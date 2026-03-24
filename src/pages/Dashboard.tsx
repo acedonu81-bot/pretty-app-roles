@@ -35,7 +35,7 @@ const Dashboard = () => {
       case 'staff': return <PlaceholderView title="Personal de Sala" subtitle="Asigna personal y coordina turnos." />;
       case 'makeup': return <PlaceholderView title="Estilismo Makeup" subtitle="Servicio de peluquería y maquillaje VIP." />;
       case 'mapa': return <PlaceholderView title="Mapa Salas" subtitle="Salas verificadas en toda España." />;
-      case 'live': return <PlaceholderView title="Streaming VIVO" subtitle="Showcase en directo para promotores." />;
+      case 'live': return <LiveStreamView />;
       case 'rescue': return <PlaceholderView title="NIGHTLIFE Rescue" subtitle="Sistema de emergencia y reemplazo de DJ." />;
       default: return <DJView />;
     }
