@@ -14,6 +14,10 @@ import ProfileView from '@/components/dashboard/views/ProfileView';
 import KYCView from '@/components/dashboard/views/KYCView';
 import PlaceholderView from '@/components/dashboard/views/PlaceholderView';
 import LiveStreamView from '@/components/dashboard/views/LiveStreamView';
+import SecurityView from '@/components/dashboard/views/SecurityView';
+import StaffView from '@/components/dashboard/views/StaffView';
+import MakeupView from '@/components/dashboard/views/MakeupView';
+import MapaView from '@/components/dashboard/views/MapaView';
 
 const Dashboard = () => {
   const location = useLocation();
@@ -31,10 +35,10 @@ const Dashboard = () => {
       case 'wallet': return <WalletView />;
       case 'profile': return <ProfileView />;
       case 'kyc': return <KYCView />;
-      case 'security': return <PlaceholderView title="Seguridad Privada" subtitle="Gestiona escoltas y seguridad para eventos." />;
-      case 'staff': return <PlaceholderView title="Personal de Sala" subtitle="Asigna personal y coordina turnos." />;
-      case 'makeup': return <PlaceholderView title="Estilismo Makeup" subtitle="Servicio de peluquería y maquillaje VIP." />;
-      case 'mapa': return <PlaceholderView title="Mapa Salas" subtitle="Salas verificadas en toda España." />;
+      case 'security': return <SecurityView />;
+      case 'staff': return <StaffView />;
+      case 'makeup': return <MakeupView />;
+      case 'mapa': return <MapaView />;
       case 'live': return <LiveStreamView />;
       case 'rescue': return <PlaceholderView title="NIGHTLIFE Rescue" subtitle="Sistema de emergencia y reemplazo de DJ." />;
       default: return <DJView />;
