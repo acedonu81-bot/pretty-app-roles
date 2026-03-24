@@ -13,6 +13,7 @@ import WalletView from '@/components/dashboard/views/WalletView';
 import ProfileView from '@/components/dashboard/views/ProfileView';
 import KYCView from '@/components/dashboard/views/KYCView';
 import PlaceholderView from '@/components/dashboard/views/PlaceholderView';
+import LiveStreamView from '@/components/dashboard/views/LiveStreamView';
 
 const Dashboard = () => {
   const location = useLocation();
