@@ -1,8 +1,34 @@
+import { useState } from 'react';
+import { Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
 import AudioUpload from '@/components/dashboard/AudioUpload';
 
 const ProfileView = () => {
+  const { user } = useAuth();
+  const [deleting, setDeleting] = useState(false);
   const genres = ['Techno', 'Minimal', 'Deep House', 'Dark'];
+
+  const handleDeleteMedia = async () => {
+    if (!user) return;
+    const confirmed = window.confirm('¿Estás seguro? Se eliminarán TODOS tus archivos multimedia (audio, fotos) de forma permanente.');
+    if (!confirmed) return;
+    setDeleting(true);
+    try {
+      const { data: files } = await supabase.storage.from('audio-sessions').list(user.id);
+      if (files && files.length > 0) {
+        const paths = files.map(f => `${user.id}/${f.name}`);
+        await supabase.storage.from('audio-sessions').remove(paths);
+      }
+      await (supabase.from('profiles').update({ photo_url: '', audio_url: '' } as any) as any).eq('user_id', user.id);
+      toast.success('Contenido multimedia eliminado permanentemente.');
+    } catch {
+      toast.error('Error al eliminar contenido.');
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
@@ -64,6 +90,21 @@ const ProfileView = () => {
             </div>
           </div>
           <AudioUpload />
+
+          {/* Media deletion - GDPR */}
+          <div className="glass-panel p-5">
+            <h4 className="text-sm font-bold mb-2 flex items-center gap-2">
+              <Trash2 size={14} style={{ color: '#ff5f56' }} /> Gestión de Contenido Multimedia
+            </h4>
+            <p className="text-[0.6rem] text-muted-foreground mb-3">
+              Según la normativa RGPD, puedes solicitar la eliminación permanente de todo tu contenido multimedia (audios, fotos de perfil y trabajos).
+            </p>
+            <button onClick={handleDeleteMedia} disabled={deleting}
+              className="w-full py-2.5 rounded-lg font-medium text-xs transition-all disabled:opacity-50"
+              style={{ background: 'rgba(255,95,86,0.06)', color: '#ff5f56', border: '1px solid rgba(255,95,86,0.15)' }}>
+              {deleting ? 'Eliminando...' : 'Eliminar todo mi contenido multimedia'}
+            </button>
+          </div>
           <div className="glass-panel p-5">
             <h4 className="text-sm font-bold mb-3">Valoraciones</h4>
             {[

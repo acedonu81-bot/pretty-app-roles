@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Mail, Lock, User, Eye, EyeOff, Music, Users, Palette, Building2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import AmbientBackground from '@/components/AmbientBackground';
@@ -24,6 +24,7 @@ const Auth = () => {
   const [isRookie, setIsRookie] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
 
   const currentRole = roles.find(r => r.value === selectedRole)!;
 
@@ -39,6 +40,7 @@ const Auth = () => {
         navigate('/dashboard');
       } else {
         if (!displayName.trim()) { toast.error('Introduce tu nombre profesional'); setLoading(false); return; }
+        if (!acceptedPrivacy) { toast.error('Debes aceptar la Política de Privacidad'); setLoading(false); return; }
 
         // Validate minimum rate for non-empresario
         if (selectedRole !== 'empresario') {
@@ -168,7 +170,21 @@ const Auth = () => {
               </button>
             </div>
 
-            <button type="submit" disabled={loading}
+            {!isLogin && (
+              <label className="flex items-start gap-2.5 px-1 cursor-pointer text-left">
+                <input type="checkbox" checked={acceptedPrivacy} onChange={e => setAcceptedPrivacy(e.target.checked)}
+                  className="mt-0.5 w-3.5 h-3.5 rounded accent-[#D4AF37]" />
+                <span className="text-[0.6rem] text-muted-foreground leading-tight">
+                  He leído y acepto la{' '}
+                  <Link to="/privacidad" target="_blank" className="font-bold underline" style={{ color: '#D4AF37' }}>
+                    Política de Privacidad
+                  </Link>{' '}
+                  y los Términos y Condiciones.
+                </span>
+              </label>
+            )}
+
+            <button type="submit" disabled={loading || (!isLogin && !acceptedPrivacy)}
               className="w-full py-3 rounded-lg font-bold text-sm transition-all hover:scale-[1.01] disabled:opacity-50"
               style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' }}>
               {loading ? 'Procesando...' : isLogin ? 'Iniciar Sesión' : 'Crear Cuenta'}
