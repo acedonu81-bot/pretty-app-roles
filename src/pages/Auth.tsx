@@ -40,6 +40,7 @@ const Auth = () => {
         navigate('/dashboard');
       } else {
         if (!displayName.trim()) { toast.error('Introduce tu nombre profesional'); setLoading(false); return; }
+        if (!acceptedPrivacy) { toast.error('Debes aceptar la Política de Privacidad'); setLoading(false); return; }
 
         // Validate minimum rate for non-empresario
         if (selectedRole !== 'empresario') {
