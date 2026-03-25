@@ -89,7 +89,7 @@ const StreamTile = ({ profile, isExpanded, onToggle, viewerCount }: {
   </div>
 );
 
-const DirectoryView = ({ role, title, subtitle }: DirectoryViewProps) => {
+const DirectoryView = ({ role, title, subtitle, onNavigate }: DirectoryViewProps) => {
   const roleProfiles = profiles.filter(p => p.role === role);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [checkoutItem, setCheckoutItem] = useState<{ name: string; price: number; description: string } | null>(null);
