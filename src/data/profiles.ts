@@ -37,7 +37,7 @@ export const profiles: Profile[] = [
   {
     id: 1, name: 'Dani Tech', role: 'dj', specialty: 'Techno / Industrial',
     rating: 4.9, reviews: 218, location: 'Madrid', zone: 'Malasaña',
-    experience: '8 años', price: 450, priceUnit: '/sesión',
+    experience: '8 años', price: 450, priceUnit: '/hora',
     avatar: 'DT', gradient: 'linear-gradient(135deg, #D4AF37, #B8941E)',
     badges: ['Techno', 'Industrial', 'Modular Live'],
     description: 'DJ y productor de techno industrial con residencias en las mejores salas underground de Madrid. Sets de 3-5 horas.',
