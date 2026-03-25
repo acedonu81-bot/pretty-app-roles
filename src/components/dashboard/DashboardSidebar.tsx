@@ -24,7 +24,6 @@ const navSections = [
       { id: 'media', icon: Camera, label: 'Media & Contenido' },
       { id: 'design', icon: Palette, label: 'Diseño & Visuales' },
       { id: 'ambassador', icon: Flag, label: 'Promoción' },
-      { id: 'promotor', icon: Briefcase, label: 'Empresarios' },
       { id: 'empresario', icon: Building2, label: 'Panel Empresario' },
     ],
   },
