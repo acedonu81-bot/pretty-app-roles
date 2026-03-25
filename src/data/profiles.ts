@@ -71,7 +71,7 @@ export const profiles: Profile[] = [
   {
     id: 4, name: 'Sara Beats', role: 'dj', specialty: 'Comercial / Top Hits',
     rating: 4.8, reviews: 267, location: 'Madrid', zone: 'Salamanca',
-    experience: '9 años', price: 400, priceUnit: '/hora',
+    experience: '9 años', price: 80, priceUnit: '/hora',
     avatar: 'SB', gradient: 'linear-gradient(135deg, #333, #1a1a1a)',
     badges: ['Comercial', 'Top 40', 'Bodas & Eventos'],
     description: 'DJ versátil con repertorio comercial para todo tipo de público. Especialista en eventos corporativos y fiestas privadas.',
