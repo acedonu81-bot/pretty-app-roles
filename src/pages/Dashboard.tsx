@@ -53,6 +53,7 @@ const Dashboard = () => {
       case 'staff': return <StaffView />;
       case 'makeup': return <MakeupView />;
       case 'settings': return <SettingsView />;
+      case 'empresario': return <EmpresarioView />;
       case 'messages': return <MessagesView />;
       case 'calendar': return <CalendarView />;
       case 'profile': return <ProfileView />;
