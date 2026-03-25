@@ -24,6 +24,7 @@ export interface Profile {
   contactClicks: number;
   streamUrl?: string;
   isLive?: boolean;
+  category?: 'professional' | 'rookie';
 }
 
 const WA_MSG = encodeURIComponent('Hola, te he visto en NIGHTLIFE Madrid y me interesa tu perfil para un evento. ¿Hablamos?');
@@ -33,7 +34,7 @@ export const getPhoneLink = (phone: string) => `tel:+${phone}`;
 export const getLocationLink = (zone: string) => `https://maps.google.com/?q=${encodeURIComponent(zone + ', Madrid')}`;
 
 export const profiles: Profile[] = [
-  // DJs (4)
+  // DJs (4) — prices 40-150€/h
   {
     id: 1, name: 'Dani Tech', role: 'dj', specialty: 'Techno / Industrial',
     rating: 4.9, reviews: 218, location: 'Madrid', zone: 'Malasaña',
@@ -44,7 +45,7 @@ export const profiles: Profile[] = [
     phone: '34612345001', instagram: 'danitech_dj', topWeekend: true,
     photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=DaniTech&backgroundColor=1a1a1a',
     subscriptionTier: 'elite', isFlashActive: true, profileViews: 1247, contactClicks: 89,
-    streamUrl: 'https://twitch.tv/danitech_dj', isLive: true,
+    streamUrl: 'https://twitch.tv/danitech_dj', isLive: true, category: 'professional',
   },
   {
     id: 2, name: 'Luna Deep', role: 'dj', specialty: 'Deep House / Melodic',
@@ -56,6 +57,7 @@ export const profiles: Profile[] = [
     phone: '34612345002', instagram: 'lunadeep_music', topWeekend: true,
     photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=LunaDeep&backgroundColor=1a1a1a',
     subscriptionTier: 'elite', isFlashActive: true, profileViews: 2103, contactClicks: 156,
+    category: 'professional',
   },
   {
     id: 3, name: 'MC Ráfaga', role: 'dj', specialty: 'Urbano / Reggaetón',
@@ -67,6 +69,7 @@ export const profiles: Profile[] = [
     phone: '34612345003', instagram: 'mcrafaga_dj', topWeekend: false,
     photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=MCRafaga&backgroundColor=1a1a1a',
     subscriptionTier: 'premium', isFlashActive: false, profileViews: 634, contactClicks: 42,
+    category: 'rookie',
   },
   {
     id: 4, name: 'Sara Beats', role: 'dj', specialty: 'Comercial / Top Hits',
@@ -78,9 +81,10 @@ export const profiles: Profile[] = [
     phone: '34612345004', instagram: 'sarabeats_official', topWeekend: false,
     photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=SaraBeats&backgroundColor=1a1a1a',
     subscriptionTier: 'free', isFlashActive: true, profileViews: 412, contactClicks: 28,
+    category: 'rookie',
   },
 
-  // Staff (3)
+  // Staff (3) — prices from 20€/h
   {
     id: 5, name: 'Carla Vega', role: 'staff', specialty: 'Azafata VIP & Hostess',
     rating: 4.9, reviews: 154, location: 'Madrid', zone: 'Salamanca',
@@ -91,31 +95,34 @@ export const profiles: Profile[] = [
     phone: '34612345005', instagram: 'carlavega_hostess', topWeekend: false,
     photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=CarlaVega&backgroundColor=1a1a1a',
     subscriptionTier: 'elite', isFlashActive: true, profileViews: 876, contactClicks: 67,
+    category: 'professional',
   },
   {
     id: 6, name: 'Marcos Ríos', role: 'staff', specialty: 'Camarero VIP & Flair',
     rating: 4.8, reviews: 98, location: 'Madrid', zone: 'Malasaña',
-    experience: '7 años', price: 25, priceUnit: '/hora',
+    experience: '7 años', price: 22, priceUnit: '/hora',
     avatar: 'MR', gradient: 'linear-gradient(135deg, #333, #1a1a1a)',
     badges: ['Flair Bartending', 'Coctelería VIP', 'Certificado WSET'],
     description: 'Barman con espectáculo. Coctelería molecular y flair para eventos exclusivos en las mejores salas de Madrid.',
     phone: '34612345006', instagram: 'marcosrios_bar', topWeekend: false,
     photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=MarcosRios&backgroundColor=1a1a1a',
     subscriptionTier: 'premium', isFlashActive: false, profileViews: 523, contactClicks: 34,
+    category: 'rookie',
   },
   {
     id: 7, name: 'Patricia Sanz', role: 'staff', specialty: 'RRPP & Relaciones Públicas',
     rating: 5.0, reviews: 201, location: 'Madrid', zone: 'Chamberí',
-    experience: '10 años', price: 35, priceUnit: '/hora',
+    experience: '10 años', price: 28, priceUnit: '/hora',
     avatar: 'PS', gradient: 'linear-gradient(135deg, #333, #1a1a1a)',
     badges: ['RRPP Premium', 'Gestión Listas', 'Networking VIP'],
     description: 'La RRPP más conectada de Madrid. Gestión integral de relaciones públicas, listas y reservados para salas top.',
     phone: '34612345007', instagram: 'patriciasanz_rrpp', topWeekend: false,
     photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=PatriciaSanz&backgroundColor=1a1a1a',
     subscriptionTier: 'free', isFlashActive: true, profileViews: 345, contactClicks: 22,
+    category: 'professional',
   },
 
-  // Estilismo (3)
+  // Estilismo (3) — prices from 30€/h
   {
     id: 8, name: 'Nadia Glamour', role: 'makeup', specialty: 'Maquillaje de Noche & FX',
     rating: 5.0, reviews: 245, location: 'Madrid', zone: 'Chueca',
@@ -126,6 +133,7 @@ export const profiles: Profile[] = [
     phone: '34612345008', instagram: 'nadiaglamour_makeup', topWeekend: false,
     photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=NadiaGlamour&backgroundColor=1a1a1a',
     subscriptionTier: 'elite', isFlashActive: false, profileViews: 1089, contactClicks: 78,
+    category: 'professional',
   },
   {
     id: 9, name: 'Iván Stylez', role: 'makeup', specialty: 'Peluquería de Autor',
@@ -137,6 +145,7 @@ export const profiles: Profile[] = [
     phone: '34612345009', instagram: 'ivanstylez_hair', topWeekend: false,
     photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=IvanStylez&backgroundColor=1a1a1a',
     subscriptionTier: 'premium', isFlashActive: true, profileViews: 456, contactClicks: 31,
+    category: 'rookie',
   },
   {
     id: 10, name: 'Alicia Moon', role: 'makeup', specialty: 'Estilismo Integral Nocturno',
@@ -148,6 +157,7 @@ export const profiles: Profile[] = [
     phone: '34612345010', instagram: 'aliciamoon_style', topWeekend: false,
     photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=AliciaMoon&backgroundColor=1a1a1a',
     subscriptionTier: 'free', isFlashActive: false, profileViews: 289, contactClicks: 18,
+    category: 'professional',
   },
 ];
 
