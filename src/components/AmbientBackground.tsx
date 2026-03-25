@@ -90,7 +90,7 @@ const AmbientBackground = () => (
       </path>
 
       {/* Wave 4 — thin mid stroke */}
-      <path stroke="#D4AF37" strokeWidth="0.5" fill="none" opacity="0.04">
+      <path stroke="#D4AF37" strokeWidth="1" fill="none" opacity="0.10">
         <animate
           attributeName="d"
           values="
