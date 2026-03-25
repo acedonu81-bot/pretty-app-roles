@@ -1,5 +1,6 @@
 import { profiles, getEliteRotation } from '@/data/profiles';
 import ProfileCard from '@/components/dashboard/ProfileCard';
+import OffersWidget from '@/components/dashboard/OffersWidget';
 
 const staffProfiles = getEliteRotation(profiles.filter(p => p.role === 'staff'));
 
@@ -17,6 +18,7 @@ const StaffView = () => {
           <ProfileCard key={p.id} profile={p} />
         ))}
       </div>
+      <OffersWidget title="Ofertas para Personal de Sala" />
     </div>
   );
 };

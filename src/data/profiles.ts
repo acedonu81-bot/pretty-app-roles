@@ -22,6 +22,8 @@ export interface Profile {
   isFlashActive: boolean;
   profileViews: number;
   contactClicks: number;
+  streamUrl?: string;
+  isLive?: boolean;
 }
 
 const WA_MSG = encodeURIComponent('Hola, te he visto en NIGHTLIFE Madrid y me interesa tu perfil para un evento. ¿Hablamos?');
@@ -42,6 +44,7 @@ export const profiles: Profile[] = [
     phone: '34612345001', instagram: 'danitech_dj', topWeekend: true,
     photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=DaniTech&backgroundColor=1a1a1a',
     subscriptionTier: 'elite', isFlashActive: true, profileViews: 1247, contactClicks: 89,
+    streamUrl: 'https://twitch.tv/danitech_dj', isLive: true,
   },
   {
     id: 2, name: 'Luna Deep', role: 'dj', specialty: 'Deep House / Melodic',
@@ -165,12 +168,11 @@ export const empresarios = [
   },
 ];
 
-// Elite rotation logic: shuffle elite profiles every 60 minutes
+// Elite rotation logic
 export const getEliteRotation = (allProfiles: Profile[]): Profile[] => {
   const elite = allProfiles.filter(p => p.subscriptionTier === 'elite');
   const others = allProfiles.filter(p => p.subscriptionTier !== 'elite');
   
-  // Use current hour as seed for deterministic shuffle
   const hourSeed = Math.floor(Date.now() / (60 * 60 * 1000));
   const shuffled = [...elite].sort((a, b) => {
     const hashA = ((a.id * 2654435761 + hourSeed) >>> 0) % 1000;
@@ -178,7 +180,6 @@ export const getEliteRotation = (allProfiles: Profile[]): Profile[] => {
     return hashA - hashB;
   });
   
-  // Top 12 spots for elite, rest after
   const top12 = shuffled.slice(0, 12);
   const remainingElite = shuffled.slice(12);
   

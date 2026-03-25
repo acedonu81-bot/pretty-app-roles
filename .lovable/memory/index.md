@@ -1,32 +1,38 @@
-NIGHTLIFE Madrid app — design system and architecture.
+NIGHTLIFE app design system and architecture decisions.
 
 ## Design System
 - Font: Inter (Google Fonts)
 - Background: #000000 (pure black)
 - Charcoal: #1A1A1A
 - Primary/Gold: #D4AF37 (Brushed Gold)
-- Gold Light: #F5D77A
-- Gold Dark: #B8941E
 - Red: #ff5f56
 - Text secondary: #8E8EA0
-- Minimal glassmorphism, premium sober aesthetic
-- Subtle gold ambient orbs
+- Glassmorphism panels with backdrop-blur
+- Ambient background with floating blurred orbs + SVG waves
 
 ## Routes
-- / → Landing page (hero + role cards)
-- /auth → Simple registration (name, photo, contact)
-- /dashboard → Multi-role dashboard with sidebar
+- / → Landing page (hero + role cards + TOP Weekend banner)
+- /auth → Login (Google/Apple/Email)
+- /dashboard → Multi-role dashboard with sidebar + admin view
 
 ## Dashboard Views
-DJ, Staff, Makeup, Promotor, Escenario Virtual, Last Call, TOP Weekend, Stats, Flash Booking, Messages, Calendar, Profile, Mapa, Settings
+DJ, Promotor (with venue verification), Staff, Makeup, Settings, Messages, Calendar, Profile
+MapaView (clean city listing), EscenarioVirtual (streaming embeds), FlashBookingWall, TopWeekend
+Stats, FlashBooking toggle, Admin (metrics + user management)
 
-## Key Features
-- TOP Weekend (renamed from TOP Finde): gold badge for highlighted profiles
-- Elite rotation: 12 profiles shuffled hourly in main grid
-- Flash Booking: real-time availability toggle
-- Subscription tiers: free, premium, elite (24.95€/mes)
-- WhatsApp icon on all contact buttons (not phone icon)
-- 4-column grid layout for profile cards
+## Naming
+- "Last Call" renamed to "Flash Booking" everywhere
+- "Top Finde" renamed to "TOP Weekend"
+
+## Music
+- Tech House stream via laut.fm (player in topbar)
+
+## Offers
+- Empresario offers visible in DJ/Staff/Makeup views via OffersWidget
 
 ## Language
 UI is in Spanish (es)
+
+## Backend
+- Lovable Cloud enabled (Supabase)
+- Stripe integration pending

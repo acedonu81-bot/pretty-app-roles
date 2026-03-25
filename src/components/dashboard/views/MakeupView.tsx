@@ -1,5 +1,6 @@
 import { profiles, getEliteRotation } from '@/data/profiles';
 import ProfileCard from '@/components/dashboard/ProfileCard';
+import OffersWidget from '@/components/dashboard/OffersWidget';
 
 const makeupProfiles = getEliteRotation(profiles.filter(p => p.role === 'makeup'));
 
@@ -17,6 +18,7 @@ const MakeupView = () => {
           <ProfileCard key={p.id} profile={p} />
         ))}
       </div>
+      <OffersWidget title="Ofertas de Estilismo" />
     </div>
   );
 };
