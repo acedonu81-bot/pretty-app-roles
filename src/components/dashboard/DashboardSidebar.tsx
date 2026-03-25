@@ -40,7 +40,7 @@ const navSections = [
     items: [
       { id: 'profile', icon: User, label: 'Mi Perfil' },
       { id: 'stats', icon: BarChart3, label: 'Estadísticas' },
-      { id: 'flash', icon: Zap, label: 'Flash Booking' },
+      { id: 'flash', icon: Zap, label: 'Flash Booking', pulse: true },
       { id: 'mapa', icon: Map, label: 'Directorio Salas' },
     ],
   },
@@ -48,7 +48,7 @@ const navSections = [
     label: 'HERRAMIENTAS',
     items: [
       { id: 'calendar', icon: CalendarDays, label: 'Calendario' },
-      { id: 'messages', icon: MessageSquare, label: 'Mensajes', badge: '3' },
+      { id: 'messages', icon: MessageSquare, label: 'Mensajes' },
     ],
   },
   {
@@ -84,6 +84,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
             </div>
             {section.items.map((item) => {
               const isActive = activeView === item.id;
+              const hasPulse = 'pulse' in item && item.pulse;
               return (
                 <button
                   key={item.id}
@@ -97,7 +98,13 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
                 >
                   <item.icon size={18} />
                   <span className="flex-1">{item.label}</span>
-                  {item.badge && (
+                  {hasPulse && (
+                    <span className="relative flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: '#D4AF37' }} />
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5" style={{ background: '#D4AF37' }} />
+                    </span>
+                  )}
+                  {'badge' in item && item.badge && (
                     <span className="text-[0.65rem] px-1.5 py-0.5 rounded font-bold"
                       style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>
                       {item.badge}
@@ -113,8 +120,8 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
       <div className="p-4 flex items-center gap-3" style={{ borderTop: '1px solid var(--nightlife-border)' }}>
         <GeometricAvatar role="dj" seed={999} size={36} />
         <div className="min-w-0">
-          <p className="text-xs font-semibold truncate">Alex (DJ Aethel)</p>
-          <p className="text-[0.6rem] font-bold" style={{ color: '#D4AF37' }}>Plan Elite</p>
+          <p className="text-xs font-semibold truncate">Soporte NightLife</p>
+          <p className="text-[0.6rem] font-bold" style={{ color: '#D4AF37' }}>Admin</p>
         </div>
       </div>
     </aside>
