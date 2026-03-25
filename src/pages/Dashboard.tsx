@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import AmbientBackground from '@/components/AmbientBackground';
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
 import DashboardTopbar from '@/components/dashboard/DashboardTopbar';
@@ -19,15 +19,26 @@ import TopWeekendView from '@/components/dashboard/views/TopWeekendView';
 import StatsView from '@/components/dashboard/views/StatsView';
 import FlashBookingView from '@/components/dashboard/views/FlashBookingView';
 import AdminView from '@/components/dashboard/views/AdminView';
+import AdminGuard from '@/components/AdminGuard';
+import { useAuth } from '@/hooks/useAuth';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
+import { useEffect } from 'react';
 
 const Dashboard = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const initialView = (location.state as { view?: string })?.view || 'dj';
   const [activeView, setActiveView] = useState(initialView);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const isMobile = useIsMobile();
+  const { user, loading } = useAuth();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/auth', { replace: true });
+    }
+  }, [loading, user, navigate]);
 
   const handleViewChange = (view: string) => {
     setActiveView(view);
@@ -50,10 +61,24 @@ const Dashboard = () => {
       case 'topweekend': return <TopWeekendView />;
       case 'stats': return <StatsView />;
       case 'flash': return <FlashBookingView />;
-      case 'admin': return <AdminView />;
+      case 'admin': return (
+        <AdminGuard>
+          <AdminView />
+        </AdminGuard>
+      );
       default: return <DJView />;
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex h-screen w-screen items-center justify-center" style={{ background: '#000' }}>
+        <div className="text-xs text-muted-foreground animate-pulse">Cargando...</div>
+      </div>
+    );
+  }
+
+  if (!user) return null;
 
   return (
     <div className="flex h-screen w-screen overflow-hidden" style={{ background: '#000' }}>

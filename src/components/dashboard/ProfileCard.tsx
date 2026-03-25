@@ -46,9 +46,9 @@ const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
         </div>
       )}
 
-      {/* Flash Active */}
+      {/* Flash Active — positioned right side, below TOP WEEKEND */}
       {p.isFlashActive && (
-        <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2 py-0.5 rounded text-[0.55rem] font-bold"
+        <div className={`absolute ${p.topWeekend ? 'top-8' : 'top-3'} right-3 flex items-center gap-1.5 px-2 py-0.5 rounded text-[0.55rem] font-bold`}
           style={{ background: 'rgba(34,197,94,0.15)', color: '#22c55e', border: '1px solid rgba(34,197,94,0.3)' }}>
           <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
           DISPONIBLE
