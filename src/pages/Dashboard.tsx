@@ -14,7 +14,7 @@ import StaffView from '@/components/dashboard/views/StaffView';
 import MakeupView from '@/components/dashboard/views/MakeupView';
 import MapaView from '@/components/dashboard/views/MapaView';
 import EscenarioVirtualView from '@/components/dashboard/views/EscenarioVirtualView';
-import LastCallView from '@/components/dashboard/views/LastCallView';
+import FlashBookingWallView from '@/components/dashboard/views/FlashBookingWallView';
 import TopWeekendView from '@/components/dashboard/views/TopWeekendView';
 import StatsView from '@/components/dashboard/views/StatsView';
 import FlashBookingView from '@/components/dashboard/views/FlashBookingView';
