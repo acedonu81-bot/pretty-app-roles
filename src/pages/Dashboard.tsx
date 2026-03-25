@@ -12,6 +12,7 @@ import CalendarView from '@/components/dashboard/views/CalendarView';
 import ProfileView from '@/components/dashboard/views/ProfileView';
 import StaffView from '@/components/dashboard/views/StaffView';
 import MakeupView from '@/components/dashboard/views/MakeupView';
+import VestuarioView from '@/components/dashboard/views/VestuarioView';
 import MapaView from '@/components/dashboard/views/MapaView';
 import EscenarioVirtualView from '@/components/dashboard/views/EscenarioVirtualView';
 import FlashBookingWallView from '@/components/dashboard/views/FlashBookingWallView';
@@ -19,6 +20,7 @@ import TopWeekendView from '@/components/dashboard/views/TopWeekendView';
 import StatsView from '@/components/dashboard/views/StatsView';
 import FlashBookingView from '@/components/dashboard/views/FlashBookingView';
 import RookieView from '@/components/dashboard/views/RookieView';
+import SubscriptionView from '@/components/dashboard/views/SubscriptionView';
 import AdminView from '@/components/dashboard/views/AdminView';
 import EmpresarioView from '@/components/dashboard/views/EmpresarioView';
 import AdminGuard from '@/components/AdminGuard';
@@ -52,6 +54,7 @@ const Dashboard = () => {
       case 'promotor': return <PromotorView />;
       case 'staff': return <StaffView />;
       case 'makeup': return <MakeupView />;
+      case 'vestuario': return <VestuarioView />;
       case 'settings': return <SettingsView />;
       case 'empresario': return <EmpresarioView />;
       case 'messages': return <MessagesView />;
@@ -64,6 +67,7 @@ const Dashboard = () => {
       case 'stats': return <StatsView />;
       case 'flash': return <FlashBookingView />;
       case 'rookie': return <RookieView />;
+      case 'subscription': return <SubscriptionView />;
       case 'admin': return (
         <AdminGuard>
           <AdminView />

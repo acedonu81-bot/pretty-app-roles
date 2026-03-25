@@ -1,8 +1,8 @@
 import {
-  Headphones, UserCheck, Smile, Briefcase, Building2,
+  Headphones, UserCheck, Smile, Shirt, Briefcase, Building2,
   User, Map, CalendarDays,
   MessageSquare, Radio, Megaphone, Settings, Crown,
-  BarChart3, Zap, ShieldCheck, Award,
+  BarChart3, Zap, ShieldCheck, Award, CreditCard,
 } from 'lucide-react';
 import GeometricAvatar from './GeometricAvatar';
 
@@ -17,7 +17,8 @@ const navSections = [
     items: [
       { id: 'dj', icon: Headphones, label: 'DJs' },
       { id: 'staff', icon: UserCheck, label: 'Personal de Sala' },
-      { id: 'makeup', icon: Smile, label: 'Estilismo & Makeup' },
+      { id: 'makeup', icon: Smile, label: 'Maquillaje & Peluquería' },
+      { id: 'vestuario', icon: Shirt, label: 'Vestuario & Moda' },
       { id: 'promotor', icon: Briefcase, label: 'Empresarios' },
       { id: 'empresario', icon: Building2, label: 'Panel Empresario' },
     ],
@@ -41,6 +42,7 @@ const navSections = [
       { id: 'profile', icon: User, label: 'Mi Perfil' },
       { id: 'stats', icon: BarChart3, label: 'Estadísticas' },
       { id: 'rookie', icon: Award, label: 'Mi Panel Rookie' },
+      { id: 'subscription', icon: CreditCard, label: 'Suscripción' },
       { id: 'flash', icon: Zap, label: 'Flash Booking', pulse: true },
       { id: 'mapa', icon: Map, label: 'Directorio Salas' },
     ],

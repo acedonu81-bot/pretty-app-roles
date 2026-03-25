@@ -66,7 +66,7 @@ const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
 
       {/* Header */}
       <div className="flex items-center gap-3 mb-3 mt-1">
-        <GeometricAvatar role={p.role} seed={p.id} size={48} isLive={p.isLive} />
+        <GeometricAvatar role={p.role as any} seed={p.id} size={48} isLive={p.isLive} />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <h3 className="text-sm font-bold truncate">{p.name}</h3>
