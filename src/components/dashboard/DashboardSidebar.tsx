@@ -17,6 +17,7 @@ const navSections = [
     label: 'DIRECTORIO',
     items: [
       { id: 'dj', icon: Headphones, label: 'DJs' },
+      { id: 'rookie', icon: Award, label: 'DJ Promesa' },
       { id: 'staff', icon: UserCheck, label: 'Personal de Sala' },
       { id: 'makeup', icon: Smile, label: 'Maquillaje & Peluquería' },
       { id: 'vestuario', icon: Shirt, label: 'Vestuario & Moda' },
