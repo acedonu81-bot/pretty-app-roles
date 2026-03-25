@@ -64,11 +64,11 @@ const EmpresarioView = () => {
   };
 
   const fetchPros = async () => {
-    const { data } = await supabase
+    const { data } = await (supabase
       .from('profiles')
-      .select('*')
-      .in('validation_status' as any, ['approved', 'pending']);
-    if (data) setPros(data as unknown as Pro[]);
+      .select('*') as any)
+      .in('validation_status', ['approved', 'pending']);
+    if (data) setPros(data as Pro[]);
   };
 
   const fetchFavorites = async () => {
