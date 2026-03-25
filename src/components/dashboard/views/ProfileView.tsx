@@ -1,4 +1,5 @@
 import { toast } from 'sonner';
+import AudioUpload from '@/components/dashboard/AudioUpload';
 
 const ProfileView = () => {
   const genres = ['Techno', 'Minimal', 'Deep House', 'Dark'];
