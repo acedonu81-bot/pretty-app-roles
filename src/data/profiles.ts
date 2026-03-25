@@ -49,7 +49,7 @@ export const profiles: Profile[] = [
   {
     id: 2, name: 'Luna Deep', role: 'dj', specialty: 'Deep House / Melodic',
     rating: 5.0, reviews: 312, location: 'Madrid', zone: 'Salamanca',
-    experience: '11 años', price: 600, priceUnit: '/hora',
+    experience: '11 años', price: 150, priceUnit: '/hora',
     avatar: 'LD', gradient: 'linear-gradient(135deg, #D4AF37, #F5D77A)',
     badges: ['Deep House', 'Melodic', 'Vinyl Set'],
     description: 'Referente del deep house en Madrid. Sesiones melódicas con vinilo y producción propia. Resident en Horizon.',
