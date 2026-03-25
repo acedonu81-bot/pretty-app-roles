@@ -45,7 +45,7 @@ const Dashboard = () => {
       case 'profile': return <ProfileView />;
       case 'mapa': return <MapaView />;
       case 'escenario': return <EscenarioVirtualView />;
-      case 'lastcall': return <LastCallView />;
+      case 'flashbooking': return <FlashBookingWallView />;
       case 'topweekend': return <TopWeekendView />;
       case 'stats': return <StatsView />;
       case 'flash': return <FlashBookingView />;

@@ -1,5 +1,5 @@
-import { Search, LogOut, Menu } from 'lucide-react';
-import { useState } from 'react';
+import { Search, LogOut, Menu, Bell, Volume2, VolumeX } from 'lucide-react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface TopbarProps {
@@ -10,6 +10,22 @@ interface TopbarProps {
 const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
   const navigate = useNavigate();
   const [showNotif, setShowNotif] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const toggleMusic = () => {
+    if (!audioRef.current) {
+      audioRef.current = new Audio('https://stream.zeno.fm/0r0xa792kwzuv');
+      audioRef.current.loop = true;
+      audioRef.current.volume = 0.3;
+    }
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play().catch(() => {});
+    }
+    setIsPlaying(!isPlaying);
+  };
 
   return (
     <header
@@ -43,20 +59,32 @@ const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
         </div>
       </div>
 
-      <div className="flex items-center gap-3 relative flex-shrink-0">
+      <div className="flex items-center gap-2 relative flex-shrink-0">
+        {/* Music player */}
+        <button
+          onClick={toggleMusic}
+          className="p-2 rounded-lg transition-all duration-200 hover:scale-105"
+          style={{
+            background: isPlaying ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.04)',
+            border: isPlaying ? '1px solid rgba(212,175,55,0.25)' : '1px solid var(--nightlife-border)',
+            color: isPlaying ? '#D4AF37' : 'var(--nightlife-text-secondary)',
+          }}
+          title={isPlaying ? 'Pausar música' : 'Reproducir Deep House'}
+        >
+          {isPlaying ? <Volume2 size={16} /> : <VolumeX size={16} />}
+        </button>
+
+        {/* Notifications - premium static bell */}
         <button
           onClick={() => setShowNotif(!showNotif)}
-          className="relative p-2 rounded-lg transition-colors"
-          style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.15)', color: '#D4AF37' }}
+          className="relative p-2 rounded-lg transition-all duration-200 hover:scale-105"
+          style={{
+            background: 'rgba(212,175,55,0.08)',
+            border: '1px solid rgba(212,175,55,0.15)',
+            color: '#D4AF37',
+          }}
         >
-          <div className="flex items-end gap-[2px] h-4 w-4">
-            {[12, 8, 5, 9].map((h, i) => (
-              <div key={i} className="flex-1 rounded-t-sm" style={{
-                background: 'currentColor', height: `${h}px`,
-                animation: `eqBar 0.4s ease-in-out infinite alternate ${i * 0.2}s`, transformOrigin: 'bottom',
-              }} />
-            ))}
-          </div>
+          <Bell size={16} />
           <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full" style={{ background: '#D4AF37' }} />
         </button>
 
@@ -72,7 +100,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
                 { title: 'Flash Booking activado', desc: 'Tu perfil aparece como disponible ahora.', time: 'Hace 1 hora' },
                 { title: 'Rotación Elite', desc: 'Tu perfil ha sido mostrado 47 veces esta hora.', time: 'Hace 3 hrs' },
               ].map((n, i) => (
-                <div key={i} className="px-3 py-2.5 flex gap-2 items-start cursor-pointer hover:bg-white/3" style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
+                <div key={i} className="px-3 py-2.5 flex gap-2 items-start cursor-pointer transition-colors hover:bg-white/5" style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
                   <div className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ background: '#D4AF37' }} />
                   <div>
                     <p className="text-xs font-semibold">{n.title}</p>
