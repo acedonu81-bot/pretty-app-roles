@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { Radio, Send, Eye, MessageSquare, ExternalLink } from 'lucide-react';
+import { Radio, Send, Eye, MessageSquare, ExternalLink, Crown } from 'lucide-react';
+import { profiles } from '@/data/profiles';
 
 const WaIcon = ({ size = 18 }: { size?: number }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
