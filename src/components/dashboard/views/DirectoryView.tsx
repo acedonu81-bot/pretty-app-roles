@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Crown, Radio, Eye } from 'lucide-react';
-import { profiles, getEliteRotation } from '@/data/profiles';
+import { Crown, Radio, Eye, Maximize2, Minimize2, Users } from 'lucide-react';
+import { profiles, getEliteRotation, Profile } from '@/data/profiles';
 import ProfileCard from '@/components/dashboard/ProfileCard';
 import CheckoutModal from '@/components/dashboard/CheckoutModal';
 import OffersWidget from '@/components/dashboard/OffersWidget';
@@ -13,11 +13,88 @@ interface DirectoryViewProps {
   onNavigate?: (view: string) => void;
 }
 
-const DirectoryView = ({ role, title, subtitle, onNavigate }: DirectoryViewProps) => {
+/** Simulated equalizer bars for a stream */
+const MiniEqualizer = () => {
+  const [heights, setHeights] = useState(Array(12).fill(30));
+  useEffect(() => {
+    const iv = setInterval(() => setHeights(Array(12).fill(0).map(() => 15 + Math.random() * 85)), 200);
+    return () => clearInterval(iv);
+  }, []);
+  return (
+    <div className="w-full h-full flex items-end justify-center gap-[2px] p-3">
+      {heights.map((h, i) => (
+        <div key={i} className="w-1.5 rounded-full transition-all duration-150"
+          style={{ height: `${h}%`, background: 'linear-gradient(180deg, #D4AF37, #B8941E)', opacity: 0.6 }} />
+      ))}
+    </div>
+  );
+};
+
+/** Single stream tile */
+const StreamTile = ({ profile, isExpanded, onToggle, viewerCount }: {
+  profile: Profile;
+  isExpanded: boolean;
+  onToggle: () => void;
+  viewerCount: number;
+}) => (
+  <div className={`relative rounded-lg overflow-hidden flex flex-col ${isExpanded ? 'col-span-2 row-span-2' : ''}`}
+    style={{ background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(229,57,53,0.2)', minHeight: isExpanded ? 320 : 160 }}>
+    {/* Stream content */}
+    <div className="flex-1 relative">
+      {profile.streamUrl ? (
+        <iframe
+          src={profile.streamUrl.includes('twitch') 
+            ? `https://player.twitch.tv/?channel=${profile.streamUrl.match(/twitch\.tv\/(\w+)/)?.[1]}&parent=${window.location.hostname}`
+            : profile.streamUrl.includes('youtube') || profile.streamUrl.includes('youtu.be')
+              ? `https://www.youtube.com/embed/${profile.streamUrl.match(/(?:watch\?v=|live\/|youtu\.be\/)([a-zA-Z0-9_-]+)/)?.[1]}?autoplay=1&mute=1`
+              : ''}
+          className="w-full h-full absolute inset-0"
+          allowFullScreen
+          allow="autoplay; encrypted-media"
+          style={{ border: 'none' }}
+        />
+      ) : (
+        <MiniEqualizer />
+      )}
+    </div>
+
+    {/* Overlay info */}
+    <div className="absolute top-2 left-2 flex items-center gap-1.5">
+      <span className="text-[0.5rem] font-bold px-1.5 py-0.5 rounded-md flex items-center gap-1"
+        style={{ background: '#E53935', color: '#fff' }}>
+        <Radio size={8} className="animate-pulse" /> LIVE
+      </span>
+      <span className="text-[0.5rem] font-medium px-1.5 py-0.5 rounded-md flex items-center gap-1"
+        style={{ background: 'rgba(0,0,0,0.7)', color: '#fff' }}>
+        <Eye size={8} /> {viewerCount}
+      </span>
+    </div>
+
+    <button onClick={onToggle} className="absolute top-2 right-2 w-6 h-6 rounded flex items-center justify-center transition-all hover:scale-110"
+      style={{ background: 'rgba(0,0,0,0.6)', color: '#fff' }}>
+      {isExpanded ? <Minimize2 size={12} /> : <Maximize2 size={12} />}
+    </button>
+
+    {/* Profile bar */}
+    <div className="flex items-center gap-2 p-2" style={{ background: 'rgba(0,0,0,0.8)' }}>
+      <GeometricAvatar role={profile.role as any} seed={profile.id} size={24} isLive />
+      <div className="flex-1 min-w-0">
+        <p className="text-[0.65rem] font-bold truncate">{profile.name}</p>
+        <p className="text-[0.5rem] text-muted-foreground truncate">{profile.specialty}</p>
+      </div>
+      <span className="text-[0.5rem] font-bold" style={{ color: '#D4AF37' }}>
+        {profile.profileViews.toLocaleString()} views
+      </span>
+    </div>
+  </div>
+);
+
+const DirectoryView = ({ role, title, subtitle }: DirectoryViewProps) => {
   const roleProfiles = profiles.filter(p => p.role === role);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [checkoutItem, setCheckoutItem] = useState<{ name: string; price: number; description: string } | null>(null);
   const [sortedProfiles, setSortedProfiles] = useState(() => getEliteRotation(roleProfiles));
+  const [expandedStream, setExpandedStream] = useState<number | null>(null);
 
   useEffect(() => {
     setSortedProfiles(getEliteRotation(roleProfiles));
@@ -25,8 +102,18 @@ const DirectoryView = ({ role, title, subtitle, onNavigate }: DirectoryViewProps
     return () => clearInterval(iv);
   }, [role]);
 
-  // Find top profile by views (featured streamer)
-  const topStreamer = [...roleProfiles].sort((a, b) => b.profileViews - a.profileViews)[0];
+  // Simulated live streamers for this role (profiles that are live or have streamUrl)
+  const liveStreamers = roleProfiles
+    .filter(p => p.isLive || p.streamUrl)
+    .sort((a, b) => b.profileViews - a.profileViews)
+    .slice(0, 4);
+
+  // Simulated viewer counts
+  const viewerCounts = liveStreamers.map((p) => 15 + Math.floor(p.profileViews / 30));
+
+  const toggleExpand = (id: number) => {
+    setExpandedStream(prev => prev === id ? null : id);
+  };
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
@@ -37,55 +124,60 @@ const DirectoryView = ({ role, title, subtitle, onNavigate }: DirectoryViewProps
           </h2>
           <p className="text-sm text-muted-foreground">{subtitle}</p>
         </div>
-        <button
-          onClick={() => onNavigate?.('escenario')}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-lg font-bold text-sm transition-all duration-300 hover:scale-105 active:scale-95 shrink-0"
-          style={{
-            background: 'linear-gradient(90deg, #E53935, #C62828)',
-            color: 'white',
-            boxShadow: '0 2px 12px rgba(229,57,53,0.3)',
-          }}
-        >
-          <Radio size={16} className="animate-pulse" />
-          Emitir en Directo
-        </button>
       </div>
 
-      {/* Featured top streamer */}
-      {topStreamer && (
-        <div className="glass-panel p-4 mb-5 flex items-center gap-4"
-          style={{ border: '1px solid rgba(229,57,53,0.2)', background: 'rgba(229,57,53,0.03)' }}>
-          <div className="relative">
-            <GeometricAvatar role={topStreamer.role as any} seed={topStreamer.id} size={52} isLive={topStreamer.isLive} />
-            {topStreamer.isLive && (
-              <span className="absolute -top-1 -right-1 text-[0.45rem] font-bold px-1.5 py-0.5 rounded-md animate-pulse"
-                style={{ background: '#E53935', color: '#fff' }}>
-                LIVE
-              </span>
-            )}
-          </div>
-          <div className="flex-1 min-w-0">
+      {/* Embedded Live Streams */}
+      {liveStreamers.length > 0 && (
+        <div className="glass-panel p-4 mb-5" style={{ border: '1px solid rgba(229,57,53,0.15)' }}>
+          <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <Crown size={14} style={{ color: '#D4AF37' }} />
-              <span className="text-[0.6rem] font-bold uppercase tracking-wider" style={{ color: '#D4AF37' }}>
-                Más visto en {title}
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: '#E53935' }} />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5" style={{ background: '#E53935' }} />
               </span>
+              <span className="text-xs font-bold" style={{ color: '#E53935' }}>EN DIRECTO</span>
+              <span className="text-[0.6rem] text-muted-foreground">— {title}</span>
             </div>
-            <p className="text-sm font-bold truncate mt-0.5">{topStreamer.name}</p>
-            <p className="text-xs text-muted-foreground">{topStreamer.specialty}</p>
-          </div>
-          <div className="flex items-center gap-4 text-xs text-muted-foreground shrink-0">
-            <span className="flex items-center gap-1">
-              <Eye size={12} /> <span className="font-bold text-foreground">{topStreamer.profileViews.toLocaleString()}</span> visitas
+            <span className="text-[0.6rem] text-muted-foreground flex items-center gap-1">
+              <Users size={10} /> {liveStreamers.length} streaming
             </span>
-            {topStreamer.isLive && (
-              <button
-                onClick={() => onNavigate?.('escenario')}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold text-[0.65rem] transition-all hover:scale-105"
-                style={{ background: 'rgba(229,57,53,0.15)', color: '#E53935', border: '1px solid rgba(229,57,53,0.25)' }}
-              >
-                <Radio size={10} /> Ver en Directo
-              </button>
+          </div>
+
+          {/* Stream grid: 1 stream = full width, 2 = 2 cols, 3-4 = 2x2 grid */}
+          <div className={`grid gap-2 ${
+            expandedStream !== null
+              ? 'grid-cols-1'
+              : liveStreamers.length === 1
+                ? 'grid-cols-1'
+                : 'grid-cols-1 sm:grid-cols-2'
+          }`}
+            style={{ minHeight: expandedStream !== null ? 350 : liveStreamers.length === 1 ? 220 : 180 }}
+          >
+            {expandedStream !== null ? (
+              // Show only the expanded stream
+              (() => {
+                const p = liveStreamers.find(s => s.id === expandedStream);
+                if (!p) return null;
+                const idx = liveStreamers.indexOf(p);
+                return (
+                  <StreamTile
+                    profile={p}
+                    isExpanded
+                    onToggle={() => toggleExpand(p.id)}
+                    viewerCount={viewerCounts[idx] || 0}
+                  />
+                );
+              })()
+            ) : (
+              liveStreamers.map((p, i) => (
+                <StreamTile
+                  key={p.id}
+                  profile={p}
+                  isExpanded={false}
+                  onToggle={() => toggleExpand(p.id)}
+                  viewerCount={viewerCounts[i]}
+                />
+              ))
             )}
           </div>
         </div>
