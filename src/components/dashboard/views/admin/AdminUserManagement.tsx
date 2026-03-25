@@ -78,7 +78,7 @@ const AdminUserManagement = () => {
                       background: u.subscription_tier === 'elite' ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.05)',
                       color: u.subscription_tier === 'elite' ? '#D4AF37' : 'var(--nightlife-text-secondary)',
                     }}>
-                    {u.subscription_tier.toUpperCase()}
+                    {(u.subscription_tier || 'free').toUpperCase()}
                   </span>
                   <span className="text-[0.5rem] px-1 py-0.5 rounded font-bold"
                     style={{
