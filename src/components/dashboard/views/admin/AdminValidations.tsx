@@ -45,9 +45,9 @@ const AdminValidations = () => {
 
   const handleAction = async (profile: PendingProfile, action: 'approved' | 'rookie' | 'rejected') => {
     const category = action === 'approved' ? 'professional' : action === 'rookie' ? 'rookie' : 'rejected';
-    const { error } = await supabase
+    const { error } = await (supabase
       .from('profiles')
-      .update({ validation_status: action, category } as any)
+      .update({ validation_status: action, category } as any) as any)
       .eq('id', profile.id);
 
     if (error) {

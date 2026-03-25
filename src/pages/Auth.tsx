@@ -1,10 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, Music, Users, Palette, Building2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import AmbientBackground from '@/components/AmbientBackground';
 import LegalFooter from '@/components/LegalFooter';
 import { toast } from 'sonner';
+
+const roles = [
+  { value: 'dj', label: 'DJ', icon: Music, minRate: 40 },
+  { value: 'staff', label: 'Personal de Sala', icon: Users, minRate: 20 },
+  { value: 'makeup', label: 'Estilismo', icon: Palette, minRate: 30 },
+  { value: 'empresario', label: 'Empresario / Sala', icon: Building2, minRate: 0 },
+];
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -12,15 +19,17 @@ const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
+  const [selectedRole, setSelectedRole] = useState('dj');
+  const [hourlyRate, setHourlyRate] = useState('');
+  const [isRookie, setIsRookie] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const currentRole = roles.find(r => r.value === selectedRole)!;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) {
-      toast.error('Completa todos los campos');
-      return;
-    }
+    if (!email || !password) { toast.error('Completa todos los campos'); return; }
     setLoading(true);
     try {
       if (isLogin) {
@@ -29,21 +38,38 @@ const Auth = () => {
         toast.success('¡Bienvenido de vuelta!');
         navigate('/dashboard');
       } else {
-        if (!displayName.trim()) {
-          toast.error('Introduce tu nombre profesional');
-          setLoading(false);
-          return;
+        if (!displayName.trim()) { toast.error('Introduce tu nombre profesional'); setLoading(false); return; }
+
+        // Validate minimum rate for non-empresario
+        if (selectedRole !== 'empresario') {
+          const rate = parseInt(hourlyRate) || 0;
+          if (rate < currentRole.minRate) {
+            toast.error(`El mínimo para ${currentRole.label} es ${currentRole.minRate}€/hora`);
+            setLoading(false);
+            return;
+          }
         }
+
         const { error } = await supabase.auth.signUp({
           email,
           password,
           options: {
-            data: { display_name: displayName },
+            data: {
+              display_name: displayName,
+              role: selectedRole,
+              hourly_rate: selectedRole !== 'empresario' ? parseInt(hourlyRate) || currentRole.minRate : 0,
+              category: isRookie ? 'rookie' : 'pending',
+            },
             emailRedirectTo: window.location.origin,
           },
         });
         if (error) throw error;
-        toast.success('Cuenta creada. Revisa tu email para confirmar.');
+
+        if (selectedRole === 'empresario') {
+          toast.success('Solicitud enviada. El administrador revisará tu cuenta.');
+        } else {
+          toast.success('Cuenta creada. Perfil en proceso de validación. Plazo estimado: 24 horas.');
+        }
       }
     } catch (err: any) {
       toast.error(err.message || 'Error de autenticación');
@@ -57,7 +83,7 @@ const Auth = () => {
       <AmbientBackground />
 
       <div className="flex-1 flex items-center justify-center px-4 py-12">
-        <div className="glass-panel w-[420px] max-w-full p-8 text-center z-10">
+        <div className="glass-panel w-[460px] max-w-full p-8 text-center z-10">
           <h2 className="text-2xl font-bold mb-1">
             NIGHT<span className="text-gradient">LIFE</span>
           </h2>
@@ -65,58 +91,92 @@ const Auth = () => {
 
           <form onSubmit={handleSubmit} className="space-y-3">
             {!isLogin && (
-              <div className="relative">
-                <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                <input
-                  value={displayName}
-                  onChange={e => setDisplayName(e.target.value)}
-                  placeholder="Tu nombre artístico o profesional"
-                  className="nightlife-input !py-3 !pl-9 text-sm"
-                />
-              </div>
+              <>
+                <div className="relative">
+                  <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <input value={displayName} onChange={e => setDisplayName(e.target.value)}
+                    placeholder="Tu nombre artístico o profesional" className="nightlife-input !py-3 !pl-9 text-sm" />
+                </div>
+
+                {/* Role selector */}
+                <div className="grid grid-cols-2 gap-2">
+                  {roles.map(r => (
+                    <button key={r.value} type="button" onClick={() => setSelectedRole(r.value)}
+                      className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-xs font-bold transition-all"
+                      style={{
+                        background: selectedRole === r.value ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.03)',
+                        border: `1px solid ${selectedRole === r.value ? 'rgba(212,175,55,0.4)' : 'var(--nightlife-border)'}`,
+                        color: selectedRole === r.value ? '#D4AF37' : '#8E8EA0',
+                      }}>
+                      <r.icon size={14} /> {r.label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Hourly rate for non-empresario */}
+                {selectedRole !== 'empresario' && (
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">€</span>
+                    <input type="number" value={hourlyRate} onChange={e => setHourlyRate(e.target.value)}
+                      placeholder={`Tarifa por hora (mín. ${currentRole.minRate}€)`}
+                      min={currentRole.minRate} className="nightlife-input !py-3 !pl-8 text-sm" />
+                  </div>
+                )}
+
+                {/* Rookie toggle */}
+                {selectedRole !== 'empresario' && (
+                  <label className="flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer transition-all"
+                    style={{
+                      background: isRookie ? 'rgba(255,188,0,0.08)' : 'rgba(255,255,255,0.03)',
+                      border: `1px solid ${isRookie ? 'rgba(255,188,0,0.3)' : 'var(--nightlife-border)'}`,
+                    }}>
+                    <input type="checkbox" checked={isRookie} onChange={e => setIsRookie(e.target.checked)} className="hidden" />
+                    <div className="w-4 h-4 rounded border flex items-center justify-center"
+                      style={{ borderColor: isRookie ? '#ffbc00' : '#555', background: isRookie ? '#ffbc00' : 'transparent' }}>
+                      {isRookie && <span className="text-[0.5rem] text-black font-bold">✓</span>}
+                    </div>
+                    <div className="text-left">
+                      <span className="text-xs font-bold" style={{ color: isRookie ? '#ffbc00' : '#8E8EA0' }}>Soy Rookie / Promesa</span>
+                      <p className="text-[0.55rem] text-muted-foreground">Necesitarás 500 apoyos de la comunidad para ascender a Profesional</p>
+                    </div>
+                  </label>
+                )}
+
+                {selectedRole === 'empresario' && (
+                  <div className="px-3 py-2.5 rounded-lg text-left" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
+                    <p className="text-[0.6rem]" style={{ color: '#D4AF37' }}>
+                      ⚡ Las cuentas de empresario requieren aprobación del administrador. Recibirás un email de confirmación.
+                    </p>
+                  </div>
+                )}
+              </>
             )}
 
             <div className="relative">
               <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="Email"
-                className="nightlife-input !py-3 !pl-9 text-sm"
-              />
+              <input type="email" value={email} onChange={e => setEmail(e.target.value)}
+                placeholder="Email" className="nightlife-input !py-3 !pl-9 text-sm" />
             </div>
 
             <div className="relative">
               <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <input
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                placeholder="Contraseña"
-                className="nightlife-input !py-3 !pl-9 !pr-10 text-sm"
-              />
+              <input type={showPassword ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)}
+                placeholder="Contraseña" className="nightlife-input !py-3 !pl-9 !pr-10 text-sm" />
               <button type="button" onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
                 {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
               </button>
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
+            <button type="submit" disabled={loading}
               className="w-full py-3 rounded-lg font-bold text-sm transition-all hover:scale-[1.01] disabled:opacity-50"
-              style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' }}
-            >
+              style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' }}>
               {loading ? 'Procesando...' : isLogin ? 'Iniciar Sesión' : 'Crear Cuenta'}
             </button>
           </form>
 
-          <button
-            onClick={() => setIsLogin(!isLogin)}
-            className="mt-4 text-xs transition-colors"
-            style={{ color: '#D4AF37' }}
-          >
+          <button onClick={() => setIsLogin(!isLogin)}
+            className="mt-4 text-xs transition-colors" style={{ color: '#D4AF37' }}>
             {isLogin ? '¿No tienes cuenta? Regístrate' : '¿Ya tienes cuenta? Inicia sesión'}
           </button>
         </div>
