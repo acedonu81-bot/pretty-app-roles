@@ -36,7 +36,7 @@ const MessagesView = () => {
         <p className="text-muted-foreground">Comunicaciones cifradas E2E con Promotores, Salas y Equipos.</p>
       </div>
 
-      <div className="grid grid-cols-[300px_1fr] h-[70vh] max-h-[680px] rounded-2xl overflow-hidden" style={{ border: '1px solid var(--nightlife-border)' }}>
+      <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] h-[70vh] max-h-[680px] rounded-2xl overflow-hidden" style={{ border: '1px solid var(--nightlife-border)' }}>
         {/* Thread list */}
         <div className="flex flex-col" style={{ borderRight: '1px solid var(--nightlife-border)', background: 'rgba(0,0,0,0.2)' }}>
           <div className="p-4" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>

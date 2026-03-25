@@ -65,13 +65,13 @@ const LastCallView = () => {
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
         <div>
-          <h2 className="text-3xl font-extrabold mb-1">Last <span className="text-gradient">Call</span> 🔥</h2>
-          <p className="text-muted-foreground">Ofertas urgentes que caducan en 2 horas. ¡No te las pierdas!</p>
+          <h2 className="text-2xl md:text-3xl font-extrabold mb-1">Last <span className="text-gradient">Call</span> 🔥</h2>
+          <p className="text-muted-foreground text-sm">Ofertas urgentes que caducan en 2 horas. ¡No te las pierdas!</p>
         </div>
         <button onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 px-6 py-4 rounded-full font-extrabold text-sm transition-all duration-200 hover:scale-105 active:scale-95"
+          className="flex items-center gap-2 px-6 py-3 md:py-4 rounded-full font-extrabold text-sm transition-all duration-200 hover:scale-105 active:scale-95 w-full sm:w-auto justify-center"
           style={{ background: 'linear-gradient(90deg, hsl(var(--primary)), #6b21ff)', color: 'white', boxShadow: '0 0 25px hsla(var(--primary) / 0.4)' }}>
           {showForm ? <X size={18} /> : <Plus size={18} />}
           {showForm ? 'Cancelar' : 'Publicar Urgencia'}

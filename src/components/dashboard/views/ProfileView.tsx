@@ -16,7 +16,7 @@ const ProfileView = () => {
         >Guardar Cambios</button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-5">
         {/* Left */}
         <div className="flex flex-col gap-4">
           <div className="glass-panel p-6 rounded-2xl text-center">

@@ -63,7 +63,7 @@ const MapaView = () => {
         <p className="text-muted-foreground">Salas verificadas en toda España.</p>
       </div>
 
-      <div className="grid grid-cols-[1fr_360px] gap-5" style={{ height: '70vh' }}>
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-5" style={{ minHeight: '50vh' }}>
         {/* Map */}
         <div className="glass-panel p-6 relative overflow-hidden">
           {/* Simplified Spain outline */}

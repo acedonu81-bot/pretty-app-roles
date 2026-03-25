@@ -65,16 +65,16 @@ const EscenarioVirtualView = () => {
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
         <div>
-          <h2 className="text-3xl font-extrabold mb-1">
+          <h2 className="text-2xl md:text-3xl font-extrabold mb-1">
             Escenario <span className="text-gradient">Virtual</span>
           </h2>
-          <p className="text-muted-foreground">Pincha en directo y conecta con empresarios en tiempo real.</p>
+          <p className="text-muted-foreground text-sm">Pincha en directo y conecta con empresarios en tiempo real.</p>
         </div>
         <button
           onClick={() => setIsLive(!isLive)}
-          className="flex items-center gap-2 px-8 py-4 rounded-full font-extrabold text-sm transition-all duration-300"
+          className="flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 rounded-full font-extrabold text-sm transition-all duration-300 w-full sm:w-auto justify-center"
           style={{
             background: isLive ? 'linear-gradient(90deg, hsl(var(--destructive)), #ff2d2d)' : 'linear-gradient(90deg, hsl(var(--primary)), #6b21ff)',
             color: 'white',
