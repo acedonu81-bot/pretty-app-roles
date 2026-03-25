@@ -1,5 +1,5 @@
 import {
-  Headphones, UserCheck, Smile, Briefcase,
+  Headphones, UserCheck, Smile, Briefcase, Building2,
   User, Map, CalendarDays,
   MessageSquare, Radio, Megaphone, Settings, Crown,
   BarChart3, Zap, ShieldCheck,
