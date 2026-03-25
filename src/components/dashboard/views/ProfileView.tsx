@@ -63,6 +63,7 @@ const ProfileView = () => {
                 className="nightlife-input mt-1 text-sm resize-y" />
             </div>
           </div>
+          <AudioUpload />
           <div className="glass-panel p-5">
             <h4 className="text-sm font-bold mb-3">Valoraciones</h4>
             {[
