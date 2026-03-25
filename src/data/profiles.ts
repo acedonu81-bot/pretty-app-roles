@@ -60,7 +60,7 @@ export const profiles: Profile[] = [
   {
     id: 3, name: 'MC Ráfaga', role: 'dj', specialty: 'Urbano / Reggaetón',
     rating: 4.7, reviews: 189, location: 'Madrid', zone: 'Malasaña',
-    experience: '6 años', price: 350, priceUnit: '/hora',
+    experience: '6 años', price: 60, priceUnit: '/hora',
     avatar: 'MR', gradient: 'linear-gradient(135deg, #333, #1a1a1a)',
     badges: ['Urbano', 'Reggaetón', 'Latino Mix'],
     description: 'El DJ urbano más solicitado de la zona centro. Especialista en sesiones de reggaetón y perreo intenso.',
