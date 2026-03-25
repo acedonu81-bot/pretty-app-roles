@@ -50,37 +50,6 @@ const Landing = () => {
         </div>
       </header>
 
-      {/* TOP WEEKEND Banner */}
-      {topProfiles.length > 0 && (
-        <section className="max-w-[1200px] mx-auto px-6 md:px-8 py-10 w-full">
-          <div className="glass-panel p-6" style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
-            <h3 className="text-lg font-bold mb-1 flex items-center gap-2">
-              <Crown size={18} style={{ color: '#D4AF37' }} />
-              <span style={{ color: '#D4AF37' }}>DJs y Staff Recomendados para este Weekend</span>
-            </h3>
-            <p className="text-xs text-muted-foreground mb-5">Perfiles destacados con el sello TOP Weekend — los más solicitados esta semana.</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {topProfiles.map(p => (
-                <div key={p.id} className="flex items-center gap-3 p-3 rounded-lg transition-all duration-200 hover:bg-white/3 cursor-pointer"
-                  style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}
-                  onClick={() => navigate('/dashboard')}>
-                  <GeometricAvatar role={p.role as any} seed={p.id} size={40} />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="font-bold text-sm">{p.name}</span>
-                      <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded" style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' }}>
-                        TOP WEEKEND
-                      </span>
-                    </div>
-                    <p className="text-xs text-muted-foreground">{p.specialty} • {p.zone}</p>
-                  </div>
-                  <span className="text-sm font-bold" style={{ color: '#D4AF37' }}>€{p.price}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       <section className="max-w-[1200px] mx-auto px-6 md:px-8 py-16 flex-1">
         <h3 className="text-center text-3xl lg:text-4xl font-bold mb-12">
