@@ -3,21 +3,19 @@ import { useLocation } from 'react-router-dom';
 import AmbientBackground from '@/components/AmbientBackground';
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
 import DashboardTopbar from '@/components/dashboard/DashboardTopbar';
+import LegalFooter from '@/components/LegalFooter';
 import DJView from '@/components/dashboard/views/DJView';
 import PromotorView from '@/components/dashboard/views/PromotorView';
-import AgencyView from '@/components/dashboard/views/AgencyView';
 import SettingsView from '@/components/dashboard/views/SettingsView';
 import MessagesView from '@/components/dashboard/views/MessagesView';
 import CalendarView from '@/components/dashboard/views/CalendarView';
 import WalletView from '@/components/dashboard/views/WalletView';
 import ProfileView from '@/components/dashboard/views/ProfileView';
-import KYCView from '@/components/dashboard/views/KYCView';
-import PlaceholderView from '@/components/dashboard/views/PlaceholderView';
-import LiveStreamView from '@/components/dashboard/views/LiveStreamView';
-import SecurityView from '@/components/dashboard/views/SecurityView';
 import StaffView from '@/components/dashboard/views/StaffView';
 import MakeupView from '@/components/dashboard/views/MakeupView';
 import MapaView from '@/components/dashboard/views/MapaView';
+import EscenarioVirtualView from '@/components/dashboard/views/EscenarioVirtualView';
+import LastCallView from '@/components/dashboard/views/LastCallView';
 
 const Dashboard = () => {
   const location = useLocation();
@@ -28,19 +26,16 @@ const Dashboard = () => {
     switch (activeView) {
       case 'dj': return <DJView />;
       case 'promotor': return <PromotorView />;
-      case 'agency': return <AgencyView />;
+      case 'staff': return <StaffView />;
+      case 'makeup': return <MakeupView />;
       case 'settings': return <SettingsView />;
       case 'messages': return <MessagesView />;
       case 'calendar': return <CalendarView />;
       case 'wallet': return <WalletView />;
       case 'profile': return <ProfileView />;
-      case 'kyc': return <KYCView />;
-      case 'security': return <SecurityView />;
-      case 'staff': return <StaffView />;
-      case 'makeup': return <MakeupView />;
       case 'mapa': return <MapaView />;
-      case 'live': return <LiveStreamView />;
-      case 'rescue': return <PlaceholderView title="NIGHTLIFE Rescue" subtitle="Sistema de emergencia y reemplazo de DJ." />;
+      case 'escenario': return <EscenarioVirtualView />;
+      case 'lastcall': return <LastCallView />;
       default: return <DJView />;
     }
   };
@@ -54,6 +49,7 @@ const Dashboard = () => {
         <div className="p-8 flex-1">
           {renderView()}
         </div>
+        <LegalFooter />
       </main>
     </div>
   );
