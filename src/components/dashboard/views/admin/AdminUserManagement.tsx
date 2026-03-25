@@ -78,14 +78,14 @@ const AdminUserManagement = () => {
                       background: u.subscription_tier === 'elite' ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.05)',
                       color: u.subscription_tier === 'elite' ? '#D4AF37' : 'var(--nightlife-text-secondary)',
                     }}>
-                    {u.subscription_tier.toUpperCase()}
+                    {(u.subscription_tier || 'free').toUpperCase()}
                   </span>
                   <span className="text-[0.5rem] px-1 py-0.5 rounded font-bold"
                     style={{
                       background: u.category === 'professional' ? 'rgba(34,197,94,0.1)' : 'rgba(255,188,0,0.1)',
                       color: u.category === 'professional' ? '#22c55e' : '#ffbc00',
                     }}>
-                    {u.category === 'professional' ? 'PRO' : u.category.toUpperCase()}
+                    {u.category === 'professional' ? 'PRO' : (u.category || 'rookie').toUpperCase()}
                   </span>
                 </div>
                 <p className="text-[0.6rem] text-muted-foreground">{u.role} · {u.zone || 'Sin zona'} · Score: {u.score}</p>
