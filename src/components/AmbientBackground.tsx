@@ -2,7 +2,7 @@ const AmbientBackground = () => (
   <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
     {/* Floating gold orbs */}
     <div
-      className="absolute w-[600px] h-[600px] rounded-full opacity-[0.12]"
+      className="absolute w-[600px] h-[600px] rounded-full opacity-[0.22]"
       style={{
         top: '-20%', left: '-10%',
         background: 'radial-gradient(circle, #D4AF37 0%, transparent 70%)',
