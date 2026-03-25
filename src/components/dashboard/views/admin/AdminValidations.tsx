@@ -25,12 +25,12 @@ const AdminValidations = () => {
   }, []);
 
   const fetchPending = async () => {
-    const { data } = await supabase
+    const { data } = await (supabase
       .from('profiles')
-      .select('*')
-      .eq('validation_status' as any, 'pending')
-      .order('validation_submitted_at' as any, { ascending: true });
-    if (data) setPending(data as unknown as PendingProfile[]);
+      .select('*') as any)
+      .eq('validation_status', 'pending')
+      .order('validation_submitted_at', { ascending: true });
+    if (data) setPending(data as PendingProfile[]);
   };
 
   const getWaitHours = (submitted: string) => {
