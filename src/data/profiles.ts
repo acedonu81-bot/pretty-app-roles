@@ -141,7 +141,7 @@ export const profiles: Profile[] = [
   {
     id: 10, name: 'Alicia Moon', role: 'makeup', specialty: 'Estilismo Integral Nocturno',
     rating: 4.8, reviews: 134, location: 'Madrid', zone: 'Chueca',
-    experience: '7 años', price: 350, priceUnit: '/sesión',
+    experience: '7 años', price: 350, priceUnit: '/hora',
     avatar: 'AM', gradient: 'linear-gradient(135deg, #333, #1a1a1a)',
     badges: ['Styling Completo', 'Asesoría Imagen', 'Luxury Brands'],
     description: 'Servicio integral de imagen nocturna: maquillaje, peinado y vestuario para artistas, DJs y personal de sala.',

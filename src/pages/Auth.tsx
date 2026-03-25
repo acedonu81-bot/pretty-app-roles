@@ -1,26 +1,55 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Camera } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 import AmbientBackground from '@/components/AmbientBackground';
 import LegalFooter from '@/components/LegalFooter';
+import { toast } from 'sonner';
 
 const Auth = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState('');
-  const [contact, setContact] = useState('');
-  const [photo, setPhoto] = useState<string | null>(null);
+  const [isLogin, setIsLogin] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [displayName, setDisplayName] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handlePhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => setPhoto(reader.result as string);
-      reader.readAsDataURL(file);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !password) {
+      toast.error('Completa todos los campos');
+      return;
     }
-  };
-
-  const handleRegister = () => {
-    navigate('/dashboard');
+    setLoading(true);
+    try {
+      if (isLogin) {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        toast.success('¡Bienvenido de vuelta!');
+        navigate('/dashboard');
+      } else {
+        if (!displayName.trim()) {
+          toast.error('Introduce tu nombre profesional');
+          setLoading(false);
+          return;
+        }
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: { display_name: displayName },
+            emailRedirectTo: window.location.origin,
+          },
+        });
+        if (error) throw error;
+        toast.success('Cuenta creada. Revisa tu email para confirmar.');
+      }
+    } catch (err: any) {
+      toast.error(err.message || 'Error de autenticación');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -34,50 +63,62 @@ const Auth = () => {
           </h2>
           <p className="text-muted-foreground mb-6 text-xs">Directorio Profesional · Madrid</p>
 
-          <label className="mx-auto w-20 h-20 rounded-lg flex items-center justify-center cursor-pointer mb-5 overflow-hidden transition-all hover:scale-105" style={{
-            background: photo ? 'transparent' : 'rgba(255,255,255,0.03)',
-            border: `1px dashed ${photo ? '#D4AF37' : 'var(--nightlife-border)'}`,
-          }}>
-            {photo ? (
-              <img src={photo} alt="Avatar" className="w-full h-full object-cover" />
-            ) : (
-              <div className="flex flex-col items-center gap-1">
-                <Camera size={20} className="text-muted-foreground" />
-                <span className="text-[0.55rem] text-muted-foreground">Foto</span>
+          <form onSubmit={handleSubmit} className="space-y-3">
+            {!isLogin && (
+              <div className="relative">
+                <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                <input
+                  value={displayName}
+                  onChange={e => setDisplayName(e.target.value)}
+                  placeholder="Tu nombre artístico o profesional"
+                  className="nightlife-input !py-3 !pl-9 text-sm"
+                />
               </div>
             )}
-            <input type="file" accept="image/*" onChange={handlePhoto} className="hidden" />
-          </label>
 
-          <input value={name} onChange={e => setName(e.target.value)}
-            placeholder="Tu nombre artístico o profesional"
-            className="nightlife-input !py-3 mb-2 text-sm" />
-          <input value={contact} onChange={e => setContact(e.target.value)}
-            placeholder="Email o teléfono de contacto"
-            className="nightlife-input !py-3 mb-5 text-sm" />
+            <div className="relative">
+              <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder="Email"
+                className="nightlife-input !py-3 !pl-9 text-sm"
+              />
+            </div>
 
-          <button onClick={handleRegister}
-            className="w-full py-3 rounded-lg font-bold text-sm transition-all hover:scale-[1.01]"
-            style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' }}>
-            Entrar al Directorio
+            <div className="relative">
+              <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                placeholder="Contraseña"
+                className="nightlife-input !py-3 !pl-9 !pr-10 text-sm"
+              />
+              <button type="button" onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+              </button>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 rounded-lg font-bold text-sm transition-all hover:scale-[1.01] disabled:opacity-50"
+              style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' }}
+            >
+              {loading ? 'Procesando...' : isLogin ? 'Iniciar Sesión' : 'Crear Cuenta'}
+            </button>
+          </form>
+
+          <button
+            onClick={() => setIsLogin(!isLogin)}
+            className="mt-4 text-xs transition-colors"
+            style={{ color: '#D4AF37' }}
+          >
+            {isLogin ? '¿No tienes cuenta? Regístrate' : '¿Ya tienes cuenta? Inicia sesión'}
           </button>
-
-          <div className="flex items-center my-5 text-muted-foreground text-xs">
-            <div className="flex-1 border-t" style={{ borderColor: 'var(--nightlife-border)' }} />
-            <span className="mx-3 text-[0.6rem]">o accede con</span>
-            <div className="flex-1 border-t" style={{ borderColor: 'var(--nightlife-border)' }} />
-          </div>
-
-          <div className="flex gap-2">
-            <button onClick={handleRegister} className="flex-1 rounded-lg py-3 text-xs font-medium flex items-center justify-center gap-2 bg-white text-black/80 hover:-translate-y-0.5 transition-transform">
-              <svg viewBox="0 0 24 24" width="16" fill="currentColor"><path d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C8.36 19.27 5 16.25 5 12c0-4.1 3.2-7.27 7.2-7.27 3.09 0 4.9 1.97 4.9 1.97L19 4.72S16.56 2 12.1 2C6.42 2 2.03 6.8 2.03 12c0 5.05 4.13 10 10.22 10 5.35 0 9.25-3.67 9.25-9.09 0-1.15-.15-1.81-.15-1.81z" /></svg>
-              Google
-            </button>
-            <button onClick={handleRegister} className="flex-1 rounded-lg py-3 text-xs font-medium flex items-center justify-center gap-2 bg-black text-white hover:-translate-y-0.5 transition-transform" style={{ border: '1px solid rgba(255,255,255,0.15)' }}>
-              <svg viewBox="0 0 24 24" width="16" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.32 2.32-1.55 4.3-3.74 4.25z" /></svg>
-              Apple
-            </button>
-          </div>
         </div>
       </div>
 
