@@ -18,8 +18,9 @@ const parseStreamUrl = (url: string): { type: string; embedUrl: string } | null 
   if (!url) return null;
   const twitchMatch = url.match(/twitch\.tv\/(\w+)/);
   if (twitchMatch) return { type: 'Twitch', embedUrl: `https://player.twitch.tv/?channel=${twitchMatch[1]}&parent=${window.location.hostname}` };
-  const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/live\/)([a-zA-Z0-9_-]+)/);
-  if (ytMatch) return { type: 'YouTube', embedUrl: `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1` };
+  // YouTube: support watch?v=, youtu.be/, live/, and channel links
+  const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|live\/|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+  if (ytMatch) return { type: 'YouTube', embedUrl: `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1&mute=1` };
   const mixMatch = url.match(/mixcloud\.com\/(.+)/);
   if (mixMatch) return { type: 'Mixcloud', embedUrl: `https://www.mixcloud.com/widget/iframe/?hide_cover=1&feed=${encodeURIComponent('/' + mixMatch[1])}` };
   return null;

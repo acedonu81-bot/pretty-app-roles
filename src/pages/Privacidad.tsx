@@ -67,7 +67,7 @@ const Privacidad = () => {
 
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>7. Tus Derechos (Derechos ARCO)</h2>
-            <p>Tienes derecho a acceder, rectificar, suprimir tus datos, así como a la portabilidad de los mismos y a la limitación u oposición de su tratamiento. Para ejercer estos derechos, debes enviar un correo electrónico a <span style={{ color: '#D4AF37' }}>admin@nightlife.madrid</span> adjuntando una copia de tu DNI o documento equivalente.</p>
+            <p>Tienes derecho a acceder, rectificar, suprimir tus datos, así como a la portabilidad de los mismos y a la limitación u oposición de su tratamiento. Para ejercer estos derechos, debes enviar un correo electrónico a <span style={{ color: '#D4AF37' }}>admin@xpeak.es</span> adjuntando una copia de tu DNI o documento equivalente.</p>
           </section>
         </div>
       </div>
