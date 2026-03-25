@@ -60,7 +60,7 @@ const VoteButton = ({ profileId, voteCount, hasVotedToday: initialVoted, categor
           color: voted ? '#8E8EA0' : '#D4AF37',
         }}>
         <Heart size={12} fill={voted ? '#8E8EA0' : 'none'} />
-        {voted ? 'Votado (24h)' : loading ? 'Votando...' : 'Apoyar Talento'}
+        {voted ? 'Votado (24h)' : loading ? 'Votando...' : 'Apoyar Promesa'}
       </button>
     </div>
   );

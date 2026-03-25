@@ -46,7 +46,6 @@ const navSections = [
     items: [
       { id: 'profile', icon: User, label: 'Mi Perfil' },
       { id: 'stats', icon: BarChart3, label: 'Estadísticas' },
-      { id: 'rookie', icon: Award, label: 'DJ Promesa' },
       { id: 'subscription', icon: CreditCard, label: 'Suscripción' },
       { id: 'flash', icon: Zap, label: 'Flash Booking', pulse: true },
       { id: 'mapa', icon: Map, label: 'Directorio Salas' },

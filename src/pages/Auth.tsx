@@ -116,18 +116,25 @@ const Auth = () => {
                     placeholder="Tu nombre artístico o profesional" className="nightlife-input !py-3 !pl-9 text-sm" />
                 </div>
 
-                {/* Role selector */}
-                <div className="grid grid-cols-2 gap-2">
-                  {roles.map(r => (
-                    <button key={r.value} type="button" onClick={() => setSelectedRole(r.value)}
-                      className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-xs font-bold transition-all"
-                      style={{
-                        background: selectedRole === r.value ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.03)',
-                        border: `1px solid ${selectedRole === r.value ? 'rgba(212,175,55,0.4)' : 'var(--nightlife-border)'}`,
-                        color: selectedRole === r.value ? '#D4AF37' : '#8E8EA0',
-                      }}>
-                      <r.icon size={14} /> {r.label}
-                    </button>
+                {/* Role selector by category */}
+                <div className="space-y-2">
+                  {roleGroups.map(group => (
+                    <div key={group.label}>
+                      <p className="text-[0.6rem] font-bold text-muted-foreground mb-1 px-1">{group.label}</p>
+                      <div className="grid grid-cols-2 gap-1.5">
+                        {group.roles.map(r => (
+                          <button key={r.value} type="button" onClick={() => setSelectedRole(r.value)}
+                            className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-all"
+                            style={{
+                              background: selectedRole === r.value ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.03)',
+                              border: `1px solid ${selectedRole === r.value ? 'rgba(212,175,55,0.4)' : 'var(--nightlife-border)'}`,
+                              color: selectedRole === r.value ? '#D4AF37' : '#8E8EA0',
+                            }}>
+                            <r.icon size={14} /> {r.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   ))}
                 </div>
 

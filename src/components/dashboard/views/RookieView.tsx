@@ -10,7 +10,7 @@ type ValidationStatus = 'pending' | 'approved' | 'rookie' | 'rejected' | 'awaiti
 const statusConfig: Record<ValidationStatus, { label: string; color: string; icon: typeof CheckCircle; bg: string }> = {
   pending: { label: 'Pendiente de revisión', color: '#D4AF37', icon: Clock, bg: 'rgba(212,175,55,0.08)' },
   approved: { label: 'Aprobado PRO', color: '#22c55e', icon: CheckCircle, bg: 'rgba(34,197,94,0.08)' },
-  rookie: { label: 'Rookie / Promesa', color: '#D4AF37', icon: Award, bg: 'rgba(212,175,55,0.08)' },
+  rookie: { label: 'Promesa', color: '#D4AF37', icon: Award, bg: 'rgba(212,175,55,0.08)' },
   rejected: { label: 'Rechazado', color: '#ef4444', icon: XCircle, bg: 'rgba(239,68,68,0.08)' },
   awaiting_admin: { label: 'Esperando aprobación Admin', color: '#f59e0b', icon: AlertCircle, bg: 'rgba(245,158,11,0.08)' },
 };
