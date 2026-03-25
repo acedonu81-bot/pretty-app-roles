@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Mail, Lock, User, Eye, EyeOff, Music, Users, Palette, Building2 } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, Music, Users, Palette, Building2, Camera, Brush, Flag, Shirt } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import AmbientBackground from '@/components/AmbientBackground';
 import LegalFooter from '@/components/LegalFooter';
@@ -9,8 +9,12 @@ import { toast } from 'sonner';
 const roles = [
   { value: 'dj', label: 'DJ', icon: Music, minRate: 40 },
   { value: 'staff', label: 'Personal de Sala', icon: Users, minRate: 20 },
-  { value: 'makeup', label: 'Estilismo', icon: Palette, minRate: 30 },
-  { value: 'empresario', label: 'Empresario / Sala', icon: Building2, minRate: 0 },
+  { value: 'makeup', label: 'Maquillaje', icon: Palette, minRate: 30 },
+  { value: 'vestuario', label: 'Vestuario', icon: Shirt, minRate: 30 },
+  { value: 'media', label: 'Media', icon: Camera, minRate: 30 },
+  { value: 'design', label: 'Diseño', icon: Brush, minRate: 30 },
+  { value: 'ambassador', label: 'Promoción', icon: Flag, minRate: 15 },
+  { value: 'empresario', label: 'Empresario', icon: Building2, minRate: 0 },
 ];
 
 const Auth = () => {

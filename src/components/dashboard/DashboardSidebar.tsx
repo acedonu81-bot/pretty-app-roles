@@ -3,6 +3,7 @@ import {
   User, Map, CalendarDays,
   MessageSquare, Radio, Megaphone, Settings, Crown,
   BarChart3, Zap, ShieldCheck, Award, CreditCard,
+  Camera, Palette, Flag,
 } from 'lucide-react';
 import GeometricAvatar from './GeometricAvatar';
 
@@ -19,6 +20,9 @@ const navSections = [
       { id: 'staff', icon: UserCheck, label: 'Personal de Sala' },
       { id: 'makeup', icon: Smile, label: 'Maquillaje & Peluquería' },
       { id: 'vestuario', icon: Shirt, label: 'Vestuario & Moda' },
+      { id: 'media', icon: Camera, label: 'Media & Contenido' },
+      { id: 'design', icon: Palette, label: 'Diseño & Visuales' },
+      { id: 'ambassador', icon: Flag, label: 'Promoción' },
       { id: 'promotor', icon: Briefcase, label: 'Empresarios' },
       { id: 'empresario', icon: Building2, label: 'Panel Empresario' },
     ],
@@ -67,10 +71,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
   return (
     <aside
       className="w-[260px] h-full flex flex-col z-10 flex-shrink-0"
-      style={{
-        background: '#0a0a0a',
-        borderRight: '1px solid var(--nightlife-border)',
-      }}
+      style={{ background: '#0a0a0a', borderRight: '1px solid var(--nightlife-border)' }}
     >
       <div className="p-6" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>
         <h2 className="text-xl font-bold tracking-wider">
@@ -92,7 +93,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
                 <button
                   key={item.id}
                   onClick={() => onViewChange(item.id)}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg mb-0.5 text-sm font-medium transition-all duration-200 text-left`}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg mb-0.5 text-sm font-medium transition-all duration-200 text-left"
                   style={{
                     color: isActive ? '#D4AF37' : 'var(--nightlife-text-secondary)',
                     background: isActive ? 'rgba(212,175,55,0.08)' : undefined,

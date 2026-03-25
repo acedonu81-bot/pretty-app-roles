@@ -15,75 +15,45 @@ interface ProfileCardProps {
   compact?: boolean;
 }
 
-const tierBadge = (tier: string) => {
-  if (tier === 'elite') return { label: 'ELITE', bg: 'linear-gradient(90deg, #D4AF37, #F5D77A)', color: '#000' };
-  if (tier === 'premium') return { label: 'PREMIUM', bg: 'rgba(212,175,55,0.15)', color: '#D4AF37' };
-  return null;
-};
-
 const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
-  const tier = tierBadge(p.subscriptionTier);
   const isRookie = p.category === 'rookie';
+
+  // Collect all active badges into a single row
+  const statusBadges: { label: string; bg: string; color: string; glow?: string }[] = [];
+
+  if (p.isLive) statusBadges.push({ label: 'LIVE', bg: '#E53935', color: '#fff', glow: '0 2px 8px rgba(229,57,53,0.4)' });
+  if (p.topWeekend) statusBadges.push({ label: 'TOP WEEKEND', bg: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' });
+  if (p.isPremium) statusBadges.push({ label: 'PREMIUM', bg: 'rgba(212,175,55,0.15)', color: '#D4AF37' });
+  if (p.subscriptionTier === 'elite' && !p.isPremium) statusBadges.push({ label: 'ELITE', bg: 'rgba(212,175,55,0.1)', color: '#D4AF37' });
+  if (isRookie) statusBadges.push({ label: 'ROOKIE', bg: 'rgba(255,188,0,0.1)', color: '#ffbc00' });
+  if (p.isFlashActive) statusBadges.push({ label: 'DISPONIBLE', bg: 'rgba(34,197,94,0.12)', color: '#22c55e' });
 
   return (
     <div className="glass-panel p-5 flex flex-col transition-all hover:border-primary/20 duration-300 relative group">
-      {/* Top row badges — left: LIVE, right: TOP WEEKEND */}
-      <div className="absolute -top-2 left-0 right-0 flex items-center justify-between px-2 z-10 pointer-events-none">
-        {p.isLive ? (
-          <div className="px-2.5 py-1 rounded-md text-[0.55rem] font-bold tracking-wider flex items-center gap-1 pointer-events-auto"
-            style={{ background: '#E53935', color: '#fff', boxShadow: '0 2px 12px rgba(229,57,53,0.5)' }}>
-            <Radio size={10} className="animate-pulse" /> LIVE
-          </div>
-        ) : <span />}
-        {p.topWeekend ? (
-          <div className="px-3 py-1 rounded-md text-[0.6rem] font-bold tracking-wider pointer-events-auto"
-            style={{
-              background: 'linear-gradient(90deg, #D4AF37, #B8941E)',
-              color: '#000',
-              boxShadow: '0 2px 10px rgba(212,175,55,0.3)',
-            }}>
-            TOP WEEKEND
-          </div>
-        ) : <span />}
-      </div>
-
-      {/* Flash Active — below top badges */}
-      {p.isFlashActive && (
-        <div className="absolute top-6 right-3 flex items-center gap-1.5 px-2 py-0.5 rounded text-[0.55rem] font-bold z-10"
-          style={{ background: 'rgba(34,197,94,0.15)', color: '#22c55e', border: '1px solid rgba(34,197,94,0.3)' }}>
-          <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-          DISPONIBLE
-        </div>
-      )}
-
-      {/* Rookie badge */}
-      {isRookie && (
-        <div className="absolute top-6 left-3 px-2 py-0.5 rounded text-[0.55rem] font-bold z-10"
-          style={{ background: 'rgba(255,188,0,0.1)', color: '#ffbc00', border: '1px solid rgba(255,188,0,0.2)' }}>
-          ROOKIE
-        </div>
-      )}
-
-      {/* Premium badge */}
-      {p.isPremium && (
-        <div className="absolute top-6 left-3 px-2 py-0.5 rounded text-[0.55rem] font-bold z-10"
-          style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' }}>
-          ⭐ PREMIUM
+      {/* Status badges — single row, no overlap */}
+      {statusBadges.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          {statusBadges.map((b) => (
+            <span key={b.label} className="text-[0.55rem] font-bold px-2 py-0.5 rounded-md tracking-wide inline-flex items-center gap-1"
+              style={{
+                background: b.bg,
+                color: b.color,
+                boxShadow: b.glow,
+                border: b.bg.startsWith('rgba') ? `1px solid ${b.color}22` : undefined,
+              }}>
+              {b.label === 'LIVE' && <Radio size={8} className="animate-pulse" />}
+              {b.label === 'DISPONIBLE' && <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />}
+              {b.label}
+            </span>
+          ))}
         </div>
       )}
 
       {/* Header */}
-      <div className="flex items-center gap-3 mb-3 mt-1">
+      <div className="flex items-center gap-3 mb-3">
         <GeometricAvatar role={p.role as any} seed={p.id} size={48} isLive={p.isLive} />
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <h3 className="text-sm font-bold truncate">{p.name}</h3>
-            {tier && (
-              <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded" style={{ background: tier.bg, color: tier.color }}>
-                {tier.label}
-              </span>
-            )}
-          </div>
+          <h3 className="text-sm font-bold truncate">{p.name}</h3>
           <p className="text-xs text-muted-foreground">{p.specialty}</p>
         </div>
       </div>
