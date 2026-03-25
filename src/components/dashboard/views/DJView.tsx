@@ -3,6 +3,7 @@ import { Crown } from 'lucide-react';
 import { profiles, getEliteRotation } from '@/data/profiles';
 import ProfileCard from '@/components/dashboard/ProfileCard';
 import CheckoutModal from '@/components/dashboard/CheckoutModal';
+import OffersWidget from '@/components/dashboard/OffersWidget';
 
 const djProfiles = profiles.filter(p => p.role === 'dj');
 
@@ -11,7 +12,6 @@ const DJView = () => {
   const [checkoutItem, setCheckoutItem] = useState<{ name: string; price: number; description: string } | null>(null);
   const [sortedProfiles, setSortedProfiles] = useState(() => getEliteRotation(djProfiles));
 
-  // Re-sort every 60 minutes (Elite rotation)
   useEffect(() => {
     const iv = setInterval(() => {
       setSortedProfiles(getEliteRotation(djProfiles));
@@ -28,7 +28,6 @@ const DJView = () => {
         <p className="text-sm text-muted-foreground">Encuentra tu DJ ideal para cualquier tipo de evento nocturno en Madrid.</p>
       </div>
 
-      {/* Elite banner */}
       {sortedProfiles.some(p => p.subscriptionTier === 'elite') && (
         <div className="p-3 mb-5 rounded-lg flex items-center gap-2" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
           <Crown size={16} style={{ color: '#D4AF37' }} />
@@ -43,6 +42,8 @@ const DJView = () => {
           <ProfileCard key={p.id} profile={p} />
         ))}
       </div>
+
+      <OffersWidget title="Ofertas para DJs" />
 
       <CheckoutModal open={checkoutOpen} onClose={() => setCheckoutOpen(false)} item={checkoutItem} />
     </div>

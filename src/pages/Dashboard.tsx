@@ -18,6 +18,7 @@ import FlashBookingWallView from '@/components/dashboard/views/FlashBookingWallV
 import TopWeekendView from '@/components/dashboard/views/TopWeekendView';
 import StatsView from '@/components/dashboard/views/StatsView';
 import FlashBookingView from '@/components/dashboard/views/FlashBookingView';
+import AdminView from '@/components/dashboard/views/AdminView';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 
@@ -49,6 +50,7 @@ const Dashboard = () => {
       case 'topweekend': return <TopWeekendView />;
       case 'stats': return <StatsView />;
       case 'flash': return <FlashBookingView />;
+      case 'admin': return <AdminView />;
       default: return <DJView />;
     }
   };

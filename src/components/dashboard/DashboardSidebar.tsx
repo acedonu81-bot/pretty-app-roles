@@ -2,7 +2,7 @@ import {
   Headphones, UserCheck, Smile, Briefcase,
   User, Map, CalendarDays,
   MessageSquare, Radio, Megaphone, Settings, Crown,
-  BarChart3, Zap,
+  BarChart3, Zap, ShieldCheck,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -39,7 +39,7 @@ const navSections = [
       { id: 'profile', icon: User, label: 'Mi Perfil' },
       { id: 'stats', icon: BarChart3, label: 'Estadísticas' },
       { id: 'flash', icon: Zap, label: 'Flash Booking' },
-      { id: 'mapa', icon: Map, label: 'Mapa de Salas' },
+      { id: 'mapa', icon: Map, label: 'Directorio Salas' },
     ],
   },
   {
@@ -53,6 +53,7 @@ const navSections = [
     label: 'CONFIGURACIÓN',
     items: [
       { id: 'settings', icon: Settings, label: 'Ajustes' },
+      { id: 'admin', icon: ShieldCheck, label: 'Admin', badge: '⚡' },
     ],
   },
 ];
