@@ -34,15 +34,15 @@ const AmbientBackground = () => (
       <defs>
         <linearGradient id="waveGold1" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="#D4AF37" stopOpacity="0" />
-          <stop offset="30%" stopColor="#D4AF37" stopOpacity="0.08" />
-          <stop offset="50%" stopColor="#D4AF37" stopOpacity="0.12" />
-          <stop offset="70%" stopColor="#D4AF37" stopOpacity="0.08" />
+          <stop offset="30%" stopColor="#D4AF37" stopOpacity="0.25" />
+          <stop offset="50%" stopColor="#D4AF37" stopOpacity="0.35" />
+          <stop offset="70%" stopColor="#D4AF37" stopOpacity="0.25" />
           <stop offset="100%" stopColor="#D4AF37" stopOpacity="0" />
         </linearGradient>
         <linearGradient id="waveGold2" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="#B8941E" stopOpacity="0" />
-          <stop offset="40%" stopColor="#B8941E" stopOpacity="0.06" />
-          <stop offset="60%" stopColor="#B8941E" stopOpacity="0.06" />
+          <stop offset="40%" stopColor="#B8941E" stopOpacity="0.18" />
+          <stop offset="60%" stopColor="#B8941E" stopOpacity="0.18" />
           <stop offset="100%" stopColor="#B8941E" stopOpacity="0" />
         </linearGradient>
       </defs>
