@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { useState as useStateAlias } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Radio, Send, Eye, MessageSquare, ExternalLink } from 'lucide-react';
 
 const WaIcon = ({ size = 18 }: { size?: number }) => (
@@ -15,17 +14,14 @@ const fakeChat = [
   { user: 'DJ_Mara_92', text: 'Qué temazo!!', color: '#8E8EA0' },
 ];
 
-const parseStreamUrl = (url: string): { type: 'twitch' | 'youtube' | 'mixcloud' | 'unknown'; embedUrl: string } | null => {
+const parseStreamUrl = (url: string): { type: string; embedUrl: string } | null => {
   if (!url) return null;
-  // Twitch
   const twitchMatch = url.match(/twitch\.tv\/(\w+)/);
-  if (twitchMatch) return { type: 'twitch', embedUrl: `https://player.twitch.tv/?channel=${twitchMatch[1]}&parent=${window.location.hostname}` };
-  // YouTube
+  if (twitchMatch) return { type: 'Twitch', embedUrl: `https://player.twitch.tv/?channel=${twitchMatch[1]}&parent=${window.location.hostname}` };
   const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/live\/)([a-zA-Z0-9_-]+)/);
-  if (ytMatch) return { type: 'youtube', embedUrl: `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1` };
-  // Mixcloud
+  if (ytMatch) return { type: 'YouTube', embedUrl: `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1` };
   const mixMatch = url.match(/mixcloud\.com\/(.+)/);
-  if (mixMatch) return { type: 'mixcloud', embedUrl: `https://www.mixcloud.com/widget/iframe/?hide_cover=1&feed=${encodeURIComponent('/' + mixMatch[1])}` };
+  if (mixMatch) return { type: 'Mixcloud', embedUrl: `https://www.mixcloud.com/widget/iframe/?hide_cover=1&feed=${encodeURIComponent('/' + mixMatch[1])}` };
   return null;
 };
 
@@ -38,14 +34,47 @@ const EscenarioVirtualView = () => {
   const [eqHeights, setEqHeights] = useState<number[]>(Array(20).fill(20));
   const [streamUrl, setStreamUrl] = useState('');
   const [showUrlInput, setShowUrlInput] = useState(false);
-  const chatRef = { current: null as HTMLDivElement | null };
+  const chatRef = useRef<HTMLDivElement>(null);
 
   const streamEmbed = parseStreamUrl(streamUrl);
 
-  // Effects (same as before but inline for simplicity)
-  useState(() => {
+  useEffect(() => {
     if (!isLive) return;
-  });
+    const iv = setInterval(() => setEqHeights(Array(20).fill(0).map(() => 15 + Math.random() * 85)), 150);
+    return () => clearInterval(iv);
+  }, [isLive]);
+
+  useEffect(() => {
+    if (!isLive) { setViewers(0); return; }
+    setViewers(28);
+    const iv = setInterval(() => setViewers(v => Math.max(5, v + Math.floor(Math.random() * 9) - 3)), 3000);
+    return () => clearInterval(iv);
+  }, [isLive]);
+
+  useEffect(() => {
+    if (!isLive) { setElapsed(0); return; }
+    const iv = setInterval(() => setElapsed(e => e + 1), 1000);
+    return () => clearInterval(iv);
+  }, [isLive]);
+
+  useEffect(() => {
+    if (!isLive) return;
+    const phrases = ['🔥 Brutal!', 'Quiero booking!', '👏👏👏', 'Esa transición 🎧', 'Contacta conmigo!', 'DROP! 💣'];
+    const users = ['NightRider', 'BeatJunkie', 'ClubQueen', 'PromoMadrid', 'DeepSoul'];
+    const colors = ['#D4AF37', '#8E8EA0'];
+    const iv = setInterval(() => {
+      setChatMessages(prev => [...prev.slice(-40), {
+        user: users[Math.floor(Math.random() * users.length)],
+        text: phrases[Math.floor(Math.random() * phrases.length)],
+        color: colors[Math.floor(Math.random() * colors.length)],
+      }]);
+    }, 2800);
+    return () => clearInterval(iv);
+  }, [isLive]);
+
+  useEffect(() => {
+    chatRef.current?.scrollTo({ top: chatRef.current.scrollHeight, behavior: 'smooth' });
+  }, [chatMessages]);
 
   const formatTime = (s: number) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
 
@@ -65,21 +94,17 @@ const EscenarioVirtualView = () => {
           <p className="text-sm text-muted-foreground">Pincha en directo y conecta con empresarios en tiempo real.</p>
         </div>
         <div className="flex gap-2 w-full sm:w-auto">
-          <button
-            onClick={() => setShowUrlInput(!showUrlInput)}
+          <button onClick={() => setShowUrlInput(!showUrlInput)}
             className="flex items-center gap-2 px-4 py-3 rounded-lg font-bold text-xs transition-all duration-200"
-            style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}
-          >
+            style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
             <ExternalLink size={14} /> Stream URL
           </button>
-          <button
-            onClick={() => setIsLive(!isLive)}
+          <button onClick={() => setIsLive(!isLive)}
             className="flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-sm transition-all duration-300 flex-1 sm:flex-initial justify-center"
             style={{
               background: isLive ? 'linear-gradient(90deg, #ff5f56, #ff2d2d)' : 'linear-gradient(90deg, #D4AF37, #B8941E)',
               color: isLive ? 'white' : '#000',
-            }}
-          >
+            }}>
             <Radio size={16} className={isLive ? 'animate-pulse' : ''} />
             {isLive ? 'DETENER' : 'EN VIVO'}
           </button>
@@ -89,20 +114,13 @@ const EscenarioVirtualView = () => {
       {showUrlInput && (
         <div className="glass-panel p-4 mb-4 animate-[fadeIn_0.3s_ease]">
           <p className="text-xs font-bold mb-2 flex items-center gap-2">
-            <ExternalLink size={12} style={{ color: '#D4AF37' }} />
-            Introduce tu URL de streaming
+            <ExternalLink size={12} style={{ color: '#D4AF37' }} /> Introduce tu URL de streaming
           </p>
           <p className="text-[0.6rem] text-muted-foreground mb-3">Soporta Twitch, YouTube Live y Mixcloud</p>
-          <input
-            value={streamUrl}
-            onChange={e => setStreamUrl(e.target.value)}
-            placeholder="https://twitch.tv/tu_canal o https://youtube.com/live/..."
-            className="nightlife-input text-sm !py-2.5"
-          />
+          <input value={streamUrl} onChange={e => setStreamUrl(e.target.value)}
+            placeholder="https://twitch.tv/tu_canal o https://youtube.com/live/..." className="nightlife-input text-sm !py-2.5" />
           {streamEmbed && (
-            <p className="text-[0.6rem] mt-2 font-bold" style={{ color: '#22c55e' }}>
-              ✓ {streamEmbed.type.charAt(0).toUpperCase() + streamEmbed.type.slice(1)} detectado
-            </p>
+            <p className="text-[0.6rem] mt-2 font-bold" style={{ color: '#22c55e' }}>✓ {streamEmbed.type} detectado</p>
           )}
         </div>
       )}
@@ -126,18 +144,12 @@ const EscenarioVirtualView = () => {
           <div className="glass-panel p-5 flex-1 flex flex-col">
             <div className="flex-1 rounded-lg overflow-hidden flex items-center justify-center relative" style={{ background: 'rgba(0,0,0,0.6)', minHeight: 300 }}>
               {streamEmbed && isLive ? (
-                <iframe
-                  src={streamEmbed.embedUrl}
-                  className="w-full h-full absolute inset-0"
-                  allowFullScreen
-                  allow="autoplay; encrypted-media"
-                  style={{ border: 'none' }}
-                />
+                <iframe src={streamEmbed.embedUrl} className="w-full h-full absolute inset-0" allowFullScreen allow="autoplay; encrypted-media" style={{ border: 'none' }} />
               ) : isLive ? (
                 <div className="w-full h-full flex items-end justify-center gap-1 p-6">
                   {eqHeights.map((h, i) => (
                     <div key={i} className="w-2.5 rounded-full transition-all duration-150"
-                      style={{ height: `${h}%`, background: `linear-gradient(180deg, #D4AF37, #B8941E)`, opacity: 0.7 }} />
+                      style={{ height: `${h}%`, background: 'linear-gradient(180deg, #D4AF37, #B8941E)', opacity: 0.7 }} />
                   ))}
                 </div>
               ) : (
@@ -147,12 +159,10 @@ const EscenarioVirtualView = () => {
                 </div>
               )}
             </div>
-
             <a href="https://wa.me/34600000000?text=Hola%2C%20te%20he%20visto%20en%20NIGHTLIFE%20Madrid" target="_blank" rel="noopener noreferrer"
               className="mt-4 w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:scale-[1.01]"
               style={{ background: 'linear-gradient(90deg, #25D366, #128C7E)', color: 'white' }}>
-              <WaIcon size={18} />
-              Contactar al DJ
+              <WaIcon size={18} /> Contactar al DJ
             </a>
           </div>
         </div>
@@ -167,7 +177,7 @@ const EscenarioVirtualView = () => {
               </span>
             )}
           </div>
-          <div ref={el => { chatRef.current = el; }} className="flex-1 overflow-y-auto flex flex-col gap-1 mb-2 min-h-0">
+          <div ref={chatRef} className="flex-1 overflow-y-auto flex flex-col gap-1 mb-2 min-h-0">
             {chatMessages.map((msg, i) => (
               <div key={i} className="text-xs px-2 py-1.5 rounded" style={{ background: 'rgba(255,255,255,0.02)' }}>
                 <span className="font-bold mr-1" style={{ color: msg.color }}>{msg.user}</span>
