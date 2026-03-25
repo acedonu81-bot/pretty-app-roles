@@ -239,7 +239,7 @@ const EmpresarioView = () => {
           ) : filtered.map(p => (
             <div key={p.id} className="glass-panel p-4 transition-all hover:border-primary/20">
               <div className="flex items-center gap-3 mb-3">
-                <GeometricAvatar role={p.role} seed={p.id.charCodeAt(0)} size={42} />
+                <GeometricAvatar role={p.role as any} seed={p.id.charCodeAt(0)} size={42} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-bold truncate">{p.display_name || 'Sin nombre'}</span>
