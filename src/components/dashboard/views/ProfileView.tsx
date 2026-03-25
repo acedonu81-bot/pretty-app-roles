@@ -5,13 +5,13 @@ const ProfileView = () => {
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
-      <div className="flex justify-between items-start mb-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-8">
         <div>
-          <h2 className="text-3xl font-extrabold mb-1">Mi Perfil <span className="text-gradient">Público</span></h2>
-          <p className="text-muted-foreground">Así te ven los promotores. Optimiza cada campo para aparecer primero.</p>
+          <h2 className="text-2xl md:text-3xl font-extrabold mb-1">Mi Perfil <span className="text-gradient">Público</span></h2>
+          <p className="text-muted-foreground text-sm">Así te ven los promotores. Optimiza cada campo para aparecer primero.</p>
         </div>
         <button onClick={() => toast.success('Perfil guardado y publicado en el directorio.')}
-          className="px-5 py-2.5 rounded-xl font-extrabold text-sm"
+          className="px-5 py-2.5 rounded-xl font-extrabold text-sm w-full sm:w-auto"
           style={{ background: 'linear-gradient(90deg,#8c52ff,#00b8ff)', color: 'white' }}
         >Guardar Cambios</button>
       </div>
