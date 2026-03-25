@@ -85,9 +85,9 @@ const RookieView = () => {
     <div className="animate-[fadeIn_0.4s_ease]">
       <div className="mb-6">
         <h2 className="text-2xl font-bold mb-1">
-          Panel <span className="text-gradient">Rookie</span>
+          Panel <span className="text-gradient">Promesa</span>
         </h2>
-        <p className="text-sm text-muted-foreground">Tu camino hacia el estatus PRO.</p>
+        <p className="text-sm text-muted-foreground">Tu camino hacia el estatus PRO. Eres una de nuestras Promesas.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
