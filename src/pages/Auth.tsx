@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Mail, Lock, User, Eye, EyeOff, Music, Users, Palette, Building2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import AmbientBackground from '@/components/AmbientBackground';
