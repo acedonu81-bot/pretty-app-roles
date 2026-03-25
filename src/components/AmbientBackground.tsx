@@ -2,7 +2,7 @@ const AmbientBackground = () => (
   <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
     {/* Floating gold orbs */}
     <div
-      className="absolute w-[600px] h-[600px] rounded-full opacity-[0.12]"
+      className="absolute w-[600px] h-[600px] rounded-full opacity-[0.22]"
       style={{
         top: '-20%', left: '-10%',
         background: 'radial-gradient(circle, #D4AF37 0%, transparent 70%)',
@@ -11,7 +11,7 @@ const AmbientBackground = () => (
       }}
     />
     <div
-      className="absolute w-[500px] h-[500px] rounded-full opacity-[0.08]"
+      className="absolute w-[500px] h-[500px] rounded-full opacity-[0.16]"
       style={{
         bottom: '-15%', right: '-8%',
         background: 'radial-gradient(circle, #D4AF37 0%, transparent 70%)',
@@ -20,7 +20,7 @@ const AmbientBackground = () => (
       }}
     />
     <div
-      className="absolute w-[350px] h-[350px] rounded-full opacity-[0.06]"
+      className="absolute w-[350px] h-[350px] rounded-full opacity-[0.12]"
       style={{
         top: '40%', left: '50%',
         background: 'radial-gradient(circle, #B8941E 0%, transparent 70%)',
@@ -34,15 +34,15 @@ const AmbientBackground = () => (
       <defs>
         <linearGradient id="waveGold1" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="#D4AF37" stopOpacity="0" />
-          <stop offset="30%" stopColor="#D4AF37" stopOpacity="0.08" />
-          <stop offset="50%" stopColor="#D4AF37" stopOpacity="0.12" />
-          <stop offset="70%" stopColor="#D4AF37" stopOpacity="0.08" />
+          <stop offset="30%" stopColor="#D4AF37" stopOpacity="0.25" />
+          <stop offset="50%" stopColor="#D4AF37" stopOpacity="0.35" />
+          <stop offset="70%" stopColor="#D4AF37" stopOpacity="0.25" />
           <stop offset="100%" stopColor="#D4AF37" stopOpacity="0" />
         </linearGradient>
         <linearGradient id="waveGold2" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="#B8941E" stopOpacity="0" />
-          <stop offset="40%" stopColor="#B8941E" stopOpacity="0.06" />
-          <stop offset="60%" stopColor="#B8941E" stopOpacity="0.06" />
+          <stop offset="40%" stopColor="#B8941E" stopOpacity="0.18" />
+          <stop offset="60%" stopColor="#B8941E" stopOpacity="0.18" />
           <stop offset="100%" stopColor="#B8941E" stopOpacity="0" />
         </linearGradient>
       </defs>
@@ -76,7 +76,7 @@ const AmbientBackground = () => (
       </path>
 
       {/* Wave 3 — subtle top wave */}
-      <path stroke="#D4AF37" strokeWidth="0.8" fill="none" opacity="0.06">
+      <path stroke="#D4AF37" strokeWidth="1.5" fill="none" opacity="0.15">
         <animate
           attributeName="d"
           values="
@@ -90,7 +90,7 @@ const AmbientBackground = () => (
       </path>
 
       {/* Wave 4 — thin mid stroke */}
-      <path stroke="#D4AF37" strokeWidth="0.5" fill="none" opacity="0.04">
+      <path stroke="#D4AF37" strokeWidth="1" fill="none" opacity="0.10">
         <animate
           attributeName="d"
           values="
