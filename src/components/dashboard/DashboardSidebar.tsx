@@ -75,7 +75,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
     >
       <div className="p-6" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>
         <h2 className="text-xl font-bold tracking-wider">
-          NIGHT<span className="text-gradient">LIFE</span>
+          X<span className="text-gradient">PEAK</span>
         </h2>
         <p className="text-[0.55rem] text-muted-foreground mt-1 tracking-widest uppercase">Madrid · Directorio Profesional</p>
       </div>
