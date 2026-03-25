@@ -1,10 +1,23 @@
 import { useState } from 'react';
 import { FileText, Send } from 'lucide-react';
 
-const threads = [
+interface Thread {
+  id: number;
+  name: string;
+  initials: string;
+  gradient: string;
+  color: string;
+  lastMsg: string;
+  time: string;
+  online?: boolean;
+  unread: number;
+  verified?: boolean;
+}
+
+const initialThreads: Thread[] = [
   { id: 1, name: 'Onyx Club Madrid', initials: 'ON', gradient: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', lastMsg: 'Contrato pendiente de firma', time: 'Hace 5m', online: true, unread: 2, verified: true },
-  { id: 2, name: 'Horizon Rooftop', initials: 'HZ', gradient: 'linear-gradient(135deg,#333,#1a1a1a)', color: '#fff', lastMsg: 'Revisa el contrato', time: 'Hace 1h' },
-  { id: 3, name: 'Base Sound BCN', initials: 'BS', gradient: 'linear-gradient(135deg,#333,#1a1a1a)', color: '#fff', lastMsg: '¿Ibiza verano? 3 noches', time: 'Ayer' },
+  { id: 2, name: 'Horizon Rooftop', initials: 'HZ', gradient: 'linear-gradient(135deg,#333,#1a1a1a)', color: '#fff', lastMsg: 'Revisa el contrato', time: 'Hace 1h', unread: 1 },
+  { id: 3, name: 'Base Sound BCN', initials: 'BS', gradient: 'linear-gradient(135deg,#333,#1a1a1a)', color: '#fff', lastMsg: '¿Ibiza verano? 3 noches', time: 'Ayer', unread: 0 },
 ];
 
 const chatMessages = [
@@ -15,9 +28,18 @@ const chatMessages = [
 ];
 
 const MessagesView = () => {
+  const [threads, setThreads] = useState<Thread[]>(initialThreads);
   const [activeThread, setActiveThread] = useState(1);
   const [inputMsg, setInputMsg] = useState('');
   const [messages, setMessages] = useState(chatMessages);
+
+  // Mark thread as read when selected
+  const selectThread = (id: number) => {
+    setActiveThread(id);
+    setThreads(prev => prev.map(t => t.id === id ? { ...t, unread: 0 } : t));
+  };
+
+  const totalUnread = threads.reduce((sum, t) => sum + t.unread, 0);
 
   const sendMessage = () => {
     if (!inputMsg.trim()) return;
@@ -30,6 +52,11 @@ const MessagesView = () => {
       <div className="mb-4">
         <h2 className="text-2xl font-bold mb-1">
           <span className="text-gradient">Mensajes</span>
+          {totalUnread > 0 && (
+            <span className="ml-2 text-sm px-2 py-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>
+              {totalUnread}
+            </span>
+          )}
         </h2>
         <p className="text-sm text-muted-foreground">Comunicaciones con empresarios y salas.</p>
       </div>
@@ -41,7 +68,7 @@ const MessagesView = () => {
           </div>
           <div className="flex-1 overflow-y-auto">
             {threads.map((t) => (
-              <div key={t.id} onClick={() => setActiveThread(t.id)}
+              <div key={t.id} onClick={() => selectThread(t.id)}
                 className="p-3 flex items-start gap-2 cursor-pointer transition-colors"
                 style={{
                   borderBottom: '1px solid var(--nightlife-border)',
@@ -58,7 +85,7 @@ const MessagesView = () => {
                     <span className="text-[0.55rem] text-muted-foreground flex-shrink-0">{t.time}</span>
                   </div>
                   <p className="text-[0.6rem] text-muted-foreground truncate">{t.lastMsg}</p>
-                  {t.unread && (
+                  {t.unread > 0 && (
                     <span className="text-[0.5rem] font-bold px-1.5 py-0.5 rounded mt-0.5 inline-block" style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>
                       {t.unread} nuevos
                     </span>

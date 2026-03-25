@@ -1,6 +1,7 @@
 import { Star, MapPin, Clock, Instagram, Navigation, Radio } from 'lucide-react';
 import { Profile, getWhatsAppLink, getInstagramLink, getLocationLink } from '@/data/profiles';
 import GeometricAvatar from './GeometricAvatar';
+import VoteButton from './VoteButton';
 
 const WhatsAppIcon = ({ size = 16 }: { size?: number }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
@@ -22,6 +23,7 @@ const tierBadge = (tier: string) => {
 
 const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
   const tier = tierBadge(p.subscriptionTier);
+  const isRookie = p.category === 'rookie';
 
   return (
     <div className="glass-panel p-5 flex flex-col transition-all hover:border-primary/20 duration-300 relative group">
@@ -51,6 +53,14 @@ const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
           style={{ background: 'rgba(34,197,94,0.15)', color: '#22c55e', border: '1px solid rgba(34,197,94,0.3)' }}>
           <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
           DISPONIBLE
+        </div>
+      )}
+
+      {/* Rookie badge */}
+      {isRookie && (
+        <div className="absolute top-6 left-3 px-2 py-0.5 rounded text-[0.55rem] font-bold z-10"
+          style={{ background: 'rgba(255,188,0,0.1)', color: '#ffbc00', border: '1px solid rgba(255,188,0,0.2)' }}>
+          ROOKIE
         </div>
       )}
 
@@ -91,7 +101,7 @@ const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
         ))}
       </div>
 
-      {/* Social icons — all gold palette */}
+      {/* Social icons */}
       <div className="flex items-center gap-2 mb-3">
         <a href={getInstagramLink(p.instagram)} target="_blank" rel="noopener noreferrer"
           className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95"
@@ -109,6 +119,16 @@ const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
           <Navigation size={14} />
         </a>
       </div>
+
+      {/* Vote button for rookies */}
+      {isRookie && (
+        <VoteButton
+          profileId={String(p.id)}
+          voteCount={Math.floor(Math.random() * 200)}
+          hasVotedToday={false}
+          category="rookie"
+        />
+      )}
 
       {/* Price + WhatsApp CTA */}
       <div className="flex items-center justify-between pt-3" style={{ borderTop: '1px solid var(--nightlife-border)' }}>

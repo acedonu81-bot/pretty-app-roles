@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import AmbientBackground from '@/components/AmbientBackground';
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
 import DashboardTopbar from '@/components/dashboard/DashboardTopbar';
-import LegalFooter from '@/components/LegalFooter';
+import GlobalPlayer from '@/components/dashboard/GlobalPlayer';
 import DJView from '@/components/dashboard/views/DJView';
 import PromotorView from '@/components/dashboard/views/PromotorView';
 import SettingsView from '@/components/dashboard/views/SettingsView';
@@ -24,7 +24,6 @@ import AdminGuard from '@/components/AdminGuard';
 import { useAuth } from '@/hooks/useAuth';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
-import { useEffect } from 'react';
 
 const Dashboard = () => {
   const location = useLocation();
@@ -100,11 +99,12 @@ const Dashboard = () => {
 
       <main className="flex-1 flex flex-col overflow-y-auto relative min-w-0">
         <DashboardTopbar onMenuToggle={() => setSidebarOpen(true)} isMobile={isMobile} />
-        <div className="p-4 md:p-6 flex-1">
+        <div className="p-4 md:p-6 flex-1 pb-20">
           {renderView()}
         </div>
-        <LegalFooter />
       </main>
+
+      <GlobalPlayer />
     </div>
   );
 };
