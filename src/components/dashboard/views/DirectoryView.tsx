@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Crown, Radio, Eye, Maximize2, Minimize2, Users } from 'lucide-react';
+import { Crown, Radio, Eye, Maximize2, Minimize2, Users, Video } from 'lucide-react';
 import { profiles, getEliteRotation, Profile } from '@/data/profiles';
 import ProfileCard from '@/components/dashboard/ProfileCard';
 import CheckoutModal from '@/components/dashboard/CheckoutModal';
