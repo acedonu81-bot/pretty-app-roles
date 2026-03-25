@@ -4,7 +4,7 @@
  */
 
 interface GeometricAvatarProps {
-  role: 'dj' | 'staff' | 'makeup' | 'promotor';
+  role: 'dj' | 'staff' | 'makeup' | 'vestuario' | 'promotor';
   seed: number;
   size?: number;
   className?: string;
