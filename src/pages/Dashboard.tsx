@@ -63,6 +63,7 @@ const Dashboard = () => {
       case 'topweekend': return <TopWeekendView />;
       case 'stats': return <StatsView />;
       case 'flash': return <FlashBookingView />;
+      case 'rookie': return <RookieView />;
       case 'admin': return (
         <AdminGuard>
           <AdminView />
