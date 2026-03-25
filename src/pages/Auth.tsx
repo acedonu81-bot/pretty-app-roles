@@ -142,7 +142,7 @@ const Auth = () => {
                       {isRookie && <span className="text-[0.5rem] text-black font-bold">✓</span>}
                     </div>
                     <div className="text-left">
-                      <span className="text-xs font-bold" style={{ color: isRookie ? '#ffbc00' : '#8E8EA0' }}>Soy Rookie / Promesa</span>
+                     <span className="text-xs font-bold" style={{ color: isRookie ? '#ffbc00' : '#8E8EA0' }}>Soy Promesa</span>
                       <p className="text-[0.55rem] text-muted-foreground">Necesitarás 500 apoyos de la comunidad para ascender a Profesional</p>
                     </div>
                   </label>
