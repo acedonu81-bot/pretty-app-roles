@@ -34,7 +34,7 @@ const Landing = () => {
             <span className="text-gradient">Gestión de Eventos</span>
           </h2>
           <p className="text-base text-muted-foreground leading-relaxed mb-8 max-w-lg mx-auto lg:mx-0">
-            Conecta con DJs, Personal de Sala, Estilistas y Empresarios. Encuentra talento o publica ofertas urgentes en tiempo real.
+            Conecta con DJs, Personal de Sala, Maquillaje y Peluquería, Vestuario y Moda, Fotógrafos, Videógrafos, Diseñadores, Promotores y Empresarios. Encuentra talento o publica ofertas en tiempo real.
           </p>
           <div className="flex gap-3 justify-center lg:justify-start flex-wrap">
             <button onClick={() => navigate('/auth')} className="btn-nightlife-primary text-base px-8 py-4">
