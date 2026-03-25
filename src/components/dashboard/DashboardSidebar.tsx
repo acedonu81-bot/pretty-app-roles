@@ -24,7 +24,6 @@ const navSections = [
       { id: 'media', icon: Camera, label: 'Media & Contenido' },
       { id: 'design', icon: Palette, label: 'Diseño & Visuales' },
       { id: 'ambassador', icon: Flag, label: 'Promoción' },
-      { id: 'promotor', icon: Briefcase, label: 'Empresarios' },
       { id: 'empresario', icon: Building2, label: 'Panel Empresario' },
     ],
   },
@@ -75,7 +74,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
     >
       <div className="p-6" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>
         <h2 className="text-xl font-bold tracking-wider">
-          NIGHT<span className="text-gradient">LIFE</span>
+          X<span className="text-gradient">PEAK</span>
         </h2>
         <p className="text-[0.55rem] text-muted-foreground mt-1 tracking-widest uppercase">Madrid · Directorio Profesional</p>
       </div>
@@ -125,7 +124,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
         <GeometricAvatar role="dj" seed={999} size={36} />
         <div className="min-w-0">
           <p className="text-xs font-semibold truncate">Soporte NightLife</p>
-          <p className="text-[0.6rem] font-bold" style={{ color: '#D4AF37' }}>Admin</p>
+          <p className="text-[0.6rem] font-bold" style={{ color: '#D4AF37' }}>XPEAK Admin</p>
         </div>
       </div>
     </aside>

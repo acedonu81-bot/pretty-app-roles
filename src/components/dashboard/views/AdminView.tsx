@@ -14,7 +14,7 @@ const AdminView = () => {
         <h2 className="text-2xl font-bold mb-1">
           Panel <span className="text-gradient">Admin</span>
         </h2>
-        <p className="text-sm text-muted-foreground">Control total del sistema NIGHTLIFE Madrid.</p>
+        <p className="text-sm text-muted-foreground">Control total del sistema XPEAK.</p>
       </div>
 
       <AdminMetrics />

@@ -23,7 +23,7 @@ const HeroMockup = () => {
           <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#D4AF37' }} />
           <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#27c93f' }} />
         </div>
-        <span className="text-muted-foreground text-xs uppercase tracking-wider font-medium">nightlife / directorio</span>
+        <span className="text-muted-foreground text-xs uppercase tracking-wider font-medium">xpeak / directorio</span>
       </div>
       <div className="p-6 flex-1">
         <div className="flex gap-3 mb-5">

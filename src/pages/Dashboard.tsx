@@ -5,7 +5,7 @@ import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
 import DashboardTopbar from '@/components/dashboard/DashboardTopbar';
 import GlobalPlayer from '@/components/dashboard/GlobalPlayer';
 import DJView from '@/components/dashboard/views/DJView';
-import PromotorView from '@/components/dashboard/views/PromotorView';
+// PromotorView merged into EmpresarioView
 import SettingsView from '@/components/dashboard/views/SettingsView';
 import MessagesView from '@/components/dashboard/views/MessagesView';
 import CalendarView from '@/components/dashboard/views/CalendarView';
@@ -54,7 +54,7 @@ const Dashboard = () => {
   const renderView = () => {
     switch (activeView) {
       case 'dj': return <DJView />;
-      case 'promotor': return <PromotorView />;
+      // promotor view merged into empresario
       case 'staff': return <StaffView />;
       case 'makeup': return <MakeupView />;
       case 'vestuario': return <VestuarioView />;

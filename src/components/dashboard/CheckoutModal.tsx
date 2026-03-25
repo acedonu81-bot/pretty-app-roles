@@ -61,7 +61,7 @@ const CheckoutModal = ({ open, onClose, item }: CheckoutModalProps) => {
               €{total} retenidos de forma segura. Se liberarán al completar el servicio.
             </p>
             <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground mb-6">
-              <Lock size={12} /> Protegido con Smart Contract NIGHTLIFE
+              <Lock size={12} /> Protegido con Smart Contract XPEAK
             </div>
             <button onClick={handleClose} className="btn-nightlife-primary text-sm">Cerrar</button>
           </div>

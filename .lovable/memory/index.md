@@ -1,36 +1,38 @@
-# Memory: index.md
-Updated: now
+XPEAK app design system and architecture decisions.
 
-NIGHTLIFE app design system and architecture decisions.
+## Brand
+- Name: XPEAK (previously NIGHTLIFE Madrid)
+- Domain: xpeak.es
+- Contact: admin@xpeak.es
 
 ## Design System
-- Font: Inter (Google Fonts)
-- Background: #000000 (pure black)
-- Primary: #D4AF37 (Brushed Gold)
-- Charcoal: #1A1A1A
-- Gold light: #F5D77A
-- Red: #ff5f56 (destructive only)
-- Green: #22c55e (availability indicator only)
+- Font: Outfit (Google Fonts)
+- Background: #07070b (near-black)
+- Primary gold: #D4AF37
+- Secondary gold: #B8941E
 - Text secondary: #8E8EA0
-- NO purple, NO pink, NO neon colors
 - Glassmorphism panels with backdrop-blur
-- Ambient background with floating gold blurred orbs
-- Gold scrollbar gradient
-- Avatars: GeometricAvatar component (SVG, gold/black, role-based patterns)
+- Ambient background with floating blurred orbs
+- Black & Gold aesthetic — NO purple/pink neon
 
 ## Routes
 - / → Landing page (hero + role cards)
 - /auth → Login (Google/Apple/Email)
 - /dashboard → Multi-role dashboard with sidebar
+- /privacidad → Privacy policy
 
 ## Dashboard Views
-DJ, Promotor, Agency, Settings, Messages, Calendar, Wallet, Profile, KYC
-Staff, Makeup, Mapa, EscenarioVirtual, FlashBooking, TopWeekend, Stats, Admin
+DJ, DJ Promesa, Staff, Makeup, Vestuario, Media, Design, Ambassador,
+Empresario (unified), Escenario Virtual, Flash Booking, TOP Weekend,
+Profile, Stats, Subscription, Calendar, Messages, Settings, Admin
+
+## Subscription Tiers
+- Gratis (Promesa/Básico)
+- Pase Diario: 4.99€
+- Pase Weekend: 8.99€
+- Pro: 29.99€/mes
+- Business: 59.99€/mes
+- NO comisiones por contrato, solo suscripción/pases
 
 ## Language
 UI is in Spanish (es)
-
-## Avatar Policy
-- NO cartoon/dicebear avatars
-- Use GeometricAvatar component with role-based geometric icons
-- Monochromatic gold-to-black palette only

@@ -22,7 +22,7 @@ const Landing = () => {
       <nav className="sticky top-0 z-50 backdrop-blur-md" style={{ background: 'rgba(0,0,0,0.8)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <div className="max-w-[1200px] mx-auto px-6 md:px-8 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold tracking-wider">
-            NIGHT<span className="text-gradient">LIFE</span>
+            X<span className="text-gradient">PEAK</span>
           </h1>
           <button onClick={() => navigate('/auth')} className="btn-nightlife-primary text-sm">
             Entrar al Directorio
