@@ -1,4 +1,8 @@
+import { useState } from 'react';
+import { Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
 import AudioUpload from '@/components/dashboard/AudioUpload';
 
 const ProfileView = () => {
