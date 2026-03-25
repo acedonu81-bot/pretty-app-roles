@@ -1,15 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Headphones, UserCheck, Smile, Briefcase, Crown } from 'lucide-react';
+import { Headphones, UserCheck, Smile, Briefcase } from 'lucide-react';
 import AmbientBackground from '@/components/AmbientBackground';
 import HeroMockup from '@/components/HeroMockup';
 import RoleCard from '@/components/RoleCard';
 import LegalFooter from '@/components/LegalFooter';
 import DemoVideoModal from '@/components/DemoVideoModal';
-import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
-import { profiles } from '@/data/profiles';
-
-const topProfiles = profiles.filter(p => p.topWeekend);
 
 const Landing = () => {
   const navigate = useNavigate();
