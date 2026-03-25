@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Crown, Radio, Eye, Maximize2, Minimize2, Users } from 'lucide-react';
+import { Crown, Radio, Eye, Maximize2, Minimize2, Users, Video } from 'lucide-react';
 import { profiles, getEliteRotation, Profile } from '@/data/profiles';
 import ProfileCard from '@/components/dashboard/ProfileCard';
 import CheckoutModal from '@/components/dashboard/CheckoutModal';
@@ -89,7 +89,7 @@ const StreamTile = ({ profile, isExpanded, onToggle, viewerCount }: {
   </div>
 );
 
-const DirectoryView = ({ role, title, subtitle }: DirectoryViewProps) => {
+const DirectoryView = ({ role, title, subtitle, onNavigate }: DirectoryViewProps) => {
   const roleProfiles = profiles.filter(p => p.role === role);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [checkoutItem, setCheckoutItem] = useState<{ name: string; price: number; description: string } | null>(null);
@@ -124,6 +124,23 @@ const DirectoryView = ({ role, title, subtitle }: DirectoryViewProps) => {
           </h2>
           <p className="text-sm text-muted-foreground">{subtitle}</p>
         </div>
+        {onNavigate && (
+          <button
+            onClick={() => onNavigate('escenario')}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
+            style={{
+              background: 'rgba(229,57,53,0.12)',
+              border: '1px solid rgba(229,57,53,0.3)',
+              color: '#E53935',
+            }}
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: '#E53935' }} />
+              <span className="relative inline-flex rounded-full h-2 w-2" style={{ background: '#E53935' }} />
+            </span>
+            <Video size={14} /> Emitir en Directo
+          </button>
+        )}
       </div>
 
       {/* Embedded Live Streams */}
