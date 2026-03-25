@@ -24,7 +24,7 @@ const navSections = [
     label: 'EN VIVO',
     items: [
       { id: 'escenario', icon: Radio, label: 'Escenario Virtual' },
-      { id: 'lastcall', icon: Megaphone, label: 'Last Call' },
+      { id: 'flashbooking', icon: Megaphone, label: 'Flash Booking' },
     ],
   },
   {

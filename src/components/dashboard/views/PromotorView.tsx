@@ -1,4 +1,5 @@
-import { Play, Eye } from 'lucide-react';
+import { useState } from 'react';
+import { Play, Eye, Building2, Users, Shield, Clock, ChevronDown, ChevronUp, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
 
 const streams = [
@@ -15,6 +16,22 @@ const streams = [
 ];
 
 const PromotorView = () => {
+  const [showVenueForm, setShowVenueForm] = useState(false);
+  const [venueData, setVenueData] = useState({
+    venueName: '', capacity: '', hasSecurity: false,
+    openingHours: '', closingHours: '', hiredStaff: '',
+  });
+  const [isVerified, setIsVerified] = useState(false);
+
+  const handleVerify = () => {
+    if (!venueData.venueName.trim()) {
+      toast.error('Introduce el nombre de tu sala');
+      return;
+    }
+    setIsVerified(true);
+    toast.success('¡Sala registrada! Ahora puedes contactar profesionales.');
+  };
+
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
       <div className="mb-6">
@@ -23,6 +40,87 @@ const PromotorView = () => {
         </h2>
         <p className="text-sm text-muted-foreground">Busca profesionales y gestiona contrataciones en tiempo real.</p>
       </div>
+
+      {/* Verification banner */}
+      {!isVerified && (
+        <div className="glass-panel p-4 mb-6" style={{ border: '1px solid rgba(212,175,55,0.2)' }}>
+          <div className="flex items-center justify-between cursor-pointer" onClick={() => setShowVenueForm(!showVenueForm)}>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'rgba(212,175,55,0.1)' }}>
+                <Building2 size={18} style={{ color: '#D4AF37' }} />
+              </div>
+              <div>
+                <p className="text-sm font-bold">Verifica tu sala para contactar profesionales</p>
+                <p className="text-xs text-muted-foreground">Rellena los datos de tu establecimiento</p>
+              </div>
+            </div>
+            {showVenueForm ? <ChevronUp size={18} className="text-muted-foreground" /> : <ChevronDown size={18} className="text-muted-foreground" />}
+          </div>
+
+          {showVenueForm && (
+            <div className="mt-4 pt-4 space-y-3" style={{ borderTop: '1px solid var(--nightlife-border)' }}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[0.65rem] text-muted-foreground uppercase tracking-wider font-bold mb-1 block">Nombre de la sala *</label>
+                  <input value={venueData.venueName} onChange={e => setVenueData({ ...venueData, venueName: e.target.value })}
+                    placeholder="Ej: Club Onyx" className="nightlife-input !py-2.5 text-sm" />
+                </div>
+                <div>
+                  <label className="text-[0.65rem] text-muted-foreground uppercase tracking-wider font-bold mb-1 block">Aforo</label>
+                  <input value={venueData.capacity} onChange={e => setVenueData({ ...venueData, capacity: e.target.value })}
+                    placeholder="Ej: 1200 personas" className="nightlife-input !py-2.5 text-sm" />
+                </div>
+                <div>
+                  <label className="text-[0.65rem] text-muted-foreground uppercase tracking-wider font-bold mb-1 block">Horario apertura</label>
+                  <input value={venueData.openingHours} onChange={e => setVenueData({ ...venueData, openingHours: e.target.value })}
+                    placeholder="Ej: 23:00" className="nightlife-input !py-2.5 text-sm" />
+                </div>
+                <div>
+                  <label className="text-[0.65rem] text-muted-foreground uppercase tracking-wider font-bold mb-1 block">Horario cierre</label>
+                  <input value={venueData.closingHours} onChange={e => setVenueData({ ...venueData, closingHours: e.target.value })}
+                    placeholder="Ej: 06:00" className="nightlife-input !py-2.5 text-sm" />
+                </div>
+                <div>
+                  <label className="text-[0.65rem] text-muted-foreground uppercase tracking-wider font-bold mb-1 block">Personal contratado</label>
+                  <input value={venueData.hiredStaff} onChange={e => setVenueData({ ...venueData, hiredStaff: e.target.value })}
+                    placeholder="Ej: 15 personas" className="nightlife-input !py-2.5 text-sm" />
+                </div>
+                <div className="flex items-center gap-3 py-2">
+                  <button
+                    onClick={() => setVenueData({ ...venueData, hasSecurity: !venueData.hasSecurity })}
+                    className="w-10 h-6 rounded-full transition-all duration-200 flex-shrink-0"
+                    style={{
+                      background: venueData.hasSecurity ? 'rgba(34,197,94,0.4)' : 'rgba(255,255,255,0.1)',
+                      border: venueData.hasSecurity ? '1px solid rgba(34,197,94,0.5)' : '1px solid var(--nightlife-border)',
+                    }}
+                  >
+                    <div className="w-4 h-4 rounded-full m-0.5 transition-all duration-200"
+                      style={{
+                        background: venueData.hasSecurity ? '#22c55e' : 'var(--nightlife-text-secondary)',
+                        transform: venueData.hasSecurity ? 'translateX(16px)' : 'translateX(0)',
+                      }} />
+                  </button>
+                  <div>
+                    <span className="text-xs font-medium flex items-center gap-1">
+                      <Shield size={12} /> ¿Tiene seguridad propia?
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <button onClick={handleVerify} className="btn-nightlife-primary !py-2.5 !px-6 text-xs">
+                Verificar Sala
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {isVerified && (
+        <div className="glass-panel p-3 mb-6 flex items-center gap-2" style={{ border: '1px solid rgba(34,197,94,0.2)' }}>
+          <CheckCircle size={16} style={{ color: '#22c55e' }} />
+          <span className="text-xs font-bold" style={{ color: '#22c55e' }}>Empresario verificado — {venueData.venueName}</span>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         {[

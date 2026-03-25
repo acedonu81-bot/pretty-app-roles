@@ -148,7 +148,7 @@ export const profiles: Profile[] = [
   },
 ];
 
-// Empresarios (for Last Call)
+// Empresarios (for Flash Booking)
 export const empresarios = [
   {
     id: 101, name: 'Club Onyx Madrid', avatar: 'ON', gradient: 'linear-gradient(135deg, #D4AF37, #B8941E)',

@@ -94,7 +94,7 @@ const Landing = () => {
           <RoleCard icon={<Headphones size={24} />} title="DJ Profesional" description="Gestiona tu caché, pincha en el Escenario Virtual y conecta en directo con empresarios." role="dj" />
           <RoleCard icon={<UserCheck size={24} />} title="Personal de Sala" description="Camareros, jefes de sala y hostess. Publica tu perfil y recibe ofertas al instante." role="staff" />
           <RoleCard icon={<Smile size={24} />} title="Estilismo & Makeup" description="Maquilladores, estilistas y artistas corporales. Muestra tu portfolio y encuentra eventos." role="makeup" />
-          <RoleCard icon={<Briefcase size={24} />} title="Empresarios" description="Publica ofertas urgentes en Last Call, contrata talento y gestiona tu equipo de noche." role="promotor" />
+          <RoleCard icon={<Briefcase size={24} />} title="Empresarios" description="Publica ofertas urgentes en Flash Booking, contrata talento y gestiona tu equipo de noche." role="promotor" />
         </div>
       </section>
 
