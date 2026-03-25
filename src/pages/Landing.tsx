@@ -6,6 +6,7 @@ import HeroMockup from '@/components/HeroMockup';
 import RoleCard from '@/components/RoleCard';
 import LegalFooter from '@/components/LegalFooter';
 import DemoVideoModal from '@/components/DemoVideoModal';
+import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
 import { profiles } from '@/data/profiles';
 
 const topProfiles = profiles.filter(p => p.topWeekend);
@@ -66,9 +67,7 @@ const Landing = () => {
                 <div key={p.id} className="flex items-center gap-3 p-3 rounded-lg transition-all duration-200 hover:bg-white/3 cursor-pointer"
                   style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}
                   onClick={() => navigate('/dashboard')}>
-                  <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0" style={{ border: '1px solid rgba(212,175,55,0.3)' }}>
-                    <img src={p.photo} alt={p.name} className="w-full h-full object-cover" />
-                  </div>
+                  <GeometricAvatar role={p.role} seed={p.id} size={40} />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-sm">{p.name}</span>

@@ -1,5 +1,6 @@
 import { Star, MapPin, Clock, Instagram, Navigation, Radio } from 'lucide-react';
 import { Profile, getWhatsAppLink, getInstagramLink, getLocationLink } from '@/data/profiles';
+import GeometricAvatar from './GeometricAvatar';
 
 const WhatsAppIcon = ({ size = 16 }: { size?: number }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
@@ -27,7 +28,7 @@ const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
       {/* LIVE badge */}
       {p.isLive && (
         <div className="absolute -top-2 -left-2 px-2.5 py-1 rounded-md text-[0.55rem] font-bold tracking-wider z-10 flex items-center gap-1"
-          style={{ background: '#ff5f56', color: 'white', boxShadow: '0 2px 10px rgba(255,95,86,0.4)' }}>
+          style={{ background: '#D4AF37', color: '#000', boxShadow: '0 2px 10px rgba(212,175,55,0.4)' }}>
           <Radio size={10} className="animate-pulse" /> LIVE
         </div>
       )}
@@ -56,10 +57,7 @@ const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
 
       {/* Header */}
       <div className="flex items-center gap-3 mb-3 mt-1">
-        <div className="w-12 h-12 rounded-lg flex items-center justify-center text-sm font-bold overflow-hidden flex-shrink-0"
-          style={{ background: p.gradient, border: p.isLive ? '2px solid #ff5f56' : undefined }}>
-          <img src={p.photo} alt={p.name} className="w-full h-full object-cover" />
-        </div>
+        <GeometricAvatar role={p.role} seed={p.id} size={48} isLive={p.isLive} />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <h3 className="text-sm font-bold truncate">{p.name}</h3>
@@ -94,21 +92,21 @@ const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
         ))}
       </div>
 
-      {/* Social icons */}
+      {/* Social icons — all gold palette */}
       <div className="flex items-center gap-2 mb-3">
         <a href={getInstagramLink(p.instagram)} target="_blank" rel="noopener noreferrer"
           className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95"
-          style={{ background: 'rgba(225,48,108,0.1)', color: '#E1306C', border: '1px solid rgba(225,48,108,0.15)' }}>
+          style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
           <Instagram size={14} />
         </a>
         <a href={getWhatsAppLink(p.phone)} target="_blank" rel="noopener noreferrer"
           className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95"
-          style={{ background: 'rgba(37,211,102,0.1)', color: '#25D366', border: '1px solid rgba(37,211,102,0.15)' }}>
+          style={{ background: 'rgba(34,197,94,0.1)', color: '#25D366', border: '1px solid rgba(34,197,94,0.15)' }}>
           <WhatsAppIcon size={14} />
         </a>
         <a href={getLocationLink(p.zone)} target="_blank" rel="noopener noreferrer"
           className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95"
-          style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
+          style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
           <Navigation size={14} />
         </a>
       </div>
