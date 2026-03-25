@@ -47,7 +47,7 @@ const AdminUserManagement = () => {
 
   const contactWhatsApp = (phone: string | null) => {
     if (!phone) { toast.error('Sin teléfono registrado'); return; }
-    const msg = encodeURIComponent('Hola, te contacto desde la administración de NIGHTLIFE Madrid.');
+    const msg = encodeURIComponent('Hola, te contacto desde la administración de XPEAK.');
     window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
   };
 

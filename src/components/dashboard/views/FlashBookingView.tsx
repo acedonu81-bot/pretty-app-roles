@@ -68,7 +68,7 @@ const FlashBookingView = () => {
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm font-bold" style={{ color: '#D4AF37' }}>€{p.price}{p.priceUnit}</span>
-              <a href={`https://wa.me/${p.phone}?text=${encodeURIComponent('Hola, te he visto en NIGHTLIFE Madrid y me interesa tu perfil para un evento. ¿Hablamos?')}`}
+              <a href={`https://wa.me/${p.phone}?text=${encodeURIComponent('Hola, te he visto en XPEAK y me interesa tu perfil para un evento. ¿Hablamos?')}`}
                 target="_blank" rel="noopener noreferrer"
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold text-xs transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(90deg, #25D366, #128C7E)', color: 'white' }}>
