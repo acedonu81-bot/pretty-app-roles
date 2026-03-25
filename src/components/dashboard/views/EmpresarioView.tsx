@@ -262,7 +262,7 @@ const EmpresarioView = () => {
 
               <div className="flex gap-2">
                 {p.phone && (
-                  <a href={`https://wa.me/${p.phone}?text=${encodeURIComponent('Hola, te contacto desde NIGHTLIFE Madrid para un evento.')}`}
+                  <a href={`https://wa.me/${p.phone}?text=${encodeURIComponent('Hola, te contacto desde XPEAK para un evento.')}`}
                     target="_blank" rel="noopener noreferrer"
                     className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-md text-xs font-bold transition-all hover:scale-105"
                     style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.2)', color: '#25D366' }}>

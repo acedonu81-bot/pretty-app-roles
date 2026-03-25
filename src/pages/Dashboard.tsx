@@ -54,7 +54,7 @@ const Dashboard = () => {
   const renderView = () => {
     switch (activeView) {
       case 'dj': return <DJView />;
-      case 'promotor': return <PromotorView />;
+      // promotor view merged into empresario
       case 'staff': return <StaffView />;
       case 'makeup': return <MakeupView />;
       case 'vestuario': return <VestuarioView />;

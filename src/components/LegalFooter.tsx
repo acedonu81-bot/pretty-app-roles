@@ -10,7 +10,7 @@ const LegalFooter = () => (
       Esta plataforma es un servicio de intermediación técnica (directorio). El titular de la app no es responsable de la veracidad de los perfiles, ni de su situación fiscal o laboral (autónomos, seguros, etc.). Cada usuario declara actuar bajo su propia responsabilidad legal. No gestionamos pagos ni contratos.
     </p>
     <p className="mt-1.5 max-w-3xl mx-auto opacity-60">
-      NIGHTLIFE Madrid es un tablón de anuncios. No intervenimos en la contratación ni verificamos la situación legal de los usuarios. La relación es exclusiva entre las partes.
+      XPEAK es un tablón de anuncios. No intervenimos en la contratación ni verificamos la situación legal de los usuarios. XPEAK no cobra comisiones por contrato, solo por suscripción/pases. La relación contractual es exclusiva entre las partes.
     </p>
   </footer>
 );

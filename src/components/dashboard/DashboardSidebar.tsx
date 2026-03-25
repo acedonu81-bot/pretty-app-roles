@@ -124,7 +124,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
         <GeometricAvatar role="dj" seed={999} size={36} />
         <div className="min-w-0">
           <p className="text-xs font-semibold truncate">Soporte NightLife</p>
-          <p className="text-[0.6rem] font-bold" style={{ color: '#D4AF37' }}>Admin</p>
+          <p className="text-[0.6rem] font-bold" style={{ color: '#D4AF37' }}>XPEAK Admin</p>
         </div>
       </div>
     </aside>
