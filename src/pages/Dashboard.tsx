@@ -51,16 +51,17 @@ const Dashboard = () => {
     if (isMobile) setSidebarOpen(false);
   };
 
+  const nav = (view: string) => handleViewChange(view);
+
   const renderView = () => {
     switch (activeView) {
-      case 'dj': return <DJView />;
-      // promotor view merged into empresario
-      case 'staff': return <StaffView />;
-      case 'makeup': return <MakeupView />;
-      case 'vestuario': return <VestuarioView />;
-      case 'media': return <MediaView />;
-      case 'design': return <DesignView />;
-      case 'ambassador': return <AmbassadorView />;
+      case 'dj': return <DJView onNavigate={nav} />;
+      case 'staff': return <StaffView onNavigate={nav} />;
+      case 'makeup': return <MakeupView onNavigate={nav} />;
+      case 'vestuario': return <VestuarioView onNavigate={nav} />;
+      case 'media': return <MediaView onNavigate={nav} />;
+      case 'design': return <DesignView onNavigate={nav} />;
+      case 'ambassador': return <AmbassadorView onNavigate={nav} />;
       case 'settings': return <SettingsView />;
       case 'empresario': return <EmpresarioView />;
       case 'messages': return <MessagesView />;
@@ -79,7 +80,7 @@ const Dashboard = () => {
           <AdminView />
         </AdminGuard>
       );
-      default: return <DJView />;
+      default: return <DJView onNavigate={nav} />;
     }
   };
 
