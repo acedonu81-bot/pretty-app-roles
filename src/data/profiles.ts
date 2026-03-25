@@ -119,7 +119,7 @@ export const profiles: Profile[] = [
   {
     id: 8, name: 'Nadia Glamour', role: 'makeup', specialty: 'Maquillaje de Noche & FX',
     rating: 5.0, reviews: 245, location: 'Madrid', zone: 'Chueca',
-    experience: '9 años', price: 300, priceUnit: '/sesión',
+    experience: '9 años', price: 300, priceUnit: '/hora',
     avatar: 'NG', gradient: 'linear-gradient(135deg, #D4AF37, #F5D77A)',
     badges: ['Noche Glam', 'FX Pro', 'Bodypaint UV'],
     description: 'Maquilladora artística especializada en looks de noche, efectos especiales y bodypaint UV para fiestas temáticas.',
