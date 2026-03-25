@@ -46,6 +46,74 @@ export type Database = {
           },
         ]
       }
+      favorites: {
+        Row: {
+          created_at: string
+          id: string
+          profile_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          profile_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          profile_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "favorites_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      flash_jobs: {
+        Row: {
+          created_at: string
+          description: string
+          employer_id: string
+          expires_at: string
+          id: string
+          is_active: boolean
+          location: string
+          pay: string
+          role_needed: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          employer_id: string
+          expires_at?: string
+          id?: string
+          is_active?: boolean
+          location?: string
+          pay: string
+          role_needed?: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          employer_id?: string
+          expires_at?: string
+          id?: string
+          is_active?: boolean
+          location?: string
+          pay?: string
+          role_needed?: string
+          title?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string

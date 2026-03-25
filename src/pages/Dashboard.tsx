@@ -19,6 +19,7 @@ import TopWeekendView from '@/components/dashboard/views/TopWeekendView';
 import StatsView from '@/components/dashboard/views/StatsView';
 import FlashBookingView from '@/components/dashboard/views/FlashBookingView';
 import AdminView from '@/components/dashboard/views/AdminView';
+import EmpresarioView from '@/components/dashboard/views/EmpresarioView';
 import AdminGuard from '@/components/AdminGuard';
 import { useAuth } from '@/hooks/useAuth';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -52,6 +53,7 @@ const Dashboard = () => {
       case 'staff': return <StaffView />;
       case 'makeup': return <MakeupView />;
       case 'settings': return <SettingsView />;
+      case 'empresario': return <EmpresarioView />;
       case 'messages': return <MessagesView />;
       case 'calendar': return <CalendarView />;
       case 'profile': return <ProfileView />;
