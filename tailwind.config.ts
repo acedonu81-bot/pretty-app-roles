@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        outfit: ['Outfit', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -58,6 +58,12 @@ export default {
           green: "var(--nightlife-green)",
           red: "var(--nightlife-red)",
           yellow: "var(--nightlife-yellow)",
+          charcoal: "var(--nightlife-charcoal)",
+        },
+        gold: {
+          DEFAULT: "#D4AF37",
+          light: "#F5D77A",
+          dark: "#B8941E",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

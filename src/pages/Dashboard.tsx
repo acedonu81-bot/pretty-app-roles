@@ -15,7 +15,9 @@ import MakeupView from '@/components/dashboard/views/MakeupView';
 import MapaView from '@/components/dashboard/views/MapaView';
 import EscenarioVirtualView from '@/components/dashboard/views/EscenarioVirtualView';
 import LastCallView from '@/components/dashboard/views/LastCallView';
-import TopFindeView from '@/components/dashboard/views/TopFindeView';
+import TopWeekendView from '@/components/dashboard/views/TopWeekendView';
+import StatsView from '@/components/dashboard/views/StatsView';
+import FlashBookingView from '@/components/dashboard/views/FlashBookingView';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 
@@ -44,24 +46,24 @@ const Dashboard = () => {
       case 'mapa': return <MapaView />;
       case 'escenario': return <EscenarioVirtualView />;
       case 'lastcall': return <LastCallView />;
-      case 'topfinde': return <TopFindeView />;
+      case 'topweekend': return <TopWeekendView />;
+      case 'stats': return <StatsView />;
+      case 'flash': return <FlashBookingView />;
       default: return <DJView />;
     }
   };
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden" style={{ background: 'var(--nightlife-bg)' }}>
+    <div className="flex h-screen w-screen overflow-hidden" style={{ background: '#000' }}>
       <AmbientBackground />
 
-      {/* Desktop sidebar */}
       {!isMobile && (
         <DashboardSidebar activeView={activeView} onViewChange={handleViewChange} />
       )}
 
-      {/* Mobile sidebar via Sheet */}
       {isMobile && (
         <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-          <SheetContent side="left" className="p-0 w-[280px] border-r-0" style={{ background: 'var(--nightlife-card)' }}>
+          <SheetContent side="left" className="p-0 w-[260px] border-r-0" style={{ background: '#0a0a0a' }}>
             <DashboardSidebar activeView={activeView} onViewChange={handleViewChange} />
           </SheetContent>
         </Sheet>
@@ -69,7 +71,7 @@ const Dashboard = () => {
 
       <main className="flex-1 flex flex-col overflow-y-auto relative min-w-0">
         <DashboardTopbar onMenuToggle={() => setSidebarOpen(true)} isMobile={isMobile} />
-        <div className="p-4 md:p-8 flex-1">
+        <div className="p-4 md:p-6 flex-1">
           {renderView()}
         </div>
         <LegalFooter />

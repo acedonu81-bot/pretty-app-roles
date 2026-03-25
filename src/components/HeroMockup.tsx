@@ -1,14 +1,10 @@
 import { useState, useEffect } from 'react';
 
 const HeroMockup = () => {
-  const [revenue, setRevenue] = useState('$85.4K');
   const [highlight, setHighlight] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setRevenue('$92.1K');
-      setHighlight(true);
-    }, 3000);
+    const timer = setTimeout(() => setHighlight(true), 2000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -16,46 +12,47 @@ const HeroMockup = () => {
     <div
       className="glass-panel w-full flex flex-col"
       style={{
-        height: 420,
-        transform: 'rotateY(-10deg) rotateX(5deg) translateY(-20px)',
+        height: 380,
+        transform: 'rotateY(-8deg) rotateX(4deg) translateY(-10px)',
         transition: 'transform 0.5s ease',
       }}
     >
-      {/* Header */}
-      <div className="p-4 flex items-center gap-4" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>
+      <div className="p-3 flex items-center gap-3" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>
         <div className="flex gap-1.5">
-          <span className="w-3 h-3 rounded-full" style={{ background: '#ff5f56' }} />
-          <span className="w-3 h-3 rounded-full" style={{ background: '#ffbd2e' }} />
-          <span className="w-3 h-3 rounded-full" style={{ background: '#27c93f' }} />
+          <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#ff5f56' }} />
+          <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#D4AF37' }} />
+          <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#27c93f' }} />
         </div>
-        <span className="text-muted-foreground text-sm uppercase tracking-wider font-semibold">dashboard / overview</span>
+        <span className="text-muted-foreground text-xs uppercase tracking-wider font-medium">nightlife / directorio</span>
       </div>
-      {/* Content */}
-      <div className="p-8 flex-1">
-        <div className="flex gap-4 mb-6">
+      <div className="p-6 flex-1">
+        <div className="flex gap-3 mb-5">
           {[
-            { label: 'Eventos Activos', value: '24' },
-            { label: 'DJs Locales', value: '18' },
+            { label: 'DJs Activos', value: '142' },
+            { label: 'Flash Booking', value: '24' },
+            { label: 'Salas Madrid', value: '38' },
           ].map((s) => (
-            <div key={s.label} className="flex-1 glass-panel-subtle p-5 flex flex-col gap-2">
-              <span className="text-muted-foreground text-xs uppercase font-semibold">{s.label}</span>
-              <span className="text-2xl font-extrabold text-foreground">{s.value}</span>
+            <div key={s.label} className="flex-1 glass-panel-subtle p-4 flex flex-col gap-1.5">
+              <span className="text-muted-foreground text-[0.55rem] uppercase font-medium">{s.label}</span>
+              <span className="text-xl font-bold text-foreground">{s.value}</span>
             </div>
           ))}
-          <div className="flex-1 p-5 flex flex-col gap-2 rounded-2xl" style={{
-            background: 'linear-gradient(145deg, rgba(140,82,255,0.1), rgba(0,229,255,0.1))',
-            border: '1px solid rgba(140,82,255,0.3)',
-          }}>
-            <span className="text-muted-foreground text-xs uppercase font-semibold">Ingresos</span>
-            <span className={`text-2xl font-extrabold transition-all duration-500 ${highlight ? 'text-nightlife-secondary' : 'text-foreground'}`}>
-              {revenue}
-            </span>
-          </div>
         </div>
-        <div className="rounded-xl p-6 flex flex-col justify-center gap-3" style={{ background: 'rgba(255,255,255,0.02)', height: 120 }}>
-          <div className="h-3 rounded w-full" style={{ background: 'linear-gradient(90deg, var(--nightlife-border), transparent)' }} />
-          <div className="h-3 rounded w-3/4" style={{ background: 'linear-gradient(90deg, var(--nightlife-secondary), transparent)' }} />
-          <div className="h-3 rounded w-1/2" style={{ background: 'linear-gradient(90deg, var(--nightlife-primary), transparent)' }} />
+        {/* Mini profile grid */}
+        <div className="grid grid-cols-4 gap-2">
+          {Array.from({ length: 8 }, (_, i) => (
+            <div key={i} className="aspect-square rounded-lg flex items-center justify-center"
+              style={{
+                background: i < 2 ? 'rgba(212,175,55,0.1)' : 'rgba(255,255,255,0.02)',
+                border: i < 2 ? '1px solid rgba(212,175,55,0.2)' : '1px solid var(--nightlife-border)',
+              }}>
+              <div className="w-5 h-5 rounded" style={{ background: i < 2 ? 'rgba(212,175,55,0.3)' : 'rgba(255,255,255,0.05)' }} />
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 flex gap-2">
+          <div className="h-2 rounded flex-1" style={{ background: 'linear-gradient(90deg, rgba(212,175,55,0.4), transparent)' }} />
+          <div className="h-2 rounded flex-[0.6]" style={{ background: 'linear-gradient(90deg, rgba(212,175,55,0.2), transparent)' }} />
         </div>
       </div>
     </div>
