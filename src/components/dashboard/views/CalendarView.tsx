@@ -11,7 +11,7 @@ const CalendarView = () => {
         <p className="text-muted-foreground">Sincroniza tu agenda con eventos, bolos, ensayos y reuniones de promotores.</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-6">
         {/* Calendar Grid */}
         <div className="glass-panel p-6 rounded-2xl">
           <div className="flex justify-between items-center mb-6">

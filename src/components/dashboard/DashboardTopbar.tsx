@@ -1,33 +1,51 @@
-import { Search, LogOut } from 'lucide-react';
+import { Search, LogOut, Menu } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const DashboardTopbar = () => {
+interface TopbarProps {
+  onMenuToggle?: () => void;
+  isMobile?: boolean;
+}
+
+const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
   const navigate = useNavigate();
   const [showNotif, setShowNotif] = useState(false);
 
   return (
     <header
-      className="h-20 px-8 flex items-center justify-between sticky top-0 z-10"
+      className="h-16 md:h-20 px-4 md:px-8 flex items-center justify-between sticky top-0 z-10 gap-3"
       style={{
         background: 'rgba(20,20,28,0.7)',
         backdropFilter: 'blur(20px)',
         borderBottom: '1px solid var(--nightlife-border)',
       }}
     >
-      {/* Search */}
-      <div className="flex items-center gap-3 px-5 py-2.5 rounded-full w-[400px]" style={{
-        background: 'var(--nightlife-card)', border: '1px solid var(--nightlife-border)',
-      }}>
-        <Search size={18} className="text-muted-foreground" />
-        <input
-          type="text"
-          placeholder="Buscar promotores, equipos, transportes rápidos..."
-          className="bg-transparent border-none outline-none text-foreground w-full text-sm"
-        />
+      <div className="flex items-center gap-3 flex-1 min-w-0">
+        {/* Hamburger */}
+        {isMobile && (
+          <button
+            onClick={onMenuToggle}
+            className="p-2 rounded-lg flex-shrink-0 transition-colors"
+            style={{ background: 'rgba(140,82,255,0.1)', border: '1px solid rgba(140,82,255,0.3)', color: '#8c52ff' }}
+          >
+            <Menu size={22} />
+          </button>
+        )}
+
+        {/* Search */}
+        <div className="flex items-center gap-3 px-4 md:px-5 py-2 md:py-2.5 rounded-full flex-1 max-w-[400px]" style={{
+          background: 'var(--nightlife-card)', border: '1px solid var(--nightlife-border)',
+        }}>
+          <Search size={16} className="text-muted-foreground flex-shrink-0" />
+          <input
+            type="text"
+            placeholder={isMobile ? 'Buscar...' : 'Buscar promotores, equipos, transportes rápidos...'}
+            className="bg-transparent border-none outline-none text-foreground w-full text-sm"
+          />
+        </div>
       </div>
 
-      <div className="flex items-center gap-6 relative">
+      <div className="flex items-center gap-3 md:gap-6 relative flex-shrink-0">
         {/* Notifications */}
         <button
           onClick={() => setShowNotif(!showNotif)}
@@ -58,7 +76,7 @@ const DashboardTopbar = () => {
         </button>
 
         {showNotif && (
-          <div className="glass-panel absolute top-14 right-16 w-[340px] z-50" style={{ boxShadow: '0 10px 40px rgba(0,0,0,0.8)' }}>
+          <div className="glass-panel absolute top-14 right-0 md:right-16 w-[300px] md:w-[340px] z-50" style={{ boxShadow: '0 10px 40px rgba(0,0,0,0.8)' }}>
             <div className="p-4 flex justify-between items-center" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>
               <h4 className="text-sm font-bold">Notificaciones</h4>
               <span className="text-xs cursor-pointer" style={{ color: 'var(--nightlife-primary)' }}>Marcar leídas</span>
@@ -84,9 +102,9 @@ const DashboardTopbar = () => {
 
         <button
           onClick={() => navigate('/')}
-          className="btn-nightlife-secondary text-xs py-2 px-4 flex items-center gap-2"
+          className="btn-nightlife-secondary text-xs py-2 px-3 md:px-4 flex items-center gap-2"
         >
-          <LogOut size={14} /> Cerrar Sesión
+          <LogOut size={14} /> {!isMobile && 'Cerrar Sesión'}
         </button>
       </div>
     </header>

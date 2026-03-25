@@ -16,11 +16,20 @@ import MapaView from '@/components/dashboard/views/MapaView';
 import EscenarioVirtualView from '@/components/dashboard/views/EscenarioVirtualView';
 import LastCallView from '@/components/dashboard/views/LastCallView';
 import TopFindeView from '@/components/dashboard/views/TopFindeView';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
 
 const Dashboard = () => {
   const location = useLocation();
   const initialView = (location.state as { view?: string })?.view || 'dj';
   const [activeView, setActiveView] = useState(initialView);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const isMobile = useIsMobile();
+
+  const handleViewChange = (view: string) => {
+    setActiveView(view);
+    if (isMobile) setSidebarOpen(false);
+  };
 
   const renderView = () => {
     switch (activeView) {
@@ -43,10 +52,24 @@ const Dashboard = () => {
   return (
     <div className="flex h-screen w-screen overflow-hidden" style={{ background: 'var(--nightlife-bg)' }}>
       <AmbientBackground />
-      <DashboardSidebar activeView={activeView} onViewChange={setActiveView} />
-      <main className="flex-1 flex flex-col overflow-y-auto relative">
-        <DashboardTopbar />
-        <div className="p-8 flex-1">
+
+      {/* Desktop sidebar */}
+      {!isMobile && (
+        <DashboardSidebar activeView={activeView} onViewChange={handleViewChange} />
+      )}
+
+      {/* Mobile sidebar via Sheet */}
+      {isMobile && (
+        <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
+          <SheetContent side="left" className="p-0 w-[280px] border-r-0" style={{ background: 'var(--nightlife-card)' }}>
+            <DashboardSidebar activeView={activeView} onViewChange={handleViewChange} />
+          </SheetContent>
+        </Sheet>
+      )}
+
+      <main className="flex-1 flex flex-col overflow-y-auto relative min-w-0">
+        <DashboardTopbar onMenuToggle={() => setSidebarOpen(true)} isMobile={isMobile} />
+        <div className="p-4 md:p-8 flex-1">
           {renderView()}
         </div>
         <LegalFooter />
