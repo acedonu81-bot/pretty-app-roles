@@ -50,7 +50,7 @@ const RookieView = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-xs text-muted-foreground animate-pulse">Cargando tu perfil Rookie...</div>
+        <div className="text-xs text-muted-foreground animate-pulse">Cargando tu perfil Promesa...</div>
       </div>
     );
   }
