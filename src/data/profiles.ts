@@ -1,7 +1,7 @@
 export interface Profile {
   id: number;
   name: string;
-  role: 'dj' | 'staff' | 'makeup' | 'promotor';
+  role: 'dj' | 'staff' | 'makeup' | 'vestuario' | 'promotor';
   specialty: string;
   rating: number;
   reviews: number;
@@ -25,6 +25,7 @@ export interface Profile {
   streamUrl?: string;
   isLive?: boolean;
   category?: 'professional' | 'rookie';
+  isPremium?: boolean;
 }
 
 const WA_MSG = encodeURIComponent('Hola, te he visto en NIGHTLIFE Madrid y me interesa tu perfil para un evento. ¿Hablamos?');
@@ -43,9 +44,9 @@ export const profiles: Profile[] = [
     badges: ['Techno', 'Industrial', 'Modular Live'],
     description: 'DJ y productor de techno industrial con residencias en las mejores salas underground de Madrid. Sets de 3-5 horas.',
     phone: '34612345001', instagram: 'danitech_dj', topWeekend: true,
-    photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=DaniTech&backgroundColor=1a1a1a',
-    subscriptionTier: 'elite', isFlashActive: true, profileViews: 1247, contactClicks: 89,
-    streamUrl: 'https://twitch.tv/danitech_dj', isLive: true, category: 'professional',
+    photo: '', subscriptionTier: 'elite', isFlashActive: true,
+    profileViews: 1247, contactClicks: 89, streamUrl: 'https://twitch.tv/danitech_dj',
+    isLive: true, category: 'professional', isPremium: true,
   },
   {
     id: 2, name: 'Luna Deep', role: 'dj', specialty: 'Deep House / Melodic',
@@ -55,9 +56,8 @@ export const profiles: Profile[] = [
     badges: ['Deep House', 'Melodic', 'Vinyl Set'],
     description: 'Referente del deep house en Madrid. Sesiones melódicas con vinilo y producción propia. Resident en Horizon.',
     phone: '34612345002', instagram: 'lunadeep_music', topWeekend: true,
-    photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=LunaDeep&backgroundColor=1a1a1a',
-    subscriptionTier: 'elite', isFlashActive: true, profileViews: 2103, contactClicks: 156,
-    category: 'professional',
+    photo: '', subscriptionTier: 'elite', isFlashActive: true,
+    profileViews: 2103, contactClicks: 156, category: 'professional', isPremium: true,
   },
   {
     id: 3, name: 'MC Ráfaga', role: 'dj', specialty: 'Urbano / Reggaetón',
@@ -67,9 +67,8 @@ export const profiles: Profile[] = [
     badges: ['Urbano', 'Reggaetón', 'Latino Mix'],
     description: 'El DJ urbano más solicitado de la zona centro. Especialista en sesiones de reggaetón y perreo intenso.',
     phone: '34612345003', instagram: 'mcrafaga_dj', topWeekend: false,
-    photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=MCRafaga&backgroundColor=1a1a1a',
-    subscriptionTier: 'premium', isFlashActive: false, profileViews: 634, contactClicks: 42,
-    category: 'rookie',
+    photo: '', subscriptionTier: 'premium', isFlashActive: false,
+    profileViews: 634, contactClicks: 42, category: 'rookie',
   },
   {
     id: 4, name: 'Sara Beats', role: 'dj', specialty: 'Comercial / Top Hits',
@@ -79,9 +78,8 @@ export const profiles: Profile[] = [
     badges: ['Comercial', 'Top 40', 'Bodas & Eventos'],
     description: 'DJ versátil con repertorio comercial para todo tipo de público. Especialista en eventos corporativos y fiestas privadas.',
     phone: '34612345004', instagram: 'sarabeats_official', topWeekend: false,
-    photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=SaraBeats&backgroundColor=1a1a1a',
-    subscriptionTier: 'free', isFlashActive: true, profileViews: 412, contactClicks: 28,
-    category: 'rookie',
+    photo: '', subscriptionTier: 'free', isFlashActive: true,
+    profileViews: 412, contactClicks: 28, category: 'rookie',
   },
 
   // Staff (3) — prices from 20€/h
@@ -93,9 +91,8 @@ export const profiles: Profile[] = [
     badges: ['Hostess VIP', 'Protocolo', 'Multilingüe EN/FR'],
     description: 'Azafata profesional con experiencia en clubs de alto standing. Gestión de listas VIP, reservados y atención al cliente premium.',
     phone: '34612345005', instagram: 'carlavega_hostess', topWeekend: false,
-    photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=CarlaVega&backgroundColor=1a1a1a',
-    subscriptionTier: 'elite', isFlashActive: true, profileViews: 876, contactClicks: 67,
-    category: 'professional',
+    photo: '', subscriptionTier: 'elite', isFlashActive: true,
+    profileViews: 876, contactClicks: 67, category: 'professional', isPremium: true,
   },
   {
     id: 6, name: 'Marcos Ríos', role: 'staff', specialty: 'Camarero VIP & Flair',
@@ -105,9 +102,8 @@ export const profiles: Profile[] = [
     badges: ['Flair Bartending', 'Coctelería VIP', 'Certificado WSET'],
     description: 'Barman con espectáculo. Coctelería molecular y flair para eventos exclusivos en las mejores salas de Madrid.',
     phone: '34612345006', instagram: 'marcosrios_bar', topWeekend: false,
-    photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=MarcosRios&backgroundColor=1a1a1a',
-    subscriptionTier: 'premium', isFlashActive: false, profileViews: 523, contactClicks: 34,
-    category: 'rookie',
+    photo: '', subscriptionTier: 'premium', isFlashActive: false,
+    profileViews: 523, contactClicks: 34, category: 'rookie',
   },
   {
     id: 7, name: 'Patricia Sanz', role: 'staff', specialty: 'RRPP & Relaciones Públicas',
@@ -117,12 +113,11 @@ export const profiles: Profile[] = [
     badges: ['RRPP Premium', 'Gestión Listas', 'Networking VIP'],
     description: 'La RRPP más conectada de Madrid. Gestión integral de relaciones públicas, listas y reservados para salas top.',
     phone: '34612345007', instagram: 'patriciasanz_rrpp', topWeekend: false,
-    photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=PatriciaSanz&backgroundColor=1a1a1a',
-    subscriptionTier: 'free', isFlashActive: true, profileViews: 345, contactClicks: 22,
-    category: 'professional',
+    photo: '', subscriptionTier: 'free', isFlashActive: true,
+    profileViews: 345, contactClicks: 22, category: 'professional',
   },
 
-  // Estilismo (3) — prices from 30€/h
+  // Maquillaje y Peluquería (2) — prices from 30€/h
   {
     id: 8, name: 'Nadia Glamour', role: 'makeup', specialty: 'Maquillaje de Noche & FX',
     rating: 5.0, reviews: 245, location: 'Madrid', zone: 'Chueca',
@@ -131,9 +126,8 @@ export const profiles: Profile[] = [
     badges: ['Noche Glam', 'FX Pro', 'Bodypaint UV'],
     description: 'Maquilladora artística especializada en looks de noche, efectos especiales y bodypaint UV para fiestas temáticas.',
     phone: '34612345008', instagram: 'nadiaglamour_makeup', topWeekend: false,
-    photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=NadiaGlamour&backgroundColor=1a1a1a',
-    subscriptionTier: 'elite', isFlashActive: false, profileViews: 1089, contactClicks: 78,
-    category: 'professional',
+    photo: '', subscriptionTier: 'elite', isFlashActive: false,
+    profileViews: 1089, contactClicks: 78, category: 'professional', isPremium: true,
   },
   {
     id: 9, name: 'Iván Stylez', role: 'makeup', specialty: 'Peluquería de Autor',
@@ -143,21 +137,32 @@ export const profiles: Profile[] = [
     badges: ['Color Expert', 'Extensiones', 'Peinado Evento'],
     description: 'Estilista capilar de autor con experiencia en desfiles y eventos nocturnos. Extensiones, color fantasía y peinados de pasarela.',
     phone: '34612345009', instagram: 'ivanstylez_hair', topWeekend: false,
-    photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=IvanStylez&backgroundColor=1a1a1a',
-    subscriptionTier: 'premium', isFlashActive: true, profileViews: 456, contactClicks: 31,
-    category: 'rookie',
+    photo: '', subscriptionTier: 'premium', isFlashActive: true,
+    profileViews: 456, contactClicks: 31, category: 'rookie',
   },
+
+  // Vestuario y Moda (2) — prices from 30€/h
   {
-    id: 10, name: 'Alicia Moon', role: 'makeup', specialty: 'Estilismo Integral Nocturno',
+    id: 10, name: 'Alicia Moon', role: 'vestuario', specialty: 'Estilismo Integral Nocturno',
     rating: 4.8, reviews: 134, location: 'Madrid', zone: 'Chueca',
     experience: '7 años', price: 55, priceUnit: '/hora',
     avatar: 'AM', gradient: 'linear-gradient(135deg, #333, #1a1a1a)',
     badges: ['Styling Completo', 'Asesoría Imagen', 'Luxury Brands'],
-    description: 'Servicio integral de imagen nocturna: maquillaje, peinado y vestuario para artistas, DJs y personal de sala.',
+    description: 'Servicio integral de imagen nocturna: vestuario, asesoría de estilo y personal shopping para artistas y profesionales.',
     phone: '34612345010', instagram: 'aliciamoon_style', topWeekend: false,
-    photo: 'https://api.dicebear.com/7.x/avataaars/svg?seed=AliciaMoon&backgroundColor=1a1a1a',
-    subscriptionTier: 'free', isFlashActive: false, profileViews: 289, contactClicks: 18,
-    category: 'professional',
+    photo: '', subscriptionTier: 'free', isFlashActive: false,
+    profileViews: 289, contactClicks: 18, category: 'professional',
+  },
+  {
+    id: 11, name: 'Diego Noir', role: 'vestuario', specialty: 'Moda Nocturna & Streetwear',
+    rating: 4.7, reviews: 92, location: 'Madrid', zone: 'Malasaña',
+    experience: '5 años', price: 35, priceUnit: '/hora',
+    avatar: 'DN', gradient: 'linear-gradient(135deg, #333, #1a1a1a)',
+    badges: ['Streetwear', 'Diseño Custom', 'Vintage'],
+    description: 'Estilista de moda nocturna y streetwear. Diseño custom de outfits para artistas y personal de salas con estilo urbano.',
+    phone: '34612345011', instagram: 'diegonoir_fashion', topWeekend: false,
+    photo: '', subscriptionTier: 'premium', isFlashActive: true,
+    profileViews: 178, contactClicks: 12, category: 'rookie',
   },
 ];
 
@@ -178,20 +183,18 @@ export const empresarios = [
   },
 ];
 
-// Elite rotation logic
+// Elite rotation logic — Premium profiles always first
 export const getEliteRotation = (allProfiles: Profile[]): Profile[] => {
-  const elite = allProfiles.filter(p => p.subscriptionTier === 'elite');
-  const others = allProfiles.filter(p => p.subscriptionTier !== 'elite');
-  
+  const premium = allProfiles.filter(p => p.isPremium);
+  const elite = allProfiles.filter(p => !p.isPremium && p.subscriptionTier === 'elite');
+  const others = allProfiles.filter(p => !p.isPremium && p.subscriptionTier !== 'elite');
+
   const hourSeed = Math.floor(Date.now() / (60 * 60 * 1000));
-  const shuffled = [...elite].sort((a, b) => {
+  const shuffle = (arr: Profile[]) => [...arr].sort((a, b) => {
     const hashA = ((a.id * 2654435761 + hourSeed) >>> 0) % 1000;
     const hashB = ((b.id * 2654435761 + hourSeed) >>> 0) % 1000;
     return hashA - hashB;
   });
-  
-  const top12 = shuffled.slice(0, 12);
-  const remainingElite = shuffled.slice(12);
-  
-  return [...top12, ...remainingElite, ...others];
+
+  return [...premium, ...shuffle(elite).slice(0, 12), ...shuffle(elite).slice(12), ...others];
 };
