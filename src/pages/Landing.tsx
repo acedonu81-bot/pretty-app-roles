@@ -24,9 +24,6 @@ const Landing = () => {
           <h1 className="text-2xl font-bold tracking-wider">
             X<span className="text-gradient">PEAK</span>
           </h1>
-          <button onClick={() => navigate('/auth')} className="btn-nightlife-primary text-sm">
-            Entrar al Directorio
-          </button>
         </div>
       </nav>
 
