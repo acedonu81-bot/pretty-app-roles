@@ -76,7 +76,7 @@ const AmbientBackground = () => (
       </path>
 
       {/* Wave 3 — subtle top wave */}
-      <path stroke="#D4AF37" strokeWidth="0.8" fill="none" opacity="0.06">
+      <path stroke="#D4AF37" strokeWidth="1.5" fill="none" opacity="0.15">
         <animate
           attributeName="d"
           values="
