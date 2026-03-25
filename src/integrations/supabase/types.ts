@@ -122,6 +122,7 @@ export type Database = {
           id: string
           instagram: string | null
           is_flash_active: boolean
+          is_premium: boolean
           is_verified: boolean
           phone: string | null
           photo_url: string | null
@@ -139,6 +140,7 @@ export type Database = {
           id?: string
           instagram?: string | null
           is_flash_active?: boolean
+          is_premium?: boolean
           is_verified?: boolean
           phone?: string | null
           photo_url?: string | null
@@ -156,6 +158,7 @@ export type Database = {
           id?: string
           instagram?: string | null
           is_flash_active?: boolean
+          is_premium?: boolean
           is_verified?: boolean
           phone?: string | null
           photo_url?: string | null

@@ -4,7 +4,7 @@
  */
 
 interface GeometricAvatarProps {
-  role: 'dj' | 'staff' | 'makeup' | 'promotor';
+  role: 'dj' | 'staff' | 'makeup' | 'vestuario' | 'promotor';
   seed: number;
   size?: number;
   className?: string;
@@ -130,8 +130,8 @@ const PromotorIcon = ({ seed, size }: { seed: number; size: number }) => {
 };
 
 const GeometricAvatar = ({ role, seed, size = 48, className, isLive }: GeometricAvatarProps) => {
-  const IconMap = { dj: DJIcon, staff: StaffIcon, makeup: MakeupIcon, promotor: PromotorIcon };
-  const Icon = IconMap[role];
+  const IconMap: Record<string, typeof DJIcon> = { dj: DJIcon, staff: StaffIcon, makeup: MakeupIcon, vestuario: MakeupIcon, promotor: PromotorIcon };
+  const Icon = IconMap[role] || DJIcon;
 
   return (
     <div

@@ -64,9 +64,17 @@ const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
         </div>
       )}
 
+      {/* Premium badge */}
+      {p.isPremium && (
+        <div className="absolute top-6 left-3 px-2 py-0.5 rounded text-[0.55rem] font-bold z-10"
+          style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' }}>
+          ⭐ PREMIUM
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-center gap-3 mb-3 mt-1">
-        <GeometricAvatar role={p.role} seed={p.id} size={48} isLive={p.isLive} />
+        <GeometricAvatar role={p.role as any} seed={p.id} size={48} isLive={p.isLive} />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <h3 className="text-sm font-bold truncate">{p.name}</h3>
