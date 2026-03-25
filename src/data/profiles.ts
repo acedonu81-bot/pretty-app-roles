@@ -84,7 +84,7 @@ export const profiles: Profile[] = [
   {
     id: 5, name: 'Carla Vega', role: 'staff', specialty: 'Azafata VIP & Hostess',
     rating: 4.9, reviews: 154, location: 'Madrid', zone: 'Salamanca',
-    experience: '5 años', price: 180, priceUnit: '/noche',
+    experience: '5 años', price: 180, priceUnit: '/hora',
     avatar: 'CV', gradient: 'linear-gradient(135deg, #D4AF37, #B8941E)',
     badges: ['Hostess VIP', 'Protocolo', 'Multilingüe EN/FR'],
     description: 'Azafata profesional con experiencia en clubs de alto standing. Gestión de listas VIP, reservados y atención al cliente premium.',
