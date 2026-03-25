@@ -9,7 +9,7 @@ const MakeupView = () => {
     <div className="animate-[fadeIn_0.4s_ease]">
       <div className="mb-5">
         <h2 className="text-2xl font-bold mb-1">
-          Estilismo <span className="text-gradient">& Makeup</span>
+          Maquillaje <span className="text-gradient">& Peluquería</span>
         </h2>
         <p className="text-sm text-muted-foreground">Maquillaje nocturno y peluquería de autor en Madrid.</p>
       </div>
