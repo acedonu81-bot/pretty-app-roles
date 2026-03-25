@@ -14,6 +14,38 @@ export type Database = {
   }
   public: {
     Tables: {
+      community_votes: {
+        Row: {
+          created_at: string
+          id: string
+          profile_id: string
+          vote_date: string
+          voter_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          profile_id: string
+          vote_date?: string
+          voter_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          profile_id?: string
+          vote_date?: string
+          voter_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_votes_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -118,11 +150,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_vote_count: { Args: { p_profile_id: string }; Returns: number }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      has_voted_today: {
+        Args: { p_profile_id: string; p_voter_id: string }
         Returns: boolean
       }
     }

@@ -37,7 +37,7 @@ export const profiles: Profile[] = [
   {
     id: 1, name: 'Dani Tech', role: 'dj', specialty: 'Techno / Industrial',
     rating: 4.9, reviews: 218, location: 'Madrid', zone: 'Malasaña',
-    experience: '8 años', price: 450, priceUnit: '/hora',
+    experience: '8 años', price: 120, priceUnit: '/hora',
     avatar: 'DT', gradient: 'linear-gradient(135deg, #D4AF37, #B8941E)',
     badges: ['Techno', 'Industrial', 'Modular Live'],
     description: 'DJ y productor de techno industrial con residencias en las mejores salas underground de Madrid. Sets de 3-5 horas.',
@@ -49,7 +49,7 @@ export const profiles: Profile[] = [
   {
     id: 2, name: 'Luna Deep', role: 'dj', specialty: 'Deep House / Melodic',
     rating: 5.0, reviews: 312, location: 'Madrid', zone: 'Salamanca',
-    experience: '11 años', price: 600, priceUnit: '/hora',
+    experience: '11 años', price: 150, priceUnit: '/hora',
     avatar: 'LD', gradient: 'linear-gradient(135deg, #D4AF37, #F5D77A)',
     badges: ['Deep House', 'Melodic', 'Vinyl Set'],
     description: 'Referente del deep house en Madrid. Sesiones melódicas con vinilo y producción propia. Resident en Horizon.',
@@ -60,7 +60,7 @@ export const profiles: Profile[] = [
   {
     id: 3, name: 'MC Ráfaga', role: 'dj', specialty: 'Urbano / Reggaetón',
     rating: 4.7, reviews: 189, location: 'Madrid', zone: 'Malasaña',
-    experience: '6 años', price: 350, priceUnit: '/hora',
+    experience: '6 años', price: 60, priceUnit: '/hora',
     avatar: 'MR', gradient: 'linear-gradient(135deg, #333, #1a1a1a)',
     badges: ['Urbano', 'Reggaetón', 'Latino Mix'],
     description: 'El DJ urbano más solicitado de la zona centro. Especialista en sesiones de reggaetón y perreo intenso.',
@@ -71,7 +71,7 @@ export const profiles: Profile[] = [
   {
     id: 4, name: 'Sara Beats', role: 'dj', specialty: 'Comercial / Top Hits',
     rating: 4.8, reviews: 267, location: 'Madrid', zone: 'Salamanca',
-    experience: '9 años', price: 400, priceUnit: '/hora',
+    experience: '9 años', price: 80, priceUnit: '/hora',
     avatar: 'SB', gradient: 'linear-gradient(135deg, #333, #1a1a1a)',
     badges: ['Comercial', 'Top 40', 'Bodas & Eventos'],
     description: 'DJ versátil con repertorio comercial para todo tipo de público. Especialista en eventos corporativos y fiestas privadas.',
@@ -84,7 +84,7 @@ export const profiles: Profile[] = [
   {
     id: 5, name: 'Carla Vega', role: 'staff', specialty: 'Azafata VIP & Hostess',
     rating: 4.9, reviews: 154, location: 'Madrid', zone: 'Salamanca',
-    experience: '5 años', price: 180, priceUnit: '/hora',
+    experience: '5 años', price: 30, priceUnit: '/hora',
     avatar: 'CV', gradient: 'linear-gradient(135deg, #D4AF37, #B8941E)',
     badges: ['Hostess VIP', 'Protocolo', 'Multilingüe EN/FR'],
     description: 'Azafata profesional con experiencia en clubs de alto standing. Gestión de listas VIP, reservados y atención al cliente premium.',
@@ -95,7 +95,7 @@ export const profiles: Profile[] = [
   {
     id: 6, name: 'Marcos Ríos', role: 'staff', specialty: 'Camarero VIP & Flair',
     rating: 4.8, reviews: 98, location: 'Madrid', zone: 'Malasaña',
-    experience: '7 años', price: 200, priceUnit: '/hora',
+    experience: '7 años', price: 25, priceUnit: '/hora',
     avatar: 'MR', gradient: 'linear-gradient(135deg, #333, #1a1a1a)',
     badges: ['Flair Bartending', 'Coctelería VIP', 'Certificado WSET'],
     description: 'Barman con espectáculo. Coctelería molecular y flair para eventos exclusivos en las mejores salas de Madrid.',
@@ -106,7 +106,7 @@ export const profiles: Profile[] = [
   {
     id: 7, name: 'Patricia Sanz', role: 'staff', specialty: 'RRPP & Relaciones Públicas',
     rating: 5.0, reviews: 201, location: 'Madrid', zone: 'Chamberí',
-    experience: '10 años', price: 250, priceUnit: '/hora',
+    experience: '10 años', price: 35, priceUnit: '/hora',
     avatar: 'PS', gradient: 'linear-gradient(135deg, #333, #1a1a1a)',
     badges: ['RRPP Premium', 'Gestión Listas', 'Networking VIP'],
     description: 'La RRPP más conectada de Madrid. Gestión integral de relaciones públicas, listas y reservados para salas top.',
@@ -119,7 +119,7 @@ export const profiles: Profile[] = [
   {
     id: 8, name: 'Nadia Glamour', role: 'makeup', specialty: 'Maquillaje de Noche & FX',
     rating: 5.0, reviews: 245, location: 'Madrid', zone: 'Chueca',
-    experience: '9 años', price: 300, priceUnit: '/hora',
+    experience: '9 años', price: 45, priceUnit: '/hora',
     avatar: 'NG', gradient: 'linear-gradient(135deg, #D4AF37, #F5D77A)',
     badges: ['Noche Glam', 'FX Pro', 'Bodypaint UV'],
     description: 'Maquilladora artística especializada en looks de noche, efectos especiales y bodypaint UV para fiestas temáticas.',
@@ -130,7 +130,7 @@ export const profiles: Profile[] = [
   {
     id: 9, name: 'Iván Stylez', role: 'makeup', specialty: 'Peluquería de Autor',
     rating: 4.9, reviews: 178, location: 'Madrid', zone: 'Chamberí',
-    experience: '12 años', price: 280, priceUnit: '/hora',
+    experience: '12 años', price: 40, priceUnit: '/hora',
     avatar: 'IS', gradient: 'linear-gradient(135deg, #333, #1a1a1a)',
     badges: ['Color Expert', 'Extensiones', 'Peinado Evento'],
     description: 'Estilista capilar de autor con experiencia en desfiles y eventos nocturnos. Extensiones, color fantasía y peinados de pasarela.',
@@ -141,7 +141,7 @@ export const profiles: Profile[] = [
   {
     id: 10, name: 'Alicia Moon', role: 'makeup', specialty: 'Estilismo Integral Nocturno',
     rating: 4.8, reviews: 134, location: 'Madrid', zone: 'Chueca',
-    experience: '7 años', price: 350, priceUnit: '/hora',
+    experience: '7 años', price: 55, priceUnit: '/hora',
     avatar: 'AM', gradient: 'linear-gradient(135deg, #333, #1a1a1a)',
     badges: ['Styling Completo', 'Asesoría Imagen', 'Luxury Brands'],
     description: 'Servicio integral de imagen nocturna: maquillaje, peinado y vestuario para artistas, DJs y personal de sala.',
