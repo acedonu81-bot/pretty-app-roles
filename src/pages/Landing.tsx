@@ -30,8 +30,8 @@ const Landing = () => {
       <header className="max-w-[1200px] mx-auto px-6 md:px-8 flex items-center min-h-[75vh] gap-12 pt-12 pb-12 flex-col lg:flex-row">
         <div className="flex-1 text-center lg:text-left">
           <h2 className="text-4xl lg:text-5xl font-bold leading-tight mb-5">
-            Directorio Profesional del{' '}
-            <span className="text-gradient">Ocio Nocturno</span>
+            Directorio Profesional en{' '}
+            <span className="text-gradient">Gestión de Eventos</span>
           </h2>
           <p className="text-base text-muted-foreground leading-relaxed mb-8 max-w-lg mx-auto lg:mx-0">
             Conecta con DJs, Personal de Sala, Estilistas y Empresarios. Encuentra talento o publica ofertas urgentes en tiempo real.
