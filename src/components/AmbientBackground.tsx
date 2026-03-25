@@ -11,7 +11,7 @@ const AmbientBackground = () => (
       }}
     />
     <div
-      className="absolute w-[500px] h-[500px] rounded-full opacity-[0.08]"
+      className="absolute w-[500px] h-[500px] rounded-full opacity-[0.16]"
       style={{
         bottom: '-15%', right: '-8%',
         background: 'radial-gradient(circle, #D4AF37 0%, transparent 70%)',
