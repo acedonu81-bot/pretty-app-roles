@@ -1,37 +1,32 @@
-# Memory: index.md
-Updated: now
-
-NIGHTLIFE Madrid — Directorio Profesional de Ocio Nocturno.
+NIGHTLIFE Madrid app — design system and architecture.
 
 ## Design System
-- Font: Outfit (Google Fonts)
-- Background: #07070b (near-black)
-- Primary: #8c52ff (purple)
-- Secondary: #00e5ff (cyan)
-- Accent green: #00ff88
+- Font: Inter (Google Fonts)
+- Background: #000000 (pure black)
+- Charcoal: #1A1A1A
+- Primary/Gold: #D4AF37 (Brushed Gold)
+- Gold Light: #F5D77A
+- Gold Dark: #B8941E
 - Red: #ff5f56
-- Yellow: #ffbc00
 - Text secondary: #8E8EA0
-- Glassmorphism panels with backdrop-blur
-- Cyberpunk aesthetic: negro, violeta y neón
-- Botones grandes para móvil
+- Minimal glassmorphism, premium sober aesthetic
+- Subtle gold ambient orbs
 
 ## Routes
-- / → Landing (directorio roles: DJ, Staff, Estilismo, Empresarios)
-- /auth → Registro simple (nombre, foto, contacto)
+- / → Landing page (hero + role cards)
+- /auth → Simple registration (name, photo, contact)
 - /dashboard → Multi-role dashboard with sidebar
 
 ## Dashboard Views
-DJ, Promotor/Empresarios, Staff, Makeup/Estilismo
-Escenario Virtual (video+chat+contactar), Last Call (urgencias 2h)
-Wallet, Profile, Mapa, Calendar, Messages, Settings
+DJ, Staff, Makeup, Promotor, Escenario Virtual, Last Call, TOP Weekend, Stats, Flash Booking, Messages, Calendar, Profile, Mapa, Settings
 
-## Removed
-- Security view (eliminada por petición)
-- KYC view (registro simplificado)
-- Agency view (fusionado con Promotor)
-- LiveStream view (reemplazado por Escenario Virtual)
+## Key Features
+- TOP Weekend (renamed from TOP Finde): gold badge for highlighted profiles
+- Elite rotation: 12 profiles shuffled hourly in main grid
+- Flash Booking: real-time availability toggle
+- Subscription tiers: free, premium, elite (24.95€/mes)
+- WhatsApp icon on all contact buttons (not phone icon)
+- 4-column grid layout for profile cards
 
-## Legal
-Footer obligatorio con descarga de responsabilidad en todas las páginas.
-UI en español (es).
+## Language
+UI is in Spanish (es)
