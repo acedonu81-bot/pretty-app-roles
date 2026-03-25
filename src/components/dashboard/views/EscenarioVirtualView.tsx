@@ -88,12 +88,29 @@ const EscenarioVirtualView = () => {
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
+      {/* Top global streamer banner */}
+      {(() => {
+        const topGlobal = [...profiles].filter(p => p.isLive || p.streamUrl).sort((a, b) => b.profileViews - a.profileViews)[0];
+        if (!topGlobal) return null;
+        return (
+          <div className="glass-panel p-3 mb-4 flex items-center gap-3" style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
+            <Crown size={16} style={{ color: '#D4AF37' }} />
+            <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>Más visto ahora:</span>
+            <span className="text-xs font-semibold">{topGlobal.name}</span>
+            <span className="text-[0.6rem] text-muted-foreground">— {topGlobal.specialty}</span>
+            <span className="ml-auto text-[0.6rem] flex items-center gap-1 text-muted-foreground">
+              <Eye size={10} /> {topGlobal.profileViews.toLocaleString()}
+            </span>
+          </div>
+        );
+      })()}
+
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-5 gap-3">
         <div>
           <h2 className="text-2xl font-bold mb-1">
             Escenario <span className="text-gradient">Virtual</span>
           </h2>
-          <p className="text-sm text-muted-foreground">Pincha en directo y conecta con empresarios en tiempo real.</p>
+          <p className="text-sm text-muted-foreground">Emite en directo y conecta con empresarios en tiempo real.</p>
         </div>
         <div className="flex gap-2 w-full sm:w-auto">
           <button onClick={() => setShowUrlInput(!showUrlInput)}
