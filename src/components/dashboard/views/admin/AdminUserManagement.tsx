@@ -29,9 +29,9 @@ const AdminUserManagement = () => {
   const fetchUsers = async () => {
     const { data } = await supabase
       .from('profiles')
-      .select('id, display_name, role, zone, subscription_tier, is_verified, phone, instagram, category, score, validation_status, user_id')
+      .select('*')
       .order('created_at', { ascending: false });
-    if (data) setUsers(data as DBProfile[]);
+    if (data) setUsers(data as unknown as DBProfile[]);
     setLoading(false);
   };
 
