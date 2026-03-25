@@ -130,7 +130,7 @@ export const profiles: Profile[] = [
   {
     id: 9, name: 'Iván Stylez', role: 'makeup', specialty: 'Peluquería de Autor',
     rating: 4.9, reviews: 178, location: 'Madrid', zone: 'Chamberí',
-    experience: '12 años', price: 280, priceUnit: '/hora',
+    experience: '12 años', price: 40, priceUnit: '/hora',
     avatar: 'IS', gradient: 'linear-gradient(135deg, #333, #1a1a1a)',
     badges: ['Color Expert', 'Extensiones', 'Peinado Evento'],
     description: 'Estilista capilar de autor con experiencia en desfiles y eventos nocturnos. Extensiones, color fantasía y peinados de pasarela.',
