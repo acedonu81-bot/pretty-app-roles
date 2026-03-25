@@ -77,13 +77,21 @@ export const empresarios = [
     id: 101, name: 'Club Onyx Madrid', avatar: 'ON', gradient: 'linear-gradient(135deg, #D4AF37, #B8941E)',
     offers: [
       { title: 'DJ Techno URGENTE esta noche', description: 'Necesitamos DJ de techno/minimal para sesión de 00h a 04h.', location: 'Madrid Centro', pay: '€350', expiresIn: 5400 },
-      { title: 'Camarero/a VIP para sábado', description: 'Buscamos personal de barra con experiencia en coctelería premium para zona VIP.', location: 'Malasaña', pay: '€150', expiresIn: 6200 },
+      { title: 'Camarero/a VIP para sábado', description: 'Buscamos personal de barra y camarero con experiencia en coctelería premium para zona VIP.', location: 'Malasaña', pay: '€150', expiresIn: 6200 },
+      { title: 'Fotógrafo para evento privado', description: 'Necesitamos fotógrafo profesional para cobertura de evento exclusivo. Entrega en 24h.', location: 'Madrid Centro', pay: '€300', expiresIn: 7200 },
+      { title: 'Diseñador de flyers para campaña', description: 'Buscamos diseñador gráfico para crear flyer y cartelería de nueva temporada.', location: 'Madrid Centro', pay: '€250', expiresIn: 8000 },
     ],
   },
   {
     id: 102, name: 'Horizon Rooftop Madrid', avatar: 'HZ', gradient: 'linear-gradient(135deg, #333, #1a1a1a)',
     offers: [
-      { title: 'Maquilladora para Neon Party', description: 'Evento temático UV. Necesitamos estilista con experiencia en pintura corporal fluorescente.', location: 'Salamanca', pay: '€200', expiresIn: 3800 },
+      { title: 'Maquilladora para Neon Party', description: 'Evento temático UV. Necesitamos maquilladora/estilista con experiencia en pintura corporal fluorescente.', location: 'Salamanca', pay: '€200', expiresIn: 3800 },
+      { title: 'DJ House para rooftop session', description: 'Sesión de deep house para terraza. Set de 3 horas.', location: 'Salamanca', pay: '€400', expiresIn: 4500 },
+      { title: 'Videógrafo para aftermovie', description: 'Necesitamos videógrafo para crear aftermovie del evento de inauguración.', location: 'Salamanca', pay: '€500', expiresIn: 9000 },
+      { title: 'Promotor/RRPP para lista VIP', description: 'Buscamos promotor con experiencia en relaciones públicas y gestión de listas VIP.', location: 'Salamanca', pay: '€120', expiresIn: 5000 },
+      { title: 'Estilista de vestuario para staff', description: 'Necesitamos estilista de vestuario y moda para uniformar al personal del evento.', location: 'Salamanca', pay: '€180', expiresIn: 6000 },
+      { title: 'Azafata/Hostess para zona VIP', description: 'Buscamos personal de sala y hostess para servicio VIP premium.', location: 'Salamanca', pay: '€100', expiresIn: 4000 },
+      { title: 'Brand Ambassador para acción de marca', description: 'Promotor/ambassador para campaña de street marketing y brand activation.', location: 'Centro', pay: '€90', expiresIn: 7000 },
     ],
   },
 ];
