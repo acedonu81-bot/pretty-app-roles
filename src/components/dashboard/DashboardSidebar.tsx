@@ -1,7 +1,7 @@
 import {
   Headphones, UserCheck, Smile, Briefcase,
-  CreditCard, User, Map, CalendarDays,
-  MessageSquare, Radio, Megaphone, Settings,
+  Star, User, Map, CalendarDays,
+  MessageSquare, Radio, Megaphone, Settings, Flame,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -27,9 +27,14 @@ const navSections = [
     ],
   },
   {
+    label: 'DESTACADOS',
+    items: [
+      { id: 'topfinde', icon: Flame, label: 'TOP Finde', badge: '⭐', badgeColor: '#ffbc00' },
+    ],
+  },
+  {
     label: 'MI CUENTA',
     items: [
-      { id: 'wallet', icon: CreditCard, label: 'Finanzas & Wallet' },
       { id: 'profile', icon: User, label: 'Mi Perfil' },
       { id: 'mapa', icon: Map, label: 'Mapa de Salas' },
     ],
