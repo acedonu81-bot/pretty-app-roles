@@ -67,7 +67,7 @@ const Landing = () => {
                 <div key={p.id} className="flex items-center gap-3 p-3 rounded-lg transition-all duration-200 hover:bg-white/3 cursor-pointer"
                   style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}
                   onClick={() => navigate('/dashboard')}>
-                  <GeometricAvatar role={p.role} seed={p.id} size={40} />
+                  <GeometricAvatar role={p.role as any} seed={p.id} size={40} />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-sm">{p.name}</span>
