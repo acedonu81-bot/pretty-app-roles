@@ -19,6 +19,7 @@ const navSections = [
       { id: 'staff', icon: UserCheck, label: 'Personal de Sala' },
       { id: 'makeup', icon: Smile, label: 'Estilismo & Makeup' },
       { id: 'promotor', icon: Briefcase, label: 'Empresarios' },
+      { id: 'empresario', icon: Building2, label: 'Panel Empresario' },
     ],
   },
   {
