@@ -17,7 +17,7 @@ const VoteButton = ({ profileId, voteCount, hasVotedToday: initialVoted, categor
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
 
-  if (category !== 'rookie') return null;
+  if (category !== 'rookie' && category !== 'promesa') return null;
 
   const handleVote = async () => {
     if (!user) { toast.error('Inicia sesión para votar'); return; }
