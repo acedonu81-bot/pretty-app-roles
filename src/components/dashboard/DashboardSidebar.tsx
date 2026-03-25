@@ -57,21 +57,21 @@ const navSections = [
 const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
   return (
     <aside
-      className="w-[280px] h-screen flex flex-col z-10 flex-shrink-0"
+      className="w-[280px] h-full flex flex-col z-10 flex-shrink-0"
       style={{
         background: 'var(--nightlife-card)',
         backdropFilter: 'blur(20px)',
         borderRight: '1px solid var(--nightlife-border)',
       }}
     >
-      <div className="p-8" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>
+      <div className="p-6 md:p-8" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>
         <h2 className="text-2xl font-extrabold tracking-wider">
           NIGHT<span className="text-gradient">LIFE</span>
         </h2>
         <p className="text-[0.6rem] text-muted-foreground mt-1 tracking-widest uppercase">Directorio Profesional</p>
       </div>
 
-      <nav className="flex-1 overflow-y-auto px-6 py-6">
+      <nav className="flex-1 overflow-y-auto px-4 md:px-6 py-4 md:py-6">
         {navSections.map((section) => (
           <div key={section.label} className="mb-4">
             <div className="text-xs text-muted-foreground uppercase tracking-widest font-extrabold mb-3">
@@ -112,12 +112,12 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
         ))}
       </nav>
 
-      <div className="p-5 flex items-center gap-3" style={{ borderTop: '1px solid var(--nightlife-border)' }}>
-        <div className="w-11 h-11 rounded-full overflow-hidden" style={{ border: '2px solid var(--nightlife-primary)' }}>
+      <div className="p-4 md:p-5 flex items-center gap-3" style={{ borderTop: '1px solid var(--nightlife-border)' }}>
+        <div className="w-11 h-11 rounded-full overflow-hidden flex-shrink-0" style={{ border: '2px solid var(--nightlife-primary)' }}>
           <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex&backgroundColor=8c52ff" alt="Alex" className="w-full h-full object-cover" />
         </div>
-        <div>
-          <p className="text-sm font-semibold">Alex (DJ Aethel)</p>
+        <div className="min-w-0">
+          <p className="text-sm font-semibold truncate">Alex (DJ Aethel)</p>
           <p className="text-xs font-extrabold text-gradient">Perfil Verificado</p>
         </div>
       </div>
