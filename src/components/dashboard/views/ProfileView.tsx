@@ -6,7 +6,29 @@ import { useAuth } from '@/hooks/useAuth';
 import AudioUpload from '@/components/dashboard/AudioUpload';
 
 const ProfileView = () => {
+  const { user } = useAuth();
+  const [deleting, setDeleting] = useState(false);
   const genres = ['Techno', 'Minimal', 'Deep House', 'Dark'];
+
+  const handleDeleteMedia = async () => {
+    if (!user) return;
+    const confirmed = window.confirm('¿Estás seguro? Se eliminarán TODOS tus archivos multimedia (audio, fotos) de forma permanente.');
+    if (!confirmed) return;
+    setDeleting(true);
+    try {
+      const { data: files } = await supabase.storage.from('audio-sessions').list(user.id);
+      if (files && files.length > 0) {
+        const paths = files.map(f => `${user.id}/${f.name}`);
+        await supabase.storage.from('audio-sessions').remove(paths);
+      }
+      await (supabase.from('profiles').update({ photo_url: '', audio_url: '' } as any) as any).eq('user_id', user.id);
+      toast.success('Contenido multimedia eliminado permanentemente.');
+    } catch {
+      toast.error('Error al eliminar contenido.');
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
