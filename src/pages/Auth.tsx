@@ -6,16 +6,28 @@ import AmbientBackground from '@/components/AmbientBackground';
 import LegalFooter from '@/components/LegalFooter';
 import { toast } from 'sonner';
 
-const roles = [
-  { value: 'dj', label: 'DJ', icon: Music, minRate: 40 },
-  { value: 'staff', label: 'Personal de Sala', icon: Users, minRate: 20 },
-  { value: 'makeup', label: 'Maquillaje', icon: Palette, minRate: 30 },
-  { value: 'vestuario', label: 'Vestuario', icon: Shirt, minRate: 30 },
-  { value: 'media', label: 'Media', icon: Camera, minRate: 30 },
-  { value: 'design', label: 'Diseño', icon: Brush, minRate: 30 },
-  { value: 'ambassador', label: 'Promoción', icon: Flag, minRate: 15 },
-  { value: 'empresario', label: 'Empresario', icon: Building2, minRate: 0 },
+const roleGroups = [
+  { label: '🎵 Música', roles: [
+    { value: 'dj', label: 'DJ', icon: Music, minRate: 40 },
+  ]},
+  { label: '👥 Staff', roles: [
+    { value: 'staff', label: 'Personal de Sala', icon: Users, minRate: 20 },
+  ]},
+  { label: '💄 Imagen', roles: [
+    { value: 'makeup', label: 'Maquillaje & Peluquería', icon: Palette, minRate: 30 },
+    { value: 'vestuario', label: 'Vestuario & Moda', icon: Shirt, minRate: 30 },
+  ]},
+  { label: '📸 Media & Diseño', roles: [
+    { value: 'media', label: 'Media & Contenido', icon: Camera, minRate: 30 },
+    { value: 'design', label: 'Diseño & Visuales', icon: Brush, minRate: 30 },
+    { value: 'ambassador', label: 'Promoción', icon: Flag, minRate: 15 },
+  ]},
+  { label: '🏢 Empresa', roles: [
+    { value: 'empresario', label: 'Empresario', icon: Building2, minRate: 0 },
+  ]},
 ];
+
+const roles = roleGroups.flatMap(g => g.roles);
 
 const Auth = () => {
   const navigate = useNavigate();
