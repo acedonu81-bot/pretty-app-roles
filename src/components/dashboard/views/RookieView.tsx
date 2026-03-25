@@ -10,7 +10,7 @@ type ValidationStatus = 'pending' | 'approved' | 'rookie' | 'rejected' | 'awaiti
 const statusConfig: Record<ValidationStatus, { label: string; color: string; icon: typeof CheckCircle; bg: string }> = {
   pending: { label: 'Pendiente de revisión', color: '#D4AF37', icon: Clock, bg: 'rgba(212,175,55,0.08)' },
   approved: { label: 'Aprobado PRO', color: '#22c55e', icon: CheckCircle, bg: 'rgba(34,197,94,0.08)' },
-  rookie: { label: 'Rookie / Promesa', color: '#D4AF37', icon: Award, bg: 'rgba(212,175,55,0.08)' },
+  rookie: { label: 'Promesa', color: '#D4AF37', icon: Award, bg: 'rgba(212,175,55,0.08)' },
   rejected: { label: 'Rechazado', color: '#ef4444', icon: XCircle, bg: 'rgba(239,68,68,0.08)' },
   awaiting_admin: { label: 'Esperando aprobación Admin', color: '#f59e0b', icon: AlertCircle, bg: 'rgba(245,158,11,0.08)' },
 };
@@ -50,7 +50,7 @@ const RookieView = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-xs text-muted-foreground animate-pulse">Cargando tu perfil Rookie...</div>
+        <div className="text-xs text-muted-foreground animate-pulse">Cargando tu perfil Promesa...</div>
       </div>
     );
   }
@@ -85,9 +85,9 @@ const RookieView = () => {
     <div className="animate-[fadeIn_0.4s_ease]">
       <div className="mb-6">
         <h2 className="text-2xl font-bold mb-1">
-          Panel <span className="text-gradient">Rookie</span>
+          Panel <span className="text-gradient">Promesa</span>
         </h2>
-        <p className="text-sm text-muted-foreground">Tu camino hacia el estatus PRO.</p>
+        <p className="text-sm text-muted-foreground">Tu camino hacia el estatus PRO. Eres una de nuestras Promesas.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">

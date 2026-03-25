@@ -25,7 +25,7 @@ const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
   if (p.topWeekend) statusBadges.push({ label: 'TOP WEEKEND', bg: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' });
   if (p.isPremium) statusBadges.push({ label: 'PREMIUM', bg: 'rgba(212,175,55,0.15)', color: '#D4AF37' });
   if (p.subscriptionTier === 'elite' && !p.isPremium) statusBadges.push({ label: 'ELITE', bg: 'rgba(212,175,55,0.1)', color: '#D4AF37' });
-  if (isRookie) statusBadges.push({ label: 'ROOKIE', bg: 'rgba(255,188,0,0.1)', color: '#ffbc00' });
+  if (isRookie) statusBadges.push({ label: 'PROMESA', bg: 'rgba(255,188,0,0.1)', color: '#ffbc00' });
   if (p.isFlashActive) statusBadges.push({ label: 'DISPONIBLE', bg: 'rgba(34,197,94,0.12)', color: '#22c55e' });
 
   return (

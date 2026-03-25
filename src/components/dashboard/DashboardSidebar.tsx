@@ -17,6 +17,7 @@ const navSections = [
     label: 'DIRECTORIO',
     items: [
       { id: 'dj', icon: Headphones, label: 'DJs' },
+      { id: 'rookie', icon: Award, label: 'DJ Promesa' },
       { id: 'staff', icon: UserCheck, label: 'Personal de Sala' },
       { id: 'makeup', icon: Smile, label: 'Maquillaje & Peluquería' },
       { id: 'vestuario', icon: Shirt, label: 'Vestuario & Moda' },
@@ -45,7 +46,6 @@ const navSections = [
     items: [
       { id: 'profile', icon: User, label: 'Mi Perfil' },
       { id: 'stats', icon: BarChart3, label: 'Estadísticas' },
-      { id: 'rookie', icon: Award, label: 'Mi Panel Rookie' },
       { id: 'subscription', icon: CreditCard, label: 'Suscripción' },
       { id: 'flash', icon: Zap, label: 'Flash Booking', pulse: true },
       { id: 'mapa', icon: Map, label: 'Directorio Salas' },
