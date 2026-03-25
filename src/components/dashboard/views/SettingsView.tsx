@@ -1,7 +1,39 @@
-import { MapPin } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { MapPin, Sun, Moon, Camera } from 'lucide-react';
 import { toast } from 'sonner';
 
 const SettingsView = () => {
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const photoRef = useRef<HTMLInputElement>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+
+  const handleThemeToggle = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    if (newTheme === 'light') {
+      document.documentElement.style.setProperty('--background', '0 0% 98%');
+      document.documentElement.style.setProperty('--foreground', '0 0% 10%');
+      document.documentElement.style.setProperty('--card', '0 0% 96%');
+      document.documentElement.style.setProperty('--muted-foreground', '0 0% 40%');
+    } else {
+      document.documentElement.style.setProperty('--background', '240 10% 3.9%');
+      document.documentElement.style.setProperty('--foreground', '0 0% 98%');
+      document.documentElement.style.setProperty('--card', '240 10% 3.9%');
+      document.documentElement.style.setProperty('--muted-foreground', '240 5% 55%');
+    }
+    toast.info(`Tema cambiado a ${newTheme === 'dark' ? 'oscuro' : 'claro'}.`);
+  };
+
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) { toast.error('Máximo 5MB para la foto'); return; }
+    const reader = new FileReader();
+    reader.onload = () => setPhotoPreview(reader.result as string);
+    reader.readAsDataURL(file);
+    toast.success('Foto actualizada.');
+  };
+
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
       <div className="mb-6">
@@ -14,6 +46,38 @@ const SettingsView = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <div className="glass-panel p-6">
           <h3 className="text-sm font-bold mb-5">Cuenta e Idioma</h3>
+
+          {/* Photo */}
+          <div className="mb-5 flex items-center gap-4">
+            <div className="relative cursor-pointer group" onClick={() => photoRef.current?.click()}>
+              <div className="w-16 h-16 rounded-lg overflow-hidden flex items-center justify-center text-xl font-bold"
+                style={{ background: photoPreview ? undefined : 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+                {photoPreview ? <img src={photoPreview} alt="Foto" className="w-full h-full object-cover" /> : 'A'}
+              </div>
+              <div className="absolute inset-0 rounded-lg flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
+                <Camera size={18} className="text-white" />
+              </div>
+            </div>
+            <div>
+              <p className="text-xs font-bold">Foto de perfil</p>
+              <p className="text-[0.6rem] text-muted-foreground">Haz clic para cambiar (máx 5MB)</p>
+            </div>
+            <input ref={photoRef} type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
+          </div>
+
+          {/* Theme */}
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <label className="block text-xs font-bold">Tema</label>
+              <p className="text-[0.6rem] text-muted-foreground">Modo oscuro o claro</p>
+            </div>
+            <button onClick={handleThemeToggle}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-all"
+              style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+              {theme === 'dark' ? <><Sun size={14} /> Modo Claro</> : <><Moon size={14} /> Modo Oscuro</>}
+            </button>
+          </div>
+
           <div className="mb-4">
             <label className="block text-xs text-muted-foreground mb-1.5">Idioma</label>
             <select className="nightlife-input cursor-pointer text-sm">
@@ -28,18 +92,12 @@ const SettingsView = () => {
           </div>
           <div className="mb-4">
             <label className="block text-xs text-muted-foreground mb-1.5">Ubicación Base</label>
-            <div className="relative">
-              <MapPin size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <input type="text" defaultValue="Madrid, España" className="nightlife-input pl-8 text-sm" />
-            </div>
+            <input type="text" defaultValue="Madrid, España" className="nightlife-input text-sm pl-3" />
           </div>
           <div className="mb-4 pt-4" style={{ borderTop: '1px solid var(--nightlife-border)' }}>
-            <label className="block text-xs text-muted-foreground mb-1.5">Caché Base (Por Hora)</label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-bold">€</span>
-              <input type="number" defaultValue={150} min={30} step={5}
-                className="nightlife-input pl-7 text-base font-bold" style={{ color: '#D4AF37' }} />
-            </div>
+            <label className="block text-xs text-muted-foreground mb-1.5">Caché Base (€/hora)</label>
+            <input type="number" defaultValue={150} min={30} step={5}
+              className="nightlife-input text-sm pl-3 font-bold" style={{ color: '#D4AF37' }} />
           </div>
           <button className="btn-nightlife-primary w-full text-sm" onClick={() => toast.info('Guardado.')}>
             Guardar Cambios

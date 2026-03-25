@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { MapPin, Star, Users, Music, CheckCircle, Search, Filter } from 'lucide-react';
 
 const cities = [
-  { id: 'madrid', name: 'Madrid', venues: 24 },
-  { id: 'barcelona', name: 'Barcelona', venues: 19 },
-  { id: 'valencia', name: 'Valencia', venues: 12 },
-  { id: 'ibiza', name: 'Ibiza', venues: 31 },
-  { id: 'sevilla', name: 'Sevilla', venues: 9 },
-  { id: 'malaga', name: 'Málaga', venues: 15 },
-  { id: 'bilbao', name: 'Bilbao', venues: 7 },
-  { id: 'zaragoza', name: 'Zaragoza', venues: 5 },
+  { id: 'madrid', name: 'Madrid', venues: 3 },
+  { id: 'barcelona', name: 'Barcelona', venues: 2 },
+  { id: 'valencia', name: 'Valencia', venues: 2 },
+  { id: 'ibiza', name: 'Ibiza', venues: 3 },
+  { id: 'sevilla', name: 'Sevilla', venues: 2 },
+  { id: 'malaga', name: 'Málaga', venues: 2 },
+  { id: 'bilbao', name: 'Bilbao', venues: 2 },
+  { id: 'zaragoza', name: 'Zaragoza', venues: 2 },
 ];
 
 const venueDetails: Record<string, Array<{ name: string; type: string; capacity: number; rating: number; verified: boolean; needs: string[] }>> = {
@@ -25,12 +25,28 @@ const venueDetails: Record<string, Array<{ name: string; type: string; capacity:
   ibiza: [
     { name: 'Ushuaïa', type: 'EDM / House', capacity: 5000, rating: 5.0, verified: true, needs: ['DJ Internacional', 'Staff completo'] },
     { name: 'Amnesia', type: 'Techno / Trance', capacity: 5000, rating: 4.9, verified: true, needs: ['DJ Techno', 'Seguridad'] },
+    { name: 'Hï Ibiza', type: 'House / Tech House', capacity: 4500, rating: 4.9, verified: true, needs: ['DJ House', 'Camareros VIP'] },
   ],
-  valencia: [{ name: 'Noxe Club', type: 'Techno / Minimal', capacity: 800, rating: 4.7, verified: true, needs: ['DJ Minimal', 'Barman'] }],
-  sevilla: [{ name: 'Antique Theatro', type: 'House / Latin', capacity: 1000, rating: 4.5, verified: true, needs: ['DJ Latino', 'RRPP'] }],
-  malaga: [{ name: 'Opium Marbella', type: 'Beach Club', capacity: 2000, rating: 4.7, verified: true, needs: ['DJ Comercial', 'Azafatas'] }],
-  bilbao: [{ name: 'Fever Club', type: 'Techno / Bass', capacity: 600, rating: 4.4, verified: true, needs: ['DJ Bass', 'Camareros'] }],
-  zaragoza: [{ name: 'La Casa del Loco', type: 'Electrónica', capacity: 400, rating: 4.5, verified: false, needs: ['DJ Electrónica'] }],
+  valencia: [
+    { name: 'Noxe Club', type: 'Techno / Minimal', capacity: 800, rating: 4.7, verified: true, needs: ['DJ Minimal', 'Barman'] },
+    { name: 'Marina Beach Club', type: 'House / Comercial', capacity: 1200, rating: 4.6, verified: true, needs: ['DJ Comercial', 'Azafatas'] },
+  ],
+  sevilla: [
+    { name: 'Antique Theatro', type: 'House / Latin', capacity: 1000, rating: 4.5, verified: true, needs: ['DJ Latino', 'RRPP'] },
+    { name: 'Sala Custom', type: 'Techno / Underground', capacity: 600, rating: 4.4, verified: true, needs: ['DJ Techno', 'Personal de sala'] },
+  ],
+  malaga: [
+    { name: 'Opium Marbella', type: 'Beach Club', capacity: 2000, rating: 4.7, verified: true, needs: ['DJ Comercial', 'Azafatas'] },
+    { name: 'Theatro Marbs', type: 'House / Comercial', capacity: 1500, rating: 4.6, verified: true, needs: ['DJ House', 'Camareros'] },
+  ],
+  bilbao: [
+    { name: 'Fever Club', type: 'Techno / Bass', capacity: 600, rating: 4.4, verified: true, needs: ['DJ Bass', 'Camareros'] },
+    { name: 'Kubik', type: 'Electrónica', capacity: 500, rating: 4.3, verified: true, needs: ['DJ Electrónica', 'Seguridad'] },
+  ],
+  zaragoza: [
+    { name: 'La Casa del Loco', type: 'Electrónica', capacity: 400, rating: 4.5, verified: true, needs: ['DJ Electrónica', 'Barman'] },
+    { name: 'Oasis Club', type: 'Comercial', capacity: 700, rating: 4.3, verified: true, needs: ['DJ Comercial', 'RRPP'] },
+  ],
 };
 
 const MapaView = () => {
@@ -49,7 +65,6 @@ const MapaView = () => {
         <p className="text-sm text-muted-foreground">Salas verificadas por ciudad y necesidades de contratación.</p>
       </div>
 
-      {/* Search */}
       <div className="glass-panel p-3 mb-5">
         <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--nightlife-border)' }}>
           <Search size={14} className="text-muted-foreground flex-shrink-0" />
@@ -64,7 +79,6 @@ const MapaView = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-4">
-        {/* City list */}
         <div className="flex flex-col gap-2">
           {filteredCities.map(city => {
             const isSelected = selectedCity === city.id;
@@ -91,7 +105,6 @@ const MapaView = () => {
           })}
         </div>
 
-        {/* Venues */}
         <div className="flex flex-col gap-3">
           {venues.length > 0 && (
             <div className="flex items-center gap-2 mb-1">
@@ -120,7 +133,6 @@ const MapaView = () => {
                 <span className="flex items-center gap-1"><Users size={11} /> {v.capacity.toLocaleString()} aforo</span>
                 <span className="flex items-center gap-1"><Music size={11} /> {v.type.split('/')[0].trim()}</span>
               </div>
-              {/* Needs */}
               <div className="flex flex-wrap gap-1.5">
                 {v.needs.map(need => (
                   <span key={need} className="text-[0.6rem] font-medium px-2 py-0.5 rounded"

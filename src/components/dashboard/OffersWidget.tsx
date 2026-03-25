@@ -7,16 +7,16 @@ const WaIcon = ({ size = 14 }: { size?: number }) => (
   </svg>
 );
 
-// Map roles to keywords for filtering offers
-const roleKeywords: Record<string, string[]> = {
-  dj: ['dj', 'techno', 'house', 'sesión', 'música', 'pinchar'],
-  staff: ['camarero', 'camarera', 'vip', 'personal', 'barra', 'servicio'],
-  makeup: ['maquillad', 'estilista', 'peluquer', 'beauty', 'neon party', 'uv', 'pintura'],
-  vestuario: ['vestuario', 'estilismo', 'moda', 'outfit', 'styling'],
-  media: ['fotógrafo', 'fotograf', 'vídeo', 'video', 'contenido', 'aftermovie', 'ugc'],
-  design: ['diseñ', 'flyer', 'visual', 'motion', 'vj', 'gráfic'],
-  promotor: ['promot', 'rrpp', 'relaciones'],
-  ambassador: ['ambassador', 'promoción', 'flyer', 'qr', 'brand'],
+// Strict role-to-offer matching - only show offers relevant to the profession
+const roleOfferKeywords: Record<string, string[]> = {
+  dj: ['dj', 'techno', 'house', 'sesión', 'música', 'pinchar', 'set'],
+  staff: ['camarero', 'camarera', 'vip', 'personal', 'barra', 'servicio', 'hostess', 'azafata', 'seguridad'],
+  makeup: ['maquillad', 'estilista', 'peluquer', 'beauty', 'neon party', 'uv', 'pintura', 'corporal'],
+  vestuario: ['vestuario', 'estilismo', 'moda', 'outfit', 'styling', 'ropa'],
+  media: ['fotógrafo', 'fotograf', 'vídeo', 'video', 'contenido', 'aftermovie', 'ugc', 'tiktoker'],
+  design: ['diseñ', 'flyer', 'visual', 'motion', 'vj', 'gráfic', 'led', 'mapping'],
+  promotor: ['promot', 'rrpp', 'relaciones', 'lista'],
+  ambassador: ['ambassador', 'promoción', 'flyer', 'qr', 'brand', 'street'],
 };
 
 interface OffersWidgetProps {
@@ -29,18 +29,17 @@ const OffersWidget = ({ title = 'Ofertas de Empresarios', role }: OffersWidgetPr
     e.offers.map(o => ({ ...o, author: e.name, avatar: e.avatar, gradient: e.gradient }))
   );
 
-  // Filter offers by role relevance
-  const filteredOffers = role && roleKeywords[role]
+  // Strict filter: only show offers matching role keywords. No fallback to all.
+  const keywords = role ? roleOfferKeywords[role] : null;
+  const filteredOffers = keywords
     ? allOffers.filter(o => {
         const text = `${o.title} ${o.description}`.toLowerCase();
-        return roleKeywords[role].some(kw => text.includes(kw));
+        return keywords.some(kw => text.includes(kw));
       })
     : allOffers;
 
-  // If no role-specific offers, show all (fallback)
-  const displayOffers = filteredOffers.length > 0 ? filteredOffers : allOffers;
-
-  if (displayOffers.length === 0) return null;
+  // If no matching offers for this role, don't show the widget at all
+  if (filteredOffers.length === 0) return null;
 
   return (
     <div className="glass-panel p-4 mt-6" style={{ border: '1px solid rgba(212,175,55,0.1)' }}>
@@ -49,7 +48,7 @@ const OffersWidget = ({ title = 'Ofertas de Empresarios', role }: OffersWidgetPr
         <span style={{ color: '#D4AF37' }}>{title}</span>
       </h3>
       <div className="space-y-2">
-        {displayOffers.map((offer, i) => (
+        {filteredOffers.map((offer, i) => (
           <div key={i} className="flex items-center gap-3 p-3 rounded-lg transition-all hover:bg-white/3"
             style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--nightlife-border)' }}>
             <div className="w-8 h-8 rounded-lg flex items-center justify-center text-[0.55rem] font-bold flex-shrink-0"

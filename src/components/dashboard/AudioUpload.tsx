@@ -4,18 +4,42 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 
+const allGenres = [
+  'Techno', 'Minimal', 'Deep House', 'Tech House', 'Progressive House', 'Melodic Techno',
+  'House', 'Afro House', 'Organic House', 'Tribal House', 'Funky House',
+  'EDM', 'Future Bass', 'Dubstep', 'Drum & Bass', 'Jungle',
+  'Trance', 'Psytrance', 'Progressive Trance', 'Uplifting Trance',
+  'Reggaetón', 'Dembow', 'Latin House', 'Moombahton',
+  'R&B', 'Hip Hop', 'Trap', 'UK Garage', 'Grime',
+  'Disco', 'Nu-Disco', 'Italo Disco', 'Funk',
+  'Ambient', 'Downtempo', 'Chillout', 'Lo-Fi',
+  'Hard Techno', 'Industrial', 'Hardstyle', 'Hardcore',
+  'Breakbeat', 'Electro', 'Synthwave', 'Retrowave',
+  'Comercial', 'Top 40', 'Pop Dance', 'Euro Dance',
+  'Dancehall', 'Afrobeats', 'Amapiano', 'Baile Funk',
+  'Acid House', 'Detroit Techno', 'Chicago House', 'Dub Techno',
+];
+
 const AudioUpload = () => {
   const [uploading, setUploading] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+  const [showGenres, setShowGenres] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { user } = useAuth();
+
+  const toggleGenre = (genre: string) => {
+    setSelectedGenres(prev =>
+      prev.includes(genre) ? prev.filter(g => g !== genre) : prev.length < 5 ? [...prev, genre] : prev
+    );
+  };
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !user) return;
     if (!file.type.includes('audio')) { toast.error('Solo archivos de audio (MP3, WAV)'); return; }
-    if (file.size > 20 * 1024 * 1024) { toast.error('Máximo 20MB'); return; }
+    if (file.size > 500 * 1024 * 1024) { toast.error('Máximo 500MB'); return; }
 
     setUploading(true);
     const path = `${user.id}/${Date.now()}-${file.name}`;
@@ -39,8 +63,44 @@ const AudioUpload = () => {
         <Music size={14} style={{ color: '#D4AF37' }} /> Sesión de Audio
       </h4>
       <p className="text-[0.6rem] text-muted-foreground mb-3">
-        Sube tu sesión grabada (MP3/WAV, máx 20MB). Es obligatorio para completar tu perfil.
+        Sube tu sesión grabada (MP3/WAV, máx 500MB). Es obligatorio para completar tu perfil.
       </p>
+
+      {/* Genre selector */}
+      <div className="mb-3">
+        <button onClick={() => setShowGenres(!showGenres)}
+          className="text-xs font-bold px-3 py-1.5 rounded-lg transition-all"
+          style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.15)', color: '#D4AF37' }}>
+          🎵 Géneros ({selectedGenres.length}/5)
+        </button>
+        {selectedGenres.length > 0 && (
+          <div className="flex flex-wrap gap-1 mt-2">
+            {selectedGenres.map(g => (
+              <span key={g} onClick={() => toggleGenre(g)}
+                className="text-[0.55rem] font-bold px-2 py-0.5 rounded cursor-pointer hover:opacity-70"
+                style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                {g} ×
+              </span>
+            ))}
+          </div>
+        )}
+        {showGenres && (
+          <div className="mt-2 max-h-48 overflow-y-auto rounded-lg p-3 flex flex-wrap gap-1"
+            style={{ background: 'rgba(0,0,0,0.4)', border: '1px solid var(--nightlife-border)' }}>
+            {allGenres.map(g => (
+              <button key={g} onClick={() => toggleGenre(g)}
+                className="text-[0.55rem] font-medium px-2 py-0.5 rounded transition-all"
+                style={{
+                  background: selectedGenres.includes(g) ? 'rgba(212,175,55,0.2)' : 'rgba(255,255,255,0.03)',
+                  color: selectedGenres.includes(g) ? '#D4AF37' : 'var(--nightlife-text-secondary)',
+                  border: selectedGenres.includes(g) ? '1px solid rgba(212,175,55,0.3)' : '1px solid var(--nightlife-border)',
+                }}>
+                {g}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
 
       {audioUrl ? (
         <div className="space-y-2">
