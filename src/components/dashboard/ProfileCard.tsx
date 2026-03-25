@@ -25,30 +25,29 @@ const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
 
   return (
     <div className="glass-panel p-5 flex flex-col transition-all hover:border-primary/20 duration-300 relative group">
-      {/* LIVE badge */}
-      {p.isLive && (
-        <div className="absolute -top-2 -left-2 px-2.5 py-1 rounded-md text-[0.55rem] font-bold tracking-wider z-10 flex items-center gap-1"
-          style={{ background: '#D4AF37', color: '#000', boxShadow: '0 2px 10px rgba(212,175,55,0.4)' }}>
-          <Radio size={10} className="animate-pulse" /> LIVE
-        </div>
-      )}
+      {/* Top row badges — left: LIVE, right: TOP WEEKEND */}
+      <div className="absolute -top-2 left-0 right-0 flex items-center justify-between px-2 z-10 pointer-events-none">
+        {p.isLive ? (
+          <div className="px-2.5 py-1 rounded-md text-[0.55rem] font-bold tracking-wider flex items-center gap-1 pointer-events-auto"
+            style={{ background: '#E53935', color: '#fff', boxShadow: '0 2px 12px rgba(229,57,53,0.5)' }}>
+            <Radio size={10} className="animate-pulse" /> LIVE
+          </div>
+        ) : <span />}
+        {p.topWeekend ? (
+          <div className="px-3 py-1 rounded-md text-[0.6rem] font-bold tracking-wider pointer-events-auto"
+            style={{
+              background: 'linear-gradient(90deg, #D4AF37, #B8941E)',
+              color: '#000',
+              boxShadow: '0 2px 10px rgba(212,175,55,0.3)',
+            }}>
+            TOP WEEKEND
+          </div>
+        ) : <span />}
+      </div>
 
-      {/* TOP WEEKEND badge */}
-      {p.topWeekend && (
-        <div className="absolute -top-2 -right-2 px-3 py-1 rounded-md text-[0.6rem] font-bold tracking-wider z-10"
-          style={{
-            background: 'linear-gradient(90deg, #D4AF37, #B8941E)',
-            color: '#000',
-            boxShadow: '0 2px 10px rgba(212,175,55,0.3)',
-          }}
-        >
-          TOP WEEKEND
-        </div>
-      )}
-
-      {/* Flash Active — positioned right side, below TOP WEEKEND */}
+      {/* Flash Active — below top badges */}
       {p.isFlashActive && (
-        <div className={`absolute ${p.topWeekend ? 'top-8' : 'top-3'} right-3 flex items-center gap-1.5 px-2 py-0.5 rounded text-[0.55rem] font-bold`}
+        <div className="absolute top-6 right-3 flex items-center gap-1.5 px-2 py-0.5 rounded text-[0.55rem] font-bold z-10"
           style={{ background: 'rgba(34,197,94,0.15)', color: '#22c55e', border: '1px solid rgba(34,197,94,0.3)' }}>
           <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
           DISPONIBLE
