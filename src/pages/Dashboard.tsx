@@ -18,6 +18,7 @@ import FlashBookingWallView from '@/components/dashboard/views/FlashBookingWallV
 import TopWeekendView from '@/components/dashboard/views/TopWeekendView';
 import StatsView from '@/components/dashboard/views/StatsView';
 import FlashBookingView from '@/components/dashboard/views/FlashBookingView';
+import RookieView from '@/components/dashboard/views/RookieView';
 import AdminView from '@/components/dashboard/views/AdminView';
 import EmpresarioView from '@/components/dashboard/views/EmpresarioView';
 import AdminGuard from '@/components/AdminGuard';
@@ -62,6 +63,7 @@ const Dashboard = () => {
       case 'topweekend': return <TopWeekendView />;
       case 'stats': return <StatsView />;
       case 'flash': return <FlashBookingView />;
+      case 'rookie': return <RookieView />;
       case 'admin': return (
         <AdminGuard>
           <AdminView />
