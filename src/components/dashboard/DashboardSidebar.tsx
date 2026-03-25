@@ -109,9 +109,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
       </nav>
 
       <div className="p-4 flex items-center gap-3" style={{ borderTop: '1px solid var(--nightlife-border)' }}>
-        <div className="w-9 h-9 rounded-lg overflow-hidden flex-shrink-0" style={{ border: '1px solid rgba(212,175,55,0.3)' }}>
-          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex&backgroundColor=1a1a1a" alt="Alex" className="w-full h-full object-cover" />
-        </div>
+        <GeometricAvatar role="dj" seed={999} size={36} />
         <div className="min-w-0">
           <p className="text-xs font-semibold truncate">Alex (DJ Aethel)</p>
           <p className="text-[0.6rem] font-bold" style={{ color: '#D4AF37' }}>Plan Elite</p>
