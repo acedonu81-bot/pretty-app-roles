@@ -106,7 +106,7 @@ export const profiles: Profile[] = [
   {
     id: 7, name: 'Patricia Sanz', role: 'staff', specialty: 'RRPP & Relaciones Públicas',
     rating: 5.0, reviews: 201, location: 'Madrid', zone: 'Chamberí',
-    experience: '10 años', price: 250, priceUnit: '/hora',
+    experience: '10 años', price: 35, priceUnit: '/hora',
     avatar: 'PS', gradient: 'linear-gradient(135deg, #333, #1a1a1a)',
     badges: ['RRPP Premium', 'Gestión Listas', 'Networking VIP'],
     description: 'La RRPP más conectada de Madrid. Gestión integral de relaciones públicas, listas y reservados para salas top.',
