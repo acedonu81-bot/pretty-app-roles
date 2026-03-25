@@ -6,6 +6,7 @@ import HeroMockup from '@/components/HeroMockup';
 import RoleCard from '@/components/RoleCard';
 import LegalFooter from '@/components/LegalFooter';
 import DemoVideoModal from '@/components/DemoVideoModal';
+import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
 import { profiles } from '@/data/profiles';
 
 const topProfiles = profiles.filter(p => p.topWeekend);

@@ -4,6 +4,7 @@ import {
   MessageSquare, Radio, Megaphone, Settings, Crown,
   BarChart3, Zap, ShieldCheck,
 } from 'lucide-react';
+import GeometricAvatar from './GeometricAvatar';
 
 interface SidebarProps {
   activeView: string;
