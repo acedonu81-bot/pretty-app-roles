@@ -90,6 +90,21 @@ const ProfileView = () => {
             </div>
           </div>
           <AudioUpload />
+
+          {/* Media deletion - GDPR */}
+          <div className="glass-panel p-5">
+            <h4 className="text-sm font-bold mb-2 flex items-center gap-2">
+              <Trash2 size={14} style={{ color: '#ff5f56' }} /> Gestión de Contenido Multimedia
+            </h4>
+            <p className="text-[0.6rem] text-muted-foreground mb-3">
+              Según la normativa RGPD, puedes solicitar la eliminación permanente de todo tu contenido multimedia (audios, fotos de perfil y trabajos).
+            </p>
+            <button onClick={handleDeleteMedia} disabled={deleting}
+              className="w-full py-2.5 rounded-lg font-medium text-xs transition-all disabled:opacity-50"
+              style={{ background: 'rgba(255,95,86,0.06)', color: '#ff5f56', border: '1px solid rgba(255,95,86,0.15)' }}>
+              {deleting ? 'Eliminando...' : 'Eliminar todo mi contenido multimedia'}
+            </button>
+          </div>
           <div className="glass-panel p-5">
             <h4 className="text-sm font-bold mb-3">Valoraciones</h4>
             {[
