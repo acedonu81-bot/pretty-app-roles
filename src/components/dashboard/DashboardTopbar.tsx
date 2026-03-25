@@ -44,20 +44,6 @@ const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
       </div>
 
       <div className="flex items-center gap-2 relative flex-shrink-0">
-        {/* Music player */}
-        <button
-          onClick={toggleMusic}
-          className="p-2 rounded-lg transition-all duration-200 hover:scale-105"
-          style={{
-            background: isPlaying ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.04)',
-            border: isPlaying ? '1px solid rgba(212,175,55,0.25)' : '1px solid var(--nightlife-border)',
-            color: isPlaying ? '#D4AF37' : 'var(--nightlife-text-secondary)',
-          }}
-          title={isPlaying ? 'Pausar Tech House' : 'Reproducir Tech House'}
-        >
-          {isPlaying ? <Volume2 size={16} /> : <VolumeX size={16} />}
-        </button>
-
         {/* Notifications */}
         <button
           onClick={() => setShowNotif(!showNotif)}
