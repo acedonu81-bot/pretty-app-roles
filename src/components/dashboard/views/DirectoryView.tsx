@@ -47,7 +47,7 @@ const DirectoryView = ({ role, title, subtitle }: DirectoryViewProps) => {
         ))}
       </div>
 
-      <OffersWidget title={`Ofertas para ${title}`} />
+      <OffersWidget title={`Ofertas para ${title}`} role={role} />
       <CheckoutModal open={checkoutOpen} onClose={() => setCheckoutOpen(false)} item={checkoutItem} />
     </div>
   );

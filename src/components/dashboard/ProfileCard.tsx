@@ -111,7 +111,10 @@ const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
       {/* Price + WhatsApp CTA */}
       <div className="flex items-center justify-between pt-3" style={{ borderTop: '1px solid var(--nightlife-border)' }}>
         <span className="text-base font-bold" style={{ color: '#D4AF37' }}>
-          €{p.price}<span className="text-xs text-muted-foreground font-normal">{p.priceUnit}</span>
+          {['makeup', 'vestuario', 'media', 'design'].includes(p.role)
+            ? 'A consultar'
+            : <>€{p.price}<span className="text-xs text-muted-foreground font-normal">{p.priceUnit}</span></>
+          }
         </span>
         <a href={getWhatsAppLink(p.phone)} target="_blank" rel="noopener noreferrer"
           className="flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-xs transition-all duration-200 hover:scale-105 active:scale-95"
