@@ -1,5 +1,5 @@
-import { Search, LogOut, Menu, Bell, Volume2, VolumeX } from 'lucide-react';
-import { useState, useRef, useEffect } from 'react';
+import { Search, LogOut, Menu, Bell } from 'lucide-react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface TopbarProps {
@@ -7,43 +7,9 @@ interface TopbarProps {
   isMobile?: boolean;
 }
 
-// High quality tech house stream (320kbps)
-const MUSIC_URL = 'https://stream.laut.fm/techhouse';
-
 const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
   const navigate = useNavigate();
   const [showNotif, setShowNotif] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  useEffect(() => {
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
-    };
-  }, []);
-
-  const toggleMusic = () => {
-    if (!audioRef.current) {
-      audioRef.current = new Audio(MUSIC_URL);
-      audioRef.current.volume = 0.35;
-      audioRef.current.addEventListener('error', () => {
-        // Fallback stream if primary fails
-        if (audioRef.current) {
-          audioRef.current.src = 'https://stream.laut.fm/deephouse';
-          audioRef.current.play().catch(() => {});
-        }
-      });
-    }
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play().catch(() => {});
-    }
-    setIsPlaying(!isPlaying);
-  };
 
   return (
     <header
