@@ -95,7 +95,7 @@ export const profiles: Profile[] = [
   {
     id: 6, name: 'Marcos Ríos', role: 'staff', specialty: 'Camarero VIP & Flair',
     rating: 4.8, reviews: 98, location: 'Madrid', zone: 'Malasaña',
-    experience: '7 años', price: 200, priceUnit: '/hora',
+    experience: '7 años', price: 25, priceUnit: '/hora',
     avatar: 'MR', gradient: 'linear-gradient(135deg, #333, #1a1a1a)',
     badges: ['Flair Bartending', 'Coctelería VIP', 'Certificado WSET'],
     description: 'Barman con espectáculo. Coctelería molecular y flair para eventos exclusivos en las mejores salas de Madrid.',
