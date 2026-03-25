@@ -7,16 +7,40 @@ const WaIcon = ({ size = 14 }: { size?: number }) => (
   </svg>
 );
 
+// Map roles to keywords for filtering offers
+const roleKeywords: Record<string, string[]> = {
+  dj: ['dj', 'techno', 'house', 'sesión', 'música', 'pinchar'],
+  staff: ['camarero', 'camarera', 'vip', 'personal', 'barra', 'servicio'],
+  makeup: ['maquillad', 'estilista', 'peluquer', 'beauty', 'neon party', 'uv', 'pintura'],
+  vestuario: ['vestuario', 'estilismo', 'moda', 'outfit', 'styling'],
+  media: ['fotógrafo', 'fotograf', 'vídeo', 'video', 'contenido', 'aftermovie', 'ugc'],
+  design: ['diseñ', 'flyer', 'visual', 'motion', 'vj', 'gráfic'],
+  promotor: ['promot', 'rrpp', 'relaciones'],
+  ambassador: ['ambassador', 'promoción', 'flyer', 'qr', 'brand'],
+};
+
 interface OffersWidgetProps {
   title?: string;
+  role?: string;
 }
 
-const OffersWidget = ({ title = 'Ofertas de Empresarios' }: OffersWidgetProps) => {
+const OffersWidget = ({ title = 'Ofertas de Empresarios', role }: OffersWidgetProps) => {
   const allOffers = empresarios.flatMap(e =>
     e.offers.map(o => ({ ...o, author: e.name, avatar: e.avatar, gradient: e.gradient }))
   );
 
-  if (allOffers.length === 0) return null;
+  // Filter offers by role relevance
+  const filteredOffers = role && roleKeywords[role]
+    ? allOffers.filter(o => {
+        const text = `${o.title} ${o.description}`.toLowerCase();
+        return roleKeywords[role].some(kw => text.includes(kw));
+      })
+    : allOffers;
+
+  // If no role-specific offers, show all (fallback)
+  const displayOffers = filteredOffers.length > 0 ? filteredOffers : allOffers;
+
+  if (displayOffers.length === 0) return null;
 
   return (
     <div className="glass-panel p-4 mt-6" style={{ border: '1px solid rgba(212,175,55,0.1)' }}>
@@ -25,7 +49,7 @@ const OffersWidget = ({ title = 'Ofertas de Empresarios' }: OffersWidgetProps) =
         <span style={{ color: '#D4AF37' }}>{title}</span>
       </h3>
       <div className="space-y-2">
-        {allOffers.map((offer, i) => (
+        {displayOffers.map((offer, i) => (
           <div key={i} className="flex items-center gap-3 p-3 rounded-lg transition-all hover:bg-white/3"
             style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--nightlife-border)' }}>
             <div className="w-8 h-8 rounded-lg flex items-center justify-center text-[0.55rem] font-bold flex-shrink-0"

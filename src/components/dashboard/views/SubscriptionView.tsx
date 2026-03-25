@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Crown, CheckCircle, Star, Zap, Eye, TrendingUp, Users } from 'lucide-react';
+import { Crown, CheckCircle, Star, Zap, Eye, TrendingUp, Calendar, Clock } from 'lucide-react';
 import { toast } from 'sonner';
 
 const plans = [
@@ -13,21 +13,39 @@ const plans = [
     textColor: '#8E8EA0',
   },
   {
+    id: 'daily',
+    name: 'Pase Diario',
+    price: 4.99,
+    period: '/día',
+    features: ['Posición prioritaria durante 24h', 'Perfil destacado con borde dorado', 'Ideal para eventos puntuales', 'Indicador "Posicionamiento Activo"'],
+    color: 'rgba(212,175,55,0.08)',
+    textColor: '#D4AF37',
+  },
+  {
+    id: 'weekend',
+    name: 'Pase Weekend',
+    price: 8.99,
+    period: '/fin de semana',
+    features: ['Posición TOP viernes a domingo', 'Streaming de perfil en directo', 'Borde dorado + sello Weekend', 'Notificaciones prioritarias de Flash Booking'],
+    color: 'rgba(212,175,55,0.12)',
+    textColor: '#D4AF37',
+    popular: true,
+  },
+  {
     id: 'pro',
     name: 'Pro',
     price: 29.99,
     period: '/mes',
-    features: ['Todo lo del plan gratuito', 'Sello PRO dorado en perfil', 'Acceso a Streaming', 'Posición mejorada en directorio', 'Estadísticas avanzadas de visitas'],
+    features: ['Todo lo de los Pases', 'Sello PRO dorado permanente', 'Acceso a Streaming 24/7', 'Estadísticas avanzadas de visitas', 'Prioridad sobre Pases y gratuitos'],
     color: 'rgba(212,175,55,0.15)',
     textColor: '#D4AF37',
-    popular: true,
   },
   {
     id: 'business',
     name: 'Business',
     price: 59.99,
     period: '/mes',
-    features: ['Todo lo del plan Pro', 'Gestión multiperfil para agencias', 'Posición TOP con rotación horaria', 'Sello BUSINESS exclusivo', 'Soporte prioritario', 'Estadísticas avanzadas de clics'],
+    features: ['Todo lo del plan Pro', 'Gestión multiperfil para agencias', 'Posición TOP con rotación horaria', 'Sello BUSINESS exclusivo', 'Soporte prioritario'],
     color: 'linear-gradient(135deg, rgba(212,175,55,0.2), rgba(184,148,30,0.1))',
     textColor: '#D4AF37',
   },
@@ -64,35 +82,36 @@ const SubscriptionView = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      {/* Plans grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-8">
         {plans.map(plan => {
           const isActive = plan.id === currentPlan;
           const isProcessing = processing === plan.id;
           return (
-            <div key={plan.id} className="glass-panel p-6 flex flex-col relative"
+            <div key={plan.id} className="glass-panel p-5 flex flex-col relative"
               style={{ border: plan.popular ? '1px solid rgba(212,175,55,0.3)' : undefined }}>
               {plan.popular && (
-                <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-[0.55rem] font-bold"
+                <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-[0.55rem] font-bold whitespace-nowrap"
                   style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' }}>
                   MÁS POPULAR
                 </div>
               )}
 
               <div className="mb-4">
-                <h3 className="text-lg font-bold" style={{ color: plan.textColor }}>{plan.name}</h3>
+                <h3 className="text-sm font-bold" style={{ color: plan.textColor }}>{plan.name}</h3>
                 <div className="flex items-baseline gap-1 mt-1">
-                  <span className="text-3xl font-black" style={{ color: plan.textColor }}>
+                  <span className="text-2xl font-black" style={{ color: plan.textColor }}>
                     {plan.price === 0 ? 'Gratis' : `€${plan.price}`}
                   </span>
-                  {plan.price > 0 && <span className="text-xs text-muted-foreground">{plan.period}</span>}
+                  {plan.price > 0 && <span className="text-[0.6rem] text-muted-foreground">{plan.period}</span>}
                 </div>
               </div>
 
-              <div className="flex-1 space-y-2.5 mb-6">
+              <div className="flex-1 space-y-2 mb-5">
                 {plan.features.map(f => (
                   <div key={f} className="flex items-start gap-2">
-                    <CheckCircle size={13} style={{ color: plan.textColor, marginTop: 2, flexShrink: 0 }} />
-                    <span className="text-xs">{f}</span>
+                    <CheckCircle size={12} style={{ color: plan.textColor, marginTop: 2, flexShrink: 0 }} />
+                    <span className="text-[0.65rem]">{f}</span>
                   </div>
                 ))}
               </div>
@@ -100,7 +119,7 @@ const SubscriptionView = () => {
               <button
                 onClick={() => handleUpgrade(plan.id)}
                 disabled={isActive || !!processing}
-                className="w-full py-2.5 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
+                className="w-full py-2 rounded-lg text-xs font-bold transition-all disabled:opacity-50"
                 style={{
                   background: isActive ? 'rgba(255,255,255,0.05)' : 'linear-gradient(90deg, #D4AF37, #B8941E)',
                   color: isActive ? '#8E8EA0' : '#000',
@@ -111,6 +130,50 @@ const SubscriptionView = () => {
             </div>
           );
         })}
+      </div>
+
+      {/* Sector-specific visibility info */}
+      <div className="glass-panel p-5 mb-6" style={{ border: '1px solid rgba(212,175,55,0.1)' }}>
+        <h4 className="text-sm font-bold mb-4 flex items-center gap-2">
+          <TrendingUp size={14} style={{ color: '#D4AF37' }} />
+          <span style={{ color: '#D4AF37' }}>Visibilidad por sector</span>
+        </h4>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {[
+            { sector: 'Música (DJs)', desc: 'Con Pase Weekend apareces primero los fines de semana con tu streaming en directo.' },
+            { sector: 'Staff / Gastronomía', desc: 'En picos de demanda (Nochevieja, Ferias), los Sello de Oro reciben primero las alertas urgentes.' },
+            { sector: 'Media (Foto/Vídeo)', desc: 'Con Pase Diario tu galería de alta resolución carga antes que la de los gratuitos.' },
+            { sector: 'Diseño Gráfico', desc: 'Trabajo digital sin fronteras: con PRO activo apareces primero en búsquedas de toda España.' },
+          ].map(s => (
+            <div key={s.sector} className="p-3 rounded-lg" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.08)' }}>
+              <p className="text-xs font-bold mb-1" style={{ color: '#D4AF37' }}>{s.sector}</p>
+              <p className="text-[0.6rem] text-muted-foreground">{s.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Ranking explanation */}
+      <div className="glass-panel p-5 mb-6" style={{ border: '1px solid rgba(212,175,55,0.1)' }}>
+        <h4 className="text-sm font-bold mb-3 flex items-center gap-2">
+          <Crown size={14} style={{ color: '#D4AF37' }} />
+          <span style={{ color: '#D4AF37' }}>Orden de visibilidad en el directorio</span>
+        </h4>
+        <div className="space-y-2">
+          {[
+            { pos: '1º', label: 'Business', desc: 'Posición TOP absoluta con rotación horaria' },
+            { pos: '2º', label: 'Pro / Pases activos', desc: 'Posicionamiento prioritario + streaming boost (+3 puestos)' },
+            { pos: '3º', label: 'Promesas / Básico', desc: 'Visibilidad estándar gratuita' },
+          ].map(r => (
+            <div key={r.pos} className="flex items-center gap-3 p-2.5 rounded-lg" style={{ background: 'rgba(255,255,255,0.02)' }}>
+              <span className="text-sm font-black w-6 text-center" style={{ color: '#D4AF37' }}>{r.pos}</span>
+              <div>
+                <p className="text-xs font-bold">{r.label}</p>
+                <p className="text-[0.55rem] text-muted-foreground">{r.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* TopWeekend message for Promesas */}
@@ -127,12 +190,12 @@ const SubscriptionView = () => {
 
       <div className="glass-panel p-6">
         <h4 className="text-sm font-bold mb-4 flex items-center gap-2">
-          <Star size={14} style={{ color: '#D4AF37' }} /> Ventajas del plan Pro
+          <Star size={14} style={{ color: '#D4AF37' }} /> Ventajas de los planes de pago
         </h4>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
             { icon: Eye, title: 'Más visibilidad', desc: 'Tu perfil aparece siempre en los primeros resultados.' },
-            { icon: Crown, title: 'Sello dorado PRO', desc: 'Distintivo visual que transmite confianza a empresarios.' },
+            { icon: Crown, title: 'Sello dorado', desc: 'Distintivo visual que transmite confianza a empresarios.' },
             { icon: TrendingUp, title: 'Estadísticas', desc: 'Conoce cuántas veces ven y contactan con tu perfil.' },
             { icon: Zap, title: 'Prioridad Flash', desc: 'Recibe las ofertas Flash Booking antes que nadie.' },
           ].map(b => (
