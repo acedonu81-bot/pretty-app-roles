@@ -220,6 +220,14 @@ const Auth = () => {
       </div>
 
       <LegalFooter />
+
+      {showWelcome && (
+        <WelcomeScreen
+          role={selectedRole}
+          displayName={displayName}
+          onClose={() => { setShowWelcome(false); navigate('/dashboard'); }}
+        />
+      )}
     </div>
   );
 };
