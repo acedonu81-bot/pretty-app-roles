@@ -85,11 +85,7 @@ const Auth = () => {
         });
         if (error) throw error;
 
-        if (selectedRole === 'empresario') {
-          toast.success('Solicitud enviada. El administrador revisará tu cuenta.');
-        } else {
-          toast.success('Cuenta creada. Perfil en proceso de validación. Plazo estimado: 24 horas.');
-        }
+        setShowWelcome(true);
       }
     } catch (err: any) {
       toast.error(err.message || 'Error de autenticación');
