@@ -68,8 +68,8 @@ const SettingsView = () => {
           {/* Theme */}
           <div className="mb-4 flex items-center justify-between">
             <div>
-              <label className="block text-xs font-bold">Tema</label>
-              <p className="text-[0.6rem] text-muted-foreground">Modo oscuro o claro</p>
+           <label className="block text-xs font-bold">Fondo</label>
+              <p className="text-[0.6rem] text-muted-foreground">Negro (predeterminado) o Blanco</p>
             </div>
             <button onClick={handleThemeToggle}
               className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-all"
