@@ -1,1 +1,7 @@
+# RLS policies updated manually — 2026-03-26
+# user_roles: admin-only INSERT/UPDATE, no self-escalation
+# community_votes: owner-only SELECT, voter DELETE
+# profile_contacts: owner-only phone access
+# profiles: privileged fields protected via trigger
+# flash_jobs: authenticated users can read active jobs
 project_id = "nrqzsoirfiyvigrwvwux"
