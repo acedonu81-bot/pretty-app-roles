@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Headphones, UserCheck, Smile, Briefcase } from 'lucide-react';
+import xpeakLogo from '@/assets/xpeak-logo.png';
 import AmbientBackground from '@/components/AmbientBackground';
 import HeroMockup from '@/components/HeroMockup';
 import RoleCard from '@/components/RoleCard';
