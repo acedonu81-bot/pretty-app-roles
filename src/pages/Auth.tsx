@@ -4,6 +4,7 @@ import { Mail, Lock, User, Eye, EyeOff, Music, Users, Palette, Building2, Camera
 import { supabase } from '@/integrations/supabase/client';
 import AmbientBackground from '@/components/AmbientBackground';
 import LegalFooter from '@/components/LegalFooter';
+import WelcomeScreen from '@/components/WelcomeScreen';
 import { toast } from 'sonner';
 
 const roleGroups = [
