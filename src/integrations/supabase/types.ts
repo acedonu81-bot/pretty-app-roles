@@ -44,13 +44,6 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "community_votes_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles_public"
-            referencedColumns: ["id"]
-          },
         ]
       }
       favorites: {
@@ -78,13 +71,6 @@ export type Database = {
             columns: ["profile_id"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "favorites_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles_public"
             referencedColumns: ["id"]
           },
         ]
@@ -232,63 +218,7 @@ export type Database = {
       }
     }
     Views: {
-      profiles_public: {
-        Row: {
-          created_at: string | null
-          display_name: string | null
-          hourly_rate: number | null
-          id: string | null
-          instagram: string | null
-          is_flash_active: boolean | null
-          is_premium: boolean | null
-          is_verified: boolean | null
-          phone: string | null
-          photo_url: string | null
-          role: string | null
-          specialty: string | null
-          subscription_tier: string | null
-          updated_at: string | null
-          user_id: string | null
-          zone: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          display_name?: string | null
-          hourly_rate?: number | null
-          id?: string | null
-          instagram?: string | null
-          is_flash_active?: boolean | null
-          is_premium?: boolean | null
-          is_verified?: boolean | null
-          phone?: never
-          photo_url?: string | null
-          role?: string | null
-          specialty?: string | null
-          subscription_tier?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-          zone?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          display_name?: string | null
-          hourly_rate?: number | null
-          id?: string | null
-          instagram?: string | null
-          is_flash_active?: boolean | null
-          is_premium?: boolean | null
-          is_verified?: boolean | null
-          phone?: never
-          photo_url?: string | null
-          role?: string | null
-          specialty?: string | null
-          subscription_tier?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-          zone?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       get_profile_phone: { Args: { p_user_id: string }; Returns: string }
