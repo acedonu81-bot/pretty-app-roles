@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom';
 import { Shield, X } from 'lucide-react';
 
 const legalText = `AVISO DE INTERMEDIACIÓN Y PROTECCIÓN DE DATOS – XPEAK
