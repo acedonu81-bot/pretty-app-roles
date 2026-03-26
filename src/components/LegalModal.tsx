@@ -21,7 +21,7 @@ interface LegalModalProps {
 const LegalModal = ({ open, onClose }: LegalModalProps) => {
   if (!open) return null;
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4" onClick={onClose}>
       <div className="glass-panel p-6 max-w-lg w-full max-h-[80vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-4">
@@ -46,7 +46,8 @@ const LegalModal = ({ open, onClose }: LegalModalProps) => {
           Entendido
         </button>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 
