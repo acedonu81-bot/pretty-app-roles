@@ -1,6 +1,6 @@
 import {
   Headphones, UserCheck, Smile, Shirt, Building2,
-  Map, CalendarDays,
+  User, Map, CalendarDays,
   MessageSquare, Radio, Megaphone, Settings, Crown,
   BarChart3, Zap, Award, CreditCard,
   Camera, Palette, Flag,
