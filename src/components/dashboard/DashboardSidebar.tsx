@@ -110,10 +110,10 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
                       <span className="relative inline-flex rounded-full h-2.5 w-2.5" style={{ background: '#D4AF37' }} />
                     </span>
                   )}
-                  {'badge' in item && item.badge && (
+                  {'badge' in item && (item as any).badge && (
                     <span className="text-[0.65rem] px-1.5 py-0.5 rounded font-bold"
                       style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>
-                      {item.badge}
+                      {(item as any).badge as string}
                     </span>
                   )}
                 </button>
