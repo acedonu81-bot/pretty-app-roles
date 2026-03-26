@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Headphones, UserCheck, Smile, Briefcase } from 'lucide-react';
+import xpeakLogo from '@/assets/xpeak-logo.png';
 import AmbientBackground from '@/components/AmbientBackground';
 import HeroMockup from '@/components/HeroMockup';
 import RoleCard from '@/components/RoleCard';
@@ -17,9 +18,12 @@ const Landing = () => {
 
       <nav className="sticky top-0 z-50 backdrop-blur-md" style={{ background: 'rgba(0,0,0,0.8)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <div className="max-w-[1200px] mx-auto px-6 md:px-8 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold tracking-wider">
-            X<span className="text-gradient">PEAK</span>
-          </h1>
+          <div className="flex items-center gap-2">
+            <img src={xpeakLogo} alt="XPEAK" width={36} height={36} />
+            <h1 className="text-2xl font-bold tracking-wider">
+              X<span className="text-gradient">PEAK</span>
+            </h1>
+          </div>
         </div>
       </nav>
 
