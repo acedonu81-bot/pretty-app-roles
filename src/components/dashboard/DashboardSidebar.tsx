@@ -1,8 +1,8 @@
 import {
-  Headphones, UserCheck, Smile, Shirt, Briefcase, Building2,
-  User, Map, CalendarDays,
+  Headphones, UserCheck, Smile, Shirt, Building2,
+  Map, CalendarDays,
   MessageSquare, Radio, Megaphone, Settings, Crown,
-  BarChart3, Zap, ShieldCheck, Award, CreditCard,
+  BarChart3, Zap, Award, CreditCard,
   Camera, Palette, Flag,
 } from 'lucide-react';
 import GeometricAvatar from './GeometricAvatar';
