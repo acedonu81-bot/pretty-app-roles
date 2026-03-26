@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { MapPin, Star, Users, Music, CheckCircle, Search, Filter } from 'lucide-react';
 
 const cities = [
-  { id: 'madrid', name: 'Madrid', venues: 3 },
+  { id: 'madrid', name: 'Madrid', venues: 2 },
   { id: 'barcelona', name: 'Barcelona', venues: 2 },
   { id: 'valencia', name: 'Valencia', venues: 2 },
   { id: 'ibiza', name: 'Ibiza', venues: 3 },
@@ -14,7 +14,6 @@ const cities = [
 
 const venueDetails: Record<string, Array<{ name: string; type: string; capacity: number; rating: number; verified: boolean; needs: string[] }>> = {
   madrid: [
-    { name: 'Onyx Club', type: 'Techno / Industrial', capacity: 1200, rating: 4.9, verified: true, needs: ['DJ Techno', 'Personal VIP', 'Seguridad'] },
     { name: 'Teatro Kapital', type: 'Multi-género', capacity: 3500, rating: 4.7, verified: true, needs: ['DJ Comercial', 'Camareros', 'RRPP'] },
     { name: 'Fabrik', type: 'Techno / Hard Style', capacity: 4000, rating: 4.8, verified: true, needs: ['DJ Techno', 'Staff técnico'] },
   ],

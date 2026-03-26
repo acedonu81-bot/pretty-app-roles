@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Star, MapPin, Clock, Instagram, Navigation, Radio, Heart, Award, CheckCircle, X } from 'lucide-react';
+import { Star, MapPin, Clock, Instagram, Navigation, Radio, Heart, Award, CheckCircle, X, Shield } from 'lucide-react';
 import { Profile, getWhatsAppLink, getInstagramLink, getLocationLink } from '@/data/profiles';
 import GeometricAvatar from './GeometricAvatar';
 import VoteButton from './VoteButton';
+import LegalModal from '@/components/LegalModal';
 
 const WhatsAppIcon = ({ size = 16 }: { size?: number }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
@@ -26,7 +27,9 @@ interface ProfileCardProps {
 const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
   const isRookie = p.category === 'rookie';
   const [expanded, setExpanded] = useState(false);
-  const voteCount = Math.floor(p.profileViews / 5); // simulated
+  const [accepted, setAccepted] = useState(false);
+  const [showLegal, setShowLegal] = useState(false);
+  const voteCount = Math.floor(p.profileViews / 5);
   const progress = Math.min((voteCount / 500) * 100, 100);
   const currentMilestone = milestones.filter(m => voteCount >= m.votes).pop();
   const nextMilestone = milestones.find(m => voteCount < m.votes);
@@ -89,15 +92,9 @@ const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
         ))}
       </div>
 
-      {/* Vote button always visible for rookies */}
       {isRookie && (
         <div className="mb-3" onClick={e => e.stopPropagation()}>
-          <VoteButton
-            profileId={String(p.id)}
-            voteCount={voteCount}
-            hasVotedToday={false}
-            category="rookie"
-          />
+          <VoteButton profileId={String(p.id)} voteCount={voteCount} hasVotedToday={false} category="rookie" />
         </div>
       )}
 
@@ -108,11 +105,6 @@ const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
           style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
           <Instagram size={14} />
         </a>
-        <a href={getWhatsAppLink(p.phone)} target="_blank" rel="noopener noreferrer"
-          className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95"
-          style={{ background: 'rgba(34,197,94,0.1)', color: '#25D366', border: '1px solid rgba(34,197,94,0.15)' }}>
-          <WhatsAppIcon size={14} />
-        </a>
         <a href={getLocationLink(p.zone)} target="_blank" rel="noopener noreferrer"
           className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95"
           style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
@@ -120,7 +112,7 @@ const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
         </a>
       </div>
 
-      {/* Expanded Rookie detail panel - only visible when card is clicked */}
+      {/* Expanded Rookie detail panel */}
       {expanded && isRookie && (
         <div className="mt-2 p-4 rounded-lg animate-[fadeIn_0.3s_ease]" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}
           onClick={e => e.stopPropagation()}>
@@ -133,8 +125,6 @@ const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
               <X size={12} className="text-muted-foreground" />
             </button>
           </div>
-
-          {/* Vote progress */}
           <div className="text-center py-3">
             <div className="text-3xl font-black" style={{ color: '#D4AF37' }}>{voteCount}</div>
             <div className="text-[0.6rem] text-muted-foreground">de 500 votos necesarios</div>
@@ -146,8 +136,6 @@ const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
           <div className="flex justify-between text-[0.5rem] text-muted-foreground mb-3">
             <span>0</span><span>{Math.round(progress)}%</span><span>500</span>
           </div>
-
-          {/* Milestones */}
           <div className="space-y-1.5">
             {milestones.map(m => {
               const reached = voteCount >= m.votes;
@@ -167,7 +155,6 @@ const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
               );
             })}
           </div>
-
           {currentMilestone && (
             <div className="mt-3 p-2 rounded-lg text-center" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
               <p className="text-[0.5rem] text-muted-foreground">Nivel actual</p>
@@ -182,7 +169,36 @@ const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
         </div>
       )}
 
-      {/* Price + WhatsApp CTA */}
+      {/* Intermediation notice */}
+      <div className="py-2 mb-2" onClick={e => e.stopPropagation()}>
+        <p className="text-[0.55rem] text-muted-foreground italic text-center">
+          XPEAK actúa estrictamente como intermediario entre profesionales y empresas. No existe relación laboral directa con la plataforma.
+        </p>
+      </div>
+
+      {/* Acceptance checkbox */}
+      <div className="mb-3 flex items-start gap-2" onClick={e => e.stopPropagation()}>
+        <input
+          type="checkbox"
+          checked={accepted}
+          onChange={() => setAccepted(!accepted)}
+          className="mt-0.5 accent-[#D4AF37] flex-shrink-0"
+          id={`accept-${p.id}`}
+        />
+        <label htmlFor={`accept-${p.id}`} className="text-[0.55rem] text-muted-foreground leading-tight cursor-pointer">
+          Acepto las{' '}
+          <button onClick={(e) => { e.preventDefault(); setShowLegal(true); }} className="underline font-bold" style={{ color: '#D4AF37' }}>
+            Normas de la Comunidad
+          </button>{' '}
+          y entiendo que XPEAK actúa solo como{' '}
+          <button onClick={(e) => { e.preventDefault(); setShowLegal(true); }} className="underline font-bold" style={{ color: '#D4AF37' }}>
+            intermediario
+          </button>{' '}
+          sin relación laboral.
+        </label>
+      </div>
+
+      {/* Price + Contact CTA */}
       <div className="flex items-center justify-between pt-3" style={{ borderTop: '1px solid var(--nightlife-border)' }}
         onClick={e => e.stopPropagation()}>
         <span className="text-base font-bold" style={{ color: '#D4AF37' }}>
@@ -191,18 +207,26 @@ const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
             : <>€{p.price}<span className="text-xs text-muted-foreground font-normal">{p.priceUnit}</span></>
           }
         </span>
-        <a href={getWhatsAppLink(p.phone)} target="_blank" rel="noopener noreferrer"
-          className="flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-xs transition-all duration-200 hover:scale-105 active:scale-95"
+        <a
+          href={accepted ? getWhatsAppLink(p.phone) : undefined}
+          target={accepted ? '_blank' : undefined}
+          rel={accepted ? 'noopener noreferrer' : undefined}
+          onClick={e => { if (!accepted) e.preventDefault(); }}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-xs transition-all duration-200 ${
+            accepted ? 'hover:scale-105 active:scale-95' : 'opacity-40 cursor-not-allowed'
+          }`}
           style={{
-            background: 'linear-gradient(90deg, #25D366, #128C7E)',
-            color: 'white',
-            boxShadow: '0 2px 10px rgba(37,211,102,0.2)',
+            background: accepted ? 'linear-gradient(90deg, #25D366, #128C7E)' : 'rgba(255,255,255,0.1)',
+            color: accepted ? 'white' : 'rgba(255,255,255,0.4)',
+            boxShadow: accepted ? '0 2px 10px rgba(37,211,102,0.2)' : 'none',
           }}
         >
           <WhatsAppIcon size={16} />
           Contactar
         </a>
       </div>
+
+      <LegalModal open={showLegal} onClose={() => setShowLegal(false)} />
     </div>
   );
 };
