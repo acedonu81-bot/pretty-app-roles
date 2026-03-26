@@ -2,9 +2,10 @@ import { Crown } from 'lucide-react';
 import { profiles, getEliteRotation } from '@/data/profiles';
 import ProfileCard from '@/components/dashboard/ProfileCard';
 
-const allSorted = getEliteRotation(profiles);
-const topProfiles = allSorted.filter(p => p.topWeekend);
-const eliteProfiles = allSorted.filter(p => p.subscriptionTier === 'elite' && !p.topWeekend);
+// Show ALL roles sorted by views (most requested)
+const allSorted = getEliteRotation(profiles).sort((a, b) => b.profileViews - a.profileViews);
+const topProfiles = allSorted.slice(0, 8);
+const restProfiles = allSorted.slice(8);
 
 const TopWeekendView = () => {
   return (
@@ -14,7 +15,7 @@ const TopWeekendView = () => {
           <Crown size={24} style={{ color: '#D4AF37' }} />
           TOP <span className="text-gradient">Weekend</span>
         </h2>
-        <p className="text-sm text-muted-foreground">Perfiles destacados y recomendados para este fin de semana en Madrid.</p>
+        <p className="text-sm text-muted-foreground">Los más solicitados de todos los roles esta semana en Madrid.</p>
       </div>
 
       <div className="p-3 mb-5 rounded-lg flex items-center gap-2" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
@@ -24,18 +25,18 @@ const TopWeekendView = () => {
         </span>
       </div>
 
-      <h3 className="text-sm font-bold mb-3" style={{ color: '#D4AF37' }}>Destacados</h3>
+      <h3 className="text-sm font-bold mb-3" style={{ color: '#D4AF37' }}>🏆 Más Solicitados</h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
         {topProfiles.map(p => (
           <ProfileCard key={p.id} profile={p} />
         ))}
       </div>
 
-      {eliteProfiles.length > 0 && (
+      {restProfiles.length > 0 && (
         <>
-          <h3 className="text-sm font-bold mb-3 text-muted-foreground">Perfiles Elite</h3>
+          <h3 className="text-sm font-bold mb-3 text-muted-foreground">Otros Perfiles Destacados</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {eliteProfiles.map(p => (
+            {restProfiles.map(p => (
               <ProfileCard key={p.id} profile={p} />
             ))}
           </div>

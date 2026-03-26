@@ -1,37 +1,36 @@
 import { useState, useRef } from 'react';
-import { MapPin, Sun, Moon, Camera } from 'lucide-react';
+import { Camera } from 'lucide-react';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
+
+const euLanguages = [
+  '🇪🇸 Español', '🇬🇧 English', '🇩🇪 Deutsch', '🇫🇷 Français', '🇮🇹 Italiano',
+  '🇵🇹 Português', '🇳🇱 Nederlands', '🇵🇱 Polski', '🇷🇴 Română', '🇬🇷 Ελληνικά',
+  '🇨🇿 Čeština', '🇭🇺 Magyar', '🇸🇪 Svenska', '🇩🇰 Dansk', '🇫🇮 Suomi',
+  '🇧🇬 Български', '🇭🇷 Hrvatski', '🇸🇰 Slovenčina', '🇸🇮 Slovenščina',
+  '🇱🇹 Lietuvių', '🇱🇻 Latviešu', '🇪🇪 Eesti', '🇲🇹 Malti', '🇮🇪 Gaeilge',
+];
 
 const SettingsView = () => {
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const { user } = useAuth();
   const photoRef = useRef<HTMLInputElement>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
 
-  const handleThemeToggle = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
-    if (newTheme === 'light') {
-      document.documentElement.style.setProperty('--background', '0 0% 98%');
-      document.documentElement.style.setProperty('--foreground', '0 0% 10%');
-      document.documentElement.style.setProperty('--card', '0 0% 96%');
-      document.documentElement.style.setProperty('--muted-foreground', '0 0% 40%');
-    } else {
-      document.documentElement.style.setProperty('--background', '240 10% 3.9%');
-      document.documentElement.style.setProperty('--foreground', '0 0% 98%');
-      document.documentElement.style.setProperty('--card', '240 10% 3.9%');
-      document.documentElement.style.setProperty('--muted-foreground', '240 5% 55%');
-    }
-    toast.info(`Tema cambiado a ${newTheme === 'dark' ? 'oscuro' : 'claro'}.`);
-  };
-
-  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file || !user) return;
     if (file.size > 5 * 1024 * 1024) { toast.error('Máximo 5MB para la foto'); return; }
-    const reader = new FileReader();
-    reader.onload = () => setPhotoPreview(reader.result as string);
-    reader.readAsDataURL(file);
-    toast.success('Foto actualizada.');
+
+    const safeName = file.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9._-]/g, '_');
+    const path = `${user.id}/avatar-${Date.now()}-${safeName}`;
+    const { error } = await supabase.storage.from('audio-sessions').upload(path, file);
+    if (error) { toast.error('Error al subir foto'); return; }
+    const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
+    const url = urlData.publicUrl;
+    await (supabase.from('profiles').update({ photo_url: url } as any) as any).eq('user_id', user.id);
+    setPhotoPreview(url);
+    toast.success('Foto de perfil guardada.');
   };
 
   return (
@@ -65,30 +64,15 @@ const SettingsView = () => {
             <input ref={photoRef} type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
           </div>
 
-          {/* Theme */}
-          <div className="mb-4 flex items-center justify-between">
-            <div>
-           <label className="block text-xs font-bold">Fondo</label>
-              <p className="text-[0.6rem] text-muted-foreground">Negro (predeterminado) o Blanco</p>
-            </div>
-            <button onClick={handleThemeToggle}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-all"
-              style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
-              {theme === 'dark' ? <><Sun size={14} /> Fondo Blanco</> : <><Moon size={14} /> Fondo Negro</>}
-            </button>
-          </div>
-
           <div className="mb-4">
             <label className="block text-xs text-muted-foreground mb-1.5">Idioma</label>
             <select className="nightlife-input cursor-pointer text-sm">
-              <option>🇪🇸 Español</option>
-              <option>🇬🇧 English</option>
-              <option>🇩🇪 Deutsch</option>
+              {euLanguages.map(lang => <option key={lang}>{lang}</option>)}
             </select>
           </div>
           <div className="mb-4">
             <label className="block text-xs text-muted-foreground mb-1.5">Email</label>
-            <input type="email" defaultValue="alex@djaethel.com" className="nightlife-input text-sm" />
+            <input type="email" defaultValue={user?.email || ''} className="nightlife-input text-sm" readOnly />
           </div>
           <div className="mb-4">
             <label className="block text-xs text-muted-foreground mb-1.5">Ubicación Base</label>
@@ -96,7 +80,7 @@ const SettingsView = () => {
           </div>
           <div className="mb-4 pt-4" style={{ borderTop: '1px solid var(--nightlife-border)' }}>
             <label className="block text-xs text-muted-foreground mb-1.5">Caché Base (€/hora)</label>
-            <input type="number" defaultValue={150} min={30} step={5}
+            <input type="number" defaultValue={40} min={20} step={5}
               className="nightlife-input text-sm pl-3 font-bold" style={{ color: '#D4AF37' }} />
           </div>
           <button className="btn-nightlife-primary w-full text-sm" onClick={() => toast.info('Guardado.')}>
@@ -107,9 +91,9 @@ const SettingsView = () => {
         <div className="glass-panel p-6">
           <h3 className="text-sm font-bold mb-5">Suscripción</h3>
           {[
-            { name: 'Free', price: 'Gratis', desc: 'Perfil básico visible en el directorio', current: false },
-            { name: 'Premium', price: '9,95€/mes', desc: 'Flash Booking + Estadísticas básicas', current: false },
-            { name: 'Elite', price: '24,95€/mes', desc: 'Top 12 posiciones + TOP Weekend + Stats avanzadas', current: true },
+            { name: 'Básico', price: 'Gratis', desc: 'Perfil básico visible en el directorio', current: true },
+            { name: 'Pro', price: '29,99€/mes', desc: 'Posicionamiento + Streaming + Sello PRO', current: false },
+            { name: 'Business', price: '59,99€/mes', desc: 'Multiperfil + TOP Weekend + Soporte prioritario', current: false },
           ].map(plan => (
             <div key={plan.name} className="flex items-center justify-between mb-4 pb-4" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>
               <div>
@@ -117,9 +101,11 @@ const SettingsView = () => {
                 <p className="text-xs text-muted-foreground">{plan.desc}</p>
               </div>
               <div className="text-right">
-                <p className="text-sm font-bold" style={{ color: '#D4AF37' }}>{plan.price}</p>
-                {plan.current && (
-                  <span className="text-[0.5rem] font-bold px-2 py-0.5 rounded" style={{ background: 'rgba(34,197,94,0.15)', color: '#22c55e' }}>ACTIVO</span>
+                <p className="text-sm font-bold" style={{ color: plan.current ? '#8E8EA0' : '#D4AF37' }}>{plan.price}</p>
+                {plan.current ? (
+                  <span className="text-[0.5rem] font-bold px-2 py-0.5 rounded" style={{ background: 'rgba(255,255,255,0.05)', color: '#8E8EA0' }}>ACTIVO</span>
+                ) : (
+                  <span className="text-[0.5rem] font-bold px-2 py-0.5 rounded" style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37' }}>PRÓXIMAMENTE</span>
                 )}
               </div>
             </div>

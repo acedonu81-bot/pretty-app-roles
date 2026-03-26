@@ -1,6 +1,4 @@
-import { useState } from 'react';
-import { Zap, Eye, MousePointerClick, Crown, TrendingUp, ToggleLeft, ToggleRight } from 'lucide-react';
-import { toast } from 'sonner';
+import { Eye, MousePointerClick, Crown, TrendingUp } from 'lucide-react';
 
 const StatsView = () => {
   return (
@@ -14,10 +12,10 @@ const StatsView = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {[
-          { label: 'Visualizaciones', value: '1,247', icon: Eye, change: '+12%' },
-          { label: 'Clics WhatsApp', value: '89', icon: MousePointerClick, change: '+8%' },
-          { label: 'Apariciones Elite', value: '342', icon: Crown, change: '+23%' },
-          { label: 'Tasa de contacto', value: '7.1%', icon: TrendingUp, change: '+2.3%' },
+          { label: 'Visualizaciones', value: '0', icon: Eye, change: '—' },
+          { label: 'Clics WhatsApp', value: '0', icon: MousePointerClick, change: '—' },
+          { label: 'Apariciones Directorio', value: '0', icon: Crown, change: '—' },
+          { label: 'Tasa de contacto', value: '0%', icon: TrendingUp, change: '—' },
         ].map(s => (
           <div key={s.label} className="glass-panel p-4">
             <div className="flex items-center justify-between mb-3">
@@ -25,41 +23,40 @@ const StatsView = () => {
               <s.icon size={14} style={{ color: '#D4AF37' }} />
             </div>
             <div className="text-2xl font-bold mb-1">{s.value}</div>
-            <span className="text-[0.6rem] font-semibold" style={{ color: '#22c55e' }}>{s.change} esta semana</span>
+            <span className="text-[0.6rem] font-semibold text-muted-foreground">{s.change} esta semana</span>
           </div>
         ))}
       </div>
 
       <div className="glass-panel p-5 mb-6">
-        <h3 className="text-sm font-bold mb-4">Exposición en la Cuadrícula Principal</h3>
+        <h3 className="text-sm font-bold mb-4">Exposición en el Directorio</h3>
         <p className="text-xs text-muted-foreground mb-4">
-          Como usuario Elite (24,95€/mes), tu perfil rota en las 12 posiciones principales cada hora.
-          Esta semana has aparecido <strong className="text-foreground">342 veces</strong> en la primera página.
+          Tu posición en el directorio depende de tu plan de suscripción. Mejora tu plan para aparecer en las primeras posiciones.
         </p>
         <div className="grid grid-cols-6 gap-1">
           {Array.from({ length: 12 }, (_, i) => (
             <div key={i} className="aspect-square rounded flex items-center justify-center text-[0.5rem] font-bold"
               style={{
-                background: i < 4 ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.03)',
-                border: i < 4 ? '1px solid rgba(212,175,55,0.3)' : '1px solid var(--nightlife-border)',
-                color: i < 4 ? '#D4AF37' : 'var(--nightlife-text-secondary)',
+                background: 'rgba(255,255,255,0.03)',
+                border: '1px solid var(--nightlife-border)',
+                color: 'var(--nightlife-text-secondary)',
               }}>
-              {i < 4 ? 'TÚ' : `#${i + 1}`}
+              {`#${i + 1}`}
             </div>
           ))}
         </div>
-        <p className="text-[0.6rem] text-muted-foreground mt-3">Rotación cada 60 minutos. 12 perfiles Elite visibles por página.</p>
+        <p className="text-[0.6rem] text-muted-foreground mt-3">Rotación cada 60 minutos. Activa un plan de pago para mejorar tu posición.</p>
       </div>
 
       <div className="glass-panel p-5">
         <h3 className="text-sm font-bold mb-3">Plan actual</h3>
-        <div className="flex items-center gap-3 p-3 rounded-lg" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
-          <Crown size={20} style={{ color: '#D4AF37' }} />
+        <div className="flex items-center gap-3 p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--nightlife-border)' }}>
+          <Crown size={20} style={{ color: '#8E8EA0' }} />
           <div className="flex-1">
-            <p className="text-sm font-bold" style={{ color: '#D4AF37' }}>Elite · 24,95€/mes</p>
-            <p className="text-xs text-muted-foreground">Posicionamiento prioritario + TOP Weekend + Estadísticas avanzadas</p>
+            <p className="text-sm font-bold">Básico · Gratis</p>
+            <p className="text-xs text-muted-foreground">Perfil visible en el directorio con funciones básicas.</p>
           </div>
-          <span className="text-[0.55rem] font-bold px-2 py-1 rounded" style={{ background: 'rgba(34,197,94,0.15)', color: '#22c55e' }}>ACTIVO</span>
+          <span className="text-[0.55rem] font-bold px-2 py-1 rounded" style={{ background: 'rgba(255,255,255,0.05)', color: '#8E8EA0' }}>ACTIVO</span>
         </div>
       </div>
     </div>

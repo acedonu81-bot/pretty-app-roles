@@ -20,6 +20,14 @@ const allGenres = [
   'Acid House', 'Detroit Techno', 'Chicago House', 'Dub Techno',
 ];
 
+/** Sanitize filename: remove special chars, accents, spaces → underscores */
+const sanitizeFileName = (name: string): string =>
+  name
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')  // remove accents
+    .replace(/[^a-zA-Z0-9._-]/g, '_')                  // only safe chars
+    .replace(/_+/g, '_')                                // collapse underscores
+    .replace(/^_|_$/g, '');                             // trim underscores
+
 const AudioUpload = () => {
   const [uploading, setUploading] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
@@ -42,14 +50,15 @@ const AudioUpload = () => {
     if (file.size > 500 * 1024 * 1024) { toast.error('Máximo 500MB'); return; }
 
     setUploading(true);
-    const path = `${user.id}/${Date.now()}-${file.name}`;
+    const safeName = sanitizeFileName(file.name) || 'audio.mp3';
+    const path = `${user.id}/${Date.now()}-${safeName}`;
     const { error } = await supabase.storage.from('audio-sessions').upload(path, file);
-    if (error) { toast.error('Error al subir'); setUploading(false); return; }
+    if (error) { toast.error('Error al subir: ' + error.message); setUploading(false); return; }
 
     const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
     const url = urlData.publicUrl;
 
-    await (supabase.from('profiles').update({ audio_url: url } as any) as any).eq('user_id', user.id);
+    await (supabase.from('profiles').update({ photo_url: url } as any) as any).eq('user_id', user.id);
 
     setAudioUrl(url);
     setFileName(file.name);

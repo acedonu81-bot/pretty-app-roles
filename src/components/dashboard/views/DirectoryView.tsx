@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Crown, Radio, Eye, Maximize2, Minimize2, Users, Video } from 'lucide-react';
+import { Crown, Eye, Maximize2, Minimize2, Users, Video } from 'lucide-react';
 import { profiles, getEliteRotation, Profile } from '@/data/profiles';
 import ProfileCard from '@/components/dashboard/ProfileCard';
 import CheckoutModal from '@/components/dashboard/CheckoutModal';
@@ -13,7 +13,7 @@ interface DirectoryViewProps {
   onNavigate?: (view: string) => void;
 }
 
-/** Simulated equalizer bars for a stream */
+/** Animated wave equalizer for LIVE indicator */
 const MiniEqualizer = () => {
   const [heights, setHeights] = useState(Array(12).fill(30));
   useEffect(() => {
@@ -30,7 +30,7 @@ const MiniEqualizer = () => {
   );
 };
 
-/** Single stream tile */
+/** Single stream tile — always shows wave animation instead of broken iframes */
 const StreamTile = ({ profile, isExpanded, onToggle, viewerCount }: {
   profile: Profile;
   isExpanded: boolean;
@@ -39,30 +39,20 @@ const StreamTile = ({ profile, isExpanded, onToggle, viewerCount }: {
 }) => (
   <div className={`relative rounded-lg overflow-hidden flex flex-col ${isExpanded ? 'col-span-2 row-span-2' : ''}`}
     style={{ background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(229,57,53,0.2)', minHeight: isExpanded ? 320 : 160 }}>
-    {/* Stream content */}
+    {/* Stream content — wave animation */}
     <div className="flex-1 relative">
-      {profile.streamUrl ? (
-        <iframe
-          src={profile.streamUrl.includes('twitch') 
-            ? `https://player.twitch.tv/?channel=${profile.streamUrl.match(/twitch\.tv\/(\w+)/)?.[1]}&parent=${window.location.hostname}`
-            : profile.streamUrl.includes('youtube') || profile.streamUrl.includes('youtu.be')
-              ? `https://www.youtube.com/embed/${profile.streamUrl.match(/(?:watch\?v=|live\/|youtu\.be\/)([a-zA-Z0-9_-]+)/)?.[1]}?autoplay=1&mute=1`
-              : ''}
-          className="w-full h-full absolute inset-0"
-          allowFullScreen
-          allow="autoplay; encrypted-media"
-          style={{ border: 'none' }}
-        />
-      ) : (
-        <MiniEqualizer />
-      )}
+      <MiniEqualizer />
     </div>
 
     {/* Overlay info */}
     <div className="absolute top-2 left-2 flex items-center gap-1.5">
       <span className="text-[0.5rem] font-bold px-1.5 py-0.5 rounded-md flex items-center gap-1"
         style={{ background: '#E53935', color: '#fff' }}>
-        <Radio size={8} className="animate-pulse" /> LIVE
+        <span className="relative flex h-1.5 w-1.5">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-white" />
+          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-white" />
+        </span>
+        LIVE
       </span>
       <span className="text-[0.5rem] font-medium px-1.5 py-0.5 rounded-md flex items-center gap-1"
         style={{ background: 'rgba(0,0,0,0.7)', color: '#fff' }}>
@@ -102,13 +92,11 @@ const DirectoryView = ({ role, title, subtitle, onNavigate }: DirectoryViewProps
     return () => clearInterval(iv);
   }, [role]);
 
-  // Simulated live streamers for this role (profiles that are live or have streamUrl)
   const liveStreamers = roleProfiles
     .filter(p => p.isLive || p.streamUrl)
     .sort((a, b) => b.profileViews - a.profileViews)
     .slice(0, 4);
 
-  // Simulated viewer counts
   const viewerCounts = liveStreamers.map((p) => 15 + Math.floor(p.profileViews / 30));
 
   const toggleExpand = (id: number) => {
@@ -160,7 +148,6 @@ const DirectoryView = ({ role, title, subtitle, onNavigate }: DirectoryViewProps
             </span>
           </div>
 
-          {/* Stream grid: 1 stream = full width, 2 = 2 cols, 3-4 = 2x2 grid */}
           <div className={`grid gap-2 ${
             expandedStream !== null
               ? 'grid-cols-1'
@@ -171,7 +158,6 @@ const DirectoryView = ({ role, title, subtitle, onNavigate }: DirectoryViewProps
             style={{ minHeight: expandedStream !== null ? 350 : liveStreamers.length === 1 ? 220 : 180 }}
           >
             {expandedStream !== null ? (
-              // Show only the expanded stream
               (() => {
                 const p = liveStreamers.find(s => s.id === expandedStream);
                 if (!p) return null;

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Crown, CheckCircle, Star, Zap, Eye, TrendingUp, Calendar, Clock } from 'lucide-react';
+import { Crown, CheckCircle, Star, Zap, Eye, TrendingUp, Lock } from 'lucide-react';
 import { toast } from 'sonner';
 
 const plans = [
@@ -53,16 +53,6 @@ const plans = [
 
 const SubscriptionView = () => {
   const [currentPlan] = useState('free');
-  const [processing, setProcessing] = useState<string | null>(null);
-
-  const handleUpgrade = (planId: string) => {
-    if (planId === currentPlan) return;
-    setProcessing(planId);
-    setTimeout(() => {
-      setProcessing(null);
-      toast.success(`Plan ${planId.toUpperCase()} activado. ¡Bienvenido!`);
-    }, 2000);
-  };
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
@@ -77,8 +67,18 @@ const SubscriptionView = () => {
         style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
         <Crown size={20} style={{ color: '#D4AF37' }} />
         <div>
-          <p className="text-sm font-bold">Plan actual: <span style={{ color: '#D4AF37' }}>{currentPlan === 'free' ? 'PROMESA / BÁSICO' : currentPlan.toUpperCase()}</span></p>
-          <p className="text-[0.6rem] text-muted-foreground">Actualiza para destacar en el directorio y conseguir más contrataciones.</p>
+          <p className="text-sm font-bold">Plan actual: <span style={{ color: '#8E8EA0' }}>PROMESA / BÁSICO</span></p>
+          <p className="text-[0.6rem] text-muted-foreground">Los planes de pago estarán disponibles próximamente.</p>
+        </div>
+      </div>
+
+      {/* Locked notice */}
+      <div className="glass-panel p-4 mb-6 flex items-center gap-3"
+        style={{ border: '1px solid rgba(255,188,0,0.2)', background: 'rgba(255,188,0,0.04)' }}>
+        <Lock size={18} style={{ color: '#ffbc00' }} />
+        <div>
+          <p className="text-xs font-bold" style={{ color: '#ffbc00' }}>Plataforma de pagos en desarrollo</p>
+          <p className="text-[0.6rem] text-muted-foreground">Los planes de pago se activarán cuando la pasarela de pagos esté operativa. Por ahora, todos los usuarios tienen acceso al plan básico gratuito.</p>
         </div>
       </div>
 
@@ -86,9 +86,9 @@ const SubscriptionView = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-8">
         {plans.map(plan => {
           const isActive = plan.id === currentPlan;
-          const isProcessing = processing === plan.id;
+          const isLocked = plan.id !== 'free';
           return (
-            <div key={plan.id} className="glass-panel p-5 flex flex-col relative"
+            <div key={plan.id} className={`glass-panel p-5 flex flex-col relative ${isLocked ? 'opacity-60' : ''}`}
               style={{ border: plan.popular ? '1px solid rgba(212,175,55,0.3)' : undefined }}>
               {plan.popular && (
                 <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-[0.55rem] font-bold whitespace-nowrap"
@@ -117,15 +117,15 @@ const SubscriptionView = () => {
               </div>
 
               <button
-                onClick={() => handleUpgrade(plan.id)}
-                disabled={isActive || !!processing}
-                className="w-full py-2 rounded-lg text-xs font-bold transition-all disabled:opacity-50"
+                disabled
+                className="w-full py-2 rounded-lg text-xs font-bold transition-all cursor-not-allowed"
                 style={{
-                  background: isActive ? 'rgba(255,255,255,0.05)' : 'linear-gradient(90deg, #D4AF37, #B8941E)',
-                  color: isActive ? '#8E8EA0' : '#000',
-                  border: isActive ? '1px solid rgba(255,255,255,0.1)' : 'none',
+                  background: isActive ? 'rgba(255,255,255,0.05)' : 'rgba(212,175,55,0.08)',
+                  color: isActive ? '#8E8EA0' : '#D4AF37',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  opacity: 0.6,
                 }}>
-                {isActive ? 'Plan Actual' : isProcessing ? 'Procesando...' : `Activar ${plan.name}`}
+                {isActive ? 'Plan Actual' : isLocked ? '🔒 Próximamente' : 'Plan Actual'}
               </button>
             </div>
           );
@@ -173,18 +173,6 @@ const SubscriptionView = () => {
               </div>
             </div>
           ))}
-        </div>
-      </div>
-
-      {/* TopWeekend message for Promesas */}
-      <div className="glass-panel p-4 mb-6 flex items-center gap-3"
-        style={{ border: '1px solid rgba(212,175,55,0.15)', background: 'rgba(212,175,55,0.04)' }}>
-        <Star size={18} style={{ color: '#D4AF37' }} />
-        <div>
-          <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>Mensaje para Promesas</p>
-          <p className="text-[0.6rem] text-muted-foreground">
-            Eres una de nuestras Promesas. En el TopWeekend te ayudamos a cerrar contratos seguros con el respaldo de la plataforma.
-          </p>
         </div>
       </div>
 

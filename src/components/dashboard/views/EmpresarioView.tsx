@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Building2, Zap, Heart, Search, MapPin, Filter, Plus, Clock, Star, Phone, MessageSquare } from 'lucide-react';
+import { Building2, Zap, Heart, Search, MapPin, Filter, Plus, Clock, Star, Phone, MessageSquare, Lock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
@@ -12,15 +12,12 @@ interface Pro {
   zone: string | null;
   hourly_rate: number;
   specialty: string | null;
-  category: string;
-  score: number;
   is_verified: boolean;
-  phone: string | null;
   instagram: string | null;
+  subscription_tier: string;
 }
 
 const zones = ['Todas', 'Malasaña', 'Salamanca', 'Chueca', 'Chamberí', 'Lavapiés', 'La Latina', 'Madrid Centro'];
-const levels = ['Todos', 'professional', 'rookie'];
 const roleOptions = ['Todos', 'dj', 'staff', 'makeup'];
 
 const EmpresarioView = () => {
@@ -29,10 +26,10 @@ const EmpresarioView = () => {
   const [pros, setPros] = useState<Pro[]>([]);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [filterZone, setFilterZone] = useState('Todas');
-  const [filterLevel, setFilterLevel] = useState('Todos');
   const [filterRole, setFilterRole] = useState('Todos');
   const [priceRange, setPriceRange] = useState([0, 200]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [privateHiring, setPrivateHiring] = useState(false);
 
   // Flash job form
   const [showFlashForm, setShowFlashForm] = useState(false);
@@ -42,33 +39,16 @@ const EmpresarioView = () => {
   const [flashLocation, setFlashLocation] = useState('Madrid Centro');
   const [flashRole, setFlashRole] = useState('dj');
 
-  // Geolocation
-  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
-
   useEffect(() => {
     fetchPros();
     fetchFavorites();
-    requestLocation();
   }, []);
 
-  const requestLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-          toast.success('Ubicación activada — mostrando profesionales cercanos');
-        },
-        () => toast.info('Sin acceso a ubicación — mostrando todos los profesionales')
-      );
-    }
-  };
-
   const fetchPros = async () => {
-    const { data } = await (supabase
+    const { data } = await supabase
       .from('profiles')
-      .select('*') as any)
-      .in('validation_status', ['approved', 'pending']);
-    if (data) setPros(data as Pro[]);
+      .select('*');
+    if (data) setPros(data as unknown as Pro[]);
   };
 
   const fetchFavorites = async () => {
@@ -108,7 +88,6 @@ const EmpresarioView = () => {
 
   const filtered = pros.filter(p => {
     if (filterZone !== 'Todas' && p.zone !== filterZone) return false;
-    if (filterLevel !== 'Todos' && p.category !== filterLevel) return false;
     if (filterRole !== 'Todos' && p.role !== filterRole) return false;
     if (p.hourly_rate < priceRange[0] || p.hourly_rate > priceRange[1]) return false;
     if (searchQuery && !p.display_name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
@@ -123,6 +102,32 @@ const EmpresarioView = () => {
           Panel <span className="text-gradient">Empresario</span>
         </h2>
         <p className="text-sm text-muted-foreground">Encuentra y contrata talento profesional para tu sala.</p>
+      </div>
+
+      {/* Private hiring toggle */}
+      <div className="glass-panel p-4 mb-5 flex items-center justify-between"
+        style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
+        <div className="flex items-center gap-3">
+          <Lock size={16} style={{ color: privateHiring ? '#D4AF37' : '#8E8EA0' }} />
+          <div>
+            <p className="text-xs font-bold">Contrataciones Privadas</p>
+            <p className="text-[0.55rem] text-muted-foreground">Marca para que tus contrataciones no sean visibles para otros usuarios.</p>
+          </div>
+        </div>
+        <label className="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" checked={privateHiring} onChange={() => setPrivateHiring(!privateHiring)} className="sr-only peer" />
+          <div className="w-9 h-5 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:rounded-full after:h-4 after:w-4 after:transition-all"
+            style={{
+              background: privateHiring ? 'rgba(212,175,55,0.3)' : 'rgba(255,255,255,0.1)',
+              border: `1px solid ${privateHiring ? 'rgba(212,175,55,0.5)' : 'rgba(255,255,255,0.15)'}`,
+            }}>
+            <div className="absolute top-[2px] left-[2px] w-4 h-4 rounded-full transition-transform"
+              style={{
+                background: privateHiring ? '#D4AF37' : '#8E8EA0',
+                transform: privateHiring ? 'translateX(16px)' : 'translateX(0)',
+              }} />
+          </div>
+        </label>
       </div>
 
       {/* Tabs */}
@@ -190,7 +195,7 @@ const EmpresarioView = () => {
             <Filter size={14} style={{ color: '#D4AF37' }} />
             <span className="text-xs font-bold">Filtros Avanzados</span>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             <div>
               <label className="text-[0.55rem] text-muted-foreground font-bold uppercase mb-1 block">Buscar</label>
               <input value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder="Nombre..." className="nightlife-input text-sm" />
@@ -199,14 +204,6 @@ const EmpresarioView = () => {
               <label className="text-[0.55rem] text-muted-foreground font-bold uppercase mb-1 block">Zona</label>
               <select value={filterZone} onChange={e => setFilterZone(e.target.value)} className="nightlife-input text-sm">
                 {zones.map(z => <option key={z} value={z}>{z}</option>)}
-              </select>
-            </div>
-            <div>
-              <label className="text-[0.55rem] text-muted-foreground font-bold uppercase mb-1 block">Nivel</label>
-              <select value={filterLevel} onChange={e => setFilterLevel(e.target.value)} className="nightlife-input text-sm">
-                <option value="Todos">Todos</option>
-                <option value="professional">Profesional</option>
-                <option value="rookie">Rookie</option>
               </select>
             </div>
             <div>
@@ -251,45 +248,26 @@ const EmpresarioView = () => {
 
               <div className="flex items-center gap-2 mb-3">
                 <span className="text-[0.55rem] px-1.5 py-0.5 rounded font-bold"
-                  style={{
-                    background: p.category === 'professional' ? 'rgba(34,197,94,0.1)' : 'rgba(255,188,0,0.1)',
-                    color: p.category === 'professional' ? '#22c55e' : '#ffbc00',
-                  }}>
-                  {p.category === 'professional' ? 'PRO' : 'ROOKIE'}
+                  style={{ background: 'rgba(255,255,255,0.05)', color: '#8E8EA0' }}>
+                  {p.subscription_tier === 'free' ? 'BÁSICO' : p.subscription_tier?.toUpperCase()}
                 </span>
                 <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>€{p.hourly_rate}/hora</span>
               </div>
 
               <div className="flex gap-2">
-                {p.phone && (
-                  <a href={`https://wa.me/${p.phone}?text=${encodeURIComponent('Hola, te contacto desde XPEAK para un evento.')}`}
-                    target="_blank" rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-md text-xs font-bold transition-all hover:scale-105"
-                    style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.2)', color: '#25D366' }}>
-                    <MessageSquare size={12} /> Contactar
-                  </a>
-                )}
                 <button onClick={() => toggleFavorite(p.id)}
-                  className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-md text-xs font-bold transition-all hover:scale-105"
+                  className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-md text-xs font-bold transition-all hover:scale-105 flex-1"
                   style={{
                     background: favorites.includes(p.id) ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.03)',
                     border: `1px solid ${favorites.includes(p.id) ? 'rgba(212,175,55,0.3)' : 'var(--nightlife-border)'}`,
                     color: favorites.includes(p.id) ? '#D4AF37' : '#8E8EA0',
                   }}>
                   <Heart size={12} fill={favorites.includes(p.id) ? '#D4AF37' : 'none'} />
+                  {favorites.includes(p.id) ? 'Guardado' : 'Guardar'}
                 </button>
               </div>
             </div>
           ))}
-        </div>
-      )}
-
-      {userLocation && (
-        <div className="mt-4 glass-panel p-3 flex items-center gap-2">
-          <MapPin size={14} style={{ color: '#22c55e' }} />
-          <span className="text-[0.6rem] text-muted-foreground">
-            Ubicación activa: {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)} — Profesionales ordenados por cercanía
-          </span>
         </div>
       )}
     </div>
