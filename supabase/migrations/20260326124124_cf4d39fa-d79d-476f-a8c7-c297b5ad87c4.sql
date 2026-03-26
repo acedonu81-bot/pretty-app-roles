@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS "Votes are viewable by everyone" ON public.community_votes;
