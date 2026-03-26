@@ -114,6 +114,27 @@ export type Database = {
         }
         Relationships: []
       }
+      profile_contacts: {
+        Row: {
+          created_at: string
+          id: string
+          phone: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          phone?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          phone?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -124,7 +145,6 @@ export type Database = {
           is_flash_active: boolean
           is_premium: boolean
           is_verified: boolean
-          phone: string | null
           photo_url: string | null
           role: string
           specialty: string | null
@@ -142,7 +162,6 @@ export type Database = {
           is_flash_active?: boolean
           is_premium?: boolean
           is_verified?: boolean
-          phone?: string | null
           photo_url?: string | null
           role?: string
           specialty?: string | null
@@ -160,7 +179,6 @@ export type Database = {
           is_flash_active?: boolean
           is_premium?: boolean
           is_verified?: boolean
-          phone?: string | null
           photo_url?: string | null
           role?: string
           specialty?: string | null
@@ -221,6 +239,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_profile_phone: { Args: { p_user_id: string }; Returns: string }
       get_vote_count: { Args: { p_profile_id: string }; Returns: number }
       has_role: {
         Args: {

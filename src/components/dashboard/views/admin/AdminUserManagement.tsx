@@ -10,7 +10,7 @@ interface DBProfile {
   zone: string | null;
   subscription_tier: string;
   is_verified: boolean;
-  phone: string | null;
+  phone?: string | null;
   instagram: string | null;
   category: string;
   score: number;
