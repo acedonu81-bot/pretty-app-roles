@@ -2,9 +2,9 @@ import { useState, useRef, useEffect } from 'react';
 import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX } from 'lucide-react';
 
 const tracks = [
-  { title: 'Tech House Radio', artist: 'XPEAK Radio', src: 'https://stream.laut.fm/techhouse' },
-  { title: 'Deep House Session', artist: 'XPEAK Chill', src: 'https://stream.laut.fm/deephouse' },
-  { title: 'Minimal Techno', artist: 'XPEAK Underground', src: 'https://stream.laut.fm/techno' },
+  { title: 'Tech House Radio', artist: 'XPEAK Radio', src: 'https://streams.ilovemusic.de/iloveradio17.mp3' },
+  { title: 'Deep House Session', artist: 'XPEAK Chill', src: 'https://streams.ilovemusic.de/iloveradio2.mp3' },
+  { title: 'Minimal Techno', artist: 'XPEAK Underground', src: 'https://streams.ilovemusic.de/iloveradio10.mp3' },
 ];
 
 const GlobalPlayer = () => {
@@ -26,6 +26,7 @@ const GlobalPlayer = () => {
     if (!audioRef.current) {
       audioRef.current = new Audio(tracks[trackIndex].src);
       audioRef.current.volume = 0.4;
+      audioRef.current.crossOrigin = 'anonymous';
     } else {
       audioRef.current.src = tracks[trackIndex].src;
     }

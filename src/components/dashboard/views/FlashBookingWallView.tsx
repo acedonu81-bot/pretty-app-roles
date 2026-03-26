@@ -20,6 +20,7 @@ interface Offer {
   expiresIn: number;
 }
 
+/** Build only 3 example employer offers */
 const buildInitialOffers = (): Offer[] => {
   let id = 1;
   const list: Offer[] = [];
@@ -28,7 +29,8 @@ const buildInitialOffers = (): Offer[] => {
       list.push({ id: id++, author: e.name, avatar: e.avatar, gradient: e.gradient, ...o });
     }
   }
-  return list;
+  // Only keep first 3
+  return list.slice(0, 3);
 };
 
 const FlashBookingWallView = () => {
@@ -71,6 +73,16 @@ const FlashBookingWallView = () => {
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
+      {/* Employer needs banner */}
+      <div className="glass-panel p-4 mb-5 flex items-center gap-3"
+        style={{ border: '1px solid rgba(212,175,55,0.2)', background: 'rgba(212,175,55,0.04)' }}>
+        <Megaphone size={20} style={{ color: '#D4AF37' }} />
+        <div>
+          <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>Ofertas de Empresarios</p>
+          <p className="text-[0.6rem] text-muted-foreground">Los empresarios publican aquí sus necesidades urgentes de personal. Responde rápido para asegurar tu contratación.</p>
+        </div>
+      </div>
+
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-5 gap-3">
         <div>
           <h2 className="text-2xl font-bold mb-1">Flash <span className="text-gradient">Booking</span></h2>
