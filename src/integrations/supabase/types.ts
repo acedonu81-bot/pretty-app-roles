@@ -145,7 +145,6 @@ export type Database = {
           is_flash_active: boolean
           is_premium: boolean
           is_verified: boolean
-          phone: string | null
           photo_url: string | null
           role: string
           specialty: string | null
@@ -163,7 +162,6 @@ export type Database = {
           is_flash_active?: boolean
           is_premium?: boolean
           is_verified?: boolean
-          phone?: string | null
           photo_url?: string | null
           role?: string
           specialty?: string | null
@@ -181,7 +179,6 @@ export type Database = {
           is_flash_active?: boolean
           is_premium?: boolean
           is_verified?: boolean
-          phone?: string | null
           photo_url?: string | null
           role?: string
           specialty?: string | null
