@@ -4,6 +4,7 @@ import { Mail, Lock, User, Eye, EyeOff, Music, Users, Palette, Building2, Camera
 import { supabase } from '@/integrations/supabase/client';
 import AmbientBackground from '@/components/AmbientBackground';
 import LegalFooter from '@/components/LegalFooter';
+import WelcomeScreen from '@/components/WelcomeScreen';
 import { toast } from 'sonner';
 
 const roleGroups = [
@@ -41,6 +42,7 @@ const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(false);
 
   const currentRole = roles.find(r => r.value === selectedRole)!;
 
@@ -83,11 +85,7 @@ const Auth = () => {
         });
         if (error) throw error;
 
-        if (selectedRole === 'empresario') {
-          toast.success('Solicitud enviada. El administrador revisará tu cuenta.');
-        } else {
-          toast.success('Cuenta creada. Perfil en proceso de validación. Plazo estimado: 24 horas.');
-        }
+        setShowWelcome(true);
       }
     } catch (err: any) {
       toast.error(err.message || 'Error de autenticación');
@@ -222,6 +220,14 @@ const Auth = () => {
       </div>
 
       <LegalFooter />
+
+      {showWelcome && (
+        <WelcomeScreen
+          role={selectedRole}
+          displayName={displayName}
+          onClose={() => { setShowWelcome(false); navigate('/dashboard'); }}
+        />
+      )}
     </div>
   );
 };
