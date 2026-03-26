@@ -77,7 +77,7 @@ const RookieView = () => {
     { label: 'Foto de perfil', done: !!profile.photo_url },
     { label: 'Sesión de audio subida', done: hasAudio },
     { label: 'Instagram vinculado', done: !!profile.instagram },
-    { label: 'Teléfono añadido', done: !!profile.phone },
+    { label: 'Zona configurada', done: !!profile.zone },
   ];
   const completionPct = Math.round((completionSteps.filter(s => s.done).length / completionSteps.length) * 100);
 
