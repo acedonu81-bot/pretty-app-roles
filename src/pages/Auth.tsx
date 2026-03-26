@@ -42,6 +42,7 @@ const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(false);
 
   const currentRole = roles.find(r => r.value === selectedRole)!;
 
