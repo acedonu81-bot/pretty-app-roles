@@ -101,7 +101,7 @@ const Auth = () => {
       <div className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="glass-panel w-[460px] max-w-full p-8 text-center z-10">
           <h2 className="text-2xl font-bold mb-1">
-            NIGHT<span className="text-gradient">LIFE</span>
+            X<span className="text-gradient">PEAK</span>
           </h2>
           <p className="text-muted-foreground mb-6 text-xs">Directorio Profesional · Madrid</p>
 

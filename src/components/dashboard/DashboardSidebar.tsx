@@ -62,7 +62,6 @@ const navSections = [
     label: 'CONFIGURACIÓN',
     items: [
       { id: 'settings', icon: Settings, label: 'Ajustes' },
-      { id: 'admin', icon: ShieldCheck, label: 'Admin', badge: '⚡' },
     ],
   },
 ];
