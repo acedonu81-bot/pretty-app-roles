@@ -31,9 +31,9 @@ const FadeIn = ({ children, delay = 0, className = '' }: { children: React.React
 
 /* ── Bento card ── */
 const BentoCard = ({
-  image, icon, title, subtitle, className = '',
+  image, icon, title, subtitle, className = '', onClick,
 }: {
-  image: string; icon: React.ReactNode; title: string; subtitle: string; className?: string;
+  image: string; icon: React.ReactNode; title: string; subtitle: string; className?: string; onClick?: () => void;
 }) => (
   <motion.div
     whileHover={{ scale: 1.03, y: -6 }}
