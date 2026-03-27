@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Building2, Zap, Heart, Search, MapPin, Filter, Plus, Clock, Star, Phone, MessageSquare, Lock } from 'lucide-react';
+import { Building2, Zap, Heart, Search, MapPin, Filter, Plus, Clock, Star, Phone, MessageSquare, Lock, Truck } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
