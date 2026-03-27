@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Video, Users, ArrowLeft, Shield } from 'lucide-react';
+import { Video, Users, ArrowLeft, Shield, Trophy } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import AmbientBackground from '@/components/AmbientBackground';
 import xpeakLogo from '@/assets/xpeak-logo.png';
@@ -70,7 +70,9 @@ const AdminBeta = () => {
 
   if (!authorized) return null;
 
+  const GOAL = 50;
   const liveVideoCount = requests.filter(r => r.feature_name === 'live_video').length;
+  const progressPct = Math.min((liveVideoCount / GOAL) * 100, 100);
 
   return (
     <div className="min-h-screen relative" style={{ background: '#0A0A0A' }}>
@@ -93,6 +95,39 @@ const AdminBeta = () => {
             style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
             <ArrowLeft size={14} /> Dashboard
           </button>
+        </div>
+
+        {/* Progress Bar */}
+        <div className="rounded-2xl p-6 mb-8" style={{
+          background: 'rgba(212,175,55,0.04)',
+          backdropFilter: 'blur(24px)',
+          border: '1px solid rgba(212,175,55,0.12)',
+        }}>
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-bold" style={{ color: '#D4AF37' }}>
+              {liveVideoCount >= GOAL ? (
+                <span className="flex items-center gap-2"><Trophy size={16} /> ¡Objetivo Alcanzado!</span>
+              ) : (
+                `Beta Tracker: ${liveVideoCount} / ${GOAL} solicitudes`
+              )}
+            </span>
+            <span className="text-xs text-muted-foreground">{Math.round(progressPct)}%</span>
+          </div>
+          <div className="relative h-4 w-full overflow-hidden rounded-full" style={{ background: 'rgba(212,175,55,0.08)' }}>
+            <div
+              className="h-full rounded-full transition-all duration-700"
+              style={{
+                width: `${progressPct}%`,
+                background: 'linear-gradient(90deg, #B8941E, #D4AF37, #E8C547)',
+                boxShadow: liveVideoCount >= GOAL ? '0 0 16px rgba(212,175,55,0.6)' : 'none',
+              }}
+            />
+          </div>
+          {liveVideoCount >= GOAL && (
+            <p className="text-xs mt-3 font-medium" style={{ color: '#D4AF37' }}>
+              🏆 ¡XPEAK está listo! 50 usuarios han solicitado el vídeo en directo. Es hora de activar la pasarela de pagos.
+            </p>
+          )}
         </div>
 
         {/* Stats Cards */}
