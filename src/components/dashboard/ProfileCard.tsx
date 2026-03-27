@@ -220,7 +220,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio }: ProfileCard
           className="mt-0.5 accent-[#D4AF37] flex-shrink-0"
           id={`accept-${p.id}`}
         />
-        <label htmlFor={`accept-${p.id}`} className="text-[0.55rem] text-muted-foreground leading-tight cursor-pointer">
+        <label htmlFor={`accept-${p.id}`} className="text-[0.55rem] sm:text-xs text-muted-foreground leading-tight cursor-pointer break-words">
           Acepto las{' '}
           <button onClick={(e) => { e.preventDefault(); setShowLegal(true); }} className="underline font-bold" style={{ color: '#D4AF37' }}>
             Normas de la Comunidad
