@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Video, Users, ArrowLeft, Shield } from 'lucide-react';
+import { Video, Users, ArrowLeft, Shield, Trophy } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import AmbientBackground from '@/components/AmbientBackground';
 import xpeakLogo from '@/assets/xpeak-logo.png';
