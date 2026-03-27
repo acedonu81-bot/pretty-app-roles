@@ -22,9 +22,10 @@ interface ProfileCardProps {
   profile: Profile;
   onBook?: (profile: Profile) => void;
   compact?: boolean;
+  showPortfolio?: boolean;
 }
 
-const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
+const ProfileCard = ({ profile: p, onBook, compact, showPortfolio }: ProfileCardProps) => {
   const isRookie = p.category === 'rookie';
   const [expanded, setExpanded] = useState(false);
   const [accepted, setAccepted] = useState(false);
@@ -91,6 +92,40 @@ const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
           </span>
         ))}
       </div>
+
+      {/* Portfolio section for creative roles */}
+      {showPortfolio && (
+        <div className="mb-3" onClick={e => e.stopPropagation()}>
+          <p className="text-[0.65rem] font-bold mb-2" style={{ color: '#D4AF37' }}>Portfolio</p>
+          {p.portfolioUrls && p.portfolioUrls.length > 0 ? (
+            <div className="grid grid-cols-2 gap-2">
+              {p.portfolioUrls.map((url, i) => {
+                const isVideo = /\.(mp4|webm|mov)$/i.test(url) || /youtube|vimeo|twitch/i.test(url);
+                return isVideo ? (
+                  <div key={i} className="rounded-lg overflow-hidden aspect-video" style={{ background: 'rgba(0,0,0,0.4)', border: '1px solid rgba(212,175,55,0.1)' }}>
+                    <video src={url} className="w-full h-full object-cover" muted loop playsInline
+                      onMouseEnter={e => (e.target as HTMLVideoElement).play()}
+                      onMouseLeave={e => { const v = e.target as HTMLVideoElement; v.pause(); v.currentTime = 0; }} />
+                  </div>
+                ) : (
+                  <div key={i} className="rounded-lg overflow-hidden aspect-square" style={{ background: 'rgba(0,0,0,0.4)', border: '1px solid rgba(212,175,55,0.1)' }}>
+                    <img src={url} alt={`${p.name} trabajo ${i + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-2">
+              {[1, 2, 3, 4].map(i => (
+                <div key={i} className="rounded-lg aspect-square flex items-center justify-center"
+                  style={{ background: 'rgba(212,175,55,0.04)', border: '1px dashed rgba(212,175,55,0.15)' }}>
+                  <span className="text-[0.55rem] text-muted-foreground text-center px-2">Subir trabajo</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {isRookie && (
         <div className="mb-3" onClick={e => e.stopPropagation()}>
