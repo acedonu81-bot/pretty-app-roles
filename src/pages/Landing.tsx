@@ -4,6 +4,7 @@ import { motion, useInView } from 'framer-motion';
 import { Music, UtensilsCrossed, Users, Camera, ArrowRight, Sparkles } from 'lucide-react';
 import xpeakLogo from '@/assets/xpeak-logo.png';
 import heroBg from '@/assets/hero-bg.jpg';
+import heroVideoAsset from '/public/hero-video.mp4.asset.json';
 import bentoMusica from '@/assets/bento-musica.jpg';
 import bentoGastro from '@/assets/bento-gastro.jpg';
 import bentoStaff from '@/assets/bento-staff.jpg';
