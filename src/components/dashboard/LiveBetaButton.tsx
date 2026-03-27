@@ -37,7 +37,7 @@ const LiveBetaButton = () => {
       if (error.code === '23505') toast.info('Ya solicitaste acceso a Vídeo en Directo');
       else toast.error('Error al enviar solicitud');
     } else {
-      toast.success('Tu perfil ha sido priorizado para la fase de vídeo. Te avisaremos por email.');
+      toast.success('🙏 ¡Gracias! Estamos trabajando en ello. Te avisaremos por email cuando esté disponible.');
     }
     setRequested(true);
     setLoading(false);

@@ -62,12 +62,12 @@ const SettingsView = () => {
         <h2 className="text-2xl font-bold mb-1">
           <span className="text-gradient">Ajustes</span>
         </h2>
-        <p className="text-sm text-muted-foreground">Gestiona preferencias, idioma y configuración de cuenta.</p>
+        <p className="text-base text-muted-foreground">Gestiona preferencias, idioma y configuración de cuenta.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <div className="glass-panel p-6">
-          <h3 className="text-sm font-bold mb-5">Cuenta e Idioma</h3>
+          <h3 className="text-base font-bold mb-5">Cuenta e Idioma</h3>
 
           {/* Photo */}
           <div className="mb-5 flex items-center gap-4">
@@ -81,44 +81,46 @@ const SettingsView = () => {
               </div>
             </div>
             <div>
-              <p className="text-xs font-bold">Foto de perfil</p>
-              <p className="text-[0.6rem] text-muted-foreground">Haz clic para cambiar (máx 5MB)</p>
+              <p className="text-sm font-bold">Foto de perfil</p>
+              <p className="text-xs text-muted-foreground">Haz clic para cambiar (máx 5MB)</p>
             </div>
             <input ref={photoRef} type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
           </div>
 
           <div className="mb-4">
-            <label className="block text-xs text-muted-foreground mb-1.5">Nombre artístico</label>
-            <input type="text" value={displayName} onChange={e => setLocalName(e.target.value)} className="nightlife-input text-sm" />
+            <label className="block text-sm text-muted-foreground mb-1.5">Nombre artístico</label>
+            <input type="text" value={displayName} onChange={e => setLocalName(e.target.value)} className="nightlife-input text-base" />
           </div>
           <div className="mb-4">
-            <label className="block text-xs text-muted-foreground mb-1.5">Idioma</label>
-            <select className="nightlife-input cursor-pointer text-sm">
+            <label className="block text-sm text-muted-foreground mb-1.5">Idioma</label>
+            <select className="nightlife-input cursor-pointer text-base">
               {euLanguages.map(lang => <option key={lang}>{lang}</option>)}
             </select>
           </div>
           <div className="mb-4">
-            <label className="block text-xs text-muted-foreground mb-1.5">Email</label>
-            <input type="email" defaultValue={user?.email || ''} className="nightlife-input text-sm" readOnly />
+            <label className="block text-sm text-muted-foreground mb-1.5">Email</label>
+            <input type="email" defaultValue={user?.email || ''} className="nightlife-input text-base" readOnly />
           </div>
           <div className="mb-4">
-            <label className="block text-xs text-muted-foreground mb-1.5">Ubicación Base</label>
-            <input type="text" value={city} onChange={e => setLocalCity(e.target.value)} className="nightlife-input text-sm pl-3" />
+            <label className="block text-sm text-muted-foreground mb-1.5">Ubicación Base</label>
+            <input type="text" value={city} onChange={e => setLocalCity(e.target.value)} className="nightlife-input text-base pl-3" />
           </div>
           <div className="mb-4 pt-4" style={{ borderTop: '1px solid var(--nightlife-border)' }}>
-            <label className="block text-xs text-muted-foreground mb-1.5">Caché Base (€/hora)</label>
+            <label className="block text-sm text-muted-foreground mb-1.5">Caché Base (€/hora)</label>
             <input type="number" value={rate} onChange={e => setLocalRate(Number(e.target.value))} min={20} step={5}
-              className="nightlife-input text-sm pl-3 font-bold" style={{ color: '#D4AF37' }} />
+              className="nightlife-input text-base pl-3 font-bold" style={{ color: '#D4AF37' }} />
           </div>
-          <button className="btn-nightlife-primary w-full text-sm" onClick={handleSave}>
+          <button className="btn-nightlife-primary w-full text-base" onClick={handleSave}>
             Guardar Cambios
           </button>
         </div>
 
         <div className="glass-panel p-6">
-          <h3 className="text-sm font-bold mb-5">Suscripción</h3>
+          <h3 className="text-base font-bold mb-5">Suscripción</h3>
           {[
             { name: 'Básico', price: 'Gratis', desc: 'Perfil básico visible en el directorio', current: true },
+            { name: 'Pase Diario', price: '4,99€/día', desc: 'Posicionamiento prioritario 24h', current: false },
+            { name: 'Pase Weekend', price: '8,99€/finde', desc: 'TOP viernes a domingo + streaming', current: false },
             { name: 'Pro', price: '29,99€/mes', desc: 'Posicionamiento + Streaming + Sello PRO', current: false },
             { name: 'Business', price: '59,99€/mes', desc: 'Multiperfil + TOP Weekend + Soporte prioritario', current: false },
           ].map(plan => (
@@ -130,9 +132,9 @@ const SettingsView = () => {
               <div className="text-right">
                 <p className="text-sm font-bold" style={{ color: plan.current ? '#8E8EA0' : '#D4AF37' }}>{plan.price}</p>
                 {plan.current ? (
-                  <span className="text-[0.5rem] font-bold px-2 py-0.5 rounded" style={{ background: 'rgba(255,255,255,0.05)', color: '#8E8EA0' }}>ACTIVO</span>
+                  <span className="text-xs font-bold px-2 py-0.5 rounded" style={{ background: 'rgba(255,255,255,0.05)', color: '#8E8EA0' }}>ACTIVO</span>
                 ) : (
-                  <span className="text-[0.5rem] font-bold px-2 py-0.5 rounded" style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37' }}>PRÓXIMAMENTE</span>
+                  <span className="text-xs font-bold px-2 py-0.5 rounded" style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37' }}>PRÓXIMAMENTE</span>
                 )}
               </div>
             </div>
@@ -140,7 +142,7 @@ const SettingsView = () => {
 
           <button
             onClick={async () => { await signOut(); toast.info('Sesión cerrada.'); }}
-            className="w-full py-2.5 rounded-lg font-medium text-xs mt-4"
+            className="w-full py-2.5 rounded-lg font-medium text-sm mt-4"
             style={{ background: 'rgba(255,95,86,0.06)', color: '#ff5f56', border: '1px solid rgba(255,95,86,0.15)' }}
           >
             Cerrar Sesión

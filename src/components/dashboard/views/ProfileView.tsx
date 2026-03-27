@@ -19,7 +19,7 @@ const ProfileView = () => {
 
   const displayName = localName ?? profile.display_name;
   const rawPhoto = profile.photo_url;
-  const photoUrl = rawPhoto && rawPhoto.length > 5 ? rawPhoto : null;
+  const photoUrl = rawPhoto && rawPhoto.trim().length > 5 && !rawPhoto.endsWith("''") ? rawPhoto : null;
 
   const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -29,9 +29,10 @@ const ProfileView = () => {
     const safeName = file.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9._-]/g, '_');
     const path = `${user.id}/photo-${Date.now()}-${safeName}`;
     const { error } = await supabase.storage.from('audio-sessions').upload(path, file);
-    if (error) { toast.error('Error al subir foto'); return; }
+    if (error) { toast.error('Error al subir foto: ' + error.message); return; }
     const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
-    await profile.updateField({ photo_url: urlData.publicUrl });
+    const newUrl = urlData.publicUrl;
+    await profile.updateField({ photo_url: newUrl });
     toast.success('Foto de perfil actualizada.');
   };
 
@@ -39,6 +40,7 @@ const ProfileView = () => {
     if (!user) return;
     const updates: any = {};
     if (localName !== null) updates.display_name = localName;
+    if (city) updates.zone = city;
     if (Object.keys(updates).length > 0) await profile.updateField(updates);
     toast.success('Perfil guardado.');
   };
@@ -56,6 +58,11 @@ const ProfileView = () => {
         const paths = files.map(f => `${user.id}/${f.name}`);
         await supabase.storage.from('audio-sessions').remove(paths);
       }
+      const { data: sessionFiles } = await supabase.storage.from('audio-sessions').list(user.id + '/sessions');
+      if (sessionFiles && sessionFiles.length > 0) {
+        const sPaths = sessionFiles.map(f => `${user.id}/sessions/${f.name}`);
+        await supabase.storage.from('audio-sessions').remove(sPaths);
+      }
       await profile.updateField({ photo_url: '' });
       toast.success('Contenido multimedia eliminado permanentemente.');
     } catch {
@@ -72,10 +79,10 @@ const ProfileView = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start gap-3 mb-6">
         <div>
           <h2 className="text-2xl font-bold mb-1">Mi <span className="text-gradient">Perfil</span></h2>
-          <p className="text-sm text-muted-foreground">Así te ven los empresarios.</p>
+          <p className="text-base text-muted-foreground">Así te ven los empresarios.</p>
         </div>
         <button onClick={handleSave}
-          className="px-5 py-2 rounded-lg font-bold text-sm w-full sm:w-auto"
+          className="px-5 py-2 rounded-lg font-bold text-base w-full sm:w-auto"
           style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
           Guardar
         </button>
@@ -84,29 +91,29 @@ const ProfileView = () => {
       <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-4">
         <div className="flex flex-col gap-4">
           <div className="glass-panel p-5 text-center">
-            <div className="relative cursor-pointer group mx-auto w-16 h-16 mb-3" onClick={() => photoRef.current?.click()}>
-              <div className="w-16 h-16 rounded-lg overflow-hidden flex items-center justify-center text-2xl font-bold"
+            <div className="relative cursor-pointer group mx-auto w-20 h-20 mb-3" onClick={() => photoRef.current?.click()}>
+              <div className="w-20 h-20 rounded-lg overflow-hidden flex items-center justify-center text-2xl font-bold"
                 style={{ background: photoUrl ? undefined : 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
                 {photoUrl
-                  ? <img src={photoUrl} alt="Foto" className="w-full h-full object-cover" />
+                  ? <img src={photoUrl} alt="Foto" className="w-full h-full object-cover" crossOrigin="anonymous" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                   : initials}
               </div>
               <div className="absolute inset-0 rounded-lg flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
-                <Camera size={18} className="text-white" />
+                <Camera size={20} className="text-white" />
               </div>
             </div>
             <input ref={photoRef} type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
 
-            <p className="font-bold text-sm">{displayName || 'Sin nombre'}</p>
-            <p className="text-[0.6rem] font-bold mt-1" style={{ color: '#D4AF37' }}>Plan Básico</p>
+            <p className="font-bold text-base">{displayName || 'Sin nombre'}</p>
+            <p className="text-xs font-bold mt-1" style={{ color: '#D4AF37' }}>Plan Básico</p>
             <div className="flex justify-center gap-0.5 my-2">
-              {[1,2,3,4,5].map(s => <span key={s} style={{ color: 'rgba(255,255,255,0.1)', fontSize: '0.8rem' }}>★</span>)}
-              <span className="text-xs text-muted-foreground ml-1">0.0</span>
+              {[1,2,3,4,5].map(s => <span key={s} style={{ color: 'rgba(255,255,255,0.1)', fontSize: '0.9rem' }}>★</span>)}
+              <span className="text-sm text-muted-foreground ml-1">0.0</span>
             </div>
           </div>
           <div className="glass-panel p-4">
             {[['Bookings 2026','0'],['Tasa respuesta','0%'],['Visitas perfil','0'],['Clics WhatsApp','0']].map(([k,v]) => (
-              <div key={k} className="flex justify-between py-1.5 text-xs" style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
+              <div key={k} className="flex justify-between py-1.5 text-sm" style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
                 <span className="text-muted-foreground">{k}</span>
                 <span className="font-semibold">{v}</span>
               </div>
@@ -116,49 +123,49 @@ const ProfileView = () => {
 
         <div className="flex flex-col gap-4">
           <div className="glass-panel p-5">
-            <h4 className="text-sm font-bold mb-4">Información</h4>
+            <h4 className="text-base font-bold mb-4">Información</h4>
             <div className="mb-3">
-              <label className="text-[0.6rem] text-muted-foreground font-bold uppercase tracking-wider">Nombre artístico</label>
-              <input type="text" value={displayName} onChange={e => setLocalName(e.target.value)} className="nightlife-input mt-1 text-sm" />
+              <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Nombre artístico</label>
+              <input type="text" value={displayName} onChange={e => setLocalName(e.target.value)} className="nightlife-input mt-1 text-base" />
             </div>
             <div className="mb-3">
-              <label className="text-[0.6rem] text-muted-foreground font-bold uppercase tracking-wider">Ciudad</label>
-              <input type="text" value={city || profile.zone || ''} onChange={e => setCity(e.target.value)} className="nightlife-input mt-1 text-sm" />
+              <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Ciudad</label>
+              <input type="text" value={city || profile.zone || ''} onChange={e => setCity(e.target.value)} className="nightlife-input mt-1 text-base" />
             </div>
             <div className="mb-3">
-              <label className="text-[0.6rem] text-muted-foreground font-bold uppercase tracking-wider">Rider técnico</label>
-              <input type="text" value={rider} onChange={e => setRider(e.target.value)} placeholder="Ej: Pioneer CDJ-3000, DJM-900NXS2" className="nightlife-input mt-1 text-sm" />
+              <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Rider técnico</label>
+              <input type="text" value={rider} onChange={e => setRider(e.target.value)} placeholder="Ej: Pioneer CDJ-3000, DJM-900NXS2" className="nightlife-input mt-1 text-base" />
             </div>
             <div className="mb-3">
-              <label className="text-[0.6rem] text-muted-foreground font-bold uppercase tracking-wider">Bio</label>
+              <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Bio</label>
               <textarea rows={2} value={bio} onChange={e => setBio(e.target.value)}
                 placeholder="Describe tu experiencia y estilo..."
-                className="nightlife-input mt-1 text-sm resize-y" />
+                className="nightlife-input mt-1 text-base resize-y" />
             </div>
           </div>
           <AudioUpload />
 
           {/* Media deletion - GDPR */}
           <div className="glass-panel p-5">
-            <h4 className="text-sm font-bold mb-2 flex items-center gap-2">
-              <Trash2 size={14} style={{ color: '#ff5f56' }} /> Gestión de Contenido Multimedia
+            <h4 className="text-base font-bold mb-2 flex items-center gap-2">
+              <Trash2 size={16} style={{ color: '#ff5f56' }} /> Gestión de Contenido Multimedia
             </h4>
-            <p className="text-[0.6rem] text-muted-foreground mb-3">
+            <p className="text-xs text-muted-foreground mb-3">
               Según la normativa RGPD, puedes solicitar la eliminación permanente de todo tu contenido multimedia (audios, fotos de perfil y trabajos).
             </p>
             <button onClick={handleDeleteMedia} disabled={deleting}
-              className="w-full py-2.5 rounded-lg font-medium text-xs transition-all disabled:opacity-50"
+              className="w-full py-2.5 rounded-lg font-medium text-sm transition-all disabled:opacity-50"
               style={{ background: 'rgba(255,95,86,0.06)', color: '#ff5f56', border: '1px solid rgba(255,95,86,0.15)' }}>
               {deleting ? 'Eliminando...' : 'Eliminar todo mi contenido multimedia'}
             </button>
           </div>
           <div className="glass-panel p-5">
-            <h4 className="text-sm font-bold mb-3">Vídeo en Directo</h4>
+            <h4 className="text-base font-bold mb-3">Vídeo en Directo</h4>
             <LiveBetaButton />
           </div>
           <div className="glass-panel p-5">
-            <h4 className="text-sm font-bold mb-3">Valoraciones</h4>
-            <p className="text-xs text-muted-foreground text-center py-4">Aún no tienes valoraciones. Aparecerán aquí cuando los empresarios valoren tu trabajo.</p>
+            <h4 className="text-base font-bold mb-3">Valoraciones</h4>
+            <p className="text-sm text-muted-foreground text-center py-4">Aún no tienes valoraciones. Aparecerán aquí cuando los empresarios valoren tu trabajo.</p>
           </div>
         </div>
       </div>
