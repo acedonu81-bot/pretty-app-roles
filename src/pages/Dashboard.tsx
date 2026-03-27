@@ -121,6 +121,7 @@ const Dashboard = () => {
 
       <GlobalPlayer />
     </div>
+    </ProfileProvider>
   );
 };
 
