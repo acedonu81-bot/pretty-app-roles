@@ -6,6 +6,9 @@ import CheckoutModal from '@/components/dashboard/CheckoutModal';
 import OffersWidget from '@/components/dashboard/OffersWidget';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
 import LiveBetaButton from '@/components/dashboard/LiveBetaButton';
+import { useProfile } from '@/hooks/useProfile';
+import { normalizeStreamUrl, parseStreamUrl } from '@/lib/streaming';
+import { toast } from 'sonner';
 
 interface DirectoryViewProps {
   role: string;
@@ -14,18 +17,6 @@ interface DirectoryViewProps {
   onNavigate?: (view: string) => void;
   wideCards?: boolean;
 }
-
-/** Parse stream URL into embeddable iframe URL */
-const parseStreamUrl = (url?: string): { type: string; embedUrl: string } | null => {
-  if (!url) return null;
-  const twitchMatch = url.match(/twitch\.tv\/(\w+)/);
-  if (twitchMatch) return { type: 'Twitch', embedUrl: `https://player.twitch.tv/?channel=${twitchMatch[1]}&parent=${window.location.hostname}` };
-  const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|live\/|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/);
-  if (ytMatch) return { type: 'YouTube', embedUrl: `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1&mute=1` };
-  const mixMatch = url.match(/mixcloud\.com\/(.+)/);
-  if (mixMatch) return { type: 'Mixcloud', embedUrl: `https://www.mixcloud.com/widget/iframe/?hide_cover=1&feed=${encodeURIComponent('/' + mixMatch[1])}` };
-  return null;
-};
 
 /** Animated wave equalizer for LIVE indicator */
 const MiniEqualizer = () => {
@@ -114,9 +105,23 @@ const StreamTile = ({ profile, isExpanded, onToggle, viewerCount }: {
 };
 
 /** Stream settings panel */
-const StreamSettingsPanel = ({ onClose }: { onClose: () => void }) => {
-  const [streamUrl, setStreamUrl] = useState('');
-  const [streamTitle, setStreamTitle] = useState('');
+const StreamSettingsPanel = ({
+  onClose,
+  onSave,
+  saving,
+  streamTitle,
+  streamUrl,
+  onStreamTitleChange,
+  onStreamUrlChange,
+}: {
+  onClose: () => void;
+  onSave: () => Promise<void>;
+  saving: boolean;
+  streamTitle: string;
+  streamUrl: string;
+  onStreamTitleChange: (value: string) => void;
+  onStreamUrlChange: (value: string) => void;
+}) => {
   const parsed = parseStreamUrl(streamUrl);
 
   return (
@@ -132,12 +137,12 @@ const StreamSettingsPanel = ({ onClose }: { onClose: () => void }) => {
       <div className="space-y-3">
         <div>
           <label className="text-xs font-medium mb-1 block">Título del directo</label>
-          <input value={streamTitle} onChange={e => setStreamTitle(e.target.value)}
+          <input value={streamTitle} onChange={e => onStreamTitleChange(e.target.value)}
             placeholder="Mi sesión en vivo..." className="nightlife-input text-sm !py-2.5 w-full" />
         </div>
         <div>
           <label className="text-xs font-medium mb-1 block">URL de streaming</label>
-          <input value={streamUrl} onChange={e => setStreamUrl(e.target.value)}
+          <input value={streamUrl} onChange={e => onStreamUrlChange(e.target.value)}
             placeholder="https://twitch.tv/tu_canal o https://youtube.com/live/..."
             className="nightlife-input text-sm !py-2.5 w-full" />
           <p className="text-[0.6rem] text-muted-foreground mt-1">Soporta Twitch, YouTube Live y Mixcloud</p>
@@ -146,9 +151,9 @@ const StreamSettingsPanel = ({ onClose }: { onClose: () => void }) => {
           )}
         </div>
         <div className="flex gap-2">
-          <button className="flex-1 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
+          <button onClick={onSave} disabled={saving} className="flex-1 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 disabled:opacity-60"
             style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' }}>
-            Guardar ajustes
+            {saving ? 'Guardando...' : 'Guardar ajustes'}
           </button>
         </div>
       </div>
@@ -157,18 +162,27 @@ const StreamSettingsPanel = ({ onClose }: { onClose: () => void }) => {
 };
 
 const DirectoryView = ({ role, title, subtitle, onNavigate, wideCards }: DirectoryViewProps) => {
+  const profile = useProfile();
   const roleProfiles = profiles.filter(p => p.role === role);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [checkoutItem, setCheckoutItem] = useState<{ name: string; price: number; description: string } | null>(null);
   const [sortedProfiles, setSortedProfiles] = useState(() => getEliteRotation(roleProfiles));
   const [expandedStream, setExpandedStream] = useState<number | null>(null);
   const [showStreamSettings, setShowStreamSettings] = useState(false);
+  const [streamUrl, setStreamUrl] = useState(profile.stream_url ?? '');
+  const [streamTitle, setStreamTitle] = useState(profile.stream_title ?? '');
+  const [savingStream, setSavingStream] = useState(false);
 
   useEffect(() => {
     setSortedProfiles(getEliteRotation(roleProfiles));
     const iv = setInterval(() => setSortedProfiles(getEliteRotation(roleProfiles)), 60 * 60 * 1000);
     return () => clearInterval(iv);
   }, [role]);
+
+  useEffect(() => {
+    setStreamUrl(profile.stream_url ?? '');
+    setStreamTitle(profile.stream_title ?? '');
+  }, [profile.stream_url, profile.stream_title]);
 
   const liveStreamers = roleProfiles
     .filter(p => p.isLive || p.streamUrl)
@@ -178,6 +192,24 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, wideCards }: Directo
 
   const toggleExpand = (id: number) => {
     setExpandedStream(prev => prev === id ? null : id);
+  };
+
+  const handleSaveStream = async () => {
+    const normalized = normalizeStreamUrl(streamUrl);
+
+    if (streamUrl.trim() && !parseStreamUrl(normalized)) {
+      toast.error('La URL del streaming no es compatible.');
+      return;
+    }
+
+    setSavingStream(true);
+    await profile.updateField({
+      stream_url: streamUrl.trim() ? normalized : null,
+      stream_title: streamTitle.trim() || null,
+    });
+    setSavingStream(false);
+    toast.success('Ajustes del directo guardados.');
+    setShowStreamSettings(false);
   };
 
   // Grid class based on wideCards prop
@@ -226,7 +258,17 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, wideCards }: Directo
         </div>
       </div>
 
-      {showStreamSettings && <StreamSettingsPanel onClose={() => setShowStreamSettings(false)} />}
+      {showStreamSettings && (
+        <StreamSettingsPanel
+          onClose={() => setShowStreamSettings(false)}
+          onSave={handleSaveStream}
+          saving={savingStream}
+          streamTitle={streamTitle}
+          streamUrl={streamUrl}
+          onStreamTitleChange={setStreamTitle}
+          onStreamUrlChange={setStreamUrl}
+        />
+      )}
 
       {/* Live Streams — vertical list ordered by viewers */}
       {liveStreamers.length > 0 && (

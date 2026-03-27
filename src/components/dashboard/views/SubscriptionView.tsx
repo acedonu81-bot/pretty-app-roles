@@ -1,66 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Crown, CheckCircle, Star, Zap, Eye, TrendingUp, Lock, Gift, PartyPopper, Truck } from 'lucide-react';
-import { toast } from 'sonner';
 import { useProfile } from '@/hooks/useProfile';
-
-const plans = [
-  {
-    id: 'free',
-    name: 'Promesa / Básico',
-    price: 0,
-    period: 'Gratis',
-    features: ['Perfil visible en directorio', 'Contacto por WhatsApp', 'Flash Booking (recibir ofertas)', 'Etiqueta Promesa o Básico'],
-    color: 'rgba(255,255,255,0.1)',
-    textColor: '#8E8EA0',
-    trialDays: 0,
-  },
-  {
-    id: 'daily',
-    name: 'Pase Diario',
-    price: 4.99,
-    period: '/día',
-    features: ['Posición prioritaria durante 24h', 'Perfil destacado con borde dorado', 'Ideal para eventos puntuales', 'Indicador "Posicionamiento Activo"'],
-    color: 'rgba(212,175,55,0.08)',
-    textColor: '#D4AF37',
-    trialDays: 7,
-  },
-  {
-    id: 'weekend',
-    name: 'Pase Weekend',
-    price: 8.99,
-    period: '/fin de semana',
-    features: ['Posición TOP viernes a domingo', 'Streaming de perfil en directo', 'Borde dorado + sello Weekend', 'Notificaciones prioritarias de Flash Booking'],
-    color: 'rgba(212,175,55,0.12)',
-    textColor: '#D4AF37',
-    popular: true,
-    trialDays: 7,
-  },
-  {
-    id: 'pro',
-    name: 'Pro',
-    price: 29.99,
-    period: '/mes',
-    features: ['Todo lo de los Pases', 'Sello PRO dorado permanente', 'Acceso a Streaming 24/7', 'Estadísticas avanzadas de visitas', 'Prioridad sobre Pases y gratuitos'],
-    color: 'rgba(212,175,55,0.15)',
-    textColor: '#D4AF37',
-    trialDays: 7,
-  },
-  {
-    id: 'business',
-    name: 'Business',
-    price: 59.99,
-    period: '/mes',
-    features: ['Todo lo del plan Pro', 'Gestión multiperfil para agencias', 'Posición TOP con rotación horaria', 'Sello BUSINESS exclusivo', 'Soporte prioritario'],
-    color: 'linear-gradient(135deg, rgba(212,175,55,0.2), rgba(184,148,30,0.1))',
-    textColor: '#D4AF37',
-    trialDays: 7,
-  },
-];
+import { Switch } from '@/components/ui/switch';
+import { ANNUAL_DISCOUNT, BillingCycle, getPlanPricing, getTrialDaysRemaining, isBirthdayToday, mapSubscriptionTierToPlan, subscriptionPlans } from '@/lib/subscriptions';
 
 const SubscriptionView = () => {
-  const [currentPlan] = useState('free');
   const profile = useProfile();
   const isEmpresario = profile.role === 'empresario';
+  const [billingCycle, setBillingCycle] = useState<BillingCycle>('monthly');
+
+  useEffect(() => {
+    setBillingCycle(profile.annual_billing ? 'annual' : 'monthly');
+  }, [profile.annual_billing]);
+
+  const currentPlan = useMemo(() => mapSubscriptionTierToPlan(profile.subscription_tier), [profile.subscription_tier]);
+  const trialDaysRemaining = useMemo(() => getTrialDaysRemaining(profile.trial_started_at), [profile.trial_started_at]);
+  const birthdayDiscountActive = useMemo(() => isBirthdayToday(profile.birthday), [profile.birthday]);
+
+  const handleCycleChange = async (checked: boolean) => {
+    setBillingCycle(checked ? 'annual' : 'monthly');
+    await profile.updateField({ annual_billing: checked });
+  };
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
@@ -100,20 +60,63 @@ const SubscriptionView = () => {
         style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
         <Crown size={20} style={{ color: '#D4AF37' }} />
         <div>
-          <p className="text-sm font-bold">Plan actual: <span style={{ color: '#8E8EA0' }}>PROMESA / BÁSICO</span></p>
+          <p className="text-sm font-bold">Plan actual: <span style={{ color: '#8E8EA0' }}>{subscriptionPlans.find(plan => plan.id === currentPlan)?.name.toUpperCase() ?? 'PROMESA / BÁSICO'}</span></p>
           <p className="text-[0.6rem] text-muted-foreground">Los planes de pago estarán disponibles próximamente.</p>
         </div>
       </div>
 
-      {/* 7-day trial notice */}
+      <div className="glass-panel p-4 mb-5 flex items-center justify-between gap-3"
+        style={{ border: '1px solid rgba(212,175,55,0.2)', background: 'rgba(212,175,55,0.03)' }}>
+        <div>
+          <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>Selector de ciclo</p>
+          <p className="text-[0.65rem] text-muted-foreground">Activa anual para aplicar un {ANNUAL_DISCOUNT * 100}% de ahorro inmediato.</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className={`text-xs font-bold ${billingCycle === 'monthly' ? 'text-foreground' : 'text-muted-foreground'}`}>Mensual</span>
+          <Switch checked={billingCycle === 'annual'} onCheckedChange={handleCycleChange} aria-label="Cambiar a facturación anual" />
+          <span className={`text-xs font-bold ${billingCycle === 'annual' ? 'text-primary' : 'text-muted-foreground'}`}>Anual</span>
+        </div>
+      </div>
+
       <div className="glass-panel p-4 mb-5 flex items-center gap-3"
         style={{ border: '1px solid rgba(212,175,55,0.25)', background: 'rgba(212,175,55,0.04)' }}>
         <Gift size={18} style={{ color: '#D4AF37' }} />
         <div>
-          <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>Prueba gratuita de 7 días</p>
+          <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>
+            {trialDaysRemaining > 0
+              ? `Te quedan ${trialDaysRemaining} ${trialDaysRemaining === 1 ? 'día' : 'días'} de acceso gratuito`
+              : 'Tu periodo de prueba ha finalizado'}
+          </p>
           <p className="text-[0.6rem] text-muted-foreground">
-            Todos los planes de pago incluyen 7 días de prueba gratuita. Al finalizar, se cobrará automáticamente salvo que canceles antes.
+            {trialDaysRemaining > 0
+              ? 'La prueba gratuita es de 15 días para todos los roles y planes de pago.'
+              : 'Suscríbete ahora al plan anual y ahorra un 30% inmediato para mantener tu perfil activo.'}
+          </p>
+        </div>
+      </div>
+
+      {/* 15-day trial notice */}
+      <div className="glass-panel p-4 mb-5 flex items-center gap-3"
+        style={{ border: '1px solid rgba(212,175,55,0.25)', background: 'rgba(212,175,55,0.04)' }}>
+        <Gift size={18} style={{ color: '#D4AF37' }} />
+        <div>
+          <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>Prueba gratuita de 15 días</p>
+          <p className="text-[0.6rem] text-muted-foreground">
+            Todos los planes de pago incluyen 15 días de prueba gratuita. Al finalizar, se cobrará automáticamente salvo que canceles antes.
             Recibirás un correo de aviso 1 día antes del cobro. Solo una prueba por usuario y plan.
+          </p>
+        </div>
+      </div>
+
+      <div className="glass-panel p-4 mb-5 flex items-center gap-3"
+        style={{ border: '1px solid rgba(212,175,55,0.18)', background: 'rgba(212,175,55,0.03)' }}>
+        <Gift size={18} style={{ color: '#D4AF37' }} />
+        <div>
+          <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>Descuento anual y cumpleaños</p>
+          <p className="text-[0.6rem] text-muted-foreground">
+            En modalidad anual obtienes un 30% de descuento. {birthdayDiscountActive
+              ? 'Hoy tienes activo un 40% por cumpleaños en la modalidad anual.'
+              : 'En tu cumpleaños se activará un 40% de descuento y recibirás el aviso cuando esté configurado el envío de emails.'}
           </p>
         </div>
       </div>
@@ -130,9 +133,10 @@ const SubscriptionView = () => {
 
       {/* Plans grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-8">
-        {plans.map(plan => {
+        {subscriptionPlans.map(plan => {
           const isActive = plan.id === currentPlan;
           const isLocked = plan.id !== 'free';
+          const pricing = getPlanPricing(plan, billingCycle, birthdayDiscountActive);
           return (
             <div key={plan.id} className={`glass-panel p-5 flex flex-col relative ${isLocked ? 'opacity-60' : ''}`}
               style={{ border: plan.popular ? '1px solid rgba(212,175,55,0.3)' : undefined }}>
@@ -147,10 +151,18 @@ const SubscriptionView = () => {
                 <h3 className="text-sm font-bold" style={{ color: plan.textColor }}>{plan.name}</h3>
                 <div className="flex items-baseline gap-1 mt-1">
                   <span className="text-2xl font-black" style={{ color: plan.textColor }}>
-                    {plan.price === 0 ? 'Gratis' : `€${plan.price}`}
+                    {pricing.finalPrice === 0 ? 'Gratis' : `€${pricing.finalPrice.toFixed(2)}`}
                   </span>
-                  {plan.price > 0 && <span className="text-[0.6rem] text-muted-foreground">{plan.period}</span>}
+                  {pricing.finalPrice > 0 && <span className="text-[0.6rem] text-muted-foreground">{pricing.period}</span>}
                 </div>
+                {pricing.originalPrice && (
+                  <p className="text-[0.55rem] text-muted-foreground line-through">€{pricing.originalPrice.toFixed(2)}</p>
+                )}
+                {pricing.discountPercent > 0 && (
+                  <p className="text-[0.55rem] mt-1 font-bold" style={{ color: '#D4AF37' }}>
+                    ✨ -{pricing.discountPercent}% · {pricing.helperText}
+                  </p>
+                )}
                 {plan.trialDays > 0 && (
                   <p className="text-[0.55rem] mt-1 font-bold" style={{ color: '#D4AF37' }}>
                     🎁 {plan.trialDays} días gratis de prueba

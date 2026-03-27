@@ -1,6 +1,8 @@
-import { Search, LogOut, Menu, Bell } from 'lucide-react';
-import { useState } from 'react';
+import { Search, LogOut, Menu, Bell, Gift, Sparkles } from 'lucide-react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useProfile } from '@/hooks/useProfile';
+import { getTrialDaysRemaining, isBirthdayToday } from '@/lib/subscriptions';
 
 interface TopbarProps {
   onMenuToggle?: () => void;
@@ -10,6 +12,29 @@ interface TopbarProps {
 const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
   const navigate = useNavigate();
   const [showNotif, setShowNotif] = useState(false);
+  const profile = useProfile();
+
+  const trialDaysRemaining = useMemo(() => getTrialDaysRemaining(profile.trial_started_at), [profile.trial_started_at]);
+  const birthdayOfferActive = useMemo(() => isBirthdayToday(profile.birthday), [profile.birthday]);
+
+  const trialLabel = trialDaysRemaining > 0
+    ? `Te quedan ${trialDaysRemaining} ${trialDaysRemaining === 1 ? 'día' : 'días'} de acceso gratuito`
+    : 'Tu periodo de prueba ha finalizado. Suscríbete al plan anual y ahorra un 30%.';
+
+  const notifications = [
+    {
+      title: trialDaysRemaining > 0 ? 'Prueba activa' : 'Prueba finalizada',
+      desc: trialLabel,
+      time: 'Ahora',
+    },
+    ...(birthdayOfferActive ? [{
+      title: 'Descuento de cumpleaños',
+      desc: 'Hoy tienes un 40% en la suscripción anual. Aprovecha la oferta.',
+      time: 'Hoy',
+    }] : []),
+    { title: 'Nuevo contacto WhatsApp', desc: 'Club Onyx ha visto tu perfil y te ha contactado.', time: 'Hace 2 min' },
+    { title: 'Flash Booking activado', desc: 'Tu perfil aparece como disponible ahora.', time: 'Hace 1 hora' },
+  ];
 
   return (
     <header
@@ -41,9 +66,21 @@ const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
             className="bg-transparent border-none outline-none text-foreground w-full text-xs"
           />
         </div>
+
+        <div
+          className="hidden lg:flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-semibold border border-border bg-card/70 text-primary"
+        >
+          <Gift size={14} />
+          <span>{trialLabel}</span>
+        </div>
       </div>
 
       <div className="flex items-center gap-2 relative flex-shrink-0">
+        <div className="lg:hidden flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-[0.65rem] font-semibold border border-border bg-card/70 text-primary">
+          <Gift size={12} />
+          <span>{trialDaysRemaining > 0 ? `${trialDaysRemaining} días gratis` : 'Prueba finalizada'}</span>
+        </div>
+
         {/* Notifications */}
         <button
           onClick={() => setShowNotif(!showNotif)}
@@ -65,13 +102,11 @@ const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
               <span className="text-[0.6rem] cursor-pointer" style={{ color: '#D4AF37' }}>Marcar leídas</span>
             </div>
             <div className="max-h-60 overflow-y-auto">
-              {[
-                { title: 'Nuevo contacto WhatsApp', desc: 'Club Onyx ha visto tu perfil y te ha contactado.', time: 'Hace 2 min' },
-                { title: 'Flash Booking activado', desc: 'Tu perfil aparece como disponible ahora.', time: 'Hace 1 hora' },
-                { title: 'Rotación Elite', desc: 'Tu perfil ha sido mostrado 47 veces esta hora.', time: 'Hace 3 hrs' },
-              ].map((n, i) => (
+              {notifications.map((n, i) => (
                 <div key={i} className="px-3 py-2.5 flex gap-2 items-start cursor-pointer transition-colors hover:bg-white/5" style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
-                  <div className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ background: '#D4AF37' }} />
+                  <div className="mt-1 flex-shrink-0" style={{ color: '#D4AF37' }}>
+                    {i === 0 ? <Gift size={12} /> : <Sparkles size={12} />}
+                  </div>
                   <div>
                     <p className="text-xs font-semibold">{n.title}</p>
                     <p className="text-[0.65rem] text-muted-foreground">{n.desc}</p>
