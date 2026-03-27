@@ -1,25 +1,23 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { Trash2, Camera } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useProfile } from '@/hooks/useProfile';
 import AudioUpload from '@/components/dashboard/AudioUpload';
 
 const ProfileView = () => {
   const { user } = useAuth();
+  const profile = useProfile();
   const [deleting, setDeleting] = useState(false);
-  const [displayName, setDisplayName] = useState('');
-  const [city, setCity] = useState('Madrid');
+  const [localName, setLocalName] = useState<string | null>(null);
+  const [city, setCity] = useState('');
   const [rider, setRider] = useState('');
   const [bio, setBio] = useState('');
-  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const photoRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (!user) return;
-    const meta = user.user_metadata;
-    setDisplayName(meta?.display_name || user.email || '');
-  }, [user]);
+  const displayName = localName ?? profile.display_name;
+  const photoUrl = profile.photo_url;
 
   const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -31,16 +29,15 @@ const ProfileView = () => {
     const { error } = await supabase.storage.from('audio-sessions').upload(path, file);
     if (error) { toast.error('Error al subir foto'); return; }
     const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
-    const url = urlData.publicUrl;
-
-    await (supabase.from('profiles').update({ photo_url: url } as any) as any).eq('user_id', user.id);
-    setPhotoPreview(url);
+    await profile.updateField({ photo_url: urlData.publicUrl });
     toast.success('Foto de perfil actualizada.');
   };
 
   const handleSave = async () => {
     if (!user) return;
-    await (supabase.from('profiles').update({ display_name: displayName } as any) as any).eq('user_id', user.id);
+    const updates: any = {};
+    if (localName !== null) updates.display_name = localName;
+    if (Object.keys(updates).length > 0) await profile.updateField(updates);
     toast.success('Perfil guardado.');
   };
 
@@ -57,8 +54,7 @@ const ProfileView = () => {
         const paths = files.map(f => `${user.id}/${f.name}`);
         await supabase.storage.from('audio-sessions').remove(paths);
       }
-      await (supabase.from('profiles').update({ photo_url: '', audio_url: '' } as any) as any).eq('user_id', user.id);
-      setPhotoPreview(null);
+      await profile.updateField({ photo_url: '' });
       toast.success('Contenido multimedia eliminado permanentemente.');
     } catch {
       toast.error('Error al eliminar contenido.');
@@ -86,12 +82,11 @@ const ProfileView = () => {
       <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-4">
         <div className="flex flex-col gap-4">
           <div className="glass-panel p-5 text-center">
-            {/* Profile photo */}
             <div className="relative cursor-pointer group mx-auto w-16 h-16 mb-3" onClick={() => photoRef.current?.click()}>
               <div className="w-16 h-16 rounded-lg overflow-hidden flex items-center justify-center text-2xl font-bold"
-                style={{ background: photoPreview ? undefined : 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-                {photoPreview
-                  ? <img src={photoPreview} alt="Foto" className="w-full h-full object-cover" />
+                style={{ background: photoUrl ? undefined : 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+                {photoUrl
+                  ? <img src={photoUrl} alt="Foto" className="w-full h-full object-cover" />
                   : initials}
               </div>
               <div className="absolute inset-0 rounded-lg flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -122,11 +117,11 @@ const ProfileView = () => {
             <h4 className="text-sm font-bold mb-4">Información</h4>
             <div className="mb-3">
               <label className="text-[0.6rem] text-muted-foreground font-bold uppercase tracking-wider">Nombre artístico</label>
-              <input type="text" value={displayName} onChange={e => setDisplayName(e.target.value)} className="nightlife-input mt-1 text-sm" />
+              <input type="text" value={displayName} onChange={e => setLocalName(e.target.value)} className="nightlife-input mt-1 text-sm" />
             </div>
             <div className="mb-3">
               <label className="text-[0.6rem] text-muted-foreground font-bold uppercase tracking-wider">Ciudad</label>
-              <input type="text" value={city} onChange={e => setCity(e.target.value)} className="nightlife-input mt-1 text-sm" />
+              <input type="text" value={city || profile.zone || ''} onChange={e => setCity(e.target.value)} className="nightlife-input mt-1 text-sm" />
             </div>
             <div className="mb-3">
               <label className="text-[0.6rem] text-muted-foreground font-bold uppercase tracking-wider">Rider técnico</label>
