@@ -87,11 +87,17 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen relative overflow-x-hidden flex flex-col" style={{ background: '#0A0A0A' }}>
-      {/* ─ Hero background ─ */}
+      {/* ─ Hero background video ─ */}
       <div className="fixed inset-0 -z-10 pointer-events-none">
-        <img src={heroBg} alt="" className="w-full h-full object-cover" style={{ opacity: 0.2, filter: 'saturate(0.8)' }} />
+        <video
+          autoPlay muted loop playsInline
+          src={HERO_VIDEO_URL}
+          poster={heroBg}
+          className="w-full h-full object-cover"
+          style={{ opacity: 0.35, filter: 'saturate(0.8)' }}
+        />
         <div className="absolute inset-0" style={{
-          background: 'linear-gradient(180deg, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0.95) 60%, #0A0A0A 100%)',
+          background: 'linear-gradient(180deg, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.95) 60%, #0A0A0A 100%)',
         }} />
       </div>
 
