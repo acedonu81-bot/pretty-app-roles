@@ -3,6 +3,7 @@ import { Camera } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useProfile } from '@/hooks/useProfile';
 
 const euLanguages = [
   '🇪🇸 Español', '🇬🇧 English', '🇩🇪 Deutsch', '🇫🇷 Français', '🇮🇹 Italiano',
@@ -13,9 +14,18 @@ const euLanguages = [
 ];
 
 const SettingsView = () => {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
+  const profile = useProfile();
   const photoRef = useRef<HTMLInputElement>(null);
-  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+
+  const [localName, setLocalName] = useState<string | null>(null);
+  const [localCity, setLocalCity] = useState<string | null>(null);
+  const [localRate, setLocalRate] = useState<number | null>(null);
+
+  const displayName = localName ?? profile.display_name;
+  const city = localCity ?? profile.zone ?? 'Madrid Centro';
+  const rate = localRate ?? profile.hourly_rate;
+  const photoUrl = profile.photo_url;
 
   const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -27,11 +37,23 @@ const SettingsView = () => {
     const { error } = await supabase.storage.from('audio-sessions').upload(path, file);
     if (error) { toast.error('Error al subir foto'); return; }
     const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
-    const url = urlData.publicUrl;
-    await (supabase.from('profiles').update({ photo_url: url } as any) as any).eq('user_id', user.id);
-    setPhotoPreview(url);
+    await profile.updateField({ photo_url: urlData.publicUrl });
     toast.success('Foto de perfil guardada.');
   };
+
+  const handleSave = async () => {
+    if (!user) return;
+    const updates: any = {};
+    if (localName !== null) updates.display_name = localName;
+    if (localCity !== null) updates.zone = localCity;
+    if (localRate !== null) updates.hourly_rate = localRate;
+    if (Object.keys(updates).length > 0) {
+      await profile.updateField(updates);
+    }
+    toast.success('Ajustes guardados.');
+  };
+
+  const initials = displayName ? displayName.charAt(0).toUpperCase() : 'X';
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
@@ -50,8 +72,8 @@ const SettingsView = () => {
           <div className="mb-5 flex items-center gap-4">
             <div className="relative cursor-pointer group" onClick={() => photoRef.current?.click()}>
               <div className="w-16 h-16 rounded-lg overflow-hidden flex items-center justify-center text-xl font-bold"
-                style={{ background: photoPreview ? undefined : 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-                {photoPreview ? <img src={photoPreview} alt="Foto" className="w-full h-full object-cover" /> : 'A'}
+                style={{ background: photoUrl ? undefined : 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+                {photoUrl ? <img src={photoUrl} alt="Foto" className="w-full h-full object-cover" /> : initials}
               </div>
               <div className="absolute inset-0 rounded-lg flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
                 <Camera size={18} className="text-white" />
@@ -65,6 +87,10 @@ const SettingsView = () => {
           </div>
 
           <div className="mb-4">
+            <label className="block text-xs text-muted-foreground mb-1.5">Nombre artístico</label>
+            <input type="text" value={displayName} onChange={e => setLocalName(e.target.value)} className="nightlife-input text-sm" />
+          </div>
+          <div className="mb-4">
             <label className="block text-xs text-muted-foreground mb-1.5">Idioma</label>
             <select className="nightlife-input cursor-pointer text-sm">
               {euLanguages.map(lang => <option key={lang}>{lang}</option>)}
@@ -76,14 +102,14 @@ const SettingsView = () => {
           </div>
           <div className="mb-4">
             <label className="block text-xs text-muted-foreground mb-1.5">Ubicación Base</label>
-            <input type="text" defaultValue="Madrid, España" className="nightlife-input text-sm pl-3" />
+            <input type="text" value={city} onChange={e => setLocalCity(e.target.value)} className="nightlife-input text-sm pl-3" />
           </div>
           <div className="mb-4 pt-4" style={{ borderTop: '1px solid var(--nightlife-border)' }}>
             <label className="block text-xs text-muted-foreground mb-1.5">Caché Base (€/hora)</label>
-            <input type="number" defaultValue={40} min={20} step={5}
+            <input type="number" value={rate} onChange={e => setLocalRate(Number(e.target.value))} min={20} step={5}
               className="nightlife-input text-sm pl-3 font-bold" style={{ color: '#D4AF37' }} />
           </div>
-          <button className="btn-nightlife-primary w-full text-sm" onClick={() => toast.info('Guardado.')}>
+          <button className="btn-nightlife-primary w-full text-sm" onClick={handleSave}>
             Guardar Cambios
           </button>
         </div>
@@ -112,7 +138,7 @@ const SettingsView = () => {
           ))}
 
           <button
-            onClick={() => toast.info('Sesión cerrada.')}
+            onClick={async () => { await signOut(); toast.info('Sesión cerrada.'); }}
             className="w-full py-2.5 rounded-lg font-medium text-xs mt-4"
             style={{ background: 'rgba(255,95,86,0.06)', color: '#ff5f56', border: '1px solid rgba(255,95,86,0.15)' }}
           >

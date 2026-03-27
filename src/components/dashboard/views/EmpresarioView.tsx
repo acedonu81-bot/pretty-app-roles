@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Building2, Zap, Heart, Search, MapPin, Filter, Plus, Clock, Star, Phone, MessageSquare, Lock } from 'lucide-react';
+import { Building2, Zap, Heart, Search, MapPin, Filter, Plus, Clock, Star, Phone, MessageSquare, Lock, Truck } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
@@ -97,6 +97,16 @@ const EmpresarioView = () => {
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
+      {/* Service on its way banner - shown when a booking is confirmed */}
+      <div className="glass-panel p-5 mb-5 flex items-center gap-4"
+        style={{ border: '1px solid rgba(212,175,55,0.3)', background: 'rgba(212,175,55,0.06)' }}>
+        <Truck size={28} style={{ color: '#D4AF37' }} />
+        <div>
+          <p className="text-sm font-bold" style={{ color: '#D4AF37' }}>🚀 Tu servicio va de camino...</p>
+          <p className="text-xs text-muted-foreground">Cuando un profesional confirme tu solicitud, recibirás los detalles aquí y por correo electrónico.</p>
+        </div>
+      </div>
+
       <div className="mb-5">
         <h2 className="text-2xl font-bold mb-1">
           Panel <span className="text-gradient">Empresario</span>

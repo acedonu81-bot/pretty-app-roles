@@ -30,6 +30,7 @@ import AdminGuard from '@/components/AdminGuard';
 import { useAuth } from '@/hooks/useAuth';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
+import { ProfileProvider } from '@/hooks/useProfile';
 
 const Dashboard = () => {
   const location = useLocation();
@@ -95,6 +96,7 @@ const Dashboard = () => {
   if (!user) return null;
 
   return (
+    <ProfileProvider>
     <div className="flex h-screen w-screen overflow-hidden" style={{ background: '#000' }}>
       <AmbientBackground />
 
@@ -119,6 +121,7 @@ const Dashboard = () => {
 
       <GlobalPlayer />
     </div>
+    </ProfileProvider>
   );
 };
 
