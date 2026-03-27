@@ -45,7 +45,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio }: ProfileCard
 
   return (
     <div
-      className="glass-panel p-5 flex flex-col transition-all hover:border-primary/20 duration-300 relative group cursor-pointer"
+      className="glass-panel p-3 sm:p-5 flex flex-col transition-all hover:border-primary/20 duration-300 relative group cursor-pointer overflow-hidden"
       onClick={() => setExpanded(!expanded)}
     >
       {statusBadges.length > 0 && (
