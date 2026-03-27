@@ -6,6 +6,7 @@ import AdminMetrics from './admin/AdminMetrics';
 import AdminCharts from './admin/AdminCharts';
 import AdminValidations from './admin/AdminValidations';
 import AdminUserManagement from './admin/AdminUserManagement';
+import AdminFeatureRequests from './admin/AdminFeatureRequests';
 
 const AdminView = () => {
   return (
