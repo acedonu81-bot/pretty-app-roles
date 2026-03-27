@@ -117,11 +117,11 @@ const GlobalPlayer = () => {
 
       <div className="flex-1 mx-2 hidden sm:block">
         <div className="flex items-center gap-2">
-          <span className="text-[0.55rem] text-muted-foreground">LIVE</span>
+          <span className="text-[0.55rem] text-muted-foreground">{currentTrack + 1}/{tracks.length}</span>
           <div className="flex-1 h-1 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.05)' }}>
             <div className="h-full rounded-full animate-pulse" style={{ width: playing ? '100%' : '0%', background: 'linear-gradient(90deg, #D4AF37, #B8941E)', transition: 'width 0.5s' }} />
           </div>
-          <span className="text-[0.55rem] text-muted-foreground">STREAM</span>
+          <span className="text-[0.55rem] text-muted-foreground">🔁 LOOP</span>
         </div>
       </div>
 
