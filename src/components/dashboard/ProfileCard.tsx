@@ -25,7 +25,7 @@ interface ProfileCardProps {
   showPortfolio?: boolean;
 }
 
-const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
+const ProfileCard = ({ profile: p, onBook, compact, showPortfolio }: ProfileCardProps) => {
   const isRookie = p.category === 'rookie';
   const [expanded, setExpanded] = useState(false);
   const [accepted, setAccepted] = useState(false);
