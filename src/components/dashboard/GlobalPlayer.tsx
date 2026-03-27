@@ -29,9 +29,20 @@ const GlobalPlayer = () => {
     if (!audioRef.current) {
       audioRef.current = new Audio(tracks[trackIndex].src);
       audioRef.current.volume = 0.4;
-      audioRef.current.crossOrigin = 'anonymous';
+      audioRef.current.onended = () => {
+        const nextIdx = (trackIndex + 1) % tracks.length;
+        changeTrack(nextIdx);
+        audioRef.current?.play().catch(() => {});
+        setPlaying(true);
+      };
     } else {
       audioRef.current.src = tracks[trackIndex].src;
+      audioRef.current.onended = () => {
+        const nextIdx = (trackIndex + 1) % tracks.length;
+        changeTrack(nextIdx);
+        audioRef.current?.play().catch(() => {});
+        setPlaying(true);
+      };
     }
     audioRef.current.muted = muted;
   };
