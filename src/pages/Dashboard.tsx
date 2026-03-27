@@ -27,6 +27,7 @@ import SubscriptionView from '@/components/dashboard/views/SubscriptionView';
 import AdminView from '@/components/dashboard/views/AdminView';
 import EmpresarioView from '@/components/dashboard/views/EmpresarioView';
 import AdminGuard from '@/components/AdminGuard';
+import RookieGuard from '@/components/RookieGuard';
 import { useAuth } from '@/hooks/useAuth';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
