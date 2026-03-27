@@ -5,6 +5,7 @@ import ProfileCard from '@/components/dashboard/ProfileCard';
 import CheckoutModal from '@/components/dashboard/CheckoutModal';
 import OffersWidget from '@/components/dashboard/OffersWidget';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
+import LiveBetaButton from '@/components/dashboard/LiveBetaButton';
 
 interface DirectoryViewProps {
   role: string;
@@ -174,6 +175,10 @@ const DirectoryView = ({ role, title, subtitle, onNavigate }: DirectoryViewProps
         {sortedProfiles.map(p => (
           <ProfileCard key={p.id} profile={p} />
         ))}
+      </div>
+
+      <div className="mt-6">
+        <LiveBetaButton />
       </div>
 
       <OffersWidget title={`Ofertas para ${title}`} role={role} />

@@ -4,6 +4,7 @@ import { motion, useInView } from 'framer-motion';
 import { Music, UtensilsCrossed, Users, Camera, ArrowRight, Sparkles } from 'lucide-react';
 import xpeakLogo from '@/assets/xpeak-logo.png';
 import heroBg from '@/assets/hero-bg.jpg';
+const HERO_VIDEO_URL = '/__l5e/assets-v1/cfcbc49a-8152-428e-bdec-cff4e18917a7/hero-video.mp4';
 import bentoMusica from '@/assets/bento-musica.jpg';
 import bentoGastro from '@/assets/bento-gastro.jpg';
 import bentoStaff from '@/assets/bento-staff.jpg';
@@ -30,13 +31,14 @@ const FadeIn = ({ children, delay = 0, className = '' }: { children: React.React
 
 /* ── Bento card ── */
 const BentoCard = ({
-  image, icon, title, subtitle, className = '',
+  image, icon, title, subtitle, className = '', onClick,
 }: {
-  image: string; icon: React.ReactNode; title: string; subtitle: string; className?: string;
+  image: string; icon: React.ReactNode; title: string; subtitle: string; className?: string; onClick?: () => void;
 }) => (
   <motion.div
     whileHover={{ scale: 1.03, y: -6 }}
     transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+    onClick={onClick}
     className={`relative overflow-hidden rounded-2xl cursor-pointer group ${className}`}
     style={{ border: '1px solid rgba(212,175,55,0.15)' }}
   >
@@ -85,11 +87,17 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen relative overflow-x-hidden flex flex-col" style={{ background: '#0A0A0A' }}>
-      {/* ─ Hero background ─ */}
+      {/* ─ Hero background video ─ */}
       <div className="fixed inset-0 -z-10 pointer-events-none">
-        <img src={heroBg} alt="" className="w-full h-full object-cover" style={{ opacity: 0.2, filter: 'saturate(0.8)' }} />
+        <video
+          autoPlay muted loop playsInline
+          src={HERO_VIDEO_URL}
+          poster={heroBg}
+          className="w-full h-full object-cover"
+          style={{ opacity: 0.35, filter: 'saturate(0.8)' }}
+        />
         <div className="absolute inset-0" style={{
-          background: 'linear-gradient(180deg, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0.95) 60%, #0A0A0A 100%)',
+          background: 'linear-gradient(180deg, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.95) 60%, #0A0A0A 100%)',
         }} />
       </div>
 
@@ -202,16 +210,16 @@ const Landing = () => {
         </FadeIn>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 auto-rows-[180px] md:auto-rows-[280px]">
           <FadeIn delay={0} className="md:row-span-2">
-            <BentoCard image={bentoMusica} icon={<Music size={20} />} title="Música" subtitle="DJs, productores y técnicos de sonido" className="h-full" />
+            <BentoCard image={bentoMusica} icon={<Music size={20} />} title="Música" subtitle="DJs, productores y técnicos de sonido" className="h-full" onClick={() => navigate('/auth')} />
           </FadeIn>
           <FadeIn delay={0.1} className="md:col-span-2">
-            <BentoCard image={bentoGastro} icon={<UtensilsCrossed size={20} />} title="Gastro" subtitle="Bartenders, chefs y catering premium" className="h-full" />
+            <BentoCard image={bentoGastro} icon={<UtensilsCrossed size={20} />} title="Gastro" subtitle="Bartenders, chefs y catering premium" className="h-full" onClick={() => navigate('/auth')} />
           </FadeIn>
           <FadeIn delay={0.15} className="md:row-span-2">
-            <BentoCard image={bentoImagen} icon={<Camera size={20} />} title="Imagen" subtitle="Fotógrafos, videógrafos y diseñadores" className="h-full" />
+            <BentoCard image={bentoImagen} icon={<Camera size={20} />} title="Imagen" subtitle="Fotógrafos, videógrafos y diseñadores" className="h-full" onClick={() => navigate('/auth')} />
           </FadeIn>
           <FadeIn delay={0.2} className="md:col-span-2">
-            <BentoCard image={bentoStaff} icon={<Users size={20} />} title="Staff" subtitle="RRPP, hostess, seguridad y coordinación" className="h-full" />
+            <BentoCard image={bentoStaff} icon={<Users size={20} />} title="Staff" subtitle="RRPP, hostess, seguridad y coordinación" className="h-full" onClick={() => navigate('/auth')} />
           </FadeIn>
         </div>
       </section>
