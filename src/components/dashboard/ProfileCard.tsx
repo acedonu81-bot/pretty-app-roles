@@ -234,9 +234,9 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio }: ProfileCard
       </div>
 
       {/* Price + Contact CTA */}
-      <div className="flex items-center justify-between pt-3" style={{ borderTop: '1px solid var(--nightlife-border)' }}
+      <div className="flex items-center justify-between pt-3 gap-2 flex-wrap" style={{ borderTop: '1px solid var(--nightlife-border)' }}
         onClick={e => e.stopPropagation()}>
-        <span className="text-base font-bold" style={{ color: '#D4AF37' }}>
+        <span className="text-sm sm:text-base font-bold whitespace-nowrap" style={{ color: '#D4AF37' }}>
           {['makeup', 'vestuario', 'media', 'design'].includes(p.role)
             ? 'A consultar'
             : <>€{p.price}<span className="text-xs text-muted-foreground font-normal">{p.priceUnit}</span></>

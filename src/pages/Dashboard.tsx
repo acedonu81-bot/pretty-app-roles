@@ -75,7 +75,11 @@ const Dashboard = () => {
       case 'topweekend': return <TopWeekendView />;
       case 'stats': return <StatsView />;
       case 'flash': return <FlashBookingView />;
-      case 'rookie': return <RookieView />;
+      case 'rookie': return (
+        <RookieGuard onDenied={() => handleViewChange('dj')}>
+          <RookieView />
+        </RookieGuard>
+      );
       case 'subscription': return <SubscriptionView />;
       case 'admin': return (
         <AdminGuard>
