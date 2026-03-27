@@ -30,16 +30,15 @@ const MiniEqualizer = () => {
   );
 };
 
-/** Single stream tile — always shows wave animation instead of broken iframes */
+/** Single stream tile — vertical layout with expand */
 const StreamTile = ({ profile, isExpanded, onToggle, viewerCount }: {
   profile: Profile;
   isExpanded: boolean;
   onToggle: () => void;
   viewerCount: number;
 }) => (
-  <div className={`relative rounded-lg overflow-hidden flex flex-col ${isExpanded ? 'col-span-2 row-span-2' : ''}`}
-    style={{ background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(229,57,53,0.2)', minHeight: isExpanded ? 320 : 160 }}>
-    {/* Stream content — wave animation */}
+  <div className={`relative rounded-lg overflow-hidden flex flex-col transition-all duration-300`}
+    style={{ background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(229,57,53,0.2)', height: isExpanded ? 350 : 140 }}>
     <div className="flex-1 relative">
       <MiniEqualizer />
     </div>
@@ -60,9 +59,9 @@ const StreamTile = ({ profile, isExpanded, onToggle, viewerCount }: {
       </span>
     </div>
 
-    <button onClick={onToggle} className="absolute top-2 right-2 w-6 h-6 rounded flex items-center justify-center transition-all hover:scale-110"
-      style={{ background: 'rgba(0,0,0,0.6)', color: '#fff' }}>
-      {isExpanded ? <Minimize2 size={12} /> : <Maximize2 size={12} />}
+    <button onClick={onToggle} className="absolute top-2 right-2 w-7 h-7 rounded-lg flex items-center justify-center transition-all hover:scale-110"
+      style={{ background: 'rgba(0,0,0,0.6)', color: '#fff', border: '1px solid rgba(255,255,255,0.1)' }}>
+      {isExpanded ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
     </button>
 
     {/* Profile bar */}
@@ -73,7 +72,7 @@ const StreamTile = ({ profile, isExpanded, onToggle, viewerCount }: {
         <p className="text-[0.5rem] text-muted-foreground truncate">{profile.specialty}</p>
       </div>
       <span className="text-[0.5rem] font-bold" style={{ color: '#D4AF37' }}>
-        {profile.profileViews.toLocaleString()} views
+        {viewerCount} viewers
       </span>
     </div>
   </div>
@@ -94,10 +93,9 @@ const DirectoryView = ({ role, title, subtitle, onNavigate }: DirectoryViewProps
 
   const liveStreamers = roleProfiles
     .filter(p => p.isLive || p.streamUrl)
-    .sort((a, b) => b.profileViews - a.profileViews)
-    .slice(0, 4);
+    .sort((a, b) => b.profileViews - a.profileViews);
 
-  const viewerCounts = liveStreamers.map((p) => 15 + Math.floor(p.profileViews / 30));
+  const viewerCounts = liveStreamers.map(() => Math.floor(Math.random() * 80) + 10);
 
   const toggleExpand = (id: number) => {
     setExpandedStream(prev => prev === id ? null : id);
@@ -131,7 +129,7 @@ const DirectoryView = ({ role, title, subtitle, onNavigate }: DirectoryViewProps
         )}
       </div>
 
-      {/* Embedded Live Streams */}
+      {/* Live Streams — vertical list ordered by viewers */}
       {liveStreamers.length > 0 && (
         <div className="glass-panel p-4 mb-5" style={{ border: '1px solid rgba(229,57,53,0.15)' }}>
           <div className="flex items-center justify-between mb-3">
@@ -148,40 +146,17 @@ const DirectoryView = ({ role, title, subtitle, onNavigate }: DirectoryViewProps
             </span>
           </div>
 
-          <div className={`grid gap-2 ${
-            expandedStream !== null
-              ? 'grid-cols-1'
-              : liveStreamers.length === 1
-                ? 'grid-cols-1'
-                : 'grid-cols-1 sm:grid-cols-2'
-          }`}
-            style={{ minHeight: expandedStream !== null ? 350 : liveStreamers.length === 1 ? 220 : 180 }}
-          >
-            {expandedStream !== null ? (
-              (() => {
-                const p = liveStreamers.find(s => s.id === expandedStream);
-                if (!p) return null;
-                const idx = liveStreamers.indexOf(p);
-                return (
-                  <StreamTile
-                    profile={p}
-                    isExpanded
-                    onToggle={() => toggleExpand(p.id)}
-                    viewerCount={viewerCounts[idx] || 0}
-                  />
-                );
-              })()
-            ) : (
-              liveStreamers.map((p, i) => (
-                <StreamTile
-                  key={p.id}
-                  profile={p}
-                  isExpanded={false}
-                  onToggle={() => toggleExpand(p.id)}
-                  viewerCount={viewerCounts[i]}
-                />
-              ))
-            )}
+          {/* Vertical stack */}
+          <div className="flex flex-col gap-2">
+            {liveStreamers.map((p, i) => (
+              <StreamTile
+                key={p.id}
+                profile={p}
+                isExpanded={expandedStream === p.id}
+                onToggle={() => toggleExpand(p.id)}
+                viewerCount={viewerCounts[i]}
+              />
+            ))}
           </div>
         </div>
       )}
