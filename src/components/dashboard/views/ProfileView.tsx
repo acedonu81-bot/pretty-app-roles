@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import AudioUpload from '@/components/dashboard/AudioUpload';
+import LiveBetaButton from '@/components/dashboard/LiveBetaButton';
 
 const ProfileView = () => {
   const { user } = useAuth();
