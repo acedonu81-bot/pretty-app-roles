@@ -78,7 +78,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
           <h2 className="text-xl font-bold tracking-wider">
             X<span className="text-gradient">PEAK</span>
           </h2>
-          <p className="text-[0.55rem] text-muted-foreground mt-0.5 tracking-widest uppercase">Madrid · Directorio Profesional</p>
+          <p className="text-[0.55rem] text-muted-foreground mt-0.5 tracking-widest uppercase">España · Directorio Profesional</p>
         </div>
       </div>
 
