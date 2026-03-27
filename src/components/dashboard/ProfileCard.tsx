@@ -22,6 +22,7 @@ interface ProfileCardProps {
   profile: Profile;
   onBook?: (profile: Profile) => void;
   compact?: boolean;
+  showPortfolio?: boolean;
 }
 
 const ProfileCard = ({ profile: p, onBook, compact }: ProfileCardProps) => {
