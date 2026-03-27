@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Radio } from 'lucide-react';
+import { Video } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -14,14 +14,14 @@ const LiveBetaButton = () => {
 
     const { error } = await supabase.from('feature_requests' as any).insert({
       user_id: user.id,
-      feature_name: 'live_video_beta',
+      feature_name: 'live_video',
     });
 
     if (error) {
-      if (error.code === '23505') toast.info('Ya solicitaste acceso al Directo Beta');
+      if (error.code === '23505') toast.info('Ya solicitaste acceso a Vídeo en Directo');
       else toast.error('Error al enviar solicitud');
     } else {
-      toast.success('¡Solicitud enviada! Te avisaremos cuando esté disponible.');
+      toast.success('Tu perfil ha sido priorizado para la fase de vídeo. Te avisaremos por email.');
     }
     setRequested(true);
     setLoading(false);
@@ -31,20 +31,25 @@ const LiveBetaButton = () => {
     <button
       onClick={handleRequest}
       disabled={loading || requested}
-      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 disabled:opacity-60"
+      className="group w-full flex items-center gap-3 px-5 py-4 rounded-xl text-sm font-bold transition-all duration-300 disabled:opacity-60"
       style={{
-        background: requested ? 'rgba(212,175,55,0.05)' : 'rgba(212,175,55,0.08)',
-        border: '1px solid rgba(212,175,55,0.2)',
+        background: '#0A0A0A',
+        border: '1px solid rgba(212,175,55,0.35)',
         color: '#D4AF37',
+        boxShadow: requested ? 'none' : '0 0 0 0 rgba(212,175,55,0)',
       }}
+      onMouseEnter={e => { if (!requested) (e.currentTarget.style.boxShadow = '0 0 20px rgba(212,175,55,0.2), inset 0 0 20px rgba(212,175,55,0.05)'); }}
+      onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; }}
     >
-      <Radio size={18} />
+      <Video size={20} />
       <span className="flex-1 text-left">
-        {requested ? 'Solicitud Enviada ✓' : 'Activar Vídeo en Directo (Beta)'}
+        {requested ? 'Solicitud Enviada ✓' : 'Habilitar Vídeo en Directo (Fase Beta)'}
       </span>
       {!requested && (
-        <span className="text-[0.6rem] px-2 py-0.5 rounded-full font-bold"
-          style={{ background: 'rgba(212,175,55,0.15)' }}>BETA</span>
+        <span className="text-[0.6rem] px-2.5 py-1 rounded-full font-bold tracking-wider"
+          style={{ background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.2)' }}>
+          BETA
+        </span>
       )}
     </button>
   );

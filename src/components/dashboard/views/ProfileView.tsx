@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import AudioUpload from '@/components/dashboard/AudioUpload';
+import LiveBetaButton from '@/components/dashboard/LiveBetaButton';
 
 const ProfileView = () => {
   const { user } = useAuth();
@@ -150,6 +151,10 @@ const ProfileView = () => {
               style={{ background: 'rgba(255,95,86,0.06)', color: '#ff5f56', border: '1px solid rgba(255,95,86,0.15)' }}>
               {deleting ? 'Eliminando...' : 'Eliminar todo mi contenido multimedia'}
             </button>
+          </div>
+          <div className="glass-panel p-5">
+            <h4 className="text-sm font-bold mb-3">Vídeo en Directo</h4>
+            <LiveBetaButton />
           </div>
           <div className="glass-panel p-5">
             <h4 className="text-sm font-bold mb-3">Valoraciones</h4>
