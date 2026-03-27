@@ -177,6 +177,10 @@ const DirectoryView = ({ role, title, subtitle, onNavigate }: DirectoryViewProps
         ))}
       </div>
 
+      <div className="mt-6">
+        <LiveBetaButton />
+      </div>
+
       <OffersWidget title={`Ofertas para ${title}`} role={role} />
       <CheckoutModal open={checkoutOpen} onClose={() => setCheckoutOpen(false)} item={checkoutItem} />
     </div>

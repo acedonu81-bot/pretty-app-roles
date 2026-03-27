@@ -20,6 +20,7 @@ const AdminView = () => {
 
       <AdminMetrics />
       <AdminCharts />
+      <AdminFeatureRequests />
       <AdminValidations />
       <AdminUserManagement />
     </div>
