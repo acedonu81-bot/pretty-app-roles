@@ -153,6 +153,10 @@ const ProfileView = () => {
             </button>
           </div>
           <div className="glass-panel p-5">
+            <h4 className="text-sm font-bold mb-3">Vídeo en Directo</h4>
+            <LiveBetaButton />
+          </div>
+          <div className="glass-panel p-5">
             <h4 className="text-sm font-bold mb-3">Valoraciones</h4>
             <p className="text-xs text-muted-foreground text-center py-4">Aún no tienes valoraciones. Aparecerán aquí cuando los empresarios valoren tu trabajo.</p>
           </div>
