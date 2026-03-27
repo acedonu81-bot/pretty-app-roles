@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Crown, CheckCircle, Star, Zap, Eye, TrendingUp, Lock } from 'lucide-react';
+import { Crown, CheckCircle, Star, Zap, Eye, TrendingUp, Lock, Gift, PartyPopper, Truck } from 'lucide-react';
 import { toast } from 'sonner';
+import { useProfile } from '@/hooks/useProfile';
 
 const plans = [
   {
@@ -11,6 +12,7 @@ const plans = [
     features: ['Perfil visible en directorio', 'Contacto por WhatsApp', 'Flash Booking (recibir ofertas)', 'Etiqueta Promesa o Básico'],
     color: 'rgba(255,255,255,0.1)',
     textColor: '#8E8EA0',
+    trialDays: 0,
   },
   {
     id: 'daily',
@@ -20,6 +22,7 @@ const plans = [
     features: ['Posición prioritaria durante 24h', 'Perfil destacado con borde dorado', 'Ideal para eventos puntuales', 'Indicador "Posicionamiento Activo"'],
     color: 'rgba(212,175,55,0.08)',
     textColor: '#D4AF37',
+    trialDays: 7,
   },
   {
     id: 'weekend',
@@ -30,6 +33,7 @@ const plans = [
     color: 'rgba(212,175,55,0.12)',
     textColor: '#D4AF37',
     popular: true,
+    trialDays: 7,
   },
   {
     id: 'pro',
@@ -39,6 +43,7 @@ const plans = [
     features: ['Todo lo de los Pases', 'Sello PRO dorado permanente', 'Acceso a Streaming 24/7', 'Estadísticas avanzadas de visitas', 'Prioridad sobre Pases y gratuitos'],
     color: 'rgba(212,175,55,0.15)',
     textColor: '#D4AF37',
+    trialDays: 7,
   },
   {
     id: 'business',
@@ -48,11 +53,14 @@ const plans = [
     features: ['Todo lo del plan Pro', 'Gestión multiperfil para agencias', 'Posición TOP con rotación horaria', 'Sello BUSINESS exclusivo', 'Soporte prioritario'],
     color: 'linear-gradient(135deg, rgba(212,175,55,0.2), rgba(184,148,30,0.1))',
     textColor: '#D4AF37',
+    trialDays: 7,
   },
 ];
 
 const SubscriptionView = () => {
   const [currentPlan] = useState('free');
+  const profile = useProfile();
+  const isEmpresario = profile.role === 'empresario';
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
@@ -63,12 +71,50 @@ const SubscriptionView = () => {
         <p className="text-sm text-muted-foreground">Elige el plan que mejor se adapte a tu carrera profesional.</p>
       </div>
 
+      {/* Hiring congratulations banners */}
+      {!isEmpresario && (
+        <div className="glass-panel p-5 mb-5 flex items-center gap-4"
+          style={{ border: '1px solid rgba(212,175,55,0.3)', background: 'rgba(212,175,55,0.06)', display: 'none' }}
+          id="congrats-banner">
+          <PartyPopper size={28} style={{ color: '#D4AF37' }} />
+          <div>
+            <p className="text-sm font-bold" style={{ color: '#D4AF37' }}>🎉 ¡Enhorabuena! ¡A reventarlo!</p>
+            <p className="text-xs text-muted-foreground">Has sido contratado para un evento. Consulta tu calendario para más detalles.</p>
+          </div>
+        </div>
+      )}
+
+      {isEmpresario && (
+        <div className="glass-panel p-5 mb-5 flex items-center gap-4"
+          style={{ border: '1px solid rgba(212,175,55,0.3)', background: 'rgba(212,175,55,0.06)', display: 'none' }}
+          id="service-banner">
+          <Truck size={28} style={{ color: '#D4AF37' }} />
+          <div>
+            <p className="text-sm font-bold" style={{ color: '#D4AF37' }}>🚀 Tu servicio va de camino...</p>
+            <p className="text-xs text-muted-foreground">El profesional ha confirmado tu solicitud. Recibirás los detalles en breve.</p>
+          </div>
+        </div>
+      )}
+
       <div className="glass-panel p-4 mb-6 flex items-center gap-3"
         style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
         <Crown size={20} style={{ color: '#D4AF37' }} />
         <div>
           <p className="text-sm font-bold">Plan actual: <span style={{ color: '#8E8EA0' }}>PROMESA / BÁSICO</span></p>
           <p className="text-[0.6rem] text-muted-foreground">Los planes de pago estarán disponibles próximamente.</p>
+        </div>
+      </div>
+
+      {/* 7-day trial notice */}
+      <div className="glass-panel p-4 mb-5 flex items-center gap-3"
+        style={{ border: '1px solid rgba(212,175,55,0.25)', background: 'rgba(212,175,55,0.04)' }}>
+        <Gift size={18} style={{ color: '#D4AF37' }} />
+        <div>
+          <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>Prueba gratuita de 7 días</p>
+          <p className="text-[0.6rem] text-muted-foreground">
+            Todos los planes de pago incluyen 7 días de prueba gratuita. Al finalizar, se cobrará automáticamente salvo que canceles antes.
+            Recibirás un correo de aviso 1 día antes del cobro. Solo una prueba por usuario y plan.
+          </p>
         </div>
       </div>
 
@@ -105,6 +151,11 @@ const SubscriptionView = () => {
                   </span>
                   {plan.price > 0 && <span className="text-[0.6rem] text-muted-foreground">{plan.period}</span>}
                 </div>
+                {plan.trialDays > 0 && (
+                  <p className="text-[0.55rem] mt-1 font-bold" style={{ color: '#D4AF37' }}>
+                    🎁 {plan.trialDays} días gratis de prueba
+                  </p>
+                )}
               </div>
 
               <div className="flex-1 space-y-2 mb-5">
