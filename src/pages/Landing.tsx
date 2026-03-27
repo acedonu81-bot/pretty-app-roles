@@ -170,19 +170,6 @@ const Landing = () => {
               Unirse al Directorio
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
             </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => setDemoOpen(true)}
-              className="text-base px-10 py-4 rounded-xl font-semibold transition-all duration-300"
-              style={{
-                background: 'rgba(255,255,255,0.04)',
-                backdropFilter: 'blur(12px)',
-                color: '#D4AF37',
-                border: '1px solid rgba(212,175,55,0.18)',
-              }}>
-              Ver Demo
-            </motion.button>
           </div>
         </FadeIn>
       </header>
