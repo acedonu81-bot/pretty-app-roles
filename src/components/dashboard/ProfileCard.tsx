@@ -84,9 +84,9 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio }: ProfileCard
 
       {!compact && <p className="text-xs text-muted-foreground mb-3 flex-1 line-clamp-2">{p.description}</p>}
 
-      <div className="flex flex-wrap gap-1 mb-3">
-        {p.badges.map(b => (
-          <span key={b} className="text-[0.6rem] font-medium px-2 py-0.5 rounded"
+      <div className="flex flex-wrap gap-1 mb-3 overflow-hidden">
+        {p.badges.slice(0, 3).map(b => (
+          <span key={b} className="text-[0.6rem] font-medium px-1.5 sm:px-2 py-0.5 rounded truncate max-w-[120px]"
             style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
             {b}
           </span>
