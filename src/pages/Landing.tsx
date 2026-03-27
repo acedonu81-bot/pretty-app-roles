@@ -160,6 +160,19 @@ const Landing = () => {
               Unirse al Directorio
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
             </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => navigate('/auth')}
+              className="text-sm font-semibold px-8 py-4 rounded-xl transition-all duration-300"
+              style={{
+                background: 'rgba(212,175,55,0.08)',
+                backdropFilter: 'blur(12px)',
+                color: '#D4AF37',
+                border: '1px solid rgba(212,175,55,0.2)',
+              }}>
+              Acceder
+            </motion.button>
           </div>
         </FadeIn>
       </header>
