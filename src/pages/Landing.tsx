@@ -38,6 +38,7 @@ const BentoCard = ({
   <motion.div
     whileHover={{ scale: 1.03, y: -6 }}
     transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+    onClick={onClick}
     className={`relative overflow-hidden rounded-2xl cursor-pointer group ${className}`}
     style={{ border: '1px solid rgba(212,175,55,0.15)' }}
   >
