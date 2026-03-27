@@ -112,8 +112,8 @@ const Landing = () => {
         <div className="max-w-[1200px] mx-auto px-6 md:px-8 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2.5">
             <img src={xpeakLogo} alt="XPEAK" width={34} height={34} />
-            <span className="text-xl font-bold tracking-wider text-gradient">
-              PEAK
+            <span className="text-xl font-bold tracking-wider">
+              X<span className="text-gradient">PEAK</span>
             </span>
           </div>
         </div>
