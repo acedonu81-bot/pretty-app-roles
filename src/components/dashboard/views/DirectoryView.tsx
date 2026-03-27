@@ -5,6 +5,7 @@ import ProfileCard from '@/components/dashboard/ProfileCard';
 import CheckoutModal from '@/components/dashboard/CheckoutModal';
 import OffersWidget from '@/components/dashboard/OffersWidget';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
+import LiveBetaButton from '@/components/dashboard/LiveBetaButton';
 
 interface DirectoryViewProps {
   role: string;
