@@ -90,6 +90,27 @@ const RookieView = () => {
         <p className="text-sm text-muted-foreground">Tu camino hacia el estatus PRO. Eres una de nuestras Promesas.</p>
       </div>
 
+      {/* 3 Featured Promesa DJs */}
+      <div className="mb-6">
+        <h3 className="text-sm font-bold mb-3" style={{ color: '#D4AF37' }}>🌟 DJs Promesa Destacados</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {[
+            { name: 'MC Ráfaga', specialty: 'Urbano / Reggaetón', votes: 87, emoji: '🔥', zone: 'Malasaña' },
+            { name: 'Sara Beats', specialty: 'Comercial / Top Hits', votes: 42, emoji: '🌱', zone: 'Salamanca' },
+            { name: 'Alex Rhythm', specialty: 'House / Afro', votes: 215, emoji: '⭐', zone: 'Chamberí' },
+          ].map((dj) => (
+            <div key={dj.name} className="glass-panel p-4 flex flex-col items-center text-center">
+              <span className="text-2xl mb-2">{dj.emoji}</span>
+              <p className="text-sm font-bold truncate w-full">{dj.name}</p>
+              <p className="text-xs text-muted-foreground truncate w-full">{dj.specialty}</p>
+              <p className="text-xs text-muted-foreground">{dj.zone}</p>
+              <div className="mt-2 text-lg font-black" style={{ color: '#D4AF37' }}>{dj.votes}</div>
+              <p className="text-[0.6rem] text-muted-foreground">votos</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Left column */}
         <div className="flex flex-col gap-4">
