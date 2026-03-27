@@ -96,6 +96,7 @@ const Dashboard = () => {
   if (!user) return null;
 
   return (
+    <ProfileProvider>
     <div className="flex h-screen w-screen overflow-hidden" style={{ background: '#000' }}>
       <AmbientBackground />
 
