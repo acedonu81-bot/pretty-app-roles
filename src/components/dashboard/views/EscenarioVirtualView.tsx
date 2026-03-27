@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { Radio, Send, Eye, MessageSquare, ExternalLink, Crown } from 'lucide-react';
+import { toast } from 'sonner';
 import { profiles } from '@/data/profiles';
+import { useProfile } from '@/hooks/useProfile';
+import { normalizeStreamUrl, parseStreamUrl } from '@/lib/streaming';
 
 const WaIcon = ({ size = 18 }: { size?: number }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
@@ -15,30 +18,27 @@ const fakeChat = [
   { user: 'DJ_Mara_92', text: 'Qué temazo!!', color: '#8E8EA0' },
 ];
 
-const parseStreamUrl = (url: string): { type: string; embedUrl: string } | null => {
-  if (!url) return null;
-  const twitchMatch = url.match(/twitch\.tv\/(\w+)/);
-  if (twitchMatch) return { type: 'Twitch', embedUrl: `https://player.twitch.tv/?channel=${twitchMatch[1]}&parent=${window.location.hostname}` };
-  // YouTube: support watch?v=, youtu.be/, live/, and channel links
-  const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|live\/|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/);
-  if (ytMatch) return { type: 'YouTube', embedUrl: `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1&mute=1` };
-  const mixMatch = url.match(/mixcloud\.com\/(.+)/);
-  if (mixMatch) return { type: 'Mixcloud', embedUrl: `https://www.mixcloud.com/widget/iframe/?hide_cover=1&feed=${encodeURIComponent('/' + mixMatch[1])}` };
-  return null;
-};
-
 const EscenarioVirtualView = () => {
+  const profile = useProfile();
   const [isLive, setIsLive] = useState(false);
   const [chatMessages, setChatMessages] = useState(fakeChat);
   const [chatInput, setChatInput] = useState('');
   const [viewers, setViewers] = useState(0);
   const [elapsed, setElapsed] = useState(0);
   const [eqHeights, setEqHeights] = useState<number[]>(Array(20).fill(20));
-  const [streamUrl, setStreamUrl] = useState('');
+  const [streamUrl, setStreamUrl] = useState(profile.stream_url ?? '');
+  const [streamTitle, setStreamTitle] = useState(profile.stream_title ?? '');
+  const [savingStream, setSavingStream] = useState(false);
   const [showUrlInput, setShowUrlInput] = useState(false);
   const chatRef = useRef<HTMLDivElement>(null);
 
-  const streamEmbed = parseStreamUrl(streamUrl);
+  useEffect(() => {
+    setStreamUrl(profile.stream_url ?? '');
+    setStreamTitle(profile.stream_title ?? '');
+  }, [profile.stream_url, profile.stream_title]);
+
+  const normalizedStreamUrl = normalizeStreamUrl(streamUrl);
+  const streamEmbed = parseStreamUrl(normalizedStreamUrl);
 
   useEffect(() => {
     if (!isLive) return;
@@ -86,6 +86,32 @@ const EscenarioVirtualView = () => {
     setChatInput('');
   };
 
+  const handleSaveStream = async () => {
+    const trimmedUrl = streamUrl.trim();
+
+    if (trimmedUrl && !streamEmbed) {
+      toast.error('La URL no es compatible. Usa Twitch, YouTube Live o Mixcloud.');
+      return;
+    }
+
+    setSavingStream(true);
+    await profile.updateField({
+      stream_url: trimmedUrl ? normalizedStreamUrl : null,
+      stream_title: streamTitle.trim() || null,
+    });
+    setSavingStream(false);
+    toast.success('Ajustes del directo guardados.');
+  };
+
+  const toggleLive = () => {
+    if (streamUrl.trim() && !streamEmbed) {
+      toast.error('La URL del streaming no es válida para incrustar el vídeo.');
+      return;
+    }
+
+    setIsLive(prev => !prev);
+  };
+
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
       {/* Top global streamer banner */}
@@ -118,7 +144,7 @@ const EscenarioVirtualView = () => {
             style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
             <ExternalLink size={14} /> Stream URL
           </button>
-          <button onClick={() => setIsLive(!isLive)}
+          <button onClick={toggleLive}
             className="flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-sm transition-all duration-300 flex-1 sm:flex-initial justify-center"
             style={{
               background: isLive ? 'linear-gradient(90deg, #ff5f56, #ff2d2d)' : 'linear-gradient(90deg, #D4AF37, #B8941E)',
@@ -136,11 +162,20 @@ const EscenarioVirtualView = () => {
             <ExternalLink size={12} style={{ color: '#D4AF37' }} /> Introduce tu URL de streaming
           </p>
           <p className="text-[0.6rem] text-muted-foreground mb-3">Soporta Twitch, YouTube Live y Mixcloud</p>
+          <input value={streamTitle} onChange={e => setStreamTitle(e.target.value)}
+            placeholder="Título del directo" className="nightlife-input text-sm !py-2.5 mb-2" />
           <input value={streamUrl} onChange={e => setStreamUrl(e.target.value)}
             placeholder="https://twitch.tv/tu_canal o https://youtube.com/live/..." className="nightlife-input text-sm !py-2.5" />
           {streamEmbed && (
             <p className="text-[0.6rem] mt-2 font-bold" style={{ color: '#22c55e' }}>✓ {streamEmbed.type} detectado</p>
           )}
+          <button
+            onClick={handleSaveStream}
+            disabled={savingStream}
+            className="mt-3 w-full rounded-lg border border-border bg-card px-4 py-2 text-xs font-bold text-primary transition-opacity disabled:opacity-60"
+          >
+            {savingStream ? 'Guardando...' : 'Guardar ajustes del directo'}
+          </button>
         </div>
       )}
 
@@ -175,6 +210,7 @@ const EscenarioVirtualView = () => {
                 <div className="text-center">
                   <Radio size={40} className="mx-auto mb-3 text-muted-foreground" />
                   <p className="text-muted-foreground text-xs">Pulsa "EN VIVO" para comenzar</p>
+                  {profile.stream_title && <p className="mt-2 text-[0.65rem] font-semibold text-primary">{profile.stream_title}</p>}
                 </div>
               )}
             </div>

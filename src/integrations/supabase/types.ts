@@ -158,6 +158,8 @@ export type Database = {
       }
       profiles: {
         Row: {
+          annual_billing: boolean
+          birthday: string | null
           created_at: string
           display_name: string
           hourly_rate: number
@@ -169,12 +171,17 @@ export type Database = {
           photo_url: string | null
           role: string
           specialty: string | null
+          stream_title: string | null
+          stream_url: string | null
           subscription_tier: string
+          trial_started_at: string
           updated_at: string
           user_id: string
           zone: string | null
         }
         Insert: {
+          annual_billing?: boolean
+          birthday?: string | null
           created_at?: string
           display_name?: string
           hourly_rate?: number
@@ -186,12 +193,17 @@ export type Database = {
           photo_url?: string | null
           role?: string
           specialty?: string | null
+          stream_title?: string | null
+          stream_url?: string | null
           subscription_tier?: string
+          trial_started_at?: string
           updated_at?: string
           user_id: string
           zone?: string | null
         }
         Update: {
+          annual_billing?: boolean
+          birthday?: string | null
           created_at?: string
           display_name?: string
           hourly_rate?: number
@@ -203,7 +215,10 @@ export type Database = {
           photo_url?: string | null
           role?: string
           specialty?: string | null
+          stream_title?: string | null
+          stream_url?: string | null
           subscription_tier?: string
+          trial_started_at?: string
           updated_at?: string
           user_id?: string
           zone?: string | null

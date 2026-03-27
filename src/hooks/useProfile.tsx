@@ -4,11 +4,16 @@ import { useAuth } from '@/hooks/useAuth';
 
 interface ProfileData {
   display_name: string;
+  birthday: string | null;
   photo_url: string | null;
   zone: string | null;
   hourly_rate: number;
   role: string;
   subscription_tier: string;
+  stream_url: string | null;
+  stream_title: string | null;
+  trial_started_at: string;
+  annual_billing: boolean;
 }
 
 interface ProfileCtx extends ProfileData {
@@ -19,11 +24,16 @@ interface ProfileCtx extends ProfileData {
 
 const defaults: ProfileData = {
   display_name: '',
+  birthday: null,
   photo_url: null,
   zone: 'Madrid Centro',
   hourly_rate: 40,
   role: 'dj',
   subscription_tier: 'free',
+  stream_url: null,
+  stream_title: null,
+  trial_started_at: new Date().toISOString(),
+  annual_billing: false,
 };
 
 const ProfileContext = createContext<ProfileCtx>({
@@ -44,7 +54,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     if (!user) return;
     const { data: row } = await supabase
       .from('profiles')
-      .select('display_name, photo_url, zone, hourly_rate, role, subscription_tier')
+      .select('display_name, birthday, photo_url, zone, hourly_rate, role, subscription_tier, stream_url, stream_title, trial_started_at, annual_billing')
       .eq('user_id', user.id)
       .maybeSingle();
     if (row) setData(row as unknown as ProfileData);

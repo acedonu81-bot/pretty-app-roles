@@ -21,6 +21,7 @@ const SettingsView = () => {
   const [localName, setLocalName] = useState<string | null>(null);
   const [localCity, setLocalCity] = useState<string | null>(null);
   const [localRate, setLocalRate] = useState<number | null>(null);
+  const [localBirthday, setLocalBirthday] = useState<string | null>(null);
 
   const displayName = localName ?? profile.display_name;
   const city = localCity ?? profile.zone ?? 'Madrid Centro';
@@ -48,6 +49,7 @@ const SettingsView = () => {
     if (localName !== null) updates.display_name = localName;
     if (localCity !== null) updates.zone = localCity;
     if (localRate !== null) updates.hourly_rate = localRate;
+    if (localBirthday !== null) updates.birthday = localBirthday || null;
     if (Object.keys(updates).length > 0) {
       await profile.updateField(updates);
     }
@@ -104,6 +106,15 @@ const SettingsView = () => {
           <div className="mb-4">
             <label className="block text-sm text-muted-foreground mb-1.5">Ubicación Base</label>
             <input type="text" value={city} onChange={e => setLocalCity(e.target.value)} className="nightlife-input text-base pl-3" />
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm text-muted-foreground mb-1.5">Fecha de cumpleaños</label>
+            <input
+              type="date"
+              value={localBirthday ?? profile.birthday ?? ''}
+              onChange={e => setLocalBirthday(e.target.value)}
+              className="nightlife-input text-base pl-3"
+            />
           </div>
           <div className="mb-4 pt-4" style={{ borderTop: '1px solid var(--nightlife-border)' }}>
             <label className="block text-sm text-muted-foreground mb-1.5">Caché Base (€/hora)</label>
