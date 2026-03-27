@@ -2,9 +2,9 @@ import { useState, useRef, useEffect } from 'react';
 import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX } from 'lucide-react';
 
 const tracks = [
+  { title: 'I Want Your Soul (Club Mix)', artist: 'Armand Van Helden', src: 'https://ddrqhwravupjzysriblq.supabase.co/storage/v1/object/sign/Music/Armand%20Van%20Helden%20-%20I%20Want%20Your%20Soul%20(Club%20mix)%20(128kbit_AAC).m4a?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83MDRjMmE2My1kM2Y2LTQ2NmUtODk4Zi0xMjAwMDAxMjg1NDQiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJNdXNpYy9Bcm1hbmQgVmFuIEhlbGRlbiAtIEkgV2FudCBZb3VyIFNvdWwgKENsdWIgbWl4KSAoMTI4a2JpdF9BQUMpLm00YSIsImlhdCI6MTc3NDU3MDcxMiwiZXhwIjoxODA2MTA2NzEyfQ.46hy6fNGSPae4Xy3s3Hy7FrMIMxCWf2Sr84fF0B_dsc' },
   { title: 'Tech House Radio', artist: 'XPEAK Radio', src: 'https://streams.ilovemusic.de/iloveradio17.mp3' },
   { title: 'Deep House Session', artist: 'XPEAK Chill', src: 'https://streams.ilovemusic.de/iloveradio2.mp3' },
-  { title: 'Minimal Techno', artist: 'XPEAK Underground', src: 'https://streams.ilovemusic.de/iloveradio10.mp3' },
 ];
 
 const GlobalPlayer = () => {
