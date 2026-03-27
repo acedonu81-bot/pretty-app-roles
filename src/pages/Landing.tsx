@@ -210,16 +210,16 @@ const Landing = () => {
         </FadeIn>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 auto-rows-[180px] md:auto-rows-[280px]">
           <FadeIn delay={0} className="md:row-span-2">
-            <BentoCard image={bentoMusica} icon={<Music size={20} />} title="Música" subtitle="DJs, productores y técnicos de sonido" className="h-full" />
+            <BentoCard image={bentoMusica} icon={<Music size={20} />} title="Música" subtitle="DJs, productores y técnicos de sonido" className="h-full" onClick={() => navigate('/auth')} />
           </FadeIn>
           <FadeIn delay={0.1} className="md:col-span-2">
-            <BentoCard image={bentoGastro} icon={<UtensilsCrossed size={20} />} title="Gastro" subtitle="Bartenders, chefs y catering premium" className="h-full" />
+            <BentoCard image={bentoGastro} icon={<UtensilsCrossed size={20} />} title="Gastro" subtitle="Bartenders, chefs y catering premium" className="h-full" onClick={() => navigate('/auth')} />
           </FadeIn>
           <FadeIn delay={0.15} className="md:row-span-2">
-            <BentoCard image={bentoImagen} icon={<Camera size={20} />} title="Imagen" subtitle="Fotógrafos, videógrafos y diseñadores" className="h-full" />
+            <BentoCard image={bentoImagen} icon={<Camera size={20} />} title="Imagen" subtitle="Fotógrafos, videógrafos y diseñadores" className="h-full" onClick={() => navigate('/auth')} />
           </FadeIn>
           <FadeIn delay={0.2} className="md:col-span-2">
-            <BentoCard image={bentoStaff} icon={<Users size={20} />} title="Staff" subtitle="RRPP, hostess, seguridad y coordinación" className="h-full" />
+            <BentoCard image={bentoStaff} icon={<Users size={20} />} title="Staff" subtitle="RRPP, hostess, seguridad y coordinación" className="h-full" onClick={() => navigate('/auth')} />
           </FadeIn>
         </div>
       </section>
