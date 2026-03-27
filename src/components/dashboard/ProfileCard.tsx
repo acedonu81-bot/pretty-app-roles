@@ -45,7 +45,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio }: ProfileCard
 
   return (
     <div
-      className="glass-panel p-5 flex flex-col transition-all hover:border-primary/20 duration-300 relative group cursor-pointer"
+      className="glass-panel p-3 sm:p-5 flex flex-col transition-all hover:border-primary/20 duration-300 relative group cursor-pointer overflow-hidden"
       onClick={() => setExpanded(!expanded)}
     >
       {statusBadges.length > 0 && (
@@ -69,8 +69,8 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio }: ProfileCard
       <div className="flex items-center gap-3 mb-3">
         <GeometricAvatar role={p.role as any} seed={p.id} size={48} isLive={p.isLive} />
         <div className="flex-1 min-w-0">
-          <h3 className="text-sm font-bold truncate">{p.name}</h3>
-          <p className="text-xs text-muted-foreground">{p.specialty}</p>
+          <h3 className="text-sm font-bold truncate max-w-full">{p.name}</h3>
+          <p className="text-xs text-muted-foreground truncate max-w-full">{p.specialty}</p>
         </div>
       </div>
 
@@ -84,9 +84,9 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio }: ProfileCard
 
       {!compact && <p className="text-xs text-muted-foreground mb-3 flex-1 line-clamp-2">{p.description}</p>}
 
-      <div className="flex flex-wrap gap-1 mb-3">
-        {p.badges.map(b => (
-          <span key={b} className="text-[0.6rem] font-medium px-2 py-0.5 rounded"
+      <div className="flex flex-wrap gap-1 mb-3 overflow-hidden">
+        {p.badges.slice(0, 3).map(b => (
+          <span key={b} className="text-[0.6rem] font-medium px-1.5 sm:px-2 py-0.5 rounded truncate max-w-[120px]"
             style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
             {b}
           </span>
@@ -220,7 +220,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio }: ProfileCard
           className="mt-0.5 accent-[#D4AF37] flex-shrink-0"
           id={`accept-${p.id}`}
         />
-        <label htmlFor={`accept-${p.id}`} className="text-[0.55rem] text-muted-foreground leading-tight cursor-pointer">
+        <label htmlFor={`accept-${p.id}`} className="text-[0.55rem] sm:text-xs text-muted-foreground leading-tight cursor-pointer break-words">
           Acepto las{' '}
           <button onClick={(e) => { e.preventDefault(); setShowLegal(true); }} className="underline font-bold" style={{ color: '#D4AF37' }}>
             Normas de la Comunidad
@@ -234,9 +234,9 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio }: ProfileCard
       </div>
 
       {/* Price + Contact CTA */}
-      <div className="flex items-center justify-between pt-3" style={{ borderTop: '1px solid var(--nightlife-border)' }}
+      <div className="flex items-center justify-between pt-3 gap-2 flex-wrap" style={{ borderTop: '1px solid var(--nightlife-border)' }}
         onClick={e => e.stopPropagation()}>
-        <span className="text-base font-bold" style={{ color: '#D4AF37' }}>
+        <span className="text-sm sm:text-base font-bold whitespace-nowrap" style={{ color: '#D4AF37' }}>
           {['makeup', 'vestuario', 'media', 'design'].includes(p.role)
             ? 'A consultar'
             : <>€{p.price}<span className="text-xs text-muted-foreground font-normal">{p.priceUnit}</span></>
