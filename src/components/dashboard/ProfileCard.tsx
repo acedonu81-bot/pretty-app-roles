@@ -69,8 +69,8 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio }: ProfileCard
       <div className="flex items-center gap-3 mb-3">
         <GeometricAvatar role={p.role as any} seed={p.id} size={48} isLive={p.isLive} />
         <div className="flex-1 min-w-0">
-          <h3 className="text-sm font-bold truncate">{p.name}</h3>
-          <p className="text-xs text-muted-foreground">{p.specialty}</p>
+          <h3 className="text-sm font-bold truncate max-w-full">{p.name}</h3>
+          <p className="text-xs text-muted-foreground truncate max-w-full">{p.specialty}</p>
         </div>
       </div>
 
