@@ -25,7 +25,8 @@ const SettingsView = () => {
   const displayName = localName ?? profile.display_name;
   const city = localCity ?? profile.zone ?? 'Madrid Centro';
   const rate = localRate ?? profile.hourly_rate;
-  const photoUrl = profile.photo_url;
+  const rawPhoto = profile.photo_url;
+  const photoUrl = rawPhoto && rawPhoto.length > 5 ? rawPhoto : null;
 
   const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
