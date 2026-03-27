@@ -1,7 +1,8 @@
-import { useState, useRef } from 'react';
-import { Upload, Music, X } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Upload, Music, X, Plus } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useProfile } from '@/hooks/useProfile';
 import { toast } from 'sonner';
 
 const allGenres = [
@@ -20,22 +21,49 @@ const allGenres = [
   'Acid House', 'Detroit Techno', 'Chicago House', 'Dub Techno',
 ];
 
-/** Sanitize filename: remove special chars, accents, spaces → underscores */
 const sanitizeFileName = (name: string): string =>
   name
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')  // remove accents
-    .replace(/[^a-zA-Z0-9._-]/g, '_')                  // only safe chars
-    .replace(/_+/g, '_')                                // collapse underscores
-    .replace(/^_|_$/g, '');                             // trim underscores
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9._-]/g, '_')
+    .replace(/_+/g, '_')
+    .replace(/^_|_$/g, '');
+
+const MAX_SESSIONS_FREE = 3;
+
+interface SessionFile {
+  name: string;
+  url: string;
+  storagePath: string;
+}
 
 const AudioUpload = () => {
   const [uploading, setUploading] = useState(false);
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  const [fileName, setFileName] = useState<string | null>(null);
+  const [sessions, setSessions] = useState<SessionFile[]>([]);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [showGenres, setShowGenres] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { user } = useAuth();
+  const profile = useProfile();
+
+  const isPro = profile.subscription_tier === 'pro' || profile.subscription_tier === 'business';
+  const maxSessions = isPro ? Infinity : MAX_SESSIONS_FREE;
+
+  // Load existing sessions from storage
+  useEffect(() => {
+    const loadSessions = async () => {
+      if (!user) return;
+      const { data: files } = await supabase.storage.from('audio-sessions').list(user.id + '/sessions');
+      if (files && files.length > 0) {
+        const loaded = files.map(f => {
+          const path = `${user.id}/sessions/${f.name}`;
+          const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
+          return { name: f.name.replace(/^\d+-/, ''), url: urlData.publicUrl, storagePath: path };
+        });
+        setSessions(loaded);
+      }
+    };
+    loadSessions();
+  }, [user]);
 
   const toggleGenre = (genre: string) => {
     setSelectedGenres(prev =>
@@ -46,39 +74,58 @@ const AudioUpload = () => {
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !user) return;
-    if (!file.type.includes('audio')) { toast.error('Solo archivos de audio (MP3, WAV)'); return; }
+    if (!file.type.includes('audio')) { toast.error('Solo archivos de audio (MP3, WAV, M4A)'); return; }
     if (file.size > 500 * 1024 * 1024) { toast.error('Máximo 500MB'); return; }
+    if (sessions.length >= maxSessions) {
+      toast.error(`Máximo ${MAX_SESSIONS_FREE} sesiones en plan básico. Actualiza a Pro para ilimitadas.`);
+      return;
+    }
 
     setUploading(true);
     const safeName = sanitizeFileName(file.name) || 'audio.mp3';
-    const path = `${user.id}/${Date.now()}-${safeName}`;
+    const path = `${user.id}/sessions/${Date.now()}-${safeName}`;
     const { error } = await supabase.storage.from('audio-sessions').upload(path, file);
     if (error) { toast.error('Error al subir: ' + error.message); setUploading(false); return; }
 
     const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
     const url = urlData.publicUrl;
 
-    await (supabase.from('profiles').update({ photo_url: url } as any) as any).eq('user_id', user.id);
+    const newSession: SessionFile = { name: file.name, url, storagePath: path };
+    setSessions(prev => [...prev, newSession]);
 
-    setAudioUrl(url);
-    setFileName(file.name);
-    toast.success('Audio subido correctamente');
+    // Notify admin via feature_requests
+    await supabase.from('feature_requests').insert({
+      user_id: user.id,
+      feature_name: `audio_upload:${file.name}`,
+    }).then(() => {}, () => {});
+
+    toast.success('Sesión subida y guardada correctamente.');
     setUploading(false);
+    if (inputRef.current) inputRef.current.value = '';
+  };
+
+  const removeSession = async (session: SessionFile) => {
+    await supabase.storage.from('audio-sessions').remove([session.storagePath]);
+    setSessions(prev => prev.filter(s => s.storagePath !== session.storagePath));
+    toast.info('Sesión eliminada.');
   };
 
   return (
     <div className="glass-panel p-4">
       <h4 className="text-sm font-bold mb-3 flex items-center gap-2">
-        <Music size={14} style={{ color: '#D4AF37' }} /> Sesión de Audio
+        <Music size={16} style={{ color: '#D4AF37' }} /> Sesiones de Audio
+        <span className="text-xs text-muted-foreground ml-auto">
+          {sessions.length}/{isPro ? '∞' : MAX_SESSIONS_FREE}
+        </span>
       </h4>
-      <p className="text-[0.6rem] text-muted-foreground mb-3">
-        Sube tu sesión grabada (MP3/WAV, máx 500MB). Es obligatorio para completar tu perfil.
+      <p className="text-xs text-muted-foreground mb-3">
+        Sube tus sesiones grabadas (MP3/WAV/M4A, máx 500MB). {!isPro && `Plan básico: máx ${MAX_SESSIONS_FREE} sesiones. Pro: ilimitadas.`}
       </p>
 
       {/* Genre selector */}
       <div className="mb-3">
         <button onClick={() => setShowGenres(!showGenres)}
-          className="text-xs font-bold px-3 py-1.5 rounded-lg transition-all"
+          className="text-sm font-bold px-3 py-1.5 rounded-lg transition-all"
           style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.15)', color: '#D4AF37' }}>
           🎵 Géneros ({selectedGenres.length}/5)
         </button>
@@ -86,7 +133,7 @@ const AudioUpload = () => {
           <div className="flex flex-wrap gap-1 mt-2">
             {selectedGenres.map(g => (
               <span key={g} onClick={() => toggleGenre(g)}
-                className="text-[0.55rem] font-bold px-2 py-0.5 rounded cursor-pointer hover:opacity-70"
+                className="text-xs font-bold px-2 py-0.5 rounded cursor-pointer hover:opacity-70"
                 style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
                 {g} ×
               </span>
@@ -98,7 +145,7 @@ const AudioUpload = () => {
             style={{ background: 'rgba(0,0,0,0.4)', border: '1px solid var(--nightlife-border)' }}>
             {allGenres.map(g => (
               <button key={g} onClick={() => toggleGenre(g)}
-                className="text-[0.55rem] font-medium px-2 py-0.5 rounded transition-all"
+                className="text-xs font-medium px-2 py-0.5 rounded transition-all"
                 style={{
                   background: selectedGenres.includes(g) ? 'rgba(212,175,55,0.2)' : 'rgba(255,255,255,0.03)',
                   color: selectedGenres.includes(g) ? '#D4AF37' : 'var(--nightlife-text-secondary)',
@@ -111,24 +158,32 @@ const AudioUpload = () => {
         )}
       </div>
 
-      {audioUrl ? (
-        <div className="space-y-2">
-          <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)' }}>
-            <Music size={12} style={{ color: '#22c55e' }} />
-            <span className="text-xs font-medium flex-1 truncate">{fileName}</span>
-            <button onClick={() => { setAudioUrl(null); setFileName(null); }}><X size={12} className="text-muted-foreground" /></button>
-          </div>
-          <audio src={audioUrl} controls className="w-full h-8" style={{ filter: 'sepia(100%) saturate(300%) brightness(70%) hue-rotate(5deg)' }} />
+      {/* Sessions list */}
+      {sessions.length > 0 && (
+        <div className="space-y-2 mb-3">
+          {sessions.map((s, i) => (
+            <div key={i} className="space-y-1">
+              <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)' }}>
+                <Music size={14} style={{ color: '#22c55e' }} />
+                <span className="text-sm font-medium flex-1 truncate">{s.name}</span>
+                <button onClick={() => removeSession(s)}><X size={14} className="text-muted-foreground hover:text-white" /></button>
+              </div>
+              <audio src={s.url} controls className="w-full h-9" style={{ filter: 'sepia(100%) saturate(300%) brightness(70%) hue-rotate(5deg)' }} />
+            </div>
+          ))}
         </div>
-      ) : (
+      )}
+
+      {/* Upload button */}
+      {sessions.length < maxSessions && (
         <button onClick={() => inputRef.current?.click()} disabled={uploading}
           className="w-full flex items-center justify-center gap-2 py-4 rounded-lg border-2 border-dashed transition-all hover:scale-[1.01]"
           style={{ borderColor: 'rgba(212,175,55,0.2)', color: '#D4AF37', background: 'rgba(212,175,55,0.03)' }}>
-          <Upload size={16} />
-          <span className="text-xs font-bold">{uploading ? 'Subiendo...' : 'Subir sesión de audio'}</span>
+          {sessions.length > 0 ? <Plus size={18} /> : <Upload size={18} />}
+          <span className="text-sm font-bold">{uploading ? 'Subiendo...' : sessions.length > 0 ? 'Añadir otra sesión' : 'Subir sesión de audio'}</span>
         </button>
       )}
-      <input ref={inputRef} type="file" accept="audio/mp3,audio/wav,audio/mpeg" onChange={handleUpload} className="hidden" />
+      <input ref={inputRef} type="file" accept="audio/mp3,audio/wav,audio/mpeg,audio/m4a,audio/x-m4a" onChange={handleUpload} className="hidden" />
     </div>
   );
 };
