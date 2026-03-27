@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Radio } from 'lucide-react';
+import { Radio, Trophy } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import { toast } from 'sonner';
+
+const GOAL = 50;
 
 interface FeatureRequest {
   id: string;
@@ -16,16 +20,27 @@ const AdminFeatureRequests = () => {
   useEffect(() => {
     const load = async () => {
       const { data } = await supabase
-        .from('feature_requests' as any)
+        .from('feature_requests')
         .select('*')
         .order('created_at', { ascending: false });
-      setRequests((data as any as FeatureRequest[]) || []);
+      const reqs = (data as FeatureRequest[]) || [];
+      setRequests(reqs);
       setLoading(false);
+
+      const liveCount = reqs.filter(r => r.feature_name === 'live_video').length;
+      if (liveCount >= GOAL) {
+        toast('¡XPEAK está listo! 50 usuarios han solicitado el vídeo en directo. Es hora de activar la pasarela de pagos.', {
+          icon: '🏆',
+          duration: 10000,
+          style: { background: '#1a1a1a', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' },
+        });
+      }
     };
     load();
   }, []);
 
-  const liveCount = requests.filter(r => r.feature_name === 'live_video_beta').length;
+  const liveCount = requests.filter(r => r.feature_name === 'live_video').length;
+  const progressPct = Math.min((liveCount / GOAL) * 100, 100);
 
   return (
     <div className="rounded-2xl p-6 mb-6" style={{
@@ -35,6 +50,30 @@ const AdminFeatureRequests = () => {
       <div className="flex items-center gap-3 mb-4">
         <Radio size={20} style={{ color: '#D4AF37' }} />
         <h3 className="text-lg font-bold">Solicitudes de Funciones Beta</h3>
+      </div>
+
+      {/* Progress bar */}
+      <div className="mb-5">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>
+            {liveCount >= GOAL ? (
+              <span className="flex items-center gap-1.5"><Trophy size={14} /> ¡Objetivo Alcanzado!</span>
+            ) : (
+              `Progreso: ${liveCount} / ${GOAL}`
+            )}
+          </span>
+          <span className="text-xs text-muted-foreground">{Math.round(progressPct)}%</span>
+        </div>
+        <div className="relative h-3 w-full overflow-hidden rounded-full" style={{ background: 'rgba(212,175,55,0.08)' }}>
+          <div
+            className="h-full rounded-full transition-all duration-700"
+            style={{
+              width: `${progressPct}%`,
+              background: 'linear-gradient(90deg, #B8941E, #D4AF37, #E8C547)',
+              boxShadow: liveCount >= GOAL ? '0 0 12px rgba(212,175,55,0.5)' : 'none',
+            }}
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
