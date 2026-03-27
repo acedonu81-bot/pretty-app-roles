@@ -75,6 +75,27 @@ export type Database = {
           },
         ]
       }
+      feature_requests: {
+        Row: {
+          created_at: string
+          feature_name: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          feature_name: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          feature_name?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       flash_jobs: {
         Row: {
           created_at: string
