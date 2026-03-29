@@ -85,6 +85,7 @@ const StatPill = ({ value, label }: { value: string; label: string }) => (
 /* ── Landing ── */
 const Landing = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [demoOpen, setDemoOpen] = useState(false);
 
   return (
