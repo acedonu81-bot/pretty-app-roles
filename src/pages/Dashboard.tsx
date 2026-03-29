@@ -26,6 +26,7 @@ import RookieView from '@/components/dashboard/views/RookieView';
 import SubscriptionView from '@/components/dashboard/views/SubscriptionView';
 import AdminView from '@/components/dashboard/views/AdminView';
 import EmpresarioView from '@/components/dashboard/views/EmpresarioView';
+import FanClubView from '@/components/dashboard/views/FanClubView';
 import AdminGuard from '@/components/AdminGuard';
 import RookieGuard from '@/components/RookieGuard';
 import { useAuth } from '@/hooks/useAuth';
@@ -77,6 +78,7 @@ const Dashboard = () => {
       case 'flash': return <FlashBookingView />;
       case 'rookie': return <RookieView />;
       case 'subscription': return <SubscriptionView />;
+      case 'fanclub': return <FanClubView />;
       case 'admin': return (
         <AdminGuard>
           <AdminView />

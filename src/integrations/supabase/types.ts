@@ -76,6 +76,79 @@ export type Database = {
           },
         ]
       }
+      fan_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          professional_profile_id: string
+          receiver_id: string
+          sender_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          professional_profile_id: string
+          receiver_id: string
+          sender_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          professional_profile_id?: string
+          receiver_id?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fan_messages_professional_profile_id_fkey"
+            columns: ["professional_profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fan_subscriptions: {
+        Row: {
+          amount: number
+          cancelled_at: string | null
+          created_at: string
+          fan_id: string
+          id: string
+          professional_profile_id: string
+          status: string
+        }
+        Insert: {
+          amount?: number
+          cancelled_at?: string | null
+          created_at?: string
+          fan_id: string
+          id?: string
+          professional_profile_id: string
+          status?: string
+        }
+        Update: {
+          amount?: number
+          cancelled_at?: string | null
+          created_at?: string
+          fan_id?: string
+          id?: string
+          professional_profile_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fan_subscriptions_professional_profile_id_fkey"
+            columns: ["professional_profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       favorites: {
         Row: {
           created_at: string
@@ -196,6 +269,7 @@ export type Database = {
           id: string
           instagram: string | null
           is_flash_active: boolean
+          is_live: boolean
           is_premium: boolean
           is_verified: boolean
           photo_url: string | null
@@ -218,6 +292,7 @@ export type Database = {
           id?: string
           instagram?: string | null
           is_flash_active?: boolean
+          is_live?: boolean
           is_premium?: boolean
           is_verified?: boolean
           photo_url?: string | null
@@ -240,6 +315,7 @@ export type Database = {
           id?: string
           instagram?: string | null
           is_flash_active?: boolean
+          is_live?: boolean
           is_premium?: boolean
           is_verified?: boolean
           photo_url?: string | null

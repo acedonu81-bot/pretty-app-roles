@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
 import { motion, useInView } from 'framer-motion';
 import { Music, UtensilsCrossed, Users, Camera, ArrowRight, Sparkles } from 'lucide-react';
 import xpeakLogo from '@/assets/xpeak-logo.png';
@@ -10,6 +11,7 @@ import bentoGastro from '@/assets/bento-gastro.jpg';
 import bentoStaff from '@/assets/bento-staff.jpg';
 import bentoImagen from '@/assets/bento-imagen.jpg';
 import LegalFooter from '@/components/LegalFooter';
+import LiveDJsSection from '@/components/dashboard/LiveDJsSection';
 import DemoVideoModal from '@/components/DemoVideoModal';
 
 /* ── Fade-in wrapper ── */
@@ -83,6 +85,7 @@ const StatPill = ({ value, label }: { value: string; label: string }) => (
 /* ── Landing ── */
 const Landing = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [demoOpen, setDemoOpen] = useState(false);
 
   return (
@@ -185,6 +188,15 @@ const Landing = () => {
           <StatPill value="100%" label="Verificados" />
         </div>
       </FadeIn>
+
+      {/* ─ DJs en Directo (solo autenticados) ─ */}
+      {user && (
+        <section className="max-w-[1200px] mx-auto px-6 md:px-8 pb-12">
+          <FadeIn>
+            <LiveDJsSection onNavigate={() => navigate('/dashboard', { state: { view: 'escenario' } })} />
+          </FadeIn>
+        </section>
+      )}
 
       {/* ─ Bento Grid ─ */}
       <section className="max-w-[1200px] mx-auto px-6 md:px-8 pb-28">

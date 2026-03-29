@@ -4,6 +4,7 @@ import { Profile, getWhatsAppLink, getInstagramLink, getLocationLink } from '@/d
 import GeometricAvatar from './GeometricAvatar';
 import VoteButton from './VoteButton';
 import LegalModal from '@/components/LegalModal';
+import FanSubscribeButton from './FanSubscribeButton';
 
 const WhatsAppIcon = ({ size = 16 }: { size?: number }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
@@ -203,6 +204,11 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio }: ProfileCard
           )}
         </div>
       )}
+
+      {/* Fan Club subscribe button */}
+      <div className="mb-3" onClick={e => e.stopPropagation()}>
+        <FanSubscribeButton profileId={String(p.id)} professionalName={p.name} />
+      </div>
 
       {/* Intermediation notice */}
       <div className="py-2 mb-2" onClick={e => e.stopPropagation()}>
