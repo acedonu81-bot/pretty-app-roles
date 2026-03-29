@@ -35,6 +35,7 @@ const defaults: ProfileData = {
   stream_title: null,
   trial_started_at: new Date().toISOString(),
   annual_billing: false,
+  is_live: false,
 };
 
 const ProfileContext = createContext<ProfileCtx>({
