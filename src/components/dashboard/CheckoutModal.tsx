@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { X, ShieldCheck, Truck, Volume2, Smile, Lock, CheckCircle, Loader2 } from 'lucide-react';
 
 interface CheckoutModalProps {
