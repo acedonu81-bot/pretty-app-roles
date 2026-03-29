@@ -17,7 +17,8 @@ const SubscriptionView = () => {
   const [cancelPlanName, setCancelPlanName] = useState('');
 
   useEffect(() => {
-    setBillingCycle(profile.annual_billing ? 'annual' : 'monthly');
+    const cycle = profile.annual_billing ? 'annual' : 'monthly';
+    setPlanCycles({ pro: cycle, business: cycle });
   }, [profile.annual_billing]);
 
   const currentPlan = useMemo(() => mapSubscriptionTierToPlan(profile.subscription_tier), [profile.subscription_tier]);
