@@ -37,6 +37,7 @@ const CheckoutModal = ({ open, onClose, item }: CheckoutModalProps) => {
   const handleClose = () => {
     setStep('extras');
     setSelectedExtras([]);
+    setAcceptedTerms(false);
     onClose();
   };
 
