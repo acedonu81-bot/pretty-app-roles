@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      cancellation_surveys: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          plan: string
+          reason: string
+          retention_accepted: boolean
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          plan: string
+          reason: string
+          retention_accepted?: boolean
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          plan?: string
+          reason?: string
+          retention_accepted?: boolean
+          user_id?: string
+        }
+        Relationships: []
+      }
       community_votes: {
         Row: {
           created_at: string
@@ -222,6 +252,36 @@ export type Database = {
           updated_at?: string
           user_id?: string
           zone?: string | null
+        }
+        Relationships: []
+      }
+      retention_discounts: {
+        Row: {
+          activated_at: string
+          discount_percent: number
+          duration_months: number
+          expires_at: string
+          id: string
+          plan: string
+          user_id: string
+        }
+        Insert: {
+          activated_at?: string
+          discount_percent?: number
+          duration_months?: number
+          expires_at?: string
+          id?: string
+          plan: string
+          user_id: string
+        }
+        Update: {
+          activated_at?: string
+          discount_percent?: number
+          duration_months?: number
+          expires_at?: string
+          id?: string
+          plan?: string
+          user_id?: string
         }
         Relationships: []
       }

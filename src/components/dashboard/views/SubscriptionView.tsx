@@ -3,11 +3,15 @@ import { Crown, CheckCircle, Star, Zap, Eye, TrendingUp, Lock, Gift, PartyPopper
 import { useProfile } from '@/hooks/useProfile';
 import { Switch } from '@/components/ui/switch';
 import { ANNUAL_DISCOUNT, BillingCycle, getPlanPricing, getTrialDaysRemaining, isBirthdayToday, mapSubscriptionTierToPlan, subscriptionPlans } from '@/lib/subscriptions';
+import CancellationModal from '@/components/dashboard/CancellationModal';
 
 const SubscriptionView = () => {
   const profile = useProfile();
   const isEmpresario = profile.role === 'empresario';
   const [billingCycle, setBillingCycle] = useState<BillingCycle>('monthly');
+  const [cancelModalOpen, setCancelModalOpen] = useState(false);
+  const [cancelPlanId, setCancelPlanId] = useState('');
+  const [cancelPlanName, setCancelPlanName] = useState('');
 
   useEffect(() => {
     setBillingCycle(profile.annual_billing ? 'annual' : 'monthly');
@@ -190,6 +194,18 @@ const SubscriptionView = () => {
                 }}>
                 {isActive ? 'Plan Actual' : isLocked ? '🔒 Próximamente' : 'Plan Actual'}
               </button>
+              {isActive && plan.id !== 'free' && (
+                <button
+                  onClick={() => {
+                    setCancelPlanId(plan.id);
+                    setCancelPlanName(plan.name);
+                    setCancelModalOpen(true);
+                  }}
+                  className="w-full mt-2 py-1.5 rounded-lg text-[0.65rem] font-medium transition-all hover:bg-destructive/10 text-muted-foreground hover:text-destructive border border-transparent hover:border-destructive/20"
+                >
+                  Cancelar suscripción
+                </button>
+              )}
             </div>
           );
         })}
@@ -258,6 +274,12 @@ const SubscriptionView = () => {
           ))}
         </div>
       </div>
+      <CancellationModal
+        open={cancelModalOpen}
+        onOpenChange={setCancelModalOpen}
+        planId={cancelPlanId}
+        planName={cancelPlanName}
+      />
     </div>
   );
 };
