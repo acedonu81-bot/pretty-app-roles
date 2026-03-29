@@ -8,21 +8,25 @@ import CancellationModal from '@/components/dashboard/CancellationModal';
 const SubscriptionView = () => {
   const profile = useProfile();
   const isEmpresario = profile.role === 'empresario';
-  const [billingCycle, setBillingCycle] = useState<BillingCycle>('monthly');
+  const [planCycles, setPlanCycles] = useState<Record<string, BillingCycle>>({
+    pro: profile.annual_billing ? 'annual' : 'monthly',
+    business: profile.annual_billing ? 'annual' : 'monthly',
+  });
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [cancelPlanId, setCancelPlanId] = useState('');
   const [cancelPlanName, setCancelPlanName] = useState('');
 
   useEffect(() => {
-    setBillingCycle(profile.annual_billing ? 'annual' : 'monthly');
+    const cycle = profile.annual_billing ? 'annual' : 'monthly';
+    setPlanCycles({ pro: cycle, business: cycle });
   }, [profile.annual_billing]);
 
   const currentPlan = useMemo(() => mapSubscriptionTierToPlan(profile.subscription_tier), [profile.subscription_tier]);
   const trialDaysRemaining = useMemo(() => getTrialDaysRemaining(profile.trial_started_at), [profile.trial_started_at]);
   const birthdayDiscountActive = useMemo(() => isBirthdayToday(profile.birthday), [profile.birthday]);
 
-  const handleCycleChange = async (checked: boolean) => {
-    setBillingCycle(checked ? 'annual' : 'monthly');
+  const handlePlanCycleChange = async (planId: string, checked: boolean) => {
+    setPlanCycles(prev => ({ ...prev, [planId]: checked ? 'annual' : 'monthly' }));
     await profile.updateField({ annual_billing: checked });
   };
 
@@ -69,18 +73,6 @@ const SubscriptionView = () => {
         </div>
       </div>
 
-      <div className="glass-panel p-4 mb-5 flex items-center justify-between gap-3"
-        style={{ border: '1px solid rgba(212,175,55,0.2)', background: 'rgba(212,175,55,0.03)' }}>
-        <div>
-          <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>Selector de ciclo</p>
-          <p className="text-[0.65rem] text-muted-foreground">Activa anual para aplicar un {ANNUAL_DISCOUNT * 100}% de ahorro inmediato.</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <span className={`text-xs font-bold ${billingCycle === 'monthly' ? 'text-foreground' : 'text-muted-foreground'}`}>Mensual</span>
-          <Switch checked={billingCycle === 'annual'} onCheckedChange={handleCycleChange} aria-label="Cambiar a facturación anual" />
-          <span className={`text-xs font-bold ${billingCycle === 'annual' ? 'text-primary' : 'text-muted-foreground'}`}>Anual</span>
-        </div>
-      </div>
 
       <div className="glass-panel p-4 mb-5 flex items-center gap-3"
         style={{ border: '1px solid rgba(212,175,55,0.25)', background: 'rgba(212,175,55,0.04)' }}>
@@ -140,7 +132,8 @@ const SubscriptionView = () => {
         {subscriptionPlans.map(plan => {
           const isActive = plan.id === currentPlan;
           const isLocked = plan.id !== 'free';
-          const pricing = getPlanPricing(plan, billingCycle, birthdayDiscountActive);
+          const cardCycle = plan.annualEligible ? (planCycles[plan.id] ?? 'monthly') : 'monthly';
+          const pricing = getPlanPricing(plan, cardCycle, birthdayDiscountActive);
           return (
             <div key={plan.id} className={`glass-panel p-5 flex flex-col relative ${isLocked ? 'opacity-60' : ''}`}
               style={{ border: plan.popular ? '1px solid rgba(212,175,55,0.3)' : undefined }}>
@@ -173,6 +166,20 @@ const SubscriptionView = () => {
                   </p>
                 )}
               </div>
+
+              {/* Per-card billing cycle toggle for annual-eligible plans */}
+              {plan.annualEligible && (
+                <div className="mb-4 p-3 rounded-lg flex items-center justify-between"
+                  style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}>
+                  <span className={`text-[0.6rem] font-bold ${cardCycle === 'monthly' ? 'text-foreground' : 'text-muted-foreground'}`}>Mensual</span>
+                  <Switch
+                    checked={cardCycle === 'annual'}
+                    onCheckedChange={(checked) => handlePlanCycleChange(plan.id, checked)}
+                    aria-label={`Cambiar ${plan.name} a facturación anual`}
+                  />
+                  <span className={`text-[0.6rem] font-bold ${cardCycle === 'annual' ? 'text-primary' : 'text-muted-foreground'}`}>Anual -30%</span>
+                </div>
+              )}
 
               <div className="flex-1 space-y-2 mb-5">
                 {plan.features.map(f => (
