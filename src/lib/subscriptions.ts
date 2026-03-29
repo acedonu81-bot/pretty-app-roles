@@ -26,6 +26,7 @@ export const subscriptionPlans: SubscriptionPlan[] = [
       'Perfil visible en el directorio',
       'Contacto directo por WhatsApp',
       'Recibir ofertas Flash Booking',
+      'Hasta 3 vídeos de streaming',
       'Etiqueta Promesa o Básico',
     ],
     textColor: '#8E8EA0',
