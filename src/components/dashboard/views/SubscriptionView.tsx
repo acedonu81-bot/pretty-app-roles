@@ -274,6 +274,12 @@ const SubscriptionView = () => {
           ))}
         </div>
       </div>
+      <CancellationModal
+        open={cancelModalOpen}
+        onOpenChange={setCancelModalOpen}
+        planId={cancelPlanId}
+        planName={cancelPlanName}
+      />
     </div>
   );
 };
