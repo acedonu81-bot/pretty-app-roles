@@ -3,6 +3,7 @@ import { Crown, CheckCircle, Star, Zap, Eye, TrendingUp, Lock, Gift, PartyPopper
 import { useProfile } from '@/hooks/useProfile';
 import { Switch } from '@/components/ui/switch';
 import { ANNUAL_DISCOUNT, BillingCycle, getPlanPricing, getTrialDaysRemaining, isBirthdayToday, mapSubscriptionTierToPlan, subscriptionPlans } from '@/lib/subscriptions';
+import CancellationModal from '@/components/dashboard/CancellationModal';
 
 const SubscriptionView = () => {
   const profile = useProfile();
