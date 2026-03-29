@@ -8,7 +8,10 @@ import CancellationModal from '@/components/dashboard/CancellationModal';
 const SubscriptionView = () => {
   const profile = useProfile();
   const isEmpresario = profile.role === 'empresario';
-  const [billingCycle, setBillingCycle] = useState<BillingCycle>('monthly');
+  const [planCycles, setPlanCycles] = useState<Record<string, BillingCycle>>({
+    pro: profile.annual_billing ? 'annual' : 'monthly',
+    business: profile.annual_billing ? 'annual' : 'monthly',
+  });
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [cancelPlanId, setCancelPlanId] = useState('');
   const [cancelPlanName, setCancelPlanName] = useState('');
