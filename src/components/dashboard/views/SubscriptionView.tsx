@@ -73,18 +73,6 @@ const SubscriptionView = () => {
         </div>
       </div>
 
-      <div className="glass-panel p-4 mb-5 flex items-center justify-between gap-3"
-        style={{ border: '1px solid rgba(212,175,55,0.2)', background: 'rgba(212,175,55,0.03)' }}>
-        <div>
-          <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>Selector de ciclo</p>
-          <p className="text-[0.65rem] text-muted-foreground">Activa anual para aplicar un {ANNUAL_DISCOUNT * 100}% de ahorro inmediato.</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <span className={`text-xs font-bold ${billingCycle === 'monthly' ? 'text-foreground' : 'text-muted-foreground'}`}>Mensual</span>
-          <Switch checked={billingCycle === 'annual'} onCheckedChange={handleCycleChange} aria-label="Cambiar a facturación anual" />
-          <span className={`text-xs font-bold ${billingCycle === 'annual' ? 'text-primary' : 'text-muted-foreground'}`}>Anual</span>
-        </div>
-      </div>
 
       <div className="glass-panel p-4 mb-5 flex items-center gap-3"
         style={{ border: '1px solid rgba(212,175,55,0.25)', background: 'rgba(212,175,55,0.04)' }}>
