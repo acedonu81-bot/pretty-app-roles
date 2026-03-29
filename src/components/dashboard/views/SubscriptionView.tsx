@@ -9,6 +9,9 @@ const SubscriptionView = () => {
   const profile = useProfile();
   const isEmpresario = profile.role === 'empresario';
   const [billingCycle, setBillingCycle] = useState<BillingCycle>('monthly');
+  const [cancelModalOpen, setCancelModalOpen] = useState(false);
+  const [cancelPlanId, setCancelPlanId] = useState('');
+  const [cancelPlanName, setCancelPlanName] = useState('');
 
   useEffect(() => {
     setBillingCycle(profile.annual_billing ? 'annual' : 'monthly');
