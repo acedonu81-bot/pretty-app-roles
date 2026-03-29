@@ -59,6 +59,7 @@ export const subscriptionPlans: SubscriptionPlan[] = [
     features: [
       'Gestión de hasta 5 perfiles',
       'Acceso a Streaming 24/7',
+      'Vídeos de streaming ilimitados',
       'Visibilidad máxima en búsquedas',
       'Sello Agencia exclusivo',
       'Todo lo incluido en Business',
