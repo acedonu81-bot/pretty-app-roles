@@ -25,8 +25,8 @@ const SubscriptionView = () => {
   const trialDaysRemaining = useMemo(() => getTrialDaysRemaining(profile.trial_started_at), [profile.trial_started_at]);
   const birthdayDiscountActive = useMemo(() => isBirthdayToday(profile.birthday), [profile.birthday]);
 
-  const handleCycleChange = async (checked: boolean) => {
-    setBillingCycle(checked ? 'annual' : 'monthly');
+  const handlePlanCycleChange = async (planId: string, checked: boolean) => {
+    setPlanCycles(prev => ({ ...prev, [planId]: checked ? 'annual' : 'monthly' }));
     await profile.updateField({ annual_billing: checked });
   };
 
