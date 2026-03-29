@@ -11,6 +11,7 @@ import bentoGastro from '@/assets/bento-gastro.jpg';
 import bentoStaff from '@/assets/bento-staff.jpg';
 import bentoImagen from '@/assets/bento-imagen.jpg';
 import LegalFooter from '@/components/LegalFooter';
+import LiveDJsSection from '@/components/dashboard/LiveDJsSection';
 import DemoVideoModal from '@/components/DemoVideoModal';
 
 /* ── Fade-in wrapper ── */
