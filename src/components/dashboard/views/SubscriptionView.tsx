@@ -194,6 +194,18 @@ const SubscriptionView = () => {
                 }}>
                 {isActive ? 'Plan Actual' : isLocked ? '🔒 Próximamente' : 'Plan Actual'}
               </button>
+              {isActive && plan.id !== 'free' && (
+                <button
+                  onClick={() => {
+                    setCancelPlanId(plan.id);
+                    setCancelPlanName(plan.name);
+                    setCancelModalOpen(true);
+                  }}
+                  className="w-full mt-2 py-1.5 rounded-lg text-[0.65rem] font-medium transition-all hover:bg-destructive/10 text-muted-foreground hover:text-destructive border border-transparent hover:border-destructive/20"
+                >
+                  Cancelar suscripción
+                </button>
+              )}
             </div>
           );
         })}
