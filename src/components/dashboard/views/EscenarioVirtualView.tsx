@@ -103,13 +103,16 @@ const EscenarioVirtualView = () => {
     toast.success('Ajustes del directo guardados.');
   };
 
-  const toggleLive = () => {
+  const toggleLive = async () => {
     if (streamUrl.trim() && !streamEmbed) {
       toast.error('La URL del streaming no es válida para incrustar el vídeo.');
       return;
     }
-
-    setIsLive(prev => !prev);
+    const newLive = !isLive;
+    setIsLive(newLive);
+    // Persist is_live to DB
+    await profile.updateField({ is_live: newLive } as any);
+    toast.success(newLive ? '¡Estás en directo!' : 'Has salido del directo.');
   };
 
   return (
