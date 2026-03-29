@@ -189,6 +189,15 @@ const Landing = () => {
         </div>
       </FadeIn>
 
+      {/* ─ DJs en Directo (solo autenticados) ─ */}
+      {user && (
+        <section className="max-w-[1200px] mx-auto px-6 md:px-8 pb-12">
+          <FadeIn>
+            <LiveDJsSection onNavigate={() => navigate('/dashboard', { state: { view: 'escenario' } })} />
+          </FadeIn>
+        </section>
+      )}
+
       {/* ─ Bento Grid ─ */}
       <section className="max-w-[1200px] mx-auto px-6 md:px-8 pb-28">
         <FadeIn>
