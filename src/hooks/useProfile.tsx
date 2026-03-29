@@ -56,7 +56,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     if (!user) return;
     const { data: row } = await supabase
       .from('profiles')
-      .select('display_name, birthday, photo_url, zone, hourly_rate, role, subscription_tier, stream_url, stream_title, trial_started_at, annual_billing')
+      .select('display_name, birthday, photo_url, zone, hourly_rate, role, subscription_tier, stream_url, stream_title, trial_started_at, annual_billing, is_live')
       .eq('user_id', user.id)
       .maybeSingle();
     if (row) setData(row as unknown as ProfileData);
