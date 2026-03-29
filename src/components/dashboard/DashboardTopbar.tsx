@@ -2,7 +2,7 @@ import { Search, LogOut, Menu, Bell, Gift, Sparkles } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProfile } from '@/hooks/useProfile';
-import { getTrialDaysRemaining, isBirthdayToday } from '@/lib/subscriptions';
+import { getTrialDaysRemaining, isBirthdayToday, mapSubscriptionTierToPlan } from '@/lib/subscriptions';
 
 interface TopbarProps {
   onMenuToggle?: () => void;
@@ -16,17 +16,19 @@ const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
 
   const trialDaysRemaining = useMemo(() => getTrialDaysRemaining(profile.trial_started_at), [profile.trial_started_at]);
   const birthdayOfferActive = useMemo(() => isBirthdayToday(profile.birthday), [profile.birthday]);
+  const currentPlan = useMemo(() => mapSubscriptionTierToPlan(profile.subscription_tier), [profile.subscription_tier]);
+  const showTrialNotice = currentPlan !== 'free';
 
   const trialLabel = trialDaysRemaining > 0
     ? `Te quedan ${trialDaysRemaining} ${trialDaysRemaining === 1 ? 'día' : 'días'} de acceso gratuito`
     : 'Tu periodo de prueba ha finalizado. Suscríbete al plan anual y ahorra un 30%.';
 
   const notifications = [
-    {
+    ...(showTrialNotice ? [{
       title: trialDaysRemaining > 0 ? 'Prueba activa' : 'Prueba finalizada',
       desc: trialLabel,
       time: 'Ahora',
-    },
+    }] : []),
     ...(birthdayOfferActive ? [{
       title: 'Descuento de cumpleaños',
       desc: 'Hoy tienes un 40% en la suscripción anual. Aprovecha la oferta.',
@@ -67,21 +69,24 @@ const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
           />
         </div>
 
-        <div
-          className="hidden lg:flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-semibold border border-border bg-card/70 text-primary"
-        >
-          <Gift size={14} />
-          <span>{trialLabel}</span>
-        </div>
+        {showTrialNotice && (
+          <div
+            className="hidden lg:flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-semibold border border-border bg-card/70 text-primary"
+          >
+            <Gift size={14} />
+            <span>{trialLabel}</span>
+          </div>
+        )}
       </div>
 
       <div className="flex items-center gap-2 relative flex-shrink-0">
-        <div className="lg:hidden flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-[0.65rem] font-semibold border border-border bg-card/70 text-primary">
-          <Gift size={12} />
-          <span>{trialDaysRemaining > 0 ? `${trialDaysRemaining} días gratis` : 'Prueba finalizada'}</span>
-        </div>
+        {showTrialNotice && (
+          <div className="lg:hidden flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-[0.65rem] font-semibold border border-border bg-card/70 text-primary">
+            <Gift size={12} />
+            <span>{trialDaysRemaining > 0 ? `${trialDaysRemaining} días gratis` : 'Prueba finalizada'}</span>
+          </div>
+        )}
 
-        {/* Notifications */}
         <button
           onClick={() => setShowNotif(!showNotif)}
           className="relative p-2 rounded-lg transition-all duration-200 hover:scale-105"
@@ -105,7 +110,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
               {notifications.map((n, i) => (
                 <div key={i} className="px-3 py-2.5 flex gap-2 items-start cursor-pointer transition-colors hover:bg-white/5" style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
                   <div className="mt-1 flex-shrink-0" style={{ color: '#D4AF37' }}>
-                    {i === 0 ? <Gift size={12} /> : <Sparkles size={12} />}
+                    {n.title.includes('Prueba') ? <Gift size={12} /> : <Sparkles size={12} />}
                   </div>
                   <div>
                     <p className="text-xs font-semibold">{n.title}</p>
