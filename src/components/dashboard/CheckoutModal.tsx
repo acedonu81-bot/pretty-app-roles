@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { X, ShieldCheck, Truck, Volume2, Smile, Lock, CheckCircle, Loader2 } from 'lucide-react';
 
 interface CheckoutModalProps {
@@ -17,6 +18,7 @@ const crossSellServices = [
 const CheckoutModal = ({ open, onClose, item }: CheckoutModalProps) => {
   const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
   const [step, setStep] = useState<'extras' | 'payment' | 'processing' | 'done'>('extras');
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   if (!open || !item) return null;
 
@@ -35,6 +37,7 @@ const CheckoutModal = ({ open, onClose, item }: CheckoutModalProps) => {
   const handleClose = () => {
     setStep('extras');
     setSelectedExtras([]);
+    setAcceptedTerms(false);
     onClose();
   };
 
@@ -99,14 +102,28 @@ const CheckoutModal = ({ open, onClose, item }: CheckoutModalProps) => {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 text-xs text-muted-foreground mb-5">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground mb-4">
               <Lock size={12} style={{ color: 'hsl(var(--accent))' }} />
               <span>Fondos retenidos en Escrow hasta confirmación del servicio</span>
             </div>
 
+            <label className="flex items-start gap-2.5 px-1 cursor-pointer text-left mb-5">
+              <input type="checkbox" checked={acceptedTerms} onChange={e => setAcceptedTerms(e.target.checked)}
+                className="mt-0.5 w-3.5 h-3.5 rounded accent-[#D4AF37]" />
+              <span className="text-[0.6rem] text-muted-foreground leading-tight">
+                Acepto los{' '}
+                <Link to="/terminos" target="_blank" className="font-bold underline" style={{ color: '#D4AF37' }}>
+                  Términos y Condiciones
+                </Link>{' '}y la{' '}
+                <Link to="/privacidad" target="_blank" className="font-bold underline" style={{ color: '#D4AF37' }}>
+                  Política de Privacidad
+                </Link>.
+              </span>
+            </label>
+
             <div className="flex gap-3">
               <button onClick={() => setStep('extras')} className="btn-nightlife-secondary flex-1 text-sm">Atrás</button>
-              <button onClick={handlePay} className="btn-nightlife-primary flex-1 text-sm">Pagar €{total}</button>
+              <button onClick={handlePay} disabled={!acceptedTerms} className="btn-nightlife-primary flex-1 text-sm disabled:opacity-50 disabled:cursor-not-allowed">Pagar €{total}</button>
             </div>
           </div>
         ) : (
