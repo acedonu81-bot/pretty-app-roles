@@ -49,21 +49,23 @@ const SubscriptionView = () => {
           </div>
         </div>
 
-        <div className="glass-panel p-4 flex-1 flex items-center gap-3" style={{ border: '1px solid rgba(212,175,55,0.25)', background: 'rgba(212,175,55,0.04)' }}>
-          <Gift size={18} style={{ color: '#D4AF37' }} />
-          <div>
-            <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>
-              {trialDaysRemaining > 0
-                ? `Te quedan ${trialDaysRemaining} ${trialDaysRemaining === 1 ? 'día' : 'días'} de prueba gratuita`
-                : 'Tu periodo de prueba ha finalizado'}
-            </p>
-            <p className="text-[0.65rem] text-muted-foreground">
-              {trialDaysRemaining > 0
-                ? '15 días gratis en todos los planes de pago.'
-                : 'Suscríbete con plan anual y ahorra un 30%.'}
-            </p>
+        {currentPlan !== 'free' && (
+          <div className="glass-panel p-4 flex-1 flex items-center gap-3" style={{ border: '1px solid rgba(212,175,55,0.25)', background: 'rgba(212,175,55,0.04)' }}>
+            <Gift size={18} style={{ color: '#D4AF37' }} />
+            <div>
+              <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>
+                {trialDaysRemaining > 0
+                  ? `Te quedan ${trialDaysRemaining} ${trialDaysRemaining === 1 ? 'día' : 'días'} de prueba gratuita`
+                  : 'Tu periodo de prueba ha finalizado'}
+              </p>
+              <p className="text-[0.65rem] text-muted-foreground">
+                {trialDaysRemaining > 0
+                  ? '15 días gratis en todos los planes de pago.'
+                  : 'Suscríbete con plan anual y ahorra un 30%.'}
+              </p>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Locked notice */}

@@ -41,6 +41,7 @@ export const subscriptionPlans: SubscriptionPlan[] = [
     features: [
       'Posicionamiento prioritario',
       'Estadísticas detalladas de visitas',
+      'Vídeos de streaming ilimitados',
       'Sello Business dorado',
       'Soporte prioritario 24/7',
       'Notificaciones Flash antes que nadie',
@@ -58,6 +59,7 @@ export const subscriptionPlans: SubscriptionPlan[] = [
     features: [
       'Gestión de hasta 5 perfiles',
       'Acceso a Streaming 24/7',
+      'Vídeos de streaming ilimitados',
       'Visibilidad máxima en búsquedas',
       'Sello Agencia exclusivo',
       'Todo lo incluido en Business',
