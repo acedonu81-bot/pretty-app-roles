@@ -6,8 +6,11 @@ import Landing from "./pages/Landing";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import Privacidad from "./pages/Privacidad";
+import Terminos from "./pages/Terminos";
+import Cookies from "./pages/Cookies";
 import AdminBeta from "./pages/AdminBeta";
 import NotFound from "./pages/NotFound";
+import CookieBanner from "./components/CookieBanner";
 
 const queryClient = new QueryClient();
 
