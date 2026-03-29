@@ -47,6 +47,7 @@ const navSections = [
       { id: 'profile', icon: User, label: 'Mi Perfil' },
       { id: 'stats', icon: BarChart3, label: 'Estadísticas' },
       { id: 'subscription', icon: CreditCard, label: 'Suscripción' },
+      { id: 'fanclub', icon: Crown, label: 'Fan Club' },
       { id: 'flash', icon: Zap, label: 'Flash Booking', pulse: true },
       { id: 'mapa', icon: Map, label: 'Directorio Salas' },
     ],

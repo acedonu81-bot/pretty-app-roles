@@ -205,6 +205,11 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio }: ProfileCard
         </div>
       )}
 
+      {/* Fan Club subscribe button */}
+      <div className="mb-3" onClick={e => e.stopPropagation()}>
+        <FanSubscribeButton profileId={String(p.id)} professionalName={p.name} />
+      </div>
+
       {/* Intermediation notice */}
       <div className="py-2 mb-2" onClick={e => e.stopPropagation()}>
         <p className="text-[0.55rem] text-muted-foreground italic text-center">

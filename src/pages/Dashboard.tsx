@@ -78,6 +78,7 @@ const Dashboard = () => {
       case 'flash': return <FlashBookingView />;
       case 'rookie': return <RookieView />;
       case 'subscription': return <SubscriptionView />;
+      case 'fanclub': return <FanClubView />;
       case 'admin': return (
         <AdminGuard>
           <AdminView />
