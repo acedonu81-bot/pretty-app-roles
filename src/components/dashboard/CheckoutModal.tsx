@@ -18,6 +18,7 @@ const crossSellServices = [
 const CheckoutModal = ({ open, onClose, item }: CheckoutModalProps) => {
   const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
   const [step, setStep] = useState<'extras' | 'payment' | 'processing' | 'done'>('extras');
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   if (!open || !item) return null;
 
