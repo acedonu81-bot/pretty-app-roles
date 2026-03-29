@@ -199,8 +199,15 @@ const Auth = () => {
                   He leído y acepto la{' '}
                   <Link to="/privacidad" target="_blank" className="font-bold underline" style={{ color: '#D4AF37' }}>
                     Política de Privacidad
+                  </Link>,{' '}
+                  los{' '}
+                  <Link to="/terminos" target="_blank" className="font-bold underline" style={{ color: '#D4AF37' }}>
+                    Términos y Condiciones
                   </Link>{' '}
-                  y los Términos y Condiciones.
+                  y la{' '}
+                  <Link to="/cookies" target="_blank" className="font-bold underline" style={{ color: '#D4AF37' }}>
+                    Política de Cookies
+                  </Link>.
                 </span>
               </label>
             )}
