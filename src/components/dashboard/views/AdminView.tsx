@@ -7,6 +7,7 @@ import AdminCharts from './admin/AdminCharts';
 import AdminValidations from './admin/AdminValidations';
 import AdminUserManagement from './admin/AdminUserManagement';
 import AdminFeatureRequests from './admin/AdminFeatureRequests';
+import AdminCancellations from './admin/AdminCancellations';
 
 const AdminView = () => {
   return (
@@ -21,6 +22,7 @@ const AdminView = () => {
       <AdminMetrics />
       <AdminCharts />
       <AdminFeatureRequests />
+      <AdminCancellations />
       <AdminValidations />
       <AdminUserManagement />
     </div>
