@@ -41,6 +41,7 @@ export const subscriptionPlans: SubscriptionPlan[] = [
     features: [
       'Posicionamiento prioritario',
       'Estadísticas detalladas de visitas',
+      'Vídeos de streaming ilimitados',
       'Sello Business dorado',
       'Soporte prioritario 24/7',
       'Notificaciones Flash antes que nadie',
