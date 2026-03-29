@@ -20,7 +20,7 @@ const Privacidad = () => {
         <div className="glass-panel p-6 md:p-8 space-y-6 text-sm leading-relaxed" style={{ color: '#ccc' }}>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>1. Responsable del Tratamiento</h2>
-            <p>El responsable del tratamiento de tus datos personales es XPEAK, con domicilio social en Madrid, España, y correo electrónico de contacto: admin@xpeak.es.</p>
+            <p>El responsable del tratamiento de tus datos personales es XPEAK, con domicilio social en España, y correo electrónico de contacto: admin@xpeak.es. Los datos se almacenan en servidores seguros gestionados mediante infraestructura cloud (Supabase). Los pagos son procesados de forma segura a través de Stripe, cumpliendo con los estándares PCI-DSS.</p>
           </section>
 
           <section>
