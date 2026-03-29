@@ -132,7 +132,8 @@ const SubscriptionView = () => {
         {subscriptionPlans.map(plan => {
           const isActive = plan.id === currentPlan;
           const isLocked = plan.id !== 'free';
-          const pricing = getPlanPricing(plan, billingCycle, birthdayDiscountActive);
+          const cardCycle = plan.annualEligible ? (planCycles[plan.id] ?? 'monthly') : 'monthly';
+          const pricing = getPlanPricing(plan, cardCycle, birthdayDiscountActive);
           return (
             <div key={plan.id} className={`glass-panel p-5 flex flex-col relative ${isLocked ? 'opacity-60' : ''}`}
               style={{ border: plan.popular ? '1px solid rgba(212,175,55,0.3)' : undefined }}>
@@ -165,6 +166,20 @@ const SubscriptionView = () => {
                   </p>
                 )}
               </div>
+
+              {/* Per-card billing cycle toggle for annual-eligible plans */}
+              {plan.annualEligible && (
+                <div className="mb-4 p-3 rounded-lg flex items-center justify-between"
+                  style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}>
+                  <span className={`text-[0.6rem] font-bold ${cardCycle === 'monthly' ? 'text-foreground' : 'text-muted-foreground'}`}>Mensual</span>
+                  <Switch
+                    checked={cardCycle === 'annual'}
+                    onCheckedChange={(checked) => handlePlanCycleChange(plan.id, checked)}
+                    aria-label={`Cambiar ${plan.name} a facturación anual`}
+                  />
+                  <span className={`text-[0.6rem] font-bold ${cardCycle === 'annual' ? 'text-primary' : 'text-muted-foreground'}`}>Anual -30%</span>
+                </div>
+              )}
 
               <div className="flex-1 space-y-2 mb-5">
                 {plan.features.map(f => (
