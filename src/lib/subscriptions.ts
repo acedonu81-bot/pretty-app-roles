@@ -109,15 +109,14 @@ export const getPlanPricing = (
   }
 
   if (billingCycle === 'annual' && plan.annualEligible) {
-    const annualBase = plan.monthlyPrice * 12;
     const discountPercent = birthdayDiscountActive ? BIRTHDAY_DISCOUNT : ANNUAL_DISCOUNT;
-    const finalPrice = annualBase * (1 - discountPercent);
+    const discountedMonthly = plan.monthlyPrice * (1 - discountPercent);
     return {
-      finalPrice,
-      originalPrice: annualBase,
-      period: '/año',
+      finalPrice: discountedMonthly,
+      originalPrice: plan.monthlyPrice,
+      period: '/mes',
       discountPercent: discountPercent * 100,
-      helperText: birthdayDiscountActive ? 'Descuento de cumpleaños aplicado' : 'Ahorro anual inmediato',
+      helperText: birthdayDiscountActive ? 'Descuento de cumpleaños aplicado' : `Facturado €${(discountedMonthly * 12).toFixed(2)}/año`,
     };
   }
 
