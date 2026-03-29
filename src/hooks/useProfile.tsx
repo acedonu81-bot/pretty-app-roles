@@ -14,6 +14,7 @@ interface ProfileData {
   stream_title: string | null;
   trial_started_at: string;
   annual_billing: boolean;
+  is_live: boolean;
 }
 
 interface ProfileCtx extends ProfileData {
