@@ -6,23 +6,23 @@
 
 @layer base {
   :root {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 95%;
+    --background: 222 47% 5%;
+    --foreground: 210 20% 96%;
 
-    --card: 0 0% 10%;
-    --card-foreground: 0 0% 95%;
+    --card: 222 40% 9%;
+    --card-foreground: 210 20% 96%;
 
-    --popover: 0 0% 10%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 222 40% 9%;
+    --popover-foreground: 210 20% 96%;
 
-    --primary: 43 72% 53%;
+    --primary: 43 72% 58%;
     --primary-foreground: 0 0% 0%;
 
-    --secondary: 43 72% 53%;
+    --secondary: 43 72% 58%;
     --secondary-foreground: 0 0% 0%;
 
-    --muted: 0 0% 14%;
-    --muted-foreground: 0 0% 50%;
+    --muted: 222 35% 14%;
+    --muted-foreground: 220 15% 52%;
 
     --accent: 43 72% 53%;
     --accent-foreground: 0 0% 0%;
@@ -37,20 +37,20 @@
     --radius: 0.75rem;
 
     /* Custom tokens */
-    --nightlife-bg: #000000;
-    --nightlife-card: rgba(26, 26, 26, 0.6);
-    --nightlife-border: rgba(255, 255, 255, 0.08);
-    --nightlife-primary: #D4AF37;
-    --nightlife-primary-glow: rgba(212, 175, 55, 0.4);
-    --nightlife-secondary: #D4AF37;
-    --nightlife-green: #D4AF37;
+    --nightlife-bg: #070B14;
+    --nightlife-card: rgba(14, 20, 38, 0.75);
+    --nightlife-border: rgba(255, 255, 255, 0.1);
+    --nightlife-primary: #E2BE50;
+    --nightlife-primary-glow: rgba(226, 190, 80, 0.4);
+    --nightlife-secondary: #E2BE50;
+    --nightlife-green: #E2BE50;
     --nightlife-red: #ff5f56;
-    --nightlife-yellow: #D4AF37;
-    --nightlife-text-secondary: #8E8EA0;
-    --nightlife-charcoal: #1A1A1A;
+    --nightlife-yellow: #E2BE50;
+    --nightlife-text-secondary: #9B9BB0;
+    --nightlife-charcoal: #0F1525;
 
-    --sidebar-background: 0 0% 6%;
-    --sidebar-foreground: 0 0% 50%;
+    --sidebar-background: 222 47% 7%;
+    --sidebar-foreground: 220 15% 55%;
     --sidebar-primary: 43 72% 53%;
     --sidebar-primary-foreground: 0 0% 0%;
     --sidebar-accent: 0 0% 12%;
@@ -174,4 +174,36 @@
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes orbFloat1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(60px, -40px) scale(1.1); }
+  66%       { transform: translate(-30px, 60px) scale(0.95); }
+}
+
+@keyframes orbFloat2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40%       { transform: translate(-80px, 50px) scale(1.08); }
+  70%       { transform: translate(40px, -30px) scale(0.92); }
+}
+
+@keyframes orbFloat3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%       { transform: translate(50px, -60px) scale(1.12); }
+}
+
+@keyframes wave1 {
+  0%, 100% { d: path("M0,80 C360,140 1080,20 1440,80 L1440,180 L0,180 Z"); }
+  50%       { d: path("M0,60 C360,160 1080,0 1440,60 L1440,180 L0,180 Z"); }
+}
+
+@keyframes wave2 {
+  0%, 100% { d: path("M0,100 C480,40 960,160 1440,100 L1440,180 L0,180 Z"); }
+  50%       { d: path("M0,120 C480,60 960,140 1440,80 L1440,180 L0,180 Z"); }
+}
+
+@keyframes wave3 {
+  0%, 100% { d: path("M0,120 C600,60 840,150 1440,90 L1440,180 L0,180 Z"); }
+  50%       { d: path("M0,90 C600,150 840,50 1440,120 L1440,180 L0,180 Z"); }
 }

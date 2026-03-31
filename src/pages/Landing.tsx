@@ -5,7 +5,7 @@ import { motion, useInView } from 'framer-motion';
 import { Music, UtensilsCrossed, Users, Camera, ArrowRight, Sparkles } from 'lucide-react';
 import xpeakLogo from '@/assets/xpeak-logo.png';
 import heroBg from '@/assets/hero-bg.jpg';
-const HERO_VIDEO_URL = '/__l5e/assets-v1/cfcbc49a-8152-428e-bdec-cff4e18917a7/hero-video.mp4';
+const HERO_VIDEO_URL = 'https://videos.pexels.com/video-files/3129957/3129957-uhd_2560_1440_25fps.mp4';
 import bentoMusica from '@/assets/bento-musica.jpg';
 import bentoGastro from '@/assets/bento-gastro.jpg';
 import bentoStaff from '@/assets/bento-staff.jpg';
@@ -89,19 +89,39 @@ const Landing = () => {
   const [demoOpen, setDemoOpen] = useState(false);
 
   return (
-    <div className="min-h-screen relative overflow-x-hidden flex flex-col" style={{ background: '#0A0A0A' }}>
-      {/* ─ Hero background video ─ */}
-      <div className="fixed inset-0 -z-10 pointer-events-none">
+    <div className="min-h-screen relative overflow-x-hidden flex flex-col" style={{ background: '#070B14' }}>
+      {/* ─ Hero background ─ */}
+      <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
+        {/* Video optional — falls back to poster if unavailable */}
         <video
           autoPlay muted loop playsInline
           src={HERO_VIDEO_URL}
           poster={heroBg}
           className="w-full h-full object-cover"
-          style={{ opacity: 0.35, filter: 'saturate(0.8)' }}
+          style={{ opacity: 0.2, filter: 'saturate(0.6) blur(1px)' }}
         />
-        <div className="absolute inset-0" style={{
-          background: 'linear-gradient(180deg, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.95) 60%, #0A0A0A 100%)',
-        }} />
+        {/* Animated gradient orbs */}
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(160deg, #070B14 0%, #0A0F20 50%, #070B14 100%)' }} />
+        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full opacity-20"
+          style={{ background: 'radial-gradient(circle, #E2BE50 0%, transparent 65%)', filter: 'blur(80px)', animation: 'orbFloat1 18s ease-in-out infinite' }} />
+        <div className="absolute top-[10%] right-[-15%] w-[500px] h-[500px] rounded-full opacity-10"
+          style={{ background: 'radial-gradient(circle, #6366f1 0%, transparent 65%)', filter: 'blur(90px)', animation: 'orbFloat2 24s ease-in-out infinite' }} />
+        <div className="absolute bottom-[10%] left-[30%] w-[400px] h-[400px] rounded-full opacity-15"
+          style={{ background: 'radial-gradient(circle, #E2BE50 0%, transparent 65%)', filter: 'blur(100px)', animation: 'orbFloat3 20s ease-in-out infinite' }} />
+        {/* Bottom fade */}
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(7,11,20,0.7) 60%, #070B14 100%)' }} />
+      </div>
+
+      {/* ─ Animated SVG wave ─ */}
+      <div className="fixed bottom-0 left-0 right-0 -z-10 pointer-events-none" style={{ height: '180px' }}>
+        <svg viewBox="0 0 1440 180" preserveAspectRatio="none" className="w-full h-full">
+          <path style={{ animation: 'wave1 8s ease-in-out infinite', fill: 'rgba(226,190,80,0.04)' }}
+            d="M0,80 C360,140 1080,20 1440,80 L1440,180 L0,180 Z" />
+          <path style={{ animation: 'wave2 12s ease-in-out infinite', fill: 'rgba(226,190,80,0.03)' }}
+            d="M0,100 C480,40 960,160 1440,100 L1440,180 L0,180 Z" />
+          <path style={{ animation: 'wave3 10s ease-in-out infinite', fill: 'rgba(99,102,241,0.03)' }}
+            d="M0,120 C600,60 840,150 1440,90 L1440,180 L0,180 Z" />
+        </svg>
       </div>
 
       {/* ─ Nav (Glassmorphism) ─ */}
