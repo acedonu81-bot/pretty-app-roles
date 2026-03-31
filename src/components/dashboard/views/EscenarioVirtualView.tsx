@@ -217,11 +217,21 @@ const EscenarioVirtualView = () => {
                 </div>
               )}
             </div>
-            <a href="https://wa.me/34600000000?text=Hola%2C%20te%20he%20visto%20en%20XPEAK" target="_blank" rel="noopener noreferrer"
-              className="mt-4 w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:scale-[1.01]"
-              style={{ background: 'linear-gradient(90deg, #25D366, #128C7E)', color: 'white' }}>
-              <WaIcon size={18} /> Contactar al DJ
-            </a>
+            {profile.phone ? (
+              <a
+                href={`https://wa.me/${profile.phone.replace(/\D/g, '')}?text=Hola%2C%20te%20he%20visto%20en%20XPEAK`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:scale-[1.01]"
+                style={{ background: 'linear-gradient(90deg, #25D366, #128C7E)', color: 'white' }}>
+                <WaIcon size={18} /> Contactar al DJ
+              </a>
+            ) : (
+              <div className="mt-4 w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-sm"
+                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', color: '#8E8EA0' }}>
+                <WaIcon size={18} /> Añade tu teléfono en Ajustes para activar el contacto
+              </div>
+            )}
           </div>
         </div>
 

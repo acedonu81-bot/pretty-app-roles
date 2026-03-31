@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
+import { subscriptionPlans, mapSubscriptionTierToPlan } from '@/lib/subscriptions';
 
 const euLanguages = [
   '🇪🇸 Español', '🇬🇧 English', '🇩🇪 Deutsch', '🇫🇷 Français', '🇮🇹 Italiano',
@@ -22,6 +23,7 @@ const SettingsView = () => {
   const [localCity, setLocalCity] = useState<string | null>(null);
   const [localRate, setLocalRate] = useState<number | null>(null);
   const [localBirthday, setLocalBirthday] = useState<string | null>(null);
+  const [localPhone, setLocalPhone] = useState<string | null>(null);
 
   const displayName = localName ?? profile.display_name;
   const city = localCity ?? profile.zone ?? 'Madrid Centro';
@@ -50,6 +52,7 @@ const SettingsView = () => {
     if (localCity !== null) updates.zone = localCity;
     if (localRate !== null) updates.hourly_rate = localRate;
     if (localBirthday !== null) updates.birthday = localBirthday || null;
+    if (localPhone !== null) updates.phone = localPhone || null;
     if (Object.keys(updates).length > 0) {
       await profile.updateField(updates);
     }
@@ -116,6 +119,16 @@ const SettingsView = () => {
               className="nightlife-input text-base pl-3"
             />
           </div>
+          <div className="mb-4">
+            <label className="block text-sm text-muted-foreground mb-1.5">Teléfono / WhatsApp</label>
+            <input
+              type="tel"
+              value={localPhone ?? profile.phone ?? ''}
+              onChange={e => setLocalPhone(e.target.value)}
+              placeholder="+34 600 000 000"
+              className="nightlife-input text-base pl-3"
+            />
+          </div>
           <div className="mb-4 pt-4" style={{ borderTop: '1px solid var(--nightlife-border)' }}>
             <label className="block text-sm text-muted-foreground mb-1.5">Caché Base (€/hora)</label>
             <input type="number" value={rate} onChange={e => setLocalRate(Number(e.target.value))} min={20} step={5}
@@ -128,28 +141,29 @@ const SettingsView = () => {
 
         <div className="glass-panel p-6">
           <h3 className="text-base font-bold mb-5">Suscripción</h3>
-          {[
-            { name: 'Básico', price: 'Gratis', desc: 'Perfil básico visible en el directorio', current: true },
-            { name: 'Pase Diario', price: '4,99€/día', desc: 'Posicionamiento prioritario 24h', current: false },
-            { name: 'Pase Weekend', price: '8,99€/finde', desc: 'TOP viernes a domingo + streaming', current: false },
-            { name: 'Pro', price: '29,99€/mes', desc: 'Posicionamiento + Streaming + Sello PRO', current: false },
-            { name: 'Business', price: '59,99€/mes', desc: 'Multiperfil + TOP Weekend + Soporte prioritario', current: false },
-          ].map(plan => (
-            <div key={plan.name} className="flex items-center justify-between mb-4 pb-4" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>
-              <div>
-                <h4 className="text-sm font-bold">{plan.name}</h4>
-                <p className="text-xs text-muted-foreground">{plan.desc}</p>
-              </div>
-              <div className="text-right">
-                <p className="text-sm font-bold" style={{ color: plan.current ? '#8E8EA0' : '#D4AF37' }}>{plan.price}</p>
-                {plan.current ? (
-                  <span className="text-xs font-bold px-2 py-0.5 rounded" style={{ background: 'rgba(255,255,255,0.05)', color: '#8E8EA0' }}>ACTIVO</span>
-                ) : (
-                  <span className="text-xs font-bold px-2 py-0.5 rounded" style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37' }}>PRÓXIMAMENTE</span>
-                )}
-              </div>
-            </div>
-          ))}
+          {(() => {
+            const currentPlanId = mapSubscriptionTierToPlan(profile.subscription_tier);
+            return subscriptionPlans.map(plan => {
+              const isCurrent = plan.id === currentPlanId;
+              const priceLabel = plan.monthlyPrice === 0 ? 'Gratis' : `${plan.monthlyPrice.toFixed(2).replace('.', ',')}€/mes`;
+              return (
+                <div key={plan.id} className="flex items-center justify-between mb-4 pb-4" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>
+                  <div>
+                    <h4 className="text-sm font-bold">{plan.name}</h4>
+                    <p className="text-xs text-muted-foreground">{plan.features[0]}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-bold" style={{ color: isCurrent ? '#8E8EA0' : '#D4AF37' }}>{priceLabel}</p>
+                    {isCurrent ? (
+                      <span className="text-xs font-bold px-2 py-0.5 rounded" style={{ background: 'rgba(255,255,255,0.05)', color: '#8E8EA0' }}>ACTIVO</span>
+                    ) : (
+                      <span className="text-xs font-bold px-2 py-0.5 rounded" style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37' }}>PRÓXIMAMENTE</span>
+                    )}
+                  </div>
+                </div>
+              );
+            });
+          })()}
 
           <button
             onClick={async () => { await signOut(); toast.info('Sesión cerrada.'); }}
