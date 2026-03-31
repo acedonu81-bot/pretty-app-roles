@@ -112,17 +112,6 @@ const Landing = () => {
         <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(7,11,20,0.7) 60%, #070B14 100%)' }} />
       </div>
 
-      {/* ─ Animated SVG wave ─ */}
-      <div className="fixed bottom-0 left-0 right-0 -z-10 pointer-events-none" style={{ height: '180px' }}>
-        <svg viewBox="0 0 1440 180" preserveAspectRatio="none" className="w-full h-full">
-          <path style={{ animation: 'wave1 8s ease-in-out infinite', fill: 'rgba(226,190,80,0.04)' }}
-            d="M0,80 C360,140 1080,20 1440,80 L1440,180 L0,180 Z" />
-          <path style={{ animation: 'wave2 12s ease-in-out infinite', fill: 'rgba(226,190,80,0.03)' }}
-            d="M0,100 C480,40 960,160 1440,100 L1440,180 L0,180 Z" />
-          <path style={{ animation: 'wave3 10s ease-in-out infinite', fill: 'rgba(99,102,241,0.03)' }}
-            d="M0,120 C600,60 840,150 1440,90 L1440,180 L0,180 Z" />
-        </svg>
-      </div>
 
       {/* ─ Nav (Glassmorphism) ─ */}
       <nav className="sticky top-0 z-50"
