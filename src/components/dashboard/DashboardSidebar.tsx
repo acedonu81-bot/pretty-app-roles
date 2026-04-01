@@ -6,7 +6,6 @@ import {
   Camera, Palette, Flag,
 } from 'lucide-react';
 import GeometricAvatar from './GeometricAvatar';
-import xpeakLogo from '@/assets/xpeak-logo.png';
 
 interface SidebarProps {
   activeView: string;
