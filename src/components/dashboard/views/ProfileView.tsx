@@ -1,11 +1,15 @@
 import { useState, useRef } from 'react';
-import { Trash2, Camera } from 'lucide-react';
+import { Trash2, Camera, Music2, ExternalLink } from 'lucide-react';
+import { parseStreamUrl } from '@/lib/streaming';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import AudioUpload from '@/components/dashboard/AudioUpload';
+import PortfolioUpload from '@/components/dashboard/PortfolioUpload';
 import LiveBetaButton from '@/components/dashboard/LiveBetaButton';
+import { subscriptionPlans, mapSubscriptionTierToPlan } from '@/lib/subscriptions';
+import { sanitizeInput } from '@/lib/contentFilter';
 
 const ProfileView = () => {
   const { user } = useAuth();
@@ -13,8 +17,18 @@ const ProfileView = () => {
   const [deleting, setDeleting] = useState(false);
   const [localName, setLocalName] = useState<string | null>(null);
   const [city, setCity] = useState('');
-  const [rider, setRider] = useState('');
-  const [bio, setBio] = useState('');
+  const [rider, setRider] = useState<string | null>(null);
+  const [bio, setBio] = useState<string | null>(null);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [selectedLangs, setSelectedLangs] = useState<string[] | null>(null);
+
+  const EU_LANGS = ['Español','Inglés','Francés','Italiano','Alemán','Portugués','Neerlandés','Polaco','Catalán','Euskera'];
+  const activeLangs = selectedLangs ?? profile.languages ?? [];
+  const toggleLang = (lang: string) => {
+    const current = activeLangs;
+    const next = current.includes(lang) ? current.filter(l => l !== lang) : [...current, lang];
+    setSelectedLangs(next);
+  };
   const photoRef = useRef<HTMLInputElement>(null);
 
   const displayName = localName ?? profile.display_name;
@@ -38,9 +52,18 @@ const ProfileView = () => {
 
   const handleSave = async () => {
     if (!user) return;
+    const toCheck = [localName, bio, rider].filter(Boolean) as string[];
+    for (const val of toCheck) {
+      const { clean, reason } = sanitizeInput(val);
+      if (!clean) { toast.error(reason); return; }
+    }
     const updates: any = {};
     if (localName !== null) updates.display_name = localName;
     if (city) updates.zone = city;
+    if (rider !== null) updates.specialty = rider;
+    if (bio !== null) updates.instagram = bio;
+    if (audioUrl !== null) updates.audio_embed_url = audioUrl || null;
+    if (selectedLangs !== null) updates.languages = selectedLangs;
     if (Object.keys(updates).length > 0) await profile.updateField(updates);
     toast.success('Perfil guardado.');
   };
@@ -105,7 +128,9 @@ const ProfileView = () => {
             <input ref={photoRef} type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
 
             <p className="font-bold text-base">{displayName || 'Sin nombre'}</p>
-            <p className="text-xs font-bold mt-1" style={{ color: '#D4AF37' }}>Plan Básico</p>
+            <p className="text-xs font-bold mt-1" style={{ color: '#D4AF37' }}>
+              {subscriptionPlans.find(p => p.id === mapSubscriptionTierToPlan(profile.subscription_tier))?.name ?? 'Free'}
+            </p>
             <div className="flex justify-center gap-0.5 my-2">
               {[1,2,3,4,5].map(s => <span key={s} style={{ color: 'rgba(255,255,255,0.1)', fontSize: '0.9rem' }}>★</span>)}
               <span className="text-sm text-muted-foreground ml-1">0.0</span>
@@ -134,16 +159,80 @@ const ProfileView = () => {
             </div>
             <div className="mb-3">
               <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Rider técnico</label>
-              <input type="text" value={rider} onChange={e => setRider(e.target.value)} placeholder="Ej: Pioneer CDJ-3000, DJM-900NXS2" className="nightlife-input mt-1 text-base" />
+              <input type="text" value={rider ?? profile.specialty ?? ''} onChange={e => setRider(e.target.value)} placeholder="Ej: Pioneer CDJ-3000, DJM-900NXS2" className="nightlife-input mt-1 text-base" />
             </div>
             <div className="mb-3">
               <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Bio</label>
-              <textarea rows={2} value={bio} onChange={e => setBio(e.target.value)}
+              <textarea rows={2} value={bio ?? profile.instagram ?? ''}
+                onChange={e => setBio(e.target.value)}
                 placeholder="Describe tu experiencia y estilo..."
                 className="nightlife-input mt-1 text-base resize-y" />
             </div>
+            <div>
+              <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Idiomas</label>
+              <div className="flex flex-wrap gap-1.5 mt-2">
+                {EU_LANGS.map(lang => (
+                  <button key={lang} type="button" onClick={() => toggleLang(lang)}
+                    className="text-xs font-bold px-2.5 py-1 rounded-lg transition-all"
+                    style={{
+                      background: activeLangs.includes(lang) ? 'rgba(226,190,80,0.15)' : 'rgba(255,255,255,0.04)',
+                      border: `1px solid ${activeLangs.includes(lang) ? 'rgba(226,190,80,0.4)' : 'var(--nightlife-border)'}`,
+                      color: activeLangs.includes(lang) ? '#E2BE50' : '#8E8EA0',
+                    }}>
+                    {lang}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
-          <AudioUpload />
+          {profile.role === 'dj' ? <AudioUpload /> : <PortfolioUpload />}
+
+          {/* External audio embed — hearthis.at / Mixcloud / SoundCloud */}
+          {profile.role === 'dj' && (() => {
+            const currentUrl = audioUrl ?? profile.audio_embed_url ?? '';
+            const parsed = parseStreamUrl(currentUrl);
+            return (
+              <div className="glass-panel p-5">
+                <h4 className="text-base font-bold mb-1 flex items-center gap-2">
+                  <Music2 size={16} style={{ color: '#D4AF37' }} /> Player Externo
+                </h4>
+                <p className="text-xs text-muted-foreground mb-3">
+                  Incrusta tu perfil de <strong>hearthis.at</strong>, <strong>Mixcloud</strong> o <strong>SoundCloud</strong> — los empresarios lo verán directamente en tu ficha.
+                </p>
+                <div className="flex gap-2 mb-3">
+                  <input
+                    type="url"
+                    value={currentUrl}
+                    onChange={e => setAudioUrl(e.target.value)}
+                    placeholder="https://hearthis.at/tu-usuario/ o mixcloud.com/..."
+                    className="nightlife-input text-sm flex-1"
+                  />
+                  {currentUrl && (
+                    <a href={currentUrl} target="_blank" rel="noopener noreferrer"
+                      className="px-3 rounded-lg flex items-center"
+                      style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+                      <ExternalLink size={14} />
+                    </a>
+                  )}
+                </div>
+                {parsed ? (
+                  <>
+                    <p className="text-[0.6rem] font-bold mb-2" style={{ color: '#22c55e' }}>
+                      ✓ {parsed.type} detectado — preview:
+                    </p>
+                    <iframe
+                      src={parsed.embedUrl}
+                      className="w-full rounded-lg"
+                      style={{ height: 160, border: 'none' }}
+                      allow="autoplay"
+                    />
+                  </>
+                ) : currentUrl ? (
+                  <p className="text-[0.6rem]" style={{ color: '#ff5f56' }}>URL no reconocida. Prueba con hearthis.at, Mixcloud o SoundCloud.</p>
+                ) : null}
+              </div>
+            );
+          })()}
 
           {/* Media deletion - GDPR */}
           <div className="glass-panel p-5">
@@ -159,10 +248,12 @@ const ProfileView = () => {
               {deleting ? 'Eliminando...' : 'Eliminar todo mi contenido multimedia'}
             </button>
           </div>
-          <div className="glass-panel p-5">
-            <h4 className="text-base font-bold mb-3">Vídeo en Directo</h4>
-            <LiveBetaButton />
-          </div>
+          {profile.role === 'dj' && (
+            <div className="glass-panel p-5">
+              <h4 className="text-base font-bold mb-3">Vídeo en Directo</h4>
+              <LiveBetaButton />
+            </div>
+          )}
           <div className="glass-panel p-5">
             <h4 className="text-base font-bold mb-3">Valoraciones</h4>
             <p className="text-sm text-muted-foreground text-center py-4">Aún no tienes valoraciones. Aparecerán aquí cuando los empresarios valoren tu trabajo.</p>

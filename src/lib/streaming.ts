@@ -1,5 +1,5 @@
 export interface ParsedStreamUrl {
-  type: 'Twitch' | 'YouTube' | 'Mixcloud';
+  type: 'Twitch' | 'YouTube' | 'Mixcloud' | 'HearThis' | 'SoundCloud';
   embedUrl: string;
 }
 
@@ -61,6 +61,31 @@ export const parseStreamUrl = (value?: string | null): ParsedStreamUrl | null =>
       return {
         type: 'Mixcloud',
         embedUrl: `https://www.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&feed=${encodeURIComponent(feed)}`,
+      };
+    }
+
+    if (hostname.includes('hearthis.at')) {
+      const segments = url.pathname.split('/').filter(Boolean);
+      if (segments.length === 0) return null;
+      const username = segments[0];
+      // Individual track: hearthis.at/username/track-slug/
+      // Profile/set:      hearthis.at/username/
+      if (segments.length >= 2) {
+        return {
+          type: 'HearThis',
+          embedUrl: `https://hearthis.at/embed/${username}/${segments[1]}/`,
+        };
+      }
+      return {
+        type: 'HearThis',
+        embedUrl: `https://hearthis.at/set/${username}/`,
+      };
+    }
+
+    if (hostname.includes('soundcloud.com')) {
+      return {
+        type: 'SoundCloud',
+        embedUrl: `https://w.soundcloud.com/player/?url=${encodeURIComponent(normalized)}&color=%23D4AF37&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&visual=true`,
       };
     }
   } catch {

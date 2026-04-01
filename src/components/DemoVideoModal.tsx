@@ -18,7 +18,7 @@ const DemoVideoModal = ({ open, onClose }: DemoVideoModalProps) => {
           <X size={16} />
         </button>
         <h3 className="text-base font-bold mb-1">
-          Mira cómo <span className="text-gradient">XPEAK</span> conecta Madrid
+          Mira cómo <span className="text-gradient">XPEAK</span> conecta Europa
         </h3>
         <p className="text-xs text-muted-foreground mb-3">Descubre el directorio profesional del ocio nocturno.</p>
         <div className="rounded-lg overflow-hidden" style={{ border: '1px solid var(--nightlife-border)' }}>

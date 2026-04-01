@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
-import { Bell, Clock, Calendar as CalendarIcon } from 'lucide-react';
+import { Bell, Clock, Calendar as CalendarIcon, ExternalLink } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
 import { toast } from 'sonner';
 
+// Pexels CDN — free, reliable, no API key needed
 const roleImages: Record<string, string> = {
-  dj: 'https://images.unsplash.com/photo-1571266028243-3716f02d2d58?w=400&h=200&fit=crop',
-  staff: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=200&fit=crop',
-  makeup: 'https://images.unsplash.com/photo-1487412912498-0447578fcca8?w=400&h=200&fit=crop',
-  media: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=400&h=200&fit=crop',
-  design: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=200&fit=crop',
-  empresario: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=200&fit=crop',
-  vestuario: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=200&fit=crop',
-  ambassador: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400&h=200&fit=crop',
+  dj: 'https://images.pexels.com/photos/1540406/pexels-photo-1540406.jpeg?auto=compress&cs=tinysrgb&w=400&h=200&fit=crop',
+  staff: 'https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&w=400&h=200&fit=crop',
+  makeup: 'https://images.pexels.com/photos/3685530/pexels-photo-3685530.jpeg?auto=compress&cs=tinysrgb&w=400&h=200&fit=crop',
+  media: 'https://images.pexels.com/photos/3379934/pexels-photo-3379934.jpeg?auto=compress&cs=tinysrgb&w=400&h=200&fit=crop',
+  design: 'https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=400&h=200&fit=crop',
+  empresario: 'https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg?auto=compress&cs=tinysrgb&w=400&h=200&fit=crop',
+  ambassador: 'https://images.pexels.com/photos/2747449/pexels-photo-2747449.jpeg?auto=compress&cs=tinysrgb&w=400&h=200&fit=crop',
 };
 
 const CalendarView = () => {
@@ -51,7 +51,14 @@ const CalendarView = () => {
     }
   };
 
-  const roleImg = roleImages[profile.role] || roleImages.dj;
+  const roleImg = roleImages[profile.role ?? 'dj'] || roleImages.dj;
+
+  const addToGoogleCalendar = () => {
+    const start = nextEventDate.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    const end = new Date(nextEventDate.getTime() + 3 * 60 * 60 * 1000).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Cierre+Sunrise+Festival+VIP&dates=${start}/${end}&details=Evento+v%C3%ADa+XPEAK&location=Stage+Principal+(Ibiza)`;
+    window.open(url, '_blank');
+  };
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
@@ -140,14 +147,19 @@ const CalendarView = () => {
                 <p className="text-xs text-muted-foreground">cuenta atrás</p>
               </div>
             </div>
-            {profile.subscription_tier !== 'free' && (
-              <div className="px-4 pb-3">
+            <div className="px-4 pb-4 flex gap-2">
+              <button onClick={addToGoogleCalendar}
+                className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-[1.02]"
+                style={{ background: 'rgba(66,133,244,0.1)', color: '#4285F4', border: '1px solid rgba(66,133,244,0.2)' }}>
+                <ExternalLink size={12} /> Google Calendar
+              </button>
+              {profile.subscription_tier !== 'free' && (
                 <div className="text-xs font-bold px-3 py-1.5 rounded-lg inline-flex items-center gap-1.5"
                   style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
-                  ⚡ Alerta prioritaria activada
+                  ⚡ Alerta prioritaria
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
 

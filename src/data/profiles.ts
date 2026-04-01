@@ -28,6 +28,7 @@ export interface Profile {
   isPremium?: boolean;
   tiktok?: string;
   portfolioUrls?: string[];
+  languages?: string[];
 }
 
 const WA_MSG = encodeURIComponent('Hola, te he visto en XPEAK y me interesa tu perfil para un evento. ¿Hablamos?');

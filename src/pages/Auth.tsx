@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Mail, Lock, User, Eye, EyeOff, Music, Users, Palette, Building2, Camera, Brush, Flag, Shirt } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, Music, Users, Smile, Building2, Camera, Flag } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import AmbientBackground from '@/components/AmbientBackground';
 import LegalFooter from '@/components/LegalFooter';
@@ -9,18 +9,16 @@ import { toast } from 'sonner';
 
 const roleGroups = [
   { label: '🎵 Música', roles: [
-    { value: 'dj', label: 'DJ', icon: Music, minRate: 40 },
+    { value: 'dj', label: 'DJ Profesional', icon: Music, minRate: 40 },
   ]},
   { label: '👥 Staff', roles: [
     { value: 'staff', label: 'Personal de Sala', icon: Users, minRate: 20 },
   ]},
   { label: '💄 Imagen', roles: [
-    { value: 'makeup', label: 'Maquillaje & Peluquería', icon: Palette, minRate: 30 },
-    { value: 'vestuario', label: 'Vestuario & Moda', icon: Shirt, minRate: 30 },
+    { value: 'makeup', label: 'Maquillaje & Peluquería', icon: Smile, minRate: 30 },
   ]},
-  { label: '📸 Media & Diseño', roles: [
+  { label: '📸 Media', roles: [
     { value: 'media', label: 'Media & Contenido', icon: Camera, minRate: 30 },
-    { value: 'design', label: 'Diseño & Visuales', icon: Brush, minRate: 30 },
     { value: 'ambassador', label: 'Promoción', icon: Flag, minRate: 15 },
   ]},
   { label: '🏢 Empresa', roles: [
@@ -103,7 +101,7 @@ const Auth = () => {
           <h2 className="text-2xl font-bold mb-1">
             X<span className="text-gradient">PEAK</span>
           </h2>
-          <p className="text-muted-foreground mb-6 text-xs">Directorio Profesional · Madrid</p>
+          <p className="text-muted-foreground mb-6 text-xs">Directorio Profesional · Europa</p>
 
           <form onSubmit={handleSubmit} className="space-y-3">
             {!isLogin && (

@@ -15,7 +15,7 @@ const TopWeekendView = () => {
           <Crown size={24} style={{ color: '#D4AF37' }} />
           TOP <span className="text-gradient">Weekend</span>
         </h2>
-        <p className="text-sm text-muted-foreground">Los más solicitados de todos los roles esta semana en Madrid.</p>
+        <p className="text-sm text-muted-foreground">Los más solicitados de todos los roles esta semana en Europa.</p>
       </div>
 
       <div className="p-3 mb-5 rounded-lg flex items-center gap-2" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>

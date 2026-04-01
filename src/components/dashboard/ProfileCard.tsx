@@ -94,6 +94,17 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio }: ProfileCard
         ))}
       </div>
 
+      {p.languages && p.languages.length > 0 && (
+        <div className="flex flex-wrap gap-1 mb-3">
+          {p.languages.map(lang => (
+            <span key={lang} className="text-[0.6rem] font-medium px-1.5 py-0.5 rounded"
+              style={{ background: 'rgba(255,255,255,0.04)', color: '#8E8EA0', border: '1px solid rgba(255,255,255,0.08)' }}>
+              {lang}
+            </span>
+          ))}
+        </div>
+      )}
+
       {/* Portfolio section for creative roles */}
       {showPortfolio && (
         <div className="mb-3" onClick={e => e.stopPropagation()}>

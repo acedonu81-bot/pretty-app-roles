@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import { Eye, MousePointerClick, Crown, TrendingUp } from 'lucide-react';
+import { useProfile } from '@/hooks/useProfile';
+import { subscriptionPlans, mapSubscriptionTierToPlan } from '@/lib/subscriptions';
 
 const TOTAL_SLOTS = 48;
 const ITEMS_PER_PAGE = 12;
 const totalPages = Math.ceil(TOTAL_SLOTS / ITEMS_PER_PAGE);
 
 const StatsView = () => {
+  const profile = useProfile();
+  const currentPlan = subscriptionPlans.find(p => p.id === mapSubscriptionTierToPlan(profile.subscription_tier));
   const [currentPage, setCurrentPage] = useState(1);
   const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIdx = Math.min(startIdx + ITEMS_PER_PAGE, TOTAL_SLOTS);
@@ -114,10 +118,12 @@ const StatsView = () => {
       <div className="glass-panel p-5">
         <h3 className="text-sm font-bold mb-3">Plan actual</h3>
         <div className="flex items-center gap-3 p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--nightlife-border)' }}>
-          <Crown size={20} style={{ color: '#8E8EA0' }} />
+          <Crown size={20} style={{ color: currentPlan?.monthlyPrice ? '#D4AF37' : '#8E8EA0' }} />
           <div className="flex-1">
-            <p className="text-sm font-bold">Básico · Gratis</p>
-            <p className="text-xs text-muted-foreground">Perfil visible en el directorio con funciones básicas.</p>
+            <p className="text-sm font-bold">
+              {currentPlan?.name ?? 'Free'} · {currentPlan?.monthlyPrice === 0 ? 'Gratis' : `${currentPlan?.monthlyPrice?.toFixed(2).replace('.', ',')}€/mes`}
+            </p>
+            <p className="text-xs text-muted-foreground">{currentPlan?.features[0] ?? 'Perfil visible en el directorio con funciones básicas.'}</p>
           </div>
           <span className="text-[0.55rem] font-bold px-2 py-1 rounded" style={{ background: 'rgba(255,255,255,0.05)', color: '#8E8EA0' }}>ACTIVO</span>
         </div>

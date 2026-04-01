@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { profiles } from '@/data/profiles';
 import { useProfile } from '@/hooks/useProfile';
 import { normalizeStreamUrl, parseStreamUrl } from '@/lib/streaming';
+import { sanitizeInput } from '@/lib/contentFilter';
 
 const WaIcon = ({ size = 18 }: { size?: number }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
@@ -82,6 +83,8 @@ const EscenarioVirtualView = () => {
 
   const sendChat = () => {
     if (!chatInput.trim()) return;
+    const { clean, reason } = sanitizeInput(chatInput);
+    if (!clean) { toast.error(reason); return; }
     setChatMessages(prev => [...prev, { user: 'Tú', text: chatInput, color: '#ffffff' }]);
     setChatInput('');
   };
@@ -198,22 +201,27 @@ const EscenarioVirtualView = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4" style={{ minHeight: '55vh' }}>
         <div className="flex flex-col gap-4">
-          <div className="glass-panel p-5 flex-1 flex flex-col">
-            <div className="flex-1 rounded-lg overflow-hidden flex items-center justify-center relative" style={{ background: 'rgba(0,0,0,0.6)', minHeight: 300 }}>
+          <div className="glass-panel p-5">
+            <div className="relative w-full rounded-lg overflow-hidden" style={{ background: 'rgba(0,0,0,0.6)', aspectRatio: '16/9' }}>
               {streamEmbed && isLive ? (
-                <iframe src={streamEmbed.embedUrl} className="w-full h-full absolute inset-0" allowFullScreen allow="autoplay; encrypted-media" style={{ border: 'none' }} />
+                <iframe src={streamEmbed.embedUrl} className="absolute inset-0 w-full h-full" allowFullScreen allow="autoplay; encrypted-media" style={{ border: 'none' }} />
               ) : isLive ? (
-                <div className="w-full h-full flex items-end justify-center gap-1 p-6">
+                <div className="absolute inset-0 flex items-end justify-center gap-1 p-6">
                   {eqHeights.map((h, i) => (
                     <div key={i} className="w-2.5 rounded-full transition-all duration-150"
                       style={{ height: `${h}%`, background: 'linear-gradient(180deg, #D4AF37, #B8941E)', opacity: 0.7 }} />
                   ))}
                 </div>
               ) : (
-                <div className="text-center">
-                  <Radio size={40} className="mx-auto mb-3 text-muted-foreground" />
-                  <p className="text-muted-foreground text-xs">Pulsa "EN VIVO" para comenzar</p>
-                  {profile.stream_title && <p className="mt-2 text-[0.65rem] font-semibold text-primary">{profile.stream_title}</p>}
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
+                  <div className="w-14 h-14 rounded-xl flex items-center justify-center" style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.15)' }}>
+                    <Radio size={26} style={{ color: 'rgba(212,175,55,0.5)' }} />
+                  </div>
+                  <p className="text-sm text-muted-foreground">Pulsa <span className="font-bold text-primary">EN VIVO</span> para comenzar</p>
+                  {profile.stream_title && <p className="text-[0.65rem] font-semibold text-primary">{profile.stream_title}</p>}
+                  {!streamUrl && (
+                    <p className="text-[0.6rem] text-muted-foreground mt-1">Configura tu URL de streaming con el botón <span className="font-bold">Stream URL</span></p>
+                  )}
                 </div>
               )}
             </div>

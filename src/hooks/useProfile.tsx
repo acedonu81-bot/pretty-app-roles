@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, createContext, useContext, ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 
 interface ProfileData {
   display_name: string;
@@ -16,6 +17,10 @@ interface ProfileData {
   annual_billing: boolean;
   is_live: boolean;
   phone: string | null;
+  specialty: string | null;
+  instagram: string | null;
+  audio_embed_url: string | null;
+  languages: string[] | null;
 }
 
 interface ProfileCtx extends ProfileData {
@@ -38,6 +43,10 @@ const defaults: ProfileData = {
   annual_billing: false,
   is_live: false,
   phone: null,
+  specialty: null,
+  instagram: null,
+  audio_embed_url: null,
+  languages: null,
 };
 
 const ProfileContext = createContext<ProfileCtx>({
@@ -58,7 +67,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     if (!user) return;
     const { data: row } = await supabase
       .from('profiles')
-      .select('display_name, birthday, photo_url, zone, hourly_rate, role, subscription_tier, stream_url, stream_title, trial_started_at, annual_billing, is_live, phone')
+      .select('display_name, birthday, photo_url, zone, hourly_rate, role, subscription_tier, stream_url, stream_title, trial_started_at, annual_billing, is_live, phone, specialty, instagram, audio_embed_url, languages')
       .eq('user_id', user.id)
       .maybeSingle();
     if (row) setData(row as unknown as ProfileData);
@@ -69,7 +78,15 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
 
   const updateField = useCallback(async (fields: Partial<ProfileData>) => {
     if (!user) return;
-    await (supabase.from('profiles').update(fields as any) as any).eq('user_id', user.id);
+    const { error } = await supabase
+      .from('profiles')
+      .update(fields as any)
+      .eq('user_id', user.id);
+    if (error) {
+      console.error('[useProfile] updateField error:', error);
+      toast.error('Error al guardar: ' + error.message);
+      return;
+    }
     setData(prev => ({ ...prev, ...fields }));
   }, [user]);
 

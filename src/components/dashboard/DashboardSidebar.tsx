@@ -1,9 +1,9 @@
 import {
-  Headphones, UserCheck, Smile, Shirt, Building2,
+  Headphones, UserCheck, Smile, Building2,
   User, Map, CalendarDays,
   MessageSquare, Radio, Megaphone, Settings, Crown,
   BarChart3, Zap, Award, CreditCard,
-  Camera, Palette, Flag,
+  Camera, Flag,
 } from 'lucide-react';
 import GeometricAvatar from './GeometricAvatar';
 
@@ -20,9 +20,7 @@ const navSections = [
       { id: 'rookie', icon: Award, label: 'DJ Promesa' },
       { id: 'staff', icon: UserCheck, label: 'Personal de Sala' },
       { id: 'makeup', icon: Smile, label: 'Maquillaje & Peluquería' },
-      { id: 'vestuario', icon: Shirt, label: 'Vestuario & Moda' },
       { id: 'media', icon: Camera, label: 'Media & Contenido' },
-      { id: 'design', icon: Palette, label: 'Diseño & Visuales' },
       { id: 'ambassador', icon: Flag, label: 'Promoción' },
       { id: 'empresario', icon: Building2, label: 'Panel Empresario' },
     ],
@@ -70,14 +68,14 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
   return (
     <aside
       className="w-[260px] h-full flex flex-col z-10 flex-shrink-0"
-      style={{ background: '#0a0a0a', borderRight: '1px solid var(--nightlife-border)' }}
+      style={{ background: '#080808', borderRight: '1px solid var(--nightlife-border)' }}
     >
       <div className="p-6 flex items-center gap-3" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>
         <div>
           <h2 className="text-xl font-bold tracking-wider">
             X<span className="text-gradient">PEAK</span>
           </h2>
-          <p className="text-[0.55rem] text-muted-foreground mt-0.5 tracking-widest uppercase">España · Directorio Profesional</p>
+          <p className="text-[0.55rem] text-muted-foreground mt-0.5 tracking-widest uppercase">Europa · Directorio Profesional</p>
         </div>
       </div>
 
