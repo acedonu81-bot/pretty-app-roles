@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { motion, useInView, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { Music, UtensilsCrossed, Users, Camera, ArrowRight, Sparkles, X, CheckCircle } from 'lucide-react';
 import xpeakLogo from '@/assets/xpeak-logo.png';
 import heroBg from '@/assets/hero-bg.jpg';
@@ -36,38 +36,77 @@ const BentoCard = ({
   image, icon, title, subtitle, className = '', onClick,
 }: {
   image: string; icon: React.ReactNode; title: string; subtitle: string; className?: string; onClick?: () => void;
-}) => (
-  <motion.div
-    whileHover={{ scale: 1.03, y: -6 }}
-    transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-    onClick={onClick}
-    className={`relative overflow-hidden rounded-2xl cursor-pointer group ${className}`}
-    style={{ border: '1px solid rgba(212,175,55,0.15)' }}
-  >
-    <img src={image} alt={title} loading="lazy"
-      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-    {/* Dark cinema overlay */}
-    <div className="absolute inset-0" style={{
-      background: 'linear-gradient(180deg, rgba(10,10,10,0.2) 0%, rgba(10,10,10,0.85) 100%)',
-    }} />
-    {/* Gold edge glow on hover */}
-    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-      style={{ boxShadow: 'inset 0 0 40px rgba(212,175,55,0.15)' }} />
-    <div className="relative z-10 h-full flex flex-col justify-end p-6">
-      <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
+}) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const shineX = useMotionValue('-100%');
+
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), { stiffness: 200, damping: 20 });
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-8, 8]), { stiffness: 200, damping: 20 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = cardRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
+    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
+    shineX.set(`${((e.clientX - rect.left) / rect.width) * 100 - 50}%`);
+  };
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+    shineX.set('-100%');
+  };
+
+  return (
+    <motion.div
+      ref={cardRef}
+      onClick={onClick}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ rotateX, rotateY, transformStyle: 'preserve-3d', perspective: 800, border: '1px solid rgba(212,175,55,0.15)' }}
+      whileHover={{ scale: 1.04, y: -8, borderColor: 'rgba(212,175,55,0.45)' }}
+      transition={{ type: 'spring', stiffness: 240, damping: 22 }}
+      className={`relative overflow-hidden rounded-2xl cursor-pointer group ${className}`}
+    >
+      <img src={image} alt={title} loading="lazy"
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-115" />
+      {/* Dark cinema overlay */}
+      <div className="absolute inset-0" style={{
+        background: 'linear-gradient(180deg, rgba(10,10,10,0.1) 0%, rgba(10,10,10,0.88) 100%)',
+      }} />
+      {/* Shine sweep */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'rgba(212,175,55,0.1)',
-          backdropFilter: 'blur(12px)',
-          border: '1px solid rgba(212,175,55,0.25)',
-          color: '#D4AF37',
-        }}>
-        {icon}
+          background: useTransform(shineX, x => `radial-gradient(ellipse 60% 80% at calc(${x} + 50%) 50%, rgba(212,175,55,0.12) 0%, transparent 70%)`),
+        }}
+      />
+      {/* Gold border glow */}
+      <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-400"
+        style={{ boxShadow: 'inset 0 0 50px rgba(212,175,55,0.12)' }} />
+      {/* Content */}
+      <div className="relative z-10 h-full flex flex-col justify-end p-6" style={{ transform: 'translateZ(20px)' }}>
+        <motion.div
+          className="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
+          whileHover={{ scale: 1.1 }}
+          style={{
+            background: 'rgba(212,175,55,0.12)',
+            backdropFilter: 'blur(12px)',
+            border: '1px solid rgba(212,175,55,0.3)',
+            color: '#D4AF37',
+          }}>
+          {icon}
+        </motion.div>
+        <h3 className="text-xl font-bold text-gradient mb-1">{title}</h3>
+        <p className="text-sm transition-colors duration-300 group-hover:text-white/75" style={{ color: 'rgba(255,255,255,0.5)' }}>{subtitle}</p>
+        <p className="text-[0.6rem] font-bold mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 tracking-widest uppercase" style={{ color: '#D4AF37' }}>
+          Ver detalles →
+        </p>
       </div>
-      <h3 className="text-xl font-bold text-gradient mb-1">{title}</h3>
-      <p className="text-sm" style={{ color: 'rgba(255,255,255,0.55)' }}>{subtitle}</p>
-    </div>
-  </motion.div>
-);
+    </motion.div>
+  );
+};
 
 /* ── Stats pill ── */
 const StatPill = ({ value, label }: { value: string; label: string }) => (

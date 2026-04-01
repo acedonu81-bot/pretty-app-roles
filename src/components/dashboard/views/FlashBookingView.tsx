@@ -53,8 +53,9 @@ const FlashBookingView = () => {
         {flashProfiles.map(p => (
           <div key={p.id} className="glass-panel p-4">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0" style={{ border: '1px solid rgba(34,197,94,0.3)' }}>
-                <img src={p.photo} alt={p.name} className="w-full h-full object-cover" />
+              <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center text-sm font-bold"
+                style={{ border: '1px solid rgba(34,197,94,0.3)', background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+                {p.photo ? <img src={p.photo} alt={p.name} className="w-full h-full object-cover" /> : p.name.charAt(0)}
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-bold truncate">{p.name}</p>
