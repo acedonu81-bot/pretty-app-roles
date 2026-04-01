@@ -6,7 +6,6 @@ import {
   Camera, Palette, Flag,
 } from 'lucide-react';
 import GeometricAvatar from './GeometricAvatar';
-import xpeakLogo from '@/assets/xpeak-logo.png';
 
 interface SidebarProps {
   activeView: string;
@@ -74,7 +73,6 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
       style={{ background: '#0a0a0a', borderRight: '1px solid var(--nightlife-border)' }}
     >
       <div className="p-6 flex items-center gap-3" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>
-        <img src={xpeakLogo} alt="XPEAK" width={32} height={32} />
         <div>
           <h2 className="text-xl font-bold tracking-wider">
             X<span className="text-gradient">PEAK</span>
