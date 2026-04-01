@@ -40,22 +40,30 @@ const BentoCard = ({
   const cardRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const shineX = useMotionValue('-100%');
+  const shinePosX = useMotionValue(50);
 
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), { stiffness: 200, damping: 20 });
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-8, 8]), { stiffness: 200, damping: 20 });
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [10, -10]), { stiffness: 180, damping: 18 });
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-10, 10]), { stiffness: 180, damping: 18 });
+  const shineOpacity = useSpring(useMotionValue(0), { stiffness: 200, damping: 20 });
+  const shineBg = useTransform(
+    shinePosX,
+    x => `radial-gradient(ellipse 55% 75% at ${x}% 50%, rgba(212,175,55,0.18) 0%, transparent 65%)`
+  );
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = cardRef.current?.getBoundingClientRect();
     if (!rect) return;
-    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
-    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
-    shineX.set(`${((e.clientX - rect.left) / rect.width) * 100 - 50}%`);
+    const nx = (e.clientX - rect.left) / rect.width - 0.5;
+    const ny = (e.clientY - rect.top) / rect.height - 0.5;
+    mouseX.set(nx);
+    mouseY.set(ny);
+    shinePosX.set(((e.clientX - rect.left) / rect.width) * 100);
+    shineOpacity.set(1);
   };
   const handleMouseLeave = () => {
     mouseX.set(0);
     mouseY.set(0);
-    shineX.set('-100%');
+    shineOpacity.set(0);
   };
 
   return (
@@ -64,32 +72,25 @@ const BentoCard = ({
       onClick={onClick}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ rotateX, rotateY, transformStyle: 'preserve-3d', perspective: 800, border: '1px solid rgba(212,175,55,0.15)' }}
-      whileHover={{ scale: 1.04, y: -8, borderColor: 'rgba(212,175,55,0.45)' }}
-      transition={{ type: 'spring', stiffness: 240, damping: 22 }}
+      style={{ rotateX, rotateY, transformPerspective: 900, border: '1px solid rgba(212,175,55,0.15)' }}
+      whileHover={{ scale: 1.04, y: -10, borderColor: 'rgba(212,175,55,0.5)' }}
+      transition={{ type: 'spring', stiffness: 220, damping: 22 }}
       className={`relative overflow-hidden rounded-2xl cursor-pointer group ${className}`}
     >
       <img src={image} alt={title} loading="lazy"
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-115" />
-      {/* Dark cinema overlay */}
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+      {/* Dark overlay */}
       <div className="absolute inset-0" style={{
-        background: 'linear-gradient(180deg, rgba(10,10,10,0.1) 0%, rgba(10,10,10,0.88) 100%)',
+        background: 'linear-gradient(180deg, rgba(10,10,10,0.15) 0%, rgba(10,10,10,0.88) 100%)',
       }} />
-      {/* Shine sweep */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: useTransform(shineX, x => `radial-gradient(ellipse 60% 80% at calc(${x} + 50%) 50%, rgba(212,175,55,0.12) 0%, transparent 70%)`),
-        }}
-      />
-      {/* Gold border glow */}
-      <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-400"
-        style={{ boxShadow: 'inset 0 0 50px rgba(212,175,55,0.12)' }} />
-      {/* Content */}
-      <div className="relative z-10 h-full flex flex-col justify-end p-6" style={{ transform: 'translateZ(20px)' }}>
-        <motion.div
-          className="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
-          whileHover={{ scale: 1.1 }}
+      {/* Shine que sigue el ratón */}
+      <motion.div className="absolute inset-0 pointer-events-none" style={{ background: shineBg, opacity: shineOpacity }} />
+      {/* Borde dorado al hover */}
+      <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        style={{ boxShadow: 'inset 0 0 60px rgba(212,175,55,0.1)' }} />
+      {/* Contenido */}
+      <div className="relative z-10 h-full flex flex-col justify-end p-6">
+        <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-110"
           style={{
             background: 'rgba(212,175,55,0.12)',
             backdropFilter: 'blur(12px)',
@@ -97,10 +98,10 @@ const BentoCard = ({
             color: '#D4AF37',
           }}>
           {icon}
-        </motion.div>
+        </div>
         <h3 className="text-xl font-bold text-gradient mb-1">{title}</h3>
-        <p className="text-sm transition-colors duration-300 group-hover:text-white/75" style={{ color: 'rgba(255,255,255,0.5)' }}>{subtitle}</p>
-        <p className="text-[0.6rem] font-bold mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 tracking-widest uppercase" style={{ color: '#D4AF37' }}>
+        <p className="text-sm" style={{ color: 'rgba(255,255,255,0.55)' }}>{subtitle}</p>
+        <p className="text-[0.6rem] font-bold mt-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0 tracking-widest uppercase" style={{ color: '#D4AF37' }}>
           Ver detalles →
         </p>
       </div>
