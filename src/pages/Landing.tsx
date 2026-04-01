@@ -122,12 +122,9 @@ const Landing = () => {
           borderBottom: '1px solid rgba(212,175,55,0.08)',
         }}>
         <div className="max-w-[1200px] mx-auto px-6 md:px-8 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2.5">
-            <img src={xpeakLogo} alt="XPEAK" width={34} height={34} />
-            <span className="text-xl font-bold tracking-wider">
-              X<span className="text-gradient">PEAK</span>
-            </span>
-          </div>
+          <span className="text-xl font-bold tracking-wider">
+            X<span className="text-gradient">PEAK</span>
+          </span>
         </div>
       </nav>
 
