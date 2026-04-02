@@ -23,6 +23,13 @@ const ProfileView = () => {
   const [selectedLangs, setSelectedLangs] = useState<string[] | null>(null);
 
   const EU_LANGS = ['Español','Inglés','Francés','Italiano','Alemán','Portugués','Neerlandés','Polaco','Catalán','Euskera'];
+  const DJ_GENRES = ['Techno','Tech House','House','Afro House','Melodic Techno','Deep House','Minimal','Trance','Progressive','Drum & Bass','Jungle','Garage','Afrobeats','Tribal','Nu Disco','Electro','Hard Techno','Industrial','Ambient','Comercial','Reggaetón','Urbano','Hip Hop','RnB','Funk','Soul','Disco','Latino','Salsa','Flamenco Fusión'];
+  const [selectedGenres, setSelectedGenres] = useState<string[] | null>(null);
+  const activeGenres = selectedGenres ?? (profile.languages ?? []).filter(g => DJ_GENRES.includes(g));
+  const toggleGenre = (g: string) => {
+    const next = activeGenres.includes(g) ? activeGenres.filter(x => x !== g) : [...activeGenres, g];
+    setSelectedGenres(next);
+  };
   const activeLangs = selectedLangs ?? profile.languages ?? [];
   const toggleLang = (lang: string) => {
     const current = activeLangs;
@@ -64,6 +71,7 @@ const ProfileView = () => {
     if (bio !== null) updates.instagram = bio;
     if (audioUrl !== null) updates.audio_embed_url = audioUrl || null;
     if (selectedLangs !== null) updates.languages = selectedLangs;
+    if (selectedGenres !== null) updates.badges = selectedGenres;
     if (Object.keys(updates).length > 0) await profile.updateField(updates);
     toast.success('Perfil guardado.');
   };
@@ -157,6 +165,24 @@ const ProfileView = () => {
               <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Ciudad</label>
               <input type="text" value={city || profile.zone || ''} onChange={e => setCity(e.target.value)} className="nightlife-input mt-1 text-base" />
             </div>
+            {profile.role === 'dj' && (
+              <div className="mb-3">
+                <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Géneros musicales</label>
+                <div className="flex flex-wrap gap-1.5 mt-2">
+                  {DJ_GENRES.map(g => (
+                    <button key={g} type="button" onClick={() => toggleGenre(g)}
+                      className="text-xs font-bold px-2.5 py-1 rounded-lg transition-all"
+                      style={{
+                        background: activeGenres.includes(g) ? 'rgba(226,190,80,0.15)' : 'rgba(255,255,255,0.04)',
+                        border: `1px solid ${activeGenres.includes(g) ? 'rgba(226,190,80,0.4)' : 'var(--nightlife-border)'}`,
+                        color: activeGenres.includes(g) ? '#E2BE50' : '#8E8EA0',
+                      }}>
+                      {g}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
             <div className="mb-3">
               <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Rider técnico</label>
               <input type="text" value={rider ?? profile.specialty ?? ''} onChange={e => setRider(e.target.value)} placeholder="Ej: Pioneer CDJ-3000, DJM-900NXS2" className="nightlife-input mt-1 text-base" />

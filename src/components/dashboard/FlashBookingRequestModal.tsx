@@ -22,7 +22,7 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, onClose 
       return;
     }
     setSending(true);
-    const { error } = await supabase.from('flash_bookings' as any).insert({
+    const payload = {
       professional_name: professionalName,
       professional_role: professionalRole,
       requester_name: form.name,
@@ -31,9 +31,14 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, onClose 
       event_location: form.location,
       event_description: form.description,
       status: 'pending',
-    });
+    };
+    const { error } = await supabase.from('flash_bookings' as any).insert(payload);
+    if (error) { setSending(false); toast.error('Error al enviar la solicitud. Inténtalo de nuevo.'); return; }
+
+    // Notificación email (no bloquea si falla)
+    supabase.functions.invoke('send-email', { body: { type: 'flash_booking', data: payload } }).catch(() => {});
+
     setSending(false);
-    if (error) { toast.error('Error al enviar la solicitud. Inténtalo de nuevo.'); return; }
     toast.success(`Solicitud enviada a ${professionalName}. Te contactará pronto.`);
     onClose();
   };
