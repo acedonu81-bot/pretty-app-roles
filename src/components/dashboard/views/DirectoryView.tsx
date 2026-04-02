@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Crown, Eye, Maximize2, Minimize2, Users, Video, Settings, ExternalLink } from 'lucide-react';
+import { useState, useEffect, useMemo } from 'react';
+import { Crown, Eye, Maximize2, Minimize2, Users, Video, Settings, ExternalLink, Globe } from 'lucide-react';
 import { profiles, getEliteRotation, Profile } from '@/data/profiles';
 import ProfileCard from '@/components/dashboard/ProfileCard';
 import CheckoutModal from '@/components/dashboard/CheckoutModal';
@@ -161,6 +161,8 @@ const StreamSettingsPanel = ({
   );
 };
 
+const EU_COUNTRIES = ['Todos', 'España', 'Portugal', 'Francia', 'Italia', 'Alemania', 'Países Bajos', 'Bélgica', 'Reino Unido', 'Suiza', 'Austria', 'Polonia'];
+
 const DirectoryView = ({ role, title, subtitle, onNavigate, wideCards }: DirectoryViewProps) => {
   const profile = useProfile();
   const roleProfiles = profiles.filter(p => p.role === role);
@@ -172,12 +174,30 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, wideCards }: Directo
   const [streamUrl, setStreamUrl] = useState(profile.stream_url ?? '');
   const [streamTitle, setStreamTitle] = useState(profile.stream_title ?? '');
   const [savingStream, setSavingStream] = useState(false);
+  const [filterCountry, setFilterCountry] = useState('Todos');
+  const [filterCity, setFilterCity] = useState('Todas');
 
   useEffect(() => {
     setSortedProfiles(getEliteRotation(roleProfiles));
     const iv = setInterval(() => setSortedProfiles(getEliteRotation(roleProfiles)), 60 * 60 * 1000);
     return () => clearInterval(iv);
   }, [role]);
+
+  const availableCities = useMemo(() => {
+    const cities = roleProfiles
+      .filter(p => filterCountry === 'Todos' || p.country === filterCountry)
+      .map(p => p.city)
+      .filter(Boolean) as string[];
+    return ['Todas', ...Array.from(new Set(cities))];
+  }, [filterCountry, roleProfiles]);
+
+  const filteredProfiles = useMemo(() => {
+    return sortedProfiles.filter(p => {
+      if (filterCountry !== 'Todos' && p.country !== filterCountry) return false;
+      if (filterCity !== 'Todas' && p.city !== filterCity) return false;
+      return true;
+    });
+  }, [sortedProfiles, filterCountry, filterCity]);
 
   useEffect(() => {
     setStreamUrl(profile.stream_url ?? '');
@@ -302,6 +322,43 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, wideCards }: Directo
         </div>
       )}
 
+      {/* Filtros Europa */}
+      <div className="flex flex-wrap gap-2 mb-5 p-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <Globe size={12} style={{ color: '#D4AF37' }} />
+          <span className="font-bold" style={{ color: '#D4AF37' }}>Europa</span>
+        </div>
+        <select value={filterCountry} onChange={e => { setFilterCountry(e.target.value); setFilterCity('Todas'); }}
+          className="text-xs px-2.5 py-1.5 rounded-lg outline-none cursor-pointer"
+          style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: filterCountry !== 'Todos' ? '#D4AF37' : 'rgba(255,255,255,0.5)' }}>
+          {EU_COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
+        </select>
+        {availableCities.length > 1 && (
+          <select value={filterCity} onChange={e => setFilterCity(e.target.value)}
+            className="text-xs px-2.5 py-1.5 rounded-lg outline-none cursor-pointer"
+            style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: filterCity !== 'Todas' ? '#D4AF37' : 'rgba(255,255,255,0.5)' }}>
+            {availableCities.map(c => <option key={c} value={c}>{c}</option>)}
+          </select>
+        )}
+        {(filterCountry !== 'Todos' || filterCity !== 'Todas') && (
+          <button onClick={() => { setFilterCountry('Todos'); setFilterCity('Todas'); }}
+            className="text-xs px-2.5 py-1.5 rounded-lg transition-all hover:bg-white/10"
+            style={{ color: 'rgba(255,255,255,0.4)' }}>
+            × Limpiar
+          </button>
+        )}
+        <span className="ml-auto text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
+          {filteredProfiles.length} resultado{filteredProfiles.length !== 1 ? 's' : ''}
+        </span>
+      </div>
+
+      {filteredProfiles.length === 0 && (
+        <div className="text-center py-12 text-muted-foreground text-sm">
+          No hay profesionales en esta zona aún.{' '}
+          <button onClick={() => { setFilterCountry('Todos'); setFilterCity('Todas'); }} style={{ color: '#D4AF37' }} className="font-bold underline">Ver todos</button>
+        </div>
+      )}
+
       {sortedProfiles.some(p => p.subscriptionTier === 'elite') && (
         <div className="p-3 mb-5 rounded-lg flex items-center gap-2" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
           <Crown size={16} style={{ color: '#D4AF37' }} />
@@ -312,7 +369,7 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, wideCards }: Directo
       )}
 
       <div className={gridClass}>
-        {sortedProfiles.map(p => (
+        {filteredProfiles.map(p => (
           <ProfileCard key={p.id} profile={p} showPortfolio={wideCards} />
         ))}
       </div>

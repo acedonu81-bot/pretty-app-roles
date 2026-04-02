@@ -9,6 +9,7 @@ import Privacidad from "./pages/Privacidad";
 import Terminos from "./pages/Terminos";
 import Cookies from "./pages/Cookies";
 import AdminBeta from "./pages/AdminBeta";
+import PublicProfile from "./pages/PublicProfile";
 import NotFound from "./pages/NotFound";
 import CookieBanner from "./components/CookieBanner";
 
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/terminos" element={<Terminos />} />
           <Route path="/cookies" element={<Cookies />} />
           <Route path="/admin-beta" element={<AdminBeta />} />
+          <Route path="/p/:id" element={<PublicProfile />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <CookieBanner />

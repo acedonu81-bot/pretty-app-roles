@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { motion, useInView, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { Music, UtensilsCrossed, Users, Camera, ArrowRight, Sparkles, X, CheckCircle } from 'lucide-react';
+import { Music, UtensilsCrossed, Users, Camera, ArrowRight, Sparkles, X, ChevronLeft, ChevronRight, Building2, Scissors, Headphones, Zap, Radio, Star, CalendarDays, Search, Award, Globe, CheckCircle, Smartphone, Video } from 'lucide-react';
 import xpeakLogo from '@/assets/xpeak-logo.png';
 import heroBg from '@/assets/hero-bg.jpg';
 const HERO_VIDEO_URL = 'https://videos.pexels.com/video-files/3129957/3129957-uhd_2560_1440_25fps.mp4';
@@ -78,7 +78,8 @@ const BentoCard = ({
       className={`relative overflow-hidden rounded-2xl cursor-pointer group ${className}`}
     >
       <img src={image} alt={title} loading="lazy"
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+        style={{ filter: 'saturate(0.6) brightness(0.8)' }} />
       {/* Dark overlay */}
       <div className="absolute inset-0" style={{
         background: 'linear-gradient(180deg, rgba(10,10,10,0.15) 0%, rgba(10,10,10,0.88) 100%)',
@@ -125,119 +126,181 @@ const StatPill = ({ value, label }: { value: string; label: string }) => (
 /* ── Role detail data ── */
 const ROLE_DETAILS = [
   {
-    key: 'musica',
-    title: 'Música',
-    icon: <Music size={28} />,
-    color: '#E2BE50',
-    tagline: 'DJs, productores y técnicos de sonido',
-    what: 'Profesionales del audio para todo tipo de eventos: clubs, festivales, bodas, eventos corporativos y privados.',
-    forPro: ['Crea tu perfil con sesiones de audio reales', 'Incrusta tu perfil de hearthis.at o Mixcloud', 'Recibe Flash Bookings urgentes de empresarios', 'Emite en directo desde tu Escenario Virtual'],
-    forBusiness: ['Busca DJs por género, tarifa y zona', 'Escucha sus sesiones antes de contratar', 'Flash Booking para cubrir una noche en menos de 1h', 'Historial de contratos verificado'],
+    key: 'musica', title: 'Música', icon: <Music size={28} />, tagline: 'DJs, productores y técnicos de sonido',
+    steps: [
+      { icon: <Headphones size={32} />, title: '¿Qué es este rol?', body: 'DJs profesionales, productores y técnicos de sonido para clubs, festivales, bodas y eventos corporativos en toda Europa.' },
+      { icon: <Music size={32} />, title: 'Tu perfil, tu marca', body: 'Incrusta tus sesiones de hearthis.at, Mixcloud o SoundCloud. Los empresarios escuchan tu trabajo antes de contactarte — sin intermediarios.' },
+      { icon: <Zap size={32} />, title: 'Flash Booking', body: 'Activa tu disponibilidad en tiempo real y recibe ofertas urgentes de salas que necesitan cubrir una noche con pocas horas de antelación.' },
+      { icon: <Radio size={32} />, title: 'Escenario Virtual', body: 'Emite tus sesiones en directo. Empresarios de toda Europa te ven actuar y pueden contactarte al instante. La vitrina más potente del sector.' },
+    ],
   },
   {
-    key: 'gastro',
-    title: 'Gastro & Sala',
-    icon: <UtensilsCrossed size={28} />,
-    color: '#E2BE50',
-    tagline: 'Bartenders, chefs y catering premium',
-    what: 'Personal especializado en hostelería nocturna: bartenders de nivel, camareros VIP, coordinadores de sala y catering para eventos exclusivos.',
-    forPro: ['Muestra tu portfolio con vídeos de tus creaciones', 'Define tu disponibilidad por fechas', 'Recibe ofertas directas de salas y eventos', 'Valoraciones verificadas de cada evento'],
-    forBusiness: ['Encuentra bartenders con experiencia en grandes eventos', 'Gestiona contrataciones puntuales o fijas', 'Compara perfiles y tarifarìos de forma transparente'],
+    key: 'gastro', title: 'Gastro & Sala', icon: <UtensilsCrossed size={28} />, tagline: 'Bartenders, chefs y catering premium',
+    steps: [
+      { icon: <UtensilsCrossed size={32} />, title: '¿Qué es este rol?', body: 'Bartenders, camareros VIP, chefs de eventos y catering premium para hostelería nocturna y eventos exclusivos en toda Europa.' },
+      { icon: <Video size={32} />, title: 'Muestra tu talento', body: 'Sube vídeos cortos de tus creaciones y cócteles. Tu portfolio habla por ti antes de cualquier entrevista.' },
+      { icon: <CalendarDays size={32} />, title: 'Gestión de disponibilidad', body: 'Define tu calendario. Recibe ofertas directas de salas y eventos sin perder tiempo con llamadas interminables.' },
+      { icon: <Star size={32} />, title: 'Reputación verificada', body: 'Cada evento suma una valoración real. La mejor carta de presentación para eventos de mayor categoría.' },
+    ],
   },
   {
-    key: 'imagen',
-    title: 'Imagen & Media',
-    icon: <Camera size={28} />,
-    color: '#E2BE50',
-    tagline: 'Fotógrafos, videógrafos y maquilladores',
-    what: 'Creadores visuales especializados en el sector nocturno: fotógrafos de eventos, videógrafos, maquilladores artísticos y peluquería para artistas.',
-    forPro: ['Portfolio de imágenes y vídeos cortos de tu trabajo', 'Perfil público indexado en buscadores', 'Contacto directo con salas y productoras', 'Calendario de disponibilidad integrado'],
-    forBusiness: ['Filtra por especialidad, zona y precio', 'Ve portfolios reales antes de contactar', 'Booking rápido para cobertura de eventos de última hora'],
+    key: 'imagen', title: 'Imagen & Media', icon: <Camera size={28} />, tagline: 'Fotógrafos, videógrafos y creadores',
+    steps: [
+      { icon: <Camera size={32} />, title: '¿Qué es este rol?', body: 'Fotógrafos de eventos, videógrafos, realizadores de contenido y técnicos visuales especializados en el entretenimiento nocturno.' },
+      { icon: <Video size={32} />, title: 'Portfolio visual', body: 'Sube imágenes y vídeos cortos de tu trabajo real. Una galería que muestra tu estilo mejor que cualquier CV.' },
+      { icon: <Search size={32} />, title: 'Visibilidad SEO', body: 'Tu perfil aparece indexado en buscadores. Salas, productoras y agencias de Europa te encuentran cuando te necesitan.' },
+      { icon: <Zap size={32} />, title: 'Booking directo', body: 'Los empresarios filtran por especialidad, zona y precio. Contacto directo sin agencias ni comisiones ocultas.' },
+    ],
   },
   {
-    key: 'staff',
-    title: 'Staff & Promoción',
-    icon: <Users size={28} />,
-    color: '#E2BE50',
-    tagline: 'RRPP, hostess, seguridad y promotores',
-    what: 'El personal invisible que hace funcionar los eventos: relaciones públicas, promotores, hostess, seguridad y coordinadores de acceso.',
-    forPro: ['Primera plataforma que formaliza el rol de RRPP en Europa', 'Define tus tarifas y condiciones sin intermediarios', 'Recibe ofertas de salas verificadas', 'Sistema de valoraciones para construir reputación'],
-    forBusiness: ['El nicho más difícil de cubrir — aquí está centralizado', 'Personal verificado con historial de eventos reales', 'Flash Booking para cubrir ausencias de última hora'],
+    key: 'staff', title: 'Staff & Promoción', icon: <Users size={28} />, tagline: 'RRPP, hostess, seguridad y promotores',
+    steps: [
+      { icon: <Users size={32} />, title: '¿Qué es este rol?', body: 'Relaciones públicas, promotores, hostess, personal de seguridad y coordinadores de acceso para clubs, festivales y eventos privados.' },
+      { icon: <Globe size={32} />, title: 'Primera plataforma formal para RRPP', body: 'XPEAK formaliza el trabajo de RRPP en Europa. Define tus tarifas y condiciones sin depender de contactos informales.' },
+      { icon: <Zap size={32} />, title: 'Ingresos transparentes', body: 'Publica tus tarifas y disponibilidad. Sin intermediarios ni comisiones. El empresario ve tu perfil y te contacta directamente.' },
+      { icon: <Award size={32} />, title: 'Construye reputación', body: 'Valoraciones verificadas de cada evento. Tu historial habla más que cualquier recomendación de boca en boca.' },
+    ],
+  },
+  {
+    key: 'belleza', title: 'Belleza & Estética', icon: <Scissors size={28} />, tagline: 'Maquilladores, peluqueros y estilistas',
+    steps: [
+      { icon: <Scissors size={32} />, title: '¿Qué es este rol?', body: 'Maquilladores artísticos, peluqueros de artistas, estilistas para shows, caracterizadores y técnicos de efectos especiales para escenario.' },
+      { icon: <Sparkles size={32} />, title: 'Tu trabajo habla', body: 'Sube fotos y vídeos de tus transformaciones. Los artistas y salas buscan talento visual antes de contactar.' },
+      { icon: <Star size={32} />, title: 'Especialización nocturna', body: 'XPEAK es el único directorio donde artistas, managers y productoras buscan profesionales de belleza del sector nocturno.' },
+      { icon: <Smartphone size={32} />, title: 'Contacto directo', body: 'Sin agencias ni intermediarios. Artistas y productoras te encuentran en XPEAK y contactan directamente vía WhatsApp.' },
+    ],
+  },
+  {
+    key: 'empresario', title: 'Empresario', icon: <Building2 size={28} />, tagline: 'Salas, promotoras y agencias de eventos',
+    steps: [
+      { icon: <Building2 size={32} />, title: '¿Para quién es?', body: 'Propietarios de clubs, salas de conciertos, agencias de eventos y promotoras que necesitan contratar talento profesional verificado.' },
+      { icon: <Search size={32} />, title: 'Encuentra al profesional ideal', body: 'Filtra por rol, especialidad, zona y precio. Escucha sesiones, ve portfolios y lee valoraciones reales antes de contactar.' },
+      { icon: <Zap size={32} />, title: 'Flash Booking — cubre una noche en 1h', body: 'Publica una oferta urgente y recibe respuestas de profesionales disponibles en tu zona en menos de 60 minutos.' },
+      { icon: <CheckCircle size={32} />, title: 'Sin sorpresas', body: 'Perfiles con historial verificado, valoraciones reales y tarifas transparentes. El sistema XPEAK protege a ambas partes en cada contratación.' },
+    ],
   },
 ];
 
-/* ── Role Modal ── */
-const RoleModal = ({ role, onClose, onJoin }: { role: typeof ROLE_DETAILS[0]; onClose: () => void; onJoin: () => void }) => (
-  <AnimatePresence>
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      onClick={onClose}
-    >
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-md" />
+/* ── Role Modal con fichas ── */
+const RoleModal = ({ role, onClose, onJoin }: { role: typeof ROLE_DETAILS[0]; onClose: () => void; onJoin: () => void }) => {
+  const [step, setStep] = useState(0);
+  const [dir, setDir] = useState(1);
+  const total = role.steps.length;
+  const isLast = step === total - 1;
+
+  const goTo = (next: number) => {
+    setDir(next > step ? 1 : -1);
+    setStep(next);
+  };
+
+  const variants = {
+    enter: (d: number) => ({ x: d > 0 ? 50 : -50, opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit: (d: number) => ({ x: d > 0 ? -50 : 50, opacity: 0 }),
+  };
+
+  return (
+    <AnimatePresence>
       <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 10 }}
-        transition={{ type: 'spring', stiffness: 300, damping: 28 }}
-        onClick={e => e.stopPropagation()}
-        className="relative w-full max-w-lg rounded-2xl overflow-hidden"
-        style={{ background: '#111', border: '1px solid rgba(226,190,80,0.2)' }}
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        className="fixed inset-0 z-50 flex items-center justify-center p-4"
+        onClick={onClose}
       >
-        {/* Header */}
-        <div className="p-6 pb-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-          <button onClick={onClose} className="absolute top-4 right-4 w-8 h-8 rounded-lg flex items-center justify-center transition-all hover:bg-white/10">
-            <X size={16} className="text-white/60" />
-          </button>
-          <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3"
-            style={{ background: 'rgba(226,190,80,0.1)', border: '1px solid rgba(226,190,80,0.2)', color: '#E2BE50' }}>
-            {role.icon}
-          </div>
-          <h3 className="text-2xl font-bold mb-1">{role.title}</h3>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>{role.tagline}</p>
-        </div>
-
-        <div className="p-6 space-y-5 max-h-[60vh] overflow-y-auto">
-          <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>{role.what}</p>
-
-          <div>
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#E2BE50' }}>Si eres profesional</p>
-            <div className="space-y-2">
-              {role.forPro.map((item, i) => (
-                <div key={i} className="flex items-start gap-2.5">
-                  <CheckCircle size={14} className="mt-0.5 flex-shrink-0" style={{ color: '#E2BE50' }} />
-                  <span className="text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>{item}</span>
-                </div>
-              ))}
+        <div className="absolute inset-0 bg-black/80 backdrop-blur-md" />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.94, y: 24 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.94, y: 12 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 28 }}
+          onClick={e => e.stopPropagation()}
+          className="relative w-full max-w-md rounded-2xl overflow-hidden"
+          style={{ background: '#111', border: '1px solid rgba(226,190,80,0.2)' }}
+        >
+          {/* Header */}
+          <div className="flex items-center gap-3 px-5 pt-5 pb-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+              style={{ background: 'rgba(226,190,80,0.1)', border: '1px solid rgba(226,190,80,0.2)', color: '#E2BE50' }}>
+              {role.icon}
             </div>
-          </div>
-
-          <div>
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.4)' }}>Si eres empresario / promotor</p>
-            <div className="space-y-2">
-              {role.forBusiness.map((item, i) => (
-                <div key={i} className="flex items-start gap-2.5">
-                  <CheckCircle size={14} className="mt-0.5 flex-shrink-0" style={{ color: 'rgba(255,255,255,0.3)' }} />
-                  <span className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>{item}</span>
-                </div>
-              ))}
+            <div className="flex-1 min-w-0">
+              <h3 className="text-lg font-bold leading-tight">{role.title}</h3>
+              <p className="text-xs truncate" style={{ color: 'rgba(255,255,255,0.4)' }}>{role.tagline}</p>
             </div>
+            <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-white/10 flex-shrink-0">
+              <X size={15} className="text-white/50" />
+            </button>
           </div>
-        </div>
 
-        <div className="p-4 pt-0">
-          <button onClick={onJoin}
-            className="w-full py-3 rounded-xl font-bold text-sm transition-all hover:scale-[1.02]"
-            style={{ background: 'linear-gradient(135deg, #D4AF37, #B8941E)', color: '#0A0A0A' }}>
-            Crear perfil gratis →
-          </button>
-        </div>
+          {/* Dots */}
+          <div className="flex justify-center gap-1.5 pt-4">
+            {role.steps.map((_, i) => (
+              <button key={i} onClick={() => goTo(i)}
+                className="rounded-full transition-all duration-300"
+                style={{
+                  width: i === step ? 20 : 6, height: 6,
+                  background: i === step ? '#D4AF37' : 'rgba(255,255,255,0.15)',
+                }} />
+            ))}
+          </div>
+
+          {/* Slide */}
+          <div className="overflow-hidden px-6 pt-5 pb-4" style={{ minHeight: 200 }}>
+            <AnimatePresence custom={dir} mode="wait">
+              <motion.div
+                key={step}
+                custom={dir}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                className="text-center"
+              >
+                <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
+                  style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+                  {role.steps[step].icon}
+                </div>
+                <h4 className="text-base font-bold mb-2">{role.steps[step].title}</h4>
+                <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                  {role.steps[step].body}
+                </p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Navigation */}
+          <div className="flex items-center gap-3 px-5 pb-5">
+            <button
+              onClick={() => goTo(step - 1)} disabled={step === 0}
+              className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all disabled:opacity-20"
+              style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <ChevronLeft size={18} />
+            </button>
+            {isLast ? (
+              <button onClick={onJoin}
+                className="flex-1 py-2.5 rounded-xl font-bold text-sm transition-all hover:scale-[1.02]"
+                style={{ background: 'linear-gradient(135deg, #D4AF37, #B8941E)', color: '#0A0A0A' }}>
+                Crear perfil gratis →
+              </button>
+            ) : (
+              <button onClick={() => goTo(step + 1)}
+                className="flex-1 py-2.5 rounded-xl font-bold text-sm transition-all hover:scale-[1.02]"
+                style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+                Siguiente →
+              </button>
+            )}
+            <button
+              onClick={() => goTo(step + 1)} disabled={isLast}
+              className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all disabled:opacity-20"
+              style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <ChevronRight size={18} />
+            </button>
+          </div>
+        </motion.div>
       </motion.div>
-    </motion.div>
-  </AnimatePresence>
-);
+    </AnimatePresence>
+  );
+};
 
 /* ── Landing ── */
 const Landing = () => {
@@ -374,22 +437,38 @@ const Landing = () => {
         <p className="text-center text-xs text-muted-foreground mb-6" style={{ color: 'rgba(255,255,255,0.3)' }}>
           Haz clic en cada categoría para ver qué puedes hacer
         </p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 auto-rows-[180px] md:auto-rows-[280px]">
+        {/* Fila 1-2: bento asimétrico */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 auto-rows-[170px] md:auto-rows-[260px] mb-3 md:mb-4">
           <FadeIn delay={0} className="md:row-span-2">
             <BentoCard image={bentoMusica} icon={<Music size={20} />} title="Música" subtitle="DJs, productores y técnicos de sonido" className="h-full"
               onClick={() => setActiveRole(ROLE_DETAILS[0])} />
           </FadeIn>
           <FadeIn delay={0.1} className="md:col-span-2">
-            <BentoCard image={bentoGastro} icon={<UtensilsCrossed size={20} />} title="Gastro" subtitle="Bartenders, chefs y catering premium" className="h-full"
-              onClick={() => setActiveRole(ROLE_DETAILS[1])} />
+            <BentoCard
+              image="https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=800"
+              icon={<Building2 size={20} />} title="Empresario" subtitle="Salas, promotoras y agencias de eventos" className="h-full"
+              onClick={() => setActiveRole(ROLE_DETAILS[5])} />
           </FadeIn>
           <FadeIn delay={0.15} className="md:row-span-2">
-            <BentoCard image={bentoImagen} icon={<Camera size={20} />} title="Imagen" subtitle="Fotógrafos, videógrafos y diseñadores" className="h-full"
+            <BentoCard image={bentoImagen} icon={<Camera size={20} />} title="Imagen & Media" subtitle="Fotógrafos, videógrafos y creadores" className="h-full"
               onClick={() => setActiveRole(ROLE_DETAILS[2])} />
           </FadeIn>
           <FadeIn delay={0.2} className="md:col-span-2">
-            <BentoCard image={bentoStaff} icon={<Users size={20} />} title="Staff" subtitle="RRPP, hostess, seguridad y coordinación" className="h-full"
+            <BentoCard image={bentoStaff} icon={<Users size={20} />} title="Staff & Promoción" subtitle="RRPP, hostess, seguridad y coordinación" className="h-full"
               onClick={() => setActiveRole(ROLE_DETAILS[3])} />
+          </FadeIn>
+        </div>
+        {/* Fila 3: Belleza + Gastro */}
+        <div className="grid grid-cols-2 gap-3 md:gap-4" style={{ height: 180 }}>
+          <FadeIn delay={0.25} className="h-full">
+            <BentoCard
+              image="https://images.pexels.com/photos/2681751/pexels-photo-2681751.jpeg?auto=compress&cs=tinysrgb&w=800"
+              icon={<Scissors size={20} />} title="Belleza & Estética" subtitle="Maquilladores, peluqueros y estilistas" className="h-full"
+              onClick={() => setActiveRole(ROLE_DETAILS[4])} />
+          </FadeIn>
+          <FadeIn delay={0.3} className="h-full">
+            <BentoCard image={bentoGastro} icon={<UtensilsCrossed size={20} />} title="Gastro & Sala" subtitle="Bartenders, chefs y catering premium" className="h-full"
+              onClick={() => setActiveRole(ROLE_DETAILS[1])} />
           </FadeIn>
         </div>
       </section>
