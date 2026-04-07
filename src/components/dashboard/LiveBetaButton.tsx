@@ -41,7 +41,7 @@ const LiveBetaButton = () => {
       if (user.email) {
         supabase.functions.invoke('send-email', {
           body: { type: 'feature_request', data: { email: user.email, feature: 'Vídeo en Directo (Fase Beta)' } },
-        }).catch(() => {});
+        }).catch((err: unknown) => console.warn('[LiveBeta] email send failed:', err));
       }
     }
     setRequested(true);

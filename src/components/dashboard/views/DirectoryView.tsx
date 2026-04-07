@@ -210,6 +210,7 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
       .from('profiles')
       .select('user_id, display_name, photo_url, zone, hourly_rate, specialty, subscription_tier, is_live, genres, audio_embed_url, bio, languages, tiktok, category, is_verified, is_flash_active')
       .eq('role', role)
+      .limit(200)
       .then(({ data }) => {
         if (!data) return;
         const mapped: Profile[] = data.map((row, i) => ({

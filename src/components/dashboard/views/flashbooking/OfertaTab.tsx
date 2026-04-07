@@ -47,8 +47,9 @@ const OfertaTab = () => {
 
   const toggleFlash = async () => {
     const next = !isFlashActive;
+    const ok = await currentUser.updateField({ is_flash_active: next });
+    if (!ok) return;
     setIsFlashActive(next);
-    await currentUser.updateField({ is_flash_active: next } as any);
     if (next && isFreeUser) {
       setFreeActivatedAt(Date.now());
       toast.info('Eres usuario gratuito — tu perfil será visible en 15 minutos');

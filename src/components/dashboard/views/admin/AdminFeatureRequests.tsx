@@ -22,7 +22,8 @@ const AdminFeatureRequests = () => {
       const { data } = await supabase
         .from('feature_requests')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .limit(500);
       const reqs = (data as FeatureRequest[]) || [];
       setRequests(reqs);
       setLoading(false);

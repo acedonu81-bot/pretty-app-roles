@@ -1,89 +1,126 @@
+import { useState, useEffect } from 'react';
 import { BarChart3, Activity } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
-const revenueData = [
-  { month: 'Ene', revenue: 8200 },
-  { month: 'Feb', revenue: 9800 },
-  { month: 'Mar', revenue: 11500 },
-  { month: 'Abr', revenue: 12800 },
-  { month: 'May', revenue: 14200 },
-  { month: 'Jun', revenue: 15900 },
-  { month: 'Jul', revenue: 18450 },
-];
-
-const heatmapZones = [
-  { zone: 'Malasaña', clicks: 342, intensity: 0.95 },
-  { zone: 'Salamanca', clicks: 289, intensity: 0.8 },
-  { zone: 'Chueca', clicks: 234, intensity: 0.65 },
-  { zone: 'Chamberí', clicks: 178, intensity: 0.5 },
-  { zone: 'Lavapiés', clicks: 145, intensity: 0.4 },
-  { zone: 'La Latina', clicks: 112, intensity: 0.3 },
-];
-
-const mockMetrics = {
-  totalUsers: 847,
-  eliteUsers: 89,
-  premiumUsers: 234,
-  freeUsers: 524,
-};
-
-const maxRevenue = Math.max(...revenueData.map(d => d.revenue));
+interface PlanCounts { elite: number; premium: number; starter: number; free: number; total: number; }
+interface ZoneCount { zone: string; count: number; }
 
 const AdminCharts = () => {
+  const [plans, setPlans] = useState<PlanCounts | null>(null);
+  const [zones, setZones] = useState<ZoneCount[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const load = async () => {
+      const [eliteRes, premRes, starterRes, freeRes, zoneRes] = await Promise.all([
+        supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('subscription_tier', 'elite'),
+        supabase.from('profiles').select('id', { count: 'exact', head: true }).in('subscription_tier', ['premium', 'business']),
+        supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('subscription_tier', 'starter'),
+        supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('subscription_tier', 'free'),
+        supabase.from('profiles').select('zone').not('zone', 'is', null).limit(500),
+      ]);
+
+      const elite = eliteRes.count ?? 0;
+      const premium = premRes.count ?? 0;
+      const starter = starterRes.count ?? 0;
+      const free = freeRes.count ?? 0;
+      setPlans({ elite, premium, starter, free, total: elite + premium + starter + free });
+
+      // Aggregate zones client-side from fetched data
+      const zoneCounts: Record<string, number> = {};
+      (zoneRes.data ?? []).forEach((r: { zone: string | null }) => {
+        if (r.zone) zoneCounts[r.zone] = (zoneCounts[r.zone] ?? 0) + 1;
+      });
+      const sorted = Object.entries(zoneCounts)
+        .map(([zone, count]) => ({ zone, count }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 6);
+      setZones(sorted);
+      setLoading(false);
+    };
+    load();
+  }, []);
+
+  const maxZone = Math.max(...zones.map(z => z.count), 1);
+
   return (
     <>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+        {/* MRR — requires Stripe, show placeholder */}
         <div className="glass-panel p-5">
           <h3 className="text-sm font-bold mb-4 flex items-center gap-2">
             <BarChart3 size={14} style={{ color: '#D4AF37' }} /> Crecimiento MRR
           </h3>
-          <div className="flex items-end gap-2 h-40">
-            {revenueData.map((d) => (
-              <div key={d.month} className="flex-1 flex flex-col items-center gap-1">
-                <span className="text-[0.5rem] font-bold" style={{ color: '#D4AF37' }}>€{(d.revenue / 1000).toFixed(1)}k</span>
-                <div className="w-full rounded-t-md transition-all"
-                  style={{ height: `${(d.revenue / maxRevenue) * 100}%`, background: 'linear-gradient(180deg, #D4AF37, #B8941E)', opacity: 0.7 }} />
-                <span className="text-[0.5rem] text-muted-foreground">{d.month}</span>
-              </div>
-            ))}
+          <div className="flex flex-col items-center justify-center h-40 gap-2">
+            <p className="text-xs text-muted-foreground">Disponible tras integrar Stripe Connect</p>
+            <span className="text-[0.6rem] font-bold px-2 py-1 rounded"
+              style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+              Próximamente
+            </span>
           </div>
         </div>
 
+        {/* Zone heatmap — real data */}
         <div className="glass-panel p-5">
           <h3 className="text-sm font-bold mb-4 flex items-center gap-2">
-            <Activity size={14} style={{ color: '#D4AF37' }} /> Heatmap de Clics por Zona
+            <Activity size={14} style={{ color: '#D4AF37' }} /> Usuarios por Zona
           </h3>
-          <div className="space-y-2">
-            {heatmapZones.map((z) => (
-              <div key={z.zone} className="flex items-center gap-3">
-                <span className="text-xs font-medium w-20">{z.zone}</span>
-                <div className="flex-1 h-6 rounded-md overflow-hidden" style={{ background: 'rgba(255,255,255,0.03)' }}>
-                  <div className="h-full rounded-md transition-all flex items-center px-2"
-                    style={{ width: `${z.intensity * 100}%`, background: `linear-gradient(90deg, rgba(212,175,55,${z.intensity * 0.6}), rgba(212,175,55,${z.intensity}))` }}>
-                    <span className="text-[0.55rem] font-bold" style={{ color: '#000' }}>{z.clicks}</span>
+          {loading ? (
+            <div className="space-y-2">
+              {Array(6).fill(0).map((_, i) => (
+                <div key={i} className="h-6 rounded-md animate-pulse" style={{ background: 'rgba(255,255,255,0.05)' }} />
+              ))}
+            </div>
+          ) : zones.length === 0 ? (
+            <p className="text-xs text-muted-foreground text-center py-8">Sin datos de zona aún</p>
+          ) : (
+            <div className="space-y-2">
+              {zones.map((z) => {
+                const intensity = z.count / maxZone;
+                return (
+                  <div key={z.zone} className="flex items-center gap-3">
+                    <span className="text-xs font-medium w-20 truncate">{z.zone}</span>
+                    <div className="flex-1 h-6 rounded-md overflow-hidden" style={{ background: 'rgba(255,255,255,0.03)' }}>
+                      <div className="h-full rounded-md transition-all flex items-center px-2"
+                        style={{ width: `${intensity * 100}%`, background: `linear-gradient(90deg, rgba(212,175,55,${intensity * 0.6}), rgba(212,175,55,${intensity}))` }}>
+                        <span className="text-[0.55rem] font-bold" style={{ color: '#000' }}>{z.count}</span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            ))}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Subscription breakdown */}
+      {/* Subscription breakdown — real data */}
       <div className="glass-panel p-5 mb-6">
         <h3 className="text-sm font-bold mb-4">Distribución de Planes</h3>
-        <div className="grid grid-cols-3 gap-4">
-          {[
-            { label: 'Elite (€24,95)', count: mockMetrics.eliteUsers, pct: ((mockMetrics.eliteUsers / mockMetrics.totalUsers) * 100).toFixed(1), color: '#D4AF37' },
-            { label: 'Premium (€9,95)', count: mockMetrics.premiumUsers, pct: ((mockMetrics.premiumUsers / mockMetrics.totalUsers) * 100).toFixed(1), color: '#8E8EA0' },
-            { label: 'Free', count: mockMetrics.freeUsers, pct: ((mockMetrics.freeUsers / mockMetrics.totalUsers) * 100).toFixed(1), color: 'rgba(255,255,255,0.3)' },
-          ].map((p) => (
-            <div key={p.label} className="text-center">
-              <p className="text-2xl font-bold" style={{ color: p.color }}>{p.count}</p>
-              <p className="text-[0.6rem] text-muted-foreground">{p.label}</p>
-              <p className="text-xs font-bold mt-1">{p.pct}%</p>
-            </div>
-          ))}
-        </div>
+        {loading ? (
+          <div className="grid grid-cols-4 gap-4">
+            {Array(4).fill(0).map((_, i) => (
+              <div key={i} className="h-16 rounded-lg animate-pulse" style={{ background: 'rgba(255,255,255,0.05)' }} />
+            ))}
+          </div>
+        ) : plans ? (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {[
+              { label: 'Elite', count: plans.elite,   color: '#D4AF37' },
+              { label: 'Premium', count: plans.premium, color: '#8B5CF6' },
+              { label: 'Starter', count: plans.starter, color: '#8E8EA0' },
+              { label: 'Free',   count: plans.free,    color: 'rgba(255,255,255,0.3)' },
+            ].map((p) => (
+              <div key={p.label} className="text-center">
+                <p className="text-2xl font-bold" style={{ color: p.color }}>{p.count}</p>
+                <p className="text-[0.6rem] text-muted-foreground">{p.label}</p>
+                <p className="text-xs font-bold mt-1">
+                  {plans.total > 0 ? ((p.count / plans.total) * 100).toFixed(1) : '0'}%
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : null}
       </div>
     </>
   );

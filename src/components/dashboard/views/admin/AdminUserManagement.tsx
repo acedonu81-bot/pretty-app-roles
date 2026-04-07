@@ -30,7 +30,8 @@ const AdminUserManagement = () => {
     const { data } = await supabase
       .from('profiles')
       .select('*')
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false })
+      .limit(500);
     if (data) setUsers(data as unknown as DBProfile[]);
     setLoading(false);
   };

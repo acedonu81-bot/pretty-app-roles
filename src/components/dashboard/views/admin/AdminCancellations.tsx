@@ -34,8 +34,8 @@ const AdminCancellations = () => {
 
   useEffect(() => {
     Promise.all([
-      supabase.from('cancellation_surveys').select('*').order('created_at', { ascending: false }),
-      supabase.from('retention_discounts').select('*'),
+      supabase.from('cancellation_surveys').select('*').order('created_at', { ascending: false }).limit(200),
+      supabase.from('retention_discounts').select('*').limit(200),
     ]).then(([surveyRes, discountRes]) => {
       setSurveys((surveyRes.data as Survey[]) || []);
       setDiscounts((discountRes.data as Discount[]) || []);

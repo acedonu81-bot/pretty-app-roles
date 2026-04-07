@@ -24,7 +24,8 @@ const EmpresarioView = () => {
   const fetchPros = async () => {
     const { data, error } = await supabase
       .from('profiles')
-      .select('user_id, display_name, role, zone, hourly_rate, specialty, subscription_tier, is_live, is_verified, photo_url, genres, bio');
+      .select('user_id, display_name, role, zone, hourly_rate, specialty, subscription_tier, is_live, is_verified, photo_url, genres, bio')
+      .limit(200);
     if (error) { toast.error('Error al cargar profesionales'); return; }
     setPros((data ?? []).map((d: any) => ({ ...d, id: d.user_id })) as unknown as Pro[]);
   };

@@ -41,10 +41,11 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
     if (error) { setSending(false); toast.error('Error al enviar la solicitud. Inténtalo de nuevo.'); return; }
 
     // Email a admin
-    supabase.functions.invoke('send-email', { body: { type: 'flash_booking', data: payload } }).catch(() => {});
-    // Confirmación al solicitante si dio email
+    supabase.functions.invoke('send-email', { body: { type: 'flash_booking', data: payload } })
+      .catch((err: unknown) => console.warn('[FlashBooking] admin email failed:', err));
     if (form.contact.includes('@')) {
-      supabase.functions.invoke('send-email', { body: { type: 'flash_booking_confirm', data: payload } }).catch(() => {});
+      supabase.functions.invoke('send-email', { body: { type: 'flash_booking_confirm', data: payload } })
+        .catch((err: unknown) => console.warn('[FlashBooking] confirm email failed:', err));
     }
 
     setSending(false);
