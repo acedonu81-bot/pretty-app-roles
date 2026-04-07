@@ -28,9 +28,9 @@ const PROFESSIONAL_STEPS: TourStep[] = [
   {
     icon: <Search size={22} />,
     title: 'Así te ven los empresarios',
-    body: 'Apareces en el Directorio filtrado por rol, zona y sello de verificación. Activa Flash Booking para señalizar que estás disponible ahora mismo.',
-    view: 'flashbooking',
-    cta: 'Ver Flash Booking →',
+    body: 'Apareces en el Directorio filtrado por rol, zona y sello de verificación. Revisa cómo queda tu ficha y asegúrate de que la información es correcta.',
+    view: 'dj',
+    cta: 'Ver Directorio →',
   },
   {
     icon: <Zap size={22} />,
@@ -146,7 +146,7 @@ const OnboardingTour = ({ onNavigate }: Props) => {
 
   return (
     <div
-      className="fixed z-50 bottom-6 right-6 w-[340px] animate-[fadeIn_0.4s_ease]"
+      className="fixed z-50 bottom-6 left-1/2 -translate-x-1/2 w-[340px] animate-[fadeIn_0.4s_ease]"
       style={{
         background: 'rgba(8,8,12,0.97)',
         border: '1px solid rgba(212,175,55,0.3)',

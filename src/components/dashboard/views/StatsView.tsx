@@ -4,9 +4,9 @@ import { useProfile } from '@/hooks/useProfile';
 import { subscriptionPlans, mapSubscriptionTierToPlan } from '@/lib/subscriptions';
 
 const PODIUM = [
-  { rank: 2, name: 'Luna M.', role: 'Makeup Artist', score: 4821, badge: '🥈', height: 80, color: '#A0A0B0', glow: 'rgba(160,160,176,0.25)' },
-  { rank: 1, name: 'DJ Konrad', role: 'DJ Techno', score: 6350, badge: '🥇', height: 110, color: '#D4AF37', glow: 'rgba(212,175,55,0.4)' },
-  { rank: 3, name: 'Carlos V.', role: 'Staff VIP', score: 3940, badge: '🥉', height: 60, color: '#CD7F32', glow: 'rgba(205,127,50,0.2)' },
+  { rank: 2, name: 'Luna M.', role: 'Makeup Artist', score: 4821, badge: '🥈', height: 110, color: '#A0A0B0', glow: 'rgba(160,160,176,0.25)' },
+  { rank: 1, name: 'DJ Konrad', role: 'DJ Techno', score: 6350, badge: '🥇', height: 150, color: '#D4AF37', glow: 'rgba(212,175,55,0.4)' },
+  { rank: 3, name: 'Carlos V.', role: 'Staff VIP', score: 3940, badge: '🥉', height: 85, color: '#CD7F32', glow: 'rgba(205,127,50,0.2)' },
 ];
 
 const FEATURED_SLOTS = 48;   // grid visual de posiciones destacadas
@@ -66,9 +66,9 @@ const StatsView = () => {
         <p className="text-xs text-muted-foreground mb-6 relative">Top 3 basado en reseñas, interacciones y suscripciones activas.</p>
 
         {/* Podium */}
-        <div className="flex items-end justify-center gap-3 relative" style={{ height: 180 }}>
+        <div className="flex items-end justify-center gap-4 relative" style={{ height: 220 }}>
           {PODIUM.map(p => (
-            <div key={p.rank} className="flex flex-col items-center gap-2 flex-1 max-w-[100px]">
+            <div key={p.rank} className="flex flex-col items-center gap-2 flex-1">
               {/* Crown/medal */}
               <span className="text-2xl">{p.badge}</span>
 

@@ -23,7 +23,7 @@ const ProfileView = () => {
   const [bio, setBio] = useState<string | null>(null);
   const [hourlyRate, setHourlyRate] = useState<string | null>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  const [tiktok, setTiktok] = useState<string | null>(null);
+  const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
   const [selectedLangs, setSelectedLangs] = useState<string[] | null>(null);
 
   const EU_LANGS = ['Español','Inglés','Francés','Italiano','Alemán','Portugués','Neerlandés','Polaco','Catalán','Euskera'];
@@ -91,7 +91,7 @@ const ProfileView = () => {
     if (audioUrl !== null) updates.audio_embed_url = audioUrl || null;
     if (selectedLangs !== null) updates.languages = selectedLangs;
     if (selectedGenres !== null) updates.genres = selectedGenres;
-    if (tiktok !== null) updates.tiktok = tiktok || null;
+    if (isAvailable !== null) updates.is_live = isAvailable;
     if (Object.keys(updates).length > 0) {
       setSaving(true);
       const ok = await profile.updateField(updates);
@@ -335,19 +335,32 @@ const ProfileView = () => {
           <div className="glass-panel p-5">
             <h4 className="text-base font-bold mb-4">Redes & Plataformas</h4>
 
-            {/* TikTok — todos los roles */}
+            {/* Disponibilidad — toggle visible en directorio */}
             <div className="mb-4">
-              <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">TikTok</label>
-              <div className="relative mt-1">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm font-bold">@</span>
-                <input
-                  type="text"
-                  value={tiktok ?? profile.tiktok ?? ''}
-                  onChange={e => setTiktok(e.target.value)}
-                  placeholder="tu_usuario"
-                  className="nightlife-input !pl-8 text-base"
-                />
-              </div>
+              <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Visibilidad en el directorio</label>
+              <p className="text-[0.6rem] text-muted-foreground mt-0.5 mb-2">
+                Activa para aparecer como "Disponible ahora" en tu ficha. Los empresarios verán un indicador verde.
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  const current = isAvailable ?? profile.is_live ?? false;
+                  setIsAvailable(!current);
+                }}
+                className="flex items-center gap-3 w-full px-4 py-3 rounded-lg transition-all"
+                style={{
+                  background: (isAvailable ?? profile.is_live) ? 'rgba(34,197,94,0.08)' : 'rgba(255,255,255,0.03)',
+                  border: `1px solid ${(isAvailable ?? profile.is_live) ? 'rgba(34,197,94,0.3)' : 'var(--nightlife-border)'}`,
+                }}>
+                <div className="relative w-10 h-5 rounded-full transition-colors flex-shrink-0"
+                  style={{ background: (isAvailable ?? profile.is_live) ? '#22c55e' : 'rgba(255,255,255,0.1)' }}>
+                  <div className="absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all"
+                    style={{ left: (isAvailable ?? profile.is_live) ? '22px' : '2px', boxShadow: '0 1px 3px rgba(0,0,0,0.4)' }} />
+                </div>
+                <span className="text-sm font-semibold" style={{ color: (isAvailable ?? profile.is_live) ? '#22c55e' : 'rgba(255,255,255,0.4)' }}>
+                  {(isAvailable ?? profile.is_live) ? 'Disponible ahora' : 'No disponible'}
+                </span>
+              </button>
             </div>
 
             {/* Audio embed — roles musicales */}

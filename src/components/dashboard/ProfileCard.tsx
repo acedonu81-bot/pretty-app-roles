@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Star, Clock, Radio, Award, CheckCircle, X, Lock, MessageCircle } from 'lucide-react';
+import { Star, Clock, Award, CheckCircle, X, Lock, MessageCircle } from 'lucide-react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Profile } from '@/data/profiles';
 import GeometricAvatar from './GeometricAvatar';
@@ -9,11 +9,6 @@ import FanSubscribeButton from './FanSubscribeButton';
 import UpgradeModal from './UpgradeModal';
 import { useProfile } from '@/hooks/useProfile';
 
-const TikTokIcon = ({ size = 14 }: { size?: number }) => (
-  <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
-    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/>
-  </svg>
-);
 
 const HearthisIcon = ({ size = 14 }: { size?: number }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
@@ -78,7 +73,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
           : null;
 
   const statusBadges: { label: string; bg: string; color: string; glow?: string }[] = [];
-  if (p.isLive) statusBadges.push({ label: 'LIVE', bg: '#E53935', color: '#fff', glow: '0 2px 8px rgba(229,57,53,0.4)' });
+  if (p.isLive) statusBadges.push({ label: 'DISPONIBLE AHORA', bg: 'rgba(34,197,94,0.12)', color: '#22c55e', glow: '0 2px 8px rgba(34,197,94,0.2)' });
   if (p.topWeekend) statusBadges.push({ label: 'TOP WEEKEND', bg: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' });
   if (tierLabel === 'AGENCIA') statusBadges.push({ label: 'AGENCIA', bg: 'linear-gradient(90deg,rgba(212,175,55,0.2),rgba(184,148,30,0.2))', color: '#D4AF37', glow: '0 0 8px rgba(212,175,55,0.15)' });
   else if (tierLabel === 'BUSINESS') statusBadges.push({ label: 'BUSINESS', bg: 'rgba(212,175,55,0.12)', color: '#D4AF37' });
@@ -157,7 +152,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
                 boxShadow: b.glow,
                 border: b.bg.startsWith('rgba') ? `1px solid ${b.color}22` : undefined,
               }}>
-              {b.label === 'LIVE' && <Radio size={8} className="animate-pulse" />}
+              {b.label === 'DISPONIBLE AHORA' && <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse inline-block" />}
               {b.label === 'DISPONIBLE' && <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />}
               {b.label}
             </span>
@@ -171,7 +166,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
             <img src={p.photo} alt={p.name} className="w-full h-full object-cover" crossOrigin="anonymous"
               onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
             {p.isLive && (
-              <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-red-500 border border-black animate-pulse" />
+              <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-green-500 border border-black animate-pulse" />
             )}
           </div>
         ) : (
@@ -268,11 +263,11 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
             <HearthisIcon size={12} /> {audioLabel}
           </a>
         )}
-        {!isDJ && p.tiktok && (
-          <a href={`https://tiktok.com/@${p.tiktok}`} target="_blank" rel="noopener noreferrer"
+        {!isDJ && p.instagram && (
+          <a href={`https://instagram.com/${p.instagram}`} target="_blank" rel="noopener noreferrer"
             className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[0.6rem] font-bold transition-all hover:scale-105"
             style={{ background: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.1)' }}>
-            <TikTokIcon size={12} /> TikTok
+            Instagram
           </a>
         )}
       </div>
