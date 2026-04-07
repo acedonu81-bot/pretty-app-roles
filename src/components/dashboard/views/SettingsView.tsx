@@ -76,6 +76,7 @@ const SettingsView = () => {
   const [audioQuality, setAudioQuality] = useState('high');
 
   // Privacy
+  const [saving, setSaving] = useState(false);
   const [profilePublic, setProfilePublic] = useState(true);
   const [showRate, setShowRate] = useState(false);
   const [allowFlash, setAllowFlash] = useState(true);
@@ -108,7 +109,7 @@ const SettingsView = () => {
   };
 
   const handleSave = async () => {
-    if (!user) return;
+    if (!user || saving) return;
     // Validate text fields
     if (localName !== null) {
       const { clean, reason } = sanitizeInput(localName, 'name');
@@ -126,13 +127,17 @@ const SettingsView = () => {
         return;
       }
     }
-    const updates: any = {};
+    const updates: Record<string, unknown> = {};
     if (localName !== null) updates.display_name = localName;
     if (localCity !== null) updates.zone = localCity;
     if (localRate !== null) updates.hourly_rate = localRate;
     if (localBirthday !== null) updates.birthday = localBirthday || null;
     if (localPhone !== null) updates.phone = localPhone || null;
-    if (Object.keys(updates).length > 0) await profile.updateField(updates);
+    if (Object.keys(updates).length > 0) {
+      setSaving(true);
+      await profile.updateField(updates);
+      setSaving(false);
+    }
     toast.success('Cambios guardados.');
   };
 
@@ -197,8 +202,8 @@ const SettingsView = () => {
           </select>
         </div>
 
-        <button className="btn-nightlife-primary w-full text-sm py-2.5" onClick={handleSave}>
-          Guardar Cambios
+        <button className="btn-nightlife-primary w-full text-sm py-2.5 disabled:opacity-60" onClick={handleSave} disabled={saving}>
+          {saving ? 'Guardando...' : 'Guardar Cambios'}
         </button>
       </Section>
 
