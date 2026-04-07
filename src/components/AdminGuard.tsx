@@ -30,7 +30,7 @@ const AdminGuard = ({ children }: AdminGuardProps) => {
       if (data) {
         setAuthorized(true);
       } else {
-        console.warn('[AdminGuard] Unauthorized admin attempt:', session.user.id);
+        // Do NOT log user IDs — would expose sensitive info in browser console
         navigate('/', { replace: true });
       }
       setChecking(false);

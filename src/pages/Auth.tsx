@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Mail, Lock, User, Eye, EyeOff, Music, Users, Smile, Building2, Camera, Flag } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, Music, Users, Smile, Building2, Camera, MapPin } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import AmbientBackground from '@/components/AmbientBackground';
 import LegalFooter from '@/components/LegalFooter';
@@ -9,7 +9,7 @@ import { toast } from 'sonner';
 
 const roleGroups = [
   { label: '🎵 Música', roles: [
-    { value: 'dj', label: 'DJ Profesional', icon: Music, minRate: 40 },
+    { value: 'dj', label: 'DJ / Artista / Productor', icon: Music, minRate: 40 },
   ]},
   { label: '👥 Staff', roles: [
     { value: 'staff', label: 'Personal de Sala', icon: Users, minRate: 20 },
@@ -19,7 +19,6 @@ const roleGroups = [
   ]},
   { label: '📸 Media', roles: [
     { value: 'media', label: 'Media & Contenido', icon: Camera, minRate: 30 },
-    { value: 'ambassador', label: 'Promoción', icon: Flag, minRate: 15 },
   ]},
   { label: '🏢 Empresa', roles: [
     { value: 'empresario', label: 'Empresario', icon: Building2, minRate: 0 },
@@ -41,8 +40,44 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
+  const [country, setCountry] = useState('España');
+  const [city, setCity] = useState('');
+
+  const COUNTRIES = ['España', 'Portugal'];
 
   const currentRole = roles.find(r => r.value === selectedRole)!;
+
+  // Simple client-side rate limiting for login attempts
+  const checkRateLimit = (): boolean => {
+    const key = 'xpeak_login_attempts';
+    const raw = localStorage.getItem(key);
+    const record: { count: number; until: number } = raw ? JSON.parse(raw) : { count: 0, until: 0 };
+    if (Date.now() < record.until) {
+      const secs = Math.ceil((record.until - Date.now()) / 1000);
+      toast.error(`Demasiados intentos. Espera ${secs}s antes de volver a intentarlo.`);
+      return false;
+    }
+    return true;
+  };
+
+  const recordLoginFailure = () => {
+    const key = 'xpeak_login_attempts';
+    const raw = localStorage.getItem(key);
+    const record: { count: number; until: number } = raw ? JSON.parse(raw) : { count: 0, until: 0 };
+    const count = record.count + 1;
+    // Exponential backoff: 3 attempts free, then 15s, 30s, 60s, 120s...
+    const backoff = count >= 3 ? Math.min(15 * 2 ** (count - 3), 120) * 1000 : 0;
+    localStorage.setItem(key, JSON.stringify({ count, until: Date.now() + backoff }));
+  };
+
+  const clearRateLimit = () => localStorage.removeItem('xpeak_login_attempts');
+
+  const validatePassword = (pwd: string): string | null => {
+    if (pwd.length < 8) return 'La contraseña debe tener al menos 8 caracteres.';
+    if (!/[0-9]/.test(pwd)) return 'La contraseña debe contener al menos un número.';
+    if (!/[^A-Za-z0-9]/.test(pwd)) return 'La contraseña debe contener al menos un carácter especial (!@#$...).';
+    return null;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,13 +85,25 @@ const Auth = () => {
     setLoading(true);
     try {
       if (isLogin) {
+        if (!checkRateLimit()) { setLoading(false); return; }
         const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
+        if (error) {
+          recordLoginFailure();
+          throw error;
+        }
+        clearRateLimit();
         toast.success('¡Bienvenido de vuelta!');
         navigate('/dashboard');
       } else {
         if (!displayName.trim()) { toast.error('Introduce tu nombre profesional'); setLoading(false); return; }
         if (!acceptedPrivacy) { toast.error('Debes aceptar la Política de Privacidad'); setLoading(false); return; }
+
+        const pwdError = validatePassword(password);
+        if (pwdError) { toast.error(pwdError); setLoading(false); return; }
+
+        // Sanitize display name — strip HTML tags and control characters
+        const safeName = displayName.trim().replace(/<[^>]*>/g, '').replace(/[\x00-\x1F\x7F]/g, '').slice(0, 60);
+        if (!safeName) { toast.error('El nombre no es válido.'); setLoading(false); return; }
 
         // Validate minimum rate for non-empresario
         if (selectedRole !== 'empresario') {
@@ -68,20 +115,41 @@ const Auth = () => {
           }
         }
 
+        // Sanitize city — strip tags and clamp length
+        const safeCity = city.trim().replace(/<[^>]*>/g, '').replace(/[\x00-\x1F\x7F]/g, '').slice(0, 80);
+        // Clamp hourly_rate to valid range
+        const safeRate = selectedRole !== 'empresario'
+          ? Math.min(Math.max(parseInt(hourlyRate) || currentRole.minRate, currentRole.minRate), 9999)
+          : 0;
+
         const { error } = await supabase.auth.signUp({
           email,
           password,
           options: {
             data: {
-              display_name: displayName,
+              display_name: safeName,
               role: selectedRole,
-              hourly_rate: selectedRole !== 'empresario' ? parseInt(hourlyRate) || currentRole.minRate : 0,
+              hourly_rate: safeRate,
               category: isRookie ? 'rookie' : 'pending',
+              zone: safeCity ? `${safeCity}, ${country}` : country,
             },
             emailRedirectTo: window.location.origin,
           },
         });
         if (error) throw error;
+
+        // Email bienvenida + aviso empresario si aplica
+        supabase.functions.invoke('send-email', {
+          body: { type: 'welcome', data: { name: displayName, email, role: selectedRole } },
+        }).catch(() => {});
+        if (selectedRole === 'empresario') {
+          supabase.functions.invoke('send-email', {
+            body: { type: 'empresario_registered', data: { name: displayName, email } },
+          }).catch(() => {});
+          supabase.functions.invoke('send-email', {
+            body: { type: 'empresario_pending', data: { name: displayName, email } },
+          }).catch(() => {});
+        }
 
         setShowWelcome(true);
       }
@@ -110,6 +178,18 @@ const Auth = () => {
                   <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                   <input value={displayName} onChange={e => setDisplayName(e.target.value)}
                     placeholder="Tu nombre artístico o profesional" className="nightlife-input !py-3 !pl-9 text-sm" />
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <select value={country} onChange={e => setCountry(e.target.value)}
+                    className="nightlife-input !py-3 text-sm">
+                    {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                  <div className="relative">
+                    <MapPin size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                    <input value={city} onChange={e => setCity(e.target.value)}
+                      placeholder="Ciudad" className="nightlife-input !py-3 !pl-9 text-sm" />
+                  </div>
                 </div>
 
                 {/* Role selector by category */}
@@ -188,6 +268,23 @@ const Auth = () => {
                 {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
               </button>
             </div>
+
+            {!isLogin && password.length > 0 && (
+              <div className="px-1 space-y-1">
+                {[
+                  { ok: password.length >= 8, label: 'Mínimo 8 caracteres' },
+                  { ok: /[0-9]/.test(password), label: 'Al menos un número' },
+                  { ok: /[^A-Za-z0-9]/.test(password), label: 'Al menos un carácter especial' },
+                ].map(({ ok, label }) => (
+                  <div key={label} className="flex items-center gap-1.5">
+                    <span className="text-[0.55rem] font-bold" style={{ color: ok ? '#22c55e' : '#666' }}>
+                      {ok ? '✓' : '·'}
+                    </span>
+                    <span className="text-[0.55rem]" style={{ color: ok ? '#22c55e' : '#666' }}>{label}</span>
+                  </div>
+                ))}
+              </div>
+            )}
 
             {!isLogin && (
               <label className="flex items-start gap-2.5 px-1 cursor-pointer text-left">

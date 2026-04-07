@@ -1,7 +1,8 @@
 import DirectoryView from './DirectoryView';
 
-const DJView = ({ onNavigate }: { onNavigate?: (view: string) => void }) => (
-  <DirectoryView role="dj" title="DJs" subtitle="Encuentra tu DJ ideal para cualquier tipo de evento nocturno en Europa." onNavigate={onNavigate} />
+interface Props { onNavigate?: (view: string) => void; onMessage?: (userId: string, name: string) => void; }
+const DJView = ({ onNavigate, onMessage }: Props) => (
+  <DirectoryView role="dj" title="Artistas Musicales" subtitle="DJs, productores, artistas en vivo, VJs y técnicos de sonido para cualquier evento en España." onNavigate={onNavigate} onMessage={onMessage} />
 );
 
 export default DJView;

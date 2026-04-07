@@ -1,4 +1,4 @@
-import { Search, LogOut, Menu, Bell, Gift, Sparkles } from 'lucide-react';
+import { Search, LogOut, Menu, Gift, Sparkles } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProfile } from '@/hooks/useProfile';
@@ -12,6 +12,7 @@ interface TopbarProps {
 const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
   const navigate = useNavigate();
   const [showNotif, setShowNotif] = useState(false);
+  const [readAll, setReadAll] = useState(false);
   const profile = useProfile();
 
   const trialDaysRemaining = useMemo(() => getTrialDaysRemaining(profile.trial_started_at), [profile.trial_started_at]);
@@ -34,7 +35,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
       desc: 'Hoy tienes un 40% en la suscripción anual. Aprovecha la oferta.',
       time: 'Hoy',
     }] : []),
-    { title: 'Nuevo contacto WhatsApp', desc: 'Club Onyx ha visto tu perfil y te ha contactado.', time: 'Hace 2 min' },
+    { title: 'Nuevo mensaje recibido', desc: 'Club Onyx ha visto tu perfil y te ha enviado un mensaje.', time: 'Hace 2 min' },
     { title: 'Flash Booking activado', desc: 'Tu perfil aparece como disponible ahora.', time: 'Hace 1 hora' },
   ];
 
@@ -87,38 +88,119 @@ const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
           </div>
         )}
 
+        {/* Notification trigger — animated pulse orb */}
         <button
-          onClick={() => setShowNotif(!showNotif)}
-          className="relative p-2 rounded-lg transition-all duration-200 hover:scale-105"
-          style={{
-            background: 'rgba(212,175,55,0.08)',
-            border: '1px solid rgba(212,175,55,0.15)',
-            color: '#D4AF37',
-          }}
+          onClick={() => setShowNotif(prev => !prev)}
+          className="relative flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95"
+          style={{ width: 36, height: 36 }}
+          aria-label="Notificaciones"
         >
-          <Bell size={16} />
-          <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full" style={{ background: '#D4AF37' }} />
+          {/* Outer glow rings — only when unread */}
+          {!readAll && <>
+            <span className="absolute inset-0 rounded-full animate-ping"
+              style={{ background: 'rgba(212,175,55,0.15)', animationDuration: '1.8s' }} />
+            <span className="absolute inset-[3px] rounded-full animate-ping"
+              style={{ background: 'rgba(212,175,55,0.1)', animationDuration: '1.8s', animationDelay: '0.3s' }} />
+          </>}
+
+          {/* Core orb — gold when unread, muted when read */}
+          <span className="relative flex items-center justify-center w-7 h-7 rounded-full transition-all duration-500"
+            style={{
+              background: readAll
+                ? 'radial-gradient(circle at 40% 35%, rgba(120,120,140,0.5), rgba(80,80,100,0.4))'
+                : showNotif
+                  ? 'radial-gradient(circle at 40% 35%, #F5D77A, #D4AF37 60%, #B8941E)'
+                  : 'radial-gradient(circle at 40% 35%, rgba(212,175,55,0.9), rgba(184,148,30,0.7))',
+              boxShadow: readAll
+                ? 'none'
+                : showNotif
+                  ? '0 0 16px rgba(212,175,55,0.7), 0 0 32px rgba(212,175,55,0.3), inset 0 1px 0 rgba(255,255,255,0.3)'
+                  : '0 0 10px rgba(212,175,55,0.4), 0 0 20px rgba(212,175,55,0.15), inset 0 1px 0 rgba(255,255,255,0.25)',
+            }}>
+            <span className="text-[0.6rem] font-black" style={{ color: readAll ? 'rgba(255,255,255,0.3)' : '#000', lineHeight: 1 }}>
+              {readAll ? '✓' : notifications.length}
+            </span>
+          </span>
+
+          {/* Live dot — only when unread */}
+          {!readAll && (
+            <span className="absolute bottom-0.5 right-0.5 w-2 h-2 rounded-full border border-black"
+              style={{ background: '#22c55e', boxShadow: '0 0 6px rgba(34,197,94,0.8)' }} />
+          )}
         </button>
 
         {showNotif && (
-          <div className="glass-panel absolute top-12 right-0 w-[300px] z-50" style={{ boxShadow: '0 10px 40px rgba(0,0,0,0.8)' }}>
-            <div className="p-3 flex justify-between items-center" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>
-              <h4 className="text-xs font-bold">Notificaciones</h4>
-              <span className="text-[0.6rem] cursor-pointer" style={{ color: '#D4AF37' }}>Marcar leídas</span>
+          <div
+            className="absolute top-12 right-0 w-[320px] z-50 rounded-2xl overflow-hidden"
+            style={{
+              background: 'rgba(8,8,12,0.96)',
+              border: '1px solid rgba(212,175,55,0.25)',
+              boxShadow: '0 0 0 1px rgba(212,175,55,0.08), 0 20px 60px rgba(0,0,0,0.9), 0 0 40px rgba(212,175,55,0.07)',
+              animation: 'fadeIn 0.18s ease',
+            }}
+          >
+            {/* Header */}
+            <div className="px-4 py-3 flex items-center justify-between"
+              style={{ borderBottom: '1px solid rgba(212,175,55,0.12)', background: 'rgba(212,175,55,0.04)' }}>
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#22c55e', boxShadow: '0 0 6px #22c55e' }} />
+                <span className="text-xs font-black tracking-wider" style={{ color: '#D4AF37' }}>NOTIFICACIONES</span>
+                <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded-full"
+                  style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>
+                  {notifications.length}
+                </span>
+              </div>
+              <button onClick={() => { setReadAll(true); setShowNotif(false); }}
+                className="text-[0.6rem] font-bold transition-colors hover:text-white"
+                style={{ color: 'rgba(255,255,255,0.3)' }}>
+                CERRAR
+              </button>
             </div>
-            <div className="max-h-60 overflow-y-auto">
+
+            {/* Items */}
+            <div className="max-h-72 overflow-y-auto">
               {notifications.map((n, i) => (
-                <div key={i} className="px-3 py-2.5 flex gap-2 items-start cursor-pointer transition-colors hover:bg-white/5" style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
-                  <div className="mt-1 flex-shrink-0" style={{ color: '#D4AF37' }}>
-                    {n.title.includes('Prueba') ? <Gift size={12} /> : <Sparkles size={12} />}
+                <div key={i}
+                  className="px-4 py-3 flex gap-3 items-start cursor-pointer group transition-all"
+                  style={{
+                    borderBottom: '1px solid rgba(255,255,255,0.04)',
+                    background: i === 0 ? 'rgba(212,175,55,0.03)' : 'transparent',
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.background = 'rgba(212,175,55,0.05)')}
+                  onMouseLeave={e => (e.currentTarget.style.background = i === 0 ? 'rgba(212,175,55,0.03)' : 'transparent')}
+                >
+                  {/* Icon orb */}
+                  <div className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center mt-0.5"
+                    style={{
+                      background: 'radial-gradient(circle at 35% 35%, rgba(212,175,55,0.3), rgba(184,148,30,0.1))',
+                      border: '1px solid rgba(212,175,55,0.2)',
+                    }}>
+                    {n.title.includes('Prueba') || n.title.includes('cumpleaños')
+                      ? <Gift size={12} style={{ color: '#D4AF37' }} />
+                      : <Sparkles size={12} style={{ color: '#D4AF37' }} />}
                   </div>
-                  <div>
-                    <p className="text-xs font-semibold">{n.title}</p>
-                    <p className="text-[0.65rem] text-muted-foreground">{n.desc}</p>
-                    <span className="text-[0.55rem] text-muted-foreground mt-0.5 block">{n.time}</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-bold truncate">{n.title}</p>
+                    <p className="text-[0.65rem] leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>{n.desc}</p>
+                    <span className="text-[0.55rem] font-bold mt-1 block" style={{ color: 'rgba(212,175,55,0.5)' }}>{n.time}</span>
                   </div>
+                  {/* Unread indicator */}
+                  {!readAll && (
+                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5"
+                      style={{ background: '#D4AF37', boxShadow: '0 0 4px rgba(212,175,55,0.6)' }} />
+                  )}
                 </div>
               ))}
+            </div>
+
+            {/* Footer */}
+            <div className="px-4 py-2.5 text-center" style={{ borderTop: '1px solid rgba(212,175,55,0.08)' }}>
+              <button
+                onClick={() => { setReadAll(true); setShowNotif(false); }}
+                className="text-[0.6rem] font-bold tracking-wider transition-colors hover:text-white"
+                style={{ color: readAll ? 'rgba(34,197,94,0.6)' : 'rgba(212,175,55,0.5)' }}>
+                {readAll ? '✓ TODAS LEÍDAS' : 'MARCAR TODAS COMO LEÍDAS'}
+              </button>
             </div>
           </div>
         )}

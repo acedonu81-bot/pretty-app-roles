@@ -1,7 +1,8 @@
 import DirectoryView from './DirectoryView';
 
-const MakeupView = ({ onNavigate }: { onNavigate?: (view: string) => void }) => (
-  <DirectoryView role="makeup" title="Maquillaje & Peluquería" subtitle="Maquillaje nocturno y peluquería de autor para eventos en Europa." onNavigate={onNavigate} wideCards />
+interface Props { onNavigate?: (view: string) => void; onMessage?: (userId: string, name: string) => void; }
+const MakeupView = ({ onNavigate, onMessage }: Props) => (
+  <DirectoryView role="makeup" title="Maquillaje & Peluquería" subtitle="Maquillaje nocturno y peluquería de autor para eventos en Europa." onNavigate={onNavigate} onMessage={onMessage} wideCards />
 );
 
 export default MakeupView;

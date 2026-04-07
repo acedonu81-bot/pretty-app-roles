@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, createContext, useContext, ReactNode 
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import { DEFAULT_ZONE } from '@/lib/constants';
 
 interface ProfileData {
   display_name: string;
@@ -19,21 +20,25 @@ interface ProfileData {
   phone: string | null;
   specialty: string | null;
   instagram: string | null;
+  bio: string | null;
   audio_embed_url: string | null;
   languages: string[] | null;
+  genres: string[] | null;
+  category: string | null;
+  tiktok: string | null;
 }
 
 interface ProfileCtx extends ProfileData {
   loading: boolean;
   refresh: () => Promise<void>;
-  updateField: (fields: Partial<ProfileData>) => Promise<void>;
+  updateField: (fields: Partial<ProfileData>) => Promise<boolean>;
 }
 
 const defaults: ProfileData = {
   display_name: '',
   birthday: null,
   photo_url: null,
-  zone: 'Madrid Centro',
+  zone: DEFAULT_ZONE,
   hourly_rate: 40,
   role: 'dj',
   subscription_tier: 'free',
@@ -45,15 +50,19 @@ const defaults: ProfileData = {
   phone: null,
   specialty: null,
   instagram: null,
+  bio: null,
   audio_embed_url: null,
   languages: null,
+  genres: null,
+  category: null,
+  tiktok: null,
 };
 
 const ProfileContext = createContext<ProfileCtx>({
   ...defaults,
   loading: true,
   refresh: async () => {},
-  updateField: async () => {},
+  updateField: async () => false,
 });
 
 export const useProfile = () => useContext(ProfileContext);
@@ -67,7 +76,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     if (!user) return;
     const { data: row } = await supabase
       .from('profiles')
-      .select('display_name, birthday, photo_url, zone, hourly_rate, role, subscription_tier, stream_url, stream_title, trial_started_at, annual_billing, is_live, phone, specialty, instagram, audio_embed_url, languages')
+      .select('display_name, birthday, photo_url, zone, hourly_rate, role, subscription_tier, stream_url, stream_title, trial_started_at, annual_billing, is_live, phone, specialty, instagram, bio, audio_embed_url, languages, genres, category, tiktok')
       .eq('user_id', user.id)
       .maybeSingle();
     if (row) setData(row as unknown as ProfileData);
@@ -76,8 +85,8 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => { refresh(); }, [refresh]);
 
-  const updateField = useCallback(async (fields: Partial<ProfileData>) => {
-    if (!user) return;
+  const updateField = useCallback(async (fields: Partial<ProfileData>): Promise<boolean> => {
+    if (!user) return false;
     const { error } = await supabase
       .from('profiles')
       .update(fields as any)
@@ -85,9 +94,10 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     if (error) {
       console.error('[useProfile] updateField error:', error);
       toast.error('Error al guardar: ' + error.message);
-      return;
+      return false;
     }
     setData(prev => ({ ...prev, ...fields }));
+    return true;
   }, [user]);
 
   return (

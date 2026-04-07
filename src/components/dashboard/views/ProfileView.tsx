@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Trash2, Camera, Music2, ExternalLink } from 'lucide-react';
+import { Trash2, Camera, Music2, ExternalLink, Star } from 'lucide-react';
 import { parseStreamUrl } from '@/lib/streaming';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
@@ -10,6 +10,7 @@ import PortfolioUpload from '@/components/dashboard/PortfolioUpload';
 import LiveBetaButton from '@/components/dashboard/LiveBetaButton';
 import { subscriptionPlans, mapSubscriptionTierToPlan } from '@/lib/subscriptions';
 import { sanitizeInput } from '@/lib/contentFilter';
+import VerificationSection from './profile/VerificationSection';
 
 const ProfileView = () => {
   const { user } = useAuth();
@@ -19,15 +20,28 @@ const ProfileView = () => {
   const [city, setCity] = useState('');
   const [rider, setRider] = useState<string | null>(null);
   const [bio, setBio] = useState<string | null>(null);
+  const [hourlyRate, setHourlyRate] = useState<string | null>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [tiktok, setTiktok] = useState<string | null>(null);
   const [selectedLangs, setSelectedLangs] = useState<string[] | null>(null);
 
   const EU_LANGS = ['Español','Inglés','Francés','Italiano','Alemán','Portugués','Neerlandés','Polaco','Catalán','Euskera'];
-  const DJ_GENRES = ['Techno','Tech House','House','Afro House','Melodic Techno','Deep House','Minimal','Trance','Progressive','Drum & Bass','Jungle','Garage','Afrobeats','Tribal','Nu Disco','Electro','Hard Techno','Industrial','Ambient','Comercial','Reggaetón','Urbano','Hip Hop','RnB','Funk','Soul','Disco','Latino','Salsa','Flamenco Fusión'];
+
+  const ROLE_TAGS: Record<string, { label: string; tags: string[] }> = {
+    dj:        { label: 'Géneros musicales',    tags: ['Techno','Tech House','House','Afro House','Melodic Techno','Deep House','Minimal','Trance','Progressive','Drum & Bass','Jungle','Garage','Afrobeats','Tribal','Nu Disco','Electro','Hard Techno','Industrial','Ambient','Comercial','Reggaetón','Urbano','Hip Hop','RnB','Funk','Soul','Disco','Latino','Salsa','Flamenco Fusión'] },
+    rookie:    { label: 'Géneros musicales',    tags: ['Techno','Tech House','House','Afro House','Melodic Techno','Deep House','Minimal','Trance','Progressive','Drum & Bass','Electro','Hard Techno','Comercial','Reggaetón','Urbano','Hip Hop'] },
+    staff:     { label: 'Especialidades',        tags: ['Azafata','RRPP','Promotor','Camarero/a','Seguridad','Relaciones Públicas','Animación','Hostess','Sala VIP','Control de acceso','Taquilla','Chill-out','Bottle service'] },
+    makeup:    { label: 'Servicios',             tags: ['Maquillaje nupcial','Caracterización','Maquillaje artístico','Peluquería','Estilismo','Nail art','Aerógrafo','Efectos especiales','Maquillaje masculino','Novias','Pasarela','Producción'] },
+    media:     { label: 'Especialidades',        tags: ['Fotografía de eventos','Vídeo','Reels & Contenido','Fotografía de DJ','Drone','Cobertura en directo','Fotografía de sala','Retrato','Edición de vídeo','Color grading','Motion graphics','Podcast'] },
+    design:    { label: 'Especialidades',        tags: ['Diseño gráfico','VJing','Mapping','LED wall','Visuales en vivo','Cartelería','Branding','Redes sociales','Ilustración','3D','Motion design'] },
+    promotor:  { label: 'Especialidades',        tags: ['Festivales','Clubs nocturnos','Eventos privados','Bodas','Corporativo','After','Terraza','Sala pequeña','Sala grande','Residencias','Giras'] },
+  };
+
+  const roleTagConfig = ROLE_TAGS[profile.role ?? ''];
   const [selectedGenres, setSelectedGenres] = useState<string[] | null>(null);
-  const activeGenres = selectedGenres ?? (profile.languages ?? []).filter(g => DJ_GENRES.includes(g));
+  const activeGenres = selectedGenres ?? profile.genres ?? [];
   const toggleGenre = (g: string) => {
-    const next = activeGenres.includes(g) ? activeGenres.filter(x => x !== g) : [...activeGenres, g];
+    const next = activeGenres.includes(g) ? activeGenres.filter((x: string) => x !== g) : [...activeGenres, g];
     setSelectedGenres(next);
   };
   const activeLangs = selectedLangs ?? profile.languages ?? [];
@@ -45,6 +59,9 @@ const ProfileView = () => {
   const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !user) return;
+    if (!file.type.startsWith('image/')) { toast.error('Solo se permiten archivos de imagen.'); return; }
+    const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) { toast.error('Formato no permitido. Usa JPG, PNG, WebP o GIF.'); return; }
     if (file.size > 5 * 1024 * 1024) { toast.error('Máximo 5MB'); return; }
 
     const safeName = file.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9._-]/g, '_');
@@ -67,12 +84,17 @@ const ProfileView = () => {
     const updates: any = {};
     if (localName !== null) updates.display_name = localName;
     if (city) updates.zone = city;
+    if (hourlyRate !== null) updates.hourly_rate = parseInt(hourlyRate) || 0;
     if (rider !== null) updates.specialty = rider;
-    if (bio !== null) updates.instagram = bio;
+    if (bio !== null) updates.bio = bio;
     if (audioUrl !== null) updates.audio_embed_url = audioUrl || null;
     if (selectedLangs !== null) updates.languages = selectedLangs;
-    if (selectedGenres !== null) updates.badges = selectedGenres;
-    if (Object.keys(updates).length > 0) await profile.updateField(updates);
+    if (selectedGenres !== null) updates.genres = selectedGenres;
+    if (tiktok !== null) updates.tiktok = tiktok || null;
+    if (Object.keys(updates).length > 0) {
+      const ok = await profile.updateField(updates);
+      if (!ok) return;
+    }
     toast.success('Perfil guardado.');
   };
 
@@ -145,13 +167,38 @@ const ProfileView = () => {
             </div>
           </div>
           <div className="glass-panel p-4">
-            {[['Bookings 2026','0'],['Tasa respuesta','0%'],['Visitas perfil','0'],['Clics WhatsApp','0']].map(([k,v]) => (
+            {[['Bookings 2026','0'],['Tasa respuesta','0%'],['Visitas perfil','0'],['Mensajes recibidos','0']].map(([k,v]) => (
               <div key={k} className="flex justify-between py-1.5 text-sm" style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
                 <span className="text-muted-foreground">{k}</span>
                 <span className="font-semibold">{v}</span>
               </div>
             ))}
           </div>
+
+          {profile.role !== 'empresario' && (
+            <button
+              onClick={async () => {
+                const next = profile.category === 'rookie' ? 'professional' : 'rookie';
+                await profile.updateField({ category: next } as any);
+                toast.success(next === 'rookie' ? '¡Ahora apareces como Artista Promesa!' : 'Has vuelto a Profesional.');
+              }}
+              className="glass-panel p-4 text-left w-full transition-all hover:scale-[1.01]"
+              style={{
+                border: profile.category === 'rookie' ? '1px solid rgba(255,188,0,0.3)' : '1px solid rgba(255,255,255,0.06)',
+              }}>
+              <div className="flex items-center gap-2 mb-1">
+                <Star size={14} style={{ color: profile.category === 'rookie' ? '#ffbc00' : '#D4AF37' }} />
+                <span className="text-xs font-bold" style={{ color: profile.category === 'rookie' ? '#ffbc00' : '#D4AF37' }}>
+                  {profile.category === 'rookie' ? 'Modo Promesa activo' : 'Última Llamada'}
+                </span>
+              </div>
+              <p className="text-[0.6rem] text-muted-foreground leading-tight">
+                {profile.category === 'rookie'
+                  ? 'Estás en modo Promesa. Consigue 500 apoyos para ascender. Pulsa para volver a Profesional.'
+                  : 'Vuelve a modo Promesa para ganar visibilidad y buscar apoyos de la comunidad.'}
+              </p>
+            </button>
+          )}
         </div>
 
         <div className="flex flex-col gap-4">
@@ -165,11 +212,32 @@ const ProfileView = () => {
               <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Ciudad</label>
               <input type="text" value={city || profile.zone || ''} onChange={e => setCity(e.target.value)} className="nightlife-input mt-1 text-base" />
             </div>
-            {profile.role === 'dj' && (
+            {profile.role !== 'empresario' && (
               <div className="mb-3">
-                <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Géneros musicales</label>
+                <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">
+                  Caché / Tarifa por hora
+                  <span className="ml-2 normal-case tracking-normal font-normal" style={{ color: 'rgba(255,255,255,0.3)' }}>
+                    — solo visible para empresarios con suscripción
+                  </span>
+                </label>
+                <div className="relative mt-1">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-bold">€</span>
+                  <input
+                    type="number"
+                    min={0}
+                    value={hourlyRate ?? profile.hourly_rate ?? ''}
+                    onChange={e => setHourlyRate(e.target.value)}
+                    placeholder="Ej: 120"
+                    className="nightlife-input !pl-8 text-base"
+                  />
+                </div>
+              </div>
+            )}
+            {roleTagConfig && (
+              <div className="mb-3">
+                <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">{roleTagConfig.label}</label>
                 <div className="flex flex-wrap gap-1.5 mt-2">
-                  {DJ_GENRES.map(g => (
+                  {roleTagConfig.tags.map(g => (
                     <button key={g} type="button" onClick={() => toggleGenre(g)}
                       className="text-xs font-bold px-2.5 py-1 rounded-lg transition-all"
                       style={{
@@ -184,12 +252,59 @@ const ProfileView = () => {
               </div>
             )}
             <div className="mb-3">
-              <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Rider técnico</label>
-              <input type="text" value={rider ?? profile.specialty ?? ''} onChange={e => setRider(e.target.value)} placeholder="Ej: Pioneer CDJ-3000, DJM-900NXS2" className="nightlife-input mt-1 text-base" />
+              {(() => {
+                const isMusical = profile.role === 'dj' || profile.role === 'rookie';
+                const label = isMusical ? 'Rider Técnico' : profile.role === 'makeup' ? 'Marcas / Productos' : profile.role === 'media' ? 'Equipo técnico' : 'Especialidad';
+                const placeholder = isMusical
+                  ? 'Ej: Pioneer CDJ-3000 + DJM-900NXS2. Mesa propia (si no hay Pioneer). 2 enchufes cerca de la cabina. Monitoreo lateral obligatorio.'
+                  : profile.role === 'media' ? 'Ej: Sony A7 III + DJI Ronin SC. Entrego en 48h. Incluye edición y color grading.'
+                  : profile.role === 'makeup' ? 'Ej: MAC, NARS, Charlotte Tilbury. Traigo maletín completo. Necesito mesa con espejo y luz natural.'
+                  : 'Describe tu especialidad y requisitos...';
+                const PRESETS: Record<string, string[]> = {
+                  dj:     ['CDJ-3000 + DJM-900NXS2', 'Mesa propia', '2 enchufes', 'Monitor lateral', 'Rider estándar Pioneer', 'Necesita backline', 'Acepta Serato', 'Acepta Traktor'],
+                  rookie: ['CDJ-3000 + DJM-900NXS2', 'Mesa propia', '2 enchufes', 'Monitor lateral', 'Controlador propio'],
+                  makeup: ['Traigo maletín', 'Necesita espejo con luz', 'Solo marcas premium', 'Acepta prueba previa', 'Trabaja en equipo'],
+                  media:  ['Cámara Sony A7', 'Drone DJI', 'Entrega 48h', 'Incluye edición', 'Raw disponible', 'Drone incluido'],
+                  staff:  ['Traje propio', 'Carnet de seguridad', 'Idiomas: EN/FR', 'Experiencia VIP', 'Uniforme de sala'],
+                };
+                const presets = PRESETS[profile.role ?? ''] ?? [];
+                const currentRider = rider ?? profile.specialty ?? '';
+                const addPreset = (chip: string) => {
+                  const cur = rider ?? profile.specialty ?? '';
+                  const sep = cur.trim() ? '. ' : '';
+                  setRider(cur.trim() + sep + chip);
+                };
+                return (
+                  <>
+                    <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">{label}</label>
+                    <p className="text-[0.6rem] text-muted-foreground mt-0.5 mb-2">
+                      Los empresarios y técnicos de sonido verán esto. Sé específico — ahorra emails.
+                    </p>
+                    {presets.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 mb-2">
+                        {presets.map(chip => (
+                          <button key={chip} type="button" onClick={() => addPreset(chip)}
+                            className="text-[0.6rem] font-bold px-2 py-1 rounded-lg transition-all hover:scale-105"
+                            style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)', color: 'rgba(212,175,55,0.7)' }}>
+                            + {chip}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                    <textarea
+                      rows={3}
+                      value={currentRider}
+                      onChange={e => setRider(e.target.value)}
+                      placeholder={placeholder}
+                      className="nightlife-input mt-1 text-sm resize-y w-full"
+                    />
+                  </>
+                );
+              })()}
             </div>
             <div className="mb-3">
               <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Bio</label>
-              <textarea rows={2} value={bio ?? profile.instagram ?? ''}
+              <textarea rows={2} value={bio ?? profile.bio ?? ''}
                 onChange={e => setBio(e.target.value)}
                 placeholder="Describe tu experiencia y estilo..."
                 className="nightlife-input mt-1 text-base resize-y" />
@@ -213,52 +328,68 @@ const ProfileView = () => {
           </div>
           {profile.role === 'dj' ? <AudioUpload /> : <PortfolioUpload />}
 
-          {/* External audio embed — hearthis.at / Mixcloud / SoundCloud */}
-          {profile.role === 'dj' && (() => {
-            const currentUrl = audioUrl ?? profile.audio_embed_url ?? '';
-            const parsed = parseStreamUrl(currentUrl);
-            return (
-              <div className="glass-panel p-5">
-                <h4 className="text-base font-bold mb-1 flex items-center gap-2">
-                  <Music2 size={16} style={{ color: '#D4AF37' }} /> Player Externo
-                </h4>
-                <p className="text-xs text-muted-foreground mb-3">
-                  Incrusta tu perfil de <strong>hearthis.at</strong>, <strong>Mixcloud</strong> o <strong>SoundCloud</strong> — los empresarios lo verán directamente en tu ficha.
-                </p>
-                <div className="flex gap-2 mb-3">
-                  <input
-                    type="url"
-                    value={currentUrl}
-                    onChange={e => setAudioUrl(e.target.value)}
-                    placeholder="https://hearthis.at/tu-usuario/ o mixcloud.com/..."
-                    className="nightlife-input text-sm flex-1"
-                  />
-                  {currentUrl && (
-                    <a href={currentUrl} target="_blank" rel="noopener noreferrer"
-                      className="px-3 rounded-lg flex items-center"
-                      style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
-                      <ExternalLink size={14} />
-                    </a>
-                  )}
-                </div>
-                {parsed ? (
-                  <>
-                    <p className="text-[0.6rem] font-bold mb-2" style={{ color: '#22c55e' }}>
-                      ✓ {parsed.type} detectado — preview:
-                    </p>
-                    <iframe
-                      src={parsed.embedUrl}
-                      className="w-full rounded-lg"
-                      style={{ height: 160, border: 'none' }}
-                      allow="autoplay"
-                    />
-                  </>
-                ) : currentUrl ? (
-                  <p className="text-[0.6rem]" style={{ color: '#ff5f56' }}>URL no reconocida. Prueba con hearthis.at, Mixcloud o SoundCloud.</p>
-                ) : null}
+          {/* Redes sociales y plataformas — todos los roles */}
+          <div className="glass-panel p-5">
+            <h4 className="text-base font-bold mb-4">Redes & Plataformas</h4>
+
+            {/* TikTok — todos los roles */}
+            <div className="mb-4">
+              <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">TikTok</label>
+              <div className="relative mt-1">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm font-bold">@</span>
+                <input
+                  type="text"
+                  value={tiktok ?? profile.tiktok ?? ''}
+                  onChange={e => setTiktok(e.target.value)}
+                  placeholder="tu_usuario"
+                  className="nightlife-input !pl-8 text-base"
+                />
               </div>
-            );
-          })()}
+            </div>
+
+            {/* Audio embed — roles musicales */}
+            {(profile.role === 'dj' || profile.role === 'rookie') && (() => {
+              const currentUrl = audioUrl ?? profile.audio_embed_url ?? '';
+              const parsed = parseStreamUrl(currentUrl);
+              return (
+                <div>
+                  <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">
+                    hearthis.at / Mixcloud / SoundCloud
+                  </label>
+                  <p className="text-[0.65rem] text-muted-foreground mt-1 mb-2">
+                    Los empresarios escucharán tus sesiones directamente desde tu ficha.
+                  </p>
+                  <div className="flex gap-2 mb-2">
+                    <input
+                      type="url"
+                      value={currentUrl}
+                      onChange={e => setAudioUrl(e.target.value)}
+                      placeholder="https://hearthis.at/tu-usuario/ o mixcloud.com/..."
+                      className="nightlife-input text-sm flex-1"
+                    />
+                    {currentUrl && (
+                      <a href={currentUrl} target="_blank" rel="noopener noreferrer"
+                        className="px-3 rounded-lg flex items-center"
+                        style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+                        <ExternalLink size={14} />
+                      </a>
+                    )}
+                  </div>
+                  {parsed ? (
+                    <>
+                      <p className="text-[0.6rem] font-bold mb-2" style={{ color: '#22c55e' }}>
+                        ✓ {parsed.type} detectado — preview:
+                      </p>
+                      <iframe src={parsed.embedUrl} className="w-full rounded-lg"
+                        style={{ height: 160, border: 'none' }} allow="autoplay" />
+                    </>
+                  ) : currentUrl ? (
+                    <p className="text-[0.6rem]" style={{ color: '#ff5f56' }}>URL no reconocida. Prueba con hearthis.at, Mixcloud o SoundCloud.</p>
+                  ) : null}
+                </div>
+              );
+            })()}
+          </div>
 
           {/* Media deletion - GDPR */}
           <div className="glass-panel p-5">
@@ -284,6 +415,8 @@ const ProfileView = () => {
             <h4 className="text-base font-bold mb-3">Valoraciones</h4>
             <p className="text-sm text-muted-foreground text-center py-4">Aún no tienes valoraciones. Aparecerán aquí cuando los empresarios valoren tu trabajo.</p>
           </div>
+
+          {profile.role !== 'empresario' && <VerificationSection />}
         </div>
       </div>
     </div>

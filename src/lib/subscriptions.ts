@@ -1,7 +1,7 @@
 export type BillingCycle = 'monthly' | 'annual';
 
 export interface SubscriptionPlan {
-  id: 'free' | 'business' | 'agency';
+  id: 'free' | 'starter' | 'business' | 'agency';
   name: string;
   monthlyPrice: number;
   annualEligible: boolean;
@@ -10,11 +10,14 @@ export interface SubscriptionPlan {
   textColor: string;
   popular?: boolean;
   trialDays: number;
+  badge?: string;
 }
 
 export const TRIAL_DAYS = 15;
-export const ANNUAL_DISCOUNT = 0.3;
-export const BIRTHDAY_DISCOUNT = 0.4;
+export const ANNUAL_DISCOUNT = 0.30;
+export const BIRTHDAY_DISCOUNT = 0.40;
+export const FAN_COMMISSION = 0.12;     // 12% sobre ingresos fan club
+export const FLASH_COMMISSION = 0.05;  // 5% comisión Flash Booking confirmado
 
 export const subscriptionPlans: SubscriptionPlan[] = [
   {
@@ -24,9 +27,9 @@ export const subscriptionPlans: SubscriptionPlan[] = [
     defaultPeriod: 'Gratis',
     features: [
       'Perfil visible en el directorio',
-      'Contacto directo por WhatsApp',
+      'Mensajería interna XPEAK',
       'Recibir ofertas Flash Booking',
-      'Hasta 3 vídeos de streaming',
+      'Hasta 2 géneros / especialidades',
       'Etiqueta Promesa o Básico',
     ],
     textColor: '#8E8EA0',
@@ -34,17 +37,35 @@ export const subscriptionPlans: SubscriptionPlan[] = [
     trialDays: 0,
   },
   {
+    id: 'starter',
+    name: 'Starter',
+    monthlyPrice: 4.99,
+    defaultPeriod: '/mes',
+    badge: 'NUEVO',
+    features: [
+      'Badge verificado en tu ficha',
+      'Estadísticas básicas (visitas, mensajes)',
+      'Géneros / especialidades ilimitados',
+      'Aparición en búsquedas mejorada',
+      '15 días gratis al activar',
+    ],
+    textColor: '#A8C5DA',
+    annualEligible: true,
+    trialDays: TRIAL_DAYS,
+  },
+  {
     id: 'business',
     name: 'Business',
-    monthlyPrice: 9.99,
+    monthlyPrice: 14.99,
     defaultPeriod: '/mes',
     features: [
-      'Posicionamiento prioritario',
-      'Estadísticas detalladas de visitas',
-      'Vídeos de streaming ilimitados',
+      'Posicionamiento prioritario #1–48',
+      'Estadísticas avanzadas + exportar',
+      'Streaming ilimitado',
       'Sello Business dorado',
-      'Soporte prioritario 24/7',
       'Notificaciones Flash antes que nadie',
+      'Soporte prioritario 24/7',
+      'Fan Club activado',
     ],
     textColor: '#D4AF37',
     annualEligible: true,
@@ -54,14 +75,15 @@ export const subscriptionPlans: SubscriptionPlan[] = [
   {
     id: 'agency',
     name: 'Agencia',
-    monthlyPrice: 29.99,
+    monthlyPrice: 44.99,
     defaultPeriod: '/mes',
     features: [
       'Gestión de hasta 5 perfiles',
-      'Acceso a Streaming 24/7',
-      'Vídeos de streaming ilimitados',
-      'Visibilidad máxima en búsquedas',
+      'Analíticas de toda la agencia',
+      'Streaming 24/7 en todos los perfiles',
+      'Visibilidad máxima garantizada',
       'Sello Agencia exclusivo',
+      'API de integración (próximamente)',
       'Todo lo incluido en Business',
     ],
     textColor: '#D4AF37',
@@ -72,8 +94,8 @@ export const subscriptionPlans: SubscriptionPlan[] = [
 
 export const mapSubscriptionTierToPlan = (tier?: string | null): SubscriptionPlan['id'] => {
   switch (tier) {
-    case 'business':
-      return 'business';
+    case 'starter': return 'starter';
+    case 'business': return 'business';
     case 'agency':
     case 'pro':
     case 'elite':

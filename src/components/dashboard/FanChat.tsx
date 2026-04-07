@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { Send, Lock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { sanitizeInput } from '@/lib/contentFilter';
+import { toast } from 'sonner';
 
 interface Message {
   id: string;
@@ -61,6 +63,8 @@ const FanChat = ({ professionalProfileId, professionalUserId, isSubscribed }: Pr
 
   const handleSend = async () => {
     if (!input.trim() || !user) return;
+    const { clean, reason } = sanitizeInput(input.trim());
+    if (!clean) { toast.error(reason); return; }
     const receiverId = user.id === professionalUserId ? messages[0]?.sender_id : professionalUserId;
     if (!receiverId) return;
 

@@ -3,9 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import AmbientBackground from '@/components/AmbientBackground';
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
 import DashboardTopbar from '@/components/dashboard/DashboardTopbar';
-import GlobalPlayer from '@/components/dashboard/GlobalPlayer';
 import DJView from '@/components/dashboard/views/DJView';
-// PromotorView merged into EmpresarioView
 import SettingsView from '@/components/dashboard/views/SettingsView';
 import MessagesView from '@/components/dashboard/views/MessagesView';
 import CalendarView from '@/components/dashboard/views/CalendarView';
@@ -19,14 +17,13 @@ import EscenarioVirtualView from '@/components/dashboard/views/EscenarioVirtualV
 import FlashBookingWallView from '@/components/dashboard/views/FlashBookingWallView';
 import TopWeekendView from '@/components/dashboard/views/TopWeekendView';
 import StatsView from '@/components/dashboard/views/StatsView';
-import FlashBookingView from '@/components/dashboard/views/FlashBookingView';
 import RookieView from '@/components/dashboard/views/RookieView';
 import SubscriptionView from '@/components/dashboard/views/SubscriptionView';
 import AdminView from '@/components/dashboard/views/AdminView';
 import EmpresarioView from '@/components/dashboard/views/EmpresarioView';
 import FanClubView from '@/components/dashboard/views/FanClubView';
 import AdminGuard from '@/components/AdminGuard';
-import RookieGuard from '@/components/RookieGuard';
+import OnboardingTour from '@/components/dashboard/OnboardingTour';
 import { useAuth } from '@/hooks/useAuth';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
@@ -38,6 +35,7 @@ const Dashboard = () => {
   const initialView = (location.state as { view?: string })?.view || 'dj';
   const [activeView, setActiveView] = useState(initialView);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [messagesTarget, setMessagesTarget] = useState<{ userId: string; name: string } | null>(null);
   const isMobile = useIsMobile();
   const { user, loading } = useAuth();
 
@@ -54,24 +52,29 @@ const Dashboard = () => {
 
   const nav = (view: string) => handleViewChange(view);
 
+  const handleMessage = (userId: string, name: string) => {
+    setMessagesTarget({ userId, name });
+    handleViewChange('messages');
+  };
+
   const renderView = () => {
     switch (activeView) {
-      case 'dj': return <DJView onNavigate={nav} />;
-      case 'staff': return <StaffView onNavigate={nav} />;
-      case 'makeup': return <MakeupView onNavigate={nav} />;
-      case 'media': return <MediaView onNavigate={nav} />;
-      case 'ambassador': return <AmbassadorView onNavigate={nav} />;
+      case 'dj': return <DJView onNavigate={nav} onMessage={handleMessage} />;
+      case 'staff': return <StaffView onNavigate={nav} onMessage={handleMessage} />;
+      case 'makeup': return <MakeupView onNavigate={nav} onMessage={handleMessage} />;
+      case 'media': return <MediaView onNavigate={nav} onMessage={handleMessage} />;
+      case 'ambassador': return <AmbassadorView onNavigate={nav} onMessage={handleMessage} />;
       case 'settings': return <SettingsView />;
       case 'empresario': return <EmpresarioView />;
-      case 'messages': return <MessagesView />;
+      case 'messages': return <MessagesView initialUserId={messagesTarget?.userId} initialName={messagesTarget?.name} />;
       case 'calendar': return <CalendarView />;
       case 'profile': return <ProfileView />;
       case 'mapa': return <MapaView />;
       case 'escenario': return <EscenarioVirtualView />;
-      case 'flashbooking': return <FlashBookingWallView />;
+      case 'flashbooking':
+      case 'flash': return <FlashBookingWallView />;
       case 'topweekend': return <TopWeekendView />;
       case 'stats': return <StatsView />;
-      case 'flash': return <FlashBookingView />;
       case 'rookie': return <RookieView />;
       case 'subscription': return <SubscriptionView />;
       case 'fanclub': return <FanClubView />;
@@ -80,7 +83,7 @@ const Dashboard = () => {
           <AdminView />
         </AdminGuard>
       );
-      default: return <DJView onNavigate={nav} />;
+      default: return <DJView onNavigate={nav} onMessage={handleMessage} />;
     }
   };
 
@@ -118,7 +121,7 @@ const Dashboard = () => {
         </div>
       </main>
 
-      <GlobalPlayer />
+      <OnboardingTour onNavigate={handleViewChange} />
     </div>
     </ProfileProvider>
   );

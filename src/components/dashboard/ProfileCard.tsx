@@ -1,14 +1,23 @@
-import { useState } from 'react';
-import { Star, MapPin, Clock, Instagram, Navigation, Radio, Heart, Award, CheckCircle, X, Shield } from 'lucide-react';
-import { Profile, getWhatsAppLink, getInstagramLink, getLocationLink } from '@/data/profiles';
+import { useState, useRef } from 'react';
+import { Star, Clock, Radio, Award, CheckCircle, X, Lock, MessageCircle } from 'lucide-react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { Profile } from '@/data/profiles';
 import GeometricAvatar from './GeometricAvatar';
 import VoteButton from './VoteButton';
 import LegalModal from '@/components/LegalModal';
 import FanSubscribeButton from './FanSubscribeButton';
+import UpgradeModal from './UpgradeModal';
+import { useProfile } from '@/hooks/useProfile';
 
-const WhatsAppIcon = ({ size = 16 }: { size?: number }) => (
+const TikTokIcon = ({ size = 14 }: { size?: number }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
-    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/>
+  </svg>
+);
+
+const HearthisIcon = ({ size = 14 }: { size?: number }) => (
+  <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
   </svg>
 );
 
@@ -24,31 +33,120 @@ interface ProfileCardProps {
   onBook?: (profile: Profile) => void;
   compact?: boolean;
   showPortfolio?: boolean;
+  onMessage?: (userId: string, name: string) => void;
+  onNavigateSubscription?: () => void;
 }
 
-const ProfileCard = ({ profile: p, onBook, compact, showPortfolio }: ProfileCardProps) => {
+const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, onNavigateSubscription }: ProfileCardProps) => {
+  const currentUser = useProfile();
+  const canSeePrice = currentUser.role === 'empresario' || currentUser.subscription_tier !== 'free';
   const isRookie = p.category === 'rookie';
+  const isPremiumCard = p.subscriptionTier === 'elite' || p.subscriptionTier === 'premium' || p.subscriptionTier === 'business' || p.subscriptionTier === 'agency';
+  const isCurrentUserFree = currentUser.subscription_tier === 'free';
   const [expanded, setExpanded] = useState(false);
   const [accepted, setAccepted] = useState(false);
   const [showLegal, setShowLegal] = useState(false);
+  const [showUpgrade, setShowUpgrade] = useState(false);
   const voteCount = Math.floor(p.profileViews / 5);
   const progress = Math.min((voteCount / 500) * 100, 100);
   const currentMilestone = milestones.filter(m => voteCount >= m.votes).pop();
   const nextMilestone = milestones.find(m => voteCount < m.votes);
 
+  // Tilt effect — only for premium/elite
+  const cardRef = useRef<HTMLDivElement>(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [6, -6]), { stiffness: 200, damping: 20 });
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-6, 6]), { stiffness: 200, damping: 20 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isPremiumCard || !cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
+    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
+  const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0); };
+
+  // Map subscription tier to display label
+  const tierLabel =
+    p.subscriptionTier === 'elite' || p.subscriptionTier === 'agency'
+      ? 'AGENCIA'
+      : p.subscriptionTier === 'premium' || p.subscriptionTier === 'business'
+        ? 'BUSINESS'
+        : p.subscriptionTier === 'starter'
+          ? 'STARTER'
+          : null;
+
   const statusBadges: { label: string; bg: string; color: string; glow?: string }[] = [];
   if (p.isLive) statusBadges.push({ label: 'LIVE', bg: '#E53935', color: '#fff', glow: '0 2px 8px rgba(229,57,53,0.4)' });
   if (p.topWeekend) statusBadges.push({ label: 'TOP WEEKEND', bg: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' });
-  if (p.isPremium) statusBadges.push({ label: 'PREMIUM', bg: 'rgba(212,175,55,0.15)', color: '#D4AF37' });
-  if (p.subscriptionTier === 'elite' && !p.isPremium) statusBadges.push({ label: 'ELITE', bg: 'rgba(212,175,55,0.1)', color: '#D4AF37' });
+  if (tierLabel === 'AGENCIA') statusBadges.push({ label: 'AGENCIA', bg: 'linear-gradient(90deg,rgba(212,175,55,0.2),rgba(184,148,30,0.2))', color: '#D4AF37', glow: '0 0 8px rgba(212,175,55,0.15)' });
+  else if (tierLabel === 'BUSINESS') statusBadges.push({ label: 'BUSINESS', bg: 'rgba(212,175,55,0.12)', color: '#D4AF37' });
+  else if (tierLabel === 'STARTER') statusBadges.push({ label: 'STARTER', bg: 'rgba(168,197,218,0.12)', color: '#A8C5DA' });
   if (isRookie) statusBadges.push({ label: 'PROMESA', bg: 'rgba(255,188,0,0.1)', color: '#ffbc00' });
   if (p.isFlashActive) statusBadges.push({ label: 'DISPONIBLE', bg: 'rgba(34,197,94,0.12)', color: '#22c55e' });
 
+  // Social/platform links
+  const isDJ = p.role === 'dj' || p.role === 'rookie';
+  const audioUrl = (p as any).audio_embed_url || p.streamUrl;
+  const audioLabel = audioUrl
+    ? audioUrl.includes('mixcloud') ? 'Mixcloud'
+    : audioUrl.includes('soundcloud') ? 'SoundCloud'
+    : audioUrl.includes('hearthis') ? 'hearthis.at'
+    : null
+    : null;
+
   return (
-    <div
-      className="glass-panel p-3 sm:p-5 flex flex-col transition-all hover:border-primary/20 duration-300 relative group cursor-pointer overflow-hidden"
+    <motion.div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="glass-panel p-3 sm:p-5 flex flex-col transition-all duration-300 relative group cursor-pointer overflow-hidden"
       onClick={() => setExpanded(!expanded)}
+      style={{
+        ...(isPremiumCard ? { rotateX, rotateY, transformStyle: 'preserve-3d', transformPerspective: 800 } : {}),
+        ...(isPremiumCard ? {
+          border: p.subscriptionTier === 'elite'
+            ? '1px solid rgba(212,175,55,0.35)'
+            : '1px solid rgba(212,175,55,0.18)',
+          boxShadow: p.subscriptionTier === 'elite'
+            ? '0 0 24px rgba(212,175,55,0.08), inset 0 0 0 1px rgba(212,175,55,0.05)'
+            : '0 0 12px rgba(212,175,55,0.04)',
+        } : {}),
+      }}
     >
+      {/* Elite shimmer top bar */}
+      {p.subscriptionTier === 'elite' && (
+        <div className="absolute top-0 left-0 right-0 h-[2px] rounded-t-xl"
+          style={{ background: 'linear-gradient(90deg, transparent, #D4AF37, transparent)' }} />
+      )}
+
+      {/* Premium animated shimmer sweep */}
+      {isPremiumCard && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl" style={{ zIndex: 1 }}>
+          <motion.div
+            className="absolute top-0 bottom-0 w-1/2"
+            style={{
+              background: p.subscriptionTier === 'elite' || p.subscriptionTier === 'agency'
+                ? 'linear-gradient(90deg, transparent, rgba(212,175,55,0.07), transparent)'
+                : 'linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent)',
+            }}
+            animate={{ x: ['-100%', '350%'] }}
+            transition={{ duration: 2.8, repeat: Infinity, repeatDelay: 4, ease: 'easeInOut' }}
+          />
+        </div>
+      )}
+
+      {/* Agency/Elite pulsing corner accent */}
+      {(p.subscriptionTier === 'elite' || p.subscriptionTier === 'agency') && (
+        <motion.div
+          className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full"
+          style={{ background: '#D4AF37', boxShadow: '0 0 6px rgba(212,175,55,0.8)', zIndex: 2 }}
+          animate={{ opacity: [0.4, 1, 0.4], scale: [0.8, 1.2, 0.8] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+        />
+      )}
+
       {statusBadges.length > 0 && (
         <div className="flex flex-wrap gap-1.5 mb-3">
           {statusBadges.map((b) => (
@@ -68,16 +166,33 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio }: ProfileCard
       )}
 
       <div className="flex items-center gap-3 mb-3">
-        <GeometricAvatar role={p.role as any} seed={p.id} size={48} isLive={p.isLive} />
+        {p.photo && p.photo.length > 5 ? (
+          <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 relative">
+            <img src={p.photo} alt={p.name} className="w-full h-full object-cover" crossOrigin="anonymous"
+              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+            {p.isLive && (
+              <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-red-500 border border-black animate-pulse" />
+            )}
+          </div>
+        ) : (
+          <GeometricAvatar role={p.role as any} seed={p.id} size={48} isLive={p.isLive} />
+        )}
         <div className="flex-1 min-w-0">
-          <h3 className="text-sm font-bold truncate max-w-full">{p.name}</h3>
+          <div className="flex items-center gap-1">
+            <h3 className="text-sm font-bold truncate max-w-full">{p.name}</h3>
+            {(p as any).isVerified && (
+              <svg viewBox="0 0 24 24" width={13} height={13} fill="#D4AF37" title="Verificado">
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="#D4AF37" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            )}
+          </div>
           <p className="text-xs text-muted-foreground truncate max-w-full">{p.specialty}</p>
         </div>
       </div>
 
       <div className="flex items-center gap-3 mb-2 text-xs text-muted-foreground">
         <span className="flex items-center gap-1"><Star size={11} style={{ color: '#D4AF37' }} /> <span className="font-semibold text-foreground">{p.rating}</span> ({p.reviews})</span>
-        <span className="flex items-center gap-1"><MapPin size={11} /> {p.zone}</span>
+        <span className="text-muted-foreground">{p.zone}</span>
       </div>
       <div className="flex items-center gap-1 mb-2 text-xs text-muted-foreground">
         <Clock size={11} /> {p.experience}
@@ -105,7 +220,6 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio }: ProfileCard
         </div>
       )}
 
-      {/* Portfolio section for creative roles */}
       {showPortfolio && (
         <div className="mb-3" onClick={e => e.stopPropagation()}>
           <p className="text-[0.65rem] font-bold mb-2" style={{ color: '#D4AF37' }}>Portfolio</p>
@@ -128,7 +242,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio }: ProfileCard
             </div>
           ) : (
             <div className="grid grid-cols-2 gap-2">
-              {[1, 2, 3, 4].map(i => (
+              {[1,2,3,4].map(i => (
                 <div key={i} className="rounded-lg aspect-square flex items-center justify-center"
                   style={{ background: 'rgba(212,175,55,0.04)', border: '1px dashed rgba(212,175,55,0.15)' }}>
                   <span className="text-[0.55rem] text-muted-foreground text-center px-2">Subir trabajo</span>
@@ -145,18 +259,22 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio }: ProfileCard
         </div>
       )}
 
-      {/* Social icons */}
+      {/* Platform links — DJs: audio platforms | Others: TikTok */}
       <div className="flex items-center gap-2 mb-3" onClick={e => e.stopPropagation()}>
-        <a href={getInstagramLink(p.instagram)} target="_blank" rel="noopener noreferrer"
-          className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95"
-          style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
-          <Instagram size={14} />
-        </a>
-        <a href={getLocationLink(p.zone)} target="_blank" rel="noopener noreferrer"
-          className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95"
-          style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
-          <Navigation size={14} />
-        </a>
+        {isDJ && audioUrl && audioLabel && (
+          <a href={audioUrl} target="_blank" rel="noopener noreferrer"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[0.6rem] font-bold transition-all hover:scale-105"
+            style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+            <HearthisIcon size={12} /> {audioLabel}
+          </a>
+        )}
+        {!isDJ && p.tiktok && (
+          <a href={`https://tiktok.com/@${p.tiktok}`} target="_blank" rel="noopener noreferrer"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[0.6rem] font-bold transition-all hover:scale-105"
+            style={{ background: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <TikTokIcon size={12} /> TikTok
+          </a>
+        )}
       </div>
 
       {/* Expanded Rookie detail panel */}
@@ -216,70 +334,83 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio }: ProfileCard
         </div>
       )}
 
-      {/* Fan Club subscribe button */}
       <div className="mb-3" onClick={e => e.stopPropagation()}>
         <FanSubscribeButton profileId={String(p.id)} professionalName={p.name} />
       </div>
 
-      {/* Intermediation notice */}
-      <div className="py-2 mb-2" onClick={e => e.stopPropagation()}>
-        <p className="text-[0.55rem] text-muted-foreground italic text-center">
-          XPEAK actúa estrictamente como intermediario entre profesionales y empresas. No existe relación laboral directa con la plataforma.
+      <div className="py-2 mb-2 px-2 rounded-lg" onClick={e => e.stopPropagation()}
+        style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
+        <p className="text-[0.65rem] leading-relaxed text-center" style={{ color: 'rgba(255,255,255,0.35)' }}>
+          XPEAK actúa como intermediario. Sin relación laboral con la plataforma.
         </p>
       </div>
 
-      {/* Acceptance checkbox */}
-      <div className="mb-3 flex items-start gap-2" onClick={e => e.stopPropagation()}>
-        <input
-          type="checkbox"
-          checked={accepted}
-          onChange={() => setAccepted(!accepted)}
-          className="mt-0.5 accent-[#D4AF37] flex-shrink-0"
-          id={`accept-${p.id}`}
-        />
-        <label htmlFor={`accept-${p.id}`} className="text-[0.55rem] sm:text-xs text-muted-foreground leading-tight cursor-pointer break-words">
+      <div className="mb-3 flex items-start gap-2 p-2.5 rounded-lg" onClick={e => e.stopPropagation()}
+        style={{ background: accepted ? 'rgba(212,175,55,0.04)' : 'transparent', border: `1px solid ${accepted ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.05)'}`, transition: 'all 0.2s' }}>
+        <input type="checkbox" checked={accepted} onChange={() => setAccepted(!accepted)}
+          className="mt-0.5 accent-[#D4AF37] flex-shrink-0" id={`accept-${p.id}`} />
+        <label htmlFor={`accept-${p.id}`} className="text-xs text-muted-foreground leading-snug cursor-pointer break-words">
           Acepto las{' '}
-          <button onClick={(e) => { e.preventDefault(); setShowLegal(true); }} className="underline font-bold" style={{ color: '#D4AF37' }}>
+          <button onClick={(e) => { e.preventDefault(); setShowLegal(true); }} className="underline font-semibold" style={{ color: '#D4AF37' }}>
             Normas de la Comunidad
           </button>{' '}
           y entiendo que XPEAK actúa solo como{' '}
-          <button onClick={(e) => { e.preventDefault(); setShowLegal(true); }} className="underline font-bold" style={{ color: '#D4AF37' }}>
+          <button onClick={(e) => { e.preventDefault(); setShowLegal(true); }} className="underline font-semibold" style={{ color: '#D4AF37' }}>
             intermediario
           </button>{' '}
           sin relación laboral.
         </label>
       </div>
 
-      {/* Price + Contact CTA */}
       <div className="flex items-center justify-between pt-3 gap-2 flex-wrap" style={{ borderTop: '1px solid var(--nightlife-border)' }}
         onClick={e => e.stopPropagation()}>
         <span className="text-sm sm:text-base font-bold whitespace-nowrap" style={{ color: '#D4AF37' }}>
           {['makeup', 'vestuario', 'media', 'design'].includes(p.role)
             ? 'A consultar'
-            : <>€{p.price}<span className="text-xs text-muted-foreground font-normal">{p.priceUnit}</span></>
+            : canSeePrice
+              ? <>€{p.price}<span className="text-xs text-muted-foreground font-normal">{p.priceUnit}</span></>
+              : <span className="flex items-center gap-1 text-xs font-medium" style={{ color: '#555' }}><Lock size={11} /> Tarifa privada</span>
           }
         </span>
-        <a
-          href={accepted ? getWhatsAppLink(p.phone) : undefined}
-          target={accepted ? '_blank' : undefined}
-          rel={accepted ? 'noopener noreferrer' : undefined}
-          onClick={e => { if (!accepted) e.preventDefault(); }}
+        <button
+          type="button"
+          disabled={!accepted}
+          onClick={() => {
+            if (!accepted) return;
+            if (isCurrentUserFree) { setShowUpgrade(true); return; }
+            if (onMessage && p.userId) onMessage(p.userId, p.name);
+          }}
           className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-xs transition-all duration-200 ${
             accepted ? 'hover:scale-105 active:scale-95' : 'opacity-40 cursor-not-allowed'
           }`}
           style={{
-            background: accepted ? 'linear-gradient(90deg, #25D366, #128C7E)' : 'rgba(255,255,255,0.1)',
-            color: accepted ? 'white' : 'rgba(255,255,255,0.4)',
-            boxShadow: accepted ? '0 2px 10px rgba(37,211,102,0.2)' : 'none',
+            background: accepted
+              ? isCurrentUserFree
+                ? 'rgba(212,175,55,0.12)'
+                : 'linear-gradient(90deg, #D4AF37, #B8941E)'
+              : 'rgba(255,255,255,0.1)',
+            color: accepted ? (isCurrentUserFree ? '#D4AF37' : '#000') : 'rgba(255,255,255,0.4)',
+            border: accepted && isCurrentUserFree ? '1px solid rgba(212,175,55,0.3)' : 'none',
+            boxShadow: accepted && !isCurrentUserFree ? '0 2px 10px rgba(212,175,55,0.2)' : 'none',
           }}
         >
-          <WhatsAppIcon size={16} />
-          Contactar
-        </a>
+          <MessageCircle size={15} />
+          {isCurrentUserFree ? (
+            <span className="flex items-center gap-1">Enviar mensaje <Lock size={10} /></span>
+          ) : 'Enviar mensaje'}
+        </button>
+
+        <UpgradeModal
+          open={showUpgrade}
+          onClose={() => setShowUpgrade(false)}
+          role={currentUser.role}
+          trigger="Para enviar mensajes a profesionales necesitas un plan de pago."
+          onNavigateSubscription={onNavigateSubscription}
+        />
       </div>
 
       <LegalModal open={showLegal} onClose={() => setShowLegal(false)} />
-    </div>
+    </motion.div>
   );
 };
 

@@ -2,15 +2,18 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Zap, Calendar, MapPin, MessageSquare } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 
 interface Props {
   professionalName: string;
   professionalRole: string;
+  professionalUserId?: string; // real user_id for RLS
   onClose: () => void;
 }
 
-const FlashBookingRequestModal = ({ professionalName, professionalRole, onClose }: Props) => {
+const FlashBookingRequestModal = ({ professionalName, professionalRole, professionalUserId, onClose }: Props) => {
+  const { user } = useAuth();
   const [form, setForm] = useState({ name: '', contact: '', date: '', location: '', description: '' });
   const [sending, setSending] = useState(false);
 
@@ -22,7 +25,7 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, onClose 
       return;
     }
     setSending(true);
-    const payload = {
+    const payload: Record<string, unknown> = {
       professional_name: professionalName,
       professional_role: professionalRole,
       requester_name: form.name,
@@ -32,11 +35,17 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, onClose 
       event_description: form.description,
       status: 'pending',
     };
+    // Attach professional_user_id so RLS lets them read their own bookings
+    if (professionalUserId) payload.professional_user_id = professionalUserId;
     const { error } = await supabase.from('flash_bookings' as any).insert(payload);
     if (error) { setSending(false); toast.error('Error al enviar la solicitud. Inténtalo de nuevo.'); return; }
 
-    // Notificación email (no bloquea si falla)
+    // Email a admin
     supabase.functions.invoke('send-email', { body: { type: 'flash_booking', data: payload } }).catch(() => {});
+    // Confirmación al solicitante si dio email
+    if (form.contact.includes('@')) {
+      supabase.functions.invoke('send-email', { body: { type: 'flash_booking_confirm', data: payload } }).catch(() => {});
+    }
 
     setSending(false);
     toast.success(`Solicitud enviada a ${professionalName}. Te contactará pronto.`);

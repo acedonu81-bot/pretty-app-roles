@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, FileText, Cookie } from 'lucide-react';
+import { Shield, FileText, Cookie, Mail } from 'lucide-react';
 import LegalModal from './LegalModal';
+import ContactModal from './ContactModal';
 
 const LegalFooter = () => {
   const [showLegal, setShowLegal] = useState(false);
+  const [showContact, setShowContact] = useState(false);
 
   return (
     <>
@@ -38,11 +40,17 @@ const LegalFooter = () => {
             style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
             <Shield size={10} /> Aviso de Intermediación
           </button>
+          <button onClick={() => setShowContact(true)}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[0.6rem] font-bold transition-all hover:scale-105"
+            style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
+            <Mail size={10} /> Contacto
+          </button>
         </div>
 
         <p className="mt-4 text-[0.55rem] opacity-40">© {new Date().getFullYear()} XPEAK — España. Todos los derechos reservados.</p>
       </footer>
       <LegalModal open={showLegal} onClose={() => setShowLegal(false)} />
+      <ContactModal open={showContact} onClose={() => setShowContact(false)} />
     </>
   );
 };

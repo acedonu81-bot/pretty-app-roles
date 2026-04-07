@@ -1,13 +1,21 @@
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Star, MapPin, Clock, Instagram, ArrowLeft, Zap, CheckCircle } from 'lucide-react';
-import { profiles, getWhatsAppLink, getInstagramLink } from '@/data/profiles';
+import { Star, MapPin, Clock, ArrowLeft, Zap, CheckCircle, Heart, Crown, Lock, Music, Image, FileText, MessageCircle } from 'lucide-react';
+import { profiles } from '@/data/profiles';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
+import { motion } from 'framer-motion';
+import { toast } from 'sonner';
 
-const WA_MSG = encodeURIComponent('Hola, te he visto en XPEAK y me interesa tu perfil para un evento. ¿Hablamos?');
+const FAKE_POSTS = [
+  { icon: Music, label: 'Set exclusivo B2B — Club privado 2h', locked: false },
+  { icon: Image, label: 'Backstage · Fotos exclusivas noche', locked: true },
+  { icon: FileText, label: 'Mensaje personal a mis fans ❤️', locked: true },
+];
 
 const PublicProfile = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [fanTier, setFanTier] = useState<'fan' | 'vip'>('fan');
   const profile = profiles.find(p => p.id === Number(id));
 
   if (!profile) {
@@ -22,7 +30,7 @@ const PublicProfile = () => {
   }
 
   const roleLabel: Record<string, string> = {
-    dj: 'DJ Profesional', staff: 'Staff & Promoción', makeup: 'Belleza & Estética',
+    dj: 'DJ & Artista', staff: 'Staff & Promoción', makeup: 'Belleza & Estética',
     media: 'Imagen & Media', design: 'Diseño & Visuales', promotor: 'Promotor', ambassador: 'Embajador',
   };
 
@@ -112,20 +120,89 @@ const PublicProfile = () => {
 
         {/* CTAs */}
         <div className="flex flex-col gap-3">
-          <a href={`https://wa.me/${profile.phone}?text=${WA_MSG}`}
-            target="_blank" rel="noopener noreferrer"
+          <button
+            type="button"
+            onClick={() => { navigate('/dashboard', { state: { view: 'messages' } }); toast.info('Inicia sesión para enviar un mensaje.'); }}
             className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-sm transition-all hover:scale-[1.02]"
-            style={{ background: 'linear-gradient(90deg,#25D366,#128C7E)', color: '#fff' }}>
-            <svg viewBox="0 0 24 24" width={18} height={18} fill="currentColor">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-            </svg>
-            Contactar por WhatsApp
-          </a>
-          <a href={getInstagramLink(profile.instagram)} target="_blank" rel="noopener noreferrer"
-            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm transition-all hover:scale-[1.02]"
-            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.6)' }}>
-            <Instagram size={16} /> Ver Instagram
-          </a>
+            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+            <MessageCircle size={18} /> Enviar mensaje
+          </button>
+        </div>
+
+        {/* ── Fan Club ── */}
+        <div className="mt-8 rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(212,175,55,0.2)' }}>
+          {/* Header */}
+          <div className="px-5 py-4 flex items-center gap-3"
+            style={{ background: 'linear-gradient(135deg,rgba(212,175,55,0.1),rgba(184,148,30,0.06))' }}>
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+              style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+              <Heart size={16} fill="currentColor" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-black" style={{ color: '#D4AF37' }}>Fan Club · {profile.name}</p>
+              <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>Contenido exclusivo para suscriptores</p>
+            </div>
+          </div>
+
+          {/* Tier toggle */}
+          <div className="px-5 pt-4 flex gap-2">
+            {([
+              { id: 'fan', label: 'Fan', price: '4,99€/mes', icon: <Heart size={13} /> },
+              { id: 'vip', label: 'VIP', price: '9,99€/mes', icon: <Crown size={13} /> },
+            ] as const).map(t => (
+              <button key={t.id} onClick={() => setFanTier(t.id)}
+                className="flex-1 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all"
+                style={{
+                  background: fanTier === t.id ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.04)',
+                  border: `1px solid ${fanTier === t.id ? 'rgba(212,175,55,0.4)' : 'rgba(255,255,255,0.08)'}`,
+                  color: fanTier === t.id ? '#D4AF37' : 'rgba(255,255,255,0.4)',
+                }}>
+                {t.icon} {t.label} · {t.price}
+              </button>
+            ))}
+          </div>
+
+          {/* Content preview */}
+          <div className="px-5 py-4 space-y-2">
+            {FAKE_POSTS.map((post, i) => (
+              <motion.div key={i}
+                initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.07 }}
+                className="flex items-center gap-3 p-3 rounded-xl"
+                style={{
+                  background: post.locked ? 'rgba(0,0,0,0.35)' : 'rgba(212,175,55,0.05)',
+                  border: `1px solid ${post.locked ? 'rgba(255,255,255,0.04)' : 'rgba(212,175,55,0.12)'}`,
+                }}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                  style={{ background: post.locked ? 'rgba(255,255,255,0.04)' : 'rgba(212,175,55,0.1)', color: post.locked ? '#3a3a3a' : '#D4AF37' }}>
+                  <post.icon size={14} />
+                </div>
+                <p className="text-xs flex-1" style={{ color: post.locked ? 'rgba(255,255,255,0.18)' : 'rgba(255,255,255,0.7)' }}>
+                  {post.label}
+                </p>
+                {post.locked
+                  ? <Lock size={12} style={{ color: '#3a3a3a', flexShrink: 0 }} />
+                  : <CheckCircle size={12} style={{ color: '#22c55e', flexShrink: 0 }} />
+                }
+              </motion.div>
+            ))}
+            <p className="text-[0.6rem] text-center pt-1" style={{ color: 'rgba(255,255,255,0.2)' }}>
+              +{fanTier === 'vip' ? '12' : '8'} publicaciones exclusivas disponibles al suscribirte
+            </p>
+          </div>
+
+          {/* CTA */}
+          <div className="px-5 pb-5">
+            <button
+              onClick={() => navigate('/auth')}
+              className="w-full py-3.5 rounded-xl font-bold text-sm transition-all hover:scale-[1.02] flex items-center justify-center gap-2"
+              style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+              {fanTier === 'vip' ? <Crown size={15} /> : <Heart size={15} fill="currentColor" />}
+              Suscribirse · {fanTier === 'vip' ? '9,99€' : '4,99€'}/mes
+            </button>
+            <p className="text-center text-[0.6rem] mt-2" style={{ color: 'rgba(255,255,255,0.2)' }}>
+              Cancela cuando quieras · 80% va directo al artista
+            </p>
+          </div>
         </div>
 
         {/* XPEAK CTA */}

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Gold circle background -->
+  <circle cx="16" cy="16" r="15" fill="#D4AF37"/>
+  <!-- Inner subtle ring -->
+  <circle cx="16" cy="16" r="15" fill="none" stroke="#B8941E" stroke-width="1"/>
+  <!-- X letter in black -->
+  <text x="16" y="21.5" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="18" fill="#000000" letter-spacing="-1">X</text>
+</svg>

@@ -37,7 +37,12 @@ const LiveBetaButton = () => {
       if (error.code === '23505') toast.info('Ya solicitaste acceso a Vídeo en Directo');
       else toast.error('Error al enviar solicitud');
     } else {
-      toast.success('🙏 ¡Gracias! Estamos trabajando en ello. Te avisaremos por email cuando esté disponible.');
+      toast.success('¡Gracias! Te avisaremos por email cuando esté disponible.');
+      if (user.email) {
+        supabase.functions.invoke('send-email', {
+          body: { type: 'feature_request', data: { email: user.email, feature: 'Vídeo en Directo (Fase Beta)' } },
+        }).catch(() => {});
+      }
     }
     setRequested(true);
     setLoading(false);

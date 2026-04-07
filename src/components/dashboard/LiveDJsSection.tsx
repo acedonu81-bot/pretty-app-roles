@@ -1,87 +1,101 @@
 import { useState, useEffect } from 'react';
-import { Radio, Eye } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import GeometricAvatar from './GeometricAvatar';
-import { parseStreamUrl } from '@/lib/streaming';
 
 interface LiveProfile {
   id: string;
   display_name: string;
   role: string;
-  stream_url: string | null;
   stream_title: string | null;
   zone: string | null;
 }
 
+const DEMO_LIVE: LiveProfile[] = [
+  { id: 'demo-1', display_name: 'DJ Konrad',  role: 'dj',     stream_title: 'Techno Industrial',  zone: 'Madrid' },
+  { id: 'demo-2', display_name: 'Carla VIP',  role: 'staff',  stream_title: 'Coordinación evento', zone: 'Barcelona' },
+  { id: 'demo-3', display_name: 'Luna Make',  role: 'makeup', stream_title: 'Backstage live',      zone: 'Valencia' },
+];
+
+const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', makeup: 'Makeup', rookie: 'Promesa', media: 'Media' };
+const ROLE_COLOR: Record<string, string> = { dj: '#D4AF37', staff: '#8B5CF6', makeup: '#EC4899', rookie: '#F59E0B', media: '#3B82F6' };
+
 const LiveDJsSection = ({ onNavigate }: { onNavigate?: () => void }) => {
-  const [liveDjs, setLiveDjs] = useState<LiveProfile[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [profiles, setProfiles] = useState<LiveProfile[]>([]);
 
   useEffect(() => {
-    const load = async () => {
-      const { data } = await supabase
-        .from('profiles')
-        .select('id, display_name, role, stream_url, stream_title, zone')
-        .eq('is_live', true)
-        .limit(6);
-      setLiveDjs((data as LiveProfile[]) ?? []);
-      setLoading(false);
-    };
-    load();
+    supabase
+      .from('profiles')
+      .select('id, display_name, role, stream_title, zone')
+      .eq('is_live', true)
+      .limit(6)
+      .then(({ data }) => {
+        const real = (data as LiveProfile[]) ?? [];
+        if (real.length === 0) { setProfiles(DEMO_LIVE); return; }
+
+        // Máximo 1 por rol, hasta 3
+        const seen = new Set<string>();
+        const varied: LiveProfile[] = [];
+        for (const p of real) {
+          if (!seen.has(p.role)) { seen.add(p.role); varied.push(p); }
+          if (varied.length === 3) break;
+        }
+        // Rellena con demos de roles que falten
+        for (const d of DEMO_LIVE) {
+          if (varied.length === 3) break;
+          if (!seen.has(d.role)) { seen.add(d.role); varied.push(d); }
+        }
+        setProfiles(varied);
+      });
   }, []);
 
-  if (loading || liveDjs.length === 0) return null;
+  if (profiles.length === 0) return null;
 
   return (
-    <section className="mb-8">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="flex items-center gap-2">
-          <span className="relative flex h-3 w-3">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: '#E53935' }} />
-            <span className="relative inline-flex rounded-full h-3 w-3" style={{ background: '#E53935' }} />
-          </span>
-          <h3 className="text-lg font-bold">
-            En <span className="text-gradient">Directo</span> Ahora
-          </h3>
-        </div>
-        <span className="text-xs text-muted-foreground">{liveDjs.length} profesional{liveDjs.length !== 1 ? 'es' : ''}</span>
+    <section className="mb-10">
+      {/* Header */}
+      <div className="flex items-center gap-2 mb-4">
+        <span className="relative flex h-2.5 w-2.5">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: '#E53935' }} />
+          <span className="relative inline-flex rounded-full h-2.5 w-2.5" style={{ background: '#E53935' }} />
+        </span>
+        <h3 className="text-base font-bold">
+          En <span className="text-gradient">Directo</span> Ahora
+        </h3>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {liveDjs.map(dj => {
-          const embed = dj.stream_url ? parseStreamUrl(dj.stream_url) : null;
+      {/* Cards — pill horizontal */}
+      <div className="flex gap-3 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
+        {profiles.map(p => {
+          const color = ROLE_COLOR[p.role] ?? '#D4AF37';
+          const label = ROLE_LABEL[p.role] ?? p.role;
           return (
-            <div key={dj.id} className="glass-panel overflow-hidden rounded-xl cursor-pointer hover:border-primary/20 transition-all"
-              onClick={onNavigate}>
-              <div className="relative" style={{ height: 160, background: 'rgba(0,0,0,0.6)' }}>
-                {embed ? (
-                  <iframe src={embed.embedUrl} className="absolute inset-0 w-full h-full"
-                    allowFullScreen allow="autoplay; encrypted-media; fullscreen"
-                    style={{ border: 'none' }} title={dj.display_name} />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <Radio size={32} className="text-muted-foreground opacity-30 animate-pulse" />
-                  </div>
-                )}
-                <div className="absolute top-2 left-2 flex items-center gap-1.5 z-10">
-                  <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded-md flex items-center gap-1"
-                    style={{ background: '#E53935', color: '#fff' }}>
-                    <span className="relative flex h-1.5 w-1.5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-white" />
-                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-white" />
-                    </span>
-                    LIVE
-                  </span>
-                </div>
+            <button
+              key={p.id}
+              onClick={onNavigate}
+              className="flex items-center gap-3 px-4 py-3 rounded-2xl flex-none transition-all hover:scale-[1.02] active:scale-95"
+              style={{
+                background: 'rgba(255,255,255,0.03)',
+                border: `1px solid ${color}28`,
+                backdropFilter: 'blur(12px)',
+              }}
+            >
+              <div className="relative flex-shrink-0">
+                <GeometricAvatar role={p.role as any} seed={p.id.charCodeAt(0)} size={38} isLive />
+                {/* live dot */}
+                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-black"
+                  style={{ background: '#E53935', boxShadow: '0 0 6px rgba(229,57,53,0.7)' }} />
               </div>
-              <div className="p-3 flex items-center gap-3">
-                <GeometricAvatar role={dj.role as any} seed={dj.id.length} size={36} isLive />
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm font-bold truncate">{dj.display_name || 'DJ'}</p>
-                  <p className="text-xs text-muted-foreground truncate">{dj.stream_title || dj.zone || 'En directo'}</p>
-                </div>
+              <div className="text-left min-w-0">
+                <p className="text-sm font-bold leading-tight truncate">{p.display_name}</p>
+                <p className="text-[0.6rem] truncate" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                  {p.stream_title || p.zone || label}
+                </p>
               </div>
-            </div>
+              <span className="text-[0.5rem] font-black px-1.5 py-0.5 rounded-full flex-shrink-0"
+                style={{ background: `${color}18`, color, border: `1px solid ${color}33` }}>
+                {label.toUpperCase()}
+              </span>
+            </button>
           );
         })}
       </div>

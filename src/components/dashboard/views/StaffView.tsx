@@ -1,7 +1,8 @@
 import DirectoryView from './DirectoryView';
 
-const StaffView = ({ onNavigate }: { onNavigate?: (view: string) => void }) => (
-  <DirectoryView role="staff" title="Personal de Sala" subtitle="Azafatas, camareros VIP y RRPP disponibles en toda Europa." onNavigate={onNavigate} />
+interface Props { onNavigate?: (view: string) => void; onMessage?: (userId: string, name: string) => void; }
+const StaffView = ({ onNavigate, onMessage }: Props) => (
+  <DirectoryView role="staff" title="Staff & Promoción" subtitle="Azafatas, RRPP, promotores y personal de sala en toda España." onNavigate={onNavigate} onMessage={onMessage} />
 );
 
 export default StaffView;

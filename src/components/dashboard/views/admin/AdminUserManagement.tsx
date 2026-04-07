@@ -45,10 +45,9 @@ const AdminUserManagement = () => {
     setUsers(prev => prev.map(u => u.id === user.id ? { ...u, is_verified: !u.is_verified } : u));
   };
 
-  const contactWhatsApp = (phone: string | null) => {
+  const contactUser = (phone: string | null) => {
     if (!phone) { toast.error('Sin teléfono registrado'); return; }
-    const msg = encodeURIComponent('Hola, te contacto desde la administración de XPEAK.');
-    window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+    toast.info('Usa el sistema de mensajes interno para contactar usuarios.');
   };
 
   const contactEmail = (userId: string, name: string) => {
@@ -91,9 +90,9 @@ const AdminUserManagement = () => {
                 <p className="text-[0.6rem] text-muted-foreground">{u.role} · {u.zone || 'Sin zona'} · Score: {u.score}</p>
               </div>
               <div className="flex gap-1.5">
-                <button onClick={() => contactWhatsApp(u.phone)} title="WhatsApp"
+                <button onClick={() => contactUser(u.phone)} title="Mensajes"
                   className="p-1.5 rounded-md transition-all hover:scale-110"
-                  style={{ background: 'rgba(34,197,94,0.1)', color: '#25D366' }}>
+                  style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>
                   <MessageSquare size={14} />
                 </button>
                 <button onClick={() => contactEmail(u.user_id, u.display_name)} title="Email"

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { MapPin, Star, Users, Music, CheckCircle, Search, Filter } from 'lucide-react';
 
 const cities = [
+  // España
   { id: 'madrid', name: 'Madrid', venues: 2 },
   { id: 'barcelona', name: 'Barcelona', venues: 2 },
   { id: 'valencia', name: 'Valencia', venues: 2 },
@@ -10,6 +11,9 @@ const cities = [
   { id: 'malaga', name: 'Málaga', venues: 2 },
   { id: 'bilbao', name: 'Bilbao', venues: 2 },
   { id: 'zaragoza', name: 'Zaragoza', venues: 2 },
+  // Portugal
+  { id: 'lisboa', name: 'Lisboa', venues: 2 },
+  { id: 'porto', name: 'Porto', venues: 2 },
 ];
 
 const venueDetails: Record<string, Array<{ name: string; type: string; capacity: number; rating: number; verified: boolean; needs: string[] }>> = {
@@ -45,6 +49,14 @@ const venueDetails: Record<string, Array<{ name: string; type: string; capacity:
   zaragoza: [
     { name: 'La Casa del Loco', type: 'Electrónica', capacity: 400, rating: 4.5, verified: true, needs: ['DJ Electrónica', 'Barman'] },
     { name: 'Oasis Club', type: 'Comercial', capacity: 700, rating: 4.3, verified: true, needs: ['DJ Comercial', 'RRPP'] },
+  ],
+  lisboa: [
+    { name: 'Lux Frágil', type: 'Electrónica / House', capacity: 800, rating: 4.9, verified: true, needs: ['DJ House', 'Barman'] },
+    { name: 'Music Box', type: 'Indie / Electrónica', capacity: 500, rating: 4.6, verified: true, needs: ['DJ Electrónica', 'Personal de sala'] },
+  ],
+  porto: [
+    { name: 'Plano B', type: 'Alternativo / Electrónica', capacity: 400, rating: 4.7, verified: true, needs: ['DJ Electrónica', 'RRPP'] },
+    { name: 'Maus Hábitos', type: 'Experimental / Arte', capacity: 350, rating: 4.5, verified: true, needs: ['DJ Experimental', 'Staff'] },
   ],
 };
 

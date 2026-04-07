@@ -1,8 +1,8 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { motion, useInView, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { Music, UtensilsCrossed, Users, Camera, ArrowRight, Sparkles, X, ChevronLeft, ChevronRight, Building2, Scissors, Headphones, Zap, Radio, Star, CalendarDays, Search, Award, Globe, CheckCircle, Smartphone, Video } from 'lucide-react';
+import { Music, UtensilsCrossed, Users, Camera, ArrowRight, Sparkles, X, ChevronLeft, ChevronRight, Building2, Scissors, Headphones, Zap, Radio, Star, CalendarDays, Search, Award, Globe, CheckCircle, Smartphone, Video, Heart } from 'lucide-react';
 import xpeakLogo from '@/assets/xpeak-logo.png';
 import heroBg from '@/assets/hero-bg.jpg';
 const HERO_VIDEO_URL = 'https://videos.pexels.com/video-files/3129957/3129957-uhd_2560_1440_25fps.mp4';
@@ -13,6 +13,7 @@ import bentoImagen from '@/assets/bento-imagen.jpg';
 import LegalFooter from '@/components/LegalFooter';
 import LiveDJsSection from '@/components/dashboard/LiveDJsSection';
 import DemoVideoModal from '@/components/DemoVideoModal';
+import { profiles } from '@/data/profiles';
 
 /* ── Fade-in wrapper ── */
 const FadeIn = ({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) => {
@@ -31,11 +32,58 @@ const FadeIn = ({ children, delay = 0, className = '' }: { children: React.React
   );
 };
 
+/* ── Rotating word ── */
+const ROTATING_WORDS = ['DJs', 'Bartenders', 'Fotógrafos', 'Promotores', 'Staff VIP', 'Productores', 'Maquilladores', 'VJs'];
+const RotatingWord = () => {
+  const [index, setIndex] = useState(0);
+  useEffect(() => {
+    const iv = setInterval(() => setIndex(i => (i + 1) % ROTATING_WORDS.length), 2200);
+    return () => clearInterval(iv);
+  }, []);
+  return (
+    <span className="relative inline-block" style={{ minWidth: '280px', overflow: 'visible', paddingBottom: '0.15em' }}>
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={index}
+          initial={{ opacity: 0, y: 24, filter: 'blur(6px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          exit={{ opacity: 0, y: -24, filter: 'blur(6px)' }}
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          className="text-gradient inline-block"
+          style={{ lineHeight: 1.15, display: 'inline-block' }}
+        >
+          {ROTATING_WORDS[index]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+};
+
+/* ── Marquee strip ── */
+const MARQUEE_ITEMS = ['🎧 DJs & Artistas', '🍹 Bartenders', '📸 Fotógrafos', '🎬 Videógrafos', '💄 Maquilladores', '🎤 Promotores', '🛡️ Seguridad', '🎹 Productores', '💡 VJs', '🎻 Artistas en Vivo', '👑 Staff VIP', '🎙️ Locutores'];
+const MarqueeStrip = () => (
+  <div className="overflow-hidden py-4 mb-0" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
+    <motion.div
+      className="flex gap-8 whitespace-nowrap"
+      animate={{ x: ['0%', '-50%'] }}
+      transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
+      style={{ width: 'max-content' }}
+    >
+      {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
+        <span key={i} className="text-sm font-semibold px-4 py-1.5 rounded-full"
+          style={{ color: 'rgba(212,175,55,0.7)', background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.1)', letterSpacing: '0.05em' }}>
+          {item}
+        </span>
+      ))}
+    </motion.div>
+  </div>
+);
+
 /* ── Bento card ── */
 const BentoCard = ({
-  image, icon, title, subtitle, className = '', onClick,
+  image, icon, title, subtitle, className = '', onClick, children,
 }: {
-  image: string; icon: React.ReactNode; title: string; subtitle: string; className?: string; onClick?: () => void;
+  image: string; icon: React.ReactNode; title: string; subtitle: string; className?: string; onClick?: () => void; children?: React.ReactNode;
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
@@ -90,7 +138,10 @@ const BentoCard = ({
       <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         style={{ boxShadow: 'inset 0 0 60px rgba(212,175,55,0.1)' }} />
       {/* Contenido */}
-      <div className="relative z-10 h-full flex flex-col justify-end p-6">
+      <div className="relative z-10 h-full flex flex-col justify-end p-5">
+        {children && (
+          <div className="mb-3">{children}</div>
+        )}
         <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-110"
           style={{
             background: 'rgba(212,175,55,0.12)',
@@ -126,12 +177,13 @@ const StatPill = ({ value, label }: { value: string; label: string }) => (
 /* ── Role detail data ── */
 const ROLE_DETAILS = [
   {
-    key: 'musica', title: 'Música', icon: <Music size={28} />, tagline: 'DJs, productores y técnicos de sonido',
+    key: 'musica', title: 'Música', icon: <Music size={28} />, tagline: 'DJs, productores, artistas en vivo, VJs y técnicos de sonido',
     steps: [
-      { icon: <Headphones size={32} />, title: '¿Qué es este rol?', body: 'DJs profesionales, productores y técnicos de sonido para clubs, festivales, bodas y eventos corporativos en toda Europa.' },
+      { icon: <Headphones size={32} />, title: '¿Qué es este rol?', body: 'DJs, productores, artistas en vivo, VJs y técnicos de sonido para clubs, festivales, bodas y eventos corporativos en toda Europa.' },
       { icon: <Music size={32} />, title: 'Tu perfil, tu marca', body: 'Incrusta tus sesiones de hearthis.at, Mixcloud o SoundCloud. Los empresarios escuchan tu trabajo antes de contactarte — sin intermediarios.' },
       { icon: <Zap size={32} />, title: 'Flash Booking', body: 'Activa tu disponibilidad en tiempo real y recibe ofertas urgentes de salas que necesitan cubrir una noche con pocas horas de antelación.' },
       { icon: <Radio size={32} />, title: 'Escenario Virtual', body: 'Emite tus sesiones en directo. Empresarios de toda Europa te ven actuar y pueden contactarte al instante. La vitrina más potente del sector.' },
+      { icon: <Heart size={32} />, title: 'Fan Club — ingresos recurrentes', body: 'Monetiza tu audiencia directamente. Tus fans se suscriben desde 4,99€/mes para acceder a sesiones exclusivas, contenido privado y mensajes directos. Tú recibes el 80%.' },
     ],
   },
   {
@@ -167,7 +219,7 @@ const ROLE_DETAILS = [
       { icon: <Scissors size={32} />, title: '¿Qué es este rol?', body: 'Maquilladores artísticos, peluqueros de artistas, estilistas para shows, caracterizadores y técnicos de efectos especiales para escenario.' },
       { icon: <Sparkles size={32} />, title: 'Tu trabajo habla', body: 'Sube fotos y vídeos de tus transformaciones. Los artistas y salas buscan talento visual antes de contactar.' },
       { icon: <Star size={32} />, title: 'Especialización nocturna', body: 'XPEAK es el único directorio donde artistas, managers y productoras buscan profesionales de belleza del sector nocturno.' },
-      { icon: <Smartphone size={32} />, title: 'Contacto directo', body: 'Sin agencias ni intermediarios. Artistas y productoras te encuentran en XPEAK y contactan directamente vía WhatsApp.' },
+      { icon: <Smartphone size={32} />, title: 'Contacto directo', body: 'Sin agencias ni intermediarios. Artistas y productoras te encuentran en XPEAK y contactan directamente a través de la plataforma.' },
     ],
   },
   {
@@ -343,11 +395,26 @@ const Landing = () => {
           <span className="text-xl font-bold tracking-wider">
             X<span className="text-gradient">PEAK</span>
           </span>
+          <div className="flex items-center gap-3">
+            <button onClick={() => navigate('/auth')}
+              className="text-xs font-semibold px-4 py-2 rounded-lg transition-all"
+              style={{ color: 'rgba(255,255,255,0.6)' }}>
+              Acceder
+            </button>
+            <motion.button
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => navigate('/auth')}
+              className="text-xs font-bold px-5 py-2 rounded-lg"
+              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+              Unirse
+            </motion.button>
+          </div>
         </div>
       </nav>
 
       {/* ─ Hero ─ */}
-      <header className="max-w-[1200px] mx-auto px-6 md:px-8 pt-28 pb-24 md:pt-40 md:pb-32 text-center">
+      <header className="max-w-[1200px] mx-auto px-6 md:px-8 pt-28 pb-36 md:pt-40 md:pb-44 text-center">
         <FadeIn>
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-8"
             style={{
@@ -362,14 +429,15 @@ const Landing = () => {
         </FadeIn>
         <FadeIn delay={0.1}>
           <h1 className="text-5xl sm:text-6xl md:text-8xl font-bold leading-[1.05] mb-7 max-w-5xl mx-auto tracking-tight">
-            La Élite de los Eventos{' '}
-            <span className="text-gradient">en un solo lugar</span>
+            El talento de los <br className="hidden sm:block" />
+            <RotatingWord />{' '}
+            <span style={{ color: 'rgba(255,255,255,0.9)' }}>está aquí</span>
           </h1>
         </FadeIn>
         <FadeIn delay={0.2}>
           <p className="text-base md:text-lg max-w-xl mx-auto mb-12 leading-relaxed"
             style={{ color: 'rgba(255,255,255,0.45)' }}>
-            Conecta con los mejores profesionales del sector: DJs, bartenders, personal de sala, fotógrafos y mucho más.
+            El directorio profesional de la noche. Conecta, contrata y destaca en toda Europa.
           </p>
         </FadeIn>
         <FadeIn delay={0.3}>
@@ -403,6 +471,8 @@ const Landing = () => {
           </div>
         </FadeIn>
       </header>
+
+      <MarqueeStrip />
 
       {/* ─ Stats ─ */}
       <FadeIn className="max-w-[900px] mx-auto px-6 mb-24">
@@ -440,8 +510,37 @@ const Landing = () => {
         {/* Fila 1-2: bento asimétrico */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 auto-rows-[170px] md:auto-rows-[260px] mb-3 md:mb-4">
           <FadeIn delay={0} className="md:row-span-2">
-            <BentoCard image={bentoMusica} icon={<Music size={20} />} title="Música" subtitle="DJs, productores y técnicos de sonido" className="h-full"
-              onClick={() => setActiveRole(ROLE_DETAILS[0])} />
+            <BentoCard image={bentoMusica} icon={<Music size={20} />} title="Música" subtitle="DJs, productores, artistas en vivo, VJs y técnicos de sonido" className="h-full"
+              onClick={() => setActiveRole(ROLE_DETAILS[0])}>
+              {/* DJ profile chips */}
+              <div className="flex flex-col gap-1.5">
+                {profiles.filter(p => p.role === 'dj').slice(0, 3).map(dj => (
+                  <div key={dj.id} className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl"
+                    style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                    <div className="w-6 h-6 rounded-lg flex items-center justify-center text-[0.6rem] font-black flex-shrink-0"
+                      style={{ background: dj.subscriptionTier === 'elite' ? 'linear-gradient(135deg,#D4AF37,#B8941E)' : 'rgba(255,255,255,0.1)', color: dj.subscriptionTier === 'elite' ? '#000' : '#fff' }}>
+                      {dj.avatar.slice(0, 1)}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[0.65rem] font-bold leading-none truncate">{dj.name}</p>
+                      <p className="text-[0.55rem] leading-tight truncate" style={{ color: 'rgba(255,255,255,0.4)' }}>{dj.specialty}</p>
+                    </div>
+                    {dj.isLive && (
+                      <span className="text-[0.5rem] font-black px-1.5 py-0.5 rounded flex-shrink-0"
+                        style={{ background: '#E53935', color: '#fff' }}>LIVE</span>
+                    )}
+                    {dj.subscriptionTier === 'elite' && !dj.isLive && (
+                      <span className="text-[0.5rem] font-black px-1.5 py-0.5 rounded flex-shrink-0"
+                        style={{ background: 'rgba(212,175,55,0.2)', color: '#D4AF37' }}>★</span>
+                    )}
+                  </div>
+                ))}
+                <p className="text-[0.55rem] font-bold tracking-widest uppercase mt-0.5 px-1"
+                  style={{ color: 'rgba(212,175,55,0.5)' }}>
+                  +{profiles.filter(p => p.role === 'dj').length - 3} DJs más →
+                </p>
+              </div>
+            </BentoCard>
           </FadeIn>
           <FadeIn delay={0.1} className="md:col-span-2">
             <BentoCard

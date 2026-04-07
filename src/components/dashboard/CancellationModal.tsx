@@ -100,6 +100,12 @@ const CancellationModal = ({ open, onOpenChange, planId, planName }: Cancellatio
         retention_accepted: false,
       });
 
+      supabase.functions.invoke('send-email', {
+        body: { type: 'subscription_cancelled', data: {
+          name: user.email, email: user.email, plan: planId,
+          reason: selectedReason, comment: comment || '',
+        }},
+      }).catch(() => {});
       toast.success('Tu suscripción será cancelada al final del periodo actual.');
       setStep('done');
     } catch {

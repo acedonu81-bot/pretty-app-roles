@@ -1,16 +1,50 @@
+import { useState, useEffect } from 'react';
 import { Users, DollarSign, Zap, Shield, TrendingUp, Activity, Trash2, RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
-const mockMetrics = {
-  totalUsers: 847,
-  professionals: 723,
-  businesses: 124,
-  monthlyMRR: 18450,
-  activeFlash: 24,
-  churnRate: 3.2,
-};
+interface Metrics {
+  totalUsers: number;
+  professionals: number;
+  businesses: number;
+  activeFlash: number;
+}
 
 const AdminMetrics = () => {
+  const [metrics, setMetrics] = useState<Metrics | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const load = async () => {
+      const [
+        { count: totalUsers },
+        { count: businesses },
+        { count: activeFlash },
+      ] = await Promise.all([
+        supabase.from('profiles').select('id', { count: 'exact', head: true }),
+        supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('role', 'empresario'),
+        supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('is_flash_active', true),
+      ]);
+      setMetrics({
+        totalUsers: totalUsers ?? 0,
+        professionals: (totalUsers ?? 0) - (businesses ?? 0),
+        businesses: businesses ?? 0,
+        activeFlash: activeFlash ?? 0,
+      });
+      setLoading(false);
+    };
+    load();
+  }, []);
+
+  const kpis = metrics ? [
+    { label: 'Usuarios Total',   value: metrics.totalUsers,    icon: Users,      color: '#D4AF37' },
+    { label: 'Profesionales',    value: metrics.professionals, icon: Users,      color: '#8E8EA0' },
+    { label: 'Empresarios',      value: metrics.businesses,    icon: Shield,     color: '#D4AF37' },
+    { label: 'MRR',              value: '—',                   icon: DollarSign, color: '#22c55e' },
+    { label: 'Flash Activos',    value: metrics.activeFlash,   icon: Zap,        color: '#22c55e' },
+    { label: 'Churn Rate',       value: '—',                   icon: TrendingUp, color: '#ff5f56' },
+  ] : [];
+
   return (
     <>
       {/* Server Status */}
@@ -19,7 +53,7 @@ const AdminMetrics = () => {
           <Activity size={16} style={{ color: '#22c55e' }} />
           <div>
             <p className="text-xs font-bold" style={{ color: '#22c55e' }}>Sistema Online</p>
-            <p className="text-[0.6rem] text-muted-foreground">Latencia: 12ms · Uptime: 99.97%</p>
+            <p className="text-[0.6rem] text-muted-foreground">Supabase · datos en tiempo real</p>
           </div>
         </div>
         <div className="flex gap-2">
@@ -38,14 +72,14 @@ const AdminMetrics = () => {
 
       {/* Key Metrics */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
-        {[
-          { label: 'Usuarios Total', value: mockMetrics.totalUsers, icon: Users, color: '#D4AF37' },
-          { label: 'Profesionales', value: mockMetrics.professionals, icon: Users, color: '#8E8EA0' },
-          { label: 'Empresarios', value: mockMetrics.businesses, icon: Shield, color: '#D4AF37' },
-          { label: 'MRR Mensual', value: `€${mockMetrics.monthlyMRR.toLocaleString()}`, icon: DollarSign, color: '#22c55e' },
-          { label: 'Flash Activos', value: mockMetrics.activeFlash, icon: Zap, color: '#22c55e' },
-          { label: 'Churn Rate', value: `${mockMetrics.churnRate}%`, icon: TrendingUp, color: '#ff5f56' },
-        ].map((m) => (
+        {loading ? (
+          Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="glass-panel p-3 animate-pulse">
+              <div className="h-3 w-16 rounded mb-2" style={{ background: 'rgba(255,255,255,0.06)' }} />
+              <div className="h-5 w-10 rounded" style={{ background: 'rgba(255,255,255,0.06)' }} />
+            </div>
+          ))
+        ) : kpis.map((m) => (
           <div key={m.label} className="glass-panel p-3">
             <div className="flex items-center gap-1.5 mb-1">
               <m.icon size={12} style={{ color: m.color }} />

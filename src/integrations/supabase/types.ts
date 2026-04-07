@@ -265,6 +265,7 @@ export type Database = {
           birthday: string | null
           created_at: string
           display_name: string
+          genres: string[] | null
           hourly_rate: number
           id: string
           instagram: string | null
@@ -288,6 +289,7 @@ export type Database = {
           birthday?: string | null
           created_at?: string
           display_name?: string
+          genres?: string[] | null
           hourly_rate?: number
           id?: string
           instagram?: string | null
@@ -311,6 +313,7 @@ export type Database = {
           birthday?: string | null
           created_at?: string
           display_name?: string
+          genres?: string[] | null
           hourly_rate?: number
           id?: string
           instagram?: string | null

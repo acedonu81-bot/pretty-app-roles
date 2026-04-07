@@ -18,7 +18,8 @@ export interface Profile {
   instagram: string;
   topWeekend: boolean;
   photo: string;
-  subscriptionTier: 'free' | 'premium' | 'elite';
+  subscriptionTier: 'free' | 'starter' | 'business' | 'premium' | 'elite' | 'agency';
+  isVerified?: boolean;
   isFlashActive: boolean;
   profileViews: number;
   contactClicks: number;
@@ -31,6 +32,7 @@ export interface Profile {
   languages?: string[];
   country?: string;
   city?: string;
+  userId?: string;
 }
 
 const WA_MSG = encodeURIComponent('Hola, te he visto en XPEAK y me interesa tu perfil para un evento. ¿Hablamos?');

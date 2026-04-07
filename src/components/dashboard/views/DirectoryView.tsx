@@ -1,20 +1,23 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Crown, Eye, Maximize2, Minimize2, Users, Video, Settings, ExternalLink, Globe } from 'lucide-react';
+import { Crown, Eye, Maximize2, Minimize2, Users, Video, Settings, Globe, Zap, Lock } from 'lucide-react';
 import { profiles, getEliteRotation, Profile } from '@/data/profiles';
 import ProfileCard from '@/components/dashboard/ProfileCard';
 import CheckoutModal from '@/components/dashboard/CheckoutModal';
 import OffersWidget from '@/components/dashboard/OffersWidget';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
 import LiveBetaButton from '@/components/dashboard/LiveBetaButton';
+import UpgradeModal from '@/components/dashboard/UpgradeModal';
 import { useProfile } from '@/hooks/useProfile';
 import { normalizeStreamUrl, parseStreamUrl } from '@/lib/streaming';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 interface DirectoryViewProps {
   role: string;
   title: string;
   subtitle: string;
   onNavigate?: (view: string) => void;
+  onMessage?: (userId: string, name: string) => void;
   wideCards?: boolean;
 }
 
@@ -161,20 +164,39 @@ const StreamSettingsPanel = ({
   );
 };
 
-const EU_COUNTRIES = ['Todas las ciudades', 'Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao', 'Málaga', 'Ibiza', 'Palma de Mallorca', 'Zaragoza', 'Murcia', 'Alicante', 'Granada'];
+const EU_COUNTRIES = [
+  'Todas las ciudades',
+  // España
+  'Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao', 'Málaga', 'Ibiza', 'Palma de Mallorca', 'Zaragoza', 'Murcia', 'Alicante', 'Granada',
+  // Portugal
+  'Lisboa', 'Porto', 'Faro', 'Cascais', 'Vilamoura',
+];
 
-const DirectoryView = ({ role, title, subtitle, onNavigate, wideCards }: DirectoryViewProps) => {
+const TIER_ORDER = ['free', 'starter', 'business', 'agency', 'elite', 'premium'];
+const TIER_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
+  free:     { label: 'Free',     color: '#8E8EA0', bg: 'rgba(255,255,255,0.04)' },
+  starter:  { label: 'Starter',  color: '#A8C5DA', bg: 'rgba(168,197,218,0.08)' },
+  business: { label: 'Business', color: '#D4AF37', bg: 'rgba(212,175,55,0.1)' },
+  premium:  { label: 'Business', color: '#D4AF37', bg: 'rgba(212,175,55,0.1)' },
+  agency:   { label: 'Agencia',  color: '#D4AF37', bg: 'rgba(212,175,55,0.15)' },
+  elite:    { label: 'Agencia',  color: '#D4AF37', bg: 'rgba(212,175,55,0.15)' },
+};
+
+const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards }: DirectoryViewProps) => {
   const profile = useProfile();
+  const isUserFree = profile.subscription_tier === 'free';
   const roleProfiles = profiles.filter(p => p.role === role);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [checkoutItem, setCheckoutItem] = useState<{ name: string; price: number; description: string } | null>(null);
   const [sortedProfiles, setSortedProfiles] = useState(() => getEliteRotation(roleProfiles));
+  const [realProfiles, setRealProfiles] = useState<Profile[]>([]);
   const [expandedStream, setExpandedStream] = useState<number | null>(null);
   const [showStreamSettings, setShowStreamSettings] = useState(false);
   const [streamUrl, setStreamUrl] = useState(profile.stream_url ?? '');
   const [streamTitle, setStreamTitle] = useState(profile.stream_title ?? '');
   const [savingStream, setSavingStream] = useState(false);
   const [filterCity, setFilterCity] = useState('Todas las ciudades');
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   useEffect(() => {
     setSortedProfiles(getEliteRotation(roleProfiles));
@@ -182,12 +204,56 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, wideCards }: Directo
     return () => clearInterval(iv);
   }, [role]);
 
+  useEffect(() => {
+    supabase
+      .from('profiles')
+      .select('user_id, display_name, photo_url, zone, hourly_rate, specialty, subscription_tier, is_live, genres, audio_embed_url, bio, languages, tiktok, category, is_verified, is_flash_active')
+      .eq('role', role)
+      .then(({ data }) => {
+        if (!data) return;
+        const mapped: Profile[] = data.map((row, i) => ({
+          id: 90000 + i,
+          userId: row.user_id,
+          name: row.display_name || 'Sin nombre',
+          role: role as Profile['role'],
+          specialty: row.specialty || '',
+          rating: 0,
+          reviews: 0,
+          location: row.zone || 'España',
+          zone: row.zone || '',
+          experience: '',
+          price: row.hourly_rate ?? 0,
+          priceUnit: '/hora',
+          avatar: (row.display_name || 'X').charAt(0).toUpperCase(),
+          gradient: 'linear-gradient(135deg,#D4AF37,#B8941E)',
+          badges: row.genres ?? [],
+          description: row.bio || '',
+          phone: '',
+          instagram: '',
+          topWeekend: false,
+          photo: row.photo_url || '',
+          subscriptionTier: (row.subscription_tier as Profile['subscriptionTier']) ?? 'free',
+          isFlashActive: row.is_flash_active ?? false,
+          profileViews: 0,
+          contactClicks: 0,
+          isLive: row.is_live ?? false,
+          isPremium: row.subscription_tier !== 'free',
+          languages: row.languages ?? [],
+          tiktok: row.tiktok || '',
+          category: (row.category as Profile['category']) ?? 'professional',
+          isVerified: row.is_verified ?? false,
+        }));
+        setRealProfiles(mapped);
+      });
+  }, [role]);
+
   const filteredProfiles = useMemo(() => {
-    if (filterCity === 'Todas las ciudades') return sortedProfiles;
-    return sortedProfiles.filter(p =>
+    const combined = [...realProfiles, ...sortedProfiles];
+    if (filterCity === 'Todas las ciudades') return combined;
+    return combined.filter(p =>
       p.city === filterCity || p.zone === filterCity || p.location === filterCity
     );
-  }, [sortedProfiles, filterCity]);
+  }, [realProfiles, sortedProfiles, filterCity]);
 
   useEffect(() => {
     setStreamUrl(profile.stream_url ?? '');
@@ -316,7 +382,7 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, wideCards }: Directo
       <div className="flex flex-wrap items-center gap-2 mb-5">
         <div className="flex items-center gap-1.5">
           <Globe size={12} style={{ color: '#D4AF37' }} />
-          <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>España</span>
+          <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>ES · PT</span>
         </div>
         <div className="flex flex-wrap gap-1.5 flex-1">
           {EU_COUNTRIES.map(c => (
@@ -339,22 +405,71 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, wideCards }: Directo
       {filteredProfiles.length === 0 && (
         <div className="text-center py-12 text-muted-foreground text-sm">
           No hay profesionales en esta zona aún.{' '}
-          <button onClick={() => { setFilterCountry('Todos'); setFilterCity('Todas'); }} style={{ color: '#D4AF37' }} className="font-bold underline">Ver todos</button>
+          <button onClick={() => setFilterCity('Todas las ciudades')} style={{ color: '#D4AF37' }} className="font-bold underline">Ver todos</button>
         </div>
       )}
 
-      {sortedProfiles.some(p => p.subscriptionTier === 'elite') && (
-        <div className="p-3 mb-5 rounded-lg flex items-center gap-2" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
-          <Crown size={16} style={{ color: '#D4AF37' }} />
-          <span className="text-xs font-medium" style={{ color: '#D4AF37' }}>
-            Perfiles Elite — Posicionamiento prioritario con rotación horaria
-          </span>
+      {/* Tier distribution bar */}
+      {filteredProfiles.length > 0 && (() => {
+        const counts: Record<string, number> = {};
+        filteredProfiles.forEach(p => {
+          const t = p.subscriptionTier ?? 'free';
+          counts[t] = (counts[t] || 0) + 1;
+        });
+        const tiers = ['agency', 'elite', 'business', 'premium', 'starter', 'free'].filter(t => counts[t]);
+        return (
+          <div className="flex flex-wrap items-center gap-2 mb-4 p-3 rounded-xl"
+            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--nightlife-border)' }}>
+            <span className="text-[0.6rem] font-bold text-muted-foreground uppercase tracking-wider mr-1">Niveles:</span>
+            {tiers.map(t => {
+              const cfg = TIER_CONFIG[t] ?? TIER_CONFIG.free;
+              return (
+                <span key={t} className="flex items-center gap-1 text-[0.6rem] font-bold px-2 py-0.5 rounded-full"
+                  style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.color}22` }}>
+                  {cfg.label} <span style={{ opacity: 0.7 }}>×{counts[t]}</span>
+                </span>
+              );
+            })}
+            {isUserFree && (
+              <button
+                onClick={() => setShowUpgradeModal(true)}
+                className="ml-auto flex items-center gap-1 text-[0.6rem] font-bold px-2.5 py-1 rounded-full transition-all hover:scale-105"
+                style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
+                <Zap size={10} /> Subir de nivel
+              </button>
+            )}
+          </div>
+        );
+      })()}
+
+      {/* Free user upgrade nudge — sticky bottom banner */}
+      {isUserFree && filteredProfiles.length > 3 && (
+        <div className="relative mb-5 p-4 rounded-xl flex items-center gap-4 overflow-hidden"
+          style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.2)' }}>
+          <div className="absolute inset-0 pointer-events-none"
+            style={{ background: 'radial-gradient(ellipse at 80% 50%, rgba(212,175,55,0.07) 0%, transparent 70%)' }} />
+          <Lock size={20} style={{ color: '#D4AF37', flexShrink: 0 }} />
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>
+              Estás en Free — solo ves una parte del directorio
+            </p>
+            <p className="text-[0.6rem] text-muted-foreground">
+              Los perfiles Business y Agencia tienen acceso prioritario. Actualiza para enviar mensajes, ver tarifas y aplicar a Flash Bookings.
+            </p>
+          </div>
+          <button
+            onClick={() => setShowUpgradeModal(true)}
+            className="flex-shrink-0 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 active:scale-95"
+            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+            Ver planes
+          </button>
         </div>
       )}
 
       <div className={gridClass}>
         {filteredProfiles.map(p => (
-          <ProfileCard key={p.id} profile={p} showPortfolio={wideCards} />
+          <ProfileCard key={p.id} profile={p} showPortfolio={wideCards} onMessage={onMessage}
+            onNavigateSubscription={() => onNavigate?.('subscription')} />
         ))}
       </div>
 
@@ -364,6 +479,13 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, wideCards }: Directo
 
       <OffersWidget title={`Ofertas para ${title}`} role={role} />
       <CheckoutModal open={checkoutOpen} onClose={() => setCheckoutOpen(false)} item={checkoutItem} />
+
+      <UpgradeModal
+        open={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        role={role}
+        onNavigateSubscription={() => { setShowUpgradeModal(false); onNavigate?.('subscription'); }}
+      />
     </div>
   );
 };
