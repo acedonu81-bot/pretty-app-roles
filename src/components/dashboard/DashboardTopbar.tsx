@@ -82,7 +82,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
 
       <div className="flex items-center gap-2 relative flex-shrink-0">
         {showTrialNotice && (
-          <div className="lg:hidden flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-[0.65rem] font-semibold border border-border bg-card/70 text-primary">
+          <div className="lg:hidden flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold border border-border bg-card/70 text-primary">
             <Gift size={12} />
             <span>{trialDaysRemaining > 0 ? `${trialDaysRemaining} días gratis` : 'Prueba finalizada'}</span>
           </div>
@@ -92,7 +92,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
         <button
           onClick={() => setShowNotif(prev => !prev)}
           className="relative flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95"
-          style={{ width: 36, height: 36 }}
+          style={{ width: 40, height: 40 }}
           aria-label="Notificaciones"
         >
           {/* Outer glow rings — only when unread */}

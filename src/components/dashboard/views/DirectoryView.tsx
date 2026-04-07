@@ -32,7 +32,7 @@ const MiniEqualizer = () => {
     <div className="w-full h-full flex items-end justify-center gap-[2px] p-3">
       {heights.map((h, i) => (
         <div key={i} className="w-1.5 rounded-full transition-all duration-150"
-          style={{ height: `${h}%`, background: 'linear-gradient(180deg, #D4AF37, #B8941E)', opacity: 0.6 }} />
+          style={{ height: `${h}%`, background: 'linear-gradient(180deg, #D4AF37, #B8941E)', opacity: Math.max(0.3, h / 100) }} />
       ))}
     </div>
   );
@@ -49,7 +49,7 @@ const StreamTile = ({ profile, isExpanded, onToggle, viewerCount }: {
 
   return (
     <div className="relative rounded-lg overflow-hidden flex flex-col transition-all duration-300"
-      style={{ background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(229,57,53,0.2)', height: isExpanded ? 450 : 180 }}>
+      style={{ background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(229,57,53,0.2)', height: isExpanded ? 'min(450px, 60vh)' : 180 }}>
       <div className="flex-1 relative">
         {streamEmbed ? (
           <iframe
@@ -78,7 +78,7 @@ const StreamTile = ({ profile, isExpanded, onToggle, viewerCount }: {
         </span>
         <span className="text-[0.55rem] font-medium px-1.5 py-0.5 rounded-md flex items-center gap-1"
           style={{ background: 'rgba(0,0,0,0.7)', color: '#fff' }}>
-          <Eye size={8} /> {viewerCount}
+          <Eye size={10} /> {viewerCount}
         </span>
         {streamEmbed && (
           <span className="text-[0.5rem] font-medium px-1.5 py-0.5 rounded-md"

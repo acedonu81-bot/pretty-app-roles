@@ -200,7 +200,7 @@ const EscenarioVirtualView = () => {
                 <div className="absolute inset-0 flex items-end justify-center gap-1 p-6">
                   {eqHeights.map((h, i) => (
                     <div key={i} className="w-2.5 rounded-full transition-all duration-150"
-                      style={{ height: `${h}%`, background: 'linear-gradient(180deg, #D4AF37, #B8941E)', opacity: 0.7 }} />
+                      style={{ height: `${h}%`, background: 'linear-gradient(180deg, #D4AF37, #B8941E)', opacity: Math.max(0.3, h / 100) }} />
                   ))}
                 </div>
               ) : (

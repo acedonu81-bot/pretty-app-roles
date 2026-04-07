@@ -64,7 +64,7 @@ const MARQUEE_ITEMS = ['🎧 DJs & Artistas', '🍹 Bartenders', '📸 Fotógraf
 const MarqueeStrip = () => (
   <div className="overflow-hidden py-4 mb-0" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
     <motion.div
-      className="flex gap-8 whitespace-nowrap"
+      className="flex gap-4 sm:gap-6 md:gap-8 whitespace-nowrap"
       animate={{ x: ['0%', '-50%'] }}
       transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
       style={{ width: 'max-content' }}
@@ -130,7 +130,7 @@ const BentoCard = ({
         style={{ filter: 'saturate(0.6) brightness(0.8)' }} />
       {/* Dark overlay */}
       <div className="absolute inset-0" style={{
-        background: 'linear-gradient(180deg, rgba(10,10,10,0.15) 0%, rgba(10,10,10,0.88) 100%)',
+        background: 'linear-gradient(180deg, rgba(10,10,10,0) 0%, rgba(10,10,10,0.5) 50%, rgba(10,10,10,0.82) 100%)',
       }} />
       {/* Shine que sigue el ratón */}
       <motion.div className="absolute inset-0 pointer-events-none" style={{ background: shineBg, opacity: shineOpacity }} />
@@ -276,7 +276,7 @@ const RoleModal = ({ role, onClose, onJoin }: { role: typeof ROLE_DETAILS[0]; on
             </div>
             <div className="flex-1 min-w-0">
               <h3 className="text-lg font-bold leading-tight">{role.title}</h3>
-              <p className="text-xs truncate" style={{ color: 'rgba(255,255,255,0.4)' }}>{role.tagline}</p>
+              <p className="text-sm" style={{ color: 'rgba(255,255,255,0.58)' }}>{role.tagline}</p>
             </div>
             <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-white/10 flex-shrink-0">
               <X size={15} className="text-white/50" />
