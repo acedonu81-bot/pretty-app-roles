@@ -144,7 +144,9 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
         }
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
       })
-      .subscribe();
+      .subscribe((status) => {
+        if (status === 'CHANNEL_ERROR') toast.error('Chat desconectado. Recarga la página.');
+      });
 
     return () => {
       if (realtimeRef.current) supabase.removeChannel(realtimeRef.current);
@@ -181,9 +183,12 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     const file = e.target.files?.[0];
     if (!file || !user) return;
     if (file.size > 5 * 1024 * 1024) { toast.error('Máximo 5MB por imagen'); return; }
+    if (!file.type.startsWith('image/')) { toast.error('Solo se permiten imágenes'); return; }
+    const allowedExts = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+    const ext = file.name.split('.').pop()?.toLowerCase();
+    if (!ext || !allowedExts.includes(ext)) { toast.error('Formato no permitido'); return; }
 
     setUploadingPhoto(true);
-    const ext = file.name.split('.').pop();
     const path = `${user.id}/${Date.now()}.${ext}`;
     const { error: uploadError } = await supabase.storage.from('message-attachments').upload(path, file, { upsert: false });
     if (uploadError) { toast.error('Error al subir imagen'); setUploadingPhoto(false); return; }

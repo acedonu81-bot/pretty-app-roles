@@ -16,6 +16,7 @@ const ProfileView = () => {
   const { user } = useAuth();
   const profile = useProfile();
   const [deleting, setDeleting] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [localName, setLocalName] = useState<string | null>(null);
   const [city, setCity] = useState('');
   const [rider, setRider] = useState<string | null>(null);
@@ -75,13 +76,13 @@ const ProfileView = () => {
   };
 
   const handleSave = async () => {
-    if (!user) return;
+    if (!user || saving) return;
     const toCheck = [localName, bio, rider].filter(Boolean) as string[];
     for (const val of toCheck) {
       const { clean, reason } = sanitizeInput(val);
       if (!clean) { toast.error(reason); return; }
     }
-    const updates: any = {};
+    const updates: Record<string, unknown> = {};
     if (localName !== null) updates.display_name = localName;
     if (city) updates.zone = city;
     if (hourlyRate !== null) updates.hourly_rate = parseInt(hourlyRate) || 0;
@@ -92,7 +93,9 @@ const ProfileView = () => {
     if (selectedGenres !== null) updates.genres = selectedGenres;
     if (tiktok !== null) updates.tiktok = tiktok || null;
     if (Object.keys(updates).length > 0) {
+      setSaving(true);
       const ok = await profile.updateField(updates);
+      setSaving(false);
       if (!ok) return;
     }
     toast.success('Perfil guardado.');
@@ -134,10 +137,10 @@ const ProfileView = () => {
           <h2 className="text-2xl font-bold mb-1">Mi <span className="text-gradient">Perfil</span></h2>
           <p className="text-base text-muted-foreground">Así te ven los empresarios.</p>
         </div>
-        <button onClick={handleSave}
-          className="px-5 py-2 rounded-lg font-bold text-base w-full sm:w-auto"
+        <button onClick={handleSave} disabled={saving}
+          className="px-5 py-2 rounded-lg font-bold text-base w-full sm:w-auto disabled:opacity-60"
           style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-          Guardar
+          {saving ? 'Guardando...' : 'Guardar'}
         </button>
       </div>
 

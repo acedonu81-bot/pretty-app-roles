@@ -25,9 +25,9 @@ const AdminValidations = () => {
   }, []);
 
   const fetchPending = async () => {
-    const { data, error } = await (supabase
+    const { data, error } = await supabase
       .from('profiles')
-      .select('*') as any)
+      .select('id, display_name, role, zone, score, audio_url, validation_submitted_at, category, user_id')
       .eq('validation_status', 'pending')
       .order('validation_submitted_at', { ascending: true });
     if (error) { toast.error('Error al cargar validaciones pendientes'); return; }
@@ -46,9 +46,9 @@ const AdminValidations = () => {
 
   const handleAction = async (profile: PendingProfile, action: 'approved' | 'rookie' | 'rejected') => {
     const category = action === 'approved' ? 'professional' : action === 'rookie' ? 'rookie' : 'rejected';
-    const { error } = await (supabase
+    const { error } = await supabase
       .from('profiles')
-      .update({ validation_status: action, category } as any) as any)
+      .update({ validation_status: action, category })
       .eq('id', profile.id);
 
     if (error) {
@@ -84,23 +84,33 @@ const AdminValidations = () => {
   };
 
   // ── Sello de Oro verification queue ──
-  const [verifications, setVerifications] = useState<any[]>([]);
+  interface PendingVerification {
+    id: string;
+    display_name: string;
+    role: string;
+    zone: string | null;
+    verification_video_url: string | null;
+    verification_submitted_at: string;
+  }
+  const [verifications, setVerifications] = useState<PendingVerification[]>([]);
   const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
 
   useEffect(() => {
     const loadVerifications = async () => {
-      const { data, error } = await (supabase.from('profiles') as any)
+      const { data, error } = await supabase
+        .from('profiles')
         .select('id, display_name, role, zone, verification_video_url, verification_submitted_at')
         .eq('verification_status', 'pending')
         .order('verification_submitted_at', { ascending: true });
       if (error) { toast.error('Error al cargar solicitudes de Sello de Oro'); return; }
-      setVerifications(data ?? []);
+      setVerifications((data ?? []) as PendingVerification[]);
     };
     loadVerifications();
   }, []);
 
   const handleSelloAction = async (id: string, action: 'approved' | 'rejected') => {
-    const { error } = await (supabase.from('profiles') as any)
+    const { error } = await supabase
+      .from('profiles')
       .update({ verification_status: action, is_verified: action === 'approved' })
       .eq('id', id);
     if (error) { toast.error('Error al procesar la solicitud'); return; }

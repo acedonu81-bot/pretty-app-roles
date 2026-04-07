@@ -27,14 +27,15 @@ const FanChat = ({ professionalProfileId, professionalUserId, isSubscribed }: Pr
   useEffect(() => {
     if (!user || !isSubscribed) return;
     const load = async () => {
-      const { data } = await supabase
-        .from('fan_messages' as any)
-        .select('*')
+      // fan_messages table is pending migration — cast until types are regenerated
+      const { data, error } = await (supabase as any)
+        .from('fan_messages')
+        .select('id, sender_id, content, created_at')
         .eq('professional_profile_id', professionalProfileId)
         .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`)
         .order('created_at', { ascending: true })
         .limit(100);
-      setMessages((data as any[]) ?? []);
+      if (!error) setMessages((data as Message[]) ?? []);
     };
     load();
 
@@ -47,11 +48,12 @@ const FanChat = ({ professionalProfileId, professionalUserId, isSubscribed }: Pr
         table: 'fan_messages',
         filter: `professional_profile_id=eq.${professionalProfileId}`,
       }, (payload) => {
-        const msg = payload.new as any;
+        const msg = payload.new as Message & { receiver_id: string };
         if (msg.sender_id === user.id || msg.receiver_id === user.id) {
-          setMessages(prev => [...prev, msg]);
+          setMessages(prev => prev.some(m => m.id === msg.id) ? prev : [...prev, msg]);
         }
       })
+      .on('error' as any, () => toast.error('Chat desconectado. Recarga la página.'))
       .subscribe();
 
     return () => { supabase.removeChannel(channel); };
@@ -68,12 +70,13 @@ const FanChat = ({ professionalProfileId, professionalUserId, isSubscribed }: Pr
     const receiverId = user.id === professionalUserId ? messages[0]?.sender_id : professionalUserId;
     if (!receiverId) return;
 
-    await supabase.from('fan_messages' as any).insert({
+    const { error } = await (supabase as any).from('fan_messages').insert({
       sender_id: user.id,
       receiver_id: receiverId,
       professional_profile_id: professionalProfileId,
       content: input.trim(),
-    } as any);
+    });
+    if (error) { toast.error('No se pudo enviar el mensaje'); return; }
     setInput('');
   };
 

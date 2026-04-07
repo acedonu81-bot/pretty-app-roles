@@ -105,7 +105,7 @@ const EscenarioVirtualView = () => {
     const newLive = !isLive;
     setIsLive(newLive);
     // Persist is_live to DB
-    await profile.updateField({ is_live: newLive } as any);
+    await profile.updateField({ is_live: newLive });
     toast.success(newLive ? '¡Estás en directo!' : 'Has salido del directo.');
   };
 
@@ -195,7 +195,7 @@ const EscenarioVirtualView = () => {
           <div className="glass-panel p-5">
             <div className="relative w-full rounded-lg overflow-hidden" style={{ background: 'rgba(0,0,0,0.6)', aspectRatio: '16/9' }}>
               {streamEmbed && isLive ? (
-                <iframe src={streamEmbed.embedUrl} className="absolute inset-0 w-full h-full" allowFullScreen allow="autoplay; encrypted-media" style={{ border: 'none' }} />
+                <iframe src={streamEmbed.embedUrl} className="absolute inset-0 w-full h-full" allowFullScreen allow="autoplay; encrypted-media" sandbox="allow-scripts allow-same-origin allow-presentation" style={{ border: 'none' }} />
               ) : isLive ? (
                 <div className="absolute inset-0 flex items-end justify-center gap-1 p-6">
                   {eqHeights.map((h, i) => (

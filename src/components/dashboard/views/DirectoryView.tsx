@@ -57,6 +57,7 @@ const StreamTile = ({ profile, isExpanded, onToggle, viewerCount }: {
             className="absolute inset-0 w-full h-full"
             allowFullScreen
             allow="autoplay; encrypted-media; fullscreen"
+            sandbox="allow-scripts allow-same-origin allow-presentation"
             style={{ border: 'none' }}
             title={`${profile.name} - ${streamEmbed.type}`}
           />
