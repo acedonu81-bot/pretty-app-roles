@@ -14,67 +14,83 @@ export type Database = {
   }
   public: {
     Tables: {
-      cancellation_surveys: {
+      availability: {
         Row: {
-          comment: string | null
-          created_at: string
+          blocked_date: string
+          created_at: string | null
           id: string
-          plan: string
-          reason: string
-          retention_accepted: boolean
-          user_id: string
+          reason: string | null
+          user_id: string | null
         }
         Insert: {
-          comment?: string | null
-          created_at?: string
+          blocked_date: string
+          created_at?: string | null
           id?: string
-          plan: string
-          reason: string
-          retention_accepted?: boolean
-          user_id: string
+          reason?: string | null
+          user_id?: string | null
         }
         Update: {
-          comment?: string | null
-          created_at?: string
+          blocked_date?: string
+          created_at?: string | null
           id?: string
-          plan?: string
-          reason?: string
-          retention_accepted?: boolean
-          user_id?: string
+          reason?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
-      community_votes: {
+      cancellation_surveys: {
         Row: {
-          created_at: string
+          comment: string | null
+          created_at: string | null
           id: string
-          profile_id: string
-          vote_date: string
-          voter_id: string
+          plan: string | null
+          reason: string | null
+          retention_accepted: boolean | null
+          user_id: string | null
         }
         Insert: {
-          created_at?: string
+          comment?: string | null
+          created_at?: string | null
           id?: string
-          profile_id: string
-          vote_date?: string
-          voter_id: string
+          plan?: string | null
+          reason?: string | null
+          retention_accepted?: boolean | null
+          user_id?: string | null
         }
         Update: {
-          created_at?: string
+          comment?: string | null
+          created_at?: string | null
           id?: string
-          profile_id?: string
-          vote_date?: string
-          voter_id?: string
+          plan?: string | null
+          reason?: string | null
+          retention_accepted?: boolean | null
+          user_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "community_votes_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
+      }
+      conversations: {
+        Row: {
+          created_at: string | null
+          id: string
+          last_message_at: string | null
+          participant_a: string | null
+          participant_b: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          last_message_at?: string | null
+          participant_a?: string | null
+          participant_b?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          last_message_at?: string | null
+          participant_a?: string | null
+          participant_b?: string | null
+        }
+        Relationships: []
       }
       fan_messages: {
         Row: {
@@ -113,31 +129,28 @@ export type Database = {
       }
       fan_subscriptions: {
         Row: {
-          amount: number
           cancelled_at: string | null
-          created_at: string
-          fan_id: string
+          fan_user_id: string
           id: string
           professional_profile_id: string
-          status: string
+          status: string | null
+          subscribed_at: string | null
         }
         Insert: {
-          amount?: number
           cancelled_at?: string | null
-          created_at?: string
-          fan_id: string
+          fan_user_id: string
           id?: string
           professional_profile_id: string
-          status?: string
+          status?: string | null
+          subscribed_at?: string | null
         }
         Update: {
-          amount?: number
           cancelled_at?: string | null
-          created_at?: string
-          fan_id?: string
+          fan_user_id?: string
           id?: string
           professional_profile_id?: string
-          status?: string
+          status?: string | null
+          subscribed_at?: string | null
         }
         Relationships: [
           {
@@ -151,19 +164,19 @@ export type Database = {
       }
       favorites: {
         Row: {
-          created_at: string
+          created_at: string | null
           id: string
           profile_id: string
           user_id: string
         }
         Insert: {
-          created_at?: string
+          created_at?: string | null
           id?: string
           profile_id: string
           user_id: string
         }
         Update: {
-          created_at?: string
+          created_at?: string | null
           id?: string
           profile_id?: string
           user_id?: string
@@ -183,253 +196,369 @@ export type Database = {
           created_at: string
           feature_name: string
           id: string
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           created_at?: string
           feature_name: string
           id?: string
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           created_at?: string
           feature_name?: string
           id?: string
-          user_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      flash_bookings: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          event_date: string | null
+          event_description: string | null
+          event_location: string | null
+          id: string
+          professional_name: string
+          professional_role: string | null
+          professional_user_id: string | null
+          requester_contact: string
+          requester_name: string
+          status: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          event_date?: string | null
+          event_description?: string | null
+          event_location?: string | null
+          id?: string
+          professional_name: string
+          professional_role?: string | null
+          professional_user_id?: string | null
+          requester_contact: string
+          requester_name: string
+          status?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          event_date?: string | null
+          event_description?: string | null
+          event_location?: string | null
+          id?: string
+          professional_name?: string
+          professional_role?: string | null
+          professional_user_id?: string | null
+          requester_contact?: string
+          requester_name?: string
+          status?: string | null
         }
         Relationships: []
       }
       flash_jobs: {
         Row: {
-          created_at: string
-          description: string
+          created_at: string | null
+          description: string | null
           employer_id: string
-          expires_at: string
+          expires_at: string | null
           id: string
-          is_active: boolean
-          location: string
-          pay: string
-          role_needed: string
+          location: string | null
+          pay: string | null
+          role_needed: string | null
           title: string
         }
         Insert: {
-          created_at?: string
-          description: string
+          created_at?: string | null
+          description?: string | null
           employer_id: string
-          expires_at?: string
+          expires_at?: string | null
           id?: string
-          is_active?: boolean
-          location?: string
-          pay: string
-          role_needed?: string
+          location?: string | null
+          pay?: string | null
+          role_needed?: string | null
           title: string
         }
         Update: {
-          created_at?: string
-          description?: string
+          created_at?: string | null
+          description?: string | null
           employer_id?: string
-          expires_at?: string
+          expires_at?: string | null
           id?: string
-          is_active?: boolean
-          location?: string
-          pay?: string
-          role_needed?: string
+          location?: string | null
+          pay?: string | null
+          role_needed?: string | null
           title?: string
         }
         Relationships: []
       }
-      profile_contacts: {
+      messages: {
         Row: {
-          created_at: string
+          content: string
+          conversation_id: string | null
+          created_at: string | null
           id: string
-          phone: string | null
-          user_id: string
+          read: boolean | null
+          sender_id: string | null
         }
         Insert: {
-          created_at?: string
+          content: string
+          conversation_id?: string | null
+          created_at?: string | null
           id?: string
-          phone?: string | null
-          user_id: string
+          read?: boolean | null
+          sender_id?: string | null
         }
         Update: {
-          created_at?: string
+          content?: string
+          conversation_id?: string | null
+          created_at?: string | null
           id?: string
-          phone?: string | null
-          user_id?: string
+          read?: boolean | null
+          sender_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
-          annual_billing: boolean
+          annual_billing: boolean | null
+          audio_embed_url: string | null
+          audio_url: string | null
+          bio: string | null
           birthday: string | null
-          created_at: string
-          display_name: string
+          category: string | null
+          created_at: string | null
+          display_name: string | null
           genres: string[] | null
-          hourly_rate: number
+          hourly_rate: number | null
           id: string
           instagram: string | null
-          is_flash_active: boolean
-          is_live: boolean
-          is_premium: boolean
-          is_verified: boolean
+          is_flash_active: boolean | null
+          is_live: boolean | null
+          is_premium: boolean | null
+          is_verified: boolean | null
+          languages: string[] | null
+          phone: string | null
           photo_url: string | null
-          role: string
+          role: string | null
+          score: number | null
           specialty: string | null
           stream_title: string | null
           stream_url: string | null
-          subscription_tier: string
-          trial_started_at: string
-          updated_at: string
+          subscription_tier: string | null
+          tiktok: string | null
+          trial_started_at: string | null
+          updated_at: string | null
           user_id: string
+          validation_status: string | null
+          validation_submitted_at: string | null
           zone: string | null
         }
         Insert: {
-          annual_billing?: boolean
+          annual_billing?: boolean | null
+          audio_embed_url?: string | null
+          audio_url?: string | null
+          bio?: string | null
           birthday?: string | null
-          created_at?: string
-          display_name?: string
+          category?: string | null
+          created_at?: string | null
+          display_name?: string | null
           genres?: string[] | null
-          hourly_rate?: number
+          hourly_rate?: number | null
           id?: string
           instagram?: string | null
-          is_flash_active?: boolean
-          is_live?: boolean
-          is_premium?: boolean
-          is_verified?: boolean
+          is_flash_active?: boolean | null
+          is_live?: boolean | null
+          is_premium?: boolean | null
+          is_verified?: boolean | null
+          languages?: string[] | null
+          phone?: string | null
           photo_url?: string | null
-          role?: string
+          role?: string | null
+          score?: number | null
           specialty?: string | null
           stream_title?: string | null
           stream_url?: string | null
-          subscription_tier?: string
-          trial_started_at?: string
-          updated_at?: string
+          subscription_tier?: string | null
+          tiktok?: string | null
+          trial_started_at?: string | null
+          updated_at?: string | null
           user_id: string
+          validation_status?: string | null
+          validation_submitted_at?: string | null
           zone?: string | null
         }
         Update: {
-          annual_billing?: boolean
+          annual_billing?: boolean | null
+          audio_embed_url?: string | null
+          audio_url?: string | null
+          bio?: string | null
           birthday?: string | null
-          created_at?: string
-          display_name?: string
+          category?: string | null
+          created_at?: string | null
+          display_name?: string | null
           genres?: string[] | null
-          hourly_rate?: number
+          hourly_rate?: number | null
           id?: string
           instagram?: string | null
-          is_flash_active?: boolean
-          is_live?: boolean
-          is_premium?: boolean
-          is_verified?: boolean
+          is_flash_active?: boolean | null
+          is_live?: boolean | null
+          is_premium?: boolean | null
+          is_verified?: boolean | null
+          languages?: string[] | null
+          phone?: string | null
           photo_url?: string | null
-          role?: string
+          role?: string | null
+          score?: number | null
           specialty?: string | null
           stream_title?: string | null
           stream_url?: string | null
-          subscription_tier?: string
-          trial_started_at?: string
-          updated_at?: string
+          subscription_tier?: string | null
+          tiktok?: string | null
+          trial_started_at?: string | null
+          updated_at?: string | null
           user_id?: string
+          validation_status?: string | null
+          validation_submitted_at?: string | null
           zone?: string | null
         }
         Relationships: []
       }
       retention_discounts: {
         Row: {
-          activated_at: string
-          discount_percent: number
-          duration_months: number
-          expires_at: string
+          created_at: string | null
+          discount_percent: number | null
+          duration_months: number | null
           id: string
-          plan: string
-          user_id: string
+          plan: string | null
+          used: boolean | null
+          user_id: string | null
+          valid_until: string | null
         }
         Insert: {
-          activated_at?: string
-          discount_percent?: number
-          duration_months?: number
-          expires_at?: string
+          created_at?: string | null
+          discount_percent?: number | null
+          duration_months?: number | null
           id?: string
-          plan: string
-          user_id: string
+          plan?: string | null
+          used?: boolean | null
+          user_id?: string | null
+          valid_until?: string | null
         }
         Update: {
-          activated_at?: string
-          discount_percent?: number
-          duration_months?: number
-          expires_at?: string
+          created_at?: string | null
+          discount_percent?: number | null
+          duration_months?: number | null
           id?: string
-          plan?: string
-          user_id?: string
+          plan?: string | null
+          used?: boolean | null
+          user_id?: string | null
+          valid_until?: string | null
         }
         Relationships: []
       }
-      transactions: {
+      reviews: {
         Row: {
-          amount: number
-          created_at: string
+          comment: string | null
+          created_at: string | null
+          event_type: string | null
           id: string
-          plan: string
-          status: string
-          user_id: string | null
+          rating: number
+          reviewed_user_id: string | null
+          reviewer_id: string | null
         }
         Insert: {
-          amount: number
-          created_at?: string
+          comment?: string | null
+          created_at?: string | null
+          event_type?: string | null
           id?: string
-          plan: string
-          status?: string
-          user_id?: string | null
+          rating: number
+          reviewed_user_id?: string | null
+          reviewer_id?: string | null
         }
         Update: {
-          amount?: number
-          created_at?: string
+          comment?: string | null
+          created_at?: string | null
+          event_type?: string | null
           id?: string
-          plan?: string
-          status?: string
-          user_id?: string | null
+          rating?: number
+          reviewed_user_id?: string | null
+          reviewer_id?: string | null
         }
         Relationships: []
       }
       user_roles: {
         Row: {
           id: string
-          role: Database["public"]["Enums"]["app_role"]
+          role: string
           user_id: string
         }
         Insert: {
           id?: string
-          role?: Database["public"]["Enums"]["app_role"]
+          role?: string
           user_id: string
         }
         Update: {
           id?: string
-          role?: Database["public"]["Enums"]["app_role"]
+          role?: string
           user_id?: string
         }
         Relationships: []
+      }
+      votes: {
+        Row: {
+          id: string
+          profile_id: string
+          vote_date: string
+          voted_at: string | null
+          voter_id: string
+        }
+        Insert: {
+          id?: string
+          profile_id: string
+          vote_date?: string
+          voted_at?: string | null
+          voter_id: string
+        }
+        Update: {
+          id?: string
+          profile_id?: string
+          vote_date?: string
+          voted_at?: string | null
+          voter_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "votes_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      get_profile_phone: { Args: { p_user_id: string }; Returns: string }
       get_vote_count: { Args: { p_profile_id: string }; Returns: number }
-      has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
       has_voted_today: {
         Args: { p_profile_id: string; p_voter_id: string }
         Returns: boolean
       }
     }
     Enums: {
-      app_role: "admin" | "user"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
@@ -556,8 +685,6 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {
-      app_role: ["admin", "user"],
-    },
+    Enums: {},
   },
 } as const

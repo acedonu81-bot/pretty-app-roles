@@ -18,7 +18,7 @@ const FanSubscribeButton = ({ profileId, professionalName }: Props) => {
     if (!user) { setLoading(false); return; }
     const check = async () => {
       const { data } = await supabase
-        .from('fan_subscriptions' as any)
+        .from('fan_subscriptions')
         .select('id, status')
         .eq('fan_id', user.id)
         .eq('professional_profile_id', profileId)
@@ -40,9 +40,12 @@ const FanSubscribeButton = ({ profileId, professionalName }: Props) => {
 
   const handleUnsubscribe = async () => {
     if (!user) return;
-    await (supabase.from('fan_subscriptions' as any).update({ status: 'cancelled', cancelled_at: new Date().toISOString() } as any) as any)
+    const { error } = await supabase
+      .from('fan_subscriptions')
+      .update({ status: 'cancelled', cancelled_at: new Date().toISOString() })
       .eq('fan_id', user.id)
       .eq('professional_profile_id', profileId);
+    if (error) { toast.error('Error al cancelar la suscripción'); return; }
     setIsSubscribed(false);
     toast.success('Suscripción cancelada');
   };

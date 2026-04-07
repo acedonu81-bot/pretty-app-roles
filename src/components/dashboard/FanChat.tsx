@@ -27,8 +27,7 @@ const FanChat = ({ professionalProfileId, professionalUserId, isSubscribed }: Pr
   useEffect(() => {
     if (!user || !isSubscribed) return;
     const load = async () => {
-      // fan_messages table is pending migration — cast until types are regenerated
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('fan_messages')
         .select('id, sender_id, content, created_at')
         .eq('professional_profile_id', professionalProfileId)
@@ -70,7 +69,7 @@ const FanChat = ({ professionalProfileId, professionalUserId, isSubscribed }: Pr
     const receiverId = user.id === professionalUserId ? messages[0]?.sender_id : professionalUserId;
     if (!receiverId) return;
 
-    const { error } = await (supabase as any).from('fan_messages').insert({
+    const { error } = await supabase.from('fan_messages').insert({
       sender_id: user.id,
       receiver_id: receiverId,
       professional_profile_id: professionalProfileId,
