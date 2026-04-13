@@ -33,7 +33,15 @@ export interface Profile {
   country?: string;
   city?: string;
   userId?: string;
+  slug?: string;
 }
+
+/** Genera slug SEO-friendly desde nombre: "Dani Tech" → "dani-tech" */
+export const toSlug = (name: string) =>
+  name.toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
 
 const WA_MSG = encodeURIComponent('Hola, te he visto en XPEAK y me interesa tu perfil para un evento. ¿Hablamos?');
 export const getWhatsAppLink = (phone: string) => `https://wa.me/${phone}?text=${WA_MSG}`;

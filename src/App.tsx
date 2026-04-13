@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { XPeakToastProvider } from "@/lib/xpeak-toast";
 import Landing from "./pages/Landing";
@@ -16,6 +17,7 @@ import CookieBanner from "./components/CookieBanner";
 const queryClient = new QueryClient();
 
 const App = () => (
+  <HelmetProvider>
   <QueryClientProvider client={queryClient}>
     <XPeakToastProvider>
     <TooltipProvider>
@@ -28,7 +30,7 @@ const App = () => (
           <Route path="/terminos" element={<Terminos />} />
           <Route path="/cookies" element={<Cookies />} />
           <Route path="/admin-beta" element={<AdminBeta />} />
-          <Route path="/p/:id" element={<PublicProfile />} />
+          <Route path="/p/:slug" element={<PublicProfile />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <CookieBanner />
@@ -36,6 +38,7 @@ const App = () => (
     </TooltipProvider>
     </XPeakToastProvider>
   </QueryClientProvider>
+  </HelmetProvider>
 );
 
 export default App;
