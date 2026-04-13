@@ -5,6 +5,7 @@ import {
   BarChart3, Award, CreditCard,
   Camera, Heart,
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import GeometricAvatar from './GeometricAvatar';
 
 interface SidebarProps {
@@ -62,18 +63,19 @@ const navSections = [
 ];
 
 const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
+  const navigate = useNavigate();
   return (
     <aside
       className="w-[260px] h-full flex flex-col z-10 flex-shrink-0"
       style={{ background: '#080808', borderRight: '1px solid var(--nightlife-border)' }}
     >
       <div className="p-6 flex items-center gap-3" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>
-        <div>
+        <button onClick={() => navigate('/')} className="text-left transition-opacity hover:opacity-70">
           <h2 className="text-xl font-bold tracking-wider">
             X<span className="text-gradient">PEAK</span>
           </h2>
           <p className="text-[0.55rem] text-muted-foreground mt-0.5 tracking-widest uppercase">Europa · Directorio Profesional</p>
-        </div>
+        </button>
       </div>
 
       <nav className="flex-1 overflow-y-auto px-4 py-4">

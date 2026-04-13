@@ -141,14 +141,14 @@ const Auth = () => {
         // Email bienvenida + aviso empresario si aplica
         supabase.functions.invoke('send-email', {
           body: { type: 'welcome', data: { name: displayName, email, role: selectedRole } },
-        }).catch(() => {});
+        }).catch((err: unknown) => console.warn('[email] welcome failed:', err));
         if (selectedRole === 'empresario') {
           supabase.functions.invoke('send-email', {
             body: { type: 'empresario_registered', data: { name: displayName, email } },
-          }).catch(() => {});
+          }).catch((err: unknown) => console.warn('[email] empresario_registered failed:', err));
           supabase.functions.invoke('send-email', {
             body: { type: 'empresario_pending', data: { name: displayName, email } },
-          }).catch(() => {});
+          }).catch((err: unknown) => console.warn('[email] empresario_pending failed:', err));
         }
 
         setShowWelcome(true);
@@ -166,9 +166,11 @@ const Auth = () => {
 
       <div className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="glass-panel w-[460px] max-w-full p-8 text-center z-10">
-          <h2 className="text-2xl font-bold mb-1">
-            X<span className="text-gradient">PEAK</span>
-          </h2>
+          <button onClick={() => navigate('/')} className="transition-opacity hover:opacity-70 mb-1">
+            <h2 className="text-2xl font-bold">
+              X<span className="text-gradient">PEAK</span>
+            </h2>
+          </button>
           <p className="text-muted-foreground mb-6 text-xs">Directorio Profesional · Europa</p>
 
           <form onSubmit={handleSubmit} className="space-y-3">

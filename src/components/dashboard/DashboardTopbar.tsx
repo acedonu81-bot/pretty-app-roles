@@ -58,6 +58,11 @@ const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
             <Menu size={20} />
           </button>
         )}
+        {isMobile && (
+          <button onClick={() => navigate('/')} className="font-bold tracking-wider text-base transition-opacity hover:opacity-70 flex-shrink-0">
+            X<span style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>PEAK</span>
+          </button>
+        )}
 
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg flex-1 max-w-[360px]" style={{
           background: 'rgba(255,255,255,0.03)', border: '1px solid var(--nightlife-border)',
@@ -131,7 +136,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
 
         {showNotif && (
           <div
-            className="absolute top-12 right-0 w-[320px] z-50 rounded-2xl overflow-hidden"
+            className="absolute top-12 right-0 w-[320px] max-w-[calc(100vw-1rem)] z-50 rounded-2xl overflow-hidden"
             style={{
               background: 'rgba(8,8,12,0.96)',
               border: '1px solid rgba(212,175,55,0.25)',

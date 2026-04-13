@@ -146,7 +146,7 @@ const OnboardingTour = ({ onNavigate }: Props) => {
 
   return (
     <div
-      className="fixed z-50 bottom-6 left-1/2 -translate-x-1/2 w-[340px] animate-[fadeIn_0.4s_ease]"
+      className="fixed z-50 bottom-4 left-1/2 -translate-x-1/2 w-[340px] max-w-[calc(100vw-2rem)] animate-[fadeIn_0.4s_ease]"
       style={{
         background: 'rgba(8,8,12,0.97)',
         border: '1px solid rgba(212,175,55,0.3)',

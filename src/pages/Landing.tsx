@@ -41,7 +41,7 @@ const RotatingWord = () => {
     return () => clearInterval(iv);
   }, []);
   return (
-    <span className="relative inline-block" style={{ minWidth: '280px', overflow: 'visible', paddingBottom: '0.15em' }}>
+    <span className="relative inline-block" style={{ minWidth: 'min(280px, 60vw)', overflow: 'visible', paddingBottom: '0.15em' }}>
       <AnimatePresence mode="wait">
         <motion.span
           key={index}
@@ -392,9 +392,9 @@ const Landing = () => {
           borderBottom: '1px solid rgba(212,175,55,0.08)',
         }}>
         <div className="max-w-[1200px] mx-auto px-6 md:px-8 py-4 flex justify-between items-center">
-          <span className="text-xl font-bold tracking-wider">
+          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-xl font-bold tracking-wider transition-opacity hover:opacity-70">
             X<span className="text-gradient">PEAK</span>
-          </span>
+          </button>
           <div className="flex items-center gap-3">
             <button onClick={() => navigate('/auth')}
               className="text-xs font-semibold px-4 py-2 rounded-lg transition-all"
@@ -414,7 +414,7 @@ const Landing = () => {
       </nav>
 
       {/* ─ Hero ─ */}
-      <header className="max-w-[1200px] mx-auto px-6 md:px-8 pt-28 pb-36 md:pt-40 md:pb-44 text-center">
+      <header className="max-w-[1200px] mx-auto px-4 md:px-8 pt-16 pb-20 md:pt-40 md:pb-44 text-center">
         <FadeIn>
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-8"
             style={{
