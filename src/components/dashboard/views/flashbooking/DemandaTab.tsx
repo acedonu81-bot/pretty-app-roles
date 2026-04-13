@@ -17,6 +17,7 @@ interface Offer {
   location: string;
   pay: string;
   expiresIn: number;
+  posterId?: string; // real Supabase user.id — absent on demo offers
 }
 
 const buildInitialOffers = (): Offer[] => {
@@ -85,6 +86,7 @@ const DemandaTab = () => {
       location: newLocation || 'Sin especificar',
       pay: newPay || 'A convenir',
       expiresIn: 7200,
+      posterId: user?.id,
     }, ...prev]);
     setNewTitle(''); setNewDesc(''); setNewLocation(''); setNewPay('');
     setShowForm(false);
@@ -95,11 +97,16 @@ const DemandaTab = () => {
     if (!replyText.trim() || !user?.id) return;
     const { clean, reason } = sanitizeInput(replyText.trim());
     if (!clean) { toast.error(reason); return; }
+    // Demo offers don't have a real posterId — block and inform
+    if (!offer.posterId) {
+      toast.info('Esta oferta es de demostración. Cuando los empresarios publiquen ofertas reales podrás contactarles aquí.');
+      return;
+    }
     setSending(true);
     try {
       const myId = user.id;
       const msgText = replyText.trim();
-      const employerId = `mock-employer-${offer.id}`;
+      const employerId = offer.posterId;
       const [pA, pB] = [myId, employerId].sort();
 
       const { data: existing, error: fetchErr } = await supabase
@@ -179,6 +186,14 @@ const DemandaTab = () => {
         </div>
       )}
 
+      {offers.some(o => !o.posterId) && (
+        <div className="glass-panel p-3 mb-4 flex items-center gap-2"
+          style={{ border: '1px solid rgba(212,175,55,0.15)', background: 'rgba(212,175,55,0.03)' }}>
+          <span className="text-[0.6rem] font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>DEMO</span>
+          <p className="text-[0.65rem] text-muted-foreground">Las ofertas marcadas son ejemplos. Los empresarios registrados pueden publicar ofertas reales.</p>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {offers.map(offer => {
           const isReplying = replyingToOffer === offer.id;
@@ -193,7 +208,12 @@ const DemandaTab = () => {
                     {offer.avatar}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-sm font-bold">{offer.title}</h3>
+                    <div className="flex items-center gap-1.5">
+                      <h3 className="text-sm font-bold">{offer.title}</h3>
+                      {!offer.posterId && (
+                        <span className="text-[0.5rem] font-bold px-1 py-0.5 rounded" style={{ background: 'rgba(212,175,55,0.12)', color: 'rgba(212,175,55,0.6)', border: '1px solid rgba(212,175,55,0.2)', flexShrink: 0 }}>DEMO</span>
+                      )}
+                    </div>
                     <p className="text-xs text-muted-foreground">{offer.author}</p>
                   </div>
                   <div className="flex items-center gap-1 px-2 py-1 rounded text-xs font-bold flex-shrink-0"

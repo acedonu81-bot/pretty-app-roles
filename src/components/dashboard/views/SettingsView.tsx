@@ -1,5 +1,5 @@
-import { useState, useRef } from 'react';
-import { Camera, Bell, Volume2, Moon, Shield, Trophy, Globe, Phone, CreditCard, LogOut, ChevronRight } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Camera, Bell, Volume2, Shield, Trophy, CreditCard, LogOut, ChevronRight } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -72,8 +72,8 @@ const SettingsView = () => {
   const [notifMarketing, setNotifMarketing] = useState(false);
   const [notifSMS, setNotifSMS] = useState(false);
 
-  // Audio quality
-  const [audioQuality, setAudioQuality] = useState('high');
+  // Audio quality — persisted in localStorage
+  const [audioQuality, setAudioQuality] = useState(() => localStorage.getItem('xpeak_audio_quality') ?? 'high');
 
   // Privacy
   const [saving, setSaving] = useState(false);
@@ -81,6 +81,9 @@ const SettingsView = () => {
   const [showRate, setShowRate] = useState(false);
   const [allowFlash, setAllowFlash] = useState(true);
   const [showOnline, setShowOnline] = useState(true);
+
+  // Persist audio quality when it changes
+  useEffect(() => { localStorage.setItem('xpeak_audio_quality', audioQuality); }, [audioQuality]);
 
   const displayName = localName ?? profile.display_name;
   const city = localCity ?? profile.zone ?? 'Madrid Centro';
@@ -197,7 +200,11 @@ const SettingsView = () => {
 
         <div className="mb-4">
           <label className="block text-xs text-muted-foreground mb-1.5 font-medium">Idioma de la interfaz</label>
-          <select className="nightlife-input text-sm cursor-pointer">
+          <select
+            className="nightlife-input text-sm cursor-pointer"
+            defaultValue={localStorage.getItem('xpeak_language') ?? '🇪🇸 Español'}
+            onChange={e => { localStorage.setItem('xpeak_language', e.target.value); toast.success('Idioma guardado.'); }}
+          >
             {euLanguages.map(lang => <option key={lang}>{lang}</option>)}
           </select>
         </div>
