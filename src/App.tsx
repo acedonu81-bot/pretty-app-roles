@@ -3,16 +3,19 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { XPeakToastProvider } from "@/lib/xpeak-toast";
+import { lazy, Suspense } from "react";
 import Landing from "./pages/Landing";
-import Auth from "./pages/Auth";
-import Dashboard from "./pages/Dashboard";
-import Privacidad from "./pages/Privacidad";
-import Terminos from "./pages/Terminos";
-import Cookies from "./pages/Cookies";
-import AdminBeta from "./pages/AdminBeta";
-import PublicProfile from "./pages/PublicProfile";
 import NotFound from "./pages/NotFound";
 import CookieBanner from "./components/CookieBanner";
+
+// Code-split heavy routes — loaded on demand
+const Auth = lazy(() => import("./pages/Auth"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Privacidad = lazy(() => import("./pages/Privacidad"));
+const Terminos = lazy(() => import("./pages/Terminos"));
+const Cookies = lazy(() => import("./pages/Cookies"));
+const AdminBeta = lazy(() => import("./pages/AdminBeta"));
+const PublicProfile = lazy(() => import("./pages/PublicProfile"));
 
 const queryClient = new QueryClient();
 
@@ -22,17 +25,19 @@ const App = () => (
     <XPeakToastProvider>
     <TooltipProvider>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/privacidad" element={<Privacidad />} />
-          <Route path="/terminos" element={<Terminos />} />
-          <Route path="/cookies" element={<Cookies />} />
-          <Route path="/admin-beta" element={<AdminBeta />} />
-          <Route path="/p/:slug" element={<PublicProfile />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Suspense fallback={<div style={{ minHeight: '100vh', background: '#090909' }} />}>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/privacidad" element={<Privacidad />} />
+            <Route path="/terminos" element={<Terminos />} />
+            <Route path="/cookies" element={<Cookies />} />
+            <Route path="/admin-beta" element={<AdminBeta />} />
+            <Route path="/p/:slug" element={<PublicProfile />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
         <CookieBanner />
       </BrowserRouter>
     </TooltipProvider>
