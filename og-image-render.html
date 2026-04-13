@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1200" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 1200px;
+      height: 630px;
+      overflow: hidden;
+      background: #090909;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    .bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 15% 50%, rgba(212,175,55,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 85% 20%, rgba(212,175,55,0.08) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 50% at 70% 80%, rgba(100,80,0,0.12) 0%, transparent 60%),
+        #090909;
+    }
+
+    /* Grid de puntos sutil */
+    .grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle, rgba(212,175,55,0.08) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* Línea superior dorada */
+    .topline {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #D4AF37 30%, #E8C547 50%, #D4AF37 70%, transparent);
+    }
+
+    .content {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 80px;
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(212,175,55,0.1);
+      border: 1px solid rgba(212,175,55,0.25);
+      border-radius: 100px;
+      padding: 6px 16px;
+      margin-bottom: 28px;
+      width: fit-content;
+    }
+    .badge-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #D4AF37;
+    }
+    .badge-text {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #D4AF37;
+    }
+
+    /* Logo */
+    .logo {
+      font-size: 88px;
+      font-weight: 900;
+      letter-spacing: -2px;
+      line-height: 1;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+    .logo span {
+      background: linear-gradient(90deg, #D4AF37, #E8C547, #B8941E);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Tagline */
+    .tagline {
+      font-size: 26px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 40px;
+      letter-spacing: 0.01em;
+    }
+    .tagline strong {
+      color: rgba(255,255,255,0.85);
+      font-weight: 600;
+    }
+
+    /* Roles chips */
+    .chips {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .chip {
+      background: rgba(212,175,55,0.07);
+      border: 1px solid rgba(212,175,55,0.2);
+      border-radius: 8px;
+      padding: 7px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(212,175,55,0.8);
+      letter-spacing: 0.03em;
+    }
+
+    /* Decoración derecha */
+    .deco {
+      position: absolute;
+      right: 80px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+    }
+    .deco-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(212,175,55,0.15);
+      border-radius: 14px;
+      padding: 14px 20px;
+      text-align: right;
+      backdrop-filter: blur(12px);
+    }
+    .deco-card .num {
+      font-size: 28px;
+      font-weight: 900;
+      background: linear-gradient(90deg, #D4AF37, #E8C547);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+    }
+    .deco-card .lbl {
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 3px;
+    }
+
+    /* Bottom domain */
+    .domain {
+      position: absolute;
+      bottom: 28px;
+      right: 80px;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(212,175,55,0.4);
+      letter-spacing: 0.08em;
+    }
+
+    /* Línea inferior */
+    .bottomline {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,0.2) 30%, rgba(212,175,55,0.2) 70%, transparent);
+    }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="grid"></div>
+  <div class="topline"></div>
+  <div class="bottomline"></div>
+
+  <div class="content">
+    <div class="badge">
+      <div class="badge-dot"></div>
+      <span class="badge-text">Directorio Profesional · Europa</span>
+    </div>
+
+    <div class="logo">X<span>PEAK</span></div>
+
+    <p class="tagline">
+      Conecta <strong>DJs, Staff, Estilistas</strong><br />
+      y Empresarios del ocio nocturno
+    </p>
+
+    <div class="chips">
+      <span class="chip">🎧 DJs & Artistas</span>
+      <span class="chip">👑 Staff VIP</span>
+      <span class="chip">💄 Maquillaje</span>
+      <span class="chip">📸 Media</span>
+      <span class="chip">⚡ Flash Booking</span>
+    </div>
+  </div>
+
+  <div class="deco">
+    <div class="deco-card">
+      <div class="num">España</div>
+      <div class="lbl">& Europa</div>
+    </div>
+    <div class="deco-card">
+      <div class="num">0%</div>
+      <div class="lbl">Comisión</div>
+    </div>
+    <div class="deco-card">
+      <div class="num">24/7</div>
+      <div class="lbl">Disponible</div>
+    </div>
+  </div>
+
+  <div class="domain">xpeak.site</div>
+</body>
+</html>
