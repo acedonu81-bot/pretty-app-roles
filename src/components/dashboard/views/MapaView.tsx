@@ -73,7 +73,12 @@ const MapaView = () => {
     <div className="animate-[fadeIn_0.4s_ease]">
       <div className="mb-5">
         <h2 className="text-2xl font-bold mb-1">Directorio de <span className="text-gradient">Salas</span></h2>
-        <p className="text-sm text-muted-foreground">Salas verificadas por ciudad y necesidades de contratación.</p>
+        <p className="text-sm text-muted-foreground">Referencia de salas del sector por ciudad.</p>
+        <div className="mt-2 flex items-center gap-2 text-[0.65rem] text-muted-foreground"
+          style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)', borderRadius: 8, padding: '6px 10px', width: 'fit-content' }}>
+          <span style={{ color: '#D4AF37', fontWeight: 700 }}>ℹ</span>
+          Datos de referencia · Las salas podrán publicar ofertas reales cuando se registren en XPEAK
+        </div>
       </div>
 
       <div className="glass-panel p-3 mb-5">
