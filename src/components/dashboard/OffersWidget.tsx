@@ -41,6 +41,10 @@ const OffersWidget = ({ title = 'Ofertas de Empresarios', role }: OffersWidgetPr
       <h3 className="text-xs font-bold mb-3 flex items-center gap-2">
         <Megaphone size={14} style={{ color: '#D4AF37' }} />
         <span style={{ color: '#D4AF37' }}>{title}</span>
+        <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded ml-1"
+          style={{ background: 'rgba(212,175,55,0.1)', color: 'rgba(212,175,55,0.55)', border: '1px solid rgba(212,175,55,0.15)' }}>
+          DEMO
+        </span>
       </h3>
       <div className="space-y-2">
         {filteredOffers.map((offer, i) => (
@@ -60,10 +64,10 @@ const OffersWidget = ({ title = 'Ofertas de Empresarios', role }: OffersWidgetPr
             </div>
             <button
               type="button"
-              onClick={() => toast.info('Ve a Mensajes para contactar con el empresario.')}
+              onClick={() => toast.info('Cuando los empresarios se registren en XPEAK, podrás aplicar directamente desde aquí.')}
               className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg font-bold text-[0.6rem] transition-all hover:scale-105 flex-shrink-0"
-              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              <MessageCircle size={12} /> Aplicar
+              style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.6)', border: '1px solid rgba(212,175,55,0.2)' }}>
+              <MessageCircle size={12} /> Demo
             </button>
           </div>
         ))}
