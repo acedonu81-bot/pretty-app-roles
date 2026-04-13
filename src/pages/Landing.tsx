@@ -60,7 +60,7 @@ const RotatingWord = () => {
 };
 
 /* ── Marquee strip ── */
-const MARQUEE_ITEMS = ['🎧 DJs & Artistas', '🍹 Bartenders', '📸 Fotógrafos', '🎬 Videógrafos', '💄 Maquilladores', '🎤 Promotores', '🛡️ Seguridad', '🎹 Productores', '💡 VJs', '🎻 Artistas en Vivo', '👑 Staff VIP', '🎙️ Locutores'];
+const MARQUEE_ITEMS = ['🎧 DJs & Artistas', '🍹 Bartenders', '📸 Fotógrafos', '🎬 Videógrafos', '💄 Maquilladores', '🎤 Promotores', '🎹 Productores', '💡 VJs', '🎻 Artistas en Vivo', '👑 Staff VIP', '🎙️ Locutores'];
 const MarqueeStrip = () => (
   <div className="overflow-hidden py-4 mb-0" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
     <motion.div
@@ -205,9 +205,9 @@ const ROLE_DETAILS = [
     ],
   },
   {
-    key: 'staff', title: 'Staff & Promoción', icon: <Users size={28} />, tagline: 'RRPP, hostess, seguridad y promotores',
+    key: 'staff', title: 'Staff & Promoción', icon: <Users size={28} />, tagline: 'RRPP, hostess, promotores y azafatas',
     steps: [
-      { icon: <Users size={32} />, title: '¿Qué es este rol?', body: 'Relaciones públicas, promotores, hostess, personal de seguridad y coordinadores de acceso para clubs, festivales y eventos privados.' },
+      { icon: <Users size={32} />, title: '¿Qué es este rol?', body: 'Relaciones públicas, promotores, hostess, azafatas y coordinadores de acceso para clubs, festivales y eventos privados.' },
       { icon: <Globe size={32} />, title: 'Primera plataforma formal para RRPP', body: 'XPEAK formaliza el trabajo de RRPP en Europa. Define tus tarifas y condiciones sin depender de contactos informales.' },
       { icon: <Zap size={32} />, title: 'Ingresos transparentes', body: 'Publica tus tarifas y disponibilidad. Sin intermediarios ni comisiones. El empresario ve tu perfil y te contacta directamente.' },
       { icon: <Award size={32} />, title: 'Construye reputación', body: 'Valoraciones verificadas de cada evento. Tu historial habla más que cualquier recomendación de boca en boca.' },
@@ -553,7 +553,7 @@ const Landing = () => {
               onClick={() => setActiveRole(ROLE_DETAILS[2])} />
           </FadeIn>
           <FadeIn delay={0.2} className="md:col-span-2">
-            <BentoCard image={bentoStaff} icon={<Users size={20} />} title="Staff & Promoción" subtitle="RRPP, hostess, seguridad y coordinación" className="h-full"
+            <BentoCard image={bentoStaff} icon={<Users size={20} />} title="Staff & Promoción" subtitle="RRPP, hostess, promotores y azafatas" className="h-full"
               onClick={() => setActiveRole(ROLE_DETAILS[3])} />
           </FadeIn>
         </div>
