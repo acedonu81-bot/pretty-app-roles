@@ -40,29 +40,11 @@ const EscenarioVirtualView = () => {
 
   useEffect(() => {
     if (!isLive) { setViewers(0); return; }
-    setViewers(28);
-    const iv = setInterval(() => setViewers(v => Math.max(5, v + Math.floor(Math.random() * 9) - 3)), 3000);
-    return () => clearInterval(iv);
   }, [isLive]);
 
   useEffect(() => {
     if (!isLive) { setElapsed(0); return; }
     const iv = setInterval(() => setElapsed(e => e + 1), 1000);
-    return () => clearInterval(iv);
-  }, [isLive]);
-
-  useEffect(() => {
-    if (!isLive) return;
-    const phrases = ['🔥 Brutal!', 'Quiero booking!', '👏👏👏', 'Esa transición 🎧', 'Contacta conmigo!', 'DROP! 💣'];
-    const users = ['NightRider', 'BeatJunkie', 'ClubQueen', 'PromoMadrid', 'DeepSoul'];
-    const colors = ['#D4AF37', '#8E8EA0'];
-    const iv = setInterval(() => {
-      setChatMessages(prev => [...prev.slice(-40), {
-        user: users[Math.floor(Math.random() * users.length)],
-        text: phrases[Math.floor(Math.random() * phrases.length)],
-        color: colors[Math.floor(Math.random() * colors.length)],
-      }]);
-    }, 2800);
     return () => clearInterval(iv);
   }, [isLive]);
 
@@ -121,6 +103,10 @@ const EscenarioVirtualView = () => {
             <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>Más visto ahora:</span>
             <span className="text-xs font-semibold">{topGlobal.name}</span>
             <span className="text-[0.6rem] text-muted-foreground">— {topGlobal.specialty}</span>
+            <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded"
+              style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
+              DEMO
+            </span>
             <span className="ml-auto text-[0.6rem] flex items-center gap-1 text-muted-foreground">
               <Eye size={10} /> {topGlobal.profileViews.toLocaleString()}
             </span>
@@ -195,13 +181,29 @@ const EscenarioVirtualView = () => {
           <div className="glass-panel p-5">
             <div className="relative w-full rounded-lg overflow-hidden" style={{ background: 'rgba(0,0,0,0.6)', aspectRatio: '16/9' }}>
               {streamEmbed && isLive ? (
-                <iframe src={streamEmbed.embedUrl} className="absolute inset-0 w-full h-full" allowFullScreen allow="autoplay; encrypted-media" sandbox="allow-scripts allow-same-origin allow-presentation" style={{ border: 'none' }} />
+                <iframe
+                  src={streamEmbed.embedUrl}
+                  title={`Stream en directo — ${streamEmbed.type}`}
+                  className="absolute inset-0 w-full h-full"
+                  allowFullScreen
+                  allow="autoplay; encrypted-media"
+                  sandbox="allow-scripts allow-same-origin allow-presentation"
+                  style={{ border: 'none' }}
+                />
               ) : isLive ? (
-                <div className="absolute inset-0 flex items-end justify-center gap-1 p-6">
-                  {eqHeights.map((h, i) => (
-                    <div key={i} className="w-2.5 rounded-full transition-all duration-150"
-                      style={{ height: `${h}%`, background: 'linear-gradient(180deg, #D4AF37, #B8941E)', opacity: Math.max(0.3, h / 100) }} />
-                  ))}
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+                  <div className="flex items-end justify-center gap-1 h-16">
+                    {eqHeights.map((h, i) => (
+                      <div key={i} className="w-2 rounded-full transition-all duration-150"
+                        style={{ height: `${h}%`, background: 'linear-gradient(180deg, #D4AF37, #B8941E)', opacity: Math.max(0.3, h / 100) }} />
+                    ))}
+                  </div>
+                  <p className="text-[0.6rem] font-bold uppercase tracking-widest" style={{ color: 'rgba(212,175,55,0.4)' }}>
+                    En vivo · Sin señal de vídeo
+                  </p>
+                  <p className="text-[0.55rem] text-muted-foreground text-center max-w-[200px]">
+                    Configura tu URL de Twitch o YouTube con el botón <span className="font-bold">Stream URL</span>
+                  </p>
                 </div>
               ) : (
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
@@ -226,29 +228,44 @@ const EscenarioVirtualView = () => {
           </div>
         </div>
 
-        <div className="glass-panel p-3 flex flex-col min-h-0">
-          <div className="flex items-center gap-2 mb-2">
+        <div className="glass-panel p-4 flex flex-col min-h-0">
+          <div className="flex items-center gap-2 mb-3">
             <MessageSquare size={14} style={{ color: '#D4AF37' }} />
             <span className="text-[0.6rem] font-bold uppercase tracking-wider">Chat en Directo</span>
-            {isLive && (
-              <span className="text-[0.5rem] font-semibold px-1.5 py-0.5 rounded ml-auto" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>
-                {viewers} online
-              </span>
-            )}
+            <span className="text-[0.5rem] font-bold px-1.5 py-0.5 rounded ml-auto"
+              style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
+              PRÓXIMAMENTE
+            </span>
           </div>
-          <div ref={chatRef} className="flex-1 overflow-y-auto flex flex-col gap-1 mb-2 min-h-0">
-            {chatMessages.map((msg, i) => (
+
+          <div ref={chatRef} className="flex-1 overflow-y-auto flex flex-col gap-1 mb-3 min-h-0">
+            {chatMessages.length > 0 ? chatMessages.map((msg, i) => (
               <div key={i} className="text-xs px-2 py-1.5 rounded" style={{ background: 'rgba(255,255,255,0.02)' }}>
                 <span className="font-bold mr-1" style={{ color: msg.color }}>{msg.user}</span>
                 <span className="text-muted-foreground">{msg.text}</span>
               </div>
-            ))}
+            )) : (
+              <div className="flex-1 flex flex-col items-center justify-center gap-2 py-8 text-center">
+                <MessageSquare size={20} style={{ color: 'rgba(212,175,55,0.15)' }} />
+                <p className="text-[0.6rem] font-bold" style={{ color: 'rgba(255,255,255,0.2)' }}>
+                  {isLive ? 'Sin espectadores aún' : 'Inicia el directo para activar el chat'}
+                </p>
+                <p className="text-[0.55rem] text-muted-foreground max-w-[160px] leading-relaxed">
+                  El chat en tiempo real se conectará vía Supabase Realtime en la próxima versión.
+                </p>
+              </div>
+            )}
           </div>
+
           <div className="flex gap-2">
             <input type="text" value={chatInput} onChange={e => setChatInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && sendChat()}
-              placeholder="Escribe..." className="nightlife-input flex-1 text-xs !py-2" />
-            <button onClick={sendChat} className="px-3 rounded-lg" style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+              placeholder={isLive ? 'Escribe un mensaje...' : 'Solo disponible en directo'}
+              disabled={!isLive}
+              className="nightlife-input flex-1 text-xs !py-2 disabled:opacity-40" />
+            <button onClick={sendChat} disabled={!isLive}
+              className="px-3 rounded-lg disabled:opacity-40"
+              style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
               <Send size={14} />
             </button>
           </div>

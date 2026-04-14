@@ -28,7 +28,8 @@ const LiveDJsSection = ({ onNavigate }: { onNavigate?: () => void }) => {
       .select('id, display_name, role, stream_title, zone')
       .eq('is_live', true)
       .limit(6)
-      .then(({ data }) => {
+      .then(({ data, error }) => {
+        if (error) { setProfiles(DEMO_LIVE); return; }
         const real = (data as LiveProfile[]) ?? [];
         if (real.length === 0) { setProfiles(DEMO_LIVE); return; }
 

@@ -408,8 +408,14 @@ const ProfileView = () => {
                       <p className="text-[0.6rem] font-bold mb-2" style={{ color: '#22c55e' }}>
                         ✓ {parsed.type} detectado — preview:
                       </p>
-                      <iframe src={parsed.embedUrl} className="w-full rounded-lg"
-                        style={{ height: 160, border: 'none' }} allow="autoplay" />
+                      <iframe
+                        src={parsed.embedUrl}
+                        title={`Preview de audio — ${parsed.type}`}
+                        className="w-full rounded-lg"
+                        style={{ height: 160, border: 'none' }}
+                        allow="autoplay"
+                        sandbox="allow-scripts allow-same-origin allow-presentation"
+                      />
                     </>
                   ) : currentUrl ? (
                     <p className="text-[0.6rem]" style={{ color: '#ff5f56' }}>URL no reconocida. Prueba con hearthis.at, Mixcloud o SoundCloud.</p>
