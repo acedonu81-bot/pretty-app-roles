@@ -164,18 +164,18 @@ const ProfileView = () => {
             <p className="text-xs font-bold mt-1" style={{ color: '#D4AF37' }}>
               {subscriptionPlans.find(p => p.id === mapSubscriptionTierToPlan(profile.subscription_tier))?.name ?? 'Free'}
             </p>
-            <div className="flex justify-center gap-0.5 my-2">
-              {[1,2,3,4,5].map(s => <span key={s} style={{ color: 'rgba(255,255,255,0.1)', fontSize: '0.9rem' }}>★</span>)}
-              <span className="text-sm text-muted-foreground ml-1">0.0</span>
-            </div>
+            <p className="text-[0.6rem] text-muted-foreground mt-2 mb-1">Sin valoraciones aún</p>
           </div>
           <div className="glass-panel p-4">
-            {[['Bookings 2026','0'],['Tasa respuesta','0%'],['Visitas perfil','0'],['Mensajes recibidos','0']].map(([k,v]) => (
+            {[['Bookings 2026','0'],['Tasa respuesta','—'],['Visitas perfil','0'],['Mensajes recibidos','0']].map(([k,v]) => (
               <div key={k} className="flex justify-between py-1.5 text-sm" style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
                 <span className="text-muted-foreground">{k}</span>
-                <span className="font-semibold">{v}</span>
+                <span className="font-semibold" style={{ color: v === '0' || v === '—' ? 'rgba(255,255,255,0.25)' : 'inherit' }}>{v}</span>
               </div>
             ))}
+            <p className="text-[0.58rem] text-center mt-2.5" style={{ color: 'rgba(255,255,255,0.2)' }}>
+              Las métricas se activan cuando completes tu perfil
+            </p>
           </div>
 
           {profile.role !== 'empresario' && (
@@ -207,6 +207,9 @@ const ProfileView = () => {
         <div className="flex flex-col gap-4">
           <div className="glass-panel p-5">
             <h4 className="text-base font-bold mb-4">Información</h4>
+
+            {/* — Identidad — */}
+            <p className="text-[0.58rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Identidad</p>
             <div className="mb-3">
               <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Nombre artístico</label>
               <input type="text" value={displayName} onChange={e => setLocalName(e.target.value)} className="nightlife-input mt-1 text-base" />
@@ -236,6 +239,10 @@ const ProfileView = () => {
                 </div>
               </div>
             )}
+            {/* — Habilidades — */}
+            <div className="mt-5 mb-3" style={{ borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: '1.25rem' }}>
+              <p className="text-[0.58rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Habilidades</p>
+            </div>
             {roleTagConfig && (
               <div className="mb-3">
                 <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">{roleTagConfig.label}</label>
@@ -305,6 +312,10 @@ const ProfileView = () => {
                 );
               })()}
             </div>
+            {/* — Sobre ti — */}
+            <div className="mt-5 mb-3" style={{ borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: '1.25rem' }}>
+              <p className="text-[0.58rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Sobre ti</p>
+            </div>
             <div className="mb-3">
               <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Bio</label>
               <textarea rows={2} value={bio ?? profile.bio ?? ''}
@@ -312,8 +323,9 @@ const ProfileView = () => {
                 placeholder="Describe tu experiencia y estilo..."
                 className="nightlife-input mt-1 text-base resize-y" />
             </div>
-            <div>
-              <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Idiomas</label>
+            <div style={{ borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: '1.25rem', marginTop: '0.5rem' }}>
+              <p className="text-[0.58rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Idiomas</p>
+              <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Idiomas que hablas</label>
               <div className="flex flex-wrap gap-1.5 mt-2">
                 {EU_LANGS.map(lang => (
                   <button key={lang} type="button" onClick={() => toggleLang(lang)}
@@ -428,8 +440,19 @@ const ProfileView = () => {
             </div>
           )}
           <div className="glass-panel p-5">
-            <h4 className="text-base font-bold mb-3">Valoraciones</h4>
-            <p className="text-sm text-muted-foreground text-center py-4">Aún no tienes valoraciones. Aparecerán aquí cuando los empresarios valoren tu trabajo.</p>
+            <h4 className="text-base font-bold mb-4">Valoraciones</h4>
+            <div className="flex flex-col items-center py-6 gap-3">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center"
+                style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.1)' }}>
+                <Star size={20} style={{ color: 'rgba(212,175,55,0.25)' }} />
+              </div>
+              <div className="text-center">
+                <p className="text-xs font-bold mb-1" style={{ color: 'rgba(255,255,255,0.35)' }}>Sin valoraciones aún</p>
+                <p className="text-[0.6rem] text-muted-foreground max-w-[200px] leading-relaxed">
+                  Los empresarios podrán valorar tu trabajo tras completar un booking contigo.
+                </p>
+              </div>
+            </div>
           </div>
 
           {profile.role !== 'empresario' && <VerificationSection />}
