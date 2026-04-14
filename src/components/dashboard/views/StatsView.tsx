@@ -62,8 +62,14 @@ const StatsView = () => {
           <h3 className="text-sm font-bold">Pole Position</h3>
           <span className="text-[0.55rem] font-bold px-2 py-0.5 rounded-full"
             style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37' }}>ESTA SEMANA</span>
+          <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded"
+            style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
+            DEMO
+          </span>
         </div>
-        <p className="text-xs text-muted-foreground mb-6 relative">Top 3 basado en reseñas, interacciones y suscripciones activas.</p>
+        <p className="text-xs text-muted-foreground mb-6 relative">
+          Top 3 de ejemplo — se actualizará con datos reales cuando haya suficientes usuarios activos.
+        </p>
 
         {/* Podium */}
         <div className="flex items-end justify-center gap-4 relative" style={{ height: 220 }}>

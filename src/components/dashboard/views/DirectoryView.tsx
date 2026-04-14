@@ -359,6 +359,10 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
               </span>
               <span className="text-xs font-bold" style={{ color: '#E53935' }}>EN DIRECTO</span>
               <span className="text-[0.65rem] text-muted-foreground">— {title}</span>
+              <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded"
+                style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
+                DEMO
+              </span>
             </div>
             <span className="text-[0.65rem] text-muted-foreground flex items-center gap-1">
               <Users size={10} /> {liveStreamers.length} streaming
@@ -405,9 +409,24 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
       </div>
 
       {filteredProfiles.length === 0 && (
-        <div className="text-center py-12 text-muted-foreground text-sm">
-          No hay profesionales en esta zona aún.{' '}
-          <button onClick={() => setFilterCity('Todas las ciudades')} style={{ color: '#D4AF37' }} className="font-bold underline">Ver todos</button>
+        <div className="glass-panel p-10 flex flex-col items-center text-center gap-3 mb-5">
+          <div className="w-12 h-12 rounded-full flex items-center justify-center"
+            style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.1)' }}>
+            <Users size={20} style={{ color: 'rgba(212,175,55,0.2)' }} />
+          </div>
+          <div>
+            <p className="text-sm font-bold mb-1" style={{ color: 'rgba(255,255,255,0.35)' }}>
+              Sin resultados en {filterCity}
+            </p>
+            <p className="text-xs text-muted-foreground mb-3 max-w-[240px] mx-auto">
+              Aún no hay profesionales registrados en esta ciudad.
+            </p>
+            <button onClick={() => setFilterCity('Todas las ciudades')}
+              className="text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-105"
+              style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+              Ver todos
+            </button>
+          </div>
         </div>
       )}
 
