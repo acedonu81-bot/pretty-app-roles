@@ -59,19 +59,22 @@ const RotatingWord = () => {
 };
 
 /* ── Marquee strip ── */
-const MARQUEE_ITEMS = ['🎧 DJs & Artistas', '🍹 Bartenders', '📸 Fotógrafos', '🎬 Videógrafos', '💄 Maquilladores', '🎤 Promotores', '🎹 Productores', '💡 VJs', '🎻 Artistas en Vivo', '👑 Staff VIP', '🎙️ Locutores'];
+const MARQUEE_ITEMS = ['DJs & Artistas', 'Bartenders', 'Fotógrafos', 'Videógrafos', 'Maquilladores', 'Promotores', 'Productores', 'VJs', 'Artistas en Vivo', 'Staff VIP', 'Locutores'];
 const MarqueeStrip = () => (
-  <div className="overflow-hidden py-4 mb-0" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
+  <div className="overflow-hidden py-5 mb-0" style={{ maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)' }}>
     <motion.div
-      className="flex gap-4 sm:gap-6 md:gap-8 whitespace-nowrap"
+      className="flex items-center whitespace-nowrap"
       animate={{ x: ['0%', '-50%'] }}
-      transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
-      style={{ width: 'max-content' }}
+      transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+      style={{ width: 'max-content', gap: 0 }}
     >
       {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
-        <span key={i} className="text-sm font-semibold px-4 py-1.5 rounded-full"
-          style={{ color: 'rgba(212,175,55,0.7)', background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.1)', letterSpacing: '0.05em' }}>
-          {item}
+        <span key={i} className="inline-flex items-center">
+          <span className="text-[0.65rem] font-bold tracking-[0.22em] uppercase"
+            style={{ color: 'rgba(212,175,55,0.45)' }}>
+            {item}
+          </span>
+          <span className="mx-6 text-[0.55rem]" style={{ color: 'rgba(212,175,55,0.2)' }}>·</span>
         </span>
       ))}
     </motion.div>
