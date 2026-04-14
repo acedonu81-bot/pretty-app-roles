@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 // Strict role-to-offer matching - only show offers relevant to the profession
 const roleOfferKeywords: Record<string, string[]> = {
   dj: ['dj', 'techno', 'house', 'sesión', 'música', 'pinchar', 'set'],
-  staff: ['camarero', 'camarera', 'vip', 'personal', 'barra', 'servicio', 'hostess', 'azafata', 'seguridad'],
+  staff: ['camarero', 'camarera', 'vip', 'personal', 'barra', 'servicio', 'hostess', 'azafata', 'coordinación'],
   makeup: ['maquillad', 'estilista', 'peluquer', 'beauty', 'neon party', 'uv', 'pintura', 'corporal'],
   vestuario: ['vestuario', 'estilismo', 'moda', 'outfit', 'styling', 'ropa'],
   media: ['fotógrafo', 'fotograf', 'vídeo', 'video', 'contenido', 'aftermovie', 'ugc', 'tiktoker'],

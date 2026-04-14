@@ -16,7 +16,7 @@ const CATEGORIES = [
   {
     key: 'necessary' as const,
     label: 'Necesarias',
-    desc: 'Imprescindibles para el funcionamiento de la plataforma (sesión, seguridad). No se pueden desactivar.',
+    desc: 'Imprescindibles para el funcionamiento de la plataforma (sesión, autenticación). No se pueden desactivar.',
     locked: true,
   },
   {

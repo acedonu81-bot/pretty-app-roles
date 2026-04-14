@@ -53,15 +53,15 @@ const Cookies = () => {
 
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>3. Cookies de Terceros</h2>
-            <p>Actualmente, XPEAK <strong className="text-foreground">no utiliza cookies de terceros</strong> con fines publicitarios ni de seguimiento. Los pagos se procesan a través de Stripe, que puede establecer sus propias cookies técnicas necesarias para la seguridad de las transacciones. Puedes consultar la política de cookies de Stripe en su sitio web oficial.</p>
+            <p>Actualmente, XPEAK <strong className="text-foreground">no utiliza cookies de terceros</strong> con fines publicitarios ni de seguimiento. Los pagos se procesan a través de Stripe, que puede establecer sus propias cookies técnicas para el procesamiento de transacciones. Puedes consultar la política de cookies de Stripe en su sitio web oficial.</p>
           </section>
 
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>4. ¿Cómo Gestionar las Cookies?</h2>
             <p className="mb-2">Puedes configurar tu navegador para bloquear o eliminar cookies en cualquier momento. Ten en cuenta que si desactivas las cookies técnicas, es posible que algunas funcionalidades de la plataforma no funcionen correctamente (como mantener tu sesión iniciada).</p>
             <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-              <li><strong className="text-foreground">Chrome:</strong> Configuración → Privacidad y seguridad → Cookies</li>
-              <li><strong className="text-foreground">Firefox:</strong> Opciones → Privacidad y seguridad → Cookies</li>
+              <li><strong className="text-foreground">Chrome:</strong> Configuración → Privacidad → Cookies</li>
+              <li><strong className="text-foreground">Firefox:</strong> Opciones → Privacidad → Cookies</li>
               <li><strong className="text-foreground">Safari:</strong> Preferencias → Privacidad → Cookies</li>
               <li><strong className="text-foreground">Edge:</strong> Configuración → Cookies y permisos del sitio</li>
             </ul>

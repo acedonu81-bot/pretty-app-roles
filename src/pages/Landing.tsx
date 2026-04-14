@@ -177,61 +177,65 @@ const StatPill = ({ value, label }: { value: string; label: string }) => (
 /* ── Pexels helpers ── */
 const px = (id: number) => `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=800&h=450&fit=crop`;
 
+// Confirmed IDs: 1540406=DJ, 164745=headphones, 1190297=concert-crowd, 1105666=stage-lights,
+// 2747449=audience, 2681751=bar-nightlife, 3407777=bartender, 1763075=venue, 2608517=vip-staff,
+// 3379934=photographer, 196644=creative-studio, 3685530=makeup, 1587009=beauty-closeup, 2883351=camera
+
 /* ── Role detail data ── */
 const ROLE_DETAILS = [
   {
     key: 'musica', title: 'Música', icon: <Music size={28} />, tagline: 'DJs, productores, artistas en vivo, VJs y técnicos de sonido',
     steps: [
-      { icon: <Headphones size={22} />, image: px(1540406), title: '¿Qué es este rol?', body: 'DJs, productores, artistas en vivo, VJs y técnicos de sonido para clubs, festivales, bodas y eventos corporativos en toda Europa.' },
-      { icon: <Music size={22} />, image: px(1540406), title: 'Tu perfil, tu marca', body: 'Incrusta tus sesiones de hearthis.at, Mixcloud o SoundCloud. Los empresarios escuchan tu trabajo antes de contactarte — sin intermediarios.' },
-      { icon: <Zap size={22} />, image: px(1190297), title: 'Flash Booking', body: 'Activa tu disponibilidad en tiempo real y recibe ofertas urgentes de salas que necesitan cubrir una noche con pocas horas de antelación.' },
-      { icon: <Radio size={22} />, image: px(1190297), title: 'Escenario Virtual', body: 'Emite tus sesiones en directo. Empresarios de toda Europa te ven actuar y pueden contactarte al instante. La vitrina más potente del sector.' },
-      { icon: <Heart size={22} />, image: px(2747449), title: 'Fan Club — ingresos recurrentes', body: 'Monetiza tu audiencia directamente. Tus fans se suscriben desde 4,99€/mes para acceder a sesiones exclusivas, contenido privado y mensajes directos. Tú recibes el 80%.' },
+      { icon: <Headphones size={22} />, image: px(1540406),  title: '¿Qué es este rol?',              body: 'DJs, productores, artistas en vivo, VJs y técnicos de sonido para clubs, festivales, bodas y eventos corporativos en toda Europa.' },
+      { icon: <Music size={22} />,      image: px(164745),   title: 'Tu perfil, tu marca',             body: 'Incrusta tus sesiones de hearthis.at, Mixcloud o SoundCloud. Los empresarios escuchan tu trabajo antes de contactarte — sin intermediarios.' },
+      { icon: <Zap size={22} />,        image: px(1190297),  title: 'Flash Booking',                   body: 'Activa tu disponibilidad en tiempo real y recibe ofertas urgentes de salas que necesitan cubrir una noche con pocas horas de antelación.' },
+      { icon: <Radio size={22} />,      image: px(1105666),  title: 'Escenario Virtual',               body: 'Emite tus sesiones en directo. Empresarios de toda Europa te ven actuar y pueden contactarte al instante. La vitrina más potente del sector.' },
+      { icon: <Heart size={22} />,      image: px(2747449),  title: 'Fan Club — ingresos recurrentes', body: 'Monetiza tu audiencia directamente. Tus fans se suscriben desde 4,99€/mes para acceder a sesiones exclusivas, contenido privado y mensajes directos. Tú recibes el 80%.' },
     ],
   },
   {
     key: 'gastro', title: 'Gastro & Sala', icon: <UtensilsCrossed size={28} />, tagline: 'Bartenders, chefs y catering premium',
     steps: [
-      { icon: <UtensilsCrossed size={22} />, image: px(2681751), title: '¿Qué es este rol?', body: 'Bartenders, camareros VIP, chefs de eventos y catering premium para hostelería nocturna y eventos exclusivos en toda Europa.' },
-      { icon: <Video size={22} />, image: px(2681751), title: 'Muestra tu talento', body: 'Sube vídeos cortos de tus creaciones y cócteles. Tu portfolio habla por ti antes de cualquier entrevista.' },
-      { icon: <CalendarDays size={22} />, image: px(1763075), title: 'Gestión de disponibilidad', body: 'Define tu calendario. Recibe ofertas directas de salas y eventos sin perder tiempo con llamadas interminables.' },
-      { icon: <Star size={22} />, image: px(2608517), title: 'Reputación verificada', body: 'Cada evento suma una valoración real. La mejor carta de presentación para eventos de mayor categoría.' },
+      { icon: <UtensilsCrossed size={22} />, image: px(2681751), title: '¿Qué es este rol?',         body: 'Bartenders, camareros VIP, chefs de eventos y catering premium para hostelería nocturna y eventos exclusivos en toda Europa.' },
+      { icon: <Video size={22} />,           image: px(3407777), title: 'Muestra tu talento',        body: 'Sube vídeos cortos de tus creaciones y cócteles. Tu portfolio habla por ti antes de cualquier entrevista.' },
+      { icon: <CalendarDays size={22} />,    image: px(1763075), title: 'Gestión de disponibilidad', body: 'Define tu calendario. Recibe ofertas directas de salas y eventos sin perder tiempo con llamadas interminables.' },
+      { icon: <Star size={22} />,            image: px(2608517), title: 'Reputación verificada',     body: 'Cada evento suma una valoración real. La mejor carta de presentación para eventos de mayor categoría.' },
     ],
   },
   {
     key: 'imagen', title: 'Imagen & Media', icon: <Camera size={28} />, tagline: 'Fotógrafos, videógrafos y creadores',
     steps: [
-      { icon: <Camera size={22} />, image: px(3379934), title: '¿Qué es este rol?', body: 'Fotógrafos de eventos, videógrafos, realizadores de contenido y técnicos visuales especializados en el entretenimiento nocturno.' },
-      { icon: <Video size={22} />, image: px(3379934), title: 'Portfolio visual', body: 'Sube imágenes y vídeos cortos de tu trabajo real. Una galería que muestra tu estilo mejor que cualquier CV.' },
-      { icon: <Search size={22} />, image: px(1190297), title: 'Visibilidad SEO', body: 'Tu perfil aparece indexado en buscadores. Salas, productoras y agencias de Europa te encuentran cuando te necesitan.' },
-      { icon: <Zap size={22} />, image: px(2608517), title: 'Booking directo', body: 'Los empresarios filtran por especialidad, zona y precio. Contacto directo sin agencias ni comisiones ocultas.' },
+      { icon: <Camera size={22} />,  image: px(3379934), title: '¿Qué es este rol?', body: 'Fotógrafos de eventos, videógrafos, realizadores de contenido y técnicos visuales especializados en el entretenimiento nocturno.' },
+      { icon: <Video size={22} />,   image: px(2883351), title: 'Portfolio visual',  body: 'Sube imágenes y vídeos cortos de tu trabajo real. Una galería que muestra tu estilo mejor que cualquier CV.' },
+      { icon: <Search size={22} />,  image: px(1190297), title: 'Visibilidad SEO',   body: 'Tu perfil aparece indexado en buscadores. Salas, productoras y agencias de Europa te encuentran cuando te necesitan.' },
+      { icon: <Zap size={22} />,     image: px(196644),  title: 'Booking directo',   body: 'Los empresarios filtran por especialidad, zona y precio. Contacto directo sin agencias ni comisiones ocultas.' },
     ],
   },
   {
     key: 'staff', title: 'Staff & Promoción', icon: <Users size={28} />, tagline: 'RRPP, hostess, promotores y azafatas',
     steps: [
-      { icon: <Users size={22} />, image: px(2608517), title: '¿Qué es este rol?', body: 'Relaciones públicas, promotores, hostess, azafatas y coordinadores de acceso para clubs, festivales y eventos privados.' },
-      { icon: <Globe size={22} />, image: px(2608517), title: 'Primera plataforma formal para RRPP', body: 'XPEAK formaliza el trabajo de RRPP en Europa. Define tus tarifas y condiciones sin depender de contactos informales.' },
-      { icon: <Zap size={22} />, image: px(1763075), title: 'Ingresos transparentes', body: 'Publica tus tarifas y disponibilidad. Sin intermediarios ni comisiones. El empresario ve tu perfil y te contacta directamente.' },
-      { icon: <Award size={22} />, image: px(2747449), title: 'Construye reputación', body: 'Valoraciones verificadas de cada evento. Tu historial habla más que cualquier recomendación de boca en boca.' },
+      { icon: <Users size={22} />,        image: px(2608517), title: '¿Qué es este rol?',                  body: 'Relaciones públicas, promotores, hostess, azafatas y coordinadores de acceso para clubs, festivales y eventos privados.' },
+      { icon: <Globe size={22} />,        image: px(1763075), title: 'Primera plataforma formal para RRPP', body: 'XPEAK formaliza el trabajo de RRPP en Europa. Define tus tarifas y condiciones sin depender de contactos informales.' },
+      { icon: <Zap size={22} />,          image: px(2681751), title: 'Ingresos transparentes',              body: 'Publica tus tarifas y disponibilidad. Sin intermediarios ni comisiones. El empresario ve tu perfil y te contacta directamente.' },
+      { icon: <Award size={22} />,        image: px(2747449), title: 'Construye reputación',                body: 'Valoraciones verificadas de cada evento. Tu historial habla más que cualquier recomendación de boca en boca.' },
     ],
   },
   {
     key: 'belleza', title: 'Belleza & Estética', icon: <Scissors size={28} />, tagline: 'Maquilladores, peluqueros y estilistas',
     steps: [
-      { icon: <Scissors size={22} />, image: px(3685530), title: '¿Qué es este rol?', body: 'Maquilladores artísticos, peluqueros de artistas, estilistas para shows, caracterizadores y técnicos de efectos especiales para escenario.' },
-      { icon: <Sparkles size={22} />, image: px(3685530), title: 'Tu trabajo habla', body: 'Sube fotos y vídeos de tus transformaciones. Los artistas y salas buscan talento visual antes de contactar.' },
-      { icon: <Star size={22} />, image: px(1190297), title: 'Especialización nocturna', body: 'XPEAK es el único directorio donde artistas, managers y productoras buscan profesionales de belleza del sector nocturno.' },
-      { icon: <Smartphone size={22} />, image: px(3685530), title: 'Contacto directo', body: 'Sin agencias ni intermediarios. Artistas y productoras te encuentran en XPEAK y contactan directamente a través de la plataforma.' },
+      { icon: <Scissors size={22} />,   image: px(3685530), title: '¿Qué es este rol?',      body: 'Maquilladores artísticos, peluqueros de artistas, estilistas para shows, caracterizadores y técnicos de efectos especiales para escenario.' },
+      { icon: <Sparkles size={22} />,   image: px(1587009), title: 'Tu trabajo habla',       body: 'Sube fotos y vídeos de tus transformaciones. Los artistas y salas buscan talento visual antes de contactar.' },
+      { icon: <Star size={22} />,       image: px(1105666), title: 'Especialización nocturna', body: 'XPEAK es el único directorio donde artistas, managers y productoras buscan profesionales de belleza del sector nocturno.' },
+      { icon: <Smartphone size={22} />, image: px(2747449), title: 'Contacto directo',       body: 'Sin agencias ni intermediarios. Artistas y productoras te encuentran en XPEAK y contactan directamente a través de la plataforma.' },
     ],
   },
   {
     key: 'empresario', title: 'Empresario', icon: <Building2 size={28} />, tagline: 'Salas, promotoras y agencias de eventos',
     steps: [
-      { icon: <Building2 size={22} />, image: px(1763075), title: '¿Para quién es?', body: 'Propietarios de clubs, salas de conciertos, agencias de eventos y promotoras que necesitan contratar talento profesional verificado.' },
-      { icon: <Search size={22} />, image: px(1540406), title: 'Encuentra al profesional ideal', body: 'Filtra por rol, especialidad, zona y precio. Escucha sesiones, ve portfolios y lee valoraciones reales antes de contactar.' },
-      { icon: <Zap size={22} />, image: px(1190297), title: 'Flash Booking — cubre una noche en 1h', body: 'Publica una oferta urgente y recibe respuestas de profesionales disponibles en tu zona en menos de 60 minutos.' },
-      { icon: <CheckCircle size={22} />, image: px(2608517), title: 'Sin sorpresas', body: 'Perfiles con historial verificado, valoraciones reales y tarifas transparentes. El sistema XPEAK protege a ambas partes en cada contratación.' },
+      { icon: <Building2 size={22} />,   image: px(1763075), title: '¿Para quién es?',                  body: 'Propietarios de clubs, salas de conciertos, agencias de eventos y promotoras que necesitan contratar talento profesional verificado.' },
+      { icon: <Search size={22} />,      image: px(1540406), title: 'Encuentra al profesional ideal',    body: 'Filtra por rol, especialidad, zona y precio. Escucha sesiones, ve portfolios y lee valoraciones reales antes de contactar.' },
+      { icon: <Zap size={22} />,         image: px(1190297), title: 'Flash Booking — cubre una noche en 1h', body: 'Publica una oferta urgente y recibe respuestas de profesionales disponibles en tu zona en menos de 60 minutos.' },
+      { icon: <CheckCircle size={22} />, image: px(2608517), title: 'Sin sorpresas',                     body: 'Perfiles con historial verificado, valoraciones reales y tarifas transparentes. El sistema XPEAK protege a ambas partes en cada contratación.' },
     ],
   },
 ];

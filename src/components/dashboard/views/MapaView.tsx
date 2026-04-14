@@ -27,7 +27,7 @@ const venueDetails: Record<string, Array<{ name: string; type: string; capacity:
   ],
   ibiza: [
     { name: 'Ushuaïa', type: 'EDM / House', capacity: 5000, rating: 5.0, verified: true, needs: ['DJ Internacional', 'Staff completo'] },
-    { name: 'Amnesia', type: 'Techno / Trance', capacity: 5000, rating: 4.9, verified: true, needs: ['DJ Techno', 'Seguridad'] },
+    { name: 'Amnesia', type: 'Techno / Trance', capacity: 5000, rating: 4.9, verified: true, needs: ['DJ Techno', 'Coordinación de sala'] },
     { name: 'Hï Ibiza', type: 'House / Tech House', capacity: 4500, rating: 4.9, verified: true, needs: ['DJ House', 'Camareros VIP'] },
   ],
   valencia: [
@@ -44,7 +44,7 @@ const venueDetails: Record<string, Array<{ name: string; type: string; capacity:
   ],
   bilbao: [
     { name: 'Fever Club', type: 'Techno / Bass', capacity: 600, rating: 4.4, verified: true, needs: ['DJ Bass', 'Camareros'] },
-    { name: 'Kubik', type: 'Electrónica', capacity: 500, rating: 4.3, verified: true, needs: ['DJ Electrónica', 'Seguridad'] },
+    { name: 'Kubik', type: 'Electrónica', capacity: 500, rating: 4.3, verified: true, needs: ['DJ Electrónica', 'Azafatas'] },
   ],
   zaragoza: [
     { name: 'La Casa del Loco', type: 'Electrónica', capacity: 400, rating: 4.5, verified: true, needs: ['DJ Electrónica', 'Barman'] },

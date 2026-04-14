@@ -241,7 +241,7 @@ const SettingsView = () => {
         <ToggleRow label="Flash Booking" desc="Ofertas urgentes de empresarios" checked={notifFlash} onChange={() => setNotifFlash(v => !v)} />
         <ToggleRow label="Top Weekend" desc="Cuando tu perfil asciende al ranking" checked={notifTopWeekend} onChange={() => setNotifTopWeekend(v => !v)} />
         <ToggleRow label="Novedades y promociones" desc="Ofertas, descuentos y actualizaciones de XPEAK" checked={notifMarketing} onChange={() => setNotifMarketing(v => !v)} />
-        <ToggleRow label="SMS de verificación" desc="Solo para acciones de seguridad" checked={notifSMS} onChange={() => setNotifSMS(v => !v)} />
+        <ToggleRow label="SMS de verificación" desc="Solo para verificación de identidad" checked={notifSMS} onChange={() => setNotifSMS(v => !v)} />
       </Section>
 
       {/* ── Privacy ── */}

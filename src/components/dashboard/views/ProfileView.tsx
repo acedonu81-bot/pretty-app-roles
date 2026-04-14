@@ -31,7 +31,7 @@ const ProfileView = () => {
   const ROLE_TAGS: Record<string, { label: string; tags: string[] }> = {
     dj:        { label: 'Géneros musicales',    tags: ['Techno','Tech House','House','Afro House','Melodic Techno','Deep House','Minimal','Trance','Progressive','Drum & Bass','Jungle','Garage','Afrobeats','Tribal','Nu Disco','Electro','Hard Techno','Industrial','Ambient','Comercial','Reggaetón','Urbano','Hip Hop','RnB','Funk','Soul','Disco','Latino','Salsa','Flamenco Fusión'] },
     rookie:    { label: 'Géneros musicales',    tags: ['Techno','Tech House','House','Afro House','Melodic Techno','Deep House','Minimal','Trance','Progressive','Drum & Bass','Electro','Hard Techno','Comercial','Reggaetón','Urbano','Hip Hop'] },
-    staff:     { label: 'Especialidades',        tags: ['Azafata','RRPP','Promotor','Camarero/a','Seguridad','Relaciones Públicas','Animación','Hostess','Sala VIP','Control de acceso','Taquilla','Chill-out','Bottle service'] },
+    staff:     { label: 'Especialidades',        tags: ['Azafata','RRPP','Promotor','Camarero/a','Relaciones Públicas','Animación','Hostess','Sala VIP','Control de acceso','Taquilla','Chill-out','Bottle service','Coordinación'] },
     makeup:    { label: 'Servicios',             tags: ['Maquillaje nupcial','Caracterización','Maquillaje artístico','Peluquería','Estilismo','Nail art','Aerógrafo','Efectos especiales','Maquillaje masculino','Novias','Pasarela','Producción'] },
     media:     { label: 'Especialidades',        tags: ['Fotografía de eventos','Vídeo','Reels & Contenido','Fotografía de DJ','Drone','Cobertura en directo','Fotografía de sala','Retrato','Edición de vídeo','Color grading','Motion graphics','Podcast'] },
     design:    { label: 'Especialidades',        tags: ['Diseño gráfico','VJing','Mapping','LED wall','Visuales en vivo','Cartelería','Branding','Redes sociales','Ilustración','3D','Motion design'] },
@@ -268,7 +268,7 @@ const ProfileView = () => {
                   rookie: ['CDJ-3000 + DJM-900NXS2', 'Mesa propia', '2 enchufes', 'Monitor lateral', 'Controlador propio'],
                   makeup: ['Traigo maletín', 'Necesita espejo con luz', 'Solo marcas premium', 'Acepta prueba previa', 'Trabaja en equipo'],
                   media:  ['Cámara Sony A7', 'Drone DJI', 'Entrega 48h', 'Incluye edición', 'Raw disponible', 'Drone incluido'],
-                  staff:  ['Traje propio', 'Carnet de seguridad', 'Idiomas: EN/FR', 'Experiencia VIP', 'Uniforme de sala'],
+                  staff:  ['Traje propio', 'Acreditación de sala', 'Idiomas: EN/FR', 'Experiencia VIP', 'Uniforme de sala'],
                 };
                 const presets = PRESETS[profile.role ?? ''] ?? [];
                 const currentRider = rider ?? profile.specialty ?? '';
