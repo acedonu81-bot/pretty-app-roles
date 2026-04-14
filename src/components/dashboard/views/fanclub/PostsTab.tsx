@@ -94,10 +94,17 @@ const PostsTab = () => {
         </button>
       </div>
 
-      <div className="glass-panel p-5 text-center py-12">
-        <FileText size={32} className="mx-auto mb-3 opacity-20" />
-        <p className="text-sm text-muted-foreground">Tus publicaciones aparecerán aquí</p>
-        <p className="text-xs text-muted-foreground mt-1">Empieza a crear contenido exclusivo para tus fans</p>
+      <div className="glass-panel p-10 flex flex-col items-center text-center gap-3">
+        <div className="w-12 h-12 rounded-full flex items-center justify-center"
+          style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.1)' }}>
+          <FileText size={20} style={{ color: 'rgba(212,175,55,0.2)' }} />
+        </div>
+        <div>
+          <p className="text-sm font-bold mb-1" style={{ color: 'rgba(255,255,255,0.35)' }}>Sin publicaciones aún</p>
+          <p className="text-xs text-muted-foreground max-w-[240px] mx-auto leading-relaxed">
+            Crea tu primera publicación exclusiva arriba. Solo la verán los fans suscritos a tu canal.
+          </p>
+        </div>
       </div>
     </motion.div>
   );

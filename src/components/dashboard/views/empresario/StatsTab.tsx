@@ -126,6 +126,10 @@ const StatsTab = ({ pros, favorites }: Props) => {
       <div className="glass-panel p-5 mb-5">
         <h4 className="text-sm font-bold mb-4 flex items-center gap-2">
           <TrendingUp size={14} style={{ color: '#D4AF37' }} /> Contrataciones esta semana
+          <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded"
+            style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
+            DEMO
+          </span>
         </h4>
         <ResponsiveContainer width="100%" height={120}>
           <BarChart data={weeklyData} barSize={28} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
@@ -148,8 +152,12 @@ const StatsTab = ({ pros, favorites }: Props) => {
       <div className="glass-panel p-5">
         <h4 className="text-sm font-bold mb-1 flex items-center gap-2">
           <Star size={14} style={{ color: '#D4AF37' }} /> Índice de calidad por rol
+          <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded"
+            style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
+            DEMO
+          </span>
         </h4>
-        <p className="text-xs text-muted-foreground mb-4">Basado en valoraciones de empresarios de la plataforma.</p>
+        <p className="text-xs text-muted-foreground mb-4">Datos de referencia — se actualizará con valoraciones reales de la plataforma.</p>
         <ResponsiveContainer width="100%" height={200}>
           <RadarChart data={radarData}>
             <PolarGrid stroke="rgba(255,255,255,0.08)" />

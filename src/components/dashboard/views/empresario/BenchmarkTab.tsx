@@ -7,8 +7,12 @@ const BenchmarkTab = () => (
       <div className="flex items-center gap-2 mb-1">
         <Euro size={14} style={{ color: '#D4AF37' }} />
         <h4 className="text-sm font-bold">¿Cómo pagan otros empresarios?</h4>
+        <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded"
+          style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
+          DEMO
+        </span>
       </div>
-      <p className="text-xs text-muted-foreground mb-5">Datos anonimizados de contratos gestionados en la plataforma.</p>
+      <p className="text-xs text-muted-foreground mb-5">Tarifas de referencia del sector. Se completará con datos reales cuando haya suficientes transacciones en la plataforma.</p>
       <div className="space-y-5">
         {PAYMENT_BENCHMARK.map(b => (
           <div key={b.role} className="glass-panel p-4">
@@ -48,7 +52,7 @@ const BenchmarkTab = () => (
           </div>
         ))}
       </div>
-      <p className="text-[0.55rem] text-muted-foreground mt-4 text-center">Datos basados en contratos anteriores. Actualizado mensualmente.</p>
+      <p className="text-[0.55rem] text-muted-foreground mt-4 text-center">Datos de referencia del sector nightlife España · Se actualizará con transacciones reales</p>
     </div>
   </div>
 );
