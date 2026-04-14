@@ -13,7 +13,6 @@ import bentoImagen from '@/assets/bento-imagen.jpg';
 import LegalFooter from '@/components/LegalFooter';
 import LiveDJsSection from '@/components/dashboard/LiveDJsSection';
 import DemoVideoModal from '@/components/DemoVideoModal';
-import { profiles } from '@/data/profiles';
 
 /* ── Fade-in wrapper ── */
 const FadeIn = ({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) => {
@@ -560,36 +559,7 @@ const Landing = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 auto-rows-[170px] md:auto-rows-[260px] mb-3 md:mb-4">
           <FadeIn delay={0} className="md:row-span-2">
             <BentoCard image={bentoMusica} icon={<Music size={20} />} title="Música" subtitle="DJs, productores, artistas en vivo, VJs y técnicos de sonido" className="h-full"
-              onClick={() => setActiveRole(ROLE_DETAILS[0])}>
-              {/* DJ profile chips */}
-              <div className="flex flex-col gap-1.5">
-                {profiles.filter(p => p.role === 'dj').slice(0, 3).map(dj => (
-                  <div key={dj.id} className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl"
-                    style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.07)' }}>
-                    <div className="w-6 h-6 rounded-lg flex items-center justify-center text-[0.6rem] font-black flex-shrink-0"
-                      style={{ background: dj.subscriptionTier === 'elite' ? 'linear-gradient(135deg,#D4AF37,#B8941E)' : 'rgba(255,255,255,0.1)', color: dj.subscriptionTier === 'elite' ? '#000' : '#fff' }}>
-                      {dj.avatar.slice(0, 1)}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-[0.65rem] font-bold leading-none truncate">{dj.name}</p>
-                      <p className="text-[0.55rem] leading-tight truncate" style={{ color: 'rgba(255,255,255,0.4)' }}>{dj.specialty}</p>
-                    </div>
-                    {dj.isLive && (
-                      <span className="text-[0.5rem] font-black px-1.5 py-0.5 rounded flex-shrink-0"
-                        style={{ background: '#E53935', color: '#fff' }}>LIVE</span>
-                    )}
-                    {dj.subscriptionTier === 'elite' && !dj.isLive && (
-                      <span className="text-[0.5rem] font-black px-1.5 py-0.5 rounded flex-shrink-0"
-                        style={{ background: 'rgba(212,175,55,0.2)', color: '#D4AF37' }}>★</span>
-                    )}
-                  </div>
-                ))}
-                <p className="text-[0.55rem] font-bold tracking-widest uppercase mt-0.5 px-1"
-                  style={{ color: 'rgba(212,175,55,0.5)' }}>
-                  +{profiles.filter(p => p.role === 'dj').length - 3} DJs más →
-                </p>
-              </div>
-            </BentoCard>
+              onClick={() => setActiveRole(ROLE_DETAILS[0])} />
           </FadeIn>
           <FadeIn delay={0.1} className="md:col-span-2">
             <BentoCard
