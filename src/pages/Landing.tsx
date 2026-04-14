@@ -488,7 +488,7 @@ const Landing = () => {
         <FadeIn delay={0.2}>
           <p className="text-base md:text-lg max-w-xl mx-auto mb-12 leading-relaxed"
             style={{ color: 'rgba(255,255,255,0.45)' }}>
-            El directorio profesional de la noche. Conecta, contrata y destaca en toda Europa.
+            El directorio profesional para clubs, bodas, eventos privados y festivales. Conecta, contrata y destaca en toda Europa.
           </p>
         </FadeIn>
         <FadeIn delay={0.3}>
