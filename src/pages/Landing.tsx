@@ -40,16 +40,16 @@ const RotatingWord = () => {
     return () => clearInterval(iv);
   }, []);
   return (
-    <span className="relative inline-block" style={{ minWidth: 'min(280px, 60vw)', overflow: 'visible', paddingBottom: '0.15em' }}>
+    // height fija = 1 línea del h1 — el texto entra/sale en absolute sin mover el layout
+    <span className="relative block w-full" style={{ height: '1.15em' }}>
       <AnimatePresence mode="wait">
         <motion.span
           key={index}
-          initial={{ opacity: 0, y: 24, filter: 'blur(6px)' }}
+          initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
           animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          exit={{ opacity: 0, y: -24, filter: 'blur(6px)' }}
-          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-          className="text-gradient inline-block"
-          style={{ lineHeight: 1.15, display: 'inline-block' }}
+          exit={{ opacity: 0, y: -20, filter: 'blur(8px)' }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="text-gradient absolute inset-0 flex items-center justify-center"
         >
           {ROTATING_WORDS[index]}
         </motion.span>
@@ -65,7 +65,7 @@ const MarqueeStrip = () => (
     <motion.div
       className="flex items-center whitespace-nowrap"
       animate={{ x: ['0%', '-50%'] }}
-      transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+      transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
       style={{ width: 'max-content', gap: 0 }}
     >
       {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
@@ -479,10 +479,10 @@ const Landing = () => {
           </div>
         </FadeIn>
         <FadeIn delay={0.1}>
-          <h1 className="text-5xl sm:text-6xl md:text-8xl font-bold leading-[1.05] mb-7 max-w-5xl mx-auto tracking-tight">
-            El talento de los <br className="hidden sm:block" />
-            <RotatingWord />{' '}
-            <span style={{ color: 'rgba(255,255,255,0.9)' }}>está aquí</span>
+          <h1 className="text-5xl sm:text-6xl md:text-8xl font-bold leading-[1.15] mb-7 max-w-5xl mx-auto tracking-tight text-center">
+            <span className="block" style={{ color: 'rgba(255,255,255,0.9)' }}>El talento de los</span>
+            <RotatingWord />
+            <span className="block" style={{ color: 'rgba(255,255,255,0.9)' }}>está aquí</span>
           </h1>
         </FadeIn>
         <FadeIn delay={0.2}>
