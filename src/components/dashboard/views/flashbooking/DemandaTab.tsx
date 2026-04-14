@@ -295,9 +295,21 @@ const DemandaTab = () => {
       </div>
 
       {offers.length === 0 && (
-        <div className="glass-panel p-10 text-center">
-          <Megaphone size={36} className="mx-auto mb-3 text-muted-foreground" />
-          <p className="text-sm text-muted-foreground">No hay ofertas activas. ¡Publica la primera!</p>
+        <div className="glass-panel p-10 flex flex-col items-center text-center gap-3">
+          <div className="w-14 h-14 rounded-full flex items-center justify-center"
+            style={{ background: 'rgba(34,197,94,0.04)', border: '1px solid rgba(34,197,94,0.1)' }}>
+            <Megaphone size={24} style={{ color: 'rgba(34,197,94,0.22)' }} />
+          </div>
+          <div>
+            <p className="text-sm font-bold mb-1.5" style={{ color: 'rgba(255,255,255,0.35)' }}>
+              No hay ofertas activas
+            </p>
+            <p className="text-xs text-muted-foreground max-w-[280px] mx-auto leading-relaxed">
+              {isEmpresario
+                ? 'Publica una oferta urgente con el botón de arriba. Caduca en 2h — ideal para necesidades de última hora.'
+                : 'Los empresarios publicarán sus necesidades aquí. Revisa pronto para no perderte ninguna oportunidad.'}
+            </p>
+          </div>
         </div>
       )}
     </div>

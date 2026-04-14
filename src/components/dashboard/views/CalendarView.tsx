@@ -274,8 +274,14 @@ const CalendarView = () => {
               <img src={roleImg} alt="Próximo evento" className="w-full h-full object-cover" />
               <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.3))' }} />
               <div className="absolute bottom-0 left-0 right-0 p-4">
-                <p className="text-xs font-bold uppercase tracking-wider" style={{ color: '#D4AF37' }}>Próximo Evento</p>
-                <h3 className="text-lg font-black mt-1">Cierre Sunrise Festival VIP</h3>
+                <div className="flex items-center gap-2 mb-1">
+                  <p className="text-xs font-bold uppercase tracking-wider" style={{ color: '#D4AF37' }}>Próximo Evento</p>
+                  <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded"
+                    style={{ background: 'rgba(212,175,55,0.2)', color: 'rgba(212,175,55,0.7)', border: '1px solid rgba(212,175,55,0.3)' }}>
+                    DEMO
+                  </span>
+                </div>
+                <h3 className="text-lg font-black">Cierre Sunrise Festival VIP</h3>
               </div>
             </div>
             <div className="p-4 flex items-center justify-between">
@@ -314,7 +320,10 @@ const CalendarView = () => {
           <div className="glass-panel p-4">
             <div className="flex justify-between items-center mb-3 pb-2" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>
               <h3 className="text-sm font-bold">Próximo Bolo</h3>
-              <span className="text-xs font-bold px-2 py-0.5 rounded" style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>Agendado</span>
+              <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded"
+                style={{ background: 'rgba(212,175,55,0.1)', color: 'rgba(212,175,55,0.55)', border: '1px solid rgba(212,175,55,0.15)' }}>
+                DEMO
+              </span>
             </div>
             <div className="p-3 rounded-lg relative" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}>
               <div className="absolute top-0 left-0 w-0.5 h-full rounded-full" style={{ background: '#D4AF37' }} />

@@ -160,10 +160,21 @@ const OfertaTab = () => {
           </div>
         ))}
         {flashProfiles.length === 0 && (
-          <div className="col-span-full glass-panel p-10 text-center">
-            <Zap size={32} className="mx-auto mb-3 text-muted-foreground opacity-30" />
-            <p className="text-sm text-muted-foreground">No hay profesionales disponibles ahora mismo.</p>
-            <p className="text-xs text-muted-foreground mt-1">Activa tu disponibilidad para aparecer aquí.</p>
+          <div className="col-span-full glass-panel p-10 flex flex-col items-center text-center gap-3">
+            <div className="w-14 h-14 rounded-full flex items-center justify-center"
+              style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.1)' }}>
+              <Zap size={24} style={{ color: 'rgba(212,175,55,0.2)' }} />
+            </div>
+            <div>
+              <p className="text-sm font-bold mb-1.5" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                Ningún profesional disponible ahora
+              </p>
+              <p className="text-xs text-muted-foreground max-w-[280px] mx-auto leading-relaxed">
+                {isEmpresario
+                  ? 'Los profesionales activarán su disponibilidad cuando busquen trabajo. Publica una oferta en la tab Demanda para ir más rápido.'
+                  : 'Activa tu disponibilidad con el toggle de arriba para que los empresarios puedan encontrarte.'}
+              </p>
+            </div>
           </div>
         )}
       </div>
