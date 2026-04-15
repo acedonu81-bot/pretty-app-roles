@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Camera, Bell, Volume2, Shield, Trophy, CreditCard, LogOut, ChevronRight } from 'lucide-react';
+import { Camera, Bell, Volume2, Shield, Trophy, CreditCard, LogOut, ChevronRight, Trash2, AlertTriangle } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -26,10 +26,10 @@ type ToggleRowProps = {
   onChange: () => void;
 };
 const ToggleRow = ({ label, desc, checked, onChange }: ToggleRowProps) => (
-  <div className="flex items-center justify-between py-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-    <div>
-      <p className="text-sm font-medium">{label}</p>
-      {desc && <p className="text-xs text-muted-foreground">{desc}</p>}
+  <div className="flex items-center justify-between gap-3 py-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+    <div className="min-w-0 flex-1">
+      <p className="text-sm font-medium leading-snug">{label}</p>
+      {desc && <p className="text-xs text-muted-foreground leading-snug">{desc}</p>}
     </div>
     <label className="relative inline-flex items-center cursor-pointer">
       <input type="checkbox" checked={checked} onChange={onChange} className="sr-only" />
@@ -75,6 +75,11 @@ const SettingsView = () => {
   // Audio quality — persisted in localStorage
   const [audioQuality, setAudioQuality] = useState(() => localStorage.getItem('xpeak_audio_quality') ?? 'high');
 
+  // Account deletion
+  const [showDeleteZone, setShowDeleteZone] = useState(false);
+  const [deleteConfirmEmail, setDeleteConfirmEmail] = useState('');
+  const [deleting, setDeleting] = useState(false);
+
   // Privacy
   const [saving, setSaving] = useState(false);
   const [profilePublic, setProfilePublic] = useState(true);
@@ -93,6 +98,40 @@ const SettingsView = () => {
   const initials = displayName ? displayName.charAt(0).toUpperCase() : 'X';
   const currentPlanId = mapSubscriptionTierToPlan(profile.subscription_tier);
   const currentPlan = subscriptionPlans.find(p => p.id === currentPlanId);
+
+  const handleDeleteAccount = async () => {
+    if (!user) return;
+    if (deleteConfirmEmail.trim().toLowerCase() !== user.email?.toLowerCase()) {
+      toast.error('El email no coincide con el de tu cuenta');
+      return;
+    }
+    setDeleting(true);
+    try {
+      // 1. Anonymize profile (RGPD Art. 17 — borrado/anonimización de datos personales)
+      await supabase.from('profiles').update({
+        display_name: 'Usuario eliminado',
+        bio: null,
+        photo_url: null,
+        phone: null,
+        instagram: null,
+        zone: null,
+        specialty: null,
+        genres: null,
+        is_live: false,
+        is_verified: false,
+      } as any).eq('user_id', user.id);
+
+      // 2. Borrar favoritos
+      await supabase.from('favorites').delete().eq('user_id', user.id);
+
+      // 3. Cerrar sesión
+      await signOut();
+      toast.success('Cuenta eliminada. Tus datos han sido anonimizados conforme al RGPD. El registro de autenticación se purgará en 30 días.');
+    } catch {
+      toast.error('Error al eliminar la cuenta. Contacta con soporte.');
+      setDeleting(false);
+    }
+  };
 
   const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -308,6 +347,60 @@ const SettingsView = () => {
         >
           <LogOut size={14} /> Cerrar Sesión
         </button>
+      </div>
+
+      {/* ── Zona de peligro — RGPD Art. 17 ── */}
+      <div className="glass-panel p-5" style={{ border: '1px solid rgba(255,95,86,0.12)' }}>
+        <button
+          onClick={() => setShowDeleteZone(!showDeleteZone)}
+          className="w-full flex items-center justify-between text-left"
+        >
+          <div className="flex items-center gap-2">
+            <AlertTriangle size={14} style={{ color: '#ff5f56' }} />
+            <span className="text-sm font-bold" style={{ color: '#ff5f56' }}>Zona de peligro</span>
+          </div>
+          <ChevronRight size={14} className="text-muted-foreground transition-transform"
+            style={{ transform: showDeleteZone ? 'rotate(90deg)' : 'rotate(0deg)' }} />
+        </button>
+
+        {showDeleteZone && (
+          <div className="mt-4 space-y-3 animate-[fadeIn_0.2s_ease]">
+            <div className="p-3 rounded-lg text-xs leading-relaxed"
+              style={{ background: 'rgba(255,95,86,0.04)', border: '1px solid rgba(255,95,86,0.1)' }}>
+              <p className="font-bold mb-1" style={{ color: '#ff5f56' }}>Eliminar cuenta permanentemente</p>
+              <p className="text-muted-foreground">
+                Al eliminar tu cuenta, todos tus datos personales serán anonimizados de forma inmediata conforme al{' '}
+                <span className="font-bold">RGPD Art. 17</span> (derecho al olvido). El registro de autenticación
+                se purgará en un plazo de 30 días. Esta acción no se puede deshacer.
+              </p>
+            </div>
+
+            <div>
+              <p className="text-xs text-muted-foreground mb-1.5">
+                Escribe tu email <span className="font-bold" style={{ color: '#ff5f56' }}>{user?.email}</span> para confirmar:
+              </p>
+              <input
+                type="email"
+                value={deleteConfirmEmail}
+                onChange={e => setDeleteConfirmEmail(e.target.value)}
+                placeholder="Tu email de cuenta"
+                maxLength={100}
+                className="nightlife-input text-sm w-full"
+                style={{ borderColor: 'rgba(255,95,86,0.3)' }}
+              />
+            </div>
+
+            <button
+              onClick={handleDeleteAccount}
+              disabled={deleting || deleteConfirmEmail.trim().toLowerCase() !== user?.email?.toLowerCase()}
+              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg font-bold text-sm transition-all hover:opacity-80 disabled:opacity-30"
+              style={{ background: 'rgba(255,95,86,0.1)', color: '#ff5f56', border: '1px solid rgba(255,95,86,0.25)' }}
+            >
+              <Trash2 size={14} />
+              {deleting ? 'Eliminando...' : 'Eliminar cuenta definitivamente'}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

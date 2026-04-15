@@ -39,11 +39,9 @@ const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
+  const [confirmedAge, setConfirmedAge] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
-  const [country, setCountry] = useState('España');
   const [city, setCity] = useState('');
-
-  const COUNTRIES = ['España', 'Portugal'];
 
   const currentRole = roles.find(r => r.value === selectedRole)!;
 
@@ -97,6 +95,7 @@ const Auth = () => {
       } else {
         if (!displayName.trim()) { toast.error('Introduce tu nombre profesional'); setLoading(false); return; }
         if (!acceptedPrivacy) { toast.error('Debes aceptar la Política de Privacidad'); setLoading(false); return; }
+        if (!confirmedAge) { toast.error('Debes confirmar que tienes 14 años o más (LOPDGDD)'); setLoading(false); return; }
 
         const pwdError = validatePassword(password);
         if (pwdError) { toast.error(pwdError); setLoading(false); return; }
@@ -131,7 +130,7 @@ const Auth = () => {
               role: selectedRole,
               hourly_rate: safeRate,
               category: isRookie ? 'rookie' : 'pending',
-              zone: safeCity ? `${safeCity}, ${country}` : country,
+              zone: safeCity ? `${safeCity}, España` : 'España',
             },
             emailRedirectTo: window.location.origin,
           },
@@ -171,7 +170,7 @@ const Auth = () => {
               X<span className="text-gradient">PEAK</span>
             </h2>
           </button>
-          <p className="text-muted-foreground mb-6 text-xs">Directorio Profesional · Europa</p>
+          <p className="text-muted-foreground mb-6 text-xs">Directorio Profesional · España</p>
 
           <form onSubmit={handleSubmit} className="space-y-3">
             {!isLogin && (
@@ -182,16 +181,10 @@ const Auth = () => {
                     placeholder="Tu nombre artístico o profesional" className="nightlife-input !py-3 !pl-9 text-sm" />
                 </div>
 
-                <div className="grid grid-cols-2 gap-2">
-                  <select value={country} onChange={e => setCountry(e.target.value)}
-                    className="nightlife-input !py-3 text-sm">
-                    {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
-                  </select>
-                  <div className="relative">
-                    <MapPin size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                    <input value={city} onChange={e => setCity(e.target.value)}
-                      placeholder="Ciudad" className="nightlife-input !py-3 !pl-9 text-sm" />
-                  </div>
+                <div className="relative">
+                  <MapPin size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <input value={city} onChange={e => setCity(e.target.value)}
+                    placeholder="Ciudad (ej. Madrid, Barcelona, Ibiza...)" className="nightlife-input !py-3 !pl-9 text-sm" />
                 </div>
 
                 {/* Role selector by category */}
@@ -202,7 +195,7 @@ const Auth = () => {
                       <div className="grid grid-cols-2 gap-1.5">
                         {group.roles.map(r => (
                           <button key={r.value} type="button" onClick={() => setSelectedRole(r.value)}
-                            className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-all"
+                            className="flex items-center gap-2 px-2 sm:px-3 py-2 rounded-lg text-[0.65rem] sm:text-xs font-bold transition-all leading-tight"
                             style={{
                               background: selectedRole === r.value ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.03)',
                               border: `1px solid ${selectedRole === r.value ? 'rgba(212,175,55,0.4)' : 'var(--nightlife-border)'}`,
@@ -289,27 +282,31 @@ const Auth = () => {
             )}
 
             {!isLogin && (
-              <label className="flex items-start gap-2.5 px-1 cursor-pointer text-left">
-                <input type="checkbox" checked={acceptedPrivacy} onChange={e => setAcceptedPrivacy(e.target.checked)}
-                  className="mt-0.5 w-3.5 h-3.5 rounded accent-[#D4AF37]" />
-                <span className="text-[0.6rem] text-muted-foreground leading-tight">
-                  He leído y acepto la{' '}
-                  <Link to="/privacidad" target="_blank" className="font-bold underline" style={{ color: '#D4AF37' }}>
-                    Política de Privacidad
-                  </Link>,{' '}
-                  los{' '}
-                  <Link to="/terminos" target="_blank" className="font-bold underline" style={{ color: '#D4AF37' }}>
-                    Términos y Condiciones
-                  </Link>{' '}
-                  y la{' '}
-                  <Link to="/cookies" target="_blank" className="font-bold underline" style={{ color: '#D4AF37' }}>
-                    Política de Cookies
-                  </Link>.
-                </span>
-              </label>
+              <div className="space-y-2 px-1">
+                <label className="flex items-start gap-2.5 cursor-pointer text-left">
+                  <input type="checkbox" checked={confirmedAge} onChange={e => setConfirmedAge(e.target.checked)}
+                    className="mt-0.5 w-3.5 h-3.5 rounded accent-[#D4AF37] flex-shrink-0" />
+                  <span className="text-[0.6rem] text-muted-foreground leading-tight">
+                    Confirmo que tengo <span className="font-bold" style={{ color: '#D4AF37' }}>14 años o más</span>.
+                    {' '}Esta plataforma no está dirigida a menores de 14 años (LOPDGDD Art. 7).
+                  </span>
+                </label>
+                <label className="flex items-start gap-2.5 cursor-pointer text-left">
+                  <input type="checkbox" checked={acceptedPrivacy} onChange={e => setAcceptedPrivacy(e.target.checked)}
+                    className="mt-0.5 w-3.5 h-3.5 rounded accent-[#D4AF37] flex-shrink-0" />
+                  <span className="text-[0.6rem] text-muted-foreground leading-tight">
+                    He leído y acepto la{' '}
+                    <Link to="/privacidad" target="_blank" className="font-bold underline" style={{ color: '#D4AF37' }}>Política de Privacidad</Link>,{' '}
+                    los{' '}
+                    <Link to="/terminos" target="_blank" className="font-bold underline" style={{ color: '#D4AF37' }}>Términos y Condiciones</Link>{' '}
+                    y la{' '}
+                    <Link to="/cookies" target="_blank" className="font-bold underline" style={{ color: '#D4AF37' }}>Política de Cookies</Link>.
+                  </span>
+                </label>
+              </div>
             )}
 
-            <button type="submit" disabled={loading || (!isLogin && !acceptedPrivacy)}
+            <button type="submit" disabled={loading || (!isLogin && (!acceptedPrivacy || !confirmedAge))}
               className="w-full py-3 rounded-lg font-bold text-sm transition-all hover:scale-[1.01] disabled:opacity-50"
               style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' }}>
               {loading ? 'Procesando...' : isLogin ? 'Iniciar Sesión' : 'Crear Cuenta'}
