@@ -99,6 +99,45 @@ const SettingsView = () => {
   const currentPlanId = mapSubscriptionTierToPlan(profile.subscription_tier);
   const currentPlan = subscriptionPlans.find(p => p.id === currentPlanId);
 
+  /* ── RGPD Art. 20 — Portabilidad de datos ── */
+  const handleExportData = async () => {
+    if (!user) return;
+    toast.info('Recopilando tus datos…');
+    try {
+      const [profileRes, favRes, bookingsRes, convsRes] = await Promise.all([
+        supabase.from('profiles').select('*').eq('user_id', user.id).maybeSingle(),
+        supabase.from('favorites').select('*').eq('user_id', user.id),
+        supabase.from('flash_bookings').select('*').eq('created_by', user.id),
+        supabase.from('conversations').select('*').or(`participant_a.eq.${user.id},participant_b.eq.${user.id}`),
+      ]);
+
+      const exportData = {
+        meta: {
+          exported_at: new Date().toISOString(),
+          platform: 'XPEAK',
+          legal_basis: 'RGPD Art. 20 — Derecho a la portabilidad de los datos',
+          user_id: user.id,
+          email: user.email,
+        },
+        profile: profileRes.data ?? null,
+        favorites: favRes.data ?? [],
+        flash_bookings: bookingsRes.data ?? [],
+        conversations: convsRes.data ?? [],
+      };
+
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `XPEAK_mis_datos_${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast.success('Datos exportados correctamente.');
+    } catch {
+      toast.error('Error al exportar datos. Inténtalo de nuevo.');
+    }
+  };
+
   const handleDeleteAccount = async () => {
     if (!user) return;
     if (deleteConfirmEmail.trim().toLowerCase() !== user.email?.toLowerCase()) {
@@ -289,6 +328,21 @@ const SettingsView = () => {
         <ToggleRow label="Mostrar tarifa en mi ficha" desc="Visible para todos los usuarios" checked={showRate} onChange={() => setShowRate(v => !v)} />
         <ToggleRow label="Disponible en Flash Booking" desc="Empresarios pueden enviarte solicitudes urgentes" checked={allowFlash} onChange={() => setAllowFlash(v => !v)} />
         <ToggleRow label="Mostrar estado en línea" desc="Indica si estás activo en la plataforma" checked={showOnline} onChange={() => setShowOnline(v => !v)} />
+        <div className="pt-3 mt-1 space-y-2" style={{ borderTop: '1px solid rgba(255,255,255,0.04)' }}>
+          <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Tus derechos RGPD</p>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={handleExportData}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
+              style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+              📦 Exportar mis datos (Art. 20)
+            </button>
+          </div>
+          <p className="text-[0.6rem] text-muted-foreground leading-relaxed">
+            Descarga todos tus datos en formato JSON conforme al RGPD Art. 20 (portabilidad).
+            Para el derecho al olvido usa "Eliminar cuenta" más abajo.
+          </p>
+        </div>
       </Section>
 
       {/* ── Top Weekend promo ── */}

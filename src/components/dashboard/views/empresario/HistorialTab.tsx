@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { CheckCircle, Clock, Download, FileText, Euro, Calendar, User, RefreshCw } from 'lucide-react';
+import { CheckCircle, Clock, Download, FileText, Euro, Calendar, User, RefreshCw, ScrollText } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
@@ -164,6 +164,209 @@ const HistorialTab = () => {
     setTimeout(() => URL.revokeObjectURL(url), 10000);
   };
 
+  /* ─── Contrato tipo ─── */
+  const generarContrato = () => {
+    const today = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
+    const html = `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>XPEAK — Contrato de Prestación de Servicios</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Georgia', serif; background:#fff; color:#111; padding:50px 60px; font-size:12px; line-height:1.7; }
+  .header { text-align:center; margin-bottom:36px; border-bottom:2px solid #D4AF37; padding-bottom:20px; }
+  .logo { font-size:22px; font-weight:900; letter-spacing:3px; font-family:'Arial',sans-serif; }
+  .logo span { color:#D4AF37; }
+  .title { font-size:16px; font-weight:bold; margin-top:8px; text-transform:uppercase; letter-spacing:1px; }
+  .subtitle { font-size:11px; color:#555; margin-top:4px; }
+  h2 { font-size:12px; font-weight:bold; text-transform:uppercase; letter-spacing:0.5px; color:#D4AF37; border-bottom:1px solid #eee; padding-bottom:6px; margin:24px 0 12px; }
+  .field-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:8px; }
+  .field { border-bottom:1px solid #ccc; min-height:24px; padding:2px 0; }
+  .field-label { font-size:9px; color:#888; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:2px; }
+  .clause { margin-bottom:14px; }
+  .clause p { text-align:justify; }
+  .clause strong { color:#111; }
+  .signatures { display:grid; grid-template-columns:1fr 1fr; gap:60px; margin-top:50px; }
+  .sig-block { border-top:1px solid #333; padding-top:8px; }
+  .sig-label { font-size:9px; color:#888; text-transform:uppercase; letter-spacing:0.5px; }
+  .sig-line { height:60px; border-bottom:1px dashed #ccc; margin:16px 0 8px; }
+  .footer { margin-top:40px; text-align:center; font-size:9px; color:#aaa; border-top:1px solid #eee; padding-top:12px; }
+  @media print { body { padding:30px 40px; } }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">X<span>PEAK</span></div>
+  <div class="title">Contrato de Prestación de Servicios Profesionales</div>
+  <div class="subtitle">Generado a través de la plataforma XPEAK · ${today}</div>
+</div>
+
+<h2>1. Partes Contratantes</h2>
+<div class="field-row">
+  <div>
+    <div class="field-label">Empresario / Contratante (nombre o razón social)</div>
+    <div class="field"></div>
+  </div>
+  <div>
+    <div class="field-label">NIF / CIF</div>
+    <div class="field"></div>
+  </div>
+</div>
+<div class="field-row">
+  <div>
+    <div class="field-label">Domicilio</div>
+    <div class="field"></div>
+  </div>
+  <div>
+    <div class="field-label">Email de contacto</div>
+    <div class="field"></div>
+  </div>
+</div>
+<div class="field-row">
+  <div>
+    <div class="field-label">Profesional contratado (nombre artístico/profesional)</div>
+    <div class="field"></div>
+  </div>
+  <div>
+    <div class="field-label">NIF / NIE del profesional</div>
+    <div class="field"></div>
+  </div>
+</div>
+<div class="field-row">
+  <div>
+    <div class="field-label">Especialidad / Rol</div>
+    <div class="field"></div>
+  </div>
+  <div>
+    <div class="field-label">Teléfono / Email del profesional</div>
+    <div class="field"></div>
+  </div>
+</div>
+
+<h2>2. Objeto del Contrato</h2>
+<div class="field-row">
+  <div>
+    <div class="field-label">Descripción del servicio</div>
+    <div class="field" style="min-height:40px"></div>
+  </div>
+  <div>
+    <div class="field-label">Nombre del evento / establecimiento</div>
+    <div class="field"></div>
+  </div>
+</div>
+
+<h2>3. Fecha, Lugar y Duración</h2>
+<div class="field-row">
+  <div>
+    <div class="field-label">Fecha del evento</div>
+    <div class="field"></div>
+  </div>
+  <div>
+    <div class="field-label">Horario (inicio — fin)</div>
+    <div class="field"></div>
+  </div>
+</div>
+<div class="field-row">
+  <div>
+    <div class="field-label">Lugar de prestación del servicio (dirección completa)</div>
+    <div class="field"></div>
+  </div>
+  <div>
+    <div class="field-label">Aforo estimado</div>
+    <div class="field"></div>
+  </div>
+</div>
+
+<h2>4. Remuneración y Forma de Pago</h2>
+<div class="field-row">
+  <div>
+    <div class="field-label">Importe acordado (€, IVA incluido)</div>
+    <div class="field"></div>
+  </div>
+  <div>
+    <div class="field-label">Forma de pago (efectivo / transferencia / otro)</div>
+    <div class="field"></div>
+  </div>
+</div>
+<div class="field-row">
+  <div>
+    <div class="field-label">Anticipo (% o importe fijo, si aplica)</div>
+    <div class="field"></div>
+  </div>
+  <div>
+    <div class="field-label">Fecha límite de pago del saldo restante</div>
+    <div class="field"></div>
+  </div>
+</div>
+
+<h2>5. Cláusulas</h2>
+<div class="clause">
+  <p><strong>5.1 Naturaleza del servicio.</strong> El profesional presta sus servicios como trabajador autónomo independiente o mediante su propia estructura empresarial. No existe relación laboral entre las partes. El profesional es responsable de sus obligaciones fiscales (emisión de factura, IVA, IRPF) y de Seguridad Social.</p>
+</div>
+<div class="clause">
+  <p><strong>5.2 Intermediación XPEAK.</strong> El presente contrato ha sido facilitado a través de la plataforma XPEAK, que actúa exclusivamente como intermediario tecnológico. XPEAK no es parte de este contrato y no asume responsabilidad alguna por el cumplimiento de las obligaciones aquí recogidas.</p>
+</div>
+<div class="clause">
+  <p><strong>5.3 Cancelación por el contratante.</strong> En caso de cancelación por parte del contratante con menos de <span style="text-decoration:underline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> días de antelación, éste abonará al profesional el <span style="text-decoration:underline">&nbsp;&nbsp;&nbsp;&nbsp;</span>% del importe total acordado en concepto de penalización.</p>
+</div>
+<div class="clause">
+  <p><strong>5.4 Cancelación por el profesional.</strong> En caso de cancelación por parte del profesional con menos de <span style="text-decoration:underline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> días de antelación, éste deberá devolver el anticipo percibido y abonar el <span style="text-decoration:underline">&nbsp;&nbsp;&nbsp;&nbsp;</span>% del importe acordado en concepto de penalización.</p>
+</div>
+<div class="clause">
+  <p><strong>5.5 Derechos de imagen y grabación.</strong> Salvo pacto expreso en contrario, el empresario podrá fotografiar o grabar el evento para uso en redes sociales y comunicación corporativa. El profesional autoriza el uso de su imagen en dicho contexto. Los derechos de retransmisión o explotación comercial requerirán acuerdo escrito adicional.</p>
+</div>
+<div class="clause">
+  <p><strong>5.6 Propiedad intelectual musical.</strong> El profesional declara contar con las licencias o autorizaciones necesarias para la ejecución o reproducción pública de las obras musicales incluidas en su actuación, eximiendo al contratante de cualquier responsabilidad frente a entidades de gestión (SGAE, AIE, AGEDI u otras).</p>
+</div>
+<div class="clause">
+  <p><strong>5.7 Condiciones técnicas.</strong> El contratante se compromete a proporcionar el equipo técnico necesario para la prestación del servicio según los requisitos técnicos del profesional (rider técnico), salvo que se haya pactado que el profesional aporta su propio equipo.</p>
+</div>
+<div class="clause">
+  <p><strong>5.8 Legislación aplicable.</strong> El presente contrato se rige por la legislación española. Para cualquier controversia, las partes se someten a los Juzgados y Tribunales del domicilio del contratante.</p>
+</div>
+
+<h2>6. Condiciones adicionales pactadas</h2>
+<div class="field" style="min-height:60px; border:1px solid #ddd; border-radius:4px; padding:8px;"></div>
+
+<div class="signatures">
+  <div class="sig-block">
+    <div class="sig-label">Firma del Empresario / Contratante</div>
+    <div class="sig-line"></div>
+    <div>Nombre: ________________________________</div>
+    <div style="margin-top:4px">Fecha: ________________________________</div>
+  </div>
+  <div class="sig-block">
+    <div class="sig-label">Firma del Profesional</div>
+    <div class="sig-line"></div>
+    <div>Nombre: ________________________________</div>
+    <div style="margin-top:4px">Fecha: ________________________________</div>
+  </div>
+</div>
+
+<div class="footer">
+  XPEAK · Directorio Profesional de Ocio Nocturno · xpeak.site · legal@xpeak.es<br>
+  Este documento es un modelo orientativo. Se recomienda consultar con un asesor legal para contratos de alto valor.
+</div>
+</body>
+</html>`;
+
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const win = window.open(url, '_blank');
+    if (win) {
+      win.onload = () => { win.print(); };
+      toast.success('Contrato generado. Imprime como PDF para guardar o firmar.');
+    } else {
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `XPEAK_contrato_tipo_${new Date().toISOString().slice(0, 10)}.html`;
+      a.click();
+      toast.success('Contrato descargado. Ábrelo en el navegador e imprime como PDF.');
+    }
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
+  };
+
   /* ─── Stats ─── */
   const completed = bookings.filter(b => b.status === 'completed').length;
   const confirmed = bookings.filter(b => b.status === 'confirmed').length;
@@ -212,25 +415,32 @@ const HistorialTab = () => {
       </div>
 
       {/* Export buttons */}
-      {bookings.length > 0 && (
-        <div className="flex gap-2 flex-wrap">
-          <button onClick={exportPDF}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
-            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-            <FileText size={13} /> Exportar PDF
-          </button>
-          <button onClick={exportCSV}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
-            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }}>
-            <Download size={13} /> Exportar CSV
-          </button>
-          <button onClick={fetchBookings}
-            className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-xs transition-all hover:scale-105"
-            style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--nightlife-border)', color: '#8E8EA0' }}>
-            <RefreshCw size={12} />
-          </button>
-        </div>
-      )}
+      <div className="flex gap-2 flex-wrap">
+        <button onClick={generarContrato}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
+          style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.25)', color: '#D4AF37' }}>
+          <ScrollText size={13} /> Contrato tipo
+        </button>
+        {bookings.length > 0 && (
+          <>
+            <button onClick={exportPDF}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
+              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+              <FileText size={13} /> Exportar PDF
+            </button>
+            <button onClick={exportCSV}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
+              style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }}>
+              <Download size={13} /> Exportar CSV
+            </button>
+          </>
+        )}
+        <button onClick={fetchBookings}
+          className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-xs transition-all hover:scale-105"
+          style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--nightlife-border)', color: '#8E8EA0' }}>
+          <RefreshCw size={12} />
+        </button>
+      </div>
 
       {/* Bookings list */}
       {loading && (

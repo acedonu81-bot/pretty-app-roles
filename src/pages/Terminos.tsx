@@ -89,18 +89,66 @@ const Terminos = () => {
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>9. Modificaciones</h2>
-            <p>XPEAK se reserva el derecho de modificar estos Términos y Condiciones en cualquier momento. Los cambios serán notificados a los usuarios registrados por correo electrónico y/o mediante aviso en la Plataforma.</p>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>9. Derechos de Propiedad Intelectual sobre Contenidos Musicales</h2>
+            <p className="mb-2">Al subir sesiones de audio, mezclas o cualquier contenido musical a la Plataforma, el usuario declara y garantiza que:</p>
+            <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+              <li>Posee los derechos necesarios sobre el contenido publicado, o cuenta con las licencias oportunas de los titulares de los derechos (SGAE, AIE, AGEDI u otras entidades de gestión).</li>
+              <li>Es el único responsable del cumplimiento de la normativa de propiedad intelectual aplicable, incluida la Ley 21/2022 de transposición de la Directiva (UE) 2019/790 sobre derechos de autor en el mercado único digital.</li>
+              <li>XPEAK actúa como prestador de servicios de alojamiento conforme al art. 14 de la Directiva 2000/31/CE y no será responsable de infracciones cometidas por los usuarios, siempre que actúe con diligencia en la retirada de contenidos infractores una vez notificada.</li>
+            </ul>
+            <p className="mt-2">XPEAK dispone de un procedimiento de notificación y retirada de contenidos infractores (<em>notice and takedown</em>). Las solicitudes deben enviarse a <span style={{ color: '#D4AF37' }}>legal@xpeak.es</span> indicando el contenido infractor y la titularidad acreditada.</p>
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>10. Legislación Aplicable</h2>
-            <p>Los presentes Términos se rigen por la legislación española. Para cualquier controversia, las partes se someten a los Juzgados y Tribunales de Madrid (España).</p>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>10. Naturaleza Jurídica de la Intermediación — XPEAK no es Empleador</h2>
+            <p className="mb-2">
+              <strong style={{ color: '#fff' }}>XPEAK opera exclusivamente como plataforma de intermediación tecnológica</strong> entre profesionales del sector del ocio nocturno y los empresarios o entidades que requieren sus servicios. A todos los efectos legales:
+            </p>
+            <ul className="list-disc list-inside space-y-2 text-muted-foreground">
+              <li><strong className="text-foreground">XPEAK no es empleador</strong> de ningún profesional registrado en la Plataforma, ni existe relación laboral, mercantil de dependencia ni vínculo de ajenidad entre XPEAK y los usuarios profesionales.</li>
+              <li>XPEAK no fija las tarifas de los profesionales, no asigna trabajos, no controla el modo de prestación de los servicios ni impone exclusividad.</li>
+              <li>La relación contractual derivada de un acuerdo entre un profesional y un empresario es <strong className="text-foreground">exclusiva entre dichas partes</strong>. XPEAK no es parte de dicho contrato.</li>
+              <li>Los profesionales actúan como trabajadores autónomos o mediante su propia estructura empresarial, siendo responsables de sus obligaciones fiscales (IVA, IRPF) y de Seguridad Social.</li>
+              <li>XPEAK percibe una comisión de intermediación por las transacciones realizadas a través de la Plataforma, en calidad de mandatario o agente tecnológico, de conformidad con el art. 1.709 y ss. del Código Civil.</li>
+              <li>Esta cláusula no resulta de aplicación a la eventual relación laboral que XPEAK pudiera mantener con su propio personal empleado.</li>
+            </ul>
+            <p className="mt-2 text-muted-foreground">
+              Lo anterior es conforme con el Real Decreto-ley 9/2021 ("Ley Rider"), cuyo ámbito de aplicación se circunscribe al reparto de productos y no al sector de servicios profesionales creativos y de eventos regulado por los presentes Términos.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>11. Edad Mínima</h2>
+            <p>El acceso y registro en XPEAK está reservado a personas mayores de <strong>14 años</strong>, conforme al art. 7 de la Ley Orgánica 3/2018 (LOPDGDD). Al registrarse, el usuario confirma que cumple con este requisito. XPEAK se reserva el derecho de cancelar sin previo aviso las cuentas de usuarios que no cumplan este requisito.</p>
+          </section>
+
+          <section>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>12. Derechos del Usuario (RGPD)</h2>
+            <p className="mb-2">De conformidad con el Reglamento (UE) 2016/679 (RGPD) y la LOPDGDD, el usuario tiene derecho a:</p>
+            <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+              <li><strong className="text-foreground">Acceso</strong> a sus datos personales tratados por XPEAK.</li>
+              <li><strong className="text-foreground">Rectificación</strong> de datos inexactos o incompletos.</li>
+              <li><strong className="text-foreground">Supresión</strong> ("derecho al olvido") mediante la función "Eliminar cuenta" disponible en Ajustes.</li>
+              <li><strong className="text-foreground">Portabilidad</strong> mediante la función "Exportar mis datos" disponible en Ajustes (formato JSON).</li>
+              <li><strong className="text-foreground">Oposición</strong> y <strong className="text-foreground">limitación del tratamiento</strong>, dirigiéndose a <span style={{ color: '#D4AF37' }}>legal@xpeak.es</span>.</li>
+            </ul>
+            <p className="mt-2">Puede presentar reclamación ante la Agencia Española de Protección de Datos (AEPD) en <em>www.aepd.es</em>.</p>
+          </section>
+
+          <section>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>13. Modificaciones</h2>
+            <p>XPEAK se reserva el derecho de modificar estos Términos y Condiciones en cualquier momento. Los cambios serán notificados a los usuarios registrados por correo electrónico y/o mediante aviso en la Plataforma con un mínimo de 15 días de antelación para cambios sustanciales.</p>
+          </section>
+
+          <section>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>14. Legislación Aplicable</h2>
+            <p>Los presentes Términos se rigen por la legislación española. Para cualquier controversia, las partes se someten a los Juzgados y Tribunales de Madrid (España), con renuncia expresa a cualquier otro fuero que pudiera corresponderles.</p>
           </section>
 
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>Contacto</h2>
-            <p>Para cualquier consulta: <span style={{ color: '#D4AF37' }}>admin@xpeak.es</span></p>
+            <p>Consultas generales: <span style={{ color: '#D4AF37' }}>admin@xpeak.es</span></p>
+            <p className="mt-1">Asuntos legales y protección de datos: <span style={{ color: '#D4AF37' }}>legal@xpeak.es</span></p>
           </section>
         </div>
       </div>
