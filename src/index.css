@@ -4,6 +4,26 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Native safe-area (iOS notch / Android cutout) ── */
+:root {
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+}
+
+/* Ensure the root fills the full viewport including notch areas */
+html, body, #root {
+  height: 100%;
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Push sticky topbar below the status bar on native */
+.native-topbar-offset {
+  padding-top: var(--sat);
+}
+
 @layer base {
   :root {
     --background: 0 0% 4%;

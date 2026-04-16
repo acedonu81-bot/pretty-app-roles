@@ -5,12 +5,18 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  // Use './' so Capacitor can load assets from the local filesystem on device
+  base: mode === "production" ? "./" : "/",
   server: {
     host: "::",
     port: 8080,
     hmr: {
       overlay: false,
     },
+  },
+  build: {
+    // Required for Capacitor — assets must be relative paths
+    assetsDir: "assets",
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {

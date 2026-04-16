@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { X, ShieldCheck, Truck, Volume2, Smile, Lock, CheckCircle, Loader2 } from 'lucide-react';
+import { X, ShieldCheck, Truck, Volume2, Smile, Lock, CheckCircle } from 'lucide-react';
 
 interface CheckoutModalProps {
   open: boolean;
@@ -17,8 +16,7 @@ const crossSellServices = [
 
 const CheckoutModal = ({ open, onClose, item }: CheckoutModalProps) => {
   const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
-  const [step, setStep] = useState<'extras' | 'payment' | 'processing' | 'done'>('extras');
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [step, setStep] = useState<'extras' | 'pending'>('extras');
 
   if (!open || !item) return null;
 
@@ -29,15 +27,9 @@ const CheckoutModal = ({ open, onClose, item }: CheckoutModalProps) => {
   const extrasTotal = crossSellServices.filter(s => selectedExtras.includes(s.id)).reduce((a, s) => a + s.price, 0);
   const total = item.price + extrasTotal;
 
-  const handlePay = () => {
-    setStep('processing');
-    setTimeout(() => setStep('done'), 2500);
-  };
-
   const handleClose = () => {
     setStep('extras');
     setSelectedExtras([]);
-    setAcceptedTerms(false);
     onClose();
   };
 
@@ -46,84 +38,40 @@ const CheckoutModal = ({ open, onClose, item }: CheckoutModalProps) => {
       <div className="glass-panel w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto animate-[fadeIn_0.3s_ease]">
         {/* Header */}
         <div className="flex items-center justify-between p-6" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>
-          <h3 className="text-lg font-extrabold">
-            {step === 'done' ? '✅ Pago Confirmado' : 'Checkout Escrow'}
-          </h3>
+          <h3 className="text-lg font-extrabold">{item.name}</h3>
           <button onClick={handleClose} className="p-1 rounded-lg hover:bg-white/5 transition-colors">
             <X size={20} className="text-muted-foreground" />
           </button>
         </div>
 
-        {step === 'done' ? (
+        {step === 'pending' ? (
           <div className="p-8 text-center">
-            <div className="w-20 h-20 rounded-full mx-auto mb-5 flex items-center justify-center" style={{ background: 'hsla(var(--accent) / 0.15)', border: '2px solid hsl(var(--accent))' }}>
-              <CheckCircle size={40} style={{ color: 'hsl(var(--accent))' }} />
+            <div className="w-16 h-16 rounded-full mx-auto mb-5 flex items-center justify-center"
+              style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)' }}>
+              <Lock size={28} style={{ color: 'rgba(212,175,55,0.6)' }} />
             </div>
-            <h4 className="text-xl font-extrabold mb-2">Pago en Escrow</h4>
-            <p className="text-muted-foreground text-sm mb-4">
-              €{total} retenidos de forma segura. Se liberarán al completar el servicio.
+            <h4 className="text-base font-extrabold mb-2">Pago próximamente</h4>
+            <p className="text-sm text-muted-foreground mb-2">
+              La pasarela de pago está en integración final.
             </p>
-            <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground mb-6">
-              <Lock size={12} /> Protegido con Smart Contract XPEAK
-            </div>
-            <button onClick={handleClose} className="btn-nightlife-primary text-sm">Cerrar</button>
-          </div>
-        ) : step === 'processing' ? (
-          <div className="p-12 text-center">
-            <Loader2 size={48} className="mx-auto mb-5 animate-spin" style={{ color: 'hsl(var(--primary))' }} />
-            <p className="text-sm font-bold text-muted-foreground">Procesando pago Escrow...</p>
-            <p className="text-xs text-muted-foreground mt-1">Verificando Smart Contract</p>
-          </div>
-        ) : step === 'payment' ? (
-          <div className="p-6">
-            {/* Summary */}
-            <div className="p-4 rounded-xl mb-5" style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid var(--nightlife-border)' }}>
-              <p className="text-sm font-bold mb-2">{item.name}</p>
-              <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                <span>Servicio base</span><span>€{item.price}</span>
+            <p className="text-[0.7rem] text-muted-foreground mb-1">
+              Resumen de tu pedido:
+            </p>
+            <p className="text-xl font-black mb-1" style={{ color: '#D4AF37' }}>€{total}</p>
+            {selectedExtras.length > 0 && (
+              <div className="text-[0.65rem] text-muted-foreground mb-4 space-y-0.5">
+                <p>{item.name} — €{item.price}</p>
+                {crossSellServices.filter(s => selectedExtras.includes(s.id)).map(s => (
+                  <p key={s.id}>{s.label} — €{s.price}</p>
+                ))}
               </div>
-              {crossSellServices.filter(s => selectedExtras.includes(s.id)).map(s => (
-                <div key={s.id} className="flex justify-between text-xs text-muted-foreground mb-1">
-                  <span>{s.label}</span><span>€{s.price}</span>
-                </div>
-              ))}
-              <div className="flex justify-between text-sm font-extrabold mt-3 pt-3" style={{ borderTop: '1px solid var(--nightlife-border)' }}>
-                <span>Total Escrow</span>
-                <span style={{ color: 'hsl(var(--accent))' }}>€{total}</span>
-              </div>
-            </div>
-
-            {/* Fake card form */}
-            <div className="space-y-3 mb-5">
-              <input type="text" placeholder="Número de tarjeta" value="4242 •••• •••• 4242" readOnly className="nightlife-input text-sm" />
-              <div className="grid grid-cols-2 gap-3">
-                <input type="text" placeholder="MM/AA" value="12/27" readOnly className="nightlife-input text-sm" />
-                <input type="text" placeholder="CVC" value="•••" readOnly className="nightlife-input text-sm" />
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2 text-xs text-muted-foreground mb-4">
-              <Lock size={12} style={{ color: 'hsl(var(--accent))' }} />
-              <span>Fondos retenidos en Escrow hasta confirmación del servicio</span>
-            </div>
-
-            <label className="flex items-start gap-2.5 px-1 cursor-pointer text-left mb-5">
-              <input type="checkbox" checked={acceptedTerms} onChange={e => setAcceptedTerms(e.target.checked)}
-                className="mt-0.5 w-3.5 h-3.5 rounded accent-[#D4AF37]" />
-              <span className="text-[0.6rem] text-muted-foreground leading-tight">
-                Acepto los{' '}
-                <Link to="/terminos" target="_blank" className="font-bold underline" style={{ color: '#D4AF37' }}>
-                  Términos y Condiciones
-                </Link>{' '}y la{' '}
-                <Link to="/privacidad" target="_blank" className="font-bold underline" style={{ color: '#D4AF37' }}>
-                  Política de Privacidad
-                </Link>.
-              </span>
-            </label>
-
+            )}
+            <p className="text-[0.65rem] text-muted-foreground mb-6">
+              En cuanto esté operativa podrás completar la compra directamente aquí.
+            </p>
             <div className="flex gap-3">
               <button onClick={() => setStep('extras')} className="btn-nightlife-secondary flex-1 text-sm">Atrás</button>
-              <button onClick={handlePay} disabled={!acceptedTerms} className="btn-nightlife-primary flex-1 text-sm disabled:opacity-50 disabled:cursor-not-allowed">Pagar €{total}</button>
+              <button onClick={handleClose} className="btn-nightlife-primary flex-1 text-sm">Entendido</button>
             </div>
           </div>
         ) : (
@@ -168,7 +116,7 @@ const CheckoutModal = ({ open, onClose, item }: CheckoutModalProps) => {
               })}
             </div>
 
-            <button onClick={() => setStep('payment')} className="btn-nightlife-primary w-full text-sm">
+            <button onClick={() => setStep('pending')} className="btn-nightlife-primary w-full text-sm">
               Continuar · €{total}
             </button>
           </div>

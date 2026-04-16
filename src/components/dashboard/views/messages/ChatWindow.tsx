@@ -182,7 +182,7 @@ const ChatWindow = ({
                 <X size={12} className="text-muted-foreground" />
               </button>
             </div>
-            <div className="grid grid-cols-10 gap-1">
+            <div className="grid grid-cols-8 sm:grid-cols-10 gap-1">
               {EMOJIS.map(e => (
                 <button key={e} onClick={() => insertEmoji(e)}
                   className="text-lg rounded-lg p-1.5 transition-all hover:scale-125 hover:bg-white/5 text-center leading-none">
@@ -195,7 +195,7 @@ const ChatWindow = ({
 
         <div className="flex items-center gap-2">
           <button type="button" onClick={() => setShowEmoji(!showEmoji)}
-            className="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center transition-all hover:scale-110"
+            className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-all hover:scale-110"
             style={{
               background: showEmoji ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.05)',
               border: `1px solid ${showEmoji ? 'rgba(212,175,55,0.3)' : 'rgba(255,255,255,0.08)'}`,
@@ -205,7 +205,7 @@ const ChatWindow = ({
           </button>
 
           <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploadingPhoto}
-            className="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center transition-all hover:scale-110 disabled:opacity-40"
+            className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-all hover:scale-110 disabled:opacity-40"
             style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.4)' }}>
             {uploadingPhoto
               ? <div className="w-4 h-4 rounded-full border border-t-transparent animate-spin" style={{ borderColor: '#D4AF37', borderTopColor: 'transparent' }} />
@@ -230,7 +230,7 @@ const ChatWindow = ({
           </div>
 
           <button type="button" onClick={onSend} disabled={sending || !input.trim()}
-            className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center transition-all hover:scale-110 active:scale-95 disabled:opacity-30 disabled:hover:scale-100"
+            className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-all hover:scale-110 active:scale-95 disabled:opacity-30 disabled:hover:scale-100"
             style={{ background: input.trim() ? 'linear-gradient(135deg,#D4AF37,#B8941E)' : 'rgba(255,255,255,0.06)', color: input.trim() ? '#000' : 'rgba(255,255,255,0.3)' }}>
             <Send size={16} />
           </button>

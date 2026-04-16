@@ -8,23 +8,23 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
     label: 'DJ / Artista',
     free: [
       'Perfil visible en el directorio',
-      'Hasta 2 géneros musicales',
+      'Géneros musicales ilimitados',
       'Mensajería interna con empresarios',
       'Recibir Flash Bookings (sin aplicar)',
     ],
     plans: {
       starter: [
         'Badge verificado en tu ficha',
-        'Géneros musicales ilimitados',
         'Rider técnico visible en perfil',
         'Estadísticas básicas de visitas',
         'Aparecer en búsquedas por género',
+        'Compra packs de streaming (1h, 5h, 15h, 30h)',
       ],
       business: [
         'Todo lo de Starter',
         'Posicionamiento #1–48 en el directorio',
         'Link de sesión (hearthis / Mixcloud / SoundCloud)',
-        'Streaming en vivo con chat de empresarios',
+        'Streaming en vivo (1h/mes incluida, +€2.99/h)',
         'Fan Club — monetiza tus seguidores (12% comisión)',
         'Flash Booking: aplica a ofertas urgentes',
         'Estadísticas avanzadas + exportar',
@@ -46,23 +46,23 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
     label: 'Artista Promesa',
     free: [
       'Perfil visible como Promesa',
-      'Hasta 2 géneros musicales',
+      'Géneros musicales ilimitados',
       'Recibir votos de la comunidad',
       'Mensajería interna',
     ],
     plans: {
       starter: [
         'Badge verificado en tu ficha',
-        'Géneros musicales ilimitados',
         'Conteo de votos destacado',
         'Estadísticas de visitas básicas',
         'Notificaciones de nuevos votos',
+        'Compra packs de streaming (1h, 5h, 15h, 30h)',
       ],
       business: [
         'Todo lo de Starter',
         'Posicionamiento prioritario entre Promesas',
         'Link de sesión (hearthis / Mixcloud / SoundCloud)',
-        'Streaming en vivo',
+        'Streaming en vivo (1h/mes incluida, +€2.99/h)',
         'Fan Club — empieza a monetizar',
         'Flash Booking: aplica a ofertas urgentes',
         'Sello Business dorado en ficha',
@@ -81,7 +81,7 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
     label: 'Staff & RRPP',
     free: [
       'Perfil visible en directorio Staff',
-      'Hasta 2 especialidades',
+      'Especialidades ilimitadas',
       'Mensajería interna',
       'Recibir Flash Bookings',
     ],
@@ -114,7 +114,7 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
     label: 'Maquillaje & Peluquería',
     free: [
       'Perfil visible en directorio',
-      'Hasta 2 servicios listados',
+      'Servicios ilimitados',
       'Mensajería interna',
     ],
     plans: {
@@ -146,7 +146,7 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
     label: 'Vestuario & Moda',
     free: [
       'Perfil visible en directorio',
-      'Hasta 2 especialidades',
+      'Especialidades ilimitadas',
       'Mensajería interna',
     ],
     plans: {
@@ -178,7 +178,7 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
     label: 'Media & Contenido',
     free: [
       'Perfil visible en directorio',
-      'Hasta 2 especialidades',
+      'Especialidades ilimitadas',
       'Mensajería interna',
     ],
     plans: {
@@ -211,7 +211,7 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
     label: 'Diseño & Visuales',
     free: [
       'Perfil visible en directorio',
-      'Hasta 2 especialidades',
+      'Especialidades ilimitadas',
       'Mensajería interna',
     ],
     plans: {
@@ -243,7 +243,7 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
     label: 'Promotor',
     free: [
       'Perfil visible en directorio',
-      'Hasta 2 especialidades',
+      'Especialidades ilimitadas',
       'Mensajería interna',
     ],
     plans: {
@@ -275,7 +275,7 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
     label: 'Brand Ambassador',
     free: [
       'Perfil visible en directorio',
-      'Hasta 2 especialidades',
+      'Especialidades ilimitadas',
       'Mensajería interna',
     ],
     plans: {

@@ -132,7 +132,7 @@ const PortfolioUpload = () => {
       </p>
 
       {items.length > 0 && (
-        <div className="grid grid-cols-3 gap-2 mb-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
           {items.map((item, i) => (
             <div key={i} className="relative aspect-square rounded-lg overflow-hidden group" style={{ background: 'rgba(0,0,0,0.4)' }}>
               {item.isVideo ? (

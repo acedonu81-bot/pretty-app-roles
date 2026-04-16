@@ -1,23 +1,55 @@
 import { useState, useEffect, useRef } from 'react';
 import { Zap, Clock, MapPin, Lock, ToggleLeft, ToggleRight, AlertTriangle } from 'lucide-react';
-import { profiles, Profile } from '@/data/profiles';
 import { useProfile } from '@/hooks/useProfile';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import FlashBookingRequestModal from '@/components/dashboard/FlashBookingRequestModal';
 
 const FREE_DELAY_SECONDS = 15 * 60;
+
+interface FlashProfile {
+  id: string;
+  name: string;
+  photo: string;
+  specialty: string;
+  zone: string;
+  price: number;
+  priceUnit: string;
+  role: string;
+}
 
 const OfertaTab = () => {
   const currentUser = useProfile();
   const isEmpresario = currentUser.role === 'empresario';
   const isFreeUser = currentUser.subscription_tier === 'free';
 
-  const flashProfiles: Profile[] = profiles.filter((p: Profile) => p.isFlashActive);
+  const [flashProfiles, setFlashProfiles] = useState<FlashProfile[]>([]);
+  const [loadingProfiles, setLoadingProfiles] = useState(true);
   const [isFlashActive, setIsFlashActive] = useState(false);
+
+  useEffect(() => {
+    supabase
+      .from('profiles')
+      .select('id, display_name, photo_url, specialty, zone, hourly_rate, role')
+      .eq('is_flash_active', true)
+      .then(({ data }) => {
+        setFlashProfiles((data ?? []).map(p => ({
+          id: p.id,
+          name: p.display_name || 'Profesional',
+          photo: p.photo_url || '',
+          specialty: p.specialty || '',
+          zone: p.zone || 'España',
+          price: p.hourly_rate || 0,
+          priceUnit: '/hora',
+          role: p.role,
+        })));
+        setLoadingProfiles(false);
+      });
+  }, []);
   const [freeCountdown, setFreeCountdown] = useState(0);
   const [freeActivatedAt, setFreeActivatedAt] = useState<number | null>(null);
   const countdownRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const [selectedPro, setSelectedPro] = useState<Profile | null>(null);
+  const [selectedPro, setSelectedPro] = useState<FlashProfile | null>(null);
 
   useEffect(() => {
     if (isFreeUser && freeActivatedAt !== null) {
@@ -54,6 +86,7 @@ const OfertaTab = () => {
       setFreeActivatedAt(Date.now());
       toast.info('Eres usuario gratuito — tu perfil será visible en 15 minutos');
     } else if (next) {
+      await currentUser.activateTrial();
       toast.success('¡Flash Booking activado! Eres visible ahora');
     } else {
       setFreeActivatedAt(null);
@@ -120,7 +153,12 @@ const OfertaTab = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {flashProfiles.map(p => (
+        {loadingProfiles && (
+          <div className="col-span-full flex items-center justify-center py-10">
+            <div className="text-xs text-muted-foreground animate-pulse">Cargando disponibles...</div>
+          </div>
+        )}
+        {!loadingProfiles && flashProfiles.map(p => (
           <div key={p.id} className="glass-panel p-4 flex flex-col gap-3 transition-all hover:border-amber-500/20">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center text-sm font-bold relative"
@@ -159,7 +197,7 @@ const OfertaTab = () => {
             </div>
           </div>
         ))}
-        {flashProfiles.length === 0 && (
+        {!loadingProfiles && flashProfiles.length === 0 && (
           <div className="col-span-full glass-panel p-10 flex flex-col items-center text-center gap-3">
             <div className="w-14 h-14 rounded-full flex items-center justify-center"
               style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.1)' }}>

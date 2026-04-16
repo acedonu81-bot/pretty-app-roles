@@ -16,8 +16,60 @@ export interface SubscriptionPlan {
 export const TRIAL_DAYS = 15;
 export const ANNUAL_DISCOUNT = 0.30;
 export const BIRTHDAY_DISCOUNT = 0.40;
-export const FAN_COMMISSION = 0.12;     // 12% sobre ingresos fan club
-export const FLASH_COMMISSION = 0.05;  // 5% comisión Flash Booking confirmado
+export const FAN_COMMISSION = 0.12;       // 12% sobre ingresos fan club
+export const FLASH_COMMISSION = 0.05;    // 5% comisión Flash Booking confirmado
+
+// Streaming (Amazon IVS)
+export const STREAMING_HOURS_BUSINESS = 1;   // horas/mes incluidas en Business
+export const STREAMING_HOURS_AGENCY = 3;     // horas/mes incluidas en Agency (pool 5 perfiles)
+export const STREAMING_OVERAGE_PRICE = 2.99; // €/hora adicional
+
+export interface StreamingPack {
+  id: string;
+  label: string;
+  hours: number;
+  price: number;
+  pricePerHour: number;
+  badge?: string;
+  highlight?: boolean;
+}
+
+export const STREAMING_PACKS: StreamingPack[] = [
+  {
+    id: 'single',
+    label: '1 hora',
+    hours: 1,
+    price: 5.99,
+    pricePerHour: 5.99,
+  },
+  {
+    id: 'pack_s',
+    label: 'Pack S — 5 horas',
+    hours: 5,
+    price: 19.99,
+    pricePerHour: 4.00,
+    badge: 'POPULAR',
+    highlight: true,
+  },
+  {
+    id: 'pack_m',
+    label: 'Pack M — 15 horas',
+    hours: 15,
+    price: 54.99,
+    pricePerHour: 3.67,
+  },
+  {
+    id: 'pack_l',
+    label: 'Pack L — 30 horas',
+    hours: 30,
+    price: 99.99,
+    pricePerHour: 3.33,
+    badge: 'MEJOR PRECIO',
+  },
+];
+
+// Planes que pueden comprar packs de streaming
+export const STREAMING_PACK_ELIGIBLE_PLANS = ['starter', 'business', 'agency'] as const;
 
 export const subscriptionPlans: SubscriptionPlan[] = [
   {
@@ -29,7 +81,7 @@ export const subscriptionPlans: SubscriptionPlan[] = [
       'Perfil visible en el directorio',
       'Mensajería interna XPEAK',
       'Recibir ofertas Flash Booking',
-      'Hasta 2 géneros / especialidades',
+      'Géneros / especialidades ilimitados',
       'Etiqueta Promesa o Básico',
     ],
     textColor: '#8E8EA0',
@@ -45,9 +97,9 @@ export const subscriptionPlans: SubscriptionPlan[] = [
     features: [
       'Badge verificado en tu ficha',
       'Estadísticas básicas (visitas, mensajes)',
-      'Géneros / especialidades ilimitados',
       'Aparición en búsquedas mejorada',
-      '15 días gratis al activar',
+      'Compra packs de streaming (1h, 5h, 15h, 30h)',
+      '15 días gratis al usar una función',
     ],
     textColor: '#A8C5DA',
     annualEligible: true,
@@ -61,7 +113,7 @@ export const subscriptionPlans: SubscriptionPlan[] = [
     features: [
       'Posicionamiento prioritario #1–48',
       'Estadísticas avanzadas + exportar',
-      'Streaming ilimitado',
+      '1h streaming en vivo/mes incluida (+ €2.99/h extra)',
       'Sello Business dorado',
       'Notificaciones Flash antes que nadie',
       'Soporte prioritario 24/7',
@@ -80,7 +132,7 @@ export const subscriptionPlans: SubscriptionPlan[] = [
     features: [
       'Gestión de hasta 5 perfiles',
       'Analíticas de toda la agencia',
-      'Streaming 24/7 en todos los perfiles',
+      '3h streaming/mes en pool de 5 perfiles (+ €2.49/h extra)',
       'Visibilidad máxima garantizada',
       'Sello Agencia exclusivo',
       'API de integración (próximamente)',
@@ -106,12 +158,16 @@ export const mapSubscriptionTierToPlan = (tier?: string | null): SubscriptionPla
   }
 };
 
-export const getTrialDaysRemaining = (trialStartedAt?: string | null) => {
-  if (!trialStartedAt) return TRIAL_DAYS;
+/**
+ * Returns:
+ *   null   → trial not started yet (user hasn't used a premium feature)
+ *   number → days remaining (0 means expired)
+ */
+export const getTrialDaysRemaining = (trialStartedAt?: string | null): number | null => {
+  if (!trialStartedAt) return null;
   const start = new Date(trialStartedAt);
-  const now = new Date();
-  if (Number.isNaN(start.getTime())) return TRIAL_DAYS;
-  const elapsedMs = now.getTime() - start.getTime();
+  if (Number.isNaN(start.getTime())) return null;
+  const elapsedMs = Date.now() - start.getTime();
   const elapsedDays = Math.floor(elapsedMs / (1000 * 60 * 60 * 24));
   return Math.max(TRIAL_DAYS - elapsedDays, 0);
 };

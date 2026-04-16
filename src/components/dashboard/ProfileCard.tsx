@@ -79,7 +79,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
   else if (tierLabel === 'BUSINESS') statusBadges.push({ label: 'BUSINESS', bg: 'rgba(212,175,55,0.12)', color: '#D4AF37' });
   else if (tierLabel === 'STARTER') statusBadges.push({ label: 'STARTER', bg: 'rgba(168,197,218,0.12)', color: '#A8C5DA' });
   if (isRookie) statusBadges.push({ label: 'PROMESA', bg: 'rgba(255,188,0,0.1)', color: '#ffbc00' });
-  if (p.isFlashActive) statusBadges.push({ label: 'DISPONIBLE', bg: 'rgba(34,197,94,0.12)', color: '#22c55e' });
+  if (p.isFlashActive && !p.isLive) statusBadges.push({ label: 'DISPONIBLE', bg: 'rgba(34,197,94,0.12)', color: '#22c55e' });
 
   // Social/platform links
   const isDJ = p.role === 'dj' || p.role === 'rookie';
@@ -359,7 +359,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
 
       <div className="flex items-center justify-between pt-3 gap-2 flex-wrap" style={{ borderTop: '1px solid var(--nightlife-border)' }}
         onClick={e => e.stopPropagation()}>
-        <span className="text-sm sm:text-base font-bold whitespace-nowrap" style={{ color: '#D4AF37' }}>
+        <span className="text-sm sm:text-base font-bold" style={{ color: '#D4AF37' }}>
           {['makeup', 'vestuario', 'media', 'design'].includes(p.role)
             ? 'A consultar'
             : canSeePrice

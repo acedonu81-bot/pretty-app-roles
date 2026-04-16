@@ -1,10 +1,9 @@
-/** Zonas geográficas disponibles en la plataforma (España + Portugal) */
+/** Zonas geográficas disponibles en la plataforma (España) */
 export const ZONES = [
   'Todas',
   'Madrid Centro', 'Malasaña', 'Salamanca', 'Chueca', 'Chamberí', 'Lavapiés', 'La Latina',
   'Barcelona', 'Valencia', 'Sevilla', 'Bilbao', 'Málaga', 'Ibiza', 'Palma de Mallorca',
   'Zaragoza', 'Murcia', 'Alicante', 'Granada',
-  'Lisboa', 'Porto', 'Faro', 'Cascais', 'Vilamoura',
 ];
 
 /** Traducciones de roles internos al español para mostrar al usuario */

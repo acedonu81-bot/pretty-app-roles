@@ -24,6 +24,7 @@ import EmpresarioView from '@/components/dashboard/views/EmpresarioView';
 import FanClubView from '@/components/dashboard/views/FanClubView';
 import AdminGuard from '@/components/AdminGuard';
 import OnboardingTour from '@/components/dashboard/OnboardingTour';
+import MobileBottomNav from '@/components/dashboard/MobileBottomNav';
 import { useAuth } from '@/hooks/useAuth';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
@@ -32,8 +33,11 @@ import { ProfileProvider } from '@/hooks/useProfile';
 const Dashboard = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const initialView = (location.state as { view?: string })?.view || 'dj';
-  const [activeView, setActiveView] = useState(initialView);
+  const [activeView, setActiveView] = useState<string>(() => {
+    const fromState = (location.state as { view?: string })?.view;
+    if (fromState) return fromState;
+    return localStorage.getItem('xpeak_view') || 'dj';
+  });
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [messagesTarget, setMessagesTarget] = useState<{ userId: string; name: string } | null>(null);
   const isMobile = useIsMobile();
@@ -47,6 +51,7 @@ const Dashboard = () => {
 
   const handleViewChange = (view: string) => {
     setActiveView(view);
+    localStorage.setItem('xpeak_view', view);
     if (isMobile) setSidebarOpen(false);
   };
 
@@ -114,12 +119,20 @@ const Dashboard = () => {
         </Sheet>
       )}
 
-      <main className="flex-1 flex flex-col overflow-y-auto relative min-w-0">
+      <main className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden relative min-w-0">
         <DashboardTopbar onMenuToggle={() => setSidebarOpen(true)} isMobile={isMobile} />
-        <div className="p-4 md:p-6 flex-1 pb-20">
+        <div className="p-4 md:p-6 flex-1 pb-24 md:pb-6">
           {renderView()}
         </div>
       </main>
+
+      {isMobile && (
+        <MobileBottomNav
+          activeView={activeView}
+          onViewChange={handleViewChange}
+          onMenuToggle={() => setSidebarOpen(true)}
+        />
+      )}
 
       <OnboardingTour onNavigate={handleViewChange} />
     </div>

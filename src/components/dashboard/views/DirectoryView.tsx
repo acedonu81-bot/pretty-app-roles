@@ -1,11 +1,10 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Crown, Eye, Maximize2, Minimize2, Users, Video, Settings, Globe, Zap, Lock } from 'lucide-react';
-import { profiles, getEliteRotation, Profile } from '@/data/profiles';
+import { Profile } from '@/data/profiles';
 import ProfileCard from '@/components/dashboard/ProfileCard';
 import CheckoutModal from '@/components/dashboard/CheckoutModal';
 import OffersWidget from '@/components/dashboard/OffersWidget';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
-import LiveBetaButton from '@/components/dashboard/LiveBetaButton';
 import UpgradeModal from '@/components/dashboard/UpgradeModal';
 import { useProfile } from '@/hooks/useProfile';
 import { normalizeStreamUrl, parseStreamUrl } from '@/lib/streaming';
@@ -167,10 +166,7 @@ const StreamSettingsPanel = ({
 
 const EU_COUNTRIES = [
   'Todas las ciudades',
-  // España
   'Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao', 'Málaga', 'Ibiza', 'Palma de Mallorca', 'Zaragoza', 'Murcia', 'Alicante', 'Granada',
-  // Portugal
-  'Lisboa', 'Porto', 'Faro', 'Cascais', 'Vilamoura',
 ];
 
 const TIER_ORDER = ['free', 'starter', 'business', 'agency', 'elite', 'premium'];
@@ -186,11 +182,10 @@ const TIER_CONFIG: Record<string, { label: string; color: string; bg: string }> 
 const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards }: DirectoryViewProps) => {
   const profile = useProfile();
   const isUserFree = profile.subscription_tier === 'free';
-  const roleProfiles = profiles.filter(p => p.role === role);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [checkoutItem, setCheckoutItem] = useState<{ name: string; price: number; description: string } | null>(null);
-  const [sortedProfiles, setSortedProfiles] = useState(() => getEliteRotation(roleProfiles));
   const [realProfiles, setRealProfiles] = useState<Profile[]>([]);
+  const [loadingProfiles, setLoadingProfiles] = useState(true);
   const [expandedStream, setExpandedStream] = useState<number | null>(null);
   const [showStreamSettings, setShowStreamSettings] = useState(false);
   const [streamUrl, setStreamUrl] = useState(profile.stream_url ?? '');
@@ -200,21 +195,16 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   useEffect(() => {
-    setSortedProfiles(getEliteRotation(roleProfiles));
-    const iv = setInterval(() => setSortedProfiles(getEliteRotation(roleProfiles)), 60 * 60 * 1000);
-    return () => clearInterval(iv);
-  }, [role]);
-
-  useEffect(() => {
+    setLoadingProfiles(true);
     supabase
       .from('profiles')
-      .select('user_id, display_name, photo_url, zone, hourly_rate, specialty, subscription_tier, is_live, genres, audio_embed_url, bio, languages, tiktok, category, is_verified, is_flash_active')
+      .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, subscription_tier, is_live, genres, audio_embed_url, bio, languages, tiktok, category, is_verified, is_flash_active, stream_url')
       .eq('role', role)
       .limit(200)
       .then(({ data }) => {
-        if (!data) return;
-        const mapped: Profile[] = data.map((row, i) => ({
-          id: 90000 + i,
+        if (!data) { setLoadingProfiles(false); return; }
+        const mapped: Profile[] = data.map((row) => ({
+          id: row.id,
           userId: row.user_id,
           name: row.display_name || 'Sin nombre',
           role: role as Profile['role'],
@@ -242,27 +232,28 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
           isPremium: row.subscription_tier !== 'free',
           languages: row.languages ?? [],
           tiktok: row.tiktok || '',
+          streamUrl: row.stream_url || undefined,
           category: (row.category as Profile['category']) ?? 'professional',
           isVerified: row.is_verified ?? false,
         }));
         setRealProfiles(mapped);
+        setLoadingProfiles(false);
       });
   }, [role]);
 
   const filteredProfiles = useMemo(() => {
-    const combined = [...realProfiles, ...sortedProfiles];
-    if (filterCity === 'Todas las ciudades') return combined;
-    return combined.filter(p =>
-      p.city === filterCity || p.zone === filterCity || p.location === filterCity
+    if (filterCity === 'Todas las ciudades') return realProfiles;
+    return realProfiles.filter(p =>
+      p.city === filterCity || p.zone?.includes(filterCity) || p.location === filterCity
     );
-  }, [realProfiles, sortedProfiles, filterCity]);
+  }, [realProfiles, filterCity]);
 
   useEffect(() => {
     setStreamUrl(profile.stream_url ?? '');
     setStreamTitle(profile.stream_title ?? '');
   }, [profile.stream_url, profile.stream_title]);
 
-  const liveStreamers = roleProfiles
+  const liveStreamers = realProfiles
     .filter(p => p.isLive || p.streamUrl)
     .sort((a, b) => b.profileViews - a.profileViews);
 
@@ -388,7 +379,7 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
       <div className="flex flex-wrap items-center gap-2 mb-5">
         <div className="flex items-center gap-1.5">
           <Globe size={12} style={{ color: '#D4AF37' }} />
-          <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>ES · PT</span>
+          <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>ES</span>
         </div>
         <div className="flex flex-wrap gap-1.5 flex-1">
           {EU_COUNTRIES.map(c => (
@@ -408,7 +399,13 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
         </span>
       </div>
 
-      {filteredProfiles.length === 0 && (
+      {loadingProfiles && (
+        <div className="glass-panel p-10 flex flex-col items-center text-center gap-2 mb-5">
+          <div className="text-xs text-muted-foreground animate-pulse">Cargando directorio...</div>
+        </div>
+      )}
+
+      {!loadingProfiles && filteredProfiles.length === 0 && (
         <div className="glass-panel p-10 flex flex-col items-center text-center gap-3 mb-5">
           <div className="w-12 h-12 rounded-full flex items-center justify-center"
             style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.1)' }}>
@@ -416,16 +413,20 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
           </div>
           <div>
             <p className="text-sm font-bold mb-1" style={{ color: 'rgba(255,255,255,0.35)' }}>
-              Sin resultados en {filterCity}
+              {filterCity === 'Todas las ciudades' ? 'Aún no hay profesionales registrados' : `Sin resultados en ${filterCity}`}
             </p>
-            <p className="text-xs text-muted-foreground mb-3 max-w-[240px] mx-auto">
-              Aún no hay profesionales registrados en esta ciudad.
+            <p className="text-xs text-muted-foreground mb-3 max-w-[260px] mx-auto">
+              {filterCity === 'Todas las ciudades'
+                ? 'El directorio se irá llenando a medida que se registren profesionales.'
+                : 'Prueba con otra ciudad o consulta el directorio completo.'}
             </p>
-            <button onClick={() => setFilterCity('Todas las ciudades')}
-              className="text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-105"
-              style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
-              Ver todos
-            </button>
+            {filterCity !== 'Todas las ciudades' && (
+              <button onClick={() => setFilterCity('Todas las ciudades')}
+                className="text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-105"
+                style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                Ver todos
+              </button>
+            )}
           </div>
         </div>
       )}
@@ -494,9 +495,6 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
         ))}
       </div>
 
-      <div className="mt-6">
-        <LiveBetaButton />
-      </div>
 
       <OffersWidget title={`Ofertas para ${title}`} role={role} />
       <CheckoutModal open={checkoutOpen} onClose={() => setCheckoutOpen(false)} item={checkoutItem} />

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { Upload, Music, X, Plus } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -41,9 +41,17 @@ const AudioUpload = () => {
   const [sessions, setSessions] = useState<SessionFile[]>([]);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [showGenres, setShowGenres] = useState(false);
+  const [savingGenres, setSavingGenres] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { user } = useAuth();
   const profile = useProfile();
+
+  // Initialize genres from profile once loaded
+  useEffect(() => {
+    if (profile.genres && profile.genres.length > 0) {
+      setSelectedGenres(profile.genres);
+    }
+  }, [profile.genres?.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const isPro = profile.subscription_tier === 'pro' || profile.subscription_tier === 'business';
   const maxSessions = isPro ? Infinity : MAX_SESSIONS_FREE;
@@ -67,9 +75,16 @@ const AudioUpload = () => {
 
   const toggleGenre = (genre: string) => {
     setSelectedGenres(prev =>
-      prev.includes(genre) ? prev.filter(g => g !== genre) : prev.length < 5 ? [...prev, genre] : prev
+      prev.includes(genre) ? prev.filter(g => g !== genre) : [...prev, genre]
     );
   };
+
+  const saveGenres = useCallback(async (genres: string[]) => {
+    setSavingGenres(true);
+    await profile.updateField({ genres });
+    setSavingGenres(false);
+    toast.success('Géneros guardados.');
+  }, [profile]);
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -99,6 +114,7 @@ const AudioUpload = () => {
       feature_name: `audio_upload:${file.name}`,
     }).then(() => {}, () => {});
 
+    await profile.activateTrial();
     toast.success('Sesión subida y guardada correctamente.');
     setUploading(false);
     if (inputRef.current) inputRef.current.value = '';
@@ -124,11 +140,22 @@ const AudioUpload = () => {
 
       {/* Genre selector */}
       <div className="mb-3">
-        <button onClick={() => setShowGenres(!showGenres)}
-          className="text-sm font-bold px-3 py-1.5 rounded-lg transition-all"
-          style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.15)', color: '#D4AF37' }}>
-          🎵 Géneros ({selectedGenres.length}/5)
-        </button>
+        <div className="flex items-center gap-2">
+          <button onClick={() => setShowGenres(!showGenres)}
+            className="text-sm font-bold px-3 py-1.5 rounded-lg transition-all"
+            style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.15)', color: '#D4AF37' }}>
+            Géneros ({selectedGenres.length}/5)
+          </button>
+          {selectedGenres.length > 0 && (
+            <button
+              onClick={() => saveGenres(selectedGenres)}
+              disabled={savingGenres}
+              className="text-xs font-bold px-3 py-1.5 rounded-lg transition-all disabled:opacity-50"
+              style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', color: '#22c55e' }}>
+              {savingGenres ? 'Guardando…' : 'Guardar'}
+            </button>
+          )}
+        </div>
         {selectedGenres.length > 0 && (
           <div className="flex flex-wrap gap-1 mt-2">
             {selectedGenres.map(g => (

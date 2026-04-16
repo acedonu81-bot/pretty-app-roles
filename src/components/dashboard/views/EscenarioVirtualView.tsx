@@ -1,14 +1,125 @@
 import { useState, useEffect, useRef } from 'react';
-import { Radio, Send, Eye, MessageCircle, MessageSquare, ExternalLink, Crown } from 'lucide-react';
+import { Radio, Send, Eye, MessageCircle, MessageSquare, ExternalLink, Crown, Flag, X } from 'lucide-react';
 import { toast } from 'sonner';
-import { profiles } from '@/data/profiles';
 import { useProfile } from '@/hooks/useProfile';
 import { normalizeStreamUrl, parseStreamUrl } from '@/lib/streaming';
 import { sanitizeInput } from '@/lib/contentFilter';
-
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
+import IVSPlayer from '@/components/dashboard/IVSPlayer';
+import StreamingPacksSection from '@/components/dashboard/StreamingPacksSection';
 
 // Chat starts empty — messages accumulate from live viewers and sendChat()
 const fakeChat: { user: string; text: string; color: string }[] = [];
+
+const REPORT_REASONS = [
+  'Contenido ilegal o violento',
+  'Consumo de sustancias',
+  'Contenido sexual explícito',
+  'Acoso o discriminación',
+  'Infracción de derechos de autor',
+  'Otro',
+];
+
+const ReportModal = ({
+  onClose,
+  streamerId,
+  streamerName,
+}: {
+  onClose: () => void;
+  streamerId: string;
+  streamerName: string;
+}) => {
+  const { user } = useAuth();
+  const [selected, setSelected] = useState('');
+  const [detail, setDetail] = useState('');
+  const [sending, setSending] = useState(false);
+
+  const submit = async () => {
+    if (!selected) { toast.error('Selecciona un motivo.'); return; }
+    setSending(true);
+    await supabase.from('feature_requests').insert({
+      user_id: user?.id ?? null,
+      feature_name: `live_report:${streamerId}:${selected}`,
+      description: detail.trim() || null,
+    }).then(() => {}, () => {});
+    setSending(false);
+    toast.success('Reporte enviado. Revisaremos el directo en menos de 24 h.');
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+      <div
+        className="relative w-full max-w-sm glass-panel p-5 animate-[fadeIn_0.2s_ease]"
+        onClick={e => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 w-7 h-7 rounded flex items-center justify-center hover:bg-white/10 transition-colors"
+          style={{ color: 'rgba(255,255,255,0.5)' }}
+        >
+          <X size={15} />
+        </button>
+
+        <div className="flex items-center gap-2 mb-4">
+          <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
+            style={{ background: 'rgba(255,95,86,0.1)', border: '1px solid rgba(255,95,86,0.25)' }}>
+            <Flag size={13} style={{ color: '#ff5f56' }} />
+          </div>
+          <div>
+            <p className="text-sm font-bold">Reportar directo</p>
+            <p className="text-[0.6rem] text-muted-foreground truncate max-w-[200px]">{streamerName}</p>
+          </div>
+        </div>
+
+        <p className="text-[0.65rem] text-muted-foreground mb-3">
+          Motivo del reporte — revisaremos el contenido en menos de 24 horas.
+        </p>
+
+        <div className="flex flex-col gap-1.5 mb-3">
+          {REPORT_REASONS.map(r => (
+            <button
+              key={r}
+              onClick={() => setSelected(r)}
+              className="text-left text-xs px-3 py-2 rounded-lg transition-all"
+              style={{
+                background: selected === r ? 'rgba(255,95,86,0.1)' : 'rgba(255,255,255,0.02)',
+                border: selected === r ? '1px solid rgba(255,95,86,0.35)' : '1px solid rgba(255,255,255,0.06)',
+                color: selected === r ? '#ff5f56' : 'var(--nightlife-text-secondary)',
+                fontWeight: selected === r ? 700 : 400,
+              }}
+            >
+              {r}
+            </button>
+          ))}
+        </div>
+
+        <textarea
+          value={detail}
+          onChange={e => setDetail(e.target.value.slice(0, 300))}
+          placeholder="Detalles adicionales (opcional, máx. 300 caracteres)"
+          rows={3}
+          className="nightlife-input w-full text-xs !py-2 mb-3 resize-none"
+        />
+
+        <button
+          onClick={submit}
+          disabled={sending || !selected}
+          className="w-full py-2.5 rounded-lg font-bold text-sm transition-all disabled:opacity-50"
+          style={{ background: 'rgba(255,95,86,0.15)', border: '1px solid rgba(255,95,86,0.3)', color: '#ff5f56' }}
+        >
+          {sending ? 'Enviando...' : 'Enviar reporte'}
+        </button>
+
+        <p className="text-[0.55rem] text-muted-foreground text-center mt-2">
+          Los reportes falsos o abusivos pueden suponer la suspensión de tu cuenta.
+        </p>
+      </div>
+    </div>
+  );
+};
 
 const EscenarioVirtualView = () => {
   const profile = useProfile();
@@ -22,6 +133,7 @@ const EscenarioVirtualView = () => {
   const [streamTitle, setStreamTitle] = useState(profile.stream_title ?? '');
   const [savingStream, setSavingStream] = useState(false);
   const [showUrlInput, setShowUrlInput] = useState(false);
+  const [showReport, setShowReport] = useState(false);
   const chatRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -66,7 +178,7 @@ const EscenarioVirtualView = () => {
     const trimmedUrl = streamUrl.trim();
 
     if (trimmedUrl && !streamEmbed) {
-      toast.error('La URL no es compatible. Usa Twitch, YouTube Live o Mixcloud.');
+      toast.error('La URL no es compatible. Usa Twitch, YouTube, Mixcloud, SoundCloud, Vimeo o Spotify.');
       return;
     }
 
@@ -75,6 +187,7 @@ const EscenarioVirtualView = () => {
       stream_url: trimmedUrl ? normalizedStreamUrl : null,
       stream_title: streamTitle.trim() || null,
     });
+    if (trimmedUrl) await profile.activateTrial();
     setSavingStream(false);
     toast.success('Ajustes del directo guardados.');
   };
@@ -86,33 +199,20 @@ const EscenarioVirtualView = () => {
     }
     const newLive = !isLive;
     setIsLive(newLive);
-    // Persist is_live to DB
     await profile.updateField({ is_live: newLive });
     toast.success(newLive ? '¡Estás en directo!' : 'Has salido del directo.');
   };
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
-      {/* Top global streamer banner */}
-      {(() => {
-        const topGlobal = [...profiles].filter(p => p.isLive || p.streamUrl).sort((a, b) => b.profileViews - a.profileViews)[0];
-        if (!topGlobal) return null;
-        return (
-          <div className="glass-panel p-3 mb-4 flex items-center gap-3" style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
-            <Crown size={16} style={{ color: '#D4AF37' }} />
-            <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>Más visto ahora:</span>
-            <span className="text-xs font-semibold">{topGlobal.name}</span>
-            <span className="text-[0.6rem] text-muted-foreground">— {topGlobal.specialty}</span>
-            <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded"
-              style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
-              DEMO
-            </span>
-            <span className="ml-auto text-[0.6rem] flex items-center gap-1 text-muted-foreground">
-              <Eye size={10} /> {topGlobal.profileViews.toLocaleString()}
-            </span>
-          </div>
-        );
-      })()}
+      {showReport && (
+        <ReportModal
+          onClose={() => setShowReport(false)}
+          streamerId={profile.id ?? 'unknown'}
+          streamerName={profile.display_name ?? 'Directo'}
+        />
+      )}
+
 
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-5 gap-3">
         <div>
@@ -144,11 +244,11 @@ const EscenarioVirtualView = () => {
           <p className="text-xs font-bold mb-2 flex items-center gap-2">
             <ExternalLink size={12} style={{ color: '#D4AF37' }} /> Introduce tu URL de streaming
           </p>
-          <p className="text-[0.6rem] text-muted-foreground mb-3">Soporta Twitch, YouTube Live y Mixcloud</p>
+          <p className="text-[0.6rem] text-muted-foreground mb-3">Soporta Twitch, YouTube, Mixcloud, SoundCloud, HearThis, Vimeo y Spotify</p>
           <input value={streamTitle} onChange={e => setStreamTitle(e.target.value)}
             placeholder="Título del directo" className="nightlife-input text-sm !py-2.5 mb-2" />
           <input value={streamUrl} onChange={e => setStreamUrl(e.target.value)}
-            placeholder="https://twitch.tv/tu_canal o https://youtube.com/live/..." className="nightlife-input text-sm !py-2.5" />
+            placeholder="Twitch, YouTube, Mixcloud, SoundCloud, Vimeo, Spotify..." className="nightlife-input text-sm !py-2.5" />
           {streamEmbed && (
             <p className="text-[0.6rem] mt-2 font-bold" style={{ color: '#22c55e' }}>✓ {streamEmbed.type} detectado</p>
           )}
@@ -181,15 +281,19 @@ const EscenarioVirtualView = () => {
           <div className="glass-panel p-5">
             <div className="relative w-full rounded-lg overflow-hidden" style={{ background: 'rgba(0,0,0,0.6)', aspectRatio: '16/9' }}>
               {streamEmbed && isLive ? (
+                streamEmbed.isHls ? (
+                  <IVSPlayer src={streamEmbed.embedUrl} />
+                ) : (
                 <iframe
                   src={streamEmbed.embedUrl}
                   title={`Stream en directo — ${streamEmbed.type}`}
                   className="absolute inset-0 w-full h-full"
                   allowFullScreen
                   allow="autoplay; encrypted-media"
-                  sandbox="allow-scripts allow-same-origin allow-presentation"
+                  sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
                   style={{ border: 'none' }}
                 />
+                )
               ) : isLive ? (
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
                   <div className="flex items-end justify-center gap-1 h-16">
@@ -217,15 +321,37 @@ const EscenarioVirtualView = () => {
                   )}
                 </div>
               )}
+
+              {/* DSA report button — always visible over the player */}
+              <button
+                onClick={() => setShowReport(true)}
+                className="absolute top-2 right-2 flex items-center gap-1 px-2 py-1 rounded transition-all hover:opacity-100"
+                style={{
+                  background: 'rgba(0,0,0,0.55)',
+                  border: '1px solid rgba(255,95,86,0.2)',
+                  color: 'rgba(255,95,86,0.6)',
+                  opacity: 0.7,
+                  backdropFilter: 'blur(6px)',
+                }}
+                title="Reportar este contenido"
+              >
+                <Flag size={10} />
+                <span className="text-[0.5rem] font-bold uppercase tracking-wider">Reportar</span>
+              </button>
             </div>
-            <button
-              type="button"
-              onClick={() => toast.info('Usa Mensajes para contactar directamente.')}
-              className="mt-4 w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:scale-[1.01]"
-              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              <MessageCircle size={18} /> Enviar mensaje
-            </button>
+
+            <div className="flex gap-2 mt-4">
+              <button
+                type="button"
+                onClick={() => toast.info('Usa Mensajes para contactar directamente.')}
+                className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:scale-[1.01]"
+                style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                <MessageCircle size={18} /> Enviar mensaje
+              </button>
+            </div>
           </div>
+
+          <StreamingPacksSection />
         </div>
 
         <div className="glass-panel p-4 flex flex-col min-h-0">

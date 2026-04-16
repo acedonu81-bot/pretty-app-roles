@@ -7,7 +7,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import AudioUpload from '@/components/dashboard/AudioUpload';
 import PortfolioUpload from '@/components/dashboard/PortfolioUpload';
-import LiveBetaButton from '@/components/dashboard/LiveBetaButton';
 import { subscriptionPlans, mapSubscriptionTierToPlan } from '@/lib/subscriptions';
 import { sanitizeInput } from '@/lib/contentFilter';
 import VerificationSection from './profile/VerificationSection';
@@ -439,12 +438,6 @@ const ProfileView = () => {
               {deleting ? 'Eliminando...' : 'Eliminar todo mi contenido multimedia'}
             </button>
           </div>
-          {profile.role === 'dj' && (
-            <div className="glass-panel p-5">
-              <h4 className="text-base font-bold mb-3">Vídeo en Directo</h4>
-              <LiveBetaButton />
-            </div>
-          )}
           <div className="glass-panel p-5">
             <h4 className="text-base font-bold mb-4">Valoraciones</h4>
             <div className="flex flex-col items-center py-6 gap-3">

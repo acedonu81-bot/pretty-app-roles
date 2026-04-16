@@ -64,8 +64,8 @@ const VerificationSection = () => {
           }}>
           <Shield size={20} style={{ color: syncedStatus === 'approved' ? '#000' : '#D4AF37' }} />
         </div>
-        <div className="flex-1">
-          <div className="flex items-center gap-2">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 flex-wrap">
             <h4 className="text-base font-bold">Sello de Oro XPEAK</h4>
             {syncedStatus === 'approved' && (
               <span className="text-[0.55rem] font-black px-1.5 py-0.5 rounded-full"

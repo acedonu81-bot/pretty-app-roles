@@ -14,7 +14,7 @@ interface ProfileData {
   subscription_tier: string;
   stream_url: string | null;
   stream_title: string | null;
-  trial_started_at: string;
+  trial_started_at: string | null;
   annual_billing: boolean;
   is_live: boolean;
   phone: string | null;
@@ -32,6 +32,8 @@ interface ProfileCtx extends ProfileData {
   loading: boolean;
   refresh: () => Promise<void>;
   updateField: (fields: Partial<ProfileData>) => Promise<boolean>;
+  /** Activates the 15-day trial on first premium feature use. No-op if already started or on free plan. */
+  activateTrial: () => Promise<void>;
 }
 
 const defaults: ProfileData = {
@@ -44,7 +46,7 @@ const defaults: ProfileData = {
   subscription_tier: 'free',
   stream_url: null,
   stream_title: null,
-  trial_started_at: new Date().toISOString(),
+  trial_started_at: null,
   annual_billing: false,
   is_live: false,
   phone: null,
@@ -63,6 +65,7 @@ const ProfileContext = createContext<ProfileCtx>({
   loading: true,
   refresh: async () => {},
   updateField: async () => false,
+  activateTrial: async () => {},
 });
 
 export const useProfile = () => useContext(ProfileContext);
@@ -100,8 +103,17 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     return true;
   }, [user]);
 
+  const activateTrial = useCallback(async () => {
+    if (!user || data.subscription_tier === 'free' || data.trial_started_at) return;
+    const now = new Date().toISOString();
+    const ok = await updateField({ trial_started_at: now });
+    if (ok) {
+      toast.success('¡Prueba de 15 días iniciada! Disfruta de todas las funciones premium.');
+    }
+  }, [user, data.subscription_tier, data.trial_started_at, updateField]);
+
   return (
-    <ProfileContext.Provider value={{ ...data, loading, refresh, updateField }}>
+    <ProfileContext.Provider value={{ ...data, loading, refresh, updateField, activateTrial }}>
       {children}
     </ProfileContext.Provider>
   );

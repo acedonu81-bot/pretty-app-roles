@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Eye, MessageCircle, Crown, TrendingUp, Star, Trophy } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
 import { subscriptionPlans, mapSubscriptionTierToPlan } from '@/lib/subscriptions';
@@ -9,18 +8,11 @@ const PODIUM = [
   { rank: 3, name: 'Carlos V.', role: 'Staff VIP', score: 3940, badge: '🥉', height: 85, color: '#CD7F32', glow: 'rgba(205,127,50,0.2)' },
 ];
 
-const FEATURED_SLOTS = 48;   // grid visual de posiciones destacadas
-const RANKING_TOTAL = 200;   // ranking paginado — posiciones 49 en adelante
-const ITEMS_PER_PAGE = 12;
-const rankingStart = FEATURED_SLOTS + 1; // posición 49
-const rankingPages = Math.ceil(RANKING_TOTAL / ITEMS_PER_PAGE);
+const FEATURED_SLOTS = 48;
 
 const StatsView = () => {
   const profile = useProfile();
   const currentPlan = subscriptionPlans.find(p => p.id === mapSubscriptionTierToPlan(profile.subscription_tier));
-  const [currentPage, setCurrentPage] = useState(1);
-  const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIdx = Math.min(startIdx + ITEMS_PER_PAGE, RANKING_TOTAL);
   // Simulated user position (0 = not ranked yet)
   const myPosition = 0;
 
@@ -135,49 +127,6 @@ const StatsView = () => {
           })}
         </div>
         <p className="text-[0.6rem] text-muted-foreground mt-3">Rotación cada 60 minutos. Activa un plan de pago para mejorar tu posición.</p>
-      </div>
-
-      {/* Ranking listing — desde posición #49 en adelante */}
-      <div className="glass-panel p-5 mb-6">
-        <h3 className="text-sm font-bold mb-1">Ranking General <span className="text-muted-foreground font-normal text-xs">(#{rankingStart} – #{rankingStart + RANKING_TOTAL - 1})</span></h3>
-        <p className="text-xs text-muted-foreground mb-4">Perfiles gratuitos y resto del directorio por orden de actividad.</p>
-        <div className="space-y-1">
-          {Array.from({ length: endIdx - startIdx }, (_, i) => {
-            const pos = rankingStart + startIdx + i;
-            const isMe = myPosition === pos;
-            return (
-              <div key={pos} className="flex items-center gap-3 p-2 rounded-lg"
-                style={{
-                  background: isMe ? 'rgba(212,175,55,0.1)' : 'rgba(255,255,255,0.02)',
-                  border: isMe ? '1px solid rgba(212,175,55,0.3)' : '1px solid transparent',
-                }}>
-                <span className="text-xs font-black w-10 text-center" style={{ color: isMe ? '#D4AF37' : '#8E8EA0' }}>#{pos}</span>
-                <div className="flex-1">
-                  <div className="w-20 h-2 rounded" style={{ background: 'rgba(255,255,255,0.05)' }} />
-                </div>
-                {isMe && <span className="text-[0.55rem] font-bold px-2 py-0.5 rounded" style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>TÚ</span>}
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Pagination */}
-        <div className="flex items-center justify-center gap-2 mt-4 flex-wrap">
-          {Array.from({ length: rankingPages }, (_, i) => (
-            <button key={i} onClick={() => setCurrentPage(i + 1)}
-              className="w-7 h-7 rounded text-xs font-bold transition-all"
-              style={{
-                background: currentPage === i + 1 ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.03)',
-                border: `1px solid ${currentPage === i + 1 ? 'rgba(212,175,55,0.3)' : 'var(--nightlife-border)'}`,
-                color: currentPage === i + 1 ? '#D4AF37' : '#8E8EA0',
-              }}>
-              {i + 1}
-            </button>
-          ))}
-        </div>
-        {myPosition === 0 && (
-          <p className="text-[0.55rem] text-muted-foreground text-center mt-3">Tu perfil aún no tiene posición asignada. Completa tu perfil para aparecer en el ranking.</p>
-        )}
       </div>
 
       {/* Current plan */}

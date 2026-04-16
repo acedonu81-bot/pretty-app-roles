@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX } from 'lucide-react';
 
 const tracks = [
@@ -14,7 +14,16 @@ const GlobalPlayer = () => {
   const [playing, setPlaying] = useState(false);
   const [currentTrack, setCurrentTrack] = useState(0);
   const [muted, setMuted] = useState(false);
+  const [progress, setProgress] = useState(0); // 0–100
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  // Ref so onended always reads the current track index without stale closure
+  const trackIndexRef = useRef(0);
+
+  useEffect(() => {
+    trackIndexRef.current = currentTrack;
+  }, [currentTrack]);
 
   useEffect(() => {
     return () => {
@@ -25,27 +34,43 @@ const GlobalPlayer = () => {
     };
   }, []);
 
-  const ensureAudio = (trackIndex: number) => {
+  const attachListeners = useCallback((audio: HTMLAudioElement) => {
+    audio.ontimeupdate = () => {
+      if (!audio.duration) return;
+      setCurrentTime(audio.currentTime);
+      setProgress((audio.currentTime / audio.duration) * 100);
+    };
+    audio.onloadedmetadata = () => {
+      setDuration(audio.duration);
+      setProgress(0);
+      setCurrentTime(0);
+    };
+    audio.onended = () => {
+      const nextIdx = (trackIndexRef.current + 1) % tracks.length;
+      setCurrentTrack(nextIdx);
+      trackIndexRef.current = nextIdx;
+      if (audioRef.current) {
+        audioRef.current.src = tracks[nextIdx].src;
+        audioRef.current.load();
+        audioRef.current.play().catch(() => {});
+      }
+      setPlaying(true);
+    };
+  }, []);
+
+  const ensureAudio = useCallback((trackIndex: number) => {
     if (!audioRef.current) {
-      audioRef.current = new Audio(tracks[trackIndex].src);
-      audioRef.current.volume = 0.4;
-      audioRef.current.onended = () => {
-        const nextIdx = (trackIndex + 1) % tracks.length;
-        changeTrack(nextIdx);
-        audioRef.current?.play().catch(() => {});
-        setPlaying(true);
-      };
+      const audio = new Audio(tracks[trackIndex].src);
+      audio.volume = 0.4;
+      audio.muted = muted;
+      attachListeners(audio);
+      audioRef.current = audio;
     } else {
       audioRef.current.src = tracks[trackIndex].src;
-      audioRef.current.onended = () => {
-        const nextIdx = (trackIndex + 1) % tracks.length;
-        changeTrack(nextIdx);
-        audioRef.current?.play().catch(() => {});
-        setPlaying(true);
-      };
+      audioRef.current.load();
+      audioRef.current.muted = muted;
     }
-    audioRef.current.muted = muted;
-  };
+  }, [muted, attachListeners]);
 
   const togglePlay = () => {
     if (!audioRef.current) ensureAudio(currentTrack);
@@ -54,18 +79,22 @@ const GlobalPlayer = () => {
     } else {
       audioRef.current?.play().catch(() => {});
     }
-    setPlaying(!playing);
+    setPlaying(p => !p);
   };
 
-  const changeTrack = (newIndex: number) => {
-    const wasPlaying = playing;
-    if (audioRef.current) audioRef.current.pause();
+  const changeTrack = useCallback((newIndex: number) => {
     setCurrentTrack(newIndex);
-    ensureAudio(newIndex);
-    if (wasPlaying) {
+    trackIndexRef.current = newIndex;
+    if (!audioRef.current) {
+      ensureAudio(newIndex);
+    } else {
+      audioRef.current.src = tracks[newIndex].src;
+      audioRef.current.load();
+    }
+    if (playing) {
       audioRef.current?.play().catch(() => {});
     }
-  };
+  }, [playing, ensureAudio]);
 
   const next = () => changeTrack((currentTrack + 1) % tracks.length);
   const prev = () => changeTrack((currentTrack - 1 + tracks.length) % tracks.length);
@@ -74,6 +103,13 @@ const GlobalPlayer = () => {
     const newMuted = !muted;
     setMuted(newMuted);
     if (audioRef.current) audioRef.current.muted = newMuted;
+  };
+
+  const formatTime = (s: number) => {
+    if (!s || !isFinite(s)) return '0:00';
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return `${m}:${String(sec).padStart(2, '0')}`;
   };
 
   const track = tracks[currentTrack];
@@ -117,11 +153,18 @@ const GlobalPlayer = () => {
 
       <div className="flex-1 mx-2 hidden sm:block">
         <div className="flex items-center gap-2">
-          <span className="text-[0.55rem] text-muted-foreground">{currentTrack + 1}/{tracks.length}</span>
+          <span className="text-[0.55rem] text-muted-foreground tabular-nums">{formatTime(currentTime)}</span>
           <div className="flex-1 h-1 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.05)' }}>
-            <div className="h-full rounded-full animate-pulse" style={{ width: playing ? '100%' : '0%', background: 'linear-gradient(90deg, #D4AF37, #B8941E)', transition: 'width 0.5s' }} />
+            <div
+              className="h-full rounded-full"
+              style={{
+                width: `${progress}%`,
+                background: 'linear-gradient(90deg, #D4AF37, #B8941E)',
+                transition: 'width 0.25s linear',
+              }}
+            />
           </div>
-          <span className="text-[0.55rem] text-muted-foreground">🔁 LOOP</span>
+          <span className="text-[0.55rem] text-muted-foreground tabular-nums">{formatTime(duration)}</span>
         </div>
       </div>
 
