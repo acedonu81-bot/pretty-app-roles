@@ -33,8 +33,8 @@ const WarningIcon = () => (
 const Toaster = () => {
   return (
     <Sonner
-      position="top-center"
-      gap={10}
+      position="bottom-center"
+      gap={6}
       icons={{
         success: <CheckIcon />,
         error: <ErrorIcon />,
@@ -42,22 +42,23 @@ const Toaster = () => {
         warning: <WarningIcon />,
       }}
       toastOptions={{
-        duration: 4000,
+        duration: 2800,
         style: {
-          background: 'rgba(10, 10, 10, 0.97)',
-          backdropFilter: 'blur(24px)',
-          WebkitBackdropFilter: 'blur(24px)',
-          border: '1px solid rgba(212,175,55,0.15)',
-          borderRadius: '14px',
-          padding: '14px 18px 14px 20px',
+          background: 'rgba(10, 10, 10, 0.95)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          border: '1px solid rgba(212,175,55,0.12)',
+          borderRadius: '10px',
+          padding: '9px 14px 9px 12px',
           color: '#f0f0f0',
           fontFamily: 'Inter, sans-serif',
-          fontSize: '13px',
+          fontSize: '12px',
           fontWeight: '500',
           letterSpacing: '0.01em',
-          boxShadow: '0 16px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.03), inset 0 1px 0 rgba(255,255,255,0.05)',
-          minWidth: '340px',
-          maxWidth: '420px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
+          minWidth: '0',
+          maxWidth: '300px',
+          width: 'auto',
         },
         classNames: {
           toast: 'xpeak-toast',
