@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Mail, Lock, User, Eye, EyeOff, Music, Users, Smile, Building2, Camera, MapPin } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, Music, Users, Smile, Building2, Camera, MapPin, MonitorPlay } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import AmbientBackground from '@/components/AmbientBackground';
 import LegalFooter from '@/components/LegalFooter';
 import WelcomeScreen from '@/components/WelcomeScreen';
+import RolePreviewModal from '@/components/RolePreviewModal';
 import { toast } from 'sonner';
 
 const roleGroups = [
@@ -42,6 +43,7 @@ const Auth = () => {
   const [confirmedAge, setConfirmedAge] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
   const [city, setCity] = useState('');
+  const [showRolePreview, setShowRolePreview] = useState(false);
 
   const currentRole = roles.find(r => r.value === selectedRole)!;
 
@@ -207,6 +209,13 @@ const Auth = () => {
                       </div>
                     </div>
                   ))}
+                  {/* Ver ejemplo */}
+                  <button type="button" onClick={() => setShowRolePreview(true)}
+                    className="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition-all hover:scale-[1.01]"
+                    style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+                    <MonitorPlay size={13} />
+                    Ver ejemplo de tu dashboard
+                  </button>
                 </div>
 
                 {/* Hourly rate for non-empresario */}
@@ -327,6 +336,13 @@ const Auth = () => {
           role={selectedRole}
           displayName={displayName}
           onClose={() => { setShowWelcome(false); navigate('/dashboard'); }}
+        />
+      )}
+
+      {showRolePreview && (
+        <RolePreviewModal
+          initialRole={selectedRole}
+          onClose={() => setShowRolePreview(false)}
         />
       )}
     </div>
