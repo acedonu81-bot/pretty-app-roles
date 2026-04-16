@@ -11,7 +11,7 @@ const FlashTab = () => {
   const [desc, setDesc]         = useState('');
   const [pay, setPay]           = useState('');
   const [location, setLocation] = useState('');
-  const [role, setRole]         = useState('dj');
+  const [role, setRole]         = useState('');
 
   const submit = async () => {
     if (!user || !title || !desc || !pay) { toast.error('Completa todos los campos'); return; }
@@ -41,11 +41,31 @@ const FlashTab = () => {
             <div className="grid grid-cols-3 gap-2">
               <input value={pay} onChange={e => setPay(e.target.value)} placeholder="Pago (ej: €350)" className="nightlife-input text-sm" />
               <input value={location} onChange={e => setLocation(e.target.value)} placeholder="Ciudad / Zona" maxLength={80} className="nightlife-input text-sm" />
-              <select value={role} onChange={e => setRole(e.target.value)} className="nightlife-input text-sm">
-                <option value="dj">DJ</option>
-                <option value="staff">Staff</option>
-                <option value="makeup">Estilismo</option>
-              </select>
+              <input
+                value={role}
+                onChange={e => setRole(e.target.value)}
+                placeholder="Rol necesario"
+                list="role-suggestions"
+                maxLength={60}
+                className="nightlife-input text-sm"
+              />
+              <datalist id="role-suggestions">
+                <option value="DJ" />
+                <option value="DJ Techno" />
+                <option value="DJ House" />
+                <option value="DJ Comercial" />
+                <option value="DJ Urbano" />
+                <option value="Staff / Camarero" />
+                <option value="Hostess / Azafata" />
+                <option value="RRPP" />
+                <option value="Seguridad" />
+                <option value="Maquillaje" />
+                <option value="Peluquería" />
+                <option value="Fotógrafo" />
+                <option value="Videógrafo" />
+                <option value="Iluminación" />
+                <option value="Técnico de sonido" />
+              </datalist>
             </div>
             <button onClick={submit} className="w-full py-2.5 rounded-lg font-bold text-sm"
               style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' }}>
