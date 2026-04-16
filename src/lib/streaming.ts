@@ -46,8 +46,10 @@ export const parseStreamUrl = (value?: string | null): ParsedStreamUrl | null =>
       const shortsId = segments[0] === 'shorts' ? segments[1] : null;
       const liveId = segments[0] === 'live' ? segments[1] : null;
       const embedId = segments[0] === 'embed' ? segments[1] : null;
+      // studio.youtube.com/video/ID/... — YouTube Studio creator URLs
+      const studioId = segments[0] === 'video' && segments[1] ? segments[1] : null;
       const watchId = url.searchParams.get('v');
-      const id = watchId || shortsId || liveId || embedId;
+      const id = watchId || shortsId || liveId || embedId || studioId;
 
       if (!id) return null;
 
