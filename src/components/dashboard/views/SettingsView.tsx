@@ -184,22 +184,53 @@ const SettingsView = () => {
         ].map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')),
       ].join('\n');
 
-      // favoritos.csv
+      // favoritos.csv — enriquecer con nombre, rol y zona del perfil guardado
       const favs = (favRes.data ?? []) as Record<string, unknown>[];
+      const favTargetIds = favs.map(f => f.target_user_id as string).filter(Boolean);
+      const convs = (convsRes.data ?? []) as Record<string, unknown>[];
+      const convOtherIds = convs.map(c => (c.participant_a === user.id ? c.participant_b : c.participant_a) as string).filter(Boolean);
+      const allOtherIds = [...new Set([...favTargetIds, ...convOtherIds])];
+
+      // Single batch query for all referenced profiles
+      const profilesMap: Record<string, Record<string, unknown>> = {};
+      if (allOtherIds.length > 0) {
+        const { data: otherProfiles } = await supabase
+          .from('profiles')
+          .select('user_id, display_name, role, zone')
+          .in('user_id', allOtherIds);
+        (otherProfiles ?? []).forEach((pr: Record<string, unknown>) => {
+          profilesMap[pr.user_id as string] = pr;
+        });
+      }
+
       const favsCsv = [
-        ['user_id_guardado', 'fecha_guardado'].join(','),
-        ...favs.map(f => [f.target_user_id ?? '', (f.created_at as string)?.slice(0, 10) ?? '']
-          .map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')),
+        ['nombre', 'rol', 'zona', 'user_id', 'fecha_guardado'].join(','),
+        ...favs.map(f => {
+          const tid = f.target_user_id as string ?? '';
+          const pr = profilesMap[tid] ?? {};
+          return [
+            (pr.display_name as string) ?? '',
+            (pr.role as string) ?? '',
+            (pr.zone as string) ?? '',
+            tid,
+            (f.created_at as string)?.slice(0, 10) ?? '',
+          ].map(v => `"${String(v).replace(/"/g, '""')}"`).join(',');
+        }),
       ].join('\n');
 
-      // conversaciones.csv
-      const convs = (convsRes.data ?? []) as Record<string, unknown>[];
+      // conversaciones.csv — con nombre y rol de la contraparte
       const convsCsv = [
-        ['conversation_id', 'contraparte_id', 'inicio'].join(','),
+        ['conversation_id', 'nombre_contraparte', 'rol_contraparte', 'user_id_contraparte', 'inicio'].join(','),
         ...convs.map(c => {
-          const other = c.participant_a === user.id ? c.participant_b : c.participant_a;
-          return [c.id, other ?? '', (c.created_at as string)?.slice(0, 10) ?? '']
-            .map(v => `"${String(v).replace(/"/g, '""')}"`).join(',');
+          const other = (c.participant_a === user.id ? c.participant_b : c.participant_a) as string ?? '';
+          const pr = profilesMap[other] ?? {};
+          return [
+            c.id ?? '',
+            (pr.display_name as string) ?? '',
+            (pr.role as string) ?? '',
+            other,
+            (c.created_at as string)?.slice(0, 10) ?? '',
+          ].map(v => `"${String(v).replace(/"/g, '""')}"`).join(',');
         }),
       ].join('\n');
 
