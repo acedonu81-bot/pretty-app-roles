@@ -3,7 +3,6 @@ import { Plus } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { ZONES } from './types';
 
 const FlashTab = () => {
   const { user } = useAuth();
@@ -11,7 +10,7 @@ const FlashTab = () => {
   const [title, setTitle]       = useState('');
   const [desc, setDesc]         = useState('');
   const [pay, setPay]           = useState('');
-  const [location, setLocation] = useState('Madrid Centro');
+  const [location, setLocation] = useState('');
   const [role, setRole]         = useState('dj');
 
   const submit = async () => {
@@ -41,9 +40,7 @@ const FlashTab = () => {
             <textarea value={desc} onChange={e => setDesc(e.target.value)} placeholder="Descripción..." rows={3} className="nightlife-input text-sm resize-y" />
             <div className="grid grid-cols-3 gap-2">
               <input value={pay} onChange={e => setPay(e.target.value)} placeholder="Pago (ej: €350)" className="nightlife-input text-sm" />
-              <select value={location} onChange={e => setLocation(e.target.value)} className="nightlife-input text-sm">
-                {ZONES.filter(z => z !== 'Todas').map(z => <option key={z} value={z}>{z}</option>)}
-              </select>
+              <input value={location} onChange={e => setLocation(e.target.value)} placeholder="Ciudad / Zona" maxLength={80} className="nightlife-input text-sm" />
               <select value={role} onChange={e => setRole(e.target.value)} className="nightlife-input text-sm">
                 <option value="dj">DJ</option>
                 <option value="staff">Staff</option>
