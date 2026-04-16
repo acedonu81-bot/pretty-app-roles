@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Trash2, Camera, Music2, ExternalLink, Star, Radio, ChevronDown, X } from 'lucide-react';
+import { Trash2, Camera, ExternalLink, Star, Radio, ChevronDown, X, MapPin } from 'lucide-react';
 import { parseStreamUrl } from '@/lib/streaming';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
@@ -24,8 +24,10 @@ const ProfileView = () => {
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
   const [selectedLangs, setSelectedLangs] = useState<string[] | null>(null);
+  const [langOpen, setLangOpen] = useState(false);
 
   const EU_LANGS = ['Español','Inglés','Francés','Italiano','Alemán','Portugués','Neerlandés','Polaco','Catalán','Euskera'];
+  const SPAIN_CITIES = ['Madrid','Barcelona','Valencia','Sevilla','Zaragoza','Málaga','Murcia','Palma de Mallorca','Alicante','Bilbao','Valladolid','Córdoba','Vigo','Gijón','Granada','A Coruña','Vitoria-Gasteiz','San Sebastián','Oviedo','Las Palmas de Gran Canaria','Santa Cruz de Tenerife','Badalona','Cartagena','Sabadell','Móstoles','Elche','Hospitalet de Llobregat','Terrassa','Jerez de la Frontera','Burgos','Santander','Almería','Alcalá de Henares','Pamplona','Salamanca','Ibiza','Marbella','León','Albacete','Logroño','Huelva','Tarragona','Lleida','Badajoz','Jaén','Cádiz','Toledo','Torrevieja','Mataró','Alcobendas'];
 
   const ROLE_TAGS: Record<string, { label: string; tags: string[] }> = {
     dj:        { label: 'Géneros musicales',    tags: ['Techno','Tech House','House','Afro House','Melodic Techno','Deep House','Minimal','Trance','Progressive','Drum & Bass','Jungle','Garage','Afrobeats','Tribal','Nu Disco','Electro','Hard Techno','Industrial','Ambient','Comercial','Reggaetón','Urbano','Hip Hop','RnB','Funk','Soul','Disco','Latino','Salsa','Flamenco Fusión'] },
@@ -248,7 +250,17 @@ const ProfileView = () => {
             </div>
             <div className="mb-3">
               <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Ciudad</label>
-              <input type="text" value={city || profile.zone || ''} onChange={e => setCity(e.target.value)} className="nightlife-input mt-1 text-base" />
+              <div className="relative mt-1">
+                <MapPin size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                <select
+                  value={city || profile.zone?.replace(', España','') || ''}
+                  onChange={e => setCity(e.target.value)}
+                  className="nightlife-input !pl-8 text-base appearance-none w-full"
+                  style={{ background: 'rgba(255,255,255,0.03)', color: (city || profile.zone) ? 'inherit' : '#8E8EA0' }}>
+                  <option value="" disabled>Seleccionar ciudad</option>
+                  {SPAIN_CITIES.map(c => <option key={c} value={c} style={{ background: '#0e0e14', color: '#fff' }}>{c}</option>)}
+                </select>
+              </div>
             </div>
             {profile.role !== 'empresario' && (
               <div className="mb-3">
@@ -407,19 +419,65 @@ const ProfileView = () => {
             <div style={{ borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: '1.25rem', marginTop: '0.5rem' }}>
               <p className="text-[0.58rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Idiomas</p>
               <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Idiomas que hablas</label>
-              <div className="flex flex-wrap gap-1.5 mt-2">
-                {EU_LANGS.map(lang => (
-                  <button key={lang} type="button" onClick={() => toggleLang(lang)}
-                    className="text-xs font-bold px-2.5 py-1 rounded-lg transition-all"
-                    style={{
-                      background: activeLangs.includes(lang) ? 'rgba(226,190,80,0.15)' : 'rgba(255,255,255,0.04)',
-                      border: `1px solid ${activeLangs.includes(lang) ? 'rgba(226,190,80,0.4)' : 'var(--nightlife-border)'}`,
-                      color: activeLangs.includes(lang) ? '#E2BE50' : '#8E8EA0',
-                    }}>
-                    {lang}
-                  </button>
-                ))}
-              </div>
+
+              {/* Selected chips */}
+              {activeLangs.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mt-2 mb-2">
+                  {activeLangs.map(lang => (
+                    <span key={lang} className="flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-lg"
+                      style={{ background: 'rgba(226,190,80,0.12)', border: '1px solid rgba(226,190,80,0.35)', color: '#E2BE50' }}>
+                      {lang}
+                      <button type="button" onClick={() => toggleLang(lang)} className="ml-0.5 opacity-60 hover:opacity-100 transition-opacity">
+                        <X size={10} />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {/* Dropdown trigger */}
+              <button
+                type="button"
+                onClick={() => setLangOpen(v => !v)}
+                className="flex items-center justify-between w-full px-3 py-2.5 rounded-lg text-sm transition-all mt-2"
+                style={{
+                  background: 'rgba(255,255,255,0.03)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  color: 'rgba(255,255,255,0.45)',
+                }}
+              >
+                <span>{activeLangs.length > 0 ? `${activeLangs.length} seleccionado${activeLangs.length > 1 ? 's' : ''}` : 'Seleccionar...'}</span>
+                <ChevronDown size={14} className="transition-transform duration-200" style={{ transform: langOpen ? 'rotate(180deg)' : 'none' }} />
+              </button>
+
+              {/* Dropdown panel */}
+              {langOpen && (
+                <div className="mt-1 rounded-xl overflow-hidden animate-[fadeIn_0.15s_ease]"
+                  style={{ background: 'rgba(12,12,16,0.97)', border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 8px 32px rgba(0,0,0,0.6)' }}>
+                  <div className="flex flex-wrap gap-1.5 p-3 max-h-48 overflow-y-auto"
+                    style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(212,175,55,0.3) transparent' }}>
+                    {EU_LANGS.map(lang => (
+                      <button key={lang} type="button" onClick={() => toggleLang(lang)}
+                        className="text-xs font-semibold px-2.5 py-1 rounded-lg transition-all hover:scale-105"
+                        style={{
+                          background: activeLangs.includes(lang) ? 'rgba(226,190,80,0.15)' : 'rgba(255,255,255,0.05)',
+                          border: `1px solid ${activeLangs.includes(lang) ? 'rgba(226,190,80,0.4)' : 'rgba(255,255,255,0.07)'}`,
+                          color: activeLangs.includes(lang) ? '#E2BE50' : 'rgba(255,255,255,0.5)',
+                        }}>
+                        {lang}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="flex items-center justify-between px-3 py-2" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+                    <span className="text-[0.6rem] text-muted-foreground">{activeLangs.length} seleccionados</span>
+                    <button type="button" onClick={() => setLangOpen(false)}
+                      className="text-[0.65rem] font-bold px-3 py-1 rounded-lg transition-all"
+                      style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                      Cerrar
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
           {profile.role === 'dj' ? <AudioUpload /> : <PortfolioUpload />}

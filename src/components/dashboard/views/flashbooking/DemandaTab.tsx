@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Megaphone, Clock, MapPin, Plus, X, MessageCircle, Lock, Send, CheckCheck, ChevronUp, RefreshCw, Zap, Crown } from 'lucide-react';
-import { empresarios } from '@/data/profiles';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
@@ -20,7 +19,6 @@ interface Offer {
   lockedFor: number;    // seconds until this tier can see it (0 = visible now)
   createdAt: number;    // ms timestamp
   posterId?: string;
-  isDemo?: boolean;
 }
 
 /* ─── Priority delay by subscription tier (seconds) ─── */
@@ -33,27 +31,6 @@ const TIER_DELAY: Record<string, number> = {
 const getTierDelay = (tier: string, role: string) => {
   if (role === 'empresario') return 0;
   return TIER_DELAY[tier] ?? TIER_DELAY.free;
-};
-
-/* ─── Demo offers (shown only when no real jobs exist) ─── */
-const buildDemoOffers = (): Offer[] => {
-  let id = 1;
-  const list: Offer[] = [];
-  for (const e of empresarios) {
-    for (const o of e.offers) {
-      list.push({
-        id: `demo-${id++}`,
-        author: e.name,
-        avatar: e.avatar,
-        gradient: e.gradient,
-        ...o,
-        lockedFor: 0,
-        createdAt: Date.now(),
-        isDemo: true,
-      });
-    }
-  }
-  return list.slice(0, 3);
 };
 
 const fmtCountdown = (s: number) => {
@@ -107,7 +84,7 @@ const DemandaTab = () => {
     if (error) { setLoading(false); return; }
 
     if (!data || data.length === 0) {
-      setOffers(buildDemoOffers());
+      setOffers([]);
       setLoading(false);
       return;
     }
@@ -148,7 +125,6 @@ const DemandaTab = () => {
         lockedFor,
         createdAt: createdMs,
         posterId: j.employer_id,
-        isDemo: false,
       };
     });
 
@@ -168,7 +144,7 @@ const DemandaTab = () => {
             expiresIn: Math.max(0, o.expiresIn - 1),
             lockedFor: Math.max(0, o.lockedFor - 1),
           }))
-          .filter(o => o.expiresIn > 0 || o.isDemo)
+          .filter(o => o.expiresIn > 0)
       );
     }, 1000);
     return () => clearInterval(iv);
@@ -204,8 +180,8 @@ const DemandaTab = () => {
     if (!replyText.trim() || !user?.id) return;
     const { clean, reason } = sanitizeInput(replyText.trim());
     if (!clean) { toast.error(reason); return; }
-    if (!offer.posterId || offer.isDemo) {
-      toast.info('Esta oferta es de demostración. Cuando los empresarios publiquen ofertas reales podrás contactarles aquí.');
+    if (!offer.posterId) {
+      toast.info('No se puede contactar al autor de esta oferta.');
       return;
     }
     setSending(true);
@@ -247,8 +223,6 @@ const DemandaTab = () => {
       setSending(false);
     }
   };
-
-  const hasDemo = offers.some(o => o.isDemo);
 
   return (
     <div>
@@ -336,20 +310,12 @@ const DemandaTab = () => {
         </div>
       )}
 
-      {!loading && hasDemo && (
-        <div className="glass-panel p-3 mb-4 flex items-center gap-2"
-          style={{ border: '1px solid rgba(212,175,55,0.15)', background: 'rgba(212,175,55,0.03)' }}>
-          <span className="text-[0.6rem] font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>DEMO</span>
-          <p className="text-[0.65rem] text-muted-foreground">Las ofertas son ejemplos. Los empresarios registrados pueden publicar ofertas reales.</p>
-        </div>
-      )}
-
       {!loading && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {offers.map(offer => {
             const isReplying = replyingToOffer === offer.id;
             const msgs = sentMessages[offer.id] ?? [];
-            const isLocked = offer.lockedFor > 0 && !offer.isDemo && !isEmpresario;
+            const isLocked = offer.lockedFor > 0 && !isEmpresario;
 
             /* ── Card bloqueada ── */
             if (isLocked) {
@@ -397,9 +363,6 @@ const DemandaTab = () => {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5">
                         <h3 className="text-sm font-bold truncate">{offer.title}</h3>
-                        {offer.isDemo && (
-                          <span className="text-[0.5rem] font-bold px-1 py-0.5 rounded flex-shrink-0" style={{ background: 'rgba(212,175,55,0.12)', color: 'rgba(212,175,55,0.6)', border: '1px solid rgba(212,175,55,0.2)' }}>DEMO</span>
-                        )}
                       </div>
                       <p className="text-xs text-muted-foreground truncate">{offer.author}</p>
                     </div>

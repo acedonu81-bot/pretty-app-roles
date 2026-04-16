@@ -794,13 +794,13 @@ Para cualquier duda: soporte@xpeak.site
               <p className="text-xs text-muted-foreground leading-snug">
                 {pushEnabled
                   ? 'Recibirás alertas aunque la app esté cerrada'
-                  : Notification.permission === 'denied'
+                  : (typeof Notification !== 'undefined' && Notification.permission === 'denied')
                     ? 'Bloqueadas en el navegador — cámbialas en Configuración del sitio'
                     : 'Actívalas para recibir alertas de mensajes y Flash Bookings'}
               </p>
             </div>
           </div>
-          {Notification.permission !== 'denied' && (
+          {(typeof Notification === 'undefined' || Notification.permission !== 'denied') && (
             <button type="button"
               onClick={async () => {
                 if (pushEnabled) {

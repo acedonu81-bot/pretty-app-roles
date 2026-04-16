@@ -28,6 +28,19 @@ const roleGroups = [
 
 const roles = roleGroups.flatMap(g => g.roles);
 
+const SPAIN_CITIES = [
+  'Madrid','Barcelona','Valencia','Sevilla','Zaragoza','Málaga','Murcia',
+  'Palma de Mallorca','Alicante','Bilbao','Valladolid','Córdoba','Vigo',
+  'Gijón','Granada','A Coruña','Vitoria-Gasteiz','San Sebastián','Oviedo',
+  'Las Palmas de Gran Canaria','Santa Cruz de Tenerife','Badalona','Cartagena',
+  'Sabadell','Móstoles','Elche','Hospitalet de Llobregat','Terrassa','Jerez de la Frontera',
+  'Burgos','Santander','Almería','Alcalá de Henares','Pamplona','Salamanca','Ibiza',
+  'Marbella','León','Albacete','Logroño','Huelva','Tarragona','Lleida','Badajoz',
+  'Jaén','Cádiz','Toledo','Torrevieja','Fuenlabrada','Alcorcón','Leganés',
+  'Getafe','Dos Hermanas','Parla','Mataró','Torrejón de Ardoz','Alcobendas',
+];
+
+
 const Auth = () => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
@@ -184,9 +197,13 @@ const Auth = () => {
                 </div>
 
                 <div className="relative">
-                  <MapPin size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                  <input value={city} onChange={e => setCity(e.target.value)}
-                    placeholder="Ciudad (ej. Madrid, Barcelona, Ibiza...)" className="nightlife-input !py-3 !pl-9 text-sm" />
+                  <MapPin size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                  <select value={city} onChange={e => setCity(e.target.value)}
+                    className="nightlife-input !py-3 !pl-9 text-sm appearance-none"
+                    style={{ background: 'rgba(255,255,255,0.03)', color: city ? 'inherit' : '#8E8EA0' }}>
+                    <option value="" disabled>Ciudad</option>
+                    {SPAIN_CITIES.map(c => <option key={c} value={c} style={{ background: '#0e0e14', color: '#fff' }}>{c}</option>)}
+                  </select>
                 </div>
 
                 {/* Role selector by category */}

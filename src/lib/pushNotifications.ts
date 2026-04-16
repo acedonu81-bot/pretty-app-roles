@@ -20,6 +20,7 @@ async function getRegistration(): Promise<ServiceWorkerRegistration | null> {
 
 /** Solicita permiso y suscribe al push. Devuelve true si ok. */
 export async function requestPushPermission(): Promise<boolean> {
+  if (!('Notification' in window)) return false;
   const reg = await getRegistration();
   if (!reg) return false;
 
@@ -57,11 +58,13 @@ export async function revokePushPermission(): Promise<void> {
 
 /** True si el usuario ya tiene push activo */
 export function isPushSubscribed(): boolean {
+  if (!('Notification' in window)) return false;
   return localStorage.getItem(STORAGE_KEY) === 'true' && Notification.permission === 'granted';
 }
 
 /** Muestra una notificación local inmediata vía SW (sin servidor) */
 export async function showLocalNotification(title: string, body: string, url = '/dashboard'): Promise<void> {
+  if (!('Notification' in window)) return;
   const reg = await getRegistration();
   if (!reg || Notification.permission !== 'granted') return;
   await reg.showNotification(title, {
