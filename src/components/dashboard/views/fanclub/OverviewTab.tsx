@@ -1,4 +1,4 @@
-import { Users, TrendingUp, Zap, Star, Play, Music, Image, FileText, Lock, Heart, Gift, ChevronRight, Package, Ticket, Music2, MessageCircle } from 'lucide-react';
+import { Users, TrendingUp, Zap, Star, Play, Music, Image, FileText, Lock, ChevronRight } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
@@ -85,43 +85,6 @@ const OverviewTab = ({ fans, totalRevenue, myShare }: Props) => {
         </div>
       </div>
 
-      <div className="glass-panel p-5 relative overflow-hidden"
-        style={{ border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.02)' }}>
-        <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full opacity-10"
-          style={{ background: 'radial-gradient(circle, #fff 0%, transparent 70%)' }} />
-        <div className="flex items-start gap-4 relative">
-          <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-            style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)' }}>
-            <Gift size={20} className="text-white" />
-          </div>
-          <div className="flex-1">
-            <div className="flex items-center gap-2 mb-1">
-              <p className="text-sm font-bold">Regalo Mensual VIP</p>
-              <span className="text-[0.5rem] font-black px-1.5 py-0.5 rounded-full"
-                style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.6)' }}>PRÓXIMAMENTE</span>
-            </div>
-            <p className="text-xs text-muted-foreground leading-relaxed mb-3">
-              Cada mes, tus fans VIP reciben una sorpresa exclusiva: merchandising firmado, acceso anticipado a eventos, descuentos en tus sesiones, o contenido inédito.
-              Tú decides qué regalar. Ellos reciben algo que no tienen los demás.
-            </p>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              {[
-                { Icon: Package,       label: 'Merch firmado' },
-                { Icon: Ticket,        label: 'Acceso VIP evento' },
-                { Icon: Music2,        label: 'Track inédito' },
-                { Icon: MessageCircle, label: 'Mensaje personal' },
-              ].map(({ Icon, label }) => (
-                <div key={label} className="rounded-lg p-2 text-center"
-                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
-                  <Icon size={16} style={{ color: 'rgba(212,175,55,0.5)', margin: '0 auto 4px' }} />
-                  <p className="text-[0.55rem] text-muted-foreground">{label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div className="glass-panel p-5 flex items-center gap-5"
         style={{ border: '1px solid rgba(212,175,55,0.2)', background: 'rgba(212,175,55,0.03)' }}>
         <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
@@ -139,19 +102,6 @@ const OverviewTab = ({ fans, totalRevenue, myShare }: Props) => {
         </button>
       </div>
 
-      {/* Sorteo mensual — PRÓXIMAMENTE */}
-      <div className="rounded-xl p-4 flex items-center gap-3"
-        style={{ background: 'rgba(212,175,55,0.03)', border: '1px solid rgba(212,175,55,0.1)' }}>
-        <span className="text-lg">🎲</span>
-        <div className="flex-1">
-          <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>Sorteo Mensual del Regalo VIP</p>
-          <p className="text-[0.6rem] text-muted-foreground">El primer viernes de cada mes, un fan VIP elegido al azar recibe el regalo mensual.</p>
-        </div>
-        <span className="text-[0.55rem] font-black px-1.5 py-0.5 rounded-full flex-shrink-0"
-          style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.3)', border: '1px solid rgba(255,255,255,0.08)' }}>
-          PRÓXIMAMENTE
-        </span>
-      </div>
     </motion.div>
   );
 };
