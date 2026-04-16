@@ -80,7 +80,7 @@ const TiersTab = () => (
         ))}
       </div>
       <p className="text-muted-foreground pt-1">
-        💡 <strong>1 fan VIP</strong> vale lo mismo que <strong>12 fans básicos</strong>. Calidad sobre cantidad.
+        <strong>1 fan VIP</strong> vale lo mismo que <strong>12 fans básicos</strong>. Calidad sobre cantidad.
       </p>
     </div>
   </motion.div>

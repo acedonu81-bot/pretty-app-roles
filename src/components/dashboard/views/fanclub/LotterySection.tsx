@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Gift, Trophy, Clock, Shuffle, CheckCircle } from 'lucide-react';
+import { Gift, Trophy, Clock, Shuffle, CheckCircle, Package, Ticket, Music2, MessageCircle } from 'lucide-react';
+
+const ICON_MAP: Record<string, React.ElementType> = { Package, Ticket, Music2, MessageCircle };
 import { toast } from 'sonner';
 
 interface FanSub { id: string; fan_id: string; amount: number; created_at: string; }
@@ -43,10 +45,10 @@ function formatCountdown(ms: number): string {
 }
 
 const GIFT_OPTIONS = [
-  { id: 'merch',   emoji: '🎸', label: 'Merch firmado' },
-  { id: 'event',   emoji: '🎟️', label: 'Acceso VIP evento' },
-  { id: 'track',   emoji: '🎵', label: 'Track inédito' },
-  { id: 'message', emoji: '💬', label: 'Mensaje personal' },
+  { id: 'merch',   icon: 'Package',   label: 'Merch firmado' },
+  { id: 'event',   icon: 'Ticket',    label: 'Acceso VIP evento' },
+  { id: 'track',   icon: 'Music2',    label: 'Track inédito' },
+  { id: 'message', icon: 'MessageCircle', label: 'Mensaje personal' },
 ];
 
 const LotterySection = ({ fans }: Props) => {
@@ -101,7 +103,7 @@ const LotterySection = ({ fans }: Props) => {
         // Persist winner for this draw month
         const drawKey = `${drawDate.getFullYear()}-${drawDate.getMonth()}`;
         localStorage.setItem('xpeak_lottery_winner', JSON.stringify({ fan: finalWinner, drawKey }));
-        toast.success(`🎉 Ganador seleccionado: ${finalWinner.fan_id}`);
+        toast.success(`Ganador seleccionado: ${finalWinner.fan_id}`);
       }
     }, 100);
   };
@@ -149,12 +151,12 @@ const LotterySection = ({ fans }: Props) => {
           Bases del sorteo
         </p>
         {[
-          '🎯 Participan todos los fans con suscripción VIP activa en el momento del sorteo',
-          '📅 El sorteo se celebra el primer viernes de cada mes a las 20:00h',
-          '🎲 El ganador se elige aleatoriamente entre todos los participantes elegibles',
-          '🎁 Un único ganador por sorteo mensual — no acumulable con otros meses',
-          '✅ El artista notifica al ganador dentro de las 24h siguientes al sorteo',
-          '🔄 En caso de no poder contactar al ganador en 48h, se realiza un nuevo sorteo',
+          'Participan todos los fans con suscripción VIP activa en el momento del sorteo',
+          'El sorteo se celebra el primer viernes de cada mes a las 20:00h',
+          'El ganador se elige aleatoriamente entre todos los participantes elegibles',
+          'Un único ganador por sorteo mensual — no acumulable con otros meses',
+          'El artista notifica al ganador dentro de las 24h siguientes al sorteo',
+          'En caso de no poder contactar al ganador en 48h, se realiza un nuevo sorteo',
         ].map((line, i) => (
           <p key={i} className="text-[0.6rem] text-muted-foreground leading-relaxed">{line}</p>
         ))}
@@ -215,7 +217,7 @@ const LotterySection = ({ fans }: Props) => {
                 {confirmed && <CheckCircle size={14} style={{ color: '#22c55e' }} />}
               </div>
               <p className="text-[0.6rem] text-muted-foreground">
-                {spinning ? 'Sorteando...' : confirmed ? 'Regalo confirmado ✓' : '🎉 ¡Fan ganador del sorteo!'}
+                {spinning ? 'Sorteando...' : confirmed ? 'Regalo confirmado ✓' : '¡Fan ganador del sorteo!'}
               </p>
             </div>
           </div>
@@ -233,7 +235,7 @@ const LotterySection = ({ fans }: Props) => {
                       border: `1px solid ${giftPicked === g.id ? 'rgba(212,175,55,0.4)' : 'rgba(255,255,255,0.06)'}`,
                       outline: giftPicked === g.id ? '2px solid rgba(212,175,55,0.3)' : 'none',
                     }}>
-                    <p className="text-lg">{g.emoji}</p>
+                    {(() => { const I = ICON_MAP[g.icon]; return I ? <I size={18} style={{ color: giftPicked === g.id ? '#D4AF37' : 'rgba(255,255,255,0.35)', margin: '0 auto 2px' }} /> : null; })()}
                     <p className="text-[0.5rem] text-muted-foreground mt-0.5 leading-tight">{g.label}</p>
                   </button>
                 ))}

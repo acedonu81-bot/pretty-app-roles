@@ -335,7 +335,7 @@ const SettingsView = () => {
               onClick={handleExportData}
               className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
               style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
-              📦 Exportar mis datos (Art. 20)
+              Exportar mis datos (Art. 20)
             </button>
           </div>
           <p className="text-[0.6rem] text-muted-foreground leading-relaxed">
@@ -364,7 +364,7 @@ const SettingsView = () => {
           </div>
           <button disabled className="flex-shrink-0 px-4 py-2 rounded-lg text-xs font-bold cursor-not-allowed"
             style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.2)' }}>
-            🔒 Próximamente
+            Próximamente
           </button>
         </div>
       </Section>

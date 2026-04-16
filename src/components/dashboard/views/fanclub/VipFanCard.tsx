@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { Package, Ticket, Music2, MessageCircle } from 'lucide-react';
+const ICON_MAP: Record<string, React.ElementType> = { Package, Ticket, Music2, MessageCircle };
 
 interface VipFan { id: string; fan_id: string; amount: number; created_at: string; streak: number; sessionDate: string; giftSent: boolean; }
 
 const GIFT_OPTIONS = [
-  { id: 'merch', emoji: '🎸', label: 'Merch firmado' },
-  { id: 'event', emoji: '🎟️', label: 'Acceso VIP evento' },
-  { id: 'track', emoji: '🎵', label: 'Track inédito' },
-  { id: 'message', emoji: '💬', label: 'Mensaje personal' },
+  { id: 'merch', icon: 'Package', label: 'Merch firmado' },
+  { id: 'event', icon: 'Ticket', label: 'Acceso VIP evento' },
+  { id: 'track', icon: 'Music2', label: 'Track inédito' },
+  { id: 'message', icon: 'MessageCircle', label: 'Mensaje personal' },
 ];
 
 const VipFanCard = ({ vf }: { vf: VipFan }) => {
@@ -61,7 +63,7 @@ const VipFanCard = ({ vf }: { vf: VipFan }) => {
                     className="text-base transition-all hover:scale-110"
                     style={{ opacity: giftPicked === g.id ? 1 : 0.35, filter: giftPicked === g.id ? 'drop-shadow(0 0 4px rgba(255,255,255,0.5))' : 'none' }}
                     title={g.label}>
-                    {g.emoji}
+                    {(() => { const I = ICON_MAP[g.icon]; return I ? <I size={16} /> : null; })()}
                   </button>
                 ))}
               </div>

@@ -31,7 +31,7 @@ const AdminFeatureRequests = () => {
       const liveCount = reqs.filter(r => r.feature_name === 'live_video').length;
       if (liveCount >= GOAL) {
         toast('¡XPEAK está listo! 50 usuarios han solicitado el vídeo en directo. Es hora de activar la pasarela de pagos.', {
-          icon: '🏆',
+          icon: 'trophy',
           duration: 10000,
           style: { background: '#1a1a1a', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' },
         });

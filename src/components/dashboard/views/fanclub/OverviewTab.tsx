@@ -1,4 +1,4 @@
-import { Users, TrendingUp, Zap, Star, Play, Music, Image, FileText, Lock, Heart, Gift, ChevronRight } from 'lucide-react';
+import { Users, TrendingUp, Zap, Star, Play, Music, Image, FileText, Lock, Heart, Gift, ChevronRight, Package, Ticket, Music2, MessageCircle } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
@@ -106,15 +106,15 @@ const OverviewTab = ({ fans, totalRevenue, myShare }: Props) => {
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {[
-                { emoji: '🎸', label: 'Merch firmado' },
-                { emoji: '🎟️', label: 'Acceso VIP evento' },
-                { emoji: '🎵', label: 'Track inédito' },
-                { emoji: '💬', label: 'Mensaje personal' },
-              ].map(g => (
-                <div key={g.label} className="rounded-lg p-2 text-center"
+                { Icon: Package,       label: 'Merch firmado' },
+                { Icon: Ticket,        label: 'Acceso VIP evento' },
+                { Icon: Music2,        label: 'Track inédito' },
+                { Icon: MessageCircle, label: 'Mensaje personal' },
+              ].map(({ Icon, label }) => (
+                <div key={label} className="rounded-lg p-2 text-center"
                   style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
-                  <p className="text-base mb-0.5">{g.emoji}</p>
-                  <p className="text-[0.55rem] text-muted-foreground">{g.label}</p>
+                  <Icon size={16} style={{ color: 'rgba(212,175,55,0.5)', margin: '0 auto 4px' }} />
+                  <p className="text-[0.55rem] text-muted-foreground">{label}</p>
                 </div>
               ))}
             </div>

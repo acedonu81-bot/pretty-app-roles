@@ -25,7 +25,7 @@ const TopWeekendView = () => {
         </span>
       </div>
 
-      <h3 className="text-sm font-bold mb-3" style={{ color: '#D4AF37' }}>🏆 Más Solicitados</h3>
+      <h3 className="text-sm font-bold mb-3" style={{ color: '#D4AF37' }}>Más Solicitados</h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
         {topProfiles.map(p => (
           <ProfileCard key={p.id} profile={p} />

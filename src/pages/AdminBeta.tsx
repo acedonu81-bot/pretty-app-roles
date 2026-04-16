@@ -125,7 +125,7 @@ const AdminBeta = () => {
           </div>
           {liveVideoCount >= GOAL && (
             <p className="text-xs mt-3 font-medium" style={{ color: '#D4AF37' }}>
-              🏆 ¡XPEAK está listo! 50 usuarios han solicitado el vídeo en directo. Es hora de activar la pasarela de pagos.
+              ¡XPEAK está listo! 50 usuarios han solicitado el vídeo en directo. Es hora de activar la pasarela de pagos.
             </p>
           )}
         </div>

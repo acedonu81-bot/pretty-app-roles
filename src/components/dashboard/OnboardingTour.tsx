@@ -16,7 +16,7 @@ const PROFESSIONAL_STEPS: TourStep[] = [
     icon: <User size={22} />,
     title: '¡Bienvenido/a a XPEAK!',
     body: 'La plataforma donde el talento nocturno encuentra su siguiente contrato. Este tour te explica lo esencial en 60 segundos.',
-    highlight: 'Comencemos 👇',
+    highlight: 'Comencemos.',
   },
   {
     icon: <User size={22} />,
@@ -36,7 +36,7 @@ const PROFESSIONAL_STEPS: TourStep[] = [
     icon: <Zap size={22} />,
     title: 'Flash Booking — contratos en minutos',
     body: 'Activa tu disponibilidad y los empresarios te ven en tiempo real. También puedes responder a las ofertas urgentes que publican.',
-    highlight: '⚡ Sin intermediarios, sin comisiones ocultas.',
+    highlight: 'Sin intermediarios, sin comisiones ocultas.',
   },
   {
     icon: <MessageCircle size={22} />,
@@ -56,7 +56,7 @@ const PROFESSIONAL_STEPS: TourStep[] = [
     icon: <CheckCircle size={22} />,
     title: '¡Listo! Ya sabes lo esencial',
     body: 'Explora el resto a tu ritmo: Fan Club, Escenario Virtual, Estadísticas y más. Cualquier duda, usa el botón de contacto.',
-    highlight: 'Empieza ahora y consigue tu primer booking. 🎯',
+    highlight: 'Empieza ahora y consigue tu primer booking.',
   },
 ];
 
@@ -65,7 +65,7 @@ const EMPRESARIO_STEPS: TourStep[] = [
     icon: <Building2 size={22} />,
     title: '¡Bienvenido/a a XPEAK!',
     body: 'El marketplace de talento nocturno. Contrata DJs, staff, makeup, media y más — con perfiles verificados y contratos cerrados en minutos.',
-    highlight: 'Comencemos 👇',
+    highlight: 'Comencemos.',
   },
   {
     icon: <Search size={22} />,
@@ -99,7 +99,7 @@ const EMPRESARIO_STEPS: TourStep[] = [
     icon: <CheckCircle size={22} />,
     title: '¡Todo listo!',
     body: 'Empieza buscando en el Directorio o publica tu primera oferta Flash. Tu historial de contrataciones y estadísticas estarán siempre disponibles.',
-    highlight: 'El talento que necesitas, cuando lo necesitas. ⚡',
+    highlight: 'El talento que necesitas, cuando lo necesitas.',
   },
 ];
 
@@ -225,7 +225,7 @@ const OnboardingTour = ({ onNavigate }: Props) => {
                 color: isLast ? '#000' : 'rgba(255,255,255,0.7)',
                 border: isLast ? 'none' : '1px solid rgba(255,255,255,0.08)',
               }}>
-              {isLast ? '¡Empezar! 🚀' : 'Siguiente'}
+              {isLast ? '¡Empezar!' : 'Siguiente'}
               {!isLast && <ChevronRight size={13} />}
             </button>
           )}

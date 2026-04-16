@@ -17,10 +17,10 @@ const HearthisIcon = ({ size = 14 }: { size?: number }) => (
 );
 
 const milestones = [
-  { votes: 50, label: 'Novato Prometedor', emoji: '🌱' },
-  { votes: 150, label: 'En Ascenso', emoji: '🔥' },
-  { votes: 300, label: 'Favorito del Público', emoji: '⭐' },
-  { votes: 500, label: '¡Candidato a PRO!', emoji: '👑' },
+  { votes: 50, label: 'Novato Prometedor', color: '#6ee7b7' },
+  { votes: 150, label: 'En Ascenso', color: '#fbbf24' },
+  { votes: 300, label: 'Favorito del Público', color: '#D4AF37' },
+  { votes: 500, label: '¡Candidato a PRO!', color: '#D4AF37' },
 ];
 
 interface ProfileCardProps {
@@ -305,7 +305,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
                     background: reached ? 'rgba(212,175,55,0.06)' : 'transparent',
                     border: `1px solid ${reached ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.03)'}`,
                   }}>
-                  <span className="text-sm">{m.emoji}</span>
+                  <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: reached ? m.color : 'rgba(255,255,255,0.1)' }} />
                   <div className="flex-1">
                     <p className={`text-[0.6rem] font-bold ${reached ? '' : 'text-muted-foreground'}`}>{m.label}</p>
                     <p className="text-[0.5rem] text-muted-foreground">{m.votes} votos</p>
@@ -318,7 +318,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
           {currentMilestone && (
             <div className="mt-3 p-2 rounded-lg text-center" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
               <p className="text-[0.5rem] text-muted-foreground">Nivel actual</p>
-              <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>{currentMilestone.emoji} {currentMilestone.label}</p>
+              <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>{currentMilestone.label}</p>
             </div>
           )}
           {nextMilestone && (

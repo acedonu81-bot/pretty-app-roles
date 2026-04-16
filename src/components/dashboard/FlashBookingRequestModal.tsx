@@ -128,7 +128,7 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
             <button onClick={send} disabled={sending}
               className="w-full py-3 rounded-xl font-bold text-sm transition-all hover:scale-[1.02] disabled:opacity-60"
               style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-              {sending ? 'Enviando...' : <span className="block leading-tight">Enviar solicitud a <span className="block sm:inline truncate max-w-[180px] sm:max-w-none align-bottom">{professionalName}</span> ⚡</span>}
+              {sending ? 'Enviando...' : <span className="block leading-tight">Enviar solicitud a <span className="block sm:inline truncate max-w-[180px] sm:max-w-none align-bottom">{professionalName}</span></span>}
             </button>
             <p className="text-center text-[0.6rem] mt-2" style={{ color: 'rgba(255,255,255,0.25)' }}>
               El profesional recibirá tu solicitud y te contactará directamente.

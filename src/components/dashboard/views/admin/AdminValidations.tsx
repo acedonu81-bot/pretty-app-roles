@@ -57,8 +57,8 @@ const AdminValidations = () => {
     }
 
     const labels: Record<string, string> = {
-      approved: '✅ Aprobado como PROFESIONAL — Email de confirmación enviado',
-      rookie: '🌟 Asignado como ROOKIE — Email de bienvenida enviado',
+      approved: 'Aprobado como PROFESIONAL — Email de confirmación enviado',
+      rookie: 'Asignado como ROOKIE — Email de bienvenida enviado',
       rejected: '❌ Perfil rechazado — Email de notificación enviado',
     };
     toast.success(labels[action]);

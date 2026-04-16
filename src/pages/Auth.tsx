@@ -8,19 +8,19 @@ import WelcomeScreen from '@/components/WelcomeScreen';
 import { toast } from 'sonner';
 
 const roleGroups = [
-  { label: '🎵 Música', roles: [
+  { label: 'Música', roles: [
     { value: 'dj', label: 'DJ / Artista / Productor', icon: Music, minRate: 40 },
   ]},
-  { label: '👥 Staff', roles: [
+  { label: 'Staff', roles: [
     { value: 'staff', label: 'Personal de Sala', icon: Users, minRate: 20 },
   ]},
-  { label: '💄 Imagen', roles: [
+  { label: 'Imagen', roles: [
     { value: 'makeup', label: 'Maquillaje & Peluquería', icon: Smile, minRate: 30 },
   ]},
-  { label: '📸 Media', roles: [
+  { label: 'Media', roles: [
     { value: 'media', label: 'Media & Contenido', icon: Camera, minRate: 30 },
   ]},
-  { label: '🏢 Empresa', roles: [
+  { label: 'Empresa', roles: [
     { value: 'empresario', label: 'Empresario', icon: Building2, minRate: 0 },
   ]},
 ];
@@ -241,7 +241,7 @@ const Auth = () => {
                 {selectedRole === 'empresario' && (
                   <div className="px-3 py-2.5 rounded-lg text-left" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
                     <p className="text-[0.6rem]" style={{ color: '#D4AF37' }}>
-                      ⚡ Las cuentas de empresario requieren aprobación del administrador. Recibirás un email de confirmación.
+                      Las cuentas de empresario requieren aprobación del administrador. Recibirás un email de confirmación.
                     </p>
                   </div>
                 )}

@@ -17,10 +17,10 @@ const statusConfig: Record<ValidationStatus, { label: string; color: string; ico
 };
 
 const milestones = [
-  { votes: 50,  label: 'Novato Prometedor',    emoji: '🌱' },
-  { votes: 150, label: 'En Ascenso',           emoji: '🔥' },
-  { votes: 300, label: 'Favorito del Público', emoji: '⭐' },
-  { votes: 500, label: '¡Candidato a PRO!',    emoji: '👑' },
+  { votes: 50,  label: 'Novato Prometedor',    color: '#6ee7b7' },
+  { votes: 150, label: 'En Ascenso',           color: '#fbbf24' },
+  { votes: 300, label: 'Favorito del Público', color: '#D4AF37' },
+  { votes: 500, label: '¡Candidato a PRO!',    color: '#D4AF37' },
 ];
 
 /* ──────────────────── Card pública de un DJ Promesa ──────────────────── */
@@ -57,7 +57,7 @@ const RookiePublicCard = ({ dj, userId }: { dj: any; userId: string | undefined 
       {currentMilestone && (
         <span className="mt-1.5 text-[0.55rem] font-bold px-2 py-0.5 rounded-full"
           style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>
-          {currentMilestone.emoji} {currentMilestone.label}
+          {currentMilestone.label}
         </span>
       )}
       <div className="w-full mt-3">
@@ -233,7 +233,7 @@ const RookieView = () => {
                       return (
                         <div key={m.votes} className="flex items-center gap-2 p-1.5 rounded"
                           style={{ background: reached ? 'rgba(212,175,55,0.06)' : 'transparent' }}>
-                          <span className="text-sm">{m.emoji}</span>
+                          <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: reached ? (m as any).color : 'rgba(255,255,255,0.12)' }} />
                           <p className={`text-xs flex-1 ${reached ? 'font-bold' : 'text-muted-foreground'}`}>{m.label}</p>
                           <span className="text-[0.6rem] text-muted-foreground">{m.votes}v</span>
                           {reached && <CheckCircle size={11} style={{ color: '#22c55e' }} />}
@@ -248,7 +248,7 @@ const RookieView = () => {
                   )}
                   {currentMilestone && (
                     <div className="mt-2 p-2 rounded text-center" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
-                      <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>{currentMilestone.emoji} {currentMilestone.label}</p>
+                      <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>{currentMilestone.label}</p>
                     </div>
                   )}
                 </div>

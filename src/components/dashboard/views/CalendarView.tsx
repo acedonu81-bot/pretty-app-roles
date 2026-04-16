@@ -289,7 +289,7 @@ const CalendarView = () => {
                 <CalendarIcon size={18} style={{ color: '#D4AF37' }} />
                 <div>
                   <p className="text-sm font-bold">{eventDateStr}</p>
-                  <p className="text-xs text-muted-foreground">📍 Stage Principal (Ibiza)</p>
+                  <p className="text-xs text-muted-foreground">Stage Principal (Ibiza)</p>
                 </div>
               </div>
               <div className="text-right">
@@ -309,7 +309,7 @@ const CalendarView = () => {
               {profile.subscription_tier !== 'free' && (
                 <div className="text-xs font-bold px-3 py-1.5 rounded-lg inline-flex items-center gap-1.5"
                   style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
-                  ⚡ Alerta prioritaria
+                  Alerta prioritaria
                 </div>
               )}
             </div>
@@ -329,8 +329,8 @@ const CalendarView = () => {
               <div className="absolute top-0 left-0 w-0.5 h-full rounded-full" style={{ background: '#D4AF37' }} />
               <h4 className="font-bold text-sm mb-1 ml-2" style={{ color: '#D4AF37' }}>Cierre Sunrise Festival VIP</h4>
               <p className="text-xs text-muted-foreground ml-2 mb-2">Horizon Enterprise S.L.</p>
-              <p className="text-xs text-muted-foreground ml-2">📅 {eventDateStr}</p>
-              <p className="text-xs text-muted-foreground ml-2">📍 Stage Principal (Ibiza)</p>
+              <p className="text-xs text-muted-foreground ml-2">{eventDateStr}</p>
+              <p className="text-xs text-muted-foreground ml-2">Stage Principal (Ibiza)</p>
             </div>
           </div>
 
@@ -355,7 +355,7 @@ const CalendarView = () => {
               ))}
             </div>
             <p className="text-xs text-muted-foreground mt-3 pt-3" style={{ borderTop: '1px solid var(--nightlife-border)' }}>
-              ⚡ Los suscriptores Pro/Business reciben alertas urgentes antes que los demás.
+              Los suscriptores Pro/Business reciben alertas urgentes antes que los demás.
             </p>
           </div>
         </div>
