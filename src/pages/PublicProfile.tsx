@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Star, MapPin, Clock, ArrowLeft, Zap, CheckCircle, Heart, Crown, Lock, Music, Image, FileText, MessageCircle } from 'lucide-react';
+import { Star, MapPin, Clock, ArrowLeft, Zap, CheckCircle, Heart, Crown, Lock, Music, Image, FileText, MessageCircle, BadgeCheck } from 'lucide-react';
 import { profiles, toSlug } from '@/data/profiles';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 const FAKE_POSTS = [
   { icon: Music, label: 'Set exclusivo B2B — Club privado 2h', locked: false },
@@ -15,17 +16,85 @@ const FAKE_POSTS = [
 
 const BASE_URL = 'https://pretty-app-roles.vercel.app';
 
+// UUID v4 pattern
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+interface SupabaseProfile {
+  user_id: string;
+  display_name: string;
+  role: string;
+  specialty: string | null;
+  zone: string | null;
+  bio: string | null;
+  photo_url: string | null;
+  hourly_rate: number | null;
+  genres: string[] | null;
+  is_live: boolean;
+  is_verified: boolean;
+  is_flash_active: boolean;
+  subscription_tier: string;
+  stream_url: string | null;
+  instagram: string | null;
+}
+
+interface RelatedProfile {
+  user_id: string;
+  display_name: string;
+  role: string;
+  specialty: string | null;
+  zone: string | null;
+}
+
 const PublicProfile = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [fanTier, setFanTier] = useState<'fan' | 'vip'>('fan');
+  const [sbProfile, setSbProfile] = useState<SupabaseProfile | null>(null);
+  const [related, setRelated] = useState<RelatedProfile[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Busca por slug (nuevo) o por id numérico (compatibilidad backward)
-  const profile = profiles.find(p =>
-    toSlug(p.name) === slug || String(p.id) === slug
-  );
+  const isUUID = UUID_RE.test(slug ?? '');
 
-  if (!profile) {
+  // Load from Supabase when slug is a UUID (real user)
+  useEffect(() => {
+    if (!isUUID) { setLoading(false); return; }
+    setLoading(true);
+    supabase
+      .from('profiles')
+      .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_flash_active, subscription_tier, stream_url, instagram')
+      .eq('user_id', slug)
+      .maybeSingle()
+      .then(({ data }) => {
+        setSbProfile(data ?? null);
+        if (data?.role) {
+          supabase
+            .from('profiles')
+            .select('user_id, display_name, role, specialty, zone')
+            .eq('role', data.role)
+            .neq('user_id', slug!)
+            .limit(3)
+            .then(({ data: rel }) => setRelated(rel ?? []));
+        }
+        setLoading(false);
+      });
+  }, [slug, isUUID]);
+
+  // Static profile fallback (demo profiles via name slug)
+  const staticProfile = !isUUID
+    ? profiles.find(p => toSlug(p.name) === slug || String(p.id) === slug)
+    : null;
+
+  // Loading state (only for UUID profiles)
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#090909' }}>
+        <p className="text-white/30 text-sm animate-pulse">Cargando perfil…</p>
+      </div>
+    );
+  }
+
+  // Not found in either source
+  if (!sbProfile && !staticProfile) {
     return (
       <>
         <Helmet>
@@ -42,10 +111,32 @@ const PublicProfile = () => {
     );
   }
 
-  const profileSlug = toSlug(profile.name);
+  // Normalize to common shape regardless of source
+  const profile = sbProfile ? {
+    name: sbProfile.display_name || 'Sin nombre',
+    role: sbProfile.role,
+    specialty: sbProfile.specialty ?? '',
+    zone: sbProfile.zone ?? 'España',
+    location: sbProfile.zone ?? 'España',
+    description: sbProfile.bio ?? '',
+    photo: sbProfile.photo_url ?? '',
+    badges: sbProfile.genres ?? [],
+    rating: 0,
+    reviews: 0,
+    experience: '',
+    price: sbProfile.hourly_rate ?? 0,
+    isLive: sbProfile.is_live,
+    isVerified: sbProfile.is_verified,
+    isFlashActive: sbProfile.is_flash_active,
+    isPremium: sbProfile.subscription_tier !== 'free',
+    subscriptionTier: sbProfile.subscription_tier,
+    id: 0,
+  } : staticProfile!;
+
+  const profileSlug = isUUID ? slug! : toSlug(staticProfile!.name);
   const profileUrl = `${BASE_URL}/p/${profileSlug}`;
   const pageTitle = `${profile.name} — ${profile.specialty} | XPEAK`;
-  const pageDesc = `${profile.name}, ${profile.specialty} en ${profile.zone}. ${profile.description} Contacta directamente en XPEAK.`;
+  const pageDesc = `${profile.name}, ${profile.specialty} en ${profile.zone}. ${profile.description || 'Profesional del sector del ocio nocturno.'} Contacta directamente en XPEAK.`;
   const ogImage = profile.photo && profile.photo.trim().length > 5
     ? profile.photo
     : `${BASE_URL}/og-image.jpg`;
@@ -54,6 +145,23 @@ const PublicProfile = () => {
     dj: 'DJ & Artista', staff: 'Staff & Promoción', makeup: 'Belleza & Estética',
     media: 'Imagen & Media', design: 'Diseño & Visuales', promotor: 'Promotor', ambassador: 'Embajador',
   };
+
+  // Related profiles: Supabase results for UUID, static data for demo
+  const relatedProfiles = isUUID
+    ? related.map(r => ({
+        key: r.user_id,
+        name: r.display_name,
+        role: r.role,
+        specialty: r.specialty ?? '',
+        zone: r.zone ?? '',
+        href: `/p/${r.user_id}`,
+        rating: 0,
+        id: r.user_id,
+      }))
+    : profiles
+        .filter(p => p.role === profile.role && p.id !== (staticProfile?.id ?? -1))
+        .slice(0, 3)
+        .map(p => ({ key: String(p.id), name: p.name, role: p.role, specialty: p.specialty, zone: p.zone ?? '', href: `/p/${toSlug(p.name)}`, rating: p.rating, id: p.id }));
 
   return (
     <>
@@ -121,6 +229,9 @@ const PublicProfile = () => {
             <div className="mt-4">
               <div className="flex items-center justify-center gap-2 mb-1">
                 <h1 className="text-2xl font-bold">{profile.name}</h1>
+                {(profile as any).isVerified && (
+                  <BadgeCheck size={18} style={{ color: '#D4AF37', flexShrink: 0 }} />
+                )}
                 {profile.isPremium && (
                   <span className="text-[0.55rem] font-black px-2 py-0.5 rounded-md"
                     style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>ELITE</span>
@@ -278,27 +389,31 @@ const PublicProfile = () => {
           </div>
 
           {/* Otros perfiles del mismo rol */}
-          <div className="mt-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.3)' }}>
-              Más {roleLabel[profile.role] ?? profile.role}s en XPEAK
-            </p>
-            <div className="flex flex-col gap-2">
-              {profiles.filter(p => p.role === profile.role && p.id !== profile.id).slice(0, 3).map(p => (
-                <button key={p.id} onClick={() => navigate(`/p/${toSlug(p.name)}`)}
-                  className="flex items-center gap-3 p-3 rounded-xl text-left transition-all hover:scale-[1.01]"
-                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <GeometricAvatar role={p.role as any} seed={p.id} size={36} />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-bold truncate">{p.name}</p>
-                    <p className="text-xs truncate" style={{ color: 'rgba(255,255,255,0.4)' }}>{p.specialty} · {p.zone}</p>
-                  </div>
-                  <div className="flex items-center gap-1 text-xs" style={{ color: '#D4AF37' }}>
-                    <Star size={10} fill="#D4AF37" /> {p.rating}
-                  </div>
-                </button>
-              ))}
+          {relatedProfiles.length > 0 && (
+            <div className="mt-8">
+              <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.3)' }}>
+                Más {roleLabel[profile.role] ?? profile.role}s en XPEAK
+              </p>
+              <div className="flex flex-col gap-2">
+                {relatedProfiles.map(p => (
+                  <button key={p.key} onClick={() => navigate(p.href)}
+                    className="flex items-center gap-3 p-3 rounded-xl text-left transition-all hover:scale-[1.01]"
+                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                    <GeometricAvatar role={p.role as any} seed={typeof p.id === 'number' ? p.id : p.id.charCodeAt(0)} size={36} />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-bold truncate">{p.name}</p>
+                      <p className="text-xs truncate" style={{ color: 'rgba(255,255,255,0.4)' }}>{p.specialty} · {p.zone}</p>
+                    </div>
+                    {p.rating > 0 && (
+                      <div className="flex items-center gap-1 text-xs" style={{ color: '#D4AF37' }}>
+                        <Star size={10} fill="#D4AF37" /> {p.rating}
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </>
