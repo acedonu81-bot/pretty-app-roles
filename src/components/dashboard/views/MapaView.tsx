@@ -1,73 +1,61 @@
-import { useState } from 'react';
-import { MapPin, Star, Users, Music, CheckCircle, Search, Filter } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { MapPin, Search, Users, CheckCircle, ExternalLink } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
 
-const cities = [
-  // España
-  { id: 'madrid', name: 'Madrid', venues: 2 },
-  { id: 'barcelona', name: 'Barcelona', venues: 2 },
-  { id: 'valencia', name: 'Valencia', venues: 2 },
-  { id: 'ibiza', name: 'Ibiza', venues: 3 },
-  { id: 'sevilla', name: 'Sevilla', venues: 2 },
-  { id: 'malaga', name: 'Málaga', venues: 2 },
-  { id: 'bilbao', name: 'Bilbao', venues: 2 },
-  { id: 'zaragoza', name: 'Zaragoza', venues: 2 },
+const CITIES = [
+  'Madrid','Barcelona','Valencia','Sevilla','Zaragoza','Málaga','Murcia',
+  'Palma de Mallorca','Alicante','Bilbao','Ibiza','Granada','San Sebastián',
+  'Gijón','Santander','A Coruña','Vitoria-Gasteiz','Pamplona','Marbella','Salamanca',
 ];
 
-const venueDetails: Record<string, Array<{ name: string; type: string; capacity: number; rating: number; verified: boolean; needs: string[] }>> = {
-  madrid: [
-    { name: 'Teatro Kapital', type: 'Multi-género', capacity: 3500, rating: 4.7, verified: true, needs: ['DJ Comercial', 'Camareros', 'RRPP'] },
-    { name: 'Fabrik', type: 'Techno / Hard Style', capacity: 4000, rating: 4.8, verified: true, needs: ['DJ Techno', 'Staff técnico'] },
-  ],
-  barcelona: [
-    { name: 'Razzmatazz', type: 'Multi-sala', capacity: 3000, rating: 4.8, verified: true, needs: ['DJ House', 'Personal de sala'] },
-    { name: 'Pacha Barcelona', type: 'House / Comercial', capacity: 1500, rating: 4.6, verified: true, needs: ['DJ House', 'Hostess VIP'] },
-  ],
-  ibiza: [
-    { name: 'Ushuaïa', type: 'EDM / House', capacity: 5000, rating: 5.0, verified: true, needs: ['DJ Internacional', 'Staff completo'] },
-    { name: 'Amnesia', type: 'Techno / Trance', capacity: 5000, rating: 4.9, verified: true, needs: ['DJ Techno', 'Coordinación de sala'] },
-    { name: 'Hï Ibiza', type: 'House / Tech House', capacity: 4500, rating: 4.9, verified: true, needs: ['DJ House', 'Camareros VIP'] },
-  ],
-  valencia: [
-    { name: 'Noxe Club', type: 'Techno / Minimal', capacity: 800, rating: 4.7, verified: true, needs: ['DJ Minimal', 'Barman'] },
-    { name: 'Marina Beach Club', type: 'House / Comercial', capacity: 1200, rating: 4.6, verified: true, needs: ['DJ Comercial', 'Azafatas'] },
-  ],
-  sevilla: [
-    { name: 'Antique Theatro', type: 'House / Latin', capacity: 1000, rating: 4.5, verified: true, needs: ['DJ Latino', 'RRPP'] },
-    { name: 'Sala Custom', type: 'Techno / Underground', capacity: 600, rating: 4.4, verified: true, needs: ['DJ Techno', 'Personal de sala'] },
-  ],
-  malaga: [
-    { name: 'Opium Marbella', type: 'Beach Club', capacity: 2000, rating: 4.7, verified: true, needs: ['DJ Comercial', 'Azafatas'] },
-    { name: 'Theatro Marbs', type: 'House / Comercial', capacity: 1500, rating: 4.6, verified: true, needs: ['DJ House', 'Camareros'] },
-  ],
-  bilbao: [
-    { name: 'Fever Club', type: 'Techno / Bass', capacity: 600, rating: 4.4, verified: true, needs: ['DJ Bass', 'Camareros'] },
-    { name: 'Kubik', type: 'Electrónica', capacity: 500, rating: 4.3, verified: true, needs: ['DJ Electrónica', 'Azafatas'] },
-  ],
-  zaragoza: [
-    { name: 'La Casa del Loco', type: 'Electrónica', capacity: 400, rating: 4.5, verified: true, needs: ['DJ Electrónica', 'Barman'] },
-    { name: 'Oasis Club', type: 'Comercial', capacity: 700, rating: 4.3, verified: true, needs: ['DJ Comercial', 'RRPP'] },
-  ],
+const ROLE_LABELS: Record<string, string> = {
+  dj: 'DJ / Artista', staff: 'Staff', makeup: 'Maquillaje', media: 'Media',
+  design: 'Diseño', promotor: 'Promotor', ambassador: 'Embajador', empresario: 'Empresario',
 };
 
-const MapaView = () => {
-  const [selectedCity, setSelectedCity] = useState<string | null>('madrid');
-  const [searchTerm, setSearchTerm] = useState('');
-  const venues = selectedCity ? (venueDetails[selectedCity] || []) : [];
+interface CityPro {
+  user_id: string;
+  display_name: string;
+  role: string;
+  specialty: string | null;
+  zone: string | null;
+  photo_url: string | null;
+  subscription_tier: string;
+  is_verified: boolean;
+}
 
-  const filteredCities = cities.filter(c =>
-    c.name.toLowerCase().includes(searchTerm.toLowerCase())
+const MapaView = () => {
+  const [selectedCity, setSelectedCity] = useState<string>('Madrid');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [allProfiles, setAllProfiles] = useState<CityPro[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    supabase
+      .from('profiles')
+      .select('user_id, display_name, role, specialty, zone, photo_url, subscription_tier, is_verified')
+      .limit(500)
+      .then(({ data }) => {
+        setAllProfiles(data ?? []);
+        setLoading(false);
+      });
+  }, []);
+
+  const cityCount = (city: string) =>
+    allProfiles.filter(p => p.zone?.includes(city)).length;
+
+  const cityProfiles = allProfiles.filter(p => p.zone?.includes(selectedCity));
+
+  const filteredCities = CITIES.filter(c =>
+    c.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
       <div className="mb-5">
-        <h2 className="text-2xl font-bold mb-1">Directorio de <span className="text-gradient">Salas</span></h2>
-        <p className="text-sm text-muted-foreground">Referencia de salas del sector por ciudad.</p>
-        <div className="mt-2 flex items-center gap-2 text-[0.65rem] text-muted-foreground"
-          style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)', borderRadius: 8, padding: '6px 10px', width: 'fit-content' }}>
-          <span style={{ color: '#D4AF37', fontWeight: 700 }}>ℹ</span>
-          Datos de referencia · Las salas podrán publicar ofertas reales cuando se registren en XPEAK
-        </div>
+        <h2 className="text-2xl font-bold mb-1">Profesionales por <span className="text-gradient">Ciudad</span></h2>
+        <p className="text-sm text-muted-foreground">Directorio de talento por ubicación en España.</p>
       </div>
 
       <div className="glass-panel p-3 mb-5">
@@ -83,14 +71,16 @@ const MapaView = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-4">
+        {/* City list */}
         <div className="flex flex-col gap-2">
           {filteredCities.map(city => {
-            const isSelected = selectedCity === city.id;
+            const count = loading ? null : cityCount(city);
+            const isSelected = selectedCity === city;
             return (
               <button
-                key={city.id}
-                onClick={() => setSelectedCity(city.id)}
+                key={city}
+                onClick={() => setSelectedCity(city)}
                 className="flex items-center gap-3 p-3 rounded-lg text-left transition-all duration-200"
                 style={{
                   background: isSelected ? 'rgba(212,175,55,0.08)' : 'rgba(255,255,255,0.02)',
@@ -102,52 +92,84 @@ const MapaView = () => {
                   <MapPin size={14} style={{ color: isSelected ? '#D4AF37' : 'var(--nightlife-text-secondary)' }} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold" style={{ color: isSelected ? '#D4AF37' : 'inherit' }}>{city.name}</p>
-                  <p className="text-[0.65rem] text-muted-foreground">{city.venues} salas</p>
+                  <p className="text-sm font-bold" style={{ color: isSelected ? '#D4AF37' : 'inherit' }}>{city}</p>
+                  {count !== null && (
+                    <p className="text-[0.65rem] text-muted-foreground">
+                      {count > 0 ? `${count} profesional${count !== 1 ? 'es' : ''}` : 'Próximamente'}
+                    </p>
+                  )}
                 </div>
               </button>
             );
           })}
         </div>
 
-        <div className="flex flex-col gap-3">
-          {venues.length > 0 && (
-            <div className="flex items-center gap-2 mb-1">
-              <Filter size={14} style={{ color: '#D4AF37' }} />
-              <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>
-                {venues.length} salas en {cities.find(c => c.id === selectedCity)?.name}
-              </span>
+        {/* Professionals panel */}
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <Users size={14} style={{ color: '#D4AF37' }} />
+            <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>
+              {loading ? '…' : cityProfiles.length} profesionales en {selectedCity}
+            </span>
+          </div>
+
+          {loading && (
+            <div className="flex items-center justify-center py-12">
+              <p className="text-xs text-muted-foreground animate-pulse">Cargando…</p>
             </div>
           )}
-          {venues.map((v, i) => (
-            <div key={i} className="glass-panel p-4 transition-all hover:border-primary/20">
-              <div className="flex items-start justify-between mb-2">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h4 className="text-sm font-bold">{v.name}</h4>
-                    {v.verified && <CheckCircle size={12} style={{ color: '#22c55e' }} />}
-                  </div>
-                  <p className="text-xs text-muted-foreground">{v.type}</p>
-                </div>
-                <div className="flex items-center gap-1 text-xs">
-                  <Star size={11} style={{ color: '#D4AF37' }} />
-                  <span className="font-semibold">{v.rating}</span>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
-                <span className="flex items-center gap-1"><Users size={11} /> {v.capacity.toLocaleString()} aforo</span>
-                <span className="flex items-center gap-1"><Music size={11} /> {v.type.split('/')[0].trim()}</span>
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {v.needs.map(need => (
-                  <span key={need} className="text-[0.6rem] font-medium px-2 py-0.5 rounded"
-                    style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
-                    {need}
-                  </span>
-                ))}
+
+          {!loading && cityProfiles.length === 0 && (
+            <div className="glass-panel p-8 flex flex-col items-center text-center gap-3">
+              <MapPin size={24} style={{ color: 'rgba(212,175,55,0.2)' }} />
+              <div>
+                <p className="text-sm font-bold mb-1" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                  Sin profesionales aún en {selectedCity}
+                </p>
+                <p className="text-xs text-muted-foreground max-w-[240px] mx-auto">
+                  Sé el primero en registrarte y aparecer aquí.
+                </p>
               </div>
             </div>
-          ))}
+          )}
+
+          {!loading && cityProfiles.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {cityProfiles.map(pro => (
+                <a
+                  key={pro.user_id}
+                  href={`/p/${pro.user_id}`}
+                  className="glass-panel p-4 flex items-center gap-3 transition-all hover:border-primary/20 hover:scale-[1.01]"
+                >
+                  <div className="flex-shrink-0">
+                    {pro.photo_url ? (
+                      <img src={pro.photo_url} alt={pro.display_name}
+                        className="w-10 h-10 rounded-lg object-cover"
+                        onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                    ) : (
+                      <GeometricAvatar role={pro.role as any} seed={pro.user_id.charCodeAt(0)} size={40} />
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5 mb-0.5">
+                      <p className="text-sm font-bold truncate">{pro.display_name || 'Sin nombre'}</p>
+                      {pro.is_verified && <CheckCircle size={11} style={{ color: '#22c55e', flexShrink: 0 }} />}
+                    </div>
+                    <p className="text-[0.65rem] text-muted-foreground truncate">
+                      {ROLE_LABELS[pro.role] ?? pro.role}{pro.specialty ? ` · ${pro.specialty}` : ''}
+                    </p>
+                    {pro.subscription_tier !== 'free' && (
+                      <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded mt-1 inline-block"
+                        style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                        {pro.subscription_tier.charAt(0).toUpperCase() + pro.subscription_tier.slice(1)}
+                      </span>
+                    )}
+                  </div>
+                  <ExternalLink size={12} style={{ color: 'rgba(255,255,255,0.2)', flexShrink: 0 }} />
+                </a>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

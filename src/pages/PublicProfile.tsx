@@ -55,28 +55,46 @@ const PublicProfile = () => {
 
   const isUUID = UUID_RE.test(slug ?? '');
 
-  // Load from Supabase when slug is a UUID (real user)
+  // Load from Supabase — UUID lookup for real users, slug fallback for legacy/demo
   useEffect(() => {
-    if (!isUUID) { setLoading(false); return; }
+    if (!slug) { setLoading(false); return; }
     setLoading(true);
-    supabase
-      .from('profiles')
-      .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_flash_active, subscription_tier, stream_url, instagram')
-      .eq('user_id', slug)
-      .maybeSingle()
-      .then(({ data }) => {
-        setSbProfile(data ?? null);
-        if (data?.role) {
-          supabase
-            .from('profiles')
-            .select('user_id, display_name, role, specialty, zone')
-            .eq('role', data.role)
-            .neq('user_id', slug!)
-            .limit(3)
-            .then(({ data: rel }) => setRelated(rel ?? []));
-        }
-        setLoading(false);
-      });
+
+    const query = isUUID
+      ? supabase.from('profiles')
+          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_flash_active, subscription_tier, stream_url, instagram')
+          .eq('user_id', slug)
+          .maybeSingle()
+      : supabase.from('profiles')
+          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_flash_active, subscription_tier, stream_url, instagram')
+          .ilike('display_name', slug.replace(/-/g, '%'))
+          .limit(20)
+          .then(({ data, error }) => {
+            // Try to match slug against normalized display_name
+            const match = (data ?? []).find(p =>
+              p.display_name
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-|-$/g, '') === slug
+            );
+            return { data: match ?? null, error };
+          });
+
+    (query as Promise<{ data: SupabaseProfile | null; error: unknown }>).then(({ data }) => {
+      setSbProfile(data ?? null);
+      if (data?.role) {
+        supabase
+          .from('profiles')
+          .select('user_id, display_name, role, specialty, zone')
+          .eq('role', data.role)
+          .neq('user_id', data.user_id)
+          .limit(3)
+          .then(({ data: rel }) => setRelated(rel ?? []));
+      }
+      setLoading(false);
+    });
   }, [slug, isUUID]);
 
   // Static profile fallback (demo profiles via name slug)
