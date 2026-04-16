@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
-import { Trash2, Camera, ExternalLink, Star, Radio, ChevronDown, X, MapPin } from 'lucide-react';
+import { Trash2, Camera, ExternalLink, Star, Radio, ChevronDown, X, MapPin, Download } from 'lucide-react';
+import { exportUserDataZip } from '@/lib/exportUserData';
 import { parseStreamUrl } from '@/lib/streaming';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
@@ -534,6 +535,25 @@ const ProfileView = () => {
                 </div>
               );
             })()}
+          </div>
+
+          {/* Export ZIP - GDPR */}
+          <div className="glass-panel p-5 flex items-center justify-between gap-4"
+            style={{ border: '1px solid rgba(212,175,55,0.2)' }}>
+            <div>
+              <h4 className="text-sm font-bold flex items-center gap-2">
+                <Download size={15} style={{ color: '#D4AF37' }} /> Exportar mis datos
+              </h4>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Descarga un ZIP con tu perfil, bookings, favoritos y conversaciones (RGPD Art. 20).
+              </p>
+            </div>
+            <button
+              onClick={() => user && exportUserDataZip(user)}
+              className="flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
+              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+              <Download size={13} /> Descargar ZIP
+            </button>
           </div>
 
           {/* Media deletion - GDPR */}

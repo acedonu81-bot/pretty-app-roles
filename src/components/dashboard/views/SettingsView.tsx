@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Camera, Bell, Volume2, Shield, Trophy, CreditCard, LogOut, ChevronRight, Trash2, AlertTriangle, Download, FileText, QrCode, Archive, BellOff } from 'lucide-react';
 import { toast } from 'sonner';
 import JSZip from 'jszip';
+import { exportUserDataZip } from '@/lib/exportUserData';
 import QRCode from 'qrcode';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -877,7 +878,7 @@ Para cualquier duda: soporte@xpeak.site
                 <p className="text-[0.6rem] text-muted-foreground">perfil · bookings · favoritos · conversaciones</p>
               </div>
             </div>
-            <button onClick={handleExportCSVZip}
+            <button onClick={() => user && exportUserDataZip(user)}
               className="flex-shrink-0 text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-105"
               style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
               Descargar
