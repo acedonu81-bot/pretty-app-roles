@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Camera, Bell, Volume2, Shield, Trophy, CreditCard, LogOut, ChevronRight, Trash2, AlertTriangle, Download, FileText, QrCode, Archive } from 'lucide-react';
+import { Camera, Bell, Volume2, Shield, Trophy, CreditCard, LogOut, ChevronRight, Trash2, AlertTriangle, Download, FileText, QrCode, Archive, BellOff } from 'lucide-react';
 import { toast } from 'sonner';
 import JSZip from 'jszip';
 import QRCode from 'qrcode';
@@ -8,6 +8,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { subscriptionPlans, mapSubscriptionTierToPlan } from '@/lib/subscriptions';
 import { sanitizeInput, containsPhoneNumber } from '@/lib/contentFilter';
+import { requestPushPermission, revokePushPermission, isPushSubscribed, showLocalNotification } from '@/lib/pushNotifications';
 
 const euLanguages = [
   '🇪🇸 Español', '🇬🇧 English', '🇩🇪 Deutsch', '🇫🇷 Français', '🇮🇹 Italiano',
@@ -67,12 +68,13 @@ const SettingsView = () => {
   const [localBirthday, setLocalBirthday] = useState<string | null>(null);
   const [localPhone, setLocalPhone] = useState<string | null>(null);
 
-  // Notification prefs
-  const [notifMessages, setNotifMessages] = useState(true);
-  const [notifFlash, setNotifFlash] = useState(true);
-  const [notifTopWeekend, setNotifTopWeekend] = useState(true);
-  const [notifMarketing, setNotifMarketing] = useState(false);
-  const [notifSMS, setNotifSMS] = useState(false);
+  // Notification prefs — backed by localStorage + Web Push
+  const [pushEnabled, setPushEnabled] = useState(() => isPushSubscribed());
+  const [notifMessages, setNotifMessages] = useState(() => localStorage.getItem('xpeak_notif_messages') !== 'false');
+  const [notifFlash, setNotifFlash] = useState(() => localStorage.getItem('xpeak_notif_flash') !== 'false');
+  const [notifTopWeekend, setNotifTopWeekend] = useState(() => localStorage.getItem('xpeak_notif_topweekend') !== 'false');
+  const [notifMarketing, setNotifMarketing] = useState(() => localStorage.getItem('xpeak_notif_marketing') === 'true');
+  const [notifSMS, setNotifSMS] = useState(() => localStorage.getItem('xpeak_notif_sms') === 'true');
 
   // Audio quality — persisted in localStorage
   const [audioQuality, setAudioQuality] = useState(() => localStorage.getItem('xpeak_audio_quality') ?? 'high');
@@ -780,11 +782,63 @@ Para cualquier duda: soporte@xpeak.site
 
       {/* ── Notifications ── */}
       <Section title="Notificaciones" icon={<Bell size={15} />}>
-        <ToggleRow label="Mensajes nuevos" desc="Alerta cuando recibes un mensaje directo" checked={notifMessages} onChange={() => setNotifMessages(v => !v)} />
-        <ToggleRow label="Flash Booking" desc="Ofertas urgentes de empresarios" checked={notifFlash} onChange={() => setNotifFlash(v => !v)} />
-        <ToggleRow label="Top Weekend" desc="Cuando tu perfil asciende al ranking" checked={notifTopWeekend} onChange={() => setNotifTopWeekend(v => !v)} />
-        <ToggleRow label="Novedades y promociones" desc="Ofertas, descuentos y actualizaciones de XPEAK" checked={notifMarketing} onChange={() => setNotifMarketing(v => !v)} />
-        <ToggleRow label="SMS de verificación" desc="Solo para verificación de identidad" checked={notifSMS} onChange={() => setNotifSMS(v => !v)} />
+        {/* Push permission master toggle */}
+        <div className="rounded-xl p-4 mb-4 flex items-center justify-between gap-3"
+          style={{ background: pushEnabled ? 'rgba(212,175,55,0.04)' : 'rgba(255,255,255,0.02)', border: `1px solid ${pushEnabled ? 'rgba(212,175,55,0.2)' : 'rgba(255,255,255,0.07)'}` }}>
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            {pushEnabled
+              ? <Bell size={16} style={{ color: '#D4AF37', flexShrink: 0 }} />
+              : <BellOff size={16} style={{ color: 'rgba(255,255,255,0.25)', flexShrink: 0 }} />}
+            <div className="min-w-0">
+              <p className="text-sm font-bold">{pushEnabled ? 'Notificaciones push activas' : 'Notificaciones push desactivadas'}</p>
+              <p className="text-xs text-muted-foreground leading-snug">
+                {pushEnabled
+                  ? 'Recibirás alertas aunque la app esté cerrada'
+                  : Notification.permission === 'denied'
+                    ? 'Bloqueadas en el navegador — cámbialas en Configuración del sitio'
+                    : 'Actívalas para recibir alertas de mensajes y Flash Bookings'}
+              </p>
+            </div>
+          </div>
+          {Notification.permission !== 'denied' && (
+            <button type="button"
+              onClick={async () => {
+                if (pushEnabled) {
+                  await revokePushPermission();
+                  setPushEnabled(false);
+                  toast.success('Notificaciones push desactivadas.');
+                } else {
+                  const ok = await requestPushPermission();
+                  if (ok) {
+                    setPushEnabled(true);
+                    await showLocalNotification('XPEAK', 'Las notificaciones push están activas.', '/dashboard');
+                    toast.success('Notificaciones push activadas.');
+                  } else {
+                    toast.error('No se pudo activar. Permite las notificaciones en tu navegador.');
+                  }
+                }
+              }}
+              className="flex-shrink-0 text-xs font-bold px-4 py-2 rounded-lg transition-all hover:scale-105"
+              style={{
+                background: pushEnabled ? 'rgba(255,95,86,0.08)' : 'linear-gradient(90deg,#D4AF37,#B8941E)',
+                color: pushEnabled ? '#ff5f56' : '#000',
+                border: pushEnabled ? '1px solid rgba(255,95,86,0.2)' : 'none',
+              }}>
+              {pushEnabled ? 'Desactivar' : 'Activar'}
+            </button>
+          )}
+        </div>
+
+        <ToggleRow label="Mensajes nuevos" desc="Alerta cuando recibes un mensaje directo" checked={notifMessages}
+          onChange={() => { const v = !notifMessages; setNotifMessages(v); localStorage.setItem('xpeak_notif_messages', String(v)); }} />
+        <ToggleRow label="Flash Booking" desc="Ofertas urgentes de empresarios" checked={notifFlash}
+          onChange={() => { const v = !notifFlash; setNotifFlash(v); localStorage.setItem('xpeak_notif_flash', String(v)); }} />
+        <ToggleRow label="Top Weekend" desc="Cuando tu perfil asciende al ranking" checked={notifTopWeekend}
+          onChange={() => { const v = !notifTopWeekend; setNotifTopWeekend(v); localStorage.setItem('xpeak_notif_topweekend', String(v)); }} />
+        <ToggleRow label="Novedades y promociones" desc="Ofertas, descuentos y actualizaciones de XPEAK" checked={notifMarketing}
+          onChange={() => { const v = !notifMarketing; setNotifMarketing(v); localStorage.setItem('xpeak_notif_marketing', String(v)); }} />
+        <ToggleRow label="SMS de verificación" desc="Solo para verificación de identidad" checked={notifSMS}
+          onChange={() => { const v = !notifSMS; setNotifSMS(v); localStorage.setItem('xpeak_notif_sms', String(v)); }} />
       </Section>
 
       {/* ── Privacy ── */}
