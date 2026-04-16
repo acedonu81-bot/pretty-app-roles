@@ -261,8 +261,9 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
     setStreamTitle(profile.stream_title ?? '');
   }, [profile.stream_url, profile.stream_title]);
 
+  // Solo aparecen en EN DIRECTO si is_live = true Y tienen stream_url activa
   const liveStreamers = realProfiles
-    .filter(p => p.isLive || p.streamUrl)
+    .filter(p => p.isLive && p.streamUrl)
     .sort((a, b) => b.profileViews - a.profileViews);
 
   const viewerCounts = liveStreamers.map(() => Math.floor(Math.random() * 80) + 10);
