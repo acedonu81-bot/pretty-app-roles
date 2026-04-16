@@ -57,7 +57,7 @@ const Section = ({ title, icon, children }: SectionProps) => (
   </div>
 );
 
-const SettingsView = () => {
+const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) => {
   const { user, signOut } = useAuth();
   const profile = useProfile();
   const photoRef = useRef<HTMLInputElement>(null);
@@ -994,7 +994,7 @@ Para cualquier duda: soporte@xpeak.site
         </div>
         <button className="w-full flex items-center justify-between p-3 rounded-lg text-sm font-medium transition-all hover:bg-white/5"
           style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}
-          onClick={() => toast.info('La pasarela de pagos estará disponible pronto.')}>
+          onClick={() => onNavigate ? onNavigate('subscription') : toast.info('Ve a Suscripción en el menú lateral.')}>
           <span>Ver todos los planes</span>
           <ChevronRight size={14} className="text-muted-foreground" />
         </button>

@@ -69,7 +69,7 @@ const Dashboard = () => {
       case 'makeup': return <MakeupView onNavigate={nav} onMessage={handleMessage} />;
       case 'media': return <MediaView onNavigate={nav} onMessage={handleMessage} />;
       case 'ambassador': return <AmbassadorView onNavigate={nav} onMessage={handleMessage} />;
-      case 'settings': return <SettingsView />;
+      case 'settings': return <SettingsView onNavigate={nav} />;
       case 'empresario': return <EmpresarioView />;
       case 'messages': return <MessagesView initialUserId={messagesTarget?.userId} initialName={messagesTarget?.name} />;
       case 'calendar': return <CalendarView />;

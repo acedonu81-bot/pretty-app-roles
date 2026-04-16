@@ -195,75 +195,78 @@ const SubscriptionView = () => {
         })}
       </div>
 
-      {/* ── STREAMING PACKS ── visible para Starter/Business/Agency */}
-      {isStreamingEligible && (
-        <div className="glass-panel p-4 mb-5" style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <Radio size={13} style={{ color: '#D4AF37' }} />
-              <span className="text-xs font-bold">Horas de Streaming en Vivo</span>
-              <span className="text-[0.5rem] font-bold px-1.5 py-0.5 rounded"
-                style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
-                AMAZON IVS
-              </span>
-            </div>
-            {includedHours > 0 && (
-              <span className="text-[0.55rem] font-bold px-2 py-0.5 rounded"
-                style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', color: '#22c55e' }}>
-                {includedHours}h/mes incluida{includedHours > 1 ? 's' : ''}
-              </span>
-            )}
+      {/* ── STREAMING PACKS ── siempre visible */}
+      <div className="glass-panel p-4 mb-5" style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <Radio size={13} style={{ color: '#D4AF37' }} />
+            <span className="text-xs font-bold">Horas de Streaming en Vivo</span>
+            <span className="text-[0.5rem] font-bold px-1.5 py-0.5 rounded"
+              style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
+              AMAZON IVS
+            </span>
           </div>
-
-          {includedHours === 0 && (
-            <p className="text-[0.6rem] text-muted-foreground mb-3">
-              Sin hora incluida en tu plan — compra las que necesites. Válidas <span className="font-bold text-primary">6 meses</span>.
-            </p>
-          )}
           {includedHours > 0 && (
-            <p className="text-[0.6rem] text-muted-foreground mb-3">
-              Tu plan incluye <span className="font-bold" style={{ color: '#22c55e' }}>{includedHours}h/mes</span>. Compra packs para emitir más.
-            </p>
+            <span className="text-[0.55rem] font-bold px-2 py-0.5 rounded"
+              style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', color: '#22c55e' }}>
+              {includedHours}h/mes incluidas
+            </span>
           )}
-
-          {/* Packs — horizontal scroll en móvil, grid en desktop */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            {STREAMING_PACKS.map(pack => (
-              <button
-                key={pack.id}
-                onClick={() => setCheckoutItem({
-                  name: pack.label,
-                  price: pack.price,
-                  description: `${pack.hours}h de streaming en vivo (Amazon IVS). Válidas 6 meses.`,
-                })}
-                className="relative flex flex-col items-start gap-0.5 p-3 rounded-lg text-left transition-all hover:scale-[1.02] active:scale-95"
-                style={{
-                  background: pack.highlight ? 'rgba(212,175,55,0.07)' : 'rgba(255,255,255,0.02)',
-                  border: pack.highlight ? '1px solid rgba(212,175,55,0.25)' : '1px solid rgba(255,255,255,0.06)',
-                }}>
-                {pack.badge && (
-                  <span className="absolute top-1.5 right-1.5 text-[0.42rem] font-black px-1.5 py-0.5 rounded"
-                    style={{
-                      background: pack.highlight ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.06)',
-                      color: pack.highlight ? '#D4AF37' : 'rgba(255,255,255,0.4)',
-                      border: pack.highlight ? '1px solid rgba(212,175,55,0.2)' : '1px solid rgba(255,255,255,0.08)',
-                    }}>{pack.badge}</span>
-                )}
-                <span className="text-[0.6rem] font-bold pr-6" style={{ color: pack.highlight ? '#D4AF37' : 'rgba(255,255,255,0.7)' }}>
-                  {pack.hours}h
-                </span>
-                <span className="text-lg font-black leading-tight" style={{ color: pack.highlight ? '#D4AF37' : 'white' }}>
-                  €{pack.price}
-                </span>
-                <span className="text-[0.5rem] text-muted-foreground">€{pack.pricePerHour.toFixed(2)}/h</span>
-              </button>
-            ))}
-          </div>
-          <p className="text-[0.5rem] text-muted-foreground text-center mt-2">
-            Alta calidad garantizada · Horas válidas 6 meses desde la compra
-          </p>
         </div>
-      )}
+
+        {!isStreamingEligible && (
+          <p className="text-[0.6rem] text-muted-foreground mb-3">
+            Disponible desde el plan <span className="font-bold" style={{ color: '#D4AF37' }}>Starter</span>. Compra horas sueltas o en pack para emitir en directo.
+          </p>
+        )}
+        {isStreamingEligible && includedHours === 0 && (
+          <p className="text-[0.6rem] text-muted-foreground mb-3">
+            Sin hora incluida en tu plan — compra las que necesites. Válidas <span className="font-bold text-primary">6 meses</span>.
+          </p>
+        )}
+        {isStreamingEligible && includedHours > 0 && (
+          <p className="text-[0.6rem] text-muted-foreground mb-3">
+            Tu plan incluye <span className="font-bold" style={{ color: '#22c55e' }}>{includedHours}h/mes</span>. Compra packs para emitir más.
+          </p>
+        )}
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {STREAMING_PACKS.map(pack => (
+            <button
+              key={pack.id}
+              onClick={() => setCheckoutItem({
+                name: pack.label,
+                price: pack.price,
+                description: `${pack.hours}h de streaming en vivo (Amazon IVS). Válidas 6 meses.`,
+              })}
+              className="relative flex flex-col items-start gap-0.5 p-3 rounded-lg text-left transition-all hover:scale-[1.02] active:scale-95"
+              style={{
+                background: pack.highlight ? 'rgba(212,175,55,0.07)' : 'rgba(255,255,255,0.02)',
+                border: pack.highlight ? '1px solid rgba(212,175,55,0.25)' : '1px solid rgba(255,255,255,0.06)',
+                opacity: !isStreamingEligible ? 0.5 : 1,
+              }}>
+              {pack.badge && (
+                <span className="absolute top-1.5 right-1.5 text-[0.42rem] font-black px-1.5 py-0.5 rounded"
+                  style={{
+                    background: pack.highlight ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.06)',
+                    color: pack.highlight ? '#D4AF37' : 'rgba(255,255,255,0.4)',
+                    border: pack.highlight ? '1px solid rgba(212,175,55,0.2)' : '1px solid rgba(255,255,255,0.08)',
+                  }}>{pack.badge}</span>
+              )}
+              <span className="text-[0.6rem] font-bold pr-6" style={{ color: pack.highlight ? '#D4AF37' : 'rgba(255,255,255,0.7)' }}>
+                {pack.hours}h
+              </span>
+              <span className="text-lg font-black leading-tight" style={{ color: pack.highlight ? '#D4AF37' : 'white' }}>
+                €{pack.price}
+              </span>
+              <span className="text-[0.5rem] text-muted-foreground">€{pack.pricePerHour.toFixed(2)}/h</span>
+            </button>
+          ))}
+        </div>
+        <p className="text-[0.5rem] text-muted-foreground text-center mt-2">
+          Alta calidad garantizada · Horas válidas 6 meses desde la compra
+        </p>
+      </div>
 
       {/* ── MÁS OPCIONES — colapsable ── */}
       <button
