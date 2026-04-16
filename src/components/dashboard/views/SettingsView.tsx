@@ -143,7 +143,7 @@ const SettingsView = () => {
   /* ── CSV Múltiple ZIP ── */
   const handleExportCSVZip = async () => {
     if (!user) return;
-    toast.info('Generando archivos CSV…');
+    toast.info('Recopilando datos…');
     try {
       const [profileRes, favRes, bookingsRes, convsRes] = await Promise.all([
         supabase.from('profiles').select('*').eq('user_id', user.id).maybeSingle(),
@@ -154,57 +154,97 @@ const SettingsView = () => {
 
       const p = profileRes.data as Record<string, unknown> | null ?? {};
       const today = new Date().toISOString().slice(0, 10);
-      const slug = (p.slug as string) || (p.display_name as string)?.toLowerCase().replace(/\s+/g, '-') || user.id.slice(0, 8);
+      const exportedAt = new Date().toISOString();
+      const displayName = (p.display_name as string) ?? '';
+      const slug = (p.slug as string) || displayName.toLowerCase().replace(/\s+/g, '-') || user.id.slice(0, 8);
+      const hourlyRate = Number(p.hourly_rate ?? 0);
 
-      // perfil.csv
-      const perfilRows = [
-        ['campo', 'valor'],
-        ['user_id', user.id],
-        ['email', user.email ?? ''],
-        ['nombre_artistico', (p.display_name as string) ?? ''],
-        ['rol', (p.role as string) ?? ''],
-        ['zona', (p.zone as string) ?? ''],
-        ['bio', ((p.bio as string) ?? '').replace(/\n/g, ' ')],
-        ['tarifa_hora', String(p.hourly_rate ?? '')],
-        ['suscripcion', (p.subscription_tier as string) ?? 'free'],
-        ['verificado', p.is_verified ? 'sí' : 'no'],
-        ['disponible', p.is_live ? 'sí' : 'no'],
-        ['generos', Array.isArray(p.genres) ? (p.genres as string[]).join('; ') : ''],
-        ['instagram', (p.instagram as string) ?? ''],
-        ['fecha_registro', (p.created_at as string)?.slice(0, 10) ?? ''],
-        ['exportado_el', today],
-      ].map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
+      const csv = (rows: (string | number | boolean | null | undefined)[][]): string =>
+        rows.map(r => r.map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(',')).join('\n');
 
-      // bookings.csv
+      // ── 1. perfil.csv ──────────────────────────────────────────────────
+      const perfilCsv = csv([
+        ['campo', 'valor', 'notas'],
+        ['user_id',          user.id,                              'Identificador único XPEAK'],
+        ['email',            user.email ?? '',                     'Email de autenticación'],
+        ['nombre_artistico', displayName,                          ''],
+        ['rol',              (p.role as string) ?? '',             'dj · staff · makeup · media · ambassador'],
+        ['zona',             (p.zone as string) ?? '',             'Ciudad/zona base de actividad'],
+        ['bio',              ((p.bio as string) ?? '').replace(/\n/g, ' '), ''],
+        ['tarifa_hora',      String(p.hourly_rate ?? ''),          'EUR · tarifa base orientativa'],
+        ['suscripcion',      (p.subscription_tier as string) ?? 'free', 'free · pro · elite'],
+        ['verificado',       p.is_verified ? 'sí' : 'no',         'Verificación manual por XPEAK'],
+        ['disponible',       p.is_live ? 'sí' : 'no',             'Visible en directorio ahora mismo'],
+        ['generos',          Array.isArray(p.genres) ? (p.genres as string[]).join('; ') : '', 'Separados por punto y coma'],
+        ['instagram',        (p.instagram as string) ?? '',        ''],
+        ['url_perfil',       `https://xpeak.site/p/${slug}`,       'URL pública permanente'],
+        ['fecha_registro',   (p.created_at as string)?.slice(0, 10) ?? '', ''],
+        ['exportado_el',     exportedAt,                           'ISO 8601 UTC'],
+        ['base_legal',       'RGPD Art. 20',                       'Derecho a la portabilidad de los datos'],
+      ]);
+
+      // ── 2. bookings.csv ────────────────────────────────────────────────
       const bookings = (bookingsRes.data ?? []) as Record<string, unknown>[];
-      const bookingsCsv = [
-        ['id', 'fecha_evento', 'descripcion', 'ubicacion', 'estado', 'fecha_solicitud'].join(','),
-        ...bookings.map(b => [
-          b.id, b.event_date ?? '', b.description ?? '', b.location ?? '', b.status ?? '', (b.created_at as string)?.slice(0, 10) ?? '',
-        ].map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')),
-      ].join('\n');
+      const bookingsByMonth: Record<string, number> = {};
+      let totalEarnings = 0;
+      const citiesSet = new Set<string>();
 
-      // favoritos.csv — enriquecer con nombre, rol y zona del perfil guardado
+      bookings.forEach(b => {
+        const month = String(b.event_date ?? '').slice(0, 7);
+        if (month) bookingsByMonth[month] = (bookingsByMonth[month] ?? 0) + 1;
+        if (b.location) citiesSet.add(String(b.location).split('·')[1]?.trim() ?? String(b.location));
+        if ((b.status === 'aceptado' || b.status === 'accepted') && hourlyRate > 0) {
+          const hrs = Number(b.duration_hours ?? 3);
+          totalEarnings += hourlyRate * hrs;
+        }
+      });
+
+      const accepted  = bookings.filter(b => b.status === 'aceptado' || b.status === 'accepted');
+      const rejected  = bookings.filter(b => b.status === 'rechazado' || b.status === 'rejected');
+      const pending   = bookings.filter(b => b.status === 'pendiente' || b.status === 'pending');
+      const acceptRate = bookings.length > 0 ? Math.round((accepted.length / bookings.length) * 100) : 0;
+
+      const bookingsCsv = csv([
+        ['id', 'fecha_evento', 'descripcion', 'ubicacion', 'estado', 'duracion_horas', 'ingreso_estimado_eur', 'solicitado_por', 'fecha_solicitud', 'notas'],
+        ...bookings.map(b => {
+          const hrs = Number(b.duration_hours ?? 3);
+          const earning = (b.status === 'aceptado' || b.status === 'accepted') && hourlyRate > 0 ? (hourlyRate * hrs).toFixed(2) : '';
+          return [
+            b.id ?? '',
+            String(b.event_date ?? '').slice(0, 10),
+            b.description ?? '',
+            b.location ?? '',
+            b.status ?? '',
+            hrs,
+            earning,
+            b.requested_by ?? '',
+            String(b.created_at ?? '').slice(0, 10),
+            b.notes ?? '',
+          ];
+        }),
+      ]);
+
+      // ── 3. favoritos.csv ───────────────────────────────────────────────
       const favs = (favRes.data ?? []) as Record<string, unknown>[];
-      const favTargetIds = favs.map(f => f.target_user_id as string).filter(Boolean);
       const convs = (convsRes.data ?? []) as Record<string, unknown>[];
-      const convOtherIds = convs.map(c => (c.participant_a === user.id ? c.participant_b : c.participant_a) as string).filter(Boolean);
-      const allOtherIds = [...new Set([...favTargetIds, ...convOtherIds])];
+      const allOtherIds = [...new Set([
+        ...favs.map(f => f.target_user_id as string),
+        ...convs.map(c => (c.participant_a === user.id ? c.participant_b : c.participant_a) as string),
+      ].filter(Boolean))];
 
-      // Single batch query for all referenced profiles
       const profilesMap: Record<string, Record<string, unknown>> = {};
       if (allOtherIds.length > 0) {
-        const { data: otherProfiles } = await supabase
+        const { data: others } = await supabase
           .from('profiles')
-          .select('user_id, display_name, role, zone')
+          .select('user_id, display_name, role, zone, is_verified, hourly_rate')
           .in('user_id', allOtherIds);
-        (otherProfiles ?? []).forEach((pr: Record<string, unknown>) => {
+        (others ?? []).forEach((pr: Record<string, unknown>) => {
           profilesMap[pr.user_id as string] = pr;
         });
       }
 
-      const favsCsv = [
-        ['nombre', 'rol', 'zona', 'user_id', 'fecha_guardado'].join(','),
+      const favsCsv = csv([
+        ['nombre', 'rol', 'zona', 'tarifa_hora_eur', 'verificado', 'url_perfil', 'user_id', 'guardado_el'],
         ...favs.map(f => {
           const tid = f.target_user_id as string ?? '';
           const pr = profilesMap[tid] ?? {};
@@ -212,15 +252,18 @@ const SettingsView = () => {
             (pr.display_name as string) ?? '',
             (pr.role as string) ?? '',
             (pr.zone as string) ?? '',
+            pr.hourly_rate ?? '',
+            pr.is_verified ? 'sí' : 'no',
+            tid ? `https://xpeak.site/p/${tid}` : '',
             tid,
-            (f.created_at as string)?.slice(0, 10) ?? '',
-          ].map(v => `"${String(v).replace(/"/g, '""')}"`).join(',');
+            String(f.created_at ?? '').slice(0, 10),
+          ];
         }),
-      ].join('\n');
+      ]);
 
-      // conversaciones.csv — con nombre y rol de la contraparte
-      const convsCsv = [
-        ['conversation_id', 'nombre_contraparte', 'rol_contraparte', 'user_id_contraparte', 'inicio'].join(','),
+      // ── 4. conversaciones.csv ──────────────────────────────────────────
+      const convsCsv = csv([
+        ['conversation_id', 'nombre_contraparte', 'rol_contraparte', 'zona_contraparte', 'user_id_contraparte', 'inicio_conversacion'],
         ...convs.map(c => {
           const other = (c.participant_a === user.id ? c.participant_b : c.participant_a) as string ?? '';
           const pr = profilesMap[other] ?? {};
@@ -228,26 +271,109 @@ const SettingsView = () => {
             c.id ?? '',
             (pr.display_name as string) ?? '',
             (pr.role as string) ?? '',
+            (pr.zone as string) ?? '',
             other,
-            (c.created_at as string)?.slice(0, 10) ?? '',
-          ].map(v => `"${String(v).replace(/"/g, '""')}"`).join(',');
+            String(c.created_at ?? '').slice(0, 10),
+          ];
         }),
-      ].join('\n');
+      ]);
 
+      // ── 5. resumen_anual.csv ───────────────────────────────────────────
+      const currentYear = new Date().getFullYear();
+      const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+      const resumenRows: (string | number)[][] = [
+        ['seccion', 'indicador', 'valor', 'unidad'],
+        ['', '', '', ''],
+        ['PERFIL', 'Nombre artístico',   displayName,                       ''],
+        ['PERFIL', 'Rol',                (p.role as string) ?? '',           ''],
+        ['PERFIL', 'Zona base',          (p.zone as string) ?? '',           ''],
+        ['PERFIL', 'Plan activo',        (p.subscription_tier as string) ?? 'free', ''],
+        ['PERFIL', 'Perfil verificado',  p.is_verified ? 'sí' : 'no',       ''],
+        ['PERFIL', 'Miembro desde',      (p.created_at as string)?.slice(0, 10) ?? '', ''],
+        ['', '', '', ''],
+        ['ACTIVIDAD', 'Total bookings solicitados',  bookings.length,        'contratos'],
+        ['ACTIVIDAD', 'Bookings aceptados',          accepted.length,        'contratos'],
+        ['ACTIVIDAD', 'Bookings rechazados',         rejected.length,        'contratos'],
+        ['ACTIVIDAD', 'Bookings pendientes',         pending.length,         'contratos'],
+        ['ACTIVIDAD', 'Tasa de aceptación',          `${acceptRate}%`,       ''],
+        ['ACTIVIDAD', 'Ciudades distintas',          citiesSet.size,         'ciudades'],
+        ['ACTIVIDAD', 'Ingreso estimado total',      totalEarnings > 0 ? totalEarnings.toFixed(2) : 'n/d', 'EUR (orientativo)'],
+        ['ACTIVIDAD', 'Tarifa base por hora',        hourlyRate > 0 ? hourlyRate : 'n/d', 'EUR/hora'],
+        ['', '', '', ''],
+        ['RED', 'Perfiles guardados (favoritos)',  favs.length,   'perfiles'],
+        ['RED', 'Conversaciones activas',          convs.length,  'chats'],
+        ['', '', '', ''],
+        ['ACTIVIDAD MENSUAL', 'Mes', 'Bookings', ''],
+        ...Array.from({ length: 12 }, (_, i) => {
+          const key = `${currentYear}-${String(i + 1).padStart(2, '0')}`;
+          const prevKey = `${currentYear - 1}-${String(i + 1).padStart(2, '0')}`;
+          return ['ACTIVIDAD MENSUAL', monthNames[i], (bookingsByMonth[key] ?? bookingsByMonth[prevKey] ?? 0), ''];
+        }),
+        ['', '', '', ''],
+        ['META', 'Exportado el',   exportedAt,         'ISO 8601 UTC'],
+        ['META', 'Base legal',     'RGPD Art. 20',     'Portabilidad de datos'],
+        ['META', 'Plataforma',     'XPEAK',            'xpeak.site'],
+        ['META', 'Nota fiscal',    'Este documento no constituye certificado fiscal oficial. Consulta con tu asesor/a.', ''],
+      ];
+      const resumenCsv = csv(resumenRows);
+
+      // ── 6. README.txt ──────────────────────────────────────────────────
+      const readme = `XPEAK — Exportación de datos personales
+========================================
+Exportado el: ${exportedAt}
+Usuario: ${displayName} (${user.email})
+Base legal: RGPD Art. 20 — Derecho a la portabilidad de los datos
+
+ARCHIVOS INCLUIDOS
+------------------
+perfil.csv
+  Todos tus datos de perfil: nombre, rol, zona, bio, tarifa, géneros,
+  suscripción, estado de verificación y URL pública permanente.
+
+bookings.csv
+  Historial completo de Flash Bookings: fecha, descripción, ubicación,
+  estado (aceptado/rechazado/pendiente), duración e ingreso estimado.
+
+favoritos.csv
+  Perfiles que has guardado: nombre, rol, zona, tarifa y URL de perfil
+  de cada profesional guardado.
+
+conversaciones.csv
+  Registro de conversaciones: nombre y rol de la contraparte por cada
+  chat iniciado en la plataforma.
+
+resumen_anual.csv
+  Resumen ejecutivo con KPIs de actividad, estadísticas de red,
+  desglose mensual de bookings y nota fiscal orientativa.
+
+NOTA LEGAL
+----------
+Este archivo fue generado automáticamente en respuesta a una solicitud
+de portabilidad de datos conforme al Art. 20 del Reglamento General de
+Protección de Datos (RGPD / GDPR). No constituye un certificado fiscal
+oficial. Para el derecho al olvido (Art. 17), usa la opción "Eliminar
+cuenta" en Ajustes > Zona de peligro.
+
+Para cualquier duda: soporte@xpeak.site
+`;
+
+      // ── Generar ZIP ────────────────────────────────────────────────────
       const zip = new JSZip();
-      zip.file('perfil.csv', '\uFEFF' + perfilRows);
-      zip.file('bookings.csv', '\uFEFF' + bookingsCsv);
-      zip.file('favoritos.csv', '\uFEFF' + favsCsv);
-      zip.file('conversaciones.csv', '\uFEFF' + convsCsv);
+      zip.file('README.txt',            readme);
+      zip.file('perfil.csv',            '\uFEFF' + perfilCsv);
+      zip.file('bookings.csv',          '\uFEFF' + bookingsCsv);
+      zip.file('favoritos.csv',         '\uFEFF' + favsCsv);
+      zip.file('conversaciones.csv',    '\uFEFF' + convsCsv);
+      zip.file('resumen_anual.csv',     '\uFEFF' + resumenCsv);
 
-      const blob = await zip.generateAsync({ type: 'blob' });
+      const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
       a.download = `XPEAK_datos_${slug}_${today}.zip`;
       a.click();
       URL.revokeObjectURL(url);
-      toast.success('ZIP con 4 archivos CSV descargado.');
+      toast.success('ZIP con 6 archivos descargado correctamente.');
     } catch {
       toast.error('Error al generar el ZIP. Inténtalo de nuevo.');
     }
