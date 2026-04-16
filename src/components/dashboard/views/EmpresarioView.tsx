@@ -19,7 +19,8 @@ const EmpresarioView = () => {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [privateHiring, setPrivateHiring] = useState(false);
 
-  useEffect(() => { fetchPros(); fetchFavorites(); }, []);
+  useEffect(() => { fetchPros(); }, []);
+  useEffect(() => { if (user?.id) fetchFavorites(); }, [user?.id]);
 
   const fetchPros = async () => {
     const { data, error } = await supabase
