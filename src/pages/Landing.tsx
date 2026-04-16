@@ -465,9 +465,9 @@ const Landing = () => {
       </nav>
 
       {/* ─ Hero ─ */}
-      <header className="max-w-[1200px] mx-auto px-4 md:px-8 pt-16 pb-20 md:pt-40 md:pb-44 text-center">
+      <header className="max-w-[1200px] mx-auto px-4 md:px-8 pt-12 pb-10 md:pt-40 md:pb-44 text-center">
         <FadeIn>
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-8"
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-5 md:mb-8"
             style={{
               background: 'rgba(212,175,55,0.06)',
               border: '1px solid rgba(212,175,55,0.15)',
@@ -479,14 +479,14 @@ const Landing = () => {
           </div>
         </FadeIn>
         <FadeIn delay={0.1}>
-          <h1 className="text-5xl sm:text-6xl md:text-8xl font-bold leading-[1.15] mb-7 max-w-5xl mx-auto tracking-tight text-center">
+          <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold leading-[1.15] mb-4 md:mb-7 max-w-5xl mx-auto tracking-tight text-center">
             <span className="block" style={{ color: 'rgba(255,255,255,0.9)' }}>El talento de los</span>
             <RotatingWord />
             <span className="block" style={{ color: 'rgba(255,255,255,0.9)' }}>está aquí</span>
           </h1>
         </FadeIn>
         <FadeIn delay={0.2}>
-          <p className="text-base md:text-lg max-w-xl mx-auto mb-12 leading-relaxed"
+          <p className="text-sm md:text-lg max-w-xl mx-auto mb-6 md:mb-12 leading-relaxed"
             style={{ color: 'rgba(255,255,255,0.45)' }}>
             El directorio profesional para clubs, bodas, eventos privados y festivales. Conecta, contrata y destaca en toda Europa.
           </p>
@@ -526,7 +526,7 @@ const Landing = () => {
       <MarqueeStrip />
 
       {/* ─ Stats ─ */}
-      <FadeIn className="max-w-[900px] mx-auto px-6 mb-24">
+      <FadeIn className="max-w-[900px] mx-auto px-6 mb-10 md:mb-24">
         <div className="grid grid-cols-3 gap-4">
           <StatPill value="+500" label="Profesionales" />
           <StatPill value="24h" label="Respuesta Media" />
@@ -544,7 +544,7 @@ const Landing = () => {
       )}
 
       {/* ─ Bento Grid ─ */}
-      <section className="max-w-[1200px] mx-auto px-6 md:px-8 pb-28">
+      <section className="max-w-[1200px] mx-auto px-6 md:px-8 pb-14 md:pb-28">
         <FadeIn>
           <div className="text-center mb-14">
             <p className="uppercase tracking-[0.3em] text-[0.65rem] font-semibold mb-4" style={{ color: '#D4AF37' }}>
