@@ -84,6 +84,9 @@ const SettingsView = () => {
   const [showDeleteZone, setShowDeleteZone] = useState(false);
   const [deleteConfirmEmail, setDeleteConfirmEmail] = useState('');
   const [deleting, setDeleting] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpCode, setOtpCode] = useState('');
+  const [sendingOtp, setSendingOtp] = useState(false);
 
   // Privacy
   const [saving, setSaving] = useState(false);
@@ -606,15 +609,44 @@ Para cualquier duda: soporte@xpeak.site
     }
   };
 
-  const handleDeleteAccount = async () => {
+  const handleSendDeleteOtp = async () => {
     if (!user) return;
     if (deleteConfirmEmail.trim().toLowerCase() !== user.email?.toLowerCase()) {
       toast.error('El email no coincide con el de tu cuenta');
       return;
     }
+    setSendingOtp(true);
+    const { error } = await supabase.auth.signInWithOtp({
+      email: user.email!,
+      options: { shouldCreateUser: false },
+    });
+    setSendingOtp(false);
+    if (error) {
+      toast.error('No se pudo enviar el código. Inténtalo de nuevo.');
+      return;
+    }
+    setOtpSent(true);
+    toast.success(`Código enviado a ${user.email}. Revisa tu bandeja de entrada.`);
+  };
+
+  const handleDeleteAccount = async () => {
+    if (!user) return;
+    if (!otpCode.trim()) { toast.error('Introduce el código de confirmación'); return; }
     setDeleting(true);
     try {
-      // 1. Anonymize profile (RGPD Art. 17 — borrado/anonimización de datos personales)
+      // 1. Verificar OTP (prueba de acceso al correo)
+      const { error: otpError } = await supabase.auth.verifyOtp({
+        email: user.email!,
+        token: otpCode.trim(),
+        type: 'email',
+      });
+      if (otpError) {
+        toast.error('Código incorrecto o expirado. Solicita uno nuevo.');
+        setDeleting(false);
+        return;
+      }
+
+      // 2. Anonimizar perfil (RGPD Art. 17)
       await supabase.from('profiles').update({
         display_name: 'Usuario eliminado',
         bio: null,
@@ -628,12 +660,12 @@ Para cualquier duda: soporte@xpeak.site
         is_verified: false,
       } as any).eq('user_id', user.id);
 
-      // 2. Borrar favoritos
+      // 3. Borrar favoritos
       await supabase.from('favorites').delete().eq('user_id', user.id);
 
-      // 3. Cerrar sesión
+      // 4. Cerrar sesión
       await signOut();
-      toast.success('Cuenta eliminada. Tus datos han sido anonimizados conforme al RGPD. El registro de autenticación se purgará en 30 días.');
+      toast.success('Cuenta eliminada. Tus datos han sido anonimizados conforme al RGPD.');
     } catch {
       toast.error('Error al eliminar la cuenta. Contacta con soporte.');
       setDeleting(false);
@@ -1005,30 +1037,80 @@ Para cualquier duda: soporte@xpeak.site
               </p>
             </div>
 
-            <div>
-              <p className="text-xs text-muted-foreground mb-1.5">
-                Escribe tu email <span className="font-bold" style={{ color: '#ff5f56' }}>{user?.email}</span> para confirmar:
-              </p>
-              <input
-                type="email"
-                value={deleteConfirmEmail}
-                onChange={e => setDeleteConfirmEmail(e.target.value)}
-                placeholder="Tu email de cuenta"
-                maxLength={100}
-                className="nightlife-input text-sm w-full"
-                style={{ borderColor: 'rgba(255,95,86,0.3)' }}
-              />
-            </div>
-
-            <button
-              onClick={handleDeleteAccount}
-              disabled={deleting || deleteConfirmEmail.trim().toLowerCase() !== user?.email?.toLowerCase()}
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg font-bold text-sm transition-all hover:opacity-80 disabled:opacity-30"
-              style={{ background: 'rgba(255,95,86,0.1)', color: '#ff5f56', border: '1px solid rgba(255,95,86,0.25)' }}
-            >
-              <Trash2 size={14} />
-              {deleting ? 'Eliminando...' : 'Eliminar cuenta definitivamente'}
-            </button>
+            {/* Paso 1 — verificar email */}
+            {!otpSent ? (
+              <>
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1.5">
+                    Paso 1 — Escribe tu email{' '}
+                    <span className="font-bold" style={{ color: '#ff5f56' }}>{user?.email}</span>{' '}
+                    para recibir el código de confirmación:
+                  </p>
+                  <input
+                    type="email"
+                    value={deleteConfirmEmail}
+                    onChange={e => setDeleteConfirmEmail(e.target.value)}
+                    placeholder="Tu email de cuenta"
+                    maxLength={100}
+                    className="nightlife-input text-sm w-full"
+                    style={{ borderColor: 'rgba(255,95,86,0.3)' }}
+                  />
+                </div>
+                <button
+                  onClick={handleSendDeleteOtp}
+                  disabled={sendingOtp || deleteConfirmEmail.trim().toLowerCase() !== user?.email?.toLowerCase()}
+                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg font-bold text-sm transition-all hover:opacity-80 disabled:opacity-30"
+                  style={{ background: 'rgba(255,95,86,0.08)', color: '#ff5f56', border: '1px solid rgba(255,95,86,0.2)' }}
+                >
+                  {sendingOtp ? 'Enviando…' : 'Enviar código de confirmación por email'}
+                </button>
+              </>
+            ) : (
+              /* Paso 2 — introducir OTP */
+              <>
+                <div className="p-3 rounded-lg text-xs"
+                  style={{ background: 'rgba(34,197,94,0.05)', border: '1px solid rgba(34,197,94,0.15)' }}>
+                  <p style={{ color: '#22c55e' }} className="font-bold mb-0.5">Código enviado</p>
+                  <p className="text-muted-foreground">
+                    Revisa la bandeja de entrada de <span className="font-bold text-white">{user?.email}</span>.
+                    El código expira en 10 minutos.
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1.5">
+                    Paso 2 — Introduce el código de 6 dígitos:
+                  </p>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    value={otpCode}
+                    onChange={e => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                    placeholder="123456"
+                    maxLength={6}
+                    className="nightlife-input text-sm w-full text-center tracking-[0.4em] font-bold"
+                    style={{ borderColor: 'rgba(255,95,86,0.3)', fontSize: '1.1rem' }}
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => { setOtpSent(false); setOtpCode(''); }}
+                    className="flex-1 py-2.5 rounded-lg text-xs font-bold transition-all hover:opacity-80"
+                    style={{ background: 'rgba(255,255,255,0.03)', color: '#8E8EA0', border: '1px solid var(--nightlife-border)' }}
+                  >
+                    Reenviar código
+                  </button>
+                  <button
+                    onClick={handleDeleteAccount}
+                    disabled={deleting || otpCode.length < 6}
+                    className="flex-[2] flex items-center justify-center gap-2 py-2.5 rounded-lg font-bold text-sm transition-all hover:opacity-80 disabled:opacity-30"
+                    style={{ background: 'rgba(255,95,86,0.1)', color: '#ff5f56', border: '1px solid rgba(255,95,86,0.25)' }}
+                  >
+                    <Trash2 size={14} />
+                    {deleting ? 'Eliminando…' : 'Eliminar cuenta definitivamente'}
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         )}
       </div>
