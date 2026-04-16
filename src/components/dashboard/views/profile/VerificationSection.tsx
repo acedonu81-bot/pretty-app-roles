@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Shield, Clock, CheckCircle, Video } from 'lucide-react';
+import { Shield, Clock, CheckCircle, Video, Film, Headphones, ScanLine, UserCheck } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
@@ -90,15 +90,20 @@ const VerificationSection = () => {
 
       {syncedStatus === 'none' && (
         <>
-          <div className="rounded-xl p-4 mb-4 space-y-2"
+          <div className="rounded-xl p-4 mb-4 space-y-2.5"
             style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}>
-            <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>Qué necesitas enviar:</p>
+            <p className="text-xs font-bold mb-3" style={{ color: '#D4AF37' }}>Qué necesitas enviar:</p>
             {[
-              '🎬 Vídeo de 30–90 segundos demostrando tu habilidad en directo',
-              '🎧 Calidad mínima: 720p, buena iluminación',
-              '📌 Sin filtros, sin música superpuesta — que se vea el trabajo real',
-              '✅ Revisión manual por el equipo XPEAK en 24–48h',
-            ].map(item => <p key={item} className="text-[0.65rem] text-muted-foreground">{item}</p>)}
+              { icon: Film,      text: 'Vídeo de 30–90 segundos demostrando tu habilidad en directo' },
+              { icon: Headphones, text: 'Calidad mínima: 720p, buena iluminación' },
+              { icon: ScanLine,  text: 'Sin filtros, sin música superpuesta — que se vea el trabajo real' },
+              { icon: UserCheck, text: 'Revisión manual por el equipo XPEAK en 24–48h' },
+            ].map(({ icon: Icon, text }) => (
+              <div key={text} className="flex items-start gap-2.5">
+                <Icon size={13} style={{ color: 'rgba(212,175,55,0.5)', flexShrink: 0, marginTop: 1 }} />
+                <p className="text-[0.65rem] text-muted-foreground leading-relaxed">{text}</p>
+              </div>
+            ))}
           </div>
           <input ref={videoRef} type="file" accept="video/*" className="hidden" onChange={handleVerificationVideo} />
           <button type="button" onClick={() => videoRef.current?.click()} disabled={uploadingVideo}

@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Trash2, Camera, Music2, ExternalLink, Star } from 'lucide-react';
+import { Trash2, Camera, Music2, ExternalLink, Star, Radio, ChevronDown, X } from 'lucide-react';
 import { parseStreamUrl } from '@/lib/streaming';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
@@ -177,6 +177,39 @@ const ProfileView = () => {
             </p>
           </div>
 
+          {/* Disponibilidad — toggle prominente en columna izquierda */}
+          {profile.role !== 'empresario' && (
+            <button
+              type="button"
+              onClick={() => {
+                const current = isAvailable ?? profile.is_live ?? false;
+                setIsAvailable(!current);
+              }}
+              className="glass-panel p-4 w-full text-left transition-all hover:scale-[1.01]"
+              style={{
+                border: `1px solid ${(isAvailable ?? profile.is_live) ? 'rgba(34,197,94,0.35)' : 'rgba(255,255,255,0.06)'}`,
+                background: (isAvailable ?? profile.is_live) ? 'rgba(34,197,94,0.06)' : 'rgba(255,255,255,0.02)',
+              }}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <Radio size={15} style={{ color: (isAvailable ?? profile.is_live) ? '#22c55e' : 'rgba(255,255,255,0.25)' }} />
+                  <div>
+                    <p className="text-sm font-bold" style={{ color: (isAvailable ?? profile.is_live) ? '#22c55e' : 'rgba(255,255,255,0.4)' }}>
+                      {(isAvailable ?? profile.is_live) ? 'Disponible ahora' : 'No disponible'}
+                    </p>
+                    <p className="text-[0.58rem] text-muted-foreground">Visible en el directorio</p>
+                  </div>
+                </div>
+                <div className="relative w-10 h-5 rounded-full flex-shrink-0"
+                  style={{ background: (isAvailable ?? profile.is_live) ? '#22c55e' : 'rgba(255,255,255,0.1)' }}>
+                  <div className="absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all duration-200"
+                    style={{ left: (isAvailable ?? profile.is_live) ? '22px' : '2px', boxShadow: '0 1px 3px rgba(0,0,0,0.4)' }} />
+                </div>
+              </div>
+            </button>
+          )}
+
           {profile.role !== 'empresario' && (
             <button
               onClick={async () => {
@@ -242,24 +275,73 @@ const ProfileView = () => {
             <div className="mt-5 mb-3" style={{ borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: '1.25rem' }}>
               <p className="text-[0.58rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Habilidades</p>
             </div>
-            {roleTagConfig && (
-              <div className="mb-3">
-                <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">{roleTagConfig.label}</label>
-                <div className="flex flex-wrap gap-1.5 mt-2">
-                  {roleTagConfig.tags.map(g => (
-                    <button key={g} type="button" onClick={() => toggleGenre(g)}
-                      className="text-xs font-bold px-2.5 py-1 rounded-lg transition-all"
-                      style={{
-                        background: activeGenres.includes(g) ? 'rgba(226,190,80,0.15)' : 'rgba(255,255,255,0.04)',
-                        border: `1px solid ${activeGenres.includes(g) ? 'rgba(226,190,80,0.4)' : 'var(--nightlife-border)'}`,
-                        color: activeGenres.includes(g) ? '#E2BE50' : '#8E8EA0',
-                      }}>
-                      {g}
-                    </button>
-                  ))}
+            {roleTagConfig && (() => {
+              const [genreOpen, setGenreOpen] = useState(false);
+              return (
+                <div className="mb-3">
+                  <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">{roleTagConfig.label}</label>
+
+                  {/* Selected chips */}
+                  {activeGenres.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mt-2 mb-2">
+                      {activeGenres.map(g => (
+                        <span key={g} className="flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-lg"
+                          style={{ background: 'rgba(226,190,80,0.12)', border: '1px solid rgba(226,190,80,0.35)', color: '#E2BE50' }}>
+                          {g}
+                          <button type="button" onClick={() => toggleGenre(g)} className="ml-0.5 opacity-60 hover:opacity-100 transition-opacity">
+                            <X size={10} />
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Dropdown trigger */}
+                  <button
+                    type="button"
+                    onClick={() => setGenreOpen(v => !v)}
+                    className="flex items-center justify-between w-full px-3 py-2.5 rounded-lg text-sm transition-all"
+                    style={{
+                      background: 'rgba(255,255,255,0.03)',
+                      border: '1px solid rgba(255,255,255,0.08)',
+                      color: 'rgba(255,255,255,0.45)',
+                    }}
+                  >
+                    <span>{activeGenres.length > 0 ? `${activeGenres.length} seleccionado${activeGenres.length > 1 ? 's' : ''}` : 'Seleccionar...'}</span>
+                    <ChevronDown size={14} className="transition-transform duration-200" style={{ transform: genreOpen ? 'rotate(180deg)' : 'none' }} />
+                  </button>
+
+                  {/* Dropdown panel */}
+                  {genreOpen && (
+                    <div className="mt-1 rounded-xl overflow-hidden animate-[fadeIn_0.15s_ease]"
+                      style={{ background: 'rgba(12,12,16,0.97)', border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 8px 32px rgba(0,0,0,0.6)' }}>
+                      <div className="flex flex-wrap gap-1.5 p-3 max-h-56 overflow-y-auto"
+                        style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(212,175,55,0.3) transparent' }}>
+                        {roleTagConfig.tags.map(g => (
+                          <button key={g} type="button" onClick={() => toggleGenre(g)}
+                            className="text-xs font-semibold px-2.5 py-1 rounded-lg transition-all hover:scale-105"
+                            style={{
+                              background: activeGenres.includes(g) ? 'rgba(226,190,80,0.15)' : 'rgba(255,255,255,0.05)',
+                              border: `1px solid ${activeGenres.includes(g) ? 'rgba(226,190,80,0.4)' : 'rgba(255,255,255,0.07)'}`,
+                              color: activeGenres.includes(g) ? '#E2BE50' : 'rgba(255,255,255,0.5)',
+                            }}>
+                            {g}
+                          </button>
+                        ))}
+                      </div>
+                      <div className="flex items-center justify-between px-3 py-2" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+                        <span className="text-[0.6rem] text-muted-foreground">{activeGenres.length} seleccionados</span>
+                        <button type="button" onClick={() => setGenreOpen(false)}
+                          className="text-[0.65rem] font-bold px-3 py-1 rounded-lg transition-all"
+                          style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                          Cerrar
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              </div>
-            )}
+              );
+            })()}
             <div className="mb-3">
               {(() => {
                 const isMusical = profile.role === 'dj' || profile.role === 'rookie';
@@ -345,34 +427,6 @@ const ProfileView = () => {
           {/* Redes sociales y plataformas — todos los roles */}
           <div className="glass-panel p-5">
             <h4 className="text-base font-bold mb-4">Redes & Plataformas</h4>
-
-            {/* Disponibilidad — toggle visible en directorio */}
-            <div className="mb-4">
-              <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Visibilidad en el directorio</label>
-              <p className="text-[0.6rem] text-muted-foreground mt-0.5 mb-2">
-                Activa para aparecer como "Disponible ahora" en tu ficha. Los empresarios verán un indicador verde.
-              </p>
-              <button
-                type="button"
-                onClick={() => {
-                  const current = isAvailable ?? profile.is_live ?? false;
-                  setIsAvailable(!current);
-                }}
-                className="flex items-center gap-3 w-full px-4 py-3 rounded-lg transition-all"
-                style={{
-                  background: (isAvailable ?? profile.is_live) ? 'rgba(34,197,94,0.08)' : 'rgba(255,255,255,0.03)',
-                  border: `1px solid ${(isAvailable ?? profile.is_live) ? 'rgba(34,197,94,0.3)' : 'var(--nightlife-border)'}`,
-                }}>
-                <div className="relative w-10 h-5 rounded-full transition-colors flex-shrink-0"
-                  style={{ background: (isAvailable ?? profile.is_live) ? '#22c55e' : 'rgba(255,255,255,0.1)' }}>
-                  <div className="absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all"
-                    style={{ left: (isAvailable ?? profile.is_live) ? '22px' : '2px', boxShadow: '0 1px 3px rgba(0,0,0,0.4)' }} />
-                </div>
-                <span className="text-sm font-semibold" style={{ color: (isAvailable ?? profile.is_live) ? '#22c55e' : 'rgba(255,255,255,0.4)' }}>
-                  {(isAvailable ?? profile.is_live) ? 'Disponible ahora' : 'No disponible'}
-                </span>
-              </button>
-            </div>
 
             {/* Audio embed — roles musicales */}
             {(profile.role === 'dj' || profile.role === 'rookie') && (() => {
