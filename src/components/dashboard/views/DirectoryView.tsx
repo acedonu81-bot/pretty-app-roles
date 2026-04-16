@@ -61,7 +61,15 @@ const StreamTile = ({ profile, isExpanded, onToggle, viewerCount }: {
             title={`${profile.name} - ${streamEmbed.type}`}
           />
         ) : (
-          <MiniEqualizer />
+          <div className="absolute inset-0 flex flex-col items-center justify-center"
+            style={{
+              backgroundImage: 'url(/hero-bg.jpg)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}>
+            <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.65)' }} />
+            <img src="/xpeak-logo.png" alt="XPEAK" className="relative z-10 w-16 opacity-60" />
+          </div>
         )}
       </div>
 

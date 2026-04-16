@@ -9,11 +9,10 @@ interface VoteButtonProps {
   voteCount: number;
   hasVotedToday: boolean;
   category: string;
+  onVoted?: () => void;
 }
 
-const VoteButton = ({ profileId, voteCount, hasVotedToday: initialVoted, category }: VoteButtonProps) => {
-  const [voted, setVoted] = useState(initialVoted);
-  const [count, setCount] = useState(voteCount);
+const VoteButton = ({ profileId, voteCount, hasVotedToday, category, onVoted }: VoteButtonProps) => {
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
 
@@ -21,7 +20,7 @@ const VoteButton = ({ profileId, voteCount, hasVotedToday: initialVoted, categor
 
   const handleVote = async () => {
     if (!user) { toast.error('Inicia sesión para votar'); return; }
-    if (voted) return;
+    if (hasVotedToday) return;
     setLoading(true);
     const { error } = await supabase.from('community_votes').insert({
       voter_id: user.id,
@@ -30,19 +29,18 @@ const VoteButton = ({ profileId, voteCount, hasVotedToday: initialVoted, categor
     if (error) {
       if (error.message.includes('duplicate') || error.message.includes('unique')) {
         toast.error('Ya has votado hoy');
-        setVoted(true);
+        onVoted?.();
       } else {
         toast.error('Error al votar');
       }
     } else {
-      setVoted(true);
-      setCount(c => c + 1);
+      onVoted?.();
       toast.success('¡Apoyo registrado!');
     }
     setLoading(false);
   };
 
-  const progress = Math.min((count / 500) * 100, 100);
+  const progress = Math.min((voteCount / 500) * 100, 100);
 
   return (
     <div className="mt-2">
@@ -52,15 +50,15 @@ const VoteButton = ({ profileId, voteCount, hasVotedToday: initialVoted, categor
         </div>
         <span className="text-[0.55rem] font-bold" style={{ color: '#D4AF37' }}>{count}/500</span>
       </div>
-      <button onClick={handleVote} disabled={voted || loading}
+      <button onClick={handleVote} disabled={hasVotedToday || loading}
         className="w-full flex items-center justify-center gap-1.5 py-1.5 rounded-md text-xs font-bold transition-all disabled:opacity-50"
         style={{
           background: voted ? 'rgba(255,255,255,0.03)' : 'rgba(212,175,55,0.08)',
           border: `1px solid ${voted ? 'rgba(255,255,255,0.1)' : 'rgba(212,175,55,0.2)'}`,
-          color: voted ? '#8E8EA0' : '#D4AF37',
+          color: hasVotedToday ? '#8E8EA0' : '#D4AF37',
         }}>
-        <Heart size={12} fill={voted ? '#8E8EA0' : 'none'} />
-        {voted ? 'Votado (24h)' : loading ? 'Votando...' : 'Apoyar Promesa'}
+        <Heart size={12} fill={hasVotedToday ? '#8E8EA0' : 'none'} />
+        {hasVotedToday ? 'Votado' : loading ? 'Votando...' : 'Apoyar Promesa'}
       </button>
     </div>
   );

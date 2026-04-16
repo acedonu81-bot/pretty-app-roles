@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 import { Star, Clock, Award, CheckCircle, X, Lock, MessageCircle } from 'lucide-react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Profile } from '@/data/profiles';
@@ -42,7 +43,31 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
   const [accepted, setAccepted] = useState(false);
   const [showLegal, setShowLegal] = useState(false);
   const [showUpgrade, setShowUpgrade] = useState(false);
-  const voteCount = Math.floor(p.profileViews / 5);
+  // Real vote count from Supabase (only loaded for rookie profiles)
+  const realProfileId = (p as any).userId ?? p.userId ?? null;
+  const [voteCount, setVoteCount] = useState(0);
+  const [hasVotedToday, setHasVotedToday] = useState(false);
+
+  useEffect(() => {
+    if (!isRookie || !realProfileId) return;
+    // Count total votes for this profile
+    supabase
+      .from('community_votes')
+      .select('id', { count: 'exact', head: true })
+      .eq('profile_id', realProfileId)
+      .then(({ count }) => setVoteCount(count ?? 0));
+    // Check if current user already voted
+    if (currentUser.id) {
+      supabase
+        .from('community_votes')
+        .select('id')
+        .eq('profile_id', realProfileId)
+        .eq('voter_id', currentUser.id)
+        .maybeSingle()
+        .then(({ data }) => setHasVotedToday(!!data));
+    }
+  }, [isRookie, realProfileId, currentUser.id]);
+
   const progress = Math.min((voteCount / 500) * 100, 100);
   const currentMilestone = milestones.filter(m => voteCount >= m.votes).pop();
   const nextMilestone = milestones.find(m => voteCount < m.votes);
@@ -250,7 +275,13 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
 
       {isRookie && (
         <div className="mb-3" onClick={e => e.stopPropagation()}>
-          <VoteButton profileId={String(p.id)} voteCount={voteCount} hasVotedToday={false} category="rookie" />
+          <VoteButton
+            profileId={realProfileId ?? String(p.id)}
+            voteCount={voteCount}
+            hasVotedToday={hasVotedToday}
+            category="rookie"
+            onVoted={() => { setVoteCount(c => c + 1); setHasVotedToday(true); }}
+          />
         </div>
       )}
 
