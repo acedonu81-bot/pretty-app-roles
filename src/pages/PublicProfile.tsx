@@ -14,7 +14,7 @@ const FAKE_POSTS = [
   { icon: FileText, label: 'Mensaje personal a mis fans ❤️', locked: true },
 ];
 
-const BASE_URL = 'https://pretty-app-roles.vercel.app';
+const BASE_URL = 'https://xpeak.site';
 
 // UUID v4 pattern
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -84,7 +84,14 @@ const PublicProfile = () => {
 
     (query as Promise<{ data: SupabaseProfile | null; error: unknown }>).then(({ data }) => {
       setSbProfile(data ?? null);
-      if (data?.role) {
+      if (data?.user_id) {
+        // Track profile view — increment score column
+        supabase.from('profiles').select('score').eq('user_id', data.user_id).maybeSingle()
+          .then(({ data: s }) => {
+            const current = (s?.score as number) ?? 0;
+            supabase.from('profiles').update({ score: current + 1 } as any).eq('user_id', data.user_id).then(() => {});
+          });
+        // Load related profiles
         supabase
           .from('profiles')
           .select('user_id, display_name, role, specialty, zone')

@@ -30,11 +30,11 @@ const OfertaTab = () => {
   useEffect(() => {
     supabase
       .from('profiles')
-      .select('id, display_name, photo_url, specialty, zone, hourly_rate, role')
+      .select('id, user_id, display_name, photo_url, specialty, zone, hourly_rate, role')
       .eq('is_flash_active', true)
       .then(({ data }) => {
         setFlashProfiles((data ?? []).map(p => ({
-          id: p.id,
+          id: p.user_id || p.id,  // use user_id for flash_bookings RLS
           name: p.display_name || 'Profesional',
           photo: p.photo_url || '',
           specialty: p.specialty || '',
@@ -221,6 +221,7 @@ const OfertaTab = () => {
         <FlashBookingRequestModal
           professionalName={selectedPro.name}
           professionalRole={selectedPro.role}
+          professionalUserId={selectedPro.id}
           onClose={() => setSelectedPro(null)}
         />
       )}

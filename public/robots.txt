@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /dashboard
 Disallow: /admin-beta
-Sitemap: https://pretty-app-roles.vercel.app/sitemap.xml
+Sitemap: https://xpeak.site/sitemap.xml

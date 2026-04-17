@@ -1,12 +1,33 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useProfile } from '@/hooks/useProfile';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 import OfertaTab from './flashbooking/OfertaTab';
 import DemandaTab from './flashbooking/DemandaTab';
+import SolicitudesTab from './flashbooking/SolicitudesTab';
 
 const FlashBookingWallView = () => {
   const currentUser = useProfile();
+  const { user } = useAuth();
   const isEmpresario = currentUser.role === 'empresario';
-  const [tab, setTab] = useState<'oferta' | 'demanda'>(isEmpresario ? 'demanda' : 'oferta');
+  const [tab, setTab] = useState<'oferta' | 'demanda' | 'solicitudes'>(isEmpresario ? 'demanda' : 'oferta');
+  const [pendingCount, setPendingCount] = useState(0);
+
+  // Count pending incoming requests for professionals
+  useEffect(() => {
+    if (isEmpresario || !user) return;
+    supabase.from('flash_bookings' as any)
+      .select('id', { count: 'exact', head: true })
+      .eq('professional_user_id', user.id)
+      .eq('status', 'pending')
+      .then(({ count }) => setPendingCount(count ?? 0));
+  }, [user, isEmpresario]);
+
+  const tabs = [
+    { id: 'oferta' as const, label: 'Oferta', sub: 'profesionales disponibles', color: '#D4AF37', pulse: false },
+    { id: 'demanda' as const, label: 'Demanda', sub: 'ofertas de empresarios', color: '#22c55e', pulse: true },
+    ...(!isEmpresario ? [{ id: 'solicitudes' as const, label: 'Solicitudes', sub: 'recibidas', color: '#D4AF37', pulse: false }] : []),
+  ];
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
@@ -15,33 +36,35 @@ const FlashBookingWallView = () => {
         <p className="text-sm text-muted-foreground">Oferta y demanda en tiempo real. Contratos cerrados en minutos.</p>
       </div>
 
-      <div className="flex gap-2 mb-5">
-        <button onClick={() => setTab('oferta')}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold transition-all"
-          style={{
-            background: tab === 'oferta' ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.03)',
-            border: `1px solid ${tab === 'oferta' ? 'rgba(212,175,55,0.4)' : 'var(--nightlife-border)'}`,
-            color: tab === 'oferta' ? '#D4AF37' : '#8E8EA0',
-          }}>
-          <span className="w-2 h-2 rounded-full flex-shrink-0"
-            style={{ background: tab === 'oferta' ? '#D4AF37' : '#555', boxShadow: tab === 'oferta' ? '0 0 6px rgba(212,175,55,0.8)' : 'none' }} />
-          Oferta <span className="text-[0.6rem] opacity-60 ml-0.5">(profesionales disponibles)</span>
-        </button>
-        <button onClick={() => setTab('demanda')}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold transition-all"
-          style={{
-            background: tab === 'demanda' ? 'rgba(34,197,94,0.08)' : 'rgba(255,255,255,0.03)',
-            border: `1px solid ${tab === 'demanda' ? 'rgba(34,197,94,0.3)' : 'var(--nightlife-border)'}`,
-            color: tab === 'demanda' ? '#22c55e' : '#8E8EA0',
-          }}>
-          <span className="w-2 h-2 rounded-full flex-shrink-0 animate-pulse"
-            style={{ background: tab === 'demanda' ? '#22c55e' : '#555', boxShadow: tab === 'demanda' ? '0 0 6px rgba(34,197,94,0.8)' : 'none' }} />
-          Demanda <span className="text-[0.6rem] opacity-60 ml-0.5">(ofertas de empresarios)</span>
-        </button>
+      <div className="flex gap-2 mb-5 flex-wrap">
+        {tabs.map(t => (
+          <button key={t.id} onClick={() => setTab(t.id)}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold transition-all"
+            style={{
+              background: tab === t.id ? `rgba(${t.color === '#D4AF37' ? '212,175,55' : '34,197,94'},0.12)` : 'rgba(255,255,255,0.03)',
+              border: `1px solid ${tab === t.id ? `rgba(${t.color === '#D4AF37' ? '212,175,55' : '34,197,94'},0.4)` : 'var(--nightlife-border)'}`,
+              color: tab === t.id ? t.color : '#8E8EA0',
+            }}>
+            <span className="w-2 h-2 rounded-full flex-shrink-0"
+              style={{
+                background: tab === t.id ? t.color : '#555',
+                boxShadow: tab === t.id ? `0 0 6px ${t.color}cc` : 'none',
+              }} />
+            {t.label}
+            {t.id === 'solicitudes' && pendingCount > 0 && (
+              <span className="text-[0.5rem] font-black px-1.5 py-0.5 rounded-full"
+                style={{ background: 'rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+                {pendingCount}
+              </span>
+            )}
+            <span className="text-[0.6rem] opacity-60 ml-0.5 hidden sm:inline">({t.sub})</span>
+          </button>
+        ))}
       </div>
 
-      {tab === 'oferta' && <OfertaTab />}
-      {tab === 'demanda' && <DemandaTab />}
+      {tab === 'oferta'      && <OfertaTab />}
+      {tab === 'demanda'     && <DemandaTab />}
+      {tab === 'solicitudes' && <SolicitudesTab />}
     </div>
   );
 };
