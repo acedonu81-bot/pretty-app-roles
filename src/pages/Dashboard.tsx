@@ -24,6 +24,7 @@ import EmpresarioView from '@/components/dashboard/views/EmpresarioView';
 import FanClubView from '@/components/dashboard/views/FanClubView';
 import ContractView from '@/components/dashboard/views/ContractView';
 import ProfessionalProfilePage from '@/components/dashboard/ProfessionalProfilePage';
+import SupportChat from '@/components/dashboard/SupportChat';
 import AdminGuard from '@/components/AdminGuard';
 import type { Profile } from '@/data/profiles';
 import OnboardingTour from '@/components/dashboard/OnboardingTour';
@@ -152,6 +153,7 @@ const Dashboard = () => {
       )}
 
       <OnboardingTour onNavigate={handleViewChange} />
+      <SupportChat />
 
       {selectedProfile && (
         <ProfessionalProfilePage
