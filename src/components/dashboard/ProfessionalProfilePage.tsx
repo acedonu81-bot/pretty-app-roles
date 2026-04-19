@@ -228,23 +228,27 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
         className="fixed inset-0 z-[100] overflow-hidden"
         style={{ background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(12px)' }}>
 
-        {/* Panel */}
+        {/* Panel — fullscreen */}
         <motion.div
           initial={{ y: '100%', opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: '100%', opacity: 0 }}
-          transition={{ type: 'spring', stiffness: 320, damping: 38 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 36 }}
+          className="absolute inset-0 overflow-y-auto md:overflow-hidden md:flex md:flex-row"
           ref={scrollRef}
-          className="absolute inset-x-0 bottom-0 md:inset-x-auto md:right-0 md:top-0 md:w-[620px] lg:w-[680px] overflow-y-auto"
-          style={{ background: '#070710', borderLeft: `1px solid ${cfg.color}25`, borderTopLeftRadius: 20, maxHeight: '100dvh' }}>
+          style={{ background: '#070710' }}>
 
           {/* Close */}
           <button onClick={onClose}
             aria-label="Cerrar perfil"
-            className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-110"
-            style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}>
+            className="fixed top-4 right-4 z-[110] w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-110"
+            style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)' }}>
             <X size={16} />
           </button>
+
+          {/* ── LEFT COLUMN (hero + identity) ── */}
+          <div className="md:w-[400px] md:flex-shrink-0 md:sticky md:top-0 md:h-screen md:overflow-y-auto"
+            style={{ borderRight: '1px solid rgba(255,255,255,0.05)' }}>
 
           {/* ── HERO ── */}
           <div className="relative overflow-hidden flex-shrink-0" style={{ height: 220 }}>
@@ -342,8 +346,13 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
             )}
           </div>
 
+          </div>{/* end left column */}
+
+          {/* ── RIGHT COLUMN (tabs + content) ── */}
+          <div className="flex-1 md:overflow-y-auto md:h-screen flex flex-col">
+
           {/* ── TABS ── */}
-          <div className="px-8 flex gap-1 mb-0"
+          <div className="px-8 flex gap-1 mb-0 flex-shrink-0"
             style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
             {tabs.map(t => (
               <button key={t.id} onClick={() => setTab(t.id)}
@@ -435,13 +444,12 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                 <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.16 }}
                   className="grid grid-cols-3 gap-3">
                   {[
-                    { label: 'Visitas', value: p.profileViews > 0 ? p.profileViews.toString() : '—', icon: '👁' },
-                    { label: 'Bookings', value: '—', icon: '📅' },
-                    { label: 'Reseñas', value: p.reviews > 0 ? `${p.reviews}` : '—', icon: '⭐' },
+                    { label: 'Visitas', value: p.profileViews > 0 ? p.profileViews.toString() : '—' },
+                    { label: 'Bookings', value: '—' },
+                    { label: 'Reseñas', value: p.reviews > 0 ? `${p.reviews}` : '—' },
                   ].map(s => (
                     <div key={s.label} className="rounded-xl p-3 text-center"
                       style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                      <p className="text-base mb-1">{s.icon}</p>
                       <p className="text-base font-black">{s.value}</p>
                       <p className="text-xs text-muted-foreground">{s.label}</p>
                     </div>
@@ -682,8 +690,8 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
             )}
           </div>
 
-          {/* ── STICKY BOTTOM BAR (contact shortcuts) ── */}
-          <div className="sticky bottom-0 px-8 py-4 flex gap-3"
+          {/* ── STICKY BOTTOM BAR ── */}
+          <div className="sticky bottom-0 mt-auto px-8 py-4 flex gap-3 flex-shrink-0"
             style={{ background: 'rgba(7,7,16,0.95)', backdropFilter: 'blur(16px)', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
             <button onClick={() => setTab('contact')}
               className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm transition-all hover:scale-[1.02]"
@@ -696,6 +704,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
               <Heart size={15} />
             </button>
           </div>
+          </div>{/* end right column */}
         </motion.div>
       </motion.div>
 

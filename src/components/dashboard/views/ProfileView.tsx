@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Trash2, Camera, ExternalLink, Star, Radio, ChevronDown, X, MapPin, Download } from 'lucide-react';
+import { Trash2, Camera, ExternalLink, Star, Radio, ChevronDown, X, MapPin, Download, ShoppingBag, Plus, Package, Tag, Image as ImageIcon } from 'lucide-react';
 import { exportUserDataZip } from '@/lib/exportUserData';
 import { parseStreamUrl } from '@/lib/streaming';
 import { toast } from 'sonner';
@@ -585,6 +585,56 @@ const ProfileView = () => {
               </div>
             </div>
           </div>
+
+          {/* Mi Tienda */}
+          {profile.role !== 'empresario' && (
+            <div className="glass-panel p-5">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <ShoppingBag size={16} style={{ color: '#D4AF37' }} />
+                  <h4 className="text-base font-bold">Mi Tienda</h4>
+                  <span className="text-xs px-1.5 py-0.5 rounded font-bold"
+                    style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>SOON</span>
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
+                Vende tus productos digitales directamente desde tu perfil: packs de samples, sesiones exclusivas, merchandising y más.
+                Los empresarios y fans los verán en tu ficha pública.
+              </p>
+
+              {/* Upload area */}
+              <div className="rounded-xl border-2 border-dashed flex flex-col items-center justify-center py-8 gap-3 mb-4 transition-colors"
+                style={{ borderColor: 'rgba(212,175,55,0.18)', background: 'rgba(212,175,55,0.03)' }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.15)' }}>
+                  <Plus size={18} style={{ color: '#D4AF37' }} />
+                </div>
+                <div className="text-center">
+                  <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>Añadir producto</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Disponible próximamente</p>
+                </div>
+              </div>
+
+              {/* Product type guide */}
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { icon: Package, label: 'Packs de samples', desc: 'Loops, one-shots, stems' },
+                  { icon: Tag, label: 'Sesiones exclusivas', desc: '1h, 2h, sets completos' },
+                  { icon: ImageIcon, label: 'Merchandising', desc: 'Camisetas, vinilos, prints' },
+                  { icon: Star, label: 'Fan Club', desc: 'Contenido para suscriptores' },
+                ].map(item => (
+                  <div key={item.label} className="rounded-lg p-3 flex items-start gap-2"
+                    style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
+                    <item.icon size={13} className="mt-0.5 flex-shrink-0" style={{ color: 'rgba(212,175,55,0.5)' }} />
+                    <div>
+                      <p className="text-xs font-semibold leading-tight">{item.label}</p>
+                      <p className="text-[0.7rem] text-muted-foreground mt-0.5">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {profile.role !== 'empresario' && <VerificationSection />}
         </div>
