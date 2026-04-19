@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send, ChevronDown, Zap, Users, CreditCard, FileText, Radio, Star } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // ─────────────────────────────────────────────────────────────────────
 // Knowledge base — respuestas contextuales sobre XPEAK
@@ -122,6 +123,7 @@ const GREETING: Msg = {
 };
 
 const SupportChat = () => {
+  const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
   const [msgs, setMsgs] = useState<Msg[]>([GREETING]);
   const [input, setInput] = useState('');
@@ -170,8 +172,9 @@ const SupportChat = () => {
         onClick={() => setOpen(o => !o)}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.95 }}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-2xl"
+        className="fixed right-4 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-2xl"
         style={{
+          bottom: isMobile ? 'calc(4.5rem + env(safe-area-inset-bottom))' : '1.5rem',
           background: 'linear-gradient(135deg, #D4AF37, #B8941E)',
           boxShadow: '0 4px 24px rgba(212,175,55,0.45)',
         }}
@@ -203,10 +206,11 @@ const SupportChat = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: 'spring', stiffness: 300, damping: 28 }}
-            className="fixed bottom-24 right-6 z-50 flex flex-col rounded-2xl overflow-hidden shadow-2xl"
+            className="fixed right-4 z-50 flex flex-col rounded-2xl overflow-hidden shadow-2xl"
             style={{
+              bottom: isMobile ? 'calc(7.5rem + env(safe-area-inset-bottom))' : '5.5rem',
               width: 'min(380px, calc(100vw - 2rem))',
-              height: 'min(520px, calc(100vh - 8rem))',
+              height: isMobile ? 'min(460px, calc(100vh - 12rem))' : 'min(520px, calc(100vh - 8rem))',
               background: '#0a0a0e',
               border: '1px solid rgba(212,175,55,0.2)',
               boxShadow: '0 8px 48px rgba(0,0,0,0.7), 0 0 0 1px rgba(212,175,55,0.08)',

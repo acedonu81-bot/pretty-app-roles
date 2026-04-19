@@ -150,16 +150,6 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
         ))}
       </nav>
 
-      <div className="p-4 flex items-center gap-3" style={{ borderTop: '1px solid var(--nightlife-border)' }}>
-        <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-          style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)' }}>
-          <span className="text-xs font-black text-black">X</span>
-        </div>
-        <div className="min-w-0">
-          <p className="text-xs font-semibold truncate">Soporte XPEAK</p>
-          <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>Asistente virtual · 24h</p>
-        </div>
-      </div>
     </aside>
   );
 };
