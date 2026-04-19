@@ -24,6 +24,7 @@ const ProfileView = () => {
   const [hourlyRate, setHourlyRate] = useState<string | null>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
+  const [savingAvailability, setSavingAvailability] = useState(false);
   const [selectedLangs, setSelectedLangs] = useState<string[] | null>(null);
   const [langOpen, setLangOpen] = useState(false);
 
@@ -93,7 +94,7 @@ const ProfileView = () => {
     if (audioUrl !== null) updates.audio_embed_url = audioUrl || null;
     if (selectedLangs !== null) updates.languages = selectedLangs;
     if (selectedGenres !== null) updates.genres = selectedGenres;
-    if (isAvailable !== null) updates.is_live = isAvailable;
+    // is_flash_active is saved immediately on toggle — skip here
     if (Object.keys(updates).length > 0) {
       setSaving(true);
       const ok = await profile.updateField(updates);
@@ -184,30 +185,41 @@ const ProfileView = () => {
           {profile.role !== 'empresario' && (
             <button
               type="button"
-              onClick={() => {
-                const current = isAvailable ?? profile.is_live ?? false;
-                setIsAvailable(!current);
+              disabled={savingAvailability}
+              onClick={async () => {
+                const current = isAvailable ?? profile.is_flash_active ?? false;
+                const next = !current;
+                setIsAvailable(next);
+                setSavingAvailability(true);
+                const ok = await profile.updateField({ is_flash_active: next });
+                setSavingAvailability(false);
+                if (ok) {
+                  toast.success(next ? '¡Disponible! Los empresarios ya te ven en Flash Booking.' : 'Disponibilidad desactivada.');
+                } else {
+                  setIsAvailable(current); // revert on error
+                }
               }}
               className="glass-panel p-4 w-full text-left transition-all hover:scale-[1.01]"
               style={{
-                border: `1px solid ${(isAvailable ?? profile.is_live) ? 'rgba(34,197,94,0.35)' : 'rgba(255,255,255,0.06)'}`,
-                background: (isAvailable ?? profile.is_live) ? 'rgba(34,197,94,0.06)' : 'rgba(255,255,255,0.02)',
+                border: `1px solid ${(isAvailable ?? profile.is_flash_active) ? 'rgba(34,197,94,0.35)' : 'rgba(255,255,255,0.06)'}`,
+                background: (isAvailable ?? profile.is_flash_active) ? 'rgba(34,197,94,0.06)' : 'rgba(255,255,255,0.02)',
+                opacity: savingAvailability ? 0.7 : 1,
               }}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <Radio size={15} style={{ color: (isAvailable ?? profile.is_live) ? '#22c55e' : 'rgba(255,255,255,0.25)' }} />
+                  <Radio size={15} style={{ color: (isAvailable ?? profile.is_flash_active) ? '#22c55e' : 'rgba(255,255,255,0.25)' }} />
                   <div>
-                    <p className="text-sm font-bold" style={{ color: (isAvailable ?? profile.is_live) ? '#22c55e' : 'rgba(255,255,255,0.4)' }}>
-                      {(isAvailable ?? profile.is_live) ? 'Disponible ahora' : 'No disponible'}
+                    <p className="text-sm font-bold" style={{ color: (isAvailable ?? profile.is_flash_active) ? '#22c55e' : 'rgba(255,255,255,0.4)' }}>
+                      {savingAvailability ? 'Guardando...' : (isAvailable ?? profile.is_flash_active) ? 'Disponible ahora' : 'No disponible'}
                     </p>
-                    <p className="text-[0.75rem] text-muted-foreground">Visible en el directorio</p>
+                    <p className="text-[0.75rem] text-muted-foreground">Visible en Flash Booking y directorio</p>
                   </div>
                 </div>
                 <div className="relative w-10 h-5 rounded-full flex-shrink-0"
-                  style={{ background: (isAvailable ?? profile.is_live) ? '#22c55e' : 'rgba(255,255,255,0.1)' }}>
+                  style={{ background: (isAvailable ?? profile.is_flash_active) ? '#22c55e' : 'rgba(255,255,255,0.1)' }}>
                   <div className="absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all duration-200"
-                    style={{ left: (isAvailable ?? profile.is_live) ? '22px' : '2px', boxShadow: '0 1px 3px rgba(0,0,0,0.4)' }} />
+                    style={{ left: (isAvailable ?? profile.is_flash_active) ? '22px' : '2px', boxShadow: '0 1px 3px rgba(0,0,0,0.4)' }} />
                 </div>
               </div>
             </button>

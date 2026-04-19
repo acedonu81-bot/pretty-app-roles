@@ -25,7 +25,12 @@ const OfertaTab = () => {
 
   const [flashProfiles, setFlashProfiles] = useState<FlashProfile[]>([]);
   const [loadingProfiles, setLoadingProfiles] = useState(true);
-  const [isFlashActive, setIsFlashActive] = useState(false);
+  const [isFlashActive, setIsFlashActive] = useState(() => currentUser.is_flash_active ?? false);
+
+  // Sync toggle state when profile finishes loading
+  useEffect(() => {
+    setIsFlashActive(currentUser.is_flash_active ?? false);
+  }, [currentUser.is_flash_active]);
 
   useEffect(() => {
     supabase
