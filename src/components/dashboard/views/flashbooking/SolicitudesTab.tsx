@@ -69,7 +69,7 @@ const SolicitudesTab = () => {
         <div className="flex items-center gap-2">
           <span className="text-sm font-bold">Solicitudes recibidas</span>
           {pending > 0 && (
-            <span className="text-[0.55rem] font-black px-2 py-0.5 rounded-full"
+            <span className="text-[0.75rem] font-black px-2 py-0.5 rounded-full"
               style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' }}>
               {pending} pendiente{pending > 1 ? 's' : ''}
             </span>
@@ -117,13 +117,13 @@ const SolicitudesTab = () => {
                     <div>
                       <p className="text-sm font-bold">{s.requester_name || 'Empresario'}</p>
                       {s.requester_contact && (
-                        <p className="text-[0.6rem] text-muted-foreground flex items-center gap-1">
+                        <p className="text-xs text-muted-foreground flex items-center gap-1">
                           <Phone size={9} /> {s.requester_contact}
                         </p>
                       )}
                     </div>
                   </div>
-                  <span className="text-[0.6rem] font-bold px-2 py-1 rounded-full flex-shrink-0"
+                  <span className="text-xs font-bold px-2 py-1 rounded-full flex-shrink-0"
                     style={{ background: st.bg, color: st.color }}>
                     {st.label}
                   </span>
@@ -150,7 +150,7 @@ const SolicitudesTab = () => {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-[0.55rem] text-muted-foreground">{fmt(s.created_at)}</span>
+                  <span className="text-[0.75rem] text-muted-foreground">{fmt(s.created_at)}</span>
                   {isPending && (
                     <div className="flex gap-2">
                       <button

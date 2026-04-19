@@ -53,7 +53,7 @@ const AdminMetrics = () => {
           <Activity size={16} style={{ color: '#22c55e' }} />
           <div>
             <p className="text-xs font-bold" style={{ color: '#22c55e' }}>Sistema Online</p>
-            <p className="text-[0.6rem] text-muted-foreground">Supabase · datos en tiempo real</p>
+            <p className="text-xs text-muted-foreground">Supabase · datos en tiempo real</p>
           </div>
         </div>
         <div className="flex gap-2">
@@ -83,7 +83,7 @@ const AdminMetrics = () => {
           <div key={m.label} className="glass-panel p-3">
             <div className="flex items-center gap-1.5 mb-1">
               <m.icon size={12} style={{ color: m.color }} />
-              <span className="text-[0.55rem] text-muted-foreground uppercase tracking-wider font-bold">{m.label}</span>
+              <span className="text-[0.75rem] text-muted-foreground uppercase tracking-wider font-bold">{m.label}</span>
             </div>
             <p className="text-lg font-bold" style={{ color: m.color }}>{m.value}</p>
           </div>

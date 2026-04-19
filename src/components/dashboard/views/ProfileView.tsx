@@ -166,7 +166,7 @@ const ProfileView = () => {
             <p className="text-xs font-bold mt-1" style={{ color: '#D4AF37' }}>
               {subscriptionPlans.find(p => p.id === mapSubscriptionTierToPlan(profile.subscription_tier))?.name ?? 'Free'}
             </p>
-            <p className="text-[0.6rem] text-muted-foreground mt-2 mb-1">Sin valoraciones aún</p>
+            <p className="text-xs text-muted-foreground mt-2 mb-1">Sin valoraciones aún</p>
           </div>
           <div className="glass-panel p-4">
             {[['Bookings 2026','0'],['Tasa respuesta','—'],['Visitas perfil','0'],['Mensajes recibidos','0']].map(([k,v]) => (
@@ -175,7 +175,7 @@ const ProfileView = () => {
                 <span className="font-semibold" style={{ color: v === '0' || v === '—' ? 'rgba(255,255,255,0.25)' : 'inherit' }}>{v}</span>
               </div>
             ))}
-            <p className="text-[0.58rem] text-center mt-2.5" style={{ color: 'rgba(255,255,255,0.2)' }}>
+            <p className="text-[0.75rem] text-center mt-2.5" style={{ color: 'rgba(255,255,255,0.2)' }}>
               Las métricas se activan cuando completes tu perfil
             </p>
           </div>
@@ -201,7 +201,7 @@ const ProfileView = () => {
                     <p className="text-sm font-bold" style={{ color: (isAvailable ?? profile.is_live) ? '#22c55e' : 'rgba(255,255,255,0.4)' }}>
                       {(isAvailable ?? profile.is_live) ? 'Disponible ahora' : 'No disponible'}
                     </p>
-                    <p className="text-[0.58rem] text-muted-foreground">Visible en el directorio</p>
+                    <p className="text-[0.75rem] text-muted-foreground">Visible en el directorio</p>
                   </div>
                 </div>
                 <div className="relative w-10 h-5 rounded-full flex-shrink-0"
@@ -230,7 +230,7 @@ const ProfileView = () => {
                   {profile.category === 'rookie' ? 'Modo Promesa activo' : 'Última Llamada'}
                 </span>
               </div>
-              <p className="text-[0.6rem] text-muted-foreground leading-tight">
+              <p className="text-xs text-muted-foreground leading-tight">
                 {profile.category === 'rookie'
                   ? 'Estás en modo Promesa. Consigue 500 apoyos para ascender. Pulsa para volver a Profesional.'
                   : 'Vuelve a modo Promesa para ganar visibilidad y buscar apoyos de la comunidad.'}
@@ -244,7 +244,7 @@ const ProfileView = () => {
             <h4 className="text-base font-bold mb-4">Información</h4>
 
             {/* — Identidad — */}
-            <p className="text-[0.58rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Identidad</p>
+            <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Identidad</p>
             <div className="mb-3">
               <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Nombre artístico</label>
               <input type="text" value={displayName} onChange={e => setLocalName(e.target.value)} className="nightlife-input mt-1 text-base" />
@@ -286,7 +286,7 @@ const ProfileView = () => {
             )}
             {/* — Habilidades — */}
             <div className="mt-5 mb-3" style={{ borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: '1.25rem' }}>
-              <p className="text-[0.58rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Habilidades</p>
+              <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Habilidades</p>
             </div>
             {roleTagConfig && (() => {
               const [genreOpen, setGenreOpen] = useState(false);
@@ -343,9 +343,9 @@ const ProfileView = () => {
                         ))}
                       </div>
                       <div className="flex items-center justify-between px-3 py-2" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-                        <span className="text-[0.6rem] text-muted-foreground">{activeGenres.length} seleccionados</span>
+                        <span className="text-xs text-muted-foreground">{activeGenres.length} seleccionados</span>
                         <button type="button" onClick={() => setGenreOpen(false)}
-                          className="text-[0.65rem] font-bold px-3 py-1 rounded-lg transition-all"
+                          className="text-xs font-bold px-3 py-1 rounded-lg transition-all"
                           style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
                           Cerrar
                         </button>
@@ -381,14 +381,14 @@ const ProfileView = () => {
                 return (
                   <>
                     <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">{label}</label>
-                    <p className="text-[0.6rem] text-muted-foreground mt-0.5 mb-2">
+                    <p className="text-xs text-muted-foreground mt-0.5 mb-2">
                       Los empresarios y técnicos de sonido verán esto. Sé específico — ahorra emails.
                     </p>
                     {presets.length > 0 && (
                       <div className="flex flex-wrap gap-1.5 mb-2">
                         {presets.map(chip => (
                           <button key={chip} type="button" onClick={() => addPreset(chip)}
-                            className="text-[0.6rem] font-bold px-2 py-1 rounded-lg transition-all hover:scale-105"
+                            className="text-xs font-bold px-2 py-1 rounded-lg transition-all hover:scale-105"
                             style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)', color: 'rgba(212,175,55,0.7)' }}>
                             + {chip}
                           </button>
@@ -408,7 +408,7 @@ const ProfileView = () => {
             </div>
             {/* — Sobre ti — */}
             <div className="mt-5 mb-3" style={{ borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: '1.25rem' }}>
-              <p className="text-[0.58rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Sobre ti</p>
+              <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Sobre ti</p>
             </div>
             <div className="mb-3">
               <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Bio</label>
@@ -418,7 +418,7 @@ const ProfileView = () => {
                 className="nightlife-input mt-1 text-base resize-y" />
             </div>
             <div style={{ borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: '1.25rem', marginTop: '0.5rem' }}>
-              <p className="text-[0.58rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Idiomas</p>
+              <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Idiomas</p>
               <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Idiomas que hablas</label>
 
               {/* Selected chips */}
@@ -470,9 +470,9 @@ const ProfileView = () => {
                     ))}
                   </div>
                   <div className="flex items-center justify-between px-3 py-2" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-                    <span className="text-[0.6rem] text-muted-foreground">{activeLangs.length} seleccionados</span>
+                    <span className="text-xs text-muted-foreground">{activeLangs.length} seleccionados</span>
                     <button type="button" onClick={() => setLangOpen(false)}
-                      className="text-[0.65rem] font-bold px-3 py-1 rounded-lg transition-all"
+                      className="text-xs font-bold px-3 py-1 rounded-lg transition-all"
                       style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
                       Cerrar
                     </button>
@@ -496,7 +496,7 @@ const ProfileView = () => {
                   <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">
                     hearthis.at / Mixcloud / SoundCloud
                   </label>
-                  <p className="text-[0.65rem] text-muted-foreground mt-1 mb-2">
+                  <p className="text-xs text-muted-foreground mt-1 mb-2">
                     Los empresarios escucharán tus sesiones directamente desde tu ficha.
                   </p>
                   <div className="flex gap-2 mb-2">
@@ -517,7 +517,7 @@ const ProfileView = () => {
                   </div>
                   {parsed ? (
                     <>
-                      <p className="text-[0.6rem] font-bold mb-2" style={{ color: '#22c55e' }}>
+                      <p className="text-xs font-bold mb-2" style={{ color: '#22c55e' }}>
                         ✓ {parsed.type} detectado — preview:
                       </p>
                       <iframe
@@ -530,7 +530,7 @@ const ProfileView = () => {
                       />
                     </>
                   ) : currentUrl ? (
-                    <p className="text-[0.6rem]" style={{ color: '#ff5f56' }}>URL no reconocida. Prueba con hearthis.at, Mixcloud o SoundCloud.</p>
+                    <p className="text-xs" style={{ color: '#ff5f56' }}>URL no reconocida. Prueba con hearthis.at, Mixcloud o SoundCloud.</p>
                   ) : null}
                 </div>
               );
@@ -579,7 +579,7 @@ const ProfileView = () => {
               </div>
               <div className="text-center">
                 <p className="text-xs font-bold mb-1" style={{ color: 'rgba(255,255,255,0.35)' }}>Sin valoraciones aún</p>
-                <p className="text-[0.6rem] text-muted-foreground max-w-[200px] leading-relaxed">
+                <p className="text-xs text-muted-foreground max-w-[200px] leading-relaxed">
                   Los empresarios podrán valorar tu trabajo tras completar un booking contigo.
                 </p>
               </div>

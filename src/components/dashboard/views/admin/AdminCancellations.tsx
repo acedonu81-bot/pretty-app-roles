@@ -85,7 +85,7 @@ const AdminCancellations = () => {
           }}>
             <m.icon size={14} className="mx-auto mb-1" style={{ color: m.color }} />
             <p className="text-lg font-bold" style={{ color: m.color }}>{m.value}</p>
-            <p className="text-[0.55rem] text-muted-foreground uppercase tracking-wider font-bold">{m.label}</p>
+            <p className="text-[0.75rem] text-muted-foreground uppercase tracking-wider font-bold">{m.label}</p>
           </div>
         ))}
       </div>
@@ -125,7 +125,7 @@ const AdminCancellations = () => {
               <div key={s.id} className="flex items-center justify-between px-3 py-2 rounded-lg text-xs"
                 style={{ background: 'rgba(255,255,255,0.03)' }}>
                 <span className="text-muted-foreground">{REASON_LABELS[s.reason] || s.reason}</span>
-                <span className="px-2 py-0.5 rounded-full font-bold text-[0.6rem]"
+                <span className="px-2 py-0.5 rounded-full font-bold text-xs"
                   style={{
                     background: s.retention_accepted ? 'rgba(34,197,94,0.12)' : 'rgba(255,95,86,0.12)',
                     color: s.retention_accepted ? '#22c55e' : '#ff5f56',

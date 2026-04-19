@@ -171,7 +171,7 @@ const OnboardingTour = ({ onNavigate }: Props) => {
               {current.icon}
             </div>
             <div>
-              <p className="text-[0.55rem] font-black tracking-widest" style={{ color: 'rgba(212,175,55,0.6)' }}>
+              <p className="text-[0.75rem] font-black tracking-widest" style={{ color: 'rgba(212,175,55,0.6)' }}>
                 PASO {step + 1} DE {steps.length}
               </p>
               <p className="text-sm font-bold leading-tight">{current.title}</p>
@@ -190,7 +190,7 @@ const OnboardingTour = ({ onNavigate }: Props) => {
         {current.highlight && (
           <div className="rounded-xl px-3 py-2 mb-3"
             style={{ background: 'rgba(212,175,55,0.07)', border: '1px solid rgba(212,175,55,0.15)' }}>
-            <p className="text-[0.65rem] font-bold" style={{ color: '#D4AF37' }}>{current.highlight}</p>
+            <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>{current.highlight}</p>
           </div>
         )}
 

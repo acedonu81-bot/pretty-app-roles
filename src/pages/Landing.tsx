@@ -5,7 +5,7 @@ import { motion, useInView, AnimatePresence, useMotionValue, useTransform, useSp
 import { Music, UtensilsCrossed, Users, Camera, ArrowRight, Sparkles, X, ChevronLeft, ChevronRight, Building2, Scissors, Headphones, Zap, Radio, Star, CalendarDays, Search, Award, Globe, CheckCircle, Smartphone, Video, Heart } from 'lucide-react';
 import xpeakLogo from '@/assets/xpeak-logo.png';
 import heroBg from '@/assets/hero-bg.jpg';
-const HERO_VIDEO_URL = 'https://videos.pexels.com/video-files/3129957/3129957-uhd_2560_1440_25fps.mp4';
+// TODO: Self-host hero video on Cloudflare R2 or similar to restore video atmosphere
 import bentoMusica from '@/assets/bento-musica.jpg';
 import bentoGastro from '@/assets/bento-gastro.jpg';
 import bentoStaff from '@/assets/bento-staff.jpg';
@@ -70,11 +70,11 @@ const MarqueeStrip = () => (
     >
       {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
         <span key={i} className="inline-flex items-center">
-          <span className="text-[0.65rem] font-bold tracking-[0.22em] uppercase"
-            style={{ color: 'rgba(212,175,55,0.45)' }}>
+          <span className="text-xs font-bold tracking-[0.22em] uppercase"
+            style={{ color: 'rgba(212,175,55,0.70)' }}>
             {item}
           </span>
-          <span className="mx-6 text-[0.55rem]" style={{ color: 'rgba(212,175,55,0.2)' }}>·</span>
+          <span aria-hidden="true" className="mx-6 text-[0.75rem]" style={{ color: 'rgba(212,175,55,0.35)' }}>·</span>
         </span>
       ))}
     </motion.div>
@@ -129,10 +129,10 @@ const BentoCard = ({
     >
       <img src={image} alt={title} loading="lazy"
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-        style={{ filter: 'saturate(0.6) brightness(0.8)' }} />
+        style={{ filter: 'saturate(0.75) brightness(0.95)' }} />
       {/* Dark overlay */}
       <div className="absolute inset-0" style={{
-        background: 'linear-gradient(180deg, rgba(10,10,10,0) 0%, rgba(10,10,10,0.5) 50%, rgba(10,10,10,0.82) 100%)',
+        background: 'linear-gradient(180deg, rgba(10,10,10,0) 0%, rgba(10,10,10,0.35) 50%, rgba(10,10,10,0.65) 100%)',
       }} />
       {/* Shine que sigue el ratón */}
       <motion.div className="absolute inset-0 pointer-events-none" style={{ background: shineBg, opacity: shineOpacity }} />
@@ -155,7 +155,7 @@ const BentoCard = ({
         </div>
         <h3 className="text-xl font-bold text-gradient mb-1">{title}</h3>
         <p className="text-sm" style={{ color: 'rgba(255,255,255,0.55)' }}>{subtitle}</p>
-        <p className="text-[0.6rem] font-bold mt-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0 tracking-widest uppercase" style={{ color: '#D4AF37' }}>
+        <p className="text-xs font-bold mt-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0 tracking-widest uppercase" style={{ color: '#D4AF37' }}>
           Ver detalles →
         </p>
       </div>
@@ -172,7 +172,7 @@ const StatPill = ({ value, label }: { value: string; label: string }) => (
       border: '1px solid rgba(212,175,55,0.1)',
     }}>
     <p className="text-2xl md:text-3xl font-bold text-gradient">{value}</p>
-    <p className="text-xs mt-1 tracking-wide uppercase" style={{ color: 'rgba(255,255,255,0.4)' }}>{label}</p>
+    <p className="text-xs mt-1 tracking-wide uppercase" style={{ color: 'rgba(255,255,255,0.58)' }}>{label}</p>
   </div>
 );
 
@@ -316,7 +316,7 @@ const RoleModal = ({ role, onClose, onJoin }: { role: typeof ROLE_DETAILS[0]; on
             </button>
 
             {/* Step counter */}
-            <div className="absolute top-3 right-3 text-[0.65rem] font-bold px-2.5 py-1 rounded-full"
+            <div className="absolute top-3 right-3 text-xs font-bold px-2.5 py-1 rounded-full"
               style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.35)', letterSpacing: '0.05em' }}>
               {String(step + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
             </div>
@@ -334,7 +334,7 @@ const RoleModal = ({ role, onClose, onJoin }: { role: typeof ROLE_DETAILS[0]; on
                   {cur.icon}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[0.6rem] font-bold uppercase tracking-widest mb-0.5" style={{ color: 'rgba(212,175,55,0.75)' }}>
+                  <p className="text-xs font-bold uppercase tracking-widest mb-0.5" style={{ color: 'rgba(212,175,55,0.75)' }}>
                     {role.title}
                   </p>
                   <h4 className="text-[1.05rem] font-bold leading-tight text-white" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.8)' }}>
@@ -413,22 +413,23 @@ const Landing = () => {
   const [activeRole, setActiveRole] = useState<typeof ROLE_DETAILS[0] | null>(null);
 
   return (
-    <div className="min-h-screen relative overflow-x-hidden flex flex-col" style={{ background: '#090909' }}>
+    <div className="min-h-screen relative overflow-x-hidden flex flex-col grain-overlay" style={{ background: '#090909' }}>
       {/* ─ Hero background ─ */}
       <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
-        <video
-          autoPlay muted loop playsInline
-          src={HERO_VIDEO_URL}
-          poster={heroBg}
-          className="w-full h-full object-cover"
-          style={{ opacity: 0.15, filter: 'saturate(0.4) blur(2px)' }}
+        <div
+          className="w-full h-full bg-cover bg-center"
+          style={{
+            backgroundImage: `url(${heroBg})`,
+            opacity: 0.22,
+            filter: 'saturate(0.55) blur(2px)',
+          }}
         />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(160deg, #090909 0%, #0d0d0d 50%, #090909 100%)' }} />
-        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full opacity-15"
+        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full opacity-20"
           style={{ background: 'radial-gradient(circle, #E2BE50 0%, transparent 65%)', filter: 'blur(90px)', animation: 'orbFloat1 18s ease-in-out infinite' }} />
-        <div className="absolute top-[10%] right-[-15%] w-[500px] h-[500px] rounded-full opacity-8"
+        <div className="absolute top-[10%] right-[-15%] w-[500px] h-[500px] rounded-full opacity-10"
           style={{ background: 'radial-gradient(circle, #6366f1 0%, transparent 65%)', filter: 'blur(100px)', animation: 'orbFloat2 24s ease-in-out infinite' }} />
-        <div className="absolute bottom-[10%] left-[30%] w-[400px] h-[400px] rounded-full opacity-10"
+        <div className="absolute bottom-[10%] left-[30%] w-[400px] h-[400px] rounded-full opacity-14"
           style={{ background: 'radial-gradient(circle, #E2BE50 0%, transparent 65%)', filter: 'blur(110px)', animation: 'orbFloat3 20s ease-in-out infinite' }} />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(9,9,9,0.7) 60%, #090909 100%)' }} />
       </div>
@@ -443,7 +444,7 @@ const Landing = () => {
           borderBottom: '1px solid rgba(212,175,55,0.08)',
         }}>
         <div className="max-w-[1200px] mx-auto px-6 md:px-8 py-4 flex justify-between items-center">
-          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-xl font-bold tracking-wider transition-opacity hover:opacity-70">
+          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-xl font-black tracking-widest transition-opacity hover:opacity-70 font-display">
             X<span className="text-gradient">PEAK</span>
           </button>
           <div className="flex items-center gap-3">
@@ -465,7 +466,8 @@ const Landing = () => {
       </nav>
 
       {/* ─ Hero ─ */}
-      <header className="max-w-[1200px] mx-auto px-4 md:px-8 pt-12 pb-10 md:pt-40 md:pb-44 text-center">
+      <main>
+      <header className="max-w-[1200px] mx-auto px-4 md:px-8 pt-12 pb-10 md:pt-24 md:pb-28 text-center">
         <FadeIn>
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-5 md:mb-8"
             style={{
@@ -473,13 +475,13 @@ const Landing = () => {
               border: '1px solid rgba(212,175,55,0.15)',
             }}>
             <Sparkles size={14} style={{ color: '#D4AF37' }} />
-            <span className="uppercase tracking-[0.3em] text-[0.65rem] font-semibold" style={{ color: '#D4AF37' }}>
+            <span className="uppercase tracking-[0.3em] text-xs font-semibold" style={{ color: '#D4AF37' }}>
               Directorio Profesional
             </span>
           </div>
         </FadeIn>
         <FadeIn delay={0.1}>
-          <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold leading-[1.15] mb-4 md:mb-7 max-w-5xl mx-auto tracking-tight text-center">
+          <h1 className="text-4xl sm:text-6xl md:text-8xl font-black leading-[1.1] mb-4 md:mb-7 max-w-5xl mx-auto tracking-tight text-center font-display">
             <span className="block" style={{ color: 'rgba(255,255,255,0.9)' }}>El talento de los</span>
             <RotatingWord />
             <span className="block" style={{ color: 'rgba(255,255,255,0.9)' }}>está aquí</span>
@@ -487,7 +489,7 @@ const Landing = () => {
         </FadeIn>
         <FadeIn delay={0.2}>
           <p className="text-sm md:text-lg max-w-xl mx-auto mb-6 md:mb-12 leading-relaxed"
-            style={{ color: 'rgba(255,255,255,0.45)' }}>
+            style={{ color: 'rgba(255,255,255,0.62)' }}>
             El directorio profesional para clubs, bodas, eventos privados y festivales. Conecta, contrata y destaca en toda Europa.
           </p>
         </FadeIn>
@@ -526,7 +528,7 @@ const Landing = () => {
       <MarqueeStrip />
 
       {/* ─ Stats ─ */}
-      <FadeIn className="max-w-[900px] mx-auto px-6 mb-10 md:mb-24">
+      <FadeIn className="max-w-[900px] mx-auto px-6 mb-10 md:mb-14">
         <div className="grid grid-cols-3 gap-4">
           <StatPill value="+500" label="Profesionales" />
           <StatPill value="24h" label="Respuesta Media" />
@@ -544,18 +546,18 @@ const Landing = () => {
       )}
 
       {/* ─ Bento Grid ─ */}
-      <section className="max-w-[1200px] mx-auto px-6 md:px-8 pb-14 md:pb-28">
+      <section className="max-w-[1200px] mx-auto px-6 md:px-8 pb-10 md:pb-16">
         <FadeIn>
           <div className="text-center mb-14">
-            <p className="uppercase tracking-[0.3em] text-[0.65rem] font-semibold mb-4" style={{ color: '#D4AF37' }}>
+            <p className="uppercase tracking-[0.3em] text-xs font-semibold mb-4" style={{ color: '#D4AF37' }}>
               Categorías
             </p>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
+            <h2 className="text-3xl md:text-5xl font-black tracking-tight font-display">
               Encuentra tu <span className="text-gradient">talento</span>
             </h2>
           </div>
         </FadeIn>
-        <p className="text-center text-xs text-muted-foreground mb-6" style={{ color: 'rgba(255,255,255,0.3)' }}>
+        <p className="text-center text-xs text-muted-foreground mb-6" style={{ color: 'rgba(255,255,255,0.55)' }}>
           Haz clic en cada categoría para ver qué puedes hacer
         </p>
         {/* Fila 1-2: bento asimétrico */}
@@ -595,7 +597,7 @@ const Landing = () => {
       </section>
 
       {/* ─ CTA ─ */}
-      <FadeIn className="max-w-[1200px] mx-auto px-6 md:px-8 pb-28">
+      <FadeIn className="max-w-[1200px] mx-auto px-6 md:px-8 pb-16">
         <div className="rounded-3xl p-12 md:p-20 text-center relative overflow-hidden"
           style={{
             background: 'rgba(212,175,55,0.03)',
@@ -604,10 +606,10 @@ const Landing = () => {
           }}>
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] rounded-full opacity-15"
             style={{ background: 'radial-gradient(circle, #D4AF37 0%, transparent 70%)', filter: 'blur(100px)' }} />
-          <h2 className="text-3xl md:text-5xl font-bold mb-5 relative z-10 tracking-tight">
+          <h2 className="text-3xl md:text-5xl font-black mb-5 relative z-10 tracking-tight font-display">
             ¿Listo para <span className="text-gradient">destacar</span>?
           </h2>
-          <p className="text-sm md:text-base mb-10 relative z-10 max-w-md mx-auto" style={{ color: 'rgba(255,255,255,0.4)' }}>
+          <p className="text-sm md:text-base mb-10 relative z-10 max-w-md mx-auto" style={{ color: 'rgba(255,255,255,0.55)' }}>
             Crea tu perfil profesional y conecta con oportunidades exclusivas.
           </p>
           <motion.button
@@ -625,6 +627,7 @@ const Landing = () => {
         </div>
       </FadeIn>
 
+      </main>
       <LegalFooter />
       <DemoVideoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
       {activeRole && (

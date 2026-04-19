@@ -37,7 +37,7 @@ const LegalModal = ({ open, onClose }: LegalModalProps) => {
           {legalText}
         </div>
         <div className="mt-4 p-3 rounded-lg text-center" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
-          <p className="text-[0.6rem] text-muted-foreground">Para ejercer tus derechos contacta con:</p>
+          <p className="text-xs text-muted-foreground">Para ejercer tus derechos contacta con:</p>
           <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>info@xpeak.site</p>
         </div>
         <button onClick={onClose}

@@ -258,7 +258,7 @@ const PublicProfile = () => {
                   <BadgeCheck size={18} style={{ color: '#D4AF37', flexShrink: 0 }} />
                 )}
                 {profile.isPremium && (
-                  <span className="text-[0.55rem] font-black px-2 py-0.5 rounded-md"
+                  <span className="text-[0.75rem] font-black px-2 py-0.5 rounded-md"
                     style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>ELITE</span>
                 )}
               </div>
@@ -277,7 +277,7 @@ const PublicProfile = () => {
               <div key={s.label} className="text-center p-3 rounded-xl"
                 style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}>
                 <p className="text-lg font-black" style={{ color: '#D4AF37' }}>{s.value}</p>
-                <p className="text-[0.6rem] text-white/40 uppercase tracking-wide">{s.label}</p>
+                <p className="text-xs text-white/40 uppercase tracking-wide">{s.label}</p>
               </div>
             ))}
           </div>
@@ -373,7 +373,7 @@ const PublicProfile = () => {
                   }
                 </motion.div>
               ))}
-              <p className="text-[0.6rem] text-center pt-1" style={{ color: 'rgba(255,255,255,0.2)' }}>
+              <p className="text-xs text-center pt-1" style={{ color: 'rgba(255,255,255,0.2)' }}>
                 +{fanTier === 'vip' ? '12' : '8'} publicaciones exclusivas disponibles al suscribirte
               </p>
             </div>
@@ -386,7 +386,7 @@ const PublicProfile = () => {
                 {fanTier === 'vip' ? <Crown size={15} /> : <Heart size={15} fill="currentColor" />}
                 Suscribirse · {fanTier === 'vip' ? '9,99€' : '4,99€'}/mes
               </button>
-              <p className="text-center text-[0.6rem] mt-2" style={{ color: 'rgba(255,255,255,0.2)' }}>
+              <p className="text-center text-xs mt-2" style={{ color: 'rgba(255,255,255,0.2)' }}>
                 Cancela cuando quieras · 80% va directo al artista
               </p>
             </div>

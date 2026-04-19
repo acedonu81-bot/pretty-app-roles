@@ -88,11 +88,11 @@ const LiveDJsSection = ({ onNavigate }: { onNavigate?: () => void }) => {
               </div>
               <div className="text-left min-w-0">
                 <p className="text-sm font-bold leading-tight truncate">{p.display_name}</p>
-                <p className="text-[0.6rem] truncate" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                <p className="text-xs truncate" style={{ color: 'rgba(255,255,255,0.4)' }}>
                   {p.stream_title || p.zone || label}
                 </p>
               </div>
-              <span className="text-[0.5rem] font-black px-1.5 py-0.5 rounded-full flex-shrink-0"
+              <span className="text-[0.7rem] font-black px-1.5 py-0.5 rounded-full flex-shrink-0"
                 style={{ background: `${color}18`, color, border: `1px solid ${color}33` }}>
                 {label.toUpperCase()}
               </span>

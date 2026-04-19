@@ -32,7 +32,7 @@ const OverviewTab = ({ fans, totalRevenue, myShare }: Props) => {
               {kpi.icon}
             </div>
             <div>
-              <p className="text-[0.65rem] text-muted-foreground">{kpi.label}</p>
+              <p className="text-xs text-muted-foreground">{kpi.label}</p>
               <p className="text-xl font-black" style={{ color: kpi.color }}>{kpi.value}</p>
             </div>
           </div>
@@ -43,7 +43,7 @@ const OverviewTab = ({ fans, totalRevenue, myShare }: Props) => {
         <p className="text-sm font-bold mb-4 flex items-center gap-2">
           <Play size={14} style={{ color: '#D4AF37' }} />
           Así ven tu Fan Club los visitantes de tu perfil
-          <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded"
+          <span className="text-[0.75rem] font-bold px-1.5 py-0.5 rounded"
             style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
             PREVIEW
           </span>

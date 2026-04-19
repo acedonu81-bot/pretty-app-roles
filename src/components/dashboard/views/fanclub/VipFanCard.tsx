@@ -27,10 +27,10 @@ const VipFanCard = ({ vf }: { vf: VipFan }) => {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <p className="text-sm font-bold truncate">{vf.fan_id}</p>
-            <span className="text-[0.5rem] font-black px-1.5 py-0.5 rounded-full flex-shrink-0"
+            <span className="text-[0.7rem] font-black px-1.5 py-0.5 rounded-full flex-shrink-0"
               style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)' }}>VIP</span>
           </div>
-          <p className="text-[0.6rem] text-muted-foreground">
+          <p className="text-xs text-muted-foreground">
             {vf.streak} meses seguidos · desde {new Date(vf.created_at).toLocaleDateString('es-ES', { month: 'short', year: 'numeric' })}
           </p>
         </div>
@@ -39,22 +39,22 @@ const VipFanCard = ({ vf }: { vf: VipFan }) => {
 
       <div className="px-4 pb-4 grid grid-cols-2 gap-3">
         <div className="rounded-xl p-3" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
-          <p className="text-[0.55rem] font-bold uppercase tracking-wider mb-1" style={{ color: '#D4AF37' }}>Próxima sesión 1:1</p>
+          <p className="text-[0.75rem] font-bold uppercase tracking-wider mb-1" style={{ color: '#D4AF37' }}>Próxima sesión 1:1</p>
           <p className="text-xs font-bold">{vf.sessionDate}</p>
           <button onClick={() => toast.info('Abre Escenario Virtual para iniciar la sesión')}
-            className="mt-2 text-[0.55rem] font-bold px-2 py-1 rounded-lg transition-all hover:opacity-80"
+            className="mt-2 text-[0.75rem] font-bold px-2 py-1 rounded-lg transition-all hover:opacity-80"
             style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
             Confirmar cita
           </button>
         </div>
 
         <div className="rounded-xl p-3" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
-          <p className="text-[0.55rem] font-bold uppercase tracking-wider mb-1.5"
+          <p className="text-[0.75rem] font-bold uppercase tracking-wider mb-1.5"
             style={{ color: giftConfirmed ? '#22c55e' : 'rgba(255,255,255,0.5)' }}>
             {giftConfirmed ? '✓ Regalo enviado' : 'Regalo de abril'}
           </p>
           {giftConfirmed ? (
-            <p className="text-[0.6rem] text-muted-foreground">El fan ha recibido su regalo mensual.</p>
+            <p className="text-xs text-muted-foreground">El fan ha recibido su regalo mensual.</p>
           ) : (
             <>
               <div className="flex gap-1 flex-wrap mb-2">
@@ -69,7 +69,7 @@ const VipFanCard = ({ vf }: { vf: VipFan }) => {
               </div>
               <button
                 onClick={() => { if (!giftPicked) { toast.error('Elige un regalo primero'); return; } setGiftConfirmed(true); toast.success('¡Regalo de abril enviado!'); }}
-                className="text-[0.55rem] font-bold px-2 py-1 rounded-lg transition-all hover:opacity-80"
+                className="text-[0.75rem] font-bold px-2 py-1 rounded-lg transition-all hover:opacity-80"
                 style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.1)' }}>
                 Confirmar regalo
               </button>

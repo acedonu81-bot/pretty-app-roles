@@ -48,17 +48,17 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, showFavor
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           <div>
-            <label className="text-[0.55rem] text-muted-foreground font-bold uppercase mb-1 block">Buscar</label>
+            <label className="text-[0.75rem] text-muted-foreground font-bold uppercase mb-1 block">Buscar</label>
             <input value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder="Nombre..." className="nightlife-input text-sm" />
           </div>
           <div>
-            <label className="text-[0.55rem] text-muted-foreground font-bold uppercase mb-1 block">Zona</label>
+            <label className="text-[0.75rem] text-muted-foreground font-bold uppercase mb-1 block">Zona</label>
             <select value={filterZone} onChange={e => setFilterZone(e.target.value)} className="nightlife-input text-sm">
               {ZONES.map(z => <option key={z} value={z}>{z}</option>)}
             </select>
           </div>
           <div>
-            <label className="text-[0.55rem] text-muted-foreground font-bold uppercase mb-1 block">Rol</label>
+            <label className="text-[0.75rem] text-muted-foreground font-bold uppercase mb-1 block">Rol</label>
             <select value={filterRole} onChange={e => setFilterRole(e.target.value)} className="nightlife-input text-sm">
               <option value="Todos">Todos</option>
               <option value="dj">DJ</option>
@@ -68,12 +68,12 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, showFavor
           </div>
         </div>
         <div className="mt-3">
-          <label className="text-[0.55rem] text-muted-foreground font-bold uppercase mb-1 block">
+          <label className="text-[0.75rem] text-muted-foreground font-bold uppercase mb-1 block">
             Tarifa máx: {maxPrice >= 1000 ? 'Sin límite' : `€${maxPrice}/hora`}
           </label>
           <input type="range" min={50} max={1000} step={50} value={maxPrice}
             onChange={e => setMaxPrice(parseInt(e.target.value))} className="w-full accent-amber-500" />
-          <div className="flex justify-between text-[0.55rem] text-muted-foreground mt-0.5">
+          <div className="flex justify-between text-[0.75rem] text-muted-foreground mt-0.5">
             <span>€50</span>
             <span style={{ color: '#D4AF37' }}>{maxPrice >= 1000 ? '∞ Sin límite' : `€${maxPrice}`}</span>
             <span>Sin límite</span>
@@ -118,8 +118,8 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, showFavor
                   <span className="text-sm font-bold truncate">{p.display_name || 'Sin nombre'}</span>
                   {p.is_verified && <Star size={12} style={{ color: '#D4AF37' }} fill="#D4AF37" title="Sello de Oro" />}
                 </div>
-                <p className="text-[0.6rem] text-muted-foreground">{p.specialty || p.role} · {p.zone || 'Madrid'}</p>
-                {p.bio && <p className="text-[0.55rem] text-muted-foreground mt-0.5 line-clamp-1">{p.bio}</p>}
+                <p className="text-xs text-muted-foreground">{p.specialty || p.role} · {p.zone || 'Madrid'}</p>
+                {p.bio && <p className="text-[0.75rem] text-muted-foreground mt-0.5 line-clamp-1">{p.bio}</p>}
               </div>
               {/* Semáforo */}
               <div className="flex flex-col items-center gap-0.5 flex-shrink-0"
@@ -128,26 +128,28 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, showFavor
                   style={p.is_flash_active
                     ? { background: '#22c55e', boxShadow: '0 0 6px rgba(34,197,94,0.7)' }
                     : { background: '#444' }} />
-                <span className="text-[0.45rem] font-bold" style={{ color: p.is_flash_active ? '#22c55e' : '#555' }}>
+                <span className="text-xs font-bold" style={{ color: p.is_flash_active ? '#22c55e' : '#555' }}>
                   {p.is_flash_active ? 'DISP.' : 'OFF'}
                 </span>
               </div>
             </div>
 
             <div className="flex items-center gap-2 mb-3 flex-wrap">
-              <span className="text-[0.55rem] px-1.5 py-0.5 rounded font-bold"
+              <span className="text-[0.75rem] px-1.5 py-0.5 rounded font-bold"
                 style={{ background: 'rgba(255,255,255,0.05)', color: '#8E8EA0' }}>
                 {p.subscription_tier === 'free' ? 'BÁSICO' : p.subscription_tier?.toUpperCase()}
               </span>
-              <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>€{p.hourly_rate}/hora</span>
+              <span className="text-base font-black" style={{ color: '#D4AF37' }}>
+                {p.hourly_rate > 0 ? <>€{p.hourly_rate}<span className="text-xs font-bold opacity-60">/hora</span></> : <span className="text-xs opacity-50">A consultar</span>}
+              </span>
               {p.genres?.slice(0, 2).map(g => (
-                <span key={g} className="text-[0.5rem] px-1 py-0.5 rounded font-bold"
+                <span key={g} className="text-[0.7rem] px-1 py-0.5 rounded font-bold"
                   style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
                   {g}
                 </span>
               ))}
               {proNotes[p.id] && (
-                <span className="text-[0.5rem] px-1 py-0.5 rounded font-bold flex items-center gap-0.5"
+                <span className="text-[0.7rem] px-1 py-0.5 rounded font-bold flex items-center gap-0.5"
                   style={{ background: 'rgba(139,92,246,0.1)', color: '#8B5CF6', border: '1px solid rgba(139,92,246,0.2)' }}>
                   📝 Nota
                 </span>
@@ -224,7 +226,7 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, showFavor
                   </button>
                 )}
               </div>
-              <p className="text-[0.55rem] text-muted-foreground mt-2 text-center">Solo tú puedes ver estas notas</p>
+              <p className="text-[0.75rem] text-muted-foreground mt-2 text-center">Solo tú puedes ver estas notas</p>
             </div>
           </div>
         );

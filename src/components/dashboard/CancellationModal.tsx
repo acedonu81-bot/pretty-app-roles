@@ -180,7 +180,7 @@ const CancellationModal = ({ open, onOpenChange, planId, planName }: Cancellatio
               <p className="text-sm text-muted-foreground">
                 Queremos que sigas con nosotros. Te ofrecemos un <span className="font-bold text-foreground">30% de descuento</span> en tu plan <span className="font-bold text-[hsl(var(--gold))]">{planName}</span> durante los próximos 3 meses.
               </p>
-              <p className="text-[0.65rem] text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 Esta oferta solo es válida una vez por plan.
               </p>
             </div>

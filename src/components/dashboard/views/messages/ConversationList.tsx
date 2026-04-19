@@ -38,11 +38,11 @@ const ConversationList = ({ conversations, loading, activeConvId, onSelectConver
   <div className="flex flex-col h-full overflow-hidden" style={{ borderRight: '1px solid rgba(212,175,55,0.1)' }}>
     <div className="px-4 py-3 flex items-center justify-between flex-shrink-0"
       style={{ borderBottom: '1px solid rgba(212,175,55,0.08)', background: 'rgba(0,0,0,0.3)' }}>
-      <span className="text-[0.65rem] font-black tracking-widest" style={{ color: 'rgba(212,175,55,0.7)' }}>
+      <span className="text-xs font-black tracking-widest" style={{ color: 'rgba(212,175,55,0.7)' }}>
         CONVERSACIONES
       </span>
       {conversations.length > 0 && (
-        <span className="text-[0.6rem] font-bold px-1.5 py-0.5 rounded-full"
+        <span className="text-xs font-bold px-1.5 py-0.5 rounded-full"
           style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37' }}>
           {conversations.length}
         </span>
@@ -88,7 +88,7 @@ const ConversationList = ({ conversations, loading, activeConvId, onSelectConver
                 {c.other_name.charAt(0).toUpperCase()}
               </div>
               {c.unread > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-[0.5rem] font-black"
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-[0.7rem] font-black"
                   style={{ background: '#D4AF37', color: '#000' }}>
                   {c.unread > 9 ? '9+' : c.unread}
                 </span>
@@ -99,7 +99,7 @@ const ConversationList = ({ conversations, loading, activeConvId, onSelectConver
                 <p className={`text-sm font-bold truncate ${c.unread > 0 ? 'text-white' : 'text-muted-foreground'}`}>
                   {c.other_name}
                 </p>
-                <span className="text-[0.55rem] text-muted-foreground flex-shrink-0 ml-2">
+                <span className="text-[0.75rem] text-muted-foreground flex-shrink-0 ml-2">
                   {formatTime(c.last_message_at)}
                 </span>
               </div>

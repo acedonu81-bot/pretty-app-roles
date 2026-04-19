@@ -133,12 +133,12 @@ const LotterySection = ({ fans }: Props) => {
         <div className="flex-1">
           <div className="flex items-center gap-2 flex-wrap">
             <h3 className="text-sm font-bold">Sorteo Mensual del Regalo VIP</h3>
-            <span className="text-[0.5rem] font-black px-1.5 py-0.5 rounded-full"
+            <span className="text-[0.7rem] font-black px-1.5 py-0.5 rounded-full"
               style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' }}>
               1er VIERNES DE MES
             </span>
           </div>
-          <p className="text-[0.6rem] text-muted-foreground mt-0.5">
+          <p className="text-xs text-muted-foreground mt-0.5">
             Un fan elegido al azar recibe el regalo mensual. El sorteo es automático y transparente.
           </p>
         </div>
@@ -147,7 +147,7 @@ const LotterySection = ({ fans }: Props) => {
       {/* Bases del sorteo */}
       <div className="rounded-xl p-4 mb-4 space-y-1.5"
         style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}>
-        <p className="text-[0.6rem] font-bold uppercase tracking-wider mb-2" style={{ color: '#D4AF37' }}>
+        <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#D4AF37' }}>
           Bases del sorteo
         </p>
         {[
@@ -158,7 +158,7 @@ const LotterySection = ({ fans }: Props) => {
           'El artista notifica al ganador dentro de las 24h siguientes al sorteo',
           'En caso de no poder contactar al ganador en 48h, se realiza un nuevo sorteo',
         ].map((line, i) => (
-          <p key={i} className="text-[0.6rem] text-muted-foreground leading-relaxed">{line}</p>
+          <p key={i} className="text-xs text-muted-foreground leading-relaxed">{line}</p>
         ))}
       </div>
 
@@ -169,7 +169,7 @@ const LotterySection = ({ fans }: Props) => {
           <Clock size={22} style={{ color: isDrawDay ? '#D4AF37' : '#8E8EA0' }} className={isDrawDay ? 'animate-pulse' : ''} />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-[0.6rem] text-muted-foreground">Próximo sorteo</p>
+          <p className="text-xs text-muted-foreground">Próximo sorteo</p>
           <p className="text-xs font-bold capitalize">{drawLabel}</p>
         </div>
         <div className="text-right flex-shrink-0">
@@ -189,10 +189,10 @@ const LotterySection = ({ fans }: Props) => {
         <Gift size={14} style={{ color: '#D4AF37' }} />
         <div className="flex-1">
           <p className="text-xs font-bold">{fans.length} fans VIP en el sorteo</p>
-          <p className="text-[0.55rem] text-muted-foreground">Todos los suscritos activos participan automáticamente</p>
+          <p className="text-[0.75rem] text-muted-foreground">Todos los suscritos activos participan automáticamente</p>
         </div>
         {fans.length === 0 && (
-          <span className="text-[0.55rem] px-2 py-0.5 rounded-full"
+          <span className="text-[0.75rem] px-2 py-0.5 rounded-full"
             style={{ background: 'rgba(255,95,86,0.1)', color: '#ff5f56', border: '1px solid rgba(255,95,86,0.2)' }}>
             Sin participantes
           </span>
@@ -216,7 +216,7 @@ const LotterySection = ({ fans }: Props) => {
                 <p className="text-sm font-bold">{winner.fan_id}</p>
                 {confirmed && <CheckCircle size={14} style={{ color: '#22c55e' }} />}
               </div>
-              <p className="text-[0.6rem] text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 {spinning ? 'Sorteando...' : confirmed ? 'Regalo confirmado ✓' : '¡Fan ganador del sorteo!'}
               </p>
             </div>
@@ -224,7 +224,7 @@ const LotterySection = ({ fans }: Props) => {
 
           {!confirmed && !spinning && (
             <>
-              <p className="text-[0.6rem] font-bold mb-2" style={{ color: '#D4AF37' }}>Elige el regalo:</p>
+              <p className="text-xs font-bold mb-2" style={{ color: '#D4AF37' }}>Elige el regalo:</p>
               <div className="grid grid-cols-4 gap-2 mb-3">
                 {GIFT_OPTIONS.map(g => (
                   <button key={g.id} type="button"
@@ -236,7 +236,7 @@ const LotterySection = ({ fans }: Props) => {
                       outline: giftPicked === g.id ? '2px solid rgba(212,175,55,0.3)' : 'none',
                     }}>
                     {(() => { const I = ICON_MAP[g.icon]; return I ? <I size={18} style={{ color: giftPicked === g.id ? '#D4AF37' : 'rgba(255,255,255,0.35)', margin: '0 auto 2px' }} /> : null; })()}
-                    <p className="text-[0.5rem] text-muted-foreground mt-0.5 leading-tight">{g.label}</p>
+                    <p className="text-[0.7rem] text-muted-foreground mt-0.5 leading-tight">{g.label}</p>
                   </button>
                 ))}
               </div>
@@ -266,7 +266,7 @@ const LotterySection = ({ fans }: Props) => {
       </button>
 
       {!isDrawDay && (
-        <p className="text-center text-[0.55rem] text-muted-foreground mt-2">
+        <p className="text-center text-[0.75rem] text-muted-foreground mt-2">
           El sorteo oficial es el primer viernes del mes. Puedes hacer pruebas en cualquier momento.
         </p>
       )}

@@ -33,7 +33,7 @@ const HeroMockup = () => {
             { label: 'Salas Madrid', value: '38' },
           ].map((s) => (
             <div key={s.label} className="flex-1 glass-panel-subtle p-4 flex flex-col gap-1.5">
-              <span className="text-muted-foreground text-[0.55rem] uppercase font-medium">{s.label}</span>
+              <span className="text-muted-foreground text-[0.75rem] uppercase font-medium">{s.label}</span>
               <span className="text-xl font-bold text-foreground">{s.value}</span>
             </div>
           ))}

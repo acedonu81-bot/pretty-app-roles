@@ -53,7 +53,7 @@ const StreamingPacksSection = () => {
         <p className="text-xs font-bold" style={{ color: 'rgba(255,255,255,0.5)' }}>
           Streaming disponible desde el plan Starter
         </p>
-        <p className="text-[0.6rem] text-muted-foreground max-w-[200px]">
+        <p className="text-xs text-muted-foreground max-w-[200px]">
           Activa Starter para comprar horas de streaming, o Business para incluir 1h/mes gratis.
         </p>
       </div>
@@ -69,10 +69,10 @@ const StreamingPacksSection = () => {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Zap size={14} style={{ color: '#D4AF37' }} />
-            <span className="text-[0.65rem] font-bold uppercase tracking-wider">Horas de Streaming</span>
+            <span className="text-xs font-bold uppercase tracking-wider">Horas de Streaming</span>
           </div>
           {includedHours > 0 && (
-            <div className="flex items-center gap-1 text-[0.55rem] font-bold px-2 py-0.5 rounded"
+            <div className="flex items-center gap-1 text-[0.75rem] font-bold px-2 py-0.5 rounded"
               style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', color: '#22c55e' }}>
               <Clock size={9} />
               {includedHours}h incluida{includedHours > 1 ? 's' : ''}/mes
@@ -82,7 +82,7 @@ const StreamingPacksSection = () => {
 
         {/* Included hours info */}
         {includedHours > 0 && (
-          <div className="mb-4 px-3 py-2.5 rounded-lg text-[0.6rem] text-muted-foreground"
+          <div className="mb-4 px-3 py-2.5 rounded-lg text-xs text-muted-foreground"
             style={{ background: 'rgba(34,197,94,0.04)', border: '1px solid rgba(34,197,94,0.1)' }}>
             Tu plan {isBusiness ? 'Business' : 'Agency'} incluye{' '}
             <span className="font-bold" style={{ color: '#22c55e' }}>
@@ -94,7 +94,7 @@ const StreamingPacksSection = () => {
 
         {/* Starter: no free hours */}
         {isStarter && (
-          <div className="mb-4 px-3 py-2.5 rounded-lg text-[0.6rem]"
+          <div className="mb-4 px-3 py-2.5 rounded-lg text-xs"
             style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}>
             <span className="text-muted-foreground">
               Las horas que compras son tuyas — sin caducidad mensual, válidas <span className="font-bold text-primary">6 meses</span>.
@@ -119,7 +119,7 @@ const StreamingPacksSection = () => {
               }}
             >
               {pack.badge && (
-                <span className="absolute top-2 right-2 text-[0.45rem] font-black px-1.5 py-0.5 rounded"
+                <span className="absolute top-2 right-2 text-xs font-black px-1.5 py-0.5 rounded"
                   style={{
                     background: pack.highlight ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.06)',
                     color: pack.highlight ? '#D4AF37' : 'rgba(255,255,255,0.4)',
@@ -128,20 +128,20 @@ const StreamingPacksSection = () => {
                   {pack.badge}
                 </span>
               )}
-              <span className="text-[0.6rem] font-bold pr-8" style={{ color: pack.highlight ? '#D4AF37' : 'rgba(255,255,255,0.8)' }}>
+              <span className="text-xs font-bold pr-8" style={{ color: pack.highlight ? '#D4AF37' : 'rgba(255,255,255,0.8)' }}>
                 {pack.hours}h
               </span>
               <span className="text-base font-black" style={{ color: pack.highlight ? '#D4AF37' : 'white' }}>
                 €{pack.price}
               </span>
-              <span className="text-[0.5rem] text-muted-foreground">
+              <span className="text-[0.7rem] text-muted-foreground">
                 €{pack.pricePerHour.toFixed(2)}/h
               </span>
             </button>
           ))}
         </div>
 
-        <p className="text-[0.52rem] text-muted-foreground text-center">
+        <p className="text-[0.7rem] text-muted-foreground text-center">
           Horas válidas 6 meses · Streaming vía Amazon IVS · Alta calidad garantizada
         </p>
 
@@ -152,10 +152,10 @@ const StreamingPacksSection = () => {
             <div className="flex items-start gap-2">
               <TrendingUp size={13} style={{ color: '#D4AF37', flexShrink: 0, marginTop: 1 }} />
               <div>
-                <p className="text-[0.6rem] font-bold" style={{ color: '#D4AF37' }}>
+                <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>
                   Ya llevas {purchaseCount} compras de horas
                 </p>
-                <p className="text-[0.55rem] text-muted-foreground mt-0.5">
+                <p className="text-[0.75rem] text-muted-foreground mt-0.5">
                   Con Business (€14.99/mes) tienes 1h incluida cada mes y todo el directorio mejorado.
                   Si usas streaming regularmente, ya te sale más barato.
                 </p>

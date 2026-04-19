@@ -208,7 +208,7 @@ const CalendarView = () => {
                 </h3>
                 {(viewMonth !== today.getMonth() || viewYear !== today.getFullYear()) && (
                   <button onClick={goToToday}
-                    className="text-[0.6rem] px-2 py-0.5 rounded font-bold transition-all hover:opacity-80"
+                    className="text-xs px-2 py-0.5 rounded font-bold transition-all hover:opacity-80"
                     style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
                     Hoy
                   </button>
@@ -226,11 +226,12 @@ const CalendarView = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-7 gap-1.5 text-center text-xs text-muted-foreground font-bold mb-2">
+            <div className="overflow-x-auto -mx-1 px-1">
+            <div className="grid grid-cols-7 gap-1 text-center text-xs text-muted-foreground font-bold mb-2 min-w-[280px]">
               {DAY_LABELS.map(d => <div key={d}>{d}</div>)}
             </div>
 
-            <div className="grid grid-cols-7 gap-1.5 text-center text-sm">
+            <div className="grid grid-cols-7 gap-1 text-center text-sm min-w-[280px]">
               {cells.map((cell, i) => {
                 const today_ = isToday(cell.day, cell.currentMonth);
                 const event_ = isEventDay(cell.day, cell.currentMonth);
@@ -256,6 +257,8 @@ const CalendarView = () => {
               })}
             </div>
 
+            </div>{/* end overflow-x-auto */}
+
             <div className="flex gap-4 mt-5 text-xs font-bold text-muted-foreground justify-center">
               <span className="flex items-center gap-1.5">
                 <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#D4AF37', border: '1px solid rgba(212,175,55,0.5)' }} />
@@ -276,7 +279,7 @@ const CalendarView = () => {
               <div className="absolute bottom-0 left-0 right-0 p-4">
                 <div className="flex items-center gap-2 mb-1">
                   <p className="text-xs font-bold uppercase tracking-wider" style={{ color: '#D4AF37' }}>Próximo Evento</p>
-                  <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded"
+                  <span className="text-[0.75rem] font-bold px-1.5 py-0.5 rounded"
                     style={{ background: 'rgba(212,175,55,0.2)', color: 'rgba(212,175,55,0.7)', border: '1px solid rgba(212,175,55,0.3)' }}>
                     DEMO
                   </span>
@@ -320,7 +323,7 @@ const CalendarView = () => {
           <div className="glass-panel p-4">
             <div className="flex justify-between items-center mb-3 pb-2" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>
               <h3 className="text-sm font-bold">Próximo Bolo</h3>
-              <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded"
+              <span className="text-[0.75rem] font-bold px-1.5 py-0.5 rounded"
                 style={{ background: 'rgba(212,175,55,0.1)', color: 'rgba(212,175,55,0.55)', border: '1px solid rgba(212,175,55,0.15)' }}>
                 DEMO
               </span>
@@ -376,7 +379,7 @@ const CalendarView = () => {
                 <CalendarIcon size={20} style={{ color: '#4285F4' }} />
               </div>
               <div>
-                <p className="text-[0.6rem] font-bold uppercase tracking-widest text-muted-foreground">Integración</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Integración</p>
                 <h3 className="text-base font-black">Google Calendar Personal</h3>
               </div>
             </div>

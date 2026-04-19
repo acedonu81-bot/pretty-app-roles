@@ -150,7 +150,7 @@ const UpgradeModal = ({ open, onClose, role, trigger, onNavigateSubscription }: 
             <Crown size={20} style={{ color: '#000' }} />
           </div>
           <div>
-            <p className="text-[0.6rem] font-bold uppercase tracking-widest text-muted-foreground">Plan Business</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Plan Business</p>
             <h3 className="text-base font-black leading-tight" style={{ color: '#D4AF37' }}>{upsell.headline}</h3>
           </div>
         </div>
@@ -180,7 +180,7 @@ const UpgradeModal = ({ open, onClose, role, trigger, onNavigateSubscription }: 
           <div>
             <p className="text-xs text-muted-foreground">Desde</p>
             <p className="text-xl font-black" style={{ color: '#D4AF37' }}>€14,99 <span className="text-xs font-normal text-muted-foreground">/mes</span></p>
-            <p className="text-[0.6rem] text-muted-foreground">€10,49/mes con plan anual · 15 días gratis</p>
+            <p className="text-xs text-muted-foreground">€10,49/mes con plan anual · 15 días gratis</p>
           </div>
           <Shield size={28} style={{ color: 'rgba(212,175,55,0.3)' }} />
         </div>

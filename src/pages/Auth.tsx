@@ -57,8 +57,25 @@ const Auth = () => {
   const [showWelcome, setShowWelcome] = useState(false);
   const [city, setCity] = useState('');
   const [showRolePreview, setShowRolePreview] = useState(false);
+  const [showForgot, setShowForgot] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [forgotSent, setForgotSent] = useState(false);
+  const [forgotLoading, setForgotLoading] = useState(false);
 
   const currentRole = roles.find(r => r.value === selectedRole)!;
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!forgotEmail) { toast.error('Introduce tu email'); return; }
+    setForgotLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(forgotEmail, {
+      redirectTo: `${window.location.origin}/auth`,
+    });
+    setForgotLoading(false);
+    if (error) { toast.error(error.message); return; }
+    setForgotSent(true);
+    toast.success('Email enviado — revisa tu bandeja de entrada');
+  };;
 
   // Simple client-side rate limiting for login attempts
   const checkRateLimit = (): boolean => {
@@ -175,13 +192,18 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col overflow-hidden relative" style={{ background: '#000' }}>
+    <div className="min-h-screen flex flex-col relative grain-overlay" style={{ background: '#060606' }}>
       <AmbientBackground />
+      {/* Extra mid orb — fills the card area with subtle warmth */}
+      <div className="fixed inset-0 -z-10 pointer-events-none flex items-center justify-center">
+        <div className="w-[700px] h-[700px] rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(212,175,55,0.07) 0%, transparent 65%)', filter: 'blur(80px)' }} />
+      </div>
 
-      <div className="flex-1 flex items-center justify-center px-4 py-12">
+      <div className="flex-1 flex items-start justify-center px-4 pt-[10vh] pb-16">
         <div className="glass-panel w-[460px] max-w-full p-8 text-center z-10">
           <button onClick={() => navigate('/')} className="transition-opacity hover:opacity-70 mb-1">
-            <h2 className="text-2xl font-bold">
+            <h2 className="text-2xl font-black tracking-widest font-display">
               X<span className="text-gradient">PEAK</span>
             </h2>
           </button>
@@ -210,11 +232,11 @@ const Auth = () => {
                 <div className="space-y-2">
                   {roleGroups.map(group => (
                     <div key={group.label}>
-                      <p className="text-[0.6rem] font-bold text-muted-foreground mb-1 px-1">{group.label}</p>
+                      <p className="text-xs font-bold text-muted-foreground mb-1 px-1">{group.label}</p>
                       <div className="grid grid-cols-2 gap-1.5">
                         {group.roles.map(r => (
                           <button key={r.value} type="button" onClick={() => setSelectedRole(r.value)}
-                            className="flex items-center gap-2 px-2 sm:px-3 py-2 rounded-lg text-[0.65rem] sm:text-xs font-bold transition-all leading-tight"
+                            className="flex items-center gap-2 px-2 sm:px-3 py-2 rounded-lg text-xs sm:text-xs font-bold transition-all leading-tight"
                             style={{
                               background: selectedRole === r.value ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.03)',
                               border: `1px solid ${selectedRole === r.value ? 'rgba(212,175,55,0.4)' : 'var(--nightlife-border)'}`,
@@ -255,18 +277,18 @@ const Auth = () => {
                     <input type="checkbox" checked={isRookie} onChange={e => setIsRookie(e.target.checked)} className="hidden" />
                     <div className="w-4 h-4 rounded border flex items-center justify-center"
                       style={{ borderColor: isRookie ? '#ffbc00' : '#555', background: isRookie ? '#ffbc00' : 'transparent' }}>
-                      {isRookie && <span className="text-[0.5rem] text-black font-bold">✓</span>}
+                      {isRookie && <span className="text-[0.7rem] text-black font-bold">✓</span>}
                     </div>
                     <div className="text-left">
                      <span className="text-xs font-bold" style={{ color: isRookie ? '#ffbc00' : '#8E8EA0' }}>Soy Promesa</span>
-                      <p className="text-[0.55rem] text-muted-foreground">Necesitarás 500 apoyos de la comunidad para ascender a Profesional</p>
+                      <p className="text-[0.75rem] text-muted-foreground">Necesitarás 500 apoyos de la comunidad para ascender a Profesional</p>
                     </div>
                   </label>
                 )}
 
                 {selectedRole === 'empresario' && (
                   <div className="px-3 py-2.5 rounded-lg text-left" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
-                    <p className="text-[0.6rem]" style={{ color: '#D4AF37' }}>
+                    <p className="text-xs" style={{ color: '#D4AF37' }}>
                       Las cuentas de empresario requieren aprobación del administrador. Recibirás un email de confirmación.
                     </p>
                   </div>
@@ -298,10 +320,10 @@ const Auth = () => {
                   { ok: /[^A-Za-z0-9]/.test(password), label: 'Al menos un carácter especial' },
                 ].map(({ ok, label }) => (
                   <div key={label} className="flex items-center gap-1.5">
-                    <span className="text-[0.55rem] font-bold" style={{ color: ok ? '#22c55e' : '#666' }}>
+                    <span className="text-[0.75rem] font-bold" style={{ color: ok ? '#22c55e' : '#666' }}>
                       {ok ? '✓' : '·'}
                     </span>
-                    <span className="text-[0.55rem]" style={{ color: ok ? '#22c55e' : '#666' }}>{label}</span>
+                    <span className="text-[0.75rem]" style={{ color: ok ? '#22c55e' : '#666' }}>{label}</span>
                   </div>
                 ))}
               </div>
@@ -312,7 +334,7 @@ const Auth = () => {
                 <label className="flex items-start gap-2.5 cursor-pointer text-left">
                   <input type="checkbox" checked={confirmedAge} onChange={e => setConfirmedAge(e.target.checked)}
                     className="mt-0.5 w-3.5 h-3.5 rounded accent-[#D4AF37] flex-shrink-0" />
-                  <span className="text-[0.6rem] text-muted-foreground leading-tight">
+                  <span className="text-xs text-muted-foreground leading-tight">
                     Confirmo que tengo <span className="font-bold" style={{ color: '#D4AF37' }}>14 años o más</span>.
                     {' '}Esta plataforma no está dirigida a menores de 14 años (LOPDGDD Art. 7).
                   </span>
@@ -320,7 +342,7 @@ const Auth = () => {
                 <label className="flex items-start gap-2.5 cursor-pointer text-left">
                   <input type="checkbox" checked={acceptedPrivacy} onChange={e => setAcceptedPrivacy(e.target.checked)}
                     className="mt-0.5 w-3.5 h-3.5 rounded accent-[#D4AF37] flex-shrink-0" />
-                  <span className="text-[0.6rem] text-muted-foreground leading-tight">
+                  <span className="text-xs text-muted-foreground leading-tight">
                     He leído y acepto la{' '}
                     <Link to="/privacidad" target="_blank" className="font-bold underline" style={{ color: '#D4AF37' }}>Política de Privacidad</Link>,{' '}
                     los{' '}
@@ -339,8 +361,47 @@ const Auth = () => {
             </button>
           </form>
 
-          <button onClick={() => setIsLogin(!isLogin)}
-            className="mt-4 text-xs transition-colors" style={{ color: '#D4AF37' }}>
+          {isLogin && !showForgot && (
+            <button type="button" onClick={() => setShowForgot(true)}
+              className="block w-full mt-2 text-xs transition-colors hover:opacity-80 text-center"
+              style={{ color: 'rgba(255,255,255,0.35)' }}>
+              ¿Olvidaste tu contraseña?
+            </button>
+          )}
+
+          {showForgot && (
+            <div className="mt-3 text-left animate-[fadeIn_0.3s_ease]">
+              {forgotSent ? (
+                <p className="text-xs text-center" style={{ color: '#22c55e' }}>
+                  Email enviado. Revisa tu bandeja de entrada para restablecer la contraseña.
+                </p>
+              ) : (
+                <form onSubmit={handleForgotPassword} className="space-y-2">
+                  <p className="text-xs text-muted-foreground text-center">Introduce tu email y te enviamos un enlace de recuperación.</p>
+                  <div className="relative">
+                    <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                    <input type="email" value={forgotEmail} onChange={e => setForgotEmail(e.target.value)}
+                      placeholder="tu@email.com" className="nightlife-input !py-2.5 !pl-9 text-sm" />
+                  </div>
+                  <div className="flex gap-2">
+                    <button type="button" onClick={() => setShowForgot(false)}
+                      className="flex-1 py-2 rounded-lg text-xs font-bold transition-all"
+                      style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--nightlife-border)', color: '#8E8EA0' }}>
+                      Cancelar
+                    </button>
+                    <button type="submit" disabled={forgotLoading}
+                      className="flex-1 py-2 rounded-lg text-xs font-bold transition-all disabled:opacity-50"
+                      style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                      {forgotLoading ? 'Enviando...' : 'Enviar enlace'}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          )}
+
+          <button onClick={() => { setIsLogin(!isLogin); setShowForgot(false); setForgotSent(false); }}
+            className="block w-full mt-4 text-xs transition-colors text-center" style={{ color: '#D4AF37' }}>
             {isLogin ? '¿No tienes cuenta? Regístrate' : '¿Ya tienes cuenta? Inicia sesión'}
           </button>
         </div>

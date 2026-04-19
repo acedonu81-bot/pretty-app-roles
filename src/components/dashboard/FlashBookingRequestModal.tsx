@@ -88,26 +88,26 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
           <div className="p-5 space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[0.65rem] font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(255,255,255,0.4)' }}>Tu nombre *</label>
+                <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(255,255,255,0.4)' }}>Tu nombre *</label>
                 <input value={form.name} onChange={e => set('name', e.target.value)}
                   placeholder="Sala Berlín / Pedro G." className="nightlife-input text-sm !py-2 w-full" />
               </div>
               <div>
-                <label className="text-[0.65rem] font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(255,255,255,0.4)' }}>Contacto (tel/email) *</label>
+                <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(255,255,255,0.4)' }}>Contacto (tel/email) *</label>
                 <input value={form.contact} onChange={e => set('contact', e.target.value)}
                   placeholder="+34 600..." className="nightlife-input text-sm !py-2 w-full" />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[0.65rem] font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: 'rgba(255,255,255,0.4)' }}>
                   <Calendar size={10} /> Fecha del evento *
                 </label>
                 <input type="date" value={form.date} onChange={e => set('date', e.target.value)}
                   className="nightlife-input text-sm !py-2 w-full" />
               </div>
               <div>
-                <label className="text-[0.65rem] font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: 'rgba(255,255,255,0.4)' }}>
                   <MapPin size={10} /> Lugar
                 </label>
                 <input value={form.location} onChange={e => set('location', e.target.value)}
@@ -115,7 +115,7 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
               </div>
             </div>
             <div>
-              <label className="text-[0.65rem] font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: 'rgba(255,255,255,0.4)' }}>
+              <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: 'rgba(255,255,255,0.4)' }}>
                 <MessageSquare size={10} /> Descripción del evento
               </label>
               <textarea value={form.description} onChange={e => set('description', e.target.value)}
@@ -130,7 +130,7 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
               style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
               {sending ? 'Enviando...' : <span className="block leading-tight">Enviar solicitud a <span className="block sm:inline truncate max-w-[180px] sm:max-w-none align-bottom">{professionalName}</span></span>}
             </button>
-            <p className="text-center text-[0.6rem] mt-2" style={{ color: 'rgba(255,255,255,0.25)' }}>
+            <p className="text-center text-xs mt-2" style={{ color: 'rgba(255,255,255,0.25)' }}>
               El profesional recibirá tu solicitud y te contactará directamente.
             </p>
           </div>

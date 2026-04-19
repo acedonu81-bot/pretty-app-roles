@@ -67,7 +67,7 @@ const StatsTab = ({ pros, favorites }: Props) => {
         ].map(s => (
           <div key={s.label} className="glass-panel p-4 flex flex-col gap-1">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-[0.55rem] text-muted-foreground font-bold uppercase tracking-wider leading-tight">{s.label}</span>
+              <span className="text-[0.75rem] text-muted-foreground font-bold uppercase tracking-wider leading-tight">{s.label}</span>
               <s.icon size={13} style={{ color: s.color }} />
             </div>
             <span className="text-2xl font-black" style={{ color: s.color }}>{s.value}</span>
@@ -126,7 +126,7 @@ const StatsTab = ({ pros, favorites }: Props) => {
       <div className="glass-panel p-5 mb-5">
         <h4 className="text-sm font-bold mb-4 flex items-center gap-2">
           <TrendingUp size={14} style={{ color: '#D4AF37' }} /> Contrataciones esta semana
-          <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded"
+          <span className="text-[0.75rem] font-bold px-1.5 py-0.5 rounded"
             style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
             DEMO
           </span>
@@ -152,7 +152,7 @@ const StatsTab = ({ pros, favorites }: Props) => {
       <div className="glass-panel p-5">
         <h4 className="text-sm font-bold mb-1 flex items-center gap-2">
           <Star size={14} style={{ color: '#D4AF37' }} /> Índice de calidad por rol
-          <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded"
+          <span className="text-[0.75rem] font-bold px-1.5 py-0.5 rounded"
             style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
             DEMO
           </span>
@@ -172,7 +172,7 @@ const StatsTab = ({ pros, favorites }: Props) => {
           {[['DJ', '#D4AF37'], ['Staff', '#8B5CF6'], ['Makeup', '#EC4899']].map(([n, c]) => (
             <div key={n} className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full" style={{ background: c }} />
-              <span className="text-[0.65rem] text-muted-foreground">{n}</span>
+              <span className="text-xs text-muted-foreground">{n}</span>
             </div>
           ))}
         </div>

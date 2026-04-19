@@ -25,7 +25,7 @@ const EmpresarioView = () => {
   const fetchPros = async () => {
     const { data, error } = await supabase
       .from('profiles')
-      .select('user_id, display_name, role, zone, hourly_rate, specialty, subscription_tier, is_live, is_verified, photo_url, genres, bio')
+      .select('user_id, display_name, role, zone, hourly_rate, specialty, subscription_tier, is_live, is_verified, photo_url, genres, bio, is_flash_active')
       .limit(200);
     if (error) { toast.error('Error al cargar profesionales'); return; }
     setPros((data ?? []).map((d: any) => ({ ...d, id: d.user_id })) as unknown as Pro[]);
@@ -99,7 +99,7 @@ const EmpresarioView = () => {
           <Lock size={16} style={{ color: privateHiring ? '#D4AF37' : '#8E8EA0' }} />
           <div>
             <p className="text-xs font-bold">Contrataciones Privadas</p>
-            <p className="text-[0.55rem] text-muted-foreground">Tus contrataciones no serán visibles para otros usuarios.</p>
+            <p className="text-[0.75rem] text-muted-foreground">Tus contrataciones no serán visibles para otros usuarios.</p>
           </div>
         </div>
         <label className="relative inline-flex items-center cursor-pointer">
@@ -122,7 +122,7 @@ const EmpresarioView = () => {
             }}>
             <t.icon size={13} /> {t.label}
             {t.id === 'favorites' && favorites.length > 0 && (
-              <span className="text-[0.55rem] px-1.5 py-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.15)' }}>{favorites.length}</span>
+              <span className="text-[0.75rem] px-1.5 py-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.15)' }}>{favorites.length}</span>
             )}
           </button>
         ))}

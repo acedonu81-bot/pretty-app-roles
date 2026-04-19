@@ -231,7 +231,7 @@ const DemandaTab = () => {
         <Megaphone size={16} style={{ color: '#22c55e' }} />
         <div className="flex-1">
           <p className="text-xs font-bold" style={{ color: '#22c55e' }}>Ofertas de Empresarios</p>
-          <p className="text-[0.6rem] text-muted-foreground">Necesidades urgentes. Responde rápido para asegurar tu contratación.</p>
+          <p className="text-xs text-muted-foreground">Necesidades urgentes. Responde rápido para asegurar tu contratación.</p>
         </div>
         <button onClick={fetchJobs} className="p-1.5 rounded-lg transition-all hover:scale-105"
           style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--nightlife-border)' }}
@@ -343,7 +343,7 @@ const DemandaTab = () => {
                       Disponible para ti en{' '}
                       <span className="font-bold" style={{ color: '#D4AF37' }}>{fmtCountdown(offer.lockedFor)}</span>
                     </p>
-                    <p className="text-[0.6rem] text-muted-foreground text-center px-4">
+                    <p className="text-xs text-muted-foreground text-center px-4">
                       Actualiza a <span className="font-bold" style={{ color: '#D4AF37' }}>Business</span> para acceso inmediato
                     </p>
                   </div>
@@ -395,7 +395,7 @@ const DemandaTab = () => {
                         {isReplying ? <><ChevronUp size={13} /> Cerrar</> : <><MessageCircle size={13} /> Responder</>}
                       </button>
                     ) : (
-                      <span className="text-[0.6rem] text-muted-foreground italic">Tu oferta</span>
+                      <span className="text-xs text-muted-foreground italic">Tu oferta</span>
                     )}
                   </div>
                 </div>
@@ -407,7 +407,7 @@ const DemandaTab = () => {
                       <div className="mb-3 flex flex-col gap-1.5">
                         {msgs.map((m, i) => (
                           <div key={i} className="flex items-end gap-2 justify-end">
-                            <span className="text-[0.55rem] text-muted-foreground">{m.time}</span>
+                            <span className="text-[0.75rem] text-muted-foreground">{m.time}</span>
                             <div className="text-xs px-3 py-1.5 rounded-xl rounded-br-sm max-w-[80%]"
                               style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.18)' }}>
                               {m.text}
@@ -417,7 +417,7 @@ const DemandaTab = () => {
                         ))}
                       </div>
                     )}
-                    <p className="text-[0.6rem] text-muted-foreground mb-2">
+                    <p className="text-xs text-muted-foreground mb-2">
                       Mensaje a <span className="font-bold" style={{ color: '#D4AF37' }}>{offer.author}</span>
                       {msgs.length === 0 && ' — También aparecerá en Mensajes'}
                     </p>

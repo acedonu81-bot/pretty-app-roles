@@ -124,14 +124,14 @@ const GlobalPlayer = () => {
     >
       <div className="flex items-center gap-3 min-w-0 w-[180px]">
         <div
-          className="w-8 h-8 rounded flex-shrink-0 flex items-center justify-center text-[0.5rem] font-bold"
+          className="w-8 h-8 rounded flex-shrink-0 flex items-center justify-center text-[0.7rem] font-bold"
           style={{ background: playing ? 'rgba(212,175,55,0.15)' : 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}
         >
           {playing ? '▶' : '♪'}
         </div>
         <div className="min-w-0">
           <p className="text-xs font-bold truncate">{track.title}</p>
-          <p className="text-[0.6rem] truncate" style={{ color: '#D4AF37' }}>{track.artist}</p>
+          <p className="text-xs truncate" style={{ color: '#D4AF37' }}>{track.artist}</p>
         </div>
       </div>
 
@@ -153,7 +153,7 @@ const GlobalPlayer = () => {
 
       <div className="flex-1 mx-2 hidden sm:block">
         <div className="flex items-center gap-2">
-          <span className="text-[0.55rem] text-muted-foreground tabular-nums">{formatTime(currentTime)}</span>
+          <span className="text-[0.75rem] text-muted-foreground tabular-nums">{formatTime(currentTime)}</span>
           <div className="flex-1 h-1 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.05)' }}>
             <div
               className="h-full rounded-full"
@@ -164,7 +164,7 @@ const GlobalPlayer = () => {
               }}
             />
           </div>
-          <span className="text-[0.55rem] text-muted-foreground tabular-nums">{formatTime(duration)}</span>
+          <span className="text-[0.75rem] text-muted-foreground tabular-nums">{formatTime(duration)}</span>
         </div>
       </div>
 

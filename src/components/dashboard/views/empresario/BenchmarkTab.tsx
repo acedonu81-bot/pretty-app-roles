@@ -7,7 +7,7 @@ const BenchmarkTab = () => (
       <div className="flex items-center gap-2 mb-1">
         <Euro size={14} style={{ color: '#D4AF37' }} />
         <h4 className="text-sm font-bold">¿Cómo pagan otros empresarios?</h4>
-        <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded"
+        <span className="text-[0.75rem] font-bold px-1.5 py-0.5 rounded"
           style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
           DEMO
         </span>
@@ -23,7 +23,7 @@ const BenchmarkTab = () => (
               </span>
             </div>
             <div className="mb-3">
-              <div className="flex justify-between text-[0.6rem] text-muted-foreground mb-1">
+              <div className="flex justify-between text-xs text-muted-foreground mb-1">
                 <span>Mínimo €{b.min}</span><span>Máximo €{b.max}</span>
               </div>
               <div className="h-2 rounded-full relative overflow-hidden" style={{ background: 'rgba(255,255,255,0.05)' }}>
@@ -35,7 +35,7 @@ const BenchmarkTab = () => (
                   }} />
               </div>
             </div>
-            <p className="text-[0.6rem] font-bold text-muted-foreground uppercase tracking-wider mb-2">Forma de pago</p>
+            <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Forma de pago</p>
             <div className="flex gap-2">
               {[
                 { label: 'Efectivo',       pct: b.pct_cash,     color: '#22c55e' },
@@ -45,14 +45,14 @@ const BenchmarkTab = () => (
                 <div key={m.label} className="flex-1 rounded-lg p-2 text-center"
                   style={{ background: `${m.color}10`, border: `1px solid ${m.color}22` }}>
                   <p className="text-sm font-black" style={{ color: m.color }}>{m.pct}%</p>
-                  <p className="text-[0.5rem] text-muted-foreground">{m.label}</p>
+                  <p className="text-[0.7rem] text-muted-foreground">{m.label}</p>
                 </div>
               ))}
             </div>
           </div>
         ))}
       </div>
-      <p className="text-[0.55rem] text-muted-foreground mt-4 text-center">Datos de referencia del sector nightlife España · Se actualizará con transacciones reales</p>
+      <p className="text-[0.75rem] text-muted-foreground mt-4 text-center">Datos de referencia del sector nightlife España · Se actualizará con transacciones reales</p>
     </div>
   </div>
 );

@@ -389,14 +389,14 @@ const HistorialTab = () => {
               <span className="text-3xl font-black" style={{ color: '#D4AF37' }}>—</span>
               <span className="text-xs text-muted-foreground">/ 5.0 · {bookings.length} solicitudes</span>
             </div>
-            <p className="text-[0.6rem] text-muted-foreground mt-0.5">
+            <p className="text-xs text-muted-foreground mt-0.5">
               Los profesionales te calificarán como empleador tras cada contratación completada.
             </p>
           </div>
           <div className="text-right flex-shrink-0">
-            <p className="text-[0.6rem] text-muted-foreground">Completadas</p>
+            <p className="text-xs text-muted-foreground">Completadas</p>
             <p className="text-lg font-black" style={{ color: '#22c55e' }}>{completed}</p>
-            <p className="text-[0.55rem] text-muted-foreground">de {bookings.length} totales</p>
+            <p className="text-[0.75rem] text-muted-foreground">de {bookings.length} totales</p>
           </div>
         </div>
         <div className="grid grid-cols-4 gap-3 mt-4 pt-4" style={{ borderTop: '1px solid rgba(212,175,55,0.1)' }}>
@@ -408,7 +408,7 @@ const HistorialTab = () => {
           ].map(s => (
             <div key={s.label} className="text-center">
               <p className="text-base font-black" style={{ color: '#D4AF37' }}>{s.value}</p>
-              <p className="text-[0.55rem] text-muted-foreground">{s.label}</p>
+              <p className="text-[0.75rem] text-muted-foreground">{s.label}</p>
             </div>
           ))}
         </div>
@@ -476,7 +476,7 @@ const HistorialTab = () => {
                   <div className="flex items-center gap-2 mb-0.5 flex-wrap">
                     <p className="text-sm font-bold truncate">{b.professional_name}</p>
                     {b.professional_role && (
-                      <span className="text-[0.55rem] px-1.5 py-0.5 rounded font-bold uppercase"
+                      <span className="text-[0.75rem] px-1.5 py-0.5 rounded font-bold uppercase"
                         style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>
                         {b.professional_role}
                       </span>
@@ -495,11 +495,11 @@ const HistorialTab = () => {
                   )}
                 </div>
                 <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
-                  <span className="text-[0.6rem] font-bold px-2 py-1 rounded-full"
+                  <span className="text-xs font-bold px-2 py-1 rounded-full"
                     style={{ background: s.bg, color: s.color }}>
                     {s.label}
                   </span>
-                  <span className="text-[0.55rem] text-muted-foreground">{fmt(b.created_at)}</span>
+                  <span className="text-[0.75rem] text-muted-foreground">{fmt(b.created_at)}</span>
                 </div>
               </div>
             );

@@ -55,7 +55,7 @@ const RookiePublicCard = ({ dj, userId }: { dj: any; userId: string | undefined 
       <p className="text-sm text-muted-foreground truncate w-full">{dj.specialty || 'DJ'}</p>
       <p className="text-xs text-muted-foreground">{dj.zone || 'Madrid'}</p>
       {currentMilestone && (
-        <span className="mt-1.5 text-[0.55rem] font-bold px-2 py-0.5 rounded-full"
+        <span className="mt-1.5 text-[0.75rem] font-bold px-2 py-0.5 rounded-full"
           style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>
           {currentMilestone.label}
         </span>
@@ -235,14 +235,14 @@ const RookieView = () => {
                           style={{ background: reached ? 'rgba(212,175,55,0.06)' : 'transparent' }}>
                           <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: reached ? (m as any).color : 'rgba(255,255,255,0.12)' }} />
                           <p className={`text-xs flex-1 ${reached ? 'font-bold' : 'text-muted-foreground'}`}>{m.label}</p>
-                          <span className="text-[0.6rem] text-muted-foreground">{m.votes}v</span>
+                          <span className="text-xs text-muted-foreground">{m.votes}v</span>
                           {reached && <CheckCircle size={11} style={{ color: '#22c55e' }} />}
                         </div>
                       );
                     })}
                   </div>
                   {nextMilestone && (
-                    <p className="text-[0.6rem] text-muted-foreground text-center mt-2">
+                    <p className="text-xs text-muted-foreground text-center mt-2">
                       Siguiente: <span className="font-bold" style={{ color: '#D4AF37' }}>{nextMilestone.label}</span> — faltan {nextMilestone.votes - voteCount} votos
                     </p>
                   )}
@@ -296,7 +296,7 @@ const RookieView = () => {
             <p className="text-xs text-muted-foreground">
               <span className="font-bold" style={{ color: '#D4AF37' }}>{rookies.length}</span> DJs Promesa en la plataforma
             </p>
-            <p className="text-[0.6rem] text-muted-foreground">Ordenados por fecha de registro</p>
+            <p className="text-xs text-muted-foreground">Ordenados por fecha de registro</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {rookies.map(dj => (

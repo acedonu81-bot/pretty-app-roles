@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Star, Clock, Award, CheckCircle, X, Lock, MessageCircle } from 'lucide-react';
+import { Star, Clock, Award, CheckCircle, X, Lock, MessageCircle, ShoppingBag, FileText } from 'lucide-react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Profile } from '@/data/profiles';
 import GeometricAvatar from './GeometricAvatar';
@@ -8,6 +8,7 @@ import VoteButton from './VoteButton';
 import LegalModal from '@/components/LegalModal';
 import FanSubscribeButton from './FanSubscribeButton';
 import UpgradeModal from './UpgradeModal';
+import ContractModal from './ContractModal';
 import { useProfile } from '@/hooks/useProfile';
 
 
@@ -31,9 +32,10 @@ interface ProfileCardProps {
   showPortfolio?: boolean;
   onMessage?: (userId: string, name: string) => void;
   onNavigateSubscription?: () => void;
+  onViewProfile?: (profile: Profile) => void;
 }
 
-const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, onNavigateSubscription }: ProfileCardProps) => {
+const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, onNavigateSubscription, onViewProfile }: ProfileCardProps) => {
   const currentUser = useProfile();
   const canSeePrice = currentUser.role === 'empresario' || currentUser.subscription_tier !== 'free';
   const isRookie = p.category === 'rookie';
@@ -43,6 +45,8 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
   const [accepted, setAccepted] = useState(false);
   const [showLegal, setShowLegal] = useState(false);
   const [showUpgrade, setShowUpgrade] = useState(false);
+  const [showContract, setShowContract] = useState(false);
+  const [showStore, setShowStore] = useState(false);
   // Real vote count from Supabase (only loaded for rookie profiles)
   const realProfileId = (p as any).userId ?? p.userId ?? null;
   const [voteCount, setVoteCount] = useState(0);
@@ -170,7 +174,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
       {statusBadges.length > 0 && (
         <div className="flex flex-wrap gap-1.5 mb-3">
           {statusBadges.map((b) => (
-            <span key={b.label} className="text-[0.55rem] font-bold px-2 py-0.5 rounded-md tracking-wide inline-flex items-center gap-1"
+            <span key={b.label} className="text-[0.75rem] font-bold px-2 py-0.5 rounded-md tracking-wide inline-flex items-center gap-1"
               style={{
                 background: b.bg,
                 color: b.color,
@@ -211,7 +215,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
       </div>
 
       <div className="flex items-center gap-3 mb-2 text-xs text-muted-foreground">
-        <span className="flex items-center gap-1"><Star size={11} style={{ color: '#D4AF37' }} /> <span className="font-semibold text-foreground">{p.rating}</span> ({p.reviews})</span>
+        {p.rating > 0 && <span className="flex items-center gap-1"><Star size={11} style={{ color: '#D4AF37' }} /> <span className="font-semibold text-foreground">{p.rating}</span> ({p.reviews})</span>}
         <span className="text-muted-foreground">{p.zone}</span>
       </div>
       <div className="flex items-center gap-1 mb-2 text-xs text-muted-foreground">
@@ -222,7 +226,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
 
       <div className="flex flex-wrap gap-1 mb-3 overflow-hidden">
         {p.badges.slice(0, 3).map(b => (
-          <span key={b} className="text-[0.6rem] font-medium px-1.5 sm:px-2 py-0.5 rounded truncate max-w-[120px]"
+          <span key={b} className="text-xs font-medium px-1.5 sm:px-2 py-0.5 rounded truncate max-w-[120px]"
             style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
             {b}
           </span>
@@ -232,7 +236,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
       {p.languages && p.languages.length > 0 && (
         <div className="flex flex-wrap gap-1 mb-3">
           {p.languages.map(lang => (
-            <span key={lang} className="text-[0.6rem] font-medium px-1.5 py-0.5 rounded"
+            <span key={lang} className="text-xs font-medium px-1.5 py-0.5 rounded"
               style={{ background: 'rgba(255,255,255,0.04)', color: '#8E8EA0', border: '1px solid rgba(255,255,255,0.08)' }}>
               {lang}
             </span>
@@ -242,7 +246,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
 
       {showPortfolio && (
         <div className="mb-3" onClick={e => e.stopPropagation()}>
-          <p className="text-[0.65rem] font-bold mb-2" style={{ color: '#D4AF37' }}>Portfolio</p>
+          <p className="text-xs font-bold mb-2" style={{ color: '#D4AF37' }}>Portfolio</p>
           {p.portfolioUrls && p.portfolioUrls.length > 0 ? (
             <div className="grid grid-cols-2 gap-2">
               {p.portfolioUrls.map((url, i) => {
@@ -265,7 +269,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
               {[1,2,3,4].map(i => (
                 <div key={i} className="rounded-lg aspect-square flex items-center justify-center"
                   style={{ background: 'rgba(212,175,55,0.04)', border: '1px dashed rgba(212,175,55,0.15)' }}>
-                  <span className="text-[0.55rem] text-muted-foreground text-center px-2">Subir trabajo</span>
+                  <span className="text-[0.75rem] text-muted-foreground text-center px-2">Subir trabajo</span>
                 </div>
               ))}
             </div>
@@ -289,14 +293,14 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
       <div className="flex items-center gap-2 mb-3" onClick={e => e.stopPropagation()}>
         {isDJ && audioUrl && audioLabel && (
           <a href={audioUrl} target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[0.6rem] font-bold transition-all hover:scale-105"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
             style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
             <HearthisIcon size={12} /> {audioLabel}
           </a>
         )}
         {!isDJ && p.instagram && (
           <a href={`https://instagram.com/${p.instagram}`} target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[0.6rem] font-bold transition-all hover:scale-105"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
             style={{ background: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.1)' }}>
             Instagram
           </a>
@@ -318,13 +322,13 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
           </div>
           <div className="text-center py-3">
             <div className="text-3xl font-black" style={{ color: '#D4AF37' }}>{voteCount}</div>
-            <div className="text-[0.6rem] text-muted-foreground">de 500 votos necesarios</div>
+            <div className="text-xs text-muted-foreground">de 500 votos necesarios</div>
           </div>
           <div className="h-2 rounded-full overflow-hidden mb-2" style={{ background: 'rgba(255,255,255,0.05)' }}>
             <div className="h-full rounded-full transition-all duration-700"
               style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #D4AF37, #22c55e)' }} />
           </div>
-          <div className="flex justify-between text-[0.5rem] text-muted-foreground mb-3">
+          <div className="flex justify-between text-[0.7rem] text-muted-foreground mb-3">
             <span>0</span><span>{Math.round(progress)}%</span><span>500</span>
           </div>
           <div className="space-y-1.5">
@@ -338,8 +342,8 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
                   }}>
                   <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: reached ? m.color : 'rgba(255,255,255,0.1)' }} />
                   <div className="flex-1">
-                    <p className={`text-[0.6rem] font-bold ${reached ? '' : 'text-muted-foreground'}`}>{m.label}</p>
-                    <p className="text-[0.5rem] text-muted-foreground">{m.votes} votos</p>
+                    <p className={`text-xs font-bold ${reached ? '' : 'text-muted-foreground'}`}>{m.label}</p>
+                    <p className="text-[0.7rem] text-muted-foreground">{m.votes} votos</p>
                   </div>
                   {reached && <CheckCircle size={10} style={{ color: '#22c55e' }} />}
                 </div>
@@ -348,12 +352,12 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
           </div>
           {currentMilestone && (
             <div className="mt-3 p-2 rounded-lg text-center" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
-              <p className="text-[0.5rem] text-muted-foreground">Nivel actual</p>
+              <p className="text-[0.7rem] text-muted-foreground">Nivel actual</p>
               <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>{currentMilestone.label}</p>
             </div>
           )}
           {nextMilestone && (
-            <p className="text-[0.5rem] text-muted-foreground text-center mt-2">
+            <p className="text-[0.7rem] text-muted-foreground text-center mt-2">
               Siguiente: <span className="font-bold" style={{ color: '#D4AF37' }}>{nextMilestone.label}</span> — faltan {nextMilestone.votes - voteCount} votos
             </p>
           )}
@@ -364,9 +368,42 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
         <FanSubscribeButton profileId={String(p.id)} professionalName={p.name} />
       </div>
 
+      {/* Ver perfil button */}
+      {onViewProfile && (
+        <div className="mb-2" onClick={e => e.stopPropagation()}>
+          <button
+            type="button"
+            onClick={() => onViewProfile(p)}
+            className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold transition-all hover:scale-105 active:scale-95"
+            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+            Ver perfil completo →
+          </button>
+        </div>
+      )}
+
+      {/* Tienda + Contrato row */}
+      <div className="flex gap-2 mb-3" onClick={e => e.stopPropagation()}>
+        <button
+          type="button"
+          onClick={() => setShowStore(true)}
+          className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
+          style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.5)' }}>
+          <ShoppingBag size={12} /> Tienda
+        </button>
+        {currentUser.role === 'empresario' && (
+          <button
+            type="button"
+            onClick={() => setShowContract(true)}
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
+            style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+            <FileText size={12} /> Contrato
+          </button>
+        )}
+      </div>
+
       <div className="py-2 mb-2 px-2 rounded-lg" onClick={e => e.stopPropagation()}
         style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
-        <p className="text-[0.65rem] leading-relaxed text-center" style={{ color: 'rgba(255,255,255,0.35)' }}>
+        <p className="text-xs leading-relaxed text-center" style={{ color: 'rgba(255,255,255,0.35)' }}>
           XPEAK actúa como intermediario. Sin relación laboral con la plataforma.
         </p>
       </div>
@@ -436,6 +473,46 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
       </div>
 
       <LegalModal open={showLegal} onClose={() => setShowLegal(false)} />
+
+      {/* Store modal */}
+      {showStore && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          onClick={() => setShowStore(false)}>
+          <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)' }} />
+          <div className="relative w-full max-w-sm rounded-2xl p-6"
+            style={{ background: '#0a0a0e', border: '1px solid rgba(255,255,255,0.1)' }}
+            onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-5">
+              <div className="flex items-center gap-2">
+                <ShoppingBag size={16} style={{ color: '#D4AF37' }} />
+                <h3 className="text-base font-bold">Tienda de <span style={{ color: '#D4AF37' }}>{p.name}</span></h3>
+              </div>
+              <button onClick={() => setShowStore(false)} className="p-1 rounded hover:bg-white/5">
+                <X size={14} className="text-muted-foreground" />
+              </button>
+            </div>
+            <div className="text-center py-8">
+              <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center"
+                style={{ background: 'rgba(212,175,55,0.06)', border: '1px dashed rgba(212,175,55,0.2)' }}>
+                <ShoppingBag size={24} style={{ color: 'rgba(212,175,55,0.3)' }} />
+              </div>
+              <p className="text-sm font-bold mb-1">Tienda sin productos aún</p>
+              <p className="text-xs text-muted-foreground mb-4">
+                {p.name} podrá vender merchandising, packs de samples, sesiones y más cuando active su tienda.
+              </p>
+              <span className="text-xs font-black px-3 py-1 rounded-full tracking-widest"
+                style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                PRÓXIMAMENTE
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Contract modal */}
+      {showContract && (
+        <ContractModal professional={p} onClose={() => setShowContract(false)} />
+      )}
     </motion.div>
   );
 };

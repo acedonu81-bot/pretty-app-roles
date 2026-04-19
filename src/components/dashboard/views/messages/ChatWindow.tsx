@@ -72,6 +72,7 @@ const ChatWindow = ({
       <div className="px-4 py-3 flex items-center gap-3 flex-shrink-0"
         style={{ borderBottom: '1px solid rgba(212,175,55,0.08)', background: 'rgba(0,0,0,0.4)' }}>
         <button onClick={onBack}
+          aria-label="Volver a conversaciones"
           className="md:hidden p-1.5 rounded-lg mr-1 transition-colors"
           style={{ background: 'rgba(255,255,255,0.05)' }}>
           <ArrowLeft size={16} />
@@ -82,7 +83,7 @@ const ChatWindow = ({
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-bold">{activeOtherName}</p>
-          <p className="text-[0.6rem] flex items-center gap-1" style={{ color: 'rgba(255,255,255,0.3)' }}>
+          <p className="text-xs flex items-center gap-1" style={{ color: 'rgba(255,255,255,0.3)' }}>
             <Shield size={9} /> Comunicación privada · XPEAK
           </p>
         </div>
@@ -109,7 +110,7 @@ const ChatWindow = ({
               {showDateSep && (
                 <div className="flex items-center gap-3 my-2">
                   <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.05)' }} />
-                  <span className="text-[0.6rem] text-muted-foreground px-2 py-0.5 rounded-full"
+                  <span className="text-xs text-muted-foreground px-2 py-0.5 rounded-full"
                     style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
                     {new Date(msg.created_at).toLocaleDateString('es', { weekday: 'short', day: 'numeric', month: 'short' })}
                   </span>
@@ -118,7 +119,7 @@ const ChatWindow = ({
               )}
               <div className={`flex items-end gap-2 ${isMe ? 'justify-end' : 'justify-start'}`}>
                 {!isMe && (
-                  <div className="w-6 h-6 rounded-lg flex items-center justify-center text-[0.6rem] font-black flex-shrink-0 mb-1"
+                  <div className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-black flex-shrink-0 mb-1"
                     style={{ background: getGradient(activeOtherName), color: '#000' }}>
                     {activeOtherName.charAt(0).toUpperCase()}
                   </div>
@@ -155,7 +156,7 @@ const ChatWindow = ({
                     </div>
                   )}
                   <div className={`flex items-center gap-1 mt-1 px-1 ${isMe ? 'flex-row-reverse' : 'flex-row'}`}>
-                    <span className="text-[0.55rem]" style={{ color: 'rgba(255,255,255,0.25)' }}>
+                    <span className="text-[0.75rem]" style={{ color: 'rgba(255,255,255,0.25)' }}>
                       {formatTime(msg.created_at)}
                     </span>
                     {isMe && (msg.read
@@ -177,7 +178,7 @@ const ChatWindow = ({
           <div className="absolute bottom-full mb-2 left-3 right-3 rounded-xl p-3 z-20"
             style={{ background: 'rgba(10,10,15,0.98)', border: '1px solid rgba(212,175,55,0.2)', boxShadow: '0 -8px 32px rgba(0,0,0,0.8)' }}>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[0.6rem] font-black tracking-widest" style={{ color: 'rgba(212,175,55,0.6)' }}>EMOTICONOS</span>
+              <span className="text-xs font-black tracking-widest" style={{ color: 'rgba(212,175,55,0.6)' }}>EMOTICONOS</span>
               <button onClick={() => setShowEmoji(false)} className="p-0.5 rounded hover:bg-white/5">
                 <X size={12} className="text-muted-foreground" />
               </button>

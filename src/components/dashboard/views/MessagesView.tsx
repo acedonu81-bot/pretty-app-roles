@@ -51,23 +51,27 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
       .order('last_message_at', { ascending: false });
 
     if (error) { toast.error('Error al cargar conversaciones'); return; }
-    if (!data) return;
+    if (!data || data.length === 0) { setConversations([]); setLoading(false); return; }
 
+    // Batch: single query for all participant profiles
+    const otherIds = data.map(c => c.participant_a === user.id ? c.participant_b : c.participant_a);
+    const { data: profilesData } = await supabase
+      .from('profiles').select('user_id, display_name').in('user_id', otherIds);
+    const profileMap = new Map((profilesData ?? []).map(p => [p.user_id, p.display_name]));
+
+    // Parallel: lastMsg + unread per conversation, all at once
     const convs: Conversation[] = await Promise.all(data.map(async (c) => {
       const otherId = c.participant_a === user.id ? c.participant_b : c.participant_a;
-      const { data: profileData } = await supabase
-        .from('profiles').select('display_name').eq('user_id', otherId).maybeSingle();
-      const { data: lastMsg } = await supabase
-        .from('messages').select('content, read, sender_id')
-        .eq('conversation_id', c.id).order('created_at', { ascending: false }).limit(1).maybeSingle();
-      const { count } = await supabase
-        .from('messages').select('id', { count: 'exact', head: true })
-        .eq('conversation_id', c.id).eq('read', false).neq('sender_id', user.id);
-
+      const [{ data: lastMsg }, { count }] = await Promise.all([
+        supabase.from('messages').select('content, read, sender_id')
+          .eq('conversation_id', c.id).order('created_at', { ascending: false }).limit(1).maybeSingle(),
+        supabase.from('messages').select('id', { count: 'exact', head: true })
+          .eq('conversation_id', c.id).eq('read', false).neq('sender_id', user.id),
+      ]);
       return {
         id: c.id,
         other_user_id: otherId,
-        other_name: profileData?.display_name || 'Usuario',
+        other_name: profileMap.get(otherId) || 'Usuario',
         last_message: lastMsg?.content || '',
         last_message_at: c.last_message_at,
         unread: count || 0,

@@ -77,7 +77,7 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
             />
             {tab.badge != null && tab.badge > 0 && (
               <span
-                className="absolute -top-1.5 -right-2 min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center text-[0.5rem] font-black"
+                className="absolute -top-1.5 -right-2 min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center text-[0.7rem] font-black"
                 style={{ background: '#D4AF37', color: '#000' }}
               >
                 {tab.badge > 9 ? '9+' : tab.badge}
@@ -85,7 +85,7 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
             )}
           </div>
           <span
-            className="text-[0.55rem] font-bold tracking-wide"
+            className="text-[0.75rem] font-bold tracking-wide"
             style={{ color: tab.isActive ? '#D4AF37' : 'rgba(255,255,255,0.3)' }}
           >
             {tab.label}
@@ -107,7 +107,7 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
         style={{ minHeight: 44 }}
       >
         <LayoutGrid size={20} style={{ color: 'rgba(255,255,255,0.35)' }} />
-        <span className="text-[0.55rem] font-bold tracking-wide" style={{ color: 'rgba(255,255,255,0.3)' }}>
+        <span className="text-[0.75rem] font-bold tracking-wide" style={{ color: 'rgba(255,255,255,0.3)' }}>
           Más
         </span>
       </button>

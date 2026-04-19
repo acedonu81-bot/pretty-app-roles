@@ -74,7 +74,7 @@ const SubscriptionView = () => {
           <Crown size={20} style={{ color: '#D4AF37' }} />
           <div>
             <p className="text-sm font-bold">Plan actual: <span style={{ color: '#D4AF37' }}>{subscriptionPlans.find(p => p.id === currentPlan)?.name.toUpperCase() ?? 'GRATIS'}</span></p>
-            <p className="text-[0.65rem] text-muted-foreground">La activación de planes estará disponible muy pronto.</p>
+            <p className="text-xs text-muted-foreground">La activación de planes estará disponible muy pronto.</p>
           </div>
         </div>
         {currentPlan !== 'free' && trialDaysRemaining === null && (
@@ -82,7 +82,7 @@ const SubscriptionView = () => {
             <Gift size={18} style={{ color: 'rgba(212,175,55,0.5)' }} />
             <div>
               <p className="text-xs font-bold" style={{ color: 'rgba(212,175,55,0.7)' }}>Prueba de 15 días pendiente</p>
-              <p className="text-[0.65rem] text-muted-foreground">Activa Flash Booking, sube una sesión o conecta un stream para empezar.</p>
+              <p className="text-xs text-muted-foreground">Activa Flash Booking, sube una sesión o conecta un stream para empezar.</p>
             </div>
           </div>
         )}
@@ -91,7 +91,7 @@ const SubscriptionView = () => {
             <Gift size={18} style={{ color: '#D4AF37' }} />
             <div>
               <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>Te quedan {trialDaysRemaining} {trialDaysRemaining === 1 ? 'día' : 'días'} de prueba</p>
-              <p className="text-[0.65rem] text-muted-foreground">Activa plan anual y ahorra un 30% al terminar.</p>
+              <p className="text-xs text-muted-foreground">Activa plan anual y ahorra un 30% al terminar.</p>
             </div>
           </div>
         )}
@@ -102,7 +102,7 @@ const SubscriptionView = () => {
         <Lock size={18} style={{ color: '#ffbc00' }} />
         <div>
           <p className="text-xs font-bold" style={{ color: '#ffbc00' }}>Pasarela de pagos en desarrollo</p>
-          <p className="text-[0.65rem] text-muted-foreground">Los planes se activarán en breve. Puedes ver lo que incluye cada uno para tu rol.</p>
+          <p className="text-xs text-muted-foreground">Los planes se activarán en breve. Puedes ver lo que incluye cada uno para tu rol.</p>
         </div>
       </div>
 
@@ -121,15 +121,15 @@ const SubscriptionView = () => {
                 boxShadow: isActive ? '0 0 20px rgba(212,175,55,0.08)' : undefined,
               }}>
               {isActive && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-[0.6rem] font-black tracking-wider"
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-black tracking-wider"
                   style={{ background: 'rgba(212,175,55,0.9)', color: '#000' }}>TU PLAN</div>
               )}
               {!isActive && plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-[0.6rem] font-black tracking-wider"
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-black tracking-wider"
                   style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' }}>RECOMENDADO</div>
               )}
               {!isActive && plan.badge && !plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-[0.6rem] font-black tracking-wider"
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-black tracking-wider"
                   style={{ background: 'linear-gradient(90deg,#A8C5DA,#7aafc7)', color: '#000' }}>{plan.badge}</div>
               )}
 
@@ -145,12 +145,12 @@ const SubscriptionView = () => {
                   <p className="text-xs text-muted-foreground line-through">€{pricing.originalPrice.toFixed(2).replace('.', ',')}</p>
                 )}
                 {pricing.discountPercent > 0 && (
-                  <p className="text-[0.65rem] mt-0.5 font-bold" style={{ color: '#22c55e' }}>
+                  <p className="text-xs mt-0.5 font-bold" style={{ color: '#22c55e' }}>
                     -{pricing.discountPercent}% · {pricing.helperText}
                   </p>
                 )}
                 {plan.trialDays > 0 && (
-                  <p className="text-[0.65rem] mt-0.5 font-bold" style={{ color: '#D4AF37' }}>
+                  <p className="text-xs mt-0.5 font-bold" style={{ color: '#D4AF37' }}>
                     {plan.trialDays} días gratis
                   </p>
                 )}
@@ -159,10 +159,10 @@ const SubscriptionView = () => {
               {plan.annualEligible && (
                 <div className="mb-4 p-2.5 rounded-lg flex items-center justify-between gap-2"
                   style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
-                  <span className={`text-[0.65rem] font-bold ${cardCycle === 'monthly' ? 'text-foreground' : 'text-muted-foreground'}`}>Mensual</span>
+                  <span className={`text-xs font-bold ${cardCycle === 'monthly' ? 'text-foreground' : 'text-muted-foreground'}`}>Mensual</span>
                   <Switch checked={cardCycle === 'annual'} onCheckedChange={(checked) => handlePlanCycleChange(plan.id, checked)}
                     aria-label={`Cambiar ${plan.name} a facturación anual`} />
-                  <span className={`text-[0.65rem] font-bold ${cardCycle === 'annual' ? 'text-primary' : 'text-muted-foreground'}`}>Anual -30%</span>
+                  <span className={`text-xs font-bold ${cardCycle === 'annual' ? 'text-primary' : 'text-muted-foreground'}`}>Anual -30%</span>
                 </div>
               )}
 
@@ -201,13 +201,13 @@ const SubscriptionView = () => {
           <div className="flex items-center gap-2">
             <Radio size={13} style={{ color: '#D4AF37' }} />
             <span className="text-xs font-bold">Horas de Streaming en Vivo</span>
-            <span className="text-[0.5rem] font-bold px-1.5 py-0.5 rounded"
+            <span className="text-[0.7rem] font-bold px-1.5 py-0.5 rounded"
               style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
               AMAZON IVS
             </span>
           </div>
           {includedHours > 0 && (
-            <span className="text-[0.55rem] font-bold px-2 py-0.5 rounded"
+            <span className="text-[0.75rem] font-bold px-2 py-0.5 rounded"
               style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', color: '#22c55e' }}>
               {includedHours}h/mes incluidas
             </span>
@@ -215,17 +215,17 @@ const SubscriptionView = () => {
         </div>
 
         {!isStreamingEligible && (
-          <p className="text-[0.6rem] text-muted-foreground mb-3">
+          <p className="text-xs text-muted-foreground mb-3">
             Disponible desde el plan <span className="font-bold" style={{ color: '#D4AF37' }}>Starter</span>. Compra horas sueltas o en pack para emitir en directo.
           </p>
         )}
         {isStreamingEligible && includedHours === 0 && (
-          <p className="text-[0.6rem] text-muted-foreground mb-3">
+          <p className="text-xs text-muted-foreground mb-3">
             Sin hora incluida en tu plan — compra las que necesites. Válidas <span className="font-bold text-primary">6 meses</span>.
           </p>
         )}
         {isStreamingEligible && includedHours > 0 && (
-          <p className="text-[0.6rem] text-muted-foreground mb-3">
+          <p className="text-xs text-muted-foreground mb-3">
             Tu plan incluye <span className="font-bold" style={{ color: '#22c55e' }}>{includedHours}h/mes</span>. Compra packs para emitir más.
           </p>
         )}
@@ -246,24 +246,24 @@ const SubscriptionView = () => {
                 opacity: !isStreamingEligible ? 0.5 : 1,
               }}>
               {pack.badge && (
-                <span className="absolute top-1.5 right-1.5 text-[0.42rem] font-black px-1.5 py-0.5 rounded"
+                <span className="absolute top-1.5 right-1.5 text-xs font-black px-1.5 py-0.5 rounded"
                   style={{
                     background: pack.highlight ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.06)',
                     color: pack.highlight ? '#D4AF37' : 'rgba(255,255,255,0.4)',
                     border: pack.highlight ? '1px solid rgba(212,175,55,0.2)' : '1px solid rgba(255,255,255,0.08)',
                   }}>{pack.badge}</span>
               )}
-              <span className="text-[0.6rem] font-bold pr-6" style={{ color: pack.highlight ? '#D4AF37' : 'rgba(255,255,255,0.7)' }}>
+              <span className="text-xs font-bold pr-6" style={{ color: pack.highlight ? '#D4AF37' : 'rgba(255,255,255,0.7)' }}>
                 {pack.hours}h
               </span>
               <span className="text-lg font-black leading-tight" style={{ color: pack.highlight ? '#D4AF37' : 'white' }}>
                 €{pack.price}
               </span>
-              <span className="text-[0.5rem] text-muted-foreground">€{pack.pricePerHour.toFixed(2)}/h</span>
+              <span className="text-[0.7rem] text-muted-foreground">€{pack.pricePerHour.toFixed(2)}/h</span>
             </button>
           ))}
         </div>
-        <p className="text-[0.5rem] text-muted-foreground text-center mt-2">
+        <p className="text-[0.7rem] text-muted-foreground text-center mt-2">
           Alta calidad garantizada · Horas válidas 6 meses desde la compra
         </p>
       </div>
@@ -303,7 +303,7 @@ const SubscriptionView = () => {
                 </div>
                 <div>
                   <p className="text-xs font-black tracking-wider" style={{ color: '#D4AF37' }}>TOP WEEKEND</p>
-                  <p className="text-[0.6rem] text-muted-foreground">Posición destacada</p>
+                  <p className="text-xs text-muted-foreground">Posición destacada</p>
                 </div>
               </div>
               <div className="flex-1">
@@ -315,7 +315,7 @@ const SubscriptionView = () => {
               </div>
               <div className="flex flex-col items-center gap-1 flex-shrink-0">
                 <p className="text-xl font-black" style={{ color: '#D4AF37' }}>9,99€</p>
-                <p className="text-[0.55rem] text-muted-foreground text-center">por fin de semana</p>
+                <p className="text-[0.75rem] text-muted-foreground text-center">por fin de semana</p>
                 <button disabled className="px-4 py-1.5 rounded-lg text-xs font-bold cursor-not-allowed mt-1"
                   style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.2)' }}>
                   Próximamente
@@ -330,14 +330,14 @@ const SubscriptionView = () => {
               <Sparkles size={15} style={{ color: '#D4AF37', flexShrink: 0, marginTop: 2 }} />
               <div>
                 <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>Flash Booking · 5% por trabajo confirmado</p>
-                <p className="text-[0.6rem] text-muted-foreground">Solo pagas si consigues el trabajo. XPEAK retiene un 5% del cachet una vez confirmado.</p>
+                <p className="text-xs text-muted-foreground">Solo pagas si consigues el trabajo. XPEAK retiene un 5% del cachet una vez confirmado.</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <Crown size={15} style={{ color: '#D4AF37', flexShrink: 0, marginTop: 2 }} />
               <div>
                 <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>Fan Club · 12% de comisión (tú te quedas el 88%)</p>
-                <p className="text-[0.6rem] text-muted-foreground">OnlyFans cobra un 20%. En XPEAK retienes más. Disponible desde plan Business.</p>
+                <p className="text-xs text-muted-foreground">OnlyFans cobra un 20%. En XPEAK retienes más. Disponible desde plan Business.</p>
               </div>
             </div>
           </div>

@@ -189,7 +189,7 @@ const OfertaTab = () => {
                   <Zap size={12} /> Solicitar
                 </button>
               ) : (
-                <span className="flex items-center gap-1 text-[0.6rem] font-bold px-2 py-1 rounded-lg"
+                <span className="flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-lg"
                   style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#555' }}>
                   <Lock size={10} /> Solo empresarios
                 </span>

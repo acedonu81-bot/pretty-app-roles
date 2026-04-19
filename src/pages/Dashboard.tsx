@@ -22,7 +22,10 @@ import SubscriptionView from '@/components/dashboard/views/SubscriptionView';
 import AdminView from '@/components/dashboard/views/AdminView';
 import EmpresarioView from '@/components/dashboard/views/EmpresarioView';
 import FanClubView from '@/components/dashboard/views/FanClubView';
+import ContractView from '@/components/dashboard/views/ContractView';
+import ProfessionalProfilePage from '@/components/dashboard/ProfessionalProfilePage';
 import AdminGuard from '@/components/AdminGuard';
+import type { Profile } from '@/data/profiles';
 import OnboardingTour from '@/components/dashboard/OnboardingTour';
 import MobileBottomNav from '@/components/dashboard/MobileBottomNav';
 import { useAuth } from '@/hooks/useAuth';
@@ -40,6 +43,8 @@ const Dashboard = () => {
   });
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [messagesTarget, setMessagesTarget] = useState<{ userId: string; name: string } | null>(null);
+  const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const isMobile = useIsMobile();
   const { user, loading } = useAuth();
 
@@ -53,9 +58,19 @@ const Dashboard = () => {
     setActiveView(view);
     localStorage.setItem('xpeak_view', view);
     if (isMobile) setSidebarOpen(false);
+    setSearchQuery('');
   };
 
   const nav = (view: string) => handleViewChange(view);
+
+  const directoryViews = new Set(['dj', 'staff', 'makeup', 'media', 'ambassador']);
+
+  const handleSearch = (q: string) => {
+    setSearchQuery(q);
+    if (q.trim() && !directoryViews.has(activeView)) {
+      handleViewChange('dj');
+    }
+  };
 
   const handleMessage = (userId: string, name: string) => {
     setMessagesTarget({ userId, name });
@@ -64,15 +79,17 @@ const Dashboard = () => {
 
   const renderView = () => {
     switch (activeView) {
-      case 'dj': return <DJView onNavigate={nav} onMessage={handleMessage} />;
-      case 'staff': return <StaffView onNavigate={nav} onMessage={handleMessage} />;
-      case 'makeup': return <MakeupView onNavigate={nav} onMessage={handleMessage} />;
-      case 'media': return <MediaView onNavigate={nav} onMessage={handleMessage} />;
-      case 'ambassador': return <AmbassadorView onNavigate={nav} onMessage={handleMessage} />;
+      case 'dj': return <DJView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
+      case 'staff': return <StaffView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
+      case 'makeup': return <MakeupView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
+      case 'media': return <MediaView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
+      case 'ambassador': return <AmbassadorView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'settings': return <SettingsView onNavigate={nav} />;
       case 'empresario': return <EmpresarioView />;
       case 'messages': return <MessagesView initialUserId={messagesTarget?.userId} initialName={messagesTarget?.name} />;
-      case 'calendar': return <CalendarView />;
+      case 'calendar':   return <CalendarView />;
+      case 'contracts':  return <ContractView />;
+      case 'store':      return <div className="animate-[fadeIn_0.4s_ease] flex flex-col items-center justify-center py-20 text-center gap-4"><span className="text-5xl">🛒</span><h2 className="text-2xl font-bold">Tienda <span className="text-gradient">XPEAK</span></h2><p className="text-sm text-muted-foreground max-w-sm">Marketplace para que los profesionales vendan merchandising, packs de samples, sesiones exclusivas y productos digitales. <span style={{ color: '#D4AF37', fontWeight: 700 }}>Próximamente.</span></p></div>;
       case 'profile': return <ProfileView />;
       case 'mapa': return <MapaView />;
       case 'escenario': return <EscenarioVirtualView />;
@@ -120,7 +137,7 @@ const Dashboard = () => {
       )}
 
       <main className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden relative min-w-0">
-        <DashboardTopbar onMenuToggle={() => setSidebarOpen(true)} isMobile={isMobile} />
+        <DashboardTopbar onMenuToggle={() => setSidebarOpen(true)} isMobile={isMobile} onSearch={handleSearch} searchQuery={searchQuery} onHome={() => handleViewChange('dj')} />
         <div className={`p-4 md:p-6 flex-1 md:pb-6 ${isMobile ? 'pb-[calc(4rem+env(safe-area-inset-bottom))]' : 'pb-6'}`}>
           {renderView()}
         </div>
@@ -135,6 +152,14 @@ const Dashboard = () => {
       )}
 
       <OnboardingTour onNavigate={handleViewChange} />
+
+      {selectedProfile && (
+        <ProfessionalProfilePage
+          profile={selectedProfile}
+          onClose={() => setSelectedProfile(null)}
+          onMessage={handleMessage}
+        />
+      )}
     </div>
     </ProfileProvider>
   );

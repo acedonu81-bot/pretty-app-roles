@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { Crown, Eye, Maximize2, Minimize2, Users, Video, Settings, Globe, Zap, Lock } from 'lucide-react';
 import { Profile } from '@/data/profiles';
 import ProfileCard from '@/components/dashboard/ProfileCard';
@@ -18,6 +18,8 @@ interface DirectoryViewProps {
   onNavigate?: (view: string) => void;
   onMessage?: (userId: string, name: string) => void;
   wideCards?: boolean;
+  searchQuery?: string;
+  onViewProfile?: (profile: Profile) => void;
 }
 
 /** Animated wave equalizer for LIVE indicator */
@@ -75,7 +77,7 @@ const StreamTile = ({ profile, isExpanded, onToggle, viewerCount }: {
 
       {/* Overlay info */}
       <div className="absolute top-2 left-2 flex items-center gap-1.5 z-10">
-        <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded-md flex items-center gap-1"
+        <span className="text-[0.75rem] font-bold px-1.5 py-0.5 rounded-md flex items-center gap-1"
           style={{ background: '#E53935', color: '#fff' }}>
           <span className="relative flex h-1.5 w-1.5">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-white" />
@@ -83,19 +85,20 @@ const StreamTile = ({ profile, isExpanded, onToggle, viewerCount }: {
           </span>
           LIVE
         </span>
-        <span className="text-[0.55rem] font-medium px-1.5 py-0.5 rounded-md flex items-center gap-1"
+        <span className="text-[0.75rem] font-medium px-1.5 py-0.5 rounded-md flex items-center gap-1"
           style={{ background: 'rgba(0,0,0,0.7)', color: '#fff' }}>
           <Eye size={10} /> {viewerCount}
         </span>
         {streamEmbed && (
-          <span className="text-[0.5rem] font-medium px-1.5 py-0.5 rounded-md"
+          <span className="text-[0.7rem] font-medium px-1.5 py-0.5 rounded-md"
             style={{ background: 'rgba(0,0,0,0.7)', color: '#D4AF37' }}>
             {streamEmbed.type}
           </span>
         )}
       </div>
 
-      <button onClick={onToggle} className="absolute top-2 right-2 w-7 h-7 rounded-lg flex items-center justify-center transition-all hover:scale-110 z-10"
+      <button onClick={onToggle} aria-label={isExpanded ? 'Reducir stream' : 'Ampliar stream'}
+        className="absolute top-2 right-2 w-7 h-7 rounded-lg flex items-center justify-center transition-all hover:scale-110 z-10"
         style={{ background: 'rgba(0,0,0,0.6)', color: '#fff', border: '1px solid rgba(255,255,255,0.1)' }}>
         {isExpanded ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
       </button>
@@ -105,9 +108,9 @@ const StreamTile = ({ profile, isExpanded, onToggle, viewerCount }: {
         <GeometricAvatar role={profile.role as any} seed={profile.id} size={24} isLive />
         <div className="flex-1 min-w-0">
           <p className="text-xs font-bold truncate">{profile.name}</p>
-          <p className="text-[0.6rem] text-muted-foreground truncate">{profile.specialty}</p>
+          <p className="text-xs text-muted-foreground truncate">{profile.specialty}</p>
         </div>
-        <span className="text-[0.6rem] font-bold" style={{ color: '#D4AF37' }}>
+        <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>
           {viewerCount} viewers
         </span>
       </div>
@@ -156,9 +159,9 @@ const StreamSettingsPanel = ({
           <input value={streamUrl} onChange={e => onStreamUrlChange(e.target.value)}
             placeholder="https://twitch.tv/tu_canal o https://youtube.com/live/..."
             className="nightlife-input text-sm !py-2.5 w-full" />
-          <p className="text-[0.6rem] text-muted-foreground mt-1">Soporta Twitch, YouTube Live y Mixcloud</p>
+          <p className="text-xs text-muted-foreground mt-1">Soporta Twitch, YouTube Live y Mixcloud</p>
           {parsed && (
-            <p className="text-[0.65rem] mt-1 font-bold" style={{ color: '#22c55e' }}>✓ {parsed.type} detectado — el vídeo se incrustará automáticamente</p>
+            <p className="text-xs mt-1 font-bold" style={{ color: '#22c55e' }}>✓ {parsed.type} detectado — el vídeo se incrustará automáticamente</p>
           )}
         </div>
         <div className="flex gap-2">
@@ -174,7 +177,15 @@ const StreamSettingsPanel = ({
 
 const EU_COUNTRIES = [
   'Todas las ciudades',
-  'Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao', 'Málaga', 'Ibiza', 'Palma de Mallorca', 'Zaragoza', 'Murcia', 'Alicante', 'Granada',
+  // Comunidades principales / nightlife
+  'Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao',
+  'Málaga', 'Ibiza', 'Palma de Mallorca', 'Zaragoza', 'Murcia',
+  'Alicante', 'Granada', 'Tenerife', 'Las Palmas de Gran Canaria',
+  // Resto de comunidades
+  'San Sebastián', 'Vitoria-Gasteiz', 'Pamplona', 'Logroño', 'Santander',
+  'Oviedo', 'Gijón', 'A Coruña', 'Vigo', 'Santiago de Compostela',
+  'Valladolid', 'Salamanca', 'Burgos', 'Toledo', 'Badajoz',
+  'Córdoba', 'Cádiz', 'Huelva', 'Almería', 'Lleida', 'Tarragona',
 ];
 
 const TIER_ORDER = ['free', 'starter', 'business', 'agency', 'elite', 'premium'];
@@ -187,7 +198,7 @@ const TIER_CONFIG: Record<string, { label: string; color: string; bg: string }> 
   elite:    { label: 'Agencia',  color: '#D4AF37', bg: 'rgba(212,175,55,0.15)' },
 };
 
-const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards }: DirectoryViewProps) => {
+const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards, searchQuery, onViewProfile }: DirectoryViewProps) => {
   const profile = useProfile();
   const isUserFree = profile.subscription_tier === 'free';
   const [checkoutOpen, setCheckoutOpen] = useState(false);
@@ -204,57 +215,67 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
 
   useEffect(() => {
     setLoadingProfiles(true);
-    supabase
+    let query = supabase
       .from('profiles')
-      .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, subscription_tier, is_live, genres, audio_embed_url, bio, languages, tiktok, category, is_verified, is_flash_active, stream_url')
+      .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, subscription_tier, is_live, genres, audio_embed_url, bio, languages, tiktok, category, is_verified, is_flash_active, stream_url, score')
       .eq('role', role)
-      .limit(200)
-      .then(({ data }) => {
-        if (!data) { setLoadingProfiles(false); return; }
-        const mapped: Profile[] = data.map((row) => ({
-          id: row.id,
-          userId: row.user_id,
-          name: row.display_name || 'Sin nombre',
-          role: role as Profile['role'],
-          specialty: row.specialty || '',
-          rating: 0,
-          reviews: 0,
-          location: row.zone || 'España',
-          zone: row.zone || '',
-          experience: '',
-          price: row.hourly_rate ?? 0,
-          priceUnit: '/hora',
-          avatar: (row.display_name || 'X').charAt(0).toUpperCase(),
-          gradient: 'linear-gradient(135deg,#D4AF37,#B8941E)',
-          badges: row.genres ?? [],
-          description: row.bio || '',
-          phone: '',
-          instagram: '',
-          topWeekend: false,
-          photo: row.photo_url || '',
-          subscriptionTier: (row.subscription_tier as Profile['subscriptionTier']) ?? 'free',
-          isFlashActive: row.is_flash_active ?? false,
-          profileViews: 0,
-          contactClicks: 0,
-          isLive: row.is_live ?? false,
-          isPremium: row.subscription_tier !== 'free',
-          languages: row.languages ?? [],
-          tiktok: row.tiktok || '',
-          streamUrl: row.stream_url || undefined,
-          category: (row.category as Profile['category']) ?? 'professional',
-          isVerified: row.is_verified ?? false,
-        }));
-        setRealProfiles(mapped);
-        setLoadingProfiles(false);
-      });
-  }, [role]);
+      .limit(200);
 
-  const filteredProfiles = useMemo(() => {
-    if (filterCity === 'Todas las ciudades') return realProfiles;
-    return realProfiles.filter(p =>
-      p.city === filterCity || p.zone?.includes(filterCity) || p.location === filterCity
-    );
-  }, [realProfiles, filterCity]);
+    if (filterCity !== 'Todas las ciudades') {
+      query = query.ilike('zone', `%${filterCity}%`);
+    }
+
+    query.then(({ data }) => {
+      if (!data) { setLoadingProfiles(false); return; }
+      const mapped: Profile[] = data.map((row) => ({
+        id: row.id,
+        userId: row.user_id,
+        name: row.display_name || 'Sin nombre',
+        role: role as Profile['role'],
+        specialty: row.specialty || '',
+        rating: 0,
+        reviews: 0,
+        location: row.zone || 'España',
+        zone: row.zone || '',
+        experience: '',
+        price: row.hourly_rate ?? 0,
+        priceUnit: '/hora',
+        avatar: (row.display_name || 'X').charAt(0).toUpperCase(),
+        gradient: 'linear-gradient(135deg,#D4AF37,#B8941E)',
+        badges: row.genres ?? [],
+        description: row.bio || '',
+        phone: '',
+        instagram: '',
+        topWeekend: false,
+        photo: row.photo_url || '',
+        subscriptionTier: (row.subscription_tier as Profile['subscriptionTier']) ?? 'free',
+        isFlashActive: row.is_flash_active ?? false,
+        profileViews: (row.score as number) ?? 0,
+        contactClicks: 0,
+        isLive: row.is_live ?? false,
+        isPremium: row.subscription_tier !== 'free',
+        languages: row.languages ?? [],
+        tiktok: row.tiktok || '',
+        streamUrl: row.stream_url || undefined,
+        category: (row.category as Profile['category']) ?? 'professional',
+        isVerified: row.is_verified ?? false,
+      }));
+      setRealProfiles(mapped);
+      setLoadingProfiles(false);
+    });
+  }, [role, filterCity]);
+
+  const filteredProfiles = searchQuery?.trim()
+    ? realProfiles.filter(p => {
+        const q = searchQuery.toLowerCase();
+        return (
+          p.name.toLowerCase().includes(q) ||
+          p.specialty.toLowerCase().includes(q) ||
+          p.zone.toLowerCase().includes(q) ||
+          p.description.toLowerCase().includes(q)
+        );
+      })
+    : realProfiles;
 
   useEffect(() => {
     setStreamUrl(profile.stream_url ?? '');
@@ -266,7 +287,7 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
     .filter(p => p.isLive && p.streamUrl)
     .sort((a, b) => b.profileViews - a.profileViews);
 
-  const viewerCounts = liveStreamers.map(() => Math.floor(Math.random() * 80) + 10);
+  const viewerCounts = liveStreamers.map(() => 0);
 
   const toggleExpand = (id: number) => {
     setExpandedStream(prev => prev === id ? null : id);
@@ -304,7 +325,7 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
           </h2>
           <p className="text-sm text-muted-foreground">{subtitle}</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <button
             onClick={() => setShowStreamSettings(!showStreamSettings)}
             className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
@@ -358,13 +379,13 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5" style={{ background: '#E53935' }} />
               </span>
               <span className="text-xs font-bold" style={{ color: '#E53935' }}>EN DIRECTO</span>
-              <span className="text-[0.65rem] text-muted-foreground">— {title}</span>
-              <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded"
+              <span className="text-xs text-muted-foreground">— {title}</span>
+              <span className="text-[0.75rem] font-bold px-1.5 py-0.5 rounded"
                 style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
                 DEMO
               </span>
             </div>
-            <span className="text-[0.65rem] text-muted-foreground flex items-center gap-1">
+            <span className="text-xs text-muted-foreground flex items-center gap-1">
               <Users size={10} /> {liveStreamers.length} streaming
             </span>
           </div>
@@ -385,25 +406,43 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
       )}
 
       {/* Filtro ciudades España */}
-      <div className="flex flex-wrap items-center gap-2 mb-5">
-        <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-3 mb-5 flex-wrap">
+        <div className="flex items-center gap-1.5 flex-shrink-0">
           <Globe size={12} style={{ color: '#D4AF37' }} />
           <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>ES</span>
         </div>
-        <div className="flex flex-wrap gap-1.5 flex-1">
-          {EU_COUNTRIES.map(c => (
-            <button key={c} onClick={() => setFilterCity(c)}
-              className="text-xs px-2.5 py-1 rounded-full transition-all"
-              style={{
-                background: filterCity === c ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.04)',
-                border: filterCity === c ? '1px solid rgba(212,175,55,0.4)' : '1px solid rgba(255,255,255,0.08)',
-                color: filterCity === c ? '#D4AF37' : 'rgba(255,255,255,0.4)',
-              }}>
-              {c === 'Todas las ciudades' ? 'Todas' : c}
-            </button>
-          ))}
+        <div className="relative flex-1 min-w-[200px] max-w-[280px]">
+          <select
+            value={filterCity}
+            onChange={e => setFilterCity(e.target.value)}
+            className="w-full appearance-none text-xs font-bold pl-3 pr-8 py-2 rounded-lg transition-all outline-none"
+            style={{
+              background: filterCity !== 'Todas las ciudades' ? 'rgba(212,175,55,0.08)' : 'rgba(255,255,255,0.04)',
+              border: filterCity !== 'Todas las ciudades' ? '1px solid rgba(212,175,55,0.35)' : '1px solid rgba(255,255,255,0.08)',
+              color: filterCity !== 'Todas las ciudades' ? '#D4AF37' : 'rgba(255,255,255,0.5)',
+              cursor: 'pointer',
+            }}
+          >
+            {EU_COUNTRIES.map(c => (
+              <option key={c} value={c} style={{ background: '#0e0e0e', color: '#fff' }}>
+                {c === 'Todas las ciudades' ? 'Todas las ciudades' : c}
+              </option>
+            ))}
+          </select>
+          <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: filterCity !== 'Todas las ciudades' ? '#D4AF37' : 'rgba(255,255,255,0.3)' }}>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
         </div>
-        <span className="text-xs" style={{ color: 'rgba(255,255,255,0.25)' }}>
+        {filterCity !== 'Todas las ciudades' && (
+          <button onClick={() => setFilterCity('Todas las ciudades')}
+            className="text-xs font-bold px-2 py-1 rounded transition-all hover:opacity-70"
+            style={{ background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.3)', border: '1px solid rgba(255,255,255,0.08)' }}>
+            Limpiar ✕
+          </button>
+        )}
+        <span className="text-xs ml-auto" style={{ color: 'rgba(255,255,255,0.25)' }}>
           {filteredProfiles.length} resultado{filteredProfiles.length !== 1 ? 's' : ''}
         </span>
       </div>
@@ -422,7 +461,7 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
           </div>
           <div>
             <p className="text-sm font-bold mb-1" style={{ color: 'rgba(255,255,255,0.35)' }}>
-              {filterCity === 'Todas las ciudades' ? 'Aún no hay profesionales registrados' : `Sin resultados en ${filterCity}`}
+              {searchQuery?.trim() ? `Sin resultados para "${searchQuery}"` : filterCity === 'Todas las ciudades' ? 'Aún no hay profesionales registrados' : `Sin resultados en ${filterCity}`}
             </p>
             <p className="text-xs text-muted-foreground mb-3 max-w-[260px] mx-auto">
               {filterCity === 'Todas las ciudades'
@@ -451,11 +490,11 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
         return (
           <div className="flex flex-wrap items-center gap-2 mb-4 p-3 rounded-xl"
             style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--nightlife-border)' }}>
-            <span className="text-[0.6rem] font-bold text-muted-foreground uppercase tracking-wider mr-1">Niveles:</span>
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider mr-1">Niveles:</span>
             {tiers.map(t => {
               const cfg = TIER_CONFIG[t] ?? TIER_CONFIG.free;
               return (
-                <span key={t} className="flex items-center gap-1 text-[0.6rem] font-bold px-2 py-0.5 rounded-full"
+                <span key={t} className="flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full"
                   style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.color}22` }}>
                   {cfg.label} <span style={{ opacity: 0.7 }}>×{counts[t]}</span>
                 </span>
@@ -464,7 +503,7 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
             {isUserFree && (
               <button
                 onClick={() => setShowUpgradeModal(true)}
-                className="ml-auto flex items-center gap-1 text-[0.6rem] font-bold px-2.5 py-1 rounded-full transition-all hover:scale-105"
+                className="ml-auto flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full transition-all hover:scale-105"
                 style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
                 <Zap size={10} /> Subir de nivel
               </button>
@@ -484,7 +523,7 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
             <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>
               Estás en Free — solo ves una parte del directorio
             </p>
-            <p className="text-[0.6rem] text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               Los perfiles Business y Agencia tienen acceso prioritario. Actualiza para enviar mensajes, ver tarifas y aplicar a Flash Bookings.
             </p>
           </div>
@@ -500,7 +539,7 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
       <div className={gridClass}>
         {filteredProfiles.map(p => (
           <ProfileCard key={p.id} profile={p} showPortfolio={wideCards} onMessage={onMessage}
-            onNavigateSubscription={() => onNavigate?.('subscription')} />
+            onNavigateSubscription={() => onNavigate?.('subscription')} onViewProfile={onViewProfile} />
         ))}
       </div>
 

@@ -24,7 +24,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <XPeakToastProvider>
     <TooltipProvider>
-      <BrowserRouter>
+      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <Suspense fallback={<div style={{ minHeight: '100vh', background: '#090909' }} />}>
           <Routes>
             <Route path="/" element={<Landing />} />

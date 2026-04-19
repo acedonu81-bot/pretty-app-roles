@@ -125,7 +125,7 @@ const AdminValidations = () => {
         <Shield size={14} style={{ color: '#D4AF37' }} />
         Validaciones Pendientes
         {pending.length > 0 && (
-          <span className="text-[0.55rem] px-2 py-0.5 rounded-full font-bold" style={{ background: 'rgba(255,95,86,0.15)', color: '#ff5f56' }}>
+          <span className="text-[0.75rem] px-2 py-0.5 rounded-full font-bold" style={{ background: 'rgba(255,95,86,0.15)', color: '#ff5f56' }}>
             {pending.length}
           </span>
         )}
@@ -144,14 +144,14 @@ const AdminValidations = () => {
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-bold">{p.display_name}</span>
-                    <span className="text-[0.55rem] px-1.5 py-0.5 rounded font-bold uppercase"
+                    <span className="text-[0.75rem] px-1.5 py-0.5 rounded font-bold uppercase"
                       style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>
                       {p.role}
                     </span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     {hours > 12 && <AlertTriangle size={12} style={{ color: priority.color }} />}
-                    <span className="text-[0.55rem] font-bold" style={{ color: priority.color }}>
+                    <span className="text-[0.75rem] font-bold" style={{ color: priority.color }}>
                       {priority.label} · {Math.floor(hours)}h
                     </span>
                   </div>
@@ -171,7 +171,7 @@ const AdminValidations = () => {
                     {playingId === p.id ? 'Pausar' : 'Escuchar sesión'}
                   </button>
                   {!p.audio_url && (
-                    <span className="text-[0.55rem] text-muted-foreground italic">Sin audio subido</span>
+                    <span className="text-[0.75rem] text-muted-foreground italic">Sin audio subido</span>
                   )}
                 </div>
 
@@ -221,7 +221,7 @@ const AdminSelloDeOro = ({ verifications, playingVideoId, setPlayingVideoId, han
       <Star size={14} fill="#D4AF37" style={{ color: '#D4AF37' }} />
       Cola Sello de Oro
       {verifications.length > 0 && (
-        <span className="text-[0.55rem] px-2 py-0.5 rounded-full font-bold"
+        <span className="text-[0.75rem] px-2 py-0.5 rounded-full font-bold"
           style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>
           {verifications.length}
         </span>
@@ -237,10 +237,10 @@ const AdminSelloDeOro = ({ verifications, playingVideoId, setPlayingVideoId, han
             <div className="flex items-center justify-between mb-3">
               <div>
                 <span className="text-sm font-bold">{v.display_name}</span>
-                <span className="text-[0.55rem] px-1.5 py-0.5 rounded font-bold uppercase ml-2"
+                <span className="text-[0.75rem] px-1.5 py-0.5 rounded font-bold uppercase ml-2"
                   style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>{v.role}</span>
               </div>
-              <span className="text-[0.55rem] text-muted-foreground">
+              <span className="text-[0.75rem] text-muted-foreground">
                 {v.verification_submitted_at ? new Date(v.verification_submitted_at).toLocaleDateString('es-ES') : '—'}
               </span>
             </div>
@@ -264,7 +264,7 @@ const AdminSelloDeOro = ({ verifications, playingVideoId, setPlayingVideoId, han
                 )}
               </div>
             ) : (
-              <p className="text-[0.6rem] text-muted-foreground mb-3 italic">Sin vídeo adjunto</p>
+              <p className="text-xs text-muted-foreground mb-3 italic">Sin vídeo adjunto</p>
             )}
             <div className="flex gap-2">
               <button onClick={() => handleSelloAction(v.id, 'approved')}

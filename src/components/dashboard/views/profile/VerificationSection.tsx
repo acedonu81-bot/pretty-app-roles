@@ -68,17 +68,17 @@ const VerificationSection = () => {
           <div className="flex items-center gap-2 flex-wrap">
             <h4 className="text-base font-bold">Sello de Oro XPEAK</h4>
             {syncedStatus === 'approved' && (
-              <span className="text-[0.55rem] font-black px-1.5 py-0.5 rounded-full"
+              <span className="text-[0.75rem] font-black px-1.5 py-0.5 rounded-full"
                 style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>★ VERIFICADO</span>
             )}
             {syncedStatus === 'pending' && (
-              <span className="text-[0.55rem] font-black px-1.5 py-0.5 rounded-full flex items-center gap-1"
+              <span className="text-[0.75rem] font-black px-1.5 py-0.5 rounded-full flex items-center gap-1"
                 style={{ background: 'rgba(245,158,11,0.15)', color: '#F59E0B', border: '1px solid rgba(245,158,11,0.3)' }}>
                 <Clock size={8} /> EN REVISIÓN
               </span>
             )}
           </div>
-          <p className="text-[0.6rem] text-muted-foreground">
+          <p className="text-xs text-muted-foreground">
             {syncedStatus === 'approved'
               ? 'Tu perfil aparece con la estrella dorada en todas las búsquedas.'
               : syncedStatus === 'pending'
@@ -101,7 +101,7 @@ const VerificationSection = () => {
             ].map(({ icon: Icon, text }) => (
               <div key={text} className="flex items-start gap-2.5">
                 <Icon size={13} style={{ color: 'rgba(212,175,55,0.5)', flexShrink: 0, marginTop: 1 }} />
-                <p className="text-[0.65rem] text-muted-foreground leading-relaxed">{text}</p>
+                <p className="text-xs text-muted-foreground leading-relaxed">{text}</p>
               </div>
             ))}
           </div>
@@ -122,7 +122,7 @@ const VerificationSection = () => {
           <Clock size={16} style={{ color: '#F59E0B' }} className="animate-pulse flex-shrink-0" />
           <div>
             <p className="text-xs font-bold" style={{ color: '#F59E0B' }}>Vídeo recibido y en cola de revisión</p>
-            <p className="text-[0.6rem] text-muted-foreground">Recibirás una notificación cuando el equipo lo apruebe o solicite cambios.</p>
+            <p className="text-xs text-muted-foreground">Recibirás una notificación cuando el equipo lo apruebe o solicite cambios.</p>
           </div>
         </div>
       )}
@@ -133,7 +133,7 @@ const VerificationSection = () => {
           <CheckCircle size={16} style={{ color: '#D4AF37' }} className="flex-shrink-0" />
           <div>
             <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>Sello activo — tu perfil es prioritario en búsquedas</p>
-            <p className="text-[0.6rem] text-muted-foreground">Los empresarios ven tu ★ en todas las listas y filtros.</p>
+            <p className="text-xs text-muted-foreground">Los empresarios ven tu ★ en todas las listas y filtros.</p>
           </div>
         </div>
       )}

@@ -48,7 +48,7 @@ const VoteButton = ({ profileId, voteCount, hasVotedToday, category, onVoted }: 
         <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.05)' }}>
           <div className="h-full rounded-full transition-all" style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #D4AF37, #22c55e)' }} />
         </div>
-        <span className="text-[0.55rem] font-bold" style={{ color: '#D4AF37' }}>{count}/500</span>
+        <span className="text-[0.75rem] font-bold" style={{ color: '#D4AF37' }}>{count}/500</span>
       </div>
       <button onClick={handleVote} disabled={hasVotedToday || loading}
         className="w-full flex items-center justify-center gap-1.5 py-1.5 rounded-md text-xs font-bold transition-all disabled:opacity-50"

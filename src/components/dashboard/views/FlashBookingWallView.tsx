@@ -52,12 +52,12 @@ const FlashBookingWallView = () => {
               }} />
             {t.label}
             {t.id === 'solicitudes' && pendingCount > 0 && (
-              <span className="text-[0.5rem] font-black px-1.5 py-0.5 rounded-full"
+              <span className="text-[0.7rem] font-black px-1.5 py-0.5 rounded-full"
                 style={{ background: 'rgba(212,175,55,0.2)', color: '#D4AF37' }}>
                 {pendingCount}
               </span>
             )}
-            <span className="text-[0.6rem] opacity-60 ml-0.5 hidden sm:inline">({t.sub})</span>
+            <span className="text-xs opacity-60 ml-0.5 hidden sm:inline">({t.sub})</span>
           </button>
         ))}
       </div>

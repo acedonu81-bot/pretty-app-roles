@@ -15,7 +15,7 @@ const FansTab = ({ fans, loading }: Props) => (
       <div className="flex items-center gap-2 mb-3">
         <Crown size={14} style={{ color: '#fff' }} />
         <p className="text-sm font-bold">Fan Top VIP · One to One</p>
-        <span className="text-[0.55rem] font-black px-1.5 py-0.5 rounded-full ml-1"
+        <span className="text-[0.75rem] font-black px-1.5 py-0.5 rounded-full ml-1"
           style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)' }}>
           €59,90/mes
         </span>

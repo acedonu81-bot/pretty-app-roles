@@ -1,4 +1,4 @@
-import { Search, LogOut, Menu, Gift, Sparkles, Bell } from 'lucide-react';
+import { Search, LogOut, Menu, Gift, Sparkles, Bell, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProfile } from '@/hooks/useProfile';
@@ -8,9 +8,12 @@ import { isNative } from '@/lib/capacitor';
 interface TopbarProps {
   onMenuToggle?: () => void;
   isMobile?: boolean;
+  onSearch?: (q: string) => void;
+  searchQuery?: string;
+  onHome?: () => void;
 }
 
-const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
+const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', onHome }: TopbarProps) => {
   const navigate = useNavigate();
   const [showNotif, setShowNotif] = useState(false);
   const [readAll, setReadAll] = useState(false);
@@ -81,12 +84,14 @@ const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
         background: 'rgba(0,0,0,0.8)',
         backdropFilter: 'blur(20px)',
         borderBottom: '1px solid var(--nightlife-border)',
+        borderTop: '1.5px solid rgba(66,133,244,0.35)',
       }}
     >
       <div className="flex items-center gap-3 flex-1 min-w-0">
         {isMobile && (
           <button
             onClick={onMenuToggle}
+            aria-label="Abrir menú"
             className="p-3 rounded-lg flex-shrink-0 transition-colors"
             style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}
           >
@@ -94,20 +99,30 @@ const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
           </button>
         )}
         {isMobile && (
-          <button onClick={() => navigate('/')} className="font-bold tracking-wider text-base transition-opacity hover:opacity-70 flex-shrink-0">
+          <button onClick={() => onHome?.()} className="font-black tracking-widest text-base transition-opacity hover:opacity-70 flex-shrink-0 font-display">
             X<span style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>PEAK</span>
           </button>
         )}
 
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg flex-1 max-w-[360px]" style={{
-          background: 'rgba(255,255,255,0.03)', border: '1px solid var(--nightlife-border)',
-        }}>
-          <Search size={14} className="text-muted-foreground flex-shrink-0" />
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg flex-1 max-w-[360px] transition-all"
+          style={{
+            background: searchQuery ? 'rgba(212,175,55,0.05)' : 'rgba(255,255,255,0.03)',
+            border: searchQuery ? '1px solid rgba(212,175,55,0.3)' : '1px solid var(--nightlife-border)',
+          }}>
+          <Search size={14} className="flex-shrink-0" style={{ color: searchQuery ? '#D4AF37' : undefined }} />
           <input
             type="text"
             placeholder={isMobile ? 'Buscar...' : 'Buscar por zona, rol o nombre...'}
             className="bg-transparent border-none outline-none text-foreground w-full text-xs"
+            value={searchQuery}
+            onChange={e => onSearch?.(e.target.value)}
+            onKeyDown={e => e.key === 'Escape' && onSearch?.('')}
           />
+          {searchQuery && (
+            <button onClick={() => onSearch?.('')} aria-label="Borrar búsqueda" className="flex-shrink-0 transition-opacity hover:opacity-70">
+              <X size={12} style={{ color: 'rgba(255,255,255,0.4)' }} />
+            </button>
+          )}
         </div>
 
         {isPaidPlan && (
@@ -167,7 +182,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
                   ? '0 0 16px rgba(212,175,55,0.7), 0 0 32px rgba(212,175,55,0.3), inset 0 1px 0 rgba(255,255,255,0.3)'
                   : '0 0 10px rgba(212,175,55,0.4), 0 0 20px rgba(212,175,55,0.15), inset 0 1px 0 rgba(255,255,255,0.25)',
             }}>
-            <span className="text-[0.6rem] font-black" style={{ color: (readAll || notifications.length === 0) ? 'rgba(255,255,255,0.3)' : '#000', lineHeight: 1 }}>
+            <span className="text-xs font-black" style={{ color: (readAll || notifications.length === 0) ? 'rgba(255,255,255,0.3)' : '#000', lineHeight: 1 }}>
               {(readAll || notifications.length === 0) ? '✓' : notifications.length}
             </span>
           </span>
@@ -198,13 +213,13 @@ const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#22c55e', boxShadow: '0 0 6px #22c55e' }} />
                 <span className="text-xs font-black tracking-wider" style={{ color: '#D4AF37' }}>NOTIFICACIONES</span>
-                <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded-full"
+                <span className="text-[0.75rem] font-bold px-1.5 py-0.5 rounded-full"
                   style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>
                   {notifications.length}
                 </span>
               </div>
               <button onClick={() => { setReadAll(true); setShowNotif(false); }}
-                className="text-[0.6rem] font-bold transition-colors hover:text-white"
+                className="text-xs font-bold transition-colors hover:text-white"
                 style={{ color: 'rgba(255,255,255,0.3)' }}>
                 CERRAR
               </button>
@@ -216,7 +231,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
                 <div className="px-4 py-8 flex flex-col items-center gap-2 text-center">
                   <Bell size={20} style={{ color: 'rgba(212,175,55,0.2)' }} />
                   <p className="text-xs font-bold" style={{ color: 'rgba(255,255,255,0.2)' }}>Sin notificaciones</p>
-                  <p className="text-[0.6rem]" style={{ color: 'rgba(255,255,255,0.15)' }}>Todo al día por aquí.</p>
+                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.15)' }}>Todo al día por aquí.</p>
                 </div>
               ) : notifications.map((n, i) => (
                 <div key={n.id}
@@ -242,8 +257,8 @@ const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-bold truncate" style={{ color: n.urgent ? '#fca5a5' : undefined }}>{n.title}</p>
-                    <p className="text-[0.65rem] leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>{n.desc}</p>
-                    <span className="text-[0.55rem] font-bold mt-1 block" style={{ color: n.urgent ? 'rgba(239,68,68,0.6)' : 'rgba(212,175,55,0.5)' }}>{n.time}</span>
+                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>{n.desc}</p>
+                    <span className="text-[0.75rem] font-bold mt-1 block" style={{ color: n.urgent ? 'rgba(239,68,68,0.6)' : 'rgba(212,175,55,0.5)' }}>{n.time}</span>
                   </div>
                   {/* Unread indicator */}
                   {!readAll && (
@@ -258,7 +273,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile }: TopbarProps) => {
             <div className="px-4 py-2.5 text-center" style={{ borderTop: '1px solid rgba(212,175,55,0.08)' }}>
               <button
                 onClick={() => { setReadAll(true); setShowNotif(false); }}
-                className="text-[0.6rem] font-bold tracking-wider transition-colors hover:text-white"
+                className="text-xs font-bold tracking-wider transition-colors hover:text-white"
                 style={{ color: readAll ? 'rgba(34,197,94,0.6)' : 'rgba(212,175,55,0.5)' }}>
                 {readAll ? '✓ TODAS LEÍDAS' : 'MARCAR TODAS COMO LEÍDAS'}
               </button>

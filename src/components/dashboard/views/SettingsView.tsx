@@ -804,9 +804,9 @@ Para cualquier duda: soporte@xpeak.site
                 border: `1px solid ${audioQuality === q.id ? 'rgba(212,175,55,0.4)' : 'rgba(255,255,255,0.07)'}`,
               }}>
               <p className="text-xs font-bold" style={{ color: audioQuality === q.id ? '#D4AF37' : undefined }}>{q.label}</p>
-              <p className="text-[0.6rem] text-muted-foreground mt-0.5">{q.desc}</p>
+              <p className="text-xs text-muted-foreground mt-0.5">{q.desc}</p>
               {audioQuality === q.id && (
-                <span className="text-[0.55rem] font-black mt-1 block" style={{ color: '#D4AF37' }}>● ACTIVO</span>
+                <span className="text-[0.75rem] font-black mt-1 block" style={{ color: '#D4AF37' }}>● ACTIVO</span>
               )}
             </button>
           ))}
@@ -890,7 +890,7 @@ Para cualquier duda: soporte@xpeak.site
               <Download size={14} style={{ color: '#D4AF37', flexShrink: 0 }} />
               <div>
                 <p className="text-xs font-bold">Exportar JSON (Art. 20)</p>
-                <p className="text-[0.6rem] text-muted-foreground">Todos tus datos en un archivo JSON completo</p>
+                <p className="text-xs text-muted-foreground">Todos tus datos en un archivo JSON completo</p>
               </div>
             </div>
             <button onClick={handleExportData}
@@ -907,7 +907,7 @@ Para cualquier duda: soporte@xpeak.site
               <Archive size={14} style={{ color: '#D4AF37', flexShrink: 0 }} />
               <div>
                 <p className="text-xs font-bold">CSV múltiple (ZIP)</p>
-                <p className="text-[0.6rem] text-muted-foreground">perfil · bookings · favoritos · conversaciones</p>
+                <p className="text-xs text-muted-foreground">perfil · bookings · favoritos · conversaciones</p>
               </div>
             </div>
             <button onClick={() => user && exportUserDataZip(user)}
@@ -924,7 +924,7 @@ Para cualquier duda: soporte@xpeak.site
               <FileText size={14} style={{ color: '#D4AF37', flexShrink: 0 }} />
               <div>
                 <p className="text-xs font-bold">Informe Anual PDF</p>
-                <p className="text-[0.6rem] text-muted-foreground">KPIs, bookings, actividad mensual · Disponible ene. 2027</p>
+                <p className="text-xs text-muted-foreground">KPIs, bookings, actividad mensual · Disponible ene. 2027</p>
               </div>
             </div>
             <button onClick={handleExportInformeAnual}
@@ -941,7 +941,7 @@ Para cualquier duda: soporte@xpeak.site
               <QrCode size={14} style={{ color: '#D4AF37', flexShrink: 0 }} />
               <div>
                 <p className="text-xs font-bold">QR de Perfil</p>
-                <p className="text-[0.6rem] text-muted-foreground">PNG 400×500px con tu URL pública · Gratis siempre</p>
+                <p className="text-xs text-muted-foreground">PNG 400×500px con tu URL pública · Gratis siempre</p>
               </div>
             </div>
             <button onClick={handleDownloadQR}
@@ -987,7 +987,7 @@ Para cualquier duda: soporte@xpeak.site
               {currentPlan?.monthlyPrice === 0 ? 'Plan gratuito activo' : `${currentPlan?.monthlyPrice?.toFixed(2).replace('.', ',')}€/mes`}
             </p>
           </div>
-          <span className="text-[0.6rem] font-bold px-2 py-1 rounded"
+          <span className="text-xs font-bold px-2 py-1 rounded"
             style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
             ACTIVO
           </span>

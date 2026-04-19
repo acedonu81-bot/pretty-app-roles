@@ -94,7 +94,7 @@ const MapaView = () => {
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-bold" style={{ color: isSelected ? '#D4AF37' : 'inherit' }}>{city}</p>
                   {count !== null && (
-                    <p className="text-[0.65rem] text-muted-foreground">
+                    <p className="text-xs text-muted-foreground">
                       {count > 0 ? `${count} profesional${count !== 1 ? 'es' : ''}` : 'Próximamente'}
                     </p>
                   )}
@@ -155,11 +155,11 @@ const MapaView = () => {
                       <p className="text-sm font-bold truncate">{pro.display_name || 'Sin nombre'}</p>
                       {pro.is_verified && <CheckCircle size={11} style={{ color: '#22c55e', flexShrink: 0 }} />}
                     </div>
-                    <p className="text-[0.65rem] text-muted-foreground truncate">
+                    <p className="text-xs text-muted-foreground truncate">
                       {ROLE_LABELS[pro.role] ?? pro.role}{pro.specialty ? ` · ${pro.specialty}` : ''}
                     </p>
                     {pro.subscription_tier !== 'free' && (
-                      <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded mt-1 inline-block"
+                      <span className="text-[0.75rem] font-bold px-1.5 py-0.5 rounded mt-1 inline-block"
                         style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
                         {pro.subscription_tier.charAt(0).toUpperCase() + pro.subscription_tier.slice(1)}
                       </span>

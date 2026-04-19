@@ -53,7 +53,7 @@ const AdminCharts = () => {
           </h3>
           <div className="flex flex-col items-center justify-center h-40 gap-2">
             <p className="text-xs text-muted-foreground">Disponible tras integrar Stripe Connect</p>
-            <span className="text-[0.6rem] font-bold px-2 py-1 rounded"
+            <span className="text-xs font-bold px-2 py-1 rounded"
               style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
               Próximamente
             </span>
@@ -83,7 +83,7 @@ const AdminCharts = () => {
                     <div className="flex-1 h-6 rounded-md overflow-hidden" style={{ background: 'rgba(255,255,255,0.03)' }}>
                       <div className="h-full rounded-md transition-all flex items-center px-2"
                         style={{ width: `${intensity * 100}%`, background: `linear-gradient(90deg, rgba(212,175,55,${intensity * 0.6}), rgba(212,175,55,${intensity}))` }}>
-                        <span className="text-[0.55rem] font-bold" style={{ color: '#000' }}>{z.count}</span>
+                        <span className="text-[0.75rem] font-bold" style={{ color: '#000' }}>{z.count}</span>
                       </div>
                     </div>
                   </div>
@@ -98,7 +98,7 @@ const AdminCharts = () => {
       <div className="glass-panel p-5 mb-6">
         <h3 className="text-sm font-bold mb-4">Distribución de Planes</h3>
         {loading ? (
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {Array(4).fill(0).map((_, i) => (
               <div key={i} className="h-16 rounded-lg animate-pulse" style={{ background: 'rgba(255,255,255,0.05)' }} />
             ))}
@@ -113,7 +113,7 @@ const AdminCharts = () => {
             ].map((p) => (
               <div key={p.label} className="text-center">
                 <p className="text-2xl font-bold" style={{ color: p.color }}>{p.count}</p>
-                <p className="text-[0.6rem] text-muted-foreground">{p.label}</p>
+                <p className="text-xs text-muted-foreground">{p.label}</p>
                 <p className="text-xs font-bold mt-1">
                   {plans.total > 0 ? ((p.count / plans.total) * 100).toFixed(1) : '0'}%
                 </p>

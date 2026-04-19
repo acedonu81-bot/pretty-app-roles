@@ -59,14 +59,14 @@ const CheckoutModal = ({ open, onClose, item }: CheckoutModalProps) => {
             </p>
             <p className="text-xl font-black mb-1" style={{ color: '#D4AF37' }}>€{total}</p>
             {selectedExtras.length > 0 && (
-              <div className="text-[0.65rem] text-muted-foreground mb-4 space-y-0.5">
+              <div className="text-xs text-muted-foreground mb-4 space-y-0.5">
                 <p>{item.name} — €{item.price}</p>
                 {crossSellServices.filter(s => selectedExtras.includes(s.id)).map(s => (
                   <p key={s.id}>{s.label} — €{s.price}</p>
                 ))}
               </div>
             )}
-            <p className="text-[0.65rem] text-muted-foreground mb-6">
+            <p className="text-xs text-muted-foreground mb-6">
               En cuanto esté operativa podrás completar la compra directamente aquí.
             </p>
             <div className="flex gap-3">

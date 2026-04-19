@@ -70,11 +70,11 @@ const ReportModal = ({
           </div>
           <div>
             <p className="text-sm font-bold">Reportar directo</p>
-            <p className="text-[0.6rem] text-muted-foreground truncate max-w-[200px]">{streamerName}</p>
+            <p className="text-xs text-muted-foreground truncate max-w-[200px]">{streamerName}</p>
           </div>
         </div>
 
-        <p className="text-[0.65rem] text-muted-foreground mb-3">
+        <p className="text-xs text-muted-foreground mb-3">
           Motivo del reporte — revisaremos el contenido en menos de 24 horas.
         </p>
 
@@ -113,7 +113,7 @@ const ReportModal = ({
           {sending ? 'Enviando...' : 'Enviar reporte'}
         </button>
 
-        <p className="text-[0.55rem] text-muted-foreground text-center mt-2">
+        <p className="text-[0.75rem] text-muted-foreground text-center mt-2">
           Los reportes falsos o abusivos pueden suponer la suspensión de tu cuenta.
         </p>
       </div>
@@ -244,13 +244,13 @@ const EscenarioVirtualView = () => {
           <p className="text-xs font-bold mb-2 flex items-center gap-2">
             <ExternalLink size={12} style={{ color: '#D4AF37' }} /> Introduce tu URL de streaming
           </p>
-          <p className="text-[0.6rem] text-muted-foreground mb-3">Soporta Twitch, YouTube, Mixcloud, SoundCloud, HearThis, Vimeo y Spotify</p>
+          <p className="text-xs text-muted-foreground mb-3">Soporta Twitch, YouTube, Mixcloud, SoundCloud, HearThis, Vimeo y Spotify</p>
           <input value={streamTitle} onChange={e => setStreamTitle(e.target.value)}
             placeholder="Título del directo" className="nightlife-input text-sm !py-2.5 mb-2" />
           <input value={streamUrl} onChange={e => setStreamUrl(e.target.value)}
             placeholder="Twitch, YouTube, Mixcloud, SoundCloud, Vimeo, Spotify..." className="nightlife-input text-sm !py-2.5" />
           {streamEmbed && (
-            <p className="text-[0.6rem] mt-2 font-bold" style={{ color: '#22c55e' }}>✓ {streamEmbed.type} detectado</p>
+            <p className="text-xs mt-2 font-bold" style={{ color: '#22c55e' }}>✓ {streamEmbed.type} detectado</p>
           )}
           <button
             onClick={handleSaveStream}
@@ -302,10 +302,10 @@ const EscenarioVirtualView = () => {
                         style={{ height: `${h}%`, background: 'linear-gradient(180deg, #D4AF37, #B8941E)', opacity: Math.max(0.3, h / 100) }} />
                     ))}
                   </div>
-                  <p className="text-[0.6rem] font-bold uppercase tracking-widest" style={{ color: 'rgba(212,175,55,0.4)' }}>
+                  <p className="text-xs font-bold uppercase tracking-widest" style={{ color: 'rgba(212,175,55,0.4)' }}>
                     En vivo · Sin señal de vídeo
                   </p>
-                  <p className="text-[0.55rem] text-muted-foreground text-center max-w-[200px]">
+                  <p className="text-[0.75rem] text-muted-foreground text-center max-w-[200px]">
                     Configura tu URL de Twitch o YouTube con el botón <span className="font-bold">Stream URL</span>
                   </p>
                 </div>
@@ -315,9 +315,9 @@ const EscenarioVirtualView = () => {
                     <Radio size={26} style={{ color: 'rgba(212,175,55,0.5)' }} />
                   </div>
                   <p className="text-sm text-muted-foreground">Pulsa <span className="font-bold text-primary">EN VIVO</span> para comenzar</p>
-                  {profile.stream_title && <p className="text-[0.65rem] font-semibold text-primary">{profile.stream_title}</p>}
+                  {profile.stream_title && <p className="text-xs font-semibold text-primary">{profile.stream_title}</p>}
                   {!streamUrl && (
-                    <p className="text-[0.6rem] text-muted-foreground mt-1">Configura tu URL de streaming con el botón <span className="font-bold">Stream URL</span></p>
+                    <p className="text-xs text-muted-foreground mt-1">Configura tu URL de streaming con el botón <span className="font-bold">Stream URL</span></p>
                   )}
                 </div>
               )}
@@ -336,7 +336,7 @@ const EscenarioVirtualView = () => {
                 title="Reportar este contenido"
               >
                 <Flag size={10} />
-                <span className="text-[0.5rem] font-bold uppercase tracking-wider">Reportar</span>
+                <span className="text-[0.7rem] font-bold uppercase tracking-wider">Reportar</span>
               </button>
             </div>
 
@@ -357,8 +357,8 @@ const EscenarioVirtualView = () => {
         <div className="glass-panel p-4 flex flex-col min-h-0">
           <div className="flex items-center gap-2 mb-3">
             <MessageSquare size={14} style={{ color: '#D4AF37' }} />
-            <span className="text-[0.6rem] font-bold uppercase tracking-wider">Chat en Directo</span>
-            <span className="text-[0.5rem] font-bold px-1.5 py-0.5 rounded ml-auto"
+            <span className="text-xs font-bold uppercase tracking-wider">Chat en Directo</span>
+            <span className="text-[0.7rem] font-bold px-1.5 py-0.5 rounded ml-auto"
               style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
               PRÓXIMAMENTE
             </span>
@@ -373,10 +373,10 @@ const EscenarioVirtualView = () => {
             )) : (
               <div className="flex-1 flex flex-col items-center justify-center gap-2 py-8 text-center">
                 <MessageSquare size={20} style={{ color: 'rgba(212,175,55,0.15)' }} />
-                <p className="text-[0.6rem] font-bold" style={{ color: 'rgba(255,255,255,0.2)' }}>
+                <p className="text-xs font-bold" style={{ color: 'rgba(255,255,255,0.2)' }}>
                   {isLive ? 'Sin espectadores aún' : 'Inicia el directo para activar el chat'}
                 </p>
-                <p className="text-[0.55rem] text-muted-foreground max-w-[160px] leading-relaxed">
+                <p className="text-[0.75rem] text-muted-foreground max-w-[160px] leading-relaxed">
                   El chat en tiempo real se conectará vía Supabase Realtime en la próxima versión.
                 </p>
               </div>

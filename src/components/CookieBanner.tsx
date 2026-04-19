@@ -45,10 +45,18 @@ const CookieBanner = () => {
   const [prefs, setPrefs] = useState<CookiePrefs>({ necessary: true, analytics: false, marketing: false, personalization: false });
 
   useEffect(() => {
-    if (!localStorage.getItem(COOKIE_KEY)) {
-      const t = setTimeout(() => setVisible(true), 1200);
-      return () => clearTimeout(t);
-    }
+    if (localStorage.getItem(COOKIE_KEY)) return;
+    // Show after scroll past the hero, or after 6s — whichever comes first
+    let fired = false;
+    const fire = () => {
+      if (fired) return;
+      fired = true;
+      setVisible(true);
+    };
+    const onScroll = () => { if (window.scrollY > window.innerHeight * 0.6) fire(); };
+    const t = setTimeout(fire, 6000);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => { clearTimeout(t); window.removeEventListener('scroll', onScroll); };
   }, []);
 
   const save = (p: CookiePrefs) => {
@@ -111,10 +119,10 @@ const CookieBanner = () => {
                         style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
                         <div className="flex-1">
                           <p className="text-xs font-bold mb-0.5">{cat.label}</p>
-                          <p className="text-[0.65rem] leading-relaxed" style={{ color: 'rgba(255,255,255,0.4)' }}>{cat.desc}</p>
+                          <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.4)' }}>{cat.desc}</p>
                         </div>
                         {cat.locked ? (
-                          <span className="text-[0.6rem] font-bold px-2 py-0.5 rounded-md mt-0.5 flex-shrink-0"
+                          <span className="text-xs font-bold px-2 py-0.5 rounded-md mt-0.5 flex-shrink-0"
                             style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
                             Siempre activa
                           </span>
