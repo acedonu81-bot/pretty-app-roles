@@ -75,6 +75,22 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
       icon: 'spark' as const,
       urgent: false,
     }] : []),
+    ...(!profile.display_name ? [{
+      id: 'incomplete_profile',
+      title: 'Perfil incompleto',
+      desc: 'Añade tu nombre artístico y guarda para aparecer en el directorio.',
+      time: 'Pendiente',
+      icon: 'spark' as const,
+      urgent: true,
+    }] : []),
+    {
+      id: 'ficha_nueva',
+      title: 'Nueva: Tu Ficha Pública',
+      desc: 'Comparte posts, audio, vídeo e imágenes con fans y empresarios desde Mi Ficha.',
+      time: 'Novedad',
+      icon: 'spark' as const,
+      urgent: false,
+    },
   ];
 
   return (
