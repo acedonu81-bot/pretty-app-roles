@@ -55,6 +55,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
   const [savingVideo, setSavingVideo] = useState(false);
   const [musicUrl, setMusicUrl] = useState('');
   const [savingMusic, setSavingMusic] = useState(false);
+  const [clearingAudio, setClearingAudio] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const ownerId = targetUserId ?? user?.id;
@@ -84,6 +85,14 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
     if (profile.bio_video_url) setVideoUrl(profile.bio_video_url);
     if ((profile as any).bg_music_url) setMusicUrl((profile as any).bg_music_url);
   }, [profile.bio_video_url, (profile as any).bg_music_url]);
+
+  const clearAudioEmbed = async () => {
+    if (!user) return;
+    setClearingAudio(true);
+    await profile.updateField({ audio_embed_url: null } as any);
+    setClearingAudio(false);
+    toast.success('Contenido de perfil eliminado');
+  };
 
   const submitPost = async () => {
     if (!draft.trim() || !user) return;
@@ -393,6 +402,33 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
               </div>
             )}
           </div>
+
+          {/* Contenido de perfil (audio_embed_url / stream_url) */}
+          {isOwn && (profile.audio_embed_url || (profile as any).stream_url) && (
+            <div className="glass-panel p-5" style={{ border: '1px solid rgba(255,85,85,0.2)' }}>
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1">
+                  <h4 className="text-sm font-bold mb-1 flex items-center gap-2">
+                    <AlertCircle size={14} style={{ color: '#ff5555' }} />
+                    Contenido vinculado al perfil
+                  </h4>
+                  <p className="text-xs text-muted-foreground mb-1">
+                    Este contenido aparece en tu ficha pública (hearthis / Mixcloud / SoundCloud / YouTube).
+                    Elimínalo aquí si ya no lo quieres mostrar.
+                  </p>
+                  <p className="text-xs font-mono truncate" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                    {profile.audio_embed_url || (profile as any).stream_url}
+                  </p>
+                </div>
+                <button type="button" onClick={clearAudioEmbed} disabled={clearingAudio}
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105 disabled:opacity-50 flex-shrink-0"
+                  style={{ background: 'rgba(255,85,85,0.08)', border: '1px solid rgba(255,85,85,0.25)', color: '#ff5555' }}>
+                  {clearingAudio ? <Loader2 size={12} className="animate-spin" /> : <X size={12} />}
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Música de fondo */}
           <div className="glass-panel p-5" style={{ border: `1px solid ${BLUE_BORDER}` }}>

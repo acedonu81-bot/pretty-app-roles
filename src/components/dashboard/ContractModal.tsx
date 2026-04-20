@@ -50,7 +50,6 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
     nombreLocal: '',
     direccionLocal: '',
     precioNeto: '',
-    tipoRetencion: '15',
     formaPago: 'transferencia bancaria',
     diasPago: '30',
     equipoSonido: EVENT_TYPES[0].equip,
@@ -66,12 +65,9 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
     if (et) setForm(f => ({ ...f, equipoSonido: et.equip }));
   };
 
-  const price  = parseFloat(form.precioNeto) || 0;
-  const ret    = parseFloat(form.tipoRetencion) || 15;
-  const iva    = price * 0.21;
-  const gross  = price + iva;
-  const retAmt = price * ret / 100;
-  const net    = gross - retAmt;
+  const price = parseFloat(form.precioNeto) || 0;
+  const iva   = price * 0.21;
+  const gross = price + iva;
 
   const fmt = (n: number) => n.toFixed(2).replace('.', ',');
   const serviceLabel = ROLE_SERVICE[professional.role] ?? 'prestación de servicios profesionales';
@@ -381,20 +377,10 @@ La retribución acordada por la prestación es la siguiente:</p>
       <td>21% s/base</td>
       <td>${price > 0 ? `€ ${fmt(iva)}` : '—'}</td>
     </tr>
-    <tr>
-      <td class="td-total"><strong>Total bruto (con IVA)</strong></td>
-      <td>—</td>
-      <td class="td-total"><strong>€ ${price > 0 ? fmt(gross) : '—'}</strong></td>
-    </tr>
-    <tr>
-      <td class="td-neg">Retención IRPF (${esc(form.tipoRetencion)}%) — art. 95 RIRPF</td>
-      <td>${esc(form.tipoRetencion)}% s/base</td>
-      <td class="td-neg">– € ${price > 0 ? fmt(retAmt) : '—'}</td>
-    </tr>
     <tr style="background:#fffdf5">
-      <td class="td-net"><strong>Líquido a percibir por el PROFESIONAL</strong></td>
+      <td class="td-net"><strong>Total con IVA (21%)</strong></td>
       <td>—</td>
-      <td class="td-net"><strong>€ ${price > 0 ? fmt(net) : '—'}</strong></td>
+      <td class="td-net"><strong>€ ${price > 0 ? fmt(gross) : '—'}</strong></td>
     </tr>
   </tbody>
 </table>
@@ -493,7 +479,6 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
         contratante_nombre: form.contratanteNombre || null,
         empresa_nombre:    form.empresaNombre || null,
         precio_neto:       price > 0 ? price : null,
-        retencion:         ret,
       });
       onSaved?.();
     }
@@ -674,16 +659,9 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
             <div className="space-y-4">
               <p className={sec} style={secStyle}>— CONDICIONES ECONÓMICAS —</p>
               <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className={lbl} style={lblStyle}>Precio neto € (sin IVA) *</label>
+                <div className="col-span-2 sm:col-span-1">
+                  <label className={lbl} style={lblStyle}>Base imponible € (sin IVA) *</label>
                   <input className={inp} style={inpStyle} type="number" placeholder="500" value={form.precioNeto} onChange={set('precioNeto')} />
-                </div>
-                <div>
-                  <label className={lbl} style={lblStyle}>Retención IRPF</label>
-                  <select className={inp} style={{ ...inpStyle, cursor: 'pointer' }} value={form.tipoRetencion} onChange={set('tipoRetencion')}>
-                    <option value="7" style={{ background: '#0a0a0e' }}>7% — Inicio actividad</option>
-                    <option value="15" style={{ background: '#0a0a0e' }}>15% — General</option>
-                  </select>
                 </div>
                 <div>
                   <label className={lbl} style={lblStyle}>Forma de pago</label>
@@ -699,9 +677,9 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
                 <div className="rounded-2xl p-4 grid grid-cols-3 gap-3 text-center"
                   style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}>
                   {[
-                    { label: 'Total + IVA 21%',       value: `€${fmt(gross)}`,  color: '#fff' },
-                    { label: `Retención ${form.tipoRetencion}%`, value: `–€${fmt(retAmt)}`, color: '#ef4444' },
-                    { label: 'Líquido a percibir',    value: `€${fmt(net)}`,   color: '#D4AF37' },
+                    { label: 'Base imponible',  value: `€${fmt(price)}`, color: 'rgba(255,255,255,0.7)' },
+                    { label: 'IVA 21%',         value: `+€${fmt(iva)}`,  color: '#fff' },
+                    { label: 'Total con IVA',   value: `€${fmt(gross)}`, color: '#D4AF37' },
                   ].map(x => (
                     <div key={x.label}>
                       <p className="text-xs text-muted-foreground mb-1">{x.label}</p>

@@ -78,7 +78,6 @@ interface ContractRow {
   contratante_nombre: string | null;
   empresa_nombre: string | null;
   precio_neto: number | null;
-  retencion: number | null;
   created_at: string;
 }
 
@@ -142,7 +141,7 @@ const ContractView = () => {
       return y === csvYear;
     });
     if (!rows.length) return;
-    const headers = ['Ref', 'Fecha evento', 'Profesional', 'Rol', 'Tipo evento', 'Evento', 'Local', 'Ciudad', 'Contratante', 'Empresa', 'Base imponible (€)', 'Retención IRPF (%)', 'Generado'];
+    const headers = ['Ref', 'Fecha evento', 'Profesional', 'Rol', 'Tipo evento', 'Evento', 'Local', 'Ciudad', 'Contratante', 'Empresa', 'Base imponible (€)', 'IVA 21% (€)', 'Total con IVA (€)', 'Generado'];
     const lines = [
       headers.join(','),
       ...rows.map(c => [
@@ -157,7 +156,8 @@ const ContractView = () => {
         c.contratante_nombre ?? '',
         c.empresa_nombre ?? '',
         c.precio_neto ?? '',
-        c.retencion ?? '',
+        c.precio_neto != null ? (c.precio_neto * 0.21).toFixed(2) : '',
+        c.precio_neto != null ? (c.precio_neto * 1.21).toFixed(2) : '',
         c.created_at ? new Date(c.created_at).toLocaleDateString('es-ES') : '',
       ].map(escCsv).join(',')),
     ];
