@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { FileText, X, Download, ChevronRight, AlertCircle, Sparkles } from 'lucide-react';
 import type { Profile } from '@/data/profiles';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
 
 const esc = (s: string) =>
   s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 
-interface Props { professional: Profile; onClose: () => void; }
+interface Props { professional: Profile; onClose: () => void; onSaved?: () => void; }
 
 const ROLE_SERVICE: Record<string, string> = {
   dj:        'sesión de DJ y actuación musical en directo',
@@ -28,7 +30,8 @@ const EVENT_TYPES = [
 const todayStr = () => new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
 const contractRef = () => `XPEAK-${Date.now().toString(36).toUpperCase().slice(-6)}`;
 
-const ContractModal = ({ professional, onClose }: Props) => {
+const ContractModal = ({ professional, onClose, onSaved }: Props) => {
+  const { user } = useAuth();
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [tipoEvento, setTipoEvento] = useState('club');
   const [ref] = useState(contractRef());
@@ -469,12 +472,31 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
 </body>
 </html>`;
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     const html = buildContractHTML();
     const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
     const url  = URL.createObjectURL(blob);
     const w    = window.open(url, '_blank', 'width=900,height=700');
     if (w) w.addEventListener('load', () => { w.print(); URL.revokeObjectURL(url); });
+
+    if (user) {
+      await supabase.from('contracts').insert({
+        user_id:           user.id,
+        ref,
+        professional_name: professional.name,
+        professional_role: professional.role,
+        event_type:        tipoEvento,
+        event_name:        form.nombreEvento || null,
+        event_date:        form.fechaEvento  || null,
+        venue:             form.nombreLocal  || null,
+        city:              form.ciudadFirma  || null,
+        contratante_nombre: form.contratanteNombre || null,
+        empresa_nombre:    form.empresaNombre || null,
+        precio_neto:       price > 0 ? price : null,
+        retencion:         ret,
+      });
+      onSaved?.();
+    }
   };
 
   // ── Shared styles ──────────────────────────────────────────────────────────

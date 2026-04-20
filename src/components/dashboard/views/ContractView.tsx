@@ -1,7 +1,9 @@
-import { useState } from 'react';
-import { FileText, Plus, AlertCircle, Scale, ShieldCheck, BookOpen, ChevronRight } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { FileText, Plus, AlertCircle, Scale, ShieldCheck, BookOpen, ChevronRight, Download, Trash2, RefreshCw } from 'lucide-react';
 import ContractModal from '@/components/dashboard/ContractModal';
 import type { Profile } from '@/data/profiles';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
 
 const DEMO_PROFESSIONAL: Profile = {
   id: 0,
@@ -63,17 +65,118 @@ const LEGAL_CARDS = [
   },
 ];
 
+interface ContractRow {
+  id: string;
+  ref: string;
+  professional_name: string | null;
+  professional_role: string | null;
+  event_type: string | null;
+  event_name: string | null;
+  event_date: string | null;
+  venue: string | null;
+  city: string | null;
+  contratante_nombre: string | null;
+  empresa_nombre: string | null;
+  precio_neto: number | null;
+  retencion: number | null;
+  created_at: string;
+}
+
+const ROLE_LABEL: Record<string, string> = {
+  dj: 'DJ / Artista', rookie: 'DJ Promesa', staff: 'Staff',
+  makeup: 'Maquillaje', media: 'Foto / Vídeo', ambassador: 'Promotor',
+};
+
+const fmtDate = (iso: string) => {
+  if (!iso) return '—';
+  try { return new Date(iso).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }); } catch { return iso; }
+};
+
+const fmtEur = (n: number | null) => n != null ? `€${n.toFixed(2).replace('.', ',')}` : '—';
+
+const escCsv = (v: unknown) => {
+  const s = String(v ?? '');
+  return s.includes(',') || s.includes('"') || s.includes('\n') ? `"${s.replace(/"/g, '""')}"` : s;
+};
+
 const ContractView = () => {
+  const { user } = useAuth();
   const [showModal, setShowModal] = useState(false);
   const [customName, setCustomName] = useState('');
   const [customRole, setCustomRole] = useState<string>('dj');
   const [soonOpen, setSoonOpen] = useState(false);
+  const [contracts, setContracts] = useState<ContractRow[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [csvYear, setCsvYear] = useState(new Date().getFullYear());
 
   const professional: Profile = {
     ...DEMO_PROFESSIONAL,
     name: customName.trim() || 'Profesional',
     role: customRole as Profile['role'],
   };
+
+  const fetchContracts = useCallback(async () => {
+    if (!user) return;
+    setLoading(true);
+    const { data } = await supabase
+      .from('contracts')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false });
+    setContracts((data as ContractRow[]) ?? []);
+    setLoading(false);
+  }, [user]);
+
+  useEffect(() => { fetchContracts(); }, [fetchContracts]);
+
+  const handleSaved = () => { fetchContracts(); setShowModal(false); };
+
+  const deleteContract = async (id: string) => {
+    await supabase.from('contracts').delete().eq('id', id);
+    setContracts(prev => prev.filter(c => c.id !== id));
+  };
+
+  const exportCsv = () => {
+    const rows = contracts.filter(c => {
+      const y = c.event_date ? new Date(c.event_date).getFullYear() : new Date(c.created_at).getFullYear();
+      return y === csvYear;
+    });
+    if (!rows.length) return;
+    const headers = ['Ref', 'Fecha evento', 'Profesional', 'Rol', 'Tipo evento', 'Evento', 'Local', 'Ciudad', 'Contratante', 'Empresa', 'Precio neto (€)', 'Retención (%)', 'Generado'];
+    const lines = [
+      headers.join(','),
+      ...rows.map(c => [
+        c.ref,
+        c.event_date ?? '',
+        c.professional_name ?? '',
+        ROLE_LABEL[c.professional_role ?? ''] ?? c.professional_role ?? '',
+        c.event_type ?? '',
+        c.event_name ?? '',
+        c.venue ?? '',
+        c.city ?? '',
+        c.contratante_nombre ?? '',
+        c.empresa_nombre ?? '',
+        c.precio_neto ?? '',
+        c.retencion ?? '',
+        c.created_at ? new Date(c.created_at).toLocaleDateString('es-ES') : '',
+      ].map(escCsv).join(',')),
+    ];
+    const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `contratos_xpeak_${csvYear}.csv`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
+
+  const availableYears = Array.from(
+    new Set(contracts.map(c => {
+      const d = c.event_date ?? c.created_at;
+      return d ? new Date(d).getFullYear() : new Date().getFullYear();
+    }))
+  ).sort((a, b) => b - a);
+
+  if (availableYears.length && !availableYears.includes(csvYear)) setCsvYear(availableYears[0]);
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
@@ -138,6 +241,116 @@ const ContractView = () => {
         </button>
       </div>
 
+      {/* ── Contract history ── */}
+      <div className="glass-panel mb-6" style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
+        <div className="flex items-center justify-between px-5 py-4"
+          style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+          <div className="flex items-center gap-2">
+            <FileText size={15} style={{ color: '#D4AF37' }} />
+            <h3 className="text-base font-bold">Historial de contratos</h3>
+            {contracts.length > 0 && (
+              <span className="text-xs px-2 py-0.5 rounded-full font-bold"
+                style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
+                {contracts.length}
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            {contracts.length > 0 && (
+              <>
+                <select
+                  value={csvYear}
+                  onChange={e => setCsvYear(Number(e.target.value))}
+                  className="text-xs px-2 py-1.5 rounded-lg outline-none"
+                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', cursor: 'pointer' }}>
+                  {availableYears.map(y => (
+                    <option key={y} value={y} style={{ background: '#0a0a0e' }}>{y}</option>
+                  ))}
+                </select>
+                <button
+                  type="button"
+                  onClick={exportCsv}
+                  className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg font-bold transition-all hover:scale-105"
+                  style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+                  <Download size={12} /> CSV {csvYear}
+                </button>
+              </>
+            )}
+            <button type="button" onClick={fetchContracts}
+              className="p-1.5 rounded-lg transition-colors hover:bg-white/5">
+              <RefreshCw size={13} style={{ color: 'rgba(255,255,255,0.3)', ...(loading ? { animation: 'spin 1s linear infinite' } : {}) }} />
+            </button>
+          </div>
+        </div>
+
+        {loading && (
+          <div className="py-10 text-center text-sm text-muted-foreground">Cargando...</div>
+        )}
+
+        {!loading && contracts.length === 0 && (
+          <div className="py-12 text-center">
+            <FileText size={32} className="mx-auto mb-3" style={{ color: 'rgba(255,255,255,0.1)' }} />
+            <p className="text-sm font-bold mb-1" style={{ color: 'rgba(255,255,255,0.3)' }}>Sin contratos aún</p>
+            <p className="text-xs text-muted-foreground">Los contratos que generes aparecerán aquí</p>
+          </div>
+        )}
+
+        {!loading && contracts.length > 0 && (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                  {['Ref', 'Profesional', 'Evento', 'Fecha evento', 'Local', 'Importe neto', 'Generado', ''].map(h => (
+                    <th key={h} className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider"
+                      style={{ color: 'rgba(255,255,255,0.35)' }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {contracts.map((c, i) => (
+                  <tr key={c.id}
+                    style={{ borderBottom: '1px solid rgba(255,255,255,0.04)', background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.01)' }}>
+                    <td className="px-4 py-3">
+                      <span className="text-xs font-mono font-bold" style={{ color: '#D4AF37' }}>{c.ref}</span>
+                    </td>
+                    <td className="px-4 py-3">
+                      <p className="text-sm font-medium">{c.professional_name ?? '—'}</p>
+                      <p className="text-xs text-muted-foreground">{ROLE_LABEL[c.professional_role ?? ''] ?? c.professional_role ?? ''}</p>
+                    </td>
+                    <td className="px-4 py-3">
+                      <p className="text-sm">{c.event_name ?? '—'}</p>
+                      <p className="text-xs text-muted-foreground capitalize">{c.event_type ?? ''}</p>
+                    </td>
+                    <td className="px-4 py-3 text-sm text-muted-foreground whitespace-nowrap">
+                      {c.event_date ? fmtDate(c.event_date) : '—'}
+                    </td>
+                    <td className="px-4 py-3">
+                      <p className="text-sm">{c.venue ?? '—'}</p>
+                      <p className="text-xs text-muted-foreground">{c.city ?? ''}</p>
+                    </td>
+                    <td className="px-4 py-3">
+                      <span className="text-sm font-bold" style={{ color: c.precio_neto ? '#D4AF37' : 'rgba(255,255,255,0.3)' }}>
+                        {fmtEur(c.precio_neto)}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-xs text-muted-foreground whitespace-nowrap">
+                      {fmtDate(c.created_at)}
+                    </td>
+                    <td className="px-4 py-3">
+                      <button type="button"
+                        onClick={() => deleteContract(c.id)}
+                        className="p-1.5 rounded-lg transition-colors hover:bg-red-500/10">
+                        <Trash2 size={13} style={{ color: 'rgba(239,68,68,0.5)' }} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
       {/* Legal notice */}
       <div className="glass-panel p-5 mb-6 flex items-start gap-3"
         style={{ border: '1px solid rgba(255,188,0,0.2)', background: 'rgba(255,188,0,0.03)' }}>
@@ -178,8 +391,6 @@ const ContractView = () => {
             {[
               'Firma digital con certificado cualificado (eIDAS)',
               'Envío al profesional para contra-firma',
-              'Historial de contratos firmados',
-              'Plantillas por tipo de evento (festival, club, boda, corporativo)',
               'Generación automática desde Flash Booking confirmado',
             ].map(f => (
               <div key={f} className="flex items-center gap-2">
@@ -192,7 +403,7 @@ const ContractView = () => {
       </div>
 
       {showModal && (
-        <ContractModal professional={professional} onClose={() => setShowModal(false)} />
+        <ContractModal professional={professional} onClose={() => setShowModal(false)} onSaved={handleSaved} />
       )}
     </div>
   );
