@@ -86,25 +86,25 @@ const ContractView = () => {
           </p>
         </div>
         <button onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm hover:scale-105 transition-all w-full sm:w-auto justify-center"
+          className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-base hover:scale-105 transition-all w-full sm:w-auto justify-center"
           style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-          <Plus size={16} /> Nuevo Contrato
+          <Plus size={18} /> Nuevo Contrato
         </button>
       </div>
 
       {/* Quick-start panel */}
-      <div className="glass-panel p-5 mb-6" style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
-        <div className="flex items-center gap-2 mb-4">
-          <FileText size={14} style={{ color: '#D4AF37' }} />
-          <h3 className="text-sm font-bold">Generar contrato rápido</h3>
+      <div className="glass-panel p-6 mb-6" style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
+        <div className="flex items-center gap-2 mb-5">
+          <FileText size={16} style={{ color: '#D4AF37' }} />
+          <h3 className="text-base font-bold">Generar contrato rápido</h3>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
           <div>
-            <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 block">
+            <label className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-1.5 block">
               Nombre del profesional
             </label>
             <input
-              className="w-full px-3 py-2 rounded-lg text-sm outline-none"
+              className="w-full px-4 py-3 rounded-lg text-base outline-none"
               style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }}
               placeholder="Ej: DJ Leinad"
               value={customName}
@@ -112,11 +112,11 @@ const ContractView = () => {
             />
           </div>
           <div>
-            <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 block">
+            <label className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-1.5 block">
               Tipo de profesional
             </label>
             <select
-              className="w-full px-3 py-2 rounded-lg text-sm outline-none"
+              className="w-full px-4 py-3 rounded-lg text-base outline-none"
               style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', cursor: 'pointer' }}
               value={customRole}
               onChange={e => setCustomRole(e.target.value)}>
@@ -130,18 +130,18 @@ const ContractView = () => {
           </div>
         </div>
         <button onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm hover:scale-105 transition-all"
+          className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-base hover:scale-105 transition-all"
           style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-          <FileText size={14} /> Abrir generador de contrato
-          <ChevronRight size={14} />
+          <FileText size={16} /> Abrir generador de contrato
+          <ChevronRight size={16} />
         </button>
       </div>
 
       {/* Legal notice */}
-      <div className="glass-panel p-4 mb-6 flex items-start gap-3"
+      <div className="glass-panel p-5 mb-6 flex items-start gap-3"
         style={{ border: '1px solid rgba(255,188,0,0.2)', background: 'rgba(255,188,0,0.03)' }}>
-        <AlertCircle size={14} style={{ color: '#ffbc00', flexShrink: 0, marginTop: 1 }} />
-        <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)' }}>
+        <AlertCircle size={16} style={{ color: '#ffbc00', flexShrink: 0, marginTop: 2 }} />
+        <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)' }}>
           <span style={{ color: '#ffbc00', fontWeight: 700 }}>Aviso legal:</span>{' '}
           Los contratos generados son modelos orientativos conforme a legislación española vigente.
           XPEAK no ejerce como despacho de abogados ni ofrece asesoramiento jurídico vinculante.
@@ -150,24 +150,24 @@ const ContractView = () => {
       </div>
 
       {/* Legal framework cards */}
-      <h3 className="text-sm font-bold mb-3" style={{ color: 'rgba(255,255,255,0.5)' }}>MARCO LEGAL APLICABLE</h3>
+      <h3 className="text-sm font-bold mb-4" style={{ color: 'rgba(255,255,255,0.5)' }}>MARCO LEGAL APLICABLE</h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
         {LEGAL_CARDS.map(card => (
-          <div key={card.title} className="glass-panel p-4"
+          <div key={card.title} className="glass-panel p-5"
             style={{ border: `1px solid ${card.color}20` }}>
-            <div className="flex items-center gap-2 mb-2">
-              <card.icon size={14} style={{ color: card.color }} />
-              <p className="text-xs font-bold" style={{ color: card.color }}>{card.title}</p>
+            <div className="flex items-center gap-2 mb-3">
+              <card.icon size={16} style={{ color: card.color }} />
+              <p className="text-sm font-bold" style={{ color: card.color }}>{card.title}</p>
             </div>
-            <p className="text-xs text-muted-foreground leading-relaxed">{card.body}</p>
+            <p className="text-sm text-muted-foreground leading-relaxed">{card.body}</p>
           </div>
         ))}
       </div>
 
       {/* Coming soon features */}
-      <div className="glass-panel p-5" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
-        <h3 className="text-sm font-bold mb-3">Próximamente en Contratos</h3>
-        <div className="space-y-2">
+      <div className="glass-panel p-6" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
+        <h3 className="text-base font-bold mb-4">Próximamente en Contratos</h3>
+        <div className="space-y-3">
           {[
             'Firma digital con certificado cualificado (eIDAS)',
             'Envío al profesional para contra-firma',
@@ -176,8 +176,8 @@ const ContractView = () => {
             'Generación automática desde Flash Booking confirmado',
           ].map(f => (
             <div key={f} className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: 'rgba(212,175,55,0.3)' }} />
-              <span className="text-xs text-muted-foreground">{f}</span>
+              <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: 'rgba(212,175,55,0.3)' }} />
+              <span className="text-sm text-muted-foreground">{f}</span>
             </div>
           ))}
         </div>
