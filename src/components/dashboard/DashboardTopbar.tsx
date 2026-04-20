@@ -16,7 +16,12 @@ interface TopbarProps {
 const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', onHome }: TopbarProps) => {
   const navigate = useNavigate();
   const [showNotif, setShowNotif] = useState(false);
-  const [readAll, setReadAll] = useState(false);
+  const [dismissed, setDismissed] = useState<Set<string>>(() => {
+    try {
+      const s = localStorage.getItem('xpeak_notif_dismissed');
+      return new Set(s ? JSON.parse(s) : []);
+    } catch { return new Set(); }
+  });
   const profile = useProfile();
 
   // null = not started, number = days remaining (0 = expired)
@@ -27,6 +32,13 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
   const trialNotStarted = isPaidPlan && trialDaysRemaining === null;
   const trialActive = isPaidPlan && trialDaysRemaining !== null && trialDaysRemaining > 0;
   const trialExpired = isPaidPlan && trialDaysRemaining === 0;
+
+  const markAllRead = () => {
+    const ids = new Set([...dismissed, ...notifications.map(n => n.id)]);
+    setDismissed(ids);
+    localStorage.setItem('xpeak_notif_dismissed', JSON.stringify([...ids]));
+    setShowNotif(false);
+  };
 
   const trialLabel = trialNotStarted
     ? 'Usa Flash Booking, streaming o sube una sesión para activar tus 15 días gratis'
@@ -92,6 +104,9 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
       urgent: false,
     },
   ];
+
+  const unread = notifications.filter(n => !dismissed.has(n.id));
+  const readAll = unread.length === 0;
 
   return (
     <header
@@ -234,7 +249,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
                   {notifications.length}
                 </span>
               </div>
-              <button onClick={() => { setReadAll(true); setShowNotif(false); }}
+              <button onClick={markAllRead}
                 className="text-xs font-bold transition-colors hover:text-white"
                 style={{ color: 'rgba(255,255,255,0.3)' }}>
                 CERRAR
@@ -288,7 +303,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
             {/* Footer */}
             <div className="px-4 py-2.5 text-center" style={{ borderTop: '1px solid rgba(212,175,55,0.08)' }}>
               <button
-                onClick={() => { setReadAll(true); setShowNotif(false); }}
+                onClick={markAllRead}
                 className="text-xs font-bold tracking-wider transition-colors hover:text-white"
                 style={{ color: readAll ? 'rgba(34,197,94,0.6)' : 'rgba(212,175,55,0.5)' }}>
                 {readAll ? '✓ TODAS LEÍDAS' : 'MARCAR TODAS COMO LEÍDAS'}

@@ -5,7 +5,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 
 const MAX_VIDEO_SECONDS = 30;
-const MAX_FILE_MB = 50;
+const MAX_IMAGE_MB = 8;
+const MAX_VIDEO_MB = 20;
 const MAX_ITEMS_FREE = 6;
 
 interface PortfolioItem {
@@ -72,16 +73,17 @@ const PortfolioUpload = () => {
       return;
     }
 
-    if (file.size > MAX_FILE_MB * 1024 * 1024) {
-      toast.error(`Máximo ${MAX_FILE_MB}MB por archivo`);
-      return;
-    }
-
     const isVideo = file.type.startsWith('video/');
     const isImage = file.type.startsWith('image/');
 
     if (!isVideo && !isImage) {
       toast.error('Solo imágenes (JPG, PNG, WEBP) o vídeos cortos (MP4, MOV)');
+      return;
+    }
+
+    const limitMB = isVideo ? MAX_VIDEO_MB : MAX_IMAGE_MB;
+    if (file.size > limitMB * 1024 * 1024) {
+      toast.error(`Máximo ${limitMB}MB por ${isVideo ? 'vídeo' : 'imagen'}`);
       return;
     }
 
@@ -128,7 +130,7 @@ const PortfolioUpload = () => {
         <span className="text-xs text-muted-foreground ml-auto">{items.length}/{MAX_ITEMS_FREE}</span>
       </h4>
       <p className="text-xs text-muted-foreground mb-3">
-        Fotos (JPG/PNG) o vídeos cortos hasta {MAX_VIDEO_SECONDS}s · máx {MAX_FILE_MB}MB
+        Fotos hasta {MAX_IMAGE_MB}MB · Vídeos hasta {MAX_VIDEO_SECONDS}s / {MAX_VIDEO_MB}MB
       </p>
 
       {items.length > 0 && (

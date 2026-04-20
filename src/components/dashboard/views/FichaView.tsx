@@ -181,7 +181,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
           </p>
         </div>
         {isOwn && slug && (
-          <a href={`/p/${slug}`} target="_blank" rel="noopener noreferrer"
+          <a href={`${import.meta.env.BASE_URL}p/${slug}`} target="_blank" rel="noopener noreferrer"
             className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105"
             style={{ background: BLUE_BG, border: `1px solid ${BLUE_BORDER}`, color: BLUE }}>
             <Globe size={13} /> Ver ficha pública

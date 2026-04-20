@@ -29,6 +29,8 @@ const sanitizeFileName = (name: string): string =>
     .replace(/^_|_$/g, '');
 
 const MAX_SESSIONS_FREE = 3;
+const MAX_SESSIONS_PRO  = 15;
+const MAX_FILE_MB       = 80;
 
 interface SessionFile {
   name: string;
@@ -54,7 +56,7 @@ const AudioUpload = () => {
   }, [profile.genres?.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const isPro = profile.subscription_tier === 'pro' || profile.subscription_tier === 'business';
-  const maxSessions = isPro ? Infinity : MAX_SESSIONS_FREE;
+  const maxSessions = isPro ? MAX_SESSIONS_PRO : MAX_SESSIONS_FREE;
 
   // Load existing sessions from storage
   useEffect(() => {
@@ -90,9 +92,9 @@ const AudioUpload = () => {
     const file = e.target.files?.[0];
     if (!file || !user) return;
     if (!file.type.includes('audio')) { toast.error('Solo archivos de audio (MP3, WAV, M4A)'); return; }
-    if (file.size > 500 * 1024 * 1024) { toast.error('Máximo 500MB'); return; }
+    if (file.size > MAX_FILE_MB * 1024 * 1024) { toast.error(`Máximo ${MAX_FILE_MB}MB por sesión (suficiente para 1h a 128kbps)`); return; }
     if (sessions.length >= maxSessions) {
-      toast.error(`Máximo ${MAX_SESSIONS_FREE} sesiones en plan básico. Actualiza a Pro para ilimitadas.`);
+      toast.error(`Máximo ${maxSessions} sesiones en tu plan. ${!isPro ? 'Actualiza a Pro para hasta 15.' : ''}`);
       return;
     }
 
@@ -135,7 +137,7 @@ const AudioUpload = () => {
         </span>
       </h4>
       <p className="text-xs text-muted-foreground mb-3">
-        Sube tus sesiones grabadas (MP3/WAV/M4A, máx 500MB). {!isPro && `Plan básico: máx ${MAX_SESSIONS_FREE} sesiones. Pro: ilimitadas.`}
+        Sube tus sesiones grabadas (MP3/WAV/M4A, máx {MAX_FILE_MB}MB). {!isPro ? `Plan básico: máx ${MAX_SESSIONS_FREE} sesiones.` : `Plan Pro: hasta ${MAX_SESSIONS_PRO} sesiones.`}
       </p>
 
       {/* Genre selector */}
