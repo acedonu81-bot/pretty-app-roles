@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { FileEdit, Plus, Trash2, Music, Video, Image as ImageIcon, Type, ExternalLink, Loader2, Globe, AlertCircle } from 'lucide-react';
+import { FileEdit, Plus, Trash2, Music, Video, Image as ImageIcon, Type, ExternalLink, Loader2, Globe, AlertCircle, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
@@ -25,11 +25,21 @@ const POST_TYPES = [
 
 type Tab = 'posts' | 'audio' | 'video' | 'images';
 
+const TABS: { id: Tab; label: string; icon: React.FC<any> }[] = [
+  { id: 'posts',  label: 'Posts & Experiencias', icon: Type      },
+  { id: 'audio',  label: 'Audio',                icon: Music     },
+  { id: 'video',  label: 'Vídeo & Música',       icon: Video     },
+  { id: 'images', label: 'Imágenes',             icon: ImageIcon },
+];
+
 interface Props {
-  /** Admin mode: view/edit another user's ficha */
   targetUserId?: string;
   targetName?: string;
 }
+
+const BLUE = '#4285F4';
+const BLUE_BG = 'rgba(66,133,244,0.12)';
+const BLUE_BORDER = 'rgba(66,133,244,0.35)';
 
 const FichaView = ({ targetUserId, targetName }: Props = {}) => {
   const { user } = useAuth();
@@ -43,6 +53,8 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
   const [submitting, setSubmitting] = useState(false);
   const [videoUrl, setVideoUrl] = useState('');
   const [savingVideo, setSavingVideo] = useState(false);
+  const [musicUrl, setMusicUrl] = useState('');
+  const [savingMusic, setSavingMusic] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const ownerId = targetUserId ?? user?.id;
@@ -67,10 +79,11 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
       });
   }, [ownerId]);
 
-  // Load existing bio video
+  // Load existing video & music
   useEffect(() => {
     if (profile.bio_video_url) setVideoUrl(profile.bio_video_url);
-  }, [profile.bio_video_url]);
+    if ((profile as any).bg_music_url) setMusicUrl((profile as any).bg_music_url);
+  }, [profile.bio_video_url, (profile as any).bg_music_url]);
 
   const submitPost = async () => {
     if (!draft.trim() || !user) return;
@@ -81,7 +94,10 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
       .select()
       .single();
     setSubmitting(false);
-    if (error) { toast.error('Error al publicar'); return; }
+    if (error) {
+      toast.error('Error al publicar. Asegúrate de haber ejecutado la migración SQL en Supabase.');
+      return;
+    }
     setPosts(prev => [data as Post, ...prev]);
     setDraft('');
     setMediaUrl('');
@@ -96,12 +112,26 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
     toast.info('Publicación eliminada');
   };
 
-  const saveVideoUrl = async () => {
+  const saveVideoUrl = async (url: string) => {
     if (!user) return;
     setSavingVideo(true);
-    const ok = await profile.updateField({ bio_video_url: videoUrl || null } as any);
+    const ok = await profile.updateField({ bio_video_url: url || null } as any);
     setSavingVideo(false);
-    if (ok) toast.success('Vídeo guardado en tu ficha');
+    if (ok) {
+      setVideoUrl(url);
+      toast.success(url ? 'Vídeo guardado' : 'Vídeo eliminado');
+    }
+  };
+
+  const saveMusicUrl = async (url: string) => {
+    if (!user) return;
+    setSavingMusic(true);
+    const ok = await profile.updateField({ bg_music_url: url || null } as any);
+    setSavingMusic(false);
+    if (ok) {
+      setMusicUrl(url);
+      toast.success(url ? 'Música de fondo guardada' : 'Música de fondo eliminada');
+    }
   };
 
   const getVideoEmbed = (url: string): string | null => {
@@ -113,17 +143,18 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
     return null;
   };
 
+  const getMusicEmbed = (url: string): string | null => {
+    if (!url) return null;
+    if (url.includes('soundcloud.com')) return `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%234285F4&auto_play=false&show_artwork=true`;
+    const yt = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/))([a-zA-Z0-9_-]{11})/);
+    if (yt) return `https://www.youtube.com/embed/${yt[1]}?autoplay=0`;
+    return null;
+  };
+
   const fmtDate = (iso: string) => {
     const d = new Date(iso);
     return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: '2-digit' });
   };
-
-  const TABS: { id: Tab; label: string; icon: React.FC<any> }[] = [
-    { id: 'posts',  label: 'Posts & Experiencias', icon: Type      },
-    { id: 'audio',  label: 'Audio',                icon: Music     },
-    { id: 'video',  label: 'Vídeo',                icon: Video     },
-    { id: 'images', label: 'Imágenes',             icon: ImageIcon },
-  ];
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
@@ -133,20 +164,17 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
           <h2 className="text-2xl font-bold mb-1">
             {targetName
             ? <span className="text-white">Ficha de {targetName}</span>
-            : <><span className="text-white">Tu </span><span style={{ color: '#4285F4' }}>Ficha Pública</span></>
+            : <><span className="text-white">Tu </span><span style={{ color: BLUE }}>Ficha Pública</span></>
           }
           </h2>
           <p className="text-sm text-muted-foreground">
-            Lo que verán fans y empresarios en tu perfil público. Posts, audio, vídeo e imágenes.
+            Lo que verán fans y empresarios en tu perfil público.
           </p>
         </div>
         {isOwn && slug && (
-          <a
-            href={`/p/${slug}`}
-            target="_blank"
-            rel="noopener noreferrer"
+          <a href={`/p/${slug}`} target="_blank" rel="noopener noreferrer"
             className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105"
-            style={{ background: 'rgba(66,133,244,0.12)', border: '1px solid rgba(66,133,244,0.35)', color: '#4285F4' }}>
+            style={{ background: BLUE_BG, border: `1px solid ${BLUE_BORDER}`, color: BLUE }}>
             <Globe size={13} /> Ver ficha pública
           </a>
         )}
@@ -158,9 +186,9 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
           <button key={t.id} onClick={() => setTab(t.id)}
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all"
             style={{
-              background: tab === t.id ? 'rgba(139,92,246,0.12)' : 'rgba(255,255,255,0.03)',
-              border: `1px solid ${tab === t.id ? 'rgba(139,92,246,0.35)' : 'var(--nightlife-border)'}`,
-              color: tab === t.id ? '#4285F4' : '#8E8EA0',
+              background: tab === t.id ? BLUE_BG : 'rgba(255,255,255,0.03)',
+              border: `1px solid ${tab === t.id ? BLUE_BORDER : 'var(--nightlife-border)'}`,
+              color: tab === t.id ? BLUE : '#8E8EA0',
             }}>
             <t.icon size={12} /> {t.label}
           </button>
@@ -172,7 +200,6 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
         <div>
           {isOwn && (
             <div className="glass-panel p-5 mb-5" style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
-              {/* Post type selector */}
               <div className="flex gap-2 mb-3">
                 {POST_TYPES.map(pt => (
                   <button key={pt.id} type="button" onClick={() => setPostType(pt.id)}
@@ -214,9 +241,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
 
               <div className="flex items-center justify-between">
                 <span className="text-xs text-muted-foreground">{draft.length}/1000</span>
-                <button
-                  type="button"
-                  onClick={submitPost}
+                <button type="button" onClick={submitPost}
                   disabled={!draft.trim() || submitting}
                   className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105 disabled:opacity-40"
                   style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
@@ -229,7 +254,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
 
           {loadingPosts && (
             <div className="flex items-center justify-center py-12">
-              <Loader2 size={18} className="animate-spin" style={{ color: '#D4AF37' }} />
+              <Loader2 size={18} className="animate-spin" style={{ color: BLUE }} />
             </div>
           )}
 
@@ -245,7 +270,6 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
             {posts.map(post => (
               <div key={post.id} className="glass-panel p-5"
                 style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
-                {/* Post header */}
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     {(() => {
@@ -255,7 +279,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
                     })()}
                     <span className="text-xs text-muted-foreground">{fmtDate(post.created_at)}</span>
                   </div>
-                  {(isOwn) && (
+                  {isOwn && (
                     <button onClick={() => deletePost(post.id)}
                       className="p-1.5 rounded-lg transition-all hover:scale-105"
                       style={{ background: 'rgba(255,85,85,0.08)', border: '1px solid rgba(255,85,85,0.2)', color: '#ff5555' }}
@@ -265,10 +289,8 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
                   )}
                 </div>
 
-                {/* Content */}
                 <p className="text-sm leading-relaxed whitespace-pre-wrap">{post.content}</p>
 
-                {/* Media */}
                 {post.media_url && post.post_type === 'image' && (
                   <div className="mt-3 rounded-xl overflow-hidden">
                     <img src={post.media_url} alt="Post media"
@@ -304,65 +326,130 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
           ) : (
             <div className="glass-panel p-8 text-center">
               <AlertCircle size={20} style={{ color: '#8E8EA0' }} className="mx-auto mb-2" />
-              <p className="text-xs text-muted-foreground">Sólo el propietario puede gestionar sus sesiones de audio.</p>
+              <p className="text-xs text-muted-foreground">Solo el propietario puede gestionar sus sesiones de audio.</p>
             </div>
           )}
         </div>
       )}
 
-      {/* ── Vídeo Destacado ──────────────────────────────────────────────── */}
+      {/* ── Vídeo & Música ───────────────────────────────────────────────── */}
       {tab === 'video' && (
-        <div>
-          <div className="glass-panel p-5 mb-5" style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
+        <div className="space-y-5">
+          {/* Vídeo principal */}
+          <div className="glass-panel p-5" style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
             <h4 className="text-sm font-bold mb-1 flex items-center gap-2">
               <Video size={14} style={{ color: '#D4AF37' }} /> Vídeo Principal
             </h4>
             <p className="text-xs text-muted-foreground mb-4">
               Aparece destacado en tu ficha pública. Usa YouTube o Vimeo.
             </p>
-            <div className="flex gap-2">
-              <input
-                type="url"
-                value={videoUrl}
-                onChange={e => setVideoUrl(e.target.value)}
-                placeholder="https://youtu.be/... o vimeo.com/..."
-                className="nightlife-input text-sm flex-1"
-                readOnly={!isOwn}
-              />
-              {isOwn && (
-                <button
-                  type="button"
-                  onClick={saveVideoUrl}
+            {isOwn ? (
+              <div className="flex gap-2">
+                <input
+                  type="url"
+                  value={videoUrl}
+                  onChange={e => setVideoUrl(e.target.value)}
+                  placeholder="https://youtu.be/... o vimeo.com/..."
+                  className="nightlife-input text-sm flex-1"
+                />
+                {videoUrl && (
+                  <button type="button" onClick={() => saveVideoUrl('')}
+                    className="p-2.5 rounded-xl transition-all hover:scale-105"
+                    style={{ background: 'rgba(255,85,85,0.08)', border: '1px solid rgba(255,85,85,0.2)', color: '#ff5555' }}
+                    title="Eliminar vídeo">
+                    <X size={14} />
+                  </button>
+                )}
+                <button type="button" onClick={() => saveVideoUrl(videoUrl)}
                   disabled={savingVideo}
                   className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105 disabled:opacity-50"
                   style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                   {savingVideo ? <Loader2 size={13} className="animate-spin" /> : 'Guardar'}
                 </button>
-              )}
-            </div>
-          </div>
-
-          {videoUrl && (() => {
-            const embed = getVideoEmbed(videoUrl);
-            return embed ? (
-              <div className="glass-panel overflow-hidden rounded-2xl" style={{ aspectRatio: '16/9' }}>
-                <iframe src={embed} className="w-full h-full" allowFullScreen title="Vídeo principal" />
               </div>
             ) : (
-              <div className="glass-panel p-5 flex items-center gap-3">
-                <AlertCircle size={16} style={{ color: '#D4AF37' }} />
-                <p className="text-xs text-muted-foreground">URL no reconocida. Usa YouTube o Vimeo.</p>
-              </div>
-            );
-          })()}
+              <input type="url" value={videoUrl} readOnly className="nightlife-input text-sm w-full" />
+            )}
 
-          {!videoUrl && (
-            <div className="glass-panel p-12 flex flex-col items-center text-center gap-3"
-              style={{ border: '1px dashed rgba(212,175,55,0.12)' }}>
-              <Video size={28} style={{ color: 'rgba(212,175,55,0.2)' }} />
-              <p className="text-sm text-muted-foreground">Sin vídeo destacado aún.</p>
-            </div>
-          )}
+            {videoUrl && (() => {
+              const embed = getVideoEmbed(videoUrl);
+              return embed ? (
+                <div className="mt-4 rounded-2xl overflow-hidden" style={{ aspectRatio: '16/9' }}>
+                  <iframe src={embed} className="w-full h-full" allowFullScreen title="Vídeo principal" />
+                </div>
+              ) : (
+                <div className="mt-3 glass-panel p-4 flex items-center gap-3">
+                  <AlertCircle size={14} style={{ color: '#D4AF37' }} />
+                  <p className="text-xs text-muted-foreground">URL no reconocida. Usa YouTube o Vimeo.</p>
+                </div>
+              );
+            })()}
+
+            {!videoUrl && (
+              <div className="mt-4 p-8 rounded-xl flex flex-col items-center text-center gap-2"
+                style={{ border: '1px dashed rgba(212,175,55,0.12)' }}>
+                <Video size={24} style={{ color: 'rgba(212,175,55,0.2)' }} />
+                <p className="text-sm text-muted-foreground">Sin vídeo destacado aún.</p>
+              </div>
+            )}
+          </div>
+
+          {/* Música de fondo */}
+          <div className="glass-panel p-5" style={{ border: `1px solid ${BLUE_BORDER}` }}>
+            <h4 className="text-sm font-bold mb-1 flex items-center gap-2">
+              <Music size={14} style={{ color: BLUE }} /> Música de Fondo
+            </h4>
+            <p className="text-xs text-muted-foreground mb-4">
+              Suena cuando alguien abre tu ficha. Usa SoundCloud o YouTube.
+            </p>
+            {isOwn ? (
+              <div className="flex gap-2">
+                <input
+                  type="url"
+                  value={musicUrl}
+                  onChange={e => setMusicUrl(e.target.value)}
+                  placeholder="https://soundcloud.com/... o youtu.be/..."
+                  className="nightlife-input text-sm flex-1"
+                />
+                {musicUrl && (
+                  <button type="button" onClick={() => saveMusicUrl('')}
+                    className="p-2.5 rounded-xl transition-all hover:scale-105"
+                    style={{ background: 'rgba(255,85,85,0.08)', border: '1px solid rgba(255,85,85,0.2)', color: '#ff5555' }}
+                    title="Eliminar música">
+                    <X size={14} />
+                  </button>
+                )}
+                <button type="button" onClick={() => saveMusicUrl(musicUrl)}
+                  disabled={savingMusic}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105 disabled:opacity-50"
+                  style={{ background: BLUE_BG, border: `1px solid ${BLUE_BORDER}`, color: BLUE }}>
+                  {savingMusic ? <Loader2 size={13} className="animate-spin" /> : 'Guardar'}
+                </button>
+              </div>
+            ) : (
+              <input type="url" value={musicUrl} readOnly className="nightlife-input text-sm w-full" />
+            )}
+
+            {musicUrl && (() => {
+              const embed = getMusicEmbed(musicUrl);
+              return embed ? (
+                <div className="mt-4 rounded-xl overflow-hidden">
+                  <iframe
+                    src={embed}
+                    className="w-full"
+                    style={{ height: musicUrl.includes('soundcloud') ? 166 : 80 }}
+                    allowFullScreen
+                    title="Música de fondo"
+                  />
+                </div>
+              ) : (
+                <div className="mt-3 glass-panel p-4 flex items-center gap-3">
+                  <AlertCircle size={14} style={{ color: BLUE }} />
+                  <p className="text-xs text-muted-foreground">Usa SoundCloud o YouTube.</p>
+                </div>
+              );
+            })()}
+          </div>
         </div>
       )}
 

@@ -23,3 +23,6 @@ CREATE POLICY "profile_posts_own_delete"
 
 -- Bio video URL on profiles (for public profile embed)
 ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS bio_video_url text;
+
+-- Background music URL on profiles (SoundCloud/Spotify/YouTube embed)
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS bg_music_url text;
