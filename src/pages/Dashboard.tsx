@@ -91,7 +91,6 @@ const Dashboard = () => {
       case 'messages': return <MessagesView initialUserId={messagesTarget?.userId} initialName={messagesTarget?.name} />;
       case 'calendar':   return <CalendarView />;
       case 'contracts':  return <ContractView />;
-      case 'store':      return <div className="animate-[fadeIn_0.4s_ease] flex flex-col items-center justify-center py-20 text-center gap-4"><span className="text-5xl">🛒</span><h2 className="text-2xl font-bold">Tienda <span className="text-gradient">XPEAK</span></h2><p className="text-sm text-muted-foreground max-w-sm">Marketplace para que los profesionales vendan merchandising, packs de samples, sesiones exclusivas y productos digitales. <span style={{ color: '#D4AF37', fontWeight: 700 }}>Próximamente.</span></p></div>;
       case 'profile': return <ProfileView onNavigate={nav} />;
       case 'ficha':   return <FichaView />;
       case 'mapa': return <MapaView />;

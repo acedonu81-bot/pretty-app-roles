@@ -64,7 +64,6 @@ const navSections = [
       { id: 'calendar',   icon: CalendarDays,  label: 'Calendario' },
       { id: 'messages',   icon: MessageSquare, label: 'Mensajes' },
       { id: 'contracts',  icon: FileText,      label: 'Contratos' },
-      { id: 'store',      icon: ShoppingBag,   label: 'Tienda', badge: 'SOON' },
     ],
   },
   {

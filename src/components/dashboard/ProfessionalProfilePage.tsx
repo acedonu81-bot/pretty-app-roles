@@ -637,19 +637,6 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                   </motion.div>
                 )}
 
-                {/* Store */}
-                <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}>
-                  <div className="rounded-xl p-4 text-center"
-                    style={{ background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(255,255,255,0.08)' }}>
-                    <ShoppingBag size={20} className="mx-auto mb-2" style={{ color: 'rgba(255,255,255,0.2)' }} />
-                    <p className="text-xs font-bold mb-0.5">Tienda de {p.name}</p>
-                    <p className="text-xs text-muted-foreground mb-2">Samples, merch, sesiones exclusivas.</p>
-                    <span className="text-xs font-black px-3 py-1 rounded-full tracking-widest"
-                      style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
-                      PRÓXIMAMENTE
-                    </span>
-                  </div>
-                </motion.div>
 
                 {/* Flash booking */}
                 {p.isFlashActive && (

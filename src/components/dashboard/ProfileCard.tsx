@@ -46,7 +46,6 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
   const [showLegal, setShowLegal] = useState(false);
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [showContract, setShowContract] = useState(false);
-  const [showStore, setShowStore] = useState(false);
   // Real vote count from Supabase (only loaded for rookie profiles)
   const realProfileId = (p as any).userId ?? p.userId ?? null;
   const [voteCount, setVoteCount] = useState(0);
@@ -381,16 +380,9 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
         </div>
       )}
 
-      {/* Tienda + Contrato row */}
-      <div className="flex gap-2 mb-3" onClick={e => e.stopPropagation()}>
-        <button
-          type="button"
-          onClick={() => setShowStore(true)}
-          className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
-          style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.5)' }}>
-          <ShoppingBag size={12} /> Tienda
-        </button>
-        {currentUser.role === 'empresario' && (
+      {/* Contrato row */}
+      {currentUser.role === 'empresario' && (
+        <div className="flex gap-2 mb-3" onClick={e => e.stopPropagation()}>
           <button
             type="button"
             onClick={() => setShowContract(true)}
@@ -398,8 +390,8 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
             style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
             <FileText size={12} /> Contrato
           </button>
-        )}
-      </div>
+        </div>
+      )}
 
       <div className="py-2 mb-2 px-2 rounded-lg" onClick={e => e.stopPropagation()}
         style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
@@ -474,40 +466,6 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
 
       <LegalModal open={showLegal} onClose={() => setShowLegal(false)} />
 
-      {/* Store modal */}
-      {showStore && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          onClick={() => setShowStore(false)}>
-          <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)' }} />
-          <div className="relative w-full max-w-sm rounded-2xl p-6"
-            style={{ background: '#0a0a0e', border: '1px solid rgba(255,255,255,0.1)' }}
-            onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-5">
-              <div className="flex items-center gap-2">
-                <ShoppingBag size={16} style={{ color: '#D4AF37' }} />
-                <h3 className="text-base font-bold">Tienda de <span style={{ color: '#D4AF37' }}>{p.name}</span></h3>
-              </div>
-              <button onClick={() => setShowStore(false)} className="p-1 rounded hover:bg-white/5">
-                <X size={14} className="text-muted-foreground" />
-              </button>
-            </div>
-            <div className="text-center py-8">
-              <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center"
-                style={{ background: 'rgba(212,175,55,0.06)', border: '1px dashed rgba(212,175,55,0.2)' }}>
-                <ShoppingBag size={24} style={{ color: 'rgba(212,175,55,0.3)' }} />
-              </div>
-              <p className="text-sm font-bold mb-1">Tienda sin productos aún</p>
-              <p className="text-xs text-muted-foreground mb-4">
-                {p.name} podrá vender merchandising, packs de samples, sesiones y más cuando active su tienda.
-              </p>
-              <span className="text-xs font-black px-3 py-1 rounded-full tracking-widest"
-                style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
-                PRÓXIMAMENTE
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Contract modal */}
       {showContract && (
