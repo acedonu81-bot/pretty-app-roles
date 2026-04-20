@@ -1,11 +1,99 @@
-import { useState, useEffect, useRef } from 'react';
-import { FileEdit, Plus, Trash2, Music, Video, Image as ImageIcon, Type, ExternalLink, Loader2, Globe, AlertCircle, X } from 'lucide-react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { FileEdit, Plus, Trash2, Music, Video, Image as ImageIcon, Type, ExternalLink, Loader2, Globe, AlertCircle, X, Upload } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { toast } from 'sonner';
 import AudioUpload from '@/components/dashboard/AudioUpload';
 import PortfolioUpload from '@/components/dashboard/PortfolioUpload';
+
+const MAX_VIDEO_SESSION_MB = 50;
+const MAX_VIDEO_SESSION_S  = 60;
+
+interface VideoItem { name: string; url: string; path: string; }
+
+const VideoSessionUpload = ({ maxSessions, userId }: { maxSessions: number; userId: string }) => {
+  const [items, setItems] = useState<VideoItem[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const load = useCallback(async () => {
+    const { data } = await supabase.storage.from('audio-sessions').list(`${userId}/video-sessions`);
+    if (data) setItems(data.map(f => {
+      const path = `${userId}/video-sessions/${f.name}`;
+      const { data: u } = supabase.storage.from('audio-sessions').getPublicUrl(path);
+      return { name: f.name.replace(/^\d+-/, ''), url: u.publicUrl, path };
+    }));
+  }, [userId]);
+
+  useEffect(() => { load(); }, [load]);
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('video/')) { toast.error('Solo MP4, MOV o WebM'); return; }
+    if (file.size > MAX_VIDEO_SESSION_MB * 1024 * 1024) { toast.error(`Máximo ${MAX_VIDEO_SESSION_MB}MB por sesión`); return; }
+    if (items.length >= maxSessions) { toast.error(`Máximo ${maxSessions} sesiones de vídeo en tu plan`); return; }
+    try {
+      const url = URL.createObjectURL(file);
+      const v = document.createElement('video');
+      v.preload = 'metadata';
+      const dur: number = await new Promise((res, rej) => {
+        v.onloadedmetadata = () => { URL.revokeObjectURL(url); res(v.duration); };
+        v.onerror = () => { URL.revokeObjectURL(url); rej(); };
+        v.src = url;
+      });
+      if (dur > MAX_VIDEO_SESSION_S) { toast.error(`Máximo ${MAX_VIDEO_SESSION_S}s (duración: ${Math.round(dur)}s)`); return; }
+    } catch { toast.error('No se pudo verificar el vídeo'); return; }
+
+    setUploading(true);
+    const safe = file.name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9._-]/g,'_');
+    const path = `${userId}/video-sessions/${Date.now()}-${safe}`;
+    const { error } = await supabase.storage.from('audio-sessions').upload(path, file);
+    if (error) { toast.error('Error: ' + error.message); setUploading(false); return; }
+    await load();
+    toast.success('Sesión de vídeo subida');
+    setUploading(false);
+    if (inputRef.current) inputRef.current.value = '';
+  };
+
+  const remove = async (item: VideoItem) => {
+    await supabase.storage.from('audio-sessions').remove([item.path]);
+    setItems(p => p.filter(i => i.path !== item.path));
+    toast.info('Sesión eliminada');
+  };
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-xs text-muted-foreground">{items.length}/{maxSessions} sesiones</span>
+      </div>
+      {items.length > 0 && (
+        <div className="space-y-2 mb-3">
+          {items.map((item, i) => (
+            <div key={i} className="flex items-center gap-2 p-2 rounded-lg"
+              style={{ background: 'rgba(66,133,244,0.05)', border: '1px solid rgba(66,133,244,0.15)' }}>
+              <Video size={13} style={{ color: '#4285F4' }} />
+              <span className="text-xs flex-1 truncate">{item.name}</span>
+              <button onClick={() => remove(item)} className="p-1 rounded hover:bg-white/5">
+                <X size={12} style={{ color: '#ff5555' }} />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+      {items.length < maxSessions && (
+        <button onClick={() => inputRef.current?.click()} disabled={uploading}
+          className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border-2 border-dashed text-xs font-bold transition-all hover:scale-[1.01] disabled:opacity-50"
+          style={{ borderColor: 'rgba(66,133,244,0.2)', color: '#4285F4', background: 'rgba(66,133,244,0.03)' }}>
+          {uploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+          {uploading ? 'Subiendo...' : 'Subir sesión de vídeo'}
+        </button>
+      )}
+      <input ref={inputRef} type="file" accept="video/mp4,video/quicktime,video/webm" onChange={handleUpload} className="hidden" />
+    </div>
+  );
+};
 
 interface Post {
   id: string;
@@ -402,6 +490,38 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
               </div>
             )}
           </div>
+
+          {/* Sesiones de vídeo — Starter+ */}
+          {isOwn && (() => {
+            const tier = (profile as any).subscription_tier ?? 'free';
+            const isPro = tier === 'pro' || tier === 'business';
+            const isStarter = tier === 'starter' || tier === 'artist';
+            const canUpload = isPro || isStarter;
+            const maxVids = isPro ? 10 : 3;
+            return (
+              <div className="glass-panel p-5" style={{ border: '1px solid rgba(66,133,244,0.15)' }}>
+                <h4 className="text-sm font-bold mb-1 flex items-center gap-2">
+                  <Video size={14} style={{ color: BLUE }} /> Sesiones de Vídeo
+                  <span className="text-xs px-1.5 py-0.5 rounded font-bold"
+                    style={{ background: 'rgba(66,133,244,0.1)', color: BLUE, border: `1px solid ${BLUE_BORDER}` }}>
+                    {canUpload ? `Starter/Pro · máx ${maxVids}` : 'Starter+'}
+                  </span>
+                </h4>
+                <p className="text-xs text-muted-foreground mb-3">
+                  Sube clips de actuaciones (MP4/MOV, máx 50MB, 60s). Solo Starter y Pro.
+                </p>
+                {canUpload ? (
+                  <VideoSessionUpload maxSessions={maxVids} userId={user!.id} />
+                ) : (
+                  <div className="p-6 rounded-xl flex flex-col items-center text-center gap-2"
+                    style={{ border: '1px dashed rgba(66,133,244,0.15)' }}>
+                    <Video size={22} style={{ color: 'rgba(66,133,244,0.2)' }} />
+                    <p className="text-xs text-muted-foreground">Activa <strong className="text-white">Starter</strong> para subir sesiones de vídeo.</p>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
 
           {/* Contenido de perfil (audio_embed_url / stream_url) */}
           {isOwn && (profile.audio_embed_url || (profile as any).stream_url) && (

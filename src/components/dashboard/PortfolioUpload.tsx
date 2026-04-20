@@ -2,12 +2,15 @@ import { useState, useRef, useEffect } from 'react';
 import { Upload, Image, X, Plus, Video } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useProfile } from '@/hooks/useProfile';
 import { toast } from 'sonner';
 
-const MAX_VIDEO_SECONDS = 30;
-const MAX_IMAGE_MB = 8;
-const MAX_VIDEO_MB = 20;
-const MAX_ITEMS_FREE = 6;
+const MAX_VIDEO_SECONDS = 60;
+const MAX_IMAGE_MB      = 15;
+const MAX_VIDEO_MB      = 50;
+const MAX_ITEMS_FREE    = 6;
+const MAX_ITEMS_STARTER = 8;
+const MAX_ITEMS_PRO     = 12;
 
 interface PortfolioItem {
   name: string;
@@ -44,6 +47,11 @@ const PortfolioUpload = () => {
   const [items, setItems] = useState<PortfolioItem[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const { user } = useAuth();
+  const profile = useProfile();
+  const tier = (profile as any).subscription_tier ?? 'free';
+  const isPro = tier === 'pro' || tier === 'business';
+  const isStarter = tier === 'starter' || tier === 'artist';
+  const maxItems = isPro ? MAX_ITEMS_PRO : isStarter ? MAX_ITEMS_STARTER : MAX_ITEMS_FREE;
 
   useEffect(() => {
     const load = async () => {
@@ -68,8 +76,8 @@ const PortfolioUpload = () => {
     const file = e.target.files?.[0];
     if (!file || !user) return;
 
-    if (items.length >= MAX_ITEMS_FREE) {
-      toast.error(`Máximo ${MAX_ITEMS_FREE} elementos en el portfolio.`);
+    if (items.length >= maxItems) {
+      toast.error(`Máximo ${maxItems} elementos en tu plan.`);
       return;
     }
 
@@ -127,10 +135,10 @@ const PortfolioUpload = () => {
     <div className="glass-panel p-4">
       <h4 className="text-sm font-bold mb-1 flex items-center gap-2">
         <Image size={16} style={{ color: '#D4AF37' }} /> Portfolio
-        <span className="text-xs text-muted-foreground ml-auto">{items.length}/{MAX_ITEMS_FREE}</span>
+        <span className="text-xs text-muted-foreground ml-auto">{items.length}/{maxItems}</span>
       </h4>
       <p className="text-xs text-muted-foreground mb-3">
-        Fotos hasta {MAX_IMAGE_MB}MB · Vídeos hasta {MAX_VIDEO_SECONDS}s / {MAX_VIDEO_MB}MB
+        Fotos hasta {MAX_IMAGE_MB}MB · Vídeos hasta {MAX_VIDEO_SECONDS}s / {MAX_VIDEO_MB}MB · Free: {MAX_ITEMS_FREE} · Starter: {MAX_ITEMS_STARTER} · Pro: {MAX_ITEMS_PRO}
       </p>
 
       {items.length > 0 && (
@@ -166,7 +174,7 @@ const PortfolioUpload = () => {
         </div>
       )}
 
-      {items.length < MAX_ITEMS_FREE && (
+      {items.length < maxItems && (
         <button
           onClick={() => inputRef.current?.click()}
           disabled={uploading}

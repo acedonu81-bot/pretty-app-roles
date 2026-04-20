@@ -28,9 +28,10 @@ const sanitizeFileName = (name: string): string =>
     .replace(/_+/g, '_')
     .replace(/^_|_$/g, '');
 
-const MAX_SESSIONS_FREE = 3;
-const MAX_SESSIONS_PRO  = 15;
-const MAX_FILE_MB       = 80;
+const MAX_SESSIONS_FREE    = 3;
+const MAX_SESSIONS_STARTER = 5;
+const MAX_SESSIONS_PRO     = 15;
+const MAX_FILE_MB          = 256;
 
 interface SessionFile {
   name: string;
@@ -55,8 +56,10 @@ const AudioUpload = () => {
     }
   }, [profile.genres?.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const isPro = profile.subscription_tier === 'pro' || profile.subscription_tier === 'business';
-  const maxSessions = isPro ? MAX_SESSIONS_PRO : MAX_SESSIONS_FREE;
+  const tier = profile.subscription_tier ?? 'free';
+  const isPro = tier === 'pro' || tier === 'business';
+  const isStarter = tier === 'starter' || tier === 'artist';
+  const maxSessions = isPro ? MAX_SESSIONS_PRO : isStarter ? MAX_SESSIONS_STARTER : MAX_SESSIONS_FREE;
 
   // Load existing sessions from storage
   useEffect(() => {
@@ -137,7 +140,7 @@ const AudioUpload = () => {
         </span>
       </h4>
       <p className="text-xs text-muted-foreground mb-3">
-        Sube tus sesiones grabadas (MP3/WAV/M4A, máx {MAX_FILE_MB}MB). {!isPro ? `Plan básico: máx ${MAX_SESSIONS_FREE} sesiones.` : `Plan Pro: hasta ${MAX_SESSIONS_PRO} sesiones.`}
+        MP3/WAV/M4A · máx {MAX_FILE_MB}MB (~1.5h a 256kbps). Free: {MAX_SESSIONS_FREE} · Starter: {MAX_SESSIONS_STARTER} · Pro: {MAX_SESSIONS_PRO}
       </p>
 
       {/* Genre selector */}
