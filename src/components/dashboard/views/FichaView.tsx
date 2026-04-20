@@ -15,6 +15,7 @@ interface VideoItem { name: string; url: string; path: string; }
 const VideoSessionUpload = ({ maxSessions, userId }: { maxSessions: number; userId: string }) => {
   const [items, setItems] = useState<VideoItem[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [rightsConfirmed, setRightsConfirmed] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const load = useCallback(async () => {
@@ -83,7 +84,21 @@ const VideoSessionUpload = ({ maxSessions, userId }: { maxSessions: number; user
         </div>
       )}
       {items.length < maxSessions && (
-        <button onClick={() => inputRef.current?.click()} disabled={uploading}
+        <label className="flex items-start gap-2 mb-3 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={rightsConfirmed}
+            onChange={e => setRightsConfirmed(e.target.checked)}
+            className="mt-0.5 flex-shrink-0 accent-[#4285F4]"
+          />
+          <span className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>
+            Declaro que soy titular o tengo autorización para publicar este contenido, conforme a los{' '}
+            <a href="/terminos" target="_blank" rel="noopener noreferrer" style={{ color: '#4285F4' }}>Términos y Condiciones</a>.
+          </span>
+        </label>
+      )}
+      {items.length < maxSessions && (
+        <button onClick={() => inputRef.current?.click()} disabled={uploading || !rightsConfirmed}
           className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border-2 border-dashed text-xs font-bold transition-all hover:scale-[1.01] disabled:opacity-50"
           style={{ borderColor: 'rgba(66,133,244,0.2)', color: '#4285F4', background: 'rgba(66,133,244,0.03)' }}>
           {uploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}

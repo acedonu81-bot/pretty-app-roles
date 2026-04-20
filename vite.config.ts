@@ -6,7 +6,7 @@ import { componentTagger } from "lovable-tagger";
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   // Use './' so Capacitor can load assets from the local filesystem on device
-  base: mode === "production" ? "/pretty-app-roles/" : "/",
+  base: "/",
   server: {
     host: "::",
     port: 8080,

@@ -175,14 +175,18 @@ const SubscriptionView = () => {
                 ))}
               </div>
 
-              <button disabled className="w-full py-2.5 rounded-lg text-sm font-bold cursor-default"
-                style={{
-                  background: isActive ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.03)',
-                  color: isActive ? '#D4AF37' : 'rgba(255,255,255,0.2)',
-                  border: `1px solid ${isActive ? 'rgba(212,175,55,0.3)' : 'rgba(255,255,255,0.06)'}`,
-                }}>
-                {isActive ? '✓ Plan Actual' : 'Próximamente'}
-              </button>
+              {isActive ? (
+                <button disabled className="w-full py-2.5 rounded-lg text-sm font-bold cursor-default"
+                  style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' }}>
+                  ✓ Plan Actual
+                </button>
+              ) : (
+                <a href={`mailto:admin@xpeak.es?subject=Solicitud%20plan%20${encodeURIComponent(plan.name)}&body=Hola,%20quiero%20activar%20el%20plan%20${encodeURIComponent(plan.name)}.`}
+                  className="w-full py-2.5 rounded-lg text-sm font-bold text-center block transition-all hover:scale-[1.01]"
+                  style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
+                  Solicitar acceso →
+                </a>
+              )}
 
               {isActive && plan.id !== 'free' && (
                 <button onClick={() => { setCancelPlanId(plan.id); setCancelPlanName(plan.name); setCancelModalOpen(true); }}
@@ -316,10 +320,11 @@ const SubscriptionView = () => {
               <div className="flex flex-col items-center gap-1 flex-shrink-0">
                 <p className="text-xl font-black" style={{ color: '#D4AF37' }}>9,99€</p>
                 <p className="text-[0.75rem] text-muted-foreground text-center">por fin de semana</p>
-                <button disabled className="px-4 py-1.5 rounded-lg text-xs font-bold cursor-not-allowed mt-1"
-                  style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.2)' }}>
-                  Próximamente
-                </button>
+                <a href="mailto:admin@xpeak.es?subject=Top%20Weekend%20-%20Lista%20de%20espera"
+                  className="px-4 py-1.5 rounded-lg text-xs font-bold mt-1 text-center block transition-all hover:scale-105"
+                  style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
+                  Apuntarme →
+                </a>
               </div>
             </div>
           </div>
@@ -359,10 +364,11 @@ const SubscriptionView = () => {
                 19,99€ <span className="text-xs font-normal text-muted-foreground">pago único · para siempre en tu perfil</span>
               </p>
             </div>
-            <button disabled className="shrink-0 px-6 py-2.5 rounded-lg text-sm font-bold cursor-not-allowed"
-              style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)', opacity: 0.6 }}>
-              Próximamente
-            </button>
+            <a href="mailto:admin@xpeak.es?subject=Verificaci%C3%B3n%20de%20identidad%20-%20Sello%20de%20Oro"
+              className="shrink-0 px-6 py-2.5 rounded-lg text-sm font-bold text-center transition-all hover:scale-105"
+              style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' }}>
+              Solicitar →
+            </a>
           </div>
         </div>
       )}

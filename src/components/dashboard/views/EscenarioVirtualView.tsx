@@ -369,8 +369,8 @@ const EscenarioVirtualView = () => {
             <MessageSquare size={14} style={{ color: '#D4AF37' }} />
             <span className="text-xs font-bold uppercase tracking-wider">Chat en Directo</span>
             <span className="text-[0.7rem] font-bold px-1.5 py-0.5 rounded ml-auto"
-              style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
-              PRÓXIMAMENTE
+              style={{ background: 'rgba(34,197,94,0.08)', color: 'rgba(34,197,94,0.6)', border: '1px solid rgba(34,197,94,0.15)' }}>
+              BETA
             </span>
           </div>
 
@@ -387,7 +387,7 @@ const EscenarioVirtualView = () => {
                   {isLive ? 'Sin espectadores aún' : 'Inicia el directo para activar el chat'}
                 </p>
                 <p className="text-[0.75rem] text-muted-foreground max-w-[160px] leading-relaxed">
-                  El chat en tiempo real se conectará vía Supabase Realtime en la próxima versión.
+                  Los espectadores podrán escribir aquí mientras emites en directo.
                 </p>
               </div>
             )}

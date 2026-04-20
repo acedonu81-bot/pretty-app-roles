@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { FileText, Plus, AlertCircle, Scale, ShieldCheck, BookOpen, ChevronRight, Download, Trash2, RefreshCw } from 'lucide-react';
+import { FileText, Plus, AlertCircle, Scale, ShieldCheck, BookOpen, Download, Trash2, RefreshCw, ChevronRight } from 'lucide-react';
 import ContractModal from '@/components/dashboard/ContractModal';
 import type { Profile } from '@/data/profiles';
 import { supabase } from '@/integrations/supabase/client';
@@ -103,7 +103,6 @@ const ContractView = () => {
   const [showModal, setShowModal] = useState(false);
   const [customName, setCustomName] = useState('');
   const [customRole, setCustomRole] = useState<string>('dj');
-  const [soonOpen, setSoonOpen] = useState(false);
   const [contracts, setContracts] = useState<ContractRow[]>([]);
   const [loading, setLoading] = useState(false);
   const [csvYear, setCsvYear] = useState(new Date().getFullYear());
@@ -378,29 +377,6 @@ const ContractView = () => {
         ))}
       </div>
 
-      {/* Coming soon features */}
-      <div className="glass-panel" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
-        <button type="button" onClick={() => setSoonOpen(o => !o)}
-          className="w-full flex items-center justify-between p-5 text-left"
-          style={{ background: 'transparent' }}>
-          <h3 className="text-base font-bold">Próximamente en Contratos</h3>
-          <ChevronRight size={16} className="transition-transform" style={{ transform: soonOpen ? 'rotate(90deg)' : 'rotate(0deg)', color: '#8E8EA0' }} />
-        </button>
-        {soonOpen && (
-          <div className="px-5 pb-5 space-y-3">
-            {[
-              'Firma digital con certificado cualificado (eIDAS)',
-              'Envío al profesional para contra-firma',
-              'Generación automática desde Flash Booking confirmado',
-            ].map(f => (
-              <div key={f} className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: 'rgba(212,175,55,0.3)' }} />
-                <span className="text-sm text-muted-foreground">{f}</span>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
 
       {showModal && (
         <ContractModal professional={professional} onClose={() => setShowModal(false)} onSaved={handleSaved} />

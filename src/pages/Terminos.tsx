@@ -90,13 +90,15 @@ const Terminos = () => {
 
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>9. Derechos de Propiedad Intelectual sobre Contenidos Musicales</h2>
-            <p className="mb-2">Al subir sesiones de audio, mezclas o cualquier contenido musical a la Plataforma, el usuario declara y garantiza que:</p>
+            <p className="mb-2">Al subir sesiones de audio, mezclas, vídeos o cualquier contenido a la Plataforma, el usuario declara, garantiza y acepta que:</p>
             <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-              <li>Posee los derechos necesarios sobre el contenido publicado, o cuenta con las licencias oportunas de los titulares de los derechos (SGAE, AIE, AGEDI u otras entidades de gestión).</li>
-              <li>Es el único responsable del cumplimiento de la normativa de propiedad intelectual aplicable, incluida la Ley 21/2022 de transposición de la Directiva (UE) 2019/790 sobre derechos de autor en el mercado único digital.</li>
-              <li>XPEAK actúa como prestador de servicios de alojamiento conforme al art. 14 de la Directiva 2000/31/CE y no será responsable de infracciones cometidas por los usuarios, siempre que actúe con diligencia en la retirada de contenidos infractores una vez notificada.</li>
+              <li>Es el único autor y titular del contenido subido, <strong className="text-foreground">o bien cuenta con todas las licencias, permisos y autorizaciones necesarias</strong> de los titulares de los derechos sobre las obras incorporadas (incluyendo, sin limitación, las entidades de gestión SGAE, AIE, AGEDI o equivalentes extranjeras).</li>
+              <li>En el caso de mezclas o sesiones que incorporen grabaciones de terceros (tracks, fonogramas, interpretaciones), el usuario es el único responsable de haber obtenido las autorizaciones oportunas de los titulares de los derechos de reproducción y comunicación pública antes de publicar dicho contenido.</li>
+              <li>Es el único responsable del cumplimiento de la normativa de propiedad intelectual aplicable, incluida la Ley 21/2022 de transposición de la Directiva (UE) 2019/790 sobre derechos de autor en el mercado único digital (DSM).</li>
+              <li>XPEAK actúa exclusivamente como prestador de servicios de alojamiento (<em>hosting</em>) conforme al art. 14 de la Directiva 2000/31/CE y al art. 17 de la Directiva (UE) 2019/790, y <strong className="text-foreground">no adquiere responsabilidad alguna</strong> sobre las infracciones cometidas por los usuarios, siempre que actúe con diligencia en la retirada de contenidos infractores una vez notificada.</li>
             </ul>
-            <p className="mt-2">XPEAK dispone de un procedimiento de notificación y retirada de contenidos infractores (<em>notice and takedown</em>). Las solicitudes deben enviarse a <span style={{ color: '#D4AF37' }}>legal@xpeak.es</span> indicando el contenido infractor y la titularidad acreditada.</p>
+            <p className="mt-3 mb-2"><strong style={{ color: '#fff' }}>Indemnización.</strong> El usuario se compromete a <strong className="text-foreground">mantener indemne a XPEAK</strong>, sus administradores, empleados y colaboradores frente a cualquier reclamación, demanda, sanción, coste o gasto (incluidos honorarios de abogado) derivados de: (i) el incumplimiento por el usuario de las declaraciones contenidas en esta cláusula; (ii) cualquier infracción de derechos de propiedad intelectual cometida mediante el contenido subido por el usuario; o (iii) cualquier reclamación de un tercero titular de derechos sobre dicho contenido.</p>
+            <p className="mt-2">XPEAK dispone de un procedimiento de notificación y retirada de contenidos infractores (<em>notice and takedown</em>). Las solicitudes deben enviarse a <span style={{ color: '#D4AF37' }}>legal@xpeak.es</span> indicando el contenido infractor, la titularidad acreditada y los datos de contacto del solicitante. XPEAK procederá a la retirada cautelar en un plazo razonable desde la recepción de la notificación.</p>
           </section>
 
           <section>

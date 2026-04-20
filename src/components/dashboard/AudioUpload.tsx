@@ -45,6 +45,7 @@ const AudioUpload = () => {
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [showGenres, setShowGenres] = useState(false);
   const [savingGenres, setSavingGenres] = useState(false);
+  const [rightsConfirmed, setRightsConfirmed] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { user } = useAuth();
   const profile = useProfile();
@@ -206,9 +207,25 @@ const AudioUpload = () => {
         </div>
       )}
 
+      {/* Rights confirmation */}
+      {sessions.length < maxSessions && (
+        <label className="flex items-start gap-2 mb-3 cursor-pointer group">
+          <input
+            type="checkbox"
+            checked={rightsConfirmed}
+            onChange={e => setRightsConfirmed(e.target.checked)}
+            className="mt-0.5 flex-shrink-0 accent-[#D4AF37]"
+          />
+          <span className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>
+            Declaro que poseo los derechos o licencias necesarias sobre este contenido, incluyendo las obras de terceros incorporadas en la mezcla, conforme a los{' '}
+            <a href="/terminos" target="_blank" rel="noopener noreferrer" style={{ color: '#D4AF37' }}>Términos y Condiciones</a>.
+          </span>
+        </label>
+      )}
+
       {/* Upload button */}
       {sessions.length < maxSessions && (
-        <button onClick={() => inputRef.current?.click()} disabled={uploading}
+        <button onClick={() => inputRef.current?.click()} disabled={uploading || !rightsConfirmed}
           className="w-full flex items-center justify-center gap-2 py-4 rounded-lg border-2 border-dashed transition-all hover:scale-[1.01]"
           style={{ borderColor: 'rgba(212,175,55,0.2)', color: '#D4AF37', background: 'rgba(212,175,55,0.03)' }}>
           {sessions.length > 0 ? <Plus size={18} /> : <Upload size={18} />}
