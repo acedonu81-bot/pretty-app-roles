@@ -160,7 +160,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
             style={{
               background: tab === t.id ? 'rgba(139,92,246,0.12)' : 'rgba(255,255,255,0.03)',
               border: `1px solid ${tab === t.id ? 'rgba(139,92,246,0.35)' : 'var(--nightlife-border)'}`,
-              color: tab === t.id ? '#8B5CF6' : '#8E8EA0',
+              color: tab === t.id ? '#4285F4' : '#8E8EA0',
             }}>
             <t.icon size={12} /> {t.label}
           </button>
