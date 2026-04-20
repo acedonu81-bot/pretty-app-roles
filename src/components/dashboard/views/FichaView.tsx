@@ -133,7 +133,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
           <h2 className="text-2xl font-bold mb-1">
             {targetName
             ? <span className="text-white">Ficha de {targetName}</span>
-            : <><span className="text-white">Tu </span><span style={{ color: '#8B5CF6' }}>Ficha Pública</span></>
+            : <><span className="text-white">Tu </span><span style={{ color: '#4285F4' }}>Ficha Pública</span></>
           }
           </h2>
           <p className="text-sm text-muted-foreground">
@@ -146,7 +146,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105"
-            style={{ background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.35)', color: '#8B5CF6' }}>
+            style={{ background: 'rgba(66,133,244,0.12)', border: '1px solid rgba(66,133,244,0.35)', color: '#4285F4' }}>
             <Globe size={13} /> Ver ficha pública
           </a>
         )}
