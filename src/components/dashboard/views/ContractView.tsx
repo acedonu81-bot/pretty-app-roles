@@ -142,7 +142,7 @@ const ContractView = () => {
       return y === csvYear;
     });
     if (!rows.length) return;
-    const headers = ['Ref', 'Fecha evento', 'Profesional', 'Rol', 'Tipo evento', 'Evento', 'Local', 'Ciudad', 'Contratante', 'Empresa', 'Precio neto (€)', 'Retención (%)', 'Generado'];
+    const headers = ['Ref', 'Fecha evento', 'Profesional', 'Rol', 'Tipo evento', 'Evento', 'Local', 'Ciudad', 'Contratante', 'Empresa', 'Base imponible (€)', 'Retención IRPF (%)', 'Generado'];
     const lines = [
       headers.join(','),
       ...rows.map(c => [
@@ -300,7 +300,7 @@ const ContractView = () => {
             <table className="w-full text-sm">
               <thead>
                 <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                  {['Ref', 'Profesional', 'Evento', 'Fecha evento', 'Local', 'Importe neto', 'Generado', ''].map(h => (
+                  {['Ref', 'Profesional', 'Evento', 'Fecha evento', 'Local', 'Base imponible', 'Generado', ''].map(h => (
                     <th key={h} className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider"
                       style={{ color: 'rgba(255,255,255,0.35)' }}>{h}</th>
                   ))}
