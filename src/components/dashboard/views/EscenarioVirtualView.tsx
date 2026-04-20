@@ -247,8 +247,18 @@ const EscenarioVirtualView = () => {
           <p className="text-xs text-muted-foreground mb-3">Soporta Twitch, YouTube, Mixcloud, SoundCloud, HearThis, Vimeo y Spotify</p>
           <input value={streamTitle} onChange={e => setStreamTitle(e.target.value)}
             placeholder="Título del directo" className="nightlife-input text-sm !py-2.5 mb-2" />
-          <input value={streamUrl} onChange={e => setStreamUrl(e.target.value)}
-            placeholder="Twitch, YouTube, Mixcloud, SoundCloud, Vimeo, Spotify..." className="nightlife-input text-sm !py-2.5" />
+          <div className="flex gap-2">
+            <input value={streamUrl} onChange={e => setStreamUrl(e.target.value)}
+              placeholder="Twitch, YouTube, Mixcloud, SoundCloud, Vimeo, Spotify..." className="nightlife-input text-sm !py-2.5 flex-1" />
+            {streamUrl && (
+              <button type="button" onClick={() => setStreamUrl('')}
+                className="px-3 rounded-lg flex items-center flex-shrink-0"
+                style={{ background: 'rgba(255,85,85,0.08)', border: '1px solid rgba(255,85,85,0.2)', color: '#ff5555' }}
+                title="Eliminar URL">
+                <X size={14} />
+              </button>
+            )}
+          </div>
           {streamEmbed && (
             <p className="text-xs mt-2 font-bold" style={{ color: '#22c55e' }}>✓ {streamEmbed.type} detectado</p>
           )}

@@ -539,6 +539,14 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                         <ExternalLink size={14} />
                       </a>
                     )}
+                    {currentUrl && (
+                      <button type="button" onClick={() => setAudioUrl('')}
+                        className="px-3 rounded-lg flex items-center"
+                        style={{ background: 'rgba(255,85,85,0.08)', border: '1px solid rgba(255,85,85,0.2)', color: '#ff5555' }}
+                        title="Eliminar">
+                        <X size={14} />
+                      </button>
+                    )}
                   </div>
                   {parsed ? (
                     <>
