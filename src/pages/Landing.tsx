@@ -435,6 +435,22 @@ const Landing = () => {
       </div>
 
 
+      {/* ─ Beta banner ─ */}
+      <div className="relative z-50 flex items-center justify-center gap-3 py-2 px-4 text-center"
+        style={{ background: 'rgba(212,175,55,0.07)', borderBottom: '1px solid rgba(212,175,55,0.15)' }}>
+        <span className="text-[0.65rem] font-black uppercase tracking-widest px-1.5 py-0.5 rounded"
+          style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' }}>
+          BETA
+        </span>
+        <span className="text-[0.75rem] text-muted-foreground">
+          Plataforma en fase de pruebas · Bugs o sugerencias a{' '}
+          <a href="mailto:admin@xpeak.es" className="font-bold transition-colors hover:text-[#D4AF37]"
+            style={{ color: 'rgba(212,175,55,0.8)' }}>
+            admin@xpeak.es
+          </a>
+        </span>
+      </div>
+
       {/* ─ Nav (Glassmorphism) ─ */}
       <nav className="sticky top-0 z-50"
         style={{
