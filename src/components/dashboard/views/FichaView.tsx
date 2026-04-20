@@ -133,7 +133,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
           <h2 className="text-2xl font-bold mb-1">
             {targetName
             ? <span className="text-white">Ficha de {targetName}</span>
-            : <><span className="text-white">Tu </span><span className="text-gradient">Ficha Pública</span></>
+            : <><span className="text-white">Tu </span><span style={{ color: '#8B5CF6' }}>Ficha Pública</span></>
           }
           </h2>
           <p className="text-sm text-muted-foreground">
@@ -146,7 +146,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105"
-            style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.25)', color: '#D4AF37' }}>
+            style={{ background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.35)', color: '#8B5CF6' }}>
             <Globe size={13} /> Ver ficha pública
           </a>
         )}
@@ -158,9 +158,9 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
           <button key={t.id} onClick={() => setTab(t.id)}
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all"
             style={{
-              background: tab === t.id ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.03)',
-              border: `1px solid ${tab === t.id ? 'rgba(212,175,55,0.3)' : 'var(--nightlife-border)'}`,
-              color: tab === t.id ? '#D4AF37' : '#8E8EA0',
+              background: tab === t.id ? 'rgba(139,92,246,0.12)' : 'rgba(255,255,255,0.03)',
+              border: `1px solid ${tab === t.id ? 'rgba(139,92,246,0.35)' : 'var(--nightlife-border)'}`,
+              color: tab === t.id ? '#8B5CF6' : '#8E8EA0',
             }}>
             <t.icon size={12} /> {t.label}
           </button>

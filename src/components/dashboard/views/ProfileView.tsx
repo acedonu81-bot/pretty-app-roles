@@ -147,7 +147,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
               type="button"
               onClick={() => onNavigate('ficha')}
               className="flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm transition-all hover:scale-105"
-              style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.25)', color: '#D4AF37' }}>
+              style={{ background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.35)', color: '#8B5CF6' }}>
               <FileEdit size={14} /> Editar Ficha Pública
             </button>
           )}
