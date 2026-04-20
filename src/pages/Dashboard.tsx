@@ -23,6 +23,7 @@ import AdminView from '@/components/dashboard/views/AdminView';
 import EmpresarioView from '@/components/dashboard/views/EmpresarioView';
 import FanClubView from '@/components/dashboard/views/FanClubView';
 import ContractView from '@/components/dashboard/views/ContractView';
+import FichaView from '@/components/dashboard/views/FichaView';
 import ProfessionalProfilePage from '@/components/dashboard/ProfessionalProfilePage';
 import SupportChat from '@/components/dashboard/SupportChat';
 import AdminGuard from '@/components/AdminGuard';
@@ -91,7 +92,8 @@ const Dashboard = () => {
       case 'calendar':   return <CalendarView />;
       case 'contracts':  return <ContractView />;
       case 'store':      return <div className="animate-[fadeIn_0.4s_ease] flex flex-col items-center justify-center py-20 text-center gap-4"><span className="text-5xl">🛒</span><h2 className="text-2xl font-bold">Tienda <span className="text-gradient">XPEAK</span></h2><p className="text-sm text-muted-foreground max-w-sm">Marketplace para que los profesionales vendan merchandising, packs de samples, sesiones exclusivas y productos digitales. <span style={{ color: '#D4AF37', fontWeight: 700 }}>Próximamente.</span></p></div>;
-      case 'profile': return <ProfileView />;
+      case 'profile': return <ProfileView onNavigate={nav} />;
+      case 'ficha':   return <FichaView />;
       case 'mapa': return <MapaView />;
       case 'escenario': return <EscenarioVirtualView />;
       case 'flashbooking':
@@ -103,7 +105,7 @@ const Dashboard = () => {
       case 'fanclub': return <FanClubView />;
       case 'admin': return (
         <AdminGuard>
-          <AdminView />
+          <AdminView onNavigate={nav} />
         </AdminGuard>
       );
       default: return <DJView onNavigate={nav} onMessage={handleMessage} />;

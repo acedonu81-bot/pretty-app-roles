@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Trash2, Camera, ExternalLink, Star, Radio, ChevronDown, X, MapPin, Download, ShoppingBag, Plus, Package, Tag, Image as ImageIcon } from 'lucide-react';
+import { Trash2, Camera, ExternalLink, Star, Radio, ChevronDown, X, MapPin, Download, ShoppingBag, Plus, Package, Tag, Image as ImageIcon, Lock, Music, Shirt, Sparkles, FileEdit } from 'lucide-react';
 import { exportUserDataZip } from '@/lib/exportUserData';
 import { parseStreamUrl } from '@/lib/streaming';
 import { toast } from 'sonner';
@@ -12,7 +12,7 @@ import { subscriptionPlans, mapSubscriptionTierToPlan } from '@/lib/subscription
 import { sanitizeInput } from '@/lib/contentFilter';
 import VerificationSection from './profile/VerificationSection';
 
-const ProfileView = () => {
+const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {}) => {
   const { user } = useAuth();
   const profile = useProfile();
   const [deleting, setDeleting] = useState(false);
@@ -27,6 +27,7 @@ const ProfileView = () => {
   const [savingAvailability, setSavingAvailability] = useState(false);
   const [selectedLangs, setSelectedLangs] = useState<string[] | null>(null);
   const [langOpen, setLangOpen] = useState(false);
+  const [shopOpen, setShopOpen] = useState(false);
 
   const EU_LANGS = ['Español','Inglés','Francés','Italiano','Alemán','Portugués','Neerlandés','Polaco','Catalán','Euskera'];
   const SPAIN_CITIES = ['Madrid','Barcelona','Valencia','Sevilla','Zaragoza','Málaga','Murcia','Palma de Mallorca','Alicante','Bilbao','Valladolid','Córdoba','Vigo','Gijón','Granada','A Coruña','Vitoria-Gasteiz','San Sebastián','Oviedo','Las Palmas de Gran Canaria','Santa Cruz de Tenerife','Badalona','Cartagena','Sabadell','Móstoles','Elche','Hospitalet de Llobregat','Terrassa','Jerez de la Frontera','Burgos','Santander','Almería','Alcalá de Henares','Pamplona','Salamanca','Ibiza','Marbella','León','Albacete','Logroño','Huelva','Tarragona','Lleida','Badajoz','Jaén','Cádiz','Toledo','Torrevieja','Mataró','Alcobendas'];
@@ -140,11 +141,22 @@ const ProfileView = () => {
           <h2 className="text-2xl font-bold mb-1">Mi <span className="text-gradient">Perfil</span></h2>
           <p className="text-base text-muted-foreground">Así te ven los empresarios.</p>
         </div>
-        <button onClick={handleSave} disabled={saving}
-          className="px-5 py-2 rounded-lg font-bold text-base w-full sm:w-auto disabled:opacity-60"
-          style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-          {saving ? 'Guardando...' : 'Guardar'}
-        </button>
+        <div className="flex gap-2 w-full sm:w-auto">
+          {onNavigate && (
+            <button
+              type="button"
+              onClick={() => onNavigate('ficha')}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm transition-all hover:scale-105"
+              style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.25)', color: '#D4AF37' }}>
+              <FileEdit size={14} /> Editar Ficha Pública
+            </button>
+          )}
+          <button onClick={handleSave} disabled={saving}
+            className="px-5 py-2 rounded-lg font-bold text-base flex-1 sm:flex-none disabled:opacity-60"
+            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+            {saving ? 'Guardando...' : 'Guardar'}
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-4">
@@ -493,7 +505,8 @@ const ProfileView = () => {
               )}
             </div>
           </div>
-          {profile.role === 'dj' ? <AudioUpload /> : <PortfolioUpload />}
+          <AudioUpload />
+          {profile.role !== 'dj' && profile.role !== 'rookie' && <PortfolioUpload />}
 
           {/* Redes sociales y plataformas — todos los roles */}
           <div className="glass-panel p-5">
@@ -600,51 +613,94 @@ const ProfileView = () => {
 
           {/* Mi Tienda */}
           {profile.role !== 'empresario' && (
-            <div className="glass-panel p-5">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <ShoppingBag size={16} style={{ color: '#D4AF37' }} />
-                  <h4 className="text-base font-bold">Mi Tienda</h4>
-                  <span className="text-xs px-1.5 py-0.5 rounded font-bold"
-                    style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>SOON</span>
-                </div>
-              </div>
-              <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
-                Vende tus productos digitales directamente desde tu perfil: packs de samples, sesiones exclusivas, merchandising y más.
-                Los empresarios y fans los verán en tu ficha pública.
-              </p>
-
-              {/* Upload area */}
-              <div className="rounded-xl border-2 border-dashed flex flex-col items-center justify-center py-8 gap-3 mb-4 transition-colors"
-                style={{ borderColor: 'rgba(212,175,55,0.18)', background: 'rgba(212,175,55,0.03)' }}>
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                  style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.15)' }}>
-                  <Plus size={18} style={{ color: '#D4AF37' }} />
-                </div>
-                <div className="text-center">
-                  <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>Añadir producto</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">Disponible próximamente</p>
-                </div>
-              </div>
-
-              {/* Product type guide */}
-              <div className="grid grid-cols-2 gap-2">
-                {[
-                  { icon: Package, label: 'Packs de samples', desc: 'Loops, one-shots, stems' },
-                  { icon: Tag, label: 'Sesiones exclusivas', desc: '1h, 2h, sets completos' },
-                  { icon: ImageIcon, label: 'Merchandising', desc: 'Camisetas, vinilos, prints' },
-                  { icon: Star, label: 'Fan Club', desc: 'Contenido para suscriptores' },
-                ].map(item => (
-                  <div key={item.label} className="rounded-lg p-3 flex items-start gap-2"
-                    style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
-                    <item.icon size={13} className="mt-0.5 flex-shrink-0" style={{ color: 'rgba(212,175,55,0.5)' }} />
-                    <div>
-                      <p className="text-xs font-semibold leading-tight">{item.label}</p>
-                      <p className="text-[0.7rem] text-muted-foreground mt-0.5">{item.desc}</p>
-                    </div>
+            <div className="glass-panel overflow-hidden" style={{ border: '1px solid rgba(212,175,55,0.18)' }}>
+              {/* Header — always visible, clickable */}
+              <button
+                type="button"
+                onClick={() => setShopOpen(o => !o)}
+                className="w-full flex items-center justify-between p-5 text-left transition-colors hover:bg-white/[0.02]"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)' }}>
+                    <ShoppingBag size={16} style={{ color: '#D4AF37' }} />
                   </div>
-                ))}
-              </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h4 className="text-sm font-bold">Mi Tienda</h4>
+                      <span className="text-[0.7rem] px-1.5 py-0.5 rounded font-bold"
+                        style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>PRÓXIMAMENTE</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">Vende samples, sesiones y merch desde tu perfil</p>
+                  </div>
+                </div>
+                <ChevronDown size={16} style={{ color: '#8E8EA0', transform: shopOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
+              </button>
+
+              {/* Expandible content */}
+              {shopOpen && (
+                <div className="px-5 pb-5 border-t" style={{ borderColor: 'rgba(212,175,55,0.1)' }}>
+                  {/* Locked notice */}
+                  <div className="flex items-center gap-2 py-3 mb-4">
+                    <Lock size={13} style={{ color: '#8E8EA0' }} />
+                    <p className="text-xs text-muted-foreground">
+                      Activa tu plan <strong className="text-white">Starter o superior</strong> para empezar a vender. Comisión XPEAK: <strong className="text-white">10%</strong>.
+                    </p>
+                  </div>
+
+                  {/* Product categories */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+                    {[
+                      {
+                        icon: Music,
+                        label: 'Packs de Samples',
+                        desc: 'Loops, one-shots, stems WAV/MP3. Descarga instantánea.',
+                        example: 'Ejemplo: Tech House Bundle €9.99',
+                        color: '#4285F4',
+                      },
+                      {
+                        icon: Star,
+                        label: 'Sesiones Privadas',
+                        desc: 'Reserva de sesiones 1:1, clases o sets a medida.',
+                        example: 'Ejemplo: Clase de producción 1h €49',
+                        color: '#D4AF37',
+                      },
+                      {
+                        icon: Shirt,
+                        label: 'Merchandising',
+                        desc: 'Camisetas, vinilos, prints. Gestión de stock propia.',
+                        example: 'Ejemplo: Hoodie edición limitada €35',
+                        color: '#F9A8D4',
+                      },
+                      {
+                        icon: Sparkles,
+                        label: 'Contenido Fan Club',
+                        desc: 'Exclusivos para tus suscriptores Fan y VIP.',
+                        example: 'Ejemplo: Set completo festival €4.99',
+                        color: '#A78BFA',
+                      },
+                    ].map(item => (
+                      <div key={item.label} className="rounded-xl p-4 flex flex-col gap-2"
+                        style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                        <div className="flex items-center gap-2">
+                          <item.icon size={14} style={{ color: item.color }} />
+                          <p className="text-xs font-bold">{item.label}</p>
+                        </div>
+                        <p className="text-[0.72rem] text-muted-foreground leading-relaxed">{item.desc}</p>
+                        <p className="text-[0.7rem] font-medium" style={{ color: item.color }}>{item.example}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Add product CTA — disabled */}
+                  <div className="rounded-xl border-2 border-dashed flex flex-col items-center justify-center py-7 gap-2 opacity-40 cursor-not-allowed"
+                    style={{ borderColor: 'rgba(212,175,55,0.2)', background: 'rgba(212,175,55,0.02)' }}>
+                    <Plus size={20} style={{ color: '#D4AF37' }} />
+                    <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>Añadir producto</p>
+                    <p className="text-[0.7rem] text-muted-foreground">Disponible con plan de pago</p>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

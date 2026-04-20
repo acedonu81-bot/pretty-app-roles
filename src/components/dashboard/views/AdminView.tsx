@@ -9,7 +9,7 @@ import AdminUserManagement from './admin/AdminUserManagement';
 import AdminFeatureRequests from './admin/AdminFeatureRequests';
 import AdminCancellations from './admin/AdminCancellations';
 
-const AdminView = () => {
+const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {}) => {
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
       <div className="mb-6">

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Zap, Heart, Search, Lock, BarChart3, Euro, CheckCircle, Image } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { Zap, Heart, Search, Lock, BarChart3, Euro, CheckCircle, Image, RefreshCw, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
@@ -18,18 +18,23 @@ const EmpresarioView = () => {
   const [pros, setPros] = useState<Pro[]>([]);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [privateHiring, setPrivateHiring] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => { fetchPros(); }, []);
-  useEffect(() => { if (user?.id) fetchFavorites(); }, [user?.id]);
-
-  const fetchPros = async () => {
+  const fetchPros = useCallback(async () => {
+    setLoading(true);
+    // Only fetch profiles that are currently available (online)
     const { data, error } = await supabase
       .from('profiles')
       .select('user_id, display_name, role, zone, hourly_rate, specialty, subscription_tier, is_live, is_verified, photo_url, genres, bio, is_flash_active')
+      .eq('is_flash_active', true)
       .limit(200);
+    setLoading(false);
     if (error) { toast.error('Error al cargar profesionales'); return; }
-    setPros((data ?? []).map((d: any) => ({ ...d, id: d.user_id })) as unknown as Pro[]);
-  };
+    // Exclude the current user's own profile
+    const filtered = (data ?? []).filter((d: any) => d.user_id !== user?.id);
+    setPros(filtered.map((d: any) => ({ ...d, id: d.user_id })) as unknown as Pro[]);
+  }, [user?.id]);
 
   const fetchFavorites = async () => {
     if (!user) return;
@@ -86,6 +91,14 @@ const EmpresarioView = () => {
     { id: 'benchmark' as const, label: 'Cómo pagan',   icon: Euro         },
   ];
 
+  useEffect(() => { fetchPros(); }, [fetchPros]);
+  useEffect(() => { if (user?.id) fetchFavorites(); }, [user?.id]);
+
+  const filteredPros = pros.filter(p =>
+    p.is_flash_active === true &&
+    (!searchQuery || (p.display_name ?? '').toLowerCase().includes(searchQuery.toLowerCase()))
+  );
+
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
       <div className="mb-5">
@@ -108,6 +121,22 @@ const EmpresarioView = () => {
             <div className="absolute top-[2px] left-[2px] w-4 h-4 rounded-full transition-transform" style={{ background: privateHiring ? '#D4AF37' : '#8E8EA0', transform: privateHiring ? 'translateX(16px)' : 'translateX(0)' }} />
           </div>
         </label>
+      </div>
+
+      {/* Search bar */}
+      <div className="relative mb-4">
+        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#8E8EA0' }} />
+        <input
+          value={searchQuery}
+          onChange={e => setSearchQuery(e.target.value)}
+          placeholder="Buscar profesional por nombre..."
+          className="nightlife-input w-full pl-9 text-sm"
+        />
+        {searchQuery && (
+          <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2">
+            <X size={14} style={{ color: '#8E8EA0' }} />
+          </button>
+        )}
       </div>
 
       {/* Tabs */}
@@ -135,11 +164,12 @@ const EmpresarioView = () => {
       {tab === 'historial' && <HistorialTab />}
       {(tab === 'discover' || tab === 'favorites') && (
         <DiscoverTab
-          pros={pros}
+          pros={filteredPros}
           favorites={favorites}
           onToggleFavorite={toggleFavorite}
           onExportCSV={exportCSV}
           showFavoritesOnly={tab === 'favorites'}
+          loading={loading}
         />
       )}
     </div>

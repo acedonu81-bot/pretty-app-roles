@@ -27,6 +27,7 @@ interface ProfileData {
   genres: string[] | null;
   category: string | null;
   tiktok: string | null;
+  bio_video_url: string | null;
 }
 
 interface ProfileCtx extends ProfileData {
@@ -60,6 +61,7 @@ const defaults: ProfileData = {
   genres: null,
   category: null,
   tiktok: null,
+  bio_video_url: null,
 };
 
 const ProfileContext = createContext<ProfileCtx>({
@@ -81,7 +83,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     if (!user) return;
     const { data: row } = await supabase
       .from('profiles')
-      .select('display_name, birthday, photo_url, zone, hourly_rate, role, subscription_tier, stream_url, stream_title, trial_started_at, annual_billing, is_live, is_flash_active, phone, specialty, instagram, bio, audio_embed_url, languages, genres, category, tiktok')
+      .select('display_name, birthday, photo_url, zone, hourly_rate, role, subscription_tier, stream_url, stream_title, trial_started_at, annual_billing, is_live, is_flash_active, phone, specialty, instagram, bio, audio_embed_url, languages, genres, category, tiktok, bio_video_url')
       .eq('user_id', user.id)
       .maybeSingle();
     if (row) setData(row as unknown as ProfileData);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { CheckCircle, XCircle, Mail, Phone, MessageSquare } from 'lucide-react';
+import { CheckCircle, XCircle, Mail, Phone, MessageSquare, FileEdit } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -101,6 +101,12 @@ const AdminUserManagement = () => {
                   style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37' }}>
                   <Mail size={14} />
                 </button>
+                <a href={`/p/${u.user_id}`} target="_blank" rel="noopener noreferrer"
+                  title="Ver ficha pública"
+                  className="p-1.5 rounded-md transition-all hover:scale-110 inline-flex"
+                  style={{ background: 'rgba(139,92,246,0.1)', color: '#8B5CF6' }}>
+                  <FileEdit size={14} />
+                </a>
                 <button onClick={() => toggleVerify(u)} title={u.is_verified ? 'Quitar verificación' : 'Verificar'}
                   className="p-1.5 rounded-md transition-all hover:scale-110"
                   style={{

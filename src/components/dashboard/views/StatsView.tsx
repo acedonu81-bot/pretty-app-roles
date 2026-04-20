@@ -187,7 +187,7 @@ const StatsView = () => {
   const yearTotalConvs = monthlyConvs.reduce((a, b) => a + b, 0);
 
   return (
-    <div className="animate-[fadeIn_0.4s_ease] max-w-4xl">
+    <div className="animate-[fadeIn_0.4s_ease]">
       <div className="mb-5">
         <h2 className="text-2xl font-bold mb-1">
           Mis <span className="text-gradient">Estadísticas</span>

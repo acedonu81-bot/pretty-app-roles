@@ -3,9 +3,10 @@ import {
   User, CalendarDays,
   MessageSquare, Radio, Megaphone, Settings, Crown,
   BarChart3, Award, CreditCard,
-  Camera, Heart, FileText, ShoppingBag,
+  Camera, Heart, FileText, ShoppingBag, FileEdit,
 } from 'lucide-react';
 import GeometricAvatar from './GeometricAvatar';
+import { useProfile } from '@/hooks/useProfile';
 
 interface SidebarProps {
   activeView: string;
@@ -50,8 +51,9 @@ const navSections = [
   {
     label: 'MI CUENTA',
     items: [
-      { id: 'profile', icon: User, label: 'Mi Perfil' },
-      { id: 'fanclub', icon: Heart, label: 'Fan Club', pulse: true, badge: 'NEW' },
+      { id: 'profile', icon: User,     label: 'Mi Perfil'    },
+      { id: 'ficha',   icon: FileEdit, label: 'Mi Ficha'     },
+      { id: 'fanclub', icon: Heart,    label: 'Fan Club', pulse: true, badge: 'NEW' },
       { id: 'stats', icon: BarChart3, label: 'Estadísticas' },
       { id: 'subscription', icon: CreditCard, label: 'Suscripción' },
     ],
@@ -77,6 +79,9 @@ const navSections = [
 const TOOL_BLUE_IDS = new Set(['calendar', 'messages', 'escenario', 'flashbooking']);
 
 const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
+  const { role } = useProfile();
+  const isEmpresario = role === 'empresario';
+
   return (
     <aside
       className="w-[260px] h-full flex flex-col z-10 flex-shrink-0"
@@ -97,7 +102,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
             <div className="text-xs text-muted-foreground uppercase tracking-widest font-bold mb-2 px-3">
               {section.label}
             </div>
-            {section.items.map((item) => {
+            {section.items.filter(item => item.id !== 'empresario' || isEmpresario).map((item) => {
               const isActive = activeView === item.id;
               const hasPulse = 'pulse' in item && item.pulse;
               return (

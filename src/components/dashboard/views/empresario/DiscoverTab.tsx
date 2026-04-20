@@ -11,13 +11,13 @@ interface Props {
   onToggleFavorite: (id: string) => void;
   onExportCSV: (list: Pro[], notes: Record<string, string>) => void;
   showFavoritesOnly?: boolean;
+  loading?: boolean;
 }
 
-const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, showFavoritesOnly = false }: Props) => {
+const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, showFavoritesOnly = false, loading = false }: Props) => {
   const [filterZone, setFilterZone]   = useState('Todas');
   const [filterRole, setFilterRole]   = useState('Todos');
   const [maxPrice, setMaxPrice]       = useState(1000);
-  const [searchQuery, setSearchQuery] = useState('');
   const [proNotes, setProNotes]       = useState<Record<string, string>>({});
   const [notesTarget, setNotesTarget] = useState<string | null>(null);
   const [notesDraft, setNotesDraft]   = useState('');
@@ -26,7 +26,6 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, showFavor
     if (filterZone !== 'Todas' && p.zone !== filterZone) return false;
     if (filterRole !== 'Todos' && p.role !== filterRole) return false;
     if (p.hourly_rate > maxPrice) return false;
-    if (searchQuery && !(p.display_name ?? '').toLowerCase().includes(searchQuery.toLowerCase())) return false;
     if (showFavoritesOnly && !favorites.includes(p.id)) return false;
     return true;
   });
@@ -46,11 +45,7 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, showFavor
           <Filter size={14} style={{ color: '#D4AF37' }} />
           <span className="text-xs font-bold">Filtros</span>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          <div>
-            <label className="text-[0.75rem] text-muted-foreground font-bold uppercase mb-1 block">Buscar</label>
-            <input value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder="Nombre..." className="nightlife-input text-sm" />
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className="text-[0.75rem] text-muted-foreground font-bold uppercase mb-1 block">Zona</label>
             <select value={filterZone} onChange={e => setFilterZone(e.target.value)} className="nightlife-input text-sm">
@@ -63,7 +58,12 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, showFavor
               <option value="Todos">Todos</option>
               <option value="dj">DJ</option>
               <option value="staff">Staff</option>
-              <option value="makeup">Estilismo</option>
+              <option value="makeup">Estilismo / Makeup</option>
+              <option value="media">Media / Foto-Vídeo</option>
+              <option value="ambassador">Relaciones Públicas</option>
+              <option value="promotor">Promotor</option>
+              <option value="design">Diseño Gráfico</option>
+              <option value="rookie">Rookie</option>
             </select>
           </div>
         </div>
@@ -98,11 +98,17 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, showFavor
 
       {/* Pro grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filtered.length === 0 ? (
+        {loading && (
+          <div className="col-span-full flex items-center justify-center py-10">
+            <div className="text-xs text-muted-foreground animate-pulse">Cargando profesionales...</div>
+          </div>
+        )}
+        {!loading && filtered.length === 0 && (
           <div className="col-span-full text-center py-12">
             <p className="text-sm text-muted-foreground">No se encontraron profesionales con estos filtros</p>
           </div>
-        ) : filtered.map(p => (
+        )}
+        {!loading && filtered.map(p => (
           <div key={p.id} className="glass-panel p-4 transition-all hover:border-primary/20">
             <div className="flex items-center gap-3 mb-3">
               {p.photo_url && p.photo_url.length > 5 ? (
