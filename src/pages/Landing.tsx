@@ -739,18 +739,19 @@ const Landing = () => {
               onClick={() => navigate('/auth')}
               className="group flex-1 flex flex-col items-center gap-2 px-6 py-5 rounded-2xl transition-all text-center"
               style={{
-                background: 'rgba(255,255,255,0.03)',
-                border: '1.5px solid rgba(255,255,255,0.12)',
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04))',
+                border: '1.5px solid rgba(255,255,255,0.28)',
+                boxShadow: '0 0 24px rgba(255,255,255,0.05)',
               }}>
               <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-1"
-                style={{ background: 'rgba(255,255,255,0.06)' }}>
-                <Building2 size={20} style={{ color: 'rgba(255,255,255,0.7)' }} />
+                style={{ background: 'rgba(255,255,255,0.12)' }}>
+                <Building2 size={20} style={{ color: '#fff' }} />
               </div>
-              <p className="font-black text-base" style={{ color: 'rgba(255,255,255,0.85)' }}>Busco talento</p>
-              <p className="text-xs leading-snug" style={{ color: 'rgba(255,255,255,0.5)' }}>
+              <p className="font-black text-base" style={{ color: '#fff' }}>Busco talento</p>
+              <p className="text-xs leading-snug" style={{ color: 'rgba(255,255,255,0.6)' }}>
                 Sala, promotora, agencia<br />o evento privado
               </p>
-              <p className="text-xs font-bold mt-1" style={{ color: 'rgba(255,255,255,0.35)' }}>
+              <p className="text-xs font-bold mt-1" style={{ color: 'rgba(255,255,255,0.6)' }}>
                 Contrata sin comisiones →
               </p>
             </motion.button>
