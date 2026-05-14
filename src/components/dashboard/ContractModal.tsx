@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { FileText, X, Download, ChevronRight, AlertCircle, Sparkles } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { FileText, X, Download, ChevronRight, AlertCircle, Sparkles, PenLine, Eraser } from 'lucide-react';
 import type { Profile } from '@/data/profiles';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -59,6 +59,64 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
       setForm(f => ({ ...f, [k]: e.target.value }));
 
+  /* ── Canvas signature ─────────────────────────────────────────────────────── */
+  const sigRef    = useRef<HTMLCanvasElement>(null);
+  const drawing   = useRef(false);
+  const [hasSig, setHasSig] = useState(false);
+
+  useEffect(() => {
+    const canvas = sigRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d')!;
+    ctx.strokeStyle = '#D4AF37';
+    ctx.lineWidth   = 2;
+    ctx.lineCap     = 'round';
+    ctx.lineJoin    = 'round';
+
+    const pos = (e: MouseEvent | Touch) => {
+      const r = canvas.getBoundingClientRect();
+      return { x: (e instanceof Touch ? e.clientX : (e as MouseEvent).clientX) - r.left, y: (e instanceof Touch ? e.clientY : (e as MouseEvent).clientY) - r.top };
+    };
+    const start = (e: MouseEvent | TouchEvent) => {
+      drawing.current = true;
+      const p = pos(e instanceof TouchEvent ? e.touches[0] : e);
+      ctx.beginPath(); ctx.moveTo(p.x, p.y);
+      e.preventDefault();
+    };
+    const move = (e: MouseEvent | TouchEvent) => {
+      if (!drawing.current) return;
+      const p = pos(e instanceof TouchEvent ? e.touches[0] : e);
+      ctx.lineTo(p.x, p.y); ctx.stroke();
+      setHasSig(true);
+      e.preventDefault();
+    };
+    const end = () => { drawing.current = false; };
+
+    canvas.addEventListener('mousedown',  start as EventListener);
+    canvas.addEventListener('mousemove',  move  as EventListener);
+    canvas.addEventListener('mouseup',    end);
+    canvas.addEventListener('mouseleave', end);
+    canvas.addEventListener('touchstart', start as EventListener, { passive: false });
+    canvas.addEventListener('touchmove',  move  as EventListener, { passive: false });
+    canvas.addEventListener('touchend',   end);
+    return () => {
+      canvas.removeEventListener('mousedown',  start as EventListener);
+      canvas.removeEventListener('mousemove',  move  as EventListener);
+      canvas.removeEventListener('mouseup',    end);
+      canvas.removeEventListener('mouseleave', end);
+      canvas.removeEventListener('touchstart', start as EventListener);
+      canvas.removeEventListener('touchmove',  move  as EventListener);
+      canvas.removeEventListener('touchend',   end);
+    };
+  }, [step]); // re-init when step changes so canvas is mounted
+
+  const clearSig = () => {
+    const canvas = sigRef.current;
+    if (!canvas) return;
+    canvas.getContext('2d')!.clearRect(0, 0, canvas.width, canvas.height);
+    setHasSig(false);
+  };
+
   const selectEventType = (id: string) => {
     setTipoEvento(id);
     const et = EVENT_TYPES.find(e => e.id === id);
@@ -74,7 +132,7 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
   const eventTypeLabel = EVENT_TYPES.find(e => e.id === tipoEvento)?.label ?? 'Evento';
 
   // ── Premium contract HTML ─────────────────────────────────────────────────
-  const buildContractHTML = () => `<!DOCTYPE html>
+  const buildContractHTML = (sigDataUrl?: string) => `<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -412,9 +470,13 @@ El uso comercial de su imagen o voz requiere autorización escrita y expresa del
 Los datos personales de las partes serán tratados conforme al RGPD (UE) 2016/679 y la LOPDGDD (LO 3/2018),
 con la única finalidad de gestionar la presente relación contractual, sin cesión a terceros salvo obligación legal.</p>
 
-<p class="clause"><span class="clause-num">NOVENA · Responsabilidad y limitación de garantías.</span>
-Cada parte responderá de los daños causados por dolo o negligencia grave.
-La responsabilidad del PROFESIONAL queda limitada al importe del precio neto del presente contrato, salvo dolo.</p>
+<p class="clause"><span class="clause-num">NOVENA · Indemnización y responsabilidad.</span>
+El PROFESIONAL se compromete a mantener indemne al CONTRATANTE y a la plataforma XPEAK frente a cualquier reclamación,
+sanción, multa o daño derivado de: (i) infracciones de derechos de propiedad intelectual o industrial;
+(ii) incumplimiento de obligaciones fiscales, laborales o de Seguridad Social; o (iii) daños a terceros causados
+por culpa o negligencia del PROFESIONAL durante la prestación del servicio.
+La responsabilidad máxima de cada parte quedará limitada al importe del precio neto del presente contrato,
+salvo en caso de dolo o negligencia grave.</p>
 
 <p class="clause"><span class="clause-num">DÉCIMA · Ley aplicable y jurisdicción.</span>
 El presente contrato se rige por la legislación española.
@@ -432,7 +494,10 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
 <div class="sigs">
   <div class="sig">
     <div class="sig-role">El Contratante</div>
-    <div class="sig-line"></div>
+    ${sigDataUrl
+      ? `<img src="${sigDataUrl}" style="max-width:100%;height:60px;display:block;margin-bottom:4px" alt="Firma digital" />`
+      : '<div class="sig-line"></div>'
+    }
     <p><strong>${esc(form.contratanteNombre||'_________________')}</strong></p>
     <p>DNI/NIF: ${esc(form.contratanteNIF||'_______________')}</p>
     <p>En representación de: ${esc(form.empresaNombre||'_______')}</p>
@@ -450,21 +515,26 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
 
 <!-- Footer -->
 <div class="footer">
-  <strong>XPEAK</strong> · Plataforma Profesional del Ocio Nocturno · xpeak.site<br>
+  <strong>XPEAK</strong> · Plataforma Profesional del Ocio Nocturno · xpeak.es<br>
   Ref. ${esc(ref)} · Cód. Civil arts. 1254 ss. · ET art. 1.1 · LPI RDL 1/1996 · RGPD 2016/679 · LOPDGDD LO 3/2018<br>
-  Documento generado electrónicamente — pendiente de firma manuscrita o digital certificada (eIDAS)
+  ${hasSig ? `Firmado digitalmente por ${esc(form.contratanteNombre||'el contratante')} el ${esc(form.fechaFirma)} · Ref. ${esc(ref)}` : 'Documento generado electrónicamente — pendiente de firma'}
 </div>
 
 </body>
 </html>`;
 
   const handleGenerate = async () => {
-    const html = buildContractHTML();
-    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-    const url  = URL.createObjectURL(blob);
-    const w    = window.open(url, '_blank', 'width=900,height=700');
-    if (w) w.addEventListener('load', () => { w.print(); URL.revokeObjectURL(url); });
+    if (price <= 0) { toast.error('El precio neto debe ser mayor que €0'); return; }
+    const today = new Date(); today.setHours(0,0,0,0);
+    if (form.fechaEvento) {
+      const evDate = new Date(form.fechaEvento);
+      if (evDate < today) { toast.error('La fecha del evento no puede ser anterior a hoy'); return; }
+    }
 
+    const sigDataUrl = hasSig ? (sigRef.current?.toDataURL('image/png') ?? undefined) : undefined;
+    const html = buildContractHTML(sigDataUrl);
+
+    // Save to DB first
     if (user) {
       await supabase.from('contracts').insert({
         user_id:           user.id,
@@ -481,6 +551,31 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
         precio_neto:       price > 0 ? price : null,
       });
       onSaved?.();
+    }
+
+    // Generate real PDF via hidden iframe → html2pdf
+    const iframe = document.createElement('iframe');
+    iframe.style.cssText = 'position:fixed;left:-9999px;top:0;width:794px;height:0;border:none;';
+    document.body.appendChild(iframe);
+    await new Promise<void>(resolve => {
+      iframe.onload = () => resolve();
+      iframe.srcdoc = html;
+    });
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const html2pdf = (await import('html2pdf.js')).default as any;
+      const iframeBody = iframe.contentDocument?.body;
+      if (iframeBody) {
+        await html2pdf().set({
+          margin: [15, 15, 15, 15],
+          filename: `XPEAK_contrato_${ref}.pdf`,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true, logging: false, windowWidth: 794 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        }).from(iframeBody).save();
+      }
+    } finally {
+      document.body.removeChild(iframe);
     }
   };
 
@@ -661,7 +756,8 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
               <div className="grid grid-cols-2 gap-3">
                 <div className="col-span-2 sm:col-span-1">
                   <label className={lbl} style={lblStyle}>Base imponible € (sin IVA) *</label>
-                  <input className={inp} style={inpStyle} type="number" placeholder="500" value={form.precioNeto} onChange={set('precioNeto')} />
+                  <input className={inp} style={{ ...inpStyle, borderColor: (form.precioNeto && price <= 0) ? 'rgba(255,95,86,0.5)' : undefined }} type="number" min={1} placeholder="500" value={form.precioNeto} onChange={set('precioNeto')} />
+                  {form.precioNeto && price <= 0 && <p className="text-xs mt-1" style={{ color: '#ff5f56' }}>El precio debe ser mayor que €0</p>}
                 </div>
                 <div>
                   <label className={lbl} style={lblStyle}>Forma de pago</label>
@@ -689,6 +785,25 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
                 </div>
               )}
 
+              {/* Digital signature */}
+              <div className="rounded-2xl p-4" style={{ background: 'rgba(212,175,55,0.03)', border: '1px solid rgba(212,175,55,0.15)' }}>
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-xs font-bold flex items-center gap-1.5" style={{ color: '#D4AF37' }}>
+                    <PenLine size={13} /> Firma digital del contratante <span className="text-muted-foreground font-normal">(opcional)</span>
+                  </p>
+                  {hasSig && (
+                    <button onClick={clearSig} className="flex items-center gap-1 text-xs px-2 py-0.5 rounded transition-all hover:scale-105"
+                      style={{ background: 'rgba(255,255,255,0.05)', color: '#8E8EA0' }}>
+                      <Eraser size={11} /> Borrar
+                    </button>
+                  )}
+                </div>
+                <canvas ref={sigRef} width={460} height={90}
+                  className="w-full rounded-lg cursor-crosshair touch-none"
+                  style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${hasSig ? 'rgba(212,175,55,0.35)' : 'rgba(255,255,255,0.08)'}`, display: 'block' }} />
+                <p className="text-xs text-muted-foreground mt-1.5">Dibuja tu firma con el ratón o con el dedo. Se incrustará en el PDF.</p>
+              </div>
+
               {/* Generate button */}
               <button onClick={handleGenerate}
                 className="w-full py-4 rounded-2xl font-bold text-base flex items-center justify-center gap-2 hover:scale-[1.01] transition-all mt-2"
@@ -696,7 +811,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
                 <Sparkles size={18} /> Generar Contrato PDF
               </button>
               <p className="text-xs text-center text-muted-foreground">
-                Se abrirá el contrato — usa "Guardar como PDF" en el diálogo de impresión
+                El contrato se descargará como PDF en tu dispositivo
               </p>
             </div>
           )}

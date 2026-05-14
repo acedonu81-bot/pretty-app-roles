@@ -1,0 +1,39 @@
+{
+  "name": "XPEAK — Contratar Profesionales para Eventos",
+  "short_name": "XPEAK",
+  "description": "Contrata DJs, fotógrafos, camareros y staff verificados para eventos en España. Flash Booking en menos de 1h.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#090909",
+  "theme_color": "#D4AF37",
+  "lang": "es",
+  "dir": "ltr",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["business", "entertainment"],
+  "shortcuts": [
+    {
+      "name": "Contratar DJ",
+      "url": "/contratar-dj",
+      "description": "Buscar DJs disponibles"
+    },
+    {
+      "name": "Contratar Staff",
+      "url": "/contratar-staff",
+      "description": "Buscar staff para eventos"
+    }
+  ]
+}

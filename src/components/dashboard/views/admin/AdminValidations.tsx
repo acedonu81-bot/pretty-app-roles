@@ -56,16 +56,21 @@ const AdminValidations = () => {
       return;
     }
 
+    const emailType: Record<string, string> = {
+      approved: 'admin_approved',
+      rookie: 'admin_rookie',
+      rejected: 'admin_rejected',
+    };
+    supabase.functions.invoke('send-email', {
+      body: { type: emailType[action], data: { user_id: profile.user_id, name: profile.display_name, role: profile.role } },
+    }).catch(() => {});
+
     const labels: Record<string, string> = {
-      approved: 'Aprobado como PROFESIONAL — Email de confirmación enviado',
-      rookie: 'Asignado como ROOKIE — Email de bienvenida enviado',
-      rejected: '❌ Perfil rechazado — Email de notificación enviado',
+      approved: 'Aprobado como PROFESIONAL — Email enviado',
+      rookie: 'Asignado como ROOKIE — Email enviado',
+      rejected: '❌ Perfil rechazado — Email enviado',
     };
     toast.success(labels[action]);
-    
-    // TODO: When email domain is configured, trigger transactional email here
-    // supabase.functions.invoke('send-transactional-email', { body: { templateName: `admin-${action}`, recipientEmail: ... } })
-    
     setPending(prev => prev.filter(p => p.id !== profile.id));
   };
 

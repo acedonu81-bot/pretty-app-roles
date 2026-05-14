@@ -3,33 +3,39 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>XPEAK — Directorio Profesional del Ocio Nocturno</title>
-    <meta name="description" content="XPEAK conecta DJs, Staff, Estilistas y Empresarios del sector nocturno en España y Europa. Encuentra talento o publica ofertas en tiempo real." />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https: ; media-src 'self' blob: https://v15-kling.klingai.com https://s15-kling.klingai.com https://videos.pexels.com; frame-src https://www.youtube.com https://www.youtube-nocookie.com https://player.twitch.tv https://w.soundcloud.com https://www.mixcloud.com https://open.spotify.com https://player.vimeo.com https://www.tiktok.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://plausible.io https://api.stripe.com; worker-src blob: ; object-src 'none';" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+    <title>XPEAK | Contratar DJs, Staff y Profesionales para Eventos en España</title>
+    <meta name="description" content="Contrata DJs verificados, fotógrafos, staff de sala y profesionales para tus eventos. Flash Booking en menos de 1h. Contratos automáticos. Gratis para salas y promotoras. Toda España." />
     <meta name="author" content="XPEAK" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://xpeak.site/" />
+    <link rel="canonical" href="https://xpeak.es/" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="alternate icon" href="/favicon.png" type="image/png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#D4AF37" />
+    <link rel="alternate" type="application/rss+xml" title="Blog XPEAK" href="https://xpeak.es/rss.xml" />
 
     <!-- Open Graph -->
-    <meta property="og:title" content="XPEAK — Directorio Profesional del Ocio Nocturno" />
-    <meta property="og:description" content="Conecta DJs, Staff, Estilistas y Empresarios del sector nocturno en España y Europa. Encuentra talento o publica ofertas en tiempo real." />
+    <meta property="og:title" content="XPEAK | Contratar DJs, Staff y Profesionales para Eventos" />
+    <meta property="og:description" content="Contrata DJs, fotógrafos, staff de sala y profesionales verificados para tus eventos en España. Flash Booking en menos de 1h. Gratis para empresarios y promotoras." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://xpeak.site/" />
+    <meta property="og:url" content="https://xpeak.es/" />
     <meta property="og:site_name" content="XPEAK" />
     <meta property="og:locale" content="es_ES" />
-    <meta property="og:image" content="https://xpeak.site/og-image.jpg" />
+    <meta property="og:image" content="https://xpeak.es/og-image.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="XPEAK — Directorio Profesional del Ocio Nocturno" />
+    <meta property="og:image:alt" content="XPEAK — Directorio profesional de DJs, staff y talento para eventos en España" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@xpeak_site" />
-    <meta name="twitter:title" content="XPEAK — Directorio Profesional del Ocio Nocturno" />
-    <meta name="twitter:description" content="Conecta DJs, Staff, Estilistas y Empresarios del sector nocturno en España y Europa." />
-    <meta name="twitter:image" content="https://xpeak.site/og-image.jpg" />
+    <meta name="twitter:site" content="@xpeak_es" />
+    <meta name="twitter:title" content="XPEAK | Contratar DJs y Profesionales para Eventos en España" />
+    <meta name="twitter:description" content="Directorio verificado de DJs, fotógrafos, staff y promotores. Flash Booking en menos de 1h. Gratis para salas y promotoras." />
+    <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
 
     <!-- JSON-LD: Organization -->
     <script type="application/ld+json">
@@ -37,11 +43,17 @@
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "XPEAK",
-      "url": "https://xpeak.site",
-      "logo": "https://xpeak.site/favicon.png",
-      "description": "Directorio profesional del ocio nocturno en España y Europa. Conecta DJs, Staff, Estilistas y Empresarios.",
-      "areaServed": ["ES"],
-      "sameAs": []
+      "url": "https://xpeak.es",
+      "logo": "https://xpeak.es/favicon.png",
+      "description": "Plataforma profesional para contratar DJs, staff, fotógrafos y profesionales verificados para eventos en España.",
+      "areaServed": [{"@type": "Country", "name": "ES"}],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hola@xpeak.es",
+        "availableLanguage": "Spanish"
+      },
+      "sameAs": ["https://www.instagram.com/xpeak.es"]
     }
     </script>
 
@@ -51,17 +63,46 @@
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "XPEAK",
-      "url": "https://xpeak.site",
+      "url": "https://xpeak.es",
       "potentialAction": {
         "@type": "SearchAction",
         "target": {
           "@type": "EntryPoint",
-          "urlTemplate": "https://xpeak.site/dashboard?q={search_term_string}"
+          "urlTemplate": "https://xpeak.es/dashboard?q={search_term_string}"
         },
         "query-input": "required name=search_term_string"
       }
     }
     </script>
+
+    <!-- JSON-LD: Service (Directorio de Talento para Eventos) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "XPEAK — Directorio de Talento para Eventos",
+      "provider": {"@type": "Organization", "name": "XPEAK", "url": "https://xpeak.es"},
+      "description": "Plataforma para contratar DJs verificados, fotógrafos, staff de sala, maquilladores, promotores y profesionales del ocio nocturno en toda España.",
+      "areaServed": {"@type": "Country", "name": "ES"},
+      "serviceType": "Directorio profesional de talento para eventos",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR",
+        "description": "Registro gratuito para empresarios, salas y promotoras"
+      }
+    }
+    </script>
+
+    <meta name="google-site-verification" content="5o6n1L1QlN-iT8Wi002P5uRxy_vACozC2fEwdO_nvj0" />
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-PHXTFGXK');</script>
+    <!-- End Google Tag Manager -->
 
     <!-- Preconnect: Google Fonts (Variable Fonts) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -79,11 +120,17 @@
     <link rel="preconnect" href="https://open.spotify.com" />
 
     <!-- Analytics (Plausible — GDPR, sin cookies, sin datos personales) -->
-    <script defer data-domain="xpeak.site" src="https://plausible.io/js/script.js"></script>
+    <script defer data-domain="xpeak.es" src="https://plausible.io/js/script.js"></script>
+
+    <!-- Meta Pixel: añadir cuando tengas el Pixel ID de Meta Business Manager -->
 
   </head>
 
   <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PHXTFGXK"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

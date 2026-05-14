@@ -54,7 +54,7 @@ const CookieBanner = () => {
       setVisible(true);
     };
     const onScroll = () => { if (window.scrollY > window.innerHeight * 0.6) fire(); };
-    const t = setTimeout(fire, 6000);
+    const t = setTimeout(fire, 1500);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => { clearTimeout(t); window.removeEventListener('scroll', onScroll); };
   }, []);
@@ -94,7 +94,7 @@ const CookieBanner = () => {
               <div className="flex-1">
                 <p className="text-sm font-bold mb-1">Preferencias de cookies</p>
                 <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>
-                  Usamos cookies propias y de terceros para mejorar tu experiencia y mostrarte contenido relevante.{' '}
+                  Usamos cookies propias para mejorar tu experiencia. Las cookies técnicas son necesarias para el funcionamiento de la plataforma.{' '}
                   <Link to="/cookies" className="underline font-medium" style={{ color: '#D4AF37' }}>Política de cookies</Link>
                 </p>
               </div>
@@ -147,30 +147,32 @@ const CookieBanner = () => {
             </AnimatePresence>
 
             {/* Actions */}
-            <div className="p-4 pt-2 flex flex-col sm:flex-row gap-2">
-              <button
-                type="button"
-                onClick={() => setExpanded(e => !e)}
-                className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all hover:bg-white/5 sm:w-auto"
-                style={{ border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}
-              >
-                {expanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
-                {expanded ? 'Guardar selección' : 'Personalizar'}
-              </button>
-              {expanded && (
-                <button type="button" onClick={saveCustom}
-                  className="flex-1 py-2.5 rounded-xl text-xs font-bold transition-all hover:scale-[1.02]"
-                  style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
-                  Guardar selección
+            <div className="px-4 pb-4 pt-2 flex flex-col gap-2">
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setExpanded(e => !e)}
+                  className="flex items-center justify-center gap-1 px-3 py-2 rounded-lg text-xs font-semibold transition-all hover:bg-white/5"
+                  style={{ border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.45)', minWidth: 0, flex: '0 0 auto' }}
+                >
+                  {expanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+                  {expanded ? 'Cerrar' : 'Personalizar'}
                 </button>
-              )}
-              <button type="button" onClick={rejectAll}
-                className="flex-1 py-2.5 rounded-xl text-xs font-semibold transition-all hover:bg-white/5"
-                style={{ border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>
-                Solo necesarias
-              </button>
+                {expanded && (
+                  <button type="button" onClick={saveCustom}
+                    className="flex-1 py-2 rounded-lg text-xs font-bold transition-all"
+                    style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+                    Guardar
+                  </button>
+                )}
+                <button type="button" onClick={rejectAll}
+                  className="flex-1 py-2 rounded-lg text-xs font-semibold transition-all hover:bg-white/5"
+                  style={{ border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)' }}>
+                  Solo necesarias
+                </button>
+              </div>
               <button type="button" onClick={acceptAll}
-                className="flex-1 py-2.5 rounded-xl text-xs font-bold transition-all hover:scale-[1.02]"
+                className="w-full py-2.5 rounded-xl text-xs font-bold transition-all hover:scale-[1.02]"
                 style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                 Aceptar todas
               </button>

@@ -1,4 +1,4 @@
-import { Music2, Users, Camera, Palette, Megaphone, Star, Building2, Scissors } from 'lucide-react';
+import { Music2, Users, Camera, Palette, Megaphone, Star, Building2, Scissors, CalendarCheck } from 'lucide-react';
 
 export type PlanFeatures = { starter: string[]; business: string[]; agency: string[] };
 
@@ -11,6 +11,7 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
       'Géneros musicales ilimitados',
       'Mensajería interna con empresarios',
       'Recibir Flash Bookings (sin aplicar)',
+      '1h de streaming de prueba en el Escenario Virtual',
     ],
     plans: {
       starter: [
@@ -49,6 +50,7 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
       'Géneros musicales ilimitados',
       'Recibir votos de la comunidad',
       'Mensajería interna',
+      '1h de streaming de prueba en el Escenario Virtual',
     ],
     plans: {
       starter: [
@@ -84,6 +86,7 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
       'Especialidades ilimitadas',
       'Mensajería interna',
       'Recibir Flash Bookings',
+      '1h de streaming de prueba en el Escenario Virtual',
     ],
     plans: {
       starter: [
@@ -116,6 +119,7 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
       'Perfil visible en directorio',
       'Servicios ilimitados',
       'Mensajería interna',
+      '1h de streaming de prueba en el Escenario Virtual',
     ],
     plans: {
       starter: [
@@ -148,6 +152,7 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
       'Perfil visible en directorio',
       'Especialidades ilimitadas',
       'Mensajería interna',
+      '1h de streaming de prueba en el Escenario Virtual',
     ],
     plans: {
       starter: [
@@ -180,6 +185,7 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
       'Perfil visible en directorio',
       'Especialidades ilimitadas',
       'Mensajería interna',
+      '1h de streaming de prueba en el Escenario Virtual',
     ],
     plans: {
       starter: [
@@ -213,6 +219,7 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
       'Perfil visible en directorio',
       'Especialidades ilimitadas',
       'Mensajería interna',
+      '1h de streaming de prueba en el Escenario Virtual',
     ],
     plans: {
       starter: [
@@ -245,6 +252,7 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
       'Perfil visible en directorio',
       'Especialidades ilimitadas',
       'Mensajería interna',
+      '1h de streaming de prueba en el Escenario Virtual',
     ],
     plans: {
       starter: [
@@ -277,6 +285,7 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
       'Perfil visible en directorio',
       'Especialidades ilimitadas',
       'Mensajería interna',
+      '1h de streaming de prueba en el Escenario Virtual',
     ],
     plans: {
       starter: [
@@ -306,10 +315,11 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
     icon: <Building2 size={16} />,
     label: 'Empresario / Sala',
     free: [
-      'Buscar profesionales en el directorio',
-      'Publicar 1 Flash Job activo',
-      'Mensajería interna (hasta 5 conversaciones)',
-      'Guardar hasta 3 favoritos',
+      'Buscar y contactar talento en el directorio sin límites',
+      'Flash Booking ilimitado — publica ofertas urgentes',
+      'Mensajería directa sin límite de conversaciones',
+      'Favoritos ilimitados — guarda tu roster',
+      'Ver tarifas y portfolios de todos los profesionales',
     ],
     plans: {
       starter: [
@@ -334,6 +344,40 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
         'API de integración (próximamente)',
         'Visibilidad máxima en Flash Booking',
         'Sello Agencia exclusivo',
+      ],
+    },
+  },
+  event_manager: {
+    icon: <CalendarCheck size={16} />,
+    label: 'Encargada de Eventos',
+    free: [
+      'Perfil visible en directorio',
+      'Áreas de coordinación ilimitadas',
+      'Mensajería interna',
+      'Recibir solicitudes de coordinación',
+      '1h de streaming de prueba en el Escenario Virtual',
+    ],
+    plans: {
+      starter: [
+        'Badge verificada — más solicitudes',
+        'Portafolio de eventos realizados',
+        'Estadísticas de visitas básicas',
+        'Aparecer en búsquedas por zona y especialidad',
+      ],
+      business: [
+        'Todo lo de Starter',
+        'Posicionamiento #1–48 en directorio',
+        'Flash Booking: recibe urgencias de coordinación',
+        'Historial de eventos verificado',
+        'Estadísticas avanzadas',
+        'Sello Business dorado en ficha',
+      ],
+      agency: [
+        'Todo lo de Business',
+        'Gestión de equipo coordinador (hasta 5 perfiles)',
+        'Panel de agencia de eventos',
+        'Visibilidad máxima garantizada',
+        'Sello Agencia — para empresas de coordinación',
       ],
     },
   },

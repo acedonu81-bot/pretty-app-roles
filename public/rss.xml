@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Blog XPEAK — Guías para eventos en España</title>
+    <link>https://xpeak.es/blog</link>
+    <description>Guías y consejos para contratar DJs, camareros, fotógrafos y staff para eventos en España. Precios, ratios y todo lo que necesitas saber.</description>
+    <language>es</language>
+    <lastBuildDate>Sat, 03 May 2026 10:00:00 +0200</lastBuildDate>
+    <atom:link href="https://xpeak.es/rss.xml" rel="self" type="application/rss+xml"/>
+    <image>
+      <url>https://xpeak.es/og-image.jpg</url>
+      <title>Blog XPEAK</title>
+      <link>https://xpeak.es/blog</link>
+    </image>
+
+    <item>
+      <title>Fotografía en eventos nocturnos: precios y cómo contratar en España (2026)</title>
+      <link>https://xpeak.es/blog/fotografia-eventos-nocturnos</link>
+      <guid isPermaLink="true">https://xpeak.es/blog/fotografia-eventos-nocturnos</guid>
+      <description>Cuánto cobra un fotógrafo de discoteca o eventos nocturnos en España. Precios por tipo de evento, equipo necesario y cómo elegir el fotógrafo correcto.</description>
+      <pubDate>Sat, 03 May 2026 10:00:00 +0200</pubDate>
+    </item>
+
+    <item>
+      <title>Música para bodas: DJ, banda en directo o lista de reproducción — guía 2026</title>
+      <link>https://xpeak.es/blog/musica-para-bodas-guia</link>
+      <guid isPermaLink="true">https://xpeak.es/blog/musica-para-bodas-guia</guid>
+      <description>Comparativa completa entre DJ, banda en directo y música grabada para bodas en España. Precios, ventajas y cuándo elegir cada opción.</description>
+      <pubDate>Sat, 03 May 2026 10:00:00 +0200</pubDate>
+    </item>
+
+    <item>
+      <title>Cómo organizar un evento corporativo paso a paso: guía completa 2026</title>
+      <link>https://xpeak.es/blog/como-organizar-evento-corporativo</link>
+      <guid isPermaLink="true">https://xpeak.es/blog/como-organizar-evento-corporativo</guid>
+      <description>Guía práctica para organizar eventos de empresa en España: presupuesto, proveedores, timeline y checklist completo.</description>
+      <pubDate>Sat, 03 May 2026 10:00:00 +0200</pubDate>
+    </item>
+
+    <item>
+      <title>DJ para cumpleaños: precios y qué incluye el servicio en España (2026)</title>
+      <link>https://xpeak.es/blog/dj-para-cumpleanos-precio</link>
+      <guid isPermaLink="true">https://xpeak.es/blog/dj-para-cumpleanos-precio</guid>
+      <description>Cuánto cuesta contratar un DJ para un cumpleaños en España. Precios por horas, tipo de equipo y cómo elegir el DJ correcto para tu fiesta.</description>
+      <pubDate>Sat, 03 May 2026 10:00:00 +0200</pubDate>
+    </item>
+
+    <item>
+      <title>Maquillaje nupcial: precios y cómo elegir tu maquilladora en España (2026)</title>
+      <link>https://xpeak.es/blog/maquillaje-nupcial-precio-guia</link>
+      <guid isPermaLink="true">https://xpeak.es/blog/maquillaje-nupcial-precio-guia</guid>
+      <description>Guía de precios de maquillaje para novias en España. Cuánto cuesta, qué incluye el servicio y cómo elegir la maquilladora perfecta.</description>
+      <pubDate>Sat, 03 May 2026 10:00:00 +0200</pubDate>
+    </item>
+
+    <item>
+      <title>Promotores de eventos: qué hacen y cuánto cobran en España (2026)</title>
+      <link>https://xpeak.es/blog/promotores-de-eventos-que-hacen</link>
+      <guid isPermaLink="true">https://xpeak.es/blog/promotores-de-eventos-que-hacen</guid>
+      <description>Tipos de promotores, funciones reales, tarifas y cómo estructurar el contrato con métricas medibles.</description>
+      <pubDate>Sat, 03 May 2026 10:00:00 +0200</pubDate>
+    </item>
+
+    <item>
+      <title>Disco móvil para comuniones: precios y qué incluye en 2026</title>
+      <link>https://xpeak.es/blog/disco-movil-para-comuniones</link>
+      <guid isPermaLink="true">https://xpeak.es/blog/disco-movil-para-comuniones</guid>
+      <description>Paquetes, qué incluye el servicio y cómo elegir el DJ correcto para tu comunión en España.</description>
+      <pubDate>Sat, 03 May 2026 10:00:00 +0200</pubDate>
+    </item>
+
+    <item>
+      <title>Catering para eventos de empresa en España: tipos y precios 2026</title>
+      <link>https://xpeak.es/blog/catering-para-eventos-de-empresa</link>
+      <guid isPermaLink="true">https://xpeak.es/blog/catering-para-eventos-de-empresa</guid>
+      <description>Coffee breaks, cócteles, cenas de gala y food trucks. Precios por persona y cómo elegir el formato correcto.</description>
+      <pubDate>Sat, 03 May 2026 10:00:00 +0200</pubDate>
+    </item>
+
+    <item>
+      <title>Staff de discoteca: funciones, sueldos y cómo contratar (2026)</title>
+      <link>https://xpeak.es/blog/staff-de-discoteca-funciones-y-salario</link>
+      <guid isPermaLink="true">https://xpeak.es/blog/staff-de-discoteca-funciones-y-salario</guid>
+      <description>Guía completa del personal de sala: hostesses, RRPPs, camareros y coordinadores. Tarifas reales por perfil.</description>
+      <pubDate>Sat, 03 May 2026 10:00:00 +0200</pubDate>
+    </item>
+
+    <item>
+      <title>Cómo contratar un fotógrafo de bodas en España: guía de precios 2026</title>
+      <link>https://xpeak.es/blog/contratar-fotografo-de-bodas</link>
+      <guid isPermaLink="true">https://xpeak.es/blog/contratar-fotografo-de-bodas</guid>
+      <description>Precios reales por ciudad y tipo de servicio. Qué incluye y cómo elegir el fotógrafo perfecto para tu boda.</description>
+      <pubDate>Sun, 03 May 2026 10:00:00 +0200</pubDate>
+    </item>
+
+    <item>
+      <title>¿Cuánto cuesta una boda en España en 2026? Presupuesto completo</title>
+      <link>https://xpeak.es/blog/cuanto-cuesta-una-boda-en-espana</link>
+      <guid isPermaLink="true">https://xpeak.es/blog/cuanto-cuesta-una-boda-en-espana</guid>
+      <description>Desglose por partidas: catering, DJ, fotógrafo, camareros, flores y más. Precio según número de invitados y ciudad.</description>
+      <pubDate>Sat, 02 May 2026 10:00:00 +0200</pubDate>
+    </item>
+
+    <item>
+      <title>DJ para bodas vs DJ para discoteca: diferencias y precios 2026</title>
+      <link>https://xpeak.es/blog/dj-para-bodas-vs-discoteca</link>
+      <guid isPermaLink="true">https://xpeak.es/blog/dj-para-bodas-vs-discoteca</guid>
+      <description>¿Son lo mismo? Diferencias en habilidades, equipamiento y precios. Cómo elegir el perfil correcto para tu evento.</description>
+      <pubDate>Wed, 29 Apr 2026 10:00:00 +0200</pubDate>
+    </item>
+
+    <item>
+      <title>Cuántos camareros necesito para mi boda: guía definitiva 2026</title>
+      <link>https://xpeak.es/blog/cuantos-camareros-necesito-para-mi-boda</link>
+      <guid isPermaLink="true">https://xpeak.es/blog/cuantos-camareros-necesito-para-mi-boda</guid>
+      <description>Tabla de ratios por número de invitados y formato de servicio. Todo lo que necesitas saber antes de contratar personal de sala.</description>
+      <pubDate>Wed, 29 Apr 2026 10:00:00 +0200</pubDate>
+    </item>
+
+    <item>
+      <title>Cuánto cobra un camarero de eventos por horas en España (2026)</title>
+      <link>https://xpeak.es/blog/cuanto-cobra-un-camarero-de-eventos</link>
+      <guid isPermaLink="true">https://xpeak.es/blog/cuanto-cobra-un-camarero-de-eventos</guid>
+      <description>Precios reales de camareros para bodas, eventos de empresa y fiestas privadas. Cuántos necesitas y cómo contratarlos.</description>
+      <pubDate>Wed, 29 Apr 2026 10:00:00 +0200</pubDate>
+    </item>
+
+    <item>
+      <title>¿Cuánto cobra un DJ en España? Tarifas y precios 2026</title>
+      <link>https://xpeak.es/blog/cuanto-cobra-un-dj-en-espana</link>
+      <guid isPermaLink="true">https://xpeak.es/blog/cuanto-cobra-un-dj-en-espana</guid>
+      <description>Guía completa con precios de DJs en España por experiencia, ciudad y tipo de evento. IVA, IRPF y equipo incluido.</description>
+      <pubDate>Tue, 28 Apr 2026 10:00:00 +0200</pubDate>
+    </item>
+
+  </channel>
+</rss>

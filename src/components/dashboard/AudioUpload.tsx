@@ -31,7 +31,7 @@ const sanitizeFileName = (name: string): string =>
 const MAX_SESSIONS_FREE    = 3;
 const MAX_SESSIONS_STARTER = 5;
 const MAX_SESSIONS_PRO     = 15;
-const MAX_FILE_MB          = 256;
+const MAX_FILE_MB          = 45;
 
 interface SessionFile {
   name: string;

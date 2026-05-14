@@ -1,4 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+
+const useCountUp = (target: number, duration = 900) => {
+  const [value, setValue] = useState(0);
+  const prev = useRef(0);
+  useEffect(() => {
+    if (target === prev.current) return;
+    prev.current = target;
+    if (target === 0) { setValue(0); return; }
+    const start = Date.now();
+    const from = value;
+    const tick = () => {
+      const elapsed = Date.now() - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      setValue(Math.round(from + (target - from) * ease));
+      if (progress < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, [target]);
+  return value;
+};
 import { Eye, MessageCircle, Crown, TrendingUp, Zap, BarChart2 } from 'lucide-react';
 
 // ── SVG Donut Chart ─────────────────────────────────────────────────────────
@@ -175,6 +196,10 @@ const StatsView = () => {
   }, [user]);
 
   const contactRate = stats.views > 0 ? Math.round((stats.conversations / stats.views) * 100) : 0;
+  const animViews    = useCountUp(stats.views);
+  const animMessages = useCountUp(stats.messages);
+  const animBookings = useCountUp(stats.bookings);
+  const animRate     = useCountUp(contactRate);
 
   // Max value for bar chart scaling
   const maxMsg  = Math.max(...monthlyMessages, 1);
@@ -198,10 +223,10 @@ const StatsView = () => {
       {/* ── KPI Cards ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {[
-          { label: 'Visualizaciones', value: loading ? '—' : stats.views.toString(), icon: Eye, note: 'visitas a tu perfil', color: '#4285F4' },
-          { label: 'Mensajes recibidos', value: loading ? '—' : stats.messages.toString(), icon: MessageCircle, note: 'de otros usuarios', color: '#4285F4' },
-          { label: 'Solicitudes Flash', value: loading ? '—' : stats.bookings.toString(), icon: Zap, note: 'booking requests', color: '#D4AF37' },
-          { label: 'Tasa de contacto', value: loading ? '—' : `${contactRate}%`, icon: TrendingUp, note: 'vistas que escriben', color: '#D4AF37' },
+          { label: 'Visitas al perfil', value: loading ? '—' : animViews.toString(), icon: Eye, note: 'visitas a tu ficha pública', color: '#4285F4' },
+          { label: 'Mensajes recibidos', value: loading ? '—' : animMessages.toString(), icon: MessageCircle, note: 'de otros usuarios', color: '#4285F4' },
+          { label: 'Solicitudes Flash', value: loading ? '—' : animBookings.toString(), icon: Zap, note: 'booking requests', color: '#D4AF37' },
+          { label: 'Tasa de contacto', value: loading ? '—' : `${animRate}%`, icon: TrendingUp, note: 'vistas que escriben', color: '#D4AF37' },
         ].map(s => (
           <div key={s.label} className="glass-panel p-4 relative overflow-hidden">
             {/* top border accent */}
@@ -225,7 +250,7 @@ const StatsView = () => {
         <DonutChart
           size={150}
           segments={[
-            { value: stats.views,         color: '#4285F4', label: 'Visualizaciones del perfil', icon: '👁' },
+            { value: stats.views,         color: '#4285F4', label: 'Visitas al perfil',           icon: '👁' },
             { value: stats.messages,      color: '#60A5FA', label: 'Mensajes recibidos',          icon: '💬' },
             { value: stats.conversations, color: '#34D399', label: 'Conversaciones activas',      icon: '🗣' },
             { value: stats.bookings,      color: '#D4AF37', label: 'Solicitudes Flash Booking',   icon: '⚡' },
@@ -286,7 +311,7 @@ const StatsView = () => {
                   <div className="flex items-end gap-px w-full" style={{ height: 88 }}>
                     <div className="flex-1 rounded-t-sm transition-all duration-500"
                       style={{
-                        height: msgH || 2,
+                        height: msgH || 1,
                         background: isBest
                           ? 'linear-gradient(180deg, #60A5FA, #4285F4)'
                           : isCurrent
@@ -345,10 +370,9 @@ const StatsView = () => {
         style={{ border: '1px solid rgba(66,133,244,0.12)', background: 'rgba(66,133,244,0.03)' }}>
         <Eye size={14} style={{ color: '#4285F4', flexShrink: 0, marginTop: 2 }} />
         <div>
-          <p className="text-xs font-bold mb-0.5" style={{ color: '#4285F4' }}>Sobre el contador de visualizaciones</p>
+          <p className="text-xs font-bold mb-0.5" style={{ color: '#4285F4' }}>Sobre las visitas al perfil</p>
           <p className="text-xs text-muted-foreground leading-relaxed">
-            Las visitas se registran cuando alguien accede a tu perfil público en xpeak.site/p/
-            Los demás datos (mensajes, solicitudes) son en tiempo real desde Supabase.
+            Cada vez que alguien abre tu ficha pública en xpeak.es/p/... suma una visita. Incluye tus propias visitas de prueba.
           </p>
         </div>
       </div>

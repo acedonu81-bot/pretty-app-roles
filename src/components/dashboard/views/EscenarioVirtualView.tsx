@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { Radio, Send, Eye, MessageCircle, MessageSquare, ExternalLink, Crown, Flag, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Radio, Send, Eye, MessageCircle, MessageSquare, ExternalLink, Crown, Flag, X, Users, Zap } from 'lucide-react';
 import { toast } from 'sonner';
 import { useProfile } from '@/hooks/useProfile';
 import { normalizeStreamUrl, parseStreamUrl } from '@/lib/streaming';
@@ -121,8 +122,14 @@ const ReportModal = ({
   );
 };
 
+const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', makeup: 'Makeup', rookie: 'Promesa', media: 'Media', design: 'Diseño', promotor: 'Promotor', ambassador: 'Embajador', vestuario: 'Moda' };
+const ROLE_COLOR: Record<string, string> = { dj: '#D4AF37', staff: '#8B5CF6', makeup: '#EC4899', rookie: '#F59E0B', media: '#3B82F6', design: '#34D399', promotor: '#F97316', ambassador: '#A78BFA', vestuario: '#F472B6' };
+
+interface LiveProfile { id: string; display_name: string; role: string; stream_title: string | null; zone: string | null; }
+
 const EscenarioVirtualView = () => {
   const profile = useProfile();
+  const navigate = useNavigate();
   const [isLive, setIsLive] = useState(false);
   const [chatMessages, setChatMessages] = useState(fakeChat);
   const [chatInput, setChatInput] = useState('');
@@ -135,6 +142,16 @@ const EscenarioVirtualView = () => {
   const [showUrlInput, setShowUrlInput] = useState(false);
   const [showReport, setShowReport] = useState(false);
   const chatRef = useRef<HTMLDivElement>(null);
+  const [liveProfiles, setLiveProfiles] = useState<LiveProfile[]>([]);
+  const [liveLoading, setLiveLoading] = useState(false);
+
+  useEffect(() => {
+    if (profile.role !== 'empresario') return;
+    setLiveLoading(true);
+    supabase.from('profiles').select('id, display_name, role, stream_title, zone')
+      .eq('is_live', true).limit(12)
+      .then(({ data }) => { setLiveProfiles((data as LiveProfile[]) ?? []); setLiveLoading(false); });
+  }, [profile.role]);
 
   useEffect(() => {
     setStreamUrl(profile.stream_url ?? '');
@@ -203,8 +220,124 @@ const EscenarioVirtualView = () => {
     toast.success(newLive ? '¡Estás en directo!' : 'Has salido del directo.');
   };
 
+  if (profile.role === 'empresario') {
+    return (
+      <div className="animate-[fadeIn_0.4s_ease]">
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold mb-1">
+            Talento <span className="text-gradient">en Directo</span>
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Profesionales emitiendo ahora mismo. Escúchalos y contacta al instante — sin intermediarios.
+          </p>
+        </div>
+
+        {liveLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[1,2,3].map(i => (
+              <div key={i} className="glass-panel p-5 animate-pulse">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-white/5" />
+                  <div className="flex-1">
+                    <div className="h-3 bg-white/5 rounded mb-2 w-3/4" />
+                    <div className="h-2 bg-white/5 rounded w-1/2" />
+                  </div>
+                </div>
+                <div className="h-8 bg-white/5 rounded-lg" />
+              </div>
+            ))}
+          </div>
+        ) : liveProfiles.length === 0 ? (
+          <div className="glass-panel p-12 flex flex-col items-center gap-4 text-center"
+            style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
+            <div className="w-14 h-14 rounded-xl flex items-center justify-center"
+              style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.1)' }}>
+              <Radio size={24} style={{ color: 'rgba(212,175,55,0.35)' }} />
+            </div>
+            <div>
+              <p className="text-sm font-bold mb-1">Nadie emite en este momento</p>
+              <p className="text-xs max-w-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                Los directos aparecen aquí en tiempo real. Vuelve los viernes y sábados por la tarde — es cuando más profesionales están en vivo.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs mt-1"
+              style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.12)' }}>
+              <Zap size={12} style={{ color: '#D4AF37' }} />
+              <span style={{ color: 'rgba(255,255,255,0.55)' }}>
+                ¿Necesitas alguien para esta noche? Usa <strong style={{ color: '#D4AF37' }}>Flash Booking</strong>
+              </span>
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {liveProfiles.map(p => {
+              const color = ROLE_COLOR[p.role] ?? '#D4AF37';
+              const label = ROLE_LABEL[p.role] ?? p.role;
+              return (
+                <div key={p.id} className="glass-panel p-5 flex flex-col gap-4"
+                  style={{ border: `1px solid ${color}20` }}>
+                  <div className="flex items-center gap-3">
+                    <div className="relative flex-shrink-0">
+                      <div className="w-11 h-11 rounded-xl flex items-center justify-center text-sm font-black"
+                        style={{ background: `${color}18`, color, border: `1px solid ${color}30` }}>
+                        {p.display_name?.[0]?.toUpperCase() ?? '?'}
+                      </div>
+                      <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2"
+                        style={{ background: '#E53935', borderColor: '#0e0e0e', boxShadow: '0 0 6px rgba(229,57,53,0.7)' }} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-bold leading-tight truncate">{p.display_name}</p>
+                      <p className="text-xs truncate mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                        {p.stream_title || p.zone || label}
+                      </p>
+                    </div>
+                    <span className="text-[0.65rem] font-black px-2 py-0.5 rounded-full flex-shrink-0"
+                      style={{ background: `${color}15`, color, border: `1px solid ${color}30` }}>
+                      {label.toUpperCase()}
+                    </span>
+                  </div>
+                  <div className="flex gap-2">
+                    <span className="flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-lg flex-shrink-0"
+                      style={{ background: 'rgba(229,57,53,0.08)', border: '1px solid rgba(229,57,53,0.2)', color: '#E53935' }}>
+                      <span className="relative flex h-1.5 w-1.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: '#E53935' }} />
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5" style={{ background: '#E53935' }} />
+                      </span>
+                      En vivo
+                    </span>
+                    <button
+                      onClick={() => navigate('/dashboard', { state: { view: 'messages', contactId: p.id } })}
+                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-[1.02]"
+                      style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                      <MessageCircle size={12} /> Contactar ahora
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        <p className="text-center text-xs mt-8" style={{ color: 'rgba(255,255,255,0.2)' }}>
+          Los directos se actualizan en tiempo real · Sin comisiones de contratación
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className="animate-[fadeIn_0.4s_ease]">
+    <div className="animate-[fadeIn_0.4s_ease] relative">
+      {/* Ambient dancefloor video background */}
+      <div className="absolute inset-0 -z-10 pointer-events-none overflow-hidden rounded-2xl">
+        <video autoPlay muted loop playsInline preload="none"
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ opacity: 0.07, filter: 'saturate(0.6) brightness(0.5)' }}>
+          <source src="/hero-dancefloor.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0"
+          style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(229,57,53,0.08) 0%, transparent 60%)' }} />
+      </div>
+
       {showReport && (
         <ReportModal
           onClose={() => setShowReport(false)}
@@ -245,6 +378,26 @@ const EscenarioVirtualView = () => {
             <ExternalLink size={12} style={{ color: '#D4AF37' }} /> Introduce tu URL de streaming
           </p>
           <p className="text-xs text-muted-foreground mb-3">Soporta Twitch, YouTube, Mixcloud, SoundCloud, HearThis, Vimeo y Spotify</p>
+
+          {/* Demo rápido */}
+          {!streamUrl && (
+            <button
+              type="button"
+              onClick={() => {
+                setStreamTitle('Demo — Tech House Session Live');
+                setStreamUrl('https://www.youtube.com/watch?v=36YnV9STBqc');
+              }}
+              className="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold mb-3 transition-all hover:scale-[1.01]"
+              style={{ background: 'rgba(229,57,53,0.08)', border: '1px solid rgba(229,57,53,0.25)', color: '#E53935' }}
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: '#E53935' }} />
+                <span className="relative inline-flex rounded-full h-2 w-2" style={{ background: '#E53935' }} />
+              </span>
+              Cargar sesión de prueba (demo)
+            </button>
+          )}
+
           <input value={streamTitle} onChange={e => setStreamTitle(e.target.value)}
             placeholder="Título del directo" className="nightlife-input text-sm !py-2.5 mb-2" />
           <div className="flex gap-2">
@@ -368,10 +521,6 @@ const EscenarioVirtualView = () => {
           <div className="flex items-center gap-2 mb-3">
             <MessageSquare size={14} style={{ color: '#D4AF37' }} />
             <span className="text-xs font-bold uppercase tracking-wider">Chat en Directo</span>
-            <span className="text-[0.7rem] font-bold px-1.5 py-0.5 rounded ml-auto"
-              style={{ background: 'rgba(34,197,94,0.08)', color: 'rgba(34,197,94,0.6)', border: '1px solid rgba(34,197,94,0.15)' }}>
-              BETA
-            </span>
           </div>
 
           <div ref={chatRef} className="flex-1 overflow-y-auto flex flex-col gap-1 mb-3 min-h-0">

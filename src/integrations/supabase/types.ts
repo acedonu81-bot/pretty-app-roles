@@ -214,6 +214,7 @@ export type Database = {
       }
       flash_bookings: {
         Row: {
+          agreed_price: number | null
           created_at: string | null
           created_by: string | null
           event_date: string | null
@@ -228,6 +229,7 @@ export type Database = {
           status: string | null
         }
         Insert: {
+          agreed_price?: number | null
           created_at?: string | null
           created_by?: string | null
           event_date?: string | null
@@ -242,6 +244,7 @@ export type Database = {
           status?: string | null
         }
         Update: {
+          agreed_price?: number | null
           created_at?: string | null
           created_by?: string | null
           event_date?: string | null

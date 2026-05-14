@@ -8,13 +8,15 @@ export const ZONES = [
 
 /** Traducciones de roles internos al español para mostrar al usuario */
 export const ROLE_ES: Record<string, string> = {
-  dj:       'DJ / Artista',
-  staff:    'Staff / Promotor',
-  makeup:   'Maquillaje / Estilismo',
-  media:    'Media / Fotografía',
-  rookie:   'Promesa DJ',
-  design:   'Diseño / Visuales',
-  promotor: 'Promotor',
+  dj:            'DJ / Artista',
+  staff:         'Staff de Sala',
+  event_manager: 'Encargada de Eventos',
+  promotor:      'Promotor / RRPP',
+  camarero:      'Camarero / Barra',
+  catering:      'Catering / Cocina',
+  makeup:        'Maquillaje / Estilismo',
+  media:         'Media / Fotografía',
+  rookie:        'Promesa DJ',
 };
 
 /** Zona por defecto cuando el usuario no ha configurado su ciudad */

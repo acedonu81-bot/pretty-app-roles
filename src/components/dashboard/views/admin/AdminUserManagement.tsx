@@ -51,8 +51,8 @@ const AdminUserManagement = () => {
     toast.info('Usa el sistema de mensajes interno para contactar usuarios.');
   };
 
-  const contactEmail = (userId: string, name: string) => {
-    toast.info(`Función de email para ${name} próximamente`);
+  const contactEmail = (_userId: string, name: string) => {
+    window.open(`mailto:admin@xpeak.es?subject=Contacto usuario: ${encodeURIComponent(name)}`);
   };
 
   return (

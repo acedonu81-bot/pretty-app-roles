@@ -52,7 +52,7 @@ const LiveDJsSection = ({ onNavigate }: { onNavigate?: () => void }) => {
   if (profiles.length === 0) return null;
 
   return (
-    <section className="mb-10">
+    <section className="mb-10 min-w-0">
       {/* Header */}
       <div className="flex items-center gap-2 mb-4">
         <span className="relative flex h-2.5 w-2.5">
@@ -65,7 +65,7 @@ const LiveDJsSection = ({ onNavigate }: { onNavigate?: () => void }) => {
       </div>
 
       {/* Cards — pill horizontal */}
-      <div className="flex gap-3 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
+      <div className="flex gap-3 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none', maskImage: 'linear-gradient(to right, black 85%, transparent 100%)' }}>
         {profiles.map(p => {
           const color = ROLE_COLOR[p.role] ?? '#D4AF37';
           const label = ROLE_LABEL[p.role] ?? p.role;

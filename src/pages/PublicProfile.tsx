@@ -1,20 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Star, MapPin, Clock, ArrowLeft, Zap, CheckCircle, Heart, Crown, Lock, Music, Image, FileText, MessageCircle, BadgeCheck } from 'lucide-react';
+import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, Headphones, BookOpen } from 'lucide-react';
+import { parseStreamUrl } from '@/lib/streaming';
 import { profiles, toSlug } from '@/data/profiles';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
-const FAKE_POSTS = [
-  { icon: Music, label: 'Set exclusivo B2B — Club privado 2h', locked: false },
-  { icon: Image, label: 'Backstage · Fotos exclusivas noche', locked: true },
-  { icon: FileText, label: 'Mensaje personal a mis fans ❤️', locked: true },
-];
 
-const BASE_URL = 'https://xpeak.site';
+const BASE_URL = 'https://xpeak.es';
 
 // UUID v4 pattern
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -35,6 +31,8 @@ interface SupabaseProfile {
   subscription_tier: string;
   stream_url: string | null;
   instagram: string | null;
+  audio_embed_url: string | null;
+  portfolio_urls: string[] | null;
 }
 
 interface RelatedProfile {
@@ -48,10 +46,10 @@ interface RelatedProfile {
 const PublicProfile = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  const [fanTier, setFanTier] = useState<'fan' | 'vip'>('fan');
   const [sbProfile, setSbProfile] = useState<SupabaseProfile | null>(null);
   const [related, setRelated] = useState<RelatedProfile[]>([]);
   const [loading, setLoading] = useState(true);
+  const [publicPosts, setPublicPosts] = useState<{ id: string; content: string; post_type: string; created_at: string; media_url: string | null }[]>([]);
 
   const isUUID = UUID_RE.test(slug ?? '');
 
@@ -62,11 +60,11 @@ const PublicProfile = () => {
 
     const query = isUUID
       ? supabase.from('profiles')
-          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_flash_active, subscription_tier, stream_url, instagram')
+          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, portfolio_urls')
           .eq('user_id', slug)
           .maybeSingle()
       : supabase.from('profiles')
-          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_flash_active, subscription_tier, stream_url, instagram')
+          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, portfolio_urls')
           .ilike('display_name', slug.replace(/-/g, '%'))
           .limit(20)
           .then(({ data, error }) => {
@@ -82,26 +80,37 @@ const PublicProfile = () => {
             return { data: match ?? null, error };
           });
 
-    (query as Promise<{ data: SupabaseProfile | null; error: unknown }>).then(({ data }) => {
-      setSbProfile(data ?? null);
-      if (data?.user_id) {
-        // Track profile view — increment score column
-        supabase.from('profiles').select('score').eq('user_id', data.user_id).maybeSingle()
-          .then(({ data: s }) => {
-            const current = (s?.score as number) ?? 0;
-            supabase.from('profiles').update({ score: current + 1 } as any).eq('user_id', data.user_id).then(() => {});
-          });
-        // Load related profiles
-        supabase
-          .from('profiles')
-          .select('user_id, display_name, role, specialty, zone')
-          .eq('role', data.role)
-          .neq('user_id', data.user_id)
-          .limit(3)
-          .then(({ data: rel }) => setRelated(rel ?? []));
-      }
-      setLoading(false);
-    });
+    (query as Promise<{ data: SupabaseProfile | null; error: unknown }>)
+      .then(({ data }) => {
+        setSbProfile(data ?? null);
+        if (data?.user_id) {
+          // Track profile view — increment score column
+          supabase.from('profiles').select('score').eq('user_id', data.user_id).maybeSingle()
+            .then(({ data: s }) => {
+              const current = (s?.score as number) ?? 0;
+              supabase.from('profiles').update({ score: current + 1 } as any).eq('user_id', data.user_id).then(() => {});
+            });
+          // Load related profiles
+          supabase
+            .from('profiles')
+            .select('user_id, display_name, role, specialty, zone')
+            .eq('role', data.role)
+            .neq('user_id', data.user_id)
+            .limit(3)
+            .then(({ data: rel }) => setRelated(rel ?? []));
+          // Load public micro-blog posts (fan_tier IS NULL = public)
+          supabase
+            .from('profile_posts' as any)
+            .select('id, content, post_type, created_at, media_url')
+            .eq('user_id', data.user_id)
+            .is('fan_tier', null)
+            .order('created_at', { ascending: false })
+            .limit(8)
+            .then(({ data: posts }) => setPublicPosts((posts ?? []) as any));
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, [slug, isUUID]);
 
   // Static profile fallback (demo profiles via name slug)
@@ -145,6 +154,7 @@ const PublicProfile = () => {
     location: sbProfile.zone ?? 'España',
     description: sbProfile.bio ?? '',
     photo: sbProfile.photo_url ?? '',
+    audioUrl: sbProfile.audio_embed_url ?? '',
     badges: sbProfile.genres ?? [],
     rating: 0,
     reviews: 0,
@@ -167,8 +177,9 @@ const PublicProfile = () => {
     : `${BASE_URL}/og-image.jpg`;
 
   const roleLabel: Record<string, string> = {
-    dj: 'DJ & Artista', staff: 'Staff & Promoción', makeup: 'Belleza & Estética',
-    media: 'Imagen & Media', design: 'Diseño & Visuales', promotor: 'Promotor', ambassador: 'Embajador',
+    dj: 'DJ & Artista', staff: 'Staff & Promoción', event_manager: 'Encargada de Eventos',
+    makeup: 'Belleza & Estética', media: 'Imagen & Media', design: 'Diseño & Visuales',
+    promotor: 'Promotor', ambassador: 'Embajador',
   };
 
   // Related profiles: Supabase results for UUID, static data for demo
@@ -250,16 +261,26 @@ const PublicProfile = () => {
         <div className="max-w-lg mx-auto px-4 py-10">
           {/* Hero */}
           <div className="flex flex-col items-center text-center mb-8">
-            <GeometricAvatar role={profile.role as any} seed={profile.id} size={80} isLive={profile.isLive} />
+            {profile.photo && profile.photo.trim().length > 5 ? (
+              <div className="relative w-20 h-20 flex-shrink-0">
+                <img src={profile.photo} alt={profile.name}
+                  className="w-20 h-20 rounded-2xl object-cover"
+                  style={{ border: '2px solid rgba(212,175,55,0.25)' }} />
+                {profile.isLive && (
+                  <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: '#22c55e' }} />
+                    <span className="relative inline-flex rounded-full h-3.5 w-3.5 border-2 border-[#090909]" style={{ background: '#22c55e' }} />
+                  </span>
+                )}
+              </div>
+            ) : (
+              <GeometricAvatar role={profile.role as any} seed={profile.id} size={80} isLive={profile.isLive} />
+            )}
             <div className="mt-4">
               <div className="flex items-center justify-center gap-2 mb-1">
                 <h1 className="text-2xl font-bold">{profile.name}</h1>
                 {(profile as any).isVerified && (
                   <BadgeCheck size={18} style={{ color: '#D4AF37', flexShrink: 0 }} />
-                )}
-                {profile.isPremium && (
-                  <span className="text-[0.75rem] font-black px-2 py-0.5 rounded-md"
-                    style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>ELITE</span>
                 )}
               </div>
               <p className="text-sm font-semibold mb-1" style={{ color: '#D4AF37' }}>{roleLabel[profile.role] ?? profile.role}</p>
@@ -268,26 +289,27 @@ const PublicProfile = () => {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-3 mb-6">
-            {[
-              { label: 'Valoración', value: profile.rating.toFixed(1) },
-              { label: 'Reseñas', value: profile.reviews },
-              { label: 'Experiencia', value: profile.experience },
-            ].map(s => (
-              <div key={s.label} className="text-center p-3 rounded-xl"
-                style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}>
-                <p className="text-lg font-black" style={{ color: '#D4AF37' }}>{s.value}</p>
-                <p className="text-xs text-white/40 uppercase tracking-wide">{s.label}</p>
-              </div>
-            ))}
-          </div>
+          {(profile.rating > 0 || profile.reviews > 0 || profile.experience) && (
+            <div className="grid grid-cols-3 gap-3 mb-6">
+              {[
+                { label: 'Valoración', value: profile.rating > 0 ? profile.rating.toFixed(1) : '—' },
+                { label: 'Reseñas', value: profile.reviews > 0 ? profile.reviews : '—' },
+                { label: 'Experiencia', value: profile.experience || '—' },
+              ].map(s => (
+                <div key={s.label} className="text-center p-3 rounded-xl"
+                  style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}>
+                  <p className="text-lg font-black" style={{ color: '#D4AF37' }}>{s.value}</p>
+                  <p className="text-xs text-white/40 uppercase tracking-wide">{s.label}</p>
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* Info */}
           <div className="glass-panel p-4 mb-4" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12 }}>
             <div className="flex items-center gap-2 mb-2 text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>
-              <MapPin size={12} /> {profile.zone}{profile.location ? `, ${profile.location}` : ''}
-              <span className="mx-1">·</span>
-              <Clock size={12} /> {profile.experience}
+              <MapPin size={12} /> {profile.zone}
+              {profile.experience && <><span className="mx-1">·</span><Clock size={12} /> {profile.experience}</>}
               {profile.isFlashActive && (
                 <><span className="mx-1">·</span>
                 <Zap size={12} style={{ color: '#22c55e' }} />
@@ -309,6 +331,82 @@ const PublicProfile = () => {
             </div>
           )}
 
+          {/* Audio player */}
+          {(profile as any).audioUrl && (() => {
+            const parsed = parseStreamUrl((profile as any).audioUrl);
+            if (!parsed) return null;
+            return (
+              <div className="mb-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <Headphones size={13} style={{ color: '#D4AF37' }} />
+                  <span className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: 'rgba(212,175,55,0.7)' }}>Mix / Sesión</span>
+                </div>
+                <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(212,175,55,0.12)' }}>
+                  <iframe
+                    src={parsed.embedUrl}
+                    width="100%"
+                    height={parsed.type === 'soundcloud' ? '166' : '120'}
+                    frameBorder="0"
+                    allow="autoplay"
+                    title="Mix"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* Portfolio gallery */}
+          {sbProfile?.portfolio_urls && sbProfile.portfolio_urls.length > 0 && (
+            <div className="mb-6">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: 'rgba(212,175,55,0.7)' }}>Portfolio</span>
+                <span className="text-[0.7rem] text-muted-foreground">({sbProfile.portfolio_urls.length})</span>
+              </div>
+              <div className="grid grid-cols-3 gap-1.5">
+                {sbProfile.portfolio_urls.slice(0, 9).map((url, i) => (
+                  <div key={i} className="aspect-square rounded-lg overflow-hidden group cursor-pointer"
+                    style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}
+                    onClick={() => window.open(url, '_blank', 'noopener')}>
+                    <img
+                      src={url}
+                      alt={`${sbProfile.display_name} portfolio ${i + 1}`}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Micro-blog — posts públicos */}
+          {publicPosts.length > 0 && (
+            <div className="mb-6">
+              <div className="flex items-center gap-2 mb-3">
+                <BookOpen size={13} style={{ color: 'rgba(212,175,55,0.7)' }} />
+                <span className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: 'rgba(212,175,55,0.7)' }}>Novedades</span>
+              </div>
+              <div className="flex flex-col gap-3">
+                {publicPosts.map(post => (
+                  <div key={post.id} className="rounded-xl p-4"
+                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                    <p className="text-xs text-muted-foreground mb-2">
+                      {new Date(post.created_at).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
+                    </p>
+                    <p className="text-sm leading-relaxed whitespace-pre-wrap" style={{ color: 'rgba(255,255,255,0.8)' }}>{post.content}</p>
+                    {post.media_url && post.post_type === 'image' && (
+                      <div className="mt-3 rounded-lg overflow-hidden">
+                        <img src={post.media_url} alt="Post" className="w-full max-h-60 object-cover" loading="lazy"
+                          onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* CTAs */}
           <div className="flex flex-col gap-3">
             <button
@@ -318,78 +416,6 @@ const PublicProfile = () => {
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               <MessageCircle size={18} /> Enviar mensaje
             </button>
-          </div>
-
-          {/* Fan Club */}
-          <div className="mt-8 rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(212,175,55,0.2)' }}>
-            <div className="px-5 py-4 flex items-center gap-3"
-              style={{ background: 'linear-gradient(135deg,rgba(212,175,55,0.1),rgba(184,148,30,0.06))' }}>
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-                <Heart size={16} fill="currentColor" />
-              </div>
-              <div className="flex-1">
-                <p className="text-sm font-black" style={{ color: '#D4AF37' }}>Fan Club · {profile.name}</p>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>Contenido exclusivo para suscriptores</p>
-              </div>
-            </div>
-
-            <div className="px-5 pt-4 flex gap-2">
-              {([
-                { id: 'fan', label: 'Fan', price: '4,99€/mes', icon: <Heart size={13} /> },
-                { id: 'vip', label: 'VIP', price: '9,99€/mes', icon: <Crown size={13} /> },
-              ] as const).map(t => (
-                <button key={t.id} onClick={() => setFanTier(t.id)}
-                  className="flex-1 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all"
-                  style={{
-                    background: fanTier === t.id ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.04)',
-                    border: `1px solid ${fanTier === t.id ? 'rgba(212,175,55,0.4)' : 'rgba(255,255,255,0.08)'}`,
-                    color: fanTier === t.id ? '#D4AF37' : 'rgba(255,255,255,0.4)',
-                  }}>
-                  {t.icon} {t.label} · {t.price}
-                </button>
-              ))}
-            </div>
-
-            <div className="px-5 py-4 space-y-2">
-              {FAKE_POSTS.map((post, i) => (
-                <motion.div key={i}
-                  initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.07 }}
-                  className="flex items-center gap-3 p-3 rounded-xl"
-                  style={{
-                    background: post.locked ? 'rgba(0,0,0,0.35)' : 'rgba(212,175,55,0.05)',
-                    border: `1px solid ${post.locked ? 'rgba(255,255,255,0.04)' : 'rgba(212,175,55,0.12)'}`,
-                  }}>
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                    style={{ background: post.locked ? 'rgba(255,255,255,0.04)' : 'rgba(212,175,55,0.1)', color: post.locked ? '#3a3a3a' : '#D4AF37' }}>
-                    <post.icon size={14} />
-                  </div>
-                  <p className="text-xs flex-1" style={{ color: post.locked ? 'rgba(255,255,255,0.18)' : 'rgba(255,255,255,0.7)' }}>
-                    {post.label}
-                  </p>
-                  {post.locked
-                    ? <Lock size={12} style={{ color: '#3a3a3a', flexShrink: 0 }} />
-                    : <CheckCircle size={12} style={{ color: '#22c55e', flexShrink: 0 }} />
-                  }
-                </motion.div>
-              ))}
-              <p className="text-xs text-center pt-1" style={{ color: 'rgba(255,255,255,0.2)' }}>
-                +{fanTier === 'vip' ? '12' : '8'} publicaciones exclusivas disponibles al suscribirte
-              </p>
-            </div>
-
-            <div className="px-5 pb-5">
-              <button
-                onClick={() => navigate('/auth')}
-                className="w-full py-3.5 rounded-xl font-bold text-sm transition-all hover:scale-[1.02] flex items-center justify-center gap-2"
-                style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-                {fanTier === 'vip' ? <Crown size={15} /> : <Heart size={15} fill="currentColor" />}
-                Suscribirse · {fanTier === 'vip' ? '9,99€' : '4,99€'}/mes
-              </button>
-              <p className="text-center text-xs mt-2" style={{ color: 'rgba(255,255,255,0.2)' }}>
-                Cancela cuando quieras · 80% va directo al artista
-              </p>
-            </div>
           </div>
 
           {/* XPEAK CTA */}
@@ -412,6 +438,13 @@ const PublicProfile = () => {
               </button>
             </div>
           </div>
+
+          {/* Aviso legal */}
+          <p className="mt-6 text-center text-[0.65rem] leading-relaxed px-2" style={{ color: 'rgba(255,255,255,0.18)' }}>
+            El contenido publicado en este perfil es responsabilidad exclusiva de su titular.
+            XPEAK actúa como plataforma intermediaria y no se hace responsable de la veracidad,
+            legalidad ni calidad de los servicios ofertados.
+          </p>
 
           {/* Otros perfiles del mismo rol */}
           {relatedProfiles.length > 0 && (

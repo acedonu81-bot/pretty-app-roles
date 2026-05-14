@@ -129,10 +129,10 @@ const POST_TYPES = [
 type Tab = 'posts' | 'audio' | 'video' | 'images';
 
 const TABS: { id: Tab; label: string; icon: React.FC<any> }[] = [
-  { id: 'posts',  label: 'Posts & Experiencias', icon: Type      },
-  { id: 'audio',  label: 'Audio',                icon: Music     },
-  { id: 'video',  label: 'Vídeo & Música',       icon: Video     },
-  { id: 'images', label: 'Imágenes',             icon: ImageIcon },
+  { id: 'posts',  label: 'Posts',    icon: Type      },
+  { id: 'audio',  label: 'Audio',   icon: Music     },
+  { id: 'video',  label: 'Vídeo',   icon: Video     },
+  { id: 'images', label: 'Fotos',   icon: ImageIcon },
 ];
 
 interface Props {
@@ -352,7 +352,13 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
               )}
 
               <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground">{draft.length}/1000</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs text-muted-foreground">{draft.length}/1000</span>
+                  <span className="text-[0.65rem] px-1.5 py-0.5 rounded font-bold"
+                    style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', color: '#22c55e' }}>
+                    Público
+                  </span>
+                </div>
                 <button type="button" onClick={submitPost}
                   disabled={!draft.trim() || submitting}
                   className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105 disabled:opacity-40"
@@ -371,10 +377,24 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
           )}
 
           {!loadingPosts && posts.length === 0 && (
-            <div className="glass-panel p-12 flex flex-col items-center text-center gap-3">
-              <FileEdit size={28} style={{ color: 'rgba(212,175,55,0.2)' }} />
-              <p className="text-sm text-muted-foreground">Aún no hay publicaciones.</p>
-              {isOwn && <p className="text-xs text-muted-foreground">Cuéntales algo a tus fans — experiencias en sala, reflexiones, novedades.</p>}
+            <div className="glass-panel p-10 flex flex-col items-center text-center gap-3">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center"
+                style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.12)' }}>
+                <FileEdit size={22} style={{ color: 'rgba(212,175,55,0.45)' }} />
+              </div>
+              <p className="text-sm font-bold">Sin publicaciones todavía</p>
+              <p className="text-xs max-w-xs leading-relaxed" style={{ color: '#8E8EA0' }}>
+                {isOwn
+                  ? 'Comparte experiencias en sala, reflexiones o novedades. Tus fans y los empresarios lo verán aquí.'
+                  : 'Este profesional aún no ha publicado contenido en su ficha.'}
+              </p>
+              {isOwn && (
+                <button type="button" onClick={() => { const el = document.querySelector('textarea'); el?.focus(); el?.scrollIntoView({ behavior: 'smooth' }); }}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 mt-1"
+                  style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                  Escribir mi primer post
+                </button>
+              )}
             </div>
           )}
 
@@ -499,9 +519,10 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
 
             {!videoUrl && (
               <div className="mt-4 p-8 rounded-xl flex flex-col items-center text-center gap-2"
-                style={{ border: '1px dashed rgba(212,175,55,0.12)' }}>
-                <Video size={24} style={{ color: 'rgba(212,175,55,0.2)' }} />
+                style={{ border: '1px dashed rgba(212,175,55,0.22)' }}>
+                <Video size={24} style={{ color: 'rgba(212,175,55,0.3)' }} />
                 <p className="text-sm text-muted-foreground">Sin vídeo destacado aún.</p>
+                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>Pega una URL de YouTube o Vimeo arriba</p>
               </div>
             )}
           </div>
@@ -528,10 +549,17 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
                 {canUpload ? (
                   <VideoSessionUpload maxSessions={maxVids} userId={user!.id} />
                 ) : (
-                  <div className="p-6 rounded-xl flex flex-col items-center text-center gap-2"
-                    style={{ border: '1px dashed rgba(66,133,244,0.15)' }}>
-                    <Video size={22} style={{ color: 'rgba(66,133,244,0.2)' }} />
-                    <p className="text-xs text-muted-foreground">Activa <strong className="text-white">Starter</strong> para subir sesiones de vídeo.</p>
+                  <div className="p-6 rounded-xl flex flex-col items-center text-center gap-3"
+                    style={{ border: '1px dashed rgba(66,133,244,0.2)' }}>
+                    <Video size={22} style={{ color: 'rgba(66,133,244,0.3)' }} />
+                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                      Las sesiones de vídeo están disponibles desde el plan <strong style={{ color: '#fff' }}>Starter</strong>.
+                    </p>
+                    <a href="#subscription"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
+                      style={{ background: 'rgba(66,133,244,0.1)', border: '1px solid rgba(66,133,244,0.25)', color: BLUE }}>
+                      Ver planes
+                    </a>
                   </div>
                 )}
               </div>

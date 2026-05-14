@@ -22,15 +22,18 @@ const StatsTab = ({ pros, favorites }: Props) => {
   const premiumCount  = pros.filter(p => p.subscription_tier !== 'free').length;
 
   const pieData = [
-    { name: 'DJ',     value: djCount     || 12, color: '#D4AF37' },
-    { name: 'Staff',  value: staffCount  || 8,  color: '#8B5CF6' },
-    { name: 'Makeup', value: makeupCount || 5,  color: '#EC4899' },
+    { name: 'DJ',     value: djCount,     color: '#D4AF37' },
+    { name: 'Staff',  value: staffCount,  color: '#8B5CF6' },
+    { name: 'Makeup', value: makeupCount, color: '#EC4899' },
   ];
 
+  const djAvgRate     = pros.filter(p => p.role === 'dj').reduce((s, p) => s + (p.hourly_rate || 0), 0) / (djCount || 1);
+  const staffAvgRate  = pros.filter(p => p.role === 'staff').reduce((s, p) => s + (p.hourly_rate || 0), 0) / (staffCount || 1);
+  const makeupAvgRate = pros.filter(p => p.role === 'makeup').reduce((s, p) => s + (p.hourly_rate || 0), 0) / (makeupCount || 1);
   const rateBarData = [
-    { name: 'DJ',     '€/hora avg': avgRate                      || 280, color: '#D4AF37' },
-    { name: 'Staff',  '€/hora avg': Math.round(avgRate * 0.3)    || 85,  color: '#8B5CF6' },
-    { name: 'Makeup', '€/hora avg': Math.round(avgRate * 0.55)   || 160, color: '#EC4899' },
+    { name: 'DJ',     '€/hora avg': djCount     > 0 ? Math.round(djAvgRate)     : 0, color: '#D4AF37' },
+    { name: 'Staff',  '€/hora avg': staffCount  > 0 ? Math.round(staffAvgRate)  : 0, color: '#8B5CF6' },
+    { name: 'Makeup', '€/hora avg': makeupCount > 0 ? Math.round(makeupAvgRate) : 0, color: '#EC4899' },
   ];
 
   const weeklyData = [
@@ -56,13 +59,13 @@ const StatsTab = ({ pros, favorites }: Props) => {
       {/* KPI cards */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-5">
         {[
-          { label: 'Profesionales activos', value: totalPros   || 25,  icon: Users,        color: '#D4AF37' },
-          { label: 'Tarifa media/hora',     value: `€${avgRate || 195}`, icon: Euro,       color: '#22c55e' },
-          { label: 'Verificados',           value: verifiedCount || 8,  icon: CheckCircle, color: '#3B82F6' },
-          { label: 'Con suscripción',       value: premiumCount  || 14, icon: Star,        color: '#EC4899' },
-          { label: 'DJs',                   value: djCount       || 12, icon: TrendingUp,  color: '#D4AF37' },
-          { label: 'Staff',                 value: staffCount    || 8,  icon: Eye,         color: '#8B5CF6' },
-          { label: 'Estilismo',             value: makeupCount   || 5,  icon: MessageSquare, color: '#F59E0B' },
+          { label: 'Profesionales activos', value: totalPros,             icon: Users,         color: '#D4AF37' },
+          { label: 'Tarifa media/hora',     value: avgRate > 0 ? `€${avgRate}` : '—', icon: Euro, color: '#22c55e' },
+          { label: 'Verificados',           value: verifiedCount,         icon: CheckCircle,   color: '#3B82F6' },
+          { label: 'Con suscripción',       value: premiumCount,          icon: Star,          color: '#EC4899' },
+          { label: 'DJs',                   value: djCount,               icon: TrendingUp,    color: '#D4AF37' },
+          { label: 'Staff',                 value: staffCount,            icon: Eye,           color: '#8B5CF6' },
+          { label: 'Estilismo',             value: makeupCount,           icon: MessageSquare, color: '#F59E0B' },
           { label: 'Tus favoritos',         value: favorites.length,    icon: Heart,       color: '#EC4899' },
         ].map(s => (
           <div key={s.label} className="glass-panel p-4 flex flex-col gap-1">
@@ -82,25 +85,31 @@ const StatsTab = ({ pros, favorites }: Props) => {
           <h4 className="text-sm font-bold mb-4 flex items-center gap-2">
             <BarChart3 size={14} style={{ color: '#D4AF37' }} /> Distribución por rol
           </h4>
-          <div className="flex items-center gap-4">
-            <ResponsiveContainer width="60%" height={160}>
-              <PieChart>
-                <Pie data={pieData} dataKey="value" cx="50%" cy="50%" innerRadius={40} outerRadius={72} paddingAngle={3} strokeWidth={0}>
-                  {pieData.map(entry => <Cell key={entry.name} fill={entry.color} opacity={0.9} />)}
-                </Pie>
-                <Tooltip content={<DarkTooltip />} />
-              </PieChart>
-            </ResponsiveContainer>
-            <div className="flex flex-col gap-2">
-              {pieData.map(d => (
-                <div key={d.name} className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: d.color }} />
-                  <span className="text-xs font-bold">{d.name}</span>
-                  <span className="text-xs text-muted-foreground">{d.value}</span>
-                </div>
-              ))}
+          {totalPros === 0 ? (
+            <div className="flex items-center justify-center h-[160px]">
+              <p className="text-xs text-muted-foreground">Sin datos todavía</p>
             </div>
-          </div>
+          ) : (
+            <div className="flex items-center gap-4">
+              <ResponsiveContainer width="60%" height={160}>
+                <PieChart>
+                  <Pie data={pieData.filter(d => d.value > 0)} dataKey="value" cx="50%" cy="50%" innerRadius={40} outerRadius={72} paddingAngle={3} strokeWidth={0}>
+                    {pieData.filter(d => d.value > 0).map(entry => <Cell key={entry.name} fill={entry.color} opacity={0.9} />)}
+                  </Pie>
+                  <Tooltip content={<DarkTooltip />} />
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="flex flex-col gap-2">
+                {pieData.map(d => (
+                  <div key={d.name} className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: d.color }} />
+                    <span className="text-xs font-bold">{d.name}</span>
+                    <span className="text-xs text-muted-foreground">{d.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Bar — tarifa */}

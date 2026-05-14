@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Music, Award, Clock, CheckCircle, XCircle, AlertCircle, TrendingUp, Heart, Share2, ChevronDown, ChevronUp } from 'lucide-react';
+import { Music, Award, Clock, CheckCircle, XCircle, AlertCircle, TrendingUp, Heart, Share2, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import AudioUpload from '@/components/dashboard/AudioUpload';
 import VoteButton from '@/components/dashboard/VoteButton';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 type ValidationStatus = 'pending' | 'approved' | 'rookie' | 'rejected' | 'awaiting_admin';
 
@@ -25,7 +26,8 @@ const milestones = [
 
 /* ──────────────────── Card pública de un DJ Promesa ──────────────────── */
 const RookiePublicCard = ({ dj, userId }: { dj: any; userId: string | undefined }) => {
-  const [voteCount, setVoteCount] = useState(0);
+  const navigate = useNavigate();
+  const [voteCount, setVoteCount] = useState<number | null>(null);
   const [votedToday, setVotedToday] = useState(false);
 
   useEffect(() => {
@@ -42,41 +44,66 @@ const RookiePublicCard = ({ dj, userId }: { dj: any; userId: string | undefined 
 
   const photoUrl = dj.photo_url && dj.photo_url.trim().length > 5 ? dj.photo_url : null;
   const initials = dj.display_name?.charAt(0)?.toUpperCase() || '?';
-  const progress = Math.min((voteCount / 500) * 100, 100);
-  const currentMilestone = milestones.filter(m => voteCount >= m.votes).pop();
+  const currentMilestone = voteCount !== null ? milestones.filter(m => voteCount >= m.votes).pop() : null;
 
   return (
-    <div className="glass-panel p-5 flex flex-col items-center text-center">
-      <div className="w-16 h-16 rounded-lg overflow-hidden mb-3 flex items-center justify-center text-xl font-bold"
-        style={{ background: photoUrl ? undefined : 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-        {photoUrl ? <img src={photoUrl} alt={dj.display_name} className="w-full h-full object-cover" /> : initials}
+    <div className="glass-panel p-4 flex flex-col gap-3 transition-all hover:border-amber-500/20">
+      {/* Avatar + info */}
+      <div className="flex items-center gap-3">
+        <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center text-base font-bold relative"
+          style={{ border: '1px solid rgba(212,175,55,0.35)', background: photoUrl ? undefined : 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+          {photoUrl ? <img src={photoUrl} alt={dj.display_name} className="w-full h-full object-cover" /> : initials}
+          <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border border-black"
+            style={{ background: '#D4AF37', boxShadow: '0 0 6px rgba(212,175,55,0.6)' }} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-bold truncate">{dj.display_name || 'Sin nombre'}</p>
+          <p className="text-xs text-muted-foreground truncate">{dj.specialty || 'DJ'}</p>
+          <p className="text-xs text-muted-foreground">{dj.zone || 'España'}</p>
+        </div>
       </div>
-      <p className="text-base font-bold truncate w-full">{dj.display_name || 'Sin nombre'}</p>
-      <p className="text-sm text-muted-foreground truncate w-full">{dj.specialty || 'DJ'}</p>
-      <p className="text-xs text-muted-foreground">{dj.zone || 'Madrid'}</p>
+
+      {/* Milestone badge */}
       {currentMilestone && (
-        <span className="mt-1.5 text-[0.75rem] font-bold px-2 py-0.5 rounded-full"
-          style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>
+        <span className="self-start text-[0.65rem] font-bold px-2 py-0.5 rounded-full"
+          style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
           {currentMilestone.label}
         </span>
       )}
-      <div className="w-full mt-3">
-        <div className="flex items-center gap-2 mb-1">
-          <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.05)' }}>
-            <div className="h-full rounded-full transition-all" style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #D4AF37, #22c55e)' }} />
-          </div>
-          <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>{voteCount}/500</span>
-        </div>
-        <VoteButton profileId={dj.id} voteCount={voteCount} hasVotedToday={votedToday} category="rookie" />
+
+      {/* Vote section */}
+      <div className="mt-auto">
+        {voteCount === null ? (
+          <div className="h-8 bg-white/5 rounded-md animate-pulse" />
+        ) : (
+          <VoteButton
+            profileId={dj.id}
+            voteCount={voteCount}
+            hasVotedToday={votedToday}
+            category="rookie"
+            onVoted={() => { setVoteCount(c => (c ?? 0) + 1); setVotedToday(true); }}
+          />
+        )}
       </div>
-      <button
-        onClick={() => {
-          navigator.clipboard.writeText(`${window.location.origin}/dashboard?promesa=${dj.id}`);
-          toast.success('Enlace copiado — compártelo para promocionar a este DJ');
-        }}
-        className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
-        <Share2 size={12} /> Compartir
-      </button>
+
+      {/* Actions row */}
+      <div className="flex items-center gap-2">
+        <button
+          onClick={() => navigate(`/p/${dj.user_id}`)}
+          className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
+          style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+          <ExternalLink size={11} /> Ver perfil
+        </button>
+        <button
+          onClick={() => {
+            navigator.clipboard.writeText(`${window.location.origin}/p/${dj.user_id}`);
+            toast.success('Enlace copiado');
+          }}
+          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs transition-all hover:scale-105"
+          style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', color: '#8E8EA0' }}>
+          <Share2 size={11} />
+        </button>
+      </div>
     </div>
   );
 };
@@ -89,7 +116,7 @@ const RookieView = () => {
   const [profile, setProfile] = useState<any>(null);
   const [voteCount, setVoteCount] = useState(0);
   const [rookies, setRookies] = useState<any[]>([]);
-  const [myPanelOpen, setMyPanelOpen] = useState(false);
+  const [myPanelOpen, setMyPanelOpen] = useState(true);
 
   useEffect(() => {
     if (!user) return;
@@ -101,7 +128,7 @@ const RookieView = () => {
         .maybeSingle();
       setProfile(p);
 
-      const userIsRookie = p?.subscription_tier === 'free';
+      const userIsRookie = p?.role === 'rookie';
       setIsRookie(userIsRookie);
 
       if (p && userIsRookie) {
@@ -109,11 +136,11 @@ const RookieView = () => {
         setVoteCount(vc ?? 0);
       }
 
-      // Load all promesa DJs (free tier) — exclude self
+      // Load DJ Promesa directory — role 'rookie' only
       const { data: allRookies } = await supabase
         .from('profiles')
         .select('*')
-        .eq('subscription_tier', 'free')
+        .eq('role', 'rookie')
         .neq('user_id', user.id)
         .order('created_at', { ascending: false })
         .limit(24);
@@ -126,8 +153,26 @@ const RookieView = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-sm text-muted-foreground animate-pulse">Cargando DJs Promesa…</div>
+      <div>
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold mb-1">DJs <span className="text-gradient">Promesa</span></h2>
+          <p className="text-sm text-muted-foreground">Descubre y apoya los nuevos talentos de la escena.</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="glass-panel p-4 animate-pulse">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-12 h-12 rounded-lg bg-white/5 flex-shrink-0" />
+                <div className="flex-1">
+                  <div className="h-3 bg-white/5 rounded mb-1.5 w-3/4" />
+                  <div className="h-2 bg-white/5 rounded w-1/2" />
+                </div>
+              </div>
+              <div className="h-1.5 bg-white/5 rounded-full mb-3" />
+              <div className="h-7 bg-white/5 rounded-md" />
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
@@ -225,7 +270,7 @@ const RookieView = () => {
                     <div className="text-xs text-muted-foreground">de 500 necesarios</div>
                   </div>
                   <div className="h-2.5 rounded-full overflow-hidden mb-2" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                    <div className="h-full rounded-full" style={{ width: `${progress}%`, background: 'linear-gradient(90deg,#D4AF37,#22c55e)' }} />
+                    <div className="h-full rounded-full transition-all duration-700" style={{ width: `${progress}%`, background: 'linear-gradient(90deg,#D4AF37,#22c55e)' }} />
                   </div>
                   <div className="space-y-1.5 mt-3">
                     {milestones.map(m => {
@@ -283,11 +328,14 @@ const RookieView = () => {
 
       {/* ── Directorio de DJs Promesa ── */}
       {rookies.length === 0 ? (
-        <div className="glass-panel p-10 text-center">
-          <Award size={32} style={{ color: '#D4AF37' }} className="mx-auto mb-3" />
-          <p className="text-sm font-bold mb-1">Sé el primero</p>
-          <p className="text-xs text-muted-foreground">
-            Aún no hay DJs Promesa registrados. Cuando alguien se registre con plan gratuito aparecerá aquí.
+        <div className="glass-panel p-10 flex flex-col items-center text-center gap-3">
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center"
+            style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.1)' }}>
+            <Award size={22} style={{ color: 'rgba(212,175,55,0.35)' }} />
+          </div>
+          <p className="text-sm font-bold">Sé el primero en la escena</p>
+          <p className="text-xs text-muted-foreground max-w-[280px] mx-auto leading-relaxed">
+            Aún no hay DJs Promesa registrados. Cuando un DJ se una con plan gratuito aparecerá aquí para recibir votos de la comunidad.
           </p>
         </div>
       ) : (
@@ -296,9 +344,9 @@ const RookieView = () => {
             <p className="text-xs text-muted-foreground">
               <span className="font-bold" style={{ color: '#D4AF37' }}>{rookies.length}</span> DJs Promesa en la plataforma
             </p>
-            <p className="text-xs text-muted-foreground">Ordenados por fecha de registro</p>
+            <p className="text-xs text-muted-foreground">Más recientes primero</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {rookies.map(dj => (
               <RookiePublicCard key={dj.id} dj={dj} userId={user?.id} />
             ))}

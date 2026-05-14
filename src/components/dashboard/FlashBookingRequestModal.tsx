@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Zap, Calendar, MapPin, MessageSquare } from 'lucide-react';
+import { X, Zap, Calendar, MapPin, MessageSquare, Euro } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
@@ -14,7 +14,7 @@ interface Props {
 
 const FlashBookingRequestModal = ({ professionalName, professionalRole, professionalUserId, onClose }: Props) => {
   const { user } = useAuth();
-  const [form, setForm] = useState({ name: '', contact: '', date: '', location: '', description: '' });
+  const [form, setForm] = useState({ name: '', contact: '', date: '', location: '', description: '', price: '' });
   const [sending, setSending] = useState(false);
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
@@ -33,7 +33,9 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
       event_date: form.date,
       event_location: form.location,
       event_description: form.description,
+      agreed_price: form.price ? parseFloat(form.price) : null,
       status: 'pending',
+      created_by: user?.id ?? null,
     };
     // Attach professional_user_id so RLS lets them read their own bookings
     if (professionalUserId) payload.professional_user_id = professionalUserId;
@@ -43,9 +45,16 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
     // Email a admin
     supabase.functions.invoke('send-email', { body: { type: 'flash_booking', data: payload } })
       .catch((err: unknown) => console.warn('[FlashBooking] admin email failed:', err));
+    // Confirmación al solicitante (si dio email)
     if (form.contact.includes('@')) {
       supabase.functions.invoke('send-email', { body: { type: 'flash_booking_confirm', data: payload } })
         .catch((err: unknown) => console.warn('[FlashBooking] confirm email failed:', err));
+    }
+    // Notificación al profesional
+    if (professionalUserId) {
+      supabase.functions.invoke('send-email', {
+        body: { type: 'booking_received', data: { ...payload, professional_user_id: professionalUserId } },
+      }).catch((err: unknown) => console.warn('[FlashBooking] professional email failed:', err));
     }
 
     setSending(false);
@@ -114,13 +123,23 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
                   placeholder="Sala / Ciudad" className="nightlife-input text-sm !py-2 w-full" />
               </div>
             </div>
-            <div>
-              <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: 'rgba(255,255,255,0.4)' }}>
-                <MessageSquare size={10} /> Descripción del evento
-              </label>
-              <textarea value={form.description} onChange={e => set('description', e.target.value)}
-                placeholder="Tipo de evento, aforo estimado, horario..." rows={3}
-                className="nightlife-input text-sm !py-2 w-full resize-none" />
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                  <MessageSquare size={10} /> Descripción del evento
+                </label>
+                <textarea value={form.description} onChange={e => set('description', e.target.value)}
+                  placeholder="Tipo de evento, aforo, horario..." rows={3}
+                  className="nightlife-input text-sm !py-2 w-full resize-none" />
+              </div>
+              <div>
+                <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                  <Euro size={10} /> Caché acordado (€)
+                </label>
+                <input type="number" min="0" step="0.01" value={form.price} onChange={e => set('price', e.target.value)}
+                  placeholder="ej. 300" className="nightlife-input text-sm !py-2 w-full" />
+                <p className="text-[0.65rem] mt-1" style={{ color: 'rgba(255,255,255,0.2)' }}>Opcional — para tu registro de gastos</p>
+              </div>
             </div>
           </div>
 

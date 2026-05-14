@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Bell, Clock, Calendar as CalendarIcon, Plus, Trash2, Check, RefreshCw, MapPin } from 'lucide-react';
+import { Bell, Calendar as CalendarIcon, Plus, Trash2, MapPin, ExternalLink, Download } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
@@ -35,7 +35,7 @@ const CalendarView = () => {
   const [viewYear, setViewYear] = useState(today.getFullYear());
   const [viewMonth, setViewMonth] = useState(today.getMonth());
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
-  const [gcalConnected, setGcalConnected] = useState(false);
+  const [, setGcalConnected] = useState(false);
   const [events, setEvents] = useState<CalEvent[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ title: '', date: '', location: '', notes: '' });
@@ -90,6 +90,46 @@ const CalendarView = () => {
 
   const fmtDate = (d: string) => new Date(d + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
 
+  const getGoogleCalURL = (ev: CalEvent) => {
+    const d = ev.date.replace(/-/g, '');
+    const params = new URLSearchParams({
+      action: 'TEMPLATE',
+      text: ev.title,
+      dates: `${d}/${d}`,
+      details: ev.notes || 'Evento añadido desde XPEAK',
+      location: ev.location || '',
+    });
+    return `https://calendar.google.com/calendar/render?${params.toString()}`;
+  };
+
+  const downloadICS = (ev: CalEvent) => {
+    const d = ev.date.replace(/-/g, '');
+    const uid = `xpeak-${ev.id}@xpeak.es`;
+    const lines = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//XPEAK//Nightlife Pro//ES',
+      'CALSCALE:GREGORIAN',
+      'BEGIN:VEVENT',
+      `DTSTART;VALUE=DATE:${d}`,
+      `DTEND;VALUE=DATE:${d}`,
+      `SUMMARY:${ev.title}`,
+      ev.location ? `LOCATION:${ev.location}` : '',
+      ev.notes   ? `DESCRIPTION:${ev.notes}` : '',
+      `UID:${uid}`,
+      'END:VEVENT',
+      'END:VCALENDAR',
+    ].filter(Boolean).join('\r\n');
+    const blob = new Blob([lines], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${ev.title.replace(/[^a-z0-9áéíóúüñ]/gi, '_')}.ics`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success('Archivo .ics descargado — ábrelo para añadir al calendario');
+  };
+
   const toggleNotifications = () => {
     setNotificationsEnabled(p => !p);
     toast[!notificationsEnabled ? 'success' : 'info'](!notificationsEnabled ? 'Alertas activadas' : 'Alertas desactivadas');
@@ -97,51 +137,35 @@ const CalendarView = () => {
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
-      <div className="mb-6 flex items-center justify-between flex-wrap gap-3">
-        <div>
+      <div className="mb-6 flex items-start justify-between gap-3">
+        <div className="min-w-0">
           <h2 className="text-2xl font-bold mb-1"><span className="text-gradient">Calendario</span></h2>
-          <p className="text-base text-muted-foreground">Tu agenda de bolos y eventos.</p>
+          <p className="text-sm text-muted-foreground">Tu agenda de bolos y eventos.</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-shrink-0">
           <button onClick={toggleNotifications}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all"
             style={{ background: notificationsEnabled ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.03)', border: notificationsEnabled ? '1px solid rgba(212,175,55,0.3)' : '1px solid var(--nightlife-border)', color: notificationsEnabled ? '#D4AF37' : '#8E8EA0' }}>
-            <Bell size={15} /> {notificationsEnabled ? 'Alertas ON' : 'Alertas'}
+            <Bell size={13} /> <span className="hidden sm:inline">{notificationsEnabled ? 'Alertas ON' : 'Alertas'}</span>
           </button>
           <button onClick={() => setShowForm(true)}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all hover:scale-105"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-            <Plus size={15} /> Añadir bolo
+            <Plus size={13} /> <span className="hidden sm:inline">Añadir</span> bolo
           </button>
         </div>
       </div>
 
-      {/* Google Calendar banner */}
-      {!gcalConnected && (
-        <div className="glass-panel p-4 mb-5 flex items-center justify-between gap-4"
-          style={{ border: '1px solid rgba(66,133,244,0.25)', background: 'rgba(66,133,244,0.04)' }}>
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(66,133,244,0.12)' }}>
-              <CalendarIcon size={16} style={{ color: '#4285F4' }} />
-            </div>
-            <div>
-              <p className="text-sm font-bold" style={{ color: '#4285F4' }}>Sincronizar con Google Calendar</p>
-              <p className="text-xs text-muted-foreground">Añade tus bolos a tu agenda personal.</p>
-            </div>
-          </div>
-          <button onClick={() => { window.open('https://calendar.google.com/calendar/r/settings/addcalendar', '_blank'); setGcalConnected(true); toast.success('Abriendo Google Calendar'); }}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-[1.02] flex-shrink-0"
-            style={{ background: '#4285F4', color: '#fff' }}>
-            <RefreshCw size={12} /> Conectar
-          </button>
+      {/* Calendar export hint */}
+      <div className="glass-panel p-4 mb-5 flex items-center gap-3"
+        style={{ border: '1px solid rgba(66,133,244,0.18)', background: 'rgba(66,133,244,0.03)' }}>
+        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(66,133,244,0.1)' }}>
+          <CalendarIcon size={15} style={{ color: '#4285F4' }} />
         </div>
-      )}
-      {gcalConnected && (
-        <div className="glass-panel p-3 mb-5 flex items-center gap-3" style={{ border: '1px solid rgba(34,197,94,0.25)' }}>
-          <Check size={14} style={{ color: '#22c55e' }} />
-          <p className="text-xs font-bold" style={{ color: '#22c55e' }}>Google Calendar conectado.</p>
-        </div>
-      )}
+        <p className="text-xs text-muted-foreground flex-1">
+          Añade cada bolo directamente a <strong className="text-white">Google Calendar</strong> o <strong className="text-white">Apple Calendar</strong> usando los botones de exportación en cada evento.
+        </p>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-5">
         {/* Calendar grid */}
@@ -212,21 +236,35 @@ const CalendarView = () => {
                 {upcomingEvents.map(ev => (
                   <div key={ev.id} className="p-3 rounded-lg relative" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
                     <div className="absolute top-0 left-0 w-0.5 h-full rounded-full" style={{ background: '#D4AF37' }} />
-                    <div className="flex items-start justify-between gap-2 ml-2">
-                      <div className="min-w-0">
-                        <p className="text-xs font-bold truncate" style={{ color: '#D4AF37' }}>{ev.title}</p>
-                        <p className="text-xs text-muted-foreground mt-0.5">{fmtDate(ev.date)}</p>
-                        {ev.location && (
-                          <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
-                            <MapPin size={10} /> {ev.location}
-                          </p>
-                        )}
+                    <div className="ml-2">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <p className="text-xs font-bold truncate" style={{ color: '#D4AF37' }}>{ev.title}</p>
+                          <p className="text-xs text-muted-foreground mt-0.5">{fmtDate(ev.date)}</p>
+                          {ev.location && (
+                            <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
+                              <MapPin size={10} /> {ev.location}
+                            </p>
+                          )}
+                        </div>
+                        <button onClick={() => deleteEvent(ev.id)}
+                          className="p-1 rounded flex-shrink-0 hover:scale-110 transition-all"
+                          style={{ color: 'rgba(255,85,85,0.5)' }}>
+                          <Trash2 size={12} />
+                        </button>
                       </div>
-                      <button onClick={() => deleteEvent(ev.id)}
-                        className="p-1 rounded flex-shrink-0 hover:scale-110 transition-all"
-                        style={{ color: 'rgba(255,85,85,0.5)' }}>
-                        <Trash2 size={12} />
-                      </button>
+                      <div className="flex gap-1.5 mt-2">
+                        <a href={getGoogleCalURL(ev)} target="_blank" rel="noopener noreferrer"
+                          className="flex items-center gap-1 px-2 py-1 rounded text-[0.65rem] font-bold transition-all hover:scale-105"
+                          style={{ background: 'rgba(66,133,244,0.1)', border: '1px solid rgba(66,133,244,0.2)', color: '#4285F4' }}>
+                          <ExternalLink size={9} /> Google Cal
+                        </a>
+                        <button onClick={() => downloadICS(ev)}
+                          className="flex items-center gap-1 px-2 py-1 rounded text-[0.65rem] font-bold transition-all hover:scale-105"
+                          style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#8E8EA0' }}>
+                          <Download size={9} /> Apple / .ics
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}

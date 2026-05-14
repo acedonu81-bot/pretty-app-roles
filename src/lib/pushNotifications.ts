@@ -6,13 +6,23 @@
 const SW_URL = '/sw.js';
 const STORAGE_KEY = 'xpeak_push_subscribed';
 
+/** Devuelve true si el navegador/dispositivo soporta push */
+export function isPushSupported(): boolean {
+  return typeof window !== 'undefined'
+    && 'serviceWorker' in navigator
+    && 'Notification' in window;
+}
+
 /** Registra el SW si no está registrado y devuelve el registro */
 async function getRegistration(): Promise<ServiceWorkerRegistration | null> {
-  if (!('serviceWorker' in navigator) || !('PushManager' in window)) return null;
+  if (!isPushSupported()) return null;
   try {
-    const existing = await navigator.serviceWorker.getRegistration(SW_URL);
+    // Buscar por scope '/' primero, luego registrar
+    const existing = await navigator.serviceWorker.getRegistration('/');
     if (existing) return existing;
-    return await navigator.serviceWorker.register(SW_URL, { scope: '/' });
+    const reg = await navigator.serviceWorker.register(SW_URL, { scope: '/' });
+    await navigator.serviceWorker.ready;
+    return reg;
   } catch {
     return null;
   }

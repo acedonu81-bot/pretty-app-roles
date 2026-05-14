@@ -1,9 +1,10 @@
 import { createRoot } from "react-dom/client";
+import { inject } from "@vercel/analytics";
 import App from "./App.tsx";
 import "./index.css";
 import { initCapacitor } from "./lib/capacitor";
 
-// Initialize native shell (no-op on web)
+inject();
 initCapacitor();
 
 createRoot(document.getElementById("root")!).render(<App />);

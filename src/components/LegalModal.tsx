@@ -9,7 +9,7 @@ Ausencia de Relación Laboral: XPEAK no es una agencia de contratación ni una e
 
 Responsabilidad de Contratación: Cualquier acuerdo, contrato o pago derivado del contacto realizado a través de esta web es responsabilidad exclusiva de las partes interesadas. XPEAK no interviene en las negociaciones ni garantiza la ejecución del servicio.
 
-Protección de Datos (RGPD): Al pulsar "Contactar", el usuario acepta que sus datos de perfil sean compartidos con el interesado únicamente para fines profesionales. El responsable del tratamiento es XPEAK y el contacto para el ejercicio de derechos (acceso, rectificación, supresión) es info@xpeak.site.
+Protección de Datos (RGPD): Al pulsar "Contactar", el usuario acepta que sus datos de perfil sean compartidos con el interesado únicamente para fines profesionales. El responsable del tratamiento es XPEAK y el contacto para el ejercicio de derechos (acceso, rectificación, supresión) es info@xpeak.es.
 
 Normas de la Comunidad: Los usuarios se comprometen a utilizar la plataforma de forma ética y profesional. XPEAK se reserva el derecho de eliminar perfiles que incumplan estas normas o generen reportes negativos.`;
 
@@ -38,7 +38,7 @@ const LegalModal = ({ open, onClose }: LegalModalProps) => {
         </div>
         <div className="mt-4 p-3 rounded-lg text-center" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
           <p className="text-xs text-muted-foreground">Para ejercer tus derechos contacta con:</p>
-          <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>info@xpeak.site</p>
+          <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>info@xpeak.es</p>
         </div>
         <button onClick={onClose}
           className="mt-4 w-full py-2.5 rounded-lg font-bold text-xs"

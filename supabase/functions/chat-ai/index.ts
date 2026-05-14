@@ -1,0 +1,96 @@
+import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
+const SYSTEM_PROMPT = `Eres el asistente de soporte de XPEAK, la plataforma profesional del ocio nocturno en España.
+Ayudas a DJs, fotógrafos, staff, camareros, maquilladores y empresarios de eventos a usar la plataforma.
+
+XPEAK ofrece:
+- Directorio de profesionales (DJs, fotógrafos, staff, camareros, diseño, promotores, catering, maquillaje)
+- Flash Booking: sistema de reserva rápida de profesionales para eventos
+- Fan Club: contenido exclusivo para fans suscritos (audio, fotos, texto)
+- Contratos PDF con firma digital
+- Planes: Free (1 perfil), Starter €9.99 (2 perfiles), Business €19.99 (3 perfiles), Agency €44.99 (5 perfiles)
+- Sello de Oro: verificación de identidad premium
+- Calendario de bolos con exportación a Google Calendar / Apple Calendar
+- Sistema de mensajes entre profesionales y empresarios
+
+Reglas:
+- Responde SIEMPRE en español
+- Sé conciso y práctico (máximo 3-4 líneas por respuesta)
+- Si no sabes algo específico, di "Para más detalles escríbenos a info@xpeak.es"
+- No inventes precios ni funcionalidades que no existen
+- Tono: profesional pero cercano, como de una startup de ocio nocturno`;
+
+serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders });
+  }
+
+  try {
+    const apiKey = Deno.env.get('ANTHROPIC_API_KEY');
+    if (!apiKey) {
+      return new Response(
+        JSON.stringify({ error: 'API key not configured', fallback: true }),
+        { status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const { message, history = [] } = await req.json();
+    if (!message || typeof message !== 'string' || message.length > 500) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid message' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const messages = [
+      ...history.slice(-6).map((m: { role: string; content: string }) => ({
+        role: m.role === 'bot' ? 'assistant' : 'user',
+        content: m.content,
+      })),
+      { role: 'user', content: message },
+    ];
+
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type':    'application/json',
+        'x-api-key':       apiKey,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model:      'claude-haiku-4-5-20251001',
+        max_tokens: 400,
+        system:     SYSTEM_PROMPT,
+        messages,
+      }),
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      console.error('Anthropic error:', err);
+      return new Response(
+        JSON.stringify({ error: 'AI unavailable', fallback: true }),
+        { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const data = await res.json();
+    const reply = data.content?.[0]?.text ?? 'Lo siento, no pude generar una respuesta. Escríbenos a info@xpeak.es';
+
+    return new Response(
+      JSON.stringify({ reply }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  } catch (err) {
+    console.error('chat-ai error:', err);
+    return new Response(
+      JSON.stringify({ error: 'Internal error', fallback: true }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+});

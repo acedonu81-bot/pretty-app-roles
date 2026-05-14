@@ -11,7 +11,7 @@ const welcomeMessages: Record<string, { icon: any; title: string; subject: strin
     icon: Music,
     title: 'Música',
     subject: 'Tu cabina te espera.',
-    body: 'Gracias por unirte como DJ a XPEAK. Ya puedes completar tu perfil y añadir tu enlace de Twitch o YouTube. Durante esta Fase Beta, aparecerás en el buscador nacional sin coste. Si vas a pinchar este fin de semana, pega tu link para que los empresarios te vean trabajar en tiempo real.',
+    body: 'Gracias por unirte como DJ a XPEAK. Ya puedes completar tu perfil y añadir tu enlace de Twitch o YouTube. Aparecerás en el buscador nacional desde el primer día. Si vas a pinchar este fin de semana, activa tu streaming para que los empresarios te vean trabajar en tiempo real.',
   },
   staff: {
     icon: Users,
@@ -53,7 +53,7 @@ const welcomeMessages: Record<string, { icon: any; title: string; subject: strin
     icon: Building2,
     title: 'Empresario',
     subject: 'El talento que necesitas está aquí.',
-    body: 'Ya puedes explorar el directorio nacional. Filtra por categoría y provincia para encontrar al profesional ideal. No cobramos comisiones por la contratación; el trato es directo entre tú y el talento. Reporta cualquier duda a info@xpeak.site.',
+    body: 'Ya puedes explorar el directorio nacional. Filtra por categoría y provincia para encontrar al profesional ideal. No cobramos comisiones por la contratación; el trato es directo entre tú y el talento. Reporta cualquier duda a info@xpeak.es.',
   },
 };
 
@@ -87,7 +87,7 @@ const WelcomeScreen = ({ role, displayName, onClose }: WelcomeScreenProps) => {
 
         <p className="text-[0.75rem] text-muted-foreground mb-4">
           📧 Se ha enviado una copia de este mensaje a tu correo electrónico.<br />
-          Firmado por <strong>Equipo XPEAK</strong> · info@xpeak.site
+          Firmado por <strong>Equipo XPEAK</strong> · info@xpeak.es
         </p>
 
         <button onClick={onClose}

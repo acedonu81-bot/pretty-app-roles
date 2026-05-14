@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Filter, Heart, Star, FileText, Download, X } from 'lucide-react';
+import { Filter, Heart, Star, FileText, Download, X, Users } from 'lucide-react';
 import { toast } from 'sonner';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
+import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import type { Pro } from './types';
 import { ZONES } from './types';
 
@@ -48,23 +49,32 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, showFavor
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className="text-[0.75rem] text-muted-foreground font-bold uppercase mb-1 block">Zona</label>
-            <select value={filterZone} onChange={e => setFilterZone(e.target.value)} className="nightlife-input text-sm">
-              {ZONES.map(z => <option key={z} value={z}>{z}</option>)}
-            </select>
+            <NightlifeSelect
+              value={filterZone}
+              onChange={setFilterZone}
+              options={ZONES.map(z => ({ value: z, label: z }))}
+              active={filterZone !== 'Todas'}
+            />
           </div>
           <div>
             <label className="text-[0.75rem] text-muted-foreground font-bold uppercase mb-1 block">Rol</label>
-            <select value={filterRole} onChange={e => setFilterRole(e.target.value)} className="nightlife-input text-sm">
-              <option value="Todos">Todos</option>
-              <option value="dj">DJ</option>
-              <option value="staff">Staff</option>
-              <option value="makeup">Estilismo / Makeup</option>
-              <option value="media">Media / Foto-Vídeo</option>
-              <option value="ambassador">Relaciones Públicas</option>
-              <option value="promotor">Promotor</option>
-              <option value="design">Diseño Gráfico</option>
-              <option value="rookie">Rookie</option>
-            </select>
+            <NightlifeSelect
+              value={filterRole}
+              onChange={setFilterRole}
+              options={[
+                { value: 'Todos', label: 'Todos' },
+                { value: 'dj', label: 'DJ' },
+                { value: 'staff', label: 'Staff' },
+                { value: 'makeup', label: 'Estilismo / Makeup' },
+                { value: 'media', label: 'Media / Foto-Vídeo' },
+                { value: 'ambassador', label: 'Relaciones Públicas' },
+                { value: 'promotor', label: 'Promotor' },
+                { value: 'camarero', label: 'Camarero / Barra' },
+                { value: 'catering', label: 'Catering / Cocina' },
+                { value: 'rookie', label: 'Rookie' },
+              ]}
+              active={filterRole !== 'Todos'}
+            />
           </div>
         </div>
         <div className="mt-3">
@@ -98,14 +108,40 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, showFavor
 
       {/* Pro grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {loading && (
-          <div className="col-span-full flex items-center justify-center py-10">
-            <div className="text-xs text-muted-foreground animate-pulse">Cargando profesionales...</div>
+        {loading && Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="glass-panel p-4 animate-pulse">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-11 h-11 rounded-lg bg-white/5 flex-shrink-0" />
+              <div className="flex-1">
+                <div className="h-3 bg-white/5 rounded mb-1.5 w-3/4" />
+                <div className="h-2 bg-white/5 rounded w-1/2" />
+              </div>
+              <div className="w-8 h-8 rounded bg-white/5 flex-shrink-0" />
+            </div>
+            <div className="flex gap-2 mb-3">
+              <div className="h-4 bg-white/5 rounded w-12" />
+              <div className="h-4 bg-white/5 rounded w-16" />
+            </div>
+            <div className="flex gap-2">
+              <div className="h-8 bg-white/5 rounded-md flex-1" />
+              <div className="h-8 w-9 bg-white/5 rounded-md" />
+            </div>
           </div>
-        )}
+        ))}
         {!loading && filtered.length === 0 && (
-          <div className="col-span-full text-center py-12">
-            <p className="text-sm text-muted-foreground">No se encontraron profesionales con estos filtros</p>
+          <div className="col-span-full glass-panel p-10 flex flex-col items-center gap-3 text-center">
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center"
+              style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.1)' }}>
+              <Users size={22} style={{ color: 'rgba(212,175,55,0.35)' }} />
+            </div>
+            <p className="text-sm font-bold">
+              {showFavoritesOnly ? 'Sin profesionales guardados' : 'Sin resultados con estos filtros'}
+            </p>
+            <p className="text-xs text-muted-foreground max-w-[280px] mx-auto leading-relaxed">
+              {showFavoritesOnly
+                ? 'Guarda profesionales desde la pestaña Descubrir para acceder rápido a ellos.'
+                : 'Prueba a ajustar la zona, el rol o ampliar el precio máximo.'}
+            </p>
           </div>
         )}
         {!loading && filtered.map(p => (

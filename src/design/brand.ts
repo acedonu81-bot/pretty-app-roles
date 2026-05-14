@@ -163,5 +163,5 @@ export const BRAND_LEGAL = {
   privacyUrl:     '/privacidad',
   termsUrl:       '/terminos',
   cookieUrl:      '/cookies',
-  supportWhatsApp:'https://wa.me/34600000000?text=Hola%2C%20necesito%20soporte%20con%20XPEAK',
+  supportEmail:   'info@xpeak.es',
 } as const;

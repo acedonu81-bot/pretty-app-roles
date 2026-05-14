@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { Camera, Bell, Volume2, Shield, Trophy, CreditCard, LogOut, ChevronRight, Trash2, AlertTriangle, Download, FileText, QrCode, Archive, BellOff } from 'lucide-react';
+import { Camera, Bell, Volume2, Shield, Trophy, CreditCard, LogOut, ChevronRight, Trash2, AlertTriangle, Download, FileText, QrCode, Archive, BellOff, Users, Plus, Check, X } from 'lucide-react';
+import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import { toast } from 'sonner';
 import JSZip from 'jszip';
 import { exportUserDataZip } from '@/lib/exportUserData';
@@ -9,7 +10,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { subscriptionPlans, mapSubscriptionTierToPlan } from '@/lib/subscriptions';
 import { sanitizeInput, containsPhoneNumber } from '@/lib/contentFilter';
-import { requestPushPermission, revokePushPermission, isPushSubscribed, showLocalNotification } from '@/lib/pushNotifications';
+import { requestPushPermission, revokePushPermission, isPushSubscribed, showLocalNotification, isPushSupported } from '@/lib/pushNotifications';
 
 const euLanguages = [
   '🇪🇸 Español', '🇬🇧 English', '🇩🇪 Deutsch', '🇫🇷 Français', '🇮🇹 Italiano',
@@ -56,6 +57,93 @@ const Section = ({ title, icon, children }: SectionProps) => (
     {children}
   </div>
 );
+
+const ROLE_OPTIONS = [
+  { value: 'dj',           label: 'DJ / Artista / Productor' },
+  { value: 'rookie',       label: 'Artista Promesa' },
+  { value: 'staff',        label: 'Personal de Sala' },
+  { value: 'event_manager',label: 'Encargada de Eventos' },
+  { value: 'promotor',     label: 'Promotor / RRPP' },
+  { value: 'camarero',     label: 'Camarero / Barra' },
+  { value: 'catering',     label: 'Catering / Cocina' },
+  { value: 'media',        label: 'Media & Contenido' },
+  { value: 'makeup',       label: 'Maquillaje & Peluquería' },
+];
+
+const MultiProfileSection = () => {
+  const { allProfiles, maxProfiles, subscription_tier, switchProfile, createProfile, profileId } = useProfile();
+  const [adding, setAdding] = useState(false);
+  const [newName, setNewName] = useState('');
+  const [newRole, setNewRole] = useState('dj');
+  const [newZone, setNewZone] = useState('');
+  const [saving, setSaving] = useState(false);
+
+  if (subscription_tier === 'free') return null;
+
+  const handleCreate = async () => {
+    if (!newName.trim()) { toast.error('Introduce un nombre'); return; }
+    setSaving(true);
+    const ok = await createProfile({ display_name: newName.trim(), role: newRole, zone: newZone || 'España', hourly_rate: 40 });
+    setSaving(false);
+    if (ok) { setAdding(false); setNewName(''); setNewRole('dj'); setNewZone(''); }
+  };
+
+  return (
+    <Section title="Mis perfiles" icon={<Users size={15} />}>
+      <p className="text-xs text-muted-foreground mb-3">
+        Tu plan <span className="font-bold capitalize" style={{ color: '#D4AF37' }}>{subscription_tier}</span> permite hasta{' '}
+        <span className="font-bold">{maxProfiles} perfiles</span> con roles distintos.
+      </p>
+      <div className="space-y-2 mb-3">
+        {allProfiles.map(p => (
+          <div key={p.id} className="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all"
+            style={{ background: p.id === profileId ? 'rgba(212,175,55,0.07)' : 'rgba(255,255,255,0.02)', border: `1px solid ${p.id === profileId ? 'rgba(212,175,55,0.25)' : 'rgba(255,255,255,0.05)'}` }}>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-bold truncate">{p.display_name}</p>
+              <p className="text-xs text-muted-foreground capitalize">{p.role}</p>
+            </div>
+            {p.id === profileId
+              ? <span className="text-[0.6rem] font-black px-2 py-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37' }}>ACTIVO</span>
+              : <button onClick={() => switchProfile(p.id)} className="text-xs font-bold px-3 py-1 rounded-lg transition-all hover:scale-105"
+                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#8E8EA0' }}>
+                  Cambiar
+                </button>
+            }
+          </div>
+        ))}
+      </div>
+
+      {allProfiles.length < maxProfiles && !adding && (
+        <button onClick={() => setAdding(true)}
+          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold transition-all hover:scale-[1.01]"
+          style={{ background: 'rgba(212,175,55,0.05)', border: '1px dashed rgba(212,175,55,0.25)', color: 'rgba(212,175,55,0.7)' }}>
+          <Plus size={13} /> Añadir perfil ({allProfiles.length}/{maxProfiles})
+        </button>
+      )}
+
+      {adding && (
+        <div className="p-4 rounded-xl space-y-3" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(212,175,55,0.15)' }}>
+          <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>Nuevo perfil</p>
+          <input value={newName} onChange={e => setNewName(e.target.value)} placeholder="Nombre artístico o profesional"
+            maxLength={60} className="nightlife-input !py-2.5 text-sm w-full" />
+          <NightlifeSelect value={newRole} onChange={setNewRole} options={ROLE_OPTIONS} active />
+          <input value={newZone} onChange={e => setNewZone(e.target.value)} placeholder="Ciudad (ej. Barcelona)"
+            maxLength={80} className="nightlife-input !py-2.5 text-sm w-full" />
+          <div className="flex gap-2">
+            <button onClick={() => setAdding(false)} className="flex-1 py-2 rounded-lg text-xs font-bold transition-all"
+              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#8E8EA0' }}>
+              <X size={12} className="inline mr-1" />Cancelar
+            </button>
+            <button onClick={handleCreate} disabled={saving} className="flex-1 py-2 rounded-lg text-xs font-bold transition-all disabled:opacity-50"
+              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+              {saving ? 'Creando...' : <><Check size={12} className="inline mr-1" />Crear perfil</>}
+            </button>
+          </div>
+        </div>
+      )}
+    </Section>
+  );
+};
 
 const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) => {
   const { user, signOut } = useAuth();
@@ -183,7 +271,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
         ['disponible',       p.is_live ? 'sí' : 'no',             'Visible en directorio ahora mismo'],
         ['generos',          Array.isArray(p.genres) ? (p.genres as string[]).join('; ') : '', 'Separados por punto y coma'],
         ['instagram',        (p.instagram as string) ?? '',        ''],
-        ['url_perfil',       `https://xpeak.site/p/${slug}`,       'URL pública permanente'],
+        ['url_perfil',       `https://xpeak.es/p/${slug}`,       'URL pública permanente'],
         ['fecha_registro',   (p.created_at as string)?.slice(0, 10) ?? '', ''],
         ['exportado_el',     exportedAt,                           'ISO 8601 UTC'],
         ['base_legal',       'RGPD Art. 20',                       'Derecho a la portabilidad de los datos'],
@@ -260,7 +348,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
             (pr.zone as string) ?? '',
             pr.hourly_rate ?? '',
             pr.is_verified ? 'sí' : 'no',
-            tid ? `https://xpeak.site/p/${tid}` : '',
+            tid ? `https://xpeak.es/p/${tid}` : '',
             tid,
             String(f.created_at ?? '').slice(0, 10),
           ];
@@ -318,7 +406,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
         ['', '', '', ''],
         ['META', 'Exportado el',   exportedAt,         'ISO 8601 UTC'],
         ['META', 'Base legal',     'RGPD Art. 20',     'Portabilidad de datos'],
-        ['META', 'Plataforma',     'XPEAK',            'xpeak.site'],
+        ['META', 'Plataforma',     'XPEAK',            'xpeak.es'],
         ['META', 'Nota fiscal',    'Este documento no constituye certificado fiscal oficial. Consulta con tu asesor/a.', ''],
       ];
       const resumenCsv = csv(resumenRows);
@@ -360,7 +448,7 @@ Protección de Datos (RGPD / GDPR). No constituye un certificado fiscal
 oficial. Para el derecho al olvido (Art. 17), usa la opción "Eliminar
 cuenta" en Ajustes > Zona de peligro.
 
-Para cualquier duda: soporte@xpeak.site
+Para cualquier duda: soporte@xpeak.es
 `;
 
       // ── Generar ZIP ────────────────────────────────────────────────────
@@ -509,7 +597,7 @@ Para cualquier duda: soporte@xpeak.site
     Para certificados oficiales de actividad, contacta con soporte.
   </div>
 
-  <div class="ftr">XPEAK · xpeak.site · ${user.id} · Exportado el ${new Date().toISOString()}</div>
+  <div class="ftr">XPEAK · xpeak.es · ${user.id} · Exportado el ${new Date().toISOString()}</div>
 </div>
 <script>window.print();</script>
 </body></html>`;
@@ -531,7 +619,7 @@ Para cualquier duda: soporte@xpeak.site
     try {
       const p = profile as Record<string, unknown>;
       const slug = (p.slug as string) || String(user.id);
-      const profileUrl = `https://xpeak.site/p/${slug}`;
+      const profileUrl = `https://xpeak.es/p/${slug}`;
       const displayName = (p.display_name as string) ?? 'Mi Perfil';
       const role = (p.role as string) ?? '';
       const zone = (p.zone as string) ?? '';
@@ -646,26 +734,17 @@ Para cualquier duda: soporte@xpeak.site
         return;
       }
 
-      // 2. Anonimizar perfil (RGPD Art. 17)
-      await supabase.from('profiles').update({
-        display_name: 'Usuario eliminado',
-        bio: null,
-        photo_url: null,
-        phone: null,
-        instagram: null,
-        zone: null,
-        specialty: null,
-        genres: null,
-        is_live: false,
-        is_verified: false,
-      } as any).eq('user_id', user.id);
+      // 2. Eliminar datos personales (RGPD Art. 17 — derecho de supresión)
+      await Promise.all([
+        supabase.from('profiles').delete().eq('user_id', user.id),
+        supabase.from('favorites').delete().eq('user_id', user.id),
+        supabase.from('flash_bookings').delete().eq('created_by', user.id),
+        supabase.from('fan_subscriptions').delete().eq('fan_user_id', user.id),
+      ]);
 
-      // 3. Borrar favoritos
-      await supabase.from('favorites').delete().eq('user_id', user.id);
-
-      // 4. Cerrar sesión
+      // 3. Cerrar sesión
       await signOut();
-      toast.success('Cuenta eliminada. Tus datos han sido anonimizados conforme al RGPD.');
+      toast.success('Cuenta eliminada. Todos tus datos personales han sido suprimidos conforme al RGPD Art. 17.');
     } catch {
       toast.error('Error al eliminar la cuenta. Contacta con soporte.');
       setDeleting(false);
@@ -723,11 +802,12 @@ Para cualquier duda: soporte@xpeak.site
   };
 
   return (
-    <div className="animate-[fadeIn_0.4s_ease] max-w-3xl">
+    <div className="animate-[fadeIn_0.4s_ease] max-w-3xl mx-auto">
       <div className="mb-6">
         <h2 className="text-2xl font-bold mb-1"><span className="text-gradient">Ajustes</span></h2>
         <p className="text-sm text-muted-foreground">Perfil, preferencias, privacidad y cuenta.</p>
       </div>
+
 
       {/* ── Profile section ── */}
       <Section title="Cuenta y Perfil" icon={<Camera size={15} />}>
@@ -778,13 +858,12 @@ Para cualquier duda: soporte@xpeak.site
 
         <div className="mb-4">
           <label className="block text-xs text-muted-foreground mb-1.5 font-medium">Idioma de la interfaz</label>
-          <select
-            className="nightlife-input text-sm cursor-pointer"
-            defaultValue={localStorage.getItem('xpeak_language') ?? '🇪🇸 Español'}
-            onChange={e => { localStorage.setItem('xpeak_language', e.target.value); toast.success('Idioma guardado.'); }}
-          >
-            {euLanguages.map(lang => <option key={lang}>{lang}</option>)}
-          </select>
+          <NightlifeSelect
+            value={localStorage.getItem('xpeak_language') ?? '🇪🇸 Español'}
+            onChange={v => { localStorage.setItem('xpeak_language', v); toast.success('Idioma guardado.'); }}
+            options={euLanguages.map(l => ({ value: l, label: l }))}
+            active
+          />
         </div>
 
         <button className="btn-nightlife-primary w-full text-sm py-2.5 disabled:opacity-60" onClick={handleSave} disabled={saving}>
@@ -815,52 +894,112 @@ Para cualquier duda: soporte@xpeak.site
 
       {/* ── Notifications ── */}
       <Section title="Notificaciones" icon={<Bell size={15} />}>
-        {/* Push permission master toggle */}
-        <div className="rounded-xl p-4 mb-4 flex items-center justify-between gap-3"
-          style={{ background: pushEnabled ? 'rgba(212,175,55,0.04)' : 'rgba(255,255,255,0.02)', border: `1px solid ${pushEnabled ? 'rgba(212,175,55,0.2)' : 'rgba(255,255,255,0.07)'}` }}>
-          <div className="flex items-center gap-3 flex-1 min-w-0">
-            {pushEnabled
-              ? <Bell size={16} style={{ color: '#D4AF37', flexShrink: 0 }} />
-              : <BellOff size={16} style={{ color: 'rgba(255,255,255,0.25)', flexShrink: 0 }} />}
-            <div className="min-w-0">
-              <p className="text-sm font-bold">{pushEnabled ? 'Notificaciones push activas' : 'Notificaciones push desactivadas'}</p>
-              <p className="text-xs text-muted-foreground leading-snug">
+        {(() => {
+          const supported = isPushSupported();
+          const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+          const isStandalone = ('standalone' in navigator) && (navigator as any).standalone;
+          const permission = supported ? (Notification as any).permission : 'unsupported';
+          const isBlocked = permission === 'denied';
+          const isIosNotPWA = isIOS && !isStandalone;
+
+          if (!supported || isIosNotPWA) {
+            return (
+              <div className="rounded-xl p-4 mb-4 space-y-3"
+                style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                <div className="flex items-center gap-3">
+                  <BellOff size={16} style={{ color: 'rgba(255,255,255,0.25)', flexShrink: 0 }} />
+                  <div>
+                    <p className="text-sm font-bold">
+                      {isIosNotPWA ? 'Instala XPEAK para activar notificaciones' : 'Notificaciones no disponibles en este navegador'}
+                    </p>
+                    <p className="text-xs text-muted-foreground leading-snug mt-0.5">
+                      {isIosNotPWA
+                        ? 'En iPhone/iPad las notificaciones solo funcionan si añades XPEAK a la pantalla de inicio.'
+                        : 'Abre XPEAK en Chrome, Safari o Firefox para activar alertas push.'}
+                    </p>
+                  </div>
+                </div>
+                {isIosNotPWA && (
+                  <div className="rounded-lg p-3 space-y-1.5 text-xs"
+                    style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
+                    <p className="font-bold" style={{ color: '#D4AF37' }}>Cómo instalar en iPhone/iPad:</p>
+                    {['1. Pulsa el icono de compartir ↑ en Safari', '2. Selecciona "Añadir a pantalla de inicio"', '3. Abre XPEAK desde el icono nuevo', '4. Vuelve a Ajustes → Notificaciones'].map(s => (
+                      <p key={s} className="text-muted-foreground">{s}</p>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          }
+
+          if (isBlocked) {
+            return (
+              <div className="rounded-xl p-4 mb-4 space-y-3"
+                style={{ background: 'rgba(255,95,86,0.04)', border: '1px solid rgba(255,95,86,0.15)' }}>
+                <div className="flex items-center gap-3">
+                  <BellOff size={16} style={{ color: '#ff5f56', flexShrink: 0 }} />
+                  <div>
+                    <p className="text-sm font-bold" style={{ color: '#ff5f56' }}>Notificaciones bloqueadas</p>
+                    <p className="text-xs text-muted-foreground leading-snug mt-0.5">
+                      Has bloqueado los permisos. Para reactivarlas tienes que cambiarlas manualmente en tu navegador.
+                    </p>
+                  </div>
+                </div>
+                <div className="rounded-lg p-3 space-y-1.5 text-xs"
+                  style={{ background: 'rgba(255,95,86,0.06)', border: '1px solid rgba(255,95,86,0.12)' }}>
+                  <p className="font-bold" style={{ color: '#ff5f56' }}>Cómo desbloquear:</p>
+                  {[
+                    'Chrome: haz clic en el 🔒 de la barra de dirección → Permisos del sitio → Notificaciones → Permitir',
+                    'Safari Mac: Safari → Ajustes → Sitios web → Notificaciones → xpeak.es → Permitir',
+                    'Firefox: icono 🔒 → Limpiar permiso de notificaciones → Recarga la página',
+                  ].map(s => <p key={s} className="text-muted-foreground leading-relaxed">{s}</p>)}
+                </div>
+              </div>
+            );
+          }
+
+          return (
+            <div className="rounded-xl p-4 mb-4 flex items-center justify-between gap-3"
+              style={{ background: pushEnabled ? 'rgba(212,175,55,0.04)' : 'rgba(255,255,255,0.02)', border: `1px solid ${pushEnabled ? 'rgba(212,175,55,0.2)' : 'rgba(255,255,255,0.07)'}` }}>
+              <div className="flex items-center gap-3 flex-1 min-w-0">
                 {pushEnabled
-                  ? 'Recibirás alertas aunque la app esté cerrada'
-                  : (typeof Notification !== 'undefined' && Notification.permission === 'denied')
-                    ? 'Bloqueadas en el navegador — cámbialas en Configuración del sitio'
-                    : 'Actívalas para recibir alertas de mensajes y Flash Bookings'}
-              </p>
-            </div>
-          </div>
-          {(typeof Notification === 'undefined' || Notification.permission !== 'denied') && (
-            <button type="button"
-              onClick={async () => {
-                if (pushEnabled) {
-                  await revokePushPermission();
-                  setPushEnabled(false);
-                  toast.success('Notificaciones push desactivadas.');
-                } else {
-                  const ok = await requestPushPermission();
-                  if (ok) {
-                    setPushEnabled(true);
-                    await showLocalNotification('XPEAK', 'Las notificaciones push están activas.', '/dashboard');
-                    toast.success('Notificaciones push activadas.');
+                  ? <Bell size={16} style={{ color: '#D4AF37', flexShrink: 0 }} />
+                  : <BellOff size={16} style={{ color: 'rgba(255,255,255,0.25)', flexShrink: 0 }} />}
+                <div className="min-w-0">
+                  <p className="text-sm font-bold">{pushEnabled ? 'Notificaciones activas' : 'Notificaciones desactivadas'}</p>
+                  <p className="text-xs text-muted-foreground leading-snug">
+                    {pushEnabled ? 'Recibirás alertas de mensajes y Flash Bookings' : 'Actívalas para no perderte nada importante'}
+                  </p>
+                </div>
+              </div>
+              <button type="button"
+                onClick={async () => {
+                  if (pushEnabled) {
+                    await revokePushPermission();
+                    setPushEnabled(false);
+                    toast.success('Notificaciones desactivadas.');
                   } else {
-                    toast.error('No se pudo activar. Permite las notificaciones en tu navegador.');
+                    const ok = await requestPushPermission();
+                    if (ok) {
+                      setPushEnabled(true);
+                      await showLocalNotification('XPEAK', '¡Notificaciones activas! Te avisaremos cuando lleguen mensajes o bookings.', '/dashboard');
+                      toast.success('Notificaciones activadas.');
+                    } else {
+                      toast.error('No se pudo activar. Revisa los permisos del sitio en tu navegador.');
+                    }
                   }
-                }
-              }}
-              className="flex-shrink-0 text-xs font-bold px-4 py-2 rounded-lg transition-all hover:scale-105"
-              style={{
-                background: pushEnabled ? 'rgba(255,95,86,0.08)' : 'linear-gradient(90deg,#D4AF37,#B8941E)',
-                color: pushEnabled ? '#ff5f56' : '#000',
-                border: pushEnabled ? '1px solid rgba(255,95,86,0.2)' : 'none',
-              }}>
-              {pushEnabled ? 'Desactivar' : 'Activar'}
-            </button>
-          )}
-        </div>
+                }}
+                className="flex-shrink-0 text-xs font-bold px-4 py-2 rounded-lg transition-all hover:scale-105"
+                style={{
+                  background: pushEnabled ? 'rgba(255,95,86,0.08)' : 'linear-gradient(90deg,#D4AF37,#B8941E)',
+                  color: pushEnabled ? '#ff5f56' : '#000',
+                  border: pushEnabled ? '1px solid rgba(255,95,86,0.2)' : 'none',
+                }}>
+                {pushEnabled ? 'Desactivar' : 'Activar'}
+              </button>
+            </div>
+          );
+        })()}
 
         <ToggleRow label="Mensajes nuevos" desc="Alerta cuando recibes un mensaje directo" checked={notifMessages}
           onChange={() => { const v = !notifMessages; setNotifMessages(v); localStorage.setItem('xpeak_notif_messages', String(v)); }} />
@@ -873,6 +1012,9 @@ Para cualquier duda: soporte@xpeak.site
         <ToggleRow label="SMS de verificación" desc="Solo para verificación de identidad" checked={notifSMS}
           onChange={() => { const v = !notifSMS; setNotifSMS(v); localStorage.setItem('xpeak_notif_sms', String(v)); }} />
       </Section>
+
+      {/* ── Mis perfiles ── */}
+      <MultiProfileSection />
 
       {/* ── Privacy ── */}
       <Section title="Privacidad" icon={<Shield size={15} />}>
@@ -970,10 +1112,11 @@ Para cualquier duda: soporte@xpeak.site
               <span className="text-xs text-muted-foreground">por fin de semana</span>
             </div>
           </div>
-          <button disabled className="flex-shrink-0 px-4 py-2 rounded-lg text-xs font-bold cursor-not-allowed"
-            style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.2)' }}>
-            Próximamente
-          </button>
+          <a href="mailto:admin@xpeak.es?subject=Top%20Weekend%20-%20Solicitud%209.99€&body=Hola,%20quiero%20activar%20Top%20Weekend%20para%20este%20fin%20de%20semana."
+            className="flex-shrink-0 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-[1.02]"
+            style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' }}>
+            Solicitar →
+          </a>
         </div>
       </Section>
 

@@ -184,9 +184,23 @@ export const getPlanPricing = (
   plan: SubscriptionPlan,
   billingCycle: BillingCycle,
   birthdayDiscountActive = false,
+  promoDiscount = 0,        // 0–1 fraction from a promo code
 ) => {
   if (plan.monthlyPrice === 0) {
     return { finalPrice: 0, originalPrice: null, period: plan.defaultPeriod, discountPercent: 0, helperText: 'Acceso básico gratuito' };
+  }
+
+  // Promo code takes priority over birthday/annual if higher
+  if (promoDiscount > 0) {
+    const best = Math.max(promoDiscount, billingCycle === 'annual' && plan.annualEligible ? ANNUAL_DISCOUNT : 0);
+    const discountedMonthly = plan.monthlyPrice * (1 - best);
+    return {
+      finalPrice: discountedMonthly,
+      originalPrice: plan.monthlyPrice,
+      period: billingCycle === 'annual' && plan.annualEligible ? '/mes' : plan.defaultPeriod,
+      discountPercent: Math.round(best * 100),
+      helperText: `Código promo aplicado${billingCycle === 'annual' && plan.annualEligible ? ` · Facturado €${(discountedMonthly * 12).toFixed(2)}/año` : ''}`,
+    };
   }
 
   if (billingCycle === 'annual' && plan.annualEligible) {
@@ -198,6 +212,18 @@ export const getPlanPricing = (
       period: '/mes',
       discountPercent: discountPercent * 100,
       helperText: birthdayDiscountActive ? 'Descuento de cumpleaños aplicado' : `Facturado €${(discountedMonthly * 12).toFixed(2)}/año`,
+    };
+  }
+
+  // Promo en modo mensual
+  if (birthdayDiscountActive) {
+    const discountedMonthly = plan.monthlyPrice * (1 - BIRTHDAY_DISCOUNT);
+    return {
+      finalPrice: discountedMonthly,
+      originalPrice: plan.monthlyPrice,
+      period: plan.defaultPeriod,
+      discountPercent: BIRTHDAY_DISCOUNT * 100,
+      helperText: '¡Feliz cumpleaños! Descuento de 1 mes aplicado',
     };
   }
 

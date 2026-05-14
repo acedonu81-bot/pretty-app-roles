@@ -130,7 +130,8 @@ const ContractView = () => {
   const handleSaved = () => { fetchContracts(); setShowModal(false); };
 
   const deleteContract = async (id: string) => {
-    await supabase.from('contracts').delete().eq('id', id);
+    if (!user) return;
+    await supabase.from('contracts').delete().eq('id', id).eq('user_id', user.id);
     setContracts(prev => prev.filter(c => c.id !== id));
   };
 
@@ -166,6 +167,63 @@ const ContractView = () => {
     a.download = `contratos_xpeak_${csvYear}.csv`;
     a.click();
     URL.revokeObjectURL(a.href);
+  };
+
+  const downloadPdf = async (c: ContractRow) => {
+    const safe = (v: string | null | undefined) =>
+      String(v ?? '—').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    const iva = c.precio_neto != null ? (c.precio_neto * 0.21).toFixed(2) : '—';
+    const total = c.precio_neto != null ? (c.precio_neto * 1.21).toFixed(2) : '—';
+    const s = 'padding:6px 8px;';
+    const sh = s + 'font-weight:bold;width:38%;color:#444;';
+    const row = (label: string, val: string, valStyle = s) =>
+      `<tr><td style="${sh}">${label}</td><td style="${valStyle}">${val}</td></tr>`;
+
+    const container = document.createElement('div');
+    container.style.cssText = 'position:fixed;left:-9999px;top:0;width:720px;background:#fff;';
+    const inner = document.createElement('div');
+    inner.style.cssText = 'font-family:Georgia,serif;padding:40px;color:#111;line-height:1.7;font-size:13px;background:#fff;';
+    const tStyle = 'width:100%;border-collapse:collapse;margin-top:8px;';
+    const h2Style = 'font-size:13px;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid #ccc;padding-bottom:4px;margin-top:28px;color:#333;';
+    inner.innerHTML = [
+      `<h1 style="font-size:20px;text-align:center;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px;">Contrato de Prestación de Servicios</h1>`,
+      `<p style="text-align:center;color:#555;font-size:11px;margin-bottom:32px;">Plataforma XPEAK · xpeak.es</p>`,
+      `<div style="text-align:center;margin-bottom:24px;"><span style="font-family:monospace;background:#f5f5f0;border:1px solid #ddd;display:inline-block;padding:4px 12px;border-radius:4px;font-size:12px;">REF: ${safe(c.ref)}</span></div>`,
+      `<h2 style="${h2Style}">Partes</h2>`,
+      `<table style="${tStyle}">${row('Contratante',safe(c.contratante_nombre))}${row('Empresa / Sala',safe(c.empresa_nombre))}${row('Profesional',safe(c.professional_name))}${row('Rol',safe(ROLE_LABEL[c.professional_role ?? ''] ?? c.professional_role))}</table>`,
+      `<h2 style="${h2Style}">Evento</h2>`,
+      `<table style="${tStyle}">${row('Nombre del evento',safe(c.event_name))}${row('Tipo',safe(c.event_type))}${row('Fecha',safe(c.event_date ? fmtDate(c.event_date) : '—'))}${row('Local / Venue',safe(c.venue))}${row('Ciudad',safe(c.city))}</table>`,
+      `<h2 style="${h2Style}">Precio y Facturación</h2>`,
+      `<table style="${tStyle}">${row('Base imponible',fmtEur(c.precio_neto),s+'font-size:14px;font-weight:bold;')}${row('IVA 21 %',safe(c.precio_neto != null ? '€'+iva : '—'))}${row('Total con IVA',safe(c.precio_neto != null ? '€'+total : '—'),s+'font-size:14px;font-weight:bold;')}</table>`,
+      `<h2 style="${h2Style}">Cláusulas</h2>`,
+      `<p style="margin:6px 0;">1. El profesional se compromete a prestar los servicios descritos en la fecha y lugar indicados.</p>`,
+      `<p style="margin:6px 0;">2. El contratante abonará el importe acordado antes o en el momento de la prestación del servicio, salvo pacto expreso en contrario.</p>`,
+      `<p style="margin:6px 0;">3. La relación entre las partes es de carácter mercantil (autónomo RETA). No existe vínculo laboral (art. 1.1 ET).</p>`,
+      `<p style="margin:6px 0;">4. El profesional es responsable de sus obligaciones fiscales (IVA mod. 303, IRPF mod. 130).</p>`,
+      `<p style="margin:6px 0;">5. En caso de cancelación con menos de 48h de antelación, el contratante abonará el 50% del importe pactado.</p>`,
+      `<p style="margin:6px 0;">6. Los datos de ambas partes se tratan conforme al RGPD 2016/679 y LO 3/2018 (LOPDGDD).</p>`,
+      `<div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:56px;">`,
+      `<div style="border-top:1px solid #333;padding-top:8px;font-size:11px;color:#555;"><p>Firma del Contratante</p><br/><br/><p>${safe(c.contratante_nombre)}</p></div>`,
+      `<div style="border-top:1px solid #333;padding-top:8px;font-size:11px;color:#555;"><p>Firma del Profesional</p><br/><br/><p>${safe(c.professional_name)}</p></div>`,
+      `</div>`,
+      `<p style="margin-top:48px;font-size:11px;color:#888;border-top:1px solid #ddd;padding-top:12px;text-align:center;">Generado el ${safe(fmtDate(c.created_at))} · XPEAK — xpeak.es · Documento orientativo, no vinculante sin firma</p>`,
+    ].join('');
+    container.appendChild(inner);
+    document.body.appendChild(container);
+
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const html2pdf = (await import('html2pdf.js')).default as any;
+      await html2pdf().set({
+        margin: 0,
+        filename: `XPEAK_contrato_${c.ref}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, logging: false },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      }).from(inner).save();
+    } finally {
+      document.body.removeChild(container);
+    }
   };
 
   const availableYears = Array.from(
@@ -336,11 +394,19 @@ const ContractView = () => {
                       {fmtDate(c.created_at)}
                     </td>
                     <td className="px-4 py-3">
-                      <button type="button"
-                        onClick={() => deleteContract(c.id)}
-                        className="p-1.5 rounded-lg transition-colors hover:bg-red-500/10">
-                        <Trash2 size={13} style={{ color: 'rgba(239,68,68,0.5)' }} />
-                      </button>
+                      <div className="flex items-center gap-1">
+                        <button type="button"
+                          onClick={() => downloadPdf(c)}
+                          title="Descargar PDF"
+                          className="p-1.5 rounded-lg transition-colors hover:bg-white/5">
+                          <Download size={13} style={{ color: 'rgba(212,175,55,0.6)' }} />
+                        </button>
+                        <button type="button"
+                          onClick={() => deleteContract(c.id)}
+                          className="p-1.5 rounded-lg transition-colors hover:bg-red-500/10">
+                          <Trash2 size={13} style={{ color: 'rgba(239,68,68,0.5)' }} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

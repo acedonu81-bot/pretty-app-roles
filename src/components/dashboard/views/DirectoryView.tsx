@@ -3,6 +3,7 @@ import { Crown, Eye, Maximize2, Minimize2, Users, Video, Settings, Globe, Zap, L
 import { Profile } from '@/data/profiles';
 import ProfileCard from '@/components/dashboard/ProfileCard';
 import CheckoutModal from '@/components/dashboard/CheckoutModal';
+import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import OffersWidget from '@/components/dashboard/OffersWidget';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
 import UpgradeModal from '@/components/dashboard/UpgradeModal';
@@ -175,18 +176,12 @@ const StreamSettingsPanel = ({
   );
 };
 
-const EU_COUNTRIES = [
+const CITY_OPTIONS = [
   'Todas las ciudades',
-  // Comunidades principales / nightlife
   'Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao',
   'Málaga', 'Ibiza', 'Palma de Mallorca', 'Zaragoza', 'Murcia',
   'Alicante', 'Granada', 'Tenerife', 'Las Palmas de Gran Canaria',
-  // Resto de comunidades
-  'San Sebastián', 'Vitoria-Gasteiz', 'Pamplona', 'Logroño', 'Santander',
-  'Oviedo', 'Gijón', 'A Coruña', 'Vigo', 'Santiago de Compostela',
-  'Valladolid', 'Salamanca', 'Burgos', 'Toledo', 'Badajoz',
-  'Córdoba', 'Cádiz', 'Huelva', 'Almería', 'Lleida', 'Tarragona',
-];
+].map(c => ({ value: c, label: c }));
 
 const TIER_ORDER = ['free', 'starter', 'business', 'agency', 'elite', 'premium'];
 const TIER_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
@@ -198,9 +193,12 @@ const TIER_CONFIG: Record<string, { label: string; color: string; bg: string }> 
   elite:    { label: 'Agencia',  color: '#D4AF37', bg: 'rgba(212,175,55,0.15)' },
 };
 
+const DJ_ROLES = new Set(['dj', 'rookie']);
+
 const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards, searchQuery, onViewProfile }: DirectoryViewProps) => {
   const profile = useProfile();
   const isUserFree = profile.subscription_tier === 'free';
+  const isDJRole = DJ_ROLES.has(role);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [checkoutItem, setCheckoutItem] = useState<{ name: string; price: number; description: string } | null>(null);
   const [realProfiles, setRealProfiles] = useState<Profile[]>([]);
@@ -211,6 +209,8 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
   const [streamTitle, setStreamTitle] = useState(profile.stream_title ?? '');
   const [savingStream, setSavingStream] = useState(false);
   const [filterCity, setFilterCity] = useState('Todas las ciudades');
+  const [filterFlash, setFilterFlash] = useState(false);
+  const [filterVerified, setFilterVerified] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   useEffect(() => {
@@ -225,9 +225,23 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
       query = query.ilike('zone', `%${filterCity}%`);
     }
 
-    query.then(({ data }) => {
+    query.order('score', { ascending: false }).then(({ data }) => {
       if (!data) { setLoadingProfiles(false); return; }
-      const mapped: Profile[] = data.map((row) => ({
+      const TIER_RANK: Record<string, number> = { agency: 5, elite: 5, business: 4, premium: 4, starter: 2, free: 1 };
+      const mapped: Profile[] = data
+        .filter(row => row.display_name && row.display_name.trim().length > 1)
+        .sort((a, b) => {
+          // 1. Live primero
+          if ((b.is_live ? 1 : 0) !== (a.is_live ? 1 : 0)) return (b.is_live ? 1 : 0) - (a.is_live ? 1 : 0);
+          // 2. Tier mayor primero
+          const tierDiff = (TIER_RANK[b.subscription_tier ?? 'free'] ?? 1) - (TIER_RANK[a.subscription_tier ?? 'free'] ?? 1);
+          if (tierDiff !== 0) return tierDiff;
+          // 3. Verificados antes
+          if ((b.is_verified ? 1 : 0) !== (a.is_verified ? 1 : 0)) return (b.is_verified ? 1 : 0) - (a.is_verified ? 1 : 0);
+          // 4. Score
+          return (b.score ?? 0) - (a.score ?? 0);
+        })
+        .map((row) => ({
         id: row.id,
         userId: row.user_id,
         name: row.display_name || 'Sin nombre',
@@ -265,17 +279,17 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
     });
   }, [role, filterCity]);
 
-  const filteredProfiles = searchQuery?.trim()
-    ? realProfiles.filter(p => {
-        const q = searchQuery.toLowerCase();
-        return (
-          p.name.toLowerCase().includes(q) ||
-          p.specialty.toLowerCase().includes(q) ||
-          p.zone.toLowerCase().includes(q) ||
-          p.description.toLowerCase().includes(q)
-        );
-      })
-    : realProfiles;
+  const filteredProfiles = realProfiles.filter(p => {
+    if (searchQuery?.trim()) {
+      const q = searchQuery.toLowerCase();
+      const matchesSearch = p.name.toLowerCase().includes(q) || p.specialty.toLowerCase().includes(q) ||
+        p.zone.toLowerCase().includes(q) || p.description.toLowerCase().includes(q);
+      if (!matchesSearch) return false;
+    }
+    if (filterFlash && !p.isFlashActive) return false;
+    if (filterVerified && !p.isVerified) return false;
+    return true;
+  });
 
   useEffect(() => {
     setStreamUrl(profile.stream_url ?? '');
@@ -314,7 +328,7 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
   // Grid class based on wideCards prop
   const gridClass = wideCards
     ? 'grid grid-cols-1 sm:grid-cols-2 gap-5'
-    : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4';
+    : 'grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3';
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
@@ -325,39 +339,49 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
           </h2>
           <p className="text-sm text-muted-foreground">{subtitle}</p>
         </div>
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() => setShowStreamSettings(!showStreamSettings)}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
-            style={{
-              background: 'rgba(212,175,55,0.08)',
-              border: '1px solid rgba(212,175,55,0.2)',
-              color: '#D4AF37',
-            }}
-          >
-            <Settings size={14} /> Ajustes Directo
-          </button>
-          {onNavigate && (
+        {isDJRole && (
+          <div className="flex flex-wrap gap-2 w-full sm:w-auto">
             <button
-              onClick={() => onNavigate('escenario')}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
+              onClick={() => setShowStreamSettings(!showStreamSettings)}
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
               style={{
-                background: 'rgba(229,57,53,0.12)',
-                border: '1px solid rgba(229,57,53,0.3)',
-                color: '#E53935',
+                background: 'rgba(212,175,55,0.08)',
+                border: '1px solid rgba(212,175,55,0.2)',
+                color: '#D4AF37',
               }}
             >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: '#E53935' }} />
-                <span className="relative inline-flex rounded-full h-2 w-2" style={{ background: '#E53935' }} />
-              </span>
-              <Video size={14} /> Emitir en Directo
+              <Settings size={14} /> Ajustes Directo
             </button>
-          )}
-        </div>
+            {onNavigate && (
+              <button
+                onClick={() => onNavigate('escenario')}
+                className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
+                style={{
+                  background: 'rgba(229,57,53,0.12)',
+                  border: '1px solid rgba(229,57,53,0.3)',
+                  color: '#E53935',
+                }}
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: '#E53935' }} />
+                  <span className="relative inline-flex rounded-full h-2 w-2" style={{ background: '#E53935' }} />
+                </span>
+                <Video size={14} /> Emitir en Directo
+              </button>
+            )}
+          </div>
+        )}
+        {!isDJRole && onNavigate && (
+          <button
+            onClick={() => onNavigate('flashbooking')}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
+            style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+            <Zap size={14} /> Flash Booking
+          </button>
+        )}
       </div>
 
-      {showStreamSettings && (
+      {isDJRole && showStreamSettings && (
         <StreamSettingsPanel
           onClose={() => setShowStreamSettings(false)}
           onSave={handleSaveStream}
@@ -370,7 +394,7 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
       )}
 
       {/* Live Streams — vertical list ordered by viewers */}
-      {liveStreamers.length > 0 && (
+      {isDJRole && liveStreamers.length > 0 && (
         <div className="glass-panel p-4 mb-5" style={{ border: '1px solid rgba(229,57,53,0.15)' }}>
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
@@ -405,74 +429,92 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
         </div>
       )}
 
-      {/* Filtro ciudades España */}
-      <div className="flex items-center gap-3 mb-5 flex-wrap">
+      {/* Filtros */}
+      <div className="flex items-center gap-2 mb-5 flex-wrap">
         <div className="flex items-center gap-1.5 flex-shrink-0">
           <Globe size={12} style={{ color: '#D4AF37' }} />
           <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>ES</span>
         </div>
-        <div className="relative flex-1 min-w-[200px] max-w-[280px]">
-          <select
-            value={filterCity}
-            onChange={e => setFilterCity(e.target.value)}
-            className="w-full appearance-none text-xs font-bold pl-3 pr-8 py-2 rounded-lg transition-all outline-none"
-            style={{
-              background: filterCity !== 'Todas las ciudades' ? 'rgba(212,175,55,0.08)' : 'rgba(255,255,255,0.04)',
-              border: filterCity !== 'Todas las ciudades' ? '1px solid rgba(212,175,55,0.35)' : '1px solid rgba(255,255,255,0.08)',
-              color: filterCity !== 'Todas las ciudades' ? '#D4AF37' : 'rgba(255,255,255,0.5)',
-              cursor: 'pointer',
-            }}
-          >
-            {EU_COUNTRIES.map(c => (
-              <option key={c} value={c} style={{ background: '#0e0e0e', color: '#fff' }}>
-                {c === 'Todas las ciudades' ? 'Todas las ciudades' : c}
-              </option>
-            ))}
-          </select>
-          <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: filterCity !== 'Todas las ciudades' ? '#D4AF37' : 'rgba(255,255,255,0.3)' }}>
-            <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
-              <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-        </div>
-        {filterCity !== 'Todas las ciudades' && (
-          <button onClick={() => setFilterCity('Todas las ciudades')}
-            className="text-xs font-bold px-2 py-1 rounded transition-all hover:opacity-70"
+        <NightlifeSelect
+          value={filterCity}
+          onChange={setFilterCity}
+          options={CITY_OPTIONS}
+          placeholder="Todas las ciudades"
+          active={filterCity !== 'Todas las ciudades'}
+          className="flex-1 min-w-[130px] max-w-[220px]"
+        />
+        <button
+          onClick={() => setFilterFlash(v => !v)}
+          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex-shrink-0"
+          style={{
+            background: filterFlash ? 'rgba(34,197,94,0.12)' : 'rgba(255,255,255,0.03)',
+            border: `1px solid ${filterFlash ? 'rgba(34,197,94,0.35)' : 'rgba(255,255,255,0.08)'}`,
+            color: filterFlash ? '#22c55e' : '#555',
+          }}>
+          <Zap size={11} /> Disponible
+        </button>
+        <button
+          onClick={() => setFilterVerified(v => !v)}
+          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex-shrink-0"
+          style={{
+            background: filterVerified ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.03)',
+            border: `1px solid ${filterVerified ? 'rgba(212,175,55,0.35)' : 'rgba(255,255,255,0.08)'}`,
+            color: filterVerified ? '#D4AF37' : '#555',
+          }}>
+          <Crown size={11} /> Verificado
+        </button>
+        {(filterCity !== 'Todas las ciudades' || filterFlash || filterVerified) && (
+          <button onClick={() => { setFilterCity('Todas las ciudades'); setFilterFlash(false); setFilterVerified(false); }}
+            className="text-xs font-bold px-2 py-1 rounded transition-all hover:opacity-70 flex-shrink-0"
             style={{ background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.3)', border: '1px solid rgba(255,255,255,0.08)' }}>
             Limpiar ✕
           </button>
         )}
-        <span className="text-xs ml-auto" style={{ color: 'rgba(255,255,255,0.25)' }}>
+        <span className="text-xs ml-auto flex-shrink-0" style={{ color: 'rgba(255,255,255,0.25)' }}>
           {filteredProfiles.length} resultado{filteredProfiles.length !== 1 ? 's' : ''}
         </span>
       </div>
 
       {loadingProfiles && (
-        <div className="glass-panel p-10 flex flex-col items-center text-center gap-2 mb-5">
-          <div className="text-xs text-muted-foreground animate-pulse">Cargando directorio...</div>
+        <div className={`${gridClass} mb-5`}>
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="glass-panel p-4 animate-pulse">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-lg bg-white/5 flex-shrink-0" />
+                <div className="flex-1">
+                  <div className="h-3 bg-white/5 rounded mb-1.5 w-3/4" />
+                  <div className="h-2 bg-white/5 rounded w-1/2" />
+                </div>
+              </div>
+              <div className="h-2 bg-white/5 rounded mb-1.5" />
+              <div className="h-2 bg-white/5 rounded w-2/3 mb-3" />
+              <div className="flex justify-between items-center">
+                <div className="h-4 bg-white/5 rounded w-1/4" />
+                <div className="h-7 bg-white/5 rounded-lg w-20" />
+              </div>
+            </div>
+          ))}
         </div>
       )}
 
       {!loadingProfiles && filteredProfiles.length === 0 && (
         <div className="glass-panel p-10 flex flex-col items-center text-center gap-3 mb-5">
-          <div className="w-12 h-12 rounded-full flex items-center justify-center"
-            style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.1)' }}>
-            <Users size={20} style={{ color: 'rgba(212,175,55,0.2)' }} />
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center"
+            style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.12)' }}>
+            <Users size={20} style={{ color: 'rgba(212,175,55,0.35)' }} />
           </div>
           <div>
-            <p className="text-sm font-bold mb-1" style={{ color: 'rgba(255,255,255,0.35)' }}>
-              {searchQuery?.trim() ? `Sin resultados para "${searchQuery}"` : filterCity === 'Todas las ciudades' ? 'Aún no hay profesionales registrados' : `Sin resultados en ${filterCity}`}
+            <p className="text-sm font-bold mb-1" style={{ color: 'rgba(255,255,255,0.8)' }}>
+              {searchQuery?.trim() ? `Sin resultados para "${searchQuery}"` : 'Sin resultados con estos filtros'}
             </p>
             <p className="text-xs text-muted-foreground mb-3 max-w-[260px] mx-auto">
-              {filterCity === 'Todas las ciudades'
-                ? 'El directorio se irá llenando a medida que se registren profesionales.'
-                : 'Prueba con otra ciudad o consulta el directorio completo.'}
+              Prueba cambiando la ciudad o quitando los filtros de disponibilidad o verificación.
             </p>
-            {filterCity !== 'Todas las ciudades' && (
-              <button onClick={() => setFilterCity('Todas las ciudades')}
+            {(filterCity !== 'Todas las ciudades' || filterFlash || filterVerified) && (
+              <button onClick={() => { setFilterCity('Todas las ciudades'); setFilterFlash(false); setFilterVerified(false); }}
                 className="text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-105"
                 style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
-                Ver todos
+                Quitar filtros
               </button>
             )}
           </div>

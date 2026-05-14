@@ -49,16 +49,48 @@ const SolicitudesTab = () => {
 
   useEffect(() => { fetch(); }, [fetch]);
 
+  /* ─── Realtime: nuevas solicitudes aparecen al instante ─── */
+  useEffect(() => {
+    if (!user) return;
+    const channel = supabase
+      .channel('flash_bookings_realtime')
+      .on('postgres_changes', {
+        event: 'INSERT', schema: 'public', table: 'flash_bookings',
+        filter: `professional_user_id=eq.${user.id}`,
+      }, () => { fetch(); toast.info('Nueva solicitud recibida'); })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [user, fetch]);
+
   const updateStatus = async (id: string, status: 'confirmed' | 'cancelled') => {
     setUpdating(id);
     const { error } = await supabase
       .from('flash_bookings' as any)
       .update({ status })
-      .eq('id', id);
+      .eq('id', id)
+      .eq('professional_user_id', user!.id);
     setUpdating(null);
     if (error) { toast.error('Error al actualizar'); return; }
     setItems(prev => prev.map(i => i.id === id ? { ...i, status } : i));
     toast.success(status === 'confirmed' ? '¡Solicitud aceptada!' : 'Solicitud rechazada');
+
+    // Email al solicitante si dejó email como contacto
+    const booking = items.find(i => i.id === id);
+    if (booking?.requester_contact?.includes('@')) {
+      supabase.functions.invoke('send-email', {
+        body: {
+          type: 'booking_status_update',
+          data: {
+            email: booking.requester_contact,
+            requester_name: booking.requester_name,
+            professional_user_id: user!.id,
+            status,
+            event_date: booking.event_date,
+            event_location: booking.event_location,
+          },
+        },
+      }).catch((err: unknown) => console.warn('[SolicitudesTab] status email failed:', err));
+    }
   };
 
   const pending = items.filter(i => i.status === 'pending').length;

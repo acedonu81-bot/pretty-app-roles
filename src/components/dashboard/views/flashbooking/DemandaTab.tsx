@@ -134,6 +134,46 @@ const DemandaTab = () => {
 
   useEffect(() => { fetchJobs(); }, [fetchJobs]);
 
+  /* ─── Realtime: nuevas ofertas aparecen sin refresh ─── */
+  useEffect(() => {
+    const channel = supabase
+      .channel('flash_jobs_realtime')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'flash_jobs' }, () => {
+        fetchJobs();
+      })
+      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'flash_jobs' }, (payload) => {
+        setOffers(prev => prev.filter(o => o.id !== payload.old.id));
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [fetchJobs]);
+
+  /* ─── Realtime: empresario ve respuestas a sus ofertas sin refresh ─── */
+  const [newReplies, setNewReplies] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    if (!isEmpresario || !user?.id) return;
+    const channel = supabase
+      .channel('flash_replies_realtime')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'flash_bookings' }, (payload) => {
+        const booking = payload.new as any;
+        if (booking.created_by === user.id) return; // ignore own inserts
+        // map back to offer id via event_description prefix
+        const match = booking.event_description?.match(/\[Respuesta a oferta Flash: (.+?)\]/);
+        if (!match) return;
+        const offerTitle = match[1];
+        setOffers(prev => {
+          const offer = prev.find(o => o.title === offerTitle);
+          if (!offer) return prev;
+          setNewReplies(r => ({ ...r, [offer.id]: (r[offer.id] ?? 0) + 1 }));
+          return prev;
+        });
+        toast.success(`Nueva respuesta a tu oferta: ${booking.professional_name}`, { duration: 5000 });
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [isEmpresario, user?.id]);
+
   /* ─── Countdown ticker ─── */
   useEffect(() => {
     const iv = setInterval(() => {
@@ -210,13 +250,25 @@ const DemandaTab = () => {
         if (msgErr) throw msgErr;
       }
 
+      // Create flash_booking so it appears in SolicitudesTab (professional) and HistorialTab (employer)
+      await supabase.from('flash_bookings' as any).insert({
+        professional_user_id: myId,
+        professional_name: currentUser.display_name || 'Profesional',
+        professional_role: currentUser.role,
+        requester_name: offer.author,
+        requester_contact: offer.posterId ?? '',
+        event_description: `[Respuesta a oferta Flash: ${offer.title}] ${msgText}`,
+        status: 'pending',
+        created_by: offer.posterId ?? null,
+      });
+
       const time = new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
       setSentMessages(prev => ({
         ...prev,
         [offer.id]: [...(prev[offer.id] ?? []), { text: msgText, time }],
       }));
       setReplyText('');
-      toast.success('Mensaje enviado. También visible en Mensajes.');
+      toast.success('Solicitud enviada — visible en tus Solicitudes y en Mensajes.');
     } catch {
       toast.error('Error al enviar. Inténtalo de nuevo.');
     } finally {
@@ -395,7 +447,18 @@ const DemandaTab = () => {
                         {isReplying ? <><ChevronUp size={13} /> Cerrar</> : <><MessageCircle size={13} /> Responder</>}
                       </button>
                     ) : (
-                      <span className="text-xs text-muted-foreground italic">Tu oferta</span>
+                      <div className="flex items-center gap-2">
+                        {(newReplies[offer.id] ?? 0) > 0 && (
+                          <button
+                            onClick={() => setNewReplies(r => ({ ...r, [offer.id]: 0 }))}
+                            className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-bold transition-all hover:scale-105"
+                            style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.25)', color: '#22c55e' }}>
+                            <MessageCircle size={11} />
+                            {newReplies[offer.id]} nueva{(newReplies[offer.id] ?? 0) > 1 ? 's' : ''}
+                          </button>
+                        )}
+                        <span className="text-xs text-muted-foreground italic">Tu oferta</span>
+                      </div>
                     )}
                   </div>
                 </div>

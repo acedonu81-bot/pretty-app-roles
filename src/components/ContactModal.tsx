@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Mail } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -12,12 +13,17 @@ interface Props {
 const ContactModal = ({ open, onClose }: Props) => {
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
   const [sending, setSending] = useState(false);
+  const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
   const send = async () => {
     if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
       toast.error('Rellena nombre, email y mensaje.');
+      return;
+    }
+    if (!acceptedPrivacy) {
+      toast.error('Debes aceptar la Política de Privacidad para enviar el mensaje.');
       return;
     }
     setSending(true);
@@ -56,7 +62,7 @@ const ContactModal = ({ open, onClose }: Props) => {
               </div>
               <div className="flex-1">
                 <p className="text-sm font-bold">Contacto</p>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>info@xpeak.site</p>
+                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>info@xpeak.es</p>
               </div>
               <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-white/10">
                 <X size={14} style={{ color: 'rgba(255,255,255,0.4)' }} />
@@ -97,7 +103,18 @@ const ContactModal = ({ open, onClose }: Props) => {
             </div>
 
             <div className="px-5 pb-5">
-              <button onClick={send} disabled={sending}
+              <label className="flex items-start gap-2.5 cursor-pointer mb-3">
+                <input type="checkbox" checked={acceptedPrivacy} onChange={e => setAcceptedPrivacy(e.target.checked)}
+                  className="mt-0.5 w-3.5 h-3.5 rounded accent-[#D4AF37] flex-shrink-0" />
+                <span className="text-xs leading-tight" style={{ color: 'rgba(255,255,255,0.45)' }}>
+                  He leído y acepto la{' '}
+                  <Link to="/privacidad" target="_blank" className="underline font-bold" style={{ color: '#D4AF37' }}>
+                    Política de Privacidad
+                  </Link>
+                  {' '}(RGPD Art. 7 · LOPDGDD Art. 6)
+                </span>
+              </label>
+              <button onClick={send} disabled={sending || !acceptedPrivacy}
                 className="w-full py-3 rounded-xl font-bold text-sm transition-all hover:scale-[1.02] disabled:opacity-60 flex items-center justify-center gap-2"
                 style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
                 <Send size={14} />

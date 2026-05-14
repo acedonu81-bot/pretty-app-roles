@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { CheckCircle, Clock, Download, FileText, Euro, Calendar, User, RefreshCw, ScrollText } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, Download, FileText, Euro, Calendar, User, RefreshCw, ScrollText } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
@@ -11,6 +11,7 @@ interface Booking {
   event_date: string | null;
   event_location: string | null;
   event_description: string | null;
+  agreed_price: number | null;
   status: string | null;
   created_at: string | null;
 }
@@ -31,13 +32,14 @@ const HistorialTab = () => {
   const { user } = useAuth();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState<string | null>(null);
 
   const fetchBookings = useCallback(async () => {
     if (!user) return;
     setLoading(true);
     const { data, error } = await supabase
       .from('flash_bookings')
-      .select('id, professional_name, professional_role, event_date, event_location, event_description, status, created_at')
+      .select('id, professional_name, professional_role, event_date, event_location, event_description, agreed_price, status, created_at')
       .eq('created_by', user.id)
       .order('created_at', { ascending: false })
       .limit(50);
@@ -52,13 +54,14 @@ const HistorialTab = () => {
   const exportCSV = () => {
     if (bookings.length === 0) { toast.error('No hay contrataciones que exportar'); return; }
     const rows = [
-      ['Profesional', 'Rol', 'Fecha Evento', 'Ubicación', 'Descripción', 'Estado', 'Fecha Solicitud'],
+      ['Profesional', 'Rol', 'Fecha Evento', 'Ubicación', 'Descripción', 'Caché (€)', 'Estado', 'Fecha Solicitud'],
       ...bookings.map(b => [
         b.professional_name,
         b.professional_role ?? '—',
         fmt(b.event_date),
         b.event_location ?? '—',
         b.event_description ?? '—',
+        b.agreed_price != null ? b.agreed_price.toFixed(2) : '—',
         STATUS_LABEL[b.status ?? '']?.label ?? b.status ?? '—',
         fmt(b.created_at),
       ]),
@@ -82,6 +85,7 @@ const HistorialTab = () => {
     const confirmed = bookings.filter(b => b.status === 'confirmed').length;
     const pending   = bookings.filter(b => b.status === 'pending').length;
 
+    const totalPDF = bookings.filter(b => b.agreed_price != null).reduce((s, b) => s + (b.agreed_price ?? 0), 0);
     const rows = bookings.map(b => {
       const s = STATUS_LABEL[b.status ?? ''] ?? { label: b.status ?? '—', color: '#8E8EA0', bg: '#222' };
       return `
@@ -90,6 +94,7 @@ const HistorialTab = () => {
           <td>${b.professional_role ?? '—'}</td>
           <td>${fmt(b.event_date)}</td>
           <td>${b.event_location ?? '—'}</td>
+          <td>${b.agreed_price != null ? `<strong>€${b.agreed_price.toLocaleString('es-ES', { minimumFractionDigits: 2 })}</strong>` : '—'}</td>
           <td><span style="color:${s.color};font-weight:700">${s.label}</span></td>
           <td>${fmt(b.created_at)}</td>
         </tr>`;
@@ -134,16 +139,17 @@ const HistorialTab = () => {
   <div class="stat"><div class="stat-val" style="color:#22c55e">${completed}</div><div class="stat-lbl">Completadas</div></div>
   <div class="stat"><div class="stat-val" style="color:#3b82f6">${confirmed}</div><div class="stat-lbl">Confirmadas</div></div>
   <div class="stat"><div class="stat-val" style="color:#f59e0b">${pending}</div><div class="stat-lbl">Pendientes</div></div>
+  ${totalPDF > 0 ? `<div class="stat"><div class="stat-val" style="color:#D4AF37">€${totalPDF.toLocaleString('es-ES', { minimumFractionDigits: 2 })}</div><div class="stat-lbl">Gasto total</div></div>` : ''}
 </div>
 <table>
   <thead>
     <tr>
-      <th>Profesional</th><th>Rol</th><th>Fecha Evento</th><th>Ubicación</th><th>Estado</th><th>Solicitud</th>
+      <th>Profesional</th><th>Rol</th><th>Fecha Evento</th><th>Ubicación</th><th>Caché (€)</th><th>Estado</th><th>Solicitud</th>
     </tr>
   </thead>
   <tbody>${rows}</tbody>
 </table>
-<div class="footer">XPEAK · Directorio Profesional de Ocio Nocturno · xpeak.site</div>
+<div class="footer">XPEAK · Directorio Profesional de Ocio Nocturno · xpeak.es</div>
 </body>
 </html>`;
 
@@ -345,7 +351,7 @@ const HistorialTab = () => {
 </div>
 
 <div class="footer">
-  XPEAK · Directorio Profesional de Ocio Nocturno · xpeak.site · legal@xpeak.es<br>
+  XPEAK · Directorio Profesional de Ocio Nocturno · xpeak.es · legal@xpeak.es<br>
   Este documento es un modelo orientativo. Se recomienda consultar con un asesor legal para contratos de alto valor.
 </div>
 </body>
@@ -367,9 +373,26 @@ const HistorialTab = () => {
     setTimeout(() => URL.revokeObjectURL(url), 10000);
   };
 
+  const updateStatus = async (id: string, status: 'confirmed' | 'cancelled') => {
+    setUpdating(id);
+    const { error } = await supabase
+      .from('flash_bookings' as any)
+      .update({ status })
+      .eq('id', id)
+      .eq('created_by', user!.id);
+    setUpdating(null);
+    if (error) { toast.error('Error al actualizar'); return; }
+    setBookings(prev => prev.map(b => b.id === id ? { ...b, status } : b));
+    toast.success(status === 'confirmed' ? '¡Solicitud confirmada!' : 'Solicitud rechazada');
+  };
+
   /* ─── Stats ─── */
   const completed = bookings.filter(b => b.status === 'completed').length;
   const confirmed = bookings.filter(b => b.status === 'confirmed').length;
+  const totalGasto = bookings
+    .filter(b => b.agreed_price != null)
+    .reduce((sum, b) => sum + (b.agreed_price ?? 0), 0);
+  const fmtEur = (n: number) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   return (
     <div className="space-y-5">
@@ -399,7 +422,7 @@ const HistorialTab = () => {
             <p className="text-[0.75rem] text-muted-foreground">de {bookings.length} totales</p>
           </div>
         </div>
-        <div className="grid grid-cols-4 gap-3 mt-4 pt-4" style={{ borderTop: '1px solid rgba(212,175,55,0.1)' }}>
+        <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 mt-4 pt-4" style={{ borderTop: '1px solid rgba(212,175,55,0.1)' }}>
           {[
             { label: 'Completadas', value: completed.toString() },
             { label: 'Confirmadas', value: confirmed.toString() },
@@ -411,6 +434,12 @@ const HistorialTab = () => {
               <p className="text-[0.75rem] text-muted-foreground">{s.label}</p>
             </div>
           ))}
+          <div className="text-center">
+            <p className="text-base font-black" style={{ color: '#22c55e' }}>
+              {totalGasto > 0 ? `€${fmtEur(totalGasto)}` : '—'}
+            </p>
+            <p className="text-[0.75rem] text-muted-foreground">Gasto total</p>
+          </div>
         </div>
       </div>
 
@@ -489,6 +518,11 @@ const HistorialTab = () => {
                     {b.event_location && (
                       <span className="truncate max-w-[160px]">{b.event_location}</span>
                     )}
+                    {b.agreed_price != null && (
+                      <span className="flex items-center gap-1 font-bold" style={{ color: '#22c55e' }}>
+                        <Euro size={10} /> {fmtEur(b.agreed_price)}
+                      </span>
+                    )}
                   </div>
                   {b.event_description && (
                     <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{b.event_description}</p>
@@ -500,6 +534,17 @@ const HistorialTab = () => {
                     {s.label}
                   </span>
                   <span className="text-[0.75rem] text-muted-foreground">{fmt(b.created_at)}</span>
+                  {b.status === 'pending' && (
+                    <div className="flex gap-1.5 mt-0.5">
+                      <button
+                        onClick={() => updateStatus(b.id, 'cancelled')}
+                        disabled={updating === b.id}
+                        className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-bold transition-all hover:scale-105 disabled:opacity-50"
+                        style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#8E8EA0' }}>
+                        <XCircle size={11} /> {updating === b.id ? '…' : 'Cancelar'}
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             );

@@ -225,7 +225,7 @@ const LotterySection = ({ fans }: Props) => {
           {!confirmed && !spinning && (
             <>
               <p className="text-xs font-bold mb-2" style={{ color: '#D4AF37' }}>Elige el regalo:</p>
-              <div className="grid grid-cols-4 gap-2 mb-3">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
                 {GIFT_OPTIONS.map(g => (
                   <button key={g.id} type="button"
                     onClick={() => setGiftPicked(g.id)}

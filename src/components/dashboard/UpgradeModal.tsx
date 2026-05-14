@@ -130,11 +130,12 @@ const UpgradeModal = ({ open, onClose, role, trigger, onNavigateSubscription }: 
   const upsell = ROLE_UPSELL[role ?? ''] ?? FALLBACK_UPSELL;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
+    <div className="fixed inset-0 z-50 overflow-y-auto"
       onClick={onClose}>
       <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(6px)' }} />
+      <div className="relative min-h-full flex items-center justify-center p-4">
       <div
-        className="relative w-full max-w-md rounded-2xl p-6 flex flex-col gap-5 animate-[fadeIn_0.25s_ease]"
+        className="relative w-full max-w-md rounded-2xl p-6 flex flex-col gap-4 animate-[fadeIn_0.25s_ease]"
         style={{ background: '#0d0d0d', border: '1px solid rgba(212,175,55,0.3)', boxShadow: '0 0 60px rgba(212,175,55,0.08)' }}
         onClick={e => e.stopPropagation()}>
 
@@ -195,6 +196,7 @@ const UpgradeModal = ({ open, onClose, role, trigger, onNavigateSubscription }: 
         <button onClick={onClose} className="text-xs text-muted-foreground text-center hover:text-foreground transition-colors">
           Seguir con el plan gratuito
         </button>
+      </div>
       </div>
     </div>
   );

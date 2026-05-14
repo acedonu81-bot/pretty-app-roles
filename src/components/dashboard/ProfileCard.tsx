@@ -1,13 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Star, Clock, Award, CheckCircle, X, Lock, MessageCircle, ShoppingBag, FileText } from 'lucide-react';
+import { Star, Clock, Award, CheckCircle, X, MessageCircle, FileText } from 'lucide-react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Profile } from '@/data/profiles';
 import GeometricAvatar from './GeometricAvatar';
 import VoteButton from './VoteButton';
 import LegalModal from '@/components/LegalModal';
-import FanSubscribeButton from './FanSubscribeButton';
-import UpgradeModal from './UpgradeModal';
 import ContractModal from './ContractModal';
 import { useProfile } from '@/hooks/useProfile';
 
@@ -37,14 +35,10 @@ interface ProfileCardProps {
 
 const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, onNavigateSubscription, onViewProfile }: ProfileCardProps) => {
   const currentUser = useProfile();
-  const canSeePrice = currentUser.role === 'empresario' || currentUser.subscription_tier !== 'free';
   const isRookie = p.category === 'rookie';
-  const isPremiumCard = p.subscriptionTier === 'elite' || p.subscriptionTier === 'premium' || p.subscriptionTier === 'business' || p.subscriptionTier === 'agency';
-  const isCurrentUserFree = currentUser.subscription_tier === 'free';
   const [expanded, setExpanded] = useState(false);
   const [accepted, setAccepted] = useState(false);
   const [showLegal, setShowLegal] = useState(false);
-  const [showUpgrade, setShowUpgrade] = useState(false);
   const [showContract, setShowContract] = useState(false);
   // Real vote count from Supabase (only loaded for rookie profiles)
   const realProfileId = (p as any).userId ?? p.userId ?? null;
@@ -55,14 +49,14 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
     if (!isRookie || !realProfileId) return;
     // Count total votes for this profile
     supabase
-      .from('community_votes')
+      .from('votes' as any)
       .select('id', { count: 'exact', head: true })
       .eq('profile_id', realProfileId)
       .then(({ count }) => setVoteCount(count ?? 0));
     // Check if current user already voted
     if (currentUser.id) {
       supabase
-        .from('community_votes')
+        .from('votes' as any)
         .select('id')
         .eq('profile_id', realProfileId)
         .eq('voter_id', currentUser.id)
@@ -83,29 +77,16 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
   const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-6, 6]), { stiffness: 200, damping: 20 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isPremiumCard || !cardRef.current) return;
+    if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
     mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
   };
   const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0); };
 
-  // Map subscription tier to display label
-  const tierLabel =
-    p.subscriptionTier === 'elite' || p.subscriptionTier === 'agency'
-      ? 'AGENCIA'
-      : p.subscriptionTier === 'premium' || p.subscriptionTier === 'business'
-        ? 'BUSINESS'
-        : p.subscriptionTier === 'starter'
-          ? 'STARTER'
-          : null;
-
   const statusBadges: { label: string; bg: string; color: string; glow?: string }[] = [];
   if (p.isLive) statusBadges.push({ label: 'DISPONIBLE AHORA', bg: 'rgba(34,197,94,0.12)', color: '#22c55e', glow: '0 2px 8px rgba(34,197,94,0.2)' });
   if (p.topWeekend) statusBadges.push({ label: 'TOP WEEKEND', bg: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' });
-  if (tierLabel === 'AGENCIA') statusBadges.push({ label: 'AGENCIA', bg: 'linear-gradient(90deg,rgba(212,175,55,0.2),rgba(184,148,30,0.2))', color: '#D4AF37', glow: '0 0 8px rgba(212,175,55,0.15)' });
-  else if (tierLabel === 'BUSINESS') statusBadges.push({ label: 'BUSINESS', bg: 'rgba(212,175,55,0.12)', color: '#D4AF37' });
-  else if (tierLabel === 'STARTER') statusBadges.push({ label: 'STARTER', bg: 'rgba(168,197,218,0.12)', color: '#A8C5DA' });
   if (isRookie) statusBadges.push({ label: 'PROMESA', bg: 'rgba(255,188,0,0.1)', color: '#ffbc00' });
   if (p.isFlashActive && !p.isLive) statusBadges.push({ label: 'DISPONIBLE', bg: 'rgba(34,197,94,0.12)', color: '#22c55e' });
 
@@ -126,49 +107,8 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
       onMouseLeave={handleMouseLeave}
       className="glass-panel p-3 sm:p-5 flex flex-col transition-all duration-300 relative group cursor-pointer overflow-hidden"
       onClick={() => setExpanded(!expanded)}
-      style={{
-        ...(isPremiumCard ? { rotateX, rotateY, transformStyle: 'preserve-3d', transformPerspective: 800 } : {}),
-        ...(isPremiumCard ? {
-          border: p.subscriptionTier === 'elite'
-            ? '1px solid rgba(212,175,55,0.35)'
-            : '1px solid rgba(212,175,55,0.18)',
-          boxShadow: p.subscriptionTier === 'elite'
-            ? '0 0 24px rgba(212,175,55,0.08), inset 0 0 0 1px rgba(212,175,55,0.05)'
-            : '0 0 12px rgba(212,175,55,0.04)',
-        } : {}),
-      }}
+      style={{}}
     >
-      {/* Elite shimmer top bar */}
-      {p.subscriptionTier === 'elite' && (
-        <div className="absolute top-0 left-0 right-0 h-[2px] rounded-t-xl"
-          style={{ background: 'linear-gradient(90deg, transparent, #D4AF37, transparent)' }} />
-      )}
-
-      {/* Premium animated shimmer sweep */}
-      {isPremiumCard && (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl" style={{ zIndex: 1 }}>
-          <motion.div
-            className="absolute top-0 bottom-0 w-1/2"
-            style={{
-              background: p.subscriptionTier === 'elite' || p.subscriptionTier === 'agency'
-                ? 'linear-gradient(90deg, transparent, rgba(212,175,55,0.07), transparent)'
-                : 'linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent)',
-            }}
-            animate={{ x: ['-100%', '350%'] }}
-            transition={{ duration: 2.8, repeat: Infinity, repeatDelay: 4, ease: 'easeInOut' }}
-          />
-        </div>
-      )}
-
-      {/* Agency/Elite pulsing corner accent */}
-      {(p.subscriptionTier === 'elite' || p.subscriptionTier === 'agency') && (
-        <motion.div
-          className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full"
-          style={{ background: '#D4AF37', boxShadow: '0 0 6px rgba(212,175,55,0.8)', zIndex: 2 }}
-          animate={{ opacity: [0.4, 1, 0.4], scale: [0.8, 1.2, 0.8] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-        />
-      )}
 
       {statusBadges.length > 0 && (
         <div className="flex flex-wrap gap-1.5 mb-3">
@@ -217,11 +157,13 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
         {p.rating > 0 && <span className="flex items-center gap-1"><Star size={11} style={{ color: '#D4AF37' }} /> <span className="font-semibold text-foreground">{p.rating}</span> ({p.reviews})</span>}
         <span className="text-muted-foreground">{p.zone}</span>
       </div>
-      <div className="flex items-center gap-1 mb-2 text-xs text-muted-foreground">
-        <Clock size={11} /> {p.experience}
-      </div>
+      {p.experience && (
+        <div className="flex items-center gap-1 mb-2 text-xs text-muted-foreground">
+          <Clock size={11} /> {p.experience}
+        </div>
+      )}
 
-      {!compact && <p className="text-xs text-muted-foreground mb-3 flex-1 line-clamp-2">{p.description}</p>}
+      {!compact && <p className="hidden sm:block text-xs text-muted-foreground mb-3 flex-1 line-clamp-2">{p.description}</p>}
 
       <div className="flex flex-wrap gap-1 mb-3 overflow-hidden">
         {p.badges.slice(0, 3).map(b => (
@@ -233,7 +175,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
       </div>
 
       {p.languages && p.languages.length > 0 && (
-        <div className="flex flex-wrap gap-1 mb-3">
+        <div className="hidden sm:flex flex-wrap gap-1 mb-3">
           {p.languages.map(lang => (
             <span key={lang} className="text-xs font-medium px-1.5 py-0.5 rounded"
               style={{ background: 'rgba(255,255,255,0.04)', color: '#8E8EA0', border: '1px solid rgba(255,255,255,0.08)' }}>
@@ -289,7 +231,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
       )}
 
       {/* Platform links — DJs: audio platforms | Others: TikTok */}
-      <div className="flex items-center gap-2 mb-3" onClick={e => e.stopPropagation()}>
+      <div className="hidden sm:flex items-center gap-2 mb-3" onClick={e => e.stopPropagation()}>
         {isDJ && audioUrl && audioLabel && (
           <a href={audioUrl} target="_blank" rel="noopener noreferrer"
             className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
@@ -363,10 +305,6 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
         </div>
       )}
 
-      <div className="mb-3" onClick={e => e.stopPropagation()}>
-        <FanSubscribeButton profileId={String(p.id)} professionalName={p.name} />
-      </div>
-
       {/* Ver perfil button */}
       {onViewProfile && (
         <div className="mb-2" onClick={e => e.stopPropagation()}>
@@ -393,7 +331,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
         </div>
       )}
 
-      <div className="py-2 mb-2 px-2 rounded-lg" onClick={e => e.stopPropagation()}
+      <div className="hidden sm:block py-2 mb-2 px-2 rounded-lg" onClick={e => e.stopPropagation()}
         style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
         <p className="text-xs leading-relaxed text-center" style={{ color: 'rgba(255,255,255,0.35)' }}>
           XPEAK actúa como intermediario. Sin relación laboral con la plataforma.
@@ -422,9 +360,9 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
         <span className="text-sm sm:text-base font-bold" style={{ color: '#D4AF37' }}>
           {['makeup', 'vestuario', 'media', 'design'].includes(p.role)
             ? 'A consultar'
-            : canSeePrice
+            : p.price > 0
               ? <>€{p.price}<span className="text-xs text-muted-foreground font-normal">{p.priceUnit}</span></>
-              : <span className="flex items-center gap-1 text-xs font-medium" style={{ color: '#555' }}><Lock size={11} /> Tarifa privada</span>
+              : 'A consultar'
           }
         </span>
         <button
@@ -432,36 +370,20 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
           disabled={!accepted}
           onClick={() => {
             if (!accepted) return;
-            if (isCurrentUserFree) { setShowUpgrade(true); return; }
             if (onMessage && p.userId) onMessage(p.userId, p.name);
           }}
           className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-xs transition-all duration-200 ${
             accepted ? 'hover:scale-105 active:scale-95' : 'opacity-40 cursor-not-allowed'
           }`}
           style={{
-            background: accepted
-              ? isCurrentUserFree
-                ? 'rgba(212,175,55,0.12)'
-                : 'linear-gradient(90deg, #D4AF37, #B8941E)'
-              : 'rgba(255,255,255,0.1)',
-            color: accepted ? (isCurrentUserFree ? '#D4AF37' : '#000') : 'rgba(255,255,255,0.4)',
-            border: accepted && isCurrentUserFree ? '1px solid rgba(212,175,55,0.3)' : 'none',
-            boxShadow: accepted && !isCurrentUserFree ? '0 2px 10px rgba(212,175,55,0.2)' : 'none',
+            background: accepted ? 'linear-gradient(90deg, #D4AF37, #B8941E)' : 'rgba(255,255,255,0.1)',
+            color: accepted ? '#000' : 'rgba(255,255,255,0.4)',
+            boxShadow: accepted ? '0 2px 10px rgba(212,175,55,0.2)' : 'none',
           }}
         >
           <MessageCircle size={15} />
-          {isCurrentUserFree ? (
-            <span className="flex items-center gap-1">Enviar mensaje <Lock size={10} /></span>
-          ) : 'Enviar mensaje'}
+          <span className="hidden sm:inline">Enviar mensaje</span>
         </button>
-
-        <UpgradeModal
-          open={showUpgrade}
-          onClose={() => setShowUpgrade(false)}
-          role={currentUser.role}
-          trigger="Para enviar mensajes a profesionales necesitas un plan de pago."
-          onNavigateSubscription={onNavigateSubscription}
-        />
       </div>
 
       <LegalModal open={showLegal} onClose={() => setShowLegal(false)} />

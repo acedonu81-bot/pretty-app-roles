@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, FileText, Cookie, Mail } from 'lucide-react';
 import LegalModal from './LegalModal';
 import ContactModal from './ContactModal';
+import xpeakLogo from '@/assets/xpeak-logo.png';
 
 const LegalFooter = () => {
   const [showLegal, setShowLegal] = useState(false);
@@ -11,44 +11,83 @@ const LegalFooter = () => {
   return (
     <>
       <footer
-        className="w-full px-4 md:px-6 py-6 text-center text-xs leading-relaxed text-muted-foreground"
-        style={{ borderTop: '1px solid rgba(212,175,55,0.1)', background: 'rgba(0,0,0,0.6)' }}
+        className="w-full px-6 md:px-10 pt-16 pb-8 mt-auto"
+        style={{ borderTop: '1px solid rgba(212,175,55,0.12)', background: 'rgba(0,0,0,0.85)' }}
       >
-        <p className="mb-2 font-bold uppercase tracking-widest text-xs" style={{ color: '#D4AF37' }}>
-          Aviso Legal
-        </p>
-        <p className="max-w-3xl mx-auto">
-          Esta plataforma es un servicio de intermediación técnica (directorio). Cada usuario declara actuar bajo su propia responsabilidad legal. XPEAK no cobra comisiones por contrato, solo por suscripción/pases.
-        </p>
+        <div className="max-w-[1200px] mx-auto">
 
-        {/* Legal links */}
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-          <Link to="/privacidad" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
-            style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
-            <Shield size={10} /> Política de Privacidad
-          </Link>
-          <Link to="/terminos" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
-            style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
-            <FileText size={10} /> Términos y Condiciones
-          </Link>
-          <Link to="/cookies" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
-            style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
-            <Cookie size={10} /> Política de Cookies
-          </Link>
-          <button onClick={() => setShowLegal(true)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
-            style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
-            <Shield size={10} /> Aviso de Intermediación
-          </button>
-          <button onClick={() => setShowContact(true)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
-            style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
-            <Mail size={10} /> Contacto
-          </button>
+          {/* Top — logo + columnas */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pb-12" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+
+            {/* Marca */}
+            <div className="col-span-2 md:col-span-1">
+              <div className="flex items-center gap-2.5 mb-3">
+                <img src={xpeakLogo} alt="XPEAK" className="hidden sm:block w-7 h-7 object-contain" />
+                <span className="text-xl font-black tracking-widest font-display" style={{ color: '#D4AF37' }}>X<span style={{ color: 'rgba(255,255,255,0.85)' }}>PEAK</span></span>
+              </div>
+              <p className="text-xs leading-relaxed max-w-[200px]" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                El directorio profesional del ocio nocturno en España y Europa.
+              </p>
+              <a href="mailto:info@xpeak.es" className="inline-block mt-3 text-xs font-bold transition-colors hover:opacity-80"
+                style={{ color: 'rgba(212,175,55,0.6)' }}>
+                info@xpeak.es
+              </a>
+            </div>
+
+            {/* Plataforma */}
+            <div>
+              <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.25)' }}>Plataforma</p>
+              <ul className="space-y-2.5 text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                <li><Link to="/auth" className="hover:text-white transition-colors">Registro gratuito</Link></li>
+                <li><Link to="/auth" className="hover:text-white transition-colors">Para profesionales</Link></li>
+                <li><Link to="/auth" className="hover:text-white transition-colors">Para empresas y salas</Link></li>
+                <li><Link to="/dashboard" className="hover:text-white transition-colors">Mi dashboard</Link></li>
+              </ul>
+            </div>
+
+            {/* Empresa */}
+            <div>
+              <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.25)' }}>Empresa</p>
+              <ul className="space-y-2.5 text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                <li><Link to="/sobre-nosotros" className="hover:text-white transition-colors">Sobre nosotros</Link></li>
+                <li>
+                  <button onClick={() => setShowContact(true)} className="hover:text-white transition-colors text-left">
+                    Contacto
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => setShowLegal(true)} className="hover:text-white transition-colors text-left">
+                    Aviso de intermediación
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            {/* Legal */}
+            <div>
+              <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.25)' }}>Legal</p>
+              <ul className="space-y-2.5 text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                <li><Link to="/privacidad" className="hover:text-white transition-colors">Política de privacidad</Link></li>
+                <li><Link to="/terminos" className="hover:text-white transition-colors">Términos y condiciones</Link></li>
+                <li><Link to="/cookies" className="hover:text-white transition-colors">Política de cookies</Link></li>
+                <li><Link to="/aviso-legal" className="hover:text-white transition-colors">Aviso legal</Link></li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Bottom */}
+          <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
+            <p className="text-[0.7rem]" style={{ color: 'rgba(255,255,255,0.25)' }}>
+              © {new Date().getFullYear()} XPEAK — España. Todos los derechos reservados.
+            </p>
+            <p className="text-[0.65rem] text-center max-w-md" style={{ color: 'rgba(255,255,255,0.2)' }}>
+              Plataforma de intermediación técnica. Cada usuario actúa bajo su propia responsabilidad legal. XPEAK no cobra comisiones por contrato.
+            </p>
+          </div>
+
         </div>
-
-        <p className="mt-4 text-xs" style={{ color: 'rgba(255,255,255,0.50)' }}>© {new Date().getFullYear()} XPEAK — España. Todos los derechos reservados.</p>
       </footer>
+
       <LegalModal open={showLegal} onClose={() => setShowLegal(false)} />
       <ContactModal open={showContact} onClose={() => setShowContact(false)} />
     </>

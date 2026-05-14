@@ -95,7 +95,7 @@ const MapaView = () => {
                   <p className="text-sm font-bold" style={{ color: isSelected ? '#D4AF37' : 'inherit' }}>{city}</p>
                   {count !== null && (
                     <p className="text-xs text-muted-foreground">
-                      {count > 0 ? `${count} profesional${count !== 1 ? 'es' : ''}` : 'Próximamente'}
+                      {count > 0 ? `${count} profesional${count !== 1 ? 'es' : ''}` : 'Sin profesionales aún'}
                     </p>
                   )}
                 </div>

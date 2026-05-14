@@ -120,7 +120,12 @@ const PortfolioUpload = () => {
     }
 
     const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
-    setItems(prev => [...prev, { name: file.name, url: urlData.publicUrl, storagePath: path, isVideo }]);
+    const newItem = { name: file.name, url: urlData.publicUrl, storagePath: path, isVideo };
+    const next = [...items, newItem];
+    setItems(next);
+    // Sync public URLs to portfolio_urls column (images only — videos not suited for portfolio grid)
+    const imageUrls = next.filter(i => !i.isVideo).map(i => i.url);
+    supabase.from('profiles').update({ portfolio_urls: imageUrls } as any).eq('user_id', user.id).then(() => {});
     toast.success('Portfolio actualizado.');
     setUploading(false);
     if (inputRef.current) inputRef.current.value = '';
@@ -128,7 +133,10 @@ const PortfolioUpload = () => {
 
   const remove = async (item: PortfolioItem) => {
     await supabase.storage.from('audio-sessions').remove([item.storagePath]);
-    setItems(prev => prev.filter(i => i.storagePath !== item.storagePath));
+    const next = items.filter(i => i.storagePath !== item.storagePath);
+    setItems(next);
+    const imageUrls = next.filter(i => !i.isVideo).map(i => i.url);
+    supabase.from('profiles').update({ portfolio_urls: imageUrls } as any).eq('user_id', user.id).then(() => {});
     toast.info('Elemento eliminado.');
   };
 

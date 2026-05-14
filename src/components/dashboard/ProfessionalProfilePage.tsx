@@ -10,7 +10,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { parseStreamUrl } from '@/lib/streaming';
 import { useProfile as useMyProfile } from '@/hooks/useProfile';
 import GeometricAvatar from './GeometricAvatar';
-import FanSubscribeButton from './FanSubscribeButton';
 import ContractModal from './ContractModal';
 import VoteButton from './VoteButton';
 import type { Profile } from '@/data/profiles';
@@ -173,7 +172,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
       let voteCount = 0;
       if (p.category === 'rookie') {
         const { count } = await supabase
-          .from('community_votes')
+          .from('votes' as any)
           .select('id', { count: 'exact', head: true })
           .eq('profile_id', String(p.id));
         voteCount = count ?? 0;
@@ -204,18 +203,10 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
 
   const priceHidden = ['makeup', 'vestuario', 'media', 'design'].includes(p.role);
 
-  // Tier display
-  const tier = p.subscriptionTier;
-  const tierLabel =
-    tier === 'elite' || tier === 'agency' ? 'AGENCIA'
-    : tier === 'premium' || tier === 'business' ? 'BUSINESS'
-    : tier === 'starter' ? 'STARTER'
-    : 'FREE';
-
   const tabs = [
     { id: 'overview', label: 'Perfil' },
-    { id: 'media',   label: isDJ ? 'Audio & Stream' : p.role === 'media' ? 'Portfolio' : 'Media' },
-    { id: 'contact', label: 'Contactar' },
+    { id: 'media',    label: isDJ ? 'Audio & Stream' : p.role === 'media' ? 'Portfolio' : 'Media' },
+    { id: 'contact',  label: 'Contactar' },
   ] as const;
 
   return (
@@ -293,12 +284,6 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                 style={{ background: `${cfg.color}20`, border: `1px solid ${cfg.color}50`, color: cfg.color }}>
                 {cfg.emoji} {cfg.label}
               </span>
-              {tierLabel !== 'FREE' && (
-                <span className="text-xs font-black px-2 py-1 rounded-full"
-                  style={{ background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.3)', color: '#D4AF37' }}>
-                  {tierLabel}
-                </span>
-              )}
             </div>
 
             {/* Tagline bottom-right */}
@@ -580,41 +565,23 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                   </motion.div>
                 ) : (
                   <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-                    <div className="rounded-xl p-10 text-center"
+                    <div className="rounded-xl p-10 text-center flex flex-col items-center gap-3"
                       style={{ background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(255,255,255,0.08)' }}>
-                      <p className="text-3xl mb-3">{cfg.emoji}</p>
-                      <p className="text-sm font-bold mb-1">Sin contenido media todavía</p>
+                      <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                        style={{ background: `${cfg.color}10`, border: `1px solid ${cfg.color}20` }}>
+                        <cfg.icon size={18} style={{ color: `${cfg.color}60` }} />
+                      </div>
+                      <p className="text-sm font-bold">Sin contenido media todavía</p>
                       <p className="text-xs text-muted-foreground">{p.name} aún no ha subido portfolio o sesiones de audio.</p>
                     </div>
                   </motion.div>
                 )}
-
-                {/* Seedance / video intro slot */}
-                <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
-                  className="rounded-xl p-4 flex items-center gap-3"
-                  style={{ background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(255,255,255,0.08)' }}>
-                  <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                    style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.15)' }}>
-                    <Radio size={16} style={{ color: 'rgba(212,175,55,0.5)' }} />
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold mb-0.5">Vídeo intro de presentación</p>
-                    <p className="text-xs text-muted-foreground">
-                      Generación de vídeo AI con <span style={{ color: '#D4AF37' }}>Seedance · Próximamente</span>
-                    </p>
-                  </div>
-                </motion.div>
               </>
             )}
 
             {/* ════ CONTACT TAB ════ */}
             {tab === 'contact' && (
               <>
-                {/* Fan Club */}
-                <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-                  <FanSubscribeButton profileId={String(p.id)} professionalName={p.name} />
-                </motion.div>
-
                 {/* Message */}
                 <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 }}>
                   <button

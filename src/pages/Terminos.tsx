@@ -1,10 +1,16 @@
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import AmbientBackground from '@/components/AmbientBackground';
 import LegalFooter from '@/components/LegalFooter';
 
 const Terminos = () => {
   return (
     <div className="min-h-screen flex flex-col overflow-hidden relative" style={{ background: '#0A0A0A' }}>
+      <Helmet>
+        <title>Términos y Condiciones | XPEAK</title>
+        <meta name="robots" content="noindex, follow" />
+        <link rel="canonical" href="https://xpeak.es/terminos" />
+      </Helmet>
       <AmbientBackground />
 
       <div className="flex-1 z-10 max-w-3xl mx-auto px-4 py-12">
@@ -66,8 +72,10 @@ const Terminos = () => {
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>5. Pagos</h2>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>5. Pagos y Derecho de Desistimiento</h2>
             <p>Todos los pagos se procesan de forma segura a través de Stripe. XPEAK no almacena datos de tarjetas de crédito en sus servidores. Las suscripciones se renuevan automáticamente salvo cancelación previa. El usuario puede cancelar en cualquier momento desde su panel de configuración.</p>
+            <p className="mt-2"><strong className="text-foreground">Derecho de desistimiento (Directiva 2011/83/UE · TRLGDCU art. 102):</strong> El usuario consumidor dispone de un plazo de <strong className="text-foreground">14 días naturales</strong> desde la contratación para desistir del servicio sin necesidad de justificación y sin penalización, siempre que no haya comenzado la prestación efectiva del servicio digital con su consentimiento expreso. Para ejercer este derecho, comuníquelo a <span style={{ color: '#D4AF37' }}>admin@xpeak.es</span> indicando su nombre, email de registro y el servicio contratado. El reembolso se realizará en el mismo medio de pago en un plazo máximo de 14 días.</p>
+            <p className="mt-2 text-muted-foreground text-sm">El derecho de desistimiento no aplica a contenidos digitales que el usuario haya comenzado a utilizar con su consentimiento previo y renuncia expresa al desistimiento (art. 103.m TRLGDCU).</p>
           </section>
 
           <section>

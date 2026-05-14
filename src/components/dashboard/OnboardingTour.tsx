@@ -142,8 +142,7 @@ const OnboardingTour = ({ onNavigate }: Props) => {
   const handleCta = () => { if (current.view) onNavigate(current.view); next(); };
 
   return (
-    <div className="fixed inset-0 z-50 pointer-events-none flex items-end justify-center pb-6 px-4"
-      style={{ paddingLeft: 'max(1rem, calc(260px + 1rem))' }}>
+    <div className="fixed inset-0 z-50 pointer-events-none flex items-end justify-center px-4 pb-24 sm:pb-6 sm:pl-[calc(260px+1rem)]">
       <AnimatePresence mode="wait">
         <motion.div
           key={step}

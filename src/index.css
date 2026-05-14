@@ -129,6 +129,11 @@ html, body, #root {
     border: 1px solid var(--nightlife-border);
     border-radius: 16px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    transition: box-shadow 0.22s ease, border-color 0.22s ease;
+  }
+  .glass-panel:hover {
+    box-shadow: 0 12px 36px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.08), 0 0 0 1px rgba(212,175,55,0.07);
+    border-color: rgba(255,255,255,0.1);
   }
 
   .glass-panel-subtle {
@@ -199,7 +204,7 @@ html, body, #root {
     transition: border 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   }
   .nightlife-input::placeholder {
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(255, 255, 255, 0.55);
   }
   .nightlife-input:focus {
     border-color: var(--nightlife-primary);
@@ -231,6 +236,11 @@ html, body, #root {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes viewEnter {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes orbFloat1 {

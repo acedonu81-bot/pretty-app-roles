@@ -1,5 +1,6 @@
-import { useState, useRef } from 'react';
-import { Trash2, Camera, ExternalLink, Star, Radio, ChevronDown, X, MapPin, Download, ShoppingBag, Plus, Package, Tag, Image as ImageIcon, Lock, Music, Shirt, Sparkles, FileEdit } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Trash2, Camera, ExternalLink, Star, Radio, ChevronDown, X, Download, ShoppingBag, Plus, Package, Tag, Image as ImageIcon, Lock, Music, Shirt, Sparkles, FileEdit, Copy, Check, Share2 } from 'lucide-react';
+import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import { exportUserDataZip } from '@/lib/exportUserData';
 import { parseStreamUrl } from '@/lib/streaming';
 import { toast } from 'sonner';
@@ -11,11 +12,13 @@ import PortfolioUpload from '@/components/dashboard/PortfolioUpload';
 import { subscriptionPlans, mapSubscriptionTierToPlan } from '@/lib/subscriptions';
 import { sanitizeInput } from '@/lib/contentFilter';
 import VerificationSection from './profile/VerificationSection';
+import { DEFAULT_ZONE } from '@/lib/constants';
 
 const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {}) => {
   const { user } = useAuth();
   const profile = useProfile();
   const [deleting, setDeleting] = useState(false);
+  const [deleteStep, setDeleteStep] = useState(0);
   const [saving, setSaving] = useState(false);
   const [localName, setLocalName] = useState<string | null>(null);
   const [city, setCity] = useState('');
@@ -28,6 +31,27 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   const [selectedLangs, setSelectedLangs] = useState<string[] | null>(null);
   const [langOpen, setLangOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
+  const [sideStats, setSideStats] = useState<{ bookings: number | null; messages: number | null }>({ bookings: null, messages: null });
+  const [copied, setCopied] = useState(false);
+
+  const rawPhoto = profile.photo_url;
+  const photoUrl = rawPhoto && rawPhoto.trim().length > 5 && !rawPhoto.endsWith("''") ? rawPhoto : null;
+
+  // Profile completeness
+  const completenessSteps = (() => {
+    const steps: { label: string; done: boolean; hint: string }[] = [
+      { label: 'Foto de perfil', done: !!photoUrl || !!profile.photo_url, hint: 'Añade una foto para generar más confianza.' },
+      { label: 'Bio', done: !!(profile.bio && profile.bio.trim().length > 20), hint: 'Escribe al menos una frase sobre ti.' },
+      { label: 'Ciudad', done: !!(profile.zone && profile.zone !== DEFAULT_ZONE), hint: 'Elige tu ciudad para aparecer en búsquedas locales.' },
+      { label: 'Especialidad', done: !!(profile.specialty && profile.specialty.trim().length > 0), hint: 'Añade tus géneros o especialidades.' },
+      { label: 'Instagram', done: !!(profile.instagram && profile.instagram.trim().length > 0), hint: 'Enlaza tu Instagram para que te contacten.' },
+      ...(profile.role !== 'empresario' ? [
+        { label: 'Mix / Audio', done: !!(profile.audio_embed_url && (profile.audio_embed_url as string).trim().length > 0), hint: 'Añade un enlace a tu mix o sesión.' },
+      ] : []),
+    ];
+    const done = steps.filter(s => s.done).length;
+    return { steps, percent: Math.round((done / steps.length) * 100) };
+  })();
 
   const EU_LANGS = ['Español','Inglés','Francés','Italiano','Alemán','Portugués','Neerlandés','Polaco','Catalán','Euskera'];
   const SPAIN_CITIES = ['Madrid','Barcelona','Valencia','Sevilla','Zaragoza','Málaga','Murcia','Palma de Mallorca','Alicante','Bilbao','Valladolid','Córdoba','Vigo','Gijón','Granada','A Coruña','Vitoria-Gasteiz','San Sebastián','Oviedo','Las Palmas de Gran Canaria','Santa Cruz de Tenerife','Badalona','Cartagena','Sabadell','Móstoles','Elche','Hospitalet de Llobregat','Terrassa','Jerez de la Frontera','Burgos','Santander','Almería','Alcalá de Henares','Pamplona','Salamanca','Ibiza','Marbella','León','Albacete','Logroño','Huelva','Tarragona','Lleida','Badajoz','Jaén','Cádiz','Toledo','Torrevieja','Mataró','Alcobendas'];
@@ -35,7 +59,8 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   const ROLE_TAGS: Record<string, { label: string; tags: string[] }> = {
     dj:        { label: 'Géneros musicales',    tags: ['Techno','Tech House','House','Afro House','Melodic Techno','Deep House','Minimal','Trance','Progressive','Drum & Bass','Jungle','Garage','Afrobeats','Tribal','Nu Disco','Electro','Hard Techno','Industrial','Ambient','Comercial','Reggaetón','Urbano','Hip Hop','RnB','Funk','Soul','Disco','Latino','Salsa','Flamenco Fusión'] },
     rookie:    { label: 'Géneros musicales',    tags: ['Techno','Tech House','House','Afro House','Melodic Techno','Deep House','Minimal','Trance','Progressive','Drum & Bass','Electro','Hard Techno','Comercial','Reggaetón','Urbano','Hip Hop'] },
-    staff:     { label: 'Especialidades',        tags: ['Azafata','RRPP','Promotor','Camarero/a','Relaciones Públicas','Animación','Hostess','Sala VIP','Control de acceso','Taquilla','Chill-out','Bottle service','Coordinación'] },
+    staff:         { label: 'Especialidades',         tags: ['Azafata','RRPP','Promotor','Camarero/a','Relaciones Públicas','Animación','Hostess','Sala VIP','Control de acceso','Taquilla','Chill-out','Bottle service','Coordinación'] },
+    event_manager: { label: 'Áreas de coordinación', tags: ['Coordinación general','Producción de eventos','Montaje y decoración','Catering','Staff externo','Protocolo','Gestión de artistas','Logística','Presupuestos','Eventos corporativos','Bodas','Festivales','Clubbing','Outdoor'] },
     makeup:    { label: 'Servicios',             tags: ['Maquillaje nupcial','Caracterización','Maquillaje artístico','Peluquería','Estilismo','Nail art','Aerógrafo','Efectos especiales','Maquillaje masculino','Novias','Pasarela','Producción'] },
     media:     { label: 'Especialidades',        tags: ['Fotografía de eventos','Vídeo','Reels & Contenido','Fotografía de DJ','Drone','Cobertura en directo','Fotografía de sala','Retrato','Edición de vídeo','Color grading','Motion graphics','Podcast'] },
     design:    { label: 'Especialidades',        tags: ['Diseño gráfico','VJing','Mapping','LED wall','Visuales en vivo','Cartelería','Branding','Redes sociales','Ilustración','3D','Motion design'] },
@@ -44,6 +69,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
 
   const roleTagConfig = ROLE_TAGS[profile.role ?? ''];
   const [selectedGenres, setSelectedGenres] = useState<string[] | null>(null);
+  const [genreOpen, setGenreOpen] = useState(false);
   const activeGenres = selectedGenres ?? profile.genres ?? [];
   const toggleGenre = (g: string) => {
     const next = activeGenres.includes(g) ? activeGenres.filter((x: string) => x !== g) : [...activeGenres, g];
@@ -55,11 +81,26 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     const next = current.includes(lang) ? current.filter(l => l !== lang) : [...current, lang];
     setSelectedLangs(next);
   };
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      const [bookingsRes, convsRes] = await Promise.all([
+        supabase.from('flash_bookings' as any).select('id', { count: 'exact', head: true }).eq('professional_user_id', user.id),
+        supabase.from('conversations').select('id').or(`participant_a.eq.${user.id},participant_b.eq.${user.id}`).limit(50),
+      ]);
+      const convIds = ((convsRes.data ?? []) as { id: string }[]).map(c => c.id);
+      let msgCount = 0;
+      if (convIds.length > 0) {
+        const { count } = await supabase.from('messages').select('id', { count: 'exact', head: true }).in('conversation_id', convIds).neq('sender_id', user.id);
+        msgCount = count ?? 0;
+      }
+      setSideStats({ bookings: bookingsRes.count ?? 0, messages: msgCount });
+    })();
+  }, [user]);
+
   const photoRef = useRef<HTMLInputElement>(null);
 
   const displayName = localName ?? profile.display_name;
-  const rawPhoto = profile.photo_url;
-  const photoUrl = rawPhoto && rawPhoto.trim().length > 5 && !rawPhoto.endsWith("''") ? rawPhoto : null;
 
   const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -107,10 +148,6 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
 
   const handleDeleteMedia = async () => {
     if (!user) return;
-    const first = window.confirm('¿Estás seguro? Se eliminarán TODOS tus archivos multimedia (audio, fotos) de forma permanente.');
-    if (!first) return;
-    const second = window.confirm('⚠️ CONFIRMACIÓN FINAL: Esta acción es IRREVERSIBLE. ¿Deseas continuar con la eliminación?');
-    if (!second) return;
     setDeleting(true);
     try {
       const { data: files } = await supabase.storage.from('audio-sessions').list(user.id);
@@ -139,20 +176,22 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
       <div className="flex flex-col sm:flex-row justify-between items-start gap-3 mb-6">
         <div>
           <h2 className="text-2xl font-bold mb-1">Mi <span className="text-gradient">Perfil</span></h2>
-          <p className="text-base text-muted-foreground">Así te ven los empresarios.</p>
+          <p className="text-base text-muted-foreground">
+            {profile.role === 'empresario' ? 'Gestiona tu información de empresa.' : 'Así te ven los empresarios.'}
+          </p>
         </div>
-        <div className="flex gap-2 w-full sm:w-auto">
+        <div className="flex gap-2 w-full sm:w-auto flex-shrink-0">
           {onNavigate && (
             <button
               type="button"
               onClick={() => onNavigate('ficha')}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm transition-all hover:scale-105"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg font-bold text-xs transition-all hover:scale-105"
               style={{ background: 'rgba(66,133,244,0.12)', border: '1px solid rgba(66,133,244,0.35)', color: '#4285F4' }}>
-              <FileEdit size={14} /> Editar Ficha Pública
+              <FileEdit size={13} /> <span className="hidden sm:inline">Editar</span> Ficha
             </button>
           )}
           <button onClick={handleSave} disabled={saving}
-            className="px-5 py-2 rounded-lg font-bold text-base flex-1 sm:flex-none disabled:opacity-60"
+            className="px-4 py-2 rounded-lg font-bold text-sm flex-1 sm:flex-none disabled:opacity-60"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
             {saving ? 'Guardando...' : 'Guardar'}
           </button>
@@ -181,17 +220,114 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             </p>
             <p className="text-xs text-muted-foreground mt-2 mb-1">Sin valoraciones aún</p>
           </div>
+          {/* — Completitud del perfil — */}
+          {completenessSteps.percent < 100 && (
+            <div className="glass-panel p-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: 'rgba(212,175,55,0.7)' }}>Perfil completo</span>
+                <span className="text-sm font-black" style={{ color: completenessSteps.percent >= 80 ? '#22c55e' : completenessSteps.percent >= 50 ? '#D4AF37' : '#ff5f56' }}>
+                  {completenessSteps.percent}%
+                </span>
+              </div>
+              <div className="w-full h-1.5 rounded-full mb-3" style={{ background: 'rgba(255,255,255,0.06)' }}>
+                <div className="h-full rounded-full transition-all duration-500"
+                  style={{
+                    width: `${completenessSteps.percent}%`,
+                    background: completenessSteps.percent >= 80 ? '#22c55e' : completenessSteps.percent >= 50 ? 'linear-gradient(90deg,#D4AF37,#B8941E)' : '#ff5f56',
+                  }} />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                {completenessSteps.steps.filter(s => !s.done).slice(0, 3).map(s => (
+                  <div key={s.label} className="flex items-start gap-2">
+                    <div className="w-3.5 h-3.5 rounded-full flex-shrink-0 mt-0.5 flex items-center justify-center"
+                      style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                      <div className="w-1 h-1 rounded-full" style={{ background: 'rgba(255,255,255,0.2)' }} />
+                    </div>
+                    <div>
+                      <p className="text-[0.7rem] font-bold leading-tight">{s.label}</p>
+                      <p className="text-[0.65rem] text-muted-foreground leading-tight">{s.hint}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className="glass-panel p-4">
-            {[['Bookings 2026','0'],['Tasa respuesta','—'],['Visitas perfil','0'],['Mensajes recibidos','0']].map(([k,v]) => (
+            {([
+              ['Bookings 2026', sideStats.bookings === null ? '—' : String(sideStats.bookings)],
+              ['Visitas perfil', String(profile.score ?? 0)],
+              ['Mensajes recibidos', sideStats.messages === null ? '—' : String(sideStats.messages)],
+            ] as [string, string][]).map(([k, v]) => (
               <div key={k} className="flex justify-between py-1.5 text-sm" style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
                 <span className="text-muted-foreground">{k}</span>
                 <span className="font-semibold" style={{ color: v === '0' || v === '—' ? 'rgba(255,255,255,0.25)' : 'inherit' }}>{v}</span>
               </div>
             ))}
-            <p className="text-[0.75rem] text-center mt-2.5" style={{ color: 'rgba(255,255,255,0.2)' }}>
-              Las métricas se activan cuando completes tu perfil
-            </p>
           </div>
+
+          {/* — Compartir perfil — */}
+          {user && (
+            <div className="glass-panel p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <Share2 size={13} style={{ color: '#D4AF37' }} />
+                <span className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: 'rgba(212,175,55,0.7)' }}>Comparte tu perfil</span>
+              </div>
+              <div className="flex items-center gap-2 mb-3">
+                <div className="flex-1 px-3 py-2 rounded-lg text-[0.7rem] font-mono truncate"
+                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', color: '#8E8EA0' }}>
+                  xpeak.es/p/{user.id.slice(0, 8)}…
+                </div>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    const url = `https://xpeak.es/p/${user.id}`;
+                    await navigator.clipboard.writeText(url);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                  }}
+                  className="px-3 py-2 rounded-lg flex items-center gap-1.5 text-[0.7rem] font-bold flex-shrink-0 transition-all"
+                  style={{
+                    background: copied ? 'rgba(34,197,94,0.12)' : 'rgba(212,175,55,0.08)',
+                    border: `1px solid ${copied ? 'rgba(34,197,94,0.3)' : 'rgba(212,175,55,0.2)'}`,
+                    color: copied ? '#22c55e' : '#D4AF37',
+                  }}>
+                  {copied ? <Check size={12} /> : <Copy size={12} />}
+                  {copied ? 'Copiado' : 'Copiar'}
+                </button>
+              </div>
+              <div className="flex gap-2">
+                <a
+                  href={`https://wa.me/?text=${encodeURIComponent(`Mi perfil en XPEAK: https://xpeak.es/p/${user.id}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[0.7rem] font-bold transition-all hover:scale-[1.02]"
+                  style={{ background: 'rgba(37,211,102,0.08)', border: '1px solid rgba(37,211,102,0.2)', color: '#25D366' }}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                  WhatsApp
+                </a>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const url = `https://xpeak.es/p/${user.id}`;
+                    if (navigator.share) {
+                      navigator.share({ title: `${displayName || 'Mi perfil'} en XPEAK`, url });
+                    } else {
+                      navigator.clipboard.writeText(url).then(() => {
+                        toast.success('Enlace copiado al portapapeles');
+                      }).catch(() => {
+                        toast.info(url);
+                      });
+                    }
+                  }}
+                  className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[0.7rem] font-bold transition-all hover:scale-[1.02]"
+                  style={{ background: 'rgba(225,48,108,0.08)', border: '1px solid rgba(225,48,108,0.2)', color: '#E1306C' }}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                  Instagram
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Disponibilidad — toggle prominente en columna izquierda */}
           {profile.role !== 'empresario' && (
@@ -274,18 +410,39 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
               <input type="text" value={displayName} onChange={e => setLocalName(e.target.value)} className="nightlife-input mt-1 text-base" />
             </div>
             <div className="mb-3">
+              <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Rol</label>
+              <NightlifeSelect
+                className="mt-1"
+                value={profile.role ?? 'dj'}
+                onChange={async (newRole) => {
+                  await profile.updateField({ role: newRole } as any);
+                  toast.success('Rol actualizado. Recarga para ver los cambios.');
+                }}
+                options={[
+                  { value: 'dj',            label: 'DJ / Artista / Productor' },
+                  { value: 'rookie',         label: 'Artista Promesa' },
+                  { value: 'staff',          label: 'Staff & RRPP' },
+                  { value: 'event_manager',  label: 'Encargada de Eventos' },
+                  { value: 'promotor',       label: 'Promotor' },
+                  { value: 'camarero',       label: 'Camarero / Barra' },
+                  { value: 'catering',       label: 'Catering / Cocina' },
+                  { value: 'makeup',         label: 'Maquillaje & Peluquería' },
+                  { value: 'media',          label: 'Foto & Vídeo' },
+                  { value: 'empresario',     label: 'Empresario / Sala' },
+                ]}
+                active
+              />
+            </div>
+            <div className="mb-3">
               <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Ciudad</label>
-              <div className="relative mt-1">
-                <MapPin size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
-                <select
-                  value={city || profile.zone?.replace(', España','') || ''}
-                  onChange={e => setCity(e.target.value)}
-                  className="nightlife-input !pl-8 text-base appearance-none w-full"
-                  style={{ background: 'rgba(255,255,255,0.03)', color: (city || profile.zone) ? 'inherit' : '#8E8EA0' }}>
-                  <option value="" disabled>Seleccionar ciudad</option>
-                  {SPAIN_CITIES.map(c => <option key={c} value={c} style={{ background: '#0e0e14', color: '#fff' }}>{c}</option>)}
-                </select>
-              </div>
+              <NightlifeSelect
+                className="mt-1"
+                value={city || profile.zone?.replace(', España','') || ''}
+                onChange={setCity}
+                options={SPAIN_CITIES.map(c => ({ value: c, label: c }))}
+                placeholder="Seleccionar ciudad"
+                active={(city || profile.zone) ? true : false}
+              />
             </div>
             {profile.role !== 'empresario' && (
               <div className="mb-3">
@@ -312,9 +469,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             <div className="mt-5 mb-3" style={{ borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: '1.25rem' }}>
               <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Habilidades</p>
             </div>
-            {roleTagConfig && (() => {
-              const [genreOpen, setGenreOpen] = useState(false);
-              return (
+            {roleTagConfig && (
                 <div className="mb-3">
                   <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">{roleTagConfig.label}</label>
 
@@ -377,23 +532,24 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                     </div>
                   )}
                 </div>
-              );
-            })()}
+            )}
             <div className="mb-3">
               {(() => {
                 const isMusical = profile.role === 'dj' || profile.role === 'rookie';
-                const label = isMusical ? 'Rider Técnico' : profile.role === 'makeup' ? 'Marcas / Productos' : profile.role === 'media' ? 'Equipo técnico' : 'Especialidad';
+                const label = isMusical ? 'Rider Técnico' : profile.role === 'makeup' ? 'Marcas / Productos' : profile.role === 'media' ? 'Equipo técnico' : profile.role === 'event_manager' ? 'Servicios de coordinación' : 'Especialidad';
                 const placeholder = isMusical
                   ? 'Ej: Pioneer CDJ-3000 + DJM-900NXS2. Mesa propia (si no hay Pioneer). 2 enchufes cerca de la cabina. Monitoreo lateral obligatorio.'
                   : profile.role === 'media' ? 'Ej: Sony A7 III + DJI Ronin SC. Entrego en 48h. Incluye edición y color grading.'
                   : profile.role === 'makeup' ? 'Ej: MAC, NARS, Charlotte Tilbury. Traigo maletín completo. Necesito mesa con espejo y luz natural.'
+                  : profile.role === 'event_manager' ? 'Ej: Coordinación integral de eventos. Gestión de artistas, catering, montaje y protocolo. Disponible en toda España.'
                   : 'Describe tu especialidad y requisitos...';
                 const PRESETS: Record<string, string[]> = {
                   dj:     ['CDJ-3000 + DJM-900NXS2', 'Mesa propia', '2 enchufes', 'Monitor lateral', 'Rider estándar Pioneer', 'Necesita backline', 'Acepta Serato', 'Acepta Traktor'],
                   rookie: ['CDJ-3000 + DJM-900NXS2', 'Mesa propia', '2 enchufes', 'Monitor lateral', 'Controlador propio'],
                   makeup: ['Traigo maletín', 'Necesita espejo con luz', 'Solo marcas premium', 'Acepta prueba previa', 'Trabaja en equipo'],
                   media:  ['Cámara Sony A7', 'Drone DJI', 'Entrega 48h', 'Incluye edición', 'Raw disponible', 'Drone incluido'],
-                  staff:  ['Traje propio', 'Acreditación de sala', 'Idiomas: EN/FR', 'Experiencia VIP', 'Uniforme de sala'],
+                  staff:         ['Traje propio', 'Acreditación de sala', 'Idiomas: EN/FR', 'Experiencia VIP', 'Uniforme de sala'],
+                  event_manager: ['Coordinación integral', 'Presupuesto detallado', 'Gestión de proveedores', 'On-site el día del evento', 'Experiencia en bodas', 'Experiencia en festivales'],
                 };
                 const presets = PRESETS[profile.role ?? ''] ?? [];
                 const currentRider = rider ?? profile.specialty ?? '';
@@ -505,8 +661,8 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
               )}
             </div>
           </div>
-          <AudioUpload />
-          {profile.role !== 'dj' && profile.role !== 'rookie' && <PortfolioUpload />}
+          {(profile.role === 'dj' || profile.role === 'rookie') && <AudioUpload />}
+          {profile.role !== 'dj' && profile.role !== 'rookie' && profile.role !== 'empresario' && <PortfolioUpload />}
 
           {/* Redes sociales y plataformas — todos los roles */}
           <div className="glass-panel p-5">
@@ -597,16 +753,53 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             <p className="text-xs text-muted-foreground mb-3">
               Según la normativa RGPD, puedes solicitar la eliminación permanente de todo tu contenido multimedia (audios, fotos de perfil y trabajos).
             </p>
-            <button onClick={handleDeleteMedia} disabled={deleting}
-              className="w-full py-2.5 rounded-lg font-medium text-sm transition-all disabled:opacity-50"
-              style={{ background: 'rgba(255,95,86,0.06)', color: '#ff5f56', border: '1px solid rgba(255,95,86,0.15)' }}>
-              {deleting ? 'Eliminando...' : 'Eliminar todo mi contenido multimedia'}
-            </button>
+            {deleteStep === 0 && (
+              <button onClick={() => setDeleteStep(1)} disabled={deleting}
+                className="w-full py-2.5 rounded-lg font-medium text-sm transition-all disabled:opacity-50"
+                style={{ background: 'rgba(255,95,86,0.06)', color: '#ff5f56', border: '1px solid rgba(255,95,86,0.15)' }}>
+                Eliminar todo mi contenido multimedia
+              </button>
+            )}
+            {deleteStep === 1 && (
+              <div className="rounded-lg p-4" style={{ background: 'rgba(255,95,86,0.06)', border: '1px solid rgba(255,95,86,0.2)' }}>
+                <p className="text-xs font-bold mb-3" style={{ color: '#ff5f56' }}>¿Seguro? Se eliminarán TODOS tus archivos multimedia de forma permanente.</p>
+                <div className="flex gap-2">
+                  <button onClick={() => setDeleteStep(0)}
+                    className="flex-1 py-2 rounded-lg text-xs font-bold transition-all"
+                    style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.6)' }}>
+                    Cancelar
+                  </button>
+                  <button onClick={() => setDeleteStep(2)}
+                    className="flex-1 py-2 rounded-lg text-xs font-bold transition-all"
+                    style={{ background: 'rgba(255,95,86,0.15)', border: '1px solid rgba(255,95,86,0.3)', color: '#ff5f56' }}>
+                    Continuar →
+                  </button>
+                </div>
+              </div>
+            )}
+            {deleteStep === 2 && (
+              <div className="rounded-lg p-4" style={{ background: 'rgba(255,95,86,0.08)', border: '1px solid rgba(255,95,86,0.35)' }}>
+                <p className="text-xs font-bold mb-1" style={{ color: '#ff5f56' }}>⚠ CONFIRMACIÓN FINAL — acción irreversible</p>
+                <p className="text-xs mb-3" style={{ color: 'rgba(255,255,255,0.5)' }}>No podrás recuperar ningún archivo después de esto.</p>
+                <div className="flex gap-2">
+                  <button onClick={() => setDeleteStep(0)}
+                    className="flex-1 py-2 rounded-lg text-xs font-bold transition-all"
+                    style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.6)' }}>
+                    Cancelar
+                  </button>
+                  <button onClick={() => { setDeleteStep(0); handleDeleteMedia(); }} disabled={deleting}
+                    className="flex-1 py-2 rounded-lg text-xs font-bold transition-all disabled:opacity-50"
+                    style={{ background: 'rgba(255,95,86,0.2)', border: '1px solid rgba(255,95,86,0.5)', color: '#ff5f56' }}>
+                    {deleting ? 'Eliminando...' : 'Eliminar definitivamente'}
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
           <div className="glass-panel p-5">
             <h4 className="text-base font-bold mb-4">Valoraciones</h4>
             <div className="flex flex-col items-center py-6 gap-3">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center"
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center"
                 style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.1)' }}>
                 <Star size={20} style={{ color: 'rgba(212,175,55,0.25)' }} />
               </div>

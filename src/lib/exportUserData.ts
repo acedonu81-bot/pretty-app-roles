@@ -39,7 +39,7 @@ export const exportUserDataZip = async (user: User) => {
       ['disponible',       p.is_live ? 'sí' : 'no',             'Visible en directorio ahora mismo'],
       ['generos',          Array.isArray(p.genres) ? (p.genres as string[]).join('; ') : '', 'Separados por punto y coma'],
       ['instagram',        (p.instagram as string) ?? '',        ''],
-      ['url_perfil',       `https://xpeak.site/p/${slug}`,       'URL pública permanente'],
+      ['url_perfil',       `https://xpeak.es/p/${slug}`,       'URL pública permanente'],
       ['fecha_registro',   (p.created_at as string)?.slice(0, 10) ?? '', ''],
       ['exportado_el',     exportedAt,                           'ISO 8601 UTC'],
       ['base_legal',       'RGPD Art. 20',                       'Derecho a la portabilidad de los datos'],
@@ -102,7 +102,7 @@ export const exportUserDataZip = async (user: User) => {
         const pr = profilesMap[tid] ?? {};
         return [(pr.display_name as string) ?? '', (pr.role as string) ?? '', (pr.zone as string) ?? '',
           pr.hourly_rate ?? '', pr.is_verified ? 'sí' : 'no',
-          tid ? `https://xpeak.site/p/${tid}` : '', tid, String(f.created_at ?? '').slice(0, 10)];
+          tid ? `https://xpeak.es/p/${tid}` : '', tid, String(f.created_at ?? '').slice(0, 10)];
       }),
     ]);
 
@@ -151,7 +151,7 @@ export const exportUserDataZip = async (user: User) => {
       ['', '', '', ''],
       ['META', 'Exportado el',   exportedAt,         'ISO 8601 UTC'],
       ['META', 'Base legal',     'RGPD Art. 20',     'Portabilidad de datos'],
-      ['META', 'Plataforma',     'XPEAK',            'xpeak.site'],
+      ['META', 'Plataforma',     'XPEAK',            'xpeak.es'],
       ['META', 'Nota fiscal',    'Este documento no constituye certificado fiscal oficial. Consulta con tu asesor/a.', ''],
     ];
     const resumenCsv = csv(resumenRows);
@@ -176,7 +176,7 @@ NOTA LEGAL
 Este archivo fue generado automáticamente conforme al Art. 20 del RGPD.
 No constituye un certificado fiscal oficial.
 Para el derecho al olvido (Art. 17): Ajustes > Zona de peligro > Eliminar cuenta.
-Soporte: soporte@xpeak.site
+Soporte: soporte@xpeak.es
 `;
 
     const zip = new JSZip();

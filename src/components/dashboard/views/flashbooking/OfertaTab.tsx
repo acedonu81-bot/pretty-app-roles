@@ -32,14 +32,14 @@ const OfertaTab = () => {
     setIsFlashActive(currentUser.is_flash_active ?? false);
   }, [currentUser.is_flash_active]);
 
-  useEffect(() => {
+  const fetchFlashProfiles = () => {
     supabase
       .from('profiles')
       .select('id, user_id, display_name, photo_url, specialty, zone, hourly_rate, role')
       .eq('is_flash_active', true)
       .then(({ data }) => {
         setFlashProfiles((data ?? []).map(p => ({
-          id: p.user_id || p.id,  // use user_id for flash_bookings RLS
+          id: p.user_id || p.id,
           name: p.display_name || 'Profesional',
           photo: p.photo_url || '',
           specialty: p.specialty || '',
@@ -50,9 +50,23 @@ const OfertaTab = () => {
         })));
         setLoadingProfiles(false);
       });
+  };
+
+  useEffect(() => {
+    fetchFlashProfiles();
+    const channel = supabase
+      .channel('flash_profiles_realtime')
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, () => {
+        fetchFlashProfiles();
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
   }, []);
   const [freeCountdown, setFreeCountdown] = useState(0);
-  const [freeActivatedAt, setFreeActivatedAt] = useState<number | null>(null);
+  const [freeActivatedAt, setFreeActivatedAt] = useState<number | null>(() => {
+    const stored = sessionStorage.getItem('flash_free_activated_at');
+    return stored ? parseInt(stored, 10) : null;
+  });
   const countdownRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [selectedPro, setSelectedPro] = useState<FlashProfile | null>(null);
 
@@ -88,12 +102,15 @@ const OfertaTab = () => {
     if (!ok) return;
     setIsFlashActive(next);
     if (next && isFreeUser) {
-      setFreeActivatedAt(Date.now());
+      const now = Date.now();
+      sessionStorage.setItem('flash_free_activated_at', String(now));
+      setFreeActivatedAt(now);
       toast.info('Eres usuario gratuito — tu perfil será visible en 15 minutos');
     } else if (next) {
       await currentUser.activateTrial();
       toast.success('¡Flash Booking activado! Eres visible ahora');
     } else {
+      sessionStorage.removeItem('flash_free_activated_at');
       setFreeActivatedAt(null);
       setFreeCountdown(0);
       if (countdownRef.current) clearInterval(countdownRef.current);
@@ -158,11 +175,25 @@ const OfertaTab = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {loadingProfiles && (
-          <div className="col-span-full flex items-center justify-center py-10">
-            <div className="text-xs text-muted-foreground animate-pulse">Cargando disponibles...</div>
+        {loadingProfiles && Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="glass-panel p-4 animate-pulse">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-lg bg-white/5 flex-shrink-0" />
+              <div className="flex-1">
+                <div className="h-3 bg-white/5 rounded mb-1.5 w-3/4" />
+                <div className="h-2 bg-white/5 rounded w-1/2" />
+              </div>
+            </div>
+            <div className="flex gap-3 mb-3">
+              <div className="h-2 bg-white/5 rounded w-1/3" />
+              <div className="h-2 bg-white/5 rounded w-1/4" />
+            </div>
+            <div className="flex justify-between items-center">
+              <div className="h-4 bg-white/5 rounded w-1/4" />
+              <div className="h-7 bg-white/5 rounded-lg w-20" />
+            </div>
           </div>
-        )}
+        ))}
         {!loadingProfiles && flashProfiles.map(p => (
           <div key={p.id} className="glass-panel p-4 flex flex-col gap-3 transition-all hover:border-amber-500/20">
             <div className="flex items-center gap-3">
@@ -195,7 +226,7 @@ const OfertaTab = () => {
                 </button>
               ) : (
                 <span className="flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-lg"
-                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#555' }}>
+                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.35)' }}>
                   <Lock size={10} /> Solo empresarios
                 </span>
               )}

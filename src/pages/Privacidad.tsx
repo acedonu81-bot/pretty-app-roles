@@ -1,10 +1,16 @@
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import AmbientBackground from '@/components/AmbientBackground';
 import LegalFooter from '@/components/LegalFooter';
 
 const Privacidad = () => {
   return (
     <div className="min-h-screen flex flex-col overflow-hidden relative" style={{ background: '#000' }}>
+      <Helmet>
+        <title>Política de Privacidad | XPEAK</title>
+        <meta name="robots" content="noindex, follow" />
+        <link rel="canonical" href="https://xpeak.es/privacidad" />
+      </Helmet>
       <AmbientBackground />
 
       <div className="flex-1 z-10 max-w-3xl mx-auto px-4 py-12">
@@ -57,17 +63,38 @@ const Privacidad = () => {
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>6. Destinatarios y Transferencias</h2>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>6. Destinatarios y Transferencias Internacionales</h2>
             <ul className="list-disc list-inside space-y-1 text-muted-foreground">
               <li><strong className="text-foreground">Empresas del Sector:</strong> Tus datos profesionales y multimedia son públicos para los usuarios registrados como "Empresa" con el fin de facilitar tu contratación.</li>
-              <li><strong className="text-foreground">Proveedores Técnicos:</strong> Los datos se alojan en servidores seguros y los pagos se procesan mediante Stripe.</li>
-              <li><strong className="text-foreground">Autoridades:</strong> Solo en caso de requerimiento legal administrativo o judicial.</li>
+              <li><strong className="text-foreground">Supabase (infraestructura):</strong> Los datos se almacenan en servidores de Supabase Inc. ubicados en la Unión Europea (Irlanda, AWS eu-west-1). La transferencia está amparada por las Cláusulas Contractuales Estándar de la Comisión Europea conforme al art. 46.2.c del RGPD.</li>
+              <li><strong className="text-foreground">Stripe (pagos):</strong> Los pagos se procesan mediante Stripe Payments Europe Ltd. (Irlanda), entidad sujeta al RGPD. XPEAK no almacena datos de tarjetas de crédito. Stripe puede transferir datos a EE.UU. bajo las garantías del Data Privacy Framework (Decisión de Adecuación de la Comisión Europea, 10/07/2023).</li>
+              <li><strong className="text-foreground">Autoridades:</strong> Solo en caso de requerimiento legal administrativo o judicial conforme a la legislación española aplicable.</li>
             </ul>
+            <p className="text-muted-foreground mt-2 text-sm">Para más información sobre las garantías de transferencia internacional puedes contactar con nosotros en admin@xpeak.es (RGPD arts. 44–49).</p>
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>7. Tus Derechos (Derechos ARCO)</h2>
-            <p>Tienes derecho a acceder, rectificar, suprimir tus datos, así como a la portabilidad de los mismos y a la limitación u oposición de su tratamiento. Para ejercer estos derechos, debes enviar un correo electrónico a <span style={{ color: '#D4AF37' }}>admin@xpeak.es</span> adjuntando una copia de tu DNI o documento equivalente.</p>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>7. Tus Derechos</h2>
+            <p className="mb-3">Conforme al RGPD (UE) 2016/679 y la LOPDGDD (LO 3/2018) tienes los siguientes derechos:</p>
+            <ul className="list-disc pl-5 space-y-1.5 text-sm text-muted-foreground">
+              <li><strong className="text-foreground">Acceso (Art. 15)</strong> — solicitar confirmación de si tratamos tus datos y obtener una copia.</li>
+              <li><strong className="text-foreground">Rectificación (Art. 16)</strong> — corregir datos inexactos o incompletos.</li>
+              <li><strong className="text-foreground">Supresión (Art. 17)</strong> — solicitar el borrado de tus datos cuando ya no sean necesarios o retires el consentimiento. En la plataforma puedes ejercerlo desde <em>Ajustes → Eliminar cuenta</em>.</li>
+              <li><strong className="text-foreground">Portabilidad (Art. 20)</strong> — recibir tus datos en formato estructurado (JSON/CSV) desde <em>Ajustes → Exportar datos</em>.</li>
+              <li><strong className="text-foreground">Limitación del tratamiento (Art. 18)</strong> — solicitar que suspendamos el tratamiento mientras se resuelve una impugnación.</li>
+              <li><strong className="text-foreground">Oposición (Art. 21)</strong> — oponerte al tratamiento basado en interés legítimo, incluyendo elaboración de perfiles con fines de marketing directo.</li>
+            </ul>
+            <p className="text-sm text-muted-foreground mt-3">Para ejercer cualquiera de estos derechos envía un correo a <span style={{ color: '#D4AF37' }}>admin@xpeak.es</span> con una copia de tu DNI o documento equivalente. Responderemos en el plazo máximo de <strong>30 días naturales</strong> (RGPD Art. 12.3).</p>
+          </section>
+
+          <section>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>8. Reclamaciones ante la Autoridad de Control</h2>
+            <p className="text-sm text-muted-foreground">
+              Si consideras que el tratamiento de tus datos infringe la normativa de protección de datos, tienes derecho a presentar una reclamación ante la <strong className="text-foreground">Agencia Española de Protección de Datos (AEPD)</strong>, sin perjuicio de cualquier otro recurso administrativo o acción judicial.
+            </p>
+            <p className="text-sm mt-2">
+              <span style={{ color: '#D4AF37' }}>www.aepd.es</span> · C/ Jorge Juan, 6 · 28001 Madrid · Tel. 901 100 099
+            </p>
           </section>
         </div>
       </div>
