@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Crown, Eye, Maximize2, Minimize2, Users, Video, Settings, Globe, Zap, Lock } from 'lucide-react';
+import { Crown, Eye, Maximize2, Minimize2, Users, Video, Settings, Globe, Zap } from 'lucide-react';
 import { Profile } from '@/data/profiles';
 import ProfileCard from '@/components/dashboard/ProfileCard';
 import CheckoutModal from '@/components/dashboard/CheckoutModal';
 import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import OffersWidget from '@/components/dashboard/OffersWidget';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
-import UpgradeModal from '@/components/dashboard/UpgradeModal';
 import { useProfile } from '@/hooks/useProfile';
 import { normalizeStreamUrl, parseStreamUrl } from '@/lib/streaming';
 import { toast } from 'sonner';
@@ -197,7 +196,6 @@ const DJ_ROLES = new Set(['dj', 'rookie']);
 
 const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards, searchQuery, onViewProfile }: DirectoryViewProps) => {
   const profile = useProfile();
-  const isUserFree = profile.subscription_tier === 'free';
   const isDJRole = DJ_ROLES.has(role);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [checkoutItem, setCheckoutItem] = useState<{ name: string; price: number; description: string } | null>(null);
@@ -211,7 +209,6 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
   const [filterCity, setFilterCity] = useState('Todas las ciudades');
   const [filterFlash, setFilterFlash] = useState(false);
   const [filterVerified, setFilterVerified] = useState(false);
-  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   useEffect(() => {
     setLoadingProfiles(true);
@@ -542,41 +539,9 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
                 </span>
               );
             })}
-            {isUserFree && (
-              <button
-                onClick={() => setShowUpgradeModal(true)}
-                className="ml-auto flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full transition-all hover:scale-105"
-                style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
-                <Zap size={10} /> Subir de nivel
-              </button>
-            )}
           </div>
         );
       })()}
-
-      {/* Free user upgrade nudge — sticky bottom banner */}
-      {isUserFree && filteredProfiles.length > 3 && (
-        <div className="relative mb-5 p-4 rounded-xl flex items-center gap-4 overflow-hidden"
-          style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.2)' }}>
-          <div className="absolute inset-0 pointer-events-none"
-            style={{ background: 'radial-gradient(ellipse at 80% 50%, rgba(212,175,55,0.07) 0%, transparent 70%)' }} />
-          <Lock size={20} style={{ color: '#D4AF37', flexShrink: 0 }} />
-          <div className="flex-1 min-w-0">
-            <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>
-              Estás en Free — solo ves una parte del directorio
-            </p>
-            <p className="text-xs text-muted-foreground">
-              Los perfiles Business y Agencia tienen acceso prioritario. Actualiza para enviar mensajes, ver tarifas y aplicar a Flash Bookings.
-            </p>
-          </div>
-          <button
-            onClick={() => setShowUpgradeModal(true)}
-            className="flex-shrink-0 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 active:scale-95"
-            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-            Ver planes
-          </button>
-        </div>
-      )}
 
       <div className={gridClass}>
         {filteredProfiles.map(p => (
@@ -588,13 +553,6 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
 
       <OffersWidget title={`Ofertas para ${title}`} role={role} />
       <CheckoutModal open={checkoutOpen} onClose={() => setCheckoutOpen(false)} item={checkoutItem} />
-
-      <UpgradeModal
-        open={showUpgradeModal}
-        onClose={() => setShowUpgradeModal(false)}
-        role={role}
-        onNavigateSubscription={() => { setShowUpgradeModal(false); onNavigate?.('subscription'); }}
-      />
     </div>
   );
 };

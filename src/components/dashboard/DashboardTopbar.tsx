@@ -1,8 +1,7 @@
-import { Search, LogOut, Menu, Gift, Sparkles, Bell, X } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { Search, LogOut, Menu, Sparkles, Bell, X } from 'lucide-react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProfile } from '@/hooks/useProfile';
-import { getTrialDaysRemaining, isBirthdayToday, mapSubscriptionTierToPlan } from '@/lib/subscriptions';
 import { isNative } from '@/lib/capacitor';
 
 interface TopbarProps {
@@ -24,15 +23,6 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
   });
   const profile = useProfile();
 
-  // null = not started, number = days remaining (0 = expired)
-  const trialDaysRemaining = useMemo(() => getTrialDaysRemaining(profile.trial_started_at), [profile.trial_started_at]);
-  const birthdayOfferActive = useMemo(() => isBirthdayToday(profile.birthday), [profile.birthday]);
-  const currentPlan = useMemo(() => mapSubscriptionTierToPlan(profile.subscription_tier), [profile.subscription_tier]);
-  const isPaidPlan = currentPlan !== 'free';
-  const trialNotStarted = isPaidPlan && trialDaysRemaining === null;
-  const trialActive = isPaidPlan && trialDaysRemaining !== null && trialDaysRemaining > 0;
-  const trialExpired = isPaidPlan && trialDaysRemaining === 0;
-
   const markAllRead = () => {
     const ids = new Set([...dismissed, ...notifications.map(n => n.id)]);
     setDismissed(ids);
@@ -40,53 +30,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
     setShowNotif(false);
   };
 
-  const trialLabel = trialNotStarted
-    ? 'Usa Flash Booking, streaming o sube una sesión para activar tus 15 días gratis'
-    : trialActive
-      ? `Te quedan ${trialDaysRemaining} ${trialDaysRemaining === 1 ? 'día' : 'días'} de acceso gratuito`
-      : 'Tu periodo de prueba ha finalizado. Suscríbete al plan anual y ahorra un 30%.';
-
   const notifications = [
-    ...(trialNotStarted ? [{
-      id: 'trial_pending',
-      title: 'Prueba no iniciada',
-      desc: 'Activa Flash Booking, conecta un stream o sube una sesión — ahí empieza el contador de 15 días.',
-      time: 'Pendiente',
-      icon: 'spark' as const,
-      urgent: false,
-    }] : []),
-    ...(trialActive ? [{
-      id: 'trial_active',
-      title: 'Prueba activa',
-      desc: trialLabel,
-      time: 'Activo',
-      icon: 'gift' as const,
-      urgent: (trialDaysRemaining ?? 99) <= 3,
-    }] : []),
-    ...(trialExpired ? [{
-      id: 'trial_ended',
-      title: 'Prueba finalizada',
-      desc: 'Suscríbete para seguir disfrutando de todas las funciones premium.',
-      time: 'Vencido',
-      icon: 'gift' as const,
-      urgent: true,
-    }] : []),
-    ...(birthdayOfferActive ? [{
-      id: 'birthday',
-      title: '¡Feliz cumpleaños! 🎂',
-      desc: 'Hoy tienes un 40% de descuento en la suscripción anual.',
-      time: 'Hoy',
-      icon: 'gift' as const,
-      urgent: false,
-    }] : []),
-    ...(currentPlan === 'free' ? [{
-      id: 'welcome',
-      title: 'Bienvenido a XPEAK',
-      desc: 'Activa Starter y aparece verificado en el directorio con Flash Booking habilitado.',
-      time: 'Nuevo',
-      icon: 'spark' as const,
-      urgent: false,
-    }] : []),
     ...(!profile.display_name ? [{
       id: 'incomplete_profile',
       title: 'Perfil incompleto',
@@ -156,34 +100,9 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
           )}
         </div>
 
-        {isPaidPlan && (
-          <div
-            className="hidden lg:flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-semibold border bg-card/70"
-            style={{
-              borderColor: trialExpired ? 'rgba(239,68,68,0.3)' : trialNotStarted ? 'rgba(212,175,55,0.2)' : 'rgba(212,175,55,0.35)',
-              color: trialExpired ? '#fca5a5' : '#D4AF37',
-            }}
-          >
-            <Gift size={14} />
-            <span>{trialLabel}</span>
-          </div>
-        )}
       </div>
 
       <div className="flex items-center gap-2 relative flex-shrink-0">
-        {isPaidPlan && (
-          <div className="lg:hidden flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold border bg-card/70"
-            style={{
-              borderColor: trialExpired ? 'rgba(239,68,68,0.3)' : 'rgba(212,175,55,0.3)',
-              color: trialExpired ? '#fca5a5' : '#D4AF37',
-            }}>
-            <Gift size={12} />
-            <span>
-              {trialNotStarted ? 'Activa tu prueba' : trialActive ? `${trialDaysRemaining} días gratis` : 'Prueba finalizada'}
-            </span>
-          </div>
-        )}
-
         {/* Notification trigger — animated pulse orb */}
         <button
           onClick={() => setShowNotif(prev => !prev)}
