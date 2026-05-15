@@ -222,7 +222,7 @@ const Dashboard = () => {
       <main className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden relative min-w-0">
         <DashboardTopbar onMenuToggle={() => setSidebarOpen(true)} isMobile={isMobile} onSearch={handleSearch} searchQuery={searchQuery} onHome={() => handleViewChange('dj')} />
         <ProfileIncompleteBanner onNavigate={handleViewChange} activeView={activeView} />
-        <div className={`p-4 md:p-6 flex-1 md:pb-6 ${isMobile ? 'pb-[calc(4rem+env(safe-area-inset-bottom))]' : 'pb-6'}`}
+        <div className={`p-4 md:p-6 flex-1 md:pb-6 ${isMobile ? 'pb-[calc(5rem+env(safe-area-inset-bottom))]' : 'pb-6'}`}
           key={activeView}
           style={{ animation: 'viewEnter 0.22s cubic-bezier(0.22,1,0.36,1) both' }}>
           {renderView()}

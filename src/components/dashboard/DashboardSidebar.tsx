@@ -214,8 +214,8 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
             items = items.filter(i => i.id !== 'rookie');
           }
           return (
-          <div key={section.label} className="mb-3">
-            <div className="text-xs text-muted-foreground uppercase tracking-widest font-bold mb-2 px-3">
+          <div key={section.label} className="mb-5">
+            <div className="text-[0.7rem] text-muted-foreground uppercase tracking-widest font-black mb-2 px-3">
               {section.label}
             </div>
             {items.map((item) => {
@@ -225,7 +225,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
                 <button
                   key={item.id}
                   onClick={() => onViewChange(item.id)}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg mb-0.5 text-sm font-medium transition-all duration-200 text-left"
+                  className="w-full flex items-center gap-3 px-3 py-3 rounded-xl mb-1 text-sm font-semibold transition-all duration-200 text-left"
                   style={{
                     color: isActive
                       ? (TOOL_BLUE_IDS.has(item.id) ? '#4285F4' : '#D4AF37')
@@ -238,7 +238,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
                       : '2px solid transparent',
                   }}
                 >
-                  <item.icon size={18} style={{
+                  <item.icon size={20} style={{
                     color: ROLE_COLORS[item.id] ?? (TOOL_BLUE_IDS.has(item.id) ? '#4285F4' : undefined),
                     opacity: isActive ? 1 : 0.7,
                   }} />

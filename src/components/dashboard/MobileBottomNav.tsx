@@ -56,10 +56,10 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
       className="fixed bottom-0 left-0 right-0 z-40 flex items-stretch md:hidden"
       style={{
         background: 'rgba(6,6,8,0.97)',
-        borderTop: '1px solid rgba(212,175,55,0.12)',
+        borderTop: '1px solid rgba(212,175,55,0.15)',
         backdropFilter: 'blur(20px)',
         paddingBottom: 'env(safe-area-inset-bottom)',
-        height: 'calc(56px + env(safe-area-inset-bottom))',
+        height: 'calc(64px + env(safe-area-inset-bottom))',
       }}
     >
       {tabs.map(tab => (
@@ -72,7 +72,7 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
         >
           <div className="relative">
             <tab.icon
-              size={20}
+              size={24}
               style={{ color: tab.isActive ? '#D4AF37' : 'rgba(255,255,255,0.35)' }}
             />
             {tab.badge != null && tab.badge > 0 && (
@@ -85,7 +85,7 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
             )}
           </div>
           <span
-            className="text-[0.75rem] font-bold tracking-wide"
+            className="text-[0.72rem] font-bold tracking-wide mt-0.5"
             style={{ color: tab.isActive ? '#D4AF37' : 'rgba(255,255,255,0.3)' }}
           >
             {tab.label}
@@ -106,8 +106,8 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
         className="flex-1 flex flex-col items-center justify-center gap-0.5 transition-all active:scale-95"
         style={{ minHeight: 44 }}
       >
-        <LayoutGrid size={20} style={{ color: 'rgba(255,255,255,0.35)' }} />
-        <span className="text-[0.75rem] font-bold tracking-wide" style={{ color: 'rgba(255,255,255,0.3)' }}>
+        <LayoutGrid size={24} style={{ color: 'rgba(255,255,255,0.35)' }} />
+        <span className="text-[0.72rem] font-bold tracking-wide mt-0.5" style={{ color: 'rgba(255,255,255,0.3)' }}>
           Más
         </span>
       </button>
