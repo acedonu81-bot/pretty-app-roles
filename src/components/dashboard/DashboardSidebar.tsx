@@ -2,7 +2,7 @@ import {
   Headphones, UserCheck, Smile, Building2,
   User, CalendarDays,
   MessageSquare, Radio, Megaphone, Settings,
-  BarChart3, Award,
+  BarChart3, Award, Crown,
   Camera, FileText, FileEdit, CalendarCheck,
   Palette, Shirt, Speaker, ChevronDown, Plus,
 } from 'lucide-react';
