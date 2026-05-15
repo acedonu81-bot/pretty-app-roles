@@ -283,7 +283,7 @@ const MOCK_MAP: Record<string, React.ReactNode> = {
 };
 
 const SIDEBAR_MAP: Record<string, string[]> = {
-  dj:         ['Mi Perfil', 'Escenario', 'Flash Booking', 'Fan Club', 'Mensajes', 'Stats'],
+  dj:         ['Mi Perfil', 'Escenario', 'Flash Booking', 'Mensajes', 'Stats'],
   staff:      ['Mi Perfil', 'Flash Booking', 'Mensajes', 'Calendario', 'Mapa'],
   makeup:     ['Mi Perfil', 'Flash Booking', 'Portfolio', 'Mensajes', 'Calendario'],
   media:      ['Mi Perfil', 'Flash Booking', 'Portfolio', 'Mensajes', 'Calendario'],
@@ -292,7 +292,7 @@ const SIDEBAR_MAP: Record<string, string[]> = {
 };
 
 const FEATURES_MAP: Record<string, { label: string; highlight?: boolean }[]> = {
-  dj:         [{ label: 'Perfil booking', highlight: true }, { label: 'Escenario Virtual live', highlight: true }, { label: 'Flash Booking urgente', highlight: true }, { label: 'Fan Club', highlight: true }, { label: 'Top Weekend' }, { label: 'Stats de perfil' }, { label: 'QR de perfil' }],
+  dj:         [{ label: 'Perfil booking', highlight: true }, { label: 'Escenario Virtual live', highlight: true }, { label: 'Flash Booking urgente', highlight: true }, { label: 'Mi Ficha pública', highlight: true }, { label: 'Top Weekend' }, { label: 'Stats de perfil' }, { label: 'QR de perfil' }],
   staff:      [{ label: 'Perfil verificado', highlight: true }, { label: 'Flash Booking urgente', highlight: true }, { label: 'Certificaciones', highlight: true }, { label: 'Disponibilidad RT' }, { label: 'Historial de trabajo' }, { label: 'Mensajes directos' }],
   makeup:     [{ label: 'Portfolio visual', highlight: true }, { label: 'Bookings de artistas', highlight: true }, { label: 'Flash Booking', highlight: true }, { label: 'Especialidades' }, { label: 'Tarifa por sesión' }, { label: 'Calendario' }],
   media:      [{ label: 'Portfolio multimedia', highlight: true }, { label: 'Flash Booking', highlight: true }, { label: 'Grid de trabajos', highlight: true }, { label: 'Especialidades' }, { label: 'Calendario de rodajes' }, { label: 'Stats' }],

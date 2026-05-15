@@ -56,7 +56,7 @@ const PROFESSIONAL_STEPS: TourStep[] = [
   {
     icon: <CheckCircle size={20} />,
     title: '¡Listo! Ya sabes lo esencial',
-    body: 'Explora Fan Club, Escenario Virtual, Estadísticas y más. Cualquier duda, usa el asistente de soporte.',
+    body: 'Explora el Escenario Virtual, Flash Booking, Estadísticas y más. Cualquier duda, usa el asistente de soporte.',
     highlight: 'Empieza ahora y consigue tu primer booking.',
   },
 ];

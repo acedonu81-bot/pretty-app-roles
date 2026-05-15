@@ -4,10 +4,6 @@ import { Profile } from '@/data/profiles';
 import ProfileCard from '@/components/dashboard/ProfileCard';
 import { supabase } from '@/integrations/supabase/client';
 
-const TIER_RANK: Record<string, number> = {
-  elite: 5, agency: 4, premium: 3, business: 2, starter: 1, free: 0,
-};
-
 const TopWeekendView = () => {
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [loading, setLoading] = useState(true);
@@ -15,8 +11,10 @@ const TopWeekendView = () => {
   useEffect(() => {
     supabase
       .from('profiles')
-      .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, subscription_tier, is_live, genres, bio, languages, tiktok, category, is_verified, is_flash_active, stream_url, role')
+      .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, is_live, genres, bio, languages, tiktok, category, is_verified, is_flash_active, stream_url, role')
       .neq('role', 'empresario')
+      .not('display_name', 'is', null)
+      .not('photo_url', 'is', null)
       .limit(200)
       .then(({ data }) => {
         if (!data) { setLoading(false); return; }
@@ -41,12 +39,12 @@ const TopWeekendView = () => {
           instagram: '',
           topWeekend: false,
           photo: row.photo_url || '',
-          subscriptionTier: (row.subscription_tier as Profile['subscriptionTier']) ?? 'free',
+          subscriptionTier: 'free' as Profile['subscriptionTier'],
           isFlashActive: row.is_flash_active ?? false,
           profileViews: 0,
           contactClicks: 0,
           isLive: row.is_live ?? false,
-          isPremium: row.subscription_tier !== 'free',
+          isPremium: false,
           languages: row.languages ?? [],
           tiktok: row.tiktok || '',
           streamUrl: row.stream_url || undefined,
@@ -54,10 +52,12 @@ const TopWeekendView = () => {
           isVerified: row.is_verified ?? false,
         }));
 
-        // Sort: paid tiers first, then free
-        const sorted = mapped.sort((a, b) =>
-          (TIER_RANK[b.subscriptionTier] ?? 0) - (TIER_RANK[a.subscriptionTier] ?? 0)
-        );
+        // Sort: verified first, then profiles with bio, then alphabetical
+        const sorted = mapped.sort((a, b) => {
+          if (a.isVerified !== b.isVerified) return a.isVerified ? -1 : 1;
+          if (!!a.description !== !!b.description) return a.description ? -1 : 1;
+          return a.name.localeCompare(b.name);
+        });
         setProfiles(sorted);
         setLoading(false);
       });
@@ -79,7 +79,7 @@ const TopWeekendView = () => {
       <div className="p-3 mb-5 rounded-lg flex items-center gap-2" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
         <Crown size={14} style={{ color: '#D4AF37' }} />
         <span className="text-xs font-medium" style={{ color: '#D4AF37' }}>
-          Los perfiles TOP Weekend aparecen primero en todas las secciones del directorio
+          Profesionales verificados y con perfil completo — los más listos para contratar
         </span>
       </div>
 

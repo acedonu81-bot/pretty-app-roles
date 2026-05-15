@@ -200,7 +200,7 @@ const ROLE_DETAILS = [
       { icon: <Music size={22} />,      image: px(164745),  title: 'Tu perfil, tu marca',             body: 'Incrusta tus sesiones de hearthis.at, Mixcloud o SoundCloud. Los empresarios escuchan tu trabajo antes de contactarte — sin intermediarios.' },
       { icon: <Zap size={22} />,        image: px(1190297), title: 'Flash Booking',                   body: 'Activa tu disponibilidad en tiempo real y recibe ofertas urgentes de salas que necesitan cubrir una noche con pocas horas de antelación.' },
       { icon: <Radio size={22} />,      image: px(1105666), title: 'Escenario Virtual',               body: 'Emite tus sesiones en directo. Empresarios de toda Europa te ven actuar y pueden contactarte al instante. La vitrina más potente del sector.' },
-      { icon: <Heart size={22} />,      image: px(2747449), title: 'Fan Club — ingresos recurrentes', body: 'Monetiza tu audiencia directamente. Tus fans se suscriben desde 4,99€/mes para acceder a sesiones exclusivas, contenido privado y mensajes directos. Tú recibes el 80%.' },
+      { icon: <Heart size={22} />,      image: px(2747449), title: 'Mi Ficha Pública', body: 'Comparte posts, audio, vídeo e imágenes con fans y empresarios. Tu ficha es tu tarjeta de presentación permanente en xpeak.es.' },
     ],
   },
   {
@@ -413,7 +413,7 @@ const RoleModal = ({ role, onClose, onJoin }: { role: typeof ROLE_DETAILS[0]; on
 
 /* ── Landing ── */
 const FAQ_ITEMS = [
-  { q: '¿Es gratis registrarse?', a: 'Sí. El registro y el perfil básico son siempre gratuitos. Los planes de pago añaden funciones avanzadas como Flash Booking ilimitado, Fan Club y estadísticas — pero nunca son obligatorios para tener presencia en el directorio.' },
+  { q: '¿Es gratis registrarse?', a: 'Sí. XPEAK es completamente gratuito durante su fase de crecimiento. Todas las funciones — perfil, Flash Booking, mensajería, estadísticas y contratos — están disponibles sin coste ni comisiones.' },
   { q: '¿Necesito experiencia profesional para unirme?', a: 'No. Hay un rol específico llamado "Artista Promesa" pensado para quienes están empezando. La comunidad te puede apoyar con votos para que asciendan a Profesional.' },
   { q: '¿Cómo funciona el Flash Booking?', a: 'Un empresario publica una oferta urgente (fecha, lugar, caché). Los profesionales disponibles en esa zona reciben una notificación y pueden responder. El empresario elige. Todo en menos de una hora.' },
   { q: '¿Soy una sala o promotora? ¿Cómo me registro?', a: 'Elige el rol "Empresario" al registrarte. Es totalmente gratuito y sin límites para contratar: búsqueda en el directorio, Flash Booking ilimitado y mensajería directa. XPEAK no cobra comisiones por contratación. El trato es directo entre sala y profesional.' },
