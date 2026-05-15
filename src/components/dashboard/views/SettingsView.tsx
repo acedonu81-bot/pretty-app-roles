@@ -8,7 +8,6 @@ import QRCode from 'qrcode';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
-import { subscriptionPlans, mapSubscriptionTierToPlan } from '@/lib/subscriptions';
 import { sanitizeInput, containsPhoneNumber } from '@/lib/contentFilter';
 import { requestPushPermission, revokePushPermission, isPushSubscribed, showLocalNotification, isPushSupported } from '@/lib/pushNotifications';
 
@@ -78,8 +77,6 @@ const MultiProfileSection = () => {
   const [newZone, setNewZone] = useState('');
   const [saving, setSaving] = useState(false);
 
-  if (subscription_tier === 'free') return null;
-
   const handleCreate = async () => {
     if (!newName.trim()) { toast.error('Introduce un nombre'); return; }
     setSaving(true);
@@ -91,8 +88,7 @@ const MultiProfileSection = () => {
   return (
     <Section title="Mis perfiles" icon={<Users size={15} />}>
       <p className="text-xs text-muted-foreground mb-3">
-        Tu plan <span className="font-bold capitalize" style={{ color: '#D4AF37' }}>{subscription_tier}</span> permite hasta{' '}
-        <span className="font-bold">{maxProfiles} perfiles</span> con roles distintos.
+        Puedes gestionar hasta <span className="font-bold">{maxProfiles} perfiles</span> con roles distintos.
       </p>
       <div className="space-y-2 mb-3">
         {allProfiles.map(p => (
@@ -192,9 +188,6 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
   const rawPhoto = profile.photo_url;
   const photoUrl = rawPhoto && rawPhoto.length > 5 ? rawPhoto : null;
   const initials = displayName ? displayName.charAt(0).toUpperCase() : 'X';
-  const currentPlanId = mapSubscriptionTierToPlan(profile.subscription_tier);
-  const currentPlan = subscriptionPlans.find(p => p.id === currentPlanId);
-
   /* ── RGPD Art. 20 — Portabilidad de datos ── */
   const handleExportData = async () => {
     if (!user) return;
@@ -1120,27 +1113,19 @@ Para cualquier duda: soporte@xpeak.es
         </div>
       </Section>
 
-      {/* ── Subscription ── */}
-      <Section title="Plan y Facturación" icon={<CreditCard size={15} />}>
-        <div className="flex items-center justify-between p-3 rounded-lg mb-3"
-          style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
+      {/* ── Plan ── */}
+      <Section title="Tu Plan" icon={<CreditCard size={15} />}>
+        <div className="flex items-center justify-between p-3 rounded-lg"
+          style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}>
           <div>
-            <p className="text-sm font-bold">{currentPlan?.name ?? 'Gratuito'}</p>
-            <p className="text-xs text-muted-foreground">
-              {currentPlan?.monthlyPrice === 0 ? 'Plan gratuito activo' : `${currentPlan?.monthlyPrice?.toFixed(2).replace('.', ',')}€/mes`}
-            </p>
+            <p className="text-sm font-bold">Plataforma gratuita</p>
+            <p className="text-xs text-muted-foreground">Todas las funciones incluidas, sin coste.</p>
           </div>
           <span className="text-xs font-bold px-2 py-1 rounded"
             style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
             ACTIVO
           </span>
         </div>
-        <button className="w-full flex items-center justify-between p-3 rounded-lg text-sm font-medium transition-all hover:bg-white/5"
-          style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}
-          onClick={() => onNavigate ? onNavigate('subscription') : toast.info('Ve a Suscripción en el menú lateral.')}>
-          <span>Ver todos los planes</span>
-          <ChevronRight size={14} className="text-muted-foreground" />
-        </button>
       </Section>
 
       {/* ── Sign out ── */}

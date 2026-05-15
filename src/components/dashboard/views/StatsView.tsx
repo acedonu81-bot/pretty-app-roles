@@ -20,7 +20,7 @@ const useCountUp = (target: number, duration = 900) => {
   }, [target]);
   return value;
 };
-import { Eye, MessageCircle, Crown, TrendingUp, Zap, BarChart2 } from 'lucide-react';
+import { Eye, MessageCircle, TrendingUp, Zap, BarChart2, CheckCircle } from 'lucide-react';
 
 // ── SVG Donut Chart ─────────────────────────────────────────────────────────
 interface DonutSegment { value: number; color: string; label: string; icon: string }
@@ -104,14 +104,11 @@ const DonutChart = ({ segments, size = 140 }: { segments: DonutSegment[]; size?:
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
-import { subscriptionPlans, mapSubscriptionTierToPlan } from '@/lib/subscriptions';
-
 const MONTH_LABELS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 
 const StatsView = () => {
   const profile = useProfile();
   const { user } = useAuth();
-  const currentPlan = subscriptionPlans.find(p => p.id === mapSubscriptionTierToPlan(profile.subscription_tier));
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth(); // 0-indexed
 
@@ -377,20 +374,18 @@ const StatsView = () => {
         </div>
       </div>
 
-      {/* ── Plan actual ── */}
+      {/* ── Plan ── */}
       <div className="glass-panel p-5">
-        <h3 className="text-sm font-bold mb-3">Plan actual</h3>
+        <h3 className="text-sm font-bold mb-3">Tu plan</h3>
         <div className="flex items-center gap-3 p-3 rounded-lg"
-          style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--nightlife-border)' }}>
-          <Crown size={20} style={{ color: currentPlan?.monthlyPrice ? '#D4AF37' : '#8E8EA0' }} />
+          style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}>
+          <CheckCircle size={20} style={{ color: '#D4AF37' }} />
           <div className="flex-1">
-            <p className="text-sm font-bold">
-              {currentPlan?.name ?? 'Free'} · {currentPlan?.monthlyPrice === 0 ? 'Gratis' : `${currentPlan?.monthlyPrice?.toFixed(2).replace('.', ',')}€/mes`}
-            </p>
-            <p className="text-xs text-muted-foreground">{currentPlan?.features[0] ?? 'Perfil visible en el directorio con funciones básicas.'}</p>
+            <p className="text-sm font-bold">Plataforma gratuita</p>
+            <p className="text-xs text-muted-foreground">Todas las funciones disponibles sin coste ni comisiones.</p>
           </div>
           <span className="text-[0.75rem] font-bold px-2 py-1 rounded"
-            style={{ background: 'rgba(255,255,255,0.05)', color: '#8E8EA0' }}>ACTIVO</span>
+            style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>ACTIVO</span>
         </div>
       </div>
     </div>

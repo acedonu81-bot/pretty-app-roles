@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Megaphone, Clock, MapPin, Plus, X, MessageCircle, Lock, Send, CheckCheck, ChevronUp, RefreshCw, Zap, Crown } from 'lucide-react';
+import { Megaphone, Clock, MapPin, Plus, X, MessageCircle, Lock, Send, CheckCheck, ChevronUp, RefreshCw, Zap } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
@@ -16,22 +16,9 @@ interface Offer {
   location: string;
   pay: string;
   expiresIn: number;    // seconds remaining
-  lockedFor: number;    // seconds until this tier can see it (0 = visible now)
   createdAt: number;    // ms timestamp
   posterId?: string;
 }
-
-/* ─── Priority delay by subscription tier (seconds) ─── */
-const TIER_DELAY: Record<string, number> = {
-  agency:     0,
-  business:   0,
-  starter:    20 * 60,   // 20 min
-  free:       45 * 60,   // 45 min
-};
-const getTierDelay = (tier: string, role: string) => {
-  if (role === 'empresario') return 0;
-  return TIER_DELAY[tier] ?? TIER_DELAY.free;
-};
 
 const fmtCountdown = (s: number) => {
   if (s <= 0) return '0:00';
@@ -52,10 +39,6 @@ const DemandaTab = () => {
   const currentUser = useProfile();
   const { user } = useAuth();
   const isEmpresario = currentUser.role === 'empresario';
-  const tier = currentUser.subscription_tier ?? 'free';
-  const isFreeUser = tier === 'free';
-  const canSeePay = isEmpresario || !isFreeUser;
-  const myDelay = getTierDelay(tier, currentUser.role);
 
   const [offers, setOffers] = useState<Offer[]>([]);
   const [loading, setLoading] = useState(true);
@@ -106,12 +89,10 @@ const DemandaTab = () => {
 
     const nowMs = Date.now();
     const mapped: Offer[] = data.map(j => {
-      const expiresMs  = new Date(j.expires_at!).getTime();
-      const createdMs  = new Date(j.created_at!).getTime();
-      const expiresIn  = Math.max(0, Math.round((expiresMs - nowMs) / 1000));
-      const ageSeconds = Math.round((nowMs - createdMs) / 1000);
-      const lockedFor  = Math.max(0, myDelay - ageSeconds);
-      const employer   = profileMap[j.employer_id] ?? { name: 'Empresario', initials: 'E' };
+      const expiresMs = new Date(j.expires_at!).getTime();
+      const createdMs = new Date(j.created_at!).getTime();
+      const expiresIn = Math.max(0, Math.round((expiresMs - nowMs) / 1000));
+      const employer  = profileMap[j.employer_id] ?? { name: 'Empresario', initials: 'E' };
       return {
         id: j.id,
         author: employer.name,
@@ -122,7 +103,6 @@ const DemandaTab = () => {
         location: j.location ?? 'Sin especificar',
         pay: j.pay ?? 'A convenir',
         expiresIn,
-        lockedFor,
         createdAt: createdMs,
         posterId: j.employer_id,
       };
@@ -179,11 +159,7 @@ const DemandaTab = () => {
     const iv = setInterval(() => {
       setOffers(prev =>
         prev
-          .map(o => ({
-            ...o,
-            expiresIn: Math.max(0, o.expiresIn - 1),
-            lockedFor: Math.max(0, o.lockedFor - 1),
-          }))
+          .map(o => ({ ...o, expiresIn: Math.max(0, o.expiresIn - 1) }))
           .filter(o => o.expiresIn > 0)
       );
     }, 1000);
@@ -308,33 +284,13 @@ const DemandaTab = () => {
         </div>
       )}
 
-      {/* Priority access banner */}
       {!isEmpresario && (
         <div className="glass-panel p-3 mb-4 flex items-center gap-3"
-          style={{
-            border: `1px solid ${myDelay === 0 ? 'rgba(34,197,94,0.2)' : myDelay <= 20 * 60 ? 'rgba(212,175,55,0.2)' : 'rgba(255,95,86,0.15)'}`,
-            background: myDelay === 0 ? 'rgba(34,197,94,0.02)' : myDelay <= 20 * 60 ? 'rgba(212,175,55,0.02)' : 'rgba(255,95,86,0.02)',
-          }}>
-          {myDelay === 0
-            ? <Zap size={14} style={{ color: '#22c55e', flexShrink: 0 }} />
-            : <Crown size={14} style={{ color: '#D4AF37', flexShrink: 0 }} />}
-          <div className="flex-1 min-w-0">
-            {myDelay === 0 ? (
-              <p className="text-xs font-bold" style={{ color: '#22c55e' }}>
-                Acceso prioritario — ves las ofertas en tiempo real
-              </p>
-            ) : myDelay <= 20 * 60 ? (
-              <p className="text-xs text-muted-foreground">
-                <span className="font-bold" style={{ color: '#D4AF37' }}>Plan Starter:</span> ves las ofertas con 20 min de delay.
-                Actualiza a <span className="font-bold" style={{ color: '#D4AF37' }}>Business</span> para acceso inmediato.
-              </p>
-            ) : (
-              <p className="text-xs text-muted-foreground">
-                <span className="font-bold" style={{ color: '#ff5f56' }}>Plan Free:</span> ves las ofertas con 45 min de delay.
-                Actualiza a <span className="font-bold" style={{ color: '#D4AF37' }}>Business</span> para acceso inmediato.
-              </p>
-            )}
-          </div>
+          style={{ border: 'rgba(34,197,94,0.2)', background: 'rgba(34,197,94,0.02)' }}>
+          <Zap size={14} style={{ color: '#22c55e', flexShrink: 0 }} />
+          <p className="text-xs font-bold" style={{ color: '#22c55e' }}>
+            Acceso en tiempo real — ves las ofertas al instante
+          </p>
         </div>
       )}
 
@@ -367,41 +323,6 @@ const DemandaTab = () => {
           {offers.map(offer => {
             const isReplying = replyingToOffer === offer.id;
             const msgs = sentMessages[offer.id] ?? [];
-            const isLocked = offer.lockedFor > 0 && !isEmpresario;
-
-            /* ── Card bloqueada ── */
-            if (isLocked) {
-              return (
-                <div key={offer.id} className="glass-panel p-5 relative overflow-hidden select-none"
-                  style={{ border: '1px solid rgba(212,175,55,0.12)' }}>
-                  {/* Blurred content behind */}
-                  <div className="blur-sm pointer-events-none">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-lg" style={{ background: 'rgba(212,175,55,0.15)' }} />
-                      <div className="flex-1">
-                        <div className="h-3 rounded w-3/4 mb-1.5" style={{ background: 'rgba(255,255,255,0.08)' }} />
-                        <div className="h-2 rounded w-1/2" style={{ background: 'rgba(255,255,255,0.04)' }} />
-                      </div>
-                    </div>
-                    <div className="h-2 rounded w-full mb-1" style={{ background: 'rgba(255,255,255,0.04)' }} />
-                    <div className="h-2 rounded w-2/3" style={{ background: 'rgba(255,255,255,0.04)' }} />
-                  </div>
-                  {/* Lock overlay */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 rounded-2xl"
-                    style={{ background: 'rgba(8,8,8,0.7)', backdropFilter: 'blur(2px)' }}>
-                    <Crown size={22} style={{ color: '#D4AF37' }} />
-                    <p className="text-sm font-bold" style={{ color: '#D4AF37' }}>Oferta bloqueada</p>
-                    <p className="text-xs text-muted-foreground text-center px-6">
-                      Disponible para ti en{' '}
-                      <span className="font-bold" style={{ color: '#D4AF37' }}>{fmtCountdown(offer.lockedFor)}</span>
-                    </p>
-                    <p className="text-xs text-muted-foreground text-center px-4">
-                      Actualiza a <span className="font-bold" style={{ color: '#D4AF37' }}>Business</span> para acceso inmediato
-                    </p>
-                  </div>
-                </div>
-              );
-            }
 
             return (
               <div key={offer.id} className="glass-panel flex flex-col transition-all duration-200"
@@ -427,13 +348,7 @@ const DemandaTab = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3 text-xs text-muted-foreground">
                       <span className="flex items-center gap-1"><MapPin size={11} /> {offer.location}</span>
-                      {canSeePay ? (
-                        <span className="font-bold text-sm" style={{ color: '#D4AF37' }}>{offer.pay}</span>
-                      ) : (
-                        <span className="flex items-center gap-1 font-medium" style={{ color: '#555' }}>
-                          <Lock size={10} /> Solo Business+
-                        </span>
-                      )}
+                      <span className="font-bold text-sm" style={{ color: '#D4AF37' }}>{offer.pay}</span>
                     </div>
                     {!isEmpresario ? (
                       <button type="button"

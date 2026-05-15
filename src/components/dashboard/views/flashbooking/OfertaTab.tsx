@@ -1,11 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
-import { Zap, Clock, MapPin, Lock, ToggleLeft, ToggleRight, AlertTriangle } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Zap, Clock, MapPin, ToggleLeft, ToggleRight, AlertTriangle } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import FlashBookingRequestModal from '@/components/dashboard/FlashBookingRequestModal';
-
-const FREE_DELAY_SECONDS = 15 * 60;
 
 interface FlashProfile {
   id: string;
@@ -21,7 +19,6 @@ interface FlashProfile {
 const OfertaTab = () => {
   const currentUser = useProfile();
   const isEmpresario = currentUser.role === 'empresario';
-  const isFreeUser = currentUser.subscription_tier === 'free';
 
   const [flashProfiles, setFlashProfiles] = useState<FlashProfile[]>([]);
   const [loadingProfiles, setLoadingProfiles] = useState(true);
@@ -62,58 +59,16 @@ const OfertaTab = () => {
       .subscribe();
     return () => { supabase.removeChannel(channel); };
   }, []);
-  const [freeCountdown, setFreeCountdown] = useState(0);
-  const [freeActivatedAt, setFreeActivatedAt] = useState<number | null>(() => {
-    const stored = sessionStorage.getItem('flash_free_activated_at');
-    return stored ? parseInt(stored, 10) : null;
-  });
-  const countdownRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [selectedPro, setSelectedPro] = useState<FlashProfile | null>(null);
-
-  useEffect(() => {
-    if (isFreeUser && freeActivatedAt !== null) {
-      const elapsed = Math.floor((Date.now() - freeActivatedAt) / 1000);
-      const remaining = Math.max(0, FREE_DELAY_SECONDS - elapsed);
-      setFreeCountdown(remaining);
-      if (remaining > 0) {
-        countdownRef.current = setInterval(() => {
-          const el = Math.floor((Date.now() - (freeActivatedAt ?? Date.now())) / 1000);
-          const rem = Math.max(0, FREE_DELAY_SECONDS - el);
-          setFreeCountdown(rem);
-          if (rem <= 0) {
-            clearInterval(countdownRef.current!);
-            toast.success('¡Ya eres visible en Flash Booking!');
-          }
-        }, 1000);
-      }
-      return () => { if (countdownRef.current) clearInterval(countdownRef.current); };
-    }
-  }, [freeActivatedAt, isFreeUser]);
-
-  const fmtCountdown = (s: number) => {
-    const m = Math.floor(s / 60);
-    const sec = s % 60;
-    return `${m}:${String(sec).padStart(2, '0')}`;
-  };
 
   const toggleFlash = async () => {
     const next = !isFlashActive;
     const ok = await currentUser.updateField({ is_flash_active: next });
     if (!ok) return;
     setIsFlashActive(next);
-    if (next && isFreeUser) {
-      const now = Date.now();
-      sessionStorage.setItem('flash_free_activated_at', String(now));
-      setFreeActivatedAt(now);
-      toast.info('Eres usuario gratuito — tu perfil será visible en 15 minutos');
-    } else if (next) {
-      await currentUser.activateTrial();
+    if (next) {
       toast.success('¡Flash Booking activado! Eres visible ahora');
     } else {
-      sessionStorage.removeItem('flash_free_activated_at');
-      setFreeActivatedAt(null);
-      setFreeCountdown(0);
-      if (countdownRef.current) clearInterval(countdownRef.current);
       toast.success('Flash Booking desactivado');
     }
   };
@@ -130,9 +85,7 @@ const OfertaTab = () => {
                 <p className="text-sm font-bold">Tu disponibilidad</p>
                 <p className="text-xs text-muted-foreground">
                   {isFlashActive
-                    ? isFreeUser && freeCountdown > 0
-                      ? `Visible en ${fmtCountdown(freeCountdown)} (acceso gratuito, 15 min después)`
-                      : 'Estás visible para empresarios ahora mismo'
+                    ? 'Estás visible para empresarios ahora mismo'
                     : 'Tu perfil no aparece en el feed Flash'}
                 </p>
               </div>
@@ -143,17 +96,6 @@ const OfertaTab = () => {
                 : <ToggleLeft size={40} style={{ color: '#8E8EA0' }} />}
             </button>
           </div>
-          {isFreeUser && isFlashActive && freeCountdown > 0 && (
-            <div className="mt-3 flex items-center gap-2 px-3 py-2 rounded-lg text-xs"
-              style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
-              <Clock size={13} style={{ color: '#D4AF37' }} />
-              <span style={{ color: '#D4AF37' }}>
-                Los usuarios de pago tienen prioridad. Visible en <strong>{fmtCountdown(freeCountdown)}</strong>.
-                <button onClick={() => toast.info('Actualiza tu plan para acceso inmediato.')}
-                  className="ml-2 underline font-bold">Actualizar plan</button>
-              </span>
-            </div>
-          )}
         </div>
       )}
 
@@ -227,7 +169,7 @@ const OfertaTab = () => {
               ) : (
                 <span className="flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-lg"
                   style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.35)' }}>
-                  <Lock size={10} /> Solo empresarios
+                  Solo empresarios
                 </span>
               )}
             </div>
