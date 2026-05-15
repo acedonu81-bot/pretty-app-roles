@@ -2,7 +2,7 @@ import {
   Headphones, UserCheck, Smile, Building2,
   User, CalendarDays,
   MessageSquare, Radio, Megaphone, Settings,
-  BarChart3, Award, Crown,
+  BarChart3, Award,
   Camera, FileText, FileEdit, CalendarCheck,
   Palette, Shirt, Speaker, ChevronDown, Plus,
 } from 'lucide-react';
@@ -52,12 +52,6 @@ const navSections = [
     items: [
       { id: 'escenario', icon: Radio, label: 'Escenario Virtual' },
       { id: 'flashbooking', icon: Megaphone, label: 'Flash Booking' },
-    ],
-  },
-  {
-    label: 'DESTACADOS',
-    items: [
-      { id: 'topweekend', icon: Crown, label: 'TOP Weekend' },
     ],
   },
   {
