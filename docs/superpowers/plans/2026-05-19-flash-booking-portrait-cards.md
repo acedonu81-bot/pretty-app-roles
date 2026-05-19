@@ -1,3 +1,25 @@
+# Flash Booking Portrait Cards Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Rewrite the card grid in `OfertaTab.tsx` from compact horizontal cards to animated portrait photo cards with Framer Motion stagger entrance.
+
+**Architecture:** Single file change — `src/components/dashboard/views/flashbooking/OfertaTab.tsx`. All business logic (fetch, realtime, toggle, modal) is preserved. Only the rendering of the card grid is replaced. Framer Motion v12 is already installed.
+
+**Tech Stack:** React 18, Framer Motion 12, Tailwind CSS, Lucide icons, inline styles (matching existing patterns in codebase).
+
+---
+
+### Task 1: Rewrite OfertaTab.tsx with portrait cards
+
+**Files:**
+- Modify: `src/components/dashboard/views/flashbooking/OfertaTab.tsx` (full rewrite, 210 lines → ~230 lines)
+
+- [ ] **Step 1: Replace the file contents**
+
+Open `src/components/dashboard/views/flashbooking/OfertaTab.tsx` and replace it entirely with:
+
+```tsx
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Zap, MapPin, ToggleLeft, ToggleRight, AlertTriangle } from 'lucide-react';
@@ -301,3 +323,28 @@ const OfertaTab = () => {
 };
 
 export default OfertaTab;
+```
+
+- [ ] **Step 2: Verify TypeScript compiles**
+
+```bash
+cd /Users/danielacedonunez/pretty-app-roles
+npx tsc --noEmit 2>&1 | head -20
+```
+
+Expected: no errors (warnings about chunk size or dynamic imports are OK).
+
+- [ ] **Step 3: Check dev server builds**
+
+```bash
+npm run build 2>&1 | tail -10
+```
+
+Expected: `✓ built in` with no TypeScript errors.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add src/components/dashboard/views/flashbooking/OfertaTab.tsx
+git commit -m "feat: flash booking portrait cards with framer motion stagger"
+```
