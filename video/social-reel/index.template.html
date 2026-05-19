@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XPEAK — Social Reel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      background: #1A1816;
+      font-family: 'Inter', sans-serif;
+    }
+
+    #root {
+      position: relative;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      background: #1A1816;
+    }
+
+    #root::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      background-size: 128px 128px;
+      opacity: 0.028;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    /* ── Clip base ────────────────────────────────────── */
+    .clip {
+      position: absolute;
+      inset: 0;
+      width: 1080px;
+      height: 1920px;
+    }
+
+    /* ── Act 1 — Headline ─────────────────────────────── */
+    #act1 {
+      background: #1A1816;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 80px;
+      gap: 32px;
+    }
+
+    #act1-badge {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: #D4AF37;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+    }
+
+    #act1-headline {
+      font-family: 'Syne', sans-serif;
+      font-weight: 900;
+      font-size: 72px;
+      color: rgba(255, 255, 255, 0.95);
+      line-height: 1.05;
+    }
+
+    #act1-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 22px;
+      color: rgba(255, 255, 255, 0.50);
+      letter-spacing: 0.10em;
+    }
+
+    /* ── Act 2 — Card profesional ─────────────────────── */
+    #act2 {
+      background: #1A1816;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card-wrap {
+      position: relative;
+      width: 840px;
+      height: 1400px;
+      border-radius: 20px;
+      border: 1px solid rgba(212, 175, 55, 0.30);
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(212, 175, 55, 0.08);
+      background: #0E0E0E;
+      overflow: hidden;
+    }
+
+    #card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(0.80) brightness(0.85);
+    }
+
+    .card-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.96) 0%, rgba(0, 0, 0, 0.60) 28%, transparent 55%);
+    }
+
+    .card-badge-xpeak {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      color: #D4AF37;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      background: rgba(0, 0, 0, 0.60);
+      padding: 6px 14px;
+      border-radius: 6px;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      z-index: 2;
+    }
+
+    .card-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      padding: 0 36px 48px;
+    }
+
+    .card-rating-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .card-stars {
+      font-size: 18px;
+      color: #D4AF37;
+    }
+
+    #card-score {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      color: #D4AF37;
+    }
+
+    #card-events {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    #card-role {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 36px;
+      color: #D4AF37;
+      margin-bottom: 8px;
+    }
+
+    #card-name {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 24px;
+      color: rgba(255, 255, 255, 0.80);
+      margin-bottom: 20px;
+    }
+
+    .card-tags {
+      display: flex;
+      gap: 10px;
+    }
+
+    #card-tag1,
+    #card-tag2 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.55);
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 6px 14px;
+      border-radius: 4px;
+    }
+
+    /* ── Act 3 — CTA ──────────────────────────────────── */
+    #act3 {
+      background: #1A1816;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+
+    #act3-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 900;
+      font-size: 100px;
+      letter-spacing: 0.30em;
+      background: linear-gradient(160deg, #F5D77A 0%, #D4AF37 55%, #B8941E 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 24px rgba(212, 175, 55, 0.40));
+    }
+
+    #act3-divider {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.60), transparent);
+    }
+
+    #act3-url {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 22px;
+      color: rgba(255, 255, 255, 0.50);
+      letter-spacing: 0.12em;
+    }
+  </style>
+</head>
+<body>
+  <div
+    id="root"
+    data-composition-id="root"
+    data-start="0"
+    data-width="1080"
+    data-height="1920"
+    data-composition-variables='{"role":"DJ &amp; Artistas","name":"Alejandro M.","rating":"4.9","events":"84","tag1":"Bodas","tag2":"Corporativos"}'
+  >
+
+    <!-- Act 1 — Headline (0–5s) -->
+    <div id="act1" class="clip" data-start="0" data-duration="5" data-track-index="1">
+      <span id="act1-badge">XPEAK</span>
+      <h1 id="act1-headline">Contrata los mejores para tu evento</h1>
+      <p id="act1-subtitle">DJ · Fotografía · Catering · y más</p>
+    </div>
+
+    <!-- Act 2 — Card profesional (5–15s) -->
+    <div id="act2" class="clip card-scene" data-start="5" data-duration="10" data-track-index="2">
+      <div class="card-wrap">
+        <img id="card-img" src="" alt="" />
+        <div class="card-gradient"></div>
+        <span class="card-badge-xpeak">XPEAK</span>
+        <div class="card-footer">
+          <div class="card-rating-row">
+            <span class="card-stars">★★★★★</span>
+            <span id="card-score"></span>
+            <span id="card-events"></span>
+          </div>
+          <div id="card-role"></div>
+          <div id="card-name"></div>
+          <div class="card-tags">
+            <span id="card-tag1"></span>
+            <span id="card-tag2"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Act 3 — CTA (15–20s) -->
+    <div id="act3" class="clip" data-start="15" data-duration="5" data-track-index="3">
+      <span id="act3-logo">XPEAK</span>
+      <div id="act3-divider"></div>
+      <span id="act3-url">xpeak.es</span>
+    </div>
+
+    <script>
+      (function () {
+        // PHOTOS lookup — tokens will be replaced by embed.py
+        var PHOTOS = {
+          'DJ & Artistas':     '__PHOTO_DJ__',
+          'Fotografía':        '__PHOTO_FOTOGRAFIA__',
+          'Maquillaje':        '__PHOTO_MAQUILLAJE__',
+          'Staff & Protocolo': '__PHOTO_STAFF__',
+          'Catering':          '__PHOTO_CATERING__',
+          'Vestuario':         '__PHOTO_VESTUARIO__',
+          'Media & Contenido': '__PHOTO_MEDIA__',
+        };
+
+        // Inject variables into DOM BEFORE building timeline
+        var vars = window.__hyperframes.getVariables();
+        document.getElementById('card-img').src           = PHOTOS[vars.role] !== undefined ? PHOTOS[vars.role] : PHOTOS['DJ & Artistas'];
+        document.getElementById('card-score').textContent  = vars.rating;
+        document.getElementById('card-events').textContent = '· ' + vars.events + ' eventos';
+        document.getElementById('card-role').textContent   = vars.role;
+        document.getElementById('card-name').textContent   = vars.name;
+        document.getElementById('card-tag1').textContent   = vars.tag1;
+        document.getElementById('card-tag2').textContent   = vars.tag2;
+
+        // Timeline
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true });
+
+        // Act 1
+        tl.from('#act1-badge',    { opacity: 0, duration: 0.5, ease: 'power2.out' }, 0.3);
+        tl.from('#act1-headline', { y: 50, opacity: 0, duration: 0.7, ease: 'power3.out' }, 0.5);
+        tl.from('#act1-subtitle', { y: 30, opacity: 0, duration: 0.5, ease: 'power2.out' }, 1.0);
+
+        // Act 2
+        tl.from('#act2', { x: -60, opacity: 0, duration: 0.6, ease: 'power3.out' }, 5.2);
+
+        // Act 3
+        tl.from('#act3-logo',    { y: 40, opacity: 0, duration: 0.7, ease: 'power3.out' }, 15.3);
+        tl.from('#act3-divider', { scaleX: 0, opacity: 0, duration: 0.5, ease: 'power2.out' }, 15.9);
+        tl.from('#act3-url',     { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' }, 16.2);
+
+        // Only allowed exit tween — final scene
+        tl.to(['#act3-logo', '#act3-divider', '#act3-url'], { opacity: 0, duration: 0.8, ease: 'power2.in' }, 19.0);
+
+        window.__timelines['root'] = tl;
+      })();
+    </script>
+
+  </div>
+</body>
+</html>
