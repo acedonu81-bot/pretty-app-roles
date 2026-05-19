@@ -302,7 +302,7 @@
         };
 
         // Inject variables into DOM BEFORE building timeline
-        var vars = window.__hyperframes.getVariables();
+        var vars = (window.__hyperframes && window.__hyperframes.getVariables()) || {};
         document.getElementById('card-img').src           = PHOTOS[vars.role] !== undefined ? PHOTOS[vars.role] : PHOTOS['DJ & Artistas'];
         document.getElementById('card-score').textContent  = vars.rating;
         document.getElementById('card-events').textContent = '· ' + vars.events + ' eventos';
@@ -321,7 +321,7 @@
         tl.from('#act1-subtitle', { y: 30, opacity: 0, duration: 0.5, ease: 'power2.out' }, 1.0);
 
         // Act 2
-        tl.from('#act2', { x: -60, opacity: 0, duration: 0.6, ease: 'power3.out' }, 5.2);
+        tl.from('#act2 .card', { x: -60, opacity: 0, duration: 0.6, ease: 'power3.out' }, 5.2);
 
         // Act 3
         tl.from('#act3-logo',    { y: 40, opacity: 0, duration: 0.7, ease: 'power3.out' }, 15.3);
