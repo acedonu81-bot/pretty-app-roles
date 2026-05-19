@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XPEAK — Landing Hero</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Syne:wght@700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #1A1816; overflow: hidden; }
+
+    #root {
+      width: 1920px;
+      height: 1080px;
+      position: relative;
+      background: #1A1816;
+      overflow: hidden;
+    }
+
+    /* Grain texture atmosférico */
+    #root::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.028;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 128px 128px;
+    }
+
+    /* Todos los clips ocupan el frame completo */
+    .clip {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+    }
+
+    /* Acto 1: Headline */
+    #act1 {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 0 160px;
+      gap: 28px;
+    }
+
+    #act1-badge {
+      position: absolute;
+      top: 52px;
+      right: 80px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      color: #D4AF37;
+      letter-spacing: 0.25em;
+    }
+
+    #act1-headline {
+      font-family: 'Syne', sans-serif;
+      font-weight: 900;
+      font-size: 96px;
+      color: rgba(255,255,255,0.95);
+      line-height: 1.05;
+      max-width: 860px;
+    }
+
+    #act1-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 28px;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.08em;
+    }
+
+    /* Cards CSS (needed for Task 3 — add now) */
+    .card-scene {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card {
+      width: 600px;
+      height: 600px;
+      border-radius: 16px;
+      border: 1px solid rgba(212,175,55,0.25);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.80);
+      overflow: hidden;
+      position: relative;
+      background: rgba(14,14,14,0.90);
+    }
+
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(0.8) brightness(0.9);
+    }
+
+    .card-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px 24px 24px;
+      background: rgba(0,0,0,0.72);
+      backdrop-filter: blur(8px);
+    }
+
+    .card-role {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 28px;
+      color: #D4AF37;
+      margin-bottom: 6px;
+    }
+
+    .card-name {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 22px;
+      color: rgba(255,255,255,0.80);
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      color: #D4AF37;
+      letter-spacing: 0.18em;
+      background: rgba(0,0,0,0.65);
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(212,175,55,0.30);
+    }
+
+    /* Acto 3: Cierre */
+    #act3 {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+    }
+
+    #act3-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 900;
+      font-size: 120px;
+      color: #D4AF37;
+      letter-spacing: 0.25em;
+      text-shadow: 0 0 40px rgba(212,175,55,0.45);
+    }
+
+    #act3-tagline {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 28px;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.12em;
+    }
+  </style>
+</head>
+<body>
+
+<div id="root" data-composition-id="root" data-start="0" data-width="1920" data-height="1080">
+
+  <!-- Act 1: Headline (0–5s) -->
+  <div id="act1" class="clip" data-start="0" data-duration="5" data-track-index="1">
+    <span id="act1-badge">XPEAK</span>
+    <h1 id="act1-headline">Tu evento merece los mejores</h1>
+    <p id="act1-subtitle">DJ · Fotógrafo · Maquillaje · Staff · Catering</p>
+  </div>
+
+  <!-- Act 2: Cards — placeholder, filled in Task 3 -->
+
+  <!-- Act 3: Cierre — placeholder, filled in Task 4 -->
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // Act 1
+    tl.from('#act1-badge',    { opacity: 0, duration: 0.5, ease: 'power2.out' }, 0.2);
+    tl.from('#act1-headline', { y: 60, opacity: 0, duration: 0.7, ease: 'power3.out' }, 0.3);
+    tl.from('#act1-subtitle', { y: 40, opacity: 0, duration: 0.5, ease: 'power2.out' }, 0.7);
+
+    // Act 2 tweens — added in Task 3
+
+    // Act 3 tweens — added in Task 4
+
+    window.__timelines['root'] = tl;
+  </script>
+</div>
+
+</body>
+</html>
