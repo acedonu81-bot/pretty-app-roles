@@ -216,7 +216,7 @@ const OfertaTab = () => {
                     color: '#D4AF37', letterSpacing: '0.06em',
                     textTransform: 'uppercase', marginBottom: 2,
                   }}>
-                    {p.role}
+                    {p.specialty || p.role}
                   </p>
                   <p style={{ fontWeight: 600, fontSize: 15, color: 'rgba(255,255,255,0.95)', marginBottom: 6 }}>
                     {p.name}
