@@ -184,7 +184,83 @@
     <p id="act1-subtitle">DJ · Fotógrafo · Maquillaje · Staff · Catering</p>
   </div>
 
-  <!-- Act 2: Cards — placeholder, filled in Task 3 -->
+  <!-- Act 2: Cards (5–22s) -->
+    <div id="card1" class="clip card-scene" data-start="5.0" data-duration="2.3" data-track-index="2">
+      <div class="card">
+        <img src="https://images.pexels.com/photos/1540406/pexels-photo-1540406.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop" crossorigin="anonymous" alt="" />
+        <span class="card-badge">XPEAK</span>
+        <div class="card-footer">
+          <div class="card-role">DJ & Artistas</div>
+          <div class="card-name">Alejandro M.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="card2" class="clip card-scene" data-start="7.4" data-duration="2.3" data-track-index="2">
+      <div class="card">
+        <img src="https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop" crossorigin="anonymous" alt="" />
+        <span class="card-badge">XPEAK</span>
+        <div class="card-footer">
+          <div class="card-role">Fotografía</div>
+          <div class="card-name">Sara V.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="card3" class="clip card-scene" data-start="9.8" data-duration="2.3" data-track-index="2">
+      <div class="card">
+        <img src="https://images.pexels.com/photos/3765114/pexels-photo-3765114.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop" crossorigin="anonymous" alt="" />
+        <span class="card-badge">XPEAK</span>
+        <div class="card-footer">
+          <div class="card-role">Maquillaje</div>
+          <div class="card-name">Laura G.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="card4" class="clip card-scene" data-start="12.2" data-duration="2.3" data-track-index="2">
+      <div class="card">
+        <img src="https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop" crossorigin="anonymous" alt="" />
+        <span class="card-badge">XPEAK</span>
+        <div class="card-footer">
+          <div class="card-role">Staff & Protocolo</div>
+          <div class="card-name">Carlos R.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="card5" class="clip card-scene" data-start="14.6" data-duration="2.3" data-track-index="2">
+      <div class="card">
+        <img src="https://images.pexels.com/photos/784633/pexels-photo-784633.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop" crossorigin="anonymous" alt="" />
+        <span class="card-badge">XPEAK</span>
+        <div class="card-footer">
+          <div class="card-role">Catering</div>
+          <div class="card-name">Elena P.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="card6" class="clip card-scene" data-start="17.0" data-duration="2.3" data-track-index="2">
+      <div class="card">
+        <img src="https://images.pexels.com/photos/1536619/pexels-photo-1536619.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop" crossorigin="anonymous" alt="" />
+        <span class="card-badge">XPEAK</span>
+        <div class="card-footer">
+          <div class="card-role">Vestuario</div>
+          <div class="card-name">Nuria T.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="card7" class="clip card-scene" data-start="19.4" data-duration="2.5" data-track-index="2">
+      <div class="card">
+        <img src="https://images.pexels.com/photos/3944405/pexels-photo-3944405.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop" crossorigin="anonymous" alt="" />
+        <span class="card-badge">XPEAK</span>
+        <div class="card-footer">
+          <div class="card-role">Media & Contenido</div>
+          <div class="card-name">David K.</div>
+        </div>
+      </div>
+    </div>
 
   <!-- Act 3: Cierre — placeholder, filled in Task 4 -->
 
@@ -198,7 +274,14 @@
     tl.from('#act1-headline', { y: 60, opacity: 0, duration: 0.7, ease: 'power3.out' }, 0.3);
     tl.from('#act1-subtitle', { y: 40, opacity: 0, duration: 0.5, ease: 'power2.out' }, 0.7);
 
-    // Act 2 tweens — added in Task 3
+    // Act 2: Cards
+    tl.from('#card1', { x: 80, opacity: 0, duration: 0.5, ease: 'power3.out' }, 5.0);
+    tl.from('#card2', { x: 80, opacity: 0, duration: 0.5, ease: 'expo.out'   }, 7.4);
+    tl.from('#card3', { x: 80, opacity: 0, duration: 0.5, ease: 'power3.out' }, 9.8);
+    tl.from('#card4', { x: 80, opacity: 0, duration: 0.5, ease: 'expo.out'   }, 12.2);
+    tl.from('#card5', { x: 80, opacity: 0, duration: 0.5, ease: 'power3.out' }, 14.6);
+    tl.from('#card6', { x: 80, opacity: 0, duration: 0.5, ease: 'expo.out'   }, 17.0);
+    tl.from('#card7', { x: 80, opacity: 0, duration: 0.5, ease: 'power3.out' }, 19.4);
 
     // Act 3 tweens — added in Task 4
 
