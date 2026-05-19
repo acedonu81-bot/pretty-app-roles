@@ -17,11 +17,9 @@ import VestuarioView from '@/components/dashboard/views/VestuarioView';
 import DesignView from '@/components/dashboard/views/DesignView';
 import PromotorView from '@/components/dashboard/views/PromotorView';
 import MapaView from '@/components/dashboard/views/MapaView';
-import EscenarioVirtualView from '@/components/dashboard/views/EscenarioVirtualView';
 import FlashBookingWallView from '@/components/dashboard/views/FlashBookingWallView';
 import TopWeekendView from '@/components/dashboard/views/TopWeekendView';
 import StatsView from '@/components/dashboard/views/StatsView';
-import RookieView from '@/components/dashboard/views/RookieView';
 import AdminView from '@/components/dashboard/views/AdminView';
 import EmpresarioView from '@/components/dashboard/views/EmpresarioView';
 import ContractView from '@/components/dashboard/views/ContractView';
@@ -164,19 +162,17 @@ const Dashboard = () => {
       case 'design': return <DesignView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'promotor': return <PromotorView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'settings': return <SettingsView onNavigate={nav} />;
-      case 'empresario': return <EmpresarioView />;
+      case 'empresario': return <EmpresarioView onMessage={handleMessage} />;
       case 'messages': return <MessagesView initialUserId={messagesTarget?.userId} initialName={messagesTarget?.name} />;
       case 'calendar':   return <CalendarView />;
       case 'contracts':  return <ContractView />;
       case 'profile': return <ProfileView onNavigate={nav} />;
       case 'ficha':   return <FichaView />;
       case 'mapa': return <MapaView />;
-      case 'escenario': return <EscenarioVirtualView />;
       case 'flashbooking':
       case 'flash': return <FlashBookingWallView />;
       case 'topweekend': return <TopWeekendView />;
       case 'stats': return <StatsView />;
-      case 'rookie': return <RookieView />;
       case 'agency': return <AgencyView />;
       case 'admin': return (
         <AdminGuard>
@@ -189,7 +185,7 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex h-screen w-screen items-center justify-center" style={{ background: '#000' }}>
+      <div className="flex h-screen w-screen items-center justify-center" style={{ background: '#242220' }}>
         <div className="text-xs text-muted-foreground animate-pulse">Cargando...</div>
       </div>
     );
@@ -204,7 +200,7 @@ const Dashboard = () => {
       <meta name="robots" content="noindex, nofollow" />
     </Helmet>
     <RoleDefaultView onViewChange={handleViewChange} />
-    <div className="flex h-screen w-screen overflow-hidden" style={{ background: '#000' }}>
+    <div className="flex h-screen w-screen overflow-hidden" style={{ background: '#242220' }}>
       <AmbientBackground />
 
       {!isMobile && (
@@ -213,7 +209,7 @@ const Dashboard = () => {
 
       {isMobile && (
         <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-          <SheetContent side="left" className="p-0 w-[260px] border-r-0" style={{ background: '#0a0a0a' }}>
+          <SheetContent side="left" className="p-0 w-[260px] border-r-0" style={{ background: '#1A1816' }}>
             <DashboardSidebar activeView={activeView} onViewChange={handleViewChange} />
           </SheetContent>
         </Sheet>
@@ -222,7 +218,7 @@ const Dashboard = () => {
       <main className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden relative min-w-0">
         <DashboardTopbar onMenuToggle={() => setSidebarOpen(true)} isMobile={isMobile} onSearch={handleSearch} searchQuery={searchQuery} onHome={() => handleViewChange('dj')} />
         <ProfileIncompleteBanner onNavigate={handleViewChange} activeView={activeView} />
-        <div className={`p-4 md:p-6 flex-1 md:pb-6 ${isMobile ? 'pb-[calc(5rem+env(safe-area-inset-bottom))]' : 'pb-6'}`}
+        <div className={`p-4 md:p-6 flex-1 md:pb-6 ${isMobile ? 'pb-[calc(6rem+env(safe-area-inset-bottom))]' : 'pb-6'}`}
           key={activeView}
           style={{ animation: 'viewEnter 0.22s cubic-bezier(0.22,1,0.36,1) both' }}>
           {renderView()}

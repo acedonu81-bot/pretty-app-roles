@@ -33,8 +33,8 @@ const FanSubscribeButton = ({ profileId, professionalName }: Props) => {
   const handleSubscribe = async () => {
     if (!user) { toast.error('Inicia sesión para suscribirte'); return; }
     // Stripe not connected yet — show coming soon
-    toast.info('Pago con Stripe · Próximamente', {
-      description: `La suscripción Fan Club de ${professionalName} costará 4,99 €/mes. Estamos integrando Stripe Connect.`,
+    toast.info('Fan Club · Próximamente', {
+      description: `La monetización del Fan Club de ${professionalName} estará disponible pronto.`,
     });
   };
 
@@ -66,7 +66,7 @@ const FanSubscribeButton = ({ profileId, professionalName }: Props) => {
     <button onClick={handleSubscribe}
       className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-bold transition-all hover:scale-[1.02] active:scale-[0.98]"
       style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' }}>
-      <Heart size={14} /> Suscribirse · 4,99 €/mes
+      <Heart size={14} /> Unirse al Fan Club
     </button>
   );
 };

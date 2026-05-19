@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Trash2, Camera, ExternalLink, Star, Radio, ChevronDown, X, Download, ShoppingBag, Plus, Package, Tag, Image as ImageIcon, Lock, Music, Shirt, Sparkles, FileEdit, Copy, Check, Share2 } from 'lucide-react';
+import { Trash2, Camera, ExternalLink, Star, Radio, ChevronDown, X, Download, ShoppingBag, Plus, Package, Tag, Image as ImageIcon, Music, Shirt, Sparkles, FileEdit, Copy, Check, Share2 } from 'lucide-react';
 import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import { exportUserDataZip } from '@/lib/exportUserData';
 import { parseStreamUrl } from '@/lib/streaming';
@@ -9,9 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import AudioUpload from '@/components/dashboard/AudioUpload';
 import PortfolioUpload from '@/components/dashboard/PortfolioUpload';
-import { subscriptionPlans, mapSubscriptionTierToPlan } from '@/lib/subscriptions';
 import { sanitizeInput } from '@/lib/contentFilter';
-import VerificationSection from './profile/VerificationSection';
 import { DEFAULT_ZONE } from '@/lib/constants';
 
 const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {}) => {
@@ -215,9 +213,6 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             <input ref={photoRef} type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
 
             <p className="font-bold text-base">{displayName || 'Sin nombre'}</p>
-            <p className="text-xs font-bold mt-1" style={{ color: '#D4AF37' }}>
-              {subscriptionPlans.find(p => p.id === mapSubscriptionTierToPlan(profile.subscription_tier))?.name ?? 'Free'}
-            </p>
             <p className="text-xs text-muted-foreground mt-2 mb-1">Sin valoraciones aún</p>
           </div>
           {/* — Completitud del perfil — */}
@@ -449,7 +444,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">
                   Caché / Tarifa por hora
                   <span className="ml-2 normal-case tracking-normal font-normal" style={{ color: 'rgba(255,255,255,0.3)' }}>
-                    — solo visible para empresarios con suscripción
+                    — solo visible para empresarios
                   </span>
                 </label>
                 <div className="relative mt-1">
@@ -813,7 +808,6 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
           </div>
 
 
-          {profile.role !== 'empresario' && <VerificationSection />}
         </div>
       </div>
     </div>

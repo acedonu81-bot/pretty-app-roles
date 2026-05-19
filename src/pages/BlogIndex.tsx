@@ -3,6 +3,8 @@ import { useState } from 'react';
 import FooterPublic from '@/components/FooterPublic';
 
 const POSTS = [
+  { slug: '/blog/maestro-de-ceremonias-boda-precio-guia', title: 'Maestro de Ceremonias para Bodas: precio y guía completa 2026', desc: 'Cuánto cuesta un maestro de ceremonias para una boda en España. Precios reales, funciones, diferencias con animador y cómo contratar.', date: '16 may 2026', tag: 'Bodas', min: 6 },
+  { slug: '/blog/musica-en-vivo-para-bodas', title: 'Música en Vivo para Bodas: grupos, solistas y cuartetos — guía 2026', desc: 'Guía completa de música en vivo para bodas. Precios por formato (solista, trío jazz, banda pop, cuarteto de cuerda) y cuándo combinarla con DJ.', date: '16 may 2026', tag: 'Bodas', min: 7 },
   { slug: '/blog/fotografia-eventos-nocturnos', title: 'Fotografía en eventos nocturnos: precios y cómo contratar en España (2026)', desc: 'Cuánto cobra un fotógrafo de discoteca o eventos nocturnos. Precios por tipo de evento, equipo y cómo elegir el perfil correcto.', date: '3 may 2026', tag: 'Fotografía', min: 4 },
   { slug: '/blog/musica-para-bodas-guia', title: 'Música para bodas: DJ, banda en directo o lista de reproducción — guía 2026', desc: 'Comparativa DJ vs banda en directo vs música grabada. Precios, ventajas y cuándo elegir cada opción para tu boda.', date: '3 may 2026', tag: 'Bodas', min: 5 },
   { slug: '/blog/como-organizar-evento-corporativo', title: 'Cómo organizar un evento corporativo paso a paso: guía completa 2026', desc: 'Presupuesto, proveedores, timeline y checklist completo para organizar eventos de empresa en España.', date: '3 may 2026', tag: 'Eventos', min: 6 },

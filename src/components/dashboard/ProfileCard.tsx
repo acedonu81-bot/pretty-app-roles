@@ -84,11 +84,9 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
   };
   const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0); };
 
-  const statusBadges: { label: string; bg: string; color: string; glow?: string }[] = [];
-  if (p.isLive) statusBadges.push({ label: 'DISPONIBLE AHORA', bg: 'rgba(34,197,94,0.12)', color: '#22c55e', glow: '0 2px 8px rgba(34,197,94,0.2)' });
+  const statusBadges: { label: string; bg: string; color: string; glow?: string; pulse?: boolean }[] = [];
   if (p.topWeekend) statusBadges.push({ label: 'TOP WEEKEND', bg: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' });
-  if (isRookie) statusBadges.push({ label: 'PROMESA', bg: 'rgba(255,188,0,0.1)', color: '#ffbc00' });
-  if (p.isFlashActive && !p.isLive) statusBadges.push({ label: 'DISPONIBLE', bg: 'rgba(34,197,94,0.12)', color: '#22c55e' });
+  if (p.isFlashActive) statusBadges.push({ label: 'DISPONIBLE', bg: 'rgba(34,197,94,0.12)', color: '#22c55e' });
 
   // Social/platform links
   const isDJ = p.role === 'dj' || p.role === 'rookie';
@@ -120,8 +118,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
                 boxShadow: b.glow,
                 border: b.bg.startsWith('rgba') ? `1px solid ${b.color}22` : undefined,
               }}>
-              {b.label === 'DISPONIBLE AHORA' && <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse inline-block" />}
-              {b.label === 'DISPONIBLE' && <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />}
+              {b.pulse && <span className="w-1.5 h-1.5 rounded-full animate-pulse inline-block" style={{ background: b.color }} />}
               {b.label}
             </span>
           ))}

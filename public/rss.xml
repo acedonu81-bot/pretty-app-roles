@@ -5,8 +5,32 @@
     <link>https://xpeak.es/blog</link>
     <description>Guías y consejos para contratar DJs, camareros, fotógrafos y staff para eventos en España. Precios, ratios y todo lo que necesitas saber.</description>
     <language>es</language>
-    <lastBuildDate>Sat, 03 May 2026 10:00:00 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 16 May 2026 10:00:00 +0200</lastBuildDate>
     <atom:link href="https://xpeak.es/rss.xml" rel="self" type="application/rss+xml"/>
+
+    <item>
+      <title>Los 10 errores al contratar un DJ para una boda (y cómo evitarlos)</title>
+      <link>https://xpeak.es/blog/10-errores-contratar-dj-boda</link>
+      <guid isPermaLink="true">https://xpeak.es/blog/10-errores-contratar-dj-boda</guid>
+      <description>Sin contrato, reservar tarde, confundir perfiles... Guía completa para novios sobre los errores más frecuentes al contratar DJ para la boda.</description>
+      <pubDate>Sun, 18 May 2026 10:00:00 +0200</pubDate>
+    </item>
+
+    <item>
+      <title>Música en vivo para bodas — grupos, solistas y precios 2026</title>
+      <link>https://xpeak.es/blog/musica-en-vivo-para-bodas</link>
+      <guid isPermaLink="true">https://xpeak.es/blog/musica-en-vivo-para-bodas</guid>
+      <description>Guía completa de música en vivo para bodas: solistas, bandas, jazz, cuartetos y grupos flamencos. Precios reales por formato y ciudad.</description>
+      <pubDate>Sat, 16 May 2026 10:00:00 +0200</pubDate>
+    </item>
+
+    <item>
+      <title>Maestro de ceremonias para boda: precio y guía 2026</title>
+      <link>https://xpeak.es/blog/maestro-de-ceremonias-boda-precio-guia</link>
+      <guid isPermaLink="true">https://xpeak.es/blog/maestro-de-ceremonias-boda-precio-guia</guid>
+      <description>¿Cuánto cuesta un maestro de ceremonias para una boda en España? Precios por experiencia y ciudad, funciones del MC y cómo elegirlo.</description>
+      <pubDate>Sat, 16 May 2026 10:00:00 +0200</pubDate>
+    </item>
     <image>
       <url>https://xpeak.es/og-image.jpg</url>
       <title>Blog XPEAK</title>

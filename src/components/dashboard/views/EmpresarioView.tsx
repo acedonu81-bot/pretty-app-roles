@@ -14,7 +14,11 @@ import BenchmarkTab from './empresario/BenchmarkTab';
 import MediaTab from './empresario/MediaTab';
 import StatsTab from './empresario/StatsTab';
 
-const EmpresarioView = () => {
+interface EmpresarioViewProps {
+  onMessage?: (userId: string, name: string) => void;
+}
+
+const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
   const { user } = useAuth();
   const { role, loading: profileLoading } = useProfile();
 
@@ -149,7 +153,8 @@ const EmpresarioView = () => {
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
           placeholder="Buscar profesional por nombre..."
-          className="nightlife-input w-full pl-9 text-sm"
+          className="nightlife-input w-full text-sm"
+          style={{ paddingLeft: '2.25rem' }}
         />
         {searchQuery && (
           <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -188,6 +193,7 @@ const EmpresarioView = () => {
           favorites={favorites}
           onToggleFavorite={toggleFavorite}
           onExportCSV={exportCSV}
+          onMessage={onMessage}
           showFavoritesOnly={tab === 'favorites'}
           loading={loading}
         />

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Building2, Users, Zap, Heart, TrendingUp, Crown, Lock, ChevronRight, Radio, Star, BarChart3, RefreshCw } from 'lucide-react';
+import { Building2, Users, Zap, Heart, TrendingUp, Radio, Star, BarChart3, RefreshCw, ChevronRight } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
@@ -112,7 +112,7 @@ const AgencyView = () => {
     toast.success('Perfil activo cambiado');
   };
 
-  // ── Upsell gate ──
+  // ── Agency check — show info if not agency tier ──
   if (!isAgency) {
     return (
       <div className="animate-[fadeIn_0.4s_ease]">
@@ -127,7 +127,7 @@ const AgencyView = () => {
             <Building2 size={28} />
           </div>
           <div>
-            <p className="text-lg font-black mb-1">Plan Agencia requerido</p>
+            <p className="text-lg font-black mb-1">Panel de Agencia</p>
             <p className="text-sm text-muted-foreground max-w-sm mx-auto leading-relaxed">
               El Panel de Agencia permite gestionar hasta 5 perfiles con roles distintos desde un único punto de control. KPIs consolidados, cambio de perfil instantáneo y Sello Agencia exclusivo.
             </p>
@@ -136,19 +136,11 @@ const AgencyView = () => {
             {['5 perfiles activos', 'KPIs consolidados', 'Sello Agencia'].map(f => (
               <div key={f} className="p-3 rounded-xl text-center text-xs font-bold"
                 style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.12)', color: '#D4AF37' }}>
-                <Lock size={12} className="mx-auto mb-1.5" style={{ color: 'rgba(212,175,55,0.4)' }} />{f}
+                {f}
               </div>
             ))}
           </div>
-          <div className="flex items-center gap-3 p-4 rounded-xl w-full max-w-sm"
-            style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)' }}>
-            <Crown size={20} style={{ color: '#D4AF37', flexShrink: 0 }} />
-            <div className="flex-1 text-left">
-              <p className="text-xs font-black" style={{ color: '#D4AF37' }}>Agencia · €44,99/mes</p>
-              <p className="text-xs text-muted-foreground">Hasta 5 perfiles · Streaming pool · API</p>
-            </div>
-            <ChevronRight size={14} style={{ color: '#D4AF37' }} />
-          </div>
+          <p className="text-xs text-muted-foreground">Contacta con el equipo de XPEAK para activar el acceso de agencia.</p>
         </div>
       </div>
     );

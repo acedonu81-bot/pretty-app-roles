@@ -1,9 +1,10 @@
-import { MessageSquare } from 'lucide-react';
+import { MessageSquare, PenSquare } from 'lucide-react';
 
 interface Conversation {
   id: string;
   other_user_id: string;
   other_name: string;
+  other_photo?: string | null;
   last_message: string;
   last_message_at: string;
   unread: number;
@@ -32,21 +33,32 @@ interface Props {
   loading: boolean;
   activeConvId: string | null;
   onSelectConversation: (conv: Conversation) => void;
+  onNewConversation?: () => void;
 }
 
-const ConversationList = ({ conversations, loading, activeConvId, onSelectConversation }: Props) => (
+const ConversationList = ({ conversations, loading, activeConvId, onSelectConversation, onNewConversation }: Props) => (
   <div className="flex flex-col h-full overflow-hidden" style={{ borderRight: '1px solid rgba(212,175,55,0.1)' }}>
     <div className="px-4 py-3 flex items-center justify-between flex-shrink-0"
       style={{ borderBottom: '1px solid rgba(212,175,55,0.08)', background: 'rgba(0,0,0,0.3)' }}>
       <span className="text-xs font-black tracking-widest" style={{ color: 'rgba(212,175,55,0.7)' }}>
         CONVERSACIONES
       </span>
-      {conversations.length > 0 && (
-        <span className="text-xs font-bold px-1.5 py-0.5 rounded-full"
-          style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37' }}>
-          {conversations.length}
-        </span>
-      )}
+      <div className="flex items-center gap-2">
+        {conversations.length > 0 && (
+          <span className="text-xs font-bold px-1.5 py-0.5 rounded-full"
+            style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37' }}>
+            {conversations.length}
+          </span>
+        )}
+        {onNewConversation && (
+          <button onClick={onNewConversation}
+            title="Nueva conversación"
+            className="w-6 h-6 flex items-center justify-center rounded-lg transition-all hover:scale-110"
+            style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>
+            <PenSquare size={12} />
+          </button>
+        )}
+      </div>
     </div>
 
     <div className="flex-1 overflow-y-auto">
@@ -83,13 +95,19 @@ const ConversationList = ({ conversations, loading, activeConvId, onSelectConver
               <div className="absolute left-0 top-2 bottom-2 w-[3px] rounded-r-full" style={{ background: '#D4AF37' }} />
             )}
             <div className="relative flex-shrink-0">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-black"
-                style={{ background: getGradient(c.other_name), color: '#000' }}>
-                {c.other_name.charAt(0).toUpperCase()}
-              </div>
+              {c.other_photo ? (
+                <img src={c.other_photo} alt={c.other_name}
+                  className="w-11 h-11 rounded-full object-cover"
+                  onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+              ) : (
+                <div className="w-11 h-11 rounded-full flex items-center justify-center text-sm font-black"
+                  style={{ background: getGradient(c.other_name), color: '#000' }}>
+                  {c.other_name.charAt(0).toUpperCase()}
+                </div>
+              )}
               {c.unread > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-[0.7rem] font-black"
-                  style={{ background: '#D4AF37', color: '#000' }}>
+                <span className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full flex items-center justify-center text-[0.65rem] font-black"
+                  style={{ background: '#22c55e', color: '#fff', border: '2px solid #000' }}>
                   {c.unread > 9 ? '9+' : c.unread}
                 </span>
               )}

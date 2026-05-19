@@ -51,6 +51,11 @@ const BlogContratarPersonalEvento = lazy(() => import("./pages/BlogContratarPers
 const BlogDJResidenteDiscoteca = lazy(() => import("./pages/BlogDJResidenteDiscoteca"));
 const BlogCateringComuniones = lazy(() => import("./pages/BlogCateringComuniones"));
 const LocalSEOLanding = lazy(() => import("./pages/LocalSEOLanding"));
+const BlogMaestroCeremonias = lazy(() => import("./pages/BlogMaestroCeremonias"));
+const BlogMusicaEnVivoBodas = lazy(() => import("./pages/BlogMusicaEnVivoBodas"));
+const BlogDJErroresBoda = lazy(() => import("./pages/BlogDJErroresBoda"));
+const BodasLanding = lazy(() => import("./pages/BodasLanding"));
+const PresupuestoBoda = lazy(() => import("./pages/PresupuestoBoda"));
 
 const queryClient = new QueryClient();
 
@@ -120,6 +125,11 @@ const App = () => (
             <Route path="/blog/como-contratar-personal-para-un-evento" element={<BlogContratarPersonalEvento />} />
             <Route path="/blog/dj-residente-discoteca-precio" element={<BlogDJResidenteDiscoteca />} />
             <Route path="/blog/catering-comuniones-precio-persona" element={<BlogCateringComuniones />} />
+            <Route path="/blog/maestro-de-ceremonias-boda-precio-guia" element={<BlogMaestroCeremonias />} />
+            <Route path="/blog/musica-en-vivo-para-bodas" element={<BlogMusicaEnVivoBodas />} />
+            <Route path="/blog/10-errores-contratar-dj-boda" element={<BlogDJErroresBoda />} />
+            <Route path="/bodas" element={<BodasLanding />} />
+            <Route path="/presupuesto-boda" element={<PresupuestoBoda />} />
             {/* Local SEO — /dj-madrid, /camareros-barcelona, /fotografo-sevilla, etc. */}
             {['madrid','barcelona','sevilla','valencia','malaga','bilbao'].flatMap(city =>
               ['dj','camareros','fotografo','maquillaje','staff'].map(cat => (

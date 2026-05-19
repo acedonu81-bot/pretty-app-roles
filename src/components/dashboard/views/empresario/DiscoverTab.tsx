@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Filter, Heart, Star, FileText, Download, X, Users } from 'lucide-react';
+import { Filter, Heart, Star, FileText, Download, X, Users, MessageCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
 import NightlifeSelect from '@/components/ui/NightlifeSelect';
@@ -11,11 +11,12 @@ interface Props {
   favorites: string[];
   onToggleFavorite: (id: string) => void;
   onExportCSV: (list: Pro[], notes: Record<string, string>) => void;
+  onMessage?: (userId: string, name: string) => void;
   showFavoritesOnly?: boolean;
   loading?: boolean;
 }
 
-const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, showFavoritesOnly = false, loading = false }: Props) => {
+const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage, showFavoritesOnly = false, loading = false }: Props) => {
   const [filterZone, setFilterZone]   = useState('Todas');
   const [filterRole, setFilterRole]   = useState('Todos');
   const [maxPrice, setMaxPrice]       = useState(1000);
@@ -177,10 +178,6 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, showFavor
             </div>
 
             <div className="flex items-center gap-2 mb-3 flex-wrap">
-              <span className="text-[0.75rem] px-1.5 py-0.5 rounded font-bold"
-                style={{ background: 'rgba(255,255,255,0.05)', color: '#8E8EA0' }}>
-                {p.subscription_tier === 'free' ? 'BÁSICO' : p.subscription_tier?.toUpperCase()}
-              </span>
               <span className="text-base font-black" style={{ color: '#D4AF37' }}>
                 {p.hourly_rate > 0 ? <>€{p.hourly_rate}<span className="text-xs font-bold opacity-60">/hora</span></> : <span className="text-xs opacity-50">A consultar</span>}
               </span>
@@ -199,15 +196,22 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, showFavor
             </div>
 
             <div className="flex gap-2">
+              {onMessage && (
+                <button onClick={() => onMessage(p.id, p.display_name || 'Profesional')}
+                  className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-md text-xs font-bold transition-all hover:scale-105 flex-1"
+                  style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', color: '#22c55e' }}>
+                  <MessageCircle size={12} /> Contactar
+                </button>
+              )}
               <button onClick={() => onToggleFavorite(p.id)}
-                className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-md text-xs font-bold transition-all hover:scale-105 flex-1"
+                className="flex items-center justify-center px-2.5 py-2 rounded-md text-xs font-bold transition-all hover:scale-105"
                 style={{
                   background: favorites.includes(p.id) ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.03)',
                   border: `1px solid ${favorites.includes(p.id) ? 'rgba(212,175,55,0.3)' : 'var(--nightlife-border)'}`,
                   color: favorites.includes(p.id) ? '#D4AF37' : '#8E8EA0',
-                }}>
+                }}
+                title={favorites.includes(p.id) ? 'Guardado' : 'Guardar'}>
                 <Heart size={12} fill={favorites.includes(p.id) ? '#D4AF37' : 'none'} />
-                {favorites.includes(p.id) ? 'Guardado' : 'Guardar'}
               </button>
               <button onClick={() => openNotes(p.id)}
                 className="flex items-center justify-center px-2.5 py-2 rounded-md text-xs font-bold transition-all hover:scale-105"

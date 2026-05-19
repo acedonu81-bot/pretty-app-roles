@@ -84,7 +84,7 @@ const FanChat = ({ professionalProfileId, professionalUserId, isSubscribed }: Pr
       <div className="glass-panel p-5 text-center">
         <Lock size={24} className="mx-auto mb-2 text-muted-foreground opacity-40" />
         <p className="text-sm text-muted-foreground mb-1">Chat privado exclusivo para fans</p>
-        <p className="text-xs text-muted-foreground">Suscríbete por 4,99 €/mes para acceder al chat directo.</p>
+        <p className="text-xs text-muted-foreground">Únete al Fan Club para acceder al chat directo.</p>
       </div>
     );
   }

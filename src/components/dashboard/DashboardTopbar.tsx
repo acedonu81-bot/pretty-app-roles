@@ -146,11 +146,14 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
 
         {showNotif && (
           <div
-            className="absolute top-12 w-[calc(100vw-2rem)] sm:w-[320px] max-w-[320px] z-50 rounded-2xl overflow-hidden"
+            className="z-50 rounded-2xl overflow-hidden"
             style={{
-              right: isMobile ? undefined : 0,
-              left: isMobile ? '50%' : undefined,
-              transform: isMobile ? 'translateX(-50%)' : undefined,
+              position: isMobile ? 'fixed' : 'absolute',
+              top: isMobile ? 64 : 48,
+              left: isMobile ? 16 : undefined,
+              right: isMobile ? 16 : 0,
+              width: isMobile ? 'calc(100vw - 32px)' : 320,
+              maxWidth: isMobile ? undefined : 320,
               background: 'rgba(8,8,12,0.96)',
               border: '1px solid rgba(212,175,55,0.25)',
               boxShadow: '0 0 0 1px rgba(212,175,55,0.08), 0 20px 60px rgba(0,0,0,0.9), 0 0 40px rgba(212,175,55,0.07)',
@@ -230,6 +233,24 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
             </div>
           </div>
         )}
+
+        {/* Avatar usuario logueado */}
+        <div className="flex items-center gap-2 px-2 py-1 rounded-lg"
+          style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+          <div className="w-7 h-7 rounded-full overflow-hidden flex items-center justify-center text-xs font-black flex-shrink-0"
+            style={profile.photo_url
+              ? undefined
+              : { background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+            {profile.photo_url
+              ? <img src={profile.photo_url} alt="" className="w-full h-full object-cover" />
+              : (profile.display_name ?? 'X').charAt(0).toUpperCase()}
+          </div>
+          {!isMobile && profile.display_name && (
+            <span className="text-xs font-bold max-w-[90px] truncate" style={{ color: 'rgba(255,255,255,0.7)' }}>
+              {profile.display_name}
+            </span>
+          )}
+        </div>
 
         <button
           onClick={() => navigate('/')}

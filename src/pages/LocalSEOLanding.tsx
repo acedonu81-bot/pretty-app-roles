@@ -30,8 +30,8 @@ const CATS: Record<string, {
 }> = {
   dj: {
     label: 'DJ', labelPlural: 'DJs', role: 'dj', unidad: '/hora', emoji: '🎧',
-    h1: (c) => `DJs en ${c} — Contratar DJ para tu evento`,
-    desc: (c, pMin, pMax) => `Encuentra DJs profesionales en ${c}. Tarifas desde ${pMin}/hora. Tech House, Techno, Comercial, Reggaeton y más. Flash Booking en menos de 1h. XPEAK.`,
+    h1: (c) => `Contratar DJ en ${c} 2026 — Bodas, Eventos y Clubs desde ${c === 'Málaga' ? '35€' : '60€'}/h`,
+    desc: (c, pMin, pMax) => `DJs profesionales en ${c} para bodas, eventos privados y clubs. Tarifas desde ${pMin}/hora. Portfolio y géneros visibles. Respuesta en menos de 1h. Sin comisiones. XPEAK.`,
     intro: (c, barrios, venues) => `${c} tiene una de las escenas de ocio nocturno más activas de España. Desde clubs de referencia como ${venues.slice(0,2).join(' y ')} hasta eventos privados en ${barrios.slice(0,2).join(' y ')}, la demanda de DJs profesionales es constante durante todo el año. En XPEAK encontrarás DJs verificados con residencias, festivales y bodas en su historial — con tarifa pública, géneros y disponibilidad real.`,
     beneficios: ['Perfiles verificados con historial real de eventos', 'Tarifa pública antes de contactar — sin sorpresas', 'Flash Booking: respuesta en menos de 60 minutos', 'Contrato digital automático incluido', 'DJs con equipo propio disponibles para toda la provincia', 'Géneros: Tech House, Techno, Comercial, Reggaeton, Afro House y más'],
     pasos: [
@@ -54,8 +54,8 @@ const CATS: Record<string, {
   },
   camareros: {
     label: 'Camarero', labelPlural: 'Camareros', role: 'staff', unidad: '/hora', emoji: '🍾',
-    h1: (c) => `Camareros en ${c} — Personal de sala para eventos`,
-    desc: (c, pMin, pMax) => `Camareros profesionales en ${c} para bodas, eventos de empresa y fiestas. Desde ${pMin}/hora. Servicio de sala, barra libre y coctelería. XPEAK.`,
+    h1: (c) => `Camareros en ${c} para Bodas y Eventos 2026 — Desde ${c === 'Málaga' ? '35€' : '40€'}/h`,
+    desc: (c, pMin, pMax) => `Camareros y barmans verificados en ${c} para bodas, eventos corporativos y fiestas privadas. Desde ${pMin}/hora. Con uniforme. Respuesta inmediata. Sin comisiones. XPEAK.`,
     intro: (c, barrios, venues) => `Encontrar camareros de confianza para un evento en ${c} puede ser complicado. En XPEAK tienes acceso a personal de sala verificado con experiencia en bodas, eventos corporativos y fiestas privadas en toda la provincia. Desde camareros de sala hasta barmans especializados en coctelería, todos con referencias y disponibilidad confirmada.`,
     beneficios: ['Personal verificado con experiencia en bodas y corporativos', 'Uniforme propio incluido en la mayoría de perfiles', 'Disponibles para contrataciones puntuales (1 noche o más)', 'Barmans con coctelería clásica y gin tonics', 'Ratio orientativo: 1 camarero / 8-10 invitados en cena', 'Contrato digital automático sin burocracia'],
     pasos: [
@@ -78,8 +78,8 @@ const CATS: Record<string, {
   },
   fotografo: {
     label: 'Fotógrafo', labelPlural: 'Fotógrafos', role: 'media', unidad: '/evento', emoji: '📷',
-    h1: (c) => `Fotógrafos en ${c} — Fotografía de eventos y bodas`,
-    desc: (c, pMin, pMax) => `Fotógrafos profesionales en ${c} para bodas, eventos nocturnos y corporativos. Desde ${pMin}. Portfolio verificado, entrega rápida. Flash Booking disponible. XPEAK.`,
+    h1: (c) => `Fotógrafos en ${c} para Bodas y Eventos 2026 — Desde ${c === 'Málaga' ? '35€' : '50€'}`,
+    desc: (c, pMin, pMax) => `Fotógrafos verificados en ${c} con portfolio real. Bodas, eventos corporativos y nocturnos. Desde ${pMin} por evento. Respuesta en menos de 1h. Gratis para organizadores. XPEAK.`,
     intro: (c, barrios, venues) => `Encontrar un fotógrafo de confianza para tu evento en ${c} es fácil con XPEAK. Perfiles verificados con portfolio real de bodas, eventos de empresa y sesiones en clubs. Desde la ${barrios[0]} hasta ${barrios[2]}, cuentas con fotógrafos especializados en cualquier tipo de luz y formato.`,
     beneficios: ['Portfolio real visible antes de contratar', 'Fotógrafos especializados en boda, noche y corporativo', 'Entrega de selección editada en 2-5 días', 'Pack foto + vídeo disponible con descuento', 'Cobertura en toda la provincia y alrededores', 'Contrato digital con cláusulas claras de entrega'],
     pasos: [

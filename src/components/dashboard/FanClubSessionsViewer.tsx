@@ -51,7 +51,7 @@ const FanClubSessionsViewer = ({ profileId, professionalName, accentColor }: Pro
 
   const handleSubscribe = () => {
     toast.info('Fan Club · Próximamente', {
-      description: `Suscripción a ${professionalName} · 4,99 €/mes. Integrando Stripe Connect.`,
+      description: `La monetización del Fan Club de ${professionalName} estará disponible pronto.`,
     });
   };
 
@@ -126,7 +126,7 @@ const FanClubSessionsViewer = ({ profileId, professionalName, accentColor }: Pro
             onClick={handleSubscribe}
             className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-bold transition-all hover:scale-[1.02] active:scale-[0.98]"
             style={{ background: `linear-gradient(90deg,${accentColor},#B8941E)`, color: '#000' }}>
-            <Heart size={13} /> Suscribirse · 4,99 €/mes
+            <Heart size={13} /> Unirse al Fan Club
           </button>
         </div>
       </div>

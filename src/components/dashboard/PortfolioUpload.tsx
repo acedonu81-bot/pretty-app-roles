@@ -8,9 +8,7 @@ import { toast } from 'sonner';
 const MAX_VIDEO_SECONDS = 60;
 const MAX_IMAGE_MB      = 15;
 const MAX_VIDEO_MB      = 50;
-const MAX_ITEMS_FREE    = 6;
-const MAX_ITEMS_STARTER = 8;
-const MAX_ITEMS_PRO     = 12;
+const MAX_ITEMS_PRO = 12;
 
 interface PortfolioItem {
   name: string;
@@ -49,10 +47,7 @@ const PortfolioUpload = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { user } = useAuth();
   const profile = useProfile();
-  const tier = (profile as any).subscription_tier ?? 'free';
-  const isPro = tier === 'pro' || tier === 'business';
-  const isStarter = tier === 'starter' || tier === 'artist';
-  const maxItems = isPro ? MAX_ITEMS_PRO : isStarter ? MAX_ITEMS_STARTER : MAX_ITEMS_FREE;
+  const maxItems = MAX_ITEMS_PRO;
 
   useEffect(() => {
     const load = async () => {
@@ -147,7 +142,7 @@ const PortfolioUpload = () => {
         <span className="text-xs text-muted-foreground ml-auto">{items.length}/{maxItems}</span>
       </h4>
       <p className="text-xs text-muted-foreground mb-3">
-        Fotos hasta {MAX_IMAGE_MB}MB · Vídeos hasta {MAX_VIDEO_SECONDS}s / {MAX_VIDEO_MB}MB · Free: {MAX_ITEMS_FREE} · Starter: {MAX_ITEMS_STARTER} · Pro: {MAX_ITEMS_PRO}
+        Fotos hasta {MAX_IMAGE_MB}MB · Vídeos hasta {MAX_VIDEO_SECONDS}s / {MAX_VIDEO_MB}MB · hasta {MAX_ITEMS_PRO} elementos
       </p>
 
       {items.length > 0 && (

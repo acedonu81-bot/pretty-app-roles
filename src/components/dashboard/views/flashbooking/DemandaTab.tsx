@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Megaphone, Clock, MapPin, Plus, X, MessageCircle, Lock, Send, CheckCheck, ChevronUp, RefreshCw, Zap } from 'lucide-react';
+import { Megaphone, Clock, MapPin, Plus, X, MessageCircle, Send, CheckCheck, ChevronUp, RefreshCw } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
@@ -275,24 +275,6 @@ const DemandaTab = () => {
           </button>
         )}
       </div>
-
-      {!isEmpresario && (
-        <div className="glass-panel p-4 mb-4 flex items-center gap-3"
-          style={{ border: '1px solid rgba(255,95,86,0.15)' }}>
-          <Lock size={14} style={{ color: '#ff5f56' }} />
-          <p className="text-xs text-muted-foreground">Solo los empresarios pueden publicar ofertas. Cambia tu rol en Ajustes.</p>
-        </div>
-      )}
-
-      {!isEmpresario && (
-        <div className="glass-panel p-3 mb-4 flex items-center gap-3"
-          style={{ border: 'rgba(34,197,94,0.2)', background: 'rgba(34,197,94,0.02)' }}>
-          <Zap size={14} style={{ color: '#22c55e', flexShrink: 0 }} />
-          <p className="text-xs font-bold" style={{ color: '#22c55e' }}>
-            Acceso en tiempo real — ves las ofertas al instante
-          </p>
-        </div>
-      )}
 
       {isEmpresario && showForm && (
         <div className="glass-panel p-5 mb-5 animate-[fadeIn_0.3s_ease]">

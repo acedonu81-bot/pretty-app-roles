@@ -11,11 +11,13 @@ interface MobileBottomNavProps {
 // Map role → directorio view
 const roleToView: Record<string, string> = {
   dj: 'dj',
-  rookie: 'rookie',
   staff: 'staff',
   makeup: 'makeup',
   media: 'media',
-  ambassador: 'ambassador',
+  vestuario: 'vestuario',
+  design: 'design',
+  promotor: 'promotor',
+  event_manager: 'event_manager',
   empresario: 'empresario',
 };
 
@@ -28,7 +30,7 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
       id: dirView,
       icon: Headphones,
       label: 'Directorio',
-      isActive: ['dj', 'rookie', 'staff', 'makeup', 'media', 'ambassador', 'empresario'].includes(activeView),
+      isActive: ['dj', 'staff', 'makeup', 'media', 'vestuario', 'design', 'promotor', 'event_manager', 'empresario'].includes(activeView),
     },
     {
       id: 'flashbooking',
@@ -55,11 +57,11 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
     <nav
       className="fixed bottom-0 left-0 right-0 z-40 flex items-stretch md:hidden"
       style={{
-        background: 'rgba(6,6,8,0.97)',
-        borderTop: '1px solid rgba(212,175,55,0.15)',
+        background: 'rgba(6,6,8,0.98)',
+        borderTop: '1px solid rgba(212,175,55,0.25)',
         backdropFilter: 'blur(20px)',
         paddingBottom: 'env(safe-area-inset-bottom)',
-        height: 'calc(64px + env(safe-area-inset-bottom))',
+        height: 'calc(76px + env(safe-area-inset-bottom))',
       }}
     >
       {tabs.map(tab => (
@@ -67,13 +69,13 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
           key={tab.id}
           type="button"
           onClick={() => onViewChange(tab.id)}
-          className="flex-1 flex flex-col items-center justify-center gap-0.5 transition-all active:scale-95 relative"
-          style={{ minHeight: 44 }}
+          className="flex-1 flex flex-col items-center justify-center gap-1 transition-all active:scale-95 relative"
+          style={{ minHeight: 52 }}
         >
           <div className="relative">
             <tab.icon
-              size={24}
-              style={{ color: tab.isActive ? '#D4AF37' : 'rgba(255,255,255,0.35)' }}
+              size={28}
+              style={{ color: tab.isActive ? '#D4AF37' : 'rgba(255,255,255,0.4)' }}
             />
             {tab.badge != null && tab.badge > 0 && (
               <span
@@ -85,8 +87,8 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
             )}
           </div>
           <span
-            className="text-[0.72rem] font-bold tracking-wide mt-0.5"
-            style={{ color: tab.isActive ? '#D4AF37' : 'rgba(255,255,255,0.3)' }}
+            className="text-[0.78rem] font-bold tracking-wide"
+            style={{ color: tab.isActive ? '#D4AF37' : 'rgba(255,255,255,0.4)' }}
           >
             {tab.label}
           </span>
@@ -103,11 +105,11 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
       <button
         type="button"
         onClick={onMenuToggle}
-        className="flex-1 flex flex-col items-center justify-center gap-0.5 transition-all active:scale-95"
-        style={{ minHeight: 44 }}
+        className="flex-1 flex flex-col items-center justify-center gap-1 transition-all active:scale-95"
+        style={{ minHeight: 52 }}
       >
-        <LayoutGrid size={24} style={{ color: 'rgba(255,255,255,0.35)' }} />
-        <span className="text-[0.72rem] font-bold tracking-wide mt-0.5" style={{ color: 'rgba(255,255,255,0.3)' }}>
+        <LayoutGrid size={28} style={{ color: 'rgba(255,255,255,0.4)' }} />
+        <span className="text-[0.78rem] font-bold tracking-wide" style={{ color: 'rgba(255,255,255,0.4)' }}>
           Más
         </span>
       </button>

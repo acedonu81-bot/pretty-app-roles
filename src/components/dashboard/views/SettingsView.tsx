@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Camera, Bell, Volume2, Shield, Trophy, CreditCard, LogOut, ChevronRight, Trash2, AlertTriangle, Download, FileText, QrCode, Archive, BellOff, Users, Plus, Check, X } from 'lucide-react';
+import { Camera, Bell, Volume2, Shield, LogOut, ChevronRight, Trash2, AlertTriangle, Download, FileText, QrCode, Archive, BellOff, Users, Plus, Check, X } from 'lucide-react';
 import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import { toast } from 'sonner';
 import JSZip from 'jszip';
@@ -182,6 +182,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
   // Persist audio quality when it changes
   useEffect(() => { localStorage.setItem('xpeak_audio_quality', audioQuality); }, [audioQuality]);
 
+  const isEmpresario = profile.role === 'empresario';
   const displayName = localName ?? profile.display_name;
   const city = localCity ?? profile.zone ?? 'Madrid Centro';
   const rate = localRate ?? profile.hourly_rate;
@@ -551,7 +552,7 @@ Para cualquier duda: soporte@xpeak.es
     <div>
       <div class="prof-name">${(p.display_name as string) ?? 'Usuario'}</div>
       <div class="prof-meta">${(p.role as string) ?? ''} · ${(p.zone as string) ?? ''} · ${user.email}</div>
-      <span class="badge">${((p.subscription_tier as string) ?? 'free').toUpperCase()}</span>
+      <span class="badge">XPEAK</span>
     </div>
   </div>
 
@@ -843,10 +844,12 @@ Para cualquier duda: soporte@xpeak.es
             <label className="block text-xs text-muted-foreground mb-1.5 font-medium">Fecha de cumpleaños</label>
             <input type="date" value={localBirthday ?? profile.birthday ?? ''} onChange={e => setLocalBirthday(e.target.value)} className="nightlife-input text-sm" />
           </div>
+          {!isEmpresario && (
           <div>
             <label className="block text-xs text-muted-foreground mb-1.5 font-medium" style={{ color: '#D4AF37' }}>Caché base (€/hora)</label>
             <input type="number" value={rate ?? ''} onChange={e => setLocalRate(Number(e.target.value))} min={20} step={5} className="nightlife-input text-sm font-bold" style={{ color: '#D4AF37' }} />
           </div>
+          )}
         </div>
 
         <div className="mb-4">
@@ -996,10 +999,15 @@ Para cualquier duda: soporte@xpeak.es
 
         <ToggleRow label="Mensajes nuevos" desc="Alerta cuando recibes un mensaje directo" checked={notifMessages}
           onChange={() => { const v = !notifMessages; setNotifMessages(v); localStorage.setItem('xpeak_notif_messages', String(v)); }} />
-        <ToggleRow label="Flash Booking" desc="Ofertas urgentes de empresarios" checked={notifFlash}
+        <ToggleRow
+          label="Flash Booking"
+          desc={isEmpresario ? 'Respuestas a tus publicaciones de trabajo urgente' : 'Ofertas urgentes de empresarios'}
+          checked={notifFlash}
           onChange={() => { const v = !notifFlash; setNotifFlash(v); localStorage.setItem('xpeak_notif_flash', String(v)); }} />
-        <ToggleRow label="Top Weekend" desc="Cuando tu perfil asciende al ranking" checked={notifTopWeekend}
-          onChange={() => { const v = !notifTopWeekend; setNotifTopWeekend(v); localStorage.setItem('xpeak_notif_topweekend', String(v)); }} />
+        {!isEmpresario && (
+          <ToggleRow label="Top Weekend" desc="Cuando tu perfil asciende al ranking" checked={notifTopWeekend}
+            onChange={() => { const v = !notifTopWeekend; setNotifTopWeekend(v); localStorage.setItem('xpeak_notif_topweekend', String(v)); }} />
+        )}
         <ToggleRow label="Novedades y promociones" desc="Ofertas, descuentos y actualizaciones de XPEAK" checked={notifMarketing}
           onChange={() => { const v = !notifMarketing; setNotifMarketing(v); localStorage.setItem('xpeak_notif_marketing', String(v)); }} />
         <ToggleRow label="SMS de verificación" desc="Solo para verificación de identidad" checked={notifSMS}
@@ -1085,46 +1093,6 @@ Para cualquier duda: soporte@xpeak.es
               Descargar
             </button>
           </div>
-        </div>
-      </Section>
-
-      {/* ── Top Weekend promo ── */}
-      <Section title="Top Weekend" icon={<Trophy size={15} />}>
-        <div className="flex items-start gap-4">
-          <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-            style={{ background: 'linear-gradient(135deg, rgba(212,175,55,0.2), rgba(184,148,30,0.1))', border: '1px solid rgba(212,175,55,0.3)' }}>
-            <Trophy size={20} style={{ color: '#D4AF37' }} />
-          </div>
-          <div className="flex-1">
-            <p className="text-sm font-bold mb-1">Destaca este fin de semana</p>
-            <p className="text-xs text-muted-foreground mb-2">
-              Tu perfil aparece en la posición #1 del directorio durante el fin de semana. Los perfiles TOP generan <strong style={{ color: '#D4AF37' }}>3× más contactos</strong>.
-            </p>
-            <div className="flex items-center gap-3">
-              <span className="text-lg font-black" style={{ color: '#D4AF37' }}>9,99€</span>
-              <span className="text-xs text-muted-foreground">por fin de semana</span>
-            </div>
-          </div>
-          <a href="mailto:admin@xpeak.es?subject=Top%20Weekend%20-%20Solicitud%209.99€&body=Hola,%20quiero%20activar%20Top%20Weekend%20para%20este%20fin%20de%20semana."
-            className="flex-shrink-0 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-[1.02]"
-            style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' }}>
-            Solicitar →
-          </a>
-        </div>
-      </Section>
-
-      {/* ── Plan ── */}
-      <Section title="Tu Plan" icon={<CreditCard size={15} />}>
-        <div className="flex items-center justify-between p-3 rounded-lg"
-          style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}>
-          <div>
-            <p className="text-sm font-bold">Plataforma gratuita</p>
-            <p className="text-xs text-muted-foreground">Todas las funciones incluidas, sin coste.</p>
-          </div>
-          <span className="text-xs font-bold px-2 py-1 rounded"
-            style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
-            ACTIVO
-          </span>
         </div>
       </Section>
 

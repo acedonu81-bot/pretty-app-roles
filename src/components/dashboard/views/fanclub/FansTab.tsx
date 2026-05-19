@@ -15,10 +15,6 @@ const FansTab = ({ fans, loading }: Props) => (
       <div className="flex items-center gap-2 mb-3">
         <Crown size={14} style={{ color: '#fff' }} />
         <p className="text-sm font-bold">Fan Top VIP · One to One</p>
-        <span className="text-[0.75rem] font-black px-1.5 py-0.5 rounded-full ml-1"
-          style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)' }}>
-          €59,90/mes
-        </span>
       </div>
       <div className="glass-panel p-5 text-center py-10">
         <Crown size={28} className="mx-auto mb-3 opacity-20" />
@@ -30,7 +26,7 @@ const FansTab = ({ fans, loading }: Props) => (
     <div className="glass-panel p-5">
       <h4 className="text-sm font-bold mb-4 flex items-center gap-2">
         <Heart size={14} style={{ color: '#D4AF37' }} /> Suscriptores Fan
-        <span className="ml-auto text-xs text-muted-foreground">{fans.length} fans · €4,99/mes</span>
+        <span className="ml-auto text-xs text-muted-foreground">{fans.length} fans</span>
       </h4>
       {loading ? (
         <p className="text-sm text-muted-foreground text-center py-8 animate-pulse">Cargando...</p>
@@ -42,7 +38,7 @@ const FansTab = ({ fans, loading }: Props) => (
           </div>
           <p className="text-sm font-bold mb-1">Aún sin suscriptores Fan</p>
           <p className="text-xs text-muted-foreground max-w-xs mx-auto">
-            Cuando activemos Stripe Connect, tus fans podrán suscribirse desde tu perfil público a 4,99€/mes.
+            Cuando activemos Stripe Connect, tus fans podrán suscribirse directamente desde tu perfil público.
           </p>
         </div>
       ) : (
@@ -58,7 +54,7 @@ const FansTab = ({ fans, loading }: Props) => (
                 <p className="text-sm font-bold">Fan #{f.fan_id.slice(0, 8)}</p>
                 <p className="text-xs text-muted-foreground">Desde {new Date(f.created_at).toLocaleDateString('es-ES')}</p>
               </div>
-              <span className="text-sm font-bold" style={{ color: '#22c55e' }}>€{Number(f.amount).toFixed(2)}/mes</span>
+              <span className="text-sm font-bold" style={{ color: '#22c55e' }}>Fan activo</span>
             </div>
           ))}
         </div>

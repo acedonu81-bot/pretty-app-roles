@@ -1,8 +1,8 @@
 import {
   Headphones, UserCheck, Smile, Building2,
   User, CalendarDays,
-  MessageSquare, Radio, Megaphone, Settings,
-  BarChart3, Award,
+  MessageSquare, Megaphone, Settings,
+  BarChart3,
   Camera, FileText, FileEdit, CalendarCheck,
   Palette, Shirt, Speaker, ChevronDown, Plus,
 } from 'lucide-react';
@@ -17,7 +17,6 @@ interface SidebarProps {
   onViewChange: (view: string) => void;
 }
 
-// Subtle role accent colors — shown as a small dot on each directory item
 const ROLE_COLORS: Record<string, string> = {
   dj:            '#4285F4',
   rookie:        '#60A5FA',
@@ -35,22 +34,20 @@ const navSections = [
   {
     label: 'DIRECTORIO',
     items: [
-      { id: 'dj',         icon: Headphones, label: 'DJs & Artistas' },
-      { id: 'rookie',     icon: Award,      label: 'DJ / Artista Promesa' },
+      { id: 'dj',         icon: Headphones, label: 'DJs, Artistas & Música en Vivo' },
       { id: 'staff',         icon: UserCheck,      label: 'Staff & Promoción' },
       { id: 'event_manager', icon: CalendarCheck,  label: 'Encargadas de Eventos' },
       { id: 'makeup',     icon: Smile,      label: 'Maquillaje & Peluquería' },
       { id: 'media',      icon: Camera,     label: 'Media & Contenido' },
       { id: 'vestuario',  icon: Shirt,      label: 'Vestuario & Moda' },
       { id: 'design',     icon: Palette,    label: 'Diseño & Visuales' },
-      { id: 'promotor',   icon: Speaker,    label: 'Promotores' },
+      { id: 'promotor',   icon: Speaker,    label: 'Promotor & MC' },
       { id: 'empresario', icon: Building2,  label: 'Panel Empresario' },
     ],
   },
   {
-    label: 'EN VIVO',
+    label: 'CONTRATACIÓN',
     items: [
-      { id: 'escenario', icon: Radio, label: 'Escenario Virtual' },
       { id: 'flashbooking', icon: Megaphone, label: 'Flash Booking' },
     ],
   },
@@ -78,8 +75,7 @@ const navSections = [
   },
 ];
 
-// Blue accent for tool/integration sections (Calendar, Messages)
-const TOOL_BLUE_IDS = new Set(['calendar', 'messages', 'escenario', 'flashbooking']);
+const TOOL_BLUE_IDS = new Set(['calendar', 'messages', 'flashbooking']);
 
 const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', makeup: 'Makeup', media: 'Media', empresario: 'Sala', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista' };
 
@@ -148,6 +144,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
   const isEmpresario = role === 'empresario';
   const [flashBadge, setFlashBadge] = useState(0);
   const [msgBadge, setMsgBadge] = useState(0);
+  const [roleCounts, setRoleCounts] = useState<Record<string, number>>({});
 
   useEffect(() => {
     if (!user || isEmpresario) return;
@@ -157,6 +154,21 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
       .eq('status', 'pending')
       .then(({ count }) => setFlashBadge(count ?? 0));
   }, [user, isEmpresario]);
+
+  useEffect(() => {
+    supabase.from('profiles' as any)
+      .select('role, display_name')
+      .then(({ data }) => {
+        if (!data) return;
+        const counts: Record<string, number> = {};
+        for (const row of data as { role: string; display_name: string | null }[]) {
+          if (row.role && row.display_name && row.display_name.trim().length > 1) {
+            counts[row.role] = (counts[row.role] ?? 0) + 1;
+          }
+        }
+        setRoleCounts(counts);
+      });
+  }, []);
 
   const refreshMsgBadge = async (uid: string) => {
     const { data } = await supabase.from('conversations')
@@ -198,7 +210,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
           <h2 className="text-xl font-black tracking-widest font-display">
             X<span className="text-gradient">PEAK</span>
           </h2>
-          <p className="text-[0.75rem] text-muted-foreground mt-0.5 tracking-widest uppercase">Europa · Directorio Profesional</p>
+          <p className="text-[0.75rem] text-muted-foreground mt-0.5 tracking-widest uppercase">España · Directorio Profesional</p>
         </button>
       </div>
 
@@ -209,7 +221,6 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
           let items = section.label === 'MI CUENTA' && isAgency
             ? [...section.items.slice(0, 2), { id: 'agency', icon: Building2, label: 'Panel Agencia', badge: 'AGENCIA' as const }, ...section.items.slice(2)]
             : section.items;
-          // "Artista Promesa" only visible for dj/rookie roles
           if (role !== 'dj' && role !== 'rookie') {
             items = items.filter(i => i.id !== 'rookie');
           }
@@ -221,37 +232,59 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
             {items.map((item) => {
               const isActive = activeView === item.id;
               const hasPulse = 'pulse' in item && item.pulse;
+              const roleColor = ROLE_COLORS[item.id];
+              const isToolBlue = TOOL_BLUE_IDS.has(item.id);
+              const iconColor = roleColor ?? (isToolBlue ? '#4285F4' : 'rgba(255,255,255,0.5)');
+              const count = roleColor ? roleCounts[item.id] : undefined;
+
               return (
                 <button
                   key={item.id}
                   onClick={() => onViewChange(item.id)}
-                  className="w-full flex items-center gap-3 px-3 py-3 rounded-xl mb-1 text-sm font-semibold transition-all duration-200 text-left"
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl mb-1 text-[0.9rem] font-semibold transition-all duration-200 text-left"
                   style={{
                     color: isActive
-                      ? (TOOL_BLUE_IDS.has(item.id) ? '#4285F4' : '#D4AF37')
+                      ? (isToolBlue ? '#4285F4' : '#D4AF37')
                       : 'var(--nightlife-text-secondary)',
                     background: isActive
-                      ? (TOOL_BLUE_IDS.has(item.id) ? 'rgba(66,133,244,0.08)' : 'rgba(212,175,55,0.08)')
+                      ? (isToolBlue ? 'rgba(66,133,244,0.08)' : 'rgba(212,175,55,0.08)')
                       : undefined,
                     borderLeft: isActive
-                      ? `2px solid ${TOOL_BLUE_IDS.has(item.id) ? '#4285F4' : '#D4AF37'}`
+                      ? `2px solid ${isToolBlue ? '#4285F4' : '#D4AF37'}`
                       : '2px solid transparent',
                   }}
                 >
-                  <item.icon size={20} style={{
-                    color: ROLE_COLORS[item.id] ?? (TOOL_BLUE_IDS.has(item.id) ? '#4285F4' : undefined),
-                    opacity: isActive ? 1 : 0.7,
-                  }} />
-                  <span className="flex-1">{item.label}</span>
-                  {ROLE_COLORS[item.id] && (
-                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 transition-all duration-200"
+                  {/* Icon with colored background for directory roles */}
+                  <span
+                    className="flex-shrink-0 flex items-center justify-center rounded-lg transition-all duration-200"
+                    style={{
+                      width: 30,
+                      height: 30,
+                      background: roleColor
+                        ? `rgba(${hexToRgb(roleColor)}, ${isActive ? 0.18 : 0.1})`
+                        : isToolBlue
+                          ? `rgba(66,133,244,${isActive ? 0.18 : 0.08})`
+                          : 'transparent',
+                    }}
+                  >
+                    <item.icon size={16} style={{ color: iconColor, opacity: isActive ? 1 : 0.8 }} />
+                  </span>
+
+                  <span className="flex-1 text-[0.82rem]">{item.label}</span>
+
+                  {/* Member count for directory roles */}
+                  {count !== undefined && count > 0 && (
+                    <span
+                      className="text-[0.65rem] px-1.5 py-0.5 rounded-md font-black flex-shrink-0 transition-all duration-200"
                       style={{
-                        background: ROLE_COLORS[item.id],
-                        opacity: isActive ? 1 : 0.35,
-                        boxShadow: isActive ? `0 0 6px ${ROLE_COLORS[item.id]}` : 'none',
+                        background: `rgba(${hexToRgb(roleColor!)}, ${isActive ? 0.2 : 0.08})`,
+                        color: isActive ? roleColor : `rgba(${hexToRgb(roleColor!)}, 0.6)`,
                       }}
-                    />
+                    >
+                      {count}
+                    </span>
                   )}
+
                   {hasPulse && (
                     <span className="relative flex h-2.5 w-2.5">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: '#D4AF37' }} />
@@ -287,5 +320,12 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
     </aside>
   );
 };
+
+function hexToRgb(hex: string): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `${r},${g},${b}`;
+}
 
 export default DashboardSidebar;

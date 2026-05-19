@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Zap, Clock, TrendingUp, Lock } from 'lucide-react';
+import { Zap, Clock } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
 import {
   STREAMING_PACKS,
@@ -46,15 +46,11 @@ const StreamingPacksSection = () => {
     return (
       <div className="glass-panel p-5 flex flex-col items-center justify-center gap-3 text-center"
         style={{ border: '1px solid rgba(212,175,55,0.08)' }}>
-        <div className="w-10 h-10 rounded-full flex items-center justify-center"
-          style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.12)' }}>
-          <Lock size={18} style={{ color: 'rgba(212,175,55,0.35)' }} />
-        </div>
         <p className="text-xs font-bold" style={{ color: 'rgba(255,255,255,0.5)' }}>
-          Streaming disponible desde el plan Starter
+          Packs de streaming próximamente
         </p>
         <p className="text-xs text-muted-foreground max-w-[200px]">
-          Activa Starter para comprar horas de streaming, o Business para incluir 1h/mes gratis.
+          La compra de horas adicionales de streaming estará disponible pronto.
         </p>
       </div>
     );
@@ -80,25 +76,15 @@ const StreamingPacksSection = () => {
           )}
         </div>
 
-        {/* Included hours info */}
+        {/* Hours included info */}
         {includedHours > 0 && (
           <div className="mb-4 px-3 py-2.5 rounded-lg text-xs text-muted-foreground"
             style={{ background: 'rgba(34,197,94,0.04)', border: '1px solid rgba(34,197,94,0.1)' }}>
-            Tu plan {isBusiness ? 'Business' : 'Agency'} incluye{' '}
+            Tienes{' '}
             <span className="font-bold" style={{ color: '#22c55e' }}>
-              {includedHours}h{isAgency ? ' en pool compartido' : ''} cada mes
+              {includedHours}h{isAgency ? ' en pool compartido' : ''} incluidas al mes
             </span>
             {' '}— sin coste adicional. Compra packs para emitir más.
-          </div>
-        )}
-
-        {/* Starter: no free hours */}
-        {isStarter && (
-          <div className="mb-4 px-3 py-2.5 rounded-lg text-xs"
-            style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}>
-            <span className="text-muted-foreground">
-              Las horas que compras son tuyas — sin caducidad mensual, válidas <span className="font-bold text-primary">6 meses</span>.
-            </span>
           </div>
         )}
 
@@ -145,24 +131,6 @@ const StreamingPacksSection = () => {
           Horas válidas 6 meses · Streaming vía Amazon IVS · Alta calidad garantizada
         </p>
 
-        {/* Starter conversion nudge */}
-        {isStarter && purchaseCount >= 2 && (
-          <div className="mt-3 px-3 py-2.5 rounded-lg animate-[fadeIn_0.4s_ease]"
-            style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
-            <div className="flex items-start gap-2">
-              <TrendingUp size={13} style={{ color: '#D4AF37', flexShrink: 0, marginTop: 1 }} />
-              <div>
-                <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>
-                  Ya llevas {purchaseCount} compras de horas
-                </p>
-                <p className="text-[0.75rem] text-muted-foreground mt-0.5">
-                  Con Business (€14.99/mes) tienes 1h incluida cada mes y todo el directorio mejorado.
-                  Si usas streaming regularmente, ya te sale más barato.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </>
   );

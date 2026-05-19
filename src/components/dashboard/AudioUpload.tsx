@@ -28,9 +28,7 @@ const sanitizeFileName = (name: string): string =>
     .replace(/_+/g, '_')
     .replace(/^_|_$/g, '');
 
-const MAX_SESSIONS_FREE    = 3;
-const MAX_SESSIONS_STARTER = 5;
-const MAX_SESSIONS_PRO     = 15;
+const MAX_SESSIONS_PRO = 15;
 const MAX_FILE_MB          = 45;
 
 interface SessionFile {
@@ -57,10 +55,7 @@ const AudioUpload = () => {
     }
   }, [profile.genres?.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const tier = profile.subscription_tier ?? 'free';
-  const isPro = tier === 'pro' || tier === 'business';
-  const isStarter = tier === 'starter' || tier === 'artist';
-  const maxSessions = isPro ? MAX_SESSIONS_PRO : isStarter ? MAX_SESSIONS_STARTER : MAX_SESSIONS_FREE;
+  const maxSessions = MAX_SESSIONS_PRO;
 
   // Load existing sessions from storage
   useEffect(() => {
@@ -98,7 +93,7 @@ const AudioUpload = () => {
     if (!file.type.includes('audio')) { toast.error('Solo archivos de audio (MP3, WAV, M4A)'); return; }
     if (file.size > MAX_FILE_MB * 1024 * 1024) { toast.error(`Máximo ${MAX_FILE_MB}MB por sesión (suficiente para 1h a 128kbps)`); return; }
     if (sessions.length >= maxSessions) {
-      toast.error(`Máximo ${maxSessions} sesiones en tu plan. ${!isPro ? 'Actualiza a Pro para hasta 15.' : ''}`);
+      toast.error(`Máximo ${maxSessions} sesiones permitidas.`);
       return;
     }
 
@@ -137,11 +132,11 @@ const AudioUpload = () => {
       <h4 className="text-sm font-bold mb-3 flex items-center gap-2">
         <Music size={16} style={{ color: '#D4AF37' }} /> Sesiones de Audio
         <span className="text-xs text-muted-foreground ml-auto">
-          {sessions.length}/{isPro ? '∞' : MAX_SESSIONS_FREE}
+          {sessions.length}/{MAX_SESSIONS_PRO}
         </span>
       </h4>
       <p className="text-xs text-muted-foreground mb-3">
-        MP3/WAV/M4A · máx {MAX_FILE_MB}MB (~1.5h a 256kbps). Free: {MAX_SESSIONS_FREE} · Starter: {MAX_SESSIONS_STARTER} · Pro: {MAX_SESSIONS_PRO}
+        MP3/WAV/M4A · máx {MAX_FILE_MB}MB (~1.5h a 256kbps) · hasta {MAX_SESSIONS_PRO} sesiones
       </p>
 
       {/* Genre selector */}

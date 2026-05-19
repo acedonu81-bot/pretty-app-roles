@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   MessageCircle, X, Send, ChevronDown,
-  Zap, Users, CreditCard, FileText, Radio, Star,
+  Zap, Users, FileText, Radio, Star,
   User, BarChart3, Calendar, Map, ShoppingBag, Heart,
   Award, Camera, Smile, Building2, RefreshCw,
 } from 'lucide-react';
@@ -36,8 +36,8 @@ const KB: KBEntry[] = [
   {
     id: 'greeting',
     patterns: [/^\s*(hola|buenas|buenos días|buenos dias|hey|hi|saludos|ey|qué hay|que hay|buenas noches|buenas tardes)\s*[!?]?\s*$/i],
-    answer: '¡Hola! Soy el asistente de **XPEAK**. Puedo ayudarte con:\n\n• Perfil y visibilidad en el directorio\n• Flash Booking y cómo conseguir contratos\n• Planes y precios\n• Contratos legales, mensajes, estadísticas\n• Streaming, Fan Club, Tienda y más\n\n¿Sobre qué quieres saber?',
-    followUps: ['¿Qué es XPEAK?', '¿Cómo funciona el Flash Booking?', '¿Cuánto cuesta?', '¿Cómo consigo más bookings?'],
+    answer: '¡Hola! Soy el asistente de **XPEAK**. Puedo ayudarte con:\n\n• Perfil y visibilidad en el directorio\n• Flash Booking y cómo conseguir contratos\n• Contratos legales, mensajes, estadísticas\n• Streaming, Fan Club, Tienda y más\n\n¿Sobre qué quieres saber?',
+    followUps: ['¿Qué es XPEAK?', '¿Cómo funciona el Flash Booking?', '¿Cómo consigo más bookings?'],
   },
 
   // ── Qué es XPEAK ─────────────────────────────────────────────────────────
@@ -45,7 +45,7 @@ const KB: KBEntry[] = [
     id: 'about',
     patterns: [/qué es xpeak|que es xpeak|para qu[eé] sirve|explícame xpeak|explicame xpeak|cuéntame.*xpeak|información.*xpeak|info.*xpeak/i],
     answer: '**XPEAK** es el marketplace profesional de la industria del entretenimiento nocturno en Europa.\n\nNació para eliminar los intermediarios entre artistas y venues. Todo ocurre en la plataforma:\n\n• **Directorio** — DJs, staff, maquilladores, media, promotores y embajadores\n• **Flash Booking** — contratación urgente con ofertas que caducan en 2h\n• **Contratos** — documentos legales generados en segundos\n• **Mensajería** — comunicación directa entre partes sin comisiones\n• **Escenario Virtual** — streaming en vivo para crecer tu audiencia\n• **Fan Club** — monetización de tu comunidad de seguidores\n• **Estadísticas** — datos reales de quién visita tu perfil\n\nActualmente activo en **España** con expansión a toda Europa prevista para 2026.',
-    followUps: ['¿Cómo me registro?', '¿Qué roles hay?', '¿Cuánto cuesta?'],
+    followUps: ['¿Cómo me registro?', '¿Qué roles hay?', '¿Cómo consigo más bookings?'],
   },
 
   // ── Registro / acceso ─────────────────────────────────────────────────────
@@ -53,7 +53,7 @@ const KB: KBEntry[] = [
     id: 'register',
     patterns: [/registr|crear cuenta|cuenta nueva|sign up|cómo me uno|como me uno|acceder|login|iniciar sesión|contraseña olvidada|password|recuperar.*cuenta/i],
     answer: 'Para crear tu cuenta en XPEAK:\n\n1. Ve a la pantalla de inicio → **"Entrar"**\n2. Regístrate con **email + contraseña** o con **Google** (un clic)\n3. Elige tu **rol profesional** (DJ, Staff, Makeup, Media…)\n4. Confirma tu email si es por correo\n\n**Si no puedes entrar:**\n• Contraseña incorrecta → usa **"¿Olvidaste tu contraseña?"** en el login\n• No recibes el email → revisa la carpeta de spam\n• Cuenta bloqueada → escribe a soporte@xpeak.es\n\nNo hay verificación manual al registrarse — accedes al instante.',
-    followUps: ['¿Cómo completo mi perfil?', '¿Puedo cambiar mi rol después?', '¿Qué diferencia hay entre planes?'],
+    followUps: ['¿Cómo completo mi perfil?', '¿Puedo cambiar mi rol después?'],
   },
 
   // ── Perfil — campos y optimización ───────────────────────────────────────
@@ -92,8 +92,8 @@ const KB: KBEntry[] = [
   {
     id: 'flashbooking',
     patterns: [/flash booking|flash book|booking.*urgente|oferta.*urgente|urgente.*booking|última hora|ultima hora|disponible.*ahora|disponib.*toggle/i],
-    answer: '**Flash Booking** es el sistema de contratación de última hora de XPEAK.\n\n**Cómo funciona para profesionales:**\n1. Activa el toggle **"Disponible ahora"** en Mi Perfil\n2. Apareces destacado en la sección Flash Booking visible para todos los empresarios\n3. Cuando recibes una oferta, te llega por **Mensajes** con detalles del evento\n4. Respondes directamente — sin intermediarios ni porcentajes\n5. Si aceptas, generáis el contrato desde Herramientas\n\n**Cómo funciona para empresarios:**\n1. Ve a **En Vivo → Flash Booking**\n2. Publica la oferta: rol, fecha, ciudad, duración y caché ofrecido\n3. La oferta es visible **2 horas** para los profesionales disponibles\n4. Recibes respuestas directamente en tus Mensajes\n\n**Importante:** Los planes **Elite y Agency** tienen visibilidad prioritaria — sus perfiles aparecen antes en la lista de disponibles.',
-    followUps: ['¿Qué pasa si nadie responde en 2 horas?', '¿Qué plan necesito?', '¿Cómo negocio el precio?'],
+    answer: '**Flash Booking** es el sistema de contratación de última hora de XPEAK.\n\n**Cómo funciona para profesionales:**\n1. Activa el toggle **"Disponible ahora"** en Mi Perfil\n2. Apareces destacado en la sección Flash Booking visible para todos los empresarios\n3. Cuando recibes una oferta, te llega por **Mensajes** con detalles del evento\n4. Respondes directamente — sin intermediarios ni porcentajes\n5. Si aceptas, generáis el contrato desde Herramientas\n\n**Cómo funciona para empresarios:**\n1. Ve a **En Vivo → Flash Booking**\n2. Publica la oferta: rol, fecha, ciudad, duración y caché ofrecido\n3. La oferta es visible **2 horas** para los profesionales disponibles\n4. Recibes respuestas directamente en tus Mensajes',
+    followUps: ['¿Qué pasa si nadie responde en 2 horas?', '¿Cómo negocio el precio?'],
   },
 
   // ── Flash Booking — expiración / sin respuesta ────────────────────────────
@@ -140,7 +140,7 @@ const KB: KBEntry[] = [
   {
     id: 'directory',
     patterns: [/directorio|cómo.*buscar|como.*buscar|filtrar.*profesional|filtros.*directorio|encontrar.*dj|encontrar.*staff|aparecer.*directorio|búsqueda.*directorio/i],
-    answer: 'El **Directorio** tiene 6 secciones, una por rol:\n\n• **DJs & Artistas** — todos los géneros, de techno a comercial\n• **DJ Promesa** — talento emergente, precios más accesibles\n• **Staff & Promoción** — azafatas, RRPP, hostess, camareros\n• **Maquillaje & Peluquería** — imagen artística, nupcial y editorial\n• **Media & Contenido** — fotógrafos, videógrafos, creadores de reels\n• **Panel Empresario** — vista específica con herramientas de contratación\n\n**Filtros disponibles en cada sección:**\n• Ciudad (busca radio local)\n• Disponibilidad ahora (Flash Booking activo)\n• Sello de Oro verificado\n• Géneros / especialidades\n\n**Orden de resultados:**\nPrimero aparecen los verificados con Sello de Oro, luego por plan (Elite > Business > Starter > Free).',
+    answer: 'El **Directorio** tiene 6 secciones, una por rol:\n\n• **DJs & Artistas** — todos los géneros, de techno a comercial\n• **DJ Promesa** — talento emergente, precios más accesibles\n• **Staff & Promoción** — azafatas, RRPP, hostess, camareros\n• **Maquillaje & Peluquería** — imagen artística, nupcial y editorial\n• **Media & Contenido** — fotógrafos, videógrafos, creadores de reels\n• **Panel Empresario** — vista específica con herramientas de contratación\n\n**Filtros disponibles en cada sección:**\n• Ciudad (busca radio local)\n• Disponibilidad ahora (Flash Booking activo)\n• Sello de Oro verificado\n• Géneros / especialidades\n\n**Orden de resultados:**\nPrimero aparecen los verificados con Sello de Oro, luego por actividad y perfil completo.',
     followUps: ['¿Cómo mejoro mi posición en resultados?', '¿Puedo buscar por precio?'],
   },
 
@@ -148,8 +148,8 @@ const KB: KBEntry[] = [
   {
     id: 'ranking',
     patterns: [/posicionamiento|ranking|aparecer.*primero|mejorar.*visibilidad|algoritmo|orden.*resultados|cómo.*destaco|como.*destaco/i],
-    answer: 'El orden en que apareces en el directorio sigue esta jerarquía:\n\n**1. Sello de Oro** (verificado por XPEAK) — posición más alta\n**2. Plan de suscripción** — Elite > Business > Starter > Free\n**3. Perfil completo** — foto + bio + géneros + audio\n**4. Actividad reciente** — perfiles con más interacciones suben\n**5. Disponibilidad activa** — con el toggle ON apareces destacado en Flash Booking\n\n**Para subir rápido sin pagar más:**\n• Completa el 100% de tu perfil (foto, bio, géneros, idiomas, audio)\n• Solicita el Sello de Oro (gratis, solo necesitas vídeo)\n• Mantén el toggle de disponibilidad activo los fines de semana\n• Responde rápido a los mensajes (la actividad influye en el ranking)',
-    followUps: ['¿Cómo obtengo el Sello de Oro?', '¿Qué plan da más visibilidad?'],
+    answer: 'El orden en que apareces en el directorio sigue esta jerarquía:\n\n**1. Sello de Oro** (verificado por XPEAK) — posición más alta\n**2. Perfil completo** — foto + bio + géneros + audio\n**3. Actividad reciente** — perfiles con más interacciones suben\n**4. Disponibilidad activa** — con el toggle ON apareces destacado en Flash Booking\n\n**Para subir rápido:**\n• Completa el 100% de tu perfil (foto, bio, géneros, idiomas, audio)\n• Solicita el Sello de Oro (gratis, solo necesitas vídeo)\n• Mantén el toggle de disponibilidad activo los fines de semana\n• Responde rápido a los mensajes (la actividad influye en el ranking)',
+    followUps: ['¿Cómo obtengo el Sello de Oro?'],
   },
 
   // ── Roles disponibles — descripción detallada ─────────────────────────────
@@ -168,27 +168,27 @@ const KB: KBEntry[] = [
     followUps: ['¿Cómo cambio de rol?', '¿Qué géneros debo seleccionar?'],
   },
 
-  // ── Suscripciones — comparativa detallada ────────────────────────────────
+  // ── Plataforma gratuita ────────────────────────────────────────────────────
   {
     id: 'subscription',
     patterns: [/suscripci|precio.*plan|plan.*precio|cuánto.*cuesta|cuanto.*cuesta|gratis.*qué incluye|free.*plan|starter|business.*plan|elite.*plan|agency.*plan|diferencia.*planes/i],
-    answer: 'Comparativa de los **4 planes XPEAK**:\n\n**Free — Gratis siempre**\n• Perfil activo y visible en el directorio\n• Posición estándar (última en el ranking)\n• Sin acceso a Flash Booking\n• Sin streaming en Escenario Virtual\n\n**Starter**\n• Acceso a Flash Booking (con retraso de 15 min respecto a Elite/Business)\n• Posición media en el directorio\n• Estadísticas básicas\n\n**Business**\n• Posición destacada en el directorio\n• Flash Booking sin retraso\n• Streaming en Escenario Virtual\n• Estadísticas completas con comparativas\n• Acceso prioritario a TOP Weekend\n\n**Elite / Agency**\n• Máxima visibilidad — aparece primero en todas las búsquedas\n• Badge AGENCIA (para empresas con múltiples artistas)\n• Todas las funciones desbloqueadas\n• Soporte prioritario\n\nPrecios exactos en **Mi Cuenta → Suscripción**. Sin permanencia, cancela cuando quieras.',
-    followUps: ['¿Puedo probar Business gratis?', '¿Hay descuento si pago anual?', '¿Cómo cancelo?'],
+    answer: '**XPEAK es completamente gratuito** durante su fase de crecimiento.\n\nTodo incluido sin coste:\n\n• Perfil activo y visible en el directorio europeo\n• Flash Booking — contratos en tiempo real\n• Mensajería directa con clientes y profesionales\n• Calendario y gestión de contratos\n• Estadísticas de visitas a tu perfil\n• Escenario virtual y directos embebidos\n\nSin tarjeta de crédito · Sin contratos · Sin comisiones.',
+    followUps: ['¿Cómo completo mi perfil?', '¿Cómo consigo más bookings?'],
   },
 
-  // ── Facturación / pagos / cancelar plan ───────────────────────────────────
+  // ── Plataforma gratuita — sin cobros ──────────────────────────────────────
   {
     id: 'billing',
     patterns: [/cancelar.*plan|cancelar.*suscripci|reembolso|devoluci|cobro.*incorrecto|método de pago|tarjeta.*pago|cambiar.*tarjeta|factura.*suscripci|stripe/i],
-    answer: 'Todo lo relacionado con pagos está en **Mi Cuenta → Suscripción**.\n\n**Cancelar:**\n• Puedes cancelar en cualquier momento sin penalización\n• Conservas el plan activo hasta el fin del período ya pagado\n• Después pasas automáticamente a Free\n\n**Cambiar de plan:**\n• Upgrade (Free → Starter → Business): efecto inmediato\n• Downgrade: efecto al finalizar el período actual\n\n**Cambiar método de pago:**\n• En Suscripción → "Gestionar facturación" (portal Stripe)\n• Puedes añadir nueva tarjeta y eliminar la antigua\n\n**Reembolsos:**\n• Escribe a soporte@xpeak.es en los **7 días** siguientes al cobro\n• Se estudian caso a caso\n\nXPEAK procesa pagos con **Stripe** — tus datos de tarjeta nunca pasan por nuestros servidores.',
-    followUps: ['¿Qué pasa si mi tarjeta falla?', '¿Puedo pagar con PayPal?'],
+    answer: 'XPEAK es completamente **gratuito** — no hay planes de pago ni cobros.\n\nNo se requiere tarjeta de crédito. No hay suscripciones ni cargos periódicos.\n\nSi tienes alguna duda sobre pagos o cobros, escríbenos a **soporte@xpeak.es** — lo aclaramos enseguida.',
+    followUps: ['¿Qué incluye la plataforma?', '¿Cómo contacto con soporte?'],
   },
 
   // ── Sello de Oro — requisitos y proceso ───────────────────────────────────
   {
     id: 'verification',
     patterns: [/sello.*oro|verificaci|badge.*verificado|cómo.*verificar|como.*verificar|obtener.*sello|solicitar.*verificaci|video.*verificaci|vídeo.*verificaci/i],
-    answer: 'El **Sello de Oro XPEAK** es la verificación de calidad de la plataforma.\n\n**Requisitos para solicitarlo:**\n1. Perfil completo (foto, bio, géneros, ciudad)\n2. Vídeo de demostración subido (mínimo 2 minutos mostrando tu trabajo real)\n3. Historial limpio en la plataforma (sin reportes)\n\n**Proceso:**\n1. Graba un vídeo — puede ser una actuación real, session grabada o contenido propio\n2. Súbelo a YouTube, Drive o Vimeo (enlace sin contraseña)\n3. Ve a **Mi Perfil → Sección Verificación → Solicitar Sello**\n4. El equipo lo revisa en **24-48 horas laborables**\n5. Si se aprueba, el badge aparece en tu tarjeta y perfil inmediatamente\n\n**Qué consigues:**\n• Posición #1 en el directorio (por encima de los no verificados del mismo plan)\n• Mayor tasa de conversión — los empresarios confían más\n• Elegibilidad para TOP Weekend y selecciones editoriales\n• El sello es **gratuito** — no requiere plan de pago específico',
+    answer: 'El **Sello de Oro XPEAK** es la verificación de calidad de la plataforma.\n\n**Requisitos para solicitarlo:**\n1. Perfil completo (foto, bio, géneros, ciudad)\n2. Vídeo de demostración subido (mínimo 2 minutos mostrando tu trabajo real)\n3. Historial limpio en la plataforma (sin reportes)\n\n**Proceso:**\n1. Graba un vídeo — puede ser una actuación real, session grabada o contenido propio\n2. Súbelo a YouTube, Drive o Vimeo (enlace sin contraseña)\n3. Ve a **Mi Perfil → Sección Verificación → Solicitar Sello**\n4. El equipo lo revisa en **24-48 horas laborables**\n5. Si se aprueba, el badge aparece en tu tarjeta y perfil inmediatamente\n\n**Qué consigues:**\n• Posición #1 en el directorio (por encima de los no verificados)\n• Mayor tasa de conversión — los empresarios confían más\n• Elegibilidad para TOP Weekend y selecciones editoriales\n• El sello es **completamente gratuito**',
     followUps: ['¿Qué tipo de vídeo necesito?', '¿Cuánto tarda la revisión?'],
   },
 
@@ -196,23 +196,23 @@ const KB: KBEntry[] = [
   {
     id: 'topweekend',
     patterns: [/top weekend|topweekend|selección.*editorial|selecci.*semana|cada jueves|fin de semana.*destacado/i],
-    answer: '**TOP Weekend** es la selección editorial semanal — la sección más vista por los empresarios.\n\nCada **jueves a las 12:00** el equipo XPEAK publica los 6-10 mejores profesionales disponibles para ese fin de semana.\n\n**Criterios de selección:**\n• Sello de Oro activo (imprescindible)\n• Disponibilidad activada para viernes y/o sábado\n• Perfil con audio + vídeo + bio completa\n• Plan Business o Elite\n• Sin conflictos ni reportes recientes\n\n**Qué ganas al aparecer:**\n• Tu tarjeta en posición destacada visible para TODOS los usuarios de la plataforma\n• Notificación a los empresarios registrados con tu perfil\n• Históricamente, los seleccionados reciben entre 3 y 8 contactos ese fin de semana\n\nNo puedes "pagar" para aparecer — es decisión editorial del equipo.',
-    followUps: ['¿Cómo obtengo el Sello de Oro?', '¿Qué plan necesito?'],
+    answer: '**TOP Weekend** es la selección editorial semanal — la sección más vista por los empresarios.\n\nCada **jueves a las 12:00** el equipo XPEAK publica los 6-10 mejores profesionales disponibles para ese fin de semana.\n\n**Criterios de selección:**\n• Sello de Oro activo (imprescindible)\n• Disponibilidad activada para viernes y/o sábado\n• Perfil con audio + vídeo + bio completa\n• Sin conflictos ni reportes recientes\n\n**Qué ganas al aparecer:**\n• Tu tarjeta en posición destacada visible para TODOS los usuarios de la plataforma\n• Notificación a los empresarios registrados con tu perfil\n• Históricamente, los seleccionados reciben entre 3 y 8 contactos ese fin de semana\n\nNo puedes "pagar" para aparecer — es decisión editorial del equipo.',
+    followUps: ['¿Cómo obtengo el Sello de Oro?'],
   },
 
   // ── Escenario Virtual / streaming ─────────────────────────────────────────
   {
     id: 'streaming',
     patterns: [/escenario virtual|streaming|stream|en vivo|en directo|twitch|youtube.*live|emitir|broadcast|directo.*xpeak/i],
-    answer: 'El **Escenario Virtual** es el espacio de streaming en directo integrado en XPEAK.\n\n**Cómo activarlo:**\n1. Ve a **En Vivo → Escenario Virtual**\n2. Conecta tu canal de Twitch, YouTube Live o Mixcloud Live\n3. Cuando estés emitiendo en tu plataforma habitual, activa el toggle en XPEAK\n4. Tu directo aparece en el feed de Escenario Virtual visible para todos los usuarios\n\n**Requisitos:**\n• Plan **Business o Elite** activo\n• Canal externo con al menos 1 emisión previa\n\n**Beneficios de visibilidad:**\n• Los empresarios que están buscando DJs te ven actuando en tiempo real — es la mejor demo posible\n• El feed de directos aparece en el dashboard principal de todos los usuarios\n• Cada emisión aumenta las visitas a tu perfil entre un 40-70%\n\n**Tip:** Emite en viernes por la tarde (17-20h) — es cuando más empresarios navegan por XPEAK planificando el fin de semana.',
-    followUps: ['¿Qué plan necesito para el Escenario Virtual?', '¿Puedo guardar la grabación?'],
+    answer: 'El **Escenario Virtual** es el espacio de streaming en directo integrado en XPEAK.\n\n**Cómo activarlo:**\n1. Ve a **En Vivo → Escenario Virtual**\n2. Conecta tu canal de Twitch, YouTube Live o Mixcloud Live\n3. Cuando estés emitiendo en tu plataforma habitual, activa el toggle en XPEAK\n4. Tu directo aparece en el feed de Escenario Virtual visible para todos los usuarios\n\n**Beneficios de visibilidad:**\n• Los empresarios que están buscando DJs te ven actuando en tiempo real — es la mejor demo posible\n• El feed de directos aparece en el dashboard principal de todos los usuarios\n• Cada emisión aumenta las visitas a tu perfil entre un 40-70%\n\n**Tip:** Emite en viernes por la tarde (17-20h) — es cuando más empresarios navegan por XPEAK planificando el fin de semana.',
+    followUps: ['¿Puedo guardar la grabación?'],
   },
 
   // ── Fan Club ──────────────────────────────────────────────────────────────
   {
     id: 'fanclub',
     patterns: [/fan club|fanclub|seguidores|fans|contenido exclusivo|suscriptores.*fan|monetizar.*fans|comunidad.*xpeak/i],
-    answer: '**Fan Club** es tu espacio de comunidad y monetización directa en XPEAK.\n\n**Qué puedes publicar:**\n• Sets y sesiones exclusivas no publicadas en otras plataformas\n• Fotos y vídeos behind the scenes\n• Adelantos de fechas antes del anuncio público\n• Acceso anticipado a tu tienda\n• Sorteos de entradas o merchandising entre suscriptores\n\n**Cómo funciona la suscripción:**\n• Tú fijas el precio mensual (mínimo €2, máximo libre)\n• Los fans pagan para acceder al contenido exclusivo\n• XPEAK cobra una comisión del 12% — tú te quedas el 88%\n\nConfigura tu Fan Club desde **Mi Cuenta → Fan Club**.',
+    answer: '**Fan Club** es tu espacio de comunidad en XPEAK.\n\n**Qué puedes publicar:**\n• Sets y sesiones exclusivas no publicadas en otras plataformas\n• Fotos y vídeos behind the scenes\n• Adelantos de fechas antes del anuncio público\n• Acceso anticipado a tu tienda\n• Sorteos de entradas o merchandising entre seguidores\n\n**La monetización del Fan Club** (contenido de pago para fans) está en desarrollo y llegará próximamente.\n\nConfigura tu Fan Club desde **Mi Cuenta → Fan Club**.',
     followUps: ['¿Cuándo llega la monetización completa?', '¿Qué más puedo vender en XPEAK?'],
   },
 
@@ -228,7 +228,7 @@ const KB: KBEntry[] = [
   {
     id: 'stats',
     patterns: [/estadísticas|estadisticas|métricas|visitas.*perfil|clics.*contacto|cómo.*interpretar.*stats|que significan.*stats|rendimiento.*perfil/i],
-    answer: 'En **Mi Cuenta → Estadísticas** tienes un panel de rendimiento con estos datos:\n\n**Visitas al perfil** — número de veces que alguien ha abierto tu ficha completa. Un perfil con Sello de Oro y plan Business recibe entre 50 y 200 visitas semanales en temporada alta.\n\n**Clics de contacto** — cuántas personas han pulsado "Mensaje" desde tu perfil. Si este número es bajo respecto a las visitas, tu bio o tarifa puede estar ahuyentando contactos.\n\n**Mensajes recibidos** — conversaciones iniciadas. Un ratio visitas/mensajes sano es 1 mensaje por cada 10-15 visitas.\n\n**Evolución mensual** — gráfica de tendencia. Identifica picos (¿coincidieron con TOP Weekend? ¿con una emisión en Escenario Virtual?) para repetirlos.\n\nCon **Business o Elite** accedes a comparativas del sector — sabes si estás por encima o por debajo de la media de tu rol y ciudad.',
+    answer: 'En **Mi Cuenta → Estadísticas** tienes un panel de rendimiento con estos datos:\n\n**Visitas al perfil** — número de veces que alguien ha abierto tu ficha completa. Un perfil con Sello de Oro recibe entre 50 y 200 visitas semanales en temporada alta.\n\n**Clics de contacto** — cuántas personas han pulsado "Mensaje" desde tu perfil. Si este número es bajo respecto a las visitas, tu bio o tarifa puede estar ahuyentando contactos.\n\n**Mensajes recibidos** — conversaciones iniciadas. Un ratio visitas/mensajes sano es 1 mensaje por cada 10-15 visitas.\n\n**Evolución mensual** — gráfica de tendencia. Identifica picos (¿coincidieron con TOP Weekend? ¿con una emisión en Escenario Virtual?) para repetirlos.',
     followUps: ['¿Cómo mejoro mi ratio de contactos?', '¿Dónde activo el streaming?'],
   },
 
@@ -253,7 +253,7 @@ const KB: KBEntry[] = [
     id: 'empresario',
     patterns: [/panel.*empresario|cómo.*contratar|como.*contratar|soy.*empresario|soy.*sala|soy.*club|busco.*dj|buscar.*artista|organizo.*evento/i],
     answer: 'Como empresario, XPEAK te da todo lo que necesitas en un solo lugar.\n\n**Flujo de contratación completo:**\n1. **Busca** en el Directorio filtrando por rol + ciudad + disponibilidad\n2. **Escucha** el audio o mira el vídeo del profesional antes de contactar\n3. **Verifica** el Sello de Oro para seguridad adicional\n4. **Contacta** directamente con el botón Mensaje — sin intermediarios\n5. **Acuerda** precio y condiciones en el chat\n6. **Genera el contrato** en Herramientas → Contratos con datos de ambas partes\n7. **Firma** y archiva el PDF\n\n**Para urgencias:** Publica en **Flash Booking** con fecha, rol, ciudad y caché — en 2h tienes respuestas de profesionales disponibles.\n\n**Panel Empresario** (Directorio → Panel Empresario) agrupa todas las herramientas de búsqueda en una vista optimizada.',
-    followUps: ['¿Cómo publico un Flash Booking?', '¿Cuánto cuesta para empresas?'],
+    followUps: ['¿Cómo publico un Flash Booking?'],
   },
 
   // ── Ajustes generales ─────────────────────────────────────────────────────
@@ -276,7 +276,7 @@ const KB: KBEntry[] = [
   {
     id: 'gdpr',
     patterns: [/rgpd|gdpr|privacidad.*datos|mis datos|exportar datos|portabilidad|derecho.*olvido|eliminar.*datos|política.*privacidad/i],
-    answer: 'XPEAK cumple con el **RGPD** europeo y la **LOPDGDD** española.\n\n**Tus derechos en XPEAK:**\n• **Acceso** — puedes solicitar qué datos tenemos sobre ti en cualquier momento\n• **Rectificación** — edita tus datos directamente desde Mi Perfil o Ajustes\n• **Supresión ("derecho al olvido")** — elimina tu cuenta desde Ajustes → se borran todos tus datos en 30 días\n• **Portabilidad** — descarga un ZIP con todos tus datos (mensajes, perfil, estadísticas) desde Ajustes → Exportar datos\n• **Oposición al tratamiento** — escribe a privacidad@xpeak.es\n\n**Datos que no almacenamos:**\n• Datos bancarios (los gestiona Stripe de forma aislada)\n• Contraseñas en texto plano (encriptadas con bcrypt)\n\nLa política de privacidad completa está en **xpeak.es/privacidad**.',
+    answer: 'XPEAK cumple con el **RGPD** europeo y la **LOPDGDD** española.\n\n**Tus derechos en XPEAK:**\n• **Acceso** — puedes solicitar qué datos tenemos sobre ti en cualquier momento\n• **Rectificación** — edita tus datos directamente desde Mi Perfil o Ajustes\n• **Supresión ("derecho al olvido")** — elimina tu cuenta desde Ajustes → se borran todos tus datos en 30 días\n• **Portabilidad** — descarga un ZIP con todos tus datos (mensajes, perfil, estadísticas) desde Ajustes → Exportar datos\n• **Oposición al tratamiento** — escribe a privacidad@xpeak.es\n\n**Datos que no almacenamos:**\n• Contraseñas en texto plano (encriptadas con bcrypt)\n\nLa política de privacidad completa está en **xpeak.es/privacidad**.',
     followUps: ['¿Cómo elimino mi cuenta?', '¿Cómo exporto mis datos?'],
   },
 
@@ -284,7 +284,7 @@ const KB: KBEntry[] = [
   {
     id: 'deleteaccount',
     patterns: [/eliminar.*cuenta|borrar.*cuenta|dar.*baja|darme.*baja|cerrar.*cuenta|dejar.*xpeak/i],
-    answer: 'Para eliminar tu cuenta permanentemente:\n\n1. Ve a **Ajustes** (menú lateral, abajo)\n2. Baja hasta la sección **"Zona de peligro"**\n3. Clic en **"Eliminar cuenta"**\n4. Confirma con tu contraseña\n\n**Qué ocurre al eliminar:**\n• Tu perfil desaparece del directorio inmediatamente\n• Los mensajes con otras personas se archivan (la otra parte puede seguir viendo su lado)\n• Tus datos se purgan de los servidores en **30 días** (RGPD)\n• Si tenías suscripción activa, se cancela automáticamente — no se realizan cobros adicionales\n\n**Antes de eliminar considera:**\n• Puedes desactivar la visibilidad del perfil temporalmente (Ajustes → Privacidad) sin borrar la cuenta\n• Puedes pausar la suscripción en lugar de eliminar la cuenta',
+    answer: 'Para eliminar tu cuenta permanentemente:\n\n1. Ve a **Ajustes** (menú lateral, abajo)\n2. Baja hasta la sección **"Zona de peligro"**\n3. Clic en **"Eliminar cuenta"**\n4. Confirma con tu contraseña\n\n**Qué ocurre al eliminar:**\n• Tu perfil desaparece del directorio inmediatamente\n• Los mensajes con otras personas se archivan (la otra parte puede seguir viendo su lado)\n• Tus datos se purgan de los servidores en **30 días** (RGPD)\n**Antes de eliminar considera:**\n• Puedes desactivar la visibilidad del perfil temporalmente (Ajustes → Privacidad) sin borrar la cuenta',
     followUps: ['¿Puedo reactivar la cuenta después?', '¿Qué pasa con mis estadísticas?'],
   },
 
@@ -308,7 +308,7 @@ const KB: KBEntry[] = [
   {
     id: 'support',
     patterns: [/soporte|hablar con alguien|hablar con persona|equipo.*xpeak|contactar.*equipo|email soporte|soporte@/i],
-    answer: 'El equipo de XPEAK está disponible por:\n\n**Email:** soporte@xpeak.es\n• Tiempo de respuesta habitual: **24-48h** en días laborables (L-V)\n• Para urgencias relacionadas con eventos en menos de 48h, escribe con asunto **"URGENTE — [descripción breve]"** — se priorizan\n\n**Qué incluir en tu email para resolución más rápida:**\n• Tu nombre de usuario o email de cuenta\n• Descripción clara del problema o pregunta\n• Capturas de pantalla si hay un error visual\n• Plataforma (web / iPhone / Android)\n\n**Para consultas sobre facturación:** incluye el ID de tu suscripción (visible en Mi Cuenta → Suscripción)\n\n**Para reportes de usuarios:** usa la función de reporte dentro de la plataforma o envía el perfil del usuario al email.',
+    answer: 'El equipo de XPEAK está disponible por:\n\n**Email:** soporte@xpeak.es\n• Tiempo de respuesta habitual: **24-48h** en días laborables (L-V)\n• Para urgencias relacionadas con eventos en menos de 48h, escribe con asunto **"URGENTE — [descripción breve]"** — se priorizan\n\n**Qué incluir en tu email para resolución más rápida:**\n• Tu nombre de usuario o email de cuenta\n• Descripción clara del problema o pregunta\n• Capturas de pantalla si hay un error visual\n• Plataforma (web / iPhone / Android)\n\n**Para reportes de usuarios:** usa la función de reporte dentro de la plataforma o envía el perfil del usuario al email.',
     followUps: ['¿Hay soporte en fin de semana?', '¿Qué tipo de problemas resolvéis?'],
   },
 
@@ -316,8 +316,8 @@ const KB: KBEntry[] = [
   {
     id: 'morebookings',
     patterns: [/más bookings|mas bookings|más contratos|mas contratos|conseguir.*trabajo|primer.*booking|cómo.*conseguir.*evento|como.*conseguir.*evento|no me contratan/i],
-    answer: 'Para conseguir más bookings en XPEAK, sigue este checklist:\n\n**Perfil (base):**\n✓ Foto profesional de alta calidad (no selfie, no foto de fiesta)\n✓ Bio clara con especialidad, experiencia y propuesta de valor\n✓ Géneros/especialidades correctamente etiquetados\n✓ Tarifa visible (los empresarios prefieren saber el precio antes de escribir)\n✓ Audio embed con tu mejor mix\n\n**Visibilidad:**\n✓ Solicita el **Sello de Oro** — sube al top del directorio sin coste extra\n✓ Activa disponibilidad los **jueves-domingos** — es cuando más buscan los empresarios\n✓ Emite en el **Escenario Virtual** en viernes por la tarde (plan Business)\n✓ Mantén el calendario actualizado\n\n**Conversión:**\n✓ Responde los mensajes en menos de 2 horas — la velocidad de respuesta influye en las estadísticas de perfil\n✓ Tras acordar verbalmente, genera el contrato inmediatamente',
-    followUps: ['¿Cómo obtengo el Sello de Oro?', '¿Qué plan me da más visibilidad?'],
+    answer: 'Para conseguir más bookings en XPEAK, sigue este checklist:\n\n**Perfil (base):**\n✓ Foto profesional de alta calidad (no selfie, no foto de fiesta)\n✓ Bio clara con especialidad, experiencia y propuesta de valor\n✓ Géneros/especialidades correctamente etiquetados\n✓ Tarifa visible (los empresarios prefieren saber el precio antes de escribir)\n✓ Audio embed con tu mejor mix\n\n**Visibilidad:**\n✓ Solicita el **Sello de Oro** — sube al top del directorio gratis\n✓ Activa disponibilidad los **jueves-domingos** — es cuando más buscan los empresarios\n✓ Emite en el **Escenario Virtual** en viernes por la tarde\n✓ Mantén el calendario actualizado\n\n**Conversión:**\n✓ Responde los mensajes en menos de 2 horas — la velocidad de respuesta influye en las estadísticas de perfil\n✓ Tras acordar verbalmente, genera el contrato inmediatamente',
+    followUps: ['¿Cómo obtengo el Sello de Oro?'],
   },
 
   // ── Europa / bookings internacionales ────────────────────────────────────
@@ -370,7 +370,6 @@ function getBestMatch(input: string): KBEntry | null {
 // Fallback inteligente: sugiere los temas más relevantes
 const TOPIC_HINTS = [
   { label: 'Flash Booking',      keyword: 'cómo funciona el flash booking' },
-  { label: 'Planes y precios',   keyword: 'diferencia entre planes' },
   { label: 'Mi perfil',          keyword: 'cómo completo mi perfil' },
   { label: 'Contratos',          keyword: 'cómo genero un contrato' },
   { label: 'Más bookings',       keyword: 'cómo conseguir más bookings' },
@@ -381,6 +380,7 @@ const TOPIC_HINTS = [
   { label: 'Cancelaciones',      keyword: 'qué pasa si se cancela el evento' },
   { label: 'Privacidad',         keyword: 'quién ve mi perfil' },
   { label: 'Soporte humano',     keyword: 'soporte equipo xpeak' },
+  { label: 'Más información',    keyword: 'qué es xpeak' },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -389,7 +389,6 @@ const TOPIC_HINTS = [
 const QUICK_ACTIONS = [
   { icon: Zap,        label: 'Flash Booking',  msg: '¿Cómo funciona el flash booking?' },
   { icon: User,       label: 'Mi perfil',      msg: '¿Cómo completo mi perfil?' },
-  { icon: CreditCard, label: 'Precios',        msg: '¿Cuánto cuesta XPEAK?' },
   { icon: FileText,   label: 'Contratos',      msg: '¿Cómo genero un contrato?' },
   { icon: Star,       label: 'Sello de Oro',   msg: '¿Cómo obtengo el sello de oro?' },
   { icon: Radio,      label: 'Streaming',      msg: '¿Cómo emito en directo?' },
@@ -397,6 +396,7 @@ const QUICK_ACTIONS = [
   { icon: Building2,  label: 'Empresarios',    msg: '¿Cómo funciona para empresarios?' },
   { icon: Award,      label: 'TOP Weekend',    msg: '¿Qué es el TOP Weekend?' },
   { icon: BarChart3,  label: 'Estadísticas',   msg: '¿Qué estadísticas puedo ver?' },
+  { icon: Map,        label: 'Mapa',           msg: '¿Cómo funciona el mapa?' },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -421,9 +421,9 @@ const MsgText = ({ text }: { text: string }) => {
 // ─────────────────────────────────────────────────────────────────────────────
 const GREETING: Msg = {
   from: 'bot',
-  text: '¡Hola! Soy el asistente de **XPEAK**. Puedo responderte sobre el directorio, suscripciones, flash booking, contratos, streaming y mucho más.\n\n¿En qué te puedo ayudar?',
+  text: '¡Hola! Soy el asistente de **XPEAK**. Puedo responderte sobre el directorio, flash booking, contratos, streaming y mucho más.\n\n¿En qué te puedo ayudar?',
   ts: Date.now(),
-  followUps: ['¿Qué es XPEAK?', '¿Cómo funciona el Flash Booking?', '¿Cuánto cuesta?'],
+  followUps: ['¿Qué es XPEAK?', '¿Cómo funciona el Flash Booking?', '¿Cómo consigo más bookings?'],
 };
 
 const SupportChat = () => {

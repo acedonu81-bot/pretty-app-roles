@@ -11,6 +11,7 @@ interface Conversation {
   id: string;
   other_user_id: string;
   other_name: string;
+  other_photo?: string | null;
   last_message: string;
   last_message_at: string;
   unread: number;
@@ -38,6 +39,10 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
   const [showEmoji, setShowEmoji] = useState(false);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [showConvList, setShowConvList] = useState(true);
+  const [showNewConv, setShowNewConv] = useState(false);
+  const [searchUsers, setSearchUsers] = useState('');
+  const [userResults, setUserResults] = useState<{ user_id: string; display_name: string; role: string }[]>([]);
+  const [searchingUsers, setSearchingUsers] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const realtimeRef = useRef<RealtimeChannel | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -56,8 +61,8 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     // Batch: single query for all participant profiles
     const otherIds = data.map(c => c.participant_a === user.id ? c.participant_b : c.participant_a);
     const { data: profilesData } = await supabase
-      .from('profiles').select('user_id, display_name').in('user_id', otherIds);
-    const profileMap = new Map((profilesData ?? []).map(p => [p.user_id, p.display_name]));
+      .from('profiles').select('user_id, display_name, photo_url').in('user_id', otherIds);
+    const profileMap = new Map((profilesData ?? []).map(p => [p.user_id, { name: p.display_name, photo: p.photo_url }]));
 
     // Parallel: lastMsg + unread per conversation, all at once
     const convs: Conversation[] = await Promise.all(data.map(async (c) => {
@@ -71,7 +76,8 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
       return {
         id: c.id,
         other_user_id: otherId,
-        other_name: profileMap.get(otherId) || 'Usuario',
+        other_name: profileMap.get(otherId)?.name || 'Usuario',
+        other_photo: profileMap.get(otherId)?.photo,
         last_message: lastMsg?.content || '',
         last_message_at: c.last_message_at,
         unread: count || 0,
@@ -211,6 +217,26 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     loadConversations();
   };
 
+  const searchUsersHandler = async (q: string) => {
+    setSearchUsers(q);
+    if (q.trim().length < 2) { setUserResults([]); return; }
+    setSearchingUsers(true);
+    const { data } = await supabase.from('profiles')
+      .select('user_id, display_name, role')
+      .ilike('display_name', `%${q}%`)
+      .neq('user_id', user?.id ?? '')
+      .limit(10);
+    setUserResults((data ?? []) as { user_id: string; display_name: string; role: string }[]);
+    setSearchingUsers(false);
+  };
+
+  const startNewConversation = async (targetUserId: string, targetName: string) => {
+    setShowNewConv(false);
+    setSearchUsers('');
+    setUserResults([]);
+    await openConversationWith(targetUserId, targetName);
+  };
+
   const totalUnread = conversations.reduce((s, c) => s + c.unread, 0);
   const isMobileChat = !showConvList && activeConvId;
 
@@ -241,6 +267,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
               loading={loading}
               activeConvId={activeConvId}
               onSelectConversation={handleSelectConversation}
+              onNewConversation={() => setShowNewConv(true)}
             />
           )}
 
@@ -270,6 +297,45 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
           )}
         </div>
       </div>
+
+      {/* Nueva conversación modal */}
+      {showNewConv && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)' }}
+          onClick={e => { if (e.target === e.currentTarget) { setShowNewConv(false); setSearchUsers(''); setUserResults([]); } }}>
+          <div className="rounded-2xl p-5 w-full max-w-sm"
+            style={{ background: '#0a0a0e', border: '1px solid rgba(212,175,55,0.25)', boxShadow: '0 20px 60px rgba(0,0,0,0.8)' }}>
+            <p className="text-sm font-bold mb-3">Nueva conversación</p>
+            <input
+              autoFocus
+              value={searchUsers}
+              onChange={e => searchUsersHandler(e.target.value)}
+              placeholder="Buscar profesional por nombre..."
+              className="nightlife-input w-full text-sm mb-3"
+            />
+            {searchingUsers && <p className="text-xs text-muted-foreground text-center py-2">Buscando...</p>}
+            {!searchingUsers && userResults.length === 0 && searchUsers.length >= 2 && (
+              <p className="text-xs text-muted-foreground text-center py-2">Sin resultados</p>
+            )}
+            <div className="flex flex-col gap-1 max-h-60 overflow-y-auto">
+              {userResults.map(u => (
+                <button key={u.user_id} onClick={() => startNewConversation(u.user_id, u.display_name || 'Usuario')}
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all hover:scale-[1.01]"
+                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-black flex-shrink-0"
+                    style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+                    {(u.display_name || 'U').charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold">{u.display_name || 'Usuario'}</p>
+                    <p className="text-xs text-muted-foreground">{u.role}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

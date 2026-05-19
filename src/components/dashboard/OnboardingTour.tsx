@@ -16,7 +16,7 @@ const PROFESSIONAL_STEPS: TourStep[] = [
   {
     icon: <User size={20} />,
     title: '¡Bienvenido/a a XPEAK!',
-    body: 'La plataforma donde el talento nocturno encuentra su siguiente contrato. Este tour te explica lo esencial en 60 segundos.',
+    body: 'La plataforma donde los profesionales de eventos encuentran su siguiente contrato. Este tour te explica lo esencial en 60 segundos.',
     highlight: 'Comencemos.',
   },
   {
@@ -47,13 +47,6 @@ const PROFESSIONAL_STEPS: TourStep[] = [
     cta: 'Ver mensajes →',
   },
   {
-    icon: <Star size={20} />,
-    title: 'Sello de Oro XPEAK',
-    body: 'Sube un vídeo demostrando tu trabajo. El equipo lo revisa en 24h. El sello te posiciona primero en todas las búsquedas.',
-    view: 'profile',
-    cta: 'Solicitar sello →',
-  },
-  {
     icon: <CheckCircle size={20} />,
     title: '¡Listo! Ya sabes lo esencial',
     body: 'Explora el Escenario Virtual, Flash Booking, Estadísticas y más. Cualquier duda, usa el asistente de soporte.',
@@ -65,7 +58,7 @@ const EMPRESARIO_STEPS: TourStep[] = [
   {
     icon: <Building2 size={20} />,
     title: '¡Bienvenido/a a XPEAK!',
-    body: 'El marketplace de talento nocturno. Contrata DJs, staff, makeup y media — con contratos cerrados en minutos.',
+    body: 'El marketplace de talento para eventos. Contrata DJs, staff, makeup y media — con contratos cerrados en minutos.',
     highlight: 'Comencemos.',
   },
   {

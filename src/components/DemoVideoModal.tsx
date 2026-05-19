@@ -18,9 +18,9 @@ const DemoVideoModal = ({ open, onClose }: DemoVideoModalProps) => {
           <X size={16} />
         </button>
         <h3 className="text-base font-bold mb-1">
-          Mira cómo <span className="text-gradient">XPEAK</span> conecta Europa
+          Mira cómo <span className="text-gradient">XPEAK</span> conecta profesionales
         </h3>
-        <p className="text-xs text-muted-foreground mb-3">Descubre el directorio profesional del ocio nocturno.</p>
+        <p className="text-xs text-muted-foreground mb-3">Descubre cómo contratar el equipo perfecto para tu evento.</p>
         <div className="rounded-lg overflow-hidden" style={{ border: '1px solid var(--nightlife-border)' }}>
           <video controls autoPlay muted playsInline className="w-full aspect-video bg-black">
             <source src="https://videos.pexels.com/video-files/3129957/3129957-uhd_2560_1440_25fps.mp4" type="video/mp4" />

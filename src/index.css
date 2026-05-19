@@ -122,6 +122,13 @@ html, body, #root {
     display: inline-block;
   }
 
+  /* On light-background pages, use darker gold so gradient stays readable */
+  [data-landing="true"] .text-gradient {
+    background: linear-gradient(135deg, #7A5800, #B8900A);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
   .glass-panel {
     background: var(--nightlife-card);
     backdrop-filter: blur(20px);

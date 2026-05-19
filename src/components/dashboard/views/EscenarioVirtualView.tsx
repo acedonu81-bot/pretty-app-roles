@@ -8,7 +8,6 @@ import { sanitizeInput } from '@/lib/contentFilter';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import IVSPlayer from '@/components/dashboard/IVSPlayer';
-import StreamingPacksSection from '@/components/dashboard/StreamingPacksSection';
 
 // Chat starts empty — messages accumulate from live viewers and sendChat()
 const fakeChat: { user: string; text: string; color: string }[] = [];
@@ -125,7 +124,7 @@ const ReportModal = ({
 const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', makeup: 'Makeup', rookie: 'Promesa', media: 'Media', design: 'Diseño', promotor: 'Promotor', ambassador: 'Embajador', vestuario: 'Moda' };
 const ROLE_COLOR: Record<string, string> = { dj: '#D4AF37', staff: '#8B5CF6', makeup: '#EC4899', rookie: '#F59E0B', media: '#3B82F6', design: '#34D399', promotor: '#F97316', ambassador: '#A78BFA', vestuario: '#F472B6' };
 
-interface LiveProfile { id: string; display_name: string; role: string; stream_title: string | null; zone: string | null; }
+interface LiveProfile { id: string; display_name: string; role: string; stream_title: string | null; zone: string | null; stream_url: string | null; }
 
 const EscenarioVirtualView = () => {
   const profile = useProfile();
@@ -148,7 +147,7 @@ const EscenarioVirtualView = () => {
   useEffect(() => {
     if (profile.role !== 'empresario') return;
     setLiveLoading(true);
-    supabase.from('profiles').select('id, display_name, role, stream_title, zone')
+    supabase.from('profiles').select('id, display_name, role, stream_title, zone, stream_url')
       .eq('is_live', true).limit(12)
       .then(({ data }) => { setLiveProfiles((data as LiveProfile[]) ?? []); setLiveLoading(false); });
   }, [profile.role]);
@@ -297,19 +296,34 @@ const EscenarioVirtualView = () => {
                     </span>
                   </div>
                   <div className="flex gap-2">
-                    <span className="flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-lg flex-shrink-0"
-                      style={{ background: 'rgba(229,57,53,0.08)', border: '1px solid rgba(229,57,53,0.2)', color: '#E53935' }}>
-                      <span className="relative flex h-1.5 w-1.5">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: '#E53935' }} />
-                        <span className="relative inline-flex rounded-full h-1.5 w-1.5" style={{ background: '#E53935' }} />
+                    {p.stream_url ? (
+                      <a
+                        href={p.stream_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-[1.02]"
+                        style={{ background: 'rgba(229,57,53,0.15)', border: '1px solid rgba(229,57,53,0.35)', color: '#E53935' }}>
+                        <span className="relative flex h-1.5 w-1.5">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: '#E53935' }} />
+                          <span className="relative inline-flex rounded-full h-1.5 w-1.5" style={{ background: '#E53935' }} />
+                        </span>
+                        Ver directo
+                      </a>
+                    ) : (
+                      <span className="flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-lg flex-shrink-0"
+                        style={{ background: 'rgba(229,57,53,0.08)', border: '1px solid rgba(229,57,53,0.2)', color: '#E53935' }}>
+                        <span className="relative flex h-1.5 w-1.5">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: '#E53935' }} />
+                          <span className="relative inline-flex rounded-full h-1.5 w-1.5" style={{ background: '#E53935' }} />
+                        </span>
+                        En vivo
                       </span>
-                      En vivo
-                    </span>
+                    )}
                     <button
                       onClick={() => navigate('/dashboard', { state: { view: 'messages', contactId: p.id } })}
                       className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-[1.02]"
                       style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-                      <MessageCircle size={12} /> Contactar ahora
+                      <MessageCircle size={12} /> Contactar
                     </button>
                   </div>
                 </div>
@@ -514,7 +528,6 @@ const EscenarioVirtualView = () => {
             </div>
           </div>
 
-          <StreamingPacksSection />
         </div>
 
         <div className="glass-panel p-4 flex flex-col min-h-0">

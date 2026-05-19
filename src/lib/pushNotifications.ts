@@ -31,26 +31,25 @@ async function getRegistration(): Promise<ServiceWorkerRegistration | null> {
 /** Solicita permiso y suscribe al push. Devuelve true si ok. */
 export async function requestPushPermission(): Promise<boolean> {
   if (!('Notification' in window)) return false;
-  const reg = await getRegistration();
-  if (!reg) return false;
 
   const permission = await Notification.requestPermission();
   if (permission !== 'granted') return false;
 
-  // Suscribir al pushManager (sin VAPID en modo basic — la suscripción es válida para notificaciones locales)
+  // SW + VAPID opcionales — si fallan seguimos con notificaciones locales
   try {
-    // Intentamos suscripción completa si hay VAPID key configurada
-    const vapidKey = import.meta.env.VITE_VAPID_PUBLIC_KEY;
-    if (vapidKey) {
-      const sub = await reg.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(vapidKey),
-      });
-      // Aquí guardaríamos sub.toJSON() en Supabase para envíos del servidor
-      console.info('[XPEAK Push] Suscripción push activa:', sub.endpoint);
+    const reg = await getRegistration();
+    if (reg) {
+      const vapidKey = import.meta.env.VITE_VAPID_PUBLIC_KEY;
+      if (vapidKey) {
+        const sub = await reg.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(vapidKey),
+        });
+        console.info('[XPEAK Push] Suscripción push activa:', sub.endpoint);
+      }
     }
   } catch {
-    // Sin VAPID todavía — seguimos con notificaciones locales vía SW
+    // Sin VAPID todavía — notificaciones locales disponibles
   }
 
   localStorage.setItem(STORAGE_KEY, 'true');

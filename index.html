@@ -3,11 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https: ; media-src 'self' blob: https://v15-kling.klingai.com https://s15-kling.klingai.com https://videos.pexels.com; frame-src https://www.youtube.com https://www.youtube-nocookie.com https://player.twitch.tv https://w.soundcloud.com https://www.mixcloud.com https://open.spotify.com https://player.vimeo.com https://www.tiktok.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://plausible.io https://api.stripe.com; worker-src blob: ; object-src 'none';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https: ; media-src 'self' blob: https://videos.pexels.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://plausible.io https://api.stripe.com; worker-src blob: ; object-src 'none';" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
     <title>XPEAK | Contratar DJs, Staff y Profesionales para Eventos en España</title>
-    <meta name="description" content="Contrata DJs verificados, fotógrafos, staff de sala y profesionales para tus eventos. Flash Booking en menos de 1h. Contratos automáticos. Gratis para salas y promotoras. Toda España." />
+    <meta name="description" content="Contrata DJs, fotógrafos, camareros, maquilladores y profesionales verificados para bodas, comuniones y eventos en España. Flash Booking en menos de 1h. Contratos automáticos. Gratis para organizadores." />
     <meta name="author" content="XPEAK" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://xpeak.es/" />
@@ -20,7 +20,7 @@
 
     <!-- Open Graph -->
     <meta property="og:title" content="XPEAK | Contratar DJs, Staff y Profesionales para Eventos" />
-    <meta property="og:description" content="Contrata DJs, fotógrafos, staff de sala y profesionales verificados para tus eventos en España. Flash Booking en menos de 1h. Gratis para empresarios y promotoras." />
+    <meta property="og:description" content="Contrata DJs, fotógrafos, camareros, maquilladores y profesionales verificados para bodas, comuniones y eventos en España. Flash Booking en menos de 1h. Gratis para organizadores." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://xpeak.es/" />
     <meta property="og:site_name" content="XPEAK" />
@@ -34,7 +34,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@xpeak_es" />
     <meta name="twitter:title" content="XPEAK | Contratar DJs y Profesionales para Eventos en España" />
-    <meta name="twitter:description" content="Directorio verificado de DJs, fotógrafos, staff y promotores. Flash Booking en menos de 1h. Gratis para salas y promotoras." />
+    <meta name="twitter:description" content="Directorio verificado de DJs, fotógrafos, camareros, maquilladores y más. Flash Booking en menos de 1h. Gratis para organizadores de eventos." />
     <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
 
     <!-- JSON-LD: Organization -->
@@ -82,14 +82,14 @@
       "@type": "Service",
       "name": "XPEAK — Directorio de Talento para Eventos",
       "provider": {"@type": "Organization", "name": "XPEAK", "url": "https://xpeak.es"},
-      "description": "Plataforma para contratar DJs verificados, fotógrafos, staff de sala, maquilladores, promotores y profesionales del ocio nocturno en toda España.",
+      "description": "Plataforma para contratar DJs, fotógrafos, camareros, maquilladores, maestros de ceremonias y profesionales de eventos en toda España.",
       "areaServed": {"@type": "Country", "name": "ES"},
       "serviceType": "Directorio profesional de talento para eventos",
       "offers": {
         "@type": "Offer",
         "price": "0",
         "priceCurrency": "EUR",
-        "description": "Registro gratuito para empresarios, salas y promotoras"
+        "description": "Registro gratuito para organizadores de eventos, empresas y particulares"
       }
     }
     </script>
@@ -104,20 +104,19 @@
     })(window,document,'script','dataLayer','GTM-PHXTFGXK');</script>
     <!-- End Google Tag Manager -->
 
-    <!-- Preconnect: Google Fonts (Variable Fonts) -->
+    <!-- Preconnect: Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- Preconnect -->
+    <!-- Preload critical fonts to remove them from the render-blocking chain -->
+    <link rel="preload" href="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="https://fonts.gstatic.com/s/syne/v24/8vIH7w4qzmVxm2BL9G78HEY.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- Preconnect: Supabase (API calls on mount) -->
+    <link rel="preconnect" href="https://ddrqhwravupjzysriblq.supabase.co" />
+
+    <!-- Preconnect: Demo video (only used in modal, lower priority) -->
     <link rel="preconnect" href="https://videos.pexels.com" />
-    <link rel="preconnect" href="https://images.pexels.com" />
-    <link rel="preconnect" href="https://player.twitch.tv" />
-    <link rel="preconnect" href="https://www.youtube.com" />
-    <link rel="preconnect" href="https://www.mixcloud.com" />
-    <link rel="preconnect" href="https://w.soundcloud.com" />
-    <link rel="preconnect" href="https://hearthis.at" />
-    <link rel="preconnect" href="https://player.vimeo.com" />
-    <link rel="preconnect" href="https://open.spotify.com" />
 
     <!-- Analytics (Plausible — GDPR, sin cookies, sin datos personales) -->
     <script defer data-domain="xpeak.es" src="https://plausible.io/js/script.js"></script>

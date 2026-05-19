@@ -527,44 +527,18 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
             )}
           </div>
 
-          {/* Sesiones de vídeo — Starter+ */}
-          {isOwn && (() => {
-            const tier = (profile as any).subscription_tier ?? 'free';
-            const isPro = tier === 'pro' || tier === 'business';
-            const isStarter = tier === 'starter' || tier === 'artist';
-            const canUpload = isPro || isStarter;
-            const maxVids = isPro ? 10 : 3;
-            return (
-              <div className="glass-panel p-5" style={{ border: '1px solid rgba(66,133,244,0.15)' }}>
-                <h4 className="text-sm font-bold mb-1 flex items-center gap-2">
-                  <Video size={14} style={{ color: BLUE }} /> Sesiones de Vídeo
-                  <span className="text-xs px-1.5 py-0.5 rounded font-bold"
-                    style={{ background: 'rgba(66,133,244,0.1)', color: BLUE, border: `1px solid ${BLUE_BORDER}` }}>
-                    {canUpload ? `Starter/Pro · máx ${maxVids}` : 'Starter+'}
-                  </span>
-                </h4>
-                <p className="text-xs text-muted-foreground mb-3">
-                  Sube clips de actuaciones (MP4/MOV, máx 50MB, 60s). Solo Starter y Pro.
-                </p>
-                {canUpload ? (
-                  <VideoSessionUpload maxSessions={maxVids} userId={user!.id} />
-                ) : (
-                  <div className="p-6 rounded-xl flex flex-col items-center text-center gap-3"
-                    style={{ border: '1px dashed rgba(66,133,244,0.2)' }}>
-                    <Video size={22} style={{ color: 'rgba(66,133,244,0.3)' }} />
-                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                      Las sesiones de vídeo están disponibles desde el plan <strong style={{ color: '#fff' }}>Starter</strong>.
-                    </p>
-                    <a href="#subscription"
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
-                      style={{ background: 'rgba(66,133,244,0.1)', border: '1px solid rgba(66,133,244,0.25)', color: BLUE }}>
-                      Ver planes
-                    </a>
-                  </div>
-                )}
-              </div>
-            );
-          })()}
+          {/* Sesiones de vídeo */}
+          {isOwn && (
+            <div className="glass-panel p-5" style={{ border: '1px solid rgba(66,133,244,0.15)' }}>
+              <h4 className="text-sm font-bold mb-1 flex items-center gap-2">
+                <Video size={14} style={{ color: BLUE }} /> Sesiones de Vídeo
+              </h4>
+              <p className="text-xs text-muted-foreground mb-3">
+                Sube clips de actuaciones (MP4/MOV, máx 50MB, 60s).
+              </p>
+              <VideoSessionUpload maxSessions={10} userId={user!.id} />
+            </div>
+          )}
 
           {/* Contenido de perfil (audio_embed_url / stream_url) */}
           {isOwn && (profile.audio_embed_url || (profile as any).stream_url) && (

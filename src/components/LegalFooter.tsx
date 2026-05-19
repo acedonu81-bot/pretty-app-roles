@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import LegalModal from './LegalModal';
 import ContactModal from './ContactModal';
-import xpeakLogo from '@/assets/xpeak-logo.png';
 
 const LegalFooter = () => {
   const [showLegal, setShowLegal] = useState(false);
@@ -22,33 +21,32 @@ const LegalFooter = () => {
             {/* Marca */}
             <div className="col-span-2 md:col-span-1">
               <div className="flex items-center gap-2.5 mb-3">
-                <img src={xpeakLogo} alt="XPEAK" className="hidden sm:block w-7 h-7 object-contain" />
                 <span className="text-xl font-black tracking-widest font-display" style={{ color: '#D4AF37' }}>X<span style={{ color: 'rgba(255,255,255,0.85)' }}>PEAK</span></span>
               </div>
-              <p className="text-xs leading-relaxed max-w-[200px]" style={{ color: 'rgba(255,255,255,0.35)' }}>
-                El directorio profesional del ocio nocturno en España y Europa.
+              <p className="text-xs leading-relaxed max-w-[200px]" style={{ color: 'rgba(255,255,255,0.55)' }}>
+                Conectamos profesionales de eventos con quienes los necesitan. España.
               </p>
               <a href="mailto:info@xpeak.es" className="inline-block mt-3 text-xs font-bold transition-colors hover:opacity-80"
-                style={{ color: 'rgba(212,175,55,0.6)' }}>
+                style={{ color: 'rgba(212,175,55,0.7)' }}>
                 info@xpeak.es
               </a>
             </div>
 
             {/* Plataforma */}
             <div>
-              <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.25)' }}>Plataforma</p>
-              <ul className="space-y-2.5 text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
+              <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Plataforma</p>
+              <ul className="space-y-2.5 text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
                 <li><Link to="/auth" className="hover:text-white transition-colors">Registro gratuito</Link></li>
                 <li><Link to="/auth" className="hover:text-white transition-colors">Para profesionales</Link></li>
-                <li><Link to="/auth" className="hover:text-white transition-colors">Para empresas y salas</Link></li>
+                <li><Link to="/auth" className="hover:text-white transition-colors">Para organizadores de eventos</Link></li>
                 <li><Link to="/dashboard" className="hover:text-white transition-colors">Mi dashboard</Link></li>
               </ul>
             </div>
 
             {/* Empresa */}
             <div>
-              <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.25)' }}>Empresa</p>
-              <ul className="space-y-2.5 text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
+              <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Empresa</p>
+              <ul className="space-y-2.5 text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
                 <li><Link to="/sobre-nosotros" className="hover:text-white transition-colors">Sobre nosotros</Link></li>
                 <li>
                   <button onClick={() => setShowContact(true)} className="hover:text-white transition-colors text-left">
@@ -65,8 +63,8 @@ const LegalFooter = () => {
 
             {/* Legal */}
             <div>
-              <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.25)' }}>Legal</p>
-              <ul className="space-y-2.5 text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
+              <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Legal</p>
+              <ul className="space-y-2.5 text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
                 <li><Link to="/privacidad" className="hover:text-white transition-colors">Política de privacidad</Link></li>
                 <li><Link to="/terminos" className="hover:text-white transition-colors">Términos y condiciones</Link></li>
                 <li><Link to="/cookies" className="hover:text-white transition-colors">Política de cookies</Link></li>
@@ -77,10 +75,10 @@ const LegalFooter = () => {
 
           {/* Bottom */}
           <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
-            <p className="text-[0.7rem]" style={{ color: 'rgba(255,255,255,0.25)' }}>
+            <p className="text-[0.7rem]" style={{ color: 'rgba(255,255,255,0.45)' }}>
               © {new Date().getFullYear()} XPEAK — España. Todos los derechos reservados.
             </p>
-            <p className="text-[0.65rem] text-center max-w-md" style={{ color: 'rgba(255,255,255,0.2)' }}>
+            <p className="text-[0.65rem] text-center max-w-md" style={{ color: 'rgba(255,255,255,0.4)' }}>
               Plataforma de intermediación técnica. Cada usuario actúa bajo su propia responsabilidad legal. XPEAK no cobra comisiones por contrato.
             </p>
           </div>

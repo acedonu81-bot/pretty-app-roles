@@ -367,7 +367,26 @@ export default function BlogCosteBoda() {
           </div>
 
           {/* Artículos relacionados */}
-          <section className="mt-12">
+          {/* Planificador CTA */}
+          <section className="mt-10 mb-4">
+            <a href="/presupuesto-boda"
+              className="flex flex-col sm:flex-row items-center gap-4 p-5 rounded-2xl transition-all hover:scale-[1.01]"
+              style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.2)' }}>
+              <span className="text-4xl flex-shrink-0">🛒</span>
+              <div className="flex-1 text-center sm:text-left">
+                <p className="text-sm font-black mb-1">Calcula tu presupuesto de boda al instante</p>
+                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>
+                  Añade DJ, catering, fotógrafo y camareros. Las fichas se suman en tiempo real con el total estimado.
+                </p>
+              </div>
+              <span className="text-xs font-black px-4 py-2 rounded-lg flex-shrink-0"
+                style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                Ir al planificador →
+              </span>
+            </a>
+          </section>
+
+          <section className="mt-8">
             <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: 'rgba(255,255,255,0.3)' }}>Artículos relacionados</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {[

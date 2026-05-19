@@ -21,7 +21,6 @@ interface CityPro {
   specialty: string | null;
   zone: string | null;
   photo_url: string | null;
-  subscription_tier: string;
   is_verified: boolean;
 }
 
@@ -34,7 +33,7 @@ const MapaView = () => {
   useEffect(() => {
     supabase
       .from('profiles')
-      .select('user_id, display_name, role, specialty, zone, photo_url, subscription_tier, is_verified')
+      .select('user_id, display_name, role, specialty, zone, photo_url, is_verified')
       .limit(500)
       .then(({ data }) => {
         setAllProfiles(data ?? []);
@@ -158,12 +157,6 @@ const MapaView = () => {
                     <p className="text-xs text-muted-foreground truncate">
                       {ROLE_LABELS[pro.role] ?? pro.role}{pro.specialty ? ` · ${pro.specialty}` : ''}
                     </p>
-                    {pro.subscription_tier !== 'free' && (
-                      <span className="text-[0.75rem] font-bold px-1.5 py-0.5 rounded mt-1 inline-block"
-                        style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
-                        {pro.subscription_tier.charAt(0).toUpperCase() + pro.subscription_tier.slice(1)}
-                      </span>
-                    )}
                   </div>
                   <ExternalLink size={12} style={{ color: 'rgba(255,255,255,0.2)', flexShrink: 0 }} />
                 </a>
