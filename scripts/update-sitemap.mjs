@@ -1,0 +1,196 @@
+/**
+ * Sitemap generator — runs at build time after vite build.
+ * Merges static URLs + dynamic public profiles from Supabase.
+ * Output: public/sitemap.xml
+ */
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.join(__dirname, '..');
+const OUT = path.join(ROOT, 'public', 'sitemap.xml');
+const TODAY = new Date().toISOString().slice(0, 10);
+
+// ─── Load .env manually (no dotenv dep needed) ────────────────────────────
+function loadEnv() {
+  const envPath = path.join(ROOT, '.env');
+  const raw = fs.readFileSync(envPath, 'utf-8');
+  const env = {};
+  for (const line of raw.split('\n')) {
+    const m = line.match(/^([A-Z_]+)="?([^"]*)"?$/);
+    if (m) env[m[1]] = m[2];
+  }
+  return env;
+}
+
+// ─── Fetch all public profiles from Supabase ─────────────────────────────
+async function fetchProfiles(supabaseUrl, anonKey) {
+  const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,updated_at,role&role=neq.empresario&order=updated_at.desc&limit=1000`;
+  const res = await fetch(url, {
+    headers: {
+      apikey: anonKey,
+      Authorization: `Bearer ${anonKey}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!res.ok) {
+    console.warn('⚠️  Could not fetch profiles from Supabase:', res.status);
+    return [];
+  }
+  return res.json();
+}
+
+// ─── URL helpers ──────────────────────────────────────────────────────────
+function url(loc, lastmod, changefreq, priority) {
+  return `  <url><loc>${loc}</loc><lastmod>${lastmod}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority></url>`;
+}
+
+// ─── Static URL list ──────────────────────────────────────────────────────
+function staticUrls(today) {
+  const lines = [];
+
+  // Core
+  lines.push('  <!-- Core -->');
+  lines.push(url('https://xpeak.es/', today, 'weekly', '1.0'));
+  lines.push(url('https://xpeak.es/auth', today, 'monthly', '0.8'));
+  lines.push(url('https://xpeak.es/sobre-nosotros', today, 'monthly', '0.6'));
+
+  // Category landings
+  lines.push('\n  <!-- Category landings -->');
+  const cats = ['dj','staff','fotografo','camareros','catering','maquillaje','promotores','vestuario','disco-movil'];
+  const catPri = { dj: '0.9', staff: '0.9', camareros: '0.9', catering: '0.9', fotografo: '0.8', maquillaje: '0.8', promotores: '0.8', 'disco-movil': '0.8', vestuario: '0.7' };
+  for (const c of cats) {
+    lines.push(url(`https://xpeak.es/contratar-${c}`, today, 'weekly', catPri[c] || '0.8'));
+  }
+
+  // City landings
+  const cities = ['madrid','barcelona','valencia','sevilla','malaga','bilbao','zaragoza','murcia','palma','ibiza'];
+  const cityPri = { madrid: '0.85', barcelona: '0.85', ibiza: '0.85', valencia: '0.8', sevilla: '0.8', malaga: '0.75', bilbao: '0.75', palma: '0.75', zaragoza: '0.7', murcia: '0.7' };
+  const catsByCity = ['dj','camareros','fotografo','catering','maquillaje','staff','disco-movil','promotores','vestuario'];
+
+  for (const cat of catsByCity) {
+    lines.push(`\n  <!-- ${cat} por ciudad -->`);
+    for (const city of cities) {
+      const pri = parseFloat(cityPri[city] || '0.7');
+      const adjusted = (Math.min(pri, 0.85)).toFixed(2);
+      lines.push(url(`https://xpeak.es/contratar-${cat}/${city}`, today, 'weekly', adjusted));
+    }
+  }
+
+  // Local SEO
+  lines.push('\n  <!-- Local SEO -->');
+  const localCats = [['dj','0.85'],['camareros','0.8'],['fotografo','0.8'],['maquillaje','0.75'],['staff','0.75']];
+  const localCities = ['madrid','barcelona','sevilla','valencia','malaga','bilbao'];
+  for (const [cat, pri] of localCats) {
+    for (const city of localCities) {
+      const p = (parseFloat(pri) - (localCities.indexOf(city) * 0.05)).toFixed(2);
+      lines.push(url(`https://xpeak.es/${cat}-${city}`, today, 'weekly', p));
+    }
+  }
+
+  // Special landings
+  lines.push('\n  <!-- Special landings -->');
+  lines.push(url('https://xpeak.es/bodas', today, 'weekly', '0.90'));
+  lines.push(url('https://xpeak.es/presupuesto-boda', today, 'monthly', '0.85'));
+  lines.push(url('https://xpeak.es/precios', today, 'monthly', '0.7'));
+
+  // Blog index
+  lines.push('\n  <!-- Blog -->');
+  lines.push(url('https://xpeak.es/blog', today, 'weekly', '0.7'));
+
+  // Blog posts (dates reflect actual publish dates)
+  const posts = [
+    ['https://xpeak.es/blog/10-errores-contratar-dj-boda', '2026-05-18', '0.80'],
+    ['https://xpeak.es/blog/musica-en-vivo-para-bodas', '2026-05-16', '0.80'],
+    ['https://xpeak.es/blog/maestro-de-ceremonias-boda-precio-guia', '2026-05-16', '0.80'],
+    ['https://xpeak.es/blog/wedding-planner-precio-espana', '2026-05-07', '0.75'],
+    ['https://xpeak.es/blog/como-contratar-personal-para-un-evento', '2026-05-07', '0.75'],
+    ['https://xpeak.es/blog/dj-residente-discoteca-precio', '2026-05-07', '0.75'],
+    ['https://xpeak.es/blog/catering-comuniones-precio-persona', '2026-05-07', '0.75'],
+    ['https://xpeak.es/blog/dj-boda-civil-precio-canciones', '2026-05-04', '0.75'],
+    ['https://xpeak.es/blog/catering-boda-precio-por-persona', '2026-05-04', '0.75'],
+    ['https://xpeak.es/blog/videografo-bodas-precio', '2026-05-04', '0.75'],
+    ['https://xpeak.es/blog/tendencias-bodas-2026', '2026-05-04', '0.70'],
+    ['https://xpeak.es/blog/animadores-infantiles-comuniones-cumpleanos', '2026-05-04', '0.70'],
+    ['https://xpeak.es/blog/como-organizar-fiesta-empresa', '2026-05-04', '0.75'],
+    ['https://xpeak.es/blog/precio-azafatas-eventos-espana', '2026-05-04', '0.70'],
+    ['https://xpeak.es/blog/contratar-barman-evento-privado', '2026-05-04', '0.70'],
+    ['https://xpeak.es/blog/contratar-fotografo-de-bodas', '2026-05-03', '0.75'],
+    ['https://xpeak.es/blog/staff-de-discoteca-funciones-y-salario', '2026-05-03', '0.70'],
+    ['https://xpeak.es/blog/catering-para-eventos-de-empresa', '2026-05-03', '0.70'],
+    ['https://xpeak.es/blog/disco-movil-para-comuniones', '2026-05-03', '0.70'],
+    ['https://xpeak.es/blog/promotores-de-eventos-que-hacen', '2026-05-03', '0.70'],
+    ['https://xpeak.es/blog/maquillaje-nupcial-precio-guia', '2026-05-03', '0.70'],
+    ['https://xpeak.es/blog/dj-para-cumpleanos-precio', '2026-05-03', '0.75'],
+    ['https://xpeak.es/blog/como-organizar-evento-corporativo', '2026-05-03', '0.75'],
+    ['https://xpeak.es/blog/musica-para-bodas-guia', '2026-05-03', '0.75'],
+    ['https://xpeak.es/blog/fotografia-eventos-nocturnos', '2026-05-03', '0.70'],
+    ['https://xpeak.es/blog/cuanto-cuesta-una-boda-en-espana', '2026-05-02', '0.75'],
+    ['https://xpeak.es/blog/dj-para-bodas-vs-discoteca', '2026-04-29', '0.75'],
+    ['https://xpeak.es/blog/cuantos-camareros-necesito-para-mi-boda', '2026-04-29', '0.80'],
+    ['https://xpeak.es/blog/cuanto-cobra-un-camarero-de-eventos', '2026-04-29', '0.75'],
+    ['https://xpeak.es/blog/cuanto-cobra-un-dj-en-espana', '2026-04-28', '0.75'],
+  ];
+  for (const [loc, lastmod, pri] of posts) {
+    lines.push(url(loc, lastmod, 'monthly', pri));
+  }
+
+  // Legal
+  lines.push('\n  <!-- Legales -->');
+  lines.push(url('https://xpeak.es/privacidad', '2026-01-01', 'yearly', '0.3'));
+  lines.push(url('https://xpeak.es/terminos', '2026-01-01', 'yearly', '0.3'));
+  lines.push(url('https://xpeak.es/aviso-legal', '2026-01-01', 'yearly', '0.2'));
+  lines.push(url('https://xpeak.es/cookies', '2026-01-01', 'yearly', '0.2'));
+
+  return lines.join('\n');
+}
+
+// ─── Demo profile slugs (always included) ────────────────────────────────
+const DEMO_SLUGS = [
+  'luna-deep','mc-rafaga','sara-beats','carla-vega','marcos-rios',
+  'patricia-sanz','nadia-glamour','ivan-stylez','alicia-moon','diego-noir',
+  'carlos-flash','marta-lens','zoe-viral','alex-neon','paula-motion',
+  'ruben-vj','laura-promo','javi-street',
+];
+
+// ─── Main ─────────────────────────────────────────────────────────────────
+async function main() {
+  const env = loadEnv();
+  const supabaseUrl = env.SUPABASE_URL || env.VITE_SUPABASE_URL;
+  const anonKey = env.SUPABASE_PUBLISHABLE_KEY || env.VITE_SUPABASE_PUBLISHABLE_KEY;
+
+  console.log('📍 Fetching public profiles from Supabase...');
+  const profiles = await fetchProfiles(supabaseUrl, anonKey);
+  console.log(`✅ Found ${profiles.length} real profiles`);
+
+  const profileLines = ['\n  <!-- Perfiles reales -->'];
+  for (const p of profiles) {
+    if (!p.user_id) continue;
+    const lastmod = p.updated_at ? p.updated_at.slice(0, 10) : TODAY;
+    profileLines.push(url(`https://xpeak.es/p/${p.user_id}`, lastmod, 'weekly', '0.65'));
+  }
+
+  const demoLines = ['\n  <!-- Perfiles demo -->'];
+  for (const slug of DEMO_SLUGS) {
+    demoLines.push(url(`https://xpeak.es/p/${slug}`, '2026-05-08', 'weekly', '0.60'));
+  }
+
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+${staticUrls(TODAY)}
+${profileLines.join('\n')}
+${demoLines.join('\n')}
+
+</urlset>`;
+
+  fs.writeFileSync(OUT, sitemap, 'utf-8');
+  const lineCount = sitemap.split('\n').length;
+  console.log(`✅ sitemap.xml written — ${lineCount} lines, ${profiles.length} real profiles + ${DEMO_SLUGS.length} demo`);
+}
+
+main().catch(e => {
+  console.error('❌ update-sitemap failed:', e.message);
+  process.exit(1);
+});
