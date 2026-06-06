@@ -34,7 +34,7 @@ const LegalFooter = () => {
 
             {/* Plataforma */}
             <div>
-              <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Plataforma</p>
+              <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.58)' }}>Plataforma</p>
               <ul className="space-y-2.5 text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
                 <li><Link to="/auth" className="hover:text-white transition-colors">Registro gratuito</Link></li>
                 <li><Link to="/auth" className="hover:text-white transition-colors">Para profesionales</Link></li>
@@ -45,7 +45,7 @@ const LegalFooter = () => {
 
             {/* Empresa */}
             <div>
-              <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Empresa</p>
+              <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.58)' }}>Empresa</p>
               <ul className="space-y-2.5 text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
                 <li><Link to="/sobre-nosotros" className="hover:text-white transition-colors">Sobre nosotros</Link></li>
                 <li>
@@ -63,7 +63,7 @@ const LegalFooter = () => {
 
             {/* Legal */}
             <div>
-              <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.45)' }}>Legal</p>
+              <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.58)' }}>Legal</p>
               <ul className="space-y-2.5 text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
                 <li><Link to="/privacidad" className="hover:text-white transition-colors">Política de privacidad</Link></li>
                 <li><Link to="/terminos" className="hover:text-white transition-colors">Términos y condiciones</Link></li>

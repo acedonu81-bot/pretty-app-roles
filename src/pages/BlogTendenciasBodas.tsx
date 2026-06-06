@@ -1,7 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Tendencias en bodas 2026 en España: decoración, música y experiencias', description: 'Las tendencias más buscadas para bodas en España en 2026. Decoración, música, catering experiencial y qué está pidiendo la nueva generación de novios.', datePublished: '2026-05-04', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/tendencias-bodas-2026' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Tendencias en bodas 2026 en España: decoración, música y experiencias', description: 'Las tendencias más buscadas para bodas en España en 2026. Decoración, música, catering experiencial y qué está pidiendo la nueva generación de novios.', datePublished: '2026-05-04',
+  dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/tendencias-bodas-2026' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuál es la tendencia más popular en bodas 2026?', acceptedAnswer: { '@type': 'Answer', text: 'Las bodas íntimas (menos de 80 invitados) con experiencias gastronómicas personalizadas y espacios rurales con encanto son la tendencia más fuerte en 2026. Los novios priorizan la calidad de la experiencia sobre el número de invitados y buscan personalización total: desde la música en directo hasta el menú degustación.' } },
   { '@type': 'Question', name: '¿Qué colores se llevan en bodas 2026?', acceptedAnswer: { '@type': 'Answer', text: 'Los tonos tierra y naturales (beige, terracota, verde salvia, blanco roto) dominan la paleta de bodas 2026. Los arreglos florales en tonos melocotón y burdeos son muy demandados. El blanco puro ha cedido terreno ante los tonos marfil y champán tanto en vestidos como en decoración.' } },
@@ -23,7 +25,7 @@ export default function BlogTendenciasBodas() {
   return (
     <>
       <Helmet>
-        <title>Tendencias bodas 2026 en España: decoración, música y experiencias</title>
+        <title>Tendencias bodas 2026 España | XPEAK</title>
         <meta name="description" content="Las tendencias más buscadas para bodas en España en 2026. Bodas íntimas, espacios rurales, catering experiencial y música en directo. Todo lo que piden los novios." />
         <link rel="canonical" href="https://xpeak.es/blog/tendencias-bodas-2026" />
         <meta property="og:title" content="Tendencias bodas 2026 España — XPEAK Blog" />
@@ -89,13 +91,28 @@ export default function BlogTendenciasBodas() {
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}><p className="text-sm font-bold mb-2">{f.name}</p><p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p></div>))}</div>
             </section>
+            
+            <section className="mt-8">
+              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <div className="space-y-2">
+                {[
+                  { href: '/blog/profesionales-bodas', cat: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026' },
+                ].map(link => (
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
+                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                  </a>
+                ))}
+              </div>
+            </section>
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas DJ o músicos para tu boda?</p>
               <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>XPEAK conecta con DJs y profesionales de eventos verificados en toda España. Disponibilidad y precios en tiempo real.</p>
               <a href="/contratar-dj" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver DJs en XPEAK →</a>
             </div>
           </div>
-        </main>
+                  <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/tendencias-bodas-2026" />
+</main>
         <FooterPublic />
       </div>
     </>

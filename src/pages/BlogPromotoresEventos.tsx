@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
 const PERFILES = [
   { perfil: 'Promotor de calle', tarifa: '30€ – 80€/noche', kpi: 'Personas captadas, flyers distribuidos' },
@@ -29,7 +30,17 @@ export default function BlogPromotoresEventos() {
     mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://xpeak.es/blog/promotores-de-eventos-que-hacen' },
   };
 
-  const faqStructured = {
+  const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' },
+    { '@type': 'ListItem', position: 3, name: 'Promotores de eventos: qué hacen y cuánto cobran en España (2026)', item: 'https://xpeak.es/blog/promotores-de-eventos-que-hacen' },
+  ],
+};
+
+const faqStructured = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: FAQ.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
@@ -41,7 +52,7 @@ export default function BlogPromotoresEventos() {
   return (
     <>
       <Helmet>
-        <title>Promotores de eventos: qué hacen y cuánto cobran en España (2026) — XPEAK</title>
+        <title>Promotores de eventos: funciones y precio 2026 | XPEAK</title>
         <meta name="description" content="Guía completa sobre promotores de eventos en España 2026: tipos, funciones, tarifas reales y cómo contratar con métricas medibles." />
         <meta name="keywords" content="promotor eventos España, cuánto cobra promotor discoteca, contratar promotor sala, RRPP eventos nocturnos España" />
         <link rel="canonical" href="https://xpeak.es/blog/promotores-de-eventos-que-hacen" />
@@ -57,6 +68,7 @@ export default function BlogPromotoresEventos() {
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
@@ -136,6 +148,7 @@ export default function BlogPromotoresEventos() {
             </a>
           </div>
         </article>
+          <BlogEmailCapture variant="guia" intent="ser-profesional" articlePath="/blog/promotores-de-eventos-que-hacen" />
       <FooterPublic />
       </div>
     </>

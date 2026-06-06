@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { CheckCircle, XCircle, Clock, Calendar, MapPin, User, RefreshCw, Phone } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -16,10 +16,11 @@ interface Solicitud {
 }
 
 const STATUS: Record<string, { label: string; color: string; bg: string }> = {
-  pending:   { label: 'Pendiente',  color: '#D4AF37', bg: 'rgba(212,175,55,0.08)' },
-  confirmed: { label: 'Aceptada',   color: '#22c55e', bg: 'rgba(34,197,94,0.08)' },
-  completed: { label: 'Completada', color: '#22c55e', bg: 'rgba(34,197,94,0.08)' },
-  cancelled: { label: 'Rechazada',  color: '#ff5f56', bg: 'rgba(255,95,86,0.08)' },
+  pending:  { label: 'Pendiente',  color: '#D4AF37', bg: 'rgba(212,175,55,0.08)' },
+  accepted: { label: 'Aceptada',   color: '#22c55e', bg: 'rgba(34,197,94,0.08)' },
+  closed:   { label: 'Completada', color: '#22c55e', bg: 'rgba(34,197,94,0.08)' },
+  rejected: { label: 'Rechazada',  color: '#ff5f56', bg: 'rgba(255,95,86,0.08)' },
+  open:     { label: 'Abierta',    color: '#60a5fa', bg: 'rgba(96,165,250,0.08)' },
 };
 
 const fmt = (iso: string | null) => {
@@ -32,6 +33,7 @@ const SolicitudesTab = () => {
   const [items, setItems] = useState<Solicitud[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<string | null>(null);
+  const updatingRef = useRef<string | null>(null);
 
   const fetch = useCallback(async () => {
     if (!user) return;
@@ -62,17 +64,24 @@ const SolicitudesTab = () => {
     return () => { supabase.removeChannel(channel); };
   }, [user, fetch]);
 
-  const updateStatus = async (id: string, status: 'confirmed' | 'cancelled') => {
+  const updateStatus = async (id: string, status: 'accepted' | 'rejected') => {
+    if (updatingRef.current === id) return;
+    updatingRef.current = id;
     setUpdating(id);
     const { error } = await supabase
       .from('flash_bookings' as any)
       .update({ status })
       .eq('id', id)
       .eq('professional_user_id', user!.id);
+    updatingRef.current = null;
     setUpdating(null);
-    if (error) { toast.error('Error al actualizar'); return; }
+    if (error) {
+      console.error('[SolicitudesTab] updateStatus error:', error.code, error.message, error.details);
+      toast.error(`Error al actualizar: ${error.message}`);
+      return;
+    }
     setItems(prev => prev.map(i => i.id === id ? { ...i, status } : i));
-    toast.success(status === 'confirmed' ? '¡Solicitud aceptada!' : 'Solicitud rechazada');
+    toast.success(status === 'accepted' ? '¡Solicitud aceptada!' : 'Solicitud rechazada');
 
     // Email al solicitante si dejó email como contacto
     const booking = items.find(i => i.id === id);
@@ -186,14 +195,14 @@ const SolicitudesTab = () => {
                   {isPending && (
                     <div className="flex gap-2">
                       <button
-                        onClick={() => updateStatus(s.id, 'cancelled')}
+                        onClick={() => updateStatus(s.id, 'rejected')}
                         disabled={updating === s.id}
                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105 disabled:opacity-50"
                         style={{ background: 'rgba(255,95,86,0.08)', border: '1px solid rgba(255,95,86,0.2)', color: '#ff5f56' }}>
                         <XCircle size={12} /> Rechazar
                       </button>
                       <button
-                        onClick={() => updateStatus(s.id, 'confirmed')}
+                        onClick={() => updateStatus(s.id, 'accepted')}
                         disabled={updating === s.id}
                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105 disabled:opacity-50"
                         style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>

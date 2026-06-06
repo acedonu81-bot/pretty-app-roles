@@ -1,7 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: '¿Cuánto cuesta el catering de una boda? Precio por persona en España (2026)', description: 'Guía de precios del catering para bodas en España. Coste por persona según menú, formato y número de invitados. Todo lo que incluye y cómo negociar.', datePublished: '2026-05-04', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/catering-boda-precio-por-persona' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: '¿Cuánto cuesta el catering de una boda? Precio por persona en España (2026)', description: 'Guía de precios del catering para bodas en España. Coste por persona según menú, formato y número de invitados. Todo lo que incluye y cómo negociar.', datePublished: '2026-05-04',
+  dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/catering-boda-precio-por-persona' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta el catering de una boda por persona?', acceptedAnswer: { '@type': 'Answer', text: 'En España el precio medio del catering de boda oscila entre 60€ y 150€ por persona. Un cóctel de bienvenida más banquete de 3 platos ronda los 75-100€/persona. Los menús premium con maridaje de vinos y postres elaborados pueden superar los 120-150€/persona. Las bodas rurales o en finca propia suelen ser más económicas (50-80€/persona).' } },
   { '@type': 'Question', name: '¿Qué incluye el precio del catering de boda?', acceptedAnswer: { '@type': 'Answer', text: 'Normalmente incluye: cóctel de bienvenida (canapés, bebidas), menú de banquete (entrantes, principal, postre), bebidas durante la cena (vino, agua, refrescos), personal de sala, menaje (vajilla, cubertería, cristalería) y montaje/desmontaje. La tarta nupcial, barra libre nocturna y decoración floral se presupuestan aparte.' } },
@@ -23,7 +25,7 @@ export default function BlogCateringBoda() {
   return (
     <>
       <Helmet>
-        <title>Catering boda: precio por persona en España 2026 — guía completa</title>
+        <title>Catering boda: precio por persona 2026 | XPEAK</title>
         <meta name="description" content="¿Cuánto cuesta el catering de una boda en España? Precios por persona según menú y formato. Qué incluye, cuándo pagar y cómo negociar con el proveedor." />
         <link rel="canonical" href="https://xpeak.es/blog/catering-boda-precio-por-persona" />
         <meta property="og:title" content="Catering boda: precio por persona 2026 — XPEAK Blog" />
@@ -89,13 +91,28 @@ export default function BlogCateringBoda() {
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}><p className="text-sm font-bold mb-2">{f.name}</p><p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p></div>))}</div>
             </section>
+            
+            <section className="mt-8">
+              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <div className="space-y-2">
+                {[
+                  { href: '/blog/profesionales-bodas', cat: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026' },
+                ].map(link => (
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
+                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                  </a>
+                ))}
+              </div>
+            </section>
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas camareros para tu boda?</p>
               <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>XPEAK conecta con camareros de eventos verificados en toda España. Presupuesto sin compromiso y contrato digital.</p>
               <a href="/contratar-camareros" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver camareros en XPEAK →</a>
             </div>
           </div>
-        </main>
+                  <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/catering-boda-precio-por-persona" />
+</main>
         <FooterPublic />
       </div>
     </>

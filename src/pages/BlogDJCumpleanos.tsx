@@ -1,5 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogInlineCTA from '@/components/BlogInlineCTA';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
 const article = {
   '@context': 'https://schema.org',
@@ -7,6 +9,7 @@ const article = {
   headline: 'DJ para cumpleaños: precios y qué incluye el servicio en España (2026)',
   description: 'Cuánto cuesta contratar un DJ para un cumpleaños en España. Precios por horas, qué incluye y cómo elegir el perfil correcto.',
   datePublished: '2026-05-03',
+  dateModified: '2026-05-25',
   author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
@@ -62,7 +65,7 @@ export default function BlogDJCumpleanos() {
   return (
     <>
       <Helmet>
-        <title>DJ para cumpleaños: precios y qué incluye en España (2026)</title>
+        <title>DJ para cumpleaños: precio y qué incluye 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta contratar un DJ para un cumpleaños en España. Precios por horas, tipo de equipo y cómo elegir el DJ correcto para tu fiesta." />
         <link rel="canonical" href="https://xpeak.es/blog/dj-para-cumpleanos-precio" />
         <meta property="og:title" content="DJ para cumpleaños: precios 2026 — XPEAK Blog" />
@@ -134,6 +137,8 @@ export default function BlogDJCumpleanos() {
               <p className="text-xs mt-3" style={{ color: '#8E8EA0' }}>Precios orientativos en España 2026. Equipo básico incluido. Sin IVA.</p>
             </section>
 
+            <BlogInlineCTA role="dj" />
+
             <section>
               <h2 className="text-lg font-black mb-4">Precio según perfil del DJ</h2>
               <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
@@ -195,6 +200,24 @@ export default function BlogDJCumpleanos() {
               </div>
             </section>
 
+            
+            <section className="mt-8">
+              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <div className="space-y-2">
+                {[
+                  { href: '/blog/dj-para-eventos', cat: 'Hub DJ', title: 'DJ para eventos: guía completa de precios 2026' },
+                  { href: '/blog/cuanto-cobra-un-dj-en-espana', cat: 'DJ', title: 'Cuánto cobra un DJ en España: precios 2026' },
+                  { href: '/blog/dj-para-fiesta-privada-precio', cat: 'DJ', title: 'DJ fiesta privada: precio y qué incluye 2026' },
+                  { href: '/blog/animadores-infantiles-comuniones-cumpleanos', cat: 'Infantil', title: 'Animadores infantiles: precios 2026 España' },
+                  { href: '/blog/disco-movil-para-comuniones', cat: 'DJ', title: 'Disco móvil comuniones: precio y qué incluye' },
+                ].map(link => (
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
+                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                  </a>
+                ))}
+              </div>
+            </section>
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas DJ para tu cumpleaños?</p>
               <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>En XPEAK encuentras DJs verificados para eventos privados en toda España. Flash Booking disponible en menos de 1h.</p>
@@ -204,7 +227,8 @@ export default function BlogDJCumpleanos() {
               </a>
             </div>
           </div>
-        </main>
+                  <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-para-cumpleanos-precio" />
+</main>
       <FooterPublic />
       </div>
     </>

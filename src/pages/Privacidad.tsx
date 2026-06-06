@@ -26,7 +26,7 @@ const Privacidad = () => {
         <div className="glass-panel p-6 md:p-8 space-y-6 text-sm leading-relaxed" style={{ color: '#ccc' }}>
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>1. Responsable del Tratamiento</h2>
-            <p>El responsable del tratamiento de tus datos personales es XPEAK, con domicilio social en España, y correo electrónico de contacto: admin@xpeak.es. Los datos se almacenan en servidores seguros gestionados mediante infraestructura cloud (Supabase). Los pagos son procesados de forma segura a través de Stripe, cumpliendo con los estándares PCI-DSS.</p>
+            <p>El responsable del tratamiento de tus datos personales es XPEAK, con domicilio social en España, y correo electrónico de contacto: admin@xpeak.es. Los datos se almacenan en servidores seguros gestionados mediante infraestructura cloud (Supabase).</p>
           </section>
 
           <section>
@@ -34,10 +34,9 @@ const Privacidad = () => {
             <p className="mb-2">Para el funcionamiento técnico de la plataforma, recogemos los siguientes datos:</p>
             <ul className="list-disc list-inside space-y-1 text-muted-foreground">
               <li><strong className="text-foreground">Datos de Registro:</strong> Nombre, apellidos, correo electrónico y teléfono.</li>
-              <li><strong className="text-foreground">Datos Profesionales:</strong> Categoría (DJ, Staff, MUA, Wardrobe), experiencia y zona de trabajo en Madrid.</li>
-              <li><strong className="text-foreground">Contenido Multimedia:</strong> Audios de sesiones (vía SoundCloud/Mixcloud o subida directa), fotografías de perfil y de trabajos realizados.</li>
-              <li><strong className="text-foreground">Datos de Ubicación:</strong> Localización aproximada para filtrar eventos y profesionales cercanos en la Comunidad de Madrid.</li>
-              <li><strong className="text-foreground">Datos de Pago:</strong> Gestionados de forma segura a través de Stripe. La plataforma no almacena números de tarjeta de crédito en sus servidores.</li>
+              <li><strong className="text-foreground">Datos Profesionales:</strong> Categoría (DJ, Staff, MUA, Wardrobe), experiencia y zona de trabajo en España.</li>
+              <li><strong className="text-foreground">Contenido Multimedia:</strong> Audios de sesiones (vía SoundCloud/Mixcloud), fotografías de perfil y de trabajos realizados.</li>
+              <li><strong className="text-foreground">Datos de Ubicación:</strong> Localización aproximada para filtrar eventos y profesionales cercanos en España.</li>
             </ul>
           </section>
 
@@ -47,19 +46,18 @@ const Privacidad = () => {
             <ul className="list-disc list-inside space-y-1 text-muted-foreground">
               <li>Gestionar la conexión entre talento y empresas de eventos.</li>
               <li>Permitir la votación pública y el cambio de estatus de Rookie a Profesional.</li>
-              <li>Procesar suscripciones Premium y pagos de servicios TopWeekend.</li>
               <li>Enviar notificaciones automáticas sobre ofertas de trabajo ("Flash Jobs").</li>
             </ul>
           </section>
 
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>4. Base Legal</h2>
-            <p>La base legal para el tratamiento de tus datos es el consentimiento explícito al registrarte y la ejecución de un contrato (aceptación de los Términos y Condiciones) al utilizar los servicios de reserva y suscripción.</p>
+            <p>La base legal para el tratamiento de tus datos es el consentimiento explícito al registrarte y la ejecución de un contrato (aceptación de los Términos y Condiciones) al utilizar los servicios de la plataforma.</p>
           </section>
 
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>5. Conservación de los Datos</h2>
-            <p>Los datos y archivos multimedia se conservarán mientras se mantenga la relación con la plataforma o hasta que el usuario solicite su supresión. Los datos de transacciones económicas se conservarán durante los plazos legales exigidos por la normativa fiscal española (5 años).</p>
+            <p>Los datos y archivos multimedia se conservarán mientras se mantenga la relación con la plataforma o hasta que el usuario solicite su supresión.</p>
           </section>
 
           <section>
@@ -67,7 +65,6 @@ const Privacidad = () => {
             <ul className="list-disc list-inside space-y-1 text-muted-foreground">
               <li><strong className="text-foreground">Empresas del Sector:</strong> Tus datos profesionales y multimedia son públicos para los usuarios registrados como "Empresa" con el fin de facilitar tu contratación.</li>
               <li><strong className="text-foreground">Supabase (infraestructura):</strong> Los datos se almacenan en servidores de Supabase Inc. ubicados en la Unión Europea (Irlanda, AWS eu-west-1). La transferencia está amparada por las Cláusulas Contractuales Estándar de la Comisión Europea conforme al art. 46.2.c del RGPD.</li>
-              <li><strong className="text-foreground">Stripe (pagos):</strong> Los pagos se procesan mediante Stripe Payments Europe Ltd. (Irlanda), entidad sujeta al RGPD. XPEAK no almacena datos de tarjetas de crédito. Stripe puede transferir datos a EE.UU. bajo las garantías del Data Privacy Framework (Decisión de Adecuación de la Comisión Europea, 10/07/2023).</li>
               <li><strong className="text-foreground">Autoridades:</strong> Solo en caso de requerimiento legal administrativo o judicial conforme a la legislación española aplicable.</li>
             </ul>
             <p className="text-muted-foreground mt-2 text-sm">Para más información sobre las garantías de transferencia internacional puedes contactar con nosotros en admin@xpeak.es (RGPD arts. 44–49).</p>

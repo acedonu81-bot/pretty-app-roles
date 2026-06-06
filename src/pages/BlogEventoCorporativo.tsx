@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
 const article = {
   '@context': 'https://schema.org',
@@ -7,6 +8,7 @@ const article = {
   headline: 'Cómo organizar un evento corporativo paso a paso: guía completa 2026',
   description: 'Guía práctica para organizar eventos de empresa en España: presupuesto, proveedores, timeline y checklist completo.',
   datePublished: '2026-05-03',
+  dateModified: '2026-05-25',
   author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
@@ -56,7 +58,7 @@ export default function BlogEventoCorporativo() {
   return (
     <>
       <Helmet>
-        <title>Cómo organizar un evento corporativo paso a paso: guía completa 2026</title>
+        <title>Evento corporativo: guía paso a paso 2026 | XPEAK</title>
         <meta name="description" content="Guía completa para organizar eventos de empresa en España. Presupuesto, proveedores, timeline y checklist completo para tu evento corporativo." />
         <link rel="canonical" href="https://xpeak.es/blog/como-organizar-evento-corporativo" />
         <meta property="og:title" content="Organizar evento corporativo: guía completa 2026 — XPEAK Blog" />
@@ -187,7 +189,8 @@ export default function BlogEventoCorporativo() {
               </a>
             </div>
           </div>
-        </main>
+                  <BlogEmailCapture variant="presupuestos" intent="general" articlePath="/blog/como-organizar-evento-corporativo" />
+</main>
       <FooterPublic />
       </div>
     </>

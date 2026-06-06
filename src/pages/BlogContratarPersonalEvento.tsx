@@ -1,7 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Cómo contratar personal para un evento en España: guía completa 2026', description: 'Guía paso a paso para contratar personal para eventos en España. Qué perfiles necesitas, precios por categoría y checklist antes de firmar.', datePublished: '2026-05-07', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/como-contratar-personal-para-un-evento' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Cómo contratar personal para un evento en España: guía completa 2026', description: 'Guía paso a paso para contratar personal para eventos en España. Qué perfiles necesitas, precios por categoría y checklist antes de firmar.', datePublished: '2026-05-07',
+  dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/como-contratar-personal-para-un-evento' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta contratar personal para un evento?', acceptedAnswer: { '@type': 'Answer', text: 'Depende del perfil. Un camarero para eventos cuesta entre 15€ y 25€/hora; un DJ entre 300€ y 1.500€ por evento; un fotógrafo entre 500€ y 2.500€; azafatas entre 120€ y 200€ por jornada. El presupuesto total de personal suele representar el 20-35% del coste total del evento.' } },
   { '@type': 'Question', name: '¿Con cuánta antelación hay que contratar al personal para un evento?', acceptedAnswer: { '@type': 'Answer', text: 'Para bodas y grandes eventos, con 6-12 meses de antelación para DJs y fotógrafos. El personal de sala (camareros, staff) puede contratarse con 4-8 semanas. Para urgencias, XPEAK Flash Booking permite contratar en menos de 2 horas.' } },
@@ -39,7 +41,7 @@ export default function BlogContratarPersonalEvento() {
   return (
     <>
       <Helmet>
-        <title>Cómo contratar personal para un evento: guía completa 2026</title>
+        <title>Contratar personal para un evento: guía 2026 | XPEAK</title>
         <meta name="description" content="Guía paso a paso para contratar personal para eventos en España. Perfiles, precios reales y checklist antes de firmar. Camareros, DJs, fotógrafos, azafatas y más." />
         <link rel="canonical" href="https://xpeak.es/blog/como-contratar-personal-para-un-evento" />
         <meta property="og:title" content="Cómo contratar personal para un evento — XPEAK Blog" />
@@ -178,6 +180,7 @@ export default function BlogContratarPersonalEvento() {
               <h2 className="text-base font-black mb-4" style={{ color: 'rgba(255,255,255,0.4)' }}>Artículos relacionados</h2>
               <div className="grid sm:grid-cols-2 gap-3">
                 {[
+                  { href: '/blog/staff-para-eventos', cat: 'Hub Staff', title: 'Staff para eventos: guía completa 2026' },
                   { href: '/blog/cuanto-cobra-un-camarero-de-eventos', title: 'Cuánto cobra un camarero de eventos' },
                   { href: '/blog/precio-azafatas-eventos-espana', title: 'Precio de azafatas para eventos en España' },
                   { href: '/blog/contratar-fotografo-de-bodas', title: 'Cómo contratar un fotógrafo de bodas' },
@@ -190,7 +193,8 @@ export default function BlogContratarPersonalEvento() {
               </div>
             </section>
           </div>
-        </main>
+                  <BlogEmailCapture variant="presupuestos" intent="general" articlePath="/blog/como-contratar-personal-para-un-evento" />
+</main>
         <FooterPublic />
       </div>
     </>

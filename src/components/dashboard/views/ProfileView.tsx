@@ -368,7 +368,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             </button>
           )}
 
-          {profile.role !== 'empresario' && (
+          {profile.role === 'dj' && (
             <button
               onClick={async () => {
                 const next = profile.category === 'rookie' ? 'professional' : 'rookie';
@@ -401,19 +401,28 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             {/* — Identidad — */}
             <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Identidad</p>
             <div className="mb-3">
-              <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Nombre artístico</label>
+              <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">
+                {(profile.role === 'dj' || profile.role === 'rookie') ? 'Nombre artístico' : 'Nombre profesional'}
+              </label>
               <input type="text" value={displayName} onChange={e => setLocalName(e.target.value)} className="nightlife-input mt-1 text-base" />
             </div>
             <div className="mb-3">
-              <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Rol</label>
+              <label className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"
+                style={{ color: (!profile.role || profile.role === 'pending') ? '#D4AF37' : 'rgba(255,255,255,0.45)' }}>
+                Rol
+                {(!profile.role || profile.role === 'pending') && (
+                  <span className="text-xs font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>Elige tu especialidad</span>
+                )}
+              </label>
               <NightlifeSelect
                 className="mt-1"
-                value={profile.role ?? 'dj'}
+                value={(!profile.role || profile.role === 'pending') ? '' : profile.role}
                 onChange={async (newRole) => {
                   await profile.updateField({ role: newRole } as any);
                   toast.success('Rol actualizado. Recarga para ver los cambios.');
                 }}
                 options={[
+                  { value: '',              label: 'Selecciona tu especialidad' },
                   { value: 'dj',            label: 'DJ / Artista / Productor' },
                   { value: 'rookie',         label: 'Artista Promesa' },
                   { value: 'staff',          label: 'Staff & RRPP' },
@@ -557,7 +566,9 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                   <>
                     <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">{label}</label>
                     <p className="text-xs text-muted-foreground mt-0.5 mb-2">
-                      Los empresarios y técnicos de sonido verán esto. Sé específico — ahorra emails.
+                      {profile.role === 'empresario'
+                        ? 'Describe tu tipo de sala, aforo y eventos que organizas. Ayuda a los profesionales a entender tu negocio.'
+                        : 'Los empresarios y técnicos de sonido verán esto. Sé específico — ahorra emails.'}
                     </p>
                     {presets.length > 0 && (
                       <div className="flex flex-wrap gap-1.5 mb-2">
@@ -589,7 +600,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
               <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Bio</label>
               <textarea rows={2} value={bio ?? profile.bio ?? ''}
                 onChange={e => setBio(e.target.value)}
-                placeholder="Describe tu experiencia y estilo..."
+                placeholder={profile.role === 'empresario' ? 'Describe tu sala, el tipo de eventos que organizas y tu ambiente...' : 'Describe tu experiencia y estilo...'}
                 className="nightlife-input mt-1 text-base resize-y" />
             </div>
             <div style={{ borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: '1.25rem', marginTop: '0.5rem' }}>
@@ -659,7 +670,8 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
           {(profile.role === 'dj' || profile.role === 'rookie') && <AudioUpload />}
           {profile.role !== 'dj' && profile.role !== 'rookie' && profile.role !== 'empresario' && <PortfolioUpload />}
 
-          {/* Redes sociales y plataformas — todos los roles */}
+          {/* Redes sociales y plataformas — solo roles con contenido */}
+          {(profile.role === 'dj' || profile.role === 'rookie') && (
           <div className="glass-panel p-5">
             <h4 className="text-base font-bold mb-4">Redes & Plataformas</h4>
 
@@ -720,6 +732,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
               );
             })()}
           </div>
+          )}
 
           {/* Export ZIP - GDPR */}
           <div className="glass-panel p-5 flex items-center justify-between gap-4"
@@ -801,7 +814,9 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
               <div className="text-center">
                 <p className="text-xs font-bold mb-1" style={{ color: 'rgba(255,255,255,0.35)' }}>Sin valoraciones aún</p>
                 <p className="text-xs text-muted-foreground max-w-[200px] leading-relaxed">
-                  Los empresarios podrán valorar tu trabajo tras completar un booking contigo.
+                  {profile.role === 'empresario'
+                    ? 'Los profesionales podrán valorar tu sala tras completar un booking contigo.'
+                    : 'Los empresarios podrán valorar tu trabajo tras completar un booking contigo.'}
                 </p>
               </div>
             </div>

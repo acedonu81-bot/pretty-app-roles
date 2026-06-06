@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, MapPin, Star, TrendingUp } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
 const TABLE = [
   { perfil: 'Maestro de ceremonias junior', experiencia: '< 2 años', rango: '300€ – 600€', nota: 'Bodas pequeñas, eventos locales' },
@@ -48,6 +49,16 @@ const structuredData = {
   mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://xpeak.es/blog/maestro-de-ceremonias-boda-precio-guia' },
 };
 
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' },
+    { '@type': 'ListItem', position: 3, name: 'Maestro de Ceremonias para Bodas: precio y guía 2026', item: 'https://xpeak.es/blog/maestro-de-ceremonias-boda-precio-guia' },
+  ],
+};
+
 const faqStructured = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
@@ -62,7 +73,7 @@ export default function BlogMaestroCeremonias() {
   return (
     <>
       <Helmet>
-        <title>Maestro de Ceremonias para Bodas: precio y guía 2026 — XPEAK</title>
+        <title>Maestro de ceremonias: precio y guía 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un maestro de ceremonias para una boda en España 2026. Precios reales por experiencia y ciudad, funciones, diferencias con animador y cómo contratar." />
         <meta name="keywords" content="maestro de ceremonias boda precio, cuánto cuesta MC boda España, presentador bodas, contratar maestro ceremonias, MC boda civil" />
         <link rel="canonical" href="https://xpeak.es/blog/maestro-de-ceremonias-boda-precio-guia" />
@@ -78,6 +89,7 @@ export default function BlogMaestroCeremonias() {
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
@@ -258,6 +270,7 @@ export default function BlogMaestroCeremonias() {
             <h2 className="text-lg font-black mb-5" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
+                { href: '/blog/profesionales-bodas', tag: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026', desc: 'DJ, fotógrafo, catering y más. Todo lo que necesitas para tu boda.' },
                 { href: '/blog/musica-en-vivo-para-bodas', tag: 'Bodas', title: 'Música en vivo para bodas — grupos y precios 2026', desc: 'Solistas, bandas, jazz y cuartetos. Cuánto cuesta cada formato.' },
                 { href: '/blog/cuanto-cobra-un-dj-en-espana', tag: 'DJ', title: '¿Cuánto cobra un DJ en España? Tarifas 2026', desc: 'Precio real de un DJ para boda, festival o evento corporativo.' },
                 { href: '/blog/cuanto-cuesta-una-boda-en-espana', tag: 'Bodas', title: '¿Cuánto cuesta una boda en España en 2026?', desc: 'Presupuesto completo por partida: catering, música, fotos y más.' },
@@ -274,6 +287,7 @@ export default function BlogMaestroCeremonias() {
             </div>
           </div>
         </article>
+          <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/maestro-de-ceremonias-boda-precio-guia" />
         <FooterPublic />
       </div>
     </>

@@ -3,6 +3,7 @@ import { FileText, X, Download, ChevronRight, AlertCircle, Sparkles, PenLine, Er
 import type { Profile } from '@/data/profiles';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 
 const esc = (s: string) =>
   s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
@@ -139,8 +140,8 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Contrato ${esc(ref)} — ${esc(professional.name)}</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap');
-  @page { margin: 22mm 20mm; }
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+  @page { margin: 0; size: A4; }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
@@ -151,180 +152,226 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
     background: #fff;
   }
 
-  /* ── Header ── */
+  /* ── Outer frame ── */
+  .doc-wrap {
+    min-height: 100%;
+    border: 1.5px solid #C8A84B;
+    margin: 10mm;
+  }
+
+  /* ── Hero header ── */
   .contract-header {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
-    padding-bottom: 14px;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #B8941E;
+    padding: 18px 24px 16px;
+    background: linear-gradient(135deg, #0a0a0c 0%, #181410 100%);
+    border-bottom: 3px solid #C8A84B;
   }
   .brand-name {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 22pt;
+    font-size: 26pt;
     font-weight: 700;
-    letter-spacing: 5px;
-    color: #B8941E;
+    letter-spacing: 8px;
+    color: #D4AF37;
+    line-height: 1;
   }
   .brand-sub {
-    font-size: 7pt;
-    letter-spacing: 3px;
-    color: #888;
+    font-size: 6pt;
+    letter-spacing: 3.5px;
+    color: rgba(212,175,55,0.45);
     text-transform: uppercase;
-    margin-top: 2px;
+    margin-top: 4px;
   }
   .contract-meta {
     text-align: right;
-    font-size: 8pt;
-    color: #666;
-    line-height: 1.8;
+    font-size: 7.5pt;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.9;
   }
-  .contract-meta strong { color: #B8941E; font-size: 9pt; letter-spacing: 1px; }
+  .contract-meta strong {
+    color: #D4AF37;
+    font-size: 9.5pt;
+    letter-spacing: 1.5px;
+    display: block;
+    font-weight: 700;
+  }
+
+  /* ── Content padding ── */
+  .doc-content { padding: 20px 24px 24px; }
 
   /* ── Title ── */
   .contract-title {
     text-align: center;
-    margin-bottom: 22px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e8dfc0;
   }
   .contract-title h1 {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 13pt;
+    font-size: 12.5pt;
     font-weight: 700;
-    letter-spacing: 2px;
+    letter-spacing: 2.5px;
     text-transform: uppercase;
-    color: #1a1a1a;
-    margin-bottom: 4px;
+    color: #0a0a0c;
+    margin-bottom: 5px;
   }
   .contract-title p {
-    font-size: 8pt;
-    color: #888;
-    letter-spacing: 1px;
+    font-size: 7.5pt;
+    color: #B8941E;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
   }
   .gold-line {
-    height: 1px;
-    background: linear-gradient(to right, transparent, #B8941E, transparent);
-    margin: 12px auto;
-    width: 60%;
+    height: 2px;
+    background: linear-gradient(to right, transparent, #C8A84B 30%, #D4AF37 50%, #C8A84B 70%, transparent);
+    margin: 10px auto;
+    width: 45%;
   }
 
   /* ── Intro ── */
-  .intro { font-size: 9.5pt; color: #444; margin-bottom: 18px; text-align: justify; }
+  .intro { font-size: 9.5pt; color: #444; margin-bottom: 16px; text-align: justify; line-height: 1.7; }
 
   /* ── Parties ── */
-  .parties { display: flex; gap: 16px; margin-bottom: 18px; }
+  .parties { display: flex; gap: 14px; margin-bottom: 16px; }
   .party {
     flex: 1;
-    padding: 12px 14px;
+    padding: 13px 15px;
     border: 1px solid #e0d4a8;
-    border-top: 3px solid #B8941E;
-    border-radius: 2px;
-    background: #fffdf5;
+    border-top: 3px solid #C8A84B;
+    background: linear-gradient(160deg, #fffdf5 0%, #fefefe 100%);
   }
   .party-role {
-    font-size: 7.5pt;
-    font-weight: 600;
-    letter-spacing: 2px;
+    font-size: 7pt;
+    font-weight: 700;
+    letter-spacing: 2.5px;
     text-transform: uppercase;
     color: #B8941E;
-    margin-bottom: 6px;
+    margin-bottom: 7px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ede8d5;
   }
-  .party p { font-size: 9pt; color: #333; margin-bottom: 3px; }
-  .party strong { color: #1a1a1a; }
+  .party p { font-size: 8.5pt; color: #333; margin-bottom: 3px; }
+  .party strong { color: #0a0a0c; font-weight: 600; }
 
   /* ── Section headings ── */
   h2 {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 9.5pt;
+    font-family: 'Inter', sans-serif;
+    font-size: 7.5pt;
     font-weight: 700;
-    letter-spacing: 2px;
+    letter-spacing: 2.5px;
     text-transform: uppercase;
-    color: #B8941E;
-    margin: 18px 0 8px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid #e0d4a8;
+    color: #0a0a0c;
+    margin: 18px 0 10px;
+    padding: 7px 10px 7px 13px;
+    background: #f8f5ed;
+    border-left: 3px solid #C8A84B;
   }
 
   /* ── Body text ── */
-  p.clause { font-size: 9.5pt; color: #333; text-align: justify; margin-bottom: 8px; }
-  .clause-num { font-weight: 600; color: #1a1a1a; }
+  p.clause { font-size: 9pt; color: #333; text-align: justify; margin-bottom: 9px; line-height: 1.7; }
+  .clause-num { font-weight: 700; color: #0a0a0c; text-transform: uppercase; letter-spacing: 0.3px; }
 
   /* ── Economic table ── */
   table {
     width: 100%;
     border-collapse: collapse;
-    margin: 10px 0 14px;
+    margin: 12px 0 16px;
     font-size: 9pt;
+    border: 1px solid #e0d4a8;
   }
-  thead tr { background: #1a1a1a; }
-  thead th { color: #D4AF37; padding: 7px 10px; text-align: left; font-weight: 600; letter-spacing: 0.5px; }
-  tbody tr:nth-child(even) { background: #f9f7f0; }
-  tbody td { padding: 6px 10px; color: #333; border-bottom: 1px solid #ede8d5; }
-  .td-total { font-weight: 700; color: #1a1a1a; font-size: 10pt; }
-  .td-net { font-weight: 700; color: #B8941E; font-size: 10.5pt; }
+  thead tr { background: #0a0a0c; }
+  thead th {
+    color: #D4AF37;
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-size: 7.5pt;
+    text-transform: uppercase;
+  }
+  tbody tr:nth-child(odd) { background: #fff; }
+  tbody tr:nth-child(even) { background: #fdfaf2; }
+  tbody td { padding: 7px 12px; color: #333; border-bottom: 1px solid #ede8d5; }
+  tbody tr:last-child { background: #0a0a0c !important; }
+  tbody tr:last-child td { color: rgba(255,255,255,0.75); border-bottom: none; font-weight: 500; }
+  tbody tr:last-child .td-net { color: #D4AF37; font-size: 11pt; font-weight: 700; }
+  .td-total { font-weight: 700; color: #0a0a0c; }
+  .td-net { font-weight: 700; color: #B8941E; }
   .td-neg { color: #c0392b; }
 
-  /* ── Event summary box ── */
+  /* ── Event box ── */
   .event-box {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    padding: 12px 14px;
+    gap: 12px;
+    padding: 13px 16px;
     border: 1px solid #e0d4a8;
-    border-left: 4px solid #B8941E;
-    background: #fffdf5;
-    border-radius: 2px;
-    margin-bottom: 14px;
+    border-left: 4px solid #C8A84B;
+    background: linear-gradient(135deg, #fffdf5 0%, #fefefe 100%);
+    margin-bottom: 16px;
     font-size: 9pt;
   }
-  .event-field { flex: 1; min-width: 130px; }
-  .event-field .lbl { font-size: 7.5pt; letter-spacing: 1.5px; text-transform: uppercase; color: #999; margin-bottom: 2px; }
-  .event-field .val { font-weight: 600; color: #1a1a1a; }
+  .event-field { flex: 1; min-width: 115px; }
+  .event-field .lbl {
+    font-size: 6.5pt;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #B8941E;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+  .event-field .val { font-weight: 600; color: #0a0a0c; font-size: 9pt; }
 
   /* ── Warning ── */
   .warn {
-    margin: 14px 0;
-    padding: 9px 12px;
+    margin: 16px 0;
+    padding: 10px 14px;
     background: #fffbeb;
-    border: 1px solid #f0c040;
-    border-radius: 2px;
+    border: 1px solid #e8c040;
+    border-left: 4px solid #D4AF37;
     font-size: 8.5pt;
-    color: #7a6000;
+    color: #6a5200;
+    line-height: 1.6;
   }
 
   /* ── Signatures ── */
   .sigs {
     display: flex;
-    gap: 40px;
-    margin-top: 40px;
+    gap: 36px;
+    margin-top: 34px;
     page-break-inside: avoid;
+    padding-top: 18px;
+    border-top: 1.5px solid #e0d4a8;
   }
   .sig { flex: 1; }
   .sig-role {
-    font-size: 7.5pt;
-    letter-spacing: 2px;
+    font-size: 7pt;
+    letter-spacing: 2.5px;
     text-transform: uppercase;
     color: #B8941E;
-    margin-bottom: 4px;
-    font-weight: 600;
+    margin-bottom: 6px;
+    font-weight: 700;
   }
+  .sig-image { max-width: 100%; height: 56px; display: block; margin-bottom: 4px; object-fit: contain; }
   .sig-line {
-    border-bottom: 1px solid #1a1a1a;
-    height: 50px;
+    border-bottom: 1px solid #0a0a0c;
+    height: 56px;
     margin-bottom: 8px;
   }
-  .sig p { font-size: 8.5pt; color: #555; line-height: 1.7; }
-  .sig strong { color: #1a1a1a; }
+  .sig p { font-size: 8.5pt; color: #555; line-height: 1.8; }
+  .sig strong { color: #0a0a0c; }
 
   /* ── Footer ── */
   .footer {
-    margin-top: 28px;
-    padding-top: 10px;
-    border-top: 1px solid #ddd;
-    font-size: 7.5pt;
+    padding: 10px 24px;
+    border-top: 1px solid #e0d4a8;
+    font-size: 7pt;
     color: #aaa;
     text-align: center;
-    line-height: 1.8;
+    line-height: 1.9;
+    background: #f8f5ed;
   }
   .footer strong { color: #B8941E; letter-spacing: 1px; }
 
@@ -334,26 +381,29 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
 </style>
 </head>
 <body>
+<div class="doc-wrap">
 
 <!-- Header -->
 <div class="contract-header">
   <div>
     <div class="brand-name">XPEAK</div>
-    <div class="brand-sub">Plataforma Profesional del Ocio Nocturno</div>
+    <div class="brand-sub">Plataforma Profesional del Ocio Nocturno · xpeak.es</div>
   </div>
   <div class="contract-meta">
-    <strong>REF. ${esc(ref)}</strong><br>
+    <strong>REF. ${esc(ref)}</strong>
     Tipo: ${esc(eventTypeLabel)}<br>
     Emitido: ${esc(form.fechaFirma)}<br>
-    Versión: 2.0
+    Versión: 2.1
   </div>
 </div>
+
+<div class="doc-content">
 
 <!-- Title -->
 <div class="contract-title">
   <h1>Contrato de Prestación de Servicios Profesionales</h1>
-  <p>${esc(serviceLabel.toUpperCase())}</p>
   <div class="gold-line"></div>
+  <p>${esc(serviceLabel.toUpperCase())}</p>
 </div>
 
 <!-- Intro -->
@@ -380,7 +430,7 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
     <p><strong>${esc(professional.name)}</strong></p>
     <p>Prestador independiente · RETA</p>
     <p>Actividad: ${esc(serviceLabel)}</p>
-    <p>ID XPEAK: <strong>${esc(String(professional.id))}</strong></p>
+    ${professional.id > 0 ? `<p>ID XPEAK: <strong>${esc(String(professional.id))}</strong></p>` : ''}
   </div>
 </div>
 
@@ -388,7 +438,7 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
 <h2>El Evento</h2>
 <div class="event-box">
   <div class="event-field"><div class="lbl">Nombre del evento</div><div class="val">${esc(form.nombreEvento||'—')}</div></div>
-  <div class="event-field"><div class="lbl">Fecha</div><div class="val">${esc(form.fechaEvento||'—')}</div></div>
+  <div class="event-field"><div class="lbl">Fecha</div><div class="val">${form.fechaEvento ? esc(new Date(form.fechaEvento + 'T00:00:00').toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })) : '—'}</div></div>
   <div class="event-field"><div class="lbl">Horario</div><div class="val">${esc(form.horaInicio||'—')} – ${esc(form.horaFin||'—')}</div></div>
   <div class="event-field"><div class="lbl">Local</div><div class="val">${esc(form.nombreLocal||'—')}</div></div>
   <div class="event-field"><div class="lbl">Dirección</div><div class="val">${esc(form.direccionLocal||'—')}</div></div>
@@ -400,7 +450,7 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
 
 <p class="clause"><span class="clause-num">PRIMERA · Objeto.</span>
 El PROFESIONAL prestará los servicios de <strong>${esc(serviceLabel)}</strong> el día
-<strong>${esc(form.fechaEvento||'_______')}</strong>, en horario de
+<strong>${form.fechaEvento ? esc(new Date(form.fechaEvento + 'T00:00:00').toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })) : '_______'}</strong>, en horario de
 <strong>${esc(form.horaInicio||'__:__')}</strong> a <strong>${esc(form.horaFin||'__:__')}</strong>,
 en el local "<strong>${esc(form.nombreLocal||'_______')}</strong>",
 ubicado en <strong>${esc(form.direccionLocal||'_______')}</strong>,
@@ -495,7 +545,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
   <div class="sig">
     <div class="sig-role">El Contratante</div>
     ${sigDataUrl
-      ? `<img src="${sigDataUrl}" style="max-width:100%;height:60px;display:block;margin-bottom:4px" alt="Firma digital" />`
+      ? `<img src="${sigDataUrl}" class="sig-image" alt="Firma digital" />`
       : '<div class="sig-line"></div>'
     }
     <p><strong>${esc(form.contratanteNombre||'_________________')}</strong></p>
@@ -507,19 +557,22 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
     <div class="sig-role">El Profesional</div>
     <div class="sig-line"></div>
     <p><strong>${esc(professional.name)}</strong></p>
-    <p>Plataforma: XPEAK · ID: ${esc(String(professional.id))}</p>
+    <p>Plataforma: XPEAK${professional.id > 0 ? ` · ID: ${esc(String(professional.id))}` : ''}</p>
     <p>Actividad: ${esc(serviceLabel)}</p>
     <p>Fecha: ${esc(form.fechaFirma)}</p>
   </div>
 </div>
 
+</div><!-- /doc-content -->
+
 <!-- Footer -->
 <div class="footer">
   <strong>XPEAK</strong> · Plataforma Profesional del Ocio Nocturno · xpeak.es<br>
-  Ref. ${esc(ref)} · Cód. Civil arts. 1254 ss. · ET art. 1.1 · LPI RDL 1/1996 · RGPD 2016/679 · LOPDGDD LO 3/2018<br>
-  ${hasSig ? `Firmado digitalmente por ${esc(form.contratanteNombre||'el contratante')} el ${esc(form.fechaFirma)} · Ref. ${esc(ref)}` : 'Documento generado electrónicamente — pendiente de firma'}
+  Ref. ${esc(ref)} · C.Civil arts. 1254 ss. · ET art. 1.1 · LPI RDL 1/1996 · RGPD 2016/679 · LOPDGDD LO 3/2018<br>
+  ${hasSig ? `✦ Firmado digitalmente por ${esc(form.contratanteNombre||'el contratante')} · ${esc(form.fechaFirma)} · Ref. ${esc(ref)}` : '✦ Documento generado electrónicamente — pendiente de firma por las partes'}
 </div>
 
+</div><!-- /doc-wrap -->
 </body>
 </html>`;
 
@@ -567,7 +620,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
       const iframeBody = iframe.contentDocument?.body;
       if (iframeBody) {
         await html2pdf().set({
-          margin: [15, 15, 15, 15],
+          margin: [0, 0, 0, 0],
           filename: `XPEAK_contrato_${ref}.pdf`,
           image: { type: 'jpeg', quality: 0.98 },
           html2canvas: { scale: 2, useCORS: true, logging: false, windowWidth: 794 },

@@ -1,7 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Catering para comuniones en España: precio por persona y qué incluye (2026)', description: 'Cuánto cuesta el catering de una comunión en España. Precios por persona, formatos de menú y cómo elegir el servicio correcto para tu celebración.', datePublished: '2026-05-07', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/catering-comuniones-precio-persona' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Catering para comuniones en España: precio por persona y qué incluye (2026)', description: 'Cuánto cuesta el catering de una comunión en España. Precios por persona, formatos de menú y cómo elegir el servicio correcto para tu celebración.', datePublished: '2026-05-07',
+  dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/catering-comuniones-precio-persona' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta el catering para una comunión por persona?', acceptedAnswer: { '@type': 'Answer', text: 'El precio medio del catering de comunión en España es de 35€ a 80€ por persona para un menú completo (almuerzo o cena). Un cóctel o aperitivo oscila entre 15€ y 35€/persona. El precio varía según la ciudad, el número de invitados y si incluye bebidas, personal de sala y alquiler de espacio.' } },
   { '@type': 'Question', name: '¿Cuántos camareros necesito para la comunión?', acceptedAnswer: { '@type': 'Answer', text: 'Para una comunión con servicio de mesa, se recomienda 1 camarero por cada 20-25 invitados. Para un buffet o cóctel, 1 por cada 25-35 personas. Siempre añade un maitre o coordinador si hay más de 60 invitados.' } },
@@ -34,7 +36,7 @@ export default function BlogCateringComuniones() {
   return (
     <>
       <Helmet>
-        <title>Catering para comuniones: precio por persona en España (2026)</title>
+        <title>Catering comuniones: precio por persona 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta el catering de una comunión en España. Precios por persona, formatos de menú (banquete, cóctel, buffet), extras y cómo elegir el servicio correcto." />
         <link rel="canonical" href="https://xpeak.es/blog/catering-comuniones-precio-persona" />
         <meta property="og:title" content="Catering comuniones: precio por persona 2026 — XPEAK Blog" />
@@ -167,6 +169,7 @@ export default function BlogCateringComuniones() {
               <h2 className="text-base font-black mb-4" style={{ color: 'rgba(255,255,255,0.4)' }}>Artículos relacionados</h2>
               <div className="grid sm:grid-cols-2 gap-3">
                 {[
+                  { href: '/blog/comuniones-guia-completa', cat: 'Hub Comuniones', title: 'Comuniones en España: guía completa 2026' },
                   { href: '/blog/catering-boda-precio-por-persona', title: 'Catering de boda: precio por persona' },
                   { href: '/blog/cuantos-camareros-necesito-para-mi-boda', title: 'Cuántos camareros necesito para mi celebración' },
                   { href: '/blog/disco-movil-para-comuniones', title: 'Disco móvil para comuniones: precios' },
@@ -179,7 +182,8 @@ export default function BlogCateringComuniones() {
               </div>
             </section>
           </div>
-        </main>
+                  <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/catering-comuniones-precio-persona" />
+</main>
         <FooterPublic />
       </div>
     </>

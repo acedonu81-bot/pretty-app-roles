@@ -1,5 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogInlineCTA from '@/components/BlogInlineCTA';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
 const PERFILES = [
   { perfil: 'Hostess / Azafata', tarifa: '15€ – 22€/h', turno: '40€ – 80€/noche', nota: 'Recepción, lista de invitados, mesa VIP' },
@@ -30,7 +32,17 @@ export default function BlogStaffDiscoteca() {
     mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://xpeak.es/blog/staff-de-discoteca-funciones-y-salario' },
   };
 
-  const faqStructured = {
+  const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' },
+    { '@type': 'ListItem', position: 3, name: 'Staff de discoteca: funciones, sueldos y cómo contratar (2026)', item: 'https://xpeak.es/blog/staff-de-discoteca-funciones-y-salario' },
+  ],
+};
+
+const faqStructured = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: FAQ.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
@@ -42,7 +54,7 @@ export default function BlogStaffDiscoteca() {
   return (
     <>
       <Helmet>
-        <title>Staff de discoteca: funciones, sueldos y cómo contratar (2026) — XPEAK</title>
+        <title>Staff discoteca: funciones y sueldos 2026 | XPEAK</title>
         <meta name="description" content="Guía completa del personal de sala para discotecas en España 2026: hostesses, RRPPs, camareros y coordinadores. Tarifas reales por perfil." />
         <meta name="keywords" content="staff discoteca España, hostess eventos nocturnos, relaciones públicas discoteca, personal sala nocturna, contratar staff sala" />
         <link rel="canonical" href="https://xpeak.es/blog/staff-de-discoteca-funciones-y-salario" />
@@ -58,6 +70,7 @@ export default function BlogStaffDiscoteca() {
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
@@ -101,6 +114,8 @@ export default function BlogStaffDiscoteca() {
             <p className="text-xs mt-2" style={{ color: '#8E8EA0' }}>Los RRPPs suelen cobrar fijo + porcentaje de la taquilla atribuida a su lista.</p>
           </section>
 
+          <BlogInlineCTA role="staff" />
+
           <section className="mb-10">
             <h2 className="text-lg font-black mb-4">Funciones de cada perfil</h2>
             <div className="space-y-3">
@@ -130,7 +145,25 @@ export default function BlogStaffDiscoteca() {
             </div>
           </section>
 
-          <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
+          
+            <section className="mt-8">
+              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <div className="space-y-2">
+                {[
+                  { href: '/blog/staff-para-eventos', cat: 'Hub Staff', title: 'Staff para eventos: guía completa 2026' },
+                  { href: '/blog/cuanto-cobra-un-camarero-de-eventos', cat: 'Staff', title: 'Cuánto cobra un camarero de eventos 2026' },
+                  { href: '/blog/precio-azafatas-eventos-espana', cat: 'Staff', title: 'Precio azafatas para eventos España 2026' },
+                  { href: '/blog/contratar-barman-evento-privado', cat: 'Staff', title: 'Barman evento privado: precio 2026' },
+                  { href: '/blog/como-contratar-personal-para-un-evento', cat: 'Guía', title: 'Contratar personal para un evento: guía 2026' },
+                ].map(link => (
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
+                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                  </a>
+                ))}
+              </div>
+            </section>
+            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
             <p className="text-sm font-black mb-1">Encuentra staff verificado para tu sala</p>
             <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>Hostesses, RRPPs, camareros y coordinadores. Flash Booking en menos de 1h.</p>
             <a href="/contratar-staff" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-xs font-black transition-all hover:scale-105"
@@ -139,6 +172,7 @@ export default function BlogStaffDiscoteca() {
             </a>
           </div>
         </article>
+          <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/staff-de-discoteca-funciones-y-salario" />
       <FooterPublic />
       </div>
     </>

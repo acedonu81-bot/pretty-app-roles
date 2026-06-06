@@ -1,6 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, TrendingUp, MapPin, Star } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogInlineCTA from '@/components/BlogInlineCTA';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
 const TABLE = [
   { perfil: 'DJ emergente / rookie', experiencia: '< 1 año', rango: '30€ – 60€/h', nota: 'Bodas pequeñas, cumpleaños' },
@@ -40,7 +43,17 @@ export default function BlogDJPrecio() {
     mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://xpeak.es/blog/cuanto-cobra-un-dj-en-espana' },
   };
 
-  const faqStructured = {
+  const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' },
+    { '@type': 'ListItem', position: 3, name: '¿Cuánto cobra un DJ en España? Tarifas y precios 2026', item: 'https://xpeak.es/blog/cuanto-cobra-un-dj-en-espana' },
+  ],
+};
+
+const faqStructured = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: FAQ.map(f => ({
@@ -53,7 +66,7 @@ export default function BlogDJPrecio() {
   return (
     <>
       <Helmet>
-        <title>¿Cuánto cobra un DJ en España? Tarifas y precios 2026 — XPEAK</title>
+        <title>Cuánto cobra un DJ en España: precios 2026 | XPEAK</title>
         <meta name="description" content="Guía completa con precios de DJs en España 2026: tarifas por experiencia, ciudad y tipo de evento. IVA, IRPF, equipo incluido o no. Datos reales de XPEAK." />
         <meta name="keywords" content="cuánto cobra un DJ, precio DJ España, tarifa DJ boda, DJ precio hora España, cuánto cuesta DJ 2026" />
         <link rel="canonical" href="https://xpeak.es/blog/cuanto-cobra-un-dj-en-espana" />
@@ -69,6 +82,7 @@ export default function BlogDJPrecio() {
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
@@ -149,10 +163,21 @@ export default function BlogDJPrecio() {
             </table>
           </div>
 
+          <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
+          <BlogInlineCTA role="dj" variant="upgrade" />
+
           {/* Por ciudad */}
           <h2 className="text-xl font-black mb-4">Precio de un DJ por ciudad</h2>
           <p className="text-sm mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
-            La geografía también importa. Las ciudades con mayor demanda de ocio nocturno tienen precios más altos, pero también más oferta de DJs:
+            La geografía también importa. Las ciudades con mayor demanda de ocio nocturno tienen precios más altos, pero también más oferta de DJs.
+            Consulta la guía específica de tu ciudad: <a href="/blog/dj-bodas-madrid" style={{ color: '#D4AF37' }}>DJ bodas Madrid</a>,{' '}
+            <a href="/blog/dj-bodas-barcelona" style={{ color: '#D4AF37' }}>Barcelona</a>,{' '}
+            <a href="/blog/dj-bodas-sevilla" style={{ color: '#D4AF37' }}>Sevilla</a>{' '}
+            o <a href="/blog/dj-bodas-valencia" style={{ color: '#D4AF37' }}>Valencia</a>.
+            Si ya tienes claro el precio, usa nuestra{' '}
+            <a href="/blog/calculadora-tarifa-dj" style={{ color: '#D4AF37' }}>calculadora de tarifa DJ</a>{' '}
+            o descarga la{' '}
+            <a href="/plantilla-contrato-dj" style={{ color: '#D4AF37' }}>plantilla de contrato gratis</a>.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10">
             {CITIES.map(c => (
@@ -217,23 +242,59 @@ export default function BlogDJPrecio() {
             ))}
           </div>
 
-          {/* CTA */}
-          <div className="rounded-2xl p-8 text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
-            <h2 className="text-xl font-black mb-2">¿Buscas DJ para tu evento?</h2>
-            <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.5)' }}>
-              Encuentra DJs verificados con tarifas públicas, Flash Booking y contratos automáticos.
-            </p>
-            <a href="/auth"
-              className="inline-flex items-center gap-2 px-7 py-3 rounded-xl font-black text-sm transition-all hover:scale-105"
-              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              <Zap size={14} /> Ver DJs en XPEAK — gratis
-            </a>
+          {/* CTA dual — DJ + Organizador */}
+          <div className="rounded-2xl overflow-hidden mb-2" style={{ border: '1px solid rgba(212,175,55,0.2)' }}>
+            {/* CTA DJ */}
+            <div className="p-8" style={{ background: 'linear-gradient(135deg,#0e0e14 0%,#181410 100%)', borderBottom: '1px solid rgba(212,175,55,0.15)' }}>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-[0.65rem] font-black uppercase tracking-widest px-2.5 py-1 rounded-full"
+                  style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
+                  ¿Eres DJ?
+                </span>
+              </div>
+              <h2 className="text-xl font-black mb-2 leading-snug">
+                Publica tu tarifa y empieza a recibir bookings
+              </h2>
+              <p className="text-sm mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                Más de 9 DJs ya tienen perfil verificado en XPEAK. Aparece en el directorio, activa Flash Booking para fechas disponibles y genera contratos en segundos.
+              </p>
+              <div className="flex flex-wrap gap-3 mb-5">
+                {['Perfil gratuito', 'Tarifas públicas', 'Flash Booking', 'Contratos automáticos'].map(f => (
+                  <span key={f} className="flex items-center gap-1.5 text-xs font-bold"
+                    style={{ color: 'rgba(212,175,55,0.8)' }}>
+                    <Star size={10} style={{ color: '#D4AF37' }} /> {f}
+                  </span>
+                ))}
+              </div>
+              <a href="/auth?mode=register&role=dj"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105 hover:shadow-lg"
+                style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                <Zap size={15} /> Crear mi perfil DJ — es gratis
+              </a>
+            </div>
+
+            {/* CTA Organizador */}
+            <div className="p-6 flex flex-col sm:flex-row items-center justify-between gap-4"
+              style={{ background: 'rgba(255,255,255,0.02)' }}>
+              <div>
+                <p className="text-sm font-black mb-0.5">¿Buscas DJ para tu sala o evento?</p>
+                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                  Directorio con tarifas públicas · Flash Booking para esta noche · 0 comisión
+                </p>
+              </div>
+              <a href="/auth"
+                className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-xs transition-all hover:scale-105"
+                style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)', whiteSpace: 'nowrap' }}>
+                Ver DJs disponibles →
+              </a>
+            </div>
           </div>
 
           <div className="mt-12">
             <h2 className="text-lg font-black mb-5" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
+                { href: '/blog/dj-para-eventos', tag: 'Hub DJ', title: 'DJ para eventos: guía completa de precios 2026', desc: 'Precios, perfiles y cómo contratar DJ para cada tipo de evento en España.' },
                 { href: '/blog/musica-en-vivo-para-bodas', tag: 'Bodas', title: 'Música en vivo para bodas — grupos y precios 2026', desc: 'Solistas, bandas, jazz y cuartetos. Cuánto cuesta cada formato.' },
                 { href: '/blog/maestro-de-ceremonias-boda-precio-guia', tag: 'Bodas', title: 'Maestro de ceremonias: precio y guía 2026', desc: 'Qué hace un MC, cuánto cobra y cómo elegirlo para tu boda.' },
                 { href: '/blog/cuanto-cuesta-una-boda-en-espana', tag: 'Bodas', title: '¿Cuánto cuesta una boda en España en 2026?', desc: 'Presupuesto completo por partida: catering, música, fotos y más.' },
@@ -251,6 +312,7 @@ export default function BlogDJPrecio() {
           </div>
         </article>
         <FooterPublic />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_precio" />
       </div>
     </>
   );

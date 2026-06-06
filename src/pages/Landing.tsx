@@ -181,7 +181,7 @@ const StatPill = ({ value, label }: { value: string; label: React.ReactNode }) =
 );
 
 /* ── Pexels helpers ── */
-const px = (id: number) => `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=800&h=450&fit=crop`;
+const px = (id: number) => `/images/pexels/${id}.jpg`;
 
 // All IDs verified visually via Chrome DevTools:
 // 1540406=DJ decks | 164745=DJ controller lit | 1190297=concert crowd | 1105666=concert orange lights
@@ -510,7 +510,7 @@ const Landing = () => {
   return (
     <>
     <Helmet>
-      <title>XPEAK | Contratar DJ, Fotógrafo, Camarero y Más para Bodas y Eventos en España</title>
+      <title>XPEAK — Contratar DJ, Fotógrafo y Staff para Eventos | España</title>
       <meta name="description" content="Encuentra y contrata DJ, fotógrafo, camarero, catering y staff para tu boda o evento. Profesionales verificados en toda España. Gratis para organizadores. Flash Booking en menos de 1h." />
       <link rel="canonical" href="https://xpeak.es/" />
       <meta property="og:title" content="XPEAK | Contratar DJs, Staff y Profesionales para Eventos en España" />
@@ -544,6 +544,26 @@ const Landing = () => {
         "uploadDate": "2026-01-01T00:00:00+01:00",
         "contentUrl": "https://xpeak.es/hero-dancefloor.mp4",
         "publisher": { "@type": "Organization", "name": "XPEAK", "url": "https://xpeak.es" }
+      })}</script>
+      <script type="application/ld+json">{JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "XPEAK",
+        "url": "https://xpeak.es",
+        "logo": { "@type": "ImageObject", "url": "https://xpeak.es/favicon.png" },
+        "sameAs": [],
+        "description": "Directorio de profesionales verificados para bodas y eventos en España. DJs, fotógrafos, camareros, maquilladores y staff. Flash Booking en menos de 1h."
+      })}</script>
+      <script type="application/ld+json">{JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "XPEAK",
+        "url": "https://xpeak.es",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": { "@type": "EntryPoint", "urlTemplate": "https://xpeak.es/contratar-dj?q={search_term_string}" },
+          "query-input": "required name=search_term_string"
+        }
       })}</script>
     </Helmet>
     <div className="min-h-screen relative overflow-x-hidden flex flex-col grain-overlay" data-landing="true" style={{ background: '#C4C2BF', color: 'rgba(22,20,18,0.88)' }}>
@@ -580,10 +600,10 @@ const Landing = () => {
           <div className="flex items-center gap-3">
             <button onClick={() => navigate('/auth')}
               className="hidden sm:block text-xs font-semibold px-4 py-2 rounded-lg transition-all"
-              style={{ color: 'rgba(22,20,18,0.65)' }}>
+              style={{ color: 'rgba(22,20,18,0.75)' }}>
               Acceder
             </button>
-            <button onClick={() => navigate('/auth')}
+            <button onClick={() => navigate('/auth?mode=register&role=empresario')}
               className="hidden sm:block text-xs font-semibold px-4 py-2 rounded-lg transition-all"
               style={{ color: 'rgba(22,20,18,0.75)', border: '1px solid rgba(0,0,0,0.15)', borderRadius: '10px' }}>
               <span className="flex items-center gap-1.5"><Building2 size={12} /> Soy empresario</span>
@@ -591,7 +611,7 @@ const Landing = () => {
             <motion.button
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => navigate('/auth')}
+              onClick={() => navigate('/auth?mode=register&role=profesional')}
               className="text-xs font-bold px-5 py-2.5 rounded-xl flex items-center gap-1.5"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               <Headphones size={13} /> Soy profesional
@@ -605,7 +625,7 @@ const Landing = () => {
       <div className="relative overflow-hidden">
         {/* Ghost event photo — desaturated, very low opacity, blends with concrete */}
         <img
-          src="https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1000&fit=crop"
+          src="/images/pexels/1024993-hero.jpg"
           alt=""
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover pointer-events-none"
@@ -715,7 +735,7 @@ const Landing = () => {
               whileTap={{ scale: 0.97 }}
               onClick={() => {
                 if (typeof window !== 'undefined' && (window as any).fbq) (window as any).fbq('track', 'Lead');
-                navigate('/auth');
+                navigate('/auth?mode=register&role=profesional');
               }}
               className="group flex-1 flex flex-col items-center gap-2 px-6 py-5 rounded-2xl transition-all text-center"
               style={{
@@ -740,7 +760,7 @@ const Landing = () => {
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => navigate('/auth')}
+              onClick={() => navigate('/auth?mode=register&role=empresario')}
               className="group flex-1 flex flex-col items-center gap-2 px-6 py-5 rounded-2xl transition-all text-center"
               style={{
                 background: '#FFFFFF',
@@ -760,7 +780,15 @@ const Landing = () => {
               </p>
             </motion.button>
           </div>
-          <p className="text-center text-xs mt-3" style={{ color: 'rgba(22,20,18,0.4)' }}>Registro siempre gratuito · Sin tarjeta</p>
+          <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-1 mt-4">
+            {[
+              '✓ 31 profesionales publicados',
+              '✓ 0€ comisión para contratar',
+              '✓ Sin tarjeta de crédito',
+            ].map(t => (
+              <span key={t} className="text-xs font-semibold" style={{ color: 'rgba(22,20,18,0.5)' }}>{t}</span>
+            ))}
+          </div>
         </FadeIn>
       </header>
       </div>
@@ -768,9 +796,9 @@ const Landing = () => {
       {/* ─ Stats ─ */}
       <FadeIn className="max-w-[900px] mx-auto px-6 mb-10 md:mb-14">
         <div className="grid grid-cols-3 gap-2 md:gap-4">
-          <StatPill value="GRATIS" label={<><span className="md:hidden">Sin tarjeta</span><span className="hidden md:inline">Sin tarjeta · Para siempre</span></>} />
+          <StatPill value="31+" label="Profesionales publicados" />
+          <StatPill value="0€" label={<><span className="md:hidden">Comisión</span><span className="hidden md:inline">Comisión para contratar</span></>} />
           <StatPill value="España" label={<><span className="md:hidden">Europa 2027</span><span className="hidden md:inline">+ Europa en 2027</span></>} />
-          <StatPill value="+40" label="Ciudades activas" />
         </div>
       </FadeIn>
 
@@ -799,6 +827,7 @@ const Landing = () => {
           loop
           muted
           playsInline
+          poster="/og-image.jpg"
           src="/video/landing-hero.mp4"
           style={{
             width: '100%',
@@ -850,7 +879,7 @@ const Landing = () => {
             </h2>
           </div>
         </FadeIn>
-        <p className="text-center text-xs text-muted-foreground mb-6" style={{ color: 'rgba(22,20,18,0.55)' }}>
+        <p className="text-center text-xs text-muted-foreground mb-6" style={{ color: 'rgba(22,20,18,0.72)' }}>
           Haz clic en cada categoría para ver qué puedes hacer
         </p>
         {/* Fila 1-2: bento asimétrico */}
@@ -861,7 +890,7 @@ const Landing = () => {
           </FadeIn>
           <FadeIn delay={0.1} className="md:col-span-2">
             <BentoCard
-              image="https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=800"
+              image="/images/pexels/1190297.jpg"
               icon={<Building2 size={20} />} title="Empresario" subtitle="Salas, promotoras y agencias de eventos" className="h-full"
               onClick={() => setActiveRole(ROLE_DETAILS[5])} />
           </FadeIn>
@@ -878,7 +907,7 @@ const Landing = () => {
         <div className="grid grid-cols-2 gap-3 md:gap-4" style={{ height: 180 }}>
           <FadeIn delay={0.25} className="h-full">
             <BentoCard
-              image="https://images.pexels.com/photos/2681751/pexels-photo-2681751.jpeg?auto=compress&cs=tinysrgb&w=800"
+              image="/images/pexels/2681751.jpg"
               icon={<Scissors size={20} />} title="Belleza & Estética" subtitle="Maquilladores, peluqueros y estilistas" className="h-full"
               onClick={() => setActiveRole(ROLE_DETAILS[4])} />
           </FadeIn>
@@ -1030,7 +1059,7 @@ const Landing = () => {
       <section className="relative overflow-hidden pb-16">
         {/* Ghost photo — professionals at work, not wedding */}
         <img
-          src="https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&w=1600&h=600&fit=crop"
+          src="/images/pexels/2608517-hero.jpg"
           alt=""
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover pointer-events-none"
@@ -1086,7 +1115,7 @@ const Landing = () => {
           style={{ background: '#1A1814' }}>
           {/* Same wedding ghost photo as hero */}
           <img
-            src="https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1000&fit=crop"
+            src="/images/pexels/1024993-hero.jpg"
             alt=""
             aria-hidden="true"
             className="absolute inset-0 w-full h-full object-cover pointer-events-none"
@@ -1100,31 +1129,31 @@ const Landing = () => {
             style={{ background: 'radial-gradient(circle, #D4AF37 0%, transparent 70%)', filter: 'blur(100px)' }} />
           <div className="relative z-10 max-w-[1200px] mx-auto px-6 md:px-8">
             <p className="text-[0.7rem] font-bold uppercase tracking-[0.25em] mb-4" style={{ color: 'rgba(212,175,55,0.55)' }}>
-              Únete gratis hoy
+              31 profesionales ya publicados
             </p>
             <h2 className="text-2xl md:text-5xl font-black mb-4 tracking-tight font-display leading-tight"
               style={{ color: 'rgba(255,255,255,0.92)' }}>
-              ¿Listo para{' '}
+              Publica tu tarifa.{' '}
               <span style={{
                 background: 'linear-gradient(135deg,#D4AF37,#F5D77A)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-              }}>destacar?</span>
+              }}>Recibe bookings.</span>
             </h2>
-            <p className="text-sm mb-8 max-w-xs mx-auto" style={{ color: 'rgba(255,255,255,0.45)' }}>
-              2 minutos. Sin tarjeta. Sin trampa.
+            <p className="text-sm mb-8 max-w-sm mx-auto" style={{ color: 'rgba(255,255,255,0.45)' }}>
+              Los organizadores ven tu perfil, tu tarifa y te contactan directamente. Sin intermediarios. Sin comisiones.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-3">
               <motion.button
                 whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.98 }}
-                onClick={() => navigate('/auth')}
+                onClick={() => navigate('/auth?mode=register&role=profesional')}
                 className="inline-flex items-center justify-center gap-2 text-sm font-black px-8 py-4 rounded-xl transition-all"
                 style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#0A0A0A', boxShadow: '0 0 40px rgba(212,175,55,0.25)' }}>
                 <Headphones size={16} /> Soy Profesional
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.98 }}
-                onClick={() => navigate('/auth')}
+                onClick={() => navigate('/auth?mode=register&role=empresario')}
                 className="inline-flex items-center justify-center gap-2 text-sm font-black px-8 py-4 rounded-xl transition-all"
                 style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.14)', color: 'rgba(255,255,255,0.82)' }}>
                 <Building2 size={16} /> Organizo un Evento
@@ -1144,7 +1173,7 @@ const Landing = () => {
         <RoleModal
           role={activeRole}
           onClose={() => setActiveRole(null)}
-          onJoin={() => { setActiveRole(null); navigate('/auth'); }}
+          onJoin={() => { setActiveRole(null); navigate('/auth?mode=register&role=profesional'); }}
         />
       )}
     </div>

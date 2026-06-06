@@ -10,6 +10,7 @@ import MessagesView from '@/components/dashboard/views/MessagesView';
 import CalendarView from '@/components/dashboard/views/CalendarView';
 import ProfileView from '@/components/dashboard/views/ProfileView';
 import StaffView from '@/components/dashboard/views/StaffView';
+import EventManagerView from '@/components/dashboard/views/EventManagerView';
 import MakeupView from '@/components/dashboard/views/MakeupView';
 import MediaView from '@/components/dashboard/views/MediaView';
 import AmbassadorView from '@/components/dashboard/views/AmbassadorView';
@@ -67,7 +68,8 @@ const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: s
           <div className="h-full rounded-full" style={{ width: `${percent}%`, background: 'linear-gradient(90deg,#D4AF37,#B8941E)' }} />
         </div>
         <span style={{ color: 'rgba(255,255,255,0.55)' }}>
-          Tu perfil está al <strong style={{ color: '#D4AF37' }}>{percent}%</strong> — complétalo para aparecer mejor en el directorio
+          Perfil al <strong style={{ color: '#D4AF37' }}>{percent}%</strong>
+          <span className="hidden sm:inline"> — complétalo para aparecer mejor en el directorio</span>
         </span>
       </div>
       <button onClick={() => onNavigate('profile')}
@@ -82,6 +84,7 @@ const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: s
 };
 
 const ROLE_DEFAULT_VIEW: Partial<Record<string, string>> = {
+  pending: 'profile', dj: 'profile',
   vestuario: 'vestuario', design: 'design', promotor: 'promotor',
   staff: 'staff', makeup: 'makeup', media: 'media',
   event_manager: 'event_manager', empresario: 'empresario', rookie: 'rookie',
@@ -154,7 +157,7 @@ const Dashboard = () => {
     switch (activeView) {
       case 'dj': return <DJView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'staff': return <StaffView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
-      case 'event_manager': return <StaffView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
+      case 'event_manager': return <EventManagerView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'makeup': return <MakeupView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'media': return <MediaView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'ambassador': return <AmbassadorView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
@@ -233,7 +236,7 @@ const Dashboard = () => {
         />
       )}
 
-      <OnboardingTour onNavigate={handleViewChange} />
+      {!showWizard && <OnboardingTour onNavigate={handleViewChange} />}
       <SupportChat />
       {showWizard && (
         <OnboardingWizard

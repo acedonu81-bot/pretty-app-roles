@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
 const PAQUETES = [
   { paquete: 'Básico (4h)', precio: '400€ – 650€', incluye: 'DJ + equipo de sonido + luces de color básicas' },
@@ -29,7 +30,17 @@ export default function BlogDiscoMovilComuniones() {
     mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://xpeak.es/blog/disco-movil-para-comuniones' },
   };
 
-  const faqStructured = {
+  const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' },
+    { '@type': 'ListItem', position: 3, name: 'Disco móvil para comuniones: precios y qué incluye en 2026', item: 'https://xpeak.es/blog/disco-movil-para-comuniones' },
+  ],
+};
+
+const faqStructured = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: FAQ.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
@@ -41,7 +52,7 @@ export default function BlogDiscoMovilComuniones() {
   return (
     <>
       <Helmet>
-        <title>Disco móvil para comuniones: precios y qué incluye en 2026 — XPEAK</title>
+        <title>Disco móvil comuniones: precio y qué incluye | XPEAK</title>
         <meta name="description" content="Guía para contratar disco móvil para comuniones en España 2026: precios por paquete, qué incluye el servicio y cómo elegir el DJ correcto." />
         <meta name="keywords" content="disco móvil comunión España, precio disco móvil comunión, contratar DJ comunión, disco movil comunion precio" />
         <link rel="canonical" href="https://xpeak.es/blog/disco-movil-para-comuniones" />
@@ -57,6 +68,7 @@ export default function BlogDiscoMovilComuniones() {
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
@@ -129,7 +141,22 @@ export default function BlogDiscoMovilComuniones() {
             </div>
           </section>
 
-          <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
+          
+            <section className="mt-8">
+              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <div className="space-y-2">
+                {[
+                  { href: '/blog/comuniones-guia-completa', cat: 'Hub Comuniones', title: 'Comuniones en España: guía completa 2026' },
+                  { href: '/blog/dj-para-eventos', cat: 'Hub DJ', title: 'DJ para eventos: guía completa de precios 2026' },
+                ].map(link => (
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
+                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                  </a>
+                ))}
+              </div>
+            </section>
+            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
             <p className="text-sm font-black mb-1">Encuentra disco móvil para tu comunión</p>
             <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>DJs con equipo completo verificados en toda España. Sin comisión.</p>
             <a href="/contratar-disco-movil" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-xs font-black transition-all hover:scale-105"
@@ -138,6 +165,7 @@ export default function BlogDiscoMovilComuniones() {
             </a>
           </div>
         </article>
+          <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/disco-movil-para-comuniones" />
       <FooterPublic />
       </div>
     </>

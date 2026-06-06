@@ -1,9 +1,21 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, ArrowLeft } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogInlineCTA from '@/components/BlogInlineCTA';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
 export default function BlogCamarerosPrecio() {
-  const faqStructured = {
+  const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' },
+    { '@type': 'ListItem', position: 3, name: 'Cuánto cobra un camarero de eventos por horas en España (2026)', item: 'https://xpeak.es/blog/cuanto-cobra-un-camarero-de-eventos' },
+  ],
+};
+
+const faqStructured = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: [
@@ -27,7 +39,7 @@ export default function BlogCamarerosPrecio() {
   return (
     <>
       <Helmet>
-        <title>Cuánto cobra un camarero de eventos por horas en España (2026) — XPEAK</title>
+        <title>Cuánto cobra un camarero de eventos 2026 | XPEAK</title>
         <meta name="description" content="Guía completa de precios de camareros para eventos en España 2026: bodas, empresas y fiestas privadas. Cuánto cobran y cuántos necesitas contratar." />
         <link rel="canonical" href="https://xpeak.es/blog/cuanto-cobra-un-camarero-de-eventos" />
         <meta property="og:title" content="Cuánto cobra un camarero de eventos en España 2026 — XPEAK" />
@@ -41,6 +53,7 @@ export default function BlogCamarerosPrecio() {
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(articleStructured)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
@@ -127,6 +140,8 @@ export default function BlogCamarerosPrecio() {
               </p>
             </section>
 
+            <BlogInlineCTA role="staff" />
+
             <section>
               <h2 className="text-xl sm:text-2xl font-black mb-3">Precio de camareros para eventos de empresa</h2>
               <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.65)' }}>
@@ -183,7 +198,25 @@ export default function BlogCamarerosPrecio() {
             </section>
           </div>
 
-          <div className="mt-12 rounded-2xl p-7 text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
+          
+            <section className="mt-8">
+              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <div className="space-y-2">
+                {[
+                  { href: '/blog/staff-para-eventos', cat: 'Hub Staff', title: 'Staff para eventos: guía completa 2026' },
+                  { href: '/blog/cuantos-camareros-necesito-para-mi-boda', cat: 'Bodas', title: 'Cuántos camareros necesito para mi boda' },
+                  { href: '/blog/staff-de-discoteca-funciones-y-salario', cat: 'Staff', title: 'Staff de discoteca: funciones y sueldos 2026' },
+                  { href: '/blog/cuanto-cuesta-una-boda-en-espana', cat: 'Bodas', title: 'Cuánto cuesta una boda en España 2026' },
+                  { href: '/blog/contratar-barman-evento-privado', cat: 'Staff', title: 'Barman evento privado: precio 2026' },
+                ].map(link => (
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
+                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                  </a>
+                ))}
+              </div>
+            </section>
+            <div className="mt-12 rounded-2xl p-7 text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
             <h2 className="text-xl font-black mb-2">Encuentra camareros para tu evento</h2>
             <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.5)' }}>
               Gratis para organizadores · Flash Booking en menos de 1h · Contrato digital automático
@@ -195,6 +228,7 @@ export default function BlogCamarerosPrecio() {
             </a>
           </div>
         </article>
+          <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/cuanto-cobra-un-camarero-de-eventos" />
         <FooterPublic />
       </div>
     </>

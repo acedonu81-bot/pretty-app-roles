@@ -76,6 +76,7 @@ const navSections = [
 ];
 
 const TOOL_BLUE_IDS = new Set(['calendar', 'messages', 'flashbooking']);
+const NO_COUNT_BADGE = new Set(['empresario']);
 
 const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', makeup: 'Makeup', media: 'Media', empresario: 'Sala', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista' };
 
@@ -235,7 +236,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
               const roleColor = ROLE_COLORS[item.id];
               const isToolBlue = TOOL_BLUE_IDS.has(item.id);
               const iconColor = roleColor ?? (isToolBlue ? '#4285F4' : 'rgba(255,255,255,0.5)');
-              const count = roleColor ? roleCounts[item.id] : undefined;
+              const count = roleColor && !NO_COUNT_BADGE.has(item.id) ? roleCounts[item.id] : undefined;
 
               return (
                 <button

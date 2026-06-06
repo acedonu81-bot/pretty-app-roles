@@ -1,7 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Cómo organizar una fiesta de empresa: checklist completo y proveedores (2026)', description: 'Guía paso a paso para organizar la fiesta de empresa perfecta. Checklist, presupuesto, proveedores y timeline. Todo lo que necesitas saber para el evento de fin de año.', datePublished: '2026-05-04', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/como-organizar-fiesta-empresa' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Cómo organizar una fiesta de empresa: checklist completo y proveedores (2026)', description: 'Guía paso a paso para organizar la fiesta de empresa perfecta. Checklist, presupuesto, proveedores y timeline. Todo lo que necesitas saber para el evento de fin de año.', datePublished: '2026-05-04',
+  dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/como-organizar-fiesta-empresa' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta organizar una fiesta de empresa?', acceptedAnswer: { '@type': 'Answer', text: 'El presupuesto de una fiesta de empresa en España varía entre 40€ y 150€ por persona dependiendo del formato. Una cena de empresa con DJ en restaurante cuesta entre 50€ y 80€/persona. Alquilar un espacio exclusivo con catering, DJ y personal puede superar los 100–120€/persona. Para 50 empleados, el presupuesto habitual ronda los 3.000€ a 8.000€.' } },
   { '@type': 'Question', name: '¿Con cuánta antelación organizar la fiesta de empresa?', acceptedAnswer: { '@type': 'Answer', text: 'Para fiestas de fin de año (noviembre-diciembre) es imprescindible empezar a organizar en agosto-septiembre. Los espacios y DJs para diciembre se reservan con 3-4 meses de antelación mínimo. Para eventos de team building o celebraciones puntuales fuera de temporada alta, 4-6 semanas es suficiente.' } },
@@ -30,7 +32,7 @@ export default function BlogFiestaEmpresa() {
   return (
     <>
       <Helmet>
-        <title>Cómo organizar una fiesta de empresa: checklist y proveedores 2026</title>
+        <title>Fiesta de empresa: cómo organizarla 2026 | XPEAK</title>
         <meta name="description" content="Guía completa para organizar la fiesta de empresa. Checklist por fases, presupuesto por partidas y qué proveedores necesitas. Ideal para cenas de fin de año y team building." />
         <link rel="canonical" href="https://xpeak.es/blog/como-organizar-fiesta-empresa" />
         <meta property="og:title" content="Organizar fiesta de empresa: checklist 2026 — XPEAK Blog" />
@@ -123,7 +125,8 @@ export default function BlogFiestaEmpresa() {
               </div>
             </div>
           </div>
-        </main>
+                  <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/como-organizar-fiesta-empresa" />
+</main>
         <FooterPublic />
       </div>
     </>

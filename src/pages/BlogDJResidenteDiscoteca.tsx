@@ -1,7 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ residente de discoteca: precio, funciones y cómo contratarlo en España (2026)', description: 'Qué hace un DJ residente, cuánto cobra y cómo diferenciarlo de un DJ invitado. Precios por ciudad y tipo de sala en España 2026.', datePublished: '2026-05-07', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-residente-discoteca-precio' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ residente de discoteca: precio, funciones y cómo contratarlo en España (2026)', description: 'Qué hace un DJ residente, cuánto cobra y cómo diferenciarlo de un DJ invitado. Precios por ciudad y tipo de sala en España 2026.', datePublished: '2026-05-07',
+  dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-residente-discoteca-precio' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cobra un DJ residente de discoteca?', acceptedAnswer: { '@type': 'Answer', text: 'En España, un DJ residente en sala pequeña o mediana cobra entre 200€ y 600€ por noche. En salas de referencia de grandes ciudades (Madrid, Barcelona, Ibiza), el rango es 600€–2.000€. Los cachés mensuales para residencias largas oscilan entre 1.500€ y 8.000€/mes dependiendo del nivel del artista y la sala.' } },
   { '@type': 'Question', name: '¿Qué diferencia hay entre DJ residente y DJ invitado?', acceptedAnswer: { '@type': 'Answer', text: 'El DJ residente toca regularmente en la misma sala (semanalmente o en fechas fijas) y se convierte en imagen del club. El DJ invitado actúa puntualmente, normalmente como acto principal o en sesiones especiales. Los invitados suelen cobrar entre 2x y 10x más que el residente de la misma sala.' } },
@@ -23,7 +25,7 @@ export default function BlogDJResidenteDiscoteca() {
   return (
     <>
       <Helmet>
-        <title>DJ residente de discoteca: precio y funciones en España (2026)</title>
+        <title>DJ residente discoteca: precio y funciones 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobra un DJ residente en España. Precios por ciudad y tipo de sala, diferencias con DJ invitado y cómo contratar el residente perfecto para tu club." />
         <link rel="canonical" href="https://xpeak.es/blog/dj-residente-discoteca-precio" />
         <meta property="og:title" content="DJ residente discoteca: precio 2026 — XPEAK Blog" />
@@ -144,6 +146,7 @@ export default function BlogDJResidenteDiscoteca() {
               <h2 className="text-base font-black mb-4" style={{ color: 'rgba(255,255,255,0.4)' }}>Artículos relacionados</h2>
               <div className="grid sm:grid-cols-2 gap-3">
                 {[
+                  { href: '/blog/dj-para-eventos', cat: 'Hub DJ', title: 'DJ para eventos: guía completa de precios 2026' },
                   { href: '/blog/cuanto-cobra-un-dj-en-espana', title: '¿Cuánto cobra un DJ en España?' },
                   { href: '/blog/dj-para-bodas-vs-discoteca', title: 'DJ para bodas vs DJ de discoteca' },
                   { href: '/blog/staff-de-discoteca-funciones-y-salario', title: 'Staff de discoteca: funciones y salario' },
@@ -156,7 +159,8 @@ export default function BlogDJResidenteDiscoteca() {
               </div>
             </section>
           </div>
-        </main>
+                  <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-residente-discoteca-precio" />
+</main>
         <FooterPublic />
       </div>
     </>

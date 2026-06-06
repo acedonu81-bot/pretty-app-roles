@@ -1,6 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import { Music, Camera, UtensilsCrossed, Flower2, Users, Car, ChevronRight } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogInlineCTA from '@/components/BlogInlineCTA';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
 const PARTIDAS = [
   { icon: UtensilsCrossed, label: 'Catering y banquete', min: 8000, max: 25000, nota: 'Partida más alta. €50–150/comensal según menú y servicio.' },
@@ -66,7 +68,17 @@ export default function BlogCosteBoda() {
     mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://xpeak.es/blog/cuanto-cuesta-una-boda-en-espana' },
   };
 
-  const faqStructured = {
+  const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' },
+    { '@type': 'ListItem', position: 3, name: '¿Cuánto cuesta una boda en España en 2026? Presupuesto completo', item: 'https://xpeak.es/blog/cuanto-cuesta-una-boda-en-espana' },
+  ],
+};
+
+const faqStructured = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: FAQ.map(f => ({
@@ -82,7 +94,7 @@ export default function BlogCosteBoda() {
   return (
     <>
       <Helmet>
-        <title>¿Cuánto cuesta una boda en España en 2026? Presupuesto completo — XPEAK</title>
+        <title>Cuánto cuesta una boda en España 2026 | XPEAK</title>
         <meta name="description" content="Guía completa del coste de una boda en España 2026: desglose por partidas (catering, DJ, fotógrafo, personal), precio según invitados y ciudad. Datos reales." />
         <meta name="keywords" content="cuánto cuesta una boda España, presupuesto boda 2026, precio boda España, coste boda media España, cuánto vale organizar una boda" />
         <link rel="canonical" href="https://xpeak.es/blog/cuanto-cuesta-una-boda-en-espana" />
@@ -98,6 +110,7 @@ export default function BlogCosteBoda() {
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
@@ -239,6 +252,8 @@ export default function BlogCosteBoda() {
               </table>
             </div>
           </section>
+
+          <BlogInlineCTA role="general" />
 
           {/* DJ */}
           <section className="mb-12">
@@ -390,6 +405,7 @@ export default function BlogCosteBoda() {
             <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: 'rgba(255,255,255,0.3)' }}>Artículos relacionados</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {[
+                { href: '/blog/profesionales-bodas', cat: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026' },
                 { href: '/blog/cuantos-camareros-necesito-para-mi-boda', title: 'Cuántos camareros necesito para mi boda', cat: 'Bodas' },
                 { href: '/blog/cuanto-cobra-un-camarero-de-eventos', title: 'Cuánto cobra un camarero de eventos en España', cat: 'Precios' },
                 { href: '/blog/cuanto-cobra-un-dj-en-espana', title: '¿Cuánto cobra un DJ en España? Tarifas 2026', cat: 'Precios' },
@@ -409,6 +425,7 @@ export default function BlogCosteBoda() {
           </section>
 
         </article>
+          <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuanto-cuesta-una-boda-en-espana" />
       <FooterPublic />
       </div>
     </>

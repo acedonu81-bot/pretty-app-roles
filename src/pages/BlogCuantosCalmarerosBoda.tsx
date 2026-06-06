@@ -1,9 +1,21 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, ArrowLeft } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogInlineCTA from '@/components/BlogInlineCTA';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
 export default function BlogCuantosCalmarerosBoda() {
-  const faqStructured = {
+  const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' },
+    { '@type': 'ListItem', position: 3, name: 'Cuántos camareros necesito para mi boda: guía definitiva 2026', item: 'https://xpeak.es/blog/cuantos-camareros-necesito-para-mi-boda' },
+  ],
+};
+
+const faqStructured = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: [
@@ -36,7 +48,7 @@ export default function BlogCuantosCalmarerosBoda() {
   return (
     <>
       <Helmet>
-        <title>Cuántos camareros necesito para mi boda: guía definitiva 2026 — XPEAK</title>
+        <title>Cuántos camareros para mi boda: guía 2026 | XPEAK</title>
         <meta name="description" content="Guía definitiva 2026: cuántos camareros necesitas para tu boda según los invitados y el tipo de servicio. Tabla de ratios y consejos prácticos." />
         <link rel="canonical" href="https://xpeak.es/blog/cuantos-camareros-necesito-para-mi-boda" />
         <meta property="og:title" content="Cuántos camareros necesito para mi boda 2026 — XPEAK" />
@@ -50,6 +62,7 @@ export default function BlogCuantosCalmarerosBoda() {
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(articleStructured)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
@@ -111,6 +124,8 @@ export default function BlogCuantosCalmarerosBoda() {
               * Ratios estándar del sector. Pueden variar según el espacio, el tipo de menú y la duración del evento.
             </p>
           </section>
+
+          <BlogInlineCTA role="staff" />
 
           <div className="space-y-8">
             <section>
@@ -191,7 +206,26 @@ export default function BlogCuantosCalmarerosBoda() {
             </section>
           </div>
 
-          <div className="mt-12 rounded-2xl p-7 text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
+          
+            <section className="mt-8">
+              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <div className="space-y-2">
+                {[
+                  { href: '/blog/staff-para-eventos', cat: 'Hub Staff', title: 'Staff para eventos: guía completa 2026' },
+                  { href: '/blog/profesionales-bodas', cat: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026' },
+                  { href: '/blog/cuanto-cobra-un-camarero-de-eventos', cat: 'Staff', title: 'Cuánto cobra un camarero de eventos 2026' },
+                  { href: '/blog/catering-boda-precio-por-persona', cat: 'Catering', title: 'Catering boda: precio por persona 2026' },
+                  { href: '/blog/cuanto-cuesta-una-boda-en-espana', cat: 'Bodas', title: 'Cuánto cuesta una boda en España 2026' },
+                  { href: '/blog/contratar-barman-evento-privado', cat: 'Staff', title: 'Barman evento privado: precio 2026' },
+                ].map(link => (
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
+                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                  </a>
+                ))}
+              </div>
+            </section>
+            <div className="mt-12 rounded-2xl p-7 text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
             <h2 className="text-xl font-black mb-2">Contrata el personal perfecto para tu boda</h2>
             <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.5)' }}>
               Gratis para organizadores · Camareros verificados · Contrato digital automático
@@ -203,6 +237,7 @@ export default function BlogCuantosCalmarerosBoda() {
             </a>
           </div>
         </article>
+          <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuantos-camareros-necesito-para-mi-boda" />
         <FooterPublic />
       </div>
     </>

@@ -37,7 +37,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
   const currentUser = useProfile();
   const isRookie = p.category === 'rookie';
   const [expanded, setExpanded] = useState(false);
-  const [accepted, setAccepted] = useState(false);
+  const [accepted, setAccepted] = useState(() => localStorage.getItem('xpeak_norms_accepted') === 'true');
   const [showLegal, setShowLegal] = useState(false);
   const [showContract, setShowContract] = useState(false);
   // Real vote count from Supabase (only loaded for rookie profiles)
@@ -203,14 +203,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
               })}
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-2">
-              {[1,2,3,4].map(i => (
-                <div key={i} className="rounded-lg aspect-square flex items-center justify-center"
-                  style={{ background: 'rgba(212,175,55,0.04)', border: '1px dashed rgba(212,175,55,0.15)' }}>
-                  <span className="text-[0.75rem] text-muted-foreground text-center px-2">Subir trabajo</span>
-                </div>
-              ))}
-            </div>
+            <p className="text-xs text-muted-foreground italic">Sin portfolio todavía</p>
           )}
         </div>
       )}
@@ -337,7 +330,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
 
       <div className="mb-3 flex items-start gap-2 p-2.5 rounded-lg" onClick={e => e.stopPropagation()}
         style={{ background: accepted ? 'rgba(212,175,55,0.04)' : 'transparent', border: `1px solid ${accepted ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.05)'}`, transition: 'all 0.2s' }}>
-        <input type="checkbox" checked={accepted} onChange={() => setAccepted(!accepted)}
+        <input type="checkbox" checked={accepted} onChange={() => { const next = !accepted; setAccepted(next); if (next) localStorage.setItem('xpeak_norms_accepted', 'true'); }}
           className="mt-0.5 accent-[#D4AF37] flex-shrink-0" id={`accept-${p.id}`} />
         <label htmlFor={`accept-${p.id}`} className="text-xs text-muted-foreground leading-snug cursor-pointer break-words">
           Acepto las{' '}

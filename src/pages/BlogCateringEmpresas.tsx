@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
 const FORMATOS = [
   { formato: 'Coffee break', precio: '8€ – 18€/persona', cuando: 'Reuniones y formaciones de media jornada' },
@@ -30,7 +31,17 @@ export default function BlogCateringEmpresas() {
     mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://xpeak.es/blog/catering-para-eventos-de-empresa' },
   };
 
-  const faqStructured = {
+  const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' },
+    { '@type': 'ListItem', position: 3, name: 'Catering para eventos de empresa en España: tipos y precios 2026', item: 'https://xpeak.es/blog/catering-para-eventos-de-empresa' },
+  ],
+};
+
+const faqStructured = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: FAQ.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
@@ -42,7 +53,7 @@ export default function BlogCateringEmpresas() {
   return (
     <>
       <Helmet>
-        <title>Catering para eventos de empresa en España: tipos y precios 2026 — XPEAK</title>
+        <title>Catering eventos empresa: tipos y precios 2026 | XPEAK</title>
         <meta name="description" content="Guía completa de catering corporativo en España 2026: coffee breaks, cócteles, cenas de gala y food trucks. Precios por persona y cuándo contratar." />
         <meta name="keywords" content="catering eventos empresa España, catering corporativo Madrid, precio catering empresa, contratar catering evento empresa" />
         <link rel="canonical" href="https://xpeak.es/blog/catering-para-eventos-de-empresa" />
@@ -58,6 +69,7 @@ export default function BlogCateringEmpresas() {
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
@@ -137,6 +149,7 @@ export default function BlogCateringEmpresas() {
             </a>
           </div>
         </article>
+          <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/catering-para-eventos-de-empresa" />
       <FooterPublic />
       </div>
     </>

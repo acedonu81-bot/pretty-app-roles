@@ -869,7 +869,7 @@ Para cualquier duda: soporte@xpeak.es
 
       {/* ── Audio quality ── */}
       <Section title="Calidad de Audio" icon={<Volume2 size={15} />}>
-        <p className="text-xs text-muted-foreground mb-3">Afecta la reproducción de mixes y sesiones en el Escenario Virtual.</p>
+        <p className="text-xs text-muted-foreground mb-3">Afecta la reproducción de mixes y sesiones en la plataforma.</p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {AUDIO_QUALITIES.map(q => (
             <button key={q.id} onClick={() => { setAudioQuality(q.id); toast.success(`Calidad: ${q.label}`); }}

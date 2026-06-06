@@ -1,6 +1,18 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, ArrowLeft } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogInlineCTA from '@/components/BlogInlineCTA';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' },
+    { '@type': 'ListItem', position: 3, name: 'DJ para bodas vs DJ para discoteca: diferencias y precios 2026', item: 'https://xpeak.es/blog/dj-para-bodas-vs-discoteca' },
+  ],
+};
 
 export default function BlogDJBodaVsDiscoteca() {
   const articleStructured = {
@@ -17,7 +29,7 @@ export default function BlogDJBodaVsDiscoteca() {
   return (
     <>
       <Helmet>
-        <title>DJ para bodas vs DJ para discoteca: diferencias y precios 2026 — XPEAK</title>
+        <title>DJ bodas vs discoteca: diferencias 2026 | XPEAK</title>
         <meta name="description" content="¿Son lo mismo un DJ de boda y un DJ de discoteca? Diferencias en habilidades, equipamiento y precios. Guía para elegir el perfil correcto en 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/dj-para-bodas-vs-discoteca" />
         <meta property="og:title" content="DJ para bodas vs DJ para discoteca 2026 — XPEAK" />
@@ -30,6 +42,7 @@ export default function BlogDJBodaVsDiscoteca() {
         <meta name="twitter:description" content="¿Son lo mismo un DJ de boda y un DJ de discoteca? Diferencias en habilidades, equipamiento y precios." />
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(articleStructured)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
@@ -124,6 +137,8 @@ export default function BlogDJBodaVsDiscoteca() {
               </div>
             </section>
 
+            <BlogInlineCTA role="dj" />
+
             <section>
               <h2 className="text-xl sm:text-2xl font-black mb-3">¿Cuál necesitas para tu evento?</h2>
               <div className="space-y-3">
@@ -163,6 +178,20 @@ export default function BlogDJBodaVsDiscoteca() {
             </section>
           </div>
 
+          <section className="mt-8">
+              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <div className="space-y-2">
+                {[
+                  { href: '/blog/dj-para-eventos', cat: 'Hub DJ', title: 'DJ para eventos: guía completa de precios 2026' },
+                ].map(link => (
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
+                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                  </a>
+                ))}
+              </div>
+            </section>
+
           <div className="mt-12 rounded-2xl p-7 text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
             <h2 className="text-xl font-black mb-2">Encuentra el DJ perfecto para tu evento</h2>
             <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.5)' }}>
@@ -182,6 +211,7 @@ export default function BlogDJBodaVsDiscoteca() {
             </div>
           </div>
         </article>
+          <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-para-bodas-vs-discoteca" />
         <FooterPublic />
       </div>
     </>

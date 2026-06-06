@@ -1,6 +1,17 @@
 import { Helmet } from 'react-helmet-async';
 import { ArrowLeft, Zap } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' },
+    { '@type': 'ListItem', position: 3, name: 'Los 10 errores al contratar un DJ para una boda (y cómo evitarlos)', item: 'https://xpeak.es/blog/10-errores-contratar-dj-boda' },
+  ],
+};
 
 export default function BlogDJErroresBoda() {
   const articleStructured = {
@@ -80,7 +91,7 @@ export default function BlogDJErroresBoda() {
   return (
     <>
       <Helmet>
-        <title>Los 10 errores al contratar un DJ para una boda (y cómo evitarlos) — XPEAK</title>
+        <title>10 errores al contratar DJ para tu boda | XPEAK</title>
         <meta name="description" content="Los 10 errores más frecuentes al contratar un DJ para una boda en España: sin contrato, reservar tarde, confundir perfiles. Guía práctica para novios 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/10-errores-contratar-dj-boda" />
         <meta property="og:title" content="Los 10 errores al contratar un DJ para una boda — XPEAK" />
@@ -94,6 +105,7 @@ export default function BlogDJErroresBoda() {
         <meta name="twitter:description" content="Guía para novios: los 10 errores más comunes al contratar un DJ para la boda y cómo evitarlos." />
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(articleStructured)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
@@ -185,6 +197,8 @@ export default function BlogDJErroresBoda() {
           <h2 className="text-lg font-black mb-5">Artículos relacionados</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
+              { href: '/blog/dj-para-eventos', cat: 'Hub DJ', title: 'DJ para eventos: guía completa de precios 2026' },
+              { href: '/blog/profesionales-bodas', cat: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026' },
               { href: '/blog/dj-para-bodas-vs-discoteca', emoji: '🆚', title: 'DJ de boda vs DJ de discoteca: diferencias clave', desc: 'Por qué no son lo mismo y cómo elegir el perfil correcto.' },
               { href: '/blog/cuanto-cobra-un-dj-en-espana', emoji: '💰', title: '¿Cuánto cobra un DJ en España? Precios 2026', desc: 'Tarifas reales por tipo de evento, experiencia y ciudad.' },
               { href: '/blog/musica-para-bodas-guia', emoji: '🎵', title: 'Música para bodas: DJ, banda o lista — guía completa', desc: 'Comparativa completa de opciones musicales para tu boda.' },
@@ -203,6 +217,7 @@ export default function BlogDJErroresBoda() {
           </div>
         </article>
 
+          <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/10-errores-contratar-dj-boda" />
         <FooterPublic />
       </div>
     </>

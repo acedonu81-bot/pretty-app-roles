@@ -1,5 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogInlineCTA from '@/components/BlogInlineCTA';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
 const TIPOS = [
   { tipo: 'Sesión de retrato (2h)', rango: '80€ – 180€', nota: 'Fotos de pareja o pre-boda' },
@@ -39,7 +41,17 @@ export default function BlogFotografoBodas() {
     mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://xpeak.es/blog/contratar-fotografo-de-bodas' },
   };
 
-  const faqStructured = {
+  const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' },
+    { '@type': 'ListItem', position: 3, name: 'Cómo contratar un fotógrafo de bodas en España: guía de precios 2026', item: 'https://xpeak.es/blog/contratar-fotografo-de-bodas' },
+  ],
+};
+
+const faqStructured = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: FAQ.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
@@ -51,7 +63,7 @@ export default function BlogFotografoBodas() {
   return (
     <>
       <Helmet>
-        <title>Cómo contratar un fotógrafo de bodas en España: guía de precios 2026 — XPEAK</title>
+        <title>Fotógrafo bodas España: precio y cómo contratar | XPEAK</title>
         <meta name="description" content="Precios reales de fotógrafos de bodas en España 2026: qué incluye, cuánto cuesta por ciudad y cómo elegir el fotógrafo perfecto para tu boda." />
         <meta name="keywords" content="contratar fotógrafo boda España, precio fotógrafo boda 2026, fotógrafo boda Madrid, cuánto cuesta fotógrafo boda" />
         <link rel="canonical" href="https://xpeak.es/blog/contratar-fotografo-de-bodas" />
@@ -67,6 +79,7 @@ export default function BlogFotografoBodas() {
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
@@ -107,6 +120,8 @@ export default function BlogFotografoBodas() {
               </table>
             </div>
           </section>
+
+          <BlogInlineCTA role="fotografo" />
 
           <section className="mb-10">
             <h2 className="text-lg font-black mb-4">Precios por ciudad</h2>
@@ -155,7 +170,26 @@ export default function BlogFotografoBodas() {
             </div>
           </section>
 
-          <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
+          
+            <section className="mt-8">
+              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <div className="space-y-2">
+                {[
+                  { href: '/blog/profesionales-bodas', cat: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026' },
+                  { href: '/blog/fotografos-eventos', cat: 'Hub Foto', title: 'Fotógrafos para eventos: guía completa 2026' },
+                  { href: '/blog/videografo-bodas-precio', cat: 'Bodas', title: 'Videógrafo de bodas: precio y qué incluye 2026' },
+                  { href: '/blog/cuanto-cuesta-una-boda-en-espana', cat: 'Bodas', title: 'Cuánto cuesta una boda en España 2026' },
+                  { href: '/blog/cuanto-cobra-un-dj-en-espana', cat: 'DJ', title: 'Cuánto cobra un DJ en España: precios 2026' },
+                  { href: '/blog/fotografia-eventos-nocturnos', cat: 'Fotografía', title: 'Fotografía eventos nocturnos: precios 2026' },
+                ].map(link => (
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
+                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                  </a>
+                ))}
+              </div>
+            </section>
+            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
             <p className="text-sm font-black mb-1">Encuentra fotógrafos verificados en España</p>
             <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>Portafolios reales, tarifas públicas y contratos digitales. Sin comisión.</p>
             <a href="/contratar-fotografo" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-xs font-black transition-all hover:scale-105"
@@ -164,6 +198,7 @@ export default function BlogFotografoBodas() {
             </a>
           </div>
         </article>
+          <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/contratar-fotografo-de-bodas" />
       <FooterPublic />
       </div>
     </>

@@ -1,7 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Wedding Planner: precio y qué hace en España (2026)', description: 'Cuánto cobra un wedding planner en España. Precios por paquete, diferencias entre coordinador y planificador integral, y cómo elegir el perfecto para tu boda.', datePublished: '2026-05-07', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/wedding-planner-precio-espana' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Wedding Planner: precio y qué hace en España (2026)', description: 'Cuánto cobra un wedding planner en España. Precios por paquete, diferencias entre coordinador y planificador integral, y cómo elegir el perfecto para tu boda.', datePublished: '2026-05-07',
+  dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/wedding-planner-precio-espana' };
 
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cobra un wedding planner en España?', acceptedAnswer: { '@type': 'Answer', text: 'El precio de un wedding planner en España varía entre 800€ y 6.000€ según el paquete. La coordinación del día cuesta entre 800€ y 2.000€. La planificación parcial (últimos 3 meses) ronda los 1.500–3.500€. La planificación integral desde cero suele costar entre 3.000€ y 8.000€ o un porcentaje del presupuesto total de la boda (normalmente entre el 8% y el 15%).' } },
@@ -34,7 +36,7 @@ export default function BlogWeddingPlanner() {
   return (
     <>
       <Helmet>
-        <title>Wedding Planner: precio y qué hace en España (2026) — XPEAK Blog</title>
+        <title>Wedding Planner: precio en España 2026 | XPEAK</title>
         <meta name="description" content="¿Cuánto cobra un wedding planner en España? Precios por paquete, diferencias entre coordinador y planificador integral, y checklist completo para tu boda." />
         <link rel="canonical" href="https://xpeak.es/blog/wedding-planner-precio-espana" />
         <meta property="og:title" content="Wedding Planner: precio y qué hace en España (2026)" />
@@ -269,6 +271,7 @@ export default function BlogWeddingPlanner() {
               <h2 className="text-lg font-black mb-4">Artículos relacionados</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {[
+                  { href: '/blog/profesionales-bodas', tag: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026', desc: 'DJ, fotógrafo, catering y más. Todo lo que necesitas para tu boda.' },
                   { href: '/blog/cuanto-cuesta-una-boda-en-espana', title: 'Presupuesto completo de boda en España 2026', tag: 'Bodas' },
                   { href: '/blog/catering-boda-precio-por-persona', title: 'Catering de boda: precio por persona', tag: 'Catering' },
                   { href: '/blog/cuanto-cobra-un-dj-en-espana', title: 'Cuánto cobra un DJ para bodas', tag: 'DJ' },
@@ -292,7 +295,8 @@ export default function BlogWeddingPlanner() {
             </div>
 
           </div>
-        </main>
+                  <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/wedding-planner-precio-espana" />
+</main>
         <FooterPublic />
       </div>
     </>

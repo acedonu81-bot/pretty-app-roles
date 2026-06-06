@@ -1,5 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogInlineCTA from '@/components/BlogInlineCTA';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
 const article = {
   '@context': 'https://schema.org',
@@ -7,6 +9,7 @@ const article = {
   headline: 'Maquillaje nupcial: precios y cómo elegir tu maquilladora en España (2026)',
   description: 'Guía de precios de maquillaje para novias en España. Cuánto cuesta, qué incluye el servicio y cómo elegir la maquilladora perfecta.',
   datePublished: '2026-05-03',
+  dateModified: '2026-05-25',
   author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
@@ -68,7 +71,7 @@ export default function BlogMaquillajeBoda() {
   return (
     <>
       <Helmet>
-        <title>Maquillaje nupcial: precios y cómo elegir tu maquilladora en España (2026)</title>
+        <title>Maquillaje nupcial: precios y cómo elegir 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta el maquillaje de novia en España, qué incluye y cómo elegir bien tu maquilladora. Precios por ciudad y tipo de servicio." />
         <link rel="canonical" href="https://xpeak.es/blog/maquillaje-nupcial-precio-guia" />
         <meta property="og:title" content="Maquillaje nupcial: precios 2026 — XPEAK Blog" />
@@ -142,6 +145,8 @@ export default function BlogMaquillajeBoda() {
               <p className="text-xs mt-3" style={{ color: '#8E8EA0' }}>Precios medios en España 2026. Sin IVA. El desplazamiento se cobra aparte según distancia al venue.</p>
             </section>
 
+            <BlogInlineCTA role="makeup" />
+
             <section>
               <h2 className="text-lg font-black mb-4">Precio del maquillaje de novia por ciudad</h2>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -195,6 +200,24 @@ export default function BlogMaquillajeBoda() {
               </div>
             </section>
 
+            
+            <section className="mt-8">
+              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <div className="space-y-2">
+                {[
+                  { href: '/blog/profesionales-bodas', cat: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026' },
+                  { href: '/blog/maquilladora-para-eventos-precio', cat: 'Maquillaje', title: 'Maquilladora para eventos: precios 2026' },
+                  { href: '/blog/contratar-fotografo-de-bodas', cat: 'Bodas', title: 'Contratar fotógrafo de bodas: guía y precios' },
+                  { href: '/blog/cuanto-cuesta-una-boda-en-espana', cat: 'Bodas', title: 'Cuánto cuesta una boda en España 2026' },
+                  { href: '/blog/personal-de-imagen-ferias-y-congresos', cat: 'Imagen', title: 'Personal de imagen para ferias y congresos' },
+                ].map(link => (
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
+                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                  </a>
+                ))}
+              </div>
+            </section>
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas maquilladora verificada para tu evento?</p>
               <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>En XPEAK puedes contratar maquilladoras profesionales con portfolio verificado. Gratis para empresarios y organizadores.</p>
@@ -204,7 +227,8 @@ export default function BlogMaquillajeBoda() {
               </a>
             </div>
           </div>
-        </main>
+                  <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/maquillaje-nupcial-precio-guia" />
+</main>
       <FooterPublic />
       </div>
     </>

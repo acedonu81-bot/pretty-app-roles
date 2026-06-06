@@ -1,7 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Contratar barman para evento privado: precios y qué incluye en España (2026)', description: 'Cuánto cuesta contratar un barman o coctelero para un evento privado en España. Tarifas, equipo incluido y diferencias con camarero de barra.', datePublished: '2026-05-04', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/contratar-barman-evento-privado' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Contratar barman para evento privado: precios y qué incluye en España (2026)', description: 'Cuánto cuesta contratar un barman o coctelero para un evento privado en España. Tarifas, equipo incluido y diferencias con camarero de barra.', datePublished: '2026-05-04',
+  dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/contratar-barman-evento-privado' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta contratar un barman para un evento privado?', acceptedAnswer: { '@type': 'Answer', text: 'El precio de un barman profesional para eventos privados en España oscila entre 150€ y 400€ por evento (4-6 horas), dependiendo del nivel de coctelería, equipamiento y ciudad. Los barmans de show o flair cobran entre 300€ y 600€.' } },
   { '@type': 'Question', name: '¿El barman trae el equipo y los productos?', acceptedAnswer: { '@type': 'Answer', text: 'Depende del paquete. Muchos barmans ofrecen un servicio todo incluido (coctelería, equipo, hielo, decoración de barra) con un precio por persona. Si traes el alcohol tú, el precio del barman baja significativamente. Especifícalo siempre en el presupuesto.' } },
@@ -23,7 +25,7 @@ export default function BlogBarmanEventos() {
   return (
     <>
       <Helmet>
-        <title>Contratar barman para evento privado: precios 2026 en España</title>
+        <title>Barman evento privado: precio 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta contratar un barman o coctelero para un evento privado en España. Tarifas, paquetes y diferencias con camarero de barra. Guía 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/contratar-barman-evento-privado" />
         <meta property="og:title" content="Contratar barman evento privado: precios 2026 — XPEAK Blog" />
@@ -68,13 +70,29 @@ export default function BlogBarmanEventos() {
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}><p className="text-sm font-bold mb-2">{f.name}</p><p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p></div>))}</div>
             </section>
+            
+            <section className="mt-8">
+              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <div className="space-y-2">
+                {[
+                  { href: '/blog/staff-para-eventos', cat: 'Hub Staff', title: 'Staff para eventos: guía completa 2026' },
+                  { href: '/blog/profesionales-bodas', cat: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026' },
+                ].map(link => (
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
+                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                  </a>
+                ))}
+              </div>
+            </section>
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas barman o camarero para tu evento?</p>
               <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>XPEAK conecta con camareros y barmans verificados en toda España. Contrato digital automático incluido.</p>
               <a href="/contratar-camareros" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver camareros en XPEAK →</a>
             </div>
           </div>
-        </main>
+                  <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/contratar-barman-evento-privado" />
+</main>
       <FooterPublic />
       </div>
     </>

@@ -222,7 +222,7 @@ const StatsView = () => {
         {[
           { label: 'Visitas al perfil', value: loading ? '—' : animViews.toString(), icon: Eye, note: 'visitas a tu ficha pública', color: '#4285F4' },
           { label: 'Mensajes recibidos', value: loading ? '—' : animMessages.toString(), icon: MessageCircle, note: 'de otros usuarios', color: '#4285F4' },
-          { label: 'Solicitudes Flash', value: loading ? '—' : animBookings.toString(), icon: Zap, note: 'booking requests', color: '#D4AF37' },
+          { label: 'Solicitudes Flash', value: loading ? '—' : animBookings.toString(), icon: Zap, note: 'solicitudes recibidas', color: '#D4AF37' },
           { label: 'Tasa de contacto', value: loading ? '—' : `${animRate}%`, icon: TrendingUp, note: 'vistas que escriben', color: '#D4AF37' },
         ].map(s => (
           <div key={s.label} className="glass-panel p-4 relative overflow-hidden">

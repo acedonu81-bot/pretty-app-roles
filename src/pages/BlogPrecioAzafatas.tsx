@@ -1,7 +1,11 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogInlineCTA from '@/components/BlogInlineCTA';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en España: guía completa 2026', description: 'Cuánto cobran las azafatas para eventos, ferias y congresos en España. Tarifas por horas, perfil y ciudad.', datePublished: '2026-05-04', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-eventos-espana' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en España: guía completa 2026', description: 'Cuánto cobran las azafatas para eventos, ferias y congresos en España. Tarifas por horas, perfil y ciudad.', datePublished: '2026-05-04',
+  dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-eventos-espana' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cobran las azafatas de eventos en España?', acceptedAnswer: { '@type': 'Answer', text: 'El precio medio de una azafata para eventos es de 12-18€/hora bruto para el profesional, aunque las agencias cobran al cliente entre 20-35€/hora por el servicio completo. Para ferias y congresos de varios días el precio suele fijarse por jornada (120-200€/día).' } },
   { '@type': 'Question', name: '¿Qué diferencia hay entre azafata de stand y azafata de imagen?', acceptedAnswer: { '@type': 'Answer', text: 'La azafata de stand trabaja en ferias y exposiciones atendiendo a visitantes, recogiendo contactos y explicando el producto. La azafata de imagen trabaja en eventos de marca, entregas de premios o actos de representación, priorizando la presencia y protocolo sobre las ventas.' } },
@@ -23,7 +27,7 @@ export default function BlogPrecioAzafatas() {
   return (
     <>
       <Helmet>
-        <title>Precio de azafatas para eventos en España: guía completa 2026</title>
+        <title>Precio azafatas para eventos España 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos, ferias y congresos en España. Tarifas por horas, perfil y ciudad. Guía completa 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-eventos-espana" />
         <meta property="og:title" content="Precio azafatas eventos España 2026 — XPEAK Blog" />
@@ -48,6 +52,7 @@ export default function BlogPrecioAzafatas() {
             <p className="text-sm leading-relaxed" style={{ color: '#8E8EA0' }}>Tarifas reales de azafatas para ferias, congresos y eventos corporativos. Lo que cobran, lo que se factura y cómo elegir el perfil correcto.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>4 mayo 2026</time>
           </div>
+          <BlogInlineCTA role="azafata" variant="upgrade" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata</h2>
@@ -67,14 +72,30 @@ export default function BlogPrecioAzafatas() {
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}><p className="text-sm font-bold mb-2">{f.name}</p><p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p></div>))}</div>
             </section>
+            
+            <section className="mt-8">
+              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <div className="space-y-2">
+                {[
+                  { href: '/blog/staff-para-eventos', cat: 'Hub Staff', title: 'Staff para eventos: guía completa 2026' },
+                ].map(link => (
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
+                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                  </a>
+                ))}
+              </div>
+            </section>
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Necesitas azafatas para tu evento o feria?</p>
               <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>XPEAK conecta organizadores con staff profesional verificado en toda España. Contrato digital automático incluido.</p>
               <a href="/contratar-staff" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver staff en XPEAK →</a>
             </div>
           </div>
-        </main>
+                  <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/precio-azafatas-eventos-espana" />
+</main>
       <FooterPublic />
+      <BlogScrollCTA role="azafata" storageKey="xpeak_scrollcta_precio_azafatas" />
       </div>
     </>
   );

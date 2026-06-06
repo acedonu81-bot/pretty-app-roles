@@ -57,7 +57,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
   const profile = useProfile();
   const [step, setStep] = useState(0);
 
-  const role = profile.role ?? 'dj';
+  const role = profile.role ?? '';
   const roleData = ROLE_TIPS[role] ?? {
     title: 'Tu perfil profesional está activado',
     tips: DEFAULT_TIPS,

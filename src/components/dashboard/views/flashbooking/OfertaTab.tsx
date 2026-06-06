@@ -15,6 +15,7 @@ interface FlashProfile {
   price: number;
   priceUnit: string;
   role: string;
+  photoError?: boolean;
 }
 
 const containerVariants = {
@@ -166,7 +167,7 @@ const OfertaTab = () => {
                   cursor: 'pointer',
                 }}
               >
-                {p.photo ? (
+                {p.photo && !p.photoError ? (
                   <img
                     src={p.photo}
                     alt={p.name}
@@ -176,6 +177,9 @@ const OfertaTab = () => {
                       position: 'absolute', inset: 0,
                       filter: 'saturate(0.75) brightness(0.85)',
                     }}
+                    onError={() => setFlashProfiles(prev =>
+                      prev.map(x => x.id === p.id ? { ...x, photoError: true } : x)
+                    )}
                   />
                 ) : (
                   <div style={{

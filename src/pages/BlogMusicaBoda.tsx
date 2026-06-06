@@ -1,5 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogInlineCTA from '@/components/BlogInlineCTA';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
 const article = {
   '@context': 'https://schema.org',
@@ -7,6 +10,7 @@ const article = {
   headline: 'Música para bodas: DJ, banda en directo o lista de reproducción — guía 2026',
   description: 'Comparativa completa entre DJ, banda en directo y música grabada para bodas en España. Precios, ventajas y cuándo elegir cada opción.',
   datePublished: '2026-05-03',
+  dateModified: '2026-05-25',
   author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
@@ -69,7 +73,7 @@ export default function BlogMusicaBoda() {
   return (
     <>
       <Helmet>
-        <title>Música para bodas: DJ, banda o lista de reproducción — guía 2026</title>
+        <title>Música para bodas: DJ, banda o playlist 2026 | XPEAK</title>
         <meta name="description" content="Comparativa DJ vs banda en directo vs música grabada para bodas. Precios, ventajas y cuándo elegir cada opción para tu boda en España." />
         <link rel="canonical" href="https://xpeak.es/blog/musica-para-bodas-guia" />
         <meta property="og:title" content="Música para bodas: guía completa 2026 — XPEAK Blog" />
@@ -115,6 +119,9 @@ export default function BlogMusicaBoda() {
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>3 mayo 2026</time>
           </div>
 
+          <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/musica-para-bodas-guia" />
+          <BlogInlineCTA role="dj" variant="upgrade" />
+
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Comparativa completa de opciones</h2>
@@ -151,6 +158,13 @@ export default function BlogMusicaBoda() {
               <h2 className="text-lg font-black mb-3">La combinación perfecta: DJ + cuarteto</h2>
               <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.75)' }}>
                 La opción más popular en bodas con presupuesto medio-alto es combinar un cuarteto de cuerda para la ceremonia y el cóctel (música clásica o versiones instrumentales de pop) con un DJ para la cena y pista de baile.
+                Para saber cuánto presupuestar, consulta{' '}
+                <a href="/blog/cuanto-cobra-un-dj-en-espana" style={{ color: '#D4AF37' }}>cuánto cobra un DJ en España</a>{' '}
+                o usa la <a href="/blog/calculadora-tarifa-dj" style={{ color: '#D4AF37' }}>calculadora de tarifa DJ</a>.
+                Antes de contratar, infórmate sobre{' '}
+                <a href="/blog/contrato-dj-que-debe-incluir" style={{ color: '#D4AF37' }}>qué debe incluir un contrato de DJ</a>{' '}
+                y descarga la{' '}
+                <a href="/plantilla-contrato-dj" style={{ color: '#D4AF37' }}>plantilla gratuita</a>.
               </p>
               <div className="grid grid-cols-3 gap-3">
                 {[
@@ -179,6 +193,26 @@ export default function BlogMusicaBoda() {
               </div>
             </section>
 
+            
+            <section className="mt-8">
+              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <div className="space-y-2">
+                {[
+                  { href: '/blog/profesionales-bodas', cat: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026' },
+                  { href: '/blog/dj-para-eventos', cat: 'Hub DJ', title: 'DJ para eventos: guía completa de precios 2026' },
+                  { href: '/blog/cuanto-cobra-un-dj-en-espana', cat: 'DJ', title: 'Cuánto cobra un DJ en España: precios 2026' },
+                  { href: '/blog/dj-boda-civil-precio-canciones', cat: 'Bodas', title: 'DJ boda civil: precio y canciones 2026' },
+                  { href: '/blog/saxofonista-para-bodas-precio', cat: 'Música', title: 'Saxofonista para bodas: precio 2026' },
+                  { href: '/blog/cantante-para-bodas-precio', cat: 'Música', title: 'Cantante para bodas: precio en España 2026' },
+                  { href: '/blog/musica-en-vivo-para-bodas', cat: 'Música', title: 'Música en vivo para bodas: precios 2026' },
+                ].map(link => (
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
+                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                  </a>
+                ))}
+              </div>
+            </section>
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas DJ para tu boda?</p>
               <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>En XPEAK encuentras DJs especializados en bodas con portfolios verificados. Compara perfiles y contrata con contrato digital automático.</p>
@@ -190,6 +224,7 @@ export default function BlogMusicaBoda() {
           </div>
         </main>
       <FooterPublic />
+      <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_musica_boda" />
       </div>
     </>
   );

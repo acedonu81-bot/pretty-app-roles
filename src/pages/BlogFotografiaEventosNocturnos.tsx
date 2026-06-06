@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
 const article = {
   '@context': 'https://schema.org',
@@ -7,6 +8,7 @@ const article = {
   headline: 'Fotografía en eventos nocturnos: precios y cómo contratar en España (2026)',
   description: 'Cuánto cobra un fotógrafo de eventos nocturnos en España. Precios por tipo de evento, qué incluye y cómo elegir el perfil correcto.',
   datePublished: '2026-05-03',
+  dateModified: '2026-05-25',
   author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
@@ -61,7 +63,7 @@ export default function BlogFotografiaEventosNocturnos() {
   return (
     <>
       <Helmet>
-        <title>Fotografía en eventos nocturnos: precios y cómo contratar en España (2026)</title>
+        <title>Fotografía eventos nocturnos: precios 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobra un fotógrafo de discoteca o eventos nocturnos en España. Precios por tipo de evento, equipo necesario y cómo elegir el fotógrafo correcto." />
         <link rel="canonical" href="https://xpeak.es/blog/fotografia-eventos-nocturnos" />
         <meta property="og:title" content="Fotografía eventos nocturnos: precios 2026 — XPEAK Blog" />
@@ -180,6 +182,20 @@ export default function BlogFotografiaEventosNocturnos() {
               </div>
             </section>
 
+            
+            <section className="mt-8">
+              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <div className="space-y-2">
+                {[
+                  { href: '/blog/fotografos-eventos', cat: 'Hub Foto', title: 'Fotógrafos para eventos: guía completa 2026' },
+                ].map(link => (
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
+                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                  </a>
+                ))}
+              </div>
+            </section>
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas fotógrafo para tu sala o evento nocturno?</p>
               <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>XPEAK tiene fotógrafos especializados en eventos nocturnos verificados en toda España. Contrata con contrato digital automático.</p>
@@ -189,7 +205,8 @@ export default function BlogFotografiaEventosNocturnos() {
               </a>
             </div>
           </div>
-        </main>
+                  <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/fotografia-eventos-nocturnos" />
+</main>
       <FooterPublic />
       </div>
     </>

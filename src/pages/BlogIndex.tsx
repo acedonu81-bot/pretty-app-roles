@@ -1,8 +1,38 @@
 import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
 
 const POSTS = [
+  { slug: '/blog/dj-bodas-bilbao', title: 'DJ para bodas en Bilbao: precio y cómo contratar en 2026', desc: 'Precios DJs boda Bilbao. Caseríos vascos, costa del Cantábrico y bodegas de Rioja Alavesa.', date: '3 jun 2026', tag: 'DJ', min: 4 },
+  { slug: '/blog/dj-bodas-mallorca', title: 'DJ para bodas en Mallorca: precio y cómo contratar en 2026', desc: 'Precios DJs boda Mallorca. Fincas de lujo, bodas internacionales y temporada mayo-octubre.', date: '3 jun 2026', tag: 'DJ', min: 4 },
+  { slug: '/blog/fotografo-boda-valencia', title: 'Fotógrafo para bodas en Valencia: precio y guía 2026', desc: 'Precios fotógrafos boda Valencia. Estilo mediterráneo, L\'Albufera y cuándo reservar.', date: '3 jun 2026', tag: 'Fotografía', min: 4 },
+  { slug: '/blog/fotografo-boda-sevilla', title: 'Fotógrafo para bodas en Sevilla: precio y guía 2026', desc: 'Precios fotógrafos boda Sevilla. Haciendas, patios y la luz dorada andaluza única en España.', date: '3 jun 2026', tag: 'Fotografía', min: 4 },
+  { slug: '/blog/fotografo-boda-madrid', title: 'Fotógrafo para bodas en Madrid: precio y guía 2026', desc: 'Precios reales de fotógrafos de boda en Madrid. Zonas, estilos y con cuánta antelación reservar.', date: '2 jun 2026', tag: 'Fotografía', min: 4 },
+  { slug: '/blog/fotografo-boda-barcelona', title: 'Fotógrafo para bodas en Barcelona: precio y guía 2026', desc: 'Precios y estilos de fotógrafos de boda en Barcelona. Documental, editorial y cuándo reservar.', date: '2 jun 2026', tag: 'Fotografía', min: 4 },
+  { slug: '/blog/dj-bodas-sevilla', title: 'DJ para bodas en Sevilla: precio y cómo contratar en 2026', desc: 'Precios reales de DJs de boda en Sevilla. Haciendas, campiña andaluza y zonas más demandadas.', date: '2 jun 2026', tag: 'DJ', min: 4 },
+  { slug: '/blog/dj-bodas-malaga', title: 'DJ para bodas en Málaga: precio y cómo contratar en 2026', desc: 'Precios de DJs de boda en Málaga. Costa del Sol, Serranía de Ronda y temporada alta.', date: '2 jun 2026', tag: 'DJ', min: 4 },
+  { slug: '/blog/como-ser-promotor-eventos', title: 'Cómo ser promotor de eventos en España: guía completa 2026', desc: 'Qué hace un promotor, cuánto cobra, modelos de comisión y cómo conseguir los primeros contratos con salas.', date: '2 jun 2026', tag: 'Staff', min: 5 },
+  { slug: '/blog/maquilladora-conseguir-clientes', title: 'Cómo conseguir trabajo de maquilladora en España 2026', desc: '6 estrategias para maquilladoras freelance. Portfolio, Instagram, colaboraciones y cómo fijar el precio.', date: '2 jun 2026', tag: 'Maquillaje', min: 4 },
+  { slug: '/blog/como-trabajar-de-rrpp-discoteca', title: 'Cómo trabajar de RRPP en discoteca en España: guía 2026', desc: 'Qué hace un RRPP, cuánto cobra por comisión y cómo conseguir contratos con discotecas y clubs nocturnos.', date: '2 jun 2026', tag: 'Staff', min: 4 },
+  { slug: '/blog/como-conseguir-bolos-dj', title: 'Cómo conseguir bolos como DJ en España: 8 estrategias 2026', desc: 'Guía práctica para DJs freelance. Plataformas, redes, precios y cómo diferenciarte en el mercado de bodas y eventos.', date: '2 jun 2026', tag: 'DJ', min: 5 },
+  { slug: '/blog/como-trabajar-de-camarero-eventos', title: 'Cómo trabajar de camarero en eventos en España: guía 2026', desc: 'Requisitos, cuánto cobras por jornada y cómo buscar trabajo de camarero en bodas, comuniones y eventos corporativos.', date: '2 jun 2026', tag: 'Staff', min: 5 },
+  { slug: '/blog/fotografo-como-conseguir-clientes', title: 'Cómo conseguir clientes como fotógrafo de eventos 2026', desc: '7 estrategias para fotógrafos freelance de bodas y comuniones. Portfolio, Instagram, plataformas y precios.', date: '2 jun 2026', tag: 'Fotografía', min: 4 },
+  { slug: '/blog/fotografo-comunion-madrid', title: 'Fotógrafo para comunión en Madrid: precio y guía 2026', desc: 'Cuánto cuesta un fotógrafo de comunión en Madrid. Paquetes, momentos clave y cuándo reservar para mayo o junio.', date: '28 may 2026', tag: 'Fotografía', min: 4 },
+  { slug: '/blog/dj-bodas-barcelona', title: 'DJ para bodas en Barcelona: precio y cómo contratar en 2026', desc: 'Precios reales de DJs de boda en Barcelona. Maresme, Penedès, Costa Daurada y cómo elegir el perfil correcto.', date: '28 may 2026', tag: 'DJ', min: 5 },
+  { slug: '/blog/dj-bodas-valencia', title: 'DJ para bodas en Valencia: precio y cómo contratar en 2026', desc: 'Precios reales de DJs de boda en Valencia. L\'Albufera, Marina Alta y cómo contratar en la Comunitat Valenciana.', date: '28 may 2026', tag: 'DJ', min: 5 },
+  { slug: '/blog/dj-bodas-madrid', title: 'DJ para bodas en Madrid: precio y cómo contratar en 2026', desc: 'Cuánto cuesta un DJ para una boda en Madrid. Precios reales, zonas de celebración y cómo elegir el mejor DJ en la Comunidad de Madrid.', date: '28 may 2026', tag: 'DJ', min: 5 },
+  { slug: '/blog/contrato-dj-que-debe-incluir', title: 'Contrato DJ: qué debe incluir y cómo redactarlo (2026)', desc: 'Checklist legal completo para contratos de DJ. Cláusulas obligatorias, errores frecuentes y cómo protegerte antes de firmar.', date: '27 may 2026', tag: 'DJ', min: 5 },
+  { slug: '/blog/fotografo-para-comunion-precio', title: 'Fotógrafo para comunión: precio y qué incluye en España (2026)', desc: 'Cuánto cuesta un fotógrafo para una comunión. Precios por paquetes, qué incluye el reportaje y cuándo reservar.', date: '27 may 2026', tag: 'Fotografía', min: 4 },
+  { slug: '/blog/dj-para-comunion-precio', title: 'DJ para comunión: precio y qué incluye el servicio en España (2026)', desc: 'Cuánto cuesta un DJ para una comunión. Precios por horas, diferencias con la disco móvil y qué música poner.', date: '27 may 2026', tag: 'DJ', min: 4 },
+  { slug: '/blog/dj-para-fiesta-privada-precio', title: 'DJ para fiesta privada: precios y qué incluye en España (2026)', desc: 'Cuánto cuesta contratar un DJ para una fiesta privada. Precios según el número de invitados, horas y equipo incluido.', date: '23 may 2026', tag: 'DJ', min: 4 },
+  { slug: '/blog/cuanto-cuesta-una-comunion-en-espana', title: '¿Cuánto cuesta una comunión en España? Presupuesto completo 2026', desc: 'Desglose real del coste de una comunión: catering, DJ, fotógrafo, animación y decoración. Precios por partida para 80–100 invitados.', date: '23 may 2026', tag: 'Eventos', min: 5 },
+  { slug: '/blog/cantante-para-bodas-precio', title: 'Cantante para bodas: precio y cómo contratar en España (2026)', desc: 'Cuánto cuesta un cantante para una boda. Precios por formato: solista, dúo acústico, trío jazz o banda completa.', date: '23 may 2026', tag: 'Bodas', min: 5 },
+  { slug: '/blog/dj-para-eventos-corporativos-precio', title: 'DJ para eventos corporativos: precio y qué pedir en España (2026)', desc: 'Cuánto cuesta un DJ para un evento corporativo. Precios para afterworks, galas, fiestas de empresa y presentaciones.', date: '23 may 2026', tag: 'DJ', min: 4 },
+  { slug: '/blog/maquilladora-para-eventos-precio', title: 'Maquilladora para eventos: precios y qué incluye en España (2026)', desc: 'Cuánto cobra una maquilladora para bodas, eventos corporativos y sesiones de foto. Precios por servicio y duración.', date: '23 may 2026', tag: 'Maquillaje', min: 4 },
+  { slug: '/blog/saxofonista-para-bodas-precio', title: 'Saxofonista para bodas: precio y repertorio en España (2026)', desc: 'Cuánto cuesta un saxofonista para una boda. Precios por ceremonia, cóctel y pista. Saxo solo vs saxo + DJ.', date: '23 may 2026', tag: 'Bodas', min: 4 },
+  { slug: '/blog/tecnico-de-sonido-para-eventos', title: 'Técnico de sonido para eventos: funciones y precios en España (2026)', desc: 'Cuánto cuesta un técnico de sonido para bodas, conciertos y eventos corporativos. Diferencias FOH vs monitor.', date: '23 may 2026', tag: 'Eventos', min: 4 },
+  { slug: '/blog/personal-de-imagen-ferias-y-congresos', title: 'Personal de imagen para ferias y congresos: precios en España (2026)', desc: 'Cuánto cuestan azafatas, promotoras y modelos para ferias y congresos. Precios por perfil y jornada.', date: '23 may 2026', tag: 'Staff', min: 4 },
   { slug: '/blog/maestro-de-ceremonias-boda-precio-guia', title: 'Maestro de Ceremonias para Bodas: precio y guía completa 2026', desc: 'Cuánto cuesta un maestro de ceremonias para una boda en España. Precios reales, funciones, diferencias con animador y cómo contratar.', date: '16 may 2026', tag: 'Bodas', min: 6 },
   { slug: '/blog/musica-en-vivo-para-bodas', title: 'Música en Vivo para Bodas: grupos, solistas y cuartetos — guía 2026', desc: 'Guía completa de música en vivo para bodas. Precios por formato (solista, trío jazz, banda pop, cuarteto de cuerda) y cuándo combinarla con DJ.', date: '16 may 2026', tag: 'Bodas', min: 7 },
   { slug: '/blog/fotografia-eventos-nocturnos', title: 'Fotografía en eventos nocturnos: precios y cómo contratar en España (2026)', desc: 'Cuánto cobra un fotógrafo de discoteca o eventos nocturnos. Precios por tipo de evento, equipo y cómo elegir el perfil correcto.', date: '3 may 2026', tag: 'Fotografía', min: 4 },
@@ -100,6 +130,29 @@ export default function BlogIndex() {
             </p>
           </div>
 
+          {/* Guías por categoría */}
+          <div className="mb-10">
+            <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.35)' }}>Guías completas</p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {[
+                { href: '/blog/dj-para-eventos', label: 'DJ', desc: '10 guías' },
+                { href: '/blog/profesionales-bodas', label: 'Bodas', desc: '16 guías' },
+                { href: '/blog/fotografos-eventos', label: 'Fotografía', desc: '4 guías' },
+                { href: '/blog/comuniones-guia-completa', label: 'Comuniones', desc: '6 guías' },
+                { href: '/blog/staff-para-eventos', label: 'Staff', desc: '9 guías' },
+              ].map(hub => (
+                <a key={hub.href} href={hub.href}
+                  className="flex items-center gap-3 p-3 rounded-xl transition-all hover:scale-[1.02]"
+                  style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)', textDecoration: 'none' }}>
+                  <div>
+                    <p className="text-xs font-black" style={{ color: '#D4AF37' }}>{hub.label}</p>
+                    <p className="text-[0.6rem]" style={{ color: 'rgba(255,255,255,0.35)' }}>{hub.desc}</p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+
           {/* Filtro por categoría */}
           <div className="flex flex-wrap gap-2 mb-8">
             {ALL_TAGS.map(tag => (
@@ -147,7 +200,8 @@ export default function BlogIndex() {
             </p>
           </div>
 
-        </main>
+                  <BlogEmailCapture variant="presupuestos" intent="general" articlePath="" />
+</main>
 
         <FooterPublic />
       </div>

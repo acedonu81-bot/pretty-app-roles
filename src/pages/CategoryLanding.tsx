@@ -453,7 +453,7 @@ export default function CategoryLanding() {
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               <Zap size={15} /> Publicar oferta gratis
             </a>
-            <a href="/"
+            <a href={`/directorio/${['dj','fotografo','staff','maquillaje','promotores'].includes(data.slug) ? data.slug : data.slug === 'camareros' ? 'staff' : 'dj'}`}
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
               style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }}>
               Ver directorio <ArrowRight size={14} />
