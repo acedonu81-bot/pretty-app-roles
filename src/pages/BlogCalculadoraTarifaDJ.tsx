@@ -40,6 +40,29 @@ export default function BlogCalculadoraTarifaDJ() {
   const precio = Math.round((base * multCiudad * multHoras * multExp + extraLuces) / 50) * 50;
   const rango = `${Math.round(precio * 0.8)}€ – ${Math.round(precio * 1.2)}€`;
 
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: "Calculadora de tarifa DJ 2026: precio estimado para tu evento",
+    description: "Calcula cuánto cuesta un DJ para tu evento. Introduce el tipo de evento, ciudad y horas y obtén un precio estimado real para 2026.",
+    author: { '@type': 'Organization', name: 'XPEAK' },
+    publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+    datePublished: '2026-06-07',
+    dateModified: '2026-06-07',
+    url: "https://xpeak.es/blog/calculadora-tarifa-dj",
+    mainEntityOfPage: { '@type': 'WebPage', '@id': "https://xpeak.es/blog/calculadora-tarifa-dj" },
+  };
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' },
+      { '@type': 'ListItem', position: 3, name: "Calculadora de tarifa DJ 2026: precio estimado para tu evento", item: "https://xpeak.es/blog/calculadora-tarifa-dj" },
+    ],
+  };
+
   return (
     <>
       <Helmet>
@@ -52,6 +75,8 @@ export default function BlogCalculadoraTarifaDJ() {
         <meta property="og:type" content="website" />
         <meta property="og:image" content="https://xpeak.es/og-image.jpg" />
         <meta property="og:site_name" content="XPEAK" />
+        <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
       </Helmet>
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">

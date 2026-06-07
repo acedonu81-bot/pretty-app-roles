@@ -10,7 +10,31 @@ const faq = [{ q: `¿Cuánto cuesta un DJ para una boda en ${ciudad}?`, a: `Entr
 
 const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: `DJs para bodas en Huelva`, description: `Encuentra y contrata DJs verificados para bodas y eventos en Huelva. Presupuestos gratuitos, contratos digitales y 0% comisión.`, serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Huelva' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: `https://xpeak.es/blog/dj-bodas-huelva`, offers: { '@type': 'Offer', description: 'Presupuestos gratuitos de DJs verificados', price: '0', priceCurrency: 'EUR' } };
 export default function BlogDJBodaHuelva() {
-  return (<><Helmet><title>DJ para bodas en Huelva: precio 2026 | XPEAK</title><meta name="description" content={`Cuánto cuesta un DJ para una boda en ${ciudad}. Precios 2026, Sierra de Aracena, Costa de la Luz y cómo contratar.`} /><link rel="canonical" href={`https://xpeak.es/blog/${slug}`} /><meta property="og:title" content={`DJ bodas ${ciudad} 2026 — XPEAK`} /><meta property="og:url" content={`https://xpeak.es/blog/${slug}`} /><meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" /><meta name="twitter:card" content="summary_large_image" /><script type="application/ld+json">{JSON.stringify(serviceSchema)}</script></Helmet>
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: "DJ para bodas en Huelva: precio 2026",
+    description: "",
+    author: { '@type': 'Organization', name: 'XPEAK' },
+    publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+    datePublished: '2026-06-07',
+    dateModified: '2026-06-07',
+    url: "https://xpeak.es/blog/dj-bodas-huelva",
+    mainEntityOfPage: { '@type': 'WebPage', '@id': "https://xpeak.es/blog/dj-bodas-huelva" },
+  };
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' },
+      { '@type': 'ListItem', position: 3, name: "DJ para bodas en Huelva: precio 2026", item: "https://xpeak.es/blog/dj-bodas-huelva" },
+    ],
+  };
+
+        <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
+  return (<><Helmet><title>DJ para bodas en Huelva: precio 2026 | XPEAK</title><meta name="description" content={`Cuánto cuesta un DJ para una boda en ${ciudad}. Precios 2026, Sierra de Aracena, Costa de la Luz y cómo contratar.`} /><link rel="canonical" href={`https://xpeak.es/blog/${slug}`} /><meta property="og:title" content={`DJ bodas ${ciudad} 2026 — XPEAK`} /><meta property="og:url" content={`https://xpeak.es/blog/${slug}`} /><meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" /><meta name="twitter:card" content="summary_large_image" /><script type="application/ld+json">{JSON.stringify(serviceSchema)}</script><script type="application/ld+json">{JSON.stringify(articleSchema)}</script><script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script></Helmet>
   <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
     <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto"><a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a><div className="flex items-center gap-3"><a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#8E8EA0' }}>Blog</a><a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a></div></nav>
     <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">

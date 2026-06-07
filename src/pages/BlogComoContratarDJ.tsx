@@ -22,6 +22,29 @@ const PASOS = [
 ];
 
 export default function BlogComoContratarDJ() {
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: "Cómo contratar un DJ para tu evento: guía completa 2026",
+    description: "Guía paso a paso para contratar un DJ en España. Qué preguntar, qué incluye el precio, cómo comparar presupuestos y qué contrato firmar. 2026.",
+    author: { '@type': 'Organization', name: 'XPEAK' },
+    publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+    datePublished: '2026-06-07',
+    dateModified: '2026-06-07',
+    url: "https://xpeak.es/blog/como-contratar-un-dj",
+    mainEntityOfPage: { '@type': 'WebPage', '@id': "https://xpeak.es/blog/como-contratar-un-dj" },
+  };
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' },
+      { '@type': 'ListItem', position: 3, name: "Cómo contratar un DJ para tu evento: guía completa 2026", item: "https://xpeak.es/blog/como-contratar-un-dj" },
+    ],
+  };
+
   return (
     <>
       <Helmet>
@@ -36,6 +59,8 @@ export default function BlogComoContratarDJ() {
         <meta property="og:site_name" content="XPEAK" />
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
         <script type="application/ld+json">{JSON.stringify({ '@context': 'https://schema.org', '@type': 'HowTo', name: 'Cómo contratar un DJ', step: PASOS.map(p => ({ '@type': 'HowToStep', position: parseInt(p.n), name: p.t, text: p.d })) })}</script>
+        <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
       </Helmet>
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">

@@ -21,6 +21,29 @@ const PRECIOS = [
 ];
 
 export default function BlogDJEmpresa() {
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: "DJ para eventos de empresa: precio y cómo contratar 2026",
+    description: "Cuánto cuesta un DJ para un evento corporativo o fiesta de empresa. Precios 2026, qué incluye, qué música pone y cómo elegir el perfil correcto.",
+    author: { '@type': 'Organization', name: 'XPEAK' },
+    publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+    datePublished: '2026-06-07',
+    dateModified: '2026-06-07',
+    url: "https://xpeak.es/blog/dj-para-empresa-precio",
+    mainEntityOfPage: { '@type': 'WebPage', '@id': "https://xpeak.es/blog/dj-para-empresa-precio" },
+  };
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' },
+      { '@type': 'ListItem', position: 3, name: "DJ para eventos de empresa: precio y cómo contratar 2026", item: "https://xpeak.es/blog/dj-para-empresa-precio" },
+    ],
+  };
+
   return (
     <>
       <Helmet>
@@ -34,6 +57,8 @@ export default function BlogDJEmpresa() {
         <meta property="og:image" content="https://xpeak.es/og-image.jpg" />
         <meta property="og:site_name" content="XPEAK" />
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
+        <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
       </Helmet>
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
