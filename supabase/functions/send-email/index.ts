@@ -299,6 +299,65 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       </p>`),
   }),
 
+  // 15. Lead blog — email automático tras capturar email en artículo
+  lead_welcome: (d) => {
+    const isProf = d.intent === 'ser-profesional';
+    const isPresupuesto = d.variant === 'presupuestos' || !d.variant;
+    const isPlantilla = d.variant === 'plantilla';
+    const isGuia = d.variant === 'guia';
+
+    const headline = isProf
+      ? '¿Quieres conseguir más contratos como profesional?'
+      : isPlantilla
+      ? 'Tu plantilla de contrato DJ está lista'
+      : isGuia
+      ? 'Tu guía de precios DJ 2026 está lista'
+      : 'Conectamos con los mejores profesionales para tu evento';
+
+    const body = isProf
+      ? `Crear tu perfil en XPEAK es gratis y te permite aparecer en el directorio, recibir ofertas de Flash Booking y firmar contratos digitales directamente con los clientes. Sin comisiones.`
+      : isPlantilla
+      ? `Adjuntamos el enlace a la plantilla de contrato para DJ con todas las cláusulas legales. Puedes editarla directamente o usarla para contratar tu DJ en XPEAK sin coste extra.`
+      : isGuia
+      ? `En XPEAK puedes comparar precios reales de DJs verificados en toda España — por ciudad, tipo de evento y horas. Todo transparente, sin llamadas ni intermediarios.`
+      : `En XPEAK encuentras DJs, fotógrafos, camareros y staff verificados en toda España. Tarifas públicas, contratos automáticos y Flash Booking en menos de 1h. Completamente gratis para organizadores.`;
+
+    const ctaText = isProf ? 'Crear mi perfil gratis →' : 'Ver profesionales disponibles →';
+    const ctaUrl = isProf
+      ? 'https://xpeak.es/auth?mode=register&role=profesional'
+      : 'https://xpeak.es/auth?mode=register&role=empresario';
+
+    const articleNote = d.article_path
+      ? `<p style="color:rgba(255,255,255,0.3);font-size:11px;text-align:center;margin-top:8px">Este email se generó desde el artículo <a href="https://xpeak.es${esc(d.article_path)}" style="color:rgba(212,175,55,0.5)">${esc(d.article_path)}</a></p>`
+      : '';
+
+    return {
+      subject: isProf
+        ? 'Crea tu perfil en XPEAK y empieza a conseguir contratos'
+        : isPlantilla
+        ? 'Tu plantilla de contrato DJ — XPEAK'
+        : isGuia
+        ? 'Guía de precios DJ 2026 — XPEAK'
+        : 'Tu consulta sobre profesionales para eventos — XPEAK',
+      to: d.email,
+      html: base(`
+        <h2 style="font-size:20px;font-weight:900;margin:0 0 12px;line-height:1.3">${esc(headline)}</h2>
+        <p style="color:rgba(255,255,255,0.6);font-size:14px;line-height:1.75;margin:0 0 20px">${esc(body)}</p>
+        ${isPlantilla ? `
+        <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:10px;padding:16px;margin-bottom:20px;text-align:center">
+          <p style="color:#D4AF37;font-size:13px;font-weight:700;margin:0 0 8px">📄 Plantilla de contrato DJ</p>
+          <a href="https://xpeak.es/plantilla-contrato-dj" style="color:rgba(255,255,255,0.7);font-size:13px">xpeak.es/plantilla-contrato-dj</a>
+        </div>` : ''}
+        ${btn(ctaText, ctaUrl)}
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:14px;margin-top:4px">
+          <p style="color:rgba(255,255,255,0.3);font-size:11px;margin:0 0 6px;text-transform:uppercase;letter-spacing:1px">Por qué XPEAK</p>
+          <p style="font-size:12px;color:rgba(255,255,255,0.5);margin:0;line-height:1.6">✓ Directorio verificado · ✓ Contratos automáticos · ✓ Flash Booking en 1h · ✓ 0€ comisión</p>
+        </div>
+        ${articleNote}
+      `),
+    };
+  },
+
   // 13. Flash Booking — respuesta del profesional al solicitante
   booking_status_update: (d) => ({
     subject: d.status === 'confirmed'

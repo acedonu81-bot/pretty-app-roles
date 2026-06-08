@@ -59,6 +59,14 @@ export default function BlogEmailCapture({
       return;
     }
 
+    // Enviar email de bienvenida (fire-and-forget, no bloquea el flujo)
+    supabase.functions.invoke('send-email', {
+      body: {
+        type: 'lead_welcome',
+        data: { email: email.toLowerCase().trim(), intent, variant, article_path: articlePath },
+      },
+    }).catch(() => {}); // silencioso si falla
+
     setStatus('success');
   };
 
