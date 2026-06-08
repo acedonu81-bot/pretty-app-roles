@@ -185,6 +185,13 @@ export default function BlogBodaLowCost() {
               question="¿Cuánto cuesta una boda low cost en España?"
               answer="Una boda low cost para 80-100 invitados en España cuesta entre 8.000 y 18.000€. Las 5 palancas de ahorro reales son: celebrar en viernes o domingo (ahorra 800-2.000€ en la finca), contratar en temporada baja (noviembre-marzo), comparar 3 presupuestos por servicio, elegir DJ en vez de banda, y contratar directamente sin agencia organizadora."
             />
+            <img
+              src="/images/blog/boda-low-cost-presupuesto-completo.jpg"
+              alt="Copas de cóctel en boda — guía boda low cost presupuesto completo España 2026"
+              className="w-full rounded-xl my-6 object-cover"
+              style={{ maxHeight: 320, filter: 'brightness(0.9)' }}
+              loading="lazy"
+            />
           </div>
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath={`/blog/${slug}`} />

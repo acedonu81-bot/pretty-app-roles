@@ -56,6 +56,13 @@ export default function BlogPrecioAzafatas() {
               question="¿Cuánto cobran las azafatas en España?"
               answer="Una azafata de eventos en España cobra entre 10€ y 18€/hora netos como autónoma, o entre 60€ y 120€ por jornada completa a través de agencia. Las ferias y congresos pagan entre 80€ y 150€/día según el perfil (idiomas, experiencia). Las azafatas de imagen para eventos premium pueden superar los 200€/día."
             />
+            <img
+              src="/images/blog/precio-azafatas-eventos-espana.jpg"
+              alt="Azafatas de eventos en feria profesional — precio y tarifas de azafatas en España 2026"
+              className="w-full rounded-xl my-6 object-cover"
+              style={{ maxHeight: 320, filter: 'brightness(0.9)' }}
+              loading="lazy"
+            />
           </div>
           <BlogInlineCTA role="azafata" variant="upgrade" />
           <div className="space-y-10">

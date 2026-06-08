@@ -75,6 +75,13 @@ export default function BlogContratoDJ() {
               question="¿Qué debe incluir un contrato de DJ?"
               answer="Un contrato de DJ debe incluir: fecha, horario y lugar del evento; equipo de sonido e iluminación detallado; precio total y forma de pago con señal (30-50%); cláusula de cancelación para ambas partes; y penalizaciones por retraso o no presentación. Sin estos elementos el contrato no protege a ninguna de las dos partes."
             />
+            <img
+              src="/images/blog/contrato-dj-clausulas-modelo.jpg"
+              alt="Controladora de DJ profesional en evento — modelo de contrato DJ con cláusulas legales 2026"
+              className="w-full rounded-xl my-6 object-cover"
+              style={{ maxHeight: 320, filter: 'brightness(0.9)' }}
+              loading="lazy"
+            />
           </div>
 
           <div className="space-y-10">

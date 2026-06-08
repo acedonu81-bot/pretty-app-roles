@@ -131,6 +131,13 @@ const faqStructured = {
             question="¿Cuánto cobra un DJ en España en 2026?"
             answer="Un DJ profesional en España cobra entre 60€ y 300€/hora. Para bodas y eventos privados el presupuesto total es de 400€ – 1.200€ por actuación completa. Barcelona y Madrid son las ciudades más caras; las medianas del interior, las más económicas. El precio varía según experiencia, equipo incluido y tipo de evento."
           />
+          <img
+            src="/images/blog/cuanto-cobra-dj-espana-2026.jpg"
+            alt="DJ profesional en cabina con controladora y luces de evento — precios de DJ en España 2026"
+            className="w-full rounded-xl my-6 object-cover"
+            style={{ maxHeight: 320, filter: 'brightness(0.9)' }}
+            loading="lazy"
+          />
 
           {/* Tabla por experiencia */}
           <h2 className="text-xl font-black mb-4">Tarifas de DJ por nivel de experiencia</h2>
