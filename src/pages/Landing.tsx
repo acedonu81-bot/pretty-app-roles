@@ -586,26 +586,26 @@ const Landing = () => {
       {/* ─ Nav (Glassmorphism) ─ */}
       <nav className="sticky top-0 z-50"
         style={{
-          background: 'rgba(196,194,191,0.9)',
+          background: 'rgba(9,9,9,0.88)',
           backdropFilter: 'blur(24px)',
           WebkitBackdropFilter: 'blur(24px)',
-          borderBottom: '1px solid rgba(212,175,55,0.1)',
+          borderBottom: '1px solid rgba(212,175,55,0.12)',
         }}>
         <div className="max-w-[1200px] mx-auto px-6 md:px-10 py-4 md:py-5 flex justify-between items-center">
           <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="text-2xl font-black tracking-widest transition-opacity hover:opacity-70 font-display"
-            style={{ color: 'rgba(22,20,18,0.92)' }}>
+            style={{ color: '#fff' }}>
             X<span className="text-gradient">PEAK</span>
           </button>
           <div className="flex items-center gap-3">
             <button onClick={() => navigate('/auth')}
               className="hidden sm:block text-xs font-semibold px-4 py-2 rounded-lg transition-all"
-              style={{ color: 'rgba(22,20,18,0.75)' }}>
+              style={{ color: 'rgba(255,255,255,0.6)' }}>
               Acceder
             </button>
             <button onClick={() => navigate('/auth?mode=register&role=empresario')}
               className="hidden sm:block text-xs font-semibold px-4 py-2 rounded-lg transition-all"
-              style={{ color: 'rgba(22,20,18,0.75)', border: '1px solid rgba(0,0,0,0.15)', borderRadius: '10px' }}>
+              style={{ color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '10px' }}>
               <span className="flex items-center gap-1.5"><Building2 size={12} /> Soy empresario</span>
             </button>
             <motion.button
@@ -622,18 +622,18 @@ const Landing = () => {
 
       {/* ─ Hero ─ */}
       <main>
-      <div className="relative overflow-hidden">
-        {/* Ghost event photo — desaturated, very low opacity, blends with concrete */}
+      <div className="relative overflow-hidden" style={{ background: '#0a0a0a' }}>
+        {/* Festival crowd photo — visible on dark */}
         <img
           src="/images/pexels/1190297.jpg"
           alt=""
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-          style={{ filter: 'saturate(0.3) brightness(1.2)', opacity: 0.28, objectPosition: 'center 30%' }}
+          style={{ filter: 'saturate(0.45) brightness(0.65)', opacity: 0.7, objectPosition: 'center 30%' }}
         />
-        {/* Gradient overlay: top solid concrete → transparent center → stronger at bottom */}
+        {/* Gradient: dark top → dark center → fades to page bg at bottom */}
         <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'linear-gradient(180deg, #C4C2BF 0%, rgba(196,194,191,0.55) 35%, rgba(196,194,191,0.65) 70%, #C4C2BF 100%)'
+          background: 'linear-gradient(180deg, rgba(9,9,9,0.55) 0%, rgba(9,9,9,0.2) 40%, rgba(9,9,9,0.45) 72%, #C4C2BF 100%)'
         }} />
       <header className="relative max-w-[1200px] mx-auto px-6 md:px-8 pt-16 pb-12 md:pt-28 md:pb-32 text-center">
         <FadeIn>
@@ -642,24 +642,24 @@ const Landing = () => {
               background: 'rgba(212,175,55,0.12)',
               border: '1px solid rgba(212,175,55,0.3)',
             }}>
-            <Sparkles size={14} style={{ color: '#8B6A00' }} />
-            <span className="uppercase tracking-[0.3em] text-xs font-semibold" style={{ color: '#8B6A00' }}>
+            <Sparkles size={14} style={{ color: '#D4AF37' }} />
+            <span className="uppercase tracking-[0.3em] text-xs font-semibold" style={{ color: '#D4AF37' }}>
               Clubs · Festivales · Eventos
             </span>
           </div>
         </FadeIn>
         <FadeIn delay={0.1}>
           <h1 className="text-4xl sm:text-6xl md:text-8xl font-black leading-[1.05] mb-4 md:mb-7 max-w-5xl mx-auto tracking-tight text-center font-display">
-            <span className="block" style={{ color: 'rgba(22,20,18,0.92)' }}>Los mejores profesionales</span>
+            <span className="block" style={{ color: 'rgba(255,255,255,0.95)' }}>Los mejores profesionales</span>
             <span className="block text-gradient">para</span>
             <RotatingWord />
           </h1>
         </FadeIn>
         <FadeIn delay={0.2}>
           <p className="text-sm md:text-lg max-w-md mx-auto mb-6 md:mb-8 leading-relaxed"
-            style={{ color: 'rgba(22,20,18,0.62)' }}>
+            style={{ color: 'rgba(255,255,255,0.65)' }}>
             Clubs · Festivales · Eventos Privados · Bodas · Corporativos<br />
-            <span style={{ color: 'rgba(22,20,18,0.45)' }}>DJ, fotógrafo, camarero, staff — verificados en toda España. Gratis.</span>
+            <span style={{ color: 'rgba(255,255,255,0.4)' }}>DJ, fotógrafo, camarero, staff — verificados en toda España. Gratis.</span>
           </p>
         </FadeIn>
         <FadeIn delay={0.25}>
@@ -725,7 +725,7 @@ const Landing = () => {
           </form>
         </FadeIn>
         <FadeIn delay={0.35}>
-          <p className="text-xs font-bold uppercase tracking-[0.25em] mb-4" style={{ color: 'rgba(22,20,18,0.5)' }}>
+          <p className="text-xs font-bold uppercase tracking-[0.25em] mb-4" style={{ color: 'rgba(255,255,255,0.4)' }}>
             ¿Quién eres?
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-stretch gap-3 max-w-xl mx-auto">
@@ -786,7 +786,7 @@ const Landing = () => {
               '✓ 0€ comisión para contratar',
               '✓ Sin tarjeta de crédito',
             ].map(t => (
-              <span key={t} className="text-xs font-semibold" style={{ color: 'rgba(22,20,18,0.5)' }}>{t}</span>
+              <span key={t} className="text-xs font-semibold" style={{ color: 'rgba(255,255,255,0.38)' }}>{t}</span>
             ))}
           </div>
         </FadeIn>
