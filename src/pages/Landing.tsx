@@ -30,7 +30,7 @@ const FadeIn = ({ children, delay = 0, className = '' }: { children: React.React
 };
 
 /* ── Rotating word ── */
-const ROTATING_WORDS = ['tu boda', 'tu evento', 'tu comunión', 'tu festival', 'tu fiesta', 'tu corporativo'];
+const ROTATING_WORDS = ['tu fiesta', 'tu festival', 'tu evento', 'tu club', 'tu comunión', 'tu boda'];
 const RotatingWord = () => {
   const [index, setIndex] = useState(0);
   const containerRef = useRef<HTMLSpanElement>(null);
@@ -511,7 +511,7 @@ const Landing = () => {
     <>
     <Helmet>
       <title>XPEAK — Contratar DJ, Fotógrafo y Staff para Eventos | España</title>
-      <meta name="description" content="Encuentra y contrata DJ, fotógrafo, camarero, catering y staff para tu boda o evento. Profesionales verificados en toda España. Gratis para organizadores. Flash Booking en menos de 1h." />
+      <meta name="description" content="Encuentra y contrata DJ, fotógrafo, camarero, staff y catering para festivales, clubs, eventos privados y bodas en España. Profesionales verificados. Flash Booking en menos de 1h. Gratis." />
       <link rel="canonical" href="https://xpeak.es/" />
       <meta property="og:title" content="XPEAK | Contratar DJs, Staff y Profesionales para Eventos en España" />
       <meta property="og:description" content="Contrata DJs, fotógrafos, camareros, maquilladores y profesionales verificados para bodas, comuniones y eventos en España. Flash Booking en menos de 1h. Gratis para organizadores." />
@@ -625,11 +625,11 @@ const Landing = () => {
       <div className="relative overflow-hidden">
         {/* Ghost event photo — desaturated, very low opacity, blends with concrete */}
         <img
-          src="/images/pexels/1024993-hero.jpg"
+          src="/images/pexels/1190297.jpg"
           alt=""
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-          style={{ filter: 'saturate(0.25) brightness(1.35)', opacity: 0.36 }}
+          style={{ filter: 'saturate(0.3) brightness(1.2)', opacity: 0.28, objectPosition: 'center 30%' }}
         />
         {/* Gradient overlay: top solid concrete → transparent center → stronger at bottom */}
         <div className="absolute inset-0 pointer-events-none" style={{
@@ -644,13 +644,13 @@ const Landing = () => {
             }}>
             <Sparkles size={14} style={{ color: '#8B6A00' }} />
             <span className="uppercase tracking-[0.3em] text-xs font-semibold" style={{ color: '#8B6A00' }}>
-              Directorio Profesional
+              Clubs · Festivales · Eventos
             </span>
           </div>
         </FadeIn>
         <FadeIn delay={0.1}>
           <h1 className="text-4xl sm:text-6xl md:text-8xl font-black leading-[1.05] mb-4 md:mb-7 max-w-5xl mx-auto tracking-tight text-center font-display">
-            <span className="block" style={{ color: 'rgba(22,20,18,0.92)' }}>El equipo perfecto</span>
+            <span className="block" style={{ color: 'rgba(22,20,18,0.92)' }}>Los mejores profesionales</span>
             <span className="block text-gradient">para</span>
             <RotatingWord />
           </h1>
@@ -658,8 +658,8 @@ const Landing = () => {
         <FadeIn delay={0.2}>
           <p className="text-sm md:text-lg max-w-md mx-auto mb-6 md:mb-8 leading-relaxed"
             style={{ color: 'rgba(22,20,18,0.62)' }}>
-            DJ · Fotógrafo · Camarero · Catering · Maquillaje · Staff<br />
-            <span style={{ color: 'rgba(22,20,18,0.45)' }}>Profesionales verificados en toda España. Gratis.</span>
+            Clubs · Festivales · Eventos Privados · Bodas · Corporativos<br />
+            <span style={{ color: 'rgba(22,20,18,0.45)' }}>DJ, fotógrafo, camarero, staff — verificados en toda España. Gratis.</span>
           </p>
         </FadeIn>
         <FadeIn delay={0.25}>
@@ -681,7 +681,7 @@ const Landing = () => {
               <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: '#D4AF37' }} />
               <input
                 name="q"
-                placeholder="Busca DJ para boda, fotógrafo, camarero..."
+                placeholder="Busca DJ para tu evento, camarero, fotógrafo..."
                 className="w-full pl-10 pr-4 py-3.5 rounded-xl text-sm focus:outline-none"
                 style={{
                   background: '#FFFFFF',
