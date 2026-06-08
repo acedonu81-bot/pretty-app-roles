@@ -3,6 +3,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogAnswerBox from '@/components/BlogAnswerBox';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Contrato para DJ: qué debe incluir y cómo redactarlo (2026)', description: 'Guía completa sobre qué cláusulas debe tener un contrato de DJ para eventos. Checklist legal, errores frecuentes y cómo protegerte antes del evento.', datePublished: '2026-05-27', dateModified: '2026-05-27', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/contrato-dj-que-debe-incluir' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
@@ -70,6 +71,10 @@ export default function BlogContratoDJ() {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Contrato para DJ: qué debe incluir y cómo redactarlo (2026)</h1>
             <p className="text-sm leading-relaxed" style={{ color: '#8E8EA0' }}>Un contrato mal redactado es la causa número uno de conflictos entre DJs y organizadores. Esta guía cubre todas las cláusulas que deben estar y los errores que cuestan dinero.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>27 mayo 2026</time>
+            <BlogAnswerBox
+              question="¿Qué debe incluir un contrato de DJ?"
+              answer="Un contrato de DJ debe incluir: fecha, horario y lugar del evento; equipo de sonido e iluminación detallado; precio total y forma de pago con señal (30-50%); cláusula de cancelación para ambas partes; y penalizaciones por retraso o no presentación. Sin estos elementos el contrato no protege a ninguna de las dos partes."
+            />
           </div>
 
           <div className="space-y-10">

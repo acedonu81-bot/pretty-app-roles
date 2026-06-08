@@ -3,6 +3,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogAnswerBox from '@/components/BlogAnswerBox';
 
 const article = {
   '@context': 'https://schema.org',
@@ -117,6 +118,10 @@ export default function BlogMusicaBoda() {
               La música es lo que hace bailar a tus invitados a las 3 de la mañana. Comparativa honesta de todas las opciones con precios reales y cuándo elegir cada una.
             </p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>3 mayo 2026</time>
+            <BlogAnswerBox
+              question="¿Qué música poner en una boda?"
+              answer="Una boda tiene cuatro momentos musicales: ceremonia (música clásica o acústica), cóctel (jazz o lounge suave), cena (ambiente discreto de fondo) y baile (pop, latino o el género favorito de los novios). La diferencia entre DJ y banda en directo está en el presupuesto: 600-1.200€ vs 2.000-5.000€, con resultados muy similares para los invitados."
+            />
           </div>
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/musica-para-bodas-guia" />

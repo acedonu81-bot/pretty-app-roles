@@ -4,6 +4,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogAnswerBox from '@/components/BlogAnswerBox';
 
 const TABLE = [
   { perfil: 'DJ emergente / rookie', experiencia: '< 1 año', rango: '30€ – 60€/h', nota: 'Bodas pequeñas, cumpleaños' },
@@ -126,14 +127,10 @@ const faqStructured = {
             La pregunta que más reciben salas, promotoras y organizadores cuando van a contratar un DJ es siempre la misma: <strong style={{ color: '#fff' }}>¿cuánto cuesta?</strong> La respuesta honesta es que depende de tres variables — experiencia, ciudad y tipo de evento — y que la horquilla va de 30€ a más de 500€/hora. Esta guía desglosa esos números con datos reales de la plataforma XPEAK.
           </p>
 
-          <div className="p-4 rounded-xl mb-8" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
-            <p className="text-sm font-bold mb-1" style={{ color: '#D4AF37' }}>Resumen rápido</p>
-            <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
-              Un DJ profesional en España cobra entre <strong style={{ color: '#fff' }}>60€ y 300€/hora</strong> de media.
-              Para bodas y eventos privados, el presupuesto total suele ser de <strong style={{ color: '#fff' }}>400€ – 1.200€</strong> por actuación.
-              Las ciudades más caras son Barcelona y Madrid; las más económicas, ciudades medianas del interior.
-            </p>
-          </div>
+          <BlogAnswerBox
+            question="¿Cuánto cobra un DJ en España en 2026?"
+            answer="Un DJ profesional en España cobra entre 60€ y 300€/hora. Para bodas y eventos privados el presupuesto total es de 400€ – 1.200€ por actuación completa. Barcelona y Madrid son las ciudades más caras; las medianas del interior, las más económicas. El precio varía según experiencia, equipo incluido y tipo de evento."
+          />
 
           {/* Tabla por experiencia */}
           <h2 className="text-xl font-black mb-4">Tarifas de DJ por nivel de experiencia</h2>

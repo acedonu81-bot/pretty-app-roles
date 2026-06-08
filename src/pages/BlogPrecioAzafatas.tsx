@@ -3,6 +3,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogAnswerBox from '@/components/BlogAnswerBox';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en España: guía completa 2026', description: 'Cuánto cobran las azafatas para eventos, ferias y congresos en España. Tarifas por horas, perfil y ciudad.', datePublished: '2026-05-04',
   dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-eventos-espana' };
@@ -51,6 +52,10 @@ export default function BlogPrecioAzafatas() {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Precio de azafatas para eventos en España: guía completa 2026</h1>
             <p className="text-sm leading-relaxed" style={{ color: '#8E8EA0' }}>Tarifas reales de azafatas para ferias, congresos y eventos corporativos. Lo que cobran, lo que se factura y cómo elegir el perfil correcto.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>4 mayo 2026</time>
+            <BlogAnswerBox
+              question="¿Cuánto cobran las azafatas en España?"
+              answer="Una azafata de eventos en España cobra entre 10€ y 18€/hora netos como autónoma, o entre 60€ y 120€ por jornada completa a través de agencia. Las ferias y congresos pagan entre 80€ y 150€/día según el perfil (idiomas, experiencia). Las azafatas de imagen para eventos premium pueden superar los 200€/día."
+            />
           </div>
           <BlogInlineCTA role="azafata" variant="upgrade" />
           <div className="space-y-10">

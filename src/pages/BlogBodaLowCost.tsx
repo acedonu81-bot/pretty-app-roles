@@ -3,6 +3,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogAnswerBox from '@/components/BlogAnswerBox';
 
 const slug = 'boda-low-cost-checklist-completo';
 
@@ -180,6 +181,10 @@ export default function BlogBodaLowCost() {
               Organizar una boda bonita sin arruinarse es posible. La clave está en saber exactamente qué contratar, en qué orden y dónde está el margen real de ahorro en cada partida.
             </p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>7 junio 2026 · 8 min de lectura</time>
+            <BlogAnswerBox
+              question="¿Cuánto cuesta una boda low cost en España?"
+              answer="Una boda low cost para 80-100 invitados en España cuesta entre 8.000 y 18.000€. Las 5 palancas de ahorro reales son: celebrar en viernes o domingo (ahorra 800-2.000€ en la finca), contratar en temporada baja (noviembre-marzo), comparar 3 presupuestos por servicio, elegir DJ en vez de banda, y contratar directamente sin agencia organizadora."
+            />
           </div>
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath={`/blog/${slug}`} />
