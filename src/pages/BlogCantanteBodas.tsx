@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { Zap, TrendingUp, Star } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 
 const TABLE = [
   { formato: 'Solista voz (sin banda)', momento: 'Ceremonia / cóctel', rango: '300€ – 700€', notas: 'Piano o backing track de acompañamiento' },
@@ -204,6 +205,7 @@ const faqStructured = {
               ))}
             </div>
           </div>
+          <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/cantante-para-bodas-precio" />
         <FooterPublic />

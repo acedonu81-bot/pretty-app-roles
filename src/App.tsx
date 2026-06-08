@@ -86,6 +86,10 @@ const BlogRRPPDiscoteca = lazy(() => import("./pages/BlogRRPPDiscoteca"));
 const DirectorioPublico = lazy(() => import("./pages/DirectorioPublico"));
 const BlogDJBodaBilbao = lazy(() => import("./pages/BlogDJBodaBilbao"));
 const BlogDJBodaMallorca = lazy(() => import("./pages/BlogDJBodaMallorca"));
+const BlogFotografoBoda = lazy(() => import("./pages/BlogFotografoBoda"));
+const BlogFotografoBodaBilbao = lazy(() => import("./pages/BlogFotografoBodaBilbao"));
+const BlogFotografoBodaMalaga = lazy(() => import("./pages/BlogFotografoBodaMalaga"));
+const BlogFotografoBodaMallorca = lazy(() => import("./pages/BlogFotografoBodaMallorca"));
 const BlogFotografoBodaValencia = lazy(() => import("./pages/BlogFotografoBodaValencia"));
 const BlogFotografoBodaSevilla = lazy(() => import("./pages/BlogFotografoBodaSevilla"));
 const BlogDJBodaSevilla = lazy(() => import("./pages/BlogDJBodaSevilla"));
@@ -97,6 +101,17 @@ const BlogDJBodaGranada = lazy(() => import("./pages/BlogDJBodaGranada"));
 const BlogDJBodaIbiza = lazy(() => import("./pages/BlogDJBodaIbiza"));
 const BlogDJBodaMurcia = lazy(() => import("./pages/BlogDJBodaMurcia"));
 const BlogDJBodaAlicante = lazy(() => import("./pages/BlogDJBodaAlicante"));
+const BlogFotografoBodaGranada = lazy(() => import("./pages/BlogFotografoBodaGranada"));
+const BlogFotografoBodaAlicante = lazy(() => import("./pages/BlogFotografoBodaAlicante"));
+const BlogFotografoBodaZaragoza = lazy(() => import("./pages/BlogFotografoBodaZaragoza"));
+const BlogFotografoBodaTenerife = lazy(() => import("./pages/BlogFotografoBodaTenerife"));
+const BlogFotografoBodaMurcia = lazy(() => import("./pages/BlogFotografoBodaMurcia"));
+const BlogFotografoBodaCordoba = lazy(() => import("./pages/BlogFotografoBodaCordoba"));
+const BlogGrupoMusicalBoda = lazy(() => import("./pages/BlogGrupoMusicalBoda"));
+const BlogDJTechnoMadrid = lazy(() => import("./pages/BlogDJTechnoMadrid"));
+const BlogFotografoComunionBarcelona = lazy(() => import("./pages/BlogFotografoComunionBarcelona"));
+const BlogCateringBodaPrecio = lazy(() => import("./pages/BlogCateringBodaPrecio"));
+const BlogOrganizarFiestaEmpresa = lazy(() => import("./pages/BlogOrganizarFiestaEmpresa"));
 const BlogDJBodaCordoba = lazy(() => import("./pages/BlogDJBodaCordoba"));
 const BlogDJBodaValladolid = lazy(() => import("./pages/BlogDJBodaValladolid"));
 const BlogDJBodaACoruna = lazy(() => import("./pages/BlogDJBodaACoruna"));
@@ -277,6 +292,21 @@ const App = () => (
             <Route path="/blog/calculadora-tarifa-dj" element={<BlogCalculadoraTarifaDJ />} />
             <Route path="/blog/fotografo-boda-madrid" element={<BlogFotografoBodaMadrid />} />
             <Route path="/blog/fotografo-boda-barcelona" element={<BlogFotografoBodaBarcelona />} />
+            <Route path="/blog/fotografo-boda" element={<BlogFotografoBoda />} />
+            <Route path="/blog/fotografo-boda-bilbao" element={<BlogFotografoBodaBilbao />} />
+            <Route path="/blog/fotografo-boda-malaga" element={<BlogFotografoBodaMalaga />} />
+            <Route path="/blog/fotografo-boda-mallorca" element={<BlogFotografoBodaMallorca />} />
+            <Route path="/blog/fotografo-boda-granada" element={<BlogFotografoBodaGranada />} />
+            <Route path="/blog/fotografo-boda-alicante" element={<BlogFotografoBodaAlicante />} />
+            <Route path="/blog/fotografo-boda-zaragoza" element={<BlogFotografoBodaZaragoza />} />
+            <Route path="/blog/fotografo-boda-tenerife" element={<BlogFotografoBodaTenerife />} />
+            <Route path="/blog/fotografo-boda-murcia" element={<BlogFotografoBodaMurcia />} />
+            <Route path="/blog/fotografo-boda-cordoba" element={<BlogFotografoBodaCordoba />} />
+            <Route path="/blog/grupo-musical-para-boda-precio" element={<BlogGrupoMusicalBoda />} />
+            <Route path="/blog/dj-techno-madrid" element={<BlogDJTechnoMadrid />} />
+            <Route path="/blog/fotografo-comunion-barcelona" element={<BlogFotografoComunionBarcelona />} />
+            <Route path="/blog/catering-boda-precio-por-persona" element={<BlogCateringBodaPrecio />} />
+            <Route path="/blog/como-organizar-fiesta-de-empresa" element={<BlogOrganizarFiestaEmpresa />} />
             <Route path="/bodas" element={<BodasLanding />} />
             <Route path="/presupuesto-boda" element={<PresupuestoBoda />} />
             {/* Local SEO — /dj-madrid, /camareros-barcelona, /fotografo-sevilla, etc. */}

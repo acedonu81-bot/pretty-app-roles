@@ -3,6 +3,7 @@ import { Zap, ArrowLeft } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 
 const breadcrumb = {
   '@context': 'https://schema.org',
@@ -20,7 +21,7 @@ export default function BlogDJBodaVsDiscoteca() {
     '@type': 'Article',
     headline: 'DJ para bodas vs DJ para discoteca: diferencias, precios y cómo elegir en 2026',
     datePublished: '2026-04-20',
-    dateModified: '2026-04-29',
+    dateModified: '2026-06-08',
     author: { '@type': 'Organization', name: 'XPEAK' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     description: 'Diferencias entre un DJ de boda y un DJ de discoteca: habilidades, equipamiento, precios y cómo elegir el perfil correcto para tu evento.',
@@ -210,6 +211,7 @@ export default function BlogDJBodaVsDiscoteca() {
               </a>
             </div>
           </div>
+          <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-para-bodas-vs-discoteca" />
         <FooterPublic />

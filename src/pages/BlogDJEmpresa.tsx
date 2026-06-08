@@ -3,6 +3,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 
 const slug = 'dj-para-empresa-precio';
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [

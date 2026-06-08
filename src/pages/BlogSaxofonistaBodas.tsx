@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { Zap, TrendingUp, Star } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 
 const TABLE = [
   { momento: 'Ceremonia (entrada + firma + salida)', duracion: '30–60 min', rango: '250€ – 500€', estilo: 'Clásico, jazz, pop en versión saxo' },
@@ -203,6 +204,7 @@ const faqStructured = {
               ))}
             </div>
           </div>
+          <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/saxofonista-para-bodas-precio" />
         <FooterPublic />

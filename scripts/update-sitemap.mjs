@@ -101,6 +101,21 @@ function staticUrls(today) {
 
   // Blog posts (dates reflect actual publish dates)
   const posts = [
+    ['https://xpeak.es/blog/fotografo-boda-granada', '2026-06-08', '0.80'],
+    ['https://xpeak.es/blog/fotografo-boda-alicante', '2026-06-08', '0.80'],
+    ['https://xpeak.es/blog/fotografo-boda-zaragoza', '2026-06-08', '0.80'],
+    ['https://xpeak.es/blog/fotografo-boda-tenerife', '2026-06-08', '0.80'],
+    ['https://xpeak.es/blog/fotografo-boda-murcia', '2026-06-08', '0.78'],
+    ['https://xpeak.es/blog/fotografo-boda-cordoba', '2026-06-08', '0.78'],
+    ['https://xpeak.es/blog/grupo-musical-para-boda-precio', '2026-06-08', '0.82'],
+    ['https://xpeak.es/blog/dj-techno-madrid', '2026-06-08', '0.80'],
+    ['https://xpeak.es/blog/fotografo-comunion-barcelona', '2026-06-08', '0.78'],
+    ['https://xpeak.es/blog/catering-boda-precio-por-persona', '2026-06-08', '0.82'],
+    ['https://xpeak.es/blog/como-organizar-fiesta-de-empresa', '2026-06-08', '0.80'],
+    ['https://xpeak.es/blog/fotografo-boda', '2026-06-08', '0.78'],
+    ['https://xpeak.es/blog/fotografo-boda-bilbao', '2026-06-03', '0.78'],
+    ['https://xpeak.es/blog/fotografo-boda-malaga', '2026-06-03', '0.78'],
+    ['https://xpeak.es/blog/fotografo-boda-mallorca', '2026-06-03', '0.80'],
     ['https://xpeak.es/blog/10-errores-contratar-dj-boda', '2026-05-18', '0.80'],
     ['https://xpeak.es/blog/musica-en-vivo-para-bodas', '2026-05-16', '0.80'],
     ['https://xpeak.es/blog/maestro-de-ceremonias-boda-precio-guia', '2026-05-16', '0.80'],

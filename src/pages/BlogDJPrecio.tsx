@@ -5,6 +5,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
+import BlogShare from '@/components/BlogShare';
 
 const TABLE = [
   { perfil: 'DJ emergente / rookie', experiencia: '< 1 año', rango: '30€ – 60€/h', nota: 'Bodas pequeñas, cumpleaños' },
@@ -39,7 +40,7 @@ export default function BlogDJPrecio() {
     author: { '@type': 'Organization', name: 'XPEAK' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-04-28',
-    dateModified: '2026-04-28',
+    dateModified: '2026-06-08',
     url: 'https://xpeak.es/blog/cuanto-cobra-un-dj-en-espana',
     mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://xpeak.es/blog/cuanto-cobra-un-dj-en-espana' },
   };
@@ -314,6 +315,7 @@ const faqStructured = {
               ))}
             </div>
           </div>
+          <BlogShare />
         </article>
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_precio" />

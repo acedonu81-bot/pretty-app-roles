@@ -3,6 +3,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para bodas en A Coruña: precio y cómo contratar en 2026', description: 'Cuánto cuesta un DJ para una boda en A Coruña. Precios reales 2026, pazos, fincas gallegas y cómo contratar el mejor DJ en Galicia.', datePublished: '2026-06-03', dateModified: '2026-06-03', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-bodas-a-coruna' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [

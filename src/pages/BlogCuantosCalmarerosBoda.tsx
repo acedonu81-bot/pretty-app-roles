@@ -3,6 +3,7 @@ import { Zap, ArrowLeft } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 
 export default function BlogCuantosCalmarerosBoda() {
   const breadcrumb = {
@@ -30,7 +31,7 @@ const faqStructured = {
     '@type': 'Article',
     headline: 'Cuántos camareros necesito para mi boda: la guía definitiva 2026',
     datePublished: '2026-04-15',
-    dateModified: '2026-04-29',
+    dateModified: '2026-06-08',
     author: { '@type': 'Organization', name: 'XPEAK' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     description: 'Guía definitiva 2026: cuántos camareros necesitas para tu boda según el número de invitados, formato del servicio y tipo de evento.',
@@ -236,6 +237,7 @@ const faqStructured = {
               <Zap size={14} /> Buscar camareros para mi boda
             </a>
           </div>
+          <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuantos-camareros-necesito-para-mi-boda" />
         <FooterPublic />

@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Videógrafo para bodas: precio y qué incluye el vídeo en España (2026)', description: 'Cuánto cuesta contratar un videógrafo para tu boda. Precios por tipo de vídeo, duración, ciudad y diferencias con el fotógrafo. Guía 2026.', datePublished: '2026-05-04',
   dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/videografo-bodas-precio' };

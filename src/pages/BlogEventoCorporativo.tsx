@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 
 const article = {
   '@context': 'https://schema.org',

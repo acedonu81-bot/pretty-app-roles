@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 
 const slug = 'calculadora-tarifa-dj';
 

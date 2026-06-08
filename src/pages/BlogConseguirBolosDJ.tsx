@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Cómo conseguir bolos como DJ en España: 8 estrategias para 2026', description: 'Guía práctica para DJs freelance que quieren conseguir más bolos: plataformas, redes sociales, precios, portfolio y cómo posicionarse en el mercado.', datePublished: '2026-06-02', dateModified: '2026-06-02', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/como-conseguir-bolos-dj' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [

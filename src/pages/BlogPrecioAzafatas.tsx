@@ -4,6 +4,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
+import BlogShare from '@/components/BlogShare';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en España: guía completa 2026', description: 'Cuánto cobran las azafatas para eventos, ferias y congresos en España. Tarifas por horas, perfil y ciudad.', datePublished: '2026-05-04',
   dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-eventos-espana' };

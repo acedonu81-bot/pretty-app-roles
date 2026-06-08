@@ -3,6 +3,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 const slug = 'dj-bodas-pamplona'; const ciudad = 'Pamplona';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '350–800€' },{ servicio: 'Cóctel + pista', precio: '550–1.200€' },{ servicio: 'Servicio completo', precio: '700–1.800€' },{ servicio: 'Pack masía o palacio premium', precio: '1.000–2.000€' }];
 const ZONAS = [{ zona: 'Pamplona capital', fincas: 'Palacios de Navarra, casonas históricas', nota: 'Ambiente urbano único' },{ zona: 'Valle de Ulzama / Norte', fincas: 'Caseríos entre hayedos, muy fotogénicos', nota: 'Verde y espectacular' },{ zona: 'Ribera del Ebro', fincas: 'Bodegas de Navarra, masías del sur', nota: 'Vino y clima cálido' },{ zona: 'Pirineos / Roncesvalles', fincas: 'Fincas de montaña con vistas a los Pirineos', nota: 'Para bodas íntimas' }];

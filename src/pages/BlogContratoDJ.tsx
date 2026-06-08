@@ -4,6 +4,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
+import BlogShare from '@/components/BlogShare';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Contrato para DJ: qué debe incluir y cómo redactarlo (2026)', description: 'Guía completa sobre qué cláusulas debe tener un contrato de DJ para eventos. Checklist legal, errores frecuentes y cómo protegerte antes del evento.', datePublished: '2026-05-27', dateModified: '2026-05-27', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/contrato-dj-que-debe-incluir' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [

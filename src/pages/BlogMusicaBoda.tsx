@@ -4,6 +4,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
+import BlogShare from '@/components/BlogShare';
 
 const article = {
   '@context': 'https://schema.org',

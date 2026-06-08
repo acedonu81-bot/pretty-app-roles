@@ -3,6 +3,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 const slug = 'dj-bodas-vigo'; const ciudad = 'Vigo';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '300–700€' },{ servicio: 'Cóctel + pista', precio: '480–1.050€' },{ servicio: 'Servicio completo', precio: '620–1.500€' },{ servicio: 'Pack pazo o finca atlántica', precio: '900–1.800€' }];
 const ZONAS = [{ zona: 'Vigo capital', fincas: 'Fincas con vistas a la Ría de Vigo', nota: 'Vistas espectaculares' },{ zona: 'Islas Cíes / Rías Bajas', fincas: 'Pazos con acceso a la costa', nota: 'Bodas de ensueño junto al mar' },{ zona: 'Interior Pontevedra', fincas: 'Pazos gallegos entre camelias', nota: 'Clásico y elegante' },{ zona: 'Baixo Miño', fincas: 'Fincas fronterizas con Portugal', nota: 'Económico y espacioso' }];

@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { Zap, TrendingUp, Star } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 
 const TABLE = [
   { tipo: 'Afterwork / coctelería (< 100 p.)', horas: '3–4 h', rango: '400€ – 800€', notas: 'Música ambiental, lounge/house suave' },
@@ -204,6 +205,7 @@ const faqStructured = {
               ))}
             </div>
           </div>
+          <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-para-eventos-corporativos-precio" />
         <FooterPublic />

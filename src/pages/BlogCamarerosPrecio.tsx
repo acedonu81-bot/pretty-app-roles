@@ -3,6 +3,7 @@ import { Zap, ArrowLeft } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 
 export default function BlogCamarerosPrecio() {
   const breadcrumb = {
@@ -30,7 +31,7 @@ const faqStructured = {
     '@type': 'Article',
     headline: 'Cuánto cobra un camarero de eventos por horas en España (2026)',
     datePublished: '2026-04-01',
-    dateModified: '2026-04-29',
+    dateModified: '2026-06-08',
     author: { '@type': 'Organization', name: 'XPEAK' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     description: 'Guía completa de precios de camareros para eventos en España 2026: bodas, empresas, fiestas privadas. Cuánto cobran y cuántos necesitas.',
@@ -227,6 +228,7 @@ const faqStructured = {
               <Zap size={14} /> Publicar oferta gratis
             </a>
           </div>
+          <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/cuanto-cobra-un-camarero-de-eventos" />
         <FooterPublic />

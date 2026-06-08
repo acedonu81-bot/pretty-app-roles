@@ -3,6 +3,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 const slug = 'dj-bodas-burgos'; const ciudad = 'Burgos';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '280–650€' },{ servicio: 'Cóctel + pista', precio: '450–950€' },{ servicio: 'Servicio completo', precio: '580–1.400€' },{ servicio: 'Pack castillo o parador premium', precio: '800–1.800€' }];
 const ZONAS = [{ zona: 'Burgos capital', fincas: 'Paradores históricos, palacios medievales', nota: 'Junto a la Catedral' },{ zona: 'Ribera del Duero burgalesa', fincas: 'Bodegas en Aranda, Peñaranda', nota: 'Vino y gastronomía' },{ zona: 'Merindades / norte', fincas: 'Torres medievales, fincas montañosas', nota: 'Paisaje de Las Merindades' },{ zona: 'La Lora / páramos', fincas: 'Masías amplias, espacios diáfanos', nota: 'Tranquilo y económico' }];

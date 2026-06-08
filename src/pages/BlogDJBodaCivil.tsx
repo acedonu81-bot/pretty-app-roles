@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para boda civil: precio y qué canciones poner en cada momento (2026)', description: 'Guía completa de música para boda civil: cuánto cuesta el DJ, canciones para la entrada, firma y fiesta. Precios reales en España 2026.', datePublished: '2026-05-04',
   dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-boda-civil-precio-canciones' };

@@ -3,6 +3,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 const slug = 'dj-bodas-almeria'; const ciudad = 'Almería';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '270–620€' },{ servicio: 'Cóctel + pista', precio: '430–900€' },{ servicio: 'Servicio completo', precio: '550–1.300€' },{ servicio: 'Pack Cabo de Gata o cortijo', precio: '750–1.600€' }];
 const ZONAS = [{ zona: 'Almería capital', fincas: 'Cortijos urbanos y periurbanos', nota: 'Buen precio, fácil acceso' },{ zona: 'Cabo de Gata', fincas: 'Fincas junto al mar, casas de pescadores rehabilitadas', nota: 'Parque Natural único' },{ zona: 'Alpujarra almeriense', fincas: 'Cortijos blancos entre montañas', nota: 'Autenticidad y frescor' },{ zona: 'Mojácar / Vera', fincas: 'Resorts y villas costeras', nota: 'Turismo internacional' }];

@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Catering para comuniones en España: precio por persona y qué incluye (2026)', description: 'Cuánto cuesta el catering de una comunión en España. Precios por persona, formatos de menú y cómo elegir el servicio correcto para tu celebración.', datePublished: '2026-05-07',
   dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/catering-comuniones-precio-persona' };

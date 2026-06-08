@@ -3,6 +3,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 const slug = 'dj-bodas-tarragona'; const ciudad = 'Tarragona';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '350–800€' },{ servicio: 'Cóctel + pista', precio: '550–1.150€' },{ servicio: 'Servicio completo', precio: '700–1.800€' },{ servicio: 'Pack masía o resort Costa Daurada', precio: '1.000–2.200€' }];
 const ZONAS = [{ zona: 'Tarragona capital', fincas: 'Anfiteatro romano, palacios históricos', nota: 'Patrimonio UNESCO' },{ zona: 'Costa Daurada', fincas: 'Resorts en Salou, Cambrils, villas costeras', nota: 'Costa mediterránea accesible' },{ zona: 'Priorat / Montsant', fincas: 'Bodegas DO Priorat, paisaje volcánico', nota: 'Vino y exclusividad' },{ zona: 'Delta del Ebro', fincas: 'Fincas arroceras, naturaleza única', nota: 'Muy singular' }];

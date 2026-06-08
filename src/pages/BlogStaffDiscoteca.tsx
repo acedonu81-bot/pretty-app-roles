@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 
 const PERFILES = [
   { perfil: 'Hostess / Azafata', tarifa: '15€ – 22€/h', turno: '40€ – 80€/noche', nota: 'Recepción, lista de invitados, mesa VIP' },
@@ -171,6 +172,7 @@ const faqStructured = {
               Ver staff disponible →
             </a>
           </div>
+          <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/staff-de-discoteca-funciones-y-salario" />
       <FooterPublic />

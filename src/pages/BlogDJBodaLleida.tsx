@@ -3,6 +3,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 const slug = 'dj-bodas-lleida'; const ciudad = 'Lleida';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '300–680€' },{ servicio: 'Cóctel + pista', precio: '480–980€' },{ servicio: 'Servicio completo', precio: '620–1.500€' },{ servicio: 'Pack masía del Pla premium', precio: '850–1.800€' }];
 const ZONAS = [{ zona: 'Lleida capital', fincas: 'Masías y fincas en el entorno del Segre', nota: 'Precios competitivos' },{ zona: 'Pirineo leridano', fincas: 'Refugios rehabilitados, masías de montaña', nota: 'Paisaje espectacular' },{ zona: 'Les Garrigues / Priorat', fincas: 'Masías entre olivos, bodegas DO', nota: 'Aceite y vino, muy auténtico' },{ zona: 'Segria / La Plana', fincas: 'Masías amplias de la llanura', nota: 'Económico y espacioso' }];

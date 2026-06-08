@@ -3,6 +3,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 const slug = 'dj-bodas-oviedo'; const ciudad = 'Oviedo';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '300–700€' },{ servicio: 'Cóctel + pista', precio: '480–1.050€' },{ servicio: 'Servicio completo', precio: '620–1.500€' },{ servicio: 'Pack palacio asturiano premium', precio: '900–2.000€' }];
 const ZONAS = [{ zona: 'Oviedo / Gijón capital', fincas: 'Palacios asturianos, hoteles del casco histórico', nota: 'Fácil acceso, buena oferta' },{ zona: 'Asturias central', fincas: 'Casonas entre prados, fincas con hórreos', nota: 'Auténtico asturiano' },{ zona: 'Costa asturiana', fincas: 'Fincas con vistas al Cantábrico', nota: 'Espectacular en verano' },{ zona: 'Parque Natural de Covadonga', fincas: 'Fincas de montaña, naturaleza única', nota: 'Para bodas íntimas' }];

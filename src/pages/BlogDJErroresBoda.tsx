@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { ArrowLeft, Zap } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 
 const breadcrumb = {
   '@context': 'https://schema.org',
@@ -215,6 +216,7 @@ export default function BlogDJErroresBoda() {
               </a>
             ))}
           </div>
+          <BlogShare />
         </article>
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/10-errores-contratar-dj-boda" />

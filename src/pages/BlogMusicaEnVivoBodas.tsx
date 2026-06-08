@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { Zap, MapPin, Star, TrendingUp } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 
 const FORMATOS = [
   { tipo: 'Solista con guitarra o piano', rango: '400€ – 900€', desc: 'Ideal para ceremonias íntimas y cóctel. Repertorio melódico, crea ambiente sin ocupar espacio.' },
@@ -272,6 +273,7 @@ export default function BlogMusicaEnVivoBodas() {
               ))}
             </div>
           </div>
+          <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/musica-en-vivo-para-bodas" />
         <FooterPublic />

@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { Zap, TrendingUp, Star } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 
 const TABLE = [
   { perfil: 'Azafata de feria / congreso', jornada: 'Media (5h) / Completa (8h)', rango: '80€ – 180€/día', notas: 'Imagen de marca, atención al visitante' },
@@ -205,6 +206,7 @@ const faqStructured = {
               ))}
             </div>
           </div>
+          <BlogShare />
         </article>
           <BlogEmailCapture variant="guia" intent="ser-profesional" articlePath="/blog/personal-de-imagen-ferias-y-congresos" />
         <FooterPublic />

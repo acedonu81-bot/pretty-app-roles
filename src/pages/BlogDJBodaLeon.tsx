@@ -3,6 +3,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 const slug = 'dj-bodas-leon'; const ciudad = 'León';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '270–620€' },{ servicio: 'Cóctel + pista', precio: '430–900€' },{ servicio: 'Servicio completo', precio: '560–1.350€' },{ servicio: 'Pack palacio o parador', precio: '750–1.700€' }];
 const ZONAS = [{ zona: 'León capital', fincas: 'Paradores, palacios góticos, hoteles históricos', nota: 'Ciudad monumental' },{ zona: 'Bierzo', fincas: 'Bodegas y fincas junto al Sil', nota: 'Vino DO Bierzo, espectacular' },{ zona: 'Picos de Europa / Babia', fincas: 'Fincas de montaña, naturaleza impresionante', nota: 'Para bodas íntimas' },{ zona: 'Sahagún / Meseta', fincas: 'Haciendas de la llanura castellana', nota: 'Muy espacioso y económico' }];

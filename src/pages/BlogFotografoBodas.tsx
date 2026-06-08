@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 
 const TIPOS = [
   { tipo: 'Sesión de retrato (2h)', rango: '80€ – 180€', nota: 'Fotos de pareja o pre-boda' },
@@ -197,6 +198,7 @@ const faqStructured = {
               Ver fotógrafos →
             </a>
           </div>
+          <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/contratar-fotografo-de-bodas" />
       <FooterPublic />

@@ -3,6 +3,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 const slug = 'dj-bodas-cadiz'; const ciudad = 'Cádiz';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '300–700€' },{ servicio: 'Cóctel + pista', precio: '480–1.050€' },{ servicio: 'Servicio completo', precio: '620–1.500€' },{ servicio: 'Pack hacienda o finca costera premium', precio: '900–2.000€' }];
 const ZONAS = [{ zona: 'Cádiz capital / Bahía', fincas: 'Haciendas con vistas al Atlántico, casas de la Bahía', nota: 'Vista oceánica única' },{ zona: 'Jerez de la Frontera', fincas: 'Bodegas de sherry, haciendas señoriales', nota: 'Vino y flamenco' },{ zona: 'Vejer / Tarifa', fincas: 'Fincas en la sierra, vistas al Estrecho', nota: 'Muy bohemio y fotogénico' },{ zona: 'Costa de la Luz', fincas: 'Chiringuitos exclusivos, cortijos dunas', nota: 'Bodas con arena y mar' }];

@@ -3,6 +3,7 @@ import { Music, Camera, UtensilsCrossed, Flower2, Users, Car, ChevronRight } fro
 import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogShare from '@/components/BlogShare';
 
 const PARTIDAS = [
   { icon: UtensilsCrossed, label: 'Catering y banquete', min: 8000, max: 25000, nota: 'Partida más alta. €50–150/comensal según menú y servicio.' },
@@ -63,7 +64,7 @@ export default function BlogCosteBoda() {
     author: { '@type': 'Organization', name: 'XPEAK' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-04-30',
-    dateModified: '2026-04-30',
+    dateModified: '2026-06-08',
     url: 'https://xpeak.es/blog/cuanto-cuesta-una-boda-en-espana',
     mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://xpeak.es/blog/cuanto-cuesta-una-boda-en-espana' },
   };
@@ -424,6 +425,7 @@ const faqStructured = {
             </div>
           </section>
 
+          <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuanto-cuesta-una-boda-en-espana" />
       <FooterPublic />

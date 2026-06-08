@@ -3,6 +3,7 @@ import { Zap, TrendingUp, Star } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
+import BlogShare from '@/components/BlogShare';
 
 const TABLE = [
   { tipo: 'Cumpleaños íntimo (< 30 p.)', horas: '3–4 h', rango: '150€ – 350€', incluye: 'Equipo básico, listas o mezcla' },
@@ -210,6 +211,7 @@ const faqStructured = {
               ))}
             </div>
           </div>
+          <BlogShare />
         </article>
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_fiesta_privada" />
