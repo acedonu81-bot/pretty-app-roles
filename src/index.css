@@ -122,9 +122,16 @@ html, body, #root {
     display: inline-block;
   }
 
-  /* On light-background pages, use darker gold so gradient stays readable */
+  /* Light sections of landing: darker gold for readability on beige */
   [data-landing="true"] .text-gradient {
     background: linear-gradient(135deg, #7A5800, #B8900A);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Dark hero section: restore bright gold */
+  [data-hero-dark="true"] .text-gradient {
+    background: linear-gradient(135deg, #FFD84D, #D4AF37);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }

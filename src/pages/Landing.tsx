@@ -622,7 +622,7 @@ const Landing = () => {
 
       {/* ─ Hero ─ */}
       <main>
-      <div className="relative overflow-hidden" style={{ background: '#0a0a0a' }}>
+      <div className="relative overflow-hidden" data-hero-dark="true" style={{ background: '#0a0a0a' }}>
         {/* Festival crowd photo — visible on dark */}
         <img
           src="/images/pexels/1190297.jpg"
