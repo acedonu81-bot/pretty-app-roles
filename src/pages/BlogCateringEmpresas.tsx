@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 
 const FORMATOS = [
   { formato: 'Coffee break', precio: '8€ – 18€/persona', cuando: 'Reuniones y formaciones de media jornada' },
@@ -149,6 +150,7 @@ const faqStructured = {
               Ver catering →
             </a>
           </div>
+          <BlogAuthor />
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/catering-para-eventos-de-empresa" />

@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 
 const article = {
   '@context': 'https://schema.org',
@@ -208,7 +209,8 @@ export default function BlogFotografiaEventosNocturnos() {
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/fotografia-eventos-nocturnos" />
 </main>
-      <FooterPublic />
+      <BlogAuthor />
+        <FooterPublic />
       </div>
     </>
   );

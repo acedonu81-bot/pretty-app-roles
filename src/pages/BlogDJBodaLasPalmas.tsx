@@ -4,6 +4,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 const slug = 'dj-bodas-las-palmas'; const ciudad = 'Las Palmas de Gran Canaria';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '400–900€' },{ servicio: 'Cóctel + pista', precio: '600–1.300€' },{ servicio: 'Servicio completo', precio: '800–2.000€' },{ servicio: 'Pack resort o finca premium', precio: '1.200–2.500€' }];
 const ZONAS = [{ zona: 'Las Palmas capital', fincas: 'Vegueta histórico, hoteles urbanos', nota: 'Ciudad viva todo el año' },{ zona: 'Sur de Gran Canaria', fincas: 'Maspalomas, resorts de lujo, fincas dunares', nota: 'Turismo internacional masivo' },{ zona: 'Cumbre / Tejeda', fincas: 'Fincas en el corazón de la isla, vistas espectaculares', nota: 'Íntimo y único' },{ zona: 'Valle de Agaete', fincas: 'Fincas entre palmeras y mar', nota: 'Verde y atlántico' }];
@@ -50,7 +51,8 @@ export default function BlogDJBodaLasPalmas() {
       </div>
               <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-las-palmas" />
 </main>
-    <FooterPublic />
+    <BlogAuthor />
+        <FooterPublic />
     <BlogScrollCTA role="dj" storageKey={`xpeak_scrollcta_${slug}`} />
   </div></>);
 }

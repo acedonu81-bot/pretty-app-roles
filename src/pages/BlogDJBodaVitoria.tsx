@@ -4,6 +4,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 
 const slug = 'dj-bodas-vitoria';
 const ciudad = 'Vitoria';
@@ -79,6 +80,7 @@ export default function BlogDJBodaVitoria() {
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-vitoria" />
 </main>
+        <BlogAuthor />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey={`xpeak_scrollcta_${slug}`} />
       </div>

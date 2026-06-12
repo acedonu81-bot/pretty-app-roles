@@ -7,12 +7,6 @@ Disallow: /admin-beta
 Disallow: /auth
 Disallow: /baja-emails
 
-# Páginas legales — noindex, no necesitan rastreo
-Disallow: /privacidad
-Disallow: /terminos
-Disallow: /cookies
-Disallow: /aviso-legal
-Disallow: /sobre-nosotros
 
 # Parámetros de URL que generan duplicados
 Disallow: /*?*mode=

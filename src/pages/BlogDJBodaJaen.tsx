@@ -4,6 +4,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 const slug = 'dj-bodas-jaen'; const ciudad = 'Jaén';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '250–580€' },{ servicio: 'Cóctel + pista', precio: '400–850€' },{ servicio: 'Servicio completo', precio: '520–1.250€' },{ servicio: 'Pack hacienda olivarera', precio: '700–1.500€' }];
 const ZONAS = [{ zona: 'Jaén capital', fincas: 'Cortijos y haciendas en el entorno', nota: 'Precios muy competitivos' },{ zona: 'Úbeda / Baeza', fincas: 'Palacios renacentistas, paradores UNESCO', nota: 'Patrimonio único' },{ zona: 'Sierra Mágina', fincas: 'Cortijos entre olivos milenarios', nota: 'Auténtico y rural' },{ zona: 'Cazorla / Sierra', fincas: 'Fincas en el Parque Natural', nota: 'Naturaleza impresionante' }];
@@ -50,7 +51,8 @@ export default function BlogDJBodaJaen() {
       </div>
               <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-jaen" />
 </main>
-    <FooterPublic />
+    <BlogAuthor />
+        <FooterPublic />
     <BlogScrollCTA role="dj" storageKey={`xpeak_scrollcta_${slug}`} />
   </div></>);
 }

@@ -5,6 +5,7 @@ import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 
 const article = {
   '@context': 'https://schema.org',
@@ -236,7 +237,8 @@ export default function BlogMusicaBoda() {
             </div>
           </div>
         </main>
-      <FooterPublic />
+      <BlogAuthor />
+        <FooterPublic />
       <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_musica_boda" />
       </div>
     </>

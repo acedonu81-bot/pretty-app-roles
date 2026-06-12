@@ -4,6 +4,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 const slug = 'dj-bodas-logrono'; const ciudad = 'Logroño';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '280–650€' },{ servicio: 'Cóctel + pista', precio: '450–950€' },{ servicio: 'Servicio completo', precio: '580–1.400€' },{ servicio: 'Pack bodega Rioja premium', precio: '800–1.800€' }];
 const ZONAS = [{ zona: 'Logroño capital', fincas: 'Palacios y hoteles históricos', nota: 'Ciudad compacta, buen acceso' },{ zona: 'Rioja Alta / Haro', fincas: 'Bodegas centenarias con salas de eventos', nota: 'El corazón del vino Rioja' },{ zona: 'Rioja Baja', fincas: 'Fincas más económicas, paisaje árido y bello', nota: 'Buen precio, calor en verano' },{ zona: 'Sierra de la Demanda', fincas: 'Fincas de montaña con robledales', nota: 'Fresco y natural' }];
@@ -50,7 +51,8 @@ export default function BlogDJBodaLogrono() {
       </div>
               <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-logrono" />
 </main>
-    <FooterPublic />
+    <BlogAuthor />
+        <FooterPublic />
     <BlogScrollCTA role="dj" storageKey={`xpeak_scrollcta_${slug}`} />
   </div></>);
 }

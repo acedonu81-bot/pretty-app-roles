@@ -4,6 +4,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 const slug = 'dj-bodas-girona'; const ciudad = 'Girona';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '400–900€' },{ servicio: 'Cóctel + pista', precio: '600–1.300€' },{ servicio: 'Servicio completo', precio: '800–2.000€' },{ servicio: 'Pack Costa Brava o masía premium', precio: '1.200–2.800€' }];
 const ZONAS = [{ zona: 'Girona capital', fincas: 'Masías medievales, barrio judío restaurado', nota: 'Ciudad espectacular' },{ zona: 'Costa Brava', fincas: 'Villas y masías con vistas al Mediterráneo', nota: 'Bodas internacionales de lujo' },{ zona: 'Empordà', fincas: 'Masías entre viñedos, paisaje único', nota: 'DO Empordà, muy fotogénico' },{ zona: 'Pirineos / Garrotxa', fincas: 'Fincas volcánicas y de montaña', nota: 'Natural y exclusivo' }];
@@ -50,7 +51,8 @@ export default function BlogDJBodaGirona() {
       </div>
               <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-girona" />
 </main>
-    <FooterPublic />
+    <BlogAuthor />
+        <FooterPublic />
     <BlogScrollCTA role="dj" storageKey={`xpeak_scrollcta_${slug}`} />
   </div></>);
 }

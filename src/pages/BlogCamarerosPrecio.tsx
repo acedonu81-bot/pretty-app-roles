@@ -4,6 +4,8 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
+import BlogTopCTA from '@/components/BlogTopCTA';
 
 export default function BlogCamarerosPrecio() {
   const breadcrumb = {
@@ -69,6 +71,7 @@ const faqStructured = {
         <a href="/blog" className="block px-4 sm:px-6 pb-2 max-w-3xl mx-auto text-xs" style={{ color: '#8E8EA0' }}>← Todos los artículos</a>
 
         <article className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
+            <BlogTopCTA href="/auth?mode=register&intent=contratar-staff" label="Ver camareros →" />
           <a href="/contratar-camareros" className="inline-flex items-center gap-1.5 text-xs mb-6 transition-opacity hover:opacity-60"
             style={{ color: 'rgba(212,175,55,0.7)' }}>
             <ArrowLeft size={12} /> Contratar camareros
@@ -228,6 +231,7 @@ const faqStructured = {
               <Zap size={14} /> Publicar oferta gratis
             </a>
           </div>
+          <BlogAuthor />
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/cuanto-cobra-un-camarero-de-eventos" />

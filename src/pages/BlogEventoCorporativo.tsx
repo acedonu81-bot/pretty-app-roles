@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 
 const article = {
   '@context': 'https://schema.org',
@@ -192,7 +193,8 @@ export default function BlogEventoCorporativo() {
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="general" articlePath="/blog/como-organizar-evento-corporativo" />
 </main>
-      <FooterPublic />
+      <BlogAuthor />
+        <FooterPublic />
       </div>
     </>
   );

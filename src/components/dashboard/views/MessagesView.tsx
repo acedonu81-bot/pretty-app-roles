@@ -187,6 +187,15 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     await loadMessages(activeConvId);
     await loadConversations();
     setSending(false);
+    // Email notification to recipient (fire and forget)
+    if (activeOtherUserId && text) {
+      supabase.functions.invoke('send-email', {
+        body: {
+          type: 'new_message',
+          data: { user_id: activeOtherUserId, sender_name: user.user_metadata?.display_name || 'Un usuario' },
+        },
+      });
+    }
   };
 
   const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {

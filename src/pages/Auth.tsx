@@ -228,7 +228,7 @@ const Auth = () => {
               {/* Logo */}
               <div>
                 <button onClick={() => navigate('/')} className="transition-opacity hover:opacity-70 mb-8">
-                  <h2 className="text-2xl font-black tracking-widest font-display text-left">
+                  <h2 className="text-2xl font-black tracking-tight font-display text-left">
                     X<span className="text-gradient">PEAK</span>
                   </h2>
                 </button>
@@ -282,7 +282,7 @@ const Auth = () => {
               {/* Mobile logo */}
               <div className="flex flex-col items-center mb-6 md:hidden">
                 <button onClick={() => navigate('/')} className="transition-opacity hover:opacity-70 mb-1">
-                  <h2 className="text-2xl font-black tracking-widest font-display">
+                  <h2 className="text-2xl font-black tracking-tight font-display">
                     X<span className="text-gradient">PEAK</span>
                   </h2>
                 </button>
@@ -301,12 +301,12 @@ const Auth = () => {
               {/* Heading */}
               <div className="mb-6">
                 <h3 className="text-lg font-black mb-1" style={{ color: '#fff' }}>
-                  {isLogin ? 'Bienvenido de vuelta' : 'Crear cuenta gratis'}
+                  {isLogin ? 'Accede a XPEAK' : 'Crear cuenta gratis'}
                 </h3>
                 <p className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>
                   {isLogin
-                    ? 'Accede a tu perfil y tu panel de control.'
-                    : 'Solo 30 segundos · Sin tarjeta de crédito'}
+                    ? '¿Primera vez? → Pulsa "Crear cuenta gratis" abajo.'
+                    : 'Solo 30 segundos · Sin tarjeta de crédito · 0% comisión'}
                 </p>
               </div>
 

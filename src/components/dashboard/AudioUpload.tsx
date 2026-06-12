@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Upload, Music, X, Plus } from 'lucide-react';
+import { Upload, Music, X, Plus, Link } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
@@ -23,39 +23,93 @@ const allGenres = [
 
 const sanitizeFileName = (name: string): string =>
   name
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
     .replace(/[^a-zA-Z0-9._-]/g, '_')
     .replace(/_+/g, '_')
     .replace(/^_|_$/g, '');
 
 const MAX_SESSIONS_PRO = 15;
-const MAX_FILE_MB          = 45;
+const MAX_FILE_MB = 45;
+
+type SessionType = 'file' | 'soundcloud' | 'mixcloud' | 'hearthis';
 
 interface SessionFile {
   name: string;
   url: string;
   storagePath: string;
+  type: SessionType;
+}
+
+// Detect embed type from URL
+function detectType(url: string): SessionType | null {
+  if (url.includes('soundcloud.com')) return 'soundcloud';
+  if (url.includes('mixcloud.com')) return 'mixcloud';
+  if (url.includes('hearthis.at')) return 'hearthis';
+  return null;
+}
+
+// Build embed iframe src from URL
+function buildEmbedSrc(url: string, type: SessionType): string {
+  if (type === 'soundcloud') {
+    return `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23D4AF37&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true`;
+  }
+  if (type === 'mixcloud') {
+    const match = url.match(/mixcloud\.com\/(.+?\/.+?)\/?(\?.*)?$/);
+    const feed = match ? '/' + match[1] + '/' : url.replace(/https?:\/\/(www\.)?mixcloud\.com/, '');
+    return `https://www.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&light=0&feed=${encodeURIComponent(feed)}`;
+  }
+  if (type === 'hearthis') {
+    const parts = new URL(url).pathname.split('/').filter(Boolean);
+    const id = parts.length >= 2 ? parts[1] : parts[0];
+    return `https://hearthis.at/embed/${id}/`;
+  }
+  return '';
+}
+
+function EmbedPlayer({ session }: { session: SessionFile }) {
+  if (session.type === 'file') {
+    return (
+      <audio
+        src={session.url}
+        controls
+        className="w-full h-9"
+        style={{ filter: 'sepia(100%) saturate(300%) brightness(70%) hue-rotate(5deg)' }}
+      />
+    );
+  }
+  const src = buildEmbedSrc(session.url, session.type);
+  const height = session.type === 'soundcloud' ? 166 : 120;
+  return (
+    <iframe
+      src={src}
+      width="100%"
+      height={height}
+      allow="autoplay"
+      className="rounded-lg"
+      style={{ border: 'none' }}
+    />
+  );
 }
 
 const AudioUpload = () => {
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [sessions, setSessions] = useState<SessionFile[]>([]);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [showGenres, setShowGenres] = useState(false);
   const [savingGenres, setSavingGenres] = useState(false);
   const [rightsConfirmed, setRightsConfirmed] = useState(false);
+  const [linkInput, setLinkInput] = useState('');
+  const [showLinkInput, setShowLinkInput] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { user } = useAuth();
   const profile = useProfile();
 
-  // Initialize genres from profile once loaded
   useEffect(() => {
     if (profile.genres && profile.genres.length > 0) {
       setSelectedGenres(profile.genres);
     }
   }, [profile.genres?.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const maxSessions = MAX_SESSIONS_PRO;
 
   // Load existing sessions from storage
   useEffect(() => {
@@ -66,7 +120,7 @@ const AudioUpload = () => {
         const loaded = files.map(f => {
           const path = `${user.id}/sessions/${f.name}`;
           const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
-          return { name: f.name.replace(/^\d+-/, ''), url: urlData.publicUrl, storagePath: path };
+          return { name: f.name.replace(/^\d+-/, ''), url: urlData.publicUrl, storagePath: path, type: 'file' as SessionType };
         });
         setSessions(loaded);
       }
@@ -91,41 +145,71 @@ const AudioUpload = () => {
     const file = e.target.files?.[0];
     if (!file || !user) return;
     if (!file.type.includes('audio')) { toast.error('Solo archivos de audio (MP3, WAV, M4A)'); return; }
-    if (file.size > MAX_FILE_MB * 1024 * 1024) { toast.error(`Máximo ${MAX_FILE_MB}MB por sesión (suficiente para 1h a 128kbps)`); return; }
-    if (sessions.length >= maxSessions) {
-      toast.error(`Máximo ${maxSessions} sesiones permitidas.`);
-      return;
-    }
+    if (file.size > MAX_FILE_MB * 1024 * 1024) { toast.error(`Máximo ${MAX_FILE_MB}MB por sesión`); return; }
+    if (sessions.length >= MAX_SESSIONS_PRO) { toast.error(`Máximo ${MAX_SESSIONS_PRO} sesiones permitidas.`); return; }
 
     setUploading(true);
+    setUploadProgress(0);
     const safeName = sanitizeFileName(file.name) || 'audio.mp3';
     const path = `${user.id}/sessions/${Date.now()}-${safeName}`;
+
+    // Simulate progress via XHR for large files
+    const xhr = new XMLHttpRequest();
+    const progressPromise = new Promise<void>((resolve) => {
+      xhr.upload.addEventListener('progress', (e) => {
+        if (e.lengthComputable) setUploadProgress(Math.round((e.loaded / e.total) * 90));
+      });
+      resolve();
+    });
+    await progressPromise;
+
     const { error } = await supabase.storage.from('audio-sessions').upload(path, file);
-    if (error) { toast.error('Error al subir: ' + error.message); setUploading(false); return; }
+    setUploadProgress(100);
+    if (error) { toast.error('Error al subir: ' + error.message); setUploading(false); setUploadProgress(0); return; }
 
     const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
-    const url = urlData.publicUrl;
+    setSessions(prev => [...prev, { name: file.name, url: urlData.publicUrl, storagePath: path, type: 'file' }]);
 
-    const newSession: SessionFile = { name: file.name, url, storagePath: path };
-    setSessions(prev => [...prev, newSession]);
-
-    // Notify admin via feature_requests
     await supabase.from('feature_requests').insert({
       user_id: user.id,
       feature_name: `audio_upload:${file.name}`,
     }).then(() => {}, () => {});
 
     await profile.activateTrial();
-    toast.success('Sesión subida y guardada correctamente.');
+    toast.success('Sesión subida correctamente.');
     setUploading(false);
+    setUploadProgress(0);
     if (inputRef.current) inputRef.current.value = '';
   };
 
+  const handleAddLink = () => {
+    const url = linkInput.trim();
+    if (!url) return;
+    const type = detectType(url);
+    if (!type) {
+      toast.error('Pega un link de SoundCloud, Mixcloud o hearthis.at');
+      return;
+    }
+    if (sessions.length >= MAX_SESSIONS_PRO) {
+      toast.error(`Máximo ${MAX_SESSIONS_PRO} sesiones permitidas.`);
+      return;
+    }
+    const name = url.split('/').filter(Boolean).pop() || url;
+    setSessions(prev => [...prev, { name, url, storagePath: '', type }]);
+    setLinkInput('');
+    setShowLinkInput(false);
+    toast.success('Mix añadido correctamente.');
+  };
+
   const removeSession = async (session: SessionFile) => {
-    await supabase.storage.from('audio-sessions').remove([session.storagePath]);
-    setSessions(prev => prev.filter(s => s.storagePath !== session.storagePath));
+    if (session.storagePath) {
+      await supabase.storage.from('audio-sessions').remove([session.storagePath]);
+    }
+    setSessions(prev => prev.filter(s => s !== session));
     toast.info('Sesión eliminada.');
   };
+
+  const canAdd = sessions.length < MAX_SESSIONS_PRO;
 
   return (
     <div className="glass-panel p-4">
@@ -136,7 +220,7 @@ const AudioUpload = () => {
         </span>
       </h4>
       <p className="text-xs text-muted-foreground mb-3">
-        MP3/WAV/M4A · máx {MAX_FILE_MB}MB (~1.5h a 256kbps) · hasta {MAX_SESSIONS_PRO} sesiones
+        Sube un archivo (máx {MAX_FILE_MB}MB) o pega un link de SoundCloud, Mixcloud o hearthis.at
       </p>
 
       {/* Genre selector */}
@@ -188,22 +272,22 @@ const AudioUpload = () => {
 
       {/* Sessions list */}
       {sessions.length > 0 && (
-        <div className="space-y-2 mb-3">
+        <div className="space-y-3 mb-3">
           {sessions.map((s, i) => (
             <div key={i} className="space-y-1">
               <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)' }}>
-                <Music size={14} style={{ color: '#22c55e' }} />
-                <span className="text-sm font-medium flex-1 truncate">{s.name}</span>
+                {s.type === 'file' ? <Music size={14} style={{ color: '#22c55e' }} /> : <Link size={14} style={{ color: '#22c55e' }} />}
+                <span className="text-xs font-medium flex-1 truncate opacity-70">{s.type !== 'file' ? s.type : s.name}</span>
                 <button onClick={() => removeSession(s)}><X size={14} className="text-muted-foreground hover:text-white" /></button>
               </div>
-              <audio src={s.url} controls className="w-full h-9" style={{ filter: 'sepia(100%) saturate(300%) brightness(70%) hue-rotate(5deg)' }} />
+              <EmbedPlayer session={s} />
             </div>
           ))}
         </div>
       )}
 
       {/* Rights confirmation */}
-      {sessions.length < maxSessions && (
+      {canAdd && (
         <label className="flex items-start gap-2 mb-3 cursor-pointer group">
           <input
             type="checkbox"
@@ -218,15 +302,57 @@ const AudioUpload = () => {
         </label>
       )}
 
-      {/* Upload button */}
-      {sessions.length < maxSessions && (
-        <button onClick={() => inputRef.current?.click()} disabled={uploading || !rightsConfirmed}
-          className="w-full flex items-center justify-center gap-2 py-4 rounded-lg border-2 border-dashed transition-all hover:scale-[1.01]"
-          style={{ borderColor: 'rgba(212,175,55,0.2)', color: '#D4AF37', background: 'rgba(212,175,55,0.03)' }}>
-          {sessions.length > 0 ? <Plus size={18} /> : <Upload size={18} />}
-          <span className="text-sm font-bold">{uploading ? 'Subiendo...' : sessions.length > 0 ? 'Añadir otra sesión' : 'Subir sesión de audio'}</span>
-        </button>
+      {/* Link input */}
+      {canAdd && rightsConfirmed && showLinkInput && (
+        <div className="flex gap-2 mb-3">
+          <input
+            type="url"
+            value={linkInput}
+            onChange={e => setLinkInput(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && handleAddLink()}
+            placeholder="https://soundcloud.com/... · mixcloud.com/... · hearthis.at/..."
+            className="nightlife-input text-xs flex-1"
+          />
+          <button onClick={handleAddLink}
+            className="px-3 py-2 rounded-lg text-xs font-bold"
+            style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' }}>
+            Añadir
+          </button>
+          <button onClick={() => setShowLinkInput(false)}
+            className="px-2 py-2 rounded-lg"
+            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--nightlife-border)' }}>
+            <X size={14} className="text-muted-foreground" />
+          </button>
+        </div>
       )}
+
+      {/* Action buttons */}
+      {canAdd && (
+        <div className="flex gap-2">
+          <button
+            onClick={() => { if (rightsConfirmed) inputRef.current?.click(); }}
+            disabled={uploading || !rightsConfirmed}
+            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg border-2 border-dashed transition-all hover:scale-[1.01] disabled:opacity-40"
+            style={{ borderColor: 'rgba(212,175,55,0.2)', color: '#D4AF37', background: 'rgba(212,175,55,0.03)' }}>
+            <Upload size={16} />
+            <span className="text-sm font-bold">{uploading ? `Subiendo... ${uploadProgress}%` : 'Subir archivo'}</span>
+          </button>
+          {uploading && uploadProgress > 0 && (
+            <div className="w-full h-1 rounded-full mt-1 overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
+              <div className="h-full rounded-full transition-all duration-300" style={{ width: `${uploadProgress}%`, background: 'linear-gradient(90deg, #D4AF37, #B8941E)' }} />
+            </div>
+          )}
+          <button
+            onClick={() => { if (rightsConfirmed) setShowLinkInput(!showLinkInput); }}
+            disabled={!rightsConfirmed}
+            className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg border-2 border-dashed transition-all hover:scale-[1.01] disabled:opacity-40"
+            style={{ borderColor: 'rgba(212,175,55,0.2)', color: '#D4AF37', background: 'rgba(212,175,55,0.03)' }}>
+            <Link size={16} />
+            <span className="text-sm font-bold">Link</span>
+          </button>
+        </div>
+      )}
+
       <input ref={inputRef} type="file" accept="audio/mp3,audio/wav,audio/mpeg,audio/m4a,audio/x-m4a" onChange={handleUpload} className="hidden" />
     </div>
   );

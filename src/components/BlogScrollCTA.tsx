@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 interface BlogScrollCTAProps {
-  role?: 'dj' | 'staff' | 'azafata' | 'general';
+  role?: 'dj' | 'staff' | 'azafata' | 'general' | 'empresario';
   storageKey?: string;
 }
 
@@ -30,6 +30,12 @@ const CONFIG = {
     cta: 'Ver profesionales →',
     href: '/auth?mode=register',
   },
+  empresario: {
+    label: '¿Organizas eventos o bodas?',
+    sub: 'Contrata DJ, camareros y fotógrafo con Flash Booking en menos de 1h.',
+    cta: 'Ver profesionales disponibles →',
+    href: '/auth?mode=register&role=empresario',
+  },
 };
 
 export default function BlogScrollCTA({ role = 'general', storageKey }: BlogScrollCTAProps) {
@@ -46,7 +52,7 @@ export default function BlogScrollCTA({ role = 'general', storageKey }: BlogScro
 
     const handleScroll = () => {
       const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-      if (scrolled > 0.6) setVisible(true);
+      if (scrolled > 0.35) setVisible(true);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });

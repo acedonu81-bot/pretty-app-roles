@@ -3,6 +3,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 
 const article = {
   '@context': 'https://schema.org',
@@ -230,7 +231,8 @@ export default function BlogMaquillajeBoda() {
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/maquillaje-nupcial-precio-guia" />
 </main>
-      <FooterPublic />
+      <BlogAuthor />
+        <FooterPublic />
       </div>
     </>
   );

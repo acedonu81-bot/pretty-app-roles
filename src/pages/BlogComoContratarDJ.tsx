@@ -4,6 +4,8 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
+import BlogTopCTA from '@/components/BlogTopCTA';
 
 const slug = 'como-contratar-un-dj';
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
@@ -140,6 +142,7 @@ export default function BlogComoContratarDJ() {
             </div>
           </div>
         </main>
+        <BlogAuthor />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_como_contratar_dj" />
       </div>

@@ -4,6 +4,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 const slug = 'dj-bodas-santander'; const ciudad = 'Santander';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '320–750€' },{ servicio: 'Cóctel + pista', precio: '500–1.100€' },{ servicio: 'Servicio completo', precio: '650–1.600€' },{ servicio: 'Pack palacio / finca costera', precio: '900–2.000€' }];
 const ZONAS = [{ zona: 'Santander capital', fincas: 'Palacio de la Magdalena, casonas cántabras', nota: 'Elegante, vistas al Cantábrico' },{ zona: 'Valles de Cantabria', fincas: 'Fincas rurales entre prados verdes', nota: 'Paisaje único, muy fotogénico' },{ zona: 'Costa cántabra', fincas: 'Caserones y hoteles con vistas al mar', nota: 'Bodas al aire libre en verano' },{ zona: 'Liébana / Picos de Europa', fincas: 'Fincas de montaña, naturaleza impresionante', nota: 'Para bodas íntimas de aventura' }];
@@ -50,7 +51,8 @@ export default function BlogDJBodaSantander() {
       </div>
               <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-santander" />
 </main>
-    <FooterPublic />
+    <BlogAuthor />
+        <FooterPublic />
     <BlogScrollCTA role="dj" storageKey={`xpeak_scrollcta_${slug}`} />
   </div></>);
 }

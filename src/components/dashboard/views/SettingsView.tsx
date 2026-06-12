@@ -175,7 +175,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
   // Privacy
   const [saving, setSaving] = useState(false);
   const [profilePublic, setProfilePublic] = useState(true);
-  const [showRate, setShowRate] = useState(false);
+  const [showRate, setShowRate] = useState(() => (profile.hourly_rate ?? 0) > 0);
   const [allowFlash, setAllowFlash] = useState(true);
   const [showOnline, setShowOnline] = useState(true);
 
@@ -1020,7 +1020,13 @@ Para cualquier duda: soporte@xpeak.es
       {/* ── Privacy ── */}
       <Section title="Privacidad" icon={<Shield size={15} />}>
         <ToggleRow label="Perfil público en el directorio" desc="Si está desactivado, solo eres visible para empresarios" checked={profilePublic} onChange={() => setProfilePublic(v => !v)} />
-        <ToggleRow label="Mostrar tarifa en mi ficha" desc="Visible para todos los usuarios" checked={showRate} onChange={() => setShowRate(v => !v)} />
+        <ToggleRow label="Mostrar tarifa en mi ficha" desc="Si está desactivado, aparece 'A consultar' en tu perfil" checked={showRate} onChange={async () => {
+          const next = !showRate;
+          setShowRate(next);
+          const newRate = next ? (localRate ?? profile.hourly_rate ?? 40) : 0;
+          setLocalRate(newRate);
+          await profile.updateField({ hourly_rate: newRate });
+        }} />
         <ToggleRow label="Disponible en Flash Booking" desc="Empresarios pueden enviarte solicitudes urgentes" checked={allowFlash} onChange={() => setAllowFlash(v => !v)} />
         <ToggleRow label="Mostrar estado en línea" desc="Indica si estás activo en la plataforma" checked={showOnline} onChange={() => setShowOnline(v => !v)} />
         <div className="pt-3 mt-1 space-y-3" style={{ borderTop: '1px solid rgba(255,255,255,0.04)' }}>

@@ -52,7 +52,6 @@ const BlogWeddingPlanner = lazy(() => import("./pages/BlogWeddingPlanner"));
 const BlogContratarPersonalEvento = lazy(() => import("./pages/BlogContratarPersonalEvento"));
 const BlogDJResidenteDiscoteca = lazy(() => import("./pages/BlogDJResidenteDiscoteca"));
 const BlogCateringComuniones = lazy(() => import("./pages/BlogCateringComuniones"));
-const LocalSEOLanding = lazy(() => import("./pages/LocalSEOLanding"));
 const BlogMaestroCeremonias = lazy(() => import("./pages/BlogMaestroCeremonias"));
 const BlogMusicaEnVivoBodas = lazy(() => import("./pages/BlogMusicaEnVivoBodas"));
 const BlogDJErroresBoda = lazy(() => import("./pages/BlogDJErroresBoda"));
@@ -110,6 +109,12 @@ const BlogFotografoBodaMurcia = lazy(() => import("./pages/BlogFotografoBodaMurc
 const BlogFotografoBodaCordoba = lazy(() => import("./pages/BlogFotografoBodaCordoba"));
 const BlogGrupoMusicalBoda = lazy(() => import("./pages/BlogGrupoMusicalBoda"));
 const BlogDJTechnoMadrid = lazy(() => import("./pages/BlogDJTechnoMadrid"));
+const BlogChecklistEventoSala = lazy(() => import("./pages/BlogChecklistEventoSala"));
+const BlogAntelacionReservasBoda = lazy(() => import("./pages/BlogAntelacionReservasBoda"));
+const BlogFlashBookingComoFunciona = lazy(() => import("./pages/BlogFlashBookingComoFunciona"));
+const BlogPersonalExtraHosteleria = lazy(() => import("./pages/BlogPersonalExtraHosteleria"));
+const BlogDiscoMovilVerbenas = lazy(() => import("./pages/BlogDiscoMovilVerbenas"));
+const BlogFiestaVillaIbiza = lazy(() => import("./pages/BlogFiestaVillaIbiza"));
 const BlogFotografoComunionBarcelona = lazy(() => import("./pages/BlogFotografoComunionBarcelona"));
 const BlogCateringBodaPrecio = lazy(() => import("./pages/BlogCateringBodaPrecio"));
 const BlogOrganizarFiestaEmpresa = lazy(() => import("./pages/BlogOrganizarFiestaEmpresa"));
@@ -306,17 +311,17 @@ const App = () => (
             <Route path="/blog/fotografo-boda-cordoba" element={<BlogFotografoBodaCordoba />} />
             <Route path="/blog/grupo-musical-para-boda-precio" element={<BlogGrupoMusicalBoda />} />
             <Route path="/blog/dj-techno-madrid" element={<BlogDJTechnoMadrid />} />
+            <Route path="/blog/checklist-organizar-evento-sala" element={<BlogChecklistEventoSala />} />
+            <Route path="/blog/antelacion-reservar-proveedores-boda" element={<BlogAntelacionReservasBoda />} />
+            <Route path="/blog/como-funciona-flash-booking-xpeak" element={<BlogFlashBookingComoFunciona />} />
+            <Route path="/blog/personal-extra-hosteleria-temporada" element={<BlogPersonalExtraHosteleria />} />
+            <Route path="/blog/disco-movil-verbenas-fiestas-pueblo" element={<BlogDiscoMovilVerbenas />} />
+            <Route path="/blog/fiesta-privada-villa-ibiza" element={<BlogFiestaVillaIbiza />} />
             <Route path="/blog/fotografo-comunion-barcelona" element={<BlogFotografoComunionBarcelona />} />
             <Route path="/blog/catering-boda-precio-por-persona" element={<BlogCateringBodaPrecio />} />
             <Route path="/blog/como-organizar-fiesta-de-empresa" element={<BlogOrganizarFiestaEmpresa />} />
             <Route path="/bodas" element={<BodasLanding />} />
             <Route path="/presupuesto-boda" element={<PresupuestoBoda />} />
-            {/* Local SEO — /dj-madrid, /camareros-barcelona, /fotografo-sevilla, etc. */}
-            {['madrid','barcelona','sevilla','valencia','malaga','bilbao'].flatMap(city =>
-              ['dj','camareros','fotografo','maquillaje','staff'].map(cat => (
-                <Route key={`${cat}-${city}`} path={`/${cat}-${city}`} element={<LocalSEOLanding />} />
-              ))
-            )}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>

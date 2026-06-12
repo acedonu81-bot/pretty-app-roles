@@ -4,6 +4,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 const slug = 'dj-bodas-lleida'; const ciudad = 'Lleida';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '300–680€' },{ servicio: 'Cóctel + pista', precio: '480–980€' },{ servicio: 'Servicio completo', precio: '620–1.500€' },{ servicio: 'Pack masía del Pla premium', precio: '850–1.800€' }];
 const ZONAS = [{ zona: 'Lleida capital', fincas: 'Masías y fincas en el entorno del Segre', nota: 'Precios competitivos' },{ zona: 'Pirineo leridano', fincas: 'Refugios rehabilitados, masías de montaña', nota: 'Paisaje espectacular' },{ zona: 'Les Garrigues / Priorat', fincas: 'Masías entre olivos, bodegas DO', nota: 'Aceite y vino, muy auténtico' },{ zona: 'Segria / La Plana', fincas: 'Masías amplias de la llanura', nota: 'Económico y espacioso' }];
@@ -50,7 +51,8 @@ export default function BlogDJBodaLleida() {
       </div>
               <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-lleida" />
 </main>
-    <FooterPublic />
+    <BlogAuthor />
+        <FooterPublic />
     <BlogScrollCTA role="dj" storageKey={`xpeak_scrollcta_${slug}`} />
   </div></>);
 }

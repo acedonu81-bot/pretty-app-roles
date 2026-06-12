@@ -9,6 +9,12 @@ type CityInfo = {
   venues: string[];
   precioMin: string;
   precioMax: string;
+  seasonal?: {
+    badge: string;
+    months: string;
+    highlight: string;
+    keywords: string[];
+  };
 };
 
 const CITIES: Record<string, CityInfo> = {
@@ -16,12 +22,33 @@ const CITIES: Record<string, CityInfo> = {
   barcelona: { ciudad: 'Barcelona', slug: 'barcelona', venues: ['Apolo', 'Razzmatazz', 'Sala Nitsa', 'Input', 'Pacha Barcelona'],              precioMin: '80€',  precioMax: '400€' },
   valencia:  { ciudad: 'Valencia',  slug: 'valencia',  venues: ['Lolita Valencia', 'Radio City', 'Akuarela', 'Sala Wah Wah', 'Garaje Beat'],   precioMin: '50€',  precioMax: '250€' },
   sevilla:   { ciudad: 'Sevilla',   slug: 'sevilla',   venues: ['Boss Club', 'Joy Eslava Sevilla', 'Sala Malandar', 'Antique Theatre', 'Cats'], precioMin: '40€',  precioMax: '200€' },
-  malaga:    { ciudad: 'Málaga',    slug: 'malaga',    venues: ['Teatro Cervantes', 'Sala Velvet', 'Liceo', 'Sojo Club', 'Theatro Club'],        precioMin: '40€',  precioMax: '180€' },
+  malaga:    { ciudad: 'Málaga',    slug: 'malaga',    venues: ['Teatro Cervantes', 'Sala Velvet', 'Liceo', 'Sojo Club', 'Theatro Club'],        precioMin: '40€',  precioMax: '180€',
+    seasonal: {
+      badge: '☀️ Costa del Sol',
+      months: 'Abril – Octubre',
+      highlight: 'Málaga y la Costa del Sol concentran una alta demanda de profesionales para bodas en finca, terrazas de hotel y eventos privados en verano.',
+      keywords: ['DJ Málaga verano', 'DJ bodas Costa del Sol', 'camareros eventos Málaga', 'DJ terraza Málaga', 'personal extra hostelería Málaga'],
+    },
+  },
   bilbao:    { ciudad: 'Bilbao',    slug: 'bilbao',    venues: ['Kafe Antzokia', 'Sala Bilborock', 'Cotton Club', 'La Noche', 'Fever'],         precioMin: '50€',  precioMax: '220€' },
   zaragoza:  { ciudad: 'Zaragoza',  slug: 'zaragoza',  venues: ['Sala Oasis', 'El Plata', 'Sala López', 'Casa del Loco', 'Amnesia'],           precioMin: '35€',  precioMax: '160€' },
   murcia:    { ciudad: 'Murcia',    slug: 'murcia',    venues: ['Garaje Club', 'B12', 'La Puerta Falsa', 'Sala Rambla', 'Hangar'],             precioMin: '30€',  precioMax: '150€' },
-  palma:     { ciudad: 'Palma',     slug: 'palma',     venues: ['Pacha Mallorca', 'Tito\'s', 'Nikki Beach', 'Bésame', 'Es Gremi'],            precioMin: '60€',  precioMax: '350€' },
-  ibiza:     { ciudad: 'Ibiza',     slug: 'ibiza',     venues: ['Amnesia', 'Pacha', 'DC-10', 'Hi Ibiza', 'Ushuaïa'],                           precioMin: '150€', precioMax: '2000€' },
+  palma:     { ciudad: 'Palma',     slug: 'palma',     venues: ['Pacha Mallorca', 'Tito\'s', 'Nikki Beach', 'Bésame', 'Es Gremi'],            precioMin: '60€',  precioMax: '350€',
+    seasonal: {
+      badge: '🌴 Temporada Alta',
+      months: 'Mayo – Octubre',
+      highlight: 'Mallorca concentra cientos de eventos privados en fincas, villas y yates de junio a septiembre. La demanda de DJs y camareros se multiplica x3 en verano.',
+      keywords: ['DJ Mallorca verano', 'DJ villa Mallorca', 'camareros temporada Palma', 'DJ pool party Mallorca', 'personal extra hostelería Mallorca'],
+    },
+  },
+  ibiza:     { ciudad: 'Ibiza',     slug: 'ibiza',     venues: ['Amnesia', 'Pacha', 'DC-10', 'Hi Ibiza', 'Ushuaïa'],                           precioMin: '150€', precioMax: '2000€',
+    seasonal: {
+      badge: '🎉 Temporada Ibiza',
+      months: 'Mayo – Septiembre',
+      highlight: 'Ibiza es el epicentro mundial de eventos privados en villa, pool parties y yates de mayo a octubre. Los mejores profesionales se agotan con semanas de antelación.',
+      keywords: ['DJ villa Ibiza', 'DJ fiesta privada Ibiza', 'DJ pool party Ibiza', 'DJ eventos Ibiza', 'camareros temporada Ibiza', 'personal extra hostelería Ibiza'],
+    },
+  },
 };
 
 type CategoryInfo = {
@@ -38,24 +65,51 @@ const CATEGORIES: Record<string, CategoryInfo> = {
     label: 'DJ',
     keyword: 'DJ',
     unidad: '/hora',
-    desc: (c) => `DJs verificados en ${c}: Tech House, Techno, Comercial y más. Flash Booking en menos de 1h. Contratos automáticos. Sin comisión.`,
-    intro: (c, venues) => `${c} concentra una de las escenas de ocio nocturno más activas de España. Desde clubs como ${venues.slice(0,2).join(' y ')} hasta eventos privados, XPEAK conecta salas, promotoras y organizadores con DJs verificados disponibles ahora mismo.`,
+    desc: (c) => {
+      if (c === 'Ibiza') return 'DJ villa Ibiza, DJ fiesta privada Ibiza, DJ pool party Ibiza. DJs verificados disponibles en temporada. Flash Booking en menos de 1h. Contratos digitales. Sin comisión.';
+      if (c === 'Palma') return 'DJ villa Mallorca, DJ pool party Palma, DJ fiestas privadas Mallorca. Temporada mayo-octubre. Flash Booking en menos de 1h. Sin comisión.';
+      return `DJs verificados en ${c}: Tech House, Techno, Comercial y más. Flash Booking en menos de 1h. Contratos automáticos. Sin comisión.`;
+    },
+    intro: (c, venues) => {
+      if (c === 'Ibiza') return 'Ibiza es el destino número uno para DJs y eventos privados en Europa. Villas, yates, pool parties y clubs de clase mundial como Amnesia, Pacha o DC-10. XPEAK conecta organizadores con DJs verificados disponibles en Ibiza para fiestas privadas, eventos en villa y clubs. Temporada activa de mayo a octubre.';
+      if (c === 'Palma') return 'Mallorca concentra cientos de eventos privados en finca, villa y yate de mayo a octubre. XPEAK conecta organizadores con DJs verificados en Palma y toda Mallorca: desde pool parties en villas hasta bodas en finca y eventos corporativos en hotel resort.';
+      return `${c} concentra una de las escenas de ocio nocturno más activas de España. Desde clubs como ${venues.slice(0,2).join(' y ')} hasta eventos privados, XPEAK conecta salas, promotoras y organizadores con DJs verificados disponibles ahora mismo.`;
+    },
     faqs: (c, precio) => [
-      { q: `¿Cuánto cuesta contratar un DJ en ${c}?`, a: `El precio de un DJ en ${c} varía entre ${precio}/hora según experiencia y equipo. En XPEAK todos los perfiles muestran su tarifa pública antes de contactar.` },
-      { q: `¿Cómo funciona el Flash Booking en ${c}?`, a: `Publica una oferta urgente y recibe respuestas de DJs disponibles en ${c} en menos de 60 minutos. Ideal para sustituciones de última hora.` },
+      { q: `¿Cuánto cuesta contratar un DJ en ${c}?`, a: c === 'Ibiza'
+        ? `El precio de un DJ en Ibiza varía entre ${precio}/hora según el nombre del artista y el tipo de evento. Un DJ para villa privada cuesta orientativamente 300€–800€ por noche. DJs residentes de clubs reconocidos pueden superar los 2.000€. En XPEAK todos los perfiles muestran su tarifa pública.`
+        : `El precio de un DJ en ${c} varía entre ${precio}/hora según experiencia y equipo. En XPEAK todos los perfiles muestran su tarifa pública antes de contactar.` },
+      { q: c === 'Ibiza' ? '¿Puedo contratar DJ para una fiesta en villa de Ibiza?' : `¿Cómo funciona el Flash Booking en ${c}?`,
+        a: c === 'Ibiza'
+          ? 'Sí. XPEAK tiene DJs especializados en eventos privados en villa: conocen la normativa de ruido de Ibiza, trabajan con equipo silencioso o indoor y tienen experiencia con grupos internacionales. Puedes publicar tu oferta de villa y recibir candidaturas en menos de 1 hora.'
+          : `Publica una oferta urgente y recibe respuestas de DJs disponibles en ${c} en menos de 60 minutos. Ideal para sustituciones de última hora.` },
       { q: '¿XPEAK cobra comisión?', a: 'No. XPEAK es completamente gratuito para salas y promotoras. El contrato se cierra directamente entre tú y el profesional.' },
+      ...(c === 'Ibiza' ? [{ q: '¿Con cuánta antelación hay que contratar DJ en Ibiza en temporada?', a: 'En temporada alta (junio–septiembre) los mejores DJs de Ibiza se agotan con 2–4 semanas de antelación. Si tu evento es en julio o agosto, reserva con al menos 1 mes. Para urgencias, el Flash Booking de XPEAK puede encontrar disponibilidad en menos de 1 hora.' }] : []),
     ],
   },
   camareros: {
     label: 'Camareros',
     keyword: 'Camareros',
     unidad: '/hora',
-    desc: (c) => `Camareros profesionales en ${c} para bodas, eventos de empresa y fiestas privadas. Flash Booking en menos de 1h. Contrato digital automático. Gratis para organizadores.`,
-    intro: (c) => `Encuentra camareros y personal de sala en ${c} para cualquier tipo de evento: bodas, cenas corporativas, fiestas privadas y catering. XPEAK conecta organizadores con profesionales verificados con experiencia demostrable, disponibles para acuerdos puntuales o de temporada.`,
+    desc: (c) => {
+      if (c === 'Ibiza') return 'Camareros temporada Ibiza: personal extra hostelería Ibiza para villas, yates y pool parties. Contratación por horas, por noches o por temporada. Flash Booking en <1h.';
+      if (c === 'Palma') return 'Camareros temporada Mallorca: personal extra para villas, fincas y resorts. Por horas o por temporada. Flash Booking disponible. 0% comisión.';
+      return `Camareros profesionales en ${c} para bodas, eventos de empresa y fiestas privadas. Flash Booking en menos de 1h. Contrato digital automático. Gratis para organizadores.`;
+    },
+    intro: (c) => {
+      if (c === 'Ibiza') return 'Ibiza necesita cientos de camareros extra cada temporada (mayo–septiembre). XPEAK conecta villas, clubs, restaurantes y organizadores de eventos con camareros y bartenders verificados disponibles en Ibiza: por horas, por noches o para toda la temporada. Personal extra hostelería disponible en menos de 1 hora con Flash Booking.';
+      if (c === 'Palma') return 'Mallorca concentra una alta demanda de camareros extra en temporada estival. XPEAK conecta hoteles, fincas y organizadores de eventos en Palma con personal de sala verificado disponible para bodas, pool parties y eventos corporativos. Contratación por horas o por temporada.';
+      return `Encuentra camareros y personal de sala en ${c} para cualquier tipo de evento: bodas, cenas corporativas, fiestas privadas y catering. XPEAK conecta organizadores con profesionales verificados con experiencia demostrable, disponibles para acuerdos puntuales o de temporada.`;
+    },
     faqs: (c, precio) => [
-      { q: `¿Cuánto cobran los camareros en ${c}?`, a: `Los camareros profesionales en ${c} cobran entre ${precio}/hora. Para eventos de boda o corporativos con servicio completo el precio suele incluir desplazamiento y uniforme.` },
+      { q: `¿Cuánto cobran los camareros en ${c}?`, a: c === 'Ibiza'
+        ? `Los camareros en Ibiza cobran entre ${precio}/hora en temporada, con suplemento nocturno habitual de 2–4€/hora. Para eventos de villa o yate el precio puede ser superior al incluir desplazamiento y posible alojamiento. En XPEAK todos los perfiles muestran su tarifa pública.`
+        : `Los camareros profesionales en ${c} cobran entre ${precio}/hora. Para eventos de boda o corporativos con servicio completo el precio suele incluir desplazamiento y uniforme.` },
       { q: `¿Cuántos camareros necesito para mi evento en ${c}?`, a: 'La regla estándar es 1 camarero por cada 15-20 personas en formato cóctel, y 1 por cada 8-10 en cena sentada con servicio completo.' },
-      { q: '¿Puedo contratar camareros para una sola noche?', a: `Sí. XPEAK permite contrataciones puntuales en ${c}. El Flash Booking notifica a los profesionales disponibles en tu zona al instante.` },
+      { q: c === 'Ibiza' ? '¿Puedo contratar camareros por temporada en Ibiza?' : '¿Puedo contratar camareros para una sola noche?',
+        a: c === 'Ibiza'
+          ? 'Sí. XPEAK permite acuerdos de temporada completa (mayo–octubre) con contrato digital automático. También contrataciones puntuales para una sola noche o evento. El Flash Booking cubre urgencias en menos de 1 hora.'
+          : `Sí. XPEAK permite contrataciones puntuales en ${c}. El Flash Booking notifica a los profesionales disponibles en tu zona al instante.` },
     ],
   },
   staff: {
@@ -235,6 +289,33 @@ export default function CityLanding() {
             </a>
           </div>
         </section>
+
+        {/* Seasonal banner — only for cities with seasonal data */}
+        {cityData.seasonal && (
+          <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-4">
+            <div className="rounded-2xl px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-3"
+              style={{ background: 'linear-gradient(135deg, rgba(212,175,55,0.08), rgba(212,175,55,0.04))', border: '1px solid rgba(212,175,55,0.25)' }}>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <span className="text-sm font-black px-2.5 py-1 rounded-lg" style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>
+                  {cityData.seasonal.badge}
+                </span>
+                <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>{cityData.seasonal.months}</span>
+              </div>
+              <p className="text-xs leading-relaxed flex-1" style={{ color: 'rgba(255,255,255,0.55)' }}>
+                {cityData.seasonal.highlight}
+              </p>
+            </div>
+            {/* Seasonal keyword chips */}
+            <div className="flex flex-wrap gap-2 mt-3">
+              {cityData.seasonal.keywords.map(k => (
+                <span key={k} className="text-xs px-2.5 py-1 rounded-full font-bold"
+                  style={{ background: 'rgba(212,175,55,0.06)', color: 'rgba(212,175,55,0.7)', border: '1px solid rgba(212,175,55,0.15)' }}>
+                  {k}
+                </span>
+              ))}
+            </div>
+          </section>
+        )}
 
         <section className="border-y" style={{ borderColor: 'rgba(255,255,255,0.06)', background: 'rgba(212,175,55,0.03)' }}>
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">

@@ -4,6 +4,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 
 const breadcrumb = {
   '@context': 'https://schema.org',
@@ -211,6 +212,7 @@ export default function BlogDJBodaVsDiscoteca() {
               </a>
             </div>
           </div>
+          <BlogAuthor />
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-para-bodas-vs-discoteca" />

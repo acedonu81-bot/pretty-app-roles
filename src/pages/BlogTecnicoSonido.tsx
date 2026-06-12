@@ -3,6 +3,7 @@ import { Zap, TrendingUp, Star } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 
 const TABLE = [
   { evento: 'Boda o comunión (sala con PA)', horas: '6–10 h', rango: '200€ – 400€', notas: 'Montaje, prueba, ceremonia y recepción' },
@@ -205,6 +206,7 @@ const faqStructured = {
               ))}
             </div>
           </div>
+          <BlogAuthor />
           <BlogShare />
         </article>
           <BlogEmailCapture variant="guia" intent="ser-profesional" articlePath="/blog/tecnico-de-sonido-para-eventos" />

@@ -4,6 +4,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 const slug = 'dj-bodas-huelva'; const ciudad = 'Huelva';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '270–620€' },{ servicio: 'Cóctel + pista', precio: '430–900€' },{ servicio: 'Servicio completo', precio: '550–1.300€' },{ servicio: 'Pack finca o hacienda', precio: '750–1.600€' }];
 const ZONAS = [{ zona: 'Huelva capital', fincas: 'Fincas y haciendas en el entorno urbano', nota: 'Accesible, buena oferta' },{ zona: 'Punta Umbría / Mazagón', fincas: 'Fincas entre pinos y playa', nota: 'Bodas veraniegas en la costa' },{ zona: 'Sierra de Aracena', fincas: 'Cortijos de sierra con ibérico y naturaleza', nota: 'Muy auténtico y rural' },{ zona: 'Condado / El Rocío', fincas: 'Haciendas de campiña, ambiente andaluz', nota: 'Festivo y tradicional' }];
@@ -50,7 +51,8 @@ export default function BlogDJBodaHuelva() {
       </div>
               <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-huelva" />
 </main>
-    <FooterPublic />
+    <BlogAuthor />
+        <FooterPublic />
     <BlogScrollCTA role="dj" storageKey={`xpeak_scrollcta_${slug}`} />
   </div></>);
 }

@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 
 const PAQUETES = [
   { paquete: 'Básico (4h)', precio: '400€ – 650€', incluye: 'DJ + equipo de sonido + luces de color básicas' },
@@ -165,6 +166,7 @@ const faqStructured = {
               Ver disco móvil →
             </a>
           </div>
+          <BlogAuthor />
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/disco-movil-para-comuniones" />

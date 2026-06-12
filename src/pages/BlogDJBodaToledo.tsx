@@ -4,6 +4,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 const slug = 'dj-bodas-toledo'; const ciudad = 'Toledo';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '300–700€' },{ servicio: 'Cóctel + pista', precio: '480–1.050€' },{ servicio: 'Servicio completo', precio: '620–1.500€' },{ servicio: 'Pack palacio o cigarral premium', precio: '900–2.000€' }];
 const ZONAS = [{ zona: 'Toledo capital', fincas: 'Palacios medievales, conventos, casas de Toledo', nota: 'Patrimonio UNESCO, impresionante' },{ zona: 'Cigarrales del Tajo', fincas: 'Cigarrales con vistas a la ciudad medieval', nota: 'La vista más icónica de España' },{ zona: 'Montes de Toledo', fincas: 'Fincas de caza y olivar', nota: 'Espacioso y tranquilo' },{ zona: 'La Sagra', fincas: 'Fincas y cortijos cerca de Madrid', nota: 'Accesible desde Madrid (50 min)' }];
@@ -50,7 +51,8 @@ export default function BlogDJBodaToledo() {
       </div>
               <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-toledo" />
 </main>
-    <FooterPublic />
+    <BlogAuthor />
+        <FooterPublic />
     <BlogScrollCTA role="dj" storageKey={`xpeak_scrollcta_${slug}`} />
   </div></>);
 }

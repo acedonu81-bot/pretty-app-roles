@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
 import FooterPublic from '@/components/FooterPublic';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogAuthor from '@/components/BlogAuthor';
 
 const POSTS = [
   { slug: '/blog/dj-bodas-bilbao', title: 'DJ para bodas en Bilbao: precio y cómo contratar en 2026', desc: 'Precios DJs boda Bilbao. Caseríos vascos, costa del Cantábrico y bodegas de Rioja Alavesa.', date: '3 jun 2026', tag: 'DJ', min: 4 },
@@ -203,6 +204,7 @@ export default function BlogIndex() {
                   <BlogEmailCapture variant="presupuestos" intent="general" articlePath="" />
 </main>
 
+        <BlogAuthor />
         <FooterPublic />
       </div>
     </>

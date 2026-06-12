@@ -3,6 +3,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Cómo trabajar de RRPP en discoteca en España: guía 2026', description: 'Guía completa para trabajar de relaciones públicas en discotecas y clubs. Qué hace un RRPP, cuánto cobra, cómo conseguir los primeros contratos y cómo crecer.', datePublished: '2026-06-02', dateModified: '2026-06-02', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/como-trabajar-de-rrpp-discoteca' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
@@ -134,6 +135,7 @@ export default function BlogRRPPDiscoteca() {
           </div>
                   <BlogEmailCapture variant="guia" intent="ser-profesional" articlePath="/blog/como-trabajar-de-rrpp-discoteca" />
 </main>
+        <BlogAuthor />
         <FooterPublic />
       </div>
     </>

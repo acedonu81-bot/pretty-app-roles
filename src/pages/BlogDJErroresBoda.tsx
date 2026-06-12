@@ -3,6 +3,7 @@ import { ArrowLeft, Zap } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 
 const breadcrumb = {
   '@context': 'https://schema.org',
@@ -216,6 +217,7 @@ export default function BlogDJErroresBoda() {
               </a>
             ))}
           </div>
+          <BlogAuthor />
           <BlogShare />
         </article>
 

@@ -118,8 +118,11 @@ html, body, #root {
   .text-gradient {
     background: linear-gradient(135deg, #D4AF37, #F5D77A);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     display: inline-block;
+    padding-bottom: 0.05em;
+    margin-bottom: -0.05em;
   }
 
   /* Light sections of landing: darker gold for readability on beige */

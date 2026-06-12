@@ -10,6 +10,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 const OUT = path.join(ROOT, 'public', 'sitemap.xml');
+const OUT_DIST = path.join(ROOT, 'dist', 'sitemap.xml');
 const TODAY = new Date().toISOString().slice(0, 10);
 
 // ─── Load .env manually (no dotenv dep needed) ────────────────────────────
@@ -53,7 +54,6 @@ function staticUrls(today) {
   // Core
   lines.push('  <!-- Core -->');
   lines.push(url('https://xpeak.es/', today, 'weekly', '1.0'));
-  lines.push(url('https://xpeak.es/auth', today, 'monthly', '0.8'));
   lines.push(url('https://xpeak.es/sobre-nosotros', today, 'monthly', '0.6'));
 
   // Category landings
@@ -75,17 +75,6 @@ function staticUrls(today) {
       const pri = parseFloat(cityPri[city] || '0.7');
       const adjusted = (Math.min(pri, 0.85)).toFixed(2);
       lines.push(url(`https://xpeak.es/contratar-${cat}/${city}`, today, 'weekly', adjusted));
-    }
-  }
-
-  // Local SEO
-  lines.push('\n  <!-- Local SEO -->');
-  const localCats = [['dj','0.85'],['camareros','0.8'],['fotografo','0.8'],['maquillaje','0.75'],['staff','0.75']];
-  const localCities = ['madrid','barcelona','sevilla','valencia','malaga','bilbao'];
-  for (const [cat, pri] of localCats) {
-    for (const city of localCities) {
-      const p = (parseFloat(pri) - (localCities.indexOf(city) * 0.05)).toFixed(2);
-      lines.push(url(`https://xpeak.es/${cat}-${city}`, today, 'weekly', p));
     }
   }
 
@@ -112,6 +101,12 @@ function staticUrls(today) {
     ['https://xpeak.es/blog/fotografo-comunion-barcelona', '2026-06-08', '0.78'],
     ['https://xpeak.es/blog/catering-boda-precio-por-persona', '2026-06-08', '0.82'],
     ['https://xpeak.es/blog/como-organizar-fiesta-de-empresa', '2026-06-08', '0.80'],
+    ['https://xpeak.es/blog/checklist-organizar-evento-sala', '2026-06-10', '0.85'],
+    ['https://xpeak.es/blog/antelacion-reservar-proveedores-boda', '2026-06-10', '0.85'],
+    ['https://xpeak.es/blog/como-funciona-flash-booking-xpeak', '2026-06-10', '0.88'],
+    ['https://xpeak.es/blog/personal-extra-hosteleria-temporada', '2026-06-10', '0.85'],
+    ['https://xpeak.es/blog/disco-movil-verbenas-fiestas-pueblo', '2026-06-10', '0.84'],
+    ['https://xpeak.es/blog/fiesta-privada-villa-ibiza', '2026-06-10', '0.86'],
     ['https://xpeak.es/blog/fotografo-boda', '2026-06-08', '0.78'],
     ['https://xpeak.es/blog/fotografo-boda-bilbao', '2026-06-03', '0.78'],
     ['https://xpeak.es/blog/fotografo-boda-malaga', '2026-06-03', '0.78'],
@@ -182,13 +177,9 @@ async function main() {
   const profileLines = ['\n  <!-- Perfiles reales -->'];
   for (const p of profiles) {
     if (!p.user_id) continue;
+    if (p.user_id.startsWith('11111111-')) continue;
     const lastmod = p.updated_at ? p.updated_at.slice(0, 10) : TODAY;
     profileLines.push(url(`https://xpeak.es/p/${p.user_id}`, lastmod, 'weekly', '0.65'));
-  }
-
-  const demoLines = ['\n  <!-- Perfiles demo -->'];
-  for (const slug of DEMO_SLUGS) {
-    demoLines.push(url(`https://xpeak.es/p/${slug}`, '2026-05-08', 'weekly', '0.60'));
   }
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -196,13 +187,13 @@ async function main() {
 
 ${staticUrls(TODAY)}
 ${profileLines.join('\n')}
-${demoLines.join('\n')}
 
 </urlset>`;
 
   fs.writeFileSync(OUT, sitemap, 'utf-8');
+  if (fs.existsSync(path.dirname(OUT_DIST))) fs.writeFileSync(OUT_DIST, sitemap, 'utf-8');
   const lineCount = sitemap.split('\n').length;
-  console.log(`✅ sitemap.xml written — ${lineCount} lines, ${profiles.length} real profiles + ${DEMO_SLUGS.length} demo`);
+  console.log(`✅ sitemap.xml written — ${lineCount} lines, ${profiles.length} real profiles`);
 }
 
 main().catch(e => {

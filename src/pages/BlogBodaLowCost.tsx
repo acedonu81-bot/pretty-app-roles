@@ -5,6 +5,7 @@ import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 
 const slug = 'boda-low-cost-checklist-completo';
 
@@ -342,6 +343,7 @@ export default function BlogBodaLowCost() {
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath={`/blog/${slug}`} />
         </main>
 
+        <BlogAuthor />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_boda_low_cost" />
       </div>

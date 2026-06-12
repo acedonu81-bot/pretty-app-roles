@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <!-- Deep dark radial background -->
+    <radialGradient id="bgGrad" cx="40%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#1c1c1e"/>
+      <stop offset="100%" stop-color="#060606"/>
+    </radialGradient>
+
+    <!-- Gold metallic gradient (top-left bright → bottom-right dark) -->
+    <linearGradient id="gold1" x1="110" y1="110" x2="402" y2="402" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#FFF0A0"/>
+      <stop offset="30%"  stop-color="#E8C84A"/>
+      <stop offset="65%"  stop-color="#C9A227"/>
+      <stop offset="100%" stop-color="#7A5E0A"/>
+    </linearGradient>
+
+    <!-- Gold metallic gradient (top-right → bottom-left) -->
+    <linearGradient id="gold2" x1="402" y1="110" x2="110" y2="402" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#FFF0A0"/>
+      <stop offset="30%"  stop-color="#E8C84A"/>
+      <stop offset="65%"  stop-color="#C9A227"/>
+      <stop offset="100%" stop-color="#7A5E0A"/>
+    </linearGradient>
+
+    <!-- Glow filter for the X arms -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Subtle ambient glow behind the X -->
+    <filter id="ambientGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="28" result="blur"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="112" ry="112" fill="url(#bgGrad)"/>
+
+  <!-- Ambient golden halo behind the X (glow-in-the-dark effect) -->
+  <g filter="url(#ambientGlow)" opacity="0.35">
+    <line x1="116" y1="116" x2="396" y2="396" stroke="#D4AF37" stroke-width="80" stroke-linecap="round"/>
+    <line x1="396" y1="116" x2="116" y2="396" stroke="#D4AF37" stroke-width="80" stroke-linecap="round"/>
+  </g>
+
+  <!-- X arm 1: top-left → bottom-right -->
+  <line x1="116" y1="116" x2="396" y2="396"
+        stroke="url(#gold1)"
+        stroke-width="76"
+        stroke-linecap="round"
+        filter="url(#glow)"/>
+
+  <!-- X arm 2: top-right → bottom-left -->
+  <line x1="396" y1="116" x2="116" y2="396"
+        stroke="url(#gold2)"
+        stroke-width="76"
+        stroke-linecap="round"
+        filter="url(#glow)"/>
+
+  <!-- Center intersection: dark diamond to break the cross -->
+  <rect x="224" y="224" width="64" height="64"
+        rx="6" ry="6"
+        fill="#0A0A0A"
+        transform="rotate(45 256 256)"/>
+
+  <!-- Center gem: bright gold dot -->
+  <circle cx="256" cy="256" r="14" fill="#FFF0A0" opacity="0.95"/>
+  <circle cx="256" cy="256" r="8"  fill="#D4AF37"/>
+</svg>

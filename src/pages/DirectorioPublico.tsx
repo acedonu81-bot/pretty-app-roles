@@ -84,6 +84,7 @@ export default function DirectorioPublico() {
 
   const [profiles, setProfiles] = useState<DirProfile[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(false);
   const [city, setCity] = useState('Todas');
   const [bookingPro, setBookingPro] = useState<DirProfile | null>(null);
   const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
@@ -91,6 +92,7 @@ export default function DirectorioPublico() {
   useEffect(() => {
     setLoading(true);
     setProfiles([]);
+    setFetchError(false);
     let q = supabase
       .from('profiles')
       .select('user_id, display_name, role, specialty, zone, photo_url, hourly_rate, bio, is_flash_active, is_verified, score')
@@ -102,8 +104,12 @@ export default function DirectorioPublico() {
 
     if (city !== 'Todas') q = q.ilike('zone', `%${city}%`);
 
-    q.then(({ data }: any) => {
-      setProfiles((data ?? []).filter((p: any) => p.display_name?.trim().length > 1));
+    q.then(({ data, error }: any) => {
+      if (error) {
+        setFetchError(true);
+      } else {
+        setProfiles((data ?? []).filter((p: any) => p.display_name?.trim().length > 1));
+      }
       setLoading(false);
     });
   }, [config.dbRole, city]);
@@ -185,7 +191,19 @@ export default function DirectorioPublico() {
           </div>
 
           {/* Grid de perfiles */}
-          {loading && (
+          {fetchError && (
+            <div className="p-12 rounded-2xl text-center" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
+              <p className="text-sm font-bold mb-2">No se pudo cargar el directorio</p>
+              <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>Comprueba tu conexión y vuelve a intentarlo.</p>
+              <button onClick={() => { setCity(city); setFetchError(false); setLoading(true); }}
+                className="px-4 py-2 rounded-xl text-xs font-bold"
+                style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                Reintentar
+              </button>
+            </div>
+          )}
+
+          {!fetchError && loading && (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               {Array.from({ length: 8 }).map((_, i) => (
                 <div key={i} className="rounded-2xl p-4 animate-pulse" style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.05)' }}>
@@ -197,7 +215,7 @@ export default function DirectorioPublico() {
             </div>
           )}
 
-          {!loading && profiles.length === 0 && (
+          {!fetchError && !loading && profiles.length === 0 && (
             <div className="p-12 rounded-2xl text-center" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
               <p className="text-sm font-bold mb-2">Sin resultados en {city}</p>
               <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>Prueba con otra ciudad o ve al directorio completo.</p>
@@ -208,7 +226,7 @@ export default function DirectorioPublico() {
             </div>
           )}
 
-          {!loading && profiles.length > 0 && (
+          {!fetchError && !loading && profiles.length > 0 && (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               {profiles.map(p => (
                 <div key={p.user_id} className="rounded-2xl overflow-hidden flex flex-col"

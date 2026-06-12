@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 
 const PERFILES = [
   { perfil: 'Promotor de calle', tarifa: '30€ – 80€/noche', kpi: 'Personas captadas, flyers distribuidos' },
@@ -148,6 +149,7 @@ const faqStructured = {
               Ver promotores →
             </a>
           </div>
+          <BlogAuthor />
           <BlogShare />
         </article>
           <BlogEmailCapture variant="guia" intent="ser-profesional" articlePath="/blog/promotores-de-eventos-que-hacen" />

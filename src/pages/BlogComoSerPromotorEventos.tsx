@@ -3,6 +3,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Cómo ser promotor de eventos en España: guía completa 2026', description: 'Guía práctica para convertirte en promotor de eventos. Qué hace un promotor, cuánto cobra, cómo empezar y cómo conseguir los primeros contratos.', datePublished: '2026-06-02', dateModified: '2026-06-02', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/como-ser-promotor-eventos' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
@@ -138,6 +139,7 @@ export default function BlogComoSerPromotorEventos() {
           </div>
                   <BlogEmailCapture variant="guia" intent="ser-profesional" articlePath="/blog/como-ser-promotor-eventos" />
 </main>
+        <BlogAuthor />
         <FooterPublic />
       </div>
     </>

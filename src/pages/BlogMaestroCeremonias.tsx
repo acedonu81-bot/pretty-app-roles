@@ -3,6 +3,7 @@ import { Zap, MapPin, Star, TrendingUp } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 
 const TABLE = [
   { perfil: 'Maestro de ceremonias junior', experiencia: '< 2 años', rango: '300€ – 600€', nota: 'Bodas pequeñas, eventos locales' },
@@ -287,6 +288,7 @@ export default function BlogMaestroCeremonias() {
               ))}
             </div>
           </div>
+          <BlogAuthor />
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/maestro-de-ceremonias-boda-precio-guia" />

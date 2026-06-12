@@ -110,7 +110,7 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
     <div className="animate-[fadeIn_0.4s_ease]">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
         <div>
-          <h2 className="text-2xl font-bold mb-1">
+          <h2 className="text-2xl font-bold mb-1 overflow-visible leading-tight pb-1">
             Directorio <span className="text-gradient">{title}</span>
           </h2>
           <p className="text-sm text-muted-foreground">{subtitle}</p>

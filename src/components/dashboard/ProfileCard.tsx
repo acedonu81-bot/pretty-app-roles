@@ -146,7 +146,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
               </svg>
             )}
           </div>
-          <p className="text-xs text-muted-foreground truncate max-w-full">{p.specialty}</p>
+          <p className="text-xs text-muted-foreground line-clamp-2 leading-snug">{p.specialty}</p>
         </div>
       </div>
 
@@ -164,7 +164,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
 
       <div className="flex flex-wrap gap-1 mb-3 overflow-hidden">
         {p.badges.slice(0, 3).map(b => (
-          <span key={b} className="text-xs font-medium px-1.5 sm:px-2 py-0.5 rounded truncate max-w-[120px]"
+          <span key={b} className="text-xs font-medium px-1.5 sm:px-2 py-0.5 rounded"
             style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
             {b}
           </span>

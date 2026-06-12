@@ -4,6 +4,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 const slug = 'dj-bodas-albacete'; const ciudad = 'Albacete';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '260–600€' },{ servicio: 'Cóctel + pista', precio: '420–870€' },{ servicio: 'Servicio completo', precio: '540–1.300€' },{ servicio: 'Pack finca o casón manchego', precio: '750–1.600€' }];
 const ZONAS = [{ zona: 'Albacete capital', fincas: 'Casones y fincas periurbanas', nota: 'Buen acceso, precios bajos' },{ zona: 'Riopar / Sierra Segura', fincas: 'Fincas de montaña, nacimiento del Segura', nota: 'Natural y fresco' },{ zona: 'Laguna de Ruidera', fincas: 'Casas rurales entre lagunas', nota: 'Paisaje único en España' },{ zona: 'La Mancha', fincas: 'Bodegas DO La Mancha, molinos históricos', nota: 'Quijote y vino' }];
@@ -50,7 +51,8 @@ export default function BlogDJBodaAlbacete() {
       </div>
               <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-albacete" />
 </main>
-    <FooterPublic />
+    <BlogAuthor />
+        <FooterPublic />
     <BlogScrollCTA role="dj" storageKey={`xpeak_scrollcta_${slug}`} />
   </div></>);
 }

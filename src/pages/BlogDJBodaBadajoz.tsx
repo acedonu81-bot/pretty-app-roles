@@ -4,6 +4,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 const slug = 'dj-bodas-badajoz'; const ciudad = 'Badajoz';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '250–580€' },{ servicio: 'Cóctel + pista', precio: '400–850€' },{ servicio: 'Servicio completo', precio: '520–1.250€' },{ servicio: 'Pack dehesa o cortijo', precio: '700–1.500€' }];
 const ZONAS = [{ zona: 'Badajoz capital', fincas: 'Fincas y haciendas en el entorno', nota: 'Precios muy competitivos' },{ zona: 'Mérida', fincas: 'Teatro Romano, Parador, fincas históricas', nota: 'Patrimonio único' },{ zona: 'Tierra de Barros', fincas: 'Dehesas entre viñedos y olivos', nota: 'Paisaje extremeño auténtico' },{ zona: 'Sierra de Tentudía', fincas: 'Cortijos de sierra, frescos en verano', nota: 'Natural e íntimo' }];
@@ -50,7 +51,8 @@ export default function BlogDJBodaBadajoz() {
       </div>
               <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-badajoz" />
 </main>
-    <FooterPublic />
+    <BlogAuthor />
+        <FooterPublic />
     <BlogScrollCTA role="dj" storageKey={`xpeak_scrollcta_${slug}`} />
   </div></>);
 }

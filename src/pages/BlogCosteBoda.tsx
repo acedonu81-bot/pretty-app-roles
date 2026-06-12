@@ -4,6 +4,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 
 const PARTIDAS = [
   { icon: UtensilsCrossed, label: 'Catering y banquete', min: 8000, max: 25000, nota: 'Partida más alta. €50–150/comensal según menú y servicio.' },
@@ -425,6 +426,7 @@ const faqStructured = {
             </div>
           </section>
 
+          <BlogAuthor />
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuanto-cuesta-una-boda-en-espana" />

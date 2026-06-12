@@ -15,6 +15,15 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     assetsDir: "assets",
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          if (id.includes('html2pdf') || id.includes('jspdf') || id.includes('html2canvas')) {
+            return 'pdf-vendor';
+          }
+        },
+      },
+    },
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {

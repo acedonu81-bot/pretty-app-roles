@@ -62,7 +62,7 @@ const ContactModal = ({ open, onClose }: Props) => {
               </div>
               <div className="flex-1">
                 <p className="text-sm font-bold">Contacto</p>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>info@xpeak.es</p>
+                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>info@xpeak.site</p>
               </div>
               <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-white/10">
                 <X size={14} style={{ color: 'rgba(255,255,255,0.4)' }} />

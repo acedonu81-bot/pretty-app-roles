@@ -282,6 +282,9 @@ const RoleModal = ({ role, onClose, onJoin }: { role: typeof ROLE_DETAILS[0]; on
           exit={{ opacity: 0, y: 40 }}
           transition={{ type: 'spring', stiffness: 280, damping: 26 }}
           onClick={e => e.stopPropagation()}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="role-modal-title"
           className="relative w-full max-w-lg rounded-t-3xl sm:rounded-2xl overflow-hidden"
           style={{ background: '#0e0e0e', border: '1px solid rgba(226,190,80,0.18)' }}
         >
@@ -376,10 +379,10 @@ const RoleModal = ({ role, onClose, onJoin }: { role: typeof ROLE_DETAILS[0]; on
           </div>
 
           {/* ── Navigation ── */}
-          <div className="flex items-center gap-3 px-5 pb-6 pt-1">
+          <div className="flex items-center gap-3 px-5 pt-1" style={{ paddingBottom: 'calc(1.5rem + var(--sab, 0px))' }}>
             <button
               onClick={() => goTo(step - 1)} disabled={step === 0}
-              className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all disabled:opacity-20 hover:bg-white/8"
+              className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-all disabled:opacity-20 hover:bg-white/8"
               style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
               <ChevronLeft size={18} />
             </button>
@@ -398,7 +401,7 @@ const RoleModal = ({ role, onClose, onJoin }: { role: typeof ROLE_DETAILS[0]; on
             )}
             <button
               onClick={() => goTo(step + 1)} disabled={isLast}
-              className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all disabled:opacity-20 hover:bg-white/8"
+              className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-all disabled:opacity-20 hover:bg-white/8"
               style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
               <ChevronRight size={18} />
             </button>
@@ -591,30 +594,30 @@ const Landing = () => {
           WebkitBackdropFilter: 'blur(24px)',
           borderBottom: '1px solid rgba(212,175,55,0.12)',
         }}>
-        <div className="max-w-[1200px] mx-auto px-6 md:px-10 py-4 md:py-5 flex justify-between items-center">
+        <div className="max-w-[1800px] mx-auto px-6 md:px-10 py-4 md:py-5 flex justify-between items-center">
           <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="text-2xl font-black tracking-widest transition-opacity hover:opacity-70 font-display"
+            className="text-2xl font-black tracking-tight transition-opacity hover:opacity-70 font-display"
             style={{ color: '#fff' }}>
             X<span className="text-gradient">PEAK</span>
           </button>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button onClick={() => navigate('/auth')}
               className="hidden sm:block text-xs font-semibold px-4 py-2 rounded-lg transition-all"
               style={{ color: 'rgba(255,255,255,0.6)' }}>
               Acceder
             </button>
             <button onClick={() => navigate('/auth?mode=register&role=empresario')}
-              className="hidden sm:block text-xs font-semibold px-4 py-2 rounded-lg transition-all"
+              className="text-xs font-semibold px-3 sm:px-4 py-2 rounded-lg transition-all"
               style={{ color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '10px' }}>
-              <span className="flex items-center gap-1.5"><Building2 size={12} /> Soy empresario</span>
+              <span className="flex items-center gap-1"><Building2 size={12} /><span className="hidden sm:inline">Soy </span>Organizador</span>
             </button>
             <motion.button
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => navigate('/auth?mode=register&role=profesional')}
-              className="text-xs font-bold px-5 py-2.5 rounded-xl flex items-center gap-1.5"
+              className="text-xs font-bold px-3 sm:px-5 py-2.5 rounded-xl flex items-center gap-1.5"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              <Headphones size={13} /> Soy profesional
+              <Headphones size={13} /><span className="hidden sm:inline">Soy </span>Profesional
             </motion.button>
           </div>
         </div>
@@ -644,12 +647,15 @@ const Landing = () => {
             }}>
             <Sparkles size={14} style={{ color: '#D4AF37' }} />
             <span className="uppercase tracking-[0.3em] text-xs font-semibold" style={{ color: '#D4AF37' }}>
-              Clubs · Festivales · Eventos
+              Temporada activa — Ibiza · Palma · Costa del Sol
             </span>
           </div>
         </FadeIn>
         <FadeIn delay={0.1}>
-          <h1 className="text-4xl sm:text-6xl md:text-8xl font-black leading-[1.05] mb-4 md:mb-7 max-w-5xl mx-auto tracking-tight text-center font-display">
+          <h1
+            aria-label="Los mejores profesionales para tu evento en España — DJ, fotógrafo, camareros y staff verificados"
+            className="text-4xl sm:text-6xl md:text-8xl font-black leading-[1.05] mb-4 md:mb-7 max-w-5xl mx-auto tracking-tight text-center font-display"
+          >
             <span className="block" style={{ color: 'rgba(255,255,255,0.95)' }}>Los mejores profesionales</span>
             <span className="block text-gradient">para</span>
             <RotatingWord />
@@ -723,6 +729,24 @@ const Landing = () => {
               </motion.button>
             </div>
           </form>
+        </FadeIn>
+        <FadeIn delay={0.3}>
+          <div className="flex flex-wrap justify-center gap-2 mb-6 mt-2">
+            {[
+              { label: 'DJ Ibiza', href: '/contratar-dj/ibiza' },
+              { label: 'DJ Mallorca', href: '/contratar-dj/palma' },
+              { label: 'DJ Costa del Sol', href: '/contratar-dj/malaga' },
+              { label: 'DJ Madrid', href: '/contratar-dj/madrid' },
+              { label: 'Camareros Ibiza', href: '/contratar-camareros/ibiza' },
+              { label: '⚡ Flash Booking', href: '/blog/como-funciona-flash-booking-xpeak' },
+            ].map(item => (
+              <a key={item.label} href={item.href}
+                className="px-3 py-1.5 rounded-full text-xs font-bold transition-all hover:scale-105"
+                style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
+                {item.label}
+              </a>
+            ))}
+          </div>
         </FadeIn>
         <FadeIn delay={0.35}>
           <p className="text-xs font-bold uppercase tracking-[0.25em] mb-4" style={{ color: 'rgba(255,255,255,0.4)' }}>
@@ -805,11 +829,11 @@ const Landing = () => {
       {/* ─ Nightlife atmosphere strip ─ */}
       <FadeIn className="max-w-[1200px] mx-auto px-6 md:px-8 pb-12 md:pb-16">
         <div className="grid grid-cols-3 gap-2 md:gap-3 h-24 md:h-[130px]">
-          {[1190297, 1540406, 1105666].map((id) => (
+          {[1190297, 1540406, 1105666].map((id, i) => (
             <div key={id} className="relative rounded-xl overflow-hidden">
               <img
                 src={px(id)}
-                alt=""
+                alt={['Ambiente de evento nocturno', 'DJ en directo', 'Sala de eventos profesional'][i]}
                 loading="lazy"
                 className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                 style={{ filter: 'saturate(0.85) brightness(0.8)' }}
@@ -821,21 +845,43 @@ const Landing = () => {
       </FadeIn>
 
       {/* ─ Hero Reel ─ */}
-      <FadeIn className="max-w-[1200px] mx-auto px-6 md:px-8 pb-12 md:pb-16">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          poster="/og-image.jpg"
-          src="/video/landing-hero.mp4"
-          style={{
-            width: '100%',
-            borderRadius: '16px',
-            boxShadow: '0 20px 60px rgba(0,0,0,0.50)',
-            display: 'block',
-          }}
-        />
+      <FadeIn className="w-full px-4 md:px-8 pb-12 md:pb-16">
+        <div className="max-w-[1800px] mx-auto">
+          {/* Poster estático en móvil, vídeo lazy en desktop */}
+          <picture className="block sm:hidden">
+            <img
+              src="/og-image.jpg"
+              alt="Profesionales de eventos verificados — XPEAK"
+              style={{ width: '100%', borderRadius: '16px', boxShadow: '0 20px 60px rgba(0,0,0,0.50)', display: 'block', aspectRatio: '16/9', objectFit: 'cover' }}
+            />
+          </picture>
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="none"
+            poster="/og-image.jpg"
+            style={{
+              width: '100%',
+              borderRadius: '16px',
+              boxShadow: '0 20px 60px rgba(0,0,0,0.50)',
+              display: 'block',
+            }}
+            className="hidden sm:block"
+            onMouseEnter={e => { const v = e.currentTarget; if (!v.src) { v.src = '/video/landing-hero.mp4'; v.play(); } }}
+            ref={el => {
+              if (!el) return;
+              const obs = new IntersectionObserver(([entry]) => {
+                if (entry.isIntersecting && !el.src) {
+                  el.src = '/video/landing-hero.mp4';
+                  obs.disconnect();
+                }
+              }, { rootMargin: '200px' });
+              obs.observe(el);
+            }}
+          />
+        </div>
       </FadeIn>
 
       {/* ─ Mobile Categories ─ */}
@@ -995,7 +1041,7 @@ const Landing = () => {
           <a href="/presupuesto-boda" className="group block rounded-2xl overflow-hidden transition-all hover:scale-[1.01]"
             style={{ background: 'linear-gradient(135deg,rgba(212,175,55,0.08) 0%,rgba(255,255,255,0.95) 60%)', border: '1px solid rgba(212,175,55,0.25)', boxShadow: '0 2px 12px rgba(0,0,0,0.07)' }}>
             <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10 p-7 md:p-10">
-              <div className="text-5xl md:text-6xl flex-shrink-0">💒</div>
+              <div className="flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)' }}><Sparkles size={28} color="#000" /></div>
               <div className="flex-1 text-center md:text-left">
                 <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#8B6A00' }}>
                   Herramienta gratuita · Bodas 2026

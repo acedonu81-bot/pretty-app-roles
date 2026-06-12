@@ -3,6 +3,7 @@ import { Zap, TrendingUp, Star } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 
 const TABLE = [
   { partida: 'Catering (comida + bebida)', rango: '40€ – 80€/persona', notas: 'Banquete completo en restaurante o finca' },
@@ -210,6 +211,7 @@ const faqStructured = {
               ))}
             </div>
           </div>
+          <BlogAuthor />
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuanto-cuesta-una-comunion-en-espana" />

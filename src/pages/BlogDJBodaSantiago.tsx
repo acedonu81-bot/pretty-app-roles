@@ -4,6 +4,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 const slug = 'dj-bodas-santiago'; const ciudad = 'Santiago de Compostela';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '300–700€' },{ servicio: 'Cóctel + pista', precio: '480–1.050€' },{ servicio: 'Servicio completo', precio: '620–1.500€' },{ servicio: 'Pack pazo o casona histórica', precio: '900–1.800€' }];
 const ZONAS = [{ zona: 'Santiago capital', fincas: 'Pazos del casco histórico, conventos rehabilitados', nota: 'Patrimonio UNESCO, muy demandado' },{ zona: 'Ulla / Barbanza', fincas: 'Pazos entre bosques atlánticos', nota: 'Verde e íntimo' },{ zona: 'Costa da Morte', fincas: 'Fincas con vistas al Atlántico', nota: 'Bodas espectaculares' },{ zona: 'Melide / interior', fincas: 'Casas rurales, fincas amplias', nota: 'Económico y auténtico' }];
@@ -50,7 +51,8 @@ export default function BlogDJBodaSantiago() {
       </div>
               <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-santiago" />
 </main>
-    <FooterPublic />
+    <BlogAuthor />
+        <FooterPublic />
     <BlogScrollCTA role="dj" storageKey={`xpeak_scrollcta_${slug}`} />
   </div></>);
 }

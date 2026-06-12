@@ -4,6 +4,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 const slug = 'dj-bodas-castellon'; const ciudad = 'Castellón';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '300–680€' },{ servicio: 'Cóctel + pista', precio: '480–980€' },{ servicio: 'Servicio completo', precio: '620–1.500€' },{ servicio: 'Pack masía o resort Costa Azahar', precio: '850–1.800€' }];
 const ZONAS = [{ zona: 'Castellón capital', fincas: 'Fincas y haciendas en el entorno', nota: 'Accesible y competitivo' },{ zona: 'Costa Azahar', fincas: 'Benicarló, Peñíscola, Benicàssim resorts', nota: 'Costa mediterránea' },{ zona: 'Maestrazgo', fincas: 'Masías medievales de interior', nota: 'Histórico y rural' },{ zona: 'Gúdar-Javalambre', fincas: 'Fincas de montaña, esquí en invierno', nota: 'Exclusivo y fresco' }];
@@ -50,7 +51,8 @@ export default function BlogDJBodaCastellon() {
       </div>
               <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-castellon" />
 </main>
-    <FooterPublic />
+    <BlogAuthor />
+        <FooterPublic />
     <BlogScrollCTA role="dj" storageKey={`xpeak_scrollcta_${slug}`} />
   </div></>);
 }

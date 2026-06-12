@@ -3,6 +3,7 @@ import { Zap, TrendingUp, Star } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 
 const TABLE = [
   { servicio: 'Maquillaje novia (solo)', duracion: '60–90 min', rango: '100€ – 250€', notas: 'Incluye prueba previa' },
@@ -206,6 +207,7 @@ const faqStructured = {
               ))}
             </div>
           </div>
+          <BlogAuthor />
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/maquilladora-para-eventos-precio" />

@@ -13,7 +13,7 @@ const LegalFooter = () => {
         className="w-full px-6 md:px-10 pt-16 pb-8 mt-auto"
         style={{ borderTop: '1px solid rgba(212,175,55,0.12)', background: 'rgba(0,0,0,0.85)' }}
       >
-        <div className="max-w-[1200px] mx-auto">
+        <div className="max-w-[1800px] mx-auto">
 
           {/* Top — logo + columnas */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pb-12" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
@@ -21,14 +21,14 @@ const LegalFooter = () => {
             {/* Marca */}
             <div className="col-span-2 md:col-span-1">
               <div className="flex items-center gap-2.5 mb-3">
-                <span className="text-xl font-black tracking-widest font-display" style={{ color: '#D4AF37' }}>X<span style={{ color: 'rgba(255,255,255,0.85)' }}>PEAK</span></span>
+                <span className="text-xl font-black tracking-tight font-display" style={{ color: '#D4AF37' }}>X<span style={{ color: 'rgba(255,255,255,0.85)' }}>PEAK</span></span>
               </div>
               <p className="text-xs leading-relaxed max-w-[200px]" style={{ color: 'rgba(255,255,255,0.55)' }}>
                 Conectamos profesionales de eventos con quienes los necesitan. España.
               </p>
-              <a href="mailto:info@xpeak.es" className="inline-block mt-3 text-xs font-bold transition-colors hover:opacity-80"
+              <a href="mailto:info@xpeak.site" className="inline-block mt-3 text-xs font-bold transition-colors hover:opacity-80"
                 style={{ color: 'rgba(212,175,55,0.7)' }}>
-                info@xpeak.es
+                info@xpeak.site
               </a>
             </div>
 

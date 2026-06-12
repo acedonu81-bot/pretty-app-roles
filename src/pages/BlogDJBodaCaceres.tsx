@@ -4,6 +4,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 const slug = 'dj-bodas-caceres'; const ciudad = 'Cáceres';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '250–580€' },{ servicio: 'Cóctel + pista', precio: '400–850€' },{ servicio: 'Servicio completo', precio: '520–1.250€' },{ servicio: 'Pack palacio medieval o dehesa', precio: '700–1.600€' }];
 const ZONAS = [{ zona: 'Cáceres capital', fincas: 'Palacios medievales, ciudad monumental', nota: 'Patrimonio UNESCO' },{ zona: 'Valle del Jerte', fincas: 'Fincas entre cerezos, paisaje espectacular', nota: 'Ideal en primavera' },{ zona: 'La Vera', fincas: 'Casas rurales entre pimentón y tabaco', nota: 'Autenticidad extremeña' },{ zona: 'Sierra de Gata', fincas: 'Cortijos de montaña, muy tranquilos', nota: 'Íntimo y natural' }];
@@ -50,7 +51,8 @@ export default function BlogDJBodaCaceres() {
       </div>
               <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-caceres" />
 </main>
-    <FooterPublic />
+    <BlogAuthor />
+        <FooterPublic />
     <BlogScrollCTA role="dj" storageKey={`xpeak_scrollcta_${slug}`} />
   </div></>);
 }

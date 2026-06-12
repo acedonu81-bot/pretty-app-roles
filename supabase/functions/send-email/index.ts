@@ -2,13 +2,25 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { SMTPClient } from 'https://deno.land/x/denomailer@1.6.0/mod.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
+const ALLOWED_ORIGIN = 'https://xpeak.es';
+
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const ADMIN = 'info@xpeak.es';
-const FROM = 'XPEAK <info@xpeak.es>';
+// HMAC-SHA256 token for unsubscribe links (prevents email enumeration)
+async function signEmail(email: string): Promise<string> {
+  const key = Deno.env.get('UNSUB_SECRET');
+  if (!key) throw new Error('UNSUB_SECRET not configured');
+  const enc = new TextEncoder();
+  const cryptoKey = await crypto.subtle.importKey('raw', enc.encode(key), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const sig = await crypto.subtle.sign('HMAC', cryptoKey, enc.encode(email));
+  return btoa(String.fromCharCode(...new Uint8Array(sig))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+}
+
+const ADMIN = 'info@xpeak.site';
+const FROM = 'XPEAK <info@xpeak.site>';
 
 // Escape user-supplied strings before inserting into HTML to prevent injection
 const esc = (s: unknown): string =>
@@ -261,7 +273,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   // 12. Flash Booking — aviso al profesional (nueva solicitud recibida)
   booking_received: (d) => ({
     subject: `⚡ Nueva solicitud Flash Booking — ${esc(d.event_date ?? 'Fecha por confirmar')}`,
-    to: d.email,
+    to: d.email ?? ADMIN,
     html: base(`
       <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:8px;padding:16px;margin-bottom:20px">
         <p style="margin:0 0 4px">${badge('Flash Booking — Nueva solicitud')}</p>
@@ -358,6 +370,22 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     };
   },
 
+  // 13b. Nuevo mensaje en chat
+  new_message: (d) => ({
+    subject: `💬 ${esc(d.sender_name)} te ha enviado un mensaje en XPEAK`,
+    to: d.email,
+    html: base(`
+      <h2 style="font-size:20px;font-weight:900;margin:0 0 10px">Tienes un mensaje nuevo 💬</h2>
+      <p style="color:rgba(255,255,255,0.55);font-size:14px;line-height:1.7;margin:0 0 20px">
+        <strong style="color:#D4AF37">${esc(d.sender_name)}</strong> te ha enviado un mensaje en XPEAK.<br>
+        Entra para leerlo y responder.
+      </p>
+      ${btn('Ver mensaje →', 'https://xpeak.es/dashboard')}
+      <p style="color:rgba(255,255,255,0.3);font-size:12px;text-align:center">
+        Puedes desactivar estas notificaciones en Ajustes → Privacidad.
+      </p>`),
+  }),
+
   // 13. Flash Booking — respuesta del profesional al solicitante
   booking_status_update: (d) => ({
     subject: d.status === 'confirmed'
@@ -392,23 +420,37 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
 };
 
 async function sendMail(to: string, subject: string, html: string, replyTo?: string) {
+  const smtpPass = Deno.env.get('SMTP_PASS');
+  if (!smtpPass) throw new Error('SMTP_PASS not configured');
   const client = new SMTPClient({
     connection: {
       hostname: 'smtp.hostinger.com',
       port: 465,
       tls: true,
       auth: {
-        username: Deno.env.get('SMTP_USER') ?? 'info@xpeak.es',
-        password: Deno.env.get('SMTP_PASS') ?? '',
+        username: Deno.env.get('SMTP_USER') ?? 'info@xpeak.site',
+        password: smtpPass,
       },
     },
   });
-  await client.send({ from: FROM, to, replyTo: replyTo ?? ADMIN, subject, html });
-  await client.close();
+  const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('SMTP timeout')), 10000));
+  await Promise.race([
+    client.send({ from: FROM, to, replyTo: replyTo ?? ADMIN, subject, html }).then(() => client.close()),
+    timeout,
+  ]);
 }
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
+
+  // Verify request comes from our app (JWT or internal secret)
+  const authHeader = req.headers.get('authorization') ?? '';
+  const internalSecret = Deno.env.get('INTERNAL_SECRET') ?? '';
+  const isInternal = internalSecret && req.headers.get('x-internal-secret') === internalSecret;
+  const hasAuth = authHeader.startsWith('Bearer ') || isInternal;
+  if (!hasAuth) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: corsHeaders });
+  }
 
   try {
     const { type, data } = await req.json();
@@ -445,23 +487,24 @@ serve(async (req) => {
 
     // Check email opt-out (skip for admin-only emails sent to info@xpeak.es)
     if (to !== ADMIN) {
-      const adminClient = createClient(
+      const optOutClient = createClient(
         Deno.env.get('SUPABASE_URL') ?? '',
         Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
       );
-      const { data: userData } = await adminClient.auth.admin.listUsers();
-      const user = userData?.users?.find((u: any) => u.email?.toLowerCase() === to.toLowerCase());
-      if (user) {
-        const { data: profile } = await adminClient
-          .from('profiles').select('email_opt_out').eq('user_id', user.id).single();
+      // Use profile's user_id if already resolved; otherwise look up by email
+      const resolvedUserId = data?.user_id ?? data?.professional_user_id ?? null;
+      if (resolvedUserId) {
+        const { data: profile } = await optOutClient
+          .from('profiles').select('email_opt_out').eq('user_id', resolvedUserId).single();
         if (profile?.email_opt_out) {
           return new Response(JSON.stringify({ ok: true, skipped: 'opt_out' }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
         }
       }
     }
 
-    // Replace unsubscribe URL placeholder with recipient-specific link
-    const unsubUrl = `https://xpeak.es/baja-emails?email=${encodeURIComponent(to)}`;
+    // Replace unsubscribe URL with signed token (prevents email enumeration)
+    const token = await signEmail(to);
+    const unsubUrl = `https://xpeak.es/baja-emails?token=${token}&e=${encodeURIComponent(to)}`;
     const html = rawHtml.replaceAll(UNSUB_PLACEHOLDER, unsubUrl);
 
     await sendMail(to, subject, html, replyTo);

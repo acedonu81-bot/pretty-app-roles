@@ -5,6 +5,7 @@ import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 
 const article = {
   '@context': 'https://schema.org', '@type': 'Article',
@@ -118,6 +119,7 @@ export default function BlogGrupoMusicalBoda() {
               <p className="text-neutral-400 text-sm">{faq.acceptedAnswer.text}</p>
             </div>
           ))}
+          <BlogAuthor />
           <BlogShare />
         </article>
         <FooterPublic />

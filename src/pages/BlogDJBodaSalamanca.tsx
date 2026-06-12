@@ -4,6 +4,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 const slug = 'dj-bodas-salamanca'; const ciudad = 'Salamanca';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '280–650€' },{ servicio: 'Cóctel + pista', precio: '450–950€' },{ servicio: 'Servicio completo', precio: '580–1.400€' },{ servicio: 'Pack palacio o convento premium', precio: '800–1.800€' }];
 const ZONAS = [{ zona: 'Salamanca capital', fincas: 'Palacios renacentistas, conventos, plazas históricas', nota: 'Patrimonio UNESCO' },{ zona: 'Sierra de Béjar / Gredos', fincas: 'Fincas de montaña, paisajes de sierra', nota: 'Fresco y natural' },{ zona: 'Campo Charro', fincas: 'Dehesas con encinas, fincas de ganadería', nota: 'Bodas rurales, muy amplias' },{ zona: 'Alba de Tormes', fincas: 'Castillos y fincas junto al río Tormes', nota: 'Histórico y romántico' }];
@@ -50,7 +51,8 @@ export default function BlogDJBodaSalamanca() {
       </div>
               <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-salamanca" />
 </main>
-    <FooterPublic />
+    <BlogAuthor />
+        <FooterPublic />
     <BlogScrollCTA role="dj" storageKey={`xpeak_scrollcta_${slug}`} />
   </div></>);
 }

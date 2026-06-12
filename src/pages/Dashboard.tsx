@@ -46,7 +46,7 @@ const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: s
   const ctx = useProfile();
   const [dismissed, setDismissed] = useState(false);
 
-  if (ctx.loading || dismissed || !PROFILE_VIEWS.has(activeView)) return null;
+  if (ctx.loading || dismissed) return null;
 
   const steps = [
     !!ctx.photo_url,

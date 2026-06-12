@@ -6,6 +6,8 @@ import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
+import BlogTopCTA from '@/components/BlogTopCTA';
 
 const TABLE = [
   { perfil: 'DJ emergente / rookie', experiencia: '< 1 año', rango: '30€ – 60€/h', nota: 'Bodas pequeñas, cumpleaños' },
@@ -101,6 +103,7 @@ const faqStructured = {
 
         <a href="/blog" className="block px-4 sm:px-6 pb-2 max-w-3xl mx-auto text-xs" style={{ color: '#8E8EA0' }}>← Todos los artículos</a>
         <article className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 pb-20 sm:pb-24">
+            <BlogTopCTA href="/auth?mode=register&intent=contratar-dj" label="Ver DJs →" />
 
           {/* Breadcrumb */}
           <p className="text-xs mb-6 font-bold" style={{ color: 'rgba(255,255,255,0.3)' }}>
@@ -315,6 +318,7 @@ const faqStructured = {
               ))}
             </div>
           </div>
+          <BlogAuthor />
           <BlogShare />
         </article>
         <FooterPublic />

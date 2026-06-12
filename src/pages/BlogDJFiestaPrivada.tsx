@@ -4,6 +4,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 
 const TABLE = [
   { tipo: 'Cumpleaños íntimo (< 30 p.)', horas: '3–4 h', rango: '150€ – 350€', incluye: 'Equipo básico, listas o mezcla' },
@@ -211,6 +212,7 @@ const faqStructured = {
               ))}
             </div>
           </div>
+          <BlogAuthor />
           <BlogShare />
         </article>
         <FooterPublic />

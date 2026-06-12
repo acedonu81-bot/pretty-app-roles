@@ -1,26 +1,70 @@
 {
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ],
-  "headers": [
+  "routes": [
+    { "src": "/dj-madrid",      "status": 301, "headers": { "Location": "/contratar-dj/madrid" } },
+    { "src": "/dj-barcelona",   "status": 301, "headers": { "Location": "/contratar-dj/barcelona" } },
+    { "src": "/dj-sevilla",     "status": 301, "headers": { "Location": "/contratar-dj/sevilla" } },
+    { "src": "/dj-valencia",    "status": 301, "headers": { "Location": "/contratar-dj/valencia" } },
+    { "src": "/dj-malaga",      "status": 301, "headers": { "Location": "/contratar-dj/malaga" } },
+    { "src": "/dj-bilbao",      "status": 301, "headers": { "Location": "/contratar-dj/bilbao" } },
+
+    { "src": "/camareros-madrid",    "status": 301, "headers": { "Location": "/contratar-camareros/madrid" } },
+    { "src": "/camareros-barcelona", "status": 301, "headers": { "Location": "/contratar-camareros/barcelona" } },
+    { "src": "/camareros-sevilla",   "status": 301, "headers": { "Location": "/contratar-camareros/sevilla" } },
+    { "src": "/camareros-valencia",  "status": 301, "headers": { "Location": "/contratar-camareros/valencia" } },
+    { "src": "/camareros-malaga",    "status": 301, "headers": { "Location": "/contratar-camareros/malaga" } },
+    { "src": "/camareros-bilbao",    "status": 301, "headers": { "Location": "/contratar-camareros/bilbao" } },
+
+    { "src": "/fotografo-madrid",    "status": 301, "headers": { "Location": "/contratar-fotografo/madrid" } },
+    { "src": "/fotografo-barcelona", "status": 301, "headers": { "Location": "/contratar-fotografo/barcelona" } },
+    { "src": "/fotografo-sevilla",   "status": 301, "headers": { "Location": "/contratar-fotografo/sevilla" } },
+    { "src": "/fotografo-valencia",  "status": 301, "headers": { "Location": "/contratar-fotografo/valencia" } },
+    { "src": "/fotografo-malaga",    "status": 301, "headers": { "Location": "/contratar-fotografo/malaga" } },
+    { "src": "/fotografo-bilbao",    "status": 301, "headers": { "Location": "/contratar-fotografo/bilbao" } },
+
+    { "src": "/maquillaje-madrid",    "status": 301, "headers": { "Location": "/contratar-maquillaje/madrid" } },
+    { "src": "/maquillaje-barcelona", "status": 301, "headers": { "Location": "/contratar-maquillaje/barcelona" } },
+    { "src": "/maquillaje-sevilla",   "status": 301, "headers": { "Location": "/contratar-maquillaje/sevilla" } },
+    { "src": "/maquillaje-valencia",  "status": 301, "headers": { "Location": "/contratar-maquillaje/valencia" } },
+    { "src": "/maquillaje-malaga",    "status": 301, "headers": { "Location": "/contratar-maquillaje/malaga" } },
+    { "src": "/maquillaje-bilbao",    "status": 301, "headers": { "Location": "/contratar-maquillaje/bilbao" } },
+
+    { "src": "/staff-madrid",    "status": 301, "headers": { "Location": "/contratar-staff/madrid" } },
+    { "src": "/staff-barcelona", "status": 301, "headers": { "Location": "/contratar-staff/barcelona" } },
+    { "src": "/staff-sevilla",   "status": 301, "headers": { "Location": "/contratar-staff/sevilla" } },
+    { "src": "/staff-valencia",  "status": 301, "headers": { "Location": "/contratar-staff/valencia" } },
+    { "src": "/staff-malaga",    "status": 301, "headers": { "Location": "/contratar-staff/malaga" } },
+    { "src": "/staff-bilbao",    "status": 301, "headers": { "Location": "/contratar-staff/bilbao" } },
+
     {
-      "source": "/assets/(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
-      ]
+      "src": "/assets/(.*)",
+      "headers": { "Cache-Control": "public, max-age=31536000, immutable" },
+      "continue": true
     },
     {
-      "source": "/(.*\\.html)",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
-      ]
+      "src": "/(.*\\.html)",
+      "headers": { "Cache-Control": "public, max-age=0, must-revalidate" },
+      "continue": true
     },
     {
-      "source": "/sitemap.xml",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=86400" },
-        { "key": "Content-Type", "value": "application/xml; charset=utf-8" }
-      ]
-    }
+      "src": "/sitemap\\.xml",
+      "headers": { "Cache-Control": "public, max-age=86400", "Content-Type": "application/xml; charset=utf-8" },
+      "continue": true
+    },
+    {
+      "src": "/(.*)",
+      "headers": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()"
+      },
+      "continue": true
+    },
+
+    { "handle": "filesystem" },
+
+    { "src": "^/assets/.+", "status": 404 },
+
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }

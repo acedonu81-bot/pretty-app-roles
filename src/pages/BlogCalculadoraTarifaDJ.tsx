@@ -4,6 +4,7 @@ import FooterPublic from '@/components/FooterPublic';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
+import BlogAuthor from '@/components/BlogAuthor';
 
 const slug = 'calculadora-tarifa-dj';
 
@@ -198,6 +199,7 @@ export default function BlogCalculadoraTarifaDJ() {
             </section>
           </div>
         </main>
+        <BlogAuthor />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_calculadora_dj" />
       </div>

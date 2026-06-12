@@ -50,7 +50,7 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
     horaFin: '',
     nombreLocal: '',
     direccionLocal: '',
-    precioNeto: '',
+    precioNeto: '500',
     formaPago: 'transferencia bancaria',
     diasPago: '30',
     equipoSonido: EVENT_TYPES[0].equip,
@@ -143,12 +143,13 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
   @page { margin: 0; size: A4; }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { color-scheme: light only; }
 
   body {
     font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-    font-size: 9.5pt;
+    font-size: 11pt;
     color: #1a1a1a;
-    line-height: 1.65;
+    line-height: 1.7;
     background: #fff;
   }
 
@@ -156,7 +157,7 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
   .doc-wrap {
     min-height: 100%;
     border: 1.5px solid #C8A84B;
-    margin: 10mm;
+    margin: 8mm;
   }
 
   /* ── Hero header ── */
@@ -164,60 +165,71 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 18px 24px 16px;
-    background: linear-gradient(135deg, #0a0a0c 0%, #181410 100%);
+    padding: 28px 36px 26px;
+    background: linear-gradient(135deg, #050506 0%, #0d0c09 40%, #111008 100%);
     border-bottom: 3px solid #C8A84B;
+    position: relative;
+  }
+  .contract-header::after {
+    content: '';
+    position: absolute;
+    bottom: 3px;
+    left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(212,175,55,0.3) 30%, rgba(212,175,55,0.5) 50%, rgba(212,175,55,0.3) 70%, transparent);
   }
   .brand-name {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 26pt;
+    font-size: 34pt;
     font-weight: 700;
-    letter-spacing: 8px;
+    letter-spacing: 12px;
     color: #D4AF37;
     line-height: 1;
+    text-shadow: 0 0 40px rgba(212,175,55,0.25), 0 2px 8px rgba(0,0,0,0.8);
   }
   .brand-sub {
-    font-size: 6pt;
-    letter-spacing: 3.5px;
-    color: rgba(212,175,55,0.45);
+    font-size: 7pt;
+    letter-spacing: 4px;
+    color: rgba(212,175,55,0.65);
     text-transform: uppercase;
-    margin-top: 4px;
+    margin-top: 8px;
   }
   .contract-meta {
     text-align: right;
-    font-size: 7.5pt;
-    color: rgba(255,255,255,0.4);
-    line-height: 1.9;
+    font-size: 9pt;
+    color: rgba(255,255,255,0.5);
+    line-height: 2;
   }
   .contract-meta strong {
     color: #D4AF37;
-    font-size: 9.5pt;
+    font-size: 11pt;
     letter-spacing: 1.5px;
     display: block;
     font-weight: 700;
+    text-shadow: 0 0 20px rgba(212,175,55,0.3);
   }
 
   /* ── Content padding ── */
-  .doc-content { padding: 20px 24px 24px; }
+  .doc-content { padding: 24px 32px 28px; }
 
   /* ── Title ── */
   .contract-title {
     text-align: center;
-    margin-bottom: 20px;
-    padding-bottom: 16px;
+    margin-bottom: 22px;
+    padding-bottom: 18px;
     border-bottom: 1px solid #e8dfc0;
   }
   .contract-title h1 {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 12.5pt;
+    font-size: 14pt;
     font-weight: 700;
     letter-spacing: 2.5px;
     text-transform: uppercase;
     color: #0a0a0c;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
   }
   .contract-title p {
-    font-size: 7.5pt;
+    font-size: 9pt;
     color: #B8941E;
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -243,34 +255,34 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
     background: linear-gradient(160deg, #fffdf5 0%, #fefefe 100%);
   }
   .party-role {
-    font-size: 7pt;
+    font-size: 8pt;
     font-weight: 700;
     letter-spacing: 2.5px;
     text-transform: uppercase;
     color: #B8941E;
-    margin-bottom: 7px;
-    padding-bottom: 5px;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
     border-bottom: 1px solid #ede8d5;
   }
-  .party p { font-size: 8.5pt; color: #333; margin-bottom: 3px; }
+  .party p { font-size: 10pt; color: #333; margin-bottom: 4px; }
   .party strong { color: #0a0a0c; font-weight: 600; }
 
   /* ── Section headings ── */
   h2 {
     font-family: 'Inter', sans-serif;
-    font-size: 7.5pt;
+    font-size: 8.5pt;
     font-weight: 700;
     letter-spacing: 2.5px;
     text-transform: uppercase;
     color: #0a0a0c;
-    margin: 18px 0 10px;
-    padding: 7px 10px 7px 13px;
+    margin: 20px 0 12px;
+    padding: 9px 12px 9px 15px;
     background: #f8f5ed;
     border-left: 3px solid #C8A84B;
   }
 
   /* ── Body text ── */
-  p.clause { font-size: 9pt; color: #333; text-align: justify; margin-bottom: 9px; line-height: 1.7; }
+  p.clause { font-size: 10.5pt; color: #333; text-align: justify; margin-bottom: 11px; line-height: 1.75; }
   .clause-num { font-weight: 700; color: #0a0a0c; text-transform: uppercase; letter-spacing: 0.3px; }
 
   /* ── Economic table ── */
@@ -278,25 +290,25 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
     width: 100%;
     border-collapse: collapse;
     margin: 12px 0 16px;
-    font-size: 9pt;
+    font-size: 10.5pt;
     border: 1px solid #e0d4a8;
   }
   thead tr { background: #0a0a0c; }
   thead th {
     color: #D4AF37;
-    padding: 8px 12px;
+    padding: 10px 14px;
     text-align: left;
     font-weight: 600;
     letter-spacing: 1px;
-    font-size: 7.5pt;
+    font-size: 8.5pt;
     text-transform: uppercase;
   }
   tbody tr:nth-child(odd) { background: #fff; }
   tbody tr:nth-child(even) { background: #fdfaf2; }
-  tbody td { padding: 7px 12px; color: #333; border-bottom: 1px solid #ede8d5; }
+  tbody td { padding: 9px 14px; color: #333; border-bottom: 1px solid #ede8d5; }
   tbody tr:last-child { background: #0a0a0c !important; }
   tbody tr:last-child td { color: rgba(255,255,255,0.75); border-bottom: none; font-weight: 500; }
-  tbody tr:last-child .td-net { color: #D4AF37; font-size: 11pt; font-weight: 700; }
+  tbody tr:last-child .td-net { color: #D4AF37; font-size: 13pt; font-weight: 700; }
   .td-total { font-weight: 700; color: #0a0a0c; }
   .td-net { font-weight: 700; color: #B8941E; }
   .td-neg { color: #c0392b; }
@@ -606,29 +618,20 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
       onSaved?.();
     }
 
-    // Generate real PDF via hidden iframe → html2pdf
-    const iframe = document.createElement('iframe');
-    iframe.style.cssText = 'position:fixed;left:-9999px;top:0;width:794px;height:0;border:none;';
-    document.body.appendChild(iframe);
-    await new Promise<void>(resolve => {
-      iframe.onload = () => resolve();
-      iframe.srcdoc = html;
-    });
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const html2pdf = (await import('html2pdf.js')).default as any;
-      const iframeBody = iframe.contentDocument?.body;
-      if (iframeBody) {
-        await html2pdf().set({
-          margin: [0, 0, 0, 0],
-          filename: `XPEAK_contrato_${ref}.pdf`,
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true, logging: false, windowWidth: 794 },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        }).from(iframeBody).save();
-      }
-    } finally {
-      document.body.removeChild(iframe);
+    // Generate PDF via browser print dialog (reliable, respects all CSS)
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const win = window.open(url, '_blank', 'width=900,height=700');
+    if (win) {
+      win.onload = () => {
+        setTimeout(() => {
+          win.focus();
+          win.print();
+          URL.revokeObjectURL(url);
+        }, 800);
+      };
+    } else {
+      URL.revokeObjectURL(url);
     }
   };
 
