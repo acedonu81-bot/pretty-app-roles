@@ -1,7 +1,7 @@
 export interface Profile {
   id: number;
   name: string;
-  role: 'dj' | 'staff' | 'makeup' | 'vestuario' | 'media' | 'design' | 'promotor' | 'ambassador' | 'rookie' | 'empresario';
+  role: 'dj' | 'staff' | 'makeup' | 'vestuario' | 'media' | 'design' | 'promotor' | 'ambassador' | 'rookie' | 'empresario' | 'catering';
   specialty: string;
   rating: number;
   reviews: number;
@@ -80,6 +80,11 @@ export const profiles: Profile[] = [
 
   // ═══════════════════ Brand Ambassador (2) ═══════════════════
   { id: 18, name: 'Laura Promo', role: 'ambassador', specialty: 'Brand Ambassador & Street Team', rating: 4.8, reviews: 145, location: 'Madrid', zone: 'Centro', experience: '4 años', price: 25, priceUnit: '/hora', avatar: 'LP', gradient: 'linear-gradient(135deg, #D4AF37, #B8941E)', badges: ['Street Team', 'Flyering', 'Registro In-Situ'], description: 'Promotora profesional con experiencia en acciones de guerrilla.', phone: '', instagram: 'laurapromo_mad', topWeekend: false, photo: '/images/profiles/1647919.jpg', subscriptionTier: 'premium', isFlashActive: true, profileViews: 0, contactClicks: 0, category: 'professional' },
+  // Catering / Chef de eventos
+  { id: 30, name: 'Chef Marco Rossi', role: 'catering', specialty: 'Chef Privado & Banquetes', rating: 5.0, reviews: 134, location: 'Madrid', zone: 'Salamanca', country: 'España', city: 'Madrid', experience: '14 años', price: 120, priceUnit: '/evento', avatar: 'MR', gradient: 'linear-gradient(135deg, #D4AF37, #B8941E)', badges: ['Chef Privado', 'Menú Degustación', 'Cocina Mediterránea'], description: 'Chef con estrellas Michelin reconvertido en especialista de eventos privados. Desde cenas íntimas hasta banquetes de 300 personas.', phone: '', instagram: 'chefmarcorossi_events', topWeekend: true, photo: '', subscriptionTier: 'elite', isFlashActive: true, profileViews: 0, contactClicks: 0, category: 'professional', isPremium: true },
+  { id: 31, name: 'Sara Gastro',    role: 'catering', specialty: 'Catering Bodas & Eventos',  rating: 4.9, reviews: 98,  location: 'Barcelona', zone: 'Eixample',  country: 'España', city: 'Barcelona', experience: '9 años',  price: 65,  priceUnit: '/persona', avatar: 'SG', gradient: 'linear-gradient(135deg, #333, #1a1a1a)', badges: ['Bodas', 'Buffet Premium', 'Menú Cerrado'], description: 'Empresa de catering para bodas y eventos corporativos en Cataluña. Cocina de autor, menús cerrados y buffets de alta gama.', phone: '', instagram: 'saragastro_catering', topWeekend: false, photo: '', subscriptionTier: 'premium', isFlashActive: true, profileViews: 0, contactClicks: 0, category: 'professional' },
+  { id: 32, name: 'Kokoro Sushi',   role: 'catering', specialty: 'Catering Japonés & Fusión', rating: 4.8, reviews: 67,  location: 'Madrid',    zone: 'Malasaña', country: 'España', city: 'Madrid',    experience: '6 años',  price: 45,  priceUnit: '/persona', avatar: 'KS', gradient: 'linear-gradient(135deg, #333, #1a1a1a)', badges: ['Sushi en Vivo', 'Fusión', 'Estación Temática'], description: 'Catering japonés y fusión asiática con chef en directo. Estaciones de sushi, gyozas y cocktails japoneses para eventos exclusivos.', phone: '', instagram: 'kokorosushi_events', topWeekend: false, photo: '', subscriptionTier: 'free', isFlashActive: false, profileViews: 0, contactClicks: 0, category: 'rookie' },
+
   { id: 19, name: 'Javi Street', role: 'ambassador', specialty: 'Promoción Física & Soporte Marca', rating: 4.6, reviews: 67, location: 'Madrid', zone: 'Malasaña', experience: '2 años', price: 20, priceUnit: '/hora', avatar: 'JS', gradient: 'linear-gradient(135deg, #333, #1a1a1a)', badges: ['QR Campaigns', 'Activaciones', 'Soporte Evento'], description: 'Soporte de marca en eventos nocturnos. Gestión de stands y captación.', phone: '', instagram: 'javistreet_promo', topWeekend: false, photo: '/images/profiles/4353842.jpg', subscriptionTier: 'free', isFlashActive: false, profileViews: 0, contactClicks: 0, category: 'rookie' },
 ];
 

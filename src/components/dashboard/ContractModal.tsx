@@ -18,6 +18,7 @@ const ROLE_SERVICE: Record<string, string> = {
   media:     'servicios de fotografía y vídeo de evento',
   ambassador:'servicios de promotor y captación de público',
   design:    'servicios de diseño gráfico y/o VJing',
+  catering:  'servicios de catering y chef profesional para eventos',
 };
 
 const EVENT_TYPES = [
