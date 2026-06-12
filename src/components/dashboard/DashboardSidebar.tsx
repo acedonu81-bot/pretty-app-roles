@@ -272,6 +272,9 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
                         : isToolBlue
                           ? `rgba(66,133,244,${isActive ? 0.18 : 0.08})`
                           : 'transparent',
+                      boxShadow: item.id === 'empresario'
+                        ? '0 0 0 2px #D4AF37, 0 0 0 4px rgba(212,175,55,0.2)'
+                        : undefined,
                     }}
                   >
                     <item.icon size={16} style={{ color: iconColor, opacity: isActive ? 1 : 0.8 }} />
