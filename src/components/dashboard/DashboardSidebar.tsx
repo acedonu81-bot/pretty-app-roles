@@ -249,7 +249,12 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
                   key={item.id}
                   onClick={() => onViewChange(item.id)}
                   className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl mb-1 text-[0.9rem] font-semibold transition-all duration-200 text-left"
-                  style={{
+                  style={item.id === 'empresario' ? {
+                    color: '#D4AF37',
+                    background: isActive ? 'rgba(212,175,55,0.14)' : 'rgba(212,175,55,0.06)',
+                    borderLeft: '2px solid #D4AF37',
+                    boxShadow: isActive ? 'inset 0 0 20px rgba(212,175,55,0.05)' : undefined,
+                  } : {
                     color: isActive
                       ? (isToolBlue ? '#4285F4' : '#D4AF37')
                       : 'var(--nightlife-text-secondary)',
