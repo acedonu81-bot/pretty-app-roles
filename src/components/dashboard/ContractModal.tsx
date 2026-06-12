@@ -140,7 +140,7 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Contrato ${esc(ref)} — ${esc(professional.name)}</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
   @page { margin: 0; size: A4; }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root { color-scheme: light only; }
@@ -179,20 +179,22 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
     background: linear-gradient(to right, transparent, rgba(212,175,55,0.3) 30%, rgba(212,175,55,0.5) 50%, rgba(212,175,55,0.3) 70%, transparent);
   }
   .brand-name {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 34pt;
-    font-weight: 700;
-    letter-spacing: 12px;
-    color: #D4AF37;
+    font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+    font-size: 36pt;
+    font-weight: 800;
+    letter-spacing: 6px;
+    color: #C9A227;
     line-height: 1;
-    text-shadow: 0 0 40px rgba(212,175,55,0.25), 0 2px 8px rgba(0,0,0,0.8);
+    text-shadow: 0 0 30px rgba(201,162,39,0.2), 0 2px 6px rgba(0,0,0,0.9);
   }
   .brand-sub {
-    font-size: 7pt;
-    letter-spacing: 4px;
-    color: rgba(212,175,55,0.65);
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 6.5pt;
+    letter-spacing: 3.5px;
+    color: rgba(201,162,39,0.6);
     text-transform: uppercase;
-    margin-top: 8px;
+    margin-top: 7px;
+    font-weight: 500;
   }
   .contract-meta {
     text-align: right;
@@ -201,12 +203,12 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
     line-height: 2;
   }
   .contract-meta strong {
-    color: #D4AF37;
+    color: #C9A227;
     font-size: 11pt;
     letter-spacing: 1.5px;
     display: block;
     font-weight: 700;
-    text-shadow: 0 0 20px rgba(212,175,55,0.3);
+    text-shadow: 0 0 20px rgba(201,162,39,0.3);
   }
 
   /* ── Content padding ── */
