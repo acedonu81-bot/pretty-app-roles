@@ -102,7 +102,7 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
         className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all hover:bg-white/5"
         style={{ border: '1px solid rgba(255,255,255,0.06)' }}
       >
-        <div style={role === 'empresario' ? { padding: 2, borderRadius: '50%', background: 'linear-gradient(135deg,#D4AF37,#F5D77A,#B8941E)', display:'inline-flex' } : {}}>
+        <div style={role === 'empresario' ? { borderRadius: 6, boxShadow: '0 0 0 2px #D4AF37, 0 0 0 4px rgba(212,175,55,0.25)', display:'inline-flex' } : { display:'inline-flex' }}>
           <GeometricAvatar role={role as any} seed={(profileId ?? '').charCodeAt(0) || 0} size={28} />
         </div>
         <div className="flex-1 min-w-0 text-left">
@@ -121,7 +121,7 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
             <button key={p.id} onClick={() => { switchProfile(p.id); setOpen(false); }}
               className="w-full flex items-center gap-2.5 px-3 py-2.5 text-left transition-all hover:bg-white/5"
               style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', background: p.id === profileId ? 'rgba(212,175,55,0.06)' : undefined }}>
-              <div style={p.role === 'empresario' ? { padding: 2, borderRadius: '50%', background: 'linear-gradient(135deg,#D4AF37,#F5D77A,#B8941E)', display:'inline-flex' } : {}}>
+              <div style={p.role === 'empresario' ? { borderRadius: 6, boxShadow: '0 0 0 2px #D4AF37, 0 0 0 4px rgba(212,175,55,0.25)', display:'inline-flex' } : { display:'inline-flex' }}>
                 <GeometricAvatar role={p.role as any} seed={p.id.charCodeAt(0)} size={24} />
               </div>
               <div className="flex-1 min-w-0">
