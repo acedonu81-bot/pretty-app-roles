@@ -17,6 +17,7 @@ import AmbassadorView from '@/components/dashboard/views/AmbassadorView';
 import VestuarioView from '@/components/dashboard/views/VestuarioView';
 import DesignView from '@/components/dashboard/views/DesignView';
 import PromotorView from '@/components/dashboard/views/PromotorView';
+import CateringView from '@/components/dashboard/views/CateringView';
 import MapaView from '@/components/dashboard/views/MapaView';
 import FlashBookingWallView from '@/components/dashboard/views/FlashBookingWallView';
 import TopWeekendView from '@/components/dashboard/views/TopWeekendView';
@@ -164,6 +165,7 @@ const Dashboard = () => {
       case 'vestuario': return <VestuarioView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'design': return <DesignView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'promotor': return <PromotorView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
+      case 'catering': return <CateringView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'settings': return <SettingsView onNavigate={nav} />;
       case 'empresario': return <EmpresarioView onMessage={handleMessage} />;
       case 'messages': return <MessagesView initialUserId={messagesTarget?.userId} initialName={messagesTarget?.name} />;

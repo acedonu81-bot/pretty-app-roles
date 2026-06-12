@@ -4,7 +4,7 @@ import {
   MessageSquare, Megaphone, Settings,
   BarChart3,
   Camera, FileText, FileEdit, CalendarCheck,
-  Palette, Shirt, Speaker, ChevronDown, Plus,
+  Palette, Shirt, Speaker, ChevronDown, Plus, UtensilsCrossed,
 } from 'lucide-react';
 import GeometricAvatar from './GeometricAvatar';
 import { useProfile } from '@/hooks/useProfile';
@@ -28,6 +28,7 @@ const ROLE_COLORS: Record<string, string> = {
   vestuario:     '#FB923C',
   design:        '#E879F9',
   promotor:      '#38BDF8',
+  catering:      '#F59E0B',
 };
 
 const navSections = [
@@ -41,8 +42,9 @@ const navSections = [
       { id: 'media',      icon: Camera,     label: 'Media & Contenido' },
       { id: 'vestuario',  icon: Shirt,      label: 'Vestuario & Moda' },
       { id: 'design',     icon: Palette,    label: 'Diseño & Visuales' },
-      { id: 'promotor',   icon: Speaker,    label: 'Promotor & MC' },
-      { id: 'empresario', icon: Building2,  label: 'Panel Empresario' },
+      { id: 'promotor',   icon: Speaker,         label: 'Promotor & MC' },
+      { id: 'catering',   icon: UtensilsCrossed, label: 'Catering & Chef' },
+      { id: 'empresario', icon: Building2,       label: 'Panel Empresario' },
     ],
   },
   {
@@ -78,7 +80,7 @@ const navSections = [
 const TOOL_BLUE_IDS = new Set(['calendar', 'messages', 'flashbooking']);
 const NO_COUNT_BADGE = new Set(['empresario']);
 
-const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', makeup: 'Makeup', media: 'Media', empresario: 'Sala', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista' };
+const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', makeup: 'Makeup', media: 'Media', empresario: 'Sala / Club', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', promotor: 'Promotor', ambassador: 'Embajador', design: 'Diseño' };
 
 const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }) => {
   const { display_name, role, photo_url, allProfiles, switchProfile, maxProfiles, profileId } = useProfile();
@@ -100,7 +102,9 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
         className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all hover:bg-white/5"
         style={{ border: '1px solid rgba(255,255,255,0.06)' }}
       >
-        <GeometricAvatar role={role as any} seed={(profileId ?? '').charCodeAt(0) || 0} size={28} />
+        <div style={role === 'empresario' ? { padding: 2, borderRadius: '50%', background: 'linear-gradient(135deg,#D4AF37,#F5D77A,#B8941E)', display:'inline-flex' } : {}}>
+          <GeometricAvatar role={role as any} seed={(profileId ?? '').charCodeAt(0) || 0} size={28} />
+        </div>
         <div className="flex-1 min-w-0 text-left">
           <p className="text-xs font-bold truncate leading-tight">{display_name || 'Mi perfil'}</p>
           <p className="text-[0.6rem] font-bold uppercase tracking-wider" style={{ color: 'rgba(212,175,55,0.7)' }}>
@@ -117,7 +121,9 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
             <button key={p.id} onClick={() => { switchProfile(p.id); setOpen(false); }}
               className="w-full flex items-center gap-2.5 px-3 py-2.5 text-left transition-all hover:bg-white/5"
               style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', background: p.id === profileId ? 'rgba(212,175,55,0.06)' : undefined }}>
-              <GeometricAvatar role={p.role as any} seed={p.id.charCodeAt(0)} size={24} />
+              <div style={p.role === 'empresario' ? { padding: 2, borderRadius: '50%', background: 'linear-gradient(135deg,#D4AF37,#F5D77A,#B8941E)', display:'inline-flex' } : {}}>
+                <GeometricAvatar role={p.role as any} seed={p.id.charCodeAt(0)} size={24} />
+              </div>
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-bold truncate">{p.display_name}</p>
                 <p className="text-[0.6rem]" style={{ color: 'rgba(255,255,255,0.35)' }}>{ROLE_LABEL[p.role] ?? p.role}</p>
