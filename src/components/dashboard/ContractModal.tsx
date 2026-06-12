@@ -222,24 +222,25 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
     border-bottom: 1px solid #e8dfc0;
   }
   .contract-title h1 {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 14pt;
-    font-weight: 700;
-    letter-spacing: 2.5px;
+    font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+    font-size: 15pt;
+    font-weight: 800;
+    letter-spacing: 3px;
     text-transform: uppercase;
     color: #0a0a0c;
     margin-bottom: 6px;
   }
   .contract-title p {
-    font-size: 9pt;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 8.5pt;
     color: #B8941E;
-    letter-spacing: 2px;
+    letter-spacing: 2.5px;
     text-transform: uppercase;
     font-weight: 600;
   }
   .gold-line {
     height: 2px;
-    background: linear-gradient(to right, transparent, #C8A84B 30%, #D4AF37 50%, #C8A84B 70%, transparent);
+    background: linear-gradient(to right, transparent, #C8A84B 30%, #C9A227 50%, #C8A84B 70%, transparent);
     margin: 10px auto;
     width: 45%;
   }
