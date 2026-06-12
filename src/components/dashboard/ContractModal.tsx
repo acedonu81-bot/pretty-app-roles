@@ -402,7 +402,7 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
 <div class="contract-header">
   <div>
     <div class="brand-name">XPEAK</div>
-    <div class="brand-sub">Plataforma Profesional del Ocio Nocturno · xpeak.es</div>
+    <div class="brand-sub">Plataforma Profesional de Eventos · xpeak.es</div>
   </div>
   <div class="contract-meta">
     <strong>REF. ${esc(ref)}</strong>
@@ -582,7 +582,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
 
 <!-- Footer -->
 <div class="footer">
-  <strong>XPEAK</strong> · Plataforma Profesional del Ocio Nocturno · xpeak.es<br>
+  <strong>XPEAK</strong> · Plataforma Profesional de Eventos · xpeak.es<br>
   Ref. ${esc(ref)} · C.Civil arts. 1254 ss. · ET art. 1.1 · LPI RDL 1/1996 · RGPD 2016/679 · LOPDGDD LO 3/2018<br>
   ${hasSig ? `✦ Firmado digitalmente por ${esc(form.contratanteNombre||'el contratante')} · ${esc(form.fechaFirma)} · Ref. ${esc(ref)}` : '✦ Documento generado electrónicamente — pendiente de firma por las partes'}
 </div>

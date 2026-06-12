@@ -149,7 +149,7 @@ const HistorialTab = () => {
   </thead>
   <tbody>${rows}</tbody>
 </table>
-<div class="footer">XPEAK · Directorio Profesional de Ocio Nocturno · xpeak.es</div>
+<div class="footer">XPEAK · Plataforma Profesional de Eventos · xpeak.es</div>
 </body>
 </html>`;
 
@@ -351,7 +351,7 @@ const HistorialTab = () => {
 </div>
 
 <div class="footer">
-  XPEAK · Directorio Profesional de Ocio Nocturno · xpeak.es · legal@xpeak.es<br>
+  XPEAK · Plataforma Profesional de Eventos · xpeak.es · legal@xpeak.es<br>
   Este documento es un modelo orientativo. Se recomienda consultar con un asesor legal para contratos de alto valor.
 </div>
 </body>
