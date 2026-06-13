@@ -47,7 +47,7 @@ const navSections = [
       { id: 'media',      icon: Camera,     label: 'Media & Contenido' },
       { id: 'vestuario',  icon: Shirt,      label: 'Vestuario & Moda' },
       { id: 'design',     icon: Palette,    label: 'Diseño & Visuales' },
-      { id: 'promotor',   icon: Speaker,         label: 'Promotor & MC' },
+      { id: 'promotor',   icon: Speaker,         label: 'Promotor & RRPP' },
       { id: 'catering',   icon: UtensilsCrossed, label: 'Catering & Chef' },
       { id: 'mago',       icon: Wand2,           label: 'Magos & Ilusionistas' },
       { id: 'bailarin',   icon: Music2,          label: 'Bailarines & Danza' },
@@ -89,7 +89,7 @@ const navSections = [
 const TOOL_BLUE_IDS = new Set(['calendar', 'messages', 'flashbooking']);
 const NO_COUNT_BADGE = new Set(['empresario']);
 
-const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', makeup: 'Makeup', media: 'Media', empresario: 'Sala / Club', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', promotor: 'Promotor', ambassador: 'Embajador', design: 'Diseño', mago: 'Mago & Ilusionista', bailarin: 'Bailarín & Danza', humorista: 'Humorista & Cómico', speaker: 'Speaker & Presentador' };
+const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', makeup: 'Makeup', media: 'Media', empresario: 'Sala / Club', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', promotor: 'Promotor & RRPP', ambassador: 'Embajador', design: 'Diseño', mago: 'Mago & Ilusionista', bailarin: 'Bailarín & Danza', humorista: 'Humorista & Cómico', speaker: 'Speaker & Presentador' };
 
 const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }) => {
   const { display_name, role, photo_url, allProfiles, switchProfile, maxProfiles, profileId } = useProfile();
