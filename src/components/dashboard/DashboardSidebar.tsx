@@ -5,6 +5,7 @@ import {
   BarChart3,
   Camera, FileText, FileEdit, CalendarCheck,
   Palette, Shirt, Speaker, ChevronDown, Plus, UtensilsCrossed,
+  Wand2, Music2, Laugh, Mic2,
 } from 'lucide-react';
 import GeometricAvatar from './GeometricAvatar';
 import { useProfile } from '@/hooks/useProfile';
@@ -29,6 +30,10 @@ const ROLE_COLORS: Record<string, string> = {
   design:        '#E879F9',
   promotor:      '#38BDF8',
   catering:      '#F59E0B',
+  mago:          '#8B5CF6',
+  bailarin:      '#EC4899',
+  humorista:     '#F97316',
+  speaker:       '#06B6D4',
 };
 
 const navSections = [
@@ -44,6 +49,10 @@ const navSections = [
       { id: 'design',     icon: Palette,    label: 'Diseño & Visuales' },
       { id: 'promotor',   icon: Speaker,         label: 'Promotor & MC' },
       { id: 'catering',   icon: UtensilsCrossed, label: 'Catering & Chef' },
+      { id: 'mago',       icon: Wand2,           label: 'Magos & Ilusionistas' },
+      { id: 'bailarin',   icon: Music2,          label: 'Bailarines & Danza' },
+      { id: 'humorista',  icon: Laugh,           label: 'Humoristas & Cómicos' },
+      { id: 'speaker',    icon: Mic2,            label: 'Speakers & Presentadores' },
       { id: 'empresario', icon: Building2,       label: 'Panel Empresario' },
     ],
   },
@@ -80,7 +89,7 @@ const navSections = [
 const TOOL_BLUE_IDS = new Set(['calendar', 'messages', 'flashbooking']);
 const NO_COUNT_BADGE = new Set(['empresario']);
 
-const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', makeup: 'Makeup', media: 'Media', empresario: 'Sala / Club', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', promotor: 'Promotor', ambassador: 'Embajador', design: 'Diseño' };
+const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', makeup: 'Makeup', media: 'Media', empresario: 'Sala / Club', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', promotor: 'Promotor', ambassador: 'Embajador', design: 'Diseño', mago: 'Mago & Ilusionista', bailarin: 'Bailarín & Danza', humorista: 'Humorista & Cómico', speaker: 'Speaker & Presentador' };
 
 const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }) => {
   const { display_name, role, photo_url, allProfiles, switchProfile, maxProfiles, profileId } = useProfile();
