@@ -11,7 +11,7 @@ const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { ic
     tagline: 'El directorio donde te contratan los mejores eventos.',
     sub: 'DJs de toda España ya publican su tarifa y consiguen bolos en horas.',
     bullets: [
-      { icon: '⚡', text: 'Flash Booking — oferta en menos de 1h' },
+      { icon: '⚡', text: 'Flash Booking — cubre un evento en <1h (próximamente)' },
       { icon: '📄', text: 'Contratos digitales automáticos' },
       { icon: '🇪🇸', text: 'Visible para salas de toda España' },
     ],
@@ -29,16 +29,16 @@ const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { ic
     tagline: 'El directorio de referencia para profesionales de eventos.',
     sub: 'Crea tu perfil, publica tu tarifa y empieza a recibir solicitudes.',
     bullets: [
-      { icon: '⚡', text: 'Flash Booking — trabajos en menos de 1h' },
+      { icon: '🎯', text: 'Visible para salas y promotoras de España' },
       { icon: '📄', text: 'Contratos automáticos con PDF' },
-      { icon: '🇪🇸', text: 'Visible para salas y promotoras de España' },
+      { icon: '💰', text: '0% comisión — cobras todo lo tuyo' },
     ],
   },
   empresario: {
     tagline: 'Contrata talento verificado sin comisiones.',
-    sub: 'Flash Booking: profesional disponible en menos de 1 hora.',
+    sub: 'Flash Booking próximamente. Directorio real, contacto directo.',
     bullets: [
-      { icon: '⚡', text: 'Respuesta de profesional en 1h' },
+      { icon: '🔍', text: 'Directorio de profesionales verificados' },
       { icon: '📄', text: 'Contrato automático — sin papeleo' },
       { icon: '✅', text: 'DJs, fotógrafos y staff verificados' },
     ],
@@ -49,7 +49,7 @@ const DEFAULT_CONTENT = {
   tagline: 'El directorio de referencia para profesionales de eventos.',
   sub: 'Publica tu perfil, consigue trabajo. Gratis, sin comisiones.',
   bullets: [
-    { icon: '⚡', text: 'Flash Booking — trabajos en menos de 1h' },
+    { icon: '⚡', text: 'Flash Booking — próximamente' },
     { icon: '💰', text: '0% comisión — cobras todo lo tuyo' },
     { icon: '🇪🇸', text: 'Visible en toda España' },
   ],
@@ -134,9 +134,7 @@ const Auth = () => {
   const clearRateLimit = () => localStorage.removeItem('xpeak_login_attempts');
 
   const validatePassword = (pwd: string): string | null => {
-    if (pwd.length < 8) return 'La contraseña debe tener al menos 8 caracteres.';
-    if (!/[0-9]/.test(pwd)) return 'La contraseña debe contener al menos un número.';
-    if (!/[^A-Za-z0-9]/.test(pwd)) return 'La contraseña debe contener al menos un carácter especial (!@#$...).';
+    if (pwd.length < 6) return 'La contraseña debe tener al menos 6 caracteres.';
     return null;
   };
 
@@ -205,9 +203,8 @@ const Auth = () => {
   };
 
   const passwordStrength = !isLogin && password.length > 0 ? [
-    { ok: password.length >= 8, label: '8+ chars' },
-    { ok: /[0-9]/.test(password), label: 'Número' },
-    { ok: /[^A-Za-z0-9]/.test(password), label: 'Especial' },
+    { ok: password.length >= 6, label: '6+ caracteres' },
+    { ok: password.length >= 10, label: 'Segura' },
   ] : null;
 
   return (
@@ -532,11 +529,32 @@ const Auth = () => {
       </div>
 
       {showWelcome && (
-        <WelcomeScreen
-          role="pending"
-          displayName={displayName}
-          onClose={() => { setShowWelcome(false); navigate('/dashboard'); }}
-        />
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4" style={{ background: 'rgba(0,0,0,0.9)' }}>
+          <div className="w-full max-w-sm rounded-2xl p-8 text-center"
+            style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 24px 64px rgba(0,0,0,0.3)' }}>
+            <div className="w-16 h-16 rounded-full mx-auto mb-5 flex items-center justify-center"
+              style={{ background: 'rgba(212,175,55,0.12)', border: '2px solid rgba(212,175,55,0.3)' }}>
+              <Mail size={28} style={{ color: '#D4AF37' }} />
+            </div>
+            <h2 className="text-xl font-black mb-2" style={{ color: 'rgba(22,20,18,0.92)' }}>
+              ¡Revisa tu email!
+            </h2>
+            <p className="text-sm leading-relaxed mb-2" style={{ color: 'rgba(22,20,18,0.6)' }}>
+              Hemos enviado un enlace de confirmación a
+            </p>
+            <p className="text-sm font-black mb-5" style={{ color: '#8B6A00' }}>{email}</p>
+            <p className="text-xs leading-relaxed mb-6" style={{ color: 'rgba(22,20,18,0.5)' }}>
+              Haz clic en el enlace del email para activar tu cuenta y acceder a XPEAK.<br />
+              Si no lo ves, revisa la carpeta de spam.
+            </p>
+            <button
+              onClick={() => setShowWelcome(false)}
+              className="w-full py-3 rounded-xl font-black text-sm transition-all hover:scale-[1.01]"
+              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+              Entendido
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

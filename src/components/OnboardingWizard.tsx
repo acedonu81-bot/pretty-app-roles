@@ -72,8 +72,12 @@ interface Props {
 const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
   const { user } = useAuth();
   const profile = useProfile();
+  // Pre-fill role from URL param if available
+  const urlRole = new URLSearchParams(window.location.search).get('role') ?? '';
+  const validRoles = ['dj','media','makeup','staff','promotor','empresario'];
+  const prefilledRole = validRoles.includes(urlRole) ? urlRole : (validRoles.includes(profile.role ?? '') ? profile.role ?? '' : '');
   const [step, setStep] = useState(0);
-  const [selectedRole, setSelectedRole] = useState<string>('');
+  const [selectedRole, setSelectedRole] = useState<string>(prefilledRole);
   const [saving, setSaving] = useState(false);
 
   const markDone = () => {
