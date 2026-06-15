@@ -13,7 +13,7 @@ const FansTab = ({ fans, loading }: Props) => (
     {/* VIP One to One — shown when Stripe Connect is live */}
     <div>
       <div className="flex items-center gap-2 mb-3">
-        <Crown size={14} style={{ color: '#fff' }} />
+        <Crown size={14} style={{ color: 'rgba(22,20,18,0.88)' }} />
         <p className="text-sm font-bold">Fan Top VIP · One to One</p>
       </div>
       <div className="glass-panel p-5 text-center py-10">

@@ -206,7 +206,7 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
               <button onClick={() => onToggleFavorite(p.id)}
                 className="flex items-center justify-center px-2.5 py-2 rounded-md text-xs font-bold transition-all hover:scale-105"
                 style={{
-                  background: favorites.includes(p.id) ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.03)',
+                  background: favorites.includes(p.id) ? 'rgba(212,175,55,0.12)' : 'rgba(0,0,0,0.03)',
                   border: `1px solid ${favorites.includes(p.id) ? 'rgba(212,175,55,0.3)' : 'var(--nightlife-border)'}`,
                   color: favorites.includes(p.id) ? '#D4AF37' : '#8E8EA0',
                 }}
@@ -216,7 +216,7 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
               <button onClick={() => openNotes(p.id)}
                 className="flex items-center justify-center px-2.5 py-2 rounded-md text-xs font-bold transition-all hover:scale-105"
                 style={{
-                  background: proNotes[p.id] ? 'rgba(139,92,246,0.1)' : 'rgba(255,255,255,0.03)',
+                  background: proNotes[p.id] ? 'rgba(139,92,246,0.1)' : 'rgba(0,0,0,0.03)',
                   border: `1px solid ${proNotes[p.id] ? 'rgba(139,92,246,0.3)' : 'var(--nightlife-border)'}`,
                   color: proNotes[p.id] ? '#8B5CF6' : '#8E8EA0',
                 }}
@@ -256,7 +256,7 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
               <div className="flex gap-2 mt-3">
                 <button onClick={saveNotes}
                   className="flex-1 py-2.5 rounded-xl text-xs font-bold transition-all hover:scale-[1.02]"
-                  style={{ background: 'linear-gradient(90deg,#8B5CF6,#7C3AED)', color: '#fff' }}>
+                  style={{ background: 'linear-gradient(90deg,#8B5CF6,#7C3AED)', color: 'rgba(22,20,18,0.88)' }}>
                   Guardar nota
                 </button>
                 {proNotes[notesTarget] && (
@@ -267,7 +267,7 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
                       toast.success('Nota eliminada');
                     }}
                     className="px-3 py-2.5 rounded-xl text-xs font-bold"
-                    style={{ background: 'rgba(255,255,255,0.04)', color: '#8E8EA0', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    style={{ background: 'rgba(0,0,0,0.04)', color: '#8E8EA0', border: '1px solid rgba(0,0,0,0.08)' }}>
                     Borrar
                   </button>
                 )}

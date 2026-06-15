@@ -14,25 +14,25 @@ const SubscriptionView = () => (
     <div className="text-center mb-8">
       <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#D4AF37' }}>Plan actual</p>
       <h2 className="text-3xl font-black mb-2">Plataforma gratuita</h2>
-      <p className="text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>
+      <p className="text-sm" style={{ color: 'rgba(22,20,18,0.65)' }}>
         XPEAK es completamente gratis durante su fase de crecimiento.<br />
         Todas las funciones disponibles sin coste ni comisiones.
       </p>
     </div>
 
     <div className="rounded-2xl p-6 mb-6" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.2)' }}>
-      <p className="text-sm font-bold mb-4" style={{ color: 'rgba(255,255,255,0.6)' }}>Incluido en tu cuenta</p>
+      <p className="text-sm font-bold mb-4" style={{ color: 'rgba(22,20,18,0.65)' }}>Incluido en tu cuenta</p>
       <div className="flex flex-col gap-3">
         {FEATURES.map(f => (
           <div key={f} className="flex items-center gap-3">
             <CheckCircle size={16} style={{ color: '#D4AF37', flexShrink: 0 }} />
-            <span className="text-sm" style={{ color: 'rgba(255,255,255,0.75)' }}>{f}</span>
+            <span className="text-sm" style={{ color: 'rgba(22,20,18,0.8)' }}>{f}</span>
           </div>
         ))}
       </div>
     </div>
 
-    <p className="text-center text-xs" style={{ color: 'rgba(255,255,255,0.25)' }}>
+    <p className="text-center text-xs" style={{ color: 'rgba(22,20,18,0.3)' }}>
       Sin tarjeta de crédito · Sin contratos · Cancela cuando quieras
     </p>
   </div>

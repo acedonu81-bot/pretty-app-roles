@@ -53,6 +53,16 @@ const VideoSessionUpload = ({ maxSessions, userId }: { maxSessions: number; user
     const { error } = await supabase.storage.from('audio-sessions').upload(path, file);
     if (error) { toast.error('Error: ' + error.message); setUploading(false); return; }
     await load();
+    // Sync video session URLs to profiles table
+    const { data: vids } = await supabase.storage.from('audio-sessions').list(`${userId}/video-sessions`);
+    if (vids) {
+      const urls = vids.map(f => {
+        const p2 = `${userId}/video-sessions/${f.name}`;
+        const { data: u } = supabase.storage.from('audio-sessions').getPublicUrl(p2);
+        return u.publicUrl;
+      });
+      supabase.from('profiles').update({ video_session_urls: urls } as any).eq('user_id', userId).then(() => {});
+    }
     toast.success('Sesión de vídeo subida');
     setUploading(false);
     if (inputRef.current) inputRef.current.value = '';
@@ -60,7 +70,10 @@ const VideoSessionUpload = ({ maxSessions, userId }: { maxSessions: number; user
 
   const remove = async (item: VideoItem) => {
     await supabase.storage.from('audio-sessions').remove([item.path]);
-    setItems(p => p.filter(i => i.path !== item.path));
+    const next = items.filter(i => i.path !== item.path);
+    setItems(next);
+    const urls = next.map(i => i.url);
+    supabase.from('profiles').update({ video_session_urls: urls } as any).eq('user_id', userId).then(() => {});
     toast.info('Sesión eliminada');
   };
 
@@ -91,7 +104,7 @@ const VideoSessionUpload = ({ maxSessions, userId }: { maxSessions: number; user
             onChange={e => setRightsConfirmed(e.target.checked)}
             className="mt-0.5 flex-shrink-0 accent-[#4285F4]"
           />
-          <span className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>
+          <span className="text-xs leading-relaxed" style={{ color: 'rgba(22,20,18,0.65)' }}>
             Declaro que soy titular o tengo autorización para publicar este contenido, conforme a los{' '}
             <a href="/terminos" target="_blank" rel="noopener noreferrer" style={{ color: '#4285F4' }}>Términos y Condiciones</a>.
           </span>
@@ -276,7 +289,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
           <h2 className="text-2xl font-bold mb-1">
             {targetName
             ? <span className="text-white">Ficha de {targetName}</span>
-            : <><span className="text-white">Tu </span><span style={{ color: BLUE }}>Ficha Pública</span></>
+            : <><span style={{ color: 'rgba(22,20,18,0.88)' }}>Tu </span><span style={{ color: BLUE }}>Ficha Pública</span></>
           }
           </h2>
           <p className="text-sm text-muted-foreground">
@@ -284,7 +297,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
           </p>
         </div>
         {isOwn && slug && (
-          <a href={`${import.meta.env.BASE_URL}p/${slug}`} target="_blank" rel="noopener noreferrer"
+          <a href={`/p/${slug}`}
             className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105"
             style={{ background: BLUE_BG, border: `1px solid ${BLUE_BORDER}`, color: BLUE }}>
             <Globe size={13} /> Ver ficha pública
@@ -298,7 +311,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
           <button key={t.id} onClick={() => setTab(t.id)}
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all"
             style={{
-              background: tab === t.id ? BLUE_BG : 'rgba(255,255,255,0.03)',
+              background: tab === t.id ? BLUE_BG : 'rgba(0,0,0,0.03)',
               border: `1px solid ${tab === t.id ? BLUE_BORDER : 'var(--nightlife-border)'}`,
               color: tab === t.id ? BLUE : '#8E8EA0',
             }}>
@@ -317,7 +330,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
                   <button key={pt.id} type="button" onClick={() => setPostType(pt.id)}
                     className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all"
                     style={{
-                      background: postType === pt.id ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.03)',
+                      background: postType === pt.id ? 'rgba(212,175,55,0.12)' : 'rgba(0,0,0,0.03)',
                       border: `1px solid ${postType === pt.id ? 'rgba(212,175,55,0.3)' : 'var(--nightlife-border)'}`,
                       color: postType === pt.id ? '#D4AF37' : '#8E8EA0',
                     }}>
@@ -401,7 +414,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
           <div className="flex flex-col gap-4">
             {posts.map(post => (
               <div key={post.id} className="glass-panel p-5"
-                style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
+                style={{ border: '1px solid rgba(0,0,0,0.05)' }}>
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     {(() => {
@@ -522,7 +535,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
                 style={{ border: '1px dashed rgba(212,175,55,0.22)' }}>
                 <Video size={24} style={{ color: 'rgba(212,175,55,0.3)' }} />
                 <p className="text-sm text-muted-foreground">Sin vídeo destacado aún.</p>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>Pega una URL de YouTube o Vimeo arriba</p>
+                <p className="text-xs" style={{ color: 'rgba(22,20,18,0.35)' }}>Pega una URL de YouTube o Vimeo arriba</p>
               </div>
             )}
           </div>
@@ -553,7 +566,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
                     Este contenido aparece en tu ficha pública (hearthis / Mixcloud / SoundCloud / YouTube).
                     Elimínalo aquí si ya no lo quieres mostrar.
                   </p>
-                  <p className="text-xs font-mono truncate" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                  <p className="text-xs font-mono truncate" style={{ color: 'rgba(22,20,18,0.4)' }}>
                     {profile.audio_embed_url || (profile as any).stream_url}
                   </p>
                 </div>

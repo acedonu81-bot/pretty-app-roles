@@ -1,14 +1,13 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Star, Clock, Award, CheckCircle, X, MessageCircle, FileText } from 'lucide-react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { Star, MapPin, BadgeCheck, MessageCircle, FileText, Zap, Award, CheckCircle, X } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { Profile } from '@/data/profiles';
 import GeometricAvatar from './GeometricAvatar';
 import VoteButton from './VoteButton';
 import LegalModal from '@/components/LegalModal';
 import ContractModal from './ContractModal';
 import { useProfile } from '@/hooks/useProfile';
-
 
 const HearthisIcon = ({ size = 14 }: { size?: number }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
@@ -36,32 +35,22 @@ interface ProfileCardProps {
 const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, onNavigateSubscription, onViewProfile }: ProfileCardProps) => {
   const currentUser = useProfile();
   const isRookie = p.category === 'rookie';
-  const [expanded, setExpanded] = useState(false);
+  const [expandedRookie, setExpandedRookie] = useState(false);
   const [accepted, setAccepted] = useState(() => localStorage.getItem('xpeak_norms_accepted') === 'true');
   const [showLegal, setShowLegal] = useState(false);
   const [showContract, setShowContract] = useState(false);
-  // Real vote count from Supabase (only loaded for rookie profiles)
+  const [imgError, setImgError] = useState(false);
   const realProfileId = (p as any).userId ?? p.userId ?? null;
   const [voteCount, setVoteCount] = useState(0);
   const [hasVotedToday, setHasVotedToday] = useState(false);
 
   useEffect(() => {
     if (!isRookie || !realProfileId) return;
-    // Count total votes for this profile
-    supabase
-      .from('votes' as any)
-      .select('id', { count: 'exact', head: true })
-      .eq('profile_id', realProfileId)
+    supabase.from('votes' as any).select('id', { count: 'exact', head: true }).eq('profile_id', realProfileId)
       .then(({ count }) => setVoteCount(count ?? 0));
-    // Check if current user already voted
     if (currentUser.id) {
-      supabase
-        .from('votes' as any)
-        .select('id')
-        .eq('profile_id', realProfileId)
-        .eq('voter_id', currentUser.id)
-        .maybeSingle()
-        .then(({ data }) => setHasVotedToday(!!data));
+      supabase.from('votes' as any).select('id').eq('profile_id', realProfileId).eq('voter_id', currentUser.id)
+        .maybeSingle().then(({ data }) => setHasVotedToday(!!data));
     }
   }, [isRookie, realProfileId, currentUser.id]);
 
@@ -69,320 +58,262 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
   const currentMilestone = milestones.filter(m => voteCount >= m.votes).pop();
   const nextMilestone = milestones.find(m => voteCount < m.votes);
 
-  // Tilt effect — only for premium/elite
-  const cardRef = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [6, -6]), { stiffness: 200, damping: 20 });
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-6, 6]), { stiffness: 200, damping: 20 });
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
-    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
-  };
-  const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0); };
-
-  const statusBadges: { label: string; bg: string; color: string; glow?: string; pulse?: boolean }[] = [];
-  if (p.topWeekend) statusBadges.push({ label: 'TOP WEEKEND', bg: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' });
-  if (p.isFlashActive) statusBadges.push({ label: 'DISPONIBLE', bg: 'rgba(34,197,94,0.12)', color: '#22c55e' });
-
-  // Social/platform links
   const isDJ = p.role === 'dj' || p.role === 'rookie';
   const audioUrl = (p as any).audio_embed_url || p.streamUrl;
   const audioLabel = audioUrl
     ? audioUrl.includes('mixcloud') ? 'Mixcloud'
     : audioUrl.includes('soundcloud') ? 'SoundCloud'
     : audioUrl.includes('hearthis') ? 'hearthis.at'
-    : null
-    : null;
+    : null : null;
+
+  const hasPhoto = p.photo && p.photo.length > 5 && !imgError;
+  const priceLabel = ['makeup', 'vestuario', 'media', 'design'].includes(p.role)
+    ? null : p.price > 0 ? `${p.price}€${p.priceUnit}` : null;
+  const isEarlyAdopter = (p as any).isEarlyAdopter ?? false;
 
   return (
     <motion.div
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="glass-panel p-3 sm:p-5 flex flex-col transition-all duration-300 relative group cursor-pointer overflow-hidden"
-      onClick={() => setExpanded(!expanded)}
-      style={{}}
+      className="rounded-2xl overflow-x-hidden flex flex-col transition-all duration-200 hover:scale-[1.01]"
+      style={{
+        background: 'rgba(0,0,0,0.03)',
+        border: isEarlyAdopter ? '2px solid rgba(96,165,250,0.7)' : '1px solid rgba(0,0,0,0.08)',
+        boxShadow: isEarlyAdopter ? '0 0 24px rgba(96,165,250,0.25), inset 0 0 24px rgba(96,165,250,0.04)' : undefined,
+      }}
+      whileHover={{ boxShadow: isEarlyAdopter ? '0 0 40px rgba(96,165,250,0.4)' : '0 8px 40px rgba(0,0,0,0.4)' }}
     >
-
-      {statusBadges.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 mb-3">
-          {statusBadges.map((b) => (
-            <span key={b.label} className="text-[0.75rem] font-bold px-2 py-0.5 rounded-md tracking-wide inline-flex items-center gap-1"
-              style={{
-                background: b.bg,
-                color: b.color,
-                boxShadow: b.glow,
-                border: b.bg.startsWith('rgba') ? `1px solid ${b.color}22` : undefined,
-              }}>
-              {b.pulse && <span className="w-1.5 h-1.5 rounded-full animate-pulse inline-block" style={{ background: b.color }} />}
-              {b.label}
-            </span>
-          ))}
-        </div>
-      )}
-
-      <div className="flex items-center gap-3 mb-3">
-        {p.photo && p.photo.length > 5 ? (
-          <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 relative">
-            <img src={p.photo} alt={p.name} className="w-full h-full object-cover" crossOrigin="anonymous"
-              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-            {p.isLive && (
-              <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-green-500 border border-black animate-pulse" />
-            )}
-          </div>
-        ) : (
-          <GeometricAvatar role={p.role as any} seed={p.id} size={48} isLive={p.isLive} />
-        )}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-1">
-            <h3 className="text-sm font-bold truncate max-w-full">{p.name}</h3>
-            {(p as any).isVerified && (
-              <svg viewBox="0 0 24 24" width={13} height={13} fill="#D4AF37" title="Verificado">
-                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="#D4AF37" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            )}
-          </div>
-          <p className="text-xs text-muted-foreground line-clamp-2 leading-snug">{p.specialty}</p>
-        </div>
-      </div>
-
-      <div className="flex items-center gap-3 mb-2 text-xs text-muted-foreground">
-        {p.rating > 0 && <span className="flex items-center gap-1"><Star size={11} style={{ color: '#D4AF37' }} /> <span className="font-semibold text-foreground">{p.rating}</span> ({p.reviews})</span>}
-        <span className="text-muted-foreground">{p.zone}</span>
-      </div>
-      {p.experience && (
-        <div className="flex items-center gap-1 mb-2 text-xs text-muted-foreground">
-          <Clock size={11} /> {p.experience}
-        </div>
-      )}
-
-      {!compact && <p className="hidden sm:block text-xs text-muted-foreground mb-3 flex-1 line-clamp-2">{p.description}</p>}
-
-      <div className="flex flex-wrap gap-1 mb-3 overflow-hidden">
-        {p.badges.slice(0, 3).map(b => (
-          <span key={b} className="text-xs font-medium px-1.5 sm:px-2 py-0.5 rounded"
-            style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
-            {b}
-          </span>
-        ))}
-      </div>
-
-      {p.languages && p.languages.length > 0 && (
-        <div className="hidden sm:flex flex-wrap gap-1 mb-3">
-          {p.languages.map(lang => (
-            <span key={lang} className="text-xs font-medium px-1.5 py-0.5 rounded"
-              style={{ background: 'rgba(255,255,255,0.04)', color: '#8E8EA0', border: '1px solid rgba(255,255,255,0.08)' }}>
-              {lang}
-            </span>
-          ))}
-        </div>
-      )}
-
-      {showPortfolio && (
-        <div className="mb-3" onClick={e => e.stopPropagation()}>
-          <p className="text-xs font-bold mb-2" style={{ color: '#D4AF37' }}>Portfolio</p>
-          {p.portfolioUrls && p.portfolioUrls.length > 0 ? (
-            <div className="grid grid-cols-2 gap-2">
-              {p.portfolioUrls.map((url, i) => {
-                const isVideo = /\.(mp4|webm|mov)$/i.test(url) || /youtube|vimeo|twitch/i.test(url);
-                return isVideo ? (
-                  <div key={i} className="rounded-lg overflow-hidden aspect-video" style={{ background: 'rgba(0,0,0,0.4)', border: '1px solid rgba(212,175,55,0.1)' }}>
-                    <video src={url} className="w-full h-full object-cover" muted loop playsInline
-                      onMouseEnter={e => (e.target as HTMLVideoElement).play()}
-                      onMouseLeave={e => { const v = e.target as HTMLVideoElement; v.pause(); v.currentTime = 0; }} />
-                  </div>
-                ) : (
-                  <div key={i} className="rounded-lg overflow-hidden aspect-square" style={{ background: 'rgba(0,0,0,0.4)', border: '1px solid rgba(212,175,55,0.1)' }}>
-                    <img src={url} alt={`${p.name} trabajo ${i + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
-                  </div>
-                );
-              })}
-            </div>
+      {/* ── FOTO HERO ── */}
+      <div className="relative" style={{ paddingBottom: '62%' }}>
+        <div className="absolute inset-0" style={{ borderRadius: '0 0 50% 50% / 0 0 20px 20px', overflow: 'hidden' }}>
+          {hasPhoto ? (
+            <img src={p.photo} alt={p.name} className="w-full h-full object-cover"
+              onError={() => setImgError(true)} />
           ) : (
-            <p className="text-xs text-muted-foreground italic">Sin portfolio todavía</p>
+            <div className="w-full h-full flex items-center justify-center"
+              style={{ background: 'linear-gradient(135deg,rgba(212,175,55,0.12),rgba(0,0,0,0.6))' }}>
+              <GeometricAvatar role={p.role as any} seed={p.id} size={80} isLive={p.isLive} />
+            </div>
+          )}
+          {/* gradient bottom */}
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(7,7,16,0.9) 0%, transparent 50%)' }} />
+        </div>
+
+        {/* Badges top-left */}
+        <div className="absolute top-2.5 left-2.5 flex gap-1.5 flex-wrap z-10">
+          {isEarlyAdopter && (
+            <span className="flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black"
+              style={{ background: 'rgba(96,165,250,0.9)', color: '#000' }}>
+              ⭐ Early Adopter
+            </span>
+          )}
+          {p.topWeekend && (
+            <span className="px-2 py-0.5 rounded-full text-[0.6rem] font-black"
+              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>TOP WEEKEND</span>
+          )}
+          {(p as any).isVerified && (
+            <span className="flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black"
+              style={{ background: 'rgba(212,175,55,0.9)', color: '#000' }}>
+              <BadgeCheck size={9} /> Pro
+            </span>
+          )}
+          {p.isFlashActive && (
+            <span className="flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black animate-pulse"
+              style={{ background: 'rgba(34,197,94,0.9)', color: '#000' }}>
+              <Zap size={9} fill="#000" /> Disponible
+            </span>
           )}
         </div>
-      )}
 
-      {isRookie && (
-        <div className="mb-3" onClick={e => e.stopPropagation()}>
-          <VoteButton
-            profileId={realProfileId ?? String(p.id)}
-            voteCount={voteCount}
-            hasVotedToday={hasVotedToday}
-            category="rookie"
-            onVoted={() => { setVoteCount(c => c + 1); setHasVotedToday(true); }}
-          />
+        {/* Views top-right */}
+        {p.profileViews > 0 && (
+          <div className="absolute top-2.5 right-2.5 z-10">
+            <span className="text-[0.6rem] font-bold px-2 py-0.5 rounded-full"
+              style={{ background: 'rgba(0,0,0,0.6)', color: 'rgba(212,175,55,0.8)' }}>
+              {p.profileViews > 99 ? '99+' : p.profileViews} vistos
+            </span>
+          </div>
+        )}
+
+        {/* Name + specialty overlaid en el bottom */}
+        <div className="absolute bottom-0 left-0 right-0 z-10 p-3" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%)' }}>
+          <div className="flex items-end justify-between gap-2">
+            <div className="flex-1 min-w-0">
+              <h3 className="text-base font-black" style={{ color: '#fff', textShadow: '0 1px 4px rgba(0,0,0,0.5)', lineHeight: 1.2, paddingBottom: '0.15em', overflow: 'visible' }}>{p.name}</h3>
+              {p.specialty && <p className="text-xs" style={{ color: '#D4AF37' }}>{p.specialty}</p>}
+            </div>
+            {priceLabel && (
+              <span className="text-sm font-black shrink-0" style={{ color: '#D4AF37' }}>{priceLabel}</span>
+            )}
+          </div>
         </div>
-      )}
+      </div>
 
-      {/* Platform links — DJs: audio platforms | Others: TikTok */}
-      <div className="hidden sm:flex items-center gap-2 mb-3" onClick={e => e.stopPropagation()}>
+      {/* ── CUERPO ── */}
+      <div className="p-3 flex flex-col flex-1 gap-2">
+
+        {/* Rating + zona */}
+        <div className="flex items-center gap-2 text-xs" style={{ color: '#8E8EA0' }}>
+          {p.rating > 0 && (
+            <span className="flex items-center gap-1">
+              <Star size={11} style={{ color: '#D4AF37' }} fill="#D4AF37" />
+              <span className="font-bold" style={{ color: 'rgba(22,20,18,0.88)' }}>{p.rating}</span>
+              <span>({p.reviews})</span>
+            </span>
+          )}
+          {p.zone && (
+            <span className="flex items-center gap-1"><MapPin size={10} />{p.zone.split(',')[0]}</span>
+          )}
+        </div>
+
+        {/* Descripción */}
+        {!compact && p.description && (
+          <p className="text-xs leading-relaxed line-clamp-2" style={{ color: 'rgba(22,20,18,0.5)' }}>
+            "{p.description}"
+          </p>
+        )}
+
+        {/* Badges géneros */}
+        {p.badges.length > 0 && (
+          <div className="flex flex-wrap gap-1">
+            {p.badges.slice(0, 3).map(b => (
+              <span key={b} className="text-[0.65rem] font-semibold px-1.5 py-0.5 rounded"
+                style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
+                {b}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Audio link */}
         {isDJ && audioUrl && audioLabel && (
           <a href={audioUrl} target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
+            onClick={e => e.stopPropagation()}
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold w-fit transition-all hover:scale-105"
             style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
             <HearthisIcon size={12} /> {audioLabel}
           </a>
         )}
-        {!isDJ && p.instagram && (
-          <a href={`https://instagram.com/${p.instagram}`} target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
-            style={{ background: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.1)' }}>
-            Instagram
-          </a>
-        )}
-      </div>
 
-      {/* Expanded Rookie detail panel */}
-      {expanded && isRookie && (
-        <div className="mt-2 p-4 rounded-lg animate-[fadeIn_0.3s_ease]" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}
-          onClick={e => e.stopPropagation()}>
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <Award size={14} style={{ color: '#D4AF37' }} />
-              <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>Panel Promesa</span>
-            </div>
-            <button onClick={() => setExpanded(false)} className="p-1 rounded hover:bg-white/5">
-              <X size={12} className="text-muted-foreground" />
-            </button>
-          </div>
-          <div className="text-center py-3">
-            <div className="text-3xl font-black" style={{ color: '#D4AF37' }}>{voteCount}</div>
-            <div className="text-xs text-muted-foreground">de 500 votos necesarios</div>
-          </div>
-          <div className="h-2 rounded-full overflow-hidden mb-2" style={{ background: 'rgba(255,255,255,0.05)' }}>
-            <div className="h-full rounded-full transition-all duration-700"
-              style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #D4AF37, #22c55e)' }} />
-          </div>
-          <div className="flex justify-between text-[0.7rem] text-muted-foreground mb-3">
-            <span>0</span><span>{Math.round(progress)}%</span><span>500</span>
-          </div>
-          <div className="space-y-1.5">
-            {milestones.map(m => {
-              const reached = voteCount >= m.votes;
-              return (
-                <div key={m.votes} className="flex items-center gap-2 p-1.5 rounded-lg"
-                  style={{
-                    background: reached ? 'rgba(212,175,55,0.06)' : 'transparent',
-                    border: `1px solid ${reached ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.03)'}`,
-                  }}>
-                  <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: reached ? m.color : 'rgba(255,255,255,0.1)' }} />
-                  <div className="flex-1">
-                    <p className={`text-xs font-bold ${reached ? '' : 'text-muted-foreground'}`}>{m.label}</p>
-                    <p className="text-[0.7rem] text-muted-foreground">{m.votes} votos</p>
-                  </div>
-                  {reached && <CheckCircle size={10} style={{ color: '#22c55e' }} />}
+        {/* Portfolio */}
+        {showPortfolio && p.portfolioUrls && p.portfolioUrls.length > 0 && (
+          <div className="grid grid-cols-3 gap-1">
+            {p.portfolioUrls.slice(0, 3).map((url, i) => {
+              const isVideo = /\.(mp4|webm|mov)$/i.test(url) || /youtube|vimeo|twitch/i.test(url);
+              return isVideo ? (
+                <div key={i} className="rounded-lg overflow-hidden aspect-square" style={{ background: 'rgba(0,0,0,0.4)' }}>
+                  <video src={url} className="w-full h-full object-cover" muted loop playsInline
+                    onMouseEnter={e => (e.target as HTMLVideoElement).play()}
+                    onMouseLeave={e => { const v = e.target as HTMLVideoElement; v.pause(); v.currentTime = 0; }} />
+                </div>
+              ) : (
+                <div key={i} className="rounded-lg overflow-hidden aspect-square" style={{ background: 'rgba(0,0,0,0.4)' }}>
+                  <img src={url} alt="" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
                 </div>
               );
             })}
           </div>
-          {currentMilestone && (
-            <div className="mt-3 p-2 rounded-lg text-center" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
-              <p className="text-[0.7rem] text-muted-foreground">Nivel actual</p>
-              <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>{currentMilestone.label}</p>
+        )}
+
+        {/* Rookie votes */}
+        {isRookie && (
+          <div onClick={e => e.stopPropagation()}>
+            <VoteButton profileId={realProfileId ?? String(p.id)} voteCount={voteCount}
+              hasVotedToday={hasVotedToday} category="rookie"
+              onVoted={() => { setVoteCount(c => c + 1); setHasVotedToday(true); }} />
+          </div>
+        )}
+
+        {/* Rookie expanded panel */}
+        {expandedRookie && isRookie && (
+          <div className="p-3 rounded-lg" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}
+            onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-bold flex items-center gap-1" style={{ color: '#D4AF37' }}>
+                <Award size={12} /> Panel Promesa
+              </span>
+              <button onClick={() => setExpandedRookie(false)}><X size={12} className="text-muted-foreground" /></button>
             </div>
+            <div className="text-center py-2">
+              <div className="text-2xl font-black" style={{ color: '#D4AF37' }}>{voteCount}</div>
+              <div className="text-xs text-muted-foreground">de 500 votos</div>
+            </div>
+            <div className="h-1.5 rounded-full overflow-hidden mb-2" style={{ background: 'rgba(0,0,0,0.05)' }}>
+              <div className="h-full rounded-full" style={{ width: `${progress}%`, background: 'linear-gradient(90deg,#D4AF37,#22c55e)' }} />
+            </div>
+            <div className="space-y-1">
+              {milestones.map(m => {
+                const reached = voteCount >= m.votes;
+                return (
+                  <div key={m.votes} className="flex items-center gap-2 p-1 rounded"
+                    style={{ background: reached ? 'rgba(212,175,55,0.06)' : 'transparent' }}>
+                    <span className="w-1.5 h-1.5 rounded-full" style={{ background: reached ? m.color : 'rgba(0,0,0,0.08)' }} />
+                    <span className={`text-xs flex-1 ${reached ? 'font-bold' : 'text-muted-foreground'}`}>{m.label}</span>
+                    <span className="text-[0.65rem] text-muted-foreground">{m.votes}</span>
+                    {reached && <CheckCircle size={9} style={{ color: '#22c55e' }} />}
+                  </div>
+                );
+              })}
+            </div>
+            {nextMilestone && (
+              <p className="text-[0.65rem] text-muted-foreground text-center mt-2">
+                Faltan <span className="font-bold" style={{ color: '#D4AF37' }}>{nextMilestone.votes - voteCount}</span> votos para {nextMilestone.label}
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* CTAs */}
+        <div className="mt-auto flex flex-col gap-2 pt-1">
+          {onViewProfile && (
+            <button type="button" onClick={() => onViewProfile(p)}
+              className="w-full py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
+              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 4px 15px rgba(212,175,55,0.25)' }}>
+              Ver perfil completo →
+            </button>
           )}
-          {nextMilestone && (
-            <p className="text-[0.7rem] text-muted-foreground text-center mt-2">
-              Siguiente: <span className="font-bold" style={{ color: '#D4AF37' }}>{nextMilestone.label}</span> — faltan {nextMilestone.votes - voteCount} votos
-            </p>
+
+          <div className="flex gap-2">
+            {currentUser.role === 'empresario' && (
+              <button type="button" onClick={() => setShowContract(true)}
+                className="flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105"
+                style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+                <FileText size={11} /> Contrato
+              </button>
+            )}
+            <button type="button"
+              onClick={() => {
+                if (!accepted) { setShowLegal(true); return; }
+                if (onMessage && p.userId) onMessage(p.userId, p.name);
+              }}
+              className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105"
+              style={{
+                background: accepted ? 'rgba(0,0,0,0.05)' : 'rgba(0,0,0,0.04)',
+                border: '1px solid rgba(0,0,0,0.08)',
+                color: accepted ? 'rgba(22,20,18,0.85)' : 'rgba(22,20,18,0.45)',
+              }}>
+              <MessageCircle size={13} />
+              {accepted ? 'Enviar mensaje' : 'Aceptar normas para contactar'}
+            </button>
+          </div>
+
+          {/* Checkbox normas — compacto */}
+          {!accepted && (
+            <label className="flex items-start gap-2 cursor-pointer" onClick={e => e.stopPropagation()}>
+              <input type="checkbox" checked={accepted}
+                onChange={() => { setAccepted(true); localStorage.setItem('xpeak_norms_accepted', 'true'); }}
+                className="mt-0.5 accent-[#D4AF37] flex-shrink-0" />
+              <span className="text-[0.65rem] leading-snug" style={{ color: 'rgba(22,20,18,0.4)' }}>
+                Acepto las{' '}
+                <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowLegal(true); }}
+                  className="underline" style={{ color: '#D4AF37' }}>Normas</button>
+                {' '}— XPEAK actúa como intermediario sin relación laboral.
+              </span>
+            </label>
           )}
         </div>
-      )}
-
-      {/* Ver perfil button */}
-      {onViewProfile && (
-        <div className="mb-2" onClick={e => e.stopPropagation()}>
-          <button
-            type="button"
-            onClick={() => onViewProfile(p)}
-            className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold transition-all hover:scale-105 active:scale-95"
-            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-            Ver perfil completo →
-          </button>
-        </div>
-      )}
-
-      {/* Contrato row */}
-      {currentUser.role === 'empresario' && (
-        <div className="flex gap-2 mb-3" onClick={e => e.stopPropagation()}>
-          <button
-            type="button"
-            onClick={() => setShowContract(true)}
-            className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
-            style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
-            <FileText size={12} /> Contrato
-          </button>
-        </div>
-      )}
-
-      <div className="hidden sm:block py-2 mb-2 px-2 rounded-lg" onClick={e => e.stopPropagation()}
-        style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
-        <p className="text-xs leading-relaxed text-center" style={{ color: 'rgba(255,255,255,0.35)' }}>
-          XPEAK actúa como intermediario. Sin relación laboral con la plataforma.
-        </p>
-      </div>
-
-      <div className="mb-3 flex items-start gap-2 p-2.5 rounded-lg" onClick={e => e.stopPropagation()}
-        style={{ background: accepted ? 'rgba(212,175,55,0.04)' : 'transparent', border: `1px solid ${accepted ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.05)'}`, transition: 'all 0.2s' }}>
-        <input type="checkbox" checked={accepted} onChange={() => { const next = !accepted; setAccepted(next); if (next) localStorage.setItem('xpeak_norms_accepted', 'true'); }}
-          className="mt-0.5 accent-[#D4AF37] flex-shrink-0" id={`accept-${p.id}`} />
-        <label htmlFor={`accept-${p.id}`} className="text-xs text-muted-foreground leading-snug cursor-pointer break-words">
-          Acepto las{' '}
-          <button onClick={(e) => { e.preventDefault(); setShowLegal(true); }} className="underline font-semibold" style={{ color: '#D4AF37' }}>
-            Normas de la Comunidad
-          </button>{' '}
-          y entiendo que XPEAK actúa solo como{' '}
-          <button onClick={(e) => { e.preventDefault(); setShowLegal(true); }} className="underline font-semibold" style={{ color: '#D4AF37' }}>
-            intermediario
-          </button>{' '}
-          sin relación laboral.
-        </label>
-      </div>
-
-      <div className="flex items-center justify-between pt-3 gap-2 flex-wrap" style={{ borderTop: '1px solid var(--nightlife-border)' }}
-        onClick={e => e.stopPropagation()}>
-        <span className="text-sm sm:text-base font-bold" style={{ color: '#D4AF37' }}>
-          {['makeup', 'vestuario', 'media', 'design'].includes(p.role)
-            ? 'A consultar'
-            : p.price > 0
-              ? <>€{p.price}<span className="text-xs text-muted-foreground font-normal">{p.priceUnit}</span></>
-              : 'A consultar'
-          }
-        </span>
-        <button
-          type="button"
-          disabled={!accepted}
-          onClick={() => {
-            if (!accepted) return;
-            if (onMessage && p.userId) onMessage(p.userId, p.name);
-          }}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-xs transition-all duration-200 ${
-            accepted ? 'hover:scale-105 active:scale-95' : 'opacity-40 cursor-not-allowed'
-          }`}
-          style={{
-            background: accepted ? 'linear-gradient(90deg, #D4AF37, #B8941E)' : 'rgba(255,255,255,0.1)',
-            color: accepted ? '#000' : 'rgba(255,255,255,0.4)',
-            boxShadow: accepted ? '0 2px 10px rgba(212,175,55,0.2)' : 'none',
-          }}
-        >
-          <MessageCircle size={15} />
-          <span className="hidden sm:inline">Enviar mensaje</span>
-        </button>
       </div>
 
       <LegalModal open={showLegal} onClose={() => setShowLegal(false)} />
-
-
-      {/* Contract modal */}
-      {showContract && (
-        <ContractModal professional={p} onClose={() => setShowContract(false)} />
-      )}
+      {showContract && <ContractModal professional={p} onClose={() => setShowContract(false)} />}
     </motion.div>
   );
 };

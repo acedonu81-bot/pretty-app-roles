@@ -91,9 +91,9 @@ export default function BlogChecklistEventoSala() {
                   <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
                     <thead>
                       <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                        <th style={{ textAlign: 'left', padding: '8px 0', color: 'rgba(255,255,255,0.4)', fontWeight: 600 }}>Proveedor</th>
-                        <th style={{ textAlign: 'left', padding: '8px 0', color: 'rgba(255,255,255,0.4)', fontWeight: 600 }}>Antelación</th>
-                        <th style={{ textAlign: 'left', padding: '8px 0', color: 'rgba(255,255,255,0.4)', fontWeight: 600 }}>Precio orient.</th>
+                        <th style={{ textAlign: 'left', padding: '8px 0', color: 'rgba(255,255,255,0.6)', fontWeight: 600 }}>Proveedor</th>
+                        <th style={{ textAlign: 'left', padding: '8px 0', color: 'rgba(255,255,255,0.6)', fontWeight: 600 }}>Antelación</th>
+                        <th style={{ textAlign: 'left', padding: '8px 0', color: 'rgba(255,255,255,0.6)', fontWeight: 600 }}>Precio orient.</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -144,7 +144,7 @@ export default function BlogChecklistEventoSala() {
                 ))}
               </tbody>
             </table>
-            <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem' }}>* Precios orientativos. No incluyen alquiler de sala, producción de escenario ni caché de artistas headliners.</p>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.8rem' }}>* Precios orientativos. No incluyen alquiler de sala, producción de escenario ni caché de artistas headliners.</p>
 
             <h2 className="text-xl font-black mt-8 mb-3">Preguntas frecuentes</h2>
             {[

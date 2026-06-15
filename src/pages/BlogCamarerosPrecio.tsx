@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, ArrowLeft } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import RelatedPosts from '@/components/RelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';

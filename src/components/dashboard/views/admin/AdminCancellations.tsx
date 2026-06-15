@@ -123,7 +123,7 @@ const AdminCancellations = () => {
           <div className="max-h-40 overflow-y-auto space-y-1.5">
             {surveys.slice(0, 10).map(s => (
               <div key={s.id} className="flex items-center justify-between px-3 py-2 rounded-lg text-xs"
-                style={{ background: 'rgba(255,255,255,0.03)' }}>
+                style={{ background: 'rgba(0,0,0,0.03)' }}>
                 <span className="text-muted-foreground">{REASON_LABELS[s.reason] || s.reason}</span>
                 <span className="px-2 py-0.5 rounded-full font-bold text-xs"
                   style={{

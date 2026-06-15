@@ -26,14 +26,14 @@ html, body, #root {
 
 @layer base {
   :root {
-    --background: 0 0% 4%;
-    --foreground: 0 0% 96%;
+    --background: 0 0% 100%;
+    --foreground: 25 10% 10%;
 
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 96%;
+    --card: 0 0% 98%;
+    --card-foreground: 25 10% 10%;
 
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 96%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 25 10% 10%;
 
     --primary: 43 72% 58%;
     --primary-foreground: 0 0% 0%;
@@ -41,8 +41,8 @@ html, body, #root {
     --secondary: 43 72% 58%;
     --secondary-foreground: 0 0% 0%;
 
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 52%;
+    --muted: 30 10% 95%;
+    --muted-foreground: 25 8% 45%;
 
     --accent: 43 72% 53%;
     --accent-foreground: 0 0% 0%;
@@ -50,8 +50,8 @@ html, body, #root {
     --destructive: 4 90% 58%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 100% / 0.08;
-    --input: 0 0% 100% / 0.08;
+    --border: 25 10% 10% / 0.08;
+    --input: 25 10% 10% / 0.08;
     --ring: 43 72% 53%;
 
     --radius: 0.75rem;
@@ -60,32 +60,32 @@ html, body, #root {
     /* Keep in sync with src/design/tokens.ts           */
 
     /* Surfaces */
-    --nightlife-bg:       #060606;
-    --nightlife-card:     rgba(14, 14, 14, 0.85);
-    --nightlife-charcoal: #141414;
+    --nightlife-bg:       #ffffff;
+    --nightlife-card:     rgba(249, 248, 246, 0.95);
+    --nightlife-charcoal: #f5f4f0;
 
     /* Borders */
-    --nightlife-border:   rgba(255, 255, 255, 0.08);
-    --nightlife-border-subtle: rgba(255, 255, 255, 0.05);
+    --nightlife-border:   rgba(0, 0, 0, 0.08);
+    --nightlife-border-subtle: rgba(0, 0, 0, 0.05);
 
     /* Brand gold */
     --nightlife-primary:      #D4AF37;
-    --nightlife-primary-glow: rgba(212, 175, 55, 0.35);
+    --nightlife-primary-glow: rgba(212, 175, 55, 0.25);
     --nightlife-secondary:    #B8941E;
     --nightlife-yellow:       #D4AF37;
-    --nightlife-green:        #22c55e;
-    --nightlife-red:          #E53935;
+    --nightlife-green:        #16a34a;
+    --nightlife-red:          #dc2626;
 
     /* Text */
-    --nightlife-text-secondary: #888898;
+    --nightlife-text-secondary: #6b7280;
 
-    --sidebar-background: 0 0% 6%;
-    --sidebar-foreground: 220 15% 55%;
+    --sidebar-background: 30 10% 97%;
+    --sidebar-foreground: 25 10% 35%;
     --sidebar-primary: 43 72% 53%;
     --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 0 0% 12%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 0 0% 100% / 0.08;
+    --sidebar-accent: 30 10% 93%;
+    --sidebar-accent-foreground: 25 10% 15%;
+    --sidebar-border: 25 10% 10% / 0.08;
     --sidebar-ring: 43 72% 53%;
   }
 }
@@ -102,8 +102,25 @@ html, body, #root {
     font-family: 'Inter', sans-serif;
   }
 
-  h1, h2, h3 {
+  h1, h2, h3, h4 {
     font-family: 'Syne', sans-serif;
+    overflow: visible !important;
+    padding-bottom: 0.2em;
+    line-height: 1.25 !important;
+    clip-path: none !important;
+    -webkit-clip-path: none !important;
+  }
+
+  /* Evitar que leading-tight de Tailwind corte descenders en cualquier elemento */
+  .leading-tight, .leading-none, .leading-snug {
+    line-height: 1.2 !important;
+    overflow: visible !important;
+    padding-bottom: 0.1em;
+  }
+
+  /* Prevenir corte de descenders (g, y, j, p, q) en cualquier texto */
+  * {
+    -webkit-font-smoothing: antialiased;
   }
 
   ::-webkit-scrollbar { width: 4px; height: 4px; }
@@ -132,9 +149,9 @@ html, body, #root {
     -webkit-text-fill-color: transparent;
   }
 
-  /* Dark hero section: restore bright gold */
+  /* Dark hero section: bright yellow-gold */
   [data-hero-dark="true"] .text-gradient {
-    background: linear-gradient(135deg, #FFD84D, #D4AF37);
+    background: linear-gradient(135deg, #FFE566, #FFCC00);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -145,16 +162,16 @@ html, body, #root {
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--nightlife-border);
     border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
     transition: box-shadow 0.22s ease, border-color 0.22s ease;
   }
   .glass-panel:hover {
-    box-shadow: 0 12px 36px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.08), 0 0 0 1px rgba(212,175,55,0.07);
-    border-color: rgba(255,255,255,0.1);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.1), 0 0 0 1px rgba(212,175,55,0.12);
+    border-color: rgba(0,0,0,0.12);
   }
 
   .glass-panel-subtle {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(0, 0, 0, 0.02);
     backdrop-filter: blur(12px);
     border: 1px solid var(--nightlife-border);
     border-radius: 12px;
@@ -173,13 +190,13 @@ html, body, #root {
   }
   .btn-nightlife-primary:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
   }
 
   .btn-nightlife-secondary {
-    background: rgba(255, 255, 255, 0.05);
-    color: #D4AF37;
-    border: 1px solid rgba(212, 175, 55, 0.2);
+    background: rgba(0, 0, 0, 0.04);
+    color: #B8941E;
+    border: 1px solid rgba(212, 175, 55, 0.3);
     padding: 0.8rem 1.8rem;
     border-radius: 8px;
     font-weight: 600;
@@ -187,7 +204,7 @@ html, body, #root {
     cursor: pointer;
   }
   .btn-nightlife-secondary:hover {
-    background: rgba(212, 175, 55, 0.15);
+    background: rgba(212, 175, 55, 0.1);
     border-color: rgba(212, 175, 55, 0.5);
     transform: translateY(-1px);
   }
@@ -212,21 +229,21 @@ html, body, #root {
   .nightlife-input {
     width: 100%;
     padding: 0.75rem 1rem;
-    background: rgba(0, 0, 0, 0.6);
-    border: 1px solid var(--nightlife-border);
+    background: #f9f8f6;
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    color: white;
+    color: rgba(22, 20, 18, 0.88);
     outline: none;
     font-family: 'Inter', sans-serif;
     transition: border 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   }
   .nightlife-input::placeholder {
-    color: rgba(255, 255, 255, 0.55);
+    color: rgba(22, 20, 18, 0.35);
   }
   .nightlife-input:focus {
     border-color: var(--nightlife-primary);
-    background: rgba(0, 0, 0, 0.8);
-    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12), inset 0 0 0 1px rgba(212, 175, 55, 0.2);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1), inset 0 0 0 1px rgba(212, 175, 55, 0.15);
   }
 }
 

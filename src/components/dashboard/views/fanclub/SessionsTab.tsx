@@ -124,7 +124,7 @@ const SessionsTab = () => {
             </button>
             <button type="button" onClick={() => setAdding(false)}
               className="px-4 py-2 rounded-lg text-xs font-bold transition-all hover:opacity-70"
-              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.5)' }}>
+              style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: 'rgba(22,20,18,0.55)' }}>
               Cancelar
             </button>
           </div>
@@ -173,8 +173,8 @@ const SessionsTab = () => {
               <div className="flex items-center gap-1.5 flex-shrink-0">
                 <a href={s.url} target="_blank" rel="noopener noreferrer"
                   className="w-9 h-9 rounded-lg flex items-center justify-center transition-all hover:scale-110"
-                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                  <ExternalLink size={13} style={{ color: 'rgba(255,255,255,0.4)' }} />
+                  style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}>
+                  <ExternalLink size={13} style={{ color: 'rgba(22,20,18,0.65)' }} />
                 </a>
                 <button type="button" onClick={() => handleDelete(s.id)}
                   className="w-9 h-9 rounded-lg flex items-center justify-center transition-all hover:scale-110"

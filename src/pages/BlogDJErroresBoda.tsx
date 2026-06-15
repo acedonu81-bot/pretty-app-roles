@@ -185,7 +185,7 @@ export default function BlogDJErroresBoda() {
           <div className="rounded-xl p-6 sm:p-8 mb-12 text-center"
             style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
             <p className="text-sm font-bold mb-2">¿Buscas DJ para tu boda?</p>
-            <p className="text-xs mb-5" style={{ color: 'rgba(255,255,255,0.45)' }}>
+            <p className="text-xs mb-5" style={{ color: 'rgba(255,255,255,0.6)' }}>
               Encuentra DJs verificados con experiencia en bodas. Perfiles con referencias reales, precios públicos y contrato digital automático.
             </p>
             <a href="/contratar-dj"
@@ -212,7 +212,7 @@ export default function BlogDJErroresBoda() {
                 <span className="text-2xl flex-shrink-0">{post.emoji}</span>
                 <div>
                   <p className="text-sm font-black leading-snug mb-1.5">{post.title}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>{post.desc}</p>
+                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{post.desc}</p>
                 </div>
               </a>
             ))}

@@ -184,6 +184,17 @@ const Auth = () => {
           body: { type: 'welcome', data: { name: displayName, email, role: 'pending' } },
         }).catch((err: unknown) => console.warn('[email] welcome failed:', err));
 
+        // Early adopter: primeros 20 usuarios reales reciben email automático
+        supabase.from('profiles')
+          .select('user_id', { count: 'exact', head: true })
+          .then(({ count }) => {
+            if (typeof count === 'number' && count <= 20) {
+              supabase.functions.invoke('send-email', {
+                body: { type: 'early_adopter', data: { name: displayName, email } },
+              }).catch((err: unknown) => console.warn('[email] early_adopter failed:', err));
+            }
+          });
+
         setShowWelcome(true);
       }
     } catch (err: any) {
@@ -271,7 +282,7 @@ const Auth = () => {
                 </div>
                 <div className="flex items-center gap-1.5">
                   {[1,2,3,4,5].map(i => <span key={i} style={{ color: '#D4AF37', fontSize: '0.7rem' }}>★</span>)}
-                  <span className="text-xs ml-1" style={{ color: 'rgba(255,255,255,0.4)' }}>Directorio de referencia en España</span>
+                  <span className="text-xs ml-1" style={{ color: 'rgba(255,255,255,0.6)' }}>Directorio de referencia en España</span>
                 </div>
               </div>
             </div>
@@ -303,7 +314,7 @@ const Auth = () => {
                 <h3 className="text-lg font-black mb-1" style={{ color: '#fff' }}>
                   {isLogin ? 'Accede a XPEAK' : 'Crear cuenta gratis'}
                 </h3>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>
+                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
                   {isLogin
                     ? '¿Primera vez? → Pulsa "Crear cuenta gratis" abajo.'
                     : 'Solo 30 segundos · Sin tarjeta de crédito · 0% comisión'}
@@ -484,7 +495,7 @@ const Auth = () => {
 
               {/* Toggle login / registro */}
               <div className="mt-5 pt-5 flex items-center justify-between" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-                <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                <span className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
                   {isLogin ? '¿Nuevo en XPEAK?' : '¿Ya tienes cuenta?'}
                 </span>
                 <button

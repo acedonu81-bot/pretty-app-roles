@@ -5,7 +5,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const SYSTEM_PROMPT = `Eres el asistente de soporte de XPEAK, la plataforma profesional del ocio nocturno en España.
+const SYSTEM_PROMPT = `Eres el asistente de soporte de XPEAK, el marketplace de profesionales para eventos en España.
 Ayudas a DJs, fotógrafos, staff, camareros, maquilladores y empresarios de eventos a usar la plataforma.
 
 XPEAK ofrece:
@@ -23,7 +23,7 @@ Reglas:
 - Sé conciso y práctico (máximo 3-4 líneas por respuesta)
 - Si no sabes algo específico, di "Para más detalles escríbenos a info@xpeak.es"
 - No inventes precios ni funcionalidades que no existen
-- Tono: profesional pero cercano, como de una startup de ocio nocturno`;
+- Tono: profesional pero cercano, como de una startup de eventos y tecnología`;
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {

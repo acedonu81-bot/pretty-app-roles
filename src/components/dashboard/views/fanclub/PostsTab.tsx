@@ -126,9 +126,9 @@ const PostsTab = () => {
             <button key={pt.id} onClick={() => setPostType(pt.id)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all"
               style={{
-                background: postType === pt.id ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.04)',
-                border: `1px solid ${postType === pt.id ? 'rgba(212,175,55,0.4)' : 'rgba(255,255,255,0.08)'}`,
-                color: postType === pt.id ? '#D4AF37' : 'rgba(255,255,255,0.5)',
+                background: postType === pt.id ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.04)',
+                border: `1px solid ${postType === pt.id ? 'rgba(212,175,55,0.4)' : 'rgba(0,0,0,0.08)'}`,
+                color: postType === pt.id ? '#D4AF37' : 'rgba(22,20,18,0.55)',
               }}>
               {pt.icon} {pt.label}
             </button>
@@ -177,7 +177,7 @@ const PostsTab = () => {
 
         {/* Tier selector */}
         <div className="flex items-center gap-3 mt-4 p-3 rounded-xl"
-          style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+          style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.05)' }}>
           <p className="text-xs text-muted-foreground flex-1">Visible para:</p>
           <div className="flex gap-2">
             {(['fan', 'vip'] as const).map(tier => (
@@ -185,8 +185,8 @@ const PostsTab = () => {
                 className="px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1"
                 style={{
                   background: postTier === tier ? 'rgba(212,175,55,0.15)' : 'transparent',
-                  border: `1px solid ${postTier === tier ? 'rgba(212,175,55,0.35)' : 'rgba(255,255,255,0.08)'}`,
-                  color: postTier === tier ? '#D4AF37' : 'rgba(255,255,255,0.35)',
+                  border: `1px solid ${postTier === tier ? 'rgba(212,175,55,0.35)' : 'rgba(0,0,0,0.08)'}`,
+                  color: postTier === tier ? '#D4AF37' : 'rgba(22,20,18,0.4)',
                 }}>
                 {TIER_ICON[tier]}
                 {tier.toUpperCase()} +
@@ -224,7 +224,7 @@ const PostsTab = () => {
       ) : (
         <div className="space-y-3">
           {posts.map(p => (
-            <div key={p.id} className="glass-panel p-4" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
+            <div key={p.id} className="glass-panel p-4" style={{ border: '1px solid rgba(0,0,0,0.05)' }}>
               <div className="flex items-start justify-between gap-2 mb-2">
                 <div className="flex items-center gap-2">
                   <span className="text-[0.6rem] font-bold px-1.5 py-0.5 rounded flex items-center gap-1 uppercase"
@@ -246,7 +246,7 @@ const PostsTab = () => {
               ) : p.post_type === 'audio' && p.media_url ? (
                 <audio controls src={p.media_url} className="w-full mb-2" style={{ height: 36 }} />
               ) : null}
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.75)' }}>{p.content}</p>
+              <p className="text-sm leading-relaxed" style={{ color: 'rgba(22,20,18,0.8)' }}>{p.content}</p>
             </div>
           ))}
         </div>

@@ -14,6 +14,93 @@ import BenchmarkTab from './empresario/BenchmarkTab';
 import MediaTab from './empresario/MediaTab';
 import StatsTab from './empresario/StatsTab';
 
+/* ── Feed público "Empresas que contratan" ── */
+const WhoIsHiringFeed = () => {
+  const [companies, setCompanies] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    supabase
+      .from('profiles')
+      .select('user_id, display_name, zone, bio, photo_url, is_verified, score')
+      .eq('role', 'empresario')
+      .not('display_name', 'is', null)
+      .order('is_verified', { ascending: false })
+      .order('score', { ascending: false })
+      .limit(20)
+      .then(({ data }) => {
+        setCompanies((data ?? []).filter((p: any) => p.display_name?.trim().length > 1));
+        setLoading(false);
+      });
+  }, []);
+
+  return (
+    <div className="p-4 sm:p-6 max-w-2xl mx-auto">
+      <div className="mb-6">
+        <div className="flex items-center gap-2 mb-1">
+          <Building2 size={16} style={{ color: '#D4AF37' }} />
+          <h2 className="text-base font-black" style={{ color: 'rgba(22,20,18,0.88)' }}>Empresas & salas en XPEAK</h2>
+        </div>
+        <p className="text-xs" style={{ color: 'rgba(22,20,18,0.45)' }}>
+          Clubs, promotoras y organizadores registrados. Pueden contactarte para sus eventos.
+        </p>
+      </div>
+
+      {loading && (
+        <div className="flex flex-col gap-3">
+          {[1,2,3].map(i => <div key={i} className="rounded-2xl h-16 animate-pulse" style={{ background: 'rgba(0,0,0,0.04)' }} />)}
+        </div>
+      )}
+
+      {!loading && companies.length === 0 && (
+        <div className="py-12 text-center rounded-2xl" style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.06)' }}>
+          <Building2 size={28} className="mx-auto mb-3" style={{ color: 'rgba(212,175,55,0.3)' }} />
+          <p className="text-sm font-bold" style={{ color: 'rgba(22,20,18,0.4)' }}>Aún no hay empresas registradas</p>
+          <p className="text-xs mt-1" style={{ color: 'rgba(22,20,18,0.3)' }}>Pronto verás aquí los clubs y promotoras que buscan talento</p>
+        </div>
+      )}
+
+      <div className="flex flex-col gap-2">
+        {companies.map(c => (
+          <div key={c.user_id} className="flex items-center gap-3 rounded-xl p-3"
+            style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.07)', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden"
+              style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.15)' }}>
+              {c.photo_url
+                ? <img src={c.photo_url} alt={c.display_name} className="w-full h-full object-cover" />
+                : <Building2 size={16} style={{ color: '#D4AF37' }} />}
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <p className="text-sm font-black truncate" style={{ color: 'rgba(22,20,18,0.9)' }}>{c.display_name}</p>
+                {c.is_verified && (
+                  <span className="text-[10px] font-black px-1.5 py-0.5 rounded-full flex-shrink-0"
+                    style={{ background: 'rgba(212,175,55,0.12)', color: '#B8941E' }}>✓ Verificado</span>
+                )}
+              </div>
+              {c.zone && (
+                <p className="text-xs truncate" style={{ color: 'rgba(22,20,18,0.4)' }}>📍 {c.zone}</p>
+              )}
+              {c.bio && (
+                <p className="text-xs line-clamp-1 mt-0.5" style={{ color: 'rgba(22,20,18,0.5)' }}>{c.bio}</p>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-8 p-5 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}>
+        <p className="text-sm font-black mb-1">¿Organizas eventos?</p>
+        <p className="text-xs mb-3" style={{ color: 'rgba(22,20,18,0.55)' }}>Únete como empresa y los profesionales podrán encontrarte y contactarte.</p>
+        <a href="/dashboard?view=profile" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black"
+          style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+          <Building2 size={13} /> Cambiar a rol Empresa
+        </a>
+      </div>
+    </div>
+  );
+};
+
 interface EmpresarioViewProps {
   onMessage?: (userId: string, name: string) => void;
 }
@@ -90,20 +177,9 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
   useEffect(() => { fetchPros(); }, [fetchPros]);
   useEffect(() => { if (user?.id) fetchFavorites(); }, [user?.id, fetchFavorites]);
 
-  // Early return AFTER all hooks
+  // Si no es empresario, mostrar feed de quién está contratando (solo lectura)
   if (!profileLoading && role !== 'empresario') {
-    return (
-      <div className="flex flex-col items-center justify-center h-full min-h-[60vh] gap-4 text-center px-4">
-        <div className="w-16 h-16 rounded-2xl flex items-center justify-center"
-          style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.15)' }}>
-          <Building2 size={28} style={{ color: 'rgba(212,175,55,0.5)' }} />
-        </div>
-        <h2 className="text-lg font-black tracking-tight">Panel exclusivo para empresas y salas</h2>
-        <p className="text-sm max-w-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>
-          Esta sección está pensada para clubs, promotoras y organizadores de eventos. Si eres empresa, cambia tu rol en <strong style={{ color: '#D4AF37' }}>Mi Perfil → Rol → Empresa / Sala</strong>.
-        </p>
-      </div>
-    );
+    return <WhoIsHiringFeed />;
   }
 
   const TABS = [
@@ -127,6 +203,22 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
       <div className="mb-5">
         <h2 className="text-2xl font-bold mb-1">Panel <span className="text-gradient">Empresario</span></h2>
         <p className="text-sm text-muted-foreground">Encuentra, contrata y analiza el talento para tu sala.</p>
+      </div>
+
+      {/* Activity strip */}
+      <div className="flex items-center gap-3 mb-4 px-4 py-2.5 rounded-xl text-xs overflow-x-auto"
+        style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.12)' }}>
+        <div className="flex items-center gap-1.5 flex-shrink-0">
+          <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#D4AF37' }} />
+          <span style={{ color: 'rgba(22,20,18,0.55)' }}>Comunidad activa:</span>
+        </div>
+        <div className="flex items-center gap-4 flex-shrink-0">
+          <span style={{ color: '#D4AF37', fontWeight: 700 }}>Directorio en crecimiento</span>
+          <span style={{ color: 'rgba(22,20,18,0.35)' }}>·</span>
+          <span style={{ color: 'rgba(22,20,18,0.75)', fontWeight: 600 }}>47+ profesionales activos</span>
+          <span style={{ color: 'rgba(22,20,18,0.35)' }}>·</span>
+          <span style={{ color: 'rgba(22,20,18,0.55)' }}>toda España</span>
+        </div>
       </div>
 
       {/* Private hiring — coming soon */}
@@ -169,7 +261,7 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
           <button key={t.id} onClick={() => setTab(t.id)}
             className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-all"
             style={{
-              background: tab === t.id ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.03)',
+              background: tab === t.id ? 'rgba(212,175,55,0.12)' : 'rgba(0,0,0,0.03)',
               border: `1px solid ${tab === t.id ? 'rgba(212,175,55,0.3)' : 'var(--nightlife-border)'}`,
               color: tab === t.id ? '#D4AF37' : '#8E8EA0',
             }}>

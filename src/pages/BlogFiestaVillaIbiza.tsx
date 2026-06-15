@@ -89,7 +89,7 @@ export default function BlogFiestaVillaIbiza() {
                 ))}
               </tbody>
             </table>
-            <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem', marginBottom: '1.5rem' }}>* Precios orientativos 2026. No incluyen alquiler de villa ni bebidas.</p>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.8rem', marginBottom: '1.5rem' }}>* Precios orientativos 2026. No incluyen alquiler de villa ni bebidas.</p>
 
             <div className="mt-8 p-5 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
               <p className="font-black text-lg mb-2">Contrata DJ, camareros y catering para tu villa en Ibiza</p>

@@ -34,7 +34,7 @@ const AvisoLegal = () => (
       </Section>
 
       <Section title="2. Objeto y naturaleza del servicio">
-        <p>XPEAK es una plataforma de intermediación técnica que opera como directorio profesional para el sector de eventos y ocio nocturno en España.</p>
+        <p>XPEAK es una plataforma de intermediación técnica que opera como directorio profesional para el sector de eventos y eventos y entretenimiento en España.</p>
         <p>XPEAK actúa exclusivamente como intermediario tecnológico conforme al artículo 14 de la Directiva 2000/31/CE y la LSSI-CE. XPEAK <span className="font-bold text-white">no es agencia de empleo</span>, empresa de trabajo temporal (ETT) ni actúa como empleador de los profesionales registrados.</p>
         <p>Los contratos de prestación de servicios se celebran directamente entre empresarios y profesionales. XPEAK no es parte de dichos contratos.</p>
       </Section>

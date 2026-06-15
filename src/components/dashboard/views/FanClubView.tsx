@@ -86,9 +86,9 @@ const FanClubView = () => {
             <button key={t} onClick={() => setTab(t)}
               className="flex-none px-3 py-1.5 rounded-lg text-xs font-bold capitalize transition-all"
               style={{
-                background: tab === t ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.04)',
-                border: `1px solid ${tab === t ? 'rgba(212,175,55,0.4)' : 'rgba(255,255,255,0.08)'}`,
-                color: tab === t ? '#D4AF37' : 'rgba(255,255,255,0.4)',
+                background: tab === t ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.04)',
+                border: `1px solid ${tab === t ? 'rgba(212,175,55,0.4)' : 'rgba(0,0,0,0.08)'}`,
+                color: tab === t ? '#D4AF37' : 'rgba(22,20,18,0.45)',
               }}>
               {t === 'overview' ? 'Resumen' : t === 'sessions' ? 'Sesiones' : t === 'posts' ? 'Publicar' : t === 'fans' ? 'Fans' : 'Niveles'}
             </button>

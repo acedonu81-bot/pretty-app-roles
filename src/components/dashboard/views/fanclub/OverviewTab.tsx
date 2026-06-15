@@ -49,8 +49,8 @@ const OverviewTab = ({ fans, totalRevenue, myShare }: Props) => {
           </span>
         </p>
         <div className="rounded-xl overflow-hidden p-4 space-y-3"
-          style={{ background: 'rgba(0,0,0,0.4)', border: '1px solid rgba(255,255,255,0.05)' }}>
-          <div className="flex items-center gap-3 pb-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          style={{ background: 'rgba(0,0,0,0.4)', border: '1px solid rgba(0,0,0,0.05)' }}>
+          <div className="flex items-center gap-3 pb-3" style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
             <div className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-base"
               style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
               {profile.display_name?.charAt(0)?.toUpperCase() ?? 'X'}
@@ -71,12 +71,12 @@ const OverviewTab = ({ fans, totalRevenue, myShare }: Props) => {
             { label: 'Mensaje personal a mis fans', type: 'text', locked: true },
           ].map((item, i) => (
             <div key={i} className="flex items-center gap-3 p-2.5 rounded-lg"
-              style={{ background: item.locked ? 'rgba(0,0,0,0.3)' : 'rgba(212,175,55,0.04)', border: '1px solid rgba(255,255,255,0.04)' }}>
+              style={{ background: item.locked ? 'rgba(0,0,0,0.3)' : 'rgba(212,175,55,0.04)', border: '1px solid rgba(0,0,0,0.04)' }}>
               <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                style={{ background: item.locked ? 'rgba(255,255,255,0.05)' : 'rgba(212,175,55,0.1)', color: item.locked ? '#555' : '#D4AF37' }}>
+                style={{ background: item.locked ? 'rgba(0,0,0,0.05)' : 'rgba(212,175,55,0.1)', color: item.locked ? '#555' : '#D4AF37' }}>
                 {item.type === 'audio' ? <Music size={14} /> : item.type === 'photo' ? <Image size={14} /> : <FileText size={14} />}
               </div>
-              <p className="text-xs flex-1" style={{ color: item.locked ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.7)' }}>
+              <p className="text-xs flex-1" style={{ color: item.locked ? 'rgba(0,0,0,0.1)' : 'rgba(22,20,18,0.75)' }}>
                 {item.label}
               </p>
               {item.locked && <Lock size={12} style={{ color: '#555' }} />}

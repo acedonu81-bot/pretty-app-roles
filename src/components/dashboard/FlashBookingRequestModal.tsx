@@ -77,46 +77,46 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
           transition={{ type: 'spring', stiffness: 300, damping: 28 }}
           onClick={e => e.stopPropagation()}
           className="relative w-full max-w-md rounded-2xl overflow-hidden"
-          style={{ background: '#111', border: '1px solid rgba(212,175,55,0.2)' }}
+          style={{ background: '#ffffff', border: '1px solid rgba(212,175,55,0.2)' }}
         >
           {/* Header */}
-          <div className="flex items-center gap-3 px-5 pt-5 pb-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          <div className="flex items-center gap-3 px-5 pt-5 pb-4" style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
             <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
               style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
               <Zap size={16} />
             </div>
             <div className="flex-1">
               <p className="text-sm font-bold">Flash Booking</p>
-              <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>Solicitud para {professionalName}</p>
+              <p className="text-xs" style={{ color: 'rgba(22,20,18,0.65)' }}>Solicitud para {professionalName}</p>
             </div>
             <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-white/10">
-              <X size={14} style={{ color: 'rgba(255,255,255,0.4)' }} />
+              <X size={14} style={{ color: 'rgba(22,20,18,0.65)' }} />
             </button>
           </div>
 
           <div className="p-5 space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(255,255,255,0.4)' }}>Tu nombre *</label>
+                <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(22,20,18,0.65)' }}>Tu nombre *</label>
                 <input value={form.name} onChange={e => set('name', e.target.value)}
                   placeholder="Sala Berlín / Pedro G." className="nightlife-input text-sm !py-2 w-full" />
               </div>
               <div>
-                <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(255,255,255,0.4)' }}>Contacto (tel/email) *</label>
+                <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(22,20,18,0.65)' }}>Contacto (tel/email) *</label>
                 <input value={form.contact} onChange={e => set('contact', e.target.value)}
                   placeholder="+34 600..." className="nightlife-input text-sm !py-2 w-full" />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: 'rgba(22,20,18,0.65)' }}>
                   <Calendar size={10} /> Fecha del evento *
                 </label>
                 <input type="date" value={form.date} onChange={e => set('date', e.target.value)}
                   className="nightlife-input text-sm !py-2 w-full" />
               </div>
               <div>
-                <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: 'rgba(22,20,18,0.65)' }}>
                   <MapPin size={10} /> Lugar
                 </label>
                 <input value={form.location} onChange={e => set('location', e.target.value)}
@@ -125,7 +125,7 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: 'rgba(22,20,18,0.65)' }}>
                   <MessageSquare size={10} /> Descripción del evento
                 </label>
                 <textarea value={form.description} onChange={e => set('description', e.target.value)}
@@ -133,12 +133,12 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
                   className="nightlife-input text-sm !py-2 w-full resize-none" />
               </div>
               <div>
-                <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: 'rgba(22,20,18,0.65)' }}>
                   <Euro size={10} /> Caché acordado (€)
                 </label>
                 <input type="number" min="0" step="0.01" value={form.price} onChange={e => set('price', e.target.value)}
                   placeholder="ej. 300" className="nightlife-input text-sm !py-2 w-full" />
-                <p className="text-[0.65rem] mt-1" style={{ color: 'rgba(255,255,255,0.2)' }}>Opcional — para tu registro de gastos</p>
+                <p className="text-[0.65rem] mt-1" style={{ color: 'rgba(0,0,0,0.1)' }}>Opcional — para tu registro de gastos</p>
               </div>
             </div>
           </div>
@@ -149,7 +149,7 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
               style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
               {sending ? 'Enviando...' : <span className="block leading-tight">Enviar solicitud a <span className="block sm:inline truncate max-w-[180px] sm:max-w-none align-bottom">{professionalName}</span></span>}
             </button>
-            <p className="text-center text-xs mt-2" style={{ color: 'rgba(255,255,255,0.25)' }}>
+            <p className="text-center text-xs mt-2" style={{ color: 'rgba(22,20,18,0.3)' }}>
               El profesional recibirá tu solicitud y te contactará directamente.
             </p>
           </div>

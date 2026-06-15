@@ -154,7 +154,7 @@ const GlobalPlayer = () => {
       <div className="flex-1 mx-2 hidden sm:block">
         <div className="flex items-center gap-2">
           <span className="text-[0.75rem] text-muted-foreground tabular-nums">{formatTime(currentTime)}</span>
-          <div className="flex-1 h-1 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.05)' }}>
+          <div className="flex-1 h-1 rounded-full overflow-hidden" style={{ background: 'rgba(0,0,0,0.05)' }}>
             <div
               className="h-full rounded-full"
               style={{

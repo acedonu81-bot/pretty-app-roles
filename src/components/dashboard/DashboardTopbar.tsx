@@ -30,6 +30,12 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
     setShowNotif(false);
   };
 
+  // Solo mostrar novedades si el perfil tiene menos de 7 días (usuarios nuevos)
+  const profileAgeDays = profile.created_at
+    ? (Date.now() - new Date(profile.created_at).getTime()) / (1000 * 60 * 60 * 24)
+    : 999;
+  const isNewUser = profileAgeDays < 7;
+
   const notifications = [
     ...(!profile.display_name ? [{
       id: 'incomplete_profile',
@@ -39,14 +45,14 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
       icon: 'spark' as const,
       urgent: true,
     }] : []),
-    {
+    ...(isNewUser ? [{
       id: 'ficha_nueva',
       title: 'Nueva: Tu Ficha Pública',
       desc: 'Comparte posts, audio, vídeo e imágenes con fans y empresarios desde Mi Ficha.',
       time: 'Novedad',
       icon: 'spark' as const,
       urgent: false,
-    },
+    }] : []),
   ];
 
   const unread = notifications.filter(n => !dismissed.has(n.id));
@@ -56,10 +62,10 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
     <header
       className={`h-14 px-4 md:px-6 flex items-center justify-between sticky top-0 z-10 gap-3${isNative ? ' native-topbar-offset' : ''}`}
       style={{
-        background: 'rgba(0,0,0,0.8)',
+        background: 'rgba(255,255,255,0.95)',
         backdropFilter: 'blur(20px)',
-        borderBottom: '1px solid var(--nightlife-border)',
-        borderTop: '1.5px solid rgba(66,133,244,0.35)',
+        borderBottom: '1px solid rgba(0,0,0,0.07)',
+        borderTop: 'none',
       }}
     >
       <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -81,7 +87,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
 
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg flex-1 max-w-[360px] transition-all"
           style={{
-            background: searchQuery ? 'rgba(212,175,55,0.05)' : 'rgba(255,255,255,0.03)',
+            background: searchQuery ? 'rgba(212,175,55,0.05)' : 'rgba(0,0,0,0.03)',
             border: searchQuery ? '1px solid rgba(212,175,55,0.3)' : '1px solid var(--nightlife-border)',
           }}>
           <Search size={14} className="flex-shrink-0" style={{ color: searchQuery ? '#D4AF37' : undefined }} />
@@ -95,7 +101,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
           />
           {searchQuery && (
             <button onClick={() => onSearch?.('')} aria-label="Borrar búsqueda" className="flex-shrink-0 transition-opacity hover:opacity-70">
-              <X size={12} style={{ color: 'rgba(255,255,255,0.4)' }} />
+              <X size={12} style={{ color: 'rgba(22,20,18,0.65)' }} />
             </button>
           )}
         </div>
@@ -129,10 +135,10 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
               boxShadow: readAll || notifications.length === 0
                 ? 'none'
                 : showNotif
-                  ? '0 0 16px rgba(212,175,55,0.7), 0 0 32px rgba(212,175,55,0.3), inset 0 1px 0 rgba(255,255,255,0.3)'
-                  : '0 0 10px rgba(212,175,55,0.4), 0 0 20px rgba(212,175,55,0.15), inset 0 1px 0 rgba(255,255,255,0.25)',
+                  ? '0 0 16px rgba(212,175,55,0.7), 0 0 32px rgba(212,175,55,0.3), inset 0 1px 0 rgba(22,20,18,0.35)'
+                  : '0 0 10px rgba(212,175,55,0.4), 0 0 20px rgba(212,175,55,0.15), inset 0 1px 0 rgba(22,20,18,0.3)',
             }}>
-            <span className="text-xs font-black" style={{ color: (readAll || notifications.length === 0) ? 'rgba(255,255,255,0.3)' : '#000', lineHeight: 1 }}>
+            <span className="text-xs font-black" style={{ color: (readAll || notifications.length === 0) ? 'rgba(22,20,18,0.35)' : '#000', lineHeight: 1 }}>
               {(readAll || notifications.length === 0) ? '✓' : notifications.length}
             </span>
           </span>
@@ -154,9 +160,9 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
               right: isMobile ? 16 : 0,
               width: isMobile ? 'calc(100vw - 32px)' : 320,
               maxWidth: isMobile ? undefined : 320,
-              background: 'rgba(8,8,12,0.96)',
+              background: '#ffffff',
               border: '1px solid rgba(212,175,55,0.25)',
-              boxShadow: '0 0 0 1px rgba(212,175,55,0.08), 0 20px 60px rgba(0,0,0,0.9), 0 0 40px rgba(212,175,55,0.07)',
+              boxShadow: '0 4px 30px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.07)',
               animation: 'fadeIn 0.18s ease',
             }}
           >
@@ -173,7 +179,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
               </div>
               <button onClick={markAllRead}
                 className="text-xs font-bold transition-colors hover:text-white"
-                style={{ color: 'rgba(255,255,255,0.3)' }}>
+                style={{ color: 'rgba(22,20,18,0.35)' }}>
                 CERRAR
               </button>
             </div>
@@ -183,14 +189,14 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
               {notifications.length === 0 ? (
                 <div className="px-4 py-8 flex flex-col items-center gap-2 text-center">
                   <Bell size={20} style={{ color: 'rgba(212,175,55,0.2)' }} />
-                  <p className="text-xs font-bold" style={{ color: 'rgba(255,255,255,0.2)' }}>Sin notificaciones</p>
-                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.15)' }}>Todo al día por aquí.</p>
+                  <p className="text-xs font-bold" style={{ color: 'rgba(0,0,0,0.1)' }}>Sin notificaciones</p>
+                  <p className="text-xs" style={{ color: 'rgba(0,0,0,0.1)' }}>Todo al día por aquí.</p>
                 </div>
               ) : notifications.map((n, i) => (
                 <div key={n.id}
                   className="px-4 py-3 flex gap-3 items-start cursor-pointer transition-all"
                   style={{
-                    borderBottom: '1px solid rgba(255,255,255,0.04)',
+                    borderBottom: '1px solid rgba(0,0,0,0.04)',
                     background: n.urgent ? 'rgba(239,68,68,0.04)' : i === 0 ? 'rgba(212,175,55,0.03)' : 'transparent',
                   }}
                   onMouseEnter={e => (e.currentTarget.style.background = n.urgent ? 'rgba(239,68,68,0.07)' : 'rgba(212,175,55,0.05)')}
@@ -210,7 +216,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-bold truncate" style={{ color: n.urgent ? '#fca5a5' : undefined }}>{n.title}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>{n.desc}</p>
+                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(22,20,18,0.65)' }}>{n.desc}</p>
                     <span className="text-[0.75rem] font-bold mt-1 block" style={{ color: n.urgent ? 'rgba(239,68,68,0.6)' : 'rgba(212,175,55,0.5)' }}>{n.time}</span>
                   </div>
                   {/* Unread indicator */}
@@ -236,7 +242,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
 
         {/* Avatar usuario logueado */}
         <div className="flex items-center gap-2 px-2 py-1 rounded-lg"
-          style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+          style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
           <div className="w-7 h-7 rounded-full overflow-hidden flex items-center justify-center text-xs font-black flex-shrink-0"
             style={profile.photo_url
               ? undefined
@@ -246,7 +252,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
               : (profile.display_name ?? 'X').charAt(0).toUpperCase()}
           </div>
           {!isMobile && profile.display_name && (
-            <span className="text-xs font-bold max-w-[90px] truncate" style={{ color: 'rgba(255,255,255,0.7)' }}>
+            <span className="text-xs font-bold max-w-[90px] truncate" style={{ color: 'rgba(22,20,18,0.75)' }}>
               {profile.display_name}
             </span>
           )}
@@ -255,7 +261,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
         <button
           onClick={() => navigate('/')}
           className="text-xs py-1.5 px-3 flex items-center gap-2 rounded-lg transition-colors"
-          style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--nightlife-border)', color: 'var(--nightlife-text-secondary)' }}
+          style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid var(--nightlife-border)', color: 'var(--nightlife-text-secondary)' }}
         >
           <LogOut size={13} /> {!isMobile && 'Salir'}
         </button>

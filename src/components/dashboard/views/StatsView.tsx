@@ -39,11 +39,11 @@ const DonutChart = ({ segments, size = 140 }: { segments: DonutSegment[]; size?:
       <div className="relative flex-shrink-0" style={{ width: size, height: size }}>
         <svg viewBox="0 0 100 100" style={{ width: '100%', height: '100%', transform: 'rotate(-90deg)' }}>
           {/* Track */}
-          <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="13" />
+          <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(0,0,0,0.05)" strokeWidth="13" />
 
           {isEmpty ? (
             <circle cx={cx} cy={cy} r={r} fill="none"
-              stroke="rgba(255,255,255,0.08)" strokeWidth="13"
+              stroke="rgba(0,0,0,0.08)" strokeWidth="13"
               strokeDasharray={`${circumference * 0.5} ${circumference * 0.5}`}
               strokeDashoffset={0}
               strokeLinecap="round" />
@@ -69,10 +69,10 @@ const DonutChart = ({ segments, size = 140 }: { segments: DonutSegment[]; size?:
         </svg>
         {/* Center label */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-xl font-black" style={{ color: '#fff', lineHeight: 1 }}>
+          <span className="text-xl font-black" style={{ color: 'rgba(22,20,18,0.88)', lineHeight: 1 }}>
             {isEmpty ? '—' : total > 999 ? `${(total / 1000).toFixed(1)}k` : total}
           </span>
-          <span className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.3)' }}>
+          <span className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: 'rgba(22,20,18,0.35)' }}>
             total
           </span>
         </div>
@@ -84,11 +84,11 @@ const DonutChart = ({ segments, size = 140 }: { segments: DonutSegment[]; size?:
           <div key={i} className="flex items-center gap-2">
             <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: seg.color, boxShadow: `0 0 5px ${seg.color}80` }} />
             <span className="text-xs text-muted-foreground flex-1">{seg.label}</span>
-            <span className="text-xs font-black" style={{ color: isEmpty ? 'rgba(255,255,255,0.2)' : seg.color }}>
+            <span className="text-xs font-black" style={{ color: isEmpty ? 'rgba(0,0,0,0.1)' : seg.color }}>
               {seg.value}
             </span>
             {!isEmpty && (
-              <span className="text-[0.75rem]" style={{ color: 'rgba(255,255,255,0.2)', minWidth: 28, textAlign: 'right' }}>
+              <span className="text-[0.75rem]" style={{ color: 'rgba(0,0,0,0.1)', minWidth: 28, textAlign: 'right' }}>
                 {Math.round((seg.value / total) * 100)}%
               </span>
             )}
@@ -298,7 +298,7 @@ const StatsView = () => {
                         padding: '4px 8px',
                         fontSize: '0.6rem',
                         fontWeight: 700,
-                        color: '#fff',
+                        color: 'rgba(22,20,18,0.88)',
                       }}>
                       <span style={{ color: '#4285F4' }}>{monthlyMessages[i]} msg</span>
                       {monthlyConvs[i] > 0 && <span style={{ color: 'rgba(66,133,244,0.6)' }}> · {monthlyConvs[i]} conv</span>}
@@ -327,7 +327,7 @@ const StatsView = () => {
                   </div>
                   {/* Month label */}
                   <span className="text-[0.75rem] font-bold"
-                    style={{ color: isCurrent ? '#4285F4' : 'rgba(255,255,255,0.25)' }}>
+                    style={{ color: isCurrent ? '#4285F4' : 'rgba(22,20,18,0.3)' }}>
                     {label}
                   </span>
                 </div>
@@ -339,7 +339,7 @@ const StatsView = () => {
 
         {/* Year totals row */}
         {!loading && (
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mt-4 pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mt-4 pt-4" style={{ borderTop: '1px solid rgba(0,0,0,0.05)' }}>
             <div>
               <p className="text-xs text-muted-foreground uppercase tracking-wider font-bold mb-0.5">Total mensajes {currentYear}</p>
               <p className="text-lg font-black" style={{ color: '#4285F4' }}>{yearTotalMsgs}</p>

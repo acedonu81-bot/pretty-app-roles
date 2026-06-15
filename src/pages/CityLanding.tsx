@@ -1,7 +1,61 @@
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Zap, Star, Shield, ArrowRight, MapPin } from 'lucide-react';
+import { Zap, Star, Shield, ArrowRight, MapPin, CheckCircle } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+
+interface Prof { id: string; display_name: string; photo_url: string | null; bio: string | null; city: string | null; role: string; score: number; slug: string | null; is_verified: boolean; is_early_adopter: boolean; }
+
+const ROLE_MAP: Record<string, string[]> = {
+  dj: ['dj'], camareros: ['staff'], fotografo: ['media'], staff: ['staff', 'promotor'],
+  catering: ['empresario'], maquillaje: ['makeup'], promotores: ['promotor'],
+  'disco-movil': ['dj'], vestuario: ['staff'],
+};
+
+function useCityProfessionals(ciudad: string, categorySlug: string) {
+  const [profs, setProfs] = useState<Prof[]>([]);
+  const [suggestions, setSuggestions] = useState<Prof[]>([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    setLoaded(false);
+    setProfs([]);
+    setSuggestions([]);
+    const roles = ROLE_MAP[categorySlug] ?? ['dj'];
+    const map = (p: any): Prof => ({ id: p.user_id, display_name: p.display_name ?? 'Profesional', photo_url: p.photo_url, bio: p.bio, city: p.city, role: p.role, score: p.score ?? 0, slug: p.slug, is_verified: p.is_verified ?? false, is_early_adopter: p.is_early_adopter ?? false });
+
+    supabase
+      .from('profiles')
+      .select('user_id,display_name,photo_url,bio,city,role,score,slug,is_verified,is_early_adopter')
+      .in('role', roles)
+      .eq('is_primary', true)
+      .ilike('city', `%${ciudad}%`)
+      .order('score', { ascending: false })
+      .limit(6)
+      .then(({ data }) => {
+        if (data?.length) {
+          setProfs(data.map(map));
+          setLoaded(true);
+        } else {
+          // No hay en esta ciudad — cargar sugerencias nacionales
+          supabase
+            .from('profiles')
+            .select('user_id,display_name,photo_url,bio,city,role,score,slug,is_verified,is_early_adopter')
+            .in('role', roles)
+            .eq('is_primary', true)
+            .order('score', { ascending: false })
+            .limit(4)
+            .then(({ data: sug }) => {
+              setSuggestions((sug ?? []).map(map));
+              setLoaded(true);
+            });
+        }
+      });
+  }, [ciudad, categorySlug]);
+
+  return { profs, suggestions, loaded };
+}
 
 type CityInfo = {
   ciudad: string;
@@ -81,6 +135,91 @@ const CITIES: Record<string, CityInfo> = {
   formentera:    { ciudad: 'Formentera',         slug: 'formentera',    venues: ['Beso Beach', 'Juan y Andrea', 'Hostal La Savina', 'Es Pujols Club', 'Fonda Pepe'],   precioMin: '120€', precioMax: '1500€',
     seasonal: { badge: '🏝️ Formentera', months: 'Junio – Septiembre', highlight: 'Formentera es el destino más exclusivo del Mediterráneo. Fiestas privadas en villa, yates y beach clubs de lujo con DJs de primer nivel. Demanda altísima y oferta casi inexistente.', keywords: ['DJ Formentera villa', 'DJ fiesta privada Formentera', 'DJ Formentera verano', 'camareros Formentera'] },
   },
+  // Ciudades ampliadas — cobertura nacional completa
+  vigo:          { ciudad: 'Vigo',               slug: 'vigo',          venues: ['Pub Modus', 'Discoteca Acuario', 'Sala Radar', 'Why Not Vigo', 'Chaman Club'],        precioMin: '35€', precioMax: '160€' },
+  santiago:      { ciudad: 'Santiago de Compostela', slug: 'santiago',  venues: ['Sala Capitol', 'Modus Vivendi', 'The Old House', 'Pub Momo', 'Discoteca Azabache'],  precioMin: '35€', precioMax: '160€' },
+  gijon:         { ciudad: 'Gijón',              slug: 'gijon',         venues: ['Sala Acapulco', 'Discoteca 2001', 'Pub Triskel', 'Sala Albéniz', 'Club Escape'],      precioMin: '30€', precioMax: '150€' },
+  oviedo:        { ciudad: 'Oviedo',             slug: 'oviedo',        venues: ['Sala Gruta', 'La Cámara', 'Discoteca Ciao', 'Pub Bambú', 'Sala Ítaca'],              precioMin: '30€', precioMax: '150€' },
+  vitoria:       { ciudad: 'Vitoria-Gasteiz',    slug: 'vitoria',       venues: ['Sala Comercial', 'Discoteca Ozono', 'Pub Laredo', 'El Jardín', 'Sala Aplauso'],      precioMin: '35€', precioMax: '160€' },
+  pamplona:      { ciudad: 'Pamplona',           slug: 'pamplona',      venues: ['Sala Totem', 'Discoteca Reverb', 'Pub Txoko', 'La Morea Club', 'Sala Zentral'],      precioMin: '35€', precioMax: '170€' },
+  logrono:       { ciudad: 'Logroño',            slug: 'logrono',       venues: ['Pub Peñas', 'Discoteca Sala 8', 'Club Escena', 'La Cueva', 'Sala Gonzalo'],          precioMin: '30€', precioMax: '140€' },
+  salamanca:     { ciudad: 'Salamanca',          slug: 'salamanca',     venues: ['Camelot Club', 'Gatsby Club', 'Sala Versalles', 'Disco Safari', 'Pub Doctor'],       precioMin: '30€', precioMax: '150€' },
+  toledo:        { ciudad: 'Toledo',             slug: 'toledo',        venues: ['Sala Lava', 'Discoteca Manhattan', 'Pub El Corral', 'Circus Club', 'La Sala'],        precioMin: '30€', precioMax: '140€' },
+  albacete:      { ciudad: 'Albacete',           slug: 'albacete',      venues: ['Sala Big Ben', 'Discoteca Sphaerum', 'Pub San Juan', 'Club Génesis', 'La Riviera'],   precioMin: '25€', precioMax: '130€' },
+  marbella:      { ciudad: 'Marbella',           slug: 'marbella',      venues: ['Ocean Club', 'Nikki Beach Marbella', 'Suite 88', 'Olivia Valere', 'Buddha'],          precioMin: '80€', precioMax: '600€',
+    seasonal: { badge: '☀️ Costa del Sol VIP', months: 'Mayo – Octubre', highlight: 'Marbella es el destino premium de la Costa del Sol. Beach clubs, fincas de lujo y villas de alta gama concentran la mayor demanda de DJs y staff de alto nivel.', keywords: ['DJ Marbella villa', 'DJ Marbella boda', 'camareros Marbella beach club'] } },
+  benidorm:      { ciudad: 'Benidorm',           slug: 'benidorm',      venues: ['Penélope Club', 'Ku Benidorm', 'Disco 9 Club', 'Benidorm Palace', 'Sala Pub'],        precioMin: '40€', precioMax: '250€',
+    seasonal: { badge: '🌞 Temporada Benidorm', months: 'Abril – Octubre', highlight: 'Benidorm concentra la mayor densidad de clubs y hoteles por habitante de España. Alta demanda de DJs y personal de hostelería todo el verano.', keywords: ['DJ Benidorm verano', 'camareros hoteles Benidorm'] } },
+  sitges:        { ciudad: 'Sitges',             slug: 'sitges',        venues: ['Atlantida Sitges', 'Privilege Sitges', 'El Patio', 'Organic Club', 'Bar Parrot'],     precioMin: '60€', precioMax: '300€',
+    seasonal: { badge: '🌊 Sitges', months: 'Mayo – Octubre', highlight: 'Sitges concentra eventos, festivales y bodas todo el verano. Alta demanda de DJs y personal para eventos de playa y fiestas privadas.', keywords: ['DJ Sitges eventos', 'DJ Sitges boda', 'camareros Sitges'] } },
+  tarragona:     { ciudad: 'Tarragona',          slug: 'tarragona',     venues: ['Sala Zeppelin', 'Discoteca Tequila', 'Pub Saratoga', 'Club Cocoa', 'Sala B5'],       precioMin: '40€', precioMax: '180€' },
+  lleida:        { ciudad: 'Lleida',             slug: 'lleida',        venues: ['Sala Capitol', 'Discoteca Cheers', 'Pub Molino', 'Club Lotus', 'Sala Indiana'],       precioMin: '25€', precioMax: '130€' },
+  girona:        { ciudad: 'Girona',             slug: 'girona',        venues: ['Sala Platea', 'Pub La Sala', 'Club Borsalino', 'Discoteca Rocambola', 'Neon Club'],   precioMin: '40€', precioMax: '180€' },
+  castellon:     { ciudad: 'Castellón',          slug: 'castellon',     venues: ['Discoteca Zona', 'Pub Mónaco', 'Sala B12', 'Club Zenith', 'La Fábrica'],             precioMin: '30€', precioMax: '150€' },
+  almeria:       { ciudad: 'Almería',            slug: 'almeria',       venues: ['Sala Torresolo', 'Discoteca El Pueblo', 'Club Maxi', 'Pub Bamboleo', 'La Bodega'],    precioMin: '30€', precioMax: '150€' },
+  huelva:        { ciudad: 'Huelva',             slug: 'huelva',        venues: ['Sala Mandala', 'Discoteca Zeus', 'Pub Rincón', 'Club Cosmos', 'La Traca'],            precioMin: '25€', precioMax: '130€' },
+  jaen:          { ciudad: 'Jaén',               slug: 'jaen',          venues: ['Sala Olympo', 'Discoteca Galaxia', 'Pub Mandrágora', 'Club Noctámbulos', 'El Rincón'], precioMin: '25€', precioMax: '120€' },
+  cadiz:         { ciudad: 'Cádiz',              slug: 'cadiz',         venues: ['Sala La Clandestina', 'Discoteca Moma', 'Pub El Balandro', 'Club 7 Vidas', 'La Peña'], precioMin: '30€', precioMax: '150€' },
+  badajoz:       { ciudad: 'Badajoz',            slug: 'badajoz',       venues: ['Sala Zona 5', 'Discoteca Avenue', 'Pub Eterno', 'Club Eskalera', 'La Noche'],         precioMin: '25€', precioMax: '120€' },
+  caceres:       { ciudad: 'Cáceres',            slug: 'caceres',       venues: ['Sala Música', 'Discoteca La Madrugada', 'Pub Barón', 'Club Xplore', 'El Corcho'],    precioMin: '25€', precioMax: '120€' },
+  leon:          { ciudad: 'León',               slug: 'leon',          venues: ['Sala Maravillas', 'Discoteca Houdini', 'Pub Claustro', 'Club Studio', 'La Noche'],   precioMin: '25€', precioMax: '130€' },
+  burgos:        { ciudad: 'Burgos',             slug: 'burgos',        venues: ['Sala Bohemio', 'Discoteca Atenas', 'Pub La Mafia', 'Club Atlético', 'La Trastienda'], precioMin: '25€', precioMax: '130€' },
+  segovia:       { ciudad: 'Segovia',            slug: 'segovia',       venues: ['Sala El Alcázar', 'Pub Mesón', 'Club Medieval', 'Terraza La Muralla', 'El Refugio'],  precioMin: '30€', precioMax: '140€' },
+  pontevedra:    { ciudad: 'Pontevedra',         slug: 'pontevedra',    venues: ['Sala Karma', 'Pub Alameda', 'Discoteca Bahía', 'Club 5 Sentidos', 'La Noche'],        precioMin: '30€', precioMax: '140€' },
+  lugo:          { ciudad: 'Lugo',               slug: 'lugo',          venues: ['Sala Lugo', 'Pub La Merced', 'Discoteca Galaxia', 'Club Espiral', 'El Molino'],       precioMin: '25€', precioMax: '120€' },
+  ourense:       { ciudad: 'Ourense',            slug: 'ourense',       venues: ['Sala As Burgas', 'Pub Cardenal', 'Discoteca Domus', 'Club Thermal', 'La Taberna'],    precioMin: '25€', precioMax: '120€' },
+  avila:         { ciudad: 'Ávila',              slug: 'avila',         venues: ['Sala Muralla', 'Pub Medieval', 'Discoteca Siglo XV', 'Club Torreón', 'La Bodega'],    precioMin: '25€', precioMax: '120€' },
+  cuenca:        { ciudad: 'Cuenca',             slug: 'cuenca',        venues: ['Sala Casas Colgadas', 'Pub El Ventilador', 'Club Serranía', 'Discoteca Matrix', 'El Hoyo'], precioMin: '25€', precioMax: '120€' },
+  guadalajara:   { ciudad: 'Guadalajara',        slug: 'guadalajara',   venues: ['Sala Carena', 'Discoteca Azteca', 'Pub El Palacio', 'Club Fuente', 'La Estrella'],    precioMin: '25€', precioMax: '130€' },
+  huesca:        { ciudad: 'Huesca',             slug: 'huesca',        venues: ['Sala Pirámide', 'Pub Montearagón', 'Discoteca Helios', 'Club Pyros', 'La Cueva'],     precioMin: '25€', precioMax: '120€' },
+  teruel:        { ciudad: 'Teruel',             slug: 'teruel',        venues: ['Sala Mudéjar', 'Pub Amantes', 'Discoteca El Torico', 'Club Aragón', 'La Taberna'],    precioMin: '20€', precioMax: '110€' },
+  soria:         { ciudad: 'Soria',              slug: 'soria',         venues: ['Sala Duero', 'Pub La Numancia', 'Discoteca Medinaceli', 'Club Pinar', 'El Rincón'],   precioMin: '20€', precioMax: '100€' },
+  elche:         { ciudad: 'Elche',              slug: 'elche',         venues: ['Sala Palmeral', 'Discoteca Noctambulos', 'Pub Altamira', 'Club Milenio', 'La Nit'],   precioMin: '35€', precioMax: '160€' },
+  cartagena:     { ciudad: 'Cartagena',          slug: 'cartagena',     venues: ['Sala Arsenal', 'Discoteca Anfiteatro', 'Pub Naval', 'Club Mediterráneo', 'La Cueva'], precioMin: '30€', precioMax: '150€' },
+  jerez:         { ciudad: 'Jerez de la Frontera', slug: 'jerez',       venues: ['Sala Jerez', 'Discoteca Karting', 'Pub El Gallo', 'Club Bodega', 'La Tasca'],        precioMin: '30€', precioMax: '150€' },
+  costaadeje:    { ciudad: 'Costa Adeje',        slug: 'costaadeje',    venues: ['Hard Rock Tenerife', 'Papagayo Beach Club', 'El Cine Club', 'Tropic Club', 'Monkey Beach'], precioMin: '60€', precioMax: '350€',
+    seasonal: { badge: '🌴 Sur Tenerife', months: 'Todo el año', highlight: 'Costa Adeje y el sur de Tenerife concentran hoteles de lujo, bodas internacionales y eventos privados todo el año.', keywords: ['DJ Costa Adeje', 'DJ bodas sur Tenerife', 'camareros hoteles Costa Adeje'] } },
+  // Municipios grandes
+  fuengirola:    { ciudad: 'Fuengirola',          slug: 'fuengirola',    venues: ['Marenostrum Resort', 'Sala Mango', 'Pub Sea Garden', 'Club Yate', 'La Quinta'],      precioMin: '45€', precioMax: '220€',
+    seasonal: { badge: '☀️ Costa del Sol', months: 'Abril – Octubre', highlight: 'Fuengirola es uno de los municipios turísticos más activos de la Costa del Sol, con alta demanda de DJs y personal para hoteles y eventos en verano.', keywords: ['DJ Fuengirola verano', 'camareros eventos Fuengirola', 'DJ bodas Fuengirola'] } },
+  torremolinos:  { ciudad: 'Torremolinos',        slug: 'torremolinos',  venues: ['Sala Waikiki', 'Discoteca Palladium', 'Pub Nogalera', 'Club Havana', 'La Taberna'],  precioMin: '40€', precioMax: '200€',
+    seasonal: { badge: '☀️ Costa del Sol', months: 'Abril – Octubre', highlight: 'Torremolinos concentra clubs y hoteles de playa con alta demanda de DJs y staff en verano. Ambiente cosmopolita y eventos LGBTQ+.', keywords: ['DJ Torremolinos verano', 'DJ Torremolinos clubs', 'camareros Torremolinos'] } },
+  benalmadena:   { ciudad: 'Benalmádena',         slug: 'benalmadena',   venues: ['Casino Torrequebrada', 'Sala Fortuna', 'Pub Puerto Marina', 'Club Kiu', 'La Arena'], precioMin: '40€', precioMax: '200€',
+    seasonal: { badge: '☀️ Costa del Sol', months: 'Abril – Octubre', highlight: 'Benalmádena y su Puerto Marina concentran restaurantes, clubs y eventos en verano. Casino Torrequebrada es referencia de entretenimiento en la Costa del Sol.', keywords: ['DJ Benalmádena', 'camareros Puerto Marina', 'DJ eventos Benalmádena'] } },
+  estepona:      { ciudad: 'Estepona',            slug: 'estepona',      venues: ['Sala La Rada', 'Discoteca Suite', 'Pub Bodegas', 'Club Cosmo', 'La Terraza'],        precioMin: '45€', precioMax: '250€',
+    seasonal: { badge: '☀️ Costa del Sol', months: 'Mayo – Octubre', highlight: 'Estepona está en auge con nuevos complejos de lujo y campos de golf. Alta demanda de DJs y personal para eventos en villas y fincas.', keywords: ['DJ Estepona', 'camareros Estepona eventos', 'DJ boda Estepona'] } },
+  gandia:        { ciudad: 'Gandía',              slug: 'gandia',        venues: ['Discoteca Spook', 'Sala Norte', 'Pub Heaven', 'Club Ítaca', 'La Crema'],            precioMin: '35€', precioMax: '180€',
+    seasonal: { badge: '🌊 Valencia Coast', months: 'Junio – Septiembre', highlight: 'Gandía es el destino de eventos y entretenimiento más activo de la Comunidad Valenciana en verano. Spook Factory es referencia nacional de música electrónica.', keywords: ['DJ Gandía verano', 'DJ Spook Gandía', 'camareros eventos Gandía'] } },
+  denia:         { ciudad: 'Dénia',               slug: 'denia',         venues: ['Sala La Pedrera', 'Pub El Quinto', 'Club Faralló', 'La Raqueta', 'Terraza Tramontana'], precioMin: '40€', precioMax: '200€',
+    seasonal: { badge: '🌊 Costa Blanca Norte', months: 'Mayo – Septiembre', highlight: 'Dénia combina turismo familiar y de lujo con bodas en finca y eventos privados. Alta demanda de DJs y camareros en verano.', keywords: ['DJ Dénia bodas', 'camareros eventos Dénia', 'DJ fiesta privada Dénia'] } },
+  calpe:         { ciudad: 'Calpe',               slug: 'calpe',         venues: ['Club Salinas', 'Pub El Peñón', 'Discoteca Infinity', 'Terraza Ifach', 'La Lonja'],   precioMin: '40€', precioMax: '200€',
+    seasonal: { badge: '🌊 Costa Blanca', months: 'Mayo – Septiembre', highlight: 'Calpe y el Peñón de Ifach son referencia en bodas con vistas al mar y eventos privados de lujo en la Costa Blanca.', keywords: ['DJ Calpe boda', 'camareros Calpe eventos', 'DJ fiesta privada Calpe'] } },
+  javea:         { ciudad: 'Jávea',               slug: 'javea',         venues: ['Club Náutico Jávea', 'Pub Tossalet', 'Discoteca Pirámide', 'La Siesta', 'El Arenal Club'], precioMin: '50€', precioMax: '280€',
+    seasonal: { badge: '🌊 Costa Blanca', months: 'Mayo – Septiembre', highlight: 'Jávea es destino premium en la Costa Blanca con alta concentración de residentes europeos. Bodas en villa y eventos exclusivos todo el verano.', keywords: ['DJ Jávea bodas', 'camareros Jávea eventos', 'DJ villa Jávea'] } },
+  talavera:      { ciudad: 'Talavera de la Reina', slug: 'talavera',     venues: ['Sala Kalipso', 'Discoteca La Fábrica', 'Pub Aljibe', 'Club Menfis', 'La Vega'],     precioMin: '25€', precioMax: '130€' },
+  getafe:        { ciudad: 'Getafe',              slug: 'getafe',        venues: ['Sala Bonavista', 'Discoteca Area', 'Pub Getafe Center', 'Club 4', 'La Esquina'],     precioMin: '30€', precioMax: '150€' },
+  alcorcon:      { ciudad: 'Alcorcón',            slug: 'alcorcon',      venues: ['Sala Independencia', 'Pub Alcazar', 'Discoteca Fenix', 'Club Base', 'La Pista'],     precioMin: '30€', precioMax: '150€' },
+  leganes:       { ciudad: 'Leganés',             slug: 'leganes',       venues: ['Sala La Herrería', 'Pub Madrid Sur', 'Discoteca Ozone', 'Club Central', 'La Nave'],  precioMin: '30€', precioMax: '150€' },
+  mostoles:      { ciudad: 'Móstoles',            slug: 'mostoles',      venues: ['Sala Altair', 'Pub Paseo', 'Discoteca Escena', 'Club Olimpo', 'La Zona'],           precioMin: '30€', precioMax: '150€' },
+  fuenlabrada:   { ciudad: 'Fuenlabrada',         slug: 'fuenlabrada',   venues: ['Sala Zeus', 'Pub Plaza Norte', 'Discoteca Génesis', 'Club Babel', 'La Cueva'],      precioMin: '30€', precioMax: '140€' },
+  badalona:      { ciudad: 'Badalona',            slug: 'badalona',      venues: ['Sala Razzmatazz Badalona', 'Pub Mar Badalona', 'Discoteca Cosmos', 'Club Sirius', 'La Plataforma'], precioMin: '40€', precioMax: '180€' },
+  hospitalet:    { ciudad: "L'Hospitalet",        slug: 'hospitalet',    venues: ['Sala Apolo 2', 'Pub Rambla', 'Discoteca La Farga', 'Club Central', 'La Nave'],      precioMin: '40€', precioMax: '180€' },
+  sabadell:      { ciudad: 'Sabadell',            slug: 'sabadell',      venues: ['Sala Rix', 'Pub El Vapor', 'Discoteca Space', 'Club Groove', 'La Industria'],       precioMin: '35€', precioMax: '170€' },
+  terrassa:      { ciudad: 'Terrassa',            slug: 'terrassa',      venues: ['Sala Ègara', 'Pub La Mina', 'Discoteca Colors', 'Club Universe', 'La Fàbrica'],     precioMin: '35€', precioMax: '170€' },
+  cornella:      { ciudad: 'Cornellà',            slug: 'cornella',      venues: ['Sala Bikini Sur', 'Pub Riera', 'Discoteca Antilla', 'Club Mix', 'La Zona'],         precioMin: '35€', precioMax: '170€' },
+  manresa:       { ciudad: 'Manresa',             slug: 'manresa',       venues: ['Sala Stroika', 'Pub Casino', 'Discoteca Nit', 'Club La Llum', 'El Casal'],          precioMin: '30€', precioMax: '150€' },
+  mataro:        { ciudad: 'Mataró',              slug: 'mataro',        venues: ['Sala Rock Dreams', 'Pub La Mar', 'Discoteca Mond', 'Club Proa', 'La Fàbrica'],      precioMin: '35€', precioMax: '160€' },
+  reus:          { ciudad: 'Reus',                slug: 'reus',          venues: ['Sala Fortuny', 'Pub La Cartuja', 'Discoteca Cosmos', 'Club Eros', 'El Mercat'],     precioMin: '30€', precioMax: '150€' },
+  elda:          { ciudad: 'Elda',                slug: 'elda',          venues: ['Sala Altea', 'Pub La Molineta', 'Discoteca Metrópolis', 'Club Alce', 'La Cueva'],   precioMin: '25€', precioMax: '130€' },
+  torrevieja:    { ciudad: 'Torrevieja',          slug: 'torrevieja',    venues: ['Sala Mar', 'Pub Playa', 'Discoteca Picadilly', 'Club Nix', 'La Caleta'],            precioMin: '35€', precioMax: '180€',
+    seasonal: { badge: '🌊 Costa Blanca Sur', months: 'Mayo – Octubre', highlight: 'Torrevieja concentra turismo europeo y residentes del norte con alta demanda de DJs y personal para eventos en verano.', keywords: ['DJ Torrevieja verano', 'camareros Torrevieja', 'DJ bodas Torrevieja'] } },
+  orihuela:      { ciudad: 'Orihuela Costa',      slug: 'orihuela',      venues: ['Sala Zenia', 'Pub La Manga', 'Discoteca Dreams', 'Club Playa Flamenca', 'La Cala'],  precioMin: '35€', precioMax: '180€',
+    seasonal: { badge: '🌊 Costa Blanca Sur', months: 'Mayo – Octubre', highlight: 'Orihuela Costa y La Zenia concentran urbanizaciones de lujo con bodas en finca y eventos privados en temporada alta.', keywords: ['DJ Orihuela Costa', 'camareros Orihuela eventos', 'DJ bodas Orihuela'] } },
+  valdemoro:     { ciudad: 'Valdemoro',           slug: 'valdemoro',     venues: ['Sala Central', 'Pub La Plaza', 'Discoteca Oasis', 'Club Zona', 'El Gato'],          precioMin: '25€', precioMax: '130€' },
+  pozuelo:       { ciudad: 'Pozuelo de Alarcón',  slug: 'pozuelo',       venues: ['Sala Pozuelo', 'Pub La Dehesa', 'Discoteca Campus', 'Club Alto', 'La Finca'],       precioMin: '40€', precioMax: '200€' },
+  majadahonda:   { ciudad: 'Majadahonda',         slug: 'majadahonda',   venues: ['Sala Majadahonda', 'Pub La Estación', 'Discoteca Classic', 'Club Monte', 'El Lago'], precioMin: '40€', precioMax: '200€' },
+  elmasnou:      { ciudad: 'El Masnou',           slug: 'elmasnou',      venues: ['Sala Port', 'Pub La Barca', 'Club Mar', 'Terraza El Masnou', 'La Riba'],            precioMin: '40€', precioMax: '180€' },
+  vilanova:      { ciudad: 'Vilanova i la Geltrú', slug: 'vilanova',     venues: ['Sala Maldà', 'Pub La Geltrú', 'Discoteca Cosmos', 'Club Maresme', 'La Musclera'],   precioMin: '40€', precioMax: '180€' },
 };
 
 type CategoryInfo = {
@@ -105,7 +244,7 @@ const CATEGORIES: Record<string, CategoryInfo> = {
     intro: (c, venues) => {
       if (c === 'Ibiza') return 'Ibiza es el destino número uno para DJs y eventos privados en Europa. Villas, yates, pool parties y clubs de clase mundial como Amnesia, Pacha o DC-10. XPEAK conecta organizadores con DJs verificados disponibles en Ibiza para fiestas privadas, eventos en villa y clubs. Temporada activa de mayo a octubre.';
       if (c === 'Palma') return 'Mallorca concentra cientos de eventos privados en finca, villa y yate de mayo a octubre. XPEAK conecta organizadores con DJs verificados en Palma y toda Mallorca: desde pool parties en villas hasta bodas en finca y eventos corporativos en hotel resort.';
-      return `${c} concentra una de las escenas de ocio nocturno más activas de España. Desde clubs como ${venues.slice(0,2).join(' y ')} hasta eventos privados, XPEAK conecta salas, promotoras y organizadores con DJs verificados disponibles ahora mismo.`;
+      return `${c} concentra una de las escenas de eventos y entretenimiento más activas de España. Desde clubs como ${venues.slice(0,2).join(' y ')} hasta eventos privados, XPEAK conecta salas, promotoras y organizadores con DJs verificados disponibles ahora mismo.`;
     },
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta contratar un DJ en ${c}?`, a: c === 'Ibiza'
@@ -192,7 +331,157 @@ const CATEGORIES: Record<string, CategoryInfo> = {
       { q: '¿La disco móvil sirve para bodas?', a: 'Sí, es la opción más popular para bodas en fincas rurales y locales sin equipo propio. El DJ llega con todo el material, lo monta antes del evento y lo recoge al terminar.' },
     ],
   },
+  speaker: {
+    label: 'Speaker',
+    keyword: 'Speaker y Presentador',
+    unidad: '/evento',
+    desc: (c) => `Contratar speaker o presentador en ${c} para eventos corporativos, congresos y galas. Ponentes motivacionales, MCs y presentadores verificados. Flash Booking. Sin comisión.`,
+    intro: (c) => `Encuentra speakers, ponentes y presentadores profesionales en ${c} para conferencias, congresos, cenas de empresa y galas. XPEAK conecta organizadores con comunicadores verificados: desde keynote speakers motivacionales hasta MCs bilingües con experiencia en grandes eventos.`,
+    faqs: (c, precio) => [
+      { q: `¿Cuánto cuesta contratar un speaker en ${c}?`, a: `Un speaker profesional en ${c} cobra entre ${precio} por evento según su especialidad y trayectoria. Presentadores de eventos desde 300€; keynote speakers con experiencia internacional desde 1.000€.` },
+      { q: `¿Qué diferencia hay entre un speaker y un presentador en ${c}?`, a: 'Un speaker da una ponencia o conferencia con contenido propio. Un presentador o MC conduce el evento, da paso a los actos y dinamiza la audiencia. Muchos profesionales hacen ambas funciones.' },
+      { q: '¿Puedo contratar un presentador bilingüe en ${c}?', a: `Sí. XPEAK tiene presentadores bilingüe (español/inglés) en ${c} para eventos con asistentes internacionales. Especifícalo en tu solicitud de Flash Booking.` },
+    ],
+  },
+  mago: {
+    label: 'Mago',
+    keyword: 'Mago e Ilusionista',
+    unidad: '/evento',
+    desc: (c) => `Contratar mago o ilusionista en ${c} para bodas, eventos de empresa y fiestas privadas. Magia de cerca y shows de escenario. Flash Booking. Sin comisión.`,
+    intro: (c) => `Encuentra magos e ilusionistas profesionales en ${c} para cualquier tipo de evento: magia de cerca en mesas para bodas y cenas de empresa, shows de escenario para convenciones y fiestas privadas. XPEAK conecta organizadores con magos verificados con experiencia demostrable.`,
+    faqs: (c, precio) => [
+      { q: `¿Cuánto cuesta contratar un mago en ${c}?`, a: `Un mago profesional en ${c} cobra entre ${precio} por evento. Magia de cerca para bodas (pase entre mesas): 200€–400€. Shows de escenario de 30–60 min: 400€–800€.` },
+      { q: `¿Qué tipos de espectáculos de magia hay en ${c}?`, a: 'Magia de cerca (close-up) entre los asistentes, shows de escenario con grandes ilusiones, magia infantil y familiar, y magia corporativa con branding de la empresa integrado en el show.' },
+      { q: '¿Un mago es adecuado para una boda?', a: 'Sí, es uno de los entretenimientos más valorados en bodas. El mago pasa por las mesas durante el cóctel o la cena creando momentos únicos y rompiendo el hielo entre los invitados.' },
+    ],
+  },
+  bailarin: {
+    label: 'Bailarín',
+    keyword: 'Bailarín y Compañía de Danza',
+    unidad: '/evento',
+    desc: (c) => `Contratar bailarines en ${c} para bodas, eventos y espectáculos: flamenco, baile moderno, latino y danza contemporánea. Shows desde 30 min. Flash Booking. Sin comisión.`,
+    intro: (c) => `Encuentra bailarines y compañías de danza en ${c} para amenizar cualquier evento: flamenco para bodas y eventos internacionales, shows de baile moderno para convenciones, danza contemporánea para galas y espectáculos de apertura. XPEAK conecta organizadores con bailarines profesionales verificados.`,
+    faqs: (c, precio) => [
+      { q: `¿Cuánto cuesta contratar bailarines en ${c}?`, a: `Un espectáculo de baile en ${c} cuesta entre ${precio} por show según la duración y el número de bailarines. Shows de flamenco desde 300€; compañías de 4–6 bailarines desde 600€.` },
+      { q: `¿Qué estilos de baile puedo contratar en ${c}?`, a: `En XPEAK encontrarás bailarines de flamenco, baile latino (salsa, bachata), hip hop, danza contemporánea, ballet y baile nupcial para la primera danza de bodas en ${c}.` },
+      { q: '¿Puedo contratar bailarines para una boda civil?', a: 'Sí. El espectáculo de baile es muy popular durante el cóctel o la apertura del banquete. También hay bailarines especializados en coreografías sorpresa para la primera danza de los novios.' },
+    ],
+  },
+  monologo: {
+    label: 'Monólogo',
+    keyword: 'Monologuista y Stand-Up',
+    unidad: '/actuación',
+    desc: (c) => `Contratar monologuista o cómico de stand-up en ${c} para cenas de empresa, bodas y eventos. Guión personalizado. Flash Booking. Sin comisión.`,
+    intro: (c) => `Encuentra monologuistas y cómicos de stand-up en ${c} para cualquier evento: cenas de empresa, bodas, convenciones, fiestas privadas y festivales de humor. XPEAK conecta organizadores con profesionales del humor verificados con experiencia demostrable y guión adaptable a cada ocasión.`,
+    faqs: (c, precio) => [
+      { q: `¿Cuánto cuesta contratar un monologuista en ${c}?`, a: `Un monólogo profesional en ${c} cuesta entre ${precio} por actuación según la duración y el perfil del cómico. Actuaciones de 20-30 min para cenas de empresa: 300€–600€. Shows de stand-up de 45-60 min: 500€–1.200€.` },
+      { q: `¿El monologuista puede personalizar el guión para mi empresa en ${c}?`, a: 'Sí. La mayoría de monologuistas en XPEAK ofrecen guión 100% personalizado con referencias a tu empresa, sector, equipo o ciudad. Es el formato más demandado para cenas de empresa y convenciones.' },
+      { q: `¿Un monólogo funciona para una boda en ${c}?`, a: 'Absolutamente. El monólogo de boda es el entretenimiento que más recuerdan los invitados. El cómico recoge anécdotas de la pareja y los invitados para crear un show único e irrepetible de 20-30 minutos.' },
+      { q: '¿Cuánto dura una actuación de stand-up para eventos?', a: 'Lo más habitual es 20-30 minutos para cenas y bodas (formato cóctel o sobremesa) y 45-60 minutos para shows de teatro o festivales. Puedes especificar la duración exacta al hacer la solicitud.' },
+    ],
+  },
+  monologos: {
+    label: 'Monólogos',
+    keyword: 'Monologuista y Stand-Up',
+    unidad: '/actuación',
+    desc: (c) => `Contratar monologuistas en ${c} para cenas de empresa, bodas y eventos. Stand-up comedy con guión personalizado. Flash Booking. Sin comisión.`,
+    intro: (c) => `Encuentra monologuistas y cómicos de stand-up en ${c} para cualquier tipo de evento. XPEAK conecta organizadores con los mejores cómicos verificados de ${c}: desde stand-up comedy para festivales hasta monólogos a medida para cenas corporativas y bodas.`,
+    faqs: (c, precio) => [
+      { q: `¿Cuánto cobran los monologuistas en ${c}?`, a: `Los monologuistas profesionales en ${c} cobran entre ${precio} por actuación. Monólogos cortos de 20 min: desde 250€. Shows completos de 60 min: desde 600€.` },
+      { q: `¿Dónde puedo encontrar monologuistas para eventos en ${c}?`, a: `En XPEAK tienes un directorio de monologuistas verificados en ${c} con vídeos de actuaciones anteriores, opiniones de clientes y disponibilidad en tiempo real. Puedes contactar directamente o usar Flash Booking para urgencias.` },
+      { q: '¿Puedo contratar varios cómicos para una noche de stand-up?', a: 'Sí. XPEAK permite coordinar varios monologuistas para una misma noche. Ideal para festivales de humor, galas de empresa con varios actos o eventos benéficos con presentador y cómicos.' },
+    ],
+  },
+  humorista: {
+    label: 'Humorista',
+    keyword: 'Humorista y Cómico',
+    unidad: '/evento',
+    desc: (c) => `Contratar humorista o monologuista en ${c} para cenas de empresa, bodas y eventos privados. Stand-up comedy, monólogos personalizados e impro. Flash Booking. Sin comisión.`,
+    intro: (c) => `Encuentra humoristas, monologuistas y cómicos en ${c} para amenizar cenas de empresa, bodas, fiestas privadas y eventos corporativos. XPEAK conecta organizadores con humoristas profesionales con experiencia en eventos: desde stand-up comedy hasta dinámicas de impro para team building.`,
+    faqs: (c, precio) => [
+      { q: `¿Cuánto cuesta contratar un humorista en ${c}?`, a: `Un monólogo profesional en ${c} cuesta entre ${precio} por actuación. Shows de 20–30 min para cenas de empresa: 300€–600€. Actuaciones de stand-up de 45–60 min: 500€–1.000€.` },
+      { q: `¿El humorista puede personalizar el monólogo para mi empresa en ${c}?`, a: 'Sí. La mayoría de humoristas en XPEAK ofrecen guion personalizado con referencias a la empresa, el sector o los asistentes. Especifícalo al hacer la solicitud.' },
+      { q: '¿Un humorista es adecuado para una cena de empresa?', a: 'Es uno de los entretenimientos más demandados para cenas corporativas. Un buen monólogo rompe el hielo, genera risas compartidas y crea un recuerdo positivo del evento entre los empleados.' },
+    ],
+  },
+  maquillaje: {
+    label: 'Maquilladora',
+    keyword: 'Maquilladora y Estilista',
+    unidad: '/servicio',
+    desc: (c) => `Contratar maquilladora en ${c} para bodas, eventos y sesiones fotográficas. Maquillaje profesional, peinado y estilismo. Flash Booking. Sin comisión.`,
+    intro: (c) => `Encuentra maquilladoras y estilistas profesionales en ${c} para bodas, sesiones de fotos, eventos de moda y TV. XPEAK conecta organizadores y novias con maquilladoras verificadas con portfolio real y experiencia en eventos.`,
+    faqs: (c, precio) => [
+      { q: `¿Cuánto cuesta una maquilladora profesional en ${c}?`, a: `El maquillaje profesional en ${c} cuesta entre ${precio} por servicio. Maquillaje de novia completo: 150€–300€. Maquillaje artístico para eventos: 80€–200€.` },
+      { q: `¿La maquilladora va al domicilio o a la peluquería en ${c}?`, a: 'La mayoría de maquilladoras en XPEAK ofrecen servicio a domicilio o en el propio venue del evento. Especifícalo en tu solicitud y confirma el desplazamiento.' },
+      { q: '¿Puedo contratar maquillaje para varias personas?', a: 'Sí. Para bodas y eventos grupales muchas maquilladoras trabajan en equipo o tienen asistentes. Indica el número de personas al hacer la solicitud para recibir presupuesto ajustado.' },
+    ],
+  },
+  promotores: {
+    label: 'Promotor',
+    keyword: 'Promotor y RRPP',
+    unidad: '/noche',
+    desc: (c) => `Contratar promotor o RRPP en ${c} para clubs, festivales y eventos. Gestión de listas VIP, captación de público y relaciones públicas. Flash Booking. Sin comisión.`,
+    intro: (c) => `Encuentra promotores y relaciones públicas profesionales en ${c} para clubs nocturnos, festivales y eventos. XPEAK conecta salas y organizadores con promotores verificados: gestión de listas VIP, captación de público, street marketing y coordinación de prensa.`,
+    faqs: (c, precio) => [
+      { q: `¿Cuánto cobra un promotor en ${c}?`, a: `Un promotor o RRPP en ${c} cobra entre ${precio} por noche según el volumen de trabajo y su red de contactos. Algunos trabajan a comisión por entrada vendida; otros cobran tarifa fija.` },
+      { q: `¿Qué hace exactamente un promotor de eventos en ${c}?`, a: 'Gestiona la lista VIP, capta público objetivo, hace difusión en redes y en su red de contactos, coordina con la puerta y en algunos casos gestiona relaciones con prensa y medios locales.' },
+      { q: '¿El promotor puede gestionar el marketing en redes sociales?', a: 'Depende del perfil. En XPEAK algunos promotores incluyen gestión de Instagram y contenido en su servicio. Consulta directamente con cada profesional qué incluye su tarifa.' },
+    ],
+  },
+  animador: {
+    label: 'Animador',
+    keyword: 'Payaso y Animador de Eventos',
+    unidad: '/evento',
+    desc: (c) => `Contratar payaso o animador en ${c} para cumpleaños, bodas, eventos corporativos y festivales. Animación infantil, magia y circo. Flash Booking. Sin comisión.`,
+    intro: (c) => `Encuentra payasos, animadores y artistas de calle en ${c} para todo tipo de eventos. XPEAK conecta organizadores con animadores profesionales verificados en ${c}: desde animación infantil con magia y globoflexia hasta artistas de circo y mimo para eventos corporativos y festivales.`,
+    faqs: (c, precio) => [
+      { q: `¿Cuánto cuesta contratar un payaso o animador en ${c}?`, a: `Un animador o payaso profesional en ${c} cuesta entre ${precio} por evento. Animación infantil básica (60 min): 150€–250€. Shows de circo o animación adultos: 300€–600€.` },
+      { q: `¿Qué servicios incluye un animador infantil en ${c}?`, a: 'Los animadores infantiles en XPEAK suelen incluir magia, globoflexia, juegos y cuentacuentos. Algunos ofrecen también pintacaras y talleres de manualidades. Consulta el perfil de cada profesional para ver qué incluye su show.' },
+      { q: `¿Puedo contratar un animador para una boda en ${c}?`, a: 'Sí. Muchos animadores en XPEAK tienen experiencia en bodas, tanto para entretener a los niños durante el banquete como para dinamizar al público adulto con juegos, humor o espectáculos de circo.' },
+      { q: '¿Hay animadores disponibles para eventos corporativos?', a: 'Sí. Artistas de circo, zanqueros, mimos y animadores de team building son muy demandados en eventos de empresa. Usa Flash Booking si necesitas un animador con urgencia para tu evento.' },
+    ],
+  },
+  payaso: {
+    label: 'Payaso',
+    keyword: 'Payaso Profesional',
+    unidad: '/evento',
+    desc: (c) => `Contratar payaso profesional en ${c} para cumpleaños infantiles, bodas y fiestas. Magia, globoflexia y animación. Flash Booking. Sin comisión.`,
+    intro: (c) => `Encuentra payasos profesionales en ${c} para cumpleaños, comuniones y todo tipo de celebraciones. XPEAK conecta familias y organizadores con los mejores payasos verificados en ${c} con portfolio de actuaciones y opiniones reales de clientes.`,
+    faqs: (c, precio) => [
+      { q: `¿Cuánto cobra un payaso en ${c}?`, a: `Un payaso profesional en ${c} cobra entre ${precio} por actuación. Shows de 60 min para cumpleaños: 150€–300€. Actuaciones con más de 2 horas o efectos especiales: desde 350€.` },
+      { q: `¿A partir de qué edad es adecuado un payaso para niños en ${c}?`, a: 'Los payasos en XPEAK adaptan su show a la edad del público. Para niños de 3-5 años: globoflexia y cuentacuentos. Para 6-12 años: magia, juegos participativos y humor. Especifícalo al hacer la reserva.' },
+      { q: '¿El payaso lleva su propio material?', a: 'Sí. Todos los animadores en XPEAK llevan su propio material: disfraces, globos, efectos mágicos y música. Solo necesitas un espacio mínimo de 3x3m para el show.' },
+    ],
+  },
 };
+
+const ProfGrid = ({ profs }: { profs: Prof[] }) => (
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 16 }}>
+    {profs.map(p => (
+      <a key={p.id}
+        href={p.slug ? `/p/${p.slug}` : `/p/${p.id}`}
+        style={{ textDecoration: 'none', display: 'block', background: 'rgba(255,255,255,0.03)', border: p.is_early_adopter ? '2px solid #3B82F6' : '1px solid rgba(255,255,255,0.08)', borderRadius: 16, overflow: 'hidden', transition: 'transform 0.2s', boxShadow: p.is_early_adopter ? '0 0 0 3px rgba(59,130,246,0.15)' : 'none' }}
+        onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.02)')}
+        onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}>
+        <div style={{ aspectRatio: '3/2', overflow: 'hidden', background: 'rgba(255,255,255,0.05)', position: 'relative' }}>
+          {p.photo_url
+            ? <img src={p.photo_url} alt={p.display_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} loading="lazy" />
+            : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36, fontWeight: 900, color: '#D4AF37' }}>{p.display_name.charAt(0)}</div>
+          }
+          <div style={{ position: 'absolute', top: 8, right: 8, display: 'flex', gap: 4 }}>
+            {p.is_verified && <span style={{ background: '#D4AF37', color: '#000', fontSize: 9, fontWeight: 900, padding: '2px 6px', borderRadius: 4 }}>✓ VERIFICADO</span>}
+            {p.is_early_adopter && <span style={{ background: '#3B82F6', color: '#fff', fontSize: 9, fontWeight: 900, padding: '2px 6px', borderRadius: 4 }}>⭐ EARLY</span>}
+          </div>
+        </div>
+        <div style={{ padding: '12px 14px' }}>
+          <p style={{ fontWeight: 900, fontSize: 14, color: '#fff', margin: '0 0 4px' }}>{p.display_name}</p>
+          {p.city && <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', margin: '0 0 6px', display: 'flex', alignItems: 'center', gap: 4 }}><span>📍</span>{p.city}</p>}
+          {p.bio && <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)', margin: 0, lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{p.bio}</p>}
+        </div>
+      </a>
+    ))}
+  </div>
+);
 
 export default function CityLanding() {
   const { ciudad } = useParams<{ ciudad: string }>();
@@ -208,6 +497,7 @@ export default function CityLanding() {
 
   const precio = `${cityData.precioMin}–${cityData.precioMax}`;
   const canonicalBase = `/contratar-${categorySlug}/${cityData.slug}`;
+  const { profs: professionals, suggestions: profSuggestions, loaded: profsLoaded } = useCityProfessionals(cityData.ciudad, categorySlug);
   const h1 = `Contratar ${catData.keyword} en ${cityData.ciudad}`;
 
   const structuredData = {
@@ -314,7 +604,7 @@ export default function CityLanding() {
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               <Zap size={15} /> Publicar oferta gratis
             </a>
-            <a href="/"
+            <a href={`/directorio/${categorySlug}`}
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
               style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }}>
               Ver directorio <ArrowRight size={14} />
@@ -373,7 +663,7 @@ export default function CityLanding() {
         {cityData.venues.length > 0 && (
           <section className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
             <h2 className="text-xl sm:text-2xl font-black mb-2">Espacios y venues en {cityData.ciudad}</h2>
-            <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.45)' }}>
+            <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.6)' }}>
               Profesionales con experiencia en los principales espacios de la ciudad.
             </p>
             <div className="flex flex-wrap gap-2">
@@ -383,6 +673,45 @@ export default function CityLanding() {
                   {v}
                 </span>
               ))}
+            </div>
+          </section>
+        )}
+
+        {/* Profesionales reales de Supabase */}
+        {profsLoaded && (
+          <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14">
+            {professionals.length > 0 ? (
+              <>
+                <h2 className="text-xl sm:text-2xl font-black mb-2">
+                  {catData.keyword} disponibles en {cityData.ciudad}
+                </h2>
+                <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                  Profesionales verificados activos en XPEAK. Contacto directo, sin intermediarios.
+                </p>
+                <ProfGrid profs={professionals} />
+              </>
+            ) : (
+              <>
+                <div className="rounded-2xl p-6 mb-8 text-center" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  <p className="text-base font-black mb-1">Aún no hay {catData.keyword} registrados en {cityData.ciudad}</p>
+                  <p className="text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>
+                    Estamos creciendo. Mientras tanto, puedes contactar a estos profesionales que trabajan en toda España y se desplazan.
+                  </p>
+                </div>
+                {profSuggestions.length > 0 && (
+                  <>
+                    <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.3)' }}>
+                      Sugerencias · Disponibles en toda España
+                    </p>
+                    <ProfGrid profs={profSuggestions} />
+                  </>
+                )}
+              </>
+            )}
+            <div style={{ textAlign: 'center', marginTop: 24 }}>
+              <a href={`/directorio/${categorySlug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 24px', borderRadius: 12, fontWeight: 700, fontSize: 13, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', textDecoration: 'none' }}>
+                Ver todos los {catData.keyword} <ArrowRight size={13} />
+              </a>
             </div>
           </section>
         )}
@@ -398,7 +727,7 @@ export default function CityLanding() {
               <div key={s.step} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
                 <p className="text-3xl font-black mb-3" style={{ color: 'rgba(212,175,55,0.25)' }}>{s.step}</p>
                 <p className="text-sm font-bold mb-1.5">{s.title}</p>
-                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>{s.body}</p>
+                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{s.body}</p>
               </div>
             ))}
           </div>

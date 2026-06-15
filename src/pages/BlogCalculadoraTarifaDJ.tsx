@@ -152,7 +152,7 @@ export default function BlogCalculadoraTarifaDJ() {
                         border: `1px solid ${experiencia === opt.v ? 'rgba(212,175,55,0.4)' : 'rgba(255,255,255,0.08)'}`,
                       }}>
                       <p className="text-xs font-bold" style={{ color: experiencia === opt.v ? '#D4AF37' : '#fff' }}>{opt.l}</p>
-                      <p className="text-[0.6rem]" style={{ color: 'rgba(255,255,255,0.4)' }}>{opt.s}</p>
+                      <p className="text-[0.6rem]" style={{ color: 'rgba(255,255,255,0.6)' }}>{opt.s}</p>
                     </button>
                   ))}
                 </div>
@@ -168,7 +168,7 @@ export default function BlogCalculadoraTarifaDJ() {
             <div className="mt-6 p-5 rounded-xl text-center" style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.25)' }}>
               <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: 'rgba(212,175,55,0.7)' }}>Precio estimado</p>
               <p className="text-4xl font-black mb-1" style={{ color: '#D4AF37' }}>{rango}</p>
-              <p className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>Sin IVA · Orientativo · Basado en tarifas reales 2026</p>
+              <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>Sin IVA · Orientativo · Basado en tarifas reales 2026</p>
             </div>
           </div>
 

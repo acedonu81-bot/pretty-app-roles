@@ -204,7 +204,7 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
   .contract-meta {
     text-align: right;
     font-size: 9pt;
-    color: rgba(255,255,255,0.5);
+    color: rgba(22,20,18,0.55);
     line-height: 2;
   }
   .contract-meta strong {
@@ -315,7 +315,7 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
   tbody tr:nth-child(even) { background: #fdfaf2; }
   tbody td { padding: 9px 14px; color: #333; border-bottom: 1px solid #ede8d5; }
   tbody tr:last-child { background: #0a0a0c !important; }
-  tbody tr:last-child td { color: rgba(255,255,255,0.75); border-bottom: none; font-weight: 500; }
+  tbody tr:last-child td { color: rgba(22,20,18,0.8); border-bottom: none; font-weight: 500; }
   tbody tr:last-child .td-net { color: #D4AF37; font-size: 13pt; font-weight: 700; }
   .td-total { font-weight: 700; color: #0a0a0c; }
   .td-net { font-weight: 700; color: #B8941E; }
@@ -645,9 +645,9 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
 
   // ── Shared styles ──────────────────────────────────────────────────────────
   const inp = "w-full px-4 py-3 rounded-xl text-sm outline-none transition-all";
-  const inpStyle = { background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' } as const;
+  const inpStyle = { background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: 'rgba(22,20,18,0.88)' } as const;
   const lbl = "text-xs font-bold uppercase tracking-wider mb-1.5 block";
-  const lblStyle = { color: 'rgba(255,255,255,0.4)' };
+  const lblStyle = { color: 'rgba(22,20,18,0.65)' };
   const sec = "text-xs font-black tracking-widest mb-4";
   const secStyle = { color: 'rgba(212,175,55,0.7)' };
 
@@ -668,7 +668,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
 
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4"
-          style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
               style={{ background: 'linear-gradient(135deg,rgba(212,175,55,0.15),rgba(212,175,55,0.05))', border: '1px solid rgba(212,175,55,0.25)' }}>
@@ -676,7 +676,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
             </div>
             <div>
               <h3 className="text-sm font-bold">Generar Contrato</h3>
-              <p className="text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>Con <span style={{ color: '#D4AF37' }}>{professional.name}</span> · Ref. {ref}</p>
+              <p className="text-xs" style={{ color: 'rgba(22,20,18,0.4)' }}>Con <span style={{ color: '#D4AF37' }}>{professional.name}</span> · Ref. {ref}</p>
             </div>
           </div>
           <button onClick={onClose} className="p-2 rounded-lg hover:bg-white/5 transition-colors">
@@ -685,19 +685,19 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
         </div>
 
         {/* Step indicator */}
-        <div className="flex items-center gap-0 px-5 py-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+        <div className="flex items-center gap-0 px-5 py-3" style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
           {STEPS.map((s, i) => (
             <div key={s} className="flex items-center flex-1">
               <button onClick={() => setStep((i + 1) as 1|2|3)}
                 className="flex items-center gap-1.5 text-xs font-bold transition-all"
-                style={{ color: step === i+1 ? '#D4AF37' : stepComplete[i] ? 'rgba(34,197,94,0.8)' : 'rgba(255,255,255,0.3)' }}>
+                style={{ color: step === i+1 ? '#D4AF37' : stepComplete[i] ? 'rgba(34,197,94,0.8)' : 'rgba(22,20,18,0.35)' }}>
                 <span className="w-5 h-5 rounded-full flex items-center justify-center text-xs"
-                  style={{ background: step === i+1 ? 'rgba(212,175,55,0.15)' : stepComplete[i] ? 'rgba(34,197,94,0.1)' : 'rgba(255,255,255,0.05)', border: `1px solid ${step === i+1 ? 'rgba(212,175,55,0.4)' : stepComplete[i] ? 'rgba(34,197,94,0.3)' : 'rgba(255,255,255,0.1)'}` }}>
+                  style={{ background: step === i+1 ? 'rgba(212,175,55,0.15)' : stepComplete[i] ? 'rgba(34,197,94,0.1)' : 'rgba(0,0,0,0.05)', border: `1px solid ${step === i+1 ? 'rgba(212,175,55,0.4)' : stepComplete[i] ? 'rgba(34,197,94,0.3)' : 'rgba(0,0,0,0.08)'}` }}>
                   {stepComplete[i] ? '✓' : i+1}
                 </span>
                 <span className="hidden sm:inline">{s}</span>
               </button>
-              {i < 2 && <ChevronRight size={12} className="flex-1 mx-1" style={{ color: 'rgba(255,255,255,0.15)' }} />}
+              {i < 2 && <ChevronRight size={12} className="flex-1 mx-1" style={{ color: 'rgba(0,0,0,0.1)' }} />}
             </div>
           ))}
         </div>
@@ -706,7 +706,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
         <div className="mx-5 mt-4 p-3 rounded-xl flex items-start gap-2"
           style={{ background: 'rgba(255,188,0,0.04)', border: '1px solid rgba(255,188,0,0.15)' }}>
           <AlertCircle size={12} style={{ color: '#ffbc00', flexShrink: 0, marginTop: 1 }} />
-          <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.4)' }}>
+          <p className="text-xs leading-relaxed" style={{ color: 'rgba(22,20,18,0.65)' }}>
             Modelo orientativo conforme a legislación española. Recomendamos revisión por abogado antes de firmar.
           </p>
         </div>
@@ -766,9 +766,9 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
                     <button key={et.id} type="button" onClick={() => selectEventType(et.id)}
                       className="px-3 py-2.5 rounded-xl text-xs font-bold transition-all text-left"
                       style={{
-                        background: tipoEvento === et.id ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.03)',
-                        border: `1px solid ${tipoEvento === et.id ? 'rgba(212,175,55,0.4)' : 'rgba(255,255,255,0.08)'}`,
-                        color: tipoEvento === et.id ? '#D4AF37' : 'rgba(255,255,255,0.5)',
+                        background: tipoEvento === et.id ? 'rgba(212,175,55,0.12)' : 'rgba(0,0,0,0.03)',
+                        border: `1px solid ${tipoEvento === et.id ? 'rgba(212,175,55,0.4)' : 'rgba(0,0,0,0.08)'}`,
+                        color: tipoEvento === et.id ? '#D4AF37' : 'rgba(22,20,18,0.55)',
                       }}>
                       {et.label}
                     </button>
@@ -808,7 +808,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
                 <label className={lbl} style={lblStyle}>Equipamiento técnico</label>
                 <textarea className={inp} style={{ ...inpStyle, resize: 'none' } as React.CSSProperties}
                   rows={3} value={form.equipoSonido} onChange={set('equipoSonido')} />
-                <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.25)' }}>Pre-rellenado según tipo de evento. Edita si es necesario.</p>
+                <p className="text-xs mt-1" style={{ color: 'rgba(22,20,18,0.3)' }}>Pre-rellenado según tipo de evento. Edita si es necesario.</p>
               </div>
             </div>
           )}
@@ -837,8 +837,8 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
                 <div className="rounded-2xl p-4 grid grid-cols-3 gap-3 text-center"
                   style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}>
                   {[
-                    { label: 'Base imponible',  value: `€${fmt(price)}`, color: 'rgba(255,255,255,0.7)' },
-                    { label: 'IVA 21%',         value: `+€${fmt(iva)}`,  color: '#fff' },
+                    { label: 'Base imponible',  value: `€${fmt(price)}`, color: 'rgba(22,20,18,0.75)' },
+                    { label: 'IVA 21%',         value: `+€${fmt(iva)}`,  color: 'rgba(22,20,18,0.88)' },
                     { label: 'Total con IVA',   value: `€${fmt(gross)}`, color: '#D4AF37' },
                   ].map(x => (
                     <div key={x.label}>
@@ -857,14 +857,14 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
                   </p>
                   {hasSig && (
                     <button onClick={clearSig} className="flex items-center gap-1 text-xs px-2 py-0.5 rounded transition-all hover:scale-105"
-                      style={{ background: 'rgba(255,255,255,0.05)', color: '#8E8EA0' }}>
+                      style={{ background: 'rgba(0,0,0,0.05)', color: '#8E8EA0' }}>
                       <Eraser size={11} /> Borrar
                     </button>
                   )}
                 </div>
                 <canvas ref={sigRef} width={460} height={90}
                   className="w-full rounded-lg cursor-crosshair touch-none"
-                  style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${hasSig ? 'rgba(212,175,55,0.35)' : 'rgba(255,255,255,0.08)'}`, display: 'block' }} />
+                  style={{ background: 'rgba(0,0,0,0.03)', border: `1px solid ${hasSig ? 'rgba(212,175,55,0.35)' : 'rgba(0,0,0,0.08)'}`, display: 'block' }} />
                 <p className="text-xs text-muted-foreground mt-1.5">Dibuja tu firma con el ratón o con el dedo. Se incrustará en el PDF.</p>
               </div>
 
@@ -886,7 +886,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
           {step > 1 && (
             <button onClick={() => setStep(s => (s - 1) as 1|2|3)}
               className="flex-1 py-3 rounded-xl font-bold text-sm transition-all"
-              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#8E8EA0' }}>
+              style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#8E8EA0' }}>
               ← Anterior
             </button>
           )}

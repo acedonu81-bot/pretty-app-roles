@@ -58,7 +58,7 @@ const MapaView = () => {
       </div>
 
       <div className="glass-panel p-3 mb-5">
-        <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--nightlife-border)' }}>
+        <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid var(--nightlife-border)' }}>
           <Search size={14} className="text-muted-foreground flex-shrink-0" />
           <input
             type="text"
@@ -87,7 +87,7 @@ const MapaView = () => {
                 }}
               >
                 <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                  style={{ background: isSelected ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.05)' }}>
+                  style={{ background: isSelected ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.05)' }}>
                   <MapPin size={14} style={{ color: isSelected ? '#D4AF37' : 'var(--nightlife-text-secondary)' }} />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -122,7 +122,7 @@ const MapaView = () => {
             <div className="glass-panel p-8 flex flex-col items-center text-center gap-3">
               <MapPin size={24} style={{ color: 'rgba(212,175,55,0.2)' }} />
               <div>
-                <p className="text-sm font-bold mb-1" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                <p className="text-sm font-bold mb-1" style={{ color: 'rgba(22,20,18,0.4)' }}>
                   Sin profesionales aún en {selectedCity}
                 </p>
                 <p className="text-xs text-muted-foreground max-w-[240px] mx-auto">
@@ -158,7 +158,7 @@ const MapaView = () => {
                       {ROLE_LABELS[pro.role] ?? pro.role}{pro.specialty ? ` · ${pro.specialty}` : ''}
                     </p>
                   </div>
-                  <ExternalLink size={12} style={{ color: 'rgba(255,255,255,0.2)', flexShrink: 0 }} />
+                  <ExternalLink size={12} style={{ color: 'rgba(0,0,0,0.1)', flexShrink: 0 }} />
                 </a>
               ))}
             </div>

@@ -64,9 +64,57 @@ function staticUrls(today) {
     lines.push(url(`https://xpeak.es/contratar-${c}`, today, 'weekly', catPri[c] || '0.8'));
   }
 
-  // City landings
-  const cities = ['madrid','barcelona','valencia','sevilla','malaga','bilbao','zaragoza','murcia','palma','ibiza'];
-  const cityPri = { madrid: '0.85', barcelona: '0.85', ibiza: '0.85', valencia: '0.8', sevilla: '0.8', malaga: '0.75', bilbao: '0.75', palma: '0.75', zaragoza: '0.7', murcia: '0.7' };
+  // City landings — todas las capitales de provincia + grandes ciudades de España
+  const cities = [
+    // Tier 1 — máximo tráfico
+    'madrid','barcelona','valencia','sevilla','bilbao','malaga','ibiza','palma',
+    // Tier 2 — capitales grandes
+    'zaragoza','murcia','alicante','granada','cordoba','san-sebastian','santander',
+    'valladolid','santiago-de-compostela','pamplona','vitoria','logrono',
+    // Tier 3 — Galicia
+    'vigo','a-coruna','ourense','lugo','pontevedra',
+    // Asturias y Cantabria
+    'oviedo','gijon',
+    // Canarias
+    'tenerife','las-palmas','lanzarote','fuerteventura',
+    // Extremadura
+    'badajoz','caceres','merida',
+    // Castilla y León
+    'salamanca','burgos','leon','segovia','avila','zamora','palencia','soria',
+    // Castilla-La Mancha
+    'toledo','ciudad-real','albacete','cuenca','guadalajara',
+    // Andalucía resto
+    'huelva','jaen','almeria','cadiz','jerez-de-la-frontera','marbella',
+    // Aragón resto
+    'huesca','teruel',
+    // Cataluña resto
+    'tarragona','lleida','girona','reus','sitges',
+    // C. Valenciana resto
+    'castellon','torrevieja','benidorm','gandia','denia',
+    // Murcia resto
+    'cartagena',
+    // Baleares
+    'menorca',
+    // Ceuta y Melilla
+    'ceuta','melilla',
+  ];
+  const cityPri = {
+    madrid:'0.90', barcelona:'0.90', ibiza:'0.88', palma:'0.85', valencia:'0.85',
+    sevilla:'0.85', malaga:'0.83', bilbao:'0.82', zaragoza:'0.80', alicante:'0.80',
+    granada:'0.78', cordoba:'0.78', 'san-sebastian':'0.78', murcia:'0.77', tenerife:'0.77',
+    'las-palmas':'0.77', vigo:'0.75', 'a-coruna':'0.75', oviedo:'0.73', santander:'0.73',
+    valladolid:'0.73', 'santiago-de-compostela':'0.73', pamplona:'0.72', vitoria:'0.72',
+    logrono:'0.70', badajoz:'0.70', salamanca:'0.70', burgos:'0.70', leon:'0.70',
+    toledo:'0.70', albacete:'0.70', caceres:'0.68', merida:'0.68', huelva:'0.68',
+    jaen:'0.68', almeria:'0.68', cadiz:'0.70', 'jerez-de-la-frontera':'0.68',
+    marbella:'0.72', cartagena:'0.68', tarragona:'0.68', girona:'0.68', lleida:'0.67',
+    gijon:'0.70', 'ciudad-real':'0.68', cuenca:'0.65', guadalajara:'0.65',
+    segovia:'0.68', avila:'0.65', zamora:'0.65', palencia:'0.65', soria:'0.63',
+    ourense:'0.65', lugo:'0.65', pontevedra:'0.68', huesca:'0.65', teruel:'0.63',
+    lanzarote:'0.70', fuerteventura:'0.70',
+    torrevieja:'0.65', benidorm:'0.70', gandia:'0.65', denia:'0.65', castellon:'0.68',
+    reus:'0.65', sitges:'0.67', menorca:'0.68', ceuta:'0.63', melilla:'0.63',
+  };
   const catsByCity = ['dj','camareros','fotografo','catering','maquillaje','staff','disco-movil','promotores','vestuario'];
 
   for (const cat of catsByCity) {

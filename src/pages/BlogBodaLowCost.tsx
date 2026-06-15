@@ -214,14 +214,14 @@ export default function BlogBodaLowCost() {
                   style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)', borderTop: '1px solid rgba(255,255,255,0.04)' }}>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-semibold truncate">{r.partida}</p>
-                    <p className="text-[0.65rem] mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>{r.peso} del total</p>
+                    <p className="text-[0.65rem] mt-0.5" style={{ color: 'rgba(255,255,255,0.6)' }}>{r.peso} del total</p>
                   </div>
                   <span className="text-xs font-black shrink-0" style={{ color: '#D4AF37' }}>{r.rango}</span>
                 </div>
               ))}
             </div>
 
-            <p className="text-xs mt-4 leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>
+            <p className="text-xs mt-4 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
               💡 <strong>Truco número 1:</strong> Cambiar de sábado a viernes o domingo ahorra entre 800 y 2.000€ solo en la finca. Nadie de tus invitados lo recordará al día siguiente.
             </p>
           </section>
@@ -254,7 +254,7 @@ export default function BlogBodaLowCost() {
                       style={{ borderTop: '1px solid rgba(255,255,255,0.04)', background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.01)' }}>
                       <div>
                         <p className="text-xs font-bold">{item.servicio}</p>
-                        <p className="text-[0.65rem] mt-0.5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>{item.ahorro}</p>
+                        <p className="text-[0.65rem] mt-0.5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{item.ahorro}</p>
                       </div>
                       <span className="text-xs font-black self-start mt-0.5 sm:text-right whitespace-nowrap" style={{ color: '#D4AF37' }}>{item.precio}</span>
                     </div>

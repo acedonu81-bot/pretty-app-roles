@@ -209,7 +209,7 @@ export default function BodasLanding() {
         {/* Servicios */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
           <h2 className="text-xl sm:text-2xl font-black mb-2">Proveedores de boda en XPEAK</h2>
-          <p className="text-sm mb-8" style={{ color: 'rgba(255,255,255,0.45)' }}>
+          <p className="text-sm mb-8" style={{ color: 'rgba(255,255,255,0.6)' }}>
             Todos los profesionales que necesitas, verificados y con contrato digital automático.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -228,7 +228,7 @@ export default function BodasLanding() {
                       </span>
                     )}
                   </div>
-                  <p className="text-xs leading-relaxed mb-2" style={{ color: 'rgba(255,255,255,0.45)' }}>{s.desc}</p>
+                  <p className="text-xs leading-relaxed mb-2" style={{ color: 'rgba(255,255,255,0.6)' }}>{s.desc}</p>
                   <p className="text-xs font-bold" style={{ color: 'rgba(212,175,55,0.7)' }}>{s.precio}</p>
                 </div>
                 <ArrowRight size={14} className="flex-shrink-0 mt-1 transition-transform group-hover:translate-x-1"
@@ -255,7 +255,7 @@ export default function BodasLanding() {
         {/* Guías del blog */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-12 sm:pb-16">
           <h2 className="text-xl sm:text-2xl font-black mb-2">Guías para organizar tu boda</h2>
-          <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.45)' }}>
+          <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.6)' }}>
             Todo lo que necesitas saber antes de contratar.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -266,7 +266,7 @@ export default function BodasLanding() {
                 <span className="text-2xl flex-shrink-0">{post.emoji}</span>
                 <div>
                   <p className="text-sm font-black leading-snug mb-1.5">{post.title}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>{post.desc}</p>
+                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{post.desc}</p>
                 </div>
               </a>
             ))}

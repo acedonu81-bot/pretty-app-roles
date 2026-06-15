@@ -86,7 +86,7 @@ const ConversationList = ({ conversations, loading, activeConvId, onSelectConver
             className="flex items-center gap-3 px-4 py-3.5 cursor-pointer transition-all duration-150 relative"
             style={{
               background: isActive ? 'rgba(212,175,55,0.07)' : 'transparent',
-              borderBottom: '1px solid rgba(255,255,255,0.03)',
+              borderBottom: '1px solid rgba(0,0,0,0.03)',
             }}
             onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLDivElement).style.background = 'rgba(255,255,255,0.02)'; }}
             onMouseLeave={e => { if (!isActive) (e.currentTarget as HTMLDivElement).style.background = 'transparent'; }}
@@ -107,7 +107,7 @@ const ConversationList = ({ conversations, loading, activeConvId, onSelectConver
               )}
               {c.unread > 0 && (
                 <span className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full flex items-center justify-center text-[0.65rem] font-black"
-                  style={{ background: '#22c55e', color: '#fff', border: '2px solid #000' }}>
+                  style={{ background: '#22c55e', color: 'rgba(22,20,18,0.88)', border: '2px solid #000' }}>
                   {c.unread > 9 ? '9+' : c.unread}
                 </span>
               )}

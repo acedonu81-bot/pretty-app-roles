@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 
 interface DirectoryViewProps {
   role: string;
+  roles?: string[];
   title: string;
   subtitle: string;
   onNavigate?: (view: string) => void;
@@ -25,7 +26,7 @@ const CITY_OPTIONS = [
   'Alicante', 'Granada', 'Tenerife', 'Las Palmas de Gran Canaria',
 ].map(c => ({ value: c, label: c }));
 
-const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards, searchQuery, onViewProfile }: DirectoryViewProps) => {
+const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wideCards, searchQuery, onViewProfile }: DirectoryViewProps) => {
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [checkoutItem, setCheckoutItem] = useState<{ name: string; price: number; description: string } | null>(null);
   const [realProfiles, setRealProfiles] = useState<Profile[]>([]);
@@ -36,10 +37,11 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
 
   useEffect(() => {
     setLoadingProfiles(true);
+    const activeRoles = roles ?? [role];
     let query = supabase
       .from('profiles')
-      .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, bio, languages, tiktok, category, is_verified, is_flash_active, score')
-      .eq('role', role)
+      .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, bio, languages, tiktok, category, is_verified, is_flash_active, is_early_adopter, score, role')
+      .in('role', activeRoles)
       .limit(200);
 
     if (filterCity !== 'Todas las ciudades') {
@@ -51,6 +53,9 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
       const mapped: Profile[] = data
         .filter(row => row.display_name && row.display_name.trim().length > 1)
         .sort((a, b) => {
+          const aEarly = (a as any).is_early_adopter ? 1 : 0;
+          const bEarly = (b as any).is_early_adopter ? 1 : 0;
+          if (bEarly !== aEarly) return bEarly - aEarly;
           if ((b.is_verified ? 1 : 0) !== (a.is_verified ? 1 : 0)) return (b.is_verified ? 1 : 0) - (a.is_verified ? 1 : 0);
           return (b.score ?? 0) - (a.score ?? 0);
         })
@@ -58,7 +63,7 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
           id: row.id,
           userId: row.user_id,
           name: row.display_name || 'Sin nombre',
-          role: role as Profile['role'],
+          role: (row as { role?: string }).role as Profile['role'] ?? role as Profile['role'],
           specialty: row.specialty || '',
           rating: 0,
           reviews: 0,
@@ -84,11 +89,12 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
           tiktok: row.tiktok || '',
           category: (row.category as Profile['category']) ?? 'professional',
           isVerified: row.is_verified ?? false,
+          isEarlyAdopter: (row as any).is_early_adopter ?? false,
         }));
       setRealProfiles(mapped);
       setLoadingProfiles(false);
     });
-  }, [role, filterCity]);
+  }, [role, roles, filterCity]);
 
   const filteredProfiles = realProfiles.filter(p => {
     if (searchQuery?.trim()) {
@@ -110,7 +116,7 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
     <div className="animate-[fadeIn_0.4s_ease]">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
         <div>
-          <h2 className="text-2xl font-bold mb-1 overflow-visible leading-tight pb-1">
+          <h2 className="text-2xl font-bold mb-1 overflow-visible pb-2" style={{ lineHeight: 1.2 }}>
             Directorio <span className="text-gradient">{title}</span>
           </h2>
           <p className="text-sm text-muted-foreground">{subtitle}</p>
@@ -121,6 +127,23 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
             className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 self-start sm:self-auto"
             style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
             <Zap size={14} /> Flash Booking
+          </button>
+        )}
+      </div>
+
+      {/* Salas activas strip */}
+      <div className="flex items-center gap-2 mb-4 px-3 py-2 rounded-lg text-xs"
+        style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}>
+        <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 animate-pulse" style={{ background: '#D4AF37' }} />
+        <span style={{ color: 'rgba(22,20,18,0.65)' }}>
+          <span style={{ color: '#D4AF37', fontWeight: 700 }}>4 salas & clubs</span>
+          {' '}registrados en XPEAK están buscando profesionales como tú
+        </span>
+        {onNavigate && (
+          <button onClick={() => onNavigate('flash')}
+            className="ml-auto flex-shrink-0 text-[0.7rem] font-bold px-2 py-1 rounded-md transition-all hover:opacity-80"
+            style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
+            Ver ofertas →
           </button>
         )}
       </div>
@@ -143,8 +166,8 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
           onClick={() => setFilterFlash(v => !v)}
           className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex-shrink-0"
           style={{
-            background: filterFlash ? 'rgba(34,197,94,0.12)' : 'rgba(255,255,255,0.03)',
-            border: `1px solid ${filterFlash ? 'rgba(34,197,94,0.35)' : 'rgba(255,255,255,0.08)'}`,
+            background: filterFlash ? 'rgba(34,197,94,0.12)' : 'rgba(0,0,0,0.03)',
+            border: `1px solid ${filterFlash ? 'rgba(34,197,94,0.35)' : 'rgba(0,0,0,0.08)'}`,
             color: filterFlash ? '#22c55e' : '#555',
           }}>
           <Zap size={11} /> Disponible
@@ -153,8 +176,8 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
           onClick={() => setFilterVerified(v => !v)}
           className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex-shrink-0"
           style={{
-            background: filterVerified ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.03)',
-            border: `1px solid ${filterVerified ? 'rgba(212,175,55,0.35)' : 'rgba(255,255,255,0.08)'}`,
+            background: filterVerified ? 'rgba(212,175,55,0.12)' : 'rgba(0,0,0,0.03)',
+            border: `1px solid ${filterVerified ? 'rgba(212,175,55,0.35)' : 'rgba(0,0,0,0.08)'}`,
             color: filterVerified ? '#D4AF37' : '#555',
           }}>
           <Crown size={11} /> Verificado
@@ -162,11 +185,11 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
         {(filterCity !== 'Todas las ciudades' || filterFlash || filterVerified) && (
           <button onClick={() => { setFilterCity('Todas las ciudades'); setFilterFlash(false); setFilterVerified(false); }}
             className="text-xs font-bold px-2 py-1 rounded transition-all hover:opacity-70 flex-shrink-0"
-            style={{ background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.3)', border: '1px solid rgba(255,255,255,0.08)' }}>
+            style={{ background: 'rgba(0,0,0,0.04)', color: 'rgba(22,20,18,0.35)', border: '1px solid rgba(0,0,0,0.08)' }}>
             Limpiar ✕
           </button>
         )}
-        <span className="text-xs ml-auto flex-shrink-0" style={{ color: 'rgba(255,255,255,0.25)' }}>
+        <span className="text-xs ml-auto flex-shrink-0" style={{ color: 'rgba(22,20,18,0.3)' }}>
           {filteredProfiles.length} resultado{filteredProfiles.length !== 1 ? 's' : ''}
         </span>
       </div>
@@ -200,7 +223,7 @@ const DirectoryView = ({ role, title, subtitle, onNavigate, onMessage, wideCards
             <Users size={20} style={{ color: 'rgba(212,175,55,0.35)' }} />
           </div>
           <div>
-            <p className="text-sm font-bold mb-1" style={{ color: 'rgba(255,255,255,0.8)' }}>
+            <p className="text-sm font-bold mb-1" style={{ color: 'rgba(22,20,18,0.85)' }}>
               {searchQuery?.trim() ? `Sin resultados para "${searchQuery}"` : 'Sin resultados con estos filtros'}
             </p>
             <p className="text-xs text-muted-foreground mb-3 max-w-[260px] mx-auto">

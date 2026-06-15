@@ -30,7 +30,7 @@ type ToggleRowProps = {
   onChange: () => void;
 };
 const ToggleRow = ({ label, desc, checked, onChange }: ToggleRowProps) => (
-  <div className="flex items-center justify-between gap-3 py-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+  <div className="flex items-center justify-between gap-3 py-3" style={{ borderBottom: '1px solid rgba(0,0,0,0.04)' }}>
     <div className="min-w-0 flex-1">
       <p className="text-sm font-medium leading-snug">{label}</p>
       {desc && <p className="text-xs text-muted-foreground leading-snug">{desc}</p>}
@@ -38,7 +38,7 @@ const ToggleRow = ({ label, desc, checked, onChange }: ToggleRowProps) => (
     <label className="relative inline-flex items-center cursor-pointer">
       <input type="checkbox" checked={checked} onChange={onChange} className="sr-only" />
       <div className="relative w-9 h-5 rounded-full transition-all"
-        style={{ background: checked ? 'rgba(212,175,55,0.3)' : 'rgba(255,255,255,0.1)', border: `1px solid ${checked ? 'rgba(212,175,55,0.5)' : 'rgba(255,255,255,0.15)'}` }}>
+        style={{ background: checked ? 'rgba(212,175,55,0.3)' : 'rgba(0,0,0,0.08)', border: `1px solid ${checked ? 'rgba(212,175,55,0.5)' : 'rgba(0,0,0,0.1)'}` }}>
         <div className="absolute top-[2px] left-[2px] w-4 h-4 rounded-full transition-transform"
           style={{ background: checked ? '#D4AF37' : '#8E8EA0', transform: checked ? 'translateX(16px)' : 'translateX(0)' }} />
       </div>
@@ -49,7 +49,7 @@ const ToggleRow = ({ label, desc, checked, onChange }: ToggleRowProps) => (
 type SectionProps = { title: string; icon: React.ReactNode; children: React.ReactNode };
 const Section = ({ title, icon, children }: SectionProps) => (
   <div className="glass-panel p-5 mb-4">
-    <div className="flex items-center gap-2 mb-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.75rem' }}>
+    <div className="flex items-center gap-2 mb-4" style={{ borderBottom: '1px solid rgba(0,0,0,0.05)', paddingBottom: '0.75rem' }}>
       <span style={{ color: '#D4AF37' }}>{icon}</span>
       <h3 className="text-sm font-bold">{title}</h3>
     </div>
@@ -93,7 +93,7 @@ const MultiProfileSection = () => {
       <div className="space-y-2 mb-3">
         {allProfiles.map(p => (
           <div key={p.id} className="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all"
-            style={{ background: p.id === profileId ? 'rgba(212,175,55,0.07)' : 'rgba(255,255,255,0.02)', border: `1px solid ${p.id === profileId ? 'rgba(212,175,55,0.25)' : 'rgba(255,255,255,0.05)'}` }}>
+            style={{ background: p.id === profileId ? 'rgba(212,175,55,0.07)' : 'rgba(255,255,255,0.02)', border: `1px solid ${p.id === profileId ? 'rgba(212,175,55,0.25)' : 'rgba(0,0,0,0.05)'}` }}>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-bold truncate">{p.display_name}</p>
               <p className="text-xs text-muted-foreground capitalize">{p.role}</p>
@@ -101,7 +101,7 @@ const MultiProfileSection = () => {
             {p.id === profileId
               ? <span className="text-[0.6rem] font-black px-2 py-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37' }}>ACTIVO</span>
               : <button onClick={() => switchProfile(p.id)} className="text-xs font-bold px-3 py-1 rounded-lg transition-all hover:scale-105"
-                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#8E8EA0' }}>
+                  style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.08)', color: '#8E8EA0' }}>
                   Cambiar
                 </button>
             }
@@ -127,7 +127,7 @@ const MultiProfileSection = () => {
             maxLength={80} className="nightlife-input !py-2.5 text-sm w-full" />
           <div className="flex gap-2">
             <button onClick={() => setAdding(false)} className="flex-1 py-2 rounded-lg text-xs font-bold transition-all"
-              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#8E8EA0' }}>
+              style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#8E8EA0' }}>
               <X size={12} className="inline mr-1" />Cancelar
             </button>
             <button onClick={handleCreate} disabled={saving} className="flex-1 py-2 rounded-lg text-xs font-bold transition-all disabled:opacity-50"
@@ -508,34 +508,34 @@ Para cualquier duda: soporte@xpeak.es
   .doc{max-width:680px;margin:0 auto;padding:0 32px}
   .hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px;padding-bottom:20px;border-bottom:1px solid rgba(212,175,55,0.3)}
   .logo{font-size:22px;font-weight:900;letter-spacing:2px;color:#D4AF37}
-  .hdr-right{text-align:right;font-size:11px;color:rgba(255,255,255,0.4)}
+  .hdr-right{text-align:right;font-size:11px;color:rgba(22,20,18,0.45)}
   .avail{font-size:10px;padding:4px 10px;border-radius:999px;background:rgba(212,175,55,0.1);color:#D4AF37;border:1px solid rgba(212,175,55,0.3);margin-top:6px;display:inline-block}
-  .prof-card{display:flex;align-items:center;gap:20px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;margin-bottom:32px}
+  .prof-card{display:flex;align-items:center;gap:20px;background:rgba(0,0,0,0.03);border:1px solid rgba(0,0,0,0.08);border-radius:16px;padding:24px;margin-bottom:32px}
   .avatar{width:64px;height:64px;border-radius:14px;background:linear-gradient(135deg,#D4AF37,#B8941E);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;color:#000;flex-shrink:0}
   .prof-name{font-size:20px;font-weight:800;margin-bottom:4px}
-  .prof-meta{font-size:12px;color:rgba(255,255,255,0.5)}
+  .prof-meta{font-size:12px;color:rgba(22,20,18,0.55)}
   .badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(212,175,55,0.12);color:#D4AF37;border:1px solid rgba(212,175,55,0.25);margin-top:6px}
   .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px}
-  .kpi{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:16px;text-align:center}
+  .kpi{background:rgba(0,0,0,0.03);border:1px solid rgba(0,0,0,0.06);border-radius:12px;padding:16px;text-align:center}
   .kpi-val{font-size:24px;font-weight:900;color:#D4AF37}
-  .kpi-lbl{font-size:10px;color:rgba(255,255,255,0.45);margin-top:4px}
+  .kpi-lbl{font-size:10px;color:rgba(22,20,18,0.5);margin-top:4px}
   .sec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:rgba(212,175,55,0.7);margin-bottom:14px}
   table{width:100%;border-collapse:collapse;margin-bottom:32px;font-size:12px}
-  th{text-align:left;padding:8px 10px;color:rgba(255,255,255,0.35);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid rgba(255,255,255,0.06)}
-  td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.04)}
+  th{text-align:left;padding:8px 10px;color:rgba(22,20,18,0.4);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid rgba(0,0,0,0.05)}
+  td{padding:10px;border-bottom:1px solid rgba(0,0,0,0.04)}
   .status{font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px}
   .st-ok{background:rgba(34,197,94,0.1);color:#22c55e;border:1px solid rgba(34,197,94,0.2)}
   .st-pend{background:rgba(212,175,55,0.1);color:#D4AF37;border:1px solid rgba(212,175,55,0.2)}
   .st-rej{background:rgba(255,95,86,0.1);color:#ff5f56;border:1px solid rgba(255,95,86,0.2)}
   .chart-wrap{margin-bottom:32px}
   .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-  .bar-lbl{font-size:10px;color:rgba(255,255,255,0.4);width:28px;flex-shrink:0;text-align:right}
-  .bar-track{flex:1;height:14px;background:rgba(255,255,255,0.04);border-radius:4px;overflow:hidden}
+  .bar-lbl{font-size:10px;color:rgba(22,20,18,0.45);width:28px;flex-shrink:0;text-align:right}
+  .bar-track{flex:1;height:14px;background:rgba(0,0,0,0.04);border-radius:4px;overflow:hidden}
   .bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#D4AF37,#B8941E)}
-  .bar-count{font-size:10px;color:rgba(255,255,255,0.5);width:16px;flex-shrink:0}
-  .fiscal{background:rgba(212,175,55,0.04);border:1px solid rgba(212,175,55,0.12);border-radius:12px;padding:16px;margin-bottom:32px;font-size:11px;color:rgba(255,255,255,0.45);line-height:1.7}
+  .bar-count{font-size:10px;color:rgba(22,20,18,0.55);width:16px;flex-shrink:0}
+  .fiscal{background:rgba(212,175,55,0.04);border:1px solid rgba(212,175,55,0.12);border-radius:12px;padding:16px;margin-bottom:32px;font-size:11px;color:rgba(22,20,18,0.5);line-height:1.7}
   .fiscal strong{color:rgba(212,175,55,0.7)}
-  .ftr{text-align:center;font-size:10px;color:rgba(255,255,255,0.2);padding-top:24px;border-top:1px solid rgba(255,255,255,0.05)}
+  .ftr{text-align:center;font-size:10px;color:rgba(0,0,0,0.1);padding-top:24px;border-top:1px solid rgba(0,0,0,0.05)}
   @media print{body{background:#000!important;padding:0}@page{margin:10mm;size:A4}}
 </style></head>
 <body><div class="doc">
@@ -572,7 +572,7 @@ Para cualquier duda: soporte@xpeak.es
       const stLabel = b.status === 'aceptado' || b.status === 'accepted' ? 'Aceptado' : b.status === 'pendiente' || b.status === 'pending' ? 'Pendiente' : 'Rechazado';
       return `<tr><td>${String(b.event_date ?? '').slice(0,10)}</td><td>${String(b.description ?? '').slice(0,35)}</td><td>${String(b.location ?? '').slice(0,20)}</td><td><span class="status ${stClass}">${stLabel}</span></td></tr>`;
     }).join('')}
-  </table>` : '<p style="font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:32px">Sin bookings registrados en ' + reportYear + '</p>'}
+  </table>` : '<p style="font-size:12px;color:rgba(22,20,18,0.35);margin-bottom:32px">Sin bookings registrados en ' + reportYear + '</p>'}
 
   <div class="chart-wrap">
     <div class="sec-title">Actividad mensual ${reportYear}</div>
@@ -875,8 +875,8 @@ Para cualquier duda: soporte@xpeak.es
             <button key={q.id} onClick={() => { setAudioQuality(q.id); toast.success(`Calidad: ${q.label}`); }}
               className="p-3 rounded-xl text-left transition-all"
               style={{
-                background: audioQuality === q.id ? 'rgba(212,175,55,0.1)' : 'rgba(255,255,255,0.03)',
-                border: `1px solid ${audioQuality === q.id ? 'rgba(212,175,55,0.4)' : 'rgba(255,255,255,0.07)'}`,
+                background: audioQuality === q.id ? 'rgba(212,175,55,0.1)' : 'rgba(0,0,0,0.03)',
+                border: `1px solid ${audioQuality === q.id ? 'rgba(212,175,55,0.4)' : 'rgba(0,0,0,0.06)'}`,
               }}>
               <p className="text-xs font-bold" style={{ color: audioQuality === q.id ? '#D4AF37' : undefined }}>{q.label}</p>
               <p className="text-xs text-muted-foreground mt-0.5">{q.desc}</p>
@@ -901,9 +901,9 @@ Para cualquier duda: soporte@xpeak.es
           if (!supported || isIosNotPWA) {
             return (
               <div className="rounded-xl p-4 mb-4 space-y-3"
-                style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(0,0,0,0.06)' }}>
                 <div className="flex items-center gap-3">
-                  <BellOff size={16} style={{ color: 'rgba(255,255,255,0.25)', flexShrink: 0 }} />
+                  <BellOff size={16} style={{ color: 'rgba(22,20,18,0.3)', flexShrink: 0 }} />
                   <div>
                     <p className="text-sm font-bold">
                       {isIosNotPWA ? 'Instala XPEAK para activar notificaciones' : 'Notificaciones no disponibles en este navegador'}
@@ -956,11 +956,11 @@ Para cualquier duda: soporte@xpeak.es
 
           return (
             <div className="rounded-xl p-4 mb-4 flex items-center justify-between gap-3"
-              style={{ background: pushEnabled ? 'rgba(212,175,55,0.04)' : 'rgba(255,255,255,0.02)', border: `1px solid ${pushEnabled ? 'rgba(212,175,55,0.2)' : 'rgba(255,255,255,0.07)'}` }}>
+              style={{ background: pushEnabled ? 'rgba(212,175,55,0.04)' : 'rgba(255,255,255,0.02)', border: `1px solid ${pushEnabled ? 'rgba(212,175,55,0.2)' : 'rgba(0,0,0,0.06)'}` }}>
               <div className="flex items-center gap-3 flex-1 min-w-0">
                 {pushEnabled
                   ? <Bell size={16} style={{ color: '#D4AF37', flexShrink: 0 }} />
-                  : <BellOff size={16} style={{ color: 'rgba(255,255,255,0.25)', flexShrink: 0 }} />}
+                  : <BellOff size={16} style={{ color: 'rgba(22,20,18,0.3)', flexShrink: 0 }} />}
                 <div className="min-w-0">
                   <p className="text-sm font-bold">{pushEnabled ? 'Notificaciones activas' : 'Notificaciones desactivadas'}</p>
                   <p className="text-xs text-muted-foreground leading-snug">
@@ -1029,12 +1029,12 @@ Para cualquier duda: soporte@xpeak.es
         }} />
         <ToggleRow label="Disponible en Flash Booking" desc="Empresarios pueden enviarte solicitudes urgentes" checked={allowFlash} onChange={() => setAllowFlash(v => !v)} />
         <ToggleRow label="Mostrar estado en línea" desc="Indica si estás activo en la plataforma" checked={showOnline} onChange={() => setShowOnline(v => !v)} />
-        <div className="pt-3 mt-1 space-y-3" style={{ borderTop: '1px solid rgba(255,255,255,0.04)' }}>
+        <div className="pt-3 mt-1 space-y-3" style={{ borderTop: '1px solid rgba(0,0,0,0.04)' }}>
           <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Tus derechos RGPD</p>
 
           {/* JSON export */}
           <div className="rounded-xl p-3 flex items-center justify-between gap-3"
-            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
+            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
             <div className="flex items-center gap-2.5">
               <Download size={14} style={{ color: '#D4AF37', flexShrink: 0 }} />
               <div>
@@ -1051,7 +1051,7 @@ Para cualquier duda: soporte@xpeak.es
 
           {/* CSV ZIP export */}
           <div className="rounded-xl p-3 flex items-center justify-between gap-3"
-            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
+            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
             <div className="flex items-center gap-2.5">
               <Archive size={14} style={{ color: '#D4AF37', flexShrink: 0 }} />
               <div>
@@ -1068,7 +1068,7 @@ Para cualquier duda: soporte@xpeak.es
 
           {/* Informe Anual */}
           <div className="rounded-xl p-3 flex items-center justify-between gap-3"
-            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
+            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
             <div className="flex items-center gap-2.5">
               <FileText size={14} style={{ color: '#D4AF37', flexShrink: 0 }} />
               <div>
@@ -1085,7 +1085,7 @@ Para cualquier duda: soporte@xpeak.es
 
           {/* QR de perfil */}
           <div className="rounded-xl p-3 flex items-center justify-between gap-3"
-            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
+            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
             <div className="flex items-center gap-2.5">
               <QrCode size={14} style={{ color: '#D4AF37', flexShrink: 0 }} />
               <div>
@@ -1197,7 +1197,7 @@ Para cualquier duda: soporte@xpeak.es
                   <button
                     onClick={() => { setOtpSent(false); setOtpCode(''); }}
                     className="flex-1 py-2.5 rounded-lg text-xs font-bold transition-all hover:opacity-80"
-                    style={{ background: 'rgba(255,255,255,0.03)', color: '#8E8EA0', border: '1px solid var(--nightlife-border)' }}
+                    style={{ background: 'rgba(0,0,0,0.03)', color: '#8E8EA0', border: '1px solid var(--nightlife-border)' }}
                   >
                     Reenviar código
                   </button>

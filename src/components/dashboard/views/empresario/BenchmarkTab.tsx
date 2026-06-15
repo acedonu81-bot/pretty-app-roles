@@ -26,7 +26,7 @@ const BenchmarkTab = () => (
               <div className="flex justify-between text-xs text-muted-foreground mb-1">
                 <span>Mínimo €{b.min}</span><span>Máximo €{b.max}</span>
               </div>
-              <div className="h-2 rounded-full relative overflow-hidden" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              <div className="h-2 rounded-full relative overflow-hidden" style={{ background: 'rgba(0,0,0,0.05)' }}>
                 <div className="absolute top-0 bottom-0 w-1 rounded-full"
                   style={{
                     left: `${((b.avg - b.min) / (b.max - b.min)) * 100}%`,

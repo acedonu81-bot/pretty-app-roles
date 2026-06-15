@@ -4,7 +4,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { XPeakToastProvider } from "@/lib/xpeak-toast";
 import { lazy, Suspense } from "react";
-import Landing from "./pages/Landing";
+const Landing = lazy(() => import("./pages/Landing"));
 import NotFound from "./pages/NotFound";
 import CookieBanner from "./components/CookieBanner";
 
@@ -182,6 +182,14 @@ const App = () => (
             <Route path="/contratar-promotores" element={<CategoryLanding />} />
             <Route path="/contratar-vestuario" element={<CategoryLanding />} />
             <Route path="/contratar-disco-movil" element={<CategoryLanding />} />
+            <Route path="/contratar-humorista" element={<CategoryLanding />} />
+            <Route path="/contratar-animador" element={<CategoryLanding />} />
+            <Route path="/contratar-animadores" element={<CategoryLanding />} />
+            <Route path="/contratar-speaker" element={<CategoryLanding />} />
+            <Route path="/contratar-mago" element={<CategoryLanding />} />
+            <Route path="/contratar-bailarin" element={<CategoryLanding />} />
+            <Route path="/contratar-payaso" element={<CategoryLanding />} />
+            <Route path="/contratar-payasos" element={<CategoryLanding />} />
             {/* City landings */}
             <Route path="/contratar-dj/:ciudad" element={<CityLanding />} />
             <Route path="/contratar-camareros/:ciudad" element={<CityLanding />} />
@@ -189,6 +197,18 @@ const App = () => (
             <Route path="/contratar-fotografo/:ciudad" element={<CityLanding />} />
             <Route path="/contratar-catering/:ciudad" element={<CityLanding />} />
             <Route path="/contratar-disco-movil/:ciudad" element={<CityLanding />} />
+            <Route path="/contratar-speaker/:ciudad" element={<CityLanding />} />
+            <Route path="/contratar-mago/:ciudad" element={<CityLanding />} />
+            <Route path="/contratar-bailarin/:ciudad" element={<CityLanding />} />
+            <Route path="/contratar-humorista/:ciudad" element={<CityLanding />} />
+            <Route path="/contratar-monologo/:ciudad" element={<CityLanding />} />
+            <Route path="/contratar-monologos/:ciudad" element={<CityLanding />} />
+            <Route path="/contratar-maquillaje/:ciudad" element={<CityLanding />} />
+            <Route path="/contratar-promotores/:ciudad" element={<CityLanding />} />
+            <Route path="/contratar-animador/:ciudad" element={<CityLanding />} />
+            <Route path="/contratar-animadores/:ciudad" element={<CityLanding />} />
+            <Route path="/contratar-payaso/:ciudad" element={<CityLanding />} />
+            <Route path="/contratar-payasos/:ciudad" element={<CityLanding />} />
             {/* Blog */}
             <Route path="/blog" element={<BlogIndex />} />
             <Route path="/blog/cuanto-cobra-un-dj-en-espana" element={<BlogDJPrecio />} />

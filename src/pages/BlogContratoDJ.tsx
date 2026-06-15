@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import RelatedPosts from '@/components/RelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
@@ -182,7 +183,8 @@ export default function BlogContratoDJ() {
               <a href="/contratar-dj" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Contratar DJ con contrato digital →</a>
             </div>
           </div>
-        </main>
+                  <RelatedPosts currentSlug="/blog/contrato-dj-que-debe-incluir" tags={['DJ']} />
+</main>
         <BlogAuthor />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_contrato_dj" />

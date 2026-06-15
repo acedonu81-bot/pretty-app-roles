@@ -172,7 +172,7 @@ const AgencyView = () => {
             <Building2 size={12} /> SELLO AGENCIA
           </div>
           <button onClick={loadStats} className="p-2 rounded-lg transition-all hover:scale-105"
-            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+            style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}>
             <RefreshCw size={13} style={{ color: '#8E8EA0' }} />
           </button>
         </div>
@@ -242,7 +242,7 @@ const AgencyView = () => {
               const isActive = p.id === profileId;
               return (
                 <div key={p.id} className="glass-panel p-4 transition-all"
-                  style={{ border: isActive ? `1px solid ${color}40` : '1px solid rgba(255,255,255,0.06)', background: isActive ? `${color}06` : undefined }}>
+                  style={{ border: isActive ? `1px solid ${color}40` : '1px solid rgba(0,0,0,0.05)', background: isActive ? `${color}06` : undefined }}>
 
                   {/* Header */}
                   <div className="flex items-center gap-3 mb-4">
@@ -275,7 +275,7 @@ const AgencyView = () => {
                       { label: 'Votos', value: p.role === 'rookie' ? p.voteCount : '—', color: '#4285F4' },
                     ].map(s => (
                       <div key={s.label} className="rounded-lg p-2 text-center"
-                        style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                        style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.05)' }}>
                         <p className="text-sm font-black" style={{ color: s.color }}>{s.value}</p>
                         <p className="text-[0.6rem] text-muted-foreground">{s.label}</p>
                       </div>
@@ -313,10 +313,10 @@ const AgencyView = () => {
             {/* Empty slot cards */}
             {Array.from({ length: Math.max(0, 5 - allProfiles.length) }).map((_, i) => (
               <div key={`empty-${i}`} className="glass-panel p-4 flex flex-col items-center justify-center gap-2 text-center"
-                style={{ border: '1px dashed rgba(255,255,255,0.06)', minHeight: 180 }}>
+                style={{ border: '1px dashed rgba(0,0,0,0.05)', minHeight: 180 }}>
                 <div className="w-8 h-8 rounded-xl flex items-center justify-center"
-                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <Users size={14} style={{ color: 'rgba(255,255,255,0.2)' }} />
+                  style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.05)' }}>
+                  <Users size={14} style={{ color: 'rgba(0,0,0,0.1)' }} />
                 </div>
                 <p className="text-xs text-muted-foreground">Slot disponible</p>
                 <p className="text-[0.65rem] text-muted-foreground">Crea un nuevo perfil en Ajustes</p>
@@ -339,7 +339,7 @@ const AgencyView = () => {
               return (
                 <div key={p.id} className="flex items-center gap-3">
                   <p className="text-xs w-28 truncate font-bold" style={{ color }}>{p.display_name}</p>
-                  <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                  <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: 'rgba(0,0,0,0.05)' }}>
                     <div className="h-full rounded-full transition-all duration-700" style={{ width: `${pct}%`, background: color }} />
                   </div>
                   <p className="text-xs font-bold w-16 text-right" style={{ color }}>€{p.flashRevenue.toFixed(0)}</p>
@@ -348,7 +348,7 @@ const AgencyView = () => {
             })}
           </div>
           <div className="flex items-center justify-between mt-4 pt-3"
-            style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+            style={{ borderTop: '1px solid rgba(0,0,0,0.05)' }}>
             <p className="text-xs font-bold text-muted-foreground">Total agencia</p>
             <p className="text-sm font-black" style={{ color: '#22c55e' }}>€{totalRevenue.toFixed(2)}</p>
           </div>

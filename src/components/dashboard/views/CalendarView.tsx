@@ -145,7 +145,7 @@ const CalendarView = () => {
         <div className="flex gap-2 flex-shrink-0">
           <button onClick={toggleNotifications}
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all"
-            style={{ background: notificationsEnabled ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.03)', border: notificationsEnabled ? '1px solid rgba(212,175,55,0.3)' : '1px solid var(--nightlife-border)', color: notificationsEnabled ? '#D4AF37' : '#8E8EA0' }}>
+            style={{ background: notificationsEnabled ? 'rgba(212,175,55,0.12)' : 'rgba(0,0,0,0.03)', border: notificationsEnabled ? '1px solid rgba(212,175,55,0.3)' : '1px solid var(--nightlife-border)', color: notificationsEnabled ? '#D4AF37' : '#8E8EA0' }}>
             <Bell size={13} /> <span className="hidden sm:inline">{notificationsEnabled ? 'Alertas ON' : 'Alertas'}</span>
           </button>
           <button onClick={() => setShowForm(true)}
@@ -223,7 +223,7 @@ const CalendarView = () => {
             <h3 className="text-sm font-bold mb-3">Próximos bolos ({upcomingEvents.length})</h3>
             {upcomingEvents.length === 0 ? (
               <div className="text-center py-6">
-                <CalendarIcon size={24} className="mx-auto mb-2" style={{ color: 'rgba(255,255,255,0.1)' }} />
+                <CalendarIcon size={24} className="mx-auto mb-2" style={{ color: 'rgba(0,0,0,0.08)' }} />
                 <p className="text-xs text-muted-foreground">Sin eventos próximos.</p>
                 <button onClick={() => setShowForm(true)}
                   className="mt-3 text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-105"
@@ -261,7 +261,7 @@ const CalendarView = () => {
                         </a>
                         <button onClick={() => downloadICS(ev)}
                           className="flex items-center gap-1 px-2 py-1 rounded text-[0.65rem] font-bold transition-all hover:scale-105"
-                          style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#8E8EA0' }}>
+                          style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#8E8EA0' }}>
                           <Download size={9} /> Apple / .ics
                         </button>
                       </div>
@@ -280,7 +280,7 @@ const CalendarView = () => {
                 <div key={n} className="flex items-center justify-between text-xs">
                   <span className="text-muted-foreground">{n}</span>
                   <div className="w-7 h-3.5 rounded-full transition-all cursor-pointer"
-                    style={{ background: notificationsEnabled ? 'rgba(212,175,55,0.3)' : 'rgba(255,255,255,0.1)' }}>
+                    style={{ background: notificationsEnabled ? 'rgba(212,175,55,0.3)' : 'rgba(0,0,0,0.08)' }}>
                     <div className="w-3 h-3 rounded-full transition-all mt-[1px]"
                       style={{ background: notificationsEnabled ? '#D4AF37' : '#555', marginLeft: notificationsEnabled ? '15px' : '1px' }} />
                   </div>
@@ -322,7 +322,7 @@ const CalendarView = () => {
             <div className="flex gap-2 mt-5">
               <button onClick={() => setShowForm(false)}
                 className="flex-1 py-2.5 rounded-xl text-sm font-bold"
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--nightlife-border)', color: '#8E8EA0' }}>
+                style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid var(--nightlife-border)', color: '#8E8EA0' }}>
                 Cancelar
               </button>
               <button onClick={addEvent}

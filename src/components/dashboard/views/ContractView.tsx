@@ -266,7 +266,7 @@ const ContractView = () => {
             </label>
             <input
               className="w-full px-4 py-3 rounded-lg text-base outline-none"
-              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }}
+              style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: 'rgba(22,20,18,0.88)' }}
               placeholder="Ej: DJ Leinad"
               value={customName}
               onChange={e => setCustomName(e.target.value)}
@@ -278,7 +278,7 @@ const ContractView = () => {
             </label>
             <select
               className="w-full px-4 py-3 rounded-lg text-base outline-none"
-              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', cursor: 'pointer' }}
+              style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: 'rgba(22,20,18,0.88)', cursor: 'pointer' }}
               value={customRole}
               onChange={e => setCustomRole(e.target.value)}>
               <option value="dj" style={{ background: '#0a0a0e' }}>DJ / Artista</option>
@@ -301,7 +301,7 @@ const ContractView = () => {
       {/* ── Contract history ── */}
       <div className="glass-panel mb-6" style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
         <div className="flex items-center justify-between px-5 py-4"
-          style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+          style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
           <div className="flex items-center gap-2">
             <FileText size={15} style={{ color: '#D4AF37' }} />
             <h3 className="text-base font-bold">Historial de contratos</h3>
@@ -319,7 +319,7 @@ const ContractView = () => {
                   value={csvYear}
                   onChange={e => setCsvYear(Number(e.target.value))}
                   className="text-xs px-2 py-1.5 rounded-lg outline-none"
-                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', cursor: 'pointer' }}>
+                  style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: 'rgba(22,20,18,0.88)', cursor: 'pointer' }}>
                   {availableYears.map(y => (
                     <option key={y} value={y} style={{ background: '#0a0a0e' }}>{y}</option>
                   ))}
@@ -335,7 +335,7 @@ const ContractView = () => {
             )}
             <button type="button" onClick={fetchContracts}
               className="p-1.5 rounded-lg transition-colors hover:bg-white/5">
-              <RefreshCw size={13} style={{ color: 'rgba(255,255,255,0.3)', ...(loading ? { animation: 'spin 1s linear infinite' } : {}) }} />
+              <RefreshCw size={13} style={{ color: 'rgba(22,20,18,0.35)', ...(loading ? { animation: 'spin 1s linear infinite' } : {}) }} />
             </button>
           </div>
         </div>
@@ -346,8 +346,8 @@ const ContractView = () => {
 
         {!loading && contracts.length === 0 && (
           <div className="py-12 text-center">
-            <FileText size={32} className="mx-auto mb-3" style={{ color: 'rgba(255,255,255,0.1)' }} />
-            <p className="text-sm font-bold mb-1" style={{ color: 'rgba(255,255,255,0.3)' }}>Sin contratos aún</p>
+            <FileText size={32} className="mx-auto mb-3" style={{ color: 'rgba(0,0,0,0.08)' }} />
+            <p className="text-sm font-bold mb-1" style={{ color: 'rgba(22,20,18,0.35)' }}>Sin contratos aún</p>
             <p className="text-xs text-muted-foreground">Los contratos que generes aparecerán aquí</p>
           </div>
         )}
@@ -356,17 +356,17 @@ const ContractView = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                <tr style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
                   {['Ref', 'Profesional', 'Evento', 'Fecha evento', 'Local', 'Base imponible', 'Generado', ''].map(h => (
                     <th key={h} className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider"
-                      style={{ color: 'rgba(255,255,255,0.35)' }}>{h}</th>
+                      style={{ color: 'rgba(22,20,18,0.4)' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {contracts.map((c, i) => (
                   <tr key={c.id}
-                    style={{ borderBottom: '1px solid rgba(255,255,255,0.04)', background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.01)' }}>
+                    style={{ borderBottom: '1px solid rgba(0,0,0,0.04)', background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.01)' }}>
                     <td className="px-4 py-3">
                       <span className="text-xs font-mono font-bold" style={{ color: '#D4AF37' }}>{c.ref}</span>
                     </td>
@@ -386,7 +386,7 @@ const ContractView = () => {
                       <p className="text-xs text-muted-foreground">{c.city ?? ''}</p>
                     </td>
                     <td className="px-4 py-3">
-                      <span className="text-sm font-bold" style={{ color: c.precio_neto ? '#D4AF37' : 'rgba(255,255,255,0.3)' }}>
+                      <span className="text-sm font-bold" style={{ color: c.precio_neto ? '#D4AF37' : 'rgba(22,20,18,0.35)' }}>
                         {fmtEur(c.precio_neto)}
                       </span>
                     </td>
@@ -420,7 +420,7 @@ const ContractView = () => {
       <div className="glass-panel p-5 mb-6 flex items-start gap-3"
         style={{ border: '1px solid rgba(255,188,0,0.2)', background: 'rgba(255,188,0,0.03)' }}>
         <AlertCircle size={16} style={{ color: '#ffbc00', flexShrink: 0, marginTop: 2 }} />
-        <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)' }}>
+        <p className="text-sm leading-relaxed" style={{ color: 'rgba(22,20,18,0.6)' }}>
           <span style={{ color: '#ffbc00', fontWeight: 700 }}>Aviso legal:</span>{' '}
           Los contratos generados son modelos orientativos conforme a legislación española vigente.
           XPEAK no ejerce como despacho de abogados ni ofrece asesoramiento jurídico vinculante.
@@ -429,7 +429,7 @@ const ContractView = () => {
       </div>
 
       {/* Legal framework cards */}
-      <h3 className="text-sm font-bold mb-4" style={{ color: 'rgba(255,255,255,0.5)' }}>MARCO LEGAL APLICABLE</h3>
+      <h3 className="text-sm font-bold mb-4" style={{ color: 'rgba(22,20,18,0.55)' }}>MARCO LEGAL APLICABLE</h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
         {LEGAL_CARDS.map(card => (
           <div key={card.title} className="glass-panel p-5"

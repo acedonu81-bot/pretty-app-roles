@@ -136,7 +136,7 @@ const UpgradeModal = ({ open, onClose, role, trigger, onNavigateSubscription }: 
       <div className="relative min-h-full flex items-center justify-center p-4">
       <div
         className="relative w-full max-w-md rounded-2xl p-6 flex flex-col gap-4 animate-[fadeIn_0.25s_ease]"
-        style={{ background: '#0d0d0d', border: '1px solid rgba(212,175,55,0.3)', boxShadow: '0 0 60px rgba(212,175,55,0.08)' }}
+        style={{ background: '#f9f8f6', border: '1px solid rgba(212,175,55,0.3)', boxShadow: '0 0 60px rgba(212,175,55,0.08)' }}
         onClick={e => e.stopPropagation()}>
 
         {/* Close */}
@@ -170,7 +170,7 @@ const UpgradeModal = ({ open, onClose, role, trigger, onNavigateSubscription }: 
           {upsell.features.map(f => (
             <div key={f} className="flex items-start gap-2.5">
               <CheckCircle size={13} style={{ color: '#D4AF37', flexShrink: 0, marginTop: 2 }} />
-              <span className="text-sm" style={{ color: 'rgba(255,255,255,0.85)' }}>{f}</span>
+              <span className="text-sm" style={{ color: 'rgba(22,20,18,0.88)' }}>{f}</span>
             </div>
           ))}
         </div>

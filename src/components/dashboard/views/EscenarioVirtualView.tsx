@@ -58,7 +58,7 @@ const ReportModal = ({
         <button
           onClick={onClose}
           className="absolute top-3 right-3 w-7 h-7 rounded flex items-center justify-center hover:bg-white/10 transition-colors"
-          style={{ color: 'rgba(255,255,255,0.5)' }}
+          style={{ color: 'rgba(22,20,18,0.55)' }}
         >
           <X size={15} />
         </button>
@@ -86,7 +86,7 @@ const ReportModal = ({
               className="text-left text-xs px-3 py-2 rounded-lg transition-all"
               style={{
                 background: selected === r ? 'rgba(255,95,86,0.1)' : 'rgba(255,255,255,0.02)',
-                border: selected === r ? '1px solid rgba(255,95,86,0.35)' : '1px solid rgba(255,255,255,0.06)',
+                border: selected === r ? '1px solid rgba(255,95,86,0.35)' : '1px solid rgba(0,0,0,0.05)',
                 color: selected === r ? '#ff5f56' : 'var(--nightlife-text-secondary)',
                 fontWeight: selected === r ? 700 : 400,
               }}
@@ -248,21 +248,21 @@ const EscenarioVirtualView = () => {
           </div>
         ) : liveProfiles.length === 0 ? (
           <div className="glass-panel p-12 flex flex-col items-center gap-4 text-center"
-            style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
+            style={{ border: '1px solid rgba(0,0,0,0.05)' }}>
             <div className="w-14 h-14 rounded-xl flex items-center justify-center"
               style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.1)' }}>
               <Radio size={24} style={{ color: 'rgba(212,175,55,0.35)' }} />
             </div>
             <div>
               <p className="text-sm font-bold mb-1">Nadie emite en este momento</p>
-              <p className="text-xs max-w-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.4)' }}>
+              <p className="text-xs max-w-xs leading-relaxed" style={{ color: 'rgba(22,20,18,0.65)' }}>
                 Los directos aparecen aquí en tiempo real. Vuelve los viernes y sábados por la tarde — es cuando más profesionales están en vivo.
               </p>
             </div>
             <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs mt-1"
               style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.12)' }}>
               <Zap size={12} style={{ color: '#D4AF37' }} />
-              <span style={{ color: 'rgba(255,255,255,0.55)' }}>
+              <span style={{ color: 'rgba(22,20,18,0.6)' }}>
                 ¿Necesitas alguien para esta noche? Usa <strong style={{ color: '#D4AF37' }}>Flash Booking</strong>
               </span>
             </div>
@@ -286,7 +286,7 @@ const EscenarioVirtualView = () => {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-bold leading-tight truncate">{p.display_name}</p>
-                      <p className="text-xs truncate mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                      <p className="text-xs truncate mt-0.5" style={{ color: 'rgba(22,20,18,0.65)' }}>
                         {p.stream_title || p.zone || label}
                       </p>
                     </div>
@@ -332,7 +332,7 @@ const EscenarioVirtualView = () => {
           </div>
         )}
 
-        <p className="text-center text-xs mt-8" style={{ color: 'rgba(255,255,255,0.2)' }}>
+        <p className="text-center text-xs mt-8" style={{ color: 'rgba(0,0,0,0.1)' }}>
           Los directos se actualizan en tiempo real · Sin comisiones de contratación
         </p>
       </div>
@@ -545,7 +545,7 @@ const EscenarioVirtualView = () => {
             )) : (
               <div className="flex-1 flex flex-col items-center justify-center gap-2 py-8 text-center">
                 <MessageSquare size={20} style={{ color: 'rgba(212,175,55,0.15)' }} />
-                <p className="text-xs font-bold" style={{ color: 'rgba(255,255,255,0.2)' }}>
+                <p className="text-xs font-bold" style={{ color: 'rgba(0,0,0,0.1)' }}>
                   {isLive ? 'Sin espectadores aún' : 'Inicia el directo para activar el chat'}
                 </p>
                 <p className="text-[0.75rem] text-muted-foreground max-w-[160px] leading-relaxed">

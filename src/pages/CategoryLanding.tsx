@@ -31,6 +31,14 @@ const BLOG_LINKS: Record<string, { href: string; emoji: string; title: string; d
     { href: '/blog/disco-movil-para-comuniones', emoji: '🎵', title: 'Disco móvil para comuniones: precios 2026', desc: 'Paquetes, qué incluye y cómo elegir el DJ para tu comunión.' },
     { href: '/blog/dj-para-bodas-vs-discoteca', emoji: '🆚', title: 'DJ para bodas vs DJ de discoteca', desc: 'Diferencias, equipos y cómo elegir el perfil correcto.' },
   ],
+  'photo-booth': [
+    { href: '/blog/photobooth-precio-boda-evento', emoji: '📸', title: 'Cuánto cuesta un photo booth para boda 2026', desc: 'Precios según tipo: clásico, 360 y espejo glamour.' },
+    { href: '/presupuesto-boda', emoji: '💒', title: 'Calculadora de presupuesto de boda', desc: 'Calcula el coste total de tu boda incluyendo el photo booth.' },
+  ],
+  'grupo-musical': [
+    { href: '/blog/cuarteto-cuerda-boda-precio', emoji: '🎻', title: 'Cuarteto de cuerda para boda: precios 2026', desc: 'Cuánto cuesta y cuándo reservarlo.' },
+    { href: '/blog/grupo-musical-para-boda-precio', emoji: '🎵', title: 'Grupo musical para boda: guía completa', desc: 'Tipos, precios y cómo elegir.' },
+  ],
 };
 
 const CATEGORY_DATA: Record<string, {
@@ -255,7 +263,7 @@ const CATEGORY_DATA: Record<string, {
     h1: 'Contratar Promotores de Eventos',
     tagline: 'Promotores y RRPP profesionales para discotecas, festivales y eventos nocturnos',
     desc: 'Contrata promotores y relaciones públicas profesionales para discotecas, festivales y eventos en España. Perfiles verificados, resultados medibles, contratos automáticos. Sin comisión.',
-    intro: 'XPEAK reúne los mejores promotores y relaciones públicas del sector del ocio nocturno y los eventos en España. Profesionales con cartera de clientes activa, experiencia en clubs y festivales, disponibles para acuerdos puntuales o de temporada con contratos digitales en minutos.',
+    intro: 'XPEAK reúne los mejores promotores y relaciones públicas del sector del eventos y entretenimiento y los eventos en España. Profesionales con cartera de clientes activa, experiencia en clubs y festivales, disponibles para acuerdos puntuales o de temporada con contratos digitales en minutos.',
     keyword: 'Promotor',
     keywords: 'contratar promotor discoteca España, relaciones públicas eventos nocturnos, promotor sala Madrid Barcelona, RRPP eventos, promotor festival España, personal RRPP discoteca',
     precio: 'desde 100€/noche',
@@ -311,6 +319,252 @@ const CATEGORY_DATA: Record<string, {
       { title: 'Contrato y confirmación', body: 'Firma el contrato digital con un clic. Incluye horarios, servicios pactados y condiciones de cancelación.' },
     ],
   },
+  humorista: {
+    slug: 'humorista',
+    emoji: '🎤',
+    h1: 'Contratar Humorista y Monologuista para Eventos',
+    tagline: 'Humoristas, monologuistas y cómicos de stand-up para bodas, cenas de empresa y eventos',
+    desc: 'Contrata humoristas y monologuistas profesionales para bodas, cenas de empresa y eventos en España. Cómicos verificados, guión personalizado. Flash Booking disponible. Sin comisión.',
+    intro: 'XPEAK conecta organizadores con humoristas y monologuistas profesionales en toda España. Desde el monólogo de bodas hasta el espectáculo de stand-up para cenas corporativas, con guión adaptado a tu evento y contratos digitales en minutos.',
+    keyword: 'Humorista',
+    keywords: 'contratar humorista boda España, monologuista eventos empresa, stand-up cena corporativa, cómico para eventos Madrid Barcelona, humor bodas España, contratar monologuista precio',
+    precio: 'desde 300€/actuación',
+    cities: [
+      { name: 'Madrid', slug: 'madrid' },
+      { name: 'Barcelona', slug: 'barcelona' },
+      { name: 'Valencia', slug: 'valencia' },
+      { name: 'Sevilla', slug: 'sevilla' },
+      { name: 'Bilbao', slug: 'bilbao' },
+      { name: 'Málaga', slug: 'malaga' },
+      { name: 'Zaragoza', slug: 'zaragoza' },
+      { name: 'Murcia', slug: 'murcia' },
+    ],
+    roles: ['Stand-Up Comedy', 'Monólogo corporativo', 'Humor de boda', 'Maestro de ceremonias cómico', 'Improvisación', 'Sketch cómico', 'Humor familiar', 'Actuación personalizada'],
+    faqs: [
+      { q: '¿Cuánto cuesta contratar un humorista para una boda?', a: 'Un monologuista para bodas en España cobra entre 300€ y 1.200€ según su trayectoria y la duración del espectáculo. Los cómicos con TV o especiales de Netflix pueden superar esa cifra. XPEAK muestra tarifas públicas de cada perfil.' },
+      { q: '¿El guión se personaliza para mi evento?', a: 'Sí. La mayoría de los humoristas en XPEAK adaptan el contenido al tipo de evento, al público y a los protagonistas. Para bodas, suelen incluir anécdotas de los novios. Para cenas corporativas, referencias al sector o la empresa.' },
+      { q: '¿Cuánto dura la actuación de un monologuista?', a: 'Las actuaciones varían entre 20 y 60 minutos según el contrato. Lo más habitual en bodas y cenas de empresa es un pase de 30-45 minutos. Algunos artistas ofrecen también participación durante la velada como animadores.' },
+      { q: '¿Puedo contratar humorista para una cena de empresa?', a: 'Es el formato más demandado. El humor corporativo requiere un cómico con experiencia en públicos mixtos y contenido inclusivo. En XPEAK puedes filtrar por especialidad "corporativo" para encontrar el perfil adecuado.' },
+    ],
+    steps: [
+      { title: 'Crea tu cuenta gratis', body: 'Regístrate como organizador o empresa. Sin tarjeta. En menos de 2 minutos tienes acceso al directorio completo.' },
+      { title: 'Busca o publica oferta', body: 'Filtra por especialidad y zona, o usa Flash Booking. Detalla el tipo de evento y el tono de humor que buscas.' },
+      { title: 'Contrato y confirmación', body: 'Firma el contrato digital con un clic. Incluye fecha, duración, guión acordado y condiciones de cancelación.' },
+    ],
+  },
+  animador: {
+    slug: 'animador',
+    emoji: '🎪',
+    h1: 'Contratar Animador y Payaso para Eventos',
+    tagline: 'Animadores infantiles, payasos y artistas de entretenimiento para cumpleaños, bodas y eventos',
+    desc: 'Contrata animadores y payasos profesionales para cumpleaños infantiles, bodas, comuniones y eventos familiares en España. Perfiles verificados, animación garantizada. Sin comisión.',
+    intro: 'XPEAK conecta familias y organizadores con animadores y payasos profesionales en toda España. Desde la animación infantil para cumpleaños hasta el espectáculo de magia para bodas y comuniones, con contratos digitales en minutos y perfiles verificados.',
+    keyword: 'Animador',
+    keywords: 'contratar animador infantil España, payaso cumpleaños Madrid Barcelona, animación bodas, animadores comuniones, contratar payaso precio España, animación infantil profesional',
+    precio: 'desde 150€/actuación',
+    cities: [
+      { name: 'Madrid', slug: 'madrid' },
+      { name: 'Barcelona', slug: 'barcelona' },
+      { name: 'Valencia', slug: 'valencia' },
+      { name: 'Sevilla', slug: 'sevilla' },
+      { name: 'Málaga', slug: 'malaga' },
+      { name: 'Bilbao', slug: 'bilbao' },
+      { name: 'Zaragoza', slug: 'zaragoza' },
+      { name: 'Murcia', slug: 'murcia' },
+      { name: 'Palma', slug: 'palma' },
+      { name: 'Ibiza', slug: 'ibiza' },
+    ],
+    roles: ['Payaso profesional', 'Animación infantil', 'Magia infantil', 'Globoflexia', 'Pintacaras', 'Animación boda', 'Espectáculo familiar', 'Animación comunión', 'Cuenta cuentos', 'Artista de circo'],
+    faqs: [
+      { q: '¿Cuánto cuesta contratar un animador infantil?', a: 'Un animador infantil en España cobra entre 150€ y 400€ por actuación de 1-2 horas según la especialidad y la ciudad. Un payaso con magia y globoflexia suele costar entre 200€ y 350€. XPEAK muestra tarifas reales de cada perfil.' },
+      { q: '¿Qué incluye una animación de cumpleaños?', a: 'Una animación de cumpleaños completa suele incluir: bienvenida con globoflexia, espectáculo de magia, pintacaras y juegos organizados. La duración habitual es de 1,5 a 2 horas. Algunos animadores también ofrecen decoración y mini-discoteca.' },
+      { q: '¿Los animadores trabajan en exterior?', a: 'Sí. La mayoría de los animadores en XPEAK trabajan tanto en interiores (salones de eventos, casas) como en exteriores (jardines, parques, terrazas). Indica el tipo de espacio en tu solicitud.' },
+      { q: '¿Puedo contratar animadores para una boda con niños?', a: 'Absolutamente. Es uno de los servicios más demandados. El animador se encarga de los niños mientras los adultos disfrutan del banquete. Puedes contratar tanto animación durante el cóctel como durante toda la celebración.' },
+    ],
+    steps: [
+      { title: 'Crea tu cuenta gratis', body: 'Regístrate como organizador o familia. Sin tarjeta. En menos de 2 minutos tienes acceso al directorio completo.' },
+      { title: 'Busca o publica oferta', body: 'Filtra por especialidad y ciudad, o usa Flash Booking. Detalla el número de niños, edades y duración del evento.' },
+      { title: 'Contrato y confirmación', body: 'Firma el contrato digital con un clic. Incluye fecha, servicios y condiciones de cancelación.' },
+    ],
+  },
+  speaker: {
+    slug: 'speaker',
+    emoji: '🎙️',
+    h1: 'Contratar Speaker y Ponente para Eventos',
+    tagline: 'Speakers, conferenciantes y ponentes profesionales para congresos, cenas de empresa y eventos corporativos',
+    desc: 'Contrata speakers y conferenciantes profesionales para congresos, teambuilding y eventos corporativos en España. Ponentes verificados, temas especializados. Flash Booking. Sin comisión.',
+    intro: 'XPEAK conecta empresas y organizadores con speakers y ponentes profesionales en toda España. Desde keynotes motivacionales hasta conferencias técnicas especializadas, con perfiles verificados y contratos digitales en minutos.',
+    keyword: 'Speaker',
+    keywords: 'contratar speaker congreso España, ponente eventos empresa Madrid Barcelona, conferenciante motivacional, speaker corporativo precio España, ponente evento tecnología',
+    precio: 'desde 500€/ponencia',
+    cities: [
+      { name: 'Madrid', slug: 'madrid' },
+      { name: 'Barcelona', slug: 'barcelona' },
+      { name: 'Valencia', slug: 'valencia' },
+      { name: 'Sevilla', slug: 'sevilla' },
+      { name: 'Bilbao', slug: 'bilbao' },
+      { name: 'Málaga', slug: 'malaga' },
+      { name: 'Zaragoza', slug: 'zaragoza' },
+      { name: 'Palma', slug: 'palma' },
+    ],
+    roles: ['Keynote motivacional', 'Conferenciante técnico', 'Facilitador de workshops', 'Moderador de mesa redonda', 'Speaker de innovación', 'Coach ejecutivo', 'Presentador corporativo', 'Experto en liderazgo'],
+    faqs: [
+      { q: '¿Cuánto cuesta contratar un speaker para un evento?', a: 'Un speaker profesional en España cobra entre 500€ y 5.000€+ según su perfil y trayectoria. Los keynote speakers con presencia internacional pueden superar esa cifra. XPEAK muestra tarifas orientativas de cada perfil.' },
+      { q: '¿Qué temas cubren los speakers de XPEAK?', a: 'Innovación, liderazgo, marketing digital, inteligencia artificial, ventas, bienestar corporativo, diversidad e inclusión, transformación digital y muchos más. Puedes filtrar por temática en el directorio.' },
+      { q: '¿El ponente prepara material personalizado?', a: 'La mayoría de los speakers en XPEAK adaptan su presentación al sector y los objetivos del evento. Puedes especificar el perfil del público, la duración y los temas clave al hacer la solicitud.' },
+      { q: '¿Puedo contratar un speaker para un evento online o híbrido?', a: 'Sí. Muchos speakers en XPEAK tienen experiencia en formatos online, híbridos y presenciales. Indica el formato de tu evento en la solicitud para filtrar los perfiles adecuados.' },
+    ],
+    steps: [
+      { title: 'Crea tu cuenta gratis', body: 'Regístrate como empresa u organizador. Sin tarjeta. Acceso inmediato al directorio de ponentes.' },
+      { title: 'Busca o publica oferta', body: 'Filtra por temática y zona, o usa Flash Booking. Detalla el sector, el público y la duración de la ponencia.' },
+      { title: 'Contrato y confirmación', body: 'Firma el contrato digital. Incluye fecha, temática acordada, duración y condiciones de cancelación.' },
+    ],
+  },
+  mago: {
+    slug: 'mago',
+    emoji: '🎩',
+    h1: 'Contratar Mago para Eventos y Bodas',
+    tagline: 'Magos y ilusionistas profesionales para bodas, cenas de empresa, cumpleaños y eventos',
+    desc: 'Contrata magos e ilusionistas profesionales para bodas, eventos corporativos y celebraciones en España. Actuaciones personalizadas verificadas. Flash Booking disponible. Sin comisión.',
+    intro: 'XPEAK conecta organizadores con magos e ilusionistas profesionales en toda España. Magia de cerca para cócteles de boda, espectáculos de grand illusion para galas corporativas y shows infantiles para comuniones, con contratos digitales en minutos.',
+    keyword: 'Mago',
+    keywords: 'contratar mago boda España, ilusionista eventos empresa, mago cóctel boda Madrid Barcelona, mago para cumpleaños precio España, actuación de magia evento',
+    precio: 'desde 250€/actuación',
+    cities: [
+      { name: 'Madrid', slug: 'madrid' },
+      { name: 'Barcelona', slug: 'barcelona' },
+      { name: 'Valencia', slug: 'valencia' },
+      { name: 'Sevilla', slug: 'sevilla' },
+      { name: 'Málaga', slug: 'malaga' },
+      { name: 'Bilbao', slug: 'bilbao' },
+      { name: 'Zaragoza', slug: 'zaragoza' },
+      { name: 'Palma', slug: 'palma' },
+    ],
+    roles: ['Magia de cerca', 'Ilusionismo de escenario', 'Magia infantil', 'Magia de cóctel', 'Grand illusion', 'Mentalismo', 'Magia corporativa', 'Escapismo'],
+    faqs: [
+      { q: '¿Cuánto cuesta contratar un mago para una boda?', a: 'Un mago profesional para bodas en España cobra entre 250€ y 1.500€ según la duración y el tipo de actuación. La magia de cerca para el cóctel (1h) suele costar entre 250€ y 600€. Un espectáculo de escenario completo puede superar los 1.000€.' },
+      { q: '¿Qué es la magia de cerca?', a: 'La magia de cerca (closeup magic) es perfecta para cócteles y recepciones: el mago va de mesa en mesa o de grupo en grupo haciendo trucos a cm de los invitados. Es el formato más demandado en bodas por su capacidad de sorprender en momentos íntimos.' },
+      { q: '¿Los magos adaptan el show al tipo de evento?', a: 'Sí. Los magos en XPEAK preparan actuaciones personalizadas según el tipo de evento, el público y la duración. Para bodas pueden incluir la alianza o los anillos en los trucos; para empresas, productos o logos de la compañía.' },
+      { q: '¿Puedo contratar magia para niños?', a: 'Sí. XPEAK incluye magos especializados en público infantil con shows de 30-60 minutos con participación, humor y magia adaptada a niños de 3 a 12 años.' },
+    ],
+    steps: [
+      { title: 'Crea tu cuenta gratis', body: 'Regístrate como organizador o familia. Sin tarjeta. Acceso inmediato al directorio de magos.' },
+      { title: 'Busca o publica oferta', body: 'Filtra por tipo de magia y ciudad, o usa Flash Booking. Detalla el tipo de evento y el público.' },
+      { title: 'Contrato y confirmación', body: 'Firma el contrato digital. Incluye tipo de actuación, duración y condiciones de cancelación.' },
+    ],
+  },
+  bailarin: {
+    slug: 'bailarin',
+    emoji: '💃',
+    h1: 'Contratar Bailarín y Bailarina para Eventos',
+    tagline: 'Bailarines y compañías de danza profesionales para bodas, galas, shows y eventos corporativos',
+    desc: 'Contrata bailarines y bailarinas profesionales para bodas, shows de entretenimiento y eventos corporativos en España. Compañías verificadas, coreografías personalizadas. Sin comisión.',
+    intro: 'XPEAK conecta organizadores con bailarines y compañías de danza profesionales en toda España. Desde el espectáculo flamenco para galas hasta la coreografía sorpresa de boda, con perfiles verificados y contratos digitales en minutos.',
+    keyword: 'Bailarín',
+    keywords: 'contratar bailarín boda España, compañía de danza eventos Madrid Barcelona, bailaora flamenca eventos, bailarín profesional precio España, show de baile corporativo',
+    precio: 'desde 200€/actuación',
+    cities: [
+      { name: 'Madrid', slug: 'madrid' },
+      { name: 'Barcelona', slug: 'barcelona' },
+      { name: 'Valencia', slug: 'valencia' },
+      { name: 'Sevilla', slug: 'sevilla' },
+      { name: 'Málaga', slug: 'malaga' },
+      { name: 'Bilbao', slug: 'bilbao' },
+      { name: 'Granada', slug: 'granada' },
+      { name: 'Ibiza', slug: 'ibiza' },
+    ],
+    roles: ['Flamenco', 'Danza contemporánea', 'Danza clásica / Ballet', 'Baile latino', 'Coreografía de boda', 'Show de cabaret', 'Danza urbana', 'Danza del vientre', 'Go-go dancers', 'Danza aérea'],
+    faqs: [
+      { q: '¿Cuánto cuesta contratar bailarines para un evento?', a: 'Un bailarín o bailarina profesional en España cobra entre 200€ y 800€ por actuación según la especialidad y la duración. Una compañía de 4-6 bailarines para un show completo puede costar entre 800€ y 3.000€. XPEAK muestra tarifas reales de cada perfil.' },
+      { q: '¿Puedo contratar flamenco para una boda o evento de empresa?', a: 'Es uno de los shows más demandados para galas y eventos con invitados internacionales. XPEAK incluye bailaoras y compañías de flamenco con espectáculos de 20 a 60 minutos, con o sin cantaor y guitarra en directo.' },
+      { q: '¿Qué es una coreografía sorpresa de boda?', a: 'Es un show preparado en secreto por familiares o amigos de los novios con un coreógrafo profesional. El día de la boda sorprenden a los novios con una actuación coordinada. XPEAK incluye coreógrafos especializados en este formato.' },
+      { q: '¿Los bailarines trabajan con música en directo?', a: 'Muchos bailarines en XPEAK ofrecen actuaciones con música en directo (guitarra, percusión) o con pistas pregrabadas. Puedes especificarlo en tu solicitud y contratar ambos servicios desde la misma plataforma.' },
+    ],
+    steps: [
+      { title: 'Crea tu cuenta gratis', body: 'Regístrate como organizador o empresa. Sin tarjeta. En menos de 2 minutos tienes acceso al directorio.' },
+      { title: 'Busca o publica oferta', body: 'Filtra por estilo de baile y ciudad, o usa Flash Booking. Detalla el tipo de evento y el espacio disponible.' },
+      { title: 'Contrato y confirmación', body: 'Firma el contrato digital. Incluye número de bailarines, duración del show y condiciones de cancelación.' },
+    ],
+  },
+  payaso: {
+    slug: 'payaso',
+    emoji: '🤡',
+    h1: 'Contratar Payaso para Fiestas y Eventos',
+    tagline: 'Payasos profesionales para cumpleaños infantiles, bodas, comuniones y eventos familiares',
+    desc: 'Contrata payasos profesionales para cumpleaños infantiles, bodas y eventos familiares en España. Animadores verificados, espectáculo garantizado. Flash Booking disponible. Sin comisión.',
+    intro: 'XPEAK conecta familias y organizadores con payasos y animadores profesionales en toda España. Magia, globoflexia, pintacaras y humor para niños de todas las edades, con contratos digitales en minutos.',
+    keyword: 'Payaso',
+    keywords: 'contratar payaso cumpleaños España, payaso infantil Madrid Barcelona, payaso para fiestas precio, animador payaso eventos familiares, payaso profesional boda España',
+    precio: 'desde 150€/actuación',
+    cities: [
+      { name: 'Madrid', slug: 'madrid' },
+      { name: 'Barcelona', slug: 'barcelona' },
+      { name: 'Valencia', slug: 'valencia' },
+      { name: 'Sevilla', slug: 'sevilla' },
+      { name: 'Málaga', slug: 'malaga' },
+      { name: 'Bilbao', slug: 'bilbao' },
+      { name: 'Zaragoza', slug: 'zaragoza' },
+      { name: 'Murcia', slug: 'murcia' },
+    ],
+    roles: ['Payaso de cumpleaños', 'Payaso de boda', 'Payaso de comunión', 'Magia y payaso', 'Globoflexia', 'Pintacaras', 'Payaso para niños', 'Show familiar completo'],
+    faqs: [
+      { q: '¿Cuánto cuesta contratar un payaso para un cumpleaños?', a: 'Un payaso profesional para cumpleaños infantiles en España cobra entre 150€ y 350€ por actuación de 1-1,5 horas. Los shows más completos con magia, globoflexia y pintacaras incluidos suelen costar entre 200€ y 300€.' },
+      { q: '¿Qué incluye la actuación de un payaso?', a: 'Una actuación completa suele incluir: espectáculo de humor, trucos de magia, globoflexia (animales y figuras con globos), pintacaras y juegos participativos con los niños. La duración habitual es de 60 a 90 minutos.' },
+      { q: '¿Los payasos trabajan en domicilios?', a: 'Sí. La mayoría de los payasos en XPEAK trabajan en domicilios, jardines, salones de cumpleaños y espacios privados. Solo necesitas espacio suficiente para que los niños se sienten y participen.' },
+      { q: '¿Para qué edades es adecuado un payaso?', a: 'Los payasos en XPEAK adaptan su actuación al rango de edad del grupo. Para niños de 3-5 años, más visual y sencillo; para 6-10 años, más participativo con juegos y magia; para adolescentes y adultos, humor más elaborado.' },
+    ],
+    steps: [
+      { title: 'Crea tu cuenta gratis', body: 'Regístrate como organizador o familia. Sin tarjeta. En menos de 2 minutos tienes acceso al directorio.' },
+      { title: 'Busca o publica oferta', body: 'Filtra por ciudad y especialidad, o usa Flash Booking. Indica edades de los niños y duración del evento.' },
+      { title: 'Contrato y confirmación', body: 'Firma el contrato digital. Incluye fecha, servicios incluidos y condiciones de cancelación.' },
+    ],
+  },
+  'photo-booth': {
+    slug: 'photo-booth',
+    emoji: '📸',
+    h1: 'Contratar Photo Booth para Boda y Eventos en España',
+    tagline: 'Cabinas de fotos profesionales con impresión al instante y álbum digital',
+    desc: 'Alquila un photo booth para tu boda, comunión o evento de empresa. Precio desde 300€. Con atrezzo, impresión al instante y álbum digital. Sin comisión.',
+    intro: 'Un photo booth es uno de los elementos que más éxito tiene en bodas, comuniones y eventos de empresa. XPEAK conecta organizadores con proveedores de photo booth profesionales en toda España.',
+    keyword: 'Photo Booth',
+    keywords: 'alquilar photo booth boda, photo booth eventos españa, cabina fotos boda precio, photobooth comunión, photo booth 360 evento empresa',
+    precio: 'desde 300€',
+    cities: [{name:'Madrid',slug:'madrid'},{name:'Barcelona',slug:'barcelona'},{name:'Valencia',slug:'valencia'},{name:'Sevilla',slug:'sevilla'},{name:'Málaga',slug:'malaga'},{name:'Bilbao',slug:'bilbao'}],
+    roles: ['Photo Booth Clásico', 'Photo Booth 360', 'Cabina Glamour', 'Selfie Mirror', 'GIF Booth', 'Video Booth'],
+    faqs: [
+      {q:'¿Cuánto cuesta un photo booth para una boda?', a:'Un photo booth para boda cuesta entre 300€ y 700€ dependiendo del tipo (clásico, 360 o espejo glamour), la duración y los extras como impresión ilimitada o libro de firmas. En XPEAK todos los precios son públicos antes de contactar.'},
+      {q:'¿Qué incluye un photo booth profesional?', a:'Normalmente incluye montaje y desmontaje, atrezzo temático, impresión ilimitada al instante, álbum digital con todas las fotos y 3-4 horas de servicio. El photo booth 360 genera vídeos cortos ideales para redes sociales.'},
+      {q:'¿Con cuánta antelación contratar un photo booth?', a:'Con 3-4 meses de antelación es suficiente para la mayoría de fechas. En temporada alta (mayo-septiembre) se recomienda reservar con 6 meses.'},
+    ],
+    steps: [
+      {title:'Elige el tipo de photo booth', body:'Clásico con impresión, 360 para vídeos o espejo glamour. Depende del estilo de tu evento.'},
+      {title:'Reserva con antelación', body:'Confirma fecha, ubicación y duración. El proveedor se encarga del montaje y desmontaje.'},
+      {title:'Comparte los recuerdos', body:'Tus invitados se llevan fotos impresas al instante. Tú recibes el álbum digital completo.'},
+    ],
+  },
+  'grupo-musical': {
+    slug: 'grupo-musical',
+    emoji: '🎵',
+    h1: 'Contratar Grupo Musical para Boda y Eventos en España',
+    tagline: 'Bandas, grupos de jazz, cuartetos y música en vivo para cualquier evento',
+    desc: 'Contrata grupos musicales para bodas, comuniones y eventos. Jazz, flamenco, pop, rock, cuarteto de cuerda. Precio desde 350€. Sin comisión.',
+    intro: 'XPEAK conecta organizadores con grupos musicales profesionales en toda España. Desde cuartetos de cuerda para ceremonias hasta bandas de pop-rock para bodas y grupos de jazz para eventos de empresa.',
+    keyword: 'Grupo Musical',
+    keywords: 'contratar grupo musical boda, banda musical eventos españa, cuarteto cuerda boda, música en vivo evento, grupo jazz evento empresa',
+    precio: 'desde 350€',
+    cities: [{name:'Madrid',slug:'madrid'},{name:'Barcelona',slug:'barcelona'},{name:'Valencia',slug:'valencia'},{name:'Sevilla',slug:'sevilla'},{name:'Málaga',slug:'malaga'},{name:'Ibiza',slug:'ibiza'}],
+    roles: ['Cuarteto de Cuerda', 'Grupo de Jazz', 'Banda Pop/Rock', 'Grupo Flamenco', 'Dúo Acústico', 'Trío de Jazz', 'Saxofonista', 'Cantante Solista'],
+    faqs: [
+      {q:'¿Cuánto cuesta contratar un grupo musical para una boda?', a:'Los precios varían: un dúo acústico o saxofonista para ceremonia parte de 300€, un cuarteto de cuerda entre 400-800€, una banda completa de 5-6 músicos entre 1.500-3.500€. En XPEAK todos los precios son públicos.'},
+      {q:'¿Cuándo debo reservar el grupo musical para mi boda?', a:'Con 6-9 meses de antelación para asegurar disponibilidad, especialmente en temporada alta (mayo-octubre). Los grupos más solicitados se agotan antes.'},
+      {q:'¿Un grupo musical puede actuar en exteriores?', a:'Sí, la mayoría cuentan con equipo propio adaptado a exteriores. Es importante informar al proveedor del espacio para dimensionar correctamente el equipo de sonido.'},
+    ],
+    steps: [
+      {title:'Elige el estilo musical', body:'Ceremonia, cóctel o cena. Cada momento tiene su música ideal: cuarteto para la ceremonia, jazz para el cóctel, banda para la cena y baile.'},
+      {title:'Confirma disponibilidad', body:'Comparte fecha, hora de inicio, ubicación y duración esperada. Cuantos más detalles, mejor presupuesto recibirás.'},
+      {title:'Contrato y ensayo', body:'Firma el contrato digital en XPEAK. Puedes coordinar con el grupo la lista de canciones especiales.'},
+    ],
+  },
   'disco-movil': {
     slug: 'disco-movil',
     emoji: '🎵',
@@ -358,6 +612,16 @@ const ICON: Record<string, React.ReactNode> = {
   promotores: <Megaphone size={20} />,
   vestuario: <Shirt size={20} />,
   'disco-movil': <Music size={20} />,
+  humorista: <Megaphone size={20} />,
+  animador: <Users size={20} />,
+  animadores: <Users size={20} />,
+  speaker: <Megaphone size={20} />,
+  mago: <Star size={20} />,
+  bailarin: <Users size={20} />,
+  payaso: <Users size={20} />,
+  payasos: <Users size={20} />,
+  'photo-booth': <Camera size={20} />,
+  'grupo-musical': <Music size={20} />,
 };
 
 export default function CategoryLanding() {
@@ -486,7 +750,7 @@ export default function CategoryLanding() {
         {/* Especialidades */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
           <h2 className="text-xl sm:text-2xl font-black mb-2">Especialidades disponibles</h2>
-          <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.45)' }}>
+          <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.6)' }}>
             Filtra por especialidad directamente en el directorio XPEAK.
           </p>
           <div className="flex flex-wrap gap-2">
@@ -503,7 +767,7 @@ export default function CategoryLanding() {
         {data.cities.length > 0 && ['dj','camareros','staff','fotografo','catering','disco-movil'].includes(data.slug) && (
           <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14">
             <h2 className="text-xl sm:text-2xl font-black mb-2">Contratar {data.keyword} por ciudad</h2>
-            <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.45)' }}>
+            <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.6)' }}>
               Guías detalladas con precios locales, venues y preguntas frecuentes.
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -526,7 +790,7 @@ export default function CategoryLanding() {
               <div key={s.title} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
                 <p className="text-3xl font-black mb-3" style={{ color: 'rgba(212,175,55,0.25)' }}>0{i + 1}</p>
                 <p className="text-sm font-bold mb-1.5">{s.title}</p>
-                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>{s.body}</p>
+                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{s.body}</p>
               </div>
             ))}
           </div>
@@ -549,7 +813,7 @@ export default function CategoryLanding() {
         {BLOG_LINKS[data.slug] && (
           <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-12 sm:pb-16">
             <h2 className="text-xl sm:text-2xl font-black mb-2">Guías relacionadas</h2>
-            <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.45)' }}>
+            <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.6)' }}>
               Artículos para preparar mejor tu contratación.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -560,7 +824,7 @@ export default function CategoryLanding() {
                   <span className="text-2xl flex-shrink-0">{post.emoji}</span>
                   <div>
                     <p className="text-sm font-black leading-snug mb-1.5">{post.title}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>{post.desc}</p>
+                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{post.desc}</p>
                   </div>
                 </a>
               ))}

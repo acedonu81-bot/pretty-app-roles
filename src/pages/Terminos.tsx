@@ -21,7 +21,7 @@ const Terminos = () => {
         <h1 className="text-3xl font-bold mb-2">
           📜 Términos y <span className="text-gradient">Condiciones</span>
         </h1>
-        <p className="text-xs text-muted-foreground mb-8">Fecha de entrada en vigor: 25 de marzo de 2026</p>
+        <p className="text-xs text-muted-foreground mb-8">Última actualización: 13 de junio de 2026</p>
 
         <div className="glass-panel p-6 md:p-8 space-y-6 text-sm leading-relaxed" style={{ color: '#ccc' }}>
           <section>
@@ -112,7 +112,7 @@ const Terminos = () => {
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>10. Naturaleza Jurídica de la Intermediación — XPEAK no es Empleador</h2>
             <p className="mb-2">
-              <strong style={{ color: '#fff' }}>XPEAK opera exclusivamente como plataforma de intermediación tecnológica</strong> entre profesionales del sector del ocio nocturno y los empresarios o entidades que requieren sus servicios. A todos los efectos legales:
+              <strong style={{ color: '#fff' }}>XPEAK opera exclusivamente como plataforma de intermediación tecnológica</strong> entre profesionales del sector del eventos y entretenimiento y los empresarios o entidades que requieren sus servicios. A todos los efectos legales:
             </p>
             <ul className="list-disc list-inside space-y-2 text-muted-foreground">
               <li><strong className="text-foreground">XPEAK no es empleador</strong> de ningún profesional registrado en la Plataforma, ni existe relación laboral, mercantil de dependencia ni vínculo de ajenidad entre XPEAK y los usuarios profesionales.</li>
@@ -146,12 +146,71 @@ const Terminos = () => {
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>13. Modificaciones</h2>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>13. Limitación de Responsabilidad</h2>
+            <p className="mb-2">En la máxima medida permitida por la legislación española aplicable:</p>
+            <ul className="list-disc list-inside space-y-2 text-muted-foreground">
+              <li>XPEAK <strong className="text-foreground">no garantiza</strong> la disponibilidad, idoneidad, calidad ni legalidad de los servicios ofrecidos por los profesionales registrados.</li>
+              <li>XPEAK <strong className="text-foreground">no es responsable</strong> de los daños directos, indirectos, incidentales, especiales o consecuentes derivados del uso de la Plataforma o de los servicios contratados entre usuarios.</li>
+              <li>La responsabilidad máxima de XPEAK frente a cualquier usuario, por cualquier concepto, quedará limitada al importe efectivamente abonado por dicho usuario a XPEAK durante los <strong className="text-foreground">3 meses anteriores</strong> al hecho causante del daño.</li>
+              <li>XPEAK no responde por incumplimientos, cancelaciones, accidentes, daños materiales o personales ocurridos durante la prestación del servicio entre profesional y cliente. Dicha responsabilidad recae exclusivamente sobre las partes contratantes.</li>
+              <li>XPEAK no garantiza que la Plataforma esté libre de interrupciones, errores o virus, aunque aplica medidas razonables de seguridad.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>14. Política de Cancelaciones y Disputas entre Usuarios</h2>
+            <p className="mb-2">Las condiciones de cancelación y devolución son pactadas <strong className="text-foreground">directamente entre el profesional y el cliente</strong>. XPEAK no interviene en dichos acuerdos ni actúa como árbitro. No obstante:</p>
+            <ul className="list-disc list-inside space-y-2 text-muted-foreground">
+              <li>Cada profesional debe indicar en su perfil su política de cancelación (sin penalización / 50% si cancela con menos de 48h / 100% si cancela el día del evento, u otras condiciones acordadas libremente).</li>
+              <li>En caso de disputa entre usuarios, XPEAK podrá actuar como mediador informal a petición de ambas partes, sin que ello suponga asumir responsabilidad alguna sobre el resultado.</li>
+              <li>Cualquier conflicto no resuelto entre las partes deberá ventilarse ante los tribunales competentes, sin perjuicio del derecho de los consumidores a acudir a la plataforma de resolución de litigios en línea de la UE (<em>ec.europa.eu/consumers/odr</em>).</li>
+              <li>XPEAK se reserva el derecho de suspender o eliminar los perfiles de usuarios que incumplan reiteradamente sus compromisos o acumulen valoraciones negativas fundadas.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>15. Conducta Prohibida</h2>
+            <p className="mb-2">Queda expresamente prohibido el uso de la Plataforma para:</p>
+            <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+              <li>Publicar información falsa, engañosa o suplantando la identidad de terceros.</li>
+              <li>Contactar a otros usuarios con fines distintos a la contratación de servicios profesionales (spam, acoso, publicidad no solicitada).</li>
+              <li>Eludir el sistema de la Plataforma para evitar el cumplimiento de estos Términos.</li>
+              <li>Realizar actividades ilegales, discriminatorias o que atenten contra los derechos de terceros.</li>
+              <li>Acceder a datos de otros usuarios sin su consentimiento o mediante técnicas de scraping automatizado.</li>
+            </ul>
+            <p className="mt-2">El incumplimiento de estas normas faculta a XPEAK para suspender o eliminar la cuenta del usuario de forma inmediata y sin derecho a reembolso.</p>
+          </section>
+
+          <section>
+            <h2 className="text-base font-bold mb-3" style={{ color: '#D4AF37' }}>15 bis. Prohibición Expresa de Raspado de Datos (Data Scraping)</h2>
+            <p className="mb-2">
+              La base de datos de profesionales de XPEAK — incluyendo nombres, fotografías, tarifas, ubicaciones, especialidades, biografías y cualquier otro dato identificativo — constituye un activo empresarial propio protegido por la normativa de propiedad intelectual e industrial y por la <strong>Directiva 96/9/CE sobre protección jurídica de bases de datos</strong>, transpuesta al ordenamiento español mediante el Real Decreto Legislativo 1/1996, de 12 de abril, que aprueba el Texto Refundido de la Ley de Propiedad Intelectual (TRLPI).
+            </p>
+            <p className="mb-2">
+              Queda <strong>expresamente prohibido, sin autorización escrita previa de XPEAK</strong>, todo acceso, extracción, reutilización, copia, publicación o redistribución de la base de datos o de partes sustanciales de la misma, así como cualquier actuación que tenga por efecto eludir las medidas técnicas de protección habilitadas en la Plataforma. En particular, se prohíbe:
+            </p>
+            <ul className="list-disc list-inside space-y-1 text-muted-foreground mb-2">
+              <li>El uso de programas automatizados, robots, arañas (crawlers), scripts u otras herramientas técnicas para acceder, recopilar o indexar datos de la Plataforma.</li>
+              <li>La copia masiva, total o parcial, del directorio de profesionales con fines comerciales, competitivos o de cualquier otra naturaleza.</li>
+              <li>La reventa, transferencia o publicación de los datos de los perfiles de profesionales en otras plataformas, bases de datos, directorios o servicios de terceros.</li>
+              <li>El acceso a la Plataforma mediante identidades falsas, VPN, proxies u otras técnicas con el objeto de eludir limitaciones de acceso.</li>
+              <li>El almacenamiento sistemático de datos con fines de inteligencia competitiva, análisis de mercado o entrenamiento de modelos de inteligencia artificial.</li>
+            </ul>
+            <p className="mb-2">
+              XPEAK implanta medidas técnicas y organizativas (limitación de peticiones, detección de bots, bloqueo de IP, honeypots y monitorización del tráfico) para detectar y prevenir el scraping no autorizado. La vulneración de estas medidas podrá ser constitutiva de delito informático en virtud del artículo 197 bis del Código Penal español.
+            </p>
+            <p>
+              Las infracciones de esta cláusula facultan a XPEAK para exigir la cesación inmediata de la actividad prohibida, el borrado de los datos extraídos, y una indemnización por daños y perjuicios no inferior a <strong>50.000 € por infracción</strong>, sin perjuicio de las acciones penales y civiles que correspondan.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>16. Modificaciones</h2>
             <p>XPEAK se reserva el derecho de modificar estos Términos y Condiciones en cualquier momento. Los cambios serán notificados a los usuarios registrados por correo electrónico y/o mediante aviso en la Plataforma con un mínimo de 15 días de antelación para cambios sustanciales.</p>
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>14. Legislación Aplicable</h2>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>17. Legislación Aplicable</h2>
             <p>Los presentes Términos se rigen por la legislación española. Para cualquier controversia, las partes se someten a los Juzgados y Tribunales de Madrid (España), con renuncia expresa a cualquier otro fuero que pudiera corresponderles.</p>
           </section>
 

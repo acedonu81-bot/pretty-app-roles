@@ -93,7 +93,7 @@ export default function BlogScrollCTA({ role = 'general', storageKey }: BlogScro
           <button
             onClick={() => { setDismissed(true); sessionStorage.setItem(key, '1'); }}
             className="w-7 h-7 rounded-full flex items-center justify-center transition-all hover:opacity-70 flex-shrink-0"
-            style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.4)' }}
+            style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.6)' }}
             aria-label="Cerrar"
           >
             ✕

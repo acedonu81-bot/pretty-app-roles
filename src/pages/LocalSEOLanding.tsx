@@ -32,7 +32,7 @@ const CATS: Record<string, {
     label: 'DJ', labelPlural: 'DJs', role: 'dj', unidad: '/hora', emoji: '🎧',
     h1: (c) => `Contratar DJ en ${c} 2026 — Bodas, Eventos y Clubs desde ${c === 'Málaga' ? '35€' : '60€'}/h`,
     desc: (c, pMin, pMax) => `DJs profesionales en ${c} para bodas, eventos privados y clubs. Tarifas desde ${pMin}/hora. Portfolio y géneros visibles. Respuesta en menos de 1h. Sin comisiones. XPEAK.`,
-    intro: (c, barrios, venues) => `${c} tiene una de las escenas de ocio nocturno más activas de España. Desde clubs de referencia como ${venues.slice(0,2).join(' y ')} hasta eventos privados en ${barrios.slice(0,2).join(' y ')}, la demanda de DJs profesionales es constante durante todo el año. En XPEAK encontrarás DJs verificados con residencias, festivales y bodas en su historial — con tarifa pública, géneros y disponibilidad real.`,
+    intro: (c, barrios, venues) => `${c} tiene una de las escenas de eventos y entretenimiento más activas de España. Desde clubs de referencia como ${venues.slice(0,2).join(' y ')} hasta eventos privados en ${barrios.slice(0,2).join(' y ')}, la demanda de DJs profesionales es constante durante todo el año. En XPEAK encontrarás DJs verificados con residencias, festivales y bodas en su historial — con tarifa pública, géneros y disponibilidad real.`,
     beneficios: ['Perfiles verificados con historial real de eventos', 'Tarifa pública antes de contactar — sin sorpresas', 'Flash Booking: respuesta en menos de 60 minutos', 'Contrato digital automático incluido', 'DJs con equipo propio disponibles para toda la provincia', 'Géneros: Tech House, Techno, Comercial, Reggaeton, Afro House y más'],
     pasos: [
       { t: 'Publica tu oferta', d: 'Indica fecha, horario, tipo de evento y presupuesto. Sin registro previo.' },
@@ -317,7 +317,7 @@ export default function LocalSEOLanding() {
         {/* Barrios */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-12">
           <h2 className="text-xl sm:text-2xl font-black mb-2">{catData.labelPlural} en los principales barrios de {nombre}</h2>
-          <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.4)' }}>Cobertura en toda la ciudad y alrededores.</p>
+          <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.6)' }}>Cobertura en toda la ciudad y alrededores.</p>
           <div className="flex flex-wrap gap-2 mb-8">
             {barrios.map(b => (
               <span key={b} className="px-3 py-1.5 rounded-lg text-xs font-bold"
@@ -327,7 +327,7 @@ export default function LocalSEOLanding() {
             ))}
           </div>
           <h2 className="text-xl sm:text-2xl font-black mb-2">Venues y espacios en {nombre}</h2>
-          <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.4)' }}>Profesionales con experiencia en los principales espacios de la ciudad.</p>
+          <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.6)' }}>Profesionales con experiencia en los principales espacios de la ciudad.</p>
           <div className="flex flex-wrap gap-2">
             {venues.map(v => (
               <span key={v} className="px-3 py-1.5 rounded-lg text-xs font-bold"

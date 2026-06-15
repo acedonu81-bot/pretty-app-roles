@@ -168,7 +168,13 @@ const AudioUpload = () => {
     if (error) { toast.error('Error al subir: ' + error.message); setUploading(false); setUploadProgress(0); return; }
 
     const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
-    setSessions(prev => [...prev, { name: file.name, url: urlData.publicUrl, storagePath: path, type: 'file' }]);
+    const newSession = { name: file.name, url: urlData.publicUrl, storagePath: path, type: 'file' as SessionType };
+    setSessions(prev => {
+      const next = [...prev, newSession];
+      const fileUrls = next.filter(s => s.type === 'file').map(s => s.url);
+      supabase.from('profiles').update({ audio_session_urls: fileUrls } as any).eq('user_id', user.id).then(() => {});
+      return next;
+    });
 
     await supabase.from('feature_requests').insert({
       user_id: user.id,
@@ -205,7 +211,12 @@ const AudioUpload = () => {
     if (session.storagePath) {
       await supabase.storage.from('audio-sessions').remove([session.storagePath]);
     }
-    setSessions(prev => prev.filter(s => s !== session));
+    setSessions(prev => {
+      const next = prev.filter(s => s !== session);
+      const fileUrls = next.filter(s => s.type === 'file').map(s => s.url);
+      supabase.from('profiles').update({ audio_session_urls: fileUrls } as any).eq('user_id', user!.id).then(() => {});
+      return next;
+    });
     toast.info('Sesión eliminada.');
   };
 
@@ -259,7 +270,7 @@ const AudioUpload = () => {
               <button key={g} onClick={() => toggleGenre(g)}
                 className="text-xs font-medium px-2 py-0.5 rounded transition-all"
                 style={{
-                  background: selectedGenres.includes(g) ? 'rgba(212,175,55,0.2)' : 'rgba(255,255,255,0.03)',
+                  background: selectedGenres.includes(g) ? 'rgba(212,175,55,0.2)' : 'rgba(0,0,0,0.03)',
                   color: selectedGenres.includes(g) ? '#D4AF37' : 'var(--nightlife-text-secondary)',
                   border: selectedGenres.includes(g) ? '1px solid rgba(212,175,55,0.3)' : '1px solid var(--nightlife-border)',
                 }}>
@@ -295,7 +306,7 @@ const AudioUpload = () => {
             onChange={e => setRightsConfirmed(e.target.checked)}
             className="mt-0.5 flex-shrink-0 accent-[#D4AF37]"
           />
-          <span className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>
+          <span className="text-xs leading-relaxed" style={{ color: 'rgba(22,20,18,0.65)' }}>
             Declaro que poseo los derechos o licencias necesarias sobre este contenido, incluyendo las obras de terceros incorporadas en la mezcla, conforme a los{' '}
             <a href="/terminos" target="_blank" rel="noopener noreferrer" style={{ color: '#D4AF37' }}>Términos y Condiciones</a>.
           </span>
@@ -320,7 +331,7 @@ const AudioUpload = () => {
           </button>
           <button onClick={() => setShowLinkInput(false)}
             className="px-2 py-2 rounded-lg"
-            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--nightlife-border)' }}>
+            style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid var(--nightlife-border)' }}>
             <X size={14} className="text-muted-foreground" />
           </button>
         </div>
@@ -338,7 +349,7 @@ const AudioUpload = () => {
             <span className="text-sm font-bold">{uploading ? `Subiendo... ${uploadProgress}%` : 'Subir archivo'}</span>
           </button>
           {uploading && uploadProgress > 0 && (
-            <div className="w-full h-1 rounded-full mt-1 overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
+            <div className="w-full h-1 rounded-full mt-1 overflow-hidden" style={{ background: 'rgba(0,0,0,0.08)' }}>
               <div className="h-full rounded-full transition-all duration-300" style={{ width: `${uploadProgress}%`, background: 'linear-gradient(90deg, #D4AF37, #B8941E)' }} />
             </div>
           )}

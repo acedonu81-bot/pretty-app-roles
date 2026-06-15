@@ -75,10 +75,10 @@ const LegalFooter = () => {
 
           {/* Bottom */}
           <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
-            <p className="text-[0.7rem]" style={{ color: 'rgba(255,255,255,0.45)' }}>
+            <p className="text-[0.7rem]" style={{ color: 'rgba(255,255,255,0.6)' }}>
               © {new Date().getFullYear()} XPEAK — España. Todos los derechos reservados.
             </p>
-            <p className="text-[0.65rem] text-center max-w-md" style={{ color: 'rgba(255,255,255,0.4)' }}>
+            <p className="text-[0.65rem] text-center max-w-md" style={{ color: 'rgba(255,255,255,0.6)' }}>
               Plataforma de intermediación técnica. Cada usuario actúa bajo su propia responsabilidad legal. XPEAK no cobra comisiones por contrato.
             </p>
           </div>

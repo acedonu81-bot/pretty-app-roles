@@ -75,7 +75,7 @@ const AdminUserManagement = () => {
                   {u.is_verified && <CheckCircle size={12} style={{ color: '#D4AF37' }} />}
                   <span className="text-[0.75rem] px-1.5 py-0.5 rounded font-bold"
                     style={{
-                      background: u.subscription_tier === 'elite' ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.05)',
+                      background: u.subscription_tier === 'elite' ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.05)',
                       color: u.subscription_tier === 'elite' ? '#D4AF37' : 'var(--nightlife-text-secondary)',
                     }}>
                     {(u.subscription_tier || 'free').toUpperCase()}
@@ -110,7 +110,7 @@ const AdminUserManagement = () => {
                 <button onClick={() => toggleVerify(u)} title={u.is_verified ? 'Quitar verificación' : 'Verificar'}
                   className="p-1.5 rounded-md transition-all hover:scale-110"
                   style={{
-                    background: u.is_verified ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.05)',
+                    background: u.is_verified ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.05)',
                     color: u.is_verified ? '#D4AF37' : 'var(--nightlife-text-secondary)',
                   }}>
                   <CheckCircle size={14} />

@@ -88,7 +88,7 @@ export default function BlogPersonalExtraHosteleria() {
                 ))}
               </tbody>
             </table>
-            <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem', marginBottom: '1.5rem' }}>* Precios orientativos. Pueden variar según ciudad, experiencia y condiciones del convenio colectivo de hostelería.</p>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.8rem', marginBottom: '1.5rem' }}>* Precios orientativos. Pueden variar según ciudad, experiencia y condiciones del convenio colectivo de hostelería.</p>
 
             <h2 className="text-xl font-black mt-8 mb-3">Camareros por horas por ciudad</h2>
             <div className="flex flex-wrap gap-2 mb-6">

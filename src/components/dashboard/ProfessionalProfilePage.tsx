@@ -227,94 +227,85 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
           transition={{ type: 'spring', stiffness: 300, damping: 36 }}
           className="absolute inset-0 overflow-y-auto md:overflow-hidden md:flex md:flex-row"
           ref={scrollRef}
-          style={{ background: '#070710' }}>
+          style={{ background: '#ffffff' }}>
 
           {/* Close */}
           <button onClick={onClose}
             aria-label="Cerrar perfil"
             className="fixed top-4 right-4 z-[110] w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-110"
-            style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)' }}>
+            style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(0,0,0,0.1)', backdropFilter: 'blur(8px)' }}>
             <X size={16} />
           </button>
 
           {/* ── LEFT COLUMN (hero + identity) ── */}
           <div className="md:w-[400px] md:flex-shrink-0 md:sticky md:top-0 md:h-screen md:overflow-y-auto"
-            style={{ borderRight: '1px solid rgba(255,255,255,0.05)' }}>
+            style={{ borderRight: '1px solid rgba(0,0,0,0.05)' }}>
 
-          {/* ── HERO ── */}
-          <div className="relative overflow-hidden flex-shrink-0" style={{ height: 220 }}>
-            {/* Gradient bg */}
-            <div className="absolute inset-0"
-              style={{ background: `linear-gradient(135deg, ${cfg.color}28 0%, #070710 70%), radial-gradient(ellipse at 30% 50%, ${cfg.glow} 0%, transparent 65%)` }} />
-            <RoleHeroAnim role={p.role} color={cfg.color} />
-            {/* Scanline texture */}
-            <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
-              style={{ backgroundImage: 'repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,1) 2px,rgba(255,255,255,1) 3px)', backgroundSize: '100% 4px' }} />
-
-            {/* Profile photo centred on hero */}
-            <div className="absolute bottom-0 left-8 translate-y-1/2">
-              <div className="relative">
-                <div className="w-24 h-24 rounded-2xl overflow-hidden flex-shrink-0"
-                  style={{ border: `2.5px solid ${cfg.color}`, boxShadow: `0 0 24px ${cfg.glow}, 0 0 4px #000` }}>
-                  {p.photo && !imgError ? (
-                    <img src={p.photo} alt={p.name} className="w-full h-full object-cover"
-                      onError={() => setImgError(true)} />
-                  ) : (
-                    <GeometricAvatar role={p.role as any} seed={p.id} size={96} isLive={p.isLive} />
-                  )}
-                </div>
-                {p.isLive && (
-                  <span className="absolute -top-1.5 -right-1.5 flex items-center gap-1 text-[0.65rem] font-black px-2 py-0.5 rounded-full"
-                    style={{ background: '#E53935', color: '#fff', boxShadow: '0 0 10px rgba(229,57,53,0.6)' }}>
-                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />LIVE
-                  </span>
-                )}
-                {verified && (
-                  <span className="absolute -bottom-1.5 -right-1.5 w-6 h-6 rounded-full flex items-center justify-center"
-                    style={{ background: '#4285F4', border: '2px solid #070710' }}>
-                    <CheckCircle size={12} color="#fff" />
-                  </span>
-                )}
+          {/* ── HERO — foto full-width, gradiente abajo, nombre anclado ── */}
+          <div className="relative flex-shrink-0" style={{ minHeight: 320 }}>
+            {/* Fondo: foto a pantalla completa o gradiente fallback */}
+            {p.photo && !imgError ? (
+              <div className="absolute inset-0 z-0">
+                <img src={p.photo} alt={p.name} className="w-full h-full object-cover object-top"
+                  onError={() => setImgError(true)} />
               </div>
-            </div>
+            ) : (
+              <div className="absolute inset-0 z-0"
+                style={{ background: `linear-gradient(135deg, ${cfg.color}28 0%, #070710 70%), radial-gradient(ellipse at 30% 50%, ${cfg.glow} 0%, transparent 65%)` }}>
+                <RoleHeroAnim role={p.role} color={cfg.color} />
+                <div className="absolute inset-0 flex items-center justify-center opacity-10">
+                  <GeometricAvatar role={p.role as any} seed={p.id} size={200} isLive={p.isLive} />
+                </div>
+              </div>
+            )}
+
+            {/* Gradiente overlay abajo */}
+            <div className="absolute inset-0 z-[1]" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.9) 100%)' }} />
 
             {/* Role pill top-left */}
-            <div className="absolute top-5 left-8 flex items-center gap-1.5">
-              <span className="text-sm font-black px-3 py-1 rounded-full"
-                style={{ background: `${cfg.color}20`, border: `1px solid ${cfg.color}50`, color: cfg.color }}>
+            <div className="absolute top-5 left-6 z-[2] flex items-center gap-1.5">
+              <span className="text-xs font-black px-3 py-1 rounded-full"
+                style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.25)', color: '#fff' }}>
                 {cfg.emoji} {cfg.label}
               </span>
+              {p.isLive && (
+                <span className="flex items-center gap-1 text-[0.65rem] font-black px-2 py-0.5 rounded-full"
+                  style={{ background: '#E53935', color: '#fff', boxShadow: '0 0 10px rgba(229,57,53,0.6)' }}>
+                  <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping inline-block" />LIVE
+                </span>
+              )}
             </div>
 
-            {/* Tagline bottom-right */}
-            <p className="absolute bottom-4 right-5 text-xs font-bold tracking-widest uppercase"
-              style={{ color: `${cfg.color}70` }}>
-              {cfg.tagline}
-            </p>
-          </div>
-
-          {/* ── NAME ROW ── */}
-          <div className="px-8 pt-16 pb-4 flex items-end justify-between gap-3 flex-wrap">
-            <div>
-              <h1 className="text-2xl font-black tracking-tight">{p.name}</h1>
+            {/* Nombre + location anclados abajo */}
+            <div className="relative z-[2] flex flex-col justify-end px-6 pb-5" style={{ minHeight: 320 }}>
+              <h1 className="font-black tracking-tight"
+                style={{ fontSize: 'clamp(1.4rem, 6vw, 2.4rem)', lineHeight: 1.1, letterSpacing: '-0.02em', color: '#fff', textShadow: '0 2px 20px rgba(0,0,0,0.5)', overflow: 'visible', paddingBottom: '0.1em', wordBreak: 'break-word', maxWidth: '100%' }}>
+                {p.name}
+                {verified && <CheckCircle size={20} className="inline ml-2 mb-1" style={{ color: '#4285F4' }} />}
+              </h1>
               <div className="flex items-center gap-2 mt-1 flex-wrap">
-                <MapPin size={11} style={{ color: cfg.color }} />
-                <span className="text-sm text-muted-foreground">{p.zone || p.location || 'España'}</span>
+                <MapPin size={11} style={{ color: 'rgba(255,255,255,0.7)' }} />
+                <span className="text-sm font-semibold" style={{ color: 'rgba(255,255,255,0.75)' }}>{p.zone || p.location || 'España'}</span>
                 {p.experience && (
                   <>
-                    <span className="text-muted-foreground/30">·</span>
-                    <Clock size={11} className="text-muted-foreground" />
-                    <span className="text-sm text-muted-foreground">{p.experience}</span>
+                    <span style={{ color: 'rgba(255,255,255,0.3)' }}>·</span>
+                    <Clock size={11} style={{ color: 'rgba(255,255,255,0.5)' }} />
+                    <span className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>{p.experience}</span>
                   </>
                 )}
                 {p.isFlashActive && (
                   <span className="flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full"
-                    style={{ background: 'rgba(34,197,94,0.1)', color: '#22c55e', border: '1px solid rgba(34,197,94,0.2)' }}>
+                    style={{ background: 'rgba(34,197,94,0.85)', color: '#fff' }}>
                     <Zap size={9} />DISPONIBLE
                   </span>
                 )}
               </div>
             </div>
+          </div>
+
+          {/* ── PRICE ROW ── */}
+          <div className="px-6 pt-4 pb-4 flex items-center justify-end gap-3 flex-wrap"
+            style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
             {!priceHidden && price > 0 && (
               <div className="text-right">
                 <p className="text-xs text-muted-foreground uppercase tracking-wider font-bold">Desde</p>
@@ -338,11 +329,11 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
 
           {/* ── TABS ── */}
           <div className="px-8 flex gap-1 mb-0 flex-shrink-0"
-            style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+            style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
             {tabs.map(t => (
               <button key={t.id} onClick={() => setTab(t.id)}
                 className="px-4 py-2.5 text-xs font-bold transition-all relative"
-                style={{ color: tab === t.id ? cfg.color : 'rgba(255,255,255,0.35)' }}>
+                style={{ color: tab === t.id ? cfg.color : 'rgba(22,20,18,0.4)' }}>
                 {t.label}
                 {tab === t.id && (
                   <motion.div layoutId="tabbar" className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full"
@@ -371,7 +362,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                 {/* Specialties / Genres */}
                 {genres && genres.length > 0 && (
                   <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-                    <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.3)' }}>
+                    <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: 'rgba(22,20,18,0.35)' }}>
                       {isDJ ? 'GÉNEROS' : 'ESPECIALIDADES'}
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -388,11 +379,11 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                 {/* Languages */}
                 {langs.length > 0 && (
                   <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}>
-                    <p className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(255,255,255,0.3)' }}>IDIOMAS</p>
+                    <p className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(22,20,18,0.35)' }}>IDIOMAS</p>
                     <div className="flex gap-2 flex-wrap">
                       {langs.map((l: string) => (
                         <span key={l} className="text-xs font-bold px-3 py-1 rounded-lg"
-                          style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.6)' }}>
+                          style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: 'rgba(22,20,18,0.65)' }}>
                           <Globe size={10} className="inline mr-1 opacity-60" />{l}
                         </span>
                       ))}
@@ -411,7 +402,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                       </p>
                       <span className="text-lg font-black" style={{ color: '#FBBF24' }}>{full.voteCount ?? 0} votos</span>
                     </div>
-                    <div className="h-2 rounded-full overflow-hidden mb-3" style={{ background: 'rgba(255,255,255,0.06)' }}>
+                    <div className="h-2 rounded-full overflow-hidden mb-3" style={{ background: 'rgba(0,0,0,0.05)' }}>
                       <motion.div className="h-full rounded-full"
                         initial={{ width: 0 }}
                         animate={{ width: `${Math.min(((full.voteCount ?? 0) / 500) * 100, 100)}%` }}
@@ -434,29 +425,38 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                     { label: 'Reseñas', value: p.reviews > 0 ? `${p.reviews}` : '—' },
                   ].map(s => (
                     <div key={s.label} className="rounded-xl p-3 text-center"
-                      style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                      style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.05)' }}>
                       <p className="text-base font-black">{s.value}</p>
                       <p className="text-xs text-muted-foreground">{s.label}</p>
                     </div>
                   ))}
                 </motion.div>
 
-                {/* Social links */}
+                {/* Social links — solo visibles para usuarios registrados */}
                 {(p.instagram || p.tiktok) && (
                   <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18 }}
-                    className="flex gap-2">
-                    {p.instagram && (
-                      <a href={`https://instagram.com/${p.instagram}`} target="_blank" rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
-                        style={{ background: 'rgba(225,48,108,0.1)', color: '#E1306C', border: '1px solid rgba(225,48,108,0.2)' }}>
-                        <Instagram size={12} /> @{p.instagram}
-                      </a>
-                    )}
-                    {p.tiktok && (
-                      <a href={`https://tiktok.com/@${p.tiktok}`} target="_blank" rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
-                        style={{ background: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                        TikTok @{p.tiktok}
+                    className="flex gap-2 flex-wrap">
+                    {me.userId ? (
+                      <>
+                        {p.instagram && (
+                          <a href={`https://instagram.com/${p.instagram}`} target="_blank" rel="noopener noreferrer"
+                            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
+                            style={{ background: 'rgba(225,48,108,0.1)', color: '#E1306C', border: '1px solid rgba(225,48,108,0.2)' }}>
+                            <Instagram size={12} /> @{p.instagram}
+                          </a>
+                        )}
+                        {p.tiktok && (
+                          <a href={`https://tiktok.com/@${p.tiktok}`} target="_blank" rel="noopener noreferrer"
+                            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
+                            style={{ background: 'rgba(0,0,0,0.05)', color: 'rgba(22,20,18,0.65)', border: '1px solid rgba(0,0,0,0.08)' }}>
+                            TikTok @{p.tiktok}
+                          </a>
+                        )}
+                      </>
+                    ) : (
+                      <a href="/auth" className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
+                        style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                        <Shield size={11} /> Regístrate para ver redes sociales
                       </a>
                     )}
                   </motion.div>
@@ -499,9 +499,9 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                 {/* GDPR legal note */}
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25 }}
                   className="flex items-center gap-2 p-3 rounded-lg"
-                  style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
-                  <Shield size={11} style={{ color: 'rgba(255,255,255,0.2)', flexShrink: 0 }} />
-                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.25)' }}>
+                  style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
+                  <Shield size={11} style={{ color: 'rgba(0,0,0,0.1)', flexShrink: 0 }} />
+                  <p className="text-xs" style={{ color: 'rgba(22,20,18,0.3)' }}>
                     XPEAK actúa como intermediario. Sin relación laboral con la plataforma.
                   </p>
                 </motion.div>
@@ -533,7 +533,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                 {/* Audio embed */}
                 {audioEmbed && (
                   <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
-                    <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.3)' }}>
+                    <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: 'rgba(22,20,18,0.35)' }}>
                       🎵 {audioEmbed.type}
                     </p>
                     <div className="rounded-xl overflow-hidden"
@@ -549,7 +549,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                 {/* Portfolio grid */}
                 {(full.portfolioUrls && full.portfolioUrls.length > 0) ? (
                   <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-                    <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.3)' }}>PORTFOLIO</p>
+                    <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: 'rgba(22,20,18,0.35)' }}>PORTFOLIO</p>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                       {full.portfolioUrls.map((url: string, i: number) => (
                         <div key={i} className="rounded-xl overflow-hidden aspect-square relative group cursor-pointer"
@@ -566,7 +566,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                 ) : (
                   <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
                     <div className="rounded-xl p-10 text-center flex flex-col items-center gap-3"
-                      style={{ background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(255,255,255,0.08)' }}>
+                      style={{ background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(0,0,0,0.08)' }}>
                       <div className="w-10 h-10 rounded-xl flex items-center justify-center"
                         style={{ background: `${cfg.color}10`, border: `1px solid ${cfg.color}20` }}>
                         <cfg.icon size={18} style={{ color: `${cfg.color}60` }} />
@@ -588,7 +588,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                     onClick={() => p.userId && onMessage?.(p.userId, p.name)}
                     disabled={!p.userId}
                     className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm transition-all hover:scale-[1.02] disabled:opacity-40"
-                    style={{ background: `linear-gradient(90deg,${cfg.color},${cfg.color}bb)`, color: '#fff' }}>
+                    style={{ background: `linear-gradient(90deg,${cfg.color},${cfg.color}bb)`, color: 'rgba(22,20,18,0.88)' }}>
                     <MessageCircle size={16} /> Enviar mensaje
                   </button>
                 </motion.div>
@@ -616,25 +616,34 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                   </motion.div>
                 )}
 
-                {/* Social quick links */}
+                {/* Social quick links — solo para usuarios registrados */}
                 {(p.instagram || p.tiktok) && (
                   <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18 }}>
-                    <p className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(255,255,255,0.25)' }}>
+                    <p className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(22,20,18,0.3)' }}>
                       REDES SOCIALES
                     </p>
                     <div className="flex gap-2 flex-wrap">
-                      {p.instagram && (
-                        <a href={`https://instagram.com/${p.instagram}`} target="_blank" rel="noopener noreferrer"
-                          className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
-                          style={{ background: 'rgba(225,48,108,0.1)', color: '#E1306C', border: '1px solid rgba(225,48,108,0.2)' }}>
-                          <Instagram size={12} /> Instagram
-                        </a>
-                      )}
-                      {p.tiktok && (
-                        <a href={`https://tiktok.com/@${p.tiktok}`} target="_blank" rel="noopener noreferrer"
-                          className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
-                          style={{ background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                          TikTok
+                      {me.userId ? (
+                        <>
+                          {p.instagram && (
+                            <a href={`https://instagram.com/${p.instagram}`} target="_blank" rel="noopener noreferrer"
+                              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
+                              style={{ background: 'rgba(225,48,108,0.1)', color: '#E1306C', border: '1px solid rgba(225,48,108,0.2)' }}>
+                              <Instagram size={12} /> Instagram
+                            </a>
+                          )}
+                          {p.tiktok && (
+                            <a href={`https://tiktok.com/@${p.tiktok}`} target="_blank" rel="noopener noreferrer"
+                              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
+                              style={{ background: 'rgba(0,0,0,0.04)', color: 'rgba(22,20,18,0.55)', border: '1px solid rgba(0,0,0,0.08)' }}>
+                              TikTok
+                            </a>
+                          )}
+                        </>
+                      ) : (
+                        <a href="/auth" className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
+                          style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                          <Shield size={11} /> Regístrate gratis para ver redes sociales
                         </a>
                       )}
                     </div>
@@ -646,15 +655,15 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
 
           {/* ── STICKY BOTTOM BAR ── */}
           <div className="sticky bottom-0 mt-auto px-8 py-4 flex gap-3 flex-shrink-0"
-            style={{ background: 'rgba(7,7,16,0.95)', backdropFilter: 'blur(16px)', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+            style={{ background: 'rgba(7,7,16,0.95)', backdropFilter: 'blur(16px)', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
             <button onClick={() => setTab('contact')}
               className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm transition-all hover:scale-[1.02]"
-              style={{ background: `linear-gradient(90deg,${cfg.color},${cfg.color}bb)`, color: '#fff' }}>
+              style={{ background: `linear-gradient(90deg,${cfg.color},${cfg.color}bb)`, color: 'rgba(22,20,18,0.88)' }}>
               <MessageCircle size={15} /> Contactar
             </button>
             <button onClick={() => setTab('media')}
               className="px-4 py-3 rounded-xl font-bold text-sm transition-all hover:scale-[1.02]"
-              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.6)' }}>
+              style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.08)', color: 'rgba(22,20,18,0.65)' }}>
               <Heart size={15} />
             </button>
           </div>

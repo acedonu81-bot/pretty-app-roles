@@ -24,7 +24,7 @@ const NotFound = () => {
         <h1 className="text-xl font-bold text-white mb-2">
           {isProfile ? "Perfil no encontrado" : "Página no encontrada"}
         </h1>
-        <p className="text-sm mb-8" style={{ color: 'rgba(255,255,255,0.45)' }}>
+        <p className="text-sm mb-8" style={{ color: 'rgba(255,255,255,0.6)' }}>
           {isProfile
             ? "Este perfil no existe o ha sido eliminado. Puede que el profesional haya cambiado su URL."
             : "La página que buscas no existe o ha sido movida."}

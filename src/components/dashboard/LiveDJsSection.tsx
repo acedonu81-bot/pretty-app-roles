@@ -75,7 +75,7 @@ const LiveDJsSection = ({ onNavigate }: { onNavigate?: () => void }) => {
               onClick={onNavigate}
               className="flex items-center gap-3 px-4 py-3 rounded-2xl flex-none transition-all hover:scale-[1.02] active:scale-95"
               style={{
-                background: 'rgba(255,255,255,0.03)',
+                background: 'rgba(0,0,0,0.03)',
                 border: `1px solid ${color}28`,
                 backdropFilter: 'blur(12px)',
               }}
@@ -88,7 +88,7 @@ const LiveDJsSection = ({ onNavigate }: { onNavigate?: () => void }) => {
               </div>
               <div className="text-left min-w-0">
                 <p className="text-sm font-bold leading-tight truncate">{p.display_name}</p>
-                <p className="text-xs truncate" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                <p className="text-xs truncate" style={{ color: 'rgba(22,20,18,0.65)' }}>
                   {p.stream_title || p.zone || label}
                 </p>
               </div>

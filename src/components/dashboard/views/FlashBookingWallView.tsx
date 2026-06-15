@@ -41,7 +41,7 @@ const FlashBookingWallView = () => {
           <button key={t.id} onClick={() => setTab(t.id)}
             className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold transition-all"
             style={{
-              background: tab === t.id ? `rgba(${t.color === '#D4AF37' ? '212,175,55' : '34,197,94'},0.12)` : 'rgba(255,255,255,0.03)',
+              background: tab === t.id ? `rgba(${t.color === '#D4AF37' ? '212,175,55' : '34,197,94'},0.12)` : 'rgba(0,0,0,0.03)',
               border: `1px solid ${tab === t.id ? `rgba(${t.color === '#D4AF37' ? '212,175,55' : '34,197,94'},0.4)` : 'var(--nightlife-border)'}`,
               color: tab === t.id ? t.color : '#8E8EA0',
             }}>

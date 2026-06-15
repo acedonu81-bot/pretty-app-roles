@@ -67,7 +67,7 @@ const SobreNosotros = () => {
             ].map(([val, label]) => (
               <div key={label} className="glass-panel p-4 text-center">
                 <p className="text-2xl font-black" style={{ color: '#D4AF37' }}>{val}</p>
-                <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.45)' }}>{label}</p>
+                <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.6)' }}>{label}</p>
               </div>
             ))}
           </div>
@@ -96,7 +96,7 @@ const SobreNosotros = () => {
               </div>
               <div>
                 <p className="font-black text-white">Daniel — Fundador y CEO</p>
-                <p className="text-xs mt-1 mb-2" style={{ color: 'rgba(255,255,255,0.45)' }}>Madrid, España</p>
+                <p className="text-xs mt-1 mb-2" style={{ color: 'rgba(255,255,255,0.6)' }}>Madrid, España</p>
                 <p style={{ color: 'rgba(255,255,255,0.65)' }}>
                   Especialista en el sector de eventos y entretenimiento nocturno en España. Con experiencia directa en el ecosistema de salas, festivales y eventos privados, fundó XPEAK para resolver los problemas que él mismo vivió al intentar conectar talento con oportunidades en el sector.
                 </p>
@@ -177,11 +177,11 @@ const SobreNosotros = () => {
             <p className="mb-4">¿Tienes preguntas, sugerencias o quieres colaborar con XPEAK?</p>
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <span style={{ color: 'rgba(255,255,255,0.4)' }}>Email:</span>
+                <span style={{ color: 'rgba(255,255,255,0.6)' }}>Email:</span>
                 <a href="mailto:info@xpeak.site" className="font-bold transition-all hover:opacity-80" style={{ color: '#D4AF37' }}>info@xpeak.site</a>
               </div>
               <div className="flex items-center gap-2">
-                <span style={{ color: 'rgba(255,255,255,0.4)' }}>Web:</span>
+                <span style={{ color: 'rgba(255,255,255,0.6)' }}>Web:</span>
                 <a href="https://xpeak.es" className="font-bold transition-all hover:opacity-80" style={{ color: '#D4AF37' }}>xpeak.es</a>
               </div>
             </div>

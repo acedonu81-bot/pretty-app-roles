@@ -227,7 +227,7 @@ const GastosTab = () => {
                           <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>{fmtEur(d.total)}</span>
                         </div>
                       </div>
-                      <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                      <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(0,0,0,0.05)' }}>
                         <div className="h-full rounded-full" style={{ width: `${pct}%`, background: 'linear-gradient(90deg,#D4AF37,#B8941E)' }} />
                       </div>
                     </div>
@@ -243,7 +243,7 @@ const GastosTab = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead>
-                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                  <tr style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
                     {['Mes', 'Contrataciones', 'Gasto total', '% del año'].map(h => (
                       <th key={h} className="pb-2 text-left font-bold text-muted-foreground">{h}</th>
                     ))}
@@ -251,7 +251,7 @@ const GastosTab = () => {
                 </thead>
                 <tbody>
                   {monthlyData.map(d => (
-                    <tr key={d.month} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                    <tr key={d.month} style={{ borderBottom: '1px solid rgba(0,0,0,0.04)' }}>
                       <td className="py-2 font-semibold">{d.month} {yearFilter}</td>
                       <td className="py-2 text-muted-foreground">{d.count}</td>
                       <td className="py-2 font-bold" style={{ color: '#D4AF37' }}>{fmtEur(d.total)}</td>

@@ -33,7 +33,7 @@ const AdminFeatureRequests = () => {
         toast('¡XPEAK está listo! 50 usuarios han solicitado el vídeo en directo. Es hora de activar la pasarela de pagos.', {
           icon: 'trophy',
           duration: 10000,
-          style: { background: '#1a1a1a', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' },
+          style: { background: '#f0efe9', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' },
         });
       }
     };
@@ -102,7 +102,7 @@ const AdminFeatureRequests = () => {
         <div className="max-h-60 overflow-y-auto space-y-2">
           {requests.map(r => (
             <div key={r.id} className="flex items-center justify-between px-3 py-2 rounded-lg text-xs"
-              style={{ background: 'rgba(255,255,255,0.03)' }}>
+              style={{ background: 'rgba(0,0,0,0.03)' }}>
               <span className="font-mono text-muted-foreground truncate max-w-[180px]">{r.user_id}</span>
               <span className="px-2 py-0.5 rounded-full font-bold"
                 style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37' }}>

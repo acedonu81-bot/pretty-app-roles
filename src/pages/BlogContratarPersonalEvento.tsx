@@ -179,7 +179,7 @@ export default function BlogContratarPersonalEvento() {
             </section>
 
             <section>
-              <h2 className="text-base font-black mb-4" style={{ color: 'rgba(255,255,255,0.4)' }}>Artículos relacionados</h2>
+              <h2 className="text-base font-black mb-4" style={{ color: 'rgba(255,255,255,0.6)' }}>Artículos relacionados</h2>
               <div className="grid sm:grid-cols-2 gap-3">
                 {[
                   { href: '/blog/staff-para-eventos', cat: 'Hub Staff', title: 'Staff para eventos: guía completa 2026' },

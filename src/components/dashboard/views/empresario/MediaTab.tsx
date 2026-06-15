@@ -64,7 +64,7 @@ const MediaTab = () => {
           <button key={f.id} onClick={() => setFilter(f.id)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all"
             style={{
-              background: filter === f.id ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.03)',
+              background: filter === f.id ? 'rgba(212,175,55,0.12)' : 'rgba(0,0,0,0.03)',
               border: `1px solid ${filter === f.id ? 'rgba(212,175,55,0.3)' : 'var(--nightlife-border)'}`,
               color: filter === f.id ? '#D4AF37' : '#8E8EA0',
             }}>
@@ -137,7 +137,7 @@ const MediaTab = () => {
                 <a href={`https://tiktok.com/@${p.tiktok.replace('@', '')}`}
                   target="_blank" rel="noopener noreferrer"
                   className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
-                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)', color: '#fff' }}>
+                  style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.09)', color: 'rgba(22,20,18,0.88)' }}>
                   <ExternalLink size={10} /> TikTok
                 </a>
               )}

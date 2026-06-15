@@ -46,7 +46,7 @@ const StreamingPacksSection = () => {
     return (
       <div className="glass-panel p-5 flex flex-col items-center justify-center gap-3 text-center"
         style={{ border: '1px solid rgba(212,175,55,0.08)' }}>
-        <p className="text-xs font-bold" style={{ color: 'rgba(255,255,255,0.5)' }}>
+        <p className="text-xs font-bold" style={{ color: 'rgba(22,20,18,0.55)' }}>
           Packs de streaming próximamente
         </p>
         <p className="text-xs text-muted-foreground max-w-[200px]">
@@ -101,20 +101,20 @@ const StreamingPacksSection = () => {
                   : 'rgba(255,255,255,0.02)',
                 border: pack.highlight
                   ? '1px solid rgba(212,175,55,0.25)'
-                  : '1px solid rgba(255,255,255,0.06)',
+                  : '1px solid rgba(0,0,0,0.05)',
               }}
             >
               {pack.badge && (
                 <span className="absolute top-2 right-2 text-xs font-black px-1.5 py-0.5 rounded"
                   style={{
-                    background: pack.highlight ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.06)',
-                    color: pack.highlight ? '#D4AF37' : 'rgba(255,255,255,0.4)',
-                    border: pack.highlight ? '1px solid rgba(212,175,55,0.2)' : '1px solid rgba(255,255,255,0.08)',
+                    background: pack.highlight ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.05)',
+                    color: pack.highlight ? '#D4AF37' : 'rgba(22,20,18,0.45)',
+                    border: pack.highlight ? '1px solid rgba(212,175,55,0.2)' : '1px solid rgba(0,0,0,0.08)',
                   }}>
                   {pack.badge}
                 </span>
               )}
-              <span className="text-xs font-bold pr-8" style={{ color: pack.highlight ? '#D4AF37' : 'rgba(255,255,255,0.8)' }}>
+              <span className="text-xs font-bold pr-8" style={{ color: pack.highlight ? '#D4AF37' : 'rgba(22,20,18,0.85)' }}>
                 {pack.hours}h
               </span>
               <span className="text-base font-black" style={{ color: pack.highlight ? '#D4AF37' : 'white' }}>

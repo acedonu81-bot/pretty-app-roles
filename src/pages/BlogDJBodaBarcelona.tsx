@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import RelatedPosts from '@/components/RelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
@@ -150,6 +151,7 @@ export default function BlogDJBodaBarcelona() {
             </div>
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-barcelona" />
+          <RelatedPosts currentSlug="/blog/dj-bodas-barcelona" tags={['DJ']} />
 </main>
         <BlogAuthor />
         <FooterPublic />

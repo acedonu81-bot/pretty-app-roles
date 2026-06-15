@@ -5,7 +5,7 @@ import {
   BarChart3,
   Camera, FileText, FileEdit, CalendarCheck,
   Palette, Shirt, Speaker, ChevronDown, Plus, UtensilsCrossed,
-  Wand2, Music2, Laugh, Mic2,
+  Wand2, Music2, Laugh, Mic2, Theater, PartyPopper,
 } from 'lucide-react';
 import GeometricAvatar from './GeometricAvatar';
 import { useProfile } from '@/hooks/useProfile';
@@ -31,8 +31,10 @@ const ROLE_COLORS: Record<string, string> = {
   promotor:      '#38BDF8',
   catering:      '#F59E0B',
   mago:          '#8B5CF6',
+  monologo:      '#EF4444',
   bailarin:      '#EC4899',
   humorista:     '#F97316',
+  animador:      '#FBBF24',
   speaker:       '#06B6D4',
 };
 
@@ -51,7 +53,8 @@ const navSections = [
       { id: 'catering',   icon: UtensilsCrossed, label: 'Catering & Chef' },
       { id: 'mago',       icon: Wand2,           label: 'Magos & Ilusionistas' },
       { id: 'bailarin',   icon: Music2,          label: 'Bailarines & Danza' },
-      { id: 'humorista',  icon: Laugh,           label: 'Humoristas & Cómicos' },
+      { id: 'humorista',  icon: Laugh,           label: 'Humor, Monólogos & Stand-Up' },
+      { id: 'animador',   icon: PartyPopper,     label: 'Payasos & Animadores' },
       { id: 'speaker',    icon: Mic2,            label: 'Speakers & Presentadores' },
       { id: 'empresario', icon: Building2,       label: 'Panel Empresario' },
     ],
@@ -89,7 +92,7 @@ const navSections = [
 const TOOL_BLUE_IDS = new Set(['calendar', 'messages', 'flashbooking']);
 const NO_COUNT_BADGE = new Set(['empresario']);
 
-const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', makeup: 'Makeup', media: 'Media', empresario: 'Sala / Club', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', promotor: 'Promotor & RRPP', ambassador: 'Embajador', design: 'Diseño', mago: 'Mago & Ilusionista', bailarin: 'Bailarín & Danza', humorista: 'Humorista & Cómico', speaker: 'Speaker & Presentador' };
+const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', makeup: 'Makeup', media: 'Media', empresario: 'Sala / Club', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', promotor: 'Promotor & RRPP', ambassador: 'Embajador', design: 'Diseño', mago: 'Mago & Ilusionista', bailarin: 'Bailarín & Danza', humorista: 'Humorista & Cómico', monologo: 'Monólogo & Stand-Up', animador: 'Payaso & Animador', speaker: 'Speaker & Presentador' };
 
 const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }) => {
   const { display_name, role, photo_url, allProfiles, switchProfile, maxProfiles, profileId } = useProfile();
@@ -109,7 +112,7 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
       <button
         onClick={() => setOpen(o => !o)}
         className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all hover:bg-white/5"
-        style={{ border: '1px solid rgba(255,255,255,0.06)' }}
+        style={{ border: '1px solid rgba(0,0,0,0.08)' }}
       >
         <div style={role === 'empresario' ? { borderRadius: 6, boxShadow: '0 0 0 2px #D4AF37, 0 0 0 4px rgba(212,175,55,0.25)', display:'inline-flex' } : { display:'inline-flex' }}>
           <GeometricAvatar role={role as any} seed={(profileId ?? '').charCodeAt(0) || 0} size={28} />
@@ -120,22 +123,22 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
             {ROLE_LABEL[role] ?? role}
           </p>
         </div>
-        <ChevronDown size={13} style={{ color: 'rgba(255,255,255,0.3)', transform: open ? 'rotate(180deg)' : undefined, transition: 'transform 0.2s' }} />
+        <ChevronDown size={13} style={{ color: 'rgba(22,20,18,0.3)', transform: open ? 'rotate(180deg)' : undefined, transition: 'transform 0.2s' }} />
       </button>
 
       {open && (
         <div className="absolute left-4 right-4 top-full mt-1 rounded-xl overflow-hidden z-50 shadow-xl"
-          style={{ background: '#111', border: '1px solid rgba(255,255,255,0.1)' }}>
+          style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.1)', boxShadow: '0 8px 24px rgba(0,0,0,0.1)' }}>
           {allProfiles.map(p => (
             <button key={p.id} onClick={() => { switchProfile(p.id); setOpen(false); }}
-              className="w-full flex items-center gap-2.5 px-3 py-2.5 text-left transition-all hover:bg-white/5"
-              style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', background: p.id === profileId ? 'rgba(212,175,55,0.06)' : undefined }}>
+              className="w-full flex items-center gap-2.5 px-3 py-2.5 text-left transition-all hover:bg-black/5"
+              style={{ borderBottom: '1px solid rgba(0,0,0,0.05)', background: p.id === profileId ? 'rgba(212,175,55,0.08)' : undefined }}>
               <div style={p.role === 'empresario' ? { borderRadius: 6, boxShadow: '0 0 0 2px #D4AF37, 0 0 0 4px rgba(212,175,55,0.25)', display:'inline-flex' } : { display:'inline-flex' }}>
                 <GeometricAvatar role={p.role as any} seed={p.id.charCodeAt(0)} size={24} />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-bold truncate">{p.display_name}</p>
-                <p className="text-[0.6rem]" style={{ color: 'rgba(255,255,255,0.35)' }}>{ROLE_LABEL[p.role] ?? p.role}</p>
+                <p className="text-[0.6rem]" style={{ color: 'rgba(22,20,18,0.45)' }}>{ROLE_LABEL[p.role] ?? p.role}</p>
               </div>
               {p.id === profileId && <span className="text-[0.6rem] font-black" style={{ color: '#D4AF37' }}>●</span>}
             </button>
@@ -219,7 +222,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
   return (
     <aside
       className="w-[260px] h-full flex flex-col z-10 flex-shrink-0"
-      style={{ background: '#080808', borderRight: '1px solid var(--nightlife-border)' }}
+      style={{ background: '#ffffff', borderRight: '1px solid var(--nightlife-border)' }}
     >
       <div className="p-6 flex items-center gap-3" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>
         <button onClick={() => onViewChange('dj')} className="text-left transition-opacity hover:opacity-70">
@@ -250,7 +253,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
               const hasPulse = 'pulse' in item && item.pulse;
               const roleColor = ROLE_COLORS[item.id];
               const isToolBlue = TOOL_BLUE_IDS.has(item.id);
-              const iconColor = roleColor ?? (isToolBlue ? '#4285F4' : 'rgba(255,255,255,0.5)');
+              const iconColor = roleColor ?? (isToolBlue ? '#4285F4' : 'rgba(22,20,18,0.45)');
               const count = roleColor && !NO_COUNT_BADGE.has(item.id) ? roleCounts[item.id] : undefined;
 
               return (
@@ -295,6 +298,14 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
                   </span>
 
                   <span className="flex-1 text-[0.82rem]">{item.label}</span>
+
+                  {/* Badge fijo para empresario */}
+                  {item.id === 'empresario' && (
+                    <span className="text-[0.65rem] px-1.5 py-0.5 rounded-md font-black flex-shrink-0"
+                      style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>
+                      4
+                    </span>
+                  )}
 
                   {/* Member count for directory roles */}
                   {count !== undefined && count > 0 && (

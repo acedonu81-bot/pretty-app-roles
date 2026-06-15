@@ -104,8 +104,8 @@ const FanChat = ({ professionalProfileId, professionalUserId, isSubscribed }: Pr
           <div key={m.id} className={`flex ${m.sender_id === user?.id ? 'justify-end' : 'justify-start'}`}>
             <div className="max-w-[75%] px-3 py-2 rounded-lg text-xs"
               style={{
-                background: m.sender_id === user?.id ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.05)',
-                border: `1px solid ${m.sender_id === user?.id ? 'rgba(212,175,55,0.2)' : 'rgba(255,255,255,0.05)'}`,
+                background: m.sender_id === user?.id ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.05)',
+                border: `1px solid ${m.sender_id === user?.id ? 'rgba(212,175,55,0.2)' : 'rgba(0,0,0,0.05)'}`,
               }}>
               {m.content}
             </div>

@@ -105,7 +105,7 @@ export default function BlogInlineCTA({ role = 'general', variant = 'default' }:
             XPEAK · Directorio verificado · 31 profesionales · 0€ comisión
           </p>
           <p className="text-sm font-bold" style={{ color: 'rgba(255,255,255,0.85)' }}>{c.pro.label}</p>
-          <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>
+          <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.6)' }}>
             {c.org.label}
           </p>
         </div>

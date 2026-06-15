@@ -53,6 +53,33 @@ const rows = (pairs: [string, string][]) =>
 
 const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to: string; replyTo?: string }> = {
 
+  // 0. Early Adopter — primeros 20 profesionales
+  early_adopter: (d) => ({
+    subject: `🏆 ${esc(d.name)}, eres Early Adopter de XPEAK — posición Elite 6 meses gratis`,
+    to: d.email,
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#D4AF37">🏆 Eres Early Adopter de XPEAK</h2>
+      <p style="color:rgba(255,255,255,0.8);font-size:14px;line-height:1.7;margin:0 0 16px">
+        Hola <strong>${esc(d.name)}</strong>, eres uno de los primeros profesionales en confiar en XPEAK desde el primer día. Eso tiene valor real para nosotros y queremos recompensarte.
+      </p>
+      <div style="background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.3);border-radius:8px;padding:20px;margin:20px 0">
+        <p style="color:#D4AF37;font-weight:700;font-size:15px;margin:0 0 12px">Tu recompensa — válida hasta diciembre 2026:</p>
+        <ul style="color:rgba(255,255,255,0.85);line-height:2.2;margin:0;padding-left:20px;font-size:14px">
+          <li>Posición <strong style="color:#D4AF37">Elite</strong> en el directorio — 6 meses gratis</li>
+          <li>Apareces el <strong style="color:#D4AF37">primero en todas las búsquedas</strong> de tu ciudad</li>
+          <li>Badge exclusivo <strong style="color:#D4AF37">⭐ Early Adopter</strong> en tu ficha</li>
+          <li>Acceso prioritario a todas las nuevas funciones</li>
+          <li>Línea directa con el equipo — responde a este email</li>
+        </ul>
+      </div>
+      <p style="color:rgba(255,255,255,0.6);font-size:13px;line-height:1.7;margin:0 0 24px">
+        Solo hay <strong style="color:#fff">20 plazas Early Adopter</strong> en toda España. La tuya está asegurada. Gracias por estar desde el principio.
+      </p>
+      ${btn('Ver mi perfil en XPEAK →', 'https://xpeak.es/dashboard')}
+      <p style="color:rgba(255,255,255,0.3);font-size:12px;text-align:center;margin-top:16px">¿Tienes dudas o sugerencias? Responde directamente a este email.</p>
+    `),
+  }),
+
   // 1. Bienvenida al nuevo usuario
   welcome: (d) => ({
     subject: `Bienvenido a XPEAK, ${esc(d.name)} 👋`,
@@ -383,6 +410,41 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       ${btn('Ver mensaje →', 'https://xpeak.es/dashboard')}
       <p style="color:rgba(255,255,255,0.3);font-size:12px;text-align:center">
         Puedes desactivar estas notificaciones en Ajustes → Privacidad.
+      </p>`),
+  }),
+
+  // 14. Badge Respuesta Rápida — notificación al profesional
+  fast_responder_badge: (d) => ({
+    subject: '⚡ ¡Has ganado el badge Respuesta Rápida en XPEAK!',
+    to: d.email,
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px">¡Badge desbloqueado! ⚡</h2>
+      <p style="color:rgba(255,255,255,0.55);font-size:14px;line-height:1.7;margin:0 0 6px">
+        Has respondido a una solicitud Flash Booking en <strong style="color:#D4AF37">menos de 1 hora</strong>.
+      </p>
+      <p style="color:rgba(255,255,255,0.55);font-size:14px;line-height:1.7;margin:0 0 20px">
+        Como recompensa, durante los próximos <strong style="color:#fff">30 días</strong> disfrutas de:
+      </p>
+      <table style="width:100%;border-collapse:collapse;margin-bottom:20px">
+        ${[
+          ['⚡ Badge visible', 'El badge "Respuesta rápida" aparece en tu ficha del directorio.'],
+          ['🔝 Posición destacada', 'Subes posiciones en los resultados del directorio frente a profesionales sin badge.'],
+          ['📈 Más visibilidad', 'Los organizadores ven tu badge antes de contactar — genera más confianza y más bookings.'],
+        ].map(([k, v]) => `
+        <tr>
+          <td style="padding:10px 14px;background:rgba(212,175,55,0.07);border-radius:8px;vertical-align:top;width:40%">
+            <span style="font-size:13px;font-weight:700;color:#D4AF37">${k}</span>
+          </td>
+          <td style="padding:10px 14px;font-size:13px;color:rgba(255,255,255,0.6);line-height:1.5">${v}</td>
+        </tr>`).join('')}
+      </table>
+      <p style="color:rgba(255,255,255,0.4);font-size:12px;margin:0 0 20px">
+        Cada vez que respondas rápido, el contador sube. Los organizadores podrán ver cuántas veces has respondido en tiempo récord.
+        ${d.fast_responder_count > 1 ? `<br>Llevas ya <strong style="color:#D4AF37">${d.fast_responder_count} respuestas rápidas</strong>.` : ''}
+      </p>
+      ${btn('Ver mi ficha →', 'https://xpeak.es/dashboard')}
+      <p style="color:rgba(255,255,255,0.3);font-size:12px;text-align:center;margin-top:16px">
+        El badge se renueva automáticamente cada vez que vuelvas a responder en menos de 1h.
       </p>`),
   }),
 

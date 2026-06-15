@@ -153,7 +153,7 @@ export default function BlogMusicaEnVivoBodas() {
                   <p className="text-sm font-bold">{f.tipo}</p>
                   <span className="text-sm font-black flex-shrink-0" style={{ color: '#D4AF37' }}>{f.rango}</span>
                 </div>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>{f.desc}</p>
+                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>{f.desc}</p>
               </div>
             ))}
           </div>
@@ -168,7 +168,7 @@ export default function BlogMusicaEnVivoBodas() {
                 <tr style={{ background: 'rgba(255,255,255,0.04)' }}>
                   {['Momento', 'Formato ideal', 'Nota'].map(h => (
                     <th key={h} className="px-3 sm:px-4 py-3 text-left font-bold uppercase tracking-wider whitespace-nowrap"
-                      style={{ color: 'rgba(255,255,255,0.4)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>{h}</th>
+                      style={{ color: 'rgba(255,255,255,0.6)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -177,7 +177,7 @@ export default function BlogMusicaEnVivoBodas() {
                   <tr key={row.momento} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)' }}>
                     <td className="px-3 sm:px-4 py-3 font-bold text-xs" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.momento}</td>
                     <td className="px-3 sm:px-4 py-3 text-xs" style={{ color: '#D4AF37', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.formato}</td>
-                    <td className="px-3 sm:px-4 py-3 text-xs" style={{ color: 'rgba(255,255,255,0.4)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.nota}</td>
+                    <td className="px-3 sm:px-4 py-3 text-xs" style={{ color: 'rgba(255,255,255,0.6)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.nota}</td>
                   </tr>
                 ))}
               </tbody>
@@ -193,7 +193,7 @@ export default function BlogMusicaEnVivoBodas() {
                   <span className="text-sm font-black">{c.ciudad}</span>
                   <span className="ml-auto text-sm font-bold" style={{ color: '#D4AF37' }}>{c.rango}</span>
                 </div>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>{c.note}</p>
+                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>{c.note}</p>
               </div>
             ))}
           </div>
@@ -269,7 +269,7 @@ export default function BlogMusicaEnVivoBodas() {
                   <span className="inline-block text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded mb-2"
                     style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.18)' }}>{p.tag}</span>
                   <p className="text-sm font-black leading-snug mb-1">{p.title}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>{p.desc}</p>
+                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{p.desc}</p>
                 </a>
               ))}
             </div>

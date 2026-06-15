@@ -245,7 +245,7 @@ const MockEmpresario = () => (
       <div style={{ width: 36, height: 36, borderRadius: 9, background: 'linear-gradient(135deg,#D4AF37,#B8941E)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, color: '#000', fontSize: 14, flexShrink: 0 }}>M</div>
       <div>
         <div style={{ fontSize: 11, fontWeight: 700 }}>Mondo Club</div>
-        <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.4)' }}>Madrid · Venue Premium · 2 salas</div>
+        <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.6)' }}>Madrid · Venue Premium · 2 salas</div>
       </div>
     </Panel>
     <KpiGrid items={[{ val: '8', lbl: 'Este mes' }, { val: '€1.2K', lbl: 'Contratado' }, { val: '4', lbl: 'Activos' }, { val: '12', lbl: 'Favoritos' }]} />
@@ -386,7 +386,7 @@ const RolePreviewModal = ({ initialRole = 'dj', onClose }: Props) => {
               <div style={{ fontSize: 13, fontWeight: 900 }}>{roleData.label}</div>
             </div>
 
-            <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', lineHeight: 1.7, marginBottom: 14 }}>
+            <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, marginBottom: 14 }}>
               {activeRole === 'dj' && 'Tu perfil es tu booking page. Muestra géneros, tarifa y disponibilidad. Los empresarios te encuentran y contratan directamente.'}
               {activeRole === 'staff' && 'Portero, técnico de sonido, iluminación o seguridad. Muestra certificaciones y disponibilidad. Los venues te contratan sin intermediarios.'}
               {activeRole === 'makeup' && 'Artistas de maquillaje y estilismo para performances y festivales. Tu portfolio habla solo.'}

@@ -99,7 +99,7 @@ export default function BlogDiscoMovilVerbenas() {
                 ))}
               </tbody>
             </table>
-            <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem', marginBottom: '1.5rem' }}>* Precios orientativos para España. Pueden variar según zona geográfica, distancia y temporada.</p>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.8rem', marginBottom: '1.5rem' }}>* Precios orientativos para España. Pueden variar según zona geográfica, distancia y temporada.</p>
 
             <h2 className="text-xl font-black mt-8 mb-3">Ciudades con más demanda de disco móvil para verbenas</h2>
             <div className="flex flex-wrap gap-2 mb-6">

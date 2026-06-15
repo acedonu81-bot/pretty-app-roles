@@ -94,7 +94,7 @@ const CheckoutModal = ({ open, onClose, item }: CheckoutModalProps) => {
                     onClick={() => toggleExtra(s.id)}
                     className="w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all"
                     style={{
-                      background: selected ? 'hsla(var(--primary) / 0.08)' : 'rgba(255,255,255,0.03)',
+                      background: selected ? 'hsla(var(--primary) / 0.08)' : 'rgba(0,0,0,0.03)',
                       border: `1px solid ${selected ? 'hsla(var(--primary) / 0.4)' : 'var(--nightlife-border)'}`,
                     }}
                   >
@@ -107,9 +107,9 @@ const CheckoutModal = ({ open, onClose, item }: CheckoutModalProps) => {
                     </div>
                     <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{
                       background: selected ? 'hsl(var(--primary))' : 'transparent',
-                      border: `2px solid ${selected ? 'hsl(var(--primary))' : 'rgba(255,255,255,0.15)'}`,
+                      border: `2px solid ${selected ? 'hsl(var(--primary))' : 'rgba(0,0,0,0.1)'}`,
                     }}>
-                      {selected && <CheckCircle size={12} style={{ color: 'white' }} />}
+                      {selected && <CheckCircle size={12} style={{ color: 'rgba(22,20,18,0.88)' }} />}
                     </div>
                   </button>
                 );

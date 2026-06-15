@@ -32,7 +32,7 @@ const FOOTER_LINKS = {
 
 export default function FooterPublic() {
   return (
-    <footer style={{ background: '#050505', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+    <footer style={{ background: '#f5f4f0', borderTop: '1px solid rgba(0,0,0,0.07)' }}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
 
         {/* Top grid */}
@@ -43,7 +43,7 @@ export default function FooterPublic() {
             <ul className="space-y-2.5">
               {FOOTER_LINKS.contratar.map(l => (
                 <li key={l.href}>
-                  <a href={l.href} className="text-xs transition-opacity hover:opacity-80" style={{ color: 'rgba(255,255,255,0.55)' }}>
+                  <a href={l.href} className="text-xs transition-opacity hover:opacity-80" style={{ color: 'rgba(22,20,18,0.6)' }}>
                     {l.label}
                   </a>
                 </li>
@@ -57,7 +57,7 @@ export default function FooterPublic() {
             <ul className="space-y-2.5">
               {FOOTER_LINKS.blog.map(l => (
                 <li key={l.href}>
-                  <a href={l.href} className="text-xs transition-opacity hover:opacity-80" style={{ color: 'rgba(255,255,255,0.55)' }}>
+                  <a href={l.href} className="text-xs transition-opacity hover:opacity-80" style={{ color: 'rgba(22,20,18,0.6)' }}>
                     {l.label}
                   </a>
                 </li>
@@ -71,7 +71,7 @@ export default function FooterPublic() {
             <ul className="space-y-2.5">
               {FOOTER_LINKS.xpeak.map(l => (
                 <li key={l.href}>
-                  <a href={l.href} className="text-xs transition-opacity hover:opacity-80" style={{ color: 'rgba(255,255,255,0.55)' }}>
+                  <a href={l.href} className="text-xs transition-opacity hover:opacity-80" style={{ color: 'rgba(22,20,18,0.6)' }}>
                     {l.label}
                   </a>
                 </li>
@@ -85,7 +85,7 @@ export default function FooterPublic() {
             <ul className="space-y-2.5">
               {FOOTER_LINKS.legal.map(l => (
                 <li key={l.href}>
-                  <a href={l.href} className="text-xs transition-opacity hover:opacity-80" style={{ color: 'rgba(255,255,255,0.55)' }}>
+                  <a href={l.href} className="text-xs transition-opacity hover:opacity-80" style={{ color: 'rgba(22,20,18,0.6)' }}>
                     {l.label}
                   </a>
                 </li>
@@ -95,18 +95,18 @@ export default function FooterPublic() {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6" style={{ borderTop: '1px solid rgba(255,255,255,0.04)' }}>
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6" style={{ borderTop: '1px solid rgba(0,0,0,0.04)' }}>
           <div className="flex items-center gap-3">
             <a href="/" className="text-base font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
-            <span className="text-[0.65rem]" style={{ color: 'rgba(255,255,255,0.2)' }}>·</span>
-            <span className="text-[0.65rem]" style={{ color: 'rgba(255,255,255,0.25)' }}>El directorio profesional de eventos en España</span>
+            <span className="text-[0.65rem]" style={{ color: 'rgba(0,0,0,0.1)' }}>·</span>
+            <span className="text-[0.65rem]" style={{ color: 'rgba(22,20,18,0.3)' }}>El directorio profesional de eventos en España</span>
           </div>
           <div className="flex items-center gap-4">
             <a href="https://www.instagram.com/xpeak.es" target="_blank" rel="noopener noreferrer"
-              className="text-[0.65rem] transition-opacity hover:opacity-80" style={{ color: 'rgba(255,255,255,0.35)' }}>
+              className="text-[0.65rem] transition-opacity hover:opacity-80" style={{ color: 'rgba(22,20,18,0.4)' }}>
               @xpeak.es
             </a>
-            <span className="text-[0.65rem]" style={{ color: 'rgba(255,255,255,0.2)' }}>© 2026 XPEAK</span>
+            <span className="text-[0.65rem]" style={{ color: 'rgba(0,0,0,0.1)' }}>© 2026 XPEAK</span>
           </div>
         </div>
       </div>

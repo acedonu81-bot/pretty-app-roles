@@ -74,7 +74,7 @@ const ChatWindow = ({
         <button onClick={onBack}
           aria-label="Volver a conversaciones"
           className="md:hidden p-1.5 rounded-lg mr-1 transition-colors"
-          style={{ background: 'rgba(255,255,255,0.05)' }}>
+          style={{ background: 'rgba(0,0,0,0.05)' }}>
           <ArrowLeft size={16} />
         </button>
         <div className="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-black flex-shrink-0"
@@ -83,7 +83,7 @@ const ChatWindow = ({
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-bold">{activeOtherName}</p>
-          <p className="text-xs flex items-center gap-1" style={{ color: 'rgba(255,255,255,0.3)' }}>
+          <p className="text-xs flex items-center gap-1" style={{ color: 'rgba(22,20,18,0.35)' }}>
             <Shield size={9} /> Comunicación privada · XPEAK
           </p>
         </div>
@@ -109,12 +109,12 @@ const ChatWindow = ({
             <div key={msg.id}>
               {showDateSep && (
                 <div className="flex items-center gap-3 my-2">
-                  <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.05)' }} />
+                  <div className="flex-1 h-px" style={{ background: 'rgba(0,0,0,0.05)' }} />
                   <span className="text-xs text-muted-foreground px-2 py-0.5 rounded-full"
-                    style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                    style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.05)' }}>
                     {new Date(msg.created_at).toLocaleDateString('es', { weekday: 'short', day: 'numeric', month: 'short' })}
                   </span>
-                  <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.05)' }} />
+                  <div className="flex-1 h-px" style={{ background: 'rgba(0,0,0,0.05)' }} />
                 </div>
               )}
               <div className={`flex items-end gap-2 ${isMe ? 'justify-end' : 'justify-start'}`}>
@@ -128,7 +128,7 @@ const ChatWindow = ({
                   {isPhoto ? (
                     <div className="rounded-2xl overflow-hidden"
                       style={{
-                        border: `1px solid ${isMe ? 'rgba(212,175,55,0.3)' : 'rgba(255,255,255,0.1)'}`,
+                        border: `1px solid ${isMe ? 'rgba(212,175,55,0.3)' : 'rgba(0,0,0,0.08)'}`,
                         borderBottomRightRadius: isMe ? 4 : undefined,
                         borderBottomLeftRadius: !isMe ? 4 : undefined,
                       }}>
@@ -144,24 +144,24 @@ const ChatWindow = ({
                       style={{
                         background: isMe
                           ? 'linear-gradient(135deg, rgba(212,175,55,0.2), rgba(184,148,30,0.12))'
-                          : 'rgba(255,255,255,0.06)',
-                        border: `1px solid ${isMe ? 'rgba(212,175,55,0.3)' : 'rgba(255,255,255,0.07)'}`,
+                          : 'rgba(0,0,0,0.05)',
+                        border: `1px solid ${isMe ? 'rgba(212,175,55,0.3)' : 'rgba(0,0,0,0.06)'}`,
                         borderBottomRightRadius: isMe ? 4 : undefined,
                         borderBottomLeftRadius: !isMe ? 4 : undefined,
                         boxShadow: isMe ? '0 2px 12px rgba(212,175,55,0.08)' : 'none',
-                        color: isMe ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.8)',
+                        color: isMe ? 'rgba(255,255,255,0.95)' : 'rgba(22,20,18,0.85)',
                         lineHeight: '1.5',
                       }}>
                       {msg.content}
                     </div>
                   )}
                   <div className={`flex items-center gap-1 mt-1 px-1 ${isMe ? 'flex-row-reverse' : 'flex-row'}`}>
-                    <span className="text-[0.75rem]" style={{ color: 'rgba(255,255,255,0.25)' }}>
+                    <span className="text-[0.75rem]" style={{ color: 'rgba(22,20,18,0.3)' }}>
                       {formatTime(msg.created_at)}
                     </span>
                     {isMe && (msg.read
                       ? <CheckCheck size={10} style={{ color: '#D4AF37' }} />
-                      : <Check size={10} style={{ color: 'rgba(255,255,255,0.25)' }} />)}
+                      : <Check size={10} style={{ color: 'rgba(22,20,18,0.3)' }} />)}
                   </div>
                 </div>
               </div>
@@ -198,16 +198,16 @@ const ChatWindow = ({
           <button type="button" onClick={() => setShowEmoji(!showEmoji)}
             className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-all hover:scale-110"
             style={{
-              background: showEmoji ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.05)',
-              border: `1px solid ${showEmoji ? 'rgba(212,175,55,0.3)' : 'rgba(255,255,255,0.08)'}`,
-              color: showEmoji ? '#D4AF37' : 'rgba(255,255,255,0.4)',
+              background: showEmoji ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.05)',
+              border: `1px solid ${showEmoji ? 'rgba(212,175,55,0.3)' : 'rgba(0,0,0,0.08)'}`,
+              color: showEmoji ? '#D4AF37' : 'rgba(22,20,18,0.45)',
             }}>
             <Smile size={16} />
           </button>
 
           <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploadingPhoto}
             className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-all hover:scale-110 disabled:opacity-40"
-            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.4)' }}>
+            style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.08)', color: 'rgba(22,20,18,0.65)' }}>
             {uploadingPhoto
               ? <div className="w-4 h-4 rounded-full border border-t-transparent animate-spin" style={{ borderColor: '#D4AF37', borderTopColor: 'transparent' }} />
               : <Image size={16} />}
@@ -224,15 +224,15 @@ const ChatWindow = ({
               placeholder="Escribe un mensaje..."
               maxLength={1000}
               className="w-full px-4 py-2.5 rounded-xl text-sm outline-none transition-all"
-              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.9)' }}
+              style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.08)', color: 'rgba(22,20,18,0.9)' }}
               onFocus={e => (e.target.style.borderColor = 'rgba(212,175,55,0.3)')}
-              onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.08)')}
+              onBlur={e => (e.target.style.borderColor = 'rgba(0,0,0,0.08)')}
             />
           </div>
 
           <button type="button" onClick={onSend} disabled={sending || !input.trim()}
             className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-all hover:scale-110 active:scale-95 disabled:opacity-30 disabled:hover:scale-100"
-            style={{ background: input.trim() ? 'linear-gradient(135deg,#D4AF37,#B8941E)' : 'rgba(255,255,255,0.06)', color: input.trim() ? '#000' : 'rgba(255,255,255,0.3)' }}>
+            style={{ background: input.trim() ? 'linear-gradient(135deg,#D4AF37,#B8941E)' : 'rgba(0,0,0,0.05)', color: input.trim() ? '#000' : 'rgba(22,20,18,0.35)' }}>
             <Send size={16} />
           </button>
         </div>

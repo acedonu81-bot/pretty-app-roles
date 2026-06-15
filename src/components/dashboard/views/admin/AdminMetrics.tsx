@@ -75,8 +75,8 @@ const AdminMetrics = () => {
         {loading ? (
           Array.from({ length: 6 }).map((_, i) => (
             <div key={i} className="glass-panel p-3 animate-pulse">
-              <div className="h-3 w-16 rounded mb-2" style={{ background: 'rgba(255,255,255,0.06)' }} />
-              <div className="h-5 w-10 rounded" style={{ background: 'rgba(255,255,255,0.06)' }} />
+              <div className="h-3 w-16 rounded mb-2" style={{ background: 'rgba(0,0,0,0.05)' }} />
+              <div className="h-5 w-10 rounded" style={{ background: 'rgba(0,0,0,0.05)' }} />
             </div>
           ))
         ) : kpis.map((m) => (

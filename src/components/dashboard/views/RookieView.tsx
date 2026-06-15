@@ -100,7 +100,7 @@ const RookiePublicCard = ({ dj, userId }: { dj: any; userId: string | undefined 
             toast.success('Enlace copiado');
           }}
           className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs transition-all hover:scale-105"
-          style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', color: '#8E8EA0' }}>
+          style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)', color: '#8E8EA0' }}>
           <Share2 size={11} />
         </button>
       </div>
@@ -242,14 +242,14 @@ const RookieView = () => {
                       <span className="text-muted-foreground">Perfil completo</span>
                       <span className="font-bold" style={{ color: '#D4AF37' }}>{completionPct}%</span>
                     </div>
-                    <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                    <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(0,0,0,0.05)' }}>
                       <div className="h-full rounded-full" style={{ width: `${completionPct}%`, background: 'linear-gradient(90deg,#D4AF37,#22c55e)' }} />
                     </div>
                     <div className="mt-2 space-y-1.5">
                       {completionSteps.map(step => (
                         <div key={step.label} className="flex items-center gap-2">
                           <div className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0"
-                            style={{ background: step.done ? 'rgba(34,197,94,0.15)' : 'rgba(255,255,255,0.05)', border: `1.5px solid ${step.done ? 'rgba(34,197,94,0.4)' : 'rgba(255,255,255,0.1)'}` }}>
+                            style={{ background: step.done ? 'rgba(34,197,94,0.15)' : 'rgba(0,0,0,0.05)', border: `1.5px solid ${step.done ? 'rgba(34,197,94,0.4)' : 'rgba(0,0,0,0.08)'}` }}>
                             {step.done && <CheckCircle size={10} style={{ color: '#22c55e' }} />}
                           </div>
                           <span className={`text-xs ${step.done ? 'line-through text-muted-foreground' : ''}`}>{step.label}</span>
@@ -269,7 +269,7 @@ const RookieView = () => {
                     <div className="text-4xl font-black" style={{ color: '#D4AF37' }}>{voteCount}</div>
                     <div className="text-xs text-muted-foreground">de 500 necesarios</div>
                   </div>
-                  <div className="h-2.5 rounded-full overflow-hidden mb-2" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                  <div className="h-2.5 rounded-full overflow-hidden mb-2" style={{ background: 'rgba(0,0,0,0.05)' }}>
                     <div className="h-full rounded-full transition-all duration-700" style={{ width: `${progress}%`, background: 'linear-gradient(90deg,#D4AF37,#22c55e)' }} />
                   </div>
                   <div className="space-y-1.5 mt-3">
@@ -278,7 +278,7 @@ const RookieView = () => {
                       return (
                         <div key={m.votes} className="flex items-center gap-2 p-1.5 rounded"
                           style={{ background: reached ? 'rgba(212,175,55,0.06)' : 'transparent' }}>
-                          <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: reached ? (m as any).color : 'rgba(255,255,255,0.12)' }} />
+                          <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: reached ? (m as any).color : 'rgba(0,0,0,0.09)' }} />
                           <p className={`text-xs flex-1 ${reached ? 'font-bold' : 'text-muted-foreground'}`}>{m.label}</p>
                           <span className="text-xs text-muted-foreground">{m.votes}v</span>
                           {reached && <CheckCircle size={11} style={{ color: '#22c55e' }} />}

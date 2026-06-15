@@ -93,13 +93,13 @@ const CookieBanner = () => {
               <Cookie size={18} style={{ color: '#D4AF37', flexShrink: 0, marginTop: 2 }} />
               <div className="flex-1">
                 <p className="text-sm font-bold mb-1">Preferencias de cookies</p>
-                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>
+                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
                   Usamos cookies propias para mejorar tu experiencia. Las cookies técnicas son necesarias para el funcionamiento de la plataforma.{' '}
                   <Link to="/cookies" className="underline font-medium" style={{ color: '#D4AF37' }}>Política de cookies</Link>
                 </p>
               </div>
               <button onClick={rejectAll} className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-white/10 flex-shrink-0">
-                <X size={13} style={{ color: 'rgba(255,255,255,0.4)' }} />
+                <X size={13} style={{ color: 'rgba(255,255,255,0.6)' }} />
               </button>
             </div>
 
@@ -119,7 +119,7 @@ const CookieBanner = () => {
                         style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
                         <div className="flex-1">
                           <p className="text-xs font-bold mb-0.5">{cat.label}</p>
-                          <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.4)' }}>{cat.desc}</p>
+                          <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{cat.desc}</p>
                         </div>
                         {cat.locked ? (
                           <span className="text-xs font-bold px-2 py-0.5 rounded-md mt-0.5 flex-shrink-0"
@@ -153,7 +153,7 @@ const CookieBanner = () => {
                   type="button"
                   onClick={() => setExpanded(e => !e)}
                   className="flex items-center justify-center gap-1 px-3 py-2 rounded-lg text-xs font-semibold transition-all hover:bg-white/5"
-                  style={{ border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.45)', minWidth: 0, flex: '0 0 auto' }}
+                  style={{ border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.6)', minWidth: 0, flex: '0 0 auto' }}
                 >
                   {expanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
                   {expanded ? 'Cerrar' : 'Personalizar'}

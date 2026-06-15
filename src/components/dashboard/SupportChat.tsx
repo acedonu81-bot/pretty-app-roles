@@ -304,11 +304,75 @@ const KB: KBEntry[] = [
     followUps: ['¿Cómo bloqueo a un usuario específico?', '¿Puedo pausar temporalmente mi perfil?'],
   },
 
+  // ── Payasos & Animadores ──────────────────────────────────────────────────
+  {
+    id: 'animadores',
+    patterns: [/payaso|animador|animación infantil|animacion infantil|cumpleaños.*niños|cumpleanos.*ninos|magia.*niños|globoflexia|circo.*evento|mimo|zancos|malabares|artista.*calle/i],
+    answer: 'XPEAK tiene una sección dedicada a **Payasos & Animadores** con profesionales para todo tipo de eventos.\n\n**Qué encontrarás:**\n• Payasos profesionales para cumpleaños y comuniones (3-12 años)\n• Animadores temáticos: princesas, superhéroes, dinosaurios\n• Artistas de circo: malabares, zancos, monociclo\n• Mimos y artistas de calle para inauguraciones y festivales\n• Animación adultos: pool parties, team building, juegos gigantes\n\n**Precios orientativos en España:**\n• Show infantil 60 min: 150€ – 300€\n• Artista de circo para evento: 300€ – 600€\n• Animación adultos en hotel/resort: 400€ – 800€\n\n**Cómo contratar:** Busca en el Directorio → "Payasos & Animadores" o usa Flash Booking si necesitas uno con urgencia.',
+    followUps: ['¿Cómo publico un Flash Booking?', '¿Cómo contacto a un profesional?'],
+  },
+
+  // ── Humoristas & Monólogos ────────────────────────────────────────────────
+  {
+    id: 'humor',
+    patterns: [/humorista|monólogo|monologo|stand.?up|cómico|comico|monologuista|humor.*corporativo|cena.*empresa.*humor|risas.*evento/i],
+    answer: 'La sección **Humor, Monólogos & Stand-Up** reúne a los mejores cómicos para eventos corporativos, bodas y festivales.\n\n**Tipos de profesionales:**\n• **Monologuistas** — guión personalizado con referencias a tu empresa o evento\n• **Stand-Up** — shows de 20-60 min para festivales y salas\n• **Improv / Teatro** — dinámicas participativas para team building\n• **Presentadores con humor** — conducción de galas y cenas\n\n**Cuándo contratar:**\n• Cenas de empresa: un monólogo de 20-30 min después de cenar funciona perfectamente\n• Bodas: los monólogos blancos son tendencia para entretener entre el banquete y el baile\n• Festivales: sets de stand-up para llenar el escenario entre actuaciones principales\n\n**Precio orientativo:** 250€ – 800€ por actuación según duración y experiencia.',
+    followUps: ['¿Cómo busco un monologuista?', '¿Puedo personalizar el guión?'],
+  },
+
+  // ── Reseñas y valoraciones ────────────────────────────────────────────────
+  {
+    id: 'reviews',
+    patterns: [/reseña|reseñas|valoración|valoracion|opiniones|rating|puntuación|puntuacion|estrella|calificación|calificacion|cómo.*valoro|como.*valoro/i],
+    answer: 'XPEAK está implementando el sistema de **reseñas verificadas**.\n\n**Cómo funcionará:**\n• Solo usuarios que han contratado a un profesional pueden dejar reseña\n• Valoración de 1 a 5 estrellas + comentario (20-500 caracteres)\n• Tipo de evento: boda, corporativo, festival, privado...\n• Las reseñas se muestran en la ficha pública del profesional\n\n**Para profesionales:**\n• Las reseñas positivas mejoran tu posición en el directorio\n• El rating aparece en tu tarjeta en los resultados de búsqueda\n• Puedes responder a las reseñas públicamente\n\n**Disponibilidad:** El sistema de reseñas estará disponible próximamente. Si tienes valoraciones de clientes anteriores, menciónalas en tu bio mientras tanto.',
+    followUps: ['¿Cómo mejoro mi posición en el directorio?', '¿Cómo contacto soporte?'],
+  },
+
+  // ── Speakers y presentadores ──────────────────────────────────────────────
+  {
+    id: 'speakers',
+    patterns: [/speaker|presentador|maestro de ceremonias|maestro.*ceremonias|mc\b|conferenciante|conferencias.*evento|ponente/i],
+    answer: 'Los **Speakers & Presentadores** de XPEAK están disponibles para eventos corporativos, galas y conferencias.\n\n**Perfiles disponibles:**\n• Speakers motivacionales para eventos de empresa\n• Maestros de ceremonias para bodas y galas\n• Presentadores de TV y radio para eventos de marca\n• Moderadores de conferencias y mesas redondas\n\n**Diferencia entre Speaker y MC:**\n• **Speaker:** da una charla propia (45-90 min) sobre un tema específico\n• **MC / Presentador:** conduce el evento, presenta actuaciones y mantiene el ritmo\n\n**Precio orientativo:**\n• MC para boda: 400€ – 1.200€\n• Speaker corporativo: 500€ – 3.000€ según perfil\n\nBusca en Directorio → "Speakers & Presentadores".',
+    followUps: ['¿Cómo contacto a un speaker?', '¿Puedo usar Flash Booking para urgencias?'],
+  },
+
+  // ── Ciudades y cobertura geográfica ───────────────────────────────────────
+  {
+    id: 'cities',
+    patterns: [/qué ciudades|que ciudades|dónde.*opera|donde.*opera|disponible.*ciudad|provincia.*xpeak|cobertura.*geográfica|cobertura geografica|mi ciudad.*xpeak|xpeak.*mi ciudad/i],
+    answer: 'XPEAK cubre **toda España** con más de 85 ciudades indexadas:\n\n**Grandes ciudades:** Madrid, Barcelona, Valencia, Sevilla, Bilbao, Málaga, Zaragoza, Murcia, Alicante, Granada, Valladolid, San Sebastián...\n\n**Islas:** Ibiza, Mallorca, Menorca, Formentera, Tenerife, Las Palmas, Lanzarote, Fuerteventura, La Palma\n\n**Costa:** Marbella, Benidorm, Sitges, Torremolinos, Fuengirola, Gandia, Dénia, Torrevieja, Calpe...\n\n**Ciudades medianas:** Salamanca, Toledo, Burgos, Segovia, Pamplona, Logroño, Vitoria, Oviedo, Gijón, Vigo, Santiago, Pontevedra...\n\nSi tu ciudad no aparece en los filtros, pon la capital de provincia más cercana — los profesionales trabajan en toda su región.\n\n**Expansión a Europa:** Portugal, Francia, Italia y Alemania están previstos para 2026.',
+    followUps: ['¿Hay profesionales en mi ciudad?', '¿Puedo trabajar en varias ciudades?'],
+  },
+
+  // ── Empresarios — cómo publicar oferta ───────────────────────────────────
+  {
+    id: 'publishoffer',
+    patterns: [/publicar.*oferta|crear.*oferta|nueva.*oferta|oferta.*trabajo|publicar.*flash|cómo.*publico|como.*publico|necesito.*dj|necesito.*camarero|busco.*staff/i],
+    answer: 'Para publicar una oferta de trabajo en XPEAK:\n\n**Opción 1 — Flash Booking (urgente):**\n1. Ve a **En Vivo → Flash Booking**\n2. Pulsa "Nueva oferta"\n3. Rellena: rol, fecha, ciudad, duración y caché ofrecido\n4. La oferta es visible 2 horas para todos los profesionales disponibles en tu zona\n5. Recibes respuestas directamente en Mensajes\n\n**Opción 2 — Contacto directo:**\n1. Busca en el Directorio filtrando por rol y ciudad\n2. Abre la ficha del profesional que te interesa\n3. Pulsa **"Mensaje"** para iniciar la conversación\n4. Negocia condiciones y genera el contrato desde Herramientas\n\n**Cuándo usar cada uno:**\n• Flash Booking → evento en menos de 48h o urgencia\n• Contacto directo → planificación con más de 1 semana de antelación',
+    followUps: ['¿Qué precio debo ofrecer?', '¿Cómo genero el contrato?'],
+  },
+
+  // ── Catering y chefs ──────────────────────────────────────────────────────
+  {
+    id: 'catering',
+    patterns: [/catering|chef|cocinero|servicio.*comida|comida.*evento|menú.*evento|canapés|canapes|banquete|servicio.*mesa.*boda/i],
+    answer: 'La sección **Catering & Chef** de XPEAK incluye:\n\n• **Chefs privados** para cenas íntimas y eventos en villa\n• **Empresas de catering** para bodas, comuniones y corporativos\n• **Bartenders** especializados en coctelería creativa\n• **Pasteleros** para tartas de boda y postres artísticos\n\n**Precio orientativo:**\n• Chef privado (10 personas): 200€ – 500€\n• Catering completo boda (100 personas): 4.000€ – 15.000€\n• Bartender para evento: 150€ – 400€\n\n**Para bodas:** muchos caterings de XPEAK también incluyen montaje de mesa, decoración floral y coordinación de servicio. Consulta en el perfil de cada profesional qué incluye su oferta.',
+    followUps: ['¿Cómo contacto a un catering?', '¿Puedo ver menús antes de contratar?'],
+  },
+
+  // ── Fotógrafos y videógrafos ───────────────────────────────────────────────
+  {
+    id: 'photographers',
+    patterns: [/fotógrafo|fotografo|videógrafo|videografo|fotos.*evento|vídeo.*evento|video.*evento|drone.*evento|fotografía.*boda|fotografia.*boda|reel.*evento/i],
+    answer: 'La sección **Media & Contenido** tiene fotógrafos y videógrafos para cualquier tipo de evento.\n\n**Especialidades disponibles:**\n• Fotografía de bodas y comuniones\n• Fotografía de eventos nocturnos y clubs\n• Videografía de bodas con edición cinematográfica\n• Drone para vistas aéreas (con licencia AESA)\n• Creadores de Reels e Instagram para marcas y artistas\n• Retransmisión en directo para streams de eventos\n\n**Cómo elegir al fotógrafo correcto:**\n• Revisa su portfolio completo antes de contactar\n• Pregunta por los derechos de las fotos (entrega en RAW o solo JPG editado)\n• Confirma cuántas horas incluye el precio y si hay edición\n• Para bodas: solicita reportaje completo de una boda anterior\n\n**Precio orientativo:** fotógrafo de boda 6h: 800€ – 2.500€.',
+    followUps: ['¿Cómo solicito ver el portfolio?', '¿Qué incluye la entrega de fotos?'],
+  },
+
   // ── Agradecimientos ───────────────────────────────────────────────────────
   {
     id: 'thanks',
-    patterns: [/^(gracias|thanks|thank you|perfecto|genial|entendido|ok|vale|de acuerdo|me queda claro|claro|bien|excelente|super|guay)\b/i],
-    answer: '¡Perfecto! Ya sabes dónde encontrarme si surge cualquier otra duda. Mucho éxito con tus próximos bookings.',
+    patterns: [/^(gracias|thanks|thank you|perfecto|genial|entendido|ok|vale|de acuerdo|me queda claro|claro|bien|excelente|super|guay|chévere|chevere|mola|ok gracias|muchas gracias)\b/i],
+    answer: '¡Perfecto! Ya sabes dónde encontrarme si surge cualquier otra duda. Mucho éxito con tus próximos bookings. 🎯',
     followUps: ['Tengo otra pregunta', 'Ver todos los temas'],
   },
 ];
@@ -345,6 +409,11 @@ const TOPIC_HINTS = [
   { label: 'Estadísticas',       keyword: 'estadísticas perfil' },
   { label: 'Cancelaciones',      keyword: 'qué pasa si se cancela el evento' },
   { label: 'Privacidad',         keyword: 'quién ve mi perfil' },
+  { label: 'Payasos & Animadores', keyword: 'payasos y animadores para eventos' },
+  { label: 'Humor & Stand-Up',   keyword: 'contratar monologuista o humorista' },
+  { label: 'Ciudades cubiertas', keyword: 'qué ciudades cubre xpeak' },
+  { label: 'Fotógrafos',         keyword: 'fotógrafo para mi evento' },
+  { label: 'Catering & Chef',    keyword: 'contratar catering para evento' },
   { label: 'Soporte humano',     keyword: 'soporte equipo xpeak' },
   { label: 'Más información',    keyword: 'qué es xpeak' },
 ];
@@ -356,11 +425,11 @@ const QUICK_ACTIONS = [
   { icon: Zap,        label: 'Flash Booking',  msg: '¿Cómo funciona el flash booking?' },
   { icon: User,       label: 'Mi perfil',      msg: '¿Cómo completo mi perfil?' },
   { icon: FileText,   label: 'Contratos',      msg: '¿Cómo genero un contrato?' },
-  { icon: Calendar,   label: 'Calendario',     msg: '¿Cómo funciona el calendario?' },
+  { icon: Star,       label: 'Más bookings',   msg: '¿Cómo consigo más bookings?' },
   { icon: Building2,  label: 'Empresarios',    msg: '¿Cómo funciona para empresarios?' },
   { icon: BarChart3,  label: 'Estadísticas',   msg: '¿Qué estadísticas puedo ver?' },
   { icon: Users,      label: 'Directorio',     msg: '¿Cómo funciona el directorio?' },
-  { icon: Map,        label: 'Mapa',           msg: '¿Cómo funciona el mapa?' },
+  { icon: Award,      label: 'Verificación',   msg: '¿Cómo consigo el sello de oro?' },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -515,7 +584,7 @@ const SupportChat = () => {
         </AnimatePresence>
         {unread > 0 && !open && (
           <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black"
-            style={{ background: '#ff5f56', color: '#fff' }}>{unread}</span>
+            style={{ background: '#ff5f56', color: 'rgba(22,20,18,0.88)' }}>{unread}</span>
         )}
       </motion.button>
 
@@ -533,20 +602,20 @@ const SupportChat = () => {
               bottom: isMobile ? 'calc(7.5rem + env(safe-area-inset-bottom))' : '5.5rem',
               width: 'min(400px, calc(100vw - 2rem))',
               height: isMobile ? 'min(480px, calc(100vh - 12rem))' : 'min(560px, calc(100vh - 8rem))',
-              background: '#0a0a0e',
-              border: '1px solid rgba(212,175,55,0.2)',
-              boxShadow: '0 8px 48px rgba(0,0,0,0.7), 0 0 0 1px rgba(212,175,55,0.08)',
+              background: '#ffffff',
+              border: '1px solid rgba(212,175,55,0.25)',
+              boxShadow: '0 8px 48px rgba(0,0,0,0.18), 0 2px 12px rgba(0,0,0,0.08)',
             }}
           >
             {/* Header */}
             <div className="flex items-center gap-3 px-4 py-3 flex-shrink-0"
-              style={{ background: 'linear-gradient(90deg, #0f0f14, #121218)', borderBottom: '1px solid rgba(212,175,55,0.12)' }}>
+              style={{ background: 'linear-gradient(90deg, #1a1814, #201e18)', borderBottom: '1px solid rgba(212,175,55,0.15)' }}>
               <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
                 style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)' }}>
                 <span className="text-xs font-black text-black">X</span>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-bold leading-none">Asistente XPEAK</p>
+                <p className="text-sm font-bold leading-none" style={{ color: '#ffffff' }}>Asistente XPEAK</p>
                 <p className="text-[0.68rem] mt-0.5" style={{ color: '#22c55e' }}>● En línea · responde al instante</p>
               </div>
               <button type="button" onClick={() => {
@@ -555,13 +624,13 @@ const SupportChat = () => {
                 setShowTopics(false);
               }}
                 className="w-7 h-7 rounded-lg flex items-center justify-center transition-all hover:bg-white/10 mr-1"
-                style={{ color: 'rgba(255,255,255,0.3)' }}
+                style={{ color: 'rgba(255,255,255,0.45)' }}
                 title="Reiniciar conversación">
                 <RefreshCw size={13} />
               </button>
               <button type="button" onClick={() => setOpen(false)}
                 className="w-7 h-7 rounded-lg flex items-center justify-center transition-all hover:bg-white/10"
-                style={{ color: 'rgba(255,255,255,0.4)' }}
+                style={{ color: 'rgba(255,255,255,0.75)' }}
                 aria-label="Cerrar chat">
                 <X size={14} />
               </button>
@@ -581,8 +650,8 @@ const SupportChat = () => {
                     )}
                     <div className="max-w-[82%] px-3 py-2 rounded-xl text-xs"
                       style={m.from === 'user'
-                        ? { background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.25)', color: '#fff', borderRadius: '14px 14px 4px 14px' }
-                        : { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.85)', borderRadius: '4px 14px 14px 14px' }
+                        ? { background: '#D4AF37', color: '#000000', borderRadius: '14px 14px 4px 14px', fontWeight: 500 }
+                        : { background: '#f5f4f0', border: '1px solid rgba(0,0,0,0.06)', color: 'rgba(22,20,18,0.88)', borderRadius: '4px 14px 14px 14px' }
                       }>
                       <MsgText text={m.text} />
                     </div>
@@ -612,7 +681,7 @@ const SupportChat = () => {
                     <span className="text-[9px] font-black text-black">X</span>
                   </div>
                   <div className="px-3 py-2.5 rounded-xl flex gap-1"
-                    style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                    style={{ background: '#f5f4f0', border: '1px solid rgba(0,0,0,0.06)' }}>
                     {[0, 1, 2].map(i => (
                       <motion.div key={i} className="w-1.5 h-1.5 rounded-full"
                         style={{ background: '#D4AF37' }}
@@ -631,7 +700,7 @@ const SupportChat = () => {
                     <button key={t.label} type="button"
                       onClick={() => { setShowTopics(false); sendMessage(t.keyword); }}
                       className="text-[0.65rem] px-2 py-1.5 rounded-lg text-left transition-all hover:scale-105"
-                      style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)' }}>
+                      style={{ background: '#f5f4f0', border: '1px solid rgba(0,0,0,0.08)', color: 'rgba(22,20,18,0.75)' }}>
                       {t.label}
                     </button>
                   ))}
@@ -645,14 +714,14 @@ const SupportChat = () => {
             {isInitial && !typing && (
               <div className="px-4 pb-2 flex-shrink-0">
                 <p className="text-[0.62rem] font-bold uppercase tracking-wider mb-2"
-                  style={{ color: 'rgba(255,255,255,0.25)' }}>Temas frecuentes</p>
+                  style={{ color: 'rgba(22,20,18,0.45)' }}>Temas frecuentes</p>
                 <div className="grid grid-cols-5 gap-1">
                   {QUICK_ACTIONS.slice(0, 10).map(qa => (
                     <button key={qa.label} type="button" onClick={() => sendMessage(qa.msg)}
                       className="flex flex-col items-center gap-0.5 p-1.5 rounded-lg text-center transition-all hover:scale-105 active:scale-95"
-                      style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                      style={{ background: '#f5f4f0', border: '1px solid rgba(0,0,0,0.06)' }}>
                       <qa.icon size={12} style={{ color: '#D4AF37' }} />
-                      <span className="text-[0.55rem] font-medium leading-tight" style={{ color: 'rgba(255,255,255,0.55)' }}>{qa.label}</span>
+                      <span className="text-[0.55rem] font-medium leading-tight" style={{ color: 'rgba(22,20,18,0.6)' }}>{qa.label}</span>
                     </button>
                   ))}
                 </div>
@@ -661,7 +730,7 @@ const SupportChat = () => {
 
             {/* Input */}
             <div className="px-3 py-3 flex-shrink-0"
-              style={{ borderTop: '1px solid rgba(255,255,255,0.06)', background: 'rgba(0,0,0,0.3)' }}>
+              style={{ borderTop: '1px solid rgba(0,0,0,0.08)', background: '#f9f8f5' }}>
               <div className="flex items-center gap-2">
                 <input
                   ref={inputRef}
@@ -672,9 +741,9 @@ const SupportChat = () => {
                   maxLength={400}
                   className="flex-1 bg-transparent outline-none text-xs py-2 px-3 rounded-xl"
                   style={{
-                    background: 'rgba(255,255,255,0.05)',
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    color: '#fff',
+                    background: '#ffffff',
+                    border: '1px solid rgba(0,0,0,0.12)',
+                    color: 'rgba(22,20,18,0.88)',
                   }}
                 />
                 <button type="button" onClick={() => sendMessage(input)}
@@ -684,7 +753,7 @@ const SupportChat = () => {
                   <Send size={14} color="#000" />
                 </button>
               </div>
-              <p className="text-[0.58rem] text-center mt-1.5" style={{ color: 'rgba(255,255,255,0.18)' }}>
+              <p className="text-[0.58rem] text-center mt-1.5" style={{ color: 'rgba(22,20,18,0.3)' }}>
                 XPEAK · Asistente virtual · 24h
               </p>
             </div>

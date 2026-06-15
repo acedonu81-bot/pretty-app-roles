@@ -4,6 +4,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import RelatedPosts from '@/components/RelatedPosts';
 import BlogTopCTA from '@/components/BlogTopCTA';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para bodas en Madrid: precio y cómo contratar en 2026', description: 'Cuánto cuesta un DJ para una boda en Madrid. Precios reales, zonas de celebración y cómo elegir el mejor DJ para tu boda en la Comunidad de Madrid.', datePublished: '2026-05-28', dateModified: '2026-05-28', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-bodas-madrid' };
@@ -150,6 +151,7 @@ export default function BlogDJBodaMadrid() {
             </div>
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-madrid" />
+          <RelatedPosts currentSlug="/blog/dj-bodas-madrid" tags={['DJ', 'Bodas']} />
 </main>
         <BlogAuthor />
         <FooterPublic />

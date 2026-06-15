@@ -5,6 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { sanitizeInput } from '@/lib/contentFilter';
+import EventRequestsSection from './EventRequestsSection';
 
 interface Offer {
   id: string;
@@ -254,6 +255,17 @@ const DemandaTab = () => {
 
   return (
     <div>
+      <EventRequestsSection />
+
+      {/* ─── Separador Flash Jobs ─── */}
+      <div className="flex items-center gap-3 mb-4">
+        <div className="flex-1 h-px" style={{ background: 'rgba(0,0,0,0.07)' }} />
+        <span className="text-[10px] font-black tracking-widest uppercase" style={{ color: 'rgba(22,20,18,0.3)' }}>
+          Flash Jobs · Urgentes 2h
+        </span>
+        <div className="flex-1 h-px" style={{ background: 'rgba(0,0,0,0.07)' }} />
+      </div>
+
       <div className="glass-panel p-4 mb-5 flex items-center gap-3"
         style={{ border: '1px solid rgba(34,197,94,0.15)', background: 'rgba(34,197,94,0.02)' }}>
         <Megaphone size={16} style={{ color: '#22c55e' }} />
@@ -262,7 +274,7 @@ const DemandaTab = () => {
           <p className="text-xs text-muted-foreground">Necesidades urgentes. Responde rápido para asegurar tu contratación.</p>
         </div>
         <button onClick={fetchJobs} className="p-1.5 rounded-lg transition-all hover:scale-105"
-          style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--nightlife-border)' }}
+          style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid var(--nightlife-border)' }}
           title="Actualizar">
           <RefreshCw size={12} style={{ color: '#8E8EA0' }} />
         </button>
@@ -312,7 +324,7 @@ const DemandaTab = () => {
                 <div className="p-5 flex flex-col flex-1">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-10 h-10 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0"
-                      style={{ background: offer.gradient, color: 'white' }}>
+                      style={{ background: offer.gradient, color: 'rgba(22,20,18,0.88)' }}>
                       {offer.avatar}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -413,7 +425,7 @@ const DemandaTab = () => {
             <Megaphone size={24} style={{ color: 'rgba(34,197,94,0.22)' }} />
           </div>
           <div>
-            <p className="text-sm font-bold mb-1.5" style={{ color: 'rgba(255,255,255,0.35)' }}>
+            <p className="text-sm font-bold mb-1.5" style={{ color: 'rgba(22,20,18,0.4)' }}>
               No hay ofertas activas
             </p>
             <p className="text-xs text-muted-foreground max-w-[280px] mx-auto leading-relaxed">

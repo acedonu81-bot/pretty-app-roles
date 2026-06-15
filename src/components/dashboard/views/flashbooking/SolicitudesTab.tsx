@@ -83,6 +83,37 @@ const SolicitudesTab = () => {
     setItems(prev => prev.map(i => i.id === id ? { ...i, status } : i));
     toast.success(status === 'accepted' ? '¡Solicitud aceptada!' : 'Solicitud rechazada');
 
+    // Badge Respuesta Rápida: si acepta en <1h desde que llegó la solicitud
+    if (status === 'accepted') {
+      const booking = items.find(i => i.id === id);
+      const createdAt = booking?.created_at ? new Date(booking.created_at).getTime() : 0;
+      const elapsed = Date.now() - createdAt;
+      if (elapsed < 60 * 60 * 1000) {
+        // Incrementar contador en el perfil
+        const { data: prof } = await supabase
+          .from('profiles')
+          .select('fast_responder_count')
+          .eq('user_id', user!.id)
+          .single() as any;
+        const newCount = ((prof?.fast_responder_count ?? 0) + 1) as number;
+        await supabase
+          .from('profiles')
+          .update({ fast_responder_count: newCount } as any)
+          .eq('user_id', user!.id);
+        toast.success('⚡ ¡Badge Respuesta Rápida obtenido! Apareces destacado en el directorio 30 días.');
+        // Email de notificación al profesional
+        supabase.functions.invoke('send-email', {
+          body: {
+            type: 'fast_responder_badge',
+            data: {
+              professional_user_id: user!.id,
+              fast_responder_count: newCount,
+            },
+          },
+        }).catch((err: unknown) => console.warn('[SolicitudesTab] fast_responder email failed:', err));
+      }
+    }
+
     // Email al solicitante si dejó email como contacto
     const booking = items.find(i => i.id === id);
     if (booking?.requester_contact?.includes('@')) {
@@ -117,7 +148,7 @@ const SolicitudesTab = () => {
           )}
         </div>
         <button onClick={fetch} className="p-1.5 rounded-lg transition-all hover:scale-105"
-          style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--nightlife-border)', color: '#8E8EA0' }}>
+          style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid var(--nightlife-border)', color: '#8E8EA0' }}>
           <RefreshCw size={12} />
         </button>
       </div>
@@ -144,11 +175,11 @@ const SolicitudesTab = () => {
       {!loading && items.length > 0 && (
         <div className="space-y-3">
           {items.map(s => {
-            const st = STATUS[s.status ?? ''] ?? { label: s.status ?? '—', color: '#8E8EA0', bg: 'rgba(255,255,255,0.04)' };
+            const st = STATUS[s.status ?? ''] ?? { label: s.status ?? '—', color: '#8E8EA0', bg: 'rgba(0,0,0,0.04)' };
             const isPending = s.status === 'pending';
             return (
               <div key={s.id} className="glass-panel p-4"
-                style={{ border: isPending ? '1px solid rgba(212,175,55,0.2)' : '1px solid rgba(255,255,255,0.06)' }}>
+                style={{ border: isPending ? '1px solid rgba(212,175,55,0.2)' : '1px solid rgba(0,0,0,0.05)' }}>
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <div className="flex items-center gap-2">
                     <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"

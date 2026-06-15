@@ -68,7 +68,7 @@ const AdminCharts = () => {
           {loading ? (
             <div className="space-y-2">
               {Array(6).fill(0).map((_, i) => (
-                <div key={i} className="h-6 rounded-md animate-pulse" style={{ background: 'rgba(255,255,255,0.05)' }} />
+                <div key={i} className="h-6 rounded-md animate-pulse" style={{ background: 'rgba(0,0,0,0.05)' }} />
               ))}
             </div>
           ) : zones.length === 0 ? (
@@ -80,7 +80,7 @@ const AdminCharts = () => {
                 return (
                   <div key={z.zone} className="flex items-center gap-3">
                     <span className="text-xs font-medium w-20 truncate">{z.zone}</span>
-                    <div className="flex-1 h-6 rounded-md overflow-hidden" style={{ background: 'rgba(255,255,255,0.03)' }}>
+                    <div className="flex-1 h-6 rounded-md overflow-hidden" style={{ background: 'rgba(0,0,0,0.03)' }}>
                       <div className="h-full rounded-md transition-all flex items-center px-2"
                         style={{ width: `${intensity * 100}%`, background: `linear-gradient(90deg, rgba(212,175,55,${intensity * 0.6}), rgba(212,175,55,${intensity}))` }}>
                         <span className="text-[0.75rem] font-bold" style={{ color: '#000' }}>{z.count}</span>
@@ -100,7 +100,7 @@ const AdminCharts = () => {
         {loading ? (
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {Array(4).fill(0).map((_, i) => (
-              <div key={i} className="h-16 rounded-lg animate-pulse" style={{ background: 'rgba(255,255,255,0.05)' }} />
+              <div key={i} className="h-16 rounded-lg animate-pulse" style={{ background: 'rgba(0,0,0,0.05)' }} />
             ))}
           </div>
         ) : plans ? (
@@ -109,7 +109,7 @@ const AdminCharts = () => {
               { label: 'Elite', count: plans.elite,   color: '#D4AF37' },
               { label: 'Premium', count: plans.premium, color: '#8B5CF6' },
               { label: 'Starter', count: plans.starter, color: '#8E8EA0' },
-              { label: 'Free',   count: plans.free,    color: 'rgba(255,255,255,0.3)' },
+              { label: 'Free',   count: plans.free,    color: 'rgba(22,20,18,0.35)' },
             ].map((p) => (
               <div key={p.label} className="text-center">
                 <p className="text-2xl font-bold" style={{ color: p.color }}>{p.count}</p>

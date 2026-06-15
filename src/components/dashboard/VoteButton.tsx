@@ -45,7 +45,7 @@ const VoteButton = ({ profileId, voteCount, hasVotedToday, category, onVoted }: 
   return (
     <div className="mt-2">
       <div className="flex items-center gap-2 mb-1.5">
-        <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.05)' }}>
+        <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(0,0,0,0.05)' }}>
           <div className="h-full rounded-full transition-all" style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #D4AF37, #22c55e)' }} />
         </div>
         <span className="text-[0.75rem] font-bold" style={{ color: '#D4AF37' }}>{voteCount}/500</span>
@@ -53,8 +53,8 @@ const VoteButton = ({ profileId, voteCount, hasVotedToday, category, onVoted }: 
       <button onClick={handleVote} disabled={hasVotedToday || loading}
         className="w-full flex items-center justify-center gap-1.5 py-1.5 rounded-md text-xs font-bold transition-all disabled:opacity-50"
         style={{
-          background: hasVotedToday ? 'rgba(255,255,255,0.03)' : 'rgba(212,175,55,0.08)',
-          border: `1px solid ${hasVotedToday ? 'rgba(255,255,255,0.1)' : 'rgba(212,175,55,0.2)'}`,
+          background: hasVotedToday ? 'rgba(0,0,0,0.03)' : 'rgba(212,175,55,0.08)',
+          border: `1px solid ${hasVotedToday ? 'rgba(0,0,0,0.08)' : 'rgba(212,175,55,0.2)'}`,
           color: hasVotedToday ? '#8E8EA0' : '#D4AF37',
         }}>
         <Heart size={12} fill={hasVotedToday ? '#8E8EA0' : 'none'} />

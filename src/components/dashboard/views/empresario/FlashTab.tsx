@@ -158,7 +158,7 @@ const FlashTab = () => {
       {myJobs.length === 0 && !showForm && (
         <div className="glass-panel p-8 flex flex-col items-center text-center gap-3">
           <Zap size={24} style={{ color: 'rgba(212,175,55,0.25)' }} />
-          <p className="text-sm font-bold" style={{ color: 'rgba(255,255,255,0.35)' }}>Sin ofertas activas</p>
+          <p className="text-sm font-bold" style={{ color: 'rgba(22,20,18,0.4)' }}>Sin ofertas activas</p>
           <p className="text-xs text-muted-foreground max-w-[260px]">
             Publica una oferta urgente y los profesionales disponibles en tu zona la verán al instante.
           </p>

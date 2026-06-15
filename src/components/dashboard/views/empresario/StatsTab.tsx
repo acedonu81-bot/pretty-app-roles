@@ -117,10 +117,10 @@ const StatsTab = ({ pros, favorites }: Props) => {
           </h4>
           <ResponsiveContainer width="100%" height={160}>
             <BarChart data={rateBarData} barSize={32} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
-              <XAxis dataKey="name" tick={{ fill: 'rgba(255,255,255,0.45)', fontSize: 11 }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={v => `€${v}`} />
-              <Tooltip content={<DarkTooltip />} cursor={{ fill: 'rgba(255,255,255,0.03)' }} />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" vertical={false} />
+              <XAxis dataKey="name" tick={{ fill: 'rgba(22,20,18,0.5)', fontSize: 11 }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fill: 'rgba(22,20,18,0.35)', fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={v => `€${v}`} />
+              <Tooltip content={<DarkTooltip />} cursor={{ fill: 'rgba(0,0,0,0.03)' }} />
               <Bar dataKey="€/hora avg" radius={[6, 6, 0, 0]}>
                 {rateBarData.map(entry => <Cell key={entry.name} fill={entry.color} fillOpacity={0.85} />)}
               </Bar>
@@ -140,9 +140,9 @@ const StatsTab = ({ pros, favorites }: Props) => {
         </h4>
         <ResponsiveContainer width="100%" height={120}>
           <BarChart data={weeklyData} barSize={28} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" vertical={false} />
-            <XAxis dataKey="dia" tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 11 }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fill: 'rgba(255,255,255,0.25)', fontSize: 10 }} axisLine={false} tickLine={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.04)" vertical={false} />
+            <XAxis dataKey="dia" tick={{ fill: 'rgba(22,20,18,0.45)', fontSize: 11 }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fill: 'rgba(22,20,18,0.3)', fontSize: 10 }} axisLine={false} tickLine={false} />
             <Tooltip content={<DarkTooltip />} cursor={{ fill: 'rgba(212,175,55,0.04)' }} />
             <Bar dataKey="contrataciones" radius={[4, 4, 0, 0]} fill="url(#goldGradient)" />
             <defs>
@@ -167,8 +167,8 @@ const StatsTab = ({ pros, favorites }: Props) => {
         <p className="text-xs text-muted-foreground mb-4">Datos de referencia — se actualizará con valoraciones reales de la plataforma.</p>
         <ResponsiveContainer width="100%" height={200}>
           <RadarChart data={radarData}>
-            <PolarGrid stroke="rgba(255,255,255,0.08)" />
-            <PolarAngleAxis dataKey="metric" tick={{ fill: 'rgba(255,255,255,0.45)', fontSize: 10 }} />
+            <PolarGrid stroke="rgba(0,0,0,0.08)" />
+            <PolarAngleAxis dataKey="metric" tick={{ fill: 'rgba(22,20,18,0.5)', fontSize: 10 }} />
             <Radar name="DJ"     dataKey="dj"     stroke="#D4AF37" fill="#D4AF37" fillOpacity={0.15} />
             <Radar name="Staff"  dataKey="staff"  stroke="#8B5CF6" fill="#8B5CF6" fillOpacity={0.12} />
             <Radar name="Makeup" dataKey="makeup" stroke="#EC4899" fill="#EC4899" fillOpacity={0.12} />

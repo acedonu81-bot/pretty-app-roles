@@ -166,7 +166,7 @@ export default function BlogMaestroCeremonias() {
                 <tr style={{ background: 'rgba(255,255,255,0.04)' }}>
                   {['Perfil', 'Experiencia', 'Precio por evento', 'Típico en'].map(h => (
                     <th key={h} className="px-2 sm:px-4 py-3 text-left font-bold uppercase tracking-wider whitespace-nowrap"
-                      style={{ color: 'rgba(255,255,255,0.4)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>{h}</th>
+                      style={{ color: 'rgba(255,255,255,0.6)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -176,7 +176,7 @@ export default function BlogMaestroCeremonias() {
                     <td className="px-2 sm:px-4 py-3 font-bold" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.perfil}</td>
                     <td className="px-2 sm:px-4 py-3 whitespace-nowrap" style={{ color: 'rgba(255,255,255,0.5)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.experiencia}</td>
                     <td className="px-2 sm:px-4 py-3 font-black whitespace-nowrap" style={{ color: '#D4AF37', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.rango}</td>
-                    <td className="px-2 sm:px-4 py-3" style={{ color: 'rgba(255,255,255,0.4)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.nota}</td>
+                    <td className="px-2 sm:px-4 py-3" style={{ color: 'rgba(255,255,255,0.6)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.nota}</td>
                   </tr>
                 ))}
               </tbody>
@@ -195,7 +195,7 @@ export default function BlogMaestroCeremonias() {
                   <span className="text-sm font-black">{c.ciudad}</span>
                   <span className="ml-auto text-sm font-bold" style={{ color: '#D4AF37' }}>{c.rango}</span>
                 </div>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>{c.note}</p>
+                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>{c.note}</p>
               </div>
             ))}
           </div>
@@ -210,7 +210,7 @@ export default function BlogMaestroCeremonias() {
                 <tr style={{ background: 'rgba(255,255,255,0.04)' }}>
                   {['Característica', 'Maestro de Ceremonias', 'Animador'].map(h => (
                     <th key={h} className="px-3 sm:px-4 py-3 text-left font-bold uppercase tracking-wider"
-                      style={{ color: 'rgba(255,255,255,0.4)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>{h}</th>
+                      style={{ color: 'rgba(255,255,255,0.6)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -225,7 +225,7 @@ export default function BlogMaestroCeremonias() {
                   <tr key={car} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)' }}>
                     <td className="px-3 sm:px-4 py-3 font-bold text-xs" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.6)' }}>{car}</td>
                     <td className="px-3 sm:px-4 py-3 text-xs" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', color: '#D4AF37' }}>{mc}</td>
-                    <td className="px-3 sm:px-4 py-3 text-xs" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.45)' }}>{anim}</td>
+                    <td className="px-3 sm:px-4 py-3 text-xs" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.6)' }}>{anim}</td>
                   </tr>
                 ))}
               </tbody>
@@ -283,7 +283,7 @@ export default function BlogMaestroCeremonias() {
                   <span className="inline-block text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded mb-2"
                     style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.18)' }}>{p.tag}</span>
                   <p className="text-sm font-black leading-snug mb-1">{p.title}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>{p.desc}</p>
+                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{p.desc}</p>
                 </a>
               ))}
             </div>

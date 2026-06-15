@@ -164,7 +164,7 @@ const LotterySection = ({ fans }: Props) => {
 
       {/* Draw countdown */}
       <div className="rounded-xl p-4 mb-4 flex items-center gap-4"
-        style={{ background: isDrawDay ? 'rgba(212,175,55,0.08)' : 'rgba(0,0,0,0.2)', border: `1px solid ${isDrawDay ? 'rgba(212,175,55,0.4)' : 'rgba(255,255,255,0.05)'}` }}>
+        style={{ background: isDrawDay ? 'rgba(212,175,55,0.08)' : 'rgba(0,0,0,0.2)', border: `1px solid ${isDrawDay ? 'rgba(212,175,55,0.4)' : 'rgba(0,0,0,0.05)'}` }}>
         <div className="flex-shrink-0">
           <Clock size={22} style={{ color: isDrawDay ? '#D4AF37' : '#8E8EA0' }} className={isDrawDay ? 'animate-pulse' : ''} />
         </div>
@@ -185,7 +185,7 @@ const LotterySection = ({ fans }: Props) => {
 
       {/* Participants bar */}
       <div className="flex items-center gap-3 mb-4 px-3 py-2.5 rounded-xl"
-        style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+        style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.05)' }}>
         <Gift size={14} style={{ color: '#D4AF37' }} />
         <div className="flex-1">
           <p className="text-xs font-bold">{fans.length} fans VIP en el sorteo</p>
@@ -231,11 +231,11 @@ const LotterySection = ({ fans }: Props) => {
                     onClick={() => setGiftPicked(g.id)}
                     className="rounded-lg p-2 text-center transition-all hover:scale-105"
                     style={{
-                      background: giftPicked === g.id ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.04)',
-                      border: `1px solid ${giftPicked === g.id ? 'rgba(212,175,55,0.4)' : 'rgba(255,255,255,0.06)'}`,
+                      background: giftPicked === g.id ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.04)',
+                      border: `1px solid ${giftPicked === g.id ? 'rgba(212,175,55,0.4)' : 'rgba(0,0,0,0.05)'}`,
                       outline: giftPicked === g.id ? '2px solid rgba(212,175,55,0.3)' : 'none',
                     }}>
-                    {(() => { const I = ICON_MAP[g.icon]; return I ? <I size={18} style={{ color: giftPicked === g.id ? '#D4AF37' : 'rgba(255,255,255,0.35)', margin: '0 auto 2px' }} /> : null; })()}
+                    {(() => { const I = ICON_MAP[g.icon]; return I ? <I size={18} style={{ color: giftPicked === g.id ? '#D4AF37' : 'rgba(22,20,18,0.4)', margin: '0 auto 2px' }} /> : null; })()}
                     <p className="text-[0.7rem] text-muted-foreground mt-0.5 leading-tight">{g.label}</p>
                   </button>
                 ))}

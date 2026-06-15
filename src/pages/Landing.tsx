@@ -1,4 +1,126 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+
+const ALL_CITIES = [
+  // Grandes capitales y destinos de ocio
+  'Madrid','Barcelona','Valencia','Sevilla','Bilbao','Málaga','Ibiza',
+  'Palma de Mallorca','Zaragoza','Murcia','Alicante','Granada','Córdoba',
+  'San Sebastián','Santander','Valladolid','Santiago de Compostela','Pamplona',
+  'Vitoria-Gasteiz','Logroño',
+  // Galicia
+  'Vigo','A Coruña','Ourense','Lugo','Pontevedra','Ferrol',
+  // Asturias y Cantabria
+  'Oviedo','Gijón','Avilés',
+  // Canarias
+  'Tenerife','Las Palmas de Gran Canaria','Santa Cruz de Tenerife','Lanzarote','Fuerteventura','La Palma',
+  // Extremadura
+  'Badajoz','Cáceres','Mérida','Plasencia','Don Benito',
+  // Castilla y León
+  'Salamanca','Burgos','León','Segovia','Ávila','Zamora','Palencia','Soria','Ponferrada',
+  // Castilla-La Mancha
+  'Toledo','Ciudad Real','Albacete','Cuenca','Guadalajara','Talavera de la Reina','Puertollano',
+  // Andalucía (resto)
+  'Huelva','Jaén','Almería','Cádiz','Jerez de la Frontera','Marbella','Algeciras',
+  'Fuengirola','Torremolinos','Benalmádena','Ronda','Linares','Úbeda','Baeza','El Puerto de Santa María',
+  // Aragón (resto)
+  'Huesca','Teruel',
+  // Cataluña (resto)
+  'Tarragona','Lleida','Girona','Badalona','Hospitalet de Llobregat','Sabadell','Terrassa','Mataró','Reus','Sitges',
+  // C. Valenciana (resto)
+  'Castellón de la Plana','Elche','Torrevieja','Benidorm','Gandia','Dénia',
+  // Murcia (resto)
+  'Cartagena','Lorca',
+  // Baleares
+  'Menorca','Formentera',
+  // Madrid área
+  'Alcalá de Henares','Alcobendas','Getafe','Leganés','Móstoles','Torrejón de Ardoz',
+  // Ciudades autónomas
+  'Ceuta','Melilla',
+];
+
+const CitySearch = ({ value, onChange }: { value: string; onChange: (v: string) => void }) => {
+  const [query, setQuery] = useState(value);
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  const suggestions = useMemo(() => {
+    if (!query.trim()) return [];
+    const q = query.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    return ALL_CITIES.filter(c =>
+      c.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').includes(q)
+    ).slice(0, 8);
+  }, [query]);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const select = (city: string) => {
+    setQuery(city);
+    onChange(city);
+    setOpen(false);
+  };
+
+  const clear = () => {
+    setQuery('');
+    onChange('');
+    setOpen(false);
+  };
+
+  return (
+    <div ref={ref} className="relative flex-1">
+      <input
+        type="text"
+        name="city"
+        value={query}
+        placeholder="Ciudad (opcional)"
+        autoComplete="off"
+        onChange={e => { setQuery(e.target.value); onChange(''); setOpen(true); }}
+        onFocus={() => setOpen(true)}
+        className="w-full py-3.5 px-4 rounded-xl text-sm focus:outline-none"
+        style={{
+          background: '#FFFFFF',
+          border: `1px solid ${open && suggestions.length ? 'rgba(212,175,55,0.5)' : 'rgba(212,175,55,0.3)'}`,
+          color: 'rgba(22,20,18,0.85)',
+          boxShadow: '0 1px 6px rgba(0,0,0,0.06)',
+        }}
+      />
+      {query && (
+        <button
+          type="button"
+          onClick={clear}
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+          tabIndex={-1}
+        >
+          <X size={13} />
+        </button>
+      )}
+      {open && suggestions.length > 0 && (
+        <ul
+          className="absolute z-50 w-full mt-1 rounded-xl overflow-hidden"
+          style={{ background: '#fff', border: '1px solid rgba(212,175,55,0.25)', boxShadow: '0 8px 24px rgba(0,0,0,0.12)' }}
+        >
+          {suggestions.map(city => (
+            <li key={city}>
+              <button
+                type="button"
+                onMouseDown={() => select(city)}
+                className="w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-amber-50"
+                style={{ color: 'rgba(22,20,18,0.85)' }}
+              >
+                {city}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
+import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Helmet } from 'react-helmet-async';
@@ -19,9 +141,9 @@ const FadeIn = ({ children, delay = 0, className = '' }: { children: React.React
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 40 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0 }}
+      animate={inView ? { opacity: 1 } : {}}
+      transition={{ duration: 0.6, delay, ease: 'easeOut' }}
       className={className}
     >
       {children}
@@ -73,8 +195,9 @@ const RotatingWord = () => {
 
 /* ── Marquee strip ── */
 const MARQUEE_ITEMS = ['Bodas', 'Eventos Corporativos', 'Comuniones', 'Fiestas Privadas', 'Festivales', 'Cumpleaños', 'Despedidas', 'Eventos Deportivos', 'Presentaciones', 'Cenas de Empresa'];
+const MARQUEE_COLORS = ['#D4AF37','#8b5cf6','#f97316','#10b981','#ec4899','#0ea5e9','#D4AF37','#8b5cf6','#f97316','#10b981'];
 const MarqueeStrip = () => (
-  <div className="overflow-hidden py-5 mb-0" style={{ maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)' }}>
+  <div className="overflow-hidden py-4 mb-0" style={{ background: '#f8f7f4', maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)' }}>
     <motion.div
       className="flex items-center whitespace-nowrap"
       animate={{ x: ['0%', '-50%'] }}
@@ -84,10 +207,10 @@ const MarqueeStrip = () => (
       {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
         <span key={i} className="inline-flex items-center">
           <span className="text-xs font-bold tracking-[0.22em] uppercase"
-            style={{ color: '#7A5800' }}>
+            style={{ color: MARQUEE_COLORS[i % MARQUEE_COLORS.length] }}>
             {item}
           </span>
-          <span aria-hidden="true" className="mx-6 text-[0.75rem]" style={{ color: 'rgba(120,80,0,0.45)' }}>·</span>
+          <span aria-hidden="true" className="mx-6 text-[0.75rem]" style={{ color: 'rgba(0,0,0,0.2)' }}>·</span>
         </span>
       ))}
     </motion.div>
@@ -168,15 +291,14 @@ const BentoCard = ({
 };
 
 /* ── Stats pill ── */
-const StatPill = ({ value, label }: { value: string; label: React.ReactNode }) => (
-  <div className="text-center px-2 py-3 md:px-8 md:py-5 rounded-xl"
+const StatPill = ({ value, label, color = '#D4AF37', bg = 'rgba(212,175,55,0.08)' }: { value: string; label: React.ReactNode; color?: string; bg?: string }) => (
+  <div className="text-center px-2 py-3 md:px-8 md:py-5 rounded-2xl"
     style={{
-      background: '#FFFFFF',
-      border: '1px solid rgba(212,175,55,0.2)',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+      background: bg,
+      border: `1px solid ${color}30`,
     }}>
-    <p className="text-xl md:text-3xl font-bold text-gradient leading-tight">{value}</p>
-    <p className="text-[0.65rem] md:text-xs mt-1.5 tracking-wide uppercase" style={{ color: 'rgba(22,20,18,0.62)' }}>{label}</p>
+    <p className="text-xl md:text-3xl font-bold leading-tight" style={{ color }}>{value}</p>
+    <p className="text-[0.65rem] md:text-xs mt-1.5 tracking-wide uppercase" style={{ color: 'rgba(22,20,18,0.55)' }}>{label}</p>
   </div>
 );
 
@@ -242,7 +364,7 @@ const ROLE_DETAILS = [
     steps: [
       { icon: <Building2 size={22} />,   image: px(1763075), title: '¿Para quién es?',                   body: 'Propietarios de clubs, salas de conciertos, agencias de eventos y promotoras que necesitan contratar talento profesional verificado.' },
       { icon: <Search size={22} />,      image: px(1540406), title: 'Encuentra al profesional ideal',     body: 'Filtra por rol, especialidad, zona y precio. Escucha sesiones, ve portfolios y lee valoraciones reales antes de contactar.' },
-      { icon: <Zap size={22} />,         image: px(1190297), title: 'Flash Booking — cubre tu evento en 1h', body: 'Publica una oferta urgente y recibe respuestas de profesionales disponibles en tu zona en menos de 60 minutos.' },
+      { icon: <Zap size={22} />,         image: px(1190297), title: 'Flash Booking — próximamente', body: 'Publica una oferta urgente y recibe respuestas de profesionales disponibles en tu zona. Función en fase de lanzamiento.' },
       { icon: <CheckCircle size={22} />, image: px(2747449), title: 'Sin sorpresas',                      body: 'Perfiles con historial verificado, valoraciones reales y tarifas transparentes. El sistema XPEAK protege a ambas partes en cada contratación.' },
     ],
   },
@@ -416,9 +538,9 @@ const RoleModal = ({ role, onClose, onJoin }: { role: typeof ROLE_DETAILS[0]; on
 const FAQ_ITEMS = [
   { q: '¿Es gratis registrarse?', a: 'Sí. XPEAK es completamente gratuito durante su fase de crecimiento. Todas las funciones — perfil, Flash Booking, mensajería, estadísticas y contratos — están disponibles sin coste ni comisiones.' },
   { q: '¿Necesito experiencia profesional para unirme?', a: 'No. Hay un rol específico llamado "Artista Promesa" pensado para quienes están empezando. La comunidad te puede apoyar con votos para que asciendan a Profesional.' },
-  { q: '¿Cómo funciona el Flash Booking?', a: 'Un empresario publica una oferta urgente (fecha, lugar, caché). Los profesionales disponibles en esa zona reciben una notificación y pueden responder. El empresario elige. Todo en menos de una hora.' },
+  { q: '¿Cómo funciona el Flash Booking?', a: 'Un empresario publica una oferta urgente (fecha, lugar, caché). Los profesionales disponibles en esa zona reciben una notificación y pueden responder. El empresario elige al candidato. Esta función está en fase de lanzamiento y estará disponible próximamente.' },
   { q: '¿Organizo eventos o bodas? ¿Cómo me registro?', a: 'Elige el rol "Empresario" al registrarte. Es totalmente gratuito y sin límites para contratar: búsqueda en el directorio, Flash Booking ilimitado y mensajería directa. XPEAK no cobra comisiones por contratación. El trato es directo entre organizador y profesional.' },
-  { q: '¿En qué ciudades funciona?', a: 'Actualmente en toda España: Madrid, Barcelona, Valencia, Sevilla, Ibiza, Málaga y más de 40 ciudades. La expansión a Portugal y resto de Europa está prevista para 2027.' },
+  { q: '¿En qué ciudades funciona?', a: 'En toda España: Madrid, Barcelona, Valencia, Sevilla, Ibiza, Málaga y más de 40 ciudades. Si no encuentras tu ciudad, puedes registrarte igualmente — los organizadores buscan por zona.' },
   { q: '¿Cómo se verifican los perfiles?', a: 'Los perfiles verificados son revisados manualmente por el equipo de XPEAK. Puedes solicitar verificación desde tu panel de perfil una vez que tengas la información completa.' },
   { q: '¿Puedo cancelar mi suscripción en cualquier momento?', a: 'Sí. Sin permanencia ni penalizaciones. Puedes cancelar desde Mi Perfil > Plan y sigues teniendo acceso hasta el final del período pagado.' },
 ];
@@ -482,17 +604,19 @@ const Landing = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [demoOpen, setDemoOpen] = useState(false);
-  const [activeRole, setActiveRole] = useState<typeof ROLE_DETAILS[0] | null>(null);
+  const [cityValue, setCityValue] = useState('');
   const [userCount, setUserCount] = useState<number | null>(null);
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterDone, setNewsletterDone] = useState(false);
   const [newsletterLoading, setNewsletterLoading] = useState(false);
+  const [communityReviews, setCommunityReviews] = useState<{ reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string }[]>([]);
 
   useEffect(() => {
-    import('@/integrations/supabase/client').then(({ supabase }) => {
-      supabase.from('profiles').select('user_id', { count: 'exact', head: true })
-        .then(({ count }) => { if (count !== null) setUserCount(count); });
-    });
+    supabase.from('profiles').select('user_id', { count: 'exact', head: true })
+      .then(({ count }) => { if (count !== null) setUserCount(count); });
+    supabase.from('reviews').select('reviewer_name, reviewer_role, reviewer_avatar, comment')
+      .eq('approved', true).order('created_at', { ascending: false }).limit(6)
+      .then(({ data }) => { if (data && data.length > 0) setCommunityReviews(data as { reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string }[]); });
   }, []);
 
   const handleNewsletter = async (e: React.FormEvent) => {
@@ -514,10 +638,10 @@ const Landing = () => {
     <>
     <Helmet>
       <title>XPEAK — Contratar DJ, Fotógrafo y Staff para Eventos | España</title>
-      <meta name="description" content="Encuentra y contrata DJ, fotógrafo, camarero, staff y catering para festivales, clubs, eventos privados y bodas en España. Profesionales verificados. Flash Booking en menos de 1h. Gratis." />
+      <meta name="description" content="Encuentra y contrata DJ, fotógrafo, camarero, staff y catering para festivales, clubs, eventos privados y bodas en España. Profesionales verificados. Flash Booking próximamente. Gratis." />
       <link rel="canonical" href="https://xpeak.es/" />
       <meta property="og:title" content="XPEAK | Contratar DJs, Staff y Profesionales para Eventos en España" />
-      <meta property="og:description" content="Contrata DJs, fotógrafos, camareros, maquilladores y profesionales verificados para bodas, comuniones y eventos en España. Flash Booking en menos de 1h. Gratis para organizadores." />
+      <meta property="og:description" content="Contrata DJs, fotógrafos, camareros, maquilladores y profesionales verificados para bodas, comuniones y eventos en España. Flash Booking próximamente. Gratis para organizadores." />
       <meta property="og:type" content="website" />
       <meta property="og:url" content="https://xpeak.es/" />
       <meta property="og:image" content="https://xpeak.es/og-image.jpg" />
@@ -527,7 +651,7 @@ const Landing = () => {
       <meta property="og:locale" content="es_ES" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="XPEAK | Contratar DJs y Profesionales para Eventos" />
-      <meta name="twitter:description" content="Flash Booking en menos de 1h. Contratos automáticos. Directorio verificado de DJs, staff, fotógrafos y más." />
+      <meta name="twitter:description" content="Flash Booking próximamente. Contratos automáticos. Directorio verificado de DJs, staff, fotógrafos y más." />
       <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
@@ -542,7 +666,7 @@ const Landing = () => {
         "@context": "https://schema.org",
         "@type": "VideoObject",
         "name": "XPEAK — Contratar DJs, Staff y Profesionales para Eventos en España",
-        "description": "XPEAK conecta salas, promotoras y organizadores con DJs, camareros, fotógrafos y staff verificados para eventos en España. Flash Booking en menos de 1h.",
+        "description": "XPEAK conecta salas, promotoras y organizadores con DJs, camareros, fotógrafos y staff verificados para eventos en España. Flash Booking próximamente.",
         "thumbnailUrl": "https://xpeak.es/og-image.jpg",
         "uploadDate": "2026-01-01T00:00:00+01:00",
         "contentUrl": "https://xpeak.es/hero-dancefloor.mp4",
@@ -555,7 +679,7 @@ const Landing = () => {
         "url": "https://xpeak.es",
         "logo": { "@type": "ImageObject", "url": "https://xpeak.es/favicon.png" },
         "sameAs": [],
-        "description": "Directorio de profesionales verificados para bodas y eventos en España. DJs, fotógrafos, camareros, maquilladores y staff. Flash Booking en menos de 1h."
+        "description": "Directorio de profesionales verificados para bodas y eventos en España. DJs, fotógrafos, camareros, maquilladores y staff. Flash Booking próximamente."
       })}</script>
       <script type="application/ld+json">{JSON.stringify({
         "@context": "https://schema.org",
@@ -569,46 +693,47 @@ const Landing = () => {
         }
       })}</script>
     </Helmet>
-    <div className="min-h-screen relative overflow-x-hidden flex flex-col grain-overlay" data-landing="true" style={{ background: '#C4C2BF', color: 'rgba(22,20,18,0.88)' }}>
-      {/* ─ Hero background ─ */}
-      <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full opacity-[0.07]"
-          style={{ background: 'radial-gradient(circle, #E2BE50 0%, transparent 65%)', filter: 'blur(90px)', animation: 'orbFloat1 18s ease-in-out infinite' }} />
-        <div className="absolute top-[10%] right-[-15%] w-[500px] h-[500px] rounded-full opacity-[0.04]"
-          style={{ background: 'radial-gradient(circle, #6366f1 0%, transparent 65%)', filter: 'blur(100px)', animation: 'orbFloat2 24s ease-in-out infinite' }} />
-        <div className="absolute bottom-[10%] left-[30%] w-[400px] h-[400px] rounded-full opacity-[0.05]"
-          style={{ background: 'radial-gradient(circle, #E2BE50 0%, transparent 65%)', filter: 'blur(110px)', animation: 'orbFloat3 20s ease-in-out infinite' }} />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(196,194,191,0.3) 60%, #C4C2BF 100%)' }} />
-        {/* Grain texture */}
-        <div className="absolute inset-0 pointer-events-none opacity-[0.07]"
-          style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`, backgroundSize: '180px' }} />
-      </div>
+    <div className="min-h-screen relative flex flex-col" data-landing="true" style={{ background: '#ffffff', color: 'rgba(22,20,18,0.88)', overflowX: 'clip' }}>
 
 
 
-      {/* ─ Nav (Glassmorphism) ─ */}
+      {/* ─ Nav ─ */}
       <nav className="sticky top-0 z-50"
         style={{
-          background: 'rgba(9,9,9,0.88)',
-          backdropFilter: 'blur(24px)',
-          WebkitBackdropFilter: 'blur(24px)',
-          borderBottom: '1px solid rgba(212,175,55,0.12)',
+          background: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(0,0,0,0.07)',
         }}>
         <div className="max-w-[1800px] mx-auto px-6 md:px-10 py-4 md:py-5 flex justify-between items-center">
           <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="text-2xl font-black tracking-tight transition-opacity hover:opacity-70 font-display"
-            style={{ color: '#fff' }}>
+            style={{ color: '#1a1208' }}>
             X<span className="text-gradient">PEAK</span>
           </button>
+          <div className="hidden md:flex items-center gap-5 absolute left-1/2 -translate-x-1/2">
+            {[
+              { label: 'Profesionales', href: '/directorio/dj' },
+              { label: 'Cómo funciona', href: '#como-funciona' },
+              { label: 'Categorías', href: '#categorias' },
+              { label: 'FAQ', href: '#faq' },
+            ].map(link => (
+              <a key={link.label} href={link.href}
+                className="text-xs font-semibold transition-all hover:opacity-60"
+                style={{ color: 'rgba(22,20,18,0.6)' }}>
+                {link.label}
+              </a>
+            ))}
+          </div>
           <div className="flex items-center gap-2 sm:gap-3">
             <button onClick={() => navigate('/auth')}
-              className="hidden sm:block text-xs font-semibold px-4 py-2 rounded-lg transition-all"
-              style={{ color: 'rgba(255,255,255,0.6)' }}>
+              className="hidden sm:block text-xs font-semibold px-4 py-2 rounded-lg transition-all hover:bg-black/5"
+              style={{ color: 'rgba(22,20,18,0.6)' }}>
               Acceder
             </button>
             <button onClick={() => navigate('/auth?mode=register&role=empresario')}
               className="text-xs font-semibold px-3 sm:px-4 py-2 rounded-lg transition-all"
-              style={{ color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '10px' }}>
+              style={{ color: 'rgba(22,20,18,0.7)', border: '1px solid rgba(0,0,0,0.12)', borderRadius: '10px' }}>
               <span className="flex items-center gap-1"><Building2 size={12} /><span className="hidden sm:inline">Soy </span>Organizador</span>
             </button>
             <motion.button
@@ -625,28 +750,28 @@ const Landing = () => {
 
       {/* ─ Hero ─ */}
       <main>
-      <div className="relative overflow-hidden" data-hero-dark="true" style={{ background: '#0a0a0a' }}>
-        {/* Festival crowd photo — visible on dark */}
+      <div className="relative" data-hero-dark="true" style={{ background: '#fff', overflowX: 'clip' }}>
+        {/* Festival crowd photo — vibrant */}
         <img
-          src="/images/pexels/1190297.jpg"
+          src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1920&q=90&auto=format&fit=crop"
           alt=""
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-          style={{ filter: 'saturate(0.45) brightness(0.65)', opacity: 0.7, objectPosition: 'center 30%' }}
+          style={{ filter: 'saturate(1.3) brightness(0.55)', opacity: 0.85, objectPosition: 'center 30%' }}
         />
-        {/* Gradient: dark top → dark center → fades to page bg at bottom */}
+        {/* Gradient: subtle top → fades to white at bottom */}
         <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'linear-gradient(180deg, rgba(9,9,9,0.55) 0%, rgba(9,9,9,0.2) 40%, rgba(9,9,9,0.45) 72%, #C4C2BF 100%)'
+          background: 'linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.3) 70%, #ffffff 100%)'
         }} />
       <header className="relative max-w-[1200px] mx-auto px-6 md:px-8 pt-16 pb-12 md:pt-28 md:pb-32 text-center">
         <FadeIn>
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-5 md:mb-8"
             style={{
-              background: 'rgba(212,175,55,0.12)',
-              border: '1px solid rgba(212,175,55,0.3)',
+              background: 'rgba(255,220,0,0.12)',
+              border: '1px solid rgba(255,220,0,0.3)',
             }}>
-            <Sparkles size={14} style={{ color: '#D4AF37' }} />
-            <span className="uppercase tracking-[0.3em] text-xs font-semibold" style={{ color: '#D4AF37' }}>
+            <Sparkles size={14} style={{ color: '#FFCC00' }} />
+            <span className="uppercase tracking-[0.3em] text-xs font-semibold" style={{ color: '#FFCC00' }}>
               Temporada activa — Ibiza · Palma · Costa del Sol
             </span>
           </div>
@@ -654,18 +779,18 @@ const Landing = () => {
         <FadeIn delay={0.1}>
           <h1
             aria-label="Los mejores profesionales para tu evento en España — DJ, fotógrafo, camareros y staff verificados"
-            className="text-4xl sm:text-6xl md:text-8xl font-black leading-[1.05] mb-4 md:mb-7 max-w-5xl mx-auto tracking-tight text-center font-display"
+            className="text-4xl sm:text-6xl md:text-8xl font-black mb-4 md:mb-7 max-w-5xl mx-auto tracking-tight text-center font-display"
+            style={{ lineHeight: 1.1, paddingBottom: '0.15em', overflow: 'visible' }}
           >
             <span className="block" style={{ color: 'rgba(255,255,255,0.95)' }}>Los mejores profesionales</span>
-            <span className="block text-gradient">para</span>
-            <RotatingWord />
+            <span className="block"><span className="text-gradient">para </span><RotatingWord /></span>
           </h1>
         </FadeIn>
         <FadeIn delay={0.2}>
           <p className="text-sm md:text-lg max-w-md mx-auto mb-6 md:mb-8 leading-relaxed"
             style={{ color: 'rgba(255,255,255,0.65)' }}>
             Clubs · Festivales · Eventos Privados · Bodas · Corporativos<br />
-            <span style={{ color: 'rgba(255,255,255,0.4)' }}>DJ, fotógrafo, camarero, staff — verificados en toda España. Gratis.</span>
+            <span style={{ color: 'rgba(255,255,255,0.6)' }}>DJ, fotógrafo, camarero, staff — verificados en toda España. Gratis.</span>
           </p>
         </FadeIn>
         <FadeIn delay={0.25}>
@@ -674,11 +799,14 @@ const Landing = () => {
               e.preventDefault();
               const fd = new FormData(e.currentTarget as HTMLFormElement);
               const q = (fd.get('q') as string) || '';
-              const city = (fd.get('city') as string) || '';
+              const city = cityValue;
               if (user) {
                 navigate('/dashboard', { state: { view: 'directorio', search: q, city } });
               } else {
-                navigate('/auth');
+                const params = new URLSearchParams();
+                if (q) params.set('q', q);
+                if (city) params.set('city', city);
+                navigate('/directorio/dj' + (params.toString() ? '?' + params.toString() : ''));
               }
             }}
             className="relative max-w-xl mx-auto mb-6 md:mb-10 flex flex-col gap-2"
@@ -698,25 +826,7 @@ const Landing = () => {
               />
             </div>
             <div className="flex gap-2">
-              <label htmlFor="city-select" className="sr-only">Ciudad</label>
-              <select
-                id="city-select"
-                name="city"
-                aria-label="Selecciona una ciudad"
-                className="flex-1 py-3.5 px-4 rounded-xl text-sm appearance-none focus:outline-none"
-                style={{
-                  background: '#FFFFFF',
-                  border: '1px solid rgba(212,175,55,0.3)',
-                  color: 'rgba(22,20,18,0.8)',
-                  boxShadow: '0 1px 6px rgba(0,0,0,0.06)',
-                  minWidth: 0,
-                }}
-              >
-                <option value="" style={{ background: '#D8D6D3' }}>Toda España</option>
-                {['Madrid','Barcelona','Valencia','Sevilla','Ibiza','Málaga','Bilbao','San Sebastián'].map(c => (
-                  <option key={c} value={c} style={{ background: '#D8D6D3' }}>{c}</option>
-                ))}
-              </select>
+              <CitySearch value={cityValue} onChange={setCityValue} />
               <motion.button
                 type="submit"
                 aria-label="Buscar profesionales"
@@ -738,7 +848,7 @@ const Landing = () => {
               { label: 'DJ Costa del Sol', href: '/contratar-dj/malaga' },
               { label: 'DJ Madrid', href: '/contratar-dj/madrid' },
               { label: 'Camareros Ibiza', href: '/contratar-camareros/ibiza' },
-              { label: '⚡ Flash Booking', href: '/blog/como-funciona-flash-booking-xpeak' },
+              { label: 'Flash Booking', href: '/blog/como-funciona-flash-booking-xpeak' },
             ].map(item => (
               <a key={item.label} href={item.href}
                 className="px-3 py-1.5 rounded-full text-xs font-bold transition-all hover:scale-105"
@@ -749,7 +859,7 @@ const Landing = () => {
           </div>
         </FadeIn>
         <FadeIn delay={0.35}>
-          <p className="text-xs font-bold uppercase tracking-[0.25em] mb-4" style={{ color: 'rgba(255,255,255,0.4)' }}>
+          <p className="text-xs font-bold uppercase tracking-[0.25em] mb-4" style={{ color: 'rgba(255,255,255,0.6)' }}>
             ¿Quién eres?
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-stretch gap-3 max-w-xl mx-auto">
@@ -814,75 +924,154 @@ const Landing = () => {
             ))}
           </div>
         </FadeIn>
+
+        {/* ── Floating activity pills ── */}
+        <div className="relative h-20 mt-6 overflow-hidden pointer-events-none select-none hidden md:block" aria-hidden="true">
+          {[
+            { text: 'DJ contratado en Madrid', delay: 0, duration: 24, top: 2 },
+            { text: 'Catering confirmado en Ibiza', delay: 8, duration: 28, top: 2 },
+            { text: 'Fotógrafo disponible en Valencia', delay: 16, duration: 26, top: 2 },
+            { text: 'Speaker reservado en Barcelona', delay: 4, duration: 30, top: 36 },
+            { text: 'Mago reservado en Sevilla', delay: 12, duration: 27, top: 36 },
+            { text: 'Flash Booking activo — Mallorca', delay: 20, duration: 25, top: 36 },
+          ].map((pill, i) => (
+            <div
+              key={i}
+              className="absolute whitespace-nowrap text-xs font-semibold px-3 py-1.5 rounded-full"
+              style={{
+                top: pill.top,
+                left: '100%',
+                background: 'rgba(212,175,55,0.08)',
+                border: '1px solid rgba(212,175,55,0.18)',
+                color: 'rgba(255,255,255,0.55)',
+                animation: `floatPill ${pill.duration}s ${pill.delay}s linear infinite`,
+              }}
+            >
+              {pill.text}
+            </div>
+          ))}
+        </div>
+        <style>{`
+          @keyframes floatPill {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(calc(-100vw - 400px)); }
+          }
+        `}</style>
+
       </header>
       </div>
 
       {/* ─ Stats ─ */}
       <FadeIn className="max-w-[900px] mx-auto px-6 mb-10 md:mb-14">
-        <div className="grid grid-cols-3 gap-2 md:gap-4">
-          <StatPill value="31+" label="Profesionales publicados" />
-          <StatPill value="0€" label={<><span className="md:hidden">Comisión</span><span className="hidden md:inline">Comisión para contratar</span></>} />
-          <StatPill value="España" label={<><span className="md:hidden">Europa 2027</span><span className="hidden md:inline">+ Europa en 2027</span></>} />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
+          <StatPill value="47+" label="Profesionales publicados" color="#D4AF37" bg="rgba(212,175,55,0.08)" />
+          <StatPill value="⚡" label="Flash Booking · Próximamente" color="#8b5cf6" bg="rgba(139,92,246,0.08)" />
+          <StatPill value="0€" label={<><span className="md:hidden">Comisión</span><span className="hidden md:inline">Comisión para contratar</span></>} color="#10b981" bg="rgba(16,185,129,0.08)" />
+          <StatPill value="España" label="Nacional" color="#f97316" bg="rgba(249,115,22,0.08)" />
         </div>
       </FadeIn>
 
-      {/* ─ Nightlife atmosphere strip ─ */}
-      <FadeIn className="max-w-[1200px] mx-auto px-6 md:px-8 pb-12 md:pb-16">
-        <div className="grid grid-cols-3 gap-2 md:gap-3 h-24 md:h-[130px]">
-          {[1190297, 1540406, 1105666].map((id, i) => (
-            <div key={id} className="relative rounded-xl overflow-hidden">
-              <img
-                src={px(id)}
-                alt={['Ambiente de evento nocturno', 'DJ en directo', 'Sala de eventos profesional'][i]}
-                loading="lazy"
-                className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                style={{ filter: 'saturate(0.85) brightness(0.8)' }}
-              />
-              <div className="absolute inset-0 rounded-xl" style={{ background: 'linear-gradient(to bottom, transparent 40%, rgba(9,9,9,0.55) 100%)' }} />
+      {/* ─ TIPOS DE EVENTO ─ */}
+      <FadeIn>
+        <section className="max-w-[1200px] mx-auto px-6 md:px-8 pt-16 pb-12 md:pt-20 md:pb-16">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl md:text-3xl font-black tracking-tight mb-3" style={{ lineHeight: 1.2, paddingBottom: '0.15em', overflow: 'visible' }}>¿Qué estás organizando?</h2>
+            <p className="text-sm" style={{ color: '#8E8EA0' }}>Encuentra el profesional perfecto para cada ocasión</p>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {[
+              { label: 'Boda', color: '#c084fc', border: 'rgba(192,132,252,0.3)', img: 'https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=400' },
+              { label: 'Cumpleaños', color: '#fb923c', border: 'rgba(251,146,60,0.3)', img: 'https://images.pexels.com/photos/1405528/pexels-photo-1405528.jpeg?auto=compress&cs=tinysrgb&w=400' },
+              { label: 'Corporativo', color: '#60a5fa', border: 'rgba(96,165,250,0.3)', img: 'https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=400' },
+              { label: 'Comunión', color: '#34d399', border: 'rgba(52,211,153,0.3)', img: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400&q=80&auto=format&fit=crop' },
+              { label: 'Festival', color: '#f472b6', border: 'rgba(244,114,182,0.3)', img: 'https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=400' },
+              { label: 'Fiesta privada', color: '#D4AF37', border: 'rgba(212,175,55,0.3)', img: 'https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg?auto=compress&cs=tinysrgb&w=400' },
+            ].map(ev => (
+              <a key={ev.label} href="/directorio/dj"
+                className="group relative rounded-2xl overflow-hidden flex flex-col items-center justify-end text-center transition-all hover:scale-105"
+                style={{ aspectRatio: '3/4', border: `1px solid ${ev.border}` }}>
+                <img src={ev.img} alt={ev.label} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <div className="absolute inset-0" style={{ background: `linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, transparent 100%)` }} />
+                <div className="relative z-10 p-3 w-full">
+                  <p className="text-sm font-black tracking-wide" style={{ color: '#fff', textShadow: '0 1px 8px rgba(0,0,0,0.8)' }}>{ev.label}</p>
+                  <div className="mt-1 h-0.5 w-6 rounded-full" style={{ background: ev.color }} />
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      </FadeIn>
+
+      {/* ─ CÓMO FUNCIONA ─ */}
+      <FadeIn>
+        <section id="como-funciona" className="w-full py-12 md:py-20" style={{ background: '#fff' }}>
+        <div className="max-w-[1100px] mx-auto px-6 md:px-8">
+          <div className="text-center mb-12">
+            <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Sin registro. Sin comisión.</p>
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-4" style={{ color: 'rgba(22,20,18,0.92)' }}>Tan fácil como esto</h2>
+            <p className="text-base max-w-xl mx-auto" style={{ color: 'rgba(22,20,18,0.55)' }}>
+              Busca el profesional que necesitas y contáctale directamente. Sin intermediarios, sin comisiones, sin complicaciones.
+            </p>
+          </div>
+
+          <div className="mb-14">
+            <p className="text-xs font-black uppercase tracking-widest mb-6 text-center" style={{ color: 'rgba(22,20,18,0.3)' }}>Si organizas un evento</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              {[
+                { step: '1', title: 'Busca el profesional', body: 'DJs, fotógrafos, camareros, maquilladores… Filtra por ciudad, tipo de evento y precio.' },
+                { step: '2', title: 'Contáctale gratis', body: 'Sin crear cuenta. Rellena un formulario en 30 segundos y el profesional te responde directamente.' },
+                { step: '3', title: 'Contrata sin comisión', body: 'El trato es entre tú y el profesional. XPEAK no cobra ninguna comisión por la contratación.' },
+              ].map(s => (
+                <div key={s.step} className="relative p-6 rounded-2xl text-center"
+                  style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.07)' }}>
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-black mx-auto mb-4"
+                    style={{ background: '#D4AF37', color: '#000', boxShadow: '0 2px 8px rgba(212,175,55,0.2)' }}>{s.step}</div>
+                  <h3 className="text-base font-black mb-2" style={{ color: 'rgba(22,20,18,0.9)', lineHeight: 1.2, paddingBottom: '0.15em', overflow: 'visible' }}>{s.title}</h3>
+                  <p className="text-sm leading-relaxed" style={{ color: 'rgba(22,20,18,0.55)' }}>{s.body}</p>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+
+          <div className="flex items-center gap-4 mb-10">
+            <div className="flex-1 h-px" style={{ background: 'rgba(0,0,0,0.08)' }} />
+            <p className="text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(22,20,18,0.3)' }}>Si eres profesional</p>
+            <div className="flex-1 h-px" style={{ background: 'rgba(0,0,0,0.08)' }} />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+            {[
+              { step: '1', title: 'Crea tu perfil', body: 'Gratis. Sube fotos, tu bio y tu precio. En 5 minutos estás visible.' },
+              { step: '2', title: 'Recibe contactos', body: 'Clientes de bodas, eventos y fiestas te escriben directamente sin intermediarios.' },
+              { step: '3', title: 'Flash Booking', body: 'Activa tu disponibilidad y recibe ofertas urgentes de eventos en tu zona.' },
+              { step: '4', title: 'Cobra lo que mereces', body: 'Sin comisiones. El trato es tuyo. XPEAK solo pone en contacto.' },
+            ].map(s => (
+              <div key={s.step} className="p-5 rounded-2xl"
+                style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.07)' }}>
+                <span className="w-6 h-6 rounded-full flex items-center justify-center text-[0.65rem] font-black mb-3 block"
+                  style={{ background: '#D4AF37', color: '#000' }}>{s.step}</span>
+                <h3 className="text-sm font-black mb-1" style={{ color: 'rgba(22,20,18,0.9)', lineHeight: 1.2, paddingBottom: '0.15em', overflow: 'visible' }}>{s.title}</h3>
+                <p className="text-xs leading-relaxed" style={{ color: 'rgba(22,20,18,0.55)' }}>{s.body}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12">
+            <a href="/directorio/dj"
+              className="px-8 py-4 rounded-2xl font-black text-base text-center transition-all hover:scale-105"
+              style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 8px 30px rgba(212,175,55,0.25)' }}>
+              Buscar profesionales →
+            </a>
+            <a href="/auth"
+              className="px-8 py-4 rounded-2xl font-black text-base text-center transition-all hover:scale-105"
+              style={{ background: 'rgba(22,20,18,0.06)', border: '1px solid rgba(22,20,18,0.12)', color: 'rgba(22,20,18,0.85)' }}>
+              Crear mi perfil gratis →
+            </a>
+          </div>
         </div>
+        </section>
       </FadeIn>
 
-      {/* ─ Hero Reel ─ */}
-      <FadeIn className="w-full px-4 md:px-8 pb-12 md:pb-16">
-        <div className="max-w-[1800px] mx-auto">
-          {/* Poster estático en móvil, vídeo lazy en desktop */}
-          <picture className="block sm:hidden">
-            <img
-              src="/og-image.jpg"
-              alt="Profesionales de eventos verificados — XPEAK"
-              style={{ width: '100%', borderRadius: '16px', boxShadow: '0 20px 60px rgba(0,0,0,0.50)', display: 'block', aspectRatio: '16/9', objectFit: 'cover' }}
-            />
-          </picture>
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="none"
-            poster="/og-image.jpg"
-            style={{
-              width: '100%',
-              borderRadius: '16px',
-              boxShadow: '0 20px 60px rgba(0,0,0,0.50)',
-              display: 'block',
-            }}
-            className="hidden sm:block"
-            onMouseEnter={e => { const v = e.currentTarget; if (!v.src) { v.src = '/video/landing-hero.mp4'; v.play(); } }}
-            ref={el => {
-              if (!el) return;
-              const obs = new IntersectionObserver(([entry]) => {
-                if (entry.isIntersecting && !el.src) {
-                  el.src = '/video/landing-hero.mp4';
-                  obs.disconnect();
-                }
-              }, { rootMargin: '200px' });
-              obs.observe(el);
-            }}
-          />
-        </div>
-      </FadeIn>
 
       {/* ─ Mobile Categories ─ */}
       <section className="block md:hidden max-w-[1200px] mx-auto px-6 pb-10">
@@ -901,7 +1090,7 @@ const Landing = () => {
           {ROLE_DETAILS.map(role => (
             <button
               key={role.key}
-              onClick={() => setActiveRole(role)}
+              onClick={() => navigate('/directorio/' + role.key)}
               className="flex-none flex items-center gap-2.5 px-4 py-3.5 rounded-2xl text-sm font-bold transition-all active:scale-95"
               style={{ background: '#FFFFFF', border: '1px solid rgba(212,175,55,0.2)', boxShadow: '0 1px 4px rgba(0,0,0,0.06)', whiteSpace: 'nowrap' }}
             >
@@ -914,39 +1103,39 @@ const Landing = () => {
       </section>
 
       {/* ─ Bento Grid ─ */}
-      <section className="hidden md:block max-w-[1200px] mx-auto px-6 md:px-8 pb-10 md:pb-16">
+      <section id="categorias" className="hidden md:block max-w-[1200px] mx-auto px-6 md:px-8 pb-10 md:pb-16">
         <FadeIn>
           <div className="text-center mb-14">
-            <p className="uppercase tracking-[0.3em] text-xs font-semibold mb-4" style={{ color: '#8B6A00' }}>
+            <p className="uppercase tracking-[0.3em] text-xs font-semibold mb-4" style={{ color: '#f97316' }}>
               Categorías
             </p>
-            <h2 className="text-3xl md:text-5xl font-black tracking-tight font-display">
+            <h2 className="text-3xl md:text-5xl font-black tracking-tight font-display" style={{ color: 'rgba(22,20,18,0.92)' }}>
               Encuentra tu <span className="text-gradient">talento</span>
             </h2>
           </div>
         </FadeIn>
-        <p className="text-center text-xs text-muted-foreground mb-6" style={{ color: 'rgba(22,20,18,0.72)' }}>
+        <p className="text-center text-xs text-muted-foreground mb-6" style={{ color: 'rgba(22,20,18,0.5)' }}>
           Haz clic en cada categoría para ver qué puedes hacer
         </p>
         {/* Fila 1-2: bento asimétrico */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 auto-rows-[170px] md:auto-rows-[260px] mb-3 md:mb-4">
           <FadeIn delay={0} className="md:row-span-2">
             <BentoCard image={bentoMusica} icon={<Music size={20} />} title="Música" subtitle="DJs, productores, artistas en vivo, VJs y técnicos de sonido" className="h-full"
-              onClick={() => setActiveRole(ROLE_DETAILS[0])} />
+              onClick={() => navigate('/directorio/' + ROLE_DETAILS[0].key)} />
           </FadeIn>
           <FadeIn delay={0.1} className="md:col-span-2">
             <BentoCard
               image="/images/pexels/1190297.jpg"
               icon={<Building2 size={20} />} title="Empresario" subtitle="Salas, promotoras y agencias de eventos" className="h-full"
-              onClick={() => setActiveRole(ROLE_DETAILS[5])} />
+              onClick={() => navigate('/directorio/' + ROLE_DETAILS[5].key)} />
           </FadeIn>
           <FadeIn delay={0.15} className="md:row-span-2">
             <BentoCard image={bentoImagen} icon={<Camera size={20} />} title="Imagen & Media" subtitle="Fotógrafos, videógrafos y creadores" className="h-full"
-              onClick={() => setActiveRole(ROLE_DETAILS[2])} />
+              onClick={() => navigate('/directorio/' + ROLE_DETAILS[2].key)} />
           </FadeIn>
           <FadeIn delay={0.2} className="md:col-span-2">
             <BentoCard image={bentoStaff} icon={<Users size={20} />} title="Staff & Promoción" subtitle="RRPP, hostess, promotores y azafatas" className="h-full"
-              onClick={() => setActiveRole(ROLE_DETAILS[3])} />
+              onClick={() => navigate('/directorio/' + ROLE_DETAILS[3].key)} />
           </FadeIn>
         </div>
         {/* Fila 3: Belleza + Gastro */}
@@ -955,119 +1144,84 @@ const Landing = () => {
             <BentoCard
               image="/images/pexels/2681751.jpg"
               icon={<Scissors size={20} />} title="Belleza & Estética" subtitle="Maquilladores, peluqueros y estilistas" className="h-full"
-              onClick={() => setActiveRole(ROLE_DETAILS[4])} />
+              onClick={() => navigate('/directorio/' + ROLE_DETAILS[4].key)} />
           </FadeIn>
           <FadeIn delay={0.3} className="h-full">
             <BentoCard image={bentoGastro} icon={<UtensilsCrossed size={20} />} title="Gastro & Sala" subtitle="Bartenders, chefs y catering premium" className="h-full"
-              onClick={() => setActiveRole(ROLE_DETAILS[1])} />
+              onClick={() => navigate('/directorio/' + ROLE_DETAILS[1].key)} />
           </FadeIn>
         </div>
       </section>
 
-      {/* ─ Dos pistas ─ */}
-      <section className="max-w-[1200px] mx-auto px-6 md:px-8 pb-12 md:pb-20">
+
+      {/* ─ Testimonios ─ */}
+      <section className="relative overflow-hidden pb-16 pt-16" style={{ background: '#f8f7f4' }}>
+        <div className="relative max-w-[1200px] mx-auto px-6 md:px-8">
         <FadeIn className="text-center mb-10">
-          <p className="text-[0.7rem] font-bold uppercase tracking-[0.25em] mb-4" style={{ color: '#7A5800' }}>¿Quién eres tú?</p>
-          <h2 className="text-3xl md:text-5xl font-black tracking-tight font-display mb-3">
-            Dos caminos, <span className="text-gradient">una plataforma</span>
+          <p className="text-[0.7rem] font-bold uppercase tracking-[0.25em] mb-4" style={{ color: '#8b5cf6' }}>Lo que dicen los profesionales</p>
+          <h2 className="text-3xl md:text-4xl font-black tracking-tight font-display" style={{ color: 'rgba(22,20,18,0.92)' }}>
+            La comunidad <span className="text-gradient">habla</span>
           </h2>
         </FadeIn>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Pista Profesional */}
-          <FadeIn delay={0.05}>
-            <div className="rounded-2xl p-6 md:p-8 flex flex-col gap-5"
-              style={{ background: '#FFFFFF', border: '1px solid rgba(212,175,55,0.2)', boxShadow: '0 2px 12px rgba(0,0,0,0.07)' }}>
-              <div>
-                <p className="text-[0.65rem] font-black uppercase tracking-widest mb-2" style={{ color: '#8B6A00' }}>Soy Profesional</p>
-                <p className="text-xl font-black leading-tight">Consigue eventos.<br />Construye tu marca.</p>
-                <p className="text-xs mt-2 leading-relaxed" style={{ color: 'rgba(22,20,18,0.55)' }}>
-                  DJ · Fotógrafo · Camarero · Maquillador · MC · Estilista · Catering
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  { icon: <Headphones size={13} />, label: 'DJ / Artista',    color: '#D4AF37' },
-                  { icon: <UtensilsCrossed size={13} />, label: 'Bartender',  color: '#FB923C' },
-                  { icon: <Camera size={13} />,     label: 'Foto & Vídeo',    color: '#34D399' },
-                  { icon: <Users size={13} />,      label: 'Staff & RRPP',    color: '#38BDF8' },
-                  { icon: <Scissors size={13} />,   label: 'Estilista',       color: '#F472B6' },
-                  { icon: <Megaphone size={13} />,  label: 'Promotor',        color: '#A78BFA' },
-                ].map(r => (
-                  <span key={r.label} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[0.7rem] font-semibold"
-                    style={{ background: `${r.color}10`, border: `1px solid ${r.color}25`, color: 'rgba(22,20,18,0.65)' }}>
-                    <span style={{ color: r.color }}>{r.icon}</span>{r.label}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </FadeIn>
-
-          {/* Pista Empresario */}
-          <FadeIn delay={0.12}>
-            <div className="rounded-2xl p-6 md:p-8 flex flex-col gap-5"
-              style={{ background: '#FFFFFF', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 2px 12px rgba(0,0,0,0.07)' }}>
-              <div>
-                <div className="flex items-center gap-2 flex-wrap mb-2">
-                  <p className="text-[0.65rem] font-black uppercase tracking-widest" style={{ color: '#F59E0B' }}>Organizo Eventos</p>
-                  <span className="text-[0.55rem] font-black uppercase tracking-widest px-2 py-0.5 rounded-full"
-                    style={{ background: 'rgba(34,197,94,0.12)', color: '#22c55e', border: '1px solid rgba(34,197,94,0.25)' }}>
-                    Siempre gratis
-                  </span>
-                </div>
-                <p className="text-xl font-black leading-tight">Tu evento siempre cubierto.<br />Sin comisiones ni papeleo.</p>
-                <p className="text-xs mt-2 leading-relaxed" style={{ color: 'rgba(22,20,18,0.55)' }}>
-                  Boda · Comunión · Corporativo · Festival · Evento privado
-                </p>
-              </div>
-              <div className="flex flex-col gap-2.5">
-                {[
-                  { icon: <FileText size={13} />,    text: 'Contrato PDF automático en cada contratación — cobertura legal sin esfuerzo' },
-                  { icon: <CalendarDays size={13} />, text: 'Panel de gestión: calendario, historial de pagos y exportación mensual' },
-                ].map(item => (
-                  <div key={item.text} className="flex items-start gap-2.5 text-xs" style={{ color: 'rgba(22,20,18,0.62)' }}>
-                    <span className="flex-shrink-0 mt-0.5" style={{ color: '#F59E0B' }}>{item.icon}</span>
-                    {item.text}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {(communityReviews.length > 0 ? communityReviews.slice(0, 3).map((r, i) => ({
+            name: r.reviewer_name, role: r.reviewer_role,
+            avatar: r.reviewer_avatar ?? r.reviewer_name.charAt(0).toUpperCase(),
+            text: r.comment,
+            photo: [
+              'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=600&q=80',
+              'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=600&q=80',
+              'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80',
+            ][i] ?? null,
+          })) : [
+            { name: 'Marcos DJ', role: 'DJ Residente · Madrid', avatar: 'M',
+              photo: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=600&q=80',
+              text: 'En menos de una semana me contactaron dos salas de Madrid a través del directorio. Nunca había conseguido bookings tan rápido sin intermediarios.' },
+            { name: 'Laura V.', role: 'Maquilladora · Barcelona', avatar: 'L',
+              photo: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=600&q=80',
+              text: 'Mi perfil en XPEAK me trajo tres clientes nuevos en el primer mes. Por fin un sitio donde el sector de eventos busca talento de imagen de verdad.' },
+            { name: 'Club Nocturno NX', role: 'Empresario · Valencia', avatar: 'N',
+              photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80',
+              text: 'El Flash Booking nos salvó una noche: publicamos la oferta a las 10pm y a las 11pm teníamos DJ confirmado. Antes eso nos costaba llamadas interminables.' },
+          ]).map((t, i) => (
+            <FadeIn key={t.name} delay={i * 0.08}>
+              <div className="relative overflow-hidden rounded-2xl h-64 flex flex-col justify-end"
+                style={{ border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 2px 10px rgba(0,0,0,0.06)' }}>
+                {/* Foto de fondo */}
+                {t.photo && (
+                  <img src={t.photo} alt={t.name} loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover" />
+                )}
+                {/* Gradiente oscuro de abajo hacia arriba */}
+                <div className="absolute inset-0"
+                  style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%)' }} />
+                {/* Contenido sobre el gradiente */}
+                <div className="relative z-10 p-5">
+                  <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.88)' }}>
+                    "{t.text}"
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-black flex-shrink-0"
+                      style={{ background: 'rgba(212,175,55,0.25)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.4)' }}>
+                      {t.avatar}
+                    </div>
+                    <div>
+                      <p className="text-xs font-black text-white">{t.name}</p>
+                      <p className="text-[0.68rem]" style={{ color: 'rgba(255,255,255,0.6)' }}>{t.role}</p>
+                    </div>
                   </div>
-                ))}
+                </div>
               </div>
-            </div>
-          </FadeIn>
+            </FadeIn>
+          ))}
         </div>
-      </section>
-
-      {/* ─ Planificador de boda ─ */}
-      <section className="max-w-[1200px] mx-auto px-6 md:px-8 py-12 md:py-16">
-        <FadeIn>
-          <a href="/presupuesto-boda" className="group block rounded-2xl overflow-hidden transition-all hover:scale-[1.01]"
-            style={{ background: 'linear-gradient(135deg,rgba(212,175,55,0.08) 0%,rgba(255,255,255,0.95) 60%)', border: '1px solid rgba(212,175,55,0.25)', boxShadow: '0 2px 12px rgba(0,0,0,0.07)' }}>
-            <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10 p-7 md:p-10">
-              <div className="flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)' }}><Sparkles size={28} color="#000" /></div>
-              <div className="flex-1 text-center md:text-left">
-                <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#8B6A00' }}>
-                  Herramienta gratuita · Bodas 2026
-                </p>
-                <h2 className="text-xl md:text-3xl font-black tracking-tight mb-2">
-                  Planifica tu boda y calcula el presupuesto
-                </h2>
-                <p className="text-sm leading-relaxed max-w-xl" style={{ color: 'rgba(22,20,18,0.6)' }}>
-                  Añade DJ, catering, fotógrafo, camareros y más. Las fichas se van sumando con el importe estimado total. Checklist mes a mes incluido.
-                </p>
-              </div>
-              <div className="flex-shrink-0">
-                <span className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-black text-sm"
-                  style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-                  <Zap size={14} /> Calcular presupuesto
-                </span>
-              </div>
-            </div>
-          </a>
-        </FadeIn>
+        </div>
       </section>
 
       {/* ─ Blog / Guías ─ */}
-      <section className="max-w-[1200px] mx-auto px-6 md:px-8 py-12">
+      <section className="max-w-[1200px] mx-auto px-6 md:px-8 py-12" style={{ background: '#fff' }}>
         <FadeIn>
-          <h2 className="text-2xl md:text-4xl font-black mb-2 tracking-tight font-display">
+          <h2 className="text-2xl md:text-4xl font-black mb-2 tracking-tight font-display" style={{ color: 'rgba(22,20,18,0.92)' }}>
             Guías y <span className="text-gradient">recursos</span>
           </h2>
           <p className="text-sm mb-8 max-w-md" style={{ color: 'rgba(22,20,18,0.55)' }}>
@@ -1101,127 +1255,47 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* ─ Testimonios ─ */}
-      <section className="relative overflow-hidden pb-16">
-        {/* Ghost photo — professionals at work, not wedding */}
-        <img
-          src="/images/pexels/2608517-hero.jpg"
-          alt=""
-          aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-          style={{ filter: 'saturate(0.2) brightness(1.4)', opacity: 0.44 }}
-        />
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(180deg, #C4C2BF 0%, rgba(196,194,191,0.5) 40%, rgba(196,194,191,0.5) 60%, #C4C2BF 100%)' }} />
-        <div className="relative max-w-[1200px] mx-auto px-6 md:px-8">
-        <FadeIn className="text-center mb-10">
-          <p className="text-[0.7rem] font-bold uppercase tracking-[0.25em] mb-4" style={{ color: '#7A5800' }}>Lo que dicen los profesionales</p>
-          <h2 className="text-3xl md:text-4xl font-black tracking-tight font-display">
-            La comunidad <span className="text-gradient">habla</span>
-          </h2>
-        </FadeIn>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {([
-            { name: 'Marcos DJ', role: 'DJ Residente · Madrid', avatar: 'M', color: '#D4AF37',
-              text: 'En menos de una semana me contactaron dos salas de Madrid a través del directorio. Nunca había conseguido bookings tan rápido sin intermediarios.' },
-            { name: 'Laura V.', role: 'Maquilladora · Barcelona', avatar: 'L', color: '#F472B6',
-              text: 'Mi perfil en XPEAK me trajo tres clientes nuevos en el primer mes. Por fin un sitio donde el sector de eventos busca talento de imagen de verdad.' },
-            { name: 'Club Nocturno NX', role: 'Empresario · Valencia', avatar: 'N', color: '#38BDF8',
-              text: 'El Flash Booking nos salvó una noche: publicamos la oferta a las 10pm y a las 11pm teníamos DJ confirmado. Antes eso nos costaba llamadas interminables.' },
-          ] as { name: string; role: string; avatar: string; color: string; text: string }[]).map((t, i) => (
-            <FadeIn key={t.name} delay={i * 0.08}>
-              <div className="glass-panel p-7 h-full flex flex-col gap-5"
-                style={{ background: '#FFFFFF', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 2px 10px rgba(0,0,0,0.06)' }}>
-                <p className="text-sm leading-relaxed flex-1" style={{ color: 'rgba(22,20,18,0.75)' }}>
-                  "{t.text}"
-                </p>
-                <div className="flex items-center gap-3 pt-2" style={{ borderTop: '1px solid rgba(0,0,0,0.07)' }}>
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-black flex-shrink-0"
-                    style={{ background: `${t.color}18`, color: t.color, border: `1px solid ${t.color}30` }}>
-                    {t.avatar}
-                  </div>
-                  <div>
-                    <p className="text-xs font-black">{t.name}</p>
-                    <p className="text-[0.72rem]" style={{ color: 'rgba(22,20,18,0.55)' }}>{t.role}</p>
-                  </div>
-                </div>
-              </div>
-            </FadeIn>
-          ))}
-        </div>
-        </div>
-      </section>
-
-
       {/* ─ FAQ ─ */}
-      <FaqSection />
+      <div id="faq"><FaqSection /></div>
 
-      {/* ─ CTA ─ dark full-width closing punch */}
+      {/* ─ CTA final limpio ─ */}
       <FadeIn>
-        <div className="relative overflow-hidden py-20 md:py-28 text-center"
-          style={{ background: '#1A1814' }}>
-          {/* Same wedding ghost photo as hero */}
-          <img
-            src="/images/pexels/1024993-hero.jpg"
-            alt=""
-            aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-            style={{ filter: 'saturate(0.25) brightness(0.7)', opacity: 0.36 }}
-          />
-          <div className="absolute inset-0 pointer-events-none" style={{
-            background: 'linear-gradient(180deg, #1A1814 0%, rgba(26,24,20,0.55) 35%, rgba(26,24,20,0.55) 65%, #1A1814 100%)'
-          }} />
-          {/* Gold orb glow */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full opacity-20 pointer-events-none"
-            style={{ background: 'radial-gradient(circle, #D4AF37 0%, transparent 70%)', filter: 'blur(100px)' }} />
-          <div className="relative z-10 max-w-[1200px] mx-auto px-6 md:px-8">
-            <p className="text-[0.7rem] font-bold uppercase tracking-[0.25em] mb-4" style={{ color: 'rgba(212,175,55,0.55)' }}>
-              31 profesionales ya publicados
-            </p>
-            <h2 className="text-2xl md:text-5xl font-black mb-4 tracking-tight font-display leading-tight"
-              style={{ color: 'rgba(255,255,255,0.92)' }}>
-              Publica tu tarifa.{' '}
-              <span style={{
-                background: 'linear-gradient(135deg,#D4AF37,#F5D77A)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}>Recibe bookings.</span>
-            </h2>
-            <p className="text-sm mb-8 max-w-sm mx-auto" style={{ color: 'rgba(255,255,255,0.45)' }}>
-              Los organizadores ven tu perfil, tu tarifa y te contactan directamente. Sin intermediarios. Sin comisiones.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-3">
-              <motion.button
-                whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.98 }}
-                onClick={() => navigate('/auth?mode=register&role=profesional')}
-                className="inline-flex items-center justify-center gap-2 text-sm font-black px-8 py-4 rounded-xl transition-all"
-                style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#0A0A0A', boxShadow: '0 0 40px rgba(212,175,55,0.25)' }}>
-                <Headphones size={16} /> Soy Profesional
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.98 }}
-                onClick={() => navigate('/auth?mode=register&role=empresario')}
-                className="inline-flex items-center justify-center gap-2 text-sm font-black px-8 py-4 rounded-xl transition-all"
-                style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.14)', color: 'rgba(255,255,255,0.82)' }}>
-                <Building2 size={16} /> Organizo un Evento
-              </motion.button>
-            </div>
-            <p className="mt-5 text-xs" style={{ color: 'rgba(255,255,255,0.22)' }}>
-              Registro gratuito · Sin tarjeta de crédito
-            </p>
+        <div className="max-w-[1200px] mx-auto px-6 md:px-8 py-16 md:py-20 text-center">
+          <p className="text-[0.7rem] font-bold uppercase tracking-[0.25em] mb-4" style={{ color: '#D4AF37' }}>
+            47 profesionales ya publicados
+          </p>
+          <h2 className="text-2xl md:text-4xl font-black mb-4 tracking-tight font-display" style={{ color: 'rgba(22,20,18,0.92)', lineHeight: 1.3, overflow: 'visible', clipPath: 'none', WebkitClipPath: 'none' }}>
+            <span style={{ display: 'block', paddingBottom: '0.05em' }}>Publica tu tarifa.</span>
+            <span style={{ display: 'inline-block', paddingBottom: '0.35em' }}>Recibe bookings.</span>
+          </h2>
+          <p className="text-sm mb-8 max-w-sm mx-auto" style={{ color: 'rgba(22,20,18,0.55)' }}>
+            Los organizadores ven tu perfil, tu tarifa y te contactan directamente. Sin intermediarios. Sin comisiones.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-3">
+            <motion.button
+              whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.98 }}
+              onClick={() => navigate('/auth?mode=register&role=profesional')}
+              className="inline-flex items-center justify-center gap-2 text-sm font-black px-8 py-4 rounded-xl transition-all"
+              style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 8px 30px rgba(212,175,55,0.25)' }}>
+              <Headphones size={16} /> Soy Profesional
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.98 }}
+              onClick={() => navigate('/auth?mode=register&role=empresario')}
+              className="inline-flex items-center justify-center gap-2 text-sm font-black px-8 py-4 rounded-xl transition-all"
+              style={{ background: 'rgba(22,20,18,0.06)', border: '1px solid rgba(22,20,18,0.12)', color: 'rgba(22,20,18,0.85)' }}>
+              <Building2 size={16} /> Organizo un Evento
+            </motion.button>
           </div>
+          <p className="mt-5 text-xs" style={{ color: 'rgba(22,20,18,0.35)' }}>
+            Registro gratuito · Sin tarjeta de crédito
+          </p>
         </div>
       </FadeIn>
 
       </main>
       <LegalFooter />
       <DemoVideoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
-      {activeRole && (
-        <RoleModal
-          role={activeRole}
-          onClose={() => setActiveRole(null)}
-          onJoin={() => { setActiveRole(null); navigate('/auth?mode=register&role=profesional'); }}
-        />
-      )}
     </div>
     </>
   );

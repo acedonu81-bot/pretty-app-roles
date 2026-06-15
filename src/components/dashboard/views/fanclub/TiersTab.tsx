@@ -21,9 +21,9 @@ const TIERS = [
     id: 'vip',
     name: 'VIP · One to One',
     price: 59.90,
-    color: '#fff',
-    glow: 'rgba(255,255,255,0.08)',
-    border: 'rgba(255,255,255,0.2)',
+    color: 'rgba(22,20,18,0.88)',
+    glow: 'rgba(0,0,0,0.08)',
+    border: 'rgba(0,0,0,0.1)',
     icon: <Crown size={18} />,
     features: [
       'Todo el nivel Fan incluido',
@@ -53,7 +53,7 @@ const TiersTab = () => (
             <p className="font-bold" style={{ color: tier.color }}>{tier.name}</p>
             <p className="text-2xl font-black" style={{ color: tier.color }}>€{tier.price}<span className="text-xs font-normal text-muted-foreground">/mes</span></p>
           </div>
-          <span className="text-xs px-2 py-1 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.3)' }}>
+          <span className="text-xs px-2 py-1 rounded-lg" style={{ background: 'rgba(0,0,0,0.05)', color: 'rgba(22,20,18,0.35)' }}>
             Próximamente
           </span>
         </div>

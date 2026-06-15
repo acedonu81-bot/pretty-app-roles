@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { Music, Camera, UtensilsCrossed, Flower2, Users, Car, ChevronRight } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import RelatedPosts from '@/components/RelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
@@ -181,7 +182,7 @@ const faqStructured = {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {RANGOS.map(r => (
                 <div key={r.tipo} className="rounded-xl p-5" style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid rgba(255,255,255,0.07)` }}>
-                  <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: 'rgba(255,255,255,0.4)' }}>{r.invitados}</p>
+                  <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: 'rgba(255,255,255,0.6)' }}>{r.invitados}</p>
                   <p className="text-lg font-black mb-0.5">{r.tipo}</p>
                   <p className="text-xl font-black" style={{ color: r.color }}>{r.rango}</p>
                 </div>
@@ -270,7 +271,7 @@ const faqStructured = {
                 { tipo: 'DJ de referencia', precio: '1.200€ – 1.800€', desc: 'DJ con nombre, setup premium, iluminación incluida.' },
               ].map(d => (
                 <div key={d.tipo} className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
-                  <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: 'rgba(255,255,255,0.4)' }}>{d.tipo}</p>
+                  <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: 'rgba(255,255,255,0.6)' }}>{d.tipo}</p>
                   <p className="text-lg font-black mb-1" style={{ color: '#D4AF37' }}>{d.precio}</p>
                   <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>{d.desc}</p>
                 </div>
@@ -392,7 +393,7 @@ const faqStructured = {
               <span className="text-4xl flex-shrink-0">🛒</span>
               <div className="flex-1 text-center sm:text-left">
                 <p className="text-sm font-black mb-1">Calcula tu presupuesto de boda al instante</p>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>
+                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
                   Añade DJ, catering, fotógrafo y camareros. Las fichas se suman en tiempo real con el total estimado.
                 </p>
               </div>

@@ -113,7 +113,7 @@ const faqStructured = {
                 <tr style={{ background: 'rgba(255,255,255,0.04)' }}>
                   {['Perfil', 'Jornada', 'Tarifa', 'Funciones principales'].map(h => (
                     <th key={h} className="px-4 py-3 text-left font-bold uppercase tracking-wider"
-                      style={{ color: 'rgba(255,255,255,0.4)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>{h}</th>
+                      style={{ color: 'rgba(255,255,255,0.6)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -123,7 +123,7 @@ const faqStructured = {
                     <td className="px-4 py-3 font-bold" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.perfil}</td>
                     <td className="px-4 py-3" style={{ color: 'rgba(255,255,255,0.5)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.jornada}</td>
                     <td className="px-4 py-3 font-black whitespace-nowrap" style={{ color: '#D4AF37', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.rango}</td>
-                    <td className="px-4 py-3" style={{ color: 'rgba(255,255,255,0.4)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.notas}</td>
+                    <td className="px-4 py-3" style={{ color: 'rgba(255,255,255,0.6)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.notas}</td>
                   </tr>
                 ))}
               </tbody>
@@ -177,7 +177,7 @@ const faqStructured = {
             <div className="p-6 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ background: 'rgba(255,255,255,0.02)' }}>
               <div>
                 <p className="text-sm font-black mb-0.5">¿Necesitas personal de imagen para tu feria?</p>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>Directorio verificado · Flash Booking para urgencias · Sin comisión</p>
+                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>Directorio verificado · Flash Booking para urgencias · Sin comisión</p>
               </div>
               <a href="/contratar-staff"
                 className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-xs transition-all hover:scale-105"
@@ -202,7 +202,7 @@ const faqStructured = {
                   <span className="inline-block text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded mb-2"
                     style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,56,0.18)' }}>{p.tag}</span>
                   <p className="text-sm font-black leading-snug mb-1">{p.title}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>{p.desc}</p>
+                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{p.desc}</p>
                 </a>
               ))}
             </div>

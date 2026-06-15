@@ -62,40 +62,40 @@ const ContactModal = ({ open, onClose }: Props) => {
               </div>
               <div className="flex-1">
                 <p className="text-sm font-bold">Contacto</p>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>info@xpeak.site</p>
+                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>info@xpeak.site</p>
               </div>
               <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-white/10">
-                <X size={14} style={{ color: 'rgba(255,255,255,0.4)' }} />
+                <X size={14} style={{ color: 'rgba(255,255,255,0.6)' }} />
               </button>
             </div>
 
             <div className="p-5 space-y-3">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(255,255,255,0.4)' }}>Nombre *</label>
+                  <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(255,255,255,0.6)' }}>Nombre *</label>
                   <input value={form.name} onChange={e => set('name', e.target.value)}
                     placeholder="Tu nombre" className="nightlife-input text-sm !py-2 w-full" />
                 </div>
                 <div>
-                  <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(255,255,255,0.4)' }}>Email *</label>
+                  <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(255,255,255,0.6)' }}>Email *</label>
                   <input type="email" value={form.email} onChange={e => set('email', e.target.value)}
                     placeholder="tu@email.com" className="nightlife-input text-sm !py-2 w-full" />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(255,255,255,0.4)' }}>Teléfono</label>
+                  <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(255,255,255,0.6)' }}>Teléfono</label>
                   <input value={form.phone} onChange={e => set('phone', e.target.value)}
                     placeholder="+34 600..." className="nightlife-input text-sm !py-2 w-full" />
                 </div>
                 <div>
-                  <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(255,255,255,0.4)' }}>Asunto</label>
+                  <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(255,255,255,0.6)' }}>Asunto</label>
                   <input value={form.subject} onChange={e => set('subject', e.target.value)}
                     placeholder="Consulta, soporte..." className="nightlife-input text-sm !py-2 w-full" />
                 </div>
               </div>
               <div>
-                <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(255,255,255,0.4)' }}>Mensaje *</label>
+                <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(255,255,255,0.6)' }}>Mensaje *</label>
                 <textarea value={form.message} onChange={e => set('message', e.target.value)}
                   placeholder="¿En qué podemos ayudarte?" rows={4}
                   className="nightlife-input text-sm !py-2 w-full resize-none" />
@@ -106,7 +106,7 @@ const ContactModal = ({ open, onClose }: Props) => {
               <label className="flex items-start gap-2.5 cursor-pointer mb-3">
                 <input type="checkbox" checked={acceptedPrivacy} onChange={e => setAcceptedPrivacy(e.target.checked)}
                   className="mt-0.5 w-3.5 h-3.5 rounded accent-[#D4AF37] flex-shrink-0" />
-                <span className="text-xs leading-tight" style={{ color: 'rgba(255,255,255,0.45)' }}>
+                <span className="text-xs leading-tight" style={{ color: 'rgba(255,255,255,0.6)' }}>
                   He leído y acepto la{' '}
                   <Link to="/privacidad" target="_blank" className="underline font-bold" style={{ color: '#D4AF37' }}>
                     Política de Privacidad

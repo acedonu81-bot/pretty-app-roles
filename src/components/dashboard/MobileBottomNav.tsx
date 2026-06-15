@@ -75,7 +75,7 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
           <div className="relative">
             <tab.icon
               size={28}
-              style={{ color: tab.isActive ? '#D4AF37' : 'rgba(255,255,255,0.4)' }}
+              style={{ color: tab.isActive ? '#D4AF37' : 'rgba(22,20,18,0.45)' }}
             />
             {tab.badge != null && tab.badge > 0 && (
               <span
@@ -88,7 +88,7 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
           </div>
           <span
             className="text-[0.78rem] font-bold tracking-wide"
-            style={{ color: tab.isActive ? '#D4AF37' : 'rgba(255,255,255,0.4)' }}
+            style={{ color: tab.isActive ? '#D4AF37' : 'rgba(22,20,18,0.45)' }}
           >
             {tab.label}
           </span>
@@ -108,8 +108,8 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
         className="flex-1 flex flex-col items-center justify-center gap-1 transition-all active:scale-95"
         style={{ minHeight: 52 }}
       >
-        <LayoutGrid size={28} style={{ color: 'rgba(255,255,255,0.4)' }} />
-        <span className="text-[0.78rem] font-bold tracking-wide" style={{ color: 'rgba(255,255,255,0.4)' }}>
+        <LayoutGrid size={28} style={{ color: 'rgba(22,20,18,0.65)' }} />
+        <span className="text-[0.78rem] font-bold tracking-wide" style={{ color: 'rgba(22,20,18,0.65)' }}>
           Más
         </span>
       </button>

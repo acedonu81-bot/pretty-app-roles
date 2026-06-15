@@ -21,6 +21,8 @@ import CateringView from '@/components/dashboard/views/CateringView';
 import MagoView from '@/components/dashboard/views/MagoView';
 import BailarinView from '@/components/dashboard/views/BailarinView';
 import HumoristaView from '@/components/dashboard/views/HumoristaView';
+import MonologoView from '@/components/dashboard/views/MonologoView';
+import AnimadorView from '@/components/dashboard/views/AnimadorView';
 import SpeakerView from '@/components/dashboard/views/SpeakerView';
 import MapaView from '@/components/dashboard/views/MapaView';
 import FlashBookingWallView from '@/components/dashboard/views/FlashBookingWallView';
@@ -69,10 +71,10 @@ const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: s
     <div className="mx-4 mt-3 mb-0 flex items-center gap-3 px-4 py-3 rounded-xl text-xs"
       style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.18)' }}>
       <div className="flex-1 flex items-center gap-3 min-w-0">
-        <div className="w-20 h-1.5 rounded-full flex-shrink-0" style={{ background: 'rgba(255,255,255,0.08)' }}>
+        <div className="w-20 h-1.5 rounded-full flex-shrink-0" style={{ background: 'rgba(0,0,0,0.08)' }}>
           <div className="h-full rounded-full" style={{ width: `${percent}%`, background: 'linear-gradient(90deg,#D4AF37,#B8941E)' }} />
         </div>
-        <span style={{ color: 'rgba(255,255,255,0.55)' }}>
+        <span style={{ color: 'rgba(22,20,18,0.6)' }}>
           Perfil al <strong style={{ color: '#D4AF37' }}>{percent}%</strong>
           <span className="hidden sm:inline"> — complétalo para aparecer mejor en el directorio</span>
         </span>
@@ -83,7 +85,7 @@ const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: s
         Completar
       </button>
       <button onClick={() => setDismissed(true)} className="flex-shrink-0 text-lg leading-none transition-opacity hover:opacity-60"
-        style={{ color: 'rgba(255,255,255,0.25)' }}>×</button>
+        style={{ color: 'rgba(22,20,18,0.3)' }}>×</button>
     </div>
   );
 };
@@ -173,6 +175,8 @@ const Dashboard = () => {
       case 'mago':      return <MagoView      onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'bailarin':  return <BailarinView  onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'humorista': return <HumoristaView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
+      case 'monologo':  return <MonologoView  onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
+      case 'animador':  return <AnimadorView  onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'speaker':   return <SpeakerView   onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'settings': return <SettingsView onNavigate={nav} />;
       case 'empresario': return <EmpresarioView onMessage={handleMessage} />;
@@ -198,7 +202,7 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex h-screen w-screen items-center justify-center" style={{ background: '#242220' }}>
+      <div className="flex h-screen w-screen items-center justify-center" style={{ background: '#f5f4f0' }}>
         <div className="text-xs text-muted-foreground animate-pulse">Cargando...</div>
       </div>
     );
@@ -213,7 +217,7 @@ const Dashboard = () => {
       <meta name="robots" content="noindex, nofollow" />
     </Helmet>
     <RoleDefaultView onViewChange={handleViewChange} />
-    <div className="flex h-screen w-screen overflow-hidden" style={{ background: '#242220' }}>
+    <div className="flex h-screen w-screen overflow-hidden" style={{ background: '#f5f4f0' }}>
       <AmbientBackground />
 
       {!isMobile && (
@@ -222,7 +226,7 @@ const Dashboard = () => {
 
       {isMobile && (
         <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-          <SheetContent side="left" className="p-0 w-[260px] border-r-0" style={{ background: '#1A1816' }}>
+          <SheetContent side="left" className="p-0 w-[260px] border-r-0" style={{ background: '#ffffff' }}>
             <DashboardSidebar activeView={activeView} onViewChange={handleViewChange} />
           </SheetContent>
         </Sheet>

@@ -11,7 +11,7 @@ const TopWeekendView = () => {
   useEffect(() => {
     supabase
       .from('profiles')
-      .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, is_live, genres, bio, languages, tiktok, category, is_verified, is_flash_active, stream_url, role')
+      .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, is_live, genres, bio, languages, tiktok, category, is_verified, is_early_adopter, is_flash_active, stream_url, role')
       .neq('role', 'empresario')
       .not('display_name', 'is', null)
       .not('photo_url', 'is', null)
@@ -50,6 +50,7 @@ const TopWeekendView = () => {
           streamUrl: row.stream_url || undefined,
           category: (row.category as Profile['category']) ?? 'professional',
           isVerified: row.is_verified ?? false,
+          isEarlyAdopter: (row as any).is_early_adopter ?? false,
         }));
 
         // Sort: verified first, then profiles with bio, then alphabetical
@@ -93,7 +94,7 @@ const TopWeekendView = () => {
         <div className="glass-panel p-10 flex flex-col items-center text-center gap-3">
           <Crown size={28} style={{ color: 'rgba(212,175,55,0.2)' }} />
           <div>
-            <p className="text-sm font-bold mb-1" style={{ color: 'rgba(255,255,255,0.35)' }}>
+            <p className="text-sm font-bold mb-1" style={{ color: 'rgba(22,20,18,0.4)' }}>
               Aún no hay perfiles TOP
             </p>
             <p className="text-xs text-muted-foreground max-w-[260px] mx-auto leading-relaxed">

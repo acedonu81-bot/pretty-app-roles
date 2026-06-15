@@ -18,17 +18,17 @@ const VipFanCard = ({ vf }: { vf: VipFan }) => {
 
   return (
     <div className="rounded-2xl overflow-hidden"
-      style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.15)' }}>
+      style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(0,0,0,0.1)' }}>
       <div className="p-4 flex items-center gap-3">
         <div className="w-10 h-10 rounded-xl flex items-center justify-center font-black flex-shrink-0"
-          style={{ background: 'linear-gradient(135deg,rgba(255,255,255,0.15),rgba(255,255,255,0.05))', color: '#fff', fontSize: 14, border: '1px solid rgba(255,255,255,0.15)' }}>
+          style={{ background: 'linear-gradient(135deg,rgba(0,0,0,0.1),rgba(0,0,0,0.05))', color: 'rgba(22,20,18,0.88)', fontSize: 14, border: '1px solid rgba(0,0,0,0.1)' }}>
           {vf.fan_id.charAt(0).toUpperCase()}
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <p className="text-sm font-bold truncate">{vf.fan_id}</p>
             <span className="text-[0.7rem] font-black px-1.5 py-0.5 rounded-full flex-shrink-0"
-              style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)' }}>VIP</span>
+              style={{ background: 'rgba(0,0,0,0.08)', color: 'rgba(22,20,18,0.75)' }}>VIP</span>
           </div>
           <p className="text-xs text-muted-foreground">
             {vf.streak} meses seguidos · desde {new Date(vf.created_at).toLocaleDateString('es-ES', { month: 'short', year: 'numeric' })}
@@ -48,9 +48,9 @@ const VipFanCard = ({ vf }: { vf: VipFan }) => {
           </button>
         </div>
 
-        <div className="rounded-xl p-3" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+        <div className="rounded-xl p-3" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
           <p className="text-[0.75rem] font-bold uppercase tracking-wider mb-1.5"
-            style={{ color: giftConfirmed ? '#22c55e' : 'rgba(255,255,255,0.5)' }}>
+            style={{ color: giftConfirmed ? '#22c55e' : 'rgba(22,20,18,0.55)' }}>
             {giftConfirmed ? '✓ Regalo enviado' : 'Regalo de abril'}
           </p>
           {giftConfirmed ? (
@@ -61,7 +61,7 @@ const VipFanCard = ({ vf }: { vf: VipFan }) => {
                 {GIFT_OPTIONS.map(g => (
                   <button key={g.id} onClick={() => setGiftPicked(g.id)}
                     className="text-base transition-all hover:scale-110"
-                    style={{ opacity: giftPicked === g.id ? 1 : 0.35, filter: giftPicked === g.id ? 'drop-shadow(0 0 4px rgba(255,255,255,0.5))' : 'none' }}
+                    style={{ opacity: giftPicked === g.id ? 1 : 0.35, filter: giftPicked === g.id ? 'drop-shadow(0 0 4px rgba(22,20,18,0.55))' : 'none' }}
                     title={g.label}>
                     {(() => { const I = ICON_MAP[g.icon]; return I ? <I size={16} /> : null; })()}
                   </button>
@@ -70,7 +70,7 @@ const VipFanCard = ({ vf }: { vf: VipFan }) => {
               <button
                 onClick={() => { if (!giftPicked) { toast.error('Elige un regalo primero'); return; } setGiftConfirmed(true); toast.success('¡Regalo de abril enviado!'); }}
                 className="text-[0.75rem] font-bold px-2 py-1 rounded-lg transition-all hover:opacity-80"
-                style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                style={{ background: 'rgba(0,0,0,0.08)', color: 'rgba(22,20,18,0.65)', border: '1px solid rgba(0,0,0,0.08)' }}>
                 Confirmar regalo
               </button>
             </>

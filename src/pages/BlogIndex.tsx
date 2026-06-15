@@ -127,7 +127,7 @@ export default function BlogIndex() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Blog · XPEAK</p>
             <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-3">Guías para eventos en España</h1>
             <p className="text-sm leading-relaxed" style={{ color: '#8E8EA0' }}>
-              Precios reales, ratios y consejos prácticos para contratar DJs, camareros, fotógrafos y staff. <span style={{ color: 'rgba(255,255,255,0.4)' }}>{POSTS.length} artículos</span>
+              Precios reales, ratios y consejos prácticos para contratar DJs, camareros, fotógrafos y staff. <span style={{ color: 'rgba(255,255,255,0.6)' }}>{POSTS.length} artículos</span>
             </p>
           </div>
 

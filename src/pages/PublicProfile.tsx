@@ -1,13 +1,213 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, Headphones, BookOpen } from 'lucide-react';
+import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, Headphones, BookOpen, Video, Music, Instagram, Send, X } from 'lucide-react';
 import { parseStreamUrl } from '@/lib/streaming';
 import { profiles, toSlug } from '@/data/profiles';
+import { useAuth } from '@/hooks/useAuth';
+import PublicContactModal from '@/components/PublicContactModal';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
+
+/* ── Reviews ─────────────────────────────────────────────────────────────── */
+interface Review {
+  id: string;
+  reviewer_name: string;
+  reviewer_role: string;
+  event_type: string | null;
+  rating: number;
+  comment: string;
+  created_at: string;
+  approved: boolean;
+}
+
+const StarRating = ({ value, onChange }: { value: number; onChange?: (v: number) => void }) => (
+  <div className="flex gap-1">
+    {[1,2,3,4,5].map(n => (
+      <button key={n} type="button" onClick={() => onChange?.(n)}
+        className={onChange ? 'cursor-pointer' : 'cursor-default'}
+        style={{ background: 'none', border: 'none', padding: 0 }}>
+        <Star size={onChange ? 28 : 14}
+          fill={n <= value ? '#D4AF37' : 'none'}
+          stroke={n <= value ? '#D4AF37' : 'rgba(22,20,18,0.2)'}
+          strokeWidth={1.5} />
+      </button>
+    ))}
+  </div>
+);
+
+const EVENT_TYPES = ['Boda','Comunión','Evento corporativo','Fiesta privada','Festival','Cumpleaños','Inauguración','Otro'];
+
+const ReviewsSection = ({ professionalUserId, professionalName }: { professionalUserId: string; professionalName: string }) => {
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [showForm, setShowForm] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [form, setForm] = useState({ name: '', role: 'Organizador', event_type: '', rating: 5, comment: '' });
+
+  useEffect(() => {
+    if (!professionalUserId) return;
+    supabase
+      .from('reviews')
+      .select('id, reviewer_name, reviewer_role, event_type, rating, comment, created_at, approved')
+      .eq('reviewed_user_id', professionalUserId)
+      .eq('approved', true)
+      .order('created_at', { ascending: false })
+      .then(({ data }) => setReviews((data ?? []) as Review[]));
+  }, [professionalUserId]);
+
+  const avgRating = reviews.length ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length) : 0;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name.trim() || !form.comment.trim() || form.rating < 1) return;
+    setSubmitting(true);
+    const { error } = await supabase.from('reviews').insert({
+      reviewed_user_id: professionalUserId,
+      reviewer_name: form.name.trim(),
+      reviewer_role: form.role,
+      event_type: form.event_type || null,
+      rating: form.rating,
+      comment: form.comment.trim(),
+      approved: false,
+    });
+    setSubmitting(false);
+    if (error) { toast.error('Error al enviar. Inténtalo de nuevo.'); return; }
+    toast.success('¡Gracias! Tu valoración se publicará tras revisión.');
+    setShowForm(false);
+    setForm({ name: '', role: 'Organizador', event_type: '', rating: 5, comment: '' });
+  };
+
+  return (
+    <div className="mt-6">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <h3 className="text-base font-black" style={{ color: 'rgba(22,20,18,0.88)', fontFamily: 'Syne, sans-serif' }}>
+            Valoraciones
+          </h3>
+          {reviews.length > 0 && (
+            <div className="flex items-center gap-1.5">
+              <Star size={14} fill="#D4AF37" stroke="#D4AF37" />
+              <span className="text-sm font-bold" style={{ color: '#D4AF37' }}>{avgRating.toFixed(1)}</span>
+              <span className="text-xs" style={{ color: 'rgba(22,20,18,0.4)' }}>({reviews.length})</span>
+            </div>
+          )}
+        </div>
+        <button
+          onClick={() => setShowForm(true)}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all hover:opacity-80"
+          style={{ background: 'rgba(212,175,55,0.1)', color: '#B8941E', border: '1px solid rgba(212,175,55,0.25)' }}>
+          <Star size={11} /> Dejar valoración
+        </button>
+      </div>
+
+      {/* Reviews list */}
+      {reviews.length === 0 ? (
+        <div className="py-6 text-center rounded-2xl" style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
+          <Star size={24} className="mx-auto mb-2" style={{ color: 'rgba(212,175,55,0.25)' }} />
+          <p className="text-xs" style={{ color: 'rgba(22,20,18,0.35)' }}>Sé el primero en valorar a {professionalName}</p>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-3">
+          {reviews.map(r => (
+            <div key={r.id} className="p-4 rounded-2xl" style={{ background: '#fafaf8', border: '1px solid rgba(0,0,0,0.06)' }}>
+              <div className="flex items-start justify-between mb-2">
+                <div>
+                  <p className="text-sm font-bold" style={{ color: 'rgba(22,20,18,0.88)' }}>{r.reviewer_name}</p>
+                  <p className="text-xs" style={{ color: 'rgba(22,20,18,0.4)' }}>
+                    {r.reviewer_role}{r.event_type ? ` · ${r.event_type}` : ''}
+                  </p>
+                </div>
+                <div className="flex flex-col items-end gap-1">
+                  <StarRating value={r.rating} />
+                  <span className="text-[10px]" style={{ color: 'rgba(22,20,18,0.3)' }}>
+                    {new Date(r.created_at).toLocaleDateString('es-ES', { month: 'short', year: 'numeric' })}
+                  </span>
+                </div>
+              </div>
+              <p className="text-sm leading-relaxed" style={{ color: 'rgba(22,20,18,0.7)' }}>"{r.comment}"</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Review form modal */}
+      <AnimatePresence>
+        {showForm && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-4"
+            style={{ background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}
+            onClick={e => { if (e.target === e.currentTarget) setShowForm(false); }}>
+            <motion.div initial={{ y: 60, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 60, opacity: 0 }}
+              className="w-full max-w-md rounded-3xl p-6"
+              style={{ background: '#fff', boxShadow: '0 24px 64px rgba(0,0,0,0.2)' }}>
+              <div className="flex items-center justify-between mb-5">
+                <h4 className="font-black text-base" style={{ fontFamily: 'Syne, sans-serif' }}>
+                  Valorar a {professionalName}
+                </h4>
+                <button onClick={() => setShowForm(false)} className="p-1 rounded-lg hover:bg-black/5">
+                  <X size={16} style={{ color: 'rgba(22,20,18,0.5)' }} />
+                </button>
+              </div>
+              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                {/* Rating */}
+                <div>
+                  <label className="text-xs font-bold mb-2 block" style={{ color: 'rgba(22,20,18,0.55)' }}>PUNTUACIÓN *</label>
+                  <StarRating value={form.rating} onChange={v => setForm(f => ({ ...f, rating: v }))} />
+                </div>
+                {/* Name */}
+                <div>
+                  <label className="text-xs font-bold mb-1.5 block" style={{ color: 'rgba(22,20,18,0.55)' }}>TU NOMBRE *</label>
+                  <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                    placeholder="María García" required
+                    className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none"
+                    style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
+                </div>
+                {/* Role */}
+                <div>
+                  <label className="text-xs font-bold mb-1.5 block" style={{ color: 'rgba(22,20,18,0.55)' }}>ERES</label>
+                  <select value={form.role} onChange={e => setForm(f => ({ ...f, role: e.target.value }))}
+                    className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none appearance-none"
+                    style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }}>
+                    {['Organizador','Empresa','Novio/a','Particular','Sala / Club'].map(r => <option key={r}>{r}</option>)}
+                  </select>
+                </div>
+                {/* Event type */}
+                <div>
+                  <label className="text-xs font-bold mb-1.5 block" style={{ color: 'rgba(22,20,18,0.55)' }}>TIPO DE EVENTO</label>
+                  <select value={form.event_type} onChange={e => setForm(f => ({ ...f, event_type: e.target.value }))}
+                    className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none appearance-none"
+                    style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }}>
+                    <option value="">Seleccionar...</option>
+                    {EVENT_TYPES.map(t => <option key={t}>{t}</option>)}
+                  </select>
+                </div>
+                {/* Comment */}
+                <div>
+                  <label className="text-xs font-bold mb-1.5 block" style={{ color: 'rgba(22,20,18,0.55)' }}>TU VALORACIÓN *</label>
+                  <textarea value={form.comment} onChange={e => setForm(f => ({ ...f, comment: e.target.value }))}
+                    placeholder="Cuéntanos tu experiencia..." required rows={3}
+                    className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none resize-none"
+                    style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
+                </div>
+                <button type="submit" disabled={submitting}
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-black text-sm transition-all"
+                  style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', opacity: submitting ? 0.7 : 1 }}>
+                  <Send size={14} /> {submitting ? 'Enviando...' : 'Enviar valoración'}
+                </button>
+                <p className="text-[10px] text-center" style={{ color: 'rgba(22,20,18,0.3)' }}>
+                  Las valoraciones se publican tras revisión en 24h.
+                </p>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
 
 
 const BASE_URL = 'https://xpeak.es';
@@ -50,8 +250,18 @@ const PublicProfile = () => {
   const [related, setRelated] = useState<RelatedProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [publicPosts, setPublicPosts] = useState<{ id: string; content: string; post_type: string; created_at: string; media_url: string | null }[]>([]);
+  const [extraMedia, setExtraMedia] = useState<{ bio_video_url?: string | null; bg_music_url?: string | null; audio_session_urls?: string[] | null; video_session_urls?: string[] | null }>({});
 
+  const { user: authUser } = useAuth();
+  const [showContact, setShowContact] = useState(false);
+  const [scrolledPastHero, setScrolledPastHero] = useState(false);
   const isUUID = UUID_RE.test(slug ?? '');
+
+  useEffect(() => {
+    const onScroll = () => setScrolledPastHero(window.scrollY > window.innerHeight * 0.6);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   // Load from Supabase — UUID lookup for real users, slug fallback for legacy/demo
   useEffect(() => {
@@ -107,6 +317,14 @@ const PublicProfile = () => {
             .order('created_at', { ascending: false })
             .limit(8)
             .then(({ data: posts }) => setPublicPosts((posts ?? []) as any));
+          // Load extended media fields (may not exist yet if migration pending)
+          supabase
+            .from('profiles')
+            .select('bio_video_url, bg_music_url, audio_session_urls, video_session_urls')
+            .eq('user_id', data.user_id)
+            .maybeSingle()
+            .then(({ data: m }) => { if (m) setExtraMedia(m as any); })
+            .catch(() => {});
         }
       })
       .catch(() => {})
@@ -168,10 +386,16 @@ const PublicProfile = () => {
     id: 0,
   } : staticProfile!;
 
-  const profileSlug = isUUID ? slug! : toSlug(staticProfile!.name);
+  const profileSlug = slug!;
   const profileUrl = `${BASE_URL}/p/${profileSlug}`;
-  const pageTitle = `${profile.name} — ${profile.specialty} | XPEAK`;
-  const pageDesc = `${profile.name}, ${profile.specialty} en ${profile.zone}. ${profile.description || 'Profesional del sector del ocio nocturno.'} Contacta directamente en XPEAK.`;
+  const cityShort = profile.zone ? profile.zone.split(',')[0].trim() : 'España';
+  const priceStr = (profile as any).price > 0 ? ` Tarifa desde ${(profile as any).price}€/h.` : '';
+  const availStr = (profile as any).isFlashActive ? ' Disponible ahora.' : '';
+  const verifiedStr = (profile as any).isVerified ? ' Perfil verificado.' : '';
+  const pageTitle = profile.specialty
+    ? `Contratar ${profile.name} — ${profile.specialty} en ${cityShort} | XPEAK`
+    : `${profile.name} — Profesional de eventos en ${cityShort} | XPEAK`;
+  const pageDesc = `Contrata a ${profile.name}${profile.specialty ? `, ${profile.specialty}` : ''} en ${cityShort}.${priceStr}${availStr}${verifiedStr} ${profile.description ? profile.description.slice(0, 100) + (profile.description.length > 100 ? '…' : '') : 'Contacta directamente en XPEAK sin comisión.'}`;
   const ogImage = profile.photo && profile.photo.trim().length > 5
     ? profile.photo
     : `${BASE_URL}/og-image.jpg`;
@@ -198,6 +422,11 @@ const PublicProfile = () => {
         .filter(p => p.role === profile.role && p.id !== (staticProfile?.id ?? -1))
         .slice(0, 3)
         .map(p => ({ key: String(p.id), name: p.name, role: p.role, specialty: p.specialty, zone: p.zone ?? '', href: `/p/${toSlug(p.name)}`, rating: p.rating, id: p.id }));
+
+  const audioEmbed = (profile as any).audioUrl ? parseStreamUrl((profile as any).audioUrl) : null;
+
+  const fadeUp = { hidden: { opacity: 0, y: 28 }, show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } } };
+  const stagger = { show: { transition: { staggerChildren: 0.1 } } };
 
   return (
     <>
@@ -226,252 +455,382 @@ const PublicProfile = () => {
           "@context": "https://schema.org",
           "@type": "Person",
           "name": profile.name,
-          "jobTitle": profile.specialty,
-          "description": profile.description,
+          "jobTitle": profile.specialty || roleLabel[profile.role] || profile.role,
+          "description": profile.description || `${profile.name}, ${profile.specialty} en ${cityShort}. Disponible para bodas, comuniones y eventos en España.`,
           "url": profileUrl,
           "image": ogImage,
           "address": {
             "@type": "PostalAddress",
-            "addressLocality": profile.zone,
+            "addressLocality": cityShort,
             "addressCountry": "ES"
           },
           "worksFor": {
             "@type": "Organization",
             "name": "XPEAK",
             "url": BASE_URL
-          }
+          },
+          ...((profile as any).price > 0 ? {
+            "offers": {
+              "@type": "Offer",
+              "name": `Contratar ${profile.name} para eventos`,
+              "description": `Tarifa de ${profile.name}, ${profile.specialty} en ${cityShort}`,
+              "priceSpecification": {
+                "@type": "UnitPriceSpecification",
+                "price": (profile as any).price,
+                "priceCurrency": "EUR",
+                "unitText": "hora"
+              },
+              "areaServed": {
+                "@type": "Country",
+                "name": "España"
+              },
+              "seller": { "@type": "Person", "name": profile.name }
+            }
+          } : {}),
+          ...(profile.badges && profile.badges.length > 0 ? { "knowsAbout": profile.badges } : {}),
+          ...(sbProfile?.instagram ? { "sameAs": [`https://www.instagram.com/${sbProfile.instagram}`] } : {}),
+          ...((profile as any).isVerified ? { "hasCredential": { "@type": "EducationalOccupationalCredential", "name": "Profesional Verificado XPEAK" } } : {})
         })}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: 'rgba(22,20,18,0.88)' }}>
         {/* Nav */}
-        <nav className="sticky top-0 z-50 px-4 py-3 flex items-center justify-between"
-          style={{ background: 'rgba(9,9,9,0.9)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(212,175,55,0.08)' }}>
-          <button onClick={() => navigate('/')} className="flex items-center gap-2 text-sm font-semibold transition-all hover:opacity-80"
-            style={{ color: 'rgba(255,255,255,0.5)' }}>
-            <ArrowLeft size={16} /> XPEAK
+        <nav className="sticky top-0 z-50 px-6 py-4 flex items-center justify-between"
+          style={{ background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
+          <button onClick={() => {
+            if (window.history.length > 1) { navigate(-1); }
+            else if (authUser) { navigate('/dashboard'); }
+            else { navigate('/'); }
+          }} className="flex items-center gap-2 text-sm font-bold tracking-widest uppercase transition-all hover:opacity-60"
+            style={{ color: 'rgba(22,20,18,0.5)' }}>
+            <ArrowLeft size={14} /> XPEAK
           </button>
-          <button onClick={() => navigate('/auth')}
-            className="text-xs font-bold px-4 py-2 rounded-lg transition-all hover:scale-105"
-            style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-            Unirse a XPEAK
-          </button>
+          <div className="flex items-center gap-2">
+            {profile.isFlashActive && (
+              <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
+                style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)', color: '#16a34a' }}>
+                <Zap size={11} fill="#16a34a" /> DISPONIBLE
+              </span>
+            )}
+            {scrolledPastHero && (
+              <button
+                onClick={() => setShowContact(true)}
+                className="hidden md:flex items-center gap-1.5 px-4 py-2 rounded-xl font-black text-sm transition-all hover:scale-105 active:scale-95"
+                style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 4px 15px rgba(212,175,55,0.3)' }}>
+                <MessageCircle size={14} /> Contactar gratis
+              </button>
+            )}
+          </div>
         </nav>
 
-        <div className="max-w-lg mx-auto px-4 py-10">
-          {/* Hero */}
-          <div className="flex flex-col items-center text-center mb-8">
-            {profile.photo && profile.photo.trim().length > 5 ? (
-              <div className="relative w-20 h-20 flex-shrink-0">
-                <img src={profile.photo} alt={profile.name}
-                  className="w-20 h-20 rounded-2xl object-cover"
-                  style={{ border: '2px solid rgba(212,175,55,0.25)' }} />
+        {/* ═══════════ HERO full-width ═══════════ */}
+        <div className="relative overflow-hidden" style={{ minHeight: '80vw', maxHeight: '92vh' }}>
+          {/* Fondo: foto a pantalla completa o gradiente */}
+          {profile.photo && profile.photo.trim().length > 5 ? (
+            <div className="absolute inset-0 z-0">
+              <img src={profile.photo} alt={profile.name} className="w-full h-full object-cover object-top" />
+            </div>
+          ) : (
+            <div className="absolute inset-0 z-0" style={{ background: 'linear-gradient(135deg, #C8820A 0%, #D4511A 35%, #C23460 65%, #8B1A6B 100%)' }}>
+              <div className="absolute inset-0 flex items-center justify-center opacity-10">
+                <GeometricAvatar role={profile.role as any} seed={profile.id} size={300} isLive={false} />
+              </div>
+            </div>
+          )}
+
+          {/* Gradiente overlay abajo */}
+          <div className="absolute inset-0 z-1" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.9) 100%)' }} />
+
+          {/* Contenido sobre la foto — anclado abajo */}
+          <motion.div className="relative z-10 flex flex-col justify-end px-5 md:px-8 pb-8 md:pb-12"
+            style={{ minHeight: '80vw', maxHeight: '92vh' }}
+            initial="hidden" animate="show" variants={stagger}>
+
+            <motion.div variants={fadeUp}>
+              {/* Role badge */}
+              <span className="inline-flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full mb-3"
+                style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.25)', color: '#fff' }}>
+                {roleLabel[profile.role] ?? profile.role}
+                {(profile as any).isVerified && <BadgeCheck size={12} style={{ color: '#D4AF37' }} />}
+              </span>
+
+              {/* Nombre grande */}
+              <h1 className="font-black tracking-tight mb-2" style={{ fontSize: 'clamp(2.2rem, 10vw, 5rem)', lineHeight: 1, letterSpacing: '-0.03em', color: '#fff', textShadow: '0 2px 20px rgba(0,0,0,0.4)' }}>
+                {profile.name}
+              </h1>
+
+              {profile.specialty && (
+                <p className="text-sm font-semibold mb-4" style={{ color: 'rgba(255,255,255,0.75)' }}>{profile.specialty}</p>
+              )}
+
+              {/* Tags */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                {profile.zone && (
+                  <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
+                    <MapPin size={11} /> {profile.zone}
+                  </span>
+                )}
+                {profile.badges.slice(0, 3).map(b => (
+                  <span key={b} className="text-xs font-bold px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(212,175,55,0.85)', color: '#000', backdropFilter: 'blur(8px)' }}>
+                    {b}
+                  </span>
+                ))}
+                {(profile as any).price > 0 && (
+                  <span className="text-xs font-bold px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
+                    Desde {(profile as any).price}€/h
+                  </span>
+                )}
                 {profile.isLive && (
-                  <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: '#22c55e' }} />
-                    <span className="relative inline-flex rounded-full h-3.5 w-3.5 border-2 border-[#090909]" style={{ background: '#22c55e' }} />
+                  <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(34,197,94,0.85)', color: '#fff' }}>
+                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping inline-block" /> EN VIVO
                   </span>
                 )}
               </div>
-            ) : (
-              <GeometricAvatar role={profile.role as any} seed={profile.id} size={80} isLive={profile.isLive} />
-            )}
-            <div className="mt-4">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <h1 className="text-2xl font-bold">{profile.name}</h1>
-                {(profile as any).isVerified && (
-                  <BadgeCheck size={18} style={{ color: '#D4AF37', flexShrink: 0 }} />
+
+              {/* Instagram */}
+              {sbProfile?.instagram && (
+                <div className="mb-4">
+                  <a href={`https://instagram.com/${sbProfile.instagram}`} target="_blank" rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full transition-all hover:scale-105"
+                    style={{ background: 'rgba(225,48,108,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(225,48,108,0.4)', color: '#fff' }}>
+                    <Instagram size={12} /> @{sbProfile.instagram}
+                  </a>
+                </div>
+              )}
+
+              {/* CTAs */}
+              <div className="flex gap-3 flex-wrap">
+                <button
+                  onClick={() => setShowContact(true)}
+                  className="flex items-center gap-2 px-7 py-3.5 rounded-2xl font-black text-base transition-all hover:scale-105 active:scale-95"
+                  style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 8px 30px rgba(212,175,55,0.4)' }}>
+                  <MessageCircle size={18} /> Contactar gratis
+                </button>
+                {profile.isFlashActive && (
+                  <button className="flex items-center gap-2 px-5 py-3.5 rounded-2xl font-bold text-sm transition-all hover:scale-105"
+                    style={{ background: 'rgba(34,197,94,0.15)', backdropFilter: 'blur(8px)', border: '1.5px solid rgba(34,197,94,0.6)', color: '#4ade80' }}>
+                    <Zap size={16} /> Flash Booking
+                  </button>
                 )}
               </div>
-              <p className="text-sm font-semibold mb-1" style={{ color: '#D4AF37' }}>{roleLabel[profile.role] ?? profile.role}</p>
-              <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>{profile.specialty}</p>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
+        </div>
 
-          {/* Stats */}
-          {(profile.rating > 0 || profile.reviews > 0 || profile.experience) && (
-            <div className="grid grid-cols-3 gap-3 mb-6">
-              {[
-                { label: 'Valoración', value: profile.rating > 0 ? profile.rating.toFixed(1) : '—' },
-                { label: 'Reseñas', value: profile.reviews > 0 ? profile.reviews : '—' },
-                { label: 'Experiencia', value: profile.experience || '—' },
-              ].map(s => (
-                <div key={s.label} className="text-center p-3 rounded-xl"
-                  style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}>
-                  <p className="text-lg font-black" style={{ color: '#D4AF37' }}>{s.value}</p>
-                  <p className="text-xs text-white/40 uppercase tracking-wide">{s.label}</p>
+        {/* ═══════════ CONTENIDO ═══════════ */}
+        <div className="max-w-3xl mx-auto px-5 pb-24 pt-8">
+          <div className="flex flex-col gap-8">
+
+          {/* Tarjeta resumen — siempre visible */}
+          <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
+            className="rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center gap-4"
+            style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.07)' }}>
+            <div className="flex-1 flex flex-col gap-1.5">
+              {(profile as any).price > 0 && (
+                <div>
+                  <span className="text-3xl font-black" style={{ color: 'rgba(22,20,18,0.92)' }}>{(profile as any).price}€</span>
+                  <span className="text-sm font-semibold ml-1" style={{ color: 'rgba(22,20,18,0.45)' }}>/hora · sin comisión</span>
                 </div>
-              ))}
-            </div>
-          )}
-
-          {/* Info */}
-          <div className="glass-panel p-4 mb-4" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12 }}>
-            <div className="flex items-center gap-2 mb-2 text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>
-              <MapPin size={12} /> {profile.zone}
-              {profile.experience && <><span className="mx-1">·</span><Clock size={12} /> {profile.experience}</>}
-              {profile.isFlashActive && (
-                <><span className="mx-1">·</span>
-                <Zap size={12} style={{ color: '#22c55e' }} />
-                <span style={{ color: '#22c55e' }}>Disponible ahora</span></>
               )}
+              <p className="text-xs" style={{ color: 'rgba(22,20,18,0.45)' }}>
+                {profile.zone && `📍 ${profile.zone} · `}Contrato directo · Pago acordado con el profesional
+              </p>
             </div>
-            <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>{profile.description}</p>
-          </div>
+            <button onClick={() => setShowContact(true)}
+              className="flex-shrink-0 flex items-center gap-2 px-6 py-3 rounded-xl font-black text-sm transition-all hover:scale-105"
+              style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+              <MessageCircle size={15} /> Pedir presupuesto
+            </button>
+          </motion.div>
 
-          {/* Badges */}
-          {profile.badges.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-6">
-              {profile.badges.map(b => (
-                <span key={b} className="text-xs font-medium px-3 py-1 rounded-full"
-                  style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
-                  {b}
-                </span>
-              ))}
-            </div>
+          {/* Bio */}
+          {profile.description && (
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
+              <h2 className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Sobre mí</h2>
+              <p className="text-base leading-relaxed" style={{ color: 'rgba(22,20,18,0.7)' }}>{profile.description}</p>
+            </motion.div>
           )}
 
-          {/* Audio player */}
-          {(profile as any).audioUrl && (() => {
-            const parsed = parseStreamUrl((profile as any).audioUrl);
-            if (!parsed) return null;
-            return (
-              <div className="mb-6">
-                <div className="flex items-center gap-2 mb-2">
-                  <Headphones size={13} style={{ color: '#D4AF37' }} />
-                  <span className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: 'rgba(212,175,55,0.7)' }}>Mix / Sesión</span>
-                </div>
-                <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(212,175,55,0.12)' }}>
-                  <iframe
-                    src={parsed.embedUrl}
-                    width="100%"
-                    height={parsed.type === 'soundcloud' ? '166' : '120'}
-                    frameBorder="0"
-                    allow="autoplay"
-                    title="Mix"
-                    loading="lazy"
-                  />
-                </div>
+          {audioEmbed && (
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
+              <div className="flex items-center gap-2 mb-4">
+                <Headphones size={14} style={{ color: '#D4AF37' }} />
+                <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#D4AF37' }}>Mix</span>
               </div>
+              <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
+                <iframe src={audioEmbed.embedUrl} width="100%"
+                  height={audioEmbed.type === 'soundcloud' ? '166' : '120'}
+                  frameBorder="0" allow="autoplay" title="Mix" loading="lazy" />
+              </div>
+            </motion.div>
+          )}
+
+          {extraMedia.audio_session_urls && extraMedia.audio_session_urls.length > 0 && (
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
+              <div className="flex items-center gap-2 mb-4">
+                <Headphones size={14} style={{ color: '#D4AF37' }} />
+                <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#D4AF37' }}>Sesiones</span>
+              </div>
+              <div className="flex flex-col gap-3">
+                {extraMedia.audio_session_urls.slice(0, 5).map((url, i) => (
+                  <audio key={i} src={url} controls className="w-full rounded-xl" />
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {extraMedia.bio_video_url && (() => {
+            const url = extraMedia.bio_video_url!;
+            const yt = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/))([a-zA-Z0-9_-]{11})/);
+            const vm = url.match(/vimeo\.com\/(\d+)/);
+            const embed = yt ? `https://www.youtube.com/embed/${yt[1]}` : vm ? `https://player.vimeo.com/video/${vm[1]}` : null;
+            if (!embed) return null;
+            return (
+              <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
+                <div className="flex items-center gap-2 mb-4">
+                  <Video size={14} style={{ color: '#D4AF37' }} />
+                  <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#D4AF37' }}>Vídeo</span>
+                </div>
+                <div className="rounded-2xl overflow-hidden" style={{ aspectRatio: '16/9', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}>
+                  <iframe src={embed} className="w-full h-full" allowFullScreen title="Vídeo" loading="lazy" />
+                </div>
+              </motion.div>
             );
           })()}
 
-          {/* Portfolio gallery */}
           {sbProfile?.portfolio_urls && sbProfile.portfolio_urls.length > 0 && (
-            <div className="mb-6">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: 'rgba(212,175,55,0.7)' }}>Portfolio</span>
-                <span className="text-[0.7rem] text-muted-foreground">({sbProfile.portfolio_urls.length})</span>
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#D4AF37' }}>Portfolio</span>
               </div>
-              <div className="grid grid-cols-3 gap-1.5">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                 {sbProfile.portfolio_urls.slice(0, 9).map((url, i) => (
-                  <div key={i} className="aspect-square rounded-lg overflow-hidden group cursor-pointer"
-                    style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}
+                  <div key={i} className="aspect-square rounded-2xl overflow-hidden group cursor-pointer"
                     onClick={() => window.open(url, '_blank', 'noopener')}>
-                    <img
-                      src={url}
-                      alt={`${sbProfile.display_name} portfolio ${i + 1}`}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      loading="lazy"
-                    />
+                    <img src={url} alt={`${sbProfile.display_name} ${i + 1}`}
+                      className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+                      loading="lazy" />
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           )}
 
-          {/* Micro-blog — posts públicos */}
+          {extraMedia.video_session_urls && extraMedia.video_session_urls.length > 0 && (
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
+              <div className="flex items-center gap-2 mb-4">
+                <Video size={14} style={{ color: '#D4AF37' }} />
+                <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#D4AF37' }}>Clips</span>
+              </div>
+              <div className="flex flex-col gap-4">
+                {extraMedia.video_session_urls.slice(0, 3).map((url, i) => (
+                  <video key={i} src={url} controls className="w-full rounded-2xl"
+                    style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }} />
+                ))}
+              </div>
+            </motion.div>
+          )}
+
           {publicPosts.length > 0 && (
-            <div className="mb-6">
-              <div className="flex items-center gap-2 mb-3">
-                <BookOpen size={13} style={{ color: 'rgba(212,175,55,0.7)' }} />
-                <span className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: 'rgba(212,175,55,0.7)' }}>Novedades</span>
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
+              <div className="flex items-center gap-2 mb-4">
+                <BookOpen size={14} style={{ color: '#D4AF37' }} />
+                <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#D4AF37' }}>Novedades</span>
               </div>
               <div className="flex flex-col gap-3">
                 {publicPosts.map(post => (
-                  <div key={post.id} className="rounded-xl p-4"
-                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-xs text-muted-foreground mb-2">
+                  <div key={post.id} className="p-5 rounded-2xl"
+                    style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.07)' }}>
+                    <p className="text-xs mb-2" style={{ color: 'rgba(22,20,18,0.4)' }}>
                       {new Date(post.created_at).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
                     </p>
-                    <p className="text-sm leading-relaxed whitespace-pre-wrap" style={{ color: 'rgba(255,255,255,0.8)' }}>{post.content}</p>
+                    <p className="text-sm leading-relaxed whitespace-pre-wrap" style={{ color: 'rgba(22,20,18,0.75)' }}>{post.content}</p>
                     {post.media_url && post.post_type === 'image' && (
-                      <div className="mt-3 rounded-lg overflow-hidden">
-                        <img src={post.media_url} alt="Post" className="w-full max-h-60 object-cover" loading="lazy"
-                          onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-                      </div>
+                      <img src={post.media_url} alt="Post" className="w-full max-h-60 object-cover rounded-xl mt-3" loading="lazy"
+                        onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                     )}
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           )}
 
-          {/* CTAs */}
-          <div className="flex flex-col gap-3">
-            <button
-              type="button"
-              onClick={() => { navigate('/dashboard', { state: { view: 'messages' } }); toast.info('Inicia sesión para enviar un mensaje.'); }}
-              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-sm transition-all hover:scale-[1.02]"
-              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              <MessageCircle size={18} /> Enviar mensaje
-            </button>
-          </div>
+          {/* Reviews */}
+          {sbProfile && (
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
+              <ReviewsSection
+                professionalUserId={sbProfile.user_id}
+                professionalName={sbProfile.display_name ?? profile.name}
+              />
+            </motion.div>
+          )}
 
-          {/* XPEAK CTA */}
-          <div className="mt-8 p-5 rounded-2xl text-center"
-            style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
-            <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: '#D4AF37' }}>XPEAK · Directorio Profesional Europa</p>
-            <p className="text-xs mb-4" style={{ color: 'rgba(255,255,255,0.4)' }}>
-              Descubre cientos de profesionales verificados del sector nocturno en toda Europa.
-            </p>
-            <div className="flex flex-col gap-2">
-              <button onClick={() => navigate('/auth')}
-                className="w-full py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-[1.02]"
-                style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-                Crear perfil gratis →
-              </button>
-              <button onClick={() => navigate('/auth')}
-                className="w-full py-2 rounded-xl text-xs font-semibold transition-all"
-                style={{ color: 'rgba(255,255,255,0.4)' }}>
-                Ya tengo cuenta · Acceder
-              </button>
+          {/* Garantías XPEAK — siempre visible */}
+          <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
+            <h2 className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Por qué contratar en XPEAK</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {[
+                { icon: '🛡️', title: 'Sin comisión', desc: 'El precio acordado va directo al profesional. XPEAK no cobra por contratación.' },
+                { icon: '✅', title: 'Perfiles verificados', desc: 'Identidad, experiencia y referencias comprobadas por el equipo XPEAK.' },
+                { icon: '⚡', title: 'Respuesta rápida', desc: 'La mayoría de profesionales responden en menos de 24h.' },
+              ].map(({ icon, title, desc }) => (
+                <div key={title} className="p-4 rounded-2xl" style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.06)' }}>
+                  <div className="text-2xl mb-2">{icon}</div>
+                  <p className="text-sm font-black mb-1" style={{ color: 'rgba(22,20,18,0.85)' }}>{title}</p>
+                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(22,20,18,0.5)' }}>{desc}</p>
+                </div>
+              ))}
             </div>
-          </div>
+          </motion.div>
 
-          {/* Aviso legal */}
-          <p className="mt-6 text-center text-[0.65rem] leading-relaxed px-2" style={{ color: 'rgba(255,255,255,0.18)' }}>
-            El contenido publicado en este perfil es responsabilidad exclusiva de su titular.
-            XPEAK actúa como plataforma intermediaria y no se hace responsable de la veracidad,
-            legalidad ni calidad de los servicios ofertados.
-          </p>
-
-          {/* Otros perfiles del mismo rol */}
+          {/* Profesionales similares */}
           {relatedProfiles.length > 0 && (
-            <div className="mt-8">
-              <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.3)' }}>
-                Más {roleLabel[profile.role] ?? profile.role}s en XPEAK
-              </p>
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
+              <h2 className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Profesionales similares</h2>
               <div className="flex flex-col gap-2">
-                {relatedProfiles.map(p => (
-                  <button key={p.key} onClick={() => navigate(p.href)}
-                    className="flex items-center gap-3 p-3 rounded-xl text-left transition-all hover:scale-[1.01]"
-                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <GeometricAvatar role={p.role as any} seed={typeof p.id === 'number' ? p.id : p.id.charCodeAt(0)} size={36} />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-bold truncate">{p.name}</p>
-                      <p className="text-xs truncate" style={{ color: 'rgba(255,255,255,0.4)' }}>{p.specialty} · {p.zone}</p>
+                {relatedProfiles.map(r => (
+                  <a key={r.key} href={r.href}
+                    className="flex items-center gap-3 p-3 rounded-xl transition-all hover:scale-[1.01]"
+                    style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.06)' }}>
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-black flex-shrink-0"
+                      style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+                      {(r.name || 'X').charAt(0).toUpperCase()}
                     </div>
-                    {p.rating > 0 && (
-                      <div className="flex items-center gap-1 text-xs" style={{ color: '#D4AF37' }}>
-                        <Star size={10} fill="#D4AF37" /> {p.rating}
-                      </div>
-                    )}
-                  </button>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-bold truncate" style={{ color: 'rgba(22,20,18,0.88)' }}>{r.name}</p>
+                      <p className="text-xs truncate" style={{ color: 'rgba(22,20,18,0.45)' }}>{r.specialty} {r.zone ? `· ${r.zone}` : ''}</p>
+                    </div>
+                    <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>Ver →</span>
+                  </a>
                 ))}
               </div>
-            </div>
+            </motion.div>
           )}
+
+          </div>
+        </div>
+
+        {showContact && profile && (
+          <PublicContactModal
+            professionalName={profile.name}
+            professionalUserId={profile.id}
+            onClose={() => setShowContact(false)}
+          />
+        )}
+
+        {/* Sticky CTA mobile */}
+        <div className="fixed bottom-0 left-0 right-0 z-50 p-4 md:hidden"
+          style={{ background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(10px)', borderTop: '1px solid rgba(0,0,0,0.07)' }}>
+          <button
+            onClick={() => setShowContact(true)}
+            className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl font-black text-base transition-all active:scale-95"
+            style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+            <MessageCircle size={18} /> Contactar gratis
+          </button>
         </div>
       </div>
     </>

@@ -330,7 +330,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
               {userResults.map(u => (
                 <button key={u.user_id} onClick={() => startNewConversation(u.user_id, u.display_name || 'Usuario')}
                   className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all hover:scale-[1.01]"
-                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                  style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.06)' }}>
                   <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-black flex-shrink-0"
                     style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
                     {(u.display_name || 'U').charAt(0).toUpperCase()}

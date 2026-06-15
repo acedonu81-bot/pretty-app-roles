@@ -15,6 +15,7 @@ interface FlashProfile {
   price: number;
   priceUnit: string;
   role: string;
+  isEarlyAdopter?: boolean;
   photoError?: boolean;
 }
 
@@ -45,8 +46,10 @@ const OfertaTab = () => {
   const fetchFlashProfiles = () => {
     supabase
       .from('profiles')
-      .select('id, user_id, display_name, photo_url, specialty, zone, hourly_rate, role')
+      .select('id, user_id, display_name, photo_url, specialty, zone, hourly_rate, role, is_early_adopter, score')
       .eq('is_flash_active', true)
+      .order('is_early_adopter', { ascending: false })
+      .order('score', { ascending: false })
       .then(({ data }) => {
         setFlashProfiles((data ?? []).map(p => ({
           id: p.user_id || p.id,
@@ -57,6 +60,7 @@ const OfertaTab = () => {
           price: p.hourly_rate || 0,
           priceUnit: '/hora',
           role: p.role,
+          isEarlyAdopter: p.is_early_adopter ?? false,
         })));
         setLoadingProfiles(false);
       });
@@ -160,8 +164,12 @@ const OfertaTab = () => {
                 style={{
                   aspectRatio: '3/4',
                   borderRadius: 16,
-                  border: '1px solid rgba(212,175,55,0.25)',
-                  boxShadow: '0 24px 56px rgba(0,0,0,0.70)',
+                  border: p.isEarlyAdopter
+                    ? '2px solid #3B82F6'
+                    : '1px solid rgba(212,175,55,0.25)',
+                  boxShadow: p.isEarlyAdopter
+                    ? '0 24px 56px rgba(0,0,0,0.70), 0 0 0 3px rgba(59,130,246,0.25)'
+                    : '0 24px 56px rgba(0,0,0,0.70)',
                   overflow: 'hidden',
                   position: 'relative',
                   cursor: 'pointer',
@@ -232,13 +240,13 @@ const OfertaTab = () => {
                     <span>· Ahora</span>
                   </div>
                   <div style={{
-                    borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 10,
+                    borderTop: '1px solid rgba(0,0,0,0.08)', paddingTop: 10,
                     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                   }}>
                     <span style={{ fontWeight: 700, fontSize: 14, color: '#D4AF37' }}>
                       {isEmpresario
                         ? (p.price > 0 ? `€${p.price}${p.priceUnit}` : 'A consultar')
-                        : <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.25)', fontWeight: 400 }}>Tarifa privada</span>}
+                        : <span style={{ fontSize: 11, color: 'rgba(22,20,18,0.3)', fontWeight: 400 }}>Tarifa privada</span>}
                     </span>
                     {isEmpresario ? (
                       <button
@@ -255,10 +263,10 @@ const OfertaTab = () => {
                       </button>
                     ) : (
                       <span style={{
-                        fontSize: 11, color: 'rgba(255,255,255,0.25)', fontWeight: 500,
+                        fontSize: 11, color: 'rgba(22,20,18,0.3)', fontWeight: 500,
                         padding: '4px 10px', borderRadius: 6,
-                        background: 'rgba(255,255,255,0.04)',
-                        border: '1px solid rgba(255,255,255,0.08)',
+                        background: 'rgba(0,0,0,0.04)',
+                        border: '1px solid rgba(0,0,0,0.08)',
                       }}>
                         Solo empresarios
                       </span>
@@ -280,7 +288,7 @@ const OfertaTab = () => {
             <Zap size={24} style={{ color: 'rgba(212,175,55,0.2)' }} />
           </div>
           <div>
-            <p className="text-sm font-bold mb-1.5" style={{ color: 'rgba(255,255,255,0.35)' }}>
+            <p className="text-sm font-bold mb-1.5" style={{ color: 'rgba(22,20,18,0.4)' }}>
               Ningún profesional disponible ahora
             </p>
             <p className="text-xs text-muted-foreground max-w-[280px] mx-auto leading-relaxed">

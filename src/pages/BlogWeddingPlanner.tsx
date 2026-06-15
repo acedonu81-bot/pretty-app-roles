@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import RelatedPosts from '@/components/RelatedPosts';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
@@ -94,7 +95,7 @@ export default function BlogWeddingPlanner() {
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs mt-3" style={{ color: 'rgba(255,255,255,0.4)' }}>Precios orientativos sin IVA (21%). Pueden variar según ciudad, experiencia y complejidad de la boda.</p>
+              <p className="text-xs mt-3" style={{ color: 'rgba(255,255,255,0.6)' }}>Precios orientativos sin IVA (21%). Pueden variar según ciudad, experiencia y complejidad de la boda.</p>
             </section>
 
             {/* QUÉ HACE */}
@@ -298,6 +299,7 @@ export default function BlogWeddingPlanner() {
 
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/wedding-planner-precio-espana" />
+          <RelatedPosts currentSlug="/blog/wedding-planner-precio-espana" tags={['Bodas']} />
 </main>
         <BlogAuthor />
         <FooterPublic />

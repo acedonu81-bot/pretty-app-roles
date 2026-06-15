@@ -7,7 +7,7 @@ const BlogAuthor = () => (
     </div>
     <div>
       <p className="text-sm font-bold">Daniel, fundador de XPEAK</p>
-      <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>
+      <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
         Especialista en el sector de eventos y entretenimiento en España. Creador de{' '}
         <a href="https://xpeak.es" style={{ color: '#D4AF37' }}>xpeak.es</a>
         , la plataforma de referencia para profesionales del sector.
