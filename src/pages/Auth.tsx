@@ -294,15 +294,11 @@ const Auth = () => {
                     X<span className="text-gradient">PEAK</span>
                   </h2>
                 </button>
-                {/* Mobile bullets */}
+                {/* Mobile — solo tagline corto */}
                 {!isLogin && (
-                  <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 mt-3">
-                    {content.bullets.map(b => (
-                      <span key={b.text} className="text-xs flex items-center gap-1" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                        <span style={{ color: '#D4AF37' }}>✓</span> {b.text}
-                      </span>
-                    ))}
-                  </div>
+                  <p className="text-xs mt-2 text-center" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                    Gratis · Sin comisión · Visible en España
+                  </p>
                 )}
               </div>
 
@@ -323,12 +319,12 @@ const Auth = () => {
                 type="button"
                 disabled={googleLoading}
                 onClick={handleGoogleSignIn}
-                className="w-full flex items-center justify-center gap-2.5 py-3 rounded-xl text-sm font-bold transition-all hover:scale-[1.01] disabled:opacity-50 mb-4"
+                className="w-full flex items-center justify-center gap-2.5 py-4 rounded-xl font-black transition-all hover:scale-[1.01] active:scale-[0.98] disabled:opacity-50 mb-4"
                 style={{
-                  background: 'rgba(255,255,255,0.07)',
-                  border: '1px solid rgba(212,175,55,0.35)',
-                  color: '#fff',
-                  boxShadow: '0 0 20px rgba(212,175,55,0.08)',
+                  background: '#fff',
+                  color: '#1a1208',
+                  fontSize: '1rem',
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
                 }}>
                 {googleLoading ? (
                   <span className="text-xs">Conectando...</span>
@@ -412,21 +408,25 @@ const Auth = () => {
                   </div>
                 )}
 
-                {/* Legal consolidado — solo en registro */}
+                {/* Legal — touch-friendly */}
                 {!isLogin && (
-                  <label className="flex items-start gap-2.5 cursor-pointer px-1 py-1">
-                    <input
-                      type="checkbox"
-                      checked={legalAccepted}
-                      onChange={e => setLegalAccepted(e.target.checked)}
-                      className="mt-0.5 w-4 h-4 rounded accent-[#D4AF37] flex-shrink-0"
-                    />
+                  <label className="flex items-center gap-3 cursor-pointer rounded-xl px-3 py-3.5 active:bg-white/5"
+                    style={{ background: 'rgba(255,255,255,0.04)', border: legalAccepted ? '1px solid rgba(212,175,55,0.4)' : '1px solid rgba(255,255,255,0.08)' }}>
+                    <div
+                      onClick={() => setLegalAccepted(!legalAccepted)}
+                      className="w-6 h-6 rounded-md flex-shrink-0 flex items-center justify-center transition-all"
+                      style={{
+                        background: legalAccepted ? '#D4AF37' : 'rgba(255,255,255,0.08)',
+                        border: legalAccepted ? 'none' : '1.5px solid rgba(255,255,255,0.2)',
+                      }}>
+                      {legalAccepted && <span style={{ color: '#000', fontSize: 14, fontWeight: 900 }}>✓</span>}
+                    </div>
                     <span className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)' }}>
-                      Tengo 14+ años y acepto la{' '}
-                      <Link to="/privacidad" target="_blank" className="underline" style={{ color: 'rgba(212,175,55,0.85)' }}>Privacidad</Link>,{' '}
-                      <Link to="/terminos" target="_blank" className="underline" style={{ color: 'rgba(212,175,55,0.85)' }}>Términos</Link>{' '}
+                      Acepto la{' '}
+                      <Link to="/privacidad" target="_blank" onClick={e => e.stopPropagation()} className="underline" style={{ color: 'rgba(212,175,55,0.85)' }}>Privacidad</Link>,{' '}
+                      <Link to="/terminos" target="_blank" onClick={e => e.stopPropagation()} className="underline" style={{ color: 'rgba(212,175,55,0.85)' }}>Términos</Link>{' '}
                       y{' '}
-                      <Link to="/cookies" target="_blank" className="underline" style={{ color: 'rgba(212,175,55,0.85)' }}>Cookies</Link>
+                      <Link to="/cookies" target="_blank" onClick={e => e.stopPropagation()} className="underline" style={{ color: 'rgba(212,175,55,0.85)' }}>Cookies</Link>
                     </span>
                   </label>
                 )}
