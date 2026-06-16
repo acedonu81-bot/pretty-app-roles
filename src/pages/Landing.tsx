@@ -125,6 +125,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useActivityFeed } from '@/hooks/useActivityFeed';
 import { useLiveStats } from '@/hooks/useLiveStats';
+import { useAvailableNow } from '@/hooks/useAvailableNow';
 import { Helmet } from 'react-helmet-async';
 import { motion, useInView, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { Music, UtensilsCrossed, Users, Camera, ArrowRight, Sparkles, X, ChevronLeft, ChevronRight, Building2, Scissors, Headphones, Zap, Radio, Star, CalendarDays, Search, Award, Globe, CheckCircle, Smartphone, Video, Heart, Palette, Megaphone, TrendingUp, Shield, FileText } from 'lucide-react';
@@ -613,6 +614,7 @@ const Landing = () => {
   const [communityReviews, setCommunityReviews] = useState<{ reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string }[]>([]);
   const { items: activityItems } = useActivityFeed();
   const { stats } = useLiveStats();
+  const { professionals: availableNow } = useAvailableNow();
 
   useEffect(() => {
     supabase.from('reviews').select('reviewer_name, reviewer_role, reviewer_avatar, comment')
@@ -942,6 +944,18 @@ const Landing = () => {
                 <span className="text-sm font-black" style={{ color: '#fff' }}>{stats.cities}</span>
                 <span className="text-xs font-semibold" style={{ color: 'rgba(255,255,255,0.5)' }}>ciudades</span>
               </div>
+            </div>
+          )}
+
+          {availableNow.length > 0 && (
+            <div className="flex flex-wrap justify-center gap-2 mt-4">
+              {availableNow.map(p => (
+                <span key={p.userId}
+                  className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full"
+                  style={{ background: `${p.roleColor}1f`, color: p.roleColor, border: `1px solid ${p.roleColor}40` }}>
+                  <Zap size={10} /> {p.roleLabel}{p.zone ? ` · ${p.zone}` : ''}
+                </span>
+              ))}
             </div>
           )}
         </FadeIn>
