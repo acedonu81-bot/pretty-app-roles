@@ -8,15 +8,26 @@ function minutesAgo(iso: string): number {
   return Math.floor((Date.now() - new Date(iso).getTime()) / 60_000);
 }
 
+function hashId(id: string): number {
+  let h = 0;
+  for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0;
+  return h;
+}
+
 const ActivityFeedWidget = () => {
   const { items } = useActivityFeed();
 
   if (items.length === 0) return null;
 
   const displayCount = Math.max(items.length, MIN_DISPLAY);
-  const displayItems: { item: ActivityItem; lane: number }[] = Array.from(
+  const displayItems: { item: ActivityItem; lane: number; round: number; hash: number }[] = Array.from(
     { length: displayCount },
-    (_, i) => ({ item: items[i % items.length], lane: i % LANES }),
+    (_, i) => {
+      const round = Math.floor(i / items.length);
+      const item = items[i % items.length];
+      const hash = hashId(`${item.id}-${round}`);
+      return { item, lane: hash % LANES, round, hash };
+    },
   );
 
   return (
@@ -29,18 +40,18 @@ const ActivityFeedWidget = () => {
         </span>
       </div>
       <div className="relative h-[92px] overflow-hidden">
-        {displayItems.map(({ item, lane }, i) => {
+        {displayItems.map(({ item, lane, round, hash }) => {
           const isNew = item.kind === 'signup' && minutesAgo(item.createdAt) < 15;
           return (
             <div
-              key={`${item.id}-${i}`}
+              key={`${item.id}-r${round}`}
               className="absolute whitespace-nowrap flex items-center gap-2 px-3 py-1.5 rounded-full"
               style={{
                 top: lane === 0 ? 2 : 48,
                 left: '100%',
                 background: '#f9f8f6',
                 border: '1px solid rgba(0,0,0,0.06)',
-                animation: `xpeakActivityTicker ${22 + (i % 3) * 4}s ${i * 3.2}s linear infinite`,
+                animation: `xpeakActivityTicker ${22 + (hash % 3) * 4}s ${(hash % 8) * 2}s linear infinite`,
               }}
             >
               <div className="relative flex-shrink-0">
