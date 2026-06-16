@@ -818,8 +818,8 @@ const PublicProfile = () => {
           <PublicContactModal
             professionalName={profile.name}
             professionalUserId={sbProfile ? sbProfile.user_id : String(profile.id)}
-            professionalRole={profile.role}
-            professionalZone={profile.zone}
+            professionalRole={sbProfile ? sbProfile.role : null}
+            professionalZone={sbProfile ? sbProfile.zone : null}
             onClose={() => setShowContact(false)}
           />
         )}

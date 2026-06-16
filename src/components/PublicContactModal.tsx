@@ -5,7 +5,8 @@ import { supabase } from '@/integrations/supabase/client';
 interface Props {
   professionalName: string;
   professionalUserId: string;
-  professionalRole: string;
+  // null for static/demo profiles — no activity event should be logged for those
+  professionalRole: string | null;
   professionalZone: string | null;
   onClose: () => void;
 }
@@ -42,16 +43,20 @@ export default function PublicContactModal({ professionalName, professionalUserI
       });
       setStatus('done');
       // Anonymous activity signal — must never block the contact flow if it fails.
-      try {
-        const { error: contactEventError } = await supabase.from('contact_events').insert({
-          professional_role: professionalRole,
-          professional_zone: professionalZone,
-        });
-        if (contactEventError) {
-          console.error('[PublicContactModal] contact_events insert error:', contactEventError);
+      // Skip entirely for static/demo profiles (professionalRole is null): logging a
+      // fabricated contact event would contradict the "zero simulated activity" rule.
+      if (professionalRole) {
+        try {
+          const { error: contactEventError } = await supabase.from('contact_events').insert({
+            professional_role: professionalRole,
+            professional_zone: professionalZone,
+          });
+          if (contactEventError) {
+            console.error('[PublicContactModal] contact_events insert error:', contactEventError);
+          }
+        } catch (err) {
+          console.error('[PublicContactModal] contact_events insert threw:', err);
         }
-      } catch (err) {
-        console.error('[PublicContactModal] contact_events insert threw:', err);
       }
     } catch {
       setStatus('error');
