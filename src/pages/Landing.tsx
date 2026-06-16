@@ -124,6 +124,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useActivityFeed } from '@/hooks/useActivityFeed';
+import { useLiveStats } from '@/hooks/useLiveStats';
 import { Helmet } from 'react-helmet-async';
 import { motion, useInView, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { Music, UtensilsCrossed, Users, Camera, ArrowRight, Sparkles, X, ChevronLeft, ChevronRight, Building2, Scissors, Headphones, Zap, Radio, Star, CalendarDays, Search, Award, Globe, CheckCircle, Smartphone, Video, Heart, Palette, Megaphone, TrendingUp, Shield, FileText } from 'lucide-react';
@@ -606,16 +607,14 @@ const Landing = () => {
   const { user } = useAuth();
   const [demoOpen, setDemoOpen] = useState(false);
   const [cityValue, setCityValue] = useState('');
-  const [userCount, setUserCount] = useState<number | null>(null);
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterDone, setNewsletterDone] = useState(false);
   const [newsletterLoading, setNewsletterLoading] = useState(false);
   const [communityReviews, setCommunityReviews] = useState<{ reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string }[]>([]);
   const { items: activityItems } = useActivityFeed();
+  const { stats } = useLiveStats();
 
   useEffect(() => {
-    supabase.from('profiles').select('user_id', { count: 'exact', head: true })
-      .then(({ count }) => { if (count !== null) setUserCount(count); });
     supabase.from('reviews').select('reviewer_name, reviewer_role, reviewer_avatar, comment')
       .eq('approved', true).order('created_at', { ascending: false }).limit(6)
       .then(({ data }) => { if (data && data.length > 0) setCommunityReviews(data as { reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string }[]); });
@@ -918,13 +917,33 @@ const Landing = () => {
           </div>
           <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-1 mt-4">
             {[
-              '✓ 31 profesionales publicados',
+              stats ? `✓ ${stats.activeProfessionals} profesionales publicados` : null,
               '✓ 0€ comisión para contratar',
               '✓ Sin tarjeta de crédito',
-            ].map(t => (
+            ].filter((t): t is string => t !== null).map(t => (
               <span key={t} className="text-xs font-semibold" style={{ color: 'rgba(255,255,255,0.38)' }}>{t}</span>
             ))}
           </div>
+
+          {stats && (
+            <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-2 mt-6">
+              <div className="flex items-center gap-2">
+                <Users size={15} style={{ color: '#D4AF37' }} />
+                <span className="text-sm font-black" style={{ color: '#fff' }}>{stats.activeProfessionals}</span>
+                <span className="text-xs font-semibold" style={{ color: 'rgba(255,255,255,0.5)' }}>profesionales activos</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Zap size={15} style={{ color: '#22c55e' }} />
+                <span className="text-sm font-black" style={{ color: '#fff' }}>{stats.availableNow}</span>
+                <span className="text-xs font-semibold" style={{ color: 'rgba(255,255,255,0.5)' }}>disponibles ahora</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Globe size={15} style={{ color: '#D4AF37' }} />
+                <span className="text-sm font-black" style={{ color: '#fff' }}>{stats.cities}</span>
+                <span className="text-xs font-semibold" style={{ color: 'rgba(255,255,255,0.5)' }}>ciudades</span>
+              </div>
+            </div>
+          )}
         </FadeIn>
 
         {/* ── Floating activity pills ── */}
