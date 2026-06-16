@@ -10,10 +10,11 @@ vi.mock('@/integrations/supabase/client', () => ({
 function mockProfilesResponse(rows: any[]) {
   const order = vi.fn().mockReturnValue({ limit: vi.fn().mockResolvedValue({ data: rows, error: null }) });
   const gte = vi.fn().mockReturnValue({ order });
-  const not = vi.fn().mockReturnValue({ gte });
+  const neq = vi.fn().mockReturnValue({ gte });
+  const not = vi.fn().mockReturnValue({ neq });
   const select = vi.fn().mockReturnValue({ not });
   (supabase.from as any).mockReturnValue({ select });
-  return { select, not, gte, order };
+  return { select, not, neq, gte, order };
 }
 
 describe('useActivityFeed', () => {

@@ -1,4 +1,5 @@
 import { Sparkles } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useActivityFeed } from '@/hooks/useActivityFeed';
 
 const ActivityFeedWidget = () => {
@@ -16,11 +17,22 @@ const ActivityFeedWidget = () => {
         </span>
       </div>
       <ul className="flex flex-col gap-1.5">
-        {items.slice(0, 5).map(item => (
-          <li key={item.id} className="text-xs" style={{ color: 'rgba(22,20,18,0.65)' }}>
-            {item.text}
-          </li>
-        ))}
+        <AnimatePresence initial={false}>
+          {items.slice(0, 5).map(item => (
+            <motion.li
+              key={item.id}
+              layout
+              initial={{ opacity: 0, y: -8, height: 0 }}
+              animate={{ opacity: 1, y: 0, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="text-xs overflow-hidden"
+              style={{ color: 'rgba(22,20,18,0.65)' }}
+            >
+              {item.text}
+            </motion.li>
+          ))}
+        </AnimatePresence>
       </ul>
     </div>
   );

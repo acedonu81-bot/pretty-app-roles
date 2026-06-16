@@ -13,6 +13,18 @@ const ROLE_LABELS: Record<string, string> = {
   staff: 'Staff / Camarero',
   promotor: 'Promotor / RRPP',
   empresario: 'Empresario',
+  event_manager: 'Encargada de Eventos',
+  rookie: 'DJ Promesa',
+  vestuario: 'Estilista',
+  catering: 'Catering & Chef',
+  ambassador: 'Embajador',
+  design: 'Diseño',
+  mago: 'Mago & Ilusionista',
+  bailarin: 'Bailarín & Danza',
+  humorista: 'Humorista & Cómico',
+  monologo: 'Monólogo & Stand-Up',
+  animador: 'Payaso & Animador',
+  speaker: 'Speaker & Presentador',
 };
 
 const MIN_ITEMS = 3;
@@ -34,6 +46,7 @@ async function fetchRecentProfiles(sinceIso: string) {
     .from('profiles')
     .select('display_name, role, zone, created_at')
     .not('display_name', 'is', null)
+    .neq('role', 'pending')
     .gte('created_at', sinceIso)
     .order('created_at', { ascending: false })
     .limit(20);
