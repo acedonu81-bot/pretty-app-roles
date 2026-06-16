@@ -5,6 +5,8 @@ import { supabase } from '@/integrations/supabase/client';
 interface Props {
   professionalName: string;
   professionalUserId: string;
+  professionalRole: string;
+  professionalZone: string | null;
   onClose: () => void;
 }
 
@@ -13,7 +15,7 @@ const EVENT_TYPES = [
   'Festival / Concierto', 'Inauguración', 'Otro',
 ];
 
-export default function PublicContactModal({ professionalName, professionalUserId, onClose }: Props) {
+export default function PublicContactModal({ professionalName, professionalUserId, professionalRole, professionalZone, onClose }: Props) {
   const [form, setForm] = useState({ name: '', email: '', eventType: '', date: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
 
@@ -39,6 +41,15 @@ export default function PublicContactModal({ professionalName, professionalUserI
         },
       });
       setStatus('done');
+      // Anonymous activity signal — must never block the contact flow if it fails.
+      try {
+        await supabase.from('contact_events').insert({
+          professional_role: professionalRole,
+          professional_zone: professionalZone,
+        });
+      } catch {
+        // non-critical, ignore
+      }
     } catch {
       setStatus('error');
     }
