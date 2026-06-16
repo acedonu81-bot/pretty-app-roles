@@ -28,3 +28,4 @@ dist-ssr
 android/keystore.properties
 android/app/*.jks
 android/app/*.keystore
+.worktrees/
