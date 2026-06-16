@@ -12,7 +12,7 @@ export interface ActivityItem {
   createdAt: string;
 }
 
-const ROLE_LABELS: Record<string, string> = {
+export const ROLE_LABELS: Record<string, string> = {
   dj: 'DJ / Artista',
   media: 'Fotógrafo / Vídeo',
   makeup: 'Maquilladora',
