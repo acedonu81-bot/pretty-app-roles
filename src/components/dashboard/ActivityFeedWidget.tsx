@@ -51,7 +51,11 @@ const ActivityFeedWidget = () => {
                 left: '100%',
                 background: '#f9f8f6',
                 border: '1px solid rgba(0,0,0,0.06)',
-                animation: `xpeakActivityTicker ${22 + (hash % 3) * 4}s ${(hash % 8) * 2}s linear infinite`,
+                // Negative delay starts each chip already mid-cycle, spread across the
+                // track from the first paint — a positive delay would leave every chip
+                // queued off-screen at the right edge (invisible) until its delay elapses,
+                // making the ticker look empty/cut off for the first several seconds.
+                animation: `xpeakActivityTicker ${22 + (hash % 3) * 4}s -${(hash % 8) * 3}s linear infinite`,
               }}
             >
               <div className="relative flex-shrink-0">
