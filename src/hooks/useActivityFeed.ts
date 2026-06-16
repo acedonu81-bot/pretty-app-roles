@@ -10,6 +10,7 @@ export interface ActivityItem {
   roleColor: string;
   zone: string | null;
   createdAt: string;
+  kind: 'signup' | 'contact';
 }
 
 export const ROLE_LABELS: Record<string, string> = {
@@ -55,6 +56,7 @@ export const ROLE_COLORS: Record<string, string> = {
 
 const MIN_ITEMS = 3;
 const POLL_INTERVAL_MS = 60_000;
+const MAX_COMBINED_ITEMS = 20;
 
 function roleLabel(role: string): string {
   return ROLE_LABELS[role] ?? role;
@@ -64,14 +66,21 @@ function roleColor(role: string): string {
   return ROLE_COLORS[role] ?? '#D4AF37';
 }
 
-function toText(row: { display_name: string; role: string; zone: string | null }): string {
+function signupText(row: { display_name: string; role: string; zone: string | null }): string {
   const label = roleLabel(row.role);
   return row.zone
     ? `${row.display_name} (${label}) se unió desde ${row.zone}`
     : `${row.display_name} (${label}) se unió a XPEAK`;
 }
 
-async function fetchRecentProfiles(sinceIso: string) {
+function contactText(row: { professional_role: string; professional_zone: string | null }): string {
+  const label = roleLabel(row.professional_role);
+  return row.professional_zone
+    ? `Alguien contactó a un/a ${label} en ${row.professional_zone}`
+    : `Alguien contactó a un/a ${label}`;
+}
+
+async function fetchRecentSignups(sinceIso: string) {
   const { data, error } = await supabase
     .from('profiles')
     .select('display_name, role, zone, created_at')
@@ -81,10 +90,62 @@ async function fetchRecentProfiles(sinceIso: string) {
     .order('created_at', { ascending: false })
     .limit(20);
   if (error) {
-    console.error('[useActivityFeed] fetch error:', error);
+    console.error('[useActivityFeed] signups fetch error:', error);
     return [];
   }
   return data ?? [];
+}
+
+async function fetchRecentContacts(sinceIso: string) {
+  const { data, error } = await supabase
+    .from('contact_events')
+    .select('professional_role, professional_zone, created_at')
+    .gte('created_at', sinceIso)
+    .order('created_at', { ascending: false })
+    .limit(20);
+  if (error) {
+    console.error('[useActivityFeed] contacts fetch error:', error);
+    return [];
+  }
+  return data ?? [];
+}
+
+function buildCombinedItems(signups: any[], contacts: any[]): ActivityItem[] {
+  const signupItems: ActivityItem[] = signups.map((row, i) => ({
+    id: `signup-${row.created_at}-${i}`,
+    text: signupText(row),
+    name: row.display_name,
+    role: row.role,
+    roleLabel: roleLabel(row.role),
+    roleColor: roleColor(row.role),
+    zone: row.zone,
+    createdAt: row.created_at,
+    kind: 'signup' as const,
+  }));
+
+  const contactItems: ActivityItem[] = contacts.map((row, i) => ({
+    id: `contact-${row.created_at}-${i}`,
+    text: contactText(row),
+    name: '',
+    role: row.professional_role,
+    roleLabel: roleLabel(row.professional_role),
+    roleColor: roleColor(row.professional_role),
+    zone: row.professional_zone,
+    createdAt: row.created_at,
+    kind: 'contact' as const,
+  }));
+
+  return [...signupItems, ...contactItems]
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, MAX_COMBINED_ITEMS);
+}
+
+async function fetchCombined(sinceIso: string): Promise<ActivityItem[]> {
+  const [signups, contacts] = await Promise.all([
+    fetchRecentSignups(sinceIso),
+    fetchRecentContacts(sinceIso),
+  ]);
+  return buildCombinedItems(signups, contacts);
 }
 
 export function useActivityFeed(): { items: ActivityItem[]; loading: boolean } {
@@ -93,29 +154,20 @@ export function useActivityFeed(): { items: ActivityItem[]; loading: boolean } {
 
   const load = useCallback(async () => {
     const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-    let rows = await fetchRecentProfiles(dayAgo);
+    let combined = await fetchCombined(dayAgo);
 
-    if (rows.length < MIN_ITEMS) {
+    if (combined.length < MIN_ITEMS) {
       const monthAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-      rows = await fetchRecentProfiles(monthAgo);
+      combined = await fetchCombined(monthAgo);
     }
 
-    if (rows.length < MIN_ITEMS) {
+    if (combined.length < MIN_ITEMS) {
       setItems([]);
       setLoading(false);
       return;
     }
 
-    setItems(rows.map((row: any, i: number) => ({
-      id: `${row.created_at}-${i}`,
-      text: toText(row),
-      name: row.display_name,
-      role: row.role,
-      roleLabel: roleLabel(row.role),
-      roleColor: roleColor(row.role),
-      zone: row.zone,
-      createdAt: row.created_at,
-    })));
+    setItems(combined);
     setLoading(false);
   }, []);
 

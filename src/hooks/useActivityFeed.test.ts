@@ -1,3 +1,4 @@
+// src/hooks/useActivityFeed.test.ts
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 import { useActivityFeed } from './useActivityFeed';
@@ -7,14 +8,24 @@ vi.mock('@/integrations/supabase/client', () => ({
   supabase: { from: vi.fn() },
 }));
 
-function mockProfilesResponse(rows: any[]) {
-  const order = vi.fn().mockReturnValue({ limit: vi.fn().mockResolvedValue({ data: rows, error: null }) });
-  const gte = vi.fn().mockReturnValue({ order });
-  const neq = vi.fn().mockReturnValue({ gte });
-  const not = vi.fn().mockReturnValue({ neq });
-  const select = vi.fn().mockReturnValue({ not });
-  (supabase.from as any).mockReturnValue({ select });
-  return { select, not, neq, gte, order };
+function mockTables(signupRows: any[], contactRows: any[]) {
+  (supabase.from as any).mockImplementation((table: string) => {
+    if (table === 'profiles') {
+      const order = vi.fn().mockReturnValue({ limit: vi.fn().mockResolvedValue({ data: signupRows, error: null }) });
+      const gte = vi.fn().mockReturnValue({ order });
+      const neq = vi.fn().mockReturnValue({ gte });
+      const not = vi.fn().mockReturnValue({ neq });
+      const select = vi.fn().mockReturnValue({ not });
+      return { select };
+    }
+    if (table === 'contact_events') {
+      const order = vi.fn().mockReturnValue({ limit: vi.fn().mockResolvedValue({ data: contactRows, error: null }) });
+      const gte = vi.fn().mockReturnValue({ order });
+      const select = vi.fn().mockReturnValue({ gte });
+      return { select };
+    }
+    throw new Error(`unexpected table ${table}`);
+  });
 }
 
 describe('useActivityFeed', () => {
@@ -24,11 +35,11 @@ describe('useActivityFeed', () => {
 
   it('maps profile rows to activity text with zone', async () => {
     const now = new Date();
-    mockProfilesResponse([
+    mockTables([
       { display_name: 'Marta', role: 'dj', zone: 'Madrid', created_at: now.toISOString() },
       { display_name: 'Carlos', role: 'staff', zone: 'Barcelona', created_at: now.toISOString() },
       { display_name: 'Sonia', role: 'makeup', zone: 'Valencia', created_at: now.toISOString() },
-    ]);
+    ], []);
 
     const { result } = renderHook(() => useActivityFeed());
 
@@ -43,11 +54,11 @@ describe('useActivityFeed', () => {
 
   it('omits the zone segment when zone is null', async () => {
     const now = new Date();
-    mockProfilesResponse([
+    mockTables([
       { display_name: 'Marta', role: 'dj', zone: null, created_at: now.toISOString() },
       { display_name: 'Carlos', role: 'staff', zone: 'Barcelona', created_at: now.toISOString() },
       { display_name: 'Sonia', role: 'makeup', zone: 'Valencia', created_at: now.toISOString() },
-    ]);
+    ], []);
 
     const { result } = renderHook(() => useActivityFeed());
 
@@ -57,14 +68,39 @@ describe('useActivityFeed', () => {
   });
 
   it('returns an empty list when fewer than 3 rows exist even after fallback', async () => {
-    mockProfilesResponse([
+    mockTables([
       { display_name: 'Marta', role: 'dj', zone: 'Madrid', created_at: new Date().toISOString() },
-    ]);
+    ], []);
 
     const { result } = renderHook(() => useActivityFeed());
 
     await waitFor(() => expect(result.current.loading).toBe(false));
 
     expect(result.current.items).toEqual([]);
+  });
+
+  it('merges signup and contact events sorted by date, newest first', async () => {
+    const t0 = new Date(Date.now() - 1000).toISOString();
+    const t1 = new Date(Date.now() - 2000).toISOString();
+    const t2 = new Date(Date.now() - 3000).toISOString();
+    mockTables(
+      [
+        { display_name: 'Marta', role: 'dj', zone: 'Madrid', created_at: t1 },
+        { display_name: 'Carlos', role: 'staff', zone: 'Barcelona', created_at: t2 },
+      ],
+      [
+        { professional_role: 'dj', professional_zone: 'Valencia', created_at: t0 },
+      ],
+    );
+
+    const { result } = renderHook(() => useActivityFeed());
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    expect(result.current.items.map(i => ({ kind: i.kind, text: i.text }))).toEqual([
+      { kind: 'contact', text: 'Alguien contactó a un/a DJ / Artista en Valencia' },
+      { kind: 'signup', text: 'Marta (DJ / Artista) se unió desde Madrid' },
+      { kind: 'signup', text: 'Carlos (Staff / Camarero) se unió desde Barcelona' },
+    ]);
   });
 });
