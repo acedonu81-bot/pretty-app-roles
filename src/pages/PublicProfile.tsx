@@ -817,7 +817,7 @@ const PublicProfile = () => {
         {showContact && profile && (
           <PublicContactModal
             professionalName={profile.name}
-            professionalUserId={profile.id}
+            professionalUserId={sbProfile ? sbProfile.user_id : String(profile.id)}
             onClose={() => setShowContact(false)}
           />
         )}
