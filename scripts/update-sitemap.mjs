@@ -194,12 +194,9 @@ function staticUrls(today) {
     lines.push(url(loc, lastmod, 'monthly', pri));
   }
 
-  // Legal
-  lines.push('\n  <!-- Legales -->');
-  lines.push(url('https://xpeak.es/privacidad', '2026-01-01', 'yearly', '0.3'));
-  lines.push(url('https://xpeak.es/terminos', '2026-01-01', 'yearly', '0.3'));
-  lines.push(url('https://xpeak.es/aviso-legal', '2026-01-01', 'yearly', '0.2'));
-  lines.push(url('https://xpeak.es/cookies', '2026-01-01', 'yearly', '0.2'));
+  // Nota: /privacidad, /terminos, /aviso-legal y /cookies se excluyen a propósito.
+  // Esas páginas llevan <meta name="robots" content="noindex"> en el código (son legales,
+  // no deben indexarse) — incluirlas aquí genera un conflicto que Search Console marca como error.
 
   return lines.join('\n');
 }
