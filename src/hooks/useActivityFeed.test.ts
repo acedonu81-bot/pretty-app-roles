@@ -34,10 +34,10 @@ describe('useActivityFeed', () => {
 
     await waitFor(() => expect(result.current.loading).toBe(false));
 
-    expect(result.current.items).toEqual([
-      { id: expect.any(String), text: 'Marta (DJ / Artista) se unió desde Madrid' },
-      { id: expect.any(String), text: 'Carlos (Staff / Camarero) se unió desde Barcelona' },
-      { id: expect.any(String), text: 'Sonia (Maquilladora) se unió desde Valencia' },
+    expect(result.current.items.map(i => i.text)).toEqual([
+      'Marta (DJ / Artista) se unió desde Madrid',
+      'Carlos (Staff / Camarero) se unió desde Barcelona',
+      'Sonia (Maquilladora) se unió desde Valencia',
     ]);
   });
 
@@ -53,7 +53,7 @@ describe('useActivityFeed', () => {
 
     await waitFor(() => expect(result.current.loading).toBe(false));
 
-    expect(result.current.items[0]).toEqual({ id: expect.any(String), text: 'Marta (DJ / Artista) se unió a XPEAK' });
+    expect(result.current.items[0].text).toEqual('Marta (DJ / Artista) se unió a XPEAK');
   });
 
   it('returns an empty list when fewer than 3 rows exist even after fallback', async () => {

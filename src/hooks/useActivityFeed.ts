@@ -4,6 +4,12 @@ import { supabase } from '@/integrations/supabase/client';
 export interface ActivityItem {
   id: string;
   text: string;
+  name: string;
+  role: string;
+  roleLabel: string;
+  roleColor: string;
+  zone: string | null;
+  createdAt: string;
 }
 
 const ROLE_LABELS: Record<string, string> = {
@@ -27,11 +33,35 @@ const ROLE_LABELS: Record<string, string> = {
   speaker: 'Speaker & Presentador',
 };
 
+export const ROLE_COLORS: Record<string, string> = {
+  dj: '#4285F4',
+  rookie: '#60A5FA',
+  staff: '#34D399',
+  event_manager: '#2DD4BF',
+  makeup: '#F9A8D4',
+  media: '#A78BFA',
+  empresario: '#D4AF37',
+  vestuario: '#FB923C',
+  design: '#E879F9',
+  promotor: '#38BDF8',
+  catering: '#F59E0B',
+  mago: '#8B5CF6',
+  monologo: '#EF4444',
+  bailarin: '#EC4899',
+  humorista: '#F97316',
+  animador: '#FBBF24',
+  speaker: '#06B6D4',
+};
+
 const MIN_ITEMS = 3;
 const POLL_INTERVAL_MS = 60_000;
 
 function roleLabel(role: string): string {
   return ROLE_LABELS[role] ?? role;
+}
+
+function roleColor(role: string): string {
+  return ROLE_COLORS[role] ?? '#D4AF37';
 }
 
 function toText(row: { display_name: string; role: string; zone: string | null }): string {
@@ -76,7 +106,16 @@ export function useActivityFeed(): { items: ActivityItem[]; loading: boolean } {
       return;
     }
 
-    setItems(rows.map((row: any, i: number) => ({ id: `${row.created_at}-${i}`, text: toText(row) })));
+    setItems(rows.map((row: any, i: number) => ({
+      id: `${row.created_at}-${i}`,
+      text: toText(row),
+      name: row.display_name,
+      role: row.role,
+      roleLabel: roleLabel(row.role),
+      roleColor: roleColor(row.role),
+      zone: row.zone,
+      createdAt: row.created_at,
+    })));
     setLoading(false);
   }, []);
 
