@@ -123,6 +123,7 @@ const CitySearch = ({ value, onChange }: { value: string; onChange: (v: string) 
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useActivityFeed } from '@/hooks/useActivityFeed';
 import { Helmet } from 'react-helmet-async';
 import { motion, useInView, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { Music, UtensilsCrossed, Users, Camera, ArrowRight, Sparkles, X, ChevronLeft, ChevronRight, Building2, Scissors, Headphones, Zap, Radio, Star, CalendarDays, Search, Award, Globe, CheckCircle, Smartphone, Video, Heart, Palette, Megaphone, TrendingUp, Shield, FileText } from 'lucide-react';
@@ -610,6 +611,7 @@ const Landing = () => {
   const [newsletterDone, setNewsletterDone] = useState(false);
   const [newsletterLoading, setNewsletterLoading] = useState(false);
   const [communityReviews, setCommunityReviews] = useState<{ reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string }[]>([]);
+  const { items: activityItems } = useActivityFeed();
 
   useEffect(() => {
     supabase.from('profiles').select('user_id', { count: 'exact', head: true })
@@ -926,31 +928,26 @@ const Landing = () => {
         </FadeIn>
 
         {/* ── Floating activity pills ── */}
-        <div className="relative h-20 mt-6 overflow-hidden pointer-events-none select-none hidden md:block" aria-hidden="true">
-          {[
-            { text: 'DJ contratado en Madrid', delay: 0, duration: 24, top: 2 },
-            { text: 'Catering confirmado en Ibiza', delay: 8, duration: 28, top: 2 },
-            { text: 'Fotógrafo disponible en Valencia', delay: 16, duration: 26, top: 2 },
-            { text: 'Speaker reservado en Barcelona', delay: 4, duration: 30, top: 36 },
-            { text: 'Mago reservado en Sevilla', delay: 12, duration: 27, top: 36 },
-            { text: 'Flash Booking activo — Mallorca', delay: 20, duration: 25, top: 36 },
-          ].map((pill, i) => (
-            <div
-              key={i}
-              className="absolute whitespace-nowrap text-xs font-semibold px-3 py-1.5 rounded-full"
-              style={{
-                top: pill.top,
-                left: '100%',
-                background: 'rgba(212,175,55,0.08)',
-                border: '1px solid rgba(212,175,55,0.18)',
-                color: 'rgba(255,255,255,0.55)',
-                animation: `floatPill ${pill.duration}s ${pill.delay}s linear infinite`,
-              }}
-            >
-              {pill.text}
-            </div>
-          ))}
-        </div>
+        {activityItems.length > 0 && (
+          <div className="relative h-20 mt-6 overflow-hidden pointer-events-none select-none hidden md:block" aria-hidden="true">
+            {activityItems.map((item, i) => (
+              <div
+                key={item.id}
+                className="absolute whitespace-nowrap text-xs font-semibold px-3 py-1.5 rounded-full"
+                style={{
+                  top: i % 2 === 0 ? 2 : 36,
+                  left: '100%',
+                  background: 'rgba(212,175,55,0.08)',
+                  border: '1px solid rgba(212,175,55,0.18)',
+                  color: 'rgba(255,255,255,0.55)',
+                  animation: `floatPill ${24 + (i % 3) * 3}s ${i * 4}s linear infinite`,
+                }}
+              >
+                {item.text}
+              </div>
+            ))}
+          </div>
+        )}
         <style>{`
           @keyframes floatPill {
             0%   { transform: translateX(0); }
