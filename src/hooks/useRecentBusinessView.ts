@@ -40,7 +40,7 @@ export function useRecentBusinessView(): { view: RecentBusinessView | null; load
     const row = (data ?? [])[0];
     setView(row ? { zone: row.viewer_zone, createdAt: row.created_at } : null);
     setLoading(false);
-  }, [user]);
+  }, [user?.id]);
 
   useEffect(() => {
     load();
