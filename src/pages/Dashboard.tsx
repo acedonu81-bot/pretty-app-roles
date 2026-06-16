@@ -5,6 +5,7 @@ import AmbientBackground from '@/components/AmbientBackground';
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
 import DashboardTopbar from '@/components/dashboard/DashboardTopbar';
 import ActivityFeedWidget from '@/components/dashboard/ActivityFeedWidget';
+import RecentBusinessViewLine from '@/components/dashboard/RecentBusinessViewLine';
 import DJView from '@/components/dashboard/views/DJView';
 import SettingsView from '@/components/dashboard/views/SettingsView';
 import MessagesView from '@/components/dashboard/views/MessagesView';
@@ -237,6 +238,7 @@ const Dashboard = () => {
         <DashboardTopbar onMenuToggle={() => setSidebarOpen(true)} isMobile={isMobile} onSearch={handleSearch} searchQuery={searchQuery} onHome={() => handleViewChange('dj')} />
         <ProfileIncompleteBanner onNavigate={handleViewChange} activeView={activeView} />
         <ActivityFeedWidget />
+        <RecentBusinessViewLine />
         <div className={`p-4 md:p-6 flex-1 md:pb-6 ${isMobile ? 'pb-[calc(6rem+env(safe-area-inset-bottom))]' : 'pb-6'}`}
           key={activeView}
           style={{ animation: 'viewEnter 0.22s cubic-bezier(0.22,1,0.36,1) both' }}>
