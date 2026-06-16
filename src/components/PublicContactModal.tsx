@@ -43,12 +43,15 @@ export default function PublicContactModal({ professionalName, professionalUserI
       setStatus('done');
       // Anonymous activity signal — must never block the contact flow if it fails.
       try {
-        await supabase.from('contact_events').insert({
+        const { error: contactEventError } = await supabase.from('contact_events').insert({
           professional_role: professionalRole,
           professional_zone: professionalZone,
         });
-      } catch {
-        // non-critical, ignore
+        if (contactEventError) {
+          console.error('[PublicContactModal] contact_events insert error:', contactEventError);
+        }
+      } catch (err) {
+        console.error('[PublicContactModal] contact_events insert threw:', err);
       }
     } catch {
       setStatus('error');
