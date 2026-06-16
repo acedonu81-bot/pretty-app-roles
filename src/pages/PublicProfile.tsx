@@ -300,6 +300,21 @@ const PublicProfile = () => {
               const current = (s?.score as number) ?? 0;
               supabase.from('profiles').update({ score: current + 1 } as any).eq('user_id', data.user_id).then(() => {});
             });
+          // Log an anonymous business-view event when the visitor is a logged-in
+          // empresario viewing someone else's profile (social-proof signal).
+          if (authUser && authUser.id !== data.user_id) {
+            supabase.from('profiles').select('role, zone').eq('user_id', authUser.id).maybeSingle()
+              .then(({ data: viewerProfile }) => {
+                if (viewerProfile?.role === 'empresario') {
+                  supabase.from('profile_business_views').insert({
+                    viewed_user_id: data.user_id,
+                    viewer_zone: viewerProfile.zone ?? null,
+                  }).then(({ error }) => {
+                    if (error) console.error('[PublicProfile] profile_business_views insert error:', error);
+                  });
+                }
+              });
+          }
           // Load related profiles
           supabase
             .from('profiles')
