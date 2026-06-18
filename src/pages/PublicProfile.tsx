@@ -830,6 +830,7 @@ const PublicProfile = () => {
             professionalUserId={sbProfile ? sbProfile.user_id : String(profile.id)}
             professionalRole={sbProfile ? sbProfile.role : null}
             professionalZone={sbProfile ? sbProfile.zone : null}
+            isFlashActive={sbProfile?.is_flash_active ?? false}
             onClose={() => setShowContact(false)}
           />
         )}
