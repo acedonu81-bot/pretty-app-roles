@@ -39,8 +39,8 @@ interface Props {
 const ConversationList = ({ conversations, loading, activeConvId, onSelectConversation, onNewConversation }: Props) => (
   <div className="flex flex-col h-full overflow-hidden" style={{ borderRight: '1px solid rgba(212,175,55,0.1)' }}>
     <div className="px-4 py-3 flex items-center justify-between flex-shrink-0"
-      style={{ borderBottom: '1px solid rgba(212,175,55,0.08)', background: 'rgba(0,0,0,0.3)' }}>
-      <span className="text-xs font-black tracking-widest" style={{ color: 'rgba(212,175,55,0.7)' }}>
+      style={{ borderBottom: '1px solid rgba(212,175,55,0.08)', background: '#ffffff' }}>
+      <span className="text-xs font-black tracking-widest" style={{ color: '#D4AF37' }}>
         CONVERSACIONES
       </span>
       <div className="flex items-center gap-2">
