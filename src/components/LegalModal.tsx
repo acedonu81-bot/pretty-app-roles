@@ -16,10 +16,16 @@ Normas de la Comunidad: Los usuarios se comprometen a utilizar la plataforma de 
 interface LegalModalProps {
   open: boolean;
   onClose: () => void;
+  onAccept?: () => void;
 }
 
-const LegalModal = ({ open, onClose }: LegalModalProps) => {
+const LegalModal = ({ open, onClose, onAccept }: LegalModalProps) => {
   if (!open) return null;
+
+  const handleAccept = () => {
+    onAccept?.();
+    onClose();
+  };
 
   return createPortal(
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4" onClick={onClose}>
@@ -40,7 +46,7 @@ const LegalModal = ({ open, onClose }: LegalModalProps) => {
           <p className="text-xs text-muted-foreground">Para ejercer tus derechos contacta con:</p>
           <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>info@xpeak.site</p>
         </div>
-        <button onClick={onClose}
+        <button onClick={handleAccept}
           className="mt-4 w-full py-2.5 rounded-lg font-bold text-xs"
           style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
           Entendido

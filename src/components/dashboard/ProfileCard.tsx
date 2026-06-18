@@ -246,33 +246,18 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
               }}
               className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105"
               style={{
-                background: accepted ? 'rgba(0,0,0,0.05)' : 'rgba(0,0,0,0.04)',
+                background: 'rgba(0,0,0,0.04)',
                 border: '1px solid rgba(0,0,0,0.08)',
-                color: accepted ? 'rgba(22,20,18,0.85)' : 'rgba(22,20,18,0.45)',
+                color: 'rgba(22,20,18,0.75)',
               }}>
               <MessageCircle size={13} />
-              {accepted ? 'Enviar mensaje' : 'Aceptar normas para contactar'}
+              Contactar
             </button>
           </div>
-
-          {/* Checkbox normas — compacto */}
-          {!accepted && (
-            <label className="flex items-start gap-2 cursor-pointer" onClick={e => e.stopPropagation()}>
-              <input type="checkbox" checked={accepted}
-                onChange={() => { setAccepted(true); localStorage.setItem('xpeak_norms_accepted', 'true'); }}
-                className="mt-0.5 accent-[#D4AF37] flex-shrink-0" />
-              <span className="text-[0.65rem] leading-snug" style={{ color: 'rgba(22,20,18,0.4)' }}>
-                Acepto las{' '}
-                <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowLegal(true); }}
-                  className="underline" style={{ color: '#D4AF37' }}>Normas</button>
-                {' '}— XPEAK actúa como intermediario sin relación laboral.
-              </span>
-            </label>
-          )}
         </div>
       </div>
 
-      <LegalModal open={showLegal} onClose={() => setShowLegal(false)} />
+      <LegalModal open={showLegal} onClose={() => setShowLegal(false)} onAccept={() => { setAccepted(true); localStorage.setItem('xpeak_norms_accepted', 'true'); }} />
       {showContract && <ContractModal professional={p} onClose={() => setShowContract(false)} />}
     </motion.div>
   );
