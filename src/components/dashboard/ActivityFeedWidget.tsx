@@ -43,21 +43,20 @@ const Chip = ({ item }: { item: ActivityItem }) => {
   );
 };
 
-// Continuous-track marquee: each lane renders its items once, then renders the
-// exact same items again right after. Animating the track by exactly -50% of
-// its own width loops it seamlessly forever — no independent per-item timing,
-// so chips never overlap each other and are always visible immediately (the
-// track's starting position, 0%, already shows real content; nothing has to
-// "arrive" from off-screen first). This also makes the widget immune to
-// re-renders (e.g. switching dashboard sections): the animation only depends
-// on the track's own width, not on per-item delays that a remount could reset.
+// Carril de marquee continuo: los items se renderizan dos veces seguidas y el
+// track se anima -50% de su propio ancho (= exactamente un juego de items),
+// creando un loop perfecto sin huecos. El keyframe está en index.css global
+// para que los re-renders de React no invaliden la animación en curso.
 const Lane = ({ items, durationSeconds }: { items: ActivityItem[]; durationSeconds: number }) => {
   if (items.length === 0) return null;
   return (
-    <div className="relative overflow-hidden h-10">
+    <div className="overflow-hidden h-11">
       <div
-        className="absolute flex items-center gap-3 will-change-transform"
-        style={{ animation: `xpeakActivityTicker ${durationSeconds}s linear infinite` }}
+        className="flex items-center gap-3 will-change-transform"
+        style={{
+          width: 'max-content',
+          animation: `xpeakActivityTicker ${durationSeconds}s linear infinite`,
+        }}
       >
         {items.map((item, i) => <Chip key={`a-${item.id}-${i}`} item={item} />)}
         {items.map((item, i) => <Chip key={`b-${item.id}-${i}`} item={item} />)}
@@ -84,15 +83,9 @@ const ActivityFeedWidget = () => {
         </span>
       </div>
       <div className="flex flex-col gap-2">
-        <Lane items={laneA} durationSeconds={Math.max(18, laneA.length * 6)} />
-        <Lane items={laneB} durationSeconds={Math.max(18, laneB.length * 6)} />
+        <Lane items={laneA} durationSeconds={Math.max(20, laneA.length * 7)} />
+        <Lane items={laneB} durationSeconds={Math.max(20, laneB.length * 7)} />
       </div>
-      <style>{`
-        @keyframes xpeakActivityTicker {
-          0%   { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-      `}</style>
     </div>
   );
 };
