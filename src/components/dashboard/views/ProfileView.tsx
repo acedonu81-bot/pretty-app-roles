@@ -368,30 +368,6 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             </button>
           )}
 
-          {profile.role === 'dj' && (
-            <button
-              onClick={async () => {
-                const next = profile.category === 'rookie' ? 'professional' : 'rookie';
-                await profile.updateField({ category: next } as any);
-                toast.success(next === 'rookie' ? '¡Ahora apareces como Artista Promesa!' : 'Has vuelto a Profesional.');
-              }}
-              className="glass-panel p-4 text-left w-full transition-all hover:scale-[1.01]"
-              style={{
-                border: profile.category === 'rookie' ? '1px solid rgba(255,188,0,0.3)' : '1px solid rgba(0,0,0,0.05)',
-              }}>
-              <div className="flex items-center gap-2 mb-1">
-                <Star size={14} style={{ color: profile.category === 'rookie' ? '#ffbc00' : '#D4AF37' }} />
-                <span className="text-xs font-bold" style={{ color: profile.category === 'rookie' ? '#ffbc00' : '#D4AF37' }}>
-                  {profile.category === 'rookie' ? 'Modo Promesa activo' : 'Última Llamada'}
-                </span>
-              </div>
-              <p className="text-xs text-muted-foreground leading-tight">
-                {profile.category === 'rookie'
-                  ? 'Estás en modo Promesa. Consigue 500 apoyos para ascender. Pulsa para volver a Profesional.'
-                  : 'Vuelve a modo Promesa para ganar visibilidad y buscar apoyos de la comunidad.'}
-              </p>
-            </button>
-          )}
         </div>
 
         <div className="flex flex-col gap-4">

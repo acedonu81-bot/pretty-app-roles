@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { X, Send, CheckCircle } from 'lucide-react';
+import { X, Send, CheckCircle, Zap } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 interface Props {
@@ -8,6 +8,7 @@ interface Props {
   // null for static/demo profiles — no activity event should be logged for those
   professionalRole: string | null;
   professionalZone: string | null;
+  isFlashActive?: boolean;
   onClose: () => void;
 }
 
@@ -16,7 +17,7 @@ const EVENT_TYPES = [
   'Festival / Concierto', 'Inauguración', 'Otro',
 ];
 
-export default function PublicContactModal({ professionalName, professionalUserId, professionalRole, professionalZone, onClose }: Props) {
+export default function PublicContactModal({ professionalName, professionalUserId, professionalRole, professionalZone, isFlashActive, onClose }: Props) {
   const [form, setForm] = useState({ name: '', email: '', eventType: '', date: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
 
@@ -94,6 +95,18 @@ export default function PublicContactModal({ professionalName, professionalUserI
               <p className="text-xs" style={{ color: 'rgba(22,20,18,0.45)' }}>Sin registro. Gratis. Te responderá directamente.</p>
             </div>
 
+            {isFlashActive && (
+              <button type="button"
+                onClick={() => {
+                  set('message', form.message || '¡Hola! Me interesa reservarte con carácter urgente vía Flash Booking. ¿Estás disponible?');
+                  document.getElementById('xpeak-contact-message')?.focus();
+                }}
+                className="w-full mb-4 flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-sm transition-all hover:scale-[1.02]"
+                style={{ background: 'rgba(34,197,94,0.1)', border: '1.5px solid rgba(34,197,94,0.5)', color: '#16a34a' }}>
+                <Zap size={15} /> Flash Booking — Reserva urgente
+              </button>
+            )}
+
             <div className="space-y-3">
               <div>
                 <label className="text-xs font-bold mb-1 block" style={{ color: 'rgba(22,20,18,0.55)' }}>Tu nombre *</label>
@@ -130,7 +143,7 @@ export default function PublicContactModal({ professionalName, professionalUserI
 
               <div>
                 <label className="text-xs font-bold mb-1 block" style={{ color: 'rgba(22,20,18,0.55)' }}>Cuéntale algo más (opcional)</label>
-                <textarea value={form.message} onChange={e => set('message', e.target.value)} rows={3}
+                <textarea id="xpeak-contact-message" value={form.message} onChange={e => set('message', e.target.value)} rows={3}
                   placeholder="Número de invitados, lugar, lo que necesitas..."
                   className="w-full px-3 py-2.5 rounded-xl text-sm outline-none resize-none"
                   style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: 'rgba(22,20,18,0.88)' }} />

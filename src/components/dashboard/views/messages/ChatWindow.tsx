@@ -70,7 +70,7 @@ const ChatWindow = ({
     <div className="flex flex-col h-full overflow-hidden">
       {/* Chat header */}
       <div className="px-4 py-3 flex items-center gap-3 flex-shrink-0"
-        style={{ borderBottom: '1px solid rgba(212,175,55,0.08)', background: 'rgba(0,0,0,0.4)' }}>
+        style={{ borderBottom: '1px solid rgba(212,175,55,0.08)', background: '#ffffff' }}>
         <button onClick={onBack}
           aria-label="Volver a conversaciones"
           className="md:hidden p-1.5 rounded-lg mr-1 transition-colors"
@@ -173,12 +173,12 @@ const ChatWindow = ({
 
       {/* Input area */}
       <div className="px-3 py-3 flex-shrink-0 relative"
-        style={{ borderTop: '1px solid rgba(212,175,55,0.08)', background: 'rgba(0,0,0,0.5)' }}>
+        style={{ borderTop: '1px solid rgba(212,175,55,0.08)', background: '#ffffff' }}>
         {showEmoji && (
           <div className="absolute bottom-full mb-2 left-3 right-3 rounded-xl p-3 z-20"
-            style={{ background: 'rgba(10,10,15,0.98)', border: '1px solid rgba(212,175,55,0.2)', boxShadow: '0 -8px 32px rgba(0,0,0,0.8)' }}>
+            style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 -4px 24px rgba(0,0,0,0.08)' }}>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-black tracking-widest" style={{ color: 'rgba(212,175,55,0.6)' }}>EMOTICONOS</span>
+              <span className="text-xs font-black tracking-widest" style={{ color: 'rgba(22,20,18,0.45)' }}>EMOTICONOS</span>
               <button onClick={() => setShowEmoji(false)} className="p-0.5 rounded hover:bg-white/5">
                 <X size={12} className="text-muted-foreground" />
               </button>
@@ -224,7 +224,7 @@ const ChatWindow = ({
               placeholder="Escribe un mensaje..."
               maxLength={1000}
               className="w-full px-4 py-2.5 rounded-xl text-sm outline-none transition-all"
-              style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.08)', color: 'rgba(22,20,18,0.9)' }}
+              style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: 'rgba(22,20,18,0.9)' }}
               onFocus={e => (e.target.style.borderColor = 'rgba(212,175,55,0.3)')}
               onBlur={e => (e.target.style.borderColor = 'rgba(0,0,0,0.08)')}
             />

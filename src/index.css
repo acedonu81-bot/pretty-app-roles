@@ -408,3 +408,9 @@ html, body, #root {
   animation: toastShine 0.6s ease forwards;
   pointer-events: none;
 }
+
+/* Ticker de actividad reciente en el dashboard */
+@keyframes xpeakActivityTicker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}

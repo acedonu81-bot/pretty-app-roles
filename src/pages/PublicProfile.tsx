@@ -617,20 +617,15 @@ const PublicProfile = () => {
                 </div>
               )}
 
-              {/* CTAs */}
+              {/* CTA — un único punto de entrada */}
               <div className="flex gap-3 flex-wrap">
                 <button
                   onClick={() => setShowContact(true)}
                   className="flex items-center gap-2 px-7 py-3.5 rounded-2xl font-black text-base transition-all hover:scale-105 active:scale-95"
                   style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 8px 30px rgba(212,175,55,0.4)' }}>
-                  <MessageCircle size={18} /> Contactar gratis
+                  <MessageCircle size={18} />
+                  {profile.isFlashActive ? 'Reservar ahora' : 'Contactar'}
                 </button>
-                {profile.isFlashActive && (
-                  <button className="flex items-center gap-2 px-5 py-3.5 rounded-2xl font-bold text-sm transition-all hover:scale-105"
-                    style={{ background: 'rgba(34,197,94,0.15)', backdropFilter: 'blur(8px)', border: '1.5px solid rgba(34,197,94,0.6)', color: '#4ade80' }}>
-                    <Zap size={16} /> Flash Booking
-                  </button>
-                )}
               </div>
             </motion.div>
           </motion.div>
@@ -835,6 +830,7 @@ const PublicProfile = () => {
             professionalUserId={sbProfile ? sbProfile.user_id : String(profile.id)}
             professionalRole={sbProfile ? sbProfile.role : null}
             professionalZone={sbProfile ? sbProfile.zone : null}
+            isFlashActive={sbProfile?.is_flash_active ?? false}
             onClose={() => setShowContact(false)}
           />
         )}
@@ -846,7 +842,7 @@ const PublicProfile = () => {
             onClick={() => setShowContact(true)}
             className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl font-black text-base transition-all active:scale-95"
             style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-            <MessageCircle size={18} /> Contactar gratis
+            <MessageCircle size={18} /> Contactar
           </button>
         </div>
       </div>

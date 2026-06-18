@@ -89,20 +89,30 @@ const Auth = () => {
   }, [navigate]);
 
   const handleGoogleSignIn = async () => {
+    const SITE_URL = import.meta.env.VITE_SITE_URL ?? window.location.origin;
     setGoogleLoading(true);
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/auth` },
+      options: { redirectTo: `${SITE_URL}/auth` },
     });
-    if (error) { toast.error('Error al conectar con Google'); setGoogleLoading(false); }
+    if (error) {
+      console.error('[Auth] Google OAuth error:', error);
+      toast.error(
+        error.message.includes('provider') || error.message.includes('OAuth')
+          ? 'Google login no está configurado. Usa email y contraseña.'
+          : 'Error al conectar con Google. Inténtalo de nuevo.'
+      );
+      setGoogleLoading(false);
+    }
   };
 
   const handleForgotPassword = async (e: React.FormEvent) => {
+    const SITE_URL = import.meta.env.VITE_SITE_URL ?? window.location.origin;
     e.preventDefault();
     if (!forgotEmail) { toast.error('Introduce tu email'); return; }
     setForgotLoading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(forgotEmail, {
-      redirectTo: `${window.location.origin}/auth`,
+      redirectTo: `${SITE_URL}/auth`,
     });
     setForgotLoading(false);
     if (error) { toast.error(error.message); return; }
@@ -160,6 +170,7 @@ const Auth = () => {
         const safeName = displayName.trim().replace(/<[^>]*>/g, '').replace(/[\x00-\x1F\x7F]/g, '').slice(0, 60);
         if (!safeName) { toast.error('El nombre no es válido.'); setLoading(false); return; }
 
+        const SITE_URL = import.meta.env.VITE_SITE_URL ?? window.location.origin;
         const { error } = await supabase.auth.signUp({
           email,
           password,
@@ -171,7 +182,7 @@ const Auth = () => {
               category: 'pending',
               zone: 'España',
             },
-            emailRedirectTo: window.location.origin,
+            emailRedirectTo: SITE_URL,
           },
         });
         if (error) throw error;

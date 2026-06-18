@@ -11,7 +11,6 @@ import { parseStreamUrl } from '@/lib/streaming';
 import { useProfile as useMyProfile } from '@/hooks/useProfile';
 import GeometricAvatar from './GeometricAvatar';
 import ContractModal from './ContractModal';
-import VoteButton from './VoteButton';
 import type { Profile } from '@/data/profiles';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -151,7 +150,6 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
     genres?: string[];
     hourlyRate?: number;
     isVerified?: boolean;
-    voteCount?: number;
   }>({});
   const [showContract, setShowContract] = useState(false);
   const [imgError, setImgError] = useState(false);
@@ -169,15 +167,6 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
         .maybeSingle();
       if (!data) return;
 
-      let voteCount = 0;
-      if (p.category === 'rookie') {
-        const { count } = await supabase
-          .from('votes' as any)
-          .select('id', { count: 'exact', head: true })
-          .eq('profile_id', String(p.id));
-        voteCount = count ?? 0;
-      }
-
       setFull({
         audioEmbedUrl: (data as any).audio_embed_url,
         portfolioUrls: (data as any).portfolio_urls ?? [],
@@ -186,11 +175,10 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
         genres: (data as any).genres ?? p.badges ?? [],
         hourlyRate: (data as any).hourly_rate ?? p.price,
         isVerified: (data as any).is_verified ?? p.isVerified,
-        voteCount,
       });
     };
     load();
-  }, [p.userId, p.id, p.category, p.description, p.languages, p.badges, p.price, p.isVerified]);
+  }, [p.userId, p.description, p.languages, p.badges, p.price, p.isVerified]);
 
   const audioEmbed = parseStreamUrl((full.audioEmbedUrl ?? (p as any).audio_embed_url) || p.streamUrl);
   const isCompany = me.role === 'empresario';
@@ -387,31 +375,6 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                           <Globe size={10} className="inline mr-1 opacity-60" />{l}
                         </span>
                       ))}
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Rookie: vote bar */}
-                {p.category === 'rookie' && (
-                  <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.14 }}
-                    className="rounded-xl p-4"
-                    style={{ background: 'rgba(251,191,36,0.05)', border: '1px solid rgba(251,191,36,0.2)' }}>
-                    <div className="flex items-center justify-between mb-3">
-                      <p className="text-xs font-black uppercase tracking-widest" style={{ color: '#FBBF24' }}>
-                        ⭐ Artista Promesa · Comunidad
-                      </p>
-                      <span className="text-lg font-black" style={{ color: '#FBBF24' }}>{full.voteCount ?? 0} votos</span>
-                    </div>
-                    <div className="h-2 rounded-full overflow-hidden mb-3" style={{ background: 'rgba(0,0,0,0.05)' }}>
-                      <motion.div className="h-full rounded-full"
-                        initial={{ width: 0 }}
-                        animate={{ width: `${Math.min(((full.voteCount ?? 0) / 500) * 100, 100)}%` }}
-                        transition={{ duration: 1, delay: 0.3 }}
-                        style={{ background: 'linear-gradient(90deg,#FBBF24,#F59E0B)', boxShadow: '0 0 8px rgba(251,191,36,0.5)' }} />
-                    </div>
-                    <div className="mb-3">
-                      <VoteButton profileId={p.userId ?? String(p.id)} voteCount={full.voteCount ?? 0}
-                        hasVotedToday={false} category="rookie" onVoted={() => setFull(f => ({ ...f, voteCount: (f.voteCount ?? 0) + 1 }))} />
                     </div>
                   </motion.div>
                 )}

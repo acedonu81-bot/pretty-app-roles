@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Star, MapPin, BadgeCheck, MessageCircle, FileText, Zap, Award, CheckCircle, X } from 'lucide-react';
+import { Star, MapPin, BadgeCheck, MessageCircle, FileText, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Profile } from '@/data/profiles';
 import GeometricAvatar from './GeometricAvatar';
@@ -35,7 +35,6 @@ interface ProfileCardProps {
 const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, onNavigateSubscription, onViewProfile }: ProfileCardProps) => {
   const currentUser = useProfile();
   const isRookie = p.category === 'rookie';
-  const [expandedRookie, setExpandedRookie] = useState(false);
   const [accepted, setAccepted] = useState(() => localStorage.getItem('xpeak_norms_accepted') === 'true');
   const [showLegal, setShowLegal] = useState(false);
   const [showContract, setShowContract] = useState(false);
@@ -222,45 +221,6 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
           </div>
         )}
 
-        {/* Rookie expanded panel */}
-        {expandedRookie && isRookie && (
-          <div className="p-3 rounded-lg" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}
-            onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-bold flex items-center gap-1" style={{ color: '#D4AF37' }}>
-                <Award size={12} /> Panel Promesa
-              </span>
-              <button onClick={() => setExpandedRookie(false)}><X size={12} className="text-muted-foreground" /></button>
-            </div>
-            <div className="text-center py-2">
-              <div className="text-2xl font-black" style={{ color: '#D4AF37' }}>{voteCount}</div>
-              <div className="text-xs text-muted-foreground">de 500 votos</div>
-            </div>
-            <div className="h-1.5 rounded-full overflow-hidden mb-2" style={{ background: 'rgba(0,0,0,0.05)' }}>
-              <div className="h-full rounded-full" style={{ width: `${progress}%`, background: 'linear-gradient(90deg,#D4AF37,#22c55e)' }} />
-            </div>
-            <div className="space-y-1">
-              {milestones.map(m => {
-                const reached = voteCount >= m.votes;
-                return (
-                  <div key={m.votes} className="flex items-center gap-2 p-1 rounded"
-                    style={{ background: reached ? 'rgba(212,175,55,0.06)' : 'transparent' }}>
-                    <span className="w-1.5 h-1.5 rounded-full" style={{ background: reached ? m.color : 'rgba(0,0,0,0.08)' }} />
-                    <span className={`text-xs flex-1 ${reached ? 'font-bold' : 'text-muted-foreground'}`}>{m.label}</span>
-                    <span className="text-[0.65rem] text-muted-foreground">{m.votes}</span>
-                    {reached && <CheckCircle size={9} style={{ color: '#22c55e' }} />}
-                  </div>
-                );
-              })}
-            </div>
-            {nextMilestone && (
-              <p className="text-[0.65rem] text-muted-foreground text-center mt-2">
-                Faltan <span className="font-bold" style={{ color: '#D4AF37' }}>{nextMilestone.votes - voteCount}</span> votos para {nextMilestone.label}
-              </p>
-            )}
-          </div>
-        )}
-
         {/* CTAs */}
         <div className="mt-auto flex flex-col gap-2 pt-1">
           {onViewProfile && (
@@ -286,33 +246,18 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
               }}
               className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105"
               style={{
-                background: accepted ? 'rgba(0,0,0,0.05)' : 'rgba(0,0,0,0.04)',
+                background: 'rgba(0,0,0,0.04)',
                 border: '1px solid rgba(0,0,0,0.08)',
-                color: accepted ? 'rgba(22,20,18,0.85)' : 'rgba(22,20,18,0.45)',
+                color: 'rgba(22,20,18,0.75)',
               }}>
               <MessageCircle size={13} />
-              {accepted ? 'Enviar mensaje' : 'Aceptar normas para contactar'}
+              Contactar
             </button>
           </div>
-
-          {/* Checkbox normas — compacto */}
-          {!accepted && (
-            <label className="flex items-start gap-2 cursor-pointer" onClick={e => e.stopPropagation()}>
-              <input type="checkbox" checked={accepted}
-                onChange={() => { setAccepted(true); localStorage.setItem('xpeak_norms_accepted', 'true'); }}
-                className="mt-0.5 accent-[#D4AF37] flex-shrink-0" />
-              <span className="text-[0.65rem] leading-snug" style={{ color: 'rgba(22,20,18,0.4)' }}>
-                Acepto las{' '}
-                <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowLegal(true); }}
-                  className="underline" style={{ color: '#D4AF37' }}>Normas</button>
-                {' '}— XPEAK actúa como intermediario sin relación laboral.
-              </span>
-            </label>
-          )}
         </div>
       </div>
 
-      <LegalModal open={showLegal} onClose={() => setShowLegal(false)} />
+      <LegalModal open={showLegal} onClose={() => setShowLegal(false)} onAccept={() => { setAccepted(true); localStorage.setItem('xpeak_norms_accepted', 'true'); }} />
       {showContract && <ContractModal professional={p} onClose={() => setShowContract(false)} />}
     </motion.div>
   );
