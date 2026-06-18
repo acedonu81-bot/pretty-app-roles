@@ -51,7 +51,7 @@ const AvisoLegal = () => (
         <p>Para más información consulta nuestra{' '}
           <Link to="/privacidad" className="underline font-bold" style={{ color: '#D4AF37' }}>Política de Privacidad</Link>.
         </p>
-        <p><span className="font-bold text-white">Contacto para ejercicio de derechos RGPD:</span> admin@xpeak.es</p>
+        <p><span className="font-bold text-white">Contacto para ejercicio de derechos RGPD:</span> info@xpeak.site</p>
       </Section>
 
       <Section title="5. Cookies">

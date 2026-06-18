@@ -60,6 +60,7 @@ const Auth = () => {
   const [searchParams] = useSearchParams();
   const roleParam = searchParams.get('role') ?? '';
   const modeParam = searchParams.get('mode') ?? '';
+  const redirectParam = searchParams.get('redirect') ?? '/dashboard';
   const content = ROLE_CONTENT[roleParam] ?? DEFAULT_CONTENT;
 
   const [isLogin, setIsLogin] = useState(modeParam !== 'register');
@@ -78,11 +79,11 @@ const Auth = () => {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate('/dashboard', { replace: true });
+      if (data.session) navigate(redirectParam, { replace: true });
     });
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (session && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED')) {
-        navigate('/dashboard', { replace: true });
+        navigate(redirectParam, { replace: true });
       }
     });
     return () => subscription.unsubscribe();
@@ -159,7 +160,7 @@ const Auth = () => {
         if (error) { recordLoginFailure(); throw error; }
         clearRateLimit();
         toast.success('¡Bienvenido de vuelta!');
-        navigate('/dashboard');
+        navigate(redirectParam);
       } else {
         if (!displayName.trim()) { toast.error('Introduce tu nombre profesional'); setLoading(false); return; }
         if (!legalAccepted) { toast.error('Acepta los términos para continuar'); setLoading(false); return; }

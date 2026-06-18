@@ -687,7 +687,20 @@ const PublicProfile = () => {
               </div>
               <div className="flex flex-col gap-3">
                 {extraMedia.audio_session_urls.slice(0, 5).map((url, i) => (
-                  <audio key={i} src={url} controls className="w-full rounded-xl" />
+                  <div key={i} className="w-full">
+                    <audio
+                      src={url}
+                      controls
+                      className="w-full rounded-xl"
+                      onError={(e) => {
+                        const audio = e.currentTarget;
+                        const p = document.createElement('p');
+                        p.textContent = 'Sesión no disponible temporalmente';
+                        p.style.cssText = 'font-size:11px;color:rgba(22,20,18,0.4);padding:8px 12px;background:rgba(0,0,0,0.04);border-radius:8px;';
+                        audio.replaceWith(p);
+                      }}
+                    />
+                  </div>
                 ))}
               </div>
             </motion.div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { CheckCircle, XCircle, Mail, Phone, MessageSquare, FileEdit } from 'lucide-react';
+import { CheckCircle, Mail, MessageSquare, FileEdit, Star, TrendingUp } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -10,6 +10,7 @@ interface DBProfile {
   zone: string | null;
   subscription_tier: string;
   is_verified: boolean;
+  is_early_adopter: boolean;
   phone?: string | null;
   instagram: string | null;
   category: string;
@@ -52,7 +53,28 @@ const AdminUserManagement = () => {
   };
 
   const contactEmail = (_userId: string, name: string) => {
-    window.open(`mailto:admin@xpeak.es?subject=Contacto usuario: ${encodeURIComponent(name)}`);
+    window.open(`mailto:info@xpeak.site?subject=Contacto usuario: ${encodeURIComponent(name)}`);
+  };
+
+  const toggleEarlyAdopter = async (user: DBProfile) => {
+    const { error } = await supabase
+      .from('profiles')
+      .update({ is_early_adopter: !user.is_early_adopter })
+      .eq('id', user.id);
+    if (error) { toast.error('Error al actualizar aro azul'); return; }
+    toast.success(user.is_early_adopter ? 'Aro azul eliminado' : '⭐ Aro Azul activado — aparecerá en primeras posiciones');
+    setUsers(prev => prev.map(u => u.id === user.id ? { ...u, is_early_adopter: !u.is_early_adopter } : u));
+  };
+
+  const boostScore = async (user: DBProfile) => {
+    const newScore = Math.max(user.score ?? 0, 500) + 200;
+    const { error } = await supabase
+      .from('profiles')
+      .update({ score: newScore })
+      .eq('id', user.id);
+    if (error) { toast.error('Error al subir score'); return; }
+    toast.success(`Score subido a ${newScore}`);
+    setUsers(prev => prev.map(u => u.id === user.id ? { ...u, score: newScore } : u));
   };
 
   return (
@@ -73,6 +95,7 @@ const AdminUserManagement = () => {
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-bold truncate">{u.display_name || 'Sin nombre'}</span>
                   {u.is_verified && <CheckCircle size={12} style={{ color: '#D4AF37' }} />}
+                  {u.is_early_adopter && <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ background: '#3b82f6', boxShadow: '0 0 4px #3b82f6' }} title="Aro Azul" />}
                   <span className="text-[0.75rem] px-1.5 py-0.5 rounded font-bold"
                     style={{
                       background: u.subscription_tier === 'elite' ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.05)',
@@ -114,6 +137,19 @@ const AdminUserManagement = () => {
                     color: u.is_verified ? '#D4AF37' : 'var(--nightlife-text-secondary)',
                   }}>
                   <CheckCircle size={14} />
+                </button>
+                <button onClick={() => toggleEarlyAdopter(u)} title={u.is_early_adopter ? 'Quitar aro azul' : 'Activar Aro Azul (1ª posición)'}
+                  className="p-1.5 rounded-md transition-all hover:scale-110"
+                  style={{
+                    background: u.is_early_adopter ? 'rgba(59,130,246,0.15)' : 'rgba(0,0,0,0.05)',
+                    color: u.is_early_adopter ? '#3b82f6' : 'var(--nightlife-text-secondary)',
+                  }}>
+                  <Star size={14} />
+                </button>
+                <button onClick={() => boostScore(u)} title="Subir score (+200)"
+                  className="p-1.5 rounded-md transition-all hover:scale-110"
+                  style={{ background: 'rgba(34,197,94,0.08)', color: '#22c55e' }}>
+                  <TrendingUp size={14} />
                 </button>
               </div>
             </div>

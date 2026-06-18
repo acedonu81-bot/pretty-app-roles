@@ -161,13 +161,9 @@ export function useActivityFeed(): { items: ActivityItem[]; loading: boolean } {
       combined = await fetchCombined(monthAgo);
     }
 
-    if (combined.length < MIN_ITEMS) {
-      setItems([]);
-      setLoading(false);
-      return;
+    if (combined.length >= MIN_ITEMS) {
+      setItems(combined);
     }
-
-    setItems(combined);
     setLoading(false);
   }, []);
 
