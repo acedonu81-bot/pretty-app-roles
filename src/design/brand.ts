@@ -163,5 +163,5 @@ export const BRAND_LEGAL = {
   privacyUrl:     '/privacidad',
   termsUrl:       '/terminos',
   cookieUrl:      '/cookies',
-  supportEmail:   'info@xpeak.site',
+  supportEmail:   'info@xpeak.es',
 } as const;

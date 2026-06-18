@@ -74,7 +74,7 @@ const Terminos = () => {
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>5. Pagos y Derecho de Desistimiento</h2>
             <p>Todos los pagos se procesan de forma segura a través de Stripe. XPEAK no almacena datos de tarjetas de crédito en sus servidores. Las suscripciones se renuevan automáticamente salvo cancelación previa. El usuario puede cancelar en cualquier momento desde su panel de configuración.</p>
-            <p className="mt-2"><strong style={{ color: 'rgba(22,20,18,0.9)' }}>Derecho de desistimiento (Directiva 2011/83/UE · TRLGDCU art. 102):</strong> El usuario consumidor dispone de un plazo de <strong style={{ color: 'rgba(22,20,18,0.9)' }}>14 días naturales</strong> desde la contratación para desistir del servicio sin necesidad de justificación y sin penalización, siempre que no haya comenzado la prestación efectiva del servicio digital con su consentimiento expreso. Para ejercer este derecho, comuníquelo a <span style={{ color: '#D4AF37' }}>info@xpeak.site</span> indicando su nombre, email de registro y el servicio contratado. El reembolso se realizará en el mismo medio de pago en un plazo máximo de 14 días.</p>
+            <p className="mt-2"><strong style={{ color: 'rgba(22,20,18,0.9)' }}>Derecho de desistimiento (Directiva 2011/83/UE · TRLGDCU art. 102):</strong> El usuario consumidor dispone de un plazo de <strong style={{ color: 'rgba(22,20,18,0.9)' }}>14 días naturales</strong> desde la contratación para desistir del servicio sin necesidad de justificación y sin penalización, siempre que no haya comenzado la prestación efectiva del servicio digital con su consentimiento expreso. Para ejercer este derecho, comuníquelo a <span style={{ color: '#D4AF37' }}>info@xpeak.es</span> indicando su nombre, email de registro y el servicio contratado. El reembolso se realizará en el mismo medio de pago en un plazo máximo de 14 días.</p>
             <p className="mt-2 text-sm" style={{ color: 'rgba(22,20,18,0.6)' }}>El derecho de desistimiento no aplica a contenidos digitales que el usuario haya comenzado a utilizar con su consentimiento previo y renuncia expresa al desistimiento (art. 103.m TRLGDCU).</p>
           </section>
 
@@ -216,7 +216,7 @@ const Terminos = () => {
 
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>Contacto</h2>
-            <p>Consultas generales: <span style={{ color: '#D4AF37' }}>info@xpeak.site</span></p>
+            <p>Consultas generales: <span style={{ color: '#D4AF37' }}>info@xpeak.es</span></p>
             <p className="mt-1">Asuntos legales y protección de datos: <span style={{ color: '#D4AF37' }}>legal@xpeak.es</span></p>
           </section>
         </div>

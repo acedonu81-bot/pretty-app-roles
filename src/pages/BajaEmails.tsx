@@ -49,7 +49,7 @@ export default function BajaEmails() {
               </p>
               <p className="text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
                 ¿Fue un error? Escríbenos a{' '}
-                <a href="mailto:info@xpeak.site" style={{ color: '#D4AF37' }}>info@xpeak.site</a>
+                <a href="mailto:info@xpeak.es" style={{ color: '#D4AF37' }}>info@xpeak.es</a>
               </p>
             </div>
           ) : (
@@ -88,7 +88,7 @@ export default function BajaEmails() {
               {status === 'error' && (
                 <p className="text-xs mt-4" style={{ color: '#ff5f56' }}>
                   Algo ha ido mal. Escríbenos a{' '}
-                  <a href="mailto:info@xpeak.site" style={{ color: '#D4AF37' }}>info@xpeak.site</a>
+                  <a href="mailto:info@xpeak.es" style={{ color: '#D4AF37' }}>info@xpeak.es</a>
                 </p>
               )}
               <p className="text-xs mt-6" style={{ color: 'rgba(255,255,255,0.2)' }}>

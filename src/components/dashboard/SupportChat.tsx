@@ -529,7 +529,7 @@ const SupportChat = () => {
         throw new Error('AI unavailable');
       }
 
-      pushBot(data.reply ?? 'Lo siento, no pude procesar tu consulta. Escríbenos a info@xpeak.site');
+      pushBot(data.reply ?? 'Lo siento, no pude procesar tu consulta. Escríbenos a info@xpeak.es');
       setNoMatchCount(0);
     } catch {
       setTyping(false);
@@ -537,7 +537,7 @@ const SupportChat = () => {
       setNoMatchCount(newCount);
       if (newCount >= 2) {
         setShowTopics(true);
-        pushBot('No he encontrado una respuesta para eso. Aquí tienes los temas disponibles o escríbenos a **info@xpeak.site**:', ['Ver todos los temas']);
+        pushBot('No he encontrado una respuesta para eso. Aquí tienes los temas disponibles o escríbenos a **info@xpeak.es**:', ['Ver todos los temas']);
       } else {
         pushBot('Mmm, no estoy seguro de entender eso. ¿Puedes reformularlo?', ['Ver todos los temas', '¿Qué es XPEAK?', '¿Cómo puedo contactar con soporte?']);
       }

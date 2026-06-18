@@ -26,9 +26,9 @@ const AvisoLegal = () => (
 
       <Section title="1. Datos identificativos del titular">
         <p><span className="font-bold text-white">Denominación:</span> XPEAK</p>
-        <p><span className="font-bold text-white">NIF/CIF:</span> <span style={{ color: '#D4AF37' }}>Pendiente de actualización — contactar: info@xpeak.site</span></p>
+        <p><span className="font-bold text-white">NIF/CIF:</span> <span style={{ color: '#D4AF37' }}>Pendiente de actualización — contactar: info@xpeak.es</span></p>
         <p><span className="font-bold text-white">Domicilio:</span> España</p>
-        <p><span className="font-bold text-white">Email:</span> info@xpeak.site</p>
+        <p><span className="font-bold text-white">Email:</span> info@xpeak.es</p>
         <p><span className="font-bold text-white">Contacto legal:</span> legal@xpeak.es</p>
         <p><span className="font-bold text-white">Web:</span> https://xpeak.es</p>
       </Section>
@@ -51,7 +51,7 @@ const AvisoLegal = () => (
         <p>Para más información consulta nuestra{' '}
           <Link to="/privacidad" className="underline font-bold" style={{ color: '#D4AF37' }}>Política de Privacidad</Link>.
         </p>
-        <p><span className="font-bold text-white">Contacto para ejercicio de derechos RGPD:</span> info@xpeak.site</p>
+        <p><span className="font-bold text-white">Contacto para ejercicio de derechos RGPD:</span> info@xpeak.es</p>
       </Section>
 
       <Section title="5. Cookies">

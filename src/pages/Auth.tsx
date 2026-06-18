@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Mail, Lock, User, Eye, EyeOff, Zap, ShieldCheck, Users } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import WelcomeScreen from '@/components/WelcomeScreen';
 import { toast } from 'sonner';
 
 const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { icon: string; text: string }[] }> = {
@@ -76,18 +75,27 @@ const Auth = () => {
   const [forgotSent, setForgotSent] = useState(false);
   const [forgotLoading, setForgotLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [showRecovery, setShowRecovery] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [recoveryLoading, setRecoveryLoading] = useState(false);
+  const isRegistering = useRef(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) navigate(redirectParam, { replace: true });
     });
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        setShowRecovery(true);
+        return;
+      }
+      if (isRegistering.current) return;
       if (session && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED')) {
         navigate(redirectParam, { replace: true });
       }
     });
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, redirectParam]);
 
   const handleGoogleSignIn = async () => {
     const SITE_URL = import.meta.env.VITE_SITE_URL ?? window.location.origin;
@@ -171,8 +179,9 @@ const Auth = () => {
         const safeName = displayName.trim().replace(/<[^>]*>/g, '').replace(/[\x00-\x1F\x7F]/g, '').slice(0, 60);
         if (!safeName) { toast.error('El nombre no es válido.'); setLoading(false); return; }
 
+        isRegistering.current = true;
         const SITE_URL = import.meta.env.VITE_SITE_URL ?? window.location.origin;
-        const { error } = await supabase.auth.signUp({
+        const { data: signUpData, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -183,7 +192,7 @@ const Auth = () => {
               category: 'pending',
               zone: 'España',
             },
-            emailRedirectTo: SITE_URL,
+            emailRedirectTo: `${SITE_URL}/auth`,
           },
         });
         if (error) throw error;
@@ -191,21 +200,26 @@ const Auth = () => {
         if (typeof window !== 'undefined' && (window as any).fbq) (window as any).fbq('track', 'CompleteRegistration');
 
         supabase.functions.invoke('send-email', {
-          body: { type: 'welcome', data: { name: displayName, email, role: 'pending' } },
+          body: { type: 'welcome', data: { name: safeName, email, role: roleParam || 'profesional' } },
         }).catch((err: unknown) => console.warn('[email] welcome failed:', err));
 
-        // Early adopter: primeros 20 usuarios reales reciben email automático
         supabase.from('profiles')
           .select('user_id', { count: 'exact', head: true })
           .then(({ count }) => {
             if (typeof count === 'number' && count <= 20) {
               supabase.functions.invoke('send-email', {
-                body: { type: 'early_adopter', data: { name: displayName, email } },
+                body: { type: 'early_adopter', data: { name: safeName, email } },
               }).catch((err: unknown) => console.warn('[email] early_adopter failed:', err));
             }
           });
 
-        setShowWelcome(true);
+        if (signUpData.session) {
+          toast.success('¡Cuenta creada! Bienvenido a XPEAK');
+          navigate(redirectParam);
+        } else {
+          setShowWelcome(true);
+        }
+        isRegistering.current = false;
       }
     } catch (err: any) {
       toast.error(err.message || 'Error de autenticación');
@@ -565,6 +579,59 @@ const Auth = () => {
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Entendido
             </button>
+          </div>
+        </div>
+      )}
+
+      {showRecovery && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4" style={{ background: 'rgba(0,0,0,0.9)' }}>
+          <div className="w-full max-w-sm rounded-2xl p-8 text-center"
+            style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 24px 64px rgba(0,0,0,0.3)' }}>
+            <div className="w-16 h-16 rounded-full mx-auto mb-5 flex items-center justify-center"
+              style={{ background: 'rgba(212,175,55,0.12)', border: '2px solid rgba(212,175,55,0.3)' }}>
+              <Lock size={28} style={{ color: '#D4AF37' }} />
+            </div>
+            <h2 className="text-xl font-black mb-2" style={{ color: 'rgba(22,20,18,0.92)' }}>
+              Nueva contraseña
+            </h2>
+            <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(22,20,18,0.6)' }}>
+              Introduce tu nueva contraseña para XPEAK.
+            </p>
+            <form onSubmit={async (e) => {
+              e.preventDefault();
+              const pwdErr = validatePassword(newPassword);
+              if (pwdErr) { toast.error(pwdErr); return; }
+              setRecoveryLoading(true);
+              const { error } = await supabase.auth.updateUser({ password: newPassword });
+              setRecoveryLoading(false);
+              if (error) { toast.error(error.message); return; }
+              toast.success('Contraseña actualizada correctamente');
+              setShowRecovery(false);
+              navigate(redirectParam, { replace: true });
+            }} className="space-y-3">
+              <div className="relative">
+                <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#999' }} />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={newPassword}
+                  onChange={e => setNewPassword(e.target.value)}
+                  placeholder="Nueva contraseña (mín. 6 caracteres)"
+                  maxLength={128}
+                  autoFocus
+                  className="w-full py-3 pl-9 pr-10 rounded-xl text-sm"
+                  style={{ background: '#f5f5f5', border: '1px solid #e0e0e0', color: '#111' }}
+                />
+                <button type="button" onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: '#999' }}>
+                  {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+                </button>
+              </div>
+              <button type="submit" disabled={recoveryLoading}
+                className="w-full py-3 rounded-xl font-black text-sm transition-all hover:scale-[1.01] disabled:opacity-50"
+                style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                {recoveryLoading ? 'Guardando...' : 'Guardar nueva contraseña'}
+              </button>
+            </form>
           </div>
         </div>
       )}

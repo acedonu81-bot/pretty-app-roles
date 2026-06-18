@@ -15,7 +15,7 @@ const jsonLd = {
   "description": "Plataforma profesional para el sector de eventos y entretenimiento en España. Conectamos DJs, fotógrafos, camareros, staff y coordinadores de eventos con salas, promotoras y particulares.",
   "contactPoint": {
     "@type": "ContactPoint",
-    "email": "info@xpeak.site",
+    "email": "info@xpeak.es",
     "contactType": "customer support",
     "availableLanguage": "Spanish"
   },
@@ -178,7 +178,7 @@ const SobreNosotros = () => {
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <span style={{ color: 'rgba(255,255,255,0.6)' }}>Email:</span>
-                <a href="mailto:info@xpeak.site" className="font-bold transition-all hover:opacity-80" style={{ color: '#D4AF37' }}>info@xpeak.site</a>
+                <a href="mailto:info@xpeak.es" className="font-bold transition-all hover:opacity-80" style={{ color: '#D4AF37' }}>info@xpeak.es</a>
               </div>
               <div className="flex items-center gap-2">
                 <span style={{ color: 'rgba(255,255,255,0.6)' }}>Web:</span>

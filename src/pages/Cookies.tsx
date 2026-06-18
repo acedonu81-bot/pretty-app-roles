@@ -97,7 +97,7 @@ const Cookies = () => {
 
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>6. Contacto</h2>
-            <p>Si tienes dudas sobre nuestra política de cookies, contacta con nosotros en: <span style={{ color: '#D4AF37' }}>info@xpeak.site</span></p>
+            <p>Si tienes dudas sobre nuestra política de cookies, contacta con nosotros en: <span style={{ color: '#D4AF37' }}>info@xpeak.es</span></p>
           </section>
         </div>
       </div>

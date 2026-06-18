@@ -53,7 +53,7 @@ const AdminUserManagement = () => {
   };
 
   const contactEmail = (_userId: string, name: string) => {
-    window.open(`mailto:info@xpeak.site?subject=Contacto usuario: ${encodeURIComponent(name)}`);
+    window.open(`mailto:info@xpeak.es?subject=Contacto usuario: ${encodeURIComponent(name)}`);
   };
 
   const toggleEarlyAdopter = async (user: DBProfile) => {
