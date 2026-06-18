@@ -11,7 +11,6 @@ import { parseStreamUrl } from '@/lib/streaming';
 import { useProfile as useMyProfile } from '@/hooks/useProfile';
 import GeometricAvatar from './GeometricAvatar';
 import ContractModal from './ContractModal';
-import VoteButton from './VoteButton';
 import type { Profile } from '@/data/profiles';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -151,7 +150,6 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
     genres?: string[];
     hourlyRate?: number;
     isVerified?: boolean;
-    voteCount?: number;
   }>({});
   const [showContract, setShowContract] = useState(false);
   const [imgError, setImgError] = useState(false);
@@ -169,15 +167,6 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
         .maybeSingle();
       if (!data) return;
 
-      let voteCount = 0;
-      if (p.category === 'rookie') {
-        const { count } = await supabase
-          .from('votes' as any)
-          .select('id', { count: 'exact', head: true })
-          .eq('profile_id', String(p.id));
-        voteCount = count ?? 0;
-      }
-
       setFull({
         audioEmbedUrl: (data as any).audio_embed_url,
         portfolioUrls: (data as any).portfolio_urls ?? [],
@@ -186,11 +175,10 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
         genres: (data as any).genres ?? p.badges ?? [],
         hourlyRate: (data as any).hourly_rate ?? p.price,
         isVerified: (data as any).is_verified ?? p.isVerified,
-        voteCount,
       });
     };
     load();
-  }, [p.userId, p.id, p.category, p.description, p.languages, p.badges, p.price, p.isVerified]);
+  }, [p.userId, p.description, p.languages, p.badges, p.price, p.isVerified]);
 
   const audioEmbed = parseStreamUrl((full.audioEmbedUrl ?? (p as any).audio_embed_url) || p.streamUrl);
   const isCompany = me.role === 'empresario';

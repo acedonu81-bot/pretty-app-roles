@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Star, MapPin, BadgeCheck, MessageCircle, FileText, Zap, Award, CheckCircle, X } from 'lucide-react';
+import { Star, MapPin, BadgeCheck, MessageCircle, FileText, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Profile } from '@/data/profiles';
 import GeometricAvatar from './GeometricAvatar';
