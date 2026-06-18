@@ -35,7 +35,6 @@ interface ProfileCardProps {
 const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, onNavigateSubscription, onViewProfile }: ProfileCardProps) => {
   const currentUser = useProfile();
   const isRookie = p.category === 'rookie';
-  const [expandedRookie, setExpandedRookie] = useState(false);
   const [accepted, setAccepted] = useState(() => localStorage.getItem('xpeak_norms_accepted') === 'true');
   const [showLegal, setShowLegal] = useState(false);
   const [showContract, setShowContract] = useState(false);
@@ -219,45 +218,6 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
             <VoteButton profileId={realProfileId ?? String(p.id)} voteCount={voteCount}
               hasVotedToday={hasVotedToday} category="rookie"
               onVoted={() => { setVoteCount(c => c + 1); setHasVotedToday(true); }} />
-          </div>
-        )}
-
-        {/* Rookie expanded panel */}
-        {expandedRookie && isRookie && (
-          <div className="p-3 rounded-lg" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}
-            onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-bold flex items-center gap-1" style={{ color: '#D4AF37' }}>
-                <Award size={12} /> Panel Promesa
-              </span>
-              <button onClick={() => setExpandedRookie(false)}><X size={12} className="text-muted-foreground" /></button>
-            </div>
-            <div className="text-center py-2">
-              <div className="text-2xl font-black" style={{ color: '#D4AF37' }}>{voteCount}</div>
-              <div className="text-xs text-muted-foreground">de 500 votos</div>
-            </div>
-            <div className="h-1.5 rounded-full overflow-hidden mb-2" style={{ background: 'rgba(0,0,0,0.05)' }}>
-              <div className="h-full rounded-full" style={{ width: `${progress}%`, background: 'linear-gradient(90deg,#D4AF37,#22c55e)' }} />
-            </div>
-            <div className="space-y-1">
-              {milestones.map(m => {
-                const reached = voteCount >= m.votes;
-                return (
-                  <div key={m.votes} className="flex items-center gap-2 p-1 rounded"
-                    style={{ background: reached ? 'rgba(212,175,55,0.06)' : 'transparent' }}>
-                    <span className="w-1.5 h-1.5 rounded-full" style={{ background: reached ? m.color : 'rgba(0,0,0,0.08)' }} />
-                    <span className={`text-xs flex-1 ${reached ? 'font-bold' : 'text-muted-foreground'}`}>{m.label}</span>
-                    <span className="text-[0.65rem] text-muted-foreground">{m.votes}</span>
-                    {reached && <CheckCircle size={9} style={{ color: '#22c55e' }} />}
-                  </div>
-                );
-              })}
-            </div>
-            {nextMilestone && (
-              <p className="text-[0.65rem] text-muted-foreground text-center mt-2">
-                Faltan <span className="font-bold" style={{ color: '#D4AF37' }}>{nextMilestone.votes - voteCount}</span> votos para {nextMilestone.label}
-              </p>
-            )}
           </div>
         )}
 
