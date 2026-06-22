@@ -34,14 +34,14 @@ export default function NightlifeSelect({ value, onChange, options, placeholder 
         style={{
           background: isActive ? 'rgba(212,175,55,0.1)' : '#ffffff',
           border: `1px solid ${isActive ? 'rgba(212,175,55,0.45)' : 'rgba(0,0,0,0.12)'}`,
-          color: isActive ? '#9a7d1f' : '#333',
+          color: isActive ? '#7a6216' : '#333',
           cursor: 'pointer',
         }}
       >
         <span className="truncate">{label}</span>
         <svg
           width="10" height="6" viewBox="0 0 10 6" fill="none"
-          style={{ flexShrink: 0, transition: 'transform 0.15s', transform: open ? 'rotate(180deg)' : 'none', color: isActive ? '#9a7d1f' : '#888' }}>
+          style={{ flexShrink: 0, transition: 'transform 0.15s', transform: open ? 'rotate(180deg)' : 'none', color: isActive ? '#7a6216' : '#888' }}>
           <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </button>
@@ -65,7 +65,7 @@ export default function NightlifeSelect({ value, onChange, options, placeholder 
               className="w-full text-left text-xs font-bold px-3 py-2.5 transition-all"
               style={{
                 background: o.value === value ? 'rgba(212,175,55,0.12)' : 'transparent',
-                color: o.value === value ? '#9a7d1f' : '#333',
+                color: o.value === value ? '#7a6216' : '#333',
                 borderBottom: '1px solid rgba(0,0,0,0.05)',
               }}
               onMouseEnter={e => { if (o.value !== value) (e.currentTarget as HTMLButtonElement).style.background = 'rgba(0,0,0,0.04)'; }}

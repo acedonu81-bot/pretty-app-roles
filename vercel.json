@@ -3,6 +3,7 @@
     { "source": "/:path(.*)", "has": [{ "type": "host", "value": "www.xpeak.es" }], "destination": "https://xpeak.es/:path", "permanent": true }
   ],
   "routes": [
+    { "src": "/directorio",     "status": 308, "headers": { "Location": "/directorio/dj" } },
     { "src": "/dj-madrid",      "status": 301, "headers": { "Location": "/contratar-dj/madrid" } },
     { "src": "/dj-barcelona",   "status": 301, "headers": { "Location": "/contratar-dj/barcelona" } },
     { "src": "/dj-sevilla",     "status": 301, "headers": { "Location": "/contratar-dj/sevilla" } },
@@ -59,7 +60,7 @@
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "DENY",
         "Referrer-Policy": "strict-origin-when-cross-origin",
-        "Permissions-Policy": "camera=(), microphone=(), geolocation=()"
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=(), encrypted-media=(self \"https://w.soundcloud.com\")"
       },
       "continue": true
     },

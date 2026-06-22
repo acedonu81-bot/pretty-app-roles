@@ -24,7 +24,8 @@ scripts/            — prerender-meta.mjs, update-sitemap.mjs
 - `npm run build` — build + prerender + sitemap
 - `npm test` — vitest
 - `npx tsc --noEmit` — type check
-- `npx vercel --prod --yes` — deploy producción (git push no funciona, token expirado)
+- `npx vercel --prod --yes` — deploy producción (Vercel no auto-despliega desde GitHub)
+- `git push origin main` — sube código a GitHub (token en macOS Keychain; sí funciona)
 
 ## Convenciones
 - Responder siempre en español

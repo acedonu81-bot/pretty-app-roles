@@ -627,8 +627,8 @@ const PublicProfile = () => {
                 </div>
               )}
 
-              {/* CTA — directo a mensajes si logueado */}
-              <div className="flex gap-3 flex-wrap">
+              {/* CTA — directo a mensajes si logueado. Oculto en móvil: el sticky bottom ya lo cubre */}
+              <div className="hidden md:flex gap-3 flex-wrap">
                 <button
                   onClick={() => {
                     if (authUser && sbProfile?.user_id) {
@@ -699,7 +699,7 @@ const PublicProfile = () => {
               <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
                 <iframe src={audioEmbed.embedUrl} width="100%"
                   height={audioEmbed.type === 'SoundCloud' ? '166' : audioEmbed.type === 'HearThis' ? '150' : '120'}
-                  frameBorder="0" allow="autoplay" title="Mix" loading="lazy" />
+                  frameBorder="0" allow="autoplay; encrypted-media" title="Mix" loading="lazy" />
               </div>
             </motion.div>
           )}

@@ -73,6 +73,8 @@ html, body, #root {
     --nightlife-primary-glow: rgba(212, 175, 55, 0.25);
     --nightlife-secondary:    #B8941E;
     --nightlife-yellow:       #D4AF37;
+    /* Accessible gold for small text on light backgrounds (WCAG AA ~4.6:1) */
+    --gold-on-light:          #7a6216;
     --nightlife-green:        #16a34a;
     --nightlife-red:          #dc2626;
 
@@ -411,6 +413,9 @@ html, body, #root {
 
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Accessible gold text for small labels on white/light surfaces */
+.text-gold-on-light { color: var(--gold-on-light); }
 
 .aspect-card-photo { aspect-ratio: 3/4; }
 @media (min-width: 640px) { .aspect-card-photo { aspect-ratio: 4/3; } }

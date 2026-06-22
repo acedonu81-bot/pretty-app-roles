@@ -36,10 +36,10 @@ const LegalFooter = () => {
             <div>
               <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.58)' }}>Plataforma</p>
               <ul className="space-y-2.5 text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                <li><Link to="/auth" className="hover:text-white transition-colors">Registro gratuito</Link></li>
-                <li><Link to="/auth" className="hover:text-white transition-colors">Para profesionales</Link></li>
-                <li><Link to="/auth" className="hover:text-white transition-colors">Para organizadores de eventos</Link></li>
-                <li><Link to="/dashboard" className="hover:text-white transition-colors">Mi dashboard</Link></li>
+                <li><Link to="/auth" className="inline-block py-1 hover:text-white transition-colors">Registro gratuito</Link></li>
+                <li><Link to="/auth" className="inline-block py-1 hover:text-white transition-colors">Para profesionales</Link></li>
+                <li><Link to="/auth" className="inline-block py-1 hover:text-white transition-colors">Para organizadores de eventos</Link></li>
+                <li><Link to="/dashboard" className="inline-block py-1 hover:text-white transition-colors">Mi dashboard</Link></li>
               </ul>
             </div>
 
@@ -47,14 +47,14 @@ const LegalFooter = () => {
             <div>
               <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.58)' }}>Empresa</p>
               <ul className="space-y-2.5 text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                <li><Link to="/sobre-nosotros" className="hover:text-white transition-colors">Sobre nosotros</Link></li>
+                <li><Link to="/sobre-nosotros" className="inline-block py-1 hover:text-white transition-colors">Sobre nosotros</Link></li>
                 <li>
-                  <button onClick={() => setShowContact(true)} className="hover:text-white transition-colors text-left">
+                  <button onClick={() => setShowContact(true)} className="inline-block py-1 hover:text-white transition-colors text-left">
                     Contacto
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => setShowLegal(true)} className="hover:text-white transition-colors text-left">
+                  <button onClick={() => setShowLegal(true)} className="inline-block py-1 hover:text-white transition-colors text-left">
                     Aviso de intermediación
                   </button>
                 </li>
@@ -65,10 +65,10 @@ const LegalFooter = () => {
             <div>
               <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.58)' }}>Legal</p>
               <ul className="space-y-2.5 text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                <li><Link to="/privacidad" className="hover:text-white transition-colors">Política de privacidad</Link></li>
-                <li><Link to="/terminos" className="hover:text-white transition-colors">Términos y condiciones</Link></li>
-                <li><Link to="/cookies" className="hover:text-white transition-colors">Política de cookies</Link></li>
-                <li><Link to="/aviso-legal" className="hover:text-white transition-colors">Aviso legal</Link></li>
+                <li><Link to="/privacidad" className="inline-block py-1 hover:text-white transition-colors">Política de privacidad</Link></li>
+                <li><Link to="/terminos" className="inline-block py-1 hover:text-white transition-colors">Términos y condiciones</Link></li>
+                <li><Link to="/cookies" className="inline-block py-1 hover:text-white transition-colors">Política de cookies</Link></li>
+                <li><Link to="/aviso-legal" className="inline-block py-1 hover:text-white transition-colors">Aviso legal</Link></li>
               </ul>
             </div>
           </div>

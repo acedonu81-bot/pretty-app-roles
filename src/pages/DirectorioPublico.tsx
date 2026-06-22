@@ -215,7 +215,7 @@ export default function DirectorioPublico() {
         <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-20">
           {/* Header */}
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#D4AF37' }}>Directorio · XPEAK</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#7a6216' }}>Directorio · XPEAK</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-3" style={{ color: '#111' }}>{config.title}</h1>
             <p className="text-sm leading-relaxed max-w-xl" style={{ color: '#333' }}>{config.subtitle}</p>
           </div>
@@ -239,7 +239,7 @@ export default function DirectorioPublico() {
               <button key={c} onClick={() => setCity(c)}
                 className="px-3 py-1 rounded-lg text-xs font-medium transition-all whitespace-nowrap flex-shrink-0"
                 style={c === city
-                  ? { background: 'rgba(212,175,55,0.12)', color: '#B8941E', border: '1px solid rgba(212,175,55,0.35)' }
+                  ? { background: 'rgba(212,175,55,0.12)', color: '#7a6216', border: '1px solid rgba(212,175,55,0.45)' }
                   : { background: '#ffffff', color: '#222', border: '1px solid rgba(0,0,0,0.1)' }
                 }>{c}</button>
             ))}
@@ -255,7 +255,7 @@ export default function DirectorioPublico() {
               <p className="text-xs mb-4" style={{ color: '#444' }}>Comprueba tu conexión y vuelve a intentarlo.</p>
               <button onClick={() => { setCity(city); setFetchError(false); setLoading(true); }}
                 className="px-4 py-2 rounded-xl text-xs font-bold"
-                style={{ background: 'rgba(212,175,55,0.1)', color: '#B8941E', border: '1px solid rgba(212,175,55,0.25)' }}>
+                style={{ background: 'rgba(212,175,55,0.1)', color: '#7a6216', border: '1px solid rgba(212,175,55,0.35)' }}>
                 Reintentar
               </button>
             </div>
@@ -278,7 +278,7 @@ export default function DirectorioPublico() {
               <p className="text-sm font-bold mb-2">Sin resultados en {city}</p>
               <p className="text-xs mb-4" style={{ color: '#444' }}>Prueba con otra ciudad o ve al directorio completo.</p>
               <button onClick={() => setCity('Todas')} className="px-4 py-2 rounded-xl text-xs font-bold"
-                style={{ background: 'rgba(212,175,55,0.1)', color: '#B8941E', border: '1px solid rgba(212,175,55,0.25)' }}>
+                style={{ background: 'rgba(212,175,55,0.1)', color: '#7a6216', border: '1px solid rgba(212,175,55,0.35)' }}>
                 Ver todos
               </button>
             </div>
@@ -310,26 +310,46 @@ export default function DirectorioPublico() {
                     </div>
                     {/* Badges */}
                     <div className="absolute top-2.5 left-2.5 flex gap-1.5 flex-wrap z-10">
+                      {/* Mobile: ONE badge, priority Disponible > Pro > Early > Rápida */}
+                      <span className="sm:hidden">
+                        {p.is_flash_active ? (
+                          <span className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
+                            style={{ background: '#15803d', color: '#fff' }}>
+                            <Zap size={10} fill="#fff" /> Disponible
+                          </span>
+                        ) : p.is_verified ? (
+                          <span className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
+                            style={{ background: '#D4AF37', color: '#000' }}>
+                            <BadgeCheck size={10} /> Pro
+                          </span>
+                        ) : (p as any).is_early_adopter ? (
+                          <span className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
+                            style={{ background: 'rgba(96,165,250,0.95)', color: '#fff' }}>
+                            ⭐ Early
+                          </span>
+                        ) : null}
+                      </span>
+                      {/* Desktop: full set */}
                       {(p as any).is_early_adopter && (
-                        <span className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
+                        <span className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
                           style={{ background: 'rgba(96,165,250,0.9)', color: '#000' }}>
                           ⭐ Early Adopter
                         </span>
                       )}
                       {p.is_verified && (
-                        <span className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
+                        <span className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
                           style={{ background: '#D4AF37', color: '#000' }}>
                           <BadgeCheck size={10} /> Pro verificado
                         </span>
                       )}
                       {p.is_flash_active && (
-                        <span className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
-                          style={{ background: '#22c55e', color: '#fff' }}>
+                        <span className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
+                          style={{ background: '#15803d', color: '#fff' }}>
                           <Zap size={10} fill="#fff" /> Disponible ahora
                         </span>
                       )}
                       {(p as any).fast_responder_count >= 1 && (
-                        <span className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
+                        <span className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
                           style={{ background: 'rgba(251,146,60,0.9)', color: '#000' }}>
                           ⚡ Respuesta rápida
                         </span>
@@ -349,14 +369,14 @@ export default function DirectorioPublico() {
                   {/* Info — clean & minimal on mobile */}
                   <div className="p-3 sm:p-4 flex flex-col flex-1">
                     <a href={`/p/${p.user_id}`} className="block hover:opacity-70 transition-opacity">
-                      <p className="text-sm sm:text-base font-black leading-tight" style={{ color: '#111' }}>{p.display_name}</p>
-                      {/* Zone + specialty inline on mobile */}
-                      <p className="text-xs truncate mt-0.5 sm:hidden" style={{ color: '#222' }}>
-                        {[p.zone?.split(',')[0], p.specialty].filter(Boolean).join(' · ')}
+                      <p className="text-sm sm:text-base font-black leading-tight truncate" style={{ color: '#111' }}>{p.display_name}</p>
+                      {/* Zone + specialty inline on mobile — single clean line */}
+                      <p className="text-xs truncate mt-0.5 sm:hidden" style={{ color: '#717171' }}>
+                        {[p.zone?.split(',')[0], p.specialty?.split(/[·+(]/)[0].trim()].filter(Boolean).join(' · ')}
                       </p>
                       {/* Desktop: specialty on its own line */}
                       {p.specialty && (
-                        <p className="hidden sm:block text-xs font-semibold mb-1 mt-0.5" style={{ color: '#D4AF37' }}>{p.specialty}</p>
+                        <p className="hidden sm:block text-xs font-semibold mb-1 mt-0.5 truncate" style={{ color: '#7a6216' }}>{p.specialty}</p>
                       )}
                     </a>
 

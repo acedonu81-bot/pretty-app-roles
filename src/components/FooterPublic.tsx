@@ -32,18 +32,18 @@ const FOOTER_LINKS = {
 
 export default function FooterPublic() {
   return (
-    <footer style={{ background: '#f5f4f0', borderTop: '1px solid rgba(0,0,0,0.07)' }}>
+    <footer style={{ background: '#ffffff', borderTop: '1px solid rgba(0,0,0,0.09)' }}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
 
         {/* Top grid */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-12">
           {/* Contratar */}
           <div>
-            <p className="text-[0.6rem] font-black uppercase tracking-widest mb-4" style={{ color: '#D4AF37' }}>Contratar</p>
+            <p className="text-[0.6rem] font-black uppercase tracking-widest mb-4" style={{ color: '#7a6216' }}>Contratar</p>
             <ul className="space-y-2.5">
               {FOOTER_LINKS.contratar.map(l => (
                 <li key={l.href}>
-                  <a href={l.href} className="text-xs transition-opacity hover:opacity-80" style={{ color: '#222' }}>
+                  <a href={l.href} className="inline-block py-1 text-xs transition-opacity hover:opacity-80" style={{ color: '#222' }}>
                     {l.label}
                   </a>
                 </li>
@@ -53,11 +53,11 @@ export default function FooterPublic() {
 
           {/* Blog */}
           <div>
-            <p className="text-[0.6rem] font-black uppercase tracking-widest mb-4" style={{ color: '#D4AF37' }}>Blog</p>
+            <p className="text-[0.6rem] font-black uppercase tracking-widest mb-4" style={{ color: '#7a6216' }}>Blog</p>
             <ul className="space-y-2.5">
               {FOOTER_LINKS.blog.map(l => (
                 <li key={l.href}>
-                  <a href={l.href} className="text-xs transition-opacity hover:opacity-80" style={{ color: '#222' }}>
+                  <a href={l.href} className="inline-block py-1 text-xs transition-opacity hover:opacity-80" style={{ color: '#222' }}>
                     {l.label}
                   </a>
                 </li>
@@ -67,11 +67,11 @@ export default function FooterPublic() {
 
           {/* XPEAK */}
           <div>
-            <p className="text-[0.6rem] font-black uppercase tracking-widest mb-4" style={{ color: '#D4AF37' }}>XPEAK</p>
+            <p className="text-[0.6rem] font-black uppercase tracking-widest mb-4" style={{ color: '#7a6216' }}>XPEAK</p>
             <ul className="space-y-2.5">
               {FOOTER_LINKS.xpeak.map(l => (
                 <li key={l.href}>
-                  <a href={l.href} className="text-xs transition-opacity hover:opacity-80" style={{ color: '#222' }}>
+                  <a href={l.href} className="inline-block py-1 text-xs transition-opacity hover:opacity-80" style={{ color: '#222' }}>
                     {l.label}
                   </a>
                 </li>
@@ -81,11 +81,11 @@ export default function FooterPublic() {
 
           {/* Legal */}
           <div>
-            <p className="text-[0.6rem] font-black uppercase tracking-widest mb-4" style={{ color: '#D4AF37' }}>Legal</p>
+            <p className="text-[0.6rem] font-black uppercase tracking-widest mb-4" style={{ color: '#7a6216' }}>Legal</p>
             <ul className="space-y-2.5">
               {FOOTER_LINKS.legal.map(l => (
                 <li key={l.href}>
-                  <a href={l.href} className="text-xs transition-opacity hover:opacity-80" style={{ color: '#222' }}>
+                  <a href={l.href} className="inline-block py-1 text-xs transition-opacity hover:opacity-80" style={{ color: '#222' }}>
                     {l.label}
                   </a>
                 </li>
@@ -106,7 +106,7 @@ export default function FooterPublic() {
               className="text-[0.65rem] transition-opacity hover:opacity-80" style={{ color: '#333' }}>
               @xpeak.es
             </a>
-            <span className="text-[0.65rem]" style={{ color: 'rgba(0,0,0,0.1)' }}>© 2026 XPEAK</span>
+            <span className="text-[0.65rem]" style={{ color: 'rgba(0,0,0,0.55)' }}>© 2026 XPEAK</span>
           </div>
         </div>
       </div>
