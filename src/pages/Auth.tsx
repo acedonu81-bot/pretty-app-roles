@@ -1,45 +1,45 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Mail, Lock, User, Eye, EyeOff, Zap, ShieldCheck, Users } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, Zap, ShieldCheck, Users, FileText, MapPin, Target, BadgeCheck, Search, Wallet, type LucideIcon } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
-const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { icon: string; text: string }[] }> = {
+const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { icon: LucideIcon; text: string }[] }> = {
   dj: {
     tagline: 'El directorio donde te contratan los mejores eventos.',
     sub: 'DJs de toda España ya publican su tarifa y consiguen bolos en horas.',
     bullets: [
-      { icon: '⚡', text: 'Flash Booking — cubre un evento en <1h (próximamente)' },
-      { icon: '📄', text: 'Contratos digitales automáticos' },
-      { icon: '🇪🇸', text: 'Visible para salas de toda España' },
+      { icon: Zap, text: 'Flash Booking — cubre un evento en <1h (próximamente)' },
+      { icon: FileText, text: 'Contratos digitales automáticos' },
+      { icon: MapPin, text: 'Visible para salas de toda España' },
     ],
   },
   staff: {
     tagline: 'Consigue trabajo de staff y camarero en eventos reales.',
     sub: 'Empresarios verificados buscan profesionales como tú cada semana.',
     bullets: [
-      { icon: '⚡', text: 'Ofertas de trabajo en tiempo real' },
-      { icon: '📄', text: 'Contratos digitales sin papeleo' },
-      { icon: '✅', text: 'Perfil verificado, más confianza' },
+      { icon: Zap, text: 'Ofertas de trabajo en tiempo real' },
+      { icon: FileText, text: 'Contratos digitales sin papeleo' },
+      { icon: BadgeCheck, text: 'Perfil verificado, más confianza' },
     ],
   },
   profesional: {
     tagline: 'El directorio de referencia para profesionales de eventos.',
     sub: 'Crea tu perfil, publica tu tarifa y empieza a recibir solicitudes.',
     bullets: [
-      { icon: '🎯', text: 'Visible para salas y promotoras de España' },
-      { icon: '📄', text: 'Contratos automáticos con PDF' },
-      { icon: '💰', text: '0% comisión — cobras todo lo tuyo' },
+      { icon: Target, text: 'Visible para salas y promotoras de España' },
+      { icon: FileText, text: 'Contratos automáticos con PDF' },
+      { icon: Wallet, text: '0% comisión — cobras todo lo tuyo' },
     ],
   },
   empresario: {
     tagline: 'Contrata talento verificado sin comisiones.',
     sub: 'Flash Booking próximamente. Directorio real, contacto directo.',
     bullets: [
-      { icon: '🔍', text: 'Directorio de profesionales verificados' },
-      { icon: '📄', text: 'Contrato automático — sin papeleo' },
-      { icon: '✅', text: 'DJs, fotógrafos y staff verificados' },
+      { icon: Search, text: 'Directorio de profesionales verificados' },
+      { icon: FileText, text: 'Contrato automático — sin papeleo' },
+      { icon: BadgeCheck, text: 'DJs, fotógrafos y staff verificados' },
     ],
   },
 };
@@ -48,9 +48,9 @@ const DEFAULT_CONTENT = {
   tagline: 'El directorio de referencia para profesionales de eventos.',
   sub: 'Publica tu perfil, consigue trabajo. Gratis, sin comisiones.',
   bullets: [
-    { icon: '⚡', text: 'Flash Booking — próximamente' },
-    { icon: '💰', text: '0% comisión — cobras todo lo tuyo' },
-    { icon: '🇪🇸', text: 'Visible en toda España' },
+    { icon: Zap, text: 'Flash Booking — próximamente' },
+    { icon: Wallet, text: '0% comisión — cobras todo lo tuyo' },
+    { icon: MapPin, text: 'Visible en toda España' },
   ],
 };
 
@@ -271,16 +271,25 @@ const Auth = () => {
                   {content.sub}
                 </p>
 
-                <div className="space-y-3">
-                  {content.bullets.map(b => (
-                    <div key={b.text} className="flex items-center gap-3">
-                      <span className="text-base w-6 text-center">{b.icon}</span>
-                      <span className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.8)' }}>{b.text}</span>
-                    </div>
-                  ))}
+                <div className="space-y-3.5">
+                  {content.bullets.map(b => {
+                    const Icon = b.icon;
+                    return (
+                      <div key={b.text} className="flex items-center gap-3">
+                        <span className="flex items-center justify-center w-8 h-8 rounded-lg flex-shrink-0"
+                          style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)' }}>
+                          <Icon size={15} style={{ color: '#D4AF37' }} strokeWidth={2.2} />
+                        </span>
+                        <span className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.85)' }}>{b.text}</span>
+                      </div>
+                    );
+                  })}
                   <div className="flex items-center gap-3">
-                    <span className="text-base w-6 text-center">💸</span>
-                    <span className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.8)' }}>Gratis · 0% comisión</span>
+                    <span className="flex items-center justify-center w-8 h-8 rounded-lg flex-shrink-0"
+                      style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)' }}>
+                      <ShieldCheck size={15} style={{ color: '#D4AF37' }} strokeWidth={2.2} />
+                    </span>
+                    <span className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.85)' }}>Gratis · 0% comisión</span>
                   </div>
                 </div>
               </div>
