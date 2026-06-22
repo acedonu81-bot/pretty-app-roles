@@ -187,14 +187,27 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     await loadMessages(activeConvId);
     await loadConversations();
     setSending(false);
-    // Email notification to recipient (fire and forget)
-    if (activeOtherUserId && text) {
-      supabase.functions.invoke('send-email', {
-        body: {
-          type: 'new_message',
-          data: { user_id: activeOtherUserId, sender_name: user.user_metadata?.display_name || 'Un usuario' },
-        },
-      });
+    // Notify recipient by 2 channels: in-app notification + email (fire and forget)
+    if (activeOtherUserId) {
+      const senderName = user.user_metadata?.display_name || 'Un usuario';
+      const preview = text ? (text.length > 80 ? text.slice(0, 80) + '…' : text) : '📷 Te ha enviado una imagen';
+      // 1) In-app notification (degrades gracefully if table not yet present)
+      supabase.from('notifications' as any).insert({
+        user_id: activeOtherUserId,
+        type: 'message',
+        title: `${senderName} te ha escrito`,
+        body: preview,
+        link: '/dashboard',
+      }).then(({ error }) => { if (error) console.warn('notif insert:', error.message); });
+      // 2) Email
+      if (text) {
+        supabase.functions.invoke('send-email', {
+          body: {
+            type: 'new_message',
+            data: { user_id: activeOtherUserId, sender_name: senderName },
+          },
+        });
+      }
     }
   };
 

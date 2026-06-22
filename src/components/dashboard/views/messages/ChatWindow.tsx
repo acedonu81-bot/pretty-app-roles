@@ -143,13 +143,14 @@ const ChatWindow = ({
                     <div className="px-4 py-2.5 rounded-2xl text-sm"
                       style={{
                         background: isMe
-                          ? 'linear-gradient(135deg, rgba(212,175,55,0.2), rgba(184,148,30,0.12))'
+                          ? 'linear-gradient(135deg, #D4AF37, #C9A227)'
                           : 'rgba(0,0,0,0.05)',
-                        border: `1px solid ${isMe ? 'rgba(212,175,55,0.3)' : 'rgba(0,0,0,0.06)'}`,
+                        border: `1px solid ${isMe ? 'rgba(184,148,30,0.5)' : 'rgba(0,0,0,0.06)'}`,
                         borderBottomRightRadius: isMe ? 4 : undefined,
                         borderBottomLeftRadius: !isMe ? 4 : undefined,
-                        boxShadow: isMe ? '0 2px 12px rgba(212,175,55,0.08)' : 'none',
-                        color: isMe ? 'rgba(255,255,255,0.95)' : '#333',
+                        boxShadow: isMe ? '0 2px 12px rgba(212,175,55,0.18)' : 'none',
+                        color: isMe ? '#1a1208' : '#222',
+                        fontWeight: isMe ? 600 : 400,
                         lineHeight: '1.5',
                       }}>
                       {msg.content}

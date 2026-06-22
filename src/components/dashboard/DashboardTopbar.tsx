@@ -1,8 +1,22 @@
-import { Search, LogOut, Menu, Sparkles, Bell, X } from 'lucide-react';
-import { useState } from 'react';
+import { Search, LogOut, Menu, Sparkles, Bell, X, MessageCircle, Gift } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProfile } from '@/hooks/useProfile';
+import { supabase } from '@/integrations/supabase/client';
 import { isNative } from '@/lib/capacitor';
+
+interface RealNotif { id: string; type: string; title: string; body: string | null; link: string | null; is_read: boolean; created_at: string; }
+
+const timeAgo = (iso: string): string => {
+  const diff = Date.now() - new Date(iso).getTime();
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return 'Ahora';
+  if (m < 60) return `Hace ${m} min`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `Hace ${h} h`;
+  const d = Math.floor(h / 24);
+  return d === 1 ? 'Ayer' : `Hace ${d} días`;
+};
 
 interface TopbarProps {
   onMenuToggle?: () => void;
@@ -21,14 +35,37 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
       return new Set(s ? JSON.parse(s) : []);
     } catch { return new Set(); }
   });
+  const [realNotifs, setRealNotifs] = useState<RealNotif[]>([]);
   const profile = useProfile();
 
-  const markAllRead = () => {
-    const ids = new Set([...dismissed, ...notifications.map(n => n.id)]);
-    setDismissed(ids);
-    localStorage.setItem('xpeak_notif_dismissed', JSON.stringify([...ids]));
-    setShowNotif(false);
-  };
+  // Load real in-app notifications + subscribe to new ones (realtime)
+  const loadNotifs = useCallback(async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    const { data } = await supabase
+      .from('notifications' as any)
+      .select('id, type, title, body, link, is_read, created_at')
+      .eq('user_id', user.id)
+      .eq('is_read', false)
+      .order('created_at', { ascending: false })
+      .limit(20);
+    if (data) setRealNotifs(data as unknown as RealNotif[]);
+  }, []);
+
+  useEffect(() => {
+    loadNotifs();
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (!user) return;
+      channel = supabase
+        .channel('notif-' + user.id)
+        .on('postgres_changes',
+          { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${user.id}` },
+          () => loadNotifs())
+        .subscribe();
+    });
+    return () => { if (channel) supabase.removeChannel(channel); };
+  }, [loadNotifs]);
 
   // Solo mostrar novedades si el perfil tiene menos de 7 días (usuarios nuevos)
   const profileAgeDays = profile.created_at
@@ -36,7 +73,18 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
     : 999;
   const isNewUser = profileAgeDays < 7;
 
+  // Real notifications (chat messages, etc.) first, then onboarding hints
   const notifications = [
+    ...realNotifs.map(n => ({
+      id: n.id,
+      title: n.title,
+      desc: n.body ?? '',
+      time: timeAgo(n.created_at),
+      icon: (n.type === 'message' ? 'message' : 'spark') as 'message' | 'spark' | 'gift',
+      urgent: false,
+      link: n.link,
+      real: true,
+    })),
     ...(!profile.display_name ? [{
       id: 'incomplete_profile',
       title: 'Perfil incompleto',
@@ -44,6 +92,8 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
       time: 'Pendiente',
       icon: 'spark' as const,
       urgent: true,
+      link: null,
+      real: false,
     }] : []),
     ...(isNewUser ? [{
       id: 'ficha_nueva',
@@ -52,11 +102,34 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
       time: 'Novedad',
       icon: 'spark' as const,
       urgent: false,
+      link: null,
+      real: false,
     }] : []),
-  ];
+  ].filter(n => !dismissed.has(n.id));
 
-  const unread = notifications.filter(n => !dismissed.has(n.id));
-  const readAll = unread.length === 0;
+  const readAll = notifications.length === 0;
+
+  const markAllRead = async () => {
+    const ids = new Set([...dismissed, ...notifications.map(n => n.id)]);
+    setDismissed(ids);
+    localStorage.setItem('xpeak_notif_dismissed', JSON.stringify([...ids]));
+    setShowNotif(false);
+    // Persist read state for real notifications in DB
+    const realIds = realNotifs.map(n => n.id);
+    if (realIds.length) {
+      await supabase.from('notifications' as any).update({ is_read: true }).in('id', realIds);
+      setRealNotifs([]);
+    }
+  };
+
+  const openNotif = async (n: { id: string; link: string | null; real: boolean }) => {
+    if (n.real) {
+      await supabase.from('notifications' as any).update({ is_read: true }).eq('id', n.id);
+      setRealNotifs(prev => prev.filter(r => r.id !== n.id));
+    }
+    setShowNotif(false);
+    if (n.link) navigate(n.link);
+  };
 
   return (
     <header
@@ -190,12 +263,13 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
             <div className="max-h-72 overflow-y-auto">
               {notifications.length === 0 ? (
                 <div className="px-4 py-8 flex flex-col items-center gap-2 text-center">
-                  <Bell size={20} style={{ color: 'rgba(212,175,55,0.2)' }} />
-                  <p className="text-xs font-bold" style={{ color: 'rgba(0,0,0,0.1)' }}>Sin notificaciones</p>
-                  <p className="text-xs" style={{ color: 'rgba(0,0,0,0.1)' }}>Todo al día por aquí.</p>
+                  <Bell size={20} style={{ color: 'rgba(212,175,55,0.4)' }} />
+                  <p className="text-xs font-bold" style={{ color: '#444' }}>Sin notificaciones</p>
+                  <p className="text-xs" style={{ color: '#777' }}>Todo al día por aquí.</p>
                 </div>
               ) : notifications.map((n, i) => (
                 <div key={n.id}
+                  onClick={() => openNotif(n)}
                   className="px-4 py-3 flex gap-3 items-start cursor-pointer transition-all"
                   style={{
                     borderBottom: '1px solid rgba(0,0,0,0.04)',
@@ -212,7 +286,9 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
                         : 'radial-gradient(circle at 35% 35%, rgba(212,175,55,0.3), rgba(184,148,30,0.1))',
                       border: n.urgent ? '1px solid rgba(239,68,68,0.3)' : '1px solid rgba(212,175,55,0.2)',
                     }}>
-                    {n.icon === 'gift'
+                    {n.icon === 'message'
+                      ? <MessageCircle size={12} style={{ color: '#D4AF37' }} />
+                      : n.icon === 'gift'
                       ? <Gift size={12} style={{ color: n.urgent ? '#ef4444' : '#D4AF37' }} />
                       : <Sparkles size={12} style={{ color: '#D4AF37' }} />}
                   </div>
