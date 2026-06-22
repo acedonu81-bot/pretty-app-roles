@@ -100,7 +100,7 @@ const RookiePublicCard = ({ dj, userId }: { dj: any; userId: string | undefined 
             toast.success('Enlace copiado');
           }}
           className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs transition-all hover:scale-105"
-          style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)', color: '#8E8EA0' }}>
+          style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)', color: '#3d3d4e' }}>
           <Share2 size={11} />
         </button>
       </div>
@@ -221,8 +221,8 @@ const RookieView = () => {
               </div>
             </div>
             {myPanelOpen
-              ? <ChevronUp size={16} style={{ color: '#8E8EA0' }} />
-              : <ChevronDown size={16} style={{ color: '#8E8EA0' }} />}
+              ? <ChevronUp size={16} style={{ color: '#3d3d4e' }} />
+              : <ChevronDown size={16} style={{ color: '#3d3d4e' }} />}
           </button>
 
           {myPanelOpen && (

@@ -43,7 +43,7 @@ const FlashBookingWallView = () => {
             style={{
               background: tab === t.id ? `rgba(${t.color === '#D4AF37' ? '212,175,55' : '34,197,94'},0.12)` : 'rgba(0,0,0,0.03)',
               border: `1px solid ${tab === t.id ? `rgba(${t.color === '#D4AF37' ? '212,175,55' : '34,197,94'},0.4)` : 'var(--nightlife-border)'}`,
-              color: tab === t.id ? t.color : '#8E8EA0',
+              color: tab === t.id ? t.color : '#3d3d4e',
             }}>
             <span className="w-2 h-2 rounded-full flex-shrink-0"
               style={{

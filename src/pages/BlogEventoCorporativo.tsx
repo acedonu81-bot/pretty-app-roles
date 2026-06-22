@@ -82,7 +82,7 @@ export default function BlogEventoCorporativo() {
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
-            <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#8E8EA0' }}>Blog</a>
+            <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
             <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Unirse gratis
@@ -91,7 +91,7 @@ export default function BlogEventoCorporativo() {
         </nav>
 
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
-          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#8E8EA0' }}>
+          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>
             ← Todos los artículos
           </a>
 
@@ -100,7 +100,7 @@ export default function BlogEventoCorporativo() {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">
               Cómo organizar un evento corporativo paso a paso: guía completa 2026
             </h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#8E8EA0' }}>
+            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>
               Desde la definición de objetivos hasta el día del evento. Todo lo que necesitas saber para que tu evento de empresa salga perfecto y dentro de presupuesto.
             </p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>3 mayo 2026</time>
@@ -123,13 +123,13 @@ export default function BlogEventoCorporativo() {
                       <tr key={row.partida} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
                         <td className="px-4 py-3 font-medium">{row.partida}</td>
                         <td className="px-4 py-3 text-center font-bold" style={{ color: '#D4AF37' }}>{row.porcentaje}</td>
-                        <td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#8E8EA0' }}>{row.nota}</td>
+                        <td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#3d3d4e' }}>{row.nota}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs mt-3" style={{ color: '#8E8EA0' }}>Distribución orientativa. Varía según ciudad, formato y número de invitados.</p>
+              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Distribución orientativa. Varía según ciudad, formato y número de invitados.</p>
             </section>
 
             <section>
@@ -164,7 +164,7 @@ export default function BlogEventoCorporativo() {
                 ].map(e => (
                   <div key={e.n} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.04)' }}>
                     <p className="text-xs font-bold mb-1">{e.n}. {e.titulo}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: '#8E8EA0' }}>{e.desc}</p>
+                    <p className="text-xs leading-relaxed" style={{ color: '#3d3d4e' }}>{e.desc}</p>
                   </div>
                 ))}
               </div>
@@ -184,7 +184,7 @@ export default function BlogEventoCorporativo() {
 
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Necesitas staff, DJ o catering para tu evento corporativo?</p>
-              <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>XPEAK conecta organizadores con profesionales verificados en toda España. Contratación rápida, contratos digitales automáticos.</p>
+              <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>XPEAK conecta organizadores con profesionales verificados en toda España. Contratación rápida, contratos digitales automáticos.</p>
               <a href="/auth" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                 Buscar profesionales en XPEAK →

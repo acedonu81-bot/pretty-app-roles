@@ -113,7 +113,7 @@ export default function BlogIndex() {
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
-            <a href="/precios" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#8E8EA0' }}>Precios</a>
+            <a href="/precios" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>Precios</a>
             <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Unirse gratis
@@ -126,7 +126,7 @@ export default function BlogIndex() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Blog · XPEAK</p>
             <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-3">Guías para eventos en España</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#8E8EA0' }}>
+            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>
               Precios reales, ratios y consejos prácticos para contratar DJs, camareros, fotógrafos y staff. <span style={{ color: 'rgba(255,255,255,0.6)' }}>{POSTS.length} artículos</span>
             </p>
           </div>
@@ -179,7 +179,7 @@ export default function BlogIndex() {
                 style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-[0.6rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
-                    style={{ background: TAG_COLORS[post.tag] || 'rgba(255,255,255,0.08)', color: TAG_TEXT[post.tag] || '#8E8EA0' }}>
+                    style={{ background: TAG_COLORS[post.tag] || 'rgba(255,255,255,0.08)', color: TAG_TEXT[post.tag] || '#3d3d4e' }}>
                     {post.tag}
                   </span>
                   <div className="flex items-center gap-2">
@@ -195,7 +195,7 @@ export default function BlogIndex() {
           </div>
 
           <div className="mt-12 pt-8" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-            <p className="text-xs text-center" style={{ color: '#8E8EA0' }}>
+            <p className="text-xs text-center" style={{ color: '#3d3d4e' }}>
               ¿Buscas profesionales verificados?{' '}
               <a href="/auth" className="underline font-bold" style={{ color: '#D4AF37' }}>Únete gratis a XPEAK</a>
             </p>

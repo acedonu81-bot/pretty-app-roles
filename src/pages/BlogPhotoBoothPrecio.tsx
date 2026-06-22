@@ -122,7 +122,7 @@ export default function BlogPhotoBoothPrecio() {
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
-            <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#8E8EA0' }}>Blog</a>
+            <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
             <a
               href="/auth"
               className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
@@ -134,7 +134,7 @@ export default function BlogPhotoBoothPrecio() {
         </nav>
 
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
-          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#8E8EA0' }}>
+          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>
             ← Todos los artículos
           </a>
 
@@ -143,7 +143,7 @@ export default function BlogPhotoBoothPrecio() {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">
               Cuánto cuesta un photo booth para boda o evento en España 2026
             </h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#8E8EA0' }}>
+            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>
               El photo booth se ha convertido en uno de los elementos más solicitados en bodas y eventos en España. Da igual si buscas el clásico con impresión, el moderno 360° o la elegante mirror booth — en esta guía encontrarás los precios reales de 2026 y todo lo que incluye cada modalidad.
             </p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>1 junio 2026</time>
@@ -202,7 +202,7 @@ export default function BlogPhotoBoothPrecio() {
                   </div>
                 ))}
               </div>
-              <p className="text-xs mt-3" style={{ color: '#8E8EA0' }}>Precios orientativos sin IVA. Madrid y Barcelona son un 15–25% más caros.</p>
+              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos sin IVA. Madrid y Barcelona son un 15–25% más caros.</p>
             </section>
 
             {/* QUÉ INCLUYE */}
@@ -284,7 +284,7 @@ export default function BlogPhotoBoothPrecio() {
               style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}
             >
               <p className="text-sm font-black mb-2">Solicita presupuesto para tu boda o evento</p>
-              <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>
+              <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>
                 XPEAK tiene proveedores de photo booth verificados con galería de trabajos reales. Presupuesto gratis en 24h.
               </p>
               <a

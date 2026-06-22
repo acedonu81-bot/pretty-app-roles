@@ -20,7 +20,7 @@ const RecentBusinessViewLine = () => {
     : `Una sala ha visto tu perfil · ${timeAgo(view.createdAt)}`;
 
   return (
-    <p className="mx-4 md:mx-6 mt-2 text-xs font-semibold" style={{ color: 'rgba(22,20,18,0.45)' }}>
+    <p className="mx-4 md:mx-6 mt-2 text-xs font-semibold" style={{ color: '#333' }}>
       {text}
     </p>
   );

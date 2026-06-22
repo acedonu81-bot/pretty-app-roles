@@ -96,7 +96,7 @@ export default function BlogMaquillajeBoda() {
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
-            <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#8E8EA0' }}>Blog</a>
+            <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
             <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Unirse gratis
@@ -105,7 +105,7 @@ export default function BlogMaquillajeBoda() {
         </nav>
 
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
-          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#8E8EA0' }}>
+          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>
             ← Todos los artículos
           </a>
 
@@ -114,7 +114,7 @@ export default function BlogMaquillajeBoda() {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">
               Maquillaje nupcial: precios y cómo elegir tu maquilladora en España (2026)
             </h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#8E8EA0' }}>
+            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>
               El maquillaje de boda es uno de los detalles más recordados en las fotos. Guía completa de precios, qué incluye y cómo no equivocarte en la elección.
             </p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>3 mayo 2026</time>
@@ -139,13 +139,13 @@ export default function BlogMaquillajeBoda() {
                         <td className="px-4 py-3 font-medium">{row.servicio}</td>
                         <td className="px-4 py-3 text-right" style={{ color: '#D4AF37' }}>{row.min}€</td>
                         <td className="px-4 py-3 text-right" style={{ color: '#D4AF37' }}>{row.max}€</td>
-                        <td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#8E8EA0' }}>{row.nota}</td>
+                        <td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#3d3d4e' }}>{row.nota}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs mt-3" style={{ color: '#8E8EA0' }}>Precios medios en España 2026. Sin IVA. El desplazamiento se cobra aparte según distancia al venue.</p>
+              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios medios en España 2026. Sin IVA. El desplazamiento se cobra aparte según distancia al venue.</p>
             </section>
 
             <BlogInlineCTA role="makeup" />
@@ -157,7 +157,7 @@ export default function BlogMaquillajeBoda() {
                   <div key={c.ciudad} className="p-4 rounded-xl text-center" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
                     <p className="text-xs font-bold mb-2">{c.ciudad}</p>
                     <p className="text-base font-black" style={{ color: '#D4AF37' }}>{c.min}–{c.max}€</p>
-                    <p className="text-[0.6rem] mt-1" style={{ color: '#8E8EA0' }}>pack completo</p>
+                    <p className="text-[0.6rem] mt-1" style={{ color: '#3d3d4e' }}>pack completo</p>
                   </div>
                 ))}
               </div>
@@ -184,7 +184,7 @@ export default function BlogMaquillajeBoda() {
                     <span className="text-xs font-black mt-0.5 shrink-0 w-5 h-5 rounded-full flex items-center justify-center" style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>{i + 1}</span>
                     <div>
                       <p className="text-xs font-bold mb-1">{item.titulo}</p>
-                      <p className="text-xs leading-relaxed" style={{ color: '#8E8EA0' }}>{item.desc}</p>
+                      <p className="text-xs leading-relaxed" style={{ color: '#3d3d4e' }}>{item.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -223,7 +223,7 @@ export default function BlogMaquillajeBoda() {
             </section>
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas maquilladora verificada para tu evento?</p>
-              <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>En XPEAK puedes contratar maquilladoras profesionales con portfolio verificado. Gratis para empresarios y organizadores.</p>
+              <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>En XPEAK puedes contratar maquilladoras profesionales con portfolio verificado. Gratis para empresarios y organizadores.</p>
               <a href="/auth" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                 Ver maquilladoras en XPEAK →

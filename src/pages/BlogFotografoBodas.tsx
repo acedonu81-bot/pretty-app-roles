@@ -93,11 +93,11 @@ const faqStructured = {
             Unirse gratis
           </a>
         </nav>
-        <a href="/blog" className="block px-4 sm:px-6 pb-2 max-w-3xl mx-auto text-xs" style={{ color: '#8E8EA0' }}>← Todos los artículos</a>
+        <a href="/blog" className="block px-4 sm:px-6 pb-2 max-w-3xl mx-auto text-xs" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
 
         <article className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 pb-20 sm:pb-24">
           <header className="mb-10">
-            <time className="text-[0.65rem] font-bold uppercase tracking-wider" style={{ color: '#8E8EA0' }}>3 may 2026</time>
+            <time className="text-[0.65rem] font-bold uppercase tracking-wider" style={{ color: '#3d3d4e' }}>3 may 2026</time>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight mt-2 mb-4 leading-tight">
               Cómo contratar un fotógrafo de bodas en España: guía de precios 2026
             </h1>
@@ -194,7 +194,7 @@ const faqStructured = {
             </section>
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
             <p className="text-sm font-black mb-1">Encuentra fotógrafos verificados en España</p>
-            <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>Portafolios reales, tarifas públicas y contratos digitales. Sin comisión.</p>
+            <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>Portafolios reales, tarifas públicas y contratos digitales. Sin comisión.</p>
             <a href="/contratar-fotografo" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-xs font-black transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Ver fotógrafos →

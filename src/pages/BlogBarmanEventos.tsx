@@ -42,14 +42,14 @@ export default function BlogBarmanEventos() {
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
-          <div className="flex items-center gap-3"><a href="/blog" className="text-xs font-bold " style={{ color: '#8E8EA0' }}>Blog</a><a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a></div>
+          <div className="flex items-center gap-3"><a href="/blog" className="text-xs font-bold " style={{ color: '#3d3d4e' }}>Blog</a><a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a></div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
-          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#8E8EA0' }}>← Todos los artículos</a>
+          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Camareros · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Contratar barman para evento privado: precios y qué incluye en España (2026)</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#8E8EA0' }}>Un buen barman convierte una barra libre ordinaria en un espectáculo. Guía de precios, paquetes y cuándo vale la pena invertir en coctelería de autor.</p>
+            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Un buen barman convierte una barra libre ordinaria en un espectáculo. Guía de precios, paquetes y cuándo vale la pena invertir en coctelería de autor.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>4 mayo 2026</time>
           </div>
           <div className="space-y-10">
@@ -58,14 +58,14 @@ export default function BlogBarmanEventos() {
               <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
                 <table className="w-full text-xs">
                   <thead><tr style={{ background: 'rgba(212,175,55,0.08)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}><th className="text-left px-4 py-3 font-bold">Paquete</th><th className="px-4 py-3 font-bold text-right">Precio</th><th className="px-4 py-3 font-bold text-left hidden sm:table-cell">Ideal para</th></tr></thead>
-                  <tbody>{PAQUETES.map((row, i) => (<tr key={row.pack} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}><td className="px-4 py-3 font-medium">{row.pack}</td><td className="px-4 py-3 text-right font-bold" style={{ color: '#D4AF37' }}>{row.precio}</td><td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#8E8EA0' }}>{row.para}</td></tr>))}</tbody>
+                  <tbody>{PAQUETES.map((row, i) => (<tr key={row.pack} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}><td className="px-4 py-3 font-medium">{row.pack}</td><td className="px-4 py-3 text-right font-bold" style={{ color: '#D4AF37' }}>{row.precio}</td><td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#3d3d4e' }}>{row.para}</td></tr>))}</tbody>
                 </table>
               </div>
             </section>
             <section>
               <h2 className="text-lg font-black mb-3">¿Barman o camarero de barra? Cuándo elegir cada uno</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {[{ t: 'Camarero de barra', puntos: ['Sirve cervezas, vinos y combinados estándar', 'Más económico (10-15€/h)', 'Suficiente para eventos informales', 'Sin formación en coctelería'], c: '#8E8EA0' }, { t: 'Barman / Coctelero', puntos: ['Elabora cócteles artesanales y de autor', 'Show visual (flair, humo, fuego)', 'Eleva el nivel percibido del evento', 'Formación certificada en mixología'], c: '#D4AF37' }].map(d => (<div key={d.t} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.025)', border: `1px solid rgba(255,255,255,0.06)` }}><h3 className="text-xs font-bold mb-3" style={{ color: d.c }}>{d.t}</h3><ul className="space-y-1.5">{d.puntos.map(p => <li key={p} className="text-xs flex items-start gap-2" style={{ color: 'rgba(255,255,255,0.75)' }}><span style={{ color: d.c }}>→</span>{p}</li>)}</ul></div>))}
+                {[{ t: 'Camarero de barra', puntos: ['Sirve cervezas, vinos y combinados estándar', 'Más económico (10-15€/h)', 'Suficiente para eventos informales', 'Sin formación en coctelería'], c: '#3d3d4e' }, { t: 'Barman / Coctelero', puntos: ['Elabora cócteles artesanales y de autor', 'Show visual (flair, humo, fuego)', 'Eleva el nivel percibido del evento', 'Formación certificada en mixología'], c: '#D4AF37' }].map(d => (<div key={d.t} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.025)', border: `1px solid rgba(255,255,255,0.06)` }}><h3 className="text-xs font-bold mb-3" style={{ color: d.c }}>{d.t}</h3><ul className="space-y-1.5">{d.puntos.map(p => <li key={p} className="text-xs flex items-start gap-2" style={{ color: 'rgba(255,255,255,0.75)' }}><span style={{ color: d.c }}>→</span>{p}</li>)}</ul></div>))}
               </div>
             </section>
             <section>
@@ -89,7 +89,7 @@ export default function BlogBarmanEventos() {
             </section>
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas barman o camarero para tu evento?</p>
-              <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>XPEAK conecta con camareros y barmans verificados en toda España. Contrato digital automático incluido.</p>
+              <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>XPEAK conecta con camareros y barmans verificados en toda España. Contrato digital automático incluido.</p>
               <a href="/contratar-camareros" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver camareros en XPEAK →</a>
             </div>
           </div>

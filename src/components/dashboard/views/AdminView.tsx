@@ -8,6 +8,7 @@ import AdminValidations from './admin/AdminValidations';
 import AdminUserManagement from './admin/AdminUserManagement';
 import AdminFeatureRequests from './admin/AdminFeatureRequests';
 import AdminCancellations from './admin/AdminCancellations';
+import AdminReviews from './admin/AdminReviews';
 
 const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {}) => {
   return (
@@ -21,6 +22,7 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
 
       <AdminMetrics />
       <AdminCharts />
+      <AdminReviews />
       <AdminFeatureRequests />
       <AdminCancellations />
       <AdminValidations />

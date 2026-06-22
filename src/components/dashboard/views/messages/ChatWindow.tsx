@@ -83,7 +83,7 @@ const ChatWindow = ({
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-bold">{activeOtherName}</p>
-          <p className="text-xs flex items-center gap-1" style={{ color: 'rgba(22,20,18,0.35)' }}>
+          <p className="text-xs flex items-center gap-1" style={{ color: '#333' }}>
             <Shield size={9} /> Comunicación privada · XPEAK
           </p>
         </div>
@@ -149,19 +149,19 @@ const ChatWindow = ({
                         borderBottomRightRadius: isMe ? 4 : undefined,
                         borderBottomLeftRadius: !isMe ? 4 : undefined,
                         boxShadow: isMe ? '0 2px 12px rgba(212,175,55,0.08)' : 'none',
-                        color: isMe ? 'rgba(255,255,255,0.95)' : 'rgba(22,20,18,0.85)',
+                        color: isMe ? 'rgba(255,255,255,0.95)' : '#333',
                         lineHeight: '1.5',
                       }}>
                       {msg.content}
                     </div>
                   )}
                   <div className={`flex items-center gap-1 mt-1 px-1 ${isMe ? 'flex-row-reverse' : 'flex-row'}`}>
-                    <span className="text-[0.75rem]" style={{ color: 'rgba(22,20,18,0.3)' }}>
+                    <span className="text-[0.75rem]" style={{ color: '#333' }}>
                       {formatTime(msg.created_at)}
                     </span>
                     {isMe && (msg.read
                       ? <CheckCheck size={10} style={{ color: '#D4AF37' }} />
-                      : <Check size={10} style={{ color: 'rgba(22,20,18,0.3)' }} />)}
+                      : <Check size={10} style={{ color: '#333' }} />)}
                   </div>
                 </div>
               </div>
@@ -178,7 +178,7 @@ const ChatWindow = ({
           <div className="absolute bottom-full mb-2 left-3 right-3 rounded-xl p-3 z-20"
             style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 -4px 24px rgba(0,0,0,0.08)' }}>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-black tracking-widest" style={{ color: 'rgba(22,20,18,0.45)' }}>EMOTICONOS</span>
+              <span className="text-xs font-black tracking-widest" style={{ color: '#333' }}>EMOTICONOS</span>
               <button onClick={() => setShowEmoji(false)} className="p-0.5 rounded hover:bg-white/5">
                 <X size={12} className="text-muted-foreground" />
               </button>
@@ -200,14 +200,14 @@ const ChatWindow = ({
             style={{
               background: showEmoji ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.05)',
               border: `1px solid ${showEmoji ? 'rgba(212,175,55,0.3)' : 'rgba(0,0,0,0.08)'}`,
-              color: showEmoji ? '#D4AF37' : 'rgba(22,20,18,0.45)',
+              color: showEmoji ? '#D4AF37' : '#333',
             }}>
             <Smile size={16} />
           </button>
 
           <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploadingPhoto}
             className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-all hover:scale-110 disabled:opacity-40"
-            style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.08)', color: 'rgba(22,20,18,0.65)' }}>
+            style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.08)', color: '#444' }}>
             {uploadingPhoto
               ? <div className="w-4 h-4 rounded-full border border-t-transparent animate-spin" style={{ borderColor: '#D4AF37', borderTopColor: 'transparent' }} />
               : <Image size={16} />}
@@ -224,7 +224,7 @@ const ChatWindow = ({
               placeholder="Escribe un mensaje..."
               maxLength={1000}
               className="w-full px-4 py-2.5 rounded-xl text-sm outline-none transition-all"
-              style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: 'rgba(22,20,18,0.9)' }}
+              style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: '#111' }}
               onFocus={e => (e.target.style.borderColor = 'rgba(212,175,55,0.3)')}
               onBlur={e => (e.target.style.borderColor = 'rgba(0,0,0,0.08)')}
             />
@@ -232,7 +232,7 @@ const ChatWindow = ({
 
           <button type="button" onClick={onSend} disabled={sending || !input.trim()}
             className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-all hover:scale-110 active:scale-95 disabled:opacity-30 disabled:hover:scale-100"
-            style={{ background: input.trim() ? 'linear-gradient(135deg,#D4AF37,#B8941E)' : 'rgba(0,0,0,0.05)', color: input.trim() ? '#000' : 'rgba(22,20,18,0.35)' }}>
+            style={{ background: input.trim() ? 'linear-gradient(135deg,#D4AF37,#B8941E)' : 'rgba(0,0,0,0.05)', color: input.trim() ? '#000' : '#333' }}>
             <Send size={16} />
           </button>
         </div>

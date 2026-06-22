@@ -16,6 +16,7 @@ interface FlashProfile {
   priceUnit: string;
   role: string;
   isEarlyAdopter?: boolean;
+  genres?: string[];
   photoError?: boolean;
 }
 
@@ -46,7 +47,7 @@ const OfertaTab = () => {
   const fetchFlashProfiles = () => {
     supabase
       .from('profiles')
-      .select('id, user_id, display_name, photo_url, specialty, zone, hourly_rate, role, is_early_adopter, score')
+      .select('id, user_id, display_name, photo_url, specialty, zone, hourly_rate, role, is_early_adopter, score, genres')
       .eq('is_flash_active', true)
       .order('is_early_adopter', { ascending: false })
       .order('score', { ascending: false })
@@ -61,6 +62,7 @@ const OfertaTab = () => {
           priceUnit: '/hora',
           role: p.role,
           isEarlyAdopter: p.is_early_adopter ?? false,
+          genres: (p as any).genres ?? [],
         })));
         setLoadingProfiles(false);
       });
@@ -94,7 +96,7 @@ const OfertaTab = () => {
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Zap size={20} style={{ color: isFlashActive ? '#D4AF37' : '#8E8EA0' }} />
+              <Zap size={20} style={{ color: isFlashActive ? '#D4AF37' : '#3d3d4e' }} />
               <div>
                 <p className="text-sm font-bold">Tu disponibilidad</p>
                 <p className="text-xs text-muted-foreground">
@@ -107,7 +109,7 @@ const OfertaTab = () => {
             <button onClick={toggleFlash} className="transition-all duration-200 hover:scale-105">
               {isFlashActive
                 ? <ToggleRight size={40} style={{ color: '#D4AF37' }} />
-                : <ToggleLeft size={40} style={{ color: '#8E8EA0' }} />}
+                : <ToggleLeft size={40} style={{ color: '#3d3d4e' }} />}
             </button>
           </div>
         </div>
@@ -161,6 +163,7 @@ const OfertaTab = () => {
                 exit={cardVariants.exit}
                 whileHover={{ scale: 1.02 }}
                 layout
+                onClick={() => window.open(`/p/${p.id}`, '_blank')}
                 style={{
                   aspectRatio: '3/4',
                   borderRadius: 16,
@@ -206,29 +209,13 @@ const OfertaTab = () => {
                   background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.50) 45%, transparent 70%)',
                 }} />
 
-                <div style={{ position: 'absolute', top: 12, left: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <span style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: 10, color: '#D4AF37', letterSpacing: '0.15em' }}>
-                    XPEAK
-                  </span>
-                  <motion.span
-                    animate={{ scale: [1, 1.5, 1], opacity: [1, 0.6, 1] }}
-                    transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-                    style={{
-                      width: 8, height: 8, borderRadius: '50%',
-                      background: '#D4AF37',
-                      boxShadow: '0 0 6px rgba(212,175,55,0.8)',
-                      display: 'inline-block',
-                    }}
-                  />
-                </div>
-
                 <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: 16 }}>
                   <p style={{
                     fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: 13,
                     color: '#D4AF37', letterSpacing: '0.06em',
                     textTransform: 'uppercase', marginBottom: 2,
                   }}>
-                    {p.specialty || p.role}
+                    {p.genres?.[0] || p.specialty || p.role}
                   </p>
                   <p style={{ fontWeight: 600, fontSize: 15, color: 'rgba(255,255,255,0.95)', marginBottom: 6 }}>
                     {p.name}
@@ -246,7 +233,7 @@ const OfertaTab = () => {
                     <span style={{ fontWeight: 700, fontSize: 14, color: '#D4AF37' }}>
                       {isEmpresario
                         ? (p.price > 0 ? `€${p.price}${p.priceUnit}` : 'A consultar')
-                        : <span style={{ fontSize: 11, color: 'rgba(22,20,18,0.3)', fontWeight: 400 }}>Tarifa privada</span>}
+                        : <span style={{ fontSize: 11, color: '#333', fontWeight: 400 }}>Tarifa privada</span>}
                     </span>
                     {isEmpresario ? (
                       <button
@@ -263,7 +250,7 @@ const OfertaTab = () => {
                       </button>
                     ) : (
                       <span style={{
-                        fontSize: 11, color: 'rgba(22,20,18,0.3)', fontWeight: 500,
+                        fontSize: 11, color: '#333', fontWeight: 500,
                         padding: '4px 10px', borderRadius: 6,
                         background: 'rgba(0,0,0,0.04)',
                         border: '1px solid rgba(0,0,0,0.08)',
@@ -288,7 +275,7 @@ const OfertaTab = () => {
             <Zap size={24} style={{ color: 'rgba(212,175,55,0.2)' }} />
           </div>
           <div>
-            <p className="text-sm font-bold mb-1.5" style={{ color: 'rgba(22,20,18,0.4)' }}>
+            <p className="text-sm font-bold mb-1.5" style={{ color: '#333' }}>
               Ningún profesional disponible ahora
             </p>
             <p className="text-xs text-muted-foreground max-w-[280px] mx-auto leading-relaxed">

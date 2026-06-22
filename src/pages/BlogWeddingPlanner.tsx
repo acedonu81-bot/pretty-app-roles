@@ -55,18 +55,18 @@ export default function BlogWeddingPlanner() {
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
-            <a href="/blog" className="text-xs font-bold" style={{ color: '#8E8EA0' }}>Blog</a>
+            <a href="/blog" className="text-xs font-bold" style={{ color: '#3d3d4e' }}>Blog</a>
             <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
           </div>
         </nav>
 
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
-          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#8E8EA0' }}>← Todos los artículos</a>
+          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
 
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Bodas · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Wedding Planner en España: precio y qué hace exactamente (2026)</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#8E8EA0' }}>Contratar un wedding planner puede ser la diferencia entre una boda perfecta y el caos. Aquí tienes los precios reales por tipo de servicio, qué incluye cada modalidad y cómo saber cuándo merece la pena.</p>
+            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Contratar un wedding planner puede ser la diferencia entre una boda perfecta y el caos. Aquí tienes los precios reales por tipo de servicio, qué incluye cada modalidad y cómo saber cuándo merece la pena.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>7 mayo 2026</time>
           </div>
 
@@ -89,7 +89,7 @@ export default function BlogWeddingPlanner() {
                       <tr key={row.paquete} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
                         <td className="px-4 py-3 font-medium">{row.paquete}</td>
                         <td className="px-4 py-3 text-right font-bold whitespace-nowrap" style={{ color: '#D4AF37' }}>{row.precio}</td>
-                        <td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#8E8EA0' }}>{row.incluye}</td>
+                        <td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#3d3d4e' }}>{row.incluye}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -115,7 +115,7 @@ export default function BlogWeddingPlanner() {
                     <span className="text-xl flex-shrink-0">{f.icon}</span>
                     <div>
                       <h3 className="text-xs font-bold mb-1">{f.title}</h3>
-                      <p className="text-xs leading-relaxed" style={{ color: '#8E8EA0' }}>{f.desc}</p>
+                      <p className="text-xs leading-relaxed" style={{ color: '#3d3d4e' }}>{f.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -149,7 +149,7 @@ export default function BlogWeddingPlanner() {
                       <h3 className="text-sm font-black">{d.title}</h3>
                       <span className="text-xs font-bold" style={{ color: d.c }}>{d.precio}</span>
                     </div>
-                    <p className="text-xs mb-3 leading-relaxed" style={{ color: '#8E8EA0' }}>{d.ideal}</p>
+                    <p className="text-xs mb-3 leading-relaxed" style={{ color: '#3d3d4e' }}>{d.ideal}</p>
                     <div className="space-y-1 mb-3">
                       {d.pros.map(p => <p key={p} className="text-xs flex gap-2" style={{ color: 'rgba(255,255,255,0.75)' }}><span style={{ color: '#22c55e' }}>✓</span>{p}</p>)}
                     </div>
@@ -176,7 +176,7 @@ export default function BlogWeddingPlanner() {
                     <div className="w-6 h-6 rounded-full flex-shrink-0 flex items-center justify-center text-xs font-black" style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>{i + 1}</div>
                     <div>
                       <h3 className="text-xs font-bold mb-1">{item.factor}</h3>
-                      <p className="text-xs leading-relaxed" style={{ color: '#8E8EA0' }}>{item.detalle}</p>
+                      <p className="text-xs leading-relaxed" style={{ color: '#3d3d4e' }}>{item.detalle}</p>
                     </div>
                   </div>
                 ))}
@@ -263,7 +263,7 @@ export default function BlogWeddingPlanner() {
                 {faqStructured.mainEntity.map((q) => (
                   <div key={q['@type']} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)' }}>
                     <h3 className="text-sm font-bold mb-2">{q.name}</h3>
-                    <p className="text-xs leading-relaxed" style={{ color: '#8E8EA0' }}>{q.acceptedAnswer.text}</p>
+                    <p className="text-xs leading-relaxed" style={{ color: '#3d3d4e' }}>{q.acceptedAnswer.text}</p>
                   </div>
                 ))}
               </div>
@@ -291,7 +291,7 @@ export default function BlogWeddingPlanner() {
             {/* CTA */}
             <div className="p-6 sm:p-8 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
               <h2 className="text-lg font-black mb-2">¿Eres wedding planner o profesional de eventos?</h2>
-              <p className="text-sm mb-5" style={{ color: '#8E8EA0' }}>Crea tu perfil en XPEAK y recibe solicitudes de bodas y eventos en toda España. Gratis.</p>
+              <p className="text-sm mb-5" style={{ color: '#3d3d4e' }}>Crea tu perfil en XPEAK y recibe solicitudes de bodas y eventos en toda España. Gratis.</p>
               <a href="/auth" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                 Crear perfil profesional gratis
               </a>

@@ -43,16 +43,16 @@ export default function BlogCateringBoda() {
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
-            <a href="/blog" className="text-xs font-bold" style={{ color: '#8E8EA0' }}>Blog</a>
+            <a href="/blog" className="text-xs font-bold" style={{ color: '#3d3d4e' }}>Blog</a>
             <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
           </div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
-          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#8E8EA0' }}>← Todos los artículos</a>
+          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Catering · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">¿Cuánto cuesta el catering de una boda? Precio por persona en España (2026)</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#8E8EA0' }}>El catering es la partida más grande del presupuesto de una boda. Aquí tienes los precios reales por formato, qué incluye cada paquete y cómo no llevarte sorpresas el día del evento.</p>
+            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>El catering es la partida más grande del presupuesto de una boda. Aquí tienes los precios reales por formato, qué incluye cada paquete y cómo no llevarte sorpresas el día del evento.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>4 mayo 2026</time>
           </div>
           <div className="space-y-10">
@@ -61,7 +61,7 @@ export default function BlogCateringBoda() {
               <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
                 <table className="w-full text-xs">
                   <thead><tr style={{ background: 'rgba(212,175,55,0.08)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}><th className="text-left px-4 py-3 font-bold">Formato</th><th className="px-4 py-3 font-bold text-right">Precio/persona</th><th className="px-4 py-3 font-bold text-left hidden sm:table-cell">Qué incluye</th></tr></thead>
-                  <tbody>{PRECIOS.map((row, i) => (<tr key={row.formato} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}><td className="px-4 py-3 font-medium">{row.formato}</td><td className="px-4 py-3 text-right font-bold" style={{ color: '#D4AF37' }}>{row.precio}</td><td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#8E8EA0' }}>{row.incluye}</td></tr>))}</tbody>
+                  <tbody>{PRECIOS.map((row, i) => (<tr key={row.formato} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}><td className="px-4 py-3 font-medium">{row.formato}</td><td className="px-4 py-3 text-right font-bold" style={{ color: '#D4AF37' }}>{row.precio}</td><td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#3d3d4e' }}>{row.incluye}</td></tr>))}</tbody>
                 </table>
               </div>
             </section>
@@ -109,7 +109,7 @@ export default function BlogCateringBoda() {
             </section>
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas camareros para tu boda?</p>
-              <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>XPEAK conecta con camareros de eventos verificados en toda España. Presupuesto sin compromiso y contrato digital.</p>
+              <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>XPEAK conecta con camareros de eventos verificados en toda España. Presupuesto sin compromiso y contrato digital.</p>
               <a href="/contratar-camareros" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver camareros en XPEAK →</a>
             </div>
           </div>

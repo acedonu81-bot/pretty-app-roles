@@ -58,7 +58,7 @@ const ReportModal = ({
         <button
           onClick={onClose}
           className="absolute top-3 right-3 w-7 h-7 rounded flex items-center justify-center hover:bg-white/10 transition-colors"
-          style={{ color: 'rgba(22,20,18,0.55)' }}
+          style={{ color: '#333' }}
         >
           <X size={15} />
         </button>
@@ -255,14 +255,14 @@ const EscenarioVirtualView = () => {
             </div>
             <div>
               <p className="text-sm font-bold mb-1">Nadie emite en este momento</p>
-              <p className="text-xs max-w-xs leading-relaxed" style={{ color: 'rgba(22,20,18,0.65)' }}>
+              <p className="text-xs max-w-xs leading-relaxed" style={{ color: '#222' }}>
                 Los directos aparecen aquí en tiempo real. Vuelve los viernes y sábados por la tarde — es cuando más profesionales están en vivo.
               </p>
             </div>
             <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs mt-1"
               style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.12)' }}>
               <Zap size={12} style={{ color: '#D4AF37' }} />
-              <span style={{ color: 'rgba(22,20,18,0.6)' }}>
+              <span style={{ color: '#222' }}>
                 ¿Necesitas alguien para esta noche? Usa <strong style={{ color: '#D4AF37' }}>Flash Booking</strong>
               </span>
             </div>
@@ -286,7 +286,7 @@ const EscenarioVirtualView = () => {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-bold leading-tight truncate">{p.display_name}</p>
-                      <p className="text-xs truncate mt-0.5" style={{ color: 'rgba(22,20,18,0.65)' }}>
+                      <p className="text-xs truncate mt-0.5" style={{ color: '#222' }}>
                         {p.stream_title || p.zone || label}
                       </p>
                     </div>

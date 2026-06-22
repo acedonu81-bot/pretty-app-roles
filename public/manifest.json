@@ -1,10 +1,12 @@
 {
-  "name": "XPEAK — Contratar Profesionales para Eventos",
+  "name": "XPEAK — Profesionales para Eventos",
   "short_name": "XPEAK",
-  "description": "Contrata DJs, fotógrafos, camareros y staff verificados para eventos en España. Flash Booking en menos de 1h.",
-  "start_url": "/",
+  "description": "Contrata DJs, fotógrafos, camareros y staff verificados para eventos en España.",
+  "start_url": "/dashboard",
+  "scope": "/",
+  "id": "/",
   "display": "standalone",
-  "background_color": "#090909",
+  "background_color": "#ffffff",
   "theme_color": "#D4AF37",
   "lang": "es",
   "dir": "ltr",
@@ -14,7 +16,13 @@
       "src": "/favicon.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "/favicon.png",
@@ -24,16 +32,25 @@
     }
   ],
   "categories": ["business", "entertainment"],
+  "prefer_related_applications": false,
   "shortcuts": [
     {
-      "name": "Contratar DJ",
-      "url": "/contratar-dj",
-      "description": "Buscar DJs disponibles"
+      "name": "Buscar DJ",
+      "short_name": "DJ",
+      "url": "/directorio/dj",
+      "description": "Buscar DJs disponibles",
+      "icons": [{ "src": "/favicon.png", "sizes": "96x96" }]
     },
     {
-      "name": "Contratar Staff",
-      "url": "/contratar-staff",
-      "description": "Buscar staff para eventos"
+      "name": "Flash Booking",
+      "short_name": "Flash",
+      "url": "/dashboard",
+      "description": "Contratación urgente"
+    },
+    {
+      "name": "Mensajes",
+      "short_name": "Chat",
+      "url": "/dashboard"
     }
   ]
 }

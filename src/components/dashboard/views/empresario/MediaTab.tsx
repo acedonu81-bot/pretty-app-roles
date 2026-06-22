@@ -66,7 +66,7 @@ const MediaTab = () => {
             style={{
               background: filter === f.id ? 'rgba(212,175,55,0.12)' : 'rgba(0,0,0,0.03)',
               border: `1px solid ${filter === f.id ? 'rgba(212,175,55,0.3)' : 'var(--nightlife-border)'}`,
-              color: filter === f.id ? '#D4AF37' : '#8E8EA0',
+              color: filter === f.id ? '#D4AF37' : '#3d3d4e',
             }}>
             <f.icon size={12} /> {f.label}
           </button>
@@ -137,7 +137,7 @@ const MediaTab = () => {
                 <a href={`https://tiktok.com/@${p.tiktok.replace('@', '')}`}
                   target="_blank" rel="noopener noreferrer"
                   className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
-                  style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.09)', color: 'rgba(22,20,18,0.88)' }}>
+                  style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.09)', color: '#222' }}>
                   <ExternalLink size={10} /> TikTok
                 </a>
               )}

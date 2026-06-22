@@ -136,7 +136,7 @@ const GlobalPlayer = () => {
       </div>
 
       <div className="flex items-center gap-2 flex-shrink-0">
-        <button onClick={prev} className="p-1.5 rounded-md transition-colors hover:bg-white/5" style={{ color: '#8E8EA0' }}>
+        <button onClick={prev} className="p-1.5 rounded-md transition-colors hover:bg-white/5" style={{ color: '#3d3d4e' }}>
           <SkipBack size={14} />
         </button>
         <button
@@ -146,7 +146,7 @@ const GlobalPlayer = () => {
         >
           {playing ? <Pause size={14} /> : <Play size={14} className="ml-0.5" />}
         </button>
-        <button onClick={next} className="p-1.5 rounded-md transition-colors hover:bg-white/5" style={{ color: '#8E8EA0' }}>
+        <button onClick={next} className="p-1.5 rounded-md transition-colors hover:bg-white/5" style={{ color: '#3d3d4e' }}>
           <SkipForward size={14} />
         </button>
       </div>

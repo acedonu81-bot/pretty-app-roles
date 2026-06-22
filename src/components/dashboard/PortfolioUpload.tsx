@@ -186,7 +186,7 @@ const PortfolioUpload = () => {
             onChange={e => setRightsConfirmed(e.target.checked)}
             className="mt-0.5 flex-shrink-0 accent-[#D4AF37]"
           />
-          <span className="text-xs leading-relaxed" style={{ color: 'rgba(22,20,18,0.65)' }}>
+          <span className="text-xs leading-relaxed" style={{ color: '#222' }}>
             Declaro que soy titular o tengo autorización para publicar este contenido, conforme a los{' '}
             <a href="/terminos" target="_blank" rel="noopener noreferrer" style={{ color: '#D4AF37' }}>Términos y Condiciones</a>.
           </span>

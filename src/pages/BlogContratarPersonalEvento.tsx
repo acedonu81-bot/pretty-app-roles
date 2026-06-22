@@ -58,14 +58,14 @@ export default function BlogContratarPersonalEvento() {
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
-          <div className="flex items-center gap-3"><a href="/blog" className="text-xs font-bold" style={{ color: '#8E8EA0' }}>Blog</a><a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a></div>
+          <div className="flex items-center gap-3"><a href="/blog" className="text-xs font-bold" style={{ color: '#3d3d4e' }}>Blog</a><a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a></div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
-          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#8E8EA0' }}>← Todos los artículos</a>
+          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Eventos · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Cómo contratar personal para un evento en España: guía completa 2026</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#8E8EA0' }}>Camareros, DJ, fotógrafo, azafatas… contratar el equipo equivocado puede arruinar un evento perfecto. Esta guía te explica qué necesitas, cuánto cuesta y cómo hacerlo bien.</p>
+            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Camareros, DJ, fotógrafo, azafatas… contratar el equipo equivocado puede arruinar un evento perfecto. Esta guía te explica qué necesitas, cuánto cuesta y cómo hacerlo bien.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>7 mayo 2026</time>
           </div>
           <div className="space-y-10">
@@ -75,15 +75,15 @@ export default function BlogContratarPersonalEvento() {
               <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
                 <table className="w-full text-xs">
                   <thead><tr style={{ background: 'rgba(212,175,55,0.08)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}><th className="text-left px-4 py-3 font-bold">Perfil</th><th className="px-4 py-3 font-bold text-right">Precio orientativo</th><th className="px-4 py-3 font-bold text-left hidden sm:table-cell">Ratio</th></tr></thead>
-                  <tbody>{PERFILES.map((row, i) => (<tr key={row.perfil} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}><td className="px-4 py-3 font-medium">{row.perfil}</td><td className="px-4 py-3 text-right font-bold" style={{ color: '#D4AF37' }}>{row.precio}</td><td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#8E8EA0' }}>{row.ratio}</td></tr>))}</tbody>
+                  <tbody>{PERFILES.map((row, i) => (<tr key={row.perfil} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}><td className="px-4 py-3 font-medium">{row.perfil}</td><td className="px-4 py-3 text-right font-bold" style={{ color: '#D4AF37' }}>{row.precio}</td><td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#3d3d4e' }}>{row.ratio}</td></tr>))}</tbody>
                 </table>
               </div>
-              <p className="text-xs mt-3" style={{ color: '#8E8EA0' }}>Precios orientativos para España 2026. Varían según ciudad, temporada y experiencia del profesional.</p>
+              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos para España 2026. Varían según ciudad, temporada y experiencia del profesional.</p>
             </section>
 
             <section>
               <h2 className="text-lg font-black mb-4">¿Qué personal necesita mi evento?</h2>
-              <p className="text-sm leading-relaxed mb-4" style={{ color: '#8E8EA0' }}>El número de profesionales depende de tres factores: número de invitados, formato del evento y nivel de servicio esperado.</p>
+              <p className="text-sm leading-relaxed mb-4" style={{ color: '#3d3d4e' }}>El número de profesionales depende de tres factores: número de invitados, formato del evento y nivel de servicio esperado.</p>
               <div className="grid sm:grid-cols-3 gap-3">
                 {[
                   { tipo: 'Evento pequeño (hasta 50 pax)', personal: '2 camareros · 1 DJ (opcional) · 1 fotógrafo', precio: '500–1.500€' },
@@ -92,7 +92,7 @@ export default function BlogContratarPersonalEvento() {
                 ].map(e => (
                   <div key={e.tipo} className="p-4 rounded-xl" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
                     <p className="text-xs font-bold mb-2" style={{ color: '#D4AF37' }}>{e.tipo}</p>
-                    <p className="text-xs mb-3" style={{ color: '#8E8EA0' }}>{e.personal}</p>
+                    <p className="text-xs mb-3" style={{ color: '#3d3d4e' }}>{e.personal}</p>
                     <p className="text-sm font-black" style={{ color: '#D4AF37' }}>{e.precio}</p>
                     <p className="text-[0.65rem]" style={{ color: 'rgba(255,255,255,0.3)' }}>solo personal</p>
                   </div>
@@ -114,7 +114,7 @@ export default function BlogContratarPersonalEvento() {
                     <span className="text-2xl font-black flex-shrink-0" style={{ color: 'rgba(212,175,55,0.2)' }}>{step.n}</span>
                     <div>
                       <p className="text-sm font-bold mb-1">{step.title}</p>
-                      <p className="text-xs leading-relaxed" style={{ color: '#8E8EA0' }}>{step.desc}</p>
+                      <p className="text-xs leading-relaxed" style={{ color: '#3d3d4e' }}>{step.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -143,9 +143,9 @@ export default function BlogContratarPersonalEvento() {
                   <div key={op.tipo} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)' }}>
                     <p className="text-sm font-black mb-3" style={{ color: '#D4AF37' }}>{op.tipo}</p>
                     <p className="text-[0.65rem] font-bold uppercase tracking-wider mb-1.5" style={{ color: '#22c55e' }}>Ventajas</p>
-                    <ul className="space-y-1 mb-3">{op.pros.map(p => <li key={p} className="text-xs flex items-start gap-1.5"><span style={{ color: '#22c55e' }}>✓</span> <span style={{ color: '#8E8EA0' }}>{p}</span></li>)}</ul>
+                    <ul className="space-y-1 mb-3">{op.pros.map(p => <li key={p} className="text-xs flex items-start gap-1.5"><span style={{ color: '#22c55e' }}>✓</span> <span style={{ color: '#3d3d4e' }}>{p}</span></li>)}</ul>
                     <p className="text-[0.65rem] font-bold uppercase tracking-wider mb-1.5" style={{ color: '#ff5f56' }}>Inconvenientes</p>
-                    <ul className="space-y-1 mb-3">{op.contras.map(c => <li key={c} className="text-xs flex items-start gap-1.5"><span style={{ color: '#ff5f56' }}>·</span> <span style={{ color: '#8E8EA0' }}>{c}</span></li>)}</ul>
+                    <ul className="space-y-1 mb-3">{op.contras.map(c => <li key={c} className="text-xs flex items-start gap-1.5"><span style={{ color: '#ff5f56' }}>·</span> <span style={{ color: '#3d3d4e' }}>{c}</span></li>)}</ul>
                     <p className="text-xs font-bold px-2 py-1 rounded-lg inline-block" style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>{op.precio}</p>
                   </div>
                 ))}
@@ -161,7 +161,7 @@ export default function BlogContratarPersonalEvento() {
                       {q.name}
                       <span className="text-xs ml-3 flex-shrink-0" style={{ color: '#D4AF37' }}>+</span>
                     </summary>
-                    <div className="px-4 py-3 text-sm leading-relaxed" style={{ color: '#8E8EA0', background: 'rgba(0,0,0,0.2)' }}>
+                    <div className="px-4 py-3 text-sm leading-relaxed" style={{ color: '#3d3d4e', background: 'rgba(0,0,0,0.2)' }}>
                       {q.acceptedAnswer.text}
                     </div>
                   </details>
@@ -172,7 +172,7 @@ export default function BlogContratarPersonalEvento() {
             <section className="rounded-2xl p-6 text-center" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
               <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#D4AF37' }}>Encuentra personal verificado en XPEAK</p>
               <h3 className="text-xl font-black mb-3">DJs, camareros, fotógrafos, azafatas y más</h3>
-              <p className="text-sm mb-5" style={{ color: '#8E8EA0' }}>Perfiles reales con portfolio, tarifas visibles y contacto directo. Sin comisiones de intermediario.</p>
+              <p className="text-sm mb-5" style={{ color: '#3d3d4e' }}>Perfiles reales con portfolio, tarifas visibles y contacto directo. Sin comisiones de intermediario.</p>
               <a href="/auth" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                 Ver profesionales disponibles →
               </a>

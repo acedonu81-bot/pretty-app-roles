@@ -13,6 +13,7 @@ import GastosTab from './empresario/GastosTab';
 import BenchmarkTab from './empresario/BenchmarkTab';
 import MediaTab from './empresario/MediaTab';
 import StatsTab from './empresario/StatsTab';
+import SmartMatchWidget from '../SmartMatchWidget';
 
 /* ── Feed público "Empresas que contratan" ── */
 const WhoIsHiringFeed = () => {
@@ -39,9 +40,9 @@ const WhoIsHiringFeed = () => {
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-1">
           <Building2 size={16} style={{ color: '#D4AF37' }} />
-          <h2 className="text-base font-black" style={{ color: 'rgba(22,20,18,0.88)' }}>Empresas & salas en XPEAK</h2>
+          <h2 className="text-base font-black" style={{ color: '#222' }}>Empresas & salas en XPEAK</h2>
         </div>
-        <p className="text-xs" style={{ color: 'rgba(22,20,18,0.45)' }}>
+        <p className="text-xs" style={{ color: '#333' }}>
           Clubs, promotoras y organizadores registrados. Pueden contactarte para sus eventos.
         </p>
       </div>
@@ -55,8 +56,8 @@ const WhoIsHiringFeed = () => {
       {!loading && companies.length === 0 && (
         <div className="py-12 text-center rounded-2xl" style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.06)' }}>
           <Building2 size={28} className="mx-auto mb-3" style={{ color: 'rgba(212,175,55,0.3)' }} />
-          <p className="text-sm font-bold" style={{ color: 'rgba(22,20,18,0.4)' }}>Aún no hay empresas registradas</p>
-          <p className="text-xs mt-1" style={{ color: 'rgba(22,20,18,0.3)' }}>Pronto verás aquí los clubs y promotoras que buscan talento</p>
+          <p className="text-sm font-bold" style={{ color: '#333' }}>Aún no hay empresas registradas</p>
+          <p className="text-xs mt-1" style={{ color: '#333' }}>Pronto verás aquí los clubs y promotoras que buscan talento</p>
         </div>
       )}
 
@@ -72,17 +73,17 @@ const WhoIsHiringFeed = () => {
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-1.5 flex-wrap">
-                <p className="text-sm font-black truncate" style={{ color: 'rgba(22,20,18,0.9)' }}>{c.display_name}</p>
+                <p className="text-sm font-black truncate" style={{ color: '#111' }}>{c.display_name}</p>
                 {c.is_verified && (
                   <span className="text-[10px] font-black px-1.5 py-0.5 rounded-full flex-shrink-0"
                     style={{ background: 'rgba(212,175,55,0.12)', color: '#B8941E' }}>✓ Verificado</span>
                 )}
               </div>
               {c.zone && (
-                <p className="text-xs truncate" style={{ color: 'rgba(22,20,18,0.4)' }}>📍 {c.zone}</p>
+                <p className="text-xs truncate" style={{ color: '#333' }}>📍 {c.zone}</p>
               )}
               {c.bio && (
-                <p className="text-xs line-clamp-1 mt-0.5" style={{ color: 'rgba(22,20,18,0.5)' }}>{c.bio}</p>
+                <p className="text-xs line-clamp-1 mt-0.5" style={{ color: '#333' }}>{c.bio}</p>
               )}
             </div>
           </div>
@@ -91,7 +92,7 @@ const WhoIsHiringFeed = () => {
 
       <div className="mt-8 p-5 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}>
         <p className="text-sm font-black mb-1">¿Organizas eventos?</p>
-        <p className="text-xs mb-3" style={{ color: 'rgba(22,20,18,0.55)' }}>Únete como empresa y los profesionales podrán encontrarte y contactarte.</p>
+        <p className="text-xs mb-3" style={{ color: '#333' }}>Únete como empresa y los profesionales podrán encontrarte y contactarte.</p>
         <a href="/dashboard?view=profile" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black"
           style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
           <Building2 size={13} /> Cambiar a rol Empresa
@@ -210,21 +211,21 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
         style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.12)' }}>
         <div className="flex items-center gap-1.5 flex-shrink-0">
           <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#D4AF37' }} />
-          <span style={{ color: 'rgba(22,20,18,0.55)' }}>Comunidad activa:</span>
+          <span style={{ color: '#333' }}>Comunidad activa:</span>
         </div>
         <div className="flex items-center gap-4 flex-shrink-0">
           <span style={{ color: '#D4AF37', fontWeight: 700 }}>Directorio en crecimiento</span>
-          <span style={{ color: 'rgba(22,20,18,0.35)' }}>·</span>
+          <span style={{ color: '#333' }}>·</span>
           <span style={{ color: 'rgba(22,20,18,0.75)', fontWeight: 600 }}>47+ profesionales activos</span>
-          <span style={{ color: 'rgba(22,20,18,0.35)' }}>·</span>
-          <span style={{ color: 'rgba(22,20,18,0.55)' }}>toda España</span>
+          <span style={{ color: '#333' }}>·</span>
+          <span style={{ color: '#333' }}>toda España</span>
         </div>
       </div>
 
       {/* Private hiring — coming soon */}
       <div className="glass-panel p-4 mb-5 flex items-center justify-between" style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
         <div className="flex items-center gap-3">
-          <Lock size={16} style={{ color: '#8E8EA0' }} />
+          <Lock size={16} style={{ color: '#3d3d4e' }} />
           <div>
             <div className="flex items-center gap-2">
               <p className="text-xs font-bold">Contrataciones Privadas</p>
@@ -240,7 +241,7 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
 
       {/* Search bar */}
       <div className="relative mb-4">
-        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#8E8EA0' }} />
+        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#3d3d4e' }} />
         <input
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
@@ -250,7 +251,7 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
         />
         {searchQuery && (
           <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2">
-            <X size={14} style={{ color: '#8E8EA0' }} />
+            <X size={14} style={{ color: '#3d3d4e' }} />
           </button>
         )}
       </div>
@@ -263,7 +264,7 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
             style={{
               background: tab === t.id ? 'rgba(212,175,55,0.12)' : 'rgba(0,0,0,0.03)',
               border: `1px solid ${tab === t.id ? 'rgba(212,175,55,0.3)' : 'var(--nightlife-border)'}`,
-              color: tab === t.id ? '#D4AF37' : '#8E8EA0',
+              color: tab === t.id ? '#D4AF37' : '#3d3d4e',
             }}>
             <t.icon size={13} /> {t.label}
             {t.id === 'favorites' && favorites.length > 0 && (
@@ -279,6 +280,7 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
       {tab === 'flash'     && <FlashTab />}
       {tab === 'historial' && <HistorialTab />}
       {tab === 'gastos'    && <GastosTab />}
+      {tab === 'discover' && <SmartMatchWidget onMessage={onMessage} />}
       {(tab === 'discover' || tab === 'favorites') && (
         <DiscoverTab
           pros={filteredPros}

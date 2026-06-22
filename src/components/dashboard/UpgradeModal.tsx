@@ -170,7 +170,7 @@ const UpgradeModal = ({ open, onClose, role, trigger, onNavigateSubscription }: 
           {upsell.features.map(f => (
             <div key={f} className="flex items-start gap-2.5">
               <CheckCircle size={13} style={{ color: '#D4AF37', flexShrink: 0, marginTop: 2 }} />
-              <span className="text-sm" style={{ color: 'rgba(22,20,18,0.88)' }}>{f}</span>
+              <span className="text-sm" style={{ color: '#222' }}>{f}</span>
             </div>
           ))}
         </div>

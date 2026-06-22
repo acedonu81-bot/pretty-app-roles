@@ -128,10 +128,10 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                     style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)' }}>
                     <Sparkles size={26} style={{ color: '#D4AF37' }} />
                   </div>
-                  <h2 className="text-xl font-black mb-1" style={{ fontFamily: 'Syne, sans-serif', color: 'rgba(22,20,18,0.92)' }}>
+                  <h2 className="text-xl font-black mb-1" style={{ fontFamily: 'Syne, sans-serif', color: '#111' }}>
                     ¡Bienvenido/a a XPEAK!
                   </h2>
-                  <p className="text-sm" style={{ color: 'rgba(22,20,18,0.5)' }}>
+                  <p className="text-sm" style={{ color: '#333' }}>
                     ¿Cuál es tu perfil?
                   </p>
                 </div>
@@ -149,11 +149,11 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                         }}>
                         <div className="w-8 h-8 rounded-lg flex items-center justify-center"
                           style={{ background: active ? `${color}25` : 'rgba(0,0,0,0.05)' }}>
-                          <Icon size={15} style={{ color: active ? color : 'rgba(22,20,18,0.4)' }} />
+                          <Icon size={15} style={{ color: active ? color : '#333' }} />
                         </div>
                         <div>
-                          <p className="text-xs font-black leading-tight" style={{ color: active ? 'rgba(22,20,18,0.92)' : 'rgba(22,20,18,0.7)' }}>{label}</p>
-                          <p className="text-[10px] leading-tight mt-0.5" style={{ color: 'rgba(22,20,18,0.38)' }}>{desc}</p>
+                          <p className="text-xs font-black leading-tight" style={{ color: active ? '#111' : '#222' }}>{label}</p>
+                          <p className="text-[10px] leading-tight mt-0.5" style={{ color: '#777' }}>{desc}</p>
                         </div>
                         {active && <CheckCircle size={12} style={{ color, alignSelf: 'flex-end', marginTop: -4 }} />}
                       </button>
@@ -165,7 +165,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                   className="w-full py-3.5 rounded-xl font-black text-sm flex items-center justify-center gap-2 transition-all"
                   style={{
                     background: selectedRole ? 'linear-gradient(135deg,#D4AF37,#B8941E)' : 'rgba(0,0,0,0.08)',
-                    color: selectedRole ? '#000' : 'rgba(22,20,18,0.3)',
+                    color: selectedRole ? '#000' : '#333',
                     cursor: selectedRole ? 'pointer' : 'not-allowed',
                   }}>
                   {saving ? 'Guardando...' : 'Continuar'} <ArrowRight size={15} />
@@ -181,10 +181,10 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                     style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.2)' }}>
                     <CheckCircle size={22} style={{ color: '#22c55e' }} />
                   </div>
-                  <h2 className="text-lg font-black mb-1" style={{ fontFamily: 'Syne, sans-serif', color: 'rgba(22,20,18,0.92)' }}>
+                  <h2 className="text-lg font-black mb-1" style={{ fontFamily: 'Syne, sans-serif', color: '#111' }}>
                     {roleData.title}
                   </h2>
-                  <p className="text-xs" style={{ color: 'rgba(22,20,18,0.5)' }}>3 pasos para destacar desde el primer día</p>
+                  <p className="text-xs" style={{ color: '#333' }}>3 pasos para destacar desde el primer día</p>
                 </div>
 
                 <div className="flex flex-col gap-2 mb-5">
@@ -194,8 +194,8 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                       <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 text-[0.65rem] font-black"
                         style={{ background: '#D4AF37', color: '#000' }}>{i + 1}</div>
                       <div>
-                        <p className="text-xs font-bold" style={{ color: 'rgba(22,20,18,0.88)' }}>{title}</p>
-                        <p className="text-[0.65rem]" style={{ color: 'rgba(22,20,18,0.5)' }}>{desc}</p>
+                        <p className="text-xs font-bold" style={{ color: '#222' }}>{title}</p>
+                        <p className="text-[0.65rem]" style={{ color: '#333' }}>{desc}</p>
                       </div>
                     </div>
                   ))}
@@ -207,7 +207,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                   Completar mi perfil <ChevronRight size={15} />
                 </button>
                 <button onClick={markDone} className="w-full py-2 text-xs font-semibold"
-                  style={{ color: 'rgba(22,20,18,0.3)' }}>
+                  style={{ color: '#333' }}>
                   Lo haré después
                 </button>
               </motion.div>

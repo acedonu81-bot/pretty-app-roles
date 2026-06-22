@@ -69,10 +69,10 @@ const DonutChart = ({ segments, size = 140 }: { segments: DonutSegment[]; size?:
         </svg>
         {/* Center label */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-xl font-black" style={{ color: 'rgba(22,20,18,0.88)', lineHeight: 1 }}>
+          <span className="text-xl font-black" style={{ color: '#222', lineHeight: 1 }}>
             {isEmpty ? '—' : total > 999 ? `${(total / 1000).toFixed(1)}k` : total}
           </span>
-          <span className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: 'rgba(22,20,18,0.35)' }}>
+          <span className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: '#333' }}>
             total
           </span>
         </div>
@@ -298,7 +298,7 @@ const StatsView = () => {
                         padding: '4px 8px',
                         fontSize: '0.6rem',
                         fontWeight: 700,
-                        color: 'rgba(22,20,18,0.88)',
+                        color: '#222',
                       }}>
                       <span style={{ color: '#4285F4' }}>{monthlyMessages[i]} msg</span>
                       {monthlyConvs[i] > 0 && <span style={{ color: 'rgba(66,133,244,0.6)' }}> · {monthlyConvs[i]} conv</span>}
@@ -327,7 +327,7 @@ const StatsView = () => {
                   </div>
                   {/* Month label */}
                   <span className="text-[0.75rem] font-bold"
-                    style={{ color: isCurrent ? '#4285F4' : 'rgba(22,20,18,0.3)' }}>
+                    style={{ color: isCurrent ? '#4285F4' : '#333' }}>
                     {label}
                   </span>
                 </div>

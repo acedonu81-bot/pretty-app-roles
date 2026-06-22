@@ -60,12 +60,13 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
 
   return (
     <header
-      className={`h-14 px-4 md:px-6 flex items-center justify-between sticky top-0 z-10 gap-3${isNative ? ' native-topbar-offset' : ''}`}
+      className={`px-4 md:px-6 flex items-center justify-between sticky top-0 z-10 gap-3${isNative ? ' native-topbar-offset' : ''}`}
       style={{
         background: 'rgba(255,255,255,0.95)',
         backdropFilter: 'blur(20px)',
         borderBottom: '1px solid rgba(0,0,0,0.07)',
-        borderTop: 'none',
+        paddingTop: 'max(0.75rem, env(safe-area-inset-top))',
+        paddingBottom: '0.75rem',
       }}
     >
       <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -85,23 +86,24 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
           </button>
         )}
 
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg flex-1 max-w-[360px] transition-all"
+        <div className="flex items-center gap-2 px-3 py-2.5 sm:py-1.5 rounded-xl sm:rounded-lg flex-1 max-w-[360px] transition-all"
           style={{
-            background: searchQuery ? 'rgba(212,175,55,0.05)' : 'rgba(0,0,0,0.03)',
-            border: searchQuery ? '1px solid rgba(212,175,55,0.3)' : '1px solid var(--nightlife-border)',
+            background: searchQuery ? 'rgba(212,175,55,0.05)' : '#f5f5f5',
+            border: searchQuery ? '1px solid rgba(212,175,55,0.3)' : '1px solid rgba(0,0,0,0.1)',
           }}>
-          <Search size={14} className="flex-shrink-0" style={{ color: searchQuery ? '#D4AF37' : undefined }} />
+          <Search size={15} className="flex-shrink-0" style={{ color: searchQuery ? '#D4AF37' : '#999' }} />
           <input
             type="text"
-            placeholder={isMobile ? 'Buscar...' : 'Buscar por zona, rol o nombre...'}
-            className="bg-transparent border-none outline-none text-foreground w-full text-xs"
+            placeholder={isMobile ? 'Buscar DJ, staff, zona...' : 'Buscar por zona, rol o nombre...'}
+            className="bg-transparent border-none outline-none w-full text-sm sm:text-xs"
+            style={{ color: '#111' }}
             value={searchQuery}
             onChange={e => onSearch?.(e.target.value)}
             onKeyDown={e => e.key === 'Escape' && onSearch?.('')}
           />
           {searchQuery && (
             <button onClick={() => onSearch?.('')} aria-label="Borrar búsqueda" className="flex-shrink-0 transition-opacity hover:opacity-70">
-              <X size={12} style={{ color: 'rgba(22,20,18,0.65)' }} />
+              <X size={12} style={{ color: '#444' }} />
             </button>
           )}
         </div>
@@ -135,10 +137,10 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
               boxShadow: readAll || notifications.length === 0
                 ? 'none'
                 : showNotif
-                  ? '0 0 16px rgba(212,175,55,0.7), 0 0 32px rgba(212,175,55,0.3), inset 0 1px 0 rgba(22,20,18,0.35)'
-                  : '0 0 10px rgba(212,175,55,0.4), 0 0 20px rgba(212,175,55,0.15), inset 0 1px 0 rgba(22,20,18,0.3)',
+                  ? '0 0 16px rgba(212,175,55,0.7), 0 0 32px rgba(212,175,55,0.3), inset 0 1px 0 #444'
+                  : '0 0 10px rgba(212,175,55,0.4), 0 0 20px rgba(212,175,55,0.15), inset 0 1px 0 #444',
             }}>
-            <span className="text-xs font-black" style={{ color: (readAll || notifications.length === 0) ? 'rgba(22,20,18,0.35)' : '#000', lineHeight: 1 }}>
+            <span className="text-xs font-black" style={{ color: (readAll || notifications.length === 0) ? '#444' : '#000', lineHeight: 1 }}>
               {(readAll || notifications.length === 0) ? '✓' : notifications.length}
             </span>
           </span>
@@ -179,7 +181,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
               </div>
               <button onClick={markAllRead}
                 className="text-xs font-bold transition-colors hover:text-white"
-                style={{ color: 'rgba(22,20,18,0.35)' }}>
+                style={{ color: '#444' }}>
                 CERRAR
               </button>
             </div>
@@ -216,7 +218,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-bold truncate" style={{ color: n.urgent ? '#fca5a5' : undefined }}>{n.title}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(22,20,18,0.65)' }}>{n.desc}</p>
+                    <p className="text-xs leading-relaxed" style={{ color: '#444' }}>{n.desc}</p>
                     <span className="text-[0.75rem] font-bold mt-1 block" style={{ color: n.urgent ? 'rgba(239,68,68,0.6)' : 'rgba(212,175,55,0.5)' }}>{n.time}</span>
                   </div>
                   {/* Unread indicator */}
@@ -252,7 +254,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
               : (profile.display_name ?? 'X').charAt(0).toUpperCase()}
           </div>
           {!isMobile && profile.display_name && (
-            <span className="text-xs font-bold max-w-[90px] truncate" style={{ color: 'rgba(22,20,18,0.75)' }}>
+            <span className="text-xs font-bold max-w-[90px] truncate" style={{ color: '#222' }}>
               {profile.display_name}
             </span>
           )}

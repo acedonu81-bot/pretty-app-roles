@@ -1,52 +1,52 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import AmbientBackground from '@/components/AmbientBackground';
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
 import DashboardTopbar from '@/components/dashboard/DashboardTopbar';
-import ActivityFeedWidget from '@/components/dashboard/ActivityFeedWidget';
 import RecentBusinessViewLine from '@/components/dashboard/RecentBusinessViewLine';
-import DJView from '@/components/dashboard/views/DJView';
-import SettingsView from '@/components/dashboard/views/SettingsView';
-import MessagesView from '@/components/dashboard/views/MessagesView';
-import CalendarView from '@/components/dashboard/views/CalendarView';
-import ProfileView from '@/components/dashboard/views/ProfileView';
-import StaffView from '@/components/dashboard/views/StaffView';
-import EventManagerView from '@/components/dashboard/views/EventManagerView';
-import MakeupView from '@/components/dashboard/views/MakeupView';
-import MediaView from '@/components/dashboard/views/MediaView';
-import AmbassadorView from '@/components/dashboard/views/AmbassadorView';
-import VestuarioView from '@/components/dashboard/views/VestuarioView';
-import DesignView from '@/components/dashboard/views/DesignView';
-import PromotorView from '@/components/dashboard/views/PromotorView';
-import CateringView from '@/components/dashboard/views/CateringView';
-import MagoView from '@/components/dashboard/views/MagoView';
-import BailarinView from '@/components/dashboard/views/BailarinView';
-import HumoristaView from '@/components/dashboard/views/HumoristaView';
-import MonologoView from '@/components/dashboard/views/MonologoView';
-import AnimadorView from '@/components/dashboard/views/AnimadorView';
-import SpeakerView from '@/components/dashboard/views/SpeakerView';
-import MapaView from '@/components/dashboard/views/MapaView';
-import FlashBookingWallView from '@/components/dashboard/views/FlashBookingWallView';
-import TopWeekendView from '@/components/dashboard/views/TopWeekendView';
-import StatsView from '@/components/dashboard/views/StatsView';
-import AdminView from '@/components/dashboard/views/AdminView';
-import EmpresarioView from '@/components/dashboard/views/EmpresarioView';
-import ContractView from '@/components/dashboard/views/ContractView';
-import FichaView from '@/components/dashboard/views/FichaView';
-import AgencyView from '@/components/dashboard/views/AgencyView';
-import ProfessionalProfilePage from '@/components/dashboard/ProfessionalProfilePage';
-import SupportChat from '@/components/dashboard/SupportChat';
+import MobileBottomNav from '@/components/dashboard/MobileBottomNav';
 import AdminGuard from '@/components/AdminGuard';
 import type { Profile } from '@/data/profiles';
-import OnboardingTour from '@/components/dashboard/OnboardingTour';
-import OnboardingWizard from '@/components/OnboardingWizard';
 import { useProfile } from '@/hooks/useProfile';
-import MobileBottomNav from '@/components/dashboard/MobileBottomNav';
 import { useAuth } from '@/hooks/useAuth';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { ProfileProvider } from '@/hooks/useProfile';
+
+const DJView = lazy(() => import('@/components/dashboard/views/DJView'));
+const StaffView = lazy(() => import('@/components/dashboard/views/StaffView'));
+const EventManagerView = lazy(() => import('@/components/dashboard/views/EventManagerView'));
+const MakeupView = lazy(() => import('@/components/dashboard/views/MakeupView'));
+const MediaView = lazy(() => import('@/components/dashboard/views/MediaView'));
+const AmbassadorView = lazy(() => import('@/components/dashboard/views/AmbassadorView'));
+const VestuarioView = lazy(() => import('@/components/dashboard/views/VestuarioView'));
+const DesignView = lazy(() => import('@/components/dashboard/views/DesignView'));
+const PromotorView = lazy(() => import('@/components/dashboard/views/PromotorView'));
+const CateringView = lazy(() => import('@/components/dashboard/views/CateringView'));
+const MagoView = lazy(() => import('@/components/dashboard/views/MagoView'));
+const BailarinView = lazy(() => import('@/components/dashboard/views/BailarinView'));
+const HumoristaView = lazy(() => import('@/components/dashboard/views/HumoristaView'));
+const MonologoView = lazy(() => import('@/components/dashboard/views/MonologoView'));
+const AnimadorView = lazy(() => import('@/components/dashboard/views/AnimadorView'));
+const SpeakerView = lazy(() => import('@/components/dashboard/views/SpeakerView'));
+const SettingsView = lazy(() => import('@/components/dashboard/views/SettingsView'));
+const MessagesView = lazy(() => import('@/components/dashboard/views/MessagesView'));
+const CalendarView = lazy(() => import('@/components/dashboard/views/CalendarView'));
+const ProfileView = lazy(() => import('@/components/dashboard/views/ProfileView'));
+const MapaView = lazy(() => import('@/components/dashboard/views/MapaView'));
+const FlashBookingWallView = lazy(() => import('@/components/dashboard/views/FlashBookingWallView'));
+const TopWeekendView = lazy(() => import('@/components/dashboard/views/TopWeekendView'));
+const StatsView = lazy(() => import('@/components/dashboard/views/StatsView'));
+const AdminView = lazy(() => import('@/components/dashboard/views/AdminView'));
+const EmpresarioView = lazy(() => import('@/components/dashboard/views/EmpresarioView'));
+const ContractView = lazy(() => import('@/components/dashboard/views/ContractView'));
+const FichaView = lazy(() => import('@/components/dashboard/views/FichaView'));
+const AgencyView = lazy(() => import('@/components/dashboard/views/AgencyView'));
+const ProfessionalProfilePage = lazy(() => import('@/components/dashboard/ProfessionalProfilePage'));
+const SupportChat = lazy(() => import('@/components/dashboard/SupportChat'));
+const OnboardingTour = lazy(() => import('@/components/dashboard/OnboardingTour'));
+const OnboardingWizard = lazy(() => import('@/components/OnboardingWizard'));
+const AmbientBackground = lazy(() => import('@/components/AmbientBackground'));
 import { DEFAULT_ZONE } from '@/lib/constants';
 
 const PROFILE_VIEWS = new Set(['profile', 'ficha', 'stats']);
@@ -76,7 +76,7 @@ const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: s
         <div className="w-20 h-1.5 rounded-full flex-shrink-0" style={{ background: 'rgba(0,0,0,0.08)' }}>
           <div className="h-full rounded-full" style={{ width: `${percent}%`, background: 'linear-gradient(90deg,#D4AF37,#B8941E)' }} />
         </div>
-        <span style={{ color: 'rgba(22,20,18,0.6)' }}>
+        <span style={{ color: '#222' }}>
           Perfil al <strong style={{ color: '#D4AF37' }}>{percent}%</strong>
           <span className="hidden sm:inline"> — complétalo para aparecer mejor en el directorio</span>
         </span>
@@ -87,7 +87,7 @@ const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: s
         Completar
       </button>
       <button onClick={() => setDismissed(true)} className="flex-shrink-0 text-lg leading-none transition-opacity hover:opacity-60"
-        style={{ color: 'rgba(22,20,18,0.3)' }}>×</button>
+        style={{ color: '#333' }}>×</button>
     </div>
   );
 };
@@ -132,6 +132,14 @@ const Dashboard = () => {
       setShowWizard(true);
     }
   }, [user]);
+
+  useEffect(() => {
+    if (!selectedProfile) return;
+    window.history.pushState({ profileOpen: true }, '');
+    const onPop = () => setSelectedProfile(null);
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, [selectedProfile]);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -220,7 +228,7 @@ const Dashboard = () => {
     </Helmet>
     <RoleDefaultView onViewChange={handleViewChange} />
     <div className="flex h-screen w-screen overflow-hidden" style={{ background: '#f5f4f0' }}>
-      <AmbientBackground />
+      <Suspense fallback={null}><AmbientBackground /></Suspense>
 
       {!isMobile && (
         <DashboardSidebar activeView={activeView} onViewChange={handleViewChange} />
@@ -237,12 +245,13 @@ const Dashboard = () => {
       <main className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden relative min-w-0">
         <DashboardTopbar onMenuToggle={() => setSidebarOpen(true)} isMobile={isMobile} onSearch={handleSearch} searchQuery={searchQuery} onHome={() => handleViewChange('dj')} />
         <ProfileIncompleteBanner onNavigate={handleViewChange} activeView={activeView} />
-        <ActivityFeedWidget />
         <RecentBusinessViewLine />
-        <div className={`p-4 md:p-6 flex-1 md:pb-6 ${isMobile ? 'pb-[calc(6rem+env(safe-area-inset-bottom))]' : 'pb-6'}`}
+        <div className={`p-4 md:p-6 flex-1 md:pb-6 ${isMobile ? 'pb-[calc(5rem+env(safe-area-inset-bottom))]' : 'pb-6'}`}
           key={activeView}
           style={{ animation: 'viewEnter 0.22s cubic-bezier(0.22,1,0.36,1) both' }}>
-          {renderView()}
+          <Suspense fallback={<div className="flex items-center justify-center py-20"><div className="w-6 h-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#D4AF37', borderTopColor: 'transparent' }} /></div>}>
+            {renderView()}
+          </Suspense>
         </div>
       </main>
 
@@ -254,21 +263,25 @@ const Dashboard = () => {
         />
       )}
 
-      {!showWizard && <OnboardingTour onNavigate={handleViewChange} />}
-      <SupportChat />
-      {showWizard && (
-        <OnboardingWizard
-          onClose={() => setShowWizard(false)}
-          onNavigate={handleViewChange}
-        />
-      )}
+      <Suspense fallback={null}>
+        {!showWizard && <OnboardingTour onNavigate={handleViewChange} />}
+        <div className="hidden sm:block"><SupportChat /></div>
+        {showWizard && (
+          <OnboardingWizard
+            onClose={() => setShowWizard(false)}
+            onNavigate={handleViewChange}
+          />
+        )}
+      </Suspense>
 
       {selectedProfile && (
-        <ProfessionalProfilePage
-          profile={selectedProfile}
-          onClose={() => setSelectedProfile(null)}
-          onMessage={handleMessage}
-        />
+        <Suspense fallback={null}>
+          <ProfessionalProfilePage
+            profile={selectedProfile}
+            onClose={() => setSelectedProfile(null)}
+            onMessage={handleMessage}
+          />
+        </Suspense>
       )}
     </div>
     </ProfileProvider>

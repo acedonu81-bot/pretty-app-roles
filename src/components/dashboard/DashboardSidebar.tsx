@@ -123,7 +123,7 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
             {ROLE_LABEL[role] ?? role}
           </p>
         </div>
-        <ChevronDown size={13} style={{ color: 'rgba(22,20,18,0.3)', transform: open ? 'rotate(180deg)' : undefined, transition: 'transform 0.2s' }} />
+        <ChevronDown size={13} style={{ color: '#444', transform: open ? 'rotate(180deg)' : undefined, transition: 'transform 0.2s' }} />
       </button>
 
       {open && (
@@ -138,7 +138,7 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-bold truncate">{p.display_name}</p>
-                <p className="text-[0.6rem]" style={{ color: 'rgba(22,20,18,0.45)' }}>{ROLE_LABEL[p.role] ?? p.role}</p>
+                <p className="text-[0.6rem]" style={{ color: '#444' }}>{ROLE_LABEL[p.role] ?? p.role}</p>
               </div>
               {p.id === profileId && <span className="text-[0.6rem] font-black" style={{ color: '#D4AF37' }}>●</span>}
             </button>
@@ -222,9 +222,9 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
   return (
     <aside
       className="w-[260px] h-full flex flex-col z-10 flex-shrink-0"
-      style={{ background: '#ffffff', borderRight: '1px solid var(--nightlife-border)' }}
+      style={{ background: '#ffffff', borderRight: '1px solid var(--nightlife-border)', paddingTop: 'env(safe-area-inset-top)' }}
     >
-      <div className="p-6 flex items-center gap-3" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>
+      <div className="px-6 py-4 flex items-center gap-3" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>
         <button onClick={() => onViewChange('dj')} className="text-left transition-opacity hover:opacity-70">
           <h2 className="text-xl font-black tracking-widest font-display">
             X<span className="text-gradient">PEAK</span>
@@ -253,7 +253,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
               const hasPulse = 'pulse' in item && item.pulse;
               const roleColor = ROLE_COLORS[item.id];
               const isToolBlue = TOOL_BLUE_IDS.has(item.id);
-              const iconColor = roleColor ?? (isToolBlue ? '#4285F4' : 'rgba(22,20,18,0.45)');
+              const iconColor = roleColor ?? (isToolBlue ? '#4285F4' : '#444');
               const count = roleColor && !NO_COUNT_BADGE.has(item.id) ? roleCounts[item.id] : undefined;
 
               return (

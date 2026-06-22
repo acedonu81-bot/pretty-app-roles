@@ -50,18 +50,18 @@ export default function HubStaff() {
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
-            <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#8E8EA0' }}>Blog</a>
+            <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
             <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
           </div>
         </nav>
 
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
-          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#8E8EA0' }}>← Todos los artículos</a>
+          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
 
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Staff · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Staff para eventos en España: camareros, hostesses y personal profesional (2026)</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#8E8EA0' }}>Guía completa sobre contratación de personal para eventos. Precios reales, ratios por número de invitados y diferencias entre cada perfil profesional.</p>
+            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Guía completa sobre contratación de personal para eventos. Precios reales, ratios por número de invitados y diferencias entre cada perfil profesional.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>27 mayo 2026</time>
           </div>
 
@@ -102,7 +102,7 @@ export default function HubStaff() {
                   </div>
                 ))}
               </div>
-              <p className="text-xs mt-3" style={{ color: '#8E8EA0' }}>Precios orientativos España 2026. Sin IVA. Variable según ciudad y experiencia.</p>
+              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos España 2026. Sin IVA. Variable según ciudad y experiencia.</p>
             </section>
 
             <section>
@@ -119,7 +119,7 @@ export default function HubStaff() {
 
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Necesitas personal para tu evento?</p>
-              <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>XPEAK tiene camareros, hostesses, bármanes y promotores verificados en toda España. Flash Booking en menos de 1h. Gratis para organizadores.</p>
+              <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>XPEAK tiene camareros, hostesses, bármanes y promotores verificados en toda España. Flash Booking en menos de 1h. Gratis para organizadores.</p>
               <a href="/contratar-staff" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver staff disponible en XPEAK →</a>
             </div>
           </div>

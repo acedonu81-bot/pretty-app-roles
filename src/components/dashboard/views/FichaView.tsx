@@ -104,7 +104,7 @@ const VideoSessionUpload = ({ maxSessions, userId }: { maxSessions: number; user
             onChange={e => setRightsConfirmed(e.target.checked)}
             className="mt-0.5 flex-shrink-0 accent-[#4285F4]"
           />
-          <span className="text-xs leading-relaxed" style={{ color: 'rgba(22,20,18,0.65)' }}>
+          <span className="text-xs leading-relaxed" style={{ color: '#222' }}>
             Declaro que soy titular o tengo autorización para publicar este contenido, conforme a los{' '}
             <a href="/terminos" target="_blank" rel="noopener noreferrer" style={{ color: '#4285F4' }}>Términos y Condiciones</a>.
           </span>
@@ -289,7 +289,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
           <h2 className="text-2xl font-bold mb-1">
             {targetName
             ? <span className="text-white">Ficha de {targetName}</span>
-            : <><span style={{ color: 'rgba(22,20,18,0.88)' }}>Tu </span><span style={{ color: BLUE }}>Ficha Pública</span></>
+            : <><span style={{ color: '#222' }}>Tu </span><span style={{ color: BLUE }}>Ficha Pública</span></>
           }
           </h2>
           <p className="text-sm text-muted-foreground">
@@ -313,7 +313,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
             style={{
               background: tab === t.id ? BLUE_BG : 'rgba(0,0,0,0.03)',
               border: `1px solid ${tab === t.id ? BLUE_BORDER : 'var(--nightlife-border)'}`,
-              color: tab === t.id ? BLUE : '#8E8EA0',
+              color: tab === t.id ? BLUE : '#3d3d4e',
             }}>
             <t.icon size={12} /> {t.label}
           </button>
@@ -332,7 +332,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
                     style={{
                       background: postType === pt.id ? 'rgba(212,175,55,0.12)' : 'rgba(0,0,0,0.03)',
                       border: `1px solid ${postType === pt.id ? 'rgba(212,175,55,0.3)' : 'var(--nightlife-border)'}`,
-                      color: postType === pt.id ? '#D4AF37' : '#8E8EA0',
+                      color: postType === pt.id ? '#D4AF37' : '#3d3d4e',
                     }}>
                     <pt.icon size={11} /> {pt.label}
                   </button>
@@ -396,7 +396,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
                 <FileEdit size={22} style={{ color: 'rgba(212,175,55,0.45)' }} />
               </div>
               <p className="text-sm font-bold">Sin publicaciones todavía</p>
-              <p className="text-xs max-w-xs leading-relaxed" style={{ color: '#8E8EA0' }}>
+              <p className="text-xs max-w-xs leading-relaxed" style={{ color: '#3d3d4e' }}>
                 {isOwn
                   ? 'Comparte experiencias en sala, reflexiones o novedades. Tus fans y los empresarios lo verán aquí.'
                   : 'Este profesional aún no ha publicado contenido en su ficha.'}
@@ -420,7 +420,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
                     {(() => {
                       const pt = POST_TYPES.find(p => p.id === post.post_type);
                       const Icon = pt?.icon ?? Type;
-                      return <Icon size={13} style={{ color: '#8E8EA0' }} />;
+                      return <Icon size={13} style={{ color: '#3d3d4e' }} />;
                     })()}
                     <span className="text-xs text-muted-foreground">{fmtDate(post.created_at)}</span>
                   </div>
@@ -470,7 +470,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
             <AudioUpload />
           ) : (
             <div className="glass-panel p-8 text-center">
-              <AlertCircle size={20} style={{ color: '#8E8EA0' }} className="mx-auto mb-2" />
+              <AlertCircle size={20} style={{ color: '#3d3d4e' }} className="mx-auto mb-2" />
               <p className="text-xs text-muted-foreground">Solo el propietario puede gestionar sus sesiones de audio.</p>
             </div>
           )}
@@ -535,7 +535,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
                 style={{ border: '1px dashed rgba(212,175,55,0.22)' }}>
                 <Video size={24} style={{ color: 'rgba(212,175,55,0.3)' }} />
                 <p className="text-sm text-muted-foreground">Sin vídeo destacado aún.</p>
-                <p className="text-xs" style={{ color: 'rgba(22,20,18,0.35)' }}>Pega una URL de YouTube o Vimeo arriba</p>
+                <p className="text-xs" style={{ color: '#333' }}>Pega una URL de YouTube o Vimeo arriba</p>
               </div>
             )}
           </div>
@@ -566,7 +566,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
                     Este contenido aparece en tu ficha pública (hearthis / Mixcloud / SoundCloud / YouTube).
                     Elimínalo aquí si ya no lo quieres mostrar.
                   </p>
-                  <p className="text-xs font-mono truncate" style={{ color: 'rgba(22,20,18,0.4)' }}>
+                  <p className="text-xs font-mono truncate" style={{ color: '#333' }}>
                     {profile.audio_embed_url || (profile as any).stream_url}
                   </p>
                 </div>
@@ -646,7 +646,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
             <PortfolioUpload />
           ) : (
             <div className="glass-panel p-8 text-center">
-              <AlertCircle size={20} style={{ color: '#8E8EA0' }} className="mx-auto mb-2" />
+              <AlertCircle size={20} style={{ color: '#3d3d4e' }} className="mx-auto mb-2" />
               <p className="text-xs text-muted-foreground">Solo el propietario puede gestionar sus imágenes.</p>
             </div>
           )}

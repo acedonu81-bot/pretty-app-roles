@@ -306,7 +306,7 @@ const AudioUpload = () => {
             onChange={e => setRightsConfirmed(e.target.checked)}
             className="mt-0.5 flex-shrink-0 accent-[#D4AF37]"
           />
-          <span className="text-xs leading-relaxed" style={{ color: 'rgba(22,20,18,0.65)' }}>
+          <span className="text-xs leading-relaxed" style={{ color: '#222' }}>
             Declaro que poseo los derechos o licencias necesarias sobre este contenido, incluyendo las obras de terceros incorporadas en la mezcla, conforme a los{' '}
             <a href="/terminos" target="_blank" rel="noopener noreferrer" style={{ color: '#D4AF37' }}>Términos y Condiciones</a>.
           </span>

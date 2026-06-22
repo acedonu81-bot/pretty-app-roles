@@ -24,16 +24,16 @@ const Chip = ({ item }: { item: ActivityItem }) => {
       </div>
 
       {item.kind === 'contact' ? (
-        <span className="text-xs font-bold whitespace-nowrap" style={{ color: 'rgba(22,20,18,0.8)' }}>{item.text}</span>
+        <span className="text-xs font-bold whitespace-nowrap" style={{ color: '#444' }}>{item.text}</span>
       ) : (
         <>
-          <span className="text-xs font-bold whitespace-nowrap" style={{ color: 'rgba(22,20,18,0.88)' }}>{item.name}</span>
+          <span className="text-xs font-bold whitespace-nowrap" style={{ color: '#222' }}>{item.name}</span>
           <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap"
             style={{ background: `${item.roleColor}18`, color: item.roleColor }}>
             {item.roleLabel}
           </span>
           {item.zone && (
-            <span className="text-[11px] flex items-center gap-0.5 whitespace-nowrap" style={{ color: 'rgba(22,20,18,0.4)' }}>
+            <span className="text-[11px] flex items-center gap-0.5 whitespace-nowrap" style={{ color: '#333' }}>
               <MapPin size={9} /> {item.zone}
             </span>
           )}
@@ -82,10 +82,16 @@ const ActivityFeedWidget = () => {
           ACTIVIDAD RECIENTE
         </span>
       </div>
-      <div className="flex flex-col gap-2">
-        <Lane items={laneA} durationSeconds={Math.max(20, laneA.length * 7)} />
-        <Lane items={laneB} durationSeconds={Math.max(20, laneB.length * 7)} />
-      </div>
+      {items.length <= 4 ? (
+        <div className="flex flex-wrap gap-2">
+          {items.map(item => <Chip key={item.id} item={item} />)}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2">
+          <Lane items={laneA} durationSeconds={Math.max(20, laneA.length * 7)} />
+          {laneB.length > 0 && <Lane items={laneB} durationSeconds={Math.max(20, laneB.length * 7)} />}
+        </div>
+      )}
     </div>
   );
 };

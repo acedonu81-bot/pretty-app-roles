@@ -242,8 +242,8 @@ export default function LocalSEOLanding() {
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
-            <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#8E8EA0' }}>Blog</a>
-            <a href="/precios" className="text-xs font-bold hidden sm:block" style={{ color: '#8E8EA0' }}>Precios</a>
+            <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
+            <a href="/precios" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Precios</a>
             <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Unirse gratis
@@ -351,7 +351,7 @@ export default function LocalSEOLanding() {
                     {i + 1}
                   </div>
                   <h3 className="text-sm font-black mb-1">{p.t}</h3>
-                  <p className="text-xs leading-relaxed" style={{ color: '#8E8EA0' }}>{p.d}</p>
+                  <p className="text-xs leading-relaxed" style={{ color: '#3d3d4e' }}>{p.d}</p>
                 </div>
               ))}
             </div>
@@ -370,7 +370,7 @@ export default function LocalSEOLanding() {
                   <span className="text-xs flex-shrink-0" style={{ color: '#D4AF37' }}>+</span>
                 </summary>
                 <div className="px-5 pb-4">
-                  <p className="text-xs leading-relaxed" style={{ color: '#8E8EA0' }}>{f.a}</p>
+                  <p className="text-xs leading-relaxed" style={{ color: '#3d3d4e' }}>{f.a}</p>
                 </div>
               </details>
             ))}
@@ -399,7 +399,7 @@ export default function LocalSEOLanding() {
             <h2 className="text-xl font-black mb-2">
               ¿Eres {catData.label.toLowerCase()} en {nombre}?
             </h2>
-            <p className="text-sm mb-5" style={{ color: '#8E8EA0' }}>
+            <p className="text-sm mb-5" style={{ color: '#3d3d4e' }}>
               Crea tu perfil en XPEAK y recibe solicitudes de eventos en toda la provincia. Es gratis.
             </p>
             <a href="/auth" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-sm transition-all hover:scale-105"

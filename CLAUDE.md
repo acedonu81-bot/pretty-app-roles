@@ -34,8 +34,16 @@ scripts/            — prerender-meta.mjs, update-sitemap.mjs
 - VITE_SITE_URL configurada en Vercel env vars (production + preview)
 - Edge functions usan `info@xpeak.site` como FROM (no cambiar sin reconfigurar SMTP)
 
-## Cosas que NO hacer
-- No usar `grep -c` (output enorme)
-- No leer archivos enteros si solo necesitas unas líneas
-- No deployar más de una vez por sesión salvo emergencia
+## Ahorro de tokens (CRÍTICO)
+- Respuestas cortas, sin narración ni resúmenes finales
+- No explicar qué vas a hacer, hacerlo directamente
+- `grep -rl` o `grep -l`, NUNCA `grep -c`
+- `Read` con `offset`/`limit`, no archivos enteros
+- Combinar Bash con `&&`, no 5 llamadas separadas
+- No releer archivos tras Edit (el sistema confirma)
+- Deploy: `2>&1 | tail -15` para truncar output
+- `take_snapshot` > `take_screenshot` salvo verificación visual
 - No lanzar subagentes sin que el usuario lo pida
+- No deployar más de una vez por sesión salvo emergencia
+- No crear archivos .md de documentación salvo que se pida
+- Máxima autonomía: actuar antes de preguntar, escalar solo si es técnicamente imposible

@@ -94,7 +94,7 @@ const TopWeekendView = () => {
         <div className="glass-panel p-10 flex flex-col items-center text-center gap-3">
           <Crown size={28} style={{ color: 'rgba(212,175,55,0.2)' }} />
           <div>
-            <p className="text-sm font-bold mb-1" style={{ color: 'rgba(22,20,18,0.4)' }}>
+            <p className="text-sm font-bold mb-1" style={{ color: '#333' }}>
               Aún no hay perfiles TOP
             </p>
             <p className="text-xs text-muted-foreground max-w-[260px] mx-auto leading-relaxed">

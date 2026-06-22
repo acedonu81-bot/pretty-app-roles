@@ -83,16 +83,16 @@ export default function BlogAnimadoresComunionPrecio() {
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
-            <a href="/blog" className="text-xs font-bold" style={{ color: '#8E8EA0' }}>Blog</a>
+            <a href="/blog" className="text-xs font-bold" style={{ color: '#3d3d4e' }}>Blog</a>
             <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
           </div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
-          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#8E8EA0' }}>← Todos los artículos</a>
+          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Animación · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Cuánto cuesta contratar animadores para comunión en España (2026)</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#8E8EA0' }}>Guía de precios por tipo de animación, cuándo reservar y consejos para que los niños lo pasen genial mientras los adultos disfrutan tranquilos.</p>
+            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Guía de precios por tipo de animación, cuándo reservar y consejos para que los niños lo pasen genial mientras los adultos disfrutan tranquilos.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>14 junio 2026</time>
           </div>
           <div className="space-y-10">
@@ -112,7 +112,7 @@ export default function BlogAnimadoresComunionPrecio() {
                 ].map(t => (
                   <div key={t.nombre} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
                     <p className="text-sm font-black mb-1">{t.nombre}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: '#8E8EA0' }}>{t.desc}</p>
+                    <p className="text-xs leading-relaxed" style={{ color: '#3d3d4e' }}>{t.desc}</p>
                   </div>
                 ))}
               </div>
@@ -134,13 +134,13 @@ export default function BlogAnimadoresComunionPrecio() {
                       <tr key={row.tipo} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
                         <td className="px-4 py-3 font-medium">{row.tipo}</td>
                         <td className="px-4 py-3 text-right font-bold" style={{ color: '#D4AF37' }}>{row.precio}</td>
-                        <td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#8E8EA0' }}>{row.incluye}</td>
+                        <td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#3d3d4e' }}>{row.incluye}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs mt-3" style={{ color: '#8E8EA0' }}>Precios orientativos para España 2026. Varían según ciudad, número de niños y duración del servicio.</p>
+              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos para España 2026. Varían según ciudad, número de niños y duración del servicio.</p>
             </section>
 
             <section>
@@ -158,7 +158,7 @@ export default function BlogAnimadoresComunionPrecio() {
                   <div key={c.caso} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
                     <p className="text-xs font-bold mb-1">{c.caso}</p>
                     <p className="text-sm font-black mb-1" style={{ color: '#D4AF37' }}>{c.antel}</p>
-                    <p className="text-[0.65rem]" style={{ color: '#8E8EA0' }}>{c.nota}</p>
+                    <p className="text-[0.65rem]" style={{ color: '#3d3d4e' }}>{c.nota}</p>
                   </div>
                 ))}
               </div>
@@ -175,7 +175,7 @@ export default function BlogAnimadoresComunionPrecio() {
                 ].map(c => (
                   <div key={c.titulo} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
                     <p className="text-sm font-black mb-1">{c.titulo}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: '#8E8EA0' }}>{c.texto}</p>
+                    <p className="text-xs leading-relaxed" style={{ color: '#3d3d4e' }}>{c.texto}</p>
                   </div>
                 ))}
               </div>

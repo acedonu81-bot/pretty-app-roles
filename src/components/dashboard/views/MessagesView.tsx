@@ -266,11 +266,11 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
         </div>
       </div>
 
-      <div className="flex-1 overflow-hidden rounded-2xl relative"
-        style={{ border: '1px solid rgba(212,175,55,0.15)', background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(20px)' }}>
-        <div className="grid h-full" style={{ gridTemplateColumns: isMobileChat ? '1fr' : 'minmax(0,280px) 1fr' }}>
+      <div className="flex-1 overflow-hidden rounded-2xl sm:rounded-2xl relative"
+        style={{ border: '1px solid rgba(0,0,0,0.08)', background: '#ffffff' }}>
+        <div className="flex flex-col sm:grid h-full" style={{ gridTemplateColumns: 'minmax(0,280px) 1fr' }}>
 
-          {(!isMobileChat || showConvList) && (
+          {(showConvList || !activeConvId) && (
             <ConversationList
               conversations={conversations}
               loading={loading}
@@ -280,28 +280,53 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
             />
           )}
 
-          {(!showConvList || !isMobileChat) && (
+          {/* Empty placeholder — desktop only when no conversation selected */}
+          {!activeConvId && (
+            <div className="hidden sm:flex flex-col h-full overflow-hidden">
+              <EmptyChatPlaceholder />
+            </div>
+          )}
+
+          {/* Chat window — full screen on mobile, right panel on desktop */}
+          {activeConvId && !showConvList && (
             <div className="flex flex-col h-full overflow-hidden">
-              {!activeConvId ? (
-                <EmptyChatPlaceholder />
-              ) : (
-                <ChatWindow
-                  messages={messages}
-                  userId={user?.id ?? ''}
-                  activeOtherName={activeOtherName}
-                  input={input}
-                  setInput={setInput}
-                  showEmoji={showEmoji}
-                  setShowEmoji={setShowEmoji}
-                  sending={sending}
-                  uploadingPhoto={uploadingPhoto}
-                  bottomRef={bottomRef}
-                  fileInputRef={fileInputRef}
-                  onSend={sendMessage}
-                  onPhotoUpload={handlePhotoUpload}
-                  onBack={() => { setShowConvList(true); setActiveConvId(null); }}
-                />
-              )}
+              <ChatWindow
+                messages={messages}
+                userId={user?.id ?? ''}
+                activeOtherName={activeOtherName}
+                input={input}
+                setInput={setInput}
+                showEmoji={showEmoji}
+                setShowEmoji={setShowEmoji}
+                sending={sending}
+                uploadingPhoto={uploadingPhoto}
+                bottomRef={bottomRef}
+                fileInputRef={fileInputRef}
+                onSend={sendMessage}
+                onPhotoUpload={handlePhotoUpload}
+                onBack={() => { setShowConvList(true); setActiveConvId(null); }}
+              />
+            </div>
+          )}
+          {/* Desktop: show chat alongside conversation list */}
+          {activeConvId && showConvList && (
+            <div className="hidden sm:flex flex-col h-full overflow-hidden">
+              <ChatWindow
+                messages={messages}
+                userId={user?.id ?? ''}
+                activeOtherName={activeOtherName}
+                input={input}
+                setInput={setInput}
+                showEmoji={showEmoji}
+                setShowEmoji={setShowEmoji}
+                sending={sending}
+                uploadingPhoto={uploadingPhoto}
+                bottomRef={bottomRef}
+                fileInputRef={fileInputRef}
+                onSend={sendMessage}
+                onPhotoUpload={handlePhotoUpload}
+                onBack={() => { setShowConvList(true); setActiveConvId(null); }}
+              />
             </div>
           )}
         </div>

@@ -44,7 +44,7 @@ export default function BajaEmails() {
                 <span style={{ fontSize: 22 }}>✓</span>
               </div>
               <h1 className="text-xl font-black mb-3">Suscripción anulada</h1>
-              <p className="text-sm mb-6" style={{ color: '#8E8EA0' }}>
+              <p className="text-sm mb-6" style={{ color: '#3d3d4e' }}>
                 Ya no recibirás emails de XPEAK en <strong style={{ color: 'rgba(255,255,255,0.7)' }}>{email}</strong>.
               </p>
               <p className="text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
@@ -55,7 +55,7 @@ export default function BajaEmails() {
           ) : (
             <form onSubmit={handleUnsubscribe}>
               <h1 className="text-xl font-black mb-2">Anular suscripción</h1>
-              <p className="text-sm mb-8" style={{ color: '#8E8EA0' }}>
+              <p className="text-sm mb-8" style={{ color: '#3d3d4e' }}>
                 Confirma tu email para dejar de recibir comunicaciones de XPEAK.
               </p>
               <input
@@ -80,7 +80,7 @@ export default function BajaEmails() {
                     ? 'rgba(255,255,255,0.05)'
                     : 'rgba(255,255,255,0.06)',
                   border: '1px solid rgba(255,255,255,0.1)',
-                  color: status === 'loading' ? '#8E8EA0' : 'rgba(255,255,255,0.7)',
+                  color: status === 'loading' ? '#3d3d4e' : 'rgba(255,255,255,0.7)',
                 }}
               >
                 {status === 'loading' ? 'Procesando…' : 'Anular suscripción'}

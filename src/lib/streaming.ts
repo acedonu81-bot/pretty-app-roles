@@ -1,8 +1,19 @@
 export interface ParsedStreamUrl {
   type: 'Twitch' | 'YouTube' | 'Mixcloud' | 'HearThis' | 'SoundCloud' | 'Vimeo' | 'Spotify' | 'IVS';
   embedUrl: string;
-  /** True when the stream should be rendered as a native <video> via HLS (e.g. Amazon IVS) */
   isHls?: boolean;
+  isProfile?: boolean;
+  _hearthisUser?: string;
+}
+
+export async function resolveHearthisProfile(username: string): Promise<string | null> {
+  try {
+    const res = await fetch(`https://api-v2.hearthis.at/${username}/?type=tracks&count=1`);
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) return null;
+    return `https://hearthis.at/embed/${username}/${data[0].permalink}/transparent_black/`;
+  } catch { return null; }
 }
 
 const normalizeUrl = (value: string) => {
@@ -73,17 +84,17 @@ export const parseStreamUrl = (value?: string | null): ParsedStreamUrl | null =>
       const segments = url.pathname.split('/').filter(Boolean);
       if (segments.length === 0) return null;
       const username = segments[0];
-      // Individual track: hearthis.at/username/track-slug/
-      // Profile/set:      hearthis.at/username/
       if (segments.length >= 2) {
         return {
           type: 'HearThis',
-          embedUrl: `https://hearthis.at/embed/${username}/${segments[1]}/`,
+          embedUrl: `https://hearthis.at/embed/${username}/${segments[1]}/transparent_black/`,
         };
       }
       return {
         type: 'HearThis',
-        embedUrl: `https://hearthis.at/set/${username}/`,
+        embedUrl: `https://hearthis.at/embed/${username}/`,
+        isProfile: true,
+        _hearthisUser: username,
       };
     }
 

@@ -73,26 +73,26 @@ export default function PublicContactModal({ professionalName, professionalUserI
         onClick={e => e.stopPropagation()}>
 
         <button onClick={onClose} className="absolute top-4 right-4 p-1 rounded-lg hover:bg-black/5">
-          <X size={16} style={{ color: 'rgba(22,20,18,0.4)' }} />
+          <X size={16} style={{ color: '#333' }} />
         </button>
 
         {status === 'done' ? (
           <div className="text-center py-6">
             <CheckCircle size={40} className="mx-auto mb-4" style={{ color: '#22c55e' }} />
-            <h3 className="text-lg font-black mb-2" style={{ color: 'rgba(22,20,18,0.9)' }}>¡Solicitud enviada!</h3>
-            <p className="text-sm mb-6" style={{ color: 'rgba(22,20,18,0.55)' }}>
+            <h3 className="text-lg font-black mb-2" style={{ color: '#111' }}>¡Solicitud enviada!</h3>
+            <p className="text-sm mb-6" style={{ color: '#333' }}>
               <strong>{professionalName}</strong> recibirá tu mensaje y te contactará directamente.
             </p>
             <button onClick={onClose} className="px-6 py-2.5 rounded-xl text-sm font-bold"
-              style={{ background: '#f5f4f0', border: '1px solid rgba(0,0,0,0.08)', color: 'rgba(22,20,18,0.7)' }}>
+              style={{ background: '#f5f4f0', border: '1px solid rgba(0,0,0,0.08)', color: '#222' }}>
               Cerrar
             </button>
           </div>
         ) : (
           <form onSubmit={handleSubmit}>
             <div className="mb-5">
-              <h3 className="text-lg font-black mb-0.5" style={{ color: 'rgba(22,20,18,0.9)' }}>Contactar con {professionalName}</h3>
-              <p className="text-xs" style={{ color: 'rgba(22,20,18,0.45)' }}>Sin registro. Gratis. Te responderá directamente.</p>
+              <h3 className="text-lg font-black mb-0.5" style={{ color: '#111' }}>Contactar con {professionalName}</h3>
+              <p className="text-xs" style={{ color: '#333' }}>Sin registro. Gratis. Te responderá directamente.</p>
             </div>
 
             {isFlashActive && (
@@ -109,44 +109,44 @@ export default function PublicContactModal({ professionalName, professionalUserI
 
             <div className="space-y-3">
               <div>
-                <label className="text-xs font-bold mb-1 block" style={{ color: 'rgba(22,20,18,0.55)' }}>Tu nombre *</label>
+                <label className="text-xs font-bold mb-1 block" style={{ color: '#333' }}>Tu nombre *</label>
                 <input value={form.name} onChange={e => set('name', e.target.value)} required
                   placeholder="Nombre completo"
                   className="w-full px-3 py-2.5 rounded-xl text-sm outline-none"
-                  style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: 'rgba(22,20,18,0.88)' }} />
+                  style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: '#222' }} />
               </div>
 
               <div>
-                <label className="text-xs font-bold mb-1 block" style={{ color: 'rgba(22,20,18,0.55)' }}>Tu email *</label>
+                <label className="text-xs font-bold mb-1 block" style={{ color: '#333' }}>Tu email *</label>
                 <input type="email" value={form.email} onChange={e => set('email', e.target.value)} required
                   placeholder="tu@email.com"
                   className="w-full px-3 py-2.5 rounded-xl text-sm outline-none"
-                  style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: 'rgba(22,20,18,0.88)' }} />
+                  style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: '#222' }} />
               </div>
 
               <div>
-                <label className="text-xs font-bold mb-1 block" style={{ color: 'rgba(22,20,18,0.55)' }}>Tipo de evento *</label>
+                <label className="text-xs font-bold mb-1 block" style={{ color: '#333' }}>Tipo de evento *</label>
                 <select value={form.eventType} onChange={e => set('eventType', e.target.value)} required
                   className="w-full px-3 py-2.5 rounded-xl text-sm outline-none"
-                  style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: form.eventType ? 'rgba(22,20,18,0.88)' : 'rgba(22,20,18,0.35)' }}>
+                  style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: form.eventType ? '#222' : '#333' }}>
                   <option value="" disabled>Selecciona el tipo de evento</option>
                   {EVENT_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
 
               <div>
-                <label className="text-xs font-bold mb-1 block" style={{ color: 'rgba(22,20,18,0.55)' }}>Fecha del evento</label>
+                <label className="text-xs font-bold mb-1 block" style={{ color: '#333' }}>Fecha del evento</label>
                 <input type="date" value={form.date} onChange={e => set('date', e.target.value)}
                   className="w-full px-3 py-2.5 rounded-xl text-sm outline-none"
-                  style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: 'rgba(22,20,18,0.88)' }} />
+                  style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: '#222' }} />
               </div>
 
               <div>
-                <label className="text-xs font-bold mb-1 block" style={{ color: 'rgba(22,20,18,0.55)' }}>Cuéntale algo más (opcional)</label>
+                <label className="text-xs font-bold mb-1 block" style={{ color: '#333' }}>Cuéntale algo más (opcional)</label>
                 <textarea id="xpeak-contact-message" value={form.message} onChange={e => set('message', e.target.value)} rows={3}
                   placeholder="Número de invitados, lugar, lo que necesitas..."
                   className="w-full px-3 py-2.5 rounded-xl text-sm outline-none resize-none"
-                  style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: 'rgba(22,20,18,0.88)' }} />
+                  style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: '#222' }} />
               </div>
             </div>
 
@@ -161,7 +161,7 @@ export default function PublicContactModal({ professionalName, professionalUserI
               {status === 'sending' ? 'Enviando…' : 'Enviar solicitud gratis'}
             </button>
 
-            <p className="text-[0.65rem] text-center mt-3" style={{ color: 'rgba(22,20,18,0.3)' }}>
+            <p className="text-[0.65rem] text-center mt-3" style={{ color: '#333' }}>
               Sin registro · Sin comisión · Respuesta directa del profesional
             </p>
           </form>

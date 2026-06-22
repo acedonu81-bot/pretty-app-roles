@@ -53,14 +53,14 @@ export default function BlogCateringComuniones() {
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
-          <div className="flex items-center gap-3"><a href="/blog" className="text-xs font-bold" style={{ color: '#8E8EA0' }}>Blog</a><a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a></div>
+          <div className="flex items-center gap-3"><a href="/blog" className="text-xs font-bold" style={{ color: '#3d3d4e' }}>Blog</a><a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a></div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
-          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#8E8EA0' }}>← Todos los artículos</a>
+          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Catering · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Catering para comuniones en España: precio por persona y qué incluye (2026)</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#8E8EA0' }}>El catering es la partida más importante del presupuesto de una comunión. Con estos precios reales y este desglose de formatos, podrás comparar presupuestos sin sorpresas.</p>
+            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>El catering es la partida más importante del presupuesto de una comunión. Con estos precios reales y este desglose de formatos, podrás comparar presupuestos sin sorpresas.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>7 mayo 2026</time>
           </div>
           <div className="space-y-10">
@@ -80,7 +80,7 @@ export default function BlogCateringComuniones() {
                   </div>
                 ))}
               </div>
-              <p className="text-xs leading-relaxed" style={{ color: '#8E8EA0' }}>Para una comunión de 80 invitados con banquete completo y cóctel previo, el presupuesto de catering ronda los <strong style={{ color: '#D4AF37' }}>4.800€–6.800€</strong>. El precio por persona baja a medida que aumentan los invitados.</p>
+              <p className="text-xs leading-relaxed" style={{ color: '#3d3d4e' }}>Para una comunión de 80 invitados con banquete completo y cóctel previo, el presupuesto de catering ronda los <strong style={{ color: '#D4AF37' }}>4.800€–6.800€</strong>. El precio por persona baja a medida que aumentan los invitados.</p>
             </section>
 
             <section>
@@ -88,7 +88,7 @@ export default function BlogCateringComuniones() {
               <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
                 <table className="w-full text-xs">
                   <thead><tr style={{ background: 'rgba(212,175,55,0.08)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}><th className="text-left px-4 py-3 font-bold">Formato</th><th className="px-4 py-3 font-bold text-right">Precio/persona</th><th className="px-4 py-3 font-bold text-left hidden sm:table-cell">Ideal para</th></tr></thead>
-                  <tbody>{FORMATOS.map((row, i) => (<tr key={row.formato} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}><td className="px-4 py-3 font-medium">{row.formato}</td><td className="px-4 py-3 text-right font-bold" style={{ color: '#D4AF37' }}>{row.precio}</td><td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#8E8EA0' }}>{row.ideal}</td></tr>))}</tbody>
+                  <tbody>{FORMATOS.map((row, i) => (<tr key={row.formato} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}><td className="px-4 py-3 font-medium">{row.formato}</td><td className="px-4 py-3 text-right font-bold" style={{ color: '#D4AF37' }}>{row.precio}</td><td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#3d3d4e' }}>{row.ideal}</td></tr>))}</tbody>
                 </table>
               </div>
             </section>
@@ -99,13 +99,13 @@ export default function BlogCateringComuniones() {
                 <div className="p-4 rounded-xl" style={{ background: 'rgba(34,197,94,0.04)', border: '1px solid rgba(34,197,94,0.15)' }}>
                   <p className="text-sm font-bold mb-3" style={{ color: '#22c55e' }}>✓ Normalmente incluido</p>
                   <ul className="space-y-1.5">
-                    {['Menú por platos o buffet (según formato)', 'Personal de sala durante el servicio', 'Mantelería y vajilla', 'Pan, agua y vino básico', 'Servicio de café e infusiones', 'Limpieza posterior del espacio'].map(i => <li key={i} className="text-xs" style={{ color: '#8E8EA0' }}>· {i}</li>)}
+                    {['Menú por platos o buffet (según formato)', 'Personal de sala durante el servicio', 'Mantelería y vajilla', 'Pan, agua y vino básico', 'Servicio de café e infusiones', 'Limpieza posterior del espacio'].map(i => <li key={i} className="text-xs" style={{ color: '#3d3d4e' }}>· {i}</li>)}
                   </ul>
                 </div>
                 <div className="p-4 rounded-xl" style={{ background: 'rgba(255,95,86,0.04)', border: '1px solid rgba(255,95,86,0.15)' }}>
                   <p className="text-sm font-bold mb-3" style={{ color: '#ff5f56' }}>✗ Normalmente aparte</p>
                   <ul className="space-y-1.5">
-                    {['Bebidas alcohólicas premium y destilados', 'Tarta de comunión', 'Alquiler del espacio', 'Animación infantil o DJ', 'Decoración floral', 'Photocall o atrezzo'].map(i => <li key={i} className="text-xs" style={{ color: '#8E8EA0' }}>· {i}</li>)}
+                    {['Bebidas alcohólicas premium y destilados', 'Tarta de comunión', 'Alquiler del espacio', 'Animación infantil o DJ', 'Decoración floral', 'Photocall o atrezzo'].map(i => <li key={i} className="text-xs" style={{ color: '#3d3d4e' }}>· {i}</li>)}
                   </ul>
                 </div>
               </div>
@@ -135,7 +135,7 @@ export default function BlogCateringComuniones() {
                 ].map(t => (
                   <div key={t.tip} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
                     <p className="text-sm font-bold mb-1" style={{ color: '#D4AF37' }}>💡 {t.tip}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: '#8E8EA0' }}>{t.desc}</p>
+                    <p className="text-xs leading-relaxed" style={{ color: '#3d3d4e' }}>{t.desc}</p>
                   </div>
                 ))}
               </div>
@@ -150,7 +150,7 @@ export default function BlogCateringComuniones() {
                       {q.name}
                       <span className="text-xs ml-3 flex-shrink-0" style={{ color: '#D4AF37' }}>+</span>
                     </summary>
-                    <div className="px-4 py-3 text-sm leading-relaxed" style={{ color: '#8E8EA0', background: 'rgba(0,0,0,0.2)' }}>
+                    <div className="px-4 py-3 text-sm leading-relaxed" style={{ color: '#3d3d4e', background: 'rgba(0,0,0,0.2)' }}>
                       {q.acceptedAnswer.text}
                     </div>
                   </details>
@@ -161,7 +161,7 @@ export default function BlogCateringComuniones() {
             <section className="rounded-2xl p-6 text-center" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
               <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#D4AF37' }}>¿Buscas catering para tu comunión?</p>
               <h3 className="text-xl font-black mb-3">Encuentra camareros y catering en XPEAK</h3>
-              <p className="text-sm mb-5" style={{ color: '#8E8EA0' }}>Profesionales verificados con tarifas reales. También DJs y animación infantil para la comunión perfecta.</p>
+              <p className="text-sm mb-5" style={{ color: '#3d3d4e' }}>Profesionales verificados con tarifas reales. También DJs y animación infantil para la comunión perfecta.</p>
               <a href="/contratar-catering" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                 Ver profesionales de catering →
               </a>

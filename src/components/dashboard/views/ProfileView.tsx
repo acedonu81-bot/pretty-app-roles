@@ -256,7 +256,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             ] as [string, string][]).map(([k, v]) => (
               <div key={k} className="flex justify-between py-1.5 text-sm" style={{ borderBottom: '1px solid rgba(0,0,0,0.03)' }}>
                 <span className="text-muted-foreground">{k}</span>
-                <span className="font-semibold" style={{ color: v === '0' || v === '—' ? 'rgba(22,20,18,0.3)' : 'inherit' }}>{v}</span>
+                <span className="font-semibold" style={{ color: v === '0' || v === '—' ? '#333' : 'inherit' }}>{v}</span>
               </div>
             ))}
           </div>
@@ -270,7 +270,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
               </div>
               <div className="flex items-center gap-2 mb-3">
                 <div className="flex-1 px-3 py-2 rounded-lg text-[0.7rem] font-mono truncate"
-                  style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', color: '#8E8EA0' }}>
+                  style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', color: '#3d3d4e' }}>
                   xpeak.es/p/{user.id.slice(0, 8)}…
                 </div>
                 <button
@@ -351,9 +351,9 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <Radio size={15} style={{ color: (isAvailable ?? profile.is_flash_active) ? '#22c55e' : 'rgba(22,20,18,0.3)' }} />
+                  <Radio size={15} style={{ color: (isAvailable ?? profile.is_flash_active) ? '#22c55e' : '#333' }} />
                   <div>
-                    <p className="text-sm font-bold" style={{ color: (isAvailable ?? profile.is_flash_active) ? '#22c55e' : 'rgba(22,20,18,0.45)' }}>
+                    <p className="text-sm font-bold" style={{ color: (isAvailable ?? profile.is_flash_active) ? '#22c55e' : '#333' }}>
                       {savingAvailability ? 'Guardando...' : (isAvailable ?? profile.is_flash_active) ? 'Disponible ahora' : 'No disponible'}
                     </p>
                     <p className="text-[0.75rem] text-muted-foreground">Visible en Flash Booking y directorio</p>
@@ -384,7 +384,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             </div>
             <div className="mb-3">
               <label className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"
-                style={{ color: (!profile.role || profile.role === 'pending') ? '#D4AF37' : 'rgba(22,20,18,0.5)' }}>
+                style={{ color: (!profile.role || profile.role === 'pending') ? '#D4AF37' : '#333' }}>
                 Rol
                 {(!profile.role || profile.role === 'pending') && (
                   <span className="text-xs font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>Elige tu especialidad</span>
@@ -428,7 +428,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
               <div className="mb-3">
                 <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">
                   Caché / Tarifa por hora
-                  <span className="ml-2 normal-case tracking-normal font-normal" style={{ color: 'rgba(22,20,18,0.35)' }}>
+                  <span className="ml-2 normal-case tracking-normal font-normal" style={{ color: '#333' }}>
                     — solo visible para empresarios
                   </span>
                 </label>
@@ -476,7 +476,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                     style={{
                       background: 'rgba(0,0,0,0.03)',
                       border: '1px solid rgba(0,0,0,0.08)',
-                      color: 'rgba(22,20,18,0.65)',
+                      color: '#222',
                     }}
                   >
                     <span>{activeGenres.length > 0 ? `${activeGenres.length} seleccionado${activeGenres.length > 1 ? 's' : ''}` : 'Seleccionar...'}</span>
@@ -495,7 +495,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                             style={{
                               background: activeGenres.includes(g) ? 'rgba(226,190,80,0.15)' : 'rgba(0,0,0,0.05)',
                               border: `1px solid ${activeGenres.includes(g) ? 'rgba(226,190,80,0.4)' : 'rgba(0,0,0,0.06)'}`,
-                              color: activeGenres.includes(g) ? '#E2BE50' : 'rgba(22,20,18,0.55)',
+                              color: activeGenres.includes(g) ? '#E2BE50' : '#333',
                             }}>
                             {g}
                           </button>
@@ -606,7 +606,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 style={{
                   background: 'rgba(0,0,0,0.03)',
                   border: '1px solid rgba(0,0,0,0.08)',
-                  color: 'rgba(22,20,18,0.65)',
+                  color: '#222',
                 }}
               >
                 <span>{activeLangs.length > 0 ? `${activeLangs.length} seleccionado${activeLangs.length > 1 ? 's' : ''}` : 'Seleccionar...'}</span>
@@ -625,7 +625,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                         style={{
                           background: activeLangs.includes(lang) ? 'rgba(226,190,80,0.15)' : 'rgba(0,0,0,0.05)',
                           border: `1px solid ${activeLangs.includes(lang) ? 'rgba(226,190,80,0.4)' : 'rgba(0,0,0,0.06)'}`,
-                          color: activeLangs.includes(lang) ? '#E2BE50' : 'rgba(22,20,18,0.55)',
+                          color: activeLangs.includes(lang) ? '#E2BE50' : '#333',
                         }}>
                         {lang}
                       </button>
@@ -750,7 +750,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 <div className="flex gap-2">
                   <button onClick={() => setDeleteStep(0)}
                     className="flex-1 py-2 rounded-lg text-xs font-bold transition-all"
-                    style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.08)', color: 'rgba(22,20,18,0.65)' }}>
+                    style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.08)', color: '#222' }}>
                     Cancelar
                   </button>
                   <button onClick={() => setDeleteStep(2)}
@@ -764,11 +764,11 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             {deleteStep === 2 && (
               <div className="rounded-lg p-4" style={{ background: 'rgba(255,95,86,0.08)', border: '1px solid rgba(255,95,86,0.35)' }}>
                 <p className="text-xs font-bold mb-1" style={{ color: '#ff5f56' }}>⚠ CONFIRMACIÓN FINAL — acción irreversible</p>
-                <p className="text-xs mb-3" style={{ color: 'rgba(22,20,18,0.55)' }}>No podrás recuperar ningún archivo después de esto.</p>
+                <p className="text-xs mb-3" style={{ color: '#333' }}>No podrás recuperar ningún archivo después de esto.</p>
                 <div className="flex gap-2">
                   <button onClick={() => setDeleteStep(0)}
                     className="flex-1 py-2 rounded-lg text-xs font-bold transition-all"
-                    style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.08)', color: 'rgba(22,20,18,0.65)' }}>
+                    style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.08)', color: '#222' }}>
                     Cancelar
                   </button>
                   <button onClick={() => { setDeleteStep(0); handleDeleteMedia(); }} disabled={deleting}
@@ -788,7 +788,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 <Star size={20} style={{ color: 'rgba(212,175,55,0.25)' }} />
               </div>
               <div className="text-center">
-                <p className="text-xs font-bold mb-1" style={{ color: 'rgba(22,20,18,0.4)' }}>Sin valoraciones aún</p>
+                <p className="text-xs font-bold mb-1" style={{ color: '#333' }}>Sin valoraciones aún</p>
                 <p className="text-xs text-muted-foreground max-w-[200px] leading-relaxed">
                   {profile.role === 'empresario'
                     ? 'Los profesionales podrán valorar tu sala tras completar un booking contigo.'

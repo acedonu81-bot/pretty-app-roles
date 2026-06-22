@@ -1,21 +1,36 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Zap, Calendar, MapPin, MessageSquare, Euro } from 'lucide-react';
+import { X, Zap, Calendar, MapPin, MessageSquare, Euro, Sparkles } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 
+const EVENT_HOURS: Record<string, number> = {
+  'Boda': 6, 'Comunión': 4, 'Evento corporativo': 5, 'Fiesta privada': 4,
+  'Festival': 8, 'Cumpleaños': 3, 'Inauguración': 3, 'Club / Discoteca': 5,
+};
+const EVENT_TYPES = Object.keys(EVENT_HOURS);
+
 interface Props {
   professionalName: string;
   professionalRole: string;
-  professionalUserId?: string; // real user_id for RLS
+  professionalUserId?: string;
   onClose: () => void;
 }
 
 const FlashBookingRequestModal = ({ professionalName, professionalRole, professionalUserId, onClose }: Props) => {
   const { user } = useAuth();
-  const [form, setForm] = useState({ name: '', contact: '', date: '', location: '', description: '', price: '' });
+  const [form, setForm] = useState({ name: '', contact: '', date: '', location: '', description: '', price: '', eventType: '' });
   const [sending, setSending] = useState(false);
+  const [hourlyRate, setHourlyRate] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!professionalUserId) return;
+    supabase.from('profiles').select('hourly_rate').eq('user_id', professionalUserId).maybeSingle()
+      .then(({ data }) => { if (data?.hourly_rate) setHourlyRate(data.hourly_rate as number); });
+  }, [professionalUserId]);
+
+  const estimatedPrice = hourlyRate && form.eventType ? hourlyRate * (EVENT_HOURS[form.eventType] ?? 4) : null;
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
@@ -87,57 +102,79 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
             </div>
             <div className="flex-1">
               <p className="text-sm font-bold">Flash Booking</p>
-              <p className="text-xs" style={{ color: 'rgba(22,20,18,0.65)' }}>Solicitud para {professionalName}</p>
+              <p className="text-xs" style={{ color: '#222' }}>Solicitud para {professionalName}</p>
             </div>
             <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-white/10">
-              <X size={14} style={{ color: 'rgba(22,20,18,0.65)' }} />
+              <X size={14} style={{ color: '#222' }} />
             </button>
           </div>
 
           <div className="p-5 space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(22,20,18,0.65)' }}>Tu nombre *</label>
+                <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: '#222' }}>Tu nombre *</label>
                 <input value={form.name} onChange={e => set('name', e.target.value)}
                   placeholder="Sala Berlín / Pedro G." className="nightlife-input text-sm !py-2 w-full" />
               </div>
               <div>
-                <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(22,20,18,0.65)' }}>Contacto (tel/email) *</label>
+                <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: '#222' }}>Contacto (tel/email) *</label>
                 <input value={form.contact} onChange={e => set('contact', e.target.value)}
                   placeholder="+34 600..." className="nightlife-input text-sm !py-2 w-full" />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: 'rgba(22,20,18,0.65)' }}>
+                <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: '#222' }}>
                   <Calendar size={10} /> Fecha del evento *
                 </label>
                 <input type="date" value={form.date} onChange={e => set('date', e.target.value)}
                   className="nightlife-input text-sm !py-2 w-full" />
               </div>
               <div>
-                <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: 'rgba(22,20,18,0.65)' }}>
+                <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: '#222' }}>
                   <MapPin size={10} /> Lugar
                 </label>
                 <input value={form.location} onChange={e => set('location', e.target.value)}
                   placeholder="Sala / Ciudad" className="nightlife-input text-sm !py-2 w-full" />
               </div>
             </div>
+            <div>
+              <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: '#222' }}>
+                Tipo de evento
+              </label>
+              <select value={form.eventType} onChange={e => set('eventType', e.target.value)}
+                className="nightlife-input text-sm !py-2 w-full appearance-none">
+                <option value="">Seleccionar...</option>
+                {EVENT_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+              </select>
+            </div>
+            {estimatedPrice && (
+              <div className="flex items-center gap-2 px-3 py-2 rounded-xl"
+                style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
+                <Sparkles size={12} style={{ color: '#D4AF37' }} />
+                <p className="text-xs" style={{ color: '#222' }}>
+                  Presupuesto estimado: <span className="font-bold" style={{ color: '#D4AF37' }}>~{estimatedPrice}€</span>
+                  <span className="ml-1" style={{ color: '#333' }}>
+                    ({hourlyRate}€/h × {EVENT_HOURS[form.eventType] ?? 4}h)
+                  </span>
+                </p>
+              </div>
+            )}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: 'rgba(22,20,18,0.65)' }}>
-                  <MessageSquare size={10} /> Descripción del evento
+                <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: '#222' }}>
+                  <MessageSquare size={10} /> Descripción
                 </label>
                 <textarea value={form.description} onChange={e => set('description', e.target.value)}
-                  placeholder="Tipo de evento, aforo, horario..." rows={3}
+                  placeholder="Aforo, horario, detalles..." rows={3}
                   className="nightlife-input text-sm !py-2 w-full resize-none" />
               </div>
               <div>
-                <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: 'rgba(22,20,18,0.65)' }}>
+                <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: '#222' }}>
                   <Euro size={10} /> Caché acordado (€)
                 </label>
                 <input type="number" min="0" step="0.01" value={form.price} onChange={e => set('price', e.target.value)}
-                  placeholder="ej. 300" className="nightlife-input text-sm !py-2 w-full" />
+                  placeholder={estimatedPrice ? `~${estimatedPrice}` : 'ej. 300'} className="nightlife-input text-sm !py-2 w-full" />
                 <p className="text-[0.65rem] mt-1" style={{ color: 'rgba(0,0,0,0.1)' }}>Opcional — para tu registro de gastos</p>
               </div>
             </div>
@@ -149,7 +186,7 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
               style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
               {sending ? 'Enviando...' : <span className="block leading-tight">Enviar solicitud a <span className="block sm:inline truncate max-w-[180px] sm:max-w-none align-bottom">{professionalName}</span></span>}
             </button>
-            <p className="text-center text-xs mt-2" style={{ color: 'rgba(22,20,18,0.3)' }}>
+            <p className="text-center text-xs mt-2" style={{ color: '#333' }}>
               El profesional recibirá tu solicitud y te contactará directamente.
             </p>
           </div>

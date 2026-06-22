@@ -260,7 +260,7 @@ const DemandaTab = () => {
       {/* ─── Separador Flash Jobs ─── */}
       <div className="flex items-center gap-3 mb-4">
         <div className="flex-1 h-px" style={{ background: 'rgba(0,0,0,0.07)' }} />
-        <span className="text-[10px] font-black tracking-widest uppercase" style={{ color: 'rgba(22,20,18,0.3)' }}>
+        <span className="text-[10px] font-black tracking-widest uppercase" style={{ color: '#333' }}>
           Flash Jobs · Urgentes 2h
         </span>
         <div className="flex-1 h-px" style={{ background: 'rgba(0,0,0,0.07)' }} />
@@ -276,7 +276,7 @@ const DemandaTab = () => {
         <button onClick={fetchJobs} className="p-1.5 rounded-lg transition-all hover:scale-105"
           style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid var(--nightlife-border)' }}
           title="Actualizar">
-          <RefreshCw size={12} style={{ color: '#8E8EA0' }} />
+          <RefreshCw size={12} style={{ color: '#3d3d4e' }} />
         </button>
         {isEmpresario && (
           <button onClick={() => setShowForm(!showForm)}
@@ -324,7 +324,7 @@ const DemandaTab = () => {
                 <div className="p-5 flex flex-col flex-1">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-10 h-10 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0"
-                      style={{ background: offer.gradient, color: 'rgba(22,20,18,0.88)' }}>
+                      style={{ background: offer.gradient, color: '#222' }}>
                       {offer.avatar}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -425,7 +425,7 @@ const DemandaTab = () => {
             <Megaphone size={24} style={{ color: 'rgba(34,197,94,0.22)' }} />
           </div>
           <div>
-            <p className="text-sm font-bold mb-1.5" style={{ color: 'rgba(22,20,18,0.4)' }}>
+            <p className="text-sm font-bold mb-1.5" style={{ color: '#333' }}>
               No hay ofertas activas
             </p>
             <p className="text-xs text-muted-foreground max-w-[280px] mx-auto leading-relaxed">

@@ -173,7 +173,7 @@ const AgencyView = () => {
           </div>
           <button onClick={loadStats} className="p-2 rounded-lg transition-all hover:scale-105"
             style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}>
-            <RefreshCw size={13} style={{ color: '#8E8EA0' }} />
+            <RefreshCw size={13} style={{ color: '#3d3d4e' }} />
           </button>
         </div>
       </div>

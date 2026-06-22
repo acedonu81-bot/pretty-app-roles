@@ -21,7 +21,7 @@ const Privacidad = () => {
         <h1 className="text-3xl font-bold mb-2">
           🔐 Política de <span className="text-gradient">Privacidad</span>
         </h1>
-        <p className="text-xs mb-8" style={{ color: 'rgba(22,20,18,0.5)' }}>Fecha de entrada en vigor: 25 de marzo de 2026</p>
+        <p className="text-xs mb-8" style={{ color: '#333' }}>Fecha de entrada en vigor: 25 de marzo de 2026</p>
 
         <div className="glass-panel p-6 md:p-8 space-y-6 text-sm leading-relaxed" style={{ color: 'rgba(22,20,18,0.78)' }}>
           <section>
@@ -32,18 +32,18 @@ const Privacidad = () => {
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>2. Datos que Recopilamos</h2>
             <p className="mb-2">Para el funcionamiento técnico de la plataforma, recogemos los siguientes datos:</p>
-            <ul className="list-disc list-inside space-y-1" style={{ color: 'rgba(22,20,18,0.65)' }}>
-              <li><strong style={{ color: 'rgba(22,20,18,0.88)' }}>Datos de Registro:</strong> Nombre, apellidos, correo electrónico y teléfono.</li>
-              <li><strong style={{ color: 'rgba(22,20,18,0.88)' }}>Datos Profesionales:</strong> Categoría (DJ, Staff, MUA, Wardrobe), experiencia y zona de trabajo en España.</li>
-              <li><strong style={{ color: 'rgba(22,20,18,0.88)' }}>Contenido Multimedia:</strong> Audios de sesiones (vía SoundCloud/Mixcloud), fotografías de perfil y de trabajos realizados.</li>
-              <li><strong style={{ color: 'rgba(22,20,18,0.88)' }}>Datos de Ubicación:</strong> Localización aproximada para filtrar eventos y profesionales cercanos en España.</li>
+            <ul className="list-disc list-inside space-y-1" style={{ color: '#222' }}>
+              <li><strong style={{ color: '#222' }}>Datos de Registro:</strong> Nombre, apellidos, correo electrónico y teléfono.</li>
+              <li><strong style={{ color: '#222' }}>Datos Profesionales:</strong> Categoría (DJ, Staff, MUA, Wardrobe), experiencia y zona de trabajo en España.</li>
+              <li><strong style={{ color: '#222' }}>Contenido Multimedia:</strong> Audios de sesiones (vía SoundCloud/Mixcloud), fotografías de perfil y de trabajos realizados.</li>
+              <li><strong style={{ color: '#222' }}>Datos de Ubicación:</strong> Localización aproximada para filtrar eventos y profesionales cercanos en España.</li>
             </ul>
           </section>
 
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>3. Finalidad del Tratamiento</h2>
             <p className="mb-2">Tus datos se utilizan exclusivamente para:</p>
-            <ul className="list-disc list-inside space-y-1" style={{ color: 'rgba(22,20,18,0.65)' }}>
+            <ul className="list-disc list-inside space-y-1" style={{ color: '#222' }}>
               <li>Gestionar la conexión entre talento y empresas de eventos.</li>
               <li>Permitir la votación pública y el cambio de estatus de Rookie a Profesional.</li>
               <li>Enviar notificaciones automáticas sobre ofertas de trabajo ("Flash Jobs").</li>
@@ -62,32 +62,32 @@ const Privacidad = () => {
 
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>6. Destinatarios y Transferencias Internacionales</h2>
-            <ul className="list-disc list-inside space-y-1" style={{ color: 'rgba(22,20,18,0.65)' }}>
-              <li><strong style={{ color: 'rgba(22,20,18,0.88)' }}>Empresas del Sector:</strong> Tus datos profesionales y multimedia son públicos para los usuarios registrados como "Empresa" con el fin de facilitar tu contratación.</li>
-              <li><strong style={{ color: 'rgba(22,20,18,0.88)' }}>Supabase (infraestructura):</strong> Los datos se almacenan en servidores de Supabase Inc. ubicados en la Unión Europea (Irlanda, AWS eu-west-1). La transferencia está amparada por las Cláusulas Contractuales Estándar de la Comisión Europea conforme al art. 46.2.c del RGPD.</li>
-              <li><strong style={{ color: 'rgba(22,20,18,0.88)' }}>Autoridades:</strong> Solo en caso de requerimiento legal administrativo o judicial conforme a la legislación española aplicable.</li>
+            <ul className="list-disc list-inside space-y-1" style={{ color: '#222' }}>
+              <li><strong style={{ color: '#222' }}>Empresas del Sector:</strong> Tus datos profesionales y multimedia son públicos para los usuarios registrados como "Empresa" con el fin de facilitar tu contratación.</li>
+              <li><strong style={{ color: '#222' }}>Supabase (infraestructura):</strong> Los datos se almacenan en servidores de Supabase Inc. ubicados en la Unión Europea (Irlanda, AWS eu-west-1). La transferencia está amparada por las Cláusulas Contractuales Estándar de la Comisión Europea conforme al art. 46.2.c del RGPD.</li>
+              <li><strong style={{ color: '#222' }}>Autoridades:</strong> Solo en caso de requerimiento legal administrativo o judicial conforme a la legislación española aplicable.</li>
             </ul>
-            <p className="mt-2" style={{ color: 'rgba(22,20,18,0.65)' }}>Para más información sobre las garantías de transferencia internacional puedes contactar con nosotros en info@xpeak.es (RGPD arts. 44–49).</p>
+            <p className="mt-2" style={{ color: '#222' }}>Para más información sobre las garantías de transferencia internacional puedes contactar con nosotros en info@xpeak.es (RGPD arts. 44–49).</p>
           </section>
 
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>7. Tus Derechos</h2>
             <p className="mb-3">Conforme al RGPD (UE) 2016/679 y la LOPDGDD (LO 3/2018) tienes los siguientes derechos:</p>
-            <ul className="list-disc pl-5 space-y-1.5" style={{ color: 'rgba(22,20,18,0.65)' }}>
-              <li><strong style={{ color: 'rgba(22,20,18,0.88)' }}>Acceso (Art. 15)</strong> — solicitar confirmación de si tratamos tus datos y obtener una copia.</li>
-              <li><strong style={{ color: 'rgba(22,20,18,0.88)' }}>Rectificación (Art. 16)</strong> — corregir datos inexactos o incompletos.</li>
-              <li><strong style={{ color: 'rgba(22,20,18,0.88)' }}>Supresión (Art. 17)</strong> — solicitar el borrado de tus datos cuando ya no sean necesarios o retires el consentimiento. En la plataforma puedes ejercerlo desde <em>Ajustes → Eliminar cuenta</em>.</li>
-              <li><strong style={{ color: 'rgba(22,20,18,0.88)' }}>Portabilidad (Art. 20)</strong> — recibir tus datos en formato estructurado (JSON/CSV) desde <em>Ajustes → Exportar datos</em>.</li>
-              <li><strong style={{ color: 'rgba(22,20,18,0.88)' }}>Limitación del tratamiento (Art. 18)</strong> — solicitar que suspendamos el tratamiento mientras se resuelve una impugnación.</li>
-              <li><strong style={{ color: 'rgba(22,20,18,0.88)' }}>Oposición (Art. 21)</strong> — oponerte al tratamiento basado en interés legítimo, incluyendo elaboración de perfiles con fines de marketing directo.</li>
+            <ul className="list-disc pl-5 space-y-1.5" style={{ color: '#222' }}>
+              <li><strong style={{ color: '#222' }}>Acceso (Art. 15)</strong> — solicitar confirmación de si tratamos tus datos y obtener una copia.</li>
+              <li><strong style={{ color: '#222' }}>Rectificación (Art. 16)</strong> — corregir datos inexactos o incompletos.</li>
+              <li><strong style={{ color: '#222' }}>Supresión (Art. 17)</strong> — solicitar el borrado de tus datos cuando ya no sean necesarios o retires el consentimiento. En la plataforma puedes ejercerlo desde <em>Ajustes → Eliminar cuenta</em>.</li>
+              <li><strong style={{ color: '#222' }}>Portabilidad (Art. 20)</strong> — recibir tus datos en formato estructurado (JSON/CSV) desde <em>Ajustes → Exportar datos</em>.</li>
+              <li><strong style={{ color: '#222' }}>Limitación del tratamiento (Art. 18)</strong> — solicitar que suspendamos el tratamiento mientras se resuelve una impugnación.</li>
+              <li><strong style={{ color: '#222' }}>Oposición (Art. 21)</strong> — oponerte al tratamiento basado en interés legítimo, incluyendo elaboración de perfiles con fines de marketing directo.</li>
             </ul>
-            <p className="text-sm mt-3" style={{ color: 'rgba(22,20,18,0.65)' }}>Para ejercer cualquiera de estos derechos envía un correo a <span style={{ color: '#D4AF37' }}>info@xpeak.es</span> con una copia de tu DNI o documento equivalente. Responderemos en el plazo máximo de <strong>30 días naturales</strong> (RGPD Art. 12.3).</p>
+            <p className="text-sm mt-3" style={{ color: '#222' }}>Para ejercer cualquiera de estos derechos envía un correo a <span style={{ color: '#D4AF37' }}>info@xpeak.es</span> con una copia de tu DNI o documento equivalente. Responderemos en el plazo máximo de <strong>30 días naturales</strong> (RGPD Art. 12.3).</p>
           </section>
 
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>8. Reclamaciones ante la Autoridad de Control</h2>
-            <p className="text-sm" style={{ color: 'rgba(22,20,18,0.65)' }}>
-              Si consideras que el tratamiento de tus datos infringe la normativa de protección de datos, tienes derecho a presentar una reclamación ante la <strong style={{ color: 'rgba(22,20,18,0.88)' }}>Agencia Española de Protección de Datos (AEPD)</strong>, sin perjuicio de cualquier otro recurso administrativo o acción judicial.
+            <p className="text-sm" style={{ color: '#222' }}>
+              Si consideras que el tratamiento de tus datos infringe la normativa de protección de datos, tienes derecho a presentar una reclamación ante la <strong style={{ color: '#222' }}>Agencia Española de Protección de Datos (AEPD)</strong>, sin perjuicio de cualquier otro recurso administrativo o acción judicial.
             </p>
             <p className="text-sm mt-2">
               <span style={{ color: '#D4AF37' }}>www.aepd.es</span> · C/ Jorge Juan, 6 · 28001 Madrid · Tel. 901 100 099

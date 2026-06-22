@@ -55,16 +55,16 @@ export default function BlogDJBodaACoruna() {
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
-            <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#8E8EA0' }}>Blog</a>
+            <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
             <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
           </div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
-          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#8E8EA0' }}>← Todos los artículos</a>
+          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>DJ · A Coruña · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para bodas en A Coruña: precio y cómo contratar en 2026</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#8E8EA0' }}>Galicia tiene una tradición de bodas muy arraigada con los pazos como venue estrella. A Coruña combina venues históricos, fincas atlánticas y una escena de DJs activa. Esta es la guía de precios y claves para contratar en 2026.</p>
+            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Galicia tiene una tradición de bodas muy arraigada con los pazos como venue estrella. A Coruña combina venues históricos, fincas atlánticas y una escena de DJs activa. Esta es la guía de precios y claves para contratar en 2026.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>3 junio 2026</time>
           </div>
           <div className="space-y-10">
@@ -78,7 +78,7 @@ export default function BlogDJBodaACoruna() {
                   </div>
                 ))}
               </div>
-              <p className="text-xs mt-3" style={{ color: '#8E8EA0' }}>Precios orientativos 2026. Sin IVA. Algunos pazos tienen lista de proveedores aprobados — verifica antes de contratar.</p>
+              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos 2026. Sin IVA. Algunos pazos tienen lista de proveedores aprobados — verifica antes de contratar.</p>
             </section>
             <BlogInlineCTA role="dj" variant="upgrade" />
             <section>
@@ -90,7 +90,7 @@ export default function BlogDJBodaACoruna() {
                       <p className="text-xs font-bold">{z.zona}</p>
                       <span className="text-[0.6rem] font-bold px-2 py-0.5 rounded ml-3 shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>{z.nota}</span>
                     </div>
-                    <p className="text-xs" style={{ color: '#8E8EA0' }}>{z.fincas}</p>
+                    <p className="text-xs" style={{ color: '#3d3d4e' }}>{z.fincas}</p>
                   </div>
                 ))}
               </div>
@@ -124,7 +124,7 @@ export default function BlogDJBodaACoruna() {
             </section>
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas DJ para tu boda en A Coruña?</p>
-              <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>XPEAK conecta organizadores con DJs verificados en toda Galicia. Contrato digital automático incluido.</p>
+              <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>XPEAK conecta organizadores con DJs verificados en toda Galicia. Contrato digital automático incluido.</p>
               <a href="/contratar-dj" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver DJs de bodas en A Coruña →</a>
             </div>
           </div>

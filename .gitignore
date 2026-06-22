@@ -31,3 +31,7 @@ android/keystore.properties
 android/app/*.jks
 android/app/*.keystore
 .worktrees/
+
+# Temp tooling artifacts
+.playwright-mcp/
+.claude/worktrees/

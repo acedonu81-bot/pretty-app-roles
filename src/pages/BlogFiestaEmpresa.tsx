@@ -50,16 +50,16 @@ export default function BlogFiestaEmpresa() {
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
-            <a href="/blog" className="text-xs font-bold" style={{ color: '#8E8EA0' }}>Blog</a>
+            <a href="/blog" className="text-xs font-bold" style={{ color: '#3d3d4e' }}>Blog</a>
             <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
           </div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
-          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#8E8EA0' }}>← Todos los artículos</a>
+          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Eventos · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Cómo organizar una fiesta de empresa: checklist completo y proveedores (2026)</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#8E8EA0' }}>La fiesta de empresa es el evento más estresante del año para quien lo organiza. Con este checklist por fases y la guía de presupuesto, no se te escapa nada.</p>
+            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>La fiesta de empresa es el evento más estresante del año para quien lo organiza. Con este checklist por fases y la guía de presupuesto, no se te escapa nada.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>4 mayo 2026</time>
           </div>
           <div className="space-y-10">
@@ -88,7 +88,7 @@ export default function BlogFiestaEmpresa() {
               <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
                 <table className="w-full text-xs">
                   <thead><tr style={{ background: 'rgba(212,175,55,0.08)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}><th className="text-left px-4 py-3 font-bold">Partida</th><th className="px-4 py-3 font-bold text-right">% del total</th><th className="px-4 py-3 font-bold text-left hidden sm:table-cell">Referencia</th></tr></thead>
-                  <tbody>{PRESUPUESTO.map((row, i) => (<tr key={row.partida} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}><td className="px-4 py-3 font-medium">{row.partida}</td><td className="px-4 py-3 text-right font-bold" style={{ color: '#D4AF37' }}>{row.porcentaje}</td><td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#8E8EA0' }}>{row.ejemplo}</td></tr>))}</tbody>
+                  <tbody>{PRESUPUESTO.map((row, i) => (<tr key={row.partida} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}><td className="px-4 py-3 font-medium">{row.partida}</td><td className="px-4 py-3 text-right font-bold" style={{ color: '#D4AF37' }}>{row.porcentaje}</td><td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#3d3d4e' }}>{row.ejemplo}</td></tr>))}</tbody>
                 </table>
               </div>
             </section>
@@ -120,7 +120,7 @@ export default function BlogFiestaEmpresa() {
 
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas DJ o camareros para tu fiesta de empresa?</p>
-              <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>XPEAK conecta con DJs, camareros y staff verificado para eventos corporativos en toda España. Presupuesto en minutos.</p>
+              <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>XPEAK conecta con DJs, camareros y staff verificado para eventos corporativos en toda España. Presupuesto en minutos.</p>
               <div className="flex items-center justify-center gap-3 flex-wrap">
                 <a href="/contratar-dj" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver DJs →</a>
                 <a href="/contratar-camareros" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.8)' }}>Ver camareros →</a>

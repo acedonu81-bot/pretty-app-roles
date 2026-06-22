@@ -74,15 +74,15 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
     <motion.div
       className="rounded-2xl overflow-x-hidden flex flex-col transition-all duration-200 hover:scale-[1.01]"
       style={{
-        background: 'rgba(0,0,0,0.03)',
-        border: isEarlyAdopter ? '2px solid rgba(96,165,250,0.7)' : '1px solid rgba(0,0,0,0.08)',
-        boxShadow: isEarlyAdopter ? '0 0 24px rgba(96,165,250,0.25), inset 0 0 24px rgba(96,165,250,0.04)' : undefined,
+        background: '#ffffff',
+        border: isEarlyAdopter ? '1px solid rgba(96,165,250,0.45)' : '1px solid rgba(0,0,0,0.08)',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
       }}
-      whileHover={{ boxShadow: isEarlyAdopter ? '0 0 40px rgba(96,165,250,0.4)' : '0 8px 40px rgba(0,0,0,0.4)' }}
+      whileHover={{ boxShadow: '0 8px 28px rgba(0,0,0,0.12)' }}
     >
       {/* ── FOTO HERO ── */}
-      <div className="relative" style={{ paddingBottom: '62%' }}>
-        <div className="absolute inset-0" style={{ borderRadius: '0 0 50% 50% / 0 0 20px 20px', overflow: 'hidden' }}>
+      <div className="relative pb-[125%] sm:pb-[62%]">
+        <div className="absolute inset-0 sm:rounded-b-none" style={{ overflow: 'hidden', borderRadius: '0' }}>
           {hasPhoto ? (
             <img src={p.photo} alt={p.name} className="w-full h-full object-cover"
               onError={() => setImgError(true)} />
@@ -92,39 +92,59 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
               <GeometricAvatar role={p.role as any} seed={p.id} size={80} isLive={p.isLive} />
             </div>
           )}
-          {/* gradient bottom */}
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(7,7,16,0.9) 0%, transparent 50%)' }} />
+          {/* gradient bottom — desktop only (mobile shows name below photo) */}
+          <div className="absolute inset-0 hidden sm:block" style={{ background: 'linear-gradient(to top, rgba(7,7,16,0.9) 0%, transparent 50%)' }} />
         </div>
 
-        {/* Badges top-left */}
+        {/* Badges top-left — single most-relevant badge on mobile, full set on desktop */}
         <div className="absolute top-2.5 left-2.5 flex gap-1.5 flex-wrap z-10">
+          {/* Mobile: only ONE badge, priority Disponible > Pro > Early Adopter */}
+          <span className="sm:hidden">
+            {p.isFlashActive ? (
+              <span className="flex items-center gap-0.5 px-2 py-1 rounded-full text-[0.6rem] font-black"
+                style={{ background: 'rgba(34,197,94,0.95)', color: '#fff' }}>
+                <Zap size={9} fill="#fff" /> Disponible
+              </span>
+            ) : (p as any).isVerified ? (
+              <span className="flex items-center gap-0.5 px-2 py-1 rounded-full text-[0.6rem] font-black"
+                style={{ background: 'rgba(212,175,55,0.95)', color: '#000' }}>
+                <BadgeCheck size={9} /> Pro
+              </span>
+            ) : isEarlyAdopter ? (
+              <span className="flex items-center gap-0.5 px-2 py-1 rounded-full text-[0.6rem] font-black"
+                style={{ background: 'rgba(96,165,250,0.95)', color: '#fff' }}>
+                ⭐ Early
+              </span>
+            ) : null}
+          </span>
+          {/* Desktop: full set */}
           {isEarlyAdopter && (
-            <span className="flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black"
+            <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black"
               style={{ background: 'rgba(96,165,250,0.9)', color: '#000' }}>
               ⭐ Early Adopter
             </span>
           )}
           {p.topWeekend && (
-            <span className="px-2 py-0.5 rounded-full text-[0.6rem] font-black"
+            <span className="hidden sm:inline px-2 py-0.5 rounded-full text-[0.6rem] font-black"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>TOP WEEKEND</span>
           )}
           {(p as any).isVerified && (
-            <span className="flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black"
+            <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black"
               style={{ background: 'rgba(212,175,55,0.9)', color: '#000' }}>
               <BadgeCheck size={9} /> Pro
             </span>
           )}
           {p.isFlashActive && (
-            <span className="flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black animate-pulse"
+            <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black animate-pulse"
               style={{ background: 'rgba(34,197,94,0.9)', color: '#000' }}>
               <Zap size={9} fill="#000" /> Disponible
             </span>
           )}
         </div>
 
-        {/* Views top-right */}
+        {/* Views top-right — desktop only */}
         {p.profileViews > 0 && (
-          <div className="absolute top-2.5 right-2.5 z-10">
+          <div className="absolute top-2.5 right-2.5 z-10 hidden sm:block">
             <span className="text-[0.6rem] font-bold px-2 py-0.5 rounded-full"
               style={{ background: 'rgba(0,0,0,0.6)', color: 'rgba(212,175,55,0.8)' }}>
               {p.profileViews > 99 ? '99+' : p.profileViews} vistos
@@ -132,12 +152,12 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
           </div>
         )}
 
-        {/* Name + specialty overlaid en el bottom */}
-        <div className="absolute bottom-0 left-0 right-0 z-10 p-3" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%)' }}>
+        {/* Name + specialty overlaid — desktop only */}
+        <div className="absolute bottom-0 left-0 right-0 z-10 p-3 hidden sm:block" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%)' }}>
           <div className="flex items-end justify-between gap-2">
             <div className="flex-1 min-w-0">
               <h3 className="text-base font-black" style={{ color: '#fff', textShadow: '0 1px 4px rgba(0,0,0,0.5)', lineHeight: 1.2, paddingBottom: '0.15em', overflow: 'visible' }}>{p.name}</h3>
-              {p.specialty && <p className="text-xs" style={{ color: '#D4AF37' }}>{p.specialty}</p>}
+              {p.specialty && <p className="text-xs truncate sm:whitespace-normal" style={{ color: '#D4AF37' }}>{p.specialty}</p>}
             </div>
             {priceLabel && (
               <span className="text-sm font-black shrink-0" style={{ color: '#D4AF37' }}>{priceLabel}</span>
@@ -146,15 +166,32 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
         </div>
       </div>
 
-      {/* ── CUERPO ── */}
-      <div className="p-3 flex flex-col flex-1 gap-2">
+      {/* Name + info below photo — mobile only */}
+      <div className="px-3 pt-2.5 sm:hidden">
+        <div className="flex items-start justify-between gap-2">
+          <h3 className="text-[0.95rem] font-bold leading-snug truncate" style={{ fontFamily: 'Inter, sans-serif', color: '#111', letterSpacing: '-0.01em' }}>{p.name}</h3>
+          {p.rating > 0 && (
+            <span className="flex items-center gap-0.5 shrink-0 text-xs" style={{ color: '#111' }}>
+              <Star size={11} style={{ color: '#111' }} fill="#111" />
+              <span className="font-semibold">{p.rating}</span>
+            </span>
+          )}
+        </div>
+        <p className="text-xs truncate mt-0.5" style={{ color: '#717171' }}>
+          {[p.location, p.badges?.[0] || p.specialty].filter(Boolean).join(' · ')}
+        </p>
+        {priceLabel && <p className="text-sm mt-1" style={{ color: '#111' }}><span className="font-bold">{priceLabel.split('€')[0]}€</span><span style={{ color: '#717171' }}>{priceLabel.includes('/') ? priceLabel.slice(priceLabel.indexOf('/')) : ''}</span></p>}
+      </div>
 
-        {/* Rating + zona */}
-        <div className="flex items-center gap-2 text-xs" style={{ color: '#8E8EA0' }}>
+      {/* ── CUERPO ── */}
+      <div className="px-3 pb-3 pt-1 sm:p-3 flex flex-col flex-1 gap-2">
+
+        {/* Rating + zona — desktop only (mobile shows it below photo) */}
+        <div className="hidden sm:flex items-center gap-2 text-xs" style={{ color: '#3d3d4e' }}>
           {p.rating > 0 && (
             <span className="flex items-center gap-1">
               <Star size={11} style={{ color: '#D4AF37' }} fill="#D4AF37" />
-              <span className="font-bold" style={{ color: 'rgba(22,20,18,0.88)' }}>{p.rating}</span>
+              <span className="font-bold" style={{ color: '#222' }}>{p.rating}</span>
               <span>({p.reviews})</span>
             </span>
           )}
@@ -163,16 +200,16 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
           )}
         </div>
 
-        {/* Descripción */}
+        {/* Descripción — desktop only */}
         {!compact && p.description && (
-          <p className="text-xs leading-relaxed line-clamp-2" style={{ color: 'rgba(22,20,18,0.5)' }}>
+          <p className="hidden sm:block text-xs leading-relaxed line-clamp-2" style={{ color: '#333' }}>
             "{p.description}"
           </p>
         )}
 
-        {/* Badges géneros */}
+        {/* Badges géneros — desktop only */}
         {p.badges.length > 0 && (
-          <div className="flex flex-wrap gap-1">
+          <div className="hidden sm:flex flex-wrap gap-1">
             {p.badges.slice(0, 3).map(b => (
               <span key={b} className="text-[0.65rem] font-semibold px-1.5 py-0.5 rounded"
                 style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
@@ -182,19 +219,19 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
           </div>
         )}
 
-        {/* Audio link */}
+        {/* Audio link — desktop only */}
         {isDJ && audioUrl && audioLabel && (
           <a href={audioUrl} target="_blank" rel="noopener noreferrer"
             onClick={e => e.stopPropagation()}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold w-fit transition-all hover:scale-105"
+            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold w-fit transition-all hover:scale-105"
             style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
             <HearthisIcon size={12} /> {audioLabel}
           </a>
         )}
 
-        {/* Portfolio */}
+        {/* Portfolio — desktop only */}
         {showPortfolio && p.portfolioUrls && p.portfolioUrls.length > 0 && (
-          <div className="grid grid-cols-3 gap-1">
+          <div className="hidden sm:grid grid-cols-3 gap-1">
             {p.portfolioUrls.slice(0, 3).map((url, i) => {
               const isVideo = /\.(mp4|webm|mov)$/i.test(url) || /youtube|vimeo|twitch/i.test(url);
               return isVideo ? (
@@ -223,15 +260,25 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
 
         {/* CTAs */}
         <div className="mt-auto flex flex-col gap-2 pt-1">
+          {/* Mobile: single primary CTA → opens profile (Airbnb-style card→detail) */}
           {onViewProfile && (
             <button type="button" onClick={() => onViewProfile(p)}
-              className="w-full py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
+              className="sm:hidden w-full py-2.5 rounded-xl text-[0.8rem] font-bold transition-all active:scale-[0.98]"
+              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+              Ver perfil
+            </button>
+          )}
+
+          {/* Desktop: full CTA set */}
+          {onViewProfile && (
+            <button type="button" onClick={() => onViewProfile(p)}
+              className="hidden sm:block w-full py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 4px 15px rgba(212,175,55,0.25)' }}>
               Ver perfil completo →
             </button>
           )}
 
-          <div className="flex gap-2">
+          <div className="hidden sm:flex gap-2">
             {currentUser.role === 'empresario' && (
               <button type="button" onClick={() => setShowContract(true)}
                 className="flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105"
@@ -248,7 +295,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
               style={{
                 background: 'rgba(0,0,0,0.04)',
                 border: '1px solid rgba(0,0,0,0.08)',
-                color: 'rgba(22,20,18,0.75)',
+                color: '#222',
               }}>
               <MessageCircle size={13} />
               Contactar

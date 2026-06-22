@@ -148,7 +148,7 @@ const SolicitudesTab = () => {
           )}
         </div>
         <button onClick={fetch} className="p-1.5 rounded-lg transition-all hover:scale-105"
-          style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid var(--nightlife-border)', color: '#8E8EA0' }}>
+          style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid var(--nightlife-border)', color: '#3d3d4e' }}>
           <RefreshCw size={12} />
         </button>
       </div>
@@ -175,7 +175,7 @@ const SolicitudesTab = () => {
       {!loading && items.length > 0 && (
         <div className="space-y-3">
           {items.map(s => {
-            const st = STATUS[s.status ?? ''] ?? { label: s.status ?? '—', color: '#8E8EA0', bg: 'rgba(0,0,0,0.04)' };
+            const st = STATUS[s.status ?? ''] ?? { label: s.status ?? '—', color: '#3d3d4e', bg: 'rgba(0,0,0,0.04)' };
             const isPending = s.status === 'pending';
             return (
               <div key={s.id} className="glass-panel p-4"

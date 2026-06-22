@@ -104,7 +104,7 @@ export default function BlogMagoPrecioEventos() {
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
-            <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#8E8EA0' }}>Blog</a>
+            <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
             <a
               href="/auth"
               className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
@@ -116,7 +116,7 @@ export default function BlogMagoPrecioEventos() {
         </nav>
 
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
-          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#8E8EA0' }}>
+          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>
             ← Todos los artículos
           </a>
 
@@ -125,7 +125,7 @@ export default function BlogMagoPrecioEventos() {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">
               Cuánto cobra un mago para eventos y fiestas en España 2026
             </h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#8E8EA0' }}>
+            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>
               La magia sigue siendo uno de los recursos de entretenimiento más efectivos para romper el hielo en bodas, cenas de empresa y fiestas privadas. En esta guía encontrarás los precios reales de 2026 según el tipo de actuación y los criterios clave para elegir al mago correcto.
             </p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>1 junio 2026</time>
@@ -190,7 +190,7 @@ export default function BlogMagoPrecioEventos() {
                   </div>
                 ))}
               </div>
-              <p className="text-xs mt-3" style={{ color: '#8E8EA0' }}>
+              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>
                 Precios orientativos sin IVA para España 2026. Madrid y Barcelona pueden ser un 20–30% más caros.
               </p>
             </section>
@@ -260,7 +260,7 @@ export default function BlogMagoPrecioEventos() {
               style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}
             >
               <p className="text-sm font-black mb-2">Contrata un mago verificado para tu evento</p>
-              <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>
+              <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>
                 XPEAK tiene magos con vídeos reales de actuación, reseñas verificadas y contrato digital incluido. Solicita presupuesto gratis.
               </p>
               <a

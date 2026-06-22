@@ -81,16 +81,13 @@ const Auth = () => {
   const isRegistering = useRef(false);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate(redirectParam, { replace: true });
-    });
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'PASSWORD_RECOVERY') {
         setShowRecovery(true);
         return;
       }
       if (isRegistering.current) return;
-      if (session && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED')) {
+      if (session && event === 'SIGNED_IN') {
         navigate(redirectParam, { replace: true });
       }
     });
@@ -502,7 +499,7 @@ const Auth = () => {
                       <div className="flex gap-2">
                         <button type="button" onClick={() => setShowForgot(false)}
                           className="flex-1 py-2 rounded-lg text-xs font-bold"
-                          style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#8E8EA0' }}>
+                          style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#3d3d4e' }}>
                           Cancelar
                         </button>
                         <button type="submit" disabled={forgotLoading}
@@ -562,14 +559,14 @@ const Auth = () => {
               style={{ background: 'rgba(212,175,55,0.12)', border: '2px solid rgba(212,175,55,0.3)' }}>
               <Mail size={28} style={{ color: '#D4AF37' }} />
             </div>
-            <h2 className="text-xl font-black mb-2" style={{ color: 'rgba(22,20,18,0.92)' }}>
+            <h2 className="text-xl font-black mb-2" style={{ color: '#111' }}>
               ¡Revisa tu email!
             </h2>
-            <p className="text-sm leading-relaxed mb-2" style={{ color: 'rgba(22,20,18,0.6)' }}>
+            <p className="text-sm leading-relaxed mb-2" style={{ color: '#222' }}>
               Hemos enviado un enlace de confirmación a
             </p>
             <p className="text-sm font-black mb-5" style={{ color: '#8B6A00' }}>{email}</p>
-            <p className="text-xs leading-relaxed mb-6" style={{ color: 'rgba(22,20,18,0.5)' }}>
+            <p className="text-xs leading-relaxed mb-6" style={{ color: '#333' }}>
               Haz clic en el enlace del email para activar tu cuenta y acceder a XPEAK.<br />
               Si no lo ves, revisa la carpeta de spam.
             </p>
@@ -591,10 +588,10 @@ const Auth = () => {
               style={{ background: 'rgba(212,175,55,0.12)', border: '2px solid rgba(212,175,55,0.3)' }}>
               <Lock size={28} style={{ color: '#D4AF37' }} />
             </div>
-            <h2 className="text-xl font-black mb-2" style={{ color: 'rgba(22,20,18,0.92)' }}>
+            <h2 className="text-xl font-black mb-2" style={{ color: '#111' }}>
               Nueva contraseña
             </h2>
-            <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(22,20,18,0.6)' }}>
+            <p className="text-sm leading-relaxed mb-4" style={{ color: '#222' }}>
               Introduce tu nueva contraseña para XPEAK.
             </p>
             <form onSubmit={async (e) => {

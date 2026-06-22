@@ -193,7 +193,7 @@ const AdminBeta = () => {
               style={{
                 background: activeTab === tab ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.03)',
                 border: `1px solid ${activeTab === tab ? 'rgba(212,175,55,0.4)' : 'rgba(255,255,255,0.08)'}`,
-                color: activeTab === tab ? '#D4AF37' : '#8E8EA0',
+                color: activeTab === tab ? '#D4AF37' : '#3d3d4e',
               }}
             >
               {tab === 'Solicitudes' ? <Users size={13} /> : tab === 'Códigos Promo' ? <Tag size={13} /> : <UserCog size={13} />}
@@ -311,7 +311,7 @@ const AdminBeta = () => {
                     value={newCode.plan_id}
                     onChange={e => setNewCode(p => ({ ...p, plan_id: e.target.value }))}
                     className="nightlife-input text-sm w-full appearance-none"
-                    style={{ background: 'rgba(255,255,255,0.03)', color: newCode.plan_id ? 'inherit' : '#8E8EA0' }}
+                    style={{ background: 'rgba(255,255,255,0.03)', color: newCode.plan_id ? 'inherit' : '#3d3d4e' }}
                   >
                     <option value="" style={{ background: '#0e0e14' }}>Todos los planes</option>
                     {['starter', 'business', 'agency'].map(p => (
@@ -397,7 +397,7 @@ const AdminBeta = () => {
                               className="flex items-center gap-1 px-2 py-1 rounded text-[0.65rem] font-bold transition-all"
                               style={c.is_active
                                 ? { background: 'rgba(34,197,94,0.1)', color: '#22c55e', border: '1px solid rgba(34,197,94,0.2)' }
-                                : { background: 'rgba(255,255,255,0.04)', color: '#8E8EA0', border: '1px solid rgba(255,255,255,0.08)' }}
+                                : { background: 'rgba(255,255,255,0.04)', color: '#3d3d4e', border: '1px solid rgba(255,255,255,0.08)' }}
                             >
                               {c.is_active ? <><Check size={10} /> Activo</> : <><X size={10} /> Inactivo</>}
                             </button>

@@ -54,7 +54,7 @@ export const ROLE_COLORS: Record<string, string> = {
   speaker: '#06B6D4',
 };
 
-const MIN_ITEMS = 3;
+const MIN_ITEMS = 1;
 const POLL_INTERVAL_MS = 60_000;
 const MAX_COMBINED_ITEMS = 20;
 

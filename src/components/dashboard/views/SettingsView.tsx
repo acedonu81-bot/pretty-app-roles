@@ -40,7 +40,7 @@ const ToggleRow = ({ label, desc, checked, onChange }: ToggleRowProps) => (
       <div className="relative w-9 h-5 rounded-full transition-all"
         style={{ background: checked ? 'rgba(212,175,55,0.3)' : 'rgba(0,0,0,0.08)', border: `1px solid ${checked ? 'rgba(212,175,55,0.5)' : 'rgba(0,0,0,0.1)'}` }}>
         <div className="absolute top-[2px] left-[2px] w-4 h-4 rounded-full transition-transform"
-          style={{ background: checked ? '#D4AF37' : '#8E8EA0', transform: checked ? 'translateX(16px)' : 'translateX(0)' }} />
+          style={{ background: checked ? '#D4AF37' : '#3d3d4e', transform: checked ? 'translateX(16px)' : 'translateX(0)' }} />
       </div>
     </label>
   </div>
@@ -101,7 +101,7 @@ const MultiProfileSection = () => {
             {p.id === profileId
               ? <span className="text-[0.6rem] font-black px-2 py-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37' }}>ACTIVO</span>
               : <button onClick={() => switchProfile(p.id)} className="text-xs font-bold px-3 py-1 rounded-lg transition-all hover:scale-105"
-                  style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.08)', color: '#8E8EA0' }}>
+                  style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.08)', color: '#3d3d4e' }}>
                   Cambiar
                 </button>
             }
@@ -127,7 +127,7 @@ const MultiProfileSection = () => {
             maxLength={80} className="nightlife-input !py-2.5 text-sm w-full" />
           <div className="flex gap-2">
             <button onClick={() => setAdding(false)} className="flex-1 py-2 rounded-lg text-xs font-bold transition-all"
-              style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#8E8EA0' }}>
+              style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#3d3d4e' }}>
               <X size={12} className="inline mr-1" />Cancelar
             </button>
             <button onClick={handleCreate} disabled={saving} className="flex-1 py-2 rounded-lg text-xs font-bold transition-all disabled:opacity-50"
@@ -508,20 +508,20 @@ Para cualquier duda: soporte@xpeak.es
   .doc{max-width:680px;margin:0 auto;padding:0 32px}
   .hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px;padding-bottom:20px;border-bottom:1px solid rgba(212,175,55,0.3)}
   .logo{font-size:22px;font-weight:900;letter-spacing:2px;color:#D4AF37}
-  .hdr-right{text-align:right;font-size:11px;color:rgba(22,20,18,0.45)}
+  .hdr-right{text-align:right;font-size:11px;color:#333}
   .avail{font-size:10px;padding:4px 10px;border-radius:999px;background:rgba(212,175,55,0.1);color:#D4AF37;border:1px solid rgba(212,175,55,0.3);margin-top:6px;display:inline-block}
   .prof-card{display:flex;align-items:center;gap:20px;background:rgba(0,0,0,0.03);border:1px solid rgba(0,0,0,0.08);border-radius:16px;padding:24px;margin-bottom:32px}
   .avatar{width:64px;height:64px;border-radius:14px;background:linear-gradient(135deg,#D4AF37,#B8941E);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;color:#000;flex-shrink:0}
   .prof-name{font-size:20px;font-weight:800;margin-bottom:4px}
-  .prof-meta{font-size:12px;color:rgba(22,20,18,0.55)}
+  .prof-meta{font-size:12px;color:#333}
   .badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(212,175,55,0.12);color:#D4AF37;border:1px solid rgba(212,175,55,0.25);margin-top:6px}
   .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px}
   .kpi{background:rgba(0,0,0,0.03);border:1px solid rgba(0,0,0,0.06);border-radius:12px;padding:16px;text-align:center}
   .kpi-val{font-size:24px;font-weight:900;color:#D4AF37}
-  .kpi-lbl{font-size:10px;color:rgba(22,20,18,0.5);margin-top:4px}
+  .kpi-lbl{font-size:10px;color:#333;margin-top:4px}
   .sec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:rgba(212,175,55,0.7);margin-bottom:14px}
   table{width:100%;border-collapse:collapse;margin-bottom:32px;font-size:12px}
-  th{text-align:left;padding:8px 10px;color:rgba(22,20,18,0.4);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid rgba(0,0,0,0.05)}
+  th{text-align:left;padding:8px 10px;color:#333;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid rgba(0,0,0,0.05)}
   td{padding:10px;border-bottom:1px solid rgba(0,0,0,0.04)}
   .status{font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px}
   .st-ok{background:rgba(34,197,94,0.1);color:#22c55e;border:1px solid rgba(34,197,94,0.2)}
@@ -529,11 +529,11 @@ Para cualquier duda: soporte@xpeak.es
   .st-rej{background:rgba(255,95,86,0.1);color:#ff5f56;border:1px solid rgba(255,95,86,0.2)}
   .chart-wrap{margin-bottom:32px}
   .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-  .bar-lbl{font-size:10px;color:rgba(22,20,18,0.45);width:28px;flex-shrink:0;text-align:right}
+  .bar-lbl{font-size:10px;color:#333;width:28px;flex-shrink:0;text-align:right}
   .bar-track{flex:1;height:14px;background:rgba(0,0,0,0.04);border-radius:4px;overflow:hidden}
   .bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#D4AF37,#B8941E)}
-  .bar-count{font-size:10px;color:rgba(22,20,18,0.55);width:16px;flex-shrink:0}
-  .fiscal{background:rgba(212,175,55,0.04);border:1px solid rgba(212,175,55,0.12);border-radius:12px;padding:16px;margin-bottom:32px;font-size:11px;color:rgba(22,20,18,0.5);line-height:1.7}
+  .bar-count{font-size:10px;color:#333;width:16px;flex-shrink:0}
+  .fiscal{background:rgba(212,175,55,0.04);border:1px solid rgba(212,175,55,0.12);border-radius:12px;padding:16px;margin-bottom:32px;font-size:11px;color:#333;line-height:1.7}
   .fiscal strong{color:rgba(212,175,55,0.7)}
   .ftr{text-align:center;font-size:10px;color:rgba(0,0,0,0.1);padding-top:24px;border-top:1px solid rgba(0,0,0,0.05)}
   @media print{body{background:#000!important;padding:0}@page{margin:10mm;size:A4}}
@@ -572,7 +572,7 @@ Para cualquier duda: soporte@xpeak.es
       const stLabel = b.status === 'aceptado' || b.status === 'accepted' ? 'Aceptado' : b.status === 'pendiente' || b.status === 'pending' ? 'Pendiente' : 'Rechazado';
       return `<tr><td>${String(b.event_date ?? '').slice(0,10)}</td><td>${String(b.description ?? '').slice(0,35)}</td><td>${String(b.location ?? '').slice(0,20)}</td><td><span class="status ${stClass}">${stLabel}</span></td></tr>`;
     }).join('')}
-  </table>` : '<p style="font-size:12px;color:rgba(22,20,18,0.35);margin-bottom:32px">Sin bookings registrados en ' + reportYear + '</p>'}
+  </table>` : '<p style="font-size:12px;color:#333;margin-bottom:32px">Sin bookings registrados en ' + reportYear + '</p>'}
 
   <div class="chart-wrap">
     <div class="sec-title">Actividad mensual ${reportYear}</div>
@@ -903,7 +903,7 @@ Para cualquier duda: soporte@xpeak.es
               <div className="rounded-xl p-4 mb-4 space-y-3"
                 style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(0,0,0,0.06)' }}>
                 <div className="flex items-center gap-3">
-                  <BellOff size={16} style={{ color: 'rgba(22,20,18,0.3)', flexShrink: 0 }} />
+                  <BellOff size={16} style={{ color: '#333', flexShrink: 0 }} />
                   <div>
                     <p className="text-sm font-bold">
                       {isIosNotPWA ? 'Instala XPEAK para activar notificaciones' : 'Notificaciones no disponibles en este navegador'}
@@ -960,7 +960,7 @@ Para cualquier duda: soporte@xpeak.es
               <div className="flex items-center gap-3 flex-1 min-w-0">
                 {pushEnabled
                   ? <Bell size={16} style={{ color: '#D4AF37', flexShrink: 0 }} />
-                  : <BellOff size={16} style={{ color: 'rgba(22,20,18,0.3)', flexShrink: 0 }} />}
+                  : <BellOff size={16} style={{ color: '#333', flexShrink: 0 }} />}
                 <div className="min-w-0">
                   <p className="text-sm font-bold">{pushEnabled ? 'Notificaciones activas' : 'Notificaciones desactivadas'}</p>
                   <p className="text-xs text-muted-foreground leading-snug">
@@ -1008,6 +1008,13 @@ Para cualquier duda: soporte@xpeak.es
           <ToggleRow label="Top Weekend" desc="Cuando tu perfil asciende al ranking" checked={notifTopWeekend}
             onChange={() => { const v = !notifTopWeekend; setNotifTopWeekend(v); localStorage.setItem('xpeak_notif_topweekend', String(v)); }} />
         )}
+        <ToggleRow label="Emails de mensajes" desc="Recibir email cuando alguien te escribe por chat"
+          checked={!profile.email_opt_out}
+          onChange={async () => {
+            const next = !profile.email_opt_out;
+            await profile.updateField({ email_opt_out: next });
+            toast.success(next ? 'Emails de mensajes desactivados' : 'Emails de mensajes activados');
+          }} />
         <ToggleRow label="Novedades y promociones" desc="Ofertas, descuentos y actualizaciones de XPEAK" checked={notifMarketing}
           onChange={() => { const v = !notifMarketing; setNotifMarketing(v); localStorage.setItem('xpeak_notif_marketing', String(v)); }} />
         <ToggleRow label="SMS de verificación" desc="Solo para verificación de identidad" checked={notifSMS}
@@ -1197,7 +1204,7 @@ Para cualquier duda: soporte@xpeak.es
                   <button
                     onClick={() => { setOtpSent(false); setOtpCode(''); }}
                     className="flex-1 py-2.5 rounded-lg text-xs font-bold transition-all hover:opacity-80"
-                    style={{ background: 'rgba(0,0,0,0.03)', color: '#8E8EA0', border: '1px solid var(--nightlife-border)' }}
+                    style={{ background: 'rgba(0,0,0,0.03)', color: '#3d3d4e', border: '1px solid var(--nightlife-border)' }}
                   >
                     Reenviar código
                   </button>

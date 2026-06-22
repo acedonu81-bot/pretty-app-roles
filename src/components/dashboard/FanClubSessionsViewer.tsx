@@ -70,7 +70,7 @@ const FanClubSessionsViewer = ({ profileId, professionalName, accentColor }: Pro
           style={{ background: `${accentColor}10`, border: `1px solid ${accentColor}25` }}>
           <Music2 size={20} style={{ color: `${accentColor}80` }} />
         </div>
-        <p className="text-sm font-bold" style={{ color: 'rgba(22,20,18,0.65)' }}>
+        <p className="text-sm font-bold" style={{ color: '#222' }}>
           Sin sesiones exclusivas todavía
         </p>
         <p className="text-xs text-muted-foreground max-w-[220px]">
@@ -91,7 +91,7 @@ const FanClubSessionsViewer = ({ profileId, professionalName, accentColor }: Pro
         {teaser && (
           <div className="relative rounded-xl overflow-hidden" style={{ border: `1px solid ${accentColor}20` }}>
             <div className="p-4 pb-2">
-              <p className="text-xs font-bold truncate" style={{ color: 'rgba(22,20,18,0.55)' }}>{teaser.title}</p>
+              <p className="text-xs font-bold truncate" style={{ color: '#333' }}>{teaser.title}</p>
             </div>
             {parsed && (
               <div className="relative" style={{ height: 80 }}>
@@ -158,8 +158,8 @@ const FanClubSessionsViewer = ({ profileId, professionalName, accentColor }: Pro
                 <p className="text-sm font-bold truncate">{s.title}</p>
                 {s.description && <p className="text-xs text-muted-foreground truncate mt-0.5">{s.description}</p>}
               </div>
-              {isOpen ? <ChevronUp size={14} style={{ flexShrink: 0, color: 'rgba(22,20,18,0.65)' }} />
-                : <ChevronDown size={14} style={{ flexShrink: 0, color: 'rgba(22,20,18,0.65)' }} />}
+              {isOpen ? <ChevronUp size={14} style={{ flexShrink: 0, color: '#222' }} />
+                : <ChevronDown size={14} style={{ flexShrink: 0, color: '#222' }} />}
             </button>
             {isOpen && parsed && (
               <div style={{ height: 120 }}>

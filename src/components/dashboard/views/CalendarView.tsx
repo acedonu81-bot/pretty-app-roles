@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
-import { Bell, Calendar as CalendarIcon, Plus, Trash2, MapPin, ExternalLink, Download } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { Bell, Calendar as CalendarIcon, Plus, Trash2, MapPin, ExternalLink, Download, EyeOff, Eye } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 const MONTH_NAMES_ES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
@@ -40,8 +41,34 @@ const CalendarView = () => {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ title: '', date: '', location: '', notes: '' });
   const [selectedDay, setSelectedDay] = useState<{ day: number; month: number; year: number } | null>(null);
+  const [blockedDates, setBlockedDates] = useState<Set<string>>(new Set());
+  const [availMode, setAvailMode] = useState(false);
 
   const storageKey = `xpeak_events_${user?.id ?? 'guest'}`;
+
+  const fetchBlocked = useCallback(async () => {
+    if (!user) return;
+    const { data } = await supabase
+      .from('availability')
+      .select('blocked_date')
+      .eq('user_id', user.id);
+    setBlockedDates(new Set((data ?? []).map((r: any) => r.blocked_date)));
+  }, [user]);
+
+  useEffect(() => { fetchBlocked(); }, [fetchBlocked]);
+
+  const toggleBlocked = async (dateStr: string) => {
+    if (!user) return;
+    if (blockedDates.has(dateStr)) {
+      await supabase.from('availability').delete().eq('user_id', user.id).eq('blocked_date', dateStr);
+      setBlockedDates(prev => { const s = new Set(prev); s.delete(dateStr); return s; });
+      toast.info('Día marcado como disponible');
+    } else {
+      await supabase.from('availability').insert({ user_id: user.id, blocked_date: dateStr });
+      setBlockedDates(prev => new Set(prev).add(dateStr));
+      toast.success('Día marcado como no disponible');
+    }
+  };
 
   useEffect(() => {
     try {
@@ -145,8 +172,13 @@ const CalendarView = () => {
         <div className="flex gap-2 flex-shrink-0">
           <button onClick={toggleNotifications}
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all"
-            style={{ background: notificationsEnabled ? 'rgba(212,175,55,0.12)' : 'rgba(0,0,0,0.03)', border: notificationsEnabled ? '1px solid rgba(212,175,55,0.3)' : '1px solid var(--nightlife-border)', color: notificationsEnabled ? '#D4AF37' : '#8E8EA0' }}>
+            style={{ background: notificationsEnabled ? 'rgba(212,175,55,0.12)' : 'rgba(0,0,0,0.03)', border: notificationsEnabled ? '1px solid rgba(212,175,55,0.3)' : '1px solid var(--nightlife-border)', color: notificationsEnabled ? '#D4AF37' : '#3d3d4e' }}>
             <Bell size={13} /> <span className="hidden sm:inline">{notificationsEnabled ? 'Alertas ON' : 'Alertas'}</span>
+          </button>
+          <button onClick={() => setAvailMode(m => !m)}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all"
+            style={{ background: availMode ? 'rgba(255,95,86,0.12)' : 'rgba(0,0,0,0.03)', border: availMode ? '1px solid rgba(255,95,86,0.3)' : '1px solid var(--nightlife-border)', color: availMode ? '#ff5f56' : '#3d3d4e' }}>
+            {availMode ? <EyeOff size={13} /> : <Eye size={13} />} <span className="hidden sm:inline">{availMode ? 'Editando' : 'Disponibilidad'}</span>
           </button>
           <button onClick={() => setShowForm(true)}
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
@@ -189,18 +221,27 @@ const CalendarView = () => {
           <div className="grid grid-cols-7 gap-1 text-center text-xs text-muted-foreground font-bold mb-2">
             {DAY_LABELS.map(d => <div key={d}>{d}</div>)}
           </div>
+          {availMode && (
+            <div className="mb-3 px-3 py-2 rounded-lg text-xs" style={{ background: 'rgba(255,95,86,0.06)', border: '1px solid rgba(255,95,86,0.15)', color: 'rgba(255,95,86,0.7)' }}>
+              Pulsa un día para marcarlo como <strong>no disponible</strong>. Los empresarios verán tu disponibilidad en tu perfil público.
+            </div>
+          )}
           <div className="grid grid-cols-7 gap-1 text-center text-sm">
             {cells.map((cell, i) => {
               const tod = isToday(cell.day, cell.currentMonth);
               const evs = eventsOnDay(cell.day, cell.currentMonth);
+              const dateStr = cell.currentMonth ? `${viewYear}-${String(viewMonth + 1).padStart(2,'0')}-${String(cell.day).padStart(2,'0')}` : '';
+              const isBlocked = cell.currentMonth && blockedDates.has(dateStr);
               return (
                 <div key={i}
+                  onClick={() => { if (availMode && cell.currentMonth) toggleBlocked(dateStr); }}
                   className={`py-2 rounded relative transition-all ${!cell.currentMonth ? 'text-white/15' : 'hover:bg-white/5 cursor-pointer'}`}
                   style={{
-                    background: tod ? 'rgba(212,175,55,0.15)' : evs.length > 0 ? 'rgba(212,175,55,0.05)' : 'rgba(255,255,255,0.02)',
-                    border: tod ? '1px solid rgba(212,175,55,0.5)' : evs.length > 0 ? '1px solid rgba(212,175,55,0.25)' : '1px solid transparent',
-                    color: tod ? '#D4AF37' : undefined,
-                    fontWeight: tod || evs.length > 0 ? 700 : undefined,
+                    background: isBlocked ? 'rgba(255,95,86,0.12)' : tod ? 'rgba(212,175,55,0.15)' : evs.length > 0 ? 'rgba(212,175,55,0.05)' : 'rgba(255,255,255,0.02)',
+                    border: isBlocked ? '1px solid rgba(255,95,86,0.35)' : tod ? '1px solid rgba(212,175,55,0.5)' : evs.length > 0 ? '1px solid rgba(212,175,55,0.25)' : '1px solid transparent',
+                    color: isBlocked ? '#ff5f56' : tod ? '#D4AF37' : undefined,
+                    fontWeight: tod || evs.length > 0 || isBlocked ? 700 : undefined,
+                    textDecoration: isBlocked ? 'line-through' : undefined,
                   }}>
                   {cell.day}
                   {evs.length > 0 && cell.currentMonth && (
@@ -261,7 +302,7 @@ const CalendarView = () => {
                         </a>
                         <button onClick={() => downloadICS(ev)}
                           className="flex items-center gap-1 px-2 py-1 rounded text-[0.65rem] font-bold transition-all hover:scale-105"
-                          style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#8E8EA0' }}>
+                          style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#3d3d4e' }}>
                           <Download size={9} /> Apple / .ics
                         </button>
                       </div>
@@ -322,7 +363,7 @@ const CalendarView = () => {
             <div className="flex gap-2 mt-5">
               <button onClick={() => setShowForm(false)}
                 className="flex-1 py-2.5 rounded-xl text-sm font-bold"
-                style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid var(--nightlife-border)', color: '#8E8EA0' }}>
+                style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid var(--nightlife-border)', color: '#3d3d4e' }}>
                 Cancelar
               </button>
               <button onClick={addEvent}

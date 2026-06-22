@@ -38,7 +38,7 @@ const AdminMetrics = () => {
 
   const kpis = metrics ? [
     { label: 'Usuarios Total',   value: metrics.totalUsers,    icon: Users,      color: '#D4AF37' },
-    { label: 'Profesionales',    value: metrics.professionals, icon: Users,      color: '#8E8EA0' },
+    { label: 'Profesionales',    value: metrics.professionals, icon: Users,      color: '#3d3d4e' },
     { label: 'Empresarios',      value: metrics.businesses,    icon: Shield,     color: '#D4AF37' },
     { label: 'MRR',              value: '—',                   icon: DollarSign, color: '#22c55e' },
     { label: 'Flash Activos',    value: metrics.activeFlash,   icon: Zap,        color: '#22c55e' },

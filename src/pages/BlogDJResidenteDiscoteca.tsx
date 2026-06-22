@@ -42,14 +42,14 @@ export default function BlogDJResidenteDiscoteca() {
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
-          <div className="flex items-center gap-3"><a href="/blog" className="text-xs font-bold" style={{ color: '#8E8EA0' }}>Blog</a><a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a></div>
+          <div className="flex items-center gap-3"><a href="/blog" className="text-xs font-bold" style={{ color: '#3d3d4e' }}>Blog</a><a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a></div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
-          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#8E8EA0' }}>← Todos los artículos</a>
+          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>DJ · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ residente de discoteca: precio, funciones y cómo contratarlo en España (2026)</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#8E8EA0' }}>El DJ residente es el corazón sonoro de una sala. Ni es un headliner de festival ni un DJ de boda — es un artista que conoce tu público como nadie. Esta guía te explica qué buscar y cuánto pagar.</p>
+            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>El DJ residente es el corazón sonoro de una sala. Ni es un headliner de festival ni un DJ de boda — es un artista que conoce tu público como nadie. Esta guía te explica qué buscar y cuánto pagar.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>7 mayo 2026</time>
           </div>
           <div className="space-y-10">
@@ -59,10 +59,10 @@ export default function BlogDJResidenteDiscoteca() {
               <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
                 <table className="w-full text-xs">
                   <thead><tr style={{ background: 'rgba(212,175,55,0.08)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}><th className="text-left px-4 py-3 font-bold">Ciudad</th><th className="px-4 py-3 font-bold text-center">Sala pequeña</th><th className="px-4 py-3 font-bold text-center">Sala mediana</th><th className="px-4 py-3 font-bold text-center hidden sm:table-cell">Sala grande / referencia</th></tr></thead>
-                  <tbody>{PRECIOS_CIUDAD.map((row, i) => (<tr key={row.ciudad} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}><td className="px-4 py-3 font-bold">{row.ciudad}</td><td className="px-4 py-3 text-center" style={{ color: '#8E8EA0' }}>{row.sala_pequeña}</td><td className="px-4 py-3 text-center font-bold" style={{ color: '#D4AF37' }}>{row.sala_mediana}</td><td className="px-4 py-3 text-center hidden sm:table-cell" style={{ color: '#D4AF37' }}>{row.sala_grande}</td></tr>))}</tbody>
+                  <tbody>{PRECIOS_CIUDAD.map((row, i) => (<tr key={row.ciudad} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}><td className="px-4 py-3 font-bold">{row.ciudad}</td><td className="px-4 py-3 text-center" style={{ color: '#3d3d4e' }}>{row.sala_pequeña}</td><td className="px-4 py-3 text-center font-bold" style={{ color: '#D4AF37' }}>{row.sala_mediana}</td><td className="px-4 py-3 text-center hidden sm:table-cell" style={{ color: '#D4AF37' }}>{row.sala_grande}</td></tr>))}</tbody>
                 </table>
               </div>
-              <p className="text-xs mt-3" style={{ color: '#8E8EA0' }}>Precios por noche (caché por sesión). Ibiza incluye temporada alta (junio–septiembre).</p>
+              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios por noche (caché por sesión). Ibiza incluye temporada alta (junio–septiembre).</p>
             </section>
 
             <section>
@@ -74,7 +74,7 @@ export default function BlogDJResidenteDiscoteca() {
                 ].map(op => (
                   <div key={op.tipo} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${op.color}22` }}>
                     <p className="text-base font-black mb-3">{op.icon} {op.tipo}</p>
-                    <ul className="space-y-1.5 mb-4">{op.puntos.map(p => <li key={p} className="text-xs flex items-start gap-1.5"><span style={{ color: op.color }}>·</span> <span style={{ color: '#8E8EA0' }}>{p}</span></li>)}</ul>
+                    <ul className="space-y-1.5 mb-4">{op.puntos.map(p => <li key={p} className="text-xs flex items-start gap-1.5"><span style={{ color: op.color }}>·</span> <span style={{ color: '#3d3d4e' }}>{p}</span></li>)}</ul>
                     <p className="text-xs px-2 py-1.5 rounded-lg" style={{ background: `${op.color}10`, color: op.color, border: `1px solid ${op.color}25` }}>{op.uso}</p>
                   </div>
                 ))}
@@ -92,7 +92,7 @@ export default function BlogDJResidenteDiscoteca() {
                 ].map(f => (
                   <div key={f.titulo} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
                     <p className="text-sm font-bold mb-1" style={{ color: '#D4AF37' }}>{f.titulo}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: '#8E8EA0' }}>{f.desc}</p>
+                    <p className="text-xs leading-relaxed" style={{ color: '#3d3d4e' }}>{f.desc}</p>
                   </div>
                 ))}
               </div>
@@ -127,7 +127,7 @@ export default function BlogDJResidenteDiscoteca() {
                       {q.name}
                       <span className="text-xs ml-3 flex-shrink-0" style={{ color: '#D4AF37' }}>+</span>
                     </summary>
-                    <div className="px-4 py-3 text-sm leading-relaxed" style={{ color: '#8E8EA0', background: 'rgba(0,0,0,0.2)' }}>
+                    <div className="px-4 py-3 text-sm leading-relaxed" style={{ color: '#3d3d4e', background: 'rgba(0,0,0,0.2)' }}>
                       {q.acceptedAnswer.text}
                     </div>
                   </details>
@@ -138,7 +138,7 @@ export default function BlogDJResidenteDiscoteca() {
             <section className="rounded-2xl p-6 text-center" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
               <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#D4AF37' }}>¿Eres sala o promotor?</p>
               <h3 className="text-xl font-black mb-3">Encuentra tu DJ residente en XPEAK</h3>
-              <p className="text-sm mb-5" style={{ color: '#8E8EA0' }}>Directorio de DJs con demos, géneros, tarifas y contacto directo. Flash Booking para urgencias.</p>
+              <p className="text-sm mb-5" style={{ color: '#3d3d4e' }}>Directorio de DJs con demos, géneros, tarifas y contacto directo. Flash Booking para urgencias.</p>
               <a href="/contratar-dj" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                 Ver DJs disponibles →
               </a>

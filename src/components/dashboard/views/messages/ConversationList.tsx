@@ -107,7 +107,7 @@ const ConversationList = ({ conversations, loading, activeConvId, onSelectConver
               )}
               {c.unread > 0 && (
                 <span className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full flex items-center justify-center text-[0.65rem] font-black"
-                  style={{ background: '#22c55e', color: 'rgba(22,20,18,0.88)', border: '2px solid #000' }}>
+                  style={{ background: '#22c55e', color: '#222', border: '2px solid #000' }}>
                   {c.unread > 9 ? '9+' : c.unread}
                 </span>
               )}

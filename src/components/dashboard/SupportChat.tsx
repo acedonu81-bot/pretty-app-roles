@@ -584,7 +584,7 @@ const SupportChat = () => {
         </AnimatePresence>
         {unread > 0 && !open && (
           <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black"
-            style={{ background: '#ff5f56', color: 'rgba(22,20,18,0.88)' }}>{unread}</span>
+            style={{ background: '#ff5f56', color: '#222' }}>{unread}</span>
         )}
       </motion.button>
 
@@ -651,7 +651,7 @@ const SupportChat = () => {
                     <div className="max-w-[82%] px-3 py-2 rounded-xl text-xs"
                       style={m.from === 'user'
                         ? { background: '#D4AF37', color: '#000000', borderRadius: '14px 14px 4px 14px', fontWeight: 500 }
-                        : { background: '#f5f4f0', border: '1px solid rgba(0,0,0,0.06)', color: 'rgba(22,20,18,0.88)', borderRadius: '4px 14px 14px 14px' }
+                        : { background: '#f5f4f0', border: '1px solid rgba(0,0,0,0.06)', color: '#222', borderRadius: '4px 14px 14px 14px' }
                       }>
                       <MsgText text={m.text} />
                     </div>
@@ -714,14 +714,14 @@ const SupportChat = () => {
             {isInitial && !typing && (
               <div className="px-4 pb-2 flex-shrink-0">
                 <p className="text-[0.62rem] font-bold uppercase tracking-wider mb-2"
-                  style={{ color: 'rgba(22,20,18,0.45)' }}>Temas frecuentes</p>
+                  style={{ color: '#333' }}>Temas frecuentes</p>
                 <div className="grid grid-cols-5 gap-1">
                   {QUICK_ACTIONS.slice(0, 10).map(qa => (
                     <button key={qa.label} type="button" onClick={() => sendMessage(qa.msg)}
                       className="flex flex-col items-center gap-0.5 p-1.5 rounded-lg text-center transition-all hover:scale-105 active:scale-95"
                       style={{ background: '#f5f4f0', border: '1px solid rgba(0,0,0,0.06)' }}>
                       <qa.icon size={12} style={{ color: '#D4AF37' }} />
-                      <span className="text-[0.55rem] font-medium leading-tight" style={{ color: 'rgba(22,20,18,0.6)' }}>{qa.label}</span>
+                      <span className="text-[0.55rem] font-medium leading-tight" style={{ color: '#222' }}>{qa.label}</span>
                     </button>
                   ))}
                 </div>
@@ -743,7 +743,7 @@ const SupportChat = () => {
                   style={{
                     background: '#ffffff',
                     border: '1px solid rgba(0,0,0,0.12)',
-                    color: 'rgba(22,20,18,0.88)',
+                    color: '#222',
                   }}
                 />
                 <button type="button" onClick={() => sendMessage(input)}
@@ -753,7 +753,7 @@ const SupportChat = () => {
                   <Send size={14} color="#000" />
                 </button>
               </div>
-              <p className="text-[0.58rem] text-center mt-1.5" style={{ color: 'rgba(22,20,18,0.3)' }}>
+              <p className="text-[0.58rem] text-center mt-1.5" style={{ color: '#333' }}>
                 XPEAK · Asistente virtual · 24h
               </p>
             </div>

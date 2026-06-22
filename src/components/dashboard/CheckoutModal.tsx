@@ -109,7 +109,7 @@ const CheckoutModal = ({ open, onClose, item }: CheckoutModalProps) => {
                       background: selected ? 'hsl(var(--primary))' : 'transparent',
                       border: `2px solid ${selected ? 'hsl(var(--primary))' : 'rgba(0,0,0,0.1)'}`,
                     }}>
-                      {selected && <CheckCircle size={12} style={{ color: 'rgba(22,20,18,0.88)' }} />}
+                      {selected && <CheckCircle size={12} style={{ color: '#222' }} />}
                     </div>
                   </button>
                 );

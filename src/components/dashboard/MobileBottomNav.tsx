@@ -1,4 +1,4 @@
-import { Headphones, Zap, MessageSquare, User, LayoutGrid } from 'lucide-react';
+import { Search, Zap, MessageSquare, User, Home } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
 
 interface MobileBottomNavProps {
@@ -8,60 +8,34 @@ interface MobileBottomNavProps {
   unreadCount?: number;
 }
 
-// Map role → directorio view
 const roleToView: Record<string, string> = {
-  dj: 'dj',
-  staff: 'staff',
-  makeup: 'makeup',
-  media: 'media',
-  vestuario: 'vestuario',
-  design: 'design',
-  promotor: 'promotor',
-  event_manager: 'event_manager',
-  empresario: 'empresario',
+  dj: 'dj', staff: 'staff', makeup: 'makeup', media: 'media',
+  vestuario: 'vestuario', design: 'design', promotor: 'promotor',
+  event_manager: 'event_manager', empresario: 'empresario',
 };
+
+const dirViews = new Set(['dj','staff','makeup','media','vestuario','design','promotor','event_manager','empresario','catering','mago','bailarin','humorista','monologo','animador','speaker','ambassador']);
 
 const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount = 0 }: MobileBottomNavProps) => {
   const profile = useProfile();
   const dirView = roleToView[profile.role] ?? 'dj';
 
   const tabs = [
-    {
-      id: dirView,
-      icon: Headphones,
-      label: 'Directorio',
-      isActive: ['dj', 'staff', 'makeup', 'media', 'vestuario', 'design', 'promotor', 'event_manager', 'empresario'].includes(activeView),
-    },
-    {
-      id: 'flashbooking',
-      icon: Zap,
-      label: 'Flash',
-      isActive: activeView === 'flashbooking' || activeView === 'flash',
-    },
-    {
-      id: 'messages',
-      icon: MessageSquare,
-      label: 'Mensajes',
-      isActive: activeView === 'messages',
-      badge: unreadCount,
-    },
-    {
-      id: 'profile',
-      icon: User,
-      label: 'Perfil',
-      isActive: activeView === 'profile',
-    },
+    { id: dirView, icon: Home, label: 'Inicio', isActive: dirViews.has(activeView) },
+    { id: 'flashbooking', icon: Zap, label: 'Flash', isActive: activeView === 'flashbooking' || activeView === 'flash' },
+    { id: 'messages', icon: MessageSquare, label: 'Chat', isActive: activeView === 'messages', badge: unreadCount },
+    { id: 'profile', icon: User, label: 'Perfil', isActive: activeView === 'profile' || activeView === 'settings' },
   ];
 
   return (
     <nav
       className="fixed bottom-0 left-0 right-0 z-40 flex items-stretch md:hidden"
       style={{
-        background: 'rgba(6,6,8,0.98)',
-        borderTop: '1px solid rgba(212,175,55,0.25)',
+        background: 'rgba(255,255,255,0.97)',
+        borderTop: '1px solid rgba(0,0,0,0.08)',
         backdropFilter: 'blur(20px)',
         paddingBottom: 'env(safe-area-inset-bottom)',
-        height: 'calc(76px + env(safe-area-inset-bottom))',
+        height: 'calc(64px + env(safe-area-inset-bottom))',
       }}
     >
       {tabs.map(tab => (
@@ -69,50 +43,27 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
           key={tab.id}
           type="button"
           onClick={() => onViewChange(tab.id)}
-          className="flex-1 flex flex-col items-center justify-center gap-1 transition-all active:scale-95 relative"
-          style={{ minHeight: 52 }}
+          className="flex-1 flex flex-col items-center justify-center gap-0.5 transition-all active:scale-95 relative"
         >
           <div className="relative">
             <tab.icon
-              size={28}
-              style={{ color: tab.isActive ? '#D4AF37' : 'rgba(22,20,18,0.45)' }}
+              size={22}
+              strokeWidth={tab.isActive ? 2.5 : 1.8}
+              style={{ color: tab.isActive ? '#D4AF37' : '#444' }}
             />
             {tab.badge != null && tab.badge > 0 && (
-              <span
-                className="absolute -top-1.5 -right-2 min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center text-[0.7rem] font-black"
-                style={{ background: '#D4AF37', color: '#000' }}
-              >
+              <span className="absolute -top-1 -right-1.5 min-w-[14px] h-[14px] px-0.5 rounded-full flex items-center justify-center text-[0.6rem] font-black"
+                style={{ background: '#ef4444', color: '#fff' }}>
                 {tab.badge > 9 ? '9+' : tab.badge}
               </span>
             )}
           </div>
-          <span
-            className="text-[0.78rem] font-bold tracking-wide"
-            style={{ color: tab.isActive ? '#D4AF37' : 'rgba(22,20,18,0.45)' }}
-          >
+          <span className="text-[0.65rem] font-semibold"
+            style={{ color: tab.isActive ? '#D4AF37' : '#444' }}>
             {tab.label}
           </span>
-          {tab.isActive && (
-            <span
-              className="absolute top-0 left-1/2 -translate-x-1/2 w-6 h-[2px] rounded-full"
-              style={{ background: '#D4AF37', boxShadow: '0 0 8px rgba(212,175,55,0.7)' }}
-            />
-          )}
         </button>
       ))}
-
-      {/* Más — opens sheet sidebar */}
-      <button
-        type="button"
-        onClick={onMenuToggle}
-        className="flex-1 flex flex-col items-center justify-center gap-1 transition-all active:scale-95"
-        style={{ minHeight: 52 }}
-      >
-        <LayoutGrid size={28} style={{ color: 'rgba(22,20,18,0.65)' }} />
-        <span className="text-[0.78rem] font-bold tracking-wide" style={{ color: 'rgba(22,20,18,0.65)' }}>
-          Más
-        </span>
-      </button>
     </nav>
   );
 };

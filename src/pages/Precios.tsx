@@ -104,7 +104,7 @@ export default function Precios() {
           <div className="text-center mb-12">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Precios</p>
             <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-4">Gratis. Sin trampa.</h1>
-            <p className="text-sm max-w-md mx-auto" style={{ color: '#8E8EA0' }}>
+            <p className="text-sm max-w-md mx-auto" style={{ color: '#3d3d4e' }}>
               XPEAK no cobra comisión sobre ningún caché ni contratación. El acceso básico es gratuito para siempre, tanto para profesionales como para empresarios.
             </p>
           </div>
@@ -119,11 +119,11 @@ export default function Precios() {
                     {plan.badge}
                   </span>
                 )}
-                <p className="text-[0.6rem] font-bold uppercase tracking-wider mb-1" style={{ color: '#8E8EA0' }}>{plan.target}</p>
+                <p className="text-[0.6rem] font-bold uppercase tracking-wider mb-1" style={{ color: '#3d3d4e' }}>{plan.target}</p>
                 <p className="text-lg font-black mb-1">{plan.nombre}</p>
                 <div className="flex items-baseline gap-1 mb-5">
                   <span className="text-4xl font-black" style={{ color: plan.gold ? '#D4AF37' : '#fff' }}>{plan.precio}</span>
-                  <span className="text-xs" style={{ color: '#8E8EA0' }}>{plan.periodo}</span>
+                  <span className="text-xs" style={{ color: '#3d3d4e' }}>{plan.periodo}</span>
                 </div>
 
                 <ul className="space-y-2 mb-6">
@@ -166,7 +166,7 @@ export default function Precios() {
 
           <div className="p-8 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
             <p className="text-lg font-black mb-2">¿Aún tienes dudas?</p>
-            <p className="text-xs mb-5" style={{ color: '#8E8EA0' }}>Escríbenos a hola@xpeak.es o usa el chat de soporte en el dashboard.</p>
+            <p className="text-xs mb-5" style={{ color: '#3d3d4e' }}>Escríbenos a hola@xpeak.es o usa el chat de soporte en el dashboard.</p>
             <a href="/auth" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-black transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Empezar gratis →

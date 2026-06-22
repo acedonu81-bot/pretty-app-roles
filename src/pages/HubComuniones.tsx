@@ -46,16 +46,16 @@ export default function HubComuniones() {
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
-            <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#8E8EA0' }}>Blog</a>
+            <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
             <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
           </div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
-          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#8E8EA0' }}>← Todos los artículos</a>
+          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Comuniones · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Comuniones en España: guía completa de presupuesto y profesionales (2026)</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#8E8EA0' }}>Todo lo que necesitas para organizar una comunión memorable: presupuesto real por partidas, qué profesionales contratar y cómo no llevarte sorpresas el día del evento.</p>
+            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Todo lo que necesitas para organizar una comunión memorable: presupuesto real por partidas, qué profesionales contratar y cómo no llevarte sorpresas el día del evento.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>28 mayo 2026</time>
           </div>
           <div className="space-y-10">
@@ -88,13 +88,13 @@ export default function HubComuniones() {
                   <div key={row.partida} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.04)' }}>
                     <div>
                       <p className="text-xs font-medium">{row.partida}</p>
-                      <p className="text-[0.6rem] mt-0.5" style={{ color: '#8E8EA0' }}>~{row.pct} del total</p>
+                      <p className="text-[0.6rem] mt-0.5" style={{ color: '#3d3d4e' }}>~{row.pct} del total</p>
                     </div>
                     <span className="text-xs font-bold ml-4 shrink-0" style={{ color: '#D4AF37' }}>{row.precio}</span>
                   </div>
                 ))}
               </div>
-              <p className="text-xs mt-3" style={{ color: '#8E8EA0' }}>Rangos orientativos para una comunión de 80-100 invitados en España 2026. Sin IVA.</p>
+              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Rangos orientativos para una comunión de 80-100 invitados en España 2026. Sin IVA.</p>
             </section>
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
@@ -109,7 +109,7 @@ export default function HubComuniones() {
             </section>
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Organizas una comunión?</p>
-              <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>XPEAK tiene DJs, fotógrafos, animadores y camareros verificados para comuniones en toda España. Flash Booking en menos de 1h. Gratis para organizadores.</p>
+              <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>XPEAK tiene DJs, fotógrafos, animadores y camareros verificados para comuniones en toda España. Flash Booking en menos de 1h. Gratis para organizadores.</p>
               <a href="/auth" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Buscar profesionales para mi comunión →</a>
             </div>
           </div>

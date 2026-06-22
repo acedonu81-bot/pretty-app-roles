@@ -7,7 +7,7 @@ import {
   Instagram, ChevronLeft,
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { parseStreamUrl } from '@/lib/streaming';
+import { parseStreamUrl, resolveHearthisProfile } from '@/lib/streaming';
 import { useProfile as useMyProfile } from '@/hooks/useProfile';
 import GeometricAvatar from './GeometricAvatar';
 import ContractModal from './ContractModal';
@@ -180,7 +180,18 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
     load();
   }, [p.userId, p.description, p.languages, p.badges, p.price, p.isVerified]);
 
-  const audioEmbed = parseStreamUrl((full.audioEmbedUrl ?? (p as any).audio_embed_url) || p.streamUrl);
+  const [audioEmbed, setAudioEmbed] = useState<ReturnType<typeof parseStreamUrl>>(null);
+  useEffect(() => {
+    const raw = (full.audioEmbedUrl ?? (p as any).audio_embed_url) || p.streamUrl;
+    const parsed = parseStreamUrl(raw);
+    if (parsed?.isProfile && parsed._hearthisUser) {
+      resolveHearthisProfile(parsed._hearthisUser).then(url => {
+        setAudioEmbed(url ? { type: 'HearThis', embedUrl: url } : null);
+      });
+    } else {
+      setAudioEmbed(parsed);
+    }
+  }, [full.audioEmbedUrl, p.streamUrl]);
   const isCompany = me.role === 'empresario';
   const isDJ = p.role === 'dj' || p.role === 'rookie';
   const bio = full.bio || p.description || '';
@@ -321,7 +332,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
             {tabs.map(t => (
               <button key={t.id} onClick={() => setTab(t.id)}
                 className="px-4 py-2.5 text-xs font-bold transition-all relative"
-                style={{ color: tab === t.id ? cfg.color : 'rgba(22,20,18,0.4)' }}>
+                style={{ color: tab === t.id ? cfg.color : '#444' }}>
                 {t.label}
                 {tab === t.id && (
                   <motion.div layoutId="tabbar" className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full"
@@ -334,138 +345,95 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
           {/* ── TAB CONTENT ── */}
           <div className="px-8 py-6 space-y-5">
 
-            {/* ════ OVERVIEW ════ */}
+            {/* ════ OVERVIEW — Airbnb style ════ */}
             {tab === 'overview' && (
               <>
                 {/* Bio */}
                 {bio && (
-                  <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}
-                    className="rounded-xl p-4"
-                    style={{ background: `${cfg.color}08`, border: `1px solid ${cfg.color}18` }}>
-                    <p className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: cfg.color }}>Sobre {p.name}</p>
-                    <p className="text-sm leading-relaxed text-muted-foreground">{bio}</p>
+                  <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
+                    <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{bio}</p>
                   </motion.div>
                 )}
 
-                {/* Specialties / Genres */}
-                {genres && genres.length > 0 && (
-                  <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-                    <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: 'rgba(22,20,18,0.35)' }}>
-                      {isDJ ? 'GÉNEROS' : 'ESPECIALIDADES'}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {genres.map((g: string) => (
-                        <span key={g} className="text-xs font-bold px-3 py-1.5 rounded-lg"
-                          style={{ background: `${cfg.color}12`, border: `1px solid ${cfg.color}30`, color: cfg.color }}>
-                          {g}
-                        </span>
-                      ))}
+                {/* Key info grid */}
+                <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}
+                  className="grid grid-cols-2 gap-3" style={{ borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: 16 }}>
+                  {p.zone && (
+                    <div className="flex items-center gap-2">
+                      <MapPin size={14} style={{ color: '#D4AF37' }} />
+                      <span className="text-sm font-bold" style={{ color: '#222' }}>{p.zone}</span>
                     </div>
-                  </motion.div>
-                )}
-
-                {/* Languages */}
-                {langs.length > 0 && (
-                  <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}>
-                    <p className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(22,20,18,0.35)' }}>IDIOMAS</p>
-                    <div className="flex gap-2 flex-wrap">
-                      {langs.map((l: string) => (
-                        <span key={l} className="text-xs font-bold px-3 py-1 rounded-lg"
-                          style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: 'rgba(22,20,18,0.65)' }}>
-                          <Globe size={10} className="inline mr-1 opacity-60" />{l}
-                        </span>
-                      ))}
+                  )}
+                  {price > 0 && !priceHidden && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-black" style={{ color: '#222' }}>{price}€/h</span>
+                      <span className="text-xs" style={{ color: '#666' }}>sin comisión</span>
                     </div>
-                  </motion.div>
-                )}
-
-                {/* Stats row */}
-                <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.16 }}
-                  className="grid grid-cols-3 gap-3">
-                  {[
-                    { label: 'Visitas', value: p.profileViews > 0 ? p.profileViews.toString() : '—' },
-                    { label: 'Bookings', value: '—' },
-                    { label: 'Reseñas', value: p.reviews > 0 ? `${p.reviews}` : '—' },
-                  ].map(s => (
-                    <div key={s.label} className="rounded-xl p-3 text-center"
-                      style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.05)' }}>
-                      <p className="text-base font-black">{s.value}</p>
-                      <p className="text-xs text-muted-foreground">{s.label}</p>
+                  )}
+                  {p.isFlashActive && (
+                    <div className="flex items-center gap-2">
+                      <Zap size={14} style={{ color: '#22c55e' }} />
+                      <span className="text-sm font-bold" style={{ color: '#22c55e' }}>Disponible ahora</span>
                     </div>
-                  ))}
+                  )}
+                  {verified && (
+                    <div className="flex items-center gap-2">
+                      <CheckCircle size={14} style={{ color: '#D4AF37' }} />
+                      <span className="text-sm font-bold" style={{ color: '#222' }}>Verificado</span>
+                    </div>
+                  )}
                 </motion.div>
 
-                {/* Social links — solo visibles para usuarios registrados */}
-                {(p.instagram || p.tiktok) && (
-                  <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18 }}
-                    className="flex gap-2 flex-wrap">
-                    {me.userId ? (
-                      <>
-                        {p.instagram && (
-                          <a href={`https://instagram.com/${p.instagram}`} target="_blank" rel="noopener noreferrer"
-                            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
-                            style={{ background: 'rgba(225,48,108,0.1)', color: '#E1306C', border: '1px solid rgba(225,48,108,0.2)' }}>
-                            <Instagram size={12} /> @{p.instagram}
-                          </a>
-                        )}
-                        {p.tiktok && (
-                          <a href={`https://tiktok.com/@${p.tiktok}`} target="_blank" rel="noopener noreferrer"
-                            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
-                            style={{ background: 'rgba(0,0,0,0.05)', color: 'rgba(22,20,18,0.65)', border: '1px solid rgba(0,0,0,0.08)' }}>
-                            TikTok @{p.tiktok}
-                          </a>
-                        )}
-                      </>
-                    ) : (
-                      <a href="/auth" className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
-                        style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
-                        <Shield size={11} /> Regístrate para ver redes sociales
+                {/* Genres */}
+                {genres && genres.length > 0 && (
+                  <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+                    className="flex flex-wrap gap-2" style={{ borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: 16 }}>
+                    {genres.map((g: string) => (
+                      <span key={g} className="text-xs font-bold px-3 py-1.5 rounded-full"
+                        style={{ background: `${cfg.color}12`, border: `1px solid ${cfg.color}25`, color: cfg.color }}>
+                        {g}
+                      </span>
+                    ))}
+                    {langs.length > 0 && langs.map((l: string) => (
+                      <span key={l} className="text-xs font-bold px-3 py-1.5 rounded-full"
+                        style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#555' }}>
+                        {l}
+                      </span>
+                    ))}
+                  </motion.div>
+                )}
+
+                {/* Social */}
+                {me.userId && (p.instagram || p.tiktok) && (
+                  <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
+                    className="flex gap-2 flex-wrap" style={{ borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: 16 }}>
+                    {p.instagram && (
+                      <a href={`https://instagram.com/${p.instagram}`} target="_blank" rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold transition-all hover:scale-105"
+                        style={{ background: 'rgba(225,48,108,0.08)', color: '#E1306C', border: '1px solid rgba(225,48,108,0.15)' }}>
+                        <Instagram size={12} /> @{p.instagram}
+                      </a>
+                    )}
+                    {p.tiktok && (
+                      <a href={`https://tiktok.com/@${p.tiktok}`} target="_blank" rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold transition-all hover:scale-105"
+                        style={{ background: 'rgba(0,0,0,0.04)', color: '#333', border: '1px solid rgba(0,0,0,0.08)' }}>
+                        TikTok @{p.tiktok}
                       </a>
                     )}
                   </motion.div>
                 )}
 
-                {/* Flash Booking CTA */}
-                {p.isFlashActive && (
-                  <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-                    className="rounded-xl p-4 flex items-center gap-3"
-                    style={{ background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.2)' }}>
-                    <Zap size={20} style={{ color: '#22c55e', flexShrink: 0 }} />
-                    <div>
-                      <p className="text-sm font-bold" style={{ color: '#22c55e' }}>Flash Booking activo</p>
-                      <p className="text-xs text-muted-foreground">Este profesional acepta bookings de última hora. Responde en &lt;2h.</p>
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Empresario: venue info */}
-                {p.role === 'empresario' && (
-                  <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }}
-                    className="rounded-xl p-4"
-                    style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
-                    <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>
-                      🏛️ Espacio & Capacidad
-                    </p>
-                    <div className="grid grid-cols-2 gap-3 text-sm">
-                      <div>
-                        <p className="text-xs text-muted-foreground mb-0.5">Ubicación</p>
-                        <p className="font-bold">{p.zone || p.location || 'España'}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground mb-0.5">Especialidad</p>
-                        <p className="font-bold">{p.specialty || 'Eventos, Clubs, Festivales'}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* GDPR legal note */}
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25 }}
-                  className="flex items-center gap-2 p-3 rounded-lg"
-                  style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
-                  <Shield size={11} style={{ color: 'rgba(0,0,0,0.1)', flexShrink: 0 }} />
-                  <p className="text-xs" style={{ color: 'rgba(22,20,18,0.3)' }}>
-                    XPEAK actúa como intermediario. Sin relación laboral con la plataforma.
+                {/* CTA */}
+                <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+                  style={{ borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: 16 }}>
+                  <button onClick={() => onMessage?.(p.userId ?? '', p.name)}
+                    className="w-full py-3 rounded-xl font-black text-sm transition-all hover:scale-[1.02]"
+                    style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                    Contactar a {p.name}
+                  </button>
+                  <p className="text-center text-[10px] mt-2" style={{ color: '#999' }}>
+                    Contrato directo · Sin comisión · Pago acordado
                   </p>
                 </motion.div>
               </>
@@ -496,11 +464,11 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                 {/* Audio embed */}
                 {audioEmbed && (
                   <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
-                    <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: 'rgba(22,20,18,0.35)' }}>
+                    <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#444' }}>
                       🎵 {audioEmbed.type}
                     </p>
                     <div className="rounded-xl overflow-hidden"
-                      style={{ height: audioEmbed.type === 'SoundCloud' ? 166 : audioEmbed.type === 'Spotify' ? 152 : 120,
+                      style={{ height: audioEmbed.type === 'SoundCloud' ? 166 : audioEmbed.type === 'Spotify' ? 152 : audioEmbed.type === 'HearThis' ? 150 : 120,
                         border: `1px solid ${cfg.color}20` }}>
                       <iframe src={audioEmbed.embedUrl} className="w-full h-full"
                         allow="autoplay; clipboard-write; encrypted-media; fullscreen"
@@ -512,7 +480,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                 {/* Portfolio grid */}
                 {(full.portfolioUrls && full.portfolioUrls.length > 0) ? (
                   <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-                    <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: 'rgba(22,20,18,0.35)' }}>PORTFOLIO</p>
+                    <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#444' }}>PORTFOLIO</p>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                       {full.portfolioUrls.map((url: string, i: number) => (
                         <div key={i} className="rounded-xl overflow-hidden aspect-square relative group cursor-pointer"
@@ -551,7 +519,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                     onClick={() => p.userId && onMessage?.(p.userId, p.name)}
                     disabled={!p.userId}
                     className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm transition-all hover:scale-[1.02] disabled:opacity-40"
-                    style={{ background: `linear-gradient(90deg,${cfg.color},${cfg.color}bb)`, color: 'rgba(22,20,18,0.88)' }}>
+                    style={{ background: `linear-gradient(90deg,${cfg.color},${cfg.color}bb)`, color: '#222' }}>
                     <MessageCircle size={16} /> Enviar mensaje
                   </button>
                 </motion.div>
@@ -582,7 +550,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                 {/* Social quick links — solo para usuarios registrados */}
                 {(p.instagram || p.tiktok) && (
                   <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18 }}>
-                    <p className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: 'rgba(22,20,18,0.3)' }}>
+                    <p className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#444' }}>
                       REDES SOCIALES
                     </p>
                     <div className="flex gap-2 flex-wrap">
@@ -598,7 +566,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                           {p.tiktok && (
                             <a href={`https://tiktok.com/@${p.tiktok}`} target="_blank" rel="noopener noreferrer"
                               className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
-                              style={{ background: 'rgba(0,0,0,0.04)', color: 'rgba(22,20,18,0.55)', border: '1px solid rgba(0,0,0,0.08)' }}>
+                              style={{ background: 'rgba(0,0,0,0.04)', color: '#333', border: '1px solid rgba(0,0,0,0.08)' }}>
                               TikTok
                             </a>
                           )}
@@ -621,12 +589,12 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
             style={{ background: 'rgba(7,7,16,0.95)', backdropFilter: 'blur(16px)', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
             <button onClick={() => setTab('contact')}
               className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm transition-all hover:scale-[1.02]"
-              style={{ background: `linear-gradient(90deg,${cfg.color},${cfg.color}bb)`, color: 'rgba(22,20,18,0.88)' }}>
+              style={{ background: `linear-gradient(90deg,${cfg.color},${cfg.color}bb)`, color: '#222' }}>
               <MessageCircle size={15} /> Contactar
             </button>
             <button onClick={() => setTab('media')}
               className="px-4 py-3 rounded-xl font-bold text-sm transition-all hover:scale-[1.02]"
-              style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.08)', color: 'rgba(22,20,18,0.65)' }}>
+              style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.08)', color: '#444' }}>
               <Heart size={15} />
             </button>
           </div>

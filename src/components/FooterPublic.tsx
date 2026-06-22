@@ -43,7 +43,7 @@ export default function FooterPublic() {
             <ul className="space-y-2.5">
               {FOOTER_LINKS.contratar.map(l => (
                 <li key={l.href}>
-                  <a href={l.href} className="text-xs transition-opacity hover:opacity-80" style={{ color: 'rgba(22,20,18,0.6)' }}>
+                  <a href={l.href} className="text-xs transition-opacity hover:opacity-80" style={{ color: '#222' }}>
                     {l.label}
                   </a>
                 </li>
@@ -57,7 +57,7 @@ export default function FooterPublic() {
             <ul className="space-y-2.5">
               {FOOTER_LINKS.blog.map(l => (
                 <li key={l.href}>
-                  <a href={l.href} className="text-xs transition-opacity hover:opacity-80" style={{ color: 'rgba(22,20,18,0.6)' }}>
+                  <a href={l.href} className="text-xs transition-opacity hover:opacity-80" style={{ color: '#222' }}>
                     {l.label}
                   </a>
                 </li>
@@ -71,7 +71,7 @@ export default function FooterPublic() {
             <ul className="space-y-2.5">
               {FOOTER_LINKS.xpeak.map(l => (
                 <li key={l.href}>
-                  <a href={l.href} className="text-xs transition-opacity hover:opacity-80" style={{ color: 'rgba(22,20,18,0.6)' }}>
+                  <a href={l.href} className="text-xs transition-opacity hover:opacity-80" style={{ color: '#222' }}>
                     {l.label}
                   </a>
                 </li>
@@ -85,7 +85,7 @@ export default function FooterPublic() {
             <ul className="space-y-2.5">
               {FOOTER_LINKS.legal.map(l => (
                 <li key={l.href}>
-                  <a href={l.href} className="text-xs transition-opacity hover:opacity-80" style={{ color: 'rgba(22,20,18,0.6)' }}>
+                  <a href={l.href} className="text-xs transition-opacity hover:opacity-80" style={{ color: '#222' }}>
                     {l.label}
                   </a>
                 </li>
@@ -99,11 +99,11 @@ export default function FooterPublic() {
           <div className="flex items-center gap-3">
             <a href="/" className="text-base font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
             <span className="text-[0.65rem]" style={{ color: 'rgba(0,0,0,0.1)' }}>·</span>
-            <span className="text-[0.65rem]" style={{ color: 'rgba(22,20,18,0.3)' }}>El directorio profesional de eventos en España</span>
+            <span className="text-[0.65rem]" style={{ color: '#333' }}>El directorio profesional de eventos en España</span>
           </div>
           <div className="flex items-center gap-4">
             <a href="https://www.instagram.com/xpeak.es" target="_blank" rel="noopener noreferrer"
-              className="text-[0.65rem] transition-opacity hover:opacity-80" style={{ color: 'rgba(22,20,18,0.4)' }}>
+              className="text-[0.65rem] transition-opacity hover:opacity-80" style={{ color: '#333' }}>
               @xpeak.es
             </a>
             <span className="text-[0.65rem]" style={{ color: 'rgba(0,0,0,0.1)' }}>© 2026 XPEAK</span>

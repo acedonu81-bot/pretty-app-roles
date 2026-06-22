@@ -87,7 +87,7 @@ const HistorialTab = () => {
 
     const totalPDF = bookings.filter(b => b.agreed_price != null).reduce((s, b) => s + (b.agreed_price ?? 0), 0);
     const rows = bookings.map(b => {
-      const s = STATUS_LABEL[b.status ?? ''] ?? { label: b.status ?? '—', color: '#8E8EA0', bg: '#222' };
+      const s = STATUS_LABEL[b.status ?? ''] ?? { label: b.status ?? '—', color: '#3d3d4e', bg: '#222' };
       return `
         <tr>
           <td>${b.professional_name}</td>
@@ -459,14 +459,14 @@ const HistorialTab = () => {
             </button>
             <button onClick={exportCSV}
               className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
-              style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.08)', color: 'rgba(22,20,18,0.88)' }}>
+              style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.08)', color: '#222' }}>
               <Download size={13} /> Exportar CSV
             </button>
           </>
         )}
         <button onClick={fetchBookings}
           className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-xs transition-all hover:scale-105"
-          style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid var(--nightlife-border)', color: '#8E8EA0' }}>
+          style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid var(--nightlife-border)', color: '#3d3d4e' }}>
           <RefreshCw size={12} />
         </button>
       </div>
@@ -494,7 +494,7 @@ const HistorialTab = () => {
       {!loading && bookings.length > 0 && (
         <div className="space-y-3">
           {bookings.map(b => {
-            const s = STATUS_LABEL[b.status ?? ''] ?? { label: b.status ?? '—', color: '#8E8EA0', bg: 'rgba(0,0,0,0.04)' };
+            const s = STATUS_LABEL[b.status ?? ''] ?? { label: b.status ?? '—', color: '#3d3d4e', bg: 'rgba(0,0,0,0.04)' };
             return (
               <div key={b.id} className="glass-panel p-4 flex items-start gap-4">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
@@ -540,7 +540,7 @@ const HistorialTab = () => {
                         onClick={() => updateStatus(b.id, 'cancelled')}
                         disabled={updating === b.id}
                         className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-bold transition-all hover:scale-105 disabled:opacity-50"
-                        style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#8E8EA0' }}>
+                        style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#3d3d4e' }}>
                         <XCircle size={11} /> {updating === b.id ? '…' : 'Cancelar'}
                       </button>
                     </div>

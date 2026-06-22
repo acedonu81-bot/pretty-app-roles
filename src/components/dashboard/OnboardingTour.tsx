@@ -149,7 +149,7 @@ const OnboardingTour = ({ onNavigate }: Props) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 pointer-events-none flex items-end justify-center px-4 pb-24 sm:pb-6 sm:pl-[calc(260px+1rem)]">
+    <div className="fixed inset-0 z-50 pointer-events-none flex items-end justify-center px-3 pb-20 sm:pb-6 sm:pl-[calc(260px+1rem)]">
       <AnimatePresence mode="wait">
         <motion.div
           key={step}
@@ -172,7 +172,7 @@ const OnboardingTour = ({ onNavigate }: Props) => {
               style={{ background: `linear-gradient(90deg, ${BLUE}, #6BA3F5)` }} />
           </div>
 
-          <div className="p-5">
+          <div className="p-3.5 sm:p-5">
             {/* Header */}
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3">
@@ -184,20 +184,20 @@ const OnboardingTour = ({ onNavigate }: Props) => {
                   <p className="text-[0.65rem] font-black tracking-widest uppercase" style={{ color: `${BLUE}99` }}>
                     {step + 1} / {steps.length}
                   </p>
-                  <p className="text-[0.88rem] font-bold leading-tight mt-0.5" style={{ color: 'rgba(22,20,18,0.9)' }}>
+                  <p className="text-[0.88rem] font-bold leading-tight mt-0.5" style={{ color: '#111' }}>
                     {current.title}
                   </p>
                 </div>
               </div>
               <button type="button" onClick={dismiss}
                 className="p-1.5 rounded-lg transition-all hover:bg-black/5 flex-shrink-0"
-                style={{ color: 'rgba(22,20,18,0.3)' }} aria-label="Cerrar tour">
+                style={{ color: '#333' }} aria-label="Cerrar tour">
                 <X size={14} />
               </button>
             </div>
 
             {/* Body */}
-            <p className="text-[0.82rem] leading-relaxed mb-3" style={{ color: 'rgba(22,20,18,0.62)' }}>
+            <p className="text-[0.82rem] leading-relaxed mb-3" style={{ color: '#555' }}>
               {current.body}
             </p>
 
@@ -213,7 +213,7 @@ const OnboardingTour = ({ onNavigate }: Props) => {
               {step > 0 && (
                 <button type="button" onClick={() => setStep(s => s - 1)}
                   className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-all hover:bg-black/5"
-                  style={{ border: '1px solid rgba(0,0,0,0.08)', color: 'rgba(22,20,18,0.5)' }}>
+                  style={{ border: '1px solid rgba(0,0,0,0.08)', color: '#333' }}>
                   <ChevronLeft size={15} />
                 </button>
               )}
@@ -227,7 +227,7 @@ const OnboardingTour = ({ onNavigate }: Props) => {
                   </button>
                   <button type="button" onClick={next}
                     className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-all hover:bg-black/5"
-                    style={{ border: '1px solid rgba(0,0,0,0.08)', color: 'rgba(22,20,18,0.5)' }}>
+                    style={{ border: '1px solid rgba(0,0,0,0.08)', color: '#333' }}>
                     <ChevronRight size={15} />
                   </button>
                 </>
@@ -236,7 +236,7 @@ const OnboardingTour = ({ onNavigate }: Props) => {
                   className="flex-1 py-2.5 rounded-xl font-bold text-[0.8rem] flex items-center justify-center gap-1.5 transition-all hover:scale-[1.02] active:scale-95"
                   style={isLast
                     ? { background: `linear-gradient(90deg, ${BLUE}, #5A95F5)`, color: '#fff', boxShadow: `0 4px 14px ${BLUE_GLOW}` }
-                    : { background: 'rgba(0,0,0,0.04)', color: 'rgba(22,20,18,0.7)', border: '1px solid rgba(0,0,0,0.07)' }
+                    : { background: 'rgba(0,0,0,0.04)', color: '#222', border: '1px solid rgba(0,0,0,0.07)' }
                   }>
                   {isLast ? '¡Empezar! 🎧' : 'Siguiente'}
                   {!isLast && <ChevronRight size={13} />}

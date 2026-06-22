@@ -21,7 +21,7 @@ const VipFanCard = ({ vf }: { vf: VipFan }) => {
       style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(0,0,0,0.1)' }}>
       <div className="p-4 flex items-center gap-3">
         <div className="w-10 h-10 rounded-xl flex items-center justify-center font-black flex-shrink-0"
-          style={{ background: 'linear-gradient(135deg,rgba(0,0,0,0.1),rgba(0,0,0,0.05))', color: 'rgba(22,20,18,0.88)', fontSize: 14, border: '1px solid rgba(0,0,0,0.1)' }}>
+          style={{ background: 'linear-gradient(135deg,rgba(0,0,0,0.1),rgba(0,0,0,0.05))', color: '#222', fontSize: 14, border: '1px solid rgba(0,0,0,0.1)' }}>
           {vf.fan_id.charAt(0).toUpperCase()}
         </div>
         <div className="flex-1 min-w-0">
@@ -50,7 +50,7 @@ const VipFanCard = ({ vf }: { vf: VipFan }) => {
 
         <div className="rounded-xl p-3" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
           <p className="text-[0.75rem] font-bold uppercase tracking-wider mb-1.5"
-            style={{ color: giftConfirmed ? '#22c55e' : 'rgba(22,20,18,0.55)' }}>
+            style={{ color: giftConfirmed ? '#22c55e' : '#333' }}>
             {giftConfirmed ? '✓ Regalo enviado' : 'Regalo de abril'}
           </p>
           {giftConfirmed ? (
@@ -61,7 +61,7 @@ const VipFanCard = ({ vf }: { vf: VipFan }) => {
                 {GIFT_OPTIONS.map(g => (
                   <button key={g.id} onClick={() => setGiftPicked(g.id)}
                     className="text-base transition-all hover:scale-110"
-                    style={{ opacity: giftPicked === g.id ? 1 : 0.35, filter: giftPicked === g.id ? 'drop-shadow(0 0 4px rgba(22,20,18,0.55))' : 'none' }}
+                    style={{ opacity: giftPicked === g.id ? 1 : 0.35, filter: giftPicked === g.id ? 'drop-shadow(0 0 4px #333)' : 'none' }}
                     title={g.label}>
                     {(() => { const I = ICON_MAP[g.icon]; return I ? <I size={16} /> : null; })()}
                   </button>
@@ -70,7 +70,7 @@ const VipFanCard = ({ vf }: { vf: VipFan }) => {
               <button
                 onClick={() => { if (!giftPicked) { toast.error('Elige un regalo primero'); return; } setGiftConfirmed(true); toast.success('¡Regalo de abril enviado!'); }}
                 className="text-[0.75rem] font-bold px-2 py-1 rounded-lg transition-all hover:opacity-80"
-                style={{ background: 'rgba(0,0,0,0.08)', color: 'rgba(22,20,18,0.65)', border: '1px solid rgba(0,0,0,0.08)' }}>
+                style={{ background: 'rgba(0,0,0,0.08)', color: '#222', border: '1px solid rgba(0,0,0,0.08)' }}>
                 Confirmar regalo
               </button>
             </>

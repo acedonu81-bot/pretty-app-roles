@@ -48,8 +48,23 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
       query = query.ilike('zone', `%${filterCity}%`);
     }
 
-    query.order('score', { ascending: false }).then(({ data }) => {
+    const reviewsPromise = supabase
+      .from('reviews')
+      .select('reviewed_user_id, rating')
+      .eq('approved', true);
+
+    Promise.all([query.order('score', { ascending: false }), reviewsPromise]).then(([{ data }, { data: reviewsData }]) => {
       if (!data) { setLoadingProfiles(false); return; }
+
+      const ratingMap = new Map<string, { sum: number; count: number }>();
+      (reviewsData ?? []).forEach((r: any) => {
+        if (!r.reviewed_user_id) return;
+        const entry = ratingMap.get(r.reviewed_user_id) || { sum: 0, count: 0 };
+        entry.sum += r.rating;
+        entry.count += 1;
+        ratingMap.set(r.reviewed_user_id, entry);
+      });
+
       const mapped: Profile[] = data
         .filter(row => row.display_name && row.display_name.trim().length > 1)
         .sort((a, b) => {
@@ -59,14 +74,16 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
           if ((b.is_verified ? 1 : 0) !== (a.is_verified ? 1 : 0)) return (b.is_verified ? 1 : 0) - (a.is_verified ? 1 : 0);
           return (b.score ?? 0) - (a.score ?? 0);
         })
-        .map((row) => ({
+        .map((row) => {
+          const stats = ratingMap.get(row.user_id);
+          return {
           id: row.id,
           userId: row.user_id,
           name: row.display_name || 'Sin nombre',
           role: (row as { role?: string }).role as Profile['role'] ?? role as Profile['role'],
           specialty: row.specialty || '',
-          rating: 0,
-          reviews: 0,
+          rating: stats ? Math.round((stats.sum / stats.count) * 10) / 10 : 0,
+          reviews: stats?.count ?? 0,
           location: row.zone || 'España',
           zone: row.zone || '',
           experience: '',
@@ -90,7 +107,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
           category: (row.category as Profile['category']) ?? 'professional',
           isVerified: row.is_verified ?? false,
           isEarlyAdopter: (row as any).is_early_adopter ?? false,
-        }));
+        };});
       setRealProfiles(mapped);
       setLoadingProfiles(false);
     });
@@ -114,28 +131,28 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3 sm:mb-5">
         <div>
-          <h2 className="text-2xl font-bold mb-1 overflow-visible pb-2" style={{ lineHeight: 1.2 }}>
+          <h2 className="text-xl sm:text-2xl font-bold mb-0.5 sm:mb-1 overflow-visible sm:pb-2" style={{ lineHeight: 1.2 }}>
             Directorio <span className="text-gradient">{title}</span>
           </h2>
-          <p className="text-sm text-muted-foreground">{subtitle}</p>
+          <p className="hidden sm:block text-sm text-muted-foreground">{subtitle}</p>
         </div>
         {onNavigate && (
           <button
             onClick={() => onNavigate('flashbooking')}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 self-start sm:self-auto"
+            className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 self-start sm:self-auto"
             style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
             <Zap size={14} /> Flash Booking
           </button>
         )}
       </div>
 
-      {/* Salas activas strip */}
-      <div className="flex items-center gap-2 mb-4 px-3 py-2 rounded-lg text-xs"
+      {/* Salas activas strip — desktop only (mobile keeps the fold clean; Flash is in bottom nav) */}
+      <div className="hidden sm:flex items-center gap-2 mb-4 px-3 py-2 rounded-lg text-xs"
         style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}>
         <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 animate-pulse" style={{ background: '#D4AF37' }} />
-        <span style={{ color: 'rgba(22,20,18,0.65)' }}>
+        <span style={{ color: '#222' }}>
           <span style={{ color: '#D4AF37', fontWeight: 700 }}>4 salas & clubs</span>
           {' '}registrados en XPEAK están buscando profesionales como tú
         </span>
@@ -149,8 +166,8 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
       </div>
 
       {/* Filtros */}
-      <div className="flex items-center gap-2 mb-5 flex-wrap">
-        <div className="flex items-center gap-1.5 flex-shrink-0">
+      <div className="flex items-center gap-2 mb-4 sm:mb-5 flex-nowrap sm:flex-wrap overflow-x-auto no-scrollbar -mx-1 px-1 sm:mx-0 sm:px-0">
+        <div className="hidden sm:flex items-center gap-1.5 flex-shrink-0">
           <Globe size={12} style={{ color: '#D4AF37' }} />
           <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>ES</span>
         </div>
@@ -160,7 +177,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
           options={CITY_OPTIONS}
           placeholder="Todas las ciudades"
           active={filterCity !== 'Todas las ciudades'}
-          className="flex-1 min-w-[130px] max-w-[220px]"
+          className="flex-shrink-0 min-w-[150px] sm:flex-1 sm:min-w-[130px] max-w-[220px]"
         />
         <button
           onClick={() => setFilterFlash(v => !v)}
@@ -185,14 +202,19 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
         {(filterCity !== 'Todas las ciudades' || filterFlash || filterVerified) && (
           <button onClick={() => { setFilterCity('Todas las ciudades'); setFilterFlash(false); setFilterVerified(false); }}
             className="text-xs font-bold px-2 py-1 rounded transition-all hover:opacity-70 flex-shrink-0"
-            style={{ background: 'rgba(0,0,0,0.04)', color: 'rgba(22,20,18,0.35)', border: '1px solid rgba(0,0,0,0.08)' }}>
+            style={{ background: 'rgba(0,0,0,0.04)', color: '#333', border: '1px solid rgba(0,0,0,0.08)' }}>
             Limpiar ✕
           </button>
         )}
-        <span className="text-xs ml-auto flex-shrink-0" style={{ color: 'rgba(22,20,18,0.3)' }}>
+        <span className="hidden sm:inline text-xs ml-auto flex-shrink-0" style={{ color: '#333' }}>
           {filteredProfiles.length} resultado{filteredProfiles.length !== 1 ? 's' : ''}
         </span>
       </div>
+
+      {/* Contador resultados — móvil, fila propia compacta */}
+      <p className="sm:hidden text-xs mb-3" style={{ color: '#717171' }}>
+        {filteredProfiles.length} profesional{filteredProfiles.length !== 1 ? 'es' : ''}
+      </p>
 
       {loadingProfiles && (
         <div className={`${gridClass} mb-5`}>
@@ -223,7 +245,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
             <Users size={20} style={{ color: 'rgba(212,175,55,0.35)' }} />
           </div>
           <div>
-            <p className="text-sm font-bold mb-1" style={{ color: 'rgba(22,20,18,0.85)' }}>
+            <p className="text-sm font-bold mb-1" style={{ color: '#333' }}>
               {searchQuery?.trim() ? `Sin resultados para "${searchQuery}"` : 'Sin resultados con estos filtros'}
             </p>
             <p className="text-xs text-muted-foreground mb-3 max-w-[260px] mx-auto">

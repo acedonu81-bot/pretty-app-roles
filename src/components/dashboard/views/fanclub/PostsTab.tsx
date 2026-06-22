@@ -128,7 +128,7 @@ const PostsTab = () => {
               style={{
                 background: postType === pt.id ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.04)',
                 border: `1px solid ${postType === pt.id ? 'rgba(212,175,55,0.4)' : 'rgba(0,0,0,0.08)'}`,
-                color: postType === pt.id ? '#D4AF37' : 'rgba(22,20,18,0.55)',
+                color: postType === pt.id ? '#D4AF37' : '#333',
               }}>
               {pt.icon} {pt.label}
             </button>
@@ -186,7 +186,7 @@ const PostsTab = () => {
                 style={{
                   background: postTier === tier ? 'rgba(212,175,55,0.15)' : 'transparent',
                   border: `1px solid ${postTier === tier ? 'rgba(212,175,55,0.35)' : 'rgba(0,0,0,0.08)'}`,
-                  color: postTier === tier ? '#D4AF37' : 'rgba(22,20,18,0.4)',
+                  color: postTier === tier ? '#D4AF37' : '#333',
                 }}>
                 {TIER_ICON[tier]}
                 {tier.toUpperCase()} +
@@ -246,7 +246,7 @@ const PostsTab = () => {
               ) : p.post_type === 'audio' && p.media_url ? (
                 <audio controls src={p.media_url} className="w-full mb-2" style={{ height: 36 }} />
               ) : null}
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(22,20,18,0.8)' }}>{p.content}</p>
+              <p className="text-sm leading-relaxed" style={{ color: '#444' }}>{p.content}</p>
             </div>
           ))}
         </div>

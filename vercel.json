@@ -1,4 +1,7 @@
 {
+  "redirects": [
+    { "source": "/:path(.*)", "has": [{ "type": "host", "value": "www.xpeak.es" }], "destination": "https://xpeak.es/:path", "permanent": true }
+  ],
   "routes": [
     { "src": "/dj-madrid",      "status": 301, "headers": { "Location": "/contratar-dj/madrid" } },
     { "src": "/dj-barcelona",   "status": 301, "headers": { "Location": "/contratar-dj/barcelona" } },

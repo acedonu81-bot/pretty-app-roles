@@ -11,7 +11,7 @@ interface Post {
 const TAG_COLOR: Record<string, string> = {
   DJ: '#D4AF37', Bodas: '#f472b6', Fotografía: '#818cf8',
   Staff: '#34d399', Camareros: '#60a5fa', Catering: '#fbbf24',
-  Maquillaje: '#f472b6', Eventos: '#a78bfa', default: '#8E8EA0',
+  Maquillaje: '#f472b6', Eventos: '#a78bfa', default: '#3d3d4e',
 };
 
 const ALL_POSTS: Post[] = [

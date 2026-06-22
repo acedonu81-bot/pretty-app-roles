@@ -90,7 +90,7 @@ export default function BlogDJCumpleanos() {
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
-            <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#8E8EA0' }}>Blog</a>
+            <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
             <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Unirse gratis
@@ -99,7 +99,7 @@ export default function BlogDJCumpleanos() {
         </nav>
 
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
-          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#8E8EA0' }}>
+          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>
             ← Todos los artículos
           </a>
 
@@ -108,7 +108,7 @@ export default function BlogDJCumpleanos() {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">
               DJ para cumpleaños: precios y qué incluye el servicio en España (2026)
             </h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#8E8EA0' }}>
+            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>
               Un DJ marca la diferencia entre una fiesta de cumpleaños memorable y una con el Bluetooth del móvil. Te contamos cuánto cuesta y qué debes pedir.
             </p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>3 mayo 2026</time>
@@ -131,13 +131,13 @@ export default function BlogDJCumpleanos() {
                       <tr key={row.horas} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
                         <td className="px-4 py-3 font-medium">{row.horas}</td>
                         <td className="px-4 py-3 text-center font-bold" style={{ color: '#D4AF37' }}>{row.precio}</td>
-                        <td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#8E8EA0' }}>{row.uso}</td>
+                        <td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#3d3d4e' }}>{row.uso}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs mt-3" style={{ color: '#8E8EA0' }}>Precios orientativos en España 2026. Equipo básico incluido. Sin IVA.</p>
+              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos en España 2026. Equipo básico incluido. Sin IVA.</p>
             </section>
 
             <BlogInlineCTA role="dj" />
@@ -158,7 +158,7 @@ export default function BlogDJCumpleanos() {
                       <tr key={row.tipo} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
                         <td className="px-4 py-3 font-medium">{row.tipo}</td>
                         <td className="px-4 py-3 text-center font-bold" style={{ color: '#D4AF37' }}>{row.precio}</td>
-                        <td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#8E8EA0' }}>{row.perfil}</td>
+                        <td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#3d3d4e' }}>{row.perfil}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -173,7 +173,7 @@ export default function BlogDJCumpleanos() {
                   <div key={item.item} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.04)' }}>
                     <div>
                       <p className="text-xs font-bold">{item.item}</p>
-                      <p className="text-[0.65rem] mt-0.5" style={{ color: '#8E8EA0' }}>{item.incluye}</p>
+                      <p className="text-[0.65rem] mt-0.5" style={{ color: '#3d3d4e' }}>{item.incluye}</p>
                     </div>
                     <span className="text-xs font-bold ml-4 shrink-0" style={{ color: '#D4AF37' }}>{item.precio}</span>
                   </div>
@@ -223,7 +223,7 @@ export default function BlogDJCumpleanos() {
             </section>
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas DJ para tu cumpleaños?</p>
-              <p className="text-xs mb-4" style={{ color: '#8E8EA0' }}>En XPEAK encuentras DJs verificados para eventos privados en toda España. Flash Booking disponible en menos de 1h.</p>
+              <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>En XPEAK encuentras DJs verificados para eventos privados en toda España. Flash Booking disponible en menos de 1h.</p>
               <a href="/contratar-dj" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                 Ver DJs en XPEAK →

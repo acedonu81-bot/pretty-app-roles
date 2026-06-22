@@ -41,7 +41,7 @@ const AdminValidations = () => {
   const getPriorityStyle = (hours: number) => {
     if (hours > 20) return { border: '1px solid rgba(255,95,86,0.4)', bg: 'rgba(255,95,86,0.05)', color: '#ff5f56', label: 'CRÍTICO' };
     if (hours > 12) return { border: '1px solid rgba(255,188,0,0.4)', bg: 'rgba(255,188,0,0.05)', color: '#ffbc00', label: 'URGENTE' };
-    return { border: '1px solid var(--nightlife-border)', bg: 'rgba(255,255,255,0.02)', color: '#8E8EA0', label: 'NORMAL' };
+    return { border: '1px solid var(--nightlife-border)', bg: 'rgba(255,255,255,0.02)', color: '#3d3d4e', label: 'NORMAL' };
   };
 
   const handleAction = async (profile: PendingProfile, action: 'approved' | 'rookie' | 'rejected') => {

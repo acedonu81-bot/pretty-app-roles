@@ -166,7 +166,7 @@ const LotterySection = ({ fans }: Props) => {
       <div className="rounded-xl p-4 mb-4 flex items-center gap-4"
         style={{ background: isDrawDay ? 'rgba(212,175,55,0.08)' : 'rgba(0,0,0,0.2)', border: `1px solid ${isDrawDay ? 'rgba(212,175,55,0.4)' : 'rgba(0,0,0,0.05)'}` }}>
         <div className="flex-shrink-0">
-          <Clock size={22} style={{ color: isDrawDay ? '#D4AF37' : '#8E8EA0' }} className={isDrawDay ? 'animate-pulse' : ''} />
+          <Clock size={22} style={{ color: isDrawDay ? '#D4AF37' : '#3d3d4e' }} className={isDrawDay ? 'animate-pulse' : ''} />
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-xs text-muted-foreground">Próximo sorteo</p>
@@ -235,7 +235,7 @@ const LotterySection = ({ fans }: Props) => {
                       border: `1px solid ${giftPicked === g.id ? 'rgba(212,175,55,0.4)' : 'rgba(0,0,0,0.05)'}`,
                       outline: giftPicked === g.id ? '2px solid rgba(212,175,55,0.3)' : 'none',
                     }}>
-                    {(() => { const I = ICON_MAP[g.icon]; return I ? <I size={18} style={{ color: giftPicked === g.id ? '#D4AF37' : 'rgba(22,20,18,0.4)', margin: '0 auto 2px' }} /> : null; })()}
+                    {(() => { const I = ICON_MAP[g.icon]; return I ? <I size={18} style={{ color: giftPicked === g.id ? '#D4AF37' : '#333', margin: '0 auto 2px' }} /> : null; })()}
                     <p className="text-[0.7rem] text-muted-foreground mt-0.5 leading-tight">{g.label}</p>
                   </button>
                 ))}

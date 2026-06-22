@@ -111,10 +111,10 @@ const EventRequestsSection = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="text-sm font-black" style={{ color: 'rgba(22,20,18,0.88)', fontFamily: 'Syne, sans-serif' }}>
+          <h3 className="text-sm font-black" style={{ color: '#222', fontFamily: 'Syne, sans-serif' }}>
             Solicitudes de Evento
           </h3>
-          <p className="text-xs" style={{ color: 'rgba(22,20,18,0.45)' }}>
+          <p className="text-xs" style={{ color: '#333' }}>
             {isEmpresario ? 'Publica lo que necesitas — los profesionales te contactan' : 'Clientes buscando profesionales ahora'}
           </p>
         </div>
@@ -136,7 +136,7 @@ const EventRequestsSection = () => {
       {!loading && requests.length === 0 && (
         <div className="py-8 text-center rounded-2xl" style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.06)' }}>
           <Calendar size={24} className="mx-auto mb-2" style={{ color: 'rgba(212,175,55,0.3)' }} />
-          <p className="text-xs font-bold mb-1" style={{ color: 'rgba(22,20,18,0.35)' }}>Sin solicitudes abiertas</p>
+          <p className="text-xs font-bold mb-1" style={{ color: '#333' }}>Sin solicitudes abiertas</p>
           <p className="text-xs" style={{ color: 'rgba(22,20,18,0.25)' }}>
             {isEmpresario ? 'Publica tu evento y los pros disponibles te contactarán.' : 'Cuando un cliente publique un evento aparecerá aquí.'}
           </p>
@@ -160,11 +160,11 @@ const EventRequestsSection = () => {
                           style={{ background: 'rgba(212,175,55,0.12)', color: '#B8941E' }}>
                           {req.event_type}
                         </span>
-                        <span className="text-[10px]" style={{ color: days <= 2 ? '#ef4444' : 'rgba(22,20,18,0.35)' }}>
+                        <span className="text-[10px]" style={{ color: days <= 2 ? '#ef4444' : '#333' }}>
                           {days}d restantes
                         </span>
                       </div>
-                      <p className="text-sm font-black truncate" style={{ color: 'rgba(22,20,18,0.9)' }}>
+                      <p className="text-sm font-black truncate" style={{ color: '#111' }}>
                         {req.client_name}
                       </p>
                     </div>
@@ -172,11 +172,11 @@ const EventRequestsSection = () => {
 
                   {/* Meta */}
                   <div className="flex flex-wrap gap-3 mb-3">
-                    <span className="flex items-center gap-1 text-xs" style={{ color: 'rgba(22,20,18,0.55)' }}>
+                    <span className="flex items-center gap-1 text-xs" style={{ color: '#333' }}>
                       <MapPin size={10} /> {req.city}
                     </span>
                     {req.event_date && (
-                      <span className="flex items-center gap-1 text-xs" style={{ color: 'rgba(22,20,18,0.55)' }}>
+                      <span className="flex items-center gap-1 text-xs" style={{ color: '#333' }}>
                         <Calendar size={10} /> {req.event_date}
                       </span>
                     )}
@@ -195,7 +195,7 @@ const EventRequestsSection = () => {
                     <div className="flex flex-wrap gap-1 mb-3">
                       {req.roles_needed.map(r => (
                         <span key={r} className="px-2 py-0.5 rounded-full text-[10px] font-semibold"
-                          style={{ background: 'rgba(0,0,0,0.04)', color: 'rgba(22,20,18,0.55)', border: '1px solid rgba(0,0,0,0.07)' }}>
+                          style={{ background: 'rgba(0,0,0,0.04)', color: '#333', border: '1px solid rgba(0,0,0,0.07)' }}>
                           {r}
                         </span>
                       ))}
@@ -205,14 +205,14 @@ const EventRequestsSection = () => {
                   {/* Expand */}
                   <button onClick={() => setExpanded(open ? null : req.id)}
                     className="w-full flex items-center justify-center gap-1 py-1.5 rounded-xl text-xs transition-all hover:bg-black/5"
-                    style={{ color: 'rgba(22,20,18,0.4)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                    style={{ color: '#333', border: '1px solid rgba(0,0,0,0.06)' }}>
                     {open ? <><ChevronUp size={12} /> Cerrar</> : <><ChevronDown size={12} /> Ver detalle y contactar</>}
                   </button>
 
                   {open && (
                     <div className="mt-3 pt-3" style={{ borderTop: '1px solid rgba(0,0,0,0.06)' }}>
                       {req.description && (
-                        <p className="text-xs leading-relaxed mb-3" style={{ color: 'rgba(22,20,18,0.65)' }}>
+                        <p className="text-xs leading-relaxed mb-3" style={{ color: '#222' }}>
                           {req.description}
                         </p>
                       )}
@@ -227,12 +227,12 @@ const EventRequestsSection = () => {
                         {req.contact_phone && (
                           <a href={`tel:${req.contact_phone}`}
                             className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105"
-                            style={{ background: 'rgba(0,0,0,0.05)', color: 'rgba(22,20,18,0.8)', border: '1px solid rgba(0,0,0,0.08)' }}>
+                            style={{ background: 'rgba(0,0,0,0.05)', color: '#444', border: '1px solid rgba(0,0,0,0.08)' }}>
                             📞 {req.contact_phone}
                           </a>
                         )}
                         {!req.contact_email && !req.contact_phone && (
-                          <p className="text-xs text-center py-2" style={{ color: 'rgba(22,20,18,0.3)' }}>
+                          <p className="text-xs text-center py-2" style={{ color: '#333' }}>
                             El cliente no dejó datos de contacto directo.
                           </p>
                         )}
@@ -257,17 +257,17 @@ const EventRequestsSection = () => {
               style={{ background: '#fff', borderBottom: '1px solid rgba(0,0,0,0.07)', zIndex: 1 }}>
               <div>
                 <h4 className="font-black text-base" style={{ fontFamily: 'Syne, sans-serif' }}>Publicar solicitud de evento</h4>
-                <p className="text-xs" style={{ color: 'rgba(22,20,18,0.45)' }}>Visible 7 días para todos los profesionales</p>
+                <p className="text-xs" style={{ color: '#333' }}>Visible 7 días para todos los profesionales</p>
               </div>
               <button onClick={() => setShowForm(false)} className="p-1.5 rounded-lg hover:bg-black/5">
-                <X size={16} style={{ color: 'rgba(22,20,18,0.4)' }} />
+                <X size={16} style={{ color: '#333' }} />
               </button>
             </div>
 
             <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-4">
               <div className="grid grid-cols-2 gap-3">
                 <div className="col-span-2">
-                  <label className="text-xs font-black mb-1.5 block" style={{ color: 'rgba(22,20,18,0.5)' }}>TU NOMBRE O EMPRESA *</label>
+                  <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>TU NOMBRE O EMPRESA *</label>
                   <input value={form.client_name} onChange={e => setForm(f => ({ ...f, client_name: e.target.value }))}
                     placeholder="María García / Eventos Sol" required
                     className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none"
@@ -275,7 +275,7 @@ const EventRequestsSection = () => {
                 </div>
 
                 <div>
-                  <label className="text-xs font-black mb-1.5 block" style={{ color: 'rgba(22,20,18,0.5)' }}>TIPO DE EVENTO *</label>
+                  <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>TIPO DE EVENTO *</label>
                   <select value={form.event_type} onChange={e => setForm(f => ({ ...f, event_type: e.target.value }))} required
                     className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none appearance-none"
                     style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }}>
@@ -285,7 +285,7 @@ const EventRequestsSection = () => {
                 </div>
 
                 <div>
-                  <label className="text-xs font-black mb-1.5 block" style={{ color: 'rgba(22,20,18,0.5)' }}>CIUDAD *</label>
+                  <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>CIUDAD *</label>
                   <input value={form.city} onChange={e => setForm(f => ({ ...f, city: e.target.value }))}
                     placeholder="Madrid, Sevilla..." required
                     className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none"
@@ -293,14 +293,14 @@ const EventRequestsSection = () => {
                 </div>
 
                 <div>
-                  <label className="text-xs font-black mb-1.5 block" style={{ color: 'rgba(22,20,18,0.5)' }}>FECHA DEL EVENTO</label>
+                  <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>FECHA DEL EVENTO</label>
                   <input type="date" value={form.event_date} onChange={e => setForm(f => ({ ...f, event_date: e.target.value }))}
                     className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none"
                     style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
                 </div>
 
                 <div>
-                  <label className="text-xs font-black mb-1.5 block" style={{ color: 'rgba(22,20,18,0.5)' }}>PRESUPUESTO (€)</label>
+                  <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>PRESUPUESTO (€)</label>
                   <div className="flex gap-2">
                     <input type="number" value={form.budget_min} onChange={e => setForm(f => ({ ...f, budget_min: e.target.value }))}
                       placeholder="Mín" className="w-1/2 px-3 py-2.5 rounded-xl text-sm focus:outline-none"
@@ -313,7 +313,7 @@ const EventRequestsSection = () => {
               </div>
 
               <div>
-                <label className="text-xs font-black mb-2 block" style={{ color: 'rgba(22,20,18,0.5)' }}>¿QUÉ PROFESIONALES NECESITAS?</label>
+                <label className="text-xs font-black mb-2 block" style={{ color: '#333' }}>¿QUÉ PROFESIONALES NECESITAS?</label>
                 <div className="flex flex-wrap gap-2">
                   {ROLES_LIST.map(r => {
                     const sel = form.roles_needed.includes(r);
@@ -323,7 +323,7 @@ const EventRequestsSection = () => {
                         style={{
                           background: sel ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.04)',
                           border: `1px solid ${sel ? 'rgba(212,175,55,0.5)' : 'rgba(0,0,0,0.08)'}`,
-                          color: sel ? '#B8941E' : 'rgba(22,20,18,0.6)',
+                          color: sel ? '#B8941E' : '#222',
                         }}>
                         {r}
                       </button>
@@ -333,7 +333,7 @@ const EventRequestsSection = () => {
               </div>
 
               <div>
-                <label className="text-xs font-black mb-1.5 block" style={{ color: 'rgba(22,20,18,0.5)' }}>DESCRIPCIÓN</label>
+                <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>DESCRIPCIÓN</label>
                 <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                   placeholder="Cuéntanos más sobre el evento: nº de personas, estilo, necesidades especiales..."
                   rows={3} className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none resize-none"
@@ -342,14 +342,14 @@ const EventRequestsSection = () => {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-black mb-1.5 block" style={{ color: 'rgba(22,20,18,0.5)' }}>EMAIL DE CONTACTO</label>
+                  <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>EMAIL DE CONTACTO</label>
                   <input type="email" value={form.contact_email} onChange={e => setForm(f => ({ ...f, contact_email: e.target.value }))}
                     placeholder="tu@email.com"
                     className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none"
                     style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
                 </div>
                 <div>
-                  <label className="text-xs font-black mb-1.5 block" style={{ color: 'rgba(22,20,18,0.5)' }}>TELÉFONO</label>
+                  <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>TELÉFONO</label>
                   <input type="tel" value={form.contact_phone} onChange={e => setForm(f => ({ ...f, contact_phone: e.target.value }))}
                     placeholder="+34 600 000 000"
                     className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none"
@@ -357,7 +357,7 @@ const EventRequestsSection = () => {
                 </div>
               </div>
 
-              <p className="text-[10px]" style={{ color: 'rgba(22,20,18,0.35)' }}>
+              <p className="text-[10px]" style={{ color: '#333' }}>
                 Al publicar aceptas que los profesionales de XPEAK puedan ver y responder a tu solicitud. Visible 7 días.
               </p>
 

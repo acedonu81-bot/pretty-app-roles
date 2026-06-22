@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, Headphones, BookOpen, Video, Music, Instagram, Send, X } from 'lucide-react';
-import { parseStreamUrl } from '@/lib/streaming';
+import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, Headphones, BookOpen, Video, Music, Instagram, Send, X, Shield } from 'lucide-react';
+import { parseStreamUrl, resolveHearthisProfile } from '@/lib/streaming';
 import { profiles, toSlug } from '@/data/profiles';
 import { useAuth } from '@/hooks/useAuth';
 import PublicContactModal from '@/components/PublicContactModal';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
+import AvailabilityCalendar from '@/components/AvailabilityCalendar';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
@@ -84,14 +85,14 @@ const ReviewsSection = ({ professionalUserId, professionalName }: { professional
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
-          <h3 className="text-base font-black" style={{ color: 'rgba(22,20,18,0.88)', fontFamily: 'Syne, sans-serif' }}>
+          <h3 className="text-base font-black" style={{ color: '#222', fontFamily: 'Syne, sans-serif' }}>
             Valoraciones
           </h3>
           {reviews.length > 0 && (
             <div className="flex items-center gap-1.5">
               <Star size={14} fill="#D4AF37" stroke="#D4AF37" />
               <span className="text-sm font-bold" style={{ color: '#D4AF37' }}>{avgRating.toFixed(1)}</span>
-              <span className="text-xs" style={{ color: 'rgba(22,20,18,0.4)' }}>({reviews.length})</span>
+              <span className="text-xs" style={{ color: '#444' }}>({reviews.length})</span>
             </div>
           )}
         </div>
@@ -107,27 +108,27 @@ const ReviewsSection = ({ professionalUserId, professionalName }: { professional
       {reviews.length === 0 ? (
         <div className="py-6 text-center rounded-2xl" style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
           <Star size={24} className="mx-auto mb-2" style={{ color: 'rgba(212,175,55,0.25)' }} />
-          <p className="text-xs" style={{ color: 'rgba(22,20,18,0.35)' }}>Sé el primero en valorar a {professionalName}</p>
+          <p className="text-xs" style={{ color: '#444' }}>Sé el primero en valorar a {professionalName}</p>
         </div>
       ) : (
         <div className="flex flex-col gap-3">
           {reviews.map(r => (
-            <div key={r.id} className="p-4 rounded-2xl" style={{ background: '#fafaf8', border: '1px solid rgba(0,0,0,0.06)' }}>
+            <div key={r.id} className="p-4 rounded-2xl" style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.06)' }}>
               <div className="flex items-start justify-between mb-2">
                 <div>
-                  <p className="text-sm font-bold" style={{ color: 'rgba(22,20,18,0.88)' }}>{r.reviewer_name}</p>
-                  <p className="text-xs" style={{ color: 'rgba(22,20,18,0.4)' }}>
+                  <p className="text-sm font-bold" style={{ color: '#222' }}>{r.reviewer_name}</p>
+                  <p className="text-xs" style={{ color: '#444' }}>
                     {r.reviewer_role}{r.event_type ? ` · ${r.event_type}` : ''}
                   </p>
                 </div>
                 <div className="flex flex-col items-end gap-1">
                   <StarRating value={r.rating} />
-                  <span className="text-[10px]" style={{ color: 'rgba(22,20,18,0.3)' }}>
+                  <span className="text-[10px]" style={{ color: '#444' }}>
                     {new Date(r.created_at).toLocaleDateString('es-ES', { month: 'short', year: 'numeric' })}
                   </span>
                 </div>
               </div>
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(22,20,18,0.7)' }}>"{r.comment}"</p>
+              <p className="text-sm leading-relaxed" style={{ color: '#333' }}>"{r.comment}"</p>
             </div>
           ))}
         </div>
@@ -148,56 +149,56 @@ const ReviewsSection = ({ professionalUserId, professionalName }: { professional
                   Valorar a {professionalName}
                 </h4>
                 <button onClick={() => setShowForm(false)} className="p-1 rounded-lg hover:bg-black/5">
-                  <X size={16} style={{ color: 'rgba(22,20,18,0.5)' }} />
+                  <X size={16} style={{ color: '#333' }} />
                 </button>
               </div>
               <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 {/* Rating */}
                 <div>
-                  <label className="text-xs font-bold mb-2 block" style={{ color: 'rgba(22,20,18,0.55)' }}>PUNTUACIÓN *</label>
+                  <label className="text-xs font-bold mb-2 block" style={{ color: '#333' }}>PUNTUACIÓN *</label>
                   <StarRating value={form.rating} onChange={v => setForm(f => ({ ...f, rating: v }))} />
                 </div>
                 {/* Name */}
                 <div>
-                  <label className="text-xs font-bold mb-1.5 block" style={{ color: 'rgba(22,20,18,0.55)' }}>TU NOMBRE *</label>
+                  <label className="text-xs font-bold mb-1.5 block" style={{ color: '#333' }}>TU NOMBRE *</label>
                   <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                     placeholder="María García" required
                     className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none"
-                    style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
+                    style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)' }} />
                 </div>
                 {/* Role */}
                 <div>
-                  <label className="text-xs font-bold mb-1.5 block" style={{ color: 'rgba(22,20,18,0.55)' }}>ERES</label>
+                  <label className="text-xs font-bold mb-1.5 block" style={{ color: '#333' }}>ERES</label>
                   <select value={form.role} onChange={e => setForm(f => ({ ...f, role: e.target.value }))}
                     className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none appearance-none"
-                    style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }}>
+                    style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)' }}>
                     {['Organizador','Empresa','Novio/a','Particular','Sala / Club'].map(r => <option key={r}>{r}</option>)}
                   </select>
                 </div>
                 {/* Event type */}
                 <div>
-                  <label className="text-xs font-bold mb-1.5 block" style={{ color: 'rgba(22,20,18,0.55)' }}>TIPO DE EVENTO</label>
+                  <label className="text-xs font-bold mb-1.5 block" style={{ color: '#333' }}>TIPO DE EVENTO</label>
                   <select value={form.event_type} onChange={e => setForm(f => ({ ...f, event_type: e.target.value }))}
                     className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none appearance-none"
-                    style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }}>
+                    style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)' }}>
                     <option value="">Seleccionar...</option>
                     {EVENT_TYPES.map(t => <option key={t}>{t}</option>)}
                   </select>
                 </div>
                 {/* Comment */}
                 <div>
-                  <label className="text-xs font-bold mb-1.5 block" style={{ color: 'rgba(22,20,18,0.55)' }}>TU VALORACIÓN *</label>
+                  <label className="text-xs font-bold mb-1.5 block" style={{ color: '#333' }}>TU VALORACIÓN *</label>
                   <textarea value={form.comment} onChange={e => setForm(f => ({ ...f, comment: e.target.value }))}
                     placeholder="Cuéntanos tu experiencia..." required rows={3}
                     className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none resize-none"
-                    style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
+                    style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)' }} />
                 </div>
                 <button type="submit" disabled={submitting}
                   className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-black text-sm transition-all"
                   style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', opacity: submitting ? 0.7 : 1 }}>
                   <Send size={14} /> {submitting ? 'Enviando...' : 'Enviar valoración'}
                 </button>
-                <p className="text-[10px] text-center" style={{ color: 'rgba(22,20,18,0.3)' }}>
+                <p className="text-[10px] text-center" style={{ color: '#444' }}>
                   Las valoraciones se publican tras revisión en 24h.
                 </p>
               </form>
@@ -255,6 +256,7 @@ const PublicProfile = () => {
   const { user: authUser } = useAuth();
   const [showContact, setShowContact] = useState(false);
   const [scrolledPastHero, setScrolledPastHero] = useState(false);
+  const [audioEmbed, setAudioEmbed] = useState<ReturnType<typeof parseStreamUrl>>(null);
   const isUUID = UUID_RE.test(slug ?? '');
 
   useEffect(() => {
@@ -293,6 +295,16 @@ const PublicProfile = () => {
     (query as Promise<{ data: SupabaseProfile | null; error: unknown }>)
       .then(({ data }) => {
         setSbProfile(data ?? null);
+        if (data?.audio_embed_url) {
+          const parsed = parseStreamUrl(data.audio_embed_url);
+          if (parsed?.isProfile && parsed._hearthisUser) {
+            resolveHearthisProfile(parsed._hearthisUser).then(url => {
+              setAudioEmbed(url ? { type: 'HearThis', embedUrl: url } : null);
+            });
+          } else {
+            setAudioEmbed(parsed);
+          }
+        }
         if (data?.user_id) {
           // Track profile view — increment score column
           supabase.from('profiles').select('score').eq('user_id', data.user_id).maybeSingle()
@@ -438,8 +450,6 @@ const PublicProfile = () => {
         .slice(0, 3)
         .map(p => ({ key: String(p.id), name: p.name, role: p.role, specialty: p.specialty, zone: p.zone ?? '', href: `/p/${toSlug(p.name)}`, rating: p.rating, id: p.id }));
 
-  const audioEmbed = (profile as any).audioUrl ? parseStreamUrl((profile as any).audioUrl) : null;
-
   const fadeUp = { hidden: { opacity: 0, y: 28 }, show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } } };
   const stagger = { show: { transition: { staggerChildren: 0.1 } } };
 
@@ -508,16 +518,16 @@ const PublicProfile = () => {
         })}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#ffffff', color: 'rgba(22,20,18,0.88)' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#222' }}>
         {/* Nav */}
-        <nav className="sticky top-0 z-50 px-6 py-4 flex items-center justify-between"
-          style={{ background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
+        <nav className="sticky top-0 z-50 px-5 pb-3 flex items-center justify-between"
+          style={{ background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(0,0,0,0.07)', paddingTop: 'max(0.75rem, env(safe-area-inset-top))' }}>
           <button onClick={() => {
             if (window.history.length > 1) { navigate(-1); }
             else if (authUser) { navigate('/dashboard'); }
             else { navigate('/'); }
           }} className="flex items-center gap-2 text-sm font-bold tracking-widest uppercase transition-all hover:opacity-60"
-            style={{ color: 'rgba(22,20,18,0.5)' }}>
+            style={{ color: '#333' }}>
             <ArrowLeft size={14} /> XPEAK
           </button>
           <div className="flex items-center gap-2">
@@ -570,12 +580,12 @@ const PublicProfile = () => {
               </span>
 
               {/* Nombre grande */}
-              <h1 className="font-black tracking-tight mb-2" style={{ fontSize: 'clamp(2.2rem, 10vw, 5rem)', lineHeight: 1, letterSpacing: '-0.03em', color: '#fff', textShadow: '0 2px 20px rgba(0,0,0,0.4)' }}>
+              <h1 className="font-black tracking-tight mb-1" style={{ fontSize: 'clamp(1.8rem, 8vw, 5rem)', lineHeight: 1.05, letterSpacing: '-0.03em', color: '#fff', textShadow: '0 2px 20px rgba(0,0,0,0.4)' }}>
                 {profile.name}
               </h1>
 
               {profile.specialty && (
-                <p className="text-sm font-semibold mb-4" style={{ color: 'rgba(255,255,255,0.75)' }}>{profile.specialty}</p>
+                <p className="text-xs sm:text-sm font-semibold mb-3 truncate max-w-[80vw]" style={{ color: 'rgba(255,255,255,0.75)' }}>{profile.specialty}</p>
               )}
 
               {/* Tags */}
@@ -617,14 +627,20 @@ const PublicProfile = () => {
                 </div>
               )}
 
-              {/* CTA — un único punto de entrada */}
+              {/* CTA — directo a mensajes si logueado */}
               <div className="flex gap-3 flex-wrap">
                 <button
-                  onClick={() => setShowContact(true)}
+                  onClick={() => {
+                    if (authUser && sbProfile?.user_id) {
+                      navigate('/dashboard', { state: { view: 'messages', messageUserId: sbProfile.user_id, messageName: profile.name } });
+                    } else {
+                      setShowContact(true);
+                    }
+                  }}
                   className="flex items-center gap-2 px-7 py-3.5 rounded-2xl font-black text-base transition-all hover:scale-105 active:scale-95"
                   style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 8px 30px rgba(212,175,55,0.4)' }}>
                   <MessageCircle size={18} />
-                  {profile.isFlashActive ? 'Reservar ahora' : 'Contactar'}
+                  Contactar
                 </button>
               </div>
             </motion.div>
@@ -635,33 +651,42 @@ const PublicProfile = () => {
         <div className="max-w-3xl mx-auto px-5 pb-24 pt-8">
           <div className="flex flex-col gap-8">
 
-          {/* Tarjeta resumen — siempre visible */}
-          <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
-            className="rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center gap-4"
-            style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.07)' }}>
-            <div className="flex-1 flex flex-col gap-1.5">
-              {(profile as any).price > 0 && (
-                <div>
-                  <span className="text-3xl font-black" style={{ color: 'rgba(22,20,18,0.92)' }}>{(profile as any).price}€</span>
-                  <span className="text-sm font-semibold ml-1" style={{ color: 'rgba(22,20,18,0.45)' }}>/hora · sin comisión</span>
-                </div>
-              )}
-              <p className="text-xs" style={{ color: 'rgba(22,20,18,0.45)' }}>
+          {/* Tarjeta precio — sin CTA duplicado */}
+          {(profile as any).price > 0 && (
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
+              className="rounded-2xl p-5"
+              style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.07)' }}>
+              <div>
+                <span className="text-3xl font-black" style={{ color: '#111' }}>{(profile as any).price}€</span>
+                <span className="text-sm font-semibold ml-1" style={{ color: '#333' }}>/hora · sin comisión</span>
+              </div>
+              <p className="text-xs mt-1" style={{ color: '#333' }}>
                 {profile.zone && `📍 ${profile.zone} · `}Contrato directo · Pago acordado con el profesional
               </p>
-            </div>
-            <button onClick={() => setShowContact(true)}
-              className="flex-shrink-0 flex items-center gap-2 px-6 py-3 rounded-xl font-black text-sm transition-all hover:scale-105"
-              style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-              <MessageCircle size={15} /> Pedir presupuesto
-            </button>
-          </motion.div>
+            </motion.div>
+          )}
+
+          {/* Video — mobile-first: show before bio for max impact */}
+          {extraMedia.bio_video_url && (() => {
+            const url = extraMedia.bio_video_url!;
+            const yt = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/))([a-zA-Z0-9_-]{11})/);
+            const vm = url.match(/vimeo\.com\/(\d+)/);
+            const embed = yt ? `https://www.youtube.com/embed/${yt[1]}` : vm ? `https://player.vimeo.com/video/${vm[1]}` : null;
+            if (!embed) return null;
+            return (
+              <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
+                <div className="rounded-2xl overflow-hidden" style={{ aspectRatio: '16/9', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}>
+                  <iframe src={embed} className="w-full h-full" allowFullScreen title="Vídeo presentación" loading="lazy" />
+                </div>
+              </motion.div>
+            );
+          })()}
 
           {/* Bio */}
           {profile.description && (
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
               <h2 className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Sobre mí</h2>
-              <p className="text-base leading-relaxed" style={{ color: 'rgba(22,20,18,0.7)' }}>{profile.description}</p>
+              <p className="text-base leading-relaxed" style={{ color: '#333' }}>{profile.description}</p>
             </motion.div>
           )}
 
@@ -673,7 +698,7 @@ const PublicProfile = () => {
               </div>
               <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
                 <iframe src={audioEmbed.embedUrl} width="100%"
-                  height={audioEmbed.type === 'soundcloud' ? '166' : '120'}
+                  height={audioEmbed.type === 'SoundCloud' ? '166' : audioEmbed.type === 'HearThis' ? '150' : '120'}
                   frameBorder="0" allow="autoplay" title="Mix" loading="lazy" />
               </div>
             </motion.div>
@@ -696,7 +721,7 @@ const PublicProfile = () => {
                         const audio = e.currentTarget;
                         const p = document.createElement('p');
                         p.textContent = 'Sesión no disponible temporalmente';
-                        p.style.cssText = 'font-size:11px;color:rgba(22,20,18,0.4);padding:8px 12px;background:rgba(0,0,0,0.04);border-radius:8px;';
+                        p.style.cssText = 'font-size:11px;color:#444;padding:8px 12px;background:rgba(0,0,0,0.04);border-radius:8px;';
                         audio.replaceWith(p);
                       }}
                     />
@@ -706,24 +731,7 @@ const PublicProfile = () => {
             </motion.div>
           )}
 
-          {extraMedia.bio_video_url && (() => {
-            const url = extraMedia.bio_video_url!;
-            const yt = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/))([a-zA-Z0-9_-]{11})/);
-            const vm = url.match(/vimeo\.com\/(\d+)/);
-            const embed = yt ? `https://www.youtube.com/embed/${yt[1]}` : vm ? `https://player.vimeo.com/video/${vm[1]}` : null;
-            if (!embed) return null;
-            return (
-              <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
-                <div className="flex items-center gap-2 mb-4">
-                  <Video size={14} style={{ color: '#D4AF37' }} />
-                  <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: '#D4AF37' }}>Vídeo</span>
-                </div>
-                <div className="rounded-2xl overflow-hidden" style={{ aspectRatio: '16/9', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}>
-                  <iframe src={embed} className="w-full h-full" allowFullScreen title="Vídeo" loading="lazy" />
-                </div>
-              </motion.div>
-            );
-          })()}
+          {/* bio_video already rendered above bio section */}
 
           {sbProfile?.portfolio_urls && sbProfile.portfolio_urls.length > 0 && (
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
@@ -767,11 +775,11 @@ const PublicProfile = () => {
               <div className="flex flex-col gap-3">
                 {publicPosts.map(post => (
                   <div key={post.id} className="p-5 rounded-2xl"
-                    style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.07)' }}>
-                    <p className="text-xs mb-2" style={{ color: 'rgba(22,20,18,0.4)' }}>
+                    style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.07)' }}>
+                    <p className="text-xs mb-2" style={{ color: '#444' }}>
                       {new Date(post.created_at).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
                     </p>
-                    <p className="text-sm leading-relaxed whitespace-pre-wrap" style={{ color: 'rgba(22,20,18,0.75)' }}>{post.content}</p>
+                    <p className="text-sm leading-relaxed whitespace-pre-wrap" style={{ color: '#222' }}>{post.content}</p>
                     {post.media_url && post.post_type === 'image' && (
                       <img src={post.media_url} alt="Post" className="w-full max-h-60 object-cover rounded-xl mt-3" loading="lazy"
                         onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
@@ -779,6 +787,13 @@ const PublicProfile = () => {
                   </div>
                 ))}
               </div>
+            </motion.div>
+          )}
+
+          {/* Availability */}
+          {sbProfile && (
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
+              <AvailabilityCalendar userId={sbProfile.user_id} />
             </motion.div>
           )}
 
@@ -797,14 +812,16 @@ const PublicProfile = () => {
             <h2 className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Por qué contratar en XPEAK</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {[
-                { icon: '🛡️', title: 'Sin comisión', desc: 'El precio acordado va directo al profesional. XPEAK no cobra por contratación.' },
-                { icon: '✅', title: 'Perfiles verificados', desc: 'Identidad, experiencia y referencias comprobadas por el equipo XPEAK.' },
-                { icon: '⚡', title: 'Respuesta rápida', desc: 'La mayoría de profesionales responden en menos de 24h.' },
+                { icon: <Shield size={20} />, title: 'Sin comisión', desc: 'El precio acordado va directo al profesional.' },
+                { icon: <BadgeCheck size={20} />, title: 'Verificados', desc: 'Identidad y experiencia comprobadas por XPEAK.' },
+                { icon: <Clock size={20} />, title: 'Respuesta rápida', desc: 'Responden en menos de 24h.' },
               ].map(({ icon, title, desc }) => (
-                <div key={title} className="p-4 rounded-2xl" style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.06)' }}>
-                  <div className="text-2xl mb-2">{icon}</div>
-                  <p className="text-sm font-black mb-1" style={{ color: 'rgba(22,20,18,0.85)' }}>{title}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(22,20,18,0.5)' }}>{desc}</p>
+                <div key={title} className="p-4 rounded-2xl flex items-start gap-3" style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)' }}>
+                  <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>{icon}</div>
+                  <div>
+                    <p className="text-sm font-black mb-0.5" style={{ color: '#111' }}>{title}</p>
+                    <p className="text-xs leading-relaxed" style={{ color: '#222' }}>{desc}</p>
+                  </div>
                 </div>
               ))}
             </div>
@@ -818,14 +835,14 @@ const PublicProfile = () => {
                 {relatedProfiles.map(r => (
                   <a key={r.key} href={r.href}
                     className="flex items-center gap-3 p-3 rounded-xl transition-all hover:scale-[1.01]"
-                    style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.06)' }}>
+                    style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <div className="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-black flex-shrink-0"
                       style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
                       {(r.name || 'X').charAt(0).toUpperCase()}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-bold truncate" style={{ color: 'rgba(22,20,18,0.88)' }}>{r.name}</p>
-                      <p className="text-xs truncate" style={{ color: 'rgba(22,20,18,0.45)' }}>{r.specialty} {r.zone ? `· ${r.zone}` : ''}</p>
+                      <p className="text-sm font-bold truncate" style={{ color: '#222' }}>{r.name}</p>
+                      <p className="text-xs truncate" style={{ color: '#444' }}>{r.specialty} {r.zone ? `· ${r.zone}` : ''}</p>
                     </div>
                     <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>Ver →</span>
                   </a>
@@ -850,9 +867,15 @@ const PublicProfile = () => {
 
         {/* Sticky CTA mobile */}
         <div className="fixed bottom-0 left-0 right-0 z-50 p-4 md:hidden"
-          style={{ background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(10px)', borderTop: '1px solid rgba(0,0,0,0.07)' }}>
+          style={{ background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(10px)', borderTop: '1px solid rgba(0,0,0,0.07)', paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}>
           <button
-            onClick={() => setShowContact(true)}
+            onClick={() => {
+              if (authUser && sbProfile?.user_id) {
+                navigate('/dashboard', { state: { view: 'messages', messageUserId: sbProfile.user_id, messageName: profile.name } });
+              } else {
+                setShowContact(true);
+              }
+            }}
             className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl font-black text-base transition-all active:scale-95"
             style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
             <MessageCircle size={18} /> Contactar

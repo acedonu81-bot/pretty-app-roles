@@ -55,9 +55,9 @@ const VoteButton = ({ profileId, voteCount, hasVotedToday, category, onVoted }: 
         style={{
           background: hasVotedToday ? 'rgba(0,0,0,0.03)' : 'rgba(212,175,55,0.08)',
           border: `1px solid ${hasVotedToday ? 'rgba(0,0,0,0.08)' : 'rgba(212,175,55,0.2)'}`,
-          color: hasVotedToday ? '#8E8EA0' : '#D4AF37',
+          color: hasVotedToday ? '#3d3d4e' : '#D4AF37',
         }}>
-        <Heart size={12} fill={hasVotedToday ? '#8E8EA0' : 'none'} />
+        <Heart size={12} fill={hasVotedToday ? '#3d3d4e' : 'none'} />
         {hasVotedToday ? 'Votado' : loading ? 'Votando...' : 'Apoyar Promesa'}
       </button>
     </div>
