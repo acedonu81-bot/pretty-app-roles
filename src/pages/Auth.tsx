@@ -35,7 +35,7 @@ const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { ic
   },
   empresario: {
     tagline: 'Encuentra DJ, staff y fotógrafo para tu evento en minutos.',
-    sub: '38 profesionales con tarifa pública. Contacto directo, sin intermediarios.',
+    sub: 'Profesionales verificados con tarifa pública. Contacto directo, sin intermediarios.',
     bullets: [
       { icon: Search, text: 'Filtra por ciudad, precio y disponibilidad' },
       { icon: FileText, text: 'Contrato automático — sin papeleo' },
@@ -178,13 +178,14 @@ const Auth = () => {
 
         isRegistering.current = true;
         const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
+        const KNOWN_ROLES = ['dj', 'media', 'makeup', 'staff', 'promotor', 'empresario', 'catering', 'mago', 'humorista', 'animador', 'bailarin', 'speaker', 'vestuario', 'photo-booth'];
         const { data: signUpData, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
             data: {
               display_name: safeName,
-              role: 'pending',
+              role: KNOWN_ROLES.includes(roleParam) ? roleParam : 'pending',
               hourly_rate: 0,
               category: 'pending',
               zone: 'España',
@@ -306,7 +307,7 @@ const Auth = () => {
                     ))}
                   </div>
                   <p className="text-xs" style={{ color: 'rgba(255,255,255,0.55)' }}>
-                    <strong className="text-white">38+ profesionales</strong> ya en la plataforma
+                    <strong className="text-white">DJs, fotógrafos y staff</strong> ya consiguen bolos aquí
                   </p>
                 </div>
                 <div className="flex items-center gap-1.5">
@@ -550,7 +551,7 @@ const Auth = () => {
                 </div>
                 <div className="flex items-center gap-1.5">
                   <Users size={11} style={{ color: 'rgba(255,255,255,0.25)' }} />
-                  <span className="text-[0.6rem]" style={{ color: 'rgba(255,255,255,0.25)' }}>38+ profesionales</span>
+                  <span className="text-[0.6rem]" style={{ color: 'rgba(255,255,255,0.25)' }}>Comunidad verificada</span>
                 </div>
               </div>
 

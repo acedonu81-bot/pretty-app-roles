@@ -196,11 +196,11 @@ const RotatingWord = () => {
 
 /* ── Bento card ── */
 const BentoCard = ({
-  image, icon, title, subtitle, className = '', onClick, children, isFresh = false,
+  image, icon, title, subtitle, className = '', href, children, isFresh = false,
 }: {
-  image: string; icon: React.ReactNode; title: string; subtitle: string; className?: string; onClick?: () => void; children?: React.ReactNode; isFresh?: boolean;
+  image: string; icon: React.ReactNode; title: string; subtitle: string; className?: string; href: string; children?: React.ReactNode; isFresh?: boolean;
 }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLAnchorElement>(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const shinePosX = useMotionValue(50);
@@ -213,7 +213,7 @@ const BentoCard = ({
     x => `radial-gradient(ellipse 55% 75% at ${x}% 50%, rgba(212,175,55,0.18) 0%, transparent 65%)`
   );
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const rect = cardRef.current?.getBoundingClientRect();
     if (!rect) return;
     const nx = (e.clientX - rect.left) / rect.width - 0.5;
@@ -230,12 +230,12 @@ const BentoCard = ({
   };
 
   return (
-    <motion.div
+    <motion.a
+      href={href}
       ref={cardRef}
-      onClick={onClick}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ rotateX, rotateY, transformPerspective: 900, border: '1px solid rgba(212,175,55,0.15)' }}
+      style={{ rotateX, rotateY, transformPerspective: 900, border: '1px solid rgba(212,175,55,0.15)', display: 'block', textDecoration: 'none' }}
       whileHover={{ scale: 1.04, y: -10, borderColor: 'rgba(212,175,55,0.5)' }}
       transition={{ type: 'spring', stiffness: 220, damping: 22 }}
       className={`relative overflow-hidden rounded-2xl cursor-pointer group ${className}`}
@@ -269,7 +269,7 @@ const BentoCard = ({
           ¿Quién hay aquí? →
         </p>
       </div>
-    </motion.div>
+    </motion.a>
   );
 };
 
@@ -284,6 +284,16 @@ const px = (id: number) => `/images/pexels/${id}.jpg`;
 // 36933463=gourmet buffet bowls | 29068721=catering shot glasses | 544961=cocktails toast
 
 /* ── Role detail data ── */
+/* Mapa categoría de la home → destino real (los keys de ROLE_DETAILS no son slugs del directorio) */
+const CATEGORY_DEST: Record<string, string> = {
+  musica: '/directorio/dj',
+  gastro: '/directorio/catering',
+  imagen: '/directorio/fotografo',
+  staff: '/directorio/staff',
+  belleza: '/directorio/maquillaje',
+  empresario: '/auth?mode=register&role=empresario',
+};
+
 const ROLE_DETAILS = [
   {
     key: 'musica', title: 'Música', icon: <Music size={28} />, tagline: 'DJs, productores, artistas en vivo, VJs y técnicos de sonido',
@@ -341,170 +351,6 @@ const ROLE_DETAILS = [
     ],
   },
 ];
-
-/* ── Role Modal con fichas ── */
-const RoleModal = ({ role, onClose, onJoin }: { role: typeof ROLE_DETAILS[0]; onClose: () => void; onJoin: () => void }) => {
-  const [step, setStep] = useState(0);
-  const [dir, setDir] = useState(1);
-  const total = role.steps.length;
-  const isLast = step === total - 1;
-  const cur = role.steps[step];
-
-  const goTo = (next: number) => {
-    if (next < 0 || next >= total) return;
-    setDir(next > step ? 1 : -1);
-    setStep(next);
-  };
-
-  const imgVariants = {
-    enter: (d: number) => ({ x: d > 0 ? 120 : -120, opacity: 0, scale: 1.05 }),
-    center: { x: 0, opacity: 1, scale: 1 },
-    exit: (d: number) => ({ x: d > 0 ? -120 : 120, opacity: 0, scale: 0.96 }),
-  };
-
-  return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4"
-        onClick={onClose}
-      >
-        <div className="absolute inset-0 bg-black/85 backdrop-blur-md" />
-        <motion.div
-          initial={{ opacity: 0, y: 60 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 40 }}
-          transition={{ type: 'spring', stiffness: 280, damping: 26 }}
-          onClick={e => e.stopPropagation()}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="role-modal-title"
-          className="relative w-full max-w-lg rounded-t-3xl sm:rounded-2xl overflow-hidden"
-          style={{ background: '#0e0e0e', border: '1px solid rgba(226,190,80,0.18)' }}
-        >
-          {/* ── Image area ── */}
-          <div className="relative h-56 overflow-hidden">
-            <AnimatePresence custom={dir} mode="wait">
-              <motion.div
-                key={`img-${step}`}
-                custom={dir}
-                variants={imgVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute inset-0"
-              >
-                <img
-                  src={cur.image}
-                  alt={cur.title}
-                  className="w-full h-full object-cover"
-                  draggable={false}
-                />
-              </motion.div>
-            </AnimatePresence>
-
-            {/* gradient: dark top + heavy dark bottom */}
-            <div className="absolute inset-0 pointer-events-none"
-              style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, transparent 35%, rgba(14,14,14,0.92) 100%)' }} />
-
-            {/* Close */}
-            <button
-              onClick={onClose}
-              className="absolute top-3 left-3 w-8 h-8 rounded-full flex items-center justify-center transition-all hover:bg-white/20"
-              style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <X size={14} className="text-white/80" />
-            </button>
-
-            {/* Step counter */}
-            <div className="absolute top-3 right-3 text-xs font-bold px-2.5 py-1 rounded-full"
-              style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.35)', letterSpacing: '0.05em' }}>
-              {String(step + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
-            </div>
-
-            {/* Bottom: icon badge + title overlaid on image */}
-            <AnimatePresence custom={dir} mode="wait">
-              <motion.div
-                key={`title-${step}`}
-                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                transition={{ duration: 0.28, delay: 0.08 }}
-                className="absolute bottom-0 left-0 right-0 px-5 pb-4 flex items-end gap-3"
-              >
-                <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(14px)', border: '1px solid rgba(212,175,55,0.45)', color: '#D4AF37' }}>
-                  {cur.icon}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-bold uppercase tracking-widest mb-0.5" style={{ color: 'rgba(212,175,55,0.75)' }}>
-                    {role.title}
-                  </p>
-                  <h4 className="text-[1.05rem] font-bold leading-tight text-white" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.8)' }}>
-                    {cur.title}
-                  </h4>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* ── Dots ── */}
-          <div className="flex justify-center gap-1.5 pt-3 pb-1">
-            {role.steps.map((_, i) => (
-              <button key={i} onClick={() => goTo(i)}
-                className="rounded-full transition-all duration-300"
-                style={{ width: i === step ? 22 : 6, height: 6, background: i === step ? '#D4AF37' : 'rgba(255,255,255,0.14)' }} />
-            ))}
-          </div>
-
-          {/* ── Body text ── */}
-          <div className="overflow-hidden" style={{ minHeight: 76 }}>
-            <AnimatePresence custom={dir} mode="wait">
-              <motion.p
-                key={`body-${step}`}
-                custom={dir}
-                variants={{ enter: d => ({ x: d > 0 ? 40 : -40, opacity: 0 }), center: { x: 0, opacity: 1 }, exit: { opacity: 0, x: 0 } }}
-                initial="enter" animate="center" exit="exit"
-                transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
-                className="text-sm leading-relaxed px-5 py-3"
-                style={{ color: 'rgba(255,255,255,0.62)' }}
-              >
-                {cur.body}
-              </motion.p>
-            </AnimatePresence>
-          </div>
-
-          {/* ── Navigation ── */}
-          <div className="flex items-center gap-3 px-5 pt-1" style={{ paddingBottom: 'calc(1.5rem + var(--sab, 0px))' }}>
-            <button
-              onClick={() => goTo(step - 1)} disabled={step === 0}
-              className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-all disabled:opacity-20 hover:bg-white/8"
-              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <ChevronLeft size={18} />
-            </button>
-            {isLast ? (
-              <button onClick={onJoin}
-                className="flex-1 py-3 rounded-xl font-bold text-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
-                style={{ background: 'linear-gradient(135deg, #D4AF37, #B8941E)', color: '#0A0A0A' }}>
-                Crear perfil gratis →
-              </button>
-            ) : (
-              <button onClick={() => goTo(step + 1)}
-                className="flex-1 py-3 rounded-xl font-bold text-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
-                style={{ background: 'rgba(212,175,55,0.09)', border: '1px solid rgba(212,175,55,0.28)', color: '#D4AF37' }}>
-                Siguiente →
-              </button>
-            )}
-            <button
-              onClick={() => goTo(step + 1)} disabled={isLast}
-              className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-all disabled:opacity-20 hover:bg-white/8"
-              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <ChevronRight size={18} />
-            </button>
-          </div>
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
-  );
-};
 
 /* ── Landing ── */
 const FAQ_ITEMS = [
@@ -947,15 +793,15 @@ const Landing = () => {
           style={{ scrollbarWidth: 'none', maskImage: 'linear-gradient(to right, black 80%, transparent 100%)' }}
         >
           {ROLE_DETAILS.map(role => (
-            <button
+            <a
               key={role.key}
-              onClick={() => navigate('/directorio/' + role.key)}
+              href={CATEGORY_DEST[role.key]}
               className="flex-none flex items-center gap-2.5 px-4 py-3.5 rounded-2xl text-sm font-bold transition-all active:scale-95"
-              style={{ background: '#FFFFFF', border: '1px solid rgba(212,175,55,0.2)', boxShadow: '0 1px 4px rgba(0,0,0,0.06)', whiteSpace: 'nowrap' }}
+              style={{ background: '#FFFFFF', border: '1px solid rgba(212,175,55,0.2)', boxShadow: '0 1px 4px rgba(0,0,0,0.06)', whiteSpace: 'nowrap', color: 'inherit', textDecoration: 'none' }}
             >
               <span style={{ color: '#D4AF37' }}>{role.icon}</span>
               {role.title}
-            </button>
+            </a>
           ))}
           <div className="flex-none w-6" />
         </div>
@@ -981,24 +827,24 @@ const Landing = () => {
           <FadeIn delay={0} className="md:row-span-2">
             <BentoCard image={bentoMusica} icon={<Music size={20} />} title="Música" subtitle="DJs, productores, artistas en vivo, VJs y técnicos de sonido" className="h-full"
               isFresh={freshRoles.has('dj')}
-              onClick={() => navigate('/directorio/' + ROLE_DETAILS[0].key)} />
+              href={CATEGORY_DEST.musica} />
           </FadeIn>
           <FadeIn delay={0.1} className="md:col-span-2">
             <BentoCard
               image="/images/pexels/1190297.jpg"
               icon={<Building2 size={20} />} title="Empresario" subtitle="Salas, promotoras y agencias de eventos" className="h-full"
               isFresh={freshRoles.has('empresario')}
-              onClick={() => navigate('/directorio/' + ROLE_DETAILS[5].key)} />
+              href={CATEGORY_DEST.empresario} />
           </FadeIn>
           <FadeIn delay={0.15} className="md:row-span-2">
             <BentoCard image={bentoImagen} icon={<Camera size={20} />} title="Imagen & Media" subtitle="Fotógrafos, videógrafos y creadores" className="h-full"
               isFresh={freshRoles.has('media')}
-              onClick={() => navigate('/directorio/' + ROLE_DETAILS[2].key)} />
+              href={CATEGORY_DEST.imagen} />
           </FadeIn>
           <FadeIn delay={0.2} className="md:col-span-2">
             <BentoCard image={bentoStaff} icon={<Users size={20} />} title="Staff & Promoción" subtitle="RRPP, hostess, promotores y azafatas" className="h-full"
               isFresh={freshRoles.has('staff') || freshRoles.has('promotor')}
-              onClick={() => navigate('/directorio/' + ROLE_DETAILS[3].key)} />
+              href={CATEGORY_DEST.staff} />
           </FadeIn>
         </div>
         {/* Fila 3: Belleza + Gastro */}
@@ -1008,12 +854,12 @@ const Landing = () => {
               image="/images/pexels/2681751.jpg"
               icon={<Scissors size={20} />} title="Belleza & Estética" subtitle="Maquilladores, peluqueros y estilistas" className="h-full"
               isFresh={freshRoles.has('makeup')}
-              onClick={() => navigate('/directorio/' + ROLE_DETAILS[4].key)} />
+              href={CATEGORY_DEST.belleza} />
           </FadeIn>
           <FadeIn delay={0.3} className="h-full">
             <BentoCard image={bentoGastro} icon={<UtensilsCrossed size={20} />} title="Gastro & Sala" subtitle="Bartenders, chefs y catering premium" className="h-full"
               isFresh={freshRoles.has('catering')}
-              onClick={() => navigate('/directorio/' + ROLE_DETAILS[1].key)} />
+              href={CATEGORY_DEST.gastro} />
           </FadeIn>
         </div>
       </section>

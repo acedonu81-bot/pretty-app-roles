@@ -1,17 +1,26 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight } from 'lucide-react';
+import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight, Megaphone, UtensilsCrossed, Laugh, PartyPopper, PersonStanding, MicVocal, Shirt } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 
 const ROLES = [
-  { value: 'dj',           label: 'DJ / Artista',      desc: 'DJ, músico, grupo musical',         icon: Music2,    color: '#D4AF37' },
-  { value: 'media',        label: 'Fotógrafo / Vídeo', desc: 'Fotografía y video de eventos',     icon: Camera,    color: '#60a5fa' },
-  { value: 'makeup',       label: 'Maquilladora',      desc: 'Maquillaje y estilismo',            icon: Sparkles,  color: '#f472b6' },
-  { value: 'staff',        label: 'Staff / Camarero',  desc: 'Personal para eventos',             icon: Users,     color: '#34d399' },
-  { value: 'promotor',     label: 'Promotor / RRPP',   desc: 'Relaciones públicas y listas',      icon: Wand2,     color: '#a78bfa' },
-  { value: 'empresario',   label: 'Empresario',        desc: 'Busco y contrato profesionales',    icon: Briefcase, color: '#fb923c' },
+  { value: 'dj',           label: 'DJ / Artista',        desc: 'DJ, músico, grupo musical',         icon: Music2,         color: '#D4AF37' },
+  { value: 'media',        label: 'Fotógrafo / Vídeo',   desc: 'Fotografía y video de eventos',     icon: Camera,         color: '#60a5fa' },
+  { value: 'makeup',       label: 'Maquilladora',        desc: 'Maquillaje y estilismo',            icon: Sparkles,       color: '#f472b6' },
+  { value: 'staff',        label: 'Staff / Camarero',    desc: 'Personal para eventos',             icon: Users,          color: '#34d399' },
+  { value: 'promotor',     label: 'Promotor / RRPP',     desc: 'Relaciones públicas y listas',      icon: Megaphone,      color: '#a78bfa' },
+  { value: 'catering',     label: 'Catering / Chef',     desc: 'Cocina, barra y cócteles',          icon: UtensilsCrossed, color: '#fb923c' },
+  { value: 'mago',         label: 'Mago / Ilusionista',  desc: 'Magia de cerca y escenario',        icon: Wand2,          color: '#8b5cf6' },
+  { value: 'humorista',    label: 'Humorista / Cómico',  desc: 'Monólogos y stand-up',              icon: Laugh,          color: '#f97316' },
+  { value: 'animador',     label: 'Animador / Payaso',   desc: 'Animación infantil y familiar',     icon: PartyPopper,    color: '#ec4899' },
+  { value: 'bailarin',     label: 'Bailarín / Danza',    desc: 'Shows, coreografías y gogós',       icon: PersonStanding, color: '#06b6d4' },
+  { value: 'speaker',      label: 'Speaker / Presentador', desc: 'Maestro de ceremonias, ponente',  icon: MicVocal,       color: '#eab308' },
+  { value: 'vestuario',    label: 'Estilista / Vestuario', desc: 'Moda, vestuario y styling',       icon: Shirt,          color: '#10b981' },
+  { value: 'photo-booth',  label: 'Photo Booth',         desc: 'Cabinas de fotos y espejos 360',    icon: Camera,         color: '#f43f5e' },
 ];
+
+const EMPRESARIO_ROLE = { value: 'empresario', label: 'Busco talento — Empresario', desc: 'Sala, promotora, agencia o evento privado: busco y contrato profesionales', icon: Briefcase, color: '#D4AF37' };
 
 const TIPS: Record<string, { title: string; tips: [string, string][] }> = {
   dj: {
@@ -54,6 +63,70 @@ const TIPS: Record<string, { title: string; tips: [string, string][] }> = {
       ['Sube tu bio', 'Cuéntales tu experiencia'],
     ],
   },
+  catering: {
+    title: 'Tu perfil de Catering está listo',
+    tips: [
+      ['Sube fotos de tus platos', 'Tu cocina es tu mejor carta de presentación'],
+      ['Define tu servicio', 'Catering completo, barra, showcooking...'],
+      ['Añade tu tarifa', 'Por persona o por evento'],
+    ],
+  },
+  mago: {
+    title: 'Tu perfil de Mago está listo',
+    tips: [
+      ['Sube un vídeo de tu show', 'La magia se vende viéndola'],
+      ['Define tu formato', 'Magia de cerca, escenario, infantil...'],
+      ['Añade tu tarifa', 'Por actuación o por hora'],
+    ],
+  },
+  humorista: {
+    title: 'Tu perfil de Humorista está listo',
+    tips: [
+      ['Sube un clip de tu monólogo', 'Que se rían antes de contratarte'],
+      ['Define tu registro', 'Bodas, empresas, salas...'],
+      ['Añade tu tarifa', 'Por show o por evento'],
+    ],
+  },
+  animador: {
+    title: 'Tu perfil de Animador está listo',
+    tips: [
+      ['Añade fotos de tus eventos', 'Los padres quieren ver tu trabajo'],
+      ['Define tu especialidad', 'Cumpleaños, comuniones, bodas...'],
+      ['Añade tu tarifa', 'Por hora o por pack de animación'],
+    ],
+  },
+  bailarin: {
+    title: 'Tu perfil de Bailarín está listo',
+    tips: [
+      ['Sube un vídeo bailando', 'El movimiento no se explica, se ve'],
+      ['Define tu estilo', 'Flamenco, urbano, gogó, coreografías...'],
+      ['Añade tu tarifa', 'Por show individual o compañía'],
+    ],
+  },
+  speaker: {
+    title: 'Tu perfil de Speaker está listo',
+    tips: [
+      ['Sube un clip presentando', 'Tu voz y presencia son tu portfolio'],
+      ['Define tu formato', 'MC de bodas, galas, congresos...'],
+      ['Añade tu tarifa', 'Por evento o por jornada'],
+    ],
+  },
+  vestuario: {
+    title: 'Tu perfil de Estilista está listo',
+    tips: [
+      ['Sube tu book', 'Looks y styling de trabajos reales'],
+      ['Define tu especialidad', 'Novias, artistas, producciones...'],
+      ['Añade tu tarifa', 'Por sesión o por proyecto'],
+    ],
+  },
+  'photo-booth': {
+    title: 'Tu perfil de Photo Booth está listo',
+    tips: [
+      ['Sube fotos de tus cabinas', 'Clásica, 360, espejo glamour...'],
+      ['Define tu servicio', 'Qué incluye: props, impresión, técnico'],
+      ['Añade tu tarifa', 'Por evento o por horas'],
+    ],
+  },
   empresario: {
     title: 'Panel de Empresario activado',
     tips: [
@@ -74,7 +147,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
   const profile = useProfile();
   // Pre-fill role from URL param if available
   const urlRole = new URLSearchParams(window.location.search).get('role') ?? '';
-  const validRoles = ['dj','media','makeup','staff','promotor','empresario'];
+  const validRoles = [...ROLES.map(r => r.value), 'empresario'];
   const prefilledRole = validRoles.includes(urlRole) ? urlRole : (validRoles.includes(profile.role ?? '') ? profile.role ?? '' : '');
   const [step, setStep] = useState(0);
   const [selectedRole, setSelectedRole] = useState<string>(prefilledRole);
@@ -136,7 +209,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                   </p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 mb-5">
+                <div className="grid grid-cols-2 gap-2 mb-3 max-h-[42vh] overflow-y-auto pr-1">
                   {ROLES.map(({ value, label, desc, icon: Icon, color }) => {
                     const active = selectedRole === value;
                     return (
@@ -160,6 +233,30 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                     );
                   })}
                 </div>
+
+                {(() => {
+                  const { value, label, desc, icon: Icon, color } = EMPRESARIO_ROLE;
+                  const active = selectedRole === value;
+                  return (
+                    <button onClick={() => setSelectedRole(value)}
+                      className="w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all mb-5"
+                      style={{
+                        background: active ? `${color}15` : 'rgba(0,0,0,0.02)',
+                        border: `1.5px solid ${active ? color : 'rgba(0,0,0,0.07)'}`,
+                        boxShadow: active ? `0 0 0 3px ${color}20` : 'none',
+                      }}>
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                        style={{ background: active ? `${color}25` : 'rgba(0,0,0,0.05)' }}>
+                        <Icon size={15} style={{ color: active ? color : '#333' }} />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-xs font-black leading-tight" style={{ color: active ? '#111' : '#222' }}>{label}</p>
+                        <p className="text-[10px] leading-tight mt-0.5" style={{ color: '#777' }}>{desc}</p>
+                      </div>
+                      {active && <CheckCircle size={12} style={{ color }} />}
+                    </button>
+                  );
+                })()}
 
                 <button onClick={handleRoleConfirm} disabled={!selectedRole || saving}
                   className="w-full py-3.5 rounded-xl font-black text-sm flex items-center justify-center gap-2 transition-all"

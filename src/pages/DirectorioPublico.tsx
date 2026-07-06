@@ -107,14 +107,64 @@ const ROLE_CONFIG: Record<string, {
     seoDesc: 'Directorio de photo booth para bodas y eventos en España. Clásico, 360 y espejo glamour. Precios desde 300€, contacto directo.',
     cta: 'Alquilar photo booth',
   },
+  catering: {
+    dbRole: 'catering',
+    title: 'Catering y chefs para eventos',
+    subtitle: 'Catering completo, chefs privados, barra de cócteles y showcooking para bodas y eventos de empresa.',
+    seoTitle: 'Contratar catering para bodas y eventos en España — XPEAK',
+    seoDesc: 'Directorio de catering y chefs para bodas y eventos en España. Menús por persona, barra libre y showcooking. Precios reales.',
+    cta: 'Pedir presupuesto',
+  },
+  humorista: {
+    dbRole: 'humorista',
+    title: 'Humoristas y monologuistas para eventos',
+    subtitle: 'Cómicos y monologuistas para bodas, cenas de empresa y eventos privados en toda España.',
+    seoTitle: 'Contratar humorista para eventos en España — XPEAK',
+    seoDesc: 'Directorio de humoristas y monologuistas para bodas y eventos en España. Shows a medida, precios reales y contacto directo.',
+    cta: 'Contratar humorista',
+  },
+  bailarin: {
+    dbRole: 'bailarin',
+    title: 'Bailarines y compañías de danza',
+    subtitle: 'Shows de baile, coreografías, flamenco y gogós para bodas, galas y eventos corporativos.',
+    seoTitle: 'Contratar bailarines para eventos en España — XPEAK',
+    seoDesc: 'Directorio de bailarines y compañías de danza para bodas y eventos en España. Flamenco, urbano y coreografías a medida.',
+    cta: 'Contratar bailarín',
+  },
+  speaker: {
+    dbRole: 'speaker',
+    title: 'Speakers y maestros de ceremonias',
+    subtitle: 'Presentadores, maestros de ceremonias y ponentes para bodas, galas, congresos y eventos corporativos.',
+    seoTitle: 'Contratar speaker y maestro de ceremonias en España — XPEAK',
+    seoDesc: 'Directorio de speakers, presentadores y MCs para bodas y eventos en España. Perfiles verificados y contacto directo.',
+    cta: 'Contratar speaker',
+  },
+  vestuario: {
+    dbRole: 'vestuario',
+    title: 'Estilistas y vestuario para eventos',
+    subtitle: 'Estilistas, personal shoppers y profesionales de vestuario para novias, artistas y producciones.',
+    seoTitle: 'Contratar estilista para bodas y eventos en España — XPEAK',
+    seoDesc: 'Directorio de estilistas y profesionales de vestuario en España. Novias, artistas y producciones. Contacto directo.',
+    cta: 'Contratar estilista',
+  },
 };
 
 const ALL_ROLES = [
   { slug: 'dj', label: 'DJs' },
   { slug: 'fotografo', label: 'Fotógrafos' },
   { slug: 'staff', label: 'Staff' },
+  { slug: 'camareros', label: 'Camareros' },
   { slug: 'maquillaje', label: 'Maquillaje' },
   { slug: 'promotores', label: 'Promotores' },
+  { slug: 'catering', label: 'Catering' },
+  { slug: 'grupo-musical', label: 'Grupos' },
+  { slug: 'animador', label: 'Animadores' },
+  { slug: 'mago', label: 'Magos' },
+  { slug: 'humorista', label: 'Humoristas' },
+  { slug: 'bailarin', label: 'Bailarines' },
+  { slug: 'speaker', label: 'Speakers' },
+  { slug: 'vestuario', label: 'Estilistas' },
+  { slug: 'photo-booth', label: 'Photo Booth' },
 ];
 
 const CITIES = ['Todas', 'Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao', 'Málaga', 'Ibiza'];
@@ -270,7 +320,7 @@ export default function DirectorioPublico() {
             </div>
           )}
 
-          {!fetchError && !loading && profiles.length === 0 && (
+          {!fetchError && !loading && profiles.length === 0 && city !== 'Todas' && (
             <div className="p-12 rounded-2xl text-center" style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)' }}>
               <p className="text-sm font-bold mb-2">Sin resultados en {city}</p>
               <p className="text-xs mb-4" style={{ color: '#444' }}>Prueba con otra ciudad o ve al directorio completo.</p>
@@ -278,6 +328,25 @@ export default function DirectorioPublico() {
                 style={{ background: 'rgba(212,175,55,0.1)', color: '#7a6216', border: '1px solid rgba(212,175,55,0.35)' }}>
                 Ver todos
               </button>
+            </div>
+          )}
+
+          {!fetchError && !loading && profiles.length === 0 && city === 'Todas' && (
+            <div className="p-12 rounded-2xl text-center" style={{ background: '#ffffff', border: '1px solid rgba(212,175,55,0.3)' }}>
+              <p className="text-sm font-black mb-2" style={{ color: '#111' }}>Categoría recién abierta</p>
+              <p className="text-xs mb-5 max-w-sm mx-auto" style={{ color: '#444' }}>
+                Estamos verificando los primeros perfiles. Si trabajas en este sector, este es el mejor momento: publícate gratis y sal el primero en las búsquedas.
+              </p>
+              <div className="flex flex-col sm:flex-row justify-center gap-2">
+                <a href={`/auth?mode=register&role=${config.dbRole}`} className="px-5 py-2.5 rounded-xl text-xs font-black"
+                  style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                  Publicar mi perfil gratis →
+                </a>
+                <a href="/directorio/dj" className="px-5 py-2.5 rounded-xl text-xs font-bold"
+                  style={{ background: 'rgba(0,0,0,0.04)', color: '#333', border: '1px solid rgba(0,0,0,0.1)' }}>
+                  Ver otras categorías
+                </a>
+              </div>
             </div>
           )}
 

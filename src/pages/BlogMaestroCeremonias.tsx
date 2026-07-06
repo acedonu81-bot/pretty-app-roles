@@ -261,7 +261,7 @@ export default function BlogMaestroCeremonias() {
             <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.5)' }}>
               Encuentra MCs verificados con portfolio real, tarifas públicas y contratos automáticos en XPEAK.
             </p>
-            <a href="/directorio/dj"
+            <a href="/directorio/speaker"
               className="inline-flex items-center gap-2 px-7 py-3 rounded-xl font-black text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               <Zap size={14} /> Ver MCs en XPEAK — gratis

@@ -67,10 +67,17 @@ function staticUrls(today) {
 
   // Category landings
   lines.push('\n  <!-- Category landings -->');
-  const cats = ['dj','staff','fotografo','camareros','catering','maquillaje','promotores','vestuario','disco-movil'];
-  const catPri = { dj: '0.9', staff: '0.9', camareros: '0.9', catering: '0.9', fotografo: '0.8', maquillaje: '0.8', promotores: '0.8', 'disco-movil': '0.8', vestuario: '0.7' };
+  const cats = ['dj','staff','fotografo','camareros','catering','maquillaje','promotores','vestuario','disco-movil','mago','humorista','animador','speaker','bailarin','payaso'];
+  const catPri = { dj: '0.9', staff: '0.9', camareros: '0.9', catering: '0.9', fotografo: '0.8', maquillaje: '0.8', promotores: '0.8', 'disco-movil': '0.8', vestuario: '0.7', mago: '0.8', humorista: '0.8', animador: '0.8', speaker: '0.7', bailarin: '0.7', payaso: '0.7' };
   for (const c of cats) {
     lines.push(url(`https://xpeak.es/contratar-${c}`, today, 'weekly', catPri[c] || '0.8'));
+  }
+
+  // Directorio público — páginas core de producto
+  lines.push('\n  <!-- Directorio público -->');
+  const dirSlugs = ['dj','fotografo','staff','camareros','maquillaje','promotores','catering','grupo-musical','animador','mago','humorista','bailarin','speaker','vestuario','photo-booth'];
+  for (const s of dirSlugs) {
+    lines.push(url(`https://xpeak.es/directorio/${s}`, today, 'daily', '0.9'));
   }
 
   // City landings — todas las capitales de provincia + grandes ciudades de España
