@@ -56,15 +56,26 @@ function buildEmbedSrc(url: string, type: SessionType): string {
     const feed = match ? '/' + match[1] + '/' : url.replace(/https?:\/\/(www\.)?mixcloud\.com/, '');
     return `https://www.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&light=0&feed=${encodeURIComponent(feed)}`;
   }
-  if (type === 'hearthis') {
-    const parts = new URL(url).pathname.split('/').filter(Boolean);
-    const id = parts.length >= 2 ? parts[1] : parts[0];
-    return `https://hearthis.at/embed/${id}/`;
-  }
+  // hearthis se resuelve async en EmbedPlayer (el widget solo acepta ID numérico)
   return '';
 }
 
 function EmbedPlayer({ session }: { session: SessionFile }) {
+  const [hearthisSrc, setHearthisSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (session.type !== 'hearthis') return;
+    setHearthisSrc(null);
+    try {
+      const parts = new URL(session.url).pathname.split('/').filter(Boolean);
+      if (parts.length < 2) return;
+      fetch(`https://api-v2.hearthis.at/${parts[0]}/${parts[1]}/`)
+        .then(r => r.ok ? r.json() : null)
+        .then(data => { if (data?.id) setHearthisSrc(`https://hearthis.at/embed/${data.id}/`); })
+        .catch(() => {});
+    } catch { /* URL inválida */ }
+  }, [session.url, session.type]);
+
   if (session.type === 'file') {
     return (
       <audio
@@ -75,8 +86,15 @@ function EmbedPlayer({ session }: { session: SessionFile }) {
       />
     );
   }
-  const src = buildEmbedSrc(session.url, session.type);
+  const src = session.type === 'hearthis' ? hearthisSrc : buildEmbedSrc(session.url, session.type);
   const height = session.type === 'soundcloud' ? 166 : 120;
+  if (!src) {
+    return (
+      <div className="w-full rounded-lg flex items-center justify-center text-xs" style={{ height, background: 'rgba(0,0,0,0.04)', color: '#777' }}>
+        Cargando sesión…
+      </div>
+    );
+  }
   return (
     <iframe
       src={src}
@@ -93,6 +111,7 @@ const AudioUpload = () => {
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [sessions, setSessions] = useState<SessionFile[]>([]);
+  const [sessionsLoaded, setSessionsLoaded] = useState(false);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [showGenres, setShowGenres] = useState(false);
   const [savingGenres, setSavingGenres] = useState(false);
@@ -109,22 +128,40 @@ const AudioUpload = () => {
     }
   }, [profile.genres?.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Load existing sessions from storage
+  // Load existing sessions: files from storage + external links from profile
   useEffect(() => {
     const loadSessions = async () => {
       if (!user) return;
+      const loaded: SessionFile[] = [];
       const { data: files } = await supabase.storage.from('audio-sessions').list(user.id + '/sessions');
       if (files && files.length > 0) {
-        const loaded = files.map(f => {
+        for (const f of files) {
           const path = `${user.id}/sessions/${f.name}`;
           const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
-          return { name: f.name.replace(/^\d+-/, ''), url: urlData.publicUrl, storagePath: path, type: 'file' as SessionType };
-        });
-        setSessions(loaded);
+          loaded.push({ name: f.name.replace(/^\d+-/, ''), url: urlData.publicUrl, storagePath: path, type: 'file' as SessionType });
+        }
       }
+      // Links externos (SoundCloud/Mixcloud/hearthis) guardados en audio_session_urls
+      const { data: prof } = await supabase.from('profiles')
+        .select('audio_session_urls').eq('user_id', user.id).maybeSingle();
+      const savedUrls: string[] = (prof as any)?.audio_session_urls ?? [];
+      for (const u of savedUrls) {
+        const t = detectType(u);
+        if (t && t !== 'file') {
+          loaded.push({ name: u.split('/').filter(Boolean).pop() || u, url: u, storagePath: '', type: t });
+        }
+      }
+      setSessions(loaded);
+      setSessionsLoaded(true);
     };
     loadSessions();
   }, [user]);
+
+  // Persistir los links externos en profiles.audio_session_urls (los files viven en storage)
+  const persistLinks = (next: SessionFile[]) => {
+    const linkUrls = next.filter(s => s.type !== 'file').map(s => s.url);
+    supabase.from('profiles').update({ audio_session_urls: linkUrls } as any).eq('user_id', user!.id).then(() => {});
+  };
 
   const toggleGenre = (genre: string) => {
     setSelectedGenres(prev =>
@@ -199,7 +236,11 @@ const AudioUpload = () => {
       return;
     }
     const name = url.split('/').filter(Boolean).pop() || url;
-    setSessions(prev => [...prev, { name, url, storagePath: '', type }]);
+    setSessions(prev => {
+      const next = [...prev, { name, url, storagePath: '', type }];
+      persistLinks(next);
+      return next;
+    });
     setLinkInput('');
     setShowLinkInput(false);
     toast.success('Mix añadido correctamente.');
@@ -211,8 +252,7 @@ const AudioUpload = () => {
     }
     setSessions(prev => {
       const next = prev.filter(s => s !== session);
-      const fileUrls = next.filter(s => s.type === 'file').map(s => s.url);
-      supabase.from('profiles').update({ audio_session_urls: fileUrls } as any).eq('user_id', user!.id).then(() => {});
+      persistLinks(next);
       return next;
     });
     toast.info('Sesión eliminada.');
@@ -285,6 +325,22 @@ const AudioUpload = () => {
           </div>
         )}
       </div>
+
+      {/* CTA: sin sesiones — el audio es el mayor gancho del perfil */}
+      {sessionsLoaded && sessions.length === 0 && (
+        <div className="rounded-xl px-4 py-4 mb-3 flex items-start gap-3"
+          style={{ background: 'linear-gradient(135deg, rgba(212,175,55,0.12), rgba(212,175,55,0.04))', border: '1.5px solid rgba(212,175,55,0.4)' }}>
+          <span className="flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: 'rgba(212,175,55,0.2)' }}>
+            <Music size={17} style={{ color: '#D4AF37' }} />
+          </span>
+          <div>
+            <p className="text-sm font-black mb-1" style={{ color: '#8A6D0F' }}>Sube tu primera sesión — es tu mejor tarjeta de presentación</p>
+            <p className="text-xs leading-relaxed" style={{ color: 'var(--nightlife-text-secondary)' }}>
+              Los organizadores escuchan antes de contactar: los perfiles con sesión reciben más visitas, salen mejor posicionados en el directorio y en Google. Pega un enlace de SoundCloud, Mixcloud o hearthis.at — tardas 10 segundos.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Sessions list */}
       {sessions.length > 0 && (

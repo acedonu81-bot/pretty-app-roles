@@ -81,38 +81,40 @@ function staticUrls(today) {
   }
 
   // City landings — todas las capitales de provincia + grandes ciudades de España
+  // IMPORTANTE: cada slug debe existir en CITIES de src/pages/CityLanding.tsx
+  // (si no existe, la URL redirige a home = soft-404 para Google)
   const cities = [
     // Tier 1 — máximo tráfico
     'madrid','barcelona','valencia','sevilla','bilbao','malaga','ibiza','palma',
     // Tier 2 — capitales grandes
-    'zaragoza','murcia','alicante','granada','cordoba','san-sebastian','santander',
-    'valladolid','santiago-de-compostela','pamplona','vitoria','logrono',
-    // Tier 3 — Galicia
-    'vigo','a-coruna','ourense','lugo','pontevedra',
+    'zaragoza','murcia','alicante','granada','cordoba','sansebastian','santander',
+    'valladolid','santiago','pamplona','vitoria','logrono',
+    // Galicia
+    'vigo','coruna','ourense','lugo','pontevedra',
     // Asturias y Cantabria
     'oviedo','gijon',
     // Canarias
-    'tenerife','las-palmas','lanzarote','fuerteventura',
+    'tenerife','laspalmas','lanzarote','fuerteventura','lapalma','costaadeje',
     // Extremadura
-    'badajoz','caceres','merida',
+    'badajoz','caceres',
     // Castilla y León
-    'salamanca','burgos','leon','segovia','avila','zamora','palencia','soria',
+    'salamanca','burgos','leon','segovia','avila','soria',
     // Castilla-La Mancha
-    'toledo','ciudad-real','albacete','cuenca','guadalajara',
+    'toledo','albacete','cuenca','guadalajara','talavera',
     // Andalucía resto
-    'huelva','jaen','almeria','cadiz','jerez-de-la-frontera','marbella',
+    'huelva','jaen','almeria','cadiz','jerez','marbella','estepona','fuengirola','torremolinos','benalmadena',
     // Aragón resto
     'huesca','teruel',
     // Cataluña resto
-    'tarragona','lleida','girona','reus','sitges',
+    'tarragona','lleida','girona','reus','sitges','badalona','hospitalet','terrassa','sabadell','mataro','manresa','cornella','vilanova','elmasnou',
     // C. Valenciana resto
-    'castellon','torrevieja','benidorm','gandia','denia',
+    'castellon','torrevieja','benidorm','gandia','denia','elche','elda','orihuela','calpe','javea',
     // Murcia resto
     'cartagena',
     // Baleares
-    'menorca',
-    // Ceuta y Melilla
-    'ceuta','melilla',
+    'menorca','formentera',
+    // Área metropolitana de Madrid
+    'alcorcon','mostoles','fuenlabrada','leganes','getafe','pozuelo','majadahonda','valdemoro',
   ];
   const cityPri = {
     madrid:'0.90', barcelona:'0.90', ibiza:'0.88', palma:'0.85', valencia:'0.85',
@@ -131,7 +133,7 @@ function staticUrls(today) {
     torrevieja:'0.65', benidorm:'0.70', gandia:'0.65', denia:'0.65', castellon:'0.68',
     reus:'0.65', sitges:'0.67', menorca:'0.68', ceuta:'0.63', melilla:'0.63',
   };
-  const catsByCity = ['dj','camareros','fotografo','catering','maquillaje','staff','disco-movil','promotores','vestuario'];
+  const catsByCity = ['dj','camareros','fotografo','catering','maquillaje','staff','disco-movil','promotores','vestuario','mago','humorista','animador','bailarin','speaker','monologo','payaso'];
 
   for (const cat of catsByCity) {
     lines.push(`\n  <!-- ${cat} por ciudad -->`);

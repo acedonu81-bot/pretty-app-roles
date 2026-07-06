@@ -7,7 +7,7 @@ import {
   Instagram, ChevronLeft,
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { parseStreamUrl, resolveHearthisProfile, normalizeStreamUrl } from '@/lib/streaming';
+import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack, normalizeStreamUrl } from '@/lib/streaming';
 import { useProfile as useMyProfile } from '@/hooks/useProfile';
 import GeometricAvatar from './GeometricAvatar';
 import ContractModal from './ContractModal';
@@ -187,14 +187,16 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
     const raw = (full.audioEmbedUrl ?? (p as any).audio_embed_url) || p.streamUrl;
     setAudioRawUrl(raw ? String(raw) : null);
     const parsed = parseStreamUrl(raw);
-    if (parsed?.isProfile && parsed._hearthisUser) {
-      // Perfil HearThis: hay que resolver el último track vía API (puede fallar).
+    if (parsed?.needsResolve && parsed._hearthisUser) {
+      // HearThis: el widget solo carga con ID numérico — resolver vía API (puede fallar).
       setAudioLoading(true);
-      resolveHearthisProfile(parsed._hearthisUser).then(url => {
-        // Si la API no devuelve track, dejamos el embed de perfil como fallback embebible.
-        setAudioEmbed(url ? { type: 'HearThis', embedUrl: url } : parsed);
+      const resolver = parsed._hearthisSlug
+        ? resolveHearthisTrack(parsed._hearthisUser, parsed._hearthisSlug)
+        : resolveHearthisProfile(parsed._hearthisUser);
+      resolver.then(url => {
+        setAudioEmbed(url ? { type: 'HearThis', embedUrl: url } : null);
         setAudioLoading(false);
-      }).catch(() => { setAudioEmbed(parsed); setAudioLoading(false); });
+      }).catch(() => { setAudioEmbed(null); setAudioLoading(false); });
     } else {
       setAudioEmbed(parsed);
     }

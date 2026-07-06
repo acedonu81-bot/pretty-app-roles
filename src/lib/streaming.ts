@@ -4,6 +4,9 @@ export interface ParsedStreamUrl {
   isHls?: boolean;
   isProfile?: boolean;
   _hearthisUser?: string;
+  /** hearthis: el iframe solo funciona con ID numérico — hay que resolverlo async vía API */
+  needsResolve?: boolean;
+  _hearthisSlug?: string;
 }
 
 export async function resolveHearthisProfile(username: string): Promise<string | null> {
@@ -11,8 +14,19 @@ export async function resolveHearthisProfile(username: string): Promise<string |
     const res = await fetch(`https://api-v2.hearthis.at/${username}/?type=tracks&count=1`);
     if (!res.ok) return null;
     const data = await res.json();
-    if (!Array.isArray(data) || data.length === 0) return null;
-    return `https://hearthis.at/embed/${username}/${data[0].permalink}/transparent_black/`;
+    if (!Array.isArray(data) || data.length === 0 || !data[0].id) return null;
+    return `https://hearthis.at/embed/${data[0].id}/`;
+  } catch { return null; }
+}
+
+/** Resuelve el embed de un track concreto de hearthis (el widget solo acepta ID numérico). */
+export async function resolveHearthisTrack(username: string, slug: string): Promise<string | null> {
+  try {
+    const res = await fetch(`https://api-v2.hearthis.at/${username}/${slug}/`);
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!data?.id) return null;
+    return `https://hearthis.at/embed/${data.id}/`;
   } catch { return null; }
 }
 
@@ -85,15 +99,21 @@ export const parseStreamUrl = (value?: string | null): ParsedStreamUrl | null =>
       if (segments.length === 0) return null;
       const username = segments[0];
       if (segments.length >= 2) {
+        // El widget de hearthis solo carga con ID numérico; el consumidor debe
+        // llamar a resolveHearthisTrack(_hearthisUser, _hearthisSlug) para obtener la URL final.
         return {
           type: 'HearThis',
-          embedUrl: `https://hearthis.at/embed/${username}/${segments[1]}/transparent_black/`,
+          embedUrl: '',
+          needsResolve: true,
+          _hearthisUser: username,
+          _hearthisSlug: segments[1],
         };
       }
       return {
         type: 'HearThis',
-        embedUrl: `https://hearthis.at/embed/${username}/`,
+        embedUrl: '',
         isProfile: true,
+        needsResolve: true,
         _hearthisUser: username,
       };
     }
