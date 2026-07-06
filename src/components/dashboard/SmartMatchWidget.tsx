@@ -25,7 +25,7 @@ const MatchCard = ({ m, onContact }: { m: MatchedProfessional; onContact: (userI
         <img src={m.photo_url} alt={m.display_name} className="w-12 h-12 rounded-xl object-cover" />
       ) : (
         <div className="w-12 h-12 rounded-xl flex items-center justify-center text-lg font-black"
-          style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>
+          style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F' }}>
           {m.display_name.charAt(0)}
         </div>
       )}
@@ -35,10 +35,10 @@ const MatchCard = ({ m, onContact }: { m: MatchedProfessional; onContact: (userI
         <a href={`/p/${m.user_id}`} className="text-sm font-bold hover:opacity-70 truncate" style={{ color: '#111' }}>
           {m.display_name}
         </a>
-        {m.is_verified && <BadgeCheck size={12} style={{ color: '#D4AF37' }} />}
+        {m.is_verified && <BadgeCheck size={12} style={{ color: '#8A6D0F' }} />}
         {m.is_early_adopter && <span className="w-2 h-2 rounded-full" style={{ background: '#3b82f6' }} />}
       </div>
-      {m.specialty && <p className="text-xs truncate" style={{ color: '#D4AF37' }}>{m.specialty}</p>}
+      {m.specialty && <p className="text-xs truncate" style={{ color: '#8A6D0F' }}>{m.specialty}</p>}
       <div className="flex flex-wrap gap-1.5 mt-1.5">
         {m.matchReasons.slice(0, 3).map((r, i) => (
           <span key={i} className="text-[0.6rem] px-1.5 py-0.5 rounded-full font-bold"
@@ -99,7 +99,7 @@ const SmartMatchWidget = ({ onViewProfile, onMessage }: Props) => {
         className="w-full flex items-center gap-2.5 px-4 py-3 text-left">
         <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
           style={{ background: 'rgba(212,175,55,0.12)' }}>
-          <Sparkles size={14} style={{ color: '#D4AF37' }} />
+          <Sparkles size={14} style={{ color: '#8A6D0F' }} />
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-bold" style={{ color: '#222' }}>Encontrar profesional ideal</p>

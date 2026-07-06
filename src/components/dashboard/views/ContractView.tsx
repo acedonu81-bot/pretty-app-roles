@@ -53,7 +53,7 @@ const LEGAL_CARDS = [
   },
   {
     icon: BookOpen,
-    color: '#D4AF37',
+    color: '#8A6D0F',
     title: 'Propiedad intelectual',
     body: 'La comunicación pública de música en el evento requiere licencia SGAE/AIE/AGEDI (a cargo del local). El DJ retiene derechos sobre sus propias grabaciones (LPI, RDL 1/1996).',
   },
@@ -82,8 +82,12 @@ interface ContractRow {
 }
 
 const ROLE_LABEL: Record<string, string> = {
-  dj: 'DJ / Artista', rookie: 'DJ Promesa', staff: 'Staff',
-  makeup: 'Maquillaje', media: 'Foto / Vídeo', ambassador: 'Promotor',
+  dj: 'DJ / Artista', rookie: 'DJ Promesa', staff: 'Staff / RRPP',
+  makeup: 'Maquillaje / Peluquería', media: 'Foto / Vídeo', ambassador: 'Promotor / Embajador',
+  animador: 'Animador', bailarin: 'Bailarín/a', catering: 'Catering',
+  design: 'Diseño', humorista: 'Humorista', mago: 'Mago/a',
+  monologo: 'Monologuista', speaker: 'Speaker / Presentador', vestuario: 'Vestuario',
+  empresario: 'Empresa / Sala',
 };
 
 const fmtDate = (iso: string) => {
@@ -129,8 +133,9 @@ const ContractView = () => {
 
   const handleSaved = () => { fetchContracts(); setShowModal(false); };
 
-  const deleteContract = async (id: string) => {
+  const deleteContract = async (id: string, ref: string) => {
     if (!user) return;
+    if (!window.confirm(`¿Eliminar el contrato ${ref}? Esta acción no se puede deshacer.`)) return;
     await supabase.from('contracts').delete().eq('id', id).eq('user_id', user.id);
     setContracts(prev => prev.filter(c => c.id !== id));
   };
@@ -233,7 +238,9 @@ const ContractView = () => {
     }))
   ).sort((a, b) => b - a);
 
-  if (availableYears.length && !availableYears.includes(csvYear)) setCsvYear(availableYears[0]);
+  useEffect(() => {
+    if (availableYears.length && !availableYears.includes(csvYear)) setCsvYear(availableYears[0]);
+  }, [availableYears, csvYear]);
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
@@ -256,7 +263,7 @@ const ContractView = () => {
       {/* Quick-start panel */}
       <div className="glass-panel p-6 mb-6" style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
         <div className="flex items-center gap-2 mb-5">
-          <FileText size={16} style={{ color: '#D4AF37' }} />
+          <FileText size={16} style={{ color: '#8A6D0F' }} />
           <h3 className="text-base font-bold">Generar contrato rápido</h3>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
@@ -303,11 +310,11 @@ const ContractView = () => {
         <div className="flex items-center justify-between px-5 py-4"
           style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
           <div className="flex items-center gap-2">
-            <FileText size={15} style={{ color: '#D4AF37' }} />
+            <FileText size={15} style={{ color: '#8A6D0F' }} />
             <h3 className="text-base font-bold">Historial de contratos</h3>
             {contracts.length > 0 && (
               <span className="text-xs px-2 py-0.5 rounded-full font-bold"
-                style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
+                style={{ background: 'rgba(212,175,55,0.12)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.25)' }}>
                 {contracts.length}
               </span>
             )}
@@ -328,7 +335,7 @@ const ContractView = () => {
                   type="button"
                   onClick={exportCsv}
                   className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg font-bold transition-all hover:scale-105"
-                  style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+                  style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
                   <Download size={12} /> CSV {csvYear}
                 </button>
               </>
@@ -368,7 +375,7 @@ const ContractView = () => {
                   <tr key={c.id}
                     style={{ borderBottom: '1px solid rgba(0,0,0,0.04)', background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.01)' }}>
                     <td className="px-4 py-3">
-                      <span className="text-xs font-mono font-bold" style={{ color: '#D4AF37' }}>{c.ref}</span>
+                      <span className="text-xs font-mono font-bold" style={{ color: '#8A6D0F' }}>{c.ref}</span>
                     </td>
                     <td className="px-4 py-3">
                       <p className="text-sm font-medium">{c.professional_name ?? '—'}</p>
@@ -402,7 +409,8 @@ const ContractView = () => {
                           <Download size={13} style={{ color: 'rgba(212,175,55,0.6)' }} />
                         </button>
                         <button type="button"
-                          onClick={() => deleteContract(c.id)}
+                          onClick={() => deleteContract(c.id, c.ref)}
+                          title="Eliminar contrato"
                           className="p-1.5 rounded-lg transition-colors hover:bg-red-500/10">
                           <Trash2 size={13} style={{ color: 'rgba(239,68,68,0.5)' }} />
                         </button>

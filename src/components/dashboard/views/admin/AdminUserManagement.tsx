@@ -94,7 +94,7 @@ const AdminUserManagement = () => {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-bold truncate">{u.display_name || 'Sin nombre'}</span>
-                  {u.is_verified && <CheckCircle size={12} style={{ color: '#D4AF37' }} />}
+                  {u.is_verified && <CheckCircle size={12} style={{ color: '#8A6D0F' }} />}
                   {u.is_early_adopter && <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ background: '#3b82f6', boxShadow: '0 0 4px #3b82f6' }} title="Aro Azul" />}
                   <span className="text-[0.75rem] px-1.5 py-0.5 rounded font-bold"
                     style={{
@@ -116,12 +116,12 @@ const AdminUserManagement = () => {
               <div className="flex gap-1.5">
                 <button onClick={() => contactUser(u.phone)} title="Mensajes"
                   className="p-1.5 rounded-md transition-all hover:scale-110"
-                  style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>
+                  style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F' }}>
                   <MessageSquare size={14} />
                 </button>
                 <button onClick={() => contactEmail(u.user_id, u.display_name)} title="Email"
                   className="p-1.5 rounded-md transition-all hover:scale-110"
-                  style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37' }}>
+                  style={{ background: 'rgba(212,175,55,0.08)', color: '#8A6D0F' }}>
                   <Mail size={14} />
                 </button>
                 <a href={`/p/${u.user_id}`} target="_blank" rel="noopener noreferrer"

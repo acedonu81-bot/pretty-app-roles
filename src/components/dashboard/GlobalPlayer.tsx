@@ -125,13 +125,13 @@ const GlobalPlayer = () => {
       <div className="flex items-center gap-3 min-w-0 w-[180px]">
         <div
           className="w-8 h-8 rounded flex-shrink-0 flex items-center justify-center text-[0.7rem] font-bold"
-          style={{ background: playing ? 'rgba(212,175,55,0.15)' : 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}
+          style={{ background: playing ? 'rgba(212,175,55,0.15)' : 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}
         >
           {playing ? '▶' : '♪'}
         </div>
         <div className="min-w-0">
           <p className="text-xs font-bold truncate">{track.title}</p>
-          <p className="text-xs truncate" style={{ color: '#D4AF37' }}>{track.artist}</p>
+          <p className="text-xs truncate" style={{ color: '#8A6D0F' }}>{track.artist}</p>
         </div>
       </div>
 
@@ -142,7 +142,7 @@ const GlobalPlayer = () => {
         <button
           onClick={togglePlay}
           className="w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-105"
-          style={{ background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.3)', color: '#D4AF37' }}
+          style={{ background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.3)', color: '#8A6D0F' }}
         >
           {playing ? <Pause size={14} /> : <Play size={14} className="ml-0.5" />}
         </button>

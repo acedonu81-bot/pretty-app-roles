@@ -148,7 +148,7 @@ const GastosTab = () => {
           <button
             onClick={exportCSV}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
-            style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+            style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
             <Download size={12} /> CSV
           </button>
         </div>
@@ -165,9 +165,9 @@ const GastosTab = () => {
           <div key={label} className="glass-panel p-4">
             <div className="flex items-center justify-between mb-2">
               <span className="text-[0.6rem] text-muted-foreground font-bold uppercase tracking-wider">{label}</span>
-              <Icon size={13} style={{ color: '#D4AF37' }} />
+              <Icon size={13} style={{ color: '#8A6D0F' }} />
             </div>
-            <div className="text-xl font-black" style={{ color: '#D4AF37' }}>{value}</div>
+            <div className="text-xl font-black" style={{ color: '#8A6D0F' }}>{value}</div>
             <span className="text-[0.6rem] text-muted-foreground">{note}</span>
           </div>
         ))}
@@ -189,11 +189,11 @@ const GastosTab = () => {
           {/* Monthly chart (bar) */}
           {monthlyData.length > 0 && (
             <div className="glass-panel p-4">
-              <p className="text-xs font-bold mb-4" style={{ color: '#D4AF37' }}>Gasto mensual {yearFilter}</p>
+              <p className="text-xs font-bold mb-4" style={{ color: '#8A6D0F' }}>Gasto mensual {yearFilter}</p>
               <div className="flex items-end gap-2 h-28">
                 {monthlyData.map(d => (
                   <div key={d.month} className="flex-1 flex flex-col items-center gap-1">
-                    <span className="text-[0.6rem] font-bold" style={{ color: '#D4AF37' }}>
+                    <span className="text-[0.6rem] font-bold" style={{ color: '#8A6D0F' }}>
                       {d.total > 0 ? `€${Math.round(d.total / 1000) > 0 ? `${(d.total/1000).toFixed(1)}k` : d.total}` : ''}
                     </span>
                     <div
@@ -214,7 +214,7 @@ const GastosTab = () => {
           {/* By role */}
           {Object.keys(byRole).length > 0 && (
             <div className="glass-panel p-4">
-              <p className="text-xs font-bold mb-3" style={{ color: '#D4AF37' }}>Gasto por categoría</p>
+              <p className="text-xs font-bold mb-3" style={{ color: '#8A6D0F' }}>Gasto por categoría</p>
               <div className="space-y-2.5">
                 {Object.entries(byRole).sort((a, b) => b[1].total - a[1].total).map(([role, d]) => {
                   const pct = totalYear > 0 ? (d.total / totalYear) * 100 : 0;
@@ -224,7 +224,7 @@ const GastosTab = () => {
                         <span className="text-xs font-semibold capitalize">{role}</span>
                         <div className="flex items-center gap-2">
                           <span className="text-[0.65rem] text-muted-foreground">{d.count} contratos</span>
-                          <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>{fmtEur(d.total)}</span>
+                          <span className="text-xs font-bold" style={{ color: '#8A6D0F' }}>{fmtEur(d.total)}</span>
                         </div>
                       </div>
                       <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(0,0,0,0.05)' }}>
@@ -239,7 +239,7 @@ const GastosTab = () => {
 
           {/* Monthly detail table */}
           <div className="glass-panel p-4">
-            <p className="text-xs font-bold mb-3" style={{ color: '#D4AF37' }}>Desglose mensual</p>
+            <p className="text-xs font-bold mb-3" style={{ color: '#8A6D0F' }}>Desglose mensual</p>
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead>
@@ -254,7 +254,7 @@ const GastosTab = () => {
                     <tr key={d.month} style={{ borderBottom: '1px solid rgba(0,0,0,0.04)' }}>
                       <td className="py-2 font-semibold">{d.month} {yearFilter}</td>
                       <td className="py-2 text-muted-foreground">{d.count}</td>
-                      <td className="py-2 font-bold" style={{ color: '#D4AF37' }}>{fmtEur(d.total)}</td>
+                      <td className="py-2 font-bold" style={{ color: '#8A6D0F' }}>{fmtEur(d.total)}</td>
                       <td className="py-2 text-muted-foreground">
                         {totalYear > 0 ? `${((d.total / totalYear) * 100).toFixed(0)}%` : '—'}
                       </td>
@@ -263,7 +263,7 @@ const GastosTab = () => {
                   <tr style={{ borderTop: '1px solid rgba(212,175,55,0.2)' }}>
                     <td className="pt-2.5 font-black text-xs">TOTAL {yearFilter}</td>
                     <td className="pt-2.5 font-black">{yearBookings.length}</td>
-                    <td className="pt-2.5 font-black text-sm" style={{ color: '#D4AF37' }}>{fmtEur(totalYear)}</td>
+                    <td className="pt-2.5 font-black text-sm" style={{ color: '#8A6D0F' }}>{fmtEur(totalYear)}</td>
                     <td className="pt-2.5 font-black">100%</td>
                   </tr>
                 </tbody>

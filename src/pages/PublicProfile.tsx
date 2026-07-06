@@ -295,6 +295,13 @@ const PublicProfile = () => {
     (query as Promise<{ data: SupabaseProfile | null; error: unknown }>)
       .then(({ data }) => {
         setSbProfile(data ?? null);
+        if (isUUID && data?.display_name) {
+          const canonical = toSlug(data.display_name);
+          if (canonical && canonical !== slug) {
+            navigate(`/p/${canonical}`, { replace: true });
+            return;
+          }
+        }
         if (data?.audio_embed_url) {
           const parsed = parseStreamUrl(data.audio_embed_url);
           if (parsed?.isProfile && parsed._hearthisUser) {
@@ -413,7 +420,7 @@ const PublicProfile = () => {
     id: 0,
   } : staticProfile!;
 
-  const profileSlug = slug!;
+  const profileSlug = sbProfile?.display_name ? toSlug(sbProfile.display_name) : slug!;
   const profileUrl = `${BASE_URL}/p/${profileSlug}`;
   const cityShort = profile.zone ? profile.zone.split(',')[0].trim() : 'España';
   const priceStr = (profile as any).price > 0 ? ` Tarifa desde ${(profile as any).price}€/h.` : '';
@@ -515,6 +522,16 @@ const PublicProfile = () => {
           ...(profile.badges && profile.badges.length > 0 ? { "knowsAbout": profile.badges } : {}),
           ...(sbProfile?.instagram ? { "sameAs": [`https://www.instagram.com/${sbProfile.instagram}`] } : {}),
           ...((profile as any).isVerified ? { "hasCredential": { "@type": "EducationalOccupationalCredential", "name": "Profesional Verificado XPEAK" } } : {})
+        })}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "XPEAK", "item": BASE_URL },
+            { "@type": "ListItem", "position": 2, "name": roleLabel[profile.role] || 'Profesionales', "item": `${BASE_URL}/directorio/${profile.role || 'dj'}` },
+            ...(cityShort !== 'España' ? [{ "@type": "ListItem", "position": 3, "name": cityShort, "item": `${BASE_URL}/contratar-dj/${toSlug(cityShort)}` }] : []),
+            { "@type": "ListItem", "position": cityShort !== 'España' ? 4 : 3, "name": profile.name, "item": profileUrl },
+          ]
         })}</script>
       </Helmet>
 

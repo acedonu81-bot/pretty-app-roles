@@ -27,7 +27,7 @@ function loadEnv() {
 
 // ─── Fetch all public profiles from Supabase ─────────────────────────────
 async function fetchProfiles(supabaseUrl, anonKey) {
-  const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,updated_at,role&role=neq.empresario&order=updated_at.desc&limit=1000`;
+  const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,zone,updated_at,role&role=neq.empresario&order=updated_at.desc&limit=1000`;
   const res = await fetch(url, {
     headers: {
       apikey: anonKey,
@@ -40,6 +40,15 @@ async function fetchProfiles(supabaseUrl, anonKey) {
     return [];
   }
   return res.json();
+}
+
+function toSlug(name) {
+  return name
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
 }
 
 // ─── URL helpers ──────────────────────────────────────────────────────────
@@ -220,11 +229,16 @@ async function main() {
   console.log(`✅ Found ${profiles.length} real profiles`);
 
   const profileLines = ['\n  <!-- Perfiles reales -->'];
+  const usedSlugs = new Set();
   for (const p of profiles) {
     if (!p.user_id) continue;
     if (p.user_id.startsWith('11111111-')) continue;
     const lastmod = p.updated_at ? p.updated_at.slice(0, 10) : TODAY;
-    profileLines.push(url(`https://xpeak.es/p/${p.user_id}`, lastmod, 'weekly', '0.65'));
+    let slug = p.display_name ? toSlug(p.display_name) : null;
+    if (slug && usedSlugs.has(slug) && p.zone) slug = `${slug}-${toSlug(p.zone)}`;
+    if (!slug || usedSlugs.has(slug)) slug = p.user_id;
+    usedSlugs.add(slug);
+    profileLines.push(url(`https://xpeak.es/p/${slug}`, lastmod, 'weekly', '0.65'));
   }
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

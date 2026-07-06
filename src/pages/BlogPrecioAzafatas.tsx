@@ -88,6 +88,26 @@ export default function BlogPrecioAzafatas() {
               <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}><p className="text-sm font-bold mb-2">{f.name}</p><p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p></div>))}</div>
             </section>
             
+            <section className="mt-8 mb-8">
+              <h2 className="text-base font-black mb-3">Contratar staff y azafatas por ciudad</h2>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { label: 'Staff Madrid', href: '/contratar-staff/madrid' },
+                  { label: 'Staff Barcelona', href: '/contratar-staff/barcelona' },
+                  { label: 'Staff Sevilla', href: '/contratar-staff/sevilla' },
+                  { label: 'Staff Valencia', href: '/contratar-staff/valencia' },
+                  { label: 'Staff Málaga', href: '/contratar-staff/malaga' },
+                  { label: 'Staff Ibiza', href: '/contratar-staff/ibiza' },
+                ].map(c => (
+                  <a key={c.href} href={c.href}
+                    className="px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
+                    style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                    {c.label}
+                  </a>
+                ))}
+              </div>
+            </section>
+
             <section className="mt-8">
               <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
               <div className="space-y-2">

@@ -102,7 +102,7 @@ export default function BlogInlineCTA({ role = 'general', variant = 'default' }:
       <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <p className="text-[0.6rem] font-black uppercase tracking-widest mb-1" style={{ color: 'rgba(212,175,55,0.6)' }}>
-            XPEAK · Directorio verificado · 31 profesionales · 0€ comisión
+            XPEAK · Directorio verificado · 38 profesionales · 0€ comisión
           </p>
           <p className="text-sm font-bold" style={{ color: 'rgba(255,255,255,0.85)' }}>{c.pro.label}</p>
           <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.6)' }}>

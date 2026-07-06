@@ -142,7 +142,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
           <button
             onClick={() => onNavigate('flashbooking')}
             className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 self-start sm:self-auto"
-            style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+            style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
             <Zap size={14} /> Flash Booking
           </button>
         )}
@@ -153,13 +153,13 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
         style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}>
         <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 animate-pulse" style={{ background: '#D4AF37' }} />
         <span style={{ color: '#222' }}>
-          <span style={{ color: '#D4AF37', fontWeight: 700 }}>4 salas & clubs</span>
+          <span style={{ color: '#8A6D0F', fontWeight: 700 }}>4 salas & clubs</span>
           {' '}registrados en XPEAK están buscando profesionales como tú
         </span>
         {onNavigate && (
           <button onClick={() => onNavigate('flash')}
             className="ml-auto flex-shrink-0 text-[0.7rem] font-bold px-2 py-1 rounded-md transition-all hover:opacity-80"
-            style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
+            style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.15)' }}>
             Ver ofertas →
           </button>
         )}
@@ -168,8 +168,8 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
       {/* Filtros */}
       <div className="flex items-center gap-2 mb-4 sm:mb-5 flex-nowrap sm:flex-wrap overflow-x-auto no-scrollbar -mx-1 px-1 sm:mx-0 sm:px-0">
         <div className="hidden sm:flex items-center gap-1.5 flex-shrink-0">
-          <Globe size={12} style={{ color: '#D4AF37' }} />
-          <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>ES</span>
+          <Globe size={12} style={{ color: '#8A6D0F' }} />
+          <span className="text-xs font-bold" style={{ color: '#8A6D0F' }}>ES</span>
         </div>
         <NightlifeSelect
           value={filterCity}
@@ -254,7 +254,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
             {(filterCity !== 'Todas las ciudades' || filterFlash || filterVerified) && (
               <button onClick={() => { setFilterCity('Todas las ciudades'); setFilterFlash(false); setFilterVerified(false); }}
                 className="text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-105"
-                style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                style={{ background: 'rgba(212,175,55,0.08)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.2)' }}>
                 Quitar filtros
               </button>
             )}

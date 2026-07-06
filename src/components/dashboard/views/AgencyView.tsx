@@ -135,7 +135,7 @@ const AgencyView = () => {
           <div className="grid grid-cols-3 gap-3 w-full max-w-sm">
             {['5 perfiles activos', 'KPIs consolidados', 'Sello Agencia'].map(f => (
               <div key={f} className="p-3 rounded-xl text-center text-xs font-bold"
-                style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.12)', color: '#D4AF37' }}>
+                style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.12)', color: '#8A6D0F' }}>
                 {f}
               </div>
             ))}
@@ -168,7 +168,7 @@ const AgencyView = () => {
         <div className="flex items-center gap-2">
           {/* Agency badge */}
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold"
-            style={{ background: 'linear-gradient(90deg,rgba(212,175,55,0.15),rgba(184,148,30,0.1))', border: '1px solid rgba(212,175,55,0.3)', color: '#D4AF37' }}>
+            style={{ background: 'linear-gradient(90deg,rgba(212,175,55,0.15),rgba(184,148,30,0.1))', border: '1px solid rgba(212,175,55,0.3)', color: '#8A6D0F' }}>
             <Building2 size={12} /> SELLO AGENCIA
           </div>
           <button onClick={loadStats} className="p-2 rounded-lg transition-all hover:scale-105"
@@ -181,7 +181,7 @@ const AgencyView = () => {
       {/* KPI grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
-          { label: 'Flash Bookings', value: loading ? '—' : totalFlash, sub: `${totalPending} pendientes`, icon: <Zap size={16} />, color: '#D4AF37' },
+          { label: 'Flash Bookings', value: loading ? '—' : totalFlash, sub: `${totalPending} pendientes`, icon: <Zap size={16} />, color: '#8A6D0F' },
           { label: 'Fans activos', value: loading ? '—' : totalFans, sub: 'en todos los perfiles', icon: <Heart size={16} />, color: '#22c55e' },
           { label: 'Ingresos registrados', value: loading ? '—' : `€${totalRevenue.toFixed(0)}`, sub: 'caché acordado total', icon: <TrendingUp size={16} />, color: '#4285F4' },
           { label: 'En directo ahora', value: loading ? '—' : liveCount, sub: `de ${allProfiles.length} perfiles`, icon: <Radio size={16} />, color: '#ef4444' },
@@ -211,7 +211,7 @@ const AgencyView = () => {
             <p className="font-black truncate">{topProfile.display_name}</p>
             <p className="text-xs text-muted-foreground">{topProfile.flashCount} bookings · {ROLE_ES[topProfile.role] ?? topProfile.role}</p>
           </div>
-          <BarChart3 size={20} style={{ color: '#D4AF37', flexShrink: 0 }} />
+          <BarChart3 size={20} style={{ color: '#8A6D0F', flexShrink: 0 }} />
         </div>
       )}
 
@@ -270,7 +270,7 @@ const AgencyView = () => {
                   {/* Stats mini-grid */}
                   <div className="grid grid-cols-3 gap-2 mb-3">
                     {[
-                      { label: 'Bookings', value: p.flashCount, color: '#D4AF37' },
+                      { label: 'Bookings', value: p.flashCount, color: '#8A6D0F' },
                       { label: 'Fans', value: p.fanCount, color: '#22c55e' },
                       { label: 'Votos', value: p.role === 'rookie' ? p.voteCount : '—', color: '#4285F4' },
                     ].map(s => (
@@ -285,7 +285,7 @@ const AgencyView = () => {
                   {/* Pending alert */}
                   {p.flashPending > 0 && (
                     <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg mb-3 text-xs font-bold"
-                      style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+                      style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
                       <Zap size={11} /> {p.flashPending} booking{p.flashPending > 1 ? 's' : ''} pendiente{p.flashPending > 1 ? 's' : ''}
                     </div>
                   )}
@@ -330,7 +330,7 @@ const AgencyView = () => {
       {!loading && totalRevenue > 0 && (
         <div className="glass-panel p-5">
           <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4 flex items-center gap-2">
-            <TrendingUp size={12} style={{ color: '#D4AF37' }} /> Ingresos por perfil
+            <TrendingUp size={12} style={{ color: '#8A6D0F' }} /> Ingresos por perfil
           </p>
           <div className="space-y-2">
             {stats.filter(p => p.flashRevenue > 0).sort((a, b) => b.flashRevenue - a.flashRevenue).map(p => {

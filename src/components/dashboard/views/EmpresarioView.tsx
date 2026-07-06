@@ -39,7 +39,7 @@ const WhoIsHiringFeed = () => {
     <div className="p-4 sm:p-6 max-w-2xl mx-auto">
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-1">
-          <Building2 size={16} style={{ color: '#D4AF37' }} />
+          <Building2 size={16} style={{ color: '#8A6D0F' }} />
           <h2 className="text-base font-black" style={{ color: '#222' }}>Empresas & salas en XPEAK</h2>
         </div>
         <p className="text-xs" style={{ color: '#333' }}>
@@ -69,7 +69,7 @@ const WhoIsHiringFeed = () => {
               style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.15)' }}>
               {c.photo_url
                 ? <img src={c.photo_url} alt={c.display_name} className="w-full h-full object-cover" />
-                : <Building2 size={16} style={{ color: '#D4AF37' }} />}
+                : <Building2 size={16} style={{ color: '#8A6D0F' }} />}
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-1.5 flex-wrap">
@@ -214,7 +214,7 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
           <span style={{ color: '#333' }}>Comunidad activa:</span>
         </div>
         <div className="flex items-center gap-4 flex-shrink-0">
-          <span style={{ color: '#D4AF37', fontWeight: 700 }}>Directorio en crecimiento</span>
+          <span style={{ color: '#8A6D0F', fontWeight: 700 }}>Directorio en crecimiento</span>
           <span style={{ color: '#333' }}>·</span>
           <span style={{ color: 'rgba(22,20,18,0.75)', fontWeight: 600 }}>47+ profesionales activos</span>
           <span style={{ color: '#333' }}>·</span>
@@ -230,7 +230,7 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
             <div className="flex items-center gap-2">
               <p className="text-xs font-bold">Contrataciones Privadas</p>
               <span className="flex items-center gap-1 text-[0.6rem] font-bold px-1.5 py-0.5 rounded-full"
-                style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+                style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
                 <Clock size={9} /> Próximamente
               </span>
             </div>

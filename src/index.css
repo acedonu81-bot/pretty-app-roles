@@ -134,8 +134,9 @@ html, body, #root {
 }
 
 @layer utilities {
+  /* Base: dashboard/app tiene fondo claro → dorado oscuro legible (WCAG AA) */
   .text-gradient {
-    background: linear-gradient(135deg, #D4AF37, #F5D77A);
+    background: linear-gradient(135deg, #9A7B12, #C9A227);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -156,6 +157,19 @@ html, body, #root {
     background: linear-gradient(135deg, #FFE566, #FFCC00);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  /* Espacio reservado por la barra de navegación inferior móvil (64px + safe-area).
+     0 en desktop. Lo usan vistas de alto completo (Mensajes) para no quedar tapadas. */
+  :root { --mobile-nav-space: 0px; }
+  @media (max-width: 768px) {
+    :root { --mobile-nav-space: calc(64px + env(safe-area-inset-bottom)); }
+    /* iOS hace zoom automático al enfocar un input con texto <16px. Forzar 16px lo evita. */
+    input:not([type='checkbox']):not([type='radio']),
+    textarea,
+    select {
+      font-size: 16px !important;
+    }
   }
 
   .glass-panel {

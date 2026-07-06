@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, TrendingUp, Star } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
@@ -130,6 +131,8 @@ const faqStructured = {
             </table>
           </div>
 
+          <BlogInlineCTA role="general" variant="upgrade" />
+
           <h2 className="text-xl font-black mb-4">¿En qué momento de la boda actúa el cantante?</h2>
           <ul className="space-y-3 mb-10">
             {[
@@ -183,6 +186,26 @@ const faqStructured = {
                 style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)', whiteSpace: 'nowrap' }}>
                 Crear perfil →
               </a>
+            </div>
+          </div>
+
+          <div className="mt-10 mb-10">
+            <h2 className="text-lg font-black mb-4">Contratar DJ y músicos por ciudad</h2>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { label: 'DJ bodas Madrid', href: '/contratar-dj/madrid' },
+                { label: 'DJ bodas Barcelona', href: '/contratar-dj/barcelona' },
+                { label: 'DJ bodas Sevilla', href: '/contratar-dj/sevilla' },
+                { label: 'DJ bodas Valencia', href: '/contratar-dj/valencia' },
+                { label: 'DJ bodas Málaga', href: '/contratar-dj/malaga' },
+                { label: 'DJ bodas Ibiza', href: '/contratar-dj/ibiza' },
+              ].map(c => (
+                <a key={c.href} href={c.href}
+                  className="px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
+                  style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                  {c.label}
+                </a>
+              ))}
             </div>
           </div>
 

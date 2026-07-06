@@ -24,9 +24,9 @@ const FlashBookingWallView = () => {
   }, [user, isEmpresario]);
 
   const tabs = [
-    { id: 'oferta' as const, label: 'Oferta', sub: 'profesionales disponibles', color: '#D4AF37', pulse: false },
+    { id: 'oferta' as const, label: 'Oferta', sub: 'profesionales disponibles', color: '#8A6D0F', pulse: false },
     { id: 'demanda' as const, label: 'Demanda', sub: 'ofertas de empresarios', color: '#22c55e', pulse: true },
-    ...(!isEmpresario ? [{ id: 'solicitudes' as const, label: 'Solicitudes', sub: 'recibidas', color: '#D4AF37', pulse: false }] : []),
+    ...(!isEmpresario ? [{ id: 'solicitudes' as const, label: 'Solicitudes', sub: 'recibidas', color: '#8A6D0F', pulse: false }] : []),
   ];
 
   return (
@@ -53,7 +53,7 @@ const FlashBookingWallView = () => {
             {t.label}
             {t.id === 'solicitudes' && pendingCount > 0 && (
               <span className="text-[0.7rem] font-black px-1.5 py-0.5 rounded-full"
-                style={{ background: 'rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+                style={{ background: 'rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
                 {pendingCount}
               </span>
             )}

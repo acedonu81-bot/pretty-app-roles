@@ -86,7 +86,7 @@ const CATEGORY_DATA: Record<string, {
       { q: '¿Los DJs están verificados?', a: 'Sí. Los perfiles en XPEAK son verificados manualmente. Incluyen experiencia, géneros, equipos, mezclas de muestra y referencias de venues.' },
     ],
     steps: [
-      { title: 'Crea tu cuenta gratis', body: 'Regístrate como sala, promotora u organizador en menos de 2 minutos. Sin tarjeta de crédito.' },
+      { title: 'Busca en el directorio', body: 'Filtra por ciudad, precio y disponibilidad. Sin registro ni tarjeta de crédito.' },
       { title: 'Publica tu oferta', body: 'Describe el evento, fecha, ciudad y presupuesto. Flash Booking lo distribuye al instante a los DJs disponibles.' },
       { title: 'Firma y listo', body: 'Elige tu DJ, firma el contrato digital con un clic. PDF listo para facturación con datos fiscales.' },
     ],
@@ -119,7 +119,7 @@ const CATEGORY_DATA: Record<string, {
       { q: '¿El staff de XPEAK tiene experiencia en eventos nocturnos?', a: 'Sí. Los perfiles en XPEAK son profesionales con experiencia demostrable en clubs, festivales y eventos privados. Cada perfil incluye historial de venues y referencias.' },
     ],
     steps: [
-      { title: 'Crea tu cuenta gratis', body: 'Regístrate como sala, promotora u organizador. Sin tarjeta de crédito. En menos de 2 minutos.' },
+      { title: 'Busca en el directorio', body: 'Filtra por ciudad, precio y disponibilidad. Sin registro ni tarjeta.' },
       { title: 'Describe tu necesidad', body: 'Especifica el tipo de staff, número de personas, fecha y presupuesto. Flash Booking gestiona la distribución automáticamente.' },
       { title: 'Contrato digital listo', body: 'Acepta las candidaturas, firma el contrato con un clic. Incluye datos fiscales para facturación correcta.' },
     ],
@@ -152,7 +152,7 @@ const CATEGORY_DATA: Record<string, {
       { q: '¿Puedo contratar fotógrafo y DJ a la vez?', a: 'Sí. Con XPEAK puedes gestionar varias contrataciones en paralelo — DJ, fotógrafo y staff — todo desde el mismo panel, con contratos digitales independientes.' },
     ],
     steps: [
-      { title: 'Crea tu cuenta gratis', body: 'Regístrate en menos de 2 minutos. Sin tarjeta. El perfil empresario te da acceso al directorio completo.' },
+      { title: 'Busca en el directorio', body: 'Explora perfiles con tarifa pública y portfolio. Sin registro.' },
       { title: 'Busca o publica oferta', body: 'Filtra fotógrafos por especialidad y zona, o usa Flash Booking para recibir candidaturas urgentes al instante.' },
       { title: 'Contrato y entrega', body: 'Cierra el acuerdo con contrato digital. Incluye plazos de entrega, derechos de imagen y condiciones de uso.' },
     ],
@@ -187,7 +187,7 @@ const CATEGORY_DATA: Record<string, {
       { q: '¿Los camareros tienen experiencia en bodas y eventos privados?', a: 'Sí. Cada perfil en XPEAK detalla su experiencia en bodas, eventos corporativos, catering y hostelería. Puedes ver historial de eventos y referencias de otros organizadores.' },
     ],
     steps: [
-      { title: 'Crea tu cuenta gratis', body: 'Regístrate como organizador o empresa en menos de 2 minutos. Sin tarjeta de crédito.' },
+      { title: 'Busca en el directorio', body: 'Filtra por ciudad, precio y disponibilidad. Sin registro.' },
       { title: 'Publica tu necesidad', body: 'Especifica número de camareros, tipo de evento, fecha y presupuesto. Flash Booking los encuentra en tu zona al instante.' },
       { title: 'Contrato digital listo', body: 'Elige los perfiles, firma el contrato con un clic. Incluye cláusulas legales y datos fiscales para facturación.' },
     ],
@@ -221,7 +221,7 @@ const CATEGORY_DATA: Record<string, {
       { q: '¿Con cuánta antelación debo contratar el catering?', a: 'Para bodas y eventos grandes, recomendamos al menos 3-6 meses de antelación. Para eventos corporativos de hasta 50 personas, el Flash Booking puede conseguirte catering disponible en menos de 1 semana.' },
     ],
     steps: [
-      { title: 'Crea tu cuenta gratis', body: 'Regístrate como organizador o empresa. Sin tarjeta. En menos de 2 minutos tienes acceso al directorio completo.' },
+      { title: 'Busca en el directorio', body: 'Explora perfiles con tarifa pública. Sin registro ni tarjeta.' },
       { title: 'Describe tu evento', body: 'Indica número de asistentes, tipo de servicio, fecha y presupuesto aproximado. Los proveedores de tu zona reciben la solicitud al instante.' },
       { title: 'Elige y firma', body: 'Compara propuestas, elige el catering que mejor se adapta y firma el contrato digital. Todo en la plataforma, sin llamadas ni correos.' },
     ],
@@ -252,7 +252,7 @@ const CATEGORY_DATA: Record<string, {
       { q: '¿Qué incluye una prueba de maquillaje?', a: 'La prueba de maquillaje previa al evento incluye la sesión de test del look completo (1-2 horas) y suele tener un coste entre 60€ y 120€ que normalmente se descuenta del precio total.' },
     ],
     steps: [
-      { title: 'Crea tu perfil gratis', body: 'Regístrate como organizador o empresa. Sin tarjeta. Acceso inmediato al directorio de artistas.' },
+      { title: 'Busca en el directorio', body: 'Explora perfiles de artistas con tarifa pública. Sin registro.' },
       { title: 'Busca o publica oferta', body: 'Filtra por especialidad, zona y disponibilidad, o usa Flash Booking para recibir candidaturas urgentes.' },
       { title: 'Contrato y confirmación', body: 'Firma el contrato digital. Incluye fecha, servicios acordados y condiciones de cancelación.' },
     ],
@@ -283,7 +283,7 @@ const CATEGORY_DATA: Record<string, {
       { q: '¿Cómo mido el rendimiento de un promotor?', a: 'Los contratos de XPEAK incluyen métricas acordadas: número de asistentes traídos, ventas de reservas o taquilla atribuida. Puedes añadir cláusulas de incentivo por objetivos directamente en el contrato digital.' },
     ],
     steps: [
-      { title: 'Crea tu cuenta gratis', body: 'Regístrate como sala, festival o promotora. Sin tarjeta. Acceso inmediato a todos los perfiles.' },
+      { title: 'Busca en el directorio', body: 'Filtra por ciudad y disponibilidad. Sin registro ni tarjeta.' },
       { title: 'Publica tu oferta', body: 'Describe el evento, zona, fecha y expectativas de aforo. Flash Booking lo distribuye a promotores activos en tu área.' },
       { title: 'Contrato con métricas', body: 'Incluye objetivos medibles en el contrato digital. Ciérralo en un clic con datos fiscales incluidos.' },
     ],
@@ -314,7 +314,7 @@ const CATEGORY_DATA: Record<string, {
       { q: '¿Qué es un personal shopper para eventos?', a: 'Un personal shopper de eventos te ayuda a elegir el outfit correcto para cada tipo de evento: gala, boda, presentación corporativa o evento de moda. Tarifa habitual: entre 80€ y 200€ por sesión de 2-3 horas.' },
     ],
     steps: [
-      { title: 'Crea tu perfil gratis', body: 'Regístrate como organizador, productora o empresa. Sin tarjeta. En menos de 2 minutos.' },
+      { title: 'Busca en el directorio', body: 'Explora perfiles con tarifa pública. Sin registro ni tarjeta.' },
       { title: 'Busca o publica tu oferta', body: 'Filtra por especialidad y zona, o usa Flash Booking. Detalla el tipo de evento y el número de personas a estilizar.' },
       { title: 'Contrato y confirmación', body: 'Firma el contrato digital con un clic. Incluye horarios, servicios pactados y condiciones de cancelación.' },
     ],
@@ -347,7 +347,7 @@ const CATEGORY_DATA: Record<string, {
       { q: '¿Puedo contratar humorista para una cena de empresa?', a: 'Es el formato más demandado. El humor corporativo requiere un cómico con experiencia en públicos mixtos y contenido inclusivo. En XPEAK puedes filtrar por especialidad "corporativo" para encontrar el perfil adecuado.' },
     ],
     steps: [
-      { title: 'Crea tu cuenta gratis', body: 'Regístrate como organizador o empresa. Sin tarjeta. En menos de 2 minutos tienes acceso al directorio completo.' },
+      { title: 'Busca en el directorio', body: 'Explora perfiles con tarifa pública. Sin registro ni tarjeta.' },
       { title: 'Busca o publica oferta', body: 'Filtra por especialidad y zona, o usa Flash Booking. Detalla el tipo de evento y el tono de humor que buscas.' },
       { title: 'Contrato y confirmación', body: 'Firma el contrato digital con un clic. Incluye fecha, duración, guión acordado y condiciones de cancelación.' },
     ],
@@ -382,7 +382,7 @@ const CATEGORY_DATA: Record<string, {
       { q: '¿Puedo contratar animadores para una boda con niños?', a: 'Absolutamente. Es uno de los servicios más demandados. El animador se encarga de los niños mientras los adultos disfrutan del banquete. Puedes contratar tanto animación durante el cóctel como durante toda la celebración.' },
     ],
     steps: [
-      { title: 'Crea tu cuenta gratis', body: 'Regístrate como organizador o familia. Sin tarjeta. En menos de 2 minutos tienes acceso al directorio completo.' },
+      { title: 'Busca en el directorio', body: 'Explora perfiles con tarifa pública. Sin registro ni tarjeta.' },
       { title: 'Busca o publica oferta', body: 'Filtra por especialidad y ciudad, o usa Flash Booking. Detalla el número de niños, edades y duración del evento.' },
       { title: 'Contrato y confirmación', body: 'Firma el contrato digital con un clic. Incluye fecha, servicios y condiciones de cancelación.' },
     ],
@@ -415,7 +415,7 @@ const CATEGORY_DATA: Record<string, {
       { q: '¿Puedo contratar un speaker para un evento online o híbrido?', a: 'Sí. Muchos speakers en XPEAK tienen experiencia en formatos online, híbridos y presenciales. Indica el formato de tu evento en la solicitud para filtrar los perfiles adecuados.' },
     ],
     steps: [
-      { title: 'Crea tu cuenta gratis', body: 'Regístrate como empresa u organizador. Sin tarjeta. Acceso inmediato al directorio de ponentes.' },
+      { title: 'Busca en el directorio', body: 'Explora perfiles de ponentes. Sin registro ni tarjeta.' },
       { title: 'Busca o publica oferta', body: 'Filtra por temática y zona, o usa Flash Booking. Detalla el sector, el público y la duración de la ponencia.' },
       { title: 'Contrato y confirmación', body: 'Firma el contrato digital. Incluye fecha, temática acordada, duración y condiciones de cancelación.' },
     ],
@@ -448,7 +448,7 @@ const CATEGORY_DATA: Record<string, {
       { q: '¿Puedo contratar magia para niños?', a: 'Sí. XPEAK incluye magos especializados en público infantil con shows de 30-60 minutos con participación, humor y magia adaptada a niños de 3 a 12 años.' },
     ],
     steps: [
-      { title: 'Crea tu cuenta gratis', body: 'Regístrate como organizador o familia. Sin tarjeta. Acceso inmediato al directorio de magos.' },
+      { title: 'Busca en el directorio', body: 'Explora perfiles de magos. Sin registro ni tarjeta.' },
       { title: 'Busca o publica oferta', body: 'Filtra por tipo de magia y ciudad, o usa Flash Booking. Detalla el tipo de evento y el público.' },
       { title: 'Contrato y confirmación', body: 'Firma el contrato digital. Incluye tipo de actuación, duración y condiciones de cancelación.' },
     ],
@@ -481,7 +481,7 @@ const CATEGORY_DATA: Record<string, {
       { q: '¿Los bailarines trabajan con música en directo?', a: 'Muchos bailarines en XPEAK ofrecen actuaciones con música en directo (guitarra, percusión) o con pistas pregrabadas. Puedes especificarlo en tu solicitud y contratar ambos servicios desde la misma plataforma.' },
     ],
     steps: [
-      { title: 'Crea tu cuenta gratis', body: 'Regístrate como organizador o empresa. Sin tarjeta. En menos de 2 minutos tienes acceso al directorio.' },
+      { title: 'Busca en el directorio', body: 'Explora perfiles con tarifa pública. Sin registro ni tarjeta.' },
       { title: 'Busca o publica oferta', body: 'Filtra por estilo de baile y ciudad, o usa Flash Booking. Detalla el tipo de evento y el espacio disponible.' },
       { title: 'Contrato y confirmación', body: 'Firma el contrato digital. Incluye número de bailarines, duración del show y condiciones de cancelación.' },
     ],
@@ -514,8 +514,8 @@ const CATEGORY_DATA: Record<string, {
       { q: '¿Para qué edades es adecuado un payaso?', a: 'Los payasos en XPEAK adaptan su actuación al rango de edad del grupo. Para niños de 3-5 años, más visual y sencillo; para 6-10 años, más participativo con juegos y magia; para adolescentes y adultos, humor más elaborado.' },
     ],
     steps: [
-      { title: 'Crea tu cuenta gratis', body: 'Regístrate como organizador o familia. Sin tarjeta. En menos de 2 minutos tienes acceso al directorio.' },
-      { title: 'Busca o publica oferta', body: 'Filtra por ciudad y especialidad, o usa Flash Booking. Indica edades de los niños y duración del evento.' },
+      { title: 'Busca en el directorio', body: 'Explora perfiles con tarifa pública. Sin registro ni tarjeta.' },
+      { title: 'Contacta directamente', body: 'Filtra por ciudad y especialidad. Indica edades de los niños y duración del evento.' },
       { title: 'Contrato y confirmación', body: 'Firma el contrato digital. Incluye fecha, servicios incluidos y condiciones de cancelación.' },
     ],
   },
@@ -712,15 +712,15 @@ export default function CategoryLanding() {
           </p>
           <p className="text-sm font-bold mb-8" style={{ color: 'rgba(212,175,55,0.7)' }}>{data.tagline}</p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a href="/auth"
-              className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
-              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              <Zap size={15} /> Publicar oferta gratis
-            </a>
             <a href={`/directorio/${['dj','fotografo','staff','maquillaje','promotores'].includes(data.slug) ? data.slug : data.slug === 'camareros' ? 'staff' : 'dj'}`}
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
+              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+              Ver profesionales disponibles <ArrowRight size={14} />
+            </a>
+            <a href="/auth?mode=register&role=profesional"
+              className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
               style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }}>
-              Ver directorio <ArrowRight size={14} />
+              Soy profesional — crear perfil
             </a>
           </div>
         </section>
@@ -837,12 +837,12 @@ export default function CategoryLanding() {
           <div className="rounded-2xl p-7 sm:p-10" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
             <h2 className="text-xl sm:text-3xl font-black mb-3">¿Buscas {data.keyword} para tu evento?</h2>
             <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>
-              Únete gratis — sin comisión, contratos automáticos, Flash Booking en menos de 1h.
+              Contacta directamente — sin registro, sin comisión, respuesta directa del profesional.
             </p>
-            <a href="/auth"
+            <a href={`/directorio/${['dj','fotografo','staff','maquillaje','promotores'].includes(data.slug) ? data.slug : data.slug === 'camareros' ? 'staff' : 'dj'}`}
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              <Zap size={15} /> Empezar gratis
+              Ver profesionales disponibles <ArrowRight size={14} />
             </a>
           </div>
         </section>

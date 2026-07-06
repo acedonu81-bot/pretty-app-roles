@@ -25,7 +25,7 @@ const FansTab = ({ fans, loading }: Props) => (
 
     <div className="glass-panel p-5">
       <h4 className="text-sm font-bold mb-4 flex items-center gap-2">
-        <Heart size={14} style={{ color: '#D4AF37' }} /> Suscriptores Fan
+        <Heart size={14} style={{ color: '#8A6D0F' }} /> Suscriptores Fan
         <span className="ml-auto text-xs text-muted-foreground">{fans.length} fans</span>
       </h4>
       {loading ? (

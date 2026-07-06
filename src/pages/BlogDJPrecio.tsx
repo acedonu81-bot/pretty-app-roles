@@ -299,6 +299,30 @@ const faqStructured = {
             </div>
           </div>
 
+          <div className="mt-10 mb-10">
+            <h2 className="text-lg font-black mb-4">Contratar DJ por ciudad</h2>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { label: 'DJ Madrid', href: '/contratar-dj/madrid' },
+                { label: 'DJ Barcelona', href: '/contratar-dj/barcelona' },
+                { label: 'DJ Valencia', href: '/contratar-dj/valencia' },
+                { label: 'DJ Sevilla', href: '/contratar-dj/sevilla' },
+                { label: 'DJ Málaga', href: '/contratar-dj/malaga' },
+                { label: 'DJ Ibiza', href: '/contratar-dj/ibiza' },
+                { label: 'DJ Bilbao', href: '/contratar-dj/bilbao' },
+                { label: 'DJ Mallorca', href: '/contratar-dj/palma' },
+                { label: 'DJ Zaragoza', href: '/contratar-dj/zaragoza' },
+                { label: 'DJ Alicante', href: '/contratar-dj/alicante' },
+              ].map(c => (
+                <a key={c.href} href={c.href}
+                  className="px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
+                  style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                  {c.label}
+                </a>
+              ))}
+            </div>
+          </div>
+
           <div className="mt-12">
             <h2 className="text-lg font-black mb-5" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

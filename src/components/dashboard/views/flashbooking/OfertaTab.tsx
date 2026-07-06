@@ -108,7 +108,7 @@ const OfertaTab = () => {
             </div>
             <button onClick={toggleFlash} className="transition-all duration-200 hover:scale-105">
               {isFlashActive
-                ? <ToggleRight size={40} style={{ color: '#D4AF37' }} />
+                ? <ToggleRight size={40} style={{ color: '#8A6D0F' }} />
                 : <ToggleLeft size={40} style={{ color: '#3d3d4e' }} />}
             </button>
           </div>
@@ -120,7 +120,7 @@ const OfertaTab = () => {
           className="glass-panel p-4 mb-5 flex items-center gap-3"
           style={{ border: '1px solid rgba(212,175,55,0.15)' }}
         >
-          <AlertTriangle size={14} style={{ color: '#D4AF37' }} />
+          <AlertTriangle size={14} style={{ color: '#8A6D0F' }} />
           <p className="text-xs text-muted-foreground">
             Como empresario puedes ver los profesionales disponibles. Usa la tab <strong>Demanda</strong> para publicar tus propias ofertas.
           </p>
@@ -132,7 +132,7 @@ const OfertaTab = () => {
           className="w-2.5 h-2.5 rounded-full flex-shrink-0"
           style={{ background: '#D4AF37', boxShadow: '0 0 8px rgba(212,175,55,0.8)' }}
         />
-        <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>Profesionales disponibles ahora</span>
+        <span className="text-xs font-bold" style={{ color: '#8A6D0F' }}>Profesionales disponibles ahora</span>
         <span className="text-xs text-muted-foreground">({flashProfiles.length})</span>
       </div>
 
@@ -212,7 +212,7 @@ const OfertaTab = () => {
                 <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: 16 }}>
                   <p style={{
                     fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: 13,
-                    color: '#D4AF37', letterSpacing: '0.06em',
+                    color: '#8A6D0F', letterSpacing: '0.06em',
                     textTransform: 'uppercase', marginBottom: 2,
                   }}>
                     {p.genres?.[0] || p.specialty || p.role}
@@ -230,7 +230,7 @@ const OfertaTab = () => {
                     borderTop: '1px solid rgba(0,0,0,0.08)', paddingTop: 10,
                     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                   }}>
-                    <span style={{ fontWeight: 700, fontSize: 14, color: '#D4AF37' }}>
+                    <span style={{ fontWeight: 700, fontSize: 14, color: '#8A6D0F' }}>
                       {isEmpresario
                         ? (p.price > 0 ? `€${p.price}${p.priceUnit}` : 'A consultar')
                         : <span style={{ fontSize: 11, color: '#333', fontWeight: 400 }}>Tarifa privada</span>}

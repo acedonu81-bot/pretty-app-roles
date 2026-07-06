@@ -18,8 +18,8 @@ const HearthisIcon = ({ size = 14 }: { size?: number }) => (
 const milestones = [
   { votes: 50, label: 'Novato Prometedor', color: '#6ee7b7' },
   { votes: 150, label: 'En Ascenso', color: '#fbbf24' },
-  { votes: 300, label: 'Favorito del Público', color: '#D4AF37' },
-  { votes: 500, label: '¡Candidato a PRO!', color: '#D4AF37' },
+  { votes: 300, label: 'Favorito del Público', color: '#8A6D0F' },
+  { votes: 500, label: '¡Candidato a PRO!', color: '#8A6D0F' },
 ];
 
 interface ProfileCardProps {
@@ -142,25 +142,15 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
           )}
         </div>
 
-        {/* Views top-right — desktop only */}
-        {p.profileViews > 0 && (
-          <div className="absolute top-2.5 right-2.5 z-10 hidden sm:block">
-            <span className="text-[0.6rem] font-bold px-2 py-0.5 rounded-full"
-              style={{ background: 'rgba(0,0,0,0.6)', color: 'rgba(212,175,55,0.8)' }}>
-              {p.profileViews > 99 ? '99+' : p.profileViews} vistos
-            </span>
-          </div>
-        )}
-
         {/* Name + specialty overlaid — desktop only */}
         <div className="absolute bottom-0 left-0 right-0 z-10 p-3 hidden sm:block" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%)' }}>
           <div className="flex items-end justify-between gap-2">
             <div className="flex-1 min-w-0">
               <h3 className="text-base font-black" style={{ color: '#fff', textShadow: '0 1px 4px rgba(0,0,0,0.5)', lineHeight: 1.2, paddingBottom: '0.15em', overflow: 'visible' }}>{p.name}</h3>
-              {p.specialty && <p className="text-xs truncate sm:whitespace-normal" style={{ color: '#D4AF37' }}>{p.specialty}</p>}
+              {p.specialty && <p className="text-xs truncate sm:whitespace-normal" style={{ color: '#F5D77A' }}>{p.specialty}</p>}
             </div>
             {priceLabel && (
-              <span className="text-sm font-black shrink-0" style={{ color: '#D4AF37' }}>{priceLabel}</span>
+              <span className="text-sm font-black shrink-0" style={{ color: '#F5D77A' }}>{priceLabel}</span>
             )}
           </div>
         </div>
@@ -190,7 +180,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
         <div className="hidden sm:flex items-center gap-2 text-xs" style={{ color: '#3d3d4e' }}>
           {p.rating > 0 && (
             <span className="flex items-center gap-1">
-              <Star size={11} style={{ color: '#D4AF37' }} fill="#D4AF37" />
+              <Star size={11} style={{ color: '#8A6D0F' }} fill="#D4AF37" />
               <span className="font-bold" style={{ color: '#222' }}>{p.rating}</span>
               <span>({p.reviews})</span>
             </span>
@@ -212,7 +202,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
           <div className="hidden sm:flex flex-wrap gap-1">
             {p.badges.slice(0, 3).map(b => (
               <span key={b} className="text-[0.65rem] font-semibold px-1.5 py-0.5 rounded"
-                style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
+                style={{ background: 'rgba(212,175,55,0.08)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.15)' }}>
                 {b}
               </span>
             ))}
@@ -224,7 +214,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
           <a href={audioUrl} target="_blank" rel="noopener noreferrer"
             onClick={e => e.stopPropagation()}
             className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold w-fit transition-all hover:scale-105"
-            style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+            style={{ background: 'rgba(212,175,55,0.08)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.2)' }}>
             <HearthisIcon size={12} /> {audioLabel}
           </a>
         )}
@@ -242,7 +232,8 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
                 </div>
               ) : (
                 <div key={i} className="rounded-lg overflow-hidden aspect-square" style={{ background: 'rgba(0,0,0,0.4)' }}>
-                  <img src={url} alt="" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                  <img src={url} alt="" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    onError={e => { (e.currentTarget.parentElement as HTMLElement).style.display = 'none'; }} />
                 </div>
               );
             })}
@@ -282,7 +273,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
             {currentUser.role === 'empresario' && (
               <button type="button" onClick={() => setShowContract(true)}
                 className="flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105"
-                style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+                style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
                 <FileText size={11} /> Contrato
               </button>
             )}

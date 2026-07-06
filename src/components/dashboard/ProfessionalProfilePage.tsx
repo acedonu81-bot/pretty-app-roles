@@ -7,7 +7,7 @@ import {
   Instagram, ChevronLeft,
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { parseStreamUrl, resolveHearthisProfile } from '@/lib/streaming';
+import { parseStreamUrl, resolveHearthisProfile, normalizeStreamUrl } from '@/lib/streaming';
 import { useProfile as useMyProfile } from '@/hooks/useProfile';
 import GeometricAvatar from './GeometricAvatar';
 import ContractModal from './ContractModal';
@@ -181,13 +181,20 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
   }, [p.userId, p.description, p.languages, p.badges, p.price, p.isVerified]);
 
   const [audioEmbed, setAudioEmbed] = useState<ReturnType<typeof parseStreamUrl>>(null);
+  const [audioLoading, setAudioLoading] = useState(false);
+  const [audioRawUrl, setAudioRawUrl] = useState<string | null>(null);
   useEffect(() => {
     const raw = (full.audioEmbedUrl ?? (p as any).audio_embed_url) || p.streamUrl;
+    setAudioRawUrl(raw ? String(raw) : null);
     const parsed = parseStreamUrl(raw);
     if (parsed?.isProfile && parsed._hearthisUser) {
+      // Perfil HearThis: hay que resolver el último track vía API (puede fallar).
+      setAudioLoading(true);
       resolveHearthisProfile(parsed._hearthisUser).then(url => {
-        setAudioEmbed(url ? { type: 'HearThis', embedUrl: url } : null);
-      });
+        // Si la API no devuelve track, dejamos el embed de perfil como fallback embebible.
+        setAudioEmbed(url ? { type: 'HearThis', embedUrl: url } : parsed);
+        setAudioLoading(false);
+      }).catch(() => { setAudioEmbed(parsed); setAudioLoading(false); });
     } else {
       setAudioEmbed(parsed);
     }
@@ -353,19 +360,40 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
             )}
 
             {/* Audio embed */}
-            {audioEmbed && (
+            {(audioEmbed || audioLoading || (audioRawUrl && !audioEmbed)) && (
               <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
                 style={{ borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: 22 }}>
                 <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#444' }}>
-                  🎵 {audioEmbed.type}
+                  🎵 {audioEmbed?.type ?? 'Audio'}
                 </p>
-                <div className="rounded-xl overflow-hidden"
-                  style={{ height: audioEmbed.type === 'SoundCloud' ? 166 : audioEmbed.type === 'Spotify' ? 152 : audioEmbed.type === 'HearThis' ? 150 : 120,
-                    border: `1px solid ${cfg.color}20` }}>
-                  <iframe src={audioEmbed.embedUrl} className="w-full h-full"
-                    allow="autoplay; clipboard-write; encrypted-media; fullscreen"
-                    title={`${p.name} audio`} />
-                </div>
+
+                {audioLoading && (
+                  <div className="rounded-xl flex items-center justify-center gap-2 py-8"
+                    style={{ border: `1px solid ${cfg.color}20`, background: 'rgba(0,0,0,0.02)' }}>
+                    <div className="w-4 h-4 rounded-full border-2 border-t-transparent animate-spin"
+                      style={{ borderColor: cfg.color, borderTopColor: 'transparent' }} />
+                    <span className="text-xs text-muted-foreground">Cargando audio…</span>
+                  </div>
+                )}
+
+                {!audioLoading && audioEmbed && (
+                  <div className="rounded-xl overflow-hidden"
+                    style={{ height: audioEmbed.type === 'SoundCloud' ? 166 : audioEmbed.type === 'Spotify' ? 152 : audioEmbed.type === 'HearThis' ? 150 : 120,
+                      border: `1px solid ${cfg.color}20` }}>
+                    <iframe src={audioEmbed.embedUrl} className="w-full h-full"
+                      allow="autoplay; clipboard-write; encrypted-media; fullscreen"
+                      title={`${p.name} audio`} />
+                  </div>
+                )}
+
+                {/* Fallback: hay URL pero no se pudo embeber → enlace directo en vez de desaparecer */}
+                {!audioLoading && !audioEmbed && audioRawUrl && (
+                  <a href={normalizeStreamUrl(audioRawUrl)} target="_blank" rel="noopener noreferrer"
+                    className="flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition-all hover:scale-[1.01]"
+                    style={{ border: `1px solid ${cfg.color}30`, color: cfg.color, background: `${cfg.color}08` }}>
+                    <ExternalLink size={14} /> Escuchar set / audio
+                  </a>
+                )}
               </motion.div>
             )}
 
@@ -379,7 +407,8 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                     <a key={i} href={url} target="_blank" rel="noopener noreferrer"
                       className="rounded-xl overflow-hidden aspect-square relative group cursor-pointer block"
                       style={{ border: `1px solid ${cfg.color}15` }}>
-                      <img src={url} alt={`${p.name} trabajo ${i + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <img src={url} alt={`${p.name} trabajo ${i + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        onError={e => { (e.currentTarget.closest('a') as HTMLElement)?.style.setProperty('display', 'none'); }} />
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                         style={{ background: 'rgba(0,0,0,0.5)' }}>
                         <ExternalLink size={18} className="text-white" />

@@ -55,8 +55,8 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   const SPAIN_CITIES = ['Madrid','Barcelona','Valencia','Sevilla','Zaragoza','Málaga','Murcia','Palma de Mallorca','Alicante','Bilbao','Valladolid','Córdoba','Vigo','Gijón','Granada','A Coruña','Vitoria-Gasteiz','San Sebastián','Oviedo','Las Palmas de Gran Canaria','Santa Cruz de Tenerife','Badalona','Cartagena','Sabadell','Móstoles','Elche','Hospitalet de Llobregat','Terrassa','Jerez de la Frontera','Burgos','Santander','Almería','Alcalá de Henares','Pamplona','Salamanca','Ibiza','Marbella','León','Albacete','Logroño','Huelva','Tarragona','Lleida','Badajoz','Jaén','Cádiz','Toledo','Torrevieja','Mataró','Alcobendas'];
 
   const ROLE_TAGS: Record<string, { label: string; tags: string[] }> = {
-    dj:        { label: 'Géneros musicales',    tags: ['Techno','Tech House','House','Afro House','Melodic Techno','Deep House','Minimal','Trance','Progressive','Drum & Bass','Jungle','Garage','Afrobeats','Tribal','Nu Disco','Electro','Hard Techno','Industrial','Ambient','Comercial','Reggaetón','Urbano','Hip Hop','RnB','Funk','Soul','Disco','Latino','Salsa','Flamenco Fusión'] },
-    rookie:    { label: 'Géneros musicales',    tags: ['Techno','Tech House','House','Afro House','Melodic Techno','Deep House','Minimal','Trance','Progressive','Drum & Bass','Electro','Hard Techno','Comercial','Reggaetón','Urbano','Hip Hop'] },
+    dj:        { label: 'Géneros musicales',    tags: ['Tech House','Deep House','House','Afro House','Organic House','Funky House','Tribal House','Progressive House','Latin House','Techno','Melodic Techno','Minimal','Hard Techno','Industrial','Dub Techno','Trance','Progressive Trance','Psytrance','Drum & Bass','Dubstep','Jungle','UK Garage','Breakbeat','Reggaetón','Dembow','Moombahton','Dancehall','R&B','Hip Hop','Trap','Afrobeats','Amapiano','Comercial','Top 40','Hits actuales','Remember','Pachanga','Disco','Nu-Disco','Funk','Electro','Synthwave','Ambient','Downtempo','Chillout','Hardstyle','Hardcore','EDM'] },
+    rookie:    { label: 'Géneros musicales',    tags: ['Tech House','Deep House','House','Afro House','Techno','Melodic Techno','Minimal','Hard Techno','Trance','Drum & Bass','Reggaetón','Dembow','Moombahton','Hip Hop','Trap','Comercial','Top 40','Hits actuales','Remember','Pachanga','Disco','Nu-Disco','Funk','EDM'] },
     staff:         { label: 'Especialidades',         tags: ['Azafata','RRPP','Promotor','Camarero/a','Relaciones Públicas','Animación','Hostess','Sala VIP','Control de acceso','Taquilla','Chill-out','Bottle service','Coordinación'] },
     event_manager: { label: 'Áreas de coordinación', tags: ['Coordinación general','Producción de eventos','Montaje y decoración','Catering','Staff externo','Protocolo','Gestión de artistas','Logística','Presupuestos','Eventos corporativos','Bodas','Festivales','Clubbing','Outdoor'] },
     makeup:    { label: 'Servicios',             tags: ['Maquillaje nupcial','Caracterización','Maquillaje artístico','Peluquería','Estilismo','Nail art','Aerógrafo','Efectos especiales','Maquillaje masculino','Novias','Pasarela','Producción'] },
@@ -265,7 +265,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
           {user && (
             <div className="glass-panel p-4">
               <div className="flex items-center gap-2 mb-3">
-                <Share2 size={13} style={{ color: '#D4AF37' }} />
+                <Share2 size={13} style={{ color: '#8A6D0F' }} />
                 <span className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: 'rgba(212,175,55,0.7)' }}>Comparte tu perfil</span>
               </div>
               <div className="flex items-center gap-2 mb-3">
@@ -387,7 +387,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 style={{ color: (!profile.role || profile.role === 'pending') ? '#D4AF37' : '#333' }}>
                 Rol
                 {(!profile.role || profile.role === 'pending') && (
-                  <span className="text-xs font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>Elige tu especialidad</span>
+                  <span className="text-xs font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(212,175,55,0.15)', color: '#8A6D0F' }}>Elige tu especialidad</span>
                 )}
               </label>
               <NightlifeSelect
@@ -484,12 +484,44 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                   </button>
 
                   {/* Dropdown panel */}
-                  {genreOpen && (
+                  {genreOpen && (() => {
+                    const isDJ = profile.role === 'dj' || profile.role === 'rookie';
+                    const DJ_GROUPS: { label: string; items: string[] }[] = [
+                      { label: 'House', items: ['Tech House','Deep House','House','Afro House','Organic House','Funky House','Tribal House','Progressive House','Latin House'] },
+                      { label: 'Techno', items: ['Techno','Melodic Techno','Minimal','Hard Techno','Industrial','Dub Techno'] },
+                      { label: 'Trance & Psy', items: ['Trance','Progressive Trance','Psytrance'] },
+                      { label: 'Bass Music', items: ['Drum & Bass','Dubstep','Jungle','UK Garage','Breakbeat'] },
+                      { label: 'Urban & Latino', items: ['Reggaetón','Dembow','Moombahton','Dancehall','R&B','Hip Hop','Trap','Afrobeats','Amapiano'] },
+                      { label: 'Comercial & Fiesta', items: ['Comercial','Top 40','Hits actuales','Remember','Pachanga'] },
+                      { label: 'Disco & Funk', items: ['Disco','Nu-Disco','Funk','Electro','Synthwave'] },
+                      { label: 'Chill & Ambiental', items: ['Ambient','Downtempo','Chillout'] },
+                      { label: 'Hard & Rave', items: ['Hardstyle','Hardcore','EDM'] },
+                    ];
+                    const availableTags = new Set(roleTagConfig.tags);
+                    const groups = isDJ ? DJ_GROUPS.map(g => ({ ...g, items: g.items.filter(i => availableTags.has(i)) })).filter(g => g.items.length > 0) : null;
+                    return (
                     <div className="mt-1 rounded-xl overflow-hidden animate-[fadeIn_0.15s_ease]"
                       style={{ background: 'rgba(12,12,16,0.97)', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 8px 32px rgba(0,0,0,0.6)' }}>
-                      <div className="flex flex-wrap gap-1.5 p-3 max-h-56 overflow-y-auto"
+                      <div className="p-3 max-h-64 overflow-y-auto space-y-3"
                         style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(212,175,55,0.3) transparent' }}>
-                        {roleTagConfig.tags.map(g => (
+                        {groups ? groups.map(group => (
+                          <div key={group.label}>
+                            <p className="text-[0.6rem] font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(212,175,55,0.45)' }}>{group.label}</p>
+                            <div className="flex flex-wrap gap-1.5">
+                              {group.items.map(g => (
+                                <button key={g} type="button" onClick={() => toggleGenre(g)}
+                                  className="text-xs font-semibold px-2.5 py-1 rounded-lg transition-all hover:scale-105"
+                                  style={{
+                                    background: activeGenres.includes(g) ? 'rgba(226,190,80,0.15)' : 'rgba(0,0,0,0.05)',
+                                    border: `1px solid ${activeGenres.includes(g) ? 'rgba(226,190,80,0.4)' : 'rgba(0,0,0,0.06)'}`,
+                                    color: activeGenres.includes(g) ? '#E2BE50' : '#333',
+                                  }}>
+                                  {g}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )) : roleTagConfig.tags.map(g => (
                           <button key={g} type="button" onClick={() => toggleGenre(g)}
                             className="text-xs font-semibold px-2.5 py-1 rounded-lg transition-all hover:scale-105"
                             style={{
@@ -505,12 +537,13 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                         <span className="text-xs text-muted-foreground">{activeGenres.length} seleccionados</span>
                         <button type="button" onClick={() => setGenreOpen(false)}
                           className="text-xs font-bold px-3 py-1 rounded-lg transition-all"
-                          style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                          style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.2)' }}>
                           Cerrar
                         </button>
                       </div>
                     </div>
-                  )}
+                    );
+                  })()}
                 </div>
             )}
             <div className="mb-3">
@@ -635,7 +668,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                     <span className="text-xs text-muted-foreground">{activeLangs.length} seleccionados</span>
                     <button type="button" onClick={() => setLangOpen(false)}
                       className="text-xs font-bold px-3 py-1 rounded-lg transition-all"
-                      style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                      style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.2)' }}>
                       Cerrar
                     </button>
                   </div>
@@ -674,7 +707,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                     {currentUrl && (
                       <a href={currentUrl} target="_blank" rel="noopener noreferrer"
                         className="px-3 rounded-lg flex items-center"
-                        style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+                        style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
                         <ExternalLink size={14} />
                       </a>
                     )}
@@ -715,7 +748,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             style={{ border: '1px solid rgba(212,175,55,0.2)' }}>
             <div>
               <h4 className="text-sm font-bold flex items-center gap-2">
-                <Download size={15} style={{ color: '#D4AF37' }} /> Exportar mis datos
+                <Download size={15} style={{ color: '#8A6D0F' }} /> Exportar mis datos
               </h4>
               <p className="text-xs text-muted-foreground mt-0.5">
                 Descarga un ZIP con tu perfil, bookings, favoritos y conversaciones (RGPD Art. 20).

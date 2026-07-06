@@ -181,7 +181,7 @@ const EventRequestsSection = () => {
                       </span>
                     )}
                     {(req.budget_min || req.budget_max) && (
-                      <span className="flex items-center gap-1 text-xs font-bold" style={{ color: '#D4AF37' }}>
+                      <span className="flex items-center gap-1 text-xs font-bold" style={{ color: '#8A6D0F' }}>
                         <Euro size={10} />
                         {req.budget_min && req.budget_max
                           ? `${req.budget_min}–${req.budget_max}€`

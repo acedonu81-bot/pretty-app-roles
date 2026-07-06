@@ -56,7 +56,7 @@ const FanSubscribeButton = ({ profileId, professionalName }: Props) => {
     return (
       <button onClick={handleUnsubscribe}
         className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-bold transition-all hover:opacity-80"
-        style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+        style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.2)' }}>
         <Heart size={14} fill="#D4AF37" /> Fan Club · Suscrito
       </button>
     );

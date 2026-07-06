@@ -37,9 +37,9 @@ const AdminMetrics = () => {
   }, []);
 
   const kpis = metrics ? [
-    { label: 'Usuarios Total',   value: metrics.totalUsers,    icon: Users,      color: '#D4AF37' },
+    { label: 'Usuarios Total',   value: metrics.totalUsers,    icon: Users,      color: '#8A6D0F' },
     { label: 'Profesionales',    value: metrics.professionals, icon: Users,      color: '#3d3d4e' },
-    { label: 'Empresarios',      value: metrics.businesses,    icon: Shield,     color: '#D4AF37' },
+    { label: 'Empresarios',      value: metrics.businesses,    icon: Shield,     color: '#8A6D0F' },
     { label: 'MRR',              value: '—',                   icon: DollarSign, color: '#22c55e' },
     { label: 'Flash Activos',    value: metrics.activeFlash,   icon: Zap,        color: '#22c55e' },
     { label: 'Churn Rate',       value: '—',                   icon: TrendingUp, color: '#ff5f56' },
@@ -59,7 +59,7 @@ const AdminMetrics = () => {
         <div className="flex gap-2">
           <button onClick={() => toast.success('Caché limpiada')}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
-            style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+            style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
             <Trash2 size={12} /> Limpiar Caché
           </button>
           <button onClick={() => toast.success('Sesiones reiniciadas')}

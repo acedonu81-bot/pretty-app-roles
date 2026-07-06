@@ -5,21 +5,19 @@ import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { toast } from 'sonner';
 
-const allGenres = [
-  'Techno', 'Minimal', 'Deep House', 'Tech House', 'Progressive House', 'Melodic Techno',
-  'House', 'Afro House', 'Organic House', 'Tribal House', 'Funky House',
-  'EDM', 'Future Bass', 'Dubstep', 'Drum & Bass', 'Jungle',
-  'Trance', 'Psytrance', 'Progressive Trance', 'Uplifting Trance',
-  'Reggaetón', 'Dembow', 'Latin House', 'Moombahton',
-  'R&B', 'Hip Hop', 'Trap', 'UK Garage', 'Grime',
-  'Disco', 'Nu-Disco', 'Italo Disco', 'Funk',
-  'Ambient', 'Downtempo', 'Chillout', 'Lo-Fi',
-  'Hard Techno', 'Industrial', 'Hardstyle', 'Hardcore',
-  'Breakbeat', 'Electro', 'Synthwave', 'Retrowave',
-  'Comercial', 'Top 40', 'Pop Dance', 'Euro Dance',
-  'Dancehall', 'Afrobeats', 'Amapiano', 'Baile Funk',
-  'Acid House', 'Detroit Techno', 'Chicago House', 'Dub Techno',
+const GENRE_GROUPS: { label: string; genres: string[] }[] = [
+  { label: 'House', genres: ['Tech House', 'Deep House', 'House', 'Afro House', 'Organic House', 'Funky House', 'Tribal House', 'Progressive House', 'Acid House', 'Chicago House', 'Latin House'] },
+  { label: 'Techno', genres: ['Techno', 'Melodic Techno', 'Minimal', 'Hard Techno', 'Industrial', 'Dub Techno', 'Detroit Techno'] },
+  { label: 'Trance & Psy', genres: ['Trance', 'Progressive Trance', 'Psytrance', 'Uplifting Trance'] },
+  { label: 'Bass Music', genres: ['Drum & Bass', 'Dubstep', 'Jungle', 'UK Garage', 'Grime', 'Breakbeat', 'Future Bass'] },
+  { label: 'Urban & Latino', genres: ['Reggaetón', 'Dembow', 'Moombahton', 'Dancehall', 'R&B', 'Hip Hop', 'Trap', 'Afrobeats', 'Amapiano', 'Baile Funk'] },
+  { label: 'Comercial & Fiesta', genres: ['Comercial', 'Top 40', 'Pop Dance', 'Hits actuales', 'Remember', 'Pachanga'] },
+  { label: 'Disco & Funk', genres: ['Disco', 'Nu-Disco', 'Italo Disco', 'Funk', 'Electro', 'Synthwave'] },
+  { label: 'Chill & Ambiental', genres: ['Ambient', 'Downtempo', 'Chillout', 'Lo-Fi'] },
+  { label: 'Hard & Rave', genres: ['Hardstyle', 'Hardcore', 'EDM', 'Retrowave'] },
 ];
+
+const allGenres = GENRE_GROUPS.flatMap(g => g.genres);
 
 const sanitizeFileName = (name: string): string =>
   name
@@ -225,7 +223,7 @@ const AudioUpload = () => {
   return (
     <div className="glass-panel p-4">
       <h4 className="text-sm font-bold mb-3 flex items-center gap-2">
-        <Music size={16} style={{ color: '#D4AF37' }} /> Sesiones de Audio
+        <Music size={16} style={{ color: '#8A6D0F' }} /> Sesiones de Audio
         <span className="text-xs text-muted-foreground ml-auto">
           {sessions.length}/{MAX_SESSIONS_PRO}
         </span>
@@ -239,7 +237,7 @@ const AudioUpload = () => {
         <div className="flex items-center gap-2">
           <button onClick={() => setShowGenres(!showGenres)}
             className="text-sm font-bold px-3 py-1.5 rounded-lg transition-all"
-            style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.15)', color: '#D4AF37' }}>
+            style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.15)', color: '#8A6D0F' }}>
             Géneros ({selectedGenres.length}/5)
           </button>
           {selectedGenres.length > 0 && (
@@ -257,25 +255,32 @@ const AudioUpload = () => {
             {selectedGenres.map(g => (
               <span key={g} onClick={() => toggleGenre(g)}
                 className="text-xs font-bold px-2 py-0.5 rounded cursor-pointer hover:opacity-70"
-                style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                style={{ background: 'rgba(212,175,55,0.15)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.2)' }}>
                 {g} ×
               </span>
             ))}
           </div>
         )}
         {showGenres && (
-          <div className="mt-2 max-h-48 overflow-y-auto rounded-lg p-3 flex flex-wrap gap-1"
+          <div className="mt-2 max-h-64 overflow-y-auto rounded-lg p-3 space-y-3"
             style={{ background: 'rgba(0,0,0,0.4)', border: '1px solid var(--nightlife-border)' }}>
-            {allGenres.map(g => (
-              <button key={g} onClick={() => toggleGenre(g)}
-                className="text-xs font-medium px-2 py-0.5 rounded transition-all"
-                style={{
-                  background: selectedGenres.includes(g) ? 'rgba(212,175,55,0.2)' : 'rgba(0,0,0,0.03)',
-                  color: selectedGenres.includes(g) ? '#D4AF37' : 'var(--nightlife-text-secondary)',
-                  border: selectedGenres.includes(g) ? '1px solid rgba(212,175,55,0.3)' : '1px solid var(--nightlife-border)',
-                }}>
-                {g}
-              </button>
+            {GENRE_GROUPS.map(group => (
+              <div key={group.label}>
+                <p className="text-[0.6rem] font-black uppercase tracking-widest mb-1.5" style={{ color: 'rgba(212,175,55,0.5)' }}>{group.label}</p>
+                <div className="flex flex-wrap gap-1">
+                  {group.genres.map(g => (
+                    <button key={g} onClick={() => toggleGenre(g)}
+                      className="text-xs font-medium px-2 py-0.5 rounded transition-all"
+                      style={{
+                        background: selectedGenres.includes(g) ? 'rgba(212,175,55,0.2)' : 'rgba(0,0,0,0.03)',
+                        color: selectedGenres.includes(g) ? '#D4AF37' : 'var(--nightlife-text-secondary)',
+                        border: selectedGenres.includes(g) ? '1px solid rgba(212,175,55,0.3)' : '1px solid var(--nightlife-border)',
+                      }}>
+                      {g}
+                    </button>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         )}
@@ -308,7 +313,7 @@ const AudioUpload = () => {
           />
           <span className="text-xs leading-relaxed" style={{ color: '#222' }}>
             Declaro que poseo los derechos o licencias necesarias sobre este contenido, incluyendo las obras de terceros incorporadas en la mezcla, conforme a los{' '}
-            <a href="/terminos" target="_blank" rel="noopener noreferrer" style={{ color: '#D4AF37' }}>Términos y Condiciones</a>.
+            <a href="/terminos" target="_blank" rel="noopener noreferrer" style={{ color: '#8A6D0F' }}>Términos y Condiciones</a>.
           </span>
         </label>
       )}
@@ -326,7 +331,7 @@ const AudioUpload = () => {
           />
           <button onClick={handleAddLink}
             className="px-3 py-2 rounded-lg text-xs font-bold"
-            style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' }}>
+            style={{ background: 'rgba(212,175,55,0.15)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.3)' }}>
             Añadir
           </button>
           <button onClick={() => setShowLinkInput(false)}
@@ -344,7 +349,7 @@ const AudioUpload = () => {
             onClick={() => { if (rightsConfirmed) inputRef.current?.click(); }}
             disabled={uploading || !rightsConfirmed}
             className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg border-2 border-dashed transition-all hover:scale-[1.01] disabled:opacity-40"
-            style={{ borderColor: 'rgba(212,175,55,0.2)', color: '#D4AF37', background: 'rgba(212,175,55,0.03)' }}>
+            style={{ borderColor: 'rgba(212,175,55,0.2)', color: '#8A6D0F', background: 'rgba(212,175,55,0.03)' }}>
             <Upload size={16} />
             <span className="text-sm font-bold">{uploading ? `Subiendo... ${uploadProgress}%` : 'Subir archivo'}</span>
           </button>
@@ -357,7 +362,7 @@ const AudioUpload = () => {
             onClick={() => { if (rightsConfirmed) setShowLinkInput(!showLinkInput); }}
             disabled={!rightsConfirmed}
             className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg border-2 border-dashed transition-all hover:scale-[1.01] disabled:opacity-40"
-            style={{ borderColor: 'rgba(212,175,55,0.2)', color: '#D4AF37', background: 'rgba(212,175,55,0.03)' }}>
+            style={{ borderColor: 'rgba(212,175,55,0.2)', color: '#8A6D0F', background: 'rgba(212,175,55,0.03)' }}>
             <Link size={16} />
             <span className="text-sm font-bold">Link</span>
           </button>

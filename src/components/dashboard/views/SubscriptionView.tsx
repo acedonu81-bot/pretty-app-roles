@@ -12,7 +12,7 @@ const FEATURES = [
 const SubscriptionView = () => (
   <div className="max-w-lg mx-auto py-10 px-4">
     <div className="text-center mb-8">
-      <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#D4AF37' }}>Plan actual</p>
+      <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#8A6D0F' }}>Plan actual</p>
       <h2 className="text-3xl font-black mb-2">Plataforma gratuita</h2>
       <p className="text-sm" style={{ color: '#222' }}>
         XPEAK es completamente gratis durante su fase de crecimiento.<br />
@@ -25,7 +25,7 @@ const SubscriptionView = () => (
       <div className="flex flex-col gap-3">
         {FEATURES.map(f => (
           <div key={f} className="flex items-center gap-3">
-            <CheckCircle size={16} style={{ color: '#D4AF37', flexShrink: 0 }} />
+            <CheckCircle size={16} style={{ color: '#8A6D0F', flexShrink: 0 }} />
             <span className="text-sm" style={{ color: '#444' }}>{f}</span>
           </div>
         ))}

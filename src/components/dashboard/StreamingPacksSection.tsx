@@ -64,7 +64,7 @@ const StreamingPacksSection = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Zap size={14} style={{ color: '#D4AF37' }} />
+            <Zap size={14} style={{ color: '#8A6D0F' }} />
             <span className="text-xs font-bold uppercase tracking-wider">Horas de Streaming</span>
           </div>
           {includedHours > 0 && (

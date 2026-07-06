@@ -20,10 +20,10 @@ const OverviewTab = ({ fans, totalRevenue, myShare }: Props) => {
     <motion.div key="overview" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-5">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Fans activos', value: fans.length, icon: <Users size={18} />, color: '#D4AF37' },
+          { label: 'Fans activos', value: fans.length, icon: <Users size={18} />, color: '#8A6D0F' },
           { label: 'Ingresos / mes', value: `€${totalRevenue.toFixed(0)}`, icon: <TrendingUp size={18} />, color: '#22c55e' },
-          { label: 'Tu parte (80%)', value: `€${myShare.toFixed(0)}`, icon: <Zap size={18} />, color: '#D4AF37' },
-          { label: 'Rating medio', value: '—', icon: <Star size={18} />, color: '#D4AF37' },
+          { label: 'Tu parte (80%)', value: `€${myShare.toFixed(0)}`, icon: <Zap size={18} />, color: '#8A6D0F' },
+          { label: 'Rating medio', value: '—', icon: <Star size={18} />, color: '#8A6D0F' },
         ].map(kpi => (
           <div key={kpi.label} className="glass-panel p-4 flex items-center gap-3"
             style={{ border: `1px solid ${kpi.color}22` }}>
@@ -41,7 +41,7 @@ const OverviewTab = ({ fans, totalRevenue, myShare }: Props) => {
 
       <div className="glass-panel p-5" style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
         <p className="text-sm font-bold mb-4 flex items-center gap-2">
-          <Play size={14} style={{ color: '#D4AF37' }} />
+          <Play size={14} style={{ color: '#8A6D0F' }} />
           Así ven tu Fan Club los visitantes de tu perfil
           <span className="text-[0.75rem] font-bold px-1.5 py-0.5 rounded"
             style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
@@ -96,7 +96,7 @@ const OverviewTab = ({ fans, totalRevenue, myShare }: Props) => {
           <p className="text-xs text-muted-foreground mt-0.5">Conecta tu cuenta bancaria y empieza a recibir pagos de fans automáticamente cada mes.</p>
         </div>
         <button className="px-4 py-2 rounded-lg text-xs font-bold flex-shrink-0"
-          style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}
+          style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.25)' }}
           onClick={() => toast.info('Próximamente disponible')}>
           Próximamente <ChevronRight size={12} className="inline" />
         </button>

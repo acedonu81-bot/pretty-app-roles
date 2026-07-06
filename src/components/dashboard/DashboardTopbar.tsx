@@ -148,7 +148,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
             onClick={onMenuToggle}
             aria-label="Abrir menú"
             className="p-3 rounded-lg flex-shrink-0 transition-colors"
-            style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}
+            style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}
           >
             <Menu size={20} />
           </button>
@@ -246,9 +246,9 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
               style={{ borderBottom: '1px solid rgba(212,175,55,0.12)', background: 'rgba(212,175,55,0.04)' }}>
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#22c55e', boxShadow: '0 0 6px #22c55e' }} />
-                <span className="text-xs font-black tracking-wider" style={{ color: '#D4AF37' }}>NOTIFICACIONES</span>
+                <span className="text-xs font-black tracking-wider" style={{ color: '#8A6D0F' }}>NOTIFICACIONES</span>
                 <span className="text-[0.75rem] font-bold px-1.5 py-0.5 rounded-full"
-                  style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>
+                  style={{ background: 'rgba(212,175,55,0.15)', color: '#8A6D0F' }}>
                   {notifications.length}
                 </span>
               </div>
@@ -287,10 +287,10 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
                       border: n.urgent ? '1px solid rgba(239,68,68,0.3)' : '1px solid rgba(212,175,55,0.2)',
                     }}>
                     {n.icon === 'message'
-                      ? <MessageCircle size={12} style={{ color: '#D4AF37' }} />
+                      ? <MessageCircle size={12} style={{ color: '#8A6D0F' }} />
                       : n.icon === 'gift'
                       ? <Gift size={12} style={{ color: n.urgent ? '#ef4444' : '#D4AF37' }} />
-                      : <Sparkles size={12} style={{ color: '#D4AF37' }} />}
+                      : <Sparkles size={12} style={{ color: '#8A6D0F' }} />}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-bold truncate" style={{ color: n.urgent ? '#fca5a5' : undefined }}>{n.title}</p>

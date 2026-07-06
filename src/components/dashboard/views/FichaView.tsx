@@ -452,7 +452,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
                   ) : (
                     <a href={post.media_url} target="_blank" rel="noopener noreferrer"
                       className="mt-3 flex items-center gap-2 text-xs"
-                      style={{ color: '#D4AF37' }}>
+                      style={{ color: '#8A6D0F' }}>
                       <ExternalLink size={12} /> Ver vídeo
                     </a>
                   );
@@ -483,7 +483,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
           {/* Vídeo principal */}
           <div className="glass-panel p-5" style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
             <h4 className="text-sm font-bold mb-1 flex items-center gap-2">
-              <Video size={14} style={{ color: '#D4AF37' }} /> Vídeo Principal
+              <Video size={14} style={{ color: '#8A6D0F' }} /> Vídeo Principal
             </h4>
             <p className="text-xs text-muted-foreground mb-4">
               Aparece destacado en tu ficha pública. Usa YouTube o Vimeo.
@@ -524,7 +524,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
                 </div>
               ) : (
                 <div className="mt-3 glass-panel p-4 flex items-center gap-3">
-                  <AlertCircle size={14} style={{ color: '#D4AF37' }} />
+                  <AlertCircle size={14} style={{ color: '#8A6D0F' }} />
                   <p className="text-xs text-muted-foreground">URL no reconocida. Usa YouTube o Vimeo.</p>
                 </div>
               );

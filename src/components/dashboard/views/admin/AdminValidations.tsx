@@ -127,7 +127,7 @@ const AdminValidations = () => {
     <>
     <div className="glass-panel p-5 mb-6">
       <h3 className="text-sm font-bold mb-4 flex items-center gap-2">
-        <Shield size={14} style={{ color: '#D4AF37' }} />
+        <Shield size={14} style={{ color: '#8A6D0F' }} />
         Validaciones Pendientes
         {pending.length > 0 && (
           <span className="text-[0.75rem] px-2 py-0.5 rounded-full font-bold" style={{ background: 'rgba(255,95,86,0.15)', color: '#ff5f56' }}>
@@ -150,7 +150,7 @@ const AdminValidations = () => {
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-bold">{p.display_name}</span>
                     <span className="text-[0.75rem] px-1.5 py-0.5 rounded font-bold uppercase"
-                      style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>
+                      style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F' }}>
                       {p.role}
                     </span>
                   </div>
@@ -171,7 +171,7 @@ const AdminValidations = () => {
                 <div className="flex items-center gap-2 mb-3">
                   <button onClick={() => toggleAudio(p.id, p.audio_url)}
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-all hover:scale-105"
-                    style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+                    style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
                     {playingId === p.id ? <Pause size={12} /> : <Play size={12} />}
                     {playingId === p.id ? 'Pausar' : 'Escuchar sesión'}
                   </button>
@@ -189,7 +189,7 @@ const AdminValidations = () => {
                   </button>
                   <button onClick={() => handleAction(p, 'rookie')}
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-all hover:scale-105"
-                    style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+                    style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
                     <Clock size={12} /> Asignar ROOKIE
                   </button>
                   <button onClick={() => handleAction(p, 'rejected')}
@@ -223,11 +223,11 @@ const AdminSelloDeOro = ({ verifications, playingVideoId, setPlayingVideoId, han
 }) => (
   <div className="glass-panel p-5 mb-6" style={{ border: '1px solid rgba(212,175,55,0.2)' }}>
     <h3 className="text-sm font-bold mb-4 flex items-center gap-2">
-      <Star size={14} fill="#D4AF37" style={{ color: '#D4AF37' }} />
+      <Star size={14} fill="#D4AF37" style={{ color: '#8A6D0F' }} />
       Cola Sello de Oro
       {verifications.length > 0 && (
         <span className="text-[0.75rem] px-2 py-0.5 rounded-full font-bold"
-          style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>
+          style={{ background: 'rgba(212,175,55,0.15)', color: '#8A6D0F' }}>
           {verifications.length}
         </span>
       )}
@@ -243,7 +243,7 @@ const AdminSelloDeOro = ({ verifications, playingVideoId, setPlayingVideoId, han
               <div>
                 <span className="text-sm font-bold">{v.display_name}</span>
                 <span className="text-[0.75rem] px-1.5 py-0.5 rounded font-bold uppercase ml-2"
-                  style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>{v.role}</span>
+                  style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F' }}>{v.role}</span>
               </div>
               <span className="text-[0.75rem] text-muted-foreground">
                 {v.verification_submitted_at ? new Date(v.verification_submitted_at).toLocaleDateString('es-ES') : '—'}
@@ -263,7 +263,7 @@ const AdminSelloDeOro = ({ verifications, playingVideoId, setPlayingVideoId, han
                   <button
                     onClick={() => setPlayingVideoId(v.id)}
                     className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
-                    style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+                    style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
                     <Video size={13} /> Ver vídeo de verificación
                   </button>
                 )}

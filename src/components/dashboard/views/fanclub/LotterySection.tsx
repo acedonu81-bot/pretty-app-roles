@@ -134,7 +134,7 @@ const LotterySection = ({ fans }: Props) => {
           <div className="flex items-center gap-2 flex-wrap">
             <h3 className="text-sm font-bold">Sorteo Mensual del Regalo VIP</h3>
             <span className="text-[0.7rem] font-black px-1.5 py-0.5 rounded-full"
-              style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' }}>
+              style={{ background: 'rgba(212,175,55,0.15)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.3)' }}>
               1er VIERNES DE MES
             </span>
           </div>
@@ -147,7 +147,7 @@ const LotterySection = ({ fans }: Props) => {
       {/* Bases del sorteo */}
       <div className="rounded-xl p-4 mb-4 space-y-1.5"
         style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}>
-        <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#D4AF37' }}>
+        <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#8A6D0F' }}>
           Bases del sorteo
         </p>
         {[
@@ -174,9 +174,9 @@ const LotterySection = ({ fans }: Props) => {
         </div>
         <div className="text-right flex-shrink-0">
           {isDrawDay ? (
-            <span className="text-xs font-black" style={{ color: '#D4AF37' }}>¡HOY!</span>
+            <span className="text-xs font-black" style={{ color: '#8A6D0F' }}>¡HOY!</span>
           ) : (
-            <span className="text-sm font-black tabular-nums" style={{ color: '#D4AF37' }}>
+            <span className="text-sm font-black tabular-nums" style={{ color: '#8A6D0F' }}>
               {formatCountdown(msLeft)}
             </span>
           )}
@@ -186,7 +186,7 @@ const LotterySection = ({ fans }: Props) => {
       {/* Participants bar */}
       <div className="flex items-center gap-3 mb-4 px-3 py-2.5 rounded-xl"
         style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.05)' }}>
-        <Gift size={14} style={{ color: '#D4AF37' }} />
+        <Gift size={14} style={{ color: '#8A6D0F' }} />
         <div className="flex-1">
           <p className="text-xs font-bold">{fans.length} fans VIP en el sorteo</p>
           <p className="text-[0.75rem] text-muted-foreground">Todos los suscritos activos participan automáticamente</p>
@@ -224,7 +224,7 @@ const LotterySection = ({ fans }: Props) => {
 
           {!confirmed && !spinning && (
             <>
-              <p className="text-xs font-bold mb-2" style={{ color: '#D4AF37' }}>Elige el regalo:</p>
+              <p className="text-xs font-bold mb-2" style={{ color: '#8A6D0F' }}>Elige el regalo:</p>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
                 {GIFT_OPTIONS.map(g => (
                   <button key={g.id} type="button"

@@ -672,11 +672,11 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
               style={{ background: 'linear-gradient(135deg,rgba(212,175,55,0.15),rgba(212,175,55,0.05))', border: '1px solid rgba(212,175,55,0.25)' }}>
-              <FileText size={16} style={{ color: '#D4AF37' }} />
+              <FileText size={16} style={{ color: '#8A6D0F' }} />
             </div>
             <div>
               <h3 className="text-sm font-bold">Generar Contrato</h3>
-              <p className="text-xs" style={{ color: '#333' }}>Con <span style={{ color: '#D4AF37' }}>{professional.name}</span> · Ref. {ref}</p>
+              <p className="text-xs" style={{ color: '#333' }}>Con <span style={{ color: '#8A6D0F' }}>{professional.name}</span> · Ref. {ref}</p>
             </div>
           </div>
           <button onClick={onClose} className="p-2 rounded-lg hover:bg-white/5 transition-colors">
@@ -839,7 +839,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
                   {[
                     { label: 'Base imponible',  value: `€${fmt(price)}`, color: 'rgba(22,20,18,0.75)' },
                     { label: 'IVA 21%',         value: `+€${fmt(iva)}`,  color: '#222' },
-                    { label: 'Total con IVA',   value: `€${fmt(gross)}`, color: '#D4AF37' },
+                    { label: 'Total con IVA',   value: `€${fmt(gross)}`, color: '#8A6D0F' },
                   ].map(x => (
                     <div key={x.label}>
                       <p className="text-xs text-muted-foreground mb-1">{x.label}</p>
@@ -852,7 +852,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
               {/* Digital signature */}
               <div className="rounded-2xl p-4" style={{ background: 'rgba(212,175,55,0.03)', border: '1px solid rgba(212,175,55,0.15)' }}>
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-xs font-bold flex items-center gap-1.5" style={{ color: '#D4AF37' }}>
+                  <p className="text-xs font-bold flex items-center gap-1.5" style={{ color: '#8A6D0F' }}>
                     <PenLine size={13} /> Firma digital del contratante <span className="text-muted-foreground font-normal">(opcional)</span>
                   </p>
                   {hasSig && (
@@ -900,7 +900,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
           {step === 3 && (
             <button onClick={handleGenerate}
               className="flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
-              style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.25)', color: '#D4AF37' }}>
+              style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.25)', color: '#8A6D0F' }}>
               <Download size={14} /> PDF
             </button>
           )}

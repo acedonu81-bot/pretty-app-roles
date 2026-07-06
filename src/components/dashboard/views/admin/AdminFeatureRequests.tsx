@@ -33,7 +33,7 @@ const AdminFeatureRequests = () => {
         toast('¡XPEAK está listo! 50 usuarios han solicitado el vídeo en directo. Es hora de activar la pasarela de pagos.', {
           icon: 'trophy',
           duration: 10000,
-          style: { background: '#f0efe9', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' },
+          style: { background: '#f0efe9', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.3)' },
         });
       }
     };
@@ -49,14 +49,14 @@ const AdminFeatureRequests = () => {
       border: '1px solid rgba(212,175,55,0.1)',
     }}>
       <div className="flex items-center gap-3 mb-4">
-        <Radio size={20} style={{ color: '#D4AF37' }} />
+        <Radio size={20} style={{ color: '#8A6D0F' }} />
         <h3 className="text-lg font-bold">Solicitudes de Funciones Beta</h3>
       </div>
 
       {/* Progress bar */}
       <div className="mb-5">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>
+          <span className="text-xs font-bold" style={{ color: '#8A6D0F' }}>
             {liveCount >= GOAL ? (
               <span className="flex items-center gap-1.5"><Trophy size={14} /> ¡Objetivo Alcanzado!</span>
             ) : (
@@ -105,7 +105,7 @@ const AdminFeatureRequests = () => {
               style={{ background: 'rgba(0,0,0,0.03)' }}>
               <span className="font-mono text-muted-foreground truncate max-w-[180px]">{r.user_id}</span>
               <span className="px-2 py-0.5 rounded-full font-bold"
-                style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37' }}>
+                style={{ background: 'rgba(212,175,55,0.12)', color: '#8A6D0F' }}>
                 {r.feature_name}
               </span>
               <span className="text-muted-foreground">

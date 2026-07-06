@@ -49,12 +49,12 @@ const AdminCharts = () => {
         {/* MRR — requires Stripe, show placeholder */}
         <div className="glass-panel p-5">
           <h3 className="text-sm font-bold mb-4 flex items-center gap-2">
-            <BarChart3 size={14} style={{ color: '#D4AF37' }} /> Crecimiento MRR
+            <BarChart3 size={14} style={{ color: '#8A6D0F' }} /> Crecimiento MRR
           </h3>
           <div className="flex flex-col items-center justify-center h-40 gap-2">
             <p className="text-xs text-muted-foreground">Disponible tras integrar Stripe Connect</p>
             <span className="text-xs font-bold px-2 py-1 rounded"
-              style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+              style={{ background: 'rgba(212,175,55,0.08)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.2)' }}>
               Próximamente
             </span>
           </div>
@@ -63,7 +63,7 @@ const AdminCharts = () => {
         {/* Zone heatmap — real data */}
         <div className="glass-panel p-5">
           <h3 className="text-sm font-bold mb-4 flex items-center gap-2">
-            <Activity size={14} style={{ color: '#D4AF37' }} /> Usuarios por Zona
+            <Activity size={14} style={{ color: '#8A6D0F' }} /> Usuarios por Zona
           </h3>
           {loading ? (
             <div className="space-y-2">
@@ -106,7 +106,7 @@ const AdminCharts = () => {
         ) : plans ? (
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              { label: 'Elite', count: plans.elite,   color: '#D4AF37' },
+              { label: 'Elite', count: plans.elite,   color: '#8A6D0F' },
               { label: 'Premium', count: plans.premium, color: '#8B5CF6' },
               { label: 'Starter', count: plans.starter, color: '#3d3d4e' },
               { label: 'Free',   count: plans.free,    color: '#333' },

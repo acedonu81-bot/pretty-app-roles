@@ -77,8 +77,8 @@ const ActivityFeedWidget = () => {
     <div className="mx-4 md:mx-6 mt-4 rounded-xl px-4 py-3 overflow-hidden"
       style={{ background: '#ffffff', border: '1px solid rgba(212,175,55,0.2)' }}>
       <div className="flex items-center gap-2 mb-3">
-        <Sparkles size={13} style={{ color: '#D4AF37' }} />
-        <span className="text-xs font-black tracking-wider" style={{ color: '#D4AF37' }}>
+        <Sparkles size={13} style={{ color: '#8A6D0F' }} />
+        <span className="text-xs font-black tracking-wider" style={{ color: '#8A6D0F' }}>
           ACTIVIDAD RECIENTE
         </span>
       </div>

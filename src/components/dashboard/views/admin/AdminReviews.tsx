@@ -60,11 +60,11 @@ const AdminReviews = () => {
   return (
     <div className="glass-panel p-5 mb-6">
       <h3 className="text-sm font-bold mb-4 flex items-center gap-2">
-        <MessageSquare size={14} style={{ color: '#D4AF37' }} />
+        <MessageSquare size={14} style={{ color: '#8A6D0F' }} />
         Reseñas Pendientes
         {reviews.length > 0 && (
           <span className="text-[0.75rem] px-2 py-0.5 rounded-full font-bold"
-            style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>
+            style={{ background: 'rgba(212,175,55,0.15)', color: '#8A6D0F' }}>
             {reviews.length}
           </span>
         )}

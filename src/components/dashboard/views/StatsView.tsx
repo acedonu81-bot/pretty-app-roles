@@ -222,8 +222,8 @@ const StatsView = () => {
         {[
           { label: 'Visitas al perfil', value: loading ? '—' : animViews.toString(), icon: Eye, note: 'visitas a tu ficha pública', color: '#4285F4' },
           { label: 'Mensajes recibidos', value: loading ? '—' : animMessages.toString(), icon: MessageCircle, note: 'de otros usuarios', color: '#4285F4' },
-          { label: 'Solicitudes Flash', value: loading ? '—' : animBookings.toString(), icon: Zap, note: 'solicitudes recibidas', color: '#D4AF37' },
-          { label: 'Tasa de contacto', value: loading ? '—' : `${animRate}%`, icon: TrendingUp, note: 'vistas que escriben', color: '#D4AF37' },
+          { label: 'Solicitudes Flash', value: loading ? '—' : animBookings.toString(), icon: Zap, note: 'solicitudes recibidas', color: '#8A6D0F' },
+          { label: 'Tasa de contacto', value: loading ? '—' : `${animRate}%`, icon: TrendingUp, note: 'vistas que escriben', color: '#8A6D0F' },
         ].map(s => (
           <div key={s.label} className="glass-panel p-4 relative overflow-hidden">
             {/* top border accent */}
@@ -250,7 +250,7 @@ const StatsView = () => {
             { value: stats.views,         color: '#4285F4', label: 'Visitas al perfil',           icon: '👁' },
             { value: stats.messages,      color: '#60A5FA', label: 'Mensajes recibidos',          icon: '💬' },
             { value: stats.conversations, color: '#34D399', label: 'Conversaciones activas',      icon: '🗣' },
-            { value: stats.bookings,      color: '#D4AF37', label: 'Solicitudes Flash Booking',   icon: '⚡' },
+            { value: stats.bookings,      color: '#8A6D0F', label: 'Solicitudes Flash Booking',   icon: '⚡' },
           ]}
         />
       </div>
@@ -356,7 +356,7 @@ const StatsView = () => {
             )}
             <div className="sm:ml-auto text-right">
               <p className="text-xs text-muted-foreground uppercase tracking-wider font-bold mb-0.5">Tasa de contacto</p>
-              <p className="text-lg font-black" style={{ color: '#D4AF37' }}>{contactRate}%</p>
+              <p className="text-lg font-black" style={{ color: '#8A6D0F' }}>{contactRate}%</p>
             </div>
           </div>
         )}
@@ -379,13 +379,13 @@ const StatsView = () => {
         <h3 className="text-sm font-bold mb-3">Tu plan</h3>
         <div className="flex items-center gap-3 p-3 rounded-lg"
           style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}>
-          <CheckCircle size={20} style={{ color: '#D4AF37' }} />
+          <CheckCircle size={20} style={{ color: '#8A6D0F' }} />
           <div className="flex-1">
             <p className="text-sm font-bold">Plataforma gratuita</p>
             <p className="text-xs text-muted-foreground">Todas las funciones disponibles sin coste ni comisiones.</p>
           </div>
           <span className="text-[0.75rem] font-bold px-2 py-1 rounded"
-            style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>ACTIVO</span>
+            style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F' }}>ACTIVO</span>
         </div>
       </div>
     </div>

@@ -291,7 +291,7 @@ const DemandaTab = () => {
       {isEmpresario && showForm && (
         <div className="glass-panel p-5 mb-5 animate-[fadeIn_0.3s_ease]">
           <h3 className="text-xs font-bold mb-3 flex items-center gap-2">
-            <Megaphone size={13} style={{ color: '#D4AF37' }} /> Nueva oferta urgente (caduca en 2h)
+            <Megaphone size={13} style={{ color: '#8A6D0F' }} /> Nueva oferta urgente (caduca en 2h)
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
             <input value={newTitle} onChange={e => setNewTitle(e.target.value)} placeholder="Título (ej: DJ Techno URGENTE)" maxLength={80} className="nightlife-input !py-2.5 text-sm" />
@@ -342,7 +342,7 @@ const DemandaTab = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3 text-xs text-muted-foreground">
                       <span className="flex items-center gap-1"><MapPin size={11} /> {offer.location}</span>
-                      <span className="font-bold text-sm" style={{ color: '#D4AF37' }}>{offer.pay}</span>
+                      <span className="font-bold text-sm" style={{ color: '#8A6D0F' }}>{offer.pay}</span>
                     </div>
                     {!isEmpresario ? (
                       <button type="button"
@@ -381,7 +381,7 @@ const DemandaTab = () => {
                           <div key={i} className="flex items-end gap-2 justify-end">
                             <span className="text-[0.75rem] text-muted-foreground">{m.time}</span>
                             <div className="text-xs px-3 py-1.5 rounded-xl rounded-br-sm max-w-[80%]"
-                              style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.18)' }}>
+                              style={{ background: 'rgba(212,175,55,0.12)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.18)' }}>
                               {m.text}
                             </div>
                             <CheckCheck size={11} style={{ color: '#22c55e', flexShrink: 0 }} />
@@ -390,7 +390,7 @@ const DemandaTab = () => {
                       </div>
                     )}
                     <p className="text-xs text-muted-foreground mb-2">
-                      Mensaje a <span className="font-bold" style={{ color: '#D4AF37' }}>{offer.author}</span>
+                      Mensaje a <span className="font-bold" style={{ color: '#8A6D0F' }}>{offer.author}</span>
                       {msgs.length === 0 && ' — También aparecerá en Mensajes'}
                     </p>
                     <div className="flex gap-2">

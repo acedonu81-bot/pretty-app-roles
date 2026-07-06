@@ -247,7 +247,7 @@ export default function BlogMusicaEnVivoBodas() {
             <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.5)' }}>
               Encuentra grupos, solistas y cuartetos verificados con portfolio real y tarifas públicas en XPEAK.
             </p>
-            <a href="/auth"
+            <a href="/directorio/grupo-musical"
               className="inline-flex items-center gap-2 px-7 py-3 rounded-xl font-black text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               <Zap size={14} /> Ver músicos en XPEAK — gratis

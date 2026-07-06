@@ -38,7 +38,8 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
   const [loading, setLoading] = useState(true);
   const [showEmoji, setShowEmoji] = useState(false);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
-  const [showConvList, setShowConvList] = useState(true);
+  // Solo controla la navegación en MÓVIL (lista <-> chat). En desktop ambos se ven siempre.
+  const [mobileShowChat, setMobileShowChat] = useState(false);
   const [showNewConv, setShowNewConv] = useState(false);
   const [searchUsers, setSearchUsers] = useState('');
   const [userResults, setUserResults] = useState<{ user_id: string; display_name: string; role: string }[]>([]);
@@ -46,6 +47,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
   const bottomRef = useRef<HTMLDivElement>(null);
   const realtimeRef = useRef<RealtimeChannel | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const searchDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const loadConversations = useCallback(async () => {
     if (!user) return;
@@ -58,31 +60,42 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     if (error) { toast.error('Error al cargar conversaciones'); return; }
     if (!data || data.length === 0) { setConversations([]); setLoading(false); return; }
 
-    // Batch: single query for all participant profiles
+    const convIds = data.map(c => c.id);
     const otherIds = data.map(c => c.participant_a === user.id ? c.participant_b : c.participant_a);
-    const { data: profilesData } = await supabase
-      .from('profiles').select('user_id, display_name, photo_url').in('user_id', otherIds);
+
+    // 3 queries totales (independiente del nº de conversaciones):
+    // perfiles + todos los mensajes de todas las conversaciones, en paralelo.
+    const [{ data: profilesData }, { data: msgsData }] = await Promise.all([
+      supabase.from('profiles').select('user_id, display_name, photo_url').in('user_id', otherIds),
+      supabase.from('messages').select('conversation_id, content, read, sender_id, created_at')
+        .in('conversation_id', convIds).order('created_at', { ascending: false }),
+    ]);
+
     const profileMap = new Map((profilesData ?? []).map(p => [p.user_id, { name: p.display_name, photo: p.photo_url }]));
 
-    // Parallel: lastMsg + unread per conversation, all at once
-    const convs: Conversation[] = await Promise.all(data.map(async (c) => {
+    // Agregar en memoria: último mensaje y nº de no leídos por conversación.
+    const lastMsgMap = new Map<string, { content: string }>();
+    const unreadMap = new Map<string, number>();
+    for (const m of msgsData ?? []) {
+      // Mensajes ya ordenados desc → el primero por conv es el último cronológico.
+      if (!lastMsgMap.has(m.conversation_id)) lastMsgMap.set(m.conversation_id, { content: m.content });
+      if (!m.read && m.sender_id !== user.id) {
+        unreadMap.set(m.conversation_id, (unreadMap.get(m.conversation_id) || 0) + 1);
+      }
+    }
+
+    const convs: Conversation[] = data.map((c) => {
       const otherId = c.participant_a === user.id ? c.participant_b : c.participant_a;
-      const [{ data: lastMsg }, { count }] = await Promise.all([
-        supabase.from('messages').select('content, read, sender_id')
-          .eq('conversation_id', c.id).order('created_at', { ascending: false }).limit(1).maybeSingle(),
-        supabase.from('messages').select('id', { count: 'exact', head: true })
-          .eq('conversation_id', c.id).eq('read', false).neq('sender_id', user.id),
-      ]);
       return {
         id: c.id,
         other_user_id: otherId,
         other_name: profileMap.get(otherId)?.name || 'Usuario',
         other_photo: profileMap.get(otherId)?.photo,
-        last_message: lastMsg?.content || '',
+        last_message: lastMsgMap.get(c.id)?.content || '',
         last_message_at: c.last_message_at,
-        unread: count || 0,
+        unread: unreadMap.get(c.id) || 0,
       };
-    }));
+    });
 
     setConversations(convs);
     setLoading(false);
@@ -119,7 +132,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
       setActiveConvId(existing.id);
       setActiveOtherName(targetName);
       setActiveOtherUserId(targetUserId);
-      setShowConvList(false);
+      setMobileShowChat(true);
       await loadMessages(existing.id);
       await loadConversations();
     }
@@ -163,6 +176,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     };
   }, [activeConvId, user, loadConversations]);
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
+  useEffect(() => () => { if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current); }, []);
 
   const sendMessage = async (overrideContent?: string, photoUrl?: string) => {
     const text = overrideContent ?? input.trim();
@@ -234,22 +248,32 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     setActiveConvId(conv.id);
     setActiveOtherName(conv.other_name);
     setActiveOtherUserId(conv.other_user_id);
-    setShowConvList(false);
+    setMobileShowChat(true);
     await loadMessages(conv.id);
     loadConversations();
   };
 
-  const searchUsersHandler = async (q: string) => {
+  // Cierra el chat: en móvil vuelve a la lista; en desktop deselecciona la conversación.
+  const handleCloseChat = () => {
+    setMobileShowChat(false);
+    setActiveConvId(null);
+  };
+
+  const searchUsersHandler = (q: string) => {
     setSearchUsers(q);
-    if (q.trim().length < 2) { setUserResults([]); return; }
+    if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current);
+    if (q.trim().length < 2) { setUserResults([]); setSearchingUsers(false); return; }
     setSearchingUsers(true);
-    const { data } = await supabase.from('profiles')
-      .select('user_id, display_name, role')
-      .ilike('display_name', `%${q}%`)
-      .neq('user_id', user?.id ?? '')
-      .limit(10);
-    setUserResults((data ?? []) as { user_id: string; display_name: string; role: string }[]);
-    setSearchingUsers(false);
+    // Debounce 300ms: una sola query cuando el usuario deja de teclear.
+    searchDebounceRef.current = setTimeout(async () => {
+      const { data } = await supabase.from('profiles')
+        .select('user_id, display_name, role')
+        .ilike('display_name', `%${q}%`)
+        .neq('user_id', user?.id ?? '')
+        .limit(10);
+      setUserResults((data ?? []) as { user_id: string; display_name: string; role: string }[]);
+      setSearchingUsers(false);
+    }, 300);
   };
 
   const startNewConversation = async (targetUserId: string, targetName: string) => {
@@ -260,17 +284,22 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
   };
 
   const totalUnread = conversations.reduce((s, c) => s + c.unread, 0);
-  const isMobileChat = !showConvList && activeConvId;
 
   return (
-    <div className="animate-[fadeIn_0.4s_ease] flex flex-col" style={{ height: 'calc(100vh - 120px)', minHeight: 500 }}>
+    <div className="animate-[fadeIn_0.4s_ease] flex flex-col"
+      style={{
+        // 100dvh = viewport dinámico (no salta con la barra de URL móvil).
+        // En móvil descuenta header (~120px) + bottom nav (64px + safe-area); en desktop solo el header.
+        height: 'calc(100dvh - 120px - var(--mobile-nav-space, 0px))',
+        minHeight: 380,
+      }}>
       <div className="mb-4 flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold mb-0.5 flex items-center gap-2">
             <span className="text-gradient">Mensajes</span>
             {totalUnread > 0 && (
               <span className="text-xs px-2 py-0.5 rounded-full font-bold"
-                style={{ background: 'rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+                style={{ background: 'rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
                 {totalUnread}
               </span>
             )}
@@ -283,7 +312,8 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
         style={{ border: '1px solid rgba(0,0,0,0.08)', background: '#ffffff' }}>
         <div className="flex flex-col sm:grid h-full" style={{ gridTemplateColumns: 'minmax(0,280px) 1fr' }}>
 
-          {(showConvList || !activeConvId) && (
+          {/* Lista de conversaciones — siempre visible en desktop; en móvil oculta al abrir un chat */}
+          <div className={`${mobileShowChat ? 'hidden' : 'flex'} sm:flex flex-col h-full overflow-hidden`}>
             <ConversationList
               conversations={conversations}
               loading={loading}
@@ -291,18 +321,15 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
               onSelectConversation={handleSelectConversation}
               onNewConversation={() => setShowNewConv(true)}
             />
-          )}
+          </div>
 
-          {/* Empty placeholder — desktop only when no conversation selected */}
-          {!activeConvId && (
+          {/* Panel derecho — placeholder si no hay chat (solo desktop), o el chat */}
+          {!activeConvId ? (
             <div className="hidden sm:flex flex-col h-full overflow-hidden">
               <EmptyChatPlaceholder />
             </div>
-          )}
-
-          {/* Chat window — full screen on mobile, right panel on desktop */}
-          {activeConvId && !showConvList && (
-            <div className="flex flex-col h-full overflow-hidden">
+          ) : (
+            <div className={`${mobileShowChat ? 'flex' : 'hidden'} sm:flex flex-col h-full overflow-hidden`}>
               <ChatWindow
                 messages={messages}
                 userId={user?.id ?? ''}
@@ -317,28 +344,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
                 fileInputRef={fileInputRef}
                 onSend={sendMessage}
                 onPhotoUpload={handlePhotoUpload}
-                onBack={() => { setShowConvList(true); setActiveConvId(null); }}
-              />
-            </div>
-          )}
-          {/* Desktop: show chat alongside conversation list */}
-          {activeConvId && showConvList && (
-            <div className="hidden sm:flex flex-col h-full overflow-hidden">
-              <ChatWindow
-                messages={messages}
-                userId={user?.id ?? ''}
-                activeOtherName={activeOtherName}
-                input={input}
-                setInput={setInput}
-                showEmoji={showEmoji}
-                setShowEmoji={setShowEmoji}
-                sending={sending}
-                uploadingPhoto={uploadingPhoto}
-                bottomRef={bottomRef}
-                fileInputRef={fileInputRef}
-                onSend={sendMessage}
-                onPhotoUpload={handlePhotoUpload}
-                onBack={() => { setShowConvList(true); setActiveConvId(null); }}
+                onBack={handleCloseChat}
               />
             </div>
           )}

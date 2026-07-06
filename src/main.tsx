@@ -4,7 +4,13 @@ import App from "./App.tsx";
 import "./index.css";
 import { initCapacitor } from "./lib/capacitor";
 
-inject();
+inject({
+  beforeSend: (event) => {
+    const skip = ['/eliminar-cuenta', '/privacidad', '/cookies', '/terminos', '/aviso-legal'];
+    if (skip.some(p => event.url.includes(p))) return null;
+    return event;
+  },
+});
 initCapacitor();
 
 if ('serviceWorker' in navigator) {

@@ -67,7 +67,7 @@ const AdminCancellations = () => {
   return (
     <div className="glass-panel p-5 mb-6">
       <h3 className="text-sm font-bold mb-4 flex items-center gap-2">
-        <TrendingDown size={14} style={{ color: '#D4AF37' }} />
+        <TrendingDown size={14} style={{ color: '#8A6D0F' }} />
         Estadísticas de Cancelación
       </h3>
 
@@ -76,8 +76,8 @@ const AdminCancellations = () => {
         {[
           { label: 'Total cancelaciones', value: total, icon: XCircle, color: '#ff5f56' },
           { label: 'Retenidos', value: retained, icon: Gift, color: '#22c55e' },
-          { label: 'Tasa retención', value: `${retentionRate}%`, icon: BarChart3, color: '#D4AF37' },
-          { label: 'Descuentos activos', value: activeDiscounts, icon: Gift, color: '#D4AF37' },
+          { label: 'Tasa retención', value: `${retentionRate}%`, icon: BarChart3, color: '#8A6D0F' },
+          { label: 'Descuentos activos', value: activeDiscounts, icon: Gift, color: '#8A6D0F' },
         ].map(m => (
           <div key={m.label} className="rounded-xl p-3 text-center" style={{
             background: 'rgba(212,175,55,0.04)',
@@ -109,7 +109,7 @@ const AdminCancellations = () => {
                     }}
                   />
                 </div>
-                <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>{count}</span>
+                <span className="text-xs font-bold" style={{ color: '#8A6D0F' }}>{count}</span>
               </div>
             ))}
           </div>

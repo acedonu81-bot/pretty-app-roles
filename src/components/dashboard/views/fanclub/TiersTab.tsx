@@ -6,7 +6,7 @@ const TIERS = [
     id: 'fan',
     name: 'Fan',
     price: 4.99,
-    color: '#D4AF37',
+    color: '#8A6D0F',
     glow: 'rgba(212,175,55,0.15)',
     border: 'rgba(212,175,55,0.3)',
     icon: <Heart size={18} />,
@@ -67,7 +67,7 @@ const TiersTab = () => (
       </div>
     ))}
     <div className="p-4 rounded-xl text-xs space-y-2" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
-      <p className="font-bold" style={{ color: '#D4AF37' }}>Reparto de ingresos</p>
+      <p className="font-bold" style={{ color: '#8A6D0F' }}>Reparto de ingresos</p>
       <p className="text-muted-foreground">
         Tú recibes el <strong style={{ color: '#22c55e' }}>80%</strong> de cada suscripción. XPEAK retiene un <strong>20%</strong> por plataforma y procesamiento.
       </p>
@@ -78,7 +78,7 @@ const TiersTab = () => (
         ].map(r => (
           <div key={r.tier} className="rounded-lg p-2.5"
             style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.1)' }}>
-            <p className="font-bold mb-1" style={{ color: '#D4AF37' }}>{r.tier}</p>
+            <p className="font-bold mb-1" style={{ color: '#8A6D0F' }}>{r.tier}</p>
             <p className="text-muted-foreground">Tú: <strong style={{ color: '#22c55e' }}>{r.tuParte}</strong></p>
             <p className="text-muted-foreground">XPEAK: {r.xpeak}</p>
           </div>

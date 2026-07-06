@@ -44,7 +44,7 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
       {/* Filters */}
       <div className="glass-panel p-4 mb-5">
         <div className="flex items-center gap-2 mb-3">
-          <Filter size={14} style={{ color: '#D4AF37' }} />
+          <Filter size={14} style={{ color: '#8A6D0F' }} />
           <span className="text-xs font-bold">Filtros</span>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -86,7 +86,7 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
             onChange={e => setMaxPrice(parseInt(e.target.value))} className="w-full accent-amber-500" />
           <div className="flex justify-between text-[0.75rem] text-muted-foreground mt-0.5">
             <span>€50</span>
-            <span style={{ color: '#D4AF37' }}>{maxPrice >= 1000 ? '∞ Sin límite' : `€${maxPrice}`}</span>
+            <span style={{ color: '#8A6D0F' }}>{maxPrice >= 1000 ? '∞ Sin límite' : `€${maxPrice}`}</span>
             <span>Sin límite</span>
           </div>
         </div>
@@ -159,7 +159,7 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-bold truncate">{p.display_name || 'Sin nombre'}</span>
-                  {p.is_verified && <Star size={12} style={{ color: '#D4AF37' }} fill="#D4AF37" title="Sello de Oro" />}
+                  {p.is_verified && <Star size={12} style={{ color: '#8A6D0F' }} fill="#D4AF37" title="Sello de Oro" />}
                 </div>
                 <p className="text-xs text-muted-foreground">{p.specialty || p.role} · {p.zone || 'Madrid'}</p>
                 {p.bio && <p className="text-[0.75rem] text-muted-foreground mt-0.5 line-clamp-1">{p.bio}</p>}
@@ -178,12 +178,12 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
             </div>
 
             <div className="flex items-center gap-2 mb-3 flex-wrap">
-              <span className="text-base font-black" style={{ color: '#D4AF37' }}>
+              <span className="text-base font-black" style={{ color: '#8A6D0F' }}>
                 {p.hourly_rate > 0 ? <>€{p.hourly_rate}<span className="text-xs font-bold opacity-60">/hora</span></> : <span className="text-xs opacity-50">A consultar</span>}
               </span>
               {p.genres?.slice(0, 2).map(g => (
                 <span key={g} className="text-[0.7rem] px-1 py-0.5 rounded font-bold"
-                  style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>
+                  style={{ background: 'rgba(212,175,55,0.08)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.15)' }}>
                   {g}
                 </span>
               ))}

@@ -243,9 +243,6 @@ export default function DirectorioPublico() {
                   : { background: '#ffffff', color: '#222', border: '1px solid rgba(0,0,0,0.1)' }
                 }>{c}</button>
             ))}
-            <span className="text-xs self-center ml-auto" style={{ color: '#333' }}>
-              {profiles.length} profesional{profiles.length !== 1 ? 'es' : ''}
-            </span>
           </div>
 
           {/* Grid de perfiles */}

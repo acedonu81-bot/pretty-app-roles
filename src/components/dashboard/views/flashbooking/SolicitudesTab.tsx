@@ -16,7 +16,7 @@ interface Solicitud {
 }
 
 const STATUS: Record<string, { label: string; color: string; bg: string }> = {
-  pending:  { label: 'Pendiente',  color: '#D4AF37', bg: 'rgba(212,175,55,0.08)' },
+  pending:  { label: 'Pendiente',  color: '#8A6D0F', bg: 'rgba(212,175,55,0.08)' },
   accepted: { label: 'Aceptada',   color: '#22c55e', bg: 'rgba(34,197,94,0.08)' },
   closed:   { label: 'Completada', color: '#22c55e', bg: 'rgba(34,197,94,0.08)' },
   rejected: { label: 'Rechazada',  color: '#ff5f56', bg: 'rgba(255,95,86,0.08)' },
@@ -142,7 +142,7 @@ const SolicitudesTab = () => {
           <span className="text-sm font-bold">Solicitudes recibidas</span>
           {pending > 0 && (
             <span className="text-[0.75rem] font-black px-2 py-0.5 rounded-full"
-              style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' }}>
+              style={{ background: 'rgba(212,175,55,0.15)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.3)' }}>
               {pending} pendiente{pending > 1 ? 's' : ''}
             </span>
           )}
@@ -184,7 +184,7 @@ const SolicitudesTab = () => {
                   <div className="flex items-center gap-2">
                     <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
                       style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.15)' }}>
-                      <User size={15} style={{ color: '#D4AF37' }} />
+                      <User size={15} style={{ color: '#8A6D0F' }} />
                     </div>
                     <div>
                       <p className="text-sm font-bold">{s.requester_name || 'Empresario'}</p>
@@ -204,13 +204,13 @@ const SolicitudesTab = () => {
                 <div className="space-y-1.5 mb-3">
                   {s.event_date && (
                     <p className="text-xs text-muted-foreground flex items-center gap-1.5">
-                      <Calendar size={11} style={{ color: '#D4AF37', flexShrink: 0 }} />
+                      <Calendar size={11} style={{ color: '#8A6D0F', flexShrink: 0 }} />
                       {fmt(s.event_date)}
                     </p>
                   )}
                   {s.event_location && (
                     <p className="text-xs text-muted-foreground flex items-center gap-1.5">
-                      <MapPin size={11} style={{ color: '#D4AF37', flexShrink: 0 }} />
+                      <MapPin size={11} style={{ color: '#8A6D0F', flexShrink: 0 }} />
                       {s.event_location}
                     </p>
                   )}

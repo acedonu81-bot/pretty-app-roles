@@ -50,7 +50,7 @@ type SectionProps = { title: string; icon: React.ReactNode; children: React.Reac
 const Section = ({ title, icon, children }: SectionProps) => (
   <div className="glass-panel p-5 mb-4">
     <div className="flex items-center gap-2 mb-4" style={{ borderBottom: '1px solid rgba(0,0,0,0.05)', paddingBottom: '0.75rem' }}>
-      <span style={{ color: '#D4AF37' }}>{icon}</span>
+      <span style={{ color: '#8A6D0F' }}>{icon}</span>
       <h3 className="text-sm font-bold">{title}</h3>
     </div>
     {children}
@@ -99,7 +99,7 @@ const MultiProfileSection = () => {
               <p className="text-xs text-muted-foreground capitalize">{p.role}</p>
             </div>
             {p.id === profileId
-              ? <span className="text-[0.6rem] font-black px-2 py-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37' }}>ACTIVO</span>
+              ? <span className="text-[0.6rem] font-black px-2 py-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.12)', color: '#8A6D0F' }}>ACTIVO</span>
               : <button onClick={() => switchProfile(p.id)} className="text-xs font-bold px-3 py-1 rounded-lg transition-all hover:scale-105"
                   style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.08)', color: '#3d3d4e' }}>
                   Cambiar
@@ -119,7 +119,7 @@ const MultiProfileSection = () => {
 
       {adding && (
         <div className="p-4 rounded-xl space-y-3" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(212,175,55,0.15)' }}>
-          <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>Nuevo perfil</p>
+          <p className="text-xs font-bold" style={{ color: '#8A6D0F' }}>Nuevo perfil</p>
           <input value={newName} onChange={e => setNewName(e.target.value)} placeholder="Nombre artístico o profesional"
             maxLength={60} className="nightlife-input !py-2.5 text-sm w-full" />
           <NightlifeSelect value={newRole} onChange={setNewRole} options={ROLE_OPTIONS} active />
@@ -846,8 +846,8 @@ Para cualquier duda: soporte@xpeak.es
           </div>
           {!isEmpresario && (
           <div>
-            <label className="block text-xs text-muted-foreground mb-1.5 font-medium" style={{ color: '#D4AF37' }}>Caché base (€/hora)</label>
-            <input type="number" value={rate ?? ''} onChange={e => setLocalRate(Number(e.target.value))} min={20} step={5} className="nightlife-input text-sm font-bold" style={{ color: '#D4AF37' }} />
+            <label className="block text-xs text-muted-foreground mb-1.5 font-medium" style={{ color: '#8A6D0F' }}>Caché base (€/hora)</label>
+            <input type="number" value={rate ?? ''} onChange={e => setLocalRate(Number(e.target.value))} min={20} step={5} className="nightlife-input text-sm font-bold" style={{ color: '#8A6D0F' }} />
           </div>
           )}
         </div>
@@ -881,7 +881,7 @@ Para cualquier duda: soporte@xpeak.es
               <p className="text-xs font-bold" style={{ color: audioQuality === q.id ? '#D4AF37' : undefined }}>{q.label}</p>
               <p className="text-xs text-muted-foreground mt-0.5">{q.desc}</p>
               {audioQuality === q.id && (
-                <span className="text-[0.75rem] font-black mt-1 block" style={{ color: '#D4AF37' }}>● ACTIVO</span>
+                <span className="text-[0.75rem] font-black mt-1 block" style={{ color: '#8A6D0F' }}>● ACTIVO</span>
               )}
             </button>
           ))}
@@ -918,7 +918,7 @@ Para cualquier duda: soporte@xpeak.es
                 {isIosNotPWA && (
                   <div className="rounded-lg p-3 space-y-1.5 text-xs"
                     style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
-                    <p className="font-bold" style={{ color: '#D4AF37' }}>Cómo instalar en iPhone/iPad:</p>
+                    <p className="font-bold" style={{ color: '#8A6D0F' }}>Cómo instalar en iPhone/iPad:</p>
                     {['1. Pulsa el icono de compartir ↑ en Safari', '2. Selecciona "Añadir a pantalla de inicio"', '3. Abre XPEAK desde el icono nuevo', '4. Vuelve a Ajustes → Notificaciones'].map(s => (
                       <p key={s} className="text-muted-foreground">{s}</p>
                     ))}
@@ -959,7 +959,7 @@ Para cualquier duda: soporte@xpeak.es
               style={{ background: pushEnabled ? 'rgba(212,175,55,0.04)' : 'rgba(255,255,255,0.02)', border: `1px solid ${pushEnabled ? 'rgba(212,175,55,0.2)' : 'rgba(0,0,0,0.06)'}` }}>
               <div className="flex items-center gap-3 flex-1 min-w-0">
                 {pushEnabled
-                  ? <Bell size={16} style={{ color: '#D4AF37', flexShrink: 0 }} />
+                  ? <Bell size={16} style={{ color: '#8A6D0F', flexShrink: 0 }} />
                   : <BellOff size={16} style={{ color: '#333', flexShrink: 0 }} />}
                 <div className="min-w-0">
                   <p className="text-sm font-bold">{pushEnabled ? 'Notificaciones activas' : 'Notificaciones desactivadas'}</p>
@@ -1043,7 +1043,7 @@ Para cualquier duda: soporte@xpeak.es
           <div className="rounded-xl p-3 flex items-center justify-between gap-3"
             style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
             <div className="flex items-center gap-2.5">
-              <Download size={14} style={{ color: '#D4AF37', flexShrink: 0 }} />
+              <Download size={14} style={{ color: '#8A6D0F', flexShrink: 0 }} />
               <div>
                 <p className="text-xs font-bold">Exportar JSON (Art. 20)</p>
                 <p className="text-xs text-muted-foreground">Todos tus datos en un archivo JSON completo</p>
@@ -1051,7 +1051,7 @@ Para cualquier duda: soporte@xpeak.es
             </div>
             <button onClick={handleExportData}
               className="flex-shrink-0 text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-105"
-              style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
+              style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.25)' }}>
               Descargar
             </button>
           </div>
@@ -1060,7 +1060,7 @@ Para cualquier duda: soporte@xpeak.es
           <div className="rounded-xl p-3 flex items-center justify-between gap-3"
             style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
             <div className="flex items-center gap-2.5">
-              <Archive size={14} style={{ color: '#D4AF37', flexShrink: 0 }} />
+              <Archive size={14} style={{ color: '#8A6D0F', flexShrink: 0 }} />
               <div>
                 <p className="text-xs font-bold">CSV múltiple (ZIP)</p>
                 <p className="text-xs text-muted-foreground">perfil · bookings · favoritos · conversaciones</p>
@@ -1068,7 +1068,7 @@ Para cualquier duda: soporte@xpeak.es
             </div>
             <button onClick={() => user && exportUserDataZip(user)}
               className="flex-shrink-0 text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-105"
-              style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
+              style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.25)' }}>
               Descargar
             </button>
           </div>
@@ -1077,7 +1077,7 @@ Para cualquier duda: soporte@xpeak.es
           <div className="rounded-xl p-3 flex items-center justify-between gap-3"
             style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
             <div className="flex items-center gap-2.5">
-              <FileText size={14} style={{ color: '#D4AF37', flexShrink: 0 }} />
+              <FileText size={14} style={{ color: '#8A6D0F', flexShrink: 0 }} />
               <div>
                 <p className="text-xs font-bold">Informe Anual PDF</p>
                 <p className="text-xs text-muted-foreground">KPIs, bookings, actividad mensual · Disponible ene. 2027</p>
@@ -1085,7 +1085,7 @@ Para cualquier duda: soporte@xpeak.es
             </div>
             <button onClick={handleExportInformeAnual}
               className="flex-shrink-0 text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-105"
-              style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
+              style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.25)' }}>
               Generar
             </button>
           </div>
@@ -1094,7 +1094,7 @@ Para cualquier duda: soporte@xpeak.es
           <div className="rounded-xl p-3 flex items-center justify-between gap-3"
             style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
             <div className="flex items-center gap-2.5">
-              <QrCode size={14} style={{ color: '#D4AF37', flexShrink: 0 }} />
+              <QrCode size={14} style={{ color: '#8A6D0F', flexShrink: 0 }} />
               <div>
                 <p className="text-xs font-bold">QR de Perfil</p>
                 <p className="text-xs text-muted-foreground">PNG 400×500px con tu URL pública · Gratis siempre</p>
@@ -1102,7 +1102,7 @@ Para cualquier duda: soporte@xpeak.es
             </div>
             <button onClick={handleDownloadQR}
               className="flex-shrink-0 text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-105"
-              style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
+              style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.25)' }}>
               Descargar
             </button>
           </div>

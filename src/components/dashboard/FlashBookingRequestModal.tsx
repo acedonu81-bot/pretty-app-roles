@@ -97,7 +97,7 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
           {/* Header */}
           <div className="flex items-center gap-3 px-5 pt-5 pb-4" style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
             <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-              style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+              style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
               <Zap size={16} />
             </div>
             <div className="flex-1">
@@ -151,9 +151,9 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
             {estimatedPrice && (
               <div className="flex items-center gap-2 px-3 py-2 rounded-xl"
                 style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
-                <Sparkles size={12} style={{ color: '#D4AF37' }} />
+                <Sparkles size={12} style={{ color: '#8A6D0F' }} />
                 <p className="text-xs" style={{ color: '#222' }}>
-                  Presupuesto estimado: <span className="font-bold" style={{ color: '#D4AF37' }}>~{estimatedPrice}€</span>
+                  Presupuesto estimado: <span className="font-bold" style={{ color: '#8A6D0F' }}>~{estimatedPrice}€</span>
                   <span className="ml-1" style={{ color: '#333' }}>
                     ({hourlyRate}€/h × {EVENT_HOURS[form.eventType] ?? 4}h)
                   </span>

@@ -91,7 +91,7 @@ const FanChat = ({ professionalProfileId, professionalUserId, isSubscribed }: Pr
 
   return (
     <div className="glass-panel flex flex-col" style={{ height: 320 }}>
-      <div className="p-3 text-xs font-bold" style={{ borderBottom: '1px solid var(--nightlife-border)', color: '#D4AF37' }}>
+      <div className="p-3 text-xs font-bold" style={{ borderBottom: '1px solid var(--nightlife-border)', color: '#8A6D0F' }}>
         Chat Fan Club
       </div>
       <div ref={chatRef} className="flex-1 overflow-y-auto p-3 space-y-2">

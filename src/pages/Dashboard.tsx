@@ -227,7 +227,7 @@ const Dashboard = () => {
       <meta name="robots" content="noindex, nofollow" />
     </Helmet>
     <RoleDefaultView onViewChange={handleViewChange} />
-    <div className="flex h-screen w-screen overflow-hidden" style={{ background: '#f5f4f0' }}>
+    <div data-app="dashboard" className="flex h-screen w-screen overflow-hidden" style={{ background: '#f5f4f0' }}>
       <Suspense fallback={null}><AmbientBackground /></Suspense>
 
       {!isMobile && (

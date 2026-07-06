@@ -92,7 +92,7 @@ const VerificationSection = () => {
         <>
           <div className="rounded-xl p-4 mb-4 space-y-2.5"
             style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}>
-            <p className="text-xs font-bold mb-3" style={{ color: '#D4AF37' }}>Qué necesitas enviar:</p>
+            <p className="text-xs font-bold mb-3" style={{ color: '#8A6D0F' }}>Qué necesitas enviar:</p>
             {[
               { icon: Film,      text: 'Vídeo de 30–90 segundos demostrando tu habilidad en directo' },
               { icon: Headphones, text: 'Calidad mínima: 720p, buena iluminación' },
@@ -130,9 +130,9 @@ const VerificationSection = () => {
       {syncedStatus === 'approved' && (
         <div className="rounded-xl p-4 flex items-center gap-3"
           style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
-          <CheckCircle size={16} style={{ color: '#D4AF37' }} className="flex-shrink-0" />
+          <CheckCircle size={16} style={{ color: '#8A6D0F' }} className="flex-shrink-0" />
           <div>
-            <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>Sello activo — tu perfil es prioritario en búsquedas</p>
+            <p className="text-xs font-bold" style={{ color: '#8A6D0F' }}>Sello activo — tu perfil es prioritario en búsquedas</p>
             <p className="text-xs text-muted-foreground">Los empresarios ven tu ★ en todas las listas y filtros.</p>
           </div>
         </div>

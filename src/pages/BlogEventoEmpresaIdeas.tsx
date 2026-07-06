@@ -155,7 +155,7 @@ export default function BlogEventoEmpresaIdeas() {
             <section className="rounded-2xl p-6 sm:p-8 text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
               <p className="text-base font-black mb-2">Organiza tu evento de empresa con XPEAK</p>
               <p className="text-xs mb-5" style={{ color: 'rgba(255,255,255,0.5)' }}>DJs, magos, grupos musicales, bartenders y animadores. Perfiles verificados, precio publico y contratos digitales. Sin comision.</p>
-              <a href="/eventos-empresa"
+              <a href="/directorio/dj"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-black text-sm transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                 Ver profesionales para eventos

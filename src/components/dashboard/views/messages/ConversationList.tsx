@@ -40,13 +40,13 @@ const ConversationList = ({ conversations, loading, activeConvId, onSelectConver
   <div className="flex flex-col h-full overflow-hidden" style={{ borderRight: '1px solid rgba(212,175,55,0.1)' }}>
     <div className="px-4 py-3 flex items-center justify-between flex-shrink-0"
       style={{ borderBottom: '1px solid rgba(212,175,55,0.08)', background: '#ffffff' }}>
-      <span className="text-xs font-black tracking-widest" style={{ color: '#D4AF37' }}>
+      <span className="text-xs font-black tracking-widest" style={{ color: '#8A6D0F' }}>
         CONVERSACIONES
       </span>
       <div className="flex items-center gap-2">
         {conversations.length > 0 && (
           <span className="text-xs font-bold px-1.5 py-0.5 rounded-full"
-            style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37' }}>
+            style={{ background: 'rgba(212,175,55,0.12)', color: '#8A6D0F' }}>
             {conversations.length}
           </span>
         )}
@@ -54,7 +54,7 @@ const ConversationList = ({ conversations, loading, activeConvId, onSelectConver
           <button onClick={onNewConversation}
             title="Nueva conversación"
             className="w-6 h-6 flex items-center justify-center rounded-lg transition-all hover:scale-110"
-            style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>
+            style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F' }}>
             <PenSquare size={12} />
           </button>
         )}

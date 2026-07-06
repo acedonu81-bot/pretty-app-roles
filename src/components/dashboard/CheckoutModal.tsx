@@ -57,7 +57,7 @@ const CheckoutModal = ({ open, onClose, item }: CheckoutModalProps) => {
             <p className="text-[0.7rem] text-muted-foreground mb-1">
               Resumen de tu pedido:
             </p>
-            <p className="text-xl font-black mb-1" style={{ color: '#D4AF37' }}>€{total}</p>
+            <p className="text-xl font-black mb-1" style={{ color: '#8A6D0F' }}>€{total}</p>
             {selectedExtras.length > 0 && (
               <div className="text-xs text-muted-foreground mb-4 space-y-0.5">
                 <p>{item.name} — €{item.price}</p>

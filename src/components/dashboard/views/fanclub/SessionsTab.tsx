@@ -72,7 +72,7 @@ const SessionsTab = () => {
       <div className="glass-panel p-4 flex items-center justify-between" style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
         <div>
           <div className="flex items-center gap-2 mb-0.5">
-            <Lock size={14} style={{ color: '#D4AF37' }} />
+            <Lock size={14} style={{ color: '#8A6D0F' }} />
             <p className="text-sm font-bold">Sesiones exclusivas Fan Club</p>
           </div>
           <p className="text-xs text-muted-foreground">Solo tus fans suscritos pueden escuchar estas sesiones</p>
@@ -90,7 +90,7 @@ const SessionsTab = () => {
       {adding && (
         <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
           className="glass-panel p-5 space-y-3" style={{ border: '1px solid rgba(212,175,55,0.2)' }}>
-          <p className="text-xs font-bold uppercase tracking-widest" style={{ color: '#D4AF37' }}>Nueva sesión</p>
+          <p className="text-xs font-bold uppercase tracking-widest" style={{ color: '#8A6D0F' }}>Nueva sesión</p>
           <div>
             <label className="text-xs font-medium mb-1 block">Título *</label>
             <input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
@@ -160,7 +160,7 @@ const SessionsTab = () => {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-0.5 flex-wrap">
                   <span className="text-xs font-black px-2 py-0.5 rounded-full"
-                    style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                    style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.2)' }}>
                     <Lock size={9} className="inline mr-1" />FAN CLUB
                   </span>
                   {parsed && (

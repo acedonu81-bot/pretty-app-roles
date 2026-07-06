@@ -35,7 +35,11 @@ const CalendarView = () => {
   const today = new Date();
   const [viewYear, setViewYear] = useState(today.getFullYear());
   const [viewMonth, setViewMonth] = useState(today.getMonth());
-  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const ALERT_KEYS = ['24h antes del evento', '1h antes del evento', 'Cambios de horario', 'Nuevos bolos'] as const;
+  const [alertPrefs, setAlertPrefs] = useState<Record<string, boolean>>(
+    Object.fromEntries(ALERT_KEYS.map(k => [k, false]))
+  );
+  const notificationsEnabled = Object.values(alertPrefs).some(Boolean);
   const [, setGcalConnected] = useState(false);
   const [events, setEvents] = useState<CalEvent[]>([]);
   const [showForm, setShowForm] = useState(false);
@@ -45,6 +49,32 @@ const CalendarView = () => {
   const [availMode, setAvailMode] = useState(false);
 
   const storageKey = `xpeak_events_${user?.id ?? 'guest'}`;
+  const alertsKey = `xpeak_alerts_${user?.id ?? 'guest'}`;
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(alertsKey);
+      if (saved) setAlertPrefs(prev => ({ ...prev, ...JSON.parse(saved) }));
+    } catch {}
+  }, [alertsKey]);
+
+  const toggleAlert = (key: string) => {
+    setAlertPrefs(prev => {
+      const next = { ...prev, [key]: !prev[key] };
+      localStorage.setItem(alertsKey, JSON.stringify(next));
+      toast[next[key] ? 'success' : 'info'](`${key}: ${next[key] ? 'activada' : 'desactivada'}`);
+      return next;
+    });
+  };
+
+  // Botón del header: activa o desactiva TODAS las alertas a la vez.
+  const toggleAllAlerts = () => {
+    const turnOn = !notificationsEnabled;
+    const next = Object.fromEntries(ALERT_KEYS.map(k => [k, turnOn]));
+    setAlertPrefs(next);
+    localStorage.setItem(alertsKey, JSON.stringify(next));
+    toast[turnOn ? 'success' : 'info'](turnOn ? 'Todas las alertas activadas' : 'Alertas desactivadas');
+  };
 
   const fetchBlocked = useCallback(async () => {
     if (!user) return;
@@ -70,29 +100,94 @@ const CalendarView = () => {
     }
   };
 
-  useEffect(() => {
+  // true = la tabla calendar_events existe y es usable; false = aún no → fallback localStorage.
+  const [remoteOk, setRemoteOk] = useState(true);
+
+  const mapRow = (r: any): CalEvent => ({
+    id: r.id, title: r.title, date: r.event_date,
+    location: r.location ?? '', notes: r.notes ?? '',
+  });
+
+  const loadFromLocal = useCallback(() => {
     try {
       const saved = localStorage.getItem(storageKey);
       if (saved) setEvents(JSON.parse(saved));
     } catch {}
   }, [storageKey]);
 
-  const saveEvents = (evs: CalEvent[]) => {
-    setEvents(evs);
-    localStorage.setItem(storageKey, JSON.stringify(evs));
-  };
+  // Migración one-time: sube los eventos que quedaran en localStorage a Supabase.
+  const migrateLocalToRemote = useCallback(async () => {
+    if (!user) return;
+    const migratedKey = `${storageKey}_migrated`;
+    if (localStorage.getItem(migratedKey)) return;
+    try {
+      const saved = localStorage.getItem(storageKey);
+      const local: CalEvent[] = saved ? JSON.parse(saved) : [];
+      if (local.length) {
+        await supabase.from('calendar_events').insert(
+          local.map(e => ({ user_id: user.id, title: e.title, event_date: e.date, location: e.location || null, notes: e.notes || null }))
+        );
+      }
+      localStorage.setItem(migratedKey, '1');
+    } catch { /* si falla la migración, no bloquea */ }
+  }, [user, storageKey]);
 
-  const addEvent = () => {
+  const fetchEvents = useCallback(async () => {
+    if (!user) { loadFromLocal(); return; }
+    const { data, error } = await supabase
+      .from('calendar_events')
+      .select('id, title, event_date, location, notes')
+      .eq('user_id', user.id)
+      .order('event_date', { ascending: true });
+    if (error) {
+      // Tabla aún no creada → modo localStorage para no romper.
+      setRemoteOk(false);
+      loadFromLocal();
+      return;
+    }
+    setRemoteOk(true);
+    await migrateLocalToRemote();
+    const { data: data2 } = await supabase
+      .from('calendar_events')
+      .select('id, title, event_date, location, notes')
+      .eq('user_id', user.id)
+      .order('event_date', { ascending: true });
+    setEvents(((data2 ?? data) as any[]).map(mapRow));
+  }, [user, loadFromLocal, migrateLocalToRemote]);
+
+  useEffect(() => { fetchEvents(); }, [fetchEvents]);
+
+  const addEvent = async () => {
     if (!form.title.trim() || !form.date) { toast.error('Título y fecha obligatorios'); return; }
-    const ev: CalEvent = { id: Date.now().toString(), title: form.title.trim(), date: form.date, location: form.location.trim(), notes: form.notes.trim() };
-    saveEvents([...events, ev]);
+    const base = { title: form.title.trim(), date: form.date, location: form.location.trim(), notes: form.notes.trim() };
+
+    if (user && remoteOk) {
+      const { data, error } = await supabase.from('calendar_events')
+        .insert({ user_id: user.id, title: base.title, event_date: base.date, location: base.location || null, notes: base.notes || null })
+        .select('id, title, event_date, location, notes').single();
+      if (error) { toast.error('Error al guardar el evento'); return; }
+      setEvents(prev => [...prev, mapRow(data)].sort((a, b) => a.date.localeCompare(b.date)));
+    } else {
+      const ev: CalEvent = { id: Date.now().toString(), ...base };
+      const next = [...events, ev];
+      setEvents(next);
+      localStorage.setItem(storageKey, JSON.stringify(next));
+    }
     setForm({ title: '', date: '', location: '', notes: '' });
     setShowForm(false);
     toast.success('Evento añadido al calendario');
   };
 
-  const deleteEvent = (id: string) => {
-    saveEvents(events.filter(e => e.id !== id));
+  const deleteEvent = async (id: string) => {
+    if (user && remoteOk) {
+      const { error } = await supabase.from('calendar_events').delete().eq('id', id).eq('user_id', user.id);
+      if (error) { toast.error('Error al eliminar'); return; }
+      setEvents(prev => prev.filter(e => e.id !== id));
+    } else {
+      const next = events.filter(e => e.id !== id);
+      setEvents(next);
+      localStorage.setItem(storageKey, JSON.stringify(next));
+    }
     toast.info('Evento eliminado');
   };
 
@@ -117,12 +212,19 @@ const CalendarView = () => {
 
   const fmtDate = (d: string) => new Date(d + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
 
+  // Para eventos de día completo, la fecha final es EXCLUSIVA (día siguiente).
+  const nextDayStr = (date: string) => {
+    const d = new Date(date + 'T12:00:00');
+    d.setDate(d.getDate() + 1);
+    return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+  };
+
   const getGoogleCalURL = (ev: CalEvent) => {
     const d = ev.date.replace(/-/g, '');
     const params = new URLSearchParams({
       action: 'TEMPLATE',
       text: ev.title,
-      dates: `${d}/${d}`,
+      dates: `${d}/${nextDayStr(ev.date)}`,
       details: ev.notes || 'Evento añadido desde XPEAK',
       location: ev.location || '',
     });
@@ -139,7 +241,7 @@ const CalendarView = () => {
       'CALSCALE:GREGORIAN',
       'BEGIN:VEVENT',
       `DTSTART;VALUE=DATE:${d}`,
-      `DTEND;VALUE=DATE:${d}`,
+      `DTEND;VALUE=DATE:${nextDayStr(ev.date)}`,
       `SUMMARY:${ev.title}`,
       ev.location ? `LOCATION:${ev.location}` : '',
       ev.notes   ? `DESCRIPTION:${ev.notes}` : '',
@@ -157,11 +259,6 @@ const CalendarView = () => {
     toast.success('Archivo .ics descargado — ábrelo para añadir al calendario');
   };
 
-  const toggleNotifications = () => {
-    setNotificationsEnabled(p => !p);
-    toast[!notificationsEnabled ? 'success' : 'info'](!notificationsEnabled ? 'Alertas activadas' : 'Alertas desactivadas');
-  };
-
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
       <div className="mb-6 flex items-start justify-between gap-3">
@@ -170,7 +267,7 @@ const CalendarView = () => {
           <p className="text-sm text-muted-foreground">Tu agenda de bolos y eventos.</p>
         </div>
         <div className="flex gap-2 flex-shrink-0">
-          <button onClick={toggleNotifications}
+          <button onClick={toggleAllAlerts}
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all"
             style={{ background: notificationsEnabled ? 'rgba(212,175,55,0.12)' : 'rgba(0,0,0,0.03)', border: notificationsEnabled ? '1px solid rgba(212,175,55,0.3)' : '1px solid var(--nightlife-border)', color: notificationsEnabled ? '#D4AF37' : '#3d3d4e' }}>
             <Bell size={13} /> <span className="hidden sm:inline">{notificationsEnabled ? 'Alertas ON' : 'Alertas'}</span>
@@ -195,7 +292,7 @@ const CalendarView = () => {
           <CalendarIcon size={15} style={{ color: '#4285F4' }} />
         </div>
         <p className="text-xs text-muted-foreground flex-1">
-          Añade cada bolo directamente a <strong className="text-white">Google Calendar</strong> o <strong className="text-white">Apple Calendar</strong> usando los botones de exportación en cada evento.
+          Añade cada bolo directamente a <strong style={{ color: '#1a1a1a' }}>Google Calendar</strong> o <strong style={{ color: '#1a1a1a' }}>Apple Calendar</strong> usando los botones de exportación en cada evento.
         </p>
       </div>
 
@@ -207,7 +304,7 @@ const CalendarView = () => {
               <h3 className="text-base font-bold">{MONTH_NAMES_ES[viewMonth]} {viewYear}</h3>
               {(viewMonth !== today.getMonth() || viewYear !== today.getFullYear()) && (
                 <button onClick={goToToday} className="text-xs px-2 py-0.5 rounded font-bold"
-                  style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
+                  style={{ background: 'rgba(212,175,55,0.12)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.25)' }}>
                   Hoy
                 </button>
               )}
@@ -268,7 +365,7 @@ const CalendarView = () => {
                 <p className="text-xs text-muted-foreground">Sin eventos próximos.</p>
                 <button onClick={() => setShowForm(true)}
                   className="mt-3 text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-105"
-                  style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                  style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.2)' }}>
                   + Añadir primer bolo
                 </button>
               </div>
@@ -280,7 +377,7 @@ const CalendarView = () => {
                     <div className="ml-2">
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0">
-                          <p className="text-xs font-bold truncate" style={{ color: '#D4AF37' }}>{ev.title}</p>
+                          <p className="text-xs font-bold truncate" style={{ color: '#8A6D0F' }}>{ev.title}</p>
                           <p className="text-xs text-muted-foreground mt-0.5">{fmtDate(ev.date)}</p>
                           {ev.location && (
                             <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
@@ -317,16 +414,21 @@ const CalendarView = () => {
           <div className="glass-panel p-4">
             <h3 className="text-sm font-bold mb-3">Alertas</h3>
             <div className="space-y-2.5">
-              {['24h antes del evento', '1h antes del evento', 'Cambios de horario', 'Nuevos bolos'].map(n => (
-                <div key={n} className="flex items-center justify-between text-xs">
-                  <span className="text-muted-foreground">{n}</span>
-                  <div className="w-7 h-3.5 rounded-full transition-all cursor-pointer"
-                    style={{ background: notificationsEnabled ? 'rgba(212,175,55,0.3)' : 'rgba(0,0,0,0.08)' }}>
-                    <div className="w-3 h-3 rounded-full transition-all mt-[1px]"
-                      style={{ background: notificationsEnabled ? '#D4AF37' : '#555', marginLeft: notificationsEnabled ? '15px' : '1px' }} />
+              {ALERT_KEYS.map(n => {
+                const on = alertPrefs[n];
+                return (
+                  <div key={n} className="flex items-center justify-between text-xs">
+                    <span className="text-muted-foreground">{n}</span>
+                    <button onClick={() => toggleAlert(n)}
+                      aria-label={`Alerta ${n}: ${on ? 'activada' : 'desactivada'}`}
+                      className="w-7 h-3.5 rounded-full transition-all cursor-pointer flex-shrink-0"
+                      style={{ background: on ? 'rgba(212,175,55,0.3)' : 'rgba(0,0,0,0.08)' }}>
+                      <div className="w-3 h-3 rounded-full transition-all mt-[1px]"
+                        style={{ background: on ? '#C9A227' : '#999', marginLeft: on ? '15px' : '1px' }} />
+                    </button>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>

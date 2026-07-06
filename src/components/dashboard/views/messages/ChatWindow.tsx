@@ -73,7 +73,8 @@ const ChatWindow = ({
         style={{ borderBottom: '1px solid rgba(212,175,55,0.08)', background: '#ffffff' }}>
         <button onClick={onBack}
           aria-label="Volver a conversaciones"
-          className="md:hidden p-1.5 rounded-lg mr-1 transition-colors"
+          title="Volver a conversaciones"
+          className="p-1.5 rounded-lg mr-1 transition-colors hover:bg-black/10"
           style={{ background: 'rgba(0,0,0,0.05)' }}>
           <ArrowLeft size={16} />
         </button>
@@ -161,7 +162,7 @@ const ChatWindow = ({
                       {formatTime(msg.created_at)}
                     </span>
                     {isMe && (msg.read
-                      ? <CheckCheck size={10} style={{ color: '#D4AF37' }} />
+                      ? <CheckCheck size={10} style={{ color: '#8A6D0F' }} />
                       : <Check size={10} style={{ color: '#333' }} />)}
                   </div>
                 </div>

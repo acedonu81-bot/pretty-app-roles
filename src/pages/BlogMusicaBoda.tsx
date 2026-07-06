@@ -208,6 +208,26 @@ export default function BlogMusicaBoda() {
             </section>
 
             
+            <section className="mt-8 mb-8">
+              <h2 className="text-base font-black mb-3">Contratar DJ para bodas por ciudad</h2>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { label: 'DJ bodas Madrid', href: '/contratar-dj/madrid' },
+                  { label: 'DJ bodas Barcelona', href: '/contratar-dj/barcelona' },
+                  { label: 'DJ bodas Sevilla', href: '/contratar-dj/sevilla' },
+                  { label: 'DJ bodas Valencia', href: '/contratar-dj/valencia' },
+                  { label: 'DJ bodas Málaga', href: '/contratar-dj/malaga' },
+                  { label: 'DJ bodas Ibiza', href: '/contratar-dj/ibiza' },
+                ].map(c => (
+                  <a key={c.href} href={c.href}
+                    className="px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
+                    style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                    {c.label}
+                  </a>
+                ))}
+              </div>
+            </section>
+
             <section className="mt-8">
               <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
               <div className="space-y-2">

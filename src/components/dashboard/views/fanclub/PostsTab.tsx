@@ -145,11 +145,11 @@ const PostsTab = () => {
             style={{ borderColor: 'rgba(212,175,55,0.2)', background: 'rgba(212,175,55,0.03)' }}
             onClick={() => fileRef.current?.click()}>
             {uploading ? (
-              <p className="text-sm font-bold animate-pulse" style={{ color: '#D4AF37' }}>Subiendo…</p>
+              <p className="text-sm font-bold animate-pulse" style={{ color: '#8A6D0F' }}>Subiendo…</p>
             ) : (
               <>
-                <Upload size={28} className="mx-auto mb-2" style={{ color: '#D4AF37' }} />
-                <p className="text-sm font-bold" style={{ color: '#D4AF37' }}>Subir sesión de audio</p>
+                <Upload size={28} className="mx-auto mb-2" style={{ color: '#8A6D0F' }} />
+                <p className="text-sm font-bold" style={{ color: '#8A6D0F' }}>Subir sesión de audio</p>
                 <p className="text-xs text-muted-foreground mt-1">MP3 / WAV / M4A · máx 100MB</p>
               </>
             )}
@@ -162,11 +162,11 @@ const PostsTab = () => {
             style={{ borderColor: 'rgba(212,175,55,0.2)', background: 'rgba(212,175,55,0.03)' }}
             onClick={() => photoRef.current?.click()}>
             {uploading ? (
-              <p className="text-sm font-bold animate-pulse" style={{ color: '#D4AF37' }}>Subiendo…</p>
+              <p className="text-sm font-bold animate-pulse" style={{ color: '#8A6D0F' }}>Subiendo…</p>
             ) : (
               <>
-                <Upload size={28} className="mx-auto mb-2" style={{ color: '#D4AF37' }} />
-                <p className="text-sm font-bold" style={{ color: '#D4AF37' }}>Subir foto exclusiva</p>
+                <Upload size={28} className="mx-auto mb-2" style={{ color: '#8A6D0F' }} />
+                <p className="text-sm font-bold" style={{ color: '#8A6D0F' }}>Subir foto exclusiva</p>
                 <p className="text-xs text-muted-foreground mt-1">JPG / PNG / WEBP · máx 20MB</p>
               </>
             )}

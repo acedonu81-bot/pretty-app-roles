@@ -261,9 +261,9 @@ const EscenarioVirtualView = () => {
             </div>
             <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs mt-1"
               style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.12)' }}>
-              <Zap size={12} style={{ color: '#D4AF37' }} />
+              <Zap size={12} style={{ color: '#8A6D0F' }} />
               <span style={{ color: '#222' }}>
-                ¿Necesitas alguien para esta noche? Usa <strong style={{ color: '#D4AF37' }}>Flash Booking</strong>
+                ¿Necesitas alguien para esta noche? Usa <strong style={{ color: '#8A6D0F' }}>Flash Booking</strong>
               </span>
             </div>
           </div>
@@ -371,7 +371,7 @@ const EscenarioVirtualView = () => {
         <div className="flex gap-2 w-full sm:w-auto">
           <button onClick={() => setShowUrlInput(!showUrlInput)}
             className="flex items-center gap-2 px-4 py-3 rounded-lg font-bold text-xs transition-all duration-200"
-            style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+            style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
             <ExternalLink size={14} /> Stream URL
           </button>
           <button onClick={toggleLive}
@@ -389,7 +389,7 @@ const EscenarioVirtualView = () => {
       {showUrlInput && (
         <div className="glass-panel p-4 mb-4 animate-[fadeIn_0.3s_ease]">
           <p className="text-xs font-bold mb-2 flex items-center gap-2">
-            <ExternalLink size={12} style={{ color: '#D4AF37' }} /> Introduce tu URL de streaming
+            <ExternalLink size={12} style={{ color: '#8A6D0F' }} /> Introduce tu URL de streaming
           </p>
           <p className="text-xs text-muted-foreground mb-3">Soporta Twitch, YouTube, Mixcloud, SoundCloud, HearThis, Vimeo y Spotify</p>
 
@@ -448,7 +448,7 @@ const EscenarioVirtualView = () => {
           <span className="text-xs font-bold" style={{ color: '#ff5f56' }}>EN VIVO</span>
           <span className="text-xs text-muted-foreground">{formatTime(elapsed)}</span>
           <div className="flex items-center gap-1 ml-auto text-xs text-muted-foreground">
-            <Eye size={12} /> <span className="font-semibold" style={{ color: '#D4AF37' }}>{viewers}</span>
+            <Eye size={12} /> <span className="font-semibold" style={{ color: '#8A6D0F' }}>{viewers}</span>
           </div>
         </div>
       )}
@@ -532,7 +532,7 @@ const EscenarioVirtualView = () => {
 
         <div className="glass-panel p-4 flex flex-col min-h-0">
           <div className="flex items-center gap-2 mb-3">
-            <MessageSquare size={14} style={{ color: '#D4AF37' }} />
+            <MessageSquare size={14} style={{ color: '#8A6D0F' }} />
             <span className="text-xs font-bold uppercase tracking-wider">Chat en Directo</span>
           </div>
 
@@ -563,7 +563,7 @@ const EscenarioVirtualView = () => {
               className="nightlife-input flex-1 text-xs !py-2 disabled:opacity-40" />
             <button onClick={sendChat} disabled={!isLive}
               className="px-3 rounded-lg disabled:opacity-40"
-              style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+              style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
               <Send size={14} />
             </button>
           </div>

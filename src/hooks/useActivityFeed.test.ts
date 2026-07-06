@@ -67,7 +67,7 @@ describe('useActivityFeed', () => {
     expect(result.current.items[0].text).toEqual('Marta (DJ / Artista) se unió a XPEAK');
   });
 
-  it('returns an empty list when fewer than 3 rows exist even after fallback', async () => {
+  it('shows the activity even when only one row exists (MIN_ITEMS = 1)', async () => {
     mockTables([
       { display_name: 'Marta', role: 'dj', zone: 'Madrid', created_at: new Date().toISOString() },
     ], []);
@@ -76,7 +76,8 @@ describe('useActivityFeed', () => {
 
     await waitFor(() => expect(result.current.loading).toBe(false));
 
-    expect(result.current.items).toEqual([]);
+    expect(result.current.items).toHaveLength(1);
+    expect(result.current.items[0]).toMatchObject({ name: 'Marta' });
   });
 
   it('merges signup and contact events sorted by date, newest first', async () => {

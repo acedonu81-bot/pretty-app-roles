@@ -51,7 +51,7 @@ const MediaTab = () => {
     <div>
       <div className="glass-panel p-4 mb-5" style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
         <h4 className="text-sm font-bold mb-1 flex items-center gap-2">
-          <Image size={14} style={{ color: '#D4AF37' }} /> Portfolios y Contenido
+          <Image size={14} style={{ color: '#8A6D0F' }} /> Portfolios y Contenido
         </h4>
         <p className="text-xs text-muted-foreground">
           Audio, fotos y redes sociales de los profesionales registrados.
@@ -75,7 +75,7 @@ const MediaTab = () => {
 
       {loading && (
         <div className="flex items-center justify-center py-16">
-          <Loader2 size={20} className="animate-spin" style={{ color: '#D4AF37' }} />
+          <Loader2 size={20} className="animate-spin" style={{ color: '#8A6D0F' }} />
         </div>
       )}
 
@@ -109,8 +109,8 @@ const MediaTab = () => {
             {p.audio_embed_url && (
               <div className="rounded-lg overflow-hidden" style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
                 <div className="flex items-center gap-2 px-3 py-1.5" style={{ background: 'rgba(212,175,55,0.05)' }}>
-                  <Music size={11} style={{ color: '#D4AF37' }} />
-                  <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>Audio</span>
+                  <Music size={11} style={{ color: '#8A6D0F' }} />
+                  <span className="text-xs font-bold" style={{ color: '#8A6D0F' }}>Audio</span>
                 </div>
                 <iframe
                   src={p.audio_embed_url}

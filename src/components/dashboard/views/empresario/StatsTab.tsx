@@ -21,7 +21,7 @@ const StatsTab = ({ pros, favorites }: Props) => {
   const verifiedCount = pros.filter(p => p.is_verified).length;
 
   const pieData = [
-    { name: 'DJ',     value: djCount,     color: '#D4AF37' },
+    { name: 'DJ',     value: djCount,     color: '#8A6D0F' },
     { name: 'Staff',  value: staffCount,  color: '#8B5CF6' },
     { name: 'Makeup', value: makeupCount, color: '#EC4899' },
   ];
@@ -30,7 +30,7 @@ const StatsTab = ({ pros, favorites }: Props) => {
   const staffAvgRate  = pros.filter(p => p.role === 'staff').reduce((s, p) => s + (p.hourly_rate || 0), 0) / (staffCount || 1);
   const makeupAvgRate = pros.filter(p => p.role === 'makeup').reduce((s, p) => s + (p.hourly_rate || 0), 0) / (makeupCount || 1);
   const rateBarData = [
-    { name: 'DJ',     '€/hora avg': djCount     > 0 ? Math.round(djAvgRate)     : 0, color: '#D4AF37' },
+    { name: 'DJ',     '€/hora avg': djCount     > 0 ? Math.round(djAvgRate)     : 0, color: '#8A6D0F' },
     { name: 'Staff',  '€/hora avg': staffCount  > 0 ? Math.round(staffAvgRate)  : 0, color: '#8B5CF6' },
     { name: 'Makeup', '€/hora avg': makeupCount > 0 ? Math.round(makeupAvgRate) : 0, color: '#EC4899' },
   ];
@@ -58,10 +58,10 @@ const StatsTab = ({ pros, favorites }: Props) => {
       {/* KPI cards */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-5">
         {[
-          { label: 'Profesionales activos', value: totalPros,             icon: Users,         color: '#D4AF37' },
+          { label: 'Profesionales activos', value: totalPros,             icon: Users,         color: '#8A6D0F' },
           { label: 'Tarifa media/hora',     value: avgRate > 0 ? `€${avgRate}` : '—', icon: Euro, color: '#22c55e' },
           { label: 'Verificados',           value: verifiedCount,         icon: CheckCircle,   color: '#3B82F6' },
-          { label: 'DJs',                   value: djCount,               icon: TrendingUp,    color: '#D4AF37' },
+          { label: 'DJs',                   value: djCount,               icon: TrendingUp,    color: '#8A6D0F' },
           { label: 'Staff',                 value: staffCount,            icon: Eye,           color: '#8B5CF6' },
           { label: 'Estilismo',             value: makeupCount,           icon: MessageSquare, color: '#F59E0B' },
           { label: 'Tus favoritos',         value: favorites.length,    icon: Heart,       color: '#EC4899' },
@@ -81,7 +81,7 @@ const StatsTab = ({ pros, favorites }: Props) => {
         {/* Donut */}
         <div className="glass-panel p-5">
           <h4 className="text-sm font-bold mb-4 flex items-center gap-2">
-            <BarChart3 size={14} style={{ color: '#D4AF37' }} /> Distribución por rol
+            <BarChart3 size={14} style={{ color: '#8A6D0F' }} /> Distribución por rol
           </h4>
           {totalPros === 0 ? (
             <div className="flex items-center justify-center h-[160px]">
@@ -113,7 +113,7 @@ const StatsTab = ({ pros, favorites }: Props) => {
         {/* Bar — tarifa */}
         <div className="glass-panel p-5">
           <h4 className="text-sm font-bold mb-4 flex items-center gap-2">
-            <Euro size={14} style={{ color: '#D4AF37' }} /> Tarifa media por rol
+            <Euro size={14} style={{ color: '#8A6D0F' }} /> Tarifa media por rol
           </h4>
           <ResponsiveContainer width="100%" height={160}>
             <BarChart data={rateBarData} barSize={32} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
@@ -132,7 +132,7 @@ const StatsTab = ({ pros, favorites }: Props) => {
       {/* Weekly sparkline */}
       <div className="glass-panel p-5 mb-5">
         <h4 className="text-sm font-bold mb-4 flex items-center gap-2">
-          <TrendingUp size={14} style={{ color: '#D4AF37' }} /> Contrataciones esta semana
+          <TrendingUp size={14} style={{ color: '#8A6D0F' }} /> Contrataciones esta semana
           <span className="text-[0.75rem] font-bold px-1.5 py-0.5 rounded"
             style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
             DEMO
@@ -158,7 +158,7 @@ const StatsTab = ({ pros, favorites }: Props) => {
       {/* Radar */}
       <div className="glass-panel p-5">
         <h4 className="text-sm font-bold mb-1 flex items-center gap-2">
-          <Star size={14} style={{ color: '#D4AF37' }} /> Índice de calidad por rol
+          <Star size={14} style={{ color: '#8A6D0F' }} /> Índice de calidad por rol
           <span className="text-[0.75rem] font-bold px-1.5 py-0.5 rounded"
             style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
             DEMO

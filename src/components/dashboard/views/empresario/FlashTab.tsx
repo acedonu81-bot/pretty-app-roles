@@ -88,7 +88,7 @@ const FlashTab = () => {
       {showForm && (
         <div className="glass-panel p-5 animate-[fadeIn_0.25s_ease]">
           <div className="flex items-center gap-2 mb-4">
-            <Zap size={14} style={{ color: '#D4AF37' }} />
+            <Zap size={14} style={{ color: '#8A6D0F' }} />
             <h4 className="text-sm font-bold">Nueva Oferta Flash — caduca en 24h</h4>
           </div>
           <div className="space-y-3">
@@ -137,7 +137,7 @@ const FlashTab = () => {
                         <MapPin size={10} /> {j.location}
                       </span>
                     )}
-                    {j.pay && <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>{j.pay}</span>}
+                    {j.pay && <span className="text-xs font-bold" style={{ color: '#8A6D0F' }}>{j.pay}</span>}
                     <span className="flex items-center gap-1 text-xs text-muted-foreground">
                       <Clock size={10} /> {fmtCountdown(j.expires_at)}
                     </span>

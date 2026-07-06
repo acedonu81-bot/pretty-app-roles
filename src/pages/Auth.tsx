@@ -7,21 +7,21 @@ import { toast } from 'sonner';
 
 const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { icon: LucideIcon; text: string }[] }> = {
   dj: {
-    tagline: 'El directorio donde te contratan los mejores eventos.',
-    sub: 'DJs de toda España ya publican su tarifa y consiguen bolos en horas.',
+    tagline: 'Publica tu tarifa y que te encuentren salas y promotoras.',
+    sub: 'DJs de toda España ya reciben solicitudes directas cada semana.',
     bullets: [
-      { icon: Zap, text: 'Flash Booking — cubre un evento en <1h (próximamente)' },
+      { icon: Target, text: 'Tu perfil visible en Google y en el directorio' },
       { icon: FileText, text: 'Contratos digitales automáticos' },
-      { icon: MapPin, text: 'Visible para salas de toda España' },
+      { icon: Wallet, text: '0% comisión — cobras todo lo tuyo' },
     ],
   },
   staff: {
     tagline: 'Consigue trabajo de staff y camarero en eventos reales.',
-    sub: 'Empresarios verificados buscan profesionales como tú cada semana.',
+    sub: 'Salas y organizadores buscan profesionales como tú cada semana.',
     bullets: [
-      { icon: Zap, text: 'Ofertas de trabajo en tiempo real' },
+      { icon: Target, text: 'Tu perfil visible para empresarios de tu zona' },
       { icon: FileText, text: 'Contratos digitales sin papeleo' },
-      { icon: BadgeCheck, text: 'Perfil verificado, más confianza' },
+      { icon: Wallet, text: '0% comisión — cobras todo lo tuyo' },
     ],
   },
   profesional: {
@@ -34,12 +34,12 @@ const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { ic
     ],
   },
   empresario: {
-    tagline: 'Contrata talento verificado sin comisiones.',
-    sub: 'Flash Booking próximamente. Directorio real, contacto directo.',
+    tagline: 'Encuentra DJ, staff y fotógrafo para tu evento en minutos.',
+    sub: '38 profesionales con tarifa pública. Contacto directo, sin intermediarios.',
     bullets: [
-      { icon: Search, text: 'Directorio de profesionales verificados' },
+      { icon: Search, text: 'Filtra por ciudad, precio y disponibilidad' },
       { icon: FileText, text: 'Contrato automático — sin papeleo' },
-      { icon: BadgeCheck, text: 'DJs, fotógrafos y staff verificados' },
+      { icon: Wallet, text: '0€ comisión — el trato es directo' },
     ],
   },
 };
@@ -48,7 +48,7 @@ const DEFAULT_CONTENT = {
   tagline: 'El directorio de referencia para profesionales de eventos.',
   sub: 'Publica tu perfil, consigue trabajo. Gratis, sin comisiones.',
   bullets: [
-    { icon: Zap, text: 'Flash Booking — próximamente' },
+    { icon: Target, text: 'Tu perfil visible en Google y en el directorio' },
     { icon: Wallet, text: '0% comisión — cobras todo lo tuyo' },
     { icon: MapPin, text: 'Visible en toda España' },
   ],
@@ -306,7 +306,7 @@ const Auth = () => {
                     ))}
                   </div>
                   <p className="text-xs" style={{ color: 'rgba(255,255,255,0.55)' }}>
-                    <strong className="text-white">31+ profesionales</strong> ya en la plataforma
+                    <strong className="text-white">38+ profesionales</strong> ya en la plataforma
                   </p>
                 </div>
                 <div className="flex items-center gap-1.5">
@@ -473,7 +473,9 @@ const Auth = () => {
                     ? 'Procesando...'
                     : isLogin
                       ? 'Iniciar Sesión'
-                      : 'Publicar mi perfil gratis →'}
+                      : roleParam === 'empresario'
+                        ? 'Empezar a contratar gratis →'
+                        : 'Publicar mi perfil gratis →'}
                 </button>
 
               </form>
@@ -547,7 +549,7 @@ const Auth = () => {
                 </div>
                 <div className="flex items-center gap-1.5">
                   <Users size={11} style={{ color: 'rgba(255,255,255,0.25)' }} />
-                  <span className="text-[0.6rem]" style={{ color: 'rgba(255,255,255,0.25)' }}>31+ profesionales</span>
+                  <span className="text-[0.6rem]" style={{ color: 'rgba(255,255,255,0.25)' }}>38+ profesionales</span>
                 </div>
               </div>
 

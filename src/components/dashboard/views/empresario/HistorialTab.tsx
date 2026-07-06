@@ -17,7 +17,7 @@ interface Booking {
 }
 
 const STATUS_LABEL: Record<string, { label: string; color: string; bg: string }> = {
-  pending:   { label: 'Pendiente',  color: '#D4AF37', bg: 'rgba(212,175,55,0.08)' },
+  pending:   { label: 'Pendiente',  color: '#8A6D0F', bg: 'rgba(212,175,55,0.08)' },
   confirmed: { label: 'Confirmado', color: '#22c55e', bg: 'rgba(34,197,94,0.08)' },
   completed: { label: 'Completado', color: '#22c55e', bg: 'rgba(34,197,94,0.08)' },
   cancelled: { label: 'Cancelado',  color: '#ff5f56', bg: 'rgba(255,95,86,0.08)' },
@@ -407,9 +407,9 @@ const HistorialTab = () => {
             <CheckCircle size={24} />
           </div>
           <div className="flex-1">
-            <p className="text-xs font-bold uppercase tracking-wider mb-0.5" style={{ color: '#D4AF37' }}>Reputación como Empleador</p>
+            <p className="text-xs font-bold uppercase tracking-wider mb-0.5" style={{ color: '#8A6D0F' }}>Reputación como Empleador</p>
             <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-black" style={{ color: '#D4AF37' }}>—</span>
+              <span className="text-3xl font-black" style={{ color: '#8A6D0F' }}>—</span>
               <span className="text-xs text-muted-foreground">/ 5.0 · {bookings.length} solicitudes</span>
             </div>
             <p className="text-xs text-muted-foreground mt-0.5">
@@ -430,7 +430,7 @@ const HistorialTab = () => {
             { label: 'Total',       value: bookings.length.toString() },
           ].map(s => (
             <div key={s.label} className="text-center">
-              <p className="text-base font-black" style={{ color: '#D4AF37' }}>{s.value}</p>
+              <p className="text-base font-black" style={{ color: '#8A6D0F' }}>{s.value}</p>
               <p className="text-[0.75rem] text-muted-foreground">{s.label}</p>
             </div>
           ))}
@@ -447,7 +447,7 @@ const HistorialTab = () => {
       <div className="flex gap-2 flex-wrap">
         <button onClick={generarContrato}
           className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
-          style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.25)', color: '#D4AF37' }}>
+          style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.25)', color: '#8A6D0F' }}>
           <ScrollText size={13} /> Contrato tipo
         </button>
         {bookings.length > 0 && (
@@ -499,14 +499,14 @@ const HistorialTab = () => {
               <div key={b.id} className="glass-panel p-4 flex items-start gap-4">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
                   style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)' }}>
-                  <User size={16} style={{ color: '#D4AF37' }} />
+                  <User size={16} style={{ color: '#8A6D0F' }} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5 flex-wrap">
                     <p className="text-sm font-bold truncate">{b.professional_name}</p>
                     {b.professional_role && (
                       <span className="text-[0.75rem] px-1.5 py-0.5 rounded font-bold uppercase"
-                        style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>
+                        style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F' }}>
                         {b.professional_role}
                       </span>
                     )}
@@ -553,7 +553,7 @@ const HistorialTab = () => {
       )}
 
       <div className="p-4 rounded-xl text-xs" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
-        <p className="font-bold mb-1 flex items-center gap-1.5" style={{ color: '#D4AF37' }}>
+        <p className="font-bold mb-1 flex items-center gap-1.5" style={{ color: '#8A6D0F' }}>
           <Euro size={12} /> Tu reputación atrae mejor talento
         </p>
         <p className="text-muted-foreground leading-relaxed">

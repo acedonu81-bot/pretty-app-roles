@@ -90,7 +90,6 @@ const navSections = [
 ];
 
 const TOOL_BLUE_IDS = new Set(['calendar', 'messages', 'flashbooking']);
-const NO_COUNT_BADGE = new Set(['empresario']);
 
 const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', makeup: 'Makeup', media: 'Media', empresario: 'Sala / Club', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', promotor: 'Promotor & RRPP', ambassador: 'Embajador', design: 'Diseño', mago: 'Mago & Ilusionista', bailarin: 'Bailarín & Danza', humorista: 'Humorista & Cómico', monologo: 'Monólogo & Stand-Up', animador: 'Payaso & Animador', speaker: 'Speaker & Presentador' };
 
@@ -140,7 +139,7 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
                 <p className="text-xs font-bold truncate">{p.display_name}</p>
                 <p className="text-[0.6rem]" style={{ color: '#444' }}>{ROLE_LABEL[p.role] ?? p.role}</p>
               </div>
-              {p.id === profileId && <span className="text-[0.6rem] font-black" style={{ color: '#D4AF37' }}>●</span>}
+              {p.id === profileId && <span className="text-[0.6rem] font-black" style={{ color: '#8A6D0F' }}>●</span>}
             </button>
           ))}
           {allProfiles.length < maxProfiles && (
@@ -163,7 +162,6 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
   const isEmpresario = role === 'empresario';
   const [flashBadge, setFlashBadge] = useState(0);
   const [msgBadge, setMsgBadge] = useState(0);
-  const [roleCounts, setRoleCounts] = useState<Record<string, number>>({});
 
   useEffect(() => {
     if (!user || isEmpresario) return;
@@ -173,21 +171,6 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
       .eq('status', 'pending')
       .then(({ count }) => setFlashBadge(count ?? 0));
   }, [user, isEmpresario]);
-
-  useEffect(() => {
-    supabase.from('profiles' as any)
-      .select('role, display_name')
-      .then(({ data }) => {
-        if (!data) return;
-        const counts: Record<string, number> = {};
-        for (const row of data as { role: string; display_name: string | null }[]) {
-          if (row.role && row.display_name && row.display_name.trim().length > 1) {
-            counts[row.role] = (counts[row.role] ?? 0) + 1;
-          }
-        }
-        setRoleCounts(counts);
-      });
-  }, []);
 
   const refreshMsgBadge = async (uid: string) => {
     const { data } = await supabase.from('conversations')
@@ -254,7 +237,6 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
               const roleColor = ROLE_COLORS[item.id];
               const isToolBlue = TOOL_BLUE_IDS.has(item.id);
               const iconColor = roleColor ?? (isToolBlue ? '#4285F4' : '#444');
-              const count = roleColor && !NO_COUNT_BADGE.has(item.id) ? roleCounts[item.id] : undefined;
 
               return (
                 <button
@@ -262,7 +244,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
                   onClick={() => onViewChange(item.id)}
                   className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl mb-1 text-[0.9rem] font-semibold transition-all duration-200 text-left"
                   style={item.id === 'empresario' ? {
-                    color: '#D4AF37',
+                    color: '#8A6D0F',
                     background: isActive ? 'rgba(212,175,55,0.14)' : 'rgba(212,175,55,0.06)',
                     borderLeft: '2px solid #D4AF37',
                     boxShadow: isActive ? 'inset 0 0 20px rgba(212,175,55,0.05)' : undefined,
@@ -299,27 +281,6 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
 
                   <span className="flex-1 text-[0.82rem]">{item.label}</span>
 
-                  {/* Badge fijo para empresario */}
-                  {item.id === 'empresario' && (
-                    <span className="text-[0.65rem] px-1.5 py-0.5 rounded-md font-black flex-shrink-0"
-                      style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>
-                      4
-                    </span>
-                  )}
-
-                  {/* Member count for directory roles */}
-                  {count !== undefined && count > 0 && (
-                    <span
-                      className="text-[0.65rem] px-1.5 py-0.5 rounded-md font-black flex-shrink-0 transition-all duration-200"
-                      style={{
-                        background: `rgba(${hexToRgb(roleColor!)}, ${isActive ? 0.2 : 0.08})`,
-                        color: isActive ? roleColor : `rgba(${hexToRgb(roleColor!)}, 0.6)`,
-                      }}
-                    >
-                      {count}
-                    </span>
-                  )}
-
                   {hasPulse && (
                     <span className="relative flex h-2.5 w-2.5">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: '#D4AF37' }} />
@@ -328,7 +289,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
                   )}
                   {item.id === 'flashbooking' && flashBadge > 0 && (
                     <span className="text-xs px-1.5 py-0.5 rounded-full font-black"
-                      style={{ background: 'rgba(212,175,55,0.2)', color: '#D4AF37' }}>
+                      style={{ background: 'rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
                       {flashBadge}
                     </span>
                   )}
@@ -340,7 +301,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
                   )}
                   {'badge' in item && (item as any).badge && item.id !== 'flashbooking' && (
                     <span className="text-xs px-1.5 py-0.5 rounded font-bold"
-                      style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>
+                      style={{ background: 'rgba(212,175,55,0.15)', color: '#8A6D0F' }}>
                       {(item as any).badge as string}
                     </span>
                   )}

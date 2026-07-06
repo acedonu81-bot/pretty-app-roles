@@ -152,7 +152,7 @@ const UpgradeModal = ({ open, onClose, role, trigger, onNavigateSubscription }: 
           </div>
           <div>
             <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Plan Business</p>
-            <h3 className="text-base font-black leading-tight" style={{ color: '#D4AF37' }}>{upsell.headline}</h3>
+            <h3 className="text-base font-black leading-tight" style={{ color: '#8A6D0F' }}>{upsell.headline}</h3>
           </div>
         </div>
 
@@ -160,7 +160,7 @@ const UpgradeModal = ({ open, onClose, role, trigger, onNavigateSubscription }: 
         {trigger && (
           <div className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs"
             style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
-            <Zap size={12} style={{ color: '#D4AF37', flexShrink: 0 }} />
+            <Zap size={12} style={{ color: '#8A6D0F', flexShrink: 0 }} />
             <span className="text-muted-foreground">{trigger}</span>
           </div>
         )}
@@ -169,7 +169,7 @@ const UpgradeModal = ({ open, onClose, role, trigger, onNavigateSubscription }: 
         <div className="space-y-2.5">
           {upsell.features.map(f => (
             <div key={f} className="flex items-start gap-2.5">
-              <CheckCircle size={13} style={{ color: '#D4AF37', flexShrink: 0, marginTop: 2 }} />
+              <CheckCircle size={13} style={{ color: '#8A6D0F', flexShrink: 0, marginTop: 2 }} />
               <span className="text-sm" style={{ color: '#222' }}>{f}</span>
             </div>
           ))}
@@ -180,7 +180,7 @@ const UpgradeModal = ({ open, onClose, role, trigger, onNavigateSubscription }: 
           style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
           <div>
             <p className="text-xs text-muted-foreground">Desde</p>
-            <p className="text-xl font-black" style={{ color: '#D4AF37' }}>€14,99 <span className="text-xs font-normal text-muted-foreground">/mes</span></p>
+            <p className="text-xl font-black" style={{ color: '#8A6D0F' }}>€14,99 <span className="text-xs font-normal text-muted-foreground">/mes</span></p>
             <p className="text-xs text-muted-foreground">€10,49/mes con plan anual · 15 días gratis</p>
           </div>
           <Shield size={28} style={{ color: 'rgba(212,175,55,0.3)' }} />

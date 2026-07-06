@@ -10,9 +10,9 @@ import { useNavigate } from 'react-router-dom';
 type ValidationStatus = 'pending' | 'approved' | 'rookie' | 'rejected' | 'awaiting_admin';
 
 const statusConfig: Record<ValidationStatus, { label: string; color: string; icon: typeof CheckCircle; bg: string }> = {
-  pending:        { label: 'Pendiente de revisión',        color: '#D4AF37', icon: Clock,         bg: 'rgba(212,175,55,0.08)' },
+  pending:        { label: 'Pendiente de revisión',        color: '#8A6D0F', icon: Clock,         bg: 'rgba(212,175,55,0.08)' },
   approved:       { label: 'Aprobado PRO',                 color: '#22c55e', icon: CheckCircle,   bg: 'rgba(34,197,94,0.08)'  },
-  rookie:         { label: 'Promesa',                      color: '#D4AF37', icon: Award,         bg: 'rgba(212,175,55,0.08)' },
+  rookie:         { label: 'Promesa',                      color: '#8A6D0F', icon: Award,         bg: 'rgba(212,175,55,0.08)' },
   rejected:       { label: 'Rechazado',                    color: '#ef4444', icon: XCircle,       bg: 'rgba(239,68,68,0.08)'  },
   awaiting_admin: { label: 'Esperando aprobación Admin',   color: '#f59e0b', icon: AlertCircle,   bg: 'rgba(245,158,11,0.08)' },
 };
@@ -20,8 +20,8 @@ const statusConfig: Record<ValidationStatus, { label: string; color: string; ico
 const milestones = [
   { votes: 50,  label: 'Novato Prometedor',    color: '#6ee7b7' },
   { votes: 150, label: 'En Ascenso',           color: '#fbbf24' },
-  { votes: 300, label: 'Favorito del Público', color: '#D4AF37' },
-  { votes: 500, label: '¡Candidato a PRO!',    color: '#D4AF37' },
+  { votes: 300, label: 'Favorito del Público', color: '#8A6D0F' },
+  { votes: 500, label: '¡Candidato a PRO!',    color: '#8A6D0F' },
 ];
 
 /* ──────────────────── Card pública de un DJ Promesa ──────────────────── */
@@ -66,7 +66,7 @@ const RookiePublicCard = ({ dj, userId }: { dj: any; userId: string | undefined 
       {/* Milestone badge */}
       {currentMilestone && (
         <span className="self-start text-[0.65rem] font-bold px-2 py-0.5 rounded-full"
-          style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+          style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.2)' }}>
           {currentMilestone.label}
         </span>
       )}
@@ -213,7 +213,7 @@ const RookieView = () => {
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg flex items-center justify-center"
                 style={{ background: 'rgba(212,175,55,0.1)' }}>
-                <Award size={15} style={{ color: '#D4AF37' }} />
+                <Award size={15} style={{ color: '#8A6D0F' }} />
               </div>
               <div>
                 <p className="text-sm font-bold">Mi progreso como Promesa</p>
@@ -240,7 +240,7 @@ const RookieView = () => {
                   <div>
                     <div className="flex justify-between text-xs mb-1">
                       <span className="text-muted-foreground">Perfil completo</span>
-                      <span className="font-bold" style={{ color: '#D4AF37' }}>{completionPct}%</span>
+                      <span className="font-bold" style={{ color: '#8A6D0F' }}>{completionPct}%</span>
                     </div>
                     <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(0,0,0,0.05)' }}>
                       <div className="h-full rounded-full" style={{ width: `${completionPct}%`, background: 'linear-gradient(90deg,#D4AF37,#22c55e)' }} />
@@ -262,11 +262,11 @@ const RookieView = () => {
                 {/* Votos */}
                 <div>
                   <div className="flex items-center gap-2 mb-3">
-                    <Heart size={14} style={{ color: '#D4AF37' }} />
+                    <Heart size={14} style={{ color: '#8A6D0F' }} />
                     <p className="text-xs font-bold">Votos de la Comunidad</p>
                   </div>
                   <div className="text-center py-3">
-                    <div className="text-4xl font-black" style={{ color: '#D4AF37' }}>{voteCount}</div>
+                    <div className="text-4xl font-black" style={{ color: '#8A6D0F' }}>{voteCount}</div>
                     <div className="text-xs text-muted-foreground">de 500 necesarios</div>
                   </div>
                   <div className="h-2.5 rounded-full overflow-hidden mb-2" style={{ background: 'rgba(0,0,0,0.05)' }}>
@@ -288,12 +288,12 @@ const RookieView = () => {
                   </div>
                   {nextMilestone && (
                     <p className="text-xs text-muted-foreground text-center mt-2">
-                      Siguiente: <span className="font-bold" style={{ color: '#D4AF37' }}>{nextMilestone.label}</span> — faltan {nextMilestone.votes - voteCount} votos
+                      Siguiente: <span className="font-bold" style={{ color: '#8A6D0F' }}>{nextMilestone.label}</span> — faltan {nextMilestone.votes - voteCount} votos
                     </p>
                   )}
                   {currentMilestone && (
                     <div className="mt-2 p-2 rounded text-center" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
-                      <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>{currentMilestone.label}</p>
+                      <p className="text-xs font-bold" style={{ color: '#8A6D0F' }}>{currentMilestone.label}</p>
                     </div>
                   )}
                 </div>
@@ -303,7 +303,7 @@ const RookieView = () => {
                   <AudioUpload />
                   <div className="glass-panel p-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <TrendingUp size={12} style={{ color: '#D4AF37' }} />
+                      <TrendingUp size={12} style={{ color: '#8A6D0F' }} />
                       <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Consejos</p>
                     </div>
                     <div className="space-y-2">
@@ -314,7 +314,7 @@ const RookieView = () => {
                         'Conecta Instagram y teléfono',
                       ].map(tip => (
                         <p key={tip} className="text-xs text-muted-foreground flex items-start gap-1.5">
-                          <span style={{ color: '#D4AF37', flexShrink: 0 }}>›</span> {tip}
+                          <span style={{ color: '#8A6D0F', flexShrink: 0 }}>›</span> {tip}
                         </p>
                       ))}
                     </div>
@@ -342,7 +342,7 @@ const RookieView = () => {
         <>
           <div className="flex items-center justify-between mb-4">
             <p className="text-xs text-muted-foreground">
-              <span className="font-bold" style={{ color: '#D4AF37' }}>{rookies.length}</span> DJs Promesa en la plataforma
+              <span className="font-bold" style={{ color: '#8A6D0F' }}>{rookies.length}</span> DJs Promesa en la plataforma
             </p>
             <p className="text-xs text-muted-foreground">Más recientes primero</p>
           </div>

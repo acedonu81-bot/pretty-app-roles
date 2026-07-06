@@ -138,7 +138,7 @@ const PortfolioUpload = () => {
   return (
     <div className="glass-panel p-4">
       <h4 className="text-sm font-bold mb-1 flex items-center gap-2">
-        <Image size={16} style={{ color: '#D4AF37' }} /> Portfolio
+        <Image size={16} style={{ color: '#8A6D0F' }} /> Portfolio
         <span className="text-xs text-muted-foreground ml-auto">{items.length}/{maxItems}</span>
       </h4>
       <p className="text-xs text-muted-foreground mb-3">
@@ -163,7 +163,7 @@ const PortfolioUpload = () => {
               )}
               {item.isVideo && (
                 <div className="absolute top-1 left-1 px-1.5 py-0.5 rounded text-[0.7rem] font-bold flex items-center gap-0.5"
-                  style={{ background: 'rgba(0,0,0,0.7)', color: '#D4AF37' }}>
+                  style={{ background: 'rgba(0,0,0,0.7)', color: '#8A6D0F' }}>
                   <Video size={8} /> VÍD
                 </div>
               )}
@@ -188,7 +188,7 @@ const PortfolioUpload = () => {
           />
           <span className="text-xs leading-relaxed" style={{ color: '#222' }}>
             Declaro que soy titular o tengo autorización para publicar este contenido, conforme a los{' '}
-            <a href="/terminos" target="_blank" rel="noopener noreferrer" style={{ color: '#D4AF37' }}>Términos y Condiciones</a>.
+            <a href="/terminos" target="_blank" rel="noopener noreferrer" style={{ color: '#8A6D0F' }}>Términos y Condiciones</a>.
           </span>
         </label>
       )}
@@ -198,7 +198,7 @@ const PortfolioUpload = () => {
           onClick={() => inputRef.current?.click()}
           disabled={uploading || !rightsConfirmed}
           className="w-full flex items-center justify-center gap-2 py-4 rounded-lg border-2 border-dashed transition-all hover:scale-[1.01]"
-          style={{ borderColor: 'rgba(212,175,55,0.2)', color: '#D4AF37', background: 'rgba(212,175,55,0.03)' }}>
+          style={{ borderColor: 'rgba(212,175,55,0.2)', color: '#8A6D0F', background: 'rgba(212,175,55,0.03)' }}>
           {items.length > 0 ? <Plus size={18} /> : <Upload size={18} />}
           <span className="text-sm font-bold">
             {uploading ? 'Subiendo...' : items.length > 0 ? 'Añadir foto o vídeo' : 'Subir portfolio'}

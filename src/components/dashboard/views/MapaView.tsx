@@ -106,8 +106,8 @@ const MapaView = () => {
         {/* Professionals panel */}
         <div>
           <div className="flex items-center gap-2 mb-3">
-            <Users size={14} style={{ color: '#D4AF37' }} />
-            <span className="text-xs font-bold" style={{ color: '#D4AF37' }}>
+            <Users size={14} style={{ color: '#8A6D0F' }} />
+            <span className="text-xs font-bold" style={{ color: '#8A6D0F' }}>
               {loading ? '…' : cityProfiles.length} profesionales en {selectedCity}
             </span>
           </div>
