@@ -196,9 +196,9 @@ const RotatingWord = () => {
 
 /* ── Bento card ── */
 const BentoCard = ({
-  image, icon, title, subtitle, className = '', onClick, children,
+  image, icon, title, subtitle, className = '', onClick, children, isFresh = false,
 }: {
-  image: string; icon: React.ReactNode; title: string; subtitle: string; className?: string; onClick?: () => void; children?: React.ReactNode;
+  image: string; icon: React.ReactNode; title: string; subtitle: string; className?: string; onClick?: () => void; children?: React.ReactNode; isFresh?: boolean;
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
@@ -252,6 +252,12 @@ const BentoCard = ({
       {/* Borde dorado al hover */}
       <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         style={{ boxShadow: 'inset 0 0 60px rgba(212,175,55,0.1)' }} />
+      {isFresh && (
+        <span className="absolute top-3 right-3 z-10 flex items-center gap-1 px-2 py-1 rounded-full text-[0.6rem] font-black uppercase tracking-wide"
+          style={{ background: '#15803d', color: '#fff' }}>
+          <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" /> Nuevo esta semana
+        </span>
+      )}
       {/* Contenido */}
       <div className="relative z-10 h-full flex flex-col justify-end p-5">
         {children && (
@@ -259,8 +265,8 @@ const BentoCard = ({
         )}
         <h3 className="text-xl font-bold text-gradient mb-1">{title}</h3>
         <p className="text-sm" style={{ color: 'rgba(255,255,255,0.85)' }}>{subtitle}</p>
-        <p className="text-xs font-bold mt-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0 tracking-widest uppercase" style={{ color: '#D4AF37' }}>
-          Ver detalles →
+        <p className="text-xs font-bold mt-2 tracking-widest uppercase transition-transform duration-300 group-hover:translate-x-1" style={{ color: '#D4AF37' }}>
+          ¿Quién hay aquí? →
         </p>
       </div>
     </motion.div>
@@ -575,11 +581,27 @@ const Landing = () => {
   const [newsletterDone, setNewsletterDone] = useState(false);
   const [newsletterLoading, setNewsletterLoading] = useState(false);
   const [communityReviews, setCommunityReviews] = useState<{ reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string }[]>([]);
+  const [freshRoles, setFreshRoles] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     supabase.from('reviews').select('reviewer_name, reviewer_role, reviewer_avatar, comment')
       .eq('approved', true).order('created_at', { ascending: false }).limit(6)
       .then(({ data }) => { if (data && data.length > 0) setCommunityReviews(data as { reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string }[]); });
+  }, []);
+
+  useEffect(() => {
+    const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+    supabase.from('profiles' as any)
+      .select('role, display_name')
+      .gte('created_at', since)
+      .then(({ data }) => {
+        if (!data) return;
+        const roles = new Set<string>();
+        for (const row of data as { role: string; display_name: string | null }[]) {
+          if (row.role && row.display_name && row.display_name.trim().length > 1) roles.add(row.role);
+        }
+        setFreshRoles(roles);
+      });
   }, []);
 
   const handleNewsletter = async (e: React.FormEvent) => {
@@ -958,20 +980,24 @@ const Landing = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 auto-rows-[170px] md:auto-rows-[260px] mb-3 md:mb-4">
           <FadeIn delay={0} className="md:row-span-2">
             <BentoCard image={bentoMusica} icon={<Music size={20} />} title="Música" subtitle="DJs, productores, artistas en vivo, VJs y técnicos de sonido" className="h-full"
+              isFresh={freshRoles.has('dj')}
               onClick={() => navigate('/directorio/' + ROLE_DETAILS[0].key)} />
           </FadeIn>
           <FadeIn delay={0.1} className="md:col-span-2">
             <BentoCard
               image="/images/pexels/1190297.jpg"
               icon={<Building2 size={20} />} title="Empresario" subtitle="Salas, promotoras y agencias de eventos" className="h-full"
+              isFresh={freshRoles.has('empresario')}
               onClick={() => navigate('/directorio/' + ROLE_DETAILS[5].key)} />
           </FadeIn>
           <FadeIn delay={0.15} className="md:row-span-2">
             <BentoCard image={bentoImagen} icon={<Camera size={20} />} title="Imagen & Media" subtitle="Fotógrafos, videógrafos y creadores" className="h-full"
+              isFresh={freshRoles.has('media')}
               onClick={() => navigate('/directorio/' + ROLE_DETAILS[2].key)} />
           </FadeIn>
           <FadeIn delay={0.2} className="md:col-span-2">
             <BentoCard image={bentoStaff} icon={<Users size={20} />} title="Staff & Promoción" subtitle="RRPP, hostess, promotores y azafatas" className="h-full"
+              isFresh={freshRoles.has('staff') || freshRoles.has('promotor')}
               onClick={() => navigate('/directorio/' + ROLE_DETAILS[3].key)} />
           </FadeIn>
         </div>
@@ -981,10 +1007,12 @@ const Landing = () => {
             <BentoCard
               image="/images/pexels/2681751.jpg"
               icon={<Scissors size={20} />} title="Belleza & Estética" subtitle="Maquilladores, peluqueros y estilistas" className="h-full"
+              isFresh={freshRoles.has('makeup')}
               onClick={() => navigate('/directorio/' + ROLE_DETAILS[4].key)} />
           </FadeIn>
           <FadeIn delay={0.3} className="h-full">
             <BentoCard image={bentoGastro} icon={<UtensilsCrossed size={20} />} title="Gastro & Sala" subtitle="Bartenders, chefs y catering premium" className="h-full"
+              isFresh={freshRoles.has('catering')}
               onClick={() => navigate('/directorio/' + ROLE_DETAILS[1].key)} />
           </FadeIn>
         </div>
@@ -1055,6 +1083,44 @@ const Landing = () => {
         </div>
       </section>
 
+
+      {/* ─ Guías destacadas (puente blog → directorio) ─ */}
+      <section className="max-w-[1200px] mx-auto px-6 md:px-8 pb-16 md:pb-20">
+        <FadeIn>
+          <div className="text-center mb-10">
+            <p className="uppercase tracking-[0.3em] text-xs font-semibold mb-3" style={{ color: '#8b5cf6' }}>Precios reales</p>
+            <h2 className="text-2xl md:text-4xl font-black tracking-tight font-display" style={{ color: '#111' }}>
+              Antes de contratar, infórmate
+            </h2>
+          </div>
+        </FadeIn>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            { href: '/blog/cuanto-cobra-un-dj-en-espana', label: 'DJ', title: '¿Cuánto cobra un DJ en España?', color: '#D4AF37' },
+            { href: '/blog/fotografo-boda', label: 'Fotografía', title: 'Fotógrafo de boda: precios y qué mirar', color: '#60a5fa' },
+            { href: '/blog/cuantos-camareros-necesito-para-mi-boda', label: 'Staff', title: '¿Cuántos camareros necesitas en tu boda?', color: '#34d399' },
+            { href: '/blog/maquillaje-nupcial-precio-guia', label: 'Belleza', title: 'Maquillaje nupcial: guía de precios', color: '#f472b6' },
+          ].map(g => (
+            <a key={g.href} href={g.href}
+              className="group block p-5 rounded-2xl transition-all hover:scale-[1.02]"
+              style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
+              <span className="inline-block text-[0.65rem] font-black uppercase tracking-widest px-2 py-1 rounded-md mb-3"
+                style={{ background: `${g.color}18`, color: g.color }}>
+                {g.label}
+              </span>
+              <p className="text-sm font-bold leading-snug mb-3" style={{ color: '#111' }}>{g.title}</p>
+              <p className="text-xs font-bold transition-transform duration-300 group-hover:translate-x-1" style={{ color: g.color }}>
+                Leer guía →
+              </p>
+            </a>
+          ))}
+        </div>
+        <p className="text-center mt-6">
+          <a href="/blog" className="text-xs font-bold underline decoration-dotted underline-offset-4" style={{ color: '#333' }}>
+            Ver todas las guías del blog →
+          </a>
+        </p>
+      </section>
 
       {/* ─ FAQ ─ */}
       <div id="faq"><FaqSection /></div>
