@@ -24,6 +24,23 @@ const sanitize = (name: string) =>
     .replace(/_+/g, '_')
     .replace(/^_|_$/g, '');
 
+/* Mensaje del CTA de portfolio vac\u00edo, por oficio \u2014 el equivalente a "escuchar antes de contratar" */
+const EMPTY_CTA: Record<string, { title: string; body: string }> = {
+  media:        { title: 'Sube tus mejores fotos \u2014 tu portfolio decide la contrataci\u00f3n', body: 'Los organizadores eligen fot\u00f3grafo mirando su trabajo, no leyendo su bio. Sube 3-4 fotos de eventos reales y un v\u00eddeo corto si tienes.' },
+  makeup:       { title: 'Sube tus trabajos: el antes y despu\u00e9s vende solo', body: 'Novias y artistas eligen maquilladora por lo que ven. Sube tus mejores looks \u2014 los perfiles con portfolio reciben m\u00e1s contactos y posicionan mejor en el directorio.' },
+  staff:        { title: 'Una buena foto profesional genera confianza', body: 'Los empresarios contratan staff que pueden ver: foto profesional + una imagen tuya trabajando en un evento marcan la diferencia frente a un perfil vac\u00edo.' },
+  promotor:     { title: 'Ense\u00f1a tus eventos y tus salas', body: 'Fotos de tus fiestas, colas en la puerta, ambiente dentro: es la prueba de que mueves gente. Los perfiles con portfolio posicionan mejor en el directorio.' },
+  catering:     { title: 'Tus platos son tu mejor carta de presentaci\u00f3n', body: 'Sube fotos de tus montajes, platos y barras. Quien organiza un evento elige catering con los ojos \u2014 un perfil sin fotos no compite.' },
+  mago:         { title: 'Un clip de tu show vende m\u00e1s que mil palabras', body: 'La magia se contrata vi\u00e9ndola: sube un v\u00eddeo corto de una actuaci\u00f3n real (vale grabado con m\u00f3vil). Los perfiles con v\u00eddeo reciben m\u00e1s contactos.' },
+  humorista:    { title: 'Sube un clip de tu mon\u00f3logo', body: 'Que se r\u00edan antes de contratarte: 30-60 segundos de una actuaci\u00f3n real es tu mejor argumento de venta. Los perfiles con v\u00eddeo posicionan mejor.' },
+  animador:     { title: 'Fotos de tus fiestas: los padres quieren ver tu trabajo', body: 'Sube fotos de animaciones reales (respetando la privacidad de los menores). Un perfil con fotos transmite la confianza que una familia necesita para contratar.' },
+  bailarin:     { title: 'El movimiento no se explica: sube un v\u00eddeo bailando', body: '30-60 segundos de un show o ensayo real. Quien busca espect\u00e1culo de baile decide en los primeros segundos de v\u00eddeo.' },
+  speaker:      { title: 'Sube un clip presentando: tu voz es tu portfolio', body: 'Un fragmento de una gala, boda o congreso real muestra tu presencia esc\u00e9nica mejor que cualquier descripci\u00f3n. Los perfiles con v\u00eddeo reciben m\u00e1s contactos.' },
+  vestuario:    { title: 'Sube tu book: looks y styling de trabajos reales', body: 'Novias, artistas y producciones eligen estilista por su ojo. Tu book es la prueba \u2014 los perfiles con portfolio posicionan mejor en el directorio.' },
+  'photo-booth': { title: 'Ense\u00f1a tus cabinas en acci\u00f3n', body: 'Fotos de tus photo booth montados en eventos reales, props y ejemplos de impresi\u00f3n. Quien alquila quiere ver exactamente lo que llega a su evento.' },
+};
+const EMPTY_CTA_DEFAULT = { title: 'Sube tu portfolio \u2014 es tu mejor tarjeta de presentaci\u00f3n', body: 'Los organizadores miran antes de contactar: los perfiles con fotos o v\u00eddeo reciben m\u00e1s visitas y salen mejor posicionados en el directorio y en Google. Tardas un minuto.' };
+
 const checkVideoDuration = (file: File): Promise<number> =>
   new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file);
@@ -43,6 +60,7 @@ const checkVideoDuration = (file: File): Promise<number> =>
 const PortfolioUpload = () => {
   const [uploading, setUploading] = useState(false);
   const [items, setItems] = useState<PortfolioItem[]>([]);
+  const [itemsLoaded, setItemsLoaded] = useState(false);
   const [rightsConfirmed, setRightsConfirmed] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { user } = useAuth();
@@ -64,6 +82,7 @@ const PortfolioUpload = () => {
         });
         setItems(loaded);
       }
+      setItemsLoaded(true);
     };
     load();
   }, [user]);
@@ -144,6 +163,23 @@ const PortfolioUpload = () => {
       <p className="text-xs text-muted-foreground mb-3">
         Fotos hasta {MAX_IMAGE_MB}MB · Vídeos hasta {MAX_VIDEO_SECONDS}s / {MAX_VIDEO_MB}MB · hasta {MAX_ITEMS_PRO} elementos
       </p>
+
+      {/* CTA: portfolio vacío — mensaje según el oficio */}
+      {itemsLoaded && items.length === 0 && (() => {
+        const cta = EMPTY_CTA[profile.role ?? ''] ?? EMPTY_CTA_DEFAULT;
+        return (
+          <div className="rounded-xl px-4 py-4 mb-3 flex items-start gap-3"
+            style={{ background: 'linear-gradient(135deg, rgba(212,175,55,0.12), rgba(212,175,55,0.04))', border: '1.5px solid rgba(212,175,55,0.4)' }}>
+            <span className="flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: 'rgba(212,175,55,0.2)' }}>
+              <Image size={17} style={{ color: '#D4AF37' }} />
+            </span>
+            <div>
+              <p className="text-sm font-black mb-1" style={{ color: '#8A6D0F' }}>{cta.title}</p>
+              <p className="text-xs leading-relaxed" style={{ color: 'var(--nightlife-text-secondary)' }}>{cta.body}</p>
+            </div>
+          </div>
+        );
+      })()}
 
       {items.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">

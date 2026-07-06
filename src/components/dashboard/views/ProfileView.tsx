@@ -43,8 +43,10 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
       { label: 'Ciudad', done: !!(profile.zone && profile.zone !== DEFAULT_ZONE), hint: 'Elige tu ciudad para aparecer en búsquedas locales.' },
       { label: 'Especialidad', done: !!(profile.specialty && profile.specialty.trim().length > 0), hint: 'Añade tus géneros o especialidades.' },
       { label: 'Instagram', done: !!(profile.instagram && profile.instagram.trim().length > 0), hint: 'Enlaza tu Instagram para que te contacten.' },
-      ...(profile.role !== 'empresario' ? [
+      ...(profile.role === 'dj' || profile.role === 'rookie' ? [
         { label: 'Mix / Audio', done: !!(profile.audio_embed_url && (profile.audio_embed_url as string).trim().length > 0), hint: 'Añade un enlace a tu mix o sesión.' },
+      ] : profile.role !== 'empresario' ? [
+        { label: 'Portfolio', done: !!(profile.portfolio_urls && profile.portfolio_urls.length > 0), hint: 'Sube fotos o un vídeo corto de tu trabajo.' },
       ] : []),
     ];
     const done = steps.filter(s => s.done).length;

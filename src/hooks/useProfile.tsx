@@ -29,6 +29,7 @@ interface ProfileData {
   tiktok: string | null;
   bio_video_url: string | null;
   bg_music_url: string | null;
+  portfolio_urls: string[] | null;
 }
 
 export interface ProfileSummary {
@@ -83,6 +84,7 @@ const defaults: ProfileData = {
   tiktok: null,
   bio_video_url: null,
   bg_music_url: null,
+  portfolio_urls: null,
 };
 
 const ProfileContext = createContext<ProfileCtx>({
@@ -113,7 +115,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     // Load all profiles for this user
     const { data: rows } = await supabase
       .from('profiles')
-      .select('id, display_name, role, photo_url, is_primary, subscription_tier, birthday, zone, hourly_rate, stream_url, stream_title, trial_started_at, annual_billing, is_live, is_flash_active, phone, specialty, instagram, bio, audio_embed_url, languages, genres, category, tiktok, bio_video_url, bg_music_url, created_at')
+      .select('id, display_name, role, photo_url, is_primary, subscription_tier, birthday, zone, hourly_rate, stream_url, stream_title, trial_started_at, annual_billing, is_live, is_flash_active, phone, specialty, instagram, bio, audio_embed_url, languages, genres, category, tiktok, bio_video_url, bg_music_url, portfolio_urls, created_at')
       .eq('user_id', user.id)
       .order('created_at', { ascending: true });
 
