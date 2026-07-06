@@ -95,7 +95,7 @@ const Auth = () => {
   }, [navigate, redirectParam]);
 
   const handleGoogleSignIn = async () => {
-    const SITE_URL = import.meta.env.VITE_SITE_URL ?? window.location.origin;
+    const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
     setGoogleLoading(true);
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
@@ -113,7 +113,7 @@ const Auth = () => {
   };
 
   const handleForgotPassword = async (e: React.FormEvent) => {
-    const SITE_URL = import.meta.env.VITE_SITE_URL ?? window.location.origin;
+    const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
     e.preventDefault();
     if (!forgotEmail) { toast.error('Introduce tu email'); return; }
     setForgotLoading(true);
@@ -177,7 +177,7 @@ const Auth = () => {
         if (!safeName) { toast.error('El nombre no es válido.'); setLoading(false); return; }
 
         isRegistering.current = true;
-        const SITE_URL = import.meta.env.VITE_SITE_URL ?? window.location.origin;
+        const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
         const { data: signUpData, error } = await supabase.auth.signUp({
           email,
           password,
@@ -442,10 +442,11 @@ const Auth = () => {
 
                 {/* Legal — touch-friendly */}
                 {!isLogin && (
-                  <label className="flex items-center gap-3 cursor-pointer rounded-xl px-3 py-3.5 active:bg-white/5"
+                  <label
+                    onClick={() => setLegalAccepted(!legalAccepted)}
+                    className="flex items-center gap-3 cursor-pointer rounded-xl px-3 py-3.5 active:bg-white/5"
                     style={{ background: 'rgba(255,255,255,0.04)', border: legalAccepted ? '1px solid rgba(212,175,55,0.4)' : '1px solid rgba(255,255,255,0.08)' }}>
                     <div
-                      onClick={() => setLegalAccepted(!legalAccepted)}
                       className="w-6 h-6 rounded-md flex-shrink-0 flex items-center justify-center transition-all"
                       style={{
                         background: legalAccepted ? '#D4AF37' : 'rgba(255,255,255,0.08)',
