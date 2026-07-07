@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, Headphones, BookOpen, Video, Music, Instagram, Send, X, Shield } from 'lucide-react';
+import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, Headphones, BookOpen, Video, Music, Instagram, Send, X, Shield, Check, Plus } from 'lucide-react';
+import { addToCart, useEventCart } from '@/lib/eventCart';
 import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack } from '@/lib/streaming';
 import { profiles, toSlug } from '@/data/profiles';
 import { useAuth } from '@/hooks/useAuth';
@@ -299,6 +300,7 @@ const PublicProfile = () => {
   const [extraMedia, setExtraMedia] = useState<{ bio_video_url?: string | null; bg_music_url?: string | null; audio_session_urls?: string[] | null; video_session_urls?: string[] | null }>({});
 
   const { user: authUser } = useAuth();
+  const { items: cartItems } = useEventCart();
   const [showContact, setShowContact] = useState(false);
   const [scrolledPastHero, setScrolledPastHero] = useState(false);
   const [audioEmbed, setAudioEmbed] = useState<ReturnType<typeof parseStreamUrl>>(null);
@@ -469,6 +471,18 @@ const PublicProfile = () => {
   } : staticProfile!;
 
   const profileSlug = sbProfile?.display_name ? toSlug(sbProfile.display_name) : slug!;
+  const inCart = sbProfile ? cartItems.some(i => i.userId === sbProfile.user_id) : false;
+  const handleAddToCart = () => {
+    if (!sbProfile) return;
+    addToCart({
+      userId: sbProfile.user_id,
+      displayName: profile.name,
+      role: profile.role,
+      photoUrl: profile.photo || null,
+      hourlyRate: profile.price || null,
+      zone: profile.zone,
+    });
+  };
   const profileUrl = `${BASE_URL}/p/${profileSlug}`;
   const cityShort = profile.zone ? profile.zone.split(',')[0].trim() : 'España';
   const priceStr = (profile as any).price > 0 ? ` Tarifa desde ${(profile as any).price}€/h.` : '';
@@ -707,6 +721,18 @@ const PublicProfile = () => {
                   <MessageCircle size={18} />
                   Contactar
                 </button>
+                {sbProfile && (
+                  <button
+                    onClick={handleAddToCart}
+                    disabled={inCart}
+                    className="flex items-center gap-2 px-6 py-3.5 rounded-2xl font-black text-base transition-all hover:scale-105 active:scale-95 disabled:hover:scale-100"
+                    style={inCart
+                      ? { background: 'rgba(34,197,94,0.1)', border: '1.5px solid rgba(34,197,94,0.4)', color: '#16a34a' }
+                      : { background: '#fff', border: '1.5px solid rgba(0,0,0,0.12)', color: '#333' }}>
+                    {inCart ? <Check size={18} /> : <Plus size={18} />}
+                    {inCart ? 'En tu evento' : 'Añadir a mi evento'}
+                  </button>
+                )}
               </div>
             </motion.div>
           </motion.div>
@@ -920,8 +946,19 @@ const PublicProfile = () => {
         )}
 
         {/* Sticky CTA mobile */}
-        <div className="fixed bottom-0 left-0 right-0 z-50 p-4 md:hidden"
+        <div className="fixed bottom-0 left-0 right-0 z-50 p-4 md:hidden flex gap-2"
           style={{ background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(10px)', borderTop: '1px solid rgba(0,0,0,0.07)', paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}>
+          {sbProfile && (
+            <button
+              onClick={handleAddToCart}
+              disabled={inCart}
+              className="flex-shrink-0 w-14 flex items-center justify-center rounded-2xl font-black text-base transition-all active:scale-95 disabled:active:scale-100"
+              style={inCart
+                ? { background: 'rgba(34,197,94,0.1)', border: '1.5px solid rgba(34,197,94,0.4)', color: '#16a34a' }
+                : { background: '#f5f4f0', border: '1.5px solid rgba(0,0,0,0.1)', color: '#333' }}>
+              {inCart ? <Check size={18} /> : <Plus size={18} />}
+            </button>
+          )}
           <button
             onClick={() => {
               if (authUser && sbProfile?.user_id) {
@@ -930,7 +967,7 @@ const PublicProfile = () => {
                 setShowContact(true);
               }
             }}
-            className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl font-black text-base transition-all active:scale-95"
+            className="flex-1 flex items-center justify-center gap-2 py-4 rounded-2xl font-black text-base transition-all active:scale-95"
             style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
             <MessageCircle size={18} /> Contactar
           </button>

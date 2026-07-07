@@ -129,7 +129,7 @@ const Terminos = () => {
 
           <section>
             <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>11. Edad Mínima</h2>
-            <p>El acceso y registro en XPEAK está reservado a personas mayores de <strong>14 años</strong>, conforme al art. 7 de la Ley Orgánica 3/2018 (LOPDGDD). Al registrarse, el usuario confirma que cumple con este requisito. XPEAK se reserva el derecho de cancelar sin previo aviso las cuentas de usuarios que no cumplan este requisito.</p>
+            <p>El acceso y registro en XPEAK como profesional está reservado a personas mayores de <strong>18 años</strong>. XPEAK conecta a los usuarios con salas, promotoras y eventos del sector nocturno, por lo que se exige la mayoría de edad legal en España como condición para publicar un perfil profesional. Al registrarse, el usuario confirma que cumple con este requisito. XPEAK se reserva el derecho de cancelar sin previo aviso las cuentas de usuarios que no cumplan este requisito.</p>
           </section>
 
           <section>

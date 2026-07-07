@@ -7,6 +7,7 @@ import { lazy, Suspense } from "react";
 const Landing = lazy(() => import("./pages/Landing"));
 import NotFound from "./pages/NotFound";
 import CookieBanner from "./components/CookieBanner";
+import EventCartWidget from "./components/EventCartWidget";
 
 // Code-split heavy routes — loaded on demand
 const Auth = lazy(() => import("./pages/Auth"));
@@ -346,6 +347,7 @@ const App = () => (
           </Routes>
         </Suspense>
         <CookieBanner />
+        <EventCartWidget />
       </BrowserRouter>
     </TooltipProvider>
     </XPeakToastProvider>

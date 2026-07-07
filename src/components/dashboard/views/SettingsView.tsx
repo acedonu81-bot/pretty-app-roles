@@ -771,6 +771,14 @@ Para cualquier duda: soporte@xpeak.es
         return;
       }
     }
+    // Edad mínima: XPEAK conecta con salas y eventos nocturnos, no aceptamos menores de 18.
+    if (localBirthday) {
+      const age = Math.floor((Date.now() - new Date(localBirthday).getTime()) / (365.25 * 24 * 60 * 60 * 1000));
+      if (age < 18) {
+        toast.error('Debes ser mayor de 18 años para tener un perfil profesional en XPEAK.');
+        return;
+      }
+    }
     const updates: Record<string, unknown> = {};
     if (localName !== null) updates.display_name = localName;
     if (localCity !== null) updates.zone = localCity;

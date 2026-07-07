@@ -107,7 +107,14 @@ function EmbedPlayer({ session }: { session: SessionFile }) {
   );
 }
 
-const AudioUpload = () => {
+interface AudioUploadProps {
+  /** URL de un track legacy guardado en profiles.audio_embed_url (sistema de "sesión única" ya retirado). */
+  legacyEmbedUrl?: string | null;
+  /** Se llama una vez migrado el track legacy a la lista de sesiones, para limpiar audio_embed_url. */
+  onMigrated?: () => void;
+}
+
+const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [sessions, setSessions] = useState<SessionFile[]>([]);
@@ -151,16 +158,26 @@ const AudioUpload = () => {
           loaded.push({ name: u.split('/').filter(Boolean).pop() || u, url: u, storagePath: '', type: t });
         }
       }
+      // Migración: el sistema viejo guardaba una única sesión en audio_embed_url.
+      // Si el usuario tenía una y no está ya en la lista, se incorpora automáticamente.
+      if (legacyEmbedUrl && !savedUrls.includes(legacyEmbedUrl)) {
+        const t = detectType(legacyEmbedUrl);
+        if (t && t !== 'file') {
+          loaded.push({ name: legacyEmbedUrl.split('/').filter(Boolean).pop() || legacyEmbedUrl, url: legacyEmbedUrl, storagePath: '', type: t });
+          persistLinks(loaded, user.id);
+        }
+        onMigrated?.();
+      }
       setSessions(loaded);
       setSessionsLoaded(true);
     };
     loadSessions();
-  }, [user]);
+  }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Persistir los links externos en profiles.audio_session_urls (los files viven en storage)
-  const persistLinks = (next: SessionFile[]) => {
+  const persistLinks = (next: SessionFile[], userId?: string) => {
     const linkUrls = next.filter(s => s.type !== 'file').map(s => s.url);
-    supabase.from('profiles').update({ audio_session_urls: linkUrls } as any).eq('user_id', user!.id).then(() => {});
+    supabase.from('profiles').update({ audio_session_urls: linkUrls } as any).eq('user_id', userId ?? user!.id).then(() => {});
   };
 
   const toggleGenre = (genre: string) => {

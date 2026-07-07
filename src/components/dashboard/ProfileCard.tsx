@@ -108,7 +108,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
             ) : (p as any).isVerified ? (
               <span className="flex items-center gap-0.5 px-2 py-1 rounded-full text-[0.6rem] font-black"
                 style={{ background: 'rgba(212,175,55,0.95)', color: '#000' }}>
-                <BadgeCheck size={9} /> Pro
+                <BadgeCheck size={9} /> Verificado
               </span>
             ) : isEarlyAdopter ? (
               <span className="flex items-center gap-0.5 px-2 py-1 rounded-full text-[0.6rem] font-black"
@@ -131,7 +131,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
           {(p as any).isVerified && (
             <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black"
               style={{ background: 'rgba(212,175,55,0.9)', color: '#000' }}>
-              <BadgeCheck size={9} /> Pro
+              <BadgeCheck size={9} /> Verificado
             </span>
           )}
           {p.isFlashActive && (

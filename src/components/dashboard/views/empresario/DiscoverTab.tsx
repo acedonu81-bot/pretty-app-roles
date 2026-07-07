@@ -26,7 +26,9 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
 
   const filtered = pros.filter(p => {
     if (filterZone !== 'Todas' && p.zone !== filterZone) return false;
-    if (filterRole !== 'Todos' && p.role !== filterRole) return false;
+    // 'camarero' es un rol legacy — cuenta como staff en el filtro
+    const effectiveRole = p.role === 'camarero' ? 'staff' : p.role;
+    if (filterRole !== 'Todos' && effectiveRole !== filterRole) return false;
     if (p.hourly_rate > maxPrice) return false;
     if (showFavoritesOnly && !favorites.includes(p.id)) return false;
     return true;

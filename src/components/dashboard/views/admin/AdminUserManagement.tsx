@@ -97,13 +97,15 @@ const AdminUserManagement = () => {
                   {u.is_verified && <CheckCircle size={12} style={{ color: '#8A6D0F' }} />}
                   {u.is_early_adopter && <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ background: '#3b82f6', boxShadow: '0 0 4px #3b82f6' }} title="Aro Azul" />}
                   <span className="text-[0.75rem] px-1.5 py-0.5 rounded font-bold"
+                    title="Plan de suscripción (free / agency / elite)"
                     style={{
                       background: u.subscription_tier === 'elite' ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.05)',
                       color: u.subscription_tier === 'elite' ? '#D4AF37' : 'var(--nightlife-text-secondary)',
                     }}>
-                    {(u.subscription_tier || 'free').toUpperCase()}
+                    PLAN {(u.subscription_tier || 'free').toUpperCase()}
                   </span>
                   <span className="text-[0.7rem] px-1 py-0.5 rounded font-bold"
+                    title="Categoría del perfil (profesional o promesa)"
                     style={{
                       background: u.category === 'professional' ? 'rgba(34,197,94,0.1)' : 'rgba(255,188,0,0.1)',
                       color: u.category === 'professional' ? '#22c55e' : '#ffbc00',

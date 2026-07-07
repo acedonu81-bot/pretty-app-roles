@@ -460,7 +460,7 @@ const ProfGrid = ({ profs }: { profs: Prof[] }) => (
     {profs.map(p => (
       <a key={p.id}
         href={p.slug ? `/p/${p.slug}` : `/p/${p.id}`}
-        style={{ textDecoration: 'none', display: 'block', background: 'rgba(255,255,255,0.03)', border: p.is_early_adopter ? '2px solid #3B82F6' : '1px solid rgba(255,255,255,0.08)', borderRadius: 16, overflow: 'hidden', transition: 'transform 0.2s', boxShadow: p.is_early_adopter ? '0 0 0 3px rgba(59,130,246,0.15)' : 'none' }}
+        style={{ textDecoration: 'none', display: 'block', background: 'rgba(255,255,255,0.03)', border: p.is_early_adopter ? '4px solid #3B82F6' : '1px solid rgba(255,255,255,0.08)', borderRadius: 16, overflow: 'hidden', transition: 'transform 0.2s', boxShadow: p.is_early_adopter ? '0 0 0 3px rgba(59,130,246,0.15)' : 'none' }}
         onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.02)')}
         onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}>
         <div style={{ aspectRatio: '3/2', overflow: 'hidden', background: 'rgba(255,255,255,0.05)', position: 'relative' }}>

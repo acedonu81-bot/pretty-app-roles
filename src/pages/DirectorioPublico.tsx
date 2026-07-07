@@ -1,10 +1,11 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Zap, MapPin, BadgeCheck, ChevronRight } from 'lucide-react';
+import { Zap, MapPin, BadgeCheck, ChevronRight, Check, Plus } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import FlashBookingRequestModal from '@/components/dashboard/FlashBookingRequestModal';
 import FooterPublic from '@/components/FooterPublic';
+import { addToCart, useEventCart } from '@/lib/eventCart';
 
 interface DirProfile {
   user_id: string;
@@ -181,15 +182,18 @@ export default function DirectorioPublico() {
   const [city, setCity] = useState('Todas');
   const [bookingPro, setBookingPro] = useState<DirProfile | null>(null);
   const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
+  const { items: cartItems } = useEventCart();
 
   useEffect(() => {
     setLoading(true);
     setProfiles([]);
     setFetchError(false);
+    // 'camarero' es un rol legacy (opción retirada de los selectores) — equivale a staff
+    const dbRoles = config.dbRole === 'staff' ? ['staff', 'camarero'] : [config.dbRole];
     let q = supabase
       .from('profiles')
       .select('user_id, display_name, role, specialty, zone, photo_url, hourly_rate, bio, is_flash_active, is_verified, is_early_adopter, score, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls')
-      .eq('role', config.dbRole)
+      .in('role', dbRoles)
       .not('display_name', 'is', null)
       .order('score', { ascending: false })
       .limit(60) as any;
@@ -368,7 +372,7 @@ export default function DirectorioPublico() {
               {profiles.map(p => (
                 <div key={p.user_id} className="rounded-2xl overflow-hidden flex flex-col bg-white"
                   style={{
-                    border: (p as any).is_early_adopter ? '2px solid rgba(96,165,250,0.7)' : '1px solid rgba(0,0,0,0.12)',
+                    border: (p as any).is_early_adopter ? '4px solid rgba(96,165,250,0.7)' : '1px solid rgba(0,0,0,0.12)',
                     boxShadow: (p as any).is_early_adopter ? '0 0 20px rgba(96,165,250,0.2), 0 2px 12px rgba(0,0,0,0.1)' : '0 2px 12px rgba(0,0,0,0.1)',
                   }}>
 
@@ -399,7 +403,7 @@ export default function DirectorioPublico() {
                         ) : p.is_verified ? (
                           <span className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
                             style={{ background: '#D4AF37', color: '#000' }}>
-                            <BadgeCheck size={10} /> Pro
+                            <BadgeCheck size={10} /> Verificado
                           </span>
                         ) : (p as any).is_early_adopter ? (
                           <span className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
@@ -418,7 +422,7 @@ export default function DirectorioPublico() {
                       {p.is_verified && (
                         <span className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
                           style={{ background: '#D4AF37', color: '#000' }}>
-                          <BadgeCheck size={10} /> Pro verificado
+                          <BadgeCheck size={10} /> Verificado
                         </span>
                       )}
                       {p.is_flash_active && (
@@ -501,6 +505,16 @@ export default function DirectorioPublico() {
                         className="flex-1 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
                         style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 2px 10px rgba(212,175,55,0.25)' }}>
                         Solicitar presupuesto
+                      </button>
+                      <button
+                        onClick={() => addToCart({ userId: p.user_id, displayName: p.display_name, role: p.role, photoUrl: p.photo_url, hourlyRate: p.hourly_rate, zone: p.zone })}
+                        disabled={cartItems.some(i => i.userId === p.user_id)}
+                        title={cartItems.some(i => i.userId === p.user_id) ? 'Ya está en tu evento' : 'Añadir a mi evento'}
+                        className="w-10 flex-shrink-0 flex items-center justify-center py-2.5 rounded-xl transition-all hover:scale-105 disabled:hover:scale-100"
+                        style={cartItems.some(i => i.userId === p.user_id)
+                          ? { background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)', color: '#22c55e' }
+                          : { background: '#ffffff', border: '1px solid rgba(0,0,0,0.12)', color: '#333' }}>
+                        {cartItems.some(i => i.userId === p.user_id) ? <Check size={15} /> : <Plus size={15} />}
                       </button>
                     </div>
                   </div>

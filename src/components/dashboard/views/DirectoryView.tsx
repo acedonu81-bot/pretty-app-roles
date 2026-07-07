@@ -37,7 +37,9 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
 
   useEffect(() => {
     setLoadingProfiles(true);
-    const activeRoles = roles ?? [role];
+    const baseRoles = roles ?? [role];
+    // 'camarero' es un rol legacy (opción retirada) — se muestra junto a staff
+    const activeRoles = baseRoles.includes('staff') ? [...baseRoles, 'camarero'] : baseRoles;
     let query = supabase
       .from('profiles')
       .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, category, is_verified, is_flash_active, is_early_adopter, score, role')

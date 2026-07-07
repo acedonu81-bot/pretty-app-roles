@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { Trash2, Camera, ExternalLink, Star, Radio, ChevronDown, X, Download, ShoppingBag, Plus, Package, Tag, Image as ImageIcon, Music, Shirt, Sparkles, FileEdit, Copy, Check, Share2 } from 'lucide-react';
+import { Trash2, Camera, Star, Radio, ChevronDown, X, Download, ShoppingBag, Plus, Package, Tag, Image as ImageIcon, Music, Shirt, Sparkles, FileEdit, Copy, Check, Share2 } from 'lucide-react';
 import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import { exportUserDataZip } from '@/lib/exportUserData';
-import { parseStreamUrl } from '@/lib/streaming';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -24,7 +23,6 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   const [rider, setRider] = useState<string | null>(null);
   const [bio, setBio] = useState<string | null>(null);
   const [hourlyRate, setHourlyRate] = useState<string | null>(null);
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
   const [savingAvailability, setSavingAvailability] = useState(false);
   const [selectedLangs, setSelectedLangs] = useState<string[] | null>(null);
@@ -135,7 +133,6 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     if (hourlyRate !== null) updates.hourly_rate = parseInt(hourlyRate) || 0;
     if (rider !== null) updates.specialty = rider;
     if (bio !== null) updates.bio = bio;
-    if (audioUrl !== null) updates.audio_embed_url = audioUrl || null;
     if (selectedLangs !== null) updates.languages = selectedLangs;
     if (selectedGenres !== null) updates.genres = selectedGenres;
     // is_flash_active is saved immediately on toggle — skip here
@@ -682,72 +679,8 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
               )}
             </div>
           </div>
-          {(profile.role === 'dj' || profile.role === 'rookie') && <AudioUpload />}
+          {(profile.role === 'dj' || profile.role === 'rookie') && <AudioUpload legacyEmbedUrl={profile.audio_embed_url} onMigrated={() => profile.updateField({ audio_embed_url: null })} />}
           {profile.role !== 'dj' && profile.role !== 'rookie' && profile.role !== 'empresario' && <PortfolioUpload />}
-
-          {/* Redes sociales y plataformas — solo roles con contenido */}
-          {(profile.role === 'dj' || profile.role === 'rookie') && (
-          <div className="glass-panel p-5">
-            <h4 className="text-base font-bold mb-4">Redes & Plataformas</h4>
-
-            {/* Audio embed — roles musicales */}
-            {(profile.role === 'dj' || profile.role === 'rookie') && (() => {
-              const currentUrl = audioUrl ?? profile.audio_embed_url ?? '';
-              const parsed = parseStreamUrl(currentUrl);
-              return (
-                <div>
-                  <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">
-                    hearthis.at / Mixcloud / SoundCloud
-                  </label>
-                  <p className="text-xs text-muted-foreground mt-1 mb-2">
-                    Los empresarios escucharán tus sesiones directamente desde tu ficha.
-                  </p>
-                  <div className="flex gap-2 mb-2">
-                    <input
-                      type="url"
-                      value={currentUrl}
-                      onChange={e => setAudioUrl(e.target.value)}
-                      placeholder="https://hearthis.at/tu-usuario/ o mixcloud.com/..."
-                      className="nightlife-input text-sm flex-1"
-                    />
-                    {currentUrl && (
-                      <a href={currentUrl} target="_blank" rel="noopener noreferrer"
-                        className="px-3 rounded-lg flex items-center"
-                        style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
-                        <ExternalLink size={14} />
-                      </a>
-                    )}
-                    {currentUrl && (
-                      <button type="button" onClick={() => setAudioUrl('')}
-                        className="px-3 rounded-lg flex items-center"
-                        style={{ background: 'rgba(255,85,85,0.08)', border: '1px solid rgba(255,85,85,0.2)', color: '#ff5555' }}
-                        title="Eliminar">
-                        <X size={14} />
-                      </button>
-                    )}
-                  </div>
-                  {parsed ? (
-                    <>
-                      <p className="text-xs font-bold mb-2" style={{ color: '#22c55e' }}>
-                        ✓ {parsed.type} detectado — preview:
-                      </p>
-                      <iframe
-                        src={parsed.embedUrl}
-                        title={`Preview de audio — ${parsed.type}`}
-                        className="w-full rounded-lg"
-                        style={{ height: 160, border: 'none' }}
-                        allow="autoplay"
-                        sandbox="allow-scripts allow-same-origin allow-presentation"
-                      />
-                    </>
-                  ) : currentUrl ? (
-                    <p className="text-xs" style={{ color: '#ff5f56' }}>URL no reconocida. Prueba con hearthis.at, Mixcloud o SoundCloud.</p>
-                  ) : null}
-                </div>
-              );
-            })()}
-          </div>
-          )}
 
           {/* Export ZIP - GDPR */}
           <div className="glass-panel p-5 flex items-center justify-between gap-4"
