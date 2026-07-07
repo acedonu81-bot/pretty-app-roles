@@ -49,7 +49,15 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
       .eq('is_read', false)
       .order('created_at', { ascending: false })
       .limit(20);
-    if (data) setRealNotifs(data as unknown as RealNotif[]);
+    if (data) {
+      // Respetar las preferencias de notificación de Ajustes (por tipo)
+      const typePref: Record<string, string> = { message: 'xpeak_notif_messages', flash: 'xpeak_notif_flash', top_weekend: 'xpeak_notif_topweekend' };
+      const filtered = (data as unknown as RealNotif[]).filter(n => {
+        const key = typePref[n.type];
+        return !key || localStorage.getItem(key) !== 'false';
+      });
+      setRealNotifs(filtered);
+    }
   }, []);
 
   useEffect(() => {

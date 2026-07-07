@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { Camera, Bell, Volume2, Shield, LogOut, ChevronRight, Trash2, AlertTriangle, Download, FileText, QrCode, Archive, BellOff, Users, Plus, Check, X } from 'lucide-react';
+import { compressImage, MAX_RAW_IMAGE_MB } from '@/lib/image';
+import { Camera, Bell, Shield, LogOut, ChevronRight, Trash2, AlertTriangle, Download, FileText, QrCode, Archive, BellOff, Users, Plus, Check, X } from 'lucide-react';
 import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import { toast } from 'sonner';
 import JSZip from 'jszip';
@@ -15,12 +16,6 @@ const euLanguages = [
   '🇪🇸 Español', '🇬🇧 English', '🇩🇪 Deutsch', '🇫🇷 Français', '🇮🇹 Italiano',
   '🇵🇹 Português', '🇳🇱 Nederlands', '🇵🇱 Polski', '🇷🇴 Română', '🇬🇷 Ελληνικά',
   '🇨🇿 Čeština', '🇭🇺 Magyar', '🇸🇪 Svenska', '🇩🇰 Dansk', '🇫🇮 Suomi',
-];
-
-const AUDIO_QUALITIES = [
-  { id: 'standard', label: 'Estándar', desc: '128 kbps · Menos datos' },
-  { id: 'high', label: 'Alta calidad', desc: '320 kbps · Recomendado' },
-  { id: 'lossless', label: 'Sin pérdidas', desc: 'FLAC / WAV · Máxima fidelidad' },
 ];
 
 type ToggleRowProps = {
@@ -157,11 +152,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
   const [notifMessages, setNotifMessages] = useState(() => localStorage.getItem('xpeak_notif_messages') !== 'false');
   const [notifFlash, setNotifFlash] = useState(() => localStorage.getItem('xpeak_notif_flash') !== 'false');
   const [notifTopWeekend, setNotifTopWeekend] = useState(() => localStorage.getItem('xpeak_notif_topweekend') !== 'false');
-  const [notifMarketing, setNotifMarketing] = useState(() => localStorage.getItem('xpeak_notif_marketing') === 'true');
-  const [notifSMS, setNotifSMS] = useState(() => localStorage.getItem('xpeak_notif_sms') === 'true');
 
-  // Audio quality — persisted in localStorage
-  const [audioQuality, setAudioQuality] = useState(() => localStorage.getItem('xpeak_audio_quality') ?? 'high');
 
   // Account deletion
   const [showDeleteZone, setShowDeleteZone] = useState(false);
@@ -179,7 +170,6 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
   const [showOnline, setShowOnline] = useState(true);
 
   // Persist audio quality when it changes
-  useEffect(() => { localStorage.setItem('xpeak_audio_quality', audioQuality); }, [audioQuality]);
 
   const isEmpresario = profile.role === 'empresario';
   const displayName = localName ?? profile.display_name;
@@ -750,11 +740,12 @@ Para cualquier duda: soporte@xpeak.es
     if (!file.type.startsWith('image/')) { toast.error('Solo se permiten imágenes.'); return; }
     const ALLOWED = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
     if (!ALLOWED.includes(file.type)) { toast.error('Formato no permitido. Usa JPG, PNG, WebP o GIF.'); return; }
-    if (file.size > 5 * 1024 * 1024) { toast.error('Máximo 5MB para la foto'); return; }
+    if (file.size > MAX_RAW_IMAGE_MB * 1024 * 1024) { toast.error(`Máximo ${MAX_RAW_IMAGE_MB}MB para la foto`); return; }
 
-    const safeName = file.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9._-]/g, '_');
+    const compressed = await compressImage(file);
+    const safeName = compressed.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9._-]/g, '_');
     const path = `${user.id}/avatar-${Date.now()}-${safeName}`;
-    const { error } = await supabase.storage.from('audio-sessions').upload(path, file);
+    const { error } = await supabase.storage.from('audio-sessions').upload(path, compressed);
     if (error) { toast.error('Error al subir foto'); return; }
     const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
     await profile.updateField({ photo_url: urlData.publicUrl });
@@ -817,7 +808,7 @@ Para cualquier duda: soporte@xpeak.es
           </div>
           <div>
             <p className="text-sm font-bold">Foto de perfil</p>
-            <p className="text-xs text-muted-foreground">Haz clic para cambiar · máx 5MB</p>
+            <p className="text-xs text-muted-foreground">Haz clic para cambiar · se optimiza automáticamente</p>
           </div>
           <input ref={photoRef} type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
         </div>
@@ -864,27 +855,6 @@ Para cualquier duda: soporte@xpeak.es
         <button className="btn-nightlife-primary w-full text-sm py-2.5 disabled:opacity-60" onClick={handleSave} disabled={saving}>
           {saving ? 'Guardando...' : 'Guardar Cambios'}
         </button>
-      </Section>
-
-      {/* ── Audio quality ── */}
-      <Section title="Calidad de Audio" icon={<Volume2 size={15} />}>
-        <p className="text-xs text-muted-foreground mb-3">Afecta la reproducción de mixes y sesiones en la plataforma.</p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {AUDIO_QUALITIES.map(q => (
-            <button key={q.id} onClick={() => { setAudioQuality(q.id); toast.success(`Calidad: ${q.label}`); }}
-              className="p-3 rounded-xl text-left transition-all"
-              style={{
-                background: audioQuality === q.id ? 'rgba(212,175,55,0.1)' : 'rgba(0,0,0,0.03)',
-                border: `1px solid ${audioQuality === q.id ? 'rgba(212,175,55,0.4)' : 'rgba(0,0,0,0.06)'}`,
-              }}>
-              <p className="text-xs font-bold" style={{ color: audioQuality === q.id ? '#D4AF37' : undefined }}>{q.label}</p>
-              <p className="text-xs text-muted-foreground mt-0.5">{q.desc}</p>
-              {audioQuality === q.id && (
-                <span className="text-[0.75rem] font-black mt-1 block" style={{ color: '#8A6D0F' }}>● ACTIVO</span>
-              )}
-            </button>
-          ))}
-        </div>
       </Section>
 
       {/* ── Notifications ── */}
@@ -1014,10 +984,6 @@ Para cualquier duda: soporte@xpeak.es
             await profile.updateField({ email_opt_out: next });
             toast.success(next ? 'Emails de mensajes desactivados' : 'Emails de mensajes activados');
           }} />
-        <ToggleRow label="Novedades y promociones" desc="Ofertas, descuentos y actualizaciones de XPEAK" checked={notifMarketing}
-          onChange={() => { const v = !notifMarketing; setNotifMarketing(v); localStorage.setItem('xpeak_notif_marketing', String(v)); }} />
-        <ToggleRow label="SMS de verificación" desc="Solo para verificación de identidad" checked={notifSMS}
-          onChange={() => { const v = !notifSMS; setNotifSMS(v); localStorage.setItem('xpeak_notif_sms', String(v)); }} />
       </Section>
 
       {/* ── Mis perfiles ── */}

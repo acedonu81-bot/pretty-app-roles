@@ -3,6 +3,7 @@ import { Upload, Image, X, Plus, Video } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
+import { compressImage } from '@/lib/image';
 import { toast } from 'sonner';
 
 const MAX_VIDEO_SECONDS = 60;
@@ -124,9 +125,11 @@ const PortfolioUpload = () => {
     }
 
     setUploading(true);
-    const safeName = sanitize(file.name) || 'portfolio-item';
+    // Imágenes: compresión a 2560px calidad alta — mantiene calidad de portfolio sin pesar 15MB
+    const toUpload = isImage ? await compressImage(file, 2560, 0.9) : file;
+    const safeName = sanitize(toUpload.name) || 'portfolio-item';
     const path = `${user.id}/portfolio/${Date.now()}-${safeName}`;
-    const { error } = await supabase.storage.from('audio-sessions').upload(path, file);
+    const { error } = await supabase.storage.from('audio-sessions').upload(path, toUpload);
     if (error) {
       toast.error('Error al subir: ' + error.message);
       setUploading(false);

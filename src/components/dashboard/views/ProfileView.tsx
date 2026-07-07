@@ -8,6 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import AudioUpload from '@/components/dashboard/AudioUpload';
+import { compressImage, MAX_RAW_IMAGE_MB } from '@/lib/image';
 import PortfolioUpload from '@/components/dashboard/PortfolioUpload';
 import { sanitizeInput } from '@/lib/contentFilter';
 import { DEFAULT_ZONE } from '@/lib/constants';
@@ -108,11 +109,12 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     if (!file.type.startsWith('image/')) { toast.error('Solo se permiten archivos de imagen.'); return; }
     const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
     if (!ALLOWED_IMAGE_TYPES.includes(file.type)) { toast.error('Formato no permitido. Usa JPG, PNG, WebP o GIF.'); return; }
-    if (file.size > 5 * 1024 * 1024) { toast.error('Máximo 5MB'); return; }
+    if (file.size > MAX_RAW_IMAGE_MB * 1024 * 1024) { toast.error(`Máximo ${MAX_RAW_IMAGE_MB}MB`); return; }
 
-    const safeName = file.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9._-]/g, '_');
+    const compressed = await compressImage(file);
+    const safeName = compressed.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9._-]/g, '_');
     const path = `${user.id}/photo-${Date.now()}-${safeName}`;
-    const { error } = await supabase.storage.from('audio-sessions').upload(path, file);
+    const { error } = await supabase.storage.from('audio-sessions').upload(path, compressed);
     if (error) { toast.error('Error al subir foto: ' + error.message); return; }
     const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
     const newUrl = urlData.publicUrl;
