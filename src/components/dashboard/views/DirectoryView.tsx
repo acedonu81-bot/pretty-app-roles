@@ -40,7 +40,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
     const activeRoles = roles ?? [role];
     let query = supabase
       .from('profiles')
-      .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, bio, languages, tiktok, category, is_verified, is_flash_active, is_early_adopter, score, role')
+      .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, category, is_verified, is_flash_active, is_early_adopter, score, role')
       .in('role', activeRoles)
       .limit(200);
 
@@ -68,10 +68,18 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
       const mapped: Profile[] = data
         .filter(row => row.display_name && row.display_name.trim().length > 1)
         .sort((a, b) => {
+          // Perfil completo sube: media (sesión/portfolio) > foto > bio (modelo GigSalad)
+          const completeness = (p: any): number => {
+            const hasMedia = !!(p.audio_embed_url?.trim())
+              || (Array.isArray(p.audio_session_urls) && p.audio_session_urls.length > 0)
+              || (Array.isArray(p.portfolio_urls) && p.portfolio_urls.length > 0);
+            return (hasMedia ? 4 : 0) + (p.photo_url ? 2 : 0) + (p.bio?.trim() ? 1 : 0);
+          };
           const aEarly = (a as any).is_early_adopter ? 1 : 0;
           const bEarly = (b as any).is_early_adopter ? 1 : 0;
           if (bEarly !== aEarly) return bEarly - aEarly;
           if ((b.is_verified ? 1 : 0) !== (a.is_verified ? 1 : 0)) return (b.is_verified ? 1 : 0) - (a.is_verified ? 1 : 0);
+          if (completeness(b) !== completeness(a)) return completeness(b) - completeness(a);
           return (b.score ?? 0) - (a.score ?? 0);
         })
         .map((row) => {

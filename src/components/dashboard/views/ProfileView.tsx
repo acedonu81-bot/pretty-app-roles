@@ -247,6 +247,9 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                   </div>
                 ))}
               </div>
+              <p className="text-[0.65rem] font-bold mt-3 pt-2.5" style={{ color: '#8A6D0F', borderTop: '1px solid rgba(212,175,55,0.15)' }}>
+                ⚡ Los perfiles completos salen primero en el directorio
+              </p>
             </div>
           )}
 
@@ -403,10 +406,9 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                   { value: '',              label: 'Selecciona tu especialidad' },
                   { value: 'dj',            label: 'DJ / Artista / Productor' },
                   { value: 'rookie',         label: 'Artista Promesa' },
-                  { value: 'staff',          label: 'Staff & RRPP' },
+                  { value: 'staff',          label: 'Staff / Camarero / RRPP' },
                   { value: 'event_manager',  label: 'Encargada de Eventos' },
                   { value: 'promotor',       label: 'Promotor' },
-                  { value: 'camarero',       label: 'Camarero / Barra' },
                   { value: 'catering',       label: 'Catering / Cocina' },
                   { value: 'makeup',         label: 'Maquillaje & Peluquería' },
                   { value: 'media',          label: 'Foto & Vídeo' },

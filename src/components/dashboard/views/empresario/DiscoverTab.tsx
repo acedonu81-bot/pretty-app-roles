@@ -65,12 +65,11 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
               options={[
                 { value: 'Todos', label: 'Todos' },
                 { value: 'dj', label: 'DJ' },
-                { value: 'staff', label: 'Staff' },
+                { value: 'staff', label: 'Staff / Camarero' },
                 { value: 'makeup', label: 'Estilismo / Makeup' },
                 { value: 'media', label: 'Media / Foto-Vídeo' },
                 { value: 'ambassador', label: 'Relaciones Públicas' },
                 { value: 'promotor', label: 'Promotor' },
-                { value: 'camarero', label: 'Camarero / Barra' },
                 { value: 'catering', label: 'Catering / Cocina' },
                 { value: 'rookie', label: 'Rookie' },
               ]}
