@@ -75,8 +75,8 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
       className="rounded-2xl overflow-x-hidden flex flex-col transition-all duration-200 hover:scale-[1.01]"
       style={{
         background: '#ffffff',
-        border: isEarlyAdopter ? '1px solid rgba(96,165,250,0.45)' : '1px solid rgba(0,0,0,0.08)',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+        border: isEarlyAdopter ? '4px solid rgba(96,165,250,0.7)' : '1px solid rgba(0,0,0,0.08)',
+        boxShadow: isEarlyAdopter ? '0 0 20px rgba(96,165,250,0.2), 0 1px 3px rgba(0,0,0,0.06)' : '0 1px 3px rgba(0,0,0,0.06)',
       }}
       whileHover={{ boxShadow: '0 8px 28px rgba(0,0,0,0.12)' }}
     >
