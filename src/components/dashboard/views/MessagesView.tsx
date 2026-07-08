@@ -119,12 +119,23 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     const a = user.id < targetUserId ? user.id : targetUserId;
     const b = user.id < targetUserId ? targetUserId : user.id;
 
-    let { data: existing } = await supabase
+    const { data: existingData, error: fetchError } = await supabase
       .from('conversations').select('id').eq('participant_a', a).eq('participant_b', b).maybeSingle();
+    if (fetchError) {
+      toast.error('No se pudo abrir la conversación. Inténtalo de nuevo.');
+      console.error('[MessagesView] fetch conversation error:', fetchError);
+      return;
+    }
+    let existing = existingData;
 
     if (!existing) {
-      const { data: created } = await supabase
+      const { data: created, error: insertError } = await supabase
         .from('conversations').insert({ participant_a: a, participant_b: b }).select('id').single();
+      if (insertError) {
+        toast.error('No se pudo iniciar la conversación. Inténtalo de nuevo.');
+        console.error('[MessagesView] create conversation error:', insertError);
+        return;
+      }
       existing = created;
     }
 

@@ -28,20 +28,23 @@ export default function PublicContactModal({ professionalName, professionalUserI
     if (!form.name || !form.email || !form.eventType) return;
     setStatus('sending');
     try {
-      await supabase.functions.invoke('send-email', {
-        body: {
-          type: 'flash_booking',
-          data: {
-            professional_user_id: professionalUserId,
-            professional_name: professionalName,
-            requester_name: form.name,
-            requester_contact: form.email,
-            event_date: form.date || 'Por confirmar',
-            event_location: '',
-            event_description: `[${form.eventType}] ${form.message}`,
-          },
-        },
-      });
+      const payload = {
+        professional_user_id: professionalUserId,
+        professional_name: professionalName,
+        requester_name: form.name,
+        requester_contact: form.email,
+        event_date: form.date || 'Por confirmar',
+        event_location: '',
+        event_description: `[${form.eventType}] ${form.message}`,
+      };
+      // Aviso a admin (registro interno)
+      await supabase.functions.invoke('send-email', { body: { type: 'flash_booking', data: payload } });
+      // Notificación al profesional — sin esto nunca se enteraba del contacto.
+      if (professionalUserId) {
+        supabase.functions.invoke('send-email', {
+          body: { type: 'booking_received', data: payload },
+        }).catch((err: unknown) => console.warn('[PublicContactModal] professional email failed:', err));
+      }
       setStatus('done');
       // Anonymous activity signal — must never block the contact flow if it fails.
       // Skip entirely for static/demo profiles (professionalRole is null): logging a
