@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { Mail, Lock, User, Eye, EyeOff, Zap, ShieldCheck, Users, FileText, MapPin, Target, BadgeCheck, Search, Wallet, type LucideIcon } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { track } from '@vercel/analytics';
 
 const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { icon: LucideIcon; text: string }[] }> = {
   dj: {
@@ -60,6 +61,7 @@ const Auth = () => {
   const roleParam = searchParams.get('role') ?? '';
   const modeParam = searchParams.get('mode') ?? '';
   const redirectParam = searchParams.get('redirect') ?? '/dashboard';
+  const refParam = searchParams.get('ref') ?? '';
   const content = ROLE_CONTENT[roleParam] ?? DEFAULT_CONTENT;
 
   const [isLogin, setIsLogin] = useState(modeParam !== 'register');
@@ -81,6 +83,11 @@ const Auth = () => {
   const isRegistering = useRef(false);
 
   useEffect(() => {
+    track('auth_view', { mode: isLogin ? 'login' : 'register', role: roleParam || 'none' });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'PASSWORD_RECOVERY') {
         setShowRecovery(true);
@@ -94,8 +101,13 @@ const Auth = () => {
     return () => subscription.unsubscribe();
   }, [navigate, redirectParam]);
 
+  // Google bloquea OAuth en navegadores integrados (TikTok, Instagram, FB) con
+  // "disallowed_useragent" — en esos casos solo ofrecemos registro por email
+  const isInAppBrowser = /TikTok|musical_ly|Instagram|FBAN|FBAV|FB_IAB|Line\//i.test(navigator.userAgent);
+
   const handleGoogleSignIn = async () => {
     const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
+    track('auth_google_click', { mode: isLogin ? 'login' : 'register' });
     setGoogleLoading(true);
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
@@ -103,6 +115,7 @@ const Auth = () => {
     });
     if (error) {
       console.error('[Auth] Google OAuth error:', error);
+      track('auth_google_error', { message: error.message });
       toast.error(
         error.message.includes('provider') || error.message.includes('OAuth')
           ? 'Google login no está configurado. Usa email y contraseña.'
@@ -156,25 +169,51 @@ const Auth = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) { toast.error('Completa todos los campos'); return; }
+    track('auth_submit', { mode: isLogin ? 'login' : 'register', role: roleParam || 'none' });
+    if (!email || !password) {
+      track('auth_validation_error', { mode: isLogin ? 'login' : 'register', reason: 'missing_fields' });
+      toast.error('Completa todos los campos');
+      return;
+    }
     setLoading(true);
     try {
       if (isLogin) {
-        if (!checkRateLimit()) { setLoading(false); return; }
+        if (!checkRateLimit()) {
+          track('auth_rate_limited', {});
+          setLoading(false);
+          return;
+        }
         const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) { recordLoginFailure(); throw error; }
+        if (error) {
+          recordLoginFailure();
+          track('auth_error', { mode: 'login', message: error.message });
+          throw error;
+        }
         clearRateLimit();
+        track('auth_success', { mode: 'login' });
         toast.success('¡Bienvenido de vuelta!');
         navigate(redirectParam);
       } else {
-        if (!displayName.trim()) { toast.error('Introduce tu nombre profesional'); setLoading(false); return; }
-        if (!legalAccepted) { toast.error('Acepta los términos para continuar'); setLoading(false); return; }
+        if (!displayName.trim()) {
+          track('auth_validation_error', { mode: 'register', reason: 'missing_name' });
+          toast.error('Introduce tu nombre profesional'); setLoading(false); return;
+        }
+        if (!legalAccepted) {
+          track('auth_validation_error', { mode: 'register', reason: 'legal_not_accepted' });
+          toast.error('Acepta los términos para continuar'); setLoading(false); return;
+        }
 
         const pwdError = validatePassword(password);
-        if (pwdError) { toast.error(pwdError); setLoading(false); return; }
+        if (pwdError) {
+          track('auth_validation_error', { mode: 'register', reason: 'weak_password' });
+          toast.error(pwdError); setLoading(false); return;
+        }
 
         const safeName = displayName.trim().replace(/<[^>]*>/g, '').replace(/[\x00-\x1F\x7F]/g, '').slice(0, 60);
-        if (!safeName) { toast.error('El nombre no es válido.'); setLoading(false); return; }
+        if (!safeName) {
+          track('auth_validation_error', { mode: 'register', reason: 'invalid_name' });
+          toast.error('El nombre no es válido.'); setLoading(false); return;
+        }
 
         isRegistering.current = true;
         const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
@@ -193,9 +232,27 @@ const Auth = () => {
             emailRedirectTo: `${SITE_URL}/auth`,
           },
         });
-        if (error) throw error;
+        if (error) {
+          track('auth_error', { mode: 'register', message: error.message });
+          throw error;
+        }
 
+        track('auth_success', { mode: 'register', role: roleParam || 'pending' });
         if (typeof window !== 'undefined' && (window as any).fbq) (window as any).fbq('track', 'CompleteRegistration');
+
+        if (refParam && signUpData.user) {
+          supabase.from('profiles').select('user_id').eq('referral_code', refParam).maybeSingle()
+            .then(({ data: inviter }) => {
+              if (inviter?.user_id && inviter.user_id !== signUpData.user!.id) {
+                supabase.from('referrals').insert({
+                  inviter_user_id: inviter.user_id,
+                  invitee_user_id: signUpData.user!.id,
+                } as any).then(({ error: refError }) => {
+                  if (refError) console.warn('[referral] insert failed:', refError.message);
+                });
+              }
+            });
+        }
 
         supabase.functions.invoke('send-email', {
           body: { type: 'welcome', data: { name: safeName, email, role: roleParam || 'profesional' } },
@@ -232,7 +289,7 @@ const Auth = () => {
   ] : null;
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#0a0908' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#ffffff', color: '#222' }}>
       <Helmet>
         <title>Acceder o Registrarse | XPEAK — Directorio Profesional de Eventos</title>
         <meta name="description" content="Únete a XPEAK gratis. Crea tu perfil profesional como DJ, fotógrafo, staff o empresario y empieza a conectar con el sector de eventos en España." />
@@ -251,24 +308,24 @@ const Auth = () => {
 
           {/* === SPLIT LAYOUT === */}
           <div className="flex flex-col md:flex-row md:rounded-2xl md:overflow-hidden"
-            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)' }}>
+            style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 8px 40px rgba(0,0,0,0.06)' }}>
 
             {/* LEFT — Value prop (desktop only) */}
             <div className="hidden md:flex md:flex-col md:justify-between md:w-[42%] md:p-10 md:border-r"
-              style={{ background: 'rgba(212,175,55,0.03)', borderColor: 'rgba(255,255,255,0.05)' }}>
+              style={{ background: 'rgba(212,175,55,0.05)', borderColor: 'rgba(0,0,0,0.06)' }}>
 
               {/* Logo */}
               <div>
                 <button onClick={() => navigate('/')} className="transition-opacity hover:opacity-70 mb-8">
-                  <h2 className="text-2xl font-black tracking-tight font-display text-left">
+                  <h2 className="text-2xl font-black tracking-tight font-display text-left leading-none" style={{ color: '#111' }}>
                     X<span className="text-gradient">PEAK</span>
                   </h2>
                 </button>
 
-                <h1 className="text-xl font-black leading-snug mb-3" style={{ color: '#fff' }}>
+                <h1 className="text-xl font-black leading-snug mb-3" style={{ color: '#111' }}>
                   {content.tagline}
                 </h1>
-                <p className="text-sm leading-relaxed mb-8" style={{ color: 'rgba(255,255,255,0.55)' }}>
+                <p className="text-sm leading-relaxed mb-8" style={{ color: 'rgba(0,0,0,0.6)' }}>
                   {content.sub}
                 </p>
 
@@ -278,41 +335,50 @@ const Auth = () => {
                     return (
                       <div key={b.text} className="flex items-center gap-3">
                         <span className="flex items-center justify-center w-8 h-8 rounded-lg flex-shrink-0"
-                          style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)' }}>
-                          <Icon size={15} style={{ color: '#D4AF37' }} strokeWidth={2.2} />
+                          style={{ background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.3)' }}>
+                          <Icon size={15} style={{ color: '#8B6A00' }} strokeWidth={2.2} />
                         </span>
-                        <span className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.85)' }}>{b.text}</span>
+                        <span className="text-sm font-medium" style={{ color: '#222' }}>{b.text}</span>
                       </div>
                     );
                   })}
                   <div className="flex items-center gap-3">
                     <span className="flex items-center justify-center w-8 h-8 rounded-lg flex-shrink-0"
-                      style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)' }}>
-                      <ShieldCheck size={15} style={{ color: '#D4AF37' }} strokeWidth={2.2} />
+                      style={{ background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.3)' }}>
+                      <ShieldCheck size={15} style={{ color: '#8B6A00' }} strokeWidth={2.2} />
                     </span>
-                    <span className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.85)' }}>Gratis · 0% comisión</span>
+                    <span className="text-sm font-medium" style={{ color: '#222' }}>Gratis · 0% comisión</span>
                   </div>
                 </div>
               </div>
 
               {/* Social proof bottom */}
-              <div className="mt-10 pt-8" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-                <div className="flex items-center gap-3 mb-3">
+              <div className="mt-10 pt-8" style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}>
+                <div className="flex items-center gap-4 mb-4">
+                  <div>
+                    <p className="text-2xl font-black leading-none" style={{ color: '#111' }}>38+</p>
+                    <p className="text-[0.65rem] mt-1" style={{ color: 'rgba(0,0,0,0.55)' }}>profesionales activos</p>
+                  </div>
+                  <div className="w-px h-9" style={{ background: 'rgba(0,0,0,0.12)' }} />
+                  <div>
+                    <div className="flex items-center gap-1">
+                      {[1,2,3,4,5].map(i => <span key={i} style={{ color: '#D4AF37', fontSize: '0.75rem' }}>★</span>)}
+                    </div>
+                    <p className="text-[0.65rem] mt-1" style={{ color: 'rgba(0,0,0,0.55)' }}>directorio de referencia</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
                   <div className="flex -space-x-2">
                     {['L','S','M','C'].map((l,i) => (
                       <div key={i} className="w-7 h-7 rounded-full flex items-center justify-center text-[0.6rem] font-black border-2"
-                        style={{ background: `hsl(${i*40+20},60%,30%)`, borderColor: '#1a1612', color: '#fff' }}>
+                        style={{ background: `hsl(${i*40+20},60%,35%)`, borderColor: '#fff', color: '#fff' }}>
                         {l}
                       </div>
                     ))}
                   </div>
-                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.55)' }}>
-                    <strong className="text-white">DJs, fotógrafos y staff</strong> ya consiguen bolos aquí
+                  <p className="text-xs" style={{ color: 'rgba(0,0,0,0.6)' }}>
+                    <strong style={{ color: '#111' }}>DJs, fotógrafos y staff</strong> ya consiguen bolos aquí
                   </p>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  {[1,2,3,4,5].map(i => <span key={i} style={{ color: '#D4AF37', fontSize: '0.7rem' }}>★</span>)}
-                  <span className="text-xs ml-1" style={{ color: 'rgba(255,255,255,0.6)' }}>Directorio de referencia en España</span>
                 </div>
               </div>
             </div>
@@ -321,15 +387,15 @@ const Auth = () => {
             <div className="flex-1 p-6 sm:p-8 md:p-10">
 
               {/* Mobile logo */}
-              <div className="flex flex-col items-center mb-6 md:hidden">
-                <button onClick={() => navigate('/')} className="transition-opacity hover:opacity-70 mb-1">
-                  <h2 className="text-2xl font-black tracking-tight font-display">
+              <div className="flex flex-col items-center mb-5 md:hidden">
+                <button onClick={() => navigate('/')} className="transition-opacity hover:opacity-70">
+                  <h2 className="text-2xl font-black tracking-tight font-display leading-none" style={{ color: '#111' }}>
                     X<span className="text-gradient">PEAK</span>
                   </h2>
                 </button>
                 {/* Mobile — solo tagline corto */}
                 {!isLogin && (
-                  <p className="text-xs mt-2 text-center" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                  <p className="text-xs mt-2 text-center" style={{ color: 'rgba(0,0,0,0.6)' }}>
                     Gratis · Sin comisión · Visible en España
                   </p>
                 )}
@@ -337,17 +403,18 @@ const Auth = () => {
 
               {/* Heading */}
               <div className="mb-6">
-                <h3 className="text-lg font-black mb-1" style={{ color: '#fff' }}>
+                <h3 className="text-lg font-black mb-1 leading-normal pb-0.5" style={{ color: '#111' }}>
                   {isLogin ? 'Accede a XPEAK' : 'Crear cuenta gratis'}
                 </h3>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                <p className="text-xs" style={{ color: 'rgba(0,0,0,0.6)' }}>
                   {isLogin
                     ? '¿Primera vez? → Pulsa "Crear cuenta gratis" abajo.'
                     : 'Solo 30 segundos · Sin tarjeta de crédito · 0% comisión'}
                 </p>
               </div>
 
-              {/* === GOOGLE — primary CTA === */}
+              {/* === GOOGLE — primary CTA (oculto en webviews: OAuth bloqueado) === */}
+              {!isInAppBrowser && (
               <button
                 type="button"
                 disabled={googleLoading}
@@ -357,7 +424,8 @@ const Auth = () => {
                   background: '#fff',
                   color: '#1a1208',
                   fontSize: '1rem',
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+                  border: '1px solid rgba(0,0,0,0.15)',
+                  boxShadow: '0 6px 20px rgba(0,0,0,0.16)',
                 }}>
                 {googleLoading ? (
                   <span className="text-xs">Conectando...</span>
@@ -373,12 +441,15 @@ const Auth = () => {
                   </>
                 )}
               </button>
+              )}
 
+              {!isInAppBrowser && (
               <div className="flex items-center gap-3 mb-4">
-                <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.08)' }} />
-                <span className="text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>o con email</span>
-                <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.08)' }} />
+                <div className="flex-1 h-px" style={{ background: 'rgba(0,0,0,0.1)' }} />
+                <span className="text-xs" style={{ color: 'rgba(0,0,0,0.5)' }}>o con email</span>
+                <div className="flex-1 h-px" style={{ background: 'rgba(0,0,0,0.1)' }} />
               </div>
+              )}
 
               <form onSubmit={handleSubmit} className="space-y-3">
 
@@ -434,8 +505,8 @@ const Auth = () => {
                   <div className="flex gap-3 px-1">
                     {passwordStrength.map(({ ok, label }) => (
                       <div key={label} className="flex items-center gap-1">
-                        <span className="text-[0.7rem] font-bold" style={{ color: ok ? '#22c55e' : '#444' }}>{ok ? '✓' : '·'}</span>
-                        <span className="text-[0.7rem]" style={{ color: ok ? '#22c55e' : '#555' }}>{label}</span>
+                        <span className="text-[0.7rem] font-bold" style={{ color: ok ? '#16a34a' : '#999' }}>{ok ? '✓' : '·'}</span>
+                        <span className="text-[0.7rem]" style={{ color: ok ? '#16a34a' : '#888' }}>{label}</span>
                       </div>
                     ))}
                   </div>
@@ -445,22 +516,22 @@ const Auth = () => {
                 {!isLogin && (
                   <label
                     onClick={() => setLegalAccepted(!legalAccepted)}
-                    className="flex items-center gap-3 cursor-pointer rounded-xl px-3 py-3.5 active:bg-white/5"
-                    style={{ background: 'rgba(255,255,255,0.04)', border: legalAccepted ? '1px solid rgba(212,175,55,0.4)' : '1px solid rgba(255,255,255,0.08)' }}>
+                    className="flex items-center gap-3 cursor-pointer rounded-xl px-3 py-3.5 active:bg-black/5"
+                    style={{ background: 'rgba(0,0,0,0.03)', border: legalAccepted ? '1px solid rgba(212,175,55,0.5)' : '1px solid rgba(0,0,0,0.1)' }}>
                     <div
                       className="w-6 h-6 rounded-md flex-shrink-0 flex items-center justify-center transition-all"
                       style={{
-                        background: legalAccepted ? '#D4AF37' : 'rgba(255,255,255,0.08)',
-                        border: legalAccepted ? 'none' : '1.5px solid rgba(255,255,255,0.2)',
+                        background: legalAccepted ? '#D4AF37' : '#fff',
+                        border: legalAccepted ? 'none' : '1.5px solid rgba(0,0,0,0.25)',
                       }}>
                       {legalAccepted && <span style={{ color: '#000', fontSize: 14, fontWeight: 900 }}>✓</span>}
                     </div>
-                    <span className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)' }}>
+                    <span className="text-xs leading-relaxed" style={{ color: 'rgba(0,0,0,0.65)' }}>
                       Acepto la{' '}
-                      <Link to="/privacidad" target="_blank" onClick={e => e.stopPropagation()} className="underline" style={{ color: 'rgba(212,175,55,0.85)' }}>Privacidad</Link>,{' '}
-                      <Link to="/terminos" target="_blank" onClick={e => e.stopPropagation()} className="underline" style={{ color: 'rgba(212,175,55,0.85)' }}>Términos</Link>{' '}
+                      <Link to="/privacidad" target="_blank" onClick={e => e.stopPropagation()} className="underline" style={{ color: '#8B6A00' }}>Privacidad</Link>,{' '}
+                      <Link to="/terminos" target="_blank" onClick={e => e.stopPropagation()} className="underline" style={{ color: '#8B6A00' }}>Términos</Link>{' '}
                       y{' '}
-                      <Link to="/cookies" target="_blank" onClick={e => e.stopPropagation()} className="underline" style={{ color: 'rgba(212,175,55,0.85)' }}>Cookies</Link>
+                      <Link to="/cookies" target="_blank" onClick={e => e.stopPropagation()} className="underline" style={{ color: '#8B6A00' }}>Cookies</Link>
                     </span>
                   </label>
                 )}
@@ -488,20 +559,20 @@ const Auth = () => {
                   type="button"
                   onClick={() => setShowForgot(true)}
                   className="block w-full mt-3 text-xs text-center transition-opacity hover:opacity-80"
-                  style={{ color: 'rgba(255,255,255,0.5)' }}>
+                  style={{ color: 'rgba(0,0,0,0.55)' }}>
                   ¿Olvidaste tu contraseña?
                 </button>
               )}
 
               {showForgot && (
-                <div className="mt-4 p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                <div className="mt-4 p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
                   {forgotSent ? (
-                    <p className="text-xs text-center" style={{ color: '#22c55e' }}>
+                    <p className="text-xs text-center" style={{ color: '#16a34a' }}>
                       ✓ Email enviado. Revisa tu bandeja de entrada para restablecer la contraseña.
                     </p>
                   ) : (
                     <form onSubmit={handleForgotPassword} className="space-y-2">
-                      <p className="text-xs mb-2" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                      <p className="text-xs mb-2" style={{ color: 'rgba(0,0,0,0.6)' }}>
                         Introduce tu email y te enviamos un enlace de recuperación.
                       </p>
                       <div className="relative">
@@ -512,7 +583,7 @@ const Auth = () => {
                       <div className="flex gap-2">
                         <button type="button" onClick={() => setShowForgot(false)}
                           className="flex-1 py-2 rounded-lg text-xs font-bold"
-                          style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#3d3d4e' }}>
+                          style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.15)', color: '#555' }}>
                           Cancelar
                         </button>
                         <button type="submit" disabled={forgotLoading}
@@ -527,38 +598,38 @@ const Auth = () => {
               )}
 
               {/* Toggle login / registro */}
-              <div className="mt-5 pt-5 flex items-center justify-between" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-                <span className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
+              <div className="mt-5 pt-5 flex items-center justify-center gap-1.5" style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}>
+                <span className="text-xs" style={{ color: 'rgba(0,0,0,0.6)' }}>
                   {isLogin ? '¿Nuevo en XPEAK?' : '¿Ya tienes cuenta?'}
                 </span>
                 <button
-                  onClick={() => { setIsLogin(!isLogin); setShowForgot(false); setForgotSent(false); }}
+                  onClick={() => { track('auth_toggle_mode', { to: isLogin ? 'register' : 'login' }); setIsLogin(!isLogin); setShowForgot(false); setForgotSent(false); }}
                   className="text-xs font-bold transition-opacity hover:opacity-80"
-                  style={{ color: '#D4AF37' }}>
-                  {isLogin ? 'Crear cuenta gratis →' : 'Iniciar sesión →'}
+                  style={{ color: '#8B6A00' }}>
+                  {isLogin ? 'Crear cuenta gratis →' : 'Inicia sesión →'}
                 </button>
               </div>
 
               {/* Trust signals */}
               <div className="mt-4 flex items-center justify-center gap-4">
                 <div className="flex items-center gap-1.5">
-                  <ShieldCheck size={11} style={{ color: 'rgba(255,255,255,0.25)' }} />
-                  <span className="text-[0.6rem]" style={{ color: 'rgba(255,255,255,0.25)' }}>Datos seguros</span>
+                  <ShieldCheck size={11} style={{ color: 'rgba(0,0,0,0.4)' }} />
+                  <span className="text-[0.6rem]" style={{ color: 'rgba(0,0,0,0.4)' }}>Datos seguros</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <Zap size={11} style={{ color: 'rgba(255,255,255,0.25)' }} />
-                  <span className="text-[0.6rem]" style={{ color: 'rgba(255,255,255,0.25)' }}>Sin spam</span>
+                  <Zap size={11} style={{ color: 'rgba(0,0,0,0.4)' }} />
+                  <span className="text-[0.6rem]" style={{ color: 'rgba(0,0,0,0.4)' }}>Sin spam</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <Users size={11} style={{ color: 'rgba(255,255,255,0.25)' }} />
-                  <span className="text-[0.6rem]" style={{ color: 'rgba(255,255,255,0.25)' }}>Comunidad verificada</span>
+                  <Users size={11} style={{ color: 'rgba(0,0,0,0.4)' }} />
+                  <span className="text-[0.6rem]" style={{ color: 'rgba(0,0,0,0.4)' }}>Comunidad verificada</span>
                 </div>
               </div>
 
             </div>
           </div>
 
-          <p className="text-center mt-6 text-[0.6rem]" style={{ color: 'rgba(255,255,255,0.12)' }}>
+          <p className="text-center mt-6 text-[0.6rem]" style={{ color: 'rgba(0,0,0,0.35)' }}>
             © {new Date().getFullYear()} XPEAK · Todos los derechos reservados
           </p>
         </div>
