@@ -624,7 +624,7 @@ const Landing = () => {
             style={{ lineHeight: 1.1, paddingBottom: '0.15em', overflow: 'visible' }}
           >
             <span className="block" style={{ color: 'rgba(255,255,255,0.95)' }}>Los mejores profesionales</span>
-            <span className="block"><span className="text-gradient">para </span><RotatingWord /></span>
+            <span className="block" style={{ minHeight: '1.3em' }}><span className="text-gradient">para </span><RotatingWord /></span>
           </h1>
         </FadeIn>
         <FadeIn delay={0.25}>
@@ -788,22 +788,31 @@ const Landing = () => {
             </h2>
           </div>
         </FadeIn>
-        <div
-          className="flex gap-3 overflow-x-auto pb-2"
-          style={{ scrollbarWidth: 'none', maskImage: 'linear-gradient(to right, black 80%, transparent 100%)' }}
-        >
-          {ROLE_DETAILS.map(role => (
-            <a
-              key={role.key}
-              href={CATEGORY_DEST[role.key]}
-              className="flex-none flex items-center gap-2.5 px-4 py-3.5 rounded-2xl text-sm font-bold transition-all active:scale-95"
-              style={{ background: '#FFFFFF', border: '1px solid rgba(212,175,55,0.2)', boxShadow: '0 1px 4px rgba(0,0,0,0.06)', whiteSpace: 'nowrap', color: 'inherit', textDecoration: 'none' }}
-            >
-              <span style={{ color: '#D4AF37' }}>{role.icon}</span>
-              {role.title}
-            </a>
-          ))}
-          <div className="flex-none w-6" />
+        <div className="relative">
+          <div
+            className="flex gap-3 overflow-x-auto pb-2"
+            style={{ scrollbarWidth: 'none' }}
+          >
+            {ROLE_DETAILS.map(role => (
+              <a
+                key={role.key}
+                href={CATEGORY_DEST[role.key]}
+                className="flex-none flex items-center gap-2.5 px-4 py-3.5 rounded-2xl text-sm font-bold transition-all active:scale-95"
+                style={{ background: '#FFFFFF', border: '1px solid rgba(212,175,55,0.2)', boxShadow: '0 1px 4px rgba(0,0,0,0.06)', whiteSpace: 'nowrap', color: 'inherit', textDecoration: 'none' }}
+              >
+                <span style={{ color: '#D4AF37' }}>{role.icon}</span>
+                {role.title}
+              </a>
+            ))}
+            <div className="flex-none w-6" />
+          </div>
+          {/* Indicador de scroll — más explícito que el degradado solo */}
+          <div
+            className="pointer-events-none absolute right-0 top-0 bottom-2 w-12 flex items-center justify-end pr-1"
+            style={{ background: 'linear-gradient(to right, transparent, #FFFFFF 70%)' }}
+          >
+            <ChevronRight size={18} style={{ color: '#D4AF37' }} />
+          </div>
         </div>
       </section>
 

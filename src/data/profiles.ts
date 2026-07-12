@@ -20,6 +20,7 @@ export interface Profile {
   photo: string;
   subscriptionTier: 'free' | 'starter' | 'business' | 'premium' | 'elite' | 'agency';
   isVerified?: boolean;
+  isSeed?: boolean;
   isFlashActive: boolean;
   profileViews: number;
   contactClicks: number;
@@ -35,6 +36,10 @@ export interface Profile {
   userId?: string;
   slug?: string;
   isEarlyAdopter?: boolean;
+  hasPriorityBadge?: boolean;
+  seekingDancePartner?: boolean;
+  danceLevel?: string | null;
+  danceRole?: string | null;
 }
 
 /** Genera slug SEO-friendly desde nombre: "Dani Tech" → "dani-tech" */
@@ -88,6 +93,10 @@ export const profiles: Profile[] = [
   // Bailarines (GigSalad: Dancers — Ballet, Flamenco, Break Dance, Grupos)
   { id: 42, name: 'Compañía Duende',    role: 'bailarin',  specialty: 'Flamenco & Danza Española',     rating: 5.0, reviews: 89,  location: 'Sevilla',   zone: 'Centro',   country: 'España', city: 'Sevilla',   experience: '15 años', price: 500, priceUnit: '/evento', avatar: 'CD', gradient: 'linear-gradient(135deg,#D4AF37,#B8941E)', badges: ['Flamenco', 'Danza Española', 'Shows'], description: 'Compañía de flamenco y danza española con 6 bailarines. Shows de 30-60 min para bodas, corporativos y festivales.', phone: '', instagram: 'ciaduende', topWeekend: true,  photo: '', subscriptionTier: 'elite',   isFlashActive: true,  profileViews: 77, contactClicks: 0, category: 'professional', isPremium: true },
   { id: 43, name: 'Crew Breakdance BCN', role: 'bailarin', specialty: 'Break Dance & Hip Hop',         rating: 4.9, reviews: 56,  location: 'Barcelona', zone: 'Gràcia',   country: 'España', city: 'Barcelona', experience: '9 años',  price: 400, priceUnit: '/evento', avatar: 'CB', gradient: 'linear-gradient(135deg,#333,#1a1a1a)',   badges: ['Breakdance', 'Hip Hop', 'Battle'], description: 'Crew de breakdance para eventos, festivales y activaciones de marca. Shows de impacto visual con 4-6 bailarines.', phone: '', instagram: 'crewbcn',   topWeekend: false, photo: '', subscriptionTier: 'premium',  isFlashActive: true,  profileViews: 31, contactClicks: 0, category: 'professional' },
+  { id: 200, name: 'Yara Salsa Madrid', role: 'bailarin', specialty: 'Instructora de Salsa & Bachata',  rating: 5.0, reviews: 63,  location: 'Madrid',    zone: 'Malasaña', country: 'España', city: 'Madrid',    experience: '8 años',  price: 350, priceUnit: '/evento', avatar: 'YS', gradient: 'linear-gradient(135deg,#D4AF37,#B8941E)', badges: ['Salsa Cubana', 'Bachata Sensual', 'Clases Particulares'], description: 'Instructora de salsa y bachata con estudio propio en Madrid. Shows de exhibición para bodas y eventos, además de clases particulares e imparte talleres en congresos.', phone: '', instagram: 'yarasalsamadrid', topWeekend: true,  photo: '', subscriptionTier: 'elite',   isFlashActive: true,  profileViews: 44, contactClicks: 0, category: 'professional', isPremium: true },
+  { id: 201, name: 'Kike & Nagore Bachata', role: 'bailarin', specialty: 'Pareja de Bachata Sensual',   rating: 4.9, reviews: 51,  location: 'Barcelona', zone: 'Eixample', country: 'España', city: 'Barcelona', experience: '6 años',  price: 450, priceUnit: '/evento', avatar: 'KN', gradient: 'linear-gradient(135deg,#333,#1a1a1a)',   badges: ['Bachata Sensual', 'Coreografía Boda', 'Congresos'], description: 'Pareja profesional de bachata sensual. Shows de exhibición en congresos y eventos, coreografías de primer baile para bodas y clases particulares en pareja.', phone: '', instagram: 'kikenagorebachata', topWeekend: false, photo: '', subscriptionTier: 'premium',  isFlashActive: true,  profileViews: 29, contactClicks: 0, category: 'professional' },
+  { id: 202, name: 'Marcos Kizomba Valencia', role: 'bailarin', specialty: 'Instructor de Kizomba',     rating: 4.8, reviews: 37,  location: 'Valencia',  zone: 'Ruzafa',   country: 'España', city: 'Valencia',  experience: '5 años',  price: 250, priceUnit: '/evento', avatar: 'MK', gradient: 'linear-gradient(135deg,#D4AF37,#B8941E)', badges: ['Kizomba', 'Semba', 'Clases Particulares'], description: 'Instructor de kizomba y semba, formado en Lisboa. Clases particulares y grupales, shows para eventos y socials semanales en Valencia.', phone: '', instagram: 'marcoskizombavlc', topWeekend: false, photo: '', subscriptionTier: 'free',    isFlashActive: false, profileViews: 16, contactClicks: 0, category: 'rookie' },
+  { id: 203, name: 'Elena Salsa On2',   role: 'bailarin', specialty: 'Bailarina Salsa On2 & Son Cubano', rating: 4.9, reviews: 42,  location: 'Sevilla',   zone: 'Centro',   country: 'España', city: 'Sevilla',   experience: '7 años',  price: 300, priceUnit: '/evento', avatar: 'ES', gradient: 'linear-gradient(135deg,#333,#1a1a1a)',   badges: ['Salsa On2', 'Son Cubano', 'Busca Pareja'], description: 'Bailarina de salsa on2 (estilo neoyorquino) y son cubano. Disponible para shows, clases particulares y busca compañero de baile fijo para congresos y socials.', phone: '', instagram: 'elenasalsaon2', topWeekend: false, photo: '', subscriptionTier: 'premium',  isFlashActive: true,  profileViews: 22, contactClicks: 0, category: 'professional' },
 
   // Humoristas / Cómicos (GigSalad: Comedians — Corporate, Stand-up, Improv)
   { id: 44, name: 'Carlos Monólogos',   role: 'humorista', specialty: 'Monólogos & Stand-Up',          rating: 4.9, reviews: 134, location: 'Madrid',    zone: 'Malasaña', country: 'España', city: 'Madrid',    experience: '10 años', price: 400, priceUnit: '/evento', avatar: 'CM', gradient: 'linear-gradient(135deg,#D4AF37,#B8941E)', badges: ['Stand-Up', 'Monólogos', 'Corporativo'], description: 'Humorista con más de 500 actuaciones. Monólogos adaptados a cenas de empresa, bodas y eventos privados. Guión personalizado incluido.', phone: '', instagram: 'carlosmonologos', topWeekend: true,  photo: '', subscriptionTier: 'elite',   isFlashActive: true,  profileViews: 56, contactClicks: 0, category: 'professional', isPremium: true },

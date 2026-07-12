@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, Headphones, BookOpen, Video, Music, Instagram, Send, X, Shield, Check, Plus } from 'lucide-react';
+import { toast } from 'sonner';
 import { addToCart, useEventCart } from '@/lib/eventCart';
 import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack } from '@/lib/streaming';
 import { profiles, toSlug } from '@/data/profiles';
@@ -274,12 +275,19 @@ interface SupabaseProfile {
   genres: string[] | null;
   is_live: boolean;
   is_verified: boolean;
+  is_seed: boolean;
   is_flash_active: boolean;
   subscription_tier: string;
   stream_url: string | null;
   instagram: string | null;
   audio_embed_url: string | null;
   portfolio_urls: string[] | null;
+  offers_classes: boolean | null;
+  class_styles: string[] | null;
+  class_price: number | null;
+  seeking_dance_partner: boolean | null;
+  dance_level: string | null;
+  dance_role: string | null;
 }
 
 interface RelatedProfile {
@@ -319,11 +327,11 @@ const PublicProfile = () => {
 
     const query = isUUID
       ? supabase.from('profiles')
-          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, portfolio_urls')
+          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role')
           .eq('user_id', slug)
           .maybeSingle()
       : supabase.from('profiles')
-          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, portfolio_urls')
+          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role')
           .ilike('display_name', slug.replace(/-/g, '%'))
           .limit(20)
           .then(({ data, error }) => {
@@ -464,9 +472,16 @@ const PublicProfile = () => {
     price: sbProfile.hourly_rate ?? 0,
     isLive: sbProfile.is_live,
     isVerified: sbProfile.is_verified,
+    isSeed: sbProfile.is_seed,
     isFlashActive: sbProfile.is_flash_active,
     isPremium: sbProfile.subscription_tier !== 'free',
     subscriptionTier: sbProfile.subscription_tier,
+    offersClasses: sbProfile.offers_classes ?? false,
+    classStyles: sbProfile.class_styles ?? [],
+    classPrice: sbProfile.class_price ?? null,
+    seekingDancePartner: sbProfile.seeking_dance_partner ?? false,
+    danceLevel: sbProfile.dance_level ?? null,
+    danceRole: sbProfile.dance_role ?? null,
     id: 0,
   } : staticProfile!;
 
@@ -482,12 +497,13 @@ const PublicProfile = () => {
       hourlyRate: profile.price || null,
       zone: profile.zone,
     });
+    toast.success(`${profile.name} añadido a "Mi evento"`, { description: 'Compara varios profesionales y pide presupuesto conjunto desde el botón dorado de abajo a la derecha.' });
   };
   const profileUrl = `${BASE_URL}/p/${profileSlug}`;
   const cityShort = profile.zone ? profile.zone.split(',')[0].trim() : 'España';
   const priceStr = (profile as any).price > 0 ? ` Tarifa desde ${(profile as any).price}€/h.` : '';
   const availStr = (profile as any).isFlashActive ? ' Disponible ahora.' : '';
-  const verifiedStr = (profile as any).isVerified ? ' Perfil verificado.' : '';
+  const verifiedStr = '';
   const pageTitle = profile.specialty
     ? `Contratar ${profile.name} — ${profile.specialty} en ${cityShort} | XPEAK`
     : `${profile.name} — Profesional de eventos en ${cityShort} | XPEAK`;
@@ -583,7 +599,6 @@ const PublicProfile = () => {
           } : {}),
           ...(profile.badges && profile.badges.length > 0 ? { "knowsAbout": profile.badges } : {}),
           ...(sbProfile?.instagram ? { "sameAs": [`https://www.instagram.com/${sbProfile.instagram}`] } : {}),
-          ...((profile as any).isVerified ? { "hasCredential": { "@type": "EducationalOccupationalCredential", "name": "Profesional Verificado XPEAK" } } : {})
         })}</script>
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
@@ -610,6 +625,12 @@ const PublicProfile = () => {
             <ArrowLeft size={14} /> XPEAK
           </button>
           <div className="flex items-center gap-2">
+            {(profile as any).isSeed && (
+              <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
+                style={{ background: 'rgba(0,0,0,0.7)', color: '#fff' }}>
+                Perfil de ejemplo
+              </span>
+            )}
             {profile.isFlashActive && (
               <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
                 style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)', color: '#16a34a' }}>
@@ -655,7 +676,6 @@ const PublicProfile = () => {
               <span className="inline-flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full mb-3"
                 style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.25)', color: '#fff' }}>
                 {roleLabel[profile.role] ?? profile.role}
-                {(profile as any).isVerified && <BadgeCheck size={12} style={{ color: '#D4AF37' }} />}
               </span>
 
               {/* Nombre grande */}
@@ -778,6 +798,53 @@ const PublicProfile = () => {
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
               <h2 className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Sobre mí</h2>
               <p className="text-base leading-relaxed" style={{ color: '#333' }}>{profile.description}</p>
+            </motion.div>
+          )}
+
+          {/* Clases particulares (bailarines) */}
+          {profile.role === 'bailarin' && (profile as any).offersClasses && (
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
+              className="rounded-2xl p-5" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
+              <h2 className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#D4AF37' }}>💃 Clases particulares</h2>
+              <p className="text-sm mb-3" style={{ color: '#333' }}>{profile.name} también da clases particulares de baile.</p>
+              {(profile as any).classStyles && (profile as any).classStyles.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mb-3">
+                  {(profile as any).classStyles.map((s: string) => (
+                    <span key={s} className="text-xs font-bold px-2.5 py-1 rounded-full"
+                      style={{ background: '#fff', border: '1px solid rgba(212,175,55,0.3)', color: '#555' }}>
+                      {s}
+                    </span>
+                  ))}
+                </div>
+              )}
+              {(profile as any).classPrice != null && (profile as any).classPrice > 0 && (
+                <p className="text-sm font-bold mb-3" style={{ color: '#222' }}>
+                  Desde €{(profile as any).classPrice}<span className="font-medium" style={{ color: '#666' }}>/hora</span>
+                </p>
+              )}
+              <button onClick={() => setShowContact(true)}
+                className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition-all hover:scale-[1.02]"
+                style={{ background: '#D4AF37', color: '#000' }}>
+                <MessageCircle size={15} /> Contactar para clases
+              </button>
+            </motion.div>
+          )}
+
+          {/* Busca pareja de baile (bailarines) */}
+          {profile.role === 'bailarin' && (profile as any).seekingDancePartner && (
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
+              className="rounded-2xl p-5" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
+              <h2 className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#D4AF37' }}>🤝 Busca pareja de baile</h2>
+              <p className="text-sm mb-3" style={{ color: '#333' }}>
+                {profile.name} está buscando pareja de baile fija
+                {(profile as any).danceRole === 'lead' ? ' — leader' : (profile as any).danceRole === 'follow' ? ' — follower' : (profile as any).danceRole === 'ambos' ? ' — baila ambos roles' : ''}
+                {(profile as any).danceLevel ? `, nivel ${(profile as any).danceLevel.toLowerCase()}` : ''}.
+              </p>
+              <button onClick={() => setShowContact(true)}
+                className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition-all hover:scale-[1.02]"
+                style={{ background: '#D4AF37', color: '#000' }}>
+                <MessageCircle size={15} /> Contactar
+              </button>
             </motion.div>
           )}
 

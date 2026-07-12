@@ -1,7 +1,9 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { Zap, MapPin, BadgeCheck, ChevronRight, Check, Plus } from 'lucide-react';
+import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import FlashBookingRequestModal from '@/components/dashboard/FlashBookingRequestModal';
 import FooterPublic from '@/components/FooterPublic';
@@ -18,6 +20,7 @@ interface DirProfile {
   bio: string | null;
   is_flash_active: boolean;
   is_verified: boolean;
+  is_seed: boolean;
   score: number;
   fast_responder_count: number;
   avgRating: number;
@@ -54,11 +57,11 @@ const ROLE_CONFIG: Record<string, {
   },
   maquillaje: {
     dbRole: 'makeup',
-    title: 'Maquilladoras para bodas y eventos',
-    subtitle: 'Maquilladoras y estilistas para novias, comuniones y galas en toda España.',
-    seoTitle: 'Contratar maquilladora para bodas y eventos — XPEAK',
-    seoDesc: 'Directorio de maquilladoras para bodas, comuniones y eventos en España. Portfolios y precios reales.',
-    cta: 'Contratar maquilladora',
+    title: 'Maquilladoras y peluqueros para bodas y eventos',
+    subtitle: 'Maquilladoras, peluqueros y estilistas para novias, comuniones y galas en toda España.',
+    seoTitle: 'Contratar maquilladora o peluquero para bodas y eventos — XPEAK',
+    seoDesc: 'Directorio de maquilladoras y peluqueros para bodas, comuniones y eventos en España. Portfolios y precios reales.',
+    cta: 'Contratar maquilladora o peluquero',
   },
   promotores: {
     dbRole: 'promotor',
@@ -126,10 +129,10 @@ const ROLE_CONFIG: Record<string, {
   },
   bailarin: {
     dbRole: 'bailarin',
-    title: 'Bailarines y compañías de danza',
-    subtitle: 'Shows de baile, coreografías, flamenco y gogós para bodas, galas y eventos corporativos.',
-    seoTitle: 'Contratar bailarines para eventos en España — XPEAK',
-    seoDesc: 'Directorio de bailarines y compañías de danza para bodas y eventos en España. Flamenco, urbano y coreografías a medida.',
+    title: 'Bailarines, compañías de danza e instructores',
+    subtitle: 'Shows de baile, coreografías, flamenco y gogós para eventos, e instructores de salsa, bachata y kizomba para clases.',
+    seoTitle: 'Contratar bailarines e instructores de baile en España — XPEAK',
+    seoDesc: 'Directorio de bailarines, compañías de danza e instructores de salsa y bachata para eventos y clases en España. Flamenco, urbano y coreografías a medida.',
     cta: 'Contratar bailarín',
   },
   speaker: {
@@ -148,6 +151,22 @@ const ROLE_CONFIG: Record<string, {
     seoDesc: 'Directorio de estilistas y profesionales de vestuario en España. Novias, artistas y producciones. Contacto directo.',
     cta: 'Contratar estilista',
   },
+  'wedding-planner': {
+    dbRole: 'event_manager',
+    title: 'Wedding planners y encargadas de eventos',
+    subtitle: 'Wedding planners y coordinadoras de eventos para bodas, comuniones y celebraciones en toda España.',
+    seoTitle: 'Contratar wedding planner para tu boda en España — XPEAK',
+    seoDesc: 'Directorio de wedding planners y encargadas de eventos en España. Organización integral de bodas y celebraciones. Precios reales y contacto directo.',
+    cta: 'Contratar wedding planner',
+  },
+  'diseno-grafico': {
+    dbRole: 'design',
+    title: 'Diseño gráfico y visuales para eventos',
+    subtitle: 'Diseñadores gráficos, invitaciones, cartelería y identidad visual para bodas y eventos de empresa.',
+    seoTitle: 'Contratar diseño gráfico para bodas y eventos en España — XPEAK',
+    seoDesc: 'Directorio de diseñadores gráficos para bodas y eventos en España. Invitaciones, cartelería y visuales a medida. Contacto directo.',
+    cta: 'Contratar diseñador',
+  },
 };
 
 const ALL_ROLES = [
@@ -155,7 +174,7 @@ const ALL_ROLES = [
   { slug: 'fotografo', label: 'Fotógrafos' },
   { slug: 'staff', label: 'Staff' },
   { slug: 'camareros', label: 'Camareros' },
-  { slug: 'maquillaje', label: 'Maquillaje' },
+  { slug: 'maquillaje', label: 'Maquillaje & Peluquería' },
   { slug: 'promotores', label: 'Promotores' },
   { slug: 'catering', label: 'Catering' },
   { slug: 'grupo-musical', label: 'Grupos' },
@@ -166,77 +185,76 @@ const ALL_ROLES = [
   { slug: 'speaker', label: 'Speakers' },
   { slug: 'vestuario', label: 'Estilistas' },
   { slug: 'photo-booth', label: 'Photo Booth' },
+  { slug: 'wedding-planner', label: 'Wedding Planners' },
+  { slug: 'diseno-grafico', label: 'Diseño Gráfico' },
 ];
 
 const CITIES = ['Todas', 'Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao', 'Málaga', 'Ibiza'];
 
 const fmt = (n: number | null) => n ? `${n}€/h` : null;
 
+async function fetchDirectorioProfiles(dbRole: string, city: string): Promise<DirProfile[]> {
+  // 'camarero' es un rol legacy (opción retirada de los selectores) — equivale a staff
+  const dbRoles = dbRole === 'staff' ? ['staff', 'camarero'] : [dbRole];
+  let q = supabase
+    .from('profiles')
+    .select('user_id, display_name, role, specialty, zone, photo_url, hourly_rate, bio, is_flash_active, is_verified, is_seed, is_early_adopter, score, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls')
+    .in('role', dbRoles)
+    .not('display_name', 'is', null)
+    .order('score', { ascending: false })
+    .limit(60) as any;
+
+  if (city !== 'Todas') q = q.ilike('zone', `%${city}%`);
+
+  const reviewsQ = supabase.from('reviews').select('reviewed_user_id, rating').eq('approved', true);
+
+  const [{ data, error }, { data: reviewsData }]: any = await Promise.all([q, reviewsQ]);
+  if (error) throw error;
+
+  const ratingMap = new Map<string, { sum: number; count: number }>();
+  (reviewsData ?? []).forEach((r: any) => {
+    if (!r.reviewed_user_id) return;
+    const entry = ratingMap.get(r.reviewed_user_id) || { sum: 0, count: 0 };
+    entry.sum += r.rating;
+    entry.count += 1;
+    ratingMap.set(r.reviewed_user_id, entry);
+  });
+  // Puntuación de perfil completo — los perfiles con media suben (modelo GigSalad:
+  // el perfil completo gana visibilidad; incentiva subir sesión/portfolio).
+  const completeness = (p: any): number => {
+    const hasMedia = !!(p.audio_embed_url?.trim())
+      || (Array.isArray(p.audio_session_urls) && p.audio_session_urls.length > 0)
+      || (Array.isArray(p.portfolio_urls) && p.portfolio_urls.length > 0);
+    return (hasMedia ? 4 : 0) + (p.photo_url ? 2 : 0) + (p.bio?.trim() ? 1 : 0);
+  };
+  const enriched = (data ?? []).filter((p: any) => p.display_name?.trim().length > 1).map((p: any) => {
+    const stats = ratingMap.get(p.user_id);
+    return { ...p, avgRating: stats ? Math.round((stats.sum / stats.count) * 10) / 10 : 0, reviewCount: stats?.count ?? 0 };
+  });
+  enriched.sort((a: any, b: any) =>
+    (Number(b.is_early_adopter) - Number(a.is_early_adopter))
+    || (Number(b.is_verified) - Number(a.is_verified))
+    || (completeness(b) - completeness(a))
+    || ((b.score ?? 0) - (a.score ?? 0))
+  );
+  return enriched;
+}
+
 export default function DirectorioPublico() {
   const { rol } = useParams<{ rol: string }>();
   const config = ROLE_CONFIG[rol ?? 'dj'] ?? ROLE_CONFIG.dj;
 
-  const [profiles, setProfiles] = useState<DirProfile[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [fetchError, setFetchError] = useState(false);
   const [city, setCity] = useState('Todas');
   const [bookingPro, setBookingPro] = useState<DirProfile | null>(null);
   const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
   const { items: cartItems } = useEventCart();
 
-  useEffect(() => {
-    setLoading(true);
-    setProfiles([]);
-    setFetchError(false);
-    // 'camarero' es un rol legacy (opción retirada de los selectores) — equivale a staff
-    const dbRoles = config.dbRole === 'staff' ? ['staff', 'camarero'] : [config.dbRole];
-    let q = supabase
-      .from('profiles')
-      .select('user_id, display_name, role, specialty, zone, photo_url, hourly_rate, bio, is_flash_active, is_verified, is_early_adopter, score, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls')
-      .in('role', dbRoles)
-      .not('display_name', 'is', null)
-      .order('score', { ascending: false })
-      .limit(60) as any;
-
-    if (city !== 'Todas') q = q.ilike('zone', `%${city}%`);
-
-    const reviewsQ = supabase.from('reviews').select('reviewed_user_id, rating').eq('approved', true);
-
-    Promise.all([q, reviewsQ]).then(([{ data, error }, { data: reviewsData }]: any) => {
-      if (error) {
-        setFetchError(true);
-      } else {
-        const ratingMap = new Map<string, { sum: number; count: number }>();
-        (reviewsData ?? []).forEach((r: any) => {
-          if (!r.reviewed_user_id) return;
-          const entry = ratingMap.get(r.reviewed_user_id) || { sum: 0, count: 0 };
-          entry.sum += r.rating;
-          entry.count += 1;
-          ratingMap.set(r.reviewed_user_id, entry);
-        });
-        // Puntuación de perfil completo — los perfiles con media suben (modelo GigSalad:
-        // el perfil completo gana visibilidad; incentiva subir sesión/portfolio).
-        const completeness = (p: any): number => {
-          const hasMedia = !!(p.audio_embed_url?.trim())
-            || (Array.isArray(p.audio_session_urls) && p.audio_session_urls.length > 0)
-            || (Array.isArray(p.portfolio_urls) && p.portfolio_urls.length > 0);
-          return (hasMedia ? 4 : 0) + (p.photo_url ? 2 : 0) + (p.bio?.trim() ? 1 : 0);
-        };
-        const enriched = (data ?? []).filter((p: any) => p.display_name?.trim().length > 1).map((p: any) => {
-          const stats = ratingMap.get(p.user_id);
-          return { ...p, avgRating: stats ? Math.round((stats.sum / stats.count) * 10) / 10 : 0, reviewCount: stats?.count ?? 0 };
-        });
-        enriched.sort((a: any, b: any) =>
-          (Number(b.is_early_adopter) - Number(a.is_early_adopter))
-          || (Number(b.is_verified) - Number(a.is_verified))
-          || (completeness(b) - completeness(a))
-          || ((b.score ?? 0) - (a.score ?? 0))
-        );
-        setProfiles(enriched);
-      }
-      setLoading(false);
-    });
-  }, [config.dbRole, city]);
+  const { data: profiles = [], isLoading: loading, isError: fetchError } = useQuery({
+    queryKey: ['directorio-publico', config.dbRole, city],
+    queryFn: () => fetchDirectorioProfiles(config.dbRole, city),
+    staleTime: 60_000,
+    gcTime: 10 * 60_000,
+  });
 
   const canonical = `https://xpeak.es/directorio/${rol ?? 'dj'}`;
   const breadcrumb = {
@@ -380,7 +398,7 @@ export default function DirectorioPublico() {
                   <a href={`/p/${p.user_id}`} className="block relative aspect-card-photo overflow-hidden">
                     <div className="absolute inset-0">
                       {p.photo_url && !imgErrors[p.user_id] ? (
-                        <img src={p.photo_url} alt={p.display_name}
+                        <img src={p.photo_url} alt={p.display_name} loading="lazy"
                           onError={() => setImgErrors(e => ({ ...e, [p.user_id]: true }))}
                           className="w-full h-full object-cover" />
                       ) : (
@@ -393,17 +411,18 @@ export default function DirectorioPublico() {
                     </div>
                     {/* Badges */}
                     <div className="absolute top-2.5 left-2.5 flex gap-1.5 flex-wrap z-10">
+                      {(p as any).is_seed && (
+                        <span className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
+                          style={{ background: 'rgba(0,0,0,0.65)', color: '#fff' }}>
+                          Perfil de ejemplo
+                        </span>
+                      )}
                       {/* Mobile: ONE badge, priority Disponible > Pro > Early > Rápida */}
                       <span className="sm:hidden">
                         {p.is_flash_active ? (
                           <span className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
                             style={{ background: '#15803d', color: '#fff' }}>
                             <Zap size={10} fill="#fff" /> Disponible
-                          </span>
-                        ) : p.is_verified ? (
-                          <span className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
-                            style={{ background: '#D4AF37', color: '#000' }}>
-                            <BadgeCheck size={10} /> Verificado
                           </span>
                         ) : (p as any).is_early_adopter ? (
                           <span className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
@@ -417,12 +436,6 @@ export default function DirectorioPublico() {
                         <span className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
                           style={{ background: 'rgba(96,165,250,0.9)', color: '#000' }}>
                           ⭐ Early Adopter
-                        </span>
-                      )}
-                      {p.is_verified && (
-                        <span className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
-                          style={{ background: '#D4AF37', color: '#000' }}>
-                          <BadgeCheck size={10} /> Verificado
                         </span>
                       )}
                       {p.is_flash_active && (
@@ -507,14 +520,21 @@ export default function DirectorioPublico() {
                         Solicitar presupuesto
                       </button>
                       <button
-                        onClick={() => addToCart({ userId: p.user_id, displayName: p.display_name, role: p.role, photoUrl: p.photo_url, hourlyRate: p.hourly_rate, zone: p.zone })}
+                        onClick={() => {
+                          if (cartItems.some(i => i.userId === p.user_id)) return;
+                          addToCart({ userId: p.user_id, displayName: p.display_name, role: p.role, photoUrl: p.photo_url, hourlyRate: p.hourly_rate, zone: p.zone });
+                          toast.success(`${p.display_name} añadido a "Mi evento"`, { description: 'Compara varios profesionales y pide presupuesto conjunto desde el botón dorado de abajo a la derecha.' });
+                        }}
                         disabled={cartItems.some(i => i.userId === p.user_id)}
-                        title={cartItems.some(i => i.userId === p.user_id) ? 'Ya está en tu evento' : 'Añadir a mi evento'}
-                        className="w-10 flex-shrink-0 flex items-center justify-center py-2.5 rounded-xl transition-all hover:scale-105 disabled:hover:scale-100"
+                        title={cartItems.some(i => i.userId === p.user_id) ? 'Ya está en tu evento' : 'Comparar en "Mi evento"'}
+                        className="flex-shrink-0 flex items-center justify-center gap-1.5 px-3 sm:px-3.5 py-2.5 rounded-xl transition-all hover:scale-105 disabled:hover:scale-100"
                         style={cartItems.some(i => i.userId === p.user_id)
                           ? { background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)', color: '#22c55e' }
                           : { background: '#ffffff', border: '1px solid rgba(0,0,0,0.12)', color: '#333' }}>
                         {cartItems.some(i => i.userId === p.user_id) ? <Check size={15} /> : <Plus size={15} />}
+                        <span className="hidden sm:inline text-xs font-bold">
+                          {cartItems.some(i => i.userId === p.user_id) ? 'Añadido' : 'Comparar'}
+                        </span>
                       </button>
                     </div>
                   </div>
