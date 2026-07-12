@@ -21,6 +21,9 @@ export default defineConfig(({ mode }) => ({
           if (id.includes('html2pdf') || id.includes('jspdf') || id.includes('html2canvas')) {
             return 'pdf-vendor';
           }
+          if (id.includes('lucide-react')) {
+            return 'icons-vendor';
+          }
         },
       },
     },

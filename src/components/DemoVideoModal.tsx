@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { X } from 'lucide-react';
 
 interface DemoVideoModalProps {
@@ -6,6 +7,15 @@ interface DemoVideoModalProps {
 }
 
 const DemoVideoModal = ({ open, onClose }: DemoVideoModalProps) => {
+  useEffect(() => {
+    if (!open) return;
+    const link = document.createElement('link');
+    link.rel = 'preconnect';
+    link.href = 'https://videos.pexels.com';
+    document.head.appendChild(link);
+    return () => { document.head.removeChild(link); };
+  }, [open]);
+
   if (!open) return null;
 
   return (
