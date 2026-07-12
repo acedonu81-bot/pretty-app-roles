@@ -512,20 +512,20 @@ const Auth = () => {
                   </div>
                 )}
 
-                {/* Legal — touch-friendly */}
+                {/* Legal — checkbox nativo real (accesible, robusto en webviews) */}
                 {!isLogin && (
                   <label
-                    onClick={() => setLegalAccepted(!legalAccepted)}
+                    htmlFor="legal-accept"
                     className="flex items-center gap-3 cursor-pointer rounded-xl px-3 py-3.5 active:bg-black/5"
                     style={{ background: 'rgba(0,0,0,0.03)', border: legalAccepted ? '1px solid rgba(212,175,55,0.5)' : '1px solid rgba(0,0,0,0.1)' }}>
-                    <div
-                      className="w-6 h-6 rounded-md flex-shrink-0 flex items-center justify-center transition-all"
-                      style={{
-                        background: legalAccepted ? '#D4AF37' : '#fff',
-                        border: legalAccepted ? 'none' : '1.5px solid rgba(0,0,0,0.25)',
-                      }}>
-                      {legalAccepted && <span style={{ color: '#000', fontSize: 14, fontWeight: 900 }}>✓</span>}
-                    </div>
+                    <input
+                      id="legal-accept"
+                      name="legalAccepted"
+                      type="checkbox"
+                      checked={legalAccepted}
+                      onChange={(e) => setLegalAccepted(e.target.checked)}
+                      className="w-6 h-6 flex-shrink-0 rounded-md accent-[#D4AF37]"
+                    />
                     <span className="text-xs leading-relaxed" style={{ color: 'rgba(0,0,0,0.65)' }}>
                       Acepto la{' '}
                       <Link to="/privacidad" target="_blank" onClick={e => e.stopPropagation()} className="underline" style={{ color: '#8B6A00' }}>Privacidad</Link>,{' '}
