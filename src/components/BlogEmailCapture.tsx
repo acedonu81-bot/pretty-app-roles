@@ -2,26 +2,37 @@ import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 interface BlogEmailCaptureProps {
-  intent?: 'contratar-dj' | 'ser-profesional' | 'contratar-staff' | 'general';
+  intent?: 'contratar-dj' | 'ser-profesional' | 'contratar-staff' | 'contratar-makeup' | 'contratar-fotografo' | 'contratar-musico' | 'contratar-bailarin' | 'general';
   articlePath?: string;
   variant?: 'presupuestos' | 'plantilla' | 'guia';
 }
 
+const PROFILE_LABEL: Record<string, string> = {
+  'contratar-dj': 'DJs',
+  'contratar-staff': 'profesionales de staff',
+  'contratar-makeup': 'maquilladoras',
+  'contratar-fotografo': 'fotógrafos',
+  'contratar-musico': 'músicos',
+  'contratar-bailarin': 'bailarines e instructores',
+  'ser-profesional': 'profesionales',
+  'general': 'profesionales',
+};
+
 const COPY = {
   'presupuestos': {
-    headline: 'Recibe 3 presupuestos de DJs verificados gratis',
+    headline: (label: string) => `Recibe 3 presupuestos de ${label} verificados gratis`,
     sub: 'Sin registro. Sin compromiso. En menos de 24 horas.',
     cta: 'Enviar presupuestos a mi email →',
     badge: 'Gratis · Sin spam',
   },
   'plantilla': {
-    headline: 'Descarga la plantilla de contrato DJ gratis',
+    headline: () => 'Descarga la plantilla de contrato gratis',
     sub: 'Formato Word editable con todas las cláusulas legales. Sin registro.',
     cta: 'Descargar plantilla gratis →',
     badge: 'PDF + Word · Actualizado 2026',
   },
   'guia': {
-    headline: 'Guía completa de precios DJ 2026 — gratis',
+    headline: () => 'Guía completa de precios 2026 — gratis',
     sub: 'Tarifas reales por ciudad, tipo de evento y horas. Descárgala al instante.',
     cta: 'Recibir guía en mi email →',
     badge: 'Gratis · Sin spam',
@@ -37,7 +48,8 @@ export default function BlogEmailCapture({
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
 
-  const c = COPY[variant];
+  const c = COPY[variant as keyof typeof COPY] ?? COPY.presupuestos;
+  const profileLabel = PROFILE_LABEL[intent] ?? PROFILE_LABEL.general;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,7 +90,7 @@ export default function BlogEmailCapture({
         <p className="text-sm font-black mb-1" style={{ color: '#22c55e' }}>¡Listo! Revisa tu bandeja de entrada</p>
         <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
           {variant === 'presupuestos'
-            ? 'Te pondremos en contacto con DJs verificados en menos de 24h.'
+            ? `Te pondremos en contacto con ${profileLabel} verificados en menos de 24h.`
             : 'Te hemos enviado el enlace de descarga a tu email.'}
         </p>
         <p className="text-xs mt-3">
@@ -102,7 +114,7 @@ export default function BlogEmailCapture({
             {c.badge}
           </span>
         </div>
-        <p className="text-base font-black leading-snug mb-1.5" style={{ color: '#fff' }}>{c.headline}</p>
+        <p className="text-base font-black leading-snug mb-1.5" style={{ color: '#fff' }}>{c.headline(profileLabel)}</p>
         <p className="text-xs mb-4 leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)' }}>{c.sub}</p>
 
         <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2">

@@ -1,5 +1,5 @@
 interface BlogInlineCTAProps {
-  role?: 'dj' | 'staff' | 'makeup' | 'fotografo' | 'general';
+  role?: 'dj' | 'staff' | 'makeup' | 'fotografo' | 'bailarin' | 'general';
   orgLabel?: string;
   variant?: 'default' | 'upgrade';
 }
@@ -68,7 +68,7 @@ const CONFIG = {
 };
 
 export default function BlogInlineCTA({ role = 'general', variant = 'default' }: BlogInlineCTAProps) {
-  const c = CONFIG[role];
+  const c = CONFIG[role as keyof typeof CONFIG] ?? CONFIG.general;
 
   if (variant === 'upgrade') {
     const u = c.upgrade;
