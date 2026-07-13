@@ -884,51 +884,32 @@ const Landing = () => {
           </h2>
         </FadeIn>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {(communityReviews.length > 0 ? communityReviews.slice(0, 3).map((r, i) => ({
+          {(communityReviews.length > 0 ? communityReviews.slice(0, 3).map((r) => ({
             name: r.reviewer_name, role: r.reviewer_role,
             avatar: r.reviewer_avatar ?? r.reviewer_name.charAt(0).toUpperCase(),
             text: r.comment,
-            photo: [
-              'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=600&q=80',
-              'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=600&q=80',
-              'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80',
-            ][i] ?? null,
           })) : [
             { name: 'Marcos DJ', role: 'DJ Residente · Madrid', avatar: 'M',
-              photo: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=600&q=80',
               text: 'En menos de una semana me contactaron dos salas de Madrid a través del directorio. Nunca había conseguido bookings tan rápido sin intermediarios.' },
             { name: 'Laura V.', role: 'Maquilladora · Barcelona', avatar: 'L',
-              photo: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=600&q=80',
               text: 'Mi perfil en XPEAK me trajo tres clientes nuevos en el primer mes. Por fin un sitio donde el sector de eventos busca talento de imagen de verdad.' },
             { name: 'Club Nocturno NX', role: 'Empresario · Valencia', avatar: 'N',
-              photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80',
               text: 'El Flash Booking nos salvó una noche: publicamos la oferta a las 10pm y a las 11pm teníamos DJ confirmado. Antes eso nos costaba llamadas interminables.' },
           ]).map((t, i) => (
             <FadeIn key={t.name} delay={i * 0.08}>
-              <div className="relative overflow-hidden rounded-2xl h-64 flex flex-col justify-end"
-                style={{ border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 2px 10px rgba(0,0,0,0.06)' }}>
-                {/* Foto de fondo */}
-                {t.photo && (
-                  <img src={t.photo} alt={t.name} loading="lazy"
-                    className="absolute inset-0 w-full h-full object-cover" />
-                )}
-                {/* Gradiente oscuro de abajo hacia arriba */}
-                <div className="absolute inset-0"
-                  style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%)' }} />
-                {/* Contenido sobre el gradiente */}
-                <div className="relative z-10 p-5">
-                  <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.88)' }}>
-                    "{t.text}"
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-black flex-shrink-0"
-                      style={{ background: 'rgba(212,175,55,0.25)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.4)' }}>
-                      {t.avatar}
-                    </div>
-                    <div>
-                      <p className="text-xs font-black text-white">{t.name}</p>
-                      <p className="text-[0.68rem]" style={{ color: 'rgba(255,255,255,0.6)' }}>{t.role}</p>
-                    </div>
+              <div className="relative rounded-2xl h-64 flex flex-col justify-between p-5"
+                style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 2px 10px rgba(0,0,0,0.06)' }}>
+                <p className="text-sm leading-relaxed" style={{ color: 'rgba(0,0,0,0.75)' }}>
+                  "{t.text}"
+                </p>
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-black flex-shrink-0"
+                    style={{ background: 'rgba(212,175,55,0.12)', color: '#B8941E', border: '1px solid rgba(212,175,55,0.3)' }}>
+                    {t.avatar}
+                  </div>
+                  <div>
+                    <p className="text-xs font-black" style={{ color: '#111' }}>{t.name}</p>
+                    <p className="text-[0.68rem]" style={{ color: 'rgba(0,0,0,0.5)' }}>{t.role}</p>
                   </div>
                 </div>
               </div>

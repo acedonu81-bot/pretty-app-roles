@@ -306,28 +306,40 @@ export default function DirectorioPublico() {
           </div>
 
           {/* Tabs por rol */}
-          <div className="flex overflow-x-auto no-scrollbar gap-2 mb-6 pb-1">
-            {ALL_ROLES.map(r => (
-              <a key={r.slug} href={`/directorio/${r.slug}`}
-                className="px-3 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap flex-shrink-0"
-                style={r.slug === (rol ?? 'dj')
-                  ? { background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }
-                  : { background: '#ffffff', color: '#222', border: '1px solid rgba(0,0,0,0.12)' }
-                }>{r.label}</a>
-            ))}
+          <div className="relative mb-6">
+            <div className="flex overflow-x-auto no-scrollbar gap-2 pb-1">
+              {ALL_ROLES.map(r => (
+                <a key={r.slug} href={`/directorio/${r.slug}`}
+                  className="px-3 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap flex-shrink-0"
+                  style={r.slug === (rol ?? 'dj')
+                    ? { background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }
+                    : { background: '#ffffff', color: '#222', border: '1px solid rgba(0,0,0,0.12)' }
+                  }>{r.label}</a>
+              ))}
+            </div>
+            <div className="sm:hidden pointer-events-none absolute right-0 top-0 bottom-1 w-10 flex items-center justify-end"
+              style={{ background: 'linear-gradient(to right, transparent, #FFFFFF 70%)' }}>
+              <ChevronRight size={16} style={{ color: '#D4AF37' }} />
+            </div>
           </div>
 
           {/* Filtro ciudad */}
-          <div className="flex overflow-x-auto no-scrollbar gap-2 mb-8 pb-1">
-            <span className="text-xs font-bold self-center flex-shrink-0" style={{ color: '#333' }}>Ciudad:</span>
-            {CITIES.map(c => (
-              <button key={c} onClick={() => setCity(c)}
-                className="px-3 py-1 rounded-lg text-xs font-medium transition-all whitespace-nowrap flex-shrink-0"
-                style={c === city
-                  ? { background: 'rgba(212,175,55,0.12)', color: '#7a6216', border: '1px solid rgba(212,175,55,0.45)' }
-                  : { background: '#ffffff', color: '#222', border: '1px solid rgba(0,0,0,0.1)' }
-                }>{c}</button>
-            ))}
+          <div className="relative mb-8">
+            <div className="flex overflow-x-auto no-scrollbar gap-2 pb-1">
+              <span className="text-xs font-bold self-center flex-shrink-0" style={{ color: '#333' }}>Ciudad:</span>
+              {CITIES.map(c => (
+                <button key={c} onClick={() => setCity(c)}
+                  className="px-3 py-1 rounded-lg text-xs font-medium transition-all whitespace-nowrap flex-shrink-0"
+                  style={c === city
+                    ? { background: 'rgba(212,175,55,0.12)', color: '#7a6216', border: '1px solid rgba(212,175,55,0.45)' }
+                    : { background: '#ffffff', color: '#222', border: '1px solid rgba(0,0,0,0.1)' }
+                  }>{c}</button>
+              ))}
+            </div>
+            <div className="sm:hidden pointer-events-none absolute right-0 top-0 bottom-1 w-10 flex items-center justify-end"
+              style={{ background: 'linear-gradient(to right, transparent, #FFFFFF 70%)' }}>
+              <ChevronRight size={16} style={{ color: '#D4AF37' }} />
+            </div>
           </div>
 
           {/* Grid de perfiles */}
