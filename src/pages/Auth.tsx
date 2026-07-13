@@ -116,7 +116,7 @@ const Auth = () => {
     if (error) {
       console.error('[Auth] Google OAuth error:', error);
       track('auth_google_error', { message: error.message });
-      toast.error(
+      authAlert(
         error.message.includes('provider') || error.message.includes('OAuth')
           ? 'Google login no está configurado. Usa email y contraseña.'
           : 'Error al conectar con Google. Inténtalo de nuevo.'
@@ -128,15 +128,24 @@ const Auth = () => {
   const handleForgotPassword = async (e: React.FormEvent) => {
     const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
     e.preventDefault();
-    if (!forgotEmail) { toast.error('Introduce tu email'); return; }
+    if (!forgotEmail) { authAlert('Introduce tu email'); return; }
     setForgotLoading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(forgotEmail, {
       redirectTo: `${SITE_URL}/auth`,
     });
     setForgotLoading(false);
-    if (error) { toast.error(error.message); return; }
+    if (error) { authAlert(error.message); return; }
     setForgotSent(true);
     toast.success('Email enviado — revisa tu bandeja de entrada');
+  };
+
+  // Respaldo con alert() nativo: el toast personalizado (xpeak-toast) no
+  // siempre llega a pintarse en producción tras un submit de formulario —
+  // alert() bloquea y siempre se ve, así que garantiza que el usuario
+  // vea por qué falló su login/registro.
+  const authAlert = (message: string) => {
+    toast.error(message);
+    window.alert(message);
   };
 
   const checkRateLimit = (): boolean => {
@@ -172,7 +181,7 @@ const Auth = () => {
     track('auth_submit', { mode: isLogin ? 'login' : 'register', role: roleParam || 'none' });
     if (!email || !password) {
       track('auth_validation_error', { mode: isLogin ? 'login' : 'register', reason: 'missing_fields' });
-      toast.error('Completa todos los campos');
+      authAlert('Completa todos los campos');
       return;
     }
     setLoading(true);
@@ -187,7 +196,9 @@ const Auth = () => {
         if (error) {
           recordLoginFailure();
           track('auth_error', { mode: 'login', message: error.message });
-          throw error;
+          authAlert(error.message.includes('Invalid login credentials') ? 'Email o contraseña incorrectos.' : (error.message || 'Error de autenticación'));
+          setLoading(false);
+          return;
         }
         clearRateLimit();
         track('auth_success', { mode: 'login' });
@@ -196,23 +207,23 @@ const Auth = () => {
       } else {
         if (!displayName.trim()) {
           track('auth_validation_error', { mode: 'register', reason: 'missing_name' });
-          toast.error('Introduce tu nombre profesional'); setLoading(false); return;
+          authAlert('Introduce tu nombre profesional'); setLoading(false); return;
         }
         if (!legalAccepted) {
           track('auth_validation_error', { mode: 'register', reason: 'legal_not_accepted' });
-          toast.error('Acepta los términos para continuar'); setLoading(false); return;
+          authAlert('Acepta los términos para continuar'); setLoading(false); return;
         }
 
         const pwdError = validatePassword(password);
         if (pwdError) {
           track('auth_validation_error', { mode: 'register', reason: 'weak_password' });
-          toast.error(pwdError); setLoading(false); return;
+          authAlert(pwdError); setLoading(false); return;
         }
 
         const safeName = displayName.trim().replace(/<[^>]*>/g, '').replace(/[\x00-\x1F\x7F]/g, '').slice(0, 60);
         if (!safeName) {
           track('auth_validation_error', { mode: 'register', reason: 'invalid_name' });
-          toast.error('El nombre no es válido.'); setLoading(false); return;
+          authAlert('El nombre no es válido.'); setLoading(false); return;
         }
 
         isRegistering.current = true;
@@ -277,7 +288,7 @@ const Auth = () => {
         isRegistering.current = false;
       }
     } catch (err: any) {
-      toast.error(err.message || 'Error de autenticación');
+      authAlert(err.message || 'Error de autenticación');
     } finally {
       setLoading(false);
     }
@@ -681,11 +692,11 @@ const Auth = () => {
             <form onSubmit={async (e) => {
               e.preventDefault();
               const pwdErr = validatePassword(newPassword);
-              if (pwdErr) { toast.error(pwdErr); return; }
+              if (pwdErr) { authAlert(pwdErr); return; }
               setRecoveryLoading(true);
               const { error } = await supabase.auth.updateUser({ password: newPassword });
               setRecoveryLoading(false);
-              if (error) { toast.error(error.message); return; }
+              if (error) { authAlert(error.message); return; }
               toast.success('Contraseña actualizada correctamente');
               setShowRecovery(false);
               navigate(redirectParam, { replace: true });
