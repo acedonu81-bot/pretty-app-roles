@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { Mail, Lock, User, Eye, EyeOff, Zap, ShieldCheck, Users, FileText, MapPin, Target, BadgeCheck, Search, Wallet, type LucideIcon } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { track } from '@vercel/analytics';
+import { track } from '@/lib/track';
 
 const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { icon: LucideIcon; text: string }[] }> = {
   dj: {
