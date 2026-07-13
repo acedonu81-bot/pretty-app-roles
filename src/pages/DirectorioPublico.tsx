@@ -206,10 +206,13 @@ async function fetchDirectorioProfiles(dbRole: string, city: string): Promise<Di
 
   if (city !== 'Todas') q = q.ilike('zone', `%${city}%`);
 
-  const reviewsQ = supabase.from('reviews').select('reviewed_user_id, rating').eq('approved', true);
-
-  const [{ data, error }, { data: reviewsData }]: any = await Promise.all([q, reviewsQ]);
+  const { data, error } = await q;
   if (error) throw error;
+
+  const userIds = (data ?? []).map((p: any) => p.user_id);
+  const { data: reviewsData } = userIds.length > 0
+    ? await supabase.from('reviews').select('reviewed_user_id, rating').eq('approved', true).in('reviewed_user_id', userIds)
+    : { data: [] };
 
   const ratingMap = new Map<string, { sum: number; count: number }>();
   (reviewsData ?? []).forEach((r: any) => {
