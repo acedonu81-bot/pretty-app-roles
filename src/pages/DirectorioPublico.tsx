@@ -535,17 +535,17 @@ export default function DirectorioPublico() {
                         onClick={() => {
                           if (cartItems.some(i => i.userId === p.user_id)) return;
                           addToCart({ userId: p.user_id, displayName: p.display_name, role: p.role, photoUrl: p.photo_url, hourlyRate: p.hourly_rate, zone: p.zone });
-                          toast.success(`${p.display_name} añadido a "Mi evento"`, { description: 'Compara varios profesionales y pide presupuesto conjunto desde el botón dorado de abajo a la derecha.' });
+                          toast.success(`${p.display_name} añadido a "Mi evento"`, { description: 'Añade varios profesionales y pide presupuesto conjunto desde el botón dorado de abajo a la derecha.' });
                         }}
                         disabled={cartItems.some(i => i.userId === p.user_id)}
-                        title={cartItems.some(i => i.userId === p.user_id) ? 'Ya está en tu evento' : 'Comparar en "Mi evento"'}
+                        title={cartItems.some(i => i.userId === p.user_id) ? 'Ya está en tu evento' : 'Añadir a "Mi evento"'}
                         className="flex-shrink-0 flex items-center justify-center gap-1.5 px-3 sm:px-3.5 py-2.5 rounded-xl transition-all hover:scale-105 disabled:hover:scale-100"
                         style={cartItems.some(i => i.userId === p.user_id)
                           ? { background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)', color: '#22c55e' }
                           : { background: '#ffffff', border: '1px solid rgba(0,0,0,0.12)', color: '#333' }}>
                         {cartItems.some(i => i.userId === p.user_id) ? <Check size={15} /> : <Plus size={15} />}
                         <span className="hidden sm:inline text-xs font-bold">
-                          {cartItems.some(i => i.userId === p.user_id) ? 'Añadido' : 'Comparar'}
+                          {cartItems.some(i => i.userId === p.user_id) ? 'Añadido' : 'Añadir'}
                         </span>
                       </button>
                     </div>

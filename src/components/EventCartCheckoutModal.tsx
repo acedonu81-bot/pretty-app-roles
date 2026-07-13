@@ -1,13 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Send, CheckCircle, Calendar, MapPin, MessageSquare, Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { CartItem, clearCart, removeFromCart } from '@/lib/eventCart';
+import { useEventCart } from '@/lib/eventCart';
 
 interface Props {
-  items: CartItem[];
   onClose: () => void;
-  onRemove: (userId: string) => void;
 }
 
 const EVENT_TYPES = [
@@ -20,8 +18,9 @@ const EVENT_HOURS: Record<string, number> = {
   'Festival / Concierto': 8, 'Cumpleaños': 3, 'Inauguración': 3, 'Otro': 4,
 };
 
-export default function EventCartCheckoutModal({ items, onClose, onRemove }: Props) {
+export default function EventCartCheckoutModal({ onClose }: Props) {
   const { user } = useAuth();
+  const { items, remove, clear } = useEventCart();
   const [form, setForm] = useState({ name: '', contact: '', eventType: '', date: '', location: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
 
@@ -30,6 +29,11 @@ export default function EventCartCheckoutModal({ items, onClose, onRemove }: Pro
   const estimatedHours = EVENT_HOURS[form.eventType] ?? 4;
   const estimatedTotal = items.reduce((sum, i) => sum + (i.hourlyRate ? i.hourlyRate * estimatedHours : 0), 0);
   const itemsWithoutRate = items.filter(i => !i.hourlyRate).length;
+
+  // Si se vacía la cesta desde dentro del modal (última papelera), cerramos solos.
+  useEffect(() => {
+    if (items.length === 0 && status !== 'done') onClose();
+  }, [items.length, status, onClose]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -78,8 +82,8 @@ export default function EventCartCheckoutModal({ items, onClose, onRemove }: Pro
       }).catch((err: unknown) => console.warn('[EventCart] confirm email failed:', err));
     }
 
-    clearCart();
     setStatus('done');
+    clear();
   }
 
   return (
@@ -119,7 +123,7 @@ export default function EventCartCheckoutModal({ items, onClose, onRemove }: Pro
                 <div key={item.userId} className="flex items-center gap-3 p-2.5 rounded-xl"
                   style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.06)' }}>
                   {item.photoUrl ? (
-                    <img src={item.photoUrl} alt={item.displayName} className="w-9 h-9 rounded-lg object-cover flex-shrink-0" />
+                    <img src={item.photoUrl} alt={item.displayName} loading="lazy" className="w-9 h-9 rounded-lg object-cover flex-shrink-0" />
                   ) : (
                     <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 text-sm font-black"
                       style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>
@@ -132,7 +136,7 @@ export default function EventCartCheckoutModal({ items, onClose, onRemove }: Pro
                       {item.zone || 'España'}{item.hourlyRate ? ` · desde ${item.hourlyRate}€/h` : ''}
                     </p>
                   </div>
-                  <button type="button" onClick={() => { removeFromCart(item.userId); onRemove(item.userId); }}
+                  <button type="button" onClick={() => remove(item.userId)}
                     className="p-1.5 rounded-lg hover:bg-black/5 flex-shrink-0">
                     <Trash2 size={13} style={{ color: '#999' }} />
                   </button>

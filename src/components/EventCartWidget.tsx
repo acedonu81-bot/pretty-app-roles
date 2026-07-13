@@ -1,25 +1,50 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, X } from 'lucide-react';
 import { useEventCart } from '@/lib/eventCart';
 import EventCartCheckoutModal from '@/components/EventCartCheckoutModal';
 
 // Rutas privadas donde el flujo de "organizador anónimo" no aplica (ya dentro de una cuenta).
 const HIDDEN_PREFIXES = ['/dashboard', '/admin-beta', '/auth'];
+const HINT_SEEN_KEY = 'xpeak_cart_hint_seen';
 
 /** Icono flotante de "mi evento" — visible en directorio y fichas públicas cuando hay algo en la cesta. */
 export default function EventCartWidget() {
-  const { items, remove } = useEventCart();
+  const { items } = useEventCart();
   const [open, setOpen] = useState(false);
+  const [showHint, setShowHint] = useState(false);
   const location = useLocation();
+
+  useEffect(() => {
+    if (items.length === 1 && !localStorage.getItem(HINT_SEEN_KEY)) {
+      setShowHint(true);
+    }
+  }, [items.length]);
+
+  const dismissHint = () => {
+    setShowHint(false);
+    localStorage.setItem(HINT_SEEN_KEY, '1');
+  };
 
   const hidden = HIDDEN_PREFIXES.some(p => location.pathname.startsWith(p));
   if (hidden || items.length === 0) return null;
 
   return (
     <>
+      {showHint && (
+        <div className="fixed bottom-20 right-5 z-40 max-w-[240px] p-3.5 rounded-xl animate-[fadeIn_0.3s_ease]"
+          style={{ background: '#161412', border: '1px solid rgba(212,175,55,0.3)', boxShadow: '0 8px 24px rgba(0,0,0,0.35)' }}>
+          <button onClick={dismissHint} className="absolute top-2 right-2 opacity-50 hover:opacity-100 transition-opacity">
+            <X size={13} color="#fff" />
+          </button>
+          <p className="text-xs font-bold mb-1" style={{ color: '#D4AF37' }}>Perfil guardado en "Mi evento"</p>
+          <p className="text-[0.7rem] leading-relaxed" style={{ color: 'rgba(255,255,255,0.75)' }}>
+            Añade varios profesionales aquí y pide presupuesto conjunto para el mismo evento con un solo formulario.
+          </p>
+        </div>
+      )}
       <button
-        onClick={() => setOpen(true)}
+        onClick={() => { setOpen(true); dismissHint(); }}
         className="fixed bottom-5 right-5 z-40 flex items-center gap-2 pl-3 pr-4 py-3 rounded-full transition-all hover:scale-105"
         style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 8px 24px rgba(212,175,55,0.4)' }}>
         <span className="relative">
@@ -33,11 +58,7 @@ export default function EventCartWidget() {
       </button>
 
       {open && (
-        <EventCartCheckoutModal
-          items={items}
-          onClose={() => setOpen(false)}
-          onRemove={remove}
-        />
+        <EventCartCheckoutModal onClose={() => setOpen(false)} />
       )}
     </>
   );

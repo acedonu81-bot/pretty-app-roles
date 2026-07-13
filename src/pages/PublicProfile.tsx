@@ -497,7 +497,7 @@ const PublicProfile = () => {
       hourlyRate: profile.price || null,
       zone: profile.zone,
     });
-    toast.success(`${profile.name} añadido a "Mi evento"`, { description: 'Compara varios profesionales y pide presupuesto conjunto desde el botón dorado de abajo a la derecha.' });
+    toast.success(`${profile.name} añadido a "Mi evento"`, { description: 'Añade varios profesionales y pide presupuesto conjunto desde el botón dorado de abajo a la derecha.' });
   };
   const profileUrl = `${BASE_URL}/p/${profileSlug}`;
   const cityShort = profile.zone ? profile.zone.split(',')[0].trim() : 'España';
