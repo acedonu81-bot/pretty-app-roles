@@ -48,3 +48,7 @@ scripts/            — prerender-meta.mjs, update-sitemap.mjs
 - No deployar más de una vez por sesión salvo emergencia
 - No crear archivos .md de documentación salvo que se pida
 - Máxima autonomía: actuar antes de preguntar, escalar solo si es técnicamente imposible
+
+## Verificación obligatoria antes de dar un fix por cerrado
+- Invocar la skill `verify-flows` tras tocar código de registro, directorio, carrito "Mi evento", perfil público o Flash Booking
+- Un `tsc --noEmit` limpio NO es suficiente — reproducir la acción real (clic, rellenar, eliminar) en el navegador antes de decir "arreglado"
