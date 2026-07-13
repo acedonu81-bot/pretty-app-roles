@@ -250,6 +250,7 @@ const Auth = () => {
 
         track('auth_success', { mode: 'register', role: roleParam || 'pending' });
         if (typeof window !== 'undefined' && (window as any).fbq) (window as any).fbq('track', 'CompleteRegistration');
+        if (typeof window !== 'undefined' && (window as any).ttq) (window as any).ttq.track('CompleteRegistration');
 
         if (refParam && signUpData.user) {
           supabase.from('profiles').select('user_id').eq('referral_code', refParam).maybeSingle()
