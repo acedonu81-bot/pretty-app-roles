@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { compressImage, MAX_RAW_IMAGE_MB } from '@/lib/image';
-import { Camera, Bell, Shield, LogOut, ChevronRight, Trash2, AlertTriangle, Download, FileText, QrCode, Archive, BellOff, Users, Plus, Check, X } from 'lucide-react';
+import { Camera, Bell, Shield, LogOut, ChevronRight, Trash2, AlertTriangle, Download, FileText, QrCode, Archive, BellOff, Users, Plus, Check, X, Lock } from 'lucide-react';
 import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import { toast } from 'sonner';
 import JSZip from 'jszip';
@@ -63,6 +64,12 @@ const ROLE_OPTIONS = [
   { value: 'makeup',       label: 'Maquillaje & Peluquería' },
 ];
 
+const NEXT_PLAN: Record<string, { label: string; profiles: number }> = {
+  free: { label: 'Starter', profiles: 2 },
+  starter: { label: 'Business', profiles: 3 },
+  business: { label: 'Agency', profiles: 5 },
+};
+
 const MultiProfileSection = () => {
   const { allProfiles, maxProfiles, subscription_tier, switchProfile, createProfile, profileId } = useProfile();
   const [adding, setAdding] = useState(false);
@@ -109,6 +116,14 @@ const MultiProfileSection = () => {
           style={{ background: 'rgba(212,175,55,0.05)', border: '1px dashed rgba(212,175,55,0.25)', color: 'rgba(212,175,55,0.7)' }}>
           <Plus size={13} /> Añadir perfil ({allProfiles.length}/{maxProfiles})
         </button>
+      )}
+
+      {allProfiles.length >= maxProfiles && NEXT_PLAN[subscription_tier] && (
+        <Link to="/precios"
+          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold transition-all hover:scale-[1.01]"
+          style={{ background: 'rgba(0,0,0,0.03)', border: '1px dashed rgba(0,0,0,0.12)', color: 'rgba(0,0,0,0.45)' }}>
+          <Lock size={13} /> Añadir perfil — desde plan {NEXT_PLAN[subscription_tier].label} ({NEXT_PLAN[subscription_tier].profiles} perfiles)
+        </Link>
       )}
 
       {adding && (

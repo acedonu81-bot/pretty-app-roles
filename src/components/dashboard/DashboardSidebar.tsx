@@ -4,9 +4,10 @@ import {
   MessageSquare, Megaphone, Settings,
   BarChart3,
   Camera, FileText, FileEdit, CalendarCheck,
-  Palette, Shirt, Speaker, ChevronDown, Plus, UtensilsCrossed,
+  Palette, Shirt, Speaker, ChevronDown, Plus, UtensilsCrossed, Lock,
   Wand2, Music2, Laugh, Mic2, Theater, PartyPopper,
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import GeometricAvatar from './GeometricAvatar';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
@@ -45,17 +46,17 @@ const navSections = [
       { id: 'dj',         icon: Headphones, label: 'DJs, Artistas & Música en Vivo' },
       { id: 'staff',         icon: UserCheck,      label: 'Staff & Promoción' },
       { id: 'event_manager', icon: CalendarCheck,  label: 'Encargadas de Eventos' },
+      { id: 'bailarin',   icon: Music2,          label: 'Instructores & Bailarines' },
       { id: 'makeup',     icon: Smile,      label: 'Maquillaje & Peluquería' },
       { id: 'media',      icon: Camera,     label: 'Media & Contenido' },
-      { id: 'vestuario',  icon: Shirt,      label: 'Vestuario & Moda' },
-      { id: 'design',     icon: Palette,    label: 'Diseño & Visuales' },
-      { id: 'promotor',   icon: Speaker,         label: 'Promotor & RRPP' },
-      { id: 'catering',   icon: UtensilsCrossed, label: 'Catering & Chef' },
       { id: 'mago',       icon: Wand2,           label: 'Magos & Ilusionistas' },
-      { id: 'bailarin',   icon: Music2,          label: 'Bailarines & Danza' },
       { id: 'humorista',  icon: Laugh,           label: 'Humor, Monólogos & Stand-Up' },
       { id: 'animador',   icon: PartyPopper,     label: 'Payasos & Animadores' },
+      { id: 'catering',   icon: UtensilsCrossed, label: 'Catering & Chef' },
+      { id: 'vestuario',  icon: Shirt,      label: 'Vestuario & Moda' },
+      { id: 'promotor',   icon: Speaker,         label: 'Promotor & RRPP' },
       { id: 'speaker',    icon: Mic2,            label: 'Speakers & Presentadores' },
+      { id: 'design',     icon: Palette,    label: 'Diseño & Visuales' },
       { id: 'empresario', icon: Building2,       label: 'Panel Empresario' },
     ],
   },
@@ -91,10 +92,16 @@ const navSections = [
 
 const TOOL_BLUE_IDS = new Set(['calendar', 'messages', 'flashbooking']);
 
-const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', camarero: 'Staff / Camarero', makeup: 'Makeup', media: 'Media', empresario: 'Sala / Club', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', promotor: 'Promotor & RRPP', ambassador: 'Embajador', design: 'Diseño', mago: 'Mago & Ilusionista', bailarin: 'Bailarín & Danza', humorista: 'Humorista & Cómico', monologo: 'Monólogo & Stand-Up', animador: 'Payaso & Animador', speaker: 'Speaker & Presentador', 'photo-booth': 'Photo Booth' };
+const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', camarero: 'Staff / Camarero', makeup: 'Makeup', media: 'Media', empresario: 'Sala / Club', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', promotor: 'Promotor & RRPP', ambassador: 'Embajador', design: 'Diseño', mago: 'Mago & Ilusionista', bailarin: 'Instructor / Bailarín', humorista: 'Humorista & Cómico', monologo: 'Monólogo & Stand-Up', animador: 'Payaso & Animador', speaker: 'Speaker & Presentador', 'photo-booth': 'Photo Booth' };
+
+const NEXT_PLAN: Record<string, { label: string; profiles: number }> = {
+  free: { label: 'Starter', profiles: 2 },
+  starter: { label: 'Business', profiles: 3 },
+  business: { label: 'Agency', profiles: 5 },
+};
 
 const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }) => {
-  const { display_name, role, photo_url, allProfiles, switchProfile, maxProfiles, profileId } = useProfile();
+  const { display_name, role, photo_url, allProfiles, switchProfile, maxProfiles, profileId, subscription_tier } = useProfile();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -104,14 +111,14 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  if (allProfiles.length <= 1 && maxProfiles <= 1) return null;
+  if (allProfiles.length <= 1 && maxProfiles <= 1 && !NEXT_PLAN[subscription_tier]) return null;
 
   return (
-    <div ref={ref} className="relative px-4 pb-3 pt-2" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>
+    <div ref={ref} className="relative px-4 pb-3 pt-2">
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all hover:bg-white/5"
-        style={{ border: '1px solid rgba(0,0,0,0.08)' }}
+        className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-2xl transition-all hover:bg-black/[0.03]"
+        style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.06)' }}
       >
         <div style={role === 'empresario' ? { borderRadius: 6, boxShadow: '0 0 0 2px #D4AF37, 0 0 0 4px rgba(212,175,55,0.25)', display:'inline-flex' } : { display:'inline-flex' }}>
           <GeometricAvatar role={role as any} seed={(profileId ?? '').charCodeAt(0) || 0} size={28} />
@@ -126,12 +133,12 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
       </button>
 
       {open && (
-        <div className="absolute left-4 right-4 top-full mt-1 rounded-xl overflow-hidden z-50 shadow-xl"
+        <div className="absolute left-4 right-4 top-full mt-2 rounded-2xl overflow-hidden z-50 p-1"
           style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.1)', boxShadow: '0 8px 24px rgba(0,0,0,0.1)' }}>
           {allProfiles.map(p => (
             <button key={p.id} onClick={() => { switchProfile(p.id); setOpen(false); }}
-              className="w-full flex items-center gap-2.5 px-3 py-2.5 text-left transition-all hover:bg-black/5"
-              style={{ borderBottom: '1px solid rgba(0,0,0,0.05)', background: p.id === profileId ? 'rgba(212,175,55,0.08)' : undefined }}>
+              className="w-full flex items-center gap-2.5 px-3 py-2.5 text-left transition-all hover:bg-black/5 rounded-xl"
+              style={{ background: p.id === profileId ? 'rgba(212,175,55,0.08)' : undefined }}>
               <div style={p.role === 'empresario' ? { borderRadius: 6, boxShadow: '0 0 0 2px #D4AF37, 0 0 0 4px rgba(212,175,55,0.25)', display:'inline-flex' } : { display:'inline-flex' }}>
                 <GeometricAvatar role={p.role as any} seed={p.id.charCodeAt(0)} size={24} />
               </div>
@@ -144,10 +151,17 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
           ))}
           {allProfiles.length < maxProfiles && (
             <button onClick={() => { setOpen(false); onViewChange('settings'); }}
-              className="w-full flex items-center gap-2 px-3 py-2.5 text-xs font-bold transition-all hover:bg-white/5"
+              className="w-full flex items-center gap-2 px-3 py-2.5 text-xs font-bold transition-all hover:bg-white/5 rounded-xl"
               style={{ color: 'rgba(212,175,55,0.7)' }}>
               <Plus size={13} /> Añadir perfil
             </button>
+          )}
+          {allProfiles.length >= maxProfiles && NEXT_PLAN[subscription_tier] && (
+            <Link to="/precios" onClick={() => setOpen(false)}
+              className="w-full flex items-center gap-2 px-3 py-2.5 text-xs font-bold transition-all hover:bg-black/5 rounded-xl"
+              style={{ color: 'rgba(0,0,0,0.4)' }}>
+              <Lock size={13} /> Añadir perfil — plan {NEXT_PLAN[subscription_tier].label}
+            </Link>
           )}
         </div>
       )}
@@ -205,9 +219,13 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
   return (
     <aside
       className="w-[260px] h-full flex flex-col z-10 flex-shrink-0"
-      style={{ background: '#ffffff', borderRight: '1px solid var(--nightlife-border)', paddingTop: 'env(safe-area-inset-top)' }}
+      style={{
+        background: '#ffffff',
+        boxShadow: 'inset -1px 0 0 rgba(0,0,0,0.05), 4px 0 24px rgba(0,0,0,0.03)',
+        paddingTop: 'env(safe-area-inset-top)',
+      }}
     >
-      <div className="px-6 py-4 flex items-center gap-3" style={{ borderBottom: '1px solid var(--nightlife-border)' }}>
+      <div className="px-6 py-4 flex items-center gap-3">
         <button onClick={() => onViewChange('dj')} className="text-left transition-opacity hover:opacity-70">
           <h2 className="text-xl font-black tracking-widest font-display">
             X<span className="text-gradient">PEAK</span>
@@ -218,7 +236,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
 
       <ProfileSwitcher onViewChange={onViewChange} />
 
-      <nav className="flex-1 overflow-y-auto px-4 py-4">
+      <nav className="flex-1 overflow-y-auto px-4 py-4 no-scrollbar">
         {navSections.map((section) => {
           let items = section.label === 'MI CUENTA' && isAgency
             ? [...section.items.slice(0, 2), { id: 'agency', icon: Building2, label: 'Panel Agencia', badge: 'AGENCIA' as const }, ...section.items.slice(2)]
@@ -242,27 +260,27 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
                 <button
                   key={item.id}
                   onClick={() => onViewChange(item.id)}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl mb-1 text-[0.9rem] font-semibold transition-all duration-200 text-left"
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-2xl mb-1 text-[0.9rem] font-semibold transition-all duration-200 text-left overflow-hidden"
                   style={item.id === 'empresario' ? {
-                    color: '#8A6D0F',
-                    background: isActive ? 'rgba(212,175,55,0.14)' : 'rgba(212,175,55,0.06)',
-                    borderLeft: '2px solid #D4AF37',
-                    boxShadow: isActive ? 'inset 0 0 20px rgba(212,175,55,0.05)' : undefined,
+                    borderRadius: 16,
+                    color: isActive ? '#8A6D0F' : 'var(--nightlife-text-secondary)',
+                    background: isActive ? 'rgba(212,175,55,0.14)' : undefined,
+                    boxShadow: isActive
+                      ? 'inset 0 0 20px rgba(212,175,55,0.05), inset 0 0 0 1px rgba(212,175,55,0.25)'
+                      : undefined,
                   } : {
+                    borderRadius: 16,
                     color: isActive
                       ? (isToolBlue ? '#4285F4' : '#D4AF37')
                       : 'var(--nightlife-text-secondary)',
                     background: isActive
-                      ? (isToolBlue ? 'rgba(66,133,244,0.08)' : 'rgba(212,175,55,0.08)')
+                      ? (isToolBlue ? 'rgba(66,133,244,0.1)' : 'rgba(212,175,55,0.1)')
                       : undefined,
-                    borderLeft: isActive
-                      ? `2px solid ${isToolBlue ? '#4285F4' : '#D4AF37'}`
-                      : '2px solid transparent',
                   }}
                 >
                   {/* Icon with colored background for directory roles */}
                   <span
-                    className="flex-shrink-0 flex items-center justify-center rounded-lg transition-all duration-200"
+                    className="flex-shrink-0 flex items-center justify-center rounded-xl transition-all duration-200"
                     style={{
                       width: 30,
                       height: 30,
