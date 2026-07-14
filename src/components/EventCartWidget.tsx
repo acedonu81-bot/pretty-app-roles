@@ -15,16 +15,18 @@ export default function EventCartWidget() {
   const [showHint, setShowHint] = useState(false);
   const location = useLocation();
 
-  useEffect(() => {
-    if (items.length === 1 && !localStorage.getItem(HINT_SEEN_KEY)) {
-      setShowHint(true);
-    }
-  }, [items.length]);
-
   const dismissHint = () => {
     setShowHint(false);
     localStorage.setItem(HINT_SEEN_KEY, '1');
   };
+
+  useEffect(() => {
+    if (items.length === 1 && !localStorage.getItem(HINT_SEEN_KEY)) {
+      setShowHint(true);
+      const t = setTimeout(dismissHint, 5000);
+      return () => clearTimeout(t);
+    }
+  }, [items.length]);
 
   const hidden = HIDDEN_PREFIXES.some(p => location.pathname.startsWith(p));
   if (hidden || items.length === 0) return null;
@@ -34,7 +36,7 @@ export default function EventCartWidget() {
       {showHint && (
         <div className="fixed bottom-20 right-5 z-40 max-w-[240px] p-3.5 rounded-xl animate-[fadeIn_0.3s_ease]"
           style={{ background: '#161412', border: '1px solid rgba(212,175,55,0.3)', boxShadow: '0 8px 24px rgba(0,0,0,0.35)' }}>
-          <button onClick={dismissHint} className="absolute top-2 right-2 opacity-50 hover:opacity-100 transition-opacity">
+          <button onClick={dismissHint} aria-label="Cerrar aviso" className="absolute top-2 right-2 opacity-50 hover:opacity-100 transition-opacity">
             <X size={13} color="#fff" />
           </button>
           <p className="text-xs font-bold mb-1" style={{ color: '#D4AF37' }}>Perfil guardado en "Mi evento"</p>

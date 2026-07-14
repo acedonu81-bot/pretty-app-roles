@@ -932,16 +932,16 @@ const Landing = () => {
         </FadeIn>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
-            { href: '/blog/cuanto-cobra-un-dj-en-espana', label: 'DJ', title: '¿Cuánto cobra un DJ en España?', color: '#D4AF37' },
-            { href: '/blog/fotografo-boda', label: 'Fotografía', title: 'Fotógrafo de boda: precios y qué mirar', color: '#60a5fa' },
-            { href: '/blog/cuantos-camareros-necesito-para-mi-boda', label: 'Staff', title: '¿Cuántos camareros necesitas en tu boda?', color: '#34d399' },
-            { href: '/blog/maquillaje-nupcial-precio-guia', label: 'Belleza', title: 'Maquillaje nupcial: guía de precios', color: '#f472b6' },
+            { href: '/blog/cuanto-cobra-un-dj-en-espana', label: 'DJ', title: '¿Cuánto cobra un DJ en España?', color: '#8a6a00', bg: 'rgba(212,175,55,0.14)' },
+            { href: '/blog/fotografo-boda', label: 'Fotografía', title: 'Fotógrafo de boda: precios y qué mirar', color: '#1d5fc9', bg: 'rgba(96,165,250,0.16)' },
+            { href: '/blog/cuantos-camareros-necesito-para-mi-boda', label: 'Staff', title: '¿Cuántos camareros necesitas en tu boda?', color: '#0f7a52', bg: 'rgba(52,211,153,0.16)' },
+            { href: '/blog/maquillaje-nupcial-precio-guia', label: 'Belleza', title: 'Maquillaje nupcial: guía de precios', color: '#c22a72', bg: 'rgba(244,114,182,0.16)' },
           ].map(g => (
             <a key={g.href} href={g.href}
               className="group block p-5 rounded-2xl transition-all hover:scale-[1.02]"
               style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
               <span className="inline-block text-[0.65rem] font-black uppercase tracking-widest px-2 py-1 rounded-md mb-3"
-                style={{ background: `${g.color}18`, color: g.color }}>
+                style={{ background: g.bg, color: g.color }}>
                 {g.label}
               </span>
               <p className="text-sm font-bold leading-snug mb-3" style={{ color: '#111' }}>{g.title}</p>
