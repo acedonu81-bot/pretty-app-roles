@@ -54,7 +54,7 @@ html, body, #root {
     --input: 25 10% 10% / 0.08;
     --ring: 43 72% 53%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
     /* ── XPEAK Design Tokens (CSS custom properties) ── */
     /* Keep in sync with src/design/tokens.ts           */
@@ -177,7 +177,7 @@ html, body, #root {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--nightlife-border);
-    border-radius: 16px;
+    border-radius: 20px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
     transition: box-shadow 0.22s ease, border-color 0.22s ease;
   }
@@ -190,7 +190,7 @@ html, body, #root {
     background: rgba(0, 0, 0, 0.02);
     backdrop-filter: blur(12px);
     border: 1px solid var(--nightlife-border);
-    border-radius: 12px;
+    border-radius: 16px;
   }
 
   .btn-nightlife-primary {
@@ -198,7 +198,7 @@ html, body, #root {
     color: #000000;
     border: none;
     padding: 0.8rem 1.8rem;
-    border-radius: 8px;
+    border-radius: 999px;
     box-shadow: 0 4px 15px var(--nightlife-primary-glow);
     font-weight: 700;
     transition: all 0.3s ease;
@@ -214,7 +214,7 @@ html, body, #root {
     color: #B8941E;
     border: 1px solid rgba(212, 175, 55, 0.3);
     padding: 0.8rem 1.8rem;
-    border-radius: 8px;
+    border-radius: 999px;
     font-weight: 600;
     transition: all 0.3s ease;
     cursor: pointer;
@@ -247,7 +247,7 @@ html, body, #root {
     padding: 0.75rem 1rem;
     background: #ffffff;
     border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    border-radius: 14px;
     color: rgba(22, 20, 18, 0.88);
     outline: none;
     font-family: 'Inter', sans-serif;
@@ -261,17 +261,20 @@ html, body, #root {
     background: #fff;
     box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1), inset 0 0 0 1px rgba(212, 175, 55, 0.15);
   }
+  /* Neutraliza el fondo azul/amarillo que Chrome fuerza en autofill */
+  .nightlife-input:-webkit-autofill,
+  .nightlife-input:-webkit-autofill:hover,
+  .nightlife-input:-webkit-autofill:focus {
+    -webkit-text-fill-color: rgba(22, 20, 18, 0.88);
+    -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+    box-shadow: 0 0 0 1000px #ffffff inset;
+    transition: background-color 5000s ease-in-out 0s;
+  }
 }
 
 @keyframes float {
   0% { transform: translate(0, 0) scale(1); }
   100% { transform: translate(50px, 100px) scale(1.1); }
-}
-
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.5); }
-  70% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
 }
 
 @keyframes eqBar {
@@ -334,18 +337,19 @@ html, body, #root {
 .xpeak-toast {
   position: relative !important;
   overflow: hidden !important;
+  border-radius: 16px !important;
 }
 
 /* Barra lateral de color según tipo */
 .xpeak-toast::before {
   content: '';
   position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
+  left: 4px;
+  top: 4px;
+  bottom: 4px;
   width: 3px;
   background: rgba(212,175,55,0.6);
-  border-radius: 3px 0 0 3px;
+  border-radius: 99px;
 }
 
 .xpeak-toast-success::before {
