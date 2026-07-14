@@ -8,7 +8,17 @@ import { toast } from 'sonner';
 const esc = (s: string) =>
   s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 
-interface Props { professional: Profile; onClose: () => void; onSaved?: () => void; }
+/** Datos que ya conoce el punto de entrada (Flash Booking, carrito, etc.) — evita
+ * que el usuario retecle lo que ya escribió el organizador al hacer la solicitud. */
+export interface ContractPrefill {
+  contratanteNombre?: string;
+  nombreEvento?: string;
+  fechaEvento?: string;
+  nombreLocal?: string;
+  direccionLocal?: string;
+}
+
+interface Props { professional: Profile; onClose: () => void; onSaved?: () => void; prefill?: ContractPrefill; }
 
 const ROLE_SERVICE: Record<string, string> = {
   dj:        'sesión de DJ y actuación musical en directo',
@@ -36,7 +46,7 @@ const EVENT_TYPES = [
 const todayStr = () => new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
 const contractRef = () => `XPEAK-${Date.now().toString(36).toUpperCase().slice(-6)}`;
 
-const ContractModal = ({ professional, onClose, onSaved }: Props) => {
+const ContractModal = ({ professional, onClose, onSaved, prefill }: Props) => {
   const { user } = useAuth();
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [tipoEvento, setTipoEvento] = useState('club');
@@ -44,17 +54,17 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
   const [form, setForm] = useState({
     ciudadFirma: '',
     fechaFirma: todayStr(),
-    contratanteNombre: '',
+    contratanteNombre: prefill?.contratanteNombre ?? '',
     contratanteNIF: '',
     empresaNombre: '',
     empresaCIF: '',
     empresaDireccion: '',
-    nombreEvento: '',
-    fechaEvento: '',
+    nombreEvento: prefill?.nombreEvento ?? '',
+    fechaEvento: prefill?.fechaEvento ?? '',
     horaInicio: '',
     horaFin: '',
-    nombreLocal: '',
-    direccionLocal: '',
+    nombreLocal: prefill?.nombreLocal ?? '',
+    direccionLocal: prefill?.direccionLocal ?? '',
     precioNeto: '500',
     formaPago: 'transferencia bancaria',
     diasPago: '30',

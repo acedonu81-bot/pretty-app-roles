@@ -1,8 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { CheckCircle, XCircle, Clock, Calendar, MapPin, User, RefreshCw, Phone } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, Calendar, MapPin, User, RefreshCw, Phone, FileText } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useProfile } from '@/hooks/useProfile';
 import { toast } from 'sonner';
+import ContractModal, { type ContractPrefill } from '@/components/dashboard/ContractModal';
+import type { Profile } from '@/data/profiles';
 
 interface Solicitud {
   id: string;
@@ -30,10 +33,12 @@ const fmt = (iso: string | null) => {
 
 const SolicitudesTab = () => {
   const { user } = useAuth();
+  const profile = useProfile();
   const [items, setItems] = useState<Solicitud[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<string | null>(null);
   const updatingRef = useRef<string | null>(null);
+  const [contractFor, setContractFor] = useState<Solicitud | null>(null);
 
   const fetch = useCallback(async () => {
     if (!user) return;
@@ -241,11 +246,46 @@ const SolicitudesTab = () => {
                       </button>
                     </div>
                   )}
+                  {s.status === 'accepted' && (
+                    <button
+                      onClick={() => setContractFor(s)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
+                      style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.3)', color: '#8A6D0F' }}>
+                      <FileText size={12} /> Generar contrato
+                    </button>
+                  )}
                 </div>
               </div>
             );
           })}
         </div>
+      )}
+
+      {contractFor && (
+        <ContractModal
+          professional={{
+            id: 0,
+            name: profile.display_name || 'Profesional',
+            role: (profile.role as Profile['role']) || 'dj',
+            specialty: profile.specialty ?? '',
+            rating: 0, reviews: 0,
+            location: profile.zone ?? '', zone: profile.zone ?? '', experience: '',
+            price: profile.hourly_rate ?? 0, priceUnit: '/hora',
+            avatar: '', gradient: '', badges: [], description: profile.bio ?? '',
+            phone: profile.phone ?? '', instagram: profile.instagram ?? '',
+            topWeekend: false, photo: profile.photo_url ?? '',
+            subscriptionTier: (profile.subscription_tier as Profile['subscriptionTier']) ?? 'free',
+            isFlashActive: profile.is_flash_active ?? false,
+            profileViews: 0, contactClicks: 0,
+          }}
+          prefill={{
+            contratanteNombre: contractFor.requester_name ?? '',
+            nombreEvento: contractFor.event_description ?? '',
+            fechaEvento: contractFor.event_date ?? '',
+            nombreLocal: contractFor.event_location ?? '',
+          } satisfies ContractPrefill}
+          onClose={() => setContractFor(null)}
+        />
       )}
     </div>
   );
