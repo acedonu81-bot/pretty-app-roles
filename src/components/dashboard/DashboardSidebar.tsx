@@ -4,10 +4,9 @@ import {
   MessageSquare, Megaphone, Settings,
   BarChart3,
   Camera, FileText, FileEdit, CalendarCheck,
-  Palette, Shirt, Speaker, ChevronDown, Plus, UtensilsCrossed, Lock,
+  Palette, Shirt, Speaker, ChevronDown, Plus, UtensilsCrossed,
   Wand2, Music2, Laugh, Mic2, Theater, PartyPopper,
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import GeometricAvatar from './GeometricAvatar';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
@@ -94,14 +93,8 @@ const TOOL_BLUE_IDS = new Set(['calendar', 'messages', 'flashbooking']);
 
 const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', camarero: 'Staff / Camarero', makeup: 'Makeup', media: 'Media', empresario: 'Sala / Club', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', promotor: 'Promotor & RRPP', ambassador: 'Embajador', design: 'Diseño', mago: 'Mago & Ilusionista', bailarin: 'Instructor / Bailarín', humorista: 'Humorista & Cómico', monologo: 'Monólogo & Stand-Up', animador: 'Payaso & Animador', speaker: 'Speaker & Presentador', 'photo-booth': 'Photo Booth' };
 
-const NEXT_PLAN: Record<string, { label: string; profiles: number }> = {
-  free: { label: 'Starter', profiles: 2 },
-  starter: { label: 'Business', profiles: 3 },
-  business: { label: 'Agency', profiles: 5 },
-};
-
 const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }) => {
-  const { display_name, role, photo_url, allProfiles, switchProfile, maxProfiles, profileId, subscription_tier } = useProfile();
+  const { display_name, role, photo_url, allProfiles, switchProfile, maxProfiles, profileId } = useProfile();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -110,8 +103,6 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
   }, []);
-
-  if (allProfiles.length <= 1 && maxProfiles <= 1 && !NEXT_PLAN[subscription_tier]) return null;
 
   return (
     <div ref={ref} className="relative px-4 pb-3 pt-2">
@@ -155,13 +146,6 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
               style={{ color: 'rgba(212,175,55,0.7)' }}>
               <Plus size={13} /> Añadir perfil
             </button>
-          )}
-          {allProfiles.length >= maxProfiles && NEXT_PLAN[subscription_tier] && (
-            <Link to="/precios" onClick={() => setOpen(false)}
-              className="w-full flex items-center gap-2 px-3 py-2.5 text-xs font-bold transition-all hover:bg-black/5 rounded-xl"
-              style={{ color: 'rgba(0,0,0,0.4)' }}>
-              <Lock size={13} /> Añadir perfil — plan {NEXT_PLAN[subscription_tier].label}
-            </Link>
           )}
         </div>
       )}
