@@ -27,9 +27,18 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   const [savingAvailability, setSavingAvailability] = useState(false);
   const [selectedLangs, setSelectedLangs] = useState<string[] | null>(null);
   const [langOpen, setLangOpen] = useState(false);
+  const [selectedRoles, setSelectedRoles] = useState<string[] | null>(null);
+  const [roleOpen, setRoleOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
   const [sideStats, setSideStats] = useState<{ bookings: number | null; messages: number | null }>({ bookings: null, messages: null });
   const [copied, setCopied] = useState(false);
+  const [referralCopied, setReferralCopied] = useState(false);
+  const [offersClasses, setOffersClasses] = useState<boolean | null>(null);
+  const [classStyles, setClassStyles] = useState<string[] | null>(null);
+  const [classPrice, setClassPrice] = useState<string | null>(null);
+  const [seekingPartner, setSeekingPartner] = useState<boolean | null>(null);
+  const [danceLevel, setDanceLevel] = useState<string | null>(null);
+  const [danceRole, setDanceRole] = useState<string | null>(null);
 
   const rawPhoto = profile.photo_url;
   const photoUrl = rawPhoto && rawPhoto.trim().length > 5 && !rawPhoto.endsWith("''") ? rawPhoto : null;
@@ -64,7 +73,10 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     media:     { label: 'Especialidades',        tags: ['Fotografía de eventos','Vídeo','Reels & Contenido','Fotografía de DJ','Drone','Cobertura en directo','Fotografía de sala','Retrato','Edición de vídeo','Color grading','Motion graphics','Podcast'] },
     design:    { label: 'Especialidades',        tags: ['Diseño gráfico','VJing','Mapping','LED wall','Visuales en vivo','Cartelería','Branding','Redes sociales','Ilustración','3D','Motion design'] },
     promotor:  { label: 'Especialidades',        tags: ['Festivales','Clubs nocturnos','Eventos privados','Bodas','Corporativo','After','Terraza','Sala pequeña','Sala grande','Residencias','Giras'] },
+    bailarin:  { label: 'Estilos de baile',       tags: ['Salsa','Salsa cubana','Salsa en línea','Bachata','Bachata sensual','Kizomba','Zouk','Merengue','Cha cha cha','Cumbia','Coreografía primer baile','Baile de exhibición','Danza urbana','Reguetón/Perreo intenso','Danza contemporánea'] },
   };
+
+  const DANCE_CLASS_STYLES = ['Salsa','Bachata','Kizomba','Zouk','Merengue','Baile de boda / primer baile','Danza urbana'];
 
   const roleTagConfig = ROLE_TAGS[profile.role ?? ''];
   const [selectedGenres, setSelectedGenres] = useState<string[] | null>(null);
@@ -79,6 +91,31 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     const current = activeLangs;
     const next = current.includes(lang) ? current.filter(l => l !== lang) : [...current, lang];
     setSelectedLangs(next);
+  };
+
+  const ROLE_OPTIONS: { value: string; label: string }[] = [
+    { value: 'dj',            label: 'DJ / Artista / Productor' },
+    { value: 'rookie',        label: 'Artista Promesa' },
+    { value: 'staff',         label: 'Staff / Camarero / RRPP' },
+    { value: 'event_manager', label: 'Encargada de Eventos' },
+    { value: 'promotor',      label: 'Promotor' },
+    { value: 'catering',      label: 'Catering / Cocina' },
+    { value: 'makeup',        label: 'Maquillaje & Peluquería' },
+    { value: 'media',         label: 'Foto & Vídeo' },
+    { value: 'empresario',    label: 'Empresario / Sala' },
+    { value: 'bailarin',      label: 'Bailarín / Danza' },
+    { value: 'mago',          label: 'Mago & Ilusionista' },
+    { value: 'humorista',     label: 'Humorista & Monólogos' },
+    { value: 'animador',      label: 'Payaso / Animador' },
+    { value: 'speaker',       label: 'Speaker / Presentador' },
+    { value: 'vestuario',     label: 'Estilista / Vestuario' },
+    { value: 'design',        label: 'Diseño & Visuales' },
+  ];
+  const activeRoles = selectedRoles ?? (profile.roles?.length ? profile.roles : (profile.role ? [profile.role] : []));
+  const toggleRole = (r: string) => {
+    const next = activeRoles.includes(r) ? activeRoles.filter(x => x !== r) : [...activeRoles, r];
+    if (next.length === 0) return;
+    setSelectedRoles(next);
   };
   useEffect(() => {
     if (!user) return;
@@ -121,7 +158,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   };
 
   const handleSave = async () => {
-    if (!user || saving) return;
+    if (!user || saving || profile.loading) return;
     const toCheck = [localName, bio, rider].filter(Boolean) as string[];
     for (const val of toCheck) {
       const { clean, reason } = sanitizeInput(val);
@@ -135,6 +172,13 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     if (bio !== null) updates.bio = bio;
     if (selectedLangs !== null) updates.languages = selectedLangs;
     if (selectedGenres !== null) updates.genres = selectedGenres;
+    if (selectedRoles !== null) { updates.roles = selectedRoles; updates.role = selectedRoles[0]; }
+    if (offersClasses !== null) updates.offers_classes = offersClasses;
+    if (classStyles !== null) updates.class_styles = classStyles;
+    if (classPrice !== null) updates.class_price = classPrice.trim() === '' ? null : parseInt(classPrice) || 0;
+    if (seekingPartner !== null) updates.seeking_dance_partner = seekingPartner;
+    if (danceLevel !== null) updates.dance_level = danceLevel;
+    if (danceRole !== null) updates.dance_role = danceRole;
     // is_flash_active is saved immediately on toggle — skip here
     if (Object.keys(updates).length > 0) {
       setSaving(true);
@@ -189,10 +233,10 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
               <FileEdit size={13} /> <span className="hidden sm:inline">Editar</span> Ficha
             </button>
           )}
-          <button onClick={handleSave} disabled={saving}
+          <button onClick={handleSave} disabled={saving || profile.loading}
             className="px-4 py-2 rounded-lg font-bold text-sm flex-1 sm:flex-none disabled:opacity-60"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-            {saving ? 'Guardando...' : 'Guardar'}
+            {profile.loading ? 'Cargando...' : (saving ? 'Guardando...' : 'Guardar')}
           </button>
         </div>
       </div>
@@ -328,6 +372,44 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             </div>
           )}
 
+          {/* — Invita y gana prioridad — */}
+          {user && profile.role !== 'empresario' && (
+            <div className="glass-panel p-4">
+              <div className="flex items-center gap-2 mb-1">
+                <Star size={13} style={{ color: '#2563eb' }} />
+                <span className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: '#2563eb' }}>Invita y gana prioridad</span>
+              </div>
+              <p className="text-[0.72rem] mb-3" style={{ color: '#3d3d4e' }}>
+                Cada profesional que invites y complete su perfil te da <strong style={{ color: 'inherit' }}>+6 meses</strong> de badge azul de prioridad — apareces antes en el directorio.
+              </p>
+              <div className="flex items-center gap-2">
+                <div className="flex-1 px-3 py-2 rounded-lg text-[0.7rem] font-mono truncate"
+                  style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', color: '#3d3d4e' }}>
+                  xpeak.es/auth?ref={(profile as any).referral_code || '···'}
+                </div>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    const code = (profile as any).referral_code;
+                    if (!code) return;
+                    await navigator.clipboard.writeText(`https://xpeak.es/auth?mode=register&ref=${code}`);
+                    setReferralCopied(true);
+                    setTimeout(() => setReferralCopied(false), 2000);
+                  }}
+                  disabled={!(profile as any).referral_code}
+                  className="px-3 py-2 rounded-lg flex items-center gap-1.5 text-[0.7rem] font-bold flex-shrink-0 transition-all disabled:opacity-40"
+                  style={{
+                    background: referralCopied ? 'rgba(34,197,94,0.12)' : 'rgba(37,99,235,0.08)',
+                    border: `1px solid ${referralCopied ? 'rgba(34,197,94,0.3)' : 'rgba(37,99,235,0.2)'}`,
+                    color: referralCopied ? '#22c55e' : '#2563eb',
+                  }}>
+                  {referralCopied ? <Check size={12} /> : <Copy size={12} />}
+                  {referralCopied ? 'Copiado' : 'Copiar'}
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* Disponibilidad — toggle prominente en columna izquierda */}
           {profile.role !== 'empresario' && (
             <button
@@ -394,27 +476,50 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                   <span className="text-xs font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(212,175,55,0.15)', color: '#8A6D0F' }}>Elige tu especialidad</span>
                 )}
               </label>
-              <NightlifeSelect
-                className="mt-1"
-                value={(!profile.role || profile.role === 'pending') ? '' : profile.role}
-                onChange={async (newRole) => {
-                  await profile.updateField({ role: newRole } as any);
-                  toast.success('Rol actualizado. Recarga para ver los cambios.');
-                }}
-                options={[
-                  { value: '',              label: 'Selecciona tu especialidad' },
-                  { value: 'dj',            label: 'DJ / Artista / Productor' },
-                  { value: 'rookie',         label: 'Artista Promesa' },
-                  { value: 'staff',          label: 'Staff / Camarero / RRPP' },
-                  { value: 'event_manager',  label: 'Encargada de Eventos' },
-                  { value: 'promotor',       label: 'Promotor' },
-                  { value: 'catering',       label: 'Catering / Cocina' },
-                  { value: 'makeup',         label: 'Maquillaje & Peluquería' },
-                  { value: 'media',          label: 'Foto & Vídeo' },
-                  { value: 'empresario',     label: 'Empresario / Sala' },
-                ]}
-                active
-              />
+              <p className="text-[0.7rem] text-muted-foreground mb-1.5">Puedes elegir varias — aparecerás en el directorio de cada una.</p>
+
+              {activeRoles.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mb-2">
+                  {activeRoles.map(r => (
+                    <span key={r} className="flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-lg"
+                      style={{ background: 'rgba(226,190,80,0.12)', border: '1px solid rgba(226,190,80,0.35)', color: '#E2BE50' }}>
+                      {ROLE_OPTIONS.find(o => o.value === r)?.label ?? r}
+                      {activeRoles.length > 1 && (
+                        <button type="button" onClick={() => toggleRole(r)} className="ml-0.5 opacity-60 hover:opacity-100 transition-opacity">
+                          <X size={10} />
+                        </button>
+                      )}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <button
+                type="button"
+                onClick={() => setRoleOpen(v => !v)}
+                className="flex items-center justify-between w-full px-3 py-2.5 rounded-lg text-sm transition-all"
+                style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)', color: '#222' }}
+              >
+                <span>Añadir otro rol...</span>
+                <ChevronDown size={14} className="transition-transform duration-200" style={{ transform: roleOpen ? 'rotate(180deg)' : 'none' }} />
+              </button>
+
+              {roleOpen && (
+                <div className="mt-2 p-2 rounded-lg flex flex-wrap gap-1.5" style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                  {ROLE_OPTIONS.map(o => {
+                    const active = activeRoles.includes(o.value);
+                    return (
+                      <button key={o.value} type="button" onClick={() => toggleRole(o.value)}
+                        className="text-xs font-bold px-2.5 py-1.5 rounded-lg transition-all"
+                        style={active
+                          ? { background: 'rgba(226,190,80,0.15)', border: '1px solid rgba(226,190,80,0.4)', color: '#8A6D0F' }
+                          : { background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.06)', color: '#444' }}>
+                        {o.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
             <div className="mb-3">
               <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Ciudad</label>
@@ -548,6 +653,115 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                     );
                   })()}
                 </div>
+            )}
+            {profile.role === 'bailarin' && (
+              <div className="mt-5 mb-3" style={{ borderTop: '1px solid rgba(0,0,0,0.04)', paddingTop: '1.25rem' }}>
+                <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Clases particulares</p>
+                <label className="flex items-center gap-2.5 mb-3 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={offersClasses ?? profile.offers_classes ?? false}
+                    onChange={e => setOffersClasses(e.target.checked)}
+                    className="w-4 h-4 accent-[#D4AF37]"
+                  />
+                  <span className="text-sm font-semibold" style={{ color: '#222' }}>Doy clases particulares de baile</span>
+                </label>
+                {(offersClasses ?? profile.offers_classes) && (
+                  <>
+                    <div className="mb-3">
+                      <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Estilos que enseño</label>
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        {DANCE_CLASS_STYLES.map(s => {
+                          const active = (classStyles ?? profile.class_styles ?? []).includes(s);
+                          return (
+                            <button key={s} type="button"
+                              onClick={() => {
+                                const current = classStyles ?? profile.class_styles ?? [];
+                                setClassStyles(active ? current.filter(x => x !== s) : [...current, s]);
+                              }}
+                              className="text-xs font-semibold px-2.5 py-1 rounded-lg transition-all hover:scale-105"
+                              style={{
+                                background: active ? 'rgba(226,190,80,0.15)' : 'rgba(0,0,0,0.05)',
+                                border: `1px solid ${active ? 'rgba(226,190,80,0.4)' : 'rgba(0,0,0,0.06)'}`,
+                                color: active ? '#E2BE50' : '#333',
+                              }}>
+                              {s}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    <div className="mb-3">
+                      <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Precio clase (€/hora)</label>
+                      <div className="relative mt-1">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-bold">€</span>
+                        <input
+                          type="number"
+                          min={0}
+                          value={classPrice ?? profile.class_price ?? ''}
+                          onChange={e => setClassPrice(e.target.value)}
+                          placeholder="Ej: 30"
+                          className="nightlife-input !pl-8 text-base"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
+                <div className="mt-5" style={{ borderTop: '1px solid rgba(0,0,0,0.04)', paddingTop: '1.25rem' }}>
+                  <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Buscar pareja de baile</p>
+                  <label className="flex items-center gap-2.5 mb-3 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={seekingPartner ?? profile.seeking_dance_partner ?? false}
+                      onChange={e => setSeekingPartner(e.target.checked)}
+                      className="w-4 h-4 accent-[#D4AF37]"
+                    />
+                    <span className="text-sm font-semibold" style={{ color: '#222' }}>Busco pareja de baile fija</span>
+                  </label>
+                  {(seekingPartner ?? profile.seeking_dance_partner) && (
+                    <div className="mb-3">
+                      <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Tu rol al bailar</label>
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        {[{ v: 'lead', l: 'Leader' }, { v: 'follow', l: 'Follower' }, { v: 'ambos', l: 'Ambos' }].map(r => {
+                          const active = (danceRole ?? profile.dance_role) === r.v;
+                          return (
+                            <button key={r.v} type="button" onClick={() => setDanceRole(r.v)}
+                              className="text-xs font-semibold px-2.5 py-1 rounded-lg transition-all hover:scale-105"
+                              style={{
+                                background: active ? 'rgba(226,190,80,0.15)' : 'rgba(0,0,0,0.05)',
+                                border: `1px solid ${active ? 'rgba(226,190,80,0.4)' : 'rgba(0,0,0,0.06)'}`,
+                                color: active ? '#E2BE50' : '#333',
+                              }}>
+                              {r.l}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                  {(seekingPartner ?? profile.seeking_dance_partner) && (
+                    <div className="mb-1">
+                      <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Nivel</label>
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        {['Principiante', 'Intermedio', 'Avanzado'].map(lvl => {
+                          const active = (danceLevel ?? profile.dance_level) === lvl;
+                          return (
+                            <button key={lvl} type="button" onClick={() => setDanceLevel(lvl)}
+                              className="text-xs font-semibold px-2.5 py-1 rounded-lg transition-all hover:scale-105"
+                              style={{
+                                background: active ? 'rgba(226,190,80,0.15)' : 'rgba(0,0,0,0.05)',
+                                border: `1px solid ${active ? 'rgba(226,190,80,0.4)' : 'rgba(0,0,0,0.06)'}`,
+                                color: active ? '#E2BE50' : '#333',
+                              }}>
+                              {lvl}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
             )}
             <div className="mb-3">
               {(() => {

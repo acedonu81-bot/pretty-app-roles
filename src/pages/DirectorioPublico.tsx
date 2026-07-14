@@ -198,8 +198,8 @@ async function fetchDirectorioProfiles(dbRole: string, city: string): Promise<Di
   const dbRoles = dbRole === 'staff' ? ['staff', 'camarero'] : [dbRole];
   let q = supabase
     .from('profiles')
-    .select('user_id, display_name, role, specialty, zone, photo_url, hourly_rate, bio, is_flash_active, is_verified, is_seed, is_early_adopter, score, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls')
-    .in('role', dbRoles)
+    .select('user_id, display_name, role, roles, specialty, zone, photo_url, hourly_rate, bio, is_flash_active, is_verified, is_seed, is_early_adopter, score, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls')
+    .overlaps('roles', dbRoles)
     .not('display_name', 'is', null)
     .order('score', { ascending: false })
     .limit(60) as any;
