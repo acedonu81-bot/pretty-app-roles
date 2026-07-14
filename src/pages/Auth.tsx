@@ -405,11 +405,25 @@ const Auth = () => {
                     X<span className="text-gradient">PEAK</span>
                   </h2>
                 </button>
-                {/* Mobile — solo tagline corto */}
+                {/* Mobile — tagline + bullets compactos (mismo contenido que el panel desktop) */}
                 {!isLogin && (
-                  <p className="text-xs mt-2 text-center" style={{ color: 'rgba(0,0,0,0.6)' }}>
-                    Gratis · Sin comisión · Visible en España
-                  </p>
+                  <>
+                    <p className="text-xs mt-2 text-center" style={{ color: 'rgba(0,0,0,0.6)' }}>
+                      {content.tagline}
+                    </p>
+                    <div className="flex flex-wrap justify-center gap-x-3 gap-y-1.5 mt-3">
+                      {content.bullets.map(b => (
+                        <span key={b.text} className="flex items-center gap-1.5 text-[0.68rem] font-medium"
+                          style={{ color: '#333' }}>
+                          <b.icon size={11} style={{ color: '#8B6A00' }} strokeWidth={2.4} />
+                          {b.text}
+                        </span>
+                      ))}
+                    </div>
+                    <p className="text-[0.68rem] mt-2.5" style={{ color: 'rgba(0,0,0,0.5)' }}>
+                      <strong style={{ color: '#333' }}>38+ profesionales</strong> ya publican su perfil aquí
+                    </p>
+                  </>
                 )}
               </div>
 
