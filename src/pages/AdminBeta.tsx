@@ -166,7 +166,7 @@ const AdminBeta = () => {
     <div className="min-h-screen relative" style={{ background: '#0A0A0A' }}>
       <AmbientBackground />
 
-      <div className="max-w-4xl mx-auto px-6 py-10 relative z-10">
+      <div className="max-w-[1600px] mx-auto px-6 py-10 relative z-10">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
