@@ -163,7 +163,7 @@ const AdminBeta = () => {
   const progressPct = Math.min((liveVideoCount / GOAL) * 100, 100);
 
   return (
-    <div className="min-h-screen relative" style={{ background: '#0A0A0A' }}>
+    <div className="min-h-screen relative" style={{ background: '#0A0A0A', color: '#fff' }}>
       <AmbientBackground />
 
       <div className="max-w-[1600px] mx-auto px-6 py-10 relative z-10">

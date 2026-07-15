@@ -99,7 +99,7 @@ const AdminUserManagement = () => {
   return (
     <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(212,175,55,0.03)', border: '1px solid rgba(212,175,55,0.1)' }}>
       <div className="px-6 py-4 flex flex-col sm:flex-row sm:items-center gap-3" style={{ borderBottom: '1px solid rgba(212,175,55,0.08)' }}>
-        <h2 className="text-base font-bold whitespace-nowrap">Gestión de Usuarios <span style={{ color: 'rgba(255,255,255,0.5)' }}>({filtered.length}{query ? ` de ${users.length}` : ''})</span></h2>
+        <h2 className="text-base font-bold whitespace-nowrap" style={{ color: '#fff' }}>Gestión de Usuarios <span style={{ color: 'rgba(255,255,255,0.5)' }}>({filtered.length}{query ? ` de ${users.length}` : ''})</span></h2>
         <div className="relative sm:ml-auto sm:w-72">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: 'rgba(255,255,255,0.35)' }} />
           <input
@@ -133,7 +133,7 @@ const AdminUserManagement = () => {
                     background: u.validation_status === 'rejected' ? 'rgba(255,95,86,0.05)' : undefined,
                     opacity: u.validation_status === 'rejected' ? 0.55 : 1,
                   }}>
-                  <td className="px-4 py-3 font-bold whitespace-nowrap">
+                  <td className="px-4 py-3 font-bold whitespace-nowrap" style={{ color: 'rgba(255,255,255,0.92)' }}>
                     {u.display_name || <span className="font-normal" style={{ color: 'rgba(255,255,255,0.4)' }}>Sin nombre</span>}
                     {u.validation_status === 'rejected' && (
                       <span className="ml-2 text-[0.6rem] font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(255,95,86,0.15)', color: '#ff5f56' }}>RECHAZADO</span>
