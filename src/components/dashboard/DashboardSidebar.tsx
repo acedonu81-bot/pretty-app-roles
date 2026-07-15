@@ -112,7 +112,11 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
         style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.06)' }}
       >
         <div style={role === 'empresario' ? { borderRadius: 6, boxShadow: '0 0 0 2px #D4AF37, 0 0 0 4px rgba(212,175,55,0.25)', display:'inline-flex' } : { display:'inline-flex' }}>
-          <GeometricAvatar role={role as any} seed={(profileId ?? '').charCodeAt(0) || 0} size={28} />
+          {photo_url && photo_url.trim().length > 5 ? (
+            <img src={photo_url} alt={display_name || 'Mi perfil'} width={28} height={28} className="rounded-lg object-cover flex-shrink-0" style={{ width: 28, height: 28 }} />
+          ) : (
+            <GeometricAvatar role={role as any} seed={(profileId ?? '').charCodeAt(0) || 0} size={28} />
+          )}
         </div>
         <div className="flex-1 min-w-0 text-left">
           <p className="text-xs font-bold truncate leading-tight">{display_name || 'Mi perfil'}</p>
@@ -131,7 +135,11 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
               className="w-full flex items-center gap-2.5 px-3 py-2.5 text-left transition-all hover:bg-black/5 rounded-xl"
               style={{ background: p.id === profileId ? 'rgba(212,175,55,0.08)' : undefined }}>
               <div style={p.role === 'empresario' ? { borderRadius: 6, boxShadow: '0 0 0 2px #D4AF37, 0 0 0 4px rgba(212,175,55,0.25)', display:'inline-flex' } : { display:'inline-flex' }}>
-                <GeometricAvatar role={p.role as any} seed={p.id.charCodeAt(0)} size={24} />
+                {p.photo_url && p.photo_url.trim().length > 5 ? (
+                  <img src={p.photo_url} alt={p.display_name} width={24} height={24} className="rounded-lg object-cover flex-shrink-0" style={{ width: 24, height: 24 }} />
+                ) : (
+                  <GeometricAvatar role={p.role as any} seed={p.id.charCodeAt(0)} size={24} />
+                )}
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-bold truncate">{p.display_name}</p>
