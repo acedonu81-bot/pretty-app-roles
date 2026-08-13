@@ -17,21 +17,27 @@ injectSpeedInsights();
 initCapacitor();
 trackAIReferral();
 
+// Purga de emergencia: dispositivos con el Service Worker antiguo ('xpeak-v2')
+// se quedaban sirviendo bundles viejos cacheados (usuarios veían la versión
+// anterior de /descubrir pese a los deploys). Al arrancar: desregistrar TODOS
+// los SW, borrar TODAS las cachés, y recargar una sola vez limpio. El flag en
+// localStorage evita un bucle de recargas.
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').then(reg => {
-      // Forzar comprobación de versión nueva en cada carga.
-      reg.update().catch(() => {});
-      // Cuando un SW nuevo toma el control (nuevo deploy), recargar una vez
-      // para servir el bundle actualizado — evita que el usuario se quede
-      // pegado en una versión vieja cacheada por el SW.
-      let refreshing = false;
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (refreshing) return;
-        refreshing = true;
+  window.addEventListener('load', async () => {
+    try {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      const hadSW = regs.length > 0;
+      if (hadSW && !localStorage.getItem('xpeak_sw_purged_v3')) {
+        await Promise.all(regs.map(r => r.unregister()));
+        if ('caches' in window) {
+          const keys = await caches.keys();
+          await Promise.all(keys.map(k => caches.delete(k)));
+        }
+        localStorage.setItem('xpeak_sw_purged_v3', '1');
         window.location.reload();
-      });
-    }).catch(() => {});
+        return;
+      }
+    } catch { /* continúa sin purgar */ }
   });
 }
 
