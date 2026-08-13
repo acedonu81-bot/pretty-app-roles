@@ -116,7 +116,7 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
             <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.4) 100%)' }} />
 
             {/* Info inferior + acciones */}
-            <div className="absolute bottom-0 left-0 right-0 z-20 p-5 pb-28 sm:pb-10">
+            <div className="absolute bottom-0 left-0 right-0 z-20 p-5" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 1.5rem)' }}>
               <div className="flex flex-wrap gap-2 mb-3">
                 {p.is_flash_active && (
                   <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-black" style={{ background: '#15803d', color: '#fff' }}>

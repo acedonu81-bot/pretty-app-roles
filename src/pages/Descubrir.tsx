@@ -124,20 +124,14 @@ export default function Descubrir() {
         />
       )}
 
-      {/* Barra superior sobre el feed */}
+      {/* Feed inmersivo: solo un botón ☰ flotante. Todo (categorías, volver a
+          clásica) vive dentro del menú — nada de barras que roben pantalla. */}
       {!loading && (
-        <div className="fixed top-0 left-0 right-0 z-[70] flex items-center justify-between px-4 py-3"
-          style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.55), transparent)' }}>
-          <a href="/" className="text-base font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
-          <span className="px-3 py-1.5 rounded-full text-xs font-black" style={{ background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(8px)', color: '#D4AF37' }}>
-            {roleLabel}
-          </span>
-          <button onClick={() => setMenuOpen(true)} aria-label="Menú"
-            className="w-10 h-10 rounded-full flex items-center justify-center active:scale-95"
-            style={{ background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(8px)' }}>
-            <Menu size={18} color="#fff" />
-          </button>
-        </div>
+        <button onClick={() => setMenuOpen(true)} aria-label="Menú"
+          className="fixed top-0 right-0 z-[70] m-3 w-11 h-11 rounded-full flex items-center justify-center active:scale-95"
+          style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(10px)', marginTop: 'calc(env(safe-area-inset-top) + 0.5rem)' }}>
+          <Menu size={20} color="#fff" />
+        </button>
       )}
 
       {menuOpen && (
