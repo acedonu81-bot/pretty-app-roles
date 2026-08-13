@@ -102,13 +102,21 @@ const Auth = () => {
   }, []);
 
   useEffect(() => {
+    // Cubre la carrera del callback OAuth: si al volver de Google la sesión ya
+    // está lista antes de montar el listener, el evento SIGNED_IN no se dispara
+    // y el usuario tenía que reintentar. Comprobamos la sesión activa al montar
+    // y navegamos directo si existe.
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session && !isRegistering.current) navigate(redirectParam, { replace: true });
+    });
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'PASSWORD_RECOVERY') {
         setShowRecovery(true);
         return;
       }
       if (isRegistering.current) return;
-      if (session && event === 'SIGNED_IN') {
+      if (session && (event === 'SIGNED_IN' || event === 'INITIAL_SESSION')) {
         navigate(redirectParam, { replace: true });
       }
     });
