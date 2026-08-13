@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import {
-  ArrowLeft, Sparkles, Loader2,
+  ArrowLeft, Sparkles, Loader2, Menu, ChevronUp, X,
   Disc3, Camera, Users, Wine, Palette, Megaphone, UtensilsCrossed,
   Music, PartyPopper, Wand2, Mic, Drama, Presentation, Shirt,
   Aperture, CalendarHeart, PenTool, type LucideIcon,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import FooterPublic from '@/components/FooterPublic';
-import SwipeDirectory from '@/components/SwipeDirectory';
+import ReelsFeed from '@/components/ReelsFeed';
 import { addToCart, useEventCart } from '@/lib/eventCart';
 import {
   ALL_ROLES,
@@ -53,6 +53,7 @@ export default function Descubrir() {
   const [activeRole, setActiveRole] = useState<string | null>(null);
   const [profiles, setProfiles] = useState<DirProfile[]>([]);
   const [loading, setLoading] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   async function openRole(slug: string) {
     const cfg = ROLE_CONFIG[slug];
@@ -99,19 +100,52 @@ export default function Descubrir() {
       );
     }
     return (
-      <SwipeDirectory
-        profiles={profiles as any}
-        onClose={backToRoles}
-        onOpenProfile={(p) => { window.location.href = profileUrl(p as DirProfile); }}
-        onBookNow={(p) => { window.location.href = profileUrl(p as DirProfile); }}
-        onAddToCart={(p) => {
-          const prof = p as DirProfile;
-          if (cartItems.some(i => i.userId === prof.user_id)) return;
-          addToCart({ userId: prof.user_id, displayName: prof.display_name, role: prof.role, photoUrl: prof.photo_url, hourlyRate: prof.hourly_rate, zone: prof.zone });
-          toast.success(`${prof.display_name} añadido a "Mi evento"`);
-        }}
-        isInCart={(userId) => cartItems.some(i => i.userId === userId)}
-      />
+      <>
+        <ReelsFeed
+          profiles={profiles as any}
+          onOpenProfile={(p) => { window.location.href = profileUrl(p as DirProfile); }}
+          onBookNow={(p) => { window.location.href = profileUrl(p as DirProfile); }}
+          onAddToCart={(p) => {
+            const prof = p as DirProfile;
+            if (cartItems.some(i => i.userId === prof.user_id)) return;
+            addToCart({ userId: prof.user_id, displayName: prof.display_name, role: prof.role, photoUrl: prof.photo_url, hourlyRate: prof.hourly_rate, zone: prof.zone });
+            toast.success(`${prof.display_name} añadido a "Mi evento"`);
+          }}
+          isInCart={(userId) => cartItems.some(i => i.userId === userId)}
+        />
+
+        {/* Barra superior sobre el feed: volver + rol activo + menú ☰ */}
+        <div className="fixed top-0 left-0 right-0 z-[70] flex items-center justify-between px-4 py-3"
+          style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.6), transparent)' }}>
+          <button onClick={backToRoles} aria-label="Volver a roles"
+            className="w-10 h-10 rounded-full flex items-center justify-center active:scale-95"
+            style={{ background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(8px)' }}>
+            <ArrowLeft size={18} color="#fff" />
+          </button>
+          <span className="px-3 py-1.5 rounded-full text-xs font-black" style={{ background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(8px)', color: '#D4AF37' }}>
+            {ALL_ROLES.find(r => r.slug === activeRole)?.label}
+          </span>
+          <button onClick={() => setMenuOpen(true)} aria-label="Cambiar rol"
+            className="w-10 h-10 rounded-full flex items-center justify-center active:scale-95"
+            style={{ background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(8px)' }}>
+            <Menu size={18} color="#fff" />
+          </button>
+        </div>
+
+        {/* Hint de scroll (solo primeros segundos, discreto) */}
+        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[65] flex flex-col items-center gap-1 pointer-events-none animate-pulse">
+          <ChevronUp size={20} color="rgba(255,255,255,0.6)" />
+          <span className="text-[0.65rem] font-bold" style={{ color: 'rgba(255,255,255,0.5)' }}>Desliza para más</span>
+        </div>
+
+        {menuOpen && (
+          <RoleMenu
+            activeRole={activeRole}
+            onPick={(slug) => { setMenuOpen(false); openRole(slug); }}
+            onClose={() => setMenuOpen(false)}
+          />
+        )}
+      </>
     );
   }
 
@@ -177,5 +211,48 @@ export default function Descubrir() {
         <FooterPublic />
       </div>
     </>
+  );
+}
+
+// ── Menú ☰ del feed: selector de rol vistoso (panel lateral) ──────────────
+function RoleMenu({ activeRole, onPick, onClose }: {
+  activeRole: string | null;
+  onPick: (slug: string) => void;
+  onClose: () => void;
+}) {
+  return (
+    <div className="fixed inset-0 z-[80]" role="dialog" aria-modal="true">
+      {/* Backdrop */}
+      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }} onClick={onClose} />
+      {/* Panel */}
+      <div className="absolute top-0 right-0 h-full w-[86%] max-w-sm overflow-y-auto"
+        style={{ background: 'linear-gradient(160deg,#0e0d0b,#090909)', borderLeft: '1px solid rgba(212,175,55,0.15)' }}>
+        <div className="flex items-center justify-between px-5 py-4 sticky top-0" style={{ background: '#0b0a09', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          <span className="text-xs font-black uppercase tracking-widest" style={{ color: '#D4AF37' }}>Cambiar categoría</span>
+          <button onClick={onClose} aria-label="Cerrar" className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.06)' }}>
+            <X size={16} color="#fff" />
+          </button>
+        </div>
+        <div className="p-4 grid grid-cols-2 gap-3">
+          {ALL_ROLES.filter(r => ROLE_CONFIG[r.slug]).map(r => {
+            const Icon = ROLE_ICON[r.slug] ?? Sparkles;
+            const active = r.slug === activeRole;
+            return (
+              <button key={r.slug} onClick={() => onPick(r.slug)}
+                className="relative overflow-hidden p-4 rounded-2xl text-left transition-all active:scale-[0.97] min-h-[104px] flex flex-col"
+                style={active
+                  ? { background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.45)' }
+                  : { background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-2" style={{ background: 'linear-gradient(135deg, rgba(212,175,55,0.18), rgba(212,175,55,0.06))', border: '1px solid rgba(212,175,55,0.2)' }}>
+                  <Icon size={20} strokeWidth={2} style={{ color: '#D4AF37' }} />
+                </div>
+                <p className="text-sm font-black leading-tight mb-auto">{r.label}</p>
+                {active && <p className="text-[0.6rem] font-bold uppercase tracking-wider mt-1" style={{ color: '#D4AF37' }}>Viendo ahora</p>}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
   );
 }

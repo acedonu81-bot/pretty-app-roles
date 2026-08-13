@@ -1,0 +1,172 @@
+import { useEffect, useRef, useState } from 'react';
+import { MapPin, Zap, BadgeCheck, Star, Plus, Check, MessageCircle } from 'lucide-react';
+
+/**
+ * ReelsFeed — feed vertical tipo Instagram/Reels. Scroll vertical infinito
+ * (scroll-snap nativo, fluido en móvil), cada profesional a pantalla completa
+ * con foto de fondo, datos y acciones superpuestas. Bucle inacabable: la lista
+ * se repite, así que aunque haya pocos perfiles el feed nunca "se acaba"
+ * (idea del usuario: "como Instagram, aunque lo hayas visto vuelve a salir").
+ *
+ * Reutiliza la estética de tarjeta de SwipeDirectory pero con gesto vertical
+ * en vez de horizontal. No sustituye a SwipeDirectory (que sigue usándose
+ * embebido en el directorio) — es la experiencia principal del feed logueado.
+ */
+
+export interface ReelsProfile {
+  user_id: string;
+  display_name: string;
+  role: string;
+  photo_url: string | null;
+  zone: string | null;
+  specialty: string | null;
+  hourly_rate: number;
+  bio: string | null;
+  is_verified: boolean;
+  is_flash_active: boolean;
+  avgRating: number;
+  reviewCount: number;
+}
+
+interface Props {
+  profiles: ReelsProfile[];
+  onOpenProfile: (p: ReelsProfile) => void;
+  onBookNow: (p: ReelsProfile) => void;
+  onAddToCart: (p: ReelsProfile) => void;
+  isInCart: (userId: string) => boolean;
+}
+
+const initialFor = (name: string) => (name?.trim()?.[0] ?? '?').toUpperCase();
+
+// Nº de repeticiones de la lista para simular scroll infinito. Al acercarse al
+// final, se re-centra el scroll al bloque del medio (bucle sin costura).
+const LOOPS = 20;
+
+export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToCart, isInCart }: Props) {
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  // Bloquear scroll del body mientras el feed está montado (es fullscreen).
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prev; };
+  }, []);
+
+  // Lista repetida para el bucle infinito.
+  const items = profiles.length > 0
+    ? Array.from({ length: LOOPS * profiles.length }, (_, i) => profiles[i % profiles.length])
+    : [];
+
+  // Arrancar centrado en el bloque del medio para poder scrollear hacia arriba
+  // y hacia abajo sin toparse con el borde.
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el || profiles.length === 0) return;
+    const start = Math.floor(LOOPS / 2) * profiles.length;
+    el.scrollTop = start * el.clientHeight;
+  }, [profiles.length]);
+
+  // Re-centrar cuando se acerca a los extremos → bucle sin costura.
+  function onScroll() {
+    const el = scrollerRef.current;
+    if (!el || profiles.length === 0) return;
+    const h = el.clientHeight;
+    const cur = Math.round(el.scrollTop / h);
+    setActiveIdx(cur % profiles.length);
+    const total = items.length;
+    if (cur < profiles.length || cur > total - profiles.length) {
+      // saltar al bloque equivalente del medio, mismo índice visible
+      const mid = Math.floor(LOOPS / 2) * profiles.length + (cur % profiles.length);
+      el.scrollTop = mid * h;
+    }
+  }
+
+  if (profiles.length === 0) return null;
+
+  return (
+    <div
+      ref={scrollerRef}
+      onScroll={onScroll}
+      className="fixed inset-0 z-[55] overflow-y-scroll snap-y snap-mandatory"
+      style={{ background: '#000', scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
+    >
+      <style>{`.reels-hide-sb::-webkit-scrollbar{display:none}`}</style>
+      {items.map((p, i) => {
+        const inCart = isInCart(p.user_id);
+        return (
+          <div key={i} className="relative w-full snap-start snap-always" style={{ height: '100dvh' }}>
+            {/* Fondo: foto o inicial */}
+            {p.photo_url && !imgErrors[p.user_id] ? (
+              <img
+                src={p.photo_url}
+                alt={p.display_name}
+                loading={i < 3 ? 'eager' : 'lazy'}
+                onError={() => setImgErrors(e => ({ ...e, [p.user_id]: true }))}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center text-8xl font-black"
+                style={{ background: 'linear-gradient(135deg,#2a2410,#1a1608)', color: 'rgba(212,175,55,0.3)' }}>
+                {initialFor(p.display_name)}
+              </div>
+            )}
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.4) 100%)' }} />
+
+            {/* Info inferior + acciones */}
+            <div className="absolute bottom-0 left-0 right-0 z-20 p-5 pb-28 sm:pb-10">
+              <div className="flex flex-wrap gap-2 mb-3">
+                {p.is_flash_active && (
+                  <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-black" style={{ background: '#15803d', color: '#fff' }}>
+                    <Zap size={11} fill="#fff" /> Disponible ahora
+                  </span>
+                )}
+                {p.is_verified && (
+                  <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-black" style={{ background: 'rgba(212,175,55,0.95)', color: '#000' }}>
+                    <BadgeCheck size={11} /> Verificado
+                  </span>
+                )}
+              </div>
+
+              <h2 className="text-2xl font-black mb-1" style={{ color: '#fff' }}>{p.display_name}</h2>
+              {p.specialty && <p className="text-sm font-semibold mb-1" style={{ color: 'rgba(212,175,55,0.9)' }}>{p.specialty}</p>}
+
+              <div className="flex items-center gap-3 mb-2 flex-wrap text-xs" style={{ color: 'rgba(255,255,255,0.78)' }}>
+                {p.zone && <span className="flex items-center gap-1"><MapPin size={11} />{p.zone.split(',')[0]}</span>}
+                {p.reviewCount > 0 && <span className="flex items-center gap-1"><Star size={11} fill="#D4AF37" color="#D4AF37" />{p.avgRating} ({p.reviewCount})</span>}
+                {p.hourly_rate > 0 && <span className="font-black" style={{ color: '#fff' }}>desde {p.hourly_rate}€/h</span>}
+              </div>
+
+              {p.bio && (
+                <p className="text-xs leading-relaxed mb-4 line-clamp-2" style={{ color: 'rgba(255,255,255,0.62)' }}>
+                  {p.bio.slice(0, 110)}{p.bio.length > 110 ? '…' : ''}
+                </p>
+              )}
+
+              <div className="flex gap-2">
+                <button onClick={() => onAddToCart(p)} disabled={inCart}
+                  className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 transition-all active:scale-95"
+                  style={inCart
+                    ? { background: 'rgba(34,197,94,0.2)', border: '1.5px solid rgba(34,197,94,0.5)' }
+                    : { background: 'rgba(255,255,255,0.12)', border: '1.5px solid rgba(255,255,255,0.25)', backdropFilter: 'blur(8px)' }}>
+                  {inCart ? <Check size={18} color="#22c55e" /> : <Plus size={18} color="#fff" />}
+                </button>
+                <button onClick={() => onOpenProfile(p)}
+                  className="flex-1 h-12 rounded-full flex items-center justify-center font-bold text-sm"
+                  style={{ background: 'rgba(255,255,255,0.12)', border: '1.5px solid rgba(255,255,255,0.25)', color: '#fff', backdropFilter: 'blur(8px)' }}>
+                  Ver perfil
+                </button>
+                <button onClick={() => onBookNow(p)}
+                  className="h-12 px-5 rounded-full flex items-center gap-1.5 font-black text-sm flex-shrink-0"
+                  style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+                  <MessageCircle size={16} /> Contactar
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
