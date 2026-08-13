@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { CheckCircle, XCircle, Clock, Download, FileText, Euro, Calendar, User, RefreshCw, ScrollText } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, Download, FileText, Euro, Calendar, User, RefreshCw, ScrollText, Star } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
@@ -8,6 +8,7 @@ interface Booking {
   id: string;
   professional_name: string;
   professional_role: string | null;
+  professional_user_id: string | null;
   event_date: string | null;
   event_location: string | null;
   event_description: string | null;
@@ -33,19 +34,33 @@ const HistorialTab = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<string | null>(null);
+  // Reseñas: qué profesionales ya valoró este usuario + booking abierto en el modal.
+  const [reviewedIds, setReviewedIds] = useState<Set<string>>(new Set());
+  const [reviewing, setReviewing] = useState<Booking | null>(null);
 
   const fetchBookings = useCallback(async () => {
     if (!user) return;
     setLoading(true);
     const { data, error } = await supabase
       .from('flash_bookings')
-      .select('id, professional_name, professional_role, event_date, event_location, event_description, agreed_price, status, created_at')
+      .select('id, professional_name, professional_role, professional_user_id, event_date, event_location, event_description, agreed_price, status, created_at')
       .eq('created_by', user.id)
       .order('created_at', { ascending: false })
       .limit(50);
     setLoading(false);
     if (error) { toast.error('Error al cargar el historial'); return; }
     setBookings(data ?? []);
+
+    // Cargar qué profesionales ya valoró este usuario (para ocultar el botón).
+    const reviewedTargets = (data ?? []).map(b => b.professional_user_id).filter(Boolean) as string[];
+    if (reviewedTargets.length) {
+      const { data: rev } = await supabase
+        .from('reviews')
+        .select('reviewed_user_id')
+        .eq('reviewer_id', user.id)
+        .in('reviewed_user_id', reviewedTargets);
+      setReviewedIds(new Set((rev ?? []).map(r => r.reviewed_user_id).filter(Boolean) as string[]));
+    }
   }, [user]);
 
   useEffect(() => { fetchBookings(); }, [fetchBookings]);
@@ -545,6 +560,22 @@ const HistorialTab = () => {
                       </button>
                     </div>
                   )}
+                  {/* Valorar: para contrataciones cerradas (confirmadas/completadas)
+                      con profesional identificado y aún sin reseña de este usuario. */}
+                  {(b.status === 'confirmed' || b.status === 'completed') && b.professional_user_id && (
+                    reviewedIds.has(b.professional_user_id) ? (
+                      <span className="flex items-center gap-1 text-[0.7rem] font-bold mt-0.5" style={{ color: '#22c55e' }}>
+                        <Star size={11} fill="#22c55e" /> Valorado
+                      </span>
+                    ) : (
+                      <button
+                        onClick={() => setReviewing(b)}
+                        className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-black transition-all hover:scale-105 mt-0.5"
+                        style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                        <Star size={11} /> Valorar
+                      </button>
+                    )
+                  )}
                 </div>
               </div>
             );
@@ -561,8 +592,93 @@ const HistorialTab = () => {
           Valora a tus contratados y paga en el plazo acordado para subir tu score.
         </p>
       </div>
+
+      {reviewing && (
+        <ReviewModal
+          booking={reviewing}
+          reviewerId={user?.id ?? ''}
+          onClose={() => setReviewing(null)}
+          onDone={(targetId) => {
+            setReviewedIds(prev => new Set(prev).add(targetId));
+            setReviewing(null);
+          }}
+        />
+      )}
     </div>
   );
 };
+
+// Modal para valorar a un profesional contratado. La reseña queda ligada al
+// professional_user_id y con approved:false (se publica tras moderación admin).
+function ReviewModal({ booking, reviewerId, onClose, onDone }: {
+  booking: Booking;
+  reviewerId: string;
+  onClose: () => void;
+  onDone: (targetId: string) => void;
+}) {
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState('');
+  const [saving, setSaving] = useState(false);
+
+  const submit = async () => {
+    if (!booking.professional_user_id || rating < 1) return;
+    if (comment.trim().length < 5) { toast.error('Escribe un comentario breve (mín. 5 caracteres).'); return; }
+    setSaving(true);
+    const { error } = await supabase.from('reviews').insert({
+      reviewed_user_id: booking.professional_user_id,
+      reviewer_id: reviewerId || null,
+      reviewer_name: 'Organizador',
+      reviewer_role: 'Organizador',
+      event_type: booking.professional_role || null,
+      rating,
+      comment: comment.trim().slice(0, 500),
+      approved: false,
+    } as any);
+    setSaving(false);
+    if (error) { toast.error('No se pudo enviar la valoración. Inténtalo de nuevo.'); return; }
+    toast.success('¡Gracias! Tu valoración se publicará tras revisión.');
+    onDone(booking.professional_user_id);
+  };
+
+  return (
+    <div className="fixed inset-0 z-[90] flex items-end sm:items-center justify-center p-4" role="dialog" aria-modal="true">
+      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.5)' }} onClick={onClose} />
+      <div className="relative w-full max-w-md rounded-2xl p-5" style={{ background: '#fff', boxShadow: '0 20px 60px rgba(0,0,0,0.25)' }}>
+        <div className="flex items-center justify-between mb-3">
+          <p className="text-base font-black" style={{ color: '#111' }}>Valorar a {booking.professional_name}</p>
+          <button onClick={onClose} aria-label="Cerrar" className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'rgba(0,0,0,0.05)' }}>
+            <XCircle size={16} color="#666" />
+          </button>
+        </div>
+
+        <div className="flex gap-1.5 mb-4">
+          {[1, 2, 3, 4, 5].map(n => (
+            <button key={n} onClick={() => setRating(n)} aria-label={`${n} estrellas`} className="transition-transform active:scale-90">
+              <Star size={30} fill={n <= rating ? '#D4AF37' : 'none'} color={n <= rating ? '#D4AF37' : '#ccc'} />
+            </button>
+          ))}
+        </div>
+
+        <textarea
+          value={comment}
+          onChange={e => setComment(e.target.value)}
+          placeholder="¿Cómo fue tu experiencia con este profesional? Puntualidad, trato, resultado…"
+          rows={4}
+          maxLength={500}
+          className="w-full p-3 rounded-xl text-sm resize-none focus:outline-none mb-4"
+          style={{ background: '#f7f7f8', border: '1px solid rgba(0,0,0,0.1)', color: '#111' }}
+        />
+
+        <button
+          onClick={submit}
+          disabled={saving}
+          className="w-full py-3 rounded-xl font-black text-sm transition-all active:scale-[0.98] disabled:opacity-50"
+          style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+          {saving ? 'Enviando…' : 'Enviar valoración'}
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default HistorialTab;
