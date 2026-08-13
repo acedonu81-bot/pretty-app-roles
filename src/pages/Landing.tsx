@@ -544,6 +544,7 @@ const Landing = () => {
           </button>
           <div className="hidden md:flex items-center gap-5 absolute left-1/2 -translate-x-1/2">
             {[
+              { label: 'Descubrir', href: '/descubrir' },
               { label: 'Profesionales', href: '/directorio/dj' },
               { label: 'Eventos', href: '#como-funciona' },
               { label: 'Categorías', href: '#categorias' },
