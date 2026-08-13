@@ -22,6 +22,7 @@ const SobreNosotros = lazy(() => import("./pages/SobreNosotros"));
 const AvisoLegal = lazy(() => import("./pages/AvisoLegal"));
 const CityLanding = lazy(() => import("./pages/CityLanding"));
 const OccasionLanding = lazy(() => import("./pages/OccasionLanding"));
+const Descubrir = lazy(() => import("./pages/Descubrir"));
 const CategoryLanding = lazy(() => import("./pages/CategoryLanding"));
 const BlogDJPrecio = lazy(() => import("./pages/BlogDJPrecio"));
 const BlogCamarerosPrecio = lazy(() => import("./pages/BlogCamarerosPrecio"));
@@ -374,6 +375,7 @@ const App = () => (
         <Suspense fallback={<div style={{ minHeight: '100vh', background: '#090909' }} />}>
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/descubrir" element={<Descubrir />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/privacidad" element={<Privacidad />} />

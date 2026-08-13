@@ -14,7 +14,7 @@ import { addToCart, useEventCart } from '@/lib/eventCart';
 // URL de perfil por slug de nombre (la misma que usan sitemap y prerender) en
 // vez de UUID — evita dos URLs indexables para el mismo perfil. PublicProfile
 // resuelve el slug y redirige al canónico si hiciera falta.
-const profileUrl = (p: { user_id: string; display_name: string | null }) => {
+export const profileUrl = (p: { user_id: string; display_name: string | null }) => {
   const slug = (p.display_name ?? '')
     .toLowerCase()
     .normalize('NFD')
@@ -24,7 +24,7 @@ const profileUrl = (p: { user_id: string; display_name: string | null }) => {
   return `/p/${slug || p.user_id}`;
 };
 
-interface DirProfile {
+export interface DirProfile {
   user_id: string;
   display_name: string;
   role: string;
@@ -43,7 +43,7 @@ interface DirProfile {
   updated_at: string | null;
 }
 
-const ROLE_CONFIG: Record<string, {
+export const ROLE_CONFIG: Record<string, {
   dbRole: string; title: string; subtitle: string;
   seoTitle: string; seoDesc: string; cta: string;
 }> = {
@@ -185,7 +185,7 @@ const ROLE_CONFIG: Record<string, {
   },
 };
 
-const ALL_ROLES = [
+export const ALL_ROLES = [
   { slug: 'dj', label: 'DJs' },
   { slug: 'fotografo', label: 'Fotógrafos' },
   { slug: 'staff', label: 'Staff' },
@@ -243,7 +243,7 @@ function recentUpdateLabel(updatedAt: string | null): string | null {
   return `Actualizado hace ${days} días`;
 }
 
-async function fetchDirectorioProfiles(dbRole: string, city: string): Promise<DirProfile[]> {
+export async function fetchDirectorioProfiles(dbRole: string, city: string): Promise<DirProfile[]> {
   // 'camarero' es un rol legacy (opción retirada de los selectores) — equivale a staff
   const dbRoles = dbRole === 'staff' ? ['staff', 'camarero'] : [dbRole];
   let q = supabase
