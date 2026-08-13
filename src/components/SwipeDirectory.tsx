@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { MapPin, Zap, BadgeCheck, Star, X as CloseIcon, Plus, Check, MessageCircle, ChevronUp, ArrowLeft, ArrowRight } from 'lucide-react';
 
 /**
@@ -60,6 +60,16 @@ export default function SwipeDirectory({ profiles, onClose, onOpenProfile, onBoo
   };
   const touchStart = useRef<{ x: number; y: number } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // En modo fullscreen (no embebido) hay que bloquear el scroll del body:
+  // si no, en móvil el gesto de deslizar la tarjeta lo captura el scroll
+  // nativo de la página y la tarjeta "no responde" (sensación de bloqueo).
+  useEffect(() => {
+    if (embedded) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prev; };
+  }, [embedded]);
 
   // Navegación circular: al llegar al final, vuelve al primero (y viceversa).
   const goNext = () => setIndex(i => (i + 1) % profiles.length);
@@ -128,6 +138,10 @@ export default function SwipeDirectory({ profiles, onClose, onOpenProfile, onBoo
         // exista en el DOM). 70vh es un valor fijo de respaldo razonable
         // para una tarjeta de perfil en móvil, sin depender de dvh.
         height: embedded ? '70vh' : undefined,
+        // touch-action:none → el contenedor captura el gesto de swipe en vez
+        // de cederlo al scroll nativo del navegador (causa del "bloqueo").
+        // En embebido se deja 'pan-y' para no atrapar el scroll de la página.
+        touchAction: embedded ? 'pan-y' : 'none',
       }}
       onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} onWheel={onWheel} ref={containerRef}>
 
