@@ -60,7 +60,10 @@ const Auth = () => {
   const [searchParams] = useSearchParams();
   const roleParam = searchParams.get('role') ?? '';
   const modeParam = searchParams.get('mode') ?? '';
-  const redirectParam = searchParams.get('redirect') ?? '/dashboard';
+  // Tras login → directo al swipe (experiencia principal). El dashboard clásico
+  // queda accesible desde el menú ☰ del feed ("Volver a versión clásica").
+  // Un ?redirect= explícito (p.ej. tras registro con onboarding) tiene prioridad.
+  const redirectParam = searchParams.get('redirect') ?? '/descubrir';
   const refParam = searchParams.get('ref') ?? '';
   const content = ROLE_CONTENT[roleParam] ?? DEFAULT_CONTENT;
 
@@ -320,7 +323,9 @@ const Auth = () => {
 
         if (signUpData.session) {
           toast.success('¡Cuenta creada! Bienvenido a XPEAK');
-          navigate(redirectParam);
+          // Registro nuevo → dashboard para completar perfil/onboarding
+          // (el login normal sí va directo al swipe vía redirectParam).
+          navigate('/dashboard', { replace: true });
         } else {
           setShowWelcome(true);
         }
