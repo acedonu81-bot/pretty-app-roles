@@ -429,10 +429,11 @@ const Landing = () => {
   const [communityReviews, setCommunityReviews] = useState<{ reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string }[]>([]);
   const [freshRoles, setFreshRoles] = useState<Set<string>>(new Set());
 
-  // Login inteligente: si ya estás logueado, salta la landing y entra directo
-  // a tu experiencia según el tipo de cuenta (organizador → feed Instagram;
-  // profesional → su dashboard). Se salta una sola vez por pestaña y se puede
-  // desactivar visitando "/?stay=1" (para ver la landing a propósito).
+  // Login inteligente: si ya estás logueado como ORGANIZADOR, entras directo al
+  // feed (es tu experiencia principal). Al profesional NO se le fuerza a ningún
+  // sitio: se queda en la landing ligera y decide (botón "Descubrir" al feed, o
+  // "Acceder" a su dashboard) — así nunca queda atrapado sin ver el feed.
+  // Se salta una vez por pestaña; "/?stay=1" desactiva el redirect.
   useEffect(() => {
     if (authLoading || !user) return;
     try {
@@ -452,10 +453,9 @@ const Landing = () => {
         if (cancelled) return;
         try { sessionStorage.setItem('xpeak_landing_seen', '1'); } catch { /* noop */ }
         const role = data?.[0]?.role;
-        // empresario = organizador (quien contrata) → feed. Resto = profesional → dashboard.
+        // Solo el organizador salta directo al feed. Profesional y sin-perfil
+        // se quedan en la landing (con acceso claro a feed y a su cuenta).
         if (role === 'empresario') navigate('/descubrir', { replace: true });
-        else if (role) navigate('/dashboard', { replace: true });
-        // sin perfil aún (recién registrado sin rol): se queda en la landing.
       });
     return () => { cancelled = true; };
   }, [user, authLoading, navigate]);
