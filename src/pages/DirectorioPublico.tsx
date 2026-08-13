@@ -246,10 +246,14 @@ function recentUpdateLabel(updatedAt: string | null): string | null {
 export async function fetchDirectorioProfiles(dbRole: string, city: string): Promise<DirProfile[]> {
   // 'camarero' es un rol legacy (opción retirada de los selectores) — equivale a staff
   const dbRoles = dbRole === 'staff' ? ['staff', 'camarero'] : [dbRole];
+  // Match por el array `roles` (overlaps) O por el `role` singular — algunos
+  // perfiles reales tienen roles:[] pero role con valor (p.ej. altas antiguas),
+  // y quedaban fuera del feed aunque sí salen en el directorio clásico.
+  const orFilter = dbRoles.map(r => `role.eq.${r}`).join(',') + ',' + dbRoles.map(r => `roles.cs.{${r}}`).join(',');
   let q = supabase
     .from('profiles')
     .select('user_id, display_name, role, roles, specialty, zone, photo_url, hourly_rate, bio, is_flash_active, is_verified, is_seed, is_early_adopter, score, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls, updated_at')
-    .overlaps('roles', dbRoles)
+    .or(orFilter)
     .not('display_name', 'is', null)
     .order('score', { ascending: false })
     .limit(60) as any;

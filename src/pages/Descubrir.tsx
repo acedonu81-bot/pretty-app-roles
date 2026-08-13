@@ -46,6 +46,14 @@ export default function Descubrir() {
   const { user } = useAuth();
   const { items: cartItems } = useEventCart();
 
+  // El feed swipe es una experiencia móvil. En desktop se ve mal (foto estirada,
+  // gesto no natural) → desktop va a la versión clásica: dashboard si está
+  // logueado, directorio si no. El feed queda solo para móvil.
+  const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
+  useEffect(() => {
+    if (isDesktop) navigate(user ? '/dashboard' : '/directorio/dj', { replace: true });
+  }, [isDesktop, user, navigate]);
+
   const [activeRole, setActiveRole] = useState<string>(() => {
     try { return localStorage.getItem(LAST_ROLE_KEY) || ALL_SLUG; } catch { return ALL_SLUG; }
   });
@@ -77,7 +85,8 @@ export default function Descubrir() {
   }, []);
 
   // Entra directo al feed al montar (con el rol recordado o "todos").
-  useEffect(() => { loadRole(activeRole); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  // En desktop no cargamos: se redirige a la versión clásica.
+  useEffect(() => { if (!isDesktop) loadRole(activeRole); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   function pickRole(slug: string) {
     setMenuOpen(false);
