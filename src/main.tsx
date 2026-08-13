@@ -4,6 +4,7 @@ import { injectSpeedInsights } from "@vercel/speed-insights";
 import App from "./App.tsx";
 import "./index.css";
 import { initCapacitor } from "./lib/capacitor";
+import { trackAIReferral } from "./lib/track";
 
 inject({
   beforeSend: (event) => {
@@ -14,6 +15,7 @@ inject({
 });
 injectSpeedInsights();
 initCapacitor();
+trackAIReferral();
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {

@@ -5,6 +5,10 @@ import FooterPublic from '@/components/FooterPublic';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
+// Fecha de última modificación (congelada al renderizar; en prerender = build).
+// Señal de frescura para motores generativos, que penalizan contenido stale.
+const BUILD_DATE = new Date().toISOString().slice(0, 10);
+
 interface Prof { id: string; display_name: string; photo_url: string | null; bio: string | null; city: string | null; role: string; score: number; slug: string | null; is_verified: boolean; is_early_adopter: boolean; }
 
 const ROLE_MAP: Record<string, string[]> = {
@@ -559,6 +563,7 @@ export default function CityLanding() {
     description: catData.desc(cityData.ciudad),
     url: `https://xpeak.es${canonicalBase}`,
     serviceType: `Contratación de ${catData.keyword}`,
+    dateModified: BUILD_DATE,
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR', description: 'Registro gratuito para salas y promotoras' },
   };
 

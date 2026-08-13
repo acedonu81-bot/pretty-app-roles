@@ -13,6 +13,10 @@ import { CATEGORIES } from '@/pages/CityLanding';
  * lista profesionales del rol a nivel nacional.
  */
 
+// Fecha de última modificación (congelada al renderizar; en prerender = build).
+// Señal de frescura para motores generativos, que penalizan contenido stale.
+const BUILD_DATE = new Date().toISOString().slice(0, 10);
+
 interface Prof { id: string; display_name: string; photo_url: string | null; bio: string | null; city: string | null; role: string; score: number; slug: string | null; is_verified: boolean; }
 
 // Roles (categoría) → roles reales en la tabla profiles. Reutiliza la lógica de CityLanding.
@@ -206,6 +210,9 @@ export default function OccasionLanding() {
     areaServed: { '@type': 'Country', name: 'España' },
     description: desc, url: `https://xpeak.es${canonical}`,
     serviceType: `Contratación de ${rol} para ${occ.label.toLowerCase()}`,
+    // Señal de frescura: las IAs priorizan contenido con dateModified reciente.
+    // En SSR/prerender se congela con la fecha del build (lo que leen los bots).
+    dateModified: BUILD_DATE,
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR', description: 'Sin comisión para quien contrata' },
   };
   const breadcrumbData = {
