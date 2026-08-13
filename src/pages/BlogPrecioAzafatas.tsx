@@ -7,6 +7,7 @@ import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 import BlogTopCTA from '@/components/BlogTopCTA';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en España: guía completa 2026', description: 'Cuánto cobran las azafatas para eventos, ferias y congresos en España. Tarifas por horas, perfil y ciudad.', datePublished: '2026-05-04',
@@ -135,6 +136,7 @@ export default function BlogPrecioAzafatas() {
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/precio-azafatas-eventos-espana" />
 </main>
+      <DJResourcesAffiliate role="staff" />
       <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-eventos-espana' tag='Staff' />
         <FooterPublic />

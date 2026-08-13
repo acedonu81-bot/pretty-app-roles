@@ -216,7 +216,7 @@ const faqStructured = {
           </div>
           <BlogAuthor />
           <BlogShare />
-          <DJResourcesAffiliate />
+          <DJResourcesAffiliate role="dj" />
         </article>
         <BlogRelatedPosts currentSlug='/blog/dj-para-fiesta-privada-precio' tag='DJ' />
         <FooterPublic />

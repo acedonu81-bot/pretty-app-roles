@@ -5,6 +5,7 @@ import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Catering para comuniones en España: precio por persona y qué incluye (2026)', description: 'Cuánto cuesta el catering de una comunión en España. Precios por persona, formatos de menú y cómo elegir el servicio correcto para tu celebración.', datePublished: '2026-05-07',
   dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/catering-comuniones-precio-persona' };
@@ -188,6 +189,7 @@ export default function BlogCateringComuniones() {
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/catering-comuniones-precio-persona" />
 </main>
+        <DJResourcesAffiliate role="catering" />
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/catering-comuniones-precio-persona' tag='Catering' />
         <FooterPublic />

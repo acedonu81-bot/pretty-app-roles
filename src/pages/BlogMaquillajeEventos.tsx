@@ -6,6 +6,7 @@ import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const TABLE = [
   { servicio: 'Maquillaje novia (solo)', duracion: '60–90 min', rango: '100€ – 250€', notas: 'Incluye prueba previa' },
@@ -209,6 +210,7 @@ const faqStructured = {
               ))}
             </div>
           </div>
+          <DJResourcesAffiliate role="maquillaje" />
           <BlogAuthor />
           <BlogShare />
         </article>

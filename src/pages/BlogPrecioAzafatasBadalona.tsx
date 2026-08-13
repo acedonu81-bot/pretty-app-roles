@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en Badalona: guía 2026', description: 'Cuánto cobran las azafatas para eventos corporativos y ferias en Badalona, área metropolitana de Barcelona. Tarifas 2026.', datePublished: '2026-03-11', dateModified: '2026-07-23', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-badalona' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
@@ -101,6 +102,7 @@ export default function BlogPrecioAzafatasBadalona() {
           </div>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/precio-azafatas-badalona" />
         </main>
+        <DJResourcesAffiliate role="staff" />
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-badalona' tag='Staff' />
         <FooterPublic />

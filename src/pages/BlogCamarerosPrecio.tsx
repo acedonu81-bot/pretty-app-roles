@@ -7,6 +7,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 import BlogTopCTA from '@/components/BlogTopCTA';
 
 export default function BlogCamarerosPrecio() {
@@ -233,6 +234,7 @@ const faqStructured = {
               <Zap size={14} /> Publicar oferta gratis
             </a>
           </div>
+          <DJResourcesAffiliate role="camareros" />
           <BlogAuthor />
           <BlogShare />
         </article>

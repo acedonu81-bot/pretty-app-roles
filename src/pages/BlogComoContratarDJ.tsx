@@ -84,7 +84,7 @@ export default function BlogComoContratarDJ() {
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>6 junio 2026</time>
           </div>
 
-          <DJResourcesAffiliate />
+          <DJResourcesAffiliate role="dj" />
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath={`/blog/${slug}`} />
 

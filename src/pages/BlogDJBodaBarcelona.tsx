@@ -158,7 +158,7 @@ export default function BlogDJBodaBarcelona() {
             </div>
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-barcelona" />
-                  <DJResourcesAffiliate />
+                  <DJResourcesAffiliate role="dj" />
 </main>
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-barcelona' tag='DJ' />

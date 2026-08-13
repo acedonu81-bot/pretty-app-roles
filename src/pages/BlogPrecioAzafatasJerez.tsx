@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en Jerez de la Frontera: guía 2026', description: 'Cuánto cobran las azafatas para catas de bodega, la Feria de Jerez y eventos ecuestres. Tarifas por perfil 2026.', datePublished: '2026-05-12', dateModified: '2026-06-22', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-jerez' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
@@ -101,6 +102,7 @@ export default function BlogPrecioAzafatasJerez() {
           </div>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/precio-azafatas-jerez" />
         </main>
+        <DJResourcesAffiliate role="staff" />
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-jerez' tag='Staff' />
         <FooterPublic />

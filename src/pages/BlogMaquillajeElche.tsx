@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de maquilladora para eventos en Elche: guía 2026', description: 'Cuánto cobra una maquilladora para bodas y eventos corporativos en Elche. Tarifas por servicio 2026.', datePublished: '2026-06-29', dateModified: '2026-08-03', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/maquillaje-eventos-elche' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
@@ -101,6 +102,7 @@ export default function BlogMaquillajeElche() {
           </div>
           <BlogEmailCapture variant="presupuestos" intent="contratar-makeup" articlePath="/blog/maquillaje-eventos-elche" />
         </main>
+        <DJResourcesAffiliate role="maquillaje" />
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-elche' tag='Maquillaje' />
         <FooterPublic />

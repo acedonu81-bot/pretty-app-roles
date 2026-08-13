@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de camareros para eventos en Benalmádena: guía 2026', description: 'Cuánto cobran los camareros y bartenders para eventos en Puerto Marina y hoteles de Benalmádena. Tarifas 2026.', datePublished: '2026-05-27', dateModified: '2026-06-29', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/camareros-eventos-benalmadena' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
@@ -102,6 +103,7 @@ export default function BlogCamarerosBenalmadena() {
           </div>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/camareros-eventos-benalmadena" />
         </main>
+        <DJResourcesAffiliate role="camareros" />
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-benalmadena' tag='Camareros' />
         <FooterPublic />

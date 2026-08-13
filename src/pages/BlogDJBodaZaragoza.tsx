@@ -123,7 +123,7 @@ export default function BlogDJBodaZaragoza() {
               <a href="/contratar-dj/zaragoza" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver DJs de bodas en Zaragoza →</a>
             </div>
           </div>
-                  <DJResourcesAffiliate />
+                  <DJResourcesAffiliate role="dj" />
 
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-zaragoza" />
 </main>

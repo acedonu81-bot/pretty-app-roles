@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Cómo conseguir clientes como fotógrafo de eventos en España: guía 2026', description: 'Guía práctica para fotógrafos freelance que quieren conseguir más clientes en bodas, comuniones y eventos. Portfolio, redes sociales, plataformas y precios.', datePublished: '2026-06-02', dateModified: '2026-06-02', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-como-conseguir-clientes' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
@@ -121,6 +122,7 @@ export default function BlogFotografoConseguirClientes() {
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/fotografo-como-conseguir-clientes" />
 </main>
+        <DJResourcesAffiliate role="fotografo" />
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/fotografo-como-conseguir-clientes' tag='Fotografía' />
         <FooterPublic />

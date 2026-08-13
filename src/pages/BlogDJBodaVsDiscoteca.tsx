@@ -259,7 +259,7 @@ export default function BlogDJBodaVsDiscoteca() {
           <BlogAuthor />
           <BlogShare />
         </article>
-          <DJResourcesAffiliate />
+          <DJResourcesAffiliate role="dj" />
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-para-bodas-vs-discoteca" />
         <BlogRelatedPosts currentSlug='/blog/dj-para-bodas-vs-discoteca' tag='DJ' />

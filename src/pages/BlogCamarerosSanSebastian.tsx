@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de camareros para eventos en San Sebastián: guía 2026', description: 'Cuánto cobran los camareros y bartenders para bodas junto a la Concha y eventos del Zinemaldia en San Sebastián. Tarifas 2026.', datePublished: '2026-03-24', dateModified: '2026-06-29', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/camareros-eventos-sansebastian' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
@@ -102,6 +103,7 @@ export default function BlogCamarerosSanSebastian() {
           </div>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/camareros-eventos-sansebastian" />
         </main>
+        <DJResourcesAffiliate role="camareros" />
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-sansebastian' tag='Camareros' />
         <FooterPublic />

@@ -248,7 +248,7 @@ export default function BlogDJErroresBoda() {
           <BlogShare />
         </article>
 
-          <DJResourcesAffiliate />
+          <DJResourcesAffiliate role="dj" />
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/10-errores-contratar-dj-boda" />
         <BlogRelatedPosts currentSlug='/blog/10-errores-contratar-dj-boda' tag='DJ' />

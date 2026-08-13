@@ -164,7 +164,7 @@ export default function BlogDJResidenteDiscoteca() {
               </div>
             </section>
           </div>
-                  <DJResourcesAffiliate />
+                  <DJResourcesAffiliate role="dj" />
 
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-residente-discoteca-precio" />
 </main>

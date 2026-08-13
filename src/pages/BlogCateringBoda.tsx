@@ -4,6 +4,7 @@ import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: '¿Cuánto cuesta el catering de una boda? Precio por persona en España (2026)', description: 'Guía de precios del catering para bodas en España. Coste por persona según menú, formato y número de invitados. Todo lo que incluye y cómo negociar.', datePublished: '2026-05-04',
   dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/catering-boda-precio-por-persona' };
@@ -116,6 +117,7 @@ export default function BlogCateringBoda() {
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/catering-boda-precio-por-persona" />
 </main>
+        <DJResourcesAffiliate role="catering" />
         <BlogAuthor />
         <FooterPublic />
         <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_catering_boda" />

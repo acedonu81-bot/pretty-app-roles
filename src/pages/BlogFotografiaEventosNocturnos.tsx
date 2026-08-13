@@ -5,6 +5,7 @@ import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = {
   '@context': 'https://schema.org',
@@ -211,6 +212,7 @@ export default function BlogFotografiaEventosNocturnos() {
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/fotografia-eventos-nocturnos" />
 </main>
+      <DJResourcesAffiliate role="fotografo" />
       <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/fotografia-eventos-nocturnos' tag='Fotografía' />
         <FooterPublic />

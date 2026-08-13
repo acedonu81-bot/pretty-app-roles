@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogTopCTA from '@/components/BlogTopCTA';
 
@@ -115,6 +116,7 @@ export default function BlogFotografoBodaBarcelona() {
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/fotografo-boda-barcelona" />
 </main>
+        <DJResourcesAffiliate role="fotografo" />
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/fotografo-boda-barcelona' tag='Fotografía' />
         <FooterPublic />

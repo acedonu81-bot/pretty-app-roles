@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Cómo conseguir trabajo de maquilladora en España: guía 2026', description: 'Guía práctica para maquilladoras freelance que quieren conseguir más clientes en bodas, comuniones y eventos. Portfolio, redes sociales, precios y plataformas.', datePublished: '2026-06-02', dateModified: '2026-06-02', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/maquilladora-conseguir-clientes' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
@@ -140,6 +141,7 @@ export default function BlogMaquilladoraConseguirClientes() {
           </div>
                   <BlogEmailCapture variant="guia" intent="ser-profesional" articlePath="/blog/maquilladora-conseguir-clientes" />
 </main>
+        <DJResourcesAffiliate role="maquillaje" />
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquilladora-conseguir-clientes' tag='Maquillaje' />
         <FooterPublic />

@@ -213,7 +213,7 @@ const faqStructured = {
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-para-eventos-corporativos-precio" />
-          <DJResourcesAffiliate />
+          <DJResourcesAffiliate role="dj" />
         <BlogRelatedPosts currentSlug='/blog/dj-para-eventos-corporativos-precio' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_corporativo" />

@@ -116,7 +116,7 @@ export default function BlogDJTechnoMadrid() {
             <li>Referencias de otras salas o eventos donde hayas actuado</li>
           </ul>
 
-          <DJResourcesAffiliate />
+          <DJResourcesAffiliate role="dj" />
 
           <BlogEmailCapture variant="general" intent="contratar-dj" articlePath="/blog/dj-techno-madrid" />
 

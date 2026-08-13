@@ -211,7 +211,7 @@ const faqStructured = {
             ))}
           </div>
 
-          <DJResourcesAffiliate />
+          <DJResourcesAffiliate role="dj" />
 
           {/* IVA e IRPF */}
           <h2 className="text-xl font-black mb-4">IVA e IRPF: lo que no te dicen en otros artículos</h2>
@@ -357,7 +357,7 @@ const faqStructured = {
           </div>
           <BlogAuthor />
           <BlogShare />
-          <DJResourcesAffiliate />
+          <DJResourcesAffiliate role="dj" />
         </article>
         <BlogRelatedPosts currentSlug='/blog/cuanto-cobra-un-dj-en-espana' tag='DJ' />
         <FooterPublic />

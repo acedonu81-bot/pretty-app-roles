@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de camareros para eventos en Toledo: guía 2026', description: 'Cuánto cobran los camareros y bartenders para bodas históricas y eventos en Toledo. Tarifas por perfil 2026.', datePublished: '2026-06-13', dateModified: '2026-07-29', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/camareros-eventos-toledo' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
@@ -101,6 +102,7 @@ export default function BlogCamarerosToledo() {
           </div>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/camareros-eventos-toledo" />
         </main>
+        <DJResourcesAffiliate role="camareros" />
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-toledo' tag='Camareros' />
         <FooterPublic />

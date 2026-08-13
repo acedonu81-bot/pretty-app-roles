@@ -225,7 +225,7 @@ export default function BlogCalculadoraTarifaDJ() {
           </div>
         </main>
         <BlogAuthor />
-        <DJResourcesAffiliate />
+        <DJResourcesAffiliate role="dj" />
         <BlogRelatedPosts currentSlug='/blog/calculadora-tarifa-dj' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_calculadora_dj" />

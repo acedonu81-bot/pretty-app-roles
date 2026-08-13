@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: "Precio de azafatas para eventos en L'Hospitalet: guía 2026", description: "Cuánto cobran las azafatas para ferias y eventos corporativos en L'Hospitalet de Llobregat. Tarifas por perfil 2026.", datePublished: '2026-03-13', dateModified: '2026-06-21', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-hospitalet' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
@@ -101,6 +102,7 @@ export default function BlogPrecioAzafatasHospitalet() {
           </div>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/precio-azafatas-hospitalet" />
         </main>
+        <DJResourcesAffiliate role="staff" />
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-hospitalet' tag='Staff' />
         <FooterPublic />

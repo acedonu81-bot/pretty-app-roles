@@ -233,7 +233,7 @@ export default function BlogDJCumpleanos() {
             </div>
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-para-cumpleanos-precio" />
-                  <DJResourcesAffiliate />
+                  <DJResourcesAffiliate role="dj" />
 </main>
       <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/dj-para-cumpleanos-precio' tag='DJ' />

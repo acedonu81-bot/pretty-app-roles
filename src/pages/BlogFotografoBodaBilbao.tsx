@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo para bodas en Bilbao: precio y guía 2026', description: 'Cuánto cuesta un fotógrafo para una boda en Bilbao. Precios reales 2026, Caseríos vascos, arquitectura industrial y la luz especial del Cantábrico.', datePublished: '2026-06-03', dateModified: '2026-06-03', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-boda-bilbao' };
@@ -112,6 +113,7 @@ export default function BlogFotografoBodaBilbao() {
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/fotografo-boda-bilbao" />
 </main>
+        <DJResourcesAffiliate role="fotografo" />
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/fotografo-boda-bilbao' tag='Fotografía' />
         <FooterPublic />

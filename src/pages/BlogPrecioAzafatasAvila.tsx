@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en Ávila: guía 2026', description: 'Cuánto cobran las azafatas para eventos institucionales y culturales en Ávila. Tarifas por perfil 2026.', datePublished: '2026-05-25', dateModified: '2026-07-23', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-avila' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
@@ -100,6 +101,7 @@ export default function BlogPrecioAzafatasAvila() {
           </div>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/precio-azafatas-avila" />
         </main>
+        <DJResourcesAffiliate role="staff" />
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-avila' tag='Staff' />
         <FooterPublic />

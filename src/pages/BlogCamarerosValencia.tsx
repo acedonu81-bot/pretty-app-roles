@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de camareros para eventos en Valencia: guía 2026', description: 'Cuánto cobran los camareros y bartenders para bodas, eventos corporativos y fiestas privadas en Valencia. Tarifas por perfil 2026.', datePublished: '2026-03-22', dateModified: '2026-05-22', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/camareros-eventos-valencia' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
@@ -102,6 +103,7 @@ export default function BlogCamarerosValencia() {
           </div>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/camareros-eventos-valencia" />
         </main>
+        <DJResourcesAffiliate role="camareros" />
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-valencia' tag='Camareros' />
         <FooterPublic />

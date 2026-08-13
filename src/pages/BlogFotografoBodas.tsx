@@ -6,6 +6,7 @@ import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const TIPOS = [
   { tipo: 'Sesión de retrato (2h)', rango: '80€ – 180€', nota: 'Fotos de pareja o pre-boda' },
@@ -201,6 +202,7 @@ const faqStructured = {
               Ver fotógrafos →
             </a>
           </div>
+          <DJResourcesAffiliate role="fotografo" />
           <BlogAuthor />
           <BlogShare />
         </article>

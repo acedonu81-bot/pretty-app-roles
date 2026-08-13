@@ -5,6 +5,7 @@ import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const FORMATOS = [
   { formato: 'Coffee break', precio: '8€ – 18€/persona', cuando: 'Reuniones y formaciones de media jornada' },
@@ -152,6 +153,7 @@ const faqStructured = {
               Ver catering →
             </a>
           </div>
+          <DJResourcesAffiliate role="catering" />
           <BlogAuthor />
           <BlogShare />
         </article>

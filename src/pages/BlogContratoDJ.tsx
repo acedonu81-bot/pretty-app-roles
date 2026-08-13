@@ -110,7 +110,7 @@ export default function BlogContratoDJ() {
               </div>
             </section>
 
-            <DJResourcesAffiliate />
+            <DJResourcesAffiliate role="dj" />
 
             <BlogEmailCapture variant="plantilla" intent="contratar-dj" articlePath="/blog/contrato-dj-que-debe-incluir" />
             <BlogInlineCTA role="dj" variant="upgrade" />
