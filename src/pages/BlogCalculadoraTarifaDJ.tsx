@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const slug = 'calculadora-tarifa-dj';
 
@@ -47,7 +49,7 @@ export default function BlogCalculadoraTarifaDJ() {
     '@type': 'Article',
     headline: "Calculadora de tarifa DJ 2026: precio estimado para tu evento",
     description: "Calcula cuánto cuesta un DJ para tu evento. Introduce el tipo de evento, ciudad y horas y obtén un precio estimado real para 2026.",
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-06-07',
     dateModified: '2026-06-07',
@@ -65,6 +67,16 @@ export default function BlogCalculadoraTarifaDJ() {
     ],
   };
 
+  const faqStructured = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda en España?', acceptedAnswer: { '@type': 'Answer', text: 'La tarifa base de un DJ para boda parte de unos 1.000€ y varía según la ciudad, las horas de servicio y la experiencia del DJ. En Madrid o Barcelona el precio sube en torno a un 25% respecto a otras ciudades, y añadir equipo de luces suma entre 150€ y 300€.' } },
+      { '@type': 'Question', name: '¿De qué depende el precio de un DJ?', acceptedAnswer: { '@type': 'Answer', text: 'El precio depende del tipo de evento (una boda cuesta más que un cumpleaños o una fiesta privada), la ciudad, el número de horas de servicio y el nivel del DJ (junior, medio o senior). Incluir equipo de luces también incrementa la tarifa.' } },
+      { '@type': 'Question', name: '¿La calculadora da un precio real?', acceptedAnswer: { '@type': 'Answer', text: 'La calculadora ofrece una estimación orientativa basada en tarifas reales de DJs en España en 2026. Para presupuestos reales de DJs verificados en tu zona, en XPEAK introduces los detalles de tu evento y recibes 3 propuestas en menos de 24 horas, gratis y sin compromiso.' } },
+    ],
+  };
+
   return (
     <>
       <Helmet>
@@ -79,6 +91,7 @@ export default function BlogCalculadoraTarifaDJ() {
         <meta property="og:site_name" content="XPEAK" />
         <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
       </Helmet>
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
@@ -182,6 +195,18 @@ export default function BlogCalculadoraTarifaDJ() {
               </p>
             </section>
 
+            <section>
+              <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
+              <div className="space-y-4">
+                {faqStructured.mainEntity.map(f => (
+                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
+                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+
             <section className="mt-4">
               <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
               <div className="space-y-2">
@@ -200,6 +225,8 @@ export default function BlogCalculadoraTarifaDJ() {
           </div>
         </main>
         <BlogAuthor />
+        <DJResourcesAffiliate />
+        <BlogRelatedPosts currentSlug='/blog/calculadora-tarifa-dj' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_calculadora_dj" />
       </div>

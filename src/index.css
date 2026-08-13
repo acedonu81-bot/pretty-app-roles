@@ -296,6 +296,18 @@ html, body, #root {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes fieldShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.animate-field-shake {
+  animation: fieldShake 0.4s ease-in-out;
+}
+
 @keyframes orbFloat1 {
   0%, 100% { transform: translate(0, 0) scale(1); }
   33%       { transform: translate(60px, -40px) scale(1.1); }
@@ -443,3 +455,7 @@ html, body, #root {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
+
+/* Reserva espacio al final de la página mientras el widget flotante "Mi evento" está visible,
+   para que no tape contenido al llegar al final del scroll (ver EventCartWidget.tsx). */
+body.has-event-cart-widget { padding-bottom: 76px; }

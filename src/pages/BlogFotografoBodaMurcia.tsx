@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
@@ -12,7 +13,7 @@ const article = {
   headline: 'Fotógrafo para bodas en Murcia: precio y guía 2026',
   description: 'Cuánto cuesta un fotógrafo para una boda en Murcia. Precios reales 2026, haciendas y fincas del Segura, huerta murciana y Mar Menor.',
   datePublished: '2026-06-08', dateModified: '2026-06-08',
-  author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   url: 'https://xpeak.es/blog/fotografo-boda-murcia',
 };
@@ -72,7 +73,7 @@ export default function BlogFotografoBodaMurcia() {
 
           <p className="text-neutral-300 mb-6">La Región de Murcia es uno de los mercados de bodas más activos del sureste español. La combinación de haciendas en la huerta, bodegas premiadas en Jumilla o Yecla, y acceso al Mar Menor hace de Murcia un escenario excepcional para bodas con identidad propia.</p>
 
-          <BlogInlineCTA role="media" text="¿Buscas fotógrafo para tu boda en Murcia? Encuentra los mejores profesionales en XPEAK." />
+          <BlogInlineCTA role="fotografo" text="¿Buscas fotógrafo para tu boda en Murcia? Encuentra los mejores profesionales en XPEAK." />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Precios fotógrafo boda Murcia 2026</h2>
           <div className="overflow-x-auto mb-8">
@@ -112,8 +113,9 @@ export default function BlogFotografoBodaMurcia() {
           <BlogAuthor />
           <BlogShare />
         </article>
+        <BlogRelatedPosts currentSlug='/blog/fotografo-boda-murcia' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="media" storageKey="xpeak_scrollcta_fotografo_murcia" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_murcia" />
       </div>
     </>
   );

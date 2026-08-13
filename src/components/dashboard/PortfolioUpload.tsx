@@ -198,7 +198,7 @@ const PortfolioUpload = () => {
                   onMouseLeave={e => { const v = e.target as HTMLVideoElement; v.pause(); v.currentTime = 0; }}
                 />
               ) : (
-                <img src={item.url} alt={item.name} className="w-full h-full object-cover" />
+                <img src={item.url} alt={item.name} loading="lazy" className="w-full h-full object-cover" />
               )}
               {item.isVideo && (
                 <div className="absolute top-1 left-1 px-1.5 py-0.5 rounded text-[0.7rem] font-bold flex items-center gap-0.5"

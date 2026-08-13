@@ -9,7 +9,7 @@ import { track } from '@/lib/track';
 const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { icon: LucideIcon; text: string }[] }> = {
   dj: {
     tagline: 'Publica tu tarifa y que te encuentren salas y promotoras.',
-    sub: 'DJs de toda España ya reciben solicitudes directas cada semana.',
+    sub: 'Crea tu perfil gratis y aparece cuando busquen un DJ en tu zona.',
     bullets: [
       { icon: Target, text: 'Tu perfil visible en Google y en el directorio' },
       { icon: FileText, text: 'Contratos digitales automáticos' },
@@ -17,8 +17,8 @@ const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { ic
     ],
   },
   staff: {
-    tagline: 'Consigue trabajo de staff y camarero en eventos reales.',
-    sub: 'Salas y organizadores buscan profesionales como tú cada semana.',
+    tagline: 'Date a conocer como staff y camarero para eventos.',
+    sub: 'Crea tu perfil gratis y aparece cuando busquen personal en tu zona.',
     bullets: [
       { icon: Target, text: 'Tu perfil visible para empresarios de tu zona' },
       { icon: FileText, text: 'Contratos digitales sin papeleo' },
@@ -27,7 +27,7 @@ const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { ic
   },
   profesional: {
     tagline: 'El directorio de referencia para profesionales de eventos.',
-    sub: 'Crea tu perfil, publica tu tarifa y empieza a recibir solicitudes.',
+    sub: 'Crea tu perfil gratis y publica tu tarifa. Tardas menos de 2 minutos.',
     bullets: [
       { icon: Target, text: 'Visible para salas y promotoras de España' },
       { icon: FileText, text: 'Contratos automáticos con PDF' },
@@ -80,11 +80,22 @@ const Auth = () => {
   const [showRecovery, setShowRecovery] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const [recoveryLoading, setRecoveryLoading] = useState(false);
+  const [proCount, setProCount] = useState<number | null>(null);
   const isRegistering = useRef(false);
 
   useEffect(() => {
     track('auth_view', { mode: isLogin ? 'login' : 'register', role: roleParam || 'none' });
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    supabase.from('profiles')
+      .select('user_id', { count: 'exact', head: true })
+      .eq('is_seed', false)
+      .neq('role', 'empresario')
+      .then(({ count }) => {
+        if (typeof count === 'number') setProCount(count);
+      });
   }, []);
 
   useEffect(() => {
@@ -148,6 +159,28 @@ const Auth = () => {
     window.alert(message);
   };
 
+  // Errores de validación con campo identificable: en vez de alert() bloqueante,
+  // resalta el campo culpable y hace scroll hasta él — el alert cerraba pero
+  // dejaba al usuario sin saber dónde estaba el problema (ej. checkbox legal
+  // al fondo del formulario, fuera de la vista en móvil).
+  const [fieldError, setFieldError] = useState<string | null>(null);
+  const nameRef = useRef<HTMLDivElement>(null);
+  const legalRef = useRef<HTMLLabelElement>(null);
+  const passwordRef = useRef<HTMLDivElement>(null);
+  const fieldRefs: Record<string, React.RefObject<HTMLElement>> = {
+    name: nameRef,
+    legal: legalRef,
+    password: passwordRef,
+  };
+  const authFieldError = (field: string, message: string) => {
+    toast.error(message);
+    setFieldError(field);
+    const el = fieldRefs[field]?.current;
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
   const checkRateLimit = (): boolean => {
     const key = 'xpeak_login_attempts';
     const raw = localStorage.getItem(key);
@@ -207,23 +240,24 @@ const Auth = () => {
       } else {
         if (!displayName.trim()) {
           track('auth_validation_error', { mode: 'register', reason: 'missing_name' });
-          authAlert('Introduce tu nombre profesional'); setLoading(false); return;
+          authFieldError('name', 'Introduce tu nombre profesional'); setLoading(false); return;
         }
         if (!legalAccepted) {
           track('auth_validation_error', { mode: 'register', reason: 'legal_not_accepted' });
-          authAlert('Acepta los términos para continuar'); setLoading(false); return;
+          authFieldError('legal', 'Acepta los términos para continuar'); setLoading(false); return;
         }
 
         const pwdError = validatePassword(password);
         if (pwdError) {
           track('auth_validation_error', { mode: 'register', reason: 'weak_password' });
-          authAlert(pwdError); setLoading(false); return;
+          authFieldError('password', pwdError); setLoading(false); return;
         }
 
+        setFieldError(null);
         const safeName = displayName.trim().replace(/<[^>]*>/g, '').replace(/[\x00-\x1F\x7F]/g, '').slice(0, 60);
         if (!safeName) {
           track('auth_validation_error', { mode: 'register', reason: 'invalid_name' });
-          authAlert('El nombre no es válido.'); setLoading(false); return;
+          authFieldError('name', 'El nombre no es válido.'); setLoading(false); return;
         }
 
         isRegistering.current = true;
@@ -248,9 +282,13 @@ const Auth = () => {
           throw error;
         }
 
+        setFieldError(null);
         track('auth_success', { mode: 'register', role: roleParam || 'pending' });
         if (typeof window !== 'undefined' && (window as any).fbq) (window as any).fbq('track', 'CompleteRegistration');
-        if (typeof window !== 'undefined' && (window as any).ttq) (window as any).ttq.track('CompleteRegistration');
+        if (typeof window !== 'undefined' && (window as any).ttq) {
+          (window as any).ttq.identify({ email });
+          (window as any).ttq.track('CompleteRegistration');
+        }
 
         if (refParam && signUpData.user) {
           supabase.from('profiles').select('user_id').eq('referral_code', refParam).maybeSingle()
@@ -368,7 +406,7 @@ const Auth = () => {
               <div className="mt-10 pt-8" style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}>
                 <div className="flex items-center gap-4 mb-4">
                   <div>
-                    <p className="text-2xl font-black leading-none" style={{ color: '#111' }}>38+</p>
+                    <p className="text-2xl font-black leading-none" style={{ color: '#111' }}>{proCount !== null ? proCount : '—'}</p>
                     <p className="text-[0.65rem] mt-1" style={{ color: 'rgba(0,0,0,0.55)' }}>profesionales activos</p>
                   </div>
                   <div className="w-px h-9" style={{ background: 'rgba(0,0,0,0.12)' }} />
@@ -421,7 +459,7 @@ const Auth = () => {
                       ))}
                     </div>
                     <p className="text-[0.68rem] mt-2.5" style={{ color: 'rgba(0,0,0,0.5)' }}>
-                      <strong style={{ color: '#333' }}>38+ profesionales</strong> ya publican su perfil aquí
+                      <strong style={{ color: '#333' }}>{proCount !== null ? proCount : ''} profesionales</strong> ya publican su perfil aquí
                     </p>
                   </>
                 )}
@@ -481,11 +519,12 @@ const Auth = () => {
 
                 {/* Nombre — solo en registro */}
                 {!isLogin && (
-                  <div className="relative">
+                  <div ref={nameRef} className={`relative rounded-xl ${fieldError === 'name' ? 'animate-field-shake' : ''}`}
+                    style={fieldError === 'name' ? { boxShadow: '0 0 0 2px #ef4444' } : undefined}>
                     <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                     <input
                       value={displayName}
-                      onChange={e => setDisplayName(e.target.value)}
+                      onChange={e => { setDisplayName(e.target.value); if (fieldError === 'name') setFieldError(null); }}
                       placeholder={roleParam === 'dj' ? 'DJ NombreArtístico' : 'Tu nombre profesional'}
                       maxLength={60}
                       className="nightlife-input !py-3 !pl-9 text-sm"
@@ -508,12 +547,13 @@ const Auth = () => {
                 </div>
 
                 {/* Password */}
-                <div className="relative">
+                <div ref={passwordRef} className={`relative rounded-xl ${fieldError === 'password' ? 'animate-field-shake' : ''}`}
+                  style={fieldError === 'password' ? { boxShadow: '0 0 0 2px #ef4444' } : undefined}>
                   <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     value={password}
-                    onChange={e => setPassword(e.target.value)}
+                    onChange={e => { setPassword(e.target.value); if (fieldError === 'password') setFieldError(null); }}
                     placeholder="Contraseña"
                     maxLength={128}
                     className="nightlife-input !py-3 !pl-9 !pr-10 text-sm"
@@ -541,18 +581,23 @@ const Auth = () => {
                 {/* Legal — checkbox nativo real (accesible, robusto en webviews) */}
                 {!isLogin && (
                   <label
+                    ref={legalRef}
                     htmlFor="legal-accept"
-                    className="flex items-center gap-3 cursor-pointer rounded-xl px-3 py-3.5 active:bg-black/5"
-                    style={{ background: 'rgba(0,0,0,0.03)', border: legalAccepted ? '1px solid rgba(212,175,55,0.5)' : '1px solid rgba(0,0,0,0.1)' }}>
+                    className={`flex items-center gap-3 cursor-pointer rounded-xl px-3 py-3.5 active:bg-black/5 ${fieldError === 'legal' ? 'animate-field-shake' : ''}`}
+                    style={{
+                      background: fieldError === 'legal' ? 'rgba(239,68,68,0.06)' : 'rgba(0,0,0,0.03)',
+                      border: fieldError === 'legal' ? '1.5px solid #ef4444' : legalAccepted ? '1px solid rgba(212,175,55,0.5)' : '1px solid rgba(0,0,0,0.1)',
+                    }}>
                     <input
                       id="legal-accept"
                       name="legalAccepted"
                       type="checkbox"
                       checked={legalAccepted}
-                      onChange={(e) => setLegalAccepted(e.target.checked)}
+                      onChange={(e) => { setLegalAccepted(e.target.checked); if (e.target.checked) setFieldError(null); }}
                       className="w-6 h-6 flex-shrink-0 rounded-md accent-[#D4AF37]"
                     />
-                    <span className="text-xs leading-relaxed" style={{ color: 'rgba(0,0,0,0.65)' }}>
+                    <span className="text-xs leading-relaxed" style={{ color: fieldError === 'legal' ? '#b91c1c' : 'rgba(0,0,0,0.65)' }}>
+                      {fieldError === 'legal' && <span className="font-bold">☝️ Marca esta casilla para continuar — </span>}
                       Acepto la{' '}
                       <Link to="/privacidad" target="_blank" onClick={e => e.stopPropagation()} className="underline" style={{ color: '#8B6A00' }}>Privacidad</Link>,{' '}
                       <Link to="/terminos" target="_blank" onClick={e => e.stopPropagation()} className="underline" style={{ color: '#8B6A00' }}>Términos</Link>{' '}

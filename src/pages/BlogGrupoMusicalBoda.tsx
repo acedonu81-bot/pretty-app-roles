@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
@@ -12,7 +13,7 @@ const article = {
   headline: 'Grupo musical para boda: precio y guía completa 2026',
   description: 'Cuánto cuesta un grupo musical para una boda en España. Precios reales 2026, tipos de grupos, qué incluye el precio y cómo contratar sin sorpresas.',
   datePublished: '2026-06-08', dateModified: '2026-06-08',
-  author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   url: 'https://xpeak.es/blog/grupo-musical-para-boda-precio',
 };
@@ -122,6 +123,7 @@ export default function BlogGrupoMusicalBoda() {
           <BlogAuthor />
           <BlogShare />
         </article>
+        <BlogRelatedPosts currentSlug='/blog/grupo-musical-para-boda-precio' tag='Bodas' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_grupo_musical_boda" />
       </div>

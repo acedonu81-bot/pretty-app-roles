@@ -18,7 +18,6 @@ const StatsTab = ({ pros, favorites }: Props) => {
   const staffCount  = pros.filter(p => p.role === 'staff').length;
   const makeupCount = pros.filter(p => p.role === 'makeup').length;
   const avgRate     = totalPros > 0 ? Math.round(pros.reduce((s, p) => s + (p.hourly_rate || 0), 0) / totalPros) : 0;
-  const verifiedCount = pros.filter(p => p.is_verified).length;
 
   const pieData = [
     { name: 'DJ',     value: djCount,     color: '#8A6D0F' },
@@ -60,7 +59,6 @@ const StatsTab = ({ pros, favorites }: Props) => {
         {[
           { label: 'Profesionales activos', value: totalPros,             icon: Users,         color: '#8A6D0F' },
           { label: 'Tarifa media/hora',     value: avgRate > 0 ? `€${avgRate}` : '—', icon: Euro, color: '#22c55e' },
-          { label: 'Verificados',           value: verifiedCount,         icon: CheckCircle,   color: '#3B82F6' },
           { label: 'DJs',                   value: djCount,               icon: TrendingUp,    color: '#8A6D0F' },
           { label: 'Staff',                 value: staffCount,            icon: Eye,           color: '#8B5CF6' },
           { label: 'Estilismo',             value: makeupCount,           icon: MessageSquare, color: '#F59E0B' },

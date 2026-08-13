@@ -1,13 +1,16 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
-import RelatedPosts from '@/components/RelatedPosts';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogAnswerBox from '@/components/BlogAnswerBox';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 import BlogTopCTA from '@/components/BlogTopCTA';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para bodas en Barcelona: precio y cómo contratar en 2026', description: 'Cuánto cuesta un DJ para una boda en Barcelona. Precios reales, zonas de celebración (Maresme, Penedès, Costa) y cómo contratar el mejor DJ en Cataluña.', datePublished: '2026-05-28', dateModified: '2026-05-28', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-bodas-barcelona' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para bodas en Barcelona: precio y cómo contratar en 2026', description: 'Cuánto cuesta un DJ para una boda en Barcelona. Precios reales, zonas de celebración (Maresme, Penedès, Costa) y cómo contratar el mejor DJ en Cataluña.', datePublished: '2026-05-28', dateModified: '2026-05-28', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-bodas-barcelona' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ para boda en Barcelona cuesta entre 800€ y 2.500€ para el servicio completo (ceremonia + cóctel + cena + pista). Los precios en Barcelona son comparables a Madrid, un 20-30% por encima de la media nacional. Para bodas solo con pista de baile (4-5h), el rango es 500-1.000€.' } },
   { '@type': 'Question', name: '¿Cuáles son las mejores zonas para casarse en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'Las zonas más populares para bodas en Barcelona son: el Maresme (fincas con vistas al mar), el Penedès y Garraf (fincas entre viñedos, muy fotogénicas), la Costa Daurada (Tarragona, más económica) y Barcelona capital (palacios, hoteles de lujo, rooftops). El Maresme y el Penedès concentran el 65% de las bodas en la provincia.' } },
@@ -70,6 +73,10 @@ export default function BlogDJBodaBarcelona() {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para bodas en Barcelona: precio y cómo contratar en 2026</h1>
             <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Barcelona es el segundo mercado de bodas más grande de España. El Maresme, el Penedès y los rooftops de la ciudad mueven miles de bodas cada año — te contamos cuánto cuesta un DJ y cómo encontrar el correcto.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>28 mayo 2026</time>
+            <BlogAnswerBox
+              question="¿Cuánto cuesta un DJ para una boda en Barcelona?"
+              answer="Un DJ para el servicio completo de una boda en Barcelona (ceremonia, cóctel, cena y pista de baile) cuesta entre 900 y 2.000€ en 2026. El precio varía según la duración del evento, el equipo técnico incluido y la experiencia del DJ."
+            />
           </div>
 
           <div className="space-y-10">
@@ -119,7 +126,7 @@ export default function BlogDJBodaBarcelona() {
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
                   <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                     <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
@@ -151,10 +158,12 @@ export default function BlogDJBodaBarcelona() {
             </div>
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-barcelona" />
-          <RelatedPosts currentSlug="/blog/dj-bodas-barcelona" tags={['DJ']} />
+                  <DJResourcesAffiliate />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/dj-bodas-barcelona' tag='DJ' />
         <FooterPublic />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_barcelona" />
       </div>
     </>
   );

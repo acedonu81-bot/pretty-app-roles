@@ -1,13 +1,15 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
-import RelatedPosts from '@/components/RelatedPosts';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogTopCTA from '@/components/BlogTopCTA';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo para bodas en Barcelona: precio y guía 2026', description: 'Cuánto cuesta un fotógrafo para una boda en Barcelona. Precios reales 2026, estilos más demandados y cómo contratar el mejor fotógrafo en Cataluña.', datePublished: '2026-06-02', dateModified: '2026-06-02', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-boda-barcelona' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo para bodas en Barcelona: precio y guía 2026', description: 'Cuánto cuesta un fotógrafo para una boda en Barcelona. Precios reales 2026, estilos más demandados y cómo contratar el mejor fotógrafo en Cataluña.', datePublished: '2026-06-02', dateModified: '2026-06-02', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-boda-barcelona' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de boda en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de boda en Barcelona cuesta entre 1.400€ y 4.000€ para el reportaje completo. Barcelona tiene una escena fotográfica muy activa con muchos profesionales de nivel internacional. El rango medio para un reportaje completo con álbum es 2.000-3.000€. Para bodas solo de ceremonia y cóctel (4-5h) el rango es 800-1.500€.' } },
   { '@type': 'Question', name: '¿Qué estilo fotográfico es más popular en bodas de Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'En Barcelona predominan dos estilos: el reportaje documental (fotoperiodismo de boda) — natural, sin posados forzados, con mucha luz ambiente — y el editorial mediterráneo, con sesiones golden hour en entornos naturales del Maresme o Penedès. El estilo oscuro y moody tiene menos presencia que en Madrid. Los novios barceloneses suelen priorizar autenticidad sobre perfección técnica.' } },
@@ -57,6 +59,11 @@ export default function BlogFotografoBodaBarcelona() {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Fotógrafo para bodas en Barcelona: precio y guía 2026</h1>
             <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Barcelona tiene una de las escenas de fotografía de bodas más activas de Europa. Desde el documental puro hasta el editorial mediterráneo — precios reales y cómo encontrar el estilo que se adapta a tu boda.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>2 junio 2026</time>
+          <BlogAnswerBox
+            question="¿Cuánto cuesta un fotógrafo para una boda en Barcelona?"
+            answer="Un fotógrafo para el reportaje completo de una boda en Barcelona (sin álbum impreso) cuesta entre 1.400 y 2.500€ en 2026. El precio final depende de las horas de cobertura, si incluye álbum físico y si se contrata también videógrafo."
+          />
+
           </div>
           <div className="space-y-10">
             <section>
@@ -77,7 +84,7 @@ export default function BlogFotografoBodaBarcelona() {
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
                   <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                     <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
@@ -107,10 +114,11 @@ export default function BlogFotografoBodaBarcelona() {
             </div>
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/fotografo-boda-barcelona" />
-          <RelatedPosts currentSlug="/blog/fotografo-boda-barcelona" tags={['Fotografía']} />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/fotografo-boda-barcelona' tag='Fotografía' />
         <FooterPublic />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda_barcelona" />
       </div>
     </>
   );

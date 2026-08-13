@@ -1,11 +1,14 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogAnswerBox from '@/components/BlogAnswerBox';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo para bodas en Mallorca: precio y guía 2026', description: 'Cuánto cuesta un fotógrafo para una boda en Mallorca. Precios reales 2026, Fincas de lujo, UNESCO Tramuntana y el mercado de bodas internacionales más activo de España.', datePublished: '2026-06-03', dateModified: '2026-06-03', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-boda-mallorca' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo para bodas en Mallorca: precio y guía 2026', description: 'Cuánto cuesta un fotógrafo para una boda en Mallorca. Precios reales 2026, Fincas de lujo, UNESCO Tramuntana y el mercado de bodas internacionales más activo de España.', datePublished: '2026-06-03', dateModified: '2026-06-03', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-boda-mallorca' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de boda en Mallorca?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de boda en Mallorca cuesta entre 1.500€ y 5.000€ para el reportaje completo. Es el mercado más caro de España después de Marbella. El 60-70% de las bodas en Mallorca son internacionales (alemanas, británicas, escandinavas) con presupuestos muy altos. Para bodas locales o nacionales, los precios son más accesibles: 1.500-2.500€ con álbum.' } },
   { '@type': 'Question', name: '¿Qué estilo fotográfico es más popular en Mallorca?', acceptedAnswer: { '@type': 'Answer', text: 'En Mallorca predomina el estilo romántico natural con mucho golden hour: atardeceres sobre el Mediterráneo, fincas con cipreses y olivos centenarios, luz cálida y dorada. La influencia alemana y escandinava ha traído un estilo muy limpio, con mucho espacio en los encuadres y postprocesado suave. Es uno de los estilos más valorados internacionalmente.' } },
@@ -53,6 +56,11 @@ export default function BlogFotografoBodaMallorca() {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Fotógrafo para bodas en Mallorca: precio y guía 2026</h1>
             <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Mallorca es el destino de fotografía de bodas de lujo más internacional de España. Los fotógrafos especializados en Mallorca trabajan con parejas alemanas, británicas y escandinavas que buscan un estilo muy específico: romántico, natural, golden hour en la Tramuntana. Es un mercado con presupuestos muy superiores a la media.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>3 junio 2026</time>
+          <BlogAnswerBox
+            question="¿Cuánto cuesta un fotógrafo para una boda en Mallorca?"
+            answer="Un fotógrafo para el reportaje completo de una boda en Mallorca (sin álbum impreso) cuesta entre 1.600 y 3.000€ en 2026. El precio final depende de las horas de cobertura, si incluye álbum físico y si se contrata también videógrafo."
+          />
+
           </div>
           <div className="space-y-10">
             <section>
@@ -73,7 +81,7 @@ export default function BlogFotografoBodaMallorca() {
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
                   <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                     <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
@@ -105,7 +113,9 @@ export default function BlogFotografoBodaMallorca() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/fotografo-boda-mallorca" />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/fotografo-boda-mallorca' tag='Fotografía' />
         <FooterPublic />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda_mallorca" />
       </div>
     </>
   );

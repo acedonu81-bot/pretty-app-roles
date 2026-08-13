@@ -1,10 +1,36 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, ArrowLeft } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
+import BlogAnswerBox from '@/components/BlogAnswerBox';
+
+const faqStructured = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: '¿Es lo mismo un DJ de boda que un DJ de discoteca?',
+      acceptedAnswer: { '@type': 'Answer', text: 'No. Un DJ de club se centra en mezclar un género concreto durante horas para mantener a la pista bailando, sin hablar por micro. Un DJ de boda es más versátil (pop, latina, flamenco, comercial en la misma noche), actúa también como animador presentando momentos especiales al micro, gestiona peticiones en tiempo real y coordina con el equipo de catering y protocolo.' },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Cuánto cobra un DJ de boda frente a un DJ residente de discoteca?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Un DJ residente de club cobra entre 200€ y 800€ por una noche completa (5-6h). Un DJ de boda (ceremonia, cena y fiesta, 6-8h) cobra entre 400€ y 1.500€, y hasta 800€-3.000€ en versión premium con animación y luces incluidas — el precio es mayor porque el servicio incluye más horas, más versatilidad musical y equipo propio de sonido e iluminación.' },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Puede un DJ de discoteca hacer bien una boda?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Puede, pero conviene comprobar que tiene experiencia real animando bodas: gestionar momentos protocolarios (entrada, primer baile, discursos), adaptar el volumen según la fase del evento y llevar equipo de sonido propio no es lo mismo que mezclar en cabina de club. Lo ideal es contratar un DJ que ya tenga bodas en su portfolio, no asumir que la experiencia en discoteca se traslada directamente.' },
+    },
+  ],
+};
 
 const breadcrumb = {
   '@context': 'https://schema.org',
@@ -23,7 +49,7 @@ export default function BlogDJBodaVsDiscoteca() {
     headline: 'DJ para bodas vs DJ para discoteca: diferencias, precios y cómo elegir en 2026',
     datePublished: '2026-04-20',
     dateModified: '2026-06-08',
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     description: 'Diferencias entre un DJ de boda y un DJ de discoteca: habilidades, equipamiento, precios y cómo elegir el perfil correcto para tu evento.',
   };
@@ -44,6 +70,7 @@ export default function BlogDJBodaVsDiscoteca() {
         <meta name="twitter:description" content="¿Son lo mismo un DJ de boda y un DJ de discoteca? Diferencias en habilidades, equipamiento y precios." />
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(articleStructured)}</script>
+        <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
@@ -77,6 +104,10 @@ export default function BlogDJBodaVsDiscoteca() {
           <p className="text-sm sm:text-base mb-8 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
             No, no son lo mismo. Un DJ de sala y un DJ de boda tienen habilidades muy distintas, y contratar al perfil equivocado puede arruinar la noche. Esta guía te explica las diferencias clave.
           </p>
+          <BlogAnswerBox
+            question="¿Es lo mismo un DJ de boda que un DJ de discoteca?"
+            answer="No. Un DJ residente de club cobra entre 200€ y 800€ por noche y se centra en mezclar sin hablar por micro. Un DJ de boda cobra entre 400€ y 1.500€ (hasta 3.000€ en versión premium) porque además de pinchar actúa como animador, gestiona peticiones en directo y coordina con catering y protocolo."
+          />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
             {[
@@ -200,7 +231,7 @@ export default function BlogDJBodaVsDiscoteca() {
               Perfiles verificados · Flash Booking en menos de 1h · Contrato automático
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <a href="/auth"
+              <a href="/contratar-dj"
                 className="inline-flex items-center gap-2 px-7 py-3 rounded-xl font-black text-sm transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                 <Zap size={14} /> Buscar DJ gratis
@@ -212,11 +243,28 @@ export default function BlogDJBodaVsDiscoteca() {
               </a>
             </div>
           </div>
+
+          <section className="mt-10">
+            <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
+            <div className="space-y-4">
+              {faqStructured.mainEntity.map(f => (
+                <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <h3 className="text-sm font-bold mb-2">{f.name}</h3>
+                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
           <BlogAuthor />
           <BlogShare />
         </article>
+          <DJResourcesAffiliate />
+
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-para-bodas-vs-discoteca" />
+        <BlogRelatedPosts currentSlug='/blog/dj-para-bodas-vs-discoteca' tag='DJ' />
         <FooterPublic />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_vs_discoteca" />
       </div>
     </>
   );

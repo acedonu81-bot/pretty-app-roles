@@ -1,11 +1,14 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogAnswerBox from '@/components/BlogAnswerBox';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo para bodas en Bilbao: precio y guía 2026', description: 'Cuánto cuesta un fotógrafo para una boda en Bilbao. Precios reales 2026, Caseríos vascos, arquitectura industrial y la luz especial del Cantábrico.', datePublished: '2026-06-03', dateModified: '2026-06-03', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-boda-bilbao' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo para bodas en Bilbao: precio y guía 2026', description: 'Cuánto cuesta un fotógrafo para una boda en Bilbao. Precios reales 2026, Caseríos vascos, arquitectura industrial y la luz especial del Cantábrico.', datePublished: '2026-06-03', dateModified: '2026-06-03', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-boda-bilbao' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de boda en Bilbao?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de boda en Bilbao cuesta entre 1.200€ y 3.500€ para el reportaje completo. Los precios en el País Vasco son similares a Barcelona, un 15-25% por encima de la media nacional. Para bodas en caseríos del interior, los precios son similares; para bodas en hoteles de lujo o palacios del casco viejo, pueden subir.' } },
   { '@type': 'Question', name: '¿Qué estilo fotográfico es más popular en Bilbao?', acceptedAnswer: { '@type': 'Answer', text: 'Los fotógrafos vascos destacan por el estilo documental naturalista: aprovechan la luz suave y difusa del norte, muy favorecedora para los retratos, y los espacios de los caseríos con piedra y madera. El Guggenheim, el casco viejo y el puerto de Getxo son localizaciones muy usadas para sesiones. El minimalismo y la autenticidad caracterizan la fotografía de boda vasca.' } },
@@ -53,6 +56,11 @@ export default function BlogFotografoBodaBilbao() {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Fotógrafo para bodas en Bilbao: precio y guía 2026</h1>
             <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Los fotógrafos de bodas en el País Vasco tienen una ventaja única: los caseríos centenarios, la luz suave del Cantábrico y los espacios industriales reconvertidos crean un estilo fotográfico muy reconocible. La escena fotográfica vasca es pequeña pero de gran nivel, con fotógrafos que trabajan todo el año gracias al clima templado.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>3 junio 2026</time>
+          <BlogAnswerBox
+            question="¿Cuánto cuesta un fotógrafo para una boda en Bilbao?"
+            answer="Un fotógrafo para el reportaje completo de una boda en Bilbao (sin álbum impreso) cuesta entre 1.300 y 2.200€ en 2026. El precio final depende de las horas de cobertura, si incluye álbum físico y si se contrata también videógrafo."
+          />
+
           </div>
           <div className="space-y-10">
             <section>
@@ -73,7 +81,7 @@ export default function BlogFotografoBodaBilbao() {
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
                   <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                     <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
@@ -105,7 +113,9 @@ export default function BlogFotografoBodaBilbao() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/fotografo-boda-bilbao" />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/fotografo-boda-bilbao' tag='Fotografía' />
         <FooterPublic />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda_bilbao" />
       </div>
     </>
   );

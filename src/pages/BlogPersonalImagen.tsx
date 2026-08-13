@@ -1,6 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, TrendingUp, Star } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
@@ -26,7 +28,7 @@ export default function BlogPersonalImagen() {
     '@type': 'Article',
     headline: 'Personal de imagen para ferias y congresos: precios en España (2026)',
     description: 'Cuánto cuesta contratar azafatas, promotoras y modelos para ferias y congresos en España. Precios por perfil, jornada y cómo elegir el equipo correcto.',
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-23',
     dateModified: '2026-05-23',
@@ -211,7 +213,9 @@ const faqStructured = {
           <BlogShare />
         </article>
           <BlogEmailCapture variant="guia" intent="ser-profesional" articlePath="/blog/personal-de-imagen-ferias-y-congresos" />
+        <BlogRelatedPosts currentSlug='/blog/personal-de-imagen-ferias-y-congresos' tag='Staff' />
         <FooterPublic />
+        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_personal_imagen" />
       </div>
     </>
   );

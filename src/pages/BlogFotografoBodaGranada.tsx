@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
@@ -14,7 +15,7 @@ const article = {
   description: 'Cuánto cuesta un fotógrafo para una boda en Granada. Precios reales 2026, La Alhambra, el Albaicín y la magia de la luz andaluza.',
   datePublished: '2026-06-08',
   dateModified: '2026-06-08',
-  author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
   url: 'https://xpeak.es/blog/fotografo-boda-granada',
@@ -87,7 +88,7 @@ export default function BlogFotografoBodaGranada() {
             Granada es uno de los destinos de boda más fotogénicos de España. La Alhambra, el Albaicín, los cármenes de la Vega y la Sierra Nevada al fondo crean un escenario único que atrae a parejas de toda Europa. Pero ese escenario también tiene sus reglas: permisos, horarios y disponibilidad limitada de los fotógrafos top.
           </p>
 
-          <BlogInlineCTA role="media" text="¿Buscas fotógrafo para tu boda en Granada? Compara perfiles, tarifas y disponibilidad en XPEAK." />
+          <BlogInlineCTA role="fotografo" text="¿Buscas fotógrafo para tu boda en Granada? Compara perfiles, tarifas y disponibilidad en XPEAK." />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Tabla de precios fotógrafo boda Granada 2026</h2>
           <div className="overflow-x-auto mb-8">
@@ -145,8 +146,9 @@ export default function BlogFotografoBodaGranada() {
           <BlogAuthor />
           <BlogShare />
         </article>
+        <BlogRelatedPosts currentSlug='/blog/fotografo-boda-granada' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="media" storageKey="xpeak_scrollcta_fotografo_granada" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_granada" />
       </div>
     </>
   );

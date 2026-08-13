@@ -94,7 +94,7 @@ const MediaTab = () => {
             <div className="flex items-center gap-3">
               {p.photo_url ? (
                 <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0">
-                  <img src={p.photo_url} alt={p.display_name ?? ''} className="w-full h-full object-cover" />
+                  <img src={p.photo_url} alt={p.display_name ?? ''} loading="lazy" className="w-full h-full object-cover" />
                 </div>
               ) : (
                 <GeometricAvatar role={p.role as any} seed={(p.user_id ?? 'x').charCodeAt(0)} size={40} />

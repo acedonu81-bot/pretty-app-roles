@@ -1,11 +1,15 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogAnswerBox from '@/components/BlogAnswerBox';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para bodas en Ibiza: precio y cómo contratar en 2026', description: 'Cuánto cuesta un DJ para una boda en Ibiza. Precios reales 2026, Capital mundial de la música electrónica y el mercado de bodas de lujo internacional más exclusivo.', datePublished: '2026-06-03', dateModified: '2026-06-03', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-bodas-ibiza' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para bodas en Ibiza: precio y cómo contratar en 2026', description: 'Cuánto cuesta un DJ para una boda en Ibiza. Precios reales 2026, Capital mundial de la música electrónica y el mercado de bodas de lujo internacional más exclusivo.', datePublished: '2026-06-03', dateModified: '2026-06-03', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-bodas-ibiza' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda en Ibiza?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ para boda en Ibiza cuesta entre 1.200€ y 6.000€ dependiendo del perfil y tipo de boda. Ibiza tiene el mercado de bodas de lujo más caro de España después de Marbella. Las bodas internacionales de alto standing pueden pagar 3.000-6.000€ por un DJ con experiencia en el mercado luxury. Para bodas de presupuesto medio, hay DJs desde 1.200€.' } },
   { '@type': 'Question', name: '¿Cuáles son las mejores zonas para bodas en Ibiza?', acceptedAnswer: { '@type': 'Answer', text: 'Las zonas más exclusivas para bodas en Ibiza son: el norte (Santa Eulalia, San Carlos, Sant Joan — las villas más exclusivas), el centro (Santa Gertrudis, Sant Miquel), el oeste (Sant Antoni — más turístico, menos bodas), y Formentera para bodas de playa muy íntimas. El norte concentra las villas de lujo más demandadas.' } },
@@ -52,6 +56,10 @@ export default function BlogDJBodaIbiza() {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para bodas en Ibiza: precio y cómo contratar en 2026</h1>
             <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Ibiza es única: la capital mundial de la música electrónica es también uno de los destinos de bodas de lujo más demandados de Europa. Los presupuestos son muy altos, la clientela mayoritariamente internacional y la temporada muy concentrada (mayo-octubre). Un DJ para boda en Ibiza no es lo mismo que un DJ de club — las bodas aquí requieren versatilidad y experiencia con clientes internacionales.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>3 junio 2026</time>
+            <BlogAnswerBox
+              question="¿Cuánto cuesta un DJ para una boda en Ibiza?"
+              answer="Un DJ para el servicio completo de una boda en Ibiza (ceremonia, cóctel, cena y pista de baile) cuesta entre 1.500 y 3.500€ en 2026. El precio varía según la duración del evento, el equipo técnico incluido y la experiencia del DJ."
+            />
           </div>
           <div className="space-y-10">
             <section>
@@ -86,7 +94,7 @@ export default function BlogDJBodaIbiza() {
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
                   <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                     <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
@@ -115,10 +123,14 @@ export default function BlogDJBodaIbiza() {
               <a href="/contratar-dj/ibiza" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver DJs de bodas en Ibiza →</a>
             </div>
           </div>
+                  <DJResourcesAffiliate />
+
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-ibiza" />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/dj-bodas-ibiza' tag='DJ' />
         <FooterPublic />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_ibiza" />
       </div>
     </>
   );

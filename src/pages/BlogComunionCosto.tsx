@@ -1,6 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, TrendingUp, Star } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
@@ -29,7 +31,7 @@ export default function BlogComunionCosto() {
     '@type': 'Article',
     headline: '¿Cuánto cuesta una comunión en España? Presupuesto completo 2026',
     description: 'Desglose real del coste de una comunión en España. Catering, DJ, fotógrafo, animación y decoración: precios por partida para 2026.',
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-23',
     dateModified: '2026-05-23',
@@ -215,7 +217,9 @@ const faqStructured = {
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuanto-cuesta-una-comunion-en-espana" />
+        <BlogRelatedPosts currentSlug='/blog/cuanto-cuesta-una-comunion-en-espana' tag='Eventos' />
         <FooterPublic />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_comunion_costo" />
       </div>
     </>
   );

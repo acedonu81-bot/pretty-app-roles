@@ -1,5 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { inject } from "@vercel/analytics";
+import { injectSpeedInsights } from "@vercel/speed-insights";
 import App from "./App.tsx";
 import "./index.css";
 import { initCapacitor } from "./lib/capacitor";
@@ -11,6 +12,7 @@ inject({
     return event;
   },
 });
+injectSpeedInsights();
 initCapacitor();
 
 if ('serviceWorker' in navigator) {

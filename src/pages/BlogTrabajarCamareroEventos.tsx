@@ -1,11 +1,13 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Cómo trabajar de camarero en eventos en España: guía completa 2026', description: 'Guía para trabajar de camarero en bodas, comuniones y eventos en España. Requisitos, cuánto cobras, cómo buscar trabajo y plataformas donde encontrar bolos.', datePublished: '2026-06-02', dateModified: '2026-06-02', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/como-trabajar-de-camarero-eventos' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Cómo trabajar de camarero en eventos en España: guía completa 2026', description: 'Guía para trabajar de camarero en bodas, comuniones y eventos en España. Requisitos, cuánto cobras, cómo buscar trabajo y plataformas donde encontrar bolos.', datePublished: '2026-06-02', dateModified: '2026-06-02', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/como-trabajar-de-camarero-eventos' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cobra un camarero de eventos por día?', acceptedAnswer: { '@type': 'Answer', text: 'Un camarero de eventos cobra entre 80€ y 180€ por jornada (8-10h), dependiendo de la experiencia, ciudad y tipo de evento. En Madrid y Barcelona los precios son más altos. Una boda de 150 personas puede pagarte 100-150€. Si trabajas 10-15 fines de semana al mes en temporada alta puedes superar los 1.500€ mensuales.' } },
   { '@type': 'Question', name: '¿Qué documentación necesito para trabajar de camarero en eventos?', acceptedAnswer: { '@type': 'Answer', text: 'Si trabajas por cuenta ajena (contratado por empresa de catering): solo necesitas DNI/NIE y número de la seguridad social. Si trabajas por tu cuenta (autónomo): necesitas darte de alta en Hacienda (modelo 037) y en la Seguridad Social. Muchos camareros de eventos trabajan para agencias que les contratan evento a evento con contrato temporal.' } },
@@ -104,7 +106,7 @@ export default function BlogTrabajarCamareroEventos() {
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
                   <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                     <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
@@ -137,7 +139,9 @@ export default function BlogTrabajarCamareroEventos() {
                   <BlogEmailCapture variant="presupuestos" intent="general" articlePath="/blog/como-trabajar-de-camarero-eventos" />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/como-trabajar-de-camarero-eventos' tag='Camareros' />
         <FooterPublic />
+        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_trabajar_camarero_eventos" />
       </div>
     </>
   );

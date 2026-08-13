@@ -1,5 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 
 const article = {
   '@context': 'https://schema.org',
@@ -8,7 +10,7 @@ const article = {
   description: 'Precios reales de cuartetos de cuerda para bodas en España. Solo ceremonia, ceremonia y cóctel o evento completo. Cuándo reservarlo y alternativas.',
   datePublished: '2026-06-14',
   dateModified: '2026-06-14',
-  author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
   url: 'https://xpeak.es/blog/cuarteto-cuerda-boda-precio',
@@ -202,7 +204,9 @@ export default function BlogCuartetoCuerdaPrecio() {
 
           </div>
         </main>
+        <BlogRelatedPosts currentSlug='/blog/cuarteto-cuerda-boda-precio' tag='Bodas' />
         <FooterPublic />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_cuarteto_cuerda_precio" />
       </div>
     </>
   );

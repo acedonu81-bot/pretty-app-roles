@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
-import RelatedPosts from '@/components/RelatedPosts';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
@@ -36,7 +37,7 @@ export default function BlogFotografoBodas() {
     '@type': 'Article',
     headline: 'Cómo contratar un fotógrafo de bodas en España: guía de precios 2026',
     description: 'Precios reales de fotógrafos de bodas en España 2026. Qué incluye, cómo elegir y cuándo contratar.',
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-03',
     dateModified: '2026-05-03',
@@ -204,7 +205,9 @@ const faqStructured = {
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/contratar-fotografo-de-bodas" />
-      <FooterPublic />
+      <BlogRelatedPosts currentSlug='/blog/contratar-fotografo-de-bodas' tag='Fotografía' />
+        <FooterPublic />
+      <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_bodas" />
       </div>
     </>
   );

@@ -1,5 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 
 const article = {
   '@context': 'https://schema.org',
@@ -8,7 +10,7 @@ const article = {
   description: 'Precios reales de magos para eventos corporativos, bodas y fiestas en España 2026. Tarifas por tipo de magia y qué buscar antes de contratar.',
   datePublished: '2026-06-01',
   dateModified: '2026-06-01',
-  author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
   publisher: {
     '@type': 'Organization',
     name: 'XPEAK',
@@ -274,7 +276,9 @@ export default function BlogMagoPrecioEventos() {
           </div>
         </main>
 
+        <BlogRelatedPosts currentSlug='/blog/mago-precio-eventos-espana' tag='Mago' />
         <FooterPublic />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_mago_precio_eventos" />
       </div>
     </>
   );

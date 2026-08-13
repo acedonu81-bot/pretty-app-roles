@@ -1,6 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, TrendingUp, Star } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
@@ -27,7 +29,7 @@ export default function BlogMaquillajeEventos() {
     '@type': 'Article',
     headline: 'Maquilladora para eventos: precios y qué incluye en España (2026)',
     description: 'Cuánto cobra una maquilladora para bodas, eventos corporativos y sesiones de foto en España. Precios por servicio y qué incluye cada paquete.',
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-23',
     dateModified: '2026-05-23',
@@ -210,8 +212,10 @@ const faqStructured = {
           <BlogAuthor />
           <BlogShare />
         </article>
-          <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/maquilladora-para-eventos-precio" />
+          <BlogEmailCapture variant="presupuestos" intent="contratar-makeup" articlePath="/blog/maquilladora-para-eventos-precio" />
+        <BlogRelatedPosts currentSlug='/blog/maquilladora-para-eventos-precio' tag='Maquillaje' />
         <FooterPublic />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maquillaje_eventos" />
       </div>
     </>
   );

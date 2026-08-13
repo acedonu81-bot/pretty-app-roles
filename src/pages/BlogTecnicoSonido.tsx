@@ -1,6 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, TrendingUp, Star } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
@@ -26,7 +28,7 @@ export default function BlogTecnicoSonido() {
     '@type': 'Article',
     headline: 'Técnico de sonido para eventos: funciones y precios en España (2026)',
     description: 'Cuánto cuesta un técnico de sonido para bodas, conciertos y eventos corporativos en España. Funciones, diferencias FOH/monitor y cuándo es necesario.',
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-23',
     dateModified: '2026-05-23',
@@ -210,7 +212,9 @@ const faqStructured = {
           <BlogShare />
         </article>
           <BlogEmailCapture variant="guia" intent="ser-profesional" articlePath="/blog/tecnico-de-sonido-para-eventos" />
+        <BlogRelatedPosts currentSlug='/blog/tecnico-de-sonido-para-eventos' tag='Eventos' />
         <FooterPublic />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_tecnico_sonido" />
       </div>
     </>
   );

@@ -1,11 +1,13 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Videógrafo para bodas: precio y qué incluye el vídeo en España (2026)', description: 'Cuánto cuesta contratar un videógrafo para tu boda. Precios por tipo de vídeo, duración, ciudad y diferencias con el fotógrafo. Guía 2026.', datePublished: '2026-05-04',
-  dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/videografo-bodas-precio' };
+  dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/videografo-bodas-precio' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cobra un videógrafo de bodas en España?', acceptedAnswer: { '@type': 'Answer', text: 'El precio de un videógrafo de bodas en España varía entre 600€ y 3.000€ dependiendo del nivel de experiencia, ciudad y paquete. Un vídeo de highlights de 3-5 minutos cuesta entre 800€ y 1.500€ con un profesional de nivel medio. Los videógrafos más reconocidos con estilo cinematográfico pueden cobrar 2.500–4.000€.' } },
   { '@type': 'Question', name: '¿Qué incluye el paquete de vídeo de boda?', acceptedAnswer: { '@type': 'Answer', text: 'Lo habitual es: grabación el día de la boda (8-10h), edición y postproducción, vídeo de highlights (3-5 min), vídeo completo de la ceremonia y el banquete (30-90 min), entrega en archivo digital y enlace para compartir. Los paquetes premium añaden un segundo cámara, sesión previa (preboda) y película cinematográfica de autor.' } },
@@ -100,7 +102,7 @@ export default function BlogVideografoBodas() {
             </section>
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
-              <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}><p className="text-sm font-bold mb-2">{f.name}</p><p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p></div>))}</div>
+              <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}><h3 className="text-sm font-bold mb-2">{f.name}</h3><p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p></div>))}</div>
             </section>
             
             <section className="mt-8">
@@ -126,7 +128,9 @@ export default function BlogVideografoBodas() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/videografo-bodas-precio" />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/videografo-bodas-precio' tag='Fotografía' />
         <FooterPublic />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_videografo_bodas" />
       </div>
     </>
   );

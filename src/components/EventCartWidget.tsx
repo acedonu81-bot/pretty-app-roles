@@ -29,7 +29,14 @@ export default function EventCartWidget() {
   }, [items.length]);
 
   const hidden = HIDDEN_PREFIXES.some(p => location.pathname.startsWith(p));
-  if (hidden || items.length === 0) return null;
+  const visible = !hidden && items.length > 0;
+
+  useEffect(() => {
+    document.body.classList.toggle('has-event-cart-widget', visible);
+    return () => document.body.classList.remove('has-event-cart-widget');
+  }, [visible]);
+
+  if (!visible) return null;
 
   return (
     <>

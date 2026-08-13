@@ -438,7 +438,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
 
                 {post.media_url && post.post_type === 'image' && (
                   <div className="mt-3 rounded-xl overflow-hidden">
-                    <img src={post.media_url} alt="Post media"
+                    <img src={post.media_url} alt="Post media" loading="lazy"
                       className="w-full max-h-80 object-cover"
                       onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                   </div>

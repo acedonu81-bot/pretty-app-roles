@@ -1,11 +1,13 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo para comunión en Madrid: precio y guía 2026', description: 'Cuánto cuesta un fotógrafo para una comunión en Madrid. Precios reales 2026 con el sobrecoste de la capital y cómo elegir el mejor fotógrafo para tu comunión.', datePublished: '2026-05-28', dateModified: '2026-05-28', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-comunion-madrid' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo para comunión en Madrid: precio y guía 2026', description: 'Cuánto cuesta un fotógrafo para una comunión en Madrid. Precios reales 2026 con el sobrecoste de la capital y cómo elegir el mejor fotógrafo para tu comunión.', datePublished: '2026-05-28', dateModified: '2026-05-28', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-comunion-madrid' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de comunión en Madrid?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de comunión en Madrid cuesta entre 400€ y 1.500€. El reportaje completo (ceremonia + sesión exterior + banquete) ronda los 600-1.200€. Los precios en Madrid son un 20-30% superiores a la media nacional. Un reportaje básico de 2-3h puede conseguirse desde 350-600€.' } },
   { '@type': 'Question', name: '¿Cuánto dura un reportaje de comunión?', acceptedAnswer: { '@type': 'Answer', text: 'Un reportaje de comunión completo dura entre 5 y 8 horas: 1h de preparativos en casa, 1-1.5h de ceremonia, 30-45 min de sesión exterior, 1-2h de cóctel y 1-2h de banquete. Muchos fotógrafos ofrecen paquetes de 4-5h sin los preparativos, más económicos, si el banquete es corto.' } },
@@ -114,7 +116,7 @@ export default function BlogFotografoComunionMadrid() {
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
                   <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                     <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
@@ -148,7 +150,9 @@ export default function BlogFotografoComunionMadrid() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/fotografo-comunion-madrid" />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/fotografo-comunion-madrid' tag='Fotografía' />
         <FooterPublic />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_comunion_madrid" />
       </div>
     </>
   );

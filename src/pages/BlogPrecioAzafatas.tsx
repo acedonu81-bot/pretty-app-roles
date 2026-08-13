@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
@@ -9,7 +10,7 @@ import BlogAuthor from '@/components/BlogAuthor';
 import BlogTopCTA from '@/components/BlogTopCTA';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en España: guía completa 2026', description: 'Cuánto cobran las azafatas para eventos, ferias y congresos en España. Tarifas por horas, perfil y ciudad.', datePublished: '2026-05-04',
-  dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-eventos-espana' };
+  dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-eventos-espana' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cobran las azafatas de eventos en España?', acceptedAnswer: { '@type': 'Answer', text: 'El precio medio de una azafata para eventos es de 12-18€/hora bruto para el profesional, aunque las agencias cobran al cliente entre 20-35€/hora por el servicio completo. Para ferias y congresos de varios días el precio suele fijarse por jornada (120-200€/día).' } },
   { '@type': 'Question', name: '¿Qué diferencia hay entre azafata de stand y azafata de imagen?', acceptedAnswer: { '@type': 'Answer', text: 'La azafata de stand trabaja en ferias y exposiciones atendiendo a visitantes, recogiendo contactos y explicando el producto. La azafata de imagen trabaja en eventos de marca, entregas de premios o actos de representación, priorizando la presencia y protocolo sobre las ventas.' } },
@@ -59,13 +60,18 @@ export default function BlogPrecioAzafatas() {
               question="¿Cuánto cobran las azafatas en España?"
               answer="Una azafata de eventos en España cobra entre 10€ y 18€/hora netos como autónoma, o entre 60€ y 120€ por jornada completa a través de agencia. Las ferias y congresos pagan entre 80€ y 150€/día según el perfil (idiomas, experiencia). Las azafatas de imagen para eventos premium pueden superar los 200€/día."
             />
-            <img
-              src="/images/blog/precio-azafatas-eventos-espana.jpg"
-              alt="Azafatas de eventos en feria profesional — precio y tarifas de azafatas en España 2026"
-              className="w-full rounded-xl my-6 object-cover"
-              style={{ maxHeight: 320, filter: 'brightness(0.9)' }}
-              loading="lazy"
-            />
+            <picture>
+              <source srcSet="/images/blog/precio-azafatas-eventos-espana.webp" type="image/webp" />
+              <img
+                src="/images/blog/precio-azafatas-eventos-espana.jpg"
+                alt="Azafatas de eventos en feria profesional — precio y tarifas de azafatas en España 2026"
+                className="w-full rounded-xl my-6 object-cover"
+                style={{ maxHeight: 320, filter: 'brightness(0.9)' }}
+                loading="lazy"
+                width={800}
+                height={450}
+              />
+            </picture>
           </div>
           <BlogInlineCTA role="azafata" variant="upgrade" />
           <div className="space-y-10">
@@ -85,7 +91,7 @@ export default function BlogPrecioAzafatas() {
             </section>
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
-              <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}><p className="text-sm font-bold mb-2">{f.name}</p><p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p></div>))}</div>
+              <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}><h3 className="text-sm font-bold mb-2">{f.name}</h3><p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p></div>))}</div>
             </section>
             
             <section className="mt-8 mb-8">
@@ -130,6 +136,7 @@ export default function BlogPrecioAzafatas() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/precio-azafatas-eventos-espana" />
 </main>
       <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/precio-azafatas-eventos-espana' tag='Staff' />
         <FooterPublic />
       <BlogScrollCTA role="azafata" storageKey="xpeak_scrollcta_precio_azafatas" />
       </div>

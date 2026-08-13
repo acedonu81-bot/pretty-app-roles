@@ -1,11 +1,13 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Cómo contratar personal para un evento en España: guía completa 2026', description: 'Guía paso a paso para contratar personal para eventos en España. Qué perfiles necesitas, precios por categoría y checklist antes de firmar.', datePublished: '2026-05-07',
-  dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/como-contratar-personal-para-un-evento' };
+  dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/como-contratar-personal-para-un-evento' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta contratar personal para un evento?', acceptedAnswer: { '@type': 'Answer', text: 'Depende del perfil. Un camarero para eventos cuesta entre 15€ y 25€/hora; un DJ entre 300€ y 1.500€ por evento; un fotógrafo entre 500€ y 2.500€; azafatas entre 120€ y 200€ por jornada. El presupuesto total de personal suele representar el 20-35% del coste total del evento.' } },
   { '@type': 'Question', name: '¿Con cuánta antelación hay que contratar al personal para un evento?', acceptedAnswer: { '@type': 'Answer', text: 'Para bodas y grandes eventos, con 6-12 meses de antelación para DJs y fotógrafos. El personal de sala (camareros, staff) puede contratarse con 4-8 semanas. Para urgencias, XPEAK Flash Booking permite contratar en menos de 2 horas.' } },
@@ -198,7 +200,9 @@ export default function BlogContratarPersonalEvento() {
                   <BlogEmailCapture variant="presupuestos" intent="general" articlePath="/blog/como-contratar-personal-para-un-evento" />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/como-contratar-personal-para-un-evento' tag='Staff' />
         <FooterPublic />
+        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_contratar_personal_evento" />
       </div>
     </>
   );

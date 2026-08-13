@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
@@ -9,8 +10,15 @@ import SolicitudesTab from './flashbooking/SolicitudesTab';
 const FlashBookingWallView = () => {
   const currentUser = useProfile();
   const { user } = useAuth();
+  const location = useLocation();
   const isEmpresario = currentUser.role === 'empresario';
-  const [tab, setTab] = useState<'oferta' | 'demanda' | 'solicitudes'>(isEmpresario ? 'demanda' : 'oferta');
+  // El enlace del email "Nueva solicitud Flash Booking" pasa ?tab=solicitudes
+  // para abrir directamente en la solicitud recibida, en vez de la pestaña
+  // por defecto (oferta/demanda).
+  const tabFromQuery = new URLSearchParams(location.search).get('tab');
+  const [tab, setTab] = useState<'oferta' | 'demanda' | 'solicitudes'>(
+    tabFromQuery === 'solicitudes' && !isEmpresario ? 'solicitudes' : (isEmpresario ? 'demanda' : 'oferta')
+  );
   const [pendingCount, setPendingCount] = useState(0);
 
   // Count pending incoming requests for professionals

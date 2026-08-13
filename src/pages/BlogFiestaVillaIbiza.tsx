@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
@@ -16,6 +17,16 @@ const jsonLd = {
   "url": "https://xpeak.es/blog/fiesta-privada-villa-ibiza"
 };
 
+const faqStructured = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    { '@type': 'Question', name: '¿Cuál es la normativa de ruido para una fiesta privada en villa en Ibiza?', acceptedAnswer: { '@type': 'Answer', text: 'Las Islas Baleares aplican una normativa estricta: en horario diurno (7h-23h) el nivel máximo en el exterior es de 45-50 dB, y en horario nocturno (23h-7h) baja a 35-40 dB, con la música amplificada exterior muy limitada. Conviene instalar el equipo de sonido en interior si la fiesta se prolonga hasta la madrugada.' } },
+    { '@type': 'Question', name: '¿Cuánto cuesta organizar una fiesta en una villa de Ibiza?', acceptedAnswer: { '@type': 'Answer', text: 'El presupuesto orientativo de proveedores es de unos 1.500€-2.600€ para 20 personas y 2.500€-5.000€ para 50 personas, sin incluir alquiler de villa ni bebidas. Incluye DJ, camareros, catering o cóctel y fotógrafo.' } },
+    { '@type': 'Question', name: '¿Qué proveedores necesito para una fiesta en villa?', acceptedAnswer: { '@type': 'Answer', text: 'Los principales son un DJ villa Ibiza (300€-1.200€ según duración y nombre), camareros (14€-20€/hora por persona, esenciales a partir de 20 invitados), catering o barra de cócteles y un fotógrafo o videógrafo con experiencia en privacidad de clientes.' } },
+  ],
+};
+
 export default function BlogFiestaVillaIbiza() {
   return (
     <>
@@ -24,6 +35,7 @@ export default function BlogFiestaVillaIbiza() {
         <meta name="description" content="Cómo organizar una fiesta privada en villa de Ibiza. Normativa de ruido, permisos, DJ villa Ibiza, camareros Ibiza y catering. Guía completa 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/fiesta-privada-villa-ibiza" />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+        <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
       </Helmet>
       <div style={{ background: '#0A0A0A', color: '#F5F5F0', minHeight: '100vh' }}>
         <div className="max-w-2xl mx-auto px-4 py-12">
@@ -91,6 +103,18 @@ export default function BlogFiestaVillaIbiza() {
             </table>
             <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.8rem', marginBottom: '1.5rem' }}>* Precios orientativos 2026. No incluyen alquiler de villa ni bebidas.</p>
 
+            <section className="mt-8">
+              <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
+              <div className="space-y-4">
+                {faqStructured.mainEntity.map(f => (
+                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
+                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+
             <div className="mt-8 p-5 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
               <p className="font-black text-lg mb-2">Contrata DJ, camareros y catering para tu villa en Ibiza</p>
               <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.9rem', marginBottom: '1rem' }}>Profesionales verificados disponibles en Ibiza. Flash Booking disponible para fechas de última hora.</p>
@@ -101,6 +125,7 @@ export default function BlogFiestaVillaIbiza() {
             <BlogShare />
           </article>
         </div>
+        <BlogRelatedPosts currentSlug='/blog/fiesta-privada-villa-ibiza' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_villa_ibiza" />
       </div>

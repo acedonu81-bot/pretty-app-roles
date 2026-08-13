@@ -1,9 +1,12 @@
 import { Helmet } from 'react-helmet-async';
 import { ArrowLeft, Zap } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const breadcrumb = {
   '@context': 'https://schema.org',
@@ -15,6 +18,16 @@ const breadcrumb = {
   ],
 };
 
+const faqStructured = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    { '@type': 'Question', name: '¿Con cuánta antelación hay que reservar un DJ de boda?', acceptedAnswer: { '@type': 'Answer', text: 'Los buenos DJs de boda se reservan con 6 a 12 meses de antelación. Si tu boda es en temporada alta (mayo a octubre), esperar a 3 meses antes significa quedarte sin las primeras opciones. Empieza a buscar en cuanto tengas fecha y finca.' } },
+    { '@type': 'Question', name: '¿Cuánto cobra un DJ para una boda en España?', acceptedAnswer: { '@type': 'Answer', text: 'Los precios en España varían entre 400€ y 1.500€ para DJs de boda según experiencia, equipamiento y ciudad. Elegir solo por precio suele salir caro: un ahorro de 200€ en el DJ puede costar el doble en disgusto si la noche falla.' } },
+    { '@type': 'Question', name: '¿Qué debe incluir el contrato de un DJ de boda?', acceptedAnswer: { '@type': 'Answer', text: 'El contrato debe incluir fecha, horario, equipamiento incluido, precio cerrado, política de cancelación y datos fiscales. Un acuerdo de palabra no vale nada si el DJ cancela o el precio sube el día del evento. En XPEAK el contrato digital se genera automáticamente al confirmar la contratación.' } },
+  ],
+};
+
 export default function BlogDJErroresBoda() {
   const articleStructured = {
     '@context': 'https://schema.org',
@@ -22,7 +35,7 @@ export default function BlogDJErroresBoda() {
     headline: 'Los 10 errores al contratar un DJ para una boda (y cómo evitarlos)',
     datePublished: '2026-05-18',
     dateModified: '2026-05-18',
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     description: 'Guía para novios: los 10 errores más comunes al contratar un DJ para la boda y cómo evitarlos para que la noche salga perfecta.',
   };
@@ -108,6 +121,7 @@ export default function BlogDJErroresBoda() {
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(articleStructured)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
+        <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
       </Helmet>
 
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
@@ -195,6 +209,19 @@ export default function BlogDJErroresBoda() {
             </a>
           </div>
 
+          {/* Preguntas frecuentes */}
+          <section className="mb-12">
+            <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
+            <div className="space-y-4">
+              {faqStructured.mainEntity.map(f => (
+                <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <h3 className="text-sm font-bold mb-2">{f.name}</h3>
+                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
           {/* Artículos relacionados */}
           <h2 className="text-lg font-black mb-5">Artículos relacionados</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -221,8 +248,12 @@ export default function BlogDJErroresBoda() {
           <BlogShare />
         </article>
 
+          <DJResourcesAffiliate />
+
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/10-errores-contratar-dj-boda" />
+        <BlogRelatedPosts currentSlug='/blog/10-errores-contratar-dj-boda' tag='DJ' />
         <FooterPublic />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_errores_boda" />
       </div>
     </>
   );

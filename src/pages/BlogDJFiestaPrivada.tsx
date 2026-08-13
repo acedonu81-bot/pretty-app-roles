@@ -1,11 +1,12 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, TrendingUp, Star } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
-import RelatedPosts from '@/components/RelatedPosts';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const TABLE = [
   { tipo: 'Cumpleaños íntimo (< 30 p.)', horas: '3–4 h', rango: '150€ – 350€', incluye: 'Equipo básico, listas o mezcla' },
@@ -27,7 +28,7 @@ export default function BlogDJFiestaPrivada() {
     '@type': 'Article',
     headline: 'DJ para fiesta privada: precios y qué incluye en España (2026)',
     description: 'Cuánto cuesta contratar un DJ para una fiesta privada en España. Precios por número de personas, horas y tipo de evento.',
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-23',
     dateModified: '2026-05-23',
@@ -186,7 +187,7 @@ const faqStructured = {
                 <p className="text-sm font-black mb-0.5">¿Buscas DJ para tu fiesta?</p>
                 <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>Directorio con tarifas públicas · Flash Booking disponible · 0 comisión</p>
               </div>
-              <a href="/auth"
+              <a href="/contratar-dj"
                 className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-xs transition-all hover:scale-105"
                 style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)', whiteSpace: 'nowrap' }}>
                 Ver DJs disponibles →
@@ -215,7 +216,9 @@ const faqStructured = {
           </div>
           <BlogAuthor />
           <BlogShare />
+          <DJResourcesAffiliate />
         </article>
+        <BlogRelatedPosts currentSlug='/blog/dj-para-fiesta-privada-precio' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_fiesta_privada" />
       </div>

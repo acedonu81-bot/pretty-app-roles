@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 
 const ARTICLES = [
   { href: '/blog/cuanto-cuesta-una-comunion-en-espana', tag: 'Presupuesto', title: '¿Cuánto cuesta una comunión en España 2026?', desc: 'Desglose por partidas: catering, DJ, fotógrafo, animación y decoración.' },
@@ -114,6 +115,7 @@ export default function HubComuniones() {
             </div>
           </div>
         </main>
+        <BlogRelatedPosts currentSlug='/blog/comuniones-guia-completa' tag='Eventos' />
         <FooterPublic />
       </div>
     </>

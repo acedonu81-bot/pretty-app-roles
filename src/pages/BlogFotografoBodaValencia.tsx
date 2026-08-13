@@ -1,11 +1,14 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogAnswerBox from '@/components/BlogAnswerBox';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo para bodas en Valencia: precio y guía 2026', description: 'Cuánto cuesta un fotógrafo para una boda en Valencia. Precios reales 2026, fincas de L\'Albufera, estilo mediterráneo y cuándo reservar en la Comunitat.', datePublished: '2026-06-03', dateModified: '2026-06-03', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-boda-valencia' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo para bodas en Valencia: precio y guía 2026', description: 'Cuánto cuesta un fotógrafo para una boda en Valencia. Precios reales 2026, fincas de L\'Albufera, estilo mediterráneo y cuándo reservar en la Comunitat.', datePublished: '2026-06-03', dateModified: '2026-06-03', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-boda-valencia' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de boda en Valencia?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de boda en Valencia cuesta entre 1.100€ y 3.000€ para el reportaje completo. Los precios en Valencia son ligeramente inferiores a Madrid y Barcelona — en la media nacional o hasta un 10% por encima. El reportaje completo con álbum ronda los 1.500-2.500€. Para reportajes de 4-5h sin álbum, el rango es 700-1.200€.' } },
   { '@type': 'Question', name: '¿Qué estilo fotográfico es más popular en bodas de Valencia?', acceptedAnswer: { '@type': 'Answer', text: 'En Valencia predomina el estilo mediterráneo luminoso: colores cálidos, mucha luz natural y localizaciones exteriores al atardecer. L\'Albufera y los arrozales son un backdrop muy fotogénico que los fotógrafos valencianos aprovechan para sesiones golden hour únicas en España. El estilo documental natural es el más demandado, con postprocesado cálido y saturado.' } },
@@ -53,6 +56,11 @@ export default function BlogFotografoBodaValencia() {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Fotógrafo para bodas en Valencia: precio y guía 2026</h1>
             <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Valencia ofrece algo que ninguna otra ciudad española tiene: el atardecer sobre L'Albufera. Los fotógrafos valencianos son reconocidos por su estilo mediterráneo cálido y luminoso. Precios más competitivos que Madrid o Barcelona.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>3 junio 2026</time>
+          <BlogAnswerBox
+            question="¿Cuánto cuesta un fotógrafo para una boda en Valencia?"
+            answer="Un fotógrafo para el reportaje completo de una boda en Valencia (sin álbum impreso) cuesta entre 1.100 y 2.000€ en 2026. El precio final depende de las horas de cobertura, si incluye álbum físico y si se contrata también videógrafo."
+          />
+
           </div>
           <div className="space-y-10">
             <section>
@@ -73,7 +81,7 @@ export default function BlogFotografoBodaValencia() {
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
                   <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                     <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
@@ -105,7 +113,9 @@ export default function BlogFotografoBodaValencia() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/fotografo-boda-valencia" />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/fotografo-boda-valencia' tag='Fotografía' />
         <FooterPublic />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda_valencia" />
       </div>
     </>
   );

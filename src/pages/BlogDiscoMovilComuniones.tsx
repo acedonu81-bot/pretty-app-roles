@@ -1,5 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
@@ -24,7 +26,7 @@ export default function BlogDiscoMovilComuniones() {
     '@type': 'Article',
     headline: 'Disco móvil para comuniones: precios y qué incluye en 2026',
     description: 'Guía completa para contratar una disco móvil para tu comunión en España: precios por paquete, qué incluye y cómo elegir bien.',
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-03',
     dateModified: '2026-05-03',
@@ -170,7 +172,9 @@ const faqStructured = {
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/disco-movil-para-comuniones" />
-      <FooterPublic />
+      <BlogRelatedPosts currentSlug='/blog/disco-movil-para-comuniones' tag='DJ' />
+        <FooterPublic />
+      <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_disco_movil_comuniones" />
       </div>
     </>
   );

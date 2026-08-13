@@ -1,15 +1,16 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
-import RelatedPosts from '@/components/RelatedPosts';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 import BlogTopCTA from '@/components/BlogTopCTA';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Contrato para DJ: qué debe incluir y cómo redactarlo (2026)', description: 'Guía completa sobre qué cláusulas debe tener un contrato de DJ para eventos. Checklist legal, errores frecuentes y cómo protegerte antes del evento.', datePublished: '2026-05-27', dateModified: '2026-05-27', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/contrato-dj-que-debe-incluir' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Contrato para DJ: qué debe incluir y cómo redactarlo (2026)', description: 'Guía completa sobre qué cláusulas debe tener un contrato de DJ para eventos. Checklist legal, errores frecuentes y cómo protegerte antes del evento.', datePublished: '2026-05-27', dateModified: '2026-05-27', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/contrato-dj-que-debe-incluir' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Es obligatorio hacer un contrato con el DJ?', acceptedAnswer: { '@type': 'Answer', text: 'No es obligatorio legalmente, pero sí es muy recomendable. Un contrato protege a ambas partes: al organizador le garantiza que el DJ cumple lo acordado, y al DJ le protege ante cancelaciones de última hora. Sin contrato, cualquier incumplimiento es mucho más difícil de reclamar.' } },
   { '@type': 'Question', name: '¿Qué señal o anticipo se paga al contratar un DJ?', acceptedAnswer: { '@type': 'Answer', text: 'Lo habitual es pagar una señal del 30-50% del caché total al firmar el contrato, y el resto 48-72 horas antes del evento o al terminar la actuación. La señal sirve para reservar la fecha y cubre los costes de preparación del DJ.' } },
@@ -79,13 +80,18 @@ export default function BlogContratoDJ() {
               question="¿Qué debe incluir un contrato de DJ?"
               answer="Un contrato de DJ debe incluir: fecha, horario y lugar del evento; equipo de sonido e iluminación detallado; precio total y forma de pago con señal (30-50%); cláusula de cancelación para ambas partes; y penalizaciones por retraso o no presentación. Sin estos elementos el contrato no protege a ninguna de las dos partes."
             />
-            <img
-              src="/images/blog/contrato-dj-clausulas-modelo.jpg"
-              alt="Controladora de DJ profesional en evento — modelo de contrato DJ con cláusulas legales 2026"
-              className="w-full rounded-xl my-6 object-cover"
-              style={{ maxHeight: 320, filter: 'brightness(0.9)' }}
-              loading="lazy"
-            />
+            <picture>
+              <source srcSet="/images/blog/contrato-dj-clausulas-modelo.webp" type="image/webp" />
+              <img
+                src="/images/blog/contrato-dj-clausulas-modelo.jpg"
+                alt="Controladora de DJ profesional en evento — modelo de contrato DJ con cláusulas legales 2026"
+                className="w-full rounded-xl my-6 object-cover"
+                style={{ maxHeight: 320, filter: 'brightness(0.9)' }}
+                loading="lazy"
+                width={800}
+                height={450}
+              />
+            </picture>
           </div>
 
           <div className="space-y-10">
@@ -103,6 +109,8 @@ export default function BlogContratoDJ() {
                 ))}
               </div>
             </section>
+
+            <DJResourcesAffiliate />
 
             <BlogEmailCapture variant="plantilla" intent="contratar-dj" articlePath="/blog/contrato-dj-que-debe-incluir" />
             <BlogInlineCTA role="dj" variant="upgrade" />
@@ -151,7 +159,7 @@ export default function BlogContratoDJ() {
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
                   <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                     <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
@@ -203,9 +211,9 @@ export default function BlogContratoDJ() {
               <a href="/contratar-dj" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Contratar DJ con contrato digital →</a>
             </div>
           </div>
-                  <RelatedPosts currentSlug="/blog/contrato-dj-que-debe-incluir" tags={['DJ']} />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/contrato-dj-que-debe-incluir' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_contrato_dj" />
       </div>

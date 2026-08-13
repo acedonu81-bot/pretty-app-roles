@@ -1,11 +1,14 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogAnswerBox from '@/components/BlogAnswerBox';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo para bodas en Sevilla: precio y guía 2026', description: 'Cuánto cuesta un fotógrafo para una boda en Sevilla. Precios reales 2026, haciendas andaluzas, patios y cómo elegir el mejor fotógrafo en Andalucía.', datePublished: '2026-06-03', dateModified: '2026-06-03', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-boda-sevilla' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo para bodas en Sevilla: precio y guía 2026', description: 'Cuánto cuesta un fotógrafo para una boda en Sevilla. Precios reales 2026, haciendas andaluzas, patios y cómo elegir el mejor fotógrafo en Andalucía.', datePublished: '2026-06-03', dateModified: '2026-06-03', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-boda-sevilla' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de boda en Sevilla?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de boda en Sevilla cuesta entre 1.000€ y 2.800€ para el reportaje completo. Los precios en Sevilla están en la media nacional o ligeramente por encima en el segmento premium. El reportaje completo con álbum ronda los 1.400-2.500€. Para reportajes de 5-6h sin álbum, el rango es 700-1.200€.' } },
   { '@type': 'Question', name: '¿Qué hace especial la fotografía de bodas en Sevilla?', acceptedAnswer: { '@type': 'Answer', text: 'Sevilla tiene una luz dorada característica en las horas de atardecer que los fotógrafos aprovechan al máximo en haciendas y patios. La arquitectura barroca, los azulejos, los naranjos y las rejas forjadas crean backdrops únicos. Los fotógrafos sevillanos especializados en bodas en haciendas saben cómo trabajar con espacios de sombras fuertes y contraluces mediterráneos.' } },
@@ -53,6 +56,11 @@ export default function BlogFotografoBodaSevilla() {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Fotógrafo para bodas en Sevilla: precio y guía 2026</h1>
             <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>La luz de Sevilla es única en España. Haciendas con naranjos, patios barrocos y ese dorado de atardecer que hace que las fotos de boda sevillanas sean reconocibles en cualquier parte del mundo. Precios y guía para elegir bien.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>3 junio 2026</time>
+          <BlogAnswerBox
+            question="¿Cuánto cuesta un fotógrafo para una boda en Sevilla?"
+            answer="Un fotógrafo para el reportaje completo de una boda en Sevilla (sin álbum impreso) cuesta entre 1.000 y 1.800€ en 2026. El precio final depende de las horas de cobertura, si incluye álbum físico y si se contrata también videógrafo."
+          />
+
           </div>
           <div className="space-y-10">
             <section>
@@ -73,7 +81,7 @@ export default function BlogFotografoBodaSevilla() {
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
                   <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                     <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
@@ -105,7 +113,9 @@ export default function BlogFotografoBodaSevilla() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/fotografo-boda-sevilla" />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/fotografo-boda-sevilla' tag='Fotografía' />
         <FooterPublic />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda_sevilla" />
       </div>
     </>
   );

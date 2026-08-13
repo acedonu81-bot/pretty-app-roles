@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
-import RelatedPosts from '@/components/RelatedPosts';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
@@ -13,7 +14,7 @@ const article = {
   description: 'Guía de precios de maquillaje para novias en España. Cuánto cuesta, qué incluye el servicio y cómo elegir la maquilladora perfecta.',
   datePublished: '2026-05-03',
   dateModified: '2026-05-25',
-  author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
   url: 'https://xpeak.es/blog/maquillaje-nupcial-precio-guia',
@@ -74,18 +75,18 @@ export default function BlogMaquillajeBoda() {
   return (
     <>
       <Helmet>
-        <title>Maquillaje nupcial: precios y cómo elegir 2026 | XPEAK</title>
-        <meta name="description" content="Cuánto cuesta el maquillaje de novia en España, qué incluye y cómo elegir bien tu maquilladora. Precios por ciudad y tipo de servicio." />
+        <title>Maquillaje de Novia: Precio Real 200€-350€ (2026) | XPEAK</title>
+        <meta name="description" content="El maquillaje de novia cuesta entre 200€ y 350€ de media (hasta 400€+ en Madrid o Barcelona), prueba incluida. Precios reales por ciudad y tipo de servicio." />
         <link rel="canonical" href="https://xpeak.es/blog/maquillaje-nupcial-precio-guia" />
-        <meta property="og:title" content="Maquillaje nupcial: precios 2026 — XPEAK Blog" />
-        <meta property="og:description" content="Cuánto cuesta el maquillaje de novia en España, qué incluye y cómo elegir bien tu maquilladora. Precios por ciudad y tipo de servicio." />
+        <meta property="og:title" content="Maquillaje de Novia: Precio Real 200€-350€ (2026)" />
+        <meta property="og:description" content="El maquillaje de novia cuesta entre 200€ y 350€ de media, prueba incluida. Precios reales por ciudad y tipo de servicio." />
         <meta property="og:url" content="https://xpeak.es/blog/maquillaje-nupcial-precio-guia" />
         <meta property="og:type" content="article" />
         <meta property="og:image" content="https://xpeak.es/og-image.jpg" />
         <meta property="og:site_name" content="XPEAK" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Maquillaje nupcial: precios 2026 — XPEAK Blog" />
-        <meta name="twitter:description" content="Cuánto cuesta el maquillaje de novia en España y cómo elegir bien tu maquilladora." />
+        <meta name="twitter:title" content="Maquillaje de Novia: Precio Real 200€-350€ (2026)" />
+        <meta name="twitter:description" content="El maquillaje de novia cuesta entre 200€ y 350€ de media, prueba incluida." />
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(article)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
@@ -196,7 +197,7 @@ export default function BlogMaquillajeBoda() {
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
                   <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                     <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
@@ -224,17 +225,18 @@ export default function BlogMaquillajeBoda() {
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas maquilladora verificada para tu evento?</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>En XPEAK puedes contratar maquilladoras profesionales con portfolio verificado. Gratis para empresarios y organizadores.</p>
-              <a href="/auth" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
+              <a href="/contratar-maquillaje" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                 Ver maquilladoras en XPEAK →
               </a>
             </div>
           </div>
-                  <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/maquillaje-nupcial-precio-guia" />
-          <RelatedPosts currentSlug="/blog/maquillaje-nupcial-precio-guia" tags={['Maquillaje']} />
+                  <BlogEmailCapture variant="presupuestos" intent="contratar-makeup" articlePath="/blog/maquillaje-nupcial-precio-guia" />
 </main>
       <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/maquillaje-nupcial-precio-guia' tag='Maquillaje' />
         <FooterPublic />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maquillaje_boda" />
       </div>
     </>
   );

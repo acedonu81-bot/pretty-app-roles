@@ -1,5 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
@@ -11,7 +13,7 @@ const article = {
   description: 'Cuánto cobra un fotógrafo de eventos nocturnos en España. Precios por tipo de evento, qué incluye y cómo elegir el perfil correcto.',
   datePublished: '2026-05-03',
   dateModified: '2026-05-25',
-  author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
   url: 'https://xpeak.es/blog/fotografia-eventos-nocturnos',
@@ -177,7 +179,7 @@ export default function BlogFotografiaEventosNocturnos() {
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
                   <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                     <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
@@ -210,7 +212,9 @@ export default function BlogFotografiaEventosNocturnos() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/fotografia-eventos-nocturnos" />
 </main>
       <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/fotografia-eventos-nocturnos' tag='Fotografía' />
         <FooterPublic />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografia_eventos_nocturnos" />
       </div>
     </>
   );

@@ -1,7 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import { Music, Camera, UtensilsCrossed, Flower2, Users, Car, ChevronRight } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
-import RelatedPosts from '@/components/RelatedPosts';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
@@ -63,7 +64,7 @@ export default function BlogCosteBoda() {
     '@type': 'Article',
     headline: '¿Cuánto cuesta una boda en España en 2026? Guía de presupuesto',
     description: 'Guía completa con el coste real de una boda en España en 2026: desglose por partidas, precio según número de invitados y ciudad. DJ, catering, fotógrafo, personal.',
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-04-30',
     dateModified: '2026-06-08',
@@ -431,7 +432,9 @@ const faqStructured = {
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuanto-cuesta-una-boda-en-espana" />
-      <FooterPublic />
+      <BlogRelatedPosts currentSlug='/blog/cuanto-cuesta-una-boda-en-espana' tag='Bodas' />
+        <FooterPublic />
+      <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_coste_boda" />
       </div>
     </>
   );

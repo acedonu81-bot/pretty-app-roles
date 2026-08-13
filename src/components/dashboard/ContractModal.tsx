@@ -673,7 +673,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
       onClick={onClose}>
       <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(10px)' }} />
       <div className="relative w-full max-w-xl my-4 rounded-2xl flex flex-col"
-        style={{ background: '#0a0a0e', border: '1px solid rgba(212,175,55,0.25)', boxShadow: '0 32px 80px rgba(0,0,0,0.6)' }}
+        style={{ background: '#ffffff', border: '1px solid rgba(212,175,55,0.25)', boxShadow: '0 32px 80px rgba(0,0,0,0.25)' }}
         onClick={e => e.stopPropagation()}>
 
         {/* Header */}
@@ -734,7 +734,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
                 </div>
                 <div>
                   <label className={lbl} style={lblStyle}>Fecha contrato</label>
-                  <input className={inp} style={{ ...inpStyle, colorScheme: 'dark' }} type="date"
+                  <input className={inp} style={{ ...inpStyle, colorScheme: 'light' }} type="date"
                     value={form.fechaFirma.split('/').reverse().join('-')}
                     onChange={e => setForm(f => ({ ...f, fechaFirma: e.target.value.split('-').reverse().join('/') }))} />
                 </div>
@@ -793,7 +793,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className={lbl} style={lblStyle}>Fecha del evento *</label>
-                  <input className={inp} style={{ ...inpStyle, colorScheme: 'dark' }} type="date" value={form.fechaEvento} onChange={set('fechaEvento')} />
+                  <input className={inp} style={{ ...inpStyle, colorScheme: 'light' }} type="date" value={form.fechaEvento} onChange={set('fechaEvento')} />
                 </div>
                 <div className="flex gap-2">
                   <div className="flex-1">

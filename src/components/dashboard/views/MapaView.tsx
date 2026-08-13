@@ -142,7 +142,7 @@ const MapaView = () => {
                 >
                   <div className="flex-shrink-0">
                     {pro.photo_url ? (
-                      <img src={pro.photo_url} alt={pro.display_name}
+                      <img src={pro.photo_url} alt={pro.display_name} loading="lazy"
                         className="w-10 h-10 rounded-lg object-cover"
                         onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                     ) : (
@@ -152,7 +152,6 @@ const MapaView = () => {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5 mb-0.5">
                       <p className="text-sm font-bold truncate">{pro.display_name || 'Sin nombre'}</p>
-                      {pro.is_verified && <CheckCircle size={11} style={{ color: '#22c55e', flexShrink: 0 }} />}
                     </div>
                     <p className="text-xs text-muted-foreground truncate">
                       {ROLE_LABELS[pro.role] ?? pro.role}{pro.specialty ? ` · ${pro.specialty}` : ''}

@@ -1,5 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
@@ -24,7 +26,7 @@ export default function BlogPromotoresEventos() {
     '@type': 'Article',
     headline: 'Promotores de eventos: qué hacen y cuánto cobran en España (2026)',
     description: 'Guía completa sobre los promotores de eventos en España 2026: tipos de promotores, funciones, tarifas y cómo contratarlos con métricas reales.',
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-03',
     dateModified: '2026-05-03',
@@ -153,7 +155,9 @@ const faqStructured = {
           <BlogShare />
         </article>
           <BlogEmailCapture variant="guia" intent="ser-profesional" articlePath="/blog/promotores-de-eventos-que-hacen" />
-      <FooterPublic />
+      <BlogRelatedPosts currentSlug='/blog/promotores-de-eventos-que-hacen' tag='Staff' />
+        <FooterPublic />
+      <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_promotores_eventos" />
       </div>
     </>
   );

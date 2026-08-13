@@ -186,7 +186,7 @@ const EscenarioVirtualView = () => {
     if (!chatInput.trim()) return;
     const { clean, reason } = sanitizeInput(chatInput);
     if (!clean) { toast.error(reason); return; }
-    setChatMessages(prev => [...prev, { user: 'Tú', text: chatInput, color: '#ffffff' }]);
+    setChatMessages(prev => [...prev, { user: 'Tú', text: chatInput, color: '#8A6D0F' }]);
     setChatInput('');
   };
 
@@ -538,7 +538,7 @@ const EscenarioVirtualView = () => {
 
           <div ref={chatRef} className="flex-1 overflow-y-auto flex flex-col gap-1 mb-3 min-h-0">
             {chatMessages.length > 0 ? chatMessages.map((msg, i) => (
-              <div key={i} className="text-xs px-2 py-1.5 rounded" style={{ background: 'rgba(255,255,255,0.02)' }}>
+              <div key={i} className="text-xs px-2 py-1.5 rounded" style={{ background: 'rgba(0,0,0,0.03)' }}>
                 <span className="font-bold mr-1" style={{ color: msg.color }}>{msg.user}</span>
                 <span className="text-muted-foreground">{msg.text}</span>
               </div>

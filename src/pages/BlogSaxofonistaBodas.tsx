@@ -1,6 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, TrendingUp, Star } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
@@ -25,7 +27,7 @@ export default function BlogSaxofonistaBodas() {
     '@type': 'Article',
     headline: 'Saxofonista para bodas: precio y repertorio en España (2026)',
     description: 'Cuánto cuesta contratar un saxofonista para una boda en España. Precios por momento del evento, qué géneros toca y si es mejor solo o con DJ.',
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-23',
     dateModified: '2026-05-23',
@@ -209,7 +211,9 @@ const faqStructured = {
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/saxofonista-para-bodas-precio" />
+        <BlogRelatedPosts currentSlug='/blog/saxofonista-para-bodas-precio' tag='Bodas' />
         <FooterPublic />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_saxofonista_bodas" />
       </div>
     </>
   );

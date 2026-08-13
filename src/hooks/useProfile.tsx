@@ -24,6 +24,7 @@ interface ProfileData {
   instagram: string | null;
   bio: string | null;
   audio_embed_url: string | null;
+  audio_session_urls: string[] | null;
   languages: string[] | null;
   genres: string[] | null;
   category: string | null;
@@ -83,6 +84,7 @@ const defaults: ProfileData = {
   instagram: null,
   bio: null,
   audio_embed_url: null,
+  audio_session_urls: null,
   languages: null,
   genres: null,
   category: null,
@@ -128,7 +130,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     // Load all profiles for this user
     const { data: rows } = await supabase
       .from('profiles')
-      .select('id, display_name, role, roles, photo_url, is_primary, subscription_tier, birthday, zone, hourly_rate, stream_url, stream_title, trial_started_at, annual_billing, is_live, is_flash_active, phone, specialty, instagram, bio, audio_embed_url, languages, genres, category, tiktok, bio_video_url, bg_music_url, portfolio_urls, referral_code, priority_badge_until, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, created_at')
+      .select('id, display_name, role, roles, photo_url, is_primary, subscription_tier, birthday, zone, hourly_rate, stream_url, stream_title, trial_started_at, annual_billing, is_live, is_flash_active, phone, specialty, instagram, bio, audio_embed_url, audio_session_urls, languages, genres, category, tiktok, bio_video_url, bg_music_url, portfolio_urls, referral_code, priority_badge_until, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, created_at')
       .eq('user_id', user.id)
       .order('created_at', { ascending: true });
 

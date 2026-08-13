@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
@@ -16,6 +17,16 @@ const jsonLd = {
   "url": "https://xpeak.es/blog/personal-extra-hosteleria-temporada"
 };
 
+const faqStructured = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    { '@type': 'Question', name: '¿Cuánto cuesta un camarero extra por horas en hostelería?', acceptedAnswer: { '@type': 'Answer', text: 'En 2026, un camarero de sala cuesta 12€-16€/hora (96€-128€ la jornada de 8h) y un bartender 14€-20€/hora. Perfiles más cualificados como jefe de sala (18€-25€/h) o maitre (20€-30€/h) suben la tarifa. Los precios varían según ciudad, experiencia y convenio colectivo de hostelería.' } },
+    { '@type': 'Question', name: '¿Cuáles son los picos de temporada en hostelería?', acceptedAnswer: { '@type': 'Answer', text: 'Son cuatro: el verano en costa e islas (junio-septiembre), las bodas y eventos privados (abril-octubre), la campaña de Navidad y Nochevieja (noviembre-enero) y los eventos corporativos (septiembre-noviembre y febrero-abril). Cada pico demanda un tipo de personal extra distinto.' } },
+    { '@type': 'Question', name: '¿Cómo contrato personal extra para mi negocio?', acceptedAnswer: { '@type': 'Answer', text: 'En XPEAK creas una cuenta de empresario gratis, publicas una oferta con el perfil, número de personas, fecha y ciudad, recibes candidaturas de camareros verificados con disponibilidad confirmada y firmas el contrato digital automático con un clic. Para urgencias, el Flash Booking da respuesta en menos de 1 hora.' } },
+  ],
+};
+
 export default function BlogPersonalExtraHosteleria() {
   return (
     <>
@@ -24,6 +35,7 @@ export default function BlogPersonalExtraHosteleria() {
         <meta name="description" content="Cómo contratar camareros por horas y personal extra para hostelería en temporada alta. Guía para salas, restaurantes y hoteles. Camareros Madrid, Barcelona e Ibiza." />
         <link rel="canonical" href="https://xpeak.es/blog/personal-extra-hosteleria-temporada" />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+        <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
       </Helmet>
       <div style={{ background: '#0A0A0A', color: '#F5F5F0', minHeight: '100vh' }}>
         <div className="max-w-2xl mx-auto px-4 py-12">
@@ -113,6 +125,18 @@ export default function BlogPersonalExtraHosteleria() {
               <li>Para urgencias: usa <strong style={{ color: '#D4AF37' }}>Flash Booking</strong> — respuesta en menos de 1 hora.</li>
             </ol>
 
+            <section className="mt-8">
+              <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
+              <div className="space-y-4">
+                {faqStructured.mainEntity.map(f => (
+                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
+                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+
             <div className="mt-8 p-5 rounded-2xl" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
               <p className="font-black text-lg mb-2">¿Necesitas camareros extra para esta temporada?</p>
               <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.9rem', marginBottom: '1rem' }}>XPEAK conecta salas, restaurantes y hoteles con camareros por horas verificados en toda España. 0% comisión. Contratos automáticos.</p>
@@ -123,6 +147,7 @@ export default function BlogPersonalExtraHosteleria() {
             <BlogShare />
           </article>
         </div>
+        <BlogRelatedPosts currentSlug='/blog/personal-extra-hosteleria-temporada' tag='Camareros' />
         <FooterPublic />
         <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_personal_extra" />
       </div>

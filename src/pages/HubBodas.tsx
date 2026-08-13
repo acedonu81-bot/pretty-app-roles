@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 
 const ARTICLES = [
   { href: '/blog/cuanto-cuesta-una-boda-en-espana', tag: 'Presupuesto', title: 'Cuánto cuesta una boda en España 2026', desc: 'Desglose por partidas: catering, DJ, fotógrafo, camareros, flores y más.' },
@@ -133,6 +134,7 @@ export default function HubBodas() {
             </div>
           </div>
         </main>
+        <BlogRelatedPosts currentSlug='/blog/profesionales-bodas' tag='Bodas' />
         <FooterPublic />
       </div>
     </>

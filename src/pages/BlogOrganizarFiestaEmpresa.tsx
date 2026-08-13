@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
@@ -12,7 +13,7 @@ const article = {
   headline: 'Cómo organizar una fiesta de empresa: guía completa y presupuesto 2026',
   description: 'Todo lo que necesitas para organizar una fiesta de empresa exitosa. Presupuesto, checklist, proveedores y errores a evitar en eventos corporativos.',
   datePublished: '2026-06-08', dateModified: '2026-06-08',
-  author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   url: 'https://xpeak.es/blog/como-organizar-fiesta-de-empresa',
 };
@@ -130,8 +131,9 @@ export default function BlogOrganizarFiestaEmpresa() {
           <BlogAuthor />
           <BlogShare />
         </article>
+        <BlogRelatedPosts currentSlug='/blog/como-organizar-fiesta-de-empresa' tag='Eventos' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_fiesta_empresa" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_organizar_fiesta_empresa" />
       </div>
     </>
   );

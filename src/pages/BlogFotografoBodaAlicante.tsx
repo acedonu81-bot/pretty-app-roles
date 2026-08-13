@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
@@ -12,7 +13,7 @@ const article = {
   headline: 'Fotógrafo para bodas en Alicante: precio y guía 2026',
   description: 'Cuánto cuesta un fotógrafo para una boda en Alicante. Precios reales 2026, playas, castillos y la luz mediterránea única de la Costa Blanca.',
   datePublished: '2026-06-08', dateModified: '2026-06-08',
-  author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   url: 'https://xpeak.es/blog/fotografo-boda-alicante',
 };
@@ -72,7 +73,7 @@ export default function BlogFotografoBodaAlicante() {
 
           <p className="text-neutral-300 mb-6">Alicante combina playas de postal, el Castillo de Santa Bárbara y fincas en el interior con viñedos. Un escenario excepcional para bodas y para los fotógrafos que saben aprovechar la luz única del Mediterráneo.</p>
 
-          <BlogInlineCTA role="media" text="¿Buscas fotógrafo para tu boda en Alicante? Compara perfiles y tarifas en XPEAK." />
+          <BlogInlineCTA role="fotografo" text="¿Buscas fotógrafo para tu boda en Alicante? Compara perfiles y tarifas en XPEAK." />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Precios fotógrafo boda Alicante 2026</h2>
           <div className="overflow-x-auto mb-8">
@@ -112,8 +113,9 @@ export default function BlogFotografoBodaAlicante() {
           <BlogAuthor />
           <BlogShare />
         </article>
+        <BlogRelatedPosts currentSlug='/blog/fotografo-boda-alicante' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="media" storageKey="xpeak_scrollcta_fotografo_alicante" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_alicante" />
       </div>
     </>
   );

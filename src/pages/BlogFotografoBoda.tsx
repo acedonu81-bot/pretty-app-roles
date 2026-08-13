@@ -1,12 +1,14 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogShare from '@/components/BlogShare';
 import BlogTopCTA from '@/components/BlogTopCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAuthor from '@/components/BlogAuthor';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo de boda: guía de precios y cómo elegir el mejor (2026)', description: 'Cuánto cuesta un fotógrafo de boda en España en 2026. Precios reales, estilos, qué incluye el reportaje y cómo elegir al fotógrafo perfecto para tu boda.', datePublished: '2026-05-10', dateModified: '2026-06-01', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-boda' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo de boda: guía de precios y cómo elegir el mejor (2026)', description: 'Cuánto cuesta un fotógrafo de boda en España en 2026. Precios reales, estilos, qué incluye el reportaje y cómo elegir al fotógrafo perfecto para tu boda.', datePublished: '2026-05-10', dateModified: '2026-06-01', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-boda' };
 
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de boda en España?', acceptedAnswer: { '@type': 'Answer', text: 'El precio medio de un fotógrafo de boda en España oscila entre 1.200€ y 3.500€ para un reportaje completo. En ciudades como Madrid o Barcelona los precios son más altos (1.800–4.500€), mientras que en ciudades medianas se pueden encontrar buenos profesionales desde 900€. El precio depende del número de horas, si incluye álbum y la experiencia del fotógrafo.' } },
@@ -181,7 +183,9 @@ export default function BlogFotografoBoda() {
             <BlogAuthor />
           </div>
         </main>
+        <BlogRelatedPosts currentSlug='/blog/fotografo-boda' tag='Fotografía' />
         <FooterPublic />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda" />
       </div>
     </>
   );

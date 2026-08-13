@@ -1,12 +1,13 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, TrendingUp, MapPin, Star } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
-import RelatedPosts from '@/components/RelatedPosts';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogShare from '@/components/BlogShare';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 import BlogAuthor from '@/components/BlogAuthor';
 import BlogTopCTA from '@/components/BlogTopCTA';
 
@@ -32,6 +33,10 @@ const FAQ = [
   { q: '¿El precio incluye equipo de sonido?', a: 'Depende del DJ. Muchos DJs emergentes no llevan equipo; los profesionales suelen tener setup propio (controladora, monitores). Comprueba en el perfil si el equipo está incluido o si necesitas contratar técnico de sonido aparte.' },
   { q: '¿Hay que pagar IRPF al contratar un DJ?', a: 'Si el DJ es autónomo (epígrafe 962 de IAE), la factura incluirá un 15% de retención de IRPF. El empresario descuenta ese porcentaje del pago y lo ingresa a Hacienda. Los contratos generados en XPEAK incluyen este cálculo automáticamente.' },
   { q: '¿Cuánto vale un DJ para una boda en España?', a: 'Un DJ para boda en España cuesta entre 400€ y 1.200€ por actuación completa (4–6h), incluyendo equipo. El precio depende de la ciudad, duración y si incluye música en la ceremonia y cóctel.' },
+  { q: '¿Cuánto cobra un DJ por una hora?', a: 'La tarifa por hora oscila entre 30€ (DJ emergente) y 500€+ (artista de referencia). Para eventos privados (bodas, cumpleaños, comuniones), lo habitual es contratar un bloque de 4-6 horas, no por hora suelta.' },
+  { q: '¿Cuánto cobra un DJ para una fiesta de 18 cumpleaños o discomóvil?', a: 'Para fiestas de cumpleaños y discomóviles con equipo propio, el rango típico es 150€-400€ por 3-4 horas, dependiendo de si incluye iluminación y microfonía para juegos.' },
+  { q: '¿Qué diferencia hay entre contratar un DJ por agencia o directamente?', a: 'Las agencias suelen añadir un 20-40% de comisión sobre la tarifa del DJ. Contratar directamente (por ejemplo, a través del directorio de XPEAK, sin intermediarios) permite pagar el precio real que fija el propio profesional.' },
+  { q: '¿Es mejor contratar un DJ con equipo propio o alquilar el sonido aparte?', a: 'Si el evento es pequeño (menos de 80 invitados), suele salir más barato un DJ con equipo propio incluido. Para eventos grandes o salas con instalación fija, es más habitual que el local aporte el sistema de sonido y el DJ solo su controladora.' },
 ];
 
 export default function BlogDJPrecio() {
@@ -40,7 +45,7 @@ export default function BlogDJPrecio() {
     '@type': 'Article',
     headline: '¿Cuánto cobra un DJ en España? Tarifas y precios 2026',
     description: 'Guía completa de precios de DJs en España por experiencia, ciudad y tipo de evento. Tarifas reales, IVA e IRPF, Flash Booking.',
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-04-28',
     dateModified: '2026-06-08',
@@ -71,19 +76,19 @@ const faqStructured = {
   return (
     <>
       <Helmet>
-        <title>Cuánto cobra un DJ en España: precios 2026 | XPEAK</title>
-        <meta name="description" content="Guía completa con precios de DJs en España 2026: tarifas por experiencia, ciudad y tipo de evento. IVA, IRPF, equipo incluido o no. Datos reales de XPEAK." />
+        <title>¿Cuánto Cobra un DJ? Precio Real 400€-1.200€ (2026) | XPEAK</title>
+        <meta name="description" content="Un DJ para boda cuesta entre 400€ y 1.200€ por actuación (30€-500€/hora según experiencia y ciudad). Tabla de precios reales 2026, por perfil y por ciudad." />
         <meta name="keywords" content="cuánto cobra un DJ, precio DJ España, tarifa DJ boda, DJ precio hora España, cuánto cuesta DJ 2026" />
         <link rel="canonical" href="https://xpeak.es/blog/cuanto-cobra-un-dj-en-espana" />
-        <meta property="og:title" content="¿Cuánto cobra un DJ en España? Tarifas 2026" />
-        <meta property="og:description" content="Precios reales de DJs en España por experiencia, ciudad y tipo de evento. Guía completa 2026." />
+        <meta property="og:title" content="¿Cuánto Cobra un DJ? Precio Real 400€-1.200€ (2026)" />
+        <meta property="og:description" content="Un DJ para boda cuesta entre 400€ y 1.200€ por actuación. Tabla de precios reales 2026, por perfil y por ciudad." />
         <meta property="og:url" content="https://xpeak.es/blog/cuanto-cobra-un-dj-en-espana" />
         <meta property="og:type" content="article" />
         <meta property="og:image" content="https://xpeak.es/og-image.jpg" />
         <meta property="og:site_name" content="XPEAK" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="¿Cuánto cobra un DJ en España? Tarifas 2026" />
-        <meta name="twitter:description" content="Precios reales de DJs en España por experiencia, ciudad y tipo de evento. Guía completa 2026." />
+        <meta name="twitter:title" content="¿Cuánto Cobra un DJ? Precio Real 400€-1.200€ (2026)" />
+        <meta name="twitter:description" content="Un DJ para boda cuesta entre 400€ y 1.200€ por actuación. Tabla de precios reales 2026, por perfil y por ciudad." />
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
@@ -136,13 +141,18 @@ const faqStructured = {
             question="¿Cuánto cobra un DJ en España en 2026?"
             answer="Un DJ profesional en España cobra entre 60€ y 300€/hora. Para bodas y eventos privados el presupuesto total es de 400€ – 1.200€ por actuación completa. Barcelona y Madrid son las ciudades más caras; las medianas del interior, las más económicas. El precio varía según experiencia, equipo incluido y tipo de evento."
           />
-          <img
-            src="/images/blog/cuanto-cobra-dj-espana-2026.jpg"
-            alt="DJ profesional en cabina con controladora y luces de evento — precios de DJ en España 2026"
-            className="w-full rounded-xl my-6 object-cover"
-            style={{ maxHeight: 320, filter: 'brightness(0.9)' }}
-            loading="lazy"
-          />
+          <picture>
+            <source srcSet="/images/blog/cuanto-cobra-dj-espana-2026.webp" type="image/webp" />
+            <img
+              src="/images/blog/cuanto-cobra-dj-espana-2026.jpg"
+              alt="DJ profesional en cabina con controladora y luces de evento — precios de DJ en España 2026"
+              className="w-full rounded-xl my-6 object-cover"
+              style={{ maxHeight: 320, filter: 'brightness(0.9)' }}
+              loading="lazy"
+              width={800}
+              height={450}
+            />
+          </picture>
 
           {/* Tabla por experiencia */}
           <h2 className="text-xl font-black mb-4">Tarifas de DJ por nivel de experiencia</h2>
@@ -200,6 +210,8 @@ const faqStructured = {
               </div>
             ))}
           </div>
+
+          <DJResourcesAffiliate />
 
           {/* IVA e IRPF */}
           <h2 className="text-xl font-black mb-4">IVA e IRPF: lo que no te dicen en otros artículos</h2>
@@ -291,7 +303,7 @@ const faqStructured = {
                   Directorio con tarifas públicas · Flash Booking para esta noche · 0 comisión
                 </p>
               </div>
-              <a href="/auth"
+              <a href="/contratar-dj"
                 className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-xs transition-all hover:scale-105"
                 style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)', whiteSpace: 'nowrap' }}>
                 Ver DJs disponibles →
@@ -345,7 +357,9 @@ const faqStructured = {
           </div>
           <BlogAuthor />
           <BlogShare />
+          <DJResourcesAffiliate />
         </article>
+        <BlogRelatedPosts currentSlug='/blog/cuanto-cobra-un-dj-en-espana' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_precio" />
       </div>

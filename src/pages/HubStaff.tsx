@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 
 const ARTICLES = [
   { href: '/blog/cuanto-cobra-un-camarero-de-eventos', tag: 'Camareros', title: 'Cuánto cobra un camarero de eventos 2026', desc: 'Precios reales para bodas, eventos de empresa y fiestas privadas.' },
@@ -124,6 +125,7 @@ export default function HubStaff() {
             </div>
           </div>
         </main>
+        <BlogRelatedPosts currentSlug='/blog/staff-para-eventos' tag='Camareros' />
         <FooterPublic />
       </div>
     </>

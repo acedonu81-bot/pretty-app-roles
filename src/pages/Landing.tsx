@@ -538,7 +538,7 @@ const Landing = () => {
         }}>
         <div className="max-w-[1800px] mx-auto px-6 md:px-10 py-4 md:py-5 flex justify-between items-center">
           <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="text-2xl font-black tracking-tight transition-opacity hover:opacity-70 font-display"
+            className="text-2xl font-black tracking-tight transition-opacity hover:opacity-70 font-display whitespace-nowrap shrink-0"
             style={{ color: '#1a1208' }}>
             X<span className="text-gradient">PEAK</span>
           </button>
@@ -588,6 +588,7 @@ const Landing = () => {
           loop
           muted
           playsInline
+          preload="none"
           poster="/videos/hero-poster.jpg"
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover pointer-events-none"
@@ -874,50 +875,45 @@ const Landing = () => {
       </section>
 
 
-      {/* ─ Testimonios ─ */}
-      <section className="relative overflow-hidden pb-16 pt-16" style={{ background: '#f8f7f4' }}>
-        <div className="relative max-w-[1200px] mx-auto px-6 md:px-8">
-        <FadeIn className="text-center mb-10">
-          <p className="text-[0.7rem] font-bold uppercase tracking-[0.25em] mb-4" style={{ color: '#8b5cf6' }}>Lo que dicen los profesionales</p>
-          <h2 className="text-3xl md:text-4xl font-black tracking-tight font-display" style={{ color: '#111' }}>
-            La comunidad <span className="text-gradient">habla</span>
-          </h2>
-        </FadeIn>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {(communityReviews.length > 0 ? communityReviews.slice(0, 3).map((r) => ({
-            name: r.reviewer_name, role: r.reviewer_role,
-            avatar: r.reviewer_avatar ?? r.reviewer_name.charAt(0).toUpperCase(),
-            text: r.comment,
-          })) : [
-            { name: 'Marcos DJ', role: 'DJ Residente · Madrid', avatar: 'M',
-              text: 'En menos de una semana me contactaron dos salas de Madrid a través del directorio. Nunca había conseguido bookings tan rápido sin intermediarios.' },
-            { name: 'Laura V.', role: 'Maquilladora · Barcelona', avatar: 'L',
-              text: 'Mi perfil en XPEAK me trajo tres clientes nuevos en el primer mes. Por fin un sitio donde el sector de eventos busca talento de imagen de verdad.' },
-            { name: 'Club Nocturno NX', role: 'Empresario · Valencia', avatar: 'N',
-              text: 'El Flash Booking nos salvó una noche: publicamos la oferta a las 10pm y a las 11pm teníamos DJ confirmado. Antes eso nos costaba llamadas interminables.' },
-          ]).map((t, i) => (
-            <FadeIn key={t.name} delay={i * 0.08}>
-              <div className="relative rounded-2xl h-64 flex flex-col justify-between p-5"
-                style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 2px 10px rgba(0,0,0,0.06)' }}>
-                <p className="text-sm leading-relaxed" style={{ color: 'rgba(0,0,0,0.75)' }}>
-                  "{t.text}"
-                </p>
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-black flex-shrink-0"
-                    style={{ background: 'rgba(212,175,55,0.12)', color: '#B8941E', border: '1px solid rgba(212,175,55,0.3)' }}>
-                    {t.avatar}
-                  </div>
-                  <div>
-                    <p className="text-xs font-black" style={{ color: '#111' }}>{t.name}</p>
-                    <p className="text-[0.68rem]" style={{ color: 'rgba(0,0,0,0.5)' }}>{t.role}</p>
+      {/* ─ Testimonios (solo si hay reseñas reales aprobadas) ─ */}
+      {communityReviews.length > 0 && (
+        <section className="relative overflow-hidden pb-16 pt-16" style={{ background: '#f8f7f4' }}>
+          <div className="relative max-w-[1200px] mx-auto px-6 md:px-8">
+          <FadeIn className="text-center mb-10">
+            <p className="text-[0.7rem] font-bold uppercase tracking-[0.25em] mb-4" style={{ color: '#8b5cf6' }}>Lo que dicen los profesionales</p>
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight font-display" style={{ color: '#111' }}>
+              La comunidad <span className="text-gradient">habla</span>
+            </h2>
+          </FadeIn>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {communityReviews.slice(0, 3).map((r) => ({
+              name: r.reviewer_name, role: r.reviewer_role,
+              avatar: r.reviewer_avatar ?? r.reviewer_name.charAt(0).toUpperCase(),
+              text: r.comment,
+            })).map((t, i) => (
+              <FadeIn key={t.name} delay={i * 0.08}>
+                <div className="relative rounded-2xl h-64 flex flex-col justify-between p-5"
+                  style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 2px 10px rgba(0,0,0,0.06)' }}>
+                  <p className="text-sm leading-relaxed" style={{ color: 'rgba(0,0,0,0.75)' }}>
+                    "{t.text}"
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-black flex-shrink-0"
+                      style={{ background: 'rgba(212,175,55,0.12)', color: '#B8941E', border: '1px solid rgba(212,175,55,0.3)' }}>
+                      {t.avatar}
+                    </div>
+                    <div>
+                      <p className="text-xs font-black" style={{ color: '#111' }}>{t.name}</p>
+                      <p className="text-[0.68rem]" style={{ color: 'rgba(0,0,0,0.5)' }}>{t.role}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </FadeIn>
-          ))}
-        </div>
-        </div>
-      </section>
+              </FadeIn>
+            ))}
+          </div>
+          </div>
+        </section>
+      )}
 
 
       {/* ─ Guías destacadas (puente blog → directorio) ─ */}

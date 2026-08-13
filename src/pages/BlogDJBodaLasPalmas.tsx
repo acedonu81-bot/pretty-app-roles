@@ -1,14 +1,19 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
+import BlogAnswerBox from '@/components/BlogAnswerBox';
 const slug = 'dj-bodas-las-palmas'; const ciudad = 'Las Palmas de Gran Canaria';
 const PRECIOS = [{ servicio: 'Solo pista (4-5h)', precio: '400–900€' },{ servicio: 'Cóctel + pista', precio: '600–1.300€' },{ servicio: 'Servicio completo', precio: '800–2.000€' },{ servicio: 'Pack resort o finca premium', precio: '1.200–2.500€' }];
 const ZONAS = [{ zona: 'Las Palmas capital', fincas: 'Vegueta histórico, hoteles urbanos', nota: 'Ciudad viva todo el año' },{ zona: 'Sur de Gran Canaria', fincas: 'Maspalomas, resorts de lujo, fincas dunares', nota: 'Turismo internacional masivo' },{ zona: 'Cumbre / Tejeda', fincas: 'Fincas en el corazón de la isla, vistas espectaculares', nota: 'Íntimo y único' },{ zona: 'Valle de Agaete', fincas: 'Fincas entre palmeras y mar', nota: 'Verde y atlántico' }];
 const faq = [{ q: `¿Cuánto cuesta un DJ para una boda en ${ciudad}?`, a: `Entre 600€ y 2.000€. Gran Canaria tiene un mercado turístico potente que eleva los precios respecto a la península. Los resorts del sur cobran hasta 2.500€ para servicios premium con bodas internacionales.` },{ q: `¿Gran Canaria es buen destino para bodas de destino internacionales?`, a: `Sí. Los resorts de Maspalomas y la Playa del Inglés reciben miles de bodas de parejas del norte de Europa cada año. Los DJs de la zona trabajan habitualmente con bodas en inglés, alemán y escandinavo.` },{ q: `¿Hay que preocuparse por la lluvia en Gran Canaria?`, a: `No en el sur. El sur de la isla tiene un clima desértico con lluvia casi inexistente. El norte y la cumbre sí tienen lluvia y niebla. Para bodas al exterior en verano, el sur de la isla es prácticamente infalible.` }];
+const faqPageSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) };
+
 
 const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: `DJs para bodas en Las Palmas de Gran Canaria`, description: `Encuentra y contrata DJs verificados para bodas y eventos en Las Palmas de Gran Canaria. Presupuestos gratuitos, contratos digitales y 0% comisión.`, serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Las Palmas de Gran Canaria' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: `https://xpeak.es/blog/dj-bodas-las-palmas`, offers: { '@type': 'Offer', description: 'Presupuestos gratuitos de DJs verificados', price: '0', priceCurrency: 'EUR' } };
 export default function BlogDJBodaLasPalmas() {
@@ -17,7 +22,7 @@ export default function BlogDJBodaLasPalmas() {
     '@type': 'Article',
     headline: "DJ para bodas en Las Palmas Gran Canaria: precio 2026",
     description: "",
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-06-07',
     dateModified: '2026-06-07',
@@ -36,22 +41,25 @@ export default function BlogDJBodaLasPalmas() {
   };
 
         <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
-  return (<><Helmet><title>DJ para bodas en Las Palmas Gran Canaria: precio 2026 | XPEAK</title><meta name="description" content={`Cuánto cuesta un DJ para una boda en ${ciudad}. Precios 2026, Maspalomas, bodas de destino y cómo contratar el mejor DJ.`} /><link rel="canonical" href={`https://xpeak.es/blog/${slug}`} /><meta property="og:title" content={`DJ bodas Las Palmas 2026 — XPEAK`} /><meta property="og:url" content={`https://xpeak.es/blog/${slug}`} /><meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" /><meta name="twitter:card" content="summary_large_image" /><script type="application/ld+json">{JSON.stringify(serviceSchema)}</script><script type="application/ld+json">{JSON.stringify(articleSchema)}</script><script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script></Helmet>
+  return (<><Helmet><title>DJ para bodas en Las Palmas Gran Canaria: precio 2026 | XPEAK</title><meta name="description" content={`Cuánto cuesta un DJ para una boda en ${ciudad}. Precios 2026, Maspalomas, bodas de destino y cómo contratar el mejor DJ.`} /><link rel="canonical" href={`https://xpeak.es/blog/${slug}`} /><meta property="og:title" content={`DJ bodas Las Palmas 2026 — XPEAK`} /><meta property="og:url" content={`https://xpeak.es/blog/${slug}`} /><meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" /><meta name="twitter:card" content="summary_large_image" /><script type="application/ld+json">{JSON.stringify(serviceSchema)}</script><script type="application/ld+json">{JSON.stringify(articleSchema)}</script><script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script><script type="application/ld+json">{JSON.stringify(faqPageSchema)}</script></Helmet>
   <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
     <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto"><a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a><div className="flex items-center gap-3"><a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a><a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a></div></nav>
     <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
       <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
-      <div className="mb-8"><p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>DJ · {ciudad} · XPEAK Blog</p><h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para bodas en Las Palmas de Gran Canaria: precio 2026</h1><p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Gran Canaria es uno de los destinos de boda internacional más populares de España, con sol garantizado y resorts de primer nivel en el sur. Guía de precios real para bodas en 2026.</p><time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>4 junio 2026</time></div>
+      <div className="mb-8"><p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>DJ · {ciudad} · XPEAK Blog</p><h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para bodas en Las Palmas de Gran Canaria: precio 2026</h1><p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Gran Canaria es uno de los destinos de boda internacional más populares de España, con sol garantizado y resorts de primer nivel en el sur. Guía de precios real para bodas en 2026.</p><time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>4 junio 2026</time><BlogAnswerBox question={`¿Cuánto cuesta un DJ para una boda en ${ciudad}?`} answer={`Un DJ para el servicio completo de una boda en ${ciudad} (ceremonia, cóctel, cena y pista de baile) cuesta entre 800 y 2.000€ en 2026. El precio varía según la duración del evento, el equipo técnico incluido y la experiencia del DJ.`} /></div>
       <div className="space-y-10">
         <section><h2 className="text-lg font-black mb-4">Precios DJ boda en Gran Canaria (2026)</h2><div className="space-y-2">{PRECIOS.map((r,i)=>(<div key={r.servicio} className="flex items-center justify-between p-4 rounded-xl" style={{background:i%2===0?'rgba(255,255,255,0.025)':'rgba(255,255,255,0.015)',border:'1px solid rgba(255,255,255,0.04)'}}><p className="text-xs font-medium">{r.servicio}</p><span className="text-xs font-bold ml-4 shrink-0" style={{color:'#D4AF37'}}>{r.precio}</span></div>))}</div><p className="text-xs mt-3" style={{color:'#3d3d4e'}}>Precios orientativos 2026. Sin IVA.</p></section>
         <BlogInlineCTA role="dj" variant="upgrade" />
         <section><h2 className="text-lg font-black mb-4">Zonas de boda en Gran Canaria</h2><div className="space-y-3">{ZONAS.map((z,i)=>(<div key={z.zona} className="p-4 rounded-xl" style={{background:i%2===0?'rgba(255,255,255,0.025)':'rgba(255,255,255,0.015)',border:'1px solid rgba(255,255,255,0.04)'}}><div className="flex items-start justify-between mb-1"><p className="text-xs font-bold">{z.zona}</p><span className="text-[0.6rem] font-bold px-2 py-0.5 rounded ml-3 shrink-0" style={{background:'rgba(212,175,55,0.1)',color:'#D4AF37'}}>{z.nota}</span></div><p className="text-xs" style={{color:'#3d3d4e'}}>{z.fincas}</p></div>))}</div></section>
-        <section><h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2><div className="space-y-4">{faq.map(f=>(<div key={f.q} className="p-5 rounded-xl" style={{background:'rgba(255,255,255,0.03)',border:'1px solid rgba(255,255,255,0.06)'}}><p className="text-sm font-bold mb-2">{f.q}</p><p className="text-xs leading-relaxed" style={{color:'rgba(255,255,255,0.72)'}}>{f.a}</p></div>))}</div></section>
+        <section><h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2><div className="space-y-4">{faq.map(f=>(<div key={f.q} className="p-5 rounded-xl" style={{background:'rgba(255,255,255,0.03)',border:'1px solid rgba(255,255,255,0.06)'}}><h3 className="text-sm font-bold mb-2">{f.q}</h3><p className="text-xs leading-relaxed" style={{color:'rgba(255,255,255,0.72)'}}>{f.a}</p></div>))}</div></section>
         <div className="p-6 rounded-2xl text-center" style={{background:'rgba(212,175,55,0.04)',border:'1px solid rgba(212,175,55,0.12)'}}><p className="text-sm font-black mb-2">¿Buscas DJ para tu boda en Gran Canaria?</p><p className="text-xs mb-4" style={{color:'#3d3d4e'}}>XPEAK conecta con DJs verificados en Canarias. Contrato digital automático.</p><a href="/contratar-dj" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black" style={{background:'linear-gradient(90deg,#D4AF37,#B8941E)',color:'#000'}}>Ver DJs de bodas en Gran Canaria →</a></div>
       </div>
+              <DJResourcesAffiliate />
+
               <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-las-palmas" />
 </main>
     <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/dj-bodas-las-palmas' tag='DJ' />
         <FooterPublic />
     <BlogScrollCTA role="dj" storageKey={`xpeak_scrollcta_${slug}`} />
   </div></>);

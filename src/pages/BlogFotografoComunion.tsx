@@ -1,11 +1,13 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo para comunión: precio y qué incluye en España (2026)', description: 'Cuánto cuesta un fotógrafo para una comunión en España. Precios por paquetes, qué incluye el reportaje y cómo elegir el mejor profesional.', datePublished: '2026-05-27', dateModified: '2026-05-27', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-para-comunion-precio' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo para comunión: precio y qué incluye en España (2026)', description: 'Cuánto cuesta un fotógrafo para una comunión en España. Precios por paquetes, qué incluye el reportaje y cómo elegir el mejor profesional.', datePublished: '2026-05-27', dateModified: '2026-05-27', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-para-comunion-precio' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo para una comunión?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo para comunión en España cuesta entre 300€ y 1.200€ según el paquete. Solo ceremonia (1-2h): 250-450€. Ceremonia + banquete (4-6h): 500-900€. Pack completo con álbum impreso: 700-1.500€. El precio varía según la ciudad y la experiencia del fotógrafo.' } },
   { '@type': 'Question', name: '¿Qué incluye el reportaje fotográfico de una comunión?', acceptedAnswer: { '@type': 'Answer', text: 'El reportaje completo incluye fotos de la preparación en casa, la ceremonia religiosa o civil, las fotos familiares en el exterior, el cóctel y el banquete. Se entregan entre 200 y 500 fotos editadas en alta resolución, normalmente en galería digital privada en 3-6 semanas.' } },
@@ -134,7 +136,7 @@ export default function BlogFotografoComunion() {
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
                   <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                     <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
@@ -170,7 +172,9 @@ export default function BlogFotografoComunion() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/fotografo-para-comunion-precio" />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/fotografo-para-comunion-precio' tag='Fotografía' />
         <FooterPublic />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_comunion" />
       </div>
     </>
   );

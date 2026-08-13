@@ -1,12 +1,15 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
-import RelatedPosts from '@/components/RelatedPosts';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogAnswerBox from '@/components/BlogAnswerBox';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para bodas en Sevilla: precio y cómo contratar en 2026', description: 'Cuánto cuesta un DJ para una boda en Sevilla. Precios reales 2026, zonas de celebración y cómo contratar el mejor DJ en Andalucía.', datePublished: '2026-06-02', dateModified: '2026-06-02', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-bodas-sevilla' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para bodas en Sevilla: precio y cómo contratar en 2026', description: 'Cuánto cuesta un DJ para una boda en Sevilla. Precios reales 2026, zonas de celebración y cómo contratar el mejor DJ en Andalucía.', datePublished: '2026-06-02', dateModified: '2026-06-02', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-bodas-sevilla' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda en Sevilla?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ para boda en Sevilla cuesta entre 600€ y 1.800€ para el servicio completo. Los precios en Sevilla están ligeramente por debajo de Madrid y Barcelona — en la media nacional o un 5-10% por encima. Para bodas solo con pista de baile (4-5h), el rango es 350-800€.' } },
   { '@type': 'Question', name: '¿Cuándo es la temporada alta de bodas en Sevilla?', acceptedAnswer: { '@type': 'Answer', text: 'En Sevilla la temporada alta es primavera tardía y otoño: octubre, noviembre, marzo y abril. El verano sevillano (julio-agosto) es muy caluroso y muchas parejas lo evitan. Septiembre tiene mucha demanda. Para bodas en octubre o noviembre, reserva con 10-12 meses de antelación.' } },
@@ -66,6 +69,10 @@ export default function BlogDJBodaSevilla() {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para bodas en Sevilla: precio y cómo contratar en 2026</h1>
             <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Sevilla es la capital de la boda andaluza. Haciendas, cortijos y patios coloniales concentran algunos de los eventos más espectaculares de España. Precios más competitivos que Madrid — te contamos exactamente cuánto y cómo elegir bien.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>2 junio 2026</time>
+            <BlogAnswerBox
+              question="¿Cuánto cuesta un DJ para una boda en Sevilla?"
+              answer="Un DJ para el servicio completo de una boda en Sevilla (ceremonia, cóctel, cena y pista de baile) cuesta entre 700 y 1.600€ en 2026. El precio varía según la duración del evento, el equipo técnico incluido y la experiencia del DJ."
+            />
           </div>
           <div className="space-y-10">
             <section>
@@ -106,7 +113,7 @@ export default function BlogDJBodaSevilla() {
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
                   <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                     <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
@@ -135,11 +142,14 @@ export default function BlogDJBodaSevilla() {
               <a href="/contratar-dj/sevilla" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver DJs de bodas en Sevilla →</a>
             </div>
           </div>
+                  <DJResourcesAffiliate />
+
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-sevilla" />
-          <RelatedPosts currentSlug="/blog/dj-bodas-sevilla" tags={['DJ']} />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/dj-bodas-sevilla' tag='DJ' />
         <FooterPublic />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_sevilla" />
       </div>
     </>
   );

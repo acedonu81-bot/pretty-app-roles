@@ -1,11 +1,13 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Cómo ser promotor de eventos en España: guía completa 2026', description: 'Guía práctica para convertirte en promotor de eventos. Qué hace un promotor, cuánto cobra, cómo empezar y cómo conseguir los primeros contratos.', datePublished: '2026-06-02', dateModified: '2026-06-02', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/como-ser-promotor-eventos' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Cómo ser promotor de eventos en España: guía completa 2026', description: 'Guía práctica para convertirte en promotor de eventos. Qué hace un promotor, cuánto cobra, cómo empezar y cómo conseguir los primeros contratos.', datePublished: '2026-06-02', dateModified: '2026-06-02', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/como-ser-promotor-eventos' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cobra un promotor de eventos en España?', acceptedAnswer: { '@type': 'Answer', text: 'Un promotor de eventos cobra de tres formas: tarifa fija por evento (150-600€), comisión por asistentes captados (1-5€/persona) o porcentaje sobre taquilla (5-15%). Un promotor activo con buena red puede generar 1.500-4.000€ al mes en temporada alta. Los promotores freelance que trabajan con varias salas simultáneamente son los que más ganan.' } },
   { '@type': 'Question', name: '¿Qué hace exactamente un promotor de eventos?', acceptedAnswer: { '@type': 'Answer', text: 'El promotor gestiona la lista de invitados (listas VIP y de acceso gratuito), hace captación activa de asistentes a través de redes sociales y contactos personales, coordina con la sala las condiciones de acceso y consumición, y en algunos casos también gestiona la comunicación del evento online. Es el puente entre el público y la sala o promotora.' } },
@@ -107,7 +109,7 @@ export default function BlogComoSerPromotorEventos() {
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
                   <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                     <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
@@ -140,7 +142,9 @@ export default function BlogComoSerPromotorEventos() {
                   <BlogEmailCapture variant="guia" intent="ser-profesional" articlePath="/blog/como-ser-promotor-eventos" />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/como-ser-promotor-eventos' tag='Staff' />
         <FooterPublic />
+        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_como_ser_promotor_eventos" />
       </div>
     </>
   );

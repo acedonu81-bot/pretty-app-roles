@@ -1,6 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, ArrowLeft } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
@@ -33,7 +35,7 @@ const faqStructured = {
     headline: 'Cuántos camareros necesito para mi boda: la guía definitiva 2026',
     datePublished: '2026-04-15',
     dateModified: '2026-06-08',
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     description: 'Guía definitiva 2026: cuántos camareros necesitas para tu boda según el número de invitados, formato del servicio y tipo de evento.',
   };
@@ -232,7 +234,7 @@ const faqStructured = {
             <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.5)' }}>
               Gratis para organizadores · Camareros verificados · Contrato digital automático
             </p>
-            <a href="/auth"
+            <a href="/contratar-camareros"
               className="inline-flex items-center gap-2 px-7 py-3 rounded-xl font-black text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               <Zap size={14} /> Buscar camareros para mi boda
@@ -242,7 +244,9 @@ const faqStructured = {
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuantos-camareros-necesito-para-mi-boda" />
+        <BlogRelatedPosts currentSlug='/blog/cuantos-camareros-necesito-para-mi-boda' tag='Camareros' />
         <FooterPublic />
+        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_cuantos_calmareros_boda" />
       </div>
     </>
   );

@@ -1,11 +1,13 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Tendencias en bodas 2026 en España: decoración, música y experiencias', description: 'Las tendencias más buscadas para bodas en España en 2026. Decoración, música, catering experiencial y qué está pidiendo la nueva generación de novios.', datePublished: '2026-05-04',
-  dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/tendencias-bodas-2026' };
+  dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/tendencias-bodas-2026' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuál es la tendencia más popular en bodas 2026?', acceptedAnswer: { '@type': 'Answer', text: 'Las bodas íntimas (menos de 80 invitados) con experiencias gastronómicas personalizadas y espacios rurales con encanto son la tendencia más fuerte en 2026. Los novios priorizan la calidad de la experiencia sobre el número de invitados y buscan personalización total: desde la música en directo hasta el menú degustación.' } },
   { '@type': 'Question', name: '¿Qué colores se llevan en bodas 2026?', acceptedAnswer: { '@type': 'Answer', text: 'Los tonos tierra y naturales (beige, terracota, verde salvia, blanco roto) dominan la paleta de bodas 2026. Los arreglos florales en tonos melocotón y burdeos son muy demandados. El blanco puro ha cedido terreno ante los tonos marfil y champán tanto en vestidos como en decoración.' } },
@@ -91,7 +93,7 @@ export default function BlogTendenciasBodas() {
             </section>
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
-              <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}><p className="text-sm font-bold mb-2">{f.name}</p><p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p></div>))}</div>
+              <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}><h3 className="text-sm font-bold mb-2">{f.name}</h3><p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p></div>))}</div>
             </section>
             
             <section className="mt-8">
@@ -116,7 +118,9 @@ export default function BlogTendenciasBodas() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/tendencias-bodas-2026" />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/tendencias-bodas-2026' tag='Bodas' />
         <FooterPublic />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_tendencias_bodas" />
       </div>
     </>
   );

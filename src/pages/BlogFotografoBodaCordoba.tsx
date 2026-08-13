@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
@@ -12,7 +13,7 @@ const article = {
   headline: 'Fotógrafo para bodas en Córdoba: precio y guía 2026',
   description: 'Cuánto cuesta un fotógrafo para una boda en Córdoba. Precios reales 2026, La Mezquita-Catedral, Patios cordobeses y la Judería.',
   datePublished: '2026-06-08', dateModified: '2026-06-08',
-  author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   url: 'https://xpeak.es/blog/fotografo-boda-cordoba',
 };
@@ -72,7 +73,7 @@ export default function BlogFotografoBodaCordoba() {
 
           <p className="text-neutral-300 mb-6">Córdoba es Patrimonio de la Humanidad con tres declaraciones UNESCO (Mezquita-Catedral, Centro Histórico y Festival de los Patios). Para un fotógrafo de bodas, la ciudad es un paraíso: callejuelas con cal blanca, naranjos en flor y una luz andaluza única.</p>
 
-          <BlogInlineCTA role="media" text="¿Buscas fotógrafo para tu boda en Córdoba? Compara perfiles y tarifas en XPEAK." />
+          <BlogInlineCTA role="fotografo" text="¿Buscas fotógrafo para tu boda en Córdoba? Compara perfiles y tarifas en XPEAK." />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Precios fotógrafo boda Córdoba 2026</h2>
           <div className="overflow-x-auto mb-8">
@@ -113,8 +114,9 @@ export default function BlogFotografoBodaCordoba() {
           <BlogAuthor />
           <BlogShare />
         </article>
+        <BlogRelatedPosts currentSlug='/blog/fotografo-boda-cordoba' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="media" storageKey="xpeak_scrollcta_fotografo_cordoba" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_cordoba" />
       </div>
     </>
   );

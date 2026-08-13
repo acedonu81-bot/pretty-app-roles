@@ -1,11 +1,15 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogAnswerBox from '@/components/BlogAnswerBox';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para bodas en Zaragoza: precio y cómo contratar en 2026', description: 'Cuánto cuesta un DJ para una boda en Zaragoza. Precios reales 2026, Aragón, la ribera del Ebro y los palacios mudéjares de la capital aragonesa.', datePublished: '2026-06-03', dateModified: '2026-06-03', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-bodas-zaragoza' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para bodas en Zaragoza: precio y cómo contratar en 2026', description: 'Cuánto cuesta un DJ para una boda en Zaragoza. Precios reales 2026, Aragón, la ribera del Ebro y los palacios mudéjares de la capital aragonesa.', datePublished: '2026-06-03', dateModified: '2026-06-03', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-bodas-zaragoza' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda en Zaragoza?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ para boda en Zaragoza cuesta entre 600€ y 1.600€ para el servicio completo. Los precios en Zaragoza son un 10-15% más económicos que en Madrid o Barcelona, lo que la convierte en uno de los mercados de bodas con mejor relación calidad-precio de España.' } },
   { '@type': 'Question', name: '¿Cuáles son las mejores zonas para bodas en Zaragoza?', acceptedAnswer: { '@type': 'Answer', text: 'Las zonas más populares son: el entorno del Canal Imperial y la Ribera del Ebro (fincas con jardines junto al agua), las Cinco Villas (masías aragonesas en el norte), el Prepirineo (fincas rurales en Huesca limítrofe) y el casco histórico de Zaragoza (palacios y salones en La Aljafería). Las masías tienen mucha demanda en primavera.' } },
@@ -52,6 +56,10 @@ export default function BlogDJBodaZaragoza() {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para bodas en Zaragoza: precio y cómo contratar en 2026</h1>
             <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Zaragoza es una ciudad grande con mercado de bodas activo y precios muy competitivos — entre un 10-20% más económica que Madrid o Barcelona. Los venues más demandados son las masías aragonesas en los alrededores, el Canal Imperial y los palacios del casco histórico.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>3 junio 2026</time>
+            <BlogAnswerBox
+              question="¿Cuánto cuesta un DJ para una boda en Zaragoza?"
+              answer="Un DJ para el servicio completo de una boda en Zaragoza (ceremonia, cóctel, cena y pista de baile) cuesta entre 700 y 1.600€ en 2026. El precio varía según la duración del evento, el equipo técnico incluido y la experiencia del DJ."
+            />
           </div>
           <div className="space-y-10">
             <section>
@@ -86,7 +94,7 @@ export default function BlogDJBodaZaragoza() {
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
                   <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                     <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
@@ -115,10 +123,14 @@ export default function BlogDJBodaZaragoza() {
               <a href="/contratar-dj/zaragoza" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver DJs de bodas en Zaragoza →</a>
             </div>
           </div>
+                  <DJResourcesAffiliate />
+
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-zaragoza" />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/dj-bodas-zaragoza' tag='DJ' />
         <FooterPublic />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_zaragoza" />
       </div>
     </>
   );

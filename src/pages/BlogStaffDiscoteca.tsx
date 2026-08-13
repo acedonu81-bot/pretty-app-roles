@@ -1,5 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
@@ -26,7 +28,7 @@ export default function BlogStaffDiscoteca() {
     '@type': 'Article',
     headline: 'Staff de discoteca: funciones, sueldos y cómo contratar (2026)',
     description: 'Guía completa del personal de sala para discotecas y clubs: hostesses, RRPPs, camareros y coordinadores. Funciones, tarifas y cómo contratar.',
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-03',
     dateModified: '2026-05-03',
@@ -177,7 +179,9 @@ const faqStructured = {
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/staff-de-discoteca-funciones-y-salario" />
-      <FooterPublic />
+      <BlogRelatedPosts currentSlug='/blog/staff-de-discoteca-funciones-y-salario' tag='Staff' />
+        <FooterPublic />
+      <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_staff_discoteca" />
       </div>
     </>
   );

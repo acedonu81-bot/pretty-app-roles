@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
@@ -12,7 +13,7 @@ const article = {
   headline: 'Fotógrafo para bodas en Tenerife: precio y guía 2026',
   description: 'Cuánto cuesta un fotógrafo para una boda en Tenerife. Precios reales 2026, fincas volcánicas, el Teide y el mercado de bodas internacionales más activo de Canarias.',
   datePublished: '2026-06-08', dateModified: '2026-06-08',
-  author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   url: 'https://xpeak.es/blog/fotografo-boda-tenerife',
 };
@@ -72,7 +73,7 @@ export default function BlogFotografoBodaTenerife() {
 
           <p className="text-neutral-300 mb-6">Tenerife es mucho más que playa: el Teide al amanecer, los acantilados de Los Gigantes, los bosques de laurisilva en Anaga o las fincas históricas de La Orotava ofrecen paisajes imposibles para reportajes de boda únicos en Europa.</p>
 
-          <BlogInlineCTA role="media" text="¿Buscas fotógrafo para tu boda en Tenerife? Encuentra los mejores profesionales de la isla en XPEAK." />
+          <BlogInlineCTA role="fotografo" text="¿Buscas fotógrafo para tu boda en Tenerife? Encuentra los mejores profesionales de la isla en XPEAK." />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Precios fotógrafo boda Tenerife 2026</h2>
           <div className="overflow-x-auto mb-8">
@@ -113,8 +114,9 @@ export default function BlogFotografoBodaTenerife() {
           <BlogAuthor />
           <BlogShare />
         </article>
+        <BlogRelatedPosts currentSlug='/blog/fotografo-boda-tenerife' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="media" storageKey="xpeak_scrollcta_fotografo_tenerife" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_tenerife" />
       </div>
     </>
   );

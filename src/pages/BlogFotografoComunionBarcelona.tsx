@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
@@ -12,7 +13,7 @@ const article = {
   headline: 'Fotógrafo de comunión en Barcelona: precio y guía 2026',
   description: 'Cuánto cuesta un fotógrafo de comunión en Barcelona. Precios reales 2026, mejores sesiones fotográficas, qué incluye y cómo reservar con antelación.',
   datePublished: '2026-06-08', dateModified: '2026-06-08',
-  author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   url: 'https://xpeak.es/blog/fotografo-comunion-barcelona',
 };
@@ -73,7 +74,7 @@ export default function BlogFotografoComunionBarcelona() {
 
           <p className="text-neutral-300 mb-6">Barcelona concentra una gran cantidad de fotógrafos especializados en comuniones con estilos muy distintos: desde el reportaje clásico y formal hasta el estilo documental natural o la sesión de moda artística. La clave es elegir el estilo que conecte con la personalidad del niño o niña.</p>
 
-          <BlogInlineCTA role="media" text="¿Buscas fotógrafo de comunión en Barcelona? Compara perfiles verificados y tarifas en XPEAK." />
+          <BlogInlineCTA role="fotografo" text="¿Buscas fotógrafo de comunión en Barcelona? Compara perfiles verificados y tarifas en XPEAK." />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Precios fotógrafo comunión Barcelona 2026</h2>
           <div className="overflow-x-auto mb-8">
@@ -114,8 +115,9 @@ export default function BlogFotografoComunionBarcelona() {
           <BlogAuthor />
           <BlogShare />
         </article>
+        <BlogRelatedPosts currentSlug='/blog/fotografo-comunion-barcelona' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="media" storageKey="xpeak_scrollcta_fotografo_comunion_bcn" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_comunion_bcn" />
       </div>
     </>
   );

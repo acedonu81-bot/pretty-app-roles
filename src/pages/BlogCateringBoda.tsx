@@ -1,11 +1,12 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: '¿Cuánto cuesta el catering de una boda? Precio por persona en España (2026)', description: 'Guía de precios del catering para bodas en España. Coste por persona según menú, formato y número de invitados. Todo lo que incluye y cómo negociar.', datePublished: '2026-05-04',
-  dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/catering-boda-precio-por-persona' };
+  dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/catering-boda-precio-por-persona' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta el catering de una boda por persona?', acceptedAnswer: { '@type': 'Answer', text: 'En España el precio medio del catering de boda oscila entre 60€ y 150€ por persona. Un cóctel de bienvenida más banquete de 3 platos ronda los 75-100€/persona. Los menús premium con maridaje de vinos y postres elaborados pueden superar los 120-150€/persona. Las bodas rurales o en finca propia suelen ser más económicas (50-80€/persona).' } },
   { '@type': 'Question', name: '¿Qué incluye el precio del catering de boda?', acceptedAnswer: { '@type': 'Answer', text: 'Normalmente incluye: cóctel de bienvenida (canapés, bebidas), menú de banquete (entrantes, principal, postre), bebidas durante la cena (vino, agua, refrescos), personal de sala, menaje (vajilla, cubertería, cristalería) y montaje/desmontaje. La tarta nupcial, barra libre nocturna y decoración floral se presupuestan aparte.' } },
@@ -91,7 +92,7 @@ export default function BlogCateringBoda() {
             </section>
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
-              <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}><p className="text-sm font-bold mb-2">{f.name}</p><p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p></div>))}</div>
+              <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}><h3 className="text-sm font-bold mb-2">{f.name}</h3><p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p></div>))}</div>
             </section>
             
             <section className="mt-8">
@@ -117,6 +118,7 @@ export default function BlogCateringBoda() {
 </main>
         <BlogAuthor />
         <FooterPublic />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_catering_boda" />
       </div>
     </>
   );

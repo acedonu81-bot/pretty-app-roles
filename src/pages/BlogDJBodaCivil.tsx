@@ -1,12 +1,16 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
+import BlogAnswerBox from '@/components/BlogAnswerBox';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para boda civil: precio y qué canciones poner en cada momento (2026)', description: 'Guía completa de música para boda civil: cuánto cuesta el DJ, canciones para la entrada, firma y fiesta. Precios reales en España 2026.', datePublished: '2026-05-04',
-  dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-boda-civil-precio-canciones' };
+  dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-boda-civil-precio-canciones' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda civil en España?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ para boda civil en España cuesta entre 600€ y 1.500€ para el servicio completo (ceremonia + cóctel + cena + pista de baile). Si solo contratas para la pista de baile (4-5h), el precio baja a 350-700€.' } },
   { '@type': 'Question', name: '¿Qué canciones se ponen en la entrada de la novia en una boda civil?', acceptedAnswer: { '@type': 'Answer', text: 'Las más elegidas para entrada de novia en boda civil: "A Thousand Years" (Christina Perri), "Canon in D" (Pachelbel versión contemporánea), "La vie en rose" (versión jazz), "Perfect" (Ed Sheeran versión instrumental), "Thinking Out Loud" (Ed Sheeran). La ventaja de la boda civil es que no hay restricciones religiosas.' } },
@@ -54,6 +58,10 @@ export default function BlogDJBodaCivil() {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para boda civil: precio y qué canciones poner en cada momento (2026)</h1>
             <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>En una boda civil tienes libertad total con la música. Te contamos cuánto cuesta el DJ y qué poner en cada momento para que fluya perfectamente.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>4 mayo 2026</time>
+            <BlogAnswerBox
+              question="¿Cuánto cuesta un DJ para una boda civil en España?"
+              answer="Un DJ para una boda civil en España cuesta entre 600€ y 1.500€ para el servicio completo (ceremonia, cóctel, cena y pista de baile). Si solo se contrata para la pista de baile (4-5h), el precio baja a 350-700€. La boda civil no impone restricciones musicales, así que el repertorio es totalmente libre."
+            />
           </div>
           <div className="space-y-10">
             <section>
@@ -69,7 +77,7 @@ export default function BlogDJBodaCivil() {
             </section>
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
-              <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}><p className="text-sm font-bold mb-2">{f.name}</p><p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p></div>))}</div>
+              <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}><h3 className="text-sm font-bold mb-2">{f.name}</h3><p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p></div>))}</div>
             </section>
             
             <section className="mt-8">
@@ -96,10 +104,14 @@ export default function BlogDJBodaCivil() {
               <a href="/contratar-dj" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver DJs de bodas en XPEAK →</a>
             </div>
           </div>
+                  <DJResourcesAffiliate />
+
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-boda-civil-precio-canciones" />
 </main>
       <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/dj-boda-civil-precio-canciones' tag='DJ' />
         <FooterPublic />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_civil" />
       </div>
     </>
   );

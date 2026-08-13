@@ -1,10 +1,12 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, TrendingUp, Star } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
-import RelatedPosts from '@/components/RelatedPosts';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const TABLE = [
   { tipo: 'Afterwork / coctelería (< 100 p.)', horas: '3–4 h', rango: '400€ – 800€', notas: 'Música ambiental, lounge/house suave' },
@@ -27,7 +29,7 @@ export default function BlogDJCorporativo() {
     '@type': 'Article',
     headline: 'DJ para eventos corporativos: precio y qué pedir en España (2026)',
     description: 'Cuánto cuesta contratar un DJ para un evento corporativo en España. Precios para afterworks, galas, fiestas de empresa y presentaciones.',
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-23',
     dateModified: '2026-05-23',
@@ -169,7 +171,7 @@ const faqStructured = {
               <p className="text-sm mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
                 Tarifas públicas, Flash Booking para fechas urgentes y contratos automáticos. Sin comisión.
               </p>
-              <a href="/auth"
+              <a href="/contratar-dj"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                 <Zap size={15} /> Ver DJs corporativos
@@ -211,7 +213,10 @@ const faqStructured = {
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-para-eventos-corporativos-precio" />
+          <DJResourcesAffiliate />
+        <BlogRelatedPosts currentSlug='/blog/dj-para-eventos-corporativos-precio' tag='DJ' />
         <FooterPublic />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_corporativo" />
       </div>
     </>
   );

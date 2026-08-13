@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Star, MapPin, BadgeCheck, MessageCircle, FileText, Zap } from 'lucide-react';
+import { Star, MapPin, BadgeCheck, MessageCircle, FileText, Zap, Users } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Profile } from '@/data/profiles';
 import GeometricAvatar from './GeometricAvatar';
@@ -69,6 +69,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
   const priceLabel = ['makeup', 'vestuario', 'media', 'design'].includes(p.role)
     ? null : p.price > 0 ? `${p.price}€${p.priceUnit}` : null;
   const isEarlyAdopter = (p as any).isEarlyAdopter ?? false;
+  const isNew = (p as any).isNew ?? false;
 
   return (
     <motion.div
@@ -82,9 +83,9 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
     >
       {/* ── FOTO HERO ── */}
       <div className="relative pb-[125%] sm:pb-[62%]">
-        <div className="absolute inset-0 sm:rounded-b-none" style={{ overflow: 'hidden', borderRadius: '0' }}>
+        <div className="absolute inset-0 rounded-t-2xl sm:rounded-b-none" style={{ overflow: 'hidden' }}>
           {hasPhoto ? (
-            <img src={p.photo} alt={p.name} className="w-full h-full object-cover"
+            <img src={p.photo} alt={p.name} loading="lazy" className="w-full h-full object-cover"
               onError={() => setImgError(true)} />
           ) : (
             <div className="w-full h-full flex items-center justify-center"
@@ -105,15 +106,20 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
                 style={{ background: 'rgba(34,197,94,0.95)', color: '#fff' }}>
                 <Zap size={9} fill="#fff" /> Disponible
               </span>
-            ) : (p as any).isVerified ? (
+            ) : (p as any).hasPriorityBadge ? (
               <span className="flex items-center gap-0.5 px-2 py-1 rounded-full text-[0.6rem] font-black"
-                style={{ background: 'rgba(212,175,55,0.95)', color: '#000' }}>
-                <BadgeCheck size={9} /> Verificado
+                style={{ background: 'rgba(37,99,235,0.95)', color: '#fff' }}>
+                <BadgeCheck size={9} /> Prioridad
               </span>
             ) : isEarlyAdopter ? (
               <span className="flex items-center gap-0.5 px-2 py-1 rounded-full text-[0.6rem] font-black"
                 style={{ background: 'rgba(96,165,250,0.95)', color: '#fff' }}>
                 ⭐ Early
+              </span>
+            ) : isNew ? (
+              <span className="flex items-center gap-0.5 px-2 py-1 rounded-full text-[0.6rem] font-black"
+                style={{ background: 'rgba(212,175,55,0.95)', color: '#000' }}>
+                Nuevo
               </span>
             ) : null}
           </span>
@@ -124,20 +130,32 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
               ⭐ Early Adopter
             </span>
           )}
+          {!isEarlyAdopter && isNew && (
+            <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black"
+              style={{ background: 'rgba(212,175,55,0.9)', color: '#000' }}>
+              Nuevo
+            </span>
+          )}
           {p.topWeekend && (
             <span className="hidden sm:inline px-2 py-0.5 rounded-full text-[0.6rem] font-black"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>TOP WEEKEND</span>
           )}
-          {(p as any).isVerified && (
+          {(p as any).hasPriorityBadge && (
             <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black"
-              style={{ background: 'rgba(212,175,55,0.9)', color: '#000' }}>
-              <BadgeCheck size={9} /> Verificado
+              style={{ background: 'rgba(37,99,235,0.9)', color: '#fff' }}>
+              <BadgeCheck size={9} /> Prioridad
             </span>
           )}
           {p.isFlashActive && (
             <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black animate-pulse"
               style={{ background: 'rgba(34,197,94,0.9)', color: '#000' }}>
               <Zap size={9} fill="#000" /> Disponible
+            </span>
+          )}
+          {p.role === 'bailarin' && (p as any).seekingDancePartner && (
+            <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black"
+              style={{ background: 'rgba(212,175,55,0.9)', color: '#000' }}>
+              <Users size={9} /> Busca pareja{(p as any).danceRole === 'lead' ? ' (leader)' : (p as any).danceRole === 'follow' ? ' (follower)' : ''}
             </span>
           )}
         </div>
@@ -232,7 +250,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
                 </div>
               ) : (
                 <div key={i} className="rounded-lg overflow-hidden aspect-square" style={{ background: 'rgba(0,0,0,0.4)' }}>
-                  <img src={url} alt="" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  <img src={url} alt="" loading="lazy" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     onError={e => { (e.currentTarget.parentElement as HTMLElement).style.display = 'none'; }} />
                 </div>
               );

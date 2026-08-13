@@ -1,12 +1,15 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogAnswerBox from '@/components/BlogAnswerBox';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para bodas en Valladolid: precio y cómo contratar en 2026', description: 'Cuánto cuesta un DJ para una boda en Valladolid. Precios reales 2026, bodegas, palacios y fincas de Castilla y cómo contratar el mejor DJ.', datePublished: '2026-06-03', dateModified: '2026-06-03', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-bodas-valladolid' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para bodas en Valladolid: precio y cómo contratar en 2026', description: 'Cuánto cuesta un DJ para una boda en Valladolid. Precios reales 2026, bodegas, palacios y fincas de Castilla y cómo contratar el mejor DJ.', datePublished: '2026-06-03', dateModified: '2026-06-03', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-bodas-valladolid' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda en Valladolid?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ para boda en Valladolid cuesta entre 500€ y 1.400€ para el servicio completo. La provincia tiene precios similares a la media castellana, más económicos que Madrid o Barcelona. Para bodas en bodegas de la Ribera del Duero el rango puede subir hasta 1.800€ por venues de mayor exclusividad.' } },
   { '@type': 'Question', name: '¿Cuándo es la temporada alta de bodas en Valladolid?', acceptedAnswer: { '@type': 'Answer', text: 'Junio, septiembre y octubre son los meses más demandados. El invierno en Valladolid es frío y los veranos son calurosos pero secos, lo que hace que la primavera tardía y el otoño sean ideales. Las bodegas de Ribera del Duero tienen una demanda especial en época de vendimia (septiembre-octubre).' } },
@@ -66,6 +69,10 @@ export default function BlogDJBodaValladolid() {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para bodas en Valladolid: precio y cómo contratar en 2026</h1>
             <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Valladolid combina palacios históricos en la capital con las bodegas de la Ribera del Duero y las fincas de la Tierra de Campos. Los precios son competitivos y la escena de DJs de boda está bien establecida. Aquí tienes la guía completa para 2026.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>3 junio 2026</time>
+            <BlogAnswerBox
+              question="¿Cuánto cuesta un DJ para una boda en Valladolid?"
+              answer="Un DJ para el servicio completo de una boda en Valladolid (ceremonia, cóctel, cena y pista de baile) cuesta entre 580 y 1.400€ en 2026. El precio varía según la duración del evento, el equipo técnico incluido y la experiencia del DJ."
+            />
           </div>
           <div className="space-y-10">
             <section>
@@ -100,7 +107,7 @@ export default function BlogDJBodaValladolid() {
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
                   <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                     <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
@@ -128,9 +135,12 @@ export default function BlogDJBodaValladolid() {
               <a href="/contratar-dj" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver DJs de bodas en Valladolid →</a>
             </div>
           </div>
+                  <DJResourcesAffiliate />
+
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-valladolid" />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/dj-bodas-valladolid' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_valladolid" />
       </div>

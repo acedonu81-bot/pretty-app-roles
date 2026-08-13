@@ -1,11 +1,15 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogAnswerBox from '@/components/BlogAnswerBox';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para bodas en Granada: precio y cómo contratar en 2026', description: 'Cuánto cuesta un DJ para una boda en Granada. Precios reales 2026, La Alhambra, la Vega y la Sierra Nevada como backdrop único en España.', datePublished: '2026-06-03', dateModified: '2026-06-03', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-bodas-granada' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para bodas en Granada: precio y cómo contratar en 2026', description: 'Cuánto cuesta un DJ para una boda en Granada. Precios reales 2026, La Alhambra, la Vega y la Sierra Nevada como backdrop único en España.', datePublished: '2026-06-03', dateModified: '2026-06-03', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-bodas-granada' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda en Granada?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ para boda en Granada cuesta entre 550€ y 1.500€ para el servicio completo. Granada es uno de los mercados de bodas más económicos de España entre ciudades de su tamaño — hasta un 25% más barato que Sevilla o Málaga. El equilibrio entre calidad y precio es muy bueno.' } },
   { '@type': 'Question', name: '¿Cuáles son las mejores zonas para bodas en Granada?', acceptedAnswer: { '@type': 'Answer', text: 'Las zonas más populares para bodas en Granada son: los cortijos de la Vega granadina (La Zubia, Ogíjares, Dílar), las haciendas del Valle de Lecrín (sur de Granada), las fincas del Altiplano (Guadix, Baza) y los hoteles históricos del centro (Palacio de los Córdoba). La Vega concentra el 60% de las bodas.' } },
@@ -52,6 +56,10 @@ export default function BlogDJBodaGranada() {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para bodas en Granada: precio y cómo contratar en 2026</h1>
             <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Granada tiene uno de los mercados de bodas más especiales de España: la proximidad de la Alhambra, los cortijos de la Vega granadina y el parque natural de Sierra Nevada crean una oferta única. Los precios son más económicos que las grandes ciudades — ideal para parejas que quieren una boda espectacular sin el presupuesto de Madrid o Marbella.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>3 junio 2026</time>
+            <BlogAnswerBox
+              question="¿Cuánto cuesta un DJ para una boda en Granada?"
+              answer="Un DJ para el servicio completo de una boda en Granada (ceremonia, cóctel, cena y pista de baile) cuesta entre 650 y 1.500€ en 2026. El precio varía según la duración del evento, el equipo técnico incluido y la experiencia del DJ."
+            />
           </div>
           <div className="space-y-10">
             <section>
@@ -86,7 +94,7 @@ export default function BlogDJBodaGranada() {
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
                   <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                     <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
@@ -115,10 +123,14 @@ export default function BlogDJBodaGranada() {
               <a href="/contratar-dj/granada" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver DJs de bodas en Granada →</a>
             </div>
           </div>
+                  <DJResourcesAffiliate />
+
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-granada" />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/dj-bodas-granada' tag='DJ' />
         <FooterPublic />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_granada" />
       </div>
     </>
   );

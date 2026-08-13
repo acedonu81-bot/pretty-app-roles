@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
@@ -14,7 +15,7 @@ const article = {
   description: 'Comparativa completa entre DJ, banda en directo y música grabada para bodas en España. Precios, ventajas y cuándo elegir cada opción.',
   datePublished: '2026-05-03',
   dateModified: '2026-05-25',
-  author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
   url: 'https://xpeak.es/blog/musica-para-bodas-guia',
@@ -124,13 +125,18 @@ export default function BlogMusicaBoda() {
               question="¿Qué música poner en una boda?"
               answer="Una boda tiene cuatro momentos musicales: ceremonia (música clásica o acústica), cóctel (jazz o lounge suave), cena (ambiente discreto de fondo) y baile (pop, latino o el género favorito de los novios). La diferencia entre DJ y banda en directo está en el presupuesto: 600-1.200€ vs 2.000-5.000€, con resultados muy similares para los invitados."
             />
-            <img
-              src="/images/blog/musica-para-bodas-dj-banda.jpg"
-              alt="Público en evento de música en directo — guía de música para bodas: DJ vs banda 2026"
-              className="w-full rounded-xl my-6 object-cover"
-              style={{ maxHeight: 320, filter: 'brightness(0.85)' }}
-              loading="lazy"
-            />
+            <picture>
+              <source srcSet="/images/blog/musica-para-bodas-dj-banda.webp" type="image/webp" />
+              <img
+                src="/images/blog/musica-para-bodas-dj-banda.jpg"
+                alt="Público en evento de música en directo — guía de música para bodas: DJ vs banda 2026"
+                className="w-full rounded-xl my-6 object-cover"
+                style={{ maxHeight: 320, filter: 'brightness(0.85)' }}
+                loading="lazy"
+                width={800}
+                height={450}
+              />
+            </picture>
           </div>
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/musica-para-bodas-guia" />
@@ -200,7 +206,7 @@ export default function BlogMusicaBoda() {
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
                   <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                     <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
@@ -258,6 +264,7 @@ export default function BlogMusicaBoda() {
           </div>
         </main>
       <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/musica-para-bodas-guia' tag='DJ' />
         <FooterPublic />
       <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_musica_boda" />
       </div>

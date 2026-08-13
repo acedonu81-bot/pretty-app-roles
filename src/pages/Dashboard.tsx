@@ -111,12 +111,36 @@ const RoleDefaultView = ({ onViewChange }: { onViewChange: (v: string) => void }
   return null;
 };
 
+// La marca "onboarded" vive en localStorage, así que un dispositivo/navegador
+// nuevo (p.ej. el WebView del enlace "Ver mensaje" del email) nunca la tiene
+// y vuelve a mostrar el wizard aunque el perfil real ya esté completo en
+// Supabase. Este gate usa role/display_name reales para saltarlo y
+// re-sincronizar la marca en ese dispositivo.
+const WizardGate = ({ showWizard, setShowWizard }: { showWizard: boolean; setShowWizard: (v: boolean) => void }) => {
+  const { user } = useAuth();
+  const { role, display_name, loading } = useProfile();
+  useEffect(() => {
+    if (!showWizard || loading || !user) return;
+    const isComplete = !!role && role !== 'pending' && !!display_name?.trim();
+    if (isComplete) {
+      localStorage.setItem(`xpeak_onboarded_${user.id}`, '1');
+      setShowWizard(false);
+    }
+  }, [showWizard, loading, role, display_name, user, setShowWizard]);
+  return null;
+};
+
 const Dashboard = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [activeView, setActiveView] = useState<string>(() => {
     const fromState = (location.state as { view?: string })?.view;
     if (fromState) return fromState;
+    // Enlaces desde email (ej. "Nueva solicitud Flash Booking") pasan la vista
+    // por query param — sin esto, el botón del email siempre caía en la vista
+    // guardada en localStorage (o "dj" por defecto), nunca en la sección real.
+    const fromQuery = new URLSearchParams(location.search).get('view');
+    if (fromQuery) return fromQuery;
     return localStorage.getItem('xpeak_view') || 'dj';
   });
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -227,7 +251,8 @@ const Dashboard = () => {
       <meta name="robots" content="noindex, nofollow" />
     </Helmet>
     <RoleDefaultView onViewChange={handleViewChange} />
-    <div data-app="dashboard" className="flex h-screen w-screen overflow-hidden" style={{ background: '#f5f4f0' }}>
+    <WizardGate showWizard={showWizard} setShowWizard={setShowWizard} />
+    <div data-app="dashboard" className="flex h-screen w-screen overflow-hidden grain-overlay" style={{ background: '#f5f4f0' }}>
       <Suspense fallback={null}><AmbientBackground /></Suspense>
 
       {!isMobile && (
@@ -242,7 +267,7 @@ const Dashboard = () => {
         </Sheet>
       )}
 
-      <main className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden relative min-w-0">
+      <main className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden relative min-w-0 no-scrollbar">
         <DashboardTopbar onMenuToggle={() => setSidebarOpen(true)} isMobile={isMobile} onSearch={handleSearch} searchQuery={searchQuery} onHome={() => handleViewChange('dj')} />
         <ProfileIncompleteBanner onNavigate={handleViewChange} activeView={activeView} />
         <RecentBusinessViewLine />
@@ -265,7 +290,7 @@ const Dashboard = () => {
 
       <Suspense fallback={null}>
         {!showWizard && <OnboardingTour onNavigate={handleViewChange} />}
-        <div className="hidden sm:block"><SupportChat /></div>
+        {activeView !== 'messages' && <div className="hidden sm:block"><SupportChat /></div>}
         {showWizard && (
           <OnboardingWizard
             onClose={() => setShowWizard(false)}

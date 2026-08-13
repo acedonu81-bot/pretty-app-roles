@@ -1,18 +1,20 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAnswerBox from '@/components/BlogAnswerBox';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = {
   '@context': 'https://schema.org', '@type': 'Article',
   headline: 'DJ de Techno en Madrid: tarifas, escena y cómo contratar 2026',
   description: 'Guía completa para contratar un DJ de techno en Madrid. Precios reales 2026, los clubs más activos, la escena underground y qué piden las salas.',
   datePublished: '2026-06-08', dateModified: '2026-06-08',
-  author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   url: 'https://xpeak.es/blog/dj-techno-madrid',
 };
@@ -114,6 +116,8 @@ export default function BlogDJTechnoMadrid() {
             <li>Referencias de otras salas o eventos donde hayas actuado</li>
           </ul>
 
+          <DJResourcesAffiliate />
+
           <BlogEmailCapture variant="general" intent="contratar-dj" articlePath="/blog/dj-techno-madrid" />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Preguntas frecuentes</h2>
@@ -126,6 +130,7 @@ export default function BlogDJTechnoMadrid() {
           <BlogAuthor />
           <BlogShare />
         </article>
+        <BlogRelatedPosts currentSlug='/blog/dj-techno-madrid' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_techno_madrid" />
       </div>

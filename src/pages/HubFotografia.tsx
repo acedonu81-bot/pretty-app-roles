@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 
 const ARTICLES = [
   { href: '/blog/contratar-fotografo-de-bodas', tag: 'Bodas', title: 'Contratar fotógrafo de bodas: guía y precios', desc: 'Precios reales por ciudad. Qué incluye y cómo elegir el fotógrafo perfecto.' },
@@ -108,6 +109,7 @@ export default function HubFotografia() {
             </div>
           </div>
         </main>
+        <BlogRelatedPosts currentSlug='/blog/fotografos-eventos' tag='Fotografía' />
         <FooterPublic />
       </div>
     </>

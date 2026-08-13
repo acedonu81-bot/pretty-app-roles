@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
@@ -28,7 +29,7 @@ export default function BlogDJEmpresa() {
     '@type': 'Article',
     headline: "DJ para eventos de empresa: precio y cómo contratar 2026",
     description: "Cuánto cuesta un DJ para un evento corporativo o fiesta de empresa. Precios 2026, qué incluye, qué música pone y cómo elegir el perfil correcto.",
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-06-07',
     dateModified: '2026-06-07',
@@ -99,7 +100,7 @@ export default function BlogDJEmpresa() {
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
                   <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                     <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
@@ -126,6 +127,7 @@ export default function BlogDJEmpresa() {
           </div>
         </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/dj-empresa-precio' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_empresa" />
       </div>

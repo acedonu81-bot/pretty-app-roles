@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { Zap, Heart, Search, Lock, BarChart3, Euro, CheckCircle, Image, X, Building2, Clock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -12,7 +12,7 @@ import HistorialTab from './empresario/HistorialTab';
 import GastosTab from './empresario/GastosTab';
 import BenchmarkTab from './empresario/BenchmarkTab';
 import MediaTab from './empresario/MediaTab';
-import StatsTab from './empresario/StatsTab';
+const StatsTab = lazy(() => import('./empresario/StatsTab'));
 import SmartMatchWidget from '../SmartMatchWidget';
 
 /* ── Feed público "Empresas que contratan" ── */
@@ -68,7 +68,7 @@ const WhoIsHiringFeed = () => {
             <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden"
               style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.15)' }}>
               {c.photo_url
-                ? <img src={c.photo_url} alt={c.display_name} className="w-full h-full object-cover" />
+                ? <img src={c.photo_url} alt={c.display_name} loading="lazy" className="w-full h-full object-cover" />
                 : <Building2 size={16} style={{ color: '#8A6D0F' }} />}
             </div>
             <div className="flex-1 min-w-0">
@@ -274,7 +274,7 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
         ))}
       </div>
 
-      {tab === 'stats'     && <StatsTab pros={pros} favorites={favorites} />}
+      {tab === 'stats'     && <Suspense fallback={<p className="text-sm text-muted-foreground animate-pulse">Cargando estadísticas…</p>}><StatsTab pros={pros} favorites={favorites} /></Suspense>}
       {tab === 'media'     && <MediaTab />}
       {tab === 'benchmark' && <BenchmarkTab />}
       {tab === 'flash'     && <FlashTab />}

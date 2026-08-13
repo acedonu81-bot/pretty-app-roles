@@ -1,10 +1,12 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 import BlogTopCTA from '@/components/BlogTopCTA';
 
 const slug = 'como-contratar-un-dj';
@@ -30,7 +32,7 @@ export default function BlogComoContratarDJ() {
     '@type': 'Article',
     headline: "Cómo contratar un DJ para tu evento: guía completa 2026",
     description: "Guía paso a paso para contratar un DJ en España. Qué preguntar, qué incluye el precio, cómo comparar presupuestos y qué contrato firmar. 2026.",
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-06-07',
     dateModified: '2026-06-07',
@@ -82,6 +84,8 @@ export default function BlogComoContratarDJ() {
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>6 junio 2026</time>
           </div>
 
+          <DJResourcesAffiliate />
+
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath={`/blog/${slug}`} />
 
           <div className="space-y-10">
@@ -109,7 +113,7 @@ export default function BlogComoContratarDJ() {
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
                   <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                     <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
@@ -143,6 +147,7 @@ export default function BlogComoContratarDJ() {
           </div>
         </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/como-contratar-un-dj' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_como_contratar_dj" />
       </div>

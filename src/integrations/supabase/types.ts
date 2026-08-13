@@ -71,6 +71,8 @@ export type Database = {
       conversations: {
         Row: {
           created_at: string | null
+          deleted_by_a: boolean
+          deleted_by_b: boolean
           id: string
           last_message_at: string | null
           participant_a: string | null
@@ -78,6 +80,8 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
+          deleted_by_a?: boolean
+          deleted_by_b?: boolean
           id?: string
           last_message_at?: string | null
           participant_a?: string | null
@@ -85,10 +89,72 @@ export type Database = {
         }
         Update: {
           created_at?: string | null
+          deleted_by_a?: boolean
+          deleted_by_b?: boolean
           id?: string
           last_message_at?: string | null
           participant_a?: string | null
           participant_b?: string | null
+        }
+        Relationships: []
+      }
+      blocked_users: {
+        Row: {
+          blocked_id: string
+          blocker_id: string
+          created_at: string
+          id: string
+        }
+        Insert: {
+          blocked_id: string
+          blocker_id: string
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          blocked_id?: string
+          blocker_id?: string
+          created_at?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      dance_socials: {
+        Row: {
+          city: string
+          created_at: string | null
+          description: string | null
+          event_date: string
+          event_name: string
+          id: string
+          link_url: string | null
+          style: string
+          user_id: string
+          venue: string | null
+        }
+        Insert: {
+          city: string
+          created_at?: string | null
+          description?: string | null
+          event_date: string
+          event_name: string
+          id?: string
+          link_url?: string | null
+          style: string
+          user_id: string
+          venue?: string | null
+        }
+        Update: {
+          city?: string
+          created_at?: string | null
+          description?: string | null
+          event_date?: string
+          event_name?: string
+          id?: string
+          link_url?: string | null
+          style?: string
+          user_id?: string
+          venue?: string | null
         }
         Relationships: []
       }
@@ -301,7 +367,9 @@ export type Database = {
           content: string
           conversation_id: string | null
           created_at: string | null
+          deleted_at: string | null
           id: string
+          photo_url: string | null
           read: boolean | null
           sender_id: string | null
         }
@@ -309,7 +377,9 @@ export type Database = {
           content: string
           conversation_id?: string | null
           created_at?: string | null
+          deleted_at?: string | null
           id?: string
+          photo_url?: string | null
           read?: boolean | null
           sender_id?: string | null
         }
@@ -317,7 +387,9 @@ export type Database = {
           content?: string
           conversation_id?: string | null
           created_at?: string | null
+          deleted_at?: string | null
           id?: string
+          photo_url?: string | null
           read?: boolean | null
           sender_id?: string | null
         }
@@ -339,7 +411,11 @@ export type Database = {
           bio: string | null
           birthday: string | null
           category: string | null
+          class_price: number | null
+          class_styles: string[] | null
           created_at: string | null
+          dance_level: string | null
+          dance_role: string | null
           display_name: string | null
           genres: string[] | null
           hourly_rate: number | null
@@ -350,10 +426,14 @@ export type Database = {
           is_premium: boolean | null
           is_verified: boolean | null
           languages: string[] | null
+          offers_classes: boolean
           phone: string | null
           photo_url: string | null
+          priority_badge_until: string | null
+          referral_code: string | null
           role: string | null
           score: number | null
+          seeking_dance_partner: boolean
           specialty: string | null
           stream_title: string | null
           stream_url: string | null
@@ -373,7 +453,11 @@ export type Database = {
           bio?: string | null
           birthday?: string | null
           category?: string | null
+          class_price?: number | null
+          class_styles?: string[] | null
           created_at?: string | null
+          dance_level?: string | null
+          dance_role?: string | null
           display_name?: string | null
           genres?: string[] | null
           hourly_rate?: number | null
@@ -384,10 +468,14 @@ export type Database = {
           is_premium?: boolean | null
           is_verified?: boolean | null
           languages?: string[] | null
+          offers_classes?: boolean
           phone?: string | null
           photo_url?: string | null
+          priority_badge_until?: string | null
+          referral_code?: string | null
           role?: string | null
           score?: number | null
+          seeking_dance_partner?: boolean
           specialty?: string | null
           stream_title?: string | null
           stream_url?: string | null
@@ -407,7 +495,11 @@ export type Database = {
           bio?: string | null
           birthday?: string | null
           category?: string | null
+          class_price?: number | null
+          class_styles?: string[] | null
           created_at?: string | null
+          dance_level?: string | null
+          dance_role?: string | null
           display_name?: string | null
           genres?: string[] | null
           hourly_rate?: number | null
@@ -418,10 +510,14 @@ export type Database = {
           is_premium?: boolean | null
           is_verified?: boolean | null
           languages?: string[] | null
+          offers_classes?: boolean
           phone?: string | null
           photo_url?: string | null
+          priority_badge_until?: string | null
+          referral_code?: string | null
           role?: string | null
           score?: number | null
+          seeking_dance_partner?: boolean
           specialty?: string | null
           stream_title?: string | null
           stream_url?: string | null
@@ -433,6 +529,30 @@ export type Database = {
           validation_status?: string | null
           validation_submitted_at?: string | null
           zone?: string | null
+        }
+        Relationships: []
+      }
+      referrals: {
+        Row: {
+          created_at: string
+          id: string
+          invitee_user_id: string
+          inviter_user_id: string
+          rewarded: boolean
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          invitee_user_id: string
+          inviter_user_id: string
+          rewarded?: boolean
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          invitee_user_id?: string
+          inviter_user_id?: string
+          rewarded?: boolean
         }
         Relationships: []
       }

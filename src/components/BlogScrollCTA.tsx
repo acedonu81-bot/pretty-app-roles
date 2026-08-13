@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 interface BlogScrollCTAProps {
-  role?: 'dj' | 'staff' | 'azafata' | 'general' | 'empresario';
+  role?: 'dj' | 'staff' | 'azafata' | 'fotografo' | 'bailarin' | 'general' | 'empresario';
   storageKey?: string;
 }
 
@@ -23,6 +23,18 @@ const CONFIG = {
     sub: 'Recibe presupuestos de azafatas verificadas — gratis y sin compromiso.',
     cta: 'Solicitar presupuestos →',
     href: '/auth?mode=register&intent=contratar-azafata',
+  },
+  fotografo: {
+    label: '¿Buscas fotógrafo para tu evento?',
+    sub: 'Portfolios reales y tarifas públicas — gratis y sin compromiso.',
+    cta: 'Ver fotógrafos disponibles →',
+    href: '/auth?mode=register&intent=contratar-fotografo',
+  },
+  bailarin: {
+    label: '¿Buscas instructor o bailarín?',
+    sub: 'Bailarines para eventos e instructores de salsa/bachata — gratis y sin compromiso.',
+    cta: 'Ver bailarines disponibles →',
+    href: '/auth?mode=register&intent=contratar-bailarin',
   },
   general: {
     label: '¿Buscas profesionales para tu evento?',

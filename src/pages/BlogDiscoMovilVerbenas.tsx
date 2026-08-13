@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
@@ -16,6 +17,16 @@ const jsonLd = {
   "url": "https://xpeak.es/blog/disco-movil-verbenas-fiestas-pueblo"
 };
 
+const faqStructured = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    { '@type': 'Question', name: '¿Cuánto cuesta una disco móvil para una verbena?', acceptedAnswer: { '@type': 'Answer', text: 'El precio orientativo de una disco móvil para verbena va de 400€ a 1.200€ según la duración: unos 400€-700€ por 4 horas con equipo básico, 600€-900€ por 6 horas con equipo completo y 800€-1.200€ por una noche completa de 8 horas. Para dos días de fiestas de pueblo el rango sube a 1.200€-2.000€.' } },
+    { '@type': 'Question', name: '¿Qué es mejor para una fiesta de pueblo, disco móvil u orquesta?', acceptedAnswer: { '@type': 'Answer', text: 'La disco móvil (400€-1.200€) es más económica, tiene repertorio ilimitado de cualquier estilo, incluye sonido y luces y se monta en 2-3 horas: ideal para verbenas modernas. La orquesta (2.000€-8.000€) tiene repertorio fijo, necesita técnico aparte y encaja mejor en verbenas clásicas con público de 50 años en adelante.' } },
+    { '@type': 'Question', name: '¿Qué incluye una disco móvil para verbena?', acceptedAnswer: { '@type': 'Answer', text: 'Incluye DJ profesional con experiencia en eventos populares, sistema de sonido (altavoces, amplificadores, subwoofer), iluminación LED de colores y efectos, máquina de humo o cañón de CO₂, mesa de mezclas, cabina completa y montaje y desmontaje, con repertorio adaptable a pop español, flamenco fusión, electrónica, reggaetón y clásicos.' } },
+  ],
+};
+
 export default function BlogDiscoMovilVerbenas() {
   return (
     <>
@@ -24,6 +35,7 @@ export default function BlogDiscoMovilVerbenas() {
         <meta name="description" content="Cómo contratar disco móvil u orquesta para fiestas de pueblo y verbenas. Precios, diferencias DJ vs orquesta, qué incluye el equipo y cómo contratarlo en España." />
         <link rel="canonical" href="https://xpeak.es/blog/disco-movil-verbenas-fiestas-pueblo" />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+        <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
       </Helmet>
       <div style={{ background: '#0A0A0A', color: '#F5F5F0', minHeight: '100vh' }}>
         <div className="max-w-2xl mx-auto px-4 py-12">
@@ -115,6 +127,18 @@ export default function BlogDiscoMovilVerbenas() {
               ))}
             </div>
 
+            <section className="mt-8">
+              <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
+              <div className="space-y-4">
+                {faqStructured.mainEntity.map(f => (
+                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
+                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+
             <div className="mt-8 p-5 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
               <p className="font-black text-lg mb-2">Contrata disco móvil para tu verbena en XPEAK</p>
               <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.9rem', marginBottom: '1rem' }}>DJs con equipo completo verificados en toda España. Contratos automáticos. Flash Booking disponible.</p>
@@ -125,6 +149,7 @@ export default function BlogDiscoMovilVerbenas() {
             <BlogShare />
           </article>
         </div>
+        <BlogRelatedPosts currentSlug='/blog/disco-movil-verbenas-fiestas-pueblo' tag='DJ' />
         <FooterPublic />
         <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_disco_movil_verbenas" />
       </div>

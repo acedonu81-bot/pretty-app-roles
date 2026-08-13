@@ -1,6 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, MapPin, Star, TrendingUp } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
@@ -43,7 +45,7 @@ const structuredData = {
   '@type': 'Article',
   headline: 'Maestro de Ceremonias para Bodas: precio y guía completa 2026',
   description: 'Cuánto cuesta un maestro de ceremonias para una boda en España. Precios por experiencia y ciudad, funciones, diferencias con animador y cómo contratar.',
-  author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   datePublished: '2026-05-16',
   dateModified: '2026-05-16',
@@ -292,7 +294,9 @@ export default function BlogMaestroCeremonias() {
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/maestro-de-ceremonias-boda-precio-guia" />
+        <BlogRelatedPosts currentSlug='/blog/maestro-de-ceremonias-boda-precio-guia' tag='Bodas' />
         <FooterPublic />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maestro_ceremonias" />
       </div>
     </>
   );

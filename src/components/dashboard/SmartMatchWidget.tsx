@@ -11,7 +11,7 @@ const ROLES = [
   { value: 'promotor', label: 'Promotor / RRPP' },
   { value: 'catering', label: 'Catering & Chef' },
   { value: 'mago', label: 'Mago & Ilusionista' },
-  { value: 'bailarin', label: 'Bailarín & Danza' },
+  { value: 'bailarin', label: 'Instructor / Bailarín' },
   { value: 'animador', label: 'Payaso & Animador' },
 ];
 
@@ -22,7 +22,7 @@ const MatchCard = ({ m, onContact }: { m: MatchedProfessional; onContact: (userI
     style={{ background: '#fafaf8', border: '1px solid rgba(212,175,55,0.12)' }}>
     <a href={`/p/${m.user_id}`} className="flex-shrink-0">
       {m.photo_url ? (
-        <img src={m.photo_url} alt={m.display_name} className="w-12 h-12 rounded-xl object-cover" />
+        <img src={m.photo_url} alt={m.display_name} loading="lazy" className="w-12 h-12 rounded-xl object-cover" />
       ) : (
         <div className="w-12 h-12 rounded-xl flex items-center justify-center text-lg font-black"
           style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F' }}>
@@ -35,7 +35,6 @@ const MatchCard = ({ m, onContact }: { m: MatchedProfessional; onContact: (userI
         <a href={`/p/${m.user_id}`} className="text-sm font-bold hover:opacity-70 truncate" style={{ color: '#111' }}>
           {m.display_name}
         </a>
-        {m.is_verified && <BadgeCheck size={12} style={{ color: '#8A6D0F' }} />}
         {m.is_early_adopter && <span className="w-2 h-2 rounded-full" style={{ background: '#3b82f6' }} />}
       </div>
       {m.specialty && <p className="text-xs truncate" style={{ color: '#8A6D0F' }}>{m.specialty}</p>}

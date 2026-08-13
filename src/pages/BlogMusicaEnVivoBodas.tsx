@@ -1,6 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, MapPin, Star, TrendingUp } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
@@ -45,7 +47,7 @@ const structuredData = {
   '@type': 'Article',
   headline: 'Música en Vivo para Bodas: grupos, solistas y cuartetos — guía y precios 2026',
   description: 'Guía completa de música en vivo para bodas en España. Formatos, precios por ciudad, cuándo ponerla y cómo combinarla con DJ.',
-  author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   datePublished: '2026-05-16',
   dateModified: '2026-05-16',
@@ -278,7 +280,9 @@ export default function BlogMusicaEnVivoBodas() {
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/musica-en-vivo-para-bodas" />
+        <BlogRelatedPosts currentSlug='/blog/musica-en-vivo-para-bodas' tag='Bodas' />
         <FooterPublic />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_musica_en_vivo_bodas" />
       </div>
     </>
   );

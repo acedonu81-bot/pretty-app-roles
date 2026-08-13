@@ -33,6 +33,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   const [sideStats, setSideStats] = useState<{ bookings: number | null; messages: number | null }>({ bookings: null, messages: null });
   const [copied, setCopied] = useState(false);
   const [referralCopied, setReferralCopied] = useState(false);
+  const [referralIsNew] = useState(() => !localStorage.getItem('xpeak_referral_seen'));
   const [offersClasses, setOffersClasses] = useState<boolean | null>(null);
   const [classStyles, setClassStyles] = useState<string[] | null>(null);
   const [classPrice, setClassPrice] = useState<string | null>(null);
@@ -52,7 +53,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
       { label: 'Especialidad', done: !!(profile.specialty && profile.specialty.trim().length > 0), hint: 'Añade tus géneros o especialidades.' },
       { label: 'Instagram', done: !!(profile.instagram && profile.instagram.trim().length > 0), hint: 'Enlaza tu Instagram para que te contacten.' },
       ...(profile.role === 'dj' || profile.role === 'rookie' ? [
-        { label: 'Mix / Audio', done: !!(profile.audio_embed_url && (profile.audio_embed_url as string).trim().length > 0), hint: 'Añade un enlace a tu mix o sesión.' },
+        { label: 'Mix / Audio', done: !!(profile.audio_embed_url && (profile.audio_embed_url as string).trim().length > 0) || !!(profile.audio_session_urls && profile.audio_session_urls.length > 0), hint: 'Añade un enlace a tu mix o sesión.' },
       ] : profile.role !== 'empresario' ? [
         { label: 'Portfolio', done: !!(profile.portfolio_urls && profile.portfolio_urls.length > 0), hint: 'Sube fotos o un vídeo corto de tu trabajo.' },
       ] : []),
@@ -117,6 +118,12 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     if (next.length === 0) return;
     setSelectedRoles(next);
   };
+  useEffect(() => {
+    if (!referralIsNew) return;
+    const t = setTimeout(() => localStorage.setItem('xpeak_referral_seen', '1'), 4000);
+    return () => clearTimeout(t);
+  }, [referralIsNew]);
+
   useEffect(() => {
     if (!user) return;
     (async () => {
@@ -374,10 +381,15 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
 
           {/* — Invita y gana prioridad — */}
           {user && profile.role !== 'empresario' && (
-            <div className="glass-panel p-4">
+            <div className="glass-panel p-4" style={referralIsNew ? { border: '1px solid rgba(37,99,235,0.35)', boxShadow: '0 0 0 1px rgba(37,99,235,0.08)' } : undefined}>
               <div className="flex items-center gap-2 mb-1">
                 <Star size={13} style={{ color: '#2563eb' }} />
                 <span className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: '#2563eb' }}>Invita y gana prioridad</span>
+                {referralIsNew && (
+                  <span className="px-1.5 py-0.5 rounded-full text-[0.55rem] font-black uppercase" style={{ background: '#2563eb', color: '#fff' }}>
+                    Nuevo
+                  </span>
+                )}
               </div>
               <p className="text-[0.72rem] mb-3" style={{ color: '#3d3d4e' }}>
                 Cada profesional que invites y complete su perfil te da <strong style={{ color: 'inherit' }}>+6 meses</strong> de badge azul de prioridad — apareces antes en el directorio.

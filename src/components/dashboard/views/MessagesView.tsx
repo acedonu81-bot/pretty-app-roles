@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import type { RealtimeChannel } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useProfile } from '@/hooks/useProfile';
 import { sanitizeInput } from '@/lib/contentFilter';
 import { toast } from 'sonner';
 import ConversationList from './messages/ConversationList';
@@ -24,10 +25,12 @@ interface Message {
   photo_url?: string | null;
   read: boolean;
   created_at: string;
+  deleted_at?: string | null;
 }
 
 const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; initialName?: string }) => {
   const { user } = useAuth();
+  const { display_name: myDisplayName } = useProfile();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeConvId, setActiveConvId] = useState<string | null>(null);
   const [activeOtherName, setActiveOtherName] = useState('');
@@ -44,6 +47,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
   const [searchUsers, setSearchUsers] = useState('');
   const [userResults, setUserResults] = useState<{ user_id: string; display_name: string; role: string }[]>([]);
   const [searchingUsers, setSearchingUsers] = useState(false);
+  const [blockedUserIds, setBlockedUserIds] = useState<Set<string>>(new Set());
   const bottomRef = useRef<HTMLDivElement>(null);
   const realtimeRef = useRef<RealtimeChannel | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -53,23 +57,34 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     if (!user) return;
     const { data, error } = await supabase
       .from('conversations')
-      .select('id, participant_a, participant_b, last_message_at')
+      .select('id, participant_a, participant_b, last_message_at, deleted_by_a, deleted_by_b')
       .or(`participant_a.eq.${user.id},participant_b.eq.${user.id}`)
       .order('last_message_at', { ascending: false });
 
     if (error) { toast.error('Error al cargar conversaciones'); return; }
-    if (!data || data.length === 0) { setConversations([]); setLoading(false); return; }
+    const visible = (data ?? []).filter(c =>
+      (c.participant_a === user.id && !c.deleted_by_a) || (c.participant_b === user.id && !c.deleted_by_b)
+    );
+    if (visible.length === 0) { setConversations([]); setLoading(false); return; }
 
-    const convIds = data.map(c => c.id);
-    const otherIds = data.map(c => c.participant_a === user.id ? c.participant_b : c.participant_a);
+    const convIds = visible.map(c => c.id);
+    const otherIds = visible.map(c => c.participant_a === user.id ? c.participant_b : c.participant_a);
 
-    // 3 queries totales (independiente del nº de conversaciones):
-    // perfiles + todos los mensajes de todas las conversaciones, en paralelo.
-    const [{ data: profilesData }, { data: msgsData }] = await Promise.all([
+    // 4 queries totales (independiente del nº de conversaciones):
+    // perfiles + mensajes + bloqueos, en paralelo.
+    const [{ data: profilesData }, { data: msgsData }, { data: blockedData }] = await Promise.all([
       supabase.from('profiles').select('user_id, display_name, photo_url').in('user_id', otherIds),
-      supabase.from('messages').select('conversation_id, content, read, sender_id, created_at')
+      supabase.from('messages').select('conversation_id, content, read, sender_id, created_at, deleted_at')
         .in('conversation_id', convIds).order('created_at', { ascending: false }),
+      supabase.from('blocked_users').select('blocked_id').eq('blocker_id', user.id),
     ]);
+
+    const blockedIds = new Set((blockedData ?? []).map(b => b.blocked_id));
+    setBlockedUserIds(blockedIds);
+    const finalConvs = visible.filter(c => {
+      const otherId = c.participant_a === user.id ? c.participant_b : c.participant_a;
+      return !blockedIds.has(otherId);
+    });
 
     const profileMap = new Map((profilesData ?? []).map(p => [p.user_id, { name: p.display_name, photo: p.photo_url }]));
 
@@ -77,6 +92,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     const lastMsgMap = new Map<string, { content: string }>();
     const unreadMap = new Map<string, number>();
     for (const m of msgsData ?? []) {
+      if (m.deleted_at) continue;
       // Mensajes ya ordenados desc → el primero por conv es el último cronológico.
       if (!lastMsgMap.has(m.conversation_id)) lastMsgMap.set(m.conversation_id, { content: m.content });
       if (!m.read && m.sender_id !== user.id) {
@@ -84,7 +100,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
       }
     }
 
-    const convs: Conversation[] = data.map((c) => {
+    const convs: Conversation[] = finalConvs.map((c) => {
       const otherId = c.participant_a === user.id ? c.participant_b : c.participant_a;
       return {
         id: c.id,
@@ -103,7 +119,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
 
   const loadMessages = useCallback(async (convId: string) => {
     const { data, error } = await supabase
-      .from('messages').select('id, sender_id, content, read, created_at')
+      .from('messages').select('id, sender_id, content, read, created_at, deleted_at')
       .eq('conversation_id', convId).order('created_at', { ascending: true });
     if (error) { toast.error('Error al cargar mensajes'); return; }
     setMessages((data ?? []) as Message[]);
@@ -116,6 +132,10 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
 
   const openConversationWith = useCallback(async (targetUserId: string, targetName: string) => {
     if (!user) return;
+    if (blockedUserIds.has(targetUserId)) {
+      toast.error('Has bloqueado a este usuario. Desbloquéalo para escribirle.');
+      return;
+    }
     const a = user.id < targetUserId ? user.id : targetUserId;
     const b = user.id < targetUserId ? targetUserId : user.id;
 
@@ -132,14 +152,30 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
       const { data: created, error: insertError } = await supabase
         .from('conversations').insert({ participant_a: a, participant_b: b }).select('id').single();
       if (insertError) {
-        toast.error('No se pudo iniciar la conversación. Inténtalo de nuevo.');
-        console.error('[MessagesView] create conversation error:', insertError);
-        return;
+        if (insertError.code === '23505') {
+          const { data: retryData, error: retryError } = await supabase
+            .from('conversations').select('id').eq('participant_a', a).eq('participant_b', b).maybeSingle();
+          if (retryError || !retryData) {
+            toast.error('No se pudo iniciar la conversación. Inténtalo de nuevo.');
+            console.error('[MessagesView] retry fetch conversation error:', retryError);
+            return;
+          }
+          existing = retryData;
+        } else {
+          toast.error('No se pudo iniciar la conversación. Inténtalo de nuevo.');
+          console.error('[MessagesView] create conversation error:', insertError);
+          return;
+        }
+      } else {
+        existing = created;
       }
-      existing = created;
     }
 
     if (existing) {
+      // Si el usuario había "eliminado" este chat de su bandeja, reaparece al reabrirlo.
+      const deletedField = user.id === a ? 'deleted_by_a' : 'deleted_by_b';
+      await supabase.from('conversations').update({ [deletedField]: false }).eq('id', existing.id);
+
       setActiveConvId(existing.id);
       setActiveOtherName(targetName);
       setActiveOtherUserId(targetUserId);
@@ -147,7 +183,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
       await loadMessages(existing.id);
       await loadConversations();
     }
-  }, [user, loadMessages, loadConversations]);
+  }, [user, loadMessages, loadConversations, blockedUserIds]);
 
   useEffect(() => { loadConversations(); }, [loadConversations]);
   useEffect(() => {
@@ -214,7 +250,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     setSending(false);
     // Notify recipient by 2 channels: in-app notification + email (fire and forget)
     if (activeOtherUserId) {
-      const senderName = user.user_metadata?.display_name || 'Un usuario';
+      const senderName = myDisplayName?.trim() || user.user_metadata?.display_name || 'Un usuario';
       const preview = text ? (text.length > 80 ? text.slice(0, 80) + '…' : text) : '📷 Te ha enviado una imagen';
       // 1) In-app notification (degrades gracefully if table not yet present)
       supabase.from('notifications' as any).insert({
@@ -294,6 +330,35 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     await openConversationWith(targetUserId, targetName);
   };
 
+  const deleteMessage = async (messageId: string) => {
+    const { error } = await supabase.from('messages')
+      .update({ deleted_at: new Date().toISOString() }).eq('id', messageId);
+    if (error) { toast.error('No se pudo eliminar el mensaje'); return; }
+    setMessages(prev => prev.map(m => m.id === messageId ? { ...m, deleted_at: new Date().toISOString() } : m));
+    if (activeConvId) loadConversations();
+  };
+
+  const deleteConversation = async (conv: Conversation) => {
+    if (!user) return;
+    const a = user.id < conv.other_user_id ? user.id : conv.other_user_id;
+    const field = user.id === a ? 'deleted_by_a' : 'deleted_by_b';
+    const { error } = await supabase.from('conversations').update({ [field]: true }).eq('id', conv.id);
+    if (error) { toast.error('No se pudo eliminar la conversación'); return; }
+    setConversations(prev => prev.filter(c => c.id !== conv.id));
+    if (activeConvId === conv.id) handleCloseChat();
+  };
+
+  const blockUser = async (targetUserId: string) => {
+    if (!user) return;
+    const { error } = await supabase.from('blocked_users')
+      .insert({ blocker_id: user.id, blocked_id: targetUserId });
+    if (error) { toast.error('No se pudo bloquear al usuario'); return; }
+    toast.success('Usuario bloqueado');
+    setBlockedUserIds(prev => new Set(prev).add(targetUserId));
+    setConversations(prev => prev.filter(c => c.other_user_id !== targetUserId));
+    if (activeOtherUserId === targetUserId) handleCloseChat();
+  };
+
   const totalUnread = conversations.reduce((s, c) => s + c.unread, 0);
 
   return (
@@ -331,6 +396,8 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
               activeConvId={activeConvId}
               onSelectConversation={handleSelectConversation}
               onNewConversation={() => setShowNewConv(true)}
+              onDeleteConversation={deleteConversation}
+              onBlockUser={conv => blockUser(conv.other_user_id)}
             />
           </div>
 
@@ -356,6 +423,12 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
                 onSend={sendMessage}
                 onPhotoUpload={handlePhotoUpload}
                 onBack={handleCloseChat}
+                onDeleteMessage={deleteMessage}
+                onDeleteConversation={() => {
+                  const conv = conversations.find(c => c.id === activeConvId);
+                  if (conv) deleteConversation(conv);
+                }}
+                onBlockUser={() => { if (activeOtherUserId) blockUser(activeOtherUserId); }}
               />
             </div>
           )}

@@ -84,6 +84,21 @@ for (const catSlug of routedCitySlugs) {
 }
 console.log(`  → ${dynamicCount} rutas ciudad/categoría dinámicas añadidas al prerender de contenido`);
 
+// Rutas de ocasión /:ocasion/contratar-:rol → OccasionLanding. Se leen de
+// ROLES_POR_OCASION (OccasionLanding.tsx) y se registran como rutas explícitas
+// en App.tsx, así que todas existen y no generan 404s.
+const OCC_ROLES = extractObjectLiteral(path.join(ROOT, 'src', 'pages', 'OccasionLanding.tsx'), 'ROLES_POR_OCASION');
+let occCount = 0;
+for (const [occSlug, roleSlugs] of Object.entries(OCC_ROLES)) {
+  for (const roleSlug of roleSlugs) {
+    const routePath = `/${occSlug}/contratar-${roleSlug}`;
+    if (!APP.includes(`path="${routePath}"`)) continue; // solo rutas realmente registradas
+    routes.push({ routePath, file: 'OccasionLanding.tsx' });
+    occCount++;
+  }
+}
+console.log(`  → ${occCount} rutas ocasión/rol añadidas al prerender de contenido`);
+
 // Shims mínimos de navegador para componentes que los tocan durante el render
 const memStorage = () => {
   const s = new Map();

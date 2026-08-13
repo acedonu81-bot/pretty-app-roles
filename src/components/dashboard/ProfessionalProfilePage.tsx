@@ -150,6 +150,12 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
     genres?: string[];
     hourlyRate?: number;
     isVerified?: boolean;
+    offersClasses?: boolean;
+    classStyles?: string[];
+    classPrice?: number | null;
+    seekingDancePartner?: boolean;
+    danceLevel?: string | null;
+    danceRole?: string | null;
   }>({});
   const [showContract, setShowContract] = useState(false);
   const [imgError, setImgError] = useState(false);
@@ -162,7 +168,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
     const load = async () => {
       const { data } = await supabase
         .from('profiles')
-        .select('audio_embed_url, portfolio_urls, bio, languages, genres, hourly_rate, is_verified')
+        .select('audio_embed_url, portfolio_urls, bio, languages, genres, hourly_rate, is_verified, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role')
         .eq('user_id', p.userId)
         .maybeSingle();
       if (!data) return;
@@ -175,6 +181,12 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
         genres: (data as any).genres ?? p.badges ?? [],
         hourlyRate: (data as any).hourly_rate ?? p.price,
         isVerified: (data as any).is_verified ?? p.isVerified,
+        offersClasses: (data as any).offers_classes ?? false,
+        classStyles: (data as any).class_styles ?? [],
+        classPrice: (data as any).class_price ?? null,
+        seekingDancePartner: (data as any).seeking_dance_partner ?? false,
+        danceLevel: (data as any).dance_level ?? null,
+        danceRole: (data as any).dance_role ?? null,
       });
     };
     load();
@@ -211,7 +223,11 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
 
   const priceHidden = ['makeup', 'vestuario', 'media', 'design'].includes(p.role);
 
-  const contact = () => p.userId && onMessage?.(p.userId, p.name);
+  const contact = () => {
+    if (!p.userId) return;
+    onMessage?.(p.userId, p.name);
+    onClose();
+  };
   const mediaLabel = isDJ ? 'Audio & Stream' : p.role === 'media' ? 'Portfolio' : 'Media';
   const hasLive = p.isLive && p.streamUrl && parseStreamUrl(p.streamUrl);
 
@@ -281,7 +297,6 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                 <h1 className="font-black tracking-tight"
                   style={{ fontSize: 'clamp(1.7rem, 7vw, 3rem)', lineHeight: 1.05, letterSpacing: '-0.02em', color: '#fff', textShadow: '0 2px 24px rgba(0,0,0,0.55)', overflow: 'visible', paddingBottom: '0.1em', wordBreak: 'break-word' }}>
                   {p.name}
-                  {verified && <CheckCircle size={22} className="inline ml-2 mb-1" style={{ color: '#4285F4' }} />}
                 </h1>
                 <div className="flex items-center gap-2.5 mt-2 flex-wrap">
                   <span className="flex items-center gap-1 text-sm font-semibold" style={{ color: 'rgba(255,255,255,0.85)' }}>
@@ -338,6 +353,53 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                     {l}
                   </span>
                 ))}
+              </motion.div>
+            )}
+
+            {/* Clases particulares (bailarines) */}
+            {p.role === 'bailarin' && full.offersClasses && (
+              <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 }}
+                className="rounded-2xl p-5" style={{ background: `${cfg.color}0A`, border: `1px solid ${cfg.color}25` }}>
+                <p className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#7a6216' }}>💃 Clases particulares</p>
+                <p className="text-sm mb-3" style={{ color: '#333' }}>{p.name} también da clases particulares de baile.</p>
+                {full.classStyles && full.classStyles.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 mb-3">
+                    {full.classStyles.map((s: string) => (
+                      <span key={s} className="text-xs font-bold px-2.5 py-1 rounded-full"
+                        style={{ background: '#fff', border: `1px solid ${cfg.color}30`, color: '#555' }}>
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                {full.classPrice != null && full.classPrice > 0 && (
+                  <p className="text-sm font-bold mb-3" style={{ color: '#222' }}>
+                    Desde €{full.classPrice}<span className="font-medium" style={{ color: '#666' }}>/hora</span>
+                  </p>
+                )}
+                <button onClick={contact}
+                  className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition-all hover:scale-[1.02]"
+                  style={{ background: cfg.color, color: '#fff' }}>
+                  <MessageCircle size={15} /> Contactar para clases
+                </button>
+              </motion.div>
+            )}
+
+            {/* Busca pareja de baile */}
+            {p.role === 'bailarin' && full.seekingDancePartner && (
+              <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.07 }}
+                className="rounded-2xl p-5" style={{ background: `${cfg.color}0A`, border: `1px solid ${cfg.color}25` }}>
+                <p className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#7a6216' }}>🤝 Busca pareja de baile</p>
+                <p className="text-sm mb-3" style={{ color: '#333' }}>
+                  {p.name} está buscando pareja de baile fija
+                  {full.danceRole === 'lead' ? ' — leader' : full.danceRole === 'follow' ? ' — follower' : full.danceRole === 'ambos' ? ' — baila ambos roles' : ''}
+                  {full.danceLevel ? `, nivel ${full.danceLevel.toLowerCase()}` : ''}.
+                </p>
+                <button onClick={contact}
+                  className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition-all hover:scale-[1.02]"
+                  style={{ background: cfg.color, color: '#fff' }}>
+                  <MessageCircle size={15} /> Contactar
+                </button>
               </motion.div>
             )}
 
@@ -409,7 +471,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                     <a key={i} href={url} target="_blank" rel="noopener noreferrer"
                       className="rounded-xl overflow-hidden aspect-square relative group cursor-pointer block"
                       style={{ border: `1px solid ${cfg.color}15` }}>
-                      <img src={url} alt={`${p.name} trabajo ${i + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      <img src={url} alt={`${p.name} trabajo ${i + 1}`} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         onError={e => { (e.currentTarget.closest('a') as HTMLElement)?.style.setProperty('display', 'none'); }} />
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                         style={{ background: 'rgba(0,0,0,0.5)' }}>

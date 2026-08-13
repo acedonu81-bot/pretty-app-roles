@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
@@ -14,7 +15,7 @@ const articleSchema = {
   '@type': 'Article',
   headline: 'Boda low cost: checklist completo de todo lo que necesitas contratar',
   description: 'Guía completa para organizar una boda con presupuesto ajustado en España 2026. Checklist de DJ, fotógrafo, catering, flores, maquillaje y más. Ahorra sin renunciar a calidad.',
-  author: { '@type': 'Organization', name: 'XPEAK' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   datePublished: '2026-06-07',
   dateModified: '2026-06-07',
@@ -187,13 +188,18 @@ export default function BlogBodaLowCost() {
               question="¿Cuánto cuesta una boda low cost en España?"
               answer="Una boda low cost para 80-100 invitados en España cuesta entre 8.000 y 18.000€. Las 5 palancas de ahorro reales son: celebrar en viernes o domingo (ahorra 800-2.000€ en la finca), contratar en temporada baja (noviembre-marzo), comparar 3 presupuestos por servicio, elegir DJ en vez de banda, y contratar directamente sin agencia organizadora."
             />
-            <img
-              src="/images/blog/boda-low-cost-presupuesto-completo.jpg"
-              alt="Copas de cóctel en boda — guía boda low cost presupuesto completo España 2026"
-              className="w-full rounded-xl my-6 object-cover"
-              style={{ maxHeight: 320, filter: 'brightness(0.9)' }}
-              loading="lazy"
-            />
+            <picture>
+              <source srcSet="/images/blog/boda-low-cost-presupuesto-completo.webp" type="image/webp" />
+              <img
+                src="/images/blog/boda-low-cost-presupuesto-completo.jpg"
+                alt="Copas de cóctel en boda — guía boda low cost presupuesto completo España 2026"
+                className="w-full rounded-xl my-6 object-cover"
+                style={{ maxHeight: 320, filter: 'brightness(0.9)' }}
+                loading="lazy"
+                width={800}
+                height={450}
+              />
+            </picture>
           </div>
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath={`/blog/${slug}`} />
@@ -301,7 +307,7 @@ export default function BlogBodaLowCost() {
               {faqSchema.mainEntity.map(f => (
                 <div key={f.name} className="p-5 rounded-xl"
                   style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <p className="text-sm font-bold mb-2">{f.name}</p>
+                  <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                   <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>{f.acceptedAnswer.text}</p>
                 </div>
               ))}
@@ -344,6 +350,7 @@ export default function BlogBodaLowCost() {
         </main>
 
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/boda-low-cost-checklist-completo' tag='Bodas' />
         <FooterPublic />
         <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_boda_low_cost" />
       </div>

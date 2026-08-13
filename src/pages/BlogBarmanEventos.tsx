@@ -1,11 +1,13 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Contratar barman para evento privado: precios y qué incluye en España (2026)', description: 'Cuánto cuesta contratar un barman o coctelero para un evento privado en España. Tarifas, equipo incluido y diferencias con camarero de barra.', datePublished: '2026-05-04',
-  dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/contratar-barman-evento-privado' };
+  dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/contratar-barman-evento-privado' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta contratar un barman para un evento privado?', acceptedAnswer: { '@type': 'Answer', text: 'El precio de un barman profesional para eventos privados en España oscila entre 150€ y 400€ por evento (4-6 horas), dependiendo del nivel de coctelería, equipamiento y ciudad. Los barmans de show o flair cobran entre 300€ y 600€.' } },
   { '@type': 'Question', name: '¿El barman trae el equipo y los productos?', acceptedAnswer: { '@type': 'Answer', text: 'Depende del paquete. Muchos barmans ofrecen un servicio todo incluido (coctelería, equipo, hielo, decoración de barra) con un precio por persona. Si traes el alcohol tú, el precio del barman baja significativamente. Especifícalo siempre en el presupuesto.' } },
@@ -70,7 +72,7 @@ export default function BlogBarmanEventos() {
             </section>
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
-              <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}><p className="text-sm font-bold mb-2">{f.name}</p><p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p></div>))}</div>
+              <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}><h3 className="text-sm font-bold mb-2">{f.name}</h3><p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p></div>))}</div>
             </section>
             
             <section className="mt-8">
@@ -96,7 +98,9 @@ export default function BlogBarmanEventos() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/contratar-barman-evento-privado" />
 </main>
       <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/contratar-barman-evento-privado' tag='Camareros' />
         <FooterPublic />
+        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_barman_eventos" />
       </div>
     </>
   );

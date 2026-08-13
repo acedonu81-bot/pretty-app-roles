@@ -1,13 +1,16 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
-import RelatedPosts from '@/components/RelatedPosts';
+import BlogAnswerBox from '@/components/BlogAnswerBox';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 import BlogTopCTA from '@/components/BlogTopCTA';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para bodas en Madrid: precio y cómo contratar en 2026', description: 'Cuánto cuesta un DJ para una boda en Madrid. Precios reales, zonas de celebración y cómo elegir el mejor DJ para tu boda en la Comunidad de Madrid.', datePublished: '2026-05-28', dateModified: '2026-05-28', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-bodas-madrid' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para bodas en Madrid: precio y cómo contratar en 2026', description: 'Cuánto cuesta un DJ para una boda en Madrid. Precios reales, zonas de celebración y cómo elegir el mejor DJ para tu boda en la Comunidad de Madrid.', datePublished: '2026-05-28', dateModified: '2026-05-28', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-bodas-madrid' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda en Madrid?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ para boda en Madrid cuesta entre 800€ y 2.500€ para el servicio completo (ceremonia + cóctel + cena + pista de baile). Los precios en Madrid son un 20-30% más altos que la media nacional debido a la mayor demanda y coste de vida. Para bodas solo con pista de baile (4-5h), el rango es 500-1.000€.' } },
   { '@type': 'Question', name: '¿Dónde se celebran más bodas en Madrid?', acceptedAnswer: { '@type': 'Answer', text: 'Las zonas más populares para bodas en Madrid son: fincas en la Sierra Norte y Sierra de Guadarrama (Cercedilla, El Escorial, Miraflores), fincas al sur (Aranjuez, Chinchón) y espacios en la ciudad (palacios, hoteles de lujo, azoteas). Las fincas rurales concentran el 60% de las bodas en la Comunidad.' } },
@@ -70,6 +73,10 @@ export default function BlogDJBodaMadrid() {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para bodas en Madrid: precio y cómo contratar en 2026</h1>
             <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Madrid concentra el mayor número de bodas de España. Los DJs de boda en la Comunidad tienen más demanda y precios más altos que la media nacional — te contamos exactamente cuánto y cómo encontrar el correcto.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>28 mayo 2026</time>
+            <BlogAnswerBox
+              question="¿Cuánto cuesta un DJ para una boda en Madrid?"
+              answer="Un DJ para el servicio completo de una boda en Madrid (ceremonia, cóctel, cena y pista de baile) cuesta entre 900 y 2.000€ en 2026. El precio varía según la duración del evento, el equipo técnico incluido y la experiencia del DJ."
+            />
           </div>
 
           <div className="space-y-10">
@@ -119,7 +126,7 @@ export default function BlogDJBodaMadrid() {
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
                   <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                     <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.a}</p>
                   </div>
                 ))}
@@ -151,10 +158,12 @@ export default function BlogDJBodaMadrid() {
             </div>
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-madrid" />
-          <RelatedPosts currentSlug="/blog/dj-bodas-madrid" tags={['DJ', 'Bodas']} />
+                  <DJResourcesAffiliate />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/dj-bodas-madrid' tag='DJ' />
         <FooterPublic />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_madrid" />
       </div>
     </>
   );

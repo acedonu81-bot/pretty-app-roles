@@ -1,12 +1,13 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
-import RelatedPosts from '@/components/RelatedPosts';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Wedding Planner: precio y qué hace en España (2026)', description: 'Cuánto cobra un wedding planner en España. Precios por paquete, diferencias entre coordinador y planificador integral, y cómo elegir el perfecto para tu boda.', datePublished: '2026-05-07',
-  dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/wedding-planner-precio-espana' };
+  dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/wedding-planner-precio-espana' };
 
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cobra un wedding planner en España?', acceptedAnswer: { '@type': 'Answer', text: 'El precio de un wedding planner en España varía entre 800€ y 6.000€ según el paquete. La coordinación del día cuesta entre 800€ y 2.000€. La planificación parcial (últimos 3 meses) ronda los 1.500–3.500€. La planificación integral desde cero suele costar entre 3.000€ y 8.000€ o un porcentaje del presupuesto total de la boda (normalmente entre el 8% y el 15%).' } },
@@ -299,10 +300,11 @@ export default function BlogWeddingPlanner() {
 
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/wedding-planner-precio-espana" />
-          <RelatedPosts currentSlug="/blog/wedding-planner-precio-espana" tags={['Bodas']} />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/wedding-planner-precio-espana' tag='Eventos' />
         <FooterPublic />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_wedding_planner" />
       </div>
     </>
   );

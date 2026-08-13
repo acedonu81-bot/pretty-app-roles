@@ -11,7 +11,6 @@ import PublicContactModal from '@/components/PublicContactModal';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
 import AvailabilityCalendar from '@/components/AvailabilityCalendar';
 import { motion, AnimatePresence } from 'framer-motion';
-import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
 /* ── Reviews ─────────────────────────────────────────────────────────────── */
@@ -312,6 +311,7 @@ const PublicProfile = () => {
   const [showContact, setShowContact] = useState(false);
   const [scrolledPastHero, setScrolledPastHero] = useState(false);
   const [audioEmbed, setAudioEmbed] = useState<ReturnType<typeof parseStreamUrl>>(null);
+  const [seoReviews, setSeoReviews] = useState<{ rating: number }[]>([]);
   const isUUID = UUID_RE.test(slug ?? '');
 
   useEffect(() => {
@@ -350,6 +350,10 @@ const PublicProfile = () => {
     (query as Promise<{ data: SupabaseProfile | null; error: unknown }>)
       .then(({ data }) => {
         setSbProfile(data ?? null);
+        if (data?.user_id) {
+          supabase.from('reviews').select('rating').eq('reviewed_user_id', data.user_id).eq('approved', true)
+            .then(({ data: rev }) => setSeoReviews(rev ?? []));
+        }
         if (isUUID && data?.display_name) {
           const canonical = toSlug(data.display_name);
           if (canonical && canonical !== slug) {
@@ -590,15 +594,35 @@ const PublicProfile = () => {
                 "priceCurrency": "EUR",
                 "unitText": "hora"
               },
+              "priceValidUntil": `${new Date().getFullYear()}-12-31`,
+              "availability": sbProfile?.is_flash_active ? "https://schema.org/InStock" : "https://schema.org/LimitedAvailability",
               "areaServed": {
                 "@type": "Country",
                 "name": "España"
               },
-              "seller": { "@type": "Person", "name": profile.name }
+              "seller": { "@type": "Person", "name": profile.name },
+              "potentialAction": {
+                "@type": "ReserveAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": profileUrl,
+                  "actionPlatform": ["https://schema.org/DesktopWebPlatform", "https://schema.org/MobileWebPlatform"]
+                },
+                "result": { "@type": "Reservation", "name": `Reserva de ${profile.name} para tu evento` }
+              }
             }
           } : {}),
           ...(profile.badges && profile.badges.length > 0 ? { "knowsAbout": profile.badges } : {}),
           ...(sbProfile?.instagram ? { "sameAs": [`https://www.instagram.com/${sbProfile.instagram}`] } : {}),
+          ...(seoReviews.length > 0 ? {
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": (seoReviews.reduce((s, r) => s + r.rating, 0) / seoReviews.length).toFixed(1),
+              "reviewCount": seoReviews.length,
+              "bestRating": "5",
+              "worstRating": "1"
+            }
+          } : {}),
         })}</script>
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
@@ -612,7 +636,10 @@ const PublicProfile = () => {
         })}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#ffffff', color: '#222' }}>
+      {/* pb en móvil (rem, escala con fuente del sistema) reserva el espacio de
+          la barra fija inferior para que nunca tape botones/contenido, ni con
+          el tamaño de fuente de accesibilidad grande activado. */}
+      <div className="min-h-screen pb-[6.5rem] md:pb-0" style={{ background: '#ffffff', color: '#222' }}>
         {/* Nav */}
         <nav className="sticky top-0 z-50 px-5 pb-3 flex items-center justify-between"
           style={{ background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(0,0,0,0.07)', paddingTop: 'max(0.75rem, env(safe-area-inset-top))' }}>
@@ -689,6 +716,12 @@ const PublicProfile = () => {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2 mb-6">
+                {profile.isVerified && (
+                  <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(212,175,55,0.85)', color: '#000', backdropFilter: 'blur(8px)' }}>
+                    <BadgeCheck size={12} /> Verificado por XPEAK
+                  </span>
+                )}
                 {profile.zone && (
                   <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
                     style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
@@ -739,7 +772,7 @@ const PublicProfile = () => {
                   className="flex items-center gap-2 px-7 py-3.5 rounded-2xl font-black text-base transition-all hover:scale-105 active:scale-95"
                   style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 8px 30px rgba(212,175,55,0.4)' }}>
                   <MessageCircle size={18} />
-                  Contactar
+                  Escríbele ahora
                 </button>
                 {sbProfile && (
                   <button
@@ -1034,9 +1067,9 @@ const PublicProfile = () => {
                 setShowContact(true);
               }
             }}
-            className="flex-1 flex items-center justify-center gap-2 py-4 rounded-2xl font-black text-base transition-all active:scale-95"
+            className="flex-1 min-w-0 flex items-center justify-center gap-2 py-4 rounded-2xl font-black text-base leading-tight text-center transition-all active:scale-95"
             style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-            <MessageCircle size={18} /> Contactar
+            <MessageCircle size={18} className="flex-shrink-0" /> <span>Escríbele ahora</span>
           </button>
         </div>
       </div>

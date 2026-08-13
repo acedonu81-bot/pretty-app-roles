@@ -20,7 +20,7 @@ interface Props {
 
 const FlashBookingRequestModal = ({ professionalName, professionalRole, professionalUserId, onClose }: Props) => {
   const { user } = useAuth();
-  const [form, setForm] = useState({ name: '', contact: '', date: '', location: '', description: '', price: '', eventType: '' });
+  const [form, setForm] = useState({ name: '', contact: '', date: '', location: '', description: '', price: '', eventType: '', website: '' });
   const [sending, setSending] = useState(false);
   const [hourlyRate, setHourlyRate] = useState<number | null>(null);
 
@@ -39,6 +39,9 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
       toast.error('Rellena tu nombre, contacto y fecha del evento.');
       return;
     }
+    // Honeypot: campo oculto que un humano nunca rellena, pero un bot sí.
+    // Fallamos en silencio (sin error visible) para no delatar la trampa.
+    if (form.website.trim()) { onClose(); return; }
     setSending(true);
     const payload: Record<string, unknown> = {
       professional_name: professionalName,
@@ -110,6 +113,10 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
           </div>
 
           <div className="p-5 space-y-3">
+            {/* Honeypot anti-bot: invisible para humanos, los bots lo rellenan */}
+            <input type="text" name="website" value={form.website} onChange={e => set('website', e.target.value)}
+              tabIndex={-1} autoComplete="off"
+              style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: '#222' }}>Tu nombre *</label>

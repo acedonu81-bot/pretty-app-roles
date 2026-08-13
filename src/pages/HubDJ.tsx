@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 
 const ARTICLES = [
   { href: '/blog/cuanto-cobra-un-dj-en-espana', tag: 'Precios', title: '¿Cuánto cobra un DJ en España? Tarifas 2026', desc: 'Guía completa con precios por experiencia, ciudad y tipo de evento.' },
@@ -127,6 +128,7 @@ export default function HubDJ() {
             </div>
           </div>
         </main>
+        <BlogRelatedPosts currentSlug='/blog/dj-para-eventos' tag='DJ' />
         <FooterPublic />
       </div>
     </>

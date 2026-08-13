@@ -1,11 +1,13 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Catering para comuniones en España: precio por persona y qué incluye (2026)', description: 'Cuánto cuesta el catering de una comunión en España. Precios por persona, formatos de menú y cómo elegir el servicio correcto para tu celebración.', datePublished: '2026-05-07',
-  dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/catering-comuniones-precio-persona' };
+  dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/catering-comuniones-precio-persona' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta el catering para una comunión por persona?', acceptedAnswer: { '@type': 'Answer', text: 'El precio medio del catering de comunión en España es de 35€ a 80€ por persona para un menú completo (almuerzo o cena). Un cóctel o aperitivo oscila entre 15€ y 35€/persona. El precio varía según la ciudad, el número de invitados y si incluye bebidas, personal de sala y alquiler de espacio.' } },
   { '@type': 'Question', name: '¿Cuántos camareros necesito para la comunión?', acceptedAnswer: { '@type': 'Answer', text: 'Para una comunión con servicio de mesa, se recomienda 1 camarero por cada 20-25 invitados. Para un buffet o cóctel, 1 por cada 25-35 personas. Siempre añade un maitre o coordinador si hay más de 60 invitados.' } },
@@ -187,7 +189,9 @@ export default function BlogCateringComuniones() {
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/catering-comuniones-precio-persona" />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/catering-comuniones-precio-persona' tag='Catering' />
         <FooterPublic />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_catering_comuniones" />
       </div>
     </>
   );

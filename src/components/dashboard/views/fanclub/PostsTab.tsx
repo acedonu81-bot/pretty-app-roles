@@ -242,7 +242,7 @@ const PostsTab = () => {
                 </div>
               </div>
               {p.post_type === 'image' && p.media_url ? (
-                <img src={p.media_url} alt={p.content} className="w-full rounded-lg max-h-48 object-cover mb-2" />
+                <img src={p.media_url} alt={p.content} loading="lazy" className="w-full rounded-lg max-h-48 object-cover mb-2" />
               ) : p.post_type === 'audio' && p.media_url ? (
                 <audio controls src={p.media_url} className="w-full mb-2" style={{ height: 36 }} />
               ) : null}

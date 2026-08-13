@@ -5,3 +5,12 @@
 # profiles: privileged fields protected via trigger
 # flash_jobs: authenticated users can read active jobs
 project_id = "ddrqhwravupjzysriblq"
+
+[functions.mcp-server]
+# Endpoint público pensado para ser llamado directamente por agentes de
+# IA externos (Claude, ChatGPT, etc.) sin que tengan que conocer ninguna
+# clave de Supabase — el propio código ya limita qué se puede hacer
+# (búsqueda de solo lectura + el mismo insert con RLS/rate-limit que usa
+# el resto de la web), así que desactivar el JWT no abre nada que no
+# estuviera ya público.
+verify_jwt = false

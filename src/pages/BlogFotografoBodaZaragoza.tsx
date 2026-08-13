@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
@@ -12,7 +13,7 @@ const article = {
   headline: 'Fotógrafo para bodas en Zaragoza: precio y guía 2026',
   description: 'Cuánto cuesta un fotógrafo para una boda en Zaragoza. Precios reales 2026, La Seo, el Pilar y las mejores localizaciones del Ebro.',
   datePublished: '2026-06-08', dateModified: '2026-06-08',
-  author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   url: 'https://xpeak.es/blog/fotografo-boda-zaragoza',
 };
@@ -72,7 +73,7 @@ export default function BlogFotografoBodaZaragoza() {
 
           <p className="text-neutral-300 mb-6">Zaragoza ofrece una combinación única: arquitectura mudéjar declarada Patrimonio UNESCO, el río Ebro como escenario natural, y acceso rápido a los Pirineos para sesiones de postboda únicas en Europa.</p>
 
-          <BlogInlineCTA role="media" text="¿Buscas fotógrafo para tu boda en Zaragoza? Compara perfiles y disponibilidad en XPEAK." />
+          <BlogInlineCTA role="fotografo" text="¿Buscas fotógrafo para tu boda en Zaragoza? Compara perfiles y disponibilidad en XPEAK." />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Precios fotógrafo boda Zaragoza 2026</h2>
           <div className="overflow-x-auto mb-8">
@@ -113,8 +114,9 @@ export default function BlogFotografoBodaZaragoza() {
           <BlogAuthor />
           <BlogShare />
         </article>
+        <BlogRelatedPosts currentSlug='/blog/fotografo-boda-zaragoza' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="media" storageKey="xpeak_scrollcta_fotografo_zaragoza" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_zaragoza" />
       </div>
     </>
   );

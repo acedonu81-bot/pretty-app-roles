@@ -1,11 +1,14 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Cómo conseguir bolos como DJ en España: 8 estrategias para 2026', description: 'Guía práctica para DJs freelance que quieren conseguir más bolos: plataformas, redes sociales, precios, portfolio y cómo posicionarse en el mercado.', datePublished: '2026-06-02', dateModified: '2026-06-02', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/como-conseguir-bolos-dj' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Cómo conseguir bolos como DJ en España: 8 estrategias para 2026', description: 'Guía práctica para DJs freelance que quieren conseguir más bolos: plataformas, redes sociales, precios, portfolio y cómo posicionarse en el mercado.', datePublished: '2026-06-02', dateModified: '2026-06-02', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/como-conseguir-bolos-dj' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto puede ganar un DJ freelance en España?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ freelance activo en España puede ganar entre 15.000€ y 50.000€ al año. Un bolo de boda paga 800-2.000€, un evento corporativo 500-1.500€ y una noche en discoteca 300-800€. Con 2-3 bolos al mes ya se supera el SMI. Los DJs que trabajan bodas en primavera y otoño más discotecas en verano son los que más ingresos anuales generan.' } },
   { '@type': 'Question', name: '¿Necesito ser autónomo para trabajar de DJ?', acceptedAnswer: { '@type': 'Answer', text: 'Sí, si trabajas de forma habitual necesitas darte de alta como autónomo y emitir facturas. La cuota de autónomos en 2026 con la tarifa plana para nuevos autónomos es de 80€/mes durante el primer año. Puedes facturar con IRPF al 15% (primeros tres años) o al 7% si es tu primera actividad. Algunos DJs usan una sociedad limitada cuando superan los 40.000€ anuales.' } },
@@ -88,7 +91,7 @@ export default function BlogConseguirBolosDJ() {
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
                   <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
                     <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
@@ -119,10 +122,14 @@ export default function BlogConseguirBolosDJ() {
               <a href="/auth?role=dj" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Crear mi perfil DJ gratis →</a>
             </div>
           </div>
+                  <DJResourcesAffiliate />
+
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/como-conseguir-bolos-dj" />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/como-conseguir-bolos-dj' tag='DJ' />
         <FooterPublic />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_conseguir_bolos_dj" />
       </div>
     </>
   );

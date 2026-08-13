@@ -1,6 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, TrendingUp, Star } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
@@ -26,7 +28,7 @@ export default function BlogCantanteBodas() {
     '@type': 'Article',
     headline: 'Cantante para bodas: precio y cómo contratar en España (2026)',
     description: 'Cuánto cuesta un cantante para una boda en España. Precios por formato (solista, dúo, trío, banda), momentos del evento y cómo elegir.',
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-23',
     dateModified: '2026-05-23',
@@ -233,7 +235,9 @@ const faqStructured = {
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/cantante-para-bodas-precio" />
+        <BlogRelatedPosts currentSlug='/blog/cantante-para-bodas-precio' tag='Bodas' />
         <FooterPublic />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_cantante_bodas" />
       </div>
     </>
   );

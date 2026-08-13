@@ -21,7 +21,7 @@ const EVENT_HOURS: Record<string, number> = {
 export default function EventCartCheckoutModal({ onClose }: Props) {
   const { user } = useAuth();
   const { items, remove, clear } = useEventCart();
-  const [form, setForm] = useState({ name: '', contact: '', eventType: '', date: '', location: '', message: '' });
+  const [form, setForm] = useState({ name: '', contact: '', eventType: '', date: '', location: '', message: '', website: '' });
   const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
@@ -38,6 +38,8 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!form.name.trim() || !form.contact.trim() || !form.eventType) return;
+    // Honeypot: campo oculto que un humano nunca rellena, pero un bot sí.
+    if (form.website.trim()) { onClose(); return; }
     setStatus('sending');
 
     const results = await Promise.allSettled(items.map(item => {
@@ -112,6 +114,10 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
           </div>
         ) : (
           <form onSubmit={handleSubmit}>
+            {/* Honeypot anti-bot: invisible para humanos, los bots lo rellenan */}
+            <input type="text" name="website" value={form.website} onChange={e => set('website', e.target.value)}
+              tabIndex={-1} autoComplete="off"
+              style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
             <div className="mb-4">
               <h3 className="text-lg font-black mb-0.5" style={{ color: '#111' }}>Tu evento — {items.length} profesional{items.length !== 1 ? 'es' : ''}</h3>
               <p className="text-xs" style={{ color: '#333' }}>Un mensaje, un envío. Cada uno te contactará directamente.</p>
