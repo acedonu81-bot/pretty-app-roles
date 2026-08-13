@@ -40,7 +40,8 @@ const initialFor = (name: string) => (name?.trim()?.[0] ?? '?').toUpperCase();
 
 // Nº de repeticiones de la lista para simular scroll infinito. Al acercarse al
 // final, se re-centra el scroll al bloque del medio (bucle sin costura).
-const LOOPS = 20;
+// 6 basta para el efecto y monta menos nodos que 20 (mejor render inicial).
+const LOOPS = 6;
 
 export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToCart, isInCart }: Props) {
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -96,7 +97,7 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
       {items.map((p, i) => {
         const inCart = isInCart(p.user_id);
         return (
-          <div key={i} className="relative w-full snap-start snap-always" style={{ height: '100dvh' }}>
+          <div key={i} className="relative w-full snap-start snap-always" style={{ height: '100dvh', contentVisibility: 'auto', containIntrinsicSize: '100dvh' } as React.CSSProperties}>
             {/* Fondo: foto o inicial */}
             {p.photo_url && !imgErrors[p.user_id] ? (
               <img

@@ -60,8 +60,9 @@ export default function Descubrir() {
     try {
       let data: DirProfile[];
       if (slug === ALL_SLUG) {
-        // Feed mezclado: junta varios roles populares y baraja.
-        const slugs = ['dj', 'fotografo', 'catering', 'camareros', 'animador', 'mago'];
+        // Feed mezclado: junta unos roles populares y baraja. 3 roles bastan
+        // para variedad y cargan rápido (menos fetches = feed más ágil).
+        const slugs = ['dj', 'fotografo', 'catering'];
         const lists = await Promise.all(slugs.map(s => fetchDirectorioProfiles(ROLE_CONFIG[s].dbRole, 'Todas').catch(() => [])));
         data = shuffle(dedupe(lists.flat()));
       } else {
