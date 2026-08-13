@@ -19,7 +19,19 @@ trackAIReferral();
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
+    navigator.serviceWorker.register('/sw.js').then(reg => {
+      // Forzar comprobación de versión nueva en cada carga.
+      reg.update().catch(() => {});
+      // Cuando un SW nuevo toma el control (nuevo deploy), recargar una vez
+      // para servir el bundle actualizado — evita que el usuario se quede
+      // pegado en una versión vieja cacheada por el SW.
+      let refreshing = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (refreshing) return;
+        refreshing = true;
+        window.location.reload();
+      });
+    }).catch(() => {});
   });
 }
 
