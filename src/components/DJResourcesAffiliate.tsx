@@ -17,6 +17,10 @@ import {
 
 type Resource = { icon: LucideIcon; title: string; desc: string; href: string };
 
+// P() = enlace a PRODUCTO concreto (/dp/ASIN) — el único que Amazon permite y
+// que genera comisión. A() = búsqueda específica (fallback donde aún no hay
+// ASIN; sustituir por P('ASIN') cuando lo saques de SiteStripe).
+const P = (asin: string) => `https://www.amazon.es/dp/${asin}?tag=xpeak-21`;
 const A = (q: string) => `https://www.amazon.es/s?k=${encodeURIComponent(q)}&tag=xpeak-21`;
 
 // Catálogo por rol (dbRole). Cada rol ve 3 productos de su oficio.
@@ -24,8 +28,8 @@ const CATALOG: Record<string, { label: string; icon: LucideIcon; items: Resource
   dj: {
     label: 'DJs', icon: Disc3,
     items: [
-      { icon: Headphones, title: 'Pioneer DJ HDJ-X5', desc: 'Los auriculares DJ más vendidos: monitorización limpia a alto volumen.', href: A('Pioneer DJ HDJ-X5 auriculares') },
-      { icon: Disc3, title: 'Pioneer DDJ-FLX4', desc: 'La controladora de entrada más popular para practicar y bolos.', href: A('Pioneer DDJ-FLX4 controladora') },
+      { icon: Headphones, title: 'Pioneer DJ HDJ-X5', desc: 'Los auriculares DJ más vendidos: monitorización limpia a alto volumen.', href: P('B0759FLG32') },
+      { icon: Disc3, title: 'Pioneer DDJ-FLX4', desc: 'La controladora de entrada más popular para practicar y bolos.', href: P('B0BLSJZC94') },
       { icon: Speaker, title: 'Monitor KRK Rokit 5', desc: 'El monitor de estudio referencia para producir tus sets.', href: A('KRK Rokit 5 monitor estudio') },
     ],
   },
@@ -48,9 +52,9 @@ const CATALOG: Record<string, { label: string; icon: LucideIcon; items: Resource
   fotografo: {
     label: 'Fotógrafos', icon: Camera,
     items: [
-      { icon: Aperture, title: 'Canon EF 50mm f/1.8 STM', desc: 'El objetivo más vendido de la historia (4.8★). Retrato de evento con poca luz.', href: A('Canon EF 50mm f1.8 STM') },
+      { icon: Aperture, title: 'Canon EF 50mm f/1.8 STM', desc: 'El objetivo más vendido de la historia (4.8★). Retrato de evento con poca luz.', href: P('B00X8MRBCW') },
       { icon: Camera, title: 'Godox flash speedlite', desc: 'El flash más vendido para iluminar bodas y salones.', href: A('Godox flash speedlite') },
-      { icon: Sparkles, title: 'SanDisk Extreme Pro SD 128GB', desc: 'La tarjeta best-seller: ráfagas y vídeo 4K sin cortes.', href: A('SanDisk Extreme Pro 128GB SD') },
+      { icon: Sparkles, title: 'SanDisk Extreme Pro SD 128GB', desc: 'La tarjeta best-seller: ráfagas y vídeo 4K sin cortes.', href: P('B07H9DVLBB') },
     ],
   },
   media: {
