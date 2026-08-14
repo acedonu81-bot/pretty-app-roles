@@ -249,7 +249,7 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
                 )}
               </div>
 
-              <h2 className="text-2xl font-black mb-1" style={{ color: '#fff' }}>{p.display_name}</h2>
+              <h2 className="text-2xl font-black mb-1 break-words line-clamp-2" style={{ color: '#fff' }}>{p.display_name}</h2>
               {p.specialty && <p className="text-sm font-semibold mb-1" style={{ color: 'rgba(212,175,55,0.9)' }}>{p.specialty}</p>}
 
               <div className="flex items-center gap-3 mb-2 flex-wrap text-xs" style={{ color: 'rgba(255,255,255,0.78)' }}>
