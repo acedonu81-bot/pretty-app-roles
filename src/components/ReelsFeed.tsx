@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { MapPin, Zap, BadgeCheck, Star, Plus, Check, MessageCircle, Volume2, VolumeX } from 'lucide-react';
 
 /**
@@ -62,7 +62,11 @@ function ReelMedia({ profile: p, eager, imgError, onImgError, soundOn }: {
   const videoRef = useRef<HTMLVideoElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
-  const hasVideo = !!p.bio_video_url;
+  // Solo archivos de vídeo directos (mp4/mov/webm) son reproducibles en <video>.
+  // bio_video_url también puede ser un enlace YouTube/Vimeo (necesita iframe, no
+  // sirve aquí) → en ese caso mostramos la foto, no un vídeo roto.
+  const url = p.bio_video_url ?? '';
+  const hasVideo = /\.(mp4|webm|mov|m4v)(\?|$)/i.test(url);
 
   // Aplica el estado de sonido global al vídeo (como Instagram: una vez activas
   // el sonido, se mantiene para todos los reels).
@@ -132,7 +136,10 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
   // Sonido global del feed (mudo por defecto, como Instagram). Se muestra solo
   // si hay algún profesional con vídeo.
   const [soundOn, setSoundOn] = useState(false);
-  const anyVideo = profiles.some(p => p.bio_video_url);
+  // Mismo criterio que hasVideo: solo cuenta vídeos REPRODUCIBLES (archivos
+  // directos), no enlaces YouTube/Vimeo → el botón de sonido solo sale si de
+  // verdad hay audio que activar.
+  const anyVideo = profiles.some(p => /\.(mp4|webm|mov|m4v)(\?|$)/i.test(p.bio_video_url ?? ''));
 
   // Bloquear scroll del body mientras el feed está montado (es fullscreen).
   useEffect(() => {
@@ -141,9 +148,19 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
     return () => { document.body.style.overflow = prev; };
   }, []);
 
+  // Orden base barajado una sola vez: evita que el feed muestre siempre el
+  // mismo patrón predecible (perfil1, perfil2, perfil3, perfil1…) cuando hay
+  // pocos perfiles. Se baraja una vez y se mantiene en todos los bloques para
+  // que el re-centrado del bucle infinito siga funcionando sin saltos.
+  const base = useMemo(() => {
+    const a = [...profiles];
+    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+    return a;
+  }, [profiles]);
+
   // Lista repetida para el bucle infinito.
-  const items = profiles.length > 0
-    ? Array.from({ length: LOOPS * profiles.length }, (_, i) => profiles[i % profiles.length])
+  const items = base.length > 0
+    ? Array.from({ length: LOOPS * base.length }, (_, i) => base[i % base.length])
     : [];
 
   // Arrancar centrado en el bloque del medio para poder scrollear hacia arriba
@@ -220,7 +237,13 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
                   </span>
                 )}
                 {p.is_early_adopter && (
-                  <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-black" style={{ background: 'rgba(96,165,250,0.95)', color: '#fff' }}>
+                  <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black"
+                    style={{
+                      background: 'linear-gradient(135deg,#60a5fa,#4f46e5)',
+                      color: '#fff',
+                      border: '1px solid rgba(255,255,255,0.35)',
+                      boxShadow: '0 0 16px rgba(96,165,250,0.5), 0 2px 8px rgba(0,0,0,0.25)',
+                    }}>
                     <Star size={11} fill="#fff" /> Fundador
                   </span>
                 )}
