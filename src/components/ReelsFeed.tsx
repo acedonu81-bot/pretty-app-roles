@@ -18,6 +18,7 @@ export interface ReelsProfile {
   display_name: string;
   role: string;
   photo_url: string | null;
+  bio_video_url?: string | null;
   zone: string | null;
   specialty: string | null;
   hourly_rate: number;
@@ -42,6 +43,79 @@ const initialFor = (name: string) => (name?.trim()?.[0] ?? '?').toUpperCase();
 // final, se re-centra el scroll al bloque del medio (bucle sin costura).
 // 6 basta para el efecto y monta menos nodos que 20 (mejor render inicial).
 const LOOPS = 6;
+
+/**
+ * Fondo de un reel: vídeo si el profesional lo tiene, si no la foto, si no la
+ * inicial. Igual que Instagram/TikTok: el vídeo SOLO se reproduce cuando el
+ * reel está en pantalla (IntersectionObserver) y solo entonces se carga
+ * (preload='none') — así tengas 3 o 3.000 vídeos, el móvil solo procesa el
+ * visible. Silenciado + loop + playsInline (autoplay móvil).
+ */
+function ReelMedia({ profile: p, eager, imgError, onImgError }: {
+  profile: ReelsProfile;
+  eager: boolean;
+  imgError: boolean;
+  onImgError: () => void;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  const hasVideo = !!p.bio_video_url;
+
+  useEffect(() => {
+    if (!hasVideo) return;
+    const el = wrapRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting && entry.intersectionRatio > 0.6),
+      { threshold: [0, 0.6, 1] }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [hasVideo]);
+
+  // Play/pause según visibilidad — nunca reproduce fuera de pantalla.
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (visible) { v.play().catch(() => { /* autoplay bloqueado: sin efecto */ }); }
+    else { v.pause(); }
+  }, [visible]);
+
+  return (
+    <div ref={wrapRef} className="absolute inset-0">
+      {/* Poster siempre debajo (foto): se ve al instante y mientras carga el vídeo */}
+      {p.photo_url && !imgError ? (
+        <img
+          src={p.photo_url}
+          alt={p.display_name}
+          loading={eager ? 'eager' : 'lazy'}
+          onError={onImgError}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      ) : (
+        <div className="absolute inset-0 flex items-center justify-center text-8xl font-black"
+          style={{ background: 'linear-gradient(135deg,#2a2410,#1a1608)', color: 'rgba(212,175,55,0.3)' }}>
+          {initialFor(p.display_name)}
+        </div>
+      )}
+
+      {/* Vídeo encima, solo cuando el reel es visible (se monta bajo demanda) */}
+      {hasVideo && visible && (
+        <video
+          ref={videoRef}
+          src={p.bio_video_url ?? undefined}
+          poster={p.photo_url ?? undefined}
+          muted
+          loop
+          playsInline
+          preload="none"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      )}
+    </div>
+  );
+}
 
 export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToCart, isInCart }: Props) {
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -98,21 +172,13 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
         const inCart = isInCart(p.user_id);
         return (
           <div key={i} className="relative w-full snap-start snap-always" style={{ height: '100dvh', contentVisibility: 'auto', containIntrinsicSize: '100dvh' } as React.CSSProperties}>
-            {/* Fondo: foto o inicial */}
-            {p.photo_url && !imgErrors[p.user_id] ? (
-              <img
-                src={p.photo_url}
-                alt={p.display_name}
-                loading={i < 3 ? 'eager' : 'lazy'}
-                onError={() => setImgErrors(e => ({ ...e, [p.user_id]: true }))}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            ) : (
-              <div className="absolute inset-0 flex items-center justify-center text-8xl font-black"
-                style={{ background: 'linear-gradient(135deg,#2a2410,#1a1608)', color: 'rgba(212,175,55,0.3)' }}>
-                {initialFor(p.display_name)}
-              </div>
-            )}
+            {/* Fondo: vídeo (si lo tiene y está visible), foto, o inicial */}
+            <ReelMedia
+              profile={p}
+              eager={i < 3}
+              imgError={!!imgErrors[p.user_id]}
+              onImgError={() => setImgErrors(e => ({ ...e, [p.user_id]: true }))}
+            />
             <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.4) 100%)' }} />
 
             {/* Info inferior + acciones */}
