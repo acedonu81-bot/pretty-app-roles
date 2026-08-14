@@ -30,7 +30,7 @@ const CATALOG: Record<string, { label: string; icon: LucideIcon; items: Resource
     items: [
       { icon: Headphones, title: 'Pioneer DJ HDJ-X5', desc: 'Los auriculares DJ más vendidos: monitorización limpia a alto volumen.', href: P('B0759FLG32') },
       { icon: Disc3, title: 'Pioneer DDJ-FLX4', desc: 'La controladora de entrada más popular para practicar y bolos.', href: P('B0BLSJZC94') },
-      { icon: Speaker, title: 'Monitor KRK Rokit 5', desc: 'El monitor de estudio referencia para producir tus sets.', href: A('KRK Rokit 5 monitor estudio') },
+      { icon: Speaker, title: 'Monitor KRK Rokit 5 G4', desc: 'El monitor de estudio referencia para producir tus sets.', href: P('B07NDBM6F2') },
     ],
   },
   camareros: {
@@ -53,7 +53,7 @@ const CATALOG: Record<string, { label: string; icon: LucideIcon; items: Resource
     label: 'Fotógrafos', icon: Camera,
     items: [
       { icon: Aperture, title: 'Canon EF 50mm f/1.8 STM', desc: 'El objetivo más vendido de la historia (4.8★). Retrato de evento con poca luz.', href: P('B00X8MRBCW') },
-      { icon: Camera, title: 'Godox flash speedlite', desc: 'El flash más vendido para iluminar bodas y salones.', href: A('Godox flash speedlite') },
+      { icon: Camera, title: 'Godox TT600 flash speedlite', desc: 'El flash más vendido para iluminar bodas y salones.', href: P('B078TGPDLR') },
       { icon: Sparkles, title: 'SanDisk Extreme Pro SD 128GB', desc: 'La tarjeta best-seller: ráfagas y vídeo 4K sin cortes.', href: P('B07H9DVLBB') },
     ],
   },
@@ -61,7 +61,7 @@ const CATALOG: Record<string, { label: string; icon: LucideIcon; items: Resource
     label: 'Fotógrafos y vídeo', icon: Camera,
     items: [
       { icon: Aperture, title: 'Objetivo luminoso 50mm', desc: 'Retrato y ambiente con poca luz en eventos.', href: A('objetivo 50mm f1.8') },
-      { icon: Camera, title: 'Estabilizador / gimbal', desc: 'Vídeo fluido para aftermovies de evento.', href: A('gimbal estabilizador camara') },
+      { icon: Camera, title: 'DJI Osmo Mobile 6 (gimbal)', desc: 'Estabilizador para aftermovies y vídeo fluido de evento.', href: P('B0B7XD7R43') },
       { icon: Sparkles, title: 'Tarjetas SD alta velocidad', desc: 'Ráfagas y vídeo 4K sin cortes.', href: A('tarjeta sd 128gb alta velocidad') },
     ],
   },
@@ -69,7 +69,7 @@ const CATALOG: Record<string, { label: string; icon: LucideIcon; items: Resource
     label: 'Maquillaje y peluquería', icon: Palette,
     items: [
       { icon: Palette, title: 'Set de brochas profesional', desc: 'Acabado impecable para novias y eventos.', href: A('set brochas maquillaje profesional') },
-      { icon: Sparkles, title: 'Luz de anillo portátil', desc: 'Luz uniforme para trabajar en cualquier sitio.', href: A('aro de luz maquillaje profesional') },
+      { icon: Sparkles, title: 'Neewer aro de luz 18"', desc: 'Luz uniforme para maquillaje profesional en cualquier sitio.', href: P('B01LXDNNBW') },
       { icon: Camera, title: 'Neceser / organizador', desc: 'Transporta tu material con orden a cada bolo.', href: A('maletin maquillaje profesional') },
     ],
   },
@@ -77,22 +77,22 @@ const CATALOG: Record<string, { label: string; icon: LucideIcon; items: Resource
     label: 'Maquillaje y peluquería', icon: Palette,
     items: [
       { icon: Palette, title: 'Set de brochas profesional', desc: 'Acabado impecable para novias y eventos.', href: A('set brochas maquillaje profesional') },
-      { icon: Sparkles, title: 'Luz de anillo portátil', desc: 'Luz uniforme para trabajar en cualquier sitio.', href: A('aro de luz maquillaje profesional') },
+      { icon: Sparkles, title: 'Neewer aro de luz 18"', desc: 'Luz uniforme para maquillaje profesional en cualquier sitio.', href: P('B01LXDNNBW') },
       { icon: Camera, title: 'Neceser / organizador', desc: 'Transporta tu material con orden a cada bolo.', href: A('maletin maquillaje profesional') },
     ],
   },
   'grupo-musical': {
     label: 'Grupos y músicos', icon: Music,
     items: [
-      { icon: Mic2, title: 'Micrófono vocal', desc: 'Voz clara en directo para bodas y eventos.', href: A('microfono vocal shure') },
-      { icon: Speaker, title: 'Sistema PA portátil', desc: 'Sonido para cóctel y ceremonia.', href: A('altavoz pa portatil bateria') },
+      { icon: Mic2, title: 'Micrófono Shure SM58', desc: 'El micro vocal estándar del directo para bodas y eventos.', href: P('B000CZ0R42') },
+      { icon: Speaker, title: 'JBL IRX112BT (PA portátil)', desc: 'Altavoz PA con batería para cóctel y ceremonia.', href: P('B081TNPGZV') },
       { icon: Music, title: 'Atril y accesorios', desc: 'Comodidad para actuaciones largas.', href: A('atril partituras musico') },
     ],
   },
   catering: {
     label: 'Catering', icon: UtensilsCrossed,
     items: [
-      { icon: UtensilsCrossed, title: 'Chafing dish / mantenedor de calor', desc: 'Comida a temperatura durante todo el evento.', href: A('chafing dish mantenedor calor buffet') },
+      { icon: UtensilsCrossed, title: 'Chafing dish acero inox', desc: 'Mantiene la comida a temperatura durante todo el evento.', href: P('B0C7T33F8J') },
       { icon: Wine, title: 'Menaje y cristalería', desc: 'Presentación cuidada para banquetes.', href: A('menaje catering profesional') },
       { icon: Sparkles, title: 'Uniforme de cocina', desc: 'Imagen y seguridad para el equipo.', href: A('chaqueta cocina profesional') },
     ],
