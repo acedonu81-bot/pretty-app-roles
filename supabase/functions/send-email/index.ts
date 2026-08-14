@@ -553,17 +553,20 @@ serve(async (req) => {
   try {
     const { type, data } = await req.json();
 
-    // Resolve user_id → email and/or professional_user_id → professional_name + email
-    if ((data?.user_id && !data?.email) || (data?.professional_user_id && (!data?.professional_name || !data?.email))) {
+    // Resolve email of the target user. IMPORTANTE: en avisos AL profesional
+    // (booking_received), el email destino es el del PROFESIONAL, no el del
+    // solicitante. El payload trae requester_contact (email de quien contacta),
+    // que NO debe usarse como destino. Resolvemos data.email desde el user_id
+    // del destinatario real (professional_user_id o user_id).
+    const targetUserId = data?.professional_user_id ?? data?.user_id;
+    if (targetUserId && !data?.email) {
       const adminClient = createClient(
         Deno.env.get('SUPABASE_URL') ?? '',
         Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
       );
-      const targetId = data?.user_id ?? data?.professional_user_id;
-      if (targetId && !data?.email) {
-        const { data: userData } = await adminClient.auth.admin.getUserById(targetId);
-        if (userData?.user?.email) data.email = userData.user.email;
-      }
+      const { data: userData } = await adminClient.auth.admin.getUserById(targetUserId);
+      if (userData?.user?.email) data.email = userData.user.email;
+
       if (data?.professional_user_id && !data?.professional_name) {
         const { data: prof } = await adminClient
           .from('profiles').select('display_name').eq('user_id', data.professional_user_id).single();

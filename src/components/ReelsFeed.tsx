@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { MapPin, Zap, BadgeCheck, Star, Plus, Check, MessageCircle } from 'lucide-react';
+import { MapPin, Zap, BadgeCheck, Star, Plus, Check, MessageCircle, Volume2, VolumeX } from 'lucide-react';
 
 /**
  * ReelsFeed — feed vertical tipo Instagram/Reels. Scroll vertical infinito
@@ -51,16 +51,24 @@ const LOOPS = 6;
  * (preload='none') — así tengas 3 o 3.000 vídeos, el móvil solo procesa el
  * visible. Silenciado + loop + playsInline (autoplay móvil).
  */
-function ReelMedia({ profile: p, eager, imgError, onImgError }: {
+function ReelMedia({ profile: p, eager, imgError, onImgError, soundOn }: {
   profile: ReelsProfile;
   eager: boolean;
   imgError: boolean;
   onImgError: () => void;
+  soundOn: boolean;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   const hasVideo = !!p.bio_video_url;
+
+  // Aplica el estado de sonido global al vídeo (como Instagram: una vez activas
+  // el sonido, se mantiene para todos los reels).
+  useEffect(() => {
+    const v = videoRef.current;
+    if (v) v.muted = !soundOn;
+  }, [soundOn, visible]);
 
   useEffect(() => {
     if (!hasVideo) return;
@@ -106,7 +114,6 @@ function ReelMedia({ profile: p, eager, imgError, onImgError }: {
           ref={videoRef}
           src={p.bio_video_url ?? undefined}
           poster={p.photo_url ?? undefined}
-          muted
           loop
           playsInline
           preload="none"
@@ -121,6 +128,10 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
   const [activeIdx, setActiveIdx] = useState(0);
+  // Sonido global del feed (mudo por defecto, como Instagram). Se muestra solo
+  // si hay algún profesional con vídeo.
+  const [soundOn, setSoundOn] = useState(false);
+  const anyVideo = profiles.some(p => p.bio_video_url);
 
   // Bloquear scroll del body mientras el feed está montado (es fullscreen).
   useEffect(() => {
@@ -168,6 +179,18 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
       style={{ background: '#000', scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
     >
       <style>{`.reels-hide-sb::-webkit-scrollbar{display:none}`}</style>
+
+      {/* Botón de sonido global (solo si hay vídeos) — mudo por defecto como
+          Instagram; toca para oír el audio de los vídeos. */}
+      {anyVideo && (
+        <button
+          onClick={() => setSoundOn(s => !s)}
+          aria-label={soundOn ? 'Silenciar' : 'Activar sonido'}
+          className="fixed top-0 left-0 z-[70] m-3 w-11 h-11 rounded-full flex items-center justify-center active:scale-95"
+          style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(10px)', marginTop: 'calc(env(safe-area-inset-top) + 0.5rem)' }}>
+          {soundOn ? <Volume2 size={20} color="#fff" /> : <VolumeX size={20} color="#fff" />}
+        </button>
+      )}
       {items.map((p, i) => {
         const inCart = isInCart(p.user_id);
         return (
@@ -178,6 +201,7 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
               eager={i < 3}
               imgError={!!imgErrors[p.user_id]}
               onImgError={() => setImgErrors(e => ({ ...e, [p.user_id]: true }))}
+              soundOn={soundOn}
             />
             <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.4) 100%)' }} />
 
