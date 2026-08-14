@@ -164,7 +164,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
         <div className="absolute bottom-0 left-0 right-0 z-10 p-3 hidden sm:block" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%)' }}>
           <div className="flex items-end justify-between gap-2">
             <div className="flex-1 min-w-0">
-              <h3 className="text-base font-black" style={{ color: '#fff', textShadow: '0 1px 4px rgba(0,0,0,0.5)', lineHeight: 1.2, paddingBottom: '0.15em', overflow: 'visible' }}>{p.name}</h3>
+              <h3 className="text-base font-black line-clamp-2 break-words" style={{ color: '#fff', textShadow: '0 1px 4px rgba(0,0,0,0.5)', lineHeight: 1.2 }}>{p.name}</h3>
               {p.specialty && <p className="text-xs truncate sm:whitespace-normal" style={{ color: '#F5D77A' }}>{p.specialty}</p>}
             </div>
             {priceLabel && (
@@ -177,7 +177,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
       {/* Name + info below photo — mobile only */}
       <div className="px-3 pt-2.5 sm:hidden">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="text-[0.95rem] font-bold leading-snug truncate" style={{ fontFamily: 'Inter, sans-serif', color: '#111', letterSpacing: '-0.01em' }}>{p.name}</h3>
+          <h3 className="text-[0.95rem] font-bold leading-snug line-clamp-2 break-words min-w-0" style={{ fontFamily: 'Inter, sans-serif', color: '#111', letterSpacing: '-0.01em' }}>{p.name}</h3>
           {p.rating > 0 && (
             <span className="flex items-center gap-0.5 shrink-0 text-xs" style={{ color: '#111' }}>
               <Star size={11} style={{ color: '#111' }} fill="#111" />

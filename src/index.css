@@ -24,6 +24,14 @@ html, body, #root {
   padding-top: var(--sat);
 }
 
+/* App nativa con StatusBar en overlay: la landing pública (no tiene topbar con
+   native-topbar-offset) necesita reservar el safe-area superior para no quedar
+   bajo la barra de estado. Se aplica solo a su header pegado arriba. */
+body.is-native-app header.sticky,
+body.is-native-app nav.sticky {
+  padding-top: max(0.75rem, var(--sat));
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

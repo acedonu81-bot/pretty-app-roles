@@ -102,12 +102,22 @@ const Auth = () => {
   }, []);
 
   useEffect(() => {
-    // Cubre la carrera del callback OAuth: si al volver de Google la sesión ya
-    // está lista antes de montar el listener, el evento SIGNED_IN no se dispara
-    // y el usuario tenía que reintentar. Comprobamos la sesión activa al montar
-    // y navegamos directo si existe.
+    // Destino tras login: si el perfil está INCOMPLETO (recién registrado, sin
+    // rol/nombre), va al dashboard a completar la ficha — NO al feed. Si ya está
+    // completo, al feed (/descubrir). Evita que un usuario nuevo entre directo
+    // al swipe sin haber rellenado su perfil.
+    const goAfterLogin = async (userId: string) => {
+      if (redirectParam !== '/descubrir') { navigate(redirectParam, { replace: true }); return; }
+      const { data } = await supabase
+        .from('profiles').select('role, display_name').eq('user_id', userId)
+        .order('is_primary', { ascending: false }).limit(1);
+      const p = data?.[0];
+      const complete = !!p && p.role && p.role !== 'pending' && !!p.display_name?.trim();
+      navigate(complete ? '/descubrir' : '/dashboard', { replace: true });
+    };
+
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session && !isRegistering.current) navigate(redirectParam, { replace: true });
+      if (session && !isRegistering.current) goAfterLogin(session.user.id);
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -117,7 +127,7 @@ const Auth = () => {
       }
       if (isRegistering.current) return;
       if (session && (event === 'SIGNED_IN' || event === 'INITIAL_SESSION')) {
-        navigate(redirectParam, { replace: true });
+        goAfterLogin(session.user.id);
       }
     });
     return () => subscription.unsubscribe();

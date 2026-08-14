@@ -20,6 +20,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   const [saving, setSaving] = useState(false);
   const [localName, setLocalName] = useState<string | null>(null);
   const [city, setCity] = useState('');
+  const [province, setProvince] = useState('');
   const [rider, setRider] = useState<string | null>(null);
   const [bio, setBio] = useState<string | null>(null);
   const [hourlyRate, setHourlyRate] = useState<string | null>(null);
@@ -62,8 +63,65 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     return { steps, percent: Math.round((done / steps.length) * 100) };
   })();
 
-  const EU_LANGS = ['Español','Inglés','Francés','Italiano','Alemán','Portugués','Neerlandés','Polaco','Catalán','Euskera'];
-  const SPAIN_CITIES = ['Madrid','Barcelona','Valencia','Sevilla','Zaragoza','Málaga','Murcia','Palma de Mallorca','Alicante','Bilbao','Valladolid','Córdoba','Vigo','Gijón','Granada','A Coruña','Vitoria-Gasteiz','San Sebastián','Oviedo','Las Palmas de Gran Canaria','Santa Cruz de Tenerife','Badalona','Cartagena','Sabadell','Móstoles','Elche','Hospitalet de Llobregat','Terrassa','Jerez de la Frontera','Burgos','Santander','Almería','Alcalá de Henares','Pamplona','Salamanca','Ibiza','Marbella','León','Albacete','Logroño','Huelva','Tarragona','Lleida','Badajoz','Jaén','Cádiz','Toledo','Torrevieja','Mataró','Alcobendas'];
+  const EU_LANGS = ['Español','Inglés','Francés','Italiano','Alemán','Portugués','Neerlandés','Polaco','Catalán','Euskera','Gallego'];
+  // Provincia → ciudades. Flujo de 2 pasos (más ordenado que una lista larga).
+  // Incluye Galicia completa (A Coruña, Lugo, Ourense, Pontevedra).
+  const PROVINCIAS: Record<string, string[]> = {
+    'A Coruña': ['A Coruña','Santiago de Compostela','Ferrol','Narón','Oleiros','Carballo'],
+    'Álava': ['Vitoria-Gasteiz'],
+    'Albacete': ['Albacete','Hellín','Villarrobledo'],
+    'Alicante': ['Alicante','Elche','Torrevieja','Orihuela','Benidorm','Denia','Calpe','Jávea'],
+    'Almería': ['Almería','Roquetas de Mar','El Ejido'],
+    'Asturias': ['Oviedo','Gijón','Avilés','Langreo'],
+    'Ávila': ['Ávila'],
+    'Badajoz': ['Badajoz','Mérida','Don Benito'],
+    'Baleares': ['Palma de Mallorca','Ibiza','Manacor','Mahón','Formentera'],
+    'Barcelona': ['Barcelona','Badalona','Hospitalet de Llobregat','Terrassa','Sabadell','Mataró','Sitges','Manresa','Vilanova i la Geltrú'],
+    'Bizkaia': ['Bilbao','Barakaldo','Getxo'],
+    'Burgos': ['Burgos','Miranda de Ebro'],
+    'Cáceres': ['Cáceres','Plasencia'],
+    'Cádiz': ['Cádiz','Jerez de la Frontera','Algeciras','San Fernando','El Puerto de Santa María'],
+    'Cantabria': ['Santander','Torrelavega'],
+    'Castellón': ['Castellón de la Plana','Vila-real','Benicàssim'],
+    'Ciudad Real': ['Ciudad Real','Puertollano'],
+    'Córdoba': ['Córdoba','Lucena'],
+    'Cuenca': ['Cuenca'],
+    'Gipuzkoa': ['San Sebastián','Irún'],
+    'Girona': ['Girona','Figueres','Lloret de Mar','Blanes'],
+    'Granada': ['Granada','Motril'],
+    'Guadalajara': ['Guadalajara'],
+    'Huelva': ['Huelva'],
+    'Huesca': ['Huesca','Jaca'],
+    'Jaén': ['Jaén','Linares','Úbeda'],
+    'León': ['León','Ponferrada'],
+    'Lleida': ['Lleida'],
+    'Lugo': ['Lugo','Monforte de Lemos','Viveiro'],
+    'Madrid': ['Madrid','Móstoles','Alcalá de Henares','Alcobendas','Fuenlabrada','Leganés','Getafe','Alcorcón','Pozuelo de Alarcón','Las Rozas','Majadahonda'],
+    'Málaga': ['Málaga','Marbella','Fuengirola','Torremolinos','Benalmádena','Estepona','Mijas'],
+    'Murcia': ['Murcia','Cartagena','Lorca','Molina de Segura'],
+    'Navarra': ['Pamplona','Tudela'],
+    'Ourense': ['Ourense','O Barco de Valdeorras','Verín'],
+    'Palencia': ['Palencia'],
+    'Las Palmas': ['Las Palmas de Gran Canaria','Telde','Maspalomas'],
+    'Pontevedra': ['Vigo','Pontevedra','Vilagarcía de Arousa','Sanxenxo','Marín'],
+    'La Rioja': ['Logroño','Calahorra'],
+    'Salamanca': ['Salamanca'],
+    'Santa Cruz de Tenerife': ['Santa Cruz de Tenerife','San Cristóbal de La Laguna','Adeje','Arona'],
+    'Segovia': ['Segovia'],
+    'Sevilla': ['Sevilla','Dos Hermanas','Alcalá de Guadaíra','Utrera'],
+    'Soria': ['Soria'],
+    'Tarragona': ['Tarragona','Reus','Salou','Cambrils'],
+    'Teruel': ['Teruel'],
+    'Toledo': ['Toledo','Talavera de la Reina'],
+    'Valencia': ['Valencia','Gandia','Torrent','Paterna','Sagunto'],
+    'Valladolid': ['Valladolid'],
+    'Zamora': ['Zamora'],
+    'Zaragoza': ['Zaragoza','Calatayud'],
+  };
+  const PROVINCE_LIST = Object.keys(PROVINCIAS).sort((a, b) => a.localeCompare(b, 'es'));
+  // Provincia actual: derivada de la ciudad ya guardada (para editar) o del estado.
+  const savedCity = (city || profile.zone?.replace(', España', '') || '').trim();
+  const provinceOfSaved = PROVINCE_LIST.find(p => PROVINCIAS[p].includes(savedCity)) ?? '';
 
   const ROLE_TAGS: Record<string, { label: string; tags: string[] }> = {
     dj:        { label: 'Géneros musicales',    tags: ['Tech House','Deep House','House','Afro House','Organic House','Funky House','Tribal House','Progressive House','Latin House','Techno','Melodic Techno','Minimal','Hard Techno','Industrial','Dub Techno','Trance','Progressive Trance','Psytrance','Drum & Bass','Dubstep','Jungle','UK Garage','Breakbeat','Reggaetón','Dembow','Moombahton','Dancehall','R&B','Hip Hop','Trap','Afrobeats','Amapiano','Comercial','Top 40','Hits actuales','Remember','Pachanga','Disco','Nu-Disco','Funk','Electro','Synthwave','Ambient','Downtempo','Chillout','Hardstyle','Hardcore','EDM'] },
@@ -371,9 +429,9 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                     }
                   }}
                   className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[0.7rem] font-bold transition-all hover:scale-[1.02]"
-                  style={{ background: 'rgba(225,48,108,0.08)', border: '1px solid rgba(225,48,108,0.2)', color: '#E1306C' }}>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                  Instagram
+                  style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.25)', color: '#8A6D0F' }}>
+                  <Copy size={13} />
+                  Copiar enlace
                 </button>
               </div>
             </div>
@@ -533,16 +591,29 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 </div>
               )}
             </div>
-            <div className="mb-3">
-              <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Ciudad</label>
-              <NightlifeSelect
-                className="mt-1"
-                value={city || profile.zone?.replace(', España','') || ''}
-                onChange={setCity}
-                options={SPAIN_CITIES.map(c => ({ value: c, label: c }))}
-                placeholder="Seleccionar ciudad"
-                active={(city || profile.zone) ? true : false}
-              />
+            <div className="mb-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Provincia</label>
+                <NightlifeSelect
+                  className="mt-1"
+                  value={province || provinceOfSaved}
+                  onChange={(p) => { setProvince(p); setCity(''); }}
+                  options={PROVINCE_LIST.map(p => ({ value: p, label: p }))}
+                  placeholder="Elige provincia"
+                  active={!!(province || provinceOfSaved)}
+                />
+              </div>
+              <div>
+                <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Ciudad</label>
+                <NightlifeSelect
+                  className="mt-1"
+                  value={city || savedCity}
+                  onChange={setCity}
+                  options={(PROVINCIAS[province || provinceOfSaved] ?? []).map(c => ({ value: c, label: c }))}
+                  placeholder={(province || provinceOfSaved) ? 'Elige ciudad' : 'Elige provincia primero'}
+                  active={!!(city || savedCity)}
+                />
+              </div>
             </div>
             {profile.role !== 'empresario' && (
               <div className="mb-3">
@@ -632,9 +703,9 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                                 <button key={g} type="button" onClick={() => toggleGenre(g)}
                                   className="text-xs font-semibold px-2.5 py-1 rounded-lg transition-all hover:scale-105"
                                   style={{
-                                    background: activeGenres.includes(g) ? 'rgba(226,190,80,0.15)' : 'rgba(0,0,0,0.05)',
-                                    border: `1px solid ${activeGenres.includes(g) ? 'rgba(226,190,80,0.4)' : 'rgba(0,0,0,0.06)'}`,
-                                    color: activeGenres.includes(g) ? '#E2BE50' : '#333',
+                                    background: activeGenres.includes(g) ? 'rgba(226,190,80,0.2)' : 'rgba(255,255,255,0.08)',
+                                    border: `1px solid ${activeGenres.includes(g) ? 'rgba(226,190,80,0.5)' : 'rgba(255,255,255,0.15)'}`,
+                                    color: activeGenres.includes(g) ? '#E2BE50' : 'rgba(255,255,255,0.85)',
                                   }}>
                                   {g}
                                 </button>
@@ -653,11 +724,11 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                           </button>
                         ))}
                       </div>
-                      <div className="flex items-center justify-between px-3 py-2" style={{ borderTop: '1px solid rgba(0,0,0,0.05)' }}>
-                        <span className="text-xs text-muted-foreground">{activeGenres.length} seleccionados</span>
+                      <div className="flex items-center justify-between px-3 py-2" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                        <span className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>{activeGenres.length} seleccionados</span>
                         <button type="button" onClick={() => setGenreOpen(false)}
                           className="text-xs font-bold px-3 py-1 rounded-lg transition-all"
-                          style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.2)' }}>
+                          style={{ background: 'rgba(212,175,55,0.2)', color: '#E2BE50', border: '1px solid rgba(212,175,55,0.4)' }}>
                           Cerrar
                         </button>
                       </div>

@@ -130,6 +130,18 @@ const WizardGate = ({ showWizard, setShowWizard }: { showWizard: boolean; setSho
   return null;
 };
 
+// Rol del perfil → vista del dashboard (su propio listado). Un rol no listado
+// usa su propio slug como vista.
+const ROLE_TO_VIEW: Record<string, string> = {
+  dj: 'dj', staff: 'staff', camarero: 'staff', makeup: 'makeup', media: 'media',
+  vestuario: 'vestuario', design: 'design', promotor: 'promotor',
+  event_manager: 'event_manager', empresario: 'empresario', catering: 'catering',
+  mago: 'mago', bailarin: 'bailarin', humorista: 'humorista', animador: 'animador',
+  speaker: 'speaker', monologo: 'monologo', ambassador: 'ambassador',
+  // photo-booth no tiene vista propia → usa la de media (fotografía/vídeo)
+  'photo-booth': 'media',
+};
+
 const Dashboard = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -150,12 +162,28 @@ const Dashboard = () => {
   const [showWizard, setShowWizard] = useState(false);
   const isMobile = useIsMobile();
   const { user, loading } = useAuth();
+  const { role: profileRole } = useProfile();
 
   useEffect(() => {
     if (user && !localStorage.getItem(`xpeak_onboarded_${user.id}`)) {
       setShowWizard(true);
     }
   }, [user]);
+
+  // Vista inicial según el ROL del usuario (no siempre 'dj'): un camarero debe
+  // ver su listado, no el de DJs. Solo ajusta si el usuario no eligió otra vista
+  // ni viene de un enlace con vista específica.
+  const viewAdjusted = useRef(false);
+  useEffect(() => {
+    if (viewAdjusted.current || !profileRole || profileRole === 'pending') return;
+    const explicit = (location.state as { view?: string })?.view
+      || new URLSearchParams(location.search).get('view')
+      || localStorage.getItem('xpeak_view');
+    if (explicit) { viewAdjusted.current = true; return; }
+    const roleView = ROLE_TO_VIEW[profileRole] ?? profileRole;
+    setActiveView(roleView);
+    viewAdjusted.current = true;
+  }, [profileRole, location]);
 
   useEffect(() => {
     if (!selectedProfile) return;
