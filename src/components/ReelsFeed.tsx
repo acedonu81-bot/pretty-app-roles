@@ -25,6 +25,7 @@ export interface ReelsProfile {
   bio: string | null;
   is_verified: boolean;
   is_flash_active: boolean;
+  is_early_adopter?: boolean;
   avgRating: number;
   reviewCount: number;
 }
@@ -216,6 +217,11 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
                 {p.is_verified && (
                   <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-black" style={{ background: 'rgba(212,175,55,0.95)', color: '#000' }}>
                     <BadgeCheck size={11} /> Verificado
+                  </span>
+                )}
+                {p.is_early_adopter && (
+                  <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-black" style={{ background: 'rgba(96,165,250,0.95)', color: '#fff' }}>
+                    <Star size={11} fill="#fff" /> Fundador
                   </span>
                 )}
               </div>
