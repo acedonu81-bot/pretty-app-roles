@@ -145,12 +145,15 @@ export default function SwipeDirectory({ profiles, onClose, onOpenProfile, onBoo
       }}
       onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} onWheel={onWheel} ref={containerRef}>
 
-      {/* Cerrar — solo en modo modal, la vista embebida no se "cierra" */}
+      {/* Cerrar — solo en modo modal, la vista embebida no se "cierra".
+          44px (tamaño táctil estándar) + aria-label + borde: sin esto el
+          botón podía perderse visualmente sobre la foto y dar sensación de
+          quedarse "atrapado" sin salida. */}
       {!embedded && onClose && (
-        <button onClick={onClose}
-          className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full flex items-center justify-center"
-          style={{ background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(8px)' }}>
-          <CloseIcon size={18} color="#fff" />
+        <button onClick={onClose} aria-label="Cerrar vista swipe" type="button"
+          className="absolute top-4 right-4 z-30 w-11 h-11 rounded-full flex items-center justify-center transition-transform active:scale-90"
+          style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', border: '1.5px solid rgba(255,255,255,0.3)' }}>
+          <CloseIcon size={20} color="#fff" strokeWidth={2.5} />
         </button>
       )}
 

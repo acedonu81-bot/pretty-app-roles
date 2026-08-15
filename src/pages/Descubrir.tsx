@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import {
-  Sparkles, Loader2, Menu, X, LayoutDashboard,
+  Sparkles, Loader2, Menu, X, LayoutDashboard, ArrowLeft,
   Disc3, Camera, Users, Wine, Palette, Megaphone, UtensilsCrossed,
   Music, PartyPopper, Wand2, Mic, Drama, Presentation, Shirt,
   Aperture, CalendarHeart, PenTool, Grid3x3, type LucideIcon,
@@ -133,14 +133,22 @@ export default function Descubrir() {
         />
       )}
 
-      {/* Feed inmersivo: solo un botón ☰ flotante. Todo (categorías, volver a
-          clásica) vive dentro del menú — nada de barras que roben pantalla. */}
+      {/* Feed inmersivo: ☰ (categorías + volver a clásica) + un botón "volver"
+          directo siempre visible — sin salida evidente el feed daba sensación
+          de pantalla "atrapada" (había que abrir el menú primero). */}
       {!loading && (
-        <button onClick={() => setMenuOpen(true)} aria-label="Menú"
-          className="fixed top-0 right-0 z-[70] m-3 w-11 h-11 rounded-full flex items-center justify-center active:scale-95"
-          style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(10px)', marginTop: 'calc(env(safe-area-inset-top) + 0.5rem)' }}>
-          <Menu size={20} color="#fff" />
-        </button>
+        <>
+          <button onClick={() => navigate(user ? '/dashboard' : '/')} aria-label="Volver"
+            className="fixed top-0 left-0 z-[70] m-3 w-11 h-11 rounded-full flex items-center justify-center active:scale-95"
+            style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(10px)', marginTop: 'calc(env(safe-area-inset-top) + 0.5rem)' }}>
+            <ArrowLeft size={20} color="#fff" />
+          </button>
+          <button onClick={() => setMenuOpen(true)} aria-label="Menú"
+            className="fixed top-0 right-0 z-[70] m-3 w-11 h-11 rounded-full flex items-center justify-center active:scale-95"
+            style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(10px)', marginTop: 'calc(env(safe-area-inset-top) + 0.5rem)' }}>
+            <Menu size={20} color="#fff" />
+          </button>
+        </>
       )}
 
       {menuOpen && (
