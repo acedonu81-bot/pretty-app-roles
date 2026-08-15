@@ -43,7 +43,7 @@ const ALL_SLUG = 'todos';
 
 export default function Descubrir() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const { items: cartItems } = useEventCart();
 
   // El feed swipe es una experiencia móvil. En desktop se ve mal (foto estirada,
@@ -51,8 +51,11 @@ export default function Descubrir() {
   // logueado, directorio si no. El feed queda solo para móvil.
   const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
   useEffect(() => {
-    if (isDesktop) navigate(user ? '/dashboard' : '/directorio/dj', { replace: true });
-  }, [isDesktop, user, navigate]);
+    // Esperar a que useAuth hidrate la sesión — si no, un usuario recién
+    // logueado (p.ej. tras volver de Google) es tratado como "no logueado"
+    // durante el primer render y se le rebota al directorio en vez del dashboard.
+    if (isDesktop && !authLoading) navigate(user ? '/dashboard' : '/directorio/dj', { replace: true });
+  }, [isDesktop, authLoading, user, navigate]);
 
   const [activeRole, setActiveRole] = useState<string>(() => {
     try { return localStorage.getItem(LAST_ROLE_KEY) || ALL_SLUG; } catch { return ALL_SLUG; }
