@@ -85,6 +85,10 @@ const Auth = () => {
   const [recoveryLoading, setRecoveryLoading] = useState(false);
   const [proCount, setProCount] = useState<number | null>(null);
   const isRegistering = useRef(false);
+  // Vuelta de Google con ?code=... — el SDK aún no ha intercambiado el código
+  // por una sesión. Sin esta pantalla, el usuario ve el login "normal" y le da
+  // otra vez, lo que pisa el code_verifier PKCE del primer intento y rompe el login.
+  const [oauthCallbackPending, setOauthCallbackPending] = useState(() => searchParams.has('code'));
 
   useEffect(() => {
     track('auth_view', { mode: isLogin ? 'login' : 'register', role: roleParam || 'none' });
@@ -118,6 +122,7 @@ const Auth = () => {
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session && !isRegistering.current) goAfterLogin(session.user.id);
+      else if (oauthCallbackPending) setOauthCallbackPending(false);
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -128,9 +133,14 @@ const Auth = () => {
       if (isRegistering.current) return;
       if (session && (event === 'SIGNED_IN' || event === 'INITIAL_SESSION')) {
         goAfterLogin(session.user.id);
+      } else if (oauthCallbackPending) {
+        // El code_verifier no coincidía (p.ej. doble clic previo) o el código
+        // ya expiró — no dejar al usuario colgado en la pantalla de carga.
+        setOauthCallbackPending(false);
       }
     });
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate, redirectParam]);
 
   // Google bloquea OAuth en navegadores integrados (TikTok, Instagram, FB) con
@@ -360,6 +370,15 @@ const Auth = () => {
     { ok: password.length >= 6, label: '6+ caracteres' },
     { ok: password.length >= 10, label: 'Segura' },
   ] : null;
+
+  if (oauthCallbackPending) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center gap-3" style={{ background: '#ffffff', color: '#222' }}>
+        <div className="w-8 h-8 rounded-full border-2 animate-spin" style={{ borderColor: 'rgba(212,175,55,0.25)', borderTopColor: '#D4AF37' }} />
+        <p className="text-sm" style={{ color: 'rgba(0,0,0,0.6)' }}>Conectando con Google...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#ffffff', color: '#222' }}>
