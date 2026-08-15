@@ -21,6 +21,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   const [localName, setLocalName] = useState<string | null>(null);
   const [city, setCity] = useState('');
   const [province, setProvince] = useState('');
+  const [showMore, setShowMore] = useState(false); // "Más detalles (opcional)" plegado por defecto
   const [rider, setRider] = useState<string | null>(null);
   const [bio, setBio] = useState<string | null>(null);
   const [hourlyRate, setHourlyRate] = useState<string | null>(null);
@@ -636,8 +637,23 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 </div>
               </div>
             )}
+            {/* — Más detalles (opcional): todo lo secundario plegado para que la
+                ficha no abrume. Lo esencial (foto, nombre, ciudad, precio, bio)
+                queda siempre visible arriba. — */}
+            <button type="button" onClick={() => setShowMore(s => !s)}
+              className="mt-5 w-full flex items-center justify-between py-3 px-1 transition-all"
+              style={{ borderTop: '1px solid rgba(0,0,0,0.06)' }}>
+              <span className="text-sm font-bold" style={{ color: '#8A6D0F' }}>
+                {showMore ? 'Ocultar detalles' : 'Añadir más detalles (opcional)'}
+              </span>
+              <ChevronDown size={16} style={{ color: '#8A6D0F', transform: showMore ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
+            </button>
+            {!showMore && (
+              <p className="text-xs text-muted-foreground mb-2 px-1">Géneros, clases, rider técnico y más. Opcional — puedes completarlo luego.</p>
+            )}
+            <div style={{ display: showMore ? 'block' : 'none' }}>
             {/* — Habilidades — */}
-            <div className="mt-5 mb-3" style={{ borderTop: '1px solid rgba(0,0,0,0.04)', paddingTop: '1.25rem' }}>
+            <div className="mt-2 mb-3">
               <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Habilidades</p>
             </div>
             {roleTagConfig && (
@@ -901,6 +917,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 );
               })()}
             </div>
+            </div>{/* fin colapsable "Más detalles" */}
             {/* — Sobre ti — */}
             <div className="mt-5 mb-3" style={{ borderTop: '1px solid rgba(0,0,0,0.04)', paddingTop: '1.25rem' }}>
               <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Sobre ti</p>
