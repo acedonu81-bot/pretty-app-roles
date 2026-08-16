@@ -164,12 +164,16 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
     : [];
 
   // Arrancar centrado en el bloque del medio para poder scrollear hacia arriba
-  // y hacia abajo sin toparse con el borde.
+  // y hacia abajo sin toparse con el borde. El índice visible siempre es 0 (el
+  // primer perfil del orden barajado), así que el indicador debe arrancar ahí
+  // también — si no, tras un remount (p.ej. volver de "Ver perfil" con el
+  // botón atrás del navegador) el indicador se queda en un valor stale.
   useEffect(() => {
     const el = scrollerRef.current;
     if (!el || profiles.length === 0) return;
     const start = Math.floor(LOOPS / 2) * profiles.length;
     el.scrollTop = start * el.clientHeight;
+    setActiveIdx(0);
   }, [profiles.length]);
 
   // Re-centrar cuando se acerca a los extremos → bucle sin costura.
