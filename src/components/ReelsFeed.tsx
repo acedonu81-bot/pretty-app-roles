@@ -163,6 +163,15 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
     ? Array.from({ length: LOOPS * base.length }, (_, i) => base[i % base.length])
     : [];
 
+  // Profundidad de avance real (perfiles vistos desde el primero, sin contar
+  // los saltos de re-centrado del bucle) — usada por el intercepto de "atrás"
+  // de más abajo para decidir si retrocede un perfil o no hace nada.
+  // prevAbsIdxRef guarda el índice absoluto de scroll síncronamente (a
+  // diferencia de activeIdx, que es state y puede leerse stale entre eventos
+  // de scroll consecutivos) para poder comparar contra el índice anterior real.
+  const backDepthRef = useRef(0);
+  const prevAbsIdxRef = useRef<number | null>(null);
+
   // Arrancar centrado en el bloque del medio para poder scrollear hacia arriba
   // y hacia abajo sin toparse con el borde. El índice visible siempre es 0 (el
   // primer perfil del orden barajado), así que el indicador debe arrancar ahí
@@ -174,6 +183,8 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
     const start = Math.floor(LOOPS / 2) * profiles.length;
     el.scrollTop = start * el.clientHeight;
     setActiveIdx(0);
+    prevAbsIdxRef.current = start;
+    backDepthRef.current = 0;
   }, [profiles.length]);
 
   // Re-centrar cuando se acerca a los extremos → bucle sin costura.
@@ -183,13 +194,50 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
     const h = el.clientHeight;
     const cur = Math.round(el.scrollTop / h);
     setActiveIdx(cur % profiles.length);
+
     const total = items.length;
-    if (cur < profiles.length || cur > total - profiles.length) {
+    const isRecenterJump = cur < profiles.length || cur > total - profiles.length;
+    if (!isRecenterJump && prevAbsIdxRef.current !== null && cur !== prevAbsIdxRef.current) {
+      const delta = cur - prevAbsIdxRef.current;
+      backDepthRef.current = Math.max(0, backDepthRef.current + delta);
+    }
+    if (!isRecenterJump) prevAbsIdxRef.current = cur;
+
+    if (isRecenterJump) {
       // saltar al bloque equivalente del medio, mismo índice visible
       const mid = Math.floor(LOOPS / 2) * profiles.length + (cur % profiles.length);
       el.scrollTop = mid * h;
+      prevAbsIdxRef.current = mid;
     }
   }
+
+  // El botón/gesto "atrás" del dispositivo debe retroceder un perfil dentro
+  // del swipe (como en Instagram), no salir de la app — y en el primer perfil
+  // no debe hacer nada, para no dejar al usuario "atrapado" a medio gesto ni
+  // sacarlo de /descubrir sin querer. Una única entrada de historial centinela
+  // basta: el popstate se neutraliza siempre reponiéndola, y backDepthRef
+  // decide si además hay que mover el scroll un perfil hacia atrás.
+  useEffect(() => {
+    if (profiles.length === 0) return;
+    window.history.pushState({ xpeakReel: true }, '');
+    const onPopState = () => {
+      const el = scrollerRef.current;
+      window.history.pushState({ xpeakReel: true }, '');
+      // El scrollBy dispara onScroll, que ya recalcula backDepthRef a partir
+      // del cambio real de posición — no decrementar aquí también, o el mismo
+      // "atrás" se contaría dos veces y el segundo "atrás" consecutivo no haría nada.
+      if (backDepthRef.current > 0 && el) {
+        el.scrollBy({ top: -el.clientHeight, behavior: 'instant' });
+      }
+      // backDepthRef === 0: primer perfil, no hace nada más que neutralizar el pop.
+    };
+    window.addEventListener('popstate', onPopState);
+    return () => {
+      window.removeEventListener('popstate', onPopState);
+      // Limpia la entrada centinela para no dejar el historial ensuciado al desmontar.
+      if (window.history.state?.xpeakReel) window.history.back();
+    };
+  }, [profiles.length]);
 
   if (profiles.length === 0) return null;
 
