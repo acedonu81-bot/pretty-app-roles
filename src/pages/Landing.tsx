@@ -540,7 +540,7 @@ const Landing = () => {
         "name": "XPEAK",
         "url": "https://xpeak.es",
         "logo": { "@type": "ImageObject", "url": "https://xpeak.es/favicon.png" },
-        "sameAs": [],
+        "sameAs": ["https://www.instagram.com/xpeak.es"],
         "description": "Directorio de profesionales verificados para bodas y eventos en España. DJs, fotógrafos, camareros, maquilladores y staff. Flash Booking."
       })}</script>
       <script type="application/ld+json">{JSON.stringify({

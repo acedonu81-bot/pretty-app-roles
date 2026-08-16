@@ -142,6 +142,21 @@ for (const { routePath, file, routePattern } of routes) {
         /<meta name="author" content="XPEAK"\s*\/>/,
         '<meta name="author" content="Daniel, Fundador de XPEAK" />'
       );
+      // Blogs con BlogAnswerBox ("Respuesta rápida") declaran esas clases CSS —
+      // les añadimos SpeakableSpecification para que asistentes de voz
+      // (Google Assistant) puedan leer la respuesta directamente.
+      if (doc.includes('xpeak-speakable-answer') && !doc.includes('SpeakableSpecification')) {
+        const speakable = JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'WebPage',
+          url: `https://xpeak.es${routePath}`,
+          speakable: {
+            '@type': 'SpeakableSpecification',
+            cssSelector: ['.xpeak-speakable-question', '.xpeak-speakable-answer'],
+          },
+        });
+        doc = doc.replace('</head>', `<script type="application/ld+json">${speakable}</script>\n</head>`);
+      }
     }
     fs.writeFileSync(htmlFile, doc);
     ok++;

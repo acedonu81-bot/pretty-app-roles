@@ -20,7 +20,7 @@ const jsonLd = {
     "availableLanguage": "Spanish"
   },
   "sameAs": [
-    "https://xpeak.es"
+    "https://www.instagram.com/xpeak.es"
   ],
   "founder": {
     "@type": "Person",
