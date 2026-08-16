@@ -198,6 +198,21 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
     >
       <style>{`.reels-hide-sb::-webkit-scrollbar{display:none}`}</style>
 
+      {/* Indicador de posición dentro del ciclo de perfiles únicos (tipo Stories) */}
+      {profiles.length > 1 && (
+        <div className="fixed top-0 left-0 right-0 z-[70] flex gap-1 px-3"
+          style={{ marginTop: 'calc(env(safe-area-inset-top) + 0.5rem)' }}>
+          {profiles.map((_, i) => (
+            <div key={i} className="flex-1 h-[3px] rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.25)' }}>
+              <div className="h-full rounded-full transition-all" style={{
+                width: i === activeIdx ? '100%' : '0%',
+                background: '#D4AF37',
+              }} />
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* Botón de sonido global (solo si hay vídeos) — mudo por defecto como
           Instagram; toca para oír el audio de los vídeos. */}
       {anyVideo && (
@@ -223,8 +238,10 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
             />
             <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.4) 100%)' }} />
 
-            {/* Info inferior + acciones */}
-            <div className="absolute bottom-0 left-0 right-0 z-20 p-5" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 1.5rem)' }}>
+            {/* Info inferior + acciones — max-w-sm evita que el texto se estire
+                de borde a borde en landscape o tablets, donde una línea de bio
+                a todo lo ancho se vuelve incómoda de leer. */}
+            <div className="absolute bottom-0 left-0 right-0 z-20 p-5 max-w-sm" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 1.5rem)' }}>
               <div className="flex flex-wrap gap-2 mb-3">
                 {p.is_flash_active && (
                   <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-black" style={{ background: '#15803d', color: '#fff' }}>
@@ -239,12 +256,12 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
                 {p.is_early_adopter && (
                   <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black"
                     style={{
-                      background: 'linear-gradient(135deg,#60a5fa,#4f46e5)',
-                      color: '#fff',
+                      background: 'linear-gradient(135deg,#D4AF37,#B8941E)',
+                      color: '#000',
                       border: '1px solid rgba(255,255,255,0.35)',
-                      boxShadow: '0 0 16px rgba(96,165,250,0.5), 0 2px 8px rgba(0,0,0,0.25)',
+                      boxShadow: '0 0 16px rgba(212,175,55,0.5), 0 2px 8px rgba(0,0,0,0.25)',
                     }}>
-                    <Star size={11} fill="#fff" /> Fundador
+                    <Star size={11} fill="#000" /> Fundador
                   </span>
                 )}
               </div>
@@ -273,12 +290,12 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
                   {inCart ? <Check size={18} color="#22c55e" /> : <Plus size={18} color="#fff" />}
                 </button>
                 <button onClick={() => onOpenProfile(p)}
-                  className="flex-1 h-12 rounded-full flex items-center justify-center font-bold text-sm"
-                  style={{ background: 'rgba(255,255,255,0.12)', border: '1.5px solid rgba(255,255,255,0.25)', color: '#fff', backdropFilter: 'blur(8px)' }}>
+                  className="h-12 px-4 rounded-full flex items-center justify-center font-semibold text-sm flex-shrink-0"
+                  style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.18)', color: 'rgba(255,255,255,0.85)' }}>
                   Ver perfil
                 </button>
                 <button onClick={() => onBookNow(p)}
-                  className="h-12 px-5 rounded-full flex items-center gap-1.5 font-black text-sm flex-shrink-0"
+                  className="flex-1 h-12 px-5 rounded-full flex items-center justify-center gap-1.5 font-black text-sm min-w-0"
                   style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
                   <MessageCircle size={16} /> Contactar
                 </button>
