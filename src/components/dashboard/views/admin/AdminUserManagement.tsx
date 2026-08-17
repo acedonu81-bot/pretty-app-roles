@@ -99,9 +99,9 @@ const AdminUserManagement = () => {
   return (
     <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(212,175,55,0.03)', border: '1px solid rgba(212,175,55,0.1)' }}>
       <div className="px-6 py-4 flex flex-col sm:flex-row sm:items-center gap-3" style={{ borderBottom: '1px solid rgba(212,175,55,0.08)' }}>
-        <h2 className="text-base font-bold whitespace-nowrap" style={{ color: '#fff' }}>Gestión de Usuarios <span style={{ color: 'rgba(255,255,255,0.5)' }}>({filtered.length}{query ? ` de ${users.length}` : ''})</span></h2>
+        <h2 className="text-base font-bold whitespace-nowrap" style={{ color: '#1a1a1a' }}>Gestión de Usuarios <span className="text-muted-foreground">({filtered.length}{query ? ` de ${users.length}` : ''})</span></h2>
         <div className="relative sm:ml-auto sm:w-72">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: 'rgba(255,255,255,0.35)' }} />
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <input
             value={query}
             onChange={e => setQuery(e.target.value)}
@@ -112,39 +112,39 @@ const AdminUserManagement = () => {
       </div>
 
       {loading ? (
-        <p className="text-sm text-center py-12 animate-pulse" style={{ color: 'rgba(255,255,255,0.45)' }}>Cargando usuarios...</p>
+        <p className="text-sm text-center py-12 animate-pulse text-muted-foreground">Cargando usuarios...</p>
       ) : filtered.length === 0 ? (
-        <p className="text-sm text-center py-12" style={{ color: 'rgba(255,255,255,0.45)' }}>Sin resultados para "{query}".</p>
+        <p className="text-sm text-center py-12 text-muted-foreground">Sin resultados para "{query}".</p>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr style={{ borderBottom: '1px solid rgba(212,175,55,0.08)' }}>
                 {['Usuario', 'Rol · Zona', 'Plan', 'Categoría', 'Score', 'Estado', 'Acciones'].map(h => (
-                  <th key={h} className="text-left px-4 py-3 text-[0.65rem] font-bold uppercase tracking-wider whitespace-nowrap" style={{ color: 'rgba(255,255,255,0.5)' }}>{h}</th>
+                  <th key={h} className="text-left px-4 py-3 text-[0.65rem] font-bold uppercase tracking-wider whitespace-nowrap text-muted-foreground">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {filtered.map(u => (
-                <tr key={u.id} className="transition-colors hover:bg-white/[0.02]"
+                <tr key={u.id} className="transition-colors hover:bg-black/[0.02]"
                   style={{
-                    borderBottom: '1px solid rgba(255,255,255,0.03)',
+                    borderBottom: '1px solid rgba(0,0,0,0.04)',
                     background: u.validation_status === 'rejected' ? 'rgba(255,95,86,0.05)' : undefined,
                     opacity: u.validation_status === 'rejected' ? 0.55 : 1,
                   }}>
-                  <td className="px-4 py-3 font-bold whitespace-nowrap" style={{ color: 'rgba(255,255,255,0.92)' }}>
-                    {u.display_name || <span className="font-normal" style={{ color: 'rgba(255,255,255,0.4)' }}>Sin nombre</span>}
+                  <td className="px-4 py-3 font-bold whitespace-nowrap" style={{ color: '#1a1a1a' }}>
+                    {u.display_name || <span className="font-normal text-muted-foreground">Sin nombre</span>}
                     {u.validation_status === 'rejected' && (
                       <span className="ml-2 text-[0.6rem] font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(255,95,86,0.15)', color: '#ff5f56' }}>RECHAZADO</span>
                     )}
                   </td>
-                  <td className="px-4 py-3 whitespace-nowrap" style={{ color: 'rgba(255,255,255,0.6)' }}>{u.role} · {u.zone || 'Sin zona'}</td>
+                  <td className="px-4 py-3 whitespace-nowrap text-muted-foreground">{u.role} · {u.zone || 'Sin zona'}</td>
                   <td className="px-4 py-3">
                     <span className="text-[0.7rem] px-1.5 py-0.5 rounded font-bold whitespace-nowrap"
                       style={{
-                        background: u.subscription_tier === 'elite' ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.05)',
-                        color: u.subscription_tier === 'elite' ? '#D4AF37' : 'rgba(255,255,255,0.6)',
+                        background: u.subscription_tier === 'elite' ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.05)',
+                        color: u.subscription_tier === 'elite' ? '#D4AF37' : '#555',
                       }}>
                       {(u.subscription_tier || 'free').toUpperCase()}
                     </span>
@@ -153,25 +153,25 @@ const AdminUserManagement = () => {
                     <span className="text-[0.7rem] px-1.5 py-0.5 rounded font-bold whitespace-nowrap"
                       style={{
                         background: u.category === 'professional' ? 'rgba(34,197,94,0.1)' : 'rgba(255,188,0,0.1)',
-                        color: u.category === 'professional' ? '#22c55e' : '#ffbc00',
+                        color: u.category === 'professional' ? '#16a34a' : '#b45309',
                       }}>
                       {u.category === 'professional' ? 'PRO' : (u.category || 'rookie').toUpperCase()}
                     </span>
                   </td>
-                  <td className="px-4 py-3 font-mono tabular-nums" style={{ color: 'rgba(255,255,255,0.7)' }}>{u.score ?? 0}</td>
+                  <td className="px-4 py-3 font-mono tabular-nums" style={{ color: '#333' }}>{u.score ?? 0}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1.5">
                       {u.is_verified && (
-                        <span className="flex items-center gap-1 text-[0.6rem] font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>
+                        <span className="flex items-center gap-1 text-[0.6rem] font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(212,175,55,0.15)', color: '#8A6D0F' }}>
                           <CheckCircle size={9} /> Verificado
                         </span>
                       )}
                       {u.is_early_adopter && (
-                        <span className="flex items-center gap-1 text-[0.6rem] font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(59,130,246,0.15)', color: '#3b82f6' }}>
+                        <span className="flex items-center gap-1 text-[0.6rem] font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(59,130,246,0.15)', color: '#2563eb' }}>
                           <Star size={9} /> Aro azul
                         </span>
                       )}
-                      {!u.is_verified && !u.is_early_adopter && <span style={{ color: 'rgba(255,255,255,0.3)' }}>—</span>}
+                      {!u.is_verified && !u.is_early_adopter && <span className="text-muted-foreground">—</span>}
                     </div>
                   </td>
                   <td className="px-4 py-3">
@@ -194,16 +194,16 @@ const AdminUserManagement = () => {
                       <button onClick={() => toggleVerify(u)} title={u.is_verified ? 'Quitar Sello Dorado' : ACTIONS[3].hint}
                         className="p-1.5 rounded-md transition-all hover:scale-110"
                         style={{
-                          background: u.is_verified ? 'rgba(212,175,55,0.2)' : 'rgba(255,255,255,0.05)',
-                          color: u.is_verified ? '#D4AF37' : 'rgba(255,255,255,0.6)',
+                          background: u.is_verified ? 'rgba(212,175,55,0.2)' : 'rgba(0,0,0,0.04)',
+                          color: u.is_verified ? '#8A6D0F' : '#666',
                         }}>
                         <CheckCircle size={13} />
                       </button>
                       <button onClick={() => toggleEarlyAdopter(u)} title={u.is_early_adopter ? 'Quitar Aro Azul' : ACTIONS[4].hint}
                         className="p-1.5 rounded-md transition-all hover:scale-110"
                         style={{
-                          background: u.is_early_adopter ? 'rgba(59,130,246,0.2)' : 'rgba(255,255,255,0.05)',
-                          color: u.is_early_adopter ? '#3b82f6' : 'rgba(255,255,255,0.6)',
+                          background: u.is_early_adopter ? 'rgba(59,130,246,0.2)' : 'rgba(0,0,0,0.04)',
+                          color: u.is_early_adopter ? '#2563eb' : '#666',
                         }}>
                         <Star size={13} />
                       </button>
@@ -221,11 +221,11 @@ const AdminUserManagement = () => {
         </div>
       )}
 
-      <div className="px-6 py-3 flex flex-wrap gap-x-5 gap-y-1.5 text-[0.65rem]" style={{ borderTop: '1px solid rgba(212,175,55,0.08)', color: 'rgba(255,255,255,0.4)' }}>
+      <div className="px-6 py-3 flex flex-wrap gap-x-5 gap-y-1.5 text-[0.65rem] text-muted-foreground" style={{ borderTop: '1px solid rgba(212,175,55,0.08)' }}>
         {ACTIONS.map(a => (
           <span key={a.label} className="flex items-center gap-1.5">
             <a.icon size={11} />
-            <strong style={{ color: 'rgba(255,255,255,0.55)' }}>{a.label}</strong> — {a.hint}
+            <strong style={{ color: '#555' }}>{a.label}</strong> — {a.hint}
           </span>
         ))}
       </div>

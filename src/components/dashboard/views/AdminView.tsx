@@ -38,9 +38,9 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
             onClick={() => setTab(t.id)}
             className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap"
             style={{
-              background: tab === t.id ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.03)',
-              border: `1px solid ${tab === t.id ? 'rgba(212,175,55,0.4)' : 'rgba(255,255,255,0.08)'}`,
-              color: tab === t.id ? '#D4AF37' : 'inherit',
+              background: tab === t.id ? 'rgba(212,175,55,0.12)' : 'rgba(0,0,0,0.03)',
+              border: `1px solid ${tab === t.id ? 'rgba(212,175,55,0.4)' : 'rgba(0,0,0,0.08)'}`,
+              color: tab === t.id ? '#8A6D0F' : '#444',
             }}
           >
             <t.icon size={13} />

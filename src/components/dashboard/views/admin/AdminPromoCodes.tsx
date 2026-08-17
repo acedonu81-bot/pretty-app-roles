@@ -167,7 +167,7 @@ const AdminPromoCodes = () => {
               </thead>
               <tbody>
                 {promoCodes.map(c => (
-                  <tr key={c.id} className="hover:bg-white/[0.02] transition-colors" style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
+                  <tr key={c.id} className="hover:bg-black/[0.02] transition-colors" style={{ borderBottom: '1px solid rgba(0,0,0,0.04)' }}>
                     <td className="px-4 py-3 font-mono font-bold text-xs" style={{ color: '#D4AF37' }}>{c.code}</td>
                     <td className="px-4 py-3 font-bold" style={{ color: '#22c55e' }}>{c.discount_percent}%</td>
                     <td className="px-4 py-3 text-xs text-muted-foreground">{c.plan_id ?? 'todos'}</td>
@@ -181,7 +181,7 @@ const AdminPromoCodes = () => {
                         className="flex items-center gap-1 px-2 py-1 rounded text-[0.65rem] font-bold transition-all"
                         style={c.is_active
                           ? { background: 'rgba(34,197,94,0.1)', color: '#22c55e', border: '1px solid rgba(34,197,94,0.2)' }
-                          : { background: 'rgba(255,255,255,0.04)', color: '#3d3d4e', border: '1px solid rgba(255,255,255,0.08)' }}
+                          : { background: 'rgba(0,0,0,0.04)', color: '#555', border: '1px solid rgba(0,0,0,0.08)' }}
                       >
                         {c.is_active ? <><Check size={10} /> Activo</> : <><X size={10} /> Inactivo</>}
                       </button>
