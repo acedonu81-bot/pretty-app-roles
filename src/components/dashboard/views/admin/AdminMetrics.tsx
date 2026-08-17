@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Users, DollarSign, Zap, Shield, TrendingUp, Activity, Trash2, RefreshCw } from 'lucide-react';
-import { toast } from 'sonner';
+import { Users, Zap, Shield, Activity } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 interface Metrics {
@@ -37,43 +36,27 @@ const AdminMetrics = () => {
   }, []);
 
   const kpis = metrics ? [
-    { label: 'Usuarios Total',   value: metrics.totalUsers,    icon: Users,      color: '#8A6D0F' },
-    { label: 'Profesionales',    value: metrics.professionals, icon: Users,      color: '#3d3d4e' },
-    { label: 'Empresarios',      value: metrics.businesses,    icon: Shield,     color: '#8A6D0F' },
-    { label: 'MRR',              value: '—',                   icon: DollarSign, color: '#22c55e' },
-    { label: 'Flash Activos',    value: metrics.activeFlash,   icon: Zap,        color: '#22c55e' },
-    { label: 'Churn Rate',       value: '—',                   icon: TrendingUp, color: '#ff5f56' },
+    { label: 'Usuarios Total',   value: metrics.totalUsers,    icon: Users,  color: '#8A6D0F' },
+    { label: 'Profesionales',    value: metrics.professionals, icon: Users,  color: '#3d3d4e' },
+    { label: 'Empresarios',      value: metrics.businesses,    icon: Shield, color: '#8A6D0F' },
+    { label: 'Flash Activos',    value: metrics.activeFlash,   icon: Zap,    color: '#22c55e' },
   ] : [];
 
   return (
     <>
       {/* Server Status */}
-      <div className="glass-panel p-4 mb-6 flex items-center justify-between" style={{ border: '1px solid rgba(34,197,94,0.2)' }}>
-        <div className="flex items-center gap-3">
-          <Activity size={16} style={{ color: '#22c55e' }} />
-          <div>
-            <p className="text-xs font-bold" style={{ color: '#22c55e' }}>Sistema Online</p>
-            <p className="text-xs text-muted-foreground">Supabase · datos en tiempo real</p>
-          </div>
-        </div>
-        <div className="flex gap-2">
-          <button onClick={() => toast.success('Caché limpiada')}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
-            style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
-            <Trash2 size={12} /> Limpiar Caché
-          </button>
-          <button onClick={() => toast.success('Sesiones reiniciadas')}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
-            style={{ background: 'rgba(255,95,86,0.08)', border: '1px solid rgba(255,95,86,0.2)', color: '#ff5f56' }}>
-            <RefreshCw size={12} /> Reset Sesiones
-          </button>
+      <div className="glass-panel p-4 mb-6 flex items-center gap-3" style={{ border: '1px solid rgba(34,197,94,0.2)' }}>
+        <Activity size={16} style={{ color: '#22c55e' }} />
+        <div>
+          <p className="text-xs font-bold" style={{ color: '#22c55e' }}>Sistema Online</p>
+          <p className="text-xs text-muted-foreground">Supabase · datos en tiempo real</p>
         </div>
       </div>
 
       {/* Key Metrics */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
         {loading ? (
-          Array.from({ length: 6 }).map((_, i) => (
+          Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="glass-panel p-3 animate-pulse">
               <div className="h-3 w-16 rounded mb-2" style={{ background: 'rgba(0,0,0,0.05)' }} />
               <div className="h-5 w-10 rounded" style={{ background: 'rgba(0,0,0,0.05)' }} />

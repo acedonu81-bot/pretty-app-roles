@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { XPeakToastProvider } from "@/lib/xpeak-toast";
@@ -16,7 +16,6 @@ const Privacidad = lazy(() => import("./pages/Privacidad"));
 const EliminarCuenta = lazy(() => import("./pages/EliminarCuenta"));
 const Terminos = lazy(() => import("./pages/Terminos"));
 const Cookies = lazy(() => import("./pages/Cookies"));
-const AdminBeta = lazy(() => import("./pages/AdminBeta"));
 const PublicProfile = lazy(() => import("./pages/PublicProfile"));
 const SobreNosotros = lazy(() => import("./pages/SobreNosotros"));
 const AvisoLegal = lazy(() => import("./pages/AvisoLegal"));
@@ -382,7 +381,11 @@ const App = () => (
             <Route path="/eliminar-cuenta" element={<EliminarCuenta />} />
             <Route path="/terminos" element={<Terminos />} />
             <Route path="/cookies" element={<Cookies />} />
-            <Route path="/admin-beta" element={<AdminBeta />} />
+            {/* Panel de admin unificado en /dashboard?view=admin — antes había un
+                segundo panel duplicado aquí (códigos promo, ya migrados a la
+                tab "Códigos Promo" del panel principal; solicitudes/usuarios
+                eran duplicados exactos de lo que ya existe en /dashboard). */}
+            <Route path="/admin-beta" element={<Navigate to="/dashboard?view=admin" replace />} />
             <Route path="/p/:slug" element={<PublicProfile />} />
             <Route path="/sobre-nosotros" element={<SobreNosotros />} />
             <Route path="/aviso-legal" element={<AvisoLegal />} />

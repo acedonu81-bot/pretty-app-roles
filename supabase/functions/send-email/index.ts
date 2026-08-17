@@ -171,7 +171,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         ['Nombre', d.name],
         ['Fecha registro', new Date().toLocaleDateString('es-ES')],
       ])}
-      ${btn('Ver en panel admin →', 'https://xpeak.es/admin-beta')}`),
+      ${btn('Ver en panel admin →', 'https://xpeak.es/dashboard?view=admin')}`),
   }),
 
   // 5. Empresario — confirmación pendiente aprobación
@@ -254,7 +254,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         ['Rol', d.role],
         ['Zona', d.zone || '—'],
       ])}
-      ${btn('Revisar perfil en admin →', 'https://xpeak.es/admin-beta')}`),
+      ${btn('Revisar perfil en admin →', 'https://xpeak.es/dashboard?view=admin')}`),
   }),
 
   // 10. Feature request — confirmación al usuario

@@ -5,7 +5,7 @@ import {
   BarChart3,
   Camera, FileText, FileEdit, CalendarCheck,
   Palette, Shirt, Speaker, ChevronDown, Plus, UtensilsCrossed,
-  Wand2, Music2, Laugh, Mic2, Theater, PartyPopper,
+  Wand2, Music2, Laugh, Mic2, Theater, PartyPopper, Shield,
 } from 'lucide-react';
 import GeometricAvatar from './GeometricAvatar';
 import { useProfile } from '@/hooks/useProfile';
@@ -85,6 +85,12 @@ const navSections = [
     label: 'CONFIGURACIÓN',
     items: [
       { id: 'settings', icon: Settings, label: 'Ajustes' },
+    ],
+  },
+  {
+    label: 'ADMIN',
+    items: [
+      { id: 'admin', icon: Shield, label: 'Panel Admin' },
     ],
   },
 ];
@@ -168,6 +174,13 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
   const isEmpresario = role === 'empresario';
   const [flashBadge, setFlashBadge] = useState(0);
   const [msgBadge, setMsgBadge] = useState(0);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    if (!user) { setIsAdmin(false); return; }
+    supabase.from('user_roles').select('role').eq('user_id', user.id).eq('role', 'admin').maybeSingle()
+      .then(({ data }) => setIsAdmin(!!data));
+  }, [user]);
 
   useEffect(() => {
     if (!user || isEmpresario) return;
@@ -229,7 +242,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
       <ProfileSwitcher onViewChange={onViewChange} />
 
       <nav className="flex-1 overflow-y-auto px-4 py-4 no-scrollbar">
-        {navSections.map((section) => {
+        {navSections.filter(s => s.label !== 'ADMIN' || isAdmin).map((section) => {
           let items = section.label === 'MI CUENTA' && isAgency
             ? [...section.items.slice(0, 2), { id: 'agency', icon: Building2, label: 'Panel Agencia', badge: 'AGENCIA' as const }, ...section.items.slice(2)]
             : section.items;
