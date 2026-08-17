@@ -4,7 +4,21 @@
 # profile_contacts: owner-only phone access
 # profiles: privileged fields protected via trigger
 # flash_jobs: authenticated users can read active jobs
+#
+# ⚠️ NUNCA ejecutar `supabase config push` con este archivo — es un
+# config.toml mínimo, no un espejo del proyecto remoto. Un push completo
+# (17 ago 2026) sobrescribió site_url/uri_allow_list de producción con
+# valores de desarrollo local (127.0.0.1) y casi rompe el login. Los
+# cambios de Auth se aplican solo vía Management API con PATCH quirúrgico
+# a campos concretos, nunca vía push de este archivo.
 project_id = "ddrqhwravupjzysriblq"
+
+# Documentado aquí solo como referencia — el CAPTCHA real ya está activado
+# en el proyecto vía Management API (17 ago 2026), NO por este archivo.
+[auth.captcha]
+enabled = true
+provider = "turnstile"
+secret = "env(TURNSTILE_SECRET_KEY)"
 
 [functions.mcp-server]
 # Endpoint público pensado para ser llamado directamente por agentes de

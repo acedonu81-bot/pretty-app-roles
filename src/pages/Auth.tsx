@@ -5,6 +5,7 @@ import { Mail, Lock, User, Eye, EyeOff, Zap, ShieldCheck, Users, FileText, MapPi
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { track } from '@/lib/track';
+import TurnstileWidget from '@/components/TurnstileWidget';
 
 const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { icon: LucideIcon; text: string }[] }> = {
   dj: {
@@ -89,6 +90,8 @@ const Auth = () => {
   // por una sesión. Sin esta pantalla, el usuario ve el login "normal" y le da
   // otra vez, lo que pisa el code_verifier PKCE del primer intento y rompe el login.
   const [oauthCallbackPending, setOauthCallbackPending] = useState(() => searchParams.has('code'));
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [forgotCaptchaToken, setForgotCaptchaToken] = useState<string | null>(null);
 
   useEffect(() => {
     track('auth_view', { mode: isLogin ? 'login' : 'register', role: roleParam || 'none' });
@@ -171,9 +174,11 @@ const Auth = () => {
     const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
     e.preventDefault();
     if (!forgotEmail) { authAlert('Introduce tu email'); return; }
+    if (!forgotCaptchaToken) { authAlert('Espera a que termine la verificación de seguridad e inténtalo de nuevo.'); return; }
     setForgotLoading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(forgotEmail, {
       redirectTo: `${SITE_URL}/auth`,
+      captchaToken: forgotCaptchaToken,
     });
     setForgotLoading(false);
     if (error) { authAlert(error.message); return; }
@@ -248,6 +253,10 @@ const Auth = () => {
       authAlert('Completa todos los campos');
       return;
     }
+    if (!captchaToken) {
+      authAlert('Espera a que termine la verificación de seguridad e inténtalo de nuevo.');
+      return;
+    }
     setLoading(true);
     try {
       if (isLogin) {
@@ -256,7 +265,7 @@ const Auth = () => {
           setLoading(false);
           return;
         }
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { error } = await supabase.auth.signInWithPassword({ email, password, options: { captchaToken } });
         if (error) {
           recordLoginFailure();
           track('auth_error', { mode: 'login', message: error.message });
@@ -306,6 +315,7 @@ const Auth = () => {
               zone: 'España',
             },
             emailRedirectTo: `${SITE_URL}/auth`,
+            captchaToken,
           },
         });
         if (error) {
@@ -649,10 +659,13 @@ const Auth = () => {
                   </label>
                 )}
 
+                {/* Verificación anti-bot — invisible la mayoría de las veces */}
+                <TurnstileWidget onVerify={setCaptchaToken} onExpire={() => setCaptchaToken(null)} />
+
                 {/* CTA principal */}
                 <button
                   type="submit"
-                  disabled={loading}
+                  disabled={loading || !captchaToken}
                   className="w-full py-3.5 rounded-xl font-black text-sm transition-all hover:scale-[1.01] disabled:opacity-50"
                   style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' }}>
                   {loading
@@ -693,13 +706,14 @@ const Auth = () => {
                         <input type="email" value={forgotEmail} onChange={e => setForgotEmail(e.target.value)}
                           placeholder="tu@email.com" className="nightlife-input !py-2.5 !pl-9 text-sm" />
                       </div>
+                      <TurnstileWidget onVerify={setForgotCaptchaToken} onExpire={() => setForgotCaptchaToken(null)} />
                       <div className="flex gap-2">
                         <button type="button" onClick={() => setShowForgot(false)}
                           className="flex-1 py-2 rounded-lg text-xs font-bold"
                           style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.15)', color: '#555' }}>
                           Cancelar
                         </button>
-                        <button type="submit" disabled={forgotLoading}
+                        <button type="submit" disabled={forgotLoading || !forgotCaptchaToken}
                           className="flex-1 py-2 rounded-lg text-xs font-bold disabled:opacity-50"
                           style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                           {forgotLoading ? 'Enviando...' : 'Enviar enlace'}
