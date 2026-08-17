@@ -9,7 +9,7 @@ import FlashBookingRequestModal from '@/components/dashboard/FlashBookingRequest
 import MultiRequestModal from '@/components/MultiRequestModal';
 import SwipeDirectory from '@/components/SwipeDirectory';
 import FooterPublic from '@/components/FooterPublic';
-import { addToCart, useEventCart } from '@/lib/eventCart';
+import { addToCart, useEventCart, MAX_CART_ITEMS } from '@/lib/eventCart';
 
 // URL de perfil por slug de nombre (la misma que usan sitemap y prerender) en
 // vez de UUID — evita dos URLs indexables para el mismo perfil. PublicProfile
@@ -401,9 +401,9 @@ export default function DirectorioPublico() {
                 onBookNow={(p) => setBookingPro(p as DirProfile)}
                 onAddToCart={(p) => {
                   const prof = p as DirProfile;
-                  if (cartItems.some(i => i.userId === prof.user_id)) return;
-                  addToCart({ userId: prof.user_id, displayName: prof.display_name, role: prof.role, photoUrl: prof.photo_url, hourlyRate: prof.hourly_rate, zone: prof.zone });
-                  toast.success(`${prof.display_name} añadido a "Mi evento"`);
+                  const result = addToCart({ userId: prof.user_id, displayName: prof.display_name, role: prof.role, photoUrl: prof.photo_url, hourlyRate: prof.hourly_rate, zone: prof.zone });
+                  if (result === 'added') toast.success(`${prof.display_name} añadido a "Mi evento"`);
+                  else if (result === 'limit_reached') toast.error(`Máximo ${MAX_CART_ITEMS} profesionales por evento. Elimina alguno para añadir más.`);
                 }}
                 isInCart={(userId) => cartItems.some(i => i.userId === userId)}
               />
@@ -675,9 +675,9 @@ export default function DirectorioPublico() {
                       </button>
                       <button
                         onClick={() => {
-                          if (cartItems.some(i => i.userId === p.user_id)) return;
-                          addToCart({ userId: p.user_id, displayName: p.display_name, role: p.role, photoUrl: p.photo_url, hourlyRate: p.hourly_rate, zone: p.zone });
-                          toast.success(`${p.display_name} añadido a "Mi evento"`, { description: 'Añade varios profesionales y pide presupuesto conjunto desde el botón dorado de abajo a la derecha.' });
+                          const result = addToCart({ userId: p.user_id, displayName: p.display_name, role: p.role, photoUrl: p.photo_url, hourlyRate: p.hourly_rate, zone: p.zone });
+                          if (result === 'added') toast.success(`${p.display_name} añadido a "Mi evento"`, { description: 'Añade varios profesionales y pide presupuesto conjunto desde el botón dorado de abajo a la derecha.' });
+                          else if (result === 'limit_reached') toast.error(`Máximo ${MAX_CART_ITEMS} profesionales por evento. Elimina alguno para añadir más.`);
                         }}
                         disabled={cartItems.some(i => i.userId === p.user_id)}
                         title={cartItems.some(i => i.userId === p.user_id) ? 'Ya está en tu evento' : 'Añadir a "Mi evento"'}
@@ -741,9 +741,9 @@ export default function DirectorioPublico() {
           onBookNow={(p) => { setShowSwipe(false); setBookingPro(p as DirProfile); }}
           onAddToCart={(p) => {
             const prof = p as DirProfile;
-            if (cartItems.some(i => i.userId === prof.user_id)) return;
-            addToCart({ userId: prof.user_id, displayName: prof.display_name, role: prof.role, photoUrl: prof.photo_url, hourlyRate: prof.hourly_rate, zone: prof.zone });
-            toast.success(`${prof.display_name} añadido a "Mi evento"`);
+            const result = addToCart({ userId: prof.user_id, displayName: prof.display_name, role: prof.role, photoUrl: prof.photo_url, hourlyRate: prof.hourly_rate, zone: prof.zone });
+            if (result === 'added') toast.success(`${prof.display_name} añadido a "Mi evento"`);
+            else if (result === 'limit_reached') toast.error(`Máximo ${MAX_CART_ITEMS} profesionales por evento. Elimina alguno para añadir más.`);
           }}
           isInCart={(userId) => cartItems.some(i => i.userId === userId)}
         />

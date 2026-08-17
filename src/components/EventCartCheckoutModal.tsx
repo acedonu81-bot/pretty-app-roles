@@ -28,6 +28,11 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
   // solo un punto de partida razonable, no un dato fijo.
   const [hours, setHours] = useState<number | ''>('');
   const [hoursTouched, setHoursTouched] = useState(false);
+  // Este envío comparte nombre + contacto con cada profesional seleccionado —
+  // mismo consentimiento explícito que pide el registro (Auth.tsx) antes de
+  // compartir datos personales con terceros.
+  const [legalAccepted, setLegalAccepted] = useState(false);
+  const [legalError, setLegalError] = useState(false);
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
@@ -48,6 +53,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!form.name.trim() || !form.contact.trim() || !form.eventType) return;
+    if (!legalAccepted) { setLegalError(true); return; }
     // Honeypot: campo oculto que un humano nunca rellena, pero un bot sí.
     if (form.website.trim()) { onClose(); return; }
     setStatus('sending');
@@ -260,6 +266,27 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
                 Indica las horas contratadas para ver el presupuesto estimado.
               </p>
             )}
+
+            <label
+              htmlFor="cart-legal-accept"
+              className={`flex items-start gap-2.5 cursor-pointer rounded-xl px-3 py-3 mt-4 ${legalError ? 'animate-field-shake' : ''}`}
+              style={{
+                background: legalError ? 'rgba(239,68,68,0.06)' : 'rgba(0,0,0,0.03)',
+                border: legalError ? '1.5px solid #ef4444' : legalAccepted ? '1px solid rgba(212,175,55,0.5)' : '1px solid rgba(0,0,0,0.1)',
+              }}>
+              <input
+                id="cart-legal-accept"
+                type="checkbox"
+                checked={legalAccepted}
+                onChange={e => { setLegalAccepted(e.target.checked); if (e.target.checked) setLegalError(false); }}
+                className="w-5 h-5 flex-shrink-0 mt-0.5 rounded-md accent-[#D4AF37]"
+              />
+              <span className="text-[0.7rem] leading-relaxed" style={{ color: legalError ? '#b91c1c' : 'rgba(0,0,0,0.65)' }}>
+                {legalError && <span className="font-bold">☝️ Marca esta casilla para continuar — </span>}
+                Acepto que mi nombre y contacto se compartan con cada profesional seleccionado, según la{' '}
+                <a href="/privacidad" target="_blank" rel="noopener" onClick={e => e.stopPropagation()} className="underline" style={{ color: '#8B6A00' }}>Política de Privacidad</a>.
+              </span>
+            </label>
 
             {status === 'error' && (
               <p className="text-xs mt-3" style={{ color: '#dc2626' }}>Algo ha fallado enviando las solicitudes. Intenta de nuevo o escríbenos a info@xpeak.es</p>

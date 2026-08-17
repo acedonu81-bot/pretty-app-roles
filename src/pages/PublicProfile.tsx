@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, Headphones, BookOpen, Video, Music, Instagram, Send, X, Shield, Check, Plus } from 'lucide-react';
 import { toast } from 'sonner';
-import { addToCart, useEventCart } from '@/lib/eventCart';
+import { addToCart, useEventCart, MAX_CART_ITEMS } from '@/lib/eventCart';
 import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack } from '@/lib/streaming';
 import { profiles, toSlug } from '@/data/profiles';
 import { useAuth } from '@/hooks/useAuth';
@@ -493,7 +493,7 @@ const PublicProfile = () => {
   const inCart = sbProfile ? cartItems.some(i => i.userId === sbProfile.user_id) : false;
   const handleAddToCart = () => {
     if (!sbProfile) return;
-    addToCart({
+    const result = addToCart({
       userId: sbProfile.user_id,
       displayName: profile.name,
       role: profile.role,
@@ -501,6 +501,11 @@ const PublicProfile = () => {
       hourlyRate: profile.price || null,
       zone: profile.zone,
     });
+    if (result === 'limit_reached') {
+      toast.error(`Máximo ${MAX_CART_ITEMS} profesionales por evento. Elimina alguno para añadir más.`);
+      return;
+    }
+    if (result === 'duplicate') return;
     toast.success(`${profile.name} añadido a "Mi evento"`, { description: 'Añade varios profesionales y pide presupuesto conjunto desde el botón dorado de abajo a la derecha.' });
   };
   const profileUrl = `${BASE_URL}/p/${profileSlug}`;

@@ -11,7 +11,7 @@ import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import ReelsFeed from '@/components/ReelsFeed';
-import { addToCart, useEventCart } from '@/lib/eventCart';
+import { addToCart, useEventCart, MAX_CART_ITEMS } from '@/lib/eventCart';
 import {
   ALL_ROLES,
   ROLE_CONFIG,
@@ -128,9 +128,9 @@ export default function Descubrir() {
           onBookNow={(p) => { window.location.href = profileUrl(p as DirProfile); }}
           onAddToCart={(p) => {
             const prof = p as DirProfile;
-            if (cartItems.some(i => i.userId === prof.user_id)) return;
-            addToCart({ userId: prof.user_id, displayName: prof.display_name, role: prof.role, photoUrl: prof.photo_url, hourlyRate: prof.hourly_rate, zone: prof.zone });
-            toast.success(`${prof.display_name} añadido a "Mi evento"`);
+            const result = addToCart({ userId: prof.user_id, displayName: prof.display_name, role: prof.role, photoUrl: prof.photo_url, hourlyRate: prof.hourly_rate, zone: prof.zone });
+            if (result === 'added') toast.success(`${prof.display_name} añadido a "Mi evento"`);
+            else if (result === 'limit_reached') toast.error(`Máximo ${MAX_CART_ITEMS} profesionales por evento. Elimina alguno para añadir más.`);
           }}
           isInCart={(userId) => cartItems.some(i => i.userId === userId)}
         />
