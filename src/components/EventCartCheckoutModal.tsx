@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, Send, CheckCircle, Calendar, MapPin, MessageSquare, Trash2 } from 'lucide-react';
+import { X, Send, CheckCircle, Calendar, MapPin, MessageSquare, Trash2, Clock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useEventCart } from '@/lib/eventCart';
@@ -23,10 +23,20 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
   const { items, remove, clear } = useEventCart();
   const [form, setForm] = useState({ name: '', contact: '', eventType: '', date: '', location: '', message: '', website: '' });
   const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
+  // Horas editables: se autorrellenan según el tipo de evento (tabla EVENT_HOURS),
+  // pero el usuario puede ajustarlas — cada evento dura lo que dura, la tabla es
+  // solo un punto de partida razonable, no un dato fijo.
+  const [hours, setHours] = useState<number | ''>('');
+  const [hoursTouched, setHoursTouched] = useState(false);
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
-  const estimatedHours = EVENT_HOURS[form.eventType] ?? 4;
+  const handleEventTypeChange = (v: string) => {
+    set('eventType', v);
+    if (!hoursTouched) setHours(EVENT_HOURS[v] ?? 4);
+  };
+
+  const estimatedHours = hours === '' ? 0 : hours;
   const estimatedTotal = items.reduce((sum, i) => sum + (i.hourlyRate ? i.hourlyRate * estimatedHours : 0), 0);
   const itemsWithoutRate = items.filter(i => !i.hourlyRate).length;
 
@@ -51,7 +61,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
         requester_contact: form.contact,
         event_date: form.date || 'Por confirmar',
         event_location: form.location,
-        event_description: `[${form.eventType}] ${form.message}`,
+        event_description: `[${form.eventType}${estimatedHours > 0 ? ` · ${estimatedHours}h` : ''}] ${form.message}`,
         agreed_price: null,
         status: 'pending',
         created_by: user?.id ?? null,
@@ -170,7 +180,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
 
               <div>
                 <label className="text-xs font-bold mb-1 block" style={{ color: '#333' }}>Tipo de evento *</label>
-                <select value={form.eventType} onChange={e => set('eventType', e.target.value)} required
+                <select value={form.eventType} onChange={e => handleEventTypeChange(e.target.value)} required
                   className="w-full px-3 py-2.5 rounded-xl text-sm outline-none"
                   style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: form.eventType ? '#222' : '#333' }}>
                   <option value="" disabled>Selecciona el tipo de evento</option>
@@ -200,6 +210,18 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
 
               <div>
                 <label className="text-xs font-bold mb-1 flex items-center gap-1" style={{ color: '#333' }}>
+                  <Clock size={10} /> Horas contratadas {form.eventType && !hoursTouched && '(estimadas)'}
+                </label>
+                <input type="number" min={1} max={24} step={0.5}
+                  value={hours}
+                  onChange={e => { setHoursTouched(true); const v = e.target.value; setHours(v === '' ? '' : Number(v)); }}
+                  placeholder="Nº de horas"
+                  className="w-full px-3 py-2.5 rounded-xl text-sm outline-none"
+                  style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: '#222' }} />
+              </div>
+
+              <div>
+                <label className="text-xs font-bold mb-1 flex items-center gap-1" style={{ color: '#333' }}>
                   <MessageSquare size={10} /> Cuéntales algo más (opcional)
                 </label>
                 <textarea value={form.message} onChange={e => set('message', e.target.value)} rows={3}
@@ -209,18 +231,34 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
               </div>
             </div>
 
-            {estimatedTotal > 0 && (
-              <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl mt-4"
+            {estimatedHours > 0 && items.some(i => i.hourlyRate) && (
+              <div className="rounded-xl mt-4 overflow-hidden"
                 style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
-                <p className="text-xs" style={{ color: '#222' }}>
-                  Presupuesto estimado: <span className="font-bold" style={{ color: '#8A6D0F' }}>~{estimatedTotal}€</span>
-                  {itemsWithoutRate > 0 && (
-                    <span className="ml-1" style={{ color: '#333' }}>
-                      ({itemsWithoutRate} profesional{itemsWithoutRate !== 1 ? 'es' : ''} sin tarifa pública — a consultar)
-                    </span>
-                  )}
-                </p>
+                <div className="px-3 pt-2.5 space-y-1">
+                  {items.filter(i => i.hourlyRate).map(i => (
+                    <div key={i.userId} className="flex items-center justify-between text-[0.7rem]" style={{ color: '#555' }}>
+                      <span className="truncate mr-2">{i.displayName}</span>
+                      <span className="flex-shrink-0">{i.hourlyRate}€/h × {estimatedHours}h = <span className="font-bold" style={{ color: '#222' }}>{(i.hourlyRate ?? 0) * estimatedHours}€</span></span>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex items-center justify-between px-3 py-2.5 mt-1" style={{ borderTop: '1px solid rgba(212,175,55,0.15)' }}>
+                  <p className="text-xs" style={{ color: '#222' }}>
+                    Presupuesto estimado ({estimatedHours}h)
+                    {itemsWithoutRate > 0 && (
+                      <span className="block text-[0.65rem] mt-0.5" style={{ color: '#333' }}>
+                        +{itemsWithoutRate} profesional{itemsWithoutRate !== 1 ? 'es' : ''} sin tarifa pública — a consultar
+                      </span>
+                    )}
+                  </p>
+                  <span className="font-black text-sm flex-shrink-0" style={{ color: '#8A6D0F' }}>~{estimatedTotal}€</span>
+                </div>
               </div>
+            )}
+            {estimatedHours === 0 && form.eventType && (
+              <p className="text-[0.7rem] mt-3" style={{ color: '#333' }}>
+                Indica las horas contratadas para ver el presupuesto estimado.
+              </p>
             )}
 
             {status === 'error' && (
