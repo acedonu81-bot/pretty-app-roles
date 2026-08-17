@@ -252,7 +252,7 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string): Pro
   const orFilter = dbRoles.map(r => `role.eq.${r}`).join(',') + ',' + dbRoles.map(r => `roles.cs.{${r}}`).join(',');
   let q = supabase
     .from('profiles')
-    .select('user_id, display_name, role, roles, specialty, zone, photo_url, bio_video_url, hourly_rate, bio, is_flash_active, is_verified, is_seed, is_early_adopter, score, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls, updated_at')
+    .select('user_id, display_name, role, roles, specialty, zone, photo_url, bio_video_url, hourly_rate, bio, is_flash_active, is_verified, is_seed, is_early_adopter, score, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls, updated_at, created_at')
     .or(orFilter)
     .not('display_name', 'is', null)
     .order('score', { ascending: false })
@@ -263,7 +263,17 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string): Pro
   const { data, error } = await q;
   if (error) throw error;
 
-  const userIds = (data ?? []).map((p: any) => p.user_id);
+  // Filtro anti-spam: registros NUEVOS (a partir de este cambio) con zona
+  // genérica "España" — es decir, que no rellenaron una ciudad real — no
+  // aparecen en el directorio hasta que la completen. Los perfiles creados
+  // antes de este corte se dejan intactos (ya se han revisado a mano).
+  const NEW_PROFILE_GATE_SINCE = '2026-08-17T17:53:25.000Z';
+  const isGenericZone = (zone: string | null) => !zone?.trim() || zone.trim() === 'España';
+  const filtered = (data ?? []).filter((p: any) =>
+    !(p.created_at >= NEW_PROFILE_GATE_SINCE && isGenericZone(p.zone))
+  );
+
+  const userIds = filtered.map((p: any) => p.user_id);
   const { data: reviewsData } = userIds.length > 0
     ? await supabase.from('reviews').select('reviewed_user_id, rating').eq('approved', true).in('reviewed_user_id', userIds)
     : { data: [] };
@@ -284,7 +294,7 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string): Pro
       || (Array.isArray(p.portfolio_urls) && p.portfolio_urls.length > 0);
     return (hasMedia ? 4 : 0) + (p.photo_url ? 2 : 0) + (p.bio?.trim() ? 1 : 0);
   };
-  const enriched = (data ?? []).filter((p: any) => p.display_name?.trim().length > 1).map((p: any) => {
+  const enriched = filtered.filter((p: any) => p.display_name?.trim().length > 1).map((p: any) => {
     const stats = ratingMap.get(p.user_id);
     return { ...p, avgRating: stats ? Math.round((stats.sum / stats.count) * 10) / 10 : 0, reviewCount: stats?.count ?? 0 };
   });

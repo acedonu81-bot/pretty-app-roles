@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { X, Send, CheckCircle, Calendar, MapPin, MessageSquare, Trash2, Clock } from 'lucide-react';
+import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useEventCart } from '@/lib/eventCart';
@@ -52,10 +53,12 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!user) { toast.error('Inicia sesión para contactar con profesionales.'); return; }
     if (!form.name.trim() || !form.contact.trim() || !form.eventType) return;
     if (!legalAccepted) { setLegalError(true); return; }
     // Honeypot: campo oculto que un humano nunca rellena, pero un bot sí.
     if (form.website.trim()) { onClose(); return; }
+
     setStatus('sending');
 
     const results = await Promise.allSettled(items.map(item => {
@@ -116,7 +119,19 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
           <X size={16} style={{ color: '#333' }} />
         </button>
 
-        {status === 'done' ? (
+        {!user ? (
+          <div className="text-center py-6">
+            <h3 className="text-lg font-black mb-2" style={{ color: '#111' }}>Inicia sesión para contactar</h3>
+            <p className="text-sm mb-6" style={{ color: '#333' }}>
+              Para pedir presupuesto necesitas una cuenta — así evitamos spam y los profesionales saben que hablan con alguien real.
+            </p>
+            <a href={`/auth?role=empresario&mode=register&redirect=${encodeURIComponent(location.pathname)}`}
+              className="inline-block px-6 py-2.5 rounded-xl text-sm font-black"
+              style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+              Iniciar sesión / Crear cuenta
+            </a>
+          </div>
+        ) : status === 'done' ? (
           <div className="text-center py-6">
             <CheckCircle size={40} className="mx-auto mb-4" style={{ color: '#22c55e' }} />
             <h3 className="text-lg font-black mb-2" style={{ color: '#111' }}>¡Solicitudes enviadas!</h3>
