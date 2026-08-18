@@ -242,6 +242,14 @@ const ROUTES = [
     ogType: 'article',
   },
   {
+    path: '/blog/mejores-plataformas-contratar-dj-espana',
+    title: 'Mejores Plataformas para Contratar DJ en España (2026) — XPEAK',
+    desc: 'Comparativa 2026 de XPEAK, Gigstarter, Bodas.net y agencias tradicionales para contratar DJ en España: comisión, coste real y cobertura de categorías.',
+    ogTitle: 'Mejores Plataformas para Contratar DJ en España (2026)',
+    ogDesc: 'Comparativa de XPEAK, Gigstarter, Bodas.net y agencias tradicionales: comisión, coste real y cobertura.',
+    ogType: 'article',
+  },
+  {
     path: '/blog/cuanto-cobra-un-camarero-de-eventos',
     title: 'Cuánto cobra un camarero de eventos por horas en España (2026) — XPEAK',
     desc: 'Guía completa de precios de camareros para eventos en España 2026: bodas, empresas y fiestas privadas. Cuánto cobran y cuántos necesitas contratar.',
