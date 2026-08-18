@@ -360,7 +360,13 @@ const Auth = () => {
           });
 
         if (signUpData.session) {
-          toast.success('¡Cuenta creada! Bienvenido a XPEAK');
+          // proCount se cargó al abrir la página (antes de este registro), así
+          // que +1 es el número real de este usuario entre los profesionales —
+          // no se muestra para empresarios, que no cuentan en esa métrica.
+          const welcomeMsg = roleParam && roleParam !== 'empresario' && proCount !== null
+            ? `¡Bienvenido! Eres el profesional nº ${proCount + 1} en unirte a XPEAK`
+            : '¡Cuenta creada! Bienvenido a XPEAK';
+          toast.success(welcomeMsg);
           // Registro nuevo → dashboard para completar perfil/onboarding
           // (el login normal sí va directo al swipe vía redirectParam).
           navigate('/dashboard', { replace: true });

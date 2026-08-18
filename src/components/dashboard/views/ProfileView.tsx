@@ -337,6 +337,9 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                   {completenessSteps.percent}%
                 </span>
               </div>
+              <p className="text-[0.65rem] text-muted-foreground mb-3">
+                Los perfiles más completos aparecen antes en el directorio — foto, bio y portfolio suman posición real.
+              </p>
               <div className="w-full h-1.5 rounded-full mb-3" style={{ background: 'rgba(0,0,0,0.05)' }}>
                 <div className="h-full rounded-full transition-all duration-500"
                   style={{

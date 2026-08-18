@@ -100,6 +100,23 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       <p style="color:rgba(255,255,255,0.3);font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`),
   }),
 
+  // 1a2. Recordatorio a las ~24-48h si el perfil sigue incompleto — solo se
+  // manda una vez (dedupe vía email_logs), nunca si ya se completó.
+  profile_incomplete_reminder: (d) => ({
+    subject: `${esc(d.name)}, tu perfil no aparece en el directorio todavía`,
+    to: d.email,
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px">Te faltan ${esc(String(d.missingCount))} pasos</h2>
+      <p style="color:rgba(255,255,255,0.55);font-size:14px;line-height:1.7;margin:0 0 6px">
+        Tu perfil como <strong style="color:#D4AF37">${esc(d.role)}</strong> está al ${esc(String(d.percent))}% — hasta que lo completes, los organizadores no pueden encontrarte en el directorio.
+      </p>
+      <p style="color:rgba(255,255,255,0.55);font-size:14px;line-height:1.7;margin:0 0 20px">
+        Solo te queda: ${esc(d.missingLabels)}.
+      </p>
+      ${btn('Terminar mi perfil →', 'https://xpeak.es/dashboard')}
+      <p style="color:rgba(255,255,255,0.3);font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`),
+  }),
+
   // 1b. Anuncio del programa de referidos — a profesionales ya registrados
   referral_announcement: (d) => ({
     subject: `${esc(d.name)}, invita a otro profesional y gana 6 meses de prioridad`,

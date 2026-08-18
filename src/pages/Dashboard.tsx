@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
 import DashboardTopbar from '@/components/dashboard/DashboardTopbar';
 import RecentBusinessViewLine from '@/components/dashboard/RecentBusinessViewLine';
+import TodaysRequestsLine from '@/components/dashboard/TodaysRequestsLine';
 import MobileBottomNav from '@/components/dashboard/MobileBottomNav';
 import AdminGuard from '@/components/AdminGuard';
 import type { Profile } from '@/data/profiles';
@@ -299,6 +300,7 @@ const Dashboard = () => {
         <DashboardTopbar onMenuToggle={() => setSidebarOpen(true)} isMobile={isMobile} onSearch={handleSearch} searchQuery={searchQuery} onHome={() => handleViewChange('dj')} />
         <ProfileIncompleteBanner onNavigate={handleViewChange} activeView={activeView} />
         <RecentBusinessViewLine />
+        <TodaysRequestsLine />
         <div className={`p-4 md:p-6 flex-1 md:pb-6 ${isMobile ? 'pb-[calc(5rem+env(safe-area-inset-bottom))]' : 'pb-6'}`}
           key={activeView}
           style={{ animation: 'viewEnter 0.22s cubic-bezier(0.22,1,0.36,1) both' }}>

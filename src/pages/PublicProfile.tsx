@@ -312,6 +312,7 @@ const PublicProfile = () => {
   const [scrolledPastHero, setScrolledPastHero] = useState(false);
   const [audioEmbed, setAudioEmbed] = useState<ReturnType<typeof parseStreamUrl>>(null);
   const [seoReviews, setSeoReviews] = useState<{ rating: number }[]>([]);
+  const [weeklyViews, setWeeklyViews] = useState<number | null>(null);
   const isUUID = UUID_RE.test(slug ?? '');
 
   useEffect(() => {
@@ -381,21 +382,36 @@ const PublicProfile = () => {
               const current = (s?.score as number) ?? 0;
               supabase.from('profiles').update({ score: current + 1 } as any).eq('user_id', data.user_id).then(() => {});
             });
-          // Log an anonymous business-view event when the visitor is a logged-in
-          // empresario viewing someone else's profile (social-proof signal).
-          if (authUser && authUser.id !== data.user_id) {
-            supabase.from('profiles').select('role, zone').eq('user_id', authUser.id).maybeSingle()
-              .then(({ data: viewerProfile }) => {
-                if (viewerProfile?.role === 'empresario') {
-                  supabase.from('profile_business_views').insert({
-                    viewed_user_id: data.user_id,
-                    viewer_zone: viewerProfile.zone ?? null,
-                  }).then(({ error }) => {
-                    if (error) console.error('[PublicProfile] profile_business_views insert error:', error);
-                  });
-                }
+          // Log every real visit in profile_business_views — one insert per
+          // view, used two ways downstream: (1) RecentBusinessViewLine shows
+          // "una sala de {zona} ha visto tu perfil" only when viewer_zone is
+          // set (i.e. a logged-in empresario), (2) the public view counter
+          // on the profile itself counts ALL rows regardless of viewer_zone.
+          if (!authUser || authUser.id !== data.user_id) {
+            (authUser
+              ? supabase.from('profiles').select('role, zone').eq('user_id', authUser.id).maybeSingle()
+              : Promise.resolve({ data: null })
+            ).then(({ data: viewerProfile }) => {
+              const zone = (viewerProfile as { role?: string; zone?: string } | null)?.role === 'empresario'
+                ? (viewerProfile as { zone?: string }).zone ?? null
+                : null;
+              supabase.from('profile_business_views').insert({
+                viewed_user_id: data.user_id,
+                viewer_zone: zone,
+              }).then(({ error }) => {
+                if (error) console.error('[PublicProfile] profile_business_views insert error:', error);
               });
+            });
           }
+          // Weekly view count for the on-profile social-proof line. Only
+          // shown above a threshold (3) so a near-empty count never reads
+          // as a negative signal — omitting it is honest, a low number
+          // dressed up as impressive would not be.
+          supabase.rpc('profile_views_last_7_days', { p_viewed_user_id: data.user_id })
+            .then(({ data: count, error }) => {
+              if (error) { console.error('[PublicProfile] view count rpc error:', error); return; }
+              setWeeklyViews(typeof count === 'number' ? count : null);
+            });
           // Load related profiles
           supabase
             .from('profiles')
@@ -731,6 +747,12 @@ const PublicProfile = () => {
                   <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
                     style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
                     <MapPin size={11} /> {profile.zone}
+                  </span>
+                )}
+                {weeklyViews !== null && weeklyViews >= 3 && (
+                  <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
+                    👀 {weeklyViews} vistas esta semana
                   </span>
                 )}
                 {profile.badges.slice(0, 3).map(b => (

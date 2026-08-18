@@ -344,6 +344,16 @@ export default function DirectorioPublico() {
   // Lead centralizado: solo profesionales reales (sin perfiles de ejemplo).
   const realPros = profiles.filter(p => !(p as any).is_seed);
 
+  // Ancla de precio real: rango min-max de tarifas publicadas en la
+  // categoría, calculado sobre los perfiles ya cargados (sin query extra).
+  // Da contexto a cada tarjeta individual — un precio suelto sin referencia
+  // se percibe como arbitrario, un rango real ayuda a situarlo.
+  const priceRange = (() => {
+    const rates = realPros.map(p => p.hourly_rate).filter((r): r is number => typeof r === 'number' && r > 0);
+    if (rates.length < 3) return null;
+    return { min: Math.min(...rates), max: Math.max(...rates) };
+  })();
+
   return (
     <>
       <Helmet>
@@ -378,7 +388,13 @@ export default function DirectorioPublico() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#7a6216' }}>Directorio · XPEAK</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-3" style={{ color: '#111' }}>{config.title}</h1>
-            <p className="text-sm leading-relaxed max-w-xl mb-5" style={{ color: '#333' }}>{config.subtitle}</p>
+            <p className={`text-sm leading-relaxed max-w-xl ${priceRange ? 'mb-2' : 'mb-5'}`} style={{ color: '#333' }}>{config.subtitle}</p>
+
+            {priceRange && (
+              <p className="text-xs font-bold mb-5" style={{ color: '#7a6216' }}>
+                Precios en esta categoría: {priceRange.min}€ – {priceRange.max}€/h
+              </p>
+            )}
 
             <div className="flex flex-wrap gap-2.5">
               {realPros.length >= 2 && (
