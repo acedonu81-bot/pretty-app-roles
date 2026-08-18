@@ -27,7 +27,14 @@ const KNOWN_ROLES = ['dj', 'staff', 'makeup', 'promotor', 'fotografo', 'catering
 const TOOLS = [
   {
     name: 'buscar_profesionales',
+    title: 'Buscar profesionales de eventos en XPEAK',
     description: 'Busca profesionales de eventos disponibles en XPEAK (DJs, fotógrafos, staff, catering, animación, etc.) por rol, ciudad y presupuesto. Devuelve perfiles reales con precio por hora, valoración y disponibilidad inmediata (Flash Booking).',
+    annotations: {
+      title: 'Buscar profesionales de eventos en XPEAK',
+      readOnlyHint: true,
+      destructiveHint: false,
+      openWorldHint: true,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -40,7 +47,14 @@ const TOOLS = [
   },
   {
     name: 'solicitar_presupuesto',
+    title: 'Solicitar presupuesto a un profesional de XPEAK',
     description: 'Crea una solicitud real de presupuesto ("Flash Booking") a un profesional concreto de XPEAK. El profesional recibe la solicitud por email y contacta directamente al organizador — esto NO reserva ni cobra nada automáticamente, solo inicia el contacto, igual que el botón "Solicitar presupuesto" de la web.',
+    annotations: {
+      title: 'Solicitar presupuesto a un profesional de XPEAK',
+      readOnlyHint: false,
+      destructiveHint: false,
+      openWorldHint: true,
+    },
     inputSchema: {
       type: 'object',
       properties: {
