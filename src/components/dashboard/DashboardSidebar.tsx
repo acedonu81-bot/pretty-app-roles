@@ -10,6 +10,7 @@ import {
 import GeometricAvatar from './GeometricAvatar';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
+import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useEffect, useState, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -170,17 +171,11 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
 const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
   const { role, subscription_tier } = useProfile();
   const { user } = useAuth();
+  const { isAdmin } = useIsAdmin();
   const isAgency = subscription_tier === 'agency' || subscription_tier === 'elite';
   const isEmpresario = role === 'empresario';
   const [flashBadge, setFlashBadge] = useState(0);
   const [msgBadge, setMsgBadge] = useState(0);
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  useEffect(() => {
-    if (!user) { setIsAdmin(false); return; }
-    supabase.from('user_roles').select('role').eq('user_id', user.id).eq('role', 'admin').maybeSingle()
-      .then(({ data }) => setIsAdmin(!!data));
-  }, [user]);
 
   useEffect(() => {
     if (!user || isEmpresario) return;

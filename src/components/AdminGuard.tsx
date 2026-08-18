@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
+import { useIsAdmin } from '@/hooks/useIsAdmin';
 
 interface AdminGuardProps {
   children: React.ReactNode;
@@ -8,37 +9,17 @@ interface AdminGuardProps {
 
 const AdminGuard = ({ children }: AdminGuardProps) => {
   const navigate = useNavigate();
-  const [authorized, setAuthorized] = useState(false);
-  const [checking, setChecking] = useState(true);
+  const { user, loading: authLoading } = useAuth();
+  const { isAdmin, loading: adminLoading } = useIsAdmin();
 
   useEffect(() => {
-    const check = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        console.warn('[AdminGuard] No session — redirecting');
-        navigate('/', { replace: true });
-        return;
-      }
+    if (authLoading || adminLoading) return;
+    if (!user || !isAdmin) {
+      navigate('/', { replace: true });
+    }
+  }, [authLoading, adminLoading, user, isAdmin, navigate]);
 
-      const { data } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', session.user.id)
-        .eq('role', 'admin')
-        .maybeSingle();
-
-      if (data) {
-        setAuthorized(true);
-      } else {
-        // Do NOT log user IDs — would expose sensitive info in browser console
-        navigate('/', { replace: true });
-      }
-      setChecking(false);
-    };
-    check();
-  }, [navigate]);
-
-  if (checking) {
+  if (authLoading || adminLoading) {
     return (
       <div className="flex items-center justify-center h-full">
         <div className="text-xs text-muted-foreground animate-pulse">Verificando acceso...</div>
@@ -46,7 +27,7 @@ const AdminGuard = ({ children }: AdminGuardProps) => {
     );
   }
 
-  return authorized ? <>{children}</> : null;
+  return (user && isAdmin) ? <>{children}</> : null;
 };
 
 export default AdminGuard;
