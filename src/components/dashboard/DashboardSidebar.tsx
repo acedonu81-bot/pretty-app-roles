@@ -177,13 +177,27 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
   const [flashBadge, setFlashBadge] = useState(0);
   const [msgBadge, setMsgBadge] = useState(0);
 
+  const refreshFlashBadge = async (uid: string) => {
+    const { count } = await supabase.from('flash_bookings' as any)
+      .select('id', { count: 'exact', head: true })
+      .eq('professional_user_id', uid)
+      .eq('status', 'pending');
+    setFlashBadge(count ?? 0);
+  };
+
   useEffect(() => {
     if (!user || isEmpresario) return;
-    supabase.from('flash_bookings' as any)
-      .select('id', { count: 'exact', head: true })
-      .eq('professional_user_id', user.id)
-      .eq('status', 'pending')
-      .then(({ count }) => setFlashBadge(count ?? 0));
+    refreshFlashBadge(user.id);
+    const channel = supabase
+      .channel('sidebar_flash_bookings')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'flash_bookings', filter: `professional_user_id=eq.${user.id}` }, () => {
+        refreshFlashBadge(user.id);
+      })
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'flash_bookings', filter: `professional_user_id=eq.${user.id}` }, () => {
+        refreshFlashBadge(user.id);
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
   }, [user, isEmpresario]);
 
   const refreshMsgBadge = async (uid: string) => {
