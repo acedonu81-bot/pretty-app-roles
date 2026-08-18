@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Clock, AlertTriangle, Play, Pause, CheckCircle, XCircle, Shield } from 'lucide-react';
+import { Clock, AlertTriangle, Play, Pause, CheckCircle, XCircle, Shield, Instagram } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -13,6 +13,7 @@ interface PendingProfile {
   validation_submitted_at: string | null;
   category: string;
   user_id: string;
+  instagram: string | null;
 }
 
 const AdminValidations = () => {
@@ -27,7 +28,7 @@ const AdminValidations = () => {
   const fetchPending = async () => {
     const { data, error } = await supabase
       .from('profiles')
-      .select('id, display_name, role, zone, score, audio_url, validation_submitted_at, category, user_id')
+      .select('id, display_name, role, zone, score, audio_url, validation_submitted_at, category, user_id, instagram')
       .eq('validation_status', 'pending')
       .order('validation_submitted_at', { ascending: true });
     if (error) { toast.error('Error al cargar validaciones pendientes'); return; }
@@ -134,6 +135,10 @@ const AdminValidations = () => {
                 <div className="flex items-center gap-4 mb-3 text-xs text-muted-foreground">
                   <span>Zona: {p.zone || 'Sin definir'}</span>
                   <span>Score: <span className="font-bold" style={{ color: p.score >= 40 ? '#22c55e' : '#ff5f56' }}>{p.score}/100</span></span>
+                  <span className="flex items-center gap-1">
+                    <Instagram size={11} style={{ color: p.instagram ? '#8A6D0F' : '#ff5f56' }} />
+                    {p.instagram ? `@${p.instagram.replace(/^@/, '')}` : <span style={{ color: '#ff5f56' }}>Sin Instagram</span>}
+                  </span>
                 </div>
 
                 {/* Audio player */}

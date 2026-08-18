@@ -24,6 +24,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   const [showMore, setShowMore] = useState(false); // "Más detalles (opcional)" plegado por defecto
   const [rider, setRider] = useState<string | null>(null);
   const [bio, setBio] = useState<string | null>(null);
+  const [instagram, setInstagram] = useState<string | null>(null);
   const [hourlyRate, setHourlyRate] = useState<string | null>(null);
   const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
   const [savingAvailability, setSavingAvailability] = useState(false);
@@ -225,7 +226,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
 
   const handleSave = async () => {
     if (!user || saving || profile.loading) return;
-    const toCheck = [localName, bio, rider].filter(Boolean) as string[];
+    const toCheck = [localName, bio, rider, instagram].filter(Boolean) as string[];
     for (const val of toCheck) {
       const { clean, reason } = sanitizeInput(val);
       if (!clean) { toast.error(reason); return; }
@@ -236,6 +237,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     if (hourlyRate !== null) updates.hourly_rate = parseInt(hourlyRate) || 0;
     if (rider !== null) updates.specialty = rider;
     if (bio !== null) updates.bio = bio;
+    if (instagram !== null) updates.instagram = instagram.trim().replace(/^@/, '') || null;
     if (selectedLangs !== null) updates.languages = selectedLangs;
     if (selectedGenres !== null) updates.genres = selectedGenres;
     if (selectedRoles !== null) { updates.roles = selectedRoles; updates.role = selectedRoles[0]; }
@@ -928,6 +930,14 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 onChange={e => setBio(e.target.value)}
                 placeholder={profile.role === 'empresario' ? 'Describe tu sala, el tipo de eventos que organizas y tu ambiente...' : 'Describe tu experiencia y estilo...'}
                 className="nightlife-input mt-1 text-base resize-y" />
+            </div>
+            <div className="mb-3">
+              <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Instagram</label>
+              <p className="text-xs text-muted-foreground mb-1">Ayuda a validar que eres real y da más confianza a quien te contrate.</p>
+              <input value={instagram ?? profile.instagram ?? ''}
+                onChange={e => setInstagram(e.target.value)}
+                placeholder="tu_usuario (sin @)"
+                className="nightlife-input mt-1 text-base" />
             </div>
             <div style={{ borderTop: '1px solid rgba(0,0,0,0.04)', paddingTop: '1.25rem', marginTop: '0.5rem' }}>
               <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Idiomas</p>
