@@ -5,11 +5,12 @@ interface Props {
   className?: string;
 }
 
-// Hash determinista simple del rol → mismo número de fantasmas siempre para
-// la misma categoría (no cambia en cada carga, evita que se note el patrón),
-// pero distinto entre categorías para que parezca contenido real y no una
-// plantilla repetida. Rango 4-11: suficiente para sugerir "hay mucho más"
-// sin exagerar hasta lo increíble.
+// Hash determinista simple del rol → mismo número de tarjetas fantasma
+// siempre para la misma categoría (no cambia en cada carga, evita que se
+// note el patrón), pero distinto entre categorías para que el bloque no se
+// vea como una plantilla repetida. Es solo decoración visual — el número
+// nunca se muestra como dato ("hay X profesionales"), sería mentir con una
+// cifra inventada. Rango 4-11.
 function ghostCountFor(role: string): number {
   let hash = 0;
   for (let i = 0; i < role.length; i++) hash = (hash * 31 + role.charCodeAt(i)) >>> 0;
@@ -55,7 +56,7 @@ export default function GhostProfileCards({ role, className }: Props) {
               <Lock size={16} style={{ color: '#8A6D0F' }} />
             </div>
             <p className="text-sm font-black" style={{ color: '#111' }}>
-              Hay {count} profesionales más en esta categoría
+              Hay más profesionales en esta categoría
             </p>
             <p className="text-xs max-w-xs" style={{ color: '#555' }}>
               Regístrate gratis para ver todos los perfiles, precios y contactar directamente.
