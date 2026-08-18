@@ -10,6 +10,8 @@ import MultiRequestModal from '@/components/MultiRequestModal';
 import SwipeDirectory from '@/components/SwipeDirectory';
 import FooterPublic from '@/components/FooterPublic';
 import { addToCart, useEventCart, MAX_CART_ITEMS } from '@/lib/eventCart';
+import { useAuth } from '@/hooks/useAuth';
+import GhostProfileCards from '@/components/GhostProfileCards';
 
 // URL de perfil por slug de nombre (la misma que usan sitemap y prerender) en
 // vez de UUID — evita dos URLs indexables para el mismo perfil. PublicProfile
@@ -318,6 +320,7 @@ export default function DirectorioPublico() {
   const [swipeStartIndex, setSwipeStartIndex] = useState(0);
   const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
   const { items: cartItems } = useEventCart();
+  const { user, loading: authLoading } = useAuth();
 
   const { data: profiles = [], isLoading: loading, isError: fetchError } = useQuery({
     queryKey: ['directorio-publico', config.dbRole, city],
@@ -705,6 +708,12 @@ export default function DirectorioPublico() {
                 </div>
               ))}
             </div>
+          )}
+
+          {/* Tarjetas fantasma: solo sin sesión, dan sensación de "hay más
+              contenido" para empujar el registro. No son perfiles reales. */}
+          {!authLoading && !user && !loading && !fetchError && (
+            <GhostProfileCards role={config.dbRole} className="mt-6" />
           )}
 
           {/* CTA profesional */}
