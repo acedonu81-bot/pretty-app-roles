@@ -1,4 +1,5 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -25,12 +26,51 @@ Reglas:
 - No inventes precios ni funcionalidades que no existen
 - Tono: profesional pero cercano, como de una startup de eventos y tecnología`;
 
+const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
+const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
+
+const RATE_LIMIT_MAX = 15;
+const RATE_LIMIT_WINDOW_MIN = 10;
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }
 
   try {
+    // Rate-limit por IP ANTES de comprobar nada más — este endpoint llama a
+    // la API de Anthropic (coste real por token), sin freno cualquiera con
+    // el anon key público podría generar volumen ilimitado directamente por
+    // fetch, sin pasar por la UI. Va primero para no depender del orden de
+    // los siguientes checks ni gastar una consulta de más si ya está limitado.
+    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+      ?? req.headers.get('x-real-ip')
+      ?? 'unknown';
+
+    const since = new Date(Date.now() - RATE_LIMIT_WINDOW_MIN * 60 * 1000).toISOString();
+    const { count } = await supabase
+      .from('edge_function_rate_limit_log' as any)
+      .select('id', { count: 'exact', head: true })
+      .eq('endpoint', 'chat-ai')
+      .eq('client_ip', clientIp)
+      .gte('created_at', since);
+
+    if (typeof count === 'number' && count >= RATE_LIMIT_MAX) {
+      return new Response(
+        JSON.stringify({ error: 'rate_limit_exceeded', fallback: true }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Registrar la llamada ANTES de cualquier otro corte posible (falta de
+    // API key, mensaje inválido, etc.) — si no se cuenta aquí, un atacante
+    // que dispare el 503/400 en cada intento nunca acumula count y el
+    // rate-limit de arriba jamás se activa.
+    try {
+      await supabase.from('edge_function_rate_limit_log' as any).insert({ endpoint: 'chat-ai', client_ip: clientIp });
+    } catch { /* non-critical */ }
+
     const apiKey = Deno.env.get('ANTHROPIC_API_KEY');
     if (!apiKey) {
       return new Response(

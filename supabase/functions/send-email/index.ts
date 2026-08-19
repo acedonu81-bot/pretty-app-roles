@@ -567,6 +567,33 @@ serve(async (req) => {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: corsHeaders });
   }
 
+  // Rate-limit por IP. El check de arriba NO es una barrera real contra
+  // spam — el anon key de Supabase es público por diseño (visible en
+  // cualquier bundle JS) y hay flujos legítimos sin sesión (formularios
+  // públicos como PublicContactModal), así que validar el JWT no serviría:
+  // cualquiera puede mandar el anon key real y sería indistinguible de un
+  // visitante genuino. La mitigación real contra "cualquiera puede invocar
+  // esto y mandar spam a terceros" es limitar volumen, no autenticar.
+  const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+    ?? req.headers.get('x-real-ip')
+    ?? 'unknown';
+  if (!isInternal) {
+    const adminClient = createClient(Deno.env.get('SUPABASE_URL') ?? '', Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '');
+    const since = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+    const { count } = await adminClient
+      .from('edge_function_rate_limit_log' as any)
+      .select('id', { count: 'exact', head: true })
+      .eq('endpoint', 'send-email')
+      .eq('client_ip', clientIp)
+      .gte('created_at', since);
+    if (typeof count === 'number' && count >= 20) {
+      return new Response(JSON.stringify({ error: 'rate_limit_exceeded' }), { status: 429, headers: corsHeaders });
+    }
+    try {
+      await adminClient.from('edge_function_rate_limit_log' as any).insert({ endpoint: 'send-email', client_ip: clientIp });
+    } catch { /* non-critical */ }
+  }
+
   try {
     const { type, data } = await req.json();
 
