@@ -91,12 +91,19 @@ serve(async (req) => {
         continue;
       }
 
-      // Log the send to avoid duplicates
-      await admin.from('email_logs' as any).insert({
-        user_id: profile.user_id,
-        type: 'six_months_anniversary',
-        sent_at: new Date().toISOString(),
-      }).catch(() => {/* non-critical */});
+      // Log the send to avoid duplicates. try/catch explícito, no
+      // .insert().catch() encadenado — esa forma lanza TypeError en la
+      // versión de supabase-js usada aquí (confirmado el 18 ago 2026 al
+      // depurar el mismo patrón en chat-ai), lo que haría caer al catch
+      // externo y contar un envío ya realizado como error, con riesgo de
+      // reintentarlo y duplicar el email al día siguiente.
+      try {
+        await admin.from('email_logs' as any).insert({
+          user_id: profile.user_id,
+          type: 'six_months_anniversary',
+          sent_at: new Date().toISOString(),
+        });
+      } catch { /* non-critical */ }
 
       sent++;
     } catch (e) {

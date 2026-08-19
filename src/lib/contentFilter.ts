@@ -71,15 +71,20 @@ export function containsPhoneNumber(text: string): boolean {
 }
 
 // ── Hate / discrimination ────────────────────────────────────────────────────
+// \b al final de un patrón exige un límite de palabra exacto ahí — no
+// matchea el plural español regular ("nazis", "maricas"), porque entre la
+// última letra de la raíz y la "s" del plural ambos son \w y no hay límite.
+// Se añade "s?" opcional donde el plural es regular; maricón/maricones es
+// irregular así que necesita su propio patrón de plural.
 const HATE_PATTERNS = [
-  /\bmaric[oó]n\b/i, /\bmarica\b/i, /\bbollerazo?\b/i,
-  /\bnazi\b/i, /\bsieg heil\b/i, /\bnigger\b/i, /\bfaggot\b/i,
+  /\bmaric[oó]n(es)?\b/i, /\bmaricas?\b/i, /\bbollerazos?\b/i,
+  /\bnazis?\b/i, /\bsieg heil\b/i, /\bniggers?\b/i, /\bfaggots?\b/i,
   /\bmuerte a los?\b/i, /\bhitler\b/i, /\bblackface\b/i,
 ];
 
 // ── Adult content ────────────────────────────────────────────────────────────
 const ADULT_PATTERNS = [
-  /\bporno?\b/i, /\bescorts?\b/i, /\bprostitu/i, /\bputero\b/i,
+  /\bpornos?\b/i, /\bescorts?\b/i, /\bprostitu/i, /\bputeros?\b/i,
   /\bxxx\b/i, /\bdesnud/i, /\bnude\b/i,
   /\bmasaje\s*er[oó]tico/i, /\bservicio\s*privado\b/i,
 ];
@@ -87,7 +92,7 @@ const ADULT_PATTERNS = [
 // ── Profanity ────────────────────────────────────────────────────────────────
 const PROFANITY_PATTERNS = [
   /\bhijodeput/i, /\bgilipoll/i,
-  /\bfuck\b/i, /\bshit\b/i, /\basshole\b/i, /\bcunt\b/i,
+  /\bfucks?\b/i, /\bshits?\b/i, /\bassholes?\b/i, /\bcunts?\b/i,
 ];
 
 // ── Contact bypass (platform circumvention) ──────────────────────────────────

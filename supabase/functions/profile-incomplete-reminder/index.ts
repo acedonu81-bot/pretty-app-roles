@@ -104,11 +104,17 @@ serve(async (req) => {
         continue;
       }
 
-      await admin.from('email_logs' as any).insert({
-        user_id: profile.user_id,
-        type: 'profile_incomplete_reminder',
-        sent_at: new Date().toISOString(),
-      }).catch(() => {/* non-critical */});
+      // try/catch explícito, no .insert().catch() encadenado — esa forma
+      // lanza TypeError en la versión de supabase-js usada aquí (confirmado
+      // el 18 ago 2026 en chat-ai), lo que haría contar un envío ya
+      // realizado como error y arriesgar reintentar/duplicar el email.
+      try {
+        await admin.from('email_logs' as any).insert({
+          user_id: profile.user_id,
+          type: 'profile_incomplete_reminder',
+          sent_at: new Date().toISOString(),
+        });
+      } catch { /* non-critical */ }
 
       sent++;
     } catch (e) {
