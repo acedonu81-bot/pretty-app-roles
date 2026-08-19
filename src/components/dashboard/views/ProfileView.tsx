@@ -37,6 +37,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   const [copied, setCopied] = useState(false);
   const [referralCopied, setReferralCopied] = useState(false);
   const [referralIsNew] = useState(() => !localStorage.getItem('xpeak_referral_seen'));
+  const [rewardedReferrals, setRewardedReferrals] = useState<number | null>(null);
   const [offersClasses, setOffersClasses] = useState<boolean | null>(null);
   const [classStyles, setClassStyles] = useState<string[] | null>(null);
   const [classPrice, setClassPrice] = useState<string | null>(null);
@@ -183,6 +184,15 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     const t = setTimeout(() => localStorage.setItem('xpeak_referral_seen', '1'), 4000);
     return () => clearTimeout(t);
   }, [referralIsNew]);
+
+  useEffect(() => {
+    if (!user) return;
+    supabase.from('referrals' as any)
+      .select('id', { count: 'exact', head: true })
+      .eq('inviter_user_id', user.id)
+      .eq('rewarded', true)
+      .then(({ count }) => setRewardedReferrals(typeof count === 'number' ? count : null));
+  }, [user]);
 
   useEffect(() => {
     if (!user) return;
@@ -452,6 +462,13 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 {referralIsNew && (
                   <span className="px-1.5 py-0.5 rounded-full text-[0.55rem] font-black uppercase" style={{ background: '#2563eb', color: '#fff' }}>
                     Nuevo
+                  </span>
+                )}
+                {/* Solo se muestra con datos reales (>0) — con 0 invitados
+                    completados, mostrar "0" desanimaría en vez de animar. */}
+                {!!rewardedReferrals && rewardedReferrals > 0 && (
+                  <span className="ml-auto px-1.5 py-0.5 rounded-full text-[0.6rem] font-black" style={{ background: 'rgba(34,197,94,0.12)', color: '#22c55e' }}>
+                    {rewardedReferrals} {rewardedReferrals === 1 ? 'invitado' : 'invitados'}
                   </span>
                 )}
               </div>

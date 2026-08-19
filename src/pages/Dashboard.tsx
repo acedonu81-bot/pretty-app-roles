@@ -58,17 +58,25 @@ const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: s
 
   if (ctx.loading || dismissed) return null;
 
+  const hasInstagram = !!(ctx.instagram && ctx.instagram.trim().length > 0);
   const steps = [
     !!ctx.photo_url,
     !!(ctx.bio && ctx.bio.trim().length > 20),
     !!(ctx.zone && ctx.zone !== DEFAULT_ZONE),
     !!(ctx.specialty && ctx.specialty.trim().length > 0),
-    !!(ctx.instagram && ctx.instagram.trim().length > 0),
+    hasInstagram,
     ...(ctx.role !== 'empresario' ? [!!(ctx.audio_embed_url && (ctx.audio_embed_url as string).trim().length > 0)] : []),
   ];
+  const missingCount = steps.filter(s => !s).length;
   const percent = Math.round((steps.filter(Boolean).length / steps.length) * 100);
 
   if (percent >= 100) return null;
+
+  // Cuando Instagram es lo único que falta, un mensaje específico apela al
+  // motivo real (confianza/validación) en vez del genérico "aparece mejor"
+  // — mismo texto que ya usa el campo en ProfileView, reforzado aquí donde
+  // el profesional lo ve sin tener que entrar a editar el perfil.
+  const instagramOnlyMissing = !hasInstagram && missingCount === 1;
 
   return (
     <div className="mx-4 mt-3 mb-0 flex items-center gap-3 px-4 py-3 rounded-xl text-xs"
@@ -78,8 +86,12 @@ const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: s
           <div className="h-full rounded-full" style={{ width: `${percent}%`, background: 'linear-gradient(90deg,#D4AF37,#B8941E)' }} />
         </div>
         <span style={{ color: '#222' }}>
-          Perfil al <strong style={{ color: '#D4AF37' }}>{percent}%</strong>
-          <span className="hidden sm:inline"> — complétalo para aparecer mejor en el directorio</span>
+          {instagramOnlyMissing
+            ? 'Solo te falta el Instagram'
+            : (<>Perfil al <strong style={{ color: '#D4AF37' }}>{percent}%</strong></>)}
+          <span className="hidden sm:inline">
+            {instagramOnlyMissing ? ' — da confianza a quien te contrate' : ' — complétalo para aparecer mejor en el directorio'}
+          </span>
         </span>
       </div>
       <button onClick={() => onNavigate('profile')}
