@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { Mail, Lock, User, Eye, EyeOff, Zap, ShieldCheck, Users, FileText, MapPin, Target, BadgeCheck, Search, Wallet, type LucideIcon } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { track } from '@/lib/track';
+import { track, trackLead } from '@/lib/track';
 import TurnstileWidget from '@/components/TurnstileWidget';
 
 const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { icon: LucideIcon; text: string }[] }> = {
@@ -325,6 +325,7 @@ const Auth = () => {
 
         setFieldError(null);
         track('auth_success', { mode: 'register', role: roleParam || 'pending' });
+        trackLead('registro', { role: roleParam || 'pending' });
         if (typeof window !== 'undefined' && (window as any).fbq) (window as any).fbq('track', 'CompleteRegistration');
         if (typeof window !== 'undefined' && (window as any).ttq) {
           (window as any).ttq.identify({ email });

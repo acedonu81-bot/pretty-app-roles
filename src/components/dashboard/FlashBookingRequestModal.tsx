@@ -4,6 +4,7 @@ import { X, Zap, Calendar, MapPin, MessageSquare, Euro, Sparkles } from 'lucide-
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import { trackLead } from '@/lib/track';
 
 const EVENT_HOURS: Record<string, number> = {
   'Boda': 6, 'Comunión': 4, 'Evento corporativo': 5, 'Fiesta privada': 4,
@@ -60,6 +61,8 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
     if (professionalUserId) payload.professional_user_id = professionalUserId;
     const { error } = await supabase.from('flash_bookings' as any).insert(payload);
     if (error) { setSending(false); toast.error('Error al enviar la solicitud. Inténtalo de nuevo.'); return; }
+
+    trackLead('flash_booking', { role: professionalRole || 'unknown' });
 
     // Email a admin
     supabase.functions.invoke('send-email', { body: { type: 'flash_booking', data: payload } })

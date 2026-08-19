@@ -1,19 +1,35 @@
 /**
- * Eventos personalizados: se mandan a Plausible (dashboard visual) y también a
- * Vercel Web Analytics (consultable por API/MCP sin salir de Claude Code).
- * Ambos gratis en el plan actual — Vercel solo cobra por volumen alto de eventos.
+ * Eventos personalizados: se mandan a Plausible (dashboard visual), Vercel
+ * Web Analytics (consultable por API/MCP sin salir de Claude Code) y al
+ * dataLayer de GTM (para que GA4 los reciba como eventos reales — antes
+ * ningún track() llegaba a GA4, solo el page_view automático, por eso el
+ * informe "Generar oportunidades de venta" marcaba 0 pese a haber usuarios
+ * nuevos y registros reales).
  */
 import { track as vercelTrack } from '@vercel/analytics';
 
 declare global {
   interface Window {
     plausible?: (eventName: string, options?: { props?: Record<string, string | number | boolean> }) => void;
+    dataLayer?: unknown[];
   }
 }
 
 export function track(eventName: string, props?: Record<string, string | number | boolean>) {
   window.plausible?.(eventName, props ? { props } : undefined);
   vercelTrack(eventName, props);
+  window.dataLayer?.push({ event: eventName, ...props });
+}
+
+/**
+ * Evento clave de GA4 para conversiones reales de negocio (registro
+ * completado, solicitud Flash Booking enviada, contacto iniciado). Usa el
+ * nombre estándar "generate_lead" que GA4 reconoce automáticamente como
+ * evento de generación de oportunidades — sin esto, el informe "Generar
+ * oportunidades de venta" no tiene ninguna señal que contar.
+ */
+export function trackLead(source: string, props?: Record<string, string | number | boolean>) {
+  track('generate_lead', { source, ...props });
 }
 
 /**
