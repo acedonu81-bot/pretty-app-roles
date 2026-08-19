@@ -64,20 +64,26 @@ const CancellationModal = ({ open, onOpenChange, planId, planName }: Cancellatio
     if (!user) return;
     setLoading(true);
     try {
-      await (supabase.from('retention_discounts' as any) as any).insert({
+      // Supabase-js no lanza excepción por errores de base de datos (RLS,
+      // constraint...), así que un try/catch sin comprobar `error` no
+      // detecta un insert fallido — el usuario vería "¡Genial! Tu
+      // descuento..." sin que exista ningún registro real del descuento.
+      const { error: discountError } = await (supabase.from('retention_discounts' as any) as any).insert({
         user_id: user.id,
         plan: planId,
         discount_percent: 30,
         duration_months: 3,
       });
+      if (discountError) throw discountError;
 
-      await (supabase.from('cancellation_surveys' as any) as any).insert({
+      const { error: surveyError } = await (supabase.from('cancellation_surveys' as any) as any).insert({
         user_id: user.id,
         plan: planId,
         reason: selectedReason,
         comment: comment || null,
         retention_accepted: true,
       });
+      if (surveyError) throw surveyError;
 
       toast.success('¡Genial! Tu descuento del 30% se aplicará durante los próximos 3 meses.');
       onOpenChange(false);
@@ -92,13 +98,14 @@ const CancellationModal = ({ open, onOpenChange, planId, planName }: Cancellatio
     if (!user) return;
     setLoading(true);
     try {
-      await (supabase.from('cancellation_surveys' as any) as any).insert({
+      const { error: surveyError } = await (supabase.from('cancellation_surveys' as any) as any).insert({
         user_id: user.id,
         plan: planId,
         reason: selectedReason,
         comment: comment || null,
         retention_accepted: false,
       });
+      if (surveyError) throw surveyError;
 
       supabase.functions.invoke('send-email', {
         body: { type: 'subscription_cancelled', data: {

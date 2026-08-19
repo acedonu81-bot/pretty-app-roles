@@ -101,10 +101,11 @@ const SolicitudesTab = () => {
           .eq('user_id', user!.id)
           .single() as any;
         const newCount = ((prof?.fast_responder_count ?? 0) + 1) as number;
-        await supabase
+        const { error: badgeError } = await supabase
           .from('profiles')
           .update({ fast_responder_count: newCount } as any)
           .eq('user_id', user!.id);
+        if (badgeError) { console.warn('[SolicitudesTab] fast_responder_count update failed:', badgeError); return; }
         toast.success('⚡ ¡Badge Respuesta Rápida obtenido! Apareces destacado en el directorio 30 días.');
         // Email de notificación al profesional
         supabase.functions.invoke('send-email', {

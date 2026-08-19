@@ -38,12 +38,16 @@ const ReportModal = ({
   const submit = async () => {
     if (!selected) { toast.error('Selecciona un motivo.'); return; }
     setSending(true);
-    await supabase.from('feature_requests').insert({
+    // Antes el error se descartaba activamente (segundo callback de .then
+    // vacío) — un reporte de abuso/contenido ilegal podía perderse en
+    // silencio mientras el usuario veía "Reporte enviado" como confirmación.
+    const { error } = await supabase.from('feature_requests').insert({
       user_id: user?.id ?? null,
       feature_name: `live_report:${streamerId}:${selected}`,
       description: detail.trim() || null,
-    }).then(() => {}, () => {});
+    });
     setSending(false);
+    if (error) { toast.error('No se pudo enviar el reporte. Inténtalo de nuevo.'); return; }
     toast.success('Reporte enviado. Revisaremos el directo en menos de 24 h.');
     onClose();
   };

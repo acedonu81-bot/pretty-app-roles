@@ -617,9 +617,11 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
     const sigDataUrl = hasSig ? (sigRef.current?.toDataURL('image/png') ?? undefined) : undefined;
     const html = buildContractHTML(sigDataUrl);
 
-    // Save to DB first
+    // Save to DB first — sin comprobar error, "onSaved" se disparaba
+    // igual aunque el insert fallara, y el usuario descargaba un contrato
+    // que en realidad nunca quedó en su historial ("contracts").
     if (user) {
-      await supabase.from('contracts').insert({
+      const { error: saveError } = await supabase.from('contracts').insert({
         user_id:           user.id,
         ref,
         professional_name: professional.name,
@@ -633,7 +635,11 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
         empresa_nombre:    form.empresaNombre || null,
         precio_neto:       price > 0 ? price : null,
       });
-      onSaved?.();
+      if (saveError) {
+        toast.error('No se pudo guardar el contrato en tu historial. El PDF se genera igualmente, pero no quedará guardado.');
+      } else {
+        onSaved?.();
+      }
     }
 
     // Generate PDF via browser print dialog (reliable, respects all CSS)

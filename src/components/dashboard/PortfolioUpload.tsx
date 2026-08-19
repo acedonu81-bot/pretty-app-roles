@@ -139,21 +139,33 @@ const PortfolioUpload = () => {
     const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
     const newItem = { name: file.name, url: urlData.publicUrl, storagePath: path, isVideo };
     const next = [...items, newItem];
-    setItems(next);
     // Sync public URLs to portfolio_urls column (images only — videos not suited for portfolio grid)
+    // — el archivo ya está en Storage, pero sin este update el perfil
+    // público nunca lo muestra. Antes se lanzaba con .then(() => {}) sin
+    // comprobar error, así que "Portfolio actualizado." se mostraba aunque
+    // el update fallara y el archivo quedara subido pero invisible.
     const imageUrls = next.filter(i => !i.isVideo).map(i => i.url);
-    supabase.from('profiles').update({ portfolio_urls: imageUrls } as any).eq('user_id', user.id).then(() => {});
-    toast.success('Portfolio actualizado.');
+    const { error: syncError } = await supabase.from('profiles').update({ portfolio_urls: imageUrls } as any).eq('user_id', user.id);
     setUploading(false);
+    if (syncError) {
+      toast.error('El archivo se subió pero no se pudo añadir a tu perfil. Inténtalo de nuevo.');
+      return;
+    }
+    setItems(next);
+    toast.success('Portfolio actualizado.');
     if (inputRef.current) inputRef.current.value = '';
   };
 
   const remove = async (item: PortfolioItem) => {
     await supabase.storage.from('audio-sessions').remove([item.storagePath]);
     const next = items.filter(i => i.storagePath !== item.storagePath);
-    setItems(next);
     const imageUrls = next.filter(i => !i.isVideo).map(i => i.url);
-    supabase.from('profiles').update({ portfolio_urls: imageUrls } as any).eq('user_id', user.id).then(() => {});
+    const { error: syncError } = await supabase.from('profiles').update({ portfolio_urls: imageUrls } as any).eq('user_id', user.id);
+    if (syncError) {
+      toast.error('No se pudo eliminar de tu perfil. Inténtalo de nuevo.');
+      return;
+    }
+    setItems(next);
     toast.info('Elemento eliminado.');
   };
 

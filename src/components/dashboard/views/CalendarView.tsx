@@ -87,14 +87,19 @@ const CalendarView = () => {
 
   useEffect(() => { fetchBlocked(); }, [fetchBlocked]);
 
+  // Sin comprobar error aquí, un fallo silencioso dejaba al profesional
+  // creyendo que bloqueó/liberó una fecha mientras el perfil público (que
+  // lee de esta misma tabla) seguía mostrando el estado anterior.
   const toggleBlocked = async (dateStr: string) => {
     if (!user) return;
     if (blockedDates.has(dateStr)) {
-      await supabase.from('availability').delete().eq('user_id', user.id).eq('blocked_date', dateStr);
+      const { error } = await supabase.from('availability').delete().eq('user_id', user.id).eq('blocked_date', dateStr);
+      if (error) { toast.error('No se pudo actualizar la disponibilidad. Inténtalo de nuevo.'); return; }
       setBlockedDates(prev => { const s = new Set(prev); s.delete(dateStr); return s; });
       toast.info('Día marcado como disponible');
     } else {
-      await supabase.from('availability').insert({ user_id: user.id, blocked_date: dateStr });
+      const { error } = await supabase.from('availability').insert({ user_id: user.id, blocked_date: dateStr });
+      if (error) { toast.error('No se pudo actualizar la disponibilidad. Inténtalo de nuevo.'); return; }
       setBlockedDates(prev => new Set(prev).add(dateStr));
       toast.success('Día marcado como no disponible');
     }
