@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { X, Send, CheckCircle, Zap } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { trackLead } from '@/lib/track';
 
 interface Props {
   professionalName: string;
@@ -31,14 +32,29 @@ export default function PublicContactModal({ professionalName, professionalUserI
       const payload = {
         professional_user_id: professionalUserId,
         professional_name: professionalName,
+        professional_role: professionalRole ?? 'profesional',
         requester_name: form.name,
         requester_contact: form.email,
         event_date: form.date || 'Por confirmar',
         event_location: '',
         event_description: `[${form.eventType}] ${form.message}`,
+        status: 'pending',
+        created_by: null,
+        source: 'public_contact_modal',
       };
+      // Insert real en flash_bookings — antes este formulario SOLO mandaba
+      // emails y nunca dejaba rastro en BD. El profesional no veía nada en
+      // su panel "Solicitudes" (que lee de esta tabla), y si el email
+      // fallaba silenciosamente, la solicitud se perdía sin que nadie se
+      // enterara pese a que la UI mostraba "¡Solicitud enviada!" como éxito.
+      const { error: insertError } = await supabase.from('flash_bookings' as any).insert(payload);
+      if (insertError) throw insertError;
+
+      trackLead('contact_modal', { role: professionalRole ?? 'unknown' });
+
       // Aviso a admin (registro interno)
-      await supabase.functions.invoke('send-email', { body: { type: 'flash_booking', data: payload } });
+      supabase.functions.invoke('send-email', { body: { type: 'flash_booking', data: payload } })
+        .catch((err: unknown) => console.warn('[PublicContactModal] admin email failed:', err));
       // Notificación al profesional — sin esto nunca se enteraba del contacto.
       if (professionalUserId) {
         supabase.functions.invoke('send-email', {
