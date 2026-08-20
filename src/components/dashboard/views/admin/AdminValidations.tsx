@@ -67,16 +67,26 @@ const AdminValidations = () => {
       rookie: 'admin_rookie',
       rejected: 'admin_rejected',
     };
-    supabase.functions.invoke('send-email', {
+    // El validation_status ya quedó guardado arriba, así que el cambio real
+    // es correcto pase lo que pase con el email — pero ese email es el
+    // ÚNICO canal por el que el profesional se entera de la decisión (no
+    // hay aviso in-app). Antes el toast decía siempre "Email enviado"
+    // aunque el envío fallara (.catch(() => {}) silencioso), sin forma de
+    // saber que había que reenviarlo manualmente.
+    const { error: emailError } = await supabase.functions.invoke('send-email', {
       body: { type: emailType[action], data: { user_id: profile.user_id, name: profile.display_name, role: profile.role } },
-    }).catch(() => {});
+    });
 
     const labels: Record<string, string> = {
-      approved: 'Aprobado como PROFESIONAL — Email enviado',
-      rookie: 'Asignado como ROOKIE — Email enviado',
-      rejected: '❌ Perfil rechazado — Email enviado',
+      approved: 'Aprobado como PROFESIONAL',
+      rookie: 'Asignado como ROOKIE',
+      rejected: '❌ Perfil rechazado',
     };
-    toast.success(labels[action]);
+    if (emailError) {
+      toast.warning(`${labels[action]} — el email de aviso falló, avísale por otro medio.`);
+    } else {
+      toast.success(`${labels[action]} — Email enviado`);
+    }
     setPending(prev => prev.filter(p => p.id !== profile.id));
   };
 

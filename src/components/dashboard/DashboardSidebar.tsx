@@ -205,7 +205,10 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
       .select('id')
       .or(`participant_a.eq.${uid},participant_b.eq.${uid}`)
       .limit(30);
-    if (!data || data.length === 0) return;
+    // Sin conversaciones → 0 mensajes sin leer. Antes retornaba sin tocar
+    // msgBadge, dejando pegado el último valor visto (ej. tras borrar
+    // todas las conversaciones, el badge seguía mostrando el número viejo).
+    if (!data || data.length === 0) { setMsgBadge(0); return; }
     const ids = data.map((c: { id: string }) => c.id);
     const { count } = await supabase.from('messages')
       .select('id', { count: 'exact', head: true })
