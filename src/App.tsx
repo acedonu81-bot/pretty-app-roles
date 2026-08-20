@@ -329,7 +329,6 @@ const BlogPersonalExtraHosteleria = lazy(() => import("./pages/BlogPersonalExtra
 const BlogDiscoMovilVerbenas = lazy(() => import("./pages/BlogDiscoMovilVerbenas"));
 const BlogFiestaVillaIbiza = lazy(() => import("./pages/BlogFiestaVillaIbiza"));
 const BlogFotografoComunionBarcelona = lazy(() => import("./pages/BlogFotografoComunionBarcelona"));
-const BlogCateringBodaPrecio = lazy(() => import("./pages/BlogCateringBodaPrecio"));
 const BlogOrganizarFiestaEmpresa = lazy(() => import("./pages/BlogOrganizarFiestaEmpresa"));
 const BlogDJBodaCordoba = lazy(() => import("./pages/BlogDJBodaCordoba"));
 const BlogDJBodaValladolid = lazy(() => import("./pages/BlogDJBodaValladolid"));
@@ -781,7 +780,6 @@ const App = () => (
             <Route path="/blog/disco-movil-verbenas-fiestas-pueblo" element={<BlogDiscoMovilVerbenas />} />
             <Route path="/blog/fiesta-privada-villa-ibiza" element={<BlogFiestaVillaIbiza />} />
             <Route path="/blog/fotografo-comunion-barcelona" element={<BlogFotografoComunionBarcelona />} />
-            <Route path="/blog/catering-boda-precio-por-persona" element={<BlogCateringBodaPrecio />} />
             <Route path="/blog/como-organizar-fiesta-de-empresa" element={<BlogOrganizarFiestaEmpresa />} />
             <Route path="/bodas" element={<BodasLanding />} />
             <Route path="/organizar-eventos" element={<OrganizadoresLanding />} />

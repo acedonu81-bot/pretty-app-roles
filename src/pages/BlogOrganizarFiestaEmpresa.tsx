@@ -57,21 +57,21 @@ export default function BlogOrganizarFiestaEmpresa() {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
       </Helmet>
-      <div className="min-h-screen" style={{ background: '#0A0A0A', color: '#F5F5F0' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <article className="max-w-3xl mx-auto px-4 py-12">
-          <nav className="text-xs text-neutral-500 mb-6 flex gap-2">
-            <a href="/" className="hover:text-neutral-300">Inicio</a><span>/</span>
-            <a href="/blog" className="hover:text-neutral-300">Blog</a><span>/</span>
-            <span className="text-neutral-300">Cómo organizar fiesta de empresa</span>
+          <nav className="text-xs text-[#666] mb-6 flex gap-2">
+            <a href="/" className="hover:text-[#8A6D0F]">Inicio</a><span>/</span>
+            <a href="/blog" className="hover:text-[#8A6D0F]">Blog</a><span>/</span>
+            <span className="text-[#333]">Cómo organizar fiesta de empresa</span>
           </nav>
           <h1 className="text-3xl sm:text-4xl font-black mb-4 leading-tight">Cómo Organizar una Fiesta de Empresa:<br />Guía Completa y Presupuesto 2026</h1>
-          <p className="text-neutral-400 text-sm mb-8">Actualizado junio 2026 · 10 min lectura</p>
+          <p className="text-[#555] text-sm mb-8">Actualizado junio 2026 · 10 min lectura</p>
 
           <BlogAnswerBox question="¿Cuánto cuesta organizar una fiesta de empresa?">
             Organizar una fiesta de empresa cuesta entre <strong>30€ y 150€ por persona</strong>. Para un evento de 50 personas con venue, catering y DJ el presupuesto típico es 3.000–7.000€. La cena de Navidad suele ser el evento más caro del año para las empresas.
           </BlogAnswerBox>
 
-          <p className="text-neutral-300 mb-6">Una buena fiesta de empresa mejora el clima laboral, refuerza la cultura corporativa y genera recuerdos positivos que fidelizan al equipo. Pero organizarla mal — venue inadecuado, DJ que no conecta, catering con esperas largas — puede tener el efecto contrario.</p>
+          <p className="text-[#333] mb-6">Una buena fiesta de empresa mejora el clima laboral, refuerza la cultura corporativa y genera recuerdos positivos que fidelizan al equipo. Pero organizarla mal — venue inadecuado, DJ que no conecta, catering con esperas largas — puede tener el efecto contrario.</p>
 
           <BlogInlineCTA role="dj" text="¿Necesitas DJ para tu evento de empresa? Encuentra artistas con tarifa pública y disponibilidad en XPEAK." />
 
@@ -79,10 +79,10 @@ export default function BlogOrganizarFiestaEmpresa() {
           <div className="overflow-x-auto mb-8">
             <table className="w-full text-sm border-collapse">
               <thead><tr style={{ background: 'rgba(109,40,217,0.08)' }}>
-                <th className="text-left p-3 border border-white/10">Partida</th>
-                <th className="text-left p-3 border border-white/10">Básico</th>
-                <th className="text-left p-3 border border-white/10">Estándar</th>
-                <th className="text-left p-3 border border-white/10">Premium</th>
+                <th className="text-left p-3 border border-black/[0.08]">Partida</th>
+                <th className="text-left p-3 border border-black/[0.08]">Básico</th>
+                <th className="text-left p-3 border border-black/[0.08]">Estándar</th>
+                <th className="text-left p-3 border border-black/[0.08]">Premium</th>
               </tr></thead>
               <tbody>
                 {[
@@ -94,10 +94,10 @@ export default function BlogOrganizarFiestaEmpresa() {
                   { p: 'TOTAL/persona', b: '37–62€', s: '70–119€', pr: '133–225€' },
                 ].map((r, i) => (
                   <tr key={i} style={{ background: r.p === 'TOTAL/persona' ? 'rgba(109,40,217,0.06)' : i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.02)' }}>
-                    <td className={`p-3 border border-white/10 ${r.p === 'TOTAL/persona' ? 'font-bold' : 'font-medium'}`}>{r.p}</td>
-                    <td className="p-3 border border-white/10 text-neutral-400">{r.b}</td>
-                    <td className="p-3 border border-white/10" style={{ color: '#6D28D9' }}>{r.s}</td>
-                    <td className="p-3 border border-white/10 text-neutral-400">{r.pr}</td>
+                    <td className={`p-3 border border-black/[0.08] ${r.p === 'TOTAL/persona' ? 'font-bold' : 'font-medium'}`}>{r.p}</td>
+                    <td className="p-3 border border-black/[0.08] text-[#555]">{r.b}</td>
+                    <td className="p-3 border border-black/[0.08]" style={{ color: '#6D28D9' }}>{r.s}</td>
+                    <td className="p-3 border border-black/[0.08] text-[#555]">{r.pr}</td>
                   </tr>
                 ))}
               </tbody>
@@ -106,12 +106,12 @@ export default function BlogOrganizarFiestaEmpresa() {
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Checklist para organizar una fiesta de empresa</h2>
           {CHECKLIST.map((fase, i) => (
-            <div key={i} className="mb-6 p-4 rounded-xl border border-white/10">
+            <div key={i} className="mb-6 p-4 rounded-xl border border-black/[0.08]">
               <h3 className="font-semibold mb-3" style={{ color: '#6D28D9' }}>{fase.fase}</h3>
               <ul className="space-y-2">
                 {fase.tareas.map((t, j) => (
-                  <li key={j} className="flex items-start gap-2 text-neutral-300 text-sm">
-                    <span className="mt-0.5 w-4 h-4 rounded border border-white/20 shrink-0" />
+                  <li key={j} className="flex items-start gap-2 text-[#333] text-sm">
+                    <span className="mt-0.5 w-4 h-4 rounded border border-black/10 shrink-0" />
                     {t}
                   </li>
                 ))}
@@ -123,9 +123,9 @@ export default function BlogOrganizarFiestaEmpresa() {
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Preguntas frecuentes</h2>
           {faqStructured.mainEntity.map((faq, i) => (
-            <div key={i} className="mb-5 p-4 rounded-xl border border-white/10">
-              <h3 className="font-semibold text-white mb-2">{faq.name}</h3>
-              <p className="text-neutral-400 text-sm">{faq.acceptedAnswer.text}</p>
+            <div key={i} className="mb-5 p-4 rounded-xl border border-black/[0.08]">
+              <h3 className="font-semibold text-[#111] mb-2">{faq.name}</h3>
+              <p className="text-[#555] text-sm">{faq.acceptedAnswer.text}</p>
             </div>
           ))}
           <BlogAuthor />

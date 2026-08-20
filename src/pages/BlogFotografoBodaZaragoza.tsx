@@ -58,21 +58,21 @@ export default function BlogFotografoBodaZaragoza() {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
       </Helmet>
-      <div className="min-h-screen" style={{ background: '#0A0A0A', color: '#F5F5F0' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <article className="max-w-3xl mx-auto px-4 py-12">
-          <nav className="text-xs text-neutral-500 mb-6 flex gap-2">
-            <a href="/" className="hover:text-neutral-300">Inicio</a><span>/</span>
-            <a href="/blog" className="hover:text-neutral-300">Blog</a><span>/</span>
-            <span className="text-neutral-300">Fotógrafo boda Zaragoza</span>
+          <nav className="text-xs text-[#666] mb-6 flex gap-2">
+            <a href="/" className="hover:text-[#8A6D0F]">Inicio</a><span>/</span>
+            <a href="/blog" className="hover:text-[#8A6D0F]">Blog</a><span>/</span>
+            <span className="text-[#333]">Fotógrafo boda Zaragoza</span>
           </nav>
           <h1 className="text-3xl sm:text-4xl font-black mb-4 leading-tight">Fotógrafo de Bodas en Zaragoza:<br />Precios y Guía 2026</h1>
-          <p className="text-neutral-400 text-sm mb-8">Actualizado junio 2026 · 7 min lectura</p>
+          <p className="text-[#555] text-sm mb-8">Actualizado junio 2026 · 7 min lectura</p>
 
           <BlogAnswerBox question="¿Cuánto cuesta un fotógrafo de bodas en Zaragoza?">
             Un fotógrafo de bodas en Zaragoza cuesta entre <strong>750€ y 2.000€</strong>. Los precios son competitivos respecto a Madrid o Barcelona, y la calidad media de los fotógrafos aragoneses es muy alta, especialmente para bodas en fincas o con el Pilar de fondo.
           </BlogAnswerBox>
 
-          <p className="text-neutral-300 mb-6">Zaragoza ofrece una combinación única: arquitectura mudéjar declarada Patrimonio UNESCO, el río Ebro como escenario natural, y acceso rápido a los Pirineos para sesiones de postboda únicas en Europa.</p>
+          <p className="text-[#333] mb-6">Zaragoza ofrece una combinación única: arquitectura mudéjar declarada Patrimonio UNESCO, el río Ebro como escenario natural, y acceso rápido a los Pirineos para sesiones de postboda únicas en Europa.</p>
 
           <BlogInlineCTA role="fotografo" text="¿Buscas fotógrafo para tu boda en Zaragoza? Compara perfiles y disponibilidad en XPEAK." />
 
@@ -80,36 +80,36 @@ export default function BlogFotografoBodaZaragoza() {
           <div className="overflow-x-auto mb-8">
             <table className="w-full text-sm border-collapse">
               <thead><tr style={{ background: 'rgba(79,70,229,0.08)' }}>
-                <th className="text-left p-3 border border-white/10">Perfil</th>
-                <th className="text-left p-3 border border-white/10">Precio</th>
-                <th className="text-left p-3 border border-white/10">Notas</th>
+                <th className="text-left p-3 border border-black/[0.08]">Perfil</th>
+                <th className="text-left p-3 border border-black/[0.08]">Precio</th>
+                <th className="text-left p-3 border border-black/[0.08]">Notas</th>
               </tr></thead>
               <tbody>{PRICES.map((p, i) => (
                 <tr key={i} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.02)' }}>
-                  <td className="p-3 border border-white/10 font-medium">{p.perfil}</td>
-                  <td className="p-3 border border-white/10 font-bold" style={{ color: '#4F46E5' }}>{p.rango}</td>
-                  <td className="p-3 border border-white/10 text-neutral-400">{p.nota}</td>
+                  <td className="p-3 border border-black/[0.08] font-medium">{p.perfil}</td>
+                  <td className="p-3 border border-black/[0.08] font-bold" style={{ color: '#4F46E5' }}>{p.rango}</td>
+                  <td className="p-3 border border-black/[0.08] text-[#555]">{p.nota}</td>
                 </tr>
               ))}</tbody>
             </table>
           </div>
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Mejores localizaciones para fotos de boda en Zaragoza</h2>
-          <ul className="space-y-3 mb-8 text-neutral-300">
-            <li><strong className="text-white">Basílica del Pilar (exterior)</strong> — Icono absoluto. Los reflejos en el Ebro al amanecer son de otro nivel.</li>
-            <li><strong className="text-white">La Seo (Catedral de San Salvador)</strong> — Arquitectura mudéjar-gótica. Ideal para bodas religiosas con reportaje en el entorno medieval.</li>
-            <li><strong className="text-white">Palacio de la Aljafería</strong> — Fortaleza morisca del s.XI. Requiere permiso previo pero las fotos son espectaculares.</li>
-            <li><strong className="text-white">Pirineos aragoneses</strong> — Para sesiones postboda únicas: Ordesa, Benasque, Hecho. A 2h de Zaragoza.</li>
-            <li><strong className="text-white">Bodegas del Somontano / Cariñena</strong> — Viñedos en otoño con colores dorados. Muy demandado en octubre.</li>
+          <ul className="space-y-3 mb-8 text-[#333]">
+            <li><strong className="text-[#111]">Basílica del Pilar (exterior)</strong> — Icono absoluto. Los reflejos en el Ebro al amanecer son de otro nivel.</li>
+            <li><strong className="text-[#111]">La Seo (Catedral de San Salvador)</strong> — Arquitectura mudéjar-gótica. Ideal para bodas religiosas con reportaje en el entorno medieval.</li>
+            <li><strong className="text-[#111]">Palacio de la Aljafería</strong> — Fortaleza morisca del s.XI. Requiere permiso previo pero las fotos son espectaculares.</li>
+            <li><strong className="text-[#111]">Pirineos aragoneses</strong> — Para sesiones postboda únicas: Ordesa, Benasque, Hecho. A 2h de Zaragoza.</li>
+            <li><strong className="text-[#111]">Bodegas del Somontano / Cariñena</strong> — Viñedos en otoño con colores dorados. Muy demandado en octubre.</li>
           </ul>
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-fotografo" articlePath="/blog/fotografo-boda-zaragoza" />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Preguntas frecuentes</h2>
           {faqStructured.mainEntity.map((faq, i) => (
-            <div key={i} className="mb-5 p-4 rounded-xl border border-white/10">
-              <h3 className="font-semibold text-white mb-2">{faq.name}</h3>
-              <p className="text-neutral-400 text-sm">{faq.acceptedAnswer.text}</p>
+            <div key={i} className="mb-5 p-4 rounded-xl border border-black/[0.08]">
+              <h3 className="font-semibold text-[#111] mb-2">{faq.name}</h3>
+              <p className="text-[#555] text-sm">{faq.acceptedAnswer.text}</p>
             </div>
           ))}
           <DJResourcesAffiliate role="fotografo" />

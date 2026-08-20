@@ -59,21 +59,21 @@ export default function BlogGrupoMusicalBoda() {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
       </Helmet>
-      <div className="min-h-screen" style={{ background: '#0A0A0A', color: '#F5F5F0' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <article className="max-w-3xl mx-auto px-4 py-12">
-          <nav className="text-xs text-neutral-500 mb-6 flex gap-2">
-            <a href="/" className="hover:text-neutral-300">Inicio</a><span>/</span>
-            <a href="/blog" className="hover:text-neutral-300">Blog</a><span>/</span>
-            <span className="text-neutral-300">Grupo musical para boda precio</span>
+          <nav className="text-xs text-[#666] mb-6 flex gap-2">
+            <a href="/" className="hover:text-[#8A6D0F]">Inicio</a><span>/</span>
+            <a href="/blog" className="hover:text-[#8A6D0F]">Blog</a><span>/</span>
+            <span className="text-[#333]">Grupo musical para boda precio</span>
           </nav>
           <h1 className="text-3xl sm:text-4xl font-black mb-4 leading-tight">Grupo Musical para Boda:<br />Precio y Guía Completa 2026</h1>
-          <p className="text-neutral-400 text-sm mb-8">Actualizado junio 2026 · 9 min lectura</p>
+          <p className="text-[#555] text-sm mb-8">Actualizado junio 2026 · 9 min lectura</p>
 
           <BlogAnswerBox question="¿Cuánto cuesta un grupo musical para una boda?">
             Un grupo musical para boda en España cuesta entre <strong>400€ y 6.000€</strong> según el formato. Un dúo acústico para el cóctel parte desde 400€; una banda completa de 6 músicos para el banquete ronda los 2.000–3.500€; una orquesta de 10+ piezas puede superar los 5.000€.
           </BlogAnswerBox>
 
-          <p className="text-neutral-300 mb-6">
+          <p className="text-[#333] mb-6">
             La música en vivo marca la diferencia entre una boda memorable y una boda corriente. El grupo musical crea momentos únicos que ningún playlist puede reproducir. Pero contratar el grupo equivocado — o pagarlo de más — es uno de los errores más frecuentes en la planificación de bodas.
           </p>
 
@@ -83,41 +83,41 @@ export default function BlogGrupoMusicalBoda() {
           <div className="overflow-x-auto mb-8">
             <table className="w-full text-sm border-collapse">
               <thead><tr style={{ background: 'rgba(219,39,119,0.08)' }}>
-                <th className="text-left p-3 border border-white/10">Tipo de grupo</th>
-                <th className="text-left p-3 border border-white/10">Momento</th>
-                <th className="text-left p-3 border border-white/10">Precio</th>
-                <th className="text-left p-3 border border-white/10">Notas</th>
+                <th className="text-left p-3 border border-black/[0.08]">Tipo de grupo</th>
+                <th className="text-left p-3 border border-black/[0.08]">Momento</th>
+                <th className="text-left p-3 border border-black/[0.08]">Precio</th>
+                <th className="text-left p-3 border border-black/[0.08]">Notas</th>
               </tr></thead>
               <tbody>{TIPOS.map((t, i) => (
                 <tr key={i} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.02)' }}>
-                  <td className="p-3 border border-white/10 font-medium">{t.tipo}</td>
-                  <td className="p-3 border border-white/10 text-neutral-400">{t.momento}</td>
-                  <td className="p-3 border border-white/10 font-bold" style={{ color: '#DB2777' }}>{t.rango}</td>
-                  <td className="p-3 border border-white/10 text-neutral-400">{t.nota}</td>
+                  <td className="p-3 border border-black/[0.08] font-medium">{t.tipo}</td>
+                  <td className="p-3 border border-black/[0.08] text-[#555]">{t.momento}</td>
+                  <td className="p-3 border border-black/[0.08] font-bold" style={{ color: '#DB2777' }}>{t.rango}</td>
+                  <td className="p-3 border border-black/[0.08] text-[#555]">{t.nota}</td>
                 </tr>
               ))}</tbody>
             </table>
           </div>
 
           <h2 className="text-2xl font-bold mt-10 mb-4">¿Qué incluye el precio de un grupo musical para boda?</h2>
-          <ul className="list-disc list-inside space-y-2 text-neutral-300 mb-6">
+          <ul className="list-disc list-inside space-y-2 text-[#333] mb-6">
             <li>Actuación en vivo según el tiempo acordado (generalmente 2–4 pases de 45 min)</li>
             <li>Sistema de sonido (PA) propio para venues de hasta 150 personas</li>
             <li>Repertorio personalizable (top de la novia, primer baile, etc.)</li>
             <li>Comunicación previa para adaptar el set-list a tus gustos</li>
           </ul>
-          <p className="text-neutral-300 mb-8">Extras habituales con coste adicional: técnico de sonido para venues grandes (+200–400€), desplazamientos superiores a 100 km, alojamiento si la boda es en zona rural alejada, segundo pase nocturno más allá de lo contratado.</p>
+          <p className="text-[#333] mb-8">Extras habituales con coste adicional: técnico de sonido para venues grandes (+200–400€), desplazamientos superiores a 100 km, alojamiento si la boda es en zona rural alejada, segundo pase nocturno más allá de lo contratado.</p>
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Grupo musical + DJ: la combinación perfecta</h2>
-          <p className="text-neutral-300 mb-6">La tendencia dominante en bodas 2026 es combinar <strong>grupo musical en vivo para el cóctel y el banquete</strong> (ambiente, primeros bailes) con un <strong>DJ para el cierre nocturno</strong> (de 00:00 a 04:00). Esta combinación maximiza el ambiente en cada momento y suele costar entre 2.500€ y 5.000€ en total por ambos servicios.</p>
+          <p className="text-[#333] mb-6">La tendencia dominante en bodas 2026 es combinar <strong>grupo musical en vivo para el cóctel y el banquete</strong> (ambiente, primeros bailes) con un <strong>DJ para el cierre nocturno</strong> (de 00:00 a 04:00). Esta combinación maximiza el ambiente en cada momento y suele costar entre 2.500€ y 5.000€ en total por ambos servicios.</p>
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-musico" articlePath="/blog/grupo-musical-para-boda-precio" />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Preguntas frecuentes</h2>
           {faqStructured.mainEntity.map((faq, i) => (
-            <div key={i} className="mb-5 p-4 rounded-xl border border-white/10">
-              <h3 className="font-semibold text-white mb-2">{faq.name}</h3>
-              <p className="text-neutral-400 text-sm">{faq.acceptedAnswer.text}</p>
+            <div key={i} className="mb-5 p-4 rounded-xl border border-black/[0.08]">
+              <h3 className="font-semibold text-[#111] mb-2">{faq.name}</h3>
+              <p className="text-[#555] text-sm">{faq.acceptedAnswer.text}</p>
             </div>
           ))}
           <BlogAuthor />

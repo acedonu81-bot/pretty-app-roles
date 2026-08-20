@@ -58,21 +58,21 @@ export default function BlogFotografoBodaAlicante() {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
       </Helmet>
-      <div className="min-h-screen" style={{ background: '#0A0A0A', color: '#F5F5F0' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <article className="max-w-3xl mx-auto px-4 py-12">
-          <nav className="text-xs text-neutral-500 mb-6 flex gap-2">
-            <a href="/" className="hover:text-neutral-300">Inicio</a><span>/</span>
-            <a href="/blog" className="hover:text-neutral-300">Blog</a><span>/</span>
-            <span className="text-neutral-300">Fotógrafo boda Alicante</span>
+          <nav className="text-xs text-[#666] mb-6 flex gap-2">
+            <a href="/" className="hover:text-[#8A6D0F]">Inicio</a><span>/</span>
+            <a href="/blog" className="hover:text-[#8A6D0F]">Blog</a><span>/</span>
+            <span className="text-[#333]">Fotógrafo boda Alicante</span>
           </nav>
           <h1 className="text-3xl sm:text-4xl font-black mb-4 leading-tight">Fotógrafo de Bodas en Alicante:<br />Precios y Guía 2026</h1>
-          <p className="text-neutral-400 text-sm mb-8">Actualizado junio 2026 · 7 min lectura</p>
+          <p className="text-[#555] text-sm mb-8">Actualizado junio 2026 · 7 min lectura</p>
 
           <BlogAnswerBox question="¿Cuánto cuesta un fotógrafo de bodas en Alicante?">
             Un fotógrafo de bodas en Alicante cuesta entre <strong>800€ y 2.200€</strong>. La Costa Blanca atrae fotógrafos con gran nivel técnico gracias a la luz mediterránea. La temporada más cara es junio–septiembre.
           </BlogAnswerBox>
 
-          <p className="text-neutral-300 mb-6">Alicante combina playas de postal, el Castillo de Santa Bárbara y fincas en el interior con viñedos. Un escenario excepcional para bodas y para los fotógrafos que saben aprovechar la luz única del Mediterráneo.</p>
+          <p className="text-[#333] mb-6">Alicante combina playas de postal, el Castillo de Santa Bárbara y fincas en el interior con viñedos. Un escenario excepcional para bodas y para los fotógrafos que saben aprovechar la luz única del Mediterráneo.</p>
 
           <BlogInlineCTA role="fotografo" text="¿Buscas fotógrafo para tu boda en Alicante? Compara perfiles y tarifas en XPEAK." />
 
@@ -80,35 +80,35 @@ export default function BlogFotografoBodaAlicante() {
           <div className="overflow-x-auto mb-8">
             <table className="w-full text-sm border-collapse">
               <thead><tr style={{ background: 'rgba(79,70,229,0.08)' }}>
-                <th className="text-left p-3 border border-white/10">Perfil</th>
-                <th className="text-left p-3 border border-white/10">Precio</th>
-                <th className="text-left p-3 border border-white/10">Notas</th>
+                <th className="text-left p-3 border border-black/[0.08]">Perfil</th>
+                <th className="text-left p-3 border border-black/[0.08]">Precio</th>
+                <th className="text-left p-3 border border-black/[0.08]">Notas</th>
               </tr></thead>
               <tbody>{PRICES.map((p, i) => (
                 <tr key={i} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.02)' }}>
-                  <td className="p-3 border border-white/10 font-medium">{p.perfil}</td>
-                  <td className="p-3 border border-white/10 font-bold" style={{ color: '#4F46E5' }}>{p.rango}</td>
-                  <td className="p-3 border border-white/10 text-neutral-400">{p.nota}</td>
+                  <td className="p-3 border border-black/[0.08] font-medium">{p.perfil}</td>
+                  <td className="p-3 border border-black/[0.08] font-bold" style={{ color: '#4F46E5' }}>{p.rango}</td>
+                  <td className="p-3 border border-black/[0.08] text-[#555]">{p.nota}</td>
                 </tr>
               ))}</tbody>
             </table>
           </div>
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Mejores localizaciones para fotos de boda en Alicante</h2>
-          <ul className="space-y-3 mb-8 text-neutral-300">
-            <li><strong className="text-white">Castillo de Santa Bárbara</strong> — Vistas panorámicas sobre la ciudad y el mar. La Golden Hour desde aquí es espectacular.</li>
-            <li><strong className="text-white">Playa del Postiguet</strong> — Arena blanca y aguas turquesas como telón de fondo de una sesión de postboda.</li>
-            <li><strong className="text-white">Explanada de España</strong> — Palmeras y mosaico de mármol. Icónica para fotos urbanas con identidad alicantina.</li>
-            <li><strong className="text-white">Fincas en Novelda / Villena</strong> — Campos de viñas y olivos para bodas íntimas en el interior provincial.</li>
+          <ul className="space-y-3 mb-8 text-[#333]">
+            <li><strong className="text-[#111]">Castillo de Santa Bárbara</strong> — Vistas panorámicas sobre la ciudad y el mar. La Golden Hour desde aquí es espectacular.</li>
+            <li><strong className="text-[#111]">Playa del Postiguet</strong> — Arena blanca y aguas turquesas como telón de fondo de una sesión de postboda.</li>
+            <li><strong className="text-[#111]">Explanada de España</strong> — Palmeras y mosaico de mármol. Icónica para fotos urbanas con identidad alicantina.</li>
+            <li><strong className="text-[#111]">Fincas en Novelda / Villena</strong> — Campos de viñas y olivos para bodas íntimas en el interior provincial.</li>
           </ul>
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-fotografo" articlePath="/blog/fotografo-boda-alicante" />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Preguntas frecuentes</h2>
           {faqStructured.mainEntity.map((faq, i) => (
-            <div key={i} className="mb-5 p-4 rounded-xl border border-white/10">
-              <h3 className="font-semibold text-white mb-2">{faq.name}</h3>
-              <p className="text-neutral-400 text-sm">{faq.acceptedAnswer.text}</p>
+            <div key={i} className="mb-5 p-4 rounded-xl border border-black/[0.08]">
+              <h3 className="font-semibold text-[#111] mb-2">{faq.name}</h3>
+              <p className="text-[#555] text-sm">{faq.acceptedAnswer.text}</p>
             </div>
           ))}
           <DJResourcesAffiliate role="fotografo" />

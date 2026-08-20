@@ -123,6 +123,22 @@ const ROLE_ALIAS: Record<string, string> = {
   peluqueria: 'maquillaje', estilista: 'maquillaje', banda: 'grupo-musical',
 };
 
+// Color de acento por catálogo — antes el bloque era dorado fijo en TODOS
+// los artículos, incluso en categorías con su propio color (Camareros=azul,
+// Maquillaje=rosa...), rompiendo la consistencia del rediseño por categoría.
+const CATALOG_ACCENT: Record<string, string> = {
+  dj: '#D4AF37', camareros: '#2563EB', staff: '#059669',
+  fotografo: '#4F46E5', media: '#4F46E5', maquillaje: '#DB2777', makeup: '#DB2777',
+  'grupo-musical': '#DB2777', catering: '#B45309', azafata: '#2563EB', bailarin: '#DB2777',
+};
+
+function hexToRgba(hex: string, alpha: number) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
 /**
  * @param role rol del blog (dj, camareros, fotografo…). Por defecto 'dj'
  * (retrocompatibilidad con los blogs de DJ que ya lo usaban sin props).
@@ -137,19 +153,20 @@ export default function DJResourcesAffiliate({ role = 'dj' }: { role?: string })
   if (!key) return null;
   const cat = CATALOG[key];
   const HeaderIcon = cat.icon;
+  const accent = CATALOG_ACCENT[key] ?? '#D4AF37';
 
   return (
     <section className="mt-10 mb-4">
       <div className="rounded-2xl p-5 sm:p-6"
-        style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.18)' }}>
+        style={{ background: hexToRgba(accent, 0.05), border: `1px solid ${hexToRgba(accent, 0.18)}` }}>
         <div className="flex items-center gap-2 mb-1">
           <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-            style={{ background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.25)', color: '#8A6D0F' }}>
+            style={{ background: hexToRgba(accent, 0.12), border: `1px solid ${hexToRgba(accent, 0.25)}`, color: accent }}>
             <HeaderIcon size={16} />
           </div>
-          <h3 className="text-base font-black" style={{ color: '#D4AF37' }}>Equipo recomendado para {cat.label}</h3>
+          <h3 className="text-base font-black" style={{ color: accent }}>Equipo recomendado para {cat.label}</h3>
         </div>
-        <p className="text-xs mb-5" style={{ color: 'rgba(212,175,55,0.6)' }}>
+        <p className="text-xs mb-5" style={{ color: '#666' }}>
           Material que usan profesionales del sector. Selección de XPEAK.
         </p>
 
@@ -160,10 +177,10 @@ export default function DJResourcesAffiliate({ role = 'dj' }: { role?: string })
               <a key={r.title} href={r.href} target="_blank" rel="sponsored noopener noreferrer"
                 className="flex flex-col rounded-xl p-4 transition-all hover:scale-[1.02]"
                 style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)' }}>
-                <Icon size={20} style={{ color: '#8A6D0F' }} className="mb-2" />
+                <Icon size={20} style={{ color: accent }} className="mb-2" />
                 <p className="text-sm font-bold mb-1" style={{ color: '#111' }}>{r.title}</p>
                 <p className="text-xs leading-relaxed mb-3 flex-1" style={{ color: '#555' }}>{r.desc}</p>
-                <span className="inline-flex items-center gap-1 text-xs font-bold" style={{ color: '#8A6D0F' }}>
+                <span className="inline-flex items-center gap-1 text-xs font-bold" style={{ color: accent }}>
                   Ver en Amazon <ExternalLink size={11} />
                 </span>
               </a>
