@@ -7,11 +7,15 @@ import EventCartCheckoutModal from '@/components/EventCartCheckoutModal';
 // Rutas privadas donde el flujo de "organizador anónimo" no aplica (ya dentro de una cuenta).
 const HIDDEN_PREFIXES = ['/dashboard', '/admin-beta', '/auth'];
 const HINT_SEEN_KEY = 'xpeak_cart_hint_seen';
+const DRAFT_KEY = 'xpeak_event_cart_draft';
 
 /** Icono flotante de "mi evento" — visible en directorio y fichas públicas cuando hay algo en la cesta. */
 export default function EventCartWidget() {
   const { items } = useEventCart();
-  const [open, setOpen] = useState(false);
+  // Si vuelve de crear cuenta con un borrador de solicitud pendiente (ver
+  // EventCartCheckoutModal), reabre el modal solo para que no tenga que
+  // volver a pulsar "Mi evento" y encontrar el formulario en blanco.
+  const [open, setOpen] = useState(() => !!sessionStorage.getItem(DRAFT_KEY));
   const [showHint, setShowHint] = useState(false);
   const location = useLocation();
 

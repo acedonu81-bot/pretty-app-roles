@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { X, Send, CheckCircle, Calendar, MapPin, MessageSquare, Trash2, Clock } from 'lucide-react';
-import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useEventCart } from '@/lib/eventCart';
@@ -19,10 +18,30 @@ const EVENT_HOURS: Record<string, number> = {
   'Festival / Concierto': 8, 'Cumpleaños': 3, 'Inauguración': 3, 'Otro': 4,
 };
 
+// Antes, un visitante sin sesión que ya había añadido 2-3 profesionales al
+// carrito veía un muro de login nada más abrir el modal, sin poder ni
+// empezar a rellenar su solicitud — la peor fricción posible justo cuando
+// más comprometido estaba. Ahora rellena el formulario entero y el registro
+// solo aparece al enviar, guardando lo escrito en sessionStorage para
+// restaurarlo si vuelve tras crear la cuenta.
+const DRAFT_KEY = 'xpeak_event_cart_draft';
+
+function readDraft(): { name: string; contact: string; eventType: string; date: string; location: string; message: string } | null {
+  try {
+    const raw = sessionStorage.getItem(DRAFT_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
 export default function EventCartCheckoutModal({ onClose }: Props) {
   const { user } = useAuth();
   const { items, remove, clear } = useEventCart();
-  const [form, setForm] = useState({ name: '', contact: '', eventType: '', date: '', location: '', message: '', website: '' });
+  const [form, setForm] = useState(() => {
+    const draft = readDraft();
+    return { name: draft?.name ?? '', contact: draft?.contact ?? '', eventType: draft?.eventType ?? '', date: draft?.date ?? '', location: draft?.location ?? '', message: draft?.message ?? '', website: '' };
+  });
   const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
   // Horas editables: se autorrellenan según el tipo de evento (tabla EVENT_HOURS),
   // pero el usuario puede ajustarlas — cada evento dura lo que dura, la tabla es
@@ -51,11 +70,24 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
     if (items.length === 0 && status !== 'done') onClose();
   }, [items.length, status, onClose]);
 
+  // Draft ya restaurado (o no) al montar — una vez leído no hace falta seguir
+  // ocupando sessionStorage con datos que ya están en el formulario en memoria.
+  useEffect(() => {
+    if (user) sessionStorage.removeItem(DRAFT_KEY);
+  }, [user]);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!user) { toast.error('Inicia sesión para contactar con profesionales.'); return; }
     if (!form.name.trim() || !form.contact.trim() || !form.eventType) return;
     if (!legalAccepted) { setLegalError(true); return; }
+    if (!user) {
+      // Guarda lo ya escrito y lleva a registro — al volver (mismo pathname
+      // vía ?redirect=), el modal se reabre con el formulario intacto en vez
+      // de perder el trabajo que el usuario ya invirtió.
+      sessionStorage.setItem(DRAFT_KEY, JSON.stringify({ name: form.name, contact: form.contact, eventType: form.eventType, date: form.date, location: form.location, message: form.message }));
+      window.location.href = `/auth?role=empresario&mode=register&redirect=${encodeURIComponent(location.pathname)}`;
+      return;
+    }
     // Honeypot: campo oculto que un humano nunca rellena, pero un bot sí.
     if (form.website.trim()) { onClose(); return; }
 
@@ -119,19 +151,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
           <X size={16} style={{ color: '#333' }} />
         </button>
 
-        {!user ? (
-          <div className="text-center py-6">
-            <h3 className="text-lg font-black mb-2" style={{ color: '#111' }}>Inicia sesión para contactar</h3>
-            <p className="text-sm mb-6" style={{ color: '#333' }}>
-              Para pedir presupuesto necesitas una cuenta — así evitamos spam y los profesionales saben que hablan con alguien real.
-            </p>
-            <a href={`/auth?role=empresario&mode=register&redirect=${encodeURIComponent(location.pathname)}`}
-              className="inline-block px-6 py-2.5 rounded-xl text-sm font-black"
-              style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-              Iniciar sesión / Crear cuenta
-            </a>
-          </div>
-        ) : status === 'done' ? (
+        {status === 'done' ? (
           <div className="text-center py-6">
             <CheckCircle size={40} className="mx-auto mb-4" style={{ color: '#22c55e' }} />
             <h3 className="text-lg font-black mb-2" style={{ color: '#111' }}>¡Solicitudes enviadas!</h3>
@@ -311,11 +331,13 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
               className="w-full mt-4 py-3 rounded-xl font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] disabled:opacity-60"
               style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
               <Send size={15} />
-              {status === 'sending' ? 'Enviando…' : `Contactar a los ${items.length} profesional${items.length !== 1 ? 'es' : ''}`}
+              {status === 'sending' ? 'Enviando…' : user ? `Contactar a los ${items.length} profesional${items.length !== 1 ? 'es' : ''}` : 'Crear cuenta y enviar →'}
             </button>
 
             <p className="text-[0.65rem] text-center mt-3" style={{ color: '#333' }}>
-              Sin registro · Sin comisión · Cada profesional te contactará directamente
+              {user
+                ? 'Sin comisión · Cada profesional te contactará directamente'
+                : 'Cuenta gratis en 30 segundos · No perderás lo que has escrito'}
             </p>
           </form>
         )}
