@@ -119,6 +119,12 @@ body.is-native-app nav.sticky {
     line-height: 1.25 !important;
     clip-path: none !important;
     -webkit-clip-path: none !important;
+    /* Syne en peso 900 dibuja la g/p/j con el descendente cortado en
+       línea recta en vez de curva, a cualquier tamaño de título. El
+       peso 800 es visualmente casi idéntico (misma familia geométrica)
+       sin ese defecto de la fuente, así que se fuerza aquí para toda
+       la web en vez de tocar cada font-black de cada componente. */
+    font-weight: 800 !important;
   }
 
   /* Evitar que leading-tight de Tailwind corte descenders en cualquier elemento */
@@ -131,6 +137,16 @@ body.is-native-app nav.sticky {
   /* Prevenir corte de descenders (g, y, j, p, q) en cualquier texto */
   * {
     -webkit-font-smoothing: antialiased;
+  }
+
+  /* Artículos de blog: max-w-3xl (768px) deja demasiado espacio vacío a
+     los lados en monitores grandes ("columna centrada tipo ChatGPT").
+     Se amplía solo el contenedor de artículo (hijo directo del wrapper
+     .min-h-screen de cada Blog*.tsx), sin tocar max-w-3xl en el resto
+     de la web donde sí es el ancho correcto. */
+  .min-h-screen > article.max-w-3xl,
+  .min-h-screen > main.max-w-3xl {
+    max-width: 56rem; /* 896px, equivalente a max-w-4xl */
   }
 
   ::-webkit-scrollbar { width: 4px; height: 4px; }
