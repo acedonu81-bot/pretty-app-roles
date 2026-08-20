@@ -201,7 +201,7 @@ export default function SwipeDirectory({ profiles, onClose, onOpenProfile, onBoo
       )}
 
       {/* Info inferior */}
-      <div className="absolute bottom-0 left-0 right-0 z-20 p-5 pb-28 sm:pb-8">
+      <div className="swipe-card-info absolute bottom-0 left-0 right-0 z-20 p-5 pb-28 sm:pb-8">
         <div className="flex flex-wrap gap-2 mb-3">
           {p.is_flash_active && (
             <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-black" style={{ background: '#15803d', color: '#fff' }}>

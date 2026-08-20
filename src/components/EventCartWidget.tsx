@@ -17,6 +17,7 @@ export default function EventCartWidget() {
   // volver a pulsar "Mi evento" y encontrar el formulario en blanco.
   const [open, setOpen] = useState(() => !!sessionStorage.getItem(DRAFT_KEY));
   const [showHint, setShowHint] = useState(false);
+  const [overSwipeCard, setOverSwipeCard] = useState(false);
   const location = useLocation();
 
   const dismissHint = () => {
@@ -32,8 +33,35 @@ export default function EventCartWidget() {
     }
   }, [items.length]);
 
+  // La vista Swipe del directorio (móvil) tiene sus propios botones
+  // "Ver perfil completo"/"Contactar" anclados al fondo de la tarjeta —
+  // este FAB fixed puede solaparlos según cuánto contenido haya encima
+  // (no hay padding que lo resuelva en todas las alturas de pantalla, la
+  // tarjeta vive en el flujo normal de la página, no a pantalla completa).
+  // Se oculta mientras la tarjeta esté en viewport; el swipe ya tiene su
+  // propio botón "+" para añadir al carrito, así que no se pierde acceso.
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (entries) => setOverSwipeCard(entries.some(e => e.isIntersecting)),
+      { threshold: 0.15 }
+    );
+    const observed = new Set<Element>();
+    const sync = () => {
+      document.querySelectorAll('.swipe-card-info').forEach(el => {
+        if (!observed.has(el)) { io.observe(el); observed.add(el); }
+      });
+    };
+    // La tarjeta Swipe se monta de forma asíncrona (tras cargar perfiles),
+    // después de que este widget ya esté montado — un MutationObserver
+    // detecta cuándo aparece en el DOM, en vez de solo comprobar una vez.
+    const mo = new MutationObserver(sync);
+    mo.observe(document.body, { childList: true, subtree: true });
+    sync();
+    return () => { io.disconnect(); mo.disconnect(); };
+  }, [location.pathname]);
+
   const hidden = HIDDEN_PREFIXES.some(p => location.pathname.startsWith(p));
-  const visible = !hidden && items.length > 0;
+  const visible = !hidden && items.length > 0 && !overSwipeCard;
 
   useEffect(() => {
     document.body.classList.toggle('has-event-cart-widget', visible);
