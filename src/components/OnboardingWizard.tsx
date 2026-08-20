@@ -1,8 +1,22 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight, Megaphone, UtensilsCrossed, Laugh, PartyPopper, PersonStanding, MicVocal, Shirt } from 'lucide-react';
+import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight, Megaphone, UtensilsCrossed, Laugh, PartyPopper, PersonStanding, MicVocal, Shirt, Upload, Euro } from 'lucide-react';
+import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
+import { supabase } from '@/integrations/supabase/client';
+import { compressImage, MAX_RAW_IMAGE_MB } from '@/lib/image';
+import NightlifeSelect from '@/components/ui/NightlifeSelect';
+
+// Ciudades principales — lista corta a propósito para elegir en segundos
+// dentro del wizard. Quien necesite un barrio/ciudad más específico lo
+// ajusta luego en Mi Perfil (este selector no sustituye ese, solo evita
+// que la ficha quede publicada con "España" genérico desde el minuto 1.
+const WIZARD_CITIES = [
+  'Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao', 'Málaga', 'Zaragoza',
+  'Murcia', 'Alicante', 'Granada', 'A Coruña', 'Vigo', 'Palma de Mallorca',
+  'Ibiza', 'San Sebastián', 'Córdoba', 'Valladolid', 'Vitoria', 'Gijón', 'Otra ciudad',
+];
 
 const ROLES = [
   { value: 'dj',           label: 'DJ / Artista',        desc: 'DJ, músico, grupo musical',         icon: Music2,         color: '#D4AF37' },
@@ -153,9 +167,49 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
   const [selectedRole, setSelectedRole] = useState<string>(prefilledRole);
   const [saving, setSaving] = useState(false);
 
+  // Campos del formulario rápido — antes el step 1 solo mostraba tips de
+  // texto ("Añade tu foto") sin ningún input real, así que "Lo haré
+  // después" era la salida trivial. 4 de los últimos 5 registros reales
+  // quedaron sin foto/precio/ciudad por esto. Ahora se rellenan aquí mismo.
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const [city, setCity] = useState('');
+  const [hourlyRate, setHourlyRate] = useState('');
+  const [savingQuick, setSavingQuick] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const markDone = () => {
     if (user) localStorage.setItem(`xpeak_onboarded_${user.id}`, '1');
     onClose();
+  };
+
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+    if (!file.type.startsWith('image/')) { toast.error('Solo se permiten archivos de imagen.'); return; }
+    if (file.size > MAX_RAW_IMAGE_MB * 1024 * 1024) { toast.error(`Máximo ${MAX_RAW_IMAGE_MB}MB`); return; }
+    setUploadingPhoto(true);
+    const compressed = await compressImage(file);
+    const safeName = compressed.name.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-zA-Z0-9._-]/g, '_');
+    const path = `${user.id}/photo-${Date.now()}-${safeName}`;
+    const { error } = await supabase.storage.from('audio-sessions').upload(path, compressed);
+    setUploadingPhoto(false);
+    if (error) { toast.error('Error al subir foto: ' + error.message); return; }
+    const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
+    setPhotoUrl(urlData.publicUrl);
+  };
+
+  const handleQuickSave = async () => {
+    setSavingQuick(true);
+    const updates: Record<string, unknown> = {};
+    if (photoUrl) updates.photo_url = photoUrl;
+    if (city && city !== 'Otra ciudad') updates.zone = city;
+    const rate = parseFloat(hourlyRate);
+    if (hourlyRate && !isNaN(rate) && rate > 0) updates.hourly_rate = rate;
+    if (Object.keys(updates).length > 0) await profile.updateField(updates);
+    setSavingQuick(false);
+    markDone();
+    onNavigate(selectedRole === 'empresario' ? 'empresario' : 'profile');
   };
 
   const handleRoleConfirm = async () => {
@@ -270,9 +324,84 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
               </motion.div>
             )}
 
-            {/* Step 1 — Primeros pasos */}
-            {step === 1 && (
+            {/* Step 1 — Formulario rápido (foto/ciudad/tarifa) para roles de
+                profesional; el empresario no tiene tarifa/hora así que
+                mantiene los tips de texto originales. */}
+            {step === 1 && selectedRole !== 'empresario' && (
               <motion.div key="s1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
+                <div className="text-center mb-5">
+                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-3"
+                    style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.2)' }}>
+                    <CheckCircle size={22} style={{ color: '#22c55e' }} />
+                  </div>
+                  <h2 className="text-lg font-black mb-1" style={{ fontFamily: 'Syne, sans-serif', color: '#111' }}>
+                    {roleData.title}
+                  </h2>
+                  <p className="text-xs" style={{ color: '#333' }}>Rellena esto ahora — tu ficha se ve 3× mejor desde el primer día</p>
+                </div>
+
+                <div className="flex flex-col gap-3 mb-5">
+                  <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
+                  <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploadingPhoto}
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all"
+                    style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.12)' }}>
+                    {photoUrl ? (
+                      <img src={photoUrl} alt="Tu foto" className="w-10 h-10 rounded-full object-cover flex-shrink-0" />
+                    ) : (
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                        style={{ background: '#D4AF37' }}>
+                        <Upload size={16} style={{ color: '#000' }} />
+                      </div>
+                    )}
+                    <div className="text-left">
+                      <p className="text-xs font-bold" style={{ color: '#222' }}>
+                        {uploadingPhoto ? 'Subiendo...' : photoUrl ? 'Foto subida ✓' : 'Añade tu foto'}
+                      </p>
+                      <p className="text-[0.65rem]" style={{ color: '#333' }}>Los perfiles con foto reciben 3× más contactos</p>
+                    </div>
+                  </button>
+
+                  <div className="px-1">
+                    <p className="text-[0.65rem] font-bold mb-1.5" style={{ color: '#222' }}>Tu ciudad</p>
+                    <NightlifeSelect
+                      value={city}
+                      onChange={setCity}
+                      options={WIZARD_CITIES.map(c => ({ value: c, label: c }))}
+                      placeholder="Elige tu ciudad"
+                    />
+                  </div>
+
+                  <div className="px-1">
+                    <p className="text-[0.65rem] font-bold mb-1.5" style={{ color: '#222' }}>Tu tarifa por hora (opcional)</p>
+                    <div className="relative">
+                      <Euro size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#888' }} />
+                      <input
+                        type="number"
+                        min="0"
+                        value={hourlyRate}
+                        onChange={(e) => setHourlyRate(e.target.value)}
+                        placeholder="Ej. 80"
+                        className="w-full pl-9 pr-4 py-3 rounded-xl text-xs font-semibold outline-none"
+                        style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.1)', color: '#111' }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <button onClick={handleQuickSave} disabled={savingQuick || uploadingPhoto}
+                  className="w-full py-3.5 rounded-xl font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] mb-2"
+                  style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+                  {savingQuick ? 'Guardando...' : 'Guardar y continuar'} <ChevronRight size={15} />
+                </button>
+                <button onClick={markDone} className="w-full py-2 text-[0.65rem] font-semibold"
+                  style={{ color: '#888' }}>
+                  Prefiero hacerlo más tarde
+                </button>
+              </motion.div>
+            )}
+
+            {step === 1 && selectedRole === 'empresario' && (
+              <motion.div key="s1-org" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                 <div className="text-center mb-5">
                   <div className="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-3"
                     style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.2)' }}>
