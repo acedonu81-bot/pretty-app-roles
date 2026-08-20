@@ -96,13 +96,13 @@ export default function BlogMaestroCeremonias() {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
 
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#DB2777' }}>XPEAK</a>
           <a href="/auth"
             className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
-            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+            style={{ background: 'linear-gradient(90deg,#DB2777,#B8941E)', color: '#000' }}>
             Unirse gratis
           </a>
         </nav>
@@ -110,75 +110,75 @@ export default function BlogMaestroCeremonias() {
         <a href="/blog" className="block px-4 sm:px-6 pb-2 max-w-3xl mx-auto text-xs" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
         <article className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 pb-20 sm:pb-24">
 
-          <p className="text-xs mb-6 font-bold" style={{ color: 'rgba(255,255,255,0.3)' }}>
-            <a href="/" className="hover:text-white transition-colors">XPEAK</a>
+          <p className="text-xs mb-6 font-bold" style={{ color: '#666' }}>
+            <a href="/" className="hover:text-[#8A6D0F] transition-colors">XPEAK</a>
             {' '}›{' '}
-            <a href="/blog" className="hover:text-white transition-colors">Blog</a>
+            <a href="/blog" className="hover:text-[#8A6D0F] transition-colors">Blog</a>
             {' '}›{' '}
             <span>Maestro de ceremonias</span>
           </p>
 
           <div className="flex items-center gap-2 mb-4">
-            <TrendingUp size={14} style={{ color: '#D4AF37' }} />
-            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#D4AF37' }}>Blog · Guía de precios</span>
+            <TrendingUp size={14} style={{ color: '#DB2777' }} />
+            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#DB2777' }}>Blog · Guía de precios</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-black tracking-tight mb-4 leading-tight">
             Maestro de Ceremonias para Bodas: precio y guía completa 2026
           </h1>
-          <p className="text-sm mb-8" style={{ color: 'rgba(255,255,255,0.35)' }}>
+          <p className="text-sm mb-8" style={{ color: '#555' }}>
             XPEAK · 16 de mayo de 2026 · 6 min de lectura
           </p>
 
-          <p className="text-base leading-relaxed mb-6" style={{ color: 'rgba(255,255,255,0.7)' }}>
-            El <strong style={{ color: '#fff' }}>maestro de ceremonias</strong> es uno de los profesionales más decisivos de una boda y, paradójicamente, uno de los menos visibles en el presupuesto inicial. Su trabajo determina si el evento fluye sin pausas incómodas o si los invitados se pierden entre un momento y el siguiente. Esta guía explica qué hace, cuánto cuesta y cómo elegir el MC correcto para tu boda en España.
+          <p className="text-base leading-relaxed mb-6" style={{ color: '#222' }}>
+            El <strong style={{ color: '#111' }}>maestro de ceremonias</strong> es uno de los profesionales más decisivos de una boda y, paradójicamente, uno de los menos visibles en el presupuesto inicial. Su trabajo determina si el evento fluye sin pausas incómodas o si los invitados se pierden entre un momento y el siguiente. Esta guía explica qué hace, cuánto cuesta y cómo elegir el MC correcto para tu boda en España.
           </p>
 
-          <div className="p-4 rounded-xl mb-8" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
-            <p className="text-sm font-bold mb-1" style={{ color: '#D4AF37' }}>Resumen rápido</p>
-            <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
-              Un maestro de ceremonias para bodas en España cuesta entre <strong style={{ color: '#fff' }}>600€ y 1.500€</strong> de media por evento completo (6–8 horas).
+          <div className="p-4 rounded-xl mb-8" style={{ background: 'rgba(219,39,119,0.06)', border: '1px solid rgba(219,39,119,0.15)' }}>
+            <p className="text-sm font-bold mb-1" style={{ color: '#DB2777' }}>Resumen rápido</p>
+            <p className="text-sm leading-relaxed" style={{ color: '#333' }}>
+              Un maestro de ceremonias para bodas en España cuesta entre <strong style={{ color: '#111' }}>600€ y 1.500€</strong> de media por evento completo (6–8 horas).
               El precio depende de la experiencia, la ciudad y si incluye reuniones de coordinación previas.
               Las bodas de más de 100 invitados casi siempre necesitan MC profesional para mantener el ritmo del evento.
             </p>
           </div>
 
           <h2 className="text-xl font-black mb-4">¿Qué hace exactamente un maestro de ceremonias?</h2>
-          <p className="text-sm mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
-            El MC no es un animador que hace juegos —aunque puede hacerlos. Su función principal es <strong style={{ color: '#fff' }}>conducir el guión del evento</strong> de principio a fin, coordinándose con todos los proveedores (DJ, catering, fotógrafo) para que cada momento ocurra en el momento correcto:
+          <p className="text-base mb-5 leading-relaxed" style={{ color: '#222' }}>
+            El MC no es un animador que hace juegos —aunque puede hacerlos. Su función principal es <strong style={{ color: '#111' }}>conducir el guión del evento</strong> de principio a fin, coordinándose con todos los proveedores (DJ, catering, fotógrafo) para que cada momento ocurra en el momento correcto:
           </p>
           <div className="space-y-3 mb-10">
             {FUNCIONES.map(f => (
-              <div key={f.titulo} className="flex gap-3 p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                <Star size={13} className="flex-shrink-0 mt-0.5" style={{ color: '#D4AF37' }} />
+              <div key={f.titulo} className="flex gap-3 p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                <Star size={13} className="flex-shrink-0 mt-0.5" style={{ color: '#DB2777' }} />
                 <div>
                   <p className="text-xs font-bold mb-0.5">{f.titulo}</p>
-                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>{f.desc}</p>
+                  <p className="text-xs" style={{ color: '#444' }}>{f.desc}</p>
                 </div>
               </div>
             ))}
           </div>
 
           <h2 className="text-xl font-black mb-4">Precio del maestro de ceremonias por experiencia</h2>
-          <p className="text-sm mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
+          <p className="text-base mb-5 leading-relaxed" style={{ color: '#222' }}>
             La experiencia es el factor que más influye en el precio. Un MC que lleva 10 años conduciendo bodas de 200 personas tiene un dominio del timing y la improvisación que no se aprende en un año:
           </p>
-          <div className="overflow-x-auto mb-10 rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+          <div className="overflow-x-auto mb-10 rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
             <table className="w-full text-xs min-w-[520px]">
               <thead>
-                <tr style={{ background: 'rgba(255,255,255,0.04)' }}>
+                <tr style={{ background: 'rgba(0,0,0,0.04)' }}>
                   {['Perfil', 'Experiencia', 'Precio por evento', 'Típico en'].map(h => (
                     <th key={h} className="px-2 sm:px-4 py-3 text-left font-bold uppercase tracking-wider whitespace-nowrap"
-                      style={{ color: 'rgba(255,255,255,0.6)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>{h}</th>
+                      style={{ color: '#333', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {TABLE.map((row, i) => (
-                  <tr key={row.perfil} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)' }}>
-                    <td className="px-2 sm:px-4 py-3 font-bold" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.perfil}</td>
-                    <td className="px-2 sm:px-4 py-3 whitespace-nowrap" style={{ color: 'rgba(255,255,255,0.5)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.experiencia}</td>
-                    <td className="px-2 sm:px-4 py-3 font-black whitespace-nowrap" style={{ color: '#D4AF37', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.rango}</td>
-                    <td className="px-2 sm:px-4 py-3" style={{ color: 'rgba(255,255,255,0.6)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.nota}</td>
+                  <tr key={row.perfil} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)' }}>
+                    <td className="px-2 sm:px-4 py-3 font-bold" style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{row.perfil}</td>
+                    <td className="px-2 sm:px-4 py-3 whitespace-nowrap" style={{ color: '#444', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{row.experiencia}</td>
+                    <td className="px-2 sm:px-4 py-3 font-black whitespace-nowrap" style={{ color: '#DB2777', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{row.rango}</td>
+                    <td className="px-2 sm:px-4 py-3" style={{ color: '#333', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{row.nota}</td>
                   </tr>
                 ))}
               </tbody>
@@ -186,33 +186,33 @@ export default function BlogMaestroCeremonias() {
           </div>
 
           <h2 className="text-xl font-black mb-4">Precio del MC por ciudad en España</h2>
-          <p className="text-sm mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
+          <p className="text-base mb-5 leading-relaxed" style={{ color: '#222' }}>
             La geografía también afecta al precio, especialmente porque muchos MC de referencia cobran desplazamiento cuando trabajan fuera de su ciudad:
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10">
             {CIUDADES.map(c => (
-              <div key={c.ciudad} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <div key={c.ciudad} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)' }}>
                 <div className="flex items-center gap-2 mb-1">
-                  <MapPin size={12} style={{ color: '#D4AF37' }} />
+                  <MapPin size={12} style={{ color: '#DB2777' }} />
                   <span className="text-sm font-black">{c.ciudad}</span>
-                  <span className="ml-auto text-sm font-bold" style={{ color: '#D4AF37' }}>{c.rango}</span>
+                  <span className="ml-auto text-sm font-bold" style={{ color: '#DB2777' }}>{c.rango}</span>
                 </div>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>{c.note}</p>
+                <p className="text-xs" style={{ color: '#333' }}>{c.note}</p>
               </div>
             ))}
           </div>
 
           <h2 className="text-xl font-black mb-4">¿MC o animador? Diferencias clave</h2>
-          <p className="text-sm mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
+          <p className="text-base mb-5 leading-relaxed" style={{ color: '#222' }}>
             Es una confusión habitual. Aquí la diferencia real:
           </p>
-          <div className="overflow-x-auto mb-10 rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+          <div className="overflow-x-auto mb-10 rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
             <table className="w-full text-xs min-w-[400px]">
               <thead>
-                <tr style={{ background: 'rgba(255,255,255,0.04)' }}>
+                <tr style={{ background: 'rgba(0,0,0,0.04)' }}>
                   {['Característica', 'Maestro de Ceremonias', 'Animador'].map(h => (
                     <th key={h} className="px-3 sm:px-4 py-3 text-left font-bold uppercase tracking-wider"
-                      style={{ color: 'rgba(255,255,255,0.6)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>{h}</th>
+                      style={{ color: '#333', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -224,10 +224,10 @@ export default function BlogMaestroCeremonias() {
                   ['Guión', 'Personalizado y detallado', 'Estándar con variaciones'],
                   ['Precio medio', '600€ – 1.500€', '300€ – 800€'],
                 ].map(([car, mc, anim], i) => (
-                  <tr key={car} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)' }}>
-                    <td className="px-3 sm:px-4 py-3 font-bold text-xs" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.6)' }}>{car}</td>
-                    <td className="px-3 sm:px-4 py-3 text-xs" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', color: '#D4AF37' }}>{mc}</td>
-                    <td className="px-3 sm:px-4 py-3 text-xs" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.6)' }}>{anim}</td>
+                  <tr key={car} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)' }}>
+                    <td className="px-3 sm:px-4 py-3 font-bold text-xs" style={{ borderBottom: '1px solid rgba(0,0,0,0.05)', color: '#333' }}>{car}</td>
+                    <td className="px-3 sm:px-4 py-3 text-xs" style={{ borderBottom: '1px solid rgba(0,0,0,0.05)', color: '#DB2777' }}>{mc}</td>
+                    <td className="px-3 sm:px-4 py-3 text-xs" style={{ borderBottom: '1px solid rgba(0,0,0,0.05)', color: '#333' }}>{anim}</td>
                   </tr>
                 ))}
               </tbody>
@@ -242,8 +242,8 @@ export default function BlogMaestroCeremonias() {
               { n: '03', text: 'Verifica que se coordina con tu DJ. La sincronía entre MC y DJ es lo que define si el banquete fluye o se convierte en un caos de señales perdidas.' },
             ].map(item => (
               <li key={item.n} className="flex gap-3">
-                <span className="text-2xl font-black flex-shrink-0" style={{ color: 'rgba(212,175,55,0.2)', lineHeight: '1.1' }}>{item.n}</span>
-                <p className="text-sm leading-relaxed pt-0.5" style={{ color: 'rgba(255,255,255,0.6)' }}>{item.text}</p>
+                <span className="text-2xl font-black flex-shrink-0" style={{ color: 'rgba(219,39,119,0.2)', lineHeight: '1.1' }}>{item.n}</span>
+                <p className="text-base leading-relaxed pt-0.5" style={{ color: '#333' }}>{item.text}</p>
               </li>
             ))}
           </ol>
@@ -251,27 +251,27 @@ export default function BlogMaestroCeremonias() {
           <h2 className="text-xl font-black mb-5">Preguntas frecuentes sobre el maestro de ceremonias</h2>
           <div className="space-y-4 mb-12">
             {FAQ.map(faq => (
-              <div key={faq.q} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <div key={faq.q} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)' }}>
                 <p className="text-sm font-bold mb-2">{faq.q}</p>
-                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>{faq.a}</p>
+                <p className="text-sm leading-relaxed" style={{ color: '#444' }}>{faq.a}</p>
               </div>
             ))}
           </div>
 
-          <div className="rounded-2xl p-8 text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
+          <div className="rounded-2xl p-8 text-center" style={{ background: 'rgba(219,39,119,0.05)', border: '1px solid rgba(219,39,119,0.15)' }}>
             <h2 className="text-xl font-black mb-2">¿Buscas maestro de ceremonias para tu boda?</h2>
-            <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.5)' }}>
+            <p className="text-sm mb-5" style={{ color: '#444' }}>
               Encuentra MCs verificados con portfolio real, tarifas públicas y contratos automáticos en XPEAK.
             </p>
             <a href="/directorio/speaker"
               className="inline-flex items-center gap-2 px-7 py-3 rounded-xl font-black text-sm transition-all hover:scale-105"
-              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+              style={{ background: 'linear-gradient(90deg,#DB2777,#B8941E)', color: '#000' }}>
               <Zap size={14} /> Ver MCs en XPEAK — gratis
             </a>
           </div>
 
           <div className="mt-12">
-            <h2 className="text-lg font-black mb-5" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+            <h2 className="text-lg font-black mb-5" style={{ color: '#111' }}>Artículos relacionados</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
                 { href: '/blog/profesionales-bodas', tag: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026', desc: 'DJ, fotógrafo, catering y más. Todo lo que necesitas para tu boda.' },
@@ -281,11 +281,11 @@ export default function BlogMaestroCeremonias() {
               ].map(p => (
                 <a key={p.href} href={p.href}
                   className="block p-5 rounded-2xl transition-all hover:scale-[1.02]"
-                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
                   <span className="inline-block text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded mb-2"
-                    style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.18)' }}>{p.tag}</span>
+                    style={{ background: 'rgba(219,39,119,0.1)', color: '#DB2777', border: '1px solid rgba(219,39,119,0.18)' }}>{p.tag}</span>
                   <p className="text-sm font-black leading-snug mb-1">{p.title}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{p.desc}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{p.desc}</p>
                 </a>
               ))}
             </div>

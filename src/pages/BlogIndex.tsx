@@ -78,7 +78,7 @@ export default function BlogIndex() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#7a6216' }}>Blog · XPEAK</p>
             <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-3" style={{ color: '#111' }}>Guías para eventos en España</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#333' }}>
+            <p className="text-base leading-relaxed" style={{ color: '#333' }}>
               Precios reales, ratios y consejos prácticos para contratar DJs, camareros, fotógrafos y staff. <span style={{ color: '#111', fontWeight: 600 }}>{POSTS.length} artículos</span>
             </p>
           </div>
@@ -136,7 +136,7 @@ export default function BlogIndex() {
                   </span>
                 </div>
                 <h2 className="text-sm font-bold mb-1.5 leading-snug transition-colors" style={{ color: '#161412' }}>{post.title}</h2>
-                <p className="text-xs leading-relaxed" style={{ color: '#555' }}>{post.desc}</p>
+                <p className="text-sm leading-relaxed" style={{ color: '#555' }}>{post.desc}</p>
               </a>
             ))}
           </div>

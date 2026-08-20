@@ -43,22 +43,22 @@ export default function BlogFiestaVillaIbiza() {
           <article className="mt-6">
             <span style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)', borderRadius: 6, padding: '3px 10px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>Ibiza · Fiestas Privadas</span>
             <h1 className="text-3xl font-black mt-4 mb-4 leading-tight">Cómo organizar una fiesta privada en una villa de Ibiza: permisos, ruido y proveedores</h1>
-            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem' }}>Por Daniel · XPEAK · 10 junio 2026</p>
+            <p style={{ color: '#444', fontSize: '0.85rem' }}>Por Daniel · XPEAK · 10 junio 2026</p>
 
-            <p className="mt-6 mb-4" style={{ color: 'rgba(255,255,255,0.75)', lineHeight: 1.8 }}>
+            <p className="mt-6 mb-4" style={{ color: '#222', lineHeight: 1.8 }}>
               Ibiza es el destino favorito para fiestas privadas en villa de toda Europa. Si estás organizando una, hay aspectos clave que debes tener en cuenta: normativa de ruido, proveedores de confianza y logística. Esta guía te lo explica todo.
             </p>
 
             <h2 className="text-xl font-black mt-8 mb-3">Normativa de ruido en Ibiza para fiestas privadas</h2>
-            <p style={{ color: 'rgba(255,255,255,0.75)', lineHeight: 1.8, marginBottom: '1rem' }}>
+            <p style={{ color: '#222', lineHeight: 1.8, marginBottom: '1rem' }}>
               Las Islas Baleares tienen una normativa estricta sobre ruido que afecta a las fiestas en villas privadas:
             </p>
-            <ul style={{ color: 'rgba(255,255,255,0.75)', lineHeight: 2, paddingLeft: '1.2rem', marginBottom: '1.5rem' }}>
-              <li><strong style={{ color: '#fff' }}>Horario diurno (7h–23h):</strong> nivel máximo 45-50 dB en el exterior.</li>
-              <li><strong style={{ color: '#fff' }}>Horario nocturno (23h–7h):</strong> nivel máximo 35-40 dB. La música amplificada exterior está muy limitada.</li>
-              <li><strong style={{ color: '#fff' }}>Consejo práctico:</strong> Instala el equipo de sonido en interior o en zonas cerradas si la fiesta se prolonga hasta la madrugada. Muchas villas disponen de espacios interiores acondicionados.</li>
+            <ul style={{ color: '#222', lineHeight: 2, paddingLeft: '1.2rem', marginBottom: '1.5rem' }}>
+              <li><strong style={{ color: '#111' }}>Horario diurno (7h–23h):</strong> nivel máximo 45-50 dB en el exterior.</li>
+              <li><strong style={{ color: '#111' }}>Horario nocturno (23h–7h):</strong> nivel máximo 35-40 dB. La música amplificada exterior está muy limitada.</li>
+              <li><strong style={{ color: '#111' }}>Consejo práctico:</strong> Instala el equipo de sonido en interior o en zonas cerradas si la fiesta se prolonga hasta la madrugada. Muchas villas disponen de espacios interiores acondicionados.</li>
             </ul>
-            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.82rem' }}>* Consulta siempre el Reglamento de Ruidos de la Comunitat Autònoma de les Illes Balears y el plan de ordenación del municipio donde se encuentra la villa.</p>
+            <p style={{ color: '#444', fontSize: '0.82rem' }}>* Consulta siempre el Reglamento de Ruidos de la Comunitat Autònoma de les Illes Balears y el plan de ordenación del municipio donde se encuentra la villa.</p>
 
             <h2 className="text-xl font-black mt-8 mb-3">Proveedores que necesitas para tu fiesta en villa</h2>
             {[
@@ -67,11 +67,11 @@ export default function BlogFiestaVillaIbiza() {
               { emoji: '🍾', title: 'Catering villa Ibiza', desc: 'Servicios de finger food, cenas en villa y barra de cócteles. Muchos caterings en Ibiza ofrecen paquetes específicos para villas con equipo propio.', link: '/contratar-catering/ibiza' },
               { emoji: '📸', title: 'Fotógrafo / videógrafo', desc: 'Para inmortalizar la fiesta. Los mejores fotógrafos de fiestas privadas en Ibiza trabajan de forma discreta y tienen experiencia con privacidad de clientes.', link: '/contratar-fotografo/ibiza' },
             ].map(p => (
-              <div key={p.title} className="flex gap-3 mb-4 p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <div key={p.title} className="flex gap-3 mb-4 p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)' }}>
                 <span style={{ fontSize: '1.5rem', flexShrink: 0 }}>{p.emoji}</span>
                 <div>
                   <p className="font-black"><a href={p.link} style={{ color: '#D4AF37' }}>{p.title}</a></p>
-                  <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.88rem', lineHeight: 1.7, marginTop: 4 }}>{p.desc}</p>
+                  <p style={{ color: '#333', fontSize: '0.88rem', lineHeight: 1.7, marginTop: 4 }}>{p.desc}</p>
                 </div>
               </div>
             ))}
@@ -79,7 +79,7 @@ export default function BlogFiestaVillaIbiza() {
             <h2 className="text-xl font-black mt-8 mb-3">Presupuesto orientativo fiesta villa Ibiza</h2>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem', marginBottom: '0.5rem' }}>
               <thead>
-                <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                <tr style={{ borderBottom: '1px solid #777' }}>
                   <th style={{ textAlign: 'left', padding: '8px 0', color: '#D4AF37' }}>Proveedor</th>
                   <th style={{ textAlign: 'left', padding: '8px 0', color: '#D4AF37' }}>20 pax</th>
                   <th style={{ textAlign: 'left', padding: '8px 0', color: '#D4AF37' }}>50 pax</th>
@@ -93,23 +93,23 @@ export default function BlogFiestaVillaIbiza() {
                   ['Fotógrafo (3h)', '300€–500€', '300€–500€'],
                   ['Total orientativo', '~1.500€–2.600€', '~2.500€–5.000€'],
                 ].map(([prov, p20, p50]) => (
-                  <tr key={prov} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', fontWeight: prov.startsWith('Total') ? 700 : 'normal' }}>
+                  <tr key={prov} style={{ borderBottom: '1px solid rgba(0,0,0,0.05)', fontWeight: prov.startsWith('Total') ? 700 : 'normal' }}>
                     <td style={{ padding: '10px 0' }}>{prov}</td>
-                    <td style={{ padding: '10px 0', color: prov.startsWith('Total') ? '#D4AF37' : 'rgba(255,255,255,0.7)' }}>{p20}</td>
-                    <td style={{ padding: '10px 0', color: prov.startsWith('Total') ? '#D4AF37' : 'rgba(255,255,255,0.7)' }}>{p50}</td>
+                    <td style={{ padding: '10px 0', color: prov.startsWith('Total') ? '#D4AF37' : '#222' }}>{p20}</td>
+                    <td style={{ padding: '10px 0', color: prov.startsWith('Total') ? '#D4AF37' : '#222' }}>{p50}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.8rem', marginBottom: '1.5rem' }}>* Precios orientativos 2026. No incluyen alquiler de villa ni bebidas.</p>
+            <p style={{ color: '#333', fontSize: '0.8rem', marginBottom: '1.5rem' }}>* Precios orientativos 2026. No incluyen alquiler de villa ni bebidas.</p>
 
             <section className="mt-8">
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
-                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <h3 className="text-sm font-bold mb-2">{f.name}</h3>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#222' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
               </div>
@@ -117,7 +117,7 @@ export default function BlogFiestaVillaIbiza() {
 
             <div className="mt-8 p-5 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
               <p className="font-black text-lg mb-2">Contrata DJ, camareros y catering para tu villa en Ibiza</p>
-              <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.9rem', marginBottom: '1rem' }}>Profesionales verificados disponibles en Ibiza. Flash Booking disponible para fechas de última hora.</p>
+              <p style={{ color: '#444', fontSize: '0.9rem', marginBottom: '1rem' }}>Profesionales verificados disponibles en Ibiza. Flash Booking disponible para fechas de última hora.</p>
               <a href="/contratar-dj/ibiza" className="inline-block px-6 py-3 rounded-xl font-black text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver DJs en Ibiza →</a>
             </div>
 

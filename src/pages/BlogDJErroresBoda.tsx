@@ -124,7 +124,7 @@ export default function BlogDJErroresBoda() {
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <a href="/auth"
@@ -151,14 +151,14 @@ export default function BlogDJErroresBoda() {
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-4 leading-tight">
             Los 10 errores al contratar un DJ para una boda (y cómo evitarlos)
           </h1>
-          <p className="text-sm sm:text-base mb-10 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
+          <p className="text-base sm:text-base mb-10 leading-relaxed" style={{ color: '#333' }}>
             El DJ puede ser la diferencia entre una boda que la gente recuerda con una sonrisa o una noche que todo el mundo preferiría olvidar. Estos son los errores más frecuentes y cómo esquivarlos.
           </p>
 
           <div className="space-y-6 mb-12">
             {errores.map(e => (
               <div key={e.num} className="rounded-xl p-5 sm:p-6"
-                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)' }}>
                 <div className="flex items-start gap-4">
                   <span className="text-2xl sm:text-3xl font-black flex-shrink-0 leading-none pt-0.5"
                     style={{ color: 'rgba(212,175,55,0.25)' }}>
@@ -166,7 +166,7 @@ export default function BlogDJErroresBoda() {
                   </span>
                   <div>
                     <h2 className="text-base sm:text-lg font-black mb-2 leading-snug">{e.titulo}</h2>
-                    <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)' }}>{e.texto}</p>
+                    <p className="text-base leading-relaxed" style={{ color: '#444' }}>{e.texto}</p>
                   </div>
                 </div>
               </div>
@@ -188,7 +188,7 @@ export default function BlogDJErroresBoda() {
                 'Hay un plan de contingencia por baja de última hora',
                 'El DJ visitará o recibirá el plano del espacio antes del día',
               ].map(item => (
-                <li key={item} className="flex items-start gap-2 text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
+                <li key={item} className="flex items-start gap-2 text-sm" style={{ color: '#333' }}>
                   <span style={{ color: '#D4AF37' }}>✓</span> {item}
                 </li>
               ))}
@@ -197,9 +197,9 @@ export default function BlogDJErroresBoda() {
 
           {/* CTA */}
           <div className="rounded-xl p-6 sm:p-8 mb-12 text-center"
-            style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+            style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
             <p className="text-sm font-bold mb-2">¿Buscas DJ para tu boda?</p>
-            <p className="text-xs mb-5" style={{ color: 'rgba(255,255,255,0.6)' }}>
+            <p className="text-xs mb-5" style={{ color: '#333' }}>
               Encuentra DJs verificados con experiencia en bodas. Perfiles con referencias reales, precios públicos y contrato digital automático.
             </p>
             <a href="/contratar-dj"
@@ -214,9 +214,9 @@ export default function BlogDJErroresBoda() {
             <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
             <div className="space-y-4">
               {faqStructured.mainEntity.map(f => (
-                <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                   <h3 className="text-sm font-bold mb-2">{f.name}</h3>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#222' }}>{f.acceptedAnswer.text}</p>
                 </div>
               ))}
             </div>
@@ -235,11 +235,11 @@ export default function BlogDJErroresBoda() {
             ].map(post => (
               <a key={post.href} href={post.href}
                 className="flex items-start gap-4 p-5 rounded-xl transition-all hover:scale-[1.02]"
-                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)' }}>
                 <span className="text-2xl flex-shrink-0">{post.emoji}</span>
                 <div>
                   <p className="text-sm font-black leading-snug mb-1.5">{post.title}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{post.desc}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{post.desc}</p>
                 </div>
               </a>
             ))}

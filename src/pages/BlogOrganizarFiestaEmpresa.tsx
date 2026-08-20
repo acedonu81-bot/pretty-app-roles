@@ -78,7 +78,7 @@ export default function BlogOrganizarFiestaEmpresa() {
           <h2 className="text-2xl font-bold mt-10 mb-4">Presupuesto fiesta de empresa 2026: referencia por persona</h2>
           <div className="overflow-x-auto mb-8">
             <table className="w-full text-sm border-collapse">
-              <thead><tr style={{ background: 'rgba(212,175,55,0.08)' }}>
+              <thead><tr style={{ background: 'rgba(109,40,217,0.08)' }}>
                 <th className="text-left p-3 border border-white/10">Partida</th>
                 <th className="text-left p-3 border border-white/10">Básico</th>
                 <th className="text-left p-3 border border-white/10">Estándar</th>
@@ -93,10 +93,10 @@ export default function BlogOrganizarFiestaEmpresa() {
                   { p: 'Decoración', b: '2–4€', s: '4–8€', pr: '10–20€' },
                   { p: 'TOTAL/persona', b: '37–62€', s: '70–119€', pr: '133–225€' },
                 ].map((r, i) => (
-                  <tr key={i} style={{ background: r.p === 'TOTAL/persona' ? 'rgba(212,175,55,0.06)' : i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)' }}>
+                  <tr key={i} style={{ background: r.p === 'TOTAL/persona' ? 'rgba(109,40,217,0.06)' : i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.02)' }}>
                     <td className={`p-3 border border-white/10 ${r.p === 'TOTAL/persona' ? 'font-bold' : 'font-medium'}`}>{r.p}</td>
                     <td className="p-3 border border-white/10 text-neutral-400">{r.b}</td>
-                    <td className="p-3 border border-white/10" style={{ color: '#D4AF37' }}>{r.s}</td>
+                    <td className="p-3 border border-white/10" style={{ color: '#6D28D9' }}>{r.s}</td>
                     <td className="p-3 border border-white/10 text-neutral-400">{r.pr}</td>
                   </tr>
                 ))}
@@ -107,7 +107,7 @@ export default function BlogOrganizarFiestaEmpresa() {
           <h2 className="text-2xl font-bold mt-10 mb-4">Checklist para organizar una fiesta de empresa</h2>
           {CHECKLIST.map((fase, i) => (
             <div key={i} className="mb-6 p-4 rounded-xl border border-white/10">
-              <h3 className="font-semibold mb-3" style={{ color: '#D4AF37' }}>{fase.fase}</h3>
+              <h3 className="font-semibold mb-3" style={{ color: '#6D28D9' }}>{fase.fase}</h3>
               <ul className="space-y-2">
                 {fase.tareas.map((t, j) => (
                   <li key={j} className="flex items-start gap-2 text-neutral-300 text-sm">

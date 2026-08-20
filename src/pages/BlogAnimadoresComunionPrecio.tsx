@@ -81,27 +81,27 @@ export default function BlogAnimadoresComunionPrecio() {
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#6D28D9' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>Unirse gratis</a>
           </div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
           <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Animación · XPEAK Blog</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#6D28D9' }}>Animación · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Cuánto cuesta contratar animadores para comunión en España (2026)</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Guía de precios por tipo de animación, cuándo reservar y consejos para que los niños lo pasen genial mientras los adultos disfrutan tranquilos.</p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>14 junio 2026</time>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Guía de precios por tipo de animación, cuándo reservar y consejos para que los niños lo pasen genial mientras los adultos disfrutan tranquilos.</p>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>14 junio 2026</time>
           </div>
           <div className="space-y-10">
 
             <section>
               <h2 className="text-lg font-black mb-4">Tipos de animación para comunión</h2>
-              <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.7)' }}>
+              <p className="text-base leading-relaxed mb-4" style={{ color: '#222' }}>
                 La animación en una comunión cumple dos funciones: entretener a los niños con actividades adaptadas a su edad y liberar a los adultos para disfrutar del banquete sin preocuparse de los mas pequeños. Estas son las opciones mas habituales:
               </p>
               <div className="space-y-3">
@@ -112,9 +112,9 @@ export default function BlogAnimadoresComunionPrecio() {
                   { nombre: 'Taller de manualidades', desc: 'Monitora que guia a los niños en un taller creativo. El material suele estar incluido. Tematica personalizable.' },
                   { nombre: 'Hinchables', desc: 'Se contratan aparte con empresa especializada. Necesitan espacio exterior y supervision. Precio independiente del animador.' },
                 ].map(t => (
-                  <div key={t.nombre} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={t.nombre} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <p className="text-sm font-black mb-1">{t.nombre}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: '#3d3d4e' }}>{t.desc}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>{t.desc}</p>
                   </div>
                 ))}
               </div>
@@ -122,10 +122,10 @@ export default function BlogAnimadoresComunionPrecio() {
 
             <section>
               <h2 className="text-lg font-black mb-4">Precios de animación para comunión 2026</h2>
-              <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+              <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
                 <table className="w-full text-xs">
                   <thead>
-                    <tr style={{ background: 'rgba(212,175,55,0.08)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                    <tr style={{ background: 'rgba(109,40,217,0.08)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
                       <th className="text-left px-4 py-3 font-bold">Tipo de servicio</th>
                       <th className="px-4 py-3 font-bold text-right">Precio</th>
                       <th className="px-4 py-3 font-bold text-left hidden sm:table-cell">Que incluye</th>
@@ -133,9 +133,9 @@ export default function BlogAnimadoresComunionPrecio() {
                   </thead>
                   <tbody>
                     {PRECIOS.map((row, i) => (
-                      <tr key={row.tipo} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                      <tr key={row.tipo} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)', borderBottom: '1px solid rgba(0,0,0,0.04)' }}>
                         <td className="px-4 py-3 font-medium">{row.tipo}</td>
-                        <td className="px-4 py-3 text-right font-bold" style={{ color: '#D4AF37' }}>{row.precio}</td>
+                        <td className="px-4 py-3 text-right font-bold" style={{ color: '#6D28D9' }}>{row.precio}</td>
                         <td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#3d3d4e' }}>{row.incluye}</td>
                       </tr>
                     ))}
@@ -147,8 +147,8 @@ export default function BlogAnimadoresComunionPrecio() {
 
             <section>
               <h2 className="text-lg font-black mb-4">Cuándo contratar los animadores</h2>
-              <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                Los meses de mayo y junio concentran la gran mayoria de comuniones en España. Los animadores con buena valoración tienen agenda completa semanas antes. La recomendación general es reservar con <strong style={{ color: '#fff' }}>al menos 3 meses de antelación</strong> para estos meses.
+              <p className="text-base leading-relaxed mb-4" style={{ color: '#222' }}>
+                Los meses de mayo y junio concentran la gran mayoria de comuniones en España. Los animadores con buena valoración tienen agenda completa semanas antes. La recomendación general es reservar con <strong style={{ color: '#111' }}>al menos 3 meses de antelación</strong> para estos meses.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {[
@@ -157,9 +157,9 @@ export default function BlogAnimadoresComunionPrecio() {
                   { caso: 'Comunión en octubre-abril', antel: '1-2 meses', nota: 'Temporada baja, mas flexibilidad.' },
                   { caso: 'Evento de ultima hora', antel: 'Flash Booking', nota: 'XPEAK encuentra disponibles en 1h.' },
                 ].map(c => (
-                  <div key={c.caso} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={c.caso} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <p className="text-xs font-bold mb-1">{c.caso}</p>
-                    <p className="text-sm font-black mb-1" style={{ color: '#D4AF37' }}>{c.antel}</p>
+                    <p className="text-sm font-black mb-1" style={{ color: '#6D28D9' }}>{c.antel}</p>
                     <p className="text-[0.65rem]" style={{ color: '#3d3d4e' }}>{c.nota}</p>
                   </div>
                 ))}
@@ -175,9 +175,9 @@ export default function BlogAnimadoresComunionPrecio() {
                   { titulo: 'Aclara que incluye el precio', texto: 'Algunos presupuestos no incluyen el desplazamiento, el material de pintacaras o los globos. Pide desglose por escrito.' },
                   { titulo: 'Reserva lugar con antelacion', texto: 'Si el venue no tiene zona separada para los ninos, coordinalo con el salon antes de contratar la animacion. Necesitan espacio suficiente.' },
                 ].map(c => (
-                  <div key={c.titulo} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={c.titulo} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <p className="text-sm font-black mb-1">{c.titulo}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: '#3d3d4e' }}>{c.texto}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>{c.texto}</p>
                   </div>
                 ))}
               </div>
@@ -187,20 +187,20 @@ export default function BlogAnimadoresComunionPrecio() {
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(faq => (
-                  <div key={faq.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                  <div key={faq.name} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)' }}>
                     <p className="text-sm font-bold mb-2">{faq.name}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>{faq.acceptedAnswer.text}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#444' }}>{faq.acceptedAnswer.text}</p>
                   </div>
                 ))}
               </div>
             </section>
 
-            <section className="rounded-2xl p-6 sm:p-8 text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
+            <section className="rounded-2xl p-6 sm:p-8 text-center" style={{ background: 'rgba(109,40,217,0.05)', border: '1px solid rgba(109,40,217,0.15)' }}>
               <p className="text-base font-black mb-2">Encuentra animadores para tu comunión</p>
-              <p className="text-xs mb-5" style={{ color: 'rgba(255,255,255,0.5)' }}>Animadores infantiles, magos y dinamizadores verificados en toda España. Precio publico, sin comision.</p>
+              <p className="text-xs mb-5" style={{ color: '#444' }}>Animadores infantiles, magos y dinamizadores verificados en toda España. Precio publico, sin comision.</p>
               <a href="/contratar-animadores"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-black text-sm transition-all hover:scale-105"
-                style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>
                 Ver animadores disponibles
               </a>
             </section>

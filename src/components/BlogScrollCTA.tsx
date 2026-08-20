@@ -83,15 +83,15 @@ export default function BlogScrollCTA({ role = 'general', storageKey }: BlogScro
       <div
         className="mx-auto max-w-3xl mb-3 mx-3 sm:mx-auto rounded-2xl px-4 py-3 flex items-center justify-between gap-4"
         style={{
-          background: 'rgba(10,10,10,0.97)',
+          background: 'rgba(255,255,255,0.97)',
           border: '1px solid rgba(212,175,55,0.35)',
           boxShadow: '0 -4px 40px rgba(212,175,55,0.12)',
           backdropFilter: 'blur(12px)',
         }}
       >
         <div className="min-w-0">
-          <p className="text-xs font-black truncate" style={{ color: '#fff' }}>{c.label}</p>
-          <p className="text-[0.65rem] hidden sm:block truncate" style={{ color: 'rgba(255,255,255,0.5)' }}>{c.sub}</p>
+          <p className="text-xs font-black truncate" style={{ color: '#111' }}>{c.label}</p>
+          <p className="text-[0.65rem] hidden sm:block truncate" style={{ color: '#444' }}>{c.sub}</p>
         </div>
 
         <div className="flex items-center gap-2 flex-shrink-0">
@@ -105,7 +105,7 @@ export default function BlogScrollCTA({ role = 'general', storageKey }: BlogScro
           <button
             onClick={() => { setDismissed(true); sessionStorage.setItem(key, '1'); }}
             className="w-7 h-7 rounded-full flex items-center justify-center transition-all hover:opacity-70 flex-shrink-0"
-            style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.6)' }}
+            style={{ background: 'rgba(0,0,0,0.06)', color: '#333' }}
             aria-label="Cerrar"
           >
             ✕

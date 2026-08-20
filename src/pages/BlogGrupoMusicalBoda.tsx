@@ -82,17 +82,17 @@ export default function BlogGrupoMusicalBoda() {
           <h2 className="text-2xl font-bold mt-10 mb-4">Precios por tipo de grupo musical para boda 2026</h2>
           <div className="overflow-x-auto mb-8">
             <table className="w-full text-sm border-collapse">
-              <thead><tr style={{ background: 'rgba(212,175,55,0.08)' }}>
+              <thead><tr style={{ background: 'rgba(219,39,119,0.08)' }}>
                 <th className="text-left p-3 border border-white/10">Tipo de grupo</th>
                 <th className="text-left p-3 border border-white/10">Momento</th>
                 <th className="text-left p-3 border border-white/10">Precio</th>
                 <th className="text-left p-3 border border-white/10">Notas</th>
               </tr></thead>
               <tbody>{TIPOS.map((t, i) => (
-                <tr key={i} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)' }}>
+                <tr key={i} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.02)' }}>
                   <td className="p-3 border border-white/10 font-medium">{t.tipo}</td>
                   <td className="p-3 border border-white/10 text-neutral-400">{t.momento}</td>
-                  <td className="p-3 border border-white/10 font-bold" style={{ color: '#D4AF37' }}>{t.rango}</td>
+                  <td className="p-3 border border-white/10 font-bold" style={{ color: '#DB2777' }}>{t.rango}</td>
                   <td className="p-3 border border-white/10 text-neutral-400">{t.nota}</td>
                 </tr>
               ))}</tbody>

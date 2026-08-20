@@ -54,7 +54,7 @@ export default function BlogCateringBoda() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Catering · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">¿Cuánto cuesta el catering de una boda? Precio por persona en España (2026)</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>El catering es la partida más grande del presupuesto de una boda. Aquí tienes los precios reales por formato, qué incluye cada paquete y cómo no llevarte sorpresas el día del evento.</p>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>El catering es la partida más grande del presupuesto de una boda. Aquí tienes los precios reales por formato, qué incluye cada paquete y cómo no llevarte sorpresas el día del evento.</p>
             <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>4 mayo 2026</time>
           </div>
           <div className="space-y-10">
@@ -93,7 +93,7 @@ export default function BlogCateringBoda() {
             </section>
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
-              <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}><h3 className="text-sm font-bold mb-2">{f.name}</h3><p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p></div>))}</div>
+              <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}><h3 className="text-sm font-bold mb-2">{f.name}</h3><p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p></div>))}</div>
             </section>
             
             <section className="mt-8">

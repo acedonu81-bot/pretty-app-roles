@@ -160,14 +160,14 @@ export default function BlogBodaLowCost() {
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
 
         {/* Nav */}
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#DB2777' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold" style={{ background: 'linear-gradient(90deg,#DB2777,#B8941E)', color: '#000' }}>Unirse gratis</a>
           </div>
         </nav>
 
@@ -176,14 +176,14 @@ export default function BlogBodaLowCost() {
 
           {/* Header */}
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Bodas · Presupuesto · XPEAK Blog</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#DB2777' }}>Bodas · Presupuesto · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">
               Boda low cost: checklist completo de todo lo que necesitas contratar
             </h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>
               Organizar una boda bonita sin arruinarse es posible. La clave está en saber exactamente qué contratar, en qué orden y dónde está el margen real de ahorro en cada partida.
             </p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>7 junio 2026 · 8 min de lectura</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>7 junio 2026 · 8 min de lectura</time>
             <BlogAnswerBox
               question="¿Cuánto cuesta una boda low cost en España?"
               answer="Una boda low cost para 80-100 invitados en España cuesta entre 8.000 y 18.000€. Las 5 palancas de ahorro reales son: celebrar en viernes o domingo (ahorra 800-2.000€ en la finca), contratar en temporada baja (noviembre-marzo), comparar 3 presupuestos por servicio, elegir DJ en vez de banda, y contratar directamente sin agencia organizadora."
@@ -207,27 +207,27 @@ export default function BlogBodaLowCost() {
           {/* Resumen presupuesto */}
           <section className="mb-10">
             <h2 className="text-lg font-black mb-2">¿Cuánto cuesta una boda low cost en España?</h2>
-            <p className="text-sm leading-relaxed mb-5" style={{ color: 'rgba(255,255,255,0.7)' }}>
-              Para 80-100 invitados en 2026, el rango realista es <strong style={{ color: '#D4AF37' }}>8.000 – 18.000€</strong>. La diferencia entre el mínimo y el máximo depende casi por completo de tres decisiones: día de la semana, mes del año y si contratas cada proveedor directamente o a través de una agencia organizadora.
+            <p className="text-base leading-relaxed mb-5" style={{ color: '#222' }}>
+              Para 80-100 invitados en 2026, el rango realista es <strong style={{ color: '#DB2777' }}>8.000 – 18.000€</strong>. La diferencia entre el mínimo y el máximo depende casi por completo de tres decisiones: día de la semana, mes del año y si contratas cada proveedor directamente o a través de una agencia organizadora.
             </p>
 
-            <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
-              <div className="px-4 py-3 text-xs font-black uppercase tracking-widest" style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37' }}>
+            <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(0,0,0,0.06)' }}>
+              <div className="px-4 py-3 text-xs font-black uppercase tracking-widest" style={{ background: 'rgba(219,39,119,0.08)', color: '#DB2777' }}>
                 Distribución del presupuesto — 90 invitados
               </div>
               {RESUMEN_PRESUPUESTO.map((r, i) => (
                 <div key={r.partida} className="flex items-center justify-between px-4 py-3 gap-4"
-                  style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)', borderTop: '1px solid rgba(255,255,255,0.04)' }}>
+                  style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', borderTop: '1px solid rgba(0,0,0,0.04)' }}>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-semibold truncate">{r.partida}</p>
-                    <p className="text-[0.65rem] mt-0.5" style={{ color: 'rgba(255,255,255,0.6)' }}>{r.peso} del total</p>
+                    <p className="text-[0.65rem] mt-0.5" style={{ color: '#333' }}>{r.peso} del total</p>
                   </div>
-                  <span className="text-xs font-black shrink-0" style={{ color: '#D4AF37' }}>{r.rango}</span>
+                  <span className="text-xs font-black shrink-0" style={{ color: '#DB2777' }}>{r.rango}</span>
                 </div>
               ))}
             </div>
 
-            <p className="text-xs mt-4 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
+            <p className="text-sm mt-4 leading-relaxed" style={{ color: '#333' }}>
               💡 <strong>Truco número 1:</strong> Cambiar de sábado a viernes o domingo ahorra entre 800 y 2.000€ solo en la finca. Nadie de tus invitados lo recordará al día siguiente.
             </p>
           </section>
@@ -240,16 +240,16 @@ export default function BlogBodaLowCost() {
 
             <div className="space-y-6">
               {CHECKLIST.map((cat) => (
-                <div key={cat.categoria} className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.07)' }}>
+                <div key={cat.categoria} className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(0,0,0,0.07)' }}>
                   {/* Header categoría */}
                   <div className="flex items-center justify-between px-4 py-3.5"
-                    style={{ background: 'rgba(255,255,255,0.04)' }}>
+                    style={{ background: 'rgba(0,0,0,0.04)' }}>
                     <div className="flex items-center gap-2">
                       <span className="text-lg">{cat.emoji}</span>
                       <span className="font-black text-sm">{cat.categoria}</span>
                     </div>
                     <span className="text-xs font-bold px-3 py-1 rounded-full"
-                      style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                      style={{ background: 'rgba(219,39,119,0.1)', color: '#DB2777', border: '1px solid rgba(219,39,119,0.2)' }}>
                       {cat.presupuesto}
                     </span>
                   </div>
@@ -257,19 +257,19 @@ export default function BlogBodaLowCost() {
                   {/* Items */}
                   {cat.items.map((item, i) => (
                     <div key={item.servicio} className="px-4 py-3 grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-1"
-                      style={{ borderTop: '1px solid rgba(255,255,255,0.04)', background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.01)' }}>
+                      style={{ borderTop: '1px solid rgba(0,0,0,0.04)', background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.01)' }}>
                       <div>
                         <p className="text-xs font-bold">{item.servicio}</p>
-                        <p className="text-[0.65rem] mt-0.5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{item.ahorro}</p>
+                        <p className="text-[0.65rem] mt-0.5 leading-relaxed" style={{ color: '#333' }}>{item.ahorro}</p>
                       </div>
-                      <span className="text-xs font-black self-start mt-0.5 sm:text-right whitespace-nowrap" style={{ color: '#D4AF37' }}>{item.precio}</span>
+                      <span className="text-xs font-black self-start mt-0.5 sm:text-right whitespace-nowrap" style={{ color: '#DB2777' }}>{item.precio}</span>
                     </div>
                   ))}
 
                   {/* Consejo */}
-                  <div className="px-4 py-3" style={{ background: 'rgba(212,175,55,0.04)', borderTop: '1px solid rgba(212,175,55,0.1)' }}>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)' }}>
-                      <span className="font-bold" style={{ color: '#D4AF37' }}>Consejo: </span>{cat.consejo}
+                  <div className="px-4 py-3" style={{ background: 'rgba(219,39,119,0.04)', borderTop: '1px solid rgba(219,39,119,0.1)' }}>
+                    <p className="text-sm leading-relaxed" style={{ color: '#444' }}>
+                      <span className="font-bold" style={{ color: '#DB2777' }}>Consejo: </span>{cat.consejo}
                     </p>
                   </div>
                 </div>
@@ -289,11 +289,11 @@ export default function BlogBodaLowCost() {
                 { n: '05', t: 'Firma contratos digitales con cada proveedor', d: 'Un contrato protege tu señal (30-50%) si el proveedor cancela. Plataformas como XPEAK incluyen contrato automático en cada contratación, sin coste adicional.' },
               ].map(item => (
                 <div key={item.n} className="flex gap-4 p-4 rounded-xl"
-                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <span className="text-2xl font-black shrink-0 leading-none" style={{ color: 'rgba(212,175,55,0.3)' }}>{item.n}</span>
+                  style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                  <span className="text-2xl font-black shrink-0 leading-none" style={{ color: 'rgba(219,39,119,0.3)' }}>{item.n}</span>
                   <div>
                     <p className="text-sm font-black mb-1">{item.t}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)' }}>{item.d}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#444' }}>{item.d}</p>
                   </div>
                 </div>
               ))}
@@ -306,9 +306,9 @@ export default function BlogBodaLowCost() {
             <div className="space-y-3">
               {faqSchema.mainEntity.map(f => (
                 <div key={f.name} className="p-5 rounded-xl"
-                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                   <h3 className="text-sm font-bold mb-2">{f.name}</h3>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>{f.acceptedAnswer.text}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{f.acceptedAnswer.text}</p>
                 </div>
               ))}
             </div>
@@ -316,7 +316,7 @@ export default function BlogBodaLowCost() {
 
           {/* Artículos relacionados */}
           <section className="mt-8">
-            <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+            <h2 className="text-base font-black mb-3" style={{ color: '#111' }}>Artículos relacionados</h2>
             <div className="space-y-2">
               {[
                 { href: '/blog/cuanto-cuesta-una-boda-en-espana', cat: 'Bodas', title: 'Cuánto cuesta una boda en España 2026: desglose completo' },
@@ -326,22 +326,22 @@ export default function BlogBodaLowCost() {
               ].map(link => (
                 <a key={link.href} href={link.href}
                   className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80"
-                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
+                  style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
                   <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0"
-                    style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
-                  <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                    style={{ background: 'rgba(219,39,119,0.1)', color: '#DB2777', border: '1px solid rgba(219,39,119,0.15)' }}>{link.cat}</span>
+                  <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                 </a>
               ))}
             </div>
           </section>
 
           {/* CTA final */}
-          <div className="mt-8 p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
+          <div className="mt-8 p-6 rounded-2xl text-center" style={{ background: 'rgba(219,39,119,0.04)', border: '1px solid rgba(219,39,119,0.12)' }}>
             <p className="text-sm font-black mb-2">Contrata DJ, fotógrafo y catering sin comisiones</p>
             <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>XPEAK conecta con profesionales verificados en toda España. Tarifas públicas, contratos automáticos, 0€ de comisión.</p>
             <a href="/auth?mode=register&role=empresario"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
-              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+              style={{ background: 'linear-gradient(90deg,#DB2777,#B8941E)', color: '#000' }}>
               Buscar profesionales gratis →
             </a>
           </div>

@@ -49,29 +49,29 @@ export default function BlogVideografoBodas() {
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#4F46E5' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#4F46E5,#B8941E)', color: '#000' }}>Unirse gratis</a>
           </div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
           <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Bodas · XPEAK Blog</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#4F46E5' }}>Bodas · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Videógrafo para bodas: precio y qué incluye el vídeo en España (2026)</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Las fotos congelan momentos, el vídeo conserva las emociones. Guía de precios reales de videógrafos de boda en España, qué incluye cada paquete y cómo elegir el estilo correcto.</p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>4 mayo 2026</time>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Las fotos congelan momentos, el vídeo conserva las emociones. Guía de precios reales de videógrafos de boda en España, qué incluye cada paquete y cómo elegir el estilo correcto.</p>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>4 mayo 2026</time>
           </div>
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Precios de videógrafo de boda por paquete</h2>
-              <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+              <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
                 <table className="w-full text-xs">
-                  <thead><tr style={{ background: 'rgba(212,175,55,0.08)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}><th className="text-left px-4 py-3 font-bold">Paquete</th><th className="px-4 py-3 font-bold text-right">Precio</th><th className="px-4 py-3 font-bold text-left hidden sm:table-cell">Qué incluye</th></tr></thead>
-                  <tbody>{PAQUETES.map((row, i) => (<tr key={row.pack} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}><td className="px-4 py-3 font-medium">{row.pack}</td><td className="px-4 py-3 text-right font-bold" style={{ color: '#D4AF37' }}>{row.precio}</td><td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#3d3d4e' }}>{row.incluye}</td></tr>))}</tbody>
+                  <thead><tr style={{ background: 'rgba(79,70,229,0.08)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}><th className="text-left px-4 py-3 font-bold">Paquete</th><th className="px-4 py-3 font-bold text-right">Precio</th><th className="px-4 py-3 font-bold text-left hidden sm:table-cell">Qué incluye</th></tr></thead>
+                  <tbody>{PAQUETES.map((row, i) => (<tr key={row.pack} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)', borderBottom: '1px solid rgba(0,0,0,0.04)' }}><td className="px-4 py-3 font-medium">{row.pack}</td><td className="px-4 py-3 text-right font-bold" style={{ color: '#4F46E5' }}>{row.precio}</td><td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#3d3d4e' }}>{row.incluye}</td></tr>))}</tbody>
                 </table>
               </div>
             </section>
@@ -79,9 +79,9 @@ export default function BlogVideografoBodas() {
               <h2 className="text-lg font-black mb-4">Precios por ciudad</h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {CIUDADES.map(c => (
-                  <div key={c.ciudad} className="p-4 rounded-xl text-center" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={c.ciudad} className="p-4 rounded-xl text-center" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <p className="text-xs font-bold mb-1">{c.ciudad}</p>
-                    <p className="text-sm font-black" style={{ color: '#D4AF37' }}>{c.rango}</p>
+                    <p className="text-sm font-black" style={{ color: '#4F46E5' }}>{c.rango}</p>
                   </div>
                 ))}
               </div>
@@ -91,38 +91,38 @@ export default function BlogVideografoBodas() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
                   { t: 'Fotógrafo de boda', puntos: ['Captura momentos congelados en alta resolución', 'Álbum físico y galería digital entregables', 'Edición disponible en 4-8 semanas', 'Precio medio: 1.000–2.500€', 'Prioridad si el presupuesto es limitado'], c: '#818cf8' },
-                  { t: 'Videógrafo de boda', puntos: ['Conserva emociones, música y voz en movimiento', 'Highlights + película larga entregables', 'Edición disponible en 6-12 semanas', 'Precio medio: 1.000–2.500€', 'Complemento ideal si hay presupuesto'], c: '#D4AF37' },
+                  { t: 'Videógrafo de boda', puntos: ['Conserva emociones, música y voz en movimiento', 'Highlights + película larga entregables', 'Edición disponible en 6-12 semanas', 'Precio medio: 1.000–2.500€', 'Complemento ideal si hay presupuesto'], c: '#4F46E5' },
                 ].map(d => (
-                  <div key={d.t} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={d.t} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <h3 className="text-xs font-bold mb-3" style={{ color: d.c }}>{d.t}</h3>
-                    <ul className="space-y-1.5">{d.puntos.map(p => <li key={p} className="text-xs flex items-start gap-2" style={{ color: 'rgba(255,255,255,0.75)' }}><span style={{ color: d.c }}>→</span>{p}</li>)}</ul>
+                    <ul className="space-y-1.5">{d.puntos.map(p => <li key={p} className="text-xs flex items-start gap-2" style={{ color: '#222' }}><span style={{ color: d.c }}>→</span>{p}</li>)}</ul>
                   </div>
                 ))}
               </div>
             </section>
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
-              <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}><h3 className="text-sm font-bold mb-2">{f.name}</h3><p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p></div>))}</div>
+              <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}><h3 className="text-sm font-bold mb-2">{f.name}</h3><p className="text-sm leading-relaxed" style={{ color: '#222' }}>{f.acceptedAnswer.text}</p></div>))}</div>
             </section>
             
             <section className="mt-8">
-              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <h2 className="text-base font-black mb-3" style={{ color: '#111' }}>Artículos relacionados</h2>
               <div className="space-y-2">
                 {[
                   { href: '/blog/profesionales-bodas', cat: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026' },
                   { href: '/blog/fotografos-eventos', cat: 'Hub Foto', title: 'Fotógrafos para eventos: guía completa 2026' },
                 ].map(link => (
-                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
-                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
-                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(79,70,229,0.1)', color: '#4F46E5', border: '1px solid rgba(79,70,229,0.15)' }}>{link.cat}</span>
+                    <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}
               </div>
             </section>
-            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
+            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(79,70,229,0.04)', border: '1px solid rgba(79,70,229,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas fotógrafo o videógrafo para tu boda?</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>XPEAK conecta con fotógrafos verificados en toda España con precios transparentes y disponibilidad en tiempo real.</p>
-              <a href="/contratar-fotografo" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver fotógrafos en XPEAK →</a>
+              <a href="/contratar-fotografo" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#4F46E5,#B8941E)', color: '#000' }}>Ver fotógrafos en XPEAK →</a>
             </div>
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/videografo-bodas-precio" />

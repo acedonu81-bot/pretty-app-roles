@@ -98,13 +98,13 @@ export default function BlogMusicaEnVivoBodas() {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
 
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#DB2777' }}>XPEAK</a>
           <a href="/auth"
             className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
-            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+            style={{ background: 'linear-gradient(90deg,#DB2777,#B8941E)', color: '#000' }}>
             Unirse gratis
           </a>
         </nav>
@@ -112,74 +112,74 @@ export default function BlogMusicaEnVivoBodas() {
         <a href="/blog" className="block px-4 sm:px-6 pb-2 max-w-3xl mx-auto text-xs" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
         <article className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 pb-20 sm:pb-24">
 
-          <p className="text-xs mb-6 font-bold" style={{ color: 'rgba(255,255,255,0.3)' }}>
-            <a href="/" className="hover:text-white transition-colors">XPEAK</a>
+          <p className="text-xs mb-6 font-bold" style={{ color: '#666' }}>
+            <a href="/" className="hover:text-[#8A6D0F] transition-colors">XPEAK</a>
             {' '}›{' '}
-            <a href="/blog" className="hover:text-white transition-colors">Blog</a>
+            <a href="/blog" className="hover:text-[#8A6D0F] transition-colors">Blog</a>
             {' '}›{' '}
             <span>Música en vivo para bodas</span>
           </p>
 
           <div className="flex items-center gap-2 mb-4">
-            <TrendingUp size={14} style={{ color: '#D4AF37' }} />
-            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#D4AF37' }}>Blog · Guía de bodas</span>
+            <TrendingUp size={14} style={{ color: '#DB2777' }} />
+            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#DB2777' }}>Blog · Guía de bodas</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-black tracking-tight mb-4 leading-tight">
             Música en Vivo para Bodas: grupos, solistas y cuartetos — guía y precios 2026
           </h1>
-          <p className="text-sm mb-8" style={{ color: 'rgba(255,255,255,0.35)' }}>
+          <p className="text-sm mb-8" style={{ color: '#555' }}>
             XPEAK · 16 de mayo de 2026 · 7 min de lectura
           </p>
 
-          <p className="text-base leading-relaxed mb-6" style={{ color: 'rgba(255,255,255,0.7)' }}>
+          <p className="text-base leading-relaxed mb-6" style={{ color: '#222' }}>
             La música en vivo es el elemento que más recuerdan los invitados de una boda. El cuarteto de cuerda en la ceremonia, el trío de jazz durante el cóctel o la banda que arranca el baile son momentos que no se olvidan. Pero elegir el formato correcto —y pagarlo sin arruinar el presupuesto— requiere saber exactamente qué opciones existen y cuánto cuesta cada una en España.
           </p>
 
-          <div className="p-4 rounded-xl mb-8" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
-            <p className="text-sm font-bold mb-1" style={{ color: '#D4AF37' }}>Resumen rápido</p>
-            <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
-              La música en vivo para bodas cuesta entre <strong style={{ color: '#fff' }}>400€ (solista) y 4.000€ (banda completa)</strong> en España.
-              La opción con mejor relación impacto-precio es el <strong style={{ color: '#fff' }}>trío de jazz para el cóctel (900–1.500€)</strong>.
+          <div className="p-4 rounded-xl mb-8" style={{ background: 'rgba(219,39,119,0.06)', border: '1px solid rgba(219,39,119,0.15)' }}>
+            <p className="text-sm font-bold mb-1" style={{ color: '#DB2777' }}>Resumen rápido</p>
+            <p className="text-sm leading-relaxed" style={{ color: '#333' }}>
+              La música en vivo para bodas cuesta entre <strong style={{ color: '#111' }}>400€ (solista) y 4.000€ (banda completa)</strong> en España.
+              La opción con mejor relación impacto-precio es el <strong style={{ color: '#111' }}>trío de jazz para el cóctel (900–1.500€)</strong>.
               Lo más habitual es combinar música en vivo en el cóctel con DJ para la noche.
             </p>
           </div>
 
           <h2 className="text-xl font-black mb-4">Formatos de música en vivo para bodas y precios</h2>
-          <p className="text-sm mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
+          <p className="text-base mb-5 leading-relaxed" style={{ color: '#222' }}>
             No todos los grupos de música en vivo cuestan lo mismo ni sirven para el mismo momento. Aquí los formatos más habituales con precios reales del mercado español 2026:
           </p>
           <div className="space-y-3 mb-10">
             {FORMATOS.map(f => (
-              <div key={f.tipo} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <div key={f.tipo} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)' }}>
                 <div className="flex items-start justify-between gap-4 mb-1.5">
                   <p className="text-sm font-bold">{f.tipo}</p>
-                  <span className="text-sm font-black flex-shrink-0" style={{ color: '#D4AF37' }}>{f.rango}</span>
+                  <span className="text-sm font-black flex-shrink-0" style={{ color: '#DB2777' }}>{f.rango}</span>
                 </div>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>{f.desc}</p>
+                <p className="text-xs" style={{ color: '#333' }}>{f.desc}</p>
               </div>
             ))}
           </div>
 
           <h2 className="text-xl font-black mb-4">¿En qué momento de la boda poner música en vivo?</h2>
-          <p className="text-sm mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
+          <p className="text-base mb-5 leading-relaxed" style={{ color: '#222' }}>
             No es necesario tener música en vivo durante toda la boda. Elegir el momento correcto maximiza el impacto y permite ajustar el presupuesto:
           </p>
-          <div className="overflow-x-auto mb-10 rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+          <div className="overflow-x-auto mb-10 rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
             <table className="w-full text-xs min-w-[540px]">
               <thead>
-                <tr style={{ background: 'rgba(255,255,255,0.04)' }}>
+                <tr style={{ background: 'rgba(0,0,0,0.04)' }}>
                   {['Momento', 'Formato ideal', 'Nota'].map(h => (
                     <th key={h} className="px-3 sm:px-4 py-3 text-left font-bold uppercase tracking-wider whitespace-nowrap"
-                      style={{ color: 'rgba(255,255,255,0.6)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>{h}</th>
+                      style={{ color: '#333', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {MOMENTOS.map((row, i) => (
-                  <tr key={row.momento} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)' }}>
-                    <td className="px-3 sm:px-4 py-3 font-bold text-xs" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.momento}</td>
-                    <td className="px-3 sm:px-4 py-3 text-xs" style={{ color: '#D4AF37', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.formato}</td>
-                    <td className="px-3 sm:px-4 py-3 text-xs" style={{ color: 'rgba(255,255,255,0.6)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.nota}</td>
+                  <tr key={row.momento} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)' }}>
+                    <td className="px-3 sm:px-4 py-3 font-bold text-xs" style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{row.momento}</td>
+                    <td className="px-3 sm:px-4 py-3 text-xs" style={{ color: '#DB2777', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{row.formato}</td>
+                    <td className="px-3 sm:px-4 py-3 text-xs" style={{ color: '#333', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{row.nota}</td>
                   </tr>
                 ))}
               </tbody>
@@ -189,20 +189,20 @@ export default function BlogMusicaEnVivoBodas() {
           <h2 className="text-xl font-black mb-4">Precio de música en vivo para bodas por ciudad</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10">
             {CIUDADES.map(c => (
-              <div key={c.ciudad} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <div key={c.ciudad} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)' }}>
                 <div className="flex items-center gap-2 mb-1">
-                  <MapPin size={12} style={{ color: '#D4AF37' }} />
+                  <MapPin size={12} style={{ color: '#DB2777' }} />
                   <span className="text-sm font-black">{c.ciudad}</span>
-                  <span className="ml-auto text-sm font-bold" style={{ color: '#D4AF37' }}>{c.rango}</span>
+                  <span className="ml-auto text-sm font-bold" style={{ color: '#DB2777' }}>{c.rango}</span>
                 </div>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>{c.note}</p>
+                <p className="text-xs" style={{ color: '#333' }}>{c.note}</p>
               </div>
             ))}
           </div>
 
           <h2 className="text-xl font-black mb-4">¿Música en vivo o DJ? La fórmula que mejor funciona</h2>
-          <p className="text-sm mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
-            La pregunta clásica tiene respuesta práctica: <strong style={{ color: '#fff' }}>no es una versus la otra</strong>. La fórmula que más repiten las parejas con presupuesto medio-alto:
+          <p className="text-base mb-5 leading-relaxed" style={{ color: '#222' }}>
+            La pregunta clásica tiene respuesta práctica: <strong style={{ color: '#111' }}>no es una versus la otra</strong>. La fórmula que más repiten las parejas con presupuesto medio-alto:
           </p>
           <ol className="space-y-3 mb-10">
             {[
@@ -211,14 +211,14 @@ export default function BlogMusicaEnVivoBodas() {
               { n: '03', text: 'DJ para el banquete y pista de baile (4–6h). Más versatilidad musical, sin pausas entre temas y con la energía que una banda de boda no puede mantener 6 horas seguidas.' },
             ].map(item => (
               <li key={item.n} className="flex gap-3">
-                <span className="text-2xl font-black flex-shrink-0" style={{ color: 'rgba(212,175,55,0.2)', lineHeight: '1.1' }}>{item.n}</span>
-                <p className="text-sm leading-relaxed pt-0.5" style={{ color: 'rgba(255,255,255,0.6)' }}>{item.text}</p>
+                <span className="text-2xl font-black flex-shrink-0" style={{ color: 'rgba(219,39,119,0.2)', lineHeight: '1.1' }}>{item.n}</span>
+                <p className="text-base leading-relaxed pt-0.5" style={{ color: '#333' }}>{item.text}</p>
               </li>
             ))}
           </ol>
 
-          <div className="p-4 rounded-xl mb-10" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
-            <p className="text-xs font-bold mb-2" style={{ color: '#D4AF37' }}>Lo que debes comprobar antes de contratar</p>
+          <div className="p-4 rounded-xl mb-10" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)' }}>
+            <p className="text-xs font-bold mb-2" style={{ color: '#DB2777' }}>Lo que debes comprobar antes de contratar</p>
             <ul className="space-y-2">
               {[
                 'Que el grupo tiene rider técnico y tú sabes si el espacio lo puede asumir.',
@@ -226,8 +226,8 @@ export default function BlogMusicaEnVivoBodas() {
                 'Que el contrato especifica número de músicos, horas exactas y política de cancelación.',
                 'Si cobran desplazamiento fuera de su ciudad (habitual en grupos de más de 3 músicos).',
               ].map(item => (
-                <li key={item} className="flex gap-2 text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                  <Star size={11} className="flex-shrink-0 mt-0.5" style={{ color: '#D4AF37' }} />
+                <li key={item} className="flex gap-2 text-xs" style={{ color: '#444' }}>
+                  <Star size={11} className="flex-shrink-0 mt-0.5" style={{ color: '#DB2777' }} />
                   {item}
                 </li>
               ))}
@@ -237,27 +237,27 @@ export default function BlogMusicaEnVivoBodas() {
           <h2 className="text-xl font-black mb-5">Preguntas frecuentes sobre música en vivo en bodas</h2>
           <div className="space-y-4 mb-12">
             {FAQ.map(faq => (
-              <div key={faq.q} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <div key={faq.q} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)' }}>
                 <p className="text-sm font-bold mb-2">{faq.q}</p>
-                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>{faq.a}</p>
+                <p className="text-sm leading-relaxed" style={{ color: '#444' }}>{faq.a}</p>
               </div>
             ))}
           </div>
 
-          <div className="rounded-2xl p-8 text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
+          <div className="rounded-2xl p-8 text-center" style={{ background: 'rgba(219,39,119,0.05)', border: '1px solid rgba(219,39,119,0.15)' }}>
             <h2 className="text-xl font-black mb-2">¿Buscas músicos para tu boda?</h2>
-            <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.5)' }}>
+            <p className="text-sm mb-5" style={{ color: '#444' }}>
               Encuentra grupos, solistas y cuartetos verificados con portfolio real y tarifas públicas en XPEAK.
             </p>
             <a href="/directorio/grupo-musical"
               className="inline-flex items-center gap-2 px-7 py-3 rounded-xl font-black text-sm transition-all hover:scale-105"
-              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+              style={{ background: 'linear-gradient(90deg,#DB2777,#B8941E)', color: '#000' }}>
               <Zap size={14} /> Ver músicos en XPEAK — gratis
             </a>
           </div>
 
           <div className="mt-12">
-            <h2 className="text-lg font-black mb-5" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+            <h2 className="text-lg font-black mb-5" style={{ color: '#111' }}>Artículos relacionados</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
                 { href: '/blog/profesionales-bodas', tag: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026', desc: 'DJ, fotógrafo, catering y más. Todo lo que necesitas para tu boda.' },
@@ -267,11 +267,11 @@ export default function BlogMusicaEnVivoBodas() {
               ].map(p => (
                 <a key={p.href} href={p.href}
                   className="block p-5 rounded-2xl transition-all hover:scale-[1.02]"
-                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
                   <span className="inline-block text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded mb-2"
-                    style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.18)' }}>{p.tag}</span>
+                    style={{ background: 'rgba(219,39,119,0.1)', color: '#DB2777', border: '1px solid rgba(219,39,119,0.18)' }}>{p.tag}</span>
                   <p className="text-sm font-black leading-snug mb-1">{p.title}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{p.desc}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{p.desc}</p>
                 </a>
               ))}
             </div>

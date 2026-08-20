@@ -45,12 +45,12 @@ export default function BlogRRPPDiscoteca() {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#059669' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#059669,#B8941E)', color: '#000' }}>Unirse gratis</a>
           </div>
         </nav>
 
@@ -58,10 +58,10 @@ export default function BlogRRPPDiscoteca() {
           <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
 
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Para RRPP · XPEAK Blog</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#059669' }}>Para RRPP · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Cómo trabajar de RRPP en discoteca en España: guía 2026</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>El trabajo de relaciones públicas en discotecas es uno de los más flexibles del sector: sin horario fijo, cobras por resultados y puedes trabajar con varias salas a la vez. Lo que necesitas no es un título — es red de contactos, capacidad de gestión y saber estructurar tu negocio desde el principio.</p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>2 junio 2026</time>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>El trabajo de relaciones públicas en discotecas es uno de los más flexibles del sector: sin horario fijo, cobras por resultados y puedes trabajar con varias salas a la vez. Lo que necesitas no es un título — es red de contactos, capacidad de gestión y saber estructurar tu negocio desde el principio.</p>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>2 junio 2026</time>
           </div>
 
           <div className="space-y-10">
@@ -74,9 +74,9 @@ export default function BlogRRPPDiscoteca() {
                   { nivel: 'RRPP senior con varias salas', cobro: '5–8€ / persona o 10-15% consumo' },
                   { nivel: 'Head of RRPP / jefe de equipo', cobro: 'Fijo + comisión de su equipo' },
                 ].map((row, i) => (
-                  <div key={row.nivel} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.04)' }}>
+                  <div key={row.nivel} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <p className="text-xs font-medium">{row.nivel}</p>
-                    <span className="text-xs font-bold ml-4 shrink-0" style={{ color: '#D4AF37' }}>{row.cobro}</span>
+                    <span className="text-xs font-bold ml-4 shrink-0" style={{ color: '#059669' }}>{row.cobro}</span>
                   </div>
                 ))}
               </div>
@@ -89,11 +89,11 @@ export default function BlogRRPPDiscoteca() {
               <h2 className="text-lg font-black mb-4">Cómo empezar: 6 pasos</h2>
               <div className="space-y-4">
                 {PASOS.map((p, i) => (
-                  <div key={p.titulo} className="flex gap-4 p-5 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.05)' }}>
-                    <span className="text-xl font-black shrink-0 w-6 text-center leading-none mt-0.5" style={{ color: 'rgba(212,175,55,0.35)' }}>{i + 1}</span>
+                  <div key={p.titulo} className="flex gap-4 p-5 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.05)' }}>
+                    <span className="text-xl font-black shrink-0 w-6 text-center leading-none mt-0.5" style={{ color: 'rgba(5,150,105,0.35)' }}>{i + 1}</span>
                     <div>
                       <p className="text-sm font-black mb-1.5">{p.titulo}</p>
-                      <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>{p.desc}</p>
+                      <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{p.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -104,16 +104,16 @@ export default function BlogRRPPDiscoteca() {
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
-                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <h3 className="text-sm font-bold mb-2">{f.name}</h3>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#222' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
               </div>
             </section>
 
             <section className="mt-8">
-              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <h2 className="text-base font-black mb-3" style={{ color: '#111' }}>Artículos relacionados</h2>
               <div className="space-y-2">
                 {[
                   { href: '/blog/staff-para-eventos', cat: 'Hub Staff', title: 'Staff para eventos: guía completa 2026' },
@@ -121,18 +121,18 @@ export default function BlogRRPPDiscoteca() {
                   { href: '/blog/como-ser-promotor-eventos', cat: 'Para Promotores', title: 'Cómo ser promotor de eventos 2026' },
                   { href: '/blog/staff-de-discoteca-funciones-y-salario', cat: 'Staff', title: 'Staff de discoteca: funciones y salarios 2026' },
                 ].map(link => (
-                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
-                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
-                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(5,150,105,0.1)', color: '#059669', border: '1px solid rgba(5,150,105,0.15)' }}>{link.cat}</span>
+                    <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}
               </div>
             </section>
 
-            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
+            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(5,150,105,0.04)', border: '1px solid rgba(5,150,105,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Quieres trabajar de RRPP en eventos?</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>Crea tu perfil en XPEAK gratis. Salas, clubs y promotoras en tu ciudad ven tu red de contactos y te contratan directamente para sus eventos. Sin comisión oculta.</p>
-              <a href="/auth?role=staff" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Crear mi perfil de RRPP gratis →</a>
+              <a href="/auth?role=staff" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#059669,#B8941E)', color: '#000' }}>Crear mi perfil de RRPP gratis →</a>
             </div>
           </div>
                   <BlogEmailCapture variant="guia" intent="ser-profesional" articlePath="/blog/como-trabajar-de-rrpp-discoteca" />

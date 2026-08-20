@@ -51,12 +51,12 @@ export default function BlogFotografoComunionMadrid() {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#4F46E5' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#4F46E5,#B8941E)', color: '#000' }}>Unirse gratis</a>
           </div>
         </nav>
 
@@ -64,10 +64,10 @@ export default function BlogFotografoComunionMadrid() {
           <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
 
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Fotografía · Madrid · XPEAK Blog</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#4F46E5' }}>Fotografía · Madrid · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Fotógrafo para comunión en Madrid: precio y guía 2026</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Madrid tiene los fotógrafos de comunión más demandados de España — y los más caros. Precios reales, paquetes y todo lo que necesitas saber para no quedarte sin fotógrafo en mayo o junio.</p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>28 mayo 2026</time>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Madrid tiene los fotógrafos de comunión más demandados de España — y los más caros. Precios reales, paquetes y todo lo que necesitas saber para no quedarte sin fotógrafo en mayo o junio.</p>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>28 mayo 2026</time>
           </div>
 
           <div className="space-y-10">
@@ -75,9 +75,9 @@ export default function BlogFotografoComunionMadrid() {
               <h2 className="text-lg font-black mb-4">Precios de fotógrafo de comunión en Madrid (2026)</h2>
               <div className="space-y-2">
                 {PRECIOS.map((row, i) => (
-                  <div key={row.servicio} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.04)' }}>
+                  <div key={row.servicio} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <p className="text-xs font-medium">{row.servicio}</p>
-                    <span className="text-xs font-bold ml-4 shrink-0" style={{ color: '#D4AF37' }}>{row.precio}</span>
+                    <span className="text-xs font-bold ml-4 shrink-0" style={{ color: '#4F46E5' }}>{row.precio}</span>
                   </div>
                 ))}
               </div>
@@ -90,10 +90,10 @@ export default function BlogFotografoComunionMadrid() {
               <h2 className="text-lg font-black mb-4">Momentos clave de una comunión</h2>
               <div className="space-y-3">
                 {MOMENTOS.map((m, i) => (
-                  <div key={m.momento} className="p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.04)' }}>
+                  <div key={m.momento} className="p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <div className="flex items-start justify-between mb-1">
                       <p className="text-xs font-bold">{m.momento}</p>
-                      <span className="text-[0.6rem] font-bold px-2 py-0.5 rounded ml-3 shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>{m.importante}</span>
+                      <span className="text-[0.6rem] font-bold px-2 py-0.5 rounded ml-3 shrink-0" style={{ background: 'rgba(79,70,229,0.1)', color: '#4F46E5' }}>{m.importante}</span>
                     </div>
                     <p className="text-xs" style={{ color: '#3d3d4e' }}>{m.desc}</p>
                   </div>
@@ -104,10 +104,10 @@ export default function BlogFotografoComunionMadrid() {
 
             <section>
               <h2 className="text-lg font-black mb-3">Por qué Madrid es diferente para los fotógrafos de comunión</h2>
-              <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
                 En Madrid se celebran más comuniones en mayo y junio que en cualquier otra ciudad de España. Esto significa que los fotógrafos especializados en niños tienen la agenda completamente llena desde febrero. No esperes a decidirte — si tienes fecha, reserva ya.
               </p>
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed" style={{ color: '#222' }}>
                 Otro factor diferencial es que muchas comuniones en Madrid se celebran en restaurantes con jardín o fincas a las afueras (Pozuelo, Las Rozas, Majadahonda), lo que requiere desplazamiento y a veces suplemento. Los mejores fotógrafos de comunión en Madrid combinan experiencia trabajando con niños, buena gestión de grupos grandes y capacidad para sacar sesiones exteriores rápidas entre ceremonia y banquete.
               </p>
             </section>
@@ -116,16 +116,16 @@ export default function BlogFotografoComunionMadrid() {
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
-                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <h3 className="text-sm font-bold mb-2">{f.name}</h3>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#222' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
               </div>
             </section>
 
             <section className="mt-8">
-              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <h2 className="text-base font-black mb-3" style={{ color: '#111' }}>Artículos relacionados</h2>
               <div className="space-y-2">
                 {[
                   { href: '/blog/fotografos-eventos', cat: 'Hub Foto', title: 'Fotógrafos para eventos: guía completa 2026' },
@@ -134,18 +134,18 @@ export default function BlogFotografoComunionMadrid() {
                   { href: '/blog/cuanto-cuesta-una-comunion-en-espana', cat: 'Comuniones', title: '¿Cuánto cuesta una comunión en España? 2026' },
                   { href: '/blog/dj-para-comunion-precio', cat: 'DJ', title: 'DJ para comunión: precio y qué incluye 2026' },
                 ].map(link => (
-                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
-                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
-                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(79,70,229,0.1)', color: '#4F46E5', border: '1px solid rgba(79,70,229,0.15)' }}>{link.cat}</span>
+                    <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}
               </div>
             </section>
 
-            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
+            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(79,70,229,0.04)', border: '1px solid rgba(79,70,229,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas fotógrafo para tu comunión en Madrid?</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>XPEAK tiene fotógrafos verificados especializados en comuniones en Madrid y toda la Comunidad. Portfolios reales, reseñas verificadas y contrato digital automático.</p>
-              <a href="/contratar-fotografo/madrid" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver fotógrafos en Madrid →</a>
+              <a href="/contratar-fotografo/madrid" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#4F46E5,#B8941E)', color: '#000' }}>Ver fotógrafos en Madrid →</a>
             </div>
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/fotografo-comunion-madrid" />

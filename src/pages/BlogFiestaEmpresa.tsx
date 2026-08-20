@@ -48,21 +48,21 @@ export default function BlogFiestaEmpresa() {
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#6D28D9' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>Unirse gratis</a>
           </div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
           <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Eventos · XPEAK Blog</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#6D28D9' }}>Eventos · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Cómo organizar una fiesta de empresa: checklist completo y proveedores (2026)</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>La fiesta de empresa es el evento más estresante del año para quien lo organiza. Con este checklist por fases y la guía de presupuesto, no se te escapa nada.</p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>4 mayo 2026</time>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>La fiesta de empresa es el evento más estresante del año para quien lo organiza. Con este checklist por fases y la guía de presupuesto, no se te escapa nada.</p>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>4 mayo 2026</time>
           </div>
           <div className="space-y-10">
 
@@ -70,12 +70,12 @@ export default function BlogFiestaEmpresa() {
               <h2 className="text-lg font-black mb-5">Checklist por fases</h2>
               <div className="space-y-4">
                 {CHECKLIST.map(fase => (
-                  <div key={fase.fase} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-xs font-black mb-3" style={{ color: '#D4AF37' }}>{fase.fase}</p>
+                  <div key={fase.fase} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                    <p className="text-xs font-black mb-3" style={{ color: '#6D28D9' }}>{fase.fase}</p>
                     <ul className="space-y-2">
                       {fase.items.map(item => (
-                        <li key={item} className="flex items-start gap-2 text-xs" style={{ color: 'rgba(255,255,255,0.75)' }}>
-                          <span className="flex-shrink-0 mt-0.5 w-3.5 h-3.5 rounded border flex items-center justify-center" style={{ borderColor: 'rgba(212,175,55,0.4)' }}></span>
+                        <li key={item} className="flex items-start gap-2 text-xs" style={{ color: '#222' }}>
+                          <span className="flex-shrink-0 mt-0.5 w-3.5 h-3.5 rounded border flex items-center justify-center" style={{ borderColor: 'rgba(109,40,217,0.4)' }}></span>
                           {item}
                         </li>
                       ))}
@@ -87,10 +87,10 @@ export default function BlogFiestaEmpresa() {
 
             <section>
               <h2 className="text-lg font-black mb-4">Cómo distribuir el presupuesto</h2>
-              <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+              <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
                 <table className="w-full text-xs">
-                  <thead><tr style={{ background: 'rgba(212,175,55,0.08)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}><th className="text-left px-4 py-3 font-bold">Partida</th><th className="px-4 py-3 font-bold text-right">% del total</th><th className="px-4 py-3 font-bold text-left hidden sm:table-cell">Referencia</th></tr></thead>
-                  <tbody>{PRESUPUESTO.map((row, i) => (<tr key={row.partida} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}><td className="px-4 py-3 font-medium">{row.partida}</td><td className="px-4 py-3 text-right font-bold" style={{ color: '#D4AF37' }}>{row.porcentaje}</td><td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#3d3d4e' }}>{row.ejemplo}</td></tr>))}</tbody>
+                  <thead><tr style={{ background: 'rgba(109,40,217,0.08)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}><th className="text-left px-4 py-3 font-bold">Partida</th><th className="px-4 py-3 font-bold text-right">% del total</th><th className="px-4 py-3 font-bold text-left hidden sm:table-cell">Referencia</th></tr></thead>
+                  <tbody>{PRESUPUESTO.map((row, i) => (<tr key={row.partida} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)', borderBottom: '1px solid rgba(0,0,0,0.04)' }}><td className="px-4 py-3 font-medium">{row.partida}</td><td className="px-4 py-3 text-right font-bold" style={{ color: '#6D28D9' }}>{row.porcentaje}</td><td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#3d3d4e' }}>{row.ejemplo}</td></tr>))}</tbody>
                 </table>
               </div>
             </section>
@@ -104,12 +104,12 @@ export default function BlogFiestaEmpresa() {
                   { formato: 'Team building + cena', popularidad: '★★★★☆', desc: 'Actividad de día (karting, escape room, cocina) seguida de cena de empresa. Refuerza la cohesión.' },
                   { formato: 'Evento con showman o actuación', popularidad: '★★★☆☆', desc: 'Monologuista, mago o artista como elemento central del evento. Añade un factor WOW diferencial.' },
                 ].map(f => (
-                  <div key={f.formato} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={f.formato} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <div className="flex items-center justify-between mb-2">
                       <p className="text-sm font-bold">{f.formato}</p>
-                      <span className="text-[0.6rem]" style={{ color: '#D4AF37' }}>{f.popularidad}</span>
+                      <span className="text-[0.6rem]" style={{ color: '#6D28D9' }}>{f.popularidad}</span>
                     </div>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{f.desc}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{f.desc}</p>
                   </div>
                 ))}
               </div>
@@ -117,15 +117,15 @@ export default function BlogFiestaEmpresa() {
 
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
-              <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}><h3 className="text-sm font-bold mb-2">{f.name}</h3><p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p></div>))}</div>
+              <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}><h3 className="text-sm font-bold mb-2">{f.name}</h3><p className="text-sm leading-relaxed" style={{ color: '#222' }}>{f.acceptedAnswer.text}</p></div>))}</div>
             </section>
 
-            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
+            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(109,40,217,0.04)', border: '1px solid rgba(109,40,217,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas DJ o camareros para tu fiesta de empresa?</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>XPEAK conecta con DJs, camareros y staff verificado para eventos corporativos en toda España. Presupuesto en minutos.</p>
               <div className="flex items-center justify-center gap-3 flex-wrap">
-                <a href="/contratar-dj" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver DJs →</a>
-                <a href="/contratar-camareros" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.8)' }}>Ver camareros →</a>
+                <a href="/contratar-dj" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>Ver DJs →</a>
+                <a href="/contratar-camareros" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid #777', color: '#111' }}>Ver camareros →</a>
               </div>
             </div>
           </div>

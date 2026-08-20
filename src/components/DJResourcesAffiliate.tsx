@@ -10,9 +10,11 @@ import {
  * contenido genuino y útil — reduce el riesgo de sanción de Amazon frente a un
  * bloque genérico repetido en cientos de páginas.
  *
- * NOTA: los href apuntan a búsquedas específicas de Amazon. Amazon prefiere
- * enlaces a producto concreto (/dp/ASIN) — cuando tengas los ASIN desde
- * SiteStripe, sustituye cada href por el enlace /dp/ correspondiente.
+ * NOTA (20 ago 2026): la mayoría de items ya usan P('ASIN') verificado a
+ * mano en Amazon.es (reseñas 4+, volumen de ventas real). Solo queda un
+ * A() sin resolver — "menaje catering profesional": término demasiado
+ * amplio, ningún candidato con marca reconocible tenía volumen real de
+ * reseñas. Mejor mantener búsqueda genérica ahí que forzar un ASIN flojo.
  */
 
 type Resource = { icon: LucideIcon; title: string; desc: string; href: string };
@@ -36,17 +38,17 @@ const CATALOG: Record<string, { label: string; icon: LucideIcon; items: Resource
   camareros: {
     label: 'Camareros', icon: Wine,
     items: [
-      { icon: Wine, title: 'Set de sacacorchos y coctelería', desc: 'Kit profesional para servicio en eventos.', href: A('kit cocteleria profesional camarero') },
-      { icon: Sparkles, title: 'Delantal y uniforme de camarero', desc: 'Imagen impecable para bodas y eventos.', href: A('delantal camarero profesional negro') },
-      { icon: UtensilsCrossed, title: 'Bandeja antideslizante', desc: 'Servicio seguro en salón y barra.', href: A('bandeja camarero antideslizante') },
+      { icon: Wine, title: 'Coctelera de acero inoxidable', desc: 'Kit profesional para servicio en eventos (4.5★, +3.000 valoraciones).', href: P('B01MEHUA4I') },
+      { icon: Sparkles, title: 'Pack de 3 delantales negros con bolsillos', desc: 'Imagen impecable para bodas y eventos (4.5★, +370 valoraciones).', href: P('B0C2HRJRVM') },
+      { icon: UtensilsCrossed, title: 'Bandeja redonda antideslizante', desc: 'Servicio seguro en salón y barra (4.3★, +1.000 valoraciones).', href: P('B09CV5FHT8') },
     ],
   },
   staff: {
     label: 'Staff', icon: Sparkles,
     items: [
-      { icon: Sparkles, title: 'Uniforme y calzado de trabajo', desc: 'Comodidad para jornadas largas de evento.', href: A('zapatos trabajo comodos negros antideslizante') },
-      { icon: Mic2, title: 'Petaca / intercom de staff', desc: 'Comunicación entre equipo en eventos grandes.', href: A('walkie talkie manos libres evento') },
-      { icon: Wine, title: 'Kit de servicio', desc: 'Herramientas básicas para hostelería de eventos.', href: A('kit camarero profesional') },
+      { icon: Sparkles, title: 'Zapatillas de seguridad antideslizantes', desc: 'Comodidad para jornadas largas de evento (4.6★, +500 valoraciones).', href: P('B0FSXQQL7L') },
+      { icon: Mic2, title: 'Walkie-talkie manos libres', desc: 'Comunicación entre equipo en eventos grandes (4.7★, pack de 4).', href: P('B07XY79RL4') },
+      { icon: Wine, title: 'Kit de herramientas de camarero', desc: 'Funda profesional con 20 herramientas de bar (4.6★, +160 valoraciones).', href: P('B0BB8KPBC6') },
     ],
   },
   fotografo: {
@@ -60,25 +62,25 @@ const CATALOG: Record<string, { label: string; icon: LucideIcon; items: Resource
   media: {
     label: 'Fotógrafos y vídeo', icon: Camera,
     items: [
-      { icon: Aperture, title: 'Objetivo luminoso 50mm', desc: 'Retrato y ambiente con poca luz en eventos.', href: A('objetivo 50mm f1.8') },
+      { icon: Aperture, title: 'Canon EF 50mm f/1.8 STM', desc: 'Retrato y ambiente con poca luz en eventos (4.7★, +12.000 valoraciones).', href: P('B00XKSBMQA') },
       { icon: Camera, title: 'DJI Osmo Mobile 6 (gimbal)', desc: 'Estabilizador para aftermovies y vídeo fluido de evento.', href: P('B0B7XD7R43') },
-      { icon: Sparkles, title: 'Tarjetas SD alta velocidad', desc: 'Ráfagas y vídeo 4K sin cortes.', href: A('tarjeta sd 128gb alta velocidad') },
+      { icon: Sparkles, title: 'SanDisk Extreme Pro SD 128GB', desc: 'Ráfagas y vídeo 4K sin cortes (4.7★, +89.000 valoraciones).', href: P('B09X7FXHVJ') },
     ],
   },
   maquillaje: {
     label: 'Maquillaje y peluquería', icon: Palette,
     items: [
-      { icon: Palette, title: 'Set de brochas profesional', desc: 'Acabado impecable para novias y eventos.', href: A('set brochas maquillaje profesional') },
+      { icon: Palette, title: 'Set de brochas y esponja profesional', desc: 'Acabado impecable para novias y eventos (4.7★, +54.000 valoraciones).', href: P('B07FTXBNVL') },
       { icon: Sparkles, title: 'Neewer aro de luz 18"', desc: 'Luz uniforme para maquillaje profesional en cualquier sitio.', href: P('B01LXDNNBW') },
-      { icon: Camera, title: 'Neceser / organizador', desc: 'Transporta tu material con orden a cada bolo.', href: A('maletin maquillaje profesional') },
+      { icon: Camera, title: 'Maletín de maquillaje con ruedas', desc: 'Transporta tu material con orden a cada bolo (4.6★, +2.500 valoraciones).', href: P('B07KBX8LL6') },
     ],
   },
   makeup: {
     label: 'Maquillaje y peluquería', icon: Palette,
     items: [
-      { icon: Palette, title: 'Set de brochas profesional', desc: 'Acabado impecable para novias y eventos.', href: A('set brochas maquillaje profesional') },
+      { icon: Palette, title: 'Set de brochas y esponja profesional', desc: 'Acabado impecable para novias y eventos (4.7★, +54.000 valoraciones).', href: P('B07FTXBNVL') },
       { icon: Sparkles, title: 'Neewer aro de luz 18"', desc: 'Luz uniforme para maquillaje profesional en cualquier sitio.', href: P('B01LXDNNBW') },
-      { icon: Camera, title: 'Neceser / organizador', desc: 'Transporta tu material con orden a cada bolo.', href: A('maletin maquillaje profesional') },
+      { icon: Camera, title: 'Maletín de maquillaje con ruedas', desc: 'Transporta tu material con orden a cada bolo (4.6★, +2.500 valoraciones).', href: P('B07KBX8LL6') },
     ],
   },
   'grupo-musical': {
@@ -86,7 +88,7 @@ const CATALOG: Record<string, { label: string; icon: LucideIcon; items: Resource
     items: [
       { icon: Mic2, title: 'Micrófono Shure SM58', desc: 'El micro vocal estándar del directo para bodas y eventos.', href: P('B000CZ0R42') },
       { icon: Speaker, title: 'JBL IRX112BT (PA portátil)', desc: 'Altavoz PA con batería para cóctel y ceremonia.', href: P('B081TNPGZV') },
-      { icon: Music, title: 'Atril y accesorios', desc: 'Comodidad para actuaciones largas.', href: A('atril partituras musico') },
+      { icon: Music, title: 'Atril metálico portátil', desc: 'Comodidad para actuaciones largas (4.7★, +5.600 valoraciones).', href: P('B0BJZVXPD1') },
     ],
   },
   catering: {
@@ -94,7 +96,23 @@ const CATALOG: Record<string, { label: string; icon: LucideIcon; items: Resource
     items: [
       { icon: UtensilsCrossed, title: 'Chafing dish acero inox', desc: 'Mantiene la comida a temperatura durante todo el evento.', href: P('B0C7T33F8J') },
       { icon: Wine, title: 'Menaje y cristalería', desc: 'Presentación cuidada para banquetes.', href: A('menaje catering profesional') },
-      { icon: Sparkles, title: 'Uniforme de cocina', desc: 'Imagen y seguridad para el equipo.', href: A('chaqueta cocina profesional') },
+      { icon: Sparkles, title: 'Chaqueta de chef unisex', desc: 'Imagen y seguridad para el equipo (4.4★, +5.000 valoraciones).', href: P('B00GAXT37W') },
+    ],
+  },
+  azafata: {
+    label: 'Azafatas y hostess', icon: Sparkles,
+    items: [
+      { icon: Sparkles, title: 'Zapato de tacón bajo cómodo', desc: 'Aguanta turnos largos de congreso o evento sin sacrificar imagen (4.5★, +2.100 valoraciones).', href: P('B0CH3C5KWV') },
+      { icon: Mic2, title: 'Powerbank slim con linterna', desc: 'Batería de bolsillo para turnos largos sin enchufe cerca (4.5★, +71.000 valoraciones).', href: P('B07PNL5STG') },
+      { icon: UtensilsCrossed, title: 'Organizador de bolso para trabajo', desc: 'Lleva credencial, bolígrafo y básicos siempre a mano en stands y recepciones (4.0★).', href: P('B09X37Q92G') },
+    ],
+  },
+  bailarin: {
+    label: 'Bailarines', icon: Music,
+    items: [
+      { icon: Music, title: 'Zapatillas Bloch Essential Jazz', desc: 'Suela dividida para giros y flexibilidad en actuaciones de evento (marca especializada, 4.2★).', href: P('B00DVFVLG8') },
+      { icon: Sparkles, title: 'Maillot clásico de ballet', desc: 'Movilidad completa para ensayo y coreografía (4.4★, +790 valoraciones).', href: P('B07434LBP4') },
+      { icon: Wine, title: 'Rodillera de protección para danza', desc: 'Protección para suelos duros en salas de evento no acondicionadas (4.4★, +840 valoraciones).', href: P('B0C5GR2CLR') },
     ],
   },
 };
@@ -108,9 +126,15 @@ const ROLE_ALIAS: Record<string, string> = {
 /**
  * @param role rol del blog (dj, camareros, fotografo…). Por defecto 'dj'
  * (retrocompatibilidad con los blogs de DJ que ya lo usaban sin props).
+ * Roles sin catálogo real (general, empresario — organizadores no compran
+ * "equipo profesional" de oficio) NO caen a DJ por defecto: antes cualquier
+ * rol desconocido mostraba auriculares/controladora de DJ en un blog de
+ * animadores o de organización de bodas, contenido irrelevante que ni
+ * siquiera genera comisión real (mala señal para Amazon y para el lector).
  */
 export default function DJResourcesAffiliate({ role = 'dj' }: { role?: string }) {
-  const key = CATALOG[role] ? role : (CATALOG[ROLE_ALIAS[role]] ? ROLE_ALIAS[role] : 'dj');
+  const key = CATALOG[role] ? role : ROLE_ALIAS[role] && CATALOG[ROLE_ALIAS[role]] ? ROLE_ALIAS[role] : null;
+  if (!key) return null;
   const cat = CATALOG[key];
   const HeaderIcon = cat.icon;
 

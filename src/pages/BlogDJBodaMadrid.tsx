@@ -56,7 +56,7 @@ export default function BlogDJBodaMadrid() {
         <script type="application/ld+json">{JSON.stringify(serviceSchema)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
@@ -71,8 +71,8 @@ export default function BlogDJBodaMadrid() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>DJ · Madrid · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para bodas en Madrid: precio y cómo contratar en 2026</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Madrid concentra el mayor número de bodas de España. Los DJs de boda en la Comunidad tienen más demanda y precios más altos que la media nacional — te contamos exactamente cuánto y cómo encontrar el correcto.</p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>28 mayo 2026</time>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Madrid concentra el mayor número de bodas de España. Los DJs de boda en la Comunidad tienen más demanda y precios más altos que la media nacional — te contamos exactamente cuánto y cómo encontrar el correcto.</p>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>28 mayo 2026</time>
             <BlogAnswerBox
               question="¿Cuánto cuesta un DJ para una boda en Madrid?"
               answer="Un DJ para el servicio completo de una boda en Madrid (ceremonia, cóctel, cena y pista de baile) cuesta entre 900 y 2.000€ en 2026. El precio varía según la duración del evento, el equipo técnico incluido y la experiencia del DJ."
@@ -84,7 +84,7 @@ export default function BlogDJBodaMadrid() {
               <h2 className="text-lg font-black mb-4">Precios de DJ para boda en Madrid (2026)</h2>
               <div className="space-y-2">
                 {PRECIOS.map((row, i) => (
-                  <div key={row.servicio} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.04)' }}>
+                  <div key={row.servicio} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <p className="text-xs font-medium">{row.servicio}</p>
                     <span className="text-xs font-bold ml-4 shrink-0" style={{ color: '#D4AF37' }}>{row.precio}</span>
                   </div>
@@ -99,7 +99,7 @@ export default function BlogDJBodaMadrid() {
               <h2 className="text-lg font-black mb-4">Zonas de boda en Madrid y el DJ</h2>
               <div className="space-y-3">
                 {ZONAS.map((z, i) => (
-                  <div key={z.zona} className="p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.04)' }}>
+                  <div key={z.zona} className="p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <div className="flex items-start justify-between mb-1">
                       <p className="text-xs font-bold">{z.zona}</p>
                       <span className="text-[0.6rem] font-bold px-2 py-0.5 rounded ml-3 shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>{z.nota}</span>
@@ -113,10 +113,10 @@ export default function BlogDJBodaMadrid() {
 
             <section>
               <h2 className="text-lg font-black mb-3">Qué diferencia a un DJ de bodas en Madrid</h2>
-              <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
                 Madrid tiene un mercado de bodas exigente. Los DJs especializados en bodas en la Comunidad suelen tener experiencia en fincas con limitaciones de horario (muchas cierran a la 1:00 o 2:00), conocimiento de las particularidades acústicas de espacios con piedra o bóveda, y rodaje en coordinación con caterings de alto nivel.
               </p>
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed" style={{ color: '#222' }}>
                 También es habitual que los DJs de Madrid trabajen con equipos propios de alta gama (L-Acoustics, d&b audiotechnik) capaces de sonar bien en espacios grandes sin distorsión, algo crucial en fincas de más de 200 invitados.
               </p>
             </section>
@@ -125,16 +125,16 @@ export default function BlogDJBodaMadrid() {
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
-                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <h3 className="text-sm font-bold mb-2">{f.name}</h3>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.a}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#222' }}>{f.a}</p>
                   </div>
                 ))}
               </div>
             </section>
 
             <section className="mt-8">
-              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <h2 className="text-base font-black mb-3" style={{ color: '#111' }}>Artículos relacionados</h2>
               <div className="space-y-2">
                 {[
                   { href: '/blog/cuanto-cobra-un-dj-en-espana', cat: 'DJ', title: 'Cuánto cobra un DJ en España: precios 2026' },
@@ -143,9 +143,9 @@ export default function BlogDJBodaMadrid() {
                   { href: '/blog/contrato-dj-que-debe-incluir', cat: 'Guía', title: 'Contrato DJ: qué debe incluir 2026' },
                   { href: '/blog/profesionales-bodas', cat: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026' },
                 ].map(link => (
-                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
                     <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
-                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                    <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}
               </div>

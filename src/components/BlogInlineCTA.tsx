@@ -83,8 +83,8 @@ export default function BlogInlineCTA({ role = 'general', variant = 'default' }:
               {u.badge}
             </span>
           </div>
-          <p className="text-base font-black leading-snug mb-2" style={{ color: '#fff' }}>{u.headline}</p>
-          <p className="text-xs leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.55)' }}>{u.sub}</p>
+          <p className="text-base font-black leading-snug mb-2" style={{ color: '#111' }}>{u.headline}</p>
+          <p className="text-xs leading-relaxed mb-4" style={{ color: '#444' }}>{u.sub}</p>
           <a
             href={u.href}
             className="inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 rounded-xl text-sm font-black transition-all hover:scale-105"
@@ -102,22 +102,26 @@ export default function BlogInlineCTA({ role = 'general', variant = 'default' }:
       <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <p className="text-[0.6rem] font-black uppercase tracking-widest mb-1" style={{ color: 'rgba(212,175,55,0.6)' }}>
-            XPEAK · Directorio verificado · 38 profesionales · 0€ comisión
+            XPEAK · Directorio verificado · 0€ comisión
           </p>
-          <p className="text-sm font-bold" style={{ color: 'rgba(255,255,255,0.85)' }}>{c.pro.label}</p>
-          <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.6)' }}>
+          <p className="text-sm font-bold" style={{ color: '#111' }}>{c.pro.label}</p>
+          <p className="text-xs mt-0.5" style={{ color: '#333' }}>
             {c.org.label}
           </p>
         </div>
         <div className="flex flex-col gap-2 flex-shrink-0">
+          {/* CTA principal: registro (lleva a /auth) — antes tenía casi el
+              mismo peso visual que el secundario. Ahora es claramente el
+              dominante (más padding, sombra) y el secundario reduce tamaño
+              de fuente para no competir. */}
           <a href={c.pro.href}
-            className="inline-flex items-center justify-center px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
-            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000', whiteSpace: 'nowrap' }}>
+            className="inline-flex items-center justify-center px-6 py-3 rounded-xl text-sm font-black transition-all hover:scale-105"
+            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000', whiteSpace: 'nowrap', boxShadow: '0 4px 14px rgba(212,175,55,0.35)' }}>
             {c.pro.cta}
           </a>
           <a href={c.org.href}
-            className="inline-flex items-center justify-center px-5 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105"
-            style={{ background: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.08)', whiteSpace: 'nowrap' }}>
+            className="inline-flex items-center justify-center px-5 py-1.5 rounded-xl text-[0.7rem] font-bold transition-all hover:scale-105"
+            style={{ background: 'transparent', color: '#666', whiteSpace: 'nowrap' }}>
             {c.org.cta}
           </a>
         </div>

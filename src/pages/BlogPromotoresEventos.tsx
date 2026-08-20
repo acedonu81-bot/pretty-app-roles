@@ -50,8 +50,8 @@ const faqStructured = {
     mainEntity: FAQ.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
   };
 
-  const th = { padding: '10px 14px', textAlign: 'left' as const, fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.5px', color: '#D4AF37', borderBottom: '1px solid rgba(212,175,55,0.25)', background: 'rgba(212,175,55,0.04)' };
-  const td = { padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.82)', fontSize: '0.87rem', verticalAlign: 'top' as const };
+  const th = { padding: '10px 14px', textAlign: 'left' as const, fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.5px', color: '#059669', borderBottom: '1px solid rgba(5,150,105,0.25)', background: 'rgba(5,150,105,0.04)' };
+  const td = { padding: '10px 14px', borderBottom: '1px solid rgba(0,0,0,0.05)', color: '#111', fontSize: '0.87rem', verticalAlign: 'top' as const };
 
   return (
     <>
@@ -75,11 +75,11 @@ const faqStructured = {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#059669' }}>XPEAK</a>
           <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
-            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+            style={{ background: 'linear-gradient(90deg,#059669,#B8941E)', color: '#000' }}>
             Unirse gratis
           </a>
         </nav>
@@ -91,21 +91,21 @@ const faqStructured = {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight mt-2 mb-4 leading-tight">
               Promotores de eventos: qué hacen y cuánto cobran en España (2026)
             </h1>
-            <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
+            <p className="text-base leading-relaxed" style={{ color: '#222' }}>
               Un buen promotor puede marcar la diferencia entre una noche vacía y un sold out. Esta guía explica los tipos de promotores, sus funciones reales y cómo fijar las métricas correctas en el contrato.
             </p>
           </header>
 
           <section className="mb-10">
             <h2 className="text-lg font-black mb-4">Tipos de promotores y tarifas</h2>
-            <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+            <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
               <table className="w-full" style={{ borderCollapse: 'collapse' }}>
                 <thead><tr><th style={th}>Perfil</th><th style={th}>Tarifa</th><th style={th}>KPI clave</th></tr></thead>
                 <tbody>
                   {PERFILES.map(r => (
                     <tr key={r.perfil}>
                       <td style={{ ...td, fontWeight: 600 }}>{r.perfil}</td>
-                      <td style={{ ...td, color: '#D4AF37', fontWeight: 700 }}>{r.tarifa}</td>
+                      <td style={{ ...td, color: '#059669', fontWeight: 700 }}>{r.tarifa}</td>
                       <td style={td}>{r.kpi}</td>
                     </tr>
                   ))}
@@ -123,9 +123,9 @@ const faqStructured = {
                 { punto: 'Especifica el territorio', desc: 'Define si el promotor trabaja exclusivamente para tu sala o puede trabajar también con la competencia. La exclusividad de zona tiene un coste adicional.' },
                 { punto: 'Sistema de seguimiento', desc: 'Acordad cómo se mide la atribución: código de descuento propio, nombre en lista, QR personalizado o seguimiento por reservas. Sin seguimiento, no hay forma de medir.' },
               ].map(item => (
-                <div key={item.punto} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <p className="text-sm font-bold mb-1" style={{ color: '#D4AF37' }}>{item.punto}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{item.desc}</p>
+                <div key={item.punto} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                  <p className="text-sm font-bold mb-1" style={{ color: '#059669' }}>{item.punto}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -135,19 +135,19 @@ const faqStructured = {
             <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
             <div className="space-y-4">
               {FAQ.map(f => (
-                <div key={f.q} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <div key={f.q} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                   <p className="text-sm font-bold mb-2">{f.q}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.a}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#222' }}>{f.a}</p>
                 </div>
               ))}
             </div>
           </section>
 
-          <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
+          <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(5,150,105,0.05)', border: '1px solid rgba(5,150,105,0.15)' }}>
             <p className="text-sm font-black mb-1">Encuentra promotores verificados para tu sala</p>
             <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>Contratos con métricas incluidas. Flash Booking en menos de 1h. Sin comisión.</p>
             <a href="/contratar-promotores" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-xs font-black transition-all hover:scale-105"
-              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+              style={{ background: 'linear-gradient(90deg,#059669,#B8941E)', color: '#000' }}>
               Ver promotores →
             </a>
           </div>

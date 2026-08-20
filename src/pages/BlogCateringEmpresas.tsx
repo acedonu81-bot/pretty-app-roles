@@ -52,8 +52,8 @@ const faqStructured = {
     mainEntity: FAQ.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
   };
 
-  const th = { padding: '10px 14px', textAlign: 'left' as const, fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.5px', color: '#D4AF37', borderBottom: '1px solid rgba(212,175,55,0.25)', background: 'rgba(212,175,55,0.04)' };
-  const td = { padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.82)', fontSize: '0.87rem', verticalAlign: 'top' as const };
+  const th = { padding: '10px 14px', textAlign: 'left' as const, fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.5px', color: '#B45309', borderBottom: '1px solid rgba(180,83,9,0.25)', background: 'rgba(180,83,9,0.04)' };
+  const td = { padding: '10px 14px', borderBottom: '1px solid rgba(0,0,0,0.05)', color: '#111', fontSize: '0.87rem', verticalAlign: 'top' as const };
 
   return (
     <>
@@ -77,11 +77,11 @@ const faqStructured = {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#B45309' }}>XPEAK</a>
           <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
-            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+            style={{ background: 'linear-gradient(90deg,#B45309,#B8941E)', color: '#000' }}>
             Unirse gratis
           </a>
         </nav>
@@ -93,21 +93,21 @@ const faqStructured = {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight mt-2 mb-4 leading-tight">
               Catering para eventos de empresa en España: tipos y precios 2026
             </h1>
-            <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
+            <p className="text-base leading-relaxed" style={{ color: '#222' }}>
               El catering es uno de los elementos que más recuerdan los asistentes a un evento corporativo. Esta guía te ayuda a elegir el formato correcto y saber cuánto presupuestar.
             </p>
           </header>
 
           <section className="mb-10">
             <h2 className="text-lg font-black mb-4">Formatos y precios por persona</h2>
-            <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+            <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
               <table className="w-full" style={{ borderCollapse: 'collapse' }}>
                 <thead><tr><th style={th}>Formato</th><th style={th}>Precio/persona</th><th style={th}>Ideal para</th></tr></thead>
                 <tbody>
                   {FORMATOS.map(r => (
                     <tr key={r.formato}>
                       <td style={{ ...td, fontWeight: 600 }}>{r.formato}</td>
-                      <td style={{ ...td, color: '#D4AF37', fontWeight: 700 }}>{r.precio}</td>
+                      <td style={{ ...td, color: '#B45309', fontWeight: 700 }}>{r.precio}</td>
                       <td style={td}>{r.cuando}</td>
                     </tr>
                   ))}
@@ -125,9 +125,9 @@ const faqStructured = {
                 { titulo: 'Presupuesto por persona', desc: 'Regla práctica: coffee break (10€), cóctel (30€), almuerzo (40€), cena de gala (80€). Multiplica por el número de asistentes y añade 15-20% para imprevistos.' },
                 { titulo: 'Restricciones del espacio', desc: 'Si el venue no tiene cocina propia, opta por catering en frío o food trucks. Si tienes cocina disponible, puedes negociar servicio más completo a menor coste.' },
               ].map(item => (
-                <div key={item.titulo} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <p className="text-sm font-bold mb-1" style={{ color: '#D4AF37' }}>{item.titulo}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{item.desc}</p>
+                <div key={item.titulo} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                  <p className="text-sm font-bold mb-1" style={{ color: '#B45309' }}>{item.titulo}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -137,19 +137,19 @@ const faqStructured = {
             <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
             <div className="space-y-4">
               {FAQ.map(f => (
-                <div key={f.q} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <div key={f.q} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                   <p className="text-sm font-bold mb-2">{f.q}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.a}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#222' }}>{f.a}</p>
                 </div>
               ))}
             </div>
           </section>
 
-          <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
+          <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(180,83,9,0.05)', border: '1px solid rgba(180,83,9,0.15)' }}>
             <p className="text-sm font-black mb-1">Compara proveedores de catering en España</p>
             <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>Perfiles verificados, tarifas públicas y contratos digitales. Sin comisión.</p>
             <a href="/contratar-catering" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-xs font-black transition-all hover:scale-105"
-              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+              style={{ background: 'linear-gradient(90deg,#B45309,#B8941E)', color: '#000' }}>
               Ver catering →
             </a>
           </div>

@@ -51,7 +51,7 @@ export default function BlogDJComunion() {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
@@ -66,17 +66,17 @@ export default function BlogDJComunion() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>DJ · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para comunión: precio y qué incluye el servicio en España (2026)</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>La música es lo que hace que los niños sigan bailando a las 5 de la tarde y los abuelos aguanten hasta las 7. Te contamos cuánto cuesta y qué elegir para tu comunión.</p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>27 mayo 2026</time>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>La música es lo que hace que los niños sigan bailando a las 5 de la tarde y los abuelos aguanten hasta las 7. Te contamos cuánto cuesta y qué elegir para tu comunión.</p>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>27 mayo 2026</time>
           </div>
 
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Precio de DJ para comunión por horas</h2>
-              <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+              <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
                 <table className="w-full text-xs">
                   <thead>
-                    <tr style={{ background: 'rgba(212,175,55,0.08)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                    <tr style={{ background: 'rgba(212,175,55,0.08)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
                       <th className="text-left px-4 py-3 font-bold">Duración</th>
                       <th className="px-4 py-3 font-bold text-center">Precio medio</th>
                       <th className="px-4 py-3 font-bold text-left hidden sm:table-cell">Uso típico</th>
@@ -84,7 +84,7 @@ export default function BlogDJComunion() {
                   </thead>
                   <tbody>
                     {PRECIOS.map((row, i) => (
-                      <tr key={row.horas} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                      <tr key={row.horas} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)', borderBottom: '1px solid rgba(0,0,0,0.04)' }}>
                         <td className="px-4 py-3 font-medium">{row.horas}</td>
                         <td className="px-4 py-3 text-center font-bold" style={{ color: '#D4AF37' }}>{row.precio}</td>
                         <td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#3d3d4e' }}>{row.uso}</td>
@@ -100,10 +100,10 @@ export default function BlogDJComunion() {
 
             <section>
               <h2 className="text-lg font-black mb-3">¿DJ o disco móvil para una comunión?</h2>
-              <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed mb-4" style={{ color: '#222' }}>
                 La principal diferencia es el enfoque. La disco móvil está pensada específicamente para comuniones: incluye pantalla con videoclips, karaoke infantil, máquina de espuma y photocall. El precio es más ajustado (200-450€) pero la calidad de sonido suele ser inferior.
               </p>
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed" style={{ color: '#222' }}>
                 Un DJ profesional aporta mejor sonido, más lectura del ambiente y capacidad de adaptarse en tiempo real. Si la comunión tiene más de 60 invitados o quieres que los adultos también disfruten la música, el DJ marca la diferencia. Para comuniones más íntimas o con presupuesto ajustado, la disco móvil es una solución válida.
               </p>
             </section>
@@ -112,7 +112,7 @@ export default function BlogDJComunion() {
               <h2 className="text-lg font-black mb-4">Extras de equipo más solicitados</h2>
               <div className="space-y-2">
                 {EXTRAS.map((item, i) => (
-                  <div key={item.item} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.04)' }}>
+                  <div key={item.item} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <p className="text-xs font-medium">{item.item}</p>
                     <span className="text-xs font-bold ml-4 shrink-0" style={{ color: '#D4AF37' }}>{item.precio}</span>
                   </div>
@@ -131,7 +131,7 @@ export default function BlogDJComunion() {
                   { momento: 'Pista de baile (pleno)', musica: 'Reggaeton, pop latino, TikTok hits — los niños se vuelven locos' },
                   { momento: 'Cierre', musica: 'Clásicos de los 80-90 para que bailen también los mayores' },
                 ].map((m, i) => (
-                  <div key={m.momento} className="p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.04)' }}>
+                  <div key={m.momento} className="p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <p className="text-xs font-bold mb-1">{m.momento}</p>
                     <p className="text-xs" style={{ color: '#3d3d4e' }}>{m.musica}</p>
                   </div>
@@ -143,16 +143,16 @@ export default function BlogDJComunion() {
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
-                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <h3 className="text-sm font-bold mb-2">{f.name}</h3>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#222' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
               </div>
             </section>
 
             <section className="mt-8">
-              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <h2 className="text-base font-black mb-3" style={{ color: '#111' }}>Artículos relacionados</h2>
               <div className="space-y-2">
                 {[
                   { href: '/blog/dj-para-eventos', cat: 'Hub DJ', title: 'DJ para eventos: guía completa de precios 2026' },
@@ -163,9 +163,9 @@ export default function BlogDJComunion() {
                   { href: '/blog/catering-comuniones-precio-persona', cat: 'Catering', title: 'Catering comuniones: precio por persona 2026' },
                   { href: '/blog/cuanto-cobra-un-dj-en-espana', cat: 'DJ', title: 'Cuánto cobra un DJ en España: precios 2026' },
                 ].map(link => (
-                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
                     <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
-                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                    <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}
               </div>

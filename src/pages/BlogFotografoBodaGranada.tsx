@@ -95,7 +95,7 @@ export default function BlogFotografoBodaGranada() {
           <div className="overflow-x-auto mb-8">
             <table className="w-full text-sm border-collapse">
               <thead>
-                <tr style={{ background: 'rgba(212,175,55,0.08)' }}>
+                <tr style={{ background: 'rgba(79,70,229,0.08)' }}>
                   <th className="text-left p-3 border border-white/10">Perfil</th>
                   <th className="text-left p-3 border border-white/10">Experiencia</th>
                   <th className="text-left p-3 border border-white/10">Precio estimado</th>
@@ -104,10 +104,10 @@ export default function BlogFotografoBodaGranada() {
               </thead>
               <tbody>
                 {PRICES.map((p, i) => (
-                  <tr key={i} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)' }}>
+                  <tr key={i} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.02)' }}>
                     <td className="p-3 border border-white/10 font-medium">{p.perfil}</td>
                     <td className="p-3 border border-white/10 text-neutral-400">{p.experiencia}</td>
-                    <td className="p-3 border border-white/10 font-bold" style={{ color: '#D4AF37' }}>{p.rango}</td>
+                    <td className="p-3 border border-white/10 font-bold" style={{ color: '#4F46E5' }}>{p.rango}</td>
                     <td className="p-3 border border-white/10 text-neutral-400">{p.nota}</td>
                   </tr>
                 ))}

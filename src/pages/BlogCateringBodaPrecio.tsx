@@ -80,17 +80,17 @@ export default function BlogCateringBodaPrecio() {
           <h2 className="text-2xl font-bold mt-10 mb-4">Precios catering de boda por persona 2026</h2>
           <div className="overflow-x-auto mb-8">
             <table className="w-full text-sm border-collapse">
-              <thead><tr style={{ background: 'rgba(212,175,55,0.08)' }}>
+              <thead><tr style={{ background: 'rgba(180,83,9,0.08)' }}>
                 <th className="text-left p-3 border border-white/10">Tipo</th>
                 <th className="text-left p-3 border border-white/10">Formato</th>
                 <th className="text-left p-3 border border-white/10">Precio/persona</th>
                 <th className="text-left p-3 border border-white/10">Ideal para</th>
               </tr></thead>
               <tbody>{TIPOS.map((t, i) => (
-                <tr key={i} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)' }}>
+                <tr key={i} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.02)' }}>
                   <td className="p-3 border border-white/10 font-medium">{t.tipo}</td>
                   <td className="p-3 border border-white/10 text-neutral-400">{t.formato}</td>
-                  <td className="p-3 border border-white/10 font-bold" style={{ color: '#D4AF37' }}>{t.precio}</td>
+                  <td className="p-3 border border-white/10 font-bold" style={{ color: '#B45309' }}>{t.precio}</td>
                   <td className="p-3 border border-white/10 text-neutral-400">{t.nota}</td>
                 </tr>
               ))}</tbody>

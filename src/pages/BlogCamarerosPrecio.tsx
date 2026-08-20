@@ -62,12 +62,12 @@ const faqStructured = {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#2563EB' }}>XPEAK</a>
           <a href="/auth"
             className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
-            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+            style={{ background: 'linear-gradient(90deg,#2563EB,#B8941E)', color: '#000' }}>
             Unirse gratis
           </a>
         </nav>
@@ -76,13 +76,13 @@ const faqStructured = {
         <article className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
             <BlogTopCTA href="/auth?mode=register&intent=contratar-staff" label="Ver camareros →" />
           <a href="/contratar-camareros" className="inline-flex items-center gap-1.5 text-xs mb-6 transition-opacity hover:opacity-60"
-            style={{ color: 'rgba(212,175,55,0.7)' }}>
+            style={{ color: 'rgba(37,99,235,0.7)' }}>
             <ArrowLeft size={12} /> Contratar camareros
           </a>
 
           <div className="mb-4">
             <span className="text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded"
-              style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+              style={{ background: 'rgba(37,99,235,0.08)', color: '#2563EB', border: '1px solid rgba(37,99,235,0.2)' }}>
               Guía de precios · 2026
             </span>
           </div>
@@ -90,12 +90,12 @@ const faqStructured = {
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-4 leading-tight">
             Cuánto cobra un camarero de eventos por horas en España (2026)
           </h1>
-          <p className="text-sm sm:text-base mb-8 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
+          <p className="text-base sm:text-base mb-8 leading-relaxed" style={{ color: '#333' }}>
             Si estás organizando una boda, un evento de empresa o una fiesta privada y necesitas personal de sala, esta guía te da los precios reales del mercado en 2026 — sin intermediarios, sin letra pequeña.
           </p>
 
-          <div className="p-5 rounded-xl mb-8" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Resumen de precios 2026</p>
+          <div className="p-5 rounded-xl mb-8" style={{ background: 'rgba(37,99,235,0.05)', border: '1px solid rgba(37,99,235,0.15)' }}>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#2563EB' }}>Resumen de precios 2026</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {[
                 ['Camarero/a de sala', '10€ – 18€/hora'],
@@ -106,9 +106,9 @@ const faqStructured = {
                 ['Personal de cocina', '12€ – 20€/hora'],
               ].map(([rol, precio]) => (
                 <div key={rol} className="flex items-center justify-between p-3 rounded-lg"
-                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                   <span className="text-xs font-bold">{rol}</span>
-                  <span className="text-xs font-black" style={{ color: '#D4AF37' }}>{precio}</span>
+                  <span className="text-xs font-black" style={{ color: '#2563EB' }}>{precio}</span>
                 </div>
               ))}
             </div>
@@ -117,17 +117,17 @@ const faqStructured = {
           <div className="space-y-8">
             <section>
               <h2 className="text-xl sm:text-2xl font-black mb-3">¿Cuánto cobra un camarero de eventos en España?</h2>
-              <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                En 2026, el precio medio de un camarero de eventos en España está entre <strong style={{ color: '#fff' }}>10€ y 18€/hora</strong> para personal sin especialización, y entre <strong style={{ color: '#fff' }}>15€ y 22€/hora</strong> para barmanes y personal con más de 3 años de experiencia.
+              <p className="text-base leading-relaxed mb-4" style={{ color: '#333' }}>
+                En 2026, el precio medio de un camarero de eventos en España está entre <strong style={{ color: '#111' }}>10€ y 18€/hora</strong> para personal sin especialización, y entre <strong style={{ color: '#111' }}>15€ y 22€/hora</strong> para barmanes y personal con más de 3 años de experiencia.
               </p>
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>
+              <p className="text-base leading-relaxed" style={{ color: '#333' }}>
                 Las zonas con precios más altos son Madrid, Barcelona e Ibiza, donde el coste puede ser un 20-30% superior a la media. Ciudades como Murcia, Zaragoza o Valladolid tienen tarifas más ajustadas.
               </p>
             </section>
 
             <section>
               <h2 className="text-xl sm:text-2xl font-black mb-3">Precio de camareros para bodas</h2>
-              <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.65)' }}>
+              <p className="text-base leading-relaxed mb-4" style={{ color: '#333' }}>
                 Las bodas son el evento donde más se nota la diferencia entre un camarero genérico y uno especializado. El precio habitual para una boda incluye:
               </p>
               <ul className="space-y-2 mb-4">
@@ -137,13 +137,13 @@ const faqStructured = {
                   'Barra libre (2-3h): 1 bartender por cada 30-40 personas',
                   'Recogida y limpieza: incluida en el precio según acuerdo',
                 ].map(item => (
-                  <li key={item} className="flex items-start gap-2 text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    <span style={{ color: '#D4AF37' }}>—</span> {item}
+                  <li key={item} className="flex items-start gap-2 text-sm" style={{ color: '#333' }}>
+                    <span style={{ color: '#2563EB' }}>—</span> {item}
                   </li>
                 ))}
               </ul>
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                Para una boda de 100 personas, el presupuesto de personal de sala suele estar entre <strong style={{ color: '#fff' }}>800€ y 2.000€</strong> para un servicio completo de 6-7 horas.
+              <p className="text-base leading-relaxed" style={{ color: '#333' }}>
+                Para una boda de 100 personas, el presupuesto de personal de sala suele estar entre <strong style={{ color: '#111' }}>800€ y 2.000€</strong> para un servicio completo de 6-7 horas.
               </p>
             </section>
 
@@ -151,7 +151,7 @@ const faqStructured = {
 
             <section>
               <h2 className="text-xl sm:text-2xl font-black mb-3">Precio de camareros para eventos de empresa</h2>
-              <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.65)' }}>
+              <p className="text-base leading-relaxed mb-4" style={{ color: '#333' }}>
                 En eventos corporativos (presentaciones, cenas de empresa, coffee breaks), el precio varía según el formato:
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
@@ -161,9 +161,9 @@ const faqStructured = {
                   { tipo: 'Cena de gala', precio: '1 camarero/8 personas · 18-25€/h' },
                   { tipo: 'Jornada de empresa (8h)', precio: '1 camarero/30 personas · 120-180€/día' },
                 ].map(({ tipo, precio }) => (
-                  <div key={tipo} className="p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={tipo} className="p-3 rounded-lg" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <p className="text-xs font-bold mb-1">{tipo}</p>
-                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>{precio}</p>
+                    <p className="text-xs" style={{ color: '#444' }}>{precio}</p>
                   </div>
                 ))}
               </div>
@@ -180,9 +180,9 @@ const faqStructured = {
                   { formato: 'Boda completa (cóctel + cena + barra)', ratio: '1 camarero / 10 invitados (aprox.)' },
                 ].map(({ formato, ratio }) => (
                   <div key={formato} className="flex items-center justify-between p-3 rounded-lg text-sm"
-                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <span style={{ color: 'rgba(255,255,255,0.7)' }}>{formato}</span>
-                    <span className="font-bold text-xs" style={{ color: '#D4AF37' }}>{ratio}</span>
+                    style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                    <span style={{ color: '#222' }}>{formato}</span>
+                    <span className="font-bold text-xs" style={{ color: '#2563EB' }}>{ratio}</span>
                   </div>
                 ))}
               </div>
@@ -196,9 +196,9 @@ const faqStructured = {
                   { q: '¿Qué uniforme llevan los camareros?', a: 'El estándar para eventos formales es camisa blanca, pantalón negro y delantal. Para bodas de gala, algunos camareros ofrecen traje o frac por un suplemento. Especifícalo en tu solicitud.' },
                   { q: '¿Puedo cancelar la contratación?', a: 'Sí. Los contratos de XPEAK incluyen cláusulas de cancelación estándar: sin coste hasta 7 días antes, 50% del caché entre 7 y 48 horas, 100% en cancelaciones con menos de 48 horas.' },
                 ].map(({ q, a }) => (
-                  <div key={q} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                  <div key={q} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)' }}>
                     <p className="text-sm font-bold mb-2">{q}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>{a}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#444' }}>{a}</p>
                   </div>
                 ))}
               </div>
@@ -207,7 +207,7 @@ const faqStructured = {
 
           
             <section className="mt-8">
-              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <h2 className="text-base font-black mb-3" style={{ color: '#111' }}>Artículos relacionados</h2>
               <div className="space-y-2">
                 {[
                   { href: '/blog/staff-para-eventos', cat: 'Hub Staff', title: 'Staff para eventos: guía completa 2026' },
@@ -216,21 +216,21 @@ const faqStructured = {
                   { href: '/blog/cuanto-cuesta-una-boda-en-espana', cat: 'Bodas', title: 'Cuánto cuesta una boda en España 2026' },
                   { href: '/blog/contratar-barman-evento-privado', cat: 'Staff', title: 'Barman evento privado: precio 2026' },
                 ].map(link => (
-                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
-                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
-                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(37,99,235,0.1)', color: '#2563EB', border: '1px solid rgba(37,99,235,0.15)' }}>{link.cat}</span>
+                    <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}
               </div>
             </section>
-            <div className="mt-12 rounded-2xl p-7 text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
+            <div className="mt-12 rounded-2xl p-7 text-center" style={{ background: 'rgba(37,99,235,0.05)', border: '1px solid rgba(37,99,235,0.15)' }}>
             <h2 className="text-xl font-black mb-2">Encuentra camareros para tu evento</h2>
-            <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.5)' }}>
+            <p className="text-sm mb-5" style={{ color: '#444' }}>
               Gratis para organizadores · Flash Booking en menos de 1h · Contrato digital automático
             </p>
             <a href="/contratar-camareros"
               className="inline-flex items-center gap-2 px-7 py-3 rounded-xl font-black text-sm transition-all hover:scale-105"
-              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+              style={{ background: 'linear-gradient(90deg,#2563EB,#B8941E)', color: '#000' }}>
               <Zap size={14} /> Publicar oferta gratis
             </a>
           </div>

@@ -119,7 +119,7 @@ export default function BlogMejoresPlataformasContratarDJ() {
         <script type="application/ld+json">{JSON.stringify(itemListStructured)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
 
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
@@ -134,10 +134,10 @@ export default function BlogMejoresPlataformasContratarDJ() {
         <article className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 pb-20 sm:pb-24">
           <BlogTopCTA href="/auth?mode=register&intent=contratar-dj" label="Ver DJs →" />
 
-          <p className="text-xs mb-6 font-bold" style={{ color: 'rgba(255,255,255,0.3)' }}>
-            <a href="/" className="hover:text-white transition-colors">XPEAK</a>
+          <p className="text-xs mb-6 font-bold" style={{ color: '#666' }}>
+            <a href="/" className="hover:text-[#8A6D0F] transition-colors">XPEAK</a>
             {' '}›{' '}
-            <a href="/contratar-dj" className="hover:text-white transition-colors">Contratar DJ</a>
+            <a href="/contratar-dj" className="hover:text-[#8A6D0F] transition-colors">Contratar DJ</a>
             {' '}›{' '}
             <span>Comparativa plataformas 2026</span>
           </p>
@@ -149,11 +149,11 @@ export default function BlogMejoresPlataformasContratarDJ() {
           <h1 className="text-2xl sm:text-4xl font-black tracking-tight mb-4 leading-tight">
             Mejores plataformas para contratar DJ en España (2026)
           </h1>
-          <p className="text-sm mb-8" style={{ color: 'rgba(255,255,255,0.35)' }}>
+          <p className="text-sm mb-8" style={{ color: '#555' }}>
             XPEAK · 18 de agosto de 2026 · 5 min de lectura
           </p>
 
-          <p className="text-base leading-relaxed mb-6" style={{ color: 'rgba(255,255,255,0.7)' }}>
+          <p className="text-base leading-relaxed mb-6" style={{ color: '#222' }}>
             No todas las plataformas para contratar un DJ en España funcionan igual. Algunas no cobran nada a ninguna de las dos partes, otras cobran al profesional una cuota para destacar, y las agencias tradicionales siguen aplicando comisiones del 20-40% sobre el caché. Esta comparativa resume lo que paga cada parte y qué cubre cada plataforma, con datos verificables de cada una.
           </p>
 
@@ -163,35 +163,35 @@ export default function BlogMejoresPlataformasContratarDJ() {
           />
 
           <h2 className="text-xl font-black mb-4">Comparativa: comisión, coste y cobertura</h2>
-          <p className="text-sm mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
+          <p className="text-base mb-5 leading-relaxed" style={{ color: '#222' }}>
             Tabla comparativa con datos públicos de cada plataforma, actualizada en agosto de 2026:
           </p>
-          <div className="overflow-x-auto mb-10 rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+          <div className="overflow-x-auto mb-10 rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
             <table className="w-full text-xs min-w-[640px]">
               <thead>
-                <tr style={{ background: 'rgba(255,255,255,0.04)' }}>
+                <tr style={{ background: 'rgba(0,0,0,0.04)' }}>
                   {['Plataforma', 'Comisión organizador', 'Coste profesional', 'Contacto', 'Cobertura'].map(h => (
                     <th key={h} className="px-2 sm:px-4 py-3 text-left font-bold uppercase tracking-wider whitespace-nowrap"
-                      style={{ color: 'rgba(255,255,255,0.6)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>{h}</th>
+                      style={{ color: '#333', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {PLATFORMS.map((p, i) => (
-                  <tr key={p.name} style={{ background: p.destacado ? 'rgba(212,175,55,0.06)' : i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)' }}>
-                    <td className="px-2 sm:px-4 py-3 font-black whitespace-nowrap" style={{ color: p.destacado ? '#D4AF37' : '#fff', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                  <tr key={p.name} style={{ background: p.destacado ? 'rgba(212,175,55,0.06)' : i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)' }}>
+                    <td className="px-2 sm:px-4 py-3 font-black whitespace-nowrap" style={{ color: p.destacado ? '#D4AF37' : '#fff', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
                       {p.name}{p.destacado && <span className="ml-1.5 text-[0.6rem] px-1.5 py-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>propia</span>}
                     </td>
-                    <td className="px-2 sm:px-4 py-3" style={{ color: 'rgba(255,255,255,0.7)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{p.comision}</td>
-                    <td className="px-2 sm:px-4 py-3" style={{ color: 'rgba(255,255,255,0.7)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{p.cuotaProfesional}</td>
-                    <td className="px-2 sm:px-4 py-3" style={{ color: 'rgba(255,255,255,0.5)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{p.contacto}</td>
-                    <td className="px-2 sm:px-4 py-3" style={{ color: 'rgba(255,255,255,0.5)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{p.cobertura}</td>
+                    <td className="px-2 sm:px-4 py-3" style={{ color: '#222', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{p.comision}</td>
+                    <td className="px-2 sm:px-4 py-3" style={{ color: '#222', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{p.cuotaProfesional}</td>
+                    <td className="px-2 sm:px-4 py-3" style={{ color: '#444', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{p.contacto}</td>
+                    <td className="px-2 sm:px-4 py-3" style={{ color: '#444', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{p.cobertura}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <p className="text-[0.65rem] mb-10" style={{ color: 'rgba(255,255,255,0.3)' }}>
+          <p className="text-[0.65rem] mb-10" style={{ color: '#666' }}>
             Datos de comisión y cobertura recogidos de la información pública de cada plataforma en agosto de 2026. Las condiciones pueden cambiar — consulta siempre la fuente oficial antes de decidir.
           </p>
 
@@ -210,7 +210,7 @@ export default function BlogMejoresPlataformasContratarDJ() {
                 <Star size={13} className="flex-shrink-0 mt-0.5" style={{ color: '#D4AF37' }} />
                 <div>
                   <span className="text-xs font-bold">{item.label}: </span>
-                  <span className="text-xs" style={{ color: 'rgba(255,255,255,0.72)' }}>{item.text}</span>
+                  <span className="text-xs" style={{ color: '#222' }}>{item.text}</span>
                 </div>
               </li>
             ))}
@@ -219,15 +219,15 @@ export default function BlogMejoresPlataformasContratarDJ() {
           <h2 className="text-xl font-black mb-5">Preguntas frecuentes</h2>
           <div className="space-y-4 mb-12">
             {FAQ.map(faq => (
-              <div key={faq.q} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <div key={faq.q} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)' }}>
                 <p className="text-sm font-bold mb-2">{faq.q}</p>
-                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>{faq.a}</p>
+                <p className="text-sm leading-relaxed" style={{ color: '#444' }}>{faq.a}</p>
               </div>
             ))}
           </div>
 
           <div className="rounded-2xl overflow-hidden mb-2" style={{ border: '1px solid rgba(212,175,55,0.2)' }}>
-            <div className="p-8" style={{ background: 'linear-gradient(135deg,#0e0e14 0%,#181410 100%)', borderBottom: '1px solid rgba(212,175,55,0.15)' }}>
+            <div className="p-8" style={{ background: 'linear-gradient(135deg,#0e0e14 0%,#181410 100%)', color: '#fff', borderBottom: '1px solid rgba(212,175,55,0.15)' }}>
               <div className="flex items-center gap-2 mb-3">
                 <span className="text-[0.65rem] font-black uppercase tracking-widest px-2.5 py-1 rounded-full"
                   style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
@@ -237,7 +237,7 @@ export default function BlogMejoresPlataformasContratarDJ() {
               <h2 className="text-xl font-black mb-2 leading-snug">
                 Perfil gratis, sin comisión ni cuota de visibilidad
               </h2>
-              <p className="text-sm mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
+              <p className="text-base mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
                 A diferencia de otras plataformas, en XPEAK no pagas para aparecer bien posicionado. Perfil gratuito, tarifas públicas y Flash Booking para fechas urgentes.
               </p>
               <div className="flex flex-wrap gap-3 mb-5">
@@ -256,10 +256,10 @@ export default function BlogMejoresPlataformasContratarDJ() {
             </div>
 
             <div className="p-6 flex flex-col sm:flex-row items-center justify-between gap-4"
-              style={{ background: 'rgba(255,255,255,0.02)' }}>
+              style={{ background: 'rgba(0,0,0,0.02)' }}>
               <div>
                 <p className="text-sm font-black mb-0.5">¿Buscas DJ para tu sala o evento?</p>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                <p className="text-xs" style={{ color: '#333' }}>
                   Directorio con tarifas públicas · Flash Booking para esta noche · 0 comisión
                 </p>
               </div>
@@ -272,7 +272,7 @@ export default function BlogMejoresPlataformasContratarDJ() {
           </div>
 
           <div className="mt-12">
-            <h2 className="text-lg font-black mb-5" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+            <h2 className="text-lg font-black mb-5" style={{ color: '#111' }}>Artículos relacionados</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
                 { href: '/blog/cuanto-cobra-un-dj-en-espana', tag: 'DJ', title: '¿Cuánto cobra un DJ en España? Tarifas 2026', desc: 'Precios reales por experiencia y ciudad.' },
@@ -281,11 +281,11 @@ export default function BlogMejoresPlataformasContratarDJ() {
               ].map(p => (
                 <a key={p.href} href={p.href}
                   className="block p-5 rounded-2xl transition-all hover:scale-[1.02]"
-                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
                   <span className="inline-block text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded mb-2"
                     style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.18)' }}>{p.tag}</span>
                   <p className="text-sm font-black leading-snug mb-1">{p.title}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{p.desc}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{p.desc}</p>
                 </a>
               ))}
             </div>

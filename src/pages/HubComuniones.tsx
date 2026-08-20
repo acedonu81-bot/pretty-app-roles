@@ -22,7 +22,7 @@ const article = { '@context': 'https://schema.org', '@type': 'Article', headline
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: FAQ.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Comuniones guía completa', item: 'https://xpeak.es/blog/comuniones-guia-completa' }] };
 
-const TAG_COLOR: Record<string, string> = { Presupuesto: '#D4AF37', Música: '#a78bfa', Fotografía: '#818cf8', Catering: '#fbbf24', Animación: '#34d399' };
+const TAG_COLOR: Record<string, string> = { Presupuesto: '#6D28D9', Música: '#a78bfa', Fotografía: '#818cf8', Catering: '#fbbf24', Animación: '#34d399' };
 
 export default function HubComuniones() {
   return (
@@ -43,34 +43,34 @@ export default function HubComuniones() {
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#6D28D9' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>Unirse gratis</a>
           </div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
           <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Comuniones · XPEAK Blog</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#6D28D9' }}>Comuniones · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Comuniones en España: guía completa de presupuesto y profesionales (2026)</h1>
             <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Todo lo que necesitas para organizar una comunión memorable: presupuesto real por partidas, qué profesionales contratar y cómo no llevarte sorpresas el día del evento.</p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>28 mayo 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>28 mayo 2026</time>
           </div>
           <div className="space-y-10">
             <section>
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>Una comunión tiene dos audiencias completamente distintas: los niños que quieren bailar reggaeton y las tías que quieren hablar tranquilas. Coordinar bien los proveedores para que ambos lo pasen bien es la clave de una buena organización. Esta guía reúne todas las guías de XPEAK sobre comuniones en un solo lugar.</p>
+              <p className="text-sm leading-relaxed" style={{ color: '#222' }}>Una comunión tiene dos audiencias completamente distintas: los niños que quieren bailar reggaeton y las tías que quieren hablar tranquilas. Coordinar bien los proveedores para que ambos lo pasen bien es la clave de una buena organización. Esta guía reúne todas las guías de XPEAK sobre comuniones en un solo lugar.</p>
             </section>
             <section>
               <h2 className="text-lg font-black mb-4">Guías por profesional y partida</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {ARTICLES.map(a => (
-                  <a key={a.href} href={a.href} className="block p-4 rounded-xl transition-all hover:scale-[1.02]" style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
-                    <span className="inline-block text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded mb-2" style={{ background: 'rgba(212,175,55,0.1)', color: TAG_COLOR[a.tag] || '#D4AF37', border: `1px solid ${TAG_COLOR[a.tag] || '#D4AF37'}22` }}>{a.tag}</span>
+                  <a key={a.href} href={a.href} className="block p-4 rounded-xl transition-all hover:scale-[1.02]" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
+                    <span className="inline-block text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded mb-2" style={{ background: 'rgba(109,40,217,0.1)', color: TAG_COLOR[a.tag] || '#6D28D9', border: `1px solid ${TAG_COLOR[a.tag] || '#6D28D9'}22` }}>{a.tag}</span>
                     <p className="text-sm font-black leading-snug mb-1">{a.title}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{a.desc}</p>
+                    <p className="text-xs leading-relaxed" style={{ color: '#333' }}>{a.desc}</p>
                   </a>
                 ))}
               </div>
@@ -86,12 +86,12 @@ export default function HubComuniones() {
                   { partida: 'Decoración y detalles', precio: '300–800€', pct: '7%' },
                   { partida: 'Invitaciones y recordatorios', precio: '150–400€', pct: '3%' },
                 ].map((row, i) => (
-                  <div key={row.partida} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.04)' }}>
+                  <div key={row.partida} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <div>
                       <p className="text-xs font-medium">{row.partida}</p>
                       <p className="text-[0.6rem] mt-0.5" style={{ color: '#3d3d4e' }}>~{row.pct} del total</p>
                     </div>
-                    <span className="text-xs font-bold ml-4 shrink-0" style={{ color: '#D4AF37' }}>{row.precio}</span>
+                    <span className="text-xs font-bold ml-4 shrink-0" style={{ color: '#6D28D9' }}>{row.precio}</span>
                   </div>
                 ))}
               </div>
@@ -101,17 +101,17 @@ export default function HubComuniones() {
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
                 {FAQ.map(f => (
-                  <div key={f.q} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={f.q} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <p className="text-sm font-bold mb-2">{f.q}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.a}</p>
+                    <p className="text-xs leading-relaxed" style={{ color: '#222' }}>{f.a}</p>
                   </div>
                 ))}
               </div>
             </section>
-            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
+            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(109,40,217,0.04)', border: '1px solid rgba(109,40,217,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Organizas una comunión?</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>XPEAK tiene DJs, fotógrafos, animadores y camareros verificados para comuniones en toda España. Flash Booking en menos de 1h. Gratis para organizadores.</p>
-              <a href="/auth" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Buscar profesionales para mi comunión →</a>
+              <a href="/auth" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>Buscar profesionales para mi comunión →</a>
             </div>
           </div>
         </main>

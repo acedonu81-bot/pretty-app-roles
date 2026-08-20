@@ -12,8 +12,8 @@ export default function BlogAnswerBox({ question, answer }: BlogAnswerBoxProps) 
         Respuesta rápida
       </div>
       <div className="px-4 py-4">
-        <p className="text-xs font-bold mb-2 xpeak-speakable-question" style={{ color: 'rgba(255,255,255,0.5)' }}>{question}</p>
-        <p className="text-sm leading-relaxed font-medium xpeak-speakable-answer" style={{ color: 'rgba(255,255,255,0.88)' }}>{answer}</p>
+        <p className="text-xs font-bold mb-2 xpeak-speakable-question" style={{ color: '#444' }}>{question}</p>
+        <p className="text-sm leading-relaxed font-medium xpeak-speakable-answer" style={{ color: '#111' }}>{answer}</p>
       </div>
     </div>
   );

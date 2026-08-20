@@ -67,7 +67,7 @@ export default function BlogComoContratarDJ() {
         <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
       </Helmet>
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
@@ -80,8 +80,8 @@ export default function BlogComoContratarDJ() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>DJ · Guía · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Cómo contratar un DJ para tu evento: guía completa 2026</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Contratar un DJ parece sencillo pero hay muchas variables que pueden arruinar tu evento si no las controlas. Esta guía te explica los 6 pasos exactos, qué preguntar y qué errores evitar.</p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>6 junio 2026</time>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Contratar un DJ parece sencillo pero hay muchas variables que pueden arruinar tu evento si no las controlas. Esta guía te explica los 6 pasos exactos, qué preguntar y qué errores evitar.</p>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>6 junio 2026</time>
           </div>
 
           <DJResourcesAffiliate role="dj" />
@@ -93,12 +93,12 @@ export default function BlogComoContratarDJ() {
               <h2 className="text-lg font-black mb-4">Los 6 pasos para contratar un DJ</h2>
               <div className="space-y-4">
                 {PASOS.map(p => (
-                  <div key={p.n} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.05)' }}>
+                  <div key={p.n} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.05)' }}>
                     <div className="flex items-start gap-3">
                       <span className="text-lg font-black shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-xs" style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37' }}>{p.n}</span>
                       <div>
                         <p className="text-sm font-black mb-1">{p.t}</p>
-                        <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>{p.d}</p>
+                        <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{p.d}</p>
                       </div>
                     </div>
                   </div>
@@ -112,16 +112,16 @@ export default function BlogComoContratarDJ() {
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
-                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <h3 className="text-sm font-bold mb-2">{f.name}</h3>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#222' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
               </div>
             </section>
 
             <section className="mt-8">
-              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <h2 className="text-base font-black mb-3" style={{ color: '#111' }}>Artículos relacionados</h2>
               <div className="space-y-2">
                 {[
                   { href: '/blog/cuanto-cobra-un-dj-en-espana', cat: 'DJ', title: 'Cuánto cobra un DJ en España: precios 2026' },
@@ -129,9 +129,9 @@ export default function BlogComoContratarDJ() {
                   { href: '/blog/dj-para-eventos', cat: 'Hub DJ', title: 'DJ para eventos: guía completa 2026' },
                   { href: '/plantilla-contrato-dj', cat: 'Recurso', title: 'Plantilla contrato DJ gratis — descarga Word' },
                 ].map(link => (
-                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
                     <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
-                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                    <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}
               </div>

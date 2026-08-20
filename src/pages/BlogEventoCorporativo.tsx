@@ -80,13 +80,13 @@ export default function BlogEventoCorporativo() {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#6D28D9' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
             <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
-              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+              style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>
               Unirse gratis
             </a>
           </div>
@@ -98,23 +98,23 @@ export default function BlogEventoCorporativo() {
           </a>
 
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Eventos · XPEAK Blog</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#6D28D9' }}>Eventos · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">
               Cómo organizar un evento corporativo paso a paso: guía completa 2026
             </h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>
               Desde la definición de objetivos hasta el día del evento. Todo lo que necesitas saber para que tu evento de empresa salga perfecto y dentro de presupuesto.
             </p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>3 mayo 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>3 mayo 2026</time>
           </div>
 
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Distribución del presupuesto por partidas</h2>
-              <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+              <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
                 <table className="w-full text-xs">
                   <thead>
-                    <tr style={{ background: 'rgba(212,175,55,0.08)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                    <tr style={{ background: 'rgba(109,40,217,0.08)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
                       <th className="text-left px-4 py-3 font-bold">Partida</th>
                       <th className="px-4 py-3 font-bold text-center">% del presupuesto</th>
                       <th className="px-4 py-3 font-bold text-left hidden sm:table-cell">Detalle</th>
@@ -122,9 +122,9 @@ export default function BlogEventoCorporativo() {
                   </thead>
                   <tbody>
                     {PRESUPUESTO.map((row, i) => (
-                      <tr key={row.partida} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                      <tr key={row.partida} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)', borderBottom: '1px solid rgba(0,0,0,0.04)' }}>
                         <td className="px-4 py-3 font-medium">{row.partida}</td>
-                        <td className="px-4 py-3 text-center font-bold" style={{ color: '#D4AF37' }}>{row.porcentaje}</td>
+                        <td className="px-4 py-3 text-center font-bold" style={{ color: '#6D28D9' }}>{row.porcentaje}</td>
                         <td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#3d3d4e' }}>{row.nota}</td>
                       </tr>
                     ))}
@@ -138,15 +138,15 @@ export default function BlogEventoCorporativo() {
               <h2 className="text-lg font-black mb-4">Timeline de planificación</h2>
               <div className="space-y-4">
                 {TIMELINE.map((fase, i) => (
-                  <div key={fase.fase} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.05)' }}>
+                  <div key={fase.fase} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.05)' }}>
                     <div className="flex items-center gap-2 mb-3">
-                      <span className="w-6 h-6 rounded-full flex items-center justify-center text-[0.6rem] font-black shrink-0" style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>{i + 1}</span>
-                      <h3 className="text-sm font-black" style={{ color: '#D4AF37' }}>{fase.fase}</h3>
+                      <span className="w-6 h-6 rounded-full flex items-center justify-center text-[0.6rem] font-black shrink-0" style={{ background: 'rgba(109,40,217,0.15)', color: '#6D28D9' }}>{i + 1}</span>
+                      <h3 className="text-sm font-black" style={{ color: '#6D28D9' }}>{fase.fase}</h3>
                     </div>
                     <ul className="space-y-1.5">
                       {fase.tareas.map(t => (
-                        <li key={t} className="flex items-start gap-2 text-xs" style={{ color: 'rgba(255,255,255,0.75)' }}>
-                          <span className="mt-1 shrink-0" style={{ color: '#D4AF37' }}>✓</span>
+                        <li key={t} className="flex items-start gap-2 text-xs" style={{ color: '#222' }}>
+                          <span className="mt-1 shrink-0" style={{ color: '#6D28D9' }}>✓</span>
                           {t}
                         </li>
                       ))}
@@ -164,9 +164,9 @@ export default function BlogEventoCorporativo() {
                   { n: '2', titulo: 'Subestimar el tiempo de AV y montaje', desc: 'Un setup técnico con pantallas, micros inalámbricos y DJ puede necesitar 3-4 horas de montaje. Calcula siempre el doble del tiempo que crees que necesitas.' },
                   { n: '3', titulo: 'No tener plan B para imprevistos', desc: 'Lluvia en un evento al aire libre, DJ enfermo, corte de luz. Define antes qué harás en cada escenario. Los mejores eventos no los diferencia no tener problemas, sino saber resolverlos.' },
                 ].map(e => (
-                  <div key={e.n} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.04)' }}>
+                  <div key={e.n} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <p className="text-xs font-bold mb-1">{e.n}. {e.titulo}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: '#3d3d4e' }}>{e.desc}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>{e.desc}</p>
                   </div>
                 ))}
               </div>
@@ -176,19 +176,19 @@ export default function BlogEventoCorporativo() {
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
-                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <h3 className="text-sm font-bold mb-2">{f.name}</h3>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#222' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
               </div>
             </section>
 
-            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
+            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(109,40,217,0.04)', border: '1px solid rgba(109,40,217,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Necesitas staff, DJ o catering para tu evento corporativo?</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>XPEAK conecta organizadores con profesionales verificados en toda España. Contratación rápida, contratos digitales automáticos.</p>
               <a href="/auth" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
-                style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>
                 Buscar profesionales en XPEAK →
               </a>
             </div>

@@ -57,12 +57,12 @@ export default function BlogGestionarVariosProveedoresEvento() {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#0D9488' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth?mode=register&role=empresario" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+            <a href="/auth?mode=register&role=empresario" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#0D9488,#B8941E)', color: '#000' }}>
               Unirse gratis
             </a>
           </div>
@@ -72,25 +72,25 @@ export default function BlogGestionarVariosProveedoresEvento() {
           <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
 
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Organizadores · XPEAK Blog</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#0D9488' }}>Organizadores · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Cómo gestionar varios proveedores en un mismo evento sin perder el control</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>
               Cuantos más proveedores tiene un evento, más fácil es que algo se descoordine: un mensaje sin responder, un pago que no se sabe si se hizo, un horario que cambió y nadie avisó. Así se evita.
             </p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>16 julio 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>16 julio 2026</time>
           </div>
 
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">El problema real: no es el número de proveedores, es la dispersión</h2>
-              <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
                 Gestionar 8 proveedores no es difícil en sí mismo. Lo que genera errores es tenerlos repartidos entre WhatsApp, email, notas del móvil y una hoja de cálculo que no siempre está actualizada. Cuando la información vive en cuatro sitios distintos, algo se pierde tarde o temprano.
               </p>
             </section>
 
             <section>
               <h2 className="text-lg font-black mb-4">Un sistema simple: estado por proveedor</h2>
-              <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed mb-4" style={{ color: '#222' }}>
                 Para cada proveedor, en todo momento debes saber en qué fase está:
               </p>
               <div className="space-y-2">
@@ -102,9 +102,9 @@ export default function BlogGestionarVariosProveedoresEvento() {
                   'Contrato firmado y señal pagada',
                   'Confirmado para el día del evento',
                 ].map((estado, i) => (
-                  <div key={estado} className="flex items-center gap-3 p-3 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.04)' }}>
-                    <span className="text-xs font-black w-5 shrink-0" style={{ color: '#D4AF37' }}>{i + 1}</span>
-                    <p className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.75)' }}>{estado}</p>
+                  <div key={estado} className="flex items-center gap-3 p-3 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
+                    <span className="text-xs font-black w-5 shrink-0" style={{ color: '#0D9488' }}>{i + 1}</span>
+                    <p className="text-xs font-medium" style={{ color: '#222' }}>{estado}</p>
                   </div>
                 ))}
               </div>
@@ -115,7 +115,7 @@ export default function BlogGestionarVariosProveedoresEvento() {
 
             <section>
               <h2 className="text-lg font-black mb-4">Un solo lugar, no cuatro</h2>
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed" style={{ color: '#222' }}>
                 La mejora más grande no es un truco de productividad, es reducir el número de sitios donde vive la información. Si el presupuesto, la mensajería y el contrato de cada proveedor están en la misma plataforma, no hace falta cruzar datos entre aplicaciones distintas — y es mucho más difícil que algo se pierda.
               </p>
             </section>
@@ -124,20 +124,20 @@ export default function BlogGestionarVariosProveedoresEvento() {
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
                 {faqStructured.mainEntity.map((f) => (
-                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <p className="text-sm font-black mb-2">{f.name}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>{f.acceptedAnswer.text}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
               </div>
             </section>
 
-            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
+            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(13,148,136,0.04)', border: '1px solid rgba(13,148,136,0.12)' }}>
               <p className="text-sm font-black mb-2">Añade varios proveedores a un mismo evento y compáralos juntos</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>
                 Con el carrito "Mi evento" de XPEAK contactas a todos tus proveedores con un único mensaje, sin perder el hilo.
               </p>
-              <a href="/organizar-eventos" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+              <a href="/organizar-eventos" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#0D9488,#B8941E)', color: '#000' }}>
                 Ver panel de organización →
               </a>
             </div>

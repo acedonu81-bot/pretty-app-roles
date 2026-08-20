@@ -128,38 +128,38 @@ export default function BlogEventoEmpresaIdeas() {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
       </Helmet>
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#6D28D9' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>Unirse gratis</a>
           </div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
           <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Eventos de empresa · XPEAK Blog</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#6D28D9' }}>Eventos de empresa · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">10 ideas para eventos de empresa originales en España (2026)</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Los eventos de empresa bien ejecutados mejoran la cohesion del equipo, la retención del talento y la percepcion de la marca. Estas son las 10 ideas mas contratadas en España este año, con precio orientativo y cuándo funciona mejor cada una.</p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>14 junio 2026</time>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Los eventos de empresa bien ejecutados mejoran la cohesion del equipo, la retención del talento y la percepcion de la marca. Estas son las 10 ideas mas contratadas en España este año, con precio orientativo y cuándo funciona mejor cada una.</p>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>14 junio 2026</time>
           </div>
           <div className="space-y-8">
             {IDEAS.map(idea => (
-              <section key={idea.num} className="p-5 sm:p-6 rounded-2xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <section key={idea.num} className="p-5 sm:p-6 rounded-2xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)' }}>
                 <div className="flex items-start gap-4 mb-3">
-                  <span className="text-3xl font-black flex-shrink-0" style={{ color: 'rgba(212,175,55,0.25)' }}>{idea.num}</span>
+                  <span className="text-3xl font-black flex-shrink-0" style={{ color: 'rgba(109,40,217,0.25)' }}>{idea.num}</span>
                   <h2 className="text-lg font-black leading-tight pt-0.5">{idea.titulo}</h2>
                 </div>
-                <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.7)' }}>{idea.desc}</p>
+                <p className="text-base leading-relaxed mb-4" style={{ color: '#222' }}>{idea.desc}</p>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <div className="flex-1 p-3 rounded-xl" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.12)' }}>
-                    <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-1" style={{ color: 'rgba(212,175,55,0.6)' }}>Precio orientativo</p>
-                    <p className="text-sm font-black" style={{ color: '#D4AF37' }}>{idea.precio}</p>
+                  <div className="flex-1 p-3 rounded-xl" style={{ background: 'rgba(109,40,217,0.06)', border: '1px solid rgba(109,40,217,0.12)' }}>
+                    <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-1" style={{ color: 'rgba(109,40,217,0.6)' }}>Precio orientativo</p>
+                    <p className="text-sm font-black" style={{ color: '#6D28D9' }}>{idea.precio}</p>
                   </div>
-                  <div className="flex-1 p-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-1" style={{ color: 'rgba(255,255,255,0.35)' }}>Ideal para</p>
-                    <p className="text-xs leading-snug" style={{ color: 'rgba(255,255,255,0.7)' }}>{idea.ideal}</p>
+                  <div className="flex-1 p-3 rounded-xl" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                    <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-1" style={{ color: '#555' }}>Ideal para</p>
+                    <p className="text-xs leading-snug" style={{ color: '#222' }}>{idea.ideal}</p>
                   </div>
                 </div>
               </section>
@@ -169,20 +169,20 @@ export default function BlogEventoEmpresaIdeas() {
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
-                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <h3 className="text-sm font-bold mb-2">{f.name}</h3>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#222' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
               </div>
             </section>
 
-            <section className="rounded-2xl p-6 sm:p-8 text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
+            <section className="rounded-2xl p-6 sm:p-8 text-center" style={{ background: 'rgba(109,40,217,0.05)', border: '1px solid rgba(109,40,217,0.15)' }}>
               <p className="text-base font-black mb-2">Organiza tu evento de empresa con XPEAK</p>
-              <p className="text-xs mb-5" style={{ color: 'rgba(255,255,255,0.5)' }}>DJs, magos, grupos musicales, bartenders y animadores. Perfiles verificados, precio publico y contratos digitales. Sin comision.</p>
+              <p className="text-xs mb-5" style={{ color: '#444' }}>DJs, magos, grupos musicales, bartenders y animadores. Perfiles verificados, precio publico y contratos digitales. Sin comision.</p>
               <a href="/directorio/dj"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-black text-sm transition-all hover:scale-105"
-                style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>
                 Ver profesionales para eventos
               </a>
             </section>

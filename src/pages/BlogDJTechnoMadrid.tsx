@@ -88,7 +88,7 @@ export default function BlogDJTechnoMadrid() {
                 <th className="text-left p-3 border border-white/10">Notas</th>
               </tr></thead>
               <tbody>{TARIFAS.map((t, i) => (
-                <tr key={i} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)' }}>
+                <tr key={i} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.02)' }}>
                   <td className="p-3 border border-white/10 font-medium">{t.nivel}</td>
                   <td className="p-3 border border-white/10 text-neutral-400">{t.escenario}</td>
                   <td className="p-3 border border-white/10 font-bold" style={{ color: '#D4AF37' }}>{t.tarifa}</td>

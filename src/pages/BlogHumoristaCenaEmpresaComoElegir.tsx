@@ -64,12 +64,12 @@ export default function BlogHumoristaCenaEmpresaComoElegir() {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D97706' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth?mode=register&role=empresario" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+            <a href="/auth?mode=register&role=empresario" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D97706,#B8941E)', color: '#000' }}>
               Unirse gratis
             </a>
           </div>
@@ -79,12 +79,12 @@ export default function BlogHumoristaCenaEmpresaComoElegir() {
           <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
 
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Humorista · XPEAK Blog</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D97706' }}>Humorista · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Cómo elegir humorista para la cena de empresa</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>
               Tono, personalización del guion y duración: los detalles que marcan la diferencia entre un show que conecta y uno que no encaja con el público.
             </p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>16 julio 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>16 julio 2026</time>
           </div>
 
           <div className="space-y-10">
@@ -92,9 +92,9 @@ export default function BlogHumoristaCenaEmpresaComoElegir() {
               <h2 className="text-lg font-black mb-4">Pasos para elegir bien</h2>
               <div className="space-y-3">
                 {PASOS.map((p, i) => (
-                  <div key={p.paso} className="p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.04)' }}>
-                    <p className="text-xs font-black mb-1" style={{ color: '#D4AF37' }}>{p.paso}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{p.detalle}</p>
+                  <div key={p.paso} className="p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
+                    <p className="text-xs font-black mb-1" style={{ color: '#D97706' }}>{p.paso}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{p.detalle}</p>
                   </div>
                 ))}
               </div>
@@ -104,20 +104,20 @@ export default function BlogHumoristaCenaEmpresaComoElegir() {
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
                 {faqStructured.mainEntity.map((f) => (
-                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <p className="text-sm font-black mb-2">{f.name}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>{f.acceptedAnswer.text}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
               </div>
             </section>
 
-            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
+            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(217,119,6,0.04)', border: '1px solid rgba(217,119,6,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas humorista para tu evento?</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>
                 Compara perfiles verificados y tarifas públicas. Gratis, sin comisión.
               </p>
-              <a href="/directorio/humorista" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+              <a href="/directorio/humorista" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D97706,#B8941E)', color: '#000' }}>
                 Ver directorio de humoristas →
               </a>
             </div>
