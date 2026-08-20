@@ -202,7 +202,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
             </div>
 
             <div className="space-y-3">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-bold mb-1 block" style={{ color: '#333' }}>Tu nombre *</label>
                   <input value={form.name} onChange={e => set('name', e.target.value)} required
@@ -229,7 +229,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
                 </select>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-bold mb-1 flex items-center gap-1" style={{ color: '#333' }}>
                     <Calendar size={10} /> Fecha del evento
