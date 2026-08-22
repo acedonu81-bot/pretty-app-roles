@@ -333,18 +333,13 @@ const PublicProfile = () => {
           .maybeSingle()
       : supabase.from('profiles')
           .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role')
-          .ilike('display_name', slug.replace(/-/g, '%'))
-          .limit(20)
+          .not('display_name', 'is', null)
           .then(({ data, error }) => {
-            // Try to match slug against normalized display_name
-            const match = (data ?? []).find(p =>
-              p.display_name
-                .toLowerCase()
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g, '')
-                .replace(/[^a-z0-9]+/g, '-')
-                .replace(/^-|-$/g, '') === slug
-            );
+            // ILIKE no entiende acentos/e\u00f1es (slug.replace('-','%') nunca
+            // matchea "Mar~I\u00f1a" porque \u00f1\u2260n para SQL) \u2014 comparamos en JS con
+            // la misma normalizaci\u00f3n que genera el slug (toSlug), fiable
+            // para cualquier car\u00e1cter no-ASCII del nombre real.
+            const match = (data ?? []).find(p => toSlug(p.display_name ?? '') === slug);
             return { data: match ?? null, error };
           });
 
@@ -418,6 +413,7 @@ const PublicProfile = () => {
             .select('user_id, display_name, role, specialty, zone')
             .eq('role', data.role)
             .neq('user_id', data.user_id)
+            .not('display_name', 'is', null)
             .limit(3)
             .then(({ data: rel }) => setRelated(rel ?? []));
           // Load public micro-blog posts (fan_tier IS NULL = public)
