@@ -36,8 +36,8 @@ const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { ic
     ],
   },
   peluqueria: {
-    tagline: 'Consigue clientas de peluquería a domicilio en tu zona.',
-    sub: 'Cada semana hay clientas buscando peluquera a domicilio cerca de ellas.',
+    tagline: 'Consigue trabajo de peluquería para eventos y clientas de tu zona.',
+    sub: 'Novias, comuniones y clientas particulares buscan peluquera cada semana.',
     bullets: [
       { icon: Target, text: 'Tu perfil visible para clientas de tu zona' },
       { icon: FileText, text: 'Contratos digitales sin papeleo' },

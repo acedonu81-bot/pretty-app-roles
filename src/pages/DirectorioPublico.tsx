@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { Zap, MapPin, BadgeCheck, ChevronRight, Check, Plus, Users, Play } from 'lucide-react';
@@ -83,19 +83,11 @@ export const ROLE_CONFIG: Record<string, {
   },
   maquillaje: {
     dbRole: 'makeup',
-    title: 'Maquilladoras para bodas y eventos',
-    subtitle: 'Maquilladoras profesionales para novias, comuniones y galas en toda España.',
-    seoTitle: 'Contratar maquilladora para bodas y eventos — XPEAK',
-    seoDesc: 'Directorio de maquilladoras para bodas, comuniones y eventos en España. Portfolios y precios reales.',
-    cta: 'Contratar maquilladora',
-  },
-  peluqueria: {
-    dbRole: 'peluqueria',
-    title: 'Peluqueras y peluqueros a domicilio',
-    subtitle: 'Peluquería a domicilio para bodas, eventos y también para el día a día. Perfiles reales en toda España.',
-    seoTitle: 'Peluquera a domicilio cerca de mí — Directorio XPEAK',
-    seoDesc: 'Directorio de peluqueras y peluqueros a domicilio en España. Para novias, eventos o el día a día. Precios reales y contacto directo.',
-    cta: 'Contratar peluquería a domicilio',
+    title: 'Maquilladoras y peluqueras para bodas y eventos',
+    subtitle: 'Maquilladoras y peluqueras profesionales para novias, comuniones y galas en toda España.',
+    seoTitle: 'Contratar maquilladora o peluquera para bodas y eventos — XPEAK',
+    seoDesc: 'Directorio de maquilladoras y peluqueras para bodas, comuniones y eventos en España. Portfolios y precios reales.',
+    cta: 'Contratar maquilladora o peluquera',
   },
   promotores: {
     dbRole: 'promotor',
@@ -208,8 +200,7 @@ export const ALL_ROLES = [
   { slug: 'fotografo', label: 'Fotógrafos' },
   { slug: 'staff', label: 'Camareros' },
   { slug: 'azafata', label: 'Azafatas' },
-  { slug: 'maquillaje', label: 'Maquillaje' },
-  { slug: 'peluqueria', label: 'Peluquería a Domicilio' },
+  { slug: 'maquillaje', label: 'Maquillaje y Peluquería' },
   { slug: 'promotores', label: 'Promotores' },
   { slug: 'catering', label: 'Catering' },
   { slug: 'grupo-musical', label: 'Grupos' },
@@ -263,8 +254,12 @@ function recentUpdateLabel(updatedAt: string | null): string | null {
 }
 
 export async function fetchDirectorioProfiles(dbRole: string, city: string): Promise<DirProfile[]> {
-  // 'camarero' es un rol legacy (opción retirada de los selectores) — equivale a staff
-  const dbRoles = dbRole === 'staff' ? ['staff', 'camarero'] : [dbRole];
+  // 'camarero' es un rol legacy (opción retirada de los selectores) — equivale a staff.
+  // 'makeup' y 'peluqueria' son roles distintos en BD (para SEO/registro propio),
+  // pero se muestran juntos en un único directorio "Maquillaje y Peluquería".
+  const dbRoles = dbRole === 'staff' ? ['staff', 'camarero']
+    : dbRole === 'makeup' ? ['makeup', 'peluqueria']
+    : [dbRole];
   // Match por el array `roles` (overlaps) O por el `role` singular — algunos
   // perfiles reales tienen roles:[] pero role con valor (p.ej. altas antiguas),
   // y quedaban fuera del feed aunque sí salen en el directorio clásico.
@@ -366,6 +361,10 @@ export default function DirectorioPublico() {
     if (rates.length < 3) return null;
     return { min: Math.min(...rates), max: Math.max(...rates) };
   })();
+
+  // 'peluqueria' se fusionó con 'maquillaje' en un único directorio —
+  // redirige enlaces/índice viejos en vez de caer al fallback (DJs).
+  if (rol === 'peluqueria') return <Navigate to="/directorio/maquillaje" replace />;
 
   return (
     <>

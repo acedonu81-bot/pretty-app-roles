@@ -297,11 +297,11 @@ export const CATEGORY_DATA: Record<string, {
   peluqueria: {
     slug: 'peluqueria',
     emoji: '✂️',
-    h1: 'Peluquería a Domicilio',
-    tagline: 'Peluqueras y peluqueros a domicilio para tu evento o para el día a día',
-    desc: 'Encuentra peluquera a domicilio cerca de ti en España. Corte, color, peinados de novia y recogidos para eventos o para el día a día. Perfiles verificados, contrato digital en minutos.',
-    intro: 'XPEAK conecta a clientas y clientes con peluqueras y peluqueros a domicilio en toda España. Ya sea para el peinado de una boda, un evento puntual o un servicio recurrente en casa, encuentra profesionales verificados cerca de ti, con portafolio real y contacto directo sin comisión.',
-    keyword: 'Peluquera/o a domicilio',
+    h1: 'Peluquería para Bodas y Eventos',
+    tagline: 'Peluqueras y peluqueros profesionales para tu evento',
+    desc: 'Encuentra peluquera cerca de ti en España. Corte, color, peinados de novia y recogidos. Perfiles verificados, contrato digital en minutos.',
+    intro: 'XPEAK conecta a clientas y clientes con peluqueras y peluqueros profesionales en toda España. Encuentra profesionales verificados cerca de ti, con portafolio real y contacto directo sin comisión.',
+    keyword: 'Peluquera/o',
     keywords: 'peluquera a domicilio, peluquería a domicilio cerca de mí, peluqueras a domicilio cerca de mí, peluquera y maquilladora a domicilio, peluquería novia, peluquería novias, peluquera a domicilio Madrid Barcelona',
     precio: 'desde 35€/servicio',
     cities: [
@@ -312,12 +312,11 @@ export const CATEGORY_DATA: Record<string, {
       { name: 'Málaga', slug: 'malaga' },
       { name: 'Palma', slug: 'palma' },
     ],
-    roles: ['Peluquería a domicilio', 'Peinado de novia', 'Recogidos', 'Corte', 'Color', 'Extensiones', 'Alisado', 'Tratamientos capilares', 'Peluquería infantil', 'Peluquería de eventos'],
+    roles: ['Peinado de novia', 'Recogidos', 'Corte', 'Color', 'Extensiones', 'Alisado', 'Tratamientos capilares', 'Peluquería infantil', 'Peluquería de eventos'],
     faqs: [
-      { q: '¿Cuánto cuesta una peluquera a domicilio?', a: 'El precio de una peluquera a domicilio en España varía entre 25€ y 60€ para servicios básicos (corte, peinado), y entre 80€ y 200€ para peinados de novia con prueba previa incluida.' },
-      { q: '¿La peluquería a domicilio es solo para bodas y eventos?', a: 'No. Aunque los peinados de novia y eventos son un caso de uso frecuente, la mayoría de profesionales de XPEAK también ofrecen servicio a domicilio para el día a día: cortes, color y tratamientos capilares sin necesidad de desplazarte al salón.' },
-      { q: '¿Cómo encuentro una peluquera a domicilio cerca de mí?', a: 'Filtra por tu ciudad o zona en el directorio de XPEAK y contacta directamente con las profesionales disponibles. También puedes usar Flash Booking para necesidades urgentes, aunque la disponibilidad depende de cada zona.' },
-      { q: '¿Qué incluye un peinado de novia a domicilio?', a: 'Habitualmente incluye una prueba previa (recogido de test, 1-2 horas) y el servicio el día del evento en el domicilio o lugar de la celebración. El material lo aporta la profesional.' },
+      { q: '¿Cuánto cuesta una peluquera para eventos?', a: 'El precio varía entre 25€ y 60€ para servicios básicos (corte, peinado), y entre 80€ y 200€ para peinados de novia con prueba previa incluida.' },
+      { q: '¿Cómo encuentro una peluquera cerca de mí?', a: 'Filtra por tu ciudad o zona en el directorio de XPEAK y contacta directamente con las profesionales disponibles. También puedes usar Flash Booking para necesidades urgentes, aunque la disponibilidad depende de cada zona.' },
+      { q: '¿Qué incluye un peinado de novia?', a: 'Habitualmente incluye una prueba previa (recogido de test, 1-2 horas) y el servicio el día del evento en el lugar de la celebración. El material lo aporta la profesional.' },
     ],
     steps: [
       { title: 'Busca en el directorio', body: 'Filtra por ciudad, zona y disponibilidad. Sin registro.' },

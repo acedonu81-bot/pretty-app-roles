@@ -75,7 +75,7 @@ function staticUrls(today) {
 
   // Directorio público — páginas core de producto
   lines.push('\n  <!-- Directorio público -->');
-  const dirSlugs = ['dj','fotografo','staff','azafata','camareros','maquillaje','peluqueria','promotores','catering','grupo-musical','animador','mago','humorista','bailarin','speaker','vestuario','photo-booth','wedding-planner','diseno-grafico'];
+  const dirSlugs = ['dj','fotografo','staff','azafata','camareros','maquillaje','promotores','catering','grupo-musical','animador','mago','humorista','bailarin','speaker','vestuario','photo-booth','wedding-planner','diseno-grafico'];
   for (const s of dirSlugs) {
     lines.push(url(`https://xpeak.es/directorio/${s}`, today, 'daily', '0.9'));
   }

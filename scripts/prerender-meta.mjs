@@ -691,18 +691,10 @@ const ROUTES = [
   },
   {
     path: '/directorio/maquillaje',
-    title: 'Contratar maquilladora para bodas y eventos — Directorio XPEAK',
-    desc: 'Directorio de maquilladoras para bodas, comuniones y eventos en España. Portfolios y precios reales.',
-    ogTitle: 'Directorio de maquilladoras — XPEAK',
-    ogDesc: 'Encuentra maquilladora para tu boda o evento. Portfolios reales y contacto directo.',
-    ogType: 'website',
-  },
-  {
-    path: '/directorio/peluqueria',
-    title: 'Peluquera a domicilio cerca de mí — Directorio XPEAK',
-    desc: 'Directorio de peluqueras y peluqueros a domicilio en España. Para novias, eventos o el día a día. Precios reales y contacto directo.',
-    ogTitle: 'Peluquería a domicilio — XPEAK',
-    ogDesc: 'Encuentra peluquera a domicilio cerca de ti. Perfiles reales y contacto directo.',
+    title: 'Contratar maquilladora o peluquera a domicilio — Directorio XPEAK',
+    desc: 'Directorio de maquilladoras y peluqueras para bodas, comuniones y eventos en España. También peluquera a domicilio para el día a día. Portfolios y precios reales.',
+    ogTitle: 'Directorio de maquilladoras y peluqueras — XPEAK',
+    ogDesc: 'Encuentra maquilladora o peluquera para tu boda o evento. Portfolios reales y contacto directo.',
     ogType: 'website',
   },
   {
