@@ -722,7 +722,7 @@ export default function CityLanding() {
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
             {[
               { label: `Precio ${catData.keyword} en ${cityData.ciudad}`, value: `${precio}${catData.unidad}`, icon: <Star size={16} /> },
-              { label: 'Flash Booking', value: categorySlug === 'promotores' ? 'Necesidades urgentes' : 'En menos de 1h', icon: <Zap size={16} /> },
+              { label: 'Flash Booking', value: ['promotores', 'azafata', 'peluqueria'].includes(categorySlug) ? 'Necesidades urgentes' : 'En menos de 1h', icon: <Zap size={16} /> },
               { label: 'Comisión XPEAK', value: '0% para salas', icon: <Shield size={16} /> },
             ].map(s => (
               <div key={s.label} className="flex items-center gap-3">
@@ -844,7 +844,7 @@ export default function CityLanding() {
           <div className="rounded-2xl p-7 sm:p-10" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
             <h2 className="text-xl sm:text-3xl font-black mb-3">¿Buscas {catData.keyword} en {cityData.ciudad}?</h2>
             <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>
-              {categorySlug === 'promotores'
+              {['promotores', 'azafata', 'peluqueria'].includes(categorySlug)
                 ? 'Únete gratis — sin comisión, contratos automáticos, Flash Booking para necesidades urgentes.'
                 : 'Únete gratis — sin comisión, contratos automáticos, Flash Booking en menos de 1h.'}
             </p>

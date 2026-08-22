@@ -152,7 +152,7 @@ export const CATEGORY_DATA: Record<string, {
     faqs: [
       { q: '¿Cuánto cuesta contratar azafatas para un evento?', a: 'El precio varía según el perfil: azafatas de recepción desde 15€/hora, azafatas de stand desde 18€/hora, azafatas de imagen o protocolo desde 22€/hora. En XPEAK todos los perfiles muestran sus tarifas públicas.' },
       { q: '¿Puedo contratar azafatas para un solo día de feria?', a: 'Sí. XPEAK permite contrataciones puntuales para una jornada, un evento o varios días consecutivos de feria o congreso, con contrato digital automático.' },
-      { q: '¿Cómo funciona el Flash Booking para azafatas?', a: 'Publica tu necesidad con fecha, ubicación y número de azafatas. El sistema notifica al instante a los perfiles disponibles en tu zona. Respuesta garantizada en menos de 1 hora.' },
+      { q: '¿Cómo funciona el Flash Booking para azafatas?', a: 'Publica tu necesidad con fecha, ubicación y número de azafatas. El sistema notifica al instante a los perfiles disponibles en tu zona, útil para necesidades urgentes — aunque la disponibilidad depende de cada ciudad.' },
       { q: '¿Qué diferencia hay entre azafata y hostess?', a: 'Una azafata suele trabajar en ferias, congresos y eventos corporativos con funciones de protocolo, información y apoyo comercial. Una hostess trabaja principalmente en eventos privados y de ocio nocturno. Ambos perfiles están disponibles en XPEAK.' },
     ],
     steps: [
@@ -316,12 +316,12 @@ export const CATEGORY_DATA: Record<string, {
     faqs: [
       { q: '¿Cuánto cuesta una peluquera a domicilio?', a: 'El precio de una peluquera a domicilio en España varía entre 25€ y 60€ para servicios básicos (corte, peinado), y entre 80€ y 200€ para peinados de novia con prueba previa incluida.' },
       { q: '¿La peluquería a domicilio es solo para bodas y eventos?', a: 'No. Aunque los peinados de novia y eventos son un caso de uso frecuente, la mayoría de profesionales de XPEAK también ofrecen servicio a domicilio para el día a día: cortes, color y tratamientos capilares sin necesidad de desplazarte al salón.' },
-      { q: '¿Cómo encuentro una peluquera a domicilio cerca de mí?', a: 'Filtra por tu ciudad o zona en el directorio de XPEAK y contacta directamente con las profesionales disponibles. También puedes usar Flash Booking para recibir disponibilidad urgente en tu zona.' },
+      { q: '¿Cómo encuentro una peluquera a domicilio cerca de mí?', a: 'Filtra por tu ciudad o zona en el directorio de XPEAK y contacta directamente con las profesionales disponibles. También puedes usar Flash Booking para necesidades urgentes, aunque la disponibilidad depende de cada zona.' },
       { q: '¿Qué incluye un peinado de novia a domicilio?', a: 'Habitualmente incluye una prueba previa (recogido de test, 1-2 horas) y el servicio el día del evento en el domicilio o lugar de la celebración. El material lo aporta la profesional.' },
     ],
     steps: [
       { title: 'Busca en el directorio', body: 'Filtra por ciudad, zona y disponibilidad. Sin registro.' },
-      { title: 'Contacta o publica oferta', body: 'Contacta directamente o usa Flash Booking para recibir disponibilidad urgente cerca de ti.' },
+      { title: 'Contacta o publica oferta', body: 'Contacta directamente o usa Flash Booking para necesidades urgentes cerca de ti.' },
       { title: 'Contrato y confirmación', body: 'Firma el contrato digital. Incluye fecha, servicios acordados y condiciones de cancelación.' },
     ],
   },
@@ -863,7 +863,7 @@ export default function CategoryLanding() {
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-8">
             {[
               { label: `Precio medio ${data.keyword}`, value: data.precio, icon: <Star size={16} /> },
-              { label: 'Flash Booking', value: 'En menos de 1h', icon: <Zap size={16} /> },
+              { label: 'Flash Booking', value: ['promotores', 'azafata', 'peluqueria'].includes(data.slug) ? 'Necesidades urgentes' : 'En menos de 1h', icon: <Zap size={16} /> },
               { label: 'Comisión XPEAK', value: '0% para salas', icon: <Shield size={16} /> },
             ].map(s => (
               <div key={s.label} className="flex items-center gap-3">
