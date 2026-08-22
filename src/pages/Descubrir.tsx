@@ -30,7 +30,7 @@ import {
  */
 
 const ROLE_ICON: Record<string, LucideIcon> = {
-  dj: Disc3, fotografo: Camera, staff: Users, camareros: Wine, maquillaje: Palette,
+  dj: Disc3, fotografo: Camera, staff: Users, azafata: Users, camareros: Wine, maquillaje: Palette,
   promotores: Megaphone, catering: UtensilsCrossed, 'grupo-musical': Music,
   animador: PartyPopper, mago: Wand2, humorista: Mic, bailarin: Drama,
   speaker: Presentation, vestuario: Shirt, 'photo-booth': Aperture,
