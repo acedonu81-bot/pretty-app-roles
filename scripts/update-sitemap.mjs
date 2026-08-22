@@ -67,15 +67,15 @@ function staticUrls(today) {
 
   // Category landings
   lines.push('\n  <!-- Category landings -->');
-  const cats = ['dj','staff','fotografo','camareros','catering','maquillaje','promotores','vestuario','disco-movil','mago','humorista','animador','animadores','speaker','bailarin','payaso','payasos','grupo-musical','photo-booth','monologo'];
-  const catPri = { dj: '0.9', staff: '0.9', camareros: '0.9', catering: '0.9', fotografo: '0.8', maquillaje: '0.8', promotores: '0.8', 'disco-movil': '0.8', vestuario: '0.7', mago: '0.8', humorista: '0.8', animador: '0.8', animadores: '0.8', speaker: '0.7', bailarin: '0.7', payaso: '0.7', payasos: '0.7', 'grupo-musical': '0.75', 'photo-booth': '0.75', monologo: '0.75' };
+  const cats = ['dj','staff','azafata','fotografo','camareros','catering','maquillaje','promotores','vestuario','disco-movil','mago','humorista','animador','animadores','speaker','bailarin','payaso','payasos','grupo-musical','photo-booth','monologo'];
+  const catPri = { dj: '0.9', staff: '0.9', azafata: '0.9', camareros: '0.9', catering: '0.9', fotografo: '0.8', maquillaje: '0.8', promotores: '0.8', 'disco-movil': '0.8', vestuario: '0.7', mago: '0.8', humorista: '0.8', animador: '0.8', animadores: '0.8', speaker: '0.7', bailarin: '0.7', payaso: '0.7', payasos: '0.7', 'grupo-musical': '0.75', 'photo-booth': '0.75', monologo: '0.75' };
   for (const c of cats) {
     lines.push(url(`https://xpeak.es/contratar-${c}`, today, 'weekly', catPri[c] || '0.8'));
   }
 
   // Directorio público — páginas core de producto
   lines.push('\n  <!-- Directorio público -->');
-  const dirSlugs = ['dj','fotografo','staff','camareros','maquillaje','promotores','catering','grupo-musical','animador','mago','humorista','bailarin','speaker','vestuario','photo-booth','wedding-planner','diseno-grafico'];
+  const dirSlugs = ['dj','fotografo','staff','azafata','camareros','maquillaje','promotores','catering','grupo-musical','animador','mago','humorista','bailarin','speaker','vestuario','photo-booth','wedding-planner','diseno-grafico'];
   for (const s of dirSlugs) {
     lines.push(url(`https://xpeak.es/directorio/${s}`, today, 'daily', '0.9'));
   }
@@ -135,7 +135,7 @@ function staticUrls(today) {
     torrevieja:'0.65', benidorm:'0.70', gandia:'0.65', denia:'0.65', castellon:'0.68',
     reus:'0.65', sitges:'0.67', menorca:'0.68', ceuta:'0.63', melilla:'0.63',
   };
-  const catsByCity = ['dj','camareros','fotografo','catering','maquillaje','staff','disco-movil','promotores','vestuario','mago','humorista','animador','animadores','bailarin','speaker','monologo','monologos','payaso','payasos','grupo-musical','photo-booth'];
+  const catsByCity = ['dj','camareros','fotografo','catering','maquillaje','staff','azafata','disco-movil','promotores','vestuario','mago','humorista','animador','animadores','bailarin','speaker','monologo','monologos','payaso','payasos','grupo-musical','photo-booth'];
 
   for (const cat of catsByCity) {
     lines.push(`\n  <!-- ${cat} por ciudad -->`);

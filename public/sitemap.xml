@@ -8,6 +8,7 @@
   <!-- Category landings -->
   <url><loc>https://xpeak.es/contratar-dj</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://xpeak.es/contratar-staff</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://xpeak.es/contratar-fotografo</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://xpeak.es/contratar-camareros</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://xpeak.es/contratar-catering</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
@@ -31,6 +32,7 @@
   <url><loc>https://xpeak.es/directorio/dj</loc><lastmod>2026-08-22</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
   <url><loc>https://xpeak.es/directorio/fotografo</loc><lastmod>2026-08-22</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
   <url><loc>https://xpeak.es/directorio/staff</loc><lastmod>2026-08-22</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://xpeak.es/directorio/azafata</loc><lastmod>2026-08-22</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
   <url><loc>https://xpeak.es/directorio/camareros</loc><lastmod>2026-08-22</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
   <url><loc>https://xpeak.es/directorio/maquillaje</loc><lastmod>2026-08-22</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
   <url><loc>https://xpeak.es/directorio/promotores</loc><lastmod>2026-08-22</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
@@ -616,6 +618,101 @@
   <url><loc>https://xpeak.es/contratar-staff/pozuelo</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
   <url><loc>https://xpeak.es/contratar-staff/majadahonda</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
   <url><loc>https://xpeak.es/contratar-staff/valdemoro</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+
+  <!-- azafata por ciudad -->
+  <url><loc>https://xpeak.es/contratar-azafata/madrid</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/barcelona</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/valencia</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/sevilla</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/bilbao</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.82</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/malaga</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.83</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/ibiza</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/palma</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/zaragoza</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.80</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/murcia</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.77</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/alicante</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.80</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/granada</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.78</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/cordoba</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.78</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/sansebastian</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/santander</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.73</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/valladolid</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.73</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/santiago</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/pamplona</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/vitoria</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/logrono</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/vigo</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/coruna</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/ourense</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/lugo</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/pontevedra</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.68</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/oviedo</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.73</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/gijon</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/tenerife</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.77</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/laspalmas</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/lanzarote</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/fuerteventura</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/lapalma</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/costaadeje</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/badajoz</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/caceres</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.68</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/salamanca</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/burgos</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/leon</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/segovia</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.68</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/avila</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/soria</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.63</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/toledo</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/albacete</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/cuenca</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/guadalajara</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/talavera</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/huelva</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.68</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/jaen</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.68</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/almeria</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.68</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/cadiz</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/jerez</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/marbella</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/estepona</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/fuengirola</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/torremolinos</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/benalmadena</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/huesca</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/teruel</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.63</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/tarragona</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.68</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/lleida</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.67</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/girona</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.68</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/reus</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/sitges</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.67</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/badalona</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/hospitalet</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/terrassa</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/sabadell</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/mataro</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/manresa</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/cornella</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/vilanova</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/elmasnou</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/castellon</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.68</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/torrevieja</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/benidorm</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/gandia</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/denia</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/elche</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/elda</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/orihuela</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/calpe</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/javea</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/cartagena</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.68</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/menorca</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.68</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/formentera</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/alcorcon</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/mostoles</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/fuenlabrada</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/leganes</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/getafe</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/pozuelo</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/majadahonda</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://xpeak.es/contratar-azafata/valdemoro</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
 
   <!-- disco-movil por ciudad -->
   <url><loc>https://xpeak.es/contratar-disco-movil/madrid</loc><lastmod>2026-08-22</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
