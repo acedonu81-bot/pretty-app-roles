@@ -33,7 +33,7 @@ describe('useAvailableNow', () => {
 
     expect(result.current.professionals).toEqual([
       { userId: '1', roleLabel: 'DJ / Artista', roleColor: '#4285F4', zone: 'Madrid' },
-      { userId: '2', roleLabel: 'Staff / Camarero', roleColor: '#34D399', zone: 'Barcelona' },
+      { userId: '2', roleLabel: 'Camarero', roleColor: '#34D399', zone: 'Barcelona' },
     ]);
   });
 

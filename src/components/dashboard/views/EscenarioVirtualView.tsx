@@ -125,8 +125,8 @@ const ReportModal = ({
   );
 };
 
-const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', makeup: 'Makeup', rookie: 'Promesa', media: 'Media', design: 'Diseño', promotor: 'Promotor', ambassador: 'Embajador', vestuario: 'Moda' };
-const ROLE_COLOR: Record<string, string> = { dj: '#D4AF37', staff: '#8B5CF6', makeup: '#EC4899', rookie: '#F59E0B', media: '#3B82F6', design: '#34D399', promotor: '#F97316', ambassador: '#A78BFA', vestuario: '#F472B6' };
+const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Camarero', azafata: 'Azafata', makeup: 'Makeup', rookie: 'Promesa', media: 'Media', design: 'Diseño', promotor: 'Promotor', ambassador: 'Embajador', vestuario: 'Moda' };
+const ROLE_COLOR: Record<string, string> = { dj: '#D4AF37', staff: '#8B5CF6', azafata: '#F472B6', makeup: '#EC4899', rookie: '#F59E0B', media: '#3B82F6', design: '#34D399', promotor: '#F97316', ambassador: '#A78BFA', vestuario: '#F472B6' };
 
 interface LiveProfile { id: string; display_name: string; role: string; stream_title: string | null; zone: string | null; stream_url: string | null; }
 

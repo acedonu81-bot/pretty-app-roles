@@ -23,7 +23,8 @@ interface Props { professional: Profile; onClose: () => void; onSaved?: () => vo
 const ROLE_SERVICE: Record<string, string> = {
   dj:        'sesión de DJ y actuación musical en directo',
   rookie:    'actuación musical (artista emergente)',
-  staff:     'servicios de staff y gestión de sala',
+  staff:     'servicios de camarero y gestión de sala',
+  azafata:   'servicios de azafata/hostess de imagen y atención al público',
   makeup:    'servicios de maquillaje, peluquería y estilismo',
   media:     'servicios de fotografía y vídeo de evento',
   ambassador:'servicios de promotor y captación de público',

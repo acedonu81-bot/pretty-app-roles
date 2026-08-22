@@ -18,8 +18,17 @@ const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { ic
     ],
   },
   staff: {
-    tagline: 'Date a conocer como staff y camarero para eventos.',
-    sub: 'Crea tu perfil gratis y aparece cuando busquen personal en tu zona.',
+    tagline: 'Consigue trabajo de camarero en eventos reales.',
+    sub: 'Salas y organizadores buscan profesionales como tú cada semana.',
+    bullets: [
+      { icon: Target, text: 'Tu perfil visible para empresarios de tu zona' },
+      { icon: FileText, text: 'Contratos digitales sin papeleo' },
+      { icon: Wallet, text: '0% comisión — cobras todo lo tuyo' },
+    ],
+  },
+  azafata: {
+    tagline: 'Consigue trabajo de azafata en eventos reales.',
+    sub: 'Salas y organizadores buscan azafatas como tú cada semana.',
     bullets: [
       { icon: Target, text: 'Tu perfil visible para empresarios de tu zona' },
       { icon: FileText, text: 'Contratos digitales sin papeleo' },
@@ -302,7 +311,7 @@ const Auth = () => {
 
         isRegistering.current = true;
         const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
-        const KNOWN_ROLES = ['dj', 'media', 'makeup', 'staff', 'promotor', 'empresario', 'catering', 'mago', 'humorista', 'animador', 'bailarin', 'speaker', 'vestuario', 'photo-booth'];
+        const KNOWN_ROLES = ['dj', 'media', 'makeup', 'staff', 'azafata', 'promotor', 'empresario', 'catering', 'mago', 'humorista', 'animador', 'bailarin', 'speaker', 'vestuario', 'photo-booth'];
         const { data: signUpData, error } = await supabase.auth.signUp({
           email,
           password,

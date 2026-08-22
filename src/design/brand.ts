@@ -112,7 +112,8 @@ export const COPY = {
 export const NAV_LABELS: Record<string, string> = {
   dj:           'DJs & Artistas',
   rookie:       'DJ / Artista Promesa',
-  staff:        'Staff & Promoción',
+  staff:        'Camareros',
+  azafata:      'Azafatas',
   makeup:       'Maquillaje & Peluquería',
   media:        'Media & Contenido',
   empresario:   'Panel Empresario',

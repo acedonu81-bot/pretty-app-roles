@@ -23,6 +23,7 @@ const ROLE_COLORS: Record<string, string> = {
   dj:            '#4285F4',
   rookie:        '#60A5FA',
   staff:         '#34D399',
+  azafata:       '#F472B6',
   event_manager: '#2DD4BF',
   makeup:        '#F9A8D4',
   media:         '#A78BFA',
@@ -44,7 +45,8 @@ const navSections = [
     label: 'DIRECTORIO',
     items: [
       { id: 'dj',         icon: Headphones, label: 'DJs, Artistas & Música en Vivo' },
-      { id: 'staff',         icon: UserCheck,      label: 'Staff & Promoción' },
+      { id: 'staff',         icon: UserCheck,      label: 'Camareros' },
+      { id: 'azafata',       icon: UserCheck,      label: 'Azafatas' },
       { id: 'event_manager', icon: CalendarCheck,  label: 'Encargadas de Eventos' },
       { id: 'bailarin',   icon: Music2,          label: 'Instructores & Bailarines' },
       { id: 'makeup',     icon: Smile,      label: 'Maquillaje & Peluquería' },
@@ -98,7 +100,7 @@ const navSections = [
 
 const TOOL_BLUE_IDS = new Set(['calendar', 'messages', 'flashbooking']);
 
-const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', camarero: 'Staff / Camarero', makeup: 'Makeup', media: 'Media', empresario: 'Sala / Club', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', promotor: 'Promotor & RRPP', ambassador: 'Embajador', design: 'Diseño', mago: 'Mago & Ilusionista', bailarin: 'Instructor / Bailarín', humorista: 'Humorista & Cómico', monologo: 'Monólogo & Stand-Up', animador: 'Payaso & Animador', speaker: 'Speaker & Presentador', 'photo-booth': 'Photo Booth' };
+const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Camarero', azafata: 'Azafata', camarero: 'Camarero', makeup: 'Makeup', media: 'Media', empresario: 'Sala / Club', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', promotor: 'Promotor & RRPP', ambassador: 'Embajador', design: 'Diseño', mago: 'Mago & Ilusionista', bailarin: 'Instructor / Bailarín', humorista: 'Humorista & Cómico', monologo: 'Monólogo & Stand-Up', animador: 'Payaso & Animador', speaker: 'Speaker & Presentador', 'photo-booth': 'Photo Booth' };
 
 const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }) => {
   const { display_name, role, photo_url, allProfiles, switchProfile, maxProfiles, profileId } = useProfile();

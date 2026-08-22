@@ -9,7 +9,8 @@ export const ZONES = [
 /** Traducciones de roles internos al español para mostrar al usuario */
 export const ROLE_ES: Record<string, string> = {
   dj:            'DJ / Artista / Música en Vivo',
-  staff:         'Staff de Sala',
+  staff:         'Camarero',
+  azafata:       'Azafata',
   event_manager: 'Encargada de Eventos',
   promotor:      'Promotor & Maestro de Ceremonias',
   camarero:      'Camarero / Barra',

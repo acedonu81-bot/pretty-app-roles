@@ -1,7 +1,7 @@
 export interface Profile {
   id: number;
   name: string;
-  role: 'dj' | 'staff' | 'makeup' | 'vestuario' | 'media' | 'design' | 'promotor' | 'ambassador' | 'rookie' | 'empresario' | 'catering' | 'mago' | 'bailarin' | 'humorista' | 'monologo' | 'speaker' | 'animador';
+  role: 'dj' | 'staff' | 'azafata' | 'makeup' | 'vestuario' | 'media' | 'design' | 'promotor' | 'ambassador' | 'rookie' | 'empresario' | 'catering' | 'mago' | 'bailarin' | 'humorista' | 'monologo' | 'speaker' | 'animador';
   specialty: string;
   rating: number;
   reviews: number;

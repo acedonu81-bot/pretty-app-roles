@@ -158,7 +158,8 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   const ROLE_OPTIONS: { value: string; label: string }[] = [
     { value: 'dj',            label: 'DJ / Artista / Productor' },
     { value: 'rookie',        label: 'Artista Promesa' },
-    { value: 'staff',         label: 'Staff / Camarero / RRPP' },
+    { value: 'staff',         label: 'Camarero' },
+    { value: 'azafata',       label: 'Azafata' },
     { value: 'event_manager', label: 'Encargada de Eventos' },
     { value: 'promotor',      label: 'Promotor' },
     { value: 'catering',      label: 'Catering / Cocina' },
