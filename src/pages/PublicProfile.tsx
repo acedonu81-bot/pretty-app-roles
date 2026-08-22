@@ -543,8 +543,12 @@ const PublicProfile = () => {
     promotor: 'Promotor', ambassador: 'Embajador', azafata: 'Azafata',
   };
 
-  // Related profiles: Supabase results for UUID, static data for demo
-  const relatedProfiles = isUUID
+  // Related profiles: Supabase results for real profiles, static data for
+  // demo-only profiles — antes comprobaba isUUID (si la URL era un UUID
+  // crudo), pero todas las URLs reales usan slug, así que esa condición
+  // siempre era falsa y mostraba profesionales inventados ("Luna Deep",
+  // "MC Ráfaga") como "similares" en el 100% de los perfiles reales.
+  const relatedProfiles = sbProfile
     ? related.map(r => ({
         key: r.user_id,
         name: r.display_name,
