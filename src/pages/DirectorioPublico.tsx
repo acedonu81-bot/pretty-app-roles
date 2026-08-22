@@ -273,9 +273,11 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string): Pro
   const { data, error } = await q;
   if (error) throw error;
 
-  // Filtro anti-spam: basta con foto O bio (no ambos) para aparecer — exigir
-  // las dos ocultaba perfiles reales con solo una de las dos rellena.
-  const filtered = (data ?? []).filter((p: any) => !!p.photo_url || !!p.bio?.trim());
+  // Sin gate de completitud por ahora — con poco volumen de usuarios,
+  // exigir foto/bio echaba del directorio a la mayoría de perfiles reales.
+  // Retomar cuando haya volumen que lo justifique, avisando antes a los
+  // usuarios existentes.
+  const filtered = data ?? [];
 
   const userIds = filtered.map((p: any) => p.user_id);
   const { data: reviewsData } = userIds.length > 0
