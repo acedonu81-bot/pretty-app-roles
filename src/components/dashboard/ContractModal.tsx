@@ -642,6 +642,25 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
       }
     }
 
+    // Avisa al profesional de que existe un contrato con su nombre — el
+    // generador no le pide firma dentro de la plataforma, así que sin este
+    // email podría no enterarse nunca de que se generó.
+    if (professional.userId) {
+      supabase.functions.invoke('send-email', {
+        body: {
+          type: 'contract_generated',
+          data: {
+            professional_user_id: professional.userId,
+            ref,
+            contratante_nombre: form.contratanteNombre || null,
+            event_date: form.fechaEvento || null,
+            event_type: tipoEvento,
+            amount: price > 0 ? price : null,
+          },
+        },
+      }).catch((err: unknown) => console.warn('[email] contract_generated failed:', err));
+    }
+
     // Generate PDF via browser print dialog (reliable, respects all CSS)
     const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
     const url = URL.createObjectURL(blob);

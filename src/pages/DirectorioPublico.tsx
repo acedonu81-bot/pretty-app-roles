@@ -267,13 +267,8 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string): Pro
 
   // Filtro anti-spam: registros NUEVOS (a partir de este cambio) con zona
   // genérica "España" — es decir, que no rellenaron una ciudad real — no
-  // aparecen en el directorio hasta que la completen. Los perfiles creados
-  // antes de este corte se dejan intactos (ya se han revisado a mano).
-  const NEW_PROFILE_GATE_SINCE = '2026-08-17T17:53:25.000Z';
-  const isGenericZone = (zone: string | null) => !zone?.trim() || zone.trim() === 'España';
-  const filtered = (data ?? []).filter((p: any) =>
-    !(p.created_at >= NEW_PROFILE_GATE_SINCE && isGenericZone(p.zone))
-  );
+  // aparecen en el directorio hasta que la completen (foto + descripción).
+  const filtered = (data ?? []).filter((p: any) => !!p.photo_url && !!p.bio?.trim());
 
   const userIds = filtered.map((p: any) => p.user_id);
   const { data: reviewsData } = userIds.length > 0

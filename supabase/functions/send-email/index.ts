@@ -358,6 +358,29 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       <p style="color:rgba(255,255,255,0.3);font-size:12px;text-align:center">Acepta o rechaza la solicitud desde tu panel de Flash Booking.</p>`),
   }),
 
+  // 13b. Contrato generado — avisa al profesional de que existe un contrato con su nombre
+  contract_generated: (d) => ({
+    subject: `📄 Se ha generado un contrato contigo — ${esc(d.event_type ?? 'evento')}`,
+    to: d.email,
+    html: base(`
+      <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:8px;padding:16px;margin-bottom:20px">
+        <p style="margin:0 0 4px">${badge('Contrato generado')}</p>
+        <p style="font-size:20px;font-weight:900;margin:6px 0 0">Ref. ${esc(d.ref ?? '—')}</p>
+      </div>
+      <p style="color:rgba(255,255,255,0.55);font-size:14px;line-height:1.7;margin:0 0 20px">
+        Hola <strong style="color:#fff">${esc(d.professional_name)}</strong>, <strong style="color:#D4AF37">${esc(d.contratante_nombre ?? 'un contratante')}</strong> ha generado un contrato contigo en XPEAK para el evento del <strong style="color:#fff">${esc(d.event_date ?? 'fecha por confirmar')}</strong>.
+      </p>
+      ${rows([
+        ['Contratante', d.contratante_nombre],
+        ['Fecha del evento', d.event_date],
+        ['Tipo de evento', d.event_type],
+        ['Importe', d.amount ? `${d.amount}€` : '—'],
+      ])}
+      <p style="color:rgba(255,255,255,0.3);font-size:12px;text-align:center;margin-top:16px">
+        Revisa el documento con calma antes de firmar. XPEAK no gestiona el envío del PDF — pídeselo directamente al contratante si no lo has recibido.
+      </p>`),
+  }),
+
   // 14. Aniversario 6 meses
   six_months_anniversary: (d) => ({
     subject: `¡Llevas 6 meses en XPEAK, ${esc(d.name)}! 🎉`,

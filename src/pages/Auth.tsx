@@ -677,11 +677,13 @@ const Auth = () => {
                   style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' }}>
                   {loading
                     ? 'Procesando...'
-                    : isLogin
-                      ? 'Iniciar Sesión'
-                      : roleParam === 'empresario'
-                        ? 'Empezar a contratar gratis →'
-                        : 'Publicar mi perfil gratis →'}
+                    : !captchaToken
+                      ? 'Verificando seguridad…'
+                      : isLogin
+                        ? 'Iniciar Sesión'
+                        : roleParam === 'empresario'
+                          ? 'Empezar a contratar gratis →'
+                          : 'Publicar mi perfil gratis →'}
                 </button>
 
               </form>

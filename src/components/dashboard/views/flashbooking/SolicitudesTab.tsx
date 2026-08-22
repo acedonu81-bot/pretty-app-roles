@@ -266,6 +266,7 @@ const SolicitudesTab = () => {
         <ContractModal
           professional={{
             id: 0,
+            userId: user?.id,
             name: profile.display_name || 'Profesional',
             role: (profile.role as Profile['role']) || 'dj',
             specialty: profile.specialty ?? '',
