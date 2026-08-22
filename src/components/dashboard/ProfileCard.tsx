@@ -66,7 +66,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
     : null : null;
 
   const hasPhoto = p.photo && p.photo.length > 5 && !imgError;
-  const priceLabel = ['makeup', 'vestuario', 'media', 'design'].includes(p.role)
+  const priceLabel = ['makeup', 'peluqueria', 'vestuario', 'media', 'design'].includes(p.role)
     ? null : p.price > 0 ? `${p.price}€${p.priceUnit}` : null;
   const isEarlyAdopter = (p as any).isEarlyAdopter ?? false;
 

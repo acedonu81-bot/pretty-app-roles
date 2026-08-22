@@ -1,5 +1,5 @@
 interface BlogInlineCTAProps {
-  role?: 'dj' | 'staff' | 'makeup' | 'fotografo' | 'bailarin' | 'general';
+  role?: 'dj' | 'staff' | 'makeup' | 'peluqueria' | 'fotografo' | 'bailarin' | 'general';
   orgLabel?: string;
   variant?: 'default' | 'upgrade';
 }
@@ -38,6 +38,18 @@ const CONFIG = {
       sub: 'Portfolios reales, tarifas públicas y contrato digital automático. Sin intermediarios.',
       cta: 'Ver maquilladoras →',
       href: '/auth?mode=register&intent=contratar-makeup',
+      badge: 'Directorio verificado',
+    },
+  },
+  peluqueria: {
+    pro: { label: '¿Eres peluquera a domicilio?', cta: 'Publica tu tarifa gratis →', href: '/auth?mode=register&role=peluqueria' },
+    org: { label: '¿Buscas peluquera a domicilio?', cta: 'Ver peluqueras →', href: '/contratar-peluqueria' },
+    upgrade: {
+      eyebrow: 'XPEAK · Gratis · Sin comisión',
+      headline: 'Encuentra peluquera a domicilio cerca de ti',
+      sub: 'Para tu evento o para el día a día. Portfolios reales, tarifas públicas y contrato digital automático.',
+      cta: 'Ver peluqueras a domicilio →',
+      href: '/auth?mode=register&intent=contratar-peluqueria',
       badge: 'Directorio verificado',
     },
   },

@@ -1,4 +1,4 @@
-import { Music, Users, Camera, Brush, Building2, Utensils, Flag, Shirt, Palette, X } from 'lucide-react';
+import { Music, Users, Camera, Brush, Building2, Utensils, Flag, Shirt, Palette, Scissors, X } from 'lucide-react';
 
 interface WelcomeScreenProps {
   role: string;
@@ -23,7 +23,13 @@ const welcomeMessages: Record<string, { icon: any; title: string; subject: strin
     icon: Palette,
     title: 'Imagen',
     subject: 'Tu estilo marca la diferencia.',
-    body: 'Tu perfil de Maquillaje y Peluquería ya está activo. Sube fotos de alta calidad de tus trabajos y completa tu biografía técnica para que los organizadores validen tu estilo antes de la contratación.',
+    body: 'Tu perfil de Maquillaje ya está activo. Sube fotos de alta calidad de tus trabajos y completa tu biografía técnica para que los organizadores validen tu estilo antes de la contratación.',
+  },
+  peluqueria: {
+    icon: Scissors,
+    title: 'Peluquería a Domicilio',
+    subject: 'Cada clienta cerca de ti cuenta.',
+    body: 'Tu perfil de Peluquería a Domicilio ya está activo. Sube fotos de tus trabajos y completa tu zona de cobertura para que las clientas de tu área te encuentren, ya sea para un evento o para el día a día.',
   },
   vestuario: {
     icon: Shirt,

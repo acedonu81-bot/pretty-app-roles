@@ -1,4 +1,4 @@
-import { Music2, Users, Camera, Palette, Megaphone, Star, Building2, Scissors, CalendarCheck } from 'lucide-react';
+import { Music2, Users, Camera, Palette, Megaphone, Star, Building2, Scissors, CalendarCheck, Sparkles } from 'lucide-react';
 
 export type PlanFeatures = { starter: string[]; business: string[]; agency: string[] };
 
@@ -113,8 +113,8 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
     },
   },
   makeup: {
-    icon: <Scissors size={16} />,
-    label: 'Maquillaje & Peluquería',
+    icon: <Sparkles size={16} />,
+    label: 'Maquillaje',
     free: [
       'Perfil visible en directorio',
       'Servicios ilimitados',
@@ -140,6 +140,39 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
         'Todo lo de Business',
         'Gestión de equipo (hasta 5 perfiles)',
         'Panel de agencia de imagen y estilismo',
+        'Visibilidad máxima garantizada',
+        'Sello Agencia exclusivo',
+      ],
+    },
+  },
+  peluqueria: {
+    icon: <Scissors size={16} />,
+    label: 'Peluquería a Domicilio',
+    free: [
+      'Perfil visible en directorio',
+      'Servicios ilimitados',
+      'Mensajería interna',
+      '1h de streaming de prueba en el Escenario Virtual',
+    ],
+    plans: {
+      starter: [
+        'Badge verificado en tu ficha',
+        'Servicios ilimitados (corte, color, peinados...)',
+        'Estadísticas de visitas básicas',
+        'Aparecer en búsquedas por zona',
+      ],
+      business: [
+        'Todo lo de Starter',
+        'Posicionamiento prioritario en directorio',
+        'Portafolio fotográfico ampliado (hasta 20 imágenes)',
+        'Flash Booking: servicios urgentes cerca de ti',
+        'Estadísticas avanzadas + exportar',
+        'Sello Business dorado',
+      ],
+      agency: [
+        'Todo lo de Business',
+        'Gestión de equipo (hasta 5 perfiles)',
+        'Panel de agencia de peluquería',
         'Visibilidad máxima garantizada',
         'Sello Agencia exclusivo',
       ],

@@ -83,7 +83,7 @@ interface ContractRow {
 
 const ROLE_LABEL: Record<string, string> = {
   dj: 'DJ / Artista', rookie: 'DJ Promesa', staff: 'Staff / RRPP',
-  makeup: 'Maquillaje / Peluquería', media: 'Foto / Vídeo', ambassador: 'Promotor / Embajador',
+  makeup: 'Maquillaje', peluqueria: 'Peluquería a Domicilio', media: 'Foto / Vídeo', ambassador: 'Promotor / Embajador',
   animador: 'Animador', bailarin: 'Bailarín/a', catering: 'Catering',
   design: 'Diseño', humorista: 'Humorista', mago: 'Mago/a',
   monologo: 'Monologuista', speaker: 'Speaker / Presentador', vestuario: 'Vestuario',
@@ -291,7 +291,8 @@ const ContractView = () => {
               <option value="dj" style={{ background: '#0a0a0e' }}>DJ / Artista</option>
               <option value="rookie" style={{ background: '#0a0a0e' }}>DJ Promesa</option>
               <option value="staff" style={{ background: '#0a0a0e' }}>Staff / RRPP</option>
-              <option value="makeup" style={{ background: '#0a0a0e' }}>Maquillaje / Peluquería</option>
+              <option value="makeup" style={{ background: '#0a0a0e' }}>Maquillaje</option>
+              <option value="peluqueria" style={{ background: '#0a0a0e' }}>Peluquería a Domicilio</option>
               <option value="media" style={{ background: '#0a0a0e' }}>Foto / Vídeo</option>
               <option value="ambassador" style={{ background: '#0a0a0e' }}>Promotor / Embajador</option>
             </select>

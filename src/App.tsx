@@ -180,6 +180,7 @@ const App = () => (
             <Route path="/contratar-camareros" element={<CategoryLanding />} />
             <Route path="/contratar-catering" element={<CategoryLanding />} />
             <Route path="/contratar-maquillaje" element={<CategoryLanding />} />
+            <Route path="/contratar-peluqueria" element={<CategoryLanding />} />
             <Route path="/contratar-promotores" element={<CategoryLanding />} />
             <Route path="/contratar-vestuario" element={<CategoryLanding />} />
             <Route path="/contratar-disco-movil" element={<CategoryLanding />} />
@@ -205,6 +206,7 @@ const App = () => (
             <Route path="/contratar-monologo/:ciudad" element={<CityLanding />} />
             <Route path="/contratar-monologos/:ciudad" element={<CityLanding />} />
             <Route path="/contratar-maquillaje/:ciudad" element={<CityLanding />} />
+            <Route path="/contratar-peluqueria/:ciudad" element={<CityLanding />} />
             <Route path="/contratar-promotores/:ciudad" element={<CityLanding />} />
             <Route path="/contratar-animador/:ciudad" element={<CityLanding />} />
             <Route path="/contratar-animadores/:ciudad" element={<CityLanding />} />

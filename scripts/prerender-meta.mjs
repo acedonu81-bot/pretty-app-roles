@@ -69,9 +69,17 @@ const ROUTES = [
   {
     path: '/contratar-maquillaje',
     title: 'Contratar Maquillador para Eventos — XPEAK | Directorio Profesional de Eventos',
-    desc: 'Contrata maquilladores artísticos, peluqueros y estilistas para eventos, shows y actuaciones en España. Perfiles verificados. Sin comisión.',
+    desc: 'Contrata maquilladores artísticos para eventos, shows y actuaciones en España. Perfiles verificados. Sin comisión.',
     ogTitle: 'Contratar Maquillador para Eventos en España — XPEAK',
-    ogDesc: 'Maquilladores y estilistas para shows, clubs y eventos. Directorio verificado. Flash Booking disponible.',
+    ogDesc: 'Maquilladores para shows, clubs y eventos. Directorio verificado. Flash Booking disponible.',
+    ogType: 'website',
+  },
+  {
+    path: '/contratar-peluqueria',
+    title: 'Peluquería a Domicilio — XPEAK | Directorio Profesional de Eventos',
+    desc: 'Encuentra peluquera a domicilio cerca de ti en España. Corte, color, peinados de novia y recogidos, para eventos o para el día a día. Perfiles verificados. Sin comisión.',
+    ogTitle: 'Peluquería a Domicilio Cerca de Ti — XPEAK',
+    ogDesc: 'Peluqueras y peluqueros a domicilio en toda España. Para bodas, eventos o el día a día. Directorio verificado.',
     ogType: 'website',
   },
   {
@@ -479,6 +487,14 @@ const ROUTES = [
     desc: 'Directorio de maquilladoras para bodas, comuniones y eventos en España. Portfolios y precios reales.',
     ogTitle: 'Directorio de maquilladoras — XPEAK',
     ogDesc: 'Encuentra maquilladoras para tu boda o evento. Portfolios reales y contacto directo.',
+    ogType: 'website',
+  },
+  {
+    path: '/directorio/peluqueria',
+    title: 'Peluquera a domicilio cerca de mí — Directorio XPEAK',
+    desc: 'Directorio de peluqueras y peluqueros a domicilio en España. Para novias, eventos o el día a día. Precios reales y contacto directo.',
+    ogTitle: 'Peluquería a domicilio — XPEAK',
+    ogDesc: 'Encuentra peluquera a domicilio cerca de ti. Perfiles reales y contacto directo.',
     ogType: 'website',
   },
   {

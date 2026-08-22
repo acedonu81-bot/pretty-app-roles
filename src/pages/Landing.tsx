@@ -333,9 +333,9 @@ const ROLE_DETAILS = [
     ],
   },
   {
-    key: 'belleza', title: 'Belleza & Estética', icon: <Scissors size={28} />, tagline: 'Maquilladores, peluqueros y estilistas',
+    key: 'belleza', title: 'Belleza & Estética', icon: <Scissors size={28} />, tagline: 'Maquilladores y peluquería a domicilio',
     steps: [
-      { icon: <Scissors size={22} />,   image: px(3685530), title: '¿Qué es este rol?',        body: 'Maquilladores artísticos, peluqueros de artistas, estilistas para shows, caracterizadores y técnicos de efectos especiales para escenario.' },
+      { icon: <Scissors size={22} />,   image: px(3685530), title: '¿Qué es este rol?',        body: 'Maquilladores artísticos y peluqueras/os a domicilio: para eventos, bodas o para el día a día, caracterizadores y técnicos de efectos especiales.' },
       { icon: <Sparkles size={22} />,   image: px(2681751), title: 'Tu trabajo habla',          body: 'Sube fotos y vídeos de tus transformaciones. Los artistas y salas buscan talento visual antes de contactar.' },
       { icon: <Star size={22} />,       image: px(2681751), title: 'Especialización nocturna',  body: 'XPEAK es el único directorio donde artistas, managers y productoras buscan profesionales de belleza del sector nocturno.' },
       { icon: <Smartphone size={22} />, image: px(3685530), title: 'Contacto directo',          body: 'Sin agencias ni intermediarios. Artistas y productoras te encuentran en XPEAK y contactan directamente a través de la plataforma.' },
@@ -861,8 +861,8 @@ const Landing = () => {
           <FadeIn delay={0.25} className="h-full">
             <BentoCard
               image="/images/pexels/2681751.jpg"
-              icon={<Scissors size={20} />} title="Belleza & Estética" subtitle="Maquilladores, peluqueros y estilistas" className="h-full"
-              isFresh={freshRoles.has('makeup')}
+              icon={<Scissors size={20} />} title="Belleza & Estética" subtitle="Maquilladores y peluquería a domicilio" className="h-full"
+              isFresh={freshRoles.has('makeup') || freshRoles.has('peluqueria')}
               href={CATEGORY_DEST.belleza} />
           </FadeIn>
           <FadeIn delay={0.3} className="h-full">

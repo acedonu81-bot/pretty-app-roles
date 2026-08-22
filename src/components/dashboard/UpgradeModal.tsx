@@ -47,6 +47,17 @@ const ROLE_UPSELL: Record<string, { headline: string; features: string[]; cta: s
     ],
     cta: 'Activar Business y conseguir más clientes',
   },
+  peluqueria: {
+    headline: 'Consigue más clientas a domicilio',
+    features: [
+      'Posicionamiento prioritario en directorio',
+      'Portafolio ampliado hasta 20 fotos',
+      'Flash Booking — servicios urgentes cerca de ti',
+      'Estadísticas de visitas avanzadas',
+      'Sello Business dorado en tu ficha',
+    ],
+    cta: 'Activar Business y conseguir más clientas',
+  },
   vestuario: {
     headline: 'Lleva tu estudio al siguiente nivel',
     features: [

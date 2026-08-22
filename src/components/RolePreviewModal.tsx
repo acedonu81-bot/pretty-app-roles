@@ -8,7 +8,7 @@ interface Props {
 const ROLES = [
   { value: 'dj',         label: 'DJ / Artista',    icon: Music,     color: '#D4AF37' },
   { value: 'staff',      label: 'Staff Técnico',    icon: Users,     color: '#60a5fa' },
-  { value: 'makeup',     label: 'Makeup / Estilo',  icon: Smile,     color: '#c084fc' },
+  { value: 'makeup',     label: 'Maquillaje',       icon: Smile,     color: '#c084fc' },
   { value: 'media',      label: 'Foto / Video',     icon: Camera,    color: '#34d399' },
   { value: 'ambassador', label: 'Ambassador / PR',  icon: Phone,     color: '#fb923c' },
   { value: 'empresario', label: 'Empresario',       icon: Building2, color: '#D4AF37' },

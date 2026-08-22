@@ -15,6 +15,7 @@ export const ROLE_ES: Record<string, string> = {
   camarero:      'Camarero / Barra',
   catering:      'Catering / Cocina',
   makeup:        'Maquillaje / Estilismo',
+  peluqueria:    'Peluquería a Domicilio',
   media:         'Media / Fotografía',
 };
 

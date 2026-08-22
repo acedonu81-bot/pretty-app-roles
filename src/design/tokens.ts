@@ -210,7 +210,8 @@ export const roleMeta: Record<string, { label: string; plural: string }> = {
   dj:         { label: 'DJ & Artista',       plural: 'DJs & Artistas' },
   rookie:     { label: 'DJ / Artista Promesa',plural: 'DJs & Artistas Promesa' },
   staff:      { label: 'Staff & Promotor',   plural: 'Staff & Promoción' },
-  makeup:     { label: 'Maquillaje',         plural: 'Maquillaje & Peluquería' },
+  makeup:     { label: 'Maquillaje',         plural: 'Maquillaje' },
+  peluqueria: { label: 'Peluquería a Domicilio', plural: 'Peluquería a Domicilio' },
   media:      { label: 'Media & Contenido',  plural: 'Media & Contenido' },
   empresario: { label: 'Empresario',         plural: 'Empresarios' },
 };

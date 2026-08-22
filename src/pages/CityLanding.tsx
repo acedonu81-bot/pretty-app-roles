@@ -9,7 +9,7 @@ interface Prof { id: string; display_name: string; photo_url: string | null; bio
 
 const ROLE_MAP: Record<string, string[]> = {
   dj: ['dj'], camareros: ['staff'], fotografo: ['media'], staff: ['staff', 'promotor'],
-  catering: ['empresario'], maquillaje: ['makeup'], promotores: ['promotor'],
+  catering: ['empresario'], maquillaje: ['makeup'], peluqueria: ['peluqueria'], promotores: ['promotor'],
   'disco-movil': ['dj'], vestuario: ['staff'],
 };
 
@@ -406,14 +406,26 @@ const CATEGORIES: Record<string, CategoryInfo> = {
   },
   maquillaje: {
     label: 'Maquilladora',
-    keyword: 'Maquilladora y Estilista',
+    keyword: 'Maquilladora',
     unidad: '/servicio',
-    desc: (c) => `Contratar maquilladora en ${c} para bodas, eventos y sesiones fotográficas. Maquillaje profesional, peinado y estilismo. Flash Booking. Sin comisión.`,
-    intro: (c) => `Encuentra maquilladoras y estilistas profesionales en ${c} para bodas, sesiones de fotos, eventos de moda y TV. XPEAK conecta organizadores y novias con maquilladoras verificadas con portfolio real y experiencia en eventos.`,
+    desc: (c) => `Contratar maquilladora en ${c} para bodas, eventos y sesiones fotográficas. Maquillaje profesional y artístico. Flash Booking. Sin comisión.`,
+    intro: (c) => `Encuentra maquilladoras profesionales en ${c} para bodas, sesiones de fotos, eventos de moda y TV. XPEAK conecta organizadores y novias con maquilladoras verificadas con portfolio real y experiencia en eventos.`,
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta una maquilladora profesional en ${c}?`, a: `El maquillaje profesional en ${c} cuesta entre ${precio} por servicio. Maquillaje de novia completo: 150€–300€. Maquillaje artístico para eventos: 80€–200€.` },
-      { q: `¿La maquilladora va al domicilio o a la peluquería en ${c}?`, a: 'La mayoría de maquilladoras en XPEAK ofrecen servicio a domicilio o en el propio venue del evento. Especifícalo en tu solicitud y confirma el desplazamiento.' },
+      { q: `¿La maquilladora va al domicilio en ${c}?`, a: 'La mayoría de maquilladoras en XPEAK ofrecen servicio a domicilio o en el propio venue del evento. Especifícalo en tu solicitud y confirma el desplazamiento.' },
       { q: '¿Puedo contratar maquillaje para varias personas?', a: 'Sí. Para bodas y eventos grupales muchas maquilladoras trabajan en equipo o tienen asistentes. Indica el número de personas al hacer la solicitud para recibir presupuesto ajustado.' },
+    ],
+  },
+  peluqueria: {
+    label: 'Peluquera a domicilio',
+    keyword: 'Peluquera a Domicilio',
+    unidad: '/servicio',
+    desc: (c) => `Peluquera a domicilio en ${c}: corte, color y peinados de novia. Para tu evento o para el día a día, sin salir de casa. Flash Booking. Sin comisión.`,
+    intro: (c) => `Encuentra peluqueras y peluqueros a domicilio en ${c}, cerca de ti. Ya sea para el peinado de una boda, un evento puntual o un servicio recurrente en casa, XPEAK conecta a clientas con profesionales verificados con portfolio real.`,
+    faqs: (c, precio) => [
+      { q: `¿Cuánto cuesta una peluquera a domicilio en ${c}?`, a: `Una peluquera a domicilio en ${c} cuesta entre ${precio} por servicio. Corte y peinado básico: 25€–60€. Peinado de novia con prueba previa: 80€–200€.` },
+      { q: `¿La peluquería a domicilio en ${c} es solo para bodas?`, a: 'No. Aunque los peinados de novia y eventos son un caso de uso frecuente, la mayoría de profesionales también ofrecen servicio a domicilio para el día a día: cortes, color y tratamientos capilares.' },
+      { q: `¿Cómo encuentro una peluquera a domicilio cerca de mí en ${c}?`, a: 'Filtra por tu zona en el directorio de XPEAK y contacta directamente con las profesionales disponibles, o usa Flash Booking para recibir disponibilidad urgente.' },
     ],
   },
   promotores: {

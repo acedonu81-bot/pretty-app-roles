@@ -17,6 +17,7 @@ export const ROLE_LABELS: Record<string, string> = {
   dj: 'DJ / Artista',
   media: 'Fotógrafo / Vídeo',
   makeup: 'Maquilladora',
+  peluqueria: 'Peluquería a Domicilio',
   staff: 'Staff / Camarero',
   promotor: 'Promotor / RRPP',
   empresario: 'Empresario',

@@ -60,7 +60,8 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     rookie:    { label: 'Géneros musicales',    tags: ['Tech House','Deep House','House','Afro House','Techno','Melodic Techno','Minimal','Hard Techno','Trance','Drum & Bass','Reggaetón','Dembow','Moombahton','Hip Hop','Trap','Comercial','Top 40','Hits actuales','Remember','Pachanga','Disco','Nu-Disco','Funk','EDM'] },
     staff:         { label: 'Especialidades',         tags: ['Azafata','RRPP','Promotor','Camarero/a','Relaciones Públicas','Animación','Hostess','Sala VIP','Control de acceso','Taquilla','Chill-out','Bottle service','Coordinación'] },
     event_manager: { label: 'Áreas de coordinación', tags: ['Coordinación general','Producción de eventos','Montaje y decoración','Catering','Staff externo','Protocolo','Gestión de artistas','Logística','Presupuestos','Eventos corporativos','Bodas','Festivales','Clubbing','Outdoor'] },
-    makeup:    { label: 'Servicios',             tags: ['Maquillaje nupcial','Caracterización','Maquillaje artístico','Peluquería','Estilismo','Nail art','Aerógrafo','Efectos especiales','Maquillaje masculino','Novias','Pasarela','Producción'] },
+    makeup:    { label: 'Servicios',             tags: ['Maquillaje nupcial','Caracterización','Maquillaje artístico','Estilismo','Nail art','Aerógrafo','Efectos especiales','Maquillaje masculino','Novias','Pasarela','Producción'] },
+    peluqueria:{ label: 'Servicios',             tags: ['Peluquería a domicilio','Peinado de novia','Recogidos','Corte','Color','Extensiones','Alisado','Tratamientos capilares','Peluquería infantil','Eventos','Día a día'] },
     media:     { label: 'Especialidades',        tags: ['Fotografía de eventos','Vídeo','Reels & Contenido','Fotografía de DJ','Drone','Cobertura en directo','Fotografía de sala','Retrato','Edición de vídeo','Color grading','Motion graphics','Podcast'] },
     design:    { label: 'Especialidades',        tags: ['Diseño gráfico','VJing','Mapping','LED wall','Visuales en vivo','Cartelería','Branding','Redes sociales','Ilustración','3D','Motion design'] },
     promotor:  { label: 'Especialidades',        tags: ['Festivales','Clubs nocturnos','Eventos privados','Bodas','Corporativo','After','Terraza','Sala pequeña','Sala grande','Residencias','Giras'] },
@@ -409,7 +410,8 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                   { value: 'event_manager',  label: 'Encargada de Eventos' },
                   { value: 'promotor',       label: 'Promotor' },
                   { value: 'catering',       label: 'Catering / Cocina' },
-                  { value: 'makeup',         label: 'Maquillaje & Peluquería' },
+                  { value: 'makeup',         label: 'Maquillaje' },
+                  { value: 'peluqueria',     label: 'Peluquería a Domicilio' },
                   { value: 'media',          label: 'Foto & Vídeo' },
                   { value: 'empresario',     label: 'Empresario / Sala' },
                 ]}
@@ -552,17 +554,19 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             <div className="mb-3">
               {(() => {
                 const isMusical = profile.role === 'dj' || profile.role === 'rookie';
-                const label = isMusical ? 'Rider Técnico' : profile.role === 'makeup' ? 'Marcas / Productos' : profile.role === 'media' ? 'Equipo técnico' : profile.role === 'event_manager' ? 'Servicios de coordinación' : 'Especialidad';
+                const label = isMusical ? 'Rider Técnico' : profile.role === 'makeup' ? 'Marcas / Productos' : profile.role === 'peluqueria' ? 'Servicios / Técnicas' : profile.role === 'media' ? 'Equipo técnico' : profile.role === 'event_manager' ? 'Servicios de coordinación' : 'Especialidad';
                 const placeholder = isMusical
                   ? 'Ej: Pioneer CDJ-3000 + DJM-900NXS2. Mesa propia (si no hay Pioneer). 2 enchufes cerca de la cabina. Monitoreo lateral obligatorio.'
                   : profile.role === 'media' ? 'Ej: Sony A7 III + DJI Ronin SC. Entrego en 48h. Incluye edición y color grading.'
                   : profile.role === 'makeup' ? 'Ej: MAC, NARS, Charlotte Tilbury. Traigo maletín completo. Necesito mesa con espejo y luz natural.'
+                  : profile.role === 'peluqueria' ? 'Ej: Peluquería a domicilio. Corte, color, peinados de novia y recogidos. Traigo todo el material necesario.'
                   : profile.role === 'event_manager' ? 'Ej: Coordinación integral de eventos. Gestión de artistas, catering, montaje y protocolo. Disponible en toda España.'
                   : 'Describe tu especialidad y requisitos...';
                 const PRESETS: Record<string, string[]> = {
                   dj:     ['CDJ-3000 + DJM-900NXS2', 'Mesa propia', '2 enchufes', 'Monitor lateral', 'Rider estándar Pioneer', 'Necesita backline', 'Acepta Serato', 'Acepta Traktor'],
                   rookie: ['CDJ-3000 + DJM-900NXS2', 'Mesa propia', '2 enchufes', 'Monitor lateral', 'Controlador propio'],
                   makeup: ['Traigo maletín', 'Necesita espejo con luz', 'Solo marcas premium', 'Acepta prueba previa', 'Trabaja en equipo'],
+                  peluqueria: ['Peluquería a domicilio', 'Peinado de novia', 'Traigo todo el material', 'Acepta prueba previa', 'Corte y color'],
                   media:  ['Cámara Sony A7', 'Drone DJI', 'Entrega 48h', 'Incluye edición', 'Raw disponible', 'Drone incluido'],
                   staff:         ['Traje propio', 'Acreditación de sala', 'Idiomas: EN/FR', 'Experiencia VIP', 'Uniforme de sala'],
                   event_manager: ['Coordinación integral', 'Presupuesto detallado', 'Gestión de proveedores', 'On-site el día del evento', 'Experiencia en bodas', 'Experiencia en festivales'],

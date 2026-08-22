@@ -9,12 +9,12 @@ interface MobileBottomNavProps {
 }
 
 const roleToView: Record<string, string> = {
-  dj: 'dj', staff: 'staff', makeup: 'makeup', media: 'media',
+  dj: 'dj', staff: 'staff', makeup: 'makeup', peluqueria: 'peluqueria', media: 'media',
   vestuario: 'vestuario', design: 'design', promotor: 'promotor',
   event_manager: 'event_manager', empresario: 'empresario',
 };
 
-const dirViews = new Set(['dj','staff','makeup','media','vestuario','design','promotor','event_manager','empresario','catering','mago','bailarin','humorista','monologo','animador','speaker','ambassador']);
+const dirViews = new Set(['dj','staff','makeup','peluqueria','media','vestuario','design','promotor','event_manager','empresario','catering','mago','bailarin','humorista','monologo','animador','speaker','ambassador']);
 
 const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount = 0 }: MobileBottomNavProps) => {
   const profile = useProfile();

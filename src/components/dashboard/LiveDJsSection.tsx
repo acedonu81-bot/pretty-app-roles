@@ -16,8 +16,8 @@ const DEMO_LIVE: LiveProfile[] = [
   { id: 'demo-3', display_name: 'Luna Make',  role: 'makeup', stream_title: 'Backstage live',      zone: 'Valencia' },
 ];
 
-const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', makeup: 'Makeup', rookie: 'Promesa', media: 'Media' };
-const ROLE_COLOR: Record<string, string> = { dj: '#D4AF37', staff: '#8B5CF6', makeup: '#EC4899', rookie: '#F59E0B', media: '#3B82F6' };
+const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', makeup: 'Maquillaje', peluqueria: 'Peluquería', rookie: 'Promesa', media: 'Media' };
+const ROLE_COLOR: Record<string, string> = { dj: '#D4AF37', staff: '#8B5CF6', makeup: '#EC4899', peluqueria: '#F472B6', rookie: '#F59E0B', media: '#3B82F6' };
 
 const LiveDJsSection = ({ onNavigate }: { onNavigate?: () => void }) => {
   const [profiles, setProfiles] = useState<LiveProfile[]>([]);

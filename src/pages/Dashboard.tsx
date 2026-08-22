@@ -17,6 +17,7 @@ const DJView = lazy(() => import('@/components/dashboard/views/DJView'));
 const StaffView = lazy(() => import('@/components/dashboard/views/StaffView'));
 const EventManagerView = lazy(() => import('@/components/dashboard/views/EventManagerView'));
 const MakeupView = lazy(() => import('@/components/dashboard/views/MakeupView'));
+const PeluqueriaView = lazy(() => import('@/components/dashboard/views/PeluqueriaView'));
 const MediaView = lazy(() => import('@/components/dashboard/views/MediaView'));
 const AmbassadorView = lazy(() => import('@/components/dashboard/views/AmbassadorView'));
 const VestuarioView = lazy(() => import('@/components/dashboard/views/VestuarioView'));
@@ -95,7 +96,7 @@ const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: s
 const ROLE_DEFAULT_VIEW: Partial<Record<string, string>> = {
   pending: 'profile', dj: 'profile',
   vestuario: 'vestuario', design: 'design', promotor: 'promotor',
-  staff: 'staff', makeup: 'makeup', media: 'media',
+  staff: 'staff', makeup: 'makeup', peluqueria: 'peluqueria', media: 'media',
   event_manager: 'event_manager', empresario: 'empresario', rookie: 'rookie',
   camarero: 'staff', catering: 'staff',
 };
@@ -156,7 +157,7 @@ const Dashboard = () => {
 
   const nav = (view: string) => handleViewChange(view);
 
-  const directoryViews = new Set(['dj', 'staff', 'event_manager', 'makeup', 'media', 'ambassador', 'vestuario', 'design', 'promotor', 'camarero', 'catering']);
+  const directoryViews = new Set(['dj', 'staff', 'event_manager', 'makeup', 'peluqueria', 'media', 'ambassador', 'vestuario', 'design', 'promotor', 'camarero', 'catering']);
 
   const handleSearch = (q: string) => {
     setSearchQuery(q);
@@ -176,6 +177,7 @@ const Dashboard = () => {
       case 'staff': return <StaffView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'event_manager': return <EventManagerView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'makeup': return <MakeupView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
+      case 'peluqueria': return <PeluqueriaView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'media': return <MediaView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'ambassador': return <AmbassadorView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'vestuario': return <VestuarioView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;

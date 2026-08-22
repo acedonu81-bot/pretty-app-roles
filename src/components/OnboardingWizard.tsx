@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight, Megaphone, UtensilsCrossed, Laugh, PartyPopper, PersonStanding, MicVocal, Shirt } from 'lucide-react';
+import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight, Megaphone, UtensilsCrossed, Laugh, PartyPopper, PersonStanding, MicVocal, Shirt, Scissors } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 
 const ROLES = [
   { value: 'dj',           label: 'DJ / Artista',        desc: 'DJ, músico, grupo musical',         icon: Music2,         color: '#D4AF37' },
   { value: 'media',        label: 'Fotógrafo / Vídeo',   desc: 'Fotografía y video de eventos',     icon: Camera,         color: '#60a5fa' },
-  { value: 'makeup',       label: 'Maquilladora',        desc: 'Maquillaje y estilismo',            icon: Sparkles,       color: '#f472b6' },
+  { value: 'makeup',       label: 'Maquilladora',        desc: 'Maquillaje para bodas y eventos',   icon: Sparkles,       color: '#f472b6' },
+  { value: 'peluqueria',   label: 'Peluquería a Domicilio', desc: 'Peluquería a domicilio, eventos y día a día', icon: Scissors, color: '#ec4899' },
   { value: 'staff',        label: 'Staff / Camarero',    desc: 'Personal para eventos',             icon: Users,          color: '#34d399' },
   { value: 'promotor',     label: 'Promotor / RRPP',     desc: 'Relaciones públicas y listas',      icon: Megaphone,      color: '#a78bfa' },
   { value: 'catering',     label: 'Catering / Chef',     desc: 'Cocina, barra y cócteles',          icon: UtensilsCrossed, color: '#fb923c' },
@@ -45,6 +46,14 @@ const TIPS: Record<string, { title: string; tips: [string, string][] }> = {
       ['Añade tu foto', 'Tu mejor trabajo como portada'],
       ['Escribe tu especialidad', 'Nupcial, editorial, artístico...'],
       ['Activa disponibilidad Flash', 'Para eventos urgentes'],
+    ],
+  },
+  peluqueria: {
+    title: 'Tu perfil de Peluquería a Domicilio está listo',
+    tips: [
+      ['Añade tu foto', 'Tu mejor trabajo como portada'],
+      ['Define tu zona', 'Para que te encuentren clientas cerca de ti'],
+      ['Activa disponibilidad Flash', 'Para servicios urgentes o de última hora'],
     ],
   },
   staff: {

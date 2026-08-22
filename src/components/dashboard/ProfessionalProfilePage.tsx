@@ -22,7 +22,8 @@ const ROLE_CFG: Record<string, {
   dj:        { color: '#4285F4', glow: 'rgba(66,133,244,0.45)',   label: 'DJ · Artista',       emoji: '🎧', tagline: 'La pista empieza aquí',        icon: Music },
   rookie:    { color: '#FBBF24', glow: 'rgba(251,191,36,0.4)',    label: 'DJ Promesa',          emoji: '⭐', tagline: 'El próximo grande',             icon: Star },
   staff:     { color: '#34D399', glow: 'rgba(52,211,153,0.35)',   label: 'Staff · RRPP',        emoji: '🎪', tagline: 'El engranaje invisible del show', icon: Users },
-  makeup:    { color: '#F472B6', glow: 'rgba(244,114,182,0.35)',  label: 'Maquillaje · Estilismo',emoji:'💄', tagline: 'Arte en la piel',              icon: Star },
+  makeup:    { color: '#F472B6', glow: 'rgba(244,114,182,0.35)',  label: 'Maquillaje',            emoji:'💄', tagline: 'Arte en la piel',              icon: Star },
+  peluqueria:{ color: '#EC4899', glow: 'rgba(236,72,153,0.35)',   label: 'Peluquería a Domicilio', emoji:'✂️', tagline: 'Estilo que llega hasta ti',   icon: Star },
   media:     { color: '#A78BFA', glow: 'rgba(167,139,250,0.4)',   label: 'Media · Contenido',   emoji: '📸', tagline: 'Cada frame es eterno',          icon: Camera },
   ambassador:{ color: '#FB923C', glow: 'rgba(251,146,60,0.35)',   label: 'Promotor',            emoji: '📣', tagline: 'La energía que llena salas',    icon: Megaphone },
   vestuario: { color: '#D4AF37', glow: 'rgba(212,175,55,0.35)',   label: 'Vestuario',           emoji: '👗', tagline: 'Estilo que habla',              icon: Crown },
@@ -56,7 +57,7 @@ const RoleHeroAnim = ({ role, color }: { role: string; color: string }) => {
     );
   }
 
-  if (role === 'makeup') {
+  if (role === 'makeup' || role === 'peluqueria') {
     return (
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {[
@@ -209,7 +210,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
   const price = full.hourlyRate ?? p.price;
   const verified = full.isVerified ?? p.isVerified ?? false;
 
-  const priceHidden = ['makeup', 'vestuario', 'media', 'design'].includes(p.role);
+  const priceHidden = ['makeup', 'peluqueria', 'vestuario', 'media', 'design'].includes(p.role);
 
   const contact = () => p.userId && onMessage?.(p.userId, p.name);
   const mediaLabel = isDJ ? 'Audio & Stream' : p.role === 'media' ? 'Portfolio' : 'Media';

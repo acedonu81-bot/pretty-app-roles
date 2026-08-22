@@ -25,6 +25,15 @@ const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { ic
       { icon: Wallet, text: '0% comisión — cobras todo lo tuyo' },
     ],
   },
+  peluqueria: {
+    tagline: 'Consigue clientas de peluquería a domicilio en tu zona.',
+    sub: 'Cada semana hay clientas buscando peluquera a domicilio cerca de ellas.',
+    bullets: [
+      { icon: Target, text: 'Tu perfil visible para clientas de tu zona' },
+      { icon: FileText, text: 'Contratos digitales sin papeleo' },
+      { icon: Wallet, text: '0% comisión — cobras todo lo tuyo' },
+    ],
+  },
   profesional: {
     tagline: 'El directorio de referencia para profesionales de eventos.',
     sub: 'Crea tu perfil, publica tu tarifa y empieza a recibir solicitudes.',
@@ -228,7 +237,7 @@ const Auth = () => {
 
         isRegistering.current = true;
         const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
-        const KNOWN_ROLES = ['dj', 'media', 'makeup', 'staff', 'promotor', 'empresario', 'catering', 'mago', 'humorista', 'animador', 'bailarin', 'speaker', 'vestuario', 'photo-booth'];
+        const KNOWN_ROLES = ['dj', 'media', 'makeup', 'peluqueria', 'staff', 'promotor', 'empresario', 'catering', 'mago', 'humorista', 'animador', 'bailarin', 'speaker', 'vestuario', 'photo-booth'];
         const { data: signUpData, error } = await supabase.auth.signUp({
           email,
           password,

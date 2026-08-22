@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Zap, Star, Shield, ArrowRight, Music, Users, Camera, MapPin, Scissors, Megaphone, UtensilsCrossed, Shirt } from 'lucide-react';
+import { Zap, Star, Shield, ArrowRight, Music, Users, Camera, MapPin, Scissors, Sparkles, Megaphone, UtensilsCrossed, Shirt } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 
 const BLOG_LINKS: Record<string, { href: string; emoji: string; title: string; desc: string }[]> = {
@@ -230,11 +230,11 @@ const CATEGORY_DATA: Record<string, {
     slug: 'maquillaje',
     emoji: '💄',
     h1: 'Contratar Maquillador para Eventos',
-    tagline: 'Maquilladores y estilistas profesionales para bodas, eventos y producción audiovisual',
+    tagline: 'Maquilladores profesionales para bodas, eventos y producción audiovisual',
     desc: 'Contrata maquilladores profesionales para bodas, eventos de moda y producción audiovisual en España. Artistas verificados, portafolio real, contrato digital en minutos.',
-    intro: 'XPEAK conecta novias, agencias de moda y productoras con maquilladores y estilistas profesionales en toda España. Desde el maquillaje de novia hasta la caracterización para producciones audiovisuales, con perfiles verificados y portafolios reales.',
+    intro: 'XPEAK conecta novias, agencias de moda y productoras con maquilladores profesionales en toda España. Desde el maquillaje de novia hasta la caracterización para producciones audiovisuales, con perfiles verificados y portafolios reales.',
     keyword: 'Maquillador/a',
-    keywords: 'contratar maquillador boda España, maquilladora profesional eventos, maquillaje nupcial Madrid Barcelona, maquillador caracterización producción, estilista eventos España',
+    keywords: 'contratar maquillador boda España, maquilladora profesional eventos, maquillaje nupcial Madrid Barcelona, maquillador caracterización producción, maquillaje eventos España',
     precio: 'desde 80€/sesión',
     cities: [
       { name: 'Madrid', slug: 'madrid' },
@@ -244,7 +244,7 @@ const CATEGORY_DATA: Record<string, {
       { name: 'Málaga', slug: 'malaga' },
       { name: 'Palma', slug: 'palma' },
     ],
-    roles: ['Maquillaje nupcial', 'Maquillaje editorial', 'Caracterización', 'Airbrush', 'Maquillaje artístico', 'Peinado y recogidos', 'Maquillaje de pasarela', 'Maquillaje para foto y vídeo', 'Peluquería', 'Estilismo integral'],
+    roles: ['Maquillaje nupcial', 'Maquillaje editorial', 'Caracterización', 'Airbrush', 'Maquillaje artístico', 'Maquillaje de pasarela', 'Maquillaje para foto y vídeo', 'Nail art', 'Maquillaje masculino', 'Efectos especiales'],
     faqs: [
       { q: '¿Cuánto cuesta un maquillador profesional para una boda?', a: 'El precio de un maquillador de boda en España varía entre 150€ y 500€ para la novia, más 80€-150€ por cada persona adicional del séquito. Incluye prueba previa y el día del evento.' },
       { q: '¿Puedo contratar maquillador para producción audiovisual?', a: 'Sí. XPEAK incluye artistas especializados en maquillaje para cine, televisión, videoclips y fotografía publicitaria, con experiencia en sets de rodaje y entregas ajustadas a tiempos de producción.' },
@@ -254,6 +254,37 @@ const CATEGORY_DATA: Record<string, {
     steps: [
       { title: 'Busca en el directorio', body: 'Explora perfiles de artistas con tarifa pública. Sin registro.' },
       { title: 'Busca o publica oferta', body: 'Filtra por especialidad, zona y disponibilidad, o usa Flash Booking para recibir candidaturas urgentes.' },
+      { title: 'Contrato y confirmación', body: 'Firma el contrato digital. Incluye fecha, servicios acordados y condiciones de cancelación.' },
+    ],
+  },
+  peluqueria: {
+    slug: 'peluqueria',
+    emoji: '✂️',
+    h1: 'Peluquería a Domicilio',
+    tagline: 'Peluqueras y peluqueros a domicilio para tu evento o para el día a día',
+    desc: 'Encuentra peluquera a domicilio cerca de ti en España. Corte, color, peinados de novia y recogidos para eventos o para el día a día. Perfiles verificados, contrato digital en minutos.',
+    intro: 'XPEAK conecta a clientas y clientes con peluqueras y peluqueros a domicilio en toda España. Ya sea para el peinado de una boda, un evento puntual o un servicio recurrente en casa, encuentra profesionales verificados cerca de ti, con portafolio real y contacto directo sin comisión.',
+    keyword: 'Peluquera/o a domicilio',
+    keywords: 'peluquera a domicilio, peluquería a domicilio cerca de mí, peluqueras a domicilio cerca de mí, peluquera y maquilladora a domicilio, peluquería novia, peluquería novias, peluquera a domicilio Madrid Barcelona',
+    precio: 'desde 35€/servicio',
+    cities: [
+      { name: 'Madrid', slug: 'madrid' },
+      { name: 'Barcelona', slug: 'barcelona' },
+      { name: 'Valencia', slug: 'valencia' },
+      { name: 'Sevilla', slug: 'sevilla' },
+      { name: 'Málaga', slug: 'malaga' },
+      { name: 'Palma', slug: 'palma' },
+    ],
+    roles: ['Peluquería a domicilio', 'Peinado de novia', 'Recogidos', 'Corte', 'Color', 'Extensiones', 'Alisado', 'Tratamientos capilares', 'Peluquería infantil', 'Peluquería de eventos'],
+    faqs: [
+      { q: '¿Cuánto cuesta una peluquera a domicilio?', a: 'El precio de una peluquera a domicilio en España varía entre 25€ y 60€ para servicios básicos (corte, peinado), y entre 80€ y 200€ para peinados de novia con prueba previa incluida.' },
+      { q: '¿La peluquería a domicilio es solo para bodas y eventos?', a: 'No. Aunque los peinados de novia y eventos son un caso de uso frecuente, la mayoría de profesionales de XPEAK también ofrecen servicio a domicilio para el día a día: cortes, color y tratamientos capilares sin necesidad de desplazarte al salón.' },
+      { q: '¿Cómo encuentro una peluquera a domicilio cerca de mí?', a: 'Filtra por tu ciudad o zona en el directorio de XPEAK y contacta directamente con las profesionales disponibles. También puedes usar Flash Booking para recibir disponibilidad urgente en tu zona.' },
+      { q: '¿Qué incluye un peinado de novia a domicilio?', a: 'Habitualmente incluye una prueba previa (recogido de test, 1-2 horas) y el servicio el día del evento en el domicilio o lugar de la celebración. El material lo aporta la profesional.' },
+    ],
+    steps: [
+      { title: 'Busca en el directorio', body: 'Filtra por ciudad, zona y disponibilidad. Sin registro.' },
+      { title: 'Contacta o publica oferta', body: 'Contacta directamente o usa Flash Booking para recibir disponibilidad urgente cerca de ti.' },
       { title: 'Contrato y confirmación', body: 'Firma el contrato digital. Incluye fecha, servicios acordados y condiciones de cancelación.' },
     ],
   },
@@ -608,7 +639,8 @@ const ICON: Record<string, React.ReactNode> = {
   fotografo: <Camera size={20} />,
   camareros: <UtensilsCrossed size={20} />,
   catering: <UtensilsCrossed size={20} />,
-  maquillaje: <Scissors size={20} />,
+  maquillaje: <Sparkles size={20} />,
+  peluqueria: <Scissors size={20} />,
   promotores: <Megaphone size={20} />,
   vestuario: <Shirt size={20} />,
   'disco-movil': <Music size={20} />,
@@ -712,7 +744,7 @@ export default function CategoryLanding() {
           </p>
           <p className="text-sm font-bold mb-8" style={{ color: 'rgba(212,175,55,0.7)' }}>{data.tagline}</p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a href={`/directorio/${['dj','fotografo','staff','maquillaje','promotores'].includes(data.slug) ? data.slug : data.slug === 'camareros' ? 'staff' : 'dj'}`}
+            <a href={`/directorio/${['dj','fotografo','staff','maquillaje','peluqueria','promotores'].includes(data.slug) ? data.slug : data.slug === 'camareros' ? 'staff' : 'dj'}`}
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Ver profesionales disponibles <ArrowRight size={14} />
@@ -839,7 +871,7 @@ export default function CategoryLanding() {
             <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>
               Contacta directamente — sin registro, sin comisión, respuesta directa del profesional.
             </p>
-            <a href={`/directorio/${['dj','fotografo','staff','maquillaje','promotores'].includes(data.slug) ? data.slug : data.slug === 'camareros' ? 'staff' : 'dj'}`}
+            <a href={`/directorio/${['dj','fotografo','staff','maquillaje','peluqueria','promotores'].includes(data.slug) ? data.slug : data.slug === 'camareros' ? 'staff' : 'dj'}`}
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Ver profesionales disponibles <ArrowRight size={14} />

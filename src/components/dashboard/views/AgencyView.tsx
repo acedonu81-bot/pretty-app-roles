@@ -9,13 +9,13 @@ import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
 const ROLE_ES: Record<string, string> = {
   dj: 'DJ / Artista', rookie: 'DJ Promesa', staff: 'Staff', event_manager: 'Encargada Eventos',
   promotor: 'Promotor', camarero: 'Camarero', catering: 'Catering',
-  makeup: 'Maquillaje', media: 'Media / Foto', empresario: 'Empresario',
+  makeup: 'Maquillaje', peluqueria: 'Peluquería a Domicilio', media: 'Media / Foto', empresario: 'Empresario',
 };
 
 const ROLE_COLOR: Record<string, string> = {
   dj: '#4285F4', rookie: '#FBBF24', staff: '#34D399', event_manager: '#34D399',
   promotor: '#38BDF8', camarero: '#FB923C', catering: '#F472B6',
-  makeup: '#F472B6', media: '#A78BFA', empresario: '#D4AF37',
+  makeup: '#F472B6', peluqueria: '#EC4899', media: '#A78BFA', empresario: '#D4AF37',
 };
 
 interface ProfileStat {

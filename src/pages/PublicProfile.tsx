@@ -514,7 +514,7 @@ const PublicProfile = () => {
 
   const roleLabel: Record<string, string> = {
     dj: 'DJ & Artista', staff: 'Staff & Promoción', event_manager: 'Encargada de Eventos',
-    makeup: 'Belleza & Estética', media: 'Imagen & Media', design: 'Diseño & Visuales',
+    makeup: 'Maquillaje', peluqueria: 'Peluquería a Domicilio', media: 'Imagen & Media', design: 'Diseño & Visuales',
     promotor: 'Promotor', ambassador: 'Embajador',
   };
 

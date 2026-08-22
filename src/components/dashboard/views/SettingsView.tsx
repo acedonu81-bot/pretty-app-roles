@@ -60,7 +60,8 @@ const ROLE_OPTIONS = [
   { value: 'promotor',     label: 'Promotor / RRPP' },
   { value: 'catering',     label: 'Catering / Cocina' },
   { value: 'media',        label: 'Media & Contenido' },
-  { value: 'makeup',       label: 'Maquillaje & Peluquería' },
+  { value: 'makeup',       label: 'Maquillaje' },
+  { value: 'peluqueria',   label: 'Peluquería a Domicilio' },
 ];
 
 const MultiProfileSection = () => {

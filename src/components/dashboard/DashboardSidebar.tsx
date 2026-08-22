@@ -5,7 +5,7 @@ import {
   BarChart3,
   Camera, FileText, FileEdit, CalendarCheck,
   Palette, Shirt, Speaker, ChevronDown, Plus, UtensilsCrossed,
-  Wand2, Music2, Laugh, Mic2, Theater, PartyPopper,
+  Wand2, Music2, Laugh, Mic2, Theater, PartyPopper, Scissors,
 } from 'lucide-react';
 import GeometricAvatar from './GeometricAvatar';
 import { useProfile } from '@/hooks/useProfile';
@@ -24,6 +24,7 @@ const ROLE_COLORS: Record<string, string> = {
   staff:         '#34D399',
   event_manager: '#2DD4BF',
   makeup:        '#F9A8D4',
+  peluqueria:    '#F472B6',
   media:         '#A78BFA',
   empresario:    '#D4AF37',
   vestuario:     '#FB923C',
@@ -45,7 +46,8 @@ const navSections = [
       { id: 'dj',         icon: Headphones, label: 'DJs, Artistas & Música en Vivo' },
       { id: 'staff',         icon: UserCheck,      label: 'Staff & Promoción' },
       { id: 'event_manager', icon: CalendarCheck,  label: 'Encargadas de Eventos' },
-      { id: 'makeup',     icon: Smile,      label: 'Maquillaje & Peluquería' },
+      { id: 'makeup',     icon: Smile,      label: 'Maquillaje' },
+      { id: 'peluqueria', icon: Scissors,   label: 'Peluquería a Domicilio' },
       { id: 'media',      icon: Camera,     label: 'Media & Contenido' },
       { id: 'vestuario',  icon: Shirt,      label: 'Vestuario & Moda' },
       { id: 'design',     icon: Palette,    label: 'Diseño & Visuales' },
@@ -91,7 +93,7 @@ const navSections = [
 
 const TOOL_BLUE_IDS = new Set(['calendar', 'messages', 'flashbooking']);
 
-const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', camarero: 'Staff / Camarero', makeup: 'Makeup', media: 'Media', empresario: 'Sala / Club', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', promotor: 'Promotor & RRPP', ambassador: 'Embajador', design: 'Diseño', mago: 'Mago & Ilusionista', bailarin: 'Bailarín & Danza', humorista: 'Humorista & Cómico', monologo: 'Monólogo & Stand-Up', animador: 'Payaso & Animador', speaker: 'Speaker & Presentador', 'photo-booth': 'Photo Booth' };
+const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', camarero: 'Staff / Camarero', makeup: 'Maquillaje', peluqueria: 'Peluquería a Domicilio', media: 'Media', empresario: 'Sala / Club', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', promotor: 'Promotor & RRPP', ambassador: 'Embajador', design: 'Diseño', mago: 'Mago & Ilusionista', bailarin: 'Bailarín & Danza', humorista: 'Humorista & Cómico', monologo: 'Monólogo & Stand-Up', animador: 'Payaso & Animador', speaker: 'Speaker & Presentador', 'photo-booth': 'Photo Booth' };
 
 const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }) => {
   const { display_name, role, photo_url, allProfiles, switchProfile, maxProfiles, profileId } = useProfile();
