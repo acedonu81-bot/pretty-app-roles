@@ -555,7 +555,7 @@ const PublicProfile = () => {
         role: r.role,
         specialty: r.specialty ?? '',
         zone: r.zone ?? '',
-        href: `/p/${r.user_id}`,
+        href: `/p/${toSlug(r.display_name ?? '') || r.user_id}`,
         rating: 0,
         id: r.user_id,
       }))
