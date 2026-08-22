@@ -1,5 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 
 const article = {
   '@context': 'https://schema.org',
@@ -8,7 +10,7 @@ const article = {
   description: 'Precios reales de magos para eventos corporativos, bodas y fiestas en España 2026. Tarifas por tipo de magia y qué buscar antes de contratar.',
   datePublished: '2026-06-01',
   dateModified: '2026-06-01',
-  author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
   publisher: {
     '@type': 'Organization',
     name: 'XPEAK',
@@ -100,15 +102,15 @@ export default function BlogMagoPrecioEventos() {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#7C3AED' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
             <a
               href="/auth"
               className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
-              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}
+              style={{ background: 'linear-gradient(90deg,#7C3AED,#B8941E)', color: '#000' }}
             >
               Unirse gratis
             </a>
@@ -121,21 +123,21 @@ export default function BlogMagoPrecioEventos() {
           </a>
 
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Entretenimiento · Eventos · XPEAK Blog</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#7C3AED' }}>Entretenimiento · Eventos · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">
               Cuánto cobra un mago para eventos y fiestas en España 2026
             </h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>
               La magia sigue siendo uno de los recursos de entretenimiento más efectivos para romper el hielo en bodas, cenas de empresa y fiestas privadas. En esta guía encontrarás los precios reales de 2026 según el tipo de actuación y los criterios clave para elegir al mago correcto.
             </p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>1 junio 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>1 junio 2026</time>
           </div>
 
           <div className="space-y-10">
             {/* TIPOS DE MAGIA */}
             <section>
               <h2 className="text-lg font-black mb-4">Tipos de magia para eventos</h2>
-              <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed mb-4" style={{ color: '#222' }}>
                 No todos los magos hacen lo mismo. El tipo de actuación determina tanto el precio como la experiencia que vivirán tus invitados. Estos son los formatos más habituales en España:
               </p>
               <div className="space-y-3">
@@ -161,12 +163,12 @@ export default function BlogMagoPrecioEventos() {
                     key={item.tipo}
                     className="p-4 rounded-xl"
                     style={{
-                      background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)',
-                      border: '1px solid rgba(255,255,255,0.04)',
+                      background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)',
+                      border: '1px solid rgba(0,0,0,0.04)',
                     }}
                   >
                     <p className="text-xs font-black mb-1">{item.tipo}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{item.desc}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{item.desc}</p>
                   </div>
                 ))}
               </div>
@@ -181,12 +183,12 @@ export default function BlogMagoPrecioEventos() {
                     key={row.tipo}
                     className="flex items-center justify-between p-4 rounded-xl"
                     style={{
-                      background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)',
-                      border: '1px solid rgba(255,255,255,0.04)',
+                      background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)',
+                      border: '1px solid rgba(0,0,0,0.04)',
                     }}
                   >
                     <p className="text-xs font-medium">{row.tipo}</p>
-                    <span className="text-xs font-black ml-4 shrink-0" style={{ color: '#D4AF37' }}>{row.precio}</span>
+                    <span className="text-xs font-black ml-4 shrink-0" style={{ color: '#7C3AED' }}>{row.precio}</span>
                   </div>
                 ))}
               </div>
@@ -198,13 +200,13 @@ export default function BlogMagoPrecioEventos() {
             {/* QUÉ BUSCAR */}
             <section>
               <h2 className="text-lg font-black mb-4">Qué buscar en un mago profesional</h2>
-              <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
                 El criterio más importante no es el precio, sino el historial de actuaciones similares. Un mago que ha trabajado en muchas bodas sabe gestionar la dinámica del cóctel, no interrumpir conversaciones y adaptarse al ritmo del evento. Pide referencias de eventos reales, no solo valoraciones genéricas.
               </p>
-              <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
                 Revisa vídeos de actuación en directo, preferiblemente grabados por los asistentes al evento (no producción profesional). Las reacciones del público son el mejor indicador de calidad real.
               </p>
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed" style={{ color: '#222' }}>
                 Para eventos de empresa, asegúrate de que el mago tiene experiencia con público adulto y entorno profesional. El humor y el nivel de participación que funciona en una boda no siempre encaja en un evento corporativo formal.
               </p>
             </section>
@@ -217,10 +219,10 @@ export default function BlogMagoPrecioEventos() {
                   <div
                     key={f.name}
                     className="p-5 rounded-xl"
-                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
+                    style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}
                   >
                     <p className="text-sm font-black mb-2">{f.name}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>{f.acceptedAnswer.text}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
               </div>
@@ -228,7 +230,7 @@ export default function BlogMagoPrecioEventos() {
 
             {/* ARTÍCULOS RELACIONADOS */}
             <section>
-              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <h2 className="text-base font-black mb-3" style={{ color: '#111' }}>Artículos relacionados</h2>
               <div className="space-y-2">
                 {[
                   { href: '/eventos-empresa', cat: 'Hub', title: 'Contratar profesionales para eventos de empresa' },
@@ -240,15 +242,15 @@ export default function BlogMagoPrecioEventos() {
                     key={link.href}
                     href={link.href}
                     className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80"
-                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}
+                    style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}
                   >
                     <span
                       className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0"
-                      style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}
+                      style={{ background: 'rgba(124,58,237,0.1)', color: '#7C3AED', border: '1px solid rgba(124,58,237,0.15)' }}
                     >
                       {link.cat}
                     </span>
-                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                    <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}
               </div>
@@ -257,7 +259,7 @@ export default function BlogMagoPrecioEventos() {
             {/* CTA FINAL */}
             <div
               className="p-6 rounded-2xl text-center"
-              style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}
+              style={{ background: 'rgba(124,58,237,0.04)', border: '1px solid rgba(124,58,237,0.12)' }}
             >
               <p className="text-sm font-black mb-2">Contrata un mago verificado para tu evento</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>
@@ -266,7 +268,7 @@ export default function BlogMagoPrecioEventos() {
               <a
                 href="/contratar-mago"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
-                style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}
+                style={{ background: 'linear-gradient(90deg,#7C3AED,#B8941E)', color: '#000' }}
               >
                 Ver magos disponibles →
               </a>
@@ -274,7 +276,9 @@ export default function BlogMagoPrecioEventos() {
           </div>
         </main>
 
+        <BlogRelatedPosts currentSlug='/blog/mago-precio-eventos-espana' tag='Mago' />
         <FooterPublic />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_mago_precio_eventos" />
       </div>
     </>
   );

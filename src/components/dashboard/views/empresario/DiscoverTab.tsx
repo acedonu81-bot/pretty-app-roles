@@ -67,8 +67,9 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
               options={[
                 { value: 'Todos', label: 'Todos' },
                 { value: 'dj', label: 'DJ' },
-                { value: 'staff', label: 'Staff / Camarero' },
-                { value: 'makeup', label: 'Maquillaje' },
+                { value: 'staff', label: 'Camarero' },
+                { value: 'azafata', label: 'Azafata' },
+                { value: 'makeup', label: 'Estilismo / Makeup' },
                 { value: 'peluqueria', label: 'Peluquería a Domicilio' },
                 { value: 'media', label: 'Media / Foto-Vídeo' },
                 { value: 'ambassador', label: 'Relaciones Públicas' },
@@ -152,7 +153,7 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
             <div className="flex items-center gap-3 mb-3">
               {p.photo_url && p.photo_url.length > 5 ? (
                 <div className="w-11 h-11 rounded-lg overflow-hidden flex-shrink-0">
-                  <img src={p.photo_url} alt={p.display_name} className="w-full h-full object-cover"
+                  <img src={p.photo_url} alt={p.display_name} loading="lazy" className="w-full h-full object-cover"
                     onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                 </div>
               ) : (
@@ -161,7 +162,6 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-bold truncate">{p.display_name || 'Sin nombre'}</span>
-                  {p.is_verified && <Star size={12} style={{ color: '#8A6D0F' }} fill="#D4AF37" title="Sello de Oro" />}
                 </div>
                 <p className="text-xs text-muted-foreground">{p.specialty || p.role} · {p.zone || 'Madrid'}</p>
                 {p.bio && <p className="text-[0.75rem] text-muted-foreground mt-0.5 line-clamp-1">{p.bio}</p>}

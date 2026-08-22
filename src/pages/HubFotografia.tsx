@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 
 const ARTICLES = [
   { href: '/blog/contratar-fotografo-de-bodas', tag: 'Bodas', title: 'Contratar fotógrafo de bodas: guía y precios', desc: 'Precios reales por ciudad. Qué incluye y cómo elegir el fotógrafo perfecto.' },
@@ -40,34 +41,34 @@ export default function HubFotografia() {
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#4F46E5' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#4F46E5,#B8941E)', color: '#000' }}>Unirse gratis</a>
           </div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
           <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Fotografía · XPEAK Blog</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#4F46E5' }}>Fotografía · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Fotógrafos para eventos en España: guía completa de precios y tipos (2026)</h1>
             <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Precios reales, qué incluye cada servicio y cómo elegir el fotógrafo correcto para cada tipo de evento. Todo en un solo lugar.</p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>28 mayo 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>28 mayo 2026</time>
           </div>
           <div className="space-y-10">
             <section>
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>El fotógrafo de tu evento es el único proveedor cuyo trabajo te acompañará el resto de tu vida. Elegir bien o mal marca la diferencia entre un álbum que abres con emoción y uno que guardas en un cajón. Esta guía cubre todos los tipos de fotografía de eventos con precios reales y consejos prácticos.</p>
+              <p className="text-sm leading-relaxed" style={{ color: '#222' }}>El fotógrafo de tu evento es el único proveedor cuyo trabajo te acompañará el resto de tu vida. Elegir bien o mal marca la diferencia entre un álbum que abres con emoción y uno que guardas en un cajón. Esta guía cubre todos los tipos de fotografía de eventos con precios reales y consejos prácticos.</p>
             </section>
             <section>
               <h2 className="text-lg font-black mb-4">Guías por tipo de evento</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {ARTICLES.map(a => (
-                  <a key={a.href} href={a.href} className="block p-4 rounded-xl transition-all hover:scale-[1.02]" style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
-                    <span className="inline-block text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded mb-2" style={{ background: 'rgba(212,175,55,0.1)', color: TAG_COLOR[a.tag] || '#D4AF37', border: `1px solid ${TAG_COLOR[a.tag] || '#D4AF37'}22` }}>{a.tag}</span>
+                  <a key={a.href} href={a.href} className="block p-4 rounded-xl transition-all hover:scale-[1.02]" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
+                    <span className="inline-block text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded mb-2" style={{ background: 'rgba(79,70,229,0.1)', color: TAG_COLOR[a.tag] || '#4F46E5', border: `1px solid ${TAG_COLOR[a.tag] || '#4F46E5'}22` }}>{a.tag}</span>
                     <p className="text-sm font-black leading-snug mb-1">{a.title}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{a.desc}</p>
+                    <p className="text-xs leading-relaxed" style={{ color: '#333' }}>{a.desc}</p>
                   </a>
                 ))}
               </div>
@@ -82,9 +83,9 @@ export default function HubFotografia() {
                   { tipo: 'Evento nocturno / discoteca', precio: '250–600€/noche' },
                   { tipo: 'Pack fotógrafo + videógrafo boda', precio: '2.500–5.500€' },
                 ].map((row, i) => (
-                  <div key={row.tipo} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.04)' }}>
+                  <div key={row.tipo} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <p className="text-xs font-medium">{row.tipo}</p>
-                    <span className="text-xs font-bold ml-4 shrink-0" style={{ color: '#D4AF37' }}>{row.precio}</span>
+                    <span className="text-xs font-bold ml-4 shrink-0" style={{ color: '#4F46E5' }}>{row.precio}</span>
                   </div>
                 ))}
               </div>
@@ -94,20 +95,21 @@ export default function HubFotografia() {
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
                 {FAQ.map(f => (
-                  <div key={f.q} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={f.q} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <p className="text-sm font-bold mb-2">{f.q}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.a}</p>
+                    <p className="text-xs leading-relaxed" style={{ color: '#222' }}>{f.a}</p>
                   </div>
                 ))}
               </div>
             </section>
-            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
+            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(79,70,229,0.04)', border: '1px solid rgba(79,70,229,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas fotógrafo para tu evento?</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>XPEAK tiene fotógrafos y videógrafos verificados para bodas, comuniones y eventos en toda España. Portfolios reales, reseñas verificadas y contrato digital automático.</p>
-              <a href="/contratar-fotografo" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver fotógrafos en XPEAK →</a>
+              <a href="/contratar-fotografo" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#4F46E5,#B8941E)', color: '#000' }}>Ver fotógrafos en XPEAK →</a>
             </div>
           </div>
         </main>
+        <BlogRelatedPosts currentSlug='/blog/fotografos-eventos' tag='Fotografía' />
         <FooterPublic />
       </div>
     </>

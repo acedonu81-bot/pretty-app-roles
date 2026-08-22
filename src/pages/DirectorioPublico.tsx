@@ -2,14 +2,31 @@ import { useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
-import { Zap, MapPin, BadgeCheck, ChevronRight, Check, Plus } from 'lucide-react';
+import { Zap, MapPin, BadgeCheck, ChevronRight, Check, Plus, Users, Play } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import FlashBookingRequestModal from '@/components/dashboard/FlashBookingRequestModal';
+import MultiRequestModal from '@/components/MultiRequestModal';
+import SwipeDirectory from '@/components/SwipeDirectory';
 import FooterPublic from '@/components/FooterPublic';
-import { addToCart, useEventCart } from '@/lib/eventCart';
+import { addToCart, useEventCart, MAX_CART_ITEMS } from '@/lib/eventCart';
+import { useAuth } from '@/hooks/useAuth';
+import GhostProfileCards from '@/components/GhostProfileCards';
 
-interface DirProfile {
+// URL de perfil por slug de nombre (la misma que usan sitemap y prerender) en
+// vez de UUID — evita dos URLs indexables para el mismo perfil. PublicProfile
+// resuelve el slug y redirige al canónico si hiciera falta.
+export const profileUrl = (p: { user_id: string; display_name: string | null }) => {
+  const slug = (p.display_name ?? '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+  return `/p/${slug || p.user_id}`;
+};
+
+export interface DirProfile {
   user_id: string;
   display_name: string;
   role: string;
@@ -25,9 +42,10 @@ interface DirProfile {
   fast_responder_count: number;
   avgRating: number;
   reviewCount: number;
+  updated_at: string | null;
 }
 
-const ROLE_CONFIG: Record<string, {
+export const ROLE_CONFIG: Record<string, {
   dbRole: string; title: string; subtitle: string;
   seoTitle: string; seoDesc: string; cta: string;
 }> = {
@@ -49,11 +67,19 @@ const ROLE_CONFIG: Record<string, {
   },
   staff: {
     dbRole: 'staff',
-    title: 'Staff y camareros para eventos',
-    subtitle: 'Camareros, azafatas y personal de sala para bodas, comuniones y eventos en España.',
-    seoTitle: 'Contratar staff para eventos en España — XPEAK',
-    seoDesc: 'Directorio de camareros, azafatas y personal de eventos. Perfiles reales, disponibilidad y precios por jornada.',
+    title: 'Camareros para eventos',
+    subtitle: 'Camareros y personal de sala para bodas, comuniones y eventos en España.',
+    seoTitle: 'Contratar camareros para eventos en España — XPEAK',
+    seoDesc: 'Directorio de camareros y personal de sala para eventos. Perfiles reales, disponibilidad y precios por jornada.',
     cta: 'Contratar para mi evento',
+  },
+  azafata: {
+    dbRole: 'azafata',
+    title: 'Azafatas para eventos',
+    subtitle: 'Azafatas de imagen, hostess y personal de atención al público para bodas, ferias y eventos en España.',
+    seoTitle: 'Contratar azafatas para eventos en España — XPEAK',
+    seoDesc: 'Directorio de azafatas para eventos en España. Perfiles reales, disponibilidad y precios por jornada.',
+    cta: 'Contratar azafata',
   },
   maquillaje: {
     dbRole: 'makeup',
@@ -153,11 +179,11 @@ const ROLE_CONFIG: Record<string, {
   },
   vestuario: {
     dbRole: 'vestuario',
-    title: 'Estilistas y vestuario para eventos',
-    subtitle: 'Estilistas, personal shoppers y profesionales de vestuario para novias, artistas y producciones.',
-    seoTitle: 'Contratar estilista para bodas y eventos en España — XPEAK',
-    seoDesc: 'Directorio de estilistas y profesionales de vestuario en España. Novias, artistas y producciones. Contacto directo.',
-    cta: 'Contratar estilista',
+    title: 'Personal shopper y vestuario para eventos',
+    subtitle: 'Personal shoppers y profesionales de vestuario para novias, artistas y producciones — no confundir con maquillaje/peluquería.',
+    seoTitle: 'Contratar personal shopper y vestuario para bodas y eventos en España — XPEAK',
+    seoDesc: 'Directorio de personal shoppers y profesionales de vestuario en España. Novias, artistas y producciones. Contacto directo.',
+    cta: 'Contratar personal shopper',
   },
   'wedding-planner': {
     dbRole: 'event_manager',
@@ -177,22 +203,22 @@ const ROLE_CONFIG: Record<string, {
   },
 };
 
-const ALL_ROLES = [
+export const ALL_ROLES = [
   { slug: 'dj', label: 'DJs' },
   { slug: 'fotografo', label: 'Fotógrafos' },
-  { slug: 'staff', label: 'Staff' },
-  { slug: 'camareros', label: 'Camareros' },
+  { slug: 'staff', label: 'Camareros' },
+  { slug: 'azafata', label: 'Azafatas' },
   { slug: 'maquillaje', label: 'Maquillaje' },
   { slug: 'peluqueria', label: 'Peluquería a Domicilio' },
   { slug: 'promotores', label: 'Promotores' },
   { slug: 'catering', label: 'Catering' },
   { slug: 'grupo-musical', label: 'Grupos' },
-  { slug: 'animador', label: 'Animadores' },
-  { slug: 'mago', label: 'Magos' },
-  { slug: 'humorista', label: 'Humoristas' },
-  { slug: 'bailarin', label: 'Bailarines' },
+  { slug: 'animador', label: 'Animadores Infantiles' },
+  { slug: 'mago', label: 'Magos & Ilusionismo' },
+  { slug: 'humorista', label: 'Humoristas & Monólogos' },
+  { slug: 'bailarin', label: 'Bailarines & Danza' },
   { slug: 'speaker', label: 'Speakers' },
-  { slug: 'vestuario', label: 'Estilistas' },
+  { slug: 'vestuario', label: 'Personal Shopper & Vestuario' },
   { slug: 'photo-booth', label: 'Photo Booth' },
   { slug: 'wedding-planner', label: 'Wedding Planners' },
   { slug: 'diseno-grafico', label: 'Diseño Gráfico' },
@@ -200,15 +226,53 @@ const ALL_ROLES = [
 
 const CITIES = ['Todas', 'Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao', 'Málaga', 'Ibiza'];
 
+// Sugerencias de categorías relacionadas cuando una queda sin resultados —
+// agrupadas por tipo de necesidad, no alfabético, para que la sugerencia tenga sentido real.
+const RELATED_ROLES: Record<string, string[]> = {
+  mago: ['animador', 'humorista', 'bailarin'],
+  animador: ['mago', 'humorista', 'bailarin'],
+  humorista: ['mago', 'speaker', 'animador'],
+  speaker: ['humorista', 'wedding-planner'],
+  bailarin: ['animador', 'grupo-musical', 'dj'],
+  'grupo-musical': ['dj', 'bailarin'],
+  'photo-booth': ['fotografo', 'diseno-grafico'],
+  'diseno-grafico': ['photo-booth', 'fotografo'],
+  'wedding-planner': ['speaker', 'catering', 'vestuario'],
+  vestuario: ['maquillaje', 'wedding-planner'],
+  catering: ['staff', 'wedding-planner'],
+  promotores: ['staff', 'dj'],
+};
+const DEFAULT_RELATED = ['dj', 'fotografo', 'staff'];
+
 const fmt = (n: number | null) => n ? `${n}€/h` : null;
 
-async function fetchDirectorioProfiles(dbRole: string, city: string): Promise<DirProfile[]> {
+// Solo mostramos "actualizado hace X" si es reciente (últimos 30 días) — un dato
+// viejo sería contraproducente, así que se omite en vez de mostrar algo negativo.
+function recentUpdateLabel(updatedAt: string | null): string | null {
+  if (!updatedAt) return null;
+  const diffMs = Date.now() - new Date(updatedAt).getTime();
+  const days = Math.floor(diffMs / 86400000);
+  if (days < 0 || days > 30) return null;
+  if (days === 0) {
+    const hours = Math.floor(diffMs / 3600000);
+    if (hours < 1) return 'Actualizado hace unos minutos';
+    return `Actualizado hace ${hours}h`;
+  }
+  if (days === 1) return 'Actualizado ayer';
+  return `Actualizado hace ${days} días`;
+}
+
+export async function fetchDirectorioProfiles(dbRole: string, city: string): Promise<DirProfile[]> {
   // 'camarero' es un rol legacy (opción retirada de los selectores) — equivale a staff
   const dbRoles = dbRole === 'staff' ? ['staff', 'camarero'] : [dbRole];
+  // Match por el array `roles` (overlaps) O por el `role` singular — algunos
+  // perfiles reales tienen roles:[] pero role con valor (p.ej. altas antiguas),
+  // y quedaban fuera del feed aunque sí salen en el directorio clásico.
+  const orFilter = dbRoles.map(r => `role.eq.${r}`).join(',') + ',' + dbRoles.map(r => `roles.cs.{${r}}`).join(',');
   let q = supabase
     .from('profiles')
-    .select('user_id, display_name, role, specialty, zone, photo_url, hourly_rate, bio, is_flash_active, is_verified, is_seed, is_early_adopter, score, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls')
-    .in('role', dbRoles)
+    .select('user_id, display_name, role, roles, specialty, zone, photo_url, bio_video_url, hourly_rate, bio, is_flash_active, is_verified, is_seed, is_early_adopter, score, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls, updated_at, created_at')
+    .or(orFilter)
     .not('display_name', 'is', null)
     .order('score', { ascending: false })
     .limit(60) as any;
@@ -218,7 +282,13 @@ async function fetchDirectorioProfiles(dbRole: string, city: string): Promise<Di
   const { data, error } = await q;
   if (error) throw error;
 
-  const userIds = (data ?? []).map((p: any) => p.user_id);
+  // Sin gate de completitud por ahora — con poco volumen de usuarios,
+  // exigir foto/bio echaba del directorio a la mayoría de perfiles reales.
+  // Retomar cuando haya volumen que lo justifique, avisando antes a los
+  // usuarios existentes.
+  const filtered = data ?? [];
+
+  const userIds = filtered.map((p: any) => p.user_id);
   const { data: reviewsData } = userIds.length > 0
     ? await supabase.from('reviews').select('reviewed_user_id, rating').eq('approved', true).in('reviewed_user_id', userIds)
     : { data: [] };
@@ -239,7 +309,7 @@ async function fetchDirectorioProfiles(dbRole: string, city: string): Promise<Di
       || (Array.isArray(p.portfolio_urls) && p.portfolio_urls.length > 0);
     return (hasMedia ? 4 : 0) + (p.photo_url ? 2 : 0) + (p.bio?.trim() ? 1 : 0);
   };
-  const enriched = (data ?? []).filter((p: any) => p.display_name?.trim().length > 1).map((p: any) => {
+  const enriched = filtered.filter((p: any) => p.display_name?.trim().length > 1).map((p: any) => {
     const stats = ratingMap.get(p.user_id);
     return { ...p, avgRating: stats ? Math.round((stats.sum / stats.count) * 10) / 10 : 0, reviewCount: stats?.count ?? 0 };
   });
@@ -258,8 +328,12 @@ export default function DirectorioPublico() {
 
   const [city, setCity] = useState('Todas');
   const [bookingPro, setBookingPro] = useState<DirProfile | null>(null);
+  const [showMultiRequest, setShowMultiRequest] = useState(false);
+  const [showSwipe, setShowSwipe] = useState(false);
+  const [swipeStartIndex, setSwipeStartIndex] = useState(0);
   const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
   const { items: cartItems } = useEventCart();
+  const { user, loading: authLoading } = useAuth();
 
   const { data: profiles = [], isLoading: loading, isError: fetchError } = useQuery({
     queryKey: ['directorio-publico', config.dbRole, city],
@@ -279,6 +353,19 @@ export default function DirectorioPublico() {
   };
 
   const initialFor = (name: string) => name.charAt(0).toUpperCase();
+
+  // Lead centralizado: solo profesionales reales (sin perfiles de ejemplo).
+  const realPros = profiles.filter(p => !(p as any).is_seed);
+
+  // Ancla de precio real: rango min-max de tarifas publicadas en la
+  // categoría, calculado sobre los perfiles ya cargados (sin query extra).
+  // Da contexto a cada tarjeta individual — un precio suelto sin referencia
+  // se percibe como arbitrario, un rango real ayuda a situarlo.
+  const priceRange = (() => {
+    const rates = realPros.map(p => p.hourly_rate).filter((r): r is number => typeof r === 'number' && r > 0);
+    if (rates.length < 3) return null;
+    return { min: Math.min(...rates), max: Math.max(...rates) };
+  })();
 
   return (
     <>
@@ -314,8 +401,56 @@ export default function DirectorioPublico() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#7a6216' }}>Directorio · XPEAK</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-3" style={{ color: '#111' }}>{config.title}</h1>
-            <p className="text-sm leading-relaxed max-w-xl" style={{ color: '#333' }}>{config.subtitle}</p>
+            <p className={`text-sm leading-relaxed max-w-xl ${priceRange ? 'mb-2' : 'mb-5'}`} style={{ color: '#333' }}>{config.subtitle}</p>
+
+            {priceRange && (
+              <p className="text-xs font-bold mb-5" style={{ color: '#7a6216' }}>
+                Precios en esta categoría: {priceRange.min}€ – {priceRange.max}€/h
+              </p>
+            )}
+
+            <div className="flex flex-wrap gap-2.5">
+              {realPros.length >= 2 && (
+                <button onClick={() => setShowMultiRequest(true)}
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-black text-sm transition-all hover:scale-[1.02] active:scale-95"
+                  style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 6px 20px rgba(212,175,55,0.3)' }}>
+                  <Users size={16} /> Pide presupuesto a varios de golpe
+                  <span className="text-[0.7rem] font-bold px-1.5 py-0.5 rounded-full" style={{ background: 'rgba(0,0,0,0.15)' }}>
+                    1 formulario · {realPros.length} respuestas
+                  </span>
+                </button>
+              )}
+              {profiles.length >= 2 && (
+                <button onClick={() => { setSwipeStartIndex(0); setShowSwipe(true); }}
+                  className="hidden sm:inline-flex items-center gap-2 px-5 py-3 rounded-xl font-black text-sm transition-all hover:scale-[1.02] active:scale-95"
+                  style={{ background: '#111', color: '#fff', border: '1px solid rgba(212,175,55,0.3)' }}>
+                  <Play size={14} fill="#D4AF37" color="#D4AF37" /> Vista Swipe
+                </button>
+              )}
+            </div>
           </div>
+
+          {/* Vista Swipe: por defecto en móvil, embebida en el flujo (no
+              modal) — sin botón, tal como TikTok. El grid clásico con SEO
+              sigue existiendo debajo, oculto visualmente en móvil, visible
+              en desktop. */}
+          {!fetchError && !loading && profiles.length >= 2 && (
+            <div className="sm:hidden -mx-4 mb-6 rounded-2xl overflow-hidden">
+              <SwipeDirectory
+                embedded
+                profiles={profiles}
+                onOpenProfile={(p) => { window.location.href = profileUrl(p as DirProfile); }}
+                onBookNow={(p) => setBookingPro(p as DirProfile)}
+                onAddToCart={(p) => {
+                  const prof = p as DirProfile;
+                  const result = addToCart({ userId: prof.user_id, displayName: prof.display_name, role: prof.role, photoUrl: prof.photo_url, hourlyRate: prof.hourly_rate, zone: prof.zone });
+                  if (result === 'added') toast.success(`${prof.display_name} añadido a "Mi evento"`);
+                  else if (result === 'limit_reached') toast.error(`Máximo ${MAX_CART_ITEMS} profesionales por evento. Elimina alguno para añadir más.`);
+                }}
+                isInCart={(userId) => cartItems.some(i => i.userId === userId)}
+              />
+            </div>
+          )}
 
           {/* Tabs por rol */}
           <div className="relative mb-6">
@@ -396,21 +531,40 @@ export default function DirectorioPublico() {
               <p className="text-xs mb-5 max-w-sm mx-auto" style={{ color: '#444' }}>
                 Estamos verificando los primeros perfiles. Si trabajas en este sector, este es el mejor momento: publícate gratis y sal el primero en las búsquedas.
               </p>
-              <div className="flex flex-col sm:flex-row justify-center gap-2">
+              <div className="flex flex-col sm:flex-row justify-center gap-2 mb-6">
                 <a href={`/auth?mode=register&role=${config.dbRole}`} className="px-5 py-2.5 rounded-xl text-xs font-black"
                   style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                   Publicar mi perfil gratis →
                 </a>
-                <a href="/directorio/dj" className="px-5 py-2.5 rounded-xl text-xs font-bold"
-                  style={{ background: 'rgba(0,0,0,0.04)', color: '#333', border: '1px solid rgba(0,0,0,0.1)' }}>
-                  Ver otras categorías
-                </a>
               </div>
+              {(() => {
+                const related = (RELATED_ROLES[rol ?? ''] ?? DEFAULT_RELATED).filter(s => s !== rol);
+                return (
+                  <div className="pt-5" style={{ borderTop: '1px solid rgba(0,0,0,0.06)' }}>
+                    <p className="text-[0.7rem] font-bold uppercase tracking-wider mb-3" style={{ color: '#888' }}>
+                      Mientras tanto, busca otros profesionales
+                    </p>
+                    <div className="flex flex-wrap justify-center gap-2">
+                      {related.map(slug => {
+                        const r = ROLE_CONFIG[slug];
+                        const label = ALL_ROLES.find(a => a.slug === slug)?.label ?? r?.title ?? slug;
+                        if (!r) return null;
+                        return (
+                          <a key={slug} href={`/directorio/${slug}`} className="px-4 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105"
+                            style={{ background: 'rgba(0,0,0,0.04)', color: '#333', border: '1px solid rgba(0,0,0,0.1)' }}>
+                            {label}
+                          </a>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
           )}
 
           {!fetchError && !loading && profiles.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className={`${profiles.length >= 2 ? 'hidden sm:grid' : 'grid'} grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4`}>
               {profiles.map(p => (
                 <div key={p.user_id} className="rounded-2xl overflow-hidden flex flex-col bg-white"
                   style={{
@@ -419,7 +573,7 @@ export default function DirectorioPublico() {
                   }}>
 
                   {/* Foto — tall on mobile (3:4), wide on desktop (4:3) */}
-                  <a href={`/p/${p.user_id}`} className="block relative aspect-card-photo overflow-hidden">
+                  <a href={profileUrl(p)} className="block relative aspect-card-photo overflow-hidden">
                     <div className="absolute inset-0">
                       {p.photo_url && !imgErrors[p.user_id] ? (
                         <img src={p.photo_url} alt={p.display_name} loading="lazy"
@@ -441,12 +595,17 @@ export default function DirectorioPublico() {
                           Perfil de ejemplo
                         </span>
                       )}
-                      {/* Mobile: ONE badge, priority Disponible > Pro > Early > Rápida */}
+                      {/* Mobile: ONE badge, priority Disponible > Verificado > Pro > Early > Rápida */}
                       <span className="sm:hidden">
                         {p.is_flash_active ? (
                           <span className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
                             style={{ background: '#15803d', color: '#fff' }}>
                             <Zap size={10} fill="#fff" /> Disponible
+                          </span>
+                        ) : p.is_verified ? (
+                          <span className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
+                            style={{ background: 'rgba(212,175,55,0.95)', color: '#000' }}>
+                            <BadgeCheck size={10} /> Verificado
                           </span>
                         ) : (p as any).is_early_adopter ? (
                           <span className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
@@ -456,6 +615,12 @@ export default function DirectorioPublico() {
                         ) : null}
                       </span>
                       {/* Desktop: full set */}
+                      {p.is_verified && (
+                        <span className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
+                          style={{ background: 'rgba(212,175,55,0.95)', color: '#000' }}>
+                          <BadgeCheck size={10} /> Verificado por XPEAK
+                        </span>
+                      )}
                       {(p as any).is_early_adopter && (
                         <span className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
                           style={{ background: 'rgba(96,165,250,0.9)', color: '#000' }}>
@@ -488,7 +653,7 @@ export default function DirectorioPublico() {
 
                   {/* Info — clean & minimal on mobile */}
                   <div className="p-3 sm:p-4 flex flex-col flex-1">
-                    <a href={`/p/${p.user_id}`} className="block hover:opacity-70 transition-opacity">
+                    <a href={profileUrl(p)} className="block hover:opacity-70 transition-opacity">
                       <p className="text-sm sm:text-base font-black leading-tight truncate" style={{ color: '#111' }}>{p.display_name}</p>
                       {/* Zone + specialty inline on mobile — single clean line */}
                       <p className="text-xs truncate mt-0.5 sm:hidden" style={{ color: '#717171' }}>
@@ -524,6 +689,13 @@ export default function DirectorioPublico() {
                       </p>
                     )}
 
+                    {/* Actividad reciente real — solo si hubo cambios en el perfil en los últimos 30 días */}
+                    {recentUpdateLabel(p.updated_at) && (
+                      <p className="text-[0.65rem] mb-2" style={{ color: '#7a6216' }}>
+                        {recentUpdateLabel(p.updated_at)}
+                      </p>
+                    )}
+
                     {/* Bio — desktop only */}
                     {p.bio && (
                       <p className="hidden sm:block text-xs leading-relaxed mb-3 line-clamp-2" style={{ color: '#333' }}>
@@ -533,7 +705,7 @@ export default function DirectorioPublico() {
 
                     {/* CTAs — 1 button on mobile, 2 on desktop */}
                     <div className="mt-auto flex gap-2 pt-2">
-                      <a href={`/p/${p.user_id}`}
+                      <a href={profileUrl(p)}
                         className="hidden sm:flex flex-1 text-center justify-center py-2.5 rounded-xl text-xs font-bold transition-all hover:bg-black/5"
                         style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.12)', color: '#333' }}>
                         Ver perfil
@@ -545,9 +717,9 @@ export default function DirectorioPublico() {
                       </button>
                       <button
                         onClick={() => {
-                          if (cartItems.some(i => i.userId === p.user_id)) return;
-                          addToCart({ userId: p.user_id, displayName: p.display_name, role: p.role, photoUrl: p.photo_url, hourlyRate: p.hourly_rate, zone: p.zone });
-                          toast.success(`${p.display_name} añadido a "Mi evento"`, { description: 'Añade varios profesionales y pide presupuesto conjunto desde el botón dorado de abajo a la derecha.' });
+                          const result = addToCart({ userId: p.user_id, displayName: p.display_name, role: p.role, photoUrl: p.photo_url, hourlyRate: p.hourly_rate, zone: p.zone });
+                          if (result === 'added') toast.success(`${p.display_name} añadido a "Mi evento"`, { description: 'Añade varios profesionales y pide presupuesto conjunto desde el botón dorado de abajo a la derecha.' });
+                          else if (result === 'limit_reached') toast.error(`Máximo ${MAX_CART_ITEMS} profesionales por evento. Elimina alguno para añadir más.`);
                         }}
                         disabled={cartItems.some(i => i.userId === p.user_id)}
                         title={cartItems.some(i => i.userId === p.user_id) ? 'Ya está en tu evento' : 'Añadir a "Mi evento"'}
@@ -565,6 +737,12 @@ export default function DirectorioPublico() {
                 </div>
               ))}
             </div>
+          )}
+
+          {/* Tarjetas fantasma: solo sin sesión, dan sensación de "hay más
+              contenido" para empujar el registro. No son perfiles reales. */}
+          {!authLoading && !user && !loading && !fetchError && (
+            <GhostProfileCards role={config.dbRole} className="mt-6" />
           )}
 
           {/* CTA profesional */}
@@ -590,6 +768,32 @@ export default function DirectorioPublico() {
           professionalRole={bookingPro.role}
           professionalUserId={bookingPro.user_id}
           onClose={() => setBookingPro(null)}
+        />
+      )}
+
+      {showMultiRequest && (
+        <MultiRequestModal
+          categoryLabel={config.title.split(' ')[0]}
+          city={city}
+          pros={realPros.map(p => ({ user_id: p.user_id, display_name: p.display_name, role: p.role }))}
+          onClose={() => setShowMultiRequest(false)}
+        />
+      )}
+
+      {showSwipe && (
+        <SwipeDirectory
+          profiles={profiles}
+          initialIndex={swipeStartIndex}
+          onClose={() => setShowSwipe(false)}
+          onOpenProfile={(p) => { window.location.href = profileUrl(p as DirProfile); }}
+          onBookNow={(p) => { setShowSwipe(false); setBookingPro(p as DirProfile); }}
+          onAddToCart={(p) => {
+            const prof = p as DirProfile;
+            const result = addToCart({ userId: prof.user_id, displayName: prof.display_name, role: prof.role, photoUrl: prof.photo_url, hourlyRate: prof.hourly_rate, zone: prof.zone });
+            if (result === 'added') toast.success(`${prof.display_name} añadido a "Mi evento"`);
+            else if (result === 'limit_reached') toast.error(`Máximo ${MAX_CART_ITEMS} profesionales por evento. Elimina alguno para añadir más.`);
+          }}
+          isInCart={(userId) => cartItems.some(i => i.userId === userId)}
         />
       )}
     </>

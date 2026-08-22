@@ -36,6 +36,17 @@ const ROLE_UPSELL: Record<string, { headline: string; features: string[]; cta: s
     ],
     cta: 'Activar Business y llenar mi agenda',
   },
+  azafata: {
+    headline: 'Consigue más contratos de azafata',
+    features: [
+      'Posicionamiento prioritario en directorio',
+      'Flash Booking — urgencias en tiempo real',
+      'Historial de eventos verificado en tu ficha',
+      'Estadísticas avanzadas de visitas',
+      'Sello Business dorado — más confianza',
+    ],
+    cta: 'Activar Business y llenar mi agenda',
+  },
   makeup: {
     headline: 'Tu talento merece más visibilidad',
     features: [

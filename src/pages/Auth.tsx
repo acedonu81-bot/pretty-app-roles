@@ -4,12 +4,13 @@ import { Helmet } from 'react-helmet-async';
 import { Mail, Lock, User, Eye, EyeOff, Zap, ShieldCheck, Users, FileText, MapPin, Target, BadgeCheck, Search, Wallet, type LucideIcon } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { track } from '@/lib/track';
+import { track, trackLead } from '@/lib/track';
+import TurnstileWidget from '@/components/TurnstileWidget';
 
 const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { icon: LucideIcon; text: string }[] }> = {
   dj: {
     tagline: 'Publica tu tarifa y que te encuentren salas y promotoras.',
-    sub: 'DJs de toda España ya reciben solicitudes directas cada semana.',
+    sub: 'Crea tu perfil gratis y aparece cuando busquen un DJ en tu zona.',
     bullets: [
       { icon: Target, text: 'Tu perfil visible en Google y en el directorio' },
       { icon: FileText, text: 'Contratos digitales automáticos' },
@@ -17,8 +18,17 @@ const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { ic
     ],
   },
   staff: {
-    tagline: 'Consigue trabajo de staff y camarero en eventos reales.',
+    tagline: 'Consigue trabajo de camarero en eventos reales.',
     sub: 'Salas y organizadores buscan profesionales como tú cada semana.',
+    bullets: [
+      { icon: Target, text: 'Tu perfil visible para empresarios de tu zona' },
+      { icon: FileText, text: 'Contratos digitales sin papeleo' },
+      { icon: Wallet, text: '0% comisión — cobras todo lo tuyo' },
+    ],
+  },
+  azafata: {
+    tagline: 'Consigue trabajo de azafata en eventos reales.',
+    sub: 'Salas y organizadores buscan azafatas como tú cada semana.',
     bullets: [
       { icon: Target, text: 'Tu perfil visible para empresarios de tu zona' },
       { icon: FileText, text: 'Contratos digitales sin papeleo' },
@@ -36,7 +46,7 @@ const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { ic
   },
   profesional: {
     tagline: 'El directorio de referencia para profesionales de eventos.',
-    sub: 'Crea tu perfil, publica tu tarifa y empieza a recibir solicitudes.',
+    sub: 'Crea tu perfil gratis y publica tu tarifa. Tardas menos de 2 minutos.',
     bullets: [
       { icon: Target, text: 'Visible para salas y promotoras de España' },
       { icon: FileText, text: 'Contratos automáticos con PDF' },
@@ -69,7 +79,10 @@ const Auth = () => {
   const [searchParams] = useSearchParams();
   const roleParam = searchParams.get('role') ?? '';
   const modeParam = searchParams.get('mode') ?? '';
-  const redirectParam = searchParams.get('redirect') ?? '/dashboard';
+  // Tras login → directo al swipe (experiencia principal). El dashboard clásico
+  // queda accesible desde el menú ☰ del feed ("Volver a versión clásica").
+  // Un ?redirect= explícito (p.ej. tras registro con onboarding) tiene prioridad.
+  const redirectParam = searchParams.get('redirect') ?? '/descubrir';
   const refParam = searchParams.get('ref') ?? '';
   const content = ROLE_CONTENT[roleParam] ?? DEFAULT_CONTENT;
 
@@ -89,7 +102,14 @@ const Auth = () => {
   const [showRecovery, setShowRecovery] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const [recoveryLoading, setRecoveryLoading] = useState(false);
+  const [proCount, setProCount] = useState<number | null>(null);
   const isRegistering = useRef(false);
+  // Vuelta de Google con ?code=... — el SDK aún no ha intercambiado el código
+  // por una sesión. Sin esta pantalla, el usuario ve el login "normal" y le da
+  // otra vez, lo que pisa el code_verifier PKCE del primer intento y rompe el login.
+  const [oauthCallbackPending, setOauthCallbackPending] = useState(() => searchParams.has('code'));
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [forgotCaptchaToken, setForgotCaptchaToken] = useState<string | null>(null);
 
   useEffect(() => {
     track('auth_view', { mode: isLogin ? 'login' : 'register', role: roleParam || 'none' });
@@ -97,17 +117,51 @@ const Auth = () => {
   }, []);
 
   useEffect(() => {
+    supabase.from('profiles')
+      .select('user_id', { count: 'exact', head: true })
+      .eq('is_seed', false)
+      .neq('role', 'empresario')
+      .then(({ count }) => {
+        if (typeof count === 'number') setProCount(count);
+      });
+  }, []);
+
+  useEffect(() => {
+    // Destino tras login: si el perfil está INCOMPLETO (recién registrado, sin
+    // rol/nombre), va al dashboard a completar la ficha — NO al feed. Si ya está
+    // completo, al feed (/descubrir). Evita que un usuario nuevo entre directo
+    // al swipe sin haber rellenado su perfil.
+    const goAfterLogin = async (userId: string) => {
+      if (redirectParam !== '/descubrir') { navigate(redirectParam, { replace: true }); return; }
+      const { data } = await supabase
+        .from('profiles').select('role, display_name').eq('user_id', userId)
+        .order('is_primary', { ascending: false }).limit(1);
+      const p = data?.[0];
+      const complete = !!p && p.role && p.role !== 'pending' && !!p.display_name?.trim();
+      navigate(complete ? '/descubrir' : '/dashboard', { replace: true });
+    };
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session && !isRegistering.current) goAfterLogin(session.user.id);
+      else if (oauthCallbackPending) setOauthCallbackPending(false);
+    });
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'PASSWORD_RECOVERY') {
         setShowRecovery(true);
         return;
       }
       if (isRegistering.current) return;
-      if (session && event === 'SIGNED_IN') {
-        navigate(redirectParam, { replace: true });
+      if (session && (event === 'SIGNED_IN' || event === 'INITIAL_SESSION')) {
+        goAfterLogin(session.user.id);
+      } else if (oauthCallbackPending) {
+        // El code_verifier no coincidía (p.ej. doble clic previo) o el código
+        // ya expiró — no dejar al usuario colgado en la pantalla de carga.
+        setOauthCallbackPending(false);
       }
     });
     return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate, redirectParam]);
 
   // Google bloquea OAuth en navegadores integrados (TikTok, Instagram, FB) con
@@ -138,9 +192,11 @@ const Auth = () => {
     const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
     e.preventDefault();
     if (!forgotEmail) { authAlert('Introduce tu email'); return; }
+    if (!forgotCaptchaToken) { authAlert('Espera a que termine la verificación de seguridad e inténtalo de nuevo.'); return; }
     setForgotLoading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(forgotEmail, {
       redirectTo: `${SITE_URL}/auth`,
+      captchaToken: forgotCaptchaToken,
     });
     setForgotLoading(false);
     if (error) { authAlert(error.message); return; }
@@ -155,6 +211,28 @@ const Auth = () => {
   const authAlert = (message: string) => {
     toast.error(message);
     window.alert(message);
+  };
+
+  // Errores de validación con campo identificable: en vez de alert() bloqueante,
+  // resalta el campo culpable y hace scroll hasta él — el alert cerraba pero
+  // dejaba al usuario sin saber dónde estaba el problema (ej. checkbox legal
+  // al fondo del formulario, fuera de la vista en móvil).
+  const [fieldError, setFieldError] = useState<string | null>(null);
+  const nameRef = useRef<HTMLDivElement>(null);
+  const legalRef = useRef<HTMLLabelElement>(null);
+  const passwordRef = useRef<HTMLDivElement>(null);
+  const fieldRefs: Record<string, React.RefObject<HTMLElement>> = {
+    name: nameRef,
+    legal: legalRef,
+    password: passwordRef,
+  };
+  const authFieldError = (field: string, message: string) => {
+    toast.error(message);
+    setFieldError(field);
+    const el = fieldRefs[field]?.current;
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   };
 
   const checkRateLimit = (): boolean => {
@@ -193,6 +271,10 @@ const Auth = () => {
       authAlert('Completa todos los campos');
       return;
     }
+    if (!captchaToken) {
+      authAlert('Espera a que termine la verificación de seguridad e inténtalo de nuevo.');
+      return;
+    }
     setLoading(true);
     try {
       if (isLogin) {
@@ -201,7 +283,7 @@ const Auth = () => {
           setLoading(false);
           return;
         }
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { error } = await supabase.auth.signInWithPassword({ email, password, options: { captchaToken } });
         if (error) {
           recordLoginFailure();
           track('auth_error', { mode: 'login', message: error.message });
@@ -216,28 +298,29 @@ const Auth = () => {
       } else {
         if (!displayName.trim()) {
           track('auth_validation_error', { mode: 'register', reason: 'missing_name' });
-          authAlert('Introduce tu nombre profesional'); setLoading(false); return;
+          authFieldError('name', 'Introduce tu nombre profesional'); setLoading(false); return;
         }
         if (!legalAccepted) {
           track('auth_validation_error', { mode: 'register', reason: 'legal_not_accepted' });
-          authAlert('Acepta los términos para continuar'); setLoading(false); return;
+          authFieldError('legal', 'Acepta los términos para continuar'); setLoading(false); return;
         }
 
         const pwdError = validatePassword(password);
         if (pwdError) {
           track('auth_validation_error', { mode: 'register', reason: 'weak_password' });
-          authAlert(pwdError); setLoading(false); return;
+          authFieldError('password', pwdError); setLoading(false); return;
         }
 
+        setFieldError(null);
         const safeName = displayName.trim().replace(/<[^>]*>/g, '').replace(/[\x00-\x1F\x7F]/g, '').slice(0, 60);
         if (!safeName) {
           track('auth_validation_error', { mode: 'register', reason: 'invalid_name' });
-          authAlert('El nombre no es válido.'); setLoading(false); return;
+          authFieldError('name', 'El nombre no es válido.'); setLoading(false); return;
         }
 
         isRegistering.current = true;
         const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
-        const KNOWN_ROLES = ['dj', 'media', 'makeup', 'peluqueria', 'staff', 'promotor', 'empresario', 'catering', 'mago', 'humorista', 'animador', 'bailarin', 'speaker', 'vestuario', 'photo-booth'];
+        const KNOWN_ROLES = ['dj', 'media', 'makeup', 'peluqueria', 'staff', 'azafata', 'promotor', 'empresario', 'catering', 'mago', 'humorista', 'animador', 'bailarin', 'speaker', 'vestuario', 'photo-booth'];
         const { data: signUpData, error } = await supabase.auth.signUp({
           email,
           password,
@@ -250,6 +333,7 @@ const Auth = () => {
               zone: 'España',
             },
             emailRedirectTo: `${SITE_URL}/auth`,
+            captchaToken,
           },
         });
         if (error) {
@@ -257,9 +341,14 @@ const Auth = () => {
           throw error;
         }
 
+        setFieldError(null);
         track('auth_success', { mode: 'register', role: roleParam || 'pending' });
+        trackLead('registro', { role: roleParam || 'pending' });
         if (typeof window !== 'undefined' && (window as any).fbq) (window as any).fbq('track', 'CompleteRegistration');
-        if (typeof window !== 'undefined' && (window as any).ttq) (window as any).ttq.track('CompleteRegistration');
+        if (typeof window !== 'undefined' && (window as any).ttq) {
+          (window as any).ttq.identify({ email });
+          (window as any).ttq.track('CompleteRegistration');
+        }
 
         if (refParam && signUpData.user) {
           supabase.from('profiles').select('user_id').eq('referral_code', refParam).maybeSingle()
@@ -290,8 +379,16 @@ const Auth = () => {
           });
 
         if (signUpData.session) {
-          toast.success('¡Cuenta creada! Bienvenido a XPEAK');
-          navigate(redirectParam);
+          // proCount se cargó al abrir la página (antes de este registro), así
+          // que +1 es el número real de este usuario entre los profesionales —
+          // no se muestra para empresarios, que no cuentan en esa métrica.
+          const welcomeMsg = roleParam && roleParam !== 'empresario' && proCount !== null
+            ? `¡Bienvenido! Eres el profesional nº ${proCount + 1} en unirte a XPEAK`
+            : '¡Cuenta creada! Bienvenido a XPEAK';
+          toast.success(welcomeMsg);
+          // Registro nuevo → dashboard para completar perfil/onboarding
+          // (el login normal sí va directo al swipe vía redirectParam).
+          navigate('/dashboard', { replace: true });
         } else {
           setShowWelcome(true);
         }
@@ -308,6 +405,15 @@ const Auth = () => {
     { ok: password.length >= 6, label: '6+ caracteres' },
     { ok: password.length >= 10, label: 'Segura' },
   ] : null;
+
+  if (oauthCallbackPending) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center gap-3" style={{ background: '#ffffff', color: '#222' }}>
+        <div className="w-8 h-8 rounded-full border-2 animate-spin" style={{ borderColor: 'rgba(212,175,55,0.25)', borderTopColor: '#D4AF37' }} />
+        <p className="text-sm" style={{ color: 'rgba(0,0,0,0.6)' }}>Conectando con Google...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#ffffff', color: '#222' }}>
@@ -377,7 +483,7 @@ const Auth = () => {
               <div className="mt-10 pt-8" style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}>
                 <div className="flex items-center gap-4 mb-4">
                   <div>
-                    <p className="text-2xl font-black leading-none" style={{ color: '#111' }}>38+</p>
+                    <p className="text-2xl font-black leading-none" style={{ color: '#111' }}>{proCount !== null ? proCount : '—'}</p>
                     <p className="text-[0.65rem] mt-1" style={{ color: 'rgba(0,0,0,0.55)' }}>profesionales activos</p>
                   </div>
                   <div className="w-px h-9" style={{ background: 'rgba(0,0,0,0.12)' }} />
@@ -430,7 +536,7 @@ const Auth = () => {
                       ))}
                     </div>
                     <p className="text-[0.68rem] mt-2.5" style={{ color: 'rgba(0,0,0,0.5)' }}>
-                      <strong style={{ color: '#333' }}>38+ profesionales</strong> ya publican su perfil aquí
+                      <strong style={{ color: '#333' }}>{proCount !== null ? proCount : ''} profesionales</strong> ya publican su perfil aquí
                     </p>
                   </>
                 )}
@@ -490,11 +596,12 @@ const Auth = () => {
 
                 {/* Nombre — solo en registro */}
                 {!isLogin && (
-                  <div className="relative">
+                  <div ref={nameRef} className={`relative rounded-xl ${fieldError === 'name' ? 'animate-field-shake' : ''}`}
+                    style={fieldError === 'name' ? { boxShadow: '0 0 0 2px #ef4444' } : undefined}>
                     <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                     <input
                       value={displayName}
-                      onChange={e => setDisplayName(e.target.value)}
+                      onChange={e => { setDisplayName(e.target.value); if (fieldError === 'name') setFieldError(null); }}
                       placeholder={roleParam === 'dj' ? 'DJ NombreArtístico' : 'Tu nombre profesional'}
                       maxLength={60}
                       className="nightlife-input !py-3 !pl-9 text-sm"
@@ -517,12 +624,13 @@ const Auth = () => {
                 </div>
 
                 {/* Password */}
-                <div className="relative">
+                <div ref={passwordRef} className={`relative rounded-xl ${fieldError === 'password' ? 'animate-field-shake' : ''}`}
+                  style={fieldError === 'password' ? { boxShadow: '0 0 0 2px #ef4444' } : undefined}>
                   <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     value={password}
-                    onChange={e => setPassword(e.target.value)}
+                    onChange={e => { setPassword(e.target.value); if (fieldError === 'password') setFieldError(null); }}
                     placeholder="Contraseña"
                     maxLength={128}
                     className="nightlife-input !py-3 !pl-9 !pr-10 text-sm"
@@ -550,18 +658,23 @@ const Auth = () => {
                 {/* Legal — checkbox nativo real (accesible, robusto en webviews) */}
                 {!isLogin && (
                   <label
+                    ref={legalRef}
                     htmlFor="legal-accept"
-                    className="flex items-center gap-3 cursor-pointer rounded-xl px-3 py-3.5 active:bg-black/5"
-                    style={{ background: 'rgba(0,0,0,0.03)', border: legalAccepted ? '1px solid rgba(212,175,55,0.5)' : '1px solid rgba(0,0,0,0.1)' }}>
+                    className={`flex items-center gap-3 cursor-pointer rounded-xl px-3 py-3.5 active:bg-black/5 ${fieldError === 'legal' ? 'animate-field-shake' : ''}`}
+                    style={{
+                      background: fieldError === 'legal' ? 'rgba(239,68,68,0.06)' : 'rgba(0,0,0,0.03)',
+                      border: fieldError === 'legal' ? '1.5px solid #ef4444' : legalAccepted ? '1px solid rgba(212,175,55,0.5)' : '1px solid rgba(0,0,0,0.1)',
+                    }}>
                     <input
                       id="legal-accept"
                       name="legalAccepted"
                       type="checkbox"
                       checked={legalAccepted}
-                      onChange={(e) => setLegalAccepted(e.target.checked)}
+                      onChange={(e) => { setLegalAccepted(e.target.checked); if (e.target.checked) setFieldError(null); }}
                       className="w-6 h-6 flex-shrink-0 rounded-md accent-[#D4AF37]"
                     />
-                    <span className="text-xs leading-relaxed" style={{ color: 'rgba(0,0,0,0.65)' }}>
+                    <span className="text-xs leading-relaxed" style={{ color: fieldError === 'legal' ? '#b91c1c' : 'rgba(0,0,0,0.65)' }}>
+                      {fieldError === 'legal' && <span className="font-bold">☝️ Marca esta casilla para continuar — </span>}
                       Acepto la{' '}
                       <Link to="/privacidad" target="_blank" onClick={e => e.stopPropagation()} className="underline" style={{ color: '#8B6A00' }}>Privacidad</Link>,{' '}
                       <Link to="/terminos" target="_blank" onClick={e => e.stopPropagation()} className="underline" style={{ color: '#8B6A00' }}>Términos</Link>{' '}
@@ -571,19 +684,24 @@ const Auth = () => {
                   </label>
                 )}
 
+                {/* Verificación anti-bot — invisible la mayoría de las veces */}
+                <TurnstileWidget onVerify={setCaptchaToken} onExpire={() => setCaptchaToken(null)} />
+
                 {/* CTA principal */}
                 <button
                   type="submit"
-                  disabled={loading}
+                  disabled={loading || !captchaToken}
                   className="w-full py-3.5 rounded-xl font-black text-sm transition-all hover:scale-[1.01] disabled:opacity-50"
                   style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' }}>
                   {loading
                     ? 'Procesando...'
-                    : isLogin
-                      ? 'Iniciar Sesión'
-                      : roleParam === 'empresario'
-                        ? 'Empezar a contratar gratis →'
-                        : 'Publicar mi perfil gratis →'}
+                    : !captchaToken
+                      ? 'Verificando seguridad…'
+                      : isLogin
+                        ? 'Iniciar Sesión'
+                        : roleParam === 'empresario'
+                          ? 'Empezar a contratar gratis →'
+                          : 'Publicar mi perfil gratis →'}
                 </button>
 
               </form>
@@ -615,13 +733,14 @@ const Auth = () => {
                         <input type="email" value={forgotEmail} onChange={e => setForgotEmail(e.target.value)}
                           placeholder="tu@email.com" className="nightlife-input !py-2.5 !pl-9 text-sm" />
                       </div>
+                      <TurnstileWidget onVerify={setForgotCaptchaToken} onExpire={() => setForgotCaptchaToken(null)} />
                       <div className="flex gap-2">
                         <button type="button" onClick={() => setShowForgot(false)}
                           className="flex-1 py-2 rounded-lg text-xs font-bold"
                           style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.15)', color: '#555' }}>
                           Cancelar
                         </button>
-                        <button type="submit" disabled={forgotLoading}
+                        <button type="submit" disabled={forgotLoading || !forgotCaptchaToken}
                           className="flex-1 py-2 rounded-lg text-xs font-bold disabled:opacity-50"
                           style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                           {forgotLoading ? 'Enviando...' : 'Enviar enlace'}

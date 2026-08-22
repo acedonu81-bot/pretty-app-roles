@@ -55,7 +55,8 @@ const Section = ({ title, icon, children }: SectionProps) => (
 const ROLE_OPTIONS = [
   { value: 'dj',           label: 'DJ / Artista / Productor' },
   { value: 'rookie',       label: 'Artista Promesa' },
-  { value: 'staff',        label: 'Staff / Camarero / Sala' },
+  { value: 'staff',        label: 'Camarero / Sala' },
+  { value: 'azafata',      label: 'Azafata' },
   { value: 'event_manager',label: 'Encargada de Eventos' },
   { value: 'promotor',     label: 'Promotor / RRPP' },
   { value: 'catering',     label: 'Catering / Cocina' },
@@ -65,7 +66,7 @@ const ROLE_OPTIONS = [
 ];
 
 const MultiProfileSection = () => {
-  const { allProfiles, maxProfiles, subscription_tier, switchProfile, createProfile, profileId } = useProfile();
+  const { allProfiles, maxProfiles, switchProfile, createProfile, profileId } = useProfile();
   const [adding, setAdding] = useState(false);
   const [newName, setNewName] = useState('');
   const [newRole, setNewRole] = useState('dj');
@@ -83,7 +84,7 @@ const MultiProfileSection = () => {
   return (
     <Section title="Mis perfiles" icon={<Users size={15} />}>
       <p className="text-xs text-muted-foreground mb-3">
-        Puedes gestionar hasta <span className="font-bold">{maxProfiles} perfiles</span> con roles distintos.
+        Crea perfiles adicionales con roles distintos (ej. DJ y Fotógrafo) y cambia entre ellos cuando quieras.
       </p>
       <div className="space-y-2 mb-3">
         {allProfiles.map(p => (

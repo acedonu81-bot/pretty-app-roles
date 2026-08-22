@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
 import DashboardTopbar from '@/components/dashboard/DashboardTopbar';
 import RecentBusinessViewLine from '@/components/dashboard/RecentBusinessViewLine';
+import TodaysRequestsLine from '@/components/dashboard/TodaysRequestsLine';
 import MobileBottomNav from '@/components/dashboard/MobileBottomNav';
 import AdminGuard from '@/components/AdminGuard';
 import type { Profile } from '@/data/profiles';
@@ -15,6 +16,7 @@ import { ProfileProvider } from '@/hooks/useProfile';
 
 const DJView = lazy(() => import('@/components/dashboard/views/DJView'));
 const StaffView = lazy(() => import('@/components/dashboard/views/StaffView'));
+const AzafataView = lazy(() => import('@/components/dashboard/views/AzafataView'));
 const EventManagerView = lazy(() => import('@/components/dashboard/views/EventManagerView'));
 const MakeupView = lazy(() => import('@/components/dashboard/views/MakeupView'));
 const PeluqueriaView = lazy(() => import('@/components/dashboard/views/PeluqueriaView'));
@@ -58,17 +60,25 @@ const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: s
 
   if (ctx.loading || dismissed) return null;
 
+  const hasInstagram = !!(ctx.instagram && ctx.instagram.trim().length > 0);
   const steps = [
     !!ctx.photo_url,
     !!(ctx.bio && ctx.bio.trim().length > 20),
     !!(ctx.zone && ctx.zone !== DEFAULT_ZONE),
     !!(ctx.specialty && ctx.specialty.trim().length > 0),
-    !!(ctx.instagram && ctx.instagram.trim().length > 0),
+    hasInstagram,
     ...(ctx.role !== 'empresario' ? [!!(ctx.audio_embed_url && (ctx.audio_embed_url as string).trim().length > 0)] : []),
   ];
+  const missingCount = steps.filter(s => !s).length;
   const percent = Math.round((steps.filter(Boolean).length / steps.length) * 100);
 
   if (percent >= 100) return null;
+
+  // Cuando Instagram es lo único que falta, un mensaje específico apela al
+  // motivo real (confianza/validación) en vez del genérico "aparece mejor"
+  // — mismo texto que ya usa el campo en ProfileView, reforzado aquí donde
+  // el profesional lo ve sin tener que entrar a editar el perfil.
+  const instagramOnlyMissing = !hasInstagram && missingCount === 1;
 
   return (
     <div className="mx-4 mt-3 mb-0 flex items-center gap-3 px-4 py-3 rounded-xl text-xs"
@@ -78,8 +88,12 @@ const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: s
           <div className="h-full rounded-full" style={{ width: `${percent}%`, background: 'linear-gradient(90deg,#D4AF37,#B8941E)' }} />
         </div>
         <span style={{ color: '#222' }}>
-          Perfil al <strong style={{ color: '#D4AF37' }}>{percent}%</strong>
-          <span className="hidden sm:inline"> — complétalo para aparecer mejor en el directorio</span>
+          {instagramOnlyMissing
+            ? 'Solo te falta el Instagram'
+            : (<>Perfil al <strong style={{ color: '#D4AF37' }}>{percent}%</strong></>)}
+          <span className="hidden sm:inline">
+            {instagramOnlyMissing ? ' — da confianza a quien te contrate' : ' — complétalo para aparecer mejor en el directorio'}
+          </span>
         </span>
       </div>
       <button onClick={() => onNavigate('profile')}
@@ -96,7 +110,7 @@ const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: s
 const ROLE_DEFAULT_VIEW: Partial<Record<string, string>> = {
   pending: 'profile', dj: 'profile',
   vestuario: 'vestuario', design: 'design', promotor: 'promotor',
-  staff: 'staff', makeup: 'makeup', peluqueria: 'peluqueria', media: 'media',
+  staff: 'staff', azafata: 'azafata', makeup: 'makeup', peluqueria: 'peluqueria', media: 'media',
   event_manager: 'event_manager', empresario: 'empresario', rookie: 'rookie',
   camarero: 'staff', catering: 'staff',
 };
@@ -112,12 +126,48 @@ const RoleDefaultView = ({ onViewChange }: { onViewChange: (v: string) => void }
   return null;
 };
 
+// La marca "onboarded" vive en localStorage, así que un dispositivo/navegador
+// nuevo (p.ej. el WebView del enlace "Ver mensaje" del email) nunca la tiene
+// y vuelve a mostrar el wizard aunque el perfil real ya esté completo en
+// Supabase. Este gate usa role/display_name reales para saltarlo y
+// re-sincronizar la marca en ese dispositivo.
+const WizardGate = ({ showWizard, setShowWizard }: { showWizard: boolean; setShowWizard: (v: boolean) => void }) => {
+  const { user } = useAuth();
+  const { role, display_name, loading } = useProfile();
+  useEffect(() => {
+    if (!showWizard || loading || !user) return;
+    const isComplete = !!role && role !== 'pending' && !!display_name?.trim();
+    if (isComplete) {
+      localStorage.setItem(`xpeak_onboarded_${user.id}`, '1');
+      setShowWizard(false);
+    }
+  }, [showWizard, loading, role, display_name, user, setShowWizard]);
+  return null;
+};
+
+// Rol del perfil → vista del dashboard (su propio listado). Un rol no listado
+// usa su propio slug como vista.
+const ROLE_TO_VIEW: Record<string, string> = {
+  dj: 'dj', staff: 'staff', camarero: 'staff', makeup: 'makeup', media: 'media',
+  vestuario: 'vestuario', design: 'design', promotor: 'promotor',
+  event_manager: 'event_manager', empresario: 'empresario', catering: 'catering',
+  mago: 'mago', bailarin: 'bailarin', humorista: 'humorista', animador: 'animador',
+  speaker: 'speaker', monologo: 'monologo', ambassador: 'ambassador',
+  // photo-booth no tiene vista propia → usa la de media (fotografía/vídeo)
+  'photo-booth': 'media',
+};
+
 const Dashboard = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [activeView, setActiveView] = useState<string>(() => {
     const fromState = (location.state as { view?: string })?.view;
     if (fromState) return fromState;
+    // Enlaces desde email (ej. "Nueva solicitud Flash Booking") pasan la vista
+    // por query param — sin esto, el botón del email siempre caía en la vista
+    // guardada en localStorage (o "dj" por defecto), nunca en la sección real.
+    const fromQuery = new URLSearchParams(location.search).get('view');
+    if (fromQuery) return fromQuery;
     return localStorage.getItem('xpeak_view') || 'dj';
   });
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -127,12 +177,28 @@ const Dashboard = () => {
   const [showWizard, setShowWizard] = useState(false);
   const isMobile = useIsMobile();
   const { user, loading } = useAuth();
+  const { role: profileRole } = useProfile();
 
   useEffect(() => {
     if (user && !localStorage.getItem(`xpeak_onboarded_${user.id}`)) {
       setShowWizard(true);
     }
   }, [user]);
+
+  // Vista inicial según el ROL del usuario (no siempre 'dj'): un camarero debe
+  // ver su listado, no el de DJs. Solo ajusta si el usuario no eligió otra vista
+  // ni viene de un enlace con vista específica.
+  const viewAdjusted = useRef(false);
+  useEffect(() => {
+    if (viewAdjusted.current || !profileRole || profileRole === 'pending') return;
+    const explicit = (location.state as { view?: string })?.view
+      || new URLSearchParams(location.search).get('view')
+      || localStorage.getItem('xpeak_view');
+    if (explicit) { viewAdjusted.current = true; return; }
+    const roleView = ROLE_TO_VIEW[profileRole] ?? profileRole;
+    setActiveView(roleView);
+    viewAdjusted.current = true;
+  }, [profileRole, location]);
 
   useEffect(() => {
     if (!selectedProfile) return;
@@ -157,7 +223,7 @@ const Dashboard = () => {
 
   const nav = (view: string) => handleViewChange(view);
 
-  const directoryViews = new Set(['dj', 'staff', 'event_manager', 'makeup', 'peluqueria', 'media', 'ambassador', 'vestuario', 'design', 'promotor', 'camarero', 'catering']);
+  const directoryViews = new Set(['dj', 'staff', 'azafata', 'event_manager', 'makeup', 'peluqueria', 'media', 'ambassador', 'vestuario', 'design', 'promotor', 'camarero', 'catering']);
 
   const handleSearch = (q: string) => {
     setSearchQuery(q);
@@ -175,6 +241,7 @@ const Dashboard = () => {
     switch (activeView) {
       case 'dj': return <DJView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'staff': return <StaffView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
+      case 'azafata': return <AzafataView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'event_manager': return <EventManagerView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'makeup': return <MakeupView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'peluqueria': return <PeluqueriaView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
@@ -229,7 +296,8 @@ const Dashboard = () => {
       <meta name="robots" content="noindex, nofollow" />
     </Helmet>
     <RoleDefaultView onViewChange={handleViewChange} />
-    <div data-app="dashboard" className="flex h-screen w-screen overflow-hidden" style={{ background: '#f5f4f0' }}>
+    <WizardGate showWizard={showWizard} setShowWizard={setShowWizard} />
+    <div data-app="dashboard" className="flex h-screen w-screen overflow-hidden grain-overlay" style={{ background: '#f5f4f0' }}>
       <Suspense fallback={null}><AmbientBackground /></Suspense>
 
       {!isMobile && (
@@ -244,10 +312,11 @@ const Dashboard = () => {
         </Sheet>
       )}
 
-      <main className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden relative min-w-0">
+      <main className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden relative min-w-0 no-scrollbar">
         <DashboardTopbar onMenuToggle={() => setSidebarOpen(true)} isMobile={isMobile} onSearch={handleSearch} searchQuery={searchQuery} onHome={() => handleViewChange('dj')} />
         <ProfileIncompleteBanner onNavigate={handleViewChange} activeView={activeView} />
         <RecentBusinessViewLine />
+        <TodaysRequestsLine />
         <div className={`p-4 md:p-6 flex-1 md:pb-6 ${isMobile ? 'pb-[calc(5rem+env(safe-area-inset-bottom))]' : 'pb-6'}`}
           key={activeView}
           style={{ animation: 'viewEnter 0.22s cubic-bezier(0.22,1,0.36,1) both' }}>
@@ -267,7 +336,7 @@ const Dashboard = () => {
 
       <Suspense fallback={null}>
         {!showWizard && <OnboardingTour onNavigate={handleViewChange} />}
-        <div className="hidden sm:block"><SupportChat /></div>
+        {activeView !== 'messages' && <div className="hidden sm:block"><SupportChat /></div>}
         {showWizard && (
           <OnboardingWizard
             onClose={() => setShowWizard(false)}

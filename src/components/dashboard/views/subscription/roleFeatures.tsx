@@ -112,6 +112,40 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
       ],
     },
   },
+  azafata: {
+    icon: <Users size={16} />,
+    label: 'Azafata',
+    free: [
+      'Perfil visible en directorio Azafatas',
+      'Especialidades ilimitadas',
+      'Mensajería interna',
+      'Recibir Flash Bookings',
+      '1h de streaming de prueba en el Escenario Virtual',
+    ],
+    plans: {
+      starter: [
+        'Badge verificado — más contratos',
+        'Especialidades ilimitadas (protocolo, stands, ferias...)',
+        'Estadísticas de visitas básicas',
+        'Aparecer en búsquedas por zona y especialidad',
+      ],
+      business: [
+        'Todo lo de Starter',
+        'Posicionamiento #1–48 en directorio',
+        'Flash Booking: aplica a urgencias de ferias y congresos',
+        'Historial de eventos verificado',
+        'Estadísticas avanzadas',
+        'Sello Business dorado en ficha',
+      ],
+      agency: [
+        'Todo lo de Business',
+        'Gestión de equipo (hasta 5 perfiles)',
+        'Panel de empresa de personal',
+        'Visibilidad máxima garantizada',
+        'Sello Agencia — para empresas de azafatas',
+      ],
+    },
+  },
   makeup: {
     icon: <Sparkles size={16} />,
     label: 'Maquillaje',

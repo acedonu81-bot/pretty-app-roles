@@ -4,6 +4,7 @@ import { X, Zap, Calendar, MapPin, MessageSquare, Euro, Sparkles } from 'lucide-
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import { trackLead } from '@/lib/track';
 
 const EVENT_HOURS: Record<string, number> = {
   'Boda': 6, 'Comunión': 4, 'Evento corporativo': 5, 'Fiesta privada': 4,
@@ -20,7 +21,7 @@ interface Props {
 
 const FlashBookingRequestModal = ({ professionalName, professionalRole, professionalUserId, onClose }: Props) => {
   const { user } = useAuth();
-  const [form, setForm] = useState({ name: '', contact: '', date: '', location: '', description: '', price: '', eventType: '' });
+  const [form, setForm] = useState({ name: '', contact: '', date: '', location: '', description: '', price: '', eventType: '', website: '' });
   const [sending, setSending] = useState(false);
   const [hourlyRate, setHourlyRate] = useState<number | null>(null);
 
@@ -35,10 +36,14 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
   const send = async () => {
+    if (!user) { toast.error('Inicia sesión para contactar con profesionales.'); return; }
     if (!form.name.trim() || !form.contact.trim() || !form.date.trim()) {
       toast.error('Rellena tu nombre, contacto y fecha del evento.');
       return;
     }
+    // Honeypot: campo oculto que un humano nunca rellena, pero un bot sí.
+    // Fallamos en silencio (sin error visible) para no delatar la trampa.
+    if (form.website.trim()) { onClose(); return; }
     setSending(true);
     const payload: Record<string, unknown> = {
       professional_name: professionalName,
@@ -56,6 +61,8 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
     if (professionalUserId) payload.professional_user_id = professionalUserId;
     const { error } = await supabase.from('flash_bookings' as any).insert(payload);
     if (error) { setSending(false); toast.error('Error al enviar la solicitud. Inténtalo de nuevo.'); return; }
+
+    trackLead('flash_booking', { role: professionalRole || 'unknown' });
 
     // Email a admin
     supabase.functions.invoke('send-email', { body: { type: 'flash_booking', data: payload } })
@@ -109,7 +116,23 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
             </button>
           </div>
 
+          {!user ? (
+            <div className="p-5 text-center">
+              <p className="text-sm mb-4" style={{ color: '#333' }}>
+                Inicia sesión para contactar con {professionalName} — así evitamos spam y sabe que habla con alguien real.
+              </p>
+              <a href={`/auth?role=empresario&mode=register&redirect=${encodeURIComponent(location.pathname)}`}
+                className="inline-block px-6 py-2.5 rounded-xl text-sm font-black"
+                style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+                Iniciar sesión / Crear cuenta
+              </a>
+            </div>
+          ) : (
           <div className="p-5 space-y-3">
+            {/* Honeypot anti-bot: invisible para humanos, los bots lo rellenan */}
+            <input type="text" name="website" value={form.website} onChange={e => set('website', e.target.value)}
+              tabIndex={-1} autoComplete="off"
+              style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: '#222' }}>Tu nombre *</label>
@@ -179,7 +202,9 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
               </div>
             </div>
           </div>
+          )}
 
+          {user && (
           <div className="px-5 pb-5">
             <button onClick={send} disabled={sending}
               className="w-full py-3 rounded-xl font-bold text-sm transition-all hover:scale-[1.02] disabled:opacity-60"
@@ -190,6 +215,7 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
               El profesional recibirá tu solicitud y te contactará directamente.
             </p>
           </div>
+          )}
         </motion.div>
       </motion.div>
     </AnimatePresence>

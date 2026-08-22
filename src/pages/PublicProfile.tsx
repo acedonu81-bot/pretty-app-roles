@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, Headphones, BookOpen, Video, Music, Instagram, Send, X, Shield, Check, Plus } from 'lucide-react';
 import { toast } from 'sonner';
-import { addToCart, useEventCart } from '@/lib/eventCart';
+import { addToCart, useEventCart, MAX_CART_ITEMS } from '@/lib/eventCart';
 import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack } from '@/lib/streaming';
 import { profiles, toSlug } from '@/data/profiles';
 import { useAuth } from '@/hooks/useAuth';
@@ -11,7 +11,6 @@ import PublicContactModal from '@/components/PublicContactModal';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
 import AvailabilityCalendar from '@/components/AvailabilityCalendar';
 import { motion, AnimatePresence } from 'framer-motion';
-import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
 /* ── Reviews ─────────────────────────────────────────────────────────────── */
@@ -312,6 +311,8 @@ const PublicProfile = () => {
   const [showContact, setShowContact] = useState(false);
   const [scrolledPastHero, setScrolledPastHero] = useState(false);
   const [audioEmbed, setAudioEmbed] = useState<ReturnType<typeof parseStreamUrl>>(null);
+  const [seoReviews, setSeoReviews] = useState<{ rating: number }[]>([]);
+  const [weeklyViews, setWeeklyViews] = useState<number | null>(null);
   const isUUID = UUID_RE.test(slug ?? '');
 
   useEffect(() => {
@@ -332,24 +333,23 @@ const PublicProfile = () => {
           .maybeSingle()
       : supabase.from('profiles')
           .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role')
-          .ilike('display_name', slug.replace(/-/g, '%'))
-          .limit(20)
+          .not('display_name', 'is', null)
           .then(({ data, error }) => {
-            // Try to match slug against normalized display_name
-            const match = (data ?? []).find(p =>
-              p.display_name
-                .toLowerCase()
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g, '')
-                .replace(/[^a-z0-9]+/g, '-')
-                .replace(/^-|-$/g, '') === slug
-            );
+            // ILIKE no entiende acentos/e\u00f1es (slug.replace('-','%') nunca
+            // matchea "Mar~I\u00f1a" porque \u00f1\u2260n para SQL) \u2014 comparamos en JS con
+            // la misma normalizaci\u00f3n que genera el slug (toSlug), fiable
+            // para cualquier car\u00e1cter no-ASCII del nombre real.
+            const match = (data ?? []).find(p => toSlug(p.display_name ?? '') === slug);
             return { data: match ?? null, error };
           });
 
     (query as Promise<{ data: SupabaseProfile | null; error: unknown }>)
       .then(({ data }) => {
         setSbProfile(data ?? null);
+        if (data?.user_id) {
+          supabase.from('reviews').select('rating').eq('reviewed_user_id', data.user_id).eq('approved', true)
+            .then(({ data: rev }) => setSeoReviews(rev ?? []));
+        }
         if (isUUID && data?.display_name) {
           const canonical = toSlug(data.display_name);
           if (canonical && canonical !== slug) {
@@ -377,27 +377,43 @@ const PublicProfile = () => {
               const current = (s?.score as number) ?? 0;
               supabase.from('profiles').update({ score: current + 1 } as any).eq('user_id', data.user_id).then(() => {});
             });
-          // Log an anonymous business-view event when the visitor is a logged-in
-          // empresario viewing someone else's profile (social-proof signal).
-          if (authUser && authUser.id !== data.user_id) {
-            supabase.from('profiles').select('role, zone').eq('user_id', authUser.id).maybeSingle()
-              .then(({ data: viewerProfile }) => {
-                if (viewerProfile?.role === 'empresario') {
-                  supabase.from('profile_business_views').insert({
-                    viewed_user_id: data.user_id,
-                    viewer_zone: viewerProfile.zone ?? null,
-                  }).then(({ error }) => {
-                    if (error) console.error('[PublicProfile] profile_business_views insert error:', error);
-                  });
-                }
+          // Log every real visit in profile_business_views — one insert per
+          // view, used two ways downstream: (1) RecentBusinessViewLine shows
+          // "una sala de {zona} ha visto tu perfil" only when viewer_zone is
+          // set (i.e. a logged-in empresario), (2) the public view counter
+          // on the profile itself counts ALL rows regardless of viewer_zone.
+          if (!authUser || authUser.id !== data.user_id) {
+            (authUser
+              ? supabase.from('profiles').select('role, zone').eq('user_id', authUser.id).maybeSingle()
+              : Promise.resolve({ data: null })
+            ).then(({ data: viewerProfile }) => {
+              const zone = (viewerProfile as { role?: string; zone?: string } | null)?.role === 'empresario'
+                ? (viewerProfile as { zone?: string }).zone ?? null
+                : null;
+              supabase.from('profile_business_views').insert({
+                viewed_user_id: data.user_id,
+                viewer_zone: zone,
+              }).then(({ error }) => {
+                if (error) console.error('[PublicProfile] profile_business_views insert error:', error);
               });
+            });
           }
+          // Weekly view count for the on-profile social-proof line. Only
+          // shown above a threshold (3) so a near-empty count never reads
+          // as a negative signal — omitting it is honest, a low number
+          // dressed up as impressive would not be.
+          supabase.rpc('profile_views_last_7_days', { p_viewed_user_id: data.user_id })
+            .then(({ data: count, error }) => {
+              if (error) { console.error('[PublicProfile] view count rpc error:', error); return; }
+              setWeeklyViews(typeof count === 'number' ? count : null);
+            });
           // Load related profiles
           supabase
             .from('profiles')
             .select('user_id, display_name, role, specialty, zone')
             .eq('role', data.role)
             .neq('user_id', data.user_id)
+            .not('display_name', 'is', null)
             .limit(3)
             .then(({ data: rel }) => setRelated(rel ?? []));
           // Load public micro-blog posts (fan_tier IS NULL = public)
@@ -489,7 +505,7 @@ const PublicProfile = () => {
   const inCart = sbProfile ? cartItems.some(i => i.userId === sbProfile.user_id) : false;
   const handleAddToCart = () => {
     if (!sbProfile) return;
-    addToCart({
+    const result = addToCart({
       userId: sbProfile.user_id,
       displayName: profile.name,
       role: profile.role,
@@ -497,6 +513,11 @@ const PublicProfile = () => {
       hourlyRate: profile.price || null,
       zone: profile.zone,
     });
+    if (result === 'limit_reached') {
+      toast.error(`Máximo ${MAX_CART_ITEMS} profesionales por evento. Elimina alguno para añadir más.`);
+      return;
+    }
+    if (result === 'duplicate') return;
     toast.success(`${profile.name} añadido a "Mi evento"`, { description: 'Añade varios profesionales y pide presupuesto conjunto desde el botón dorado de abajo a la derecha.' });
   };
   const profileUrl = `${BASE_URL}/p/${profileSlug}`;
@@ -513,13 +534,21 @@ const PublicProfile = () => {
     : `${BASE_URL}/og-image.jpg`;
 
   const roleLabel: Record<string, string> = {
-    dj: 'DJ & Artista', staff: 'Staff & Promoción', event_manager: 'Encargada de Eventos',
-    makeup: 'Maquillaje', peluqueria: 'Peluquería a Domicilio', media: 'Imagen & Media', design: 'Diseño & Visuales',
-    promotor: 'Promotor', ambassador: 'Embajador',
+    dj: 'DJ & Artista', staff: 'Camarero', azafata: 'Azafata', event_manager: 'Encargada de Eventos',
+    makeup: 'Belleza & Estética', peluqueria: 'Peluquería a Domicilio', media: 'Imagen & Media', design: 'Diseño & Visuales',
+    promotor: 'Promotor', ambassador: 'Embajador', catering: 'Catering & Chef',
+    mago: 'Mago & Ilusionista', bailarin: 'Bailarín & Danza', humorista: 'Humorista & Cómico',
+    monologo: 'Monólogo & Stand-Up', animador: 'Animador Infantil', speaker: 'Speaker & Presentador',
+    vestuario: 'Personal Shopper & Vestuario', 'photo-booth': 'Photo Booth',
+    'grupo-musical': 'Grupo Musical', 'wedding-planner': 'Wedding Planner', 'diseno-grafico': 'Diseño Gráfico',
   };
 
-  // Related profiles: Supabase results for UUID, static data for demo
-  const relatedProfiles = isUUID
+  // Related profiles: Supabase results for real profiles, static data for
+  // demo-only profiles — antes comprobaba isUUID (si la URL era un UUID
+  // crudo), pero todas las URLs reales usan slug, así que esa condición
+  // siempre era falsa y mostraba profesionales inventados ("Luna Deep",
+  // "MC Ráfaga") como "similares" en el 100% de los perfiles reales.
+  const relatedProfiles = sbProfile
     ? related.map(r => ({
         key: r.user_id,
         name: r.display_name,
@@ -590,15 +619,35 @@ const PublicProfile = () => {
                 "priceCurrency": "EUR",
                 "unitText": "hora"
               },
+              "priceValidUntil": `${new Date().getFullYear()}-12-31`,
+              "availability": sbProfile?.is_flash_active ? "https://schema.org/InStock" : "https://schema.org/LimitedAvailability",
               "areaServed": {
                 "@type": "Country",
                 "name": "España"
               },
-              "seller": { "@type": "Person", "name": profile.name }
+              "seller": { "@type": "Person", "name": profile.name },
+              "potentialAction": {
+                "@type": "ReserveAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": profileUrl,
+                  "actionPlatform": ["https://schema.org/DesktopWebPlatform", "https://schema.org/MobileWebPlatform"]
+                },
+                "result": { "@type": "Reservation", "name": `Reserva de ${profile.name} para tu evento` }
+              }
             }
           } : {}),
           ...(profile.badges && profile.badges.length > 0 ? { "knowsAbout": profile.badges } : {}),
           ...(sbProfile?.instagram ? { "sameAs": [`https://www.instagram.com/${sbProfile.instagram}`] } : {}),
+          ...(seoReviews.length > 0 ? {
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": (seoReviews.reduce((s, r) => s + r.rating, 0) / seoReviews.length).toFixed(1),
+              "reviewCount": seoReviews.length,
+              "bestRating": "5",
+              "worstRating": "1"
+            }
+          } : {}),
         })}</script>
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
@@ -612,7 +661,10 @@ const PublicProfile = () => {
         })}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#ffffff', color: '#222' }}>
+      {/* pb en móvil (rem, escala con fuente del sistema) reserva el espacio de
+          la barra fija inferior para que nunca tape botones/contenido, ni con
+          el tamaño de fuente de accesibilidad grande activado. */}
+      <div className="min-h-screen pb-[6.5rem] md:pb-0" style={{ background: '#ffffff', color: '#222' }}>
         {/* Nav */}
         <nav className="sticky top-0 z-50 px-5 pb-3 flex items-center justify-between"
           style={{ background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(0,0,0,0.07)', paddingTop: 'max(0.75rem, env(safe-area-inset-top))' }}>
@@ -689,10 +741,22 @@ const PublicProfile = () => {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2 mb-6">
+                {profile.isVerified && (
+                  <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(212,175,55,0.85)', color: '#000', backdropFilter: 'blur(8px)' }}>
+                    <BadgeCheck size={12} /> Verificado por XPEAK
+                  </span>
+                )}
                 {profile.zone && (
                   <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
                     style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
                     <MapPin size={11} /> {profile.zone}
+                  </span>
+                )}
+                {weeklyViews !== null && weeklyViews >= 3 && (
+                  <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
+                    👀 {weeklyViews} vistas esta semana
                   </span>
                 )}
                 {profile.badges.slice(0, 3).map(b => (
@@ -739,7 +803,7 @@ const PublicProfile = () => {
                   className="flex items-center gap-2 px-7 py-3.5 rounded-2xl font-black text-base transition-all hover:scale-105 active:scale-95"
                   style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 8px 30px rgba(212,175,55,0.4)' }}>
                   <MessageCircle size={18} />
-                  Contactar
+                  Escríbele ahora
                 </button>
                 {sbProfile && (
                   <button
@@ -1034,9 +1098,9 @@ const PublicProfile = () => {
                 setShowContact(true);
               }
             }}
-            className="flex-1 flex items-center justify-center gap-2 py-4 rounded-2xl font-black text-base transition-all active:scale-95"
+            className="flex-1 min-w-0 flex items-center justify-center gap-2 py-4 rounded-2xl font-black text-base leading-tight text-center transition-all active:scale-95"
             style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-            <MessageCircle size={18} /> Contactar
+            <MessageCircle size={18} className="flex-shrink-0" /> <span>Escríbele ahora</span>
           </button>
         </div>
       </div>

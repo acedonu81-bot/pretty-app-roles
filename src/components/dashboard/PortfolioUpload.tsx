@@ -30,7 +30,8 @@ const EMPTY_CTA: Record<string, { title: string; body: string }> = {
   media:        { title: 'Sube tus mejores fotos \u2014 tu portfolio decide la contrataci\u00f3n', body: 'Los organizadores eligen fot\u00f3grafo mirando su trabajo, no leyendo su bio. Sube 3-4 fotos de eventos reales y un v\u00eddeo corto si tienes.' },
   makeup:       { title: 'Sube tus trabajos: el antes y despu\u00e9s vende solo', body: 'Novias y artistas eligen maquilladora por lo que ven. Sube tus mejores looks \u2014 los perfiles con portfolio reciben m\u00e1s contactos y posicionan mejor en el directorio.' },
   peluqueria:   { title: 'Sube tus trabajos: cortes, color y recogidos', body: 'Las clientas eligen peluquera a domicilio por lo que ven. Sube tus mejores looks \u2014 los perfiles con portfolio reciben m\u00e1s contactos y posicionan mejor en el directorio.' },
-  staff:        { title: 'Una buena foto profesional genera confianza', body: 'Los empresarios contratan staff que pueden ver: foto profesional + una imagen tuya trabajando en un evento marcan la diferencia frente a un perfil vac\u00edo.' },
+  staff:        { title: 'Una buena foto profesional genera confianza', body: 'Los empresarios contratan camareros que pueden ver: foto profesional + una imagen tuya trabajando en un evento marcan la diferencia frente a un perfil vac\u00edo.' },
+  azafata:      { title: 'Una buena foto profesional genera confianza', body: 'Los empresarios contratan azafatas que pueden ver: foto profesional + una imagen tuya trabajando en un evento marcan la diferencia frente a un perfil vac\u00edo.' },
   promotor:     { title: 'Ense\u00f1a tus eventos y tus salas', body: 'Fotos de tus fiestas, colas en la puerta, ambiente dentro: es la prueba de que mueves gente. Los perfiles con portfolio posicionan mejor en el directorio.' },
   catering:     { title: 'Tus platos son tu mejor carta de presentaci\u00f3n', body: 'Sube fotos de tus montajes, platos y barras. Quien organiza un evento elige catering con los ojos \u2014 un perfil sin fotos no compite.' },
   mago:         { title: 'Un clip de tu show vende m\u00e1s que mil palabras', body: 'La magia se contrata vi\u00e9ndola: sube un v\u00eddeo corto de una actuaci\u00f3n real (vale grabado con m\u00f3vil). Los perfiles con v\u00eddeo reciben m\u00e1s contactos.' },
@@ -140,21 +141,33 @@ const PortfolioUpload = () => {
     const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
     const newItem = { name: file.name, url: urlData.publicUrl, storagePath: path, isVideo };
     const next = [...items, newItem];
-    setItems(next);
     // Sync public URLs to portfolio_urls column (images only — videos not suited for portfolio grid)
+    // — el archivo ya está en Storage, pero sin este update el perfil
+    // público nunca lo muestra. Antes se lanzaba con .then(() => {}) sin
+    // comprobar error, así que "Portfolio actualizado." se mostraba aunque
+    // el update fallara y el archivo quedara subido pero invisible.
     const imageUrls = next.filter(i => !i.isVideo).map(i => i.url);
-    supabase.from('profiles').update({ portfolio_urls: imageUrls } as any).eq('user_id', user.id).then(() => {});
-    toast.success('Portfolio actualizado.');
+    const { error: syncError } = await supabase.from('profiles').update({ portfolio_urls: imageUrls } as any).eq('user_id', user.id);
     setUploading(false);
+    if (syncError) {
+      toast.error('El archivo se subió pero no se pudo añadir a tu perfil. Inténtalo de nuevo.');
+      return;
+    }
+    setItems(next);
+    toast.success('Portfolio actualizado.');
     if (inputRef.current) inputRef.current.value = '';
   };
 
   const remove = async (item: PortfolioItem) => {
     await supabase.storage.from('audio-sessions').remove([item.storagePath]);
     const next = items.filter(i => i.storagePath !== item.storagePath);
-    setItems(next);
     const imageUrls = next.filter(i => !i.isVideo).map(i => i.url);
-    supabase.from('profiles').update({ portfolio_urls: imageUrls } as any).eq('user_id', user.id).then(() => {});
+    const { error: syncError } = await supabase.from('profiles').update({ portfolio_urls: imageUrls } as any).eq('user_id', user.id);
+    if (syncError) {
+      toast.error('No se pudo eliminar de tu perfil. Inténtalo de nuevo.');
+      return;
+    }
+    setItems(next);
     toast.info('Elemento eliminado.');
   };
 
@@ -199,7 +212,7 @@ const PortfolioUpload = () => {
                   onMouseLeave={e => { const v = e.target as HTMLVideoElement; v.pause(); v.currentTime = 0; }}
                 />
               ) : (
-                <img src={item.url} alt={item.name} className="w-full h-full object-cover" />
+                <img src={item.url} alt={item.name} loading="lazy" className="w-full h-full object-cover" />
               )}
               {item.isVideo && (
                 <div className="absolute top-1 left-1 px-1.5 py-0.5 rounded text-[0.7rem] font-bold flex items-center gap-0.5"

@@ -3,13 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://plausible.io https://analytics.tiktok.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https: ; media-src 'self' blob: https://videos.pexels.com; frame-src 'self' https://w.soundcloud.com https://www.youtube.com https://player.vimeo.com https://hearthis.at https://app.hearthis.at https://www.mixcloud.com https://player.twitch.tv https://open.spotify.com https://www.googletagmanager.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://plausible.io https://api.stripe.com https://api-v2.hearthis.at https://analytics.tiktok.com; worker-src 'self' blob: ; object-src 'none';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://plausible.io https://analytics.tiktok.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https: ; media-src 'self' blob: https://videos.pexels.com; frame-src 'self' https://w.soundcloud.com https://www.youtube.com https://player.vimeo.com https://hearthis.at https://app.hearthis.at https://www.mixcloud.com https://player.twitch.tv https://open.spotify.com https://www.googletagmanager.com https://challenges.cloudflare.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.doubleclick.net https://plausible.io https://api.stripe.com https://api-v2.hearthis.at https://analytics.tiktok.com https://*.tiktok.com https://*.tiktokw.us https://*.tiktokcdn.com https://challenges.cloudflare.com; worker-src 'self' blob: ; object-src 'none';" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
     <title>XPEAK | Contratar DJs, Staff y Profesionales para Eventos en España</title>
     <meta name="description" content="Contrata DJs, fotógrafos, camareros, maquilladores y profesionales verificados para bodas, comuniones y eventos en España. Flash Booking en menos de 1h. Contratos automáticos. Gratis para organizadores." />
     <meta name="author" content="XPEAK" />
     <meta name="robots" content="index, follow" />
+    <meta name="impact-site-verification" content="764ac10e-10cf-4b5c-b890-8ca327c1fc88" />
     <link rel="canonical" href="https://xpeak.es/" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="alternate icon" href="/favicon.png" type="image/png" />
@@ -100,6 +101,27 @@
 
     <meta name="google-site-verification" content="5o6n1L1QlN-iT8Wi002P5uRxy_vACozC2fEwdO_nvj0" />
 
+    <!-- Google Consent Mode v2 — debe ir ANTES de cargar gtm.js. Sin esta señal,
+         GA4 descarta los hits aunque la etiqueta se dispare (gtm.js con 200/204
+         pero 0 usuarios activos en Analytics). Lee la preferencia ya guardada
+         por CookieBanner.tsx si existe; si no, deniega analytics/ads por
+         defecto hasta que el usuario decida (RGPD). -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      (function(){
+        var granted = { granted: true }, denied = { granted: false };
+        var prefs = null;
+        try { prefs = JSON.parse(localStorage.getItem('xpeak-cookie-consent')); } catch (e) {}
+        gtag('consent', 'default', {
+          ad_storage: prefs && prefs.marketing ? 'granted' : 'denied',
+          ad_user_data: prefs && prefs.marketing ? 'granted' : 'denied',
+          ad_personalization: prefs && prefs.marketing ? 'granted' : 'denied',
+          analytics_storage: prefs && prefs.analytics ? 'granted' : 'denied',
+        });
+      })();
+    </script>
+
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -115,6 +137,9 @@
     <!-- Preload critical fonts to remove them from the render-blocking chain -->
     <link rel="preload" href="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="https://fonts.gstatic.com/s/syne/v24/8vIH7w4qzmVxm2BL9G78HEY.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- Preload hero poster (LCP element on the landing page) -->
+    <link rel="preload" href="/videos/hero-poster.jpg" as="image" fetchpriority="high" />
 
     <!-- Preconnect: Supabase (API calls on mount) -->
     <link rel="preconnect" href="https://ddrqhwravupjzysriblq.supabase.co" />

@@ -29,7 +29,7 @@ const esc = (s: unknown): string =>
 const UNSUB_PLACEHOLDER = '{{UNSUB_URL}}';
 
 const base = (content: string) => `
-<div style="font-family:sans-serif;background:#090909;color:#fff;padding:32px;max-width:520px;margin:0 auto;border-radius:12px;border:1px solid rgba(212,175,55,0.2)">
+<div style="font-family:sans-serif;background:#0d0d0d;color:#fff;padding:32px;max-width:520px;margin:0 auto;border-radius:12px;border:1px solid rgba(212,175,55,0.2)">
   <div style="text-align:center;margin-bottom:24px">
     <a href="https://xpeak.es" style="text-decoration:none;font-size:26px;font-weight:900;letter-spacing:2px;color:#fff">X<span style="color:#D4AF37">PEAK</span></a>
   </div>
@@ -44,7 +44,11 @@ const badge = (text: string, color = '#D4AF37') =>
   `<span style="background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.25);border-radius:6px;padding:3px 10px;font-size:11px;font-weight:700;color:${color};text-transform:uppercase;letter-spacing:1px">${esc(text)}</span>`;
 
 const btn = (text: string, url: string) =>
-  `<a href="${esc(url)}" style="display:block;text-align:center;background:linear-gradient(135deg,#D4AF37,#B8941E);color:#000;font-weight:900;font-size:14px;padding:14px;border-radius:8px;text-decoration:none;margin:20px 0">${esc(text)}</a>`;
+  `<a href="${esc(url)}" style="display:block;text-align:center;background:linear-gradient(135deg,#D4AF37,#B8941E);color:#000;font-weight:900;font-size:14px;padding:15px;border-radius:10px;text-decoration:none;margin:20px 0;box-shadow:0 4px 16px rgba(212,175,55,0.25)">${esc(text)}</a>`;
+
+// Círculo con inicial/emoji — para remitentes de mensajes, avisos de perfil, etc.
+const avatarCircle = (initialOrEmoji: string) =>
+  `<div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,rgba(212,175,55,0.18),rgba(212,175,55,0.06));border:1px solid rgba(212,175,55,0.3);display:table;margin:0 auto 18px"><div style="display:table-cell;text-align:center;vertical-align:middle;font-size:22px;font-weight:900;color:#D4AF37">${esc(initialOrEmoji)}</div></div>`;
 
 const rows = (pairs: [string, string][]) =>
   `<table style="width:100%;border-collapse:collapse">${pairs.map(([k, v]) =>
@@ -94,6 +98,42 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       </p>
       ${btn('Completar mi perfil →', 'https://xpeak.es/dashboard')}
       <p style="color:rgba(255,255,255,0.3);font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`),
+  }),
+
+  // 1a2. Recordatorio a las ~24-48h si el perfil sigue incompleto — solo se
+  // manda una vez (dedupe vía email_logs), nunca si ya se completó.
+  profile_incomplete_reminder: (d) => ({
+    subject: `${esc(d.name)}, tu perfil no aparece en el directorio todavía`,
+    to: d.email,
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px">Te faltan ${esc(String(d.missingCount))} pasos</h2>
+      <p style="color:rgba(255,255,255,0.55);font-size:14px;line-height:1.7;margin:0 0 6px">
+        Tu perfil como <strong style="color:#D4AF37">${esc(d.role)}</strong> está al ${esc(String(d.percent))}% — hasta que lo completes, los organizadores no pueden encontrarte en el directorio.
+      </p>
+      <p style="color:rgba(255,255,255,0.55);font-size:14px;line-height:1.7;margin:0 0 20px">
+        Solo te queda: ${esc(d.missingLabels)}.
+      </p>
+      ${btn('Terminar mi perfil →', 'https://xpeak.es/dashboard')}
+      <p style="color:rgba(255,255,255,0.3);font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`),
+  }),
+
+  // 1b. Anuncio del programa de referidos — a profesionales ya registrados
+  referral_announcement: (d) => ({
+    subject: `${esc(d.name)}, invita a otro profesional y gana 6 meses de prioridad`,
+    to: d.email,
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#2563eb">Invita y gana prioridad</h2>
+      <p style="color:rgba(255,255,255,0.8);font-size:14px;line-height:1.7;margin:0 0 16px">
+        Hola <strong>${esc(d.name)}</strong>, tienes disponible tu propio enlace de invitación en XPEAK — y cada profesional que invites y complete su perfil te da <strong style="color:#2563eb">+6 meses de badge azul de prioridad</strong>, apareciendo antes que el resto en el directorio de tu ciudad.
+      </p>
+      <div style="background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.25);border-radius:8px;padding:20px;margin:20px 0">
+        <p style="color:#2563eb;font-weight:700;font-size:15px;margin:0 0 12px">Tu enlace de invitación:</p>
+        <p style="color:rgba(255,255,255,0.85);font-family:monospace;font-size:13px;background:rgba(0,0,0,0.3);border-radius:6px;padding:10px 12px;margin:0 0 8px;word-break:break-all">https://xpeak.es/auth?mode=register&amp;ref=${esc(d.referral_code)}</p>
+        <p style="color:rgba(255,255,255,0.5);font-size:12px;line-height:1.6;margin:0">Compártelo con otros DJs, fotógrafos, camareros o cualquier profesional del sector que conozcas. Cuando complete su perfil (foto, bio y algún media), el premio se activa solo.</p>
+      </div>
+      ${btn('Ver mi enlace en mi perfil →', 'https://xpeak.es/dashboard')}
+      <p style="color:rgba(255,255,255,0.3);font-size:12px;text-align:center;margin-top:16px">¿Tienes dudas? Responde directamente a este email.</p>
+    `),
   }),
 
   // 2. Flash Booking — aviso a admin
@@ -148,7 +188,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         ['Nombre', d.name],
         ['Fecha registro', new Date().toLocaleDateString('es-ES')],
       ])}
-      ${btn('Ver en panel admin →', 'https://xpeak.es/admin-beta')}`),
+      ${btn('Ver en panel admin →', 'https://xpeak.es/dashboard?view=admin')}`),
   }),
 
   // 5. Empresario — confirmación pendiente aprobación
@@ -231,7 +271,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         ['Rol', d.role],
         ['Zona', d.zone || '—'],
       ])}
-      ${btn('Revisar perfil en admin →', 'https://xpeak.es/admin-beta')}`),
+      ${btn('Revisar perfil en admin →', 'https://xpeak.es/dashboard?view=admin')}`),
   }),
 
   // 10. Feature request — confirmación al usuario
@@ -314,8 +354,31 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         ['Descripción', d.event_description],
         ['Caché acordado', d.agreed_price ? `${d.agreed_price}€` : '—'],
       ])}
-      ${btn('Ver solicitud en XPEAK →', 'https://xpeak.es/dashboard')}
+      ${btn('Ver solicitud en XPEAK →', 'https://xpeak.es/dashboard?view=flashbooking&tab=solicitudes')}
       <p style="color:rgba(255,255,255,0.3);font-size:12px;text-align:center">Acepta o rechaza la solicitud desde tu panel de Flash Booking.</p>`),
+  }),
+
+  // 13b. Contrato generado — avisa al profesional de que existe un contrato con su nombre
+  contract_generated: (d) => ({
+    subject: `📄 Se ha generado un contrato contigo — ${esc(d.event_type ?? 'evento')}`,
+    to: d.email,
+    html: base(`
+      <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:8px;padding:16px;margin-bottom:20px">
+        <p style="margin:0 0 4px">${badge('Contrato generado')}</p>
+        <p style="font-size:20px;font-weight:900;margin:6px 0 0">Ref. ${esc(d.ref ?? '—')}</p>
+      </div>
+      <p style="color:rgba(255,255,255,0.55);font-size:14px;line-height:1.7;margin:0 0 20px">
+        Hola <strong style="color:#fff">${esc(d.professional_name)}</strong>, <strong style="color:#D4AF37">${esc(d.contratante_nombre ?? 'un contratante')}</strong> ha generado un contrato contigo en XPEAK para el evento del <strong style="color:#fff">${esc(d.event_date ?? 'fecha por confirmar')}</strong>.
+      </p>
+      ${rows([
+        ['Contratante', d.contratante_nombre],
+        ['Fecha del evento', d.event_date],
+        ['Tipo de evento', d.event_type],
+        ['Importe', d.amount ? `${d.amount}€` : '—'],
+      ])}
+      <p style="color:rgba(255,255,255,0.3);font-size:12px;text-align:center;margin-top:16px">
+        Revisa el documento con calma antes de firmar. XPEAK no gestiona el envío del PDF — pídeselo directamente al contratante si no lo has recibido.
+      </p>`),
   }),
 
   // 14. Aniversario 6 meses
@@ -402,13 +465,15 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     subject: `💬 ${esc(d.sender_name)} te ha enviado un mensaje en XPEAK`,
     to: d.email,
     html: base(`
-      <h2 style="font-size:20px;font-weight:900;margin:0 0 10px">Tienes un mensaje nuevo 💬</h2>
-      <p style="color:rgba(255,255,255,0.55);font-size:14px;line-height:1.7;margin:0 0 20px">
-        <strong style="color:#D4AF37">${esc(d.sender_name)}</strong> te ha enviado un mensaje en XPEAK.<br>
-        Entra para leerlo y responder.
-      </p>
+      <div style="text-align:center">
+        ${avatarCircle(esc(d.sender_name).charAt(0).toUpperCase())}
+        <h2 style="font-size:20px;font-weight:900;margin:0 0 8px">Mensaje nuevo de <span style="color:#D4AF37">${esc(d.sender_name)}</span></h2>
+        <p style="color:rgba(255,255,255,0.5);font-size:14px;line-height:1.7;margin:0 0 6px">
+          Tienes una conversación esperando respuesta en XPEAK.
+        </p>
+      </div>
       ${btn('Ver mensaje →', 'https://xpeak.es/dashboard')}
-      <p style="color:rgba(255,255,255,0.3);font-size:12px;text-align:center">
+      <p style="color:rgba(255,255,255,0.25);font-size:11px;text-align:center;margin:0">
         Puedes desactivar estas notificaciones en Ajustes → Privacidad.
       </p>`),
   }),
@@ -481,7 +546,18 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   }),
 };
 
+// denomailer codifica el body en quoted-printable y convierte todo "espacio +
+// salto de línea" en "=20\r\n" (comportamiento correcto del estándar). Nuestros
+// templates HTML son template literals indentados con muchos saltos de línea
+// arrastrando espacios — algunos clientes de correo no decodifican bien esa
+// secuencia y muestran "=20" literal. Colapsar los saltos/espacios entre tags
+// antes de enviar elimina las líneas problemáticas sin tocar el contenido.
+function minifyHtml(html: string): string {
+  return html.replace(/>\s+</g, '><').replace(/[ \t]*\n[ \t]*/g, ' ').trim();
+}
+
 async function sendMail(to: string, subject: string, html: string, replyTo?: string) {
+  html = minifyHtml(html);
   const smtpPass = Deno.env.get('SMTP_PASS');
   if (!smtpPass) throw new Error('SMTP_PASS not configured');
   const client = new SMTPClient({
@@ -514,20 +590,50 @@ serve(async (req) => {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: corsHeaders });
   }
 
+  // Rate-limit por IP. El check de arriba NO es una barrera real contra
+  // spam — el anon key de Supabase es público por diseño (visible en
+  // cualquier bundle JS) y hay flujos legítimos sin sesión (formularios
+  // públicos como PublicContactModal), así que validar el JWT no serviría:
+  // cualquiera puede mandar el anon key real y sería indistinguible de un
+  // visitante genuino. La mitigación real contra "cualquiera puede invocar
+  // esto y mandar spam a terceros" es limitar volumen, no autenticar.
+  const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+    ?? req.headers.get('x-real-ip')
+    ?? 'unknown';
+  if (!isInternal) {
+    const adminClient = createClient(Deno.env.get('SUPABASE_URL') ?? '', Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '');
+    const since = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+    const { count } = await adminClient
+      .from('edge_function_rate_limit_log' as any)
+      .select('id', { count: 'exact', head: true })
+      .eq('endpoint', 'send-email')
+      .eq('client_ip', clientIp)
+      .gte('created_at', since);
+    if (typeof count === 'number' && count >= 20) {
+      return new Response(JSON.stringify({ error: 'rate_limit_exceeded' }), { status: 429, headers: corsHeaders });
+    }
+    try {
+      await adminClient.from('edge_function_rate_limit_log' as any).insert({ endpoint: 'send-email', client_ip: clientIp });
+    } catch { /* non-critical */ }
+  }
+
   try {
     const { type, data } = await req.json();
 
-    // Resolve user_id → email and/or professional_user_id → professional_name + email
-    if ((data?.user_id && !data?.email) || (data?.professional_user_id && (!data?.professional_name || !data?.email))) {
+    // Resolve email of the target user. IMPORTANTE: en avisos AL profesional
+    // (booking_received), el email destino es el del PROFESIONAL, no el del
+    // solicitante. El payload trae requester_contact (email de quien contacta),
+    // que NO debe usarse como destino. Resolvemos data.email desde el user_id
+    // del destinatario real (professional_user_id o user_id).
+    const targetUserId = data?.professional_user_id ?? data?.user_id;
+    if (targetUserId && !data?.email) {
       const adminClient = createClient(
         Deno.env.get('SUPABASE_URL') ?? '',
         Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
       );
-      const targetId = data?.user_id ?? data?.professional_user_id;
-      if (targetId && !data?.email) {
-        const { data: userData } = await adminClient.auth.admin.getUserById(targetId);
-        if (userData?.user?.email) data.email = userData.user.email;
-      }
+      const { data: userData } = await adminClient.auth.admin.getUserById(targetUserId);
+      if (userData?.user?.email) data.email = userData.user.email;
+
       if (data?.professional_user_id && !data?.professional_name) {
         const { data: prof } = await adminClient
           .from('profiles').select('display_name').eq('user_id', data.professional_user_id).single();

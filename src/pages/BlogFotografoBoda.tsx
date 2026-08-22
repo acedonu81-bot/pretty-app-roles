@@ -1,12 +1,15 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogShare from '@/components/BlogShare';
 import BlogTopCTA from '@/components/BlogTopCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo de boda: guía de precios y cómo elegir el mejor (2026)', description: 'Cuánto cuesta un fotógrafo de boda en España en 2026. Precios reales, estilos, qué incluye el reportaje y cómo elegir al fotógrafo perfecto para tu boda.', datePublished: '2026-05-10', dateModified: '2026-06-01', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-boda' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo de boda: guía de precios y cómo elegir el mejor (2026)', description: 'Cuánto cuesta un fotógrafo de boda en España en 2026. Precios reales, estilos, qué incluye el reportaje y cómo elegir al fotógrafo perfecto para tu boda.', datePublished: '2026-05-10', dateModified: '2026-06-01', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-boda' };
 
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de boda en España?', acceptedAnswer: { '@type': 'Answer', text: 'El precio medio de un fotógrafo de boda en España oscila entre 1.200€ y 3.500€ para un reportaje completo. En ciudades como Madrid o Barcelona los precios son más altos (1.800–4.500€), mientras que en ciudades medianas se pueden encontrar buenos profesionales desde 900€. El precio depende del número de horas, si incluye álbum y la experiencia del fotógrafo.' } },
@@ -55,12 +58,12 @@ export default function BlogFotografoBoda() {
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#4F46E5' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#4F46E5,#B8941E)', color: '#000' }}>Unirse gratis</a>
           </div>
         </nav>
 
@@ -70,10 +73,10 @@ export default function BlogFotografoBoda() {
           <BlogTopCTA role="fotografo" />
 
           <div className="mb-8 mt-6">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Fotografía · España · XPEAK Blog</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#4F46E5' }}>Fotografía · España · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Fotógrafo de boda: guía de precios y cómo elegir el mejor (2026)</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>El fotógrafo de boda es uno de los proveedores más importantes que contratarás. Las fotos son lo único que te queda para siempre. Esta guía te explica cuánto cuesta, qué incluye un reportaje y cómo no equivocarte en la elección.</p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>10 mayo 2026 · Actualizado 1 junio 2026</time>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>El fotógrafo de boda es uno de los proveedores más importantes que contratarás. Las fotos son lo único que te queda para siempre. Esta guía te explica cuánto cuesta, qué incluye un reportaje y cómo no equivocarte en la elección.</p>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>10 mayo 2026 · Actualizado 1 junio 2026</time>
           </div>
 
           <div className="space-y-10">
@@ -82,9 +85,9 @@ export default function BlogFotografoBoda() {
               <h2 className="text-lg font-black mb-4">Precios fotógrafo de boda en España (2026)</h2>
               <div className="space-y-2">
                 {PRECIOS.map((row, i) => (
-                  <div key={row.servicio} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.04)' }}>
+                  <div key={row.servicio} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <p className="text-xs font-medium">{row.servicio}</p>
-                    <span className="text-xs font-bold ml-4 shrink-0" style={{ color: '#D4AF37' }}>{row.precio}</span>
+                    <span className="text-xs font-bold ml-4 shrink-0" style={{ color: '#4F46E5' }}>{row.precio}</span>
                   </div>
                 ))}
               </div>
@@ -95,7 +98,7 @@ export default function BlogFotografoBoda() {
 
             <section>
               <h2 className="text-lg font-black mb-4">¿Qué incluye un reportaje de boda?</h2>
-              <p className="text-sm leading-relaxed mb-4" style={{ color: '#3d3d4e' }}>Un reportaje completo de boda cubre todo el día, desde los preparativos hasta el baile. Esto es lo que debe incluir un paquete estándar:</p>
+              <p className="text-base leading-relaxed mb-4" style={{ color: '#3d3d4e' }}>Un reportaje completo de boda cubre todo el día, desde los preparativos hasta el baile. Esto es lo que debe incluir un paquete estándar:</p>
               <ul className="space-y-3">
                 {[
                   'Preparativos de novia y novio (en paralelo si hay segundo fotógrafo)',
@@ -106,8 +109,8 @@ export default function BlogFotografoBoda() {
                   'Entrega de 400-800 fotos editadas en alta resolución (en 4-8 semanas)',
                   'Galería privada online para compartir con la familia',
                 ].map(item => (
-                  <li key={item} className="flex items-start gap-3 text-sm" style={{ color: 'rgba(255,255,255,0.75)' }}>
-                    <span className="mt-0.5 shrink-0" style={{ color: '#D4AF37' }}>✓</span>
+                  <li key={item} className="flex items-start gap-3 text-sm" style={{ color: '#222' }}>
+                    <span className="mt-0.5 shrink-0" style={{ color: '#4F46E5' }}>✓</span>
                     {item}
                   </li>
                 ))}
@@ -119,9 +122,9 @@ export default function BlogFotografoBoda() {
               <h2 className="text-lg font-black mb-4">Estilos de fotografía de boda</h2>
               <div className="space-y-3">
                 {ESTILOS.map((e) => (
-                  <div key={e.estilo} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-black mb-1" style={{ color: '#D4AF37' }}>{e.estilo}</p>
-                    <p className="text-xs mb-1" style={{ color: 'rgba(255,255,255,0.7)' }}>{e.descripcion}</p>
+                  <div key={e.estilo} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                    <p className="text-sm font-black mb-1" style={{ color: '#4F46E5' }}>{e.estilo}</p>
+                    <p className="text-xs mb-1" style={{ color: '#222' }}>{e.descripcion}</p>
                     <p className="text-xs" style={{ color: '#3d3d4e' }}>Ideal para: {e.para}</p>
                   </div>
                 ))}
@@ -130,7 +133,7 @@ export default function BlogFotografoBoda() {
 
             <section>
               <h2 className="text-lg font-black mb-4">Cómo elegir al fotógrafo de tu boda</h2>
-              <p className="text-sm leading-relaxed mb-4" style={{ color: '#3d3d4e' }}>No te quedes solo con las fotos del perfil de Instagram. Sigue estos pasos:</p>
+              <p className="text-base leading-relaxed mb-4" style={{ color: '#3d3d4e' }}>No te quedes solo con las fotos del perfil de Instagram. Sigue estos pasos:</p>
               <ol className="space-y-4">
                 {[
                   { titulo: 'Ver bodas completas, no solo las mejores fotos', desc: 'Pide ver una o dos bodas completas de principio a fin. Las mejores fotos siempre quedan bien — lo importante es ver el nivel general.' },
@@ -140,10 +143,10 @@ export default function BlogFotografoBoda() {
                   { titulo: 'No contratar solo por precio', desc: 'El más barato puede salir muy caro. Valora el portfolio, la experiencia, las referencias y el feeling personal, no solo el presupuesto.' },
                 ].map((step, i) => (
                   <li key={step.titulo} className="flex gap-4">
-                    <span className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-black shrink-0 mt-0.5" style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.3)' }}>{i + 1}</span>
+                    <span className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-black shrink-0 mt-0.5" style={{ background: 'rgba(79,70,229,0.15)', color: '#4F46E5', border: '1px solid rgba(79,70,229,0.3)' }}>{i + 1}</span>
                     <div>
                       <p className="text-sm font-bold mb-1">{step.titulo}</p>
-                      <p className="text-xs leading-relaxed" style={{ color: '#3d3d4e' }}>{step.desc}</p>
+                      <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>{step.desc}</p>
                     </div>
                   </li>
                 ))}
@@ -152,7 +155,7 @@ export default function BlogFotografoBoda() {
 
             <section>
               <h2 className="text-lg font-black mb-3">¿Con cuánta antelación reservar?</h2>
-              <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Reserva el fotógrafo con <strong style={{ color: '#fff' }}>12-18 meses de antelación</strong> para bodas en temporada alta (mayo, junio, septiembre, octubre). Los mejores profesionales tienen agenda llena con 1-2 años de adelanto. Si tu boda es en temporada baja (enero, febrero, noviembre) o entre semana, puedes tener más margen, pero siempre es mejor reservar antes.</p>
+              <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Reserva el fotógrafo con <strong style={{ color: '#111' }}>12-18 meses de antelación</strong> para bodas en temporada alta (mayo, junio, septiembre, octubre). Los mejores profesionales tienen agenda llena con 1-2 años de adelanto. Si tu boda es en temporada baja (enero, febrero, noviembre) o entre semana, puedes tener más margen, pero siempre es mejor reservar antes.</p>
             </section>
 
             <BlogEmailCapture variant="presupuestos" articlePath="/blog/fotografo-boda" />
@@ -161,27 +164,30 @@ export default function BlogFotografoBoda() {
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
                 {faqStructured.mainEntity.map((faq) => (
-                  <div key={faq['@type']} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={faq['@type']} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <p className="text-sm font-bold mb-2">{faq.name}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: '#3d3d4e' }}>{faq.acceptedAnswer.text}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>{faq.acceptedAnswer.text}</p>
                   </div>
                 ))}
               </div>
             </section>
 
-            <section className="p-5 rounded-2xl" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
+            <section className="p-5 rounded-2xl" style={{ background: 'rgba(79,70,229,0.06)', border: '1px solid rgba(79,70,229,0.15)' }}>
               <h3 className="text-base font-black mb-2">Encuentra fotógrafos de boda verificados en XPEAK</h3>
-              <p className="text-xs leading-relaxed mb-4" style={{ color: '#3d3d4e' }}>En XPEAK puedes ver el portfolio completo de fotógrafos de boda en toda España, comparar tarifas reales y contactar directamente sin intermediarios.</p>
-              <a href="/contratar-fotografo" className="inline-block px-5 py-2.5 rounded-xl text-sm font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+              <p className="text-sm leading-relaxed mb-4" style={{ color: '#3d3d4e' }}>En XPEAK puedes ver el portfolio completo de fotógrafos de boda en toda España, comparar tarifas reales y contactar directamente sin intermediarios.</p>
+              <a href="/contratar-fotografo" className="inline-block px-5 py-2.5 rounded-xl text-sm font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(135deg,#4F46E5,#B8941E)', color: '#000' }}>
                 Ver fotógrafos disponibles →
               </a>
             </section>
 
             <BlogShare />
+            <DJResourcesAffiliate role="fotografo" />
             <BlogAuthor />
           </div>
         </main>
+        <BlogRelatedPosts currentSlug='/blog/fotografo-boda' tag='Fotografía' />
         <FooterPublic />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda" />
       </div>
     </>
   );

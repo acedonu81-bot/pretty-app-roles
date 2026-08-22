@@ -11,6 +11,7 @@ interface ProfileData {
   zone: string | null;
   hourly_rate: number;
   role: string;
+  roles: string[];
   subscription_tier: string;
   stream_url: string | null;
   stream_title: string | null;
@@ -23,6 +24,7 @@ interface ProfileData {
   instagram: string | null;
   bio: string | null;
   audio_embed_url: string | null;
+  audio_session_urls: string[] | null;
   languages: string[] | null;
   genres: string[] | null;
   category: string | null;
@@ -30,6 +32,14 @@ interface ProfileData {
   bio_video_url: string | null;
   bg_music_url: string | null;
   portfolio_urls: string[] | null;
+  referral_code: string | null;
+  priority_badge_until: string | null;
+  offers_classes: boolean;
+  class_styles: string[] | null;
+  class_price: number | null;
+  seeking_dance_partner: boolean;
+  dance_level: string | null;
+  dance_role: string | null;
 }
 
 export interface ProfileSummary {
@@ -40,12 +50,7 @@ export interface ProfileSummary {
   is_primary: boolean;
 }
 
-const PLAN_PROFILE_LIMITS: Record<string, number> = {
-  free: 1,
-  starter: 2,
-  business: 3,
-  agency: 5,
-};
+const MAX_PROFILES_PER_USER = 20;
 
 interface ProfileCtx extends ProfileData {
   loading: boolean;
@@ -66,6 +71,7 @@ const defaults: ProfileData = {
   zone: DEFAULT_ZONE,
   hourly_rate: 40,
   role: 'dj',
+  roles: ['dj'],
   subscription_tier: 'free',
   stream_url: null,
   stream_title: null,
@@ -78,6 +84,7 @@ const defaults: ProfileData = {
   instagram: null,
   bio: null,
   audio_embed_url: null,
+  audio_session_urls: null,
   languages: null,
   genres: null,
   category: null,
@@ -85,6 +92,14 @@ const defaults: ProfileData = {
   bio_video_url: null,
   bg_music_url: null,
   portfolio_urls: null,
+  referral_code: null,
+  priority_badge_until: null,
+  offers_classes: false,
+  class_styles: null,
+  class_price: null,
+  seeking_dance_partner: false,
+  dance_level: null,
+  dance_role: null,
 };
 
 const ProfileContext = createContext<ProfileCtx>({
@@ -115,7 +130,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     // Load all profiles for this user
     const { data: rows } = await supabase
       .from('profiles')
-      .select('id, display_name, role, photo_url, is_primary, subscription_tier, birthday, zone, hourly_rate, stream_url, stream_title, trial_started_at, annual_billing, is_live, is_flash_active, phone, specialty, instagram, bio, audio_embed_url, languages, genres, category, tiktok, bio_video_url, bg_music_url, portfolio_urls, created_at')
+      .select('id, display_name, role, roles, photo_url, is_primary, subscription_tier, birthday, zone, hourly_rate, stream_url, stream_title, trial_started_at, annual_billing, is_live, is_flash_active, phone, specialty, instagram, bio, audio_embed_url, audio_session_urls, languages, genres, category, tiktok, bio_video_url, bg_music_url, portfolio_urls, referral_code, priority_badge_until, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, created_at')
       .eq('user_id', user.id)
       .order('created_at', { ascending: true });
 
@@ -124,7 +139,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     // Find primary, fallback to first
     const primary = (rows.find((r: any) => r.is_primary) ?? rows[0]) as any;
     setProfileId(primary.id);
-    setData(primary as unknown as ProfileData);
+    setData({ ...primary, roles: (primary.roles?.length ? primary.roles : [primary.role]) } as unknown as ProfileData);
     setAllProfiles(rows.map((r: any) => ({
       id: r.id,
       display_name: r.display_name ?? '',
@@ -138,7 +153,11 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => { refresh(); }, [refresh]);
 
   const updateField = useCallback(async (fields: Partial<ProfileData>): Promise<boolean> => {
-    if (!user || !profileId) return false;
+    if (!user) return false;
+    if (!profileId) {
+      toast.error('Tu perfil aún se está cargando. Espera unos segundos y vuelve a intentarlo.');
+      return false;
+    }
     const { error } = await supabase
       .from('profiles')
       .update(fields as any)
@@ -154,22 +173,30 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
 
   const switchProfile = useCallback(async (id: string) => {
     if (!user) return;
+    // Optimista: si ya tenemos el resumen de este perfil en memoria, lo mostramos
+    // de inmediato mientras el UPDATE + refresh completan en segundo plano.
+    const target = allProfiles.find(p => p.id === id);
+    if (target) {
+      setProfileId(id);
+      setData(prev => ({ ...prev, display_name: target.display_name, role: target.role, photo_url: target.photo_url }));
+      setAllProfiles(prev => prev.map(p => ({ ...p, is_primary: p.id === id })));
+    }
+    toast.success('Perfil cambiado');
+
     // Set is_primary on selected profile (trigger in DB handles unsetting others)
     const { error } = await supabase
       .from('profiles')
       .update({ is_primary: true } as any)
       .eq('id', id)
       .eq('user_id', user.id);
-    if (error) { toast.error('No se pudo cambiar de perfil'); return; }
+    if (error) { toast.error('No se pudo cambiar de perfil'); await refresh(); return; }
     await refresh();
-    toast.success('Perfil cambiado');
-  }, [user, refresh]);
+  }, [user, refresh, allProfiles]);
 
   const createProfile = useCallback(async (newData: { display_name: string; role: string; zone: string; hourly_rate: number }): Promise<boolean> => {
     if (!user) return false;
-    const limit = PLAN_PROFILE_LIMITS[data.subscription_tier] ?? 1;
-    if (allProfiles.length >= limit) {
-      toast.error(`Tu plan ${data.subscription_tier} permite hasta ${limit} perfil${limit > 1 ? 'es' : ''}. Actualiza tu plan para añadir más.`);
+    if (allProfiles.length >= MAX_PROFILES_PER_USER) {
+      toast.error(`Máximo ${MAX_PROFILES_PER_USER} perfiles por cuenta.`);
       return false;
     }
     const { error } = await supabase
@@ -188,7 +215,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     await refresh();
     toast.success('Perfil creado');
     return true;
-  }, [user, data.subscription_tier, allProfiles.length, refresh]);
+  }, [user, allProfiles.length, refresh]);
 
   const activateTrial = useCallback(async () => {
     if (!user || data.subscription_tier === 'free' || data.trial_started_at) return;
@@ -197,7 +224,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     if (ok) toast.success('¡Prueba de 15 días iniciada! Disfruta de todas las funciones premium.');
   }, [user, data.subscription_tier, data.trial_started_at, updateField]);
 
-  const maxProfiles = PLAN_PROFILE_LIMITS[data.subscription_tier] ?? 1;
+  const maxProfiles = MAX_PROFILES_PER_USER;
 
   return (
     <ProfileContext.Provider value={{ ...data, loading, profileId, allProfiles, refresh, updateField, activateTrial, switchProfile, createProfile, maxProfiles }}>

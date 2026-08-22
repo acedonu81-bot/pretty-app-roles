@@ -15,9 +15,15 @@ const welcomeMessages: Record<string, { icon: any; title: string; subject: strin
   },
   staff: {
     icon: Users,
-    title: 'Staff & Sala',
+    title: 'Camarero & Sala',
     subject: 'Listo para la acción.',
-    body: 'Tu perfil de Staff ya está activo. En XPEAK, la puntualidad y la presencia son clave. Mantén tus datos de contacto actualizados para recibir avisos de contratación urgente de salas y eventos en tu zona.',
+    body: 'Tu perfil de Camarero ya está activo. En XPEAK, la puntualidad y la presencia son clave. Mantén tus datos de contacto actualizados para recibir avisos de contratación urgente de salas y eventos en tu zona.',
+  },
+  azafata: {
+    icon: Users,
+    title: 'Azafata',
+    subject: 'Listo para la acción.',
+    body: 'Tu perfil de Azafata ya está activo. En XPEAK, la imagen y la puntualidad son clave. Mantén tus datos de contacto actualizados para recibir avisos de contratación urgente de eventos en tu zona.',
   },
   makeup: {
     icon: Palette,

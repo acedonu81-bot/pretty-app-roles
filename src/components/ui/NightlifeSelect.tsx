@@ -30,7 +30,7 @@ export default function NightlifeSelect({ value, onChange, options, placeholder 
       <button
         type="button"
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between gap-2 text-xs font-bold px-3 py-2 rounded-lg transition-all outline-none"
+        className="w-full flex items-center justify-between gap-2 text-xs font-bold px-3 py-2 rounded-full transition-all outline-none"
         style={{
           background: isActive ? 'rgba(212,175,55,0.1)' : '#ffffff',
           border: `1px solid ${isActive ? 'rgba(212,175,55,0.45)' : 'rgba(0,0,0,0.12)'}`,
@@ -49,7 +49,7 @@ export default function NightlifeSelect({ value, onChange, options, placeholder 
       {/* Dropdown */}
       {open && (
         <div
-          className="absolute z-50 mt-1 w-full rounded-xl overflow-hidden overflow-y-auto"
+          className="absolute z-50 mt-2 w-full rounded-2xl overflow-hidden overflow-y-auto p-1"
           style={{
             background: '#ffffff',
             border: '1px solid rgba(0,0,0,0.1)',
@@ -62,11 +62,10 @@ export default function NightlifeSelect({ value, onChange, options, placeholder 
               key={o.value}
               type="button"
               onClick={() => { onChange(o.value); setOpen(false); }}
-              className="w-full text-left text-xs font-bold px-3 py-2.5 transition-all"
+              className="w-full text-left text-xs font-bold px-3 py-2.5 transition-all rounded-xl"
               style={{
                 background: o.value === value ? 'rgba(212,175,55,0.12)' : 'transparent',
                 color: o.value === value ? '#7a6216' : '#333',
-                borderBottom: '1px solid rgba(0,0,0,0.05)',
               }}
               onMouseEnter={e => { if (o.value !== value) (e.currentTarget as HTMLButtonElement).style.background = 'rgba(0,0,0,0.04)'; }}
               onMouseLeave={e => { if (o.value !== value) (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; }}

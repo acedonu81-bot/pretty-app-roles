@@ -1,24 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Crown } from 'lucide-react';
 import { Profile } from '@/data/profiles';
 import ProfileCard from '@/components/dashboard/ProfileCard';
 import { supabase } from '@/integrations/supabase/client';
 
-const TopWeekendView = () => {
-  const [profiles, setProfiles] = useState<Profile[]>([]);
-  const [loading, setLoading] = useState(true);
+async function fetchTopWeekendProfiles(): Promise<Profile[]> {
+  const { data } = await supabase
+    .from('profiles')
+    .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, is_live, genres, bio, languages, tiktok, category, is_verified, is_early_adopter, is_flash_active, stream_url, role')
+    .neq('role', 'empresario')
+    .not('display_name', 'is', null)
+    .not('photo_url', 'is', null)
+    .limit(200);
 
-  useEffect(() => {
-    supabase
-      .from('profiles')
-      .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, is_live, genres, bio, languages, tiktok, category, is_verified, is_early_adopter, is_flash_active, stream_url, role')
-      .neq('role', 'empresario')
-      .not('display_name', 'is', null)
-      .not('photo_url', 'is', null)
-      .limit(200)
-      .then(({ data }) => {
-        if (!data) { setLoading(false); return; }
-        const mapped: Profile[] = data.map(row => ({
+  if (!data) return [];
+
+  const mapped: Profile[] = data.map(row => ({
           id: row.id,
           userId: row.user_id,
           name: row.display_name || 'Sin nombre',
@@ -53,16 +51,21 @@ const TopWeekendView = () => {
           isEarlyAdopter: (row as any).is_early_adopter ?? false,
         }));
 
-        // Sort: verified first, then profiles with bio, then alphabetical
-        const sorted = mapped.sort((a, b) => {
-          if (a.isVerified !== b.isVerified) return a.isVerified ? -1 : 1;
-          if (!!a.description !== !!b.description) return a.description ? -1 : 1;
-          return a.name.localeCompare(b.name);
-        });
-        setProfiles(sorted);
-        setLoading(false);
-      });
-  }, []);
+  // Sort: verified first, then profiles with bio, then alphabetical
+  return mapped.sort((a, b) => {
+    if (a.isVerified !== b.isVerified) return a.isVerified ? -1 : 1;
+    if (!!a.description !== !!b.description) return a.description ? -1 : 1;
+    return a.name.localeCompare(b.name);
+  });
+}
+
+const TopWeekendView = () => {
+  const { data: profiles = [], isLoading: loading } = useQuery({
+    queryKey: ['top-weekend-profiles'],
+    queryFn: fetchTopWeekendProfiles,
+    staleTime: 60_000,
+    gcTime: 10 * 60_000,
+  });
 
   const topProfiles = profiles.slice(0, 8);
   const restProfiles = profiles.slice(8);

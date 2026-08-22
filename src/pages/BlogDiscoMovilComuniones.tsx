@@ -1,5 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
@@ -24,7 +26,7 @@ export default function BlogDiscoMovilComuniones() {
     '@type': 'Article',
     headline: 'Disco móvil para comuniones: precios y qué incluye en 2026',
     description: 'Guía completa para contratar una disco móvil para tu comunión en España: precios por paquete, qué incluye y cómo elegir bien.',
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-03',
     dateModified: '2026-05-03',
@@ -49,7 +51,7 @@ const faqStructured = {
   };
 
   const th = { padding: '10px 14px', textAlign: 'left' as const, fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.5px', color: '#D4AF37', borderBottom: '1px solid rgba(212,175,55,0.25)', background: 'rgba(212,175,55,0.04)' };
-  const td = { padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.82)', fontSize: '0.87rem', verticalAlign: 'top' as const };
+  const td = { padding: '10px 14px', borderBottom: '1px solid rgba(0,0,0,0.05)', color: '#111', fontSize: '0.87rem', verticalAlign: 'top' as const };
 
   return (
     <>
@@ -73,7 +75,7 @@ const faqStructured = {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
@@ -89,14 +91,14 @@ const faqStructured = {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight mt-2 mb-4 leading-tight">
               Disco móvil para comuniones: precios y qué incluye en 2026
             </h1>
-            <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
+            <p className="text-base leading-relaxed" style={{ color: '#222' }}>
               La disco móvil convierte el baile de la comunión en un momento que todos recuerdan. Aquí tienes todo lo que necesitas saber antes de contratar.
             </p>
           </header>
 
           <section className="mb-10">
             <h2 className="text-lg font-black mb-4">Precios por paquete</h2>
-            <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+            <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
               <table className="w-full" style={{ borderCollapse: 'collapse' }}>
                 <thead><tr><th style={th}>Paquete</th><th style={th}>Precio</th><th style={th}>Incluye</th></tr></thead>
                 <tbody>
@@ -125,7 +127,7 @@ const faqStructured = {
               ].map(item => (
                 <div key={item.item} className="p-3 rounded-lg" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}>
                   <p className="text-xs font-bold" style={{ color: '#D4AF37' }}>{item.item}</p>
-                  <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.72)' }}>{item.desc}</p>
+                  <p className="text-xs mt-0.5" style={{ color: '#222' }}>{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -135,9 +137,9 @@ const faqStructured = {
             <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
             <div className="space-y-4">
               {FAQ.map(f => (
-                <div key={f.q} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <div key={f.q} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                   <p className="text-sm font-bold mb-2">{f.q}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.a}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#222' }}>{f.a}</p>
                 </div>
               ))}
             </div>
@@ -145,15 +147,15 @@ const faqStructured = {
 
           
             <section className="mt-8">
-              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <h2 className="text-base font-black mb-3" style={{ color: '#111' }}>Artículos relacionados</h2>
               <div className="space-y-2">
                 {[
                   { href: '/blog/comuniones-guia-completa', cat: 'Hub Comuniones', title: 'Comuniones en España: guía completa 2026' },
                   { href: '/blog/dj-para-eventos', cat: 'Hub DJ', title: 'DJ para eventos: guía completa de precios 2026' },
                 ].map(link => (
-                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
                     <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
-                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                    <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}
               </div>
@@ -170,7 +172,9 @@ const faqStructured = {
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/disco-movil-para-comuniones" />
-      <FooterPublic />
+      <BlogRelatedPosts currentSlug='/blog/disco-movil-para-comuniones' tag='DJ' />
+        <FooterPublic />
+      <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_disco_movil_comuniones" />
       </div>
     </>
   );

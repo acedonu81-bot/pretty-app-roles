@@ -1,10 +1,36 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, ArrowLeft } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
+import BlogAnswerBox from '@/components/BlogAnswerBox';
+
+const faqStructured = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: '¿Es lo mismo un DJ de boda que un DJ de discoteca?',
+      acceptedAnswer: { '@type': 'Answer', text: 'No. Un DJ de club se centra en mezclar un género concreto durante horas para mantener a la pista bailando, sin hablar por micro. Un DJ de boda es más versátil (pop, latina, flamenco, comercial en la misma noche), actúa también como animador presentando momentos especiales al micro, gestiona peticiones en tiempo real y coordina con el equipo de catering y protocolo.' },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Cuánto cobra un DJ de boda frente a un DJ residente de discoteca?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Un DJ residente de club cobra entre 200€ y 800€ por una noche completa (5-6h). Un DJ de boda (ceremonia, cena y fiesta, 6-8h) cobra entre 400€ y 1.500€, y hasta 800€-3.000€ en versión premium con animación y luces incluidas — el precio es mayor porque el servicio incluye más horas, más versatilidad musical y equipo propio de sonido e iluminación.' },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Puede un DJ de discoteca hacer bien una boda?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Puede, pero conviene comprobar que tiene experiencia real animando bodas: gestionar momentos protocolarios (entrada, primer baile, discursos), adaptar el volumen según la fase del evento y llevar equipo de sonido propio no es lo mismo que mezclar en cabina de club. Lo ideal es contratar un DJ que ya tenga bodas en su portfolio, no asumir que la experiencia en discoteca se traslada directamente.' },
+    },
+  ],
+};
 
 const breadcrumb = {
   '@context': 'https://schema.org',
@@ -23,7 +49,7 @@ export default function BlogDJBodaVsDiscoteca() {
     headline: 'DJ para bodas vs DJ para discoteca: diferencias, precios y cómo elegir en 2026',
     datePublished: '2026-04-20',
     dateModified: '2026-06-08',
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     description: 'Diferencias entre un DJ de boda y un DJ de discoteca: habilidades, equipamiento, precios y cómo elegir el perfil correcto para tu evento.',
   };
@@ -44,10 +70,11 @@ export default function BlogDJBodaVsDiscoteca() {
         <meta name="twitter:description" content="¿Son lo mismo un DJ de boda y un DJ de discoteca? Diferencias en habilidades, equipamiento y precios." />
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(articleStructured)}</script>
+        <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <a href="/auth"
@@ -74,9 +101,13 @@ export default function BlogDJBodaVsDiscoteca() {
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-4 leading-tight">
             DJ para bodas vs DJ para discoteca: diferencias, precios y cómo elegir
           </h1>
-          <p className="text-sm sm:text-base mb-8 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
+          <p className="text-base sm:text-base mb-8 leading-relaxed" style={{ color: '#333' }}>
             No, no son lo mismo. Un DJ de sala y un DJ de boda tienen habilidades muy distintas, y contratar al perfil equivocado puede arruinar la noche. Esta guía te explica las diferencias clave.
           </p>
+          <BlogAnswerBox
+            question="¿Es lo mismo un DJ de boda que un DJ de discoteca?"
+            answer="No. Un DJ residente de club cobra entre 200€ y 800€ por noche y se centra en mezclar sin hablar por micro. Un DJ de boda cobra entre 400€ y 1.500€ (hasta 3.000€ en versión premium) porque además de pinchar actúa como animador, gestiona peticiones en directo y coordina con catering y protocolo."
+          />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
             {[
@@ -105,11 +136,11 @@ export default function BlogDJBodaVsDiscoteca() {
                 color: '#D4AF37',
               },
             ].map(({ tipo, puntos, color }) => (
-              <div key={tipo} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${color}22` }}>
+              <div key={tipo} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: `1px solid ${color}22` }}>
                 <p className="text-sm font-black mb-4" style={{ color }}>{tipo}</p>
                 <ul className="space-y-2">
                   {puntos.map(p => (
-                    <li key={p} className="flex items-start gap-2 text-xs" style={{ color: 'rgba(255,255,255,0.65)' }}>
+                    <li key={p} className="flex items-start gap-2 text-xs" style={{ color: '#333' }}>
                       <span style={{ color }}>✓</span> {p}
                     </li>
                   ))}
@@ -131,8 +162,8 @@ export default function BlogDJBodaVsDiscoteca() {
                   { tipo: 'DJ internacional / conocido', precio: '+2.000€' },
                 ].map(({ tipo, precio }) => (
                   <div key={tipo} className="flex items-center justify-between p-3 rounded-lg text-sm"
-                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <span style={{ color: 'rgba(255,255,255,0.7)' }}>{tipo}</span>
+                    style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                    <span style={{ color: '#222' }}>{tipo}</span>
                     <span className="font-black text-xs ml-4 flex-shrink-0" style={{ color: '#D4AF37' }}>{precio}</span>
                   </div>
                 ))}
@@ -152,9 +183,9 @@ export default function BlogDJBodaVsDiscoteca() {
                   { evento: 'Fiesta privada', recomendacion: 'DJ flexible que adapte el set a tus preferencias en tiempo real', icono: '🎉' },
                   { evento: 'Inauguración / pop-up', recomendacion: 'DJ ambient o deep house con equipo compacto y discreción', icono: '🏪' },
                 ].map(({ evento, recomendacion, icono }) => (
-                  <div key={evento} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                  <div key={evento} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)' }}>
                     <p className="text-sm font-bold mb-1">{icono} {evento}</p>
-                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>{recomendacion}</p>
+                    <p className="text-xs" style={{ color: '#444' }}>{recomendacion}</p>
                   </div>
                 ))}
               </div>
@@ -172,7 +203,7 @@ export default function BlogDJBodaVsDiscoteca() {
                   '¿Tienes seguro de responsabilidad civil?',
                   '¿Qué pasa si cancelas o tienes una emergencia?',
                 ].map((p, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
+                  <li key={i} className="flex items-start gap-2 text-sm" style={{ color: '#333' }}>
                     <span className="font-black" style={{ color: '#D4AF37' }}>{i + 1}.</span> {p}
                   </li>
                 ))}
@@ -181,14 +212,14 @@ export default function BlogDJBodaVsDiscoteca() {
           </div>
 
           <section className="mt-8">
-              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <h2 className="text-base font-black mb-3" style={{ color: '#111' }}>Artículos relacionados</h2>
               <div className="space-y-2">
                 {[
                   { href: '/blog/dj-para-eventos', cat: 'Hub DJ', title: 'DJ para eventos: guía completa de precios 2026' },
                 ].map(link => (
-                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
                     <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
-                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                    <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}
               </div>
@@ -196,27 +227,44 @@ export default function BlogDJBodaVsDiscoteca() {
 
           <div className="mt-12 rounded-2xl p-7 text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
             <h2 className="text-xl font-black mb-2">Encuentra el DJ perfecto para tu evento</h2>
-            <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.5)' }}>
+            <p className="text-sm mb-5" style={{ color: '#444' }}>
               Perfiles verificados · Flash Booking en menos de 1h · Contrato automático
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <a href="/auth"
+              <a href="/contratar-dj"
                 className="inline-flex items-center gap-2 px-7 py-3 rounded-xl font-black text-sm transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                 <Zap size={14} /> Buscar DJ gratis
               </a>
               <a href="/contratar-dj"
                 className="inline-flex items-center gap-2 px-7 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }}>
+                style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid #777', color: '#111' }}>
                 Ver directorio de DJs
               </a>
             </div>
           </div>
+
+          <section className="mt-10">
+            <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
+            <div className="space-y-4">
+              {faqStructured.mainEntity.map(f => (
+                <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                  <h3 className="text-sm font-bold mb-2">{f.name}</h3>
+                  <p className="text-sm leading-relaxed" style={{ color: '#222' }}>{f.acceptedAnswer.text}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
           <BlogAuthor />
           <BlogShare />
         </article>
+          <DJResourcesAffiliate role="dj" />
+
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-para-bodas-vs-discoteca" />
+        <BlogRelatedPosts currentSlug='/blog/dj-para-bodas-vs-discoteca' tag='DJ' />
         <FooterPublic />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_vs_discoteca" />
       </div>
     </>
   );

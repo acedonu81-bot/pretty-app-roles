@@ -1,10 +1,12 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
-import RelatedPosts from '@/components/RelatedPosts';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const TIPOS = [
   { tipo: 'Sesión de retrato (2h)', rango: '80€ – 180€', nota: 'Fotos de pareja o pre-boda' },
@@ -36,7 +38,7 @@ export default function BlogFotografoBodas() {
     '@type': 'Article',
     headline: 'Cómo contratar un fotógrafo de bodas en España: guía de precios 2026',
     description: 'Precios reales de fotógrafos de bodas en España 2026. Qué incluye, cómo elegir y cuándo contratar.',
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-03',
     dateModified: '2026-05-03',
@@ -60,8 +62,8 @@ const faqStructured = {
     mainEntity: FAQ.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
   };
 
-  const th = { padding: '10px 14px', textAlign: 'left' as const, fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.5px', color: '#D4AF37', borderBottom: '1px solid rgba(212,175,55,0.25)', background: 'rgba(212,175,55,0.04)' };
-  const td = { padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.82)', fontSize: '0.87rem', verticalAlign: 'top' as const };
+  const th = { padding: '10px 14px', textAlign: 'left' as const, fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.5px', color: '#4F46E5', borderBottom: '1px solid rgba(79,70,229,0.25)', background: 'rgba(79,70,229,0.04)' };
+  const td = { padding: '10px 14px', borderBottom: '1px solid rgba(0,0,0,0.05)', color: '#111', fontSize: '0.87rem', verticalAlign: 'top' as const };
 
   return (
     <>
@@ -85,11 +87,11 @@ const faqStructured = {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#4F46E5' }}>XPEAK</a>
           <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
-            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+            style={{ background: 'linear-gradient(90deg,#4F46E5,#B8941E)', color: '#000' }}>
             Unirse gratis
           </a>
         </nav>
@@ -101,21 +103,21 @@ const faqStructured = {
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight mt-2 mb-4 leading-tight">
               Cómo contratar un fotógrafo de bodas en España: guía de precios 2026
             </h1>
-            <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
+            <p className="text-base leading-relaxed" style={{ color: '#222' }}>
               El fotógrafo de boda es una de las decisiones más importantes: las fotos son lo único que queda para siempre. Esta guía te explica qué cuesta, qué incluye y cómo elegir al profesional adecuado.
             </p>
           </header>
 
           <section className="mb-10">
             <h2 className="text-lg font-black mb-4">Precios por tipo de servicio</h2>
-            <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+            <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
               <table className="w-full" style={{ borderCollapse: 'collapse' }}>
                 <thead><tr><th style={th}>Servicio</th><th style={th}>Precio</th><th style={th}>Qué incluye</th></tr></thead>
                 <tbody>
                   {TIPOS.map(r => (
                     <tr key={r.tipo}>
                       <td style={{ ...td, fontWeight: 600 }}>{r.tipo}</td>
-                      <td style={{ ...td, color: '#D4AF37', fontWeight: 700 }}>{r.rango}</td>
+                      <td style={{ ...td, color: '#4F46E5', fontWeight: 700 }}>{r.rango}</td>
                       <td style={td}>{r.nota}</td>
                     </tr>
                   ))}
@@ -128,14 +130,14 @@ const faqStructured = {
 
           <section className="mb-10">
             <h2 className="text-lg font-black mb-4">Precios por ciudad</h2>
-            <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+            <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
               <table className="w-full" style={{ borderCollapse: 'collapse' }}>
                 <thead><tr><th style={th}>Ciudad</th><th style={th}>Boda completa</th><th style={th}>Nota</th></tr></thead>
                 <tbody>
                   {CIUDADES.map(r => (
                     <tr key={r.ciudad}>
                       <td style={{ ...td, fontWeight: 600 }}>{r.ciudad}</td>
-                      <td style={{ ...td, color: '#D4AF37', fontWeight: 700 }}>{r.rango}</td>
+                      <td style={{ ...td, color: '#4F46E5', fontWeight: 700 }}>{r.rango}</td>
                       <td style={td}>{r.nota}</td>
                     </tr>
                   ))}
@@ -153,9 +155,9 @@ const faqStructured = {
                 { titulo: 'Segunda cámara', desc: 'Muchos fotógrafos trabajan con un segundo asistente para cubrir simultaneamente la novia y el novio. Pregunta si está incluido o tiene coste adicional.' },
                 { titulo: 'Contrato claro', desc: 'Asegúrate de que el contrato especifique: horas contratadas, número de fotos editadas, plazo de entrega, derechos de uso y condiciones de cancelación.' },
               ].map(item => (
-                <div key={item.titulo} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <p className="text-sm font-bold mb-1" style={{ color: '#D4AF37' }}>{item.titulo}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{item.desc}</p>
+                <div key={item.titulo} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                  <p className="text-sm font-bold mb-1" style={{ color: '#4F46E5' }}>{item.titulo}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -165,9 +167,9 @@ const faqStructured = {
             <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
             <div className="space-y-4">
               {FAQ.map(f => (
-                <div key={f.q} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <div key={f.q} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                   <p className="text-sm font-bold mb-2">{f.q}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.a}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#222' }}>{f.a}</p>
                 </div>
               ))}
             </div>
@@ -175,7 +177,7 @@ const faqStructured = {
 
           
             <section className="mt-8">
-              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <h2 className="text-base font-black mb-3" style={{ color: '#111' }}>Artículos relacionados</h2>
               <div className="space-y-2">
                 {[
                   { href: '/blog/profesionales-bodas', cat: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026' },
@@ -185,26 +187,29 @@ const faqStructured = {
                   { href: '/blog/cuanto-cobra-un-dj-en-espana', cat: 'DJ', title: 'Cuánto cobra un DJ en España: precios 2026' },
                   { href: '/blog/fotografia-eventos-nocturnos', cat: 'Fotografía', title: 'Fotografía eventos nocturnos: precios 2026' },
                 ].map(link => (
-                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
-                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
-                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(79,70,229,0.1)', color: '#4F46E5', border: '1px solid rgba(79,70,229,0.15)' }}>{link.cat}</span>
+                    <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}
               </div>
             </section>
-            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
+            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(79,70,229,0.05)', border: '1px solid rgba(79,70,229,0.15)' }}>
             <p className="text-sm font-black mb-1">Encuentra fotógrafos verificados en España</p>
             <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>Portafolios reales, tarifas públicas y contratos digitales. Sin comisión.</p>
             <a href="/contratar-fotografo" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-xs font-black transition-all hover:scale-105"
-              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+              style={{ background: 'linear-gradient(90deg,#4F46E5,#B8941E)', color: '#000' }}>
               Ver fotógrafos →
             </a>
           </div>
+          <DJResourcesAffiliate role="fotografo" />
           <BlogAuthor />
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/contratar-fotografo-de-bodas" />
-      <FooterPublic />
+      <BlogRelatedPosts currentSlug='/blog/contratar-fotografo-de-bodas' tag='Fotografía' />
+        <FooterPublic />
+      <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_bodas" />
       </div>
     </>
   );

@@ -228,7 +228,7 @@ const DemandaTab = () => {
       }
 
       // Create flash_booking so it appears in SolicitudesTab (professional) and HistorialTab (employer)
-      await supabase.from('flash_bookings' as any).insert({
+      const { error: bookingErr } = await supabase.from('flash_bookings' as any).insert({
         professional_user_id: myId,
         professional_name: currentUser.display_name || 'Profesional',
         professional_role: currentUser.role,
@@ -238,6 +238,7 @@ const DemandaTab = () => {
         status: 'pending',
         created_by: offer.posterId ?? null,
       });
+      if (bookingErr) throw bookingErr;
 
       const time = new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
       setSentMessages(prev => ({

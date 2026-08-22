@@ -1,16 +1,20 @@
-import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
+import { useParams, useLocation, Link, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Zap, Star, Shield, ArrowRight, MapPin, CheckCircle } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
+// Fecha de última modificación (congelada al renderizar; en prerender = build).
+// Señal de frescura para motores generativos, que penalizan contenido stale.
+const BUILD_DATE = new Date().toISOString().slice(0, 10);
+
 interface Prof { id: string; display_name: string; photo_url: string | null; bio: string | null; city: string | null; role: string; score: number; slug: string | null; is_verified: boolean; is_early_adopter: boolean; }
 
 const ROLE_MAP: Record<string, string[]> = {
   dj: ['dj'], camareros: ['staff'], fotografo: ['media'], staff: ['staff', 'promotor'],
   catering: ['empresario'], maquillaje: ['makeup'], peluqueria: ['peluqueria'], promotores: ['promotor'],
-  'disco-movil': ['dj'], vestuario: ['staff'],
+  'disco-movil': ['dj'], vestuario: ['staff'], azafata: ['azafata'],
 };
 
 function useCityProfessionals(ciudad: string, categorySlug: string) {
@@ -71,7 +75,7 @@ type CityInfo = {
   };
 };
 
-const CITIES: Record<string, CityInfo> = {
+export const CITIES: Record<string, CityInfo> = {
   madrid:    { ciudad: 'Madrid',    slug: 'madrid',    venues: ['Fabrik', 'Mondo Disko', 'Teatro Barceló', 'Opium Madrid', 'Charada'],         precioMin: '60€',  precioMax: '300€' },
   barcelona: { ciudad: 'Barcelona', slug: 'barcelona', venues: ['Apolo', 'Razzmatazz', 'Sala Nitsa', 'Input', 'Pacha Barcelona'],              precioMin: '80€',  precioMax: '400€' },
   valencia:  { ciudad: 'Valencia',  slug: 'valencia',  venues: ['Lolita Valencia', 'Radio City', 'Akuarela', 'Sala Wah Wah', 'Garaje Beat'],   precioMin: '50€',  precioMax: '250€' },
@@ -231,7 +235,7 @@ type CategoryInfo = {
   faqs: (ciudad: string, precio: string) => { q: string; a: string }[];
 };
 
-const CATEGORIES: Record<string, CategoryInfo> = {
+export const CATEGORIES: Record<string, CategoryInfo> = {
   dj: {
     label: 'DJ',
     keyword: 'DJ',
@@ -295,6 +299,18 @@ const CATEGORIES: Record<string, CategoryInfo> = {
       { q: '¿El staff tiene experiencia en eventos nocturnos?', a: 'Todos los perfiles en XPEAK incluyen historial de venues y referencias verificadas de eventos anteriores.' },
     ],
   },
+  azafata: {
+    label: 'Azafatas',
+    keyword: 'Azafatas',
+    unidad: '/hora',
+    desc: (c) => `Azafatas profesionales en ${c} para ferias, congresos y eventos corporativos. Flash Booking en menos de 1h. Sin comisión.`,
+    intro: (c) => `XPEAK conecta empresas, agencias y organizadores con azafatas verificadas en ${c}: recepción, protocolo, stands feriales y presentaciones de producto. Contrato digital en minutos, sin intermediarios.`,
+    faqs: (c, precio) => [
+      { q: `¿Cuánto cuesta contratar azafatas en ${c}?`, a: `El precio de las azafatas en ${c} varía entre ${precio}/hora según el perfil: recepción desde 15€, stands desde 18€, imagen o protocolo desde 22€.` },
+      { q: `¿Puedo contratar azafatas para una feria en ${c}?`, a: `Sí. XPEAK tiene perfiles con experiencia en ferias y congresos en ${c} y alrededores. Puedes contratar desde 1 persona hasta equipos completos.` },
+      { q: '¿Las azafatas tienen experiencia en eventos corporativos?', a: 'Todos los perfiles en XPEAK incluyen historial de eventos y referencias verificadas de contrataciones anteriores.' },
+    ],
+  },
   fotografo: {
     label: 'Fotógrafo',
     keyword: 'Fotógrafo',
@@ -356,15 +372,27 @@ const CATEGORIES: Record<string, CategoryInfo> = {
     ],
   },
   bailarin: {
-    label: 'Bailarín',
-    keyword: 'Bailarín y Compañía de Danza',
+    label: 'Bailarín / Instructor',
+    keyword: 'Bailarín, Compañía de Danza e Instructor',
     unidad: '/evento',
-    desc: (c) => `Contratar bailarines en ${c} para bodas, eventos y espectáculos: flamenco, baile moderno, latino y danza contemporánea. Shows desde 30 min. Flash Booking. Sin comisión.`,
+    desc: (c) => `Contratar bailarines en ${c} para bodas, eventos y espectáculos: flamenco, baile moderno, latino y danza contemporánea. También instructores de salsa y bachata para clases. Shows desde 30 min. Flash Booking. Sin comisión.`,
     intro: (c) => `Encuentra bailarines y compañías de danza en ${c} para amenizar cualquier evento: flamenco para bodas y eventos internacionales, shows de baile moderno para convenciones, danza contemporánea para galas y espectáculos de apertura. XPEAK conecta organizadores con bailarines profesionales verificados.`,
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta contratar bailarines en ${c}?`, a: `Un espectáculo de baile en ${c} cuesta entre ${precio} por show según la duración y el número de bailarines. Shows de flamenco desde 300€; compañías de 4–6 bailarines desde 600€.` },
       { q: `¿Qué estilos de baile puedo contratar en ${c}?`, a: `En XPEAK encontrarás bailarines de flamenco, baile latino (salsa, bachata), hip hop, danza contemporánea, ballet y baile nupcial para la primera danza de bodas en ${c}.` },
       { q: '¿Puedo contratar bailarines para una boda civil?', a: 'Sí. El espectáculo de baile es muy popular durante el cóctel o la apertura del banquete. También hay bailarines especializados en coreografías sorpresa para la primera danza de los novios.' },
+    ],
+  },
+  vestuario: {
+    label: 'Estilista / Vestuario',
+    keyword: 'Estilista',
+    unidad: '/día',
+    desc: (c) => `Contratar estilista o profesional del vestuario en ${c} para bodas, producciones audiovisuales y eventos de moda. Portafolio real, perfiles verificados. Flash Booking. Sin comisión.`,
+    intro: (c) => `Encuentra estilistas, diseñadores de vestuario y personal de armario en ${c}: desde el estilismo integral para bodas hasta la coordinación de vestuario en rodajes, videoclips y espectáculos. XPEAK conecta organizadores con profesionales del vestuario verificados con portafolio real.`,
+    faqs: (c, precio) => [
+      { q: `¿Cuánto cuesta contratar un estilista en ${c}?`, a: `Un estilista integral para boda en ${c} (novia, novio y séquito) cobra entre 300€ y 1.500€ según el alcance. Producciones audiovisuales: ${precio} por jornada.` },
+      { q: `¿Puedo contratar estilistas para una producción audiovisual en ${c}?`, a: 'Sí. XPEAK incluye coordinadores de vestuario con experiencia en rodajes, videoclips y campañas publicitarias. Especifica el número de días de rodaje y el tipo de producción en tu oferta.' },
+      { q: `¿Qué es un personal shopper para eventos en ${c}?`, a: 'Un personal shopper te ayuda a elegir el outfit correcto para cada tipo de evento: gala, boda, presentación corporativa o evento de moda. Tarifa habitual: entre 80€ y 200€ por sesión de 2-3 horas.' },
     ],
   },
   monologo: {
@@ -428,16 +456,47 @@ const CATEGORIES: Record<string, CategoryInfo> = {
       { q: `¿Cómo encuentro una peluquera a domicilio cerca de mí en ${c}?`, a: 'Filtra por tu zona en el directorio de XPEAK y contacta directamente con las profesionales disponibles, o usa Flash Booking para recibir disponibilidad urgente.' },
     ],
   },
+  'grupo-musical': {
+    label: 'Grupo Musical',
+    keyword: 'Grupo Musical',
+    unidad: '/evento',
+    desc: (c) => `Contratar grupo musical en ${c} para bodas y eventos: cuartetos de cuerda, jazz, flamenco y bandas pop-rock. Música en vivo. Flash Booking. Sin comisión.`,
+    intro: (c) => `Encuentra grupos musicales profesionales en ${c} para cualquier momento de tu evento: cuartetos de cuerda para la ceremonia, jazz o flamenco para el cóctel, banda completa para la fiesta. XPEAK conecta organizadores con músicos verificados en ${c}.`,
+    faqs: (c, precio) => [
+      { q: `¿Cuánto cuesta contratar un grupo musical en ${c}?`, a: `Un grupo musical en ${c} cuesta entre ${precio} según el número de músicos y la duración. Un dúo acústico o saxofonista parte de 300€; una banda completa de 5-6 músicos puede superar los 1.500€.` },
+      { q: `¿Con cuánta antelación reservar un grupo musical en ${c}?`, a: 'Con 6-9 meses de antelación para asegurar disponibilidad, especialmente en temporada alta (mayo-octubre). Los grupos más solicitados se agotan antes.' },
+      { q: '¿El grupo musical puede actuar en exteriores?', a: `Sí, la mayoría cuenta con equipo propio adaptado a exteriores. Indica el espacio de tu evento en ${c} para que el proveedor dimensione correctamente el equipo de sonido.` },
+    ],
+  },
+  'photo-booth': {
+    label: 'Photo Booth',
+    keyword: 'Photo Booth',
+    unidad: '/evento',
+    desc: (c) => `Alquilar photo booth en ${c} para bodas, comuniones y eventos de empresa. Impresión al instante y álbum digital. Flash Booking. Sin comisión.`,
+    intro: (c) => `Encuentra proveedores de photo booth en ${c} para tu boda, comunión o evento de empresa: cabina clásica con impresión, photo booth 360 para vídeos o espejo glamour. XPEAK conecta organizadores con proveedores verificados en ${c}.`,
+    faqs: (c, precio) => [
+      { q: `¿Cuánto cuesta un photo booth en ${c}?`, a: `Un photo booth en ${c} cuesta entre ${precio} según el tipo (clásico, 360 o espejo glamour), la duración y extras como impresión ilimitada o libro de firmas.` },
+      { q: `¿Qué incluye un photo booth profesional en ${c}?`, a: 'Normalmente incluye montaje y desmontaje, atrezzo temático, impresión ilimitada al instante, álbum digital y varias horas de servicio.' },
+      { q: `¿Con cuánta antelación contratar un photo booth en ${c}?`, a: 'Con 3-4 meses de antelación suele ser suficiente. En temporada alta (mayo-septiembre) se recomienda reservar con 6 meses.' },
+    ],
+  },
   promotores: {
     label: 'Promotor',
     keyword: 'Promotor y RRPP',
     unidad: '/noche',
-    desc: (c) => `Contratar promotor o RRPP en ${c} para clubs, festivales y eventos. Gestión de listas VIP, captación de público y relaciones públicas. Flash Booking. Sin comisión.`,
-    intro: (c) => `Encuentra promotores y relaciones públicas profesionales en ${c} para clubs nocturnos, festivales y eventos. XPEAK conecta salas y organizadores con promotores verificados: gestión de listas VIP, captación de público, street marketing y coordinación de prensa.`,
+    desc: (c) => {
+      if (c === 'A Coruña') return 'Promotor y RRPP en A Coruña para discotecas, festivales y eventos privados. Gestión de listas VIP, captación de público y relaciones públicas. Perfiles verificados. Sin comisión.';
+      return `Contratar promotor o RRPP en ${c} para clubs, festivales y eventos. Gestión de listas VIP, captación de público y relaciones públicas. Flash Booking. Sin comisión.`;
+    },
+    intro: (c, venues) => {
+      if (c === 'A Coruña') return `A Coruña tiene una escena de ocio nocturno consolidada, con salas como ${venues.slice(0,2).join(' y ')} entre las más activas de Galicia. XPEAK conecta discotecas, promotoras y organizadores con promotores y RRPP verificados en A Coruña: gestión de listas VIP, captación de público y coordinación de puerta.`;
+      return `Encuentra promotores y relaciones públicas profesionales en ${c} para clubs nocturnos, festivales y eventos. XPEAK conecta salas y organizadores con promotores verificados: gestión de listas VIP, captación de público, street marketing y coordinación de prensa.`;
+    },
     faqs: (c, precio) => [
       { q: `¿Cuánto cobra un promotor en ${c}?`, a: `Un promotor o RRPP en ${c} cobra entre ${precio} por noche según el volumen de trabajo y su red de contactos. Algunos trabajan a comisión por entrada vendida; otros cobran tarifa fija.` },
       { q: `¿Qué hace exactamente un promotor de eventos en ${c}?`, a: 'Gestiona la lista VIP, capta público objetivo, hace difusión en redes y en su red de contactos, coordina con la puerta y en algunos casos gestiona relaciones con prensa y medios locales.' },
       { q: '¿El promotor puede gestionar el marketing en redes sociales?', a: 'Depende del perfil. En XPEAK algunos promotores incluyen gestión de Instagram y contenido en su servicio. Consulta directamente con cada profesional qué incluye su tarifa.' },
+      ...(c === 'A Coruña' ? [{ q: '¿Hay promotores disponibles en A Coruña ahora mismo?', a: 'La oferta de promotores verificados en Galicia todavía está creciendo en XPEAK. Puedes publicar tu necesidad y contactar directamente con los perfiles disponibles; si tu evento es urgente, indica la fecha con antelación para asegurar respuesta.' }] : []),
     ],
   },
   animador: {
@@ -481,7 +540,6 @@ const ProfGrid = ({ profs }: { profs: Prof[] }) => (
             : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36, fontWeight: 900, color: '#D4AF37' }}>{p.display_name.charAt(0)}</div>
           }
           <div style={{ position: 'absolute', top: 8, right: 8, display: 'flex', gap: 4 }}>
-            {p.is_verified && <span style={{ background: '#D4AF37', color: '#000', fontSize: 9, fontWeight: 900, padding: '2px 6px', borderRadius: 4 }}>✓ VERIFICADO</span>}
             {p.is_early_adopter && <span style={{ background: '#3B82F6', color: '#fff', fontSize: 9, fontWeight: 900, padding: '2px 6px', borderRadius: 4 }}>⭐ EARLY</span>}
           </div>
         </div>
@@ -498,10 +556,18 @@ const ProfGrid = ({ profs }: { profs: Prof[] }) => (
 export default function CityLanding() {
   const { ciudad } = useParams<{ ciudad: string }>();
   const { pathname } = useLocation();
-  const navigate = useNavigate();
 
   const cityData = ciudad ? CITIES[ciudad.toLowerCase()] : null;
-  if (!cityData) { navigate('/'); return null; }
+  if (!cityData) {
+    return (
+      <>
+        <Helmet>
+          <meta name="robots" content="noindex, follow" />
+        </Helmet>
+        <Navigate to="/" replace />
+      </>
+    );
+  }
 
   // Detect category from pathname: /contratar-dj/madrid → 'dj'
   const categorySlug = pathname.split('/')[1]?.replace('contratar-', '') ?? 'dj';
@@ -521,6 +587,7 @@ export default function CityLanding() {
     description: catData.desc(cityData.ciudad),
     url: `https://xpeak.es${canonicalBase}`,
     serviceType: `Contratación de ${catData.keyword}`,
+    dateModified: BUILD_DATE,
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR', description: 'Registro gratuito para salas y promotoras' },
   };
 
@@ -655,7 +722,7 @@ export default function CityLanding() {
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
             {[
               { label: `Precio ${catData.keyword} en ${cityData.ciudad}`, value: `${precio}${catData.unidad}`, icon: <Star size={16} /> },
-              { label: 'Flash Booking', value: 'En menos de 1h', icon: <Zap size={16} /> },
+              { label: 'Flash Booking', value: categorySlug === 'promotores' ? 'Necesidades urgentes' : 'En menos de 1h', icon: <Zap size={16} /> },
               { label: 'Comisión XPEAK', value: '0% para salas', icon: <Shield size={16} /> },
             ].map(s => (
               <div key={s.label} className="flex items-center gap-3">
@@ -757,11 +824,29 @@ export default function CityLanding() {
           </div>
         </section>
 
+        {/* Otras categorías en la misma ciudad — enlazado interno cruzado */}
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-12 sm:pb-14">
+          <h2 className="text-xl sm:text-2xl font-black mb-6">Otros profesionales en {cityData.ciudad}</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {Object.keys(CATEGORIES)
+              .filter(slug => slug !== categorySlug && slug !== 'monologos')
+              .map(slug => (
+                <a key={slug} href={`/contratar-${slug}/${cityData.slug}`}
+                  className="flex items-center gap-2 p-4 rounded-xl font-bold text-sm transition-all hover:scale-105"
+                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  {CATEGORIES[slug].keyword}
+                </a>
+              ))}
+          </div>
+        </section>
+
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-16 sm:pb-20 text-center">
           <div className="rounded-2xl p-7 sm:p-10" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
             <h2 className="text-xl sm:text-3xl font-black mb-3">¿Buscas {catData.keyword} en {cityData.ciudad}?</h2>
             <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>
-              Únete gratis — sin comisión, contratos automáticos, Flash Booking en menos de 1h.
+              {categorySlug === 'promotores'
+                ? 'Únete gratis — sin comisión, contratos automáticos, Flash Booking para necesidades urgentes.'
+                : 'Únete gratis — sin comisión, contratos automáticos, Flash Booking en menos de 1h.'}
             </p>
             <a href="/auth"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"

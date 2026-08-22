@@ -20,16 +20,30 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   const [saving, setSaving] = useState(false);
   const [localName, setLocalName] = useState<string | null>(null);
   const [city, setCity] = useState('');
+  const [province, setProvince] = useState('');
+  const [showMore, setShowMore] = useState(false); // "Más detalles (opcional)" plegado por defecto
   const [rider, setRider] = useState<string | null>(null);
   const [bio, setBio] = useState<string | null>(null);
+  const [instagram, setInstagram] = useState<string | null>(null);
   const [hourlyRate, setHourlyRate] = useState<string | null>(null);
   const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
   const [savingAvailability, setSavingAvailability] = useState(false);
   const [selectedLangs, setSelectedLangs] = useState<string[] | null>(null);
   const [langOpen, setLangOpen] = useState(false);
+  const [selectedRoles, setSelectedRoles] = useState<string[] | null>(null);
+  const [roleOpen, setRoleOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
   const [sideStats, setSideStats] = useState<{ bookings: number | null; messages: number | null }>({ bookings: null, messages: null });
   const [copied, setCopied] = useState(false);
+  const [referralCopied, setReferralCopied] = useState(false);
+  const [referralIsNew] = useState(() => !localStorage.getItem('xpeak_referral_seen'));
+  const [rewardedReferrals, setRewardedReferrals] = useState<number | null>(null);
+  const [offersClasses, setOffersClasses] = useState<boolean | null>(null);
+  const [classStyles, setClassStyles] = useState<string[] | null>(null);
+  const [classPrice, setClassPrice] = useState<string | null>(null);
+  const [seekingPartner, setSeekingPartner] = useState<boolean | null>(null);
+  const [danceLevel, setDanceLevel] = useState<string | null>(null);
+  const [danceRole, setDanceRole] = useState<string | null>(null);
 
   const rawPhoto = profile.photo_url;
   const photoUrl = rawPhoto && rawPhoto.trim().length > 5 && !rawPhoto.endsWith("''") ? rawPhoto : null;
@@ -43,7 +57,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
       { label: 'Especialidad', done: !!(profile.specialty && profile.specialty.trim().length > 0), hint: 'Añade tus géneros o especialidades.' },
       { label: 'Instagram', done: !!(profile.instagram && profile.instagram.trim().length > 0), hint: 'Enlaza tu Instagram para que te contacten.' },
       ...(profile.role === 'dj' || profile.role === 'rookie' ? [
-        { label: 'Mix / Audio', done: !!(profile.audio_embed_url && (profile.audio_embed_url as string).trim().length > 0), hint: 'Añade un enlace a tu mix o sesión.' },
+        { label: 'Mix / Audio', done: !!(profile.audio_embed_url && (profile.audio_embed_url as string).trim().length > 0) || !!(profile.audio_session_urls && profile.audio_session_urls.length > 0), hint: 'Añade un enlace a tu mix o sesión.' },
       ] : profile.role !== 'empresario' ? [
         { label: 'Portfolio', done: !!(profile.portfolio_urls && profile.portfolio_urls.length > 0), hint: 'Sube fotos o un vídeo corto de tu trabajo.' },
       ] : []),
@@ -52,8 +66,65 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     return { steps, percent: Math.round((done / steps.length) * 100) };
   })();
 
-  const EU_LANGS = ['Español','Inglés','Francés','Italiano','Alemán','Portugués','Neerlandés','Polaco','Catalán','Euskera'];
-  const SPAIN_CITIES = ['Madrid','Barcelona','Valencia','Sevilla','Zaragoza','Málaga','Murcia','Palma de Mallorca','Alicante','Bilbao','Valladolid','Córdoba','Vigo','Gijón','Granada','A Coruña','Vitoria-Gasteiz','San Sebastián','Oviedo','Las Palmas de Gran Canaria','Santa Cruz de Tenerife','Badalona','Cartagena','Sabadell','Móstoles','Elche','Hospitalet de Llobregat','Terrassa','Jerez de la Frontera','Burgos','Santander','Almería','Alcalá de Henares','Pamplona','Salamanca','Ibiza','Marbella','León','Albacete','Logroño','Huelva','Tarragona','Lleida','Badajoz','Jaén','Cádiz','Toledo','Torrevieja','Mataró','Alcobendas'];
+  const EU_LANGS = ['Español','Inglés','Francés','Italiano','Alemán','Portugués','Neerlandés','Polaco','Catalán','Euskera','Gallego'];
+  // Provincia → ciudades. Flujo de 2 pasos (más ordenado que una lista larga).
+  // Incluye Galicia completa (A Coruña, Lugo, Ourense, Pontevedra).
+  const PROVINCIAS: Record<string, string[]> = {
+    'A Coruña': ['A Coruña','Santiago de Compostela','Ferrol','Narón','Oleiros','Carballo'],
+    'Álava': ['Vitoria-Gasteiz'],
+    'Albacete': ['Albacete','Hellín','Villarrobledo'],
+    'Alicante': ['Alicante','Elche','Torrevieja','Orihuela','Benidorm','Denia','Calpe','Jávea'],
+    'Almería': ['Almería','Roquetas de Mar','El Ejido'],
+    'Asturias': ['Oviedo','Gijón','Avilés','Langreo'],
+    'Ávila': ['Ávila'],
+    'Badajoz': ['Badajoz','Mérida','Don Benito'],
+    'Baleares': ['Palma de Mallorca','Ibiza','Manacor','Mahón','Formentera'],
+    'Barcelona': ['Barcelona','Badalona','Hospitalet de Llobregat','Terrassa','Sabadell','Mataró','Sitges','Manresa','Vilanova i la Geltrú'],
+    'Bizkaia': ['Bilbao','Barakaldo','Getxo'],
+    'Burgos': ['Burgos','Miranda de Ebro'],
+    'Cáceres': ['Cáceres','Plasencia'],
+    'Cádiz': ['Cádiz','Jerez de la Frontera','Algeciras','San Fernando','El Puerto de Santa María'],
+    'Cantabria': ['Santander','Torrelavega'],
+    'Castellón': ['Castellón de la Plana','Vila-real','Benicàssim'],
+    'Ciudad Real': ['Ciudad Real','Puertollano'],
+    'Córdoba': ['Córdoba','Lucena'],
+    'Cuenca': ['Cuenca'],
+    'Gipuzkoa': ['San Sebastián','Irún'],
+    'Girona': ['Girona','Figueres','Lloret de Mar','Blanes'],
+    'Granada': ['Granada','Motril'],
+    'Guadalajara': ['Guadalajara'],
+    'Huelva': ['Huelva'],
+    'Huesca': ['Huesca','Jaca'],
+    'Jaén': ['Jaén','Linares','Úbeda'],
+    'León': ['León','Ponferrada'],
+    'Lleida': ['Lleida'],
+    'Lugo': ['Lugo','Monforte de Lemos','Viveiro'],
+    'Madrid': ['Madrid','Móstoles','Alcalá de Henares','Alcobendas','Fuenlabrada','Leganés','Getafe','Alcorcón','Pozuelo de Alarcón','Las Rozas','Majadahonda'],
+    'Málaga': ['Málaga','Marbella','Fuengirola','Torremolinos','Benalmádena','Estepona','Mijas'],
+    'Murcia': ['Murcia','Cartagena','Lorca','Molina de Segura'],
+    'Navarra': ['Pamplona','Tudela'],
+    'Ourense': ['Ourense','O Barco de Valdeorras','Verín'],
+    'Palencia': ['Palencia'],
+    'Las Palmas': ['Las Palmas de Gran Canaria','Telde','Maspalomas'],
+    'Pontevedra': ['Vigo','Pontevedra','Vilagarcía de Arousa','Sanxenxo','Marín'],
+    'La Rioja': ['Logroño','Calahorra'],
+    'Salamanca': ['Salamanca'],
+    'Santa Cruz de Tenerife': ['Santa Cruz de Tenerife','San Cristóbal de La Laguna','Adeje','Arona'],
+    'Segovia': ['Segovia'],
+    'Sevilla': ['Sevilla','Dos Hermanas','Alcalá de Guadaíra','Utrera'],
+    'Soria': ['Soria'],
+    'Tarragona': ['Tarragona','Reus','Salou','Cambrils'],
+    'Teruel': ['Teruel'],
+    'Toledo': ['Toledo','Talavera de la Reina'],
+    'Valencia': ['Valencia','Gandia','Torrent','Paterna','Sagunto'],
+    'Valladolid': ['Valladolid'],
+    'Zamora': ['Zamora'],
+    'Zaragoza': ['Zaragoza','Calatayud'],
+  };
+  const PROVINCE_LIST = Object.keys(PROVINCIAS).sort((a, b) => a.localeCompare(b, 'es'));
+  // Provincia actual: derivada de la ciudad ya guardada (para editar) o del estado.
+  const savedCity = (city || profile.zone?.replace(', España', '') || '').trim();
+  const provinceOfSaved = PROVINCE_LIST.find(p => PROVINCIAS[p].includes(savedCity)) ?? '';
 
   const ROLE_TAGS: Record<string, { label: string; tags: string[] }> = {
     dj:        { label: 'Géneros musicales',    tags: ['Tech House','Deep House','House','Afro House','Organic House','Funky House','Tribal House','Progressive House','Latin House','Techno','Melodic Techno','Minimal','Hard Techno','Industrial','Dub Techno','Trance','Progressive Trance','Psytrance','Drum & Bass','Dubstep','Jungle','UK Garage','Breakbeat','Reggaetón','Dembow','Moombahton','Dancehall','R&B','Hip Hop','Trap','Afrobeats','Amapiano','Comercial','Top 40','Hits actuales','Remember','Pachanga','Disco','Nu-Disco','Funk','Electro','Synthwave','Ambient','Downtempo','Chillout','Hardstyle','Hardcore','EDM'] },
@@ -65,7 +136,10 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     media:     { label: 'Especialidades',        tags: ['Fotografía de eventos','Vídeo','Reels & Contenido','Fotografía de DJ','Drone','Cobertura en directo','Fotografía de sala','Retrato','Edición de vídeo','Color grading','Motion graphics','Podcast'] },
     design:    { label: 'Especialidades',        tags: ['Diseño gráfico','VJing','Mapping','LED wall','Visuales en vivo','Cartelería','Branding','Redes sociales','Ilustración','3D','Motion design'] },
     promotor:  { label: 'Especialidades',        tags: ['Festivales','Clubs nocturnos','Eventos privados','Bodas','Corporativo','After','Terraza','Sala pequeña','Sala grande','Residencias','Giras'] },
+    bailarin:  { label: 'Estilos de baile',       tags: ['Salsa','Salsa cubana','Salsa en línea','Bachata','Bachata sensual','Kizomba','Zouk','Merengue','Cha cha cha','Cumbia','Coreografía primer baile','Baile de exhibición','Danza urbana','Reguetón/Perreo intenso','Danza contemporánea'] },
   };
+
+  const DANCE_CLASS_STYLES = ['Salsa','Bachata','Kizomba','Zouk','Merengue','Baile de boda / primer baile','Danza urbana'];
 
   const roleTagConfig = ROLE_TAGS[profile.role ?? ''];
   const [selectedGenres, setSelectedGenres] = useState<string[] | null>(null);
@@ -81,6 +155,48 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     const next = current.includes(lang) ? current.filter(l => l !== lang) : [...current, lang];
     setSelectedLangs(next);
   };
+
+  const ROLE_OPTIONS: { value: string; label: string }[] = [
+    { value: 'dj',            label: 'DJ / Artista / Productor' },
+    { value: 'rookie',        label: 'Artista Promesa' },
+    { value: 'staff',         label: 'Camarero' },
+    { value: 'azafata',       label: 'Azafata' },
+    { value: 'event_manager', label: 'Encargada de Eventos' },
+    { value: 'promotor',      label: 'Promotor' },
+    { value: 'catering',      label: 'Catering / Cocina' },
+    { value: 'makeup',        label: 'Maquillaje' },
+    { value: 'peluqueria',    label: 'Peluquería a Domicilio' },
+    { value: 'media',         label: 'Foto & Vídeo' },
+    { value: 'empresario',    label: 'Empresario / Sala' },
+    { value: 'bailarin',      label: 'Bailarín / Danza' },
+    { value: 'mago',          label: 'Mago & Ilusionista' },
+    { value: 'humorista',     label: 'Humorista & Monólogos' },
+    { value: 'animador',      label: 'Payaso / Animador' },
+    { value: 'speaker',       label: 'Speaker / Presentador' },
+    { value: 'vestuario',     label: 'Estilista / Vestuario' },
+    { value: 'design',        label: 'Diseño & Visuales' },
+  ];
+  const activeRoles = selectedRoles ?? (profile.roles?.length ? profile.roles : (profile.role ? [profile.role] : []));
+  const toggleRole = (r: string) => {
+    const next = activeRoles.includes(r) ? activeRoles.filter(x => x !== r) : [...activeRoles, r];
+    if (next.length === 0) return;
+    setSelectedRoles(next);
+  };
+  useEffect(() => {
+    if (!referralIsNew) return;
+    const t = setTimeout(() => localStorage.setItem('xpeak_referral_seen', '1'), 4000);
+    return () => clearTimeout(t);
+  }, [referralIsNew]);
+
+  useEffect(() => {
+    if (!user) return;
+    supabase.from('referrals' as any)
+      .select('id', { count: 'exact', head: true })
+      .eq('inviter_user_id', user.id)
+      .eq('rewarded', true)
+      .then(({ count }) => setRewardedReferrals(typeof count === 'number' ? count : null));
+  }, [user]);
+
   useEffect(() => {
     if (!user) return;
     (async () => {
@@ -122,8 +238,8 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   };
 
   const handleSave = async () => {
-    if (!user || saving) return;
-    const toCheck = [localName, bio, rider].filter(Boolean) as string[];
+    if (!user || saving || profile.loading) return;
+    const toCheck = [localName, bio, rider, instagram].filter(Boolean) as string[];
     for (const val of toCheck) {
       const { clean, reason } = sanitizeInput(val);
       if (!clean) { toast.error(reason); return; }
@@ -134,8 +250,16 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     if (hourlyRate !== null) updates.hourly_rate = parseInt(hourlyRate) || 0;
     if (rider !== null) updates.specialty = rider;
     if (bio !== null) updates.bio = bio;
+    if (instagram !== null) updates.instagram = instagram.trim().replace(/^@/, '') || null;
     if (selectedLangs !== null) updates.languages = selectedLangs;
     if (selectedGenres !== null) updates.genres = selectedGenres;
+    if (selectedRoles !== null) { updates.roles = selectedRoles; updates.role = selectedRoles[0]; }
+    if (offersClasses !== null) updates.offers_classes = offersClasses;
+    if (classStyles !== null) updates.class_styles = classStyles;
+    if (classPrice !== null) updates.class_price = classPrice.trim() === '' ? null : parseInt(classPrice) || 0;
+    if (seekingPartner !== null) updates.seeking_dance_partner = seekingPartner;
+    if (danceLevel !== null) updates.dance_level = danceLevel;
+    if (danceRole !== null) updates.dance_role = danceRole;
     // is_flash_active is saved immediately on toggle — skip here
     if (Object.keys(updates).length > 0) {
       setSaving(true);
@@ -190,10 +314,10 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
               <FileEdit size={13} /> <span className="hidden sm:inline">Editar</span> Ficha
             </button>
           )}
-          <button onClick={handleSave} disabled={saving}
+          <button onClick={handleSave} disabled={saving || profile.loading}
             className="px-4 py-2 rounded-lg font-bold text-sm flex-1 sm:flex-none disabled:opacity-60"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-            {saving ? 'Guardando...' : 'Guardar'}
+            {profile.loading ? 'Cargando...' : (saving ? 'Guardando...' : 'Guardar')}
           </button>
         </div>
       </div>
@@ -226,6 +350,9 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                   {completenessSteps.percent}%
                 </span>
               </div>
+              <p className="text-[0.65rem] text-muted-foreground mb-3">
+                Los perfiles más completos aparecen antes en el directorio — foto, bio y portfolio suman posición real.
+              </p>
               <div className="w-full h-1.5 rounded-full mb-3" style={{ background: 'rgba(0,0,0,0.05)' }}>
                 <div className="h-full rounded-full transition-all duration-500"
                   style={{
@@ -321,9 +448,59 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                     }
                   }}
                   className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[0.7rem] font-bold transition-all hover:scale-[1.02]"
-                  style={{ background: 'rgba(225,48,108,0.08)', border: '1px solid rgba(225,48,108,0.2)', color: '#E1306C' }}>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                  Instagram
+                  style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.25)', color: '#8A6D0F' }}>
+                  <Copy size={13} />
+                  Copiar enlace
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* — Invita y gana prioridad — */}
+          {user && profile.role !== 'empresario' && (
+            <div className="glass-panel p-4" style={referralIsNew ? { border: '1px solid rgba(37,99,235,0.35)', boxShadow: '0 0 0 1px rgba(37,99,235,0.08)' } : undefined}>
+              <div className="flex items-center gap-2 mb-1">
+                <Star size={13} style={{ color: '#2563eb' }} />
+                <span className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: '#2563eb' }}>Invita y gana prioridad</span>
+                {referralIsNew && (
+                  <span className="px-1.5 py-0.5 rounded-full text-[0.55rem] font-black uppercase" style={{ background: '#2563eb', color: '#fff' }}>
+                    Nuevo
+                  </span>
+                )}
+                {/* Solo se muestra con datos reales (>0) — con 0 invitados
+                    completados, mostrar "0" desanimaría en vez de animar. */}
+                {!!rewardedReferrals && rewardedReferrals > 0 && (
+                  <span className="ml-auto px-1.5 py-0.5 rounded-full text-[0.6rem] font-black" style={{ background: 'rgba(34,197,94,0.12)', color: '#22c55e' }}>
+                    {rewardedReferrals} {rewardedReferrals === 1 ? 'invitado' : 'invitados'}
+                  </span>
+                )}
+              </div>
+              <p className="text-[0.72rem] mb-3" style={{ color: '#3d3d4e' }}>
+                Cada profesional que invites y complete su perfil te da <strong style={{ color: 'inherit' }}>+6 meses</strong> de badge azul de prioridad — apareces antes en el directorio.
+              </p>
+              <div className="flex items-center gap-2">
+                <div className="flex-1 px-3 py-2 rounded-lg text-[0.7rem] font-mono truncate"
+                  style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', color: '#3d3d4e' }}>
+                  xpeak.es/auth?ref={(profile as any).referral_code || '···'}
+                </div>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    const code = (profile as any).referral_code;
+                    if (!code) return;
+                    await navigator.clipboard.writeText(`https://xpeak.es/auth?mode=register&ref=${code}`);
+                    setReferralCopied(true);
+                    setTimeout(() => setReferralCopied(false), 2000);
+                  }}
+                  disabled={!(profile as any).referral_code}
+                  className="px-3 py-2 rounded-lg flex items-center gap-1.5 text-[0.7rem] font-bold flex-shrink-0 transition-all disabled:opacity-40"
+                  style={{
+                    background: referralCopied ? 'rgba(34,197,94,0.12)' : 'rgba(37,99,235,0.08)',
+                    border: `1px solid ${referralCopied ? 'rgba(34,197,94,0.3)' : 'rgba(37,99,235,0.2)'}`,
+                    color: referralCopied ? '#22c55e' : '#2563eb',
+                  }}>
+                  {referralCopied ? <Check size={12} /> : <Copy size={12} />}
+                  {referralCopied ? 'Copiado' : 'Copiar'}
                 </button>
               </div>
             </div>
@@ -395,39 +572,74 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                   <span className="text-xs font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(212,175,55,0.15)', color: '#8A6D0F' }}>Elige tu especialidad</span>
                 )}
               </label>
-              <NightlifeSelect
-                className="mt-1"
-                value={(!profile.role || profile.role === 'pending') ? '' : profile.role}
-                onChange={async (newRole) => {
-                  await profile.updateField({ role: newRole } as any);
-                  toast.success('Rol actualizado. Recarga para ver los cambios.');
-                }}
-                options={[
-                  { value: '',              label: 'Selecciona tu especialidad' },
-                  { value: 'dj',            label: 'DJ / Artista / Productor' },
-                  { value: 'rookie',         label: 'Artista Promesa' },
-                  { value: 'staff',          label: 'Staff / Camarero / RRPP' },
-                  { value: 'event_manager',  label: 'Encargada de Eventos' },
-                  { value: 'promotor',       label: 'Promotor' },
-                  { value: 'catering',       label: 'Catering / Cocina' },
-                  { value: 'makeup',         label: 'Maquillaje' },
-                  { value: 'peluqueria',     label: 'Peluquería a Domicilio' },
-                  { value: 'media',          label: 'Foto & Vídeo' },
-                  { value: 'empresario',     label: 'Empresario / Sala' },
-                ]}
-                active
-              />
+              <p className="text-[0.7rem] text-muted-foreground mb-1.5">Puedes elegir varias — aparecerás en el directorio de cada una.</p>
+
+              {activeRoles.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mb-2">
+                  {activeRoles.map(r => (
+                    <span key={r} className="flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-lg"
+                      style={{ background: 'rgba(226,190,80,0.12)', border: '1px solid rgba(226,190,80,0.35)', color: '#E2BE50' }}>
+                      {ROLE_OPTIONS.find(o => o.value === r)?.label ?? r}
+                      {activeRoles.length > 1 && (
+                        <button type="button" onClick={() => toggleRole(r)} className="ml-0.5 opacity-60 hover:opacity-100 transition-opacity">
+                          <X size={10} />
+                        </button>
+                      )}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <button
+                type="button"
+                onClick={() => setRoleOpen(v => !v)}
+                className="flex items-center justify-between w-full px-3 py-2.5 rounded-lg text-sm transition-all"
+                style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)', color: '#222' }}
+              >
+                <span>Añadir otro rol...</span>
+                <ChevronDown size={14} className="transition-transform duration-200" style={{ transform: roleOpen ? 'rotate(180deg)' : 'none' }} />
+              </button>
+
+              {roleOpen && (
+                <div className="mt-2 p-2 rounded-lg flex flex-wrap gap-1.5" style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                  {ROLE_OPTIONS.map(o => {
+                    const active = activeRoles.includes(o.value);
+                    return (
+                      <button key={o.value} type="button" onClick={() => toggleRole(o.value)}
+                        className="text-xs font-bold px-2.5 py-1.5 rounded-lg transition-all"
+                        style={active
+                          ? { background: 'rgba(226,190,80,0.15)', border: '1px solid rgba(226,190,80,0.4)', color: '#8A6D0F' }
+                          : { background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.06)', color: '#444' }}>
+                        {o.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
-            <div className="mb-3">
-              <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Ciudad</label>
-              <NightlifeSelect
-                className="mt-1"
-                value={city || profile.zone?.replace(', España','') || ''}
-                onChange={setCity}
-                options={SPAIN_CITIES.map(c => ({ value: c, label: c }))}
-                placeholder="Seleccionar ciudad"
-                active={(city || profile.zone) ? true : false}
-              />
+            <div className="mb-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Provincia</label>
+                <NightlifeSelect
+                  className="mt-1"
+                  value={province || provinceOfSaved}
+                  onChange={(p) => { setProvince(p); setCity(''); }}
+                  options={PROVINCE_LIST.map(p => ({ value: p, label: p }))}
+                  placeholder="Elige provincia"
+                  active={!!(province || provinceOfSaved)}
+                />
+              </div>
+              <div>
+                <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Ciudad</label>
+                <NightlifeSelect
+                  className="mt-1"
+                  value={city || savedCity}
+                  onChange={setCity}
+                  options={(PROVINCIAS[province || provinceOfSaved] ?? []).map(c => ({ value: c, label: c }))}
+                  placeholder={(province || provinceOfSaved) ? 'Elige ciudad' : 'Elige provincia primero'}
+                  active={!!(city || savedCity)}
+                />
+              </div>
             </div>
             {profile.role !== 'empresario' && (
               <div className="mb-3">
@@ -450,8 +662,23 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 </div>
               </div>
             )}
+            {/* — Más detalles (opcional): todo lo secundario plegado para que la
+                ficha no abrume. Lo esencial (foto, nombre, ciudad, precio, bio)
+                queda siempre visible arriba. — */}
+            <button type="button" onClick={() => setShowMore(s => !s)}
+              className="mt-5 w-full flex items-center justify-between py-3 px-1 transition-all"
+              style={{ borderTop: '1px solid rgba(0,0,0,0.06)' }}>
+              <span className="text-sm font-bold" style={{ color: '#8A6D0F' }}>
+                {showMore ? 'Ocultar detalles' : 'Añadir más detalles (opcional)'}
+              </span>
+              <ChevronDown size={16} style={{ color: '#8A6D0F', transform: showMore ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
+            </button>
+            {!showMore && (
+              <p className="text-xs text-muted-foreground mb-2 px-1">Géneros, clases, rider técnico y más. Opcional — puedes completarlo luego.</p>
+            )}
+            <div style={{ display: showMore ? 'block' : 'none' }}>
             {/* — Habilidades — */}
-            <div className="mt-5 mb-3" style={{ borderTop: '1px solid rgba(0,0,0,0.04)', paddingTop: '1.25rem' }}>
+            <div className="mt-2 mb-3">
               <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Habilidades</p>
             </div>
             {roleTagConfig && (
@@ -517,9 +744,9 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                                 <button key={g} type="button" onClick={() => toggleGenre(g)}
                                   className="text-xs font-semibold px-2.5 py-1 rounded-lg transition-all hover:scale-105"
                                   style={{
-                                    background: activeGenres.includes(g) ? 'rgba(226,190,80,0.15)' : 'rgba(0,0,0,0.05)',
-                                    border: `1px solid ${activeGenres.includes(g) ? 'rgba(226,190,80,0.4)' : 'rgba(0,0,0,0.06)'}`,
-                                    color: activeGenres.includes(g) ? '#E2BE50' : '#333',
+                                    background: activeGenres.includes(g) ? 'rgba(226,190,80,0.2)' : 'rgba(255,255,255,0.08)',
+                                    border: `1px solid ${activeGenres.includes(g) ? 'rgba(226,190,80,0.5)' : 'rgba(255,255,255,0.15)'}`,
+                                    color: activeGenres.includes(g) ? '#E2BE50' : 'rgba(255,255,255,0.85)',
                                   }}>
                                   {g}
                                 </button>
@@ -538,11 +765,11 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                           </button>
                         ))}
                       </div>
-                      <div className="flex items-center justify-between px-3 py-2" style={{ borderTop: '1px solid rgba(0,0,0,0.05)' }}>
-                        <span className="text-xs text-muted-foreground">{activeGenres.length} seleccionados</span>
+                      <div className="flex items-center justify-between px-3 py-2" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                        <span className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>{activeGenres.length} seleccionados</span>
                         <button type="button" onClick={() => setGenreOpen(false)}
                           className="text-xs font-bold px-3 py-1 rounded-lg transition-all"
-                          style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.2)' }}>
+                          style={{ background: 'rgba(212,175,55,0.2)', color: '#E2BE50', border: '1px solid rgba(212,175,55,0.4)' }}>
                           Cerrar
                         </button>
                       </div>
@@ -550,6 +777,115 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                     );
                   })()}
                 </div>
+            )}
+            {profile.role === 'bailarin' && (
+              <div className="mt-5 mb-3" style={{ borderTop: '1px solid rgba(0,0,0,0.04)', paddingTop: '1.25rem' }}>
+                <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Clases particulares</p>
+                <label className="flex items-center gap-2.5 mb-3 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={offersClasses ?? profile.offers_classes ?? false}
+                    onChange={e => setOffersClasses(e.target.checked)}
+                    className="w-4 h-4 accent-[#D4AF37]"
+                  />
+                  <span className="text-sm font-semibold" style={{ color: '#222' }}>Doy clases particulares de baile</span>
+                </label>
+                {(offersClasses ?? profile.offers_classes) && (
+                  <>
+                    <div className="mb-3">
+                      <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Estilos que enseño</label>
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        {DANCE_CLASS_STYLES.map(s => {
+                          const active = (classStyles ?? profile.class_styles ?? []).includes(s);
+                          return (
+                            <button key={s} type="button"
+                              onClick={() => {
+                                const current = classStyles ?? profile.class_styles ?? [];
+                                setClassStyles(active ? current.filter(x => x !== s) : [...current, s]);
+                              }}
+                              className="text-xs font-semibold px-2.5 py-1 rounded-lg transition-all hover:scale-105"
+                              style={{
+                                background: active ? 'rgba(226,190,80,0.15)' : 'rgba(0,0,0,0.05)',
+                                border: `1px solid ${active ? 'rgba(226,190,80,0.4)' : 'rgba(0,0,0,0.06)'}`,
+                                color: active ? '#E2BE50' : '#333',
+                              }}>
+                              {s}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    <div className="mb-3">
+                      <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Precio clase (€/hora)</label>
+                      <div className="relative mt-1">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-bold">€</span>
+                        <input
+                          type="number"
+                          min={0}
+                          value={classPrice ?? profile.class_price ?? ''}
+                          onChange={e => setClassPrice(e.target.value)}
+                          placeholder="Ej: 30"
+                          className="nightlife-input !pl-8 text-base"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
+                <div className="mt-5" style={{ borderTop: '1px solid rgba(0,0,0,0.04)', paddingTop: '1.25rem' }}>
+                  <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Buscar pareja de baile</p>
+                  <label className="flex items-center gap-2.5 mb-3 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={seekingPartner ?? profile.seeking_dance_partner ?? false}
+                      onChange={e => setSeekingPartner(e.target.checked)}
+                      className="w-4 h-4 accent-[#D4AF37]"
+                    />
+                    <span className="text-sm font-semibold" style={{ color: '#222' }}>Busco pareja de baile fija</span>
+                  </label>
+                  {(seekingPartner ?? profile.seeking_dance_partner) && (
+                    <div className="mb-3">
+                      <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Tu rol al bailar</label>
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        {[{ v: 'lead', l: 'Leader' }, { v: 'follow', l: 'Follower' }, { v: 'ambos', l: 'Ambos' }].map(r => {
+                          const active = (danceRole ?? profile.dance_role) === r.v;
+                          return (
+                            <button key={r.v} type="button" onClick={() => setDanceRole(r.v)}
+                              className="text-xs font-semibold px-2.5 py-1 rounded-lg transition-all hover:scale-105"
+                              style={{
+                                background: active ? 'rgba(226,190,80,0.15)' : 'rgba(0,0,0,0.05)',
+                                border: `1px solid ${active ? 'rgba(226,190,80,0.4)' : 'rgba(0,0,0,0.06)'}`,
+                                color: active ? '#E2BE50' : '#333',
+                              }}>
+                              {r.l}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                  {(seekingPartner ?? profile.seeking_dance_partner) && (
+                    <div className="mb-1">
+                      <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Nivel</label>
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        {['Principiante', 'Intermedio', 'Avanzado'].map(lvl => {
+                          const active = (danceLevel ?? profile.dance_level) === lvl;
+                          return (
+                            <button key={lvl} type="button" onClick={() => setDanceLevel(lvl)}
+                              className="text-xs font-semibold px-2.5 py-1 rounded-lg transition-all hover:scale-105"
+                              style={{
+                                background: active ? 'rgba(226,190,80,0.15)' : 'rgba(0,0,0,0.05)',
+                                border: `1px solid ${active ? 'rgba(226,190,80,0.4)' : 'rgba(0,0,0,0.06)'}`,
+                                color: active ? '#E2BE50' : '#333',
+                              }}>
+                              {lvl}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
             )}
             <div className="mb-3">
               {(() => {
@@ -608,6 +944,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 );
               })()}
             </div>
+            </div>{/* fin colapsable "Más detalles" */}
             {/* — Sobre ti — */}
             <div className="mt-5 mb-3" style={{ borderTop: '1px solid rgba(0,0,0,0.04)', paddingTop: '1.25rem' }}>
               <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Sobre ti</p>
@@ -618,6 +955,14 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 onChange={e => setBio(e.target.value)}
                 placeholder={profile.role === 'empresario' ? 'Describe tu sala, el tipo de eventos que organizas y tu ambiente...' : 'Describe tu experiencia y estilo...'}
                 className="nightlife-input mt-1 text-base resize-y" />
+            </div>
+            <div className="mb-3">
+              <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Instagram</label>
+              <p className="text-xs text-muted-foreground mb-1">Ayuda a validar que eres real y da más confianza a quien te contrate.</p>
+              <input value={instagram ?? profile.instagram ?? ''}
+                onChange={e => setInstagram(e.target.value)}
+                placeholder="tu_usuario (sin @)"
+                className="nightlife-input mt-1 text-base" />
             </div>
             <div style={{ borderTop: '1px solid rgba(0,0,0,0.04)', paddingTop: '1.25rem', marginTop: '0.5rem' }}>
               <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Idiomas</p>

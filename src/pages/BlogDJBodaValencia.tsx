@@ -1,12 +1,15 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
-import RelatedPosts from '@/components/RelatedPosts';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import BlogAnswerBox from '@/components/BlogAnswerBox';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
-const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para bodas en Valencia: precio y cómo contratar en 2026', description: 'Cuánto cuesta un DJ para una boda en Valencia. Precios reales 2026, zonas de celebración y cómo contratar el mejor DJ en la Comunitat Valenciana.', datePublished: '2026-05-28', dateModified: '2026-05-28', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-bodas-valencia' };
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para bodas en Valencia: precio y cómo contratar en 2026', description: 'Cuánto cuesta un DJ para una boda en Valencia. Precios reales 2026, zonas de celebración y cómo contratar el mejor DJ en la Comunitat Valenciana.', datePublished: '2026-05-28', dateModified: '2026-05-28', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-bodas-valencia' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda en Valencia?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ para boda en Valencia cuesta entre 700€ y 1.800€ para el servicio completo. Los precios en Valencia están en la media nacional o ligeramente por encima (10-15%), más económicos que Madrid o Barcelona. Para bodas solo con pista de baile (4-5h), el rango es 400-900€.' } },
   { '@type': 'Question', name: '¿Cuándo es la temporada alta de bodas en Valencia?', acceptedAnswer: { '@type': 'Answer', text: 'En Valencia la temporada alta es abril-junio y septiembre-octubre. Destaca que abril coincide con el final de Fallas y la Semana Santa, lo que genera mucha competencia por DJs disponibles. Junio es el mes más demandado. El clima mediterráneo permite bodas casi todo el año.' } },
@@ -52,7 +55,7 @@ export default function BlogDJBodaValencia() {
         <script type="application/ld+json">{JSON.stringify(serviceSchema)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
@@ -67,8 +70,12 @@ export default function BlogDJBodaValencia() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>DJ · Valencia · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para bodas en Valencia: precio y cómo contratar en 2026</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Valencia tiene uno de los mercados de bodas más activos de España gracias a su clima mediterráneo y la enorme variedad de fincas. Precios más competitivos que Madrid o Barcelona — te explicamos exactamente cuánto y cómo elegir bien.</p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>28 mayo 2026</time>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Valencia tiene uno de los mercados de bodas más activos de España gracias a su clima mediterráneo y la enorme variedad de fincas. Precios más competitivos que Madrid o Barcelona — te explicamos exactamente cuánto y cómo elegir bien.</p>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>28 mayo 2026</time>
+            <BlogAnswerBox
+              question="¿Cuánto cuesta un DJ para una boda en Valencia?"
+              answer="Un DJ para el servicio completo de una boda en Valencia (ceremonia, cóctel, cena y pista de baile) cuesta entre 800 y 1.800€ en 2026. El precio varía según la duración del evento, el equipo técnico incluido y la experiencia del DJ."
+            />
           </div>
 
           <div className="space-y-10">
@@ -76,7 +83,7 @@ export default function BlogDJBodaValencia() {
               <h2 className="text-lg font-black mb-4">Precios de DJ para boda en Valencia (2026)</h2>
               <div className="space-y-2">
                 {PRECIOS.map((row, i) => (
-                  <div key={row.servicio} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.04)' }}>
+                  <div key={row.servicio} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <p className="text-xs font-medium">{row.servicio}</p>
                     <span className="text-xs font-bold ml-4 shrink-0" style={{ color: '#D4AF37' }}>{row.precio}</span>
                   </div>
@@ -91,7 +98,7 @@ export default function BlogDJBodaValencia() {
               <h2 className="text-lg font-black mb-4">Zonas de boda en Valencia y el DJ</h2>
               <div className="space-y-3">
                 {ZONAS.map((z, i) => (
-                  <div key={z.zona} className="p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.04)' }}>
+                  <div key={z.zona} className="p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <div className="flex items-start justify-between mb-1">
                       <p className="text-xs font-bold">{z.zona}</p>
                       <span className="text-[0.6rem] font-bold px-2 py-0.5 rounded ml-3 shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>{z.nota}</span>
@@ -105,10 +112,10 @@ export default function BlogDJBodaValencia() {
 
             <section>
               <h2 className="text-lg font-black mb-3">Qué diferencia a un DJ de bodas en Valencia</h2>
-              <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
                 Valencia tiene una escena musical muy rica: DJs locales con formación en electrónica, techno y música latina conviven en el mismo mercado. Para bodas, los DJs valencianos suelen tener experiencia en eventos grandes — la ciudad organiza festivales masivos que han profesionalizado mucho el sector.
               </p>
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed" style={{ color: '#222' }}>
                 Un punto a tener en cuenta es la temporada de Fallas (febrero-marzo): los DJs más demandados suelen estar totalmente reservados para esas fechas y para bodas de primavera que se solapan. Si tu boda es en abril, mayo o junio, reserva con al menos 9-10 meses de antelación para no quedarte sin opciones de calidad.
               </p>
             </section>
@@ -117,16 +124,16 @@ export default function BlogDJBodaValencia() {
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
-                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
+                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
+                    <p className="text-sm leading-relaxed" style={{ color: '#222' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
               </div>
             </section>
 
             <section className="mt-8">
-              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <h2 className="text-base font-black mb-3" style={{ color: '#111' }}>Artículos relacionados</h2>
               <div className="space-y-2">
                 {[
                   { href: '/blog/dj-para-eventos', cat: 'Hub DJ', title: 'DJ para eventos: guía completa de precios 2026' },
@@ -135,9 +142,9 @@ export default function BlogDJBodaValencia() {
                   { href: '/blog/dj-bodas-barcelona', cat: 'SEO Local', title: 'DJ para bodas en Barcelona: precio 2026' },
                   { href: '/blog/cuanto-cobra-un-dj-en-espana', cat: 'DJ', title: 'Cuánto cobra un DJ en España: precios 2026' },
                 ].map(link => (
-                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
                     <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
-                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                    <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}
               </div>
@@ -149,11 +156,14 @@ export default function BlogDJBodaValencia() {
               <a href="/contratar-dj/valencia" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver DJs de bodas en Valencia →</a>
             </div>
           </div>
+                  <DJResourcesAffiliate role="dj" />
+
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-bodas-valencia" />
-          <RelatedPosts currentSlug="/blog/dj-bodas-valencia" tags={['DJ']} />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/dj-bodas-valencia' tag='DJ' />
         <FooterPublic />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_valencia" />
       </div>
     </>
   );

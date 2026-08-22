@@ -1,6 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, TrendingUp, Star } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
@@ -29,7 +31,7 @@ export default function BlogComunionCosto() {
     '@type': 'Article',
     headline: '¿Cuánto cuesta una comunión en España? Presupuesto completo 2026',
     description: 'Desglose real del coste de una comunión en España. Catering, DJ, fotógrafo, animación y decoración: precios por partida para 2026.',
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-23',
     dateModified: '2026-05-23',
@@ -72,11 +74,11 @@ const faqStructured = {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#6D28D9' }}>XPEAK</a>
           <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
-            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+            style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>
             Unirse gratis
           </a>
         </nav>
@@ -84,51 +86,51 @@ const faqStructured = {
         <a href="/blog" className="block px-4 sm:px-6 pb-2 max-w-3xl mx-auto text-xs" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
         <article className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 pb-20 sm:pb-24">
 
-          <p className="text-xs mb-6 font-bold" style={{ color: 'rgba(255,255,255,0.3)' }}>
-            <a href="/" className="hover:text-white transition-colors">XPEAK</a> › <a href="/blog" className="hover:text-white transition-colors">Blog</a> › <span>Presupuesto comunión</span>
+          <p className="text-xs mb-6 font-bold" style={{ color: '#666' }}>
+            <a href="/" className="hover:text-[#8A6D0F] transition-colors">XPEAK</a> › <a href="/blog" className="hover:text-[#8A6D0F] transition-colors">Blog</a> › <span>Presupuesto comunión</span>
           </p>
 
           <div className="flex items-center gap-2 mb-4">
-            <TrendingUp size={14} style={{ color: '#D4AF37' }} />
-            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#D4AF37' }}>Blog · Guía de precios</span>
+            <TrendingUp size={14} style={{ color: '#6D28D9' }} />
+            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#6D28D9' }}>Blog · Guía de precios</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-black tracking-tight mb-4 leading-tight">
             ¿Cuánto cuesta una comunión en España? Presupuesto completo 2026
           </h1>
-          <p className="text-sm mb-8" style={{ color: 'rgba(255,255,255,0.35)' }}>XPEAK · 23 de mayo de 2026 · 5 min de lectura</p>
+          <p className="text-sm mb-8" style={{ color: '#555' }}>XPEAK · 23 de mayo de 2026 · 5 min de lectura</p>
 
-          <p className="text-base leading-relaxed mb-6" style={{ color: 'rgba(255,255,255,0.7)' }}>
-            Organizar una comunión en España en 2026 tiene un coste que puede ir de <strong style={{ color: '#fff' }}>4.000€ a más de 20.000€</strong> dependiendo del número de invitados, la ciudad y las partidas que se contraten. Esta guía desglosa cada partida con precios reales para que puedas planificar sin sorpresas.
+          <p className="text-base leading-relaxed mb-6" style={{ color: '#222' }}>
+            Organizar una comunión en España en 2026 tiene un coste que puede ir de <strong style={{ color: '#111' }}>4.000€ a más de 20.000€</strong> dependiendo del número de invitados, la ciudad y las partidas que se contraten. Esta guía desglosa cada partida con precios reales para que puedas planificar sin sorpresas.
           </p>
 
-          <div className="p-4 rounded-xl mb-8" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
-            <p className="text-sm font-bold mb-1" style={{ color: '#D4AF37' }}>Resumen rápido</p>
-            <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
-              Una comunión para <strong style={{ color: '#fff' }}>80–100 invitados</strong> cuesta entre <strong style={{ color: '#fff' }}>8.000€ y 15.000€</strong> de media.
+          <div className="p-4 rounded-xl mb-8" style={{ background: 'rgba(109,40,217,0.06)', border: '1px solid rgba(109,40,217,0.15)' }}>
+            <p className="text-sm font-bold mb-1" style={{ color: '#6D28D9' }}>Resumen rápido</p>
+            <p className="text-sm leading-relaxed" style={{ color: '#333' }}>
+              Una comunión para <strong style={{ color: '#111' }}>80–100 invitados</strong> cuesta entre <strong style={{ color: '#111' }}>8.000€ y 15.000€</strong> de media.
               El catering es la partida más cara (40–50% del total). DJ, fotógrafo y animación suman entre 1.000€ y 2.500€.
             </p>
           </div>
 
           <h2 className="text-xl font-black mb-4">Desglose de costes por partida</h2>
-          <p className="text-sm mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
+          <p className="text-base mb-5 leading-relaxed" style={{ color: '#222' }}>
             Estos son los rangos reales de cada partida para una comunión de 80–100 personas en España:
           </p>
-          <div className="overflow-x-auto mb-10 rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+          <div className="overflow-x-auto mb-10 rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
             <table className="w-full text-xs min-w-[480px]">
               <thead>
-                <tr style={{ background: 'rgba(255,255,255,0.04)' }}>
+                <tr style={{ background: 'rgba(0,0,0,0.04)' }}>
                   {['Partida', 'Precio estimado', 'Notas'].map(h => (
                     <th key={h} className="px-4 py-3 text-left font-bold uppercase tracking-wider"
-                      style={{ color: 'rgba(255,255,255,0.6)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>{h}</th>
+                      style={{ color: '#333', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {TABLE.map((row, i) => (
-                  <tr key={row.partida} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)' }}>
-                    <td className="px-4 py-3 font-bold" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.partida}</td>
-                    <td className="px-4 py-3 font-black whitespace-nowrap" style={{ color: '#D4AF37', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.rango}</td>
-                    <td className="px-4 py-3" style={{ color: 'rgba(255,255,255,0.6)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.notas}</td>
+                  <tr key={row.partida} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)' }}>
+                    <td className="px-4 py-3 font-bold" style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{row.partida}</td>
+                    <td className="px-4 py-3 font-black whitespace-nowrap" style={{ color: '#6D28D9', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{row.rango}</td>
+                    <td className="px-4 py-3" style={{ color: '#333', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{row.notas}</td>
                   </tr>
                 ))}
               </tbody>
@@ -143,10 +145,10 @@ const faqStructured = {
               { label: 'Menú cerrado vs. a la carta', text: 'Un menú cerrado negociado con el restaurante es siempre más económico que un servicio a la carta o personalizado.' },
             ].map(item => (
               <li key={item.label} className="flex gap-3">
-                <Star size={13} className="flex-shrink-0 mt-0.5" style={{ color: '#D4AF37' }} />
+                <Star size={13} className="flex-shrink-0 mt-0.5" style={{ color: '#6D28D9' }} />
                 <div>
                   <span className="text-xs font-bold">{item.label}: </span>
-                  <span className="text-xs" style={{ color: 'rgba(255,255,255,0.72)' }}>{item.text}</span>
+                  <span className="text-xs" style={{ color: '#222' }}>{item.text}</span>
                 </div>
               </li>
             ))}
@@ -155,44 +157,44 @@ const faqStructured = {
           <h2 className="text-xl font-black mb-5">Preguntas frecuentes</h2>
           <div className="space-y-4 mb-12">
             {FAQ.map(faq => (
-              <div key={faq.q} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <div key={faq.q} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)' }}>
                 <p className="text-sm font-bold mb-2">{faq.q}</p>
-                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>{faq.a}</p>
+                <p className="text-sm leading-relaxed" style={{ color: '#444' }}>{faq.a}</p>
               </div>
             ))}
           </div>
 
-          <div className="rounded-2xl overflow-hidden mb-2" style={{ border: '1px solid rgba(212,175,55,0.2)' }}>
-            <div className="p-8" style={{ background: 'linear-gradient(135deg,#0e0e14 0%,#181410 100%)', borderBottom: '1px solid rgba(212,175,55,0.15)' }}>
+          <div className="rounded-2xl overflow-hidden mb-2" style={{ border: '1px solid rgba(109,40,217,0.2)' }}>
+            <div className="p-8" style={{ background: 'linear-gradient(135deg,#0e0e14 0%,#181410 100%)', color: '#fff', borderBottom: '1px solid rgba(109,40,217,0.15)' }}>
               <span className="text-[0.65rem] font-black uppercase tracking-widest px-2.5 py-1 rounded-full mb-3 inline-block"
-                style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
+                style={{ background: 'rgba(109,40,217,0.12)', color: '#6D28D9', border: '1px solid rgba(109,40,217,0.25)' }}>
                 Profesionales para comuniones
               </span>
               <h2 className="text-xl font-black mb-2 leading-snug">DJ, fotógrafo y animadores verificados para tu comunión</h2>
-              <p className="text-sm mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
+              <p className="text-base mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
                 Encuentra todos los profesionales que necesitas en XPEAK. Tarifas públicas, perfiles verificados y Flash Booking para reservar en minutos.
               </p>
               <a href="/auth"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
-                style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>
                 <Zap size={15} /> Ver profesionales disponibles
               </a>
             </div>
-            <div className="p-6 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ background: 'rgba(255,255,255,0.02)' }}>
+            <div className="p-6 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ background: 'rgba(0,0,0,0.02)' }}>
               <div>
                 <p className="text-sm font-black mb-0.5">¿Eres DJ o fotógrafo de comuniones?</p>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>Crea tu perfil gratis y empieza a recibir solicitudes</p>
+                <p className="text-xs" style={{ color: '#333' }}>Crea tu perfil gratis y empieza a recibir solicitudes</p>
               </div>
               <a href="/auth?mode=register"
                 className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-xs transition-all hover:scale-105"
-                style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)', whiteSpace: 'nowrap' }}>
+                style={{ background: 'rgba(109,40,217,0.1)', color: '#6D28D9', border: '1px solid rgba(109,40,217,0.25)', whiteSpace: 'nowrap' }}>
                 Crear perfil gratis →
               </a>
             </div>
           </div>
 
           <div className="mt-12">
-            <h2 className="text-lg font-black mb-5" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+            <h2 className="text-lg font-black mb-5" style={{ color: '#111' }}>Artículos relacionados</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
                 { href: '/blog/comuniones-guia-completa', tag: 'Hub Comuniones', title: 'Comuniones en España: guía completa 2026', desc: 'Presupuesto, DJ, fotógrafo, catering y animación para tu comunión.' },
@@ -202,11 +204,11 @@ const faqStructured = {
               ].map(p => (
                 <a key={p.href} href={p.href}
                   className="block p-5 rounded-2xl transition-all hover:scale-[1.02]"
-                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
                   <span className="inline-block text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded mb-2"
-                    style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.18)' }}>{p.tag}</span>
+                    style={{ background: 'rgba(109,40,217,0.1)', color: '#6D28D9', border: '1px solid rgba(109,40,217,0.18)' }}>{p.tag}</span>
                   <p className="text-sm font-black leading-snug mb-1">{p.title}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{p.desc}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{p.desc}</p>
                 </a>
               ))}
             </div>
@@ -215,7 +217,9 @@ const faqStructured = {
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuanto-cuesta-una-comunion-en-espana" />
+        <BlogRelatedPosts currentSlug='/blog/cuanto-cuesta-una-comunion-en-espana' tag='Eventos' />
         <FooterPublic />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_comunion_costo" />
       </div>
     </>
   );

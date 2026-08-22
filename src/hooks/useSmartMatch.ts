@@ -132,8 +132,8 @@ export function useSmartMatch(query: MatchQuery | null): { results: MatchedProfe
     const [profilesRes, reviewsRes, availRes] = await Promise.all([
       supabase
         .from('profiles')
-        .select('user_id, display_name, role, specialty, zone, photo_url, hourly_rate, is_flash_active, is_verified, is_early_adopter, score, fast_responder_count')
-        .eq('role', query.role)
+        .select('user_id, display_name, role, roles, specialty, zone, photo_url, hourly_rate, is_flash_active, is_verified, is_early_adopter, score, fast_responder_count')
+        .contains('roles', [query.role])
         .not('display_name', 'is', null)
         .limit(100),
       supabase.from('reviews').select('reviewed_user_id, rating').eq('approved', true),

@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 
 const ARTICLES = [
   { href: '/blog/cuanto-cobra-un-camarero-de-eventos', tag: 'Camareros', title: 'Cuánto cobra un camarero de eventos 2026', desc: 'Precios reales para bodas, eventos de empresa y fiestas privadas.' },
@@ -24,7 +25,7 @@ const article = { '@context': 'https://schema.org', '@type': 'Article', headline
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: FAQ.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Staff para eventos', item: 'https://xpeak.es/blog/staff-para-eventos' }] };
 
-const TAG_COLOR: Record<string, string> = { Camareros: '#60a5fa', Discoteca: '#34d399', Azafatas: '#f472b6', Barman: '#fbbf24', Promotores: '#a78bfa', Animadores: '#D4AF37', Imagen: '#f472b6', Guía: '#D4AF37' };
+const TAG_COLOR: Record<string, string> = { Camareros: '#60a5fa', Discoteca: '#34d399', Azafatas: '#f472b6', Barman: '#fbbf24', Promotores: '#a78bfa', Animadores: '#2563EB', Imagen: '#f472b6', Guía: '#2563EB' };
 
 export default function HubStaff() {
   return (
@@ -46,12 +47,12 @@ export default function HubStaff() {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#2563EB' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#2563EB,#B8941E)', color: '#000' }}>Unirse gratis</a>
           </div>
         </nav>
 
@@ -59,15 +60,15 @@ export default function HubStaff() {
           <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
 
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Staff · XPEAK Blog</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#2563EB' }}>Staff · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Staff para eventos en España: camareros, hostesses y personal profesional (2026)</h1>
             <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Guía completa sobre contratación de personal para eventos. Precios reales, ratios por número de invitados y diferencias entre cada perfil profesional.</p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>27 mayo 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>27 mayo 2026</time>
           </div>
 
           <div className="space-y-10">
             <section>
-              <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.72)' }}>
+              <p className="text-sm leading-relaxed mb-4" style={{ color: '#222' }}>
                 El personal de sala es una de las partidas más infravaloradas en la organización de eventos. Un camarero mal elegido o un ratio insuficiente puede arruinar la experiencia de tus invitados aunque todo lo demás sea perfecto. Esta guía cubre todos los perfiles, sus precios reales y cuántos necesitas según el tipo y tamaño de tu evento.
               </p>
             </section>
@@ -76,10 +77,10 @@ export default function HubStaff() {
               <h2 className="text-lg font-black mb-4">Guías por perfil de personal</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {ARTICLES.map(a => (
-                  <a key={a.href} href={a.href} className="block p-4 rounded-xl transition-all hover:scale-[1.02]" style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
-                    <span className="inline-block text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded mb-2" style={{ background: 'rgba(212,175,55,0.1)', color: TAG_COLOR[a.tag] || '#D4AF37', border: `1px solid ${TAG_COLOR[a.tag] || '#D4AF37'}22` }}>{a.tag}</span>
+                  <a key={a.href} href={a.href} className="block p-4 rounded-xl transition-all hover:scale-[1.02]" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
+                    <span className="inline-block text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded mb-2" style={{ background: 'rgba(37,99,235,0.1)', color: TAG_COLOR[a.tag] || '#2563EB', border: `1px solid ${TAG_COLOR[a.tag] || '#2563EB'}22` }}>{a.tag}</span>
                     <p className="text-sm font-black leading-snug mb-1">{a.title}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{a.desc}</p>
+                    <p className="text-xs leading-relaxed" style={{ color: '#333' }}>{a.desc}</p>
                   </a>
                 ))}
               </div>
@@ -96,9 +97,9 @@ export default function HubStaff() {
                   { perfil: 'Animador infantil', tarifa: '150–350€ el evento (3-4h)' },
                   { perfil: 'Relaciones Públicas (RRPP)', tarifa: '80–300€/noche + % taquilla' },
                 ].map((row, i) => (
-                  <div key={row.perfil} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.04)' }}>
+                  <div key={row.perfil} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <p className="text-xs font-medium">{row.perfil}</p>
-                    <span className="text-xs font-bold ml-4 shrink-0" style={{ color: '#D4AF37' }}>{row.tarifa}</span>
+                    <span className="text-xs font-bold ml-4 shrink-0" style={{ color: '#2563EB' }}>{row.tarifa}</span>
                   </div>
                 ))}
               </div>
@@ -109,21 +110,22 @@ export default function HubStaff() {
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
                 {FAQ.map(f => (
-                  <div key={f.q} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={f.q} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <p className="text-sm font-bold mb-2">{f.q}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.a}</p>
+                    <p className="text-xs leading-relaxed" style={{ color: '#222' }}>{f.a}</p>
                   </div>
                 ))}
               </div>
             </section>
 
-            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
+            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(37,99,235,0.04)', border: '1px solid rgba(37,99,235,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Necesitas personal para tu evento?</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>XPEAK tiene camareros, hostesses, bármanes y promotores verificados en toda España. Flash Booking en menos de 1h. Gratis para organizadores.</p>
-              <a href="/contratar-staff" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver staff disponible en XPEAK →</a>
+              <a href="/contratar-staff" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#2563EB,#B8941E)', color: '#000' }}>Ver staff disponible en XPEAK →</a>
             </div>
           </div>
         </main>
+        <BlogRelatedPosts currentSlug='/blog/staff-para-eventos' tag='Camareros' />
         <FooterPublic />
       </div>
     </>

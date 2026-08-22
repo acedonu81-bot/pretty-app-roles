@@ -15,12 +15,20 @@ export const isAndroid = Capacitor.getPlatform() === 'android';
 export async function initCapacitor(onBack?: () => boolean) {
   if (!isNative) return;
 
-  // Status bar — dark background to match XPEAK theme
+  // Marca el body como app nativa → el CSS reserva el safe-area superior para
+  // que ninguna pantalla quede tapada por la barra de estado (overlay:true).
+  document.body.classList.add('is-native-app');
+
+  // Status bar — overlay TRUE: la webview ocupa toda la pantalla (incluido bajo
+  // la barra de estado). El feed fullscreen se ve completo y los controles de
+  // UI respetan el safe-area (var(--sat)) para no quedar tapados por la hora/
+  // batería. Con overlay:false la barra recortaba la parte superior del feed.
   try {
     await StatusBar.setStyle({ style: Style.Dark });
-    await StatusBar.setBackgroundColor({ color: '#080808' });
     if (isAndroid) {
-      await StatusBar.setOverlaysWebView({ overlay: false });
+      await StatusBar.setOverlaysWebView({ overlay: true });
+    } else {
+      await StatusBar.setBackgroundColor({ color: '#080808' });
     }
   } catch { /* ignore on web */ }
 

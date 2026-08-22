@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Crown, Users, Globe, Zap } from 'lucide-react';
 import { Profile } from '@/data/profiles';
 import ProfileCard from '@/components/dashboard/ProfileCard';
@@ -26,102 +27,112 @@ const CITY_OPTIONS = [
   'Alicante', 'Granada', 'Tenerife', 'Las Palmas de Gran Canaria',
 ].map(c => ({ value: c, label: c }));
 
+async function fetchDirectoryProfiles(role: string, roles: string[] | undefined, filterCity: string): Promise<Profile[]> {
+  const activeRoles = roles ?? [role];
+  let query = supabase
+    .from('profiles')
+    .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, category, is_verified, is_flash_active, is_early_adopter, priority_badge_until, score, role, seeking_dance_partner, dance_level, dance_role, created_at')
+    .in('role', activeRoles)
+    .limit(200);
+
+  if (filterCity !== 'Todas las ciudades') {
+    query = query.ilike('zone', `%${filterCity}%`);
+  }
+
+  const reviewsPromise = supabase
+    .from('reviews')
+    .select('reviewed_user_id, rating')
+    .eq('approved', true);
+
+  const [{ data }, { data: reviewsData }] = await Promise.all([query.order('score', { ascending: false }), reviewsPromise]);
+  if (!data) return [];
+
+  const ratingMap = new Map<string, { sum: number; count: number }>();
+  (reviewsData ?? []).forEach((r: any) => {
+    if (!r.reviewed_user_id) return;
+    const entry = ratingMap.get(r.reviewed_user_id) || { sum: 0, count: 0 };
+    entry.sum += r.rating;
+    entry.count += 1;
+    ratingMap.set(r.reviewed_user_id, entry);
+  });
+
+  return data
+    .filter(row => row.display_name && row.display_name.trim().length > 1)
+    .sort((a, b) => {
+      // Perfil completo sube: media (sesión/portfolio) > foto > bio (modelo GigSalad)
+      const completeness = (p: any): number => {
+        const hasMedia = !!(p.audio_embed_url?.trim())
+          || (Array.isArray(p.audio_session_urls) && p.audio_session_urls.length > 0)
+          || (Array.isArray(p.portfolio_urls) && p.portfolio_urls.length > 0);
+        return (hasMedia ? 4 : 0) + (p.photo_url ? 2 : 0) + (p.bio?.trim() ? 1 : 0);
+      };
+      const aEarly = (a as any).is_early_adopter ? 1 : 0;
+      const bEarly = (b as any).is_early_adopter ? 1 : 0;
+      if (bEarly !== aEarly) return bEarly - aEarly;
+      const hasPriority = (p: any) => p.priority_badge_until && new Date(p.priority_badge_until) > new Date();
+      const aPriority = hasPriority(a) ? 1 : 0;
+      const bPriority = hasPriority(b) ? 1 : 0;
+      if (bPriority !== aPriority) return bPriority - aPriority;
+      if ((b.is_verified ? 1 : 0) !== (a.is_verified ? 1 : 0)) return (b.is_verified ? 1 : 0) - (a.is_verified ? 1 : 0);
+      if (completeness(b) !== completeness(a)) return completeness(b) - completeness(a);
+      return (b.score ?? 0) - (a.score ?? 0);
+    })
+    .map((row) => {
+      const stats = ratingMap.get(row.user_id);
+      return {
+      id: row.id,
+      userId: row.user_id,
+      name: row.display_name || 'Sin nombre',
+      role: (row as { role?: string }).role as Profile['role'] ?? role as Profile['role'],
+      specialty: row.specialty || '',
+      rating: stats ? Math.round((stats.sum / stats.count) * 10) / 10 : 0,
+      reviews: stats?.count ?? 0,
+      location: row.zone || 'España',
+      zone: row.zone || '',
+      experience: '',
+      price: row.hourly_rate ?? 0,
+      priceUnit: '/hora',
+      avatar: (row.display_name || 'X').charAt(0).toUpperCase(),
+      gradient: 'linear-gradient(135deg,#D4AF37,#B8941E)',
+      badges: row.genres ?? [],
+      description: row.bio || '',
+      phone: '',
+      instagram: '',
+      topWeekend: false,
+      photo: row.photo_url || '',
+      subscriptionTier: (row.subscription_tier as Profile['subscriptionTier']) ?? 'free',
+      isFlashActive: row.is_flash_active ?? false,
+      profileViews: (row.score as number) ?? 0,
+      contactClicks: 0,
+      isPremium: row.subscription_tier !== 'free',
+      languages: row.languages ?? [],
+      tiktok: row.tiktok || '',
+      category: (row.category as Profile['category']) ?? 'professional',
+      isVerified: row.is_verified ?? false,
+      isEarlyAdopter: (row as any).is_early_adopter ?? false,
+      hasPriorityBadge: !!((row as any).priority_badge_until && new Date((row as any).priority_badge_until) > new Date()),
+      isNew: !!((row as any).created_at && (Date.now() - new Date((row as any).created_at).getTime()) < 30 * 24 * 60 * 60 * 1000),
+      seekingDancePartner: (row as any).seeking_dance_partner ?? false,
+      danceLevel: (row as any).dance_level ?? null,
+      danceRole: (row as any).dance_role ?? null,
+    };});
+}
+
 const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wideCards, searchQuery, onViewProfile }: DirectoryViewProps) => {
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [checkoutItem, setCheckoutItem] = useState<{ name: string; price: number; description: string } | null>(null);
-  const [realProfiles, setRealProfiles] = useState<Profile[]>([]);
-  const [loadingProfiles, setLoadingProfiles] = useState(true);
   const [filterCity, setFilterCity] = useState('Todas las ciudades');
   const [filterFlash, setFilterFlash] = useState(false);
   const [filterVerified, setFilterVerified] = useState(false);
+  const [filterSeekingPartner, setFilterSeekingPartner] = useState(false);
+  const [filterDanceRole, setFilterDanceRole] = useState<'' | 'lead' | 'follow'>('');
 
-  useEffect(() => {
-    setLoadingProfiles(true);
-    const baseRoles = roles ?? [role];
-    // 'camarero' es un rol legacy (opción retirada) — se muestra junto a staff
-    const activeRoles = baseRoles.includes('staff') ? [...baseRoles, 'camarero'] : baseRoles;
-    let query = supabase
-      .from('profiles')
-      .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, category, is_verified, is_flash_active, is_early_adopter, score, role')
-      .in('role', activeRoles)
-      .limit(200);
-
-    if (filterCity !== 'Todas las ciudades') {
-      query = query.ilike('zone', `%${filterCity}%`);
-    }
-
-    const reviewsPromise = supabase
-      .from('reviews')
-      .select('reviewed_user_id, rating')
-      .eq('approved', true);
-
-    Promise.all([query.order('score', { ascending: false }), reviewsPromise]).then(([{ data }, { data: reviewsData }]) => {
-      if (!data) { setLoadingProfiles(false); return; }
-
-      const ratingMap = new Map<string, { sum: number; count: number }>();
-      (reviewsData ?? []).forEach((r: any) => {
-        if (!r.reviewed_user_id) return;
-        const entry = ratingMap.get(r.reviewed_user_id) || { sum: 0, count: 0 };
-        entry.sum += r.rating;
-        entry.count += 1;
-        ratingMap.set(r.reviewed_user_id, entry);
-      });
-
-      const mapped: Profile[] = data
-        .filter(row => row.display_name && row.display_name.trim().length > 1)
-        .sort((a, b) => {
-          // Perfil completo sube: media (sesión/portfolio) > foto > bio (modelo GigSalad)
-          const completeness = (p: any): number => {
-            const hasMedia = !!(p.audio_embed_url?.trim())
-              || (Array.isArray(p.audio_session_urls) && p.audio_session_urls.length > 0)
-              || (Array.isArray(p.portfolio_urls) && p.portfolio_urls.length > 0);
-            return (hasMedia ? 4 : 0) + (p.photo_url ? 2 : 0) + (p.bio?.trim() ? 1 : 0);
-          };
-          const aEarly = (a as any).is_early_adopter ? 1 : 0;
-          const bEarly = (b as any).is_early_adopter ? 1 : 0;
-          if (bEarly !== aEarly) return bEarly - aEarly;
-          if ((b.is_verified ? 1 : 0) !== (a.is_verified ? 1 : 0)) return (b.is_verified ? 1 : 0) - (a.is_verified ? 1 : 0);
-          if (completeness(b) !== completeness(a)) return completeness(b) - completeness(a);
-          return (b.score ?? 0) - (a.score ?? 0);
-        })
-        .map((row) => {
-          const stats = ratingMap.get(row.user_id);
-          return {
-          id: row.id,
-          userId: row.user_id,
-          name: row.display_name || 'Sin nombre',
-          role: (row as { role?: string }).role as Profile['role'] ?? role as Profile['role'],
-          specialty: row.specialty || '',
-          rating: stats ? Math.round((stats.sum / stats.count) * 10) / 10 : 0,
-          reviews: stats?.count ?? 0,
-          location: row.zone || 'España',
-          zone: row.zone || '',
-          experience: '',
-          price: row.hourly_rate ?? 0,
-          priceUnit: '/hora',
-          avatar: (row.display_name || 'X').charAt(0).toUpperCase(),
-          gradient: 'linear-gradient(135deg,#D4AF37,#B8941E)',
-          badges: row.genres ?? [],
-          description: row.bio || '',
-          phone: '',
-          instagram: '',
-          topWeekend: false,
-          photo: row.photo_url || '',
-          subscriptionTier: (row.subscription_tier as Profile['subscriptionTier']) ?? 'free',
-          isFlashActive: row.is_flash_active ?? false,
-          profileViews: (row.score as number) ?? 0,
-          contactClicks: 0,
-          isPremium: row.subscription_tier !== 'free',
-          languages: row.languages ?? [],
-          tiktok: row.tiktok || '',
-          category: (row.category as Profile['category']) ?? 'professional',
-          isVerified: row.is_verified ?? false,
-          isEarlyAdopter: (row as any).is_early_adopter ?? false,
-        };});
-      setRealProfiles(mapped);
-      setLoadingProfiles(false);
-    });
-  }, [role, roles, filterCity]);
+  const { data: realProfiles = [], isLoading: loadingProfiles } = useQuery({
+    queryKey: ['directory-profiles', role, roles, filterCity],
+    queryFn: () => fetchDirectoryProfiles(role, roles, filterCity),
+    staleTime: 60_000, // datos frescos 1 min — cambiar de rol y volver no re-fetchea
+    gcTime: 10 * 60_000, // mantiene en caché 10 min aunque el componente se desmonte
+  });
 
   const filteredProfiles = realProfiles.filter(p => {
     if (searchQuery?.trim()) {
@@ -132,6 +143,8 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
     }
     if (filterFlash && !p.isFlashActive) return false;
     if (filterVerified && !p.isVerified) return false;
+    if (filterSeekingPartner && !p.seekingDancePartner) return false;
+    if (filterDanceRole && p.danceRole !== filterDanceRole && p.danceRole !== 'ambos') return false;
     return true;
   });
 
@@ -151,7 +164,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
         {onNavigate && (
           <button
             onClick={() => onNavigate('flashbooking')}
-            className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 self-start sm:self-auto"
+            className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all hover:scale-105 self-start sm:self-auto"
             style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
             <Zap size={14} /> Flash Booking
           </button>
@@ -159,7 +172,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
       </div>
 
       {/* Salas activas strip — desktop only (mobile keeps the fold clean; Flash is in bottom nav) */}
-      <div className="hidden sm:flex items-center gap-2 mb-4 px-3 py-2 rounded-lg text-xs"
+      <div className="hidden sm:flex items-center gap-2 mb-4 px-3 py-2 rounded-full text-xs"
         style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}>
         <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 animate-pulse" style={{ background: '#D4AF37' }} />
         <span style={{ color: '#222' }}>
@@ -168,7 +181,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
         </span>
         {onNavigate && (
           <button onClick={() => onNavigate('flash')}
-            className="ml-auto flex-shrink-0 text-[0.7rem] font-bold px-2 py-1 rounded-md transition-all hover:opacity-80"
+            className="ml-auto flex-shrink-0 text-[0.7rem] font-bold px-2.5 py-1 rounded-full transition-all hover:opacity-80"
             style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.15)' }}>
             Ver ofertas →
           </button>
@@ -191,7 +204,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
         />
         <button
           onClick={() => setFilterFlash(v => !v)}
-          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex-shrink-0"
+          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-bold transition-all flex-shrink-0"
           style={{
             background: filterFlash ? 'rgba(34,197,94,0.12)' : 'rgba(0,0,0,0.03)',
             border: `1px solid ${filterFlash ? 'rgba(34,197,94,0.35)' : 'rgba(0,0,0,0.08)'}`,
@@ -201,7 +214,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
         </button>
         <button
           onClick={() => setFilterVerified(v => !v)}
-          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex-shrink-0"
+          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-bold transition-all flex-shrink-0"
           style={{
             background: filterVerified ? 'rgba(212,175,55,0.12)' : 'rgba(0,0,0,0.03)',
             border: `1px solid ${filterVerified ? 'rgba(212,175,55,0.35)' : 'rgba(0,0,0,0.08)'}`,
@@ -209,9 +222,45 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
           }}>
           <Crown size={11} /> Verificado
         </button>
-        {(filterCity !== 'Todas las ciudades' || filterFlash || filterVerified) && (
-          <button onClick={() => { setFilterCity('Todas las ciudades'); setFilterFlash(false); setFilterVerified(false); }}
-            className="text-xs font-bold px-2 py-1 rounded transition-all hover:opacity-70 flex-shrink-0"
+        {role === 'bailarin' && (
+          <button
+            onClick={() => setFilterSeekingPartner(v => !v)}
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-bold transition-all flex-shrink-0"
+            style={{
+              background: filterSeekingPartner ? 'rgba(212,175,55,0.12)' : 'rgba(0,0,0,0.03)',
+              border: `1px solid ${filterSeekingPartner ? 'rgba(212,175,55,0.35)' : 'rgba(0,0,0,0.08)'}`,
+              color: filterSeekingPartner ? '#D4AF37' : '#555',
+            }}>
+            <Users size={11} /> Buscan pareja
+          </button>
+        )}
+        {role === 'bailarin' && filterSeekingPartner && (
+          <>
+            <button
+              onClick={() => setFilterDanceRole(v => v === 'lead' ? '' : 'lead')}
+              className="px-2.5 py-1.5 rounded-full text-xs font-bold transition-all flex-shrink-0"
+              style={{
+                background: filterDanceRole === 'lead' ? 'rgba(212,175,55,0.12)' : 'rgba(0,0,0,0.03)',
+                border: `1px solid ${filterDanceRole === 'lead' ? 'rgba(212,175,55,0.35)' : 'rgba(0,0,0,0.08)'}`,
+                color: filterDanceRole === 'lead' ? '#D4AF37' : '#555',
+              }}>
+              Leaders
+            </button>
+            <button
+              onClick={() => setFilterDanceRole(v => v === 'follow' ? '' : 'follow')}
+              className="px-2.5 py-1.5 rounded-full text-xs font-bold transition-all flex-shrink-0"
+              style={{
+                background: filterDanceRole === 'follow' ? 'rgba(212,175,55,0.12)' : 'rgba(0,0,0,0.03)',
+                border: `1px solid ${filterDanceRole === 'follow' ? 'rgba(212,175,55,0.35)' : 'rgba(0,0,0,0.08)'}`,
+                color: filterDanceRole === 'follow' ? '#D4AF37' : '#555',
+              }}>
+              Followers
+            </button>
+          </>
+        )}
+        {(filterCity !== 'Todas las ciudades' || filterFlash || filterVerified || filterSeekingPartner) && (
+          <button onClick={() => { setFilterCity('Todas las ciudades'); setFilterFlash(false); setFilterVerified(false); setFilterSeekingPartner(false); setFilterDanceRole(''); }}
+            className="text-xs font-bold px-2.5 py-1 rounded-full transition-all hover:opacity-70 flex-shrink-0"
             style={{ background: 'rgba(0,0,0,0.04)', color: '#333', border: '1px solid rgba(0,0,0,0.08)' }}>
             Limpiar ✕
           </button>
@@ -250,7 +299,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
 
       {!loadingProfiles && filteredProfiles.length === 0 && (
         <div className="glass-panel p-10 flex flex-col items-center text-center gap-3 mb-5">
-          <div className="w-12 h-12 rounded-xl flex items-center justify-center"
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
             style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.12)' }}>
             <Users size={20} style={{ color: 'rgba(212,175,55,0.35)' }} />
           </div>
@@ -263,7 +312,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
             </p>
             {(filterCity !== 'Todas las ciudades' || filterFlash || filterVerified) && (
               <button onClick={() => { setFilterCity('Todas las ciudades'); setFilterFlash(false); setFilterVerified(false); }}
-                className="text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-105"
+                className="text-xs font-bold px-3 py-1.5 rounded-full transition-all hover:scale-105"
                 style={{ background: 'rgba(212,175,55,0.08)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.2)' }}>
                 Quitar filtros
               </button>

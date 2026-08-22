@@ -40,6 +40,65 @@ for (const m of APP.matchAll(/<Route path="([^"]+)" element={<(\w+)/g)) {
   if (file) routes.push({ routePath, file });
 }
 
+// Rutas dinámicas /contratar-:categoria/:ciudad → CityLanding. StaticRouter
+// soporta cualquier location string, así que basta con expandir cada
+// combinación real (misma fuente que prerender-meta.mjs) y apuntarlas todas
+// al mismo componente.
+function extractObjectLiteral(filePath, exportName) {
+  const src = fs.readFileSync(filePath, 'utf8');
+  const marker = `export const ${exportName}`;
+  const markerIdx = src.indexOf(marker);
+  if (markerIdx === -1) throw new Error(`${marker} not found in ${filePath}`);
+  const braceStart = src.indexOf('{', src.indexOf('=', markerIdx));
+  let depth = 0, end = -1;
+  for (let i = braceStart; i < src.length; i++) {
+    if (src[i] === '{') depth++;
+    else if (src[i] === '}') { depth--; if (depth === 0) { end = i; break; } }
+  }
+  if (end === -1) throw new Error(`Unbalanced braces reading ${exportName}`);
+  // eslint-disable-next-line no-eval
+  const obj = eval(`(${src.slice(braceStart, end + 1)})`);
+  // Alias post-objeto tipo "CATEGORY_DATA.animadores = CATEGORY_DATA.animador;"
+  const aliasRe = new RegExp(`${exportName}\\.(\\w+)\\s*=\\s*${exportName}\\.(\\w+);`, 'g');
+  for (const m of src.slice(end + 1).matchAll(aliasRe)) {
+    obj[m[1]] = obj[m[2]];
+  }
+  return obj;
+}
+
+// CATEGORIES (CityLanding.tsx) es la fuente real que consume el componente en
+// runtime, sin restricción de ciudades — a diferencia de CATEGORY_DATA.cities
+// (CategoryLanding.tsx) que es solo una lista curada corta para /contratar-X
+// sin ciudad. Solo se generan combinaciones cuya ruta /contratar-X/:ciudad
+// esté realmente registrada en App.tsx (evita prerenderizar 404s).
+const CITY_CATEGORIES = extractObjectLiteral(path.join(ROOT, 'src', 'pages', 'CityLanding.tsx'), 'CATEGORIES');
+const CITIES = extractObjectLiteral(path.join(ROOT, 'src', 'pages', 'CityLanding.tsx'), 'CITIES');
+const routedCitySlugs = [...APP.matchAll(/<Route path="\/contratar-([a-z-]+)\/:ciudad"/g)].map(m => m[1]);
+let dynamicCount = 0;
+for (const catSlug of routedCitySlugs) {
+  if (!CITY_CATEGORIES[catSlug]) continue;
+  for (const citySlug of Object.keys(CITIES)) {
+    routes.push({ routePath: `/contratar-${catSlug}/${citySlug}`, file: 'CityLanding.tsx', routePattern: `/contratar-${catSlug}/:ciudad` });
+    dynamicCount++;
+  }
+}
+console.log(`  → ${dynamicCount} rutas ciudad/categoría dinámicas añadidas al prerender de contenido`);
+
+// Rutas de ocasión /:ocasion/contratar-:rol → OccasionLanding. Se leen de
+// ROLES_POR_OCASION (OccasionLanding.tsx) y se registran como rutas explícitas
+// en App.tsx, así que todas existen y no generan 404s.
+const OCC_ROLES = extractObjectLiteral(path.join(ROOT, 'src', 'pages', 'OccasionLanding.tsx'), 'ROLES_POR_OCASION');
+let occCount = 0;
+for (const [occSlug, roleSlugs] of Object.entries(OCC_ROLES)) {
+  for (const roleSlug of roleSlugs) {
+    const routePath = `/${occSlug}/contratar-${roleSlug}`;
+    if (!APP.includes(`path="${routePath}"`)) continue; // solo rutas realmente registradas
+    routes.push({ routePath, file: 'OccasionLanding.tsx' });
+    occCount++;
+  }
+}
+console.log(`  → ${occCount} rutas ocasión/rol añadidas al prerender de contenido`);
+
 // Shims mínimos de navegador para componentes que los tocan durante el render
 const memStorage = () => {
   const s = new Map();
@@ -60,19 +119,44 @@ const { renderPage } = await import(path.join(ROOT, 'dist-ssr', 'entry-prerender
 
 let ok = 0, failed = 0, missing = 0;
 const failures = [];
-for (const { routePath, file } of routes) {
+for (const { routePath, file, routePattern } of routes) {
   const htmlFile = routePath === '/'
     ? path.join(DIST, 'index.html')
     : path.join(DIST, routePath.slice(1), 'index.html');
   if (!fs.existsSync(htmlFile)) { missing++; continue; }
   try {
-    const { html, headScripts } = await renderPage(file, routePath);
+    const { html, headScripts } = await renderPage(file, routePath, routePattern);
     let doc = fs.readFileSync(htmlFile, 'utf8');
     // Sustituye el shell vacío (incluido el texto oculto legacy) por contenido real
     doc = doc.replace(/<div id="root">[\s\S]*?<\/div>\s*(?=<\/body>|\n\s*<\/body>)/, `<div id="root">${html}</div>\n  `);
     // JSON-LD y demás scripts de Helmet que aún no estén en el head
     if (headScripts && !doc.includes(headScripts.slice(0, 120))) {
       doc = doc.replace('</head>', `${headScripts}\n</head>`);
+    }
+    // Coherencia de autor: los artículos de blog declaran author Person:Daniel
+    // en su JSON-LD, así que su <meta author> global "XPEAK" contradice esa
+    // señal E-E-A-T. Alinéala a la persona en las rutas de blog; el resto del
+    // sitio conserva la marca como autor.
+    if (routePath.startsWith('/blog/')) {
+      doc = doc.replace(
+        /<meta name="author" content="XPEAK"\s*\/>/,
+        '<meta name="author" content="Daniel, Fundador de XPEAK" />'
+      );
+      // Blogs con BlogAnswerBox ("Respuesta rápida") declaran esas clases CSS —
+      // les añadimos SpeakableSpecification para que asistentes de voz
+      // (Google Assistant) puedan leer la respuesta directamente.
+      if (doc.includes('xpeak-speakable-answer') && !doc.includes('SpeakableSpecification')) {
+        const speakable = JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'WebPage',
+          url: `https://xpeak.es${routePath}`,
+          speakable: {
+            '@type': 'SpeakableSpecification',
+            cssSelector: ['.xpeak-speakable-question', '.xpeak-speakable-answer'],
+          },
+        });
+        doc = doc.replace('</head>', `<script type="application/ld+json">${speakable}</script>\n</head>`);
+      }
     }
     fs.writeFileSync(htmlFile, doc);
     ok++;

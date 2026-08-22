@@ -7,7 +7,7 @@ export default function BlogTopCTA({ label, href }: BlogTopCTAProps) {
   return (
     <div className="flex items-center justify-between gap-3 my-4 px-4 py-3 rounded-xl"
       style={{ background: 'rgba(212,175,55,0.07)', border: '1px solid rgba(212,175,55,0.2)' }}>
-      <p className="text-xs font-bold" style={{ color: 'rgba(255,255,255,0.7)' }}>
+      <p className="text-xs font-bold" style={{ color: '#222' }}>
         ⚡ Flash Booking — profesionales verificados en menos de 1h
       </p>
       <a href={href}

@@ -1,11 +1,14 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ residente de discoteca: precio, funciones y cómo contratarlo en España (2026)', description: 'Qué hace un DJ residente, cuánto cobra y cómo diferenciarlo de un DJ invitado. Precios por ciudad y tipo de sala en España 2026.', datePublished: '2026-05-07',
-  dateModified: '2026-05-25', author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-residente-discoteca-precio' };
+  dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-residente-discoteca-precio' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cobra un DJ residente de discoteca?', acceptedAnswer: { '@type': 'Answer', text: 'En España, un DJ residente en sala pequeña o mediana cobra entre 200€ y 600€ por noche. En salas de referencia de grandes ciudades (Madrid, Barcelona, Ibiza), el rango es 600€–2.000€. Los cachés mensuales para residencias largas oscilan entre 1.500€ y 8.000€/mes dependiendo del nivel del artista y la sala.' } },
   { '@type': 'Question', name: '¿Qué diferencia hay entre DJ residente y DJ invitado?', acceptedAnswer: { '@type': 'Answer', text: 'El DJ residente toca regularmente en la misma sala (semanalmente o en fechas fijas) y se convierte en imagen del club. El DJ invitado actúa puntualmente, normalmente como acto principal o en sesiones especiales. Los invitados suelen cobrar entre 2x y 10x más que el residente de la misma sala.' } },
@@ -39,7 +42,7 @@ export default function BlogDJResidenteDiscoteca() {
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3"><a href="/blog" className="text-xs font-bold" style={{ color: '#3d3d4e' }}>Blog</a><a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a></div>
@@ -49,17 +52,17 @@ export default function BlogDJResidenteDiscoteca() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>DJ · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ residente de discoteca: precio, funciones y cómo contratarlo en España (2026)</h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>El DJ residente es el corazón sonoro de una sala. Ni es un headliner de festival ni un DJ de boda — es un artista que conoce tu público como nadie. Esta guía te explica qué buscar y cuánto pagar.</p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>7 mayo 2026</time>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>El DJ residente es el corazón sonoro de una sala. Ni es un headliner de festival ni un DJ de boda — es un artista que conoce tu público como nadie. Esta guía te explica qué buscar y cuánto pagar.</p>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>7 mayo 2026</time>
           </div>
           <div className="space-y-10">
 
             <section>
               <h2 className="text-lg font-black mb-4">Precios de DJ residente por ciudad y tamaño de sala</h2>
-              <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+              <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
                 <table className="w-full text-xs">
-                  <thead><tr style={{ background: 'rgba(212,175,55,0.08)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}><th className="text-left px-4 py-3 font-bold">Ciudad</th><th className="px-4 py-3 font-bold text-center">Sala pequeña</th><th className="px-4 py-3 font-bold text-center">Sala mediana</th><th className="px-4 py-3 font-bold text-center hidden sm:table-cell">Sala grande / referencia</th></tr></thead>
-                  <tbody>{PRECIOS_CIUDAD.map((row, i) => (<tr key={row.ciudad} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}><td className="px-4 py-3 font-bold">{row.ciudad}</td><td className="px-4 py-3 text-center" style={{ color: '#3d3d4e' }}>{row.sala_pequeña}</td><td className="px-4 py-3 text-center font-bold" style={{ color: '#D4AF37' }}>{row.sala_mediana}</td><td className="px-4 py-3 text-center hidden sm:table-cell" style={{ color: '#D4AF37' }}>{row.sala_grande}</td></tr>))}</tbody>
+                  <thead><tr style={{ background: 'rgba(212,175,55,0.08)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}><th className="text-left px-4 py-3 font-bold">Ciudad</th><th className="px-4 py-3 font-bold text-center">Sala pequeña</th><th className="px-4 py-3 font-bold text-center">Sala mediana</th><th className="px-4 py-3 font-bold text-center hidden sm:table-cell">Sala grande / referencia</th></tr></thead>
+                  <tbody>{PRECIOS_CIUDAD.map((row, i) => (<tr key={row.ciudad} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)', borderBottom: '1px solid rgba(0,0,0,0.04)' }}><td className="px-4 py-3 font-bold">{row.ciudad}</td><td className="px-4 py-3 text-center" style={{ color: '#3d3d4e' }}>{row.sala_pequeña}</td><td className="px-4 py-3 text-center font-bold" style={{ color: '#D4AF37' }}>{row.sala_mediana}</td><td className="px-4 py-3 text-center hidden sm:table-cell" style={{ color: '#D4AF37' }}>{row.sala_grande}</td></tr>))}</tbody>
                 </table>
               </div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios por noche (caché por sesión). Ibiza incluye temporada alta (junio–septiembre).</p>
@@ -72,7 +75,7 @@ export default function BlogDJResidenteDiscoteca() {
                   { tipo: 'DJ Residente', icon: '🏠', color: '#D4AF37', puntos: ['Toca regularmente (semanal o quincenal)', 'Conoce el público y lo fideliza', 'Precio más estable y previsible', 'Se convierte en imagen del club', 'Warm-up y closing habitualmente', 'Caché más bajo que el invitado'], uso: 'Modelo para salas locales y clubes de barrio' },
                   { tipo: 'DJ Invitado', icon: '⭐', color: '#818cf8', puntos: ['Toca en fechas especiales o festivales internos', 'Atrae público nuevo y fans de su estilo', 'Caché entre 2x y 10x más alto', 'Requiere mayor promoción previa', 'No se implica en la identidad de la sala', 'Perfecto para eventos especiales'], uso: 'Necesario para fechas clave, cumpleaños de sala, halloweens, año nuevo' },
                 ].map(op => (
-                  <div key={op.tipo} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${op.color}22` }}>
+                  <div key={op.tipo} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.02)', border: `1px solid ${op.color}22` }}>
                     <p className="text-base font-black mb-3">{op.icon} {op.tipo}</p>
                     <ul className="space-y-1.5 mb-4">{op.puntos.map(p => <li key={p} className="text-xs flex items-start gap-1.5"><span style={{ color: op.color }}>·</span> <span style={{ color: '#3d3d4e' }}>{p}</span></li>)}</ul>
                     <p className="text-xs px-2 py-1.5 rounded-lg" style={{ background: `${op.color}10`, color: op.color, border: `1px solid ${op.color}25` }}>{op.uso}</p>
@@ -90,9 +93,9 @@ export default function BlogDJResidenteDiscoteca() {
                   { titulo: 'Closing (cierre)', desc: 'El arte más subestimado: cerrar una noche bien es tan difícil como abrirla. El residente de closing baja la energía gradualmente o la mantiene alta hasta el último momento según la política de la sala.' },
                   { titulo: 'Identidad sonora', desc: 'A medio plazo, el residente define el sonido del club. Su selección musical construye una comunidad de público fiel que vuelve precisamente por ese estilo. Este valor es intangible pero enorme.' },
                 ].map(f => (
-                  <div key={f.titulo} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={f.titulo} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <p className="text-sm font-bold mb-1" style={{ color: '#D4AF37' }}>{f.titulo}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: '#3d3d4e' }}>{f.desc}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>{f.desc}</p>
                   </div>
                 ))}
               </div>
@@ -110,9 +113,9 @@ export default function BlogDJResidenteDiscoteca() {
                   'Derechos de imagen: ¿puedes usar fotos y vídeos para redes sociales?',
                   'Duración de la residencia: mínimo de fechas o contrato por temporada',
                 ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-3 p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
+                  <div key={i} className="flex items-start gap-3 p-3 rounded-lg" style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
                     <span className="w-5 h-5 rounded-full flex items-center justify-center text-[0.6rem] font-black flex-shrink-0 mt-0.5" style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37' }}>{i + 1}</span>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.75)' }}>{item}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#222' }}>{item}</p>
                   </div>
                 ))}
               </div>
@@ -122,12 +125,12 @@ export default function BlogDJResidenteDiscoteca() {
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-3">
                 {faqStructured.mainEntity.map(q => (
-                  <details key={q.name} className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.07)' }}>
-                    <summary className="flex items-center justify-between px-4 py-3.5 cursor-pointer text-sm font-bold list-none" style={{ background: 'rgba(255,255,255,0.02)' }}>
+                  <details key={q.name} className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(0,0,0,0.07)' }}>
+                    <summary className="flex items-center justify-between px-4 py-3.5 cursor-pointer text-sm font-bold list-none" style={{ background: 'rgba(0,0,0,0.02)' }}>
                       {q.name}
                       <span className="text-xs ml-3 flex-shrink-0" style={{ color: '#D4AF37' }}>+</span>
                     </summary>
-                    <div className="px-4 py-3 text-sm leading-relaxed" style={{ color: '#3d3d4e', background: 'rgba(0,0,0,0.2)' }}>
+                    <div className="px-4 py-3 text-base leading-relaxed" style={{ color: '#3d3d4e', background: 'rgba(0,0,0,0.2)' }}>
                       {q.acceptedAnswer.text}
                     </div>
                   </details>
@@ -145,7 +148,7 @@ export default function BlogDJResidenteDiscoteca() {
             </section>
 
             <section>
-              <h2 className="text-base font-black mb-4" style={{ color: 'rgba(255,255,255,0.6)' }}>Artículos relacionados</h2>
+              <h2 className="text-base font-black mb-4" style={{ color: '#333' }}>Artículos relacionados</h2>
               <div className="grid sm:grid-cols-2 gap-3">
                 {[
                   { href: '/blog/dj-para-eventos', cat: 'Hub DJ', title: 'DJ para eventos: guía completa de precios 2026' },
@@ -154,17 +157,21 @@ export default function BlogDJResidenteDiscoteca() {
                   { href: '/blog/staff-de-discoteca-funciones-y-salario', title: 'Staff de discoteca: funciones y salario' },
                   { href: '/blog/como-organizar-fiesta-empresa', title: 'Cómo organizar una fiesta de empresa' },
                 ].map(a => (
-                  <a key={a.href} href={a.href} className="p-3 rounded-lg text-sm font-medium transition-all hover:scale-[1.01]" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.7)' }}>
+                  <a key={a.href} href={a.href} className="p-3 rounded-lg text-sm font-medium transition-all hover:scale-[1.01]" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)', color: '#222' }}>
                     {a.title} →
                   </a>
                 ))}
               </div>
             </section>
           </div>
+                  <DJResourcesAffiliate role="dj" />
+
                   <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-residente-discoteca-precio" />
 </main>
         <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/dj-residente-discoteca-precio' tag='DJ' />
         <FooterPublic />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_residente_discoteca" />
       </div>
     </>
   );

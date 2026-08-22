@@ -60,7 +60,8 @@
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "DENY",
         "Referrer-Policy": "strict-origin-when-cross-origin",
-        "Permissions-Policy": "camera=(), microphone=(), geolocation=(), encrypted-media=(self \"https://w.soundcloud.com\")"
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=(), encrypted-media=(self \"https://w.soundcloud.com\")",
+        "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload"
       },
       "continue": true
     },

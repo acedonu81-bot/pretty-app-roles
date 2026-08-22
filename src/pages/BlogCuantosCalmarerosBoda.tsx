@@ -1,6 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, ArrowLeft } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogInlineCTA from '@/components/BlogInlineCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
@@ -33,7 +35,7 @@ const faqStructured = {
     headline: 'Cuántos camareros necesito para mi boda: la guía definitiva 2026',
     datePublished: '2026-04-15',
     dateModified: '2026-06-08',
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     description: 'Guía definitiva 2026: cuántos camareros necesitas para tu boda según el número de invitados, formato del servicio y tipo de evento.',
   };
@@ -67,12 +69,12 @@ const faqStructured = {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#2563EB' }}>XPEAK</a>
           <a href="/auth"
             className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
-            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+            style={{ background: 'linear-gradient(90deg,#2563EB,#B8941E)', color: '#000' }}>
             Unirse gratis
           </a>
         </nav>
@@ -80,13 +82,13 @@ const faqStructured = {
 
         <article className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
           <a href="/contratar-camareros" className="inline-flex items-center gap-1.5 text-xs mb-6 transition-opacity hover:opacity-60"
-            style={{ color: 'rgba(212,175,55,0.7)' }}>
+            style={{ color: 'rgba(37,99,235,0.7)' }}>
             <ArrowLeft size={12} /> Contratar camareros para bodas
           </a>
 
           <div className="mb-4">
             <span className="text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded"
-              style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+              style={{ background: 'rgba(37,99,235,0.08)', color: '#2563EB', border: '1px solid rgba(37,99,235,0.2)' }}>
               Guía de bodas · 2026
             </span>
           </div>
@@ -94,7 +96,7 @@ const faqStructured = {
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-4 leading-tight">
             Cuántos camareros necesito para mi boda: la guía definitiva 2026
           </h1>
-          <p className="text-sm sm:text-base mb-8 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
+          <p className="text-base sm:text-base mb-8 leading-relaxed" style={{ color: '#333' }}>
             Una de las dudas más frecuentes al organizar una boda: ¿cuántos camareros contratar? Demasiado pocos y el servicio colapsa. Demasiados y el presupuesto se dispara. Esta guía te da los ratios exactos del sector.
           </p>
 
@@ -103,26 +105,26 @@ const faqStructured = {
             <div className="overflow-x-auto">
               <table className="w-full text-xs min-w-[480px]" style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
                 <thead>
-                  <tr style={{ background: 'rgba(212,175,55,0.08)' }}>
+                  <tr style={{ background: 'rgba(37,99,235,0.08)' }}>
                     {['Invitados', 'Cóctel', 'Cena sentada', 'Barra libre', 'Total estimado'].map(h => (
-                      <th key={h} className="px-4 py-3 text-left font-bold" style={{ color: '#D4AF37', borderBottom: '1px solid rgba(212,175,55,0.2)' }}>{h}</th>
+                      <th key={h} className="px-4 py-3 text-left font-bold" style={{ color: '#2563EB', borderBottom: '1px solid rgba(37,99,235,0.2)' }}>{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {RATIOS.map((row, i) => (
-                    <tr key={row.invitados} style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.02)' : 'transparent' }}>
+                    <tr key={row.invitados} style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.02)' : 'transparent' }}>
                       <td className="px-4 py-3 font-bold">{row.invitados}</td>
-                      <td className="px-4 py-3" style={{ color: 'rgba(255,255,255,0.7)' }}>{row.coctel}</td>
-                      <td className="px-4 py-3" style={{ color: 'rgba(255,255,255,0.7)' }}>{row.cena}</td>
-                      <td className="px-4 py-3" style={{ color: 'rgba(255,255,255,0.7)' }}>{row.barra}</td>
-                      <td className="px-4 py-3 font-black" style={{ color: '#D4AF37' }}>{row.total}</td>
+                      <td className="px-4 py-3" style={{ color: '#222' }}>{row.coctel}</td>
+                      <td className="px-4 py-3" style={{ color: '#222' }}>{row.cena}</td>
+                      <td className="px-4 py-3" style={{ color: '#222' }}>{row.barra}</td>
+                      <td className="px-4 py-3 font-black" style={{ color: '#2563EB' }}>{row.total}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <p className="text-xs mt-3" style={{ color: 'rgba(255,255,255,0.35)' }}>
+            <p className="text-xs mt-3" style={{ color: '#555' }}>
               * Ratios estándar del sector. Pueden variar según el espacio, el tipo de menú y la duración del evento.
             </p>
           </section>
@@ -132,7 +134,7 @@ const faqStructured = {
           <div className="space-y-8">
             <section>
               <h2 className="text-xl sm:text-2xl font-black mb-3">La regla de oro del catering de boda</h2>
-              <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.65)' }}>
+              <p className="text-base leading-relaxed mb-3" style={{ color: '#333' }}>
                 En el sector del catering existe una regla sencilla que funciona para la mayoría de bodas:
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
@@ -142,9 +144,9 @@ const faqStructured = {
                   { formato: '🍹 Barra libre', ratio: '1 bartender / 30–40 personas' },
                 ].map(({ formato, ratio }) => (
                   <div key={formato} className="p-4 rounded-xl text-center"
-                    style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
+                    style={{ background: 'rgba(37,99,235,0.05)', border: '1px solid rgba(37,99,235,0.15)' }}>
                     <p className="text-sm font-bold mb-1">{formato}</p>
-                    <p className="text-xs font-black" style={{ color: '#D4AF37' }}>{ratio}</p>
+                    <p className="text-xs font-black" style={{ color: '#2563EB' }}>{ratio}</p>
                   </div>
                 ))}
               </div>
@@ -160,8 +162,8 @@ const faqStructured = {
                   'Boda al aire libre con desplazamiento entre zonas (suma 1-2 camareros extra)',
                   'Invitados con movilidad reducida o niños (suma 1 camarero de apoyo)',
                 ].map(item => (
-                  <li key={item} className="flex items-start gap-2 text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                    <span style={{ color: '#D4AF37' }}>+</span> {item}
+                  <li key={item} className="flex items-start gap-2 text-sm" style={{ color: '#333' }}>
+                    <span style={{ color: '#2563EB' }}>+</span> {item}
                   </li>
                 ))}
               </ul>
@@ -169,7 +171,7 @@ const faqStructured = {
 
             <section>
               <h2 className="text-xl sm:text-2xl font-black mb-3">Cuánto cuesta el personal de una boda</h2>
-              <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.65)' }}>
+              <p className="text-base leading-relaxed mb-4" style={{ color: '#333' }}>
                 Con los ratios anteriores y precios de mercado 2026, el presupuesto aproximado en personal de sala para una boda es:
               </p>
               <div className="space-y-2">
@@ -180,13 +182,13 @@ const faqStructured = {
                   { inv: '200 invitados', rango: '1.600€ – 3.800€' },
                 ].map(({ inv, rango }) => (
                   <div key={inv} className="flex items-center justify-between p-3 rounded-lg text-sm"
-                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <span style={{ color: 'rgba(255,255,255,0.7)' }}>{inv}</span>
-                    <span className="font-black" style={{ color: '#D4AF37' }}>{rango}</span>
+                    style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                    <span style={{ color: '#222' }}>{inv}</span>
+                    <span className="font-black" style={{ color: '#2563EB' }}>{rango}</span>
                   </div>
                 ))}
               </div>
-              <p className="text-xs mt-3" style={{ color: 'rgba(255,255,255,0.35)' }}>
+              <p className="text-xs mt-3" style={{ color: '#555' }}>
                 * Precios orientativos para servicio completo (cóctel + cena + barra) de 6-7 horas. No incluye catering.
               </p>
             </section>
@@ -199,9 +201,9 @@ const faqStructured = {
                   { q: '¿Cuándo debo contratar el personal de la boda?', a: 'Para bodas con más de 50 invitados, recomendamos reservar el personal con al menos 2-3 meses de antelación. El Flash Booking de XPEAK puede cubrir necesidades urgentes en menos de 1 semana, pero el personal más solicitado se reserva con anticipación.' },
                   { q: '¿Puedo mezclar camareros de diferentes agencias?', a: 'Puedes, pero es mejor que todo el personal de sala provenga del mismo equipo o tenga experiencia trabajando juntos. La coordinación es clave para que el servicio fluya bien.' },
                 ].map(({ q, a }) => (
-                  <div key={q} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                  <div key={q} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)' }}>
                     <p className="text-sm font-bold mb-2">{q}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>{a}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#444' }}>{a}</p>
                   </div>
                 ))}
               </div>
@@ -210,7 +212,7 @@ const faqStructured = {
 
           
             <section className="mt-8">
-              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <h2 className="text-base font-black mb-3" style={{ color: '#111' }}>Artículos relacionados</h2>
               <div className="space-y-2">
                 {[
                   { href: '/blog/staff-para-eventos', cat: 'Hub Staff', title: 'Staff para eventos: guía completa 2026' },
@@ -220,21 +222,21 @@ const faqStructured = {
                   { href: '/blog/cuanto-cuesta-una-boda-en-espana', cat: 'Bodas', title: 'Cuánto cuesta una boda en España 2026' },
                   { href: '/blog/contratar-barman-evento-privado', cat: 'Staff', title: 'Barman evento privado: precio 2026' },
                 ].map(link => (
-                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
-                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
-                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(37,99,235,0.1)', color: '#2563EB', border: '1px solid rgba(37,99,235,0.15)' }}>{link.cat}</span>
+                    <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}
               </div>
             </section>
-            <div className="mt-12 rounded-2xl p-7 text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
+            <div className="mt-12 rounded-2xl p-7 text-center" style={{ background: 'rgba(37,99,235,0.05)', border: '1px solid rgba(37,99,235,0.15)' }}>
             <h2 className="text-xl font-black mb-2">Contrata el personal perfecto para tu boda</h2>
-            <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.5)' }}>
+            <p className="text-sm mb-5" style={{ color: '#444' }}>
               Gratis para organizadores · Camareros verificados · Contrato digital automático
             </p>
-            <a href="/auth"
+            <a href="/contratar-camareros"
               className="inline-flex items-center gap-2 px-7 py-3 rounded-xl font-black text-sm transition-all hover:scale-105"
-              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+              style={{ background: 'linear-gradient(90deg,#2563EB,#B8941E)', color: '#000' }}>
               <Zap size={14} /> Buscar camareros para mi boda
             </a>
           </div>
@@ -242,7 +244,9 @@ const faqStructured = {
           <BlogShare />
         </article>
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuantos-camareros-necesito-para-mi-boda" />
+        <BlogRelatedPosts currentSlug='/blog/cuantos-camareros-necesito-para-mi-boda' tag='Camareros' />
         <FooterPublic />
+        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_cuantos_calmareros_boda" />
       </div>
     </>
   );

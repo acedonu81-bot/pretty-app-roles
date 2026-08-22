@@ -87,14 +87,19 @@ const CalendarView = () => {
 
   useEffect(() => { fetchBlocked(); }, [fetchBlocked]);
 
+  // Sin comprobar error aquí, un fallo silencioso dejaba al profesional
+  // creyendo que bloqueó/liberó una fecha mientras el perfil público (que
+  // lee de esta misma tabla) seguía mostrando el estado anterior.
   const toggleBlocked = async (dateStr: string) => {
     if (!user) return;
     if (blockedDates.has(dateStr)) {
-      await supabase.from('availability').delete().eq('user_id', user.id).eq('blocked_date', dateStr);
+      const { error } = await supabase.from('availability').delete().eq('user_id', user.id).eq('blocked_date', dateStr);
+      if (error) { toast.error('No se pudo actualizar la disponibilidad. Inténtalo de nuevo.'); return; }
       setBlockedDates(prev => { const s = new Set(prev); s.delete(dateStr); return s; });
       toast.info('Día marcado como disponible');
     } else {
-      await supabase.from('availability').insert({ user_id: user.id, blocked_date: dateStr });
+      const { error } = await supabase.from('availability').insert({ user_id: user.id, blocked_date: dateStr });
+      if (error) { toast.error('No se pudo actualizar la disponibilidad. Inténtalo de nuevo.'); return; }
       setBlockedDates(prev => new Set(prev).add(dateStr));
       toast.success('Día marcado como no disponible');
     }
@@ -310,8 +315,8 @@ const CalendarView = () => {
               )}
             </div>
             <div className="flex gap-1.5">
-              <button onClick={prevMonth} className="w-8 h-8 rounded flex items-center justify-center text-muted-foreground hover:bg-white/5 transition-colors">←</button>
-              <button onClick={nextMonth} className="w-8 h-8 rounded flex items-center justify-center text-muted-foreground hover:bg-white/5 transition-colors">→</button>
+              <button onClick={prevMonth} className="w-8 h-8 rounded flex items-center justify-center text-muted-foreground hover:bg-black/5 transition-colors">←</button>
+              <button onClick={nextMonth} className="w-8 h-8 rounded flex items-center justify-center text-muted-foreground hover:bg-black/5 transition-colors">→</button>
             </div>
           </div>
 
@@ -332,9 +337,9 @@ const CalendarView = () => {
               return (
                 <div key={i}
                   onClick={() => { if (availMode && cell.currentMonth) toggleBlocked(dateStr); }}
-                  className={`py-2 rounded relative transition-all ${!cell.currentMonth ? 'text-white/15' : 'hover:bg-white/5 cursor-pointer'}`}
+                  className={`py-2 rounded relative transition-all ${!cell.currentMonth ? 'text-black/15' : 'hover:bg-black/5 cursor-pointer'}`}
                   style={{
-                    background: isBlocked ? 'rgba(255,95,86,0.12)' : tod ? 'rgba(212,175,55,0.15)' : evs.length > 0 ? 'rgba(212,175,55,0.05)' : 'rgba(255,255,255,0.02)',
+                    background: isBlocked ? 'rgba(255,95,86,0.12)' : tod ? 'rgba(212,175,55,0.15)' : evs.length > 0 ? 'rgba(212,175,55,0.05)' : 'rgba(0,0,0,0.02)',
                     border: isBlocked ? '1px solid rgba(255,95,86,0.35)' : tod ? '1px solid rgba(212,175,55,0.5)' : evs.length > 0 ? '1px solid rgba(212,175,55,0.25)' : '1px solid transparent',
                     color: isBlocked ? '#ff5f56' : tod ? '#D4AF37' : undefined,
                     fontWeight: tod || evs.length > 0 || isBlocked ? 700 : undefined,
@@ -449,7 +454,7 @@ const CalendarView = () => {
               <div>
                 <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 block">Fecha *</label>
                 <input type="date" value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
-                  className="nightlife-input text-sm w-full" style={{ colorScheme: 'dark' }} />
+                  className="nightlife-input text-sm w-full" style={{ colorScheme: 'light' }} />
               </div>
               <div>
                 <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 block">Lugar</label>

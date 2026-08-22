@@ -8,12 +8,23 @@ import { toast } from 'sonner';
 const esc = (s: string) =>
   s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 
-interface Props { professional: Profile; onClose: () => void; onSaved?: () => void; }
+/** Datos que ya conoce el punto de entrada (Flash Booking, carrito, etc.) — evita
+ * que el usuario retecle lo que ya escribió el organizador al hacer la solicitud. */
+export interface ContractPrefill {
+  contratanteNombre?: string;
+  nombreEvento?: string;
+  fechaEvento?: string;
+  nombreLocal?: string;
+  direccionLocal?: string;
+}
+
+interface Props { professional: Profile; onClose: () => void; onSaved?: () => void; prefill?: ContractPrefill; }
 
 const ROLE_SERVICE: Record<string, string> = {
   dj:        'sesión de DJ y actuación musical en directo',
   rookie:    'actuación musical (artista emergente)',
-  staff:     'servicios de staff y gestión de sala',
+  staff:     'servicios de camarero y gestión de sala',
+  azafata:   'servicios de azafata/hostess de imagen y atención al público',
   makeup:    'servicios de maquillaje y estilismo',
   peluqueria:'servicios de peluquería y estilismo capilar a domicilio',
   media:     'servicios de fotografía y vídeo de evento',
@@ -37,7 +48,7 @@ const EVENT_TYPES = [
 const todayStr = () => new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
 const contractRef = () => `XPEAK-${Date.now().toString(36).toUpperCase().slice(-6)}`;
 
-const ContractModal = ({ professional, onClose, onSaved }: Props) => {
+const ContractModal = ({ professional, onClose, onSaved, prefill }: Props) => {
   const { user } = useAuth();
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [tipoEvento, setTipoEvento] = useState('club');
@@ -45,17 +56,17 @@ const ContractModal = ({ professional, onClose, onSaved }: Props) => {
   const [form, setForm] = useState({
     ciudadFirma: '',
     fechaFirma: todayStr(),
-    contratanteNombre: '',
+    contratanteNombre: prefill?.contratanteNombre ?? '',
     contratanteNIF: '',
     empresaNombre: '',
     empresaCIF: '',
     empresaDireccion: '',
-    nombreEvento: '',
-    fechaEvento: '',
+    nombreEvento: prefill?.nombreEvento ?? '',
+    fechaEvento: prefill?.fechaEvento ?? '',
     horaInicio: '',
     horaFin: '',
-    nombreLocal: '',
-    direccionLocal: '',
+    nombreLocal: prefill?.nombreLocal ?? '',
+    direccionLocal: prefill?.direccionLocal ?? '',
     precioNeto: '500',
     formaPago: 'transferencia bancaria',
     diasPago: '30',
@@ -608,9 +619,11 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
     const sigDataUrl = hasSig ? (sigRef.current?.toDataURL('image/png') ?? undefined) : undefined;
     const html = buildContractHTML(sigDataUrl);
 
-    // Save to DB first
+    // Save to DB first — sin comprobar error, "onSaved" se disparaba
+    // igual aunque el insert fallara, y el usuario descargaba un contrato
+    // que en realidad nunca quedó en su historial ("contracts").
     if (user) {
-      await supabase.from('contracts').insert({
+      const { error: saveError } = await supabase.from('contracts').insert({
         user_id:           user.id,
         ref,
         professional_name: professional.name,
@@ -624,7 +637,30 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
         empresa_nombre:    form.empresaNombre || null,
         precio_neto:       price > 0 ? price : null,
       });
-      onSaved?.();
+      if (saveError) {
+        toast.error('No se pudo guardar el contrato en tu historial. El PDF se genera igualmente, pero no quedará guardado.');
+      } else {
+        onSaved?.();
+      }
+    }
+
+    // Avisa al profesional de que existe un contrato con su nombre — el
+    // generador no le pide firma dentro de la plataforma, así que sin este
+    // email podría no enterarse nunca de que se generó.
+    if (professional.userId) {
+      supabase.functions.invoke('send-email', {
+        body: {
+          type: 'contract_generated',
+          data: {
+            professional_user_id: professional.userId,
+            ref,
+            contratante_nombre: form.contratanteNombre || null,
+            event_date: form.fechaEvento || null,
+            event_type: tipoEvento,
+            amount: price > 0 ? price : null,
+          },
+        },
+      }).catch((err: unknown) => console.warn('[email] contract_generated failed:', err));
     }
 
     // Generate PDF via browser print dialog (reliable, respects all CSS)
@@ -664,7 +700,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
       onClick={onClose}>
       <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(10px)' }} />
       <div className="relative w-full max-w-xl my-4 rounded-2xl flex flex-col"
-        style={{ background: '#0a0a0e', border: '1px solid rgba(212,175,55,0.25)', boxShadow: '0 32px 80px rgba(0,0,0,0.6)' }}
+        style={{ background: '#ffffff', border: '1px solid rgba(212,175,55,0.25)', boxShadow: '0 32px 80px rgba(0,0,0,0.25)' }}
         onClick={e => e.stopPropagation()}>
 
         {/* Header */}
@@ -725,7 +761,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
                 </div>
                 <div>
                   <label className={lbl} style={lblStyle}>Fecha contrato</label>
-                  <input className={inp} style={{ ...inpStyle, colorScheme: 'dark' }} type="date"
+                  <input className={inp} style={{ ...inpStyle, colorScheme: 'light' }} type="date"
                     value={form.fechaFirma.split('/').reverse().join('-')}
                     onChange={e => setForm(f => ({ ...f, fechaFirma: e.target.value.split('-').reverse().join('/') }))} />
                 </div>
@@ -784,7 +820,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className={lbl} style={lblStyle}>Fecha del evento *</label>
-                  <input className={inp} style={{ ...inpStyle, colorScheme: 'dark' }} type="date" value={form.fechaEvento} onChange={set('fechaEvento')} />
+                  <input className={inp} style={{ ...inpStyle, colorScheme: 'light' }} type="date" value={form.fechaEvento} onChange={set('fechaEvento')} />
                 </div>
                 <div className="flex gap-2">
                   <div className="flex-1">

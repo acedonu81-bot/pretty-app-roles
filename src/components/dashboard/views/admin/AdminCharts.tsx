@@ -108,7 +108,7 @@ const AdminCharts = () => {
             {[
               { label: 'Elite', count: plans.elite,   color: '#8A6D0F' },
               { label: 'Premium', count: plans.premium, color: '#8B5CF6' },
-              { label: 'Starter', count: plans.starter, color: '#3d3d4e' },
+              { label: 'Starter', count: plans.starter, color: '#555' },
               { label: 'Free',   count: plans.free,    color: '#333' },
             ].map((p) => (
               <div key={p.label} className="text-center">

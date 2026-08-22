@@ -1,4 +1,5 @@
-import { Search, Zap, MessageSquare, User, Home } from 'lucide-react';
+import { Zap, MessageSquare, User, Home, Sparkles } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useProfile } from '@/hooks/useProfile';
 
 interface MobileBottomNavProps {
@@ -9,19 +10,21 @@ interface MobileBottomNavProps {
 }
 
 const roleToView: Record<string, string> = {
-  dj: 'dj', staff: 'staff', makeup: 'makeup', peluqueria: 'peluqueria', media: 'media',
+  dj: 'dj', staff: 'staff', azafata: 'azafata', makeup: 'makeup', peluqueria: 'peluqueria', media: 'media',
   vestuario: 'vestuario', design: 'design', promotor: 'promotor',
   event_manager: 'event_manager', empresario: 'empresario',
 };
 
-const dirViews = new Set(['dj','staff','makeup','peluqueria','media','vestuario','design','promotor','event_manager','empresario','catering','mago','bailarin','humorista','monologo','animador','speaker','ambassador']);
+const dirViews = new Set(['dj','staff','azafata','makeup','peluqueria','media','vestuario','design','promotor','event_manager','empresario','catering','mago','bailarin','humorista','monologo','animador','speaker','ambassador']);
 
 const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount = 0 }: MobileBottomNavProps) => {
   const profile = useProfile();
+  const navigate = useNavigate();
   const dirView = roleToView[profile.role] ?? 'dj';
 
   const tabs = [
     { id: dirView, icon: Home, label: 'Inicio', isActive: dirViews.has(activeView) },
+    { id: '__descubrir', icon: Sparkles, label: 'Descubrir', isActive: false },
     { id: 'flashbooking', icon: Zap, label: 'Flash', isActive: activeView === 'flashbooking' || activeView === 'flash' },
     { id: 'messages', icon: MessageSquare, label: 'Chat', isActive: activeView === 'messages', badge: unreadCount },
     { id: 'profile', icon: User, label: 'Perfil', isActive: activeView === 'profile' || activeView === 'settings' },
@@ -42,7 +45,7 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
         <button
           key={tab.id}
           type="button"
-          onClick={() => onViewChange(tab.id)}
+          onClick={() => tab.id === '__descubrir' ? navigate('/descubrir') : onViewChange(tab.id)}
           className="flex-1 flex flex-col items-center justify-center gap-0.5 transition-all active:scale-95 relative"
         >
           <div className="relative">

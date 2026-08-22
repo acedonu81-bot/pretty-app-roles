@@ -420,7 +420,7 @@ const FaqSection = () => {
 
 const Landing = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [demoOpen, setDemoOpen] = useState(false);
   const [cityValue, setCityValue] = useState('');
   const [newsletterEmail, setNewsletterEmail] = useState('');
@@ -428,6 +428,37 @@ const Landing = () => {
   const [newsletterLoading, setNewsletterLoading] = useState(false);
   const [communityReviews, setCommunityReviews] = useState<{ reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string }[]>([]);
   const [freshRoles, setFreshRoles] = useState<Set<string>>(new Set());
+
+  // Login inteligente: si ya estás logueado como ORGANIZADOR, entras directo al
+  // feed (es tu experiencia principal). Al profesional NO se le fuerza a ningún
+  // sitio: se queda en la landing ligera y decide (botón "Descubrir" al feed, o
+  // "Acceder" a su dashboard) — así nunca queda atrapado sin ver el feed.
+  // Se salta una vez por pestaña; "/?stay=1" desactiva el redirect.
+  useEffect(() => {
+    if (authLoading || !user) return;
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('stay') === '1') return;
+      if (sessionStorage.getItem('xpeak_landing_seen') === '1') return;
+    } catch { /* sin sessionStorage: continúa */ }
+
+    let cancelled = false;
+    supabase
+      .from('profiles')
+      .select('role')
+      .eq('user_id', user.id)
+      .order('is_primary', { ascending: false })
+      .limit(1)
+      .then(({ data }) => {
+        if (cancelled) return;
+        try { sessionStorage.setItem('xpeak_landing_seen', '1'); } catch { /* noop */ }
+        const role = data?.[0]?.role;
+        // Solo el organizador salta directo al feed. Profesional y sin-perfil
+        // se quedan en la landing (con acceso claro a feed y a su cuenta).
+        if (role === 'empresario') navigate('/descubrir', { replace: true });
+      });
+    return () => { cancelled = true; };
+  }, [user, authLoading, navigate]);
 
   useEffect(() => {
     supabase.from('reviews').select('reviewer_name, reviewer_role, reviewer_avatar, comment')
@@ -509,7 +540,7 @@ const Landing = () => {
         "name": "XPEAK",
         "url": "https://xpeak.es",
         "logo": { "@type": "ImageObject", "url": "https://xpeak.es/favicon.png" },
-        "sameAs": [],
+        "sameAs": ["https://www.instagram.com/xpeak.es"],
         "description": "Directorio de profesionales verificados para bodas y eventos en España. DJs, fotógrafos, camareros, maquilladores y staff. Flash Booking."
       })}</script>
       <script type="application/ld+json">{JSON.stringify({
@@ -538,12 +569,13 @@ const Landing = () => {
         }}>
         <div className="max-w-[1800px] mx-auto px-6 md:px-10 py-4 md:py-5 flex justify-between items-center">
           <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="text-2xl font-black tracking-tight transition-opacity hover:opacity-70 font-display"
+            className="text-2xl font-black tracking-tight transition-opacity hover:opacity-70 font-display whitespace-nowrap shrink-0"
             style={{ color: '#1a1208' }}>
             X<span className="text-gradient">PEAK</span>
           </button>
           <div className="hidden md:flex items-center gap-5 absolute left-1/2 -translate-x-1/2">
             {[
+              { label: 'Descubrir', href: '/descubrir' },
               { label: 'Profesionales', href: '/directorio/dj' },
               { label: 'Eventos', href: '#como-funciona' },
               { label: 'Categorías', href: '#categorias' },
@@ -558,22 +590,17 @@ const Landing = () => {
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
             <button onClick={() => navigate('/auth')}
-              className="hidden sm:block text-xs font-semibold px-4 py-2 rounded-lg transition-all hover:bg-black/5"
+              className="text-xs font-semibold px-4 py-2 rounded-lg transition-all hover:bg-black/5"
               style={{ color: '#444' }}>
               Acceder
-            </button>
-            <button onClick={() => navigate('/auth?mode=register&role=empresario')}
-              className="text-xs font-semibold px-3 sm:px-4 py-2 rounded-lg transition-all"
-              style={{ color: '#333', border: '1px solid rgba(0,0,0,0.12)', borderRadius: '10px' }}>
-              <span className="flex items-center gap-1"><Building2 size={12} /><span className="hidden sm:inline">Soy </span>Organizador</span>
             </button>
             <motion.button
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => navigate('/auth?mode=register&role=profesional')}
+              onClick={() => navigate('/descubrir')}
               className="text-xs font-bold px-3 sm:px-5 py-2.5 rounded-xl flex items-center gap-1.5"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              <Headphones size={13} /><span className="hidden sm:inline">Soy </span>Profesional
+              <Sparkles size={13} /><span className="hidden sm:inline">Descubrir</span><span className="sm:hidden">Ver</span>
             </motion.button>
           </div>
         </div>
@@ -588,6 +615,7 @@ const Landing = () => {
           loop
           muted
           playsInline
+          preload="none"
           poster="/videos/hero-poster.jpg"
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover pointer-events-none"
@@ -627,119 +655,78 @@ const Landing = () => {
             <span className="block" style={{ minHeight: '1.3em' }}><span className="text-gradient">para </span><RotatingWord /></span>
           </h1>
         </FadeIn>
+        {/* CTA PRIMARIO ÚNICO — un solo camino claro para el organizador.
+            El feed Instagram es la puerta principal; el buscador y "soy
+            profesional" quedan subordinados debajo. */}
         <FadeIn delay={0.25}>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              const fd = new FormData(e.currentTarget as HTMLFormElement);
-              const q = (fd.get('q') as string) || '';
-              const city = cityValue;
-              if (user) {
-                navigate('/dashboard', { state: { view: 'directorio', search: q, city } });
-              } else {
-                const params = new URLSearchParams();
-                if (q) params.set('q', q);
-                if (city) params.set('city', city);
-                navigate('/directorio/dj' + (params.toString() ? '?' + params.toString() : ''));
-              }
-            }}
-            className="relative max-w-xl mx-auto mb-6 md:mb-10 flex flex-col gap-2"
-          >
-            <div className="relative flex-1">
-              <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: '#D4AF37' }} />
-              <input
-                name="q"
-                placeholder="Busca DJ para tu evento, camarero, fotógrafo..."
-                className="w-full pl-10 pr-4 py-3.5 rounded-xl text-sm focus:outline-none"
-                style={{
-                  background: '#FFFFFF',
-                  border: '1px solid rgba(212,175,55,0.35)',
-                  color: '#111',
-                  boxShadow: '0 1px 6px rgba(0,0,0,0.06)',
-                }}
-              />
-            </div>
-            <div className="flex gap-2">
-              <CitySearch value={cityValue} onChange={setCityValue} />
-              <motion.button
-                type="submit"
-                aria-label="Buscar profesionales"
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.97 }}
-                className="flex-shrink-0 px-5 py-3.5 rounded-xl text-sm font-black transition-all flex items-center justify-center gap-2"
-                style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}
-              >
-                <Search size={15} />
-              </motion.button>
-            </div>
-          </form>
-        </FadeIn>
-        <FadeIn delay={0.35}>
-          <p className="text-xs font-bold uppercase tracking-[0.25em] mb-4" style={{ color: 'rgba(255,255,255,0.6)' }}>
-            ¿Quién eres?
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center items-stretch gap-3 max-w-xl mx-auto">
-            {/* Profesional */}
+          <div className="max-w-md mx-auto flex flex-col items-center gap-3 mb-6 md:mb-8">
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => {
-                if (typeof window !== 'undefined' && (window as any).fbq) (window as any).fbq('track', 'Lead');
-                navigate('/auth?mode=register&role=profesional');
-              }}
-              className="group flex-1 flex flex-col items-center gap-2 px-6 py-5 rounded-2xl transition-all text-center"
-              style={{
-                background: '#FFFFFF',
-                border: '1.5px solid #C09010',
-                boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
-              }}>
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-1"
-                style={{ background: 'rgba(139,106,0,0.1)' }}>
-                <Headphones size={20} style={{ color: '#8B6A00' }} />
-              </div>
-              <p className="font-black text-base" style={{ color: '#111' }}>Soy profesional</p>
-              <p className="text-xs leading-snug" style={{ color: '#333' }}>
-                DJ, fotógrafo, camarero,<br />staff, maquillador...
-              </p>
-              <p className="text-xs font-bold mt-1" style={{ color: '#8B6A00' }}>
-                Crea tu perfil y consigue contratos →
-              </p>
+              onClick={() => navigate('/descubrir')}
+              className="w-full flex items-center justify-center gap-2 px-7 py-4 rounded-2xl text-base font-black transition-all"
+              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 8px 24px rgba(212,175,55,0.35)' }}
+            >
+              <Sparkles size={18} /> Descubrir profesionales
             </motion.button>
+            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
+              Desliza y encuentra al profesional perfecto para tu evento
+            </p>
 
-            {/* Empresario */}
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => navigate('/auth?mode=register&role=empresario')}
-              className="group flex-1 flex flex-col items-center gap-2 px-6 py-5 rounded-2xl transition-all text-center"
-              style={{
-                background: '#FFFFFF',
-                border: '1.5px solid rgba(0,0,0,0.1)',
-                boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
-              }}>
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-1"
-                style={{ background: 'rgba(0,0,0,0.08)' }}>
-                <Building2 size={20} style={{ color: '#333' }} />
+            {/* Buscador secundario (para quien ya sabe qué busca) */}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const fd = new FormData(e.currentTarget as HTMLFormElement);
+                const q = (fd.get('q') as string) || '';
+                const city = cityValue;
+                if (user) {
+                  navigate('/dashboard', { state: { view: 'directorio', search: q, city } });
+                } else {
+                  const params = new URLSearchParams();
+                  if (q) params.set('q', q);
+                  if (city) params.set('city', city);
+                  navigate('/directorio/dj' + (params.toString() ? '?' + params.toString() : ''));
+                }
+              }}
+              className="w-full flex gap-2 mt-1"
+            >
+              <div className="relative flex-1">
+                <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: '#D4AF37' }} />
+                <input
+                  name="q"
+                  placeholder="O busca directamente: DJ, fotógrafo…"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl text-sm focus:outline-none"
+                  style={{ background: '#FFFFFF', border: '1px solid rgba(212,175,55,0.3)', color: '#111' }}
+                />
               </div>
-              <p className="font-black text-base" style={{ color: '#111' }}>Busco talento</p>
-              <p className="text-xs leading-snug" style={{ color: '#444' }}>
-                Sala, promotora, agencia<br />o evento privado
-              </p>
-              <p className="text-xs font-bold mt-1" style={{ color: '#444' }}>
-                Contrata sin comisiones →
-              </p>
-            </motion.button>
+              <button type="submit" aria-label="Buscar" className="flex-shrink-0 px-4 rounded-xl flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)' }}>
+                <Search size={15} color="#fff" />
+              </button>
+            </form>
           </div>
-          <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-1 mt-4">
+
+          {/* Enlace secundario discreto para el profesional */}
+          <button
+            onClick={() => {
+              if (typeof window !== 'undefined' && (window as any).fbq) (window as any).fbq('track', 'Lead');
+              navigate('/auth?mode=register&role=profesional');
+            }}
+            className="text-xs font-bold underline decoration-dotted underline-offset-4 transition-opacity hover:opacity-70"
+            style={{ color: 'rgba(255,255,255,0.75)' }}
+          >
+            ¿Eres DJ, fotógrafo o staff? Crea tu perfil gratis →
+          </button>
+
+          <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-1 mt-5">
             {[
-              '✓ Profesionales verificados cada semana',
-              '✓ 0€ comisión para contratar',
-              '✓ Sin tarjeta de crédito',
+              '✓ Verificados cada semana',
+              '✓ 0€ comisión',
+              '✓ Sin tarjeta',
             ].map(t => (
               <span key={t} className="text-xs font-bold" style={{ color: 'rgba(255,255,255,0.85)' }}>{t}</span>
             ))}
           </div>
-
         </FadeIn>
 
 
@@ -874,50 +861,45 @@ const Landing = () => {
       </section>
 
 
-      {/* ─ Testimonios ─ */}
-      <section className="relative overflow-hidden pb-16 pt-16" style={{ background: '#f8f7f4' }}>
-        <div className="relative max-w-[1200px] mx-auto px-6 md:px-8">
-        <FadeIn className="text-center mb-10">
-          <p className="text-[0.7rem] font-bold uppercase tracking-[0.25em] mb-4" style={{ color: '#8b5cf6' }}>Lo que dicen los profesionales</p>
-          <h2 className="text-3xl md:text-4xl font-black tracking-tight font-display" style={{ color: '#111' }}>
-            La comunidad <span className="text-gradient">habla</span>
-          </h2>
-        </FadeIn>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {(communityReviews.length > 0 ? communityReviews.slice(0, 3).map((r) => ({
-            name: r.reviewer_name, role: r.reviewer_role,
-            avatar: r.reviewer_avatar ?? r.reviewer_name.charAt(0).toUpperCase(),
-            text: r.comment,
-          })) : [
-            { name: 'Marcos DJ', role: 'DJ Residente · Madrid', avatar: 'M',
-              text: 'En menos de una semana me contactaron dos salas de Madrid a través del directorio. Nunca había conseguido bookings tan rápido sin intermediarios.' },
-            { name: 'Laura V.', role: 'Maquilladora · Barcelona', avatar: 'L',
-              text: 'Mi perfil en XPEAK me trajo tres clientes nuevos en el primer mes. Por fin un sitio donde el sector de eventos busca talento de imagen de verdad.' },
-            { name: 'Club Nocturno NX', role: 'Empresario · Valencia', avatar: 'N',
-              text: 'El Flash Booking nos salvó una noche: publicamos la oferta a las 10pm y a las 11pm teníamos DJ confirmado. Antes eso nos costaba llamadas interminables.' },
-          ]).map((t, i) => (
-            <FadeIn key={t.name} delay={i * 0.08}>
-              <div className="relative rounded-2xl h-64 flex flex-col justify-between p-5"
-                style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 2px 10px rgba(0,0,0,0.06)' }}>
-                <p className="text-sm leading-relaxed" style={{ color: 'rgba(0,0,0,0.75)' }}>
-                  "{t.text}"
-                </p>
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-black flex-shrink-0"
-                    style={{ background: 'rgba(212,175,55,0.12)', color: '#B8941E', border: '1px solid rgba(212,175,55,0.3)' }}>
-                    {t.avatar}
-                  </div>
-                  <div>
-                    <p className="text-xs font-black" style={{ color: '#111' }}>{t.name}</p>
-                    <p className="text-[0.68rem]" style={{ color: 'rgba(0,0,0,0.5)' }}>{t.role}</p>
+      {/* ─ Testimonios (solo si hay reseñas reales aprobadas) ─ */}
+      {communityReviews.length > 0 && (
+        <section className="relative overflow-hidden pb-16 pt-16" style={{ background: '#f8f7f4' }}>
+          <div className="relative max-w-[1200px] mx-auto px-6 md:px-8">
+          <FadeIn className="text-center mb-10">
+            <p className="text-[0.7rem] font-bold uppercase tracking-[0.25em] mb-4" style={{ color: '#8b5cf6' }}>Lo que dicen los profesionales</p>
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight font-display" style={{ color: '#111' }}>
+              La comunidad <span className="text-gradient">habla</span>
+            </h2>
+          </FadeIn>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {communityReviews.slice(0, 3).map((r) => ({
+              name: r.reviewer_name, role: r.reviewer_role,
+              avatar: r.reviewer_avatar ?? r.reviewer_name.charAt(0).toUpperCase(),
+              text: r.comment,
+            })).map((t, i) => (
+              <FadeIn key={t.name} delay={i * 0.08}>
+                <div className="relative rounded-2xl h-64 flex flex-col justify-between p-5"
+                  style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 2px 10px rgba(0,0,0,0.06)' }}>
+                  <p className="text-sm leading-relaxed" style={{ color: 'rgba(0,0,0,0.75)' }}>
+                    "{t.text}"
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-black flex-shrink-0"
+                      style={{ background: 'rgba(212,175,55,0.12)', color: '#B8941E', border: '1px solid rgba(212,175,55,0.3)' }}>
+                      {t.avatar}
+                    </div>
+                    <div>
+                      <p className="text-xs font-black" style={{ color: '#111' }}>{t.name}</p>
+                      <p className="text-[0.68rem]" style={{ color: 'rgba(0,0,0,0.5)' }}>{t.role}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </FadeIn>
-          ))}
-        </div>
-        </div>
-      </section>
+              </FadeIn>
+            ))}
+          </div>
+          </div>
+        </section>
+      )}
 
 
       {/* ─ Guías destacadas (puente blog → directorio) ─ */}

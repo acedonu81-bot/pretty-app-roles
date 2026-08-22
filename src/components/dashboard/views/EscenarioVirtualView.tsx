@@ -38,12 +38,16 @@ const ReportModal = ({
   const submit = async () => {
     if (!selected) { toast.error('Selecciona un motivo.'); return; }
     setSending(true);
-    await supabase.from('feature_requests').insert({
+    // Antes el error se descartaba activamente (segundo callback de .then
+    // vacío) — un reporte de abuso/contenido ilegal podía perderse en
+    // silencio mientras el usuario veía "Reporte enviado" como confirmación.
+    const { error } = await supabase.from('feature_requests').insert({
       user_id: user?.id ?? null,
       feature_name: `live_report:${streamerId}:${selected}`,
       description: detail.trim() || null,
-    }).then(() => {}, () => {});
+    });
     setSending(false);
+    if (error) { toast.error('No se pudo enviar el reporte. Inténtalo de nuevo.'); return; }
     toast.success('Reporte enviado. Revisaremos el directo en menos de 24 h.');
     onClose();
   };
@@ -121,8 +125,8 @@ const ReportModal = ({
   );
 };
 
-const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Staff', makeup: 'Maquillaje', peluqueria: 'Peluquería', rookie: 'Promesa', media: 'Media', design: 'Diseño', promotor: 'Promotor', ambassador: 'Embajador', vestuario: 'Moda' };
-const ROLE_COLOR: Record<string, string> = { dj: '#D4AF37', staff: '#8B5CF6', makeup: '#EC4899', peluqueria: '#F9A8D4', rookie: '#F59E0B', media: '#3B82F6', design: '#34D399', promotor: '#F97316', ambassador: '#A78BFA', vestuario: '#F472B6' };
+const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Camarero', azafata: 'Azafata', makeup: 'Makeup', peluqueria: 'Peluquería', rookie: 'Promesa', media: 'Media', design: 'Diseño', promotor: 'Promotor', ambassador: 'Embajador', vestuario: 'Moda' };
+const ROLE_COLOR: Record<string, string> = { dj: '#D4AF37', staff: '#8B5CF6', azafata: '#F472B6', makeup: '#EC4899', peluqueria: '#F9A8D4', rookie: '#F59E0B', media: '#3B82F6', design: '#34D399', promotor: '#F97316', ambassador: '#A78BFA', vestuario: '#F472B6' };
 
 interface LiveProfile { id: string; display_name: string; role: string; stream_title: string | null; zone: string | null; stream_url: string | null; }
 
@@ -186,7 +190,7 @@ const EscenarioVirtualView = () => {
     if (!chatInput.trim()) return;
     const { clean, reason } = sanitizeInput(chatInput);
     if (!clean) { toast.error(reason); return; }
-    setChatMessages(prev => [...prev, { user: 'Tú', text: chatInput, color: '#ffffff' }]);
+    setChatMessages(prev => [...prev, { user: 'Tú', text: chatInput, color: '#8A6D0F' }]);
     setChatInput('');
   };
 
@@ -538,7 +542,7 @@ const EscenarioVirtualView = () => {
 
           <div ref={chatRef} className="flex-1 overflow-y-auto flex flex-col gap-1 mb-3 min-h-0">
             {chatMessages.length > 0 ? chatMessages.map((msg, i) => (
-              <div key={i} className="text-xs px-2 py-1.5 rounded" style={{ background: 'rgba(255,255,255,0.02)' }}>
+              <div key={i} className="text-xs px-2 py-1.5 rounded" style={{ background: 'rgba(0,0,0,0.03)' }}>
                 <span className="font-bold mr-1" style={{ color: msg.color }}>{msg.user}</span>
                 <span className="text-muted-foreground">{msg.text}</span>
               </div>

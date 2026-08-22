@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
@@ -38,13 +39,13 @@ export default function BlogFlashBookingComoFunciona() {
       </Helmet>
       <div style={{ background: '#0A0A0A', color: '#F5F5F0', minHeight: '100vh' }}>
         <div className="max-w-2xl mx-auto px-4 py-12">
-          <a href="/blog" style={{ color: '#D4AF37', fontSize: '0.8rem', fontWeight: 700 }}>← Blog XPEAK</a>
+          <a href="/blog" style={{ color: '#6D28D9', fontSize: '0.8rem', fontWeight: 700 }}>← Blog XPEAK</a>
           <article className="mt-6">
-            <span style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)', borderRadius: 6, padding: '3px 10px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>XPEAK · Flash Booking</span>
+            <span style={{ background: 'rgba(109,40,217,0.1)', color: '#6D28D9', border: '1px solid rgba(109,40,217,0.2)', borderRadius: 6, padding: '3px 10px', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>XPEAK · Flash Booking</span>
             <h1 className="text-3xl font-black mt-4 mb-4 leading-tight">Cómo funciona el Flash Booking de XPEAK: contrata un profesional verificado en menos de 1 hora</h1>
-            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem' }}>Por Daniel · XPEAK · 10 junio 2026</p>
+            <p style={{ color: '#444', fontSize: '0.85rem' }}>Por Daniel · XPEAK · 10 junio 2026</p>
 
-            <p className="mt-6 mb-4" style={{ color: 'rgba(255,255,255,0.75)', lineHeight: 1.8 }}>
+            <p className="mt-6 mb-4" style={{ color: '#222', lineHeight: 1.8 }}>
               El Flash Booking es el sistema de contratación urgente de XPEAK. Diseñado para cuando necesitas un DJ para esta noche, camareros para mañana o un fotógrafo para el fin de semana. Sin llamadas, sin grupos de WhatsApp, sin esperas. Publicás la oferta y recibes respuestas de profesionales verificados disponibles en tu zona en menos de 60 minutos.
             </p>
 
@@ -57,10 +58,10 @@ export default function BlogFlashBookingComoFunciona() {
               { n: '05', title: 'Elige y firma el contrato digital', body: 'Selecciona al profesional que mejor se adapta. Con un clic se genera el contrato digital automático con todos los datos acordados. PDF listo para facturación.' },
             ].map(step => (
               <div key={step.n} className="flex gap-4 mb-5">
-                <div className="text-3xl font-black flex-shrink-0 w-10" style={{ color: 'rgba(212,175,55,0.25)' }}>{step.n}</div>
-                <div className="p-4 rounded-xl flex-1" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                <div className="text-3xl font-black flex-shrink-0 w-10" style={{ color: 'rgba(109,40,217,0.25)' }}>{step.n}</div>
+                <div className="p-4 rounded-xl flex-1" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)' }}>
                   <p className="font-black mb-1">{step.title}</p>
-                  <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem', lineHeight: 1.7 }}>{step.body}</p>
+                  <p style={{ color: '#333', fontSize: '0.9rem', lineHeight: 1.7 }}>{step.body}</p>
                 </div>
               </div>
             ))}
@@ -79,12 +80,12 @@ export default function BlogFlashBookingComoFunciona() {
                 { label: 'Catering', href: '/contratar-catering' },
                 { label: 'Disco móvil', href: '/contratar-disco-movil' },
               ].map(p => (
-                <a key={p.label} href={p.href} className="px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105" style={{ background: 'rgba(212,175,55,0.08)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>{p.label}</a>
+                <a key={p.label} href={p.href} className="px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105" style={{ background: 'rgba(109,40,217,0.08)', color: '#6D28D9', border: '1px solid rgba(109,40,217,0.2)' }}>{p.label}</a>
               ))}
             </div>
 
             <h2 className="text-xl font-black mt-8 mb-3">Casos de uso habituales</h2>
-            <ul style={{ color: 'rgba(255,255,255,0.75)', lineHeight: 2, paddingLeft: '1.2rem' }}>
+            <ul style={{ color: '#222', lineHeight: 2, paddingLeft: '1.2rem' }}>
               <li>DJ cancela el jueves para el sábado → Flash Booking encuentra sustituto en menos de 1h</li>
               <li>Boda con más invitados de lo previsto → camareros extra en 24 horas</li>
               <li>Evento corporativo de última hora → fotógrafo disponible para mañana</li>
@@ -98,22 +99,23 @@ export default function BlogFlashBookingComoFunciona() {
               { q: '¿Cuánto tarda en responder un profesional?', a: 'El tiempo medio de primera respuesta es inferior a 60 minutos. Los profesionales con disponibilidad activa reciben una notificación inmediata y pueden aceptar desde la app.' },
               { q: '¿Flash Booking tiene coste para salas y organizadores?', a: 'No. Flash Booking es completamente gratuito para salas, promotoras y organizadores. XPEAK no cobra comisión sobre ninguna contratación.' },
             ].map(({ q, a }) => (
-              <div key={q} className="mb-4 p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <div key={q} className="mb-4 p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
                 <p className="font-black mb-2">{q}</p>
-                <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem', lineHeight: 1.7 }}>{a}</p>
+                <p style={{ color: '#333', fontSize: '0.9rem', lineHeight: 1.7 }}>{a}</p>
               </div>
             ))}
 
-            <div className="mt-8 p-5 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
+            <div className="mt-8 p-5 rounded-2xl text-center" style={{ background: 'rgba(109,40,217,0.06)', border: '1px solid rgba(109,40,217,0.2)' }}>
               <p className="font-black text-lg mb-2">⚡ Prueba el Flash Booking ahora</p>
-              <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.9rem', marginBottom: '1rem' }}>Crea tu cuenta gratis y publica tu primera oferta en menos de 2 minutos.</p>
-              <a href="/auth" className="inline-block px-6 py-3 rounded-xl font-black text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Empezar gratis →</a>
+              <p style={{ color: '#444', fontSize: '0.9rem', marginBottom: '1rem' }}>Crea tu cuenta gratis y publica tu primera oferta en menos de 2 minutos.</p>
+              <a href="/auth" className="inline-block px-6 py-3 rounded-xl font-black text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>Empezar gratis →</a>
             </div>
 
             <BlogAuthor />
             <BlogShare />
           </article>
         </div>
+        <BlogRelatedPosts currentSlug='/blog/como-funciona-flash-booking-xpeak' tag='Eventos' />
         <FooterPublic />
         <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_flash_booking" />
       </div>

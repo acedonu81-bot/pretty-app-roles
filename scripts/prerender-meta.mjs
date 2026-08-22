@@ -185,8 +185,8 @@ const ROUTES = [
   // Disco móvil — genérica + ciudades
   {
     path: '/contratar-disco-movil',
-    title: 'Contratar Disco Móvil — XPEAK | DJ con equipo completo para bodas y eventos',
-    desc: 'Contrata disco móvil profesional para bodas, comuniones y fiestas privadas en España. DJ + sonido + luces + efectos incluidos. Flash Booking. Sin comisión.',
+    title: 'Alquiler de Disco Móvil con DJ — Bodas y Fiestas | XPEAK',
+    desc: 'Alquiler de disco móvil profesional para bodas, comuniones y fiestas privadas en España. DJ + sonido + luces + efectos incluidos. Flash Booking. Sin comisión.',
     ogTitle: 'Contratar Disco Móvil en España — XPEAK',
     ogDesc: 'DJ con equipo completo para bodas, comuniones y fiestas privadas. Flash Booking disponible. Sin comisión.',
     ogType: 'website',
@@ -243,10 +243,18 @@ const ROUTES = [
   // Blogs
   {
     path: '/blog/cuanto-cobra-un-dj-en-espana',
-    title: '¿Cuánto cobra un DJ en España? Tarifas y precios 2026 — XPEAK',
-    desc: 'Guía completa con precios de DJs en España 2026: tarifas por experiencia, ciudad y tipo de evento. IVA, IRPF, equipo incluido o no. Datos reales de XPEAK.',
-    ogTitle: '¿Cuánto cobra un DJ en España? Tarifas 2026',
-    ogDesc: 'Precios reales de DJs en España por experiencia, ciudad y tipo de evento. Guía completa 2026.',
+    title: '¿Cuánto Cobra un DJ? Precio Real 400€-1.200€ (2026) — XPEAK',
+    desc: 'Un DJ para boda cuesta entre 400€ y 1.200€ por actuación (30€-500€/hora según experiencia y ciudad). Tabla de precios reales 2026, por perfil y por ciudad.',
+    ogTitle: '¿Cuánto Cobra un DJ? Precio Real 400€-1.200€ (2026)',
+    ogDesc: 'Un DJ para boda cuesta entre 400€ y 1.200€ por actuación. Tabla de precios reales 2026, por perfil y por ciudad.',
+    ogType: 'article',
+  },
+  {
+    path: '/blog/mejores-plataformas-contratar-dj-espana',
+    title: 'Mejores Plataformas para Contratar DJ en España (2026) — XPEAK',
+    desc: 'Comparativa 2026 de XPEAK, Gigstarter, Bodas.net y agencias tradicionales para contratar DJ en España: comisión, coste real y cobertura de categorías.',
+    ogTitle: 'Mejores Plataformas para Contratar DJ en España (2026)',
+    ogDesc: 'Comparativa de XPEAK, Gigstarter, Bodas.net y agencias tradicionales: comisión, coste real y cobertura.',
     ogType: 'article',
   },
   {
@@ -309,6 +317,14 @@ const ROUTES = [
   { path: '/contratar-staff/palma',     title: 'Contratar Staff de Eventos en Palma — XPEAK | Hostesses y RRPP verificados',     desc: 'Contrata staff profesional en Palma de Mallorca: hostesses, RRPP, promotores y personal de sala para clubs y eventos. Flash Booking disponible.',     ogTitle: 'Contratar Staff de Eventos en Palma — XPEAK',     ogDesc: 'Staff verificado en Palma. Hostesses, RRPP y promotores para clubs y eventos.',     ogType: 'website' },
   { path: '/contratar-staff/ibiza',     title: 'Contratar Staff de Eventos en Ibiza — XPEAK | Hostesses y RRPP verificados',     desc: 'Contrata staff de primer nivel en Ibiza: hostesses VIP, relaciones públicas y promotores para clubs y eventos exclusivos. Flash Booking disponible.',     ogTitle: 'Contratar Staff de Eventos en Ibiza — XPEAK',     ogDesc: 'Staff VIP verificado en Ibiza. Hostesses, RRPP y promotores para clubs exclusivos.',     ogType: 'website' },
 
+  // Promotores por ciudad — adicionales
+  { path: '/contratar-promotores/coruna',   title: 'Contratar Promotores en A Coruña — XPEAK | RRPP y promotores verificados', desc: 'Contrata promotores, RRPP y coordinadores de acceso en A Coruña para clubs, festivales y eventos privados. Perfiles verificados. Sin comisión.', ogTitle: 'Contratar Promotores en A Coruña — XPEAK', ogDesc: 'Promotores y RRPP verificados en A Coruña. Flash Booking disponible. Sin comisión.', ogType: 'website' },
+  { path: '/contratar-promotores/madrid',   title: 'Contratar Promotores en Madrid — XPEAK | RRPP y promotores verificados',   desc: 'Contrata promotores, RRPP y coordinadores de acceso en Madrid para clubs, festivales y eventos privados. Perfiles verificados. Sin comisión.',   ogTitle: 'Contratar Promotores en Madrid — XPEAK',   ogDesc: 'Promotores y RRPP verificados en Madrid. Flash Booking disponible. Sin comisión.',   ogType: 'website' },
+  { path: '/contratar-promotores/barcelona', title: 'Contratar Promotores en Barcelona — XPEAK | RRPP y promotores verificados', desc: 'Contrata promotores, RRPP y coordinadores de acceso en Barcelona para clubs, festivales y eventos privados. Perfiles verificados. Sin comisión.', ogTitle: 'Contratar Promotores en Barcelona — XPEAK', ogDesc: 'Promotores y RRPP verificados en Barcelona. Flash Booking disponible. Sin comisión.', ogType: 'website' },
+  { path: '/contratar-promotores/valencia', title: 'Contratar Promotores en Valencia — XPEAK | RRPP y promotores verificados',  desc: 'Contrata promotores, RRPP y coordinadores de acceso en Valencia para clubs, festivales y eventos privados. Perfiles verificados. Sin comisión.',  ogTitle: 'Contratar Promotores en Valencia — XPEAK',  ogDesc: 'Promotores y RRPP verificados en Valencia. Flash Booking disponible. Sin comisión.',  ogType: 'website' },
+  { path: '/contratar-promotores/sevilla',  title: 'Contratar Promotores en Sevilla — XPEAK | RRPP y promotores verificados',   desc: 'Contrata promotores, RRPP y coordinadores de acceso en Sevilla para clubs, festivales y eventos privados. Perfiles verificados. Sin comisión.',   ogTitle: 'Contratar Promotores en Sevilla — XPEAK',   ogDesc: 'Promotores y RRPP verificados en Sevilla. Flash Booking disponible. Sin comisión.',   ogType: 'website' },
+  { path: '/contratar-promotores/malaga',   title: 'Contratar Promotores en Málaga — XPEAK | RRPP y promotores verificados',    desc: 'Contrata promotores, RRPP y coordinadores de acceso en Málaga para clubs, festivales y eventos privados. Perfiles verificados. Sin comisión.',    ogTitle: 'Contratar Promotores en Málaga — XPEAK',    ogDesc: 'Promotores y RRPP verificados en Málaga. Flash Booking disponible. Sin comisión.',    ogType: 'website' },
+
   // Fotógrafo por ciudad — adicionales
   { path: '/contratar-fotografo/valencia', title: 'Contratar Fotógrafo en Valencia — XPEAK | Fotógrafos de eventos verificados', desc: 'Contrata fotógrafos profesionales en Valencia para bodas, eventos nocturnos y corporativos. Pack foto+vídeo disponible. Flash Booking. Sin comisión.', ogTitle: 'Contratar Fotógrafo en Valencia — XPEAK', ogDesc: 'Fotógrafos verificados en Valencia para bodas y eventos. Flash Booking disponible. Sin comisión.', ogType: 'website' },
   { path: '/contratar-fotografo/sevilla',  title: 'Contratar Fotógrafo en Sevilla — XPEAK | Fotógrafos de eventos verificados',  desc: 'Contrata fotógrafos profesionales en Sevilla para bodas, eventos nocturnos y corporativos. Pack foto+vídeo disponible. Flash Booking. Sin comisión.',  ogTitle: 'Contratar Fotógrafo en Sevilla — XPEAK',  ogDesc: 'Fotógrafos verificados en Sevilla para bodas y eventos. Flash Booking disponible. Sin comisión.',  ogType: 'website' },
@@ -344,7 +360,7 @@ const ROUTES = [
   { path: '/blog/catering-para-eventos-de-empresa',    title: 'Catering para eventos de empresa en España: tipos y precios 2026 — XPEAK',             desc: 'Guía completa de catering para eventos corporativos: coffee breaks, cócteles, cenas de gala y food trucks. Precios por persona y formato.',              ogTitle: 'Catering para eventos de empresa: precios 2026',   ogDesc: 'Tipos de catering corporativo y precios por persona en España. Guía 2026.',                       ogType: 'article' },
   { path: '/blog/disco-movil-para-comuniones',         title: 'Disco móvil para comuniones: precios y qué incluye en 2026 — XPEAK',                  desc: 'Guía de precios de disco móvil para comuniones en España. Paquetes, qué incluye y cómo elegir el DJ correcto para tu comunión.',                       ogTitle: 'Disco móvil para comuniones: precios 2026',        ogDesc: 'Precios y paquetes de disco móvil para comuniones en España. Qué incluye el servicio.',           ogType: 'article' },
   { path: '/blog/promotores-de-eventos-que-hacen',     title: 'Promotores de eventos: qué hacen y cuánto cobran en España (2026) — XPEAK',           desc: 'Tipos de promotores, funciones reales, tarifas y cómo estructurar el contrato. Guía completa para contratar promotores de eventos en España.',          ogTitle: 'Promotores de eventos: qué hacen y cuánto cobran', ogDesc: 'Funciones y tarifas de promotores de eventos en España. Cómo contratar. Guía 2026.',               ogType: 'article' },
-  { path: '/blog/maquillaje-nupcial-precio-guia',      title: 'Maquillaje nupcial: precios y cómo elegir tu maquilladora en España (2026) — XPEAK',  desc: 'Guía de precios de maquillaje para novias en España. Cuánto cuesta, qué incluye y cómo elegir la maquilladora perfecta para tu boda.',                ogTitle: 'Maquillaje nupcial: precios 2026 — XPEAK Blog',    ogDesc: 'Cuánto cuesta el maquillaje de novia en España y cómo elegir bien tu maquilladora.',             ogType: 'article' },
+  { path: '/blog/maquillaje-nupcial-precio-guia',      title: 'Maquillaje de Novia: Precio Real 200€-350€ (2026) — XPEAK',  desc: 'El maquillaje de novia cuesta entre 200€ y 350€ de media (hasta 400€+ en Madrid o Barcelona), prueba incluida. Precios reales por ciudad y tipo de servicio.',                ogTitle: 'Maquillaje de Novia: Precio Real 200€-350€ (2026)',    ogDesc: 'El maquillaje de novia cuesta entre 200€ y 350€ de media, prueba incluida.',             ogType: 'article' },
   { path: '/blog/dj-para-cumpleanos-precio',           title: 'DJ para cumpleaños: precios y qué incluye el servicio en España (2026) — XPEAK',       desc: 'Cuánto cuesta contratar un DJ para un cumpleaños en España. Precios por horas, equipo incluido y cómo elegir el DJ correcto para tu fiesta.',           ogTitle: 'DJ para cumpleaños: precios 2026 — XPEAK Blog',    ogDesc: 'Cuánto cuesta contratar un DJ para un cumpleaños en España. Precios por horas y equipo.',         ogType: 'article' },
   { path: '/blog/como-organizar-evento-corporativo',   title: 'Cómo organizar un evento corporativo paso a paso: guía completa 2026 — XPEAK',         desc: 'Guía completa para organizar eventos de empresa: presupuesto, proveedores, timeline y checklist. Todo lo que necesitas saber para un evento exitoso.',  ogTitle: 'Organizar evento corporativo: guía 2026 — XPEAK',  ogDesc: 'Cómo organizar eventos de empresa. Presupuesto, proveedores, timeline y checklist completo.',    ogType: 'article' },
   { path: '/blog/musica-para-bodas-guia',              title: 'Música para bodas: DJ, banda en directo o lista de reproducción — guía 2026 — XPEAK',  desc: 'Comparativa completa DJ vs banda vs cuarteto vs playlist para bodas. Precios, ventajas y cuándo elegir cada opción para tu boda en España.',           ogTitle: 'Música para bodas: DJ vs banda 2026 — XPEAK Blog', ogDesc: 'Comparativa DJ vs banda en directo para tu boda. Precios y cuándo elegir cada opción.',           ogType: 'article' },
@@ -353,6 +369,190 @@ const ROUTES = [
   // Precios
   { path: '/precios', title: 'Precios XPEAK — Gratis para profesionales y empresarios de eventos', desc: 'XPEAK es gratis para DJs, fotógrafos, camareros y staff. También gratis para salas, promotoras y organizadores. Sin comisión. Contratos digitales incluidos.', ogTitle: 'Precios XPEAK — Gratis para todos', ogDesc: 'XPEAK es gratis para profesionales y empresarios de eventos. Sin comisión. Contratos digitales automáticos.', ogType: 'website' },
   { path: '/blog/precio-azafatas-eventos-espana',  title: 'Precio de azafatas para eventos en España: guía completa 2026 — XPEAK', desc: 'Tarifas reales de azafatas para ferias, congresos y eventos corporativos en España. Perfiles, precios por jornada y qué incluye. Guía 2026.', ogTitle: 'Precio azafatas eventos España 2026 — XPEAK Blog', ogDesc: 'Cuánto cobran las azafatas para eventos y ferias en España. Tarifas por perfil y ciudad.', ogType: 'article' },
+  { path: '/blog/precio-bailarin-instructor-salsa-bachata', title: 'Precio bailarín e instructor salsa/bachata España 2026 | XPEAK', desc: 'Cuánto cobra un bailarín para eventos y cuánto cuesta una clase de salsa, bachata o kizomba en España. Tarifas 2026.', ogTitle: 'Precio bailarín e instructor salsa/bachata 2026 — XPEAK Blog', ogDesc: 'Tarifas de bailarines para eventos e instructores de salsa y bachata en España.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-madrid', title: 'Precio azafatas para eventos en Madrid 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos, ferias IFEMA y congresos en Madrid. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Madrid 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para ferias IFEMA y eventos corporativos en Madrid.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-barcelona', title: 'Precio azafatas para eventos en Barcelona 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos, Fira de Barcelona y congresos. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Barcelona 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para Fira de Barcelona y eventos corporativos.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-valencia', title: 'Precio azafatas para eventos en Valencia 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos y ferias en Valencia. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Valencia 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos y ferias en Valencia.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-sevilla', title: 'Precio azafatas para eventos en Sevilla 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos, FIBES y ferias en Sevilla. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Sevilla 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para FIBES y eventos corporativos en Sevilla.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-bilbao', title: 'Precio azafatas para eventos en Bilbao 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos, BEC y ferias en Bilbao. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Bilbao 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para BEC y eventos corporativos en Bilbao.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-malaga', title: 'Precio azafatas para eventos en Málaga 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos y ferias en Málaga. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Málaga 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos corporativos y ferias en Málaga.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-zaragoza', title: 'Precio azafatas para eventos en Zaragoza 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos y ferias en Zaragoza. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Zaragoza 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para ferias y eventos corporativos en Zaragoza.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-palma', title: 'Precio azafatas para eventos en Palma 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos, bodas de lujo y ferias en Palma de Mallorca. Tarifas de temporada alta 2026.', ogTitle: 'Precio azafatas eventos Palma de Mallorca 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para bodas de lujo y eventos náuticos en Mallorca.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-ibiza', title: 'Precio azafatas para eventos en Ibiza 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos, clubes y fiestas privadas en Ibiza. Tarifas de temporada alta 2026.', ogTitle: 'Precio azafatas eventos Ibiza 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para clubes, villas y eventos privados en Ibiza.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-alicante', title: 'Precio azafatas para eventos en Alicante 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos, bodas y ferias en Alicante y la Costa Blanca. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Alicante 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para bodas en la Costa Blanca y eventos corporativos en Alicante.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-granada', title: 'Precio azafatas para eventos en Granada 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos, congresos y bodas en Granada. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Granada 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para congresos, bodas y eventos culturales en Granada.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-murcia', title: 'Precio azafatas para eventos en Murcia 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos, ferias y bodas en fincas de la huerta en Murcia. Tarifas 2026.', ogTitle: 'Precio azafatas eventos Murcia 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para bodas en la huerta murciana y eventos corporativos.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-cordoba', title: 'Precio azafatas para eventos en Córdoba 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos, congresos y bodas en cortijos en Córdoba. Tarifas 2026.', ogTitle: 'Precio azafatas eventos Córdoba 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para el Festival de los Patios, bodas y eventos en Córdoba.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-valladolid', title: 'Precio azafatas para eventos en Valladolid 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos, la Feria de Valladolid y bodas en fincas de Castilla. Tarifas 2026.', ogTitle: 'Precio azafatas eventos Valladolid 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para el recinto ferial y bodas en fincas de Castilla en Valladolid.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-sansebastian', title: 'Precio azafatas para eventos en San Sebastián 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos, el Zinemaldia y bodas en San Sebastián. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos San Sebastián 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para el Zinemaldia y eventos de alta gama en San Sebastián.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-santander', title: 'Precio azafatas para eventos en Santander 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos institucionales, congresos y bodas en la costa de Santander. Tarifas 2026.', ogTitle: 'Precio azafatas eventos Santander 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para congresos, eventos institucionales y bodas en la costa de Santander.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-coruna', title: 'Precio azafatas para eventos en A Coruña 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos corporativos, bodas en pazos y ferias en A Coruña. Tarifas 2026.', ogTitle: 'Precio azafatas eventos A Coruña 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos corporativos y bodas en pazos en A Coruña.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-tenerife', title: 'Precio azafatas para eventos en Tenerife 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos corporativos y bodas de lujo en Tenerife. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Tenerife 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para bodas de lujo y eventos corporativos en Tenerife.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-laspalmas', title: 'Precio azafatas para eventos en Las Palmas 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos corporativos y turismo internacional en Las Palmas. Tarifas 2026.', ogTitle: 'Precio azafatas eventos Las Palmas 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos corporativos y turismo internacional en Las Palmas.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-vigo', title: 'Precio azafatas para eventos en Vigo 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos corporativos y bodas en pazos en Vigo. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Vigo 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos corporativos del sector motor y bodas en Vigo.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-santiago', title: 'Precio azafatas para eventos en Santiago 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos institucionales, universitarios y bodas en Santiago. Tarifas 2026.', ogTitle: 'Precio azafatas eventos Santiago 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para congresos universitarios y bodas en Santiago de Compostela.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-gijon', title: 'Precio azafatas para eventos en Gijón 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos corporativos y bodas en sidrerías en Gijón. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Gijón 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos de verano y bodas en sidrerías en Gijón.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-oviedo', title: 'Precio azafatas para eventos en Oviedo 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos institucionales y bodas en el casco histórico de Oviedo. Tarifas 2026.', ogTitle: 'Precio azafatas eventos Oviedo 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos institucionales y bodas en Oviedo.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-vitoria', title: 'Precio azafatas para eventos en Vitoria-Gasteiz 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos institucionales del Gobierno Vasco y bodas en Vitoria-Gasteiz. Tarifas 2026.', ogTitle: 'Precio azafatas eventos Vitoria-Gasteiz 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos institucionales y bodas en Vitoria-Gasteiz.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-pamplona', title: 'Precio azafatas para eventos en Pamplona 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos, San Fermín y bodas en fincas de Navarra en Pamplona. Tarifas 2026.', ogTitle: 'Precio azafatas eventos Pamplona 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para San Fermín y bodas en fincas de Navarra en Pamplona.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-logrono', title: 'Precio azafatas para eventos en Logroño 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para catas de bodega y bodas en Logroño. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Logroño 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para catas de bodega y eventos vitivinícolas en Logroño.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-salamanca', title: 'Precio azafatas para eventos en Salamanca 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos, actos universitarios y bodas en Salamanca. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Salamanca 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para actos universitarios y bodas en Salamanca.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-toledo', title: 'Precio azafatas para eventos en Toledo 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para bodas en espacios históricos y eventos corporativos en Toledo. Tarifas 2026.', ogTitle: 'Precio azafatas eventos Toledo 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para bodas históricas y eventos corporativos en Toledo.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-albacete', title: 'Precio azafatas para eventos en Albacete 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para la Feria de Albacete, bodas y eventos corporativos. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Albacete 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para la Feria de Albacete y eventos locales.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-marbella', title: 'Precio azafatas para eventos en Marbella 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para bodas de lujo y eventos en Puerto Banús, Marbella. Tarifas de temporada alta 2026.', ogTitle: 'Precio azafatas eventos Marbella 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para Puerto Banús, villas y bodas de lujo en Marbella.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-benidorm', title: 'Precio azafatas para eventos en Benidorm 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos en hoteles y temporada turística en Benidorm. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Benidorm 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos hoteleros y turísticos en Benidorm.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-sitges', title: 'Precio azafatas para eventos en Sitges 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos en Sitges. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Sitges 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos en Sitges.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-tarragona', title: 'Precio azafatas para eventos en Tarragona 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos y congresos en Tarragona. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Tarragona 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos y congresos en Tarragona.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-lleida', title: 'Precio azafatas para eventos en Lleida 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos en Lleida. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Lleida 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos en Lleida.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-girona', title: 'Precio azafatas para eventos en Girona 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos en Girona. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Girona 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos en Girona.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-badalona', title: 'Precio azafatas para eventos en Badalona 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos en Badalona. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Badalona 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos en Badalona.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-caceres', title: 'Precio azafatas para eventos en Cáceres 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos, ferias y congresos en Cáceres. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Cáceres 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos y ferias en Cáceres.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-segovia', title: 'Precio azafatas para eventos en Segovia 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos y bodas en Segovia. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Segovia 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos y bodas en Segovia.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-avila', title: 'Precio azafatas para eventos en Ávila 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos institucionales y culturales en Ávila. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Ávila 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos institucionales y culturales en Ávila.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-huesca', title: 'Precio azafatas para eventos en Huesca 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos y ferias en Huesca. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Huesca 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos y ferias en Huesca.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-cuenca', title: 'Precio azafatas para eventos en Cuenca 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos y bodas con encanto en Cuenca. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Cuenca 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos y bodas en Cuenca.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-estepona', title: 'Precio azafatas para eventos en Estepona 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para bodas en villas y eventos hoteleros en Estepona. Tarifas 2026.', ogTitle: 'Precio azafatas eventos Estepona 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para bodas en villas y eventos hoteleros en Estepona.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-fuengirola', title: 'Precio azafatas para eventos en Fuengirola 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos hoteleros y turismo familiar en Fuengirola. Tarifas 2026.', ogTitle: 'Precio azafatas eventos Fuengirola 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos hoteleros y turismo familiar en Fuengirola.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-torremolinos', title: 'Precio azafatas para eventos en Torremolinos 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos en hoteles y clubs de playa en Torremolinos. Tarifas 2026.', ogTitle: 'Precio azafatas eventos Torremolinos 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos en hoteles y clubs de playa en Torremolinos.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-benalmadena', title: 'Precio azafatas para eventos en Benalmádena 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos en Puerto Marina y hoteles de Benalmádena. Tarifas 2026.', ogTitle: 'Precio azafatas eventos Benalmádena 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos en Puerto Marina y hoteles de Benalmádena.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-jerez', title: 'Precio azafatas para eventos en Jerez 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para catas de bodega, Feria de Jerez y eventos ecuestres. Tarifas 2026.', ogTitle: 'Precio azafatas eventos Jerez 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para catas de bodega, Feria de Jerez y eventos ecuestres.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-hospitalet', title: "Precio azafatas para eventos en L'Hospitalet 2026 | XPEAK", desc: "Cuánto cobran las azafatas para ferias en Fira Gran Via y eventos corporativos en L'Hospitalet. Tarifas 2026.", ogTitle: "Precio azafatas eventos L'Hospitalet 2026 — XPEAK Blog", ogDesc: "Tarifas de azafatas para ferias en Gran Via y eventos corporativos en L'Hospitalet.", ogType: 'article' },
+  { path: '/blog/precio-azafatas-sabadell', title: 'Precio azafatas para eventos en Sabadell 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos corporativos y ferias en Sabadell. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Sabadell 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos corporativos en Sabadell.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-terrassa', title: 'Precio azafatas para eventos en Terrassa 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos culturales, institucionales y bodas en Terrassa. Tarifas 2026.', ogTitle: 'Precio azafatas eventos Terrassa 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos culturales e institucionales en Terrassa.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-manresa', title: 'Precio azafatas para eventos en Manresa 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos y bodas en Manresa, Catalunya Central. Tarifas 2026.', ogTitle: 'Precio azafatas eventos Manresa 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos y bodas en Manresa.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-mataro', title: 'Precio azafatas para eventos en Mataró 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos y bodas de costa en Mataró, Maresme. Tarifas 2026.', ogTitle: 'Precio azafatas eventos Mataró 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos y bodas de costa en Mataró.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-getafe', title: 'Precio azafatas para eventos en Getafe 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos corporativos en Getafe. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Getafe 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos corporativos en Getafe.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-alcorcon', title: 'Precio azafatas para eventos en Alcorcón 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos en Alcorcón. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Alcorcón 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos en Alcorcón.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-leganes', title: 'Precio azafatas para eventos en Leganés 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos académicos y corporativos en Leganés. Tarifas 2026.', ogTitle: 'Precio azafatas eventos Leganés 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos académicos y corporativos en Leganés.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-mostoles', title: 'Precio azafatas para eventos en Móstoles 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos en Móstoles. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Móstoles 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos en Móstoles.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-fuenlabrada', title: 'Precio azafatas para eventos en Fuenlabrada 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos corporativos en Fuenlabrada. Tarifas 2026.', ogTitle: 'Precio azafatas eventos Fuenlabrada 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos corporativos en Fuenlabrada.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-castellon', title: 'Precio azafatas para eventos en Castellón 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos en Castellón. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Castellón 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos en Castellón.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-elche', title: 'Precio azafatas para eventos en Elche 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos en Elche. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Elche 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos en Elche.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-gandia', title: 'Precio azafatas para eventos en Gandía 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos de playa en Gandía. Tarifas 2026.', ogTitle: 'Precio azafatas eventos Gandía 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos de playa en Gandía.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-denia', title: 'Precio azafatas para eventos en Dénia 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos en Dénia. Tarifas por perfil 2026.', ogTitle: 'Precio azafatas eventos Dénia 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos en Dénia.', ogType: 'article' },
+  { path: '/blog/precio-azafatas-torrevieja', title: 'Precio azafatas para eventos en Torrevieja 2026 | XPEAK', desc: 'Cuánto cobran las azafatas para eventos en Torrevieja. Tarifas 2026.', ogTitle: 'Precio azafatas eventos Torrevieja 2026 — XPEAK Blog', ogDesc: 'Tarifas de azafatas para eventos en Torrevieja.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-madrid', title: 'Precio camareros para eventos en Madrid 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas y eventos corporativos en Madrid. Tarifas por perfil 2026.', ogTitle: 'Precio camareros eventos Madrid 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos corporativos en Madrid.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-barcelona', title: 'Precio camareros para eventos en Barcelona 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas y eventos corporativos en Barcelona. Tarifas por perfil 2026.', ogTitle: 'Precio camareros eventos Barcelona 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos corporativos en Barcelona.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-valencia', title: 'Precio camareros para eventos en Valencia 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas y eventos corporativos en Valencia. Tarifas por perfil 2026.', ogTitle: 'Precio camareros eventos Valencia 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos corporativos en Valencia.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-sevilla', title: 'Precio camareros para eventos en Sevilla 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas y eventos corporativos en Sevilla. Tarifas por perfil 2026.', ogTitle: 'Precio camareros eventos Sevilla 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos corporativos en Sevilla.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-bilbao', title: 'Precio camareros para eventos en Bilbao 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas y eventos corporativos en Bilbao. Tarifas por perfil 2026.', ogTitle: 'Precio camareros eventos Bilbao 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos corporativos en Bilbao.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-malaga', title: 'Precio camareros para eventos en Málaga 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas y eventos en Málaga y la Costa del Sol. Tarifas por perfil 2026.', ogTitle: 'Precio camareros eventos Málaga 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos en Málaga y la Costa del Sol.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-zaragoza', title: 'Precio camareros para eventos en Zaragoza 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas y eventos corporativos en Zaragoza. Tarifas por perfil 2026.', ogTitle: 'Precio camareros eventos Zaragoza 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos corporativos en Zaragoza.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-palma', title: 'Precio camareros para eventos en Palma 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas de lujo y eventos privados en Mallorca. Tarifas de temporada alta 2026.', ogTitle: 'Precio camareros eventos Palma de Mallorca 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas de lujo y eventos náuticos en Mallorca.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-ibiza', title: 'Precio camareros para eventos en Ibiza 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para fiestas privadas, villas y yates en Ibiza. Tarifas de temporada alta 2026.', ogTitle: 'Precio camareros eventos Ibiza 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para villas, yates y clubes en Ibiza.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-alicante', title: 'Precio camareros para eventos en Alicante 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas en la Costa Blanca y eventos en Alicante. Tarifas 2026.', ogTitle: 'Precio camareros eventos Alicante 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas en la Costa Blanca y eventos corporativos.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-granada', title: 'Precio camareros para eventos en Granada 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas en el Albaicín y eventos en Granada. Tarifas por perfil 2026.', ogTitle: 'Precio camareros eventos Granada 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos en Granada.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-murcia', title: 'Precio camareros para eventos en Murcia 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas en fincas de la huerta y eventos en Murcia. Tarifas 2026.', ogTitle: 'Precio camareros eventos Murcia 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas en la huerta murciana y eventos corporativos.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-cordoba', title: 'Precio camareros para eventos en Córdoba 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas en cortijos y eventos en Córdoba. Tarifas por perfil 2026.', ogTitle: 'Precio camareros eventos Córdoba 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas en cortijos y eventos en Córdoba.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-valladolid', title: 'Precio camareros para eventos en Valladolid 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas en fincas de Castilla y eventos en Valladolid. Tarifas 2026.', ogTitle: 'Precio camareros eventos Valladolid 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas en fincas de Castilla y eventos corporativos.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-sansebastian', title: 'Precio camareros para eventos en San Sebastián 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas junto a la Concha y eventos del Zinemaldia. Tarifas 2026.', ogTitle: 'Precio camareros eventos San Sebastián 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos del Zinemaldia en San Sebastián.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-santander', title: 'Precio camareros para eventos en Santander 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas en fincas de la costa cántabra y eventos en Santander. Tarifas 2026.', ogTitle: 'Precio camareros eventos Santander 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas en la costa cántabra y eventos corporativos.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-coruna', title: 'Precio camareros para eventos en A Coruña 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas en pazos y eventos corporativos en A Coruña. Tarifas 2026.', ogTitle: 'Precio camareros eventos A Coruña 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas en pazos y eventos corporativos en A Coruña.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-tenerife', title: 'Precio camareros para eventos en Tenerife 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas de lujo y eventos corporativos en Tenerife. Tarifas 2026.', ogTitle: 'Precio camareros eventos Tenerife 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas de lujo y eventos corporativos en Tenerife.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-laspalmas', title: 'Precio camareros para eventos en Las Palmas 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas y eventos corporativos en Las Palmas. Tarifas 2026.', ogTitle: 'Precio camareros eventos Las Palmas 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos corporativos en Las Palmas.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-vigo', title: 'Precio camareros para eventos en Vigo 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas en las Rías Baixas y eventos en Vigo. Tarifas 2026.', ogTitle: 'Precio camareros eventos Vigo 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas en las Rías Baixas y eventos corporativos en Vigo.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-santiago', title: 'Precio camareros para eventos en Santiago 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas en el casco histórico y eventos en Santiago. Tarifas 2026.', ogTitle: 'Precio camareros eventos Santiago 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos universitarios en Santiago de Compostela.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-gijon', title: 'Precio camareros para eventos en Gijón 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas en sidrerías y eventos en Gijón. Tarifas 2026.', ogTitle: 'Precio camareros eventos Gijón 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas en sidrerías y eventos de verano en Gijón.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-oviedo', title: 'Precio camareros para eventos en Oviedo 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas en el casco histórico y eventos corporativos en Oviedo. Tarifas 2026.', ogTitle: 'Precio camareros eventos Oviedo 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos corporativos en Oviedo.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-vitoria', title: 'Precio camareros para eventos en Vitoria-Gasteiz 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas y eventos institucionales en Vitoria-Gasteiz. Tarifas 2026.', ogTitle: 'Precio camareros eventos Vitoria-Gasteiz 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos institucionales en Vitoria-Gasteiz.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-pamplona', title: 'Precio camareros para eventos en Pamplona 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para San Fermín y bodas en fincas de Navarra en Pamplona. Tarifas 2026.', ogTitle: 'Precio camareros eventos Pamplona 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para San Fermín y bodas en Navarra.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-logrono', title: 'Precio camareros para eventos en Logroño 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para catas de bodega y bodas en Logroño. Tarifas 2026.', ogTitle: 'Precio camareros eventos Logroño 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para catas de bodega y eventos vitivinícolas en Logroño.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-salamanca', title: 'Precio camareros para eventos en Salamanca 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas en fincas charras y eventos en Salamanca. Tarifas 2026.', ogTitle: 'Precio camareros eventos Salamanca 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos en Salamanca.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-toledo', title: 'Precio camareros para eventos en Toledo 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas en el casco histórico y eventos en Toledo. Tarifas 2026.', ogTitle: 'Precio camareros eventos Toledo 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas históricas en Toledo.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-albacete', title: 'Precio camareros para eventos en Albacete 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas, la Feria de Albacete y eventos corporativos. Tarifas 2026.', ogTitle: 'Precio camareros eventos Albacete 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para la Feria de Albacete y bodas locales.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-marbella', title: 'Precio camareros para eventos en Marbella 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas de lujo en villas y hoteles 5* de Marbella. Tarifas 2026.', ogTitle: 'Precio camareros eventos Marbella 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas de lujo en Marbella.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-benidorm', title: 'Precio camareros para eventos en Benidorm 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para eventos hoteleros y bodas en Benidorm. Tarifas por perfil 2026.', ogTitle: 'Precio camareros eventos Benidorm 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para eventos hoteleros en Benidorm.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-sitges', title: 'Precio camareros para eventos en Sitges 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas y eventos en Sitges. Tarifas por perfil 2026.', ogTitle: 'Precio camareros eventos Sitges 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos en Sitges.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-tarragona', title: 'Precio camareros para eventos en Tarragona 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas y eventos en Tarragona. Tarifas por perfil 2026.', ogTitle: 'Precio camareros eventos Tarragona 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos en Tarragona.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-lleida', title: 'Precio camareros para eventos en Lleida 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas y eventos en Lleida. Tarifas por perfil 2026.', ogTitle: 'Precio camareros eventos Lleida 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos en Lleida.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-girona', title: 'Precio camareros para eventos en Girona 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas y eventos en Girona. Tarifas por perfil 2026.', ogTitle: 'Precio camareros eventos Girona 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos en Girona.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-badalona', title: 'Precio camareros para eventos en Badalona 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas y eventos en Badalona. Tarifas por perfil 2026.', ogTitle: 'Precio camareros eventos Badalona 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos en Badalona.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-caceres', title: 'Precio camareros para eventos en Cáceres 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para eventos y bodas en Cáceres. Tarifas por perfil 2026.', ogTitle: 'Precio camareros eventos Cáceres 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para eventos y bodas en Cáceres.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-segovia', title: 'Precio camareros para eventos en Segovia 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas en fincas y eventos en Segovia. Tarifas 2026.', ogTitle: 'Precio camareros eventos Segovia 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos en Segovia.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-avila', title: 'Precio camareros para eventos en Ávila 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para eventos y bodas en Ávila. Tarifas por perfil 2026.', ogTitle: 'Precio camareros eventos Ávila 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para eventos y bodas en Ávila.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-huesca', title: 'Precio camareros para eventos en Huesca 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas en el Somontano y eventos en Huesca. Tarifas 2026.', ogTitle: 'Precio camareros eventos Huesca 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos en Huesca.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-cuenca', title: 'Precio camareros para eventos en Cuenca 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas con encanto y eventos en Cuenca. Tarifas 2026.', ogTitle: 'Precio camareros eventos Cuenca 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos en Cuenca.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-estepona', title: 'Precio camareros para eventos en Estepona 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas en villas y eventos hoteleros en Estepona. Tarifas 2026.', ogTitle: 'Precio camareros eventos Estepona 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos hoteleros en Estepona.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-fuengirola', title: 'Precio camareros para eventos en Fuengirola 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para eventos hoteleros y celebraciones en Fuengirola. Tarifas 2026.', ogTitle: 'Precio camareros eventos Fuengirola 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para eventos hoteleros en Fuengirola.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-torremolinos', title: 'Precio camareros para eventos en Torremolinos 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para eventos en hoteles y clubs de playa en Torremolinos. Tarifas 2026.', ogTitle: 'Precio camareros eventos Torremolinos 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para eventos en hoteles y clubs de playa en Torremolinos.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-benalmadena', title: 'Precio camareros para eventos en Benalmádena 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para eventos en Puerto Marina y hoteles de Benalmádena. Tarifas 2026.', ogTitle: 'Precio camareros eventos Benalmádena 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para eventos en Puerto Marina y hoteles de Benalmádena.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-jerez', title: 'Precio camareros para eventos en Jerez 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas de bodega y la Feria de Jerez. Tarifas 2026.', ogTitle: 'Precio camareros eventos Jerez 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas de bodega y Feria de Jerez.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-hospitalet', title: "Precio camareros para eventos en L'Hospitalet 2026 | XPEAK", desc: "Cuánto cobran los camareros y bartenders para eventos corporativos en L'Hospitalet de Llobregat. Tarifas 2026.", ogTitle: "Precio camareros eventos L'Hospitalet 2026 — XPEAK Blog", ogDesc: "Tarifas de camareros y bartenders para eventos corporativos en L'Hospitalet.", ogType: 'article' },
+  { path: '/blog/camareros-eventos-sabadell', title: 'Precio camareros para eventos en Sabadell 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para eventos corporativos en Sabadell. Tarifas por perfil 2026.', ogTitle: 'Precio camareros eventos Sabadell 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para eventos corporativos en Sabadell.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-terrassa', title: 'Precio camareros para eventos en Terrassa 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas en fincas del Vallès en Terrassa. Tarifas 2026.', ogTitle: 'Precio camareros eventos Terrassa 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos en Terrassa.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-manresa', title: 'Precio camareros para eventos en Manresa 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas en fincas del Bages en Manresa. Tarifas 2026.', ogTitle: 'Precio camareros eventos Manresa 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos en Manresa.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-mataro', title: 'Precio camareros para eventos en Mataró 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas de playa y eventos en Mataró. Tarifas 2026.', ogTitle: 'Precio camareros eventos Mataró 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas de playa y eventos en Mataró.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-getafe', title: 'Precio camareros para eventos en Getafe 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas y eventos corporativos en Getafe. Tarifas 2026.', ogTitle: 'Precio camareros eventos Getafe 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos en Getafe.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-alcorcon', title: 'Precio camareros para eventos en Alcorcón 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas y eventos en Alcorcón. Tarifas 2026.', ogTitle: 'Precio camareros eventos Alcorcón 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos en Alcorcón.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-leganes', title: 'Precio camareros para eventos en Leganés 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas y eventos en Leganés. Tarifas 2026.', ogTitle: 'Precio camareros eventos Leganés 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos en Leganés.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-mostoles', title: 'Precio camareros para eventos en Móstoles 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas y eventos en Móstoles. Tarifas 2026.', ogTitle: 'Precio camareros eventos Móstoles 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos en Móstoles.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-fuenlabrada', title: 'Precio camareros para eventos en Fuenlabrada 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas y eventos corporativos en Fuenlabrada. Tarifas 2026.', ogTitle: 'Precio camareros eventos Fuenlabrada 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos en Fuenlabrada.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-castellon', title: 'Precio camareros para eventos en Castellón 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas y eventos en Castellón. Tarifas 2026.', ogTitle: 'Precio camareros eventos Castellón 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos en Castellón.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-elche', title: 'Precio camareros para eventos en Elche 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas y eventos en Elche. Tarifas 2026.', ogTitle: 'Precio camareros eventos Elche 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos en Elche.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-gandia', title: 'Precio camareros para eventos en Gandía 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas de playa en Gandía. Tarifas 2026.', ogTitle: 'Precio camareros eventos Gandía 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas de playa en Gandía.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-denia', title: 'Precio camareros para eventos en Dénia 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas y eventos en Dénia. Tarifas 2026.', ogTitle: 'Precio camareros eventos Dénia 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos en Dénia.', ogType: 'article' },
+  { path: '/blog/camareros-eventos-torrevieja', title: 'Precio camareros para eventos en Torrevieja 2026 | XPEAK', desc: 'Cuánto cobran los camareros y bartenders para bodas y eventos en Torrevieja. Tarifas 2026.', ogTitle: 'Precio camareros eventos Torrevieja 2026 — XPEAK Blog', ogDesc: 'Tarifas de camareros y bartenders para bodas y eventos en Torrevieja.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-madrid', title: 'Precio maquilladora para eventos en Madrid 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos corporativos en Madrid. Tarifas por servicio 2026.', ogTitle: 'Precio maquilladora eventos Madrid 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos corporativos en Madrid.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-barcelona', title: 'Precio maquilladora para eventos en Barcelona 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos corporativos en Barcelona. Tarifas por servicio 2026.', ogTitle: 'Precio maquilladora eventos Barcelona 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos corporativos en Barcelona.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-valencia', title: 'Precio maquilladora para eventos en Valencia 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos corporativos en Valencia. Tarifas por servicio 2026.', ogTitle: 'Precio maquilladora eventos Valencia 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos corporativos en Valencia.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-sevilla', title: 'Precio maquilladora para eventos en Sevilla 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos en Sevilla, incluida la Feria de Abril. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Sevilla 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Sevilla.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-bilbao', title: 'Precio maquilladora para eventos en Bilbao 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos corporativos en Bilbao. Tarifas por servicio 2026.', ogTitle: 'Precio maquilladora eventos Bilbao 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos corporativos en Bilbao.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-malaga', title: 'Precio maquilladora para eventos en Málaga 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos en Málaga y la Costa del Sol. Tarifas por servicio 2026.', ogTitle: 'Precio maquilladora eventos Málaga 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Málaga y la Costa del Sol.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-zaragoza', title: 'Precio maquilladora para eventos en Zaragoza 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos corporativos en Zaragoza. Tarifas por servicio 2026.', ogTitle: 'Precio maquilladora eventos Zaragoza 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos corporativos en Zaragoza.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-palma', title: 'Precio maquilladora para eventos en Palma 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas de lujo en villas y fincas de Mallorca. Tarifas de temporada alta 2026.', ogTitle: 'Precio maquilladora eventos Palma de Mallorca 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas de lujo y eventos en Mallorca.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-ibiza', title: 'Precio maquilladora para eventos en Ibiza 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y fiestas privadas en villas de Ibiza. Tarifas de temporada alta 2026.', ogTitle: 'Precio maquilladora eventos Ibiza 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas de lujo y fiestas privadas en Ibiza.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-alicante', title: 'Precio maquilladora para eventos en Alicante 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas en la Costa Blanca y eventos en Alicante. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Alicante 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas en la Costa Blanca y eventos corporativos.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-granada', title: 'Precio maquilladora para eventos en Granada 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas en el Albaicín y eventos en Granada. Tarifas por servicio 2026.', ogTitle: 'Precio maquilladora eventos Granada 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Granada.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-murcia', title: 'Precio maquilladora para eventos en Murcia 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas en fincas de la huerta y eventos en Murcia. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Murcia 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas en la huerta murciana y eventos corporativos.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-cordoba', title: 'Precio maquilladora para eventos en Córdoba 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas en cortijos y eventos en Córdoba, incluido el Festival de los Patios. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Córdoba 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas en cortijos y el Festival de los Patios en Córdoba.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-valladolid', title: 'Precio maquilladora para eventos en Valladolid 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas en fincas de Castilla y eventos corporativos en Valladolid. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Valladolid 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas en fincas de Castilla y eventos corporativos.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-sansebastian', title: 'Precio maquilladora para eventos en San Sebastián 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas junto a la Concha y el Zinemaldia en San Sebastián. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos San Sebastián 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y el Zinemaldia en San Sebastián.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-santander', title: 'Precio maquilladora para eventos en Santander 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas en fincas de la costa cántabra y eventos en Santander. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Santander 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas en la costa cántabra y eventos corporativos.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-coruna', title: 'Precio maquilladora para eventos en A Coruña 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas en pazos y eventos corporativos en A Coruña. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos A Coruña 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas en pazos y eventos corporativos en A Coruña.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-tenerife', title: 'Precio maquilladora para eventos en Tenerife 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas de lujo y eventos corporativos en Tenerife. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Tenerife 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas de lujo y eventos corporativos en Tenerife.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-laspalmas', title: 'Precio maquilladora para eventos en Las Palmas 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos corporativos en Las Palmas. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Las Palmas 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos corporativos en Las Palmas.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-vigo', title: 'Precio maquilladora para eventos en Vigo 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas en las Rías Baixas y eventos en Vigo. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Vigo 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas en las Rías Baixas y eventos corporativos en Vigo.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-santiago', title: 'Precio maquilladora para eventos en Santiago 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas en el casco histórico y eventos en Santiago. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Santiago 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos universitarios en Santiago de Compostela.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-gijon', title: 'Precio maquilladora para eventos en Gijón 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas en sidrerías y eventos con vistas al mar en Gijón. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Gijón 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Gijón.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-oviedo', title: 'Precio maquilladora para eventos en Oviedo 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas en el casco histórico y eventos corporativos en Oviedo. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Oviedo 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos corporativos en Oviedo.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-vitoria', title: 'Precio maquilladora para eventos en Vitoria-Gasteiz 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos institucionales en Vitoria-Gasteiz. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Vitoria-Gasteiz 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos institucionales en Vitoria-Gasteiz.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-pamplona', title: 'Precio maquilladora para eventos en Pamplona 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas en fincas de Navarra y eventos en Pamplona, con el pico de San Fermín. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Pamplona 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas en fincas de Navarra y eventos en Pamplona.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-logrono', title: 'Precio maquilladora para eventos en Logroño 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas en bodegas riojanas y catas de vino en Logroño. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Logroño 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas en bodegas riojanas y eventos vitivinícolas en Logroño.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-salamanca', title: 'Precio maquilladora para eventos en Salamanca 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas en fincas charras y eventos en Salamanca. Tarifas por servicio 2026.', ogTitle: 'Precio maquilladora eventos Salamanca 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Salamanca.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-toledo', title: 'Precio maquilladora para eventos en Toledo 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas en el casco histórico y eventos en Toledo. Tarifas por servicio 2026.', ogTitle: 'Precio maquilladora eventos Toledo 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas en el casco histórico de Toledo.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-albacete', title: 'Precio maquilladora para eventos en Albacete 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas, la Feria de Albacete y eventos corporativos. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Albacete 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Albacete.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-marbella', title: 'Precio maquilladora para eventos en Marbella 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas de lujo en villas y hoteles 5* de Marbella. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Marbella 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas de lujo en Marbella.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-benidorm', title: 'Precio maquilladora para eventos en Benidorm 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas en hoteles y eventos turísticos en Benidorm. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Benidorm 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos hoteleros en Benidorm.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-sitges', title: 'Precio maquilladora para eventos en Sitges 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos en Sitges. Tarifas por servicio 2026.', ogTitle: 'Precio maquilladora eventos Sitges 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Sitges.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-tarragona', title: 'Precio maquilladora para eventos en Tarragona 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos corporativos en Tarragona. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Tarragona 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Tarragona.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-lleida', title: 'Precio maquilladora para eventos en Lleida 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos en Lleida. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Lleida 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Lleida.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-girona', title: 'Precio maquilladora para eventos en Girona 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos en Girona. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Girona 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Girona.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-badalona', title: 'Precio maquilladora para eventos en Badalona 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos corporativos en Badalona. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Badalona 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Badalona.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-caceres', title: 'Precio maquilladora para eventos en Cáceres 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos institucionales en Cáceres. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Cáceres 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Cáceres.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-segovia', title: 'Precio maquilladora para eventos en Segovia 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas en fincas y eventos en Segovia. Tarifas por servicio 2026.', ogTitle: 'Precio maquilladora eventos Segovia 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Segovia.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-avila', title: 'Precio maquilladora para eventos en Ávila 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos institucionales en Ávila. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Ávila 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Ávila.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-huesca', title: 'Precio maquilladora para eventos en Huesca 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas en el Somontano y eventos en Huesca. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Huesca 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Huesca.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-cuenca', title: 'Precio maquilladora para eventos en Cuenca 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas con encanto y eventos en Cuenca. Tarifas por servicio 2026.', ogTitle: 'Precio maquilladora eventos Cuenca 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Cuenca.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-estepona', title: 'Precio maquilladora para eventos en Estepona 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas en villas y eventos en Estepona. Tarifas por servicio 2026.', ogTitle: 'Precio maquilladora eventos Estepona 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas en villas y eventos en Estepona.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-fuengirola', title: 'Precio maquilladora para eventos en Fuengirola 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos hoteleros en Fuengirola. Tarifas por servicio 2026.', ogTitle: 'Precio maquilladora eventos Fuengirola 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos hoteleros en Fuengirola.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-torremolinos', title: 'Precio maquilladora para eventos en Torremolinos 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos en hoteles y clubs de playa en Torremolinos. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Torremolinos 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en hoteles y clubs de playa en Torremolinos.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-benalmadena', title: 'Precio maquilladora para eventos en Benalmádena 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos en Puerto Marina y hoteles de Benalmádena. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Benalmádena 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Puerto Marina y hoteles de Benalmádena.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-jerez', title: 'Precio maquilladora para eventos en Jerez 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas en bodegas y la Feria de Jerez. Tarifas por servicio 2026.', ogTitle: 'Precio maquilladora eventos Jerez 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas en bodegas y Feria de Jerez.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-hospitalet', title: "Precio maquilladora para eventos en L'Hospitalet 2026 | XPEAK", desc: "Cuánto cobra una maquilladora para bodas y eventos en L'Hospitalet de Llobregat. Tarifas por servicio 2026.", ogTitle: "Precio maquilladora eventos L'Hospitalet 2026 — XPEAK Blog", ogDesc: "Tarifas de maquilladoras para bodas y eventos en L'Hospitalet.", ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-sabadell', title: 'Precio maquilladora para eventos en Sabadell 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos corporativos en Sabadell. Tarifas por servicio 2026.', ogTitle: 'Precio maquilladora eventos Sabadell 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos corporativos en Sabadell.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-terrassa', title: 'Precio maquilladora para eventos en Terrassa 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas en fincas del Vallès en Terrassa. Tarifas por servicio 2026.', ogTitle: 'Precio maquilladora eventos Terrassa 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Terrassa.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-manresa', title: 'Precio maquilladora para eventos en Manresa 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas en fincas del Bages en Manresa. Tarifas por servicio 2026.', ogTitle: 'Precio maquilladora eventos Manresa 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Manresa.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-mataro', title: 'Precio maquilladora para eventos en Mataró 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas de playa y eventos en Mataró. Tarifas por servicio 2026.', ogTitle: 'Precio maquilladora eventos Mataró 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas de playa y eventos en Mataró.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-getafe', title: 'Precio maquilladora para eventos en Getafe 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos corporativos en Getafe. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Getafe 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Getafe.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-alcorcon', title: 'Precio maquilladora para eventos en Alcorcón 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos en Alcorcón. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Alcorcón 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Alcorcón.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-leganes', title: 'Precio maquilladora para eventos en Leganés 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos en Leganés. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Leganés 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Leganés.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-mostoles', title: 'Precio maquilladora para eventos en Móstoles 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos en Móstoles. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Móstoles 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Móstoles.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-fuenlabrada', title: 'Precio maquilladora para eventos en Fuenlabrada 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos corporativos en Fuenlabrada. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Fuenlabrada 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Fuenlabrada.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-castellon', title: 'Precio maquilladora para eventos en Castellón 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos en Castellón. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Castellón 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Castellón.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-elche', title: 'Precio maquilladora para eventos en Elche 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos en Elche. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Elche 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Elche.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-gandia', title: 'Precio maquilladora para eventos en Gandía 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos de playa en Gandía. Tarifas por servicio 2026.', ogTitle: 'Precio maquilladora eventos Gandía 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos de playa en Gandía.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-denia', title: 'Precio maquilladora para eventos en Dénia 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos en Dénia. Tarifas 2026.', ogTitle: 'Precio maquilladora eventos Dénia 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Dénia.', ogType: 'article' },
+  { path: '/blog/maquillaje-eventos-torrevieja', title: 'Precio maquilladora para eventos en Torrevieja 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas y eventos en Torrevieja. Tarifas por servicio 2026.', ogTitle: 'Precio maquilladora eventos Torrevieja 2026 — XPEAK Blog', ogDesc: 'Tarifas de maquilladoras para bodas y eventos en Torrevieja.', ogType: 'article' },
   { path: '/blog/contratar-barman-evento-privado',  title: 'Contratar barman para evento privado: precios y qué incluye en España (2026) — XPEAK', desc: 'Cuánto cuesta contratar un barman o coctelero para un evento privado en España. Tarifas, paquetes y diferencias con camarero de barra. Guía 2026.', ogTitle: 'Contratar barman evento privado: precios 2026 — XPEAK Blog', ogDesc: 'Cuánto cuesta contratar un barman para un evento privado. Tarifas y paquetes.', ogType: 'article' },
   { path: '/blog/dj-boda-civil-precio-canciones',   title: 'DJ para boda civil: precio y qué canciones poner en cada momento (2026) — XPEAK', desc: 'Cuánto cuesta un DJ para boda civil en España y qué canciones poner en la entrada, firma, cóctel y pista de baile. Guía completa 2026.', ogTitle: 'DJ para boda civil: precio y canciones 2026 — XPEAK Blog', ogDesc: 'Precio del DJ para boda civil y guía de canciones por momento. Guía completa.', ogType: 'article' },
   { path: '/blog/catering-boda-precio-por-persona', title: 'Catering boda: precio por persona en España (2026) — XPEAK', desc: 'Cuánto cuesta el catering de una boda en España. Precios por formato, qué incluye cada paquete y cómo no llevarte sorpresas. Guía 2026.', ogTitle: 'Catering boda precio por persona 2026 — XPEAK Blog', ogDesc: 'Precios reales del catering de boda en España. Por persona, por formato y todo lo que incluye.', ogType: 'article' },
@@ -475,10 +675,18 @@ const ROUTES = [
   },
   {
     path: '/directorio/staff',
-    title: 'Contratar staff para eventos en España — Directorio XPEAK',
-    desc: 'Directorio de camareros, azafatas y personal de eventos en España. Perfiles reales, precios por jornada.',
-    ogTitle: 'Directorio de staff para eventos — XPEAK',
-    ogDesc: 'Encuentra camareros y personal para tu evento. Perfiles reales y precios por jornada.',
+    title: 'Contratar camareros para eventos en España — Directorio XPEAK',
+    desc: 'Directorio de camareros y personal de sala para eventos en España. Perfiles reales, precios por jornada.',
+    ogTitle: 'Directorio de camareros para eventos — XPEAK',
+    ogDesc: 'Encuentra camareros para tu evento. Perfiles reales y precios por jornada.',
+    ogType: 'website',
+  },
+  {
+    path: '/directorio/azafata',
+    title: 'Contratar azafatas para eventos en España — Directorio XPEAK',
+    desc: 'Directorio de azafatas para eventos en España. Perfiles reales, disponibilidad y precios por jornada.',
+    ogTitle: 'Directorio de azafatas para eventos — XPEAK',
+    ogDesc: 'Encuentra azafatas de imagen y hostess para tu evento. Perfiles reales, contacto directo.',
     ogType: 'website',
   },
   {
@@ -486,7 +694,7 @@ const ROUTES = [
     title: 'Contratar maquilladora para bodas y eventos — Directorio XPEAK',
     desc: 'Directorio de maquilladoras para bodas, comuniones y eventos en España. Portfolios y precios reales.',
     ogTitle: 'Directorio de maquilladoras — XPEAK',
-    ogDesc: 'Encuentra maquilladoras para tu boda o evento. Portfolios reales y contacto directo.',
+    ogDesc: 'Encuentra maquilladora para tu boda o evento. Portfolios reales y contacto directo.',
     ogType: 'website',
   },
   {
@@ -583,6 +791,30 @@ const ROUTES = [
     desc: 'Directorio de photo booth para bodas y eventos en España. Clásico, 360 y espejo glamour. Precios desde 300€, contacto directo.',
     ogTitle: 'Directorio de photo booth — XPEAK',
     ogDesc: 'Cabinas de fotos, photo booth 360 y espejos glamour para tu evento.',
+    ogType: 'website',
+  },
+  {
+    path: '/directorio/wedding-planner',
+    title: 'Contratar wedding planner para tu boda en España — Directorio XPEAK',
+    desc: 'Directorio de wedding planners y encargadas de eventos en España. Organización integral de bodas y celebraciones. Precios reales y contacto directo.',
+    ogTitle: 'Directorio de wedding planners — XPEAK',
+    ogDesc: 'Encuentra wedding planners y coordinadoras de eventos para tu boda.',
+    ogType: 'website',
+  },
+  {
+    path: '/directorio/diseno-grafico',
+    title: 'Contratar diseño gráfico para bodas y eventos en España — XPEAK',
+    desc: 'Directorio de diseñadores gráficos para bodas y eventos en España. Invitaciones, cartelería y visuales a medida. Contacto directo.',
+    ogTitle: 'Directorio de diseño gráfico — XPEAK',
+    ogDesc: 'Diseñadores gráficos para invitaciones, cartelería e identidad visual de tu evento.',
+    ogType: 'website',
+  },
+  {
+    path: '/socials',
+    title: 'Agenda de Socials de Baile — Salsa, Bachata y Kizomba | XPEAK',
+    desc: 'Socials y congresos de salsa, bachata y kizomba en toda España. Encuentra dónde bailar esta semana o publica tu evento gratis.',
+    ogTitle: 'Agenda de Socials de Baile — XPEAK',
+    ogDesc: 'Socials y congresos de salsa, bachata y kizomba en toda España.',
     ogType: 'website',
   },
 
@@ -861,6 +1093,12 @@ const ROUTES = [
   { path: '/blog/dj-para-eventos-corporativos-precio',    title: 'DJ para eventos corporativos: precio 2026 | XPEAK', desc: 'Cuánto cuesta un DJ para un evento corporativo en España 2026. Diferencias con DJ de boda, qué equipo incluye y cómo presupuestar.', ogTitle: 'DJ para eventos corporativos: precio 2026 — XPEAK Blog', ogDesc: 'Precio de DJ para eventos de empresa en España. Diferencias, equipo y cómo contratar.', ogType: 'article' },
   { path: '/blog/maquilladora-para-eventos-precio',       title: 'Maquilladora para eventos: precios 2026 | XPEAK', desc: 'Cuánto cobra una maquilladora para bodas, eventos corporativos y galas en España 2026. Precios por servicio y cómo elegir el perfil correcto.', ogTitle: 'Maquilladora para eventos: precios 2026 — XPEAK Blog', ogDesc: 'Precios de maquilladora para eventos en España. Por tipo de servicio y ciudad. Guía 2026.', ogType: 'article' },
   { path: '/blog/saxofonista-para-bodas-precio',          title: 'Saxofonista para bodas: precio 2026 | XPEAK', desc: 'Cuánto cuesta un saxofonista para una boda en España 2026. Precios por duración, tipo de evento y cómo combinarlo con DJ.', ogTitle: 'Saxofonista para bodas: precio 2026 — XPEAK Blog', ogDesc: 'Precio de saxofonista para bodas en España. Por duración y tipo de evento. Guía 2026.', ogType: 'article' },
+  { path: '/blog/animadores-comunion-precio',             title: 'Animadores para comunión: precios 2026 | XPEAK', desc: 'Precios de animadores para comunión en España. Animación infantil, karaoke, magia e hinchables. Cuándo contratarlos y consejos para elegir bien.', ogTitle: 'Animadores para comunión: precios 2026 — XPEAK Blog', ogDesc: 'Cuánto cuesta la animación infantil para una comunión en España. Guía 2026.', ogType: 'article' },
+  { path: '/blog/cuarteto-cuerda-boda-precio',            title: 'Cuarteto de cuerda para boda: precio 2026 | XPEAK', desc: 'Precios reales de cuartetos de cuerda para bodas en España. Solo ceremonia, ceremonia y cóctel o evento completo. Cuándo reservarlo y alternativas.', ogTitle: 'Cuarteto de cuerda para boda: precio 2026 — XPEAK Blog', ogDesc: 'Cuánto cuesta un cuarteto de cuerda para una boda en España. Guía 2026.', ogType: 'article' },
+  { path: '/blog/ideas-eventos-empresa-originales',       title: '10 ideas originales para eventos de empresa 2026 | XPEAK', desc: '10 ideas originales para eventos de empresa en España. Team building gastronómico, escape room, magia, DJ privado, flamenco y más. Precios y cuándo encaja cada opción.', ogTitle: '10 ideas para eventos de empresa originales — XPEAK Blog', ogDesc: 'Ideas originales para tu próximo evento de empresa en España, con precios orientativos.', ogType: 'article' },
+  { path: '/blog/mago-precio-eventos-espana',             title: 'Cuánto cobra un mago para eventos: precios 2026 | XPEAK', desc: 'Precios reales de magos para eventos corporativos, bodas y fiestas en España 2026. Tarifas por tipo de magia y qué buscar antes de contratar.', ogTitle: 'Cuánto cobra un mago para eventos 2026 — XPEAK Blog', ogDesc: 'Tarifas de magos e ilusionistas para eventos en España. Por tipo de magia. Guía 2026.', ogType: 'article' },
+  { path: '/blog/photobooth-precio-boda-evento',          title: 'Photo booth para boda o evento: precio 2026 | XPEAK', desc: 'Precios reales de photo booth para bodas y eventos en España 2026. Tipos, qué incluye cada modalidad y cómo elegir el correcto para tu celebración.', ogTitle: 'Photo booth para bodas: precio 2026 — XPEAK Blog', ogDesc: 'Cuánto cuesta un photo booth para boda o evento en España. Tipos y precios. Guía 2026.', ogType: 'article' },
+  { path: '/blog/saxofonista-precio-espana',              title: 'Cuánto cobra un saxofonista para eventos: precios 2026 | XPEAK', desc: 'Precios reales de saxofonistas para bodas, cócteles y eventos en España 2026. Tarifas por tipo de actuación y qué incluye el servicio.', ogTitle: 'Cuánto cobra un saxofonista para eventos 2026 — XPEAK Blog', ogDesc: 'Tarifas de saxofonistas para bodas y eventos en España. Por tipo de actuación. Guía 2026.', ogType: 'article' },
   { path: '/blog/tecnico-de-sonido-para-eventos',         title: 'Técnico de sonido eventos: precios 2026 | XPEAK', desc: 'Cuánto cuesta un técnico de sonido para bodas, conciertos y eventos en España 2026. Tarifas por tipo de evento y qué incluye el servicio.', ogTitle: 'Técnico de sonido para eventos: precios 2026 — XPEAK Blog', ogDesc: 'Precios de técnico de sonido para eventos en España. Por tipo, duración y equipamiento.', ogType: 'article' },
   { path: '/blog/personal-de-imagen-ferias-y-congresos',  title: 'Personal de imagen para ferias: precios 2026 | XPEAK', desc: 'Cuánto cuesta contratar azafatas, promotoras y modelos para ferias y congresos en España 2026. Tarifas por jornada y perfil.', ogTitle: 'Personal de imagen ferias y congresos: precios 2026 — XPEAK', ogDesc: 'Precios de azafatas y promotoras para ferias en España. Tarifas por perfil y jornada.', ogType: 'article' },
   { path: '/blog/fotografo-boda',                         title: 'Fotógrafo de bodas en España: guía de precios y consejos 2026 | XPEAK', desc: 'Guía completa para contratar fotógrafo de bodas en España 2026. Precios por ciudad, qué incluye el reportaje y cómo elegir el estilo correcto.', ogTitle: 'Fotógrafo de bodas España: guía y precios 2026 — XPEAK', ogDesc: 'Cómo contratar un fotógrafo de bodas en España. Precios, estilos y qué incluye el reportaje.', ogType: 'article' },
@@ -883,7 +1121,163 @@ const ROUTES = [
   { path: '/blog/fiesta-privada-villa-ibiza',             title: 'Fiesta privada en villa de Ibiza: permisos, DJ y proveedores 2026 | XPEAK', desc: 'Cómo organizar una fiesta privada en villa de Ibiza. Normativa de ruido, DJ, catering y personal para eventos en temporada. Guía completa.', ogTitle: 'Fiesta privada villa Ibiza: DJ y proveedores 2026 — XPEAK', ogDesc: 'Guía para organizar fiestas privadas en villas de Ibiza. Permisos, DJ y personal.', ogType: 'article' },
   { path: '/blog/fotografo-comunion-barcelona',           title: 'Fotógrafo de comunión en Barcelona: precios y guía 2026 | XPEAK', desc: '¿Cuánto cuesta un fotógrafo de comunión en Barcelona en 2026? Precios reales por paquete, qué incluye y cuándo reservar.', ogTitle: 'Fotógrafo comunión Barcelona: precio 2026 — XPEAK Blog', ogDesc: 'Precios de fotógrafos de comunión en Barcelona. Qué incluye y cuándo reservar. Guía 2026.', ogType: 'article' },
   { path: '/blog/como-organizar-fiesta-de-empresa',       title: 'Cómo organizar una fiesta de empresa: guía y presupuesto 2026 | XPEAK', desc: 'Guía completa para organizar una fiesta de empresa en 2026. Presupuesto por partidas, proveedores y checklist para cenas de fin de año o team building.', ogTitle: 'Cómo organizar fiesta de empresa 2026 — XPEAK Blog', ogDesc: 'Guía y presupuesto para organizar una fiesta de empresa en España. Checklist completo.', ogType: 'article' },
+  // Legal
+  { path: '/privacidad', title: 'Política de Privacidad — XPEAK', desc: 'Política de privacidad de XPEAK: qué datos recogemos, cómo los usamos y tus derechos de acceso, rectificación y borrado conforme al RGPD.', ogTitle: 'Política de Privacidad — XPEAK', ogDesc: 'Política de privacidad y protección de datos de XPEAK conforme al RGPD.', ogType: 'website' },
+  { path: '/terminos', title: 'Términos y Condiciones — XPEAK', desc: 'Términos y condiciones de uso de la plataforma XPEAK para profesionales y organizadores de eventos.', ogTitle: 'Términos y Condiciones — XPEAK', ogDesc: 'Condiciones de uso de XPEAK, la plataforma de contratación de profesionales de eventos.', ogType: 'website' },
+  { path: '/cookies', title: 'Política de Cookies — XPEAK', desc: 'Información sobre el uso de cookies en XPEAK: tipos de cookies, finalidad y cómo gestionar tus preferencias.', ogTitle: 'Política de Cookies — XPEAK', ogDesc: 'Qué cookies usa XPEAK y cómo gestionar tus preferencias de privacidad.', ogType: 'website' },
+  // Bodas
+  { path: '/bodas', title: 'Profesionales para tu Boda — XPEAK | DJ, Fotógrafo, Catering y más', desc: 'Encuentra todos los profesionales para tu boda en un solo sitio: DJ, fotógrafo, catering, maquillaje y más. Perfiles verificados, contratos digitales. Sin comisión.', ogTitle: 'Profesionales para tu Boda — XPEAK', ogDesc: 'DJ, fotógrafo, catering y maquillaje para tu boda. Perfiles verificados. Sin comisión.', ogType: 'website' },
+  { path: '/organizar-eventos', title: 'Organizar Eventos en España — Gestiona Todo desde un Solo Panel | XPEAK', desc: 'Organiza bodas, eventos de empresa y celebraciones con XPEAK: compara profesionales verificados, publica necesidades puntuales con Flash Booking y firma contratos digitales automáticos. Sin comisión.', ogTitle: 'Organizar Eventos en España — XPEAK', ogDesc: 'Panel de gestión para organizar eventos: directorio verificado, contratos digitales y control de gastos. Sin comisión.', ogType: 'website' },
+  { path: '/blog/organizar-evento-empresa-paso-a-paso', title: 'Cómo organizar un evento de empresa paso a paso (2026) | XPEAK', desc: 'Checklist completo para organizar un evento corporativo en España: presupuesto por partidas, timeline de contratación y errores más comunes a evitar.', ogTitle: 'Cómo organizar un evento de empresa paso a paso — XPEAK Blog', ogDesc: 'Checklist completo: presupuesto por partidas, timeline y errores a evitar al organizar un evento corporativo.', ogType: 'article' },
+  { path: '/blog/comparar-presupuestos-proveedores-eventos', title: 'Cómo comparar presupuestos de proveedores de eventos (2026) | XPEAK', desc: 'Método práctico para comparar presupuestos de DJ, catering, fotógrafo y staff sin perder días en llamadas y correos cruzados.', ogTitle: 'Cómo comparar presupuestos de proveedores de eventos — XPEAK Blog', ogDesc: 'Método práctico para comparar presupuestos de eventos sin perder tiempo en gestiones sueltas.', ogType: 'article' },
+  { path: '/blog/contrato-proveedores-eventos', title: 'Contrato con proveedores de eventos: qué debe incluir (2026) | XPEAK', desc: 'Cláusulas imprescindibles en el contrato con DJ, catering, fotógrafo o cualquier proveedor de eventos: cancelación, pagos e incumplimientos.', ogTitle: 'Contrato con proveedores de eventos: qué debe incluir — XPEAK Blog', ogDesc: 'Cláusulas imprescindibles para proteger al organizador en cualquier contrato con proveedores de eventos.', ogType: 'article' },
+  { path: '/blog/gestionar-varios-proveedores-evento', title: 'Cómo gestionar varios proveedores en un evento sin perder el control (2026) | XPEAK', desc: 'Coordinar DJ, catering, fotógrafo y staff a la vez sin liarte con mensajes cruzados y hojas de cálculo sueltas.', ogTitle: 'Cómo gestionar varios proveedores de un evento — XPEAK Blog', ogDesc: 'Sistema práctico para coordinar varios proveedores de un mismo evento sin perder el control.', ogType: 'article' },
+  { path: '/blog/software-para-organizar-eventos', title: 'Software para organizar eventos: qué debe tener y cómo elegirlo (2026) | XPEAK', desc: 'Qué funciones debe tener una herramienta de gestión de eventos: directorio de proveedores, contratos, presupuesto y comunicación centralizada.', ogTitle: 'Software para organizar eventos: qué debe tener — XPEAK Blog', ogDesc: 'Cómo elegir una herramienta de gestión de eventos: funciones clave y qué evitar.', ogType: 'article' },
+  { path: '/blog/cuanto-cobra-un-promotor-rrpp', title: 'Cuánto cobra un promotor o RRPP en España (2026) | XPEAK', desc: 'Precios reales de promotores y RRPP en España: tarifa por noche, comisión por entrada vendida y diferencias entre ciudades y tipo de sala.', ogTitle: 'Cuánto cobra un promotor o RRPP — XPEAK Blog', ogDesc: 'Tarifas reales: fijo por noche, comisión por entrada y factores que cambian el precio.', ogType: 'article' },
+  { path: '/blog/que-hace-un-promotor-de-eventos', title: 'Qué hace exactamente un promotor de eventos (2026) | XPEAK', desc: 'Funciones reales de un promotor o RRPP: captación de público, gestión de listas VIP, coordinación de puerta y diferencias con el RRPP de marca.', ogTitle: 'Qué hace un promotor de eventos — XPEAK Blog', ogDesc: 'Funciones reales de un promotor o RRPP en clubs y eventos.', ogType: 'article' },
+  { path: '/blog/como-contratar-promotores-discoteca', title: 'Cómo contratar promotores para tu discoteca (2026) | XPEAK', desc: 'Guía práctica para salas: cómo elegir promotores, qué modelo de pago conviene y errores comunes al gestionar un equipo de promotores.', ogTitle: 'Cómo contratar promotores para tu discoteca — XPEAK Blog', ogDesc: 'Guía práctica para salas: cómo elegir promotores y qué modelo de pago conviene.', ogType: 'article' },
+  { path: '/blog/como-elegir-mago-para-tu-evento', title: 'Cómo elegir mago para tu evento (2026) | XPEAK', desc: 'Guía para elegir mago de eventos: diferencias entre magia de cerca, de escenario e infantil, y qué preguntar antes de contratar.', ogTitle: 'Cómo elegir mago para tu evento — XPEAK Blog', ogDesc: 'Tipos de magia y qué preguntar antes de contratar un mago para tu evento.', ogType: 'article' },
+  { path: '/blog/tipos-de-animacion-para-eventos', title: 'Tipos de animación para eventos: cuál elegir (2026) | XPEAK', desc: 'Animación infantil, de circo, mimo o team building: qué tipo de animador encaja mejor según el evento y el público.', ogTitle: 'Tipos de animación para eventos — XPEAK Blog', ogDesc: 'Qué tipo de animador elegir según el evento y el público objetivo.', ogType: 'article' },
+  { path: '/blog/bailarines-para-eventos', title: 'Bailarines para eventos: cuándo contratarlos (2026) | XPEAK', desc: 'Show de baile, animación de pista o clase exprés: qué formato de bailarín encaja mejor en cada tipo de evento.', ogTitle: 'Bailarines para eventos — XPEAK Blog', ogDesc: 'Qué formato de bailarín elegir según el tipo de evento.', ogType: 'article' },
+  { path: '/blog/cuanto-cobra-un-speaker-de-eventos', title: 'Cuánto cobra un speaker o presentador de eventos (2026) | XPEAK', desc: 'Precios reales de speakers, ponentes y presentadores de eventos en España: keynote speakers, MCs bilingües y presentadores de gala.', ogTitle: 'Cuánto cobra un speaker de eventos — XPEAK Blog', ogDesc: 'Precios reales de speakers y presentadores de eventos en España.', ogType: 'article' },
+  { path: '/blog/como-elegir-presentador-evento-empresa', title: 'Cómo elegir presentador para un evento de empresa (2026) | XPEAK', desc: 'MC, keynote speaker o presentador bilingüe: cómo elegir el perfil correcto según el tipo de evento corporativo.', ogTitle: 'Cómo elegir presentador para un evento de empresa — XPEAK Blog', ogDesc: 'Qué perfil de presentador elegir según el tipo de evento corporativo.', ogType: 'article' },
+  { path: '/blog/cuanto-cobra-un-estilista-de-eventos', title: 'Cuánto cobra un estilista de eventos (2026) | XPEAK', desc: 'Precios reales de estilistas para bodas, producciones audiovisuales y personal shopper de eventos en España.', ogTitle: 'Cuánto cobra un estilista de eventos — XPEAK Blog', ogDesc: 'Precios reales de estilistas y profesionales de vestuario para eventos.', ogType: 'article' },
+  { path: '/blog/estilista-de-boda-que-incluye', title: 'Estilista de boda: qué incluye el servicio (2026) | XPEAK', desc: 'Qué hace un estilista de boda, con cuánta antelación contratarlo y qué diferencia hay entre asesoramiento y personal shopper.', ogTitle: 'Estilista de boda: qué incluye el servicio — XPEAK Blog', ogDesc: 'Qué hace un estilista de boda y con cuánta antelación contratarlo.', ogType: 'article' },
+  { path: '/blog/cuanto-cobra-un-humorista-eventos', title: 'Cuánto cobra un humorista para eventos (2026) | XPEAK', desc: 'Precios reales de humoristas y monologuistas para eventos en España: cenas de empresa, bodas y shows de stand-up.', ogTitle: 'Cuánto cobra un humorista para eventos — XPEAK Blog', ogDesc: 'Precios reales de humoristas para cenas de empresa y bodas.', ogType: 'article' },
+  { path: '/blog/humorista-cena-empresa-como-elegir', title: 'Cómo elegir humorista para la cena de empresa (2026) | XPEAK', desc: 'Qué preguntar antes de contratar un humorista para un evento corporativo: tono, personalización y duración recomendada.', ogTitle: 'Cómo elegir humorista para la cena de empresa — XPEAK Blog', ogDesc: 'Qué preguntar antes de contratar un humorista para tu evento corporativo.', ogType: 'article' },
+  { path: '/presupuesto-boda', title: 'Presupuesto de Boda 2026: Calculadora y Precios Reales — XPEAK', desc: 'Calcula el presupuesto de tu boda con precios reales de DJ, fotógrafo, catering y más proveedores en España 2026.', ogTitle: 'Presupuesto de Boda 2026 — XPEAK', ogDesc: 'Calculadora de presupuesto de boda con precios reales de proveedores en España.', ogType: 'website' },
+  { path: '/checklist-evento-empresa', title: 'Checklist para organizar un evento de empresa (2026) | XPEAK', desc: 'Checklist interactivo con cuenta atrás por fecha para organizar un evento de empresa: qué contratar y cuándo, paso a paso. Gratis, sin registro.', ogTitle: 'Checklist para organizar un evento de empresa — XPEAK', ogDesc: 'Checklist interactivo con cuenta atrás: qué contratar y cuándo para tu evento de empresa.', ogType: 'website' },
 ];
+
+// ─── Generated city × category routes ──────────────────────────────────────
+// CATEGORY_DATA (CategoryLanding.tsx) y CITIES (CityLanding.tsx) son la fuente
+// única de verdad de qué combinaciones ciudad/categoría existen como ruta real
+// en React. Se extraen del código fuente (no se importa el componente para
+// evitar arrastrar JSX/React) y se generan sus meta tags con una plantilla,
+// en vez de mantener a mano cada combinación — así ninguna ciudad/categoría
+// nueva se queda sin prerender de meta tags.
+function extractObjectLiteral(filePath, exportName) {
+  const src = fs.readFileSync(filePath, 'utf8');
+  const marker = `export const ${exportName}`;
+  const markerIdx = src.indexOf(marker);
+  if (markerIdx === -1) throw new Error(`${marker} not found in ${filePath}`);
+  const braceStart = src.indexOf('{', src.indexOf('=', markerIdx));
+  let depth = 0, end = -1;
+  for (let i = braceStart; i < src.length; i++) {
+    if (src[i] === '{') depth++;
+    else if (src[i] === '}') { depth--; if (depth === 0) { end = i; break; } }
+  }
+  if (end === -1) throw new Error(`Unbalanced braces reading ${exportName}`);
+  // eslint-disable-next-line no-eval
+  const obj = eval(`(${src.slice(braceStart, end + 1)})`);
+  // Alias post-objeto tipo "CATEGORY_DATA.animadores = CATEGORY_DATA.animador;"
+  // (rutas duplicadas en App.tsx que apuntan al mismo contenido) — se aplican
+  // sobre el objeto ya evaluado para que el prerender también las reconozca.
+  const aliasRe = new RegExp(`${exportName}\\.(\\w+)\\s*=\\s*${exportName}\\.(\\w+);`, 'g');
+  for (const m of src.slice(end + 1).matchAll(aliasRe)) {
+    obj[m[1]] = obj[m[2]];
+  }
+  return obj;
+}
+
+const CATEGORY_DATA = extractObjectLiteral(path.join(__dirname, '..', 'src', 'pages', 'CategoryLanding.tsx'), 'CATEGORY_DATA');
+const CITIES = extractObjectLiteral(path.join(__dirname, '..', 'src', 'pages', 'CityLanding.tsx'), 'CITIES');
+// CATEGORIES (no CATEGORY_DATA) es la fuente real que consume CityLanding.tsx en
+// runtime — sus funciones desc()/intro() generan texto único por ciudad (venues,
+// precio real, casos especiales Ibiza/Palma) sin restricción de qué ciudades
+// cubre, a diferencia de CATEGORY_DATA.cities que es solo una lista curada corta.
+const CITY_CATEGORIES = extractObjectLiteral(path.join(__dirname, '..', 'src', 'pages', 'CityLanding.tsx'), 'CATEGORIES');
+// Solo categorías con ruta /contratar-X/:ciudad realmente registrada en App.tsx
+// (evita generar URLs para categorías que darían 404 en producción).
+const APP_TSX = fs.readFileSync(path.join(__dirname, '..', 'src', 'App.tsx'), 'utf8');
+const routedCitySlugs = new Set(
+  [...APP_TSX.matchAll(/<Route path="\/contratar-([a-z-]+)\/:ciudad"/g)].map(m => m[1])
+);
+
+const existingPaths = new Set(ROUTES.map(r => r.path));
+let generated = 0;
+
+// Páginas de categoría genérica sin ciudad (/contratar-humorista, etc.)
+for (const [catSlug, cat] of Object.entries(CATEGORY_DATA)) {
+  const routePath = `/contratar-${catSlug}`;
+  if (existingPaths.has(routePath)) continue;
+  ROUTES.push({
+    path: routePath,
+    title: `${cat.h1} — XPEAK | Directorio Profesional de Eventos`,
+    desc: cat.desc,
+    ogTitle: `${cat.h1} en España — XPEAK`,
+    ogDesc: `${cat.tagline} Directorio verificado. Flash Booking disponible. Sin comisión.`,
+    ogType: 'website',
+  });
+  existingPaths.add(routePath);
+  generated++;
+}
+
+for (const catSlug of routedCitySlugs) {
+  const cat = CITY_CATEGORIES[catSlug];
+  if (!cat) continue; // alias sin entrada propia en CATEGORIES (ver CATEGORIES.animadores = CATEGORIES.animador, etc. si se añaden)
+  const catDataFallback = CATEGORY_DATA[catSlug]; // solo para el h1 de fallback en el <title>
+  const h1Fallback = catDataFallback?.h1 ?? `Contratar ${cat.keyword}`;
+
+  for (const [citySlug, cityInfo] of Object.entries(CITIES)) {
+    const routePath = `/contratar-${catSlug}/${citySlug}`;
+    if (existingPaths.has(routePath)) continue; // ya tiene entrada manual con copy propio
+
+    const cityName = cityInfo.ciudad;
+    const desc = cat.desc(cityName);
+
+    ROUTES.push({
+      path: routePath,
+      title: `Contratar ${cat.keyword} en ${cityName} — XPEAK | ${h1Fallback}`,
+      desc: desc.slice(0, 300),
+      ogTitle: `Contratar ${cat.keyword} en ${cityName} — XPEAK`,
+      ogDesc: desc.slice(0, 200),
+      ogType: 'website',
+    });
+    existingPaths.add(routePath);
+    generated++;
+  }
+}
+console.log(`  → ${generated} rutas ciudad/categoría generadas programáticamente (${ROUTES.length - generated} manuales preexistentes)`);
+
+// ─── Occasion landings (eje ocasión × rol, GEO/AEO) ────────────────────────
+// Fuente: ROLES_POR_OCASION (qué roles aplican por ocasión) + label de OCCASIONS,
+// ambos en OccasionLanding.tsx. El keyword del rol viene de CITY_CATEGORIES.
+// No se invocan las funciones answer/intro/faqs (dependen de scope externo):
+// el copy de meta se compone con plantillas fijas, coherentes con el componente.
+const OCC_ROLES = extractObjectLiteral(path.join(__dirname, '..', 'src', 'pages', 'OccasionLanding.tsx'), 'ROLES_POR_OCASION');
+// Labels de ocasión leídos del literal OCCASIONS (solo label/slug, sin funciones)
+const OCC_LABELS = {};
+{
+  const occSrc = fs.readFileSync(path.join(__dirname, '..', 'src', 'pages', 'OccasionLanding.tsx'), 'utf8');
+  // Clave puede ir con o sin comillas: `boda: {` o `'evento-empresa': {`
+  for (const m of occSrc.matchAll(/['"]?[\w-]+['"]?:\s*\{\s*\n\s*label:\s*'([^']+)',\s*slug:\s*'([^']+)'/g)) {
+    OCC_LABELS[m[2]] = m[1];
+  }
+}
+let occGenerated = 0;
+for (const [occSlug, roleSlugs] of Object.entries(OCC_ROLES)) {
+  const occLabel = OCC_LABELS[occSlug] ?? occSlug;
+  for (const roleSlug of roleSlugs) {
+    const cat = CITY_CATEGORIES[roleSlug];
+    if (!cat) continue;
+    const rol = cat.keyword;
+    const routePath = `/${occSlug}/contratar-${roleSlug}`;
+    if (existingPaths.has(routePath)) continue;
+    const desc = `Contrata ${rol.toLowerCase()} para ${occLabel.toLowerCase()} en España sin comisión. Profesionales verificados, precios públicos y contrato directo. Flash Booking en menos de 1h.`;
+    ROUTES.push({
+      path: routePath,
+      title: `Contratar ${rol} para ${occLabel} sin comisión — XPEAK`,
+      desc: desc.slice(0, 300),
+      ogTitle: `Contratar ${rol} para ${occLabel} sin comisión — XPEAK`,
+      ogDesc: desc.slice(0, 200),
+      ogType: 'website',
+    });
+    existingPaths.add(routePath);
+    occGenerated++;
+  }
+}
+console.log(`  → ${occGenerated} rutas ocasión/rol generadas programáticamente`);
 
 // ─── Helper: replace or inject a meta tag ──────────────────────────────────
 // attrName: "name" or "property", attrValue: "description", "og:title", etc.
@@ -916,6 +1310,95 @@ function escHtml(s) {
   return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+// ─── Perfiles reales (/p/:slug) ─────────────────────────────────────────────
+// Sin esto, las URLs de perfil del sitemap sirven el index.html raíz: title y
+// contenido de la home duplicados en ~38 URLs (Google las descarta como
+// duplicadas). Se generan meta tags únicos + un body mínimo con los datos
+// reales del perfil (React lo reemplaza al hidratar). El fetch y la lógica de
+// slug replican EXACTAMENTE update-sitemap.mjs para que las URLs coincidan.
+function loadEnv() {
+  const envPath = path.join(__dirname, '..', '.env');
+  if (!fs.existsSync(envPath)) return {};
+  const env = {};
+  for (const line of fs.readFileSync(envPath, 'utf-8').split('\n')) {
+    const m = line.match(/^([A-Z_]+)="?([^"]*)"?$/);
+    if (m) env[m[1]] = m[2];
+  }
+  return env;
+}
+
+function toSlug(name) {
+  return name
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+const ROLE_LABELS = {
+  dj: 'DJ', rookie: 'Artista', staff: 'Staff de eventos', camarero: 'Camarero/a',
+  makeup: 'Maquillaje profesional', media: 'Fotografía y vídeo', design: 'Diseño y visuales',
+  promotor: 'Promotor y RRPP', catering: 'Catering', mago: 'Mago e ilusionista',
+  bailarin: 'Bailarín/a', humorista: 'Humorista', monologo: 'Monologuista',
+  animador: 'Animador/a', speaker: 'Speaker', vestuario: 'Estilista', ambassador: 'Brand ambassador',
+};
+
+try {
+  const env = loadEnv();
+  const supabaseUrl = env.SUPABASE_URL || env.VITE_SUPABASE_URL;
+  const anonKey = env.SUPABASE_PUBLISHABLE_KEY || env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  if (supabaseUrl && anonKey) {
+    const res = await fetch(
+      `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,zone,role,specialty,bio&role=neq.empresario&is_seed=eq.false&order=updated_at.desc&limit=1000`,
+      { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } }
+    );
+    if (res.ok) {
+      const profiles = await res.json();
+      const usedSlugs = new Set();
+      let profileCount = 0;
+      for (const p of profiles) {
+        if (!p.user_id || p.user_id.startsWith('11111111-')) continue;
+        // Perfiles a medio completar (display_name null, ej. registro OAuth
+        // abandonado) no tienen contenido que prerenderizar.
+        if (!p.display_name?.trim()) continue;
+        let slug = p.display_name ? toSlug(p.display_name) : null;
+        if (slug && usedSlugs.has(slug) && p.zone) slug = `${slug}-${toSlug(p.zone)}`;
+        if (!slug || usedSlugs.has(slug)) slug = p.user_id;
+        usedSlugs.add(slug);
+
+        const routePath = `/p/${slug}`;
+        if (existingPaths.has(routePath)) continue;
+        const roleLabel = ROLE_LABELS[p.role] ?? 'Profesional de eventos';
+        const where = p.zone && p.zone !== 'España' ? ` en ${p.zone}` : ' en España';
+        const bioSnippet = (p.bio ?? '').trim().slice(0, 150);
+        const desc = bioSnippet
+          ? `${p.display_name} — ${roleLabel}${where}. ${bioSnippet}${p.bio.length > 150 ? '…' : ''} Contacta y contrata en XPEAK sin comisión.`
+          : `${p.display_name} — ${roleLabel}${where}. Perfil verificado en XPEAK: tarifas públicas, contacto directo y contrato digital. Sin comisión.`;
+
+        ROUTES.push({
+          path: routePath,
+          title: `${p.display_name} — ${roleLabel}${where} | XPEAK`,
+          desc: desc.slice(0, 300),
+          ogTitle: `${p.display_name} — ${roleLabel}${where}`,
+          ogDesc: desc.slice(0, 200),
+          ogType: 'profile',
+          bodyHtml: `<div style="max-width:720px;margin:0 auto;padding:48px 24px;color:#fff"><h1>${escHtml(p.display_name)}</h1><p><strong>${escHtml(roleLabel)}${escHtml(where)}</strong>${p.specialty ? ` · ${escHtml(p.specialty)}` : ''}</p>${p.bio ? `<p>${escHtml(p.bio)}</p>` : ''}<p><a href="https://xpeak.es/directorio">Ver más profesionales en el directorio de XPEAK</a></p></div>`,
+        });
+        existingPaths.add(routePath);
+        profileCount++;
+      }
+      console.log(`  → ${profileCount} perfiles reales con meta tags únicos`);
+    } else {
+      console.warn(`  ⚠ No se pudieron cargar perfiles (${res.status}) — se omite el prerender de /p/`);
+    }
+  } else {
+    console.warn('  ⚠ Sin credenciales Supabase en .env — se omite el prerender de /p/');
+  }
+} catch (e) {
+  console.warn(`  ⚠ Prerender de perfiles omitido: ${e.message}`);
+}
+
 // ─── Main ──────────────────────────────────────────────────────────────────
 const shell = fs.readFileSync(path.join(DIST, 'index.html'), 'utf8');
 let count = 0;
@@ -932,6 +1415,9 @@ for (const route of ROUTES) {
   html = replaceOgProp(html, 'og:type', route.ogType);
   html = replaceMeta(html, 'name', 'twitter:title', route.ogTitle);
   html = replaceMeta(html, 'name', 'twitter:description', route.ogDesc);
+  if (route.bodyHtml) {
+    html = html.replace(/<div id="root">[\s\S]*?<\/div>\s*(?=<script|\n\s*<script|<\/body>|\n\s*<\/body>)/, `<div id="root">${route.bodyHtml}</div>\n  `);
+  }
 
   const dir = path.join(DIST, route.path === '/' ? '' : route.path);
   fs.mkdirSync(dir, { recursive: true });

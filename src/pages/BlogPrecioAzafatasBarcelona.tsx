@@ -1,0 +1,113 @@
+import { Helmet } from 'react-helmet-async';
+import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
+import BlogInlineCTA from '@/components/BlogInlineCTA';
+import BlogEmailCapture from '@/components/BlogEmailCapture';
+import BlogAnswerBox from '@/components/BlogAnswerBox';
+import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
+
+const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Precio de azafatas para eventos en Barcelona: guía 2026', description: 'Cuánto cobran las azafatas para eventos, ferias (Fira de Barcelona) y congresos en Barcelona. Tarifas por perfil 2026.', datePublished: '2026-03-27', dateModified: '2026-07-05', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/precio-azafatas-barcelona' };
+const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
+  { '@type': 'Question', name: '¿Cuánto cobran las azafatas de eventos en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'En Barcelona una azafata de eventos cobra entre 13€ y 20€/hora bruto, en línea con Madrid por el volumen de ferias internacionales que pasan por Fira de Barcelona. Las agencias facturan al cliente entre 130€ y 200€/día. Durante el Mobile World Congress la demanda de perfiles multilingües dispara la tarifa un 20-30%.' } },
+  { '@type': 'Question', name: '¿Qué ferias mueven más azafatas en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'Fira de Barcelona (recintos de Montjuïc y Gran Via) concentra la mayoría de ferias grandes: el Mobile World Congress es el evento con más demanda de personal del año, seguido de salones sectoriales de alimentación, construcción y automoción. También hay bastante demanda de azafatas de imagen en el Barcelona International Convention Centre para congresos médicos.' } },
+  { '@type': 'Question', name: '¿Con cuánta antelación reservar azafatas para el MWC en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'Para el Mobile World Congress reserva con 3-4 meses de antelación — es el evento que más satura el mercado de azafatas de toda España y los perfiles con inglés se agotan primero. Para ferias sectoriales más pequeñas en Fira de Barcelona, 4-6 semanas suele bastar.' } },
+  { '@type': 'Question', name: '¿Qué perfil de azafata se pide más en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'El perfil trilingüe (inglés + otro idioma) tiene más salida en Barcelona que en el resto de España por el carácter internacional de ferias como el MWC. También hay demanda constante de azafatas de imagen para el sector moda y diseño, muy presente en la ciudad.' } },
+] };
+const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Barcelona', item: 'https://xpeak.es/blog/precio-azafatas-barcelona' }] };
+
+const PRECIOS = [
+  { perfil: 'Azafata de stand / feria Fira BCN', tarifa: '130–190€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '160–260€/día', nota: 'Eventos de marca y moda' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '170–230€/día', nota: 'Estándar en ferias internacionales' },
+  { perfil: 'Azafata trilingüe', tarifa: '220–320€/día', nota: 'Muy demandada en el MWC' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '190–290€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '85–140€', nota: 'Acto único, media jornada' },
+];
+
+export default function BlogPrecioAzafatasBarcelona() {
+  return (
+    <>
+      <Helmet>
+        <title>Precio azafatas para eventos en Barcelona 2026 | XPEAK</title>
+        <meta name="description" content="Cuánto cobran las azafatas para eventos, Fira de Barcelona y congresos. Tarifas por perfil 2026." />
+        <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-barcelona" />
+        <meta property="og:title" content="Precio azafatas eventos Barcelona 2026 — XPEAK Blog" />
+        <meta property="og:description" content="Tarifas de azafatas para Fira de Barcelona y eventos corporativos." />
+        <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-barcelona" />
+        <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />
+        <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
+        <script type="application/ld+json">{JSON.stringify(article)}</script>
+        <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
+      </Helmet>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
+        <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#059669' }}>XPEAK</a>
+          <div className="flex items-center gap-3"><a href="/blog" className="text-xs font-bold " style={{ color: '#3d3d4e' }}>Blog</a><a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#059669,#B8941E)', color: '#000' }}>Unirse gratis</a></div>
+        </nav>
+        <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
+          <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
+          <div className="mb-8">
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#059669' }}>Staff · Barcelona · XPEAK Blog</p>
+            <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Precio de azafatas para eventos en Barcelona: guía 2026</h1>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Barcelona compite con Madrid como la plaza con más demanda de azafatas de España gracias al carácter internacional de Fira de Barcelona. El Mobile World Congress marca el pico de demanda del año, pero la ciudad mantiene actividad ferial constante todo el calendario.</p>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>8 julio 2026</time>
+            <BlogAnswerBox
+              question="¿Cuánto cobran las azafatas en Barcelona?"
+              answer="Una azafata de eventos en Barcelona cobra entre 13€ y 20€/hora bruto, y las agencias facturan entre 130€ y 200€/día por el servicio completo. Durante el Mobile World Congress y otras ferias internacionales de Fira de Barcelona, la tarifa de perfiles con idiomas sube un 20-30% por la alta demanda."
+            />
+          </div>
+          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <div className="space-y-10">
+            <section>
+              <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Barcelona</h2>
+              <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
+                <table className="w-full text-xs">
+                  <thead><tr style={{ background: 'rgba(5,150,105,0.08)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}><th className="text-left px-4 py-3 font-bold">Perfil</th><th className="px-4 py-3 font-bold text-right">Tarifa</th><th className="px-4 py-3 font-bold text-left hidden sm:table-cell">Nota</th></tr></thead>
+                  <tbody>{PRECIOS.map((row, i) => (<tr key={row.perfil} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)', borderBottom: '1px solid rgba(0,0,0,0.04)' }}><td className="px-4 py-3 font-medium">{row.perfil}</td><td className="px-4 py-3 text-right font-bold" style={{ color: '#059669' }}>{row.tarifa}</td><td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#3d3d4e' }}>{row.nota}</td></tr>))}</tbody>
+                </table>
+              </div>
+              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios Barcelona 2026. Sin IVA. Desplazamiento fuera del área metropolitana puede facturarse aparte.</p>
+            </section>
+            <section>
+              <h2 className="text-lg font-black mb-3">Dónde se concentra la demanda en Barcelona</h2>
+              <div className="space-y-2">{['Fira de Barcelona (Montjuïc y Gran Via): MWC, salones de alimentación, construcción y automoción','Barcelona International Convention Centre: congresos médicos y profesionales de gran formato','Distrito 22@ y zona Diagonal: presentaciones de producto tecnológico y eventos de startups','Sector moda y diseño: showrooms y desfiles con demanda de azafatas de imagen'].map((item,i) => (<div key={i} className="flex items-start gap-3 p-3 rounded-lg" style={{ background: 'rgba(0,0,0,0.02)' }}><span className="text-xs font-black shrink-0 mt-0.5" style={{ color: '#059669' }}>✓</span><p className="text-xs" style={{ color: '#111' }}>{item}</p></div>))}</div>
+            </section>
+            <section>
+              <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
+              <div className="space-y-4">{faqStructured.mainEntity.map(f => (<div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}><h3 className="text-sm font-bold mb-2">{f.name}</h3><p className="text-sm leading-relaxed" style={{ color: '#222' }}>{f.acceptedAnswer.text}</p></div>))}</div>
+            </section>
+            <section className="mt-8">
+              <h2 className="text-base font-black mb-3" style={{ color: '#111' }}>Artículos relacionados</h2>
+              <div className="space-y-2">
+                {[
+                  { href: '/blog/staff-para-eventos', cat: 'Hub Staff', title: 'Staff para eventos: guía completa 2026' },
+                  { href: '/blog/precio-azafatas-eventos-espana', cat: 'Nacional', title: 'Precio azafatas para eventos en España: guía 2026' },
+                  { href: '/blog/personal-de-imagen-ferias-y-congresos', cat: 'Staff', title: 'Personal de imagen para ferias y congresos' },
+                ].map(link => (
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(5,150,105,0.1)', color: '#059669', border: '1px solid rgba(5,150,105,0.15)' }}>{link.cat}</span>
+                    <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
+                  </a>
+                ))}
+              </div>
+            </section>
+            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(5,150,105,0.04)', border: '1px solid rgba(5,150,105,0.12)' }}>
+              <p className="text-sm font-black mb-2">¿Necesitas azafatas para tu evento en Barcelona?</p>
+              <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>XPEAK conecta organizadores con staff profesional verificado en Barcelona. Contrato digital automático incluido.</p>
+              <a href="/contratar-staff/barcelona" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#059669,#B8941E)', color: '#000' }}>Ver staff en Barcelona →</a>
+            </div>
+          </div>
+          <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/precio-azafatas-barcelona" />
+        </main>
+        <DJResourcesAffiliate role="staff" />
+        <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/precio-azafatas-barcelona' tag='Staff' />
+        <FooterPublic />
+        <BlogScrollCTA role="azafata" storageKey="xpeak_scrollcta_precio_azafatas_barcelona" />
+      </div>
+    </>
+  );
+}

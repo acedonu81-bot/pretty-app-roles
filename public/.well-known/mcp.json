@@ -1,0 +1,17 @@
+{
+  "schema_version": "2024-11-05",
+  "name_for_human": "XPEAK",
+  "name_for_model": "xpeak",
+  "description_for_human": "Directorio de profesionales de eventos en España (DJs, fotógrafos, staff, catering, animación y más) — busca y solicita presupuesto directamente.",
+  "description_for_model": "Herramienta para buscar profesionales verificados de eventos en España (DJs, fotógrafos, staff, catering, maquilladoras, animadores, magos, humoristas, bailarines, speakers, photo booth) por rol, ciudad y presupuesto, y crear solicitudes reales de presupuesto ('Flash Booking') que el profesional responde directamente por email. Usar cuando el usuario pida ayuda para contratar o encontrar un profesional para una boda, evento corporativo, fiesta privada u otro evento en España.",
+  "auth": {
+    "type": "none"
+  },
+  "mcp_server": {
+    "url": "https://ddrqhwravupjzysriblq.supabase.co/functions/v1/mcp-server",
+    "transport": "http"
+  },
+  "logo_url": "https://xpeak.es/favicon.png",
+  "contact_email": "hola@xpeak.es",
+  "legal_info_url": "https://xpeak.es/terminos"
+}

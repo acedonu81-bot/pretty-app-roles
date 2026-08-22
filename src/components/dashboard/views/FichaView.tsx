@@ -248,6 +248,27 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
     }
   };
 
+  // Grabar/subir vídeo desde la cámara del móvil → sube a Storage y lo guarda
+  // en bio_video_url (el que reproduce el feed tipo Instagram). Máx 60s / 60MB.
+  const bioVideoInputRef = useRef<HTMLInputElement>(null);
+  const handleBioVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+    if (!file.type.startsWith('video/')) { toast.error('Sube un vídeo (MP4, MOV).'); return; }
+    if (file.size > 60 * 1024 * 1024) { toast.error('El vídeo no puede superar 60MB.'); return; }
+    setSavingVideo(true);
+    try {
+      const path = `${user.id}/bio-video/${Date.now()}.mp4`;
+      const { error } = await supabase.storage.from('audio-sessions').upload(path, file, { upsert: true });
+      if (error) { toast.error('Error al subir: ' + error.message); setSavingVideo(false); return; }
+      const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
+      await saveVideoUrl(urlData.publicUrl);
+    } finally {
+      setSavingVideo(false);
+      if (bioVideoInputRef.current) bioVideoInputRef.current.value = '';
+    }
+  };
+
   const saveMusicUrl = async (url: string) => {
     if (!user) return;
     setSavingMusic(true);
@@ -438,7 +459,7 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
 
                 {post.media_url && post.post_type === 'image' && (
                   <div className="mt-3 rounded-xl overflow-hidden">
-                    <img src={post.media_url} alt="Post media"
+                    <img src={post.media_url} alt="Post media" loading="lazy"
                       className="w-full max-h-80 object-cover"
                       onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                   </div>
@@ -486,8 +507,30 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
               <Video size={14} style={{ color: '#8A6D0F' }} /> Vídeo Principal
             </h4>
             <p className="text-xs text-muted-foreground mb-4">
-              Aparece destacado en tu ficha pública. Usa YouTube o Vimeo.
+              Se reproduce en tu tarjeta del feed (tipo Instagram) y en tu ficha. Graba uno con tu móvil o pega un enlace de YouTube/Vimeo.
             </p>
+
+            {/* Grabar/subir vídeo desde la cámara del móvil (destino: bio_video_url) */}
+            {isOwn && (
+              <>
+                <button type="button" onClick={() => bioVideoInputRef.current?.click()}
+                  disabled={savingVideo}
+                  className="w-full flex items-center justify-center gap-2 py-3 mb-3 rounded-xl text-sm font-black transition-all hover:scale-[1.01] disabled:opacity-50"
+                  style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                  {savingVideo ? <Loader2 size={15} className="animate-spin" /> : <Video size={15} />}
+                  {savingVideo ? 'Subiendo…' : 'Grabar o subir vídeo (60s)'}
+                </button>
+                <input
+                  ref={bioVideoInputRef}
+                  type="file"
+                  accept="video/mp4,video/quicktime,video/webm"
+                  capture="user"
+                  onChange={handleBioVideoUpload}
+                  className="hidden"
+                />
+                <p className="text-[0.65rem] text-muted-foreground mb-3 text-center">o pega un enlace ↓</p>
+              </>
+            )}
             {isOwn ? (
               <div className="flex gap-2">
                 <input

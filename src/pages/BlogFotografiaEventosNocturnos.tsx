@@ -1,8 +1,11 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = {
   '@context': 'https://schema.org',
@@ -11,7 +14,7 @@ const article = {
   description: 'Cuánto cobra un fotógrafo de eventos nocturnos en España. Precios por tipo de evento, qué incluye y cómo elegir el perfil correcto.',
   datePublished: '2026-05-03',
   dateModified: '2026-05-25',
-  author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
   url: 'https://xpeak.es/blog/fotografia-eventos-nocturnos',
@@ -83,13 +86,13 @@ export default function BlogFotografiaEventosNocturnos() {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#4F46E5' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
             <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
-              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+              style={{ background: 'linear-gradient(90deg,#4F46E5,#B8941E)', color: '#000' }}>
               Unirse gratis
             </a>
           </div>
@@ -101,23 +104,23 @@ export default function BlogFotografiaEventosNocturnos() {
           </a>
 
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Fotografía · XPEAK Blog</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#4F46E5' }}>Fotografía · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">
               Fotografía en eventos nocturnos: precios y cómo contratar en España (2026)
             </h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>
               La fotografía nocturna es una especialidad técnicamente exigente. No cualquier fotógrafo vale. Te explicamos qué buscar y cuánto pagar.
             </p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>3 mayo 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>3 mayo 2026</time>
           </div>
 
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Precios según tipo de evento nocturno</h2>
-              <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+              <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
                 <table className="w-full text-xs">
                   <thead>
-                    <tr style={{ background: 'rgba(212,175,55,0.08)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                    <tr style={{ background: 'rgba(79,70,229,0.08)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
                       <th className="text-left px-4 py-3 font-bold">Tipo de evento</th>
                       <th className="px-4 py-3 font-bold text-right">Desde</th>
                       <th className="px-4 py-3 font-bold text-right">Hasta</th>
@@ -126,10 +129,10 @@ export default function BlogFotografiaEventosNocturnos() {
                   </thead>
                   <tbody>
                     {PRECIOS_EVENTO.map((row, i) => (
-                      <tr key={row.evento} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                      <tr key={row.evento} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)', borderBottom: '1px solid rgba(0,0,0,0.04)' }}>
                         <td className="px-4 py-3 font-medium">{row.evento}</td>
-                        <td className="px-4 py-3 text-right" style={{ color: '#D4AF37' }}>{row.min}€</td>
-                        <td className="px-4 py-3 text-right" style={{ color: '#D4AF37' }}>{row.max}€</td>
+                        <td className="px-4 py-3 text-right" style={{ color: '#4F46E5' }}>{row.min}€</td>
+                        <td className="px-4 py-3 text-right" style={{ color: '#4F46E5' }}>{row.max}€</td>
                         <td className="px-4 py-3 hidden sm:table-cell" style={{ color: '#3d3d4e' }}>{row.notas}</td>
                       </tr>
                     ))}
@@ -143,19 +146,19 @@ export default function BlogFotografiaEventosNocturnos() {
               <h2 className="text-lg font-black mb-4">Fotógrafo nocturno vs. fotógrafo de eventos diurnos</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {DIFERENCIAS.map((d, di) => (
-                  <div key={d.titulo} className="p-5 rounded-xl" style={{ background: di === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(212,175,55,0.04)', border: di === 0 ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(212,175,55,0.12)' }}>
-                    <h3 className="text-xs font-bold mb-3" style={{ color: di === 0 ? '#3d3d4e' : '#D4AF37' }}>{d.titulo}</h3>
+                  <div key={d.titulo} className="p-5 rounded-xl" style={{ background: di === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(79,70,229,0.04)', border: di === 0 ? '1px solid rgba(0,0,0,0.06)' : '1px solid rgba(79,70,229,0.12)' }}>
+                    <h3 className="text-xs font-bold mb-3" style={{ color: di === 0 ? '#3d3d4e' : '#4F46E5' }}>{d.titulo}</h3>
                     <ul className="space-y-1.5">
                       {d.puntos.map(p => (
-                        <li key={p} className="text-xs flex items-start gap-2" style={{ color: 'rgba(255,255,255,0.75)' }}>
-                          <span style={{ color: di === 0 ? '#3d3d4e' : '#D4AF37' }}>→</span>{p}
+                        <li key={p} className="text-xs flex items-start gap-2" style={{ color: '#222' }}>
+                          <span style={{ color: di === 0 ? '#3d3d4e' : '#4F46E5' }}>→</span>{p}
                         </li>
                       ))}
                     </ul>
                   </div>
                 ))}
               </div>
-              <p className="text-sm mt-4 leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>
+              <p className="text-base mt-4 leading-relaxed" style={{ color: '#333' }}>
                 La fotografía nocturna requiere dominio del flash en ambientes oscuros y cambiantes, captura de momentos espontáneos en movimiento y resistencia a trabajar de madrugada. Es una especialidad, no una extensión de la fotografía diurna.
               </p>
             </section>
@@ -164,9 +167,9 @@ export default function BlogFotografiaEventosNocturnos() {
               <h2 className="text-lg font-black mb-4">Checklist antes de contratar</h2>
               <div className="space-y-2">
                 {CHECKLIST.map((item, i) => (
-                  <div key={i} className="flex items-start gap-3 p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.02)' }}>
-                    <span className="text-xs font-black shrink-0 mt-0.5" style={{ color: '#D4AF37' }}>✓</span>
-                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.8)' }}>{item}</p>
+                  <div key={i} className="flex items-start gap-3 p-3 rounded-lg" style={{ background: 'rgba(0,0,0,0.02)' }}>
+                    <span className="text-xs font-black shrink-0 mt-0.5" style={{ color: '#4F46E5' }}>✓</span>
+                    <p className="text-xs" style={{ color: '#111' }}>{item}</p>
                   </div>
                 ))}
               </div>
@@ -176,9 +179,9 @@ export default function BlogFotografiaEventosNocturnos() {
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
                 {faqStructured.mainEntity.map(f => (
-                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <p className="text-sm font-bold mb-2">{f.name}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.acceptedAnswer.text}</p>
+                  <div key={f.name} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                    <h3 className="text-sm font-bold mb-2">{f.name}</h3>
+                    <p className="text-sm leading-relaxed" style={{ color: '#222' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
               </div>
@@ -186,31 +189,34 @@ export default function BlogFotografiaEventosNocturnos() {
 
             
             <section className="mt-8">
-              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <h2 className="text-base font-black mb-3" style={{ color: '#111' }}>Artículos relacionados</h2>
               <div className="space-y-2">
                 {[
                   { href: '/blog/fotografos-eventos', cat: 'Hub Foto', title: 'Fotógrafos para eventos: guía completa 2026' },
                 ].map(link => (
-                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
-                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>
-                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                  <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
+                    <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(79,70,229,0.1)', color: '#4F46E5', border: '1px solid rgba(79,70,229,0.15)' }}>{link.cat}</span>
+                    <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}
               </div>
             </section>
-            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
+            <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(79,70,229,0.04)', border: '1px solid rgba(79,70,229,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas fotógrafo para tu sala o evento nocturno?</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>XPEAK tiene fotógrafos especializados en eventos nocturnos verificados en toda España. Contrata con contrato digital automático.</p>
               <a href="/contratar-fotografo" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
-                style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                style={{ background: 'linear-gradient(90deg,#4F46E5,#B8941E)', color: '#000' }}>
                 Ver fotógrafos en XPEAK →
               </a>
             </div>
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/fotografia-eventos-nocturnos" />
 </main>
+      <DJResourcesAffiliate role="fotografo" />
       <BlogAuthor />
+        <BlogRelatedPosts currentSlug='/blog/fotografia-eventos-nocturnos' tag='Fotografía' />
         <FooterPublic />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografia_eventos_nocturnos" />
       </div>
     </>
   );

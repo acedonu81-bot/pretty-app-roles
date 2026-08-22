@@ -1,12 +1,18 @@
 /**
  * Adds Article + BreadcrumbList schema to blog posts that don't have them.
  * Also adds visible date line (E-E-A-T) if missing.
+ *
+ * OJO: correr esto sobre muchos archivos a la vez sigue clonando la misma
+ * fecha en todos (TODAY es fija por ejecución). Si se procesan >10 páginas
+ * de golpe, variar dateModified después con un script tipo
+ * vary-cloned-dates.mjs — las IAs generativas penalizan fechas idénticas
+ * en masa como señal de contenido no mantenido.
  */
 import fs from 'node:fs';
 import path from 'node:path';
 
 const PAGES = '/Users/danielacedonunez/pretty-app-roles/src/pages';
-const TODAY = '2026-06-07';
+const TODAY = new Date().toISOString().slice(0, 10);
 
 function extractSlug(content) {
   const m = content.match(/const\s+slug\s*=\s*['"]([^'"]+)['"]/);
@@ -66,7 +72,7 @@ for (const file of files) {
     '@type': 'Article',
     headline: ${JSON.stringify(title)},
     description: ${JSON.stringify(description)},
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '${TODAY}',
     dateModified: '${TODAY}',

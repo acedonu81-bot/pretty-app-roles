@@ -61,6 +61,16 @@ const CookieBanner = () => {
 
   const save = (p: CookiePrefs) => {
     localStorage.setItem(COOKIE_KEY, JSON.stringify(p));
+    // Sin este update, GTM/GA4 sigue en "denied" (el default de index.html) y
+    // descarta los hits en silencio aunque la etiqueta se dispare con 200/204.
+    (window as any).dataLayer = (window as any).dataLayer || [];
+    (window as any).gtag = (window as any).gtag || function () { (window as any).dataLayer.push(arguments); };
+    (window as any).gtag('consent', 'update', {
+      ad_storage: p.marketing ? 'granted' : 'denied',
+      ad_user_data: p.marketing ? 'granted' : 'denied',
+      ad_personalization: p.marketing ? 'granted' : 'denied',
+      analytics_storage: p.analytics ? 'granted' : 'denied',
+    });
     setVisible(false);
   };
 

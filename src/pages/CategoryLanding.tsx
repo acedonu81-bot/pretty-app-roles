@@ -24,6 +24,10 @@ const BLOG_LINKS: Record<string, { href: string; emoji: string; title: string; d
     { href: '/blog/staff-de-discoteca-funciones-y-salario', emoji: '🎪', title: 'Staff de discoteca: funciones y sueldos 2026', desc: 'Hostesses, RRPPs, camareros y coordinadores. Tarifas reales.' },
     { href: '/blog/cuanto-cobra-un-camarero-de-eventos', emoji: '💰', title: '¿Cuánto cobra un camarero de eventos?', desc: 'Precios por hora y por evento en toda España.' },
   ],
+  azafata: [
+    { href: '/blog/precio-azafatas-eventos-espana', emoji: '💰', title: 'Precio de azafatas para eventos: guía 2026', desc: 'Tarifas reales por tipo de evento, ferias y congresos.' },
+    { href: '/blog/staff-de-discoteca-funciones-y-salario', emoji: '🎪', title: 'Staff de discoteca: funciones y sueldos 2026', desc: 'Diferencias entre hostess, azafata y RRPP.' },
+  ],
   promotores: [
     { href: '/blog/promotores-de-eventos-que-hacen', emoji: '📣', title: 'Promotores de eventos: qué hacen y cuánto cobran', desc: 'Tipos, funciones y cómo estructurar el contrato con métricas.' },
   ],
@@ -41,7 +45,7 @@ const BLOG_LINKS: Record<string, { href: string; emoji: string; title: string; d
   ],
 };
 
-const CATEGORY_DATA: Record<string, {
+export const CATEGORY_DATA: Record<string, {
   slug: string;
   emoji: string;
   h1: string;
@@ -121,6 +125,39 @@ const CATEGORY_DATA: Record<string, {
     steps: [
       { title: 'Busca en el directorio', body: 'Filtra por ciudad, precio y disponibilidad. Sin registro ni tarjeta.' },
       { title: 'Describe tu necesidad', body: 'Especifica el tipo de staff, número de personas, fecha y presupuesto. Flash Booking gestiona la distribución automáticamente.' },
+      { title: 'Contrato digital listo', body: 'Acepta las candidaturas, firma el contrato con un clic. Incluye datos fiscales para facturación correcta.' },
+    ],
+  },
+  azafata: {
+    slug: 'azafata',
+    emoji: '🎀',
+    h1: 'Contratar Azafatas para Eventos',
+    tagline: 'Azafatas verificadas para ferias, congresos y eventos corporativos en España',
+    desc: 'Contrata azafatas profesionales para ferias, congresos, eventos corporativos y presentaciones. Perfiles verificados, contrato digital automático. Flash Booking disponible. Sin comisión.',
+    intro: 'XPEAK conecta empresas, agencias y organizadores con azafatas profesionales verificadas en toda España. Desde recepción de congresos hasta stands feriales y presentaciones de producto, con contratos digitales listos en minutos.',
+    keyword: 'Azafatas de Eventos',
+    keywords: 'contratar azafatas eventos España, azafatas ferias, azafatas congresos, azafatas para stands, personal azafatas España',
+    precio: 'desde 15€/hora',
+    cities: [
+      { name: 'Madrid', slug: 'madrid' },
+      { name: 'Barcelona', slug: 'barcelona' },
+      { name: 'Valencia', slug: 'valencia' },
+      { name: 'Sevilla', slug: 'sevilla' },
+      { name: 'Málaga', slug: 'malaga' },
+      { name: 'Bilbao', slug: 'bilbao' },
+      { name: 'Zaragoza', slug: 'zaragoza' },
+      { name: 'Murcia', slug: 'murcia' },
+    ],
+    roles: ['Azafata de congresos', 'Azafata de feria', 'Azafata de stand', 'Azafata de imagen', 'Azafata de protocolo', 'Azafata de recepción', 'Azafata de eventos corporativos', 'Azafata de presentación de producto'],
+    faqs: [
+      { q: '¿Cuánto cuesta contratar azafatas para un evento?', a: 'El precio varía según el perfil: azafatas de recepción desde 15€/hora, azafatas de stand desde 18€/hora, azafatas de imagen o protocolo desde 22€/hora. En XPEAK todos los perfiles muestran sus tarifas públicas.' },
+      { q: '¿Puedo contratar azafatas para un solo día de feria?', a: 'Sí. XPEAK permite contrataciones puntuales para una jornada, un evento o varios días consecutivos de feria o congreso, con contrato digital automático.' },
+      { q: '¿Cómo funciona el Flash Booking para azafatas?', a: 'Publica tu necesidad con fecha, ubicación y número de azafatas. El sistema notifica al instante a los perfiles disponibles en tu zona. Respuesta garantizada en menos de 1 hora.' },
+      { q: '¿Qué diferencia hay entre azafata y hostess?', a: 'Una azafata suele trabajar en ferias, congresos y eventos corporativos con funciones de protocolo, información y apoyo comercial. Una hostess trabaja principalmente en eventos privados y de ocio nocturno. Ambos perfiles están disponibles en XPEAK.' },
+    ],
+    steps: [
+      { title: 'Busca en el directorio', body: 'Filtra por ciudad, precio y disponibilidad. Sin registro ni tarjeta.' },
+      { title: 'Describe tu necesidad', body: 'Especifica el tipo de azafata, número de personas, fecha y presupuesto. Flash Booking gestiona la distribución automáticamente.' },
       { title: 'Contrato digital listo', body: 'Acepta las candidaturas, firma el contrato con un clic. Incluye datos fiscales para facturación correcta.' },
     ],
   },
@@ -305,6 +342,7 @@ const CATEGORY_DATA: Record<string, {
       { name: 'Sevilla', slug: 'sevilla' },
       { name: 'Málaga', slug: 'malaga' },
       { name: 'Ibiza', slug: 'ibiza' },
+      { name: 'A Coruña', slug: 'coruna' },
     ],
     roles: ['Promotor de sala', 'Relaciones Públicas', 'Community manager presencial', 'Captador/a de público', 'Promotor de festival', 'Influencer de evento', 'Coordinador de lista de invitados', 'Brand ambassador', 'Promotor digital', 'Equipo de RRPP'],
     faqs: [
@@ -487,12 +525,12 @@ const CATEGORY_DATA: Record<string, {
   bailarin: {
     slug: 'bailarin',
     emoji: '💃',
-    h1: 'Contratar Bailarín y Bailarina para Eventos',
-    tagline: 'Bailarines y compañías de danza profesionales para bodas, galas, shows y eventos corporativos',
-    desc: 'Contrata bailarines y bailarinas profesionales para bodas, shows de entretenimiento y eventos corporativos en España. Compañías verificadas, coreografías personalizadas. Sin comisión.',
-    intro: 'XPEAK conecta organizadores con bailarines y compañías de danza profesionales en toda España. Desde el espectáculo flamenco para galas hasta la coreografía sorpresa de boda, con perfiles verificados y contratos digitales en minutos.',
+    h1: 'Contratar Bailarín, Bailarina e Instructor de Baile',
+    tagline: 'Bailarines, compañías de danza e instructores de salsa, bachata y kizomba para eventos y clases',
+    desc: 'Contrata bailarines y bailarinas profesionales para bodas, shows de entretenimiento y eventos corporativos en España, o encuentra instructor de salsa, bachata y kizomba para clases particulares. Perfiles verificados. Sin comisión.',
+    intro: 'XPEAK conecta organizadores con bailarines y compañías de danza profesionales en toda España — desde el espectáculo flamenco para galas hasta la coreografía sorpresa de boda — y también con instructores de salsa, bachata y kizomba disponibles para clases particulares. Perfiles verificados y contratos digitales en minutos.',
     keyword: 'Bailarín',
-    keywords: 'contratar bailarín boda España, compañía de danza eventos Madrid Barcelona, bailaora flamenca eventos, bailarín profesional precio España, show de baile corporativo',
+    keywords: 'contratar bailarín boda España, compañía de danza eventos Madrid Barcelona, bailaora flamenca eventos, bailarín profesional precio España, show de baile corporativo, instructor de salsa bachata, clases particulares de baile',
     precio: 'desde 200€/actuación',
     cities: [
       { name: 'Madrid', slug: 'madrid' },
@@ -596,6 +634,35 @@ const CATEGORY_DATA: Record<string, {
       {title:'Contrato y ensayo', body:'Firma el contrato digital en XPEAK. Puedes coordinar con el grupo la lista de canciones especiales.'},
     ],
   },
+  monologo: {
+    slug: 'monologo',
+    emoji: '🎤',
+    h1: 'Contratar Monologuista para Eventos en España',
+    tagline: 'Cómicos de stand-up y monologuistas con guion personalizado para cenas de empresa y bodas',
+    desc: 'Contrata monologuista o cómico de stand-up para cenas de empresa, bodas y eventos en España. Guion personalizado. Sin comisión.',
+    intro: 'XPEAK conecta organizadores con monologuistas y cómicos de stand-up verificados en toda España: desde shows de 20-30 minutos para cenas de empresa hasta actuaciones completas de 60 minutos para bodas y festivales de humor.',
+    keyword: 'Monologuista',
+    keywords: 'contratar monologuista, cómico stand up eventos, monólogo cena de empresa, humorista boda España, contratar cómico evento',
+    precio: 'desde 300€',
+    cities: [
+      { name: 'Madrid', slug: 'madrid' },
+      { name: 'Barcelona', slug: 'barcelona' },
+      { name: 'Valencia', slug: 'valencia' },
+      { name: 'Sevilla', slug: 'sevilla' },
+      { name: 'Málaga', slug: 'malaga' },
+    ],
+    roles: ['Stand-Up Comedy', 'Monólogo Personalizado', 'Impro', 'Cena de Empresa', 'Monólogo de Boda', 'Festival de Humor'],
+    faqs: [
+      { q: '¿Cuánto cuesta contratar un monologuista?', a: 'Un monólogo profesional cuesta entre 300€ y 1.200€ según la duración y el perfil del cómico. Actuaciones de 20-30 min para cenas de empresa: 300€-600€. Shows de stand-up de 45-60 min: 500€-1.200€.' },
+      { q: '¿El monologuista puede personalizar el guion para mi empresa?', a: 'Sí. La mayoría de monologuistas en XPEAK ofrecen guion 100% personalizado con referencias a tu empresa, sector, equipo o ciudad.' },
+      { q: '¿Un monólogo funciona para una boda?', a: 'Sí, es uno de los entretenimientos que más recuerdan los invitados. El cómico recoge anécdotas de la pareja y los invitados para crear un show único de 20-30 minutos.' },
+    ],
+    steps: [
+      { title: 'Elige el formato', body: 'Monólogo corto para sobremesa, show completo de stand-up o impro con varios cómicos.' },
+      { title: 'Comparte el contexto', body: 'Cuéntale al cómico el tipo de público, el tono deseado y cualquier tema a evitar.' },
+      { title: 'Contrato y show', body: 'Firma el contrato digital en XPEAK y confirma horarios de llegada y duración exacta.' },
+    ],
+  },
   'disco-movil': {
     slug: 'disco-movil',
     emoji: '🎵',
@@ -633,9 +700,16 @@ const CATEGORY_DATA: Record<string, {
   },
 };
 
+// Alias plurales — App.tsx registra tanto /contratar-animador como
+// /contratar-animadores (ídem payaso/payasos) apuntando al mismo componente;
+// sin esta entrada CategoryLanding no encuentra el slug y hace navigate('/').
+CATEGORY_DATA.animadores = CATEGORY_DATA.animador;
+CATEGORY_DATA.payasos = CATEGORY_DATA.payaso;
+
 const ICON: Record<string, React.ReactNode> = {
   dj: <Music size={20} />,
   staff: <Users size={20} />,
+  azafata: <Users size={20} />,
   fotografo: <Camera size={20} />,
   camareros: <UtensilsCrossed size={20} />,
   catering: <UtensilsCrossed size={20} />,
@@ -690,6 +764,31 @@ export default function CategoryLanding() {
     })),
   };
 
+  const breadcrumbData = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' },
+      { '@type': 'ListItem', position: 2, name: data.h1, item: `https://xpeak.es/contratar-${data.slug}` },
+    ],
+  };
+
+  const localBusinessData = {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name: `XPEAK — ${data.h1}`,
+    description: data.desc,
+    url: `https://xpeak.es/contratar-${data.slug}`,
+    image: 'https://xpeak.es/og-image.jpg',
+    telephone: '',
+    email: 'hola@xpeak.es',
+    address: { '@type': 'PostalAddress', addressCountry: 'ES' },
+    areaServed: { '@type': 'Country', name: 'España' },
+    priceRange: data.precio,
+    openingHours: 'Mo-Su 00:00-24:00',
+    sameAs: ['https://www.instagram.com/xpeak.es'],
+  };
+
   return (
     <>
       <Helmet>
@@ -707,6 +806,8 @@ export default function CategoryLanding() {
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbData)}</script>
+        <script type="application/ld+json">{JSON.stringify(localBusinessData)}</script>
       </Helmet>
 
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
@@ -744,7 +845,7 @@ export default function CategoryLanding() {
           </p>
           <p className="text-sm font-bold mb-8" style={{ color: 'rgba(212,175,55,0.7)' }}>{data.tagline}</p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a href={`/directorio/${['dj','fotografo','staff','maquillaje','peluqueria','promotores'].includes(data.slug) ? data.slug : data.slug === 'camareros' ? 'staff' : 'dj'}`}
+            <a href={`/directorio/${['dj','fotografo','staff','maquillaje','peluqueria','promotores','azafata'].includes(data.slug) ? data.slug : data.slug === 'camareros' ? 'staff' : 'dj'}`}
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Ver profesionales disponibles <ArrowRight size={14} />
@@ -796,7 +897,7 @@ export default function CategoryLanding() {
         </section>
 
         {/* Ciudades */}
-        {data.cities.length > 0 && ['dj','camareros','staff','fotografo','catering','disco-movil'].includes(data.slug) && (
+        {data.cities.length > 0 && (
           <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14">
             <h2 className="text-xl sm:text-2xl font-black mb-2">Contratar {data.keyword} por ciudad</h2>
             <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.6)' }}>
@@ -871,7 +972,7 @@ export default function CategoryLanding() {
             <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>
               Contacta directamente — sin registro, sin comisión, respuesta directa del profesional.
             </p>
-            <a href={`/directorio/${['dj','fotografo','staff','maquillaje','peluqueria','promotores'].includes(data.slug) ? data.slug : data.slug === 'camareros' ? 'staff' : 'dj'}`}
+            <a href={`/directorio/${['dj','fotografo','staff','maquillaje','peluqueria','promotores','azafata'].includes(data.slug) ? data.slug : data.slug === 'camareros' ? 'staff' : 'dj'}`}
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Ver profesionales disponibles <ArrowRight size={14} />

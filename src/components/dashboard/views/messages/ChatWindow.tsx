@@ -1,5 +1,5 @@
-import { useRef } from 'react';
-import { Send, Shield, MessageSquare, CheckCheck, Check, Image, Smile, X, ArrowLeft } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { Send, Shield, MessageSquare, CheckCheck, Check, Image, Smile, X, ArrowLeft, Trash2, MoreVertical } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -8,6 +8,7 @@ interface Message {
   photo_url?: string | null;
   read: boolean;
   created_at: string;
+  deleted_at?: string | null;
 }
 
 const EMOJIS = [
@@ -50,6 +51,9 @@ interface Props {
   onSend: () => void;
   onPhotoUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBack: () => void;
+  onDeleteMessage?: (messageId: string) => void;
+  onDeleteConversation?: () => void;
+  onBlockUser?: () => void;
 }
 
 const ChatWindow = ({
@@ -57,8 +61,13 @@ const ChatWindow = ({
   input, setInput, showEmoji, setShowEmoji,
   sending, uploadingPhoto, bottomRef, fileInputRef,
   onSend, onPhotoUpload, onBack,
+  onDeleteMessage, onDeleteConversation, onBlockUser,
 }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [hoveredMsgId, setHoveredMsgId] = useState<string | null>(null);
+  const [confirmDeleteMsgId, setConfirmDeleteMsgId] = useState<string | null>(null);
+  const [showHeaderMenu, setShowHeaderMenu] = useState(false);
+  const [confirmAction, setConfirmAction] = useState<'delete-chat' | 'block' | null>(null);
 
   const insertEmoji = (emoji: string) => {
     setInput(input + emoji);
@@ -88,7 +97,71 @@ const ChatWindow = ({
             <Shield size={9} /> Comunicación privada · XPEAK
           </p>
         </div>
+
+        {(onDeleteConversation || onBlockUser) && (
+          <div className="relative flex-shrink-0">
+            <button onClick={() => setShowHeaderMenu(v => !v)}
+              aria-label="Más opciones"
+              title="Más opciones"
+              className="p-1.5 rounded-lg transition-colors hover:bg-black/10"
+              style={{ background: 'rgba(0,0,0,0.05)' }}>
+              <MoreVertical size={16} />
+            </button>
+            {showHeaderMenu && (
+              <>
+                <div className="fixed inset-0 z-20" onClick={() => setShowHeaderMenu(false)} />
+                <div className="absolute right-0 top-full mt-1 z-30 rounded-xl overflow-hidden min-w-[180px]"
+                  style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 8px 24px rgba(0,0,0,0.12)' }}>
+                  {onDeleteConversation && (
+                    <button onClick={() => { setShowHeaderMenu(false); setConfirmAction('delete-chat'); }}
+                      className="w-full text-left px-4 py-2.5 text-sm font-medium flex items-center gap-2 transition-colors hover:bg-black/5"
+                      style={{ color: '#333' }}>
+                      <Trash2 size={14} /> Eliminar chat
+                    </button>
+                  )}
+                  {onBlockUser && (
+                    <button onClick={() => { setShowHeaderMenu(false); setConfirmAction('block'); }}
+                      className="w-full text-left px-4 py-2.5 text-sm font-medium flex items-center gap-2 transition-colors hover:bg-black/5"
+                      style={{ color: '#dc2626' }}>
+                      <Shield size={14} /> Bloquear a {activeOtherName}
+                    </button>
+                  )}
+                </div>
+              </>
+            )}
+          </div>
+        )}
       </div>
+
+      {confirmAction && (
+        <div className="fixed inset-0 z-40 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.5)' }}
+          onClick={() => setConfirmAction(null)}>
+          <div className="rounded-2xl p-5 max-w-sm w-full" style={{ background: '#ffffff' }} onClick={e => e.stopPropagation()}>
+            <p className="text-sm font-bold mb-1">
+              {confirmAction === 'delete-chat' ? 'Eliminar conversación' : `Bloquear a ${activeOtherName}`}
+            </p>
+            <p className="text-xs text-muted-foreground mb-4">
+              {confirmAction === 'delete-chat'
+                ? 'Se eliminará de tu bandeja. La otra persona seguirá viendo el historial.'
+                : 'No podrá enviarte mensajes ni tú a ella. Podrás desbloquearla más adelante.'}
+            </p>
+            <div className="flex gap-2 justify-end">
+              <button onClick={() => setConfirmAction(null)}
+                className="px-3.5 py-2 rounded-lg text-xs font-bold" style={{ background: 'rgba(0,0,0,0.05)', color: '#333' }}>
+                Cancelar
+              </button>
+              <button onClick={() => {
+                if (confirmAction === 'delete-chat') onDeleteConversation?.();
+                else onBlockUser?.();
+                setConfirmAction(null);
+              }}
+                className="px-3.5 py-2 rounded-lg text-xs font-bold text-white" style={{ background: '#dc2626' }}>
+                {confirmAction === 'delete-chat' ? 'Eliminar' : 'Bloquear'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-2"
@@ -118,15 +191,31 @@ const ChatWindow = ({
                   <div className="flex-1 h-px" style={{ background: 'rgba(0,0,0,0.05)' }} />
                 </div>
               )}
-              <div className={`flex items-end gap-2 ${isMe ? 'justify-end' : 'justify-start'}`}>
+              <div className={`flex items-end gap-2 ${isMe ? 'justify-end' : 'justify-start'} group`}
+                onMouseEnter={() => setHoveredMsgId(msg.id)}
+                onMouseLeave={() => setHoveredMsgId(null)}>
                 {!isMe && (
                   <div className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-black flex-shrink-0 mb-1"
                     style={{ background: getGradient(activeOtherName), color: '#000' }}>
                     {activeOtherName.charAt(0).toUpperCase()}
                   </div>
                 )}
+                {isMe && onDeleteMessage && !msg.deleted_at && (
+                  <button onClick={() => setConfirmDeleteMsgId(msg.id)}
+                    aria-label="Eliminar mensaje"
+                    title="Eliminar mensaje"
+                    className="mb-1 p-1 rounded-lg transition-opacity hover:bg-black/5"
+                    style={{ opacity: hoveredMsgId === msg.id ? 1 : 0, color: '#333' }}>
+                    <Trash2 size={13} />
+                  </button>
+                )}
                 <div className={`max-w-[68%] ${isMe ? 'items-end' : 'items-start'} flex flex-col`}>
-                  {isPhoto ? (
+                  {msg.deleted_at ? (
+                    <div className="px-4 py-2.5 rounded-2xl text-sm italic"
+                      style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.05)', color: '#666' }}>
+                      Mensaje eliminado
+                    </div>
+                  ) : isPhoto ? (
                     <div className="rounded-2xl overflow-hidden"
                       style={{
                         border: `1px solid ${isMe ? 'rgba(212,175,55,0.3)' : 'rgba(0,0,0,0.08)'}`,
@@ -172,6 +261,26 @@ const ChatWindow = ({
         })}
         <div ref={bottomRef} />
       </div>
+
+      {confirmDeleteMsgId && (
+        <div className="fixed inset-0 z-40 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.5)' }}
+          onClick={() => setConfirmDeleteMsgId(null)}>
+          <div className="rounded-2xl p-5 max-w-sm w-full" style={{ background: '#ffffff' }} onClick={e => e.stopPropagation()}>
+            <p className="text-sm font-bold mb-1">Eliminar mensaje</p>
+            <p className="text-xs text-muted-foreground mb-4">Se eliminará para ambos. Esta acción no se puede deshacer.</p>
+            <div className="flex gap-2 justify-end">
+              <button onClick={() => setConfirmDeleteMsgId(null)}
+                className="px-3.5 py-2 rounded-lg text-xs font-bold" style={{ background: 'rgba(0,0,0,0.05)', color: '#333' }}>
+                Cancelar
+              </button>
+              <button onClick={() => { onDeleteMessage?.(confirmDeleteMsgId); setConfirmDeleteMsgId(null); }}
+                className="px-3.5 py-2 rounded-lg text-xs font-bold text-white" style={{ background: '#dc2626' }}>
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Input area */}
       <div className="px-3 py-3 flex-shrink-0 relative"

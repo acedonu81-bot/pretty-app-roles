@@ -1,5 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 
 const article = {
   '@context': 'https://schema.org',
@@ -8,7 +10,7 @@ const article = {
   description: 'Precios reales de saxofonistas para bodas, cócteles y eventos en España 2026. Tarifas por tipo de actuación y qué incluye el servicio.',
   datePublished: '2026-06-01',
   dateModified: '2026-06-01',
-  author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
   publisher: {
     '@type': 'Organization',
     name: 'XPEAK',
@@ -100,15 +102,15 @@ export default function BlogSaxofonistaEventosPrecio() {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#6D28D9' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
             <a
               href="/auth"
               className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
-              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}
+              style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}
             >
               Unirse gratis
             </a>
@@ -121,21 +123,21 @@ export default function BlogSaxofonistaEventosPrecio() {
           </a>
 
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Música · Bodas · XPEAK Blog</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#6D28D9' }}>Música · Bodas · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">
               Cuánto cobra un saxofonista para eventos y bodas en España 2026
             </h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>
               El saxofón es uno de los instrumentos más solicitados en bodas y eventos de empresa en España. Su sonido cálido y versátil lo convierte en la opción perfecta para cócteles, ceremonias y galas corporativas. En esta guía encontrarás los precios reales para 2026 y todo lo que necesitas saber antes de contratar.
             </p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>1 junio 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>1 junio 2026</time>
           </div>
 
           <div className="space-y-10">
             {/* TIPOS DE ACTUACIÓN */}
             <section>
               <h2 className="text-lg font-black mb-4">Tipos de actuación de un saxofonista</h2>
-              <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed mb-4" style={{ color: '#222' }}>
                 El saxofonista puede integrarse en distintos momentos de un evento. Los más habituales en España son tres: la ceremonia civil o religiosa, el cóctel de bienvenida y la actuación en gala o evento corporativo. Cada formato tiene una duración y una dinámica diferente que afecta directamente al precio.
               </p>
               <div className="space-y-3">
@@ -149,12 +151,12 @@ export default function BlogSaxofonistaEventosPrecio() {
                     key={item.tipo}
                     className="p-4 rounded-xl"
                     style={{
-                      background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)',
-                      border: '1px solid rgba(255,255,255,0.04)',
+                      background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)',
+                      border: '1px solid rgba(0,0,0,0.04)',
                     }}
                   >
                     <p className="text-xs font-black mb-1">{item.tipo}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{item.desc}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{item.desc}</p>
                   </div>
                 ))}
               </div>
@@ -169,12 +171,12 @@ export default function BlogSaxofonistaEventosPrecio() {
                     key={row.tipo}
                     className="flex items-center justify-between p-4 rounded-xl"
                     style={{
-                      background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)',
-                      border: '1px solid rgba(255,255,255,0.04)',
+                      background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)',
+                      border: '1px solid rgba(0,0,0,0.04)',
                     }}
                   >
                     <p className="text-xs font-medium">{row.tipo}</p>
-                    <span className="text-xs font-black ml-4 shrink-0" style={{ color: '#D4AF37' }}>{row.precio}</span>
+                    <span className="text-xs font-black ml-4 shrink-0" style={{ color: '#6D28D9' }}>{row.precio}</span>
                   </div>
                 ))}
               </div>
@@ -186,13 +188,13 @@ export default function BlogSaxofonistaEventosPrecio() {
             {/* QUÉ INCLUYE */}
             <section>
               <h2 className="text-lg font-black mb-4">Qué incluye el precio de un saxofonista</h2>
-              <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
                 En la mayoría de los casos, la tarifa de un saxofonista profesional cubre la actuación en sí, el desplazamiento dentro de un radio razonable (50–80 km del domicilio del músico), el saxo y sus accesorios, y un sistema de amplificación básico para espacios de hasta 80–100 personas.
               </p>
-              <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
                 Lo que habitualmente no está incluido: desplazamientos de larga distancia (más de 100 km), alojamiento si el evento requiere pernocta, equipo de sonido para grandes espacios o festivales, y las horas de ensayo previo si el cliente pide un repertorio muy específico.
               </p>
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed" style={{ color: '#222' }}>
                 Antes de firmar contrato, confirma siempre: qué equipo de sonido lleva, cuánto espacio necesita para instalarse, si tiene repertorio definido o acepta peticiones, y si exige señal de reserva (habitualmente 30% del total).
               </p>
             </section>
@@ -200,13 +202,13 @@ export default function BlogSaxofonistaEventosPrecio() {
             {/* CÓMO CONTRATAR */}
             <section>
               <h2 className="text-lg font-black mb-4">Cómo contratar un saxofonista para tu evento</h2>
-              <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
                 El primer paso es definir para qué momento del evento lo necesitas (ceremonia, cóctel, show) y cuántos invitados habrá. Eso determina el tamaño del equipo de sonido necesario y el presupuesto aproximado.
               </p>
-              <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
                 Pide siempre un vídeo de actuación real, no solo grabaciones de estudio. La calidad en directo puede variar mucho y es el mejor indicador del nivel del músico. Busca perfiles con reseñas de bodas o eventos similares al tuyo.
               </p>
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed" style={{ color: '#222' }}>
                 Reserva con al menos 3–4 meses de antelación para bodas en temporada alta (mayo–junio, septiembre–octubre). Para eventos de empresa con menos urgencia en la fecha, 4–6 semanas suelen ser suficientes.
               </p>
             </section>
@@ -219,10 +221,10 @@ export default function BlogSaxofonistaEventosPrecio() {
                   <div
                     key={f.name}
                     className="p-5 rounded-xl"
-                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
+                    style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}
                   >
                     <p className="text-sm font-black mb-2">{f.name}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>{f.acceptedAnswer.text}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
               </div>
@@ -230,7 +232,7 @@ export default function BlogSaxofonistaEventosPrecio() {
 
             {/* ARTÍCULOS RELACIONADOS */}
             <section>
-              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <h2 className="text-base font-black mb-3" style={{ color: '#111' }}>Artículos relacionados</h2>
               <div className="space-y-2">
                 {[
                   { href: '/blog/cuanto-cobra-un-dj-en-espana', cat: 'DJ', title: 'Cuánto cobra un DJ en España: precios 2026' },
@@ -242,15 +244,15 @@ export default function BlogSaxofonistaEventosPrecio() {
                     key={link.href}
                     href={link.href}
                     className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80"
-                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}
+                    style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}
                   >
                     <span
                       className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0"
-                      style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}
+                      style={{ background: 'rgba(109,40,217,0.1)', color: '#6D28D9', border: '1px solid rgba(109,40,217,0.15)' }}
                     >
                       {link.cat}
                     </span>
-                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                    <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}
               </div>
@@ -259,7 +261,7 @@ export default function BlogSaxofonistaEventosPrecio() {
             {/* CTA FINAL */}
             <div
               className="p-6 rounded-2xl text-center"
-              style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}
+              style={{ background: 'rgba(109,40,217,0.04)', border: '1px solid rgba(109,40,217,0.12)' }}
             >
               <p className="text-sm font-black mb-2">Ver saxofonistas disponibles en tu zona</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>
@@ -268,7 +270,7 @@ export default function BlogSaxofonistaEventosPrecio() {
               <a
                 href="/directorio/grupo-musical"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
-                style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}
+                style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}
               >
                 Ver saxofonistas disponibles →
               </a>
@@ -276,7 +278,9 @@ export default function BlogSaxofonistaEventosPrecio() {
           </div>
         </main>
 
+        <BlogRelatedPosts currentSlug='/blog/saxofonista-precio-espana' tag='Eventos' />
         <FooterPublic />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_saxofonista_eventos_precio" />
       </div>
     </>
   );

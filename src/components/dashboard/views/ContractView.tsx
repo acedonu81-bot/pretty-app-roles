@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { FileText, Plus, AlertCircle, Scale, ShieldCheck, BookOpen, Download, Trash2, RefreshCw, ChevronRight } from 'lucide-react';
+import { FileText, AlertCircle, Scale, ShieldCheck, BookOpen, Download, Trash2, RefreshCw, ChevronRight } from 'lucide-react';
+import ExcelJS from 'exceljs';
 import ContractModal from '@/components/dashboard/ContractModal';
 import type { Profile } from '@/data/profiles';
 import { supabase } from '@/integrations/supabase/client';
@@ -83,12 +84,23 @@ interface ContractRow {
 
 const ROLE_LABEL: Record<string, string> = {
   dj: 'DJ / Artista', rookie: 'DJ Promesa', staff: 'Staff / RRPP',
-  makeup: 'Maquillaje', peluqueria: 'Peluquería a Domicilio', media: 'Foto / Vídeo', ambassador: 'Promotor / Embajador',
-  animador: 'Animador', bailarin: 'Bailarín/a', catering: 'Catering',
-  design: 'Diseño', humorista: 'Humorista', mago: 'Mago/a',
-  monologo: 'Monologuista', speaker: 'Speaker / Presentador', vestuario: 'Vestuario',
-  empresario: 'Empresa / Sala',
+  event_manager: 'Encargada de Eventos',
+  bailarin: 'Instructor / Bailarín',
+  makeup: 'Maquillaje', peluqueria: 'Peluquería a Domicilio', media: 'Foto / Vídeo',
+  mago: 'Mago / Ilusionista', humorista: 'Humorista', animador: 'Animador / Payaso',
+  catering: 'Catering / Chef', vestuario: 'Vestuario / Estilismo',
+  promotor: 'Promotor / RRPP', ambassador: 'Promotor / Embajador',
+  speaker: 'Speaker / Presentador', design: 'Diseño & Visuales',
+  monologo: 'Monologuista', empresario: 'Empresa / Sala',
 };
+
+// Orden alineado con DashboardSidebar.tsx — evita que el selector quede
+// desactualizado cuando se añaden roles nuevos al sistema.
+const CONTRACT_ROLE_OPTIONS = [
+  'dj', 'rookie', 'staff', 'event_manager', 'bailarin', 'makeup', 'peluqueria', 'media',
+  'mago', 'humorista', 'animador', 'catering', 'vestuario', 'promotor',
+  'speaker', 'design',
+];
 
 const fmtDate = (iso: string) => {
   if (!iso) return '—';
@@ -96,11 +108,6 @@ const fmtDate = (iso: string) => {
 };
 
 const fmtEur = (n: number | null) => n != null ? `€${n.toFixed(2).replace('.', ',')}` : '—';
-
-const escCsv = (v: unknown) => {
-  const s = String(v ?? '');
-  return s.includes(',') || s.includes('"') || s.includes('\n') ? `"${s.replace(/"/g, '""')}"` : s;
-};
 
 const ContractView = () => {
   const { user } = useAuth();
@@ -140,36 +147,98 @@ const ContractView = () => {
     setContracts(prev => prev.filter(c => c.id !== id));
   };
 
-  const exportCsv = () => {
+  const exportXlsx = async () => {
     const rows = contracts.filter(c => {
       const y = c.event_date ? new Date(c.event_date).getFullYear() : new Date(c.created_at).getFullYear();
       return y === csvYear;
     });
     if (!rows.length) return;
-    const headers = ['Ref', 'Fecha evento', 'Profesional', 'Rol', 'Tipo evento', 'Evento', 'Local', 'Ciudad', 'Contratante', 'Empresa', 'Base imponible (€)', 'IVA 21% (€)', 'Total con IVA (€)', 'Generado'];
-    const lines = [
-      headers.join(','),
-      ...rows.map(c => [
+
+    const GOLD = 'FFD4AF37';
+    const DARK = 'FF0A0908';
+
+    const wb = new ExcelJS.Workbook();
+    wb.creator = 'XPEAK';
+    wb.created = new Date();
+    const ws = wb.addWorksheet(`Contratos ${csvYear}`, {
+      views: [{ state: 'frozen', ySplit: 3 }],
+      pageSetup: { orientation: 'landscape', fitToPage: true, fitToWidth: 1 },
+    });
+
+    // ── Título de marca ──
+    ws.mergeCells('A1:N1');
+    const titleCell = ws.getCell('A1');
+    titleCell.value = `XPEAK — Resumen de contratos ${csvYear}`;
+    titleCell.font = { name: 'Calibri', size: 14, bold: true, color: { argb: 'FFFFFFFF' } };
+    titleCell.alignment = { vertical: 'middle', horizontal: 'left' };
+    titleCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: DARK } };
+    ws.getRow(1).height = 28;
+
+    ws.mergeCells('A2:N2');
+    const subtitleCell = ws.getCell('A2');
+    subtitleCell.value = `Generado el ${new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' })} · ${rows.length} contrato${rows.length !== 1 ? 's' : ''} · xpeak.es`;
+    subtitleCell.font = { name: 'Calibri', size: 9, italic: true, color: { argb: GOLD } };
+    subtitleCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: DARK } };
+    ws.getRow(2).height = 16;
+
+    // ── Cabecera de columnas ──
+    const headers = ['Ref', 'Fecha evento', 'Profesional', 'Rol', 'Tipo evento', 'Evento', 'Local', 'Ciudad', 'Contratante', 'Empresa', 'Base imponible', 'IVA 21%', 'Total con IVA', 'Generado'];
+    const headerRow = ws.getRow(3);
+    headerRow.values = headers;
+    headerRow.eachCell(cell => {
+      cell.font = { name: 'Calibri', size: 10, bold: true, color: { argb: 'FF1A1208' } };
+      cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: GOLD } };
+      cell.alignment = { vertical: 'middle', horizontal: 'center' };
+      cell.border = { bottom: { style: 'thin', color: { argb: 'FFB8941E' } } };
+    });
+    headerRow.height = 20;
+
+    // ── Filas de datos ──
+    rows.forEach((c, i) => {
+      const row = ws.addRow([
         c.ref,
-        c.event_date ?? '',
-        c.professional_name ?? '',
-        ROLE_LABEL[c.professional_role ?? ''] ?? c.professional_role ?? '',
-        c.event_type ?? '',
-        c.event_name ?? '',
-        c.venue ?? '',
-        c.city ?? '',
-        c.contratante_nombre ?? '',
-        c.empresa_nombre ?? '',
-        c.precio_neto ?? '',
-        c.precio_neto != null ? (c.precio_neto * 0.21).toFixed(2) : '',
-        c.precio_neto != null ? (c.precio_neto * 1.21).toFixed(2) : '',
-        c.created_at ? new Date(c.created_at).toLocaleDateString('es-ES') : '',
-      ].map(escCsv).join(',')),
-    ];
-    const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+        c.event_date ? new Date(c.event_date) : null,
+        c.professional_name ?? '—',
+        ROLE_LABEL[c.professional_role ?? ''] ?? c.professional_role ?? '—',
+        c.event_type ?? '—',
+        c.event_name ?? '—',
+        c.venue ?? '—',
+        c.city ?? '—',
+        c.contratante_nombre ?? '—',
+        c.empresa_nombre ?? '—',
+        c.precio_neto ?? null,
+        c.precio_neto != null ? c.precio_neto * 0.21 : null,
+        c.precio_neto != null ? c.precio_neto * 1.21 : null,
+        new Date(c.created_at),
+      ]);
+      row.eachCell(cell => { cell.font = { name: 'Calibri', size: 10 }; cell.alignment = { vertical: 'middle' }; });
+      row.getCell(2).numFmt = 'dd/mm/yyyy';
+      row.getCell(11).numFmt = '€ #,##0.00';
+      row.getCell(12).numFmt = '€ #,##0.00';
+      row.getCell(13).numFmt = '€ #,##0.00';
+      row.getCell(13).font = { name: 'Calibri', size: 10, bold: true };
+      row.getCell(14).numFmt = 'dd/mm/yyyy';
+      if (i % 2 === 1) row.eachCell(cell => { cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF7F5EF' } }; });
+    });
+
+    // ── Fila de totales ──
+    const totalBase = rows.reduce((s, c) => s + (c.precio_neto ?? 0), 0);
+    const totalRow = ws.addRow(['', '', '', '', '', '', '', '', '', 'TOTAL', totalBase, totalBase * 0.21, totalBase * 1.21, '']);
+    totalRow.eachCell(cell => { cell.font = { name: 'Calibri', size: 10, bold: true, color: { argb: 'FF1A1208' } }; cell.border = { top: { style: 'medium', color: { argb: GOLD } } }; });
+    totalRow.getCell(10).alignment = { horizontal: 'right' };
+    totalRow.getCell(11).numFmt = '€ #,##0.00';
+    totalRow.getCell(12).numFmt = '€ #,##0.00';
+    totalRow.getCell(13).numFmt = '€ #,##0.00';
+
+    // ── Anchos de columna ──
+    const widths = [14, 12, 20, 18, 14, 22, 18, 14, 20, 18, 14, 12, 14, 12];
+    ws.columns.forEach((col, i) => { col.width = widths[i]; });
+
+    const buf = await wb.xlsx.writeBuffer();
+    const blob = new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `contratos_xpeak_${csvYear}.csv`;
+    a.download = `contratos_xpeak_${csvYear}.xlsx`;
     a.click();
     URL.revokeObjectURL(a.href);
   };
@@ -244,20 +313,13 @@ const ContractView = () => {
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <div>
-          <h2 className="text-2xl font-bold mb-1">
-            <span className="text-gradient">Contratos</span>
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            Genera contratos de prestación de servicios conformes a la legislación española.
-          </p>
-        </div>
-        <button onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-base hover:scale-105 transition-all w-full sm:w-auto justify-center"
-          style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-          <Plus size={18} /> Nuevo Contrato
-        </button>
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold mb-1">
+          <span className="text-gradient">Contratos</span>
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          Genera contratos de prestación de servicios conformes a la legislación española.
+        </p>
       </div>
 
       {/* Quick-start panel */}
@@ -288,13 +350,9 @@ const ContractView = () => {
               style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#222', cursor: 'pointer' }}
               value={customRole}
               onChange={e => setCustomRole(e.target.value)}>
-              <option value="dj" style={{ background: '#0a0a0e' }}>DJ / Artista</option>
-              <option value="rookie" style={{ background: '#0a0a0e' }}>DJ Promesa</option>
-              <option value="staff" style={{ background: '#0a0a0e' }}>Staff / RRPP</option>
-              <option value="makeup" style={{ background: '#0a0a0e' }}>Maquillaje</option>
-              <option value="peluqueria" style={{ background: '#0a0a0e' }}>Peluquería a Domicilio</option>
-              <option value="media" style={{ background: '#0a0a0e' }}>Foto / Vídeo</option>
-              <option value="ambassador" style={{ background: '#0a0a0e' }}>Promotor / Embajador</option>
+              {CONTRACT_ROLE_OPTIONS.map(id => (
+                <option key={id} value={id} style={{ background: '#0a0a0e' }}>{ROLE_LABEL[id]}</option>
+              ))}
             </select>
           </div>
         </div>
@@ -334,10 +392,10 @@ const ContractView = () => {
                 </select>
                 <button
                   type="button"
-                  onClick={exportCsv}
+                  onClick={exportXlsx}
                   className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg font-bold transition-all hover:scale-105"
                   style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
-                  <Download size={12} /> CSV {csvYear}
+                  <Download size={12} /> Excel {csvYear}
                 </button>
               </>
             )}

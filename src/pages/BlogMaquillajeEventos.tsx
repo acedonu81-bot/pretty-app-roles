@@ -1,9 +1,12 @@
 import { Helmet } from 'react-helmet-async';
 import { Zap, TrendingUp, Star } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 import BlogEmailCapture from '@/components/BlogEmailCapture';
 import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
+import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const TABLE = [
   { servicio: 'Maquillaje novia (solo)', duracion: '60–90 min', rango: '100€ – 250€', notas: 'Incluye prueba previa' },
@@ -27,7 +30,7 @@ export default function BlogMaquillajeEventos() {
     '@type': 'Article',
     headline: 'Maquilladora para eventos: precios y qué incluye en España (2026)',
     description: 'Cuánto cobra una maquilladora para bodas, eventos corporativos y sesiones de foto en España. Precios por servicio y qué incluye cada paquete.',
-    author: { '@type': 'Organization', name: 'XPEAK' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-23',
     dateModified: '2026-05-23',
@@ -70,11 +73,11 @@ const faqStructured = {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#DB2777' }}>XPEAK</a>
           <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
-            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+            style={{ background: 'linear-gradient(90deg,#DB2777,#B8941E)', color: '#000' }}>
             Unirse gratis
           </a>
         </nav>
@@ -82,49 +85,49 @@ const faqStructured = {
         <a href="/blog" className="block px-4 sm:px-6 pb-2 max-w-3xl mx-auto text-xs" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
         <article className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 pb-20 sm:pb-24">
 
-          <p className="text-xs mb-6 font-bold" style={{ color: 'rgba(255,255,255,0.3)' }}>
-            <a href="/" className="hover:text-white transition-colors">XPEAK</a> › <a href="/contratar-maquillaje" className="hover:text-white transition-colors">Contratar maquilladora</a> › <span>Precios</span>
+          <p className="text-xs mb-6 font-bold" style={{ color: '#666' }}>
+            <a href="/" className="hover:text-[#8A6D0F] transition-colors">XPEAK</a> › <a href="/contratar-maquillaje" className="hover:text-[#8A6D0F] transition-colors">Contratar maquilladora</a> › <span>Precios</span>
           </p>
 
           <div className="flex items-center gap-2 mb-4">
-            <TrendingUp size={14} style={{ color: '#D4AF37' }} />
-            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#D4AF37' }}>Blog · Guía de precios</span>
+            <TrendingUp size={14} style={{ color: '#DB2777' }} />
+            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#DB2777' }}>Blog · Guía de precios</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-black tracking-tight mb-4 leading-tight">
             Maquilladora para eventos: precios y qué incluye en España (2026)
           </h1>
-          <p className="text-sm mb-8" style={{ color: 'rgba(255,255,255,0.35)' }}>XPEAK · 23 de mayo de 2026 · 4 min de lectura</p>
+          <p className="text-sm mb-8" style={{ color: '#555' }}>XPEAK · 23 de mayo de 2026 · 4 min de lectura</p>
 
-          <p className="text-base leading-relaxed mb-6" style={{ color: 'rgba(255,255,255,0.7)' }}>
+          <p className="text-base leading-relaxed mb-6" style={{ color: '#222' }}>
             Contratar una maquilladora profesional para un evento no es solo cosa de novias. Bodas, comuniones, galas corporativas, sesiones de foto y vídeo: en todos estos contextos la imagen importa y el maquillaje profesional marca la diferencia. Esta guía recoge los precios reales del mercado español en 2026.
           </p>
 
-          <div className="p-4 rounded-xl mb-8" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
-            <p className="text-sm font-bold mb-1" style={{ color: '#D4AF37' }}>Resumen rápido</p>
-            <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
-              Maquillaje de novia: <strong style={{ color: '#fff' }}>100€ – 250€</strong>. Pack boda completo (4 personas): <strong style={{ color: '#fff' }}>350€ – 700€</strong>.
-              Eventos corporativos por persona: <strong style={{ color: '#fff' }}>30€ – 70€</strong>. Todas las profesionales llevan su propio maletín.
+          <div className="p-4 rounded-xl mb-8" style={{ background: 'rgba(219,39,119,0.06)', border: '1px solid rgba(219,39,119,0.15)' }}>
+            <p className="text-sm font-bold mb-1" style={{ color: '#DB2777' }}>Resumen rápido</p>
+            <p className="text-sm leading-relaxed" style={{ color: '#333' }}>
+              Maquillaje de novia: <strong style={{ color: '#111' }}>100€ – 250€</strong>. Pack boda completo (4 personas): <strong style={{ color: '#111' }}>350€ – 700€</strong>.
+              Eventos corporativos por persona: <strong style={{ color: '#111' }}>30€ – 70€</strong>. Todas las profesionales llevan su propio maletín.
             </p>
           </div>
 
           <h2 className="text-xl font-black mb-4">Precios de maquilladora por tipo de servicio</h2>
-          <div className="overflow-x-auto mb-10 rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+          <div className="overflow-x-auto mb-10 rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
             <table className="w-full text-xs min-w-[520px]">
               <thead>
-                <tr style={{ background: 'rgba(255,255,255,0.04)' }}>
+                <tr style={{ background: 'rgba(0,0,0,0.04)' }}>
                   {['Servicio', 'Duración', 'Precio', 'Notas'].map(h => (
                     <th key={h} className="px-4 py-3 text-left font-bold uppercase tracking-wider"
-                      style={{ color: 'rgba(255,255,255,0.6)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>{h}</th>
+                      style={{ color: '#333', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {TABLE.map((row, i) => (
-                  <tr key={row.servicio} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)' }}>
-                    <td className="px-4 py-3 font-bold" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.servicio}</td>
-                    <td className="px-4 py-3 whitespace-nowrap" style={{ color: 'rgba(255,255,255,0.5)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.duracion}</td>
-                    <td className="px-4 py-3 font-black whitespace-nowrap" style={{ color: '#D4AF37', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.rango}</td>
-                    <td className="px-4 py-3" style={{ color: 'rgba(255,255,255,0.6)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.notas}</td>
+                  <tr key={row.servicio} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)' }}>
+                    <td className="px-4 py-3 font-bold" style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{row.servicio}</td>
+                    <td className="px-4 py-3 whitespace-nowrap" style={{ color: '#444', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{row.duracion}</td>
+                    <td className="px-4 py-3 font-black whitespace-nowrap" style={{ color: '#DB2777', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{row.rango}</td>
+                    <td className="px-4 py-3" style={{ color: '#333', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{row.notas}</td>
                   </tr>
                 ))}
               </tbody>
@@ -140,10 +143,10 @@ const faqStructured = {
               { label: 'Desplazamiento', text: 'Muchas maquilladores se desplazan al domicilio o al hotel. Confirma si el desplazamiento tiene suplemento (habitualmente 20–50€ fuera de un radio de 20km).' },
             ].map(item => (
               <li key={item.label} className="flex gap-3">
-                <Star size={13} className="flex-shrink-0 mt-0.5" style={{ color: '#D4AF37' }} />
+                <Star size={13} className="flex-shrink-0 mt-0.5" style={{ color: '#DB2777' }} />
                 <div>
                   <span className="text-xs font-bold">{item.label}: </span>
-                  <span className="text-xs" style={{ color: 'rgba(255,255,255,0.72)' }}>{item.text}</span>
+                  <span className="text-xs" style={{ color: '#222' }}>{item.text}</span>
                 </div>
               </li>
             ))}
@@ -152,44 +155,44 @@ const faqStructured = {
           <h2 className="text-xl font-black mb-5">Preguntas frecuentes</h2>
           <div className="space-y-4 mb-12">
             {FAQ.map(faq => (
-              <div key={faq.q} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <div key={faq.q} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)' }}>
                 <p className="text-sm font-bold mb-2">{faq.q}</p>
-                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>{faq.a}</p>
+                <p className="text-sm leading-relaxed" style={{ color: '#444' }}>{faq.a}</p>
               </div>
             ))}
           </div>
 
-          <div className="rounded-2xl overflow-hidden mb-2" style={{ border: '1px solid rgba(212,175,55,0.2)' }}>
-            <div className="p-8" style={{ background: 'linear-gradient(135deg,#0e0e14 0%,#181410 100%)', borderBottom: '1px solid rgba(212,175,55,0.15)' }}>
+          <div className="rounded-2xl overflow-hidden mb-2" style={{ border: '1px solid rgba(219,39,119,0.2)' }}>
+            <div className="p-8" style={{ background: 'linear-gradient(135deg,#0e0e14 0%,#181410 100%)', color: '#fff', borderBottom: '1px solid rgba(219,39,119,0.15)' }}>
               <span className="text-[0.65rem] font-black uppercase tracking-widest px-2.5 py-1 rounded-full mb-3 inline-block"
-                style={{ background: 'rgba(212,175,55,0.12)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
+                style={{ background: 'rgba(219,39,119,0.12)', color: '#DB2777', border: '1px solid rgba(219,39,119,0.25)' }}>
                 ¿Eres maquilladora?
               </span>
               <h2 className="text-xl font-black mb-2 leading-snug">Publica tu perfil y recibe bookings de eventos</h2>
-              <p className="text-sm mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
+              <p className="text-base mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
                 Sube tu portfolio, publica tus tarifas y activa Flash Booking para disponibilidad de última hora. Gratis.
               </p>
               <a href="/auth?mode=register&role=makeup"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
-                style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                style={{ background: 'linear-gradient(90deg,#DB2777,#B8941E)', color: '#000' }}>
                 <Zap size={15} /> Crear mi perfil — gratis
               </a>
             </div>
-            <div className="p-6 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ background: 'rgba(255,255,255,0.02)' }}>
+            <div className="p-6 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ background: 'rgba(0,0,0,0.02)' }}>
               <div>
                 <p className="text-sm font-black mb-0.5">¿Buscas maquilladora para tu evento?</p>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>Directorio verificado · Tarifas públicas · Flash Booking</p>
+                <p className="text-xs" style={{ color: '#333' }}>Directorio verificado · Tarifas públicas · Flash Booking</p>
               </div>
               <a href="/contratar-maquillaje"
                 className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-xs transition-all hover:scale-105"
-                style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)', whiteSpace: 'nowrap' }}>
+                style={{ background: 'rgba(219,39,119,0.1)', color: '#DB2777', border: '1px solid rgba(219,39,119,0.25)', whiteSpace: 'nowrap' }}>
                 Ver maquilladoras →
               </a>
             </div>
           </div>
 
           <div className="mt-12">
-            <h2 className="text-lg font-black mb-5" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+            <h2 className="text-lg font-black mb-5" style={{ color: '#111' }}>Artículos relacionados</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
                 { href: '/blog/maquillaje-nupcial-precio-guia', tag: 'Maquillaje', title: 'Maquillaje nupcial: precios y guía 2026', desc: 'Guía específica de maquillaje para novias.' },
@@ -198,20 +201,23 @@ const faqStructured = {
               ].map(p => (
                 <a key={p.href} href={p.href}
                   className="block p-5 rounded-2xl transition-all hover:scale-[1.02]"
-                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
                   <span className="inline-block text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded mb-2"
-                    style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.18)' }}>{p.tag}</span>
+                    style={{ background: 'rgba(219,39,119,0.1)', color: '#DB2777', border: '1px solid rgba(219,39,119,0.18)' }}>{p.tag}</span>
                   <p className="text-sm font-black leading-snug mb-1">{p.title}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{p.desc}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{p.desc}</p>
                 </a>
               ))}
             </div>
           </div>
+          <DJResourcesAffiliate role="maquillaje" />
           <BlogAuthor />
           <BlogShare />
         </article>
-          <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/maquilladora-para-eventos-precio" />
+          <BlogEmailCapture variant="presupuestos" intent="contratar-makeup" articlePath="/blog/maquilladora-para-eventos-precio" />
+        <BlogRelatedPosts currentSlug='/blog/maquilladora-para-eventos-precio' tag='Maquillaje' />
         <FooterPublic />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maquillaje_eventos" />
       </div>
     </>
   );

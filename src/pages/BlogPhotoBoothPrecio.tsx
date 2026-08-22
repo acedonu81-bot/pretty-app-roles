@@ -1,5 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
+import BlogScrollCTA from '@/components/BlogScrollCTA';
 
 const article = {
   '@context': 'https://schema.org',
@@ -8,7 +10,7 @@ const article = {
   description: 'Precios reales de photo booth para bodas y eventos en España 2026. Tipos, qué incluye cada modalidad y cómo elegir el correcto para tu celebración.',
   datePublished: '2026-06-01',
   dateModified: '2026-06-01',
-  author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
   publisher: {
     '@type': 'Organization',
     name: 'XPEAK',
@@ -118,15 +120,15 @@ export default function BlogPhotoBoothPrecio() {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
-          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
+          <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#4F46E5' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
             <a
               href="/auth"
               className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
-              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}
+              style={{ background: 'linear-gradient(90deg,#4F46E5,#B8941E)', color: '#000' }}
             >
               Unirse gratis
             </a>
@@ -139,14 +141,14 @@ export default function BlogPhotoBoothPrecio() {
           </a>
 
           <div className="mb-8">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Bodas · Eventos · XPEAK Blog</p>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#4F46E5' }}>Bodas · Eventos · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">
               Cuánto cuesta un photo booth para boda o evento en España 2026
             </h1>
-            <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>
               El photo booth se ha convertido en uno de los elementos más solicitados en bodas y eventos en España. Da igual si buscas el clásico con impresión, el moderno 360° o la elegante mirror booth — en esta guía encontrarás los precios reales de 2026 y todo lo que incluye cada modalidad.
             </p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>1 junio 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>1 junio 2026</time>
           </div>
 
           <div className="space-y-10">
@@ -159,18 +161,18 @@ export default function BlogPhotoBoothPrecio() {
                     key={item.nombre}
                     className="p-5 rounded-xl"
                     style={{
-                      background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)',
-                      border: '1px solid rgba(255,255,255,0.05)',
+                      background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)',
+                      border: '1px solid rgba(0,0,0,0.05)',
                     }}
                   >
                     <div className="flex items-start justify-between gap-3 mb-2">
                       <p className="text-xs font-black leading-tight">{item.nombre}</p>
                       <div className="text-right shrink-0">
-                        <p className="text-xs font-black" style={{ color: '#D4AF37' }}>{item.precio}</p>
-                        <p className="text-[0.6rem] mt-0.5" style={{ color: 'rgba(255,255,255,0.35)' }}>{item.horas}</p>
+                        <p className="text-xs font-black" style={{ color: '#4F46E5' }}>{item.precio}</p>
+                        <p className="text-[0.6rem] mt-0.5" style={{ color: '#555' }}>{item.horas}</p>
                       </div>
                     </div>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{item.desc}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{item.desc}</p>
                   </div>
                 ))}
               </div>
@@ -193,12 +195,12 @@ export default function BlogPhotoBoothPrecio() {
                     key={row.concepto}
                     className="flex items-center justify-between p-4 rounded-xl"
                     style={{
-                      background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)',
-                      border: '1px solid rgba(255,255,255,0.04)',
+                      background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)',
+                      border: '1px solid rgba(0,0,0,0.04)',
                     }}
                   >
                     <p className="text-xs font-medium">{row.concepto}</p>
-                    <span className="text-xs font-black ml-4 shrink-0" style={{ color: '#D4AF37' }}>{row.precio}</span>
+                    <span className="text-xs font-black ml-4 shrink-0" style={{ color: '#4F46E5' }}>{row.precio}</span>
                   </div>
                 ))}
               </div>
@@ -208,13 +210,13 @@ export default function BlogPhotoBoothPrecio() {
             {/* QUÉ INCLUYE */}
             <section>
               <h2 className="text-lg font-black mb-4">Qué incluye un servicio de photo booth estándar</h2>
-              <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
                 La mayoría de los paquetes de photo booth en España incluyen el montaje y desmontaje del equipo (cuenta como tiempo no activo, no se descuenta de las horas contratadas), el kit de atrezzo básico, la iluminación del puesto, un técnico o animador durante toda la actuación y la galería digital de todas las fotos en alta resolución.
               </p>
-              <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
                 En los paquetes con impresión, se incluyen copias ilimitadas durante las horas contratadas, habitualmente en formato 10x15 cm con marco personalizado. La calidad de impresión varía: los proveedores con impresoras de sublimación de tinte ofrecen un resultado significativamente mejor que las térmicas baratas.
               </p>
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed" style={{ color: '#222' }}>
                 Lo que generalmente no está incluido: desplazamiento de larga distancia, personalización avanzada de marcos o plantillas (se cobra aparte), álbum físico para los novios y horas adicionales al paquete contratado.
               </p>
             </section>
@@ -222,13 +224,13 @@ export default function BlogPhotoBoothPrecio() {
             {/* CÓMO ELEGIR */}
             <section>
               <h2 className="text-lg font-black mb-4">Cómo elegir el photo booth para tu evento</h2>
-              <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
                 El primer criterio es el espacio disponible. Los photo booth 360° necesitan una plataforma circular de al menos 1,5 m de diámetro y espacio alrededor para los espectadores. Las cabinas clásicas requieren un espacio de al menos 2x2 m con techo libre. Si la sala es pequeña o irregular, consulta siempre las dimensiones mínimas con el proveedor.
               </p>
-              <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
                 Piensa también en el público. Si tus invitados son mayoritariamente adultos mayores, el photo booth clásico con impresión funciona mejor porque el recuerdo físico es más valorado. Si es una boda o evento con gente joven, el 360° o el digital con galería instantánea por QR generan más interacción y contenido para redes.
               </p>
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              <p className="text-base leading-relaxed" style={{ color: '#222' }}>
                 Compara siempre la calidad del material: pide ejemplos de fotos impresas reales, no solo maquetas digitales. La diferencia entre un proveedor de gama media y uno premium es muy visible en la calidad final de la impresión y en la iluminación del puesto.
               </p>
             </section>
@@ -241,10 +243,10 @@ export default function BlogPhotoBoothPrecio() {
                   <div
                     key={f.name}
                     className="p-5 rounded-xl"
-                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
+                    style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}
                   >
                     <p className="text-sm font-black mb-2">{f.name}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>{f.acceptedAnswer.text}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#333' }}>{f.acceptedAnswer.text}</p>
                   </div>
                 ))}
               </div>
@@ -252,7 +254,7 @@ export default function BlogPhotoBoothPrecio() {
 
             {/* ARTÍCULOS RELACIONADOS */}
             <section>
-              <h2 className="text-base font-black mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>Artículos relacionados</h2>
+              <h2 className="text-base font-black mb-3" style={{ color: '#111' }}>Artículos relacionados</h2>
               <div className="space-y-2">
                 {[
                   { href: '/eventos-empresa', cat: 'Hub', title: 'Contratar profesionales para eventos de empresa' },
@@ -264,15 +266,15 @@ export default function BlogPhotoBoothPrecio() {
                     key={link.href}
                     href={link.href}
                     className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80"
-                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}
+                    style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}
                   >
                     <span
                       className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0"
-                      style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}
+                      style={{ background: 'rgba(79,70,229,0.1)', color: '#4F46E5', border: '1px solid rgba(79,70,229,0.15)' }}
                     >
                       {link.cat}
                     </span>
-                    <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.72)' }}>{link.title}</span>
+                    <span className="text-xs font-medium" style={{ color: '#222' }}>{link.title}</span>
                   </a>
                 ))}
               </div>
@@ -281,7 +283,7 @@ export default function BlogPhotoBoothPrecio() {
             {/* CTA FINAL */}
             <div
               className="p-6 rounded-2xl text-center"
-              style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}
+              style={{ background: 'rgba(79,70,229,0.04)', border: '1px solid rgba(79,70,229,0.12)' }}
             >
               <p className="text-sm font-black mb-2">Solicita presupuesto para tu boda o evento</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>
@@ -290,7 +292,7 @@ export default function BlogPhotoBoothPrecio() {
               <a
                 href="/presupuesto-boda"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
-                style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}
+                style={{ background: 'linear-gradient(90deg,#4F46E5,#B8941E)', color: '#000' }}
               >
                 Pedir presupuesto para mi boda →
               </a>
@@ -298,7 +300,9 @@ export default function BlogPhotoBoothPrecio() {
           </div>
         </main>
 
+        <BlogRelatedPosts currentSlug='/blog/photobooth-precio-boda-evento' tag='Fotografía' />
         <FooterPublic />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_photo_booth_precio" />
       </div>
     </>
   );

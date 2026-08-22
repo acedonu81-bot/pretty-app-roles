@@ -174,10 +174,15 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
     loadSessions();
   }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Persistir los links externos en profiles.audio_session_urls (los files viven en storage)
-  const persistLinks = (next: SessionFile[], userId?: string) => {
+  // Persistir los links externos en profiles.audio_session_urls (los files
+  // viven en storage). Devuelve el error (o null) — antes se disparaba con
+  // .then(() => {}) sin comprobar el resultado, así que "Mix añadido" /
+  // "eliminado" se mostraba aunque el update a profiles fallara y el link
+  // nunca llegara a aparecer en el perfil público.
+  const persistLinks = async (next: SessionFile[], userId?: string) => {
     const linkUrls = next.filter(s => s.type !== 'file').map(s => s.url);
-    supabase.from('profiles').update({ audio_session_urls: linkUrls } as any).eq('user_id', userId ?? user!.id).then(() => {});
+    const { error } = await supabase.from('profiles').update({ audio_session_urls: linkUrls } as any).eq('user_id', userId ?? user!.id);
+    return error;
   };
 
   const toggleGenre = (genre: string) => {
@@ -221,12 +226,16 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
 
     const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
     const newSession = { name: file.name, url: urlData.publicUrl, storagePath: path, type: 'file' as SessionType };
-    setSessions(prev => {
-      const next = [...prev, newSession];
-      const fileUrls = next.filter(s => s.type === 'file').map(s => s.url);
-      supabase.from('profiles').update({ audio_session_urls: fileUrls } as any).eq('user_id', user.id).then(() => {});
-      return next;
-    });
+    const nextSessions = [...sessions, newSession];
+    const fileUrls = nextSessions.filter(s => s.type === 'file').map(s => s.url);
+    const { error: syncError } = await supabase.from('profiles').update({ audio_session_urls: fileUrls } as any).eq('user_id', user.id);
+    setUploading(false);
+    setUploadProgress(0);
+    if (syncError) {
+      toast.error('El archivo se subió pero no se pudo añadir a tu perfil. Inténtalo de nuevo.');
+      return;
+    }
+    setSessions(nextSessions);
 
     await supabase.from('feature_requests').insert({
       user_id: user.id,
@@ -235,12 +244,10 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
 
     await profile.activateTrial();
     toast.success('Sesión subida correctamente.');
-    setUploading(false);
-    setUploadProgress(0);
     if (inputRef.current) inputRef.current.value = '';
   };
 
-  const handleAddLink = () => {
+  const handleAddLink = async () => {
     const url = linkInput.trim();
     if (!url) return;
     const type = detectType(url);
@@ -253,11 +260,13 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
       return;
     }
     const name = url.split('/').filter(Boolean).pop() || url;
-    setSessions(prev => {
-      const next = [...prev, { name, url, storagePath: '', type }];
-      persistLinks(next);
-      return next;
-    });
+    const next = [...sessions, { name, url, storagePath: '', type }];
+    const error = await persistLinks(next);
+    if (error) {
+      toast.error('No se pudo añadir el mix. Inténtalo de nuevo.');
+      return;
+    }
+    setSessions(next);
     setLinkInput('');
     setShowLinkInput(false);
     toast.success('Mix añadido correctamente.');
@@ -267,11 +276,13 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
     if (session.storagePath) {
       await supabase.storage.from('audio-sessions').remove([session.storagePath]);
     }
-    setSessions(prev => {
-      const next = prev.filter(s => s !== session);
-      persistLinks(next);
-      return next;
-    });
+    const next = sessions.filter(s => s !== session);
+    const error = await persistLinks(next);
+    if (error) {
+      toast.error('No se pudo eliminar de tu perfil. Inténtalo de nuevo.');
+      return;
+    }
+    setSessions(next);
     toast.info('Sesión eliminada.');
   };
 

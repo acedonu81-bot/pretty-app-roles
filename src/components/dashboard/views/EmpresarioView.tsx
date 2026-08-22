@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { Zap, Heart, Search, Lock, BarChart3, Euro, CheckCircle, Image, X, Building2, Clock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -12,7 +12,7 @@ import HistorialTab from './empresario/HistorialTab';
 import GastosTab from './empresario/GastosTab';
 import BenchmarkTab from './empresario/BenchmarkTab';
 import MediaTab from './empresario/MediaTab';
-import StatsTab from './empresario/StatsTab';
+const StatsTab = lazy(() => import('./empresario/StatsTab'));
 import SmartMatchWidget from '../SmartMatchWidget';
 
 /* ── Feed público "Empresas que contratan" ── */
@@ -68,7 +68,7 @@ const WhoIsHiringFeed = () => {
             <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden"
               style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.15)' }}>
               {c.photo_url
-                ? <img src={c.photo_url} alt={c.display_name} className="w-full h-full object-cover" />
+                ? <img src={c.photo_url} alt={c.display_name} loading="lazy" className="w-full h-full object-cover" />
                 : <Building2 size={16} style={{ color: '#8A6D0F' }} />}
             </div>
             <div className="flex-1 min-w-0">
@@ -206,20 +206,26 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
         <p className="text-sm text-muted-foreground">Encuentra, contrata y analiza el talento para tu sala.</p>
       </div>
 
-      {/* Activity strip */}
-      <div className="flex items-center gap-3 mb-4 px-4 py-2.5 rounded-xl text-xs overflow-x-auto"
+      {/* Guía rápida — antes había una cifra hardcodeada ("47+ profesionales
+          activos") que no era real; sustituida por 3 pasos concretos que
+          orientan a quien entra por primera vez sin depender de ningún
+          número que pueda ser bajo o falso. */}
+      <div className="flex items-center gap-3 mb-4 px-4 py-3 rounded-xl text-xs overflow-x-auto"
         style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.12)' }}>
-        <div className="flex items-center gap-1.5 flex-shrink-0">
-          <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#D4AF37' }} />
-          <span style={{ color: '#333' }}>Comunidad activa:</span>
-        </div>
-        <div className="flex items-center gap-4 flex-shrink-0">
-          <span style={{ color: '#8A6D0F', fontWeight: 700 }}>Directorio en crecimiento</span>
-          <span style={{ color: '#333' }}>·</span>
-          <span style={{ color: 'rgba(22,20,18,0.75)', fontWeight: 600 }}>47+ profesionales activos</span>
-          <span style={{ color: '#333' }}>·</span>
-          <span style={{ color: '#333' }}>toda España</span>
-        </div>
+        {[
+          { n: '1', t: 'Busca profesionales por zona y presupuesto' },
+          { n: '2', t: 'Contacta gratis, sin comisión' },
+          { n: '3', t: 'Cierra el trato directamente con él' },
+        ].map((step, i) => (
+          <div key={step.n} className="flex items-center gap-3 flex-shrink-0">
+            <div className="flex items-center gap-2">
+              <span className="w-5 h-5 rounded-full flex items-center justify-center font-black text-[0.65rem] flex-shrink-0"
+                style={{ background: 'rgba(212,175,55,0.15)', color: '#8A6D0F' }}>{step.n}</span>
+              <span style={{ color: '#333', fontWeight: 600 }}>{step.t}</span>
+            </div>
+            {i < 2 && <span style={{ color: 'rgba(0,0,0,0.15)' }}>→</span>}
+          </div>
+        ))}
       </div>
 
       {/* Private hiring — coming soon */}
@@ -274,7 +280,7 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
         ))}
       </div>
 
-      {tab === 'stats'     && <StatsTab pros={pros} favorites={favorites} />}
+      {tab === 'stats'     && <Suspense fallback={<p className="text-sm text-muted-foreground animate-pulse">Cargando estadísticas…</p>}><StatsTab pros={pros} favorites={favorites} /></Suspense>}
       {tab === 'media'     && <MediaTab />}
       {tab === 'benchmark' && <BenchmarkTab />}
       {tab === 'flash'     && <FlashTab />}

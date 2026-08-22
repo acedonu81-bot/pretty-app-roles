@@ -88,7 +88,7 @@ export default function BlogEmailCapture({
         style={{ background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.2)' }}>
         <p className="text-2xl mb-2">✓</p>
         <p className="text-sm font-black mb-1" style={{ color: '#22c55e' }}>¡Listo! Revisa tu bandeja de entrada</p>
-        <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
+        <p className="text-xs" style={{ color: '#444' }}>
           {variant === 'presupuestos'
             ? `Te pondremos en contacto con ${profileLabel} verificados en menos de 24h.`
             : 'Te hemos enviado el enlace de descarga a tu email.'}
@@ -114,8 +114,8 @@ export default function BlogEmailCapture({
             {c.badge}
           </span>
         </div>
-        <p className="text-base font-black leading-snug mb-1.5" style={{ color: '#fff' }}>{c.headline(profileLabel)}</p>
-        <p className="text-xs mb-4 leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)' }}>{c.sub}</p>
+        <p className="text-base font-black leading-snug mb-1.5" style={{ color: '#111' }}>{c.headline(profileLabel)}</p>
+        <p className="text-xs mb-4 leading-relaxed" style={{ color: '#444' }}>{c.sub}</p>
 
         <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2">
           <input
@@ -125,9 +125,9 @@ export default function BlogEmailCapture({
             placeholder="tu@email.com"
             className="flex-1 px-4 py-2.5 rounded-xl text-sm outline-none"
             style={{
-              background: 'rgba(255,255,255,0.07)',
-              border: '1px solid rgba(255,255,255,0.12)',
-              color: '#fff',
+              background: 'rgba(0,0,0,0.07)',
+              border: '1px solid #777',
+              color: '#111',
             }}
           />
           <button
@@ -143,7 +143,7 @@ export default function BlogEmailCapture({
           <p className="text-xs mt-2" style={{ color: '#ff5f56' }}>{errorMsg}</p>
         )}
 
-        <p className="text-[0.6rem] mt-3" style={{ color: 'rgba(255,255,255,0.25)' }}>
+        <p className="text-[0.6rem] mt-3" style={{ color: '#666' }}>
           Sin spam. Puedes darte de baja en cualquier momento.
         </p>
       </div>

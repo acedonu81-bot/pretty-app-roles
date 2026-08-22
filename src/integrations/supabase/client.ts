@@ -13,5 +13,10 @@ export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABL
     storage: localStorage,
     persistSession: true,
     autoRefreshToken: true,
+    // Captura la sesión del callback OAuth (?code=... al volver de Google) y la
+    // guarda — sin esto, Google pedía permiso cada vez porque el token del
+    // callback no se persistía. flowType PKCE es el recomendado para SPAs.
+    detectSessionInUrl: true,
+    flowType: 'pkce',
   }
 });

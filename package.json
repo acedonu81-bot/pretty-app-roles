@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/prerender-meta.mjs && vite build --ssr src/entry-prerender.tsx --outDir dist-ssr && node scripts/prerender-content.mjs && node scripts/update-sitemap.mjs",
+    "build": "vite build && node scripts/prerender-meta.mjs && vite build --ssr src/entry-prerender.tsx --outDir dist-ssr && node scripts/prerender-content.mjs && node scripts/prerender-reviews.mjs && node scripts/update-sitemap.mjs",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -61,6 +61,7 @@
     "@tanstack/react-query": "^5.83.0",
     "@types/qrcode": "^1.5.6",
     "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",

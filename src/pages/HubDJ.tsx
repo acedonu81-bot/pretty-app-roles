@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
+import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 
 const ARTICLES = [
   { href: '/blog/cuanto-cobra-un-dj-en-espana', tag: 'Precios', title: '¿Cuánto cobra un DJ en España? Tarifas 2026', desc: 'Guía completa con precios por experiencia, ciudad y tipo de evento.' },
@@ -47,7 +48,7 @@ export default function HubDJ() {
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
@@ -63,15 +64,15 @@ export default function HubDJ() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>DJ · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para eventos en España: guía completa de precios y tipos (2026)</h1>
             <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Todo lo que necesitas saber antes de contratar un DJ: precios reales por tipo de evento, diferencias entre perfiles y qué debe incluir el contrato.</p>
-            <time className="text-xs mt-3 block" style={{ color: 'rgba(255,255,255,0.3)' }}>27 mayo 2026</time>
+            <time className="text-xs mt-3 block" style={{ color: '#666' }}>27 mayo 2026</time>
           </div>
 
           <div className="space-y-10">
             <section>
-              <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.72)' }}>
+              <p className="text-sm leading-relaxed mb-4" style={{ color: '#222' }}>
                 Contratar un DJ en España no es lo mismo para una boda que para una discoteca o un cumpleaños. El perfil correcto, el equipo adecuado y el precio justo dependen del tipo de evento, el número de invitados y la duración del servicio. Esta guía reúne todo lo que necesitas saber en un solo lugar.
               </p>
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>
+              <p className="text-sm leading-relaxed" style={{ color: '#222' }}>
                 Los precios de los DJs en España oscilan entre los 300€ para una sesión corta en una fiesta informal y los 2.500€ o más para un DJ con nombre propio en una boda de lujo. La clave está en saber qué perfil necesitas y qué debe incluir el servicio para no llevarte sorpresas el día del evento.
               </p>
             </section>
@@ -80,10 +81,10 @@ export default function HubDJ() {
               <h2 className="text-lg font-black mb-4">Guías por tipo de evento</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {ARTICLES.map(a => (
-                  <a key={a.href} href={a.href} className="block p-4 rounded-xl transition-all hover:scale-[1.02]" style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)', textDecoration: 'none' }}>
+                  <a key={a.href} href={a.href} className="block p-4 rounded-xl transition-all hover:scale-[1.02]" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
                     <span className="inline-block text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded mb-2" style={{ background: 'rgba(212,175,55,0.1)', color: TAG_COLOR[a.tag] || '#D4AF37', border: `1px solid ${TAG_COLOR[a.tag] || '#D4AF37'}22` }}>{a.tag}</span>
                     <p className="text-sm font-black leading-snug mb-1">{a.title}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{a.desc}</p>
+                    <p className="text-xs leading-relaxed" style={{ color: '#333' }}>{a.desc}</p>
                   </a>
                 ))}
               </div>
@@ -99,7 +100,7 @@ export default function HubDJ() {
                   { tipo: 'Discoteca / sala nocturna (noche)', precio: '300–2.500€' },
                   { tipo: 'Comunión (disco móvil, 3-4h)', precio: '250–500€' },
                 ].map((row, i) => (
-                  <div key={row.tipo} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.04)' }}>
+                  <div key={row.tipo} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <p className="text-xs font-medium">{row.tipo}</p>
                     <span className="text-xs font-bold ml-4 shrink-0" style={{ color: '#D4AF37' }}>{row.precio}</span>
                   </div>
@@ -112,9 +113,9 @@ export default function HubDJ() {
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
                 {FAQ.map(f => (
-                  <div key={f.q} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div key={f.q} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <p className="text-sm font-bold mb-2">{f.q}</p>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.72)' }}>{f.a}</p>
+                    <p className="text-xs leading-relaxed" style={{ color: '#222' }}>{f.a}</p>
                   </div>
                 ))}
               </div>
@@ -127,6 +128,7 @@ export default function HubDJ() {
             </div>
           </div>
         </main>
+        <BlogRelatedPosts currentSlug='/blog/dj-para-eventos' tag='DJ' />
         <FooterPublic />
       </div>
     </>

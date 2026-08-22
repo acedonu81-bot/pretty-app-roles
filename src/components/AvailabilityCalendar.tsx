@@ -70,12 +70,13 @@ const AvailabilityCalendar = ({ userId }: { userId: string }) => {
             const isBlocked = cell.current && blocked.has(dateStr);
             const isToday = dateStr === todayStr;
             const isPast = cell.current && dateStr < todayStr;
+            const isAvailable = cell.current && !isBlocked && !isPast;
             return (
               <div key={i}
                 className="w-full aspect-square flex items-center justify-center rounded text-[0.65rem]"
                 style={{
-                  color: !cell.current ? 'rgba(22,20,18,0.1)' : isBlocked ? 'rgba(255,95,86,0.5)' : isPast ? 'rgba(22,20,18,0.2)' : isToday ? '#D4AF37' : '#222',
-                  background: isBlocked ? 'rgba(255,95,86,0.06)' : isToday ? 'rgba(212,175,55,0.1)' : 'transparent',
+                  color: !cell.current ? 'rgba(22,20,18,0.1)' : isBlocked ? 'rgba(255,95,86,0.5)' : isPast ? 'rgba(22,20,18,0.2)' : isToday ? '#D4AF37' : isAvailable ? 'rgba(34,197,94,0.8)' : '#222',
+                  background: isBlocked ? 'rgba(255,95,86,0.06)' : isToday ? 'rgba(212,175,55,0.1)' : isAvailable ? 'rgba(34,197,94,0.05)' : 'transparent',
                   fontWeight: isToday || isBlocked ? 700 : 400,
                   textDecoration: isBlocked ? 'line-through' : undefined,
                   border: isToday ? '1px solid rgba(212,175,55,0.3)' : '1px solid transparent',

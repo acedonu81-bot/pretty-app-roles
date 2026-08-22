@@ -145,7 +145,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
       style={{
         background: 'rgba(255,255,255,0.95)',
         backdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(0,0,0,0.07)',
+        boxShadow: '0 1px 0 rgba(0,0,0,0.05), 0 8px 24px rgba(0,0,0,0.03)',
         paddingTop: 'max(0.75rem, env(safe-area-inset-top))',
         paddingBottom: '0.75rem',
       }}
@@ -155,7 +155,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
           <button
             onClick={onMenuToggle}
             aria-label="Abrir menú"
-            className="p-3 rounded-lg flex-shrink-0 transition-colors"
+            className="p-3 rounded-2xl flex-shrink-0 transition-colors"
             style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}
           >
             <Menu size={20} />
@@ -167,7 +167,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
           </button>
         )}
 
-        <div className="flex items-center gap-2 px-3 py-2.5 sm:py-1.5 rounded-xl sm:rounded-lg flex-1 max-w-[360px] transition-all"
+        <div className="flex items-center gap-2 px-4 py-2.5 sm:py-2 rounded-full flex-1 max-w-[360px] transition-all"
           style={{
             background: searchQuery ? 'rgba(212,175,55,0.05)' : '#f5f5f5',
             border: searchQuery ? '1px solid rgba(212,175,55,0.3)' : '1px solid rgba(0,0,0,0.1)',
@@ -250,8 +250,8 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
             }}
           >
             {/* Header */}
-            <div className="px-4 py-3 flex items-center justify-between"
-              style={{ borderBottom: '1px solid rgba(212,175,55,0.12)', background: 'rgba(212,175,55,0.04)' }}>
+            <div className="px-4 py-3 flex items-center justify-between rounded-t-2xl"
+              style={{ background: 'rgba(212,175,55,0.04)' }}>
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#22c55e', boxShadow: '0 0 6px #22c55e' }} />
                 <span className="text-xs font-black tracking-wider" style={{ color: '#8A6D0F' }}>NOTIFICACIONES</span>
@@ -268,7 +268,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
             </div>
 
             {/* Items */}
-            <div className="max-h-72 overflow-y-auto">
+            <div className="max-h-72 overflow-y-auto py-1">
               {notifications.length === 0 ? (
                 <div className="px-4 py-8 flex flex-col items-center gap-2 text-center">
                   <Bell size={20} style={{ color: 'rgba(212,175,55,0.4)' }} />
@@ -278,9 +278,8 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
               ) : notifications.map((n, i) => (
                 <div key={n.id}
                   onClick={() => openNotif(n)}
-                  className="px-4 py-3 flex gap-3 items-start cursor-pointer transition-all"
+                  className="mx-2 my-1 px-3 py-3 flex gap-3 items-start cursor-pointer transition-all rounded-xl"
                   style={{
-                    borderBottom: '1px solid rgba(0,0,0,0.04)',
                     background: n.urgent ? 'rgba(239,68,68,0.04)' : i === 0 ? 'rgba(212,175,55,0.03)' : 'transparent',
                   }}
                   onMouseEnter={e => (e.currentTarget.style.background = n.urgent ? 'rgba(239,68,68,0.07)' : 'rgba(212,175,55,0.05)')}
@@ -315,7 +314,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
             </div>
 
             {/* Footer */}
-            <div className="px-4 py-2.5 text-center" style={{ borderTop: '1px solid rgba(212,175,55,0.08)' }}>
+            <div className="px-4 py-2.5 text-center rounded-b-2xl" style={{ background: 'rgba(212,175,55,0.02)' }}>
               <button
                 onClick={markAllRead}
                 className="text-xs font-bold tracking-wider transition-colors hover:text-white"
@@ -327,7 +326,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
         )}
 
         {/* Avatar usuario logueado */}
-        <div className="flex items-center gap-2 px-2 py-1 rounded-lg"
+        <div className="flex items-center gap-2 px-2 py-1 rounded-full"
           style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
           <div className="w-7 h-7 rounded-full overflow-hidden flex items-center justify-center text-xs font-black flex-shrink-0"
             style={profile.photo_url
@@ -346,7 +345,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
 
         <button
           onClick={() => navigate('/')}
-          className="text-xs py-1.5 px-3 flex items-center gap-2 rounded-lg transition-colors"
+          className="text-xs py-1.5 px-3 flex items-center gap-2 rounded-full transition-colors"
           style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid var(--nightlife-border)', color: 'var(--nightlife-text-secondary)' }}
         >
           <LogOut size={13} /> {!isMobile && 'Salir'}
