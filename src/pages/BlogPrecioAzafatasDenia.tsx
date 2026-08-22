@@ -102,7 +102,7 @@ export default function BlogPrecioAzafatasDenia() {
           </div>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/precio-azafatas-denia" />
         </main>
-        <DJResourcesAffiliate role="staff" />
+        <DJResourcesAffiliate role="azafata" />
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-denia' tag='Staff' />
         <FooterPublic />

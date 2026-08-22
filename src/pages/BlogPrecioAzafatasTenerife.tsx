@@ -103,7 +103,7 @@ export default function BlogPrecioAzafatasTenerife() {
           </div>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/precio-azafatas-tenerife" />
         </main>
-        <DJResourcesAffiliate role="staff" />
+        <DJResourcesAffiliate role="azafata" />
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-tenerife' tag='Staff' />
         <FooterPublic />

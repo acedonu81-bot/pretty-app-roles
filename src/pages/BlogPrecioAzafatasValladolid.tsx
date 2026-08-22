@@ -102,7 +102,7 @@ export default function BlogPrecioAzafatasValladolid() {
           </div>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/precio-azafatas-valladolid" />
         </main>
-        <DJResourcesAffiliate role="staff" />
+        <DJResourcesAffiliate role="azafata" />
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-valladolid' tag='Staff' />
         <FooterPublic />

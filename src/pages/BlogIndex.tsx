@@ -12,6 +12,7 @@ const TAG_COLORS: Record<string, string> = {
   Bodas: 'rgba(219,39,119,0.1)',
   Fotografía: 'rgba(79,70,229,0.1)',
   Staff: 'rgba(5,150,105,0.1)',
+  Azafatas: 'rgba(236,72,153,0.1)',
   Camareros: 'rgba(37,99,235,0.1)',
   Catering: 'rgba(180,83,9,0.1)',
   Maquillaje: 'rgba(219,39,119,0.1)',
@@ -27,7 +28,7 @@ const TAG_COLORS: Record<string, string> = {
 };
 const TAG_TEXT: Record<string, string> = {
   DJ: '#8A6D0F', Bodas: '#be185d', Fotografía: '#4338ca',
-  Staff: '#047857', Camareros: '#1d4ed8', Catering: '#b45309',
+  Staff: '#047857', Azafatas: '#db2777', Camareros: '#1d4ed8', Catering: '#b45309',
   Maquillaje: '#be185d', Eventos: '#6d28d9', Organizadores: '#0d9488',
   Promotores: '#d97706', Mago: '#7c3aed', Bailarin: '#be185d', Animador: '#ea580c',
   Speaker: '#1d4ed8', Vestuario: '#be185d', Humorista: '#d97706',

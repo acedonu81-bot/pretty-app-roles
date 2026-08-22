@@ -103,7 +103,7 @@ export default function BlogPrecioAzafatasTorremolinos() {
           </div>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/precio-azafatas-torremolinos" />
         </main>
-        <DJResourcesAffiliate role="staff" />
+        <DJResourcesAffiliate role="azafata" />
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-torremolinos' tag='Staff' />
         <FooterPublic />

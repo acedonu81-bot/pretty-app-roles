@@ -102,7 +102,7 @@ export default function BlogPrecioAzafatasHospitalet() {
           </div>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/precio-azafatas-hospitalet" />
         </main>
-        <DJResourcesAffiliate role="staff" />
+        <DJResourcesAffiliate role="azafata" />
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-hospitalet' tag='Staff' />
         <FooterPublic />

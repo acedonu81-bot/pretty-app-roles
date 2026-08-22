@@ -103,7 +103,7 @@ export default function BlogPrecioAzafatasBenalmadena() {
           </div>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/precio-azafatas-benalmadena" />
         </main>
-        <DJResourcesAffiliate role="staff" />
+        <DJResourcesAffiliate role="azafata" />
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-benalmadena' tag='Staff' />
         <FooterPublic />

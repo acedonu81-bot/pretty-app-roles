@@ -103,7 +103,7 @@ export default function BlogPrecioAzafatasFuengirola() {
           </div>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/precio-azafatas-fuengirola" />
         </main>
-        <DJResourcesAffiliate role="staff" />
+        <DJResourcesAffiliate role="azafata" />
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-fuengirola' tag='Staff' />
         <FooterPublic />

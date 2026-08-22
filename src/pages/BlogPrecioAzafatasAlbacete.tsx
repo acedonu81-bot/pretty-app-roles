@@ -102,7 +102,7 @@ export default function BlogPrecioAzafatasAlbacete() {
           </div>
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/precio-azafatas-albacete" />
         </main>
-        <DJResourcesAffiliate role="staff" />
+        <DJResourcesAffiliate role="azafata" />
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-albacete' tag='Staff' />
         <FooterPublic />
