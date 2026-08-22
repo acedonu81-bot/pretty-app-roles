@@ -534,9 +534,13 @@ const PublicProfile = () => {
     : `${BASE_URL}/og-image.jpg`;
 
   const roleLabel: Record<string, string> = {
-    dj: 'DJ & Artista', staff: 'Staff & Promoción', event_manager: 'Encargada de Eventos',
-    makeup: 'Belleza & Estética', media: 'Imagen & Media', design: 'Diseño & Visuales',
-    promotor: 'Promotor', ambassador: 'Embajador', azafata: 'Azafata',
+    dj: 'DJ & Artista', staff: 'Camarero', azafata: 'Azafata', event_manager: 'Encargada de Eventos',
+    makeup: 'Belleza & Estética', peluqueria: 'Peluquería a Domicilio', media: 'Imagen & Media', design: 'Diseño & Visuales',
+    promotor: 'Promotor', ambassador: 'Embajador', catering: 'Catering & Chef',
+    mago: 'Mago & Ilusionista', bailarin: 'Bailarín & Danza', humorista: 'Humorista & Cómico',
+    monologo: 'Monólogo & Stand-Up', animador: 'Animador Infantil', speaker: 'Speaker & Presentador',
+    vestuario: 'Personal Shopper & Vestuario', 'photo-booth': 'Photo Booth',
+    'grupo-musical': 'Grupo Musical', 'wedding-planner': 'Wedding Planner', 'diseno-grafico': 'Diseño Gráfico',
   };
 
   // Related profiles: Supabase results for real profiles, static data for
