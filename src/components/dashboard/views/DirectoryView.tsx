@@ -28,9 +28,7 @@ const CITY_OPTIONS = [
 ].map(c => ({ value: c, label: c }));
 
 async function fetchDirectoryProfiles(role: string, roles: string[] | undefined, filterCity: string): Promise<Profile[]> {
-  const baseRoles = roles ?? [role];
-  // 'camarero' es un rol legacy (opción retirada) — se muestra junto a staff
-  const activeRoles = baseRoles.includes('staff') ? [...baseRoles, 'camarero'] : baseRoles;
+  const activeRoles = roles ?? [role];
   let query = supabase
     .from('profiles')
     .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, category, is_verified, is_flash_active, is_early_adopter, priority_badge_until, score, role, seeking_dance_partner, dance_level, dance_role, created_at')

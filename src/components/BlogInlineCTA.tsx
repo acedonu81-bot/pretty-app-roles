@@ -1,5 +1,5 @@
 interface BlogInlineCTAProps {
-  role?: 'dj' | 'staff' | 'makeup' | 'fotografo' | 'bailarin' | 'general';
+  role?: 'dj' | 'staff' | 'azafata' | 'makeup' | 'fotografo' | 'bailarin' | 'general';
   orgLabel?: string;
   variant?: 'default' | 'upgrade';
 }
@@ -26,6 +26,18 @@ const CONFIG = {
       sub: 'Personal con experiencia comprobada. Flash Booking disponible para urgencias en menos de 1 hora.',
       cta: 'Ver staff disponible →',
       href: '/auth?mode=register&intent=contratar-staff',
+      badge: 'Flash Booking <1h',
+    },
+  },
+  azafata: {
+    pro: { label: '¿Eres azafata?', cta: 'Crea tu perfil gratis →', href: '/auth?mode=register&role=azafata' },
+    org: { label: '¿Necesitas azafatas para tu evento?', cta: 'Ver azafatas disponibles →', href: '/contratar-azafata' },
+    upgrade: {
+      eyebrow: 'XPEAK · Gratis · Sin comisión',
+      headline: 'Encuentra azafatas verificadas para tu evento',
+      sub: 'Profesionales con experiencia comprobada en ferias, congresos y eventos corporativos. Flash Booking disponible para urgencias en menos de 1 hora.',
+      cta: 'Ver azafatas disponibles →',
+      href: '/auth?mode=register&intent=contratar-azafata',
       badge: 'Flash Booking <1h',
     },
   },

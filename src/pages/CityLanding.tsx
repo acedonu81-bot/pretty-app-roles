@@ -14,7 +14,7 @@ interface Prof { id: string; display_name: string; photo_url: string | null; bio
 const ROLE_MAP: Record<string, string[]> = {
   dj: ['dj'], camareros: ['staff'], fotografo: ['media'], staff: ['staff', 'promotor'],
   catering: ['empresario'], maquillaje: ['makeup'], promotores: ['promotor'],
-  'disco-movil': ['dj'], vestuario: ['staff'],
+  'disco-movil': ['dj'], vestuario: ['staff'], azafata: ['azafata'],
 };
 
 function useCityProfessionals(ciudad: string, categorySlug: string) {
@@ -297,6 +297,18 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
       { q: `¿Cuánto cuesta el staff de eventos en ${c}?`, a: `El precio del staff profesional en ${c} varía entre ${precio}/hora según el perfil: hostesses desde 15€, coordinadores desde 25€, RRPP con lista propia desde 100€/noche.` },
       { q: `¿Puedo contratar staff para un festival en ${c}?`, a: `Sí. XPEAK tiene perfiles con experiencia en festivales de música en ${c} y alrededores. Puedes contratar desde 1 persona hasta equipos completos de producción.` },
       { q: '¿El staff tiene experiencia en eventos nocturnos?', a: 'Todos los perfiles en XPEAK incluyen historial de venues y referencias verificadas de eventos anteriores.' },
+    ],
+  },
+  azafata: {
+    label: 'Azafatas',
+    keyword: 'Azafatas',
+    unidad: '/hora',
+    desc: (c) => `Azafatas profesionales en ${c} para ferias, congresos y eventos corporativos. Flash Booking en menos de 1h. Sin comisión.`,
+    intro: (c) => `XPEAK conecta empresas, agencias y organizadores con azafatas verificadas en ${c}: recepción, protocolo, stands feriales y presentaciones de producto. Contrato digital en minutos, sin intermediarios.`,
+    faqs: (c, precio) => [
+      { q: `¿Cuánto cuesta contratar azafatas en ${c}?`, a: `El precio de las azafatas en ${c} varía entre ${precio}/hora según el perfil: recepción desde 15€, stands desde 18€, imagen o protocolo desde 22€.` },
+      { q: `¿Puedo contratar azafatas para una feria en ${c}?`, a: `Sí. XPEAK tiene perfiles con experiencia en ferias y congresos en ${c} y alrededores. Puedes contratar desde 1 persona hasta equipos completos.` },
+      { q: '¿Las azafatas tienen experiencia en eventos corporativos?', a: 'Todos los perfiles en XPEAK incluyen historial de eventos y referencias verificadas de contrataciones anteriores.' },
     ],
   },
   fotografo: {

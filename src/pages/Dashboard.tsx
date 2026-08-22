@@ -16,6 +16,7 @@ import { ProfileProvider } from '@/hooks/useProfile';
 
 const DJView = lazy(() => import('@/components/dashboard/views/DJView'));
 const StaffView = lazy(() => import('@/components/dashboard/views/StaffView'));
+const AzafataView = lazy(() => import('@/components/dashboard/views/AzafataView'));
 const EventManagerView = lazy(() => import('@/components/dashboard/views/EventManagerView'));
 const MakeupView = lazy(() => import('@/components/dashboard/views/MakeupView'));
 const MediaView = lazy(() => import('@/components/dashboard/views/MediaView'));
@@ -108,7 +109,7 @@ const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: s
 const ROLE_DEFAULT_VIEW: Partial<Record<string, string>> = {
   pending: 'profile', dj: 'profile',
   vestuario: 'vestuario', design: 'design', promotor: 'promotor',
-  staff: 'staff', makeup: 'makeup', media: 'media',
+  staff: 'staff', azafata: 'azafata', makeup: 'makeup', media: 'media',
   event_manager: 'event_manager', empresario: 'empresario', rookie: 'rookie',
   camarero: 'staff', catering: 'staff',
 };
@@ -221,7 +222,7 @@ const Dashboard = () => {
 
   const nav = (view: string) => handleViewChange(view);
 
-  const directoryViews = new Set(['dj', 'staff', 'event_manager', 'makeup', 'media', 'ambassador', 'vestuario', 'design', 'promotor', 'camarero', 'catering']);
+  const directoryViews = new Set(['dj', 'staff', 'azafata', 'event_manager', 'makeup', 'media', 'ambassador', 'vestuario', 'design', 'promotor', 'camarero', 'catering']);
 
   const handleSearch = (q: string) => {
     setSearchQuery(q);
@@ -239,6 +240,7 @@ const Dashboard = () => {
     switch (activeView) {
       case 'dj': return <DJView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'staff': return <StaffView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
+      case 'azafata': return <AzafataView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'event_manager': return <EventManagerView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'makeup': return <MakeupView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'media': return <MediaView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;

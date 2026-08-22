@@ -10,7 +10,7 @@ const CITIES = [
 ];
 
 const ROLE_LABELS: Record<string, string> = {
-  dj: 'DJ / Artista', staff: 'Staff', makeup: 'Maquillaje', media: 'Media',
+  dj: 'DJ / Artista', staff: 'Camarero', azafata: 'Azafata', makeup: 'Maquillaje', media: 'Media',
   design: 'Diseño', promotor: 'Promotor', ambassador: 'Embajador', empresario: 'Empresario',
 };
 

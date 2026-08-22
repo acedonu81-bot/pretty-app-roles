@@ -47,7 +47,7 @@ describe('useActivityFeed', () => {
 
     expect(result.current.items.map(i => i.text)).toEqual([
       'Marta (DJ / Artista) se unió desde Madrid',
-      'Carlos (Staff / Camarero) se unió desde Barcelona',
+      'Carlos (Camarero) se unió desde Barcelona',
       'Sonia (Maquilladora) se unió desde Valencia',
     ]);
   });
@@ -101,7 +101,7 @@ describe('useActivityFeed', () => {
     expect(result.current.items.map(i => ({ kind: i.kind, text: i.text }))).toEqual([
       { kind: 'contact', text: 'Alguien contactó a un/a DJ / Artista en Valencia' },
       { kind: 'signup', text: 'Marta (DJ / Artista) se unió desde Madrid' },
-      { kind: 'signup', text: 'Carlos (Staff / Camarero) se unió desde Barcelona' },
+      { kind: 'signup', text: 'Carlos (Camarero) se unió desde Barcelona' },
     ]);
   });
 });

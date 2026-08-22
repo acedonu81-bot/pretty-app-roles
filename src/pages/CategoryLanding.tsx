@@ -24,6 +24,10 @@ const BLOG_LINKS: Record<string, { href: string; emoji: string; title: string; d
     { href: '/blog/staff-de-discoteca-funciones-y-salario', emoji: '🎪', title: 'Staff de discoteca: funciones y sueldos 2026', desc: 'Hostesses, RRPPs, camareros y coordinadores. Tarifas reales.' },
     { href: '/blog/cuanto-cobra-un-camarero-de-eventos', emoji: '💰', title: '¿Cuánto cobra un camarero de eventos?', desc: 'Precios por hora y por evento en toda España.' },
   ],
+  azafata: [
+    { href: '/blog/precio-azafatas-eventos-espana', emoji: '💰', title: 'Precio de azafatas para eventos: guía 2026', desc: 'Tarifas reales por tipo de evento, ferias y congresos.' },
+    { href: '/blog/staff-de-discoteca-funciones-y-salario', emoji: '🎪', title: 'Staff de discoteca: funciones y sueldos 2026', desc: 'Diferencias entre hostess, azafata y RRPP.' },
+  ],
   promotores: [
     { href: '/blog/promotores-de-eventos-que-hacen', emoji: '📣', title: 'Promotores de eventos: qué hacen y cuánto cobran', desc: 'Tipos, funciones y cómo estructurar el contrato con métricas.' },
   ],
@@ -121,6 +125,39 @@ export const CATEGORY_DATA: Record<string, {
     steps: [
       { title: 'Busca en el directorio', body: 'Filtra por ciudad, precio y disponibilidad. Sin registro ni tarjeta.' },
       { title: 'Describe tu necesidad', body: 'Especifica el tipo de staff, número de personas, fecha y presupuesto. Flash Booking gestiona la distribución automáticamente.' },
+      { title: 'Contrato digital listo', body: 'Acepta las candidaturas, firma el contrato con un clic. Incluye datos fiscales para facturación correcta.' },
+    ],
+  },
+  azafata: {
+    slug: 'azafata',
+    emoji: '🎀',
+    h1: 'Contratar Azafatas para Eventos',
+    tagline: 'Azafatas verificadas para ferias, congresos y eventos corporativos en España',
+    desc: 'Contrata azafatas profesionales para ferias, congresos, eventos corporativos y presentaciones. Perfiles verificados, contrato digital automático. Flash Booking disponible. Sin comisión.',
+    intro: 'XPEAK conecta empresas, agencias y organizadores con azafatas profesionales verificadas en toda España. Desde recepción de congresos hasta stands feriales y presentaciones de producto, con contratos digitales listos en minutos.',
+    keyword: 'Azafatas de Eventos',
+    keywords: 'contratar azafatas eventos España, azafatas ferias, azafatas congresos, azafatas para stands, personal azafatas España',
+    precio: 'desde 15€/hora',
+    cities: [
+      { name: 'Madrid', slug: 'madrid' },
+      { name: 'Barcelona', slug: 'barcelona' },
+      { name: 'Valencia', slug: 'valencia' },
+      { name: 'Sevilla', slug: 'sevilla' },
+      { name: 'Málaga', slug: 'malaga' },
+      { name: 'Bilbao', slug: 'bilbao' },
+      { name: 'Zaragoza', slug: 'zaragoza' },
+      { name: 'Murcia', slug: 'murcia' },
+    ],
+    roles: ['Azafata de congresos', 'Azafata de feria', 'Azafata de stand', 'Azafata de imagen', 'Azafata de protocolo', 'Azafata de recepción', 'Azafata de eventos corporativos', 'Azafata de presentación de producto'],
+    faqs: [
+      { q: '¿Cuánto cuesta contratar azafatas para un evento?', a: 'El precio varía según el perfil: azafatas de recepción desde 15€/hora, azafatas de stand desde 18€/hora, azafatas de imagen o protocolo desde 22€/hora. En XPEAK todos los perfiles muestran sus tarifas públicas.' },
+      { q: '¿Puedo contratar azafatas para un solo día de feria?', a: 'Sí. XPEAK permite contrataciones puntuales para una jornada, un evento o varios días consecutivos de feria o congreso, con contrato digital automático.' },
+      { q: '¿Cómo funciona el Flash Booking para azafatas?', a: 'Publica tu necesidad con fecha, ubicación y número de azafatas. El sistema notifica al instante a los perfiles disponibles en tu zona. Respuesta garantizada en menos de 1 hora.' },
+      { q: '¿Qué diferencia hay entre azafata y hostess?', a: 'Una azafata suele trabajar en ferias, congresos y eventos corporativos con funciones de protocolo, información y apoyo comercial. Una hostess trabaja principalmente en eventos privados y de ocio nocturno. Ambos perfiles están disponibles en XPEAK.' },
+    ],
+    steps: [
+      { title: 'Busca en el directorio', body: 'Filtra por ciudad, precio y disponibilidad. Sin registro ni tarjeta.' },
+      { title: 'Describe tu necesidad', body: 'Especifica el tipo de azafata, número de personas, fecha y presupuesto. Flash Booking gestiona la distribución automáticamente.' },
       { title: 'Contrato digital listo', body: 'Acepta las candidaturas, firma el contrato con un clic. Incluye datos fiscales para facturación correcta.' },
     ],
   },
@@ -641,6 +678,7 @@ CATEGORY_DATA.payasos = CATEGORY_DATA.payaso;
 const ICON: Record<string, React.ReactNode> = {
   dj: <Music size={20} />,
   staff: <Users size={20} />,
+  azafata: <Users size={20} />,
   fotografo: <Camera size={20} />,
   camareros: <UtensilsCrossed size={20} />,
   catering: <UtensilsCrossed size={20} />,
@@ -775,7 +813,7 @@ export default function CategoryLanding() {
           </p>
           <p className="text-sm font-bold mb-8" style={{ color: 'rgba(212,175,55,0.7)' }}>{data.tagline}</p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a href={`/directorio/${['dj','fotografo','staff','maquillaje','promotores'].includes(data.slug) ? data.slug : data.slug === 'camareros' ? 'staff' : 'dj'}`}
+            <a href={`/directorio/${['dj','fotografo','staff','maquillaje','promotores','azafata'].includes(data.slug) ? data.slug : data.slug === 'camareros' ? 'staff' : 'dj'}`}
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Ver profesionales disponibles <ArrowRight size={14} />
@@ -902,7 +940,7 @@ export default function CategoryLanding() {
             <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>
               Contacta directamente — sin registro, sin comisión, respuesta directa del profesional.
             </p>
-            <a href={`/directorio/${['dj','fotografo','staff','maquillaje','promotores'].includes(data.slug) ? data.slug : data.slug === 'camareros' ? 'staff' : 'dj'}`}
+            <a href={`/directorio/${['dj','fotografo','staff','maquillaje','promotores','azafata'].includes(data.slug) ? data.slug : data.slug === 'camareros' ? 'staff' : 'dj'}`}
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Ver profesionales disponibles <ArrowRight size={14} />

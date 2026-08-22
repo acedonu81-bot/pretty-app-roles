@@ -540,7 +540,7 @@ const PublicProfile = () => {
   const roleLabel: Record<string, string> = {
     dj: 'DJ & Artista', staff: 'Staff & Promoción', event_manager: 'Encargada de Eventos',
     makeup: 'Belleza & Estética', media: 'Imagen & Media', design: 'Diseño & Visuales',
-    promotor: 'Promotor', ambassador: 'Embajador',
+    promotor: 'Promotor', ambassador: 'Embajador', azafata: 'Azafata',
   };
 
   // Related profiles: Supabase results for UUID, static data for demo

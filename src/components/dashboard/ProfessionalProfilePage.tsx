@@ -21,7 +21,8 @@ const ROLE_CFG: Record<string, {
 }> = {
   dj:        { color: '#4285F4', glow: 'rgba(66,133,244,0.45)',   label: 'DJ · Artista',       emoji: '🎧', tagline: 'La pista empieza aquí',        icon: Music },
   rookie:    { color: '#FBBF24', glow: 'rgba(251,191,36,0.4)',    label: 'DJ Promesa',          emoji: '⭐', tagline: 'El próximo grande',             icon: Star },
-  staff:     { color: '#34D399', glow: 'rgba(52,211,153,0.35)',   label: 'Staff · RRPP',        emoji: '🎪', tagline: 'El engranaje invisible del show', icon: Users },
+  staff:     { color: '#34D399', glow: 'rgba(52,211,153,0.35)',   label: 'Camarero',            emoji: '🎪', tagline: 'El engranaje invisible del show', icon: Users },
+  azafata:   { color: '#F472B6', glow: 'rgba(244,114,182,0.35)',  label: 'Azafata',             emoji: '🎀', tagline: 'La primera impresión del evento', icon: Users },
   makeup:    { color: '#F472B6', glow: 'rgba(244,114,182,0.35)',  label: 'Maquillaje · Estilismo',emoji:'💄', tagline: 'Arte en la piel',              icon: Star },
   media:     { color: '#A78BFA', glow: 'rgba(167,139,250,0.4)',   label: 'Media · Contenido',   emoji: '📸', tagline: 'Cada frame es eterno',          icon: Camera },
   ambassador:{ color: '#FB923C', glow: 'rgba(251,146,60,0.35)',   label: 'Promotor',            emoji: '📣', tagline: 'La energía que llena salas',    icon: Megaphone },
