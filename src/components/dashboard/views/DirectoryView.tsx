@@ -58,7 +58,7 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
 
   return data
     .filter(row => row.display_name && row.display_name.trim().length > 1)
-    .filter(row => !!row.photo_url && !!row.bio?.trim())
+    .filter(row => !!row.photo_url || !!row.bio?.trim())
     .sort((a, b) => {
       // Perfil completo sube: media (sesión/portfolio) > foto > bio (modelo GigSalad)
       const completeness = (p: any): number => {

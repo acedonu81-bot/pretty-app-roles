@@ -273,10 +273,9 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string): Pro
   const { data, error } = await q;
   if (error) throw error;
 
-  // Filtro anti-spam: registros NUEVOS (a partir de este cambio) con zona
-  // genérica "España" — es decir, que no rellenaron una ciudad real — no
-  // aparecen en el directorio hasta que la completen (foto + descripción).
-  const filtered = (data ?? []).filter((p: any) => !!p.photo_url && !!p.bio?.trim());
+  // Filtro anti-spam: basta con foto O bio (no ambos) para aparecer — exigir
+  // las dos ocultaba perfiles reales con solo una de las dos rellena.
+  const filtered = (data ?? []).filter((p: any) => !!p.photo_url || !!p.bio?.trim());
 
   const userIds = filtered.map((p: any) => p.user_id);
   const { data: reviewsData } = userIds.length > 0
