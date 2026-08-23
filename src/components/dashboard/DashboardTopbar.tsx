@@ -191,12 +191,12 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
 
       </div>
 
-      <div className="flex items-center gap-2 relative flex-shrink-0">
+      <div className="flex items-center gap-3 relative flex-shrink-0">
         {/* Notification trigger — animated pulse orb */}
         <button
           onClick={() => setShowNotif(prev => !prev)}
-          className="relative flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95"
-          style={{ width: 40, height: 40 }}
+          className="relative flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 flex-shrink-0"
+          style={{ width: 32, height: 32 }}
           aria-label="Notificaciones"
         >
           {/* Outer glow rings — only when there are unread notifications */}
