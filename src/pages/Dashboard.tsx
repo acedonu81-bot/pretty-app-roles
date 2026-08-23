@@ -67,7 +67,11 @@ const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: s
     !!(ctx.zone && ctx.zone !== DEFAULT_ZONE),
     !!(ctx.specialty && ctx.specialty.trim().length > 0),
     hasInstagram,
-    ...(ctx.role !== 'empresario' ? [!!(ctx.audio_embed_url && (ctx.audio_embed_url as string).trim().length > 0)] : []),
+    ...(ctx.role !== 'empresario' ? [!!(
+      (ctx.audio_embed_url && (ctx.audio_embed_url as string).trim().length > 0)
+      || (Array.isArray(ctx.audio_session_urls) && ctx.audio_session_urls.length > 0)
+      || (Array.isArray(ctx.portfolio_urls) && ctx.portfolio_urls.length > 0)
+    )] : []),
   ];
   const missingCount = steps.filter(s => !s).length;
   const percent = Math.round((steps.filter(Boolean).length / steps.length) * 100);
