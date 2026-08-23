@@ -15,6 +15,12 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     assetsDir: "assets",
+    // Vite's default modulePreload injects <link rel="modulepreload"> for every
+    // manualChunks vendor bundle into every page's HTML, regardless of which
+    // route actually needs it — e.g. pdf-vendor (html2pdf, only used by the
+    // contracts view) was being force-downloaded on /auth before first paint.
+    // Disabling it lets each lazy route pull in only the chunks it imports.
+    modulePreload: false,
     rollupOptions: {
       output: {
         manualChunks: (id) => {
