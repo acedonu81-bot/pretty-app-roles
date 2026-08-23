@@ -191,12 +191,15 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
 
       </div>
 
-      <div className="flex items-center gap-3 relative flex-shrink-0">
-        {/* Notification trigger — animated pulse orb */}
+      <div className="flex items-center gap-5 relative flex-shrink-0">
+        {/* Notification trigger — animated pulse orb. The ping rings are meant
+            to expand past the button's own box (that's the pulse effect), so
+            the fix for overlap with the avatar is extra gap on the flex
+            container above, not shrinking or clipping the animation. */}
         <button
           onClick={() => setShowNotif(prev => !prev)}
           className="relative flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 flex-shrink-0"
-          style={{ width: 32, height: 32 }}
+          style={{ width: 28, height: 28 }}
           aria-label="Notificaciones"
         >
           {/* Outer glow rings — only when there are unread notifications */}

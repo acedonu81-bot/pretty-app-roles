@@ -26,6 +26,7 @@ export function useRecentBusinessView(): { view: RecentBusinessView | null; load
       .from('profile_business_views')
       .select('viewer_zone, created_at')
       .eq('viewed_user_id', user.id)
+      .not('viewer_zone', 'is', null)
       .gte('created_at', sinceIso)
       .order('created_at', { ascending: false })
       .limit(1);

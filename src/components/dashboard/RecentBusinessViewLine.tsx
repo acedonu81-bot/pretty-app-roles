@@ -18,6 +18,8 @@ const RecentBusinessViewLine = () => {
   const text = view.zone
     ? `Una sala de ${view.zone} ha visto tu perfil · ${timeAgo(view.createdAt)}`
     : `Una sala ha visto tu perfil · ${timeAgo(view.createdAt)}`;
+  // view.zone solo puede ser null aquí si la query de arriba cambia — el hook
+  // ya filtra viewer_zone IS NOT NULL, así que este texto siempre es preciso.
 
   return (
     <p className="mx-4 md:mx-6 mt-2 text-xs font-semibold" style={{ color: '#333' }}>
