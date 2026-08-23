@@ -34,7 +34,6 @@ const DIRECTORY_ITEMS: { id: string; label: string }[] = [
   { id: 'promotor', label: 'Promotor & RRPP' },
   { id: 'speaker', label: 'Speakers & Presentadores' },
   { id: 'design', label: 'Diseño & Visuales' },
-  { id: 'empresario', label: 'Panel Empresario' },
 ];
 const DIRECTORY_IDS = new Set(DIRECTORY_ITEMS.map(i => i.id));
 
