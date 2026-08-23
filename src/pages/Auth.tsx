@@ -62,6 +62,17 @@ const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { ic
       { icon: Wallet, text: '0€ comisión — el trato es directo' },
     ],
   },
+  // Continúa el gancho del anuncio de Instagram "Pon tu precio" — evita el
+  // salto a un mensaje genérico que no reconoce por qué la persona hizo clic.
+  pontuprecio: {
+    tagline: 'Pon tu precio. Deja de aceptar lo que otros imponen.',
+    sub: 'Publica tu tarifa gratis y que te contraten directamente por ella. Sin intermediarios.',
+    bullets: [
+      { icon: Wallet, text: 'Tú decides tu tarifa — 0% comisión' },
+      { icon: Target, text: 'Tu perfil visible para salas y organizadores' },
+      { icon: FileText, text: 'Contratos digitales automáticos' },
+    ],
+  },
 };
 
 const DEFAULT_CONTENT = {
