@@ -17,17 +17,22 @@ export default defineConfig(({ mode }) => ({
     assetsDir: "assets",
     // Vite's default modulePreload injects <link rel="modulepreload"> for every
     // manualChunks vendor bundle into every page's HTML, regardless of which
-    // route actually needs it — e.g. pdf-vendor (html2pdf, only used by the
-    // contracts view) was being force-downloaded on /auth before first paint.
-    // Disabling it lets each lazy route pull in only the chunks it imports.
+    // route actually needs it. Disabling it lets each lazy route pull in only
+    // the chunks it imports.
     modulePreload: false,
     rollupOptions: {
       output: {
         manualChunks: (id) => {
           if (!id.includes('node_modules')) return;
-          if (id.includes('html2pdf') || id.includes('jspdf') || id.includes('html2canvas')) {
-            return 'pdf-vendor';
-          }
+          // pdf-vendor (html2pdf/jspdf/html2canvas) and motion-vendor
+          // (framer-motion) are deliberately NOT split into shared vendor
+          // chunks here. Grouping them as "vendor" made Rollup treat them as
+          // common dependencies that every lazy route's dynamic import
+          // resolves together — so /auth was pulling in the contracts PDF
+          // generator (only used by the dashboard's ContractView) before its
+          // own content could paint. Leaving them unbundled lets each one
+          // fall into the chunk of whichever page actually imports it
+          // (ContractView already lazy-loads html2pdf.js itself).
           if (id.includes('lucide-react')) {
             return 'icons-vendor';
           }
@@ -42,9 +47,6 @@ export default defineConfig(({ mode }) => ({
           }
           if (id.includes('@tanstack/react-query')) {
             return 'query-vendor';
-          }
-          if (id.includes('framer-motion')) {
-            return 'motion-vendor';
           }
         },
       },
