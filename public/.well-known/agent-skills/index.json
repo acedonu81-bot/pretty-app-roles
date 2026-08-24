@@ -1,4 +1,12 @@
 {
   "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
-  "skills": []
+  "skills": [
+    {
+      "name": "xpeak-directorio-eventos",
+      "type": "skill-md",
+      "description": "Busca profesionales de eventos verificados en España (DJs, fotógrafos, camareros, catering, maquilladoras, animadores, magos, humoristas, bailarines, speakers, photo booth) y solicita presupuesto real vía el MCP público de XPEAK.",
+      "url": "https://xpeak.es/.well-known/agent-skills/xpeak-directorio-eventos/SKILL.md",
+      "digest": "sha256:bc6f2f933f6d51b0325c1ac0e584e2193064d5965dd85094abf4d4e953cfcf30"
+    }
+  ]
 }

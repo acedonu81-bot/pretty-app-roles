@@ -86,6 +86,15 @@
       },
       "continue": true
     },
+    {
+      "src": "/\\.well-known/agent-skills/xpeak-directorio-eventos/SKILL\\.md",
+      "headers": {
+        "Content-Type": "text/markdown; charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "public, max-age=3600"
+      },
+      "continue": true
+    },
 
     { "src": "^/assets/.+", "status": 404 },
 
