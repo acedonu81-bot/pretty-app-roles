@@ -299,9 +299,6 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
             <span className="flex-1 text-[0.82rem] font-bold truncate">
               Directorio
             </span>
-            <span className="text-[0.6rem] font-bold px-1.5 rounded-full flex-shrink-0" style={{ background: 'rgba(10,9,8,0.05)', color: 'rgba(10,9,8,0.4)' }}>
-              {directoryItems.length}
-            </span>
             <ChevronDown size={13} style={{ color: 'rgba(10,9,8,0.35)', transform: dirOpen ? 'rotate(180deg)' : undefined, transition: 'transform 0.2s', flexShrink: 0 }} />
           </button>
 
