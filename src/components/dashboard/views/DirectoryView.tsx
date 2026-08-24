@@ -27,6 +27,16 @@ const CITY_OPTIONS = [
   'Alicante', 'Granada', 'Tenerife', 'Las Palmas de Gran Canaria',
 ].map(c => ({ value: c, label: c }));
 
+async function fetchActiveEmployerCount(): Promise<number> {
+  const now = new Date().toISOString();
+  const { data } = await supabase
+    .from('flash_jobs')
+    .select('employer_id')
+    .gt('expires_at', now);
+  if (!data) return 0;
+  return new Set(data.map((j: any) => j.employer_id)).size;
+}
+
 async function fetchDirectoryProfiles(role: string, roles: string[] | undefined, filterCity: string): Promise<Profile[]> {
   const activeRoles = roles ?? [role];
   let query = supabase
@@ -134,6 +144,13 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
     gcTime: 10 * 60_000, // mantiene en caché 10 min aunque el componente se desmonte
   });
 
+  const { data: activeEmployerCount = 0 } = useQuery({
+    queryKey: ['directory-active-employers'],
+    queryFn: fetchActiveEmployerCount,
+    staleTime: 60_000,
+    gcTime: 10 * 60_000,
+  });
+
   const filteredProfiles = realProfiles.filter(p => {
     if (searchQuery?.trim()) {
       const q = searchQuery.toLowerCase();
@@ -171,22 +188,27 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
         )}
       </div>
 
-      {/* Salas activas strip — desktop only (mobile keeps the fold clean; Flash is in bottom nav) */}
-      <div className="hidden sm:flex items-center gap-2 mb-4 px-3 py-2 rounded-full text-xs"
-        style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}>
-        <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 animate-pulse" style={{ background: '#D4AF37' }} />
-        <span style={{ color: '#222' }}>
-          <span style={{ color: '#8A6D0F', fontWeight: 700 }}>4 salas & clubs</span>
-          {' '}registrados en XPEAK están buscando profesionales como tú
-        </span>
-        {onNavigate && (
-          <button onClick={() => onNavigate('flash')}
-            className="ml-auto flex-shrink-0 text-[0.7rem] font-bold px-2.5 py-1 rounded-full transition-all hover:opacity-80"
-            style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.15)' }}>
-            Ver ofertas →
-          </button>
-        )}
-      </div>
+      {/* Salas activas strip — cifra real de employer_id distintos con oferta
+          flash_jobs vigente, ya no hardcodeada. Se oculta si hoy son 0. */}
+      {activeEmployerCount > 0 && (
+        <div className="hidden sm:flex items-center gap-2 mb-4 px-3 py-2 rounded-full text-xs"
+          style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}>
+          <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 animate-pulse" style={{ background: '#D4AF37' }} />
+          <span style={{ color: '#222' }}>
+            <span style={{ color: '#8A6D0F', fontWeight: 700 }}>
+              {activeEmployerCount} {activeEmployerCount === 1 ? 'sala & club' : 'salas & clubs'}
+            </span>
+            {' '}registrados en XPEAK están buscando profesionales como tú
+          </span>
+          {onNavigate && (
+            <button onClick={() => onNavigate('flash')}
+              className="ml-auto flex-shrink-0 text-[0.7rem] font-bold px-2.5 py-1 rounded-full transition-all hover:opacity-80"
+              style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.15)' }}>
+              Ver ofertas →
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Filtros */}
       <div className="flex items-center gap-2 mb-4 sm:mb-5 flex-nowrap sm:flex-wrap overflow-x-auto no-scrollbar -mx-1 px-1 sm:mx-0 sm:px-0">
