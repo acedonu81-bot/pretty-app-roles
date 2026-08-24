@@ -765,10 +765,15 @@ const PublicProfile = () => {
                     {b}
                   </span>
                 ))}
-                {(profile as any).price > 0 && (
+                {(profile as any).price > 0 ? (
                   <span className="text-xs font-bold px-3 py-1.5 rounded-full"
                     style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
                     Desde {(profile as any).price}€/h
+                  </span>
+                ) : (
+                  <span className="text-xs font-bold px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
+                    Precio a consultar
                   </span>
                 )}
                 {profile.isLive && (
@@ -827,19 +832,23 @@ const PublicProfile = () => {
           <div className="flex flex-col gap-8">
 
           {/* Tarjeta precio — sin CTA duplicado */}
-          {(profile as any).price > 0 && (
-            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
-              className="rounded-2xl p-5"
-              style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.07)' }}>
-              <div>
-                <span className="text-3xl font-black" style={{ color: '#111' }}>{(profile as any).price}€</span>
-                <span className="text-sm font-semibold ml-1" style={{ color: '#333' }}>/hora · sin comisión</span>
-              </div>
-              <p className="text-xs mt-1" style={{ color: '#333' }}>
-                {profile.zone && `📍 ${profile.zone} · `}Contrato directo · Pago acordado con el profesional
-              </p>
-            </motion.div>
-          )}
+          <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
+            className="rounded-2xl p-5"
+            style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.07)' }}>
+            <div>
+              {(profile as any).price > 0 ? (
+                <>
+                  <span className="text-3xl font-black" style={{ color: '#111' }}>{(profile as any).price}€</span>
+                  <span className="text-sm font-semibold ml-1" style={{ color: '#333' }}>/hora · sin comisión</span>
+                </>
+              ) : (
+                <span className="text-2xl font-black" style={{ color: '#111' }}>Precio a consultar</span>
+              )}
+            </div>
+            <p className="text-xs mt-1" style={{ color: '#333' }}>
+              {profile.zone && `📍 ${profile.zone} · `}Contrato directo · Pago acordado con el profesional
+            </p>
+          </motion.div>
 
           {/* Video — mobile-first: show before bio for max impact */}
           {extraMedia.bio_video_url && (() => {

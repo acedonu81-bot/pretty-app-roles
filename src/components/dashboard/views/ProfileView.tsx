@@ -660,6 +660,9 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                     className="nightlife-input !pl-8 text-base"
                   />
                 </div>
+                <p className="text-xs mt-1.5" style={{ color: '#333' }}>
+                  ¿Tu precio varía según el evento? Actívalo en Ajustes → Privacidad → "Mostrar tarifa en mi ficha".
+                </p>
               </div>
             )}
             {/* — Más detalles (opcional): todo lo secundario plegado para que la

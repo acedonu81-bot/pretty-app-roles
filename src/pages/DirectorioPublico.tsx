@@ -645,14 +645,12 @@ export default function DirectorioPublico() {
                       )}
                     </div>
                     {/* Price overlay — desktop only */}
-                    {p.hourly_rate > 0 && (
-                      <div className="absolute bottom-2.5 right-2.5 z-10 hidden sm:block">
-                        <span className="px-2 py-1 rounded-lg text-xs font-black"
-                          style={{ background: 'rgba(255,255,255,0.92)', color: '#1a1208', boxShadow: '0 1px 4px rgba(0,0,0,0.15)' }}>
-                          desde {p.hourly_rate}€/h
-                        </span>
-                      </div>
-                    )}
+                    <div className="absolute bottom-2.5 right-2.5 z-10 hidden sm:block">
+                      <span className="px-2 py-1 rounded-lg text-xs font-black"
+                        style={{ background: 'rgba(255,255,255,0.92)', color: '#1a1208', boxShadow: '0 1px 4px rgba(0,0,0,0.15)' }}>
+                        {p.hourly_rate > 0 ? `desde ${p.hourly_rate}€/h` : 'A consultar'}
+                      </span>
+                    </div>
                   </a>
 
                   {/* Info — clean & minimal on mobile */}
@@ -670,9 +668,9 @@ export default function DirectorioPublico() {
                     </a>
 
                     {/* Price — prominent text on mobile */}
-                    {p.hourly_rate > 0 && (
-                      <p className="text-sm font-black mt-1 sm:hidden" style={{ color: '#333' }}>desde {p.hourly_rate}€/h</p>
-                    )}
+                    <p className="text-sm font-black mt-1 sm:hidden" style={{ color: '#333' }}>
+                      {p.hourly_rate > 0 ? `desde ${p.hourly_rate}€/h` : 'A consultar'}
+                    </p>
 
                     {/* Rating — only if reviews exist */}
                     {p.reviewCount > 0 && (

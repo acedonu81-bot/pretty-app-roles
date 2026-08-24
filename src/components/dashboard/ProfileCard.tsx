@@ -66,8 +66,12 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
     : null : null;
 
   const hasPhoto = p.photo && p.photo.length > 5 && !imgError;
-  const priceLabel = ['makeup', 'peluqueria', 'vestuario', 'media', 'design'].includes(p.role)
-    ? null : p.price > 0 ? `${p.price}€${p.priceUnit}` : null;
+  const showsPrice = !['makeup', 'peluqueria', 'vestuario', 'media', 'design'].includes(p.role);
+  const priceLabel = showsPrice && p.price > 0 ? `${p.price}€${p.priceUnit}` : null;
+  // No todos los roles pueden fijar tarifa de antemano (Wedding Planner,
+  // Magos, artistas con caché por evento) — "A consultar" en vez de dejar
+  // el precio en blanco sin explicación.
+  const priceOnRequest = showsPrice && !(p.price > 0);
   const isEarlyAdopter = (p as any).isEarlyAdopter ?? false;
   const isNew = (p as any).isNew ?? false;
 
@@ -170,6 +174,9 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
             {priceLabel && (
               <span className="text-sm font-black shrink-0" style={{ color: '#F5D77A' }}>{priceLabel}</span>
             )}
+            {priceOnRequest && (
+              <span className="text-xs font-bold shrink-0" style={{ color: '#F5D77A' }}>A consultar</span>
+            )}
           </div>
         </div>
       </div>
@@ -189,6 +196,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
           {[p.location, p.badges?.[0] || p.specialty].filter(Boolean).join(' · ')}
         </p>
         {priceLabel && <p className="text-sm mt-1" style={{ color: '#111' }}><span className="font-bold">{priceLabel.split('€')[0]}€</span><span style={{ color: '#717171' }}>{priceLabel.includes('/') ? priceLabel.slice(priceLabel.indexOf('/')) : ''}</span></p>}
+        {priceOnRequest && <p className="text-sm mt-1 font-bold" style={{ color: '#111' }}>A consultar</p>}
       </div>
 
       {/* ── CUERPO ── */}

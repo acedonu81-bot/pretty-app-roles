@@ -185,6 +185,10 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const [city, setCity] = useState('');
   const [hourlyRate, setHourlyRate] = useState('');
+  // No todos los roles pueden fijar un precio de antemano (Wedding Planner,
+  // Magos, artistas con caché por evento) — "a consultar" es una respuesta
+  // válida, no un campo vacío por descuido.
+  const [priceOnRequest, setPriceOnRequest] = useState(false);
   const [savingQuick, setSavingQuick] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -214,8 +218,12 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
     const updates: Record<string, unknown> = {};
     if (photoUrl) updates.photo_url = photoUrl;
     if (city && city !== 'Otra ciudad') updates.zone = city;
-    const rate = parseFloat(hourlyRate);
-    if (hourlyRate && !isNaN(rate) && rate > 0) updates.hourly_rate = rate;
+    if (priceOnRequest) {
+      updates.hourly_rate = null;
+    } else {
+      const rate = parseFloat(hourlyRate);
+      if (hourlyRate && !isNaN(rate) && rate > 0) updates.hourly_rate = rate;
+    }
     if (Object.keys(updates).length > 0) await profile.updateField(updates);
     setSavingQuick(false);
     markDone();
@@ -388,18 +396,27 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                       <input
                         type="number"
                         min="0"
+                        disabled={priceOnRequest}
                         value={hourlyRate}
                         onChange={(e) => setHourlyRate(e.target.value)}
                         placeholder="Ej. 80"
-                        className="w-full pl-9 pr-4 py-3 rounded-xl text-xs font-semibold outline-none"
+                        className="w-full pl-9 pr-4 py-3 rounded-xl text-xs font-semibold outline-none disabled:opacity-40"
                         style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.1)', color: '#111' }}
                       />
                     </div>
+                    <label className="flex items-center gap-2 mt-2 cursor-pointer">
+                      <input type="checkbox" checked={priceOnRequest}
+                        onChange={(e) => setPriceOnRequest(e.target.checked)}
+                        className="w-3.5 h-3.5 accent-current" style={{ accentColor: '#D4AF37' }} />
+                      <span className="text-[0.65rem] font-semibold" style={{ color: '#333' }}>
+                        Mi precio varía según el evento — mostrar "A consultar"
+                      </span>
+                    </label>
                   </div>
                 </div>
 
                 {(() => {
-                  const validRate = !!hourlyRate && !isNaN(parseFloat(hourlyRate)) && parseFloat(hourlyRate) > 0;
+                  const validRate = priceOnRequest || (!!hourlyRate && !isNaN(parseFloat(hourlyRate)) && parseFloat(hourlyRate) > 0);
                   const canContinue = !!photoUrl && !!city && city !== 'Otra ciudad' && validRate;
                   const missingLabel = !photoUrl ? 'Sube tu foto para continuar'
                     : !city || city === 'Otra ciudad' ? 'Elige tu ciudad para continuar'

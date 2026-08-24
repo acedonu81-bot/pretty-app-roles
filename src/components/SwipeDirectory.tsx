@@ -221,7 +221,8 @@ export default function SwipeDirectory({ profiles, onClose, onOpenProfile, onBoo
         <div className="flex items-center gap-3 mb-2 flex-wrap text-xs" style={{ color: 'rgba(255,255,255,0.75)' }}>
           {p.zone && <span className="flex items-center gap-1"><MapPin size={11} />{p.zone.split(',')[0]}</span>}
           {p.reviewCount > 0 && <span className="flex items-center gap-1"><Star size={11} fill="#D4AF37" color="#D4AF37" />{p.avgRating} ({p.reviewCount})</span>}
-          {p.hourly_rate > 0 && <span className="font-black" style={{ color: '#fff' }}>desde {p.hourly_rate}€/h</span>}
+          {p.hourly_rate > 0 ? <span className="font-black" style={{ color: '#fff' }}>desde {p.hourly_rate}€/h</span>
+            : <span className="font-black" style={{ color: '#fff' }}>Precio a consultar</span>}
         </div>
 
         {p.bio && (
