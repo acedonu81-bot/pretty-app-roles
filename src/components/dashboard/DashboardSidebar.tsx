@@ -37,6 +37,18 @@ const DIRECTORY_ITEMS: { id: string; label: string }[] = [
 ];
 const DIRECTORY_IDS = new Set(DIRECTORY_ITEMS.map(i => i.id));
 
+// Mismos nombres de categoría que la landing (Música, Gastro & Sala, Imagen
+// & Media, Staff & Promoción, Belleza & Estética) para que el sidebar del
+// dashboard no invente un vocabulario distinto al de marketing.
+const DIRECTORY_GROUPS: { label: string; ids: string[] }[] = [
+  { label: 'Música', ids: ['dj'] },
+  { label: 'Gastro & Sala', ids: ['staff', 'catering'] },
+  { label: 'Imagen & Media', ids: ['media', 'design'] },
+  { label: 'Staff & Promoción', ids: ['azafata', 'event_manager', 'promotor', 'speaker'] },
+  { label: 'Belleza & Estética', ids: ['makeup', 'vestuario'] },
+  { label: 'Entretenimiento', ids: ['bailarin', 'mago', 'humorista', 'animador'] },
+];
+
 const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Camarero', azafata: 'Azafata', camarero: 'Camarero', makeup: 'Maquillaje', peluqueria: 'Peluquería', media: 'Media', empresario: 'Sala / Club', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', promotor: 'Promotor & RRPP', ambassador: 'Embajador', design: 'Diseño', mago: 'Mago & Ilusionista', bailarin: 'Instructor / Bailarín', humorista: 'Humorista & Cómico', monologo: 'Monólogo & Stand-Up', animador: 'Payaso & Animador', speaker: 'Speaker & Presentador', 'photo-booth': 'Photo Booth' };
 
 const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }) => {
@@ -163,9 +175,18 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
   // roles domine la barra; se abre solo si el usuario quiere explorar,
   // o automáticamente si la vista activa ya es una de directorio.
   const [dirOpen, setDirOpen] = useState(() => DIRECTORY_IDS.has(activeView));
+  // Dentro del directorio, los roles van agrupados por categoría (mismo
+  // naming que la landing) en vez de una lista plana de 15 — el grupo que
+  // contiene la vista activa se abre solo.
+  const [openGroup, setOpenGroup] = useState<string | null>(
+    () => DIRECTORY_GROUPS.find(g => g.ids.includes(activeView))?.label ?? null
+  );
 
   useEffect(() => {
-    if (DIRECTORY_IDS.has(activeView)) setDirOpen(true);
+    if (DIRECTORY_IDS.has(activeView)) {
+      setDirOpen(true);
+      setOpenGroup(DIRECTORY_GROUPS.find(g => g.ids.includes(activeView))?.label ?? null);
+    }
   }, [activeView]);
 
   const refreshFlashBadge = async (uid: string) => {
@@ -261,7 +282,9 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
 
         <hr className="my-2.5 mx-1" style={{ border: 'none', borderTop: '1px solid rgba(10,9,8,0.05)' }} />
 
-        {/* DIRECTORIO — colapsado por defecto, 16 roles a un clic en vez de siempre expandidos */}
+        {/* DIRECTORIO — colapsado por defecto; dentro, los roles van agrupados
+            por categoría (mismo naming que la landing) en vez de una lista
+            plana de 15 roles sueltos */}
         <div className="mb-1">
           <GroupLabel>Explorar</GroupLabel>
           <button
@@ -274,7 +297,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
               <Search size={17} />
             </span>
             <span className="flex-1 text-[0.82rem] font-bold truncate">
-              {dirOpen ? 'Directorio' : (activeDirLabel ?? 'Directorio')}
+              Directorio
             </span>
             <span className="text-[0.6rem] font-bold px-1.5 rounded-full flex-shrink-0" style={{ background: 'rgba(10,9,8,0.05)', color: 'rgba(10,9,8,0.4)' }}>
               {directoryItems.length}
@@ -284,24 +307,52 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
 
           {dirOpen && (
             <div className="flex flex-col gap-0.5 mt-0.5 ml-[30px] pl-2.5 py-0.5" style={{ borderLeft: '1px solid rgba(10,9,8,0.06)', maxHeight: 380, overflowY: 'auto' }}>
-              {directoryItems.map(item => {
-                const isActive = activeView === item.id;
+              {DIRECTORY_GROUPS.map(group => {
+                const items = directoryItems.filter(i => group.ids.includes(i.id));
+                if (items.length === 0) return null;
+                const groupHasActive = items.some(i => i.id === activeView);
+                const isGroupOpen = openGroup === group.label;
                 return (
-                  <button
-                    key={item.id}
-                    onClick={() => onViewChange(item.id)}
-                    className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-[9px] text-left text-[0.78rem] transition-all"
-                    style={{
-                      fontWeight: isActive ? 700 : 500,
-                      color: isActive ? '#B8941E' : 'rgba(10,9,8,0.6)',
-                      background: isActive ? 'rgba(212,175,55,0.1)' : 'transparent',
-                    }}
-                    onMouseEnter={e => { if (!isActive) { e.currentTarget.style.background = 'rgba(10,9,8,0.035)'; e.currentTarget.style.color = '#0a0908'; } }}
-                    onMouseLeave={e => { if (!isActive) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'rgba(10,9,8,0.6)'; } }}
-                  >
-                    <span className="rounded-full flex-shrink-0" style={{ width: 6, height: 6, background: '#D4AF37', opacity: isActive ? 1 : 0.5 }} />
-                    {item.label}
-                  </button>
+                  <div key={group.label} className="flex flex-col">
+                    <button
+                      onClick={() => setOpenGroup(o => (o === group.label ? null : group.label))}
+                      className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-[9px] text-left text-[0.78rem] transition-all"
+                      style={{
+                        fontWeight: groupHasActive ? 700 : 600,
+                        color: groupHasActive ? '#B8941E' : 'rgba(10,9,8,0.7)',
+                      }}
+                      onMouseEnter={e => { e.currentTarget.style.background = 'rgba(10,9,8,0.035)'; }}
+                      onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
+                    >
+                      <span className="flex-1 truncate">{group.label}</span>
+                      <ChevronDown size={11} style={{ color: 'rgba(10,9,8,0.35)', transform: isGroupOpen ? 'rotate(180deg)' : undefined, transition: 'transform 0.2s', flexShrink: 0 }} />
+                    </button>
+
+                    {isGroupOpen && (
+                      <div className="flex flex-col gap-0.5 ml-2.5 pl-2.5" style={{ borderLeft: '1px solid rgba(10,9,8,0.06)' }}>
+                        {items.map(item => {
+                          const isActive = activeView === item.id;
+                          return (
+                            <button
+                              key={item.id}
+                              onClick={() => onViewChange(item.id)}
+                              className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-[9px] text-left text-[0.78rem] transition-all"
+                              style={{
+                                fontWeight: isActive ? 700 : 500,
+                                color: isActive ? '#B8941E' : 'rgba(10,9,8,0.6)',
+                                background: isActive ? 'rgba(212,175,55,0.1)' : 'transparent',
+                              }}
+                              onMouseEnter={e => { if (!isActive) { e.currentTarget.style.background = 'rgba(10,9,8,0.035)'; e.currentTarget.style.color = '#0a0908'; } }}
+                              onMouseLeave={e => { if (!isActive) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'rgba(10,9,8,0.6)'; } }}
+                            >
+                              <span className="rounded-full flex-shrink-0" style={{ width: 6, height: 6, background: '#D4AF37', opacity: isActive ? 1 : 0.5 }} />
+                              {item.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
                 );
               })}
             </div>
