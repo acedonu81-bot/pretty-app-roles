@@ -8,6 +8,7 @@ import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import OffersWidget from '@/components/dashboard/OffersWidget';
 import { supabase } from '@/integrations/supabase/client';
 import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion, citiesForRegion } from '@/lib/regions';
+import { isEarlyAdopter } from '@/lib/earlyAdopter';
 
 interface DirectoryViewProps {
   role: string;
@@ -77,8 +78,8 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
           || (Array.isArray(p.portfolio_urls) && p.portfolio_urls.length > 0);
         return (hasMedia ? 4 : 0) + (p.photo_url ? 2 : 0) + (p.bio?.trim() ? 1 : 0);
       };
-      const aEarly = (a as any).is_early_adopter ? 1 : 0;
-      const bEarly = (b as any).is_early_adopter ? 1 : 0;
+      const aEarly = isEarlyAdopter(a as any) ? 1 : 0;
+      const bEarly = isEarlyAdopter(b as any) ? 1 : 0;
       if (bEarly !== aEarly) return bEarly - aEarly;
       const hasPriority = (p: any) => p.priority_badge_until && new Date(p.priority_badge_until) > new Date();
       const aPriority = hasPriority(a) ? 1 : 0;
@@ -120,7 +121,7 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
       tiktok: row.tiktok || '',
       category: (row.category as Profile['category']) ?? 'professional',
       isVerified: row.is_verified ?? false,
-      isEarlyAdopter: (row as any).is_early_adopter ?? false,
+      isEarlyAdopter: isEarlyAdopter(row as any),
       hasPriorityBadge: !!((row as any).priority_badge_until && new Date((row as any).priority_badge_until) > new Date()),
       isNew: !!((row as any).created_at && (Date.now() - new Date((row as any).created_at).getTime()) < 30 * 24 * 60 * 60 * 1000),
       seekingDancePartner: (row as any).seeking_dance_partner ?? false,

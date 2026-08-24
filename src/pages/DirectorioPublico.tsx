@@ -12,6 +12,7 @@ import FooterPublic from '@/components/FooterPublic';
 import { addToCart, useEventCart, MAX_CART_ITEMS } from '@/lib/eventCart';
 import { useAuth } from '@/hooks/useAuth';
 import GhostProfileCards from '@/components/GhostProfileCards';
+import { isEarlyAdopter } from '@/lib/earlyAdopter';
 
 // URL de perfil por slug de nombre (la misma que usan sitemap y prerender) en
 // vez de UUID — evita dos URLs indexables para el mismo perfil. PublicProfile
@@ -281,7 +282,11 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string): Pro
   // exigir foto/bio echaba del directorio a la mayoría de perfiles reales.
   // Retomar cuando haya volumen que lo justifique, avisando antes a los
   // usuarios existentes.
-  const filtered = data ?? [];
+  //
+  // is_early_adopter ya no viene del campo manual de BD — se recalcula aquí
+  // según si el perfil está de verdad completo (foto+bio+media). Así el aro
+  // azul se gana/pierde solo, sin depender de que un admin lo active a mano.
+  const filtered = (data ?? []).map((p: any) => ({ ...p, is_early_adopter: isEarlyAdopter(p) }));
 
   const userIds = filtered.map((p: any) => p.user_id);
   const { data: reviewsData } = userIds.length > 0

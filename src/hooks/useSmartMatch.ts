@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { isEarlyAdopter } from '@/lib/earlyAdopter';
 
 export interface MatchedProfessional {
   user_id: string;
@@ -79,7 +80,7 @@ function computeMatch(
 
   if (profile.is_verified) { score += 10; reasons.push('Verificado'); }
   if (profile.is_flash_active) { score += 8; reasons.push('Disponible ahora'); }
-  if (profile.is_early_adopter) score += 5;
+  if (isEarlyAdopter(profile)) score += 5;
   if ((profile.fast_responder_count ?? 0) >= 1) { score += 7; reasons.push('Respuesta rápida'); }
 
   score += Math.min(15, Math.round((profile.score ?? 0) / 10));
@@ -110,7 +111,7 @@ function computeMatch(
     hourly_rate: profile.hourly_rate,
     is_flash_active: profile.is_flash_active ?? false,
     is_verified: profile.is_verified ?? false,
-    is_early_adopter: profile.is_early_adopter ?? false,
+    is_early_adopter: isEarlyAdopter(profile),
     score: profile.score ?? 0,
     fast_responder_count: profile.fast_responder_count ?? 0,
     avgRating: ratingInfo.avg,
@@ -132,7 +133,7 @@ export function useSmartMatch(query: MatchQuery | null): { results: MatchedProfe
     const [profilesRes, reviewsRes, availRes] = await Promise.all([
       supabase
         .from('profiles')
-        .select('user_id, display_name, role, roles, specialty, zone, photo_url, hourly_rate, is_flash_active, is_verified, is_early_adopter, score, fast_responder_count')
+        .select('user_id, display_name, role, roles, specialty, zone, photo_url, hourly_rate, is_flash_active, is_verified, bio, audio_embed_url, audio_session_urls, portfolio_urls, score, fast_responder_count')
         .contains('roles', [query.role])
         .not('display_name', 'is', null)
         .limit(100),

@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { CheckCircle, Mail, MessageSquare, FileEdit, Star, TrendingUp, Search } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { isEarlyAdopter } from '@/lib/earlyAdopter';
 
 interface DBProfile {
   id: string;
@@ -24,9 +25,10 @@ const ACTIONS = [
   { icon: Mail, label: 'Email', hint: 'Abre un correo a info@xpeak.es sobre este usuario' },
   { icon: FileEdit, label: 'Ficha', hint: 'Ver su perfil público en una pestaña nueva' },
   { icon: CheckCircle, label: 'Sello Dorado', hint: 'Marca el perfil como verificado' },
-  { icon: Star, label: 'Aro Azul', hint: 'Prioridad en el directorio (primeras posiciones)' },
   { icon: TrendingUp, label: 'Score +200', hint: 'Empuja el ranking del perfil' },
 ] as const;
+// El Aro Azul ("early adopter") ya no es manual — se calcula solo cuando el
+// perfil tiene foto+bio+media, ver src/lib/earlyAdopter.ts.
 
 const AdminUserManagement = () => {
   const [users, setUsers] = useState<DBProfile[]>([]);
@@ -63,16 +65,6 @@ const AdminUserManagement = () => {
 
   const contactEmail = (name: string) => {
     window.open(`mailto:info@xpeak.es?subject=Contacto usuario: ${encodeURIComponent(name)}`);
-  };
-
-  const toggleEarlyAdopter = async (user: DBProfile) => {
-    const { error } = await supabase
-      .from('profiles')
-      .update({ is_early_adopter: !user.is_early_adopter })
-      .eq('id', user.id);
-    if (error) { toast.error('Error al actualizar aro azul'); return; }
-    toast.success(user.is_early_adopter ? 'Aro azul eliminado' : '⭐ Aro Azul activado — aparecerá en primeras posiciones');
-    setUsers(prev => prev.map(u => u.id === user.id ? { ...u, is_early_adopter: !u.is_early_adopter } : u));
   };
 
   const boostScore = async (user: DBProfile) => {
@@ -166,12 +158,12 @@ const AdminUserManagement = () => {
                           <CheckCircle size={9} /> Verificado
                         </span>
                       )}
-                      {u.is_early_adopter && (
+                      {isEarlyAdopter(u as any) && (
                         <span className="flex items-center gap-1 text-[0.6rem] font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(59,130,246,0.15)', color: '#2563eb' }}>
                           <Star size={9} /> Aro azul
                         </span>
                       )}
-                      {!u.is_verified && !u.is_early_adopter && <span className="text-muted-foreground">—</span>}
+                      {!u.is_verified && !isEarlyAdopter(u as any) && <span className="text-muted-foreground">—</span>}
                     </div>
                   </td>
                   <td className="px-4 py-3">
@@ -199,15 +191,7 @@ const AdminUserManagement = () => {
                         }}>
                         <CheckCircle size={13} />
                       </button>
-                      <button onClick={() => toggleEarlyAdopter(u)} title={u.is_early_adopter ? 'Quitar Aro Azul' : ACTIONS[4].hint}
-                        className="p-1.5 rounded-md transition-all hover:scale-110"
-                        style={{
-                          background: u.is_early_adopter ? 'rgba(59,130,246,0.2)' : 'rgba(0,0,0,0.04)',
-                          color: u.is_early_adopter ? '#2563eb' : '#666',
-                        }}>
-                        <Star size={13} />
-                      </button>
-                      <button onClick={() => boostScore(u)} title={ACTIONS[5].hint}
+                      <button onClick={() => boostScore(u)} title={ACTIONS[4].hint}
                         className="p-1.5 rounded-md transition-all hover:scale-110"
                         style={{ background: 'rgba(34,197,94,0.1)', color: '#22c55e' }}>
                         <TrendingUp size={13} />

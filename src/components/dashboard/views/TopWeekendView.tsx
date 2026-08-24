@@ -4,11 +4,12 @@ import { Crown } from 'lucide-react';
 import { Profile } from '@/data/profiles';
 import ProfileCard from '@/components/dashboard/ProfileCard';
 import { supabase } from '@/integrations/supabase/client';
+import { isEarlyAdopter } from '@/lib/earlyAdopter';
 
 async function fetchTopWeekendProfiles(): Promise<Profile[]> {
   const { data } = await supabase
     .from('profiles')
-    .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, is_live, genres, bio, languages, tiktok, category, is_verified, is_early_adopter, is_flash_active, stream_url, role')
+    .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, is_live, genres, bio, languages, tiktok, category, is_verified, is_flash_active, stream_url, role, audio_embed_url, audio_session_urls, portfolio_urls')
     .neq('role', 'empresario')
     .not('display_name', 'is', null)
     .not('photo_url', 'is', null)
@@ -48,7 +49,7 @@ async function fetchTopWeekendProfiles(): Promise<Profile[]> {
           streamUrl: row.stream_url || undefined,
           category: (row.category as Profile['category']) ?? 'professional',
           isVerified: row.is_verified ?? false,
-          isEarlyAdopter: (row as any).is_early_adopter ?? false,
+          isEarlyAdopter: isEarlyAdopter(row as any),
         }));
 
   // Sort: verified first, then profiles with bio, then alphabetical

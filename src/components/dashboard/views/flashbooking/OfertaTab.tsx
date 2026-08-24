@@ -5,6 +5,7 @@ import { useProfile } from '@/hooks/useProfile';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import FlashBookingRequestModal from '@/components/dashboard/FlashBookingRequestModal';
+import { isEarlyAdopter } from '@/lib/earlyAdopter';
 
 interface FlashProfile {
   id: string;
@@ -47,12 +48,13 @@ const OfertaTab = () => {
   const fetchFlashProfiles = () => {
     supabase
       .from('profiles')
-      .select('id, user_id, display_name, photo_url, specialty, zone, hourly_rate, role, is_early_adopter, score, genres')
+      .select('id, user_id, display_name, photo_url, specialty, zone, hourly_rate, role, bio, audio_embed_url, audio_session_urls, portfolio_urls, score, genres')
       .eq('is_flash_active', true)
-      .order('is_early_adopter', { ascending: false })
       .order('score', { ascending: false })
       .then(({ data }) => {
-        setFlashProfiles((data ?? []).map(p => ({
+        // is_early_adopter ya no viene de BD — se calcula aquí, así que el
+        // orden por early adopter se hace en JS tras traer los datos.
+        const mapped = (data ?? []).map(p => ({
           id: p.user_id || p.id,
           name: p.display_name || 'Profesional',
           photo: p.photo_url || '',
@@ -61,9 +63,11 @@ const OfertaTab = () => {
           price: p.hourly_rate || 0,
           priceUnit: '/hora',
           role: p.role,
-          isEarlyAdopter: p.is_early_adopter ?? false,
+          isEarlyAdopter: isEarlyAdopter(p as any),
           genres: (p as any).genres ?? [],
-        })));
+        }));
+        mapped.sort((a, b) => Number(b.isEarlyAdopter) - Number(a.isEarlyAdopter));
+        setFlashProfiles(mapped);
         setLoadingProfiles(false);
       });
   };

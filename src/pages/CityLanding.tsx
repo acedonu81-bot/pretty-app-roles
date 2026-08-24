@@ -4,6 +4,7 @@ import { Zap, Star, Shield, ArrowRight, MapPin, CheckCircle } from 'lucide-react
 import FooterPublic from '@/components/FooterPublic';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { isEarlyAdopter } from '@/lib/earlyAdopter';
 
 // Fecha de última modificación (congelada al renderizar; en prerender = build).
 // Señal de frescura para motores generativos, que penalizan contenido stale.
@@ -27,11 +28,11 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
     setProfs([]);
     setSuggestions([]);
     const roles = ROLE_MAP[categorySlug] ?? ['dj'];
-    const map = (p: any): Prof => ({ id: p.user_id, display_name: p.display_name ?? 'Profesional', photo_url: p.photo_url, bio: p.bio, city: p.city, role: p.role, score: p.score ?? 0, slug: p.slug, is_verified: p.is_verified ?? false, is_early_adopter: p.is_early_adopter ?? false });
+    const map = (p: any): Prof => ({ id: p.user_id, display_name: p.display_name ?? 'Profesional', photo_url: p.photo_url, bio: p.bio, city: p.city, role: p.role, score: p.score ?? 0, slug: p.slug, is_verified: p.is_verified ?? false, is_early_adopter: isEarlyAdopter(p) });
 
     supabase
       .from('profiles')
-      .select('user_id,display_name,photo_url,bio,city,role,score,slug,is_verified,is_early_adopter')
+      .select('user_id,display_name,photo_url,bio,city,role,score,slug,is_verified,audio_embed_url,audio_session_urls,portfolio_urls')
       .in('role', roles)
       .eq('is_primary', true)
       .ilike('city', `%${ciudad}%`)
@@ -45,7 +46,7 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
           // No hay en esta ciudad — cargar sugerencias nacionales
           supabase
             .from('profiles')
-            .select('user_id,display_name,photo_url,bio,city,role,score,slug,is_verified,is_early_adopter')
+            .select('user_id,display_name,photo_url,bio,city,role,score,slug,is_verified,audio_embed_url,audio_session_urls,portfolio_urls')
             .in('role', roles)
             .eq('is_primary', true)
             .order('score', { ascending: false })
