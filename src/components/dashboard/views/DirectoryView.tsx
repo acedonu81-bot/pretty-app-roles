@@ -7,6 +7,7 @@ import CheckoutModal from '@/components/dashboard/CheckoutModal';
 import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import OffersWidget from '@/components/dashboard/OffersWidget';
 import { supabase } from '@/integrations/supabase/client';
+import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion, citiesForRegion } from '@/lib/regions';
 
 interface DirectoryViewProps {
   role: string;
@@ -20,12 +21,7 @@ interface DirectoryViewProps {
   onViewProfile?: (profile: Profile) => void;
 }
 
-const CITY_OPTIONS = [
-  'Todas las ciudades',
-  'Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao',
-  'Málaga', 'Ibiza', 'Palma de Mallorca', 'Zaragoza', 'Murcia',
-  'Alicante', 'Granada', 'Tenerife', 'Las Palmas de Gran Canaria',
-].map(c => ({ value: c, label: c }));
+const REGION_OPTIONS = [ALL_REGIONS_LABEL, ...REGIONS.map(r => r.label)].map(r => ({ value: r, label: r }));
 
 async function fetchActiveEmployerCount(): Promise<number> {
   const now = new Date().toISOString();
@@ -37,7 +33,7 @@ async function fetchActiveEmployerCount(): Promise<number> {
   return new Set(data.map((j: any) => j.employer_id)).size;
 }
 
-async function fetchDirectoryProfiles(role: string, roles: string[] | undefined, filterCity: string): Promise<Profile[]> {
+async function fetchDirectoryProfiles(role: string, roles: string[] | undefined, filterRegion: string): Promise<Profile[]> {
   const activeRoles = roles ?? [role];
   let query = supabase
     .from('profiles')
@@ -45,8 +41,13 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
     .in('role', activeRoles)
     .limit(200);
 
-  if (filterCity !== 'Todas las ciudades') {
-    query = query.ilike('zone', `%${filterCity}%`);
+  if (filterRegion !== ALL_REGIONS_LABEL) {
+    // zone guarda ciudad, no comunidad — filtrar por comunidad es un OR de
+    // ilike contra todas sus ciudades (ver src/lib/regions.ts).
+    const cities = citiesForRegion(filterRegion);
+    if (cities.length > 0) {
+      query = query.or(cities.map(c => `zone.ilike.%${c}%`).join(','));
+    }
   }
 
   const reviewsPromise = supabase
@@ -131,15 +132,18 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
 const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wideCards, searchQuery, onViewProfile }: DirectoryViewProps) => {
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [checkoutItem, setCheckoutItem] = useState<{ name: string; price: number; description: string } | null>(null);
-  const [filterCity, setFilterCity] = useState('Todas las ciudades');
+  // Preselecciona la comunidad elegida en el sidebar (persiste entre
+  // sesiones, mismo patrón que xpeak_view) — el desplegable de abajo sigue
+  // siendo la única fuente de verdad, esto solo fija su valor inicial.
+  const [filterRegion, setFilterRegion] = useState(() => getPresetRegion());
   const [filterFlash, setFilterFlash] = useState(false);
   const [filterVerified, setFilterVerified] = useState(false);
   const [filterSeekingPartner, setFilterSeekingPartner] = useState(false);
   const [filterDanceRole, setFilterDanceRole] = useState<'' | 'lead' | 'follow'>('');
 
   const { data: realProfiles = [], isLoading: loadingProfiles } = useQuery({
-    queryKey: ['directory-profiles', role, roles, filterCity],
-    queryFn: () => fetchDirectoryProfiles(role, roles, filterCity),
+    queryKey: ['directory-profiles', role, roles, filterRegion],
+    queryFn: () => fetchDirectoryProfiles(role, roles, filterRegion),
     staleTime: 60_000, // datos frescos 1 min — cambiar de rol y volver no re-fetchea
     gcTime: 10 * 60_000, // mantiene en caché 10 min aunque el componente se desmonte
   });
@@ -217,11 +221,11 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
           <span className="text-xs font-bold" style={{ color: '#8A6D0F' }}>ES</span>
         </div>
         <NightlifeSelect
-          value={filterCity}
-          onChange={setFilterCity}
-          options={CITY_OPTIONS}
-          placeholder="Todas las ciudades"
-          active={filterCity !== 'Todas las ciudades'}
+          value={filterRegion}
+          onChange={(v) => { setFilterRegion(v); setPresetRegion(v); }}
+          options={REGION_OPTIONS}
+          placeholder="Todas las comunidades"
+          active={filterRegion !== ALL_REGIONS_LABEL}
           className="flex-shrink-0 min-w-[150px] sm:flex-1 sm:min-w-[130px] max-w-[220px]"
         />
         <button
@@ -280,8 +284,8 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
             </button>
           </>
         )}
-        {(filterCity !== 'Todas las ciudades' || filterFlash || filterVerified || filterSeekingPartner) && (
-          <button onClick={() => { setFilterCity('Todas las ciudades'); setFilterFlash(false); setFilterVerified(false); setFilterSeekingPartner(false); setFilterDanceRole(''); }}
+        {(filterRegion !== ALL_REGIONS_LABEL || filterFlash || filterVerified || filterSeekingPartner) && (
+          <button onClick={() => { setFilterRegion(ALL_REGIONS_LABEL); setPresetRegion(ALL_REGIONS_LABEL); setFilterFlash(false); setFilterVerified(false); setFilterSeekingPartner(false); setFilterDanceRole(''); }}
             className="text-xs font-bold px-2.5 py-1 rounded-full transition-all hover:opacity-70 flex-shrink-0"
             style={{ background: 'rgba(0,0,0,0.04)', color: '#333', border: '1px solid rgba(0,0,0,0.08)' }}>
             Limpiar ✕
@@ -330,10 +334,10 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
               {searchQuery?.trim() ? `Sin resultados para "${searchQuery}"` : 'Sin resultados con estos filtros'}
             </p>
             <p className="text-xs text-muted-foreground mb-3 max-w-[260px] mx-auto">
-              Prueba cambiando la ciudad o quitando los filtros de disponibilidad o verificación.
+              Prueba cambiando la comunidad o quitando los filtros de disponibilidad o verificación.
             </p>
-            {(filterCity !== 'Todas las ciudades' || filterFlash || filterVerified) && (
-              <button onClick={() => { setFilterCity('Todas las ciudades'); setFilterFlash(false); setFilterVerified(false); }}
+            {(filterRegion !== ALL_REGIONS_LABEL || filterFlash || filterVerified) && (
+              <button onClick={() => { setFilterRegion(ALL_REGIONS_LABEL); setPresetRegion(ALL_REGIONS_LABEL); setFilterFlash(false); setFilterVerified(false); }}
                 className="text-xs font-bold px-3 py-1.5 rounded-full transition-all hover:scale-105"
                 style={{ background: 'rgba(212,175,55,0.08)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.2)' }}>
                 Quitar filtros

@@ -9,6 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useEffect, useState, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion } from '@/lib/regions';
 
 interface SidebarProps {
   activeView: string;
@@ -181,6 +182,7 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
   const [openGroup, setOpenGroup] = useState<string | null>(
     () => DIRECTORY_GROUPS.find(g => g.ids.includes(activeView))?.label ?? null
   );
+  const [selectedRegion, setSelectedRegion] = useState(() => getPresetRegion());
 
   useEffect(() => {
     if (DIRECTORY_IDS.has(activeView)) {
@@ -304,6 +306,19 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
 
           {dirOpen && (
             <div className="flex flex-col gap-0.5 mt-0.5 ml-[30px] pl-2.5 py-0.5" style={{ borderLeft: '1px solid rgba(10,9,8,0.06)', maxHeight: 380, overflowY: 'auto' }}>
+              {/* Comunidad — el 80-90% busca cerca de su zona; preseleccionar
+                  aquí evita repetir el filtro dentro de cada vista de rol
+                  (el desplegable de DirectoryView respeta este mismo valor). */}
+              <select
+                value={selectedRegion}
+                onChange={e => { setSelectedRegion(e.target.value); setPresetRegion(e.target.value); }}
+                className="mb-1.5 w-full text-[0.72rem] font-bold rounded-lg px-2 py-1.5 outline-none"
+                style={{ background: 'rgba(10,9,8,0.035)', color: 'rgba(10,9,8,0.75)', border: '1px solid rgba(10,9,8,0.08)' }}
+              >
+                <option value={ALL_REGIONS_LABEL}>Todas las comunidades</option>
+                {REGIONS.map(r => <option key={r.label} value={r.label}>{r.label}</option>)}
+              </select>
+
               {DIRECTORY_GROUPS.map(group => {
                 const items = directoryItems.filter(i => group.ids.includes(i.id));
                 if (items.length === 0) return null;
