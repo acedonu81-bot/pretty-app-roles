@@ -1,5 +1,10 @@
 {
   "schema_version": "2024-11-05",
+  "name": "xpeak",
+  "serverInfo": {
+    "name": "xpeak",
+    "version": "1.0.0"
+  },
   "name_for_human": "XPEAK",
   "name_for_model": "xpeak",
   "description_for_human": "Directorio de profesionales de eventos en España (DJs, fotógrafos, staff, catering, animación y más) — busca y solicita presupuesto directamente.",

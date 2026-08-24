@@ -1,0 +1,35 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schemas/draft/server-card.json",
+  "serverInfo": {
+    "name": "xpeak",
+    "title": "XPEAK — Directorio profesional de eventos en España",
+    "version": "1.0.0",
+    "websiteUrl": "https://xpeak.es"
+  },
+  "description": "Busca profesionales verificados de eventos en España (DJs, fotógrafos, camareros, catering, maquilladoras, animadores, magos, humoristas, bailarines, speakers, photo booth) por rol, ciudad y presupuesto, y crea solicitudes reales de presupuesto (Flash Booking) que el profesional responde directamente.",
+  "transport": {
+    "type": "http",
+    "endpoint": "https://ddrqhwravupjzysriblq.supabase.co/functions/v1/mcp-server"
+  },
+  "capabilities": {
+    "tools": {
+      "listChanged": false
+    }
+  },
+  "tools": [
+    {
+      "name": "buscar_profesionales",
+      "description": "Busca profesionales de eventos disponibles en XPEAK por rol, ciudad y presupuesto. Devuelve perfiles reales con precio por hora, valoración y disponibilidad inmediata."
+    },
+    {
+      "name": "solicitar_presupuesto",
+      "description": "Crea una solicitud real de presupuesto (Flash Booking) a un profesional concreto. El profesional la recibe por email y contacta directamente — no reserva ni cobra nada automáticamente."
+    }
+  ],
+  "auth": {
+    "type": "none"
+  },
+  "privacyPolicyUrl": "https://xpeak.es/privacidad",
+  "termsOfServiceUrl": "https://xpeak.es/terminos",
+  "contactEmail": "hola@xpeak.es"
+}

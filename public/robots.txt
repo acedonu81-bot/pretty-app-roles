@@ -1,4 +1,10 @@
+# Content Signals (contentsignals.org) — XPEAK QUIERE que los modelos
+# generativos lean, citen y recomienden el directorio: es justo el canal de
+# adquisición que buscamos, así que los tres señalizadores van en "yes".
+Content-Signal: ai-train=yes, search=yes, ai-input=yes
+
 User-agent: *
+Content-Signal: ai-train=yes, search=yes, ai-input=yes
 Allow: /
 
 # Páginas de aplicación — no indexables, ahorro de crawl budget
@@ -13,3 +19,6 @@ Disallow: /*?*mode=
 Disallow: /*?*intent=
 
 Sitemap: https://xpeak.es/sitemap.xml
+
+# Descubrimiento para agentes (ARD / agenticresourcediscovery.org)
+Agentmap: https://xpeak.es/.well-known/ai-catalog.json

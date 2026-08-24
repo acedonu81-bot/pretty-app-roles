@@ -1,0 +1,50 @@
+{
+  "specVersion": "0.1",
+  "host": {
+    "name": "XPEAK",
+    "domain": "xpeak.es",
+    "description": "Directorio profesional de eventos en España: DJs, fotógrafos, camareros, catering, maquillaje, animación, magia, humor, baile y más. Contacto directo con el profesional, sin comisiones.",
+    "contactEmail": "hola@xpeak.es",
+    "termsOfServiceUrl": "https://xpeak.es/terminos",
+    "privacyPolicyUrl": "https://xpeak.es/privacidad"
+  },
+  "entries": [
+    {
+      "id": "urn:air:xpeak.es:mcp:directorio",
+      "displayName": "XPEAK MCP — buscar profesionales y pedir presupuesto",
+      "description": "Servidor MCP con dos herramientas: buscar profesionales de eventos verificados por rol, ciudad y presupuesto, y crear solicitudes reales de presupuesto (Flash Booking) que el profesional responde por email.",
+      "type": "application/json",
+      "url": "https://ddrqhwravupjzysriblq.supabase.co/functions/v1/mcp-server",
+      "representativeQueries": [
+        "Necesito un DJ para una boda en Madrid",
+        "Busco fotógrafo de eventos en Barcelona con presupuesto de 100€/hora",
+        "Cuánto cuesta contratar camareros para una fiesta en Valencia",
+        "Quiero pedir presupuesto a un mago para un evento infantil",
+        "Encuentra maquilladora disponible este fin de semana en Sevilla"
+      ]
+    },
+    {
+      "id": "urn:air:xpeak.es:docs:llms",
+      "displayName": "XPEAK llms.txt — resumen del sitio para modelos",
+      "description": "Descripción estructurada de XPEAK, sus categorías de profesionales y sus páginas principales, en formato llms.txt.",
+      "type": "text/plain",
+      "url": "https://xpeak.es/llms.txt",
+      "representativeQueries": [
+        "Qué es XPEAK",
+        "Qué tipos de profesionales de eventos hay en XPEAK",
+        "Cómo funciona el directorio de XPEAK"
+      ]
+    },
+    {
+      "id": "urn:air:xpeak.es:catalog:sitemap",
+      "displayName": "XPEAK sitemap — todas las páginas indexables",
+      "description": "Mapa del sitio con las páginas de categoría, ciudad, fichas públicas de profesionales y guías de precios.",
+      "type": "application/xml",
+      "url": "https://xpeak.es/sitemap.xml",
+      "representativeQueries": [
+        "Listado de páginas de XPEAK",
+        "Guías de precios de profesionales de eventos en España"
+      ]
+    }
+  ]
+}
