@@ -10,11 +10,11 @@
   },
   "entries": [
     {
-      "id": "urn:air:xpeak.es:mcp:directorio",
+      "identifier": "urn:air:xpeak.es:mcp:directorio",
       "displayName": "XPEAK MCP — buscar profesionales y pedir presupuesto",
       "description": "Servidor MCP con dos herramientas: buscar profesionales de eventos verificados por rol, ciudad y presupuesto, y crear solicitudes reales de presupuesto (Flash Booking) que el profesional responde por email.",
-      "type": "application/json",
-      "url": "https://ddrqhwravupjzysriblq.supabase.co/functions/v1/mcp-server",
+      "type": "application/mcp-server-card+json",
+      "url": "https://xpeak.es/.well-known/mcp/server-card.json",
       "representativeQueries": [
         "Necesito un DJ para una boda en Madrid",
         "Busco fotógrafo de eventos en Barcelona con presupuesto de 100€/hora",
@@ -24,7 +24,7 @@
       ]
     },
     {
-      "id": "urn:air:xpeak.es:docs:llms",
+      "identifier": "urn:air:xpeak.es:docs:llms",
       "displayName": "XPEAK llms.txt — resumen del sitio para modelos",
       "description": "Descripción estructurada de XPEAK, sus categorías de profesionales y sus páginas principales, en formato llms.txt.",
       "type": "text/plain",
@@ -36,7 +36,7 @@
       ]
     },
     {
-      "id": "urn:air:xpeak.es:catalog:sitemap",
+      "identifier": "urn:air:xpeak.es:catalog:sitemap",
       "displayName": "XPEAK sitemap — todas las páginas indexables",
       "description": "Mapa del sitio con las páginas de categoría, ciudad, fichas públicas de profesionales y guías de precios.",
       "type": "application/xml",
