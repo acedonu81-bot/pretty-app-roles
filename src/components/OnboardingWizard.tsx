@@ -177,10 +177,10 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
   const [selectedRole, setSelectedRole] = useState<string>(prefilledRole);
   const [saving, setSaving] = useState(false);
 
-  // Campos del formulario rápido — antes el step 1 solo mostraba tips de
-  // texto ("Añade tu foto") sin ningún input real, así que "Lo haré
-  // después" era la salida trivial. 4 de los últimos 5 registros reales
-  // quedaron sin foto/precio/ciudad por esto. Ahora se rellenan aquí mismo.
+  // Campos del formulario rápido. Foto, ciudad y tarifa son obligatorios
+  // para continuar: dejarlos opcionales (incluso con inputs reales) seguía
+  // produciendo perfiles vacíos en el directorio, así que "Guardar y
+  // continuar" se bloquea hasta que los tres estén rellenos.
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const [city, setCity] = useState('');
@@ -382,7 +382,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                   </div>
 
                   <div className="px-1">
-                    <p className="text-[0.65rem] font-bold mb-1.5" style={{ color: '#222' }}>Tu tarifa por hora (opcional)</p>
+                    <p className="text-[0.65rem] font-bold mb-1.5" style={{ color: '#222' }}>Tu tarifa por hora</p>
                     <div className="relative">
                       <Euro size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#888' }} />
                       <input
@@ -398,15 +398,25 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                   </div>
                 </div>
 
-                <button onClick={handleQuickSave} disabled={savingQuick || uploadingPhoto}
-                  className="w-full py-3.5 rounded-xl font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] mb-2"
-                  style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-                  {savingQuick ? 'Guardando...' : 'Guardar y continuar'} <ChevronRight size={15} />
-                </button>
-                <button onClick={markDone} className="w-full py-2 text-[0.65rem] font-semibold"
-                  style={{ color: '#888' }}>
-                  Prefiero hacerlo más tarde
-                </button>
+                {(() => {
+                  const validRate = !!hourlyRate && !isNaN(parseFloat(hourlyRate)) && parseFloat(hourlyRate) > 0;
+                  const canContinue = !!photoUrl && !!city && city !== 'Otra ciudad' && validRate;
+                  const missingLabel = !photoUrl ? 'Sube tu foto para continuar'
+                    : !city || city === 'Otra ciudad' ? 'Elige tu ciudad para continuar'
+                    : !validRate ? 'Indica tu tarifa para continuar'
+                    : 'Guardar y continuar';
+                  return (
+                    <button onClick={handleQuickSave} disabled={savingQuick || uploadingPhoto || !canContinue}
+                      className="w-full py-3.5 rounded-xl font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] mb-2"
+                      style={{
+                        background: canContinue ? 'linear-gradient(135deg,#D4AF37,#B8941E)' : 'rgba(0,0,0,0.15)',
+                        color: canContinue ? '#000' : '#666',
+                        cursor: canContinue ? 'pointer' : 'not-allowed',
+                      }}>
+                      {savingQuick ? 'Guardando...' : missingLabel} <ChevronRight size={15} />
+                    </button>
+                  );
+                })()}
               </motion.div>
             )}
 
