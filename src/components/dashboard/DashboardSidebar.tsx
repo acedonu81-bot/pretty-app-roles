@@ -10,6 +10,7 @@ import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useEffect, useState, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion } from '@/lib/regions';
+import { toast } from 'sonner';
 
 interface SidebarProps {
   activeView: string;
@@ -311,7 +312,16 @@ const DashboardSidebar = ({ activeView, onViewChange }: SidebarProps) => {
                   (el desplegable de DirectoryView respeta este mismo valor). */}
               <select
                 value={selectedRegion}
-                onChange={e => { setSelectedRegion(e.target.value); setPresetRegion(e.target.value); }}
+                onChange={e => {
+                  const region = e.target.value;
+                  setSelectedRegion(region);
+                  setPresetRegion(region);
+                  toast.success(
+                    region === ALL_REGIONS_LABEL
+                      ? 'Filtro de comunidad quitado'
+                      : `Filtrando por ${region} — se aplica al entrar a un rol`
+                  );
+                }}
                 className="mb-1.5 w-full text-[0.72rem] font-bold rounded-lg px-2 py-1.5 outline-none"
                 style={{ background: 'rgba(10,9,8,0.035)', color: 'rgba(10,9,8,0.75)', border: '1px solid rgba(10,9,8,0.08)' }}
               >

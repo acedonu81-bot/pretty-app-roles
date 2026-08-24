@@ -312,7 +312,7 @@ const Dashboard = () => {
 
       {isMobile && (
         <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-          <SheetContent side="left" className="p-0 w-[260px] border-r-0" style={{ background: '#ffffff' }}>
+          <SheetContent side="left" className="p-0 w-[272px] max-w-[85vw] border-r-0" style={{ background: '#ffffff' }}>
             <DashboardSidebar activeView={activeView} onViewChange={handleViewChange} />
           </SheetContent>
         </Sheet>

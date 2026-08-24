@@ -60,11 +60,11 @@ export const ROLE_CONFIG: Record<string, {
   },
   fotografo: {
     dbRole: 'media',
-    title: 'Fotógrafos y videógrafos para eventos',
-    subtitle: 'Fotógrafos de bodas, comuniones y eventos en España. Portfolios reales, precios sin sorpresas.',
+    title: 'Media & Contenido: fotógrafos, videógrafos y creadores',
+    subtitle: 'Fotógrafos, videógrafos y creadores de contenido para bodas, comuniones y eventos en España. Portfolios reales, precios sin sorpresas.',
     seoTitle: 'Contratar fotógrafo para eventos en España — XPEAK',
     seoDesc: 'Directorio de fotógrafos para bodas y eventos en España. Portfolios reales, precios visibles, contacto directo.',
-    cta: 'Contratar fotógrafo',
+    cta: 'Contratar fotógrafo o creador',
   },
   staff: {
     dbRole: 'staff',
@@ -198,7 +198,7 @@ export const ROLE_CONFIG: Record<string, {
 
 export const ALL_ROLES = [
   { slug: 'dj', label: 'DJs' },
-  { slug: 'fotografo', label: 'Fotógrafos' },
+  { slug: 'fotografo', label: 'Media & Contenido' },
   { slug: 'staff', label: 'Camareros' },
   { slug: 'azafata', label: 'Azafatas' },
   { slug: 'maquillaje', label: 'Maquillaje y Peluquería' },
