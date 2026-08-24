@@ -37,6 +37,19 @@ const ROLE_ICON: Record<string, LucideIcon> = {
   'wedding-planner': CalendarHeart, 'diseno-grafico': PenTool,
 };
 
+// Mismas 6 categorías que la landing y el sidebar del dashboard (Música,
+// Gastro & Sala, Imagen & Media, Staff & Promoción, Belleza & Estética,
+// Entretenimiento) — antes el menú listaba los 17 roles sueltos sin ninguna
+// agrupación, difícil de escanear de un vistazo.
+const ROLE_GROUPS: { label: string; slugs: string[] }[] = [
+  { label: 'Música', slugs: ['dj', 'grupo-musical'] },
+  { label: 'Gastro & Sala', slugs: ['staff', 'catering'] },
+  { label: 'Imagen & Media', slugs: ['fotografo', 'photo-booth', 'diseno-grafico'] },
+  { label: 'Staff & Promoción', slugs: ['azafata', 'promotores', 'speaker', 'wedding-planner'] },
+  { label: 'Belleza & Estética', slugs: ['maquillaje', 'vestuario'] },
+  { label: 'Entretenimiento', slugs: ['animador', 'mago', 'humorista', 'bailarin'] },
+];
+
 const LAST_ROLE_KEY = 'xpeak_descubrir_last_role';
 // 'todos' = feed mezclado (descubrimiento tipo TikTok "Para ti").
 const ALL_SLUG = 'todos';
@@ -194,17 +207,17 @@ function DiscoverMenu({ activeRole, onPick, onClose, onClassic, isLogged }: {
       <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }} onClick={onClose} />
       <div className="absolute top-0 right-0 h-full w-[86%] max-w-sm overflow-y-auto"
         style={{ background: 'linear-gradient(160deg,#0e0d0b,#090909)', borderLeft: '1px solid rgba(212,175,55,0.15)' }}>
-        <div className="flex items-center justify-between px-5 py-4 sticky top-0" style={{ background: '#0b0a09', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="flex items-center justify-between px-5 py-4 sticky top-0 z-10" style={{ background: '#0b0a09', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
           <span className="text-xs font-black uppercase tracking-widest" style={{ color: '#D4AF37' }}>Explorar</span>
           <button onClick={onClose} aria-label="Cerrar" className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.06)' }}>
             <X size={16} color="#fff" />
           </button>
         </div>
 
-        <div className="p-4 grid grid-cols-2 gap-3">
-          {/* Para ti (mezclado) */}
+        <div className="p-4">
+          {/* Para ti (mezclado) — suelto arriba, fuera de cualquier grupo */}
           <button onClick={() => onPick(ALL_SLUG)}
-            className="relative overflow-hidden p-4 rounded-2xl text-left transition-all active:scale-[0.97] min-h-[104px] flex flex-col"
+            className="relative overflow-hidden p-4 rounded-2xl text-left transition-all active:scale-[0.97] min-h-[104px] flex flex-col w-full mb-4"
             style={activeRole === ALL_SLUG
               ? { background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.45)' }
               : { background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
@@ -215,21 +228,35 @@ function DiscoverMenu({ activeRole, onPick, onClose, onClassic, isLogged }: {
             {activeRole === ALL_SLUG && <p className="text-[0.6rem] font-bold uppercase tracking-wider mt-1" style={{ color: '#D4AF37' }}>Viendo</p>}
           </button>
 
-          {ALL_ROLES.filter(r => ROLE_CONFIG[r.slug]).map(r => {
-            const Icon = ROLE_ICON[r.slug] ?? Sparkles;
-            const active = r.slug === activeRole;
+          {/* Roles agrupados por categoría — mismo naming que landing/dashboard */}
+          {ROLE_GROUPS.map(group => {
+            const roles = ALL_ROLES.filter(r => group.slugs.includes(r.slug) && ROLE_CONFIG[r.slug]);
+            if (roles.length === 0) return null;
             return (
-              <button key={r.slug} onClick={() => onPick(r.slug)}
-                className="relative overflow-hidden p-4 rounded-2xl text-left transition-all active:scale-[0.97] min-h-[104px] flex flex-col"
-                style={active
-                  ? { background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.45)' }
-                  : { background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-2" style={{ background: 'linear-gradient(135deg, rgba(212,175,55,0.18), rgba(212,175,55,0.06))', border: '1px solid rgba(212,175,55,0.2)' }}>
-                  <Icon size={20} strokeWidth={2} style={{ color: '#D4AF37' }} />
+              <div key={group.label} className="mb-4">
+                <p className="text-[0.65rem] font-black uppercase tracking-widest mb-2 px-1" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                  {group.label}
+                </p>
+                <div className="grid grid-cols-2 gap-3">
+                  {roles.map(r => {
+                    const Icon = ROLE_ICON[r.slug] ?? Sparkles;
+                    const active = r.slug === activeRole;
+                    return (
+                      <button key={r.slug} onClick={() => onPick(r.slug)}
+                        className="relative overflow-hidden p-4 rounded-2xl text-left transition-all active:scale-[0.97] min-h-[104px] flex flex-col"
+                        style={active
+                          ? { background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.45)' }
+                          : { background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                        <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-2" style={{ background: 'linear-gradient(135deg, rgba(212,175,55,0.18), rgba(212,175,55,0.06))', border: '1px solid rgba(212,175,55,0.2)' }}>
+                          <Icon size={20} strokeWidth={2} style={{ color: '#D4AF37' }} />
+                        </div>
+                        <p className="text-sm font-black leading-tight mb-auto" style={{ color: '#fff' }}>{r.label}</p>
+                        {active && <p className="text-[0.6rem] font-bold uppercase tracking-wider mt-1" style={{ color: '#D4AF37' }}>Viendo</p>}
+                      </button>
+                    );
+                  })}
                 </div>
-                <p className="text-sm font-black leading-tight mb-auto" style={{ color: '#fff' }}>{r.label}</p>
-                {active && <p className="text-[0.6rem] font-bold uppercase tracking-wider mt-1" style={{ color: '#D4AF37' }}>Viendo</p>}
-              </button>
+              </div>
             );
           })}
         </div>
