@@ -105,7 +105,7 @@ export default function Precios() {
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Precios</p>
             <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-4">Gratis. Sin trampa.</h1>
             <p className="text-sm max-w-md mx-auto" style={{ color: '#3d3d4e' }}>
-              XPEAK no cobra comisión sobre ningún caché ni contratación. El acceso básico es gratuito para siempre, tanto para profesionales como para empresarios.
+              XPEAK no cobra comisión sobre ningún caché ni contratación. El acceso básico es gratuito para siempre, tanto para profesionales como para empresarios. Sin tarjeta de crédito, sin permanencia.
             </p>
           </div>
 
