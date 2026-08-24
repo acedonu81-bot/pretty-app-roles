@@ -1,0 +1,18 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://xpeak.es/",
+      "describedby": [
+        { "href": "https://xpeak.es/llms.txt", "type": "text/plain" }
+      ],
+      "service-desc": [
+        { "href": "https://xpeak.es/.well-known/mcp/server-card.json", "type": "application/json", "title": "XPEAK MCP server — buscar profesionales y pedir presupuesto" }
+      ],
+      "item": [
+        { "href": "https://xpeak.es/sitemap.xml", "type": "application/xml" },
+        { "href": "https://xpeak.es/.well-known/ai-catalog.json", "type": "application/json" },
+        { "href": "https://xpeak.es/.well-known/agent-card.json", "type": "application/json" }
+      ]
+    }
+  ]
+}

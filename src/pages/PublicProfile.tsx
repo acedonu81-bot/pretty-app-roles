@@ -979,7 +979,7 @@ const PublicProfile = () => {
               </div>
               <div className="flex flex-col gap-4">
                 {extraMedia.video_session_urls.slice(0, 3).map((url, i) => (
-                  <video key={i} src={url} controls className="w-full rounded-2xl"
+                  <video key={i} src={url} controls preload="metadata" className="w-full rounded-2xl"
                     style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }} />
                 ))}
               </div>

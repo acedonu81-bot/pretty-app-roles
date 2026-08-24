@@ -289,6 +289,12 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
     return null;
   };
 
+  // Archivo de vídeo directo (subido a Storage con "Grabar o subir vídeo"),
+  // a diferencia de un enlace YouTube/Vimeo que necesita <iframe> — se
+  // reproduce con <video> nativo, no se embebe.
+  const isDirectVideoFile = (url: string): boolean =>
+    /\.(mp4|mov|webm|m4v)(\?|$)/i.test(url) || url.includes('/storage/v1/object/');
+
   const getMusicEmbed = (url: string): string | null => {
     if (!url) return null;
     if (url.includes('soundcloud.com')) return `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%234285F4&auto_play=false&show_artwork=true`;
@@ -465,6 +471,13 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
                   </div>
                 )}
                 {post.media_url && post.post_type === 'video' && (() => {
+                  if (isDirectVideoFile(post.media_url)) {
+                    return (
+                      <div className="mt-3 rounded-xl overflow-hidden" style={{ aspectRatio: '16/9' }}>
+                        <video src={post.media_url} controls preload="metadata" className="w-full h-full object-cover" />
+                      </div>
+                    );
+                  }
                   const embed = getVideoEmbed(post.media_url);
                   return embed ? (
                     <div className="mt-3 rounded-xl overflow-hidden" style={{ aspectRatio: '16/9' }}>
@@ -560,6 +573,13 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
             )}
 
             {videoUrl && (() => {
+              if (isDirectVideoFile(videoUrl)) {
+                return (
+                  <div className="mt-4 rounded-2xl overflow-hidden" style={{ aspectRatio: '16/9' }}>
+                    <video src={videoUrl} controls preload="metadata" className="w-full h-full object-cover" />
+                  </div>
+                );
+              }
               const embed = getVideoEmbed(videoUrl);
               return embed ? (
                 <div className="mt-4 rounded-2xl overflow-hidden" style={{ aspectRatio: '16/9' }}>

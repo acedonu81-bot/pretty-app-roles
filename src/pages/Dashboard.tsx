@@ -42,6 +42,8 @@ const TopWeekendView = lazy(() => import('@/components/dashboard/views/TopWeeken
 const StatsView = lazy(() => import('@/components/dashboard/views/StatsView'));
 const AdminView = lazy(() => import('@/components/dashboard/views/AdminView'));
 const EmpresarioView = lazy(() => import('@/components/dashboard/views/EmpresarioView'));
+const PhotoBoothView = lazy(() => import('@/components/dashboard/views/PhotoBoothView'));
+const GrupoMusicalView = lazy(() => import('@/components/dashboard/views/GrupoMusicalView'));
 const ContractView = lazy(() => import('@/components/dashboard/views/ContractView'));
 const FichaView = lazy(() => import('@/components/dashboard/views/FichaView'));
 const AgencyView = lazy(() => import('@/components/dashboard/views/AgencyView'));
@@ -263,6 +265,8 @@ const Dashboard = () => {
       case 'monologo':  return <MonologoView  onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'animador':  return <AnimadorView  onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'speaker':   return <SpeakerView   onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
+      case 'photo-booth': return <PhotoBoothView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
+      case 'grupo-musical': return <GrupoMusicalView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'settings': return <SettingsView onNavigate={nav} />;
       case 'empresario': return <EmpresarioView onMessage={handleMessage} />;
       case 'messages': return <MessagesView initialUserId={messagesTarget?.userId} initialName={messagesTarget?.name} />;

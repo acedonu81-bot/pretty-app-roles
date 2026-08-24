@@ -705,6 +705,23 @@ export const CATEGORY_DATA: Record<string, {
 CATEGORY_DATA.animadores = CATEGORY_DATA.animador;
 CATEGORY_DATA.payasos = CATEGORY_DATA.payaso;
 
+// Mapa slug de landing (/contratar-X) → slug real del directorio
+// (/directorio/Y). La mayoría coincide, pero algunos nombres de landing no
+// tienen su propia categoría en ROLE_CONFIG y hay que llevarlos a la más
+// afín — antes caían todos a 'dj' por defecto (fallback silencioso de
+// DirectorioPublico), enviando p.ej. a quien busca un monologuista a ver DJs.
+const DIRECTORIO_SLUG: Record<string, string> = {
+  dj: 'dj', fotografo: 'fotografo', staff: 'staff', camareros: 'staff',
+  maquillaje: 'maquillaje', peluqueria: 'maquillaje',
+  promotores: 'promotores', azafata: 'azafata', catering: 'catering',
+  vestuario: 'vestuario', 'disco-movil': 'dj',
+  humorista: 'humorista', monologo: 'humorista',
+  animador: 'animador', animadores: 'animador', payaso: 'animador', payasos: 'animador',
+  speaker: 'speaker', mago: 'mago', bailarin: 'bailarin',
+  'photo-booth': 'photo-booth', 'grupo-musical': 'grupo-musical',
+};
+const directorioHref = (slug: string) => `/directorio/${DIRECTORIO_SLUG[slug] ?? 'dj'}`;
+
 const ICON: Record<string, React.ReactNode> = {
   dj: <Music size={20} />,
   staff: <Users size={20} />,
@@ -844,7 +861,7 @@ export default function CategoryLanding() {
           </p>
           <p className="text-sm font-bold mb-8" style={{ color: 'rgba(212,175,55,0.7)' }}>{data.tagline}</p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a href={`/directorio/${['dj','fotografo','staff','maquillaje','peluqueria','promotores','azafata'].includes(data.slug) ? data.slug : data.slug === 'camareros' ? 'staff' : 'dj'}`}
+            <a href={directorioHref(data.slug)}
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Ver profesionales disponibles <ArrowRight size={14} />
@@ -971,7 +988,7 @@ export default function CategoryLanding() {
             <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>
               Contacta directamente — sin registro, sin comisión, respuesta directa del profesional.
             </p>
-            <a href={`/directorio/${['dj','fotografo','staff','maquillaje','peluqueria','promotores','azafata'].includes(data.slug) ? data.slug : data.slug === 'camareros' ? 'staff' : 'dj'}`}
+            <a href={directorioHref(data.slug)}
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Ver profesionales disponibles <ArrowRight size={14} />

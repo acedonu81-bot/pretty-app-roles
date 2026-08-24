@@ -22,12 +22,14 @@ interface SidebarProps {
 // coherente con el resto de XPEAK.
 const DIRECTORY_ITEMS: { id: string; label: string }[] = [
   { id: 'dj', label: 'DJs, Artistas & Música en Vivo' },
+  { id: 'grupo-musical', label: 'Grupos Musicales' },
   { id: 'staff', label: 'Camareros' },
   { id: 'azafata', label: 'Azafatas' },
   { id: 'event_manager', label: 'Encargadas de Eventos' },
   { id: 'bailarin', label: 'Instructores & Bailarines' },
   { id: 'makeup', label: 'Maquillaje & Peluquería' },
   { id: 'media', label: 'Media & Contenido' },
+  { id: 'photo-booth', label: 'Photo Booth' },
   { id: 'mago', label: 'Magos & Ilusionistas' },
   { id: 'humorista', label: 'Humor, Monólogos & Stand-Up' },
   { id: 'animador', label: 'Payasos & Animadores' },
@@ -43,9 +45,9 @@ const DIRECTORY_IDS = new Set(DIRECTORY_ITEMS.map(i => i.id));
 // & Media, Staff & Promoción, Belleza & Estética) para que el sidebar del
 // dashboard no invente un vocabulario distinto al de marketing.
 const DIRECTORY_GROUPS: { label: string; ids: string[] }[] = [
-  { label: 'Música', ids: ['dj'] },
+  { label: 'Música', ids: ['dj', 'grupo-musical'] },
   { label: 'Gastro & Sala', ids: ['staff', 'catering'] },
-  { label: 'Imagen & Media', ids: ['media', 'design'] },
+  { label: 'Imagen & Media', ids: ['media', 'photo-booth', 'design'] },
   { label: 'Staff & Promoción', ids: ['azafata', 'event_manager', 'promotor', 'speaker'] },
   { label: 'Belleza & Estética', ids: ['makeup', 'vestuario'] },
   { label: 'Entretenimiento', ids: ['bailarin', 'mago', 'humorista', 'animador'] },

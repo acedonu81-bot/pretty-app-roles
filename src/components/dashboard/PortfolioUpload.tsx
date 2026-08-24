@@ -6,9 +6,7 @@ import { useProfile } from '@/hooks/useProfile';
 import { compressImage } from '@/lib/image';
 import { toast } from 'sonner';
 
-const MAX_VIDEO_SECONDS = 60;
 const MAX_IMAGE_MB      = 15;
-const MAX_VIDEO_MB      = 50;
 const MAX_ITEMS_PRO = 12;
 
 interface PortfolioItem {
@@ -43,22 +41,6 @@ const EMPTY_CTA: Record<string, { title: string; body: string }> = {
   'photo-booth': { title: 'Ense\u00f1a tus cabinas en acci\u00f3n', body: 'Fotos de tus photo booth montados en eventos reales, props y ejemplos de impresi\u00f3n. Quien alquila quiere ver exactamente lo que llega a su evento.' },
 };
 const EMPTY_CTA_DEFAULT = { title: 'Sube tu portfolio \u2014 es tu mejor tarjeta de presentaci\u00f3n', body: 'Los organizadores miran antes de contactar: los perfiles con fotos o v\u00eddeo reciben m\u00e1s visitas y salen mejor posicionados en el directorio y en Google. Tardas un minuto.' };
-
-const checkVideoDuration = (file: File): Promise<number> =>
-  new Promise((resolve, reject) => {
-    const url = URL.createObjectURL(file);
-    const video = document.createElement('video');
-    video.preload = 'metadata';
-    video.onloadedmetadata = () => {
-      URL.revokeObjectURL(url);
-      resolve(video.duration);
-    };
-    video.onerror = () => {
-      URL.revokeObjectURL(url);
-      reject(new Error('No se pudo leer el vídeo'));
-    };
-    video.src = url;
-  });
 
 const PortfolioUpload = () => {
   const [uploading, setUploading] = useState(false);
@@ -102,28 +84,25 @@ const PortfolioUpload = () => {
     const isVideo = file.type.startsWith('video/');
     const isImage = file.type.startsWith('image/');
 
-    if (!isVideo && !isImage) {
-      toast.error('Solo imágenes (JPG, PNG, WEBP) o vídeos cortos (MP4, MOV)');
-      return;
-    }
-
-    const limitMB = isVideo ? MAX_VIDEO_MB : MAX_IMAGE_MB;
-    if (file.size > limitMB * 1024 * 1024) {
-      toast.error(`Máximo ${limitMB}MB por ${isVideo ? 'vídeo' : 'imagen'}`);
-      return;
-    }
-
     if (isVideo) {
-      try {
-        const duration = await checkVideoDuration(file);
-        if (duration > MAX_VIDEO_SECONDS) {
-          toast.error(`El vídeo no puede superar los ${MAX_VIDEO_SECONDS} segundos (duración: ${Math.round(duration)}s)`);
-          return;
-        }
-      } catch {
-        toast.error('No se pudo verificar la duración del vídeo');
-        return;
-      }
+      // Este portfolio solo sincroniza portfolio_urls (imágenes). Los vídeos
+      // tienen su propia sección ("Vídeo" en Mi Ficha, VideoSessionUpload en
+      // FichaView.tsx) que sí los guarda en el perfil público — aceptarlos
+      // aquí también los subía a Storage sin persistirlos en ningún sitio
+      // visible, dando la sensación de que "no se guardaba".
+      toast.error('Los vídeos se suben en la sección "Vídeo" de Mi Ficha, no aquí en Fotos.');
+      if (inputRef.current) inputRef.current.value = '';
+      return;
+    }
+
+    if (!isImage) {
+      toast.error('Solo imágenes (JPG, PNG, WEBP)');
+      return;
+    }
+
+    if (file.size > MAX_IMAGE_MB * 1024 * 1024) {
+      toast.error(`Máximo ${MAX_IMAGE_MB}MB por imagen`);
+      return;
     }
 
     setUploading(true);
@@ -141,11 +120,14 @@ const PortfolioUpload = () => {
     const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
     const newItem = { name: file.name, url: urlData.publicUrl, storagePath: path, isVideo };
     const next = [...items, newItem];
-    // Sync public URLs to portfolio_urls column (images only — videos not suited for portfolio grid)
-    // — el archivo ya está en Storage, pero sin este update el perfil
-    // público nunca lo muestra. Antes se lanzaba con .then(() => {}) sin
-    // comprobar error, así que "Portfolio actualizado." se mostraba aunque
-    // el update fallara y el archivo quedara subido pero invisible.
+    // Sync public URLs to portfolio_urls column (images only). Los vídeos de
+    // este portfolio NO se sincronizan a ninguna columna: video_session_urls
+    // ya la gestiona VideoSessionUpload (FichaView.tsx, pestaña "Vídeo",
+    // path Storage distinto video-sessions/) — escribir aquí también
+    // pisaría esas URLs, porque ambos componentes sobrescriben la columna
+    // entera en vez de hacer merge. El vídeo queda en Storage y visible en
+    // este grid del dashboard, pero no aparece en el perfil público hasta
+    // que se resuelva ese conflicto de raíz (unificar en una sola fuente).
     const imageUrls = next.filter(i => !i.isVideo).map(i => i.url);
     const { error: syncError } = await supabase.from('profiles').update({ portfolio_urls: imageUrls } as any).eq('user_id', user.id);
     setUploading(false);
@@ -178,7 +160,7 @@ const PortfolioUpload = () => {
         <span className="text-xs text-muted-foreground ml-auto">{items.length}/{maxItems}</span>
       </h4>
       <p className="text-xs text-muted-foreground mb-3">
-        Fotos hasta {MAX_IMAGE_MB}MB · Vídeos hasta {MAX_VIDEO_SECONDS}s / {MAX_VIDEO_MB}MB · hasta {MAX_ITEMS_PRO} elementos
+        Fotos hasta {MAX_IMAGE_MB}MB · hasta {MAX_ITEMS_PRO} elementos · para vídeos, ve a la sección "Vídeo"
       </p>
 
       {/* CTA: portfolio vacío — mensaje según el oficio */}
@@ -208,8 +190,10 @@ const PortfolioUpload = () => {
                   className="w-full h-full object-cover"
                   muted
                   playsInline
+                  preload="metadata"
+                  onLoadedMetadata={e => { (e.target as HTMLVideoElement).currentTime = 0.1; }}
                   onMouseEnter={e => (e.target as HTMLVideoElement).play()}
-                  onMouseLeave={e => { const v = e.target as HTMLVideoElement; v.pause(); v.currentTime = 0; }}
+                  onMouseLeave={e => { const v = e.target as HTMLVideoElement; v.pause(); v.currentTime = 0.1; }}
                 />
               ) : (
                 <img src={item.url} alt={item.name} loading="lazy" className="w-full h-full object-cover" />

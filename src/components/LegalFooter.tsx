@@ -36,9 +36,8 @@ const LegalFooter = () => {
             <div>
               <p className="text-[0.65rem] font-bold uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.58)' }}>Plataforma</p>
               <ul className="space-y-2.5 text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                <li><Link to="/auth" className="inline-block py-1 hover:text-white transition-colors">Registro gratuito</Link></li>
-                <li><Link to="/auth" className="inline-block py-1 hover:text-white transition-colors">Para profesionales</Link></li>
-                <li><Link to="/auth" className="inline-block py-1 hover:text-white transition-colors">Para organizadores de eventos</Link></li>
+                <li><Link to="/directorio/dj" className="inline-block py-1 hover:text-white transition-colors">Ver profesionales</Link></li>
+                <li><Link to="/auth?mode=register&role=profesional" className="inline-block py-1 hover:text-white transition-colors">Publicar mi perfil</Link></li>
                 <li><Link to="/dashboard" className="inline-block py-1 hover:text-white transition-colors">Mi dashboard</Link></li>
               </ul>
             </div>

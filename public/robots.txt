@@ -51,6 +51,3 @@ User-agent: Applebot-Extended
 Allow: /
 
 Sitemap: https://xpeak.es/sitemap.xml
-
-# Descubrimiento para agentes (ARD / agenticresourcediscovery.org)
-Agentmap: https://xpeak.es/.well-known/ai-catalog.json

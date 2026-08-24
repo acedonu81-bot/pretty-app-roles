@@ -109,7 +109,7 @@ const SERVICES: ServiceDef[] = [
   {
     id: 'maquillaje', title: 'Maquillaje nupcial', subtitle: '3–5% del presupuesto',
     note: 'Prueba previa + día del evento',
-    href: '/contratar-maquillaje', dirHref: '/directorio/maquilladora',
+    href: '/contratar-maquillaje', dirHref: '/directorio/maquillaje',
     priceType: 'per-person', priceMin: 0, priceMax: 0, perPersonMin: 150, perPersonMax: 400,
     hasQuantity: false, hasHours: false, hasPersons: true, personsLabel: 'Personas',
     bookWhen: '3–4 meses antes', tipPct: 10,
@@ -151,7 +151,7 @@ const SERVICES: ServiceDef[] = [
   {
     id: 'peluqueria', title: 'Peluquería nupcial', subtitle: 'Recogido o peinado de novia',
     note: 'Incluye prueba previa',
-    href: '/contratar-maquillaje', dirHref: '/directorio/maquilladora',
+    href: '/contratar-maquillaje', dirHref: '/directorio/maquillaje',
     priceType: 'per-person', priceMin: 0, priceMax: 0, perPersonMin: 100, perPersonMax: 280,
     hasQuantity: false, hasHours: false, hasPersons: true, personsLabel: 'Personas',
     bookWhen: '3–4 meses antes', tipPct: 10,
@@ -167,7 +167,7 @@ const SERVICES: ServiceDef[] = [
   {
     id: 'flores', title: 'Florista y decoración', subtitle: '8–12% del presupuesto',
     note: 'Centros de mesa, ramo nupcial y arco',
-    href: '/bodas', dirHref: '/directorio/decorador',
+    href: '/bodas',
     priceType: 'fixed', priceMin: 800, priceMax: 3500,
     hasQuantity: false, hasHours: false, hasPersons: false,
     bookWhen: '6 meses antes',

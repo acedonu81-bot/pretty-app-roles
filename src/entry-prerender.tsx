@@ -33,6 +33,12 @@ export async function renderPage(componentFile: string, routePath: string, route
       </QueryClientProvider>
     </HelmetProvider>
   );
-  const helmet = helmetContext.helmet as { script?: { toString(): string } } | undefined;
-  return { html, headScripts: helmet?.script?.toString() ?? '' };
+  const helmet = helmetContext.helmet as { script?: { toString(): string }; link?: { toString(): string } } | undefined;
+  // Solo <link rel="preload"> de Helmet — el resto (canonical, etc.) ya lo
+  // gestiona prerender-meta.mjs por su cuenta (corre antes en el pipeline de
+  // build) con reemplazo real; arrastrar aquí cualquier <link> duplicaría
+  // esos tags en vez de sustituirlos, porque este paso solo añade al <head>.
+  const preloadLinks = (helmet?.link?.toString() ?? '').match(/<link[^>]*rel="preload"[^>]*>/g)?.join('') ?? '';
+  const headScripts = preloadLinks + (helmet?.script?.toString() ?? '');
+  return { html, headScripts };
 }

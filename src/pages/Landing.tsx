@@ -287,7 +287,7 @@ const px = (id: number) => `/images/pexels/${id}.jpg`;
 /* Mapa categoría de la home → destino real (los keys de ROLE_DETAILS no son slugs del directorio) */
 const CATEGORY_DEST: Record<string, string> = {
   musica: '/directorio/dj',
-  gastro: '/directorio/catering',
+  gastro: '/directorio/staff',
   imagen: '/directorio/fotografo',
   staff: '/directorio/staff',
   belleza: '/directorio/maquillaje',
@@ -500,6 +500,7 @@ const Landing = () => {
     <>
     <Helmet>
       <title>XPEAK — Contratar DJ, Fotógrafo y Staff para Eventos | España</title>
+      <link rel="preload" href="/videos/hero-poster.jpg" as="image" fetchpriority="high" />
       <meta name="description" content="Encuentra y contrata DJ, fotógrafo, camarero, staff y catering para festivales, clubs, eventos privados y bodas en España. Profesionales verificados. Flash Booking. Gratis." />
       <link rel="canonical" href="https://xpeak.es/" />
       <meta property="og:title" content="XPEAK | Contratar DJs, Staff y Profesionales para Eventos en España" />
@@ -627,24 +628,7 @@ const Landing = () => {
         <div className="absolute inset-0 pointer-events-none" style={{
           background: 'linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.3) 70%, #ffffff 100%)'
         }} />
-      <header className="relative max-w-[1200px] mx-auto px-5 md:px-8 pt-12 pb-8 md:pt-20 md:pb-16 text-center">
-        <FadeIn>
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-5 md:mb-8 flex-wrap justify-center"
-            style={{
-              background: 'rgba(255,220,0,0.12)',
-              border: '1px solid rgba(255,220,0,0.3)',
-            }}>
-            <Sparkles size={14} style={{ color: '#FFCC00' }} />
-            <span className="uppercase tracking-[0.3em] text-xs font-semibold" style={{ color: '#FFCC00' }}>
-              Temporada activa —{' '}
-              <a href="/contratar-dj/ibiza" className="underline decoration-dotted underline-offset-2 hover:opacity-80">Ibiza</a>
-              {' · '}
-              <a href="/contratar-dj/palma-de-mallorca" className="underline decoration-dotted underline-offset-2 hover:opacity-80">Palma</a>
-              {' · '}
-              <a href="/contratar-dj/malaga" className="underline decoration-dotted underline-offset-2 hover:opacity-80">Costa del Sol</a>
-            </span>
-          </div>
-        </FadeIn>
+      <header className="relative max-w-[1200px] mx-auto px-5 md:px-8 pt-6 pb-8 md:pt-10 md:pb-16 text-center">
         <FadeIn delay={0.1}>
           <h1
             aria-label="Los mejores profesionales para tu evento en España — DJ, fotógrafo, camareros y staff verificados"
@@ -655,24 +639,57 @@ const Landing = () => {
             <span className="block" style={{ minHeight: '1.3em' }}><span className="text-gradient">para </span><RotatingWord /></span>
           </h1>
         </FadeIn>
-        {/* CTA PRIMARIO ÚNICO — un solo camino claro para el organizador.
-            El feed Instagram es la puerta principal; el buscador y "soy
-            profesional" quedan subordinados debajo. */}
+        {/* Selector de las dos vías reales de tráfico: quien quiere
+            CONTRATAR (organizador) y quien quiere ANUNCIARSE (profesional).
+            Antes había un solo CTA hacia "Descubrir profesionales" con la
+            vía de profesional como enlace de texto discreto debajo — parte
+            del tráfico de profesionales llegaba sin un camino claro y
+            terminaba navegando a ciegas hasta /auth vía navbar/footer. */}
         <FadeIn delay={0.25}>
-          <div className="max-w-md mx-auto flex flex-col items-center gap-3 mb-6 md:mb-8">
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => navigate('/descubrir')}
-              className="w-full flex items-center justify-center gap-2 px-7 py-4 rounded-2xl text-base font-black transition-all"
-              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 8px 24px rgba(212,175,55,0.35)' }}
-            >
-              <Sparkles size={18} /> Descubrir profesionales
-            </motion.button>
-            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
-              Desliza y encuentra al profesional perfecto para tu evento
+          <div className="max-w-md mx-auto mb-3">
+            <p className="text-center text-sm font-black uppercase tracking-[0.15em] mb-4" style={{ color: '#D4AF37', textShadow: '0 0 10px rgba(212,175,55,0.4)' }}>
+              ¿Qué quieres hacer?
             </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <motion.button
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                onClick={() => navigate('/descubrir')}
+                className="relative flex flex-col items-start justify-center gap-1 px-5 py-6 rounded-2xl text-left transition-all overflow-hidden"
+                style={{
+                  background: 'linear-gradient(135deg,#F4D35E,#D4AF37 45%,#B8941E)',
+                  color: '#000',
+                  border: '1px solid rgba(0,0,0,0.5)',
+                  boxShadow: '0 0 0 1px rgba(255,224,130,0.5), 0 0 18px rgba(0,0,0,0.55), 0 0 36px rgba(0,0,0,0.35), 0 12px 28px rgba(0,0,0,0.5)',
+                }}
+              >
+                <span className="flex items-center gap-2 text-lg font-black tracking-tight"><Sparkles size={20} /> Quiero contratar</span>
+                <span className="text-xs font-bold opacity-80">Organizo un evento</span>
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                onClick={() => {
+                  if (typeof window !== 'undefined' && (window as any).fbq) (window as any).fbq('track', 'Lead');
+                  navigate('/auth?mode=register&role=profesional');
+                }}
+                className="relative flex flex-col items-start justify-center gap-1 px-5 py-6 rounded-2xl text-left transition-all overflow-hidden"
+                style={{
+                  background: 'linear-gradient(135deg,#0f1e35,#0c1626 55%,#08101c)',
+                  border: '1px solid rgba(96,165,250,0.55)',
+                  color: '#fff',
+                  boxShadow: '0 0 0 1px rgba(96,165,250,0.15), 0 0 18px rgba(96,165,250,0.4), 0 0 36px rgba(96,165,250,0.2), 0 12px 28px rgba(0,0,0,0.5)',
+                }}
+              >
+                <span className="flex items-center gap-2 text-lg font-black tracking-tight" style={{ color: '#93c5fd', textShadow: '0 0 8px rgba(96,165,250,0.6)' }}>
+                  <Headphones size={20} /> Quiero anunciarme
+                </span>
+                <span className="text-xs font-bold" style={{ color: 'rgba(255,255,255,0.85)' }}>Soy DJ, fotógrafo, staff…</span>
+              </motion.button>
+            </div>
+          </div>
 
+          <div className="max-w-md mx-auto flex flex-col items-center gap-3 mb-6 md:mb-8">
             {/* Buscador secundario (para quien ya sabe qué busca) */}
             <form
               onSubmit={(e) => {
@@ -705,18 +722,6 @@ const Landing = () => {
               </button>
             </form>
           </div>
-
-          {/* Enlace secundario discreto para el profesional */}
-          <button
-            onClick={() => {
-              if (typeof window !== 'undefined' && (window as any).fbq) (window as any).fbq('track', 'Lead');
-              navigate('/auth?mode=register&role=profesional');
-            }}
-            className="text-xs font-bold underline decoration-dotted underline-offset-4 transition-opacity hover:opacity-70"
-            style={{ color: 'rgba(255,255,255,0.75)' }}
-          >
-            ¿Eres DJ, fotógrafo o staff? Crea tu perfil gratis →
-          </button>
 
           <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-1 mt-5">
             {[
@@ -771,7 +776,7 @@ const Landing = () => {
           <div className="text-center mb-5">
             <p className="uppercase tracking-[0.3em] text-xs font-semibold mb-2" style={{ color: '#8B6A00' }}>Categorías</p>
             <h2 className="text-2xl font-black tracking-tight font-display">
-              Encuentra tu <span className="text-gradient">talento</span>
+              Encuentra al <span className="text-gradient">profesional</span>
             </h2>
           </div>
         </FadeIn>
@@ -780,7 +785,7 @@ const Landing = () => {
             className="flex gap-3 overflow-x-auto pb-2"
             style={{ scrollbarWidth: 'none' }}
           >
-            {ROLE_DETAILS.map(role => (
+            {ROLE_DETAILS.filter(role => role.key !== 'empresario').map(role => (
               <a
                 key={role.key}
                 href={CATEGORY_DEST[role.key]}
@@ -811,12 +816,12 @@ const Landing = () => {
               Categorías
             </p>
             <h2 className="text-3xl md:text-5xl font-black tracking-tight font-display" style={{ color: '#111' }}>
-              Encuentra tu <span className="text-gradient">talento</span>
+              Encuentra al <span className="text-gradient">profesional</span>
             </h2>
           </div>
         </FadeIn>
         <p className="text-center text-xs text-muted-foreground mb-6" style={{ color: '#333' }}>
-          Haz clic en cada categoría para ver qué puedes hacer
+          Haz clic en cada categoría para ver los perfiles disponibles
         </p>
         {/* Fila 1-2: bento asimétrico */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 auto-rows-[170px] md:auto-rows-[260px] mb-3 md:mb-4">
@@ -824,13 +829,6 @@ const Landing = () => {
             <BentoCard image={bentoMusica} icon={<Music size={20} />} title="Música" subtitle="DJs, productores, artistas en vivo, VJs y técnicos de sonido" className="h-full"
               isFresh={freshRoles.has('dj')}
               href={CATEGORY_DEST.musica} />
-          </FadeIn>
-          <FadeIn delay={0.1} className="md:col-span-2">
-            <BentoCard
-              image="/images/pexels/1190297.jpg"
-              icon={<Building2 size={20} />} title="Empresario" subtitle="Salas, promotoras y agencias de eventos" className="h-full"
-              isFresh={freshRoles.has('empresario')}
-              href={CATEGORY_DEST.empresario} />
           </FadeIn>
           <FadeIn delay={0.15} className="md:row-span-2">
             <BentoCard image={bentoImagen} icon={<Camera size={20} />} title="Imagen & Media" subtitle="Fotógrafos, videógrafos y creadores" className="h-full"
