@@ -19,6 +19,7 @@ export interface ReelsProfile {
   role: string;
   photo_url: string | null;
   bio_video_url?: string | null;
+  video_session_urls?: string[] | null;
   zone: string | null;
   specialty: string | null;
   hourly_rate: number;
