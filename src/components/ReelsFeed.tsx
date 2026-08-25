@@ -54,12 +54,17 @@ const LOOPS = 6;
  * (preload='none') — así tengas 3 o 3.000 vídeos, el móvil solo procesa el
  * visible. Silenciado + loop + playsInline (autoplay móvil).
  */
-function ReelMedia({ profile: p, eager, imgError, onImgError, soundOn }: {
+function ReelMedia({ profile: p, eager, imgError, onImgError, soundOn, photoOnly = false }: {
   profile: ReelsProfile;
   eager: boolean;
   imgError: boolean;
   onImgError: () => void;
   soundOn: boolean;
+  // Cuando es true, este componente SOLO muestra foto/inicial y nunca monta
+  // ni reproduce bio_video_url — usado en el slide 0 (foto) de ReelSlider,
+  // donde el vídeo principal ahora vive en su propio slide (ReelVideoSlide).
+  // Evita doble reproducción del mismo vídeo en dos sitios a la vez.
+  photoOnly?: boolean;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -68,7 +73,7 @@ function ReelMedia({ profile: p, eager, imgError, onImgError, soundOn }: {
   // bio_video_url también puede ser un enlace YouTube/Vimeo (necesita iframe, no
   // sirve aquí) → en ese caso mostramos la foto, no un vídeo roto.
   const url = p.bio_video_url ?? '';
-  const hasVideo = /\.(mp4|webm|mov|m4v)(\?|$)/i.test(url);
+  const hasVideo = !photoOnly && /\.(mp4|webm|mov|m4v)(\?|$)/i.test(url);
 
   // Aplica el estado de sonido global al vídeo (como Instagram: una vez activas
   // el sonido, se mantiene para todos los reels).
@@ -78,6 +83,7 @@ function ReelMedia({ profile: p, eager, imgError, onImgError, soundOn }: {
   }, [soundOn, visible]);
 
   useEffect(() => {
+    if (photoOnly) return;
     if (!hasVideo) return;
     const el = wrapRef.current;
     if (!el) return;
@@ -87,15 +93,16 @@ function ReelMedia({ profile: p, eager, imgError, onImgError, soundOn }: {
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [hasVideo]);
+  }, [hasVideo, photoOnly]);
 
   // Play/pause según visibilidad — nunca reproduce fuera de pantalla.
   useEffect(() => {
+    if (photoOnly) return;
     const v = videoRef.current;
     if (!v) return;
     if (visible) { v.play().catch(() => { /* autoplay bloqueado: sin efecto */ }); }
     else { v.pause(); }
-  }, [visible]);
+  }, [visible, photoOnly]);
 
   return (
     <div ref={wrapRef} className="absolute inset-0">
@@ -115,8 +122,9 @@ function ReelMedia({ profile: p, eager, imgError, onImgError, soundOn }: {
         </div>
       )}
 
-      {/* Vídeo encima, solo cuando el reel es visible (se monta bajo demanda) */}
-      {hasVideo && visible && (
+      {/* Vídeo encima, solo cuando el reel es visible (se monta bajo demanda).
+          Nunca en modo photoOnly: hasVideo ya es false ahí, doble garantía. */}
+      {!photoOnly && hasVideo && visible && (
         <video
           ref={videoRef}
           src={p.bio_video_url ?? undefined}
@@ -219,6 +227,7 @@ function ReelSlider({ profile: p, eager, imgError, onImgError, soundOn, active, 
                   imgError={imgError}
                   onImgError={onImgError}
                   soundOn={soundOn}
+                  photoOnly
                 />
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.4) 100%)' }} />
                 <div className="absolute bottom-0 left-0 right-0 z-20 p-5 max-w-sm" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 1.5rem)' }}>
