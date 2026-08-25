@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
-import { MapPin, Zap, BadgeCheck, Star, Plus, Check, MessageCircle, Volume2, VolumeX } from 'lucide-react';
+import { MapPin, Zap, BadgeCheck, Star, Plus, Check, MessageCircle, Volume2, VolumeX, ChevronRight } from 'lucide-react';
+import { buildReelSlides, type ReelSlide } from '@/lib/reelSlides';
 
 /**
  * ReelsFeed — feed vertical tipo Instagram/Reels. Scroll vertical infinito
@@ -130,6 +131,185 @@ function ReelMedia({ profile: p, eager, imgError, onImgError, soundOn }: {
   );
 }
 
+/**
+ * Slide de vídeo individual (bio_video_url o una sesión) dentro del
+ * carrusel horizontal. Mismo criterio de reproducción por visibilidad que
+ * ReelMedia: solo carga/reproduce cuando `active` es true (perfil visible
+ * verticalmente Y slide horizontal activo). Pantalla completa, sin overlay.
+ */
+function ReelVideoSlide({ url, active, soundOn }: { url: string; active: boolean; soundOn: boolean }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (v) v.muted = !soundOn;
+  }, [soundOn, active]);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (active) { v.play().catch(() => { /* autoplay bloqueado: sin efecto */ }); }
+    else { v.pause(); }
+  }, [active]);
+
+  return (
+    <div className="absolute inset-0 bg-black">
+      {active && (
+        <video
+          ref={videoRef}
+          src={url}
+          loop
+          playsInline
+          preload="none"
+          className="absolute inset-0 w-full h-full object-contain"
+        />
+      )}
+    </div>
+  );
+}
+
+/**
+ * ReelSlider — carrusel horizontal DENTRO de una tarjeta del feed vertical.
+ * Slide 0 = foto (con el overlay de info/CTAs de siempre). Slides 1+ = vídeo,
+ * pantalla completa sin overlay. Scroll-snap-x propio, independiente del
+ * scroll-snap-y del contenedor padre — el gesto vertical para cambiar de
+ * perfil sigue funcionando sin importar en qué slide horizontal se esté.
+ */
+function ReelSlider({ profile: p, eager, imgError, onImgError, soundOn, active, inCart, onOpenProfile, onBookNow, onAddToCart }: {
+  profile: ReelsProfile;
+  eager: boolean;
+  imgError: boolean;
+  onImgError: () => void;
+  soundOn: boolean;
+  active: boolean;
+  inCart: boolean;
+  onOpenProfile: (p: ReelsProfile) => void;
+  onBookNow: (p: ReelsProfile) => void;
+  onAddToCart: (p: ReelsProfile) => void;
+}) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [hIdx, setHIdx] = useState(0);
+  const slides = useMemo(() => buildReelSlides(p), [p]);
+
+  // Al desmontar/remontar la tarjeta (siguiente perfil tras scroll vertical),
+  // el carrusel horizontal ya arranca en scrollLeft 0 por defecto — no hace
+  // falta resetear nada manualmente, cada instancia es nueva.
+
+  function onHScroll() {
+    const el = trackRef.current;
+    if (!el || el.clientWidth === 0) return;
+    setHIdx(Math.round(el.scrollLeft / el.clientWidth));
+  }
+
+  return (
+    <div className="relative w-full h-full">
+      <div
+        ref={trackRef}
+        onScroll={onHScroll}
+        className="w-full h-full overflow-x-scroll snap-x snap-mandatory flex"
+        style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
+      >
+        {slides.map((slide, i) => (
+          <div key={i} className="relative w-full h-full flex-shrink-0 snap-start" style={{ minWidth: '100%' }}>
+            {slide.type === 'photo' ? (
+              <>
+                <ReelMedia
+                  profile={p}
+                  eager={eager}
+                  imgError={imgError}
+                  onImgError={onImgError}
+                  soundOn={soundOn}
+                />
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.4) 100%)' }} />
+                <div className="absolute bottom-0 left-0 right-0 z-20 p-5 max-w-sm" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 1.5rem)' }}>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {p.is_flash_active && (
+                      <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-black" style={{ background: '#15803d', color: '#fff' }}>
+                        <Zap size={11} fill="#fff" /> Disponible ahora
+                      </span>
+                    )}
+                    {p.is_verified && (
+                      <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-black" style={{ background: 'rgba(212,175,55,0.95)', color: '#000' }}>
+                        <BadgeCheck size={11} /> Verificado
+                      </span>
+                    )}
+                    {p.is_early_adopter && (
+                      <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black"
+                        style={{
+                          background: 'linear-gradient(135deg,#D4AF37,#B8941E)',
+                          color: '#000',
+                          border: '1px solid rgba(255,255,255,0.35)',
+                          boxShadow: '0 0 16px rgba(212,175,55,0.5), 0 2px 8px rgba(0,0,0,0.25)',
+                        }}>
+                        <Star size={11} fill="#000" /> Fundador
+                      </span>
+                    )}
+                  </div>
+
+                  <h2 className="text-2xl font-black mb-1 break-words line-clamp-2" style={{ color: '#fff' }}>{p.display_name}</h2>
+                  {p.specialty && <p className="text-sm font-semibold mb-1" style={{ color: 'rgba(212,175,55,0.9)' }}>{p.specialty}</p>}
+
+                  <div className="flex items-center gap-3 mb-2 flex-wrap text-xs" style={{ color: 'rgba(255,255,255,0.78)' }}>
+                    {p.zone && <span className="flex items-center gap-1"><MapPin size={11} />{p.zone.split(',')[0]}</span>}
+                    {p.reviewCount > 0 && <span className="flex items-center gap-1"><Star size={11} fill="#D4AF37" color="#D4AF37" />{p.avgRating} ({p.reviewCount})</span>}
+                    {p.hourly_rate > 0 ? <span className="font-black" style={{ color: '#fff' }}>desde {p.hourly_rate}€/h</span>
+                      : <span className="font-black" style={{ color: '#fff' }}>Precio a consultar</span>}
+                  </div>
+
+                  {p.bio && (
+                    <p className="text-xs leading-relaxed mb-4 line-clamp-2" style={{ color: 'rgba(255,255,255,0.62)' }}>
+                      {p.bio.slice(0, 110)}{p.bio.length > 110 ? '…' : ''}
+                    </p>
+                  )}
+
+                  <div className="flex gap-2">
+                    <button onClick={() => onAddToCart(p)} disabled={inCart}
+                      className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 transition-all active:scale-95"
+                      style={inCart
+                        ? { background: 'rgba(34,197,94,0.2)', border: '1.5px solid rgba(34,197,94,0.5)' }
+                        : { background: 'rgba(255,255,255,0.12)', border: '1.5px solid rgba(255,255,255,0.25)', backdropFilter: 'blur(8px)' }}>
+                      {inCart ? <Check size={18} color="#22c55e" /> : <Plus size={18} color="#fff" />}
+                    </button>
+                    <button onClick={() => onOpenProfile(p)}
+                      className="h-12 px-4 rounded-full flex items-center justify-center font-semibold text-sm flex-shrink-0"
+                      style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.18)', color: 'rgba(255,255,255,0.85)' }}>
+                      Ver perfil
+                    </button>
+                    <button onClick={() => onBookNow(p)}
+                      className="flex-1 h-12 px-5 rounded-full flex items-center justify-center gap-1.5 font-black text-sm min-w-0"
+                      style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+                      <MessageCircle size={16} /> Contactar
+                    </button>
+                  </div>
+                </div>
+                {slides.length > 1 && i === 0 && (
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 z-20 pointer-events-none"
+                    style={{ animation: 'reel-arrow-pulse 1.6s ease-in-out infinite' }}>
+                    <ChevronRight size={26} color="rgba(255,255,255,0.85)" />
+                  </div>
+                )}
+              </>
+            ) : (
+              <ReelVideoSlide url={slide.url!} active={active && hIdx === i} soundOn={soundOn} />
+            )}
+          </div>
+        ))}
+      </div>
+
+      {slides.length > 1 && (
+        <div className="absolute top-0 left-0 right-0 z-30 flex gap-1 px-3 pt-8"
+          style={{ marginTop: 'calc(env(safe-area-inset-top) + 0.5rem)' }}>
+          {slides.map((_, i) => (
+            <div key={i} className="flex-1 h-[2px] rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.3)' }}>
+              <div className="h-full rounded-full" style={{ width: i === hIdx ? '100%' : '0%', background: 'rgba(255,255,255,0.9)' }} />
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToCart, isInCart }: Props) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
@@ -249,7 +429,13 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
       className="fixed inset-0 z-[55] overflow-y-scroll snap-y snap-mandatory"
       style={{ background: '#000', scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
     >
-      <style>{`.reels-hide-sb::-webkit-scrollbar{display:none}`}</style>
+      <style>{`
+        .reels-hide-sb::-webkit-scrollbar{display:none}
+        @keyframes reel-arrow-pulse {
+          0%, 100% { opacity: 0.4; transform: translateY(-50%) translateX(0); }
+          50% { opacity: 1; transform: translateY(-50%) translateX(6px); }
+        }
+      `}</style>
 
       {/* Indicador de posición dentro del ciclo de perfiles únicos (tipo Stories) */}
       {profiles.length > 1 && (
@@ -281,80 +467,18 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
         const inCart = isInCart(p.user_id);
         return (
           <div key={i} className="relative w-full snap-start snap-always" style={{ height: '100dvh', contentVisibility: 'auto', containIntrinsicSize: '100dvh' } as React.CSSProperties}>
-            {/* Fondo: vídeo (si lo tiene y está visible), foto, o inicial */}
-            <ReelMedia
+            <ReelSlider
               profile={p}
               eager={i < 3}
               imgError={!!imgErrors[p.user_id]}
               onImgError={() => setImgErrors(e => ({ ...e, [p.user_id]: true }))}
               soundOn={soundOn}
+              active={i % profiles.length === activeIdx}
+              inCart={inCart}
+              onOpenProfile={onOpenProfile}
+              onBookNow={onBookNow}
+              onAddToCart={onAddToCart}
             />
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.4) 100%)' }} />
-
-            {/* Info inferior + acciones — max-w-sm evita que el texto se estire
-                de borde a borde en landscape o tablets, donde una línea de bio
-                a todo lo ancho se vuelve incómoda de leer. */}
-            <div className="absolute bottom-0 left-0 right-0 z-20 p-5 max-w-sm" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 1.5rem)' }}>
-              <div className="flex flex-wrap gap-2 mb-3">
-                {p.is_flash_active && (
-                  <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-black" style={{ background: '#15803d', color: '#fff' }}>
-                    <Zap size={11} fill="#fff" /> Disponible ahora
-                  </span>
-                )}
-                {p.is_verified && (
-                  <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-black" style={{ background: 'rgba(212,175,55,0.95)', color: '#000' }}>
-                    <BadgeCheck size={11} /> Verificado
-                  </span>
-                )}
-                {p.is_early_adopter && (
-                  <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black"
-                    style={{
-                      background: 'linear-gradient(135deg,#D4AF37,#B8941E)',
-                      color: '#000',
-                      border: '1px solid rgba(255,255,255,0.35)',
-                      boxShadow: '0 0 16px rgba(212,175,55,0.5), 0 2px 8px rgba(0,0,0,0.25)',
-                    }}>
-                    <Star size={11} fill="#000" /> Fundador
-                  </span>
-                )}
-              </div>
-
-              <h2 className="text-2xl font-black mb-1 break-words line-clamp-2" style={{ color: '#fff' }}>{p.display_name}</h2>
-              {p.specialty && <p className="text-sm font-semibold mb-1" style={{ color: 'rgba(212,175,55,0.9)' }}>{p.specialty}</p>}
-
-              <div className="flex items-center gap-3 mb-2 flex-wrap text-xs" style={{ color: 'rgba(255,255,255,0.78)' }}>
-                {p.zone && <span className="flex items-center gap-1"><MapPin size={11} />{p.zone.split(',')[0]}</span>}
-                {p.reviewCount > 0 && <span className="flex items-center gap-1"><Star size={11} fill="#D4AF37" color="#D4AF37" />{p.avgRating} ({p.reviewCount})</span>}
-                {p.hourly_rate > 0 ? <span className="font-black" style={{ color: '#fff' }}>desde {p.hourly_rate}€/h</span>
-                  : <span className="font-black" style={{ color: '#fff' }}>Precio a consultar</span>}
-              </div>
-
-              {p.bio && (
-                <p className="text-xs leading-relaxed mb-4 line-clamp-2" style={{ color: 'rgba(255,255,255,0.62)' }}>
-                  {p.bio.slice(0, 110)}{p.bio.length > 110 ? '…' : ''}
-                </p>
-              )}
-
-              <div className="flex gap-2">
-                <button onClick={() => onAddToCart(p)} disabled={inCart}
-                  className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 transition-all active:scale-95"
-                  style={inCart
-                    ? { background: 'rgba(34,197,94,0.2)', border: '1.5px solid rgba(34,197,94,0.5)' }
-                    : { background: 'rgba(255,255,255,0.12)', border: '1.5px solid rgba(255,255,255,0.25)', backdropFilter: 'blur(8px)' }}>
-                  {inCart ? <Check size={18} color="#22c55e" /> : <Plus size={18} color="#fff" />}
-                </button>
-                <button onClick={() => onOpenProfile(p)}
-                  className="h-12 px-4 rounded-full flex items-center justify-center font-semibold text-sm flex-shrink-0"
-                  style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.18)', color: 'rgba(255,255,255,0.85)' }}>
-                  Ver perfil
-                </button>
-                <button onClick={() => onBookNow(p)}
-                  className="flex-1 h-12 px-5 rounded-full flex items-center justify-center gap-1.5 font-black text-sm min-w-0"
-                  style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-                  <MessageCircle size={16} /> Contactar
-                </button>
-              </div>
-            </div>
           </div>
         );
       })}
