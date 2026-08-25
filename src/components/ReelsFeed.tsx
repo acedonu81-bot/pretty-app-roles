@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { MapPin, Zap, BadgeCheck, Star, Plus, Check, MessageCircle, Volume2, VolumeX, ChevronRight } from 'lucide-react';
-import { buildReelSlides, type ReelSlide } from '@/lib/reelSlides';
+import { buildReelSlides } from '@/lib/reelSlides';
 
 /**
  * ReelsFeed — feed vertical tipo Instagram/Reels. Scroll vertical infinito
@@ -323,6 +323,11 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
   const [activeIdx, setActiveIdx] = useState(0);
+  // Índice absoluto dentro de `items` (el bucle infinito con LOOPS copias de
+  // cada perfil) — a diferencia de activeIdx (0..profiles.length-1, usado
+  // por el indicador de stories), este identifica de forma única cuál de las
+  // LOOPS copias del perfil visible es la que realmente está en pantalla.
+  const [absIdx, setAbsIdx] = useState(0);
   // Sonido global del feed (mudo por defecto, como Instagram). Se muestra solo
   // si hay algún profesional con vídeo.
   const [soundOn, setSoundOn] = useState(false);
@@ -373,6 +378,7 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
     const start = Math.floor(LOOPS / 2) * profiles.length;
     el.scrollTop = start * el.clientHeight;
     setActiveIdx(0);
+    setAbsIdx(start);
     prevAbsIdxRef.current = start;
     backDepthRef.current = 0;
   }, [profiles.length]);
@@ -384,6 +390,7 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
     const h = el.clientHeight;
     const cur = Math.round(el.scrollTop / h);
     setActiveIdx(cur % profiles.length);
+    setAbsIdx(cur);
 
     const total = items.length;
     const isRecenterJump = cur < profiles.length || cur > total - profiles.length;
@@ -482,7 +489,7 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
               imgError={!!imgErrors[p.user_id]}
               onImgError={() => setImgErrors(e => ({ ...e, [p.user_id]: true }))}
               soundOn={soundOn}
-              active={i % profiles.length === activeIdx}
+              active={i === absIdx}
               inCart={inCart}
               onOpenProfile={onOpenProfile}
               onBookNow={onBookNow}
