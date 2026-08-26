@@ -11,7 +11,7 @@ import type { Profile } from '@/data/profiles';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { Sheet, SheetContent } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet';
 import { ProfileProvider } from '@/hooks/useProfile';
 
 const DJView = lazy(() => import('@/components/dashboard/views/DJView'));
@@ -317,6 +317,10 @@ const Dashboard = () => {
       {isMobile && (
         <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
           <SheetContent side="left" className="p-0 w-[272px] max-w-[85vw] border-r-0" style={{ background: '#ffffff' }}>
+            {/* Radix exige un título accesible en todo DialogContent/SheetContent
+                para lectores de pantalla; el sidebar ya muestra "XPEAK" visualmente,
+                así que el título solo hace falta para accesibilidad, no visible. */}
+            <SheetTitle className="sr-only">Menú de navegación</SheetTitle>
             <DashboardSidebar activeView={activeView} onViewChange={handleViewChange} />
           </SheetContent>
         </Sheet>

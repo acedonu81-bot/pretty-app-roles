@@ -265,8 +265,8 @@ const EventRequestsSection = () => {
             </div>
 
             <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-4">
-              <div className="grid grid-cols-2 gap-3">
-                <div className="col-span-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="sm:col-span-2">
                   <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>TU NOMBRE O EMPRESA *</label>
                   <input value={form.client_name} onChange={e => setForm(f => ({ ...f, client_name: e.target.value }))}
                     placeholder="María García / Eventos Sol" required
@@ -340,7 +340,7 @@ const EventRequestsSection = () => {
                   style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>EMAIL DE CONTACTO</label>
                   <input type="email" value={form.contact_email} onChange={e => setForm(f => ({ ...f, contact_email: e.target.value }))}

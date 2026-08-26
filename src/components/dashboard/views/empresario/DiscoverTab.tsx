@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Filter, Heart, Star, FileText, Download, X, Users, MessageCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
@@ -40,6 +40,13 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
     setNotesTarget(null);
     toast.success('Nota guardada');
   };
+
+  useEffect(() => {
+    if (!notesTarget) return;
+    const onKeyDown = (e: KeyboardEvent) => { if (e.key === 'Escape') setNotesTarget(null); };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [notesTarget]);
 
   return (
     <>

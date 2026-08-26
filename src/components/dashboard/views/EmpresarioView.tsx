@@ -213,21 +213,25 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
       {/* Guía rápida — antes había una cifra hardcodeada ("47+ profesionales
           activos") que no era real; sustituida por 3 pasos concretos que
           orientan a quien entra por primera vez sin depender de ningún
-          número que pueda ser bajo o falso. */}
-      <div className="flex items-center gap-3 mb-4 px-4 py-3 rounded-xl text-xs overflow-x-auto"
+          número que pueda ser bajo o falso.
+          En móvil se apilan en vertical (sm:flex-row en desktop): en fila
+          horizontal el contenido no cabe en 390px y no había ninguna pista
+          de que hiciera falta deslizar — la mitad de los pasos quedaban
+          invisibles para quien entra desde un anuncio de TikTok/Instagram. */}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-4 px-4 py-3 rounded-xl text-xs"
         style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.12)' }}>
         {[
           { n: '1', t: 'Busca profesionales por zona y presupuesto' },
           { n: '2', t: 'Contacta gratis, sin comisión' },
           { n: '3', t: 'Cierra el trato directamente con él' },
         ].map((step, i) => (
-          <div key={step.n} className="flex items-center gap-3 flex-shrink-0">
+          <div key={step.n} className="flex items-center gap-3 sm:flex-shrink-0">
             <div className="flex items-center gap-2">
               <span className="w-5 h-5 rounded-full flex items-center justify-center font-black text-[0.65rem] flex-shrink-0"
                 style={{ background: 'rgba(212,175,55,0.15)', color: '#8A6D0F' }}>{step.n}</span>
               <span style={{ color: '#333', fontWeight: 600 }}>{step.t}</span>
             </div>
-            {i < 2 && <span style={{ color: 'rgba(0,0,0,0.15)' }}>→</span>}
+            {i < 2 && <span className="hidden sm:inline" style={{ color: 'rgba(0,0,0,0.15)' }}>→</span>}
           </div>
         ))}
       </div>
