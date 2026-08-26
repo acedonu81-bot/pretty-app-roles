@@ -11,7 +11,7 @@ import type { Profile } from '@/data/profiles';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { ProfileProvider } from '@/hooks/useProfile';
 
 const DJView = lazy(() => import('@/components/dashboard/views/DJView'));
@@ -321,6 +321,7 @@ const Dashboard = () => {
                 para lectores de pantalla; el sidebar ya muestra "XPEAK" visualmente,
                 así que el título solo hace falta para accesibilidad, no visible. */}
             <SheetTitle className="sr-only">Menú de navegación</SheetTitle>
+            <SheetDescription className="sr-only">Accede a las secciones del panel: inicio, directorio, mensajes, perfil y ajustes.</SheetDescription>
             <DashboardSidebar activeView={activeView} onViewChange={handleViewChange} />
           </SheetContent>
         </Sheet>
