@@ -238,7 +238,7 @@ const PortfolioUpload = () => {
           style={{ borderColor: 'rgba(212,175,55,0.2)', color: '#8A6D0F', background: 'rgba(212,175,55,0.03)' }}>
           {items.length > 0 ? <Plus size={18} /> : <Upload size={18} />}
           <span className="text-sm font-bold">
-            {uploading ? 'Subiendo...' : items.length > 0 ? 'Añadir foto o vídeo' : 'Subir portfolio'}
+            {uploading ? 'Subiendo...' : items.length > 0 ? 'Añadir foto' : 'Subir portfolio'}
           </span>
         </button>
       )}
@@ -246,7 +246,7 @@ const PortfolioUpload = () => {
       <input
         ref={inputRef}
         type="file"
-        accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/webm"
+        accept="image/jpeg,image/png,image/webp"
         onChange={handleUpload}
         className="hidden"
       />

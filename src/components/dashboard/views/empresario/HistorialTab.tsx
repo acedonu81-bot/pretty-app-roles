@@ -3,6 +3,7 @@ import { CheckCircle, XCircle, Clock, Download, FileText, Euro, Calendar, User, 
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import { buildCsv, downloadCsv, fmtDateISO } from '@/lib/csvExport';
 
 interface Booking {
   id: string;
@@ -68,27 +69,40 @@ const HistorialTab = () => {
   /* ─── Export CSV ─── */
   const exportCSV = () => {
     if (bookings.length === 0) { toast.error('No hay contrataciones que exportar'); return; }
-    const rows = [
-      ['Profesional', 'Rol', 'Fecha Evento', 'Ubicación', 'Descripción', 'Caché (€)', 'Estado', 'Fecha Solicitud'],
-      ...bookings.map(b => [
-        b.professional_name,
-        b.professional_role ?? '—',
-        fmt(b.event_date),
-        b.event_location ?? '—',
-        b.event_description ?? '—',
-        b.agreed_price != null ? b.agreed_price.toFixed(2) : '—',
-        STATUS_LABEL[b.status ?? '']?.label ?? b.status ?? '—',
-        fmt(b.created_at),
-      ]),
-    ];
-    const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
-    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `XPEAK_historial_${new Date().toISOString().slice(0, 10)}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
+    const completedCount = bookings.filter(b => b.status === 'completed').length;
+    const confirmedCount = bookings.filter(b => b.status === 'confirmed').length;
+    const pendingCount   = bookings.filter(b => b.status === 'pending').length;
+    const totalGastoCsv  = bookings.filter(b => b.agreed_price != null).reduce((s, b) => s + (b.agreed_price ?? 0), 0);
+
+    const csv = buildCsv('Historial de Contrataciones', [
+      {
+        title: 'RESUMEN',
+        header: ['Concepto', 'Valor'],
+        rows: [
+          ['Total solicitudes', bookings.length],
+          ['Completadas', completedCount],
+          ['Confirmadas', confirmedCount],
+          ['Pendientes', pendingCount],
+          ['Gasto total', totalGastoCsv > 0 ? totalGastoCsv.toFixed(2) + ' €' : '—'],
+        ],
+      },
+      {
+        title: 'DETALLE DE MOVIMIENTOS',
+        header: ['Profesional', 'Rol', 'Fecha evento', 'Ubicación', 'Descripción', 'Caché (€)', 'Estado', 'Fecha solicitud'],
+        rows: bookings.map(b => [
+          b.professional_name,
+          b.professional_role ?? '—',
+          fmtDateISO(b.event_date),
+          b.event_location ?? '—',
+          b.event_description ?? '—',
+          b.agreed_price != null ? b.agreed_price.toFixed(2) : '—',
+          STATUS_LABEL[b.status ?? '']?.label ?? b.status ?? '—',
+          fmtDateISO(b.created_at),
+        ]),
+      },
+    ]);
+
+    downloadCsv(csv, `XPEAK_historial_${new Date().toISOString().slice(0, 10)}.csv`);
     toast.success(`${bookings.length} contrataciones exportadas`);
   };
 

@@ -520,7 +520,8 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
               <Video size={14} style={{ color: '#8A6D0F' }} /> Vídeo Principal
             </h4>
             <p className="text-xs text-muted-foreground mb-4">
-              Se reproduce en tu tarjeta del feed (tipo Instagram) y en tu ficha. Graba uno con tu móvil o pega un enlace de YouTube/Vimeo.
+              Grábalo o súbelo desde tu móvil para que aparezca en el feed swipe (tipo Instagram) y en tu ficha.
+              Un enlace de YouTube o Vimeo solo se muestra en tu ficha — el feed swipe no puede reproducir vídeos externos.
             </p>
 
             {/* Grabar/subir vídeo desde la cámara del móvil (destino: bio_video_url) */}

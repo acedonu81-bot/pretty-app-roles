@@ -226,7 +226,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
   useEffect(() => () => { if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current); }, []);
 
   const sendMessage = async (overrideContent?: string, photoUrl?: string) => {
-    const text = overrideContent ?? input.trim();
+    const text = typeof overrideContent === 'string' ? overrideContent : input.trim();
     if (!text && !photoUrl) return;
     if (!activeConvId || !user || sending) return;
 

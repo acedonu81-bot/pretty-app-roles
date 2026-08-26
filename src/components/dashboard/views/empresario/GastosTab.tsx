@@ -3,6 +3,7 @@ import { Euro, Download, TrendingUp, Calendar, Users, FileText } from 'lucide-re
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import { buildCsv, downloadCsv, fmtDateISO } from '@/lib/csvExport';
 
 interface Booking {
   id: string;
@@ -94,27 +95,55 @@ const GastosTab = () => {
 
   const exportCSV = () => {
     if (yearBookings.length === 0) { toast.error('No hay gastos que exportar'); return; }
-    const rows = [
-      ['Profesional', 'Rol', 'Fecha Evento', 'Caché (€)', 'Estado', 'Fecha Solicitud'],
-      ...yearBookings.map(b => [
-        b.professional_name,
-        b.professional_role ?? '—',
-        fmt(b.event_date),
-        b.agreed_price != null ? b.agreed_price.toFixed(2) : '—',
-        b.status ?? '—',
-        fmt(b.created_at),
-      ]),
-      [],
-      ['TOTAL', '', '', totalYear.toFixed(2), '', ''],
-    ];
-    const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
-    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `XPEAK_gastos_${yearFilter}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
+
+    const csv = buildCsv(`Panel de Gastos — Año ${yearFilter}`, [
+      {
+        title: 'RESUMEN',
+        header: ['Concepto', 'Valor'],
+        rows: [
+          ['Total del año', totalYear.toFixed(2) + ' €'],
+          ['Caché medio por contratación', avgPrice > 0 ? avgPrice.toFixed(2) + ' €' : '—'],
+          ['Contrataciones', yearBookings.length],
+        ],
+      },
+      {
+        title: 'DESGLOSE MENSUAL',
+        header: ['Mes', 'Contrataciones', 'Gasto total (€)', '% del año'],
+        rows: monthlyData.map(d => [
+          d.month,
+          d.count,
+          d.total.toFixed(2),
+          totalYear > 0 ? ((d.total / totalYear) * 100).toFixed(0) + '%' : '—',
+        ]),
+      },
+      {
+        title: 'DESGLOSE POR CATEGORÍA',
+        header: ['Categoría', 'Contrataciones', 'Gasto total (€)', '% del año'],
+        rows: Object.entries(byRole).sort((a, b) => b[1].total - a[1].total).map(([role, d]) => [
+          role,
+          d.count,
+          d.total.toFixed(2),
+          totalYear > 0 ? ((d.total / totalYear) * 100).toFixed(0) + '%' : '—',
+        ]),
+      },
+      {
+        title: 'DETALLE DE MOVIMIENTOS',
+        header: ['Profesional', 'Rol', 'Fecha evento', 'Caché (€)', 'Estado', 'Fecha solicitud'],
+        rows: [
+          ...yearBookings.map(b => [
+            b.professional_name,
+            b.professional_role ?? '—',
+            fmtDateISO(b.event_date),
+            b.agreed_price != null ? b.agreed_price.toFixed(2) : '—',
+            b.status ?? '—',
+            fmtDateISO(b.created_at),
+          ]),
+          ['TOTAL', '—', '—', totalYear.toFixed(2), '—', '—'],
+        ],
+      },
+    ]);
+
+    downloadCsv(csv, `XPEAK_gastos_${yearFilter}.csv`);
     toast.success(`Gastos ${yearFilter} exportados`);
   };
 

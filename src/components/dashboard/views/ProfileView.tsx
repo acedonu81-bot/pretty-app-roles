@@ -176,7 +176,8 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     { value: 'vestuario',     label: 'Estilista / Vestuario' },
     { value: 'design',        label: 'Diseño & Visuales' },
   ];
-  const activeRoles = selectedRoles ?? (profile.roles?.length ? profile.roles : (profile.role ? [profile.role] : []));
+  const activeRoles = (selectedRoles ?? (profile.roles?.length ? profile.roles : (profile.role ? [profile.role] : [])))
+    .filter(r => r && r !== 'pending');
   const toggleRole = (r: string) => {
     const next = activeRoles.includes(r) ? activeRoles.filter(x => x !== r) : [...activeRoles, r];
     if (next.length === 0) return;

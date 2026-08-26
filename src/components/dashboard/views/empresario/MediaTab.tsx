@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Image, Music, Video, ExternalLink, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
+import SessionAudioEmbed from '@/components/dashboard/SessionAudioEmbed';
 
 interface MediaProfile {
   user_id: string;
@@ -112,14 +113,7 @@ const MediaTab = () => {
                   <Music size={11} style={{ color: '#8A6D0F' }} />
                   <span className="text-xs font-bold" style={{ color: '#8A6D0F' }}>Audio</span>
                 </div>
-                <iframe
-                  src={p.audio_embed_url}
-                  width="100%" height="80"
-                  frameBorder="0"
-                  allow="autoplay; clipboard-write; encrypted-media"
-                  className="block"
-                  title={`Audio de ${p.display_name}`}
-                />
+                <SessionAudioEmbed url={p.audio_embed_url} title={`Audio de ${p.display_name}`} height={80} />
               </div>
             )}
 

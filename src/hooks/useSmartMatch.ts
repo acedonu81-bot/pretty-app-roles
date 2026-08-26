@@ -93,7 +93,9 @@ function computeMatch(
       score += 12;
       reasons.push(`~${estimated}€ (dentro de presupuesto)`);
     } else {
-      score -= 5;
+      // Se pidió un presupuesto máximo y este profesional lo supera —
+      // no lo recomendamos como si encajara, aunque el resto del perfil sea bueno.
+      return null;
     }
   } else if (estimated) {
     reasons.push(`~${estimated}€ estimado`);
@@ -133,7 +135,7 @@ export function useSmartMatch(query: MatchQuery | null): { results: MatchedProfe
     const [profilesRes, reviewsRes, availRes] = await Promise.all([
       supabase
         .from('profiles')
-        .select('user_id, display_name, role, roles, specialty, zone, photo_url, hourly_rate, is_flash_active, is_verified, bio, audio_embed_url, audio_session_urls, portfolio_urls, score, fast_responder_count')
+        .select('user_id, display_name, role, roles, specialty, zone, photo_url, hourly_rate, is_flash_active, is_verified, bio, audio_embed_url, audio_session_urls, portfolio_urls, score, fast_responder_count, is_early_adopter_override')
         .contains('roles', [query.role])
         .not('display_name', 'is', null)
         .limit(100),

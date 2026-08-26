@@ -341,7 +341,7 @@ const ChatWindow = ({
             />
           </div>
 
-          <button type="button" onClick={onSend} disabled={sending || !input.trim()}
+          <button type="button" onClick={() => onSend()} disabled={sending || !input.trim()}
             className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-all hover:scale-110 active:scale-95 disabled:opacity-30 disabled:hover:scale-100"
             style={{ background: input.trim() ? 'linear-gradient(135deg,#D4AF37,#B8941E)' : 'rgba(0,0,0,0.05)', color: input.trim() ? '#000' : '#333' }}>
             <Send size={16} />

@@ -5,6 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { toast } from 'sonner';
 import { ROLE_ES } from '@/lib/constants';
+import { buildCsv, downloadCsv } from '@/lib/csvExport';
 import type { Pro } from '@/types';
 import DiscoverTab from './empresario/DiscoverTab';
 import FlashTab from './empresario/FlashTab';
@@ -146,32 +147,35 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
       toast.success('Eliminado de favoritos');
     } else {
       const { error } = await supabase.from('favorites').insert({ user_id: user.id, profile_id: profileId } as any);
-      if (error) { toast.error('Error al guardar favorito'); return; }
-      setFavorites(prev => [...prev, profileId]);
+      if (error && error.code !== '23505') { toast.error('Error al guardar favorito'); return; }
+      setFavorites(prev => prev.includes(profileId) ? prev : [...prev, profileId]);
       toast.success('Guardado en favoritos');
     }
   };
 
   const exportCSV = (proList: Pro[], notes: Record<string, string>) => {
-    const rows = [
-      ['Nombre', 'Rol', 'Ciudad', 'Tarifa €/hora', 'Sello Oro', 'Disponible Flash', 'Instagram / WA', 'Nota privada'],
-      ...proList.map(p => [
-        p.display_name ?? '—',
-        ROLE_ES[p.role] ?? p.role,
-        p.zone ?? '—',
-        p.hourly_rate > 0 ? `€${p.hourly_rate}` : 'A consultar',
-        p.is_verified ? 'Verificado ✓' : 'Sin verificar',
-        p.is_flash_active ? 'Disponible ahora' : 'No disponible',
-        p.instagram ? `https://instagram.com/${p.instagram.replace('@', '')}` : '—',
-        notes[p.id] ?? '',
-      ])
-    ];
-    const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
-    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = `XPEAK_talentos_${new Date().toISOString().slice(0, 10)}.csv`;
-    a.click(); URL.revokeObjectURL(url);
+    const csv = buildCsv('Talentos — Directorio', [
+      {
+        title: 'RESUMEN',
+        header: ['Concepto', 'Valor'],
+        rows: [['Profesionales listados', proList.length]],
+      },
+      {
+        title: 'DETALLE DE PROFESIONALES',
+        header: ['Nombre', 'Rol', 'Ciudad', 'Tarifa €/hora', 'Sello Oro', 'Disponible Flash', 'Instagram / WA', 'Nota privada'],
+        rows: proList.map(p => [
+          p.display_name ?? '—',
+          ROLE_ES[p.role] ?? p.role,
+          p.zone ?? '—',
+          p.hourly_rate > 0 ? `€${p.hourly_rate}` : 'A consultar',
+          p.is_verified ? 'Verificado ✓' : 'Sin verificar',
+          p.is_flash_active ? 'Disponible ahora' : 'No disponible',
+          p.instagram ? `https://instagram.com/${p.instagram.replace('@', '')}` : '—',
+          notes[p.id] ?? '',
+        ]),
+      },
+    ]);
+    downloadCsv(csv, `XPEAK_talentos_${new Date().toISOString().slice(0, 10)}.csv`);
     toast.success(`${proList.length} profesionales exportados a CSV`);
   };
 
