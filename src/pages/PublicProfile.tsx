@@ -12,6 +12,7 @@ import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
 import AvailabilityCalendar from '@/components/AvailabilityCalendar';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
+import { isEarlyAdopter } from '@/lib/earlyAdopter';
 
 /* ── Reviews ─────────────────────────────────────────────────────────────── */
 interface Review {
@@ -328,11 +329,11 @@ const PublicProfile = () => {
 
     const query = isUUID
       ? supabase.from('profiles')
-          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role')
+          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, is_early_adopter_override')
           .eq('user_id', slug)
           .maybeSingle()
       : supabase.from('profiles')
-          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role')
+          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, is_early_adopter_override')
           .not('display_name', 'is', null)
           .then(({ data, error }) => {
             // ILIKE no entiende acentos/e\u00f1es (slug.replace('-','%') nunca
@@ -485,9 +486,13 @@ const PublicProfile = () => {
     rating: 0,
     reviews: 0,
     experience: '',
-    price: sbProfile.hourly_rate ?? 0,
+    // Empresarios (salas/clubs) no se contratan "por hora" — un hourly_rate
+    // residual en su perfil (p.ej. de antes de cambiar de rol) no debe
+    // mostrarse como si fuera una tarifa de contratación.
+    price: sbProfile.role === 'empresario' ? 0 : (sbProfile.hourly_rate ?? 0),
     isLive: sbProfile.is_live,
     isVerified: sbProfile.is_verified,
+    isEarlyAdopter: isEarlyAdopter(sbProfile),
     isSeed: sbProfile.is_seed,
     isFlashActive: sbProfile.is_flash_active,
     isPremium: sbProfile.subscription_tier !== 'free',
@@ -729,6 +734,14 @@ const PublicProfile = () => {
                 style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.25)', color: '#fff' }}>
                 {roleLabel[profile.role] ?? profile.role}
               </span>
+
+              {/* Early Adopter badge — mismo criterio que en el directorio (isEarlyAdopter.ts) */}
+              {profile.isEarlyAdopter && (
+                <span className="inline-flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full mb-3 ml-2"
+                  style={{ background: '#3B82F6', color: '#fff' }}>
+                  ⭐ EARLY ADOPTER
+                </span>
+              )}
 
               {/* Nombre grande */}
               <h1 className="font-black tracking-tight mb-1" style={{ fontSize: 'clamp(1.8rem, 8vw, 5rem)', lineHeight: 1.05, letterSpacing: '-0.03em', color: '#fff', textShadow: '0 2px 20px rgba(0,0,0,0.4)' }}>
