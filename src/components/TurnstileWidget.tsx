@@ -1,5 +1,6 @@
 import { useEffect, useRef, useId, useState } from 'react';
 import { RefreshCw } from 'lucide-react';
+import { track } from '@/lib/track';
 
 // Site key pública de Cloudflare Turnstile — no es secreta, va en el bundle
 // cliente por diseño (la validación real ocurre server-side en Supabase Auth
@@ -57,7 +58,11 @@ export default function TurnstileWidget({ onVerify, onExpire }: Props) {
   useEffect(() => {
     let cancelled = false;
     setStalled(false);
-    const stallTimer = setTimeout(() => { if (!cancelled) setStalled(true); }, STALL_MS);
+    const stallTimer = setTimeout(() => {
+      if (cancelled) return;
+      setStalled(true);
+      track('turnstile_stalled', { retry: retryKey });
+    }, STALL_MS);
 
     loadTurnstileScript().then(() => {
       if (cancelled || !window.turnstile) return;
@@ -67,9 +72,9 @@ export default function TurnstileWidget({ onVerify, onExpire }: Props) {
         sitekey: SITE_KEY,
         callback: (token: string) => { clearTimeout(stallTimer); setStalled(false); onVerify(token); },
         'expired-callback': onExpire,
-        'error-callback': () => { if (!cancelled) setStalled(true); },
+        'error-callback': () => { if (!cancelled) { setStalled(true); track('turnstile_stalled', { retry: retryKey, reason: 'error-callback' }); } },
       });
-    }).catch(() => { if (!cancelled) setStalled(true); });
+    }).catch(() => { if (!cancelled) { setStalled(true); track('turnstile_stalled', { retry: retryKey, reason: 'script-load-failed' }); } });
 
     return () => {
       cancelled = true;
