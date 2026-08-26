@@ -35,6 +35,9 @@ scripts/            — prerender-meta.mjs, update-sitemap.mjs
 - VITE_SITE_URL configurada en Vercel env vars (production + preview)
 - Edge functions usan `info@xpeak.site` como FROM (no cambiar sin reconfigurar SMTP)
 
+## MCP
+- `.mcp.json` en la raíz declara `chrome-devtools` (npx chrome-devtools-mcp) para que `verify-flows` funcione en cualquier sesión/máquina sin depender de config global
+
 ## Ahorro de tokens (CRÍTICO)
 - Respuestas cortas, sin narración ni resúmenes finales
 - No explicar qué vas a hacer, hacerlo directamente
