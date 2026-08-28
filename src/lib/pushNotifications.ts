@@ -3,6 +3,8 @@
  * Gestiona permisos, registro del service worker y suscripción push.
  */
 
+import { supabase } from '@/integrations/supabase/client';
+
 const SW_URL = '/sw.js';
 const STORAGE_KEY = 'xpeak_push_subscribed';
 
@@ -29,7 +31,7 @@ async function getRegistration(): Promise<ServiceWorkerRegistration | null> {
 }
 
 /** Solicita permiso y suscribe al push. Devuelve true si ok. */
-export async function requestPushPermission(): Promise<boolean> {
+export async function requestPushPermission(userId: string): Promise<boolean> {
   if (!('Notification' in window)) return false;
 
   const permission = await Notification.requestPermission();
@@ -45,11 +47,17 @@ export async function requestPushPermission(): Promise<boolean> {
           userVisibleOnly: true,
           applicationServerKey: urlBase64ToUint8Array(vapidKey),
         });
-        console.info('[XPEAK Push] Suscripción push activa:', sub.endpoint);
+        const subJson = sub.toJSON();
+        await supabase.from('push_subscriptions').upsert({
+          user_id: userId,
+          endpoint: subJson.endpoint,
+          p256dh: subJson.keys!.p256dh!,
+          auth: subJson.keys!.auth!,
+        }, { onConflict: 'endpoint' });
       }
     }
   } catch {
-    // Sin VAPID todavía — notificaciones locales disponibles
+    // Sin VAPID todavía, o fallo de red — notificaciones locales disponibles
   }
 
   localStorage.setItem(STORAGE_KEY, 'true');
@@ -62,7 +70,10 @@ export async function revokePushPermission(): Promise<void> {
   const reg = await getRegistration();
   if (!reg) return;
   const sub = await reg.pushManager.getSubscription();
-  if (sub) await sub.unsubscribe();
+  if (sub) {
+    await supabase.from('push_subscriptions').delete().eq('endpoint', sub.endpoint);
+    await sub.unsubscribe();
+  }
 }
 
 /** True si el usuario ya tiene push activo */

@@ -729,7 +729,8 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
                     setPushEnabled(false);
                     toast.success('Notificaciones desactivadas.');
                   } else {
-                    const ok = await requestPushPermission();
+                    if (!user) return;
+                    const ok = await requestPushPermission(user.id);
                     if (ok) {
                       setPushEnabled(true);
                       await showLocalNotification('XPEAK', '¡Notificaciones activas! Te avisaremos cuando lleguen mensajes o bookings.', '/dashboard');
