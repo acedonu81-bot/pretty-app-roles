@@ -19,6 +19,7 @@ create index if not exists push_subscriptions_user_id_idx
 
 alter table public.push_subscriptions enable row level security;
 
+drop policy if exists "Users manage their own push subscriptions" on public.push_subscriptions;
 create policy "Users manage their own push subscriptions"
   on public.push_subscriptions
   for all

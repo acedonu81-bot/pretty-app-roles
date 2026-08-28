@@ -78,4 +78,30 @@ describe('revokePushPermission', () => {
     expect(deleteEqMock).toHaveBeenCalledWith('endpoint', 'https://fcm.googleapis.com/fcm/send/abc123');
     expect(unsubscribeMock).toHaveBeenCalled();
   });
+
+  it('desuscribe del navegador aunque el borrado en Supabase falle', async () => {
+    const deleteEqMock = vi.fn().mockRejectedValue(new Error('network down'));
+    const unsubscribeMock = vi.fn().mockResolvedValue(true);
+    fromMock.mockReturnValueOnce({ delete: () => ({ eq: deleteEqMock }) } as any);
+    vi.stubGlobal('navigator', {
+      serviceWorker: {
+        getRegistration: vi.fn().mockResolvedValue({
+          pushManager: {
+            getSubscription: vi.fn().mockResolvedValue({
+              endpoint: 'https://fcm.googleapis.com/fcm/send/abc123',
+              unsubscribe: unsubscribeMock,
+            }),
+          },
+        }),
+      },
+    });
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    const { revokePushPermission } = await import('./pushNotifications');
+    await expect(revokePushPermission()).resolves.toBeUndefined();
+
+    expect(deleteEqMock).toHaveBeenCalledWith('endpoint', 'https://fcm.googleapis.com/fcm/send/abc123');
+    expect(unsubscribeMock).toHaveBeenCalled();
+    warnSpy.mockRestore();
+  });
 });

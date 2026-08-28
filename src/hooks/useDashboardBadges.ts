@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 // Extraído de DashboardSidebar.tsx (lógica exacta, no reinventada) para que
@@ -7,6 +7,12 @@ import { supabase } from '@/integrations/supabase/client';
 export function useDashboardBadges(userId: string | undefined, isEmpresario: boolean) {
   const [flashBadge, setFlashBadge] = useState(0);
   const [msgBadge, setMsgBadge] = useState(0);
+  // supabase.channel(topic) devuelve la MISMA instancia si ya existe un canal
+  // con ese topic — con nombres fijos, el sidebar (que se desmonta al cerrar
+  // el Sheet móvil) y la campanita (montada toda la sesión) compartían canal,
+  // y el removeChannel() del sidebar mataba la suscripción de la campanita.
+  // Un id por instancia evita que un removeChannel() afecte al otro consumidor.
+  const instanceId = useRef(Math.random().toString(36).slice(2)).current;
 
   const refreshFlashBadge = async (uid: string) => {
     const { count } = await supabase.from('flash_bookings' as any)
@@ -20,7 +26,7 @@ export function useDashboardBadges(userId: string | undefined, isEmpresario: boo
     if (!userId || isEmpresario) return;
     refreshFlashBadge(userId);
     const channel = supabase
-      .channel('sidebar_flash_bookings')
+      .channel(`sidebar_flash_bookings_${userId}_${instanceId}`)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'flash_bookings', filter: `professional_user_id=eq.${userId}` }, () => {
         refreshFlashBadge(userId);
       })
@@ -50,7 +56,7 @@ export function useDashboardBadges(userId: string | undefined, isEmpresario: boo
     if (!userId) return;
     refreshMsgBadge(userId);
     const channel = supabase
-      .channel('badges_msgs')
+      .channel(`badges_msgs_${userId}_${instanceId}`)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, () => {
         refreshMsgBadge(userId);
       })

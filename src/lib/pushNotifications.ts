@@ -71,7 +71,15 @@ export async function revokePushPermission(): Promise<void> {
   if (!reg) return;
   const sub = await reg.pushManager.getSubscription();
   if (sub) {
-    await supabase.from('push_subscriptions').delete().eq('endpoint', sub.endpoint);
+    // Una fila de BD huérfana se autolimpia (send-push la purga al recibir
+    // 404/410 del navegador). Una suscripción del navegador viva que el
+    // usuario pidió cerrar NO se autolimpia — así que unsubscribe() debe
+    // ejecutarse siempre, incluso si el delete en Supabase falla (red, etc).
+    try {
+      await supabase.from('push_subscriptions').delete().eq('endpoint', sub.endpoint);
+    } catch (err) {
+      console.warn('[XPEAK Push] no se pudo borrar la suscripción:', err);
+    }
     await sub.unsubscribe();
   }
 }
