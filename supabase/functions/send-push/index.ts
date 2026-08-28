@@ -64,7 +64,11 @@ serve(async (req) => {
       } catch (err: any) {
         if (err?.statusCode === 404 || err?.statusCode === 410) {
           // Suscripción expirada/revocada por el navegador — limpieza incremental.
-          await adminClient.from('push_subscriptions').delete().eq('id', sub.id);
+          // Protegido con su propio try/catch: si el delete falla, no debe tumbar
+          // el Promise.all ni el resto del batch de envíos.
+          try {
+            await adminClient.from('push_subscriptions').delete().eq('id', sub.id);
+          } catch { /* cleanup no crítico — se reintentará en el próximo envío fallido */ }
         }
       }
     }));
