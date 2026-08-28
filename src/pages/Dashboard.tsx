@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
+import DashboardSidebar, { DashboardSidebarInner } from '@/components/dashboard/DashboardSidebar';
+import { SidebarProvider } from '@/components/ui/sidebar';
 import DashboardTopbar from '@/components/dashboard/DashboardTopbar';
 import RecentBusinessViewLine from '@/components/dashboard/RecentBusinessViewLine';
 import TodaysRequestsLine from '@/components/dashboard/TodaysRequestsLine';
@@ -60,7 +61,10 @@ const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: s
   const ctx = useProfile();
   const [dismissed, setDismissed] = useState(false);
 
-  if (ctx.loading || dismissed) return null;
+  // En "Mi Perfil" la tarjeta de completitud (con checklist accionable) ya
+  // cubre este aviso — mostrar también el banner ahí duplica el mismo % y
+  // mensaje dos veces seguidas en la misma pantalla.
+  if (ctx.loading || dismissed || activeView === 'profile') return null;
 
   const hasInstagram = !!(ctx.instagram && ctx.instagram.trim().length > 0);
   const steps = [
@@ -187,6 +191,22 @@ const Dashboard = () => {
   const { user, loading } = useAuth();
   const { role: profileRole } = useProfile();
 
+  // Antes usábamos key={activeView} en el contenedor de la vista para
+  // disparar la animación de entrada — pero eso fuerza a React a DESMONTAR
+  // y volver a montar todo el subárbol en cada cambio (incluye el import()
+  // lazy si la vista no estaba ya cargada), lo que en móvil se percibe como
+  // un parpadeo/pantalla en blanco entre secciones. Retriggeamos la misma
+  // animación CSS a mano (quitar y reponer la clase en el frame siguiente)
+  // para tener el mismo fade de entrada sin destruir el DOM.
+  const viewContentRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = viewContentRef.current;
+    if (!el) return;
+    el.style.animation = 'none';
+    void el.offsetHeight; // fuerza reflow — sin esto el navegador no "ve" el reset
+    el.style.animation = 'viewEnter 0.22s cubic-bezier(0.22,1,0.36,1) both';
+  }, [activeView]);
+
   useEffect(() => {
     if (user && !localStorage.getItem(`xpeak_onboarded_${user.id}`)) {
       setShowWizard(true);
@@ -307,12 +327,15 @@ const Dashboard = () => {
     </Helmet>
     <RoleDefaultView onViewChange={handleViewChange} />
     <WizardGate showWizard={showWizard} setShowWizard={setShowWizard} />
-    <div data-app="dashboard" className="flex h-screen w-screen overflow-hidden grain-overlay" style={{ background: '#f5f4f0' }}>
+    {/* h-screen es 100vh, que en Chrome Android mide la ventana CON la barra de
+        URL oculta — siempre más alto que el espacio visible real. Con el
+        overflow-hidden de este contenedor, el layout acababa midiendo más que
+        la pantalla: la topbar sticky quedaba parcialmente bajo la barra de URL
+        y la bottom nav bajo la barra de gestos (ambas se veían cortadas).
+        100dvh sigue el viewport visible, así que nada se sale. Se deja 100vh
+        antes como respaldo para navegadores sin soporte de dvh. */}
+    <div data-app="dashboard" className="flex w-screen overflow-hidden grain-overlay dvh-screen" style={{ background: '#f5f4f0' }}>
       <Suspense fallback={null}><AmbientBackground /></Suspense>
-
-      {!isMobile && (
-        <DashboardSidebar activeView={activeView} onViewChange={handleViewChange} />
-      )}
 
       {isMobile && (
         <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
@@ -322,24 +345,36 @@ const Dashboard = () => {
                 así que el título solo hace falta para accesibilidad, no visible. */}
             <SheetTitle className="sr-only">Menú de navegación</SheetTitle>
             <SheetDescription className="sr-only">Accede a las secciones del panel: inicio, directorio, mensajes, perfil y ajustes.</SheetDescription>
-            <DashboardSidebar activeView={activeView} onViewChange={handleViewChange} />
+            <DashboardSidebar activeView={activeView} onViewChange={handleViewChange} forceExpanded />
           </SheetContent>
         </Sheet>
       )}
 
-      <main className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden relative min-w-0 no-scrollbar">
-        <DashboardTopbar onMenuToggle={() => setSidebarOpen(true)} isMobile={isMobile} onSearch={handleSearch} searchQuery={searchQuery} onHome={() => handleViewChange('dj')} />
-        <ProfileIncompleteBanner onNavigate={handleViewChange} activeView={activeView} />
-        <RecentBusinessViewLine />
-        <TodaysRequestsLine />
-        <div className={`p-4 md:p-6 flex-1 md:pb-6 ${isMobile ? 'pb-[calc(5rem+env(safe-area-inset-bottom))]' : 'pb-6'}`}
-          key={activeView}
-          style={{ animation: 'viewEnter 0.22s cubic-bezier(0.22,1,0.36,1) both' }}>
-          <Suspense fallback={<div className="flex items-center justify-center py-20"><div className="w-6 h-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#D4AF37', borderTopColor: 'transparent' }} /></div>}>
-            {renderView()}
-          </Suspense>
-        </div>
-      </main>
+      {/* SidebarProvider debe envolver sidebar + main juntos (así calcula bien
+          su CSS de layout, ver ui/sidebar.tsx) — por eso engloba también el
+          <main>, no solo el <Sidebar>. En móvil el sidebar vive aparte en el
+          Sheet de arriba, así que aquí solo se activa el colapso real en desktop. */}
+      <SidebarProvider defaultOpen={!isMobile} style={{ minHeight: 0, height: '100%' }} className="flex-1 min-w-0">
+        {!isMobile && (
+          <DashboardSidebarInner activeView={activeView} onViewChange={handleViewChange} />
+        )}
+
+        <main
+          className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden relative min-w-0 no-scrollbar"
+          style={{ transition: 'width 300ms cubic-bezier(0.32,0.72,0,1)' }}
+        >
+          <DashboardTopbar onMenuToggle={() => setSidebarOpen(true)} isMobile={isMobile} onSearch={handleSearch} searchQuery={searchQuery} onHome={() => handleViewChange('dj')} userId={user?.id} isEmpresario={profileRole === 'empresario'} onViewChange={handleViewChange} />
+          <ProfileIncompleteBanner onNavigate={handleViewChange} activeView={activeView} />
+          <RecentBusinessViewLine />
+          <TodaysRequestsLine />
+          <div className={`p-4 md:p-6 flex-1 md:pb-6 ${isMobile ? 'pb-[calc(64px+max(env(safe-area-inset-bottom),12px)+1.5rem)]' : 'pb-6'}`}
+            ref={viewContentRef}>
+            <Suspense fallback={<div className="flex items-center justify-center py-20"><div className="w-6 h-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#D4AF37', borderTopColor: 'transparent' }} /></div>}>
+              {renderView()}
+            </Suspense>
+          </div>
+        </main>
+      </SidebarProvider>
 
       {isMobile && (
         <MobileBottomNav

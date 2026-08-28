@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useProfile } from '@/hooks/useProfile';
 import { supabase } from '@/integrations/supabase/client';
 import { isNative } from '@/lib/capacitor';
+import NotificationBell from './NotificationBell';
 
 interface RealNotif { id: string; type: string; title: string; body: string | null; link: string | null; is_read: boolean; created_at: string; }
 
@@ -24,9 +25,12 @@ interface TopbarProps {
   onSearch?: (q: string) => void;
   searchQuery?: string;
   onHome?: () => void;
+  userId?: string;
+  isEmpresario?: boolean;
+  onViewChange?: (view: string) => void;
 }
 
-const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', onHome }: TopbarProps) => {
+const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', onHome, userId, isEmpresario = false, onViewChange }: TopbarProps) => {
   const navigate = useNavigate();
   const [showNotif, setShowNotif] = useState(false);
   const [dismissed, setDismissed] = useState<Set<string>>(() => {
@@ -141,7 +145,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
 
   return (
     <header
-      className={`px-4 md:px-6 flex items-center justify-between sticky top-0 z-10 gap-3${isNative ? ' native-topbar-offset' : ''}`}
+      className={`px-4 md:px-6 flex items-center justify-between sticky top-0 z-30 gap-3${isNative ? ' native-topbar-offset' : ''}`}
       style={{
         background: 'rgba(255,255,255,0.95)',
         backdropFilter: 'blur(20px)',
@@ -328,13 +332,26 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
           </div>
         )}
 
-        {/* Avatar usuario logueado */}
-        <div className="flex items-center gap-2 px-2 py-1 rounded-full"
+        {/* Campanita de badges en vivo (Flash Booking / mensajes sin leer).
+            Vive junto al avatar y es independiente del orbe de notificaciones
+            de arriba: aquel lista la tabla `notifications`, esta es la red de
+            seguridad in-app de los contadores del sidebar, sin depender de
+            permisos de Web Push. */}
+        {onViewChange && (
+          <NotificationBell userId={userId} isEmpresario={isEmpresario} onViewChange={onViewChange} />
+        )}
+
+        {/* Avatar usuario logueado — cuadrado redondeado (mismo patrón que
+            ProfileSwitcher en el sidebar) y sin dorado brillante, a propósito
+            distinto del orbe circular de notificaciones: en móvil, sin el
+            nombre al lado, ambos quedaban como dos círculos dorados casi
+            idénticos pegados uno al otro. */}
+        <div className="flex items-center gap-2 pl-1 pr-2.5 py-1 rounded-2xl"
           style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
-          <div className="w-7 h-7 rounded-full overflow-hidden flex items-center justify-center text-xs font-black flex-shrink-0"
+          <div className="w-7 h-7 rounded-lg overflow-hidden flex items-center justify-center text-xs font-black flex-shrink-0"
             style={profile.photo_url
               ? undefined
-              : { background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+              : { background: '#3a3632', color: '#fff' }}>
             {profile.photo_url
               ? <img src={profile.photo_url} alt="" className="w-full h-full object-cover" />
               : (profile.display_name ?? 'X').charAt(0).toUpperCase()}
