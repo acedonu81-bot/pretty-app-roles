@@ -121,6 +121,7 @@ const Auth = () => {
   const [oauthCallbackPending, setOauthCallbackPending] = useState(() => searchParams.has('code'));
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [forgotCaptchaToken, setForgotCaptchaToken] = useState<string | null>(null);
+  const [turnstileStalled, setTurnstileStalled] = useState(false);
 
   useEffect(() => {
     track('auth_view', { mode: isLogin ? 'login' : 'register', role: roleParam || 'none' });
@@ -176,8 +177,17 @@ const Auth = () => {
   }, [navigate, redirectParam]);
 
   // Google bloquea OAuth en navegadores integrados (TikTok, Instagram, FB) con
-  // "disallowed_useragent" — en esos casos solo ofrecemos registro por email
-  const isInAppBrowser = /TikTok|musical_ly|Instagram|FBAN|FBAV|FB_IAB|Line\//i.test(navigator.userAgent);
+  // "disallowed_useragent" — en esos casos solo ofrecemos registro por email.
+  // Calculado una vez con inicializador lazy: el user agent no cambia durante
+  // la vida del componente, así que releerlo en cada render es trabajo repetido.
+  const [isInAppBrowser] = useState(() =>
+    /TikTok|musical_ly|Instagram|FBAN|FBAV|FB_IAB|Line\//i.test(navigator.userAgent));
+
+  const handleCopyAuthLink = () => {
+    navigator.clipboard.writeText(window.location.href)
+      .then(() => toast.success('Enlace copiado — pégalo en Chrome o Safari'))
+      .catch(() => authAlert('Copia el enlace de la barra de arriba y ábrelo en Chrome o Safari'));
+  };
 
   const handleGoogleSignIn = async () => {
     const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
@@ -331,7 +341,7 @@ const Auth = () => {
 
         isRegistering.current = true;
         const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
-        const KNOWN_ROLES = ['dj', 'media', 'makeup', 'peluqueria', 'staff', 'azafata', 'promotor', 'empresario', 'catering', 'mago', 'humorista', 'animador', 'bailarin', 'speaker', 'vestuario', 'photo-booth'];
+        const KNOWN_ROLES = ['dj', 'grupo-musical', 'media', 'makeup', 'peluqueria', 'staff', 'azafata', 'promotor', 'empresario', 'catering', 'mago', 'humorista', 'animador', 'bailarin', 'speaker', 'vestuario', 'photo-booth'];
         const { data: signUpData, error } = await supabase.auth.signUp({
           email,
           password,
@@ -696,7 +706,32 @@ const Auth = () => {
                 )}
 
                 {/* Verificación anti-bot — invisible la mayoría de las veces */}
-                <TurnstileWidget onVerify={setCaptchaToken} onExpire={() => setCaptchaToken(null)} />
+                <TurnstileWidget
+                  onVerify={token => { setCaptchaToken(token); setTurnstileStalled(false); }}
+                  onExpire={() => setCaptchaToken(null)}
+                  onStall={() => setTurnstileStalled(true)}
+                />
+
+                {/* El webview de Facebook/Instagram/TikTok rompe Turnstile igual que
+                    rompe Google OAuth (arriba) — sin salida, el usuario se queda
+                    mirando "Verificando seguridad…" para siempre. Este es el caso
+                    real: 63% del tráfico de /auth llega desde facebook.com. */}
+                {isInAppBrowser && turnstileStalled && (
+                  <div className="rounded-xl px-4 py-3.5 text-xs leading-relaxed"
+                    style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.3)', color: '#5c4a12' }}>
+                    <p className="font-bold mb-1.5">Este navegador no permite completar el registro.</p>
+                    <p className="mb-2.5">
+                      Estás dentro de la app de Facebook/Instagram, que bloquea la verificación de seguridad.
+                      Toca <strong>⋮ o ···</strong> arriba y elige <strong>"Abrir en Chrome"</strong> o{' '}
+                      <strong>"Abrir en el navegador"</strong>.
+                    </p>
+                    <button type="button" onClick={handleCopyAuthLink}
+                      className="w-full py-2.5 rounded-lg font-bold text-xs transition-all hover:scale-[1.01]"
+                      style={{ background: '#fff', border: '1px solid rgba(212,175,55,0.4)', color: '#8B6A00' }}>
+                      Copiar enlace para pegarlo en el navegador
+                    </button>
+                  </div>
+                )}
 
                 {/* CTA principal */}
                 <button

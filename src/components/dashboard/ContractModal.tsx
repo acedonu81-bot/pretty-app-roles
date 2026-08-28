@@ -644,6 +644,42 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
       }
     }
 
+    // Un contrato generado con fecha de evento es un acuerdo cerrado —
+    // mismo criterio que al aceptar un Flash Booking (SolicitudesTab.tsx):
+    // se añade solo al calendario del profesional y dispara "Nuevo trabajo"
+    // si lo tiene activado. Aplica a cualquier rol, no solo bolos de música.
+    if (professional.userId && form.fechaEvento) {
+      supabase.from('calendar_events').insert({
+        user_id: professional.userId,
+        title: form.contratanteNombre ? `Trabajo — ${form.contratanteNombre}` : 'Trabajo confirmado',
+        event_date: form.fechaEvento,
+        location: form.nombreLocal || null,
+        notes: form.nombreEvento || null,
+      }).then(({ error: calError }) => {
+        if (calError) console.warn('[ContractModal] calendar_events insert failed:', calError);
+      });
+
+      supabase.from('alert_preferences' as any).select('nuevos_bolos').eq('user_id', professional.userId).maybeSingle()
+        .then(({ data: pref }) => {
+          if (!(pref as any)?.nuevos_bolos) return;
+          supabase.functions.invoke('send-email', {
+            body: {
+              type: 'bolo_new_confirmation',
+              data: {
+                // El email de contacto del profesional vive en auth, no en
+                // "professional" (que es el perfil público) — send-email ya
+                // resuelve profesional_user_id → email en otras plantillas,
+                // así que se pasa el id y se deja resolver server-side.
+                professional_user_id: professional.userId,
+                title: form.contratanteNombre ? `Trabajo — ${form.contratanteNombre}` : 'Trabajo confirmado',
+                date: form.fechaEvento,
+                location: form.nombreLocal || null,
+              },
+            },
+          }).catch((err: unknown) => console.warn('[ContractModal] new-work email failed:', err));
+        });
+    }
+
     // Avisa al profesional de que existe un contrato con su nombre — el
     // generador no le pide firma dentro de la plataforma, así que sin este
     // email podría no enterarse nunca de que se generó.

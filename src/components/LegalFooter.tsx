@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ShieldCheck, Lock, MapPin } from 'lucide-react';
 import LegalModal from './LegalModal';
 import ContactModal from './ContactModal';
 
@@ -72,8 +73,23 @@ const LegalFooter = () => {
             </div>
           </div>
 
+          {/* Sellos de confianza — solo afirmaciones verificables (HTTPS real,
+              región de hosting real de Vercel/Supabase), nada que suene a
+              certificación de un tercero que no la ha emitido. */}
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-6 pb-2">
+            <span className="flex items-center gap-1.5 text-[0.65rem]" style={{ color: 'rgba(255,255,255,0.45)' }}>
+              <Lock size={11} /> Conexión segura SSL
+            </span>
+            <span className="flex items-center gap-1.5 text-[0.65rem]" style={{ color: 'rgba(255,255,255,0.45)' }}>
+              <MapPin size={11} /> Datos alojados en la UE
+            </span>
+            <span className="flex items-center gap-1.5 text-[0.65rem]" style={{ color: 'rgba(255,255,255,0.45)' }}>
+              <ShieldCheck size={11} /> Cumplimiento RGPD
+            </span>
+          </div>
+
           {/* Bottom */}
-          <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
+          <div className="pt-4 flex flex-col md:flex-row items-center justify-between gap-3" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
             <p className="text-[0.7rem]" style={{ color: 'rgba(255,255,255,0.6)' }}>
               © {new Date().getFullYear()} XPEAK — España. Todos los derechos reservados.
             </p>

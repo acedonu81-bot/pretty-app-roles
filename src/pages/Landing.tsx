@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import { useState, useRef, useEffect, useCallback, useMemo, lazy, Suspense } from 'react';
 
 const ALL_CITIES = [
   // Grandes capitales y destinos de ocio
@@ -133,6 +133,8 @@ import bentoStaff from '@/assets/bento-staff.jpg';
 import bentoImagen from '@/assets/bento-imagen.jpg';
 import LegalFooter from '@/components/LegalFooter';
 import DemoVideoModal from '@/components/DemoVideoModal';
+
+const SupportChat = lazy(() => import('@/components/dashboard/SupportChat'));
 
 /* ── Fade-in wrapper ── */
 const FadeIn = ({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) => {
@@ -418,6 +420,49 @@ const FaqSection = () => {
   );
 };
 
+// Dispara estas dos queries en cuanto este módulo se evalúa (import del
+// chunk lazy), no cuando React monta <Landing> y corre el useEffect —
+// evita el salto extra de "esperar a que el árbol de componentes termine
+// de montar" antes de empezar a pedir los datos. El useEffect de abajo
+// simplemente consume esta misma promesa si ya está en marcha.
+const communityReviewsPromise = supabase.from('reviews')
+  .select('reviewer_name, reviewer_role, reviewer_avatar, comment')
+  .eq('approved', true).order('created_at', { ascending: false }).limit(6);
+
+const freshRolesPromise = supabase.from('profiles' as any)
+  .select('role, display_name')
+  .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString());
+
+/* Nº total de perfiles por rol real — para ordenar las categorías del bento
+   por popularidad real, siempre actualizado (no hardcodear un orden fijo). */
+const categoryCountsPromise = supabase.from('profiles' as any)
+  .select('role')
+  .not('role', 'in', '("empresario","pending")');
+
+/* Categoría agregada del bento → roles reales que la componen (mismo mapeo que CATEGORY_DEST/isFresh). */
+const CATEGORY_ROLES: Record<string, string[]> = {
+  musica: ['dj'],
+  staff: ['staff', 'promotor'],
+  imagen: ['media'],
+  belleza: ['makeup', 'peluqueria'],
+  gastro: ['catering'],
+};
+
+/* Datos fijos de cada tarjeta del bento (imagen/icono/texto) — el ORDEN se decide
+   en runtime vía categoryOrder, nunca aquí. */
+const BENTO_CARD_DATA: Record<string, { image: string; icon: React.ReactNode; title: string; subtitle: string; freshRoles: string[] }> = {
+  musica:  { image: bentoMusica, icon: <Music size={20} />, title: 'Música', subtitle: 'DJs, productores, artistas en vivo, VJs y técnicos de sonido', freshRoles: ['dj'] },
+  staff:   { image: bentoStaff, icon: <Users size={20} />, title: 'Staff & Promoción', subtitle: 'RRPP, hostess, promotores y azafatas', freshRoles: ['staff', 'promotor'] },
+  imagen:  { image: bentoImagen, icon: <Camera size={20} />, title: 'Imagen & Media', subtitle: 'Fotógrafos, videógrafos y creadores', freshRoles: ['media'] },
+  belleza: { image: '/images/pexels/2681751.jpg', icon: <Scissors size={20} />, title: 'Belleza & Estética', subtitle: 'Maquilladores y peluquería a domicilio', freshRoles: ['makeup', 'peluqueria'] },
+  gastro:  { image: bentoGastro, icon: <UtensilsCrossed size={20} />, title: 'Gastro & Sala', subtitle: 'Bartenders, chefs y catering premium', freshRoles: ['catering'] },
+};
+
+/* Forma de cada una de las 5 posiciones del bento, de la más grande a la más pequeña.
+   La categoría con más inscritos ocupa la posición 0 (hueco grande), la que menos
+   la posición 4 (hueco pequeño) — así el bento se reordena solo, sin tocar código. */
+const BENTO_SLOT_CLASS = ['md:row-span-2', 'md:row-span-2', 'md:col-span-2', '', ''];
+
 const Landing = () => {
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
@@ -428,6 +473,9 @@ const Landing = () => {
   const [newsletterLoading, setNewsletterLoading] = useState(false);
   const [communityReviews, setCommunityReviews] = useState<{ reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string }[]>([]);
   const [freshRoles, setFreshRoles] = useState<Set<string>>(new Set());
+  // Orden de las 5 categorías del bento, de más a menos profesionales inscritos.
+  // Se recalcula en cada carga — nunca hardcodear un orden fijo aquí.
+  const [categoryOrder, setCategoryOrder] = useState<string[]>(['musica', 'staff', 'imagen', 'belleza', 'gastro']);
 
   // Login inteligente: si ya estás logueado como ORGANIZADOR, entras directo al
   // feed (es tu experiencia principal). Al profesional NO se le fuerza a ningún
@@ -461,24 +509,35 @@ const Landing = () => {
   }, [user, authLoading, navigate]);
 
   useEffect(() => {
-    supabase.from('reviews').select('reviewer_name, reviewer_role, reviewer_avatar, comment')
-      .eq('approved', true).order('created_at', { ascending: false }).limit(6)
-      .then(({ data }) => { if (data && data.length > 0) setCommunityReviews(data as { reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string }[]); });
+    communityReviewsPromise.then(({ data }) => { if (data && data.length > 0) setCommunityReviews(data as { reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string }[]); });
   }, []);
 
   useEffect(() => {
-    const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
-    supabase.from('profiles' as any)
-      .select('role, display_name')
-      .gte('created_at', since)
-      .then(({ data }) => {
-        if (!data) return;
-        const roles = new Set<string>();
-        for (const row of data as { role: string; display_name: string | null }[]) {
-          if (row.role && row.display_name && row.display_name.trim().length > 1) roles.add(row.role);
-        }
-        setFreshRoles(roles);
-      });
+    freshRolesPromise.then(({ data }) => {
+      if (!data) return;
+      const roles = new Set<string>();
+      for (const row of data as { role: string; display_name: string | null }[]) {
+        if (row.role && row.display_name && row.display_name.trim().length > 1) roles.add(row.role);
+      }
+      setFreshRoles(roles);
+    });
+  }, []);
+
+  useEffect(() => {
+    categoryCountsPromise.then(({ data }) => {
+      if (!data) return;
+      const roleCounts: Record<string, number> = {};
+      for (const row of data as { role: string | null }[]) {
+        if (!row.role) continue;
+        roleCounts[row.role] = (roleCounts[row.role] ?? 0) + 1;
+      }
+      const categoryCounts = Object.entries(CATEGORY_ROLES).map(([category, roles]) => ({
+        category,
+        count: roles.reduce((sum, r) => sum + (roleCounts[r] ?? 0), 0),
+      }));
+      categoryCounts.sort((a, b) => b.count - a.count);
+      setCategoryOrder(categoryCounts.map(c => c.category));
+    });
   }, []);
 
   const handleNewsletter = async (e: React.FormEvent) => {
@@ -500,7 +559,14 @@ const Landing = () => {
     <>
     <Helmet>
       <title>XPEAK — Contratar DJ, Fotógrafo y Staff para Eventos | España</title>
-      <link rel="preload" href="/videos/hero-poster.jpg" as="image" fetchpriority="high" />
+      {/* El preload real vive en index.html generado por prerender-meta.mjs
+          (solo ruta '/') — un <link rel="preload"> aquí, vía react-helmet-async,
+          no llega al navegador hasta después de montar React, perdiendo la
+          ventana de prioridad temprana que un preload necesita para servir de
+          algo (medido: ~1.1s de "load delay" evitable en el LCP con Chrome
+          DevTools). En dev (sin prerender) el navegador simplemente descubre
+          el poster un poco más tarde vía el propio <video poster>, sin preload
+          — no hay forma de adelantarlo sin HTML estático real. */}
       <meta name="description" content="Encuentra y contrata DJ, fotógrafo, camarero, staff y catering para festivales, clubs, eventos privados y bodas en España. Profesionales verificados. Flash Booking. Gratis." />
       <link rel="canonical" href="https://xpeak.es/" />
       <meta property="og:title" content="XPEAK | Contratar DJs, Staff y Profesionales para Eventos en España" />
@@ -741,7 +807,7 @@ const Landing = () => {
 
       {/* ─ TIPOS DE EVENTO ─ */}
       <FadeIn>
-        <section id="como-funciona" className="max-w-[1200px] mx-auto px-6 md:px-8 pt-8 pb-10 md:pt-14 md:pb-16">
+        <section id="como-funciona" className="max-w-[1200px] mx-auto px-6 md:px-8 pt-8 pb-10 md:pt-14 md:pb-16" style={{ scrollMarginTop: 80 }}>
           <div className="text-center mb-8">
             <h2 className="text-2xl md:text-3xl font-black tracking-tight" style={{ lineHeight: 1.2 }}>¿Qué estás organizando?</h2>
           </div>
@@ -771,7 +837,7 @@ const Landing = () => {
 
 
       {/* ─ Mobile Categories ─ */}
-      <section className="block md:hidden max-w-[1200px] mx-auto px-6 pb-10">
+      <section id="categorias-mobile" className="block md:hidden max-w-[1200px] mx-auto px-6 pb-10" style={{ scrollMarginTop: 80 }}>
         <FadeIn>
           <div className="text-center mb-5">
             <p className="uppercase tracking-[0.3em] text-xs font-semibold mb-2" style={{ color: '#8B6A00' }}>Categorías</p>
@@ -785,7 +851,7 @@ const Landing = () => {
             className="flex gap-3 overflow-x-auto pb-2"
             style={{ scrollbarWidth: 'none' }}
           >
-            {ROLE_DETAILS.filter(role => role.key !== 'empresario').map(role => (
+            {categoryOrder.map(key => ROLE_DETAILS.find(r => r.key === key)).filter((role): role is typeof ROLE_DETAILS[number] => !!role).map(role => (
               <a
                 key={role.key}
                 href={CATEGORY_DEST[role.key]}
@@ -809,7 +875,7 @@ const Landing = () => {
       </section>
 
       {/* ─ Bento Grid ─ */}
-      <section id="categorias" className="hidden md:block max-w-[1200px] mx-auto px-6 md:px-8 pb-10 md:pb-16">
+      <section id="categorias" className="hidden md:block max-w-[1200px] mx-auto px-6 md:px-8 pb-10 md:pb-16" style={{ scrollMarginTop: 80 }}>
         <FadeIn>
           <div className="text-center mb-14">
             <p className="uppercase tracking-[0.3em] text-xs font-semibold mb-4" style={{ color: '#f97316' }}>
@@ -823,38 +889,38 @@ const Landing = () => {
         <p className="text-center text-xs text-muted-foreground mb-6" style={{ color: '#333' }}>
           Haz clic en cada categoría para ver los perfiles disponibles
         </p>
-        {/* Fila 1-2: bento asimétrico */}
+        {/*
+          Bento asimétrico ordenado por nº real de profesionales inscritos por
+          categoría (categoryOrder, calculado en runtime desde Supabase) — la
+          categoría con más inscritos siempre cae en el hueco más grande, sin
+          necesidad de tocar este código cuando la plataforma crezca.
+        */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 auto-rows-[170px] md:auto-rows-[260px] mb-3 md:mb-4">
-          <FadeIn delay={0} className="md:row-span-2">
-            <BentoCard image={bentoMusica} icon={<Music size={20} />} title="Música" subtitle="DJs, productores, artistas en vivo, VJs y técnicos de sonido" className="h-full"
-              isFresh={freshRoles.has('dj')}
-              href={CATEGORY_DEST.musica} />
-          </FadeIn>
-          <FadeIn delay={0.15} className="md:row-span-2">
-            <BentoCard image={bentoImagen} icon={<Camera size={20} />} title="Imagen & Media" subtitle="Fotógrafos, videógrafos y creadores" className="h-full"
-              isFresh={freshRoles.has('media')}
-              href={CATEGORY_DEST.imagen} />
-          </FadeIn>
-          <FadeIn delay={0.2} className="md:col-span-2">
-            <BentoCard image={bentoStaff} icon={<Users size={20} />} title="Staff & Promoción" subtitle="RRPP, hostess, promotores y azafatas" className="h-full"
-              isFresh={freshRoles.has('staff') || freshRoles.has('promotor')}
-              href={CATEGORY_DEST.staff} />
-          </FadeIn>
+          {categoryOrder.slice(0, 3).map((key, i) => {
+            const card = BENTO_CARD_DATA[key];
+            if (!card) return null;
+            return (
+              <FadeIn key={key} delay={i * 0.15} className={BENTO_SLOT_CLASS[i]}>
+                <BentoCard image={card.image} icon={card.icon} title={card.title} subtitle={card.subtitle} className="h-full"
+                  isFresh={card.freshRoles.some(r => freshRoles.has(r))}
+                  href={CATEGORY_DEST[key]} />
+              </FadeIn>
+            );
+          })}
         </div>
-        {/* Fila 3: Belleza + Gastro */}
+        {/* Fila 3: las 2 categorías con menos inscritos */}
         <div className="grid grid-cols-2 gap-3 md:gap-4" style={{ height: 180 }}>
-          <FadeIn delay={0.25} className="h-full">
-            <BentoCard
-              image="/images/pexels/2681751.jpg"
-              icon={<Scissors size={20} />} title="Belleza & Estética" subtitle="Maquilladores y peluquería a domicilio" className="h-full"
-              isFresh={freshRoles.has('makeup') || freshRoles.has('peluqueria')}
-              href={CATEGORY_DEST.belleza} />
-          </FadeIn>
-          <FadeIn delay={0.3} className="h-full">
-            <BentoCard image={bentoGastro} icon={<UtensilsCrossed size={20} />} title="Gastro & Sala" subtitle="Bartenders, chefs y catering premium" className="h-full"
-              isFresh={freshRoles.has('catering')}
-              href={CATEGORY_DEST.gastro} />
-          </FadeIn>
+          {categoryOrder.slice(3, 5).map((key, i) => {
+            const card = BENTO_CARD_DATA[key];
+            if (!card) return null;
+            return (
+              <FadeIn key={key} delay={0.25 + i * 0.05} className="h-full">
+                <BentoCard image={card.image} icon={card.icon} title={card.title} subtitle={card.subtitle} className="h-full"
+                  isFresh={card.freshRoles.some(r => freshRoles.has(r))}
+                  href={CATEGORY_DEST[key]} />
+              </FadeIn>
+            );
+          })}
         </div>
       </section>
 
@@ -939,7 +1005,7 @@ const Landing = () => {
       </section>
 
       {/* ─ FAQ ─ */}
-      <div id="faq"><FaqSection /></div>
+      <div id="faq" style={{ scrollMarginTop: 80 }}><FaqSection /></div>
 
       {/* ─ CTA final limpio ─ */}
       <FadeIn>
@@ -979,6 +1045,7 @@ const Landing = () => {
       </main>
       <LegalFooter />
       <DemoVideoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
+      <Suspense fallback={null}><div className="hidden sm:block"><SupportChat /></div></Suspense>
     </div>
     </>
   );

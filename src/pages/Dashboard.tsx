@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { AnimatePresence } from 'framer-motion';
 import DashboardSidebar, { DashboardSidebarInner } from '@/components/dashboard/DashboardSidebar';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import DashboardTopbar from '@/components/dashboard/DashboardTopbar';
@@ -395,15 +396,22 @@ const Dashboard = () => {
         )}
       </Suspense>
 
-      {selectedProfile && (
-        <Suspense fallback={null}>
-          <ProfessionalProfilePage
-            profile={selectedProfile}
-            onClose={() => setSelectedProfile(null)}
-            onMessage={handleMessage}
-          />
-        </Suspense>
-      )}
+      {/* AnimatePresence aquí, no dentro de ProfessionalProfilePage: el exit de
+          framer-motion solo se reproduce si el componente que lo declara sigue
+          montado un instante más — si el padre lo desmonta de golpe (como hacía
+          antes este `{selectedProfile && ...}` fuera de cualquier AnimatePresence),
+          la animación de cierre nunca llega a verse. */}
+      <AnimatePresence>
+        {selectedProfile && (
+          <Suspense fallback={null}>
+            <ProfessionalProfilePage
+              profile={selectedProfile}
+              onClose={() => setSelectedProfile(null)}
+              onMessage={handleMessage}
+            />
+          </Suspense>
+        )}
+      </AnimatePresence>
     </div>
     </ProfileProvider>
   );

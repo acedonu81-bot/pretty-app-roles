@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight, Megaphone, UtensilsCrossed, Laugh, PartyPopper, PersonStanding, MicVocal, Shirt, Scissors, Upload, Euro } from 'lucide-react';
+import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight, Megaphone, UtensilsCrossed, Laugh, PartyPopper, PersonStanding, MicVocal, Shirt, Scissors, Upload, Euro, Guitar } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
@@ -19,7 +19,8 @@ const WIZARD_CITIES = [
 ];
 
 const ROLES = [
-  { value: 'dj',           label: 'DJ / Artista',        desc: 'DJ, músico, grupo musical',         icon: Music2,         color: '#D4AF37' },
+  { value: 'dj',           label: 'DJ / Artista',        desc: 'DJ o artista en solitario',         icon: Music2,         color: '#D4AF37' },
+  { value: 'grupo-musical', label: 'Grupo Musical',      desc: 'Banda, orquesta o grupo de versiones', icon: Guitar,       color: '#c084fc' },
   { value: 'media',        label: 'Fotógrafo / Vídeo',   desc: 'Fotografía y video de eventos',     icon: Camera,         color: '#60a5fa' },
   { value: 'makeup',       label: 'Maquilladora',        desc: 'Maquillaje y estilismo',            icon: Sparkles,       color: '#f472b6' },
   { value: 'peluqueria',   label: 'Peluquería a Domicilio', desc: 'Peluquería a domicilio, eventos y día a día', icon: Scissors, color: '#fb7185' },
@@ -45,6 +46,14 @@ const TIPS: Record<string, { title: string; tips: [string, string][] }> = {
       ['Añade tu foto', 'Los DJs con foto reciben 3× más contactos'],
       ['Sube tu mix', 'Un link de SoundCloud o Mixcloud en tu ficha'],
       ['Escribe tu bio', 'Cuéntales tu estilo y dónde has actuado'],
+    ],
+  },
+  'grupo-musical': {
+    title: 'Tu perfil de Grupo Musical está listo',
+    tips: [
+      ['Añade una foto del grupo', 'Las salas quieren ver a todos los integrantes'],
+      ['Sube un vídeo en directo', 'Un show real vende más que cualquier descripción'],
+      ['Define tu repertorio', 'Versiones, estilo y duración del set'],
     ],
   },
   media: {

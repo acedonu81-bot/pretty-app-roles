@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { MapPin, Zap, BadgeCheck, Star, Plus, Check, MessageCircle, Volume2, VolumeX, ChevronRight } from 'lucide-react';
 import { buildReelSlides } from '@/lib/reelSlides';
+import InstallPwaBanner from '@/components/InstallPwaBanner';
 
 /**
  * ReelsFeed — feed vertical tipo Instagram/Reels. Scroll vertical infinito
@@ -19,6 +20,7 @@ export interface ReelsProfile {
   display_name: string;
   role: string;
   photo_url: string | null;
+  portfolio_urls?: string[] | null;
   bio_video_url?: string | null;
   video_session_urls?: string[] | null;
   zone: string | null;
@@ -54,7 +56,7 @@ const LOOPS = 6;
  * (preload='none') — así tengas 3 o 3.000 vídeos, el móvil solo procesa el
  * visible. Silenciado + loop + playsInline (autoplay móvil).
  */
-function ReelMedia({ profile: p, eager, imgError, onImgError, soundOn, photoOnly = false }: {
+function ReelMedia({ profile: p, eager, imgError, onImgError, soundOn, photoOnly = false, photoUrl }: {
   profile: ReelsProfile;
   eager: boolean;
   imgError: boolean;
@@ -65,7 +67,12 @@ function ReelMedia({ profile: p, eager, imgError, onImgError, soundOn, photoOnly
   // donde el vídeo principal ahora vive en su propio slide (ReelVideoSlide).
   // Evita doble reproducción del mismo vídeo en dos sitios a la vez.
   photoOnly?: boolean;
+  // URL concreta a mostrar en este slide (foto principal o una del portfolio).
+  // Sin esto, todo slide de tipo 'photo' mostraba SIEMPRE p.photo_url — la
+  // foto principal se repetía visualmente en cada slide de portfolio.
+  photoUrl?: string | null;
 }) {
+  const displayUrl = photoUrl !== undefined ? photoUrl : p.photo_url;
   const videoRef = useRef<HTMLVideoElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -107,9 +114,9 @@ function ReelMedia({ profile: p, eager, imgError, onImgError, soundOn, photoOnly
   return (
     <div ref={wrapRef} className="absolute inset-0">
       {/* Poster siempre debajo (foto): se ve al instante y mientras carga el vídeo */}
-      {p.photo_url && !imgError ? (
+      {displayUrl && !imgError ? (
         <img
-          src={p.photo_url}
+          src={displayUrl}
           alt={p.display_name}
           loading={eager ? 'eager' : 'lazy'}
           onError={onImgError}
@@ -218,7 +225,7 @@ function ReelSlider({ profile: p, eager, imgError, onImgError, soundOn, active, 
         style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
       >
         {slides.map((slide, i) => (
-          <div key={i} className="relative w-full h-full flex-shrink-0 snap-start" style={{ minWidth: '100%' }}>
+          <div key={i} className="relative w-full h-full flex-shrink-0 snap-start snap-always" style={{ minWidth: '100%' }}>
             {slide.type === 'photo' ? (
               <>
                 <ReelMedia
@@ -228,6 +235,7 @@ function ReelSlider({ profile: p, eager, imgError, onImgError, soundOn, active, 
                   onImgError={onImgError}
                   soundOn={soundOn}
                   photoOnly
+                  photoUrl={slide.url}
                 />
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.4) 100%)' }} />
                 <div className="absolute bottom-0 left-0 right-0 z-20 p-5 max-w-sm" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 1.5rem)' }}>
@@ -292,9 +300,13 @@ function ReelSlider({ profile: p, eager, imgError, onImgError, soundOn, active, 
                   </div>
                 </div>
                 {slides.length > 1 && i === 0 && (
-                  <div className="absolute right-3 top-1/2 -translate-y-1/2 z-20 pointer-events-none"
-                    style={{ animation: 'reel-arrow-pulse 1.6s ease-in-out infinite' }}>
-                    <ChevronRight size={26} color="rgba(255,255,255,0.85)" />
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 z-20 pointer-events-none w-11 h-11 rounded-full flex items-center justify-center"
+                    style={{
+                      background: 'linear-gradient(135deg,#F4D35E,#D4AF37)',
+                      boxShadow: '0 0 0 1px rgba(255,255,255,0.4), 0 4px 16px rgba(0,0,0,0.5), 0 0 20px rgba(212,175,55,0.6)',
+                      animation: 'reel-arrow-pulse 1.6s ease-in-out infinite',
+                    }}>
+                    <ChevronRight size={24} color="#000" strokeWidth={3} />
                   </div>
                 )}
               </>
@@ -343,15 +355,12 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
     return () => { document.body.style.overflow = prev; };
   }, []);
 
-  // Orden base barajado una sola vez: evita que el feed muestre siempre el
-  // mismo patrón predecible (perfil1, perfil2, perfil3, perfil1…) cuando hay
-  // pocos perfiles. Se baraja una vez y se mantiene en todos los bloques para
-  // que el re-centrado del bucle infinito siga funcionando sin saltos.
-  const base = useMemo(() => {
-    const a = [...profiles];
-    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
-    return a;
-  }, [profiles]);
+  // Orden estable (por score, el mismo que trae fetchDirectorioProfiles) — un
+  // shuffle aquí encima del que ya hacía Descubrir.tsx era redundante y, si
+  // `profiles` cambiaba de referencia entre renders sin cambiar de contenido,
+  // volvía a barajar el feed entero bajo el usuario (efecto de "parpadeo" y
+  // salto a otra ficha a mitad de scroll).
+  const base = profiles;
 
   // Lista repetida para el bucle infinito.
   const items = base.length > 0
@@ -448,8 +457,8 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
       <style>{`
         .reels-hide-sb::-webkit-scrollbar{display:none}
         @keyframes reel-arrow-pulse {
-          0%, 100% { opacity: 0.4; transform: translateY(-50%) translateX(0); }
-          50% { opacity: 1; transform: translateY(-50%) translateX(6px); }
+          0%, 100% { transform: translateY(-50%) translateX(0) scale(1); filter: brightness(1); }
+          50% { transform: translateY(-50%) translateX(6px) scale(1.08); filter: brightness(1.35); }
         }
       `}</style>
 
@@ -498,6 +507,7 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
           </div>
         );
       })}
+      <InstallPwaBanner />
     </div>
   );
 }

@@ -1,0 +1,62 @@
+<!doctype html><html lang="es"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Diagnóstico pantalla</title>
+<style>
+*{box-sizing:border-box;margin:0}
+body{font-family:system-ui,sans-serif;background:#111;color:#eee;padding:16px;padding-bottom:120px}
+h1{font-size:1rem;margin-bottom:12px;color:#D4AF37}
+table{width:100%;border-collapse:collapse;font-size:13px}
+td{padding:7px 4px;border-bottom:1px solid #333;vertical-align:top}
+td:first-child{color:#999;width:52%}
+td:last-child{font-weight:700;font-family:ui-monospace,monospace;color:#fff}
+.bad{color:#ff6b6b!important}.good{color:#51cf66!important}
+.top{position:fixed;top:0;left:0;right:0;height:4px;background:#D4AF37;z-index:99}
+.bot{position:fixed;bottom:0;left:0;right:0;background:rgba(212,175,55,.95);color:#000;
+ font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;
+ padding-bottom:env(safe-area-inset-bottom);height:calc(64px + env(safe-area-inset-bottom));z-index:99}
+#copy{margin-top:16px;width:100%;padding:14px;background:#D4AF37;color:#000;border:0;border-radius:10px;font-weight:800;font-size:15px}
+</style></head><body>
+<div class="top"></div>
+<h1>Diagnóstico de pantalla — XPEAK</h1>
+<p style="font-size:12px;color:#888;margin-bottom:12px">
+Si ves la franja dorada de arriba entera y la barra dorada de abajo entera (con su texto centrado y sin cortarse), el layout encaja.</p>
+<table id="t"></table>
+<button id="copy">Copiar resultados</button>
+<div class="bot">BARRA INFERIOR — ¿se ve entera?</div>
+<script>
+const px = v => v ? v : '0px';
+const cs = getComputedStyle(document.documentElement);
+const probe = (h) => { const d=document.createElement('div');
+  d.style.cssText='position:absolute;visibility:hidden;height:'+h; document.body.appendChild(d);
+  const r=d.getBoundingClientRect().height; d.remove(); return Math.round(r); };
+const vh=probe('100vh'), dvh=probe('100dvh'), svh=probe('100svh'), lvh=probe('100lvh');
+const sab = cs.getPropertyValue('--sab').trim() || getComputedStyle(document.body).getPropertyValue('padding-bottom');
+const el=document.createElement('div');
+el.style.cssText='position:absolute;visibility:hidden;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)';
+document.body.appendChild(el);
+const st=getComputedStyle(el);
+const insetTop=st.paddingTop, insetBottom=st.paddingBottom; el.remove();
+const rows=[
+ ['Dispositivo (UA)', navigator.userAgent.slice(0,60)],
+ ['window.innerHeight', window.innerHeight],
+ ['100vh', vh + (vh>window.innerHeight?'  ← MÁS ALTO':'')],
+ ['100dvh', dvh],
+ ['100svh', svh],
+ ['100lvh', lvh],
+ ['desborde (100vh - innerHeight)', (vh-window.innerHeight)+'px'],
+ ['safe-area-inset-top', insetTop],
+ ['safe-area-inset-bottom', insetBottom],
+ ['devicePixelRatio', devicePixelRatio],
+ ['visualViewport.height', window.visualViewport?Math.round(window.visualViewport.height):'n/d'],
+ ['screen.height', screen.height],
+];
+const t=document.getElementById('t');
+t.innerHTML=rows.map(([k,v])=>{
+  const bad=(k.startsWith('desborde')&&parseInt(v)>0)||(k==='safe-area-inset-bottom'&&parseInt(v)===0);
+  return `<tr><td>${k}</td><td class="${bad?'bad':''}">${v}</td></tr>`;}).join('');
+document.getElementById('copy').onclick=()=>{
+  const txt=rows.map(([k,v])=>k+': '+v).join('\n');
+  navigator.clipboard.writeText(txt).then(()=>{document.getElementById('copy').textContent='¡Copiado! Pégamelo en el chat';});
+};
+</script></body></html>

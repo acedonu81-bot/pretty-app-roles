@@ -99,6 +99,17 @@ for (const [occSlug, roleSlugs] of Object.entries(OCC_ROLES)) {
 }
 console.log(`  → ${occCount} rutas ocasión/rol añadidas al prerender de contenido`);
 
+// Rutas de directorio /directorio/:rol → DirectorioPublico. Finitas (un slug
+// por rol en ROLE_CONFIG), a diferencia de /p/:slug que depende de perfiles
+// reales en Supabase y no se prerenderiza.
+const ROLE_CONFIG = extractObjectLiteral(path.join(ROOT, 'src', 'pages', 'DirectorioPublico.tsx'), 'ROLE_CONFIG');
+let dirCount = 0;
+for (const roleSlug of Object.keys(ROLE_CONFIG)) {
+  routes.push({ routePath: `/directorio/${roleSlug}`, file: 'DirectorioPublico.tsx', routePattern: '/directorio/:rol' });
+  dirCount++;
+}
+console.log(`  → ${dirCount} rutas de directorio/rol añadidas al prerender de contenido`);
+
 // Shims mínimos de navegador para componentes que los tocan durante el render
 const memStorage = () => {
   const s = new Map();
@@ -175,3 +186,10 @@ if (ok === 0) {
   console.error('ERROR: ninguna página prerenderizada con contenido');
   process.exit(1);
 }
+
+// El bundle SSR importa src/integrations/supabase/client.ts, cuyo cliente usa
+// autoRefreshToken: true — en Node eso arranca un setInterval que nunca se
+// limpia y deja el event loop vivo indefinidamente aunque el script ya haya
+// terminado su trabajo (visto en la práctica: 2388 páginas ok, proceso nunca
+// sale). Salida explícita para no depender de que Node cierre el loop solo.
+process.exit(0);

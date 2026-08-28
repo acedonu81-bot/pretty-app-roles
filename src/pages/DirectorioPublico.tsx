@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
-import { Zap, MapPin, BadgeCheck, ChevronRight, Check, Plus, Users, Play } from 'lucide-react';
+import { Zap, MapPin, BadgeCheck, ChevronRight, Check, Plus, Users } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import FlashBookingRequestModal from '@/components/dashboard/FlashBookingRequestModal';
@@ -34,6 +34,9 @@ export interface DirProfile {
   specialty: string | null;
   zone: string | null;
   photo_url: string | null;
+  bio_video_url: string | null;
+  video_session_urls: string[] | null;
+  portfolio_urls: string[] | null;
   hourly_rate: number | null;
   bio: string | null;
   is_flash_active: boolean;
@@ -254,6 +257,31 @@ function recentUpdateLabel(updatedAt: string | null): string | null {
   return `Actualizado hace ${days} días`;
 }
 
+// Valoraciones aprobadas de un conjunto de perfiles. Vive en su propia consulta
+// para que el listado pueda pintarse sin esperarla (ver comentario dentro de
+// fetchDirectorioProfiles). Devuelve nota media y número de reseñas por usuario.
+export async function fetchRatings(userIds: string[]): Promise<Record<string, { avg: number; count: number }>> {
+  if (userIds.length === 0) return {};
+  const { data } = await supabase
+    .from('reviews')
+    .select('reviewed_user_id, rating')
+    .eq('approved', true)
+    .in('reviewed_user_id', userIds);
+
+  const acc = new Map<string, { sum: number; count: number }>();
+  (data ?? []).forEach((r: any) => {
+    if (!r.reviewed_user_id) return;
+    const e = acc.get(r.reviewed_user_id) || { sum: 0, count: 0 };
+    e.sum += r.rating;
+    e.count += 1;
+    acc.set(r.reviewed_user_id, e);
+  });
+
+  const out: Record<string, { avg: number; count: number }> = {};
+  acc.forEach((v, k) => { out[k] = { avg: Math.round((v.sum / v.count) * 10) / 10, count: v.count }; });
+  return out;
+}
+
 export async function fetchDirectorioProfiles(dbRole: string, city: string): Promise<DirProfile[]> {
   // 'camarero' es un rol legacy (opción retirada de los selectores) — equivale a staff.
   // 'makeup' y 'peluqueria' son roles distintos en BD (para SEO/registro propio),
@@ -288,19 +316,13 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string): Pro
   // azul se gana/pierde solo, sin depender de que un admin lo active a mano.
   const filtered = (data ?? []).map((p: any) => ({ ...p, is_early_adopter: isEarlyAdopter(p) }));
 
-  const userIds = filtered.map((p: any) => p.user_id);
-  const { data: reviewsData } = userIds.length > 0
-    ? await supabase.from('reviews').select('reviewed_user_id, rating').eq('approved', true).in('reviewed_user_id', userIds)
-    : { data: [] };
-
-  const ratingMap = new Map<string, { sum: number; count: number }>();
-  (reviewsData ?? []).forEach((r: any) => {
-    if (!r.reviewed_user_id) return;
-    const entry = ratingMap.get(r.reviewed_user_id) || { sum: 0, count: 0 };
-    entry.sum += r.rating;
-    entry.count += 1;
-    ratingMap.set(r.reviewed_user_id, entry);
-  });
+  // Las valoraciones NO se piden aquí. Antes iban en un await encadenado
+  // (necesita los user_id de la consulta anterior), así que el listado no
+  // pintaba hasta terminar los dos viajes: medido con Chrome en 4G, perfiles
+  // 958ms y después reviews 1166ms. Como el orden de las tarjetas no depende
+  // de la nota (ordena por foto, early adopter, verificado, completitud y
+  // score), las tarjetas salen ya con los perfiles y la estrella se rellena
+  // cuando llega su propia consulta, en paralelo. Ver useDirectorioRatings.
   // Puntuación de perfil completo — los perfiles con media suben (modelo GigSalad:
   // el perfil completo gana visibilidad; incentiva subir sesión/portfolio).
   const completeness = (p: any): number => {
@@ -309,12 +331,16 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string): Pro
       || (Array.isArray(p.portfolio_urls) && p.portfolio_urls.length > 0);
     return (hasMedia ? 4 : 0) + (p.photo_url ? 2 : 0) + (p.bio?.trim() ? 1 : 0);
   };
-  const enriched = filtered.filter((p: any) => p.display_name?.trim().length > 1).map((p: any) => {
-    const stats = ratingMap.get(p.user_id);
-    return { ...p, avgRating: stats ? Math.round((stats.sum / stats.count) * 10) / 10 : 0, reviewCount: stats?.count ?? 0 };
-  });
+  const enriched = filtered.filter((p: any) => p.display_name?.trim().length > 1)
+    .map((p: any) => ({ ...p, avgRating: 0, reviewCount: 0 }));
+  // Sin foto siempre al final del rol, sin excepción — un perfil sin foto no
+  // compite en igualdad de condiciones (ni aunque tenga is_verified/early
+  // adopter): en el directorio se ve como una tarjeta vacía, y en el feed
+  // swipe (100% visual) no puede mostrarse en absoluto sin foto. Recupera
+  // posición en cuanto sube una.
   enriched.sort((a: any, b: any) =>
-    (Number(b.is_early_adopter) - Number(a.is_early_adopter))
+    (Number(!!b.photo_url) - Number(!!a.photo_url))
+    || (Number(b.is_early_adopter) - Number(a.is_early_adopter))
     || (Number(b.is_verified) - Number(a.is_verified))
     || (completeness(b) - completeness(a))
     || ((b.score ?? 0) - (a.score ?? 0))
@@ -329,18 +355,37 @@ export default function DirectorioPublico() {
   const [city, setCity] = useState('Todas');
   const [bookingPro, setBookingPro] = useState<DirProfile | null>(null);
   const [showMultiRequest, setShowMultiRequest] = useState(false);
-  const [showSwipe, setShowSwipe] = useState(false);
-  const [swipeStartIndex, setSwipeStartIndex] = useState(0);
   const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
   const { items: cartItems } = useEventCart();
   const { user, loading: authLoading } = useAuth();
 
-  const { data: profiles = [], isLoading: loading, isError: fetchError } = useQuery({
+  const { data: baseProfiles = [], isLoading: loading, isError: fetchError } = useQuery({
     queryKey: ['directorio-publico', config.dbRole, city],
     queryFn: () => fetchDirectorioProfiles(config.dbRole, city),
     staleTime: 60_000,
     gcTime: 10 * 60_000,
   });
+
+  // Las valoraciones llegan por separado para no retrasar el listado. Mientras
+  // no estén, las tarjetas se ven completas salvo la estrella.
+  const profileIds = baseProfiles.map((p: any) => p.user_id).filter(Boolean);
+  const { data: ratings } = useQuery({
+    queryKey: ['directorio-ratings', profileIds],
+    queryFn: () => fetchRatings(profileIds),
+    enabled: profileIds.length > 0,
+    staleTime: 60_000,
+    gcTime: 10 * 60_000,
+  });
+
+  const profiles = useMemo(
+    () => (ratings
+      ? baseProfiles.map((p: any) => {
+          const r = ratings[p.user_id];
+          return r ? { ...p, avgRating: r.avg, reviewCount: r.count } : p;
+        })
+      : baseProfiles),
+    [baseProfiles, ratings],
+  );
 
   const canonical = `https://xpeak.es/directorio/${rol ?? 'dj'}`;
   const breadcrumb = {
@@ -424,13 +469,6 @@ export default function DirectorioPublico() {
                   </span>
                 </button>
               )}
-              {profiles.length >= 2 && (
-                <button onClick={() => { setSwipeStartIndex(0); setShowSwipe(true); }}
-                  className="hidden sm:inline-flex items-center gap-2 px-5 py-3 rounded-xl font-black text-sm transition-all hover:scale-[1.02] active:scale-95"
-                  style={{ background: '#111', color: '#fff', border: '1px solid rgba(212,175,55,0.3)' }}>
-                  <Play size={14} fill="#D4AF37" color="#D4AF37" /> Vista Swipe
-                </button>
-              )}
             </div>
           </div>
 
@@ -438,11 +476,11 @@ export default function DirectorioPublico() {
               modal) — sin botón, tal como TikTok. El grid clásico con SEO
               sigue existiendo debajo, oculto visualmente en móvil, visible
               en desktop. */}
-          {!fetchError && !loading && profiles.length >= 2 && (
+          {!fetchError && !loading && profiles.filter(p => !!p.photo_url).length >= 2 && (
             <div className="sm:hidden -mx-4 mb-6 rounded-2xl overflow-hidden">
               <SwipeDirectory
                 embedded
-                profiles={profiles}
+                profiles={profiles.filter(p => !!p.photo_url)}
                 onOpenProfile={(p) => { window.location.href = profileUrl(p as DirProfile); }}
                 onBookNow={(p) => setBookingPro(p as DirProfile)}
                 onAddToCart={(p) => {
@@ -569,7 +607,7 @@ export default function DirectorioPublico() {
 
           {!fetchError && !loading && profiles.length > 0 && (
             <div className={`${profiles.length >= 2 ? 'hidden sm:grid' : 'grid'} grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4`}>
-              {profiles.map(p => (
+              {profiles.map((p, i) => (
                 <div key={p.user_id} className="rounded-2xl overflow-hidden flex flex-col bg-white"
                   style={{
                     border: (p as any).is_early_adopter ? '4px solid rgba(96,165,250,0.7)' : '1px solid rgba(0,0,0,0.12)',
@@ -580,7 +618,14 @@ export default function DirectorioPublico() {
                   <a href={profileUrl(p)} className="block relative aspect-card-photo overflow-hidden">
                     <div className="absolute inset-0">
                       {p.photo_url && !imgErrors[p.user_id] ? (
-                        <img src={p.photo_url} alt={p.display_name} loading="lazy"
+                        // Las primeras tarjetas se ven sin hacer scroll y una de
+                        // ellas es el elemento LCP. Con loading="lazy" el navegador
+                        // no pedía la foto hasta tener el layout: medido, 918ms de
+                        // espera para una imagen que se descarga en 0,8ms. Cargarlas
+                        // con prioridad alta quita esa espera; el resto sigue lazy.
+                        <img src={p.photo_url} alt={p.display_name}
+                          loading={i < 4 ? 'eager' : 'lazy'}
+                          fetchPriority={i < 4 ? 'high' : undefined}
                           onError={() => setImgErrors(e => ({ ...e, [p.user_id]: true }))}
                           className="w-full h-full object-cover" />
                       ) : (
@@ -782,22 +827,6 @@ export default function DirectorioPublico() {
         />
       )}
 
-      {showSwipe && (
-        <SwipeDirectory
-          profiles={profiles}
-          initialIndex={swipeStartIndex}
-          onClose={() => setShowSwipe(false)}
-          onOpenProfile={(p) => { window.location.href = profileUrl(p as DirProfile); }}
-          onBookNow={(p) => { setShowSwipe(false); setBookingPro(p as DirProfile); }}
-          onAddToCart={(p) => {
-            const prof = p as DirProfile;
-            const result = addToCart({ userId: prof.user_id, displayName: prof.display_name, role: prof.role, photoUrl: prof.photo_url, hourlyRate: prof.hourly_rate, zone: prof.zone });
-            if (result === 'added') toast.success(`${prof.display_name} añadido a "Mi evento"`);
-            else if (result === 'limit_reached') toast.error(`Máximo ${MAX_CART_ITEMS} profesionales por evento. Elimina alguno para añadir más.`);
-          }}
-          isInCart={(userId) => cartItems.some(i => i.userId === userId)}
-        />
-      )}
     </>
   );
 }

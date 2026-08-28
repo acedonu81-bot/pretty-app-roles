@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, Headphones, BookOpen, Video, Music, Instagram, Send, X, Shield, Check, Plus } from 'lucide-react';
@@ -44,10 +44,16 @@ const StarRating = ({ value, onChange }: { value: number; onChange?: (v: number)
 const EVENT_TYPES = ['Boda','Comunión','Evento corporativo','Fiesta privada','Festival','Cumpleaños','Inauguración','Otro'];
 
 const ReviewsSection = ({ professionalUserId, professionalName }: { professionalUserId: string; professionalName: string }) => {
+  const { user } = useAuth();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [form, setForm] = useState({ name: '', role: 'Organizador', event_type: '', rating: 5, comment: '' });
+  // Rol/nombre ya no se piden a mano — vienen de un booking completado real,
+  // verificado server-side (RLS exige flash_bookings.status='completed' con
+  // este usuario y este profesional). Sin esto, cualquier visitante anónimo
+  // podía dejar una valoración sin haber contratado nunca.
+  const [eligibleBooking, setEligibleBooking] = useState<{ requester_name: string } | null | 'loading'>('loading');
+  const [form, setForm] = useState({ event_type: '', rating: 5, comment: '' });
 
   useEffect(() => {
     if (!professionalUserId) return;
@@ -60,16 +66,30 @@ const ReviewsSection = ({ professionalUserId, professionalName }: { professional
       .then(({ data }) => setReviews((data ?? []) as Review[]));
   }, [professionalUserId]);
 
+  useEffect(() => {
+    if (!professionalUserId || !user) { setEligibleBooking(null); return; }
+    supabase
+      .from('flash_bookings')
+      .select('requester_name')
+      .eq('created_by', user.id)
+      .eq('professional_user_id', professionalUserId)
+      .eq('status', 'accepted')
+      .limit(1)
+      .maybeSingle()
+      .then(({ data }) => setEligibleBooking(data ?? null));
+  }, [professionalUserId, user]);
+
   const avgRating = reviews.length ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length) : 0;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name.trim() || !form.comment.trim() || form.rating < 1) return;
+    if (!user || !eligibleBooking || eligibleBooking === 'loading' || !form.comment.trim() || form.rating < 1) return;
     setSubmitting(true);
     const { error } = await supabase.from('reviews').insert({
+      reviewer_id: user.id,
       reviewed_user_id: professionalUserId,
-      reviewer_name: form.name.trim(),
-      reviewer_role: form.role,
+      reviewer_name: eligibleBooking.requester_name,
+      reviewer_role: 'Organizador',
       event_type: form.event_type || null,
       rating: form.rating,
       comment: form.comment.trim(),
@@ -78,8 +98,23 @@ const ReviewsSection = ({ professionalUserId, professionalName }: { professional
     setSubmitting(false);
     if (error) { toast.error('Error al enviar. Inténtalo de nuevo.'); return; }
     toast.success('¡Gracias! Tu valoración se publicará tras revisión.');
+    // Sin este aviso, la reseña queda pendiente en Supabase sin que nadie se
+    // entere — la moderación dependía de entrar manualmente al Panel Admin.
+    supabase.functions.invoke('send-email', {
+      body: {
+        type: 'new_review_pending',
+        data: {
+          professionalName,
+          reviewerName: eligibleBooking.requester_name,
+          reviewerRole: 'Organizador',
+          eventType: form.event_type || null,
+          rating: form.rating,
+          comment: form.comment.trim(),
+        },
+      },
+    }).catch((err: unknown) => console.warn('[email] new_review_pending failed:', err));
     setShowForm(false);
-    setForm({ name: '', role: 'Organizador', event_type: '', rating: 5, comment: '' });
+    setForm({ event_type: '', rating: 5, comment: '' });
   };
 
   return (
@@ -98,18 +133,33 @@ const ReviewsSection = ({ professionalUserId, professionalName }: { professional
             </div>
           )}
         </div>
-        <button
-          onClick={() => setShowForm(true)}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all hover:opacity-80"
-          style={{ background: 'rgba(212,175,55,0.1)', color: '#B8941E', border: '1px solid rgba(212,175,55,0.25)' }}>
-          <Star size={11} /> Dejar valoración
-        </button>
+        {eligibleBooking && eligibleBooking !== 'loading' && (
+          <button
+            onClick={() => setShowForm(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all hover:opacity-80"
+            style={{ background: 'rgba(212,175,55,0.1)', color: '#B8941E', border: '1px solid rgba(212,175,55,0.25)' }}>
+            <Star size={11} /> Dejar valoración
+          </button>
+        )}
       </div>
+
+      {/* Solo puede valorar quien contrató de verdad (booking completado con
+          este profesional) — evita reseñas falsas de gente que nunca contrató. */}
+      {!user && (
+        <p className="text-xs mb-3" style={{ color: '#666' }}>
+          Solo pueden valorar organizadores que hayan completado un booking con {professionalName}.
+        </p>
+      )}
+      {user && eligibleBooking === null && (
+        <p className="text-xs mb-3" style={{ color: '#666' }}>
+          Solo pueden valorar organizadores que hayan completado un booking con {professionalName}.
+        </p>
+      )}
 
       {/* Reviews list */}
       {reviews.length === 0 ? (
         <div className="py-6 text-center rounded-2xl" style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
-          <Star size={24} className="mx-auto mb-2" style={{ color: 'rgba(212,175,55,0.25)' }} />
+          <div className="flex justify-center mb-2"><StarRating value={0} /></div>
           <p className="text-xs" style={{ color: '#444' }}>Sé el primero en valorar a {professionalName}</p>
         </div>
       ) : (
@@ -159,23 +209,6 @@ const ReviewsSection = ({ professionalUserId, professionalName }: { professional
                 <div>
                   <label className="text-xs font-bold mb-2 block" style={{ color: '#333' }}>PUNTUACIÓN *</label>
                   <StarRating value={form.rating} onChange={v => setForm(f => ({ ...f, rating: v }))} />
-                </div>
-                {/* Name */}
-                <div>
-                  <label className="text-xs font-bold mb-1.5 block" style={{ color: '#333' }}>TU NOMBRE *</label>
-                  <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                    placeholder="María García" required
-                    className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none"
-                    style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)' }} />
-                </div>
-                {/* Role */}
-                <div>
-                  <label className="text-xs font-bold mb-1.5 block" style={{ color: '#333' }}>ERES</label>
-                  <select value={form.role} onChange={e => setForm(f => ({ ...f, role: e.target.value }))}
-                    className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none appearance-none"
-                    style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)' }}>
-                    {['Organizador','Empresa','Novio/a','Particular','Sala / Club'].map(r => <option key={r}>{r}</option>)}
-                  </select>
                 </div>
                 {/* Event type */}
                 <div>
@@ -314,6 +347,12 @@ const PublicProfile = () => {
   const [audioEmbed, setAudioEmbed] = useState<ReturnType<typeof parseStreamUrl>>(null);
   const [seoReviews, setSeoReviews] = useState<{ rating: number }[]>([]);
   const [weeklyViews, setWeeklyViews] = useState<number | null>(null);
+  // Los <video> nativos no se coordinan entre sí — sin esto, dar al play de
+  // un clip mientras otro ya suena los deja sonando ambos a la vez.
+  const clipVideoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const pauseOtherClips = (index: number) => {
+    clipVideoRefs.current.forEach((v, i) => { if (v && i !== index) v.pause(); });
+  };
   const isUUID = UUID_RE.test(slug ?? '');
 
   useEffect(() => {
@@ -992,8 +1031,10 @@ const PublicProfile = () => {
               </div>
               <div className="flex flex-col gap-4">
                 {extraMedia.video_session_urls.slice(0, 3).map((url, i) => (
-                  <video key={i} src={url} controls preload="metadata" className="w-full rounded-2xl"
-                    style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }} />
+                  <video key={i} ref={el => { clipVideoRefs.current[i] = el; }} src={url} controls preload="metadata"
+                    onPlay={() => pauseOtherClips(i)}
+                    className="w-full rounded-2xl mx-auto"
+                    style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.1)', maxHeight: '50vh', objectFit: 'contain', background: '#000' }} />
                 ))}
               </div>
             </motion.div>

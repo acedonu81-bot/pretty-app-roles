@@ -88,6 +88,44 @@ const SolicitudesTab = () => {
     setItems(prev => prev.map(i => i.id === id ? { ...i, status } : i));
     toast.success(status === 'accepted' ? '¡Solicitud aceptada!' : 'Solicitud rechazada');
 
+    // Al cerrar el acuerdo (aceptar), el trabajo entra solo al calendario del
+    // profesional y dispara el aviso "Nuevo trabajo" si lo tiene activado —
+    // aplica a cualquier rol (DJ, peluquería, camarero...), no solo bolos de
+    // música. Sustituye el disparo antiguo que vivía en el alta manual de
+    // CalendarView.tsx: ahora el aviso solo suena cuando hay un acuerdo real.
+    if (status === 'accepted') {
+      const accepted = items.find(i => i.id === id);
+      if (accepted?.event_date) {
+        const { error: calError } = await supabase.from('calendar_events').insert({
+          user_id: user!.id,
+          title: accepted.requester_name ? `Trabajo — ${accepted.requester_name}` : 'Trabajo confirmado',
+          event_date: accepted.event_date,
+          location: accepted.event_location || null,
+          notes: accepted.event_description || null,
+        });
+        if (calError) console.warn('[SolicitudesTab] calendar_events insert failed:', calError);
+
+        const { data: pref } = await supabase
+          .from('alert_preferences' as any)
+          .select('nuevos_bolos')
+          .eq('user_id', user!.id)
+          .maybeSingle();
+        if ((pref as any)?.nuevos_bolos && user?.email) {
+          supabase.functions.invoke('send-email', {
+            body: {
+              type: 'bolo_new_confirmation',
+              data: {
+                email: user.email,
+                title: accepted.requester_name ? `Trabajo — ${accepted.requester_name}` : 'Trabajo confirmado',
+                date: accepted.event_date,
+                location: accepted.event_location,
+              },
+            },
+          }).catch((err: unknown) => console.warn('[SolicitudesTab] new-work email failed:', err));
+        }
+      }
+    }
+
     // Badge Respuesta Rápida: si acepta en <1h desde que llegó la solicitud
     if (status === 'accepted') {
       const booking = items.find(i => i.id === id);

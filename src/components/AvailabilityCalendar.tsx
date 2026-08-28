@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 const DAY_LABELS = ['L','M','X','J','V','S','D'];
@@ -22,6 +22,7 @@ const AvailabilityCalendar = ({ userId }: { userId: string }) => {
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
   const [blocked, setBlocked] = useState<Set<string>>(new Set());
+  const [showJump, setShowJump] = useState(false);
 
   useEffect(() => {
     if (!userId) return;
@@ -47,16 +48,37 @@ const AvailabilityCalendar = ({ userId }: { userId: string }) => {
         Disponibilidad
       </h3>
       <div className="rounded-2xl p-4" style={{ background: '#fafaf8', border: '1px solid rgba(0,0,0,0.06)' }}>
-        <div className="flex items-center justify-between mb-3">
-          <button onClick={prev} className="w-6 h-6 rounded flex items-center justify-center hover:bg-black/5">
-            <ChevronLeft size={14} style={{ color: '#333' }} />
+        <div className="flex items-center justify-between mb-3 relative">
+          <button onClick={prev} className="w-7 h-7 rounded flex items-center justify-center hover:bg-black/5">
+            <ChevronLeft size={16} style={{ color: '#222' }} />
           </button>
-          <span className="text-xs font-bold" style={{ color: '#222' }}>
+          <button onClick={() => setShowJump(o => !o)}
+            className="flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-lg hover:bg-black/5" style={{ color: '#111' }}>
             {MONTH_NAMES[month]} {year}
-          </span>
-          <button onClick={next} className="w-6 h-6 rounded flex items-center justify-center hover:bg-black/5">
-            <ChevronRight size={14} style={{ color: '#333' }} />
+            <ChevronDown size={12} style={{ color: '#666', transform: showJump ? 'rotate(180deg)' : undefined }} />
           </button>
+          <button onClick={next} className="w-7 h-7 rounded flex items-center justify-center hover:bg-black/5">
+            <ChevronRight size={16} style={{ color: '#222' }} />
+          </button>
+
+          {showJump && (
+            <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-10 rounded-xl p-2 grid grid-cols-4 gap-1"
+              style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.1)', boxShadow: '0 8px 24px rgba(0,0,0,0.12)', minWidth: 220 }}>
+              {MONTH_NAMES.map((m, i) => (
+                <button key={m}
+                  onClick={() => { setMonth(i); setShowJump(false); }}
+                  className="text-[0.7rem] font-bold py-1.5 rounded-lg hover:bg-black/5"
+                  style={{ color: i === month ? '#8A6D0F' : '#333', background: i === month ? 'rgba(212,175,55,0.12)' : undefined }}>
+                  {m}
+                </button>
+              ))}
+              <div className="col-span-4 flex items-center justify-between mt-1 pt-1.5" style={{ borderTop: '1px solid rgba(0,0,0,0.06)' }}>
+                <button onClick={() => setYear(y => y - 1)} className="text-xs font-bold px-2 py-1 rounded hover:bg-black/5" style={{ color: '#333' }}>‹</button>
+                <span className="text-xs font-bold" style={{ color: '#111' }}>{year}</span>
+                <button onClick={() => setYear(y => y + 1)} className="text-xs font-bold px-2 py-1 rounded hover:bg-black/5" style={{ color: '#333' }}>›</button>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-7 gap-0.5 text-center mb-1">
@@ -75,11 +97,11 @@ const AvailabilityCalendar = ({ userId }: { userId: string }) => {
               <div key={i}
                 className="w-full aspect-square flex items-center justify-center rounded text-[0.65rem]"
                 style={{
-                  color: !cell.current ? 'rgba(22,20,18,0.1)' : isBlocked ? 'rgba(255,95,86,0.5)' : isPast ? 'rgba(22,20,18,0.2)' : isToday ? '#D4AF37' : isAvailable ? 'rgba(34,197,94,0.8)' : '#222',
-                  background: isBlocked ? 'rgba(255,95,86,0.06)' : isToday ? 'rgba(212,175,55,0.1)' : isAvailable ? 'rgba(34,197,94,0.05)' : 'transparent',
-                  fontWeight: isToday || isBlocked ? 700 : 400,
+                  color: !cell.current ? 'rgba(22,20,18,0.25)' : isBlocked ? '#c0392b' : isPast ? 'rgba(22,20,18,0.35)' : isToday ? '#8A6D0F' : isAvailable ? '#15803d' : '#222',
+                  background: isBlocked ? 'rgba(220,38,38,0.1)' : isToday ? 'rgba(212,175,55,0.16)' : isAvailable ? 'rgba(21,128,61,0.1)' : 'transparent',
+                  fontWeight: isToday || isBlocked || isAvailable ? 700 : 400,
                   textDecoration: isBlocked ? 'line-through' : undefined,
-                  border: isToday ? '1px solid rgba(212,175,55,0.3)' : '1px solid transparent',
+                  border: isToday ? '1.5px solid #D4AF37' : '1px solid transparent',
                 }}>
                 {cell.day}
               </div>
@@ -89,12 +111,12 @@ const AvailabilityCalendar = ({ userId }: { userId: string }) => {
 
         <div className="flex items-center gap-4 mt-3 pt-2" style={{ borderTop: '1px solid rgba(0,0,0,0.05)' }}>
           <div className="flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full" style={{ background: 'rgba(34,197,94,0.6)' }} />
-            <span className="text-[0.6rem]" style={{ color: '#333' }}>Disponible</span>
+            <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#15803d' }} />
+            <span className="text-[0.65rem] font-semibold" style={{ color: '#222' }}>Disponible</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full" style={{ background: 'rgba(255,95,86,0.5)' }} />
-            <span className="text-[0.6rem]" style={{ color: '#333' }}>No disponible</span>
+            <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#c0392b' }} />
+            <span className="text-[0.65rem] font-semibold" style={{ color: '#222' }}>No disponible</span>
           </div>
         </div>
       </div>

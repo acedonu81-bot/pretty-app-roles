@@ -38,7 +38,7 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
   const activeRoles = roles ?? [role];
   let query = supabase
     .from('profiles')
-    .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, category, is_verified, is_flash_active, is_early_adopter, priority_badge_until, score, role, seeking_dance_partner, dance_level, dance_role, created_at')
+    .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, category, is_verified, is_flash_active, is_early_adopter, is_early_adopter_override, priority_badge_until, score, role, seeking_dance_partner, dance_level, dance_role, created_at')
     .in('role', activeRoles)
     .limit(200);
 
@@ -78,6 +78,12 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
           || (Array.isArray(p.portfolio_urls) && p.portfolio_urls.length > 0);
         return (hasMedia ? 4 : 0) + (p.photo_url ? 2 : 0) + (p.bio?.trim() ? 1 : 0);
       };
+      // Sin foto siempre al final, sin excepción (ni con early adopter/verificado
+      // por delante) — mismo criterio que fetchDirectorioProfiles en
+      // DirectorioPublico.tsx. Recupera posición en cuanto sube una foto.
+      const aHasPhoto = a.photo_url ? 1 : 0;
+      const bHasPhoto = b.photo_url ? 1 : 0;
+      if (bHasPhoto !== aHasPhoto) return bHasPhoto - aHasPhoto;
       const aEarly = isEarlyAdopter(a as any) ? 1 : 0;
       const bEarly = isEarlyAdopter(b as any) ? 1 : 0;
       if (bEarly !== aEarly) return bEarly - aEarly;

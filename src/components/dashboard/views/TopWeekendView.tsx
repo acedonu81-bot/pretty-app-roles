@@ -9,7 +9,7 @@ import { isEarlyAdopter } from '@/lib/earlyAdopter';
 async function fetchTopWeekendProfiles(): Promise<Profile[]> {
   const { data } = await supabase
     .from('profiles')
-    .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, is_live, genres, bio, languages, tiktok, category, is_verified, is_flash_active, stream_url, role, audio_embed_url, audio_session_urls, portfolio_urls')
+    .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, is_live, genres, bio, languages, tiktok, category, is_verified, is_flash_active, stream_url, role, audio_embed_url, audio_session_urls, portfolio_urls, is_early_adopter_override')
     .neq('role', 'empresario')
     .not('display_name', 'is', null)
     .not('photo_url', 'is', null)

@@ -88,11 +88,14 @@ export default function Descubrir() {
         // para variedad y cargan rápido (menos fetches = feed más ágil).
         const slugs = ['dj', 'fotografo', 'catering'];
         const lists = await Promise.all(slugs.map(s => fetchDirectorioProfiles(ROLE_CONFIG[s].dbRole, 'Todas').catch(() => [])));
-        data = shuffle(dedupe(lists.flat()));
+        data = dedupe(lists.flat());
       } else {
         data = await fetchDirectorioProfiles(ROLE_CONFIG[slug].dbRole, 'Todas');
       }
-      setProfiles(data);
+      // El swipe es 100% visual — sin foto se ve como pantalla negra/vacía,
+      // así que se excluye del feed (no solo se le baja el orden). Recupera
+      // su sitio automáticamente en cuanto sube una foto real.
+      setProfiles(data.filter(p => !!p.photo_url));
     } catch {
       toast.error('No se pudieron cargar los perfiles. Inténtalo de nuevo.');
     } finally {
@@ -113,6 +116,13 @@ export default function Descubrir() {
   const roleLabel = activeRole === ALL_SLUG
     ? 'Para ti'
     : (ALL_ROLES.find(r => r.slug === activeRole)?.label ?? 'Descubrir');
+
+  // En desktop nunca se llega a pintar el feed ni su loader: el useEffect de
+  // arriba redirige en cuanto authLoading resuelve, pero mientras tanto (la
+  // ventana entre el primer render y esa resolución) antes se veía el loader
+  // "Cargando…" de golpe en una página que de todos modos iba a abandonarse
+  // — un flash de UI que no aporta nada. null es la salida correcta aquí.
+  if (isDesktop) return null;
 
   return (
     <>
@@ -180,15 +190,6 @@ export default function Descubrir() {
   );
 }
 
-// Baraja (Fisher-Yates) para el feed "Para ti".
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
 function dedupe(list: DirProfile[]): DirProfile[] {
   const seen = new Set<string>();
   return list.filter(p => (seen.has(p.user_id) ? false : (seen.add(p.user_id), true)));

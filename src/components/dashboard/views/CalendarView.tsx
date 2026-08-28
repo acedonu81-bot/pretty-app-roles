@@ -35,7 +35,13 @@ const CalendarView = () => {
   const today = new Date();
   const [viewYear, setViewYear] = useState(today.getFullYear());
   const [viewMonth, setViewMonth] = useState(today.getMonth());
-  const ALERT_KEYS = ['24h antes del evento', '1h antes del evento', 'Cambios de horario', 'Nuevos bolos'] as const;
+  // Solo estas dos son viables por email: "24h antes" corre con un cron
+  // diario contra la fecha del trabajo. "Nuevo trabajo" se dispara al
+  // aceptar una solicitud de Flash Booking (SolicitudesTab.tsx) — cuando el
+  // acuerdo queda cerrado, no al añadir un evento a mano. "1h antes" y
+  // "Cambios de horario" no existen porque el modelo de datos actual
+  // (CalEvent) no tiene campo de hora, solo fecha.
+  const ALERT_KEYS = ['24h antes del evento', 'Nuevo trabajo'] as const;
   const [alertPrefs, setAlertPrefs] = useState<Record<string, boolean>>(
     Object.fromEntries(ALERT_KEYS.map(k => [k, false]))
   );
@@ -51,6 +57,10 @@ const CalendarView = () => {
   const storageKey = `xpeak_events_${user?.id ?? 'guest'}`;
   const alertsKey = `xpeak_alerts_${user?.id ?? 'guest'}`;
 
+  // Las preferencias viven en Supabase (tabla alert_preferences) porque el
+  // cron server-side que manda los emails necesita leerlas sin navegador.
+  // localStorage queda como espejo para pintar la UI al instante mientras
+  // llega la respuesta de red.
   useEffect(() => {
     try {
       const saved = localStorage.getItem(alertsKey);
@@ -58,10 +68,36 @@ const CalendarView = () => {
     } catch {}
   }, [alertsKey]);
 
+  useEffect(() => {
+    if (!user) return;
+    supabase.from('alert_preferences' as any).select('bolo_24h, nuevos_bolos').eq('user_id', user.id).maybeSingle()
+      .then(({ data }) => {
+        if (!data) return;
+        const row = data as any;
+        const next = {
+          '24h antes del evento': !!row.bolo_24h,
+          'Nuevo trabajo': !!row.nuevos_bolos,
+        };
+        setAlertPrefs(next);
+        localStorage.setItem(alertsKey, JSON.stringify(next));
+      });
+  }, [user, alertsKey]);
+
+  const persistAlertPrefs = async (next: Record<string, boolean>) => {
+    if (!user) return;
+    await supabase.from('alert_preferences' as any).upsert({
+      user_id: user.id,
+      bolo_24h: !!next['24h antes del evento'],
+      nuevos_bolos: !!next['Nuevo trabajo'],
+      updated_at: new Date().toISOString(),
+    });
+  };
+
   const toggleAlert = (key: string) => {
     setAlertPrefs(prev => {
       const next = { ...prev, [key]: !prev[key] };
       localStorage.setItem(alertsKey, JSON.stringify(next));
+      persistAlertPrefs(next);
       toast[next[key] ? 'success' : 'info'](`${key}: ${next[key] ? 'activada' : 'desactivada'}`);
       return next;
     });
@@ -73,6 +109,7 @@ const CalendarView = () => {
     const next = Object.fromEntries(ALERT_KEYS.map(k => [k, turnOn]));
     setAlertPrefs(next);
     localStorage.setItem(alertsKey, JSON.stringify(next));
+    persistAlertPrefs(next);
     toast[turnOn ? 'success' : 'info'](turnOn ? 'Todas las alertas activadas' : 'Alertas desactivadas');
   };
 
@@ -103,6 +140,28 @@ const CalendarView = () => {
       setBlockedDates(prev => new Set(prev).add(dateStr));
       toast.success('Día marcado como no disponible');
     }
+  };
+
+  // Bloquea de una vez todos los viernes/sábados/domingos del mes visible que
+  // aún no estén bloqueados — útil para oficios que no trabajan fin de semana
+  // (peluquería, staff de oficina, etc.) sin tener que marcar día a día.
+  const blockWeekendsThisMonth = async () => {
+    if (!user) return;
+    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+    const weekendDates: string[] = [];
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dow = new Date(viewYear, viewMonth, d).getDay(); // 0=domingo, 5=viernes, 6=sábado
+      if (dow === 0 || dow === 5 || dow === 6) {
+        const dateStr = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        if (!blockedDates.has(dateStr)) weekendDates.push(dateStr);
+      }
+    }
+    if (weekendDates.length === 0) { toast.info('Los viernes, sábados y domingos de este mes ya están bloqueados'); return; }
+    const { error } = await supabase.from('availability')
+      .insert(weekendDates.map(d => ({ user_id: user.id, blocked_date: d })));
+    if (error) { toast.error('No se pudo bloquear los fines de semana. Inténtalo de nuevo.'); return; }
+    setBlockedDates(prev => { const s = new Set(prev); weekendDates.forEach(d => s.add(d)); return s; });
+    toast.success(`${weekendDates.length} día${weekendDates.length > 1 ? 's' : ''} bloqueado${weekendDates.length > 1 ? 's' : ''}`);
   };
 
   // true = la tabla calendar_events existe y es usable; false = aún no → fallback localStorage.
@@ -172,6 +231,10 @@ const CalendarView = () => {
         .select('id, title, event_date, location, notes').single();
       if (error) { toast.error('Error al guardar el evento'); return; }
       setEvents(prev => [...prev, mapRow(data)].sort((a, b) => a.date.localeCompare(b.date)));
+      // El aviso "Nuevo trabajo" NO se dispara aquí — un evento añadido a
+      // mano no es necesariamente un acuerdo cerrado. Se dispara solo al
+      // aceptar una solicitud de Flash Booking (SolicitudesTab.tsx), que es
+      // cuando de verdad hay un trabajo confirmado.
     } else {
       const ev: CalEvent = { id: Date.now().toString(), ...base };
       const next = [...events, ev];
@@ -269,7 +332,7 @@ const CalendarView = () => {
       <div className="mb-6 flex items-start justify-between gap-3">
         <div className="min-w-0">
           <h2 className="text-2xl font-bold mb-1"><span className="text-gradient">Calendario</span></h2>
-          <p className="text-sm text-muted-foreground">Tu agenda de bolos y eventos.</p>
+          <p className="text-sm text-muted-foreground">Tu agenda de trabajos y eventos.</p>
         </div>
         <div className="flex gap-2 flex-shrink-0">
           <button onClick={toggleAllAlerts}
@@ -277,15 +340,10 @@ const CalendarView = () => {
             style={{ background: notificationsEnabled ? 'rgba(212,175,55,0.12)' : 'rgba(0,0,0,0.03)', border: notificationsEnabled ? '1px solid rgba(212,175,55,0.3)' : '1px solid var(--nightlife-border)', color: notificationsEnabled ? '#D4AF37' : '#3d3d4e' }}>
             <Bell size={13} /> <span className="hidden sm:inline">{notificationsEnabled ? 'Alertas ON' : 'Alertas'}</span>
           </button>
-          <button onClick={() => setAvailMode(m => !m)}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all"
-            style={{ background: availMode ? 'rgba(255,95,86,0.12)' : 'rgba(0,0,0,0.03)', border: availMode ? '1px solid rgba(255,95,86,0.3)' : '1px solid var(--nightlife-border)', color: availMode ? '#ff5f56' : '#3d3d4e' }}>
-            {availMode ? <EyeOff size={13} /> : <Eye size={13} />} <span className="hidden sm:inline">{availMode ? 'Editando' : 'Disponibilidad'}</span>
-          </button>
           <button onClick={() => setShowForm(true)}
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-            <Plus size={13} /> <span className="hidden sm:inline">Añadir</span> bolo
+            <Plus size={13} /> <span className="hidden sm:inline">Añadir</span> trabajo
           </button>
         </div>
       </div>
@@ -297,7 +355,7 @@ const CalendarView = () => {
           <CalendarIcon size={15} style={{ color: '#4285F4' }} />
         </div>
         <p className="text-xs text-muted-foreground flex-1">
-          Añade cada bolo directamente a <strong style={{ color: '#1a1a1a' }}>Google Calendar</strong> o <strong style={{ color: '#1a1a1a' }}>Apple Calendar</strong> usando los botones de exportación en cada evento.
+          Añade cada trabajo directamente a <strong style={{ color: '#1a1a1a' }}>Google Calendar</strong> o <strong style={{ color: '#1a1a1a' }}>Apple Calendar</strong> usando los botones de exportación en cada evento.
         </p>
       </div>
 
@@ -323,11 +381,6 @@ const CalendarView = () => {
           <div className="grid grid-cols-7 gap-1 text-center text-xs text-muted-foreground font-bold mb-2">
             {DAY_LABELS.map(d => <div key={d}>{d}</div>)}
           </div>
-          {availMode && (
-            <div className="mb-3 px-3 py-2 rounded-lg text-xs" style={{ background: 'rgba(255,95,86,0.06)', border: '1px solid rgba(255,95,86,0.15)', color: 'rgba(255,95,86,0.7)' }}>
-              Pulsa un día para marcarlo como <strong>no disponible</strong>. Los empresarios verán tu disponibilidad en tu perfil público.
-            </div>
-          )}
           <div className="grid grid-cols-7 gap-1 text-center text-sm">
             {cells.map((cell, i) => {
               const tod = isToday(cell.day, cell.currentMonth);
@@ -357,13 +410,41 @@ const CalendarView = () => {
               );
             })}
           </div>
+
+          {/* Bloqueo de disponibilidad — control grande y siempre visible,
+              no escondido en un botón de header, para que se descubra fácil. */}
+          <div className="mt-5 pt-5" style={{ borderTop: '1px solid var(--nightlife-border)' }}>
+            <button onClick={() => setAvailMode(m => !m)}
+              className="w-full flex items-center justify-between gap-3 px-4 py-3.5 rounded-xl text-sm font-bold transition-all hover:scale-[1.01]"
+              style={{ background: availMode ? 'rgba(255,95,86,0.12)' : 'rgba(255,95,86,0.06)', border: availMode ? '1px solid rgba(255,95,86,0.4)' : '1px solid rgba(255,95,86,0.18)', color: '#ff5f56' }}>
+              <span className="flex items-center gap-2">
+                {availMode ? <EyeOff size={16} /> : <Eye size={16} />}
+                {availMode ? 'Editando disponibilidad — pulsa un día para (des)bloquearlo' : 'Bloquear fechas en las que no trabajo'}
+              </span>
+              <span className="text-xs px-2 py-1 rounded-full flex-shrink-0" style={{ background: 'rgba(255,95,86,0.15)' }}>
+                {availMode ? 'Salir' : 'Activar'}
+              </span>
+            </button>
+            {availMode && (
+              <div className="mt-3 flex flex-col sm:flex-row gap-2">
+                <p className="text-xs text-muted-foreground flex-1 self-center">
+                  Los empresarios verán tu disponibilidad en tu perfil público.
+                </p>
+                <button onClick={blockWeekendsThisMonth}
+                  className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 flex-shrink-0"
+                  style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.25)', color: '#8A6D0F' }}>
+                  Bloquear vie-sáb-dom de {MONTH_NAMES_ES[viewMonth]}
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Sidebar */}
         <div className="flex flex-col gap-4">
           {/* Upcoming events */}
           <div className="glass-panel p-4">
-            <h3 className="text-sm font-bold mb-3">Próximos bolos ({upcomingEvents.length})</h3>
+            <h3 className="text-sm font-bold mb-3">Próximos trabajos ({upcomingEvents.length})</h3>
             {upcomingEvents.length === 0 ? (
               <div className="text-center py-6">
                 <CalendarIcon size={24} className="mx-auto mb-2" style={{ color: 'rgba(0,0,0,0.08)' }} />
@@ -371,7 +452,7 @@ const CalendarView = () => {
                 <button onClick={() => setShowForm(true)}
                   className="mt-3 text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-105"
                   style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.2)' }}>
-                  + Añadir primer bolo
+                  + Añadir primer trabajo
                 </button>
               </div>
             ) : (
@@ -444,12 +525,12 @@ const CalendarView = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setShowForm(false)}>
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
           <div className="relative w-full max-w-sm glass-panel p-6 animate-[fadeIn_0.2s_ease]" onClick={e => e.stopPropagation()}>
-            <h3 className="text-base font-bold mb-4">Añadir bolo / evento</h3>
+            <h3 className="text-base font-bold mb-4">Añadir trabajo / evento</h3>
             <div className="space-y-3">
               <div>
                 <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 block">Título *</label>
                 <input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
-                  placeholder="Ej: Sala Razzmatazz — Cierre" className="nightlife-input text-sm w-full" maxLength={80} />
+                  placeholder="Ej: Boda de Marta y Javi" className="nightlife-input text-sm w-full" maxLength={80} />
               </div>
               <div>
                 <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 block">Fecha *</label>

@@ -92,9 +92,14 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
             <img src={p.photo} alt={p.name} loading="lazy" className="w-full h-full object-cover"
               onError={() => setImgError(true)} />
           ) : (
+            /* Sin foto el hueco es grande (214px de alto en móvil): un avatar
+               de 80px centrado dejaba ~63% de fondo vacío, y el degradado a
+               rgba(0,0,0,0.6) sobre tarjeta blanca se leía como un bloque gris.
+               Un avatar mayor y un fondo dorado suave lo integran con la
+               tarjeta en vez de dejar ese hueco gris. */
             <div className="w-full h-full flex items-center justify-center"
-              style={{ background: 'linear-gradient(135deg,rgba(212,175,55,0.12),rgba(0,0,0,0.6))' }}>
-              <GeometricAvatar role={p.role as any} seed={p.id} size={80} isLive={p.isLive} />
+              style={{ background: 'linear-gradient(135deg,rgba(212,175,55,0.18),rgba(212,175,55,0.06))' }}>
+              <GeometricAvatar role={p.role as any} seed={p.id} size={110} isLive={p.isLive} />
             </div>
           )}
           {/* gradient bottom — desktop only (mobile shows name below photo) */}

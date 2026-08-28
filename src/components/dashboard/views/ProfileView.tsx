@@ -10,7 +10,7 @@ import AudioUpload from '@/components/dashboard/AudioUpload';
 import { compressImage, MAX_RAW_IMAGE_MB } from '@/lib/image';
 import PortfolioUpload from '@/components/dashboard/PortfolioUpload';
 import { sanitizeInput } from '@/lib/contentFilter';
-import { DEFAULT_ZONE } from '@/lib/constants';
+import { DEFAULT_ZONE, DJ_GENRES } from '@/lib/constants';
 
 const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {}) => {
   const { user } = useAuth();
@@ -127,7 +127,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   const provinceOfSaved = PROVINCE_LIST.find(p => PROVINCIAS[p].includes(savedCity)) ?? '';
 
   const ROLE_TAGS: Record<string, { label: string; tags: string[] }> = {
-    dj:        { label: 'Géneros musicales',    tags: ['Tech House','Deep House','House','Afro House','Organic House','Funky House','Tribal House','Progressive House','Latin House','Techno','Melodic Techno','Minimal','Hard Techno','Industrial','Dub Techno','Trance','Progressive Trance','Psytrance','Drum & Bass','Dubstep','Jungle','UK Garage','Breakbeat','Reggaetón','Dembow','Moombahton','Dancehall','R&B','Hip Hop','Trap','Afrobeats','Amapiano','Comercial','Top 40','Hits actuales','Remember','Pachanga','Disco','Nu-Disco','Funk','Electro','Synthwave','Ambient','Downtempo','Chillout','Hardstyle','Hardcore','EDM'] },
+    dj:        { label: 'Géneros musicales',    tags: DJ_GENRES },
     rookie:    { label: 'Géneros musicales',    tags: ['Tech House','Deep House','House','Afro House','Techno','Melodic Techno','Minimal','Hard Techno','Trance','Drum & Bass','Reggaetón','Dembow','Moombahton','Hip Hop','Trap','Comercial','Top 40','Hits actuales','Remember','Pachanga','Disco','Nu-Disco','Funk','EDM'] },
     staff:         { label: 'Especialidades',         tags: ['Azafata','RRPP','Promotor','Camarero/a','Relaciones Públicas','Animación','Hostess','Sala VIP','Control de acceso','Taquilla','Chill-out','Bottle service','Coordinación'] },
     event_manager: { label: 'Áreas de coordinación', tags: ['Coordinación general','Producción de eventos','Montaje y decoración','Catering','Staff externo','Protocolo','Gestión de artistas','Logística','Presupuestos','Eventos corporativos','Bodas','Festivales','Clubbing','Outdoor'] },

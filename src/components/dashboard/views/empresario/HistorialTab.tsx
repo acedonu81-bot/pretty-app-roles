@@ -3,7 +3,7 @@ import { CheckCircle, XCircle, Clock, Download, FileText, Euro, Calendar, User, 
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { buildCsv, downloadCsv, fmtDateISO } from '@/lib/csvExport';
+import { buildWorkbook, downloadWorkbook, fmtDateISO } from '@/lib/csvExport';
 
 interface Booking {
   id: string;
@@ -67,14 +67,14 @@ const HistorialTab = () => {
   useEffect(() => { fetchBookings(); }, [fetchBookings]);
 
   /* ─── Export CSV ─── */
-  const exportCSV = () => {
+  const exportCSV = async () => {
     if (bookings.length === 0) { toast.error('No hay contrataciones que exportar'); return; }
     const completedCount = bookings.filter(b => b.status === 'completed').length;
     const confirmedCount = bookings.filter(b => b.status === 'confirmed').length;
     const pendingCount   = bookings.filter(b => b.status === 'pending').length;
     const totalGastoCsv  = bookings.filter(b => b.agreed_price != null).reduce((s, b) => s + (b.agreed_price ?? 0), 0);
 
-    const csv = buildCsv('Historial de Contrataciones', [
+    const wb = await buildWorkbook('Historial de Contrataciones', [
       {
         title: 'RESUMEN',
         header: ['Concepto', 'Valor'],
@@ -102,7 +102,7 @@ const HistorialTab = () => {
       },
     ]);
 
-    downloadCsv(csv, `XPEAK_historial_${new Date().toISOString().slice(0, 10)}.csv`);
+    await downloadWorkbook(wb, `XPEAK_historial_${new Date().toISOString().slice(0, 10)}.xlsx`);
     toast.success(`${bookings.length} contrataciones exportadas`);
   };
 

@@ -60,6 +60,13 @@ export default function SwipeDirectory({ profiles, onClose, onOpenProfile, onBoo
   };
   const touchStart = useRef<{ x: number; y: number } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  // Bloquea nuevos swipes mientras la tarjeta anterior sigue en su animación
+  // de salida (los 220ms del setTimeout más abajo) — sin esto, un segundo
+  // swipe disparado durante esa ventana corrompe el índice (dos goNext()
+  // programados sobre estado a medio actualizar, con dragX/touchStart
+  // pisándose entre gestos), dando la sensación de "la foto no cambió" o de
+  // saltar a un perfil que no toca.
+  const isTransitioning = useRef(false);
 
   // En modo fullscreen (no embebido) hay que bloquear el scroll del body:
   // si no, en móvil el gesto de deslizar la tarjeta lo captura el scroll
@@ -79,10 +86,11 @@ export default function SwipeDirectory({ profiles, onClose, onOpenProfile, onBoo
   const VERTICAL_THRESHOLD = 60;
 
   const onTouchStart = (e: React.TouchEvent) => {
+    if (isTransitioning.current) return;
     touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
   };
   const onTouchMove = (e: React.TouchEvent) => {
-    if (!touchStart.current) return;
+    if (!touchStart.current || isTransitioning.current) return;
     const dx = e.touches[0].clientX - touchStart.current.x;
     const dy = e.touches[0].clientY - touchStart.current.y;
     // El gesto dominante (horizontal vs vertical) decide qué se anima —
@@ -91,7 +99,7 @@ export default function SwipeDirectory({ profiles, onClose, onOpenProfile, onBoo
     else { setDragY(dy); setDragX(0); }
   };
   const onTouchEnd = (e: React.TouchEvent) => {
-    if (!touchStart.current) return;
+    if (!touchStart.current || isTransitioning.current) return;
     const dx = e.changedTouches[0].clientX - touchStart.current.x;
     const dy = e.changedTouches[0].clientY - touchStart.current.y;
     touchStart.current = null;
@@ -103,12 +111,14 @@ export default function SwipeDirectory({ profiles, onClose, onOpenProfile, onBoo
         setSwipeFeedback('like');
       } else {
         // Derecha → siguiente perfil
+        isTransitioning.current = true;
         setSwipeFeedback('next');
       }
       setTimeout(() => {
         setSwipeFeedback(null);
         if (dx > 0) goNext();
         setDragX(0);
+        isTransitioning.current = false;
       }, 220);
       return;
     }
@@ -174,7 +184,11 @@ export default function SwipeDirectory({ profiles, onClose, onOpenProfile, onBoo
           transition: touchStart.current ? 'none' : 'transform 0.25s ease',
         }}>
         {p.photo_url && !imgErrors[p.user_id] ? (
+          // Es la foto a pantalla completa de la tarjeta visible: en móvil es el
+          // elemento LCP, así que se pide con prioridad alta en vez de dejar que
+          // el navegador la trate como secundaria.
           <img src={p.photo_url} alt={p.display_name}
+            fetchPriority="high"
             onError={() => setImgErrors(e => ({ ...e, [p.user_id]: true }))}
             className="w-full h-full object-cover" />
         ) : (

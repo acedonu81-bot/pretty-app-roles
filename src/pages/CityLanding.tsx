@@ -32,7 +32,7 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
 
     supabase
       .from('profiles')
-      .select('user_id,display_name,photo_url,bio,city,role,score,slug,is_verified,audio_embed_url,audio_session_urls,portfolio_urls')
+      .select('user_id,display_name,photo_url,bio,city,role,score,slug,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,is_early_adopter_override')
       .in('role', roles)
       .eq('is_primary', true)
       .ilike('city', `%${ciudad}%`)
@@ -46,7 +46,7 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
           // No hay en esta ciudad — cargar sugerencias nacionales
           supabase
             .from('profiles')
-            .select('user_id,display_name,photo_url,bio,city,role,score,slug,is_verified,audio_embed_url,audio_session_urls,portfolio_urls')
+            .select('user_id,display_name,photo_url,bio,city,role,score,slug,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,is_early_adopter_override')
             .in('role', roles)
             .eq('is_primary', true)
             .order('score', { ascending: false })

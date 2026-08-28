@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   X, MessageCircle, FileText, ShoppingBag, MapPin, Globe,
   Zap, CheckCircle, Crown, ExternalLink, Star,
@@ -234,7 +234,11 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
   const hasLive = p.isLive && p.streamUrl && parseStreamUrl(p.streamUrl);
 
   return (
-    <AnimatePresence>
+    // Sin <AnimatePresence> propio: el padre (Dashboard.tsx) desmonta este
+    // componente entero de golpe cuando selectedProfile pasa a null, así que
+    // un AnimatePresence aquí nunca llegaría a reproducir el exit — el padre
+    // es quien debe envolver el montaje/desmontaje en su propio AnimatePresence.
+    <>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -554,7 +558,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
       {showContract && (
         <ContractModal professional={p} onClose={() => setShowContract(false)} />
       )}
-    </AnimatePresence>
+    </>
   );
 };
 

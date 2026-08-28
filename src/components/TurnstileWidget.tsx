@@ -36,6 +36,7 @@ function loadTurnstileScript(): Promise<void> {
 interface Props {
   onVerify: (token: string) => void;
   onExpire?: () => void;
+  onStall?: () => void;
 }
 
 /**
@@ -49,7 +50,7 @@ interface Props {
  */
 const STALL_MS = 8000;
 
-export default function TurnstileWidget({ onVerify, onExpire }: Props) {
+export default function TurnstileWidget({ onVerify, onExpire, onStall }: Props) {
   const containerId = `turnstile-${useId().replace(/:/g, '')}`;
   const widgetIdRef = useRef<string | null>(null);
   const [stalled, setStalled] = useState(false);
@@ -61,6 +62,7 @@ export default function TurnstileWidget({ onVerify, onExpire }: Props) {
     const stallTimer = setTimeout(() => {
       if (cancelled) return;
       setStalled(true);
+      onStall?.();
       track('turnstile_stalled', { retry: retryKey });
     }, STALL_MS);
 
@@ -72,9 +74,9 @@ export default function TurnstileWidget({ onVerify, onExpire }: Props) {
         sitekey: SITE_KEY,
         callback: (token: string) => { clearTimeout(stallTimer); setStalled(false); onVerify(token); },
         'expired-callback': onExpire,
-        'error-callback': () => { if (!cancelled) { setStalled(true); track('turnstile_stalled', { retry: retryKey, reason: 'error-callback' }); } },
+        'error-callback': () => { if (!cancelled) { setStalled(true); onStall?.(); track('turnstile_stalled', { retry: retryKey, reason: 'error-callback' }); } },
       });
-    }).catch(() => { if (!cancelled) { setStalled(true); track('turnstile_stalled', { retry: retryKey, reason: 'script-load-failed' }); } });
+    }).catch(() => { if (!cancelled) { setStalled(true); onStall?.(); track('turnstile_stalled', { retry: retryKey, reason: 'script-load-failed' }); } });
 
     return () => {
       cancelled = true;

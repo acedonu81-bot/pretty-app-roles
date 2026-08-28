@@ -1407,6 +1407,16 @@ for (const route of ROUTES) {
   html = replaceOgProp(html, 'og:type', route.ogType);
   html = replaceMeta(html, 'name', 'twitter:title', route.ogTitle);
   html = replaceMeta(html, 'name', 'twitter:description', route.ogDesc);
+  // Preload del poster del vídeo hero (elemento LCP de la landing). Antes
+  // vivía en un <Helmet> de React (Landing.tsx) y el navegador no lo veía
+  // hasta que React montaba — para entonces ya había perdido ~1.1s de la
+  // ventana de prioridad temprana (medido con Chrome DevTools). Aquí, en el
+  // HTML estático servido directamente, el navegador lo descubre al parsear
+  // el <head>, sin esperar a JS. Solo en '/' — las demás rutas no usan este
+  // recurso y no deben competir por su ancho de banda.
+  if (route.path === '/') {
+    html = html.replace('</head>', `  <link rel="preload" href="/videos/hero-poster.jpg" as="image" fetchpriority="high" />\n  </head>`);
+  }
   if (route.bodyHtml) {
     html = html.replace(/<div id="root">[\s\S]*?<\/div>\s*(?=<script|\n\s*<script|<\/body>|\n\s*<\/body>)/, `<div id="root">${route.bodyHtml}</div>\n  `);
   }

@@ -38,8 +38,11 @@ function toSlug(name) {
 }
 
 async function sbFetch(supabaseUrl, key, query) {
+  // Sin timeout, un Supabase lento/inalcanzable cuelga el pipeline de build
+  // entero de forma indefinida (visto en la práctica: 15+ min sin avanzar).
   const res = await fetch(`${supabaseUrl}/rest/v1/${query}`, {
     headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+    signal: AbortSignal.timeout(15000),
   });
   if (!res.ok) { console.warn('  ⚠ Supabase', res.status, query.slice(0, 60)); return []; }
   return res.json();

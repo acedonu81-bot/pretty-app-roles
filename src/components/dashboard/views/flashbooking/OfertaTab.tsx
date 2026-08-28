@@ -48,7 +48,7 @@ const OfertaTab = () => {
   const fetchFlashProfiles = () => {
     supabase
       .from('profiles')
-      .select('id, user_id, display_name, photo_url, specialty, zone, hourly_rate, role, bio, audio_embed_url, audio_session_urls, portfolio_urls, score, genres')
+      .select('id, user_id, display_name, photo_url, specialty, zone, hourly_rate, role, bio, audio_embed_url, audio_session_urls, portfolio_urls, score, genres, is_early_adopter_override')
       .eq('is_flash_active', true)
       .order('score', { ascending: false })
       .then(({ data }) => {

@@ -1,6 +1,7 @@
 {
   "redirects": [
-    { "source": "/:path(.*)", "has": [{ "type": "host", "value": "www.xpeak.es" }], "destination": "https://xpeak.es/:path", "permanent": true }
+    { "source": "/:path(.*)", "has": [{ "type": "host", "value": "www.xpeak.es" }], "destination": "https://xpeak.es/:path", "permanent": true },
+    { "source": "/:path(.*)", "has": [{ "type": "host", "value": "pretty-app-roles-(.*)\\.vercel\\.app" }], "destination": "https://xpeak.es/:path", "permanent": true }
   ],
   "routes": [
     { "src": "/directorio",     "status": 308, "headers": { "Location": "/directorio/dj" } },
@@ -45,6 +46,11 @@
       "continue": true
     },
     {
+      "src": "/(.*)/index\\.md",
+      "headers": { "Content-Type": "text/markdown; charset=utf-8", "Cache-Control": "public, max-age=3600" },
+      "continue": true
+    },
+    {
       "src": "/(.*\\.html)",
       "headers": { "Cache-Control": "public, max-age=0, must-revalidate" },
       "continue": true
@@ -62,7 +68,7 @@
         "Referrer-Policy": "strict-origin-when-cross-origin",
         "Permissions-Policy": "camera=(), microphone=(), geolocation=(), encrypted-media=(self \"https://w.soundcloud.com\")",
         "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
-        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://plausible.io https://analytics.tiktok.com https://challenges.cloudflare.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' blob: https://videos.pexels.com https://*.supabase.co; frame-src 'self' https://w.soundcloud.com https://www.youtube.com https://player.vimeo.com https://hearthis.at https://app.hearthis.at https://www.mixcloud.com https://player.twitch.tv https://open.spotify.com https://www.googletagmanager.com https://challenges.cloudflare.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.doubleclick.net https://plausible.io https://api.stripe.com https://api-v2.hearthis.at https://analytics.tiktok.com https://*.tiktok.com https://*.tiktokw.us https://*.tiktokcdn.com https://challenges.cloudflare.com https://connect.facebook.net https://www.facebook.com; worker-src 'self' blob:; object-src 'none';"
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://plausible.io https://analytics.tiktok.com https://challenges.cloudflare.com https://connect.facebook.net https://tracker.metricool.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' blob: https://videos.pexels.com https://*.supabase.co; frame-src 'self' https://w.soundcloud.com https://www.youtube.com https://player.vimeo.com https://hearthis.at https://app.hearthis.at https://www.mixcloud.com https://player.twitch.tv https://open.spotify.com https://www.googletagmanager.com https://challenges.cloudflare.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.doubleclick.net https://plausible.io https://api.stripe.com https://api-v2.hearthis.at https://analytics.tiktok.com https://*.tiktok.com https://*.tiktokw.us https://*.tiktokcdn.com https://challenges.cloudflare.com https://connect.facebook.net https://www.facebook.com https://tracker.metricool.com; worker-src 'self' blob:; object-src 'none';"
       },
       "continue": true
     },

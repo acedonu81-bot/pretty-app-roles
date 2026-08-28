@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { toast } from 'sonner';
 import { ROLE_ES } from '@/lib/constants';
-import { buildCsv, downloadCsv } from '@/lib/csvExport';
+import { buildWorkbook, downloadWorkbook } from '@/lib/csvExport';
 import type { Pro } from '@/types';
 import DiscoverTab from './empresario/DiscoverTab';
 import FlashTab from './empresario/FlashTab';
@@ -128,6 +128,10 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
     setLoading(false);
     if (error) { toast.error('Error al cargar profesionales'); return; }
     const filtered = (data ?? []).filter((d: any) => d.user_id !== user?.id);
+    // Sin foto siempre al final — mismo criterio que el directorio público y
+    // el feed swipe (ver fetchDirectorioProfiles en DirectorioPublico.tsx):
+    // un perfil sin foto no compite en igualdad, recupera posición en cuanto sube una.
+    filtered.sort((a: any, b: any) => Number(!!b.photo_url) - Number(!!a.photo_url));
     setPros(filtered.map((d: any) => ({ ...d, id: d.user_id })) as unknown as Pro[]);
   }, [user?.id]);
 
@@ -153,8 +157,8 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
     }
   };
 
-  const exportCSV = (proList: Pro[], notes: Record<string, string>) => {
-    const csv = buildCsv('Talentos — Directorio', [
+  const exportCSV = async (proList: Pro[], notes: Record<string, string>) => {
+    const wb = await buildWorkbook('Talentos — Directorio', [
       {
         title: 'RESUMEN',
         header: ['Concepto', 'Valor'],
@@ -175,8 +179,8 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
         ]),
       },
     ]);
-    downloadCsv(csv, `XPEAK_talentos_${new Date().toISOString().slice(0, 10)}.csv`);
-    toast.success(`${proList.length} profesionales exportados a CSV`);
+    await downloadWorkbook(wb, `XPEAK_talentos_${new Date().toISOString().slice(0, 10)}.xlsx`);
+    toast.success(`${proList.length} profesionales exportados a Excel`);
   };
 
   useEffect(() => { fetchPros(); }, [fetchPros]);

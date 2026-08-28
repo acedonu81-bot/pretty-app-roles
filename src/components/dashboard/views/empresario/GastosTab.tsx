@@ -3,7 +3,7 @@ import { Euro, Download, TrendingUp, Calendar, Users, FileText } from 'lucide-re
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { buildCsv, downloadCsv, fmtDateISO } from '@/lib/csvExport';
+import { buildWorkbook, downloadWorkbook, fmtDateISO } from '@/lib/csvExport';
 
 interface Booking {
   id: string;
@@ -93,10 +93,10 @@ const GastosTab = () => {
 
   const maxMonthTotal = Math.max(...monthlyData.map(d => d.total), 1);
 
-  const exportCSV = () => {
+  const exportCSV = async () => {
     if (yearBookings.length === 0) { toast.error('No hay gastos que exportar'); return; }
 
-    const csv = buildCsv(`Panel de Gastos — Año ${yearFilter}`, [
+    const wb = await buildWorkbook(`Panel de Gastos — Año ${yearFilter}`, [
       {
         title: 'RESUMEN',
         header: ['Concepto', 'Valor'],
@@ -109,6 +109,7 @@ const GastosTab = () => {
       {
         title: 'DESGLOSE MENSUAL',
         header: ['Mes', 'Contrataciones', 'Gasto total (€)', '% del año'],
+        dataBarColumn: 2,
         rows: monthlyData.map(d => [
           d.month,
           d.count,
@@ -119,6 +120,7 @@ const GastosTab = () => {
       {
         title: 'DESGLOSE POR CATEGORÍA',
         header: ['Categoría', 'Contrataciones', 'Gasto total (€)', '% del año'],
+        dataBarColumn: 2,
         rows: Object.entries(byRole).sort((a, b) => b[1].total - a[1].total).map(([role, d]) => [
           role,
           d.count,
@@ -143,7 +145,7 @@ const GastosTab = () => {
       },
     ]);
 
-    downloadCsv(csv, `XPEAK_gastos_${yearFilter}.csv`);
+    await downloadWorkbook(wb, `XPEAK_gastos_${yearFilter}.xlsx`);
     toast.success(`Gastos ${yearFilter} exportados`);
   };
 

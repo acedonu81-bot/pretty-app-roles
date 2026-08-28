@@ -22,6 +22,13 @@ trackAIReferral();
 // anterior de /descubrir pese a los deploys). Al arrancar: desregistrar TODOS
 // los SW, borrar TODAS las cachés, y recargar una sola vez limpio. El flag en
 // localStorage evita un bucle de recargas.
+//
+// Tras la purga (o si nunca hubo nada que purgar) se registra el sw.js actual
+// — sin esto Chrome/Android nunca considera el sitio "instalable" y jamás
+// dispara beforeinstallprompt, así que el banner de instalar PWA en
+// /descubrir no tenía forma de aparecer. sw.js ya no tiene fetch handler
+// (ver su propio comentario), así que registrarlo no reintroduce el bug de
+// caché descontrolada que causó la purga original.
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', async () => {
     try {
@@ -37,7 +44,8 @@ if ('serviceWorker' in navigator) {
         window.location.reload();
         return;
       }
-    } catch { /* continúa sin purgar */ }
+      await navigator.serviceWorker.register('/sw.js');
+    } catch { /* continúa sin SW — push e instalabilidad quedan desactivados, no crítico */ }
   });
 }
 

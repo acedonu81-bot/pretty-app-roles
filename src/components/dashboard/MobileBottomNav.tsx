@@ -37,8 +37,13 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
         background: 'rgba(255,255,255,0.97)',
         borderTop: '1px solid rgba(0,0,0,0.08)',
         backdropFilter: 'blur(20px)',
-        paddingBottom: 'env(safe-area-inset-bottom)',
-        height: 'calc(64px + env(safe-area-inset-bottom))',
+        // En Chrome/Samsung Internet sobre Android, la barra de gestos no
+        // siempre se reporta en env(safe-area-inset-bottom) (llega como 0px
+        // aunque ocupe espacio real), y la fila de iconos quedaba pisada por
+        // ella. El max() reserva un mínimo cuando el navegador no informa del
+        // inset, y respeta el valor real cuando sí lo hace.
+        paddingBottom: 'max(env(safe-area-inset-bottom), 12px)',
+        height: 'calc(64px + max(env(safe-area-inset-bottom), 12px))',
       }}
     >
       {tabs.map(tab => (

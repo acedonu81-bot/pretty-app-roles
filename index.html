@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://plausible.io https://analytics.tiktok.com https://challenges.cloudflare.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https: ; media-src 'self' blob: https://videos.pexels.com https://*.supabase.co; frame-src 'self' https://w.soundcloud.com https://www.youtube.com https://player.vimeo.com https://hearthis.at https://app.hearthis.at https://www.mixcloud.com https://player.twitch.tv https://open.spotify.com https://www.googletagmanager.com https://challenges.cloudflare.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.doubleclick.net https://plausible.io https://api.stripe.com https://api-v2.hearthis.at https://analytics.tiktok.com https://*.tiktok.com https://*.tiktokw.us https://*.tiktokcdn.com https://challenges.cloudflare.com https://connect.facebook.net https://www.facebook.com; worker-src 'self' blob: ; object-src 'none';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://plausible.io https://analytics.tiktok.com https://challenges.cloudflare.com https://connect.facebook.net https://tracker.metricool.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https: ; media-src 'self' blob: https://videos.pexels.com https://*.supabase.co; frame-src 'self' https://w.soundcloud.com https://www.youtube.com https://player.vimeo.com https://hearthis.at https://app.hearthis.at https://www.mixcloud.com https://player.twitch.tv https://open.spotify.com https://www.googletagmanager.com https://challenges.cloudflare.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.doubleclick.net https://plausible.io https://api.stripe.com https://api-v2.hearthis.at https://analytics.tiktok.com https://*.tiktok.com https://*.tiktokw.us https://*.tiktokcdn.com https://challenges.cloudflare.com https://connect.facebook.net https://www.facebook.com https://tracker.metricool.com; worker-src 'self' blob: ; object-src 'none';" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
     <title>XPEAK | Contratar DJs, Staff y Profesionales para Eventos en España</title>
@@ -127,12 +127,51 @@
       })();
     </script>
 
+    <!-- Arranque diferido del tracking.
+         Medido con Chrome (4G, CPU 4x): GTM 109ms + Meta 83ms + TikTok 48ms de
+         CPU en el hilo principal, compitiendo con el contenido justo cuando la
+         página intenta pintarse. Se registra exactamente lo mismo, pero después
+         de que la página esté usable: al primer gesto del usuario o a los 2,5s,
+         lo que ocurra antes. Así ninguna visita se pierde, ni siquiera la de
+         quien entra y se va enseguida. -->
+    <script>
+    (function () {
+      var arrancado = false;
+      var pendientes = [];
+      window.__xpeakTracking = function (fn) { pendientes.push(fn); };
+      function arrancar() {
+        if (arrancado) return;
+        arrancado = true;
+        quitarEscuchas();
+        for (var i = 0; i < pendientes.length; i++) {
+          try { pendientes[i](); } catch (e) { /* un fallo no debe tumbar al resto */ }
+        }
+        pendientes = [];
+      }
+      var eventos = ['pointerdown', 'touchstart', 'keydown', 'scroll'];
+      function quitarEscuchas() {
+        for (var i = 0; i < eventos.length; i++) {
+          window.removeEventListener(eventos[i], arrancar, { passive: true });
+        }
+      }
+      for (var i = 0; i < eventos.length; i++) {
+        window.addEventListener(eventos[i], arrancar, { passive: true, once: true });
+      }
+      setTimeout(arrancar, 2500);
+      // Si el usuario cierra o cambia de pestaña antes de tiempo, se dispara ya
+      // para no perder la visita.
+      document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'hidden') arrancar();
+      });
+    })();
+    </script>
+
     <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    <script>window.__xpeakTracking(function(){(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-PHXTFGXK');</script>
+    })(window,document,'script','dataLayer','GTM-PHXTFGXK');});</script>
     <!-- End Google Tag Manager -->
 
     <!-- Preconnect: Google Fonts -->
@@ -147,20 +186,23 @@
     <link rel="preconnect" href="https://ddrqhwravupjzysriblq.supabase.co" />
 
     <!-- Analytics (Plausible — GDPR, sin cookies, sin datos personales) -->
-    <script defer data-domain="xpeak.es" data-exclude="/eliminar-cuenta, /privacidad, /cookies, /terminos, /aviso-legal" src="https://plausible.io/js/script.exclusions.js"></script>
+    <script>window.__xpeakTracking(function(){var s=document.createElement('script');
+    s.defer=true;s.setAttribute('data-domain','xpeak.es');
+    s.setAttribute('data-exclude','/eliminar-cuenta, /privacidad, /cookies, /terminos, /aviso-legal');
+    s.src='https://plausible.io/js/script.exclusions.js';document.head.appendChild(s);});</script>
 
     <!-- TikTok Pixel — mide conversiones de la campaña de TikTok Ads -->
-    <script>
+    <script>window.__xpeakTracking(function(){
     !function (w, d, t) {
       w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script");n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
 
       ttq.load('D9AHT03C77U7PB56PT60');
       ttq.page();
     }(window, document, 'ttq');
-    </script>
+    });</script>
 
     <!-- Meta Pixel — mide conversiones (registro) de la campaña de Instagram Ads -->
-    <script>
+    <script>window.__xpeakTracking(function(){
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
     n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -171,7 +213,10 @@
     'https://connect.facebook.net/en_US/fbevents.js');
     fbq('init', '2436920620126360');
     fbq('track', 'PageView');
-    </script>
+    });</script>
+
+    <!-- Metricool — analítica de redes sociales/web para gestión de contenido -->
+    <script>window.__xpeakTracking(function(){function loadScript(a){var b=document.getElementsByTagName("head")[0],c=document.createElement("script");c.type="text/javascript",c.src="https://tracker.metricool.com/resources/be.js",c.onreadystatechange=a,c.onload=a,b.appendChild(c)}loadScript(function(){beTracker.t({hash:"6d4359c9aa1a8194c0ccc07912a3d25d"})});});</script>
 
   </head>
 

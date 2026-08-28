@@ -16,6 +16,7 @@ function completeness(p: Record<string, unknown>): { percent: number; missing: s
     { label: 'tu ciudad', done: typeof p.zone === 'string' && p.zone.trim().length > 0 && p.zone !== 'España' },
     { label: 'tu especialidad', done: typeof p.specialty === 'string' && p.specialty.trim().length > 0 },
     { label: 'tu Instagram', done: typeof p.instagram === 'string' && p.instagram.trim().length > 0 },
+    { label: 'tu tarifa', done: typeof p.hourly_rate === 'number' && p.hourly_rate > 0 },
   ];
   if (p.role === 'dj' || p.role === 'rookie') {
     steps.push({
@@ -30,9 +31,10 @@ function completeness(p: Record<string, unknown>): { percent: number; missing: s
   return { percent: Math.round((done / steps.length) * 100), missing: steps.filter(s => !s.done).map(s => s.label) };
 }
 
-// Finds profiles created 24-48h ago that are still incomplete and not
-// empresario (empresarios don't have a "directory" completeness concept),
-// sends one reminder email, logs it to avoid ever sending twice.
+// Finds ANY incomplete, non-empresario, non-seed profile (sin límite de
+// antigüedad — antes solo miraba la ventana 24-48h desde el registro, así
+// que nunca alcanzaba a perfiles ya asentados e incompletos). Dedupe vía
+// email_logs garantiza que cada perfil recibe el aviso una sola vez.
 // Designed to be called daily via Supabase cron.
 serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
@@ -41,14 +43,10 @@ serve(async (req) => {
   const serviceKey  = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
   const admin = createClient(supabaseUrl, serviceKey);
 
-  const from = new Date(Date.now() - 48 * 60 * 60 * 1000);
-  const to = new Date(Date.now() - 24 * 60 * 60 * 1000);
-
   const { data: profiles, error: profilesError } = await admin
     .from('profiles')
-    .select('user_id, display_name, role, photo_url, bio, zone, specialty, instagram, audio_embed_url, audio_session_urls, portfolio_urls, created_at')
-    .gte('created_at', from.toISOString())
-    .lte('created_at', to.toISOString())
+    .select('user_id, display_name, role, photo_url, bio, zone, specialty, instagram, audio_embed_url, audio_session_urls, portfolio_urls, hourly_rate, created_at')
+    .eq('is_seed', false)
     .neq('role', 'empresario');
 
   if (profilesError) {

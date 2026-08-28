@@ -5,6 +5,7 @@ import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
 import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import type { Pro } from './types';
 import { ZONES } from './types';
+import { DJ_GENRES } from '@/lib/constants';
 
 interface Props {
   pros: Pro[];
@@ -19,6 +20,7 @@ interface Props {
 const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage, showFavoritesOnly = false, loading = false }: Props) => {
   const [filterZone, setFilterZone]   = useState('Todas');
   const [filterRole, setFilterRole]   = useState('Todos');
+  const [filterGenre, setFilterGenre] = useState('Todos');
   const [maxPrice, setMaxPrice]       = useState(1000);
   const [proNotes, setProNotes]       = useState<Record<string, string>>({});
   const [notesTarget, setNotesTarget] = useState<string | null>(null);
@@ -29,10 +31,15 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
     // 'camarero' es un rol legacy — cuenta como staff en el filtro
     const effectiveRole = p.role === 'camarero' ? 'staff' : p.role;
     if (filterRole !== 'Todos' && effectiveRole !== filterRole) return false;
+    if (filterGenre !== 'Todos' && !(p.genres ?? []).includes(filterGenre)) return false;
     if (p.hourly_rate > maxPrice) return false;
     if (showFavoritesOnly && !favorites.includes(p.id)) return false;
     return true;
   });
+
+  useEffect(() => {
+    if (filterRole !== 'Todos' && filterRole !== 'dj') setFilterGenre('Todos');
+  }, [filterRole]);
 
   const openNotes = (id: string) => { setNotesTarget(id); setNotesDraft(proNotes[id] ?? ''); };
   const saveNotes = () => {
@@ -88,6 +95,17 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
             />
           </div>
         </div>
+        {(filterRole === 'Todos' || filterRole === 'dj') && (
+          <div className="mt-3">
+            <label className="text-[0.75rem] text-muted-foreground font-bold uppercase mb-1 block">Estilo musical</label>
+            <NightlifeSelect
+              value={filterGenre}
+              onChange={setFilterGenre}
+              options={[{ value: 'Todos', label: 'Todos' }, ...DJ_GENRES.map(g => ({ value: g, label: g }))]}
+              active={filterGenre !== 'Todos'}
+            />
+          </div>
+        )}
         <div className="mt-3">
           <label className="text-[0.75rem] text-muted-foreground font-bold uppercase mb-1 block">
             Tarifa máx: {maxPrice >= 1000 ? 'Sin límite' : `€${maxPrice}/hora`}
