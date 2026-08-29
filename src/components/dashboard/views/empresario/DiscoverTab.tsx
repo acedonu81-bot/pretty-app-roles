@@ -6,6 +6,7 @@ import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import type { Pro } from './types';
 import { ZONES } from './types';
 import { DJ_GENRES } from '@/lib/constants';
+import { useAuth } from '@/hooks/useAuth';
 
 interface Props {
   pros: Pro[];
@@ -18,6 +19,9 @@ interface Props {
 }
 
 const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage, showFavoritesOnly = false, loading = false }: Props) => {
+  const { user } = useAuth();
+  const notesStorageKey = user ? `xpeak_pro_notes_${user.id}` : null;
+
   const [filterZone, setFilterZone]   = useState('Todas');
   const [filterRole, setFilterRole]   = useState('Todos');
   const [filterGenre, setFilterGenre] = useState('Todos');
@@ -25,6 +29,25 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
   const [proNotes, setProNotes]       = useState<Record<string, string>>({});
   const [notesTarget, setNotesTarget] = useState<string | null>(null);
   const [notesDraft, setNotesDraft]   = useState('');
+
+  useEffect(() => {
+    if (!notesStorageKey) return;
+    try {
+      const raw = localStorage.getItem(notesStorageKey);
+      if (raw) setProNotes(JSON.parse(raw));
+    } catch {
+      // localStorage inaccesible o JSON corrupto — se empieza en blanco
+    }
+  }, [notesStorageKey]);
+
+  const persistNotes = (notes: Record<string, string>) => {
+    if (!notesStorageKey) return;
+    try {
+      localStorage.setItem(notesStorageKey, JSON.stringify(notes));
+    } catch {
+      // localStorage lleno o bloqueado — la nota queda solo en memoria
+    }
+  };
 
   const filtered = pros.filter(p => {
     if (filterZone !== 'Todas' && p.zone !== filterZone) return false;
@@ -43,7 +66,11 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
 
   const openNotes = (id: string) => { setNotesTarget(id); setNotesDraft(proNotes[id] ?? ''); };
   const saveNotes = () => {
-    if (notesTarget) setProNotes(prev => ({ ...prev, [notesTarget]: notesDraft }));
+    if (notesTarget) {
+      const next = { ...proNotes, [notesTarget]: notesDraft };
+      setProNotes(next);
+      persistNotes(next);
+    }
     setNotesTarget(null);
     toast.success('Nota guardada');
   };
@@ -289,7 +316,10 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
                 {proNotes[notesTarget] && (
                   <button
                     onClick={() => {
-                      setProNotes(prev => { const n = { ...prev }; delete n[notesTarget!]; return n; });
+                      const next = { ...proNotes };
+                      delete next[notesTarget!];
+                      setProNotes(next);
+                      persistNotes(next);
                       setNotesTarget(null);
                       toast.success('Nota eliminada');
                     }}
@@ -299,7 +329,7 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
                   </button>
                 )}
               </div>
-              <p className="text-[0.75rem] text-muted-foreground mt-2 text-center">Solo tú puedes ver estas notas</p>
+              <p className="text-[0.75rem] text-muted-foreground mt-2 text-center">Solo tú puedes ver estas notas · guardadas en este dispositivo</p>
             </div>
           </div>
         );
