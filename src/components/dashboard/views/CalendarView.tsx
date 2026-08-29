@@ -185,20 +185,42 @@ const CalendarView = () => {
   }, [storageKey]);
 
   // Migración one-time: sube los eventos que quedaran en localStorage a Supabase.
-  const migrateLocalToRemote = useCallback(async () => {
-    if (!user) return;
+  // Devuelve true solo si llegó a insertar algo, para que el llamador sepa si
+  // merece la pena releer la tabla.
+  const migrateLocalToRemote = useCallback(async (): Promise<boolean> => {
+    if (!user) return false;
     const migratedKey = `${storageKey}_migrated`;
-    if (localStorage.getItem(migratedKey)) return;
+    if (localStorage.getItem(migratedKey)) return false;
+    let inserted = false;
     try {
       const saved = localStorage.getItem(storageKey);
       const local: CalEvent[] = saved ? JSON.parse(saved) : [];
       if (local.length) {
-        await supabase.from('calendar_events').insert(
-          local.map(e => ({ user_id: user.id, title: e.title, event_date: e.date, location: e.location || null, notes: e.notes || null }))
-        );
+        // Solo subir los que no estén ya en remoto. Sin esto, si el insert
+        // fallaba a medias o el usuario abría el calendario en dos pestañas,
+        // se duplicaban eventos: no hay constraint de unicidad en la tabla
+        // (20260624) que lo impida. Se compara por título+fecha, que es lo
+        // que identifica un evento a ojos del usuario.
+        const { data: remote } = await supabase
+          .from('calendar_events')
+          .select('title, event_date')
+          .eq('user_id', user.id);
+        const existing = new Set((remote ?? []).map((r: any) => `${r.title}|${r.event_date}`));
+        const toInsert = local.filter(e => !existing.has(`${e.title}|${e.date}`));
+        if (toInsert.length) {
+          const { error } = await supabase.from('calendar_events').insert(
+            toInsert.map(e => ({ user_id: user.id, title: e.title, event_date: e.date, location: e.location || null, notes: e.notes || null }))
+          );
+          // Solo marcar como migrado si de verdad se guardó: antes se marcaba
+          // pase lo que pase, así que un fallo de red perdía esos eventos
+          // para siempre (la marca impedía reintentarlo).
+          if (error) { console.warn('[CalendarView] migración local→remoto falló:', error.message); return false; }
+          inserted = true;
+        }
       }
       localStorage.setItem(migratedKey, '1');
     } catch { /* si falla la migración, no bloquea */ }
+    return inserted;
   }, [user, storageKey]);
 
   const fetchEvents = useCallback(async () => {
@@ -210,18 +232,29 @@ const CalendarView = () => {
       .order('event_date', { ascending: true });
     if (error) {
       // Tabla aún no creada → modo localStorage para no romper.
+      // Se avisa: antes el fallback era silencioso y el usuario creía tener
+      // su agenda guardada en la cuenta cuando en realidad vivía solo en ese
+      // navegador (se pierde al cambiar de móvil o limpiar datos).
+      console.warn('[CalendarView] calendar_events no disponible, usando localStorage:', error.message);
       setRemoteOk(false);
       loadFromLocal();
       return;
     }
     setRemoteOk(true);
-    await migrateLocalToRemote();
-    const { data: data2 } = await supabase
-      .from('calendar_events')
-      .select('id, title, event_date, location, notes')
-      .eq('user_id', user.id)
-      .order('event_date', { ascending: true });
-    setEvents(((data2 ?? data) as any[]).map(mapRow));
+    // La migración solo corre una vez por usuario (marca en localStorage), así
+    // que releer la tabla siempre suponía una segunda consulta inútil en cada
+    // carga del calendario. Solo se recarga si de verdad se migró algo.
+    const migrated = await migrateLocalToRemote();
+    if (migrated) {
+      const { data: data2 } = await supabase
+        .from('calendar_events')
+        .select('id, title, event_date, location, notes')
+        .eq('user_id', user.id)
+        .order('event_date', { ascending: true });
+      setEvents(((data2 ?? data) as any[]).map(mapRow));
+      return;
+    }
+    setEvents((data as any[]).map(mapRow));
   }, [user, loadFromLocal, migrateLocalToRemote]);
 
   useEffect(() => { fetchEvents(); }, [fetchEvents]);
@@ -278,8 +311,14 @@ const CalendarView = () => {
     return events.filter(e => e.date === dateStr);
   };
 
+  // Fecha de hoy en horario LOCAL, no UTC: toISOString() devuelve el día
+  // anterior entre medianoche y las 02:00 en España (UTC+1/+2), así que de
+  // madrugada un evento ya pasado seguía apareciendo como "próximo". El resto
+  // del componente (eventsOnDay) ya construye las fechas en local.
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
   const upcomingEvents = [...events]
-    .filter(e => e.date >= today.toISOString().slice(0, 10))
+    .filter(e => e.date >= todayStr)
     .sort((a, b) => a.date.localeCompare(b.date))
     .slice(0, 5);
 
@@ -304,6 +343,12 @@ const CalendarView = () => {
     return `https://calendar.google.com/calendar/render?${params.toString()}`;
   };
 
+  // RFC 5545: en los valores de texto hay que escapar \ ; , y los saltos de
+  // línea. Sin esto, una ubicación tan normal como "Sala X, Madrid" partía el
+  // campo en dos y el .ics salía corrupto o con datos truncados.
+  const icsEscape = (s: string) =>
+    s.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+
   const downloadICS = (ev: CalEvent) => {
     const d = ev.date.replace(/-/g, '');
     const uid = `xpeak-${ev.id}@xpeak.es`;
@@ -315,9 +360,9 @@ const CalendarView = () => {
       'BEGIN:VEVENT',
       `DTSTART;VALUE=DATE:${d}`,
       `DTEND;VALUE=DATE:${nextDayStr(ev.date)}`,
-      `SUMMARY:${ev.title}`,
-      ev.location ? `LOCATION:${ev.location}` : '',
-      ev.notes   ? `DESCRIPTION:${ev.notes}` : '',
+      `SUMMARY:${icsEscape(ev.title)}`,
+      ev.location ? `LOCATION:${icsEscape(ev.location)}` : '',
+      ev.notes   ? `DESCRIPTION:${icsEscape(ev.notes)}` : '',
       `UID:${uid}`,
       'END:VEVENT',
       'END:VCALENDAR',
@@ -352,6 +397,21 @@ const CalendarView = () => {
           </button>
         </div>
       </div>
+
+      {/* Aviso de modo local: sin esto el usuario no tenía forma de saber que
+          su agenda no se está guardando en su cuenta, y la perdería al cambiar
+          de dispositivo o limpiar el navegador. */}
+      {user && !remoteOk && (
+        <div className="glass-panel p-4 mb-5 flex items-start gap-3"
+          style={{ border: '1px solid rgba(255,188,0,0.3)', background: 'rgba(255,188,0,0.05)' }}>
+          <CalendarIcon size={15} style={{ color: '#ffbc00', flexShrink: 0, marginTop: 2 }} />
+          <p className="text-xs flex-1" style={{ color: '#333' }}>
+            <strong>Guardado solo en este dispositivo.</strong> No hemos podido conectar con tu cuenta,
+            así que estos {workWord}s no se sincronizan y se perderán si cambias de móvil o borras los
+            datos del navegador. Recarga la página para reintentar.
+          </p>
+        </div>
+      )}
 
       {/* Calendar export hint */}
       <div className="glass-panel p-4 mb-5 flex items-center gap-3"
