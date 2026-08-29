@@ -147,7 +147,15 @@ export default function SwipeDirectory({ profiles, onClose, onOpenProfile, onBoo
         // declaración y el contenedor colapsa a altura 0 (invisible aunque
         // exista en el DOM). 70vh es un valor fijo de respaldo razonable
         // para una tarjeta de perfil en móvil, sin depender de dvh.
-        height: embedded ? '70vh' : undefined,
+        //
+        // clamp(): la vista embebida vive dentro de la página del
+        // directorio, debajo de header + bloque de precios (~400px ya
+        // consumidos antes de que la card empiece). En pantallas bajas
+        // (Android gama media, ~740px de alto) 70vh se salía del viewport
+        // y los botones de acción quedaban inalcanzables sin scroll. Topar
+        // a 420px máximo asegura que la card completa quepa debajo de ese
+        // contenido en la mayoría de móviles reales.
+        height: embedded ? 'clamp(360px, 70vh, 420px)' : undefined,
         // touch-action:none → el contenedor captura el gesto de swipe en vez
         // de cederlo al scroll nativo del navegador (causa del "bloqueo").
         // En embebido se deja 'pan-y' para no atrapar el scroll de la página.
@@ -214,8 +222,10 @@ export default function SwipeDirectory({ profiles, onClose, onOpenProfile, onBoo
         </div>
       )}
 
-      {/* Info inferior */}
-      <div className="swipe-card-info absolute bottom-0 left-0 right-0 z-20 p-5 pb-28 sm:pb-8">
+      {/* Info inferior. pb-28 reserva espacio para la nav inferior fija del
+          móvil — en pantallas bajas (Android ~360x740) se reduce junto con
+          ocultar la bio, o los botones de acción quedaban fuera del viewport. */}
+      <div className="swipe-card-info absolute bottom-0 left-0 right-0 z-20 p-5 pb-28 sm:pb-8 [@media(max-height:760px)]:pb-16">
         <div className="flex flex-wrap gap-2 mb-3">
           {p.is_flash_active && (
             <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-black" style={{ background: '#15803d', color: '#fff' }}>
@@ -239,8 +249,11 @@ export default function SwipeDirectory({ profiles, onClose, onOpenProfile, onBoo
             : <span className="font-black" style={{ color: '#fff' }}>Precio a consultar</span>}
         </div>
 
+        {/* Oculta en pantallas bajas (Android gama media ~360x740) — sin esto,
+            los botones de "Ver perfil"/"Contactar" de abajo quedaban fuera
+            del viewport visible, la tarjeta no tiene scroll (es swipe puro). */}
         {p.bio && (
-          <p className="text-xs leading-relaxed mb-4 line-clamp-2" style={{ color: 'rgba(255,255,255,0.6)' }}>
+          <p className="[@media(max-height:760px)]:hidden text-xs leading-relaxed mb-4 line-clamp-2" style={{ color: 'rgba(255,255,255,0.6)' }}>
             {p.bio.slice(0, 110)}{p.bio.length > 110 ? '…' : ''}
           </p>
         )}

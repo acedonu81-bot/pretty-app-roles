@@ -131,7 +131,7 @@ export default function PublicContactModal({ professionalName, professionalUserI
                 <label className="text-xs font-bold mb-1 block" style={{ color: '#333' }}>Tu nombre *</label>
                 <input value={form.name} onChange={e => set('name', e.target.value)} required
                   placeholder="Nombre completo"
-                  className="w-full px-3 py-2.5 rounded-xl text-sm outline-none"
+                  className="w-full px-3 py-3 rounded-xl text-sm outline-none"
                   style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: '#222' }} />
               </div>
 
@@ -139,7 +139,7 @@ export default function PublicContactModal({ professionalName, professionalUserI
                 <label className="text-xs font-bold mb-1 block" style={{ color: '#333' }}>Tu email *</label>
                 <input type="email" value={form.email} onChange={e => set('email', e.target.value)} required
                   placeholder="tu@email.com"
-                  className="w-full px-3 py-2.5 rounded-xl text-sm outline-none"
+                  className="w-full px-3 py-3 rounded-xl text-sm outline-none"
                   style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)', color: '#222' }} />
               </div>
 
