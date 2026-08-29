@@ -271,11 +271,12 @@ export default function SwipeDirectory({ profiles, onClose, onOpenProfile, onBoo
       </div>
 
       {/* Onboarding: solo la primera vez (localStorage), explica los gestos
-          antes de que el usuario tenga que adivinarlos. Se cierra al tocar
-          en cualquier sitio o solo. */}
+          antes de que el usuario tenga que adivinarlos. No bloquea la card:
+          el fondo deja intuir la foto de debajo (en vez de opaco al 82%) y
+          se cierra al tocar en cualquier sitio del overlay, no solo el botón. */}
       {showOnboarding && (
         <div className="absolute inset-0 z-40 flex flex-col items-center justify-center gap-3 px-6 py-4 text-center overflow-y-auto"
-          style={{ background: 'rgba(0,0,0,0.82)', backdropFilter: 'blur(4px)' }}
+          style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(2px)' }}
           onClick={dismissOnboarding}>
           <p className="text-xs font-black uppercase tracking-widest" style={{ color: '#D4AF37' }}>Así funciona</p>
 
@@ -306,6 +307,7 @@ export default function SwipeDirectory({ profiles, onClose, onOpenProfile, onBoo
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
             Entendido
           </button>
+          <p className="text-[0.6rem] font-semibold" style={{ color: 'rgba(255,255,255,0.4)' }}>o toca fuera para continuar</p>
         </div>
       )}
     </div>
