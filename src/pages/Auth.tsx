@@ -737,6 +737,26 @@ const Auth = () => {
                   </div>
                 )}
 
+                {/* Caso general: navegador normal pero Turnstile bloqueado por red/VPN/
+                    adblocker. Reintentar el mismo challenge en el mismo entorno bloqueado
+                    casi nunca funciona — la salida real es Google OAuth, que no depende
+                    de Turnstile. */}
+                {!isInAppBrowser && turnstileStalled && (
+                  <div className="rounded-xl px-4 py-3.5 text-xs leading-relaxed"
+                    style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.3)', color: '#5c4a12' }}>
+                    <p className="font-bold mb-1.5">La verificación de seguridad no responde.</p>
+                    <p className="mb-2.5">
+                      Puede que tu red, VPN o un bloqueador de anuncios esté impidiendo la verificación.
+                      Prueba a continuar con Google en su lugar — no depende de esta verificación.
+                    </p>
+                    <button type="button" onClick={handleGoogleSignIn} disabled={googleLoading}
+                      className="w-full py-2.5 rounded-lg font-bold text-xs transition-all hover:scale-[1.01] disabled:opacity-60"
+                      style={{ background: '#fff', border: '1px solid rgba(212,175,55,0.4)', color: '#8B6A00' }}>
+                      {googleLoading ? 'Conectando…' : 'Continuar con Google'}
+                    </button>
+                  </div>
+                )}
+
                 {/* CTA principal */}
                 <button
                   type="submit"
