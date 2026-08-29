@@ -38,7 +38,11 @@ const AdminValidations = () => {
       .select('id, display_name, role, zone, score, audio_embed_url, audio_session_urls, validation_submitted_at, category, user_id, instagram')
       .eq('validation_status', 'pending')
       .order('validation_submitted_at', { ascending: true });
-    if (error) { toast.error('Error al cargar validaciones pendientes'); return; }
+    if (error) {
+      console.error('[AdminValidations] fetchPending failed:', error.code, error.message, error.details);
+      toast.error(`Error al cargar validaciones pendientes: ${error.message}`);
+      return;
+    }
     setPending((data ?? []) as PendingProfile[]);
   };
 
@@ -114,7 +118,11 @@ const AdminValidations = () => {
       .from('profiles')
       .update({ validation_status: 'rejected', category: 'rejected' })
       .eq('id', profile.id);
-    if (error) { toast.error('Error al descartar'); return; }
+    if (error) {
+      console.error('[AdminValidations] discard failed:', error.code, error.message, error.details, error.hint);
+      toast.error(`Error al descartar: ${error.message}`);
+      return;
+    }
     toast.success(`"${profile.display_name}" descartada de la cola`);
     setPending(prev => prev.filter(p => p.id !== profile.id));
   };
@@ -123,13 +131,39 @@ const AdminValidations = () => {
     const toDiscard = pending.filter(p => !p.validation_submitted_at);
     if (toDiscard.length === 0) return;
     if (!confirm(`¿Descartar las ${toDiscard.length} solicitudes SIN FECHA? Los perfiles no se borran, solo salen de esta cola.`)) return;
-    const { error } = await supabase
-      .from('profiles')
-      .update({ validation_status: 'rejected', category: 'rejected' })
-      .in('id', toDiscard.map(p => p.id));
-    if (error) { toast.error('Error al descartar en bloque'); return; }
+
+    // En lotes: un único UPDATE ... IN (31 uuids) es una sola petición grande
+    // que falla entera si algo va mal, sin decir cuál. Por lotes se aísla el
+    // fallo, se puede informar de cuántas sí se descartaron y se quitan de la
+    // lista solo esas — antes un error dejaba la cola intacta y sin explicación.
+    const BATCH = 10;
+    const okIds: string[] = [];
+    let lastError: { message: string } | null = null;
+
+    for (let i = 0; i < toDiscard.length; i += BATCH) {
+      const batch = toDiscard.slice(i, i + BATCH);
+      const { error } = await supabase
+        .from('profiles')
+        .update({ validation_status: 'rejected', category: 'rejected' })
+        .in('id', batch.map(p => p.id));
+      if (error) {
+        console.error('[AdminValidations] discardAll batch failed:', error.code, error.message, error.details, error.hint);
+        lastError = error;
+      } else {
+        okIds.push(...batch.map(p => p.id));
+      }
+    }
+
+    if (okIds.length > 0) {
+      setPending(prev => prev.filter(p => !okIds.includes(p.id)));
+    }
+    if (lastError) {
+      toast.error(okIds.length > 0
+        ? `Descartadas ${okIds.length} de ${toDiscard.length}. El resto falló: ${lastError.message}`
+        : `Error al descartar en bloque: ${lastError.message}`);
+      return;
+    }
     toast.success(`${toDiscard.length} solicitudes sin fecha descartadas`);
-    setPending(prev => prev.filter(p => p.validation_submitted_at));
   };
 
   return (
