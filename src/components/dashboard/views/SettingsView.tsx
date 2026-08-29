@@ -51,18 +51,40 @@ const Section = ({ title, icon, children }: SectionProps) => (
   </div>
 );
 
+// Faltaban roles reales del sistema (empresario, grupo musical, fotógrafo,
+// photo-booth, mago, humorista, bailarín, speaker, vestuario...): quien
+// quisiera un segundo perfil con uno de ellos no podía crearlo desde aquí.
 const ROLE_OPTIONS = [
-  { value: 'dj',           label: 'DJ / Artista / Productor' },
-  { value: 'rookie',       label: 'Artista Promesa' },
-  { value: 'staff',        label: 'Camarero / Sala' },
-  { value: 'azafata',      label: 'Azafata' },
-  { value: 'event_manager',label: 'Encargada de Eventos' },
-  { value: 'promotor',     label: 'Promotor / RRPP' },
-  { value: 'catering',     label: 'Catering / Cocina' },
-  { value: 'media',        label: 'Media & Contenido' },
-  { value: 'makeup',       label: 'Maquillaje' },
-  { value: 'peluqueria',   label: 'Peluquería a Domicilio' },
+  { value: 'dj',              label: 'DJ / Artista / Productor' },
+  { value: 'rookie',          label: 'Artista Promesa' },
+  { value: 'grupo-musical',   label: 'Grupo musical' },
+  { value: 'staff',           label: 'Camarero / Sala' },
+  { value: 'azafata',         label: 'Azafata' },
+  { value: 'event_manager',   label: 'Encargada de Eventos' },
+  { value: 'promotor',        label: 'Promotor / RRPP' },
+  { value: 'catering',        label: 'Catering / Cocina' },
+  { value: 'media',           label: 'Media & Contenido' },
+  { value: 'fotografo',       label: 'Fotógrafo' },
+  { value: 'photo-booth',     label: 'Photo Booth' },
+  { value: 'makeup',          label: 'Maquillaje' },
+  { value: 'peluqueria',      label: 'Peluquería a Domicilio' },
+  { value: 'vestuario',       label: 'Vestuario / Estilismo' },
+  { value: 'mago',            label: 'Mago / Ilusionista' },
+  { value: 'humorista',       label: 'Humorista' },
+  { value: 'animador',        label: 'Animador' },
+  { value: 'bailarin',        label: 'Bailarín / Instructor' },
+  { value: 'speaker',         label: 'Speaker / Presentador' },
+  { value: 'wedding-planner', label: 'Wedding Planner' },
+  { value: 'design',          label: 'Diseño & Visuales' },
+  { value: 'empresario',      label: 'Empresa / Sala' },
 ];
+
+// Etiquetas legibles para pintar el rol de cada perfil (el valor crudo daba
+// "Grupo-musical", "Photo-booth"...). Derivado de ROLE_OPTIONS para que no
+// se desincronicen al añadir roles nuevos.
+const PROFILE_ROLE_LABEL: Record<string, string> = Object.fromEntries(
+  ROLE_OPTIONS.map(o => [o.value, o.label])
+);
 
 const MultiProfileSection = () => {
   const { allProfiles, maxProfiles, switchProfile, createProfile, profileId } = useProfile();
@@ -91,7 +113,9 @@ const MultiProfileSection = () => {
             style={{ background: p.id === profileId ? 'rgba(212,175,55,0.07)' : 'rgba(255,255,255,0.02)', border: `1px solid ${p.id === profileId ? 'rgba(212,175,55,0.25)' : 'rgba(0,0,0,0.05)'}` }}>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-bold truncate">{p.display_name}</p>
-              <p className="text-xs text-muted-foreground capitalize">{p.role}</p>
+              {/* `capitalize` sobre el valor crudo daba "Grupo-musical" o
+                  "Photo-booth" en vez del nombre real del rol. */}
+              <p className="text-xs text-muted-foreground truncate">{PROFILE_ROLE_LABEL[p.role] ?? p.role}</p>
             </div>
             {p.id === profileId
               ? <span className="text-[0.6rem] font-black px-2 py-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.12)', color: '#8A6D0F' }}>ACTIVO</span>
@@ -110,6 +134,15 @@ const MultiProfileSection = () => {
           style={{ background: 'rgba(212,175,55,0.05)', border: '1px dashed rgba(212,175,55,0.25)', color: 'rgba(212,175,55,0.7)' }}>
           <Plus size={13} /> Añadir perfil ({allProfiles.length}/{maxProfiles})
         </button>
+      )}
+
+      {/* Al alcanzar el máximo el botón desaparecía sin decir nada, y como no
+          hay forma de borrar un perfil el usuario se quedaba bloqueado sin
+          entender por qué. */}
+      {allProfiles.length >= maxProfiles && !adding && (
+        <p className="text-xs text-muted-foreground text-center py-2">
+          Has alcanzado el máximo de {maxProfiles} perfiles. Para eliminar uno, escríbenos desde Soporte.
+        </p>
       )}
 
       {adding && (
@@ -172,6 +205,41 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
   const [allowFlash, setAllowFlash] = useState(profile.is_flash_active ?? true);
   const [showOnline, setShowOnline] = useState(profile.show_online ?? true);
 
+  // Las preferencias de notificación viven en alert_preferences (server-side)
+  // porque los emails y las push salen del servidor y no pueden leer el
+  // localStorage del navegador. localStorage se mantiene como espejo para
+  // pintar la UI al instante, igual que hace CalendarView.
+  const persistNotifPref = async (column: string, lsKey: string, value: boolean) => {
+    localStorage.setItem(lsKey, String(value));
+    if (!user) return;
+    const { error } = await supabase.from('alert_preferences' as any).upsert({
+      user_id: user.id,
+      [column]: value,
+      updated_at: new Date().toISOString(),
+    });
+    // Si la migración 20260829c aún no está aplicada, la columna no existe:
+    // el espejo en localStorage ya quedó guardado, así que la UI no miente
+    // más de lo que lo hacía antes y no se rompe nada.
+    if (error) console.warn('[SettingsView] notif pref not persisted server-side:', error.message);
+  };
+
+  // Carga inicial desde servidor: es la fuente de verdad, y así la preferencia
+  // viaja entre dispositivos en vez de quedarse en un solo navegador.
+  useEffect(() => {
+    if (!user) return;
+    supabase.from('alert_preferences' as any)
+      .select('notif_messages, notif_flash, notif_top_weekend')
+      .eq('user_id', user.id)
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (error || !data) return;
+        const row = data as any;
+        if (typeof row.notif_messages === 'boolean') setNotifMessages(row.notif_messages);
+        if (typeof row.notif_flash === 'boolean') setNotifFlash(row.notif_flash);
+        if (typeof row.notif_top_weekend === 'boolean') setNotifTopWeekend(row.notif_top_weekend);
+      });
+  }, [user]);
+
   // El perfil llega asíncrono: sin esto, el valor inicial (calculado en el
   // primer render, cuando aún son los defaults) se quedaría fijo y los toggles
   // mostrarían "activado" aunque el usuario lo tuviera desactivado en BD.
@@ -195,7 +263,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
     if (!user) return;
     toast.info('Recopilando tus datos…');
     try {
-      const [profileRes, favRes, bookingsRes, convsRes] = await Promise.all([
+      const [profileRes, favRes, bookingsRes, convsRes, msgsRes, reviewsRes, jobsRes] = await Promise.all([
         supabase.from('profiles').select('*').eq('user_id', user.id).maybeSingle(),
         supabase.from('favorites').select('*').eq('user_id', user.id),
         // Un booking pertenece al usuario tanto si lo creó (empresario) como si es
@@ -203,7 +271,22 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
         // los datos exportados de cualquier profesional (el caso de uso principal).
         supabase.from('flash_bookings').select('*').or(`created_by.eq.${user.id},professional_user_id.eq.${user.id}`),
         supabase.from('conversations').select('*').or(`participant_a.eq.${user.id},participant_b.eq.${user.id}`),
+        // Faltaban: se exportaban las conversaciones pero no los MENSAJES (el
+        // dato personal más relevante), ni las reseñas escritas ni las ofertas
+        // publicadas. Art. 20 exige entregar los datos que el usuario aportó.
+        supabase.from('messages').select('*').eq('sender_id', user.id),
+        supabase.from('reviews').select('*').eq('reviewer_id', user.id),
+        supabase.from('flash_jobs').select('*').eq('employer_id', user.id),
       ]);
+
+      // Supabase devuelve { error } en vez de lanzar: sin comprobarlo, un fallo
+      // de RLS producía un JSON con listas vacías y un "exportado correctamente".
+      const failed = [profileRes, favRes, bookingsRes, convsRes, msgsRes, reviewsRes, jobsRes].filter(r => r.error);
+      if (failed.length > 0) {
+        failed.forEach(r => console.error('[SettingsView] export step failed:', r.error?.message));
+        toast.error('No se pudieron recuperar todos tus datos. Inténtalo de nuevo o escribe a soporte.');
+        return;
+      }
 
       const exportData = {
         meta: {
@@ -217,6 +300,9 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
         favorites: favRes.data ?? [],
         flash_bookings: bookingsRes.data ?? [],
         conversations: convsRes.data ?? [],
+        messages: msgsRes.data ?? [],
+        reviews: reviewsRes.data ?? [],
+        flash_jobs: jobsRes.data ?? [],
       };
 
       const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json;charset=utf-8;' });
@@ -503,7 +589,11 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
       // que los creó y forman parte de su propio historial/contabilidad
       // (Historial, Gastos). En su lugar se anonimiza el nombre para que no
       // quede ningún dato personal identificable, conforme al Art. 17.
-      await Promise.all([
+      // Supabase NO lanza excepción ante un error de RLS: devuelve { error }.
+      // Ignorarlos (como se hacía) significaba cerrar sesión y afirmar que
+      // todo se había suprimido aunque no fuera cierto, con el usuario ya sin
+      // sesión para reintentar. Ahora se comprueba cada operación.
+      const ops = await Promise.all([
         supabase.from('profiles').delete().eq('user_id', user.id),
         supabase.from('favorites').delete().eq('user_id', user.id),
         supabase.from('flash_bookings').delete().eq('created_by', user.id),
@@ -511,11 +601,27 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
           .update({ professional_name: 'Profesional eliminado', professional_user_id: null } as any)
           .eq('professional_user_id', user.id),
         supabase.from('fan_subscriptions').delete().eq('fan_user_id', user.id),
+        // Estas tablas quedaban fuera del borrado y conservaban datos
+        // personales: el contenido de los chats, reseñas escritas, ofertas
+        // publicadas y días bloqueados. Las cascadas de auth.users no aplican
+        // porque esa cuenta no se elimina desde el cliente.
+        supabase.from('messages').delete().eq('sender_id', user.id),
+        supabase.from('reviews').delete().eq('reviewer_id', user.id),
+        supabase.from('flash_jobs').delete().eq('employer_id', user.id),
+        supabase.from('availability').delete().eq('user_id', user.id),
       ]);
+
+      const failed = ops.filter(r => r.error);
+      if (failed.length > 0) {
+        failed.forEach(r => console.error('[SettingsView] delete step failed:', r.error?.message));
+        toast.error('No se pudieron borrar todos tus datos. No se ha cerrado la sesión: escribe a soporte para completar la supresión.');
+        setDeleting(false);
+        return;
+      }
 
       // 3. Cerrar sesión
       await signOut();
-      toast.success('Cuenta eliminada. Todos tus datos personales han sido suprimidos conforme al RGPD Art. 17.');
+      toast.success('Datos personales suprimidos y sesión cerrada (RGPD Art. 17). La baja definitiva de la cuenta de acceso se completa desde soporte.');
     } catch {
       toast.error('Error al eliminar la cuenta. Contacta con soporte.');
       setDeleting(false);
@@ -575,8 +681,12 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
     if (localPhone !== null) updates.phone = localPhone || null;
     if (Object.keys(updates).length > 0) {
       setSaving(true);
-      await profile.updateField(updates);
+      const ok = await profile.updateField(updates);
       setSaving(false);
+      // Sin comprobar el resultado se mostraba "Cambios guardados." aunque el
+      // guardado hubiera fallado: el usuario veía el toast de error y el de
+      // éxito a la vez, y se iba creyendo que sus datos estaban salvados.
+      if (!ok) return;
     }
     toast.success('Cambios guardados.');
   };
@@ -638,14 +748,21 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
           )}
         </div>
 
+        {/* XPEAK aún no tiene traducciones: el selector guardaba el idioma y
+            decía "Idioma guardado", pero la interfaz seguía en español y el
+            valor no lo lee nadie. Se deja como preferencia declarada, sin
+            prometer un cambio que no ocurre. */}
         <div className="mb-4">
-          <label className="block text-xs text-muted-foreground mb-1.5 font-medium">Idioma de la interfaz</label>
+          <label className="block text-xs text-muted-foreground mb-1.5 font-medium">Idioma preferido</label>
           <NightlifeSelect
             value={localStorage.getItem('xpeak_language') ?? '🇪🇸 Español'}
-            onChange={v => { localStorage.setItem('xpeak_language', v); toast.success('Idioma guardado.'); }}
+            onChange={v => { localStorage.setItem('xpeak_language', v); toast.success('Preferencia guardada.'); }}
             options={euLanguages.map(l => ({ value: l, label: l }))}
             active
           />
+          <p className="text-[0.7rem] text-muted-foreground mt-1.5">
+            La interfaz está disponible en español. Guardamos tu preferencia para avisarte cuando añadamos tu idioma.
+          </p>
         </div>
 
         <button className="btn-nightlife-primary w-full text-sm py-2.5 disabled:opacity-60" onClick={handleSave} disabled={saving}>
@@ -764,15 +881,15 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
         })()}
 
         <ToggleRow label="Mensajes nuevos" desc="Alerta cuando recibes un mensaje directo" checked={notifMessages}
-          onChange={() => { const v = !notifMessages; setNotifMessages(v); localStorage.setItem('xpeak_notif_messages', String(v)); }} />
+          onChange={() => { const v = !notifMessages; setNotifMessages(v); persistNotifPref('notif_messages', 'xpeak_notif_messages', v); }} />
         <ToggleRow
           label="Flash Booking"
           desc={isEmpresario ? 'Respuestas a tus publicaciones de trabajo urgente' : 'Ofertas urgentes de empresarios'}
           checked={notifFlash}
-          onChange={() => { const v = !notifFlash; setNotifFlash(v); localStorage.setItem('xpeak_notif_flash', String(v)); }} />
+          onChange={() => { const v = !notifFlash; setNotifFlash(v); persistNotifPref('notif_flash', 'xpeak_notif_flash', v); }} />
         {!isEmpresario && (
           <ToggleRow label="Top Weekend" desc="Cuando tu perfil asciende al ranking" checked={notifTopWeekend}
-            onChange={() => { const v = !notifTopWeekend; setNotifTopWeekend(v); localStorage.setItem('xpeak_notif_topweekend', String(v)); }} />
+            onChange={() => { const v = !notifTopWeekend; setNotifTopWeekend(v); persistNotifPref('notif_top_weekend', 'xpeak_notif_topweekend', v); }} />
         )}
         <ToggleRow label="Emails de mensajes" desc="Recibir email cuando alguien te escribe por chat"
           checked={!profile.email_opt_out}
