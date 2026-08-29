@@ -4,6 +4,7 @@ import ExcelJS from 'exceljs';
 import ContractModal from '@/components/dashboard/ContractModal';
 import type { Profile } from '@/data/profiles';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 
 const DEMO_PROFESSIONAL: Profile = {
@@ -115,7 +116,9 @@ const ContractView = () => {
   const [customName, setCustomName] = useState('');
   const [customRole, setCustomRole] = useState<string>('dj');
   const [contracts, setContracts] = useState<ContractRow[]>([]);
-  const [loading, setLoading] = useState(false);
+  // Arranca en true: con `false` se pintaba "Sin contratos aún" en el primer
+  // render, antes de que llegara la respuesta (parpadeo de historial vacío).
+  const [loading, setLoading] = useState(true);
   const [csvYear, setCsvYear] = useState(new Date().getFullYear());
 
   const professional: Profile = {
@@ -127,11 +130,19 @@ const ContractView = () => {
   const fetchContracts = useCallback(async () => {
     if (!user) return;
     setLoading(true);
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('contracts')
       .select('*')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false });
+    // Sin comprobar `error`, un fallo de red o RLS mostraba "Sin contratos aún"
+    // y el usuario podía creer que había perdido su historial.
+    if (error) {
+      console.error('[ContractView] fetch failed:', error.message);
+      toast.error('No se pudieron cargar tus contratos. Inténtalo de nuevo.');
+      setLoading(false);
+      return;
+    }
     setContracts((data as ContractRow[]) ?? []);
     setLoading(false);
   }, [user]);

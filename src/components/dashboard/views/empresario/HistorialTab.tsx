@@ -402,7 +402,10 @@ const HistorialTab = () => {
     setTimeout(() => URL.revokeObjectURL(url), 10000);
   };
 
-  const updateStatus = async (id: string, status: 'confirmed' | 'cancelled') => {
+  // Solo 'cancelled': la RLS (20260826b) permite al empleador pasar SU solicitud
+  // de 'pending' a 'cancelled' y nada más — quien acepta un trabajo es el
+  // profesional desde su pestaña Solicitudes, no el empresario.
+  const updateStatus = async (id: string, status: 'cancelled') => {
     setUpdating(id);
     const { error } = await supabase
       .from('flash_bookings' as any)
@@ -410,9 +413,13 @@ const HistorialTab = () => {
       .eq('id', id)
       .eq('created_by', user!.id);
     setUpdating(null);
-    if (error) { toast.error('Error al actualizar'); return; }
+    if (error) {
+      console.error('[HistorialTab] updateStatus error:', error.message);
+      toast.error('No se pudo cancelar. Solo puedes cancelar solicitudes que sigan pendientes.');
+      return;
+    }
     setBookings(prev => prev.map(b => b.id === id ? { ...b, status } : b));
-    toast.success(status === 'confirmed' ? '¡Solicitud confirmada!' : 'Solicitud rechazada');
+    toast.success('Solicitud cancelada');
   };
 
   /* ─── Stats ─── */

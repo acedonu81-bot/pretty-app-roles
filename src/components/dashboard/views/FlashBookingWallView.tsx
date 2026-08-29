@@ -21,14 +21,30 @@ const FlashBookingWallView = () => {
   );
   const [pendingCount, setPendingCount] = useState(0);
 
-  // Count pending incoming requests for professionals
+  // Count pending incoming requests for professionals.
+  // Se recuenta con cada cambio en flash_bookings: antes se leía una sola vez
+  // al montar, así que el badge seguía mostrando el número viejo después de
+  // aceptar o rechazar una solicitud hasta recargar la página.
   useEffect(() => {
     if (isEmpresario || !user) return;
-    supabase.from('flash_bookings' as any)
-      .select('id', { count: 'exact', head: true })
-      .eq('professional_user_id', user.id)
-      .eq('status', 'pending')
-      .then(({ count }) => setPendingCount(count ?? 0));
+    const load = () => {
+      supabase.from('flash_bookings' as any)
+        .select('id', { count: 'exact', head: true })
+        .eq('professional_user_id', user.id)
+        .eq('status', 'pending')
+        .then(({ count }) => setPendingCount(count ?? 0));
+    };
+    load();
+    // Topic único por usuario e instancia: supabase.channel() devuelve el mismo
+    // canal si el topic ya existe, y un remonte rápido mataba la suscripción.
+    const channel = supabase
+      .channel(`flashwall_pending_${user.id}_${Math.random().toString(36).slice(2)}`)
+      .on('postgres_changes', {
+        event: '*', schema: 'public', table: 'flash_bookings',
+        filter: `professional_user_id=eq.${user.id}`,
+      }, load)
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
   }, [user, isEmpresario]);
 
   const tabs = [
@@ -49,8 +65,10 @@ const FlashBookingWallView = () => {
           <button key={t.id} onClick={() => setTab(t.id)}
             className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold transition-all"
             style={{
-              background: tab === t.id ? `rgba(${t.color === '#D4AF37' ? '212,175,55' : '34,197,94'},0.12)` : 'rgba(0,0,0,0.03)',
-              border: `1px solid ${tab === t.id ? `rgba(${t.color === '#D4AF37' ? '212,175,55' : '34,197,94'},0.4)` : 'var(--nightlife-border)'}`,
+              // El dorado de estos tabs es '#8A6D0F': comparar con '#D4AF37'
+              // nunca acertaba, así que los tabs dorados salían con fondo verde.
+              background: tab === t.id ? `rgba(${t.color === '#22c55e' ? '34,197,94' : '212,175,55'},0.12)` : 'rgba(0,0,0,0.03)',
+              border: `1px solid ${tab === t.id ? `rgba(${t.color === '#22c55e' ? '34,197,94' : '212,175,55'},0.4)` : 'var(--nightlife-border)'}`,
               color: tab === t.id ? t.color : '#3d3d4e',
             }}>
             <span className="w-2 h-2 rounded-full flex-shrink-0"

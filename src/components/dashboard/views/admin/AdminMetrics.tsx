@@ -43,7 +43,7 @@ const AdminMetrics = () => {
         supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('is_flash_active', true).gte('updated_at', since24h),
         supabase.from('flash_bookings').select('id', { count: 'exact', head: true }),
         supabase.from('flash_bookings').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
-        supabase.from('flash_bookings').select('id', { count: 'exact', head: true }).eq('status', 'accepted'),
+        supabase.from('flash_bookings').select('id', { count: 'exact', head: true }).in('status', ['confirmed', 'accepted', 'completed']),
         supabase.from('flash_bookings').select('id', { count: 'exact', head: true }).eq('status', 'rejected'),
       ]);
       setMetrics({

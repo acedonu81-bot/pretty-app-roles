@@ -75,7 +75,7 @@ const ReviewsSection = ({ professionalUserId, professionalName }: { professional
       .select('requester_name')
       .eq('created_by', user.id)
       .eq('professional_user_id', professionalUserId)
-      .eq('status', 'accepted')
+      .in('status', ['confirmed', 'accepted', 'completed'])
       .limit(1)
       .maybeSingle()
       .then(({ data }) => setEligibleBooking(data ?? null));

@@ -165,10 +165,21 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
 
   // Privacy
   const [saving, setSaving] = useState(false);
-  const [profilePublic, setProfilePublic] = useState(true);
+  // Inicializados desde el perfil real: antes arrancaban siempre en `true`, así
+  // que un usuario que había desactivado algo lo veía activado al volver.
+  const [profilePublic, setProfilePublic] = useState(profile.is_public ?? true);
   const [showRate, setShowRate] = useState(() => (profile.hourly_rate ?? 0) > 0);
-  const [allowFlash, setAllowFlash] = useState(true);
-  const [showOnline, setShowOnline] = useState(true);
+  const [allowFlash, setAllowFlash] = useState(profile.is_flash_active ?? true);
+  const [showOnline, setShowOnline] = useState(profile.show_online ?? true);
+
+  // El perfil llega asíncrono: sin esto, el valor inicial (calculado en el
+  // primer render, cuando aún son los defaults) se quedaría fijo y los toggles
+  // mostrarían "activado" aunque el usuario lo tuviera desactivado en BD.
+  useEffect(() => {
+    setProfilePublic(profile.is_public ?? true);
+    setAllowFlash(profile.is_flash_active ?? true);
+    setShowOnline(profile.show_online ?? true);
+  }, [profile.is_public, profile.is_flash_active, profile.show_online]);
 
   // Persist audio quality when it changes
 
@@ -600,7 +611,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <div>
-            <label className="block text-xs text-muted-foreground mb-1.5 font-medium">Nombre artístico</label>
+            <label className="block text-xs text-muted-foreground mb-1.5 font-medium">{isEmpresario ? 'Nombre de la empresa o sala' : 'Nombre artístico'}</label>
             <input type="text" value={displayName ?? ''} onChange={e => setLocalName(e.target.value)} className="nightlife-input text-sm" />
           </div>
           <div>
@@ -777,7 +788,13 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
 
       {/* ── Privacy ── */}
       <Section title="Privacidad" icon={<Shield size={15} />}>
-        <ToggleRow label="Perfil público en el directorio" desc="Si está desactivado, solo eres visible para empresarios" checked={profilePublic} onChange={() => setProfilePublic(v => !v)} />
+        <ToggleRow label="Perfil público en el directorio" desc="Si está desactivado, no apareces en el directorio público" checked={profilePublic} onChange={async () => {
+          const next = !profilePublic;
+          setProfilePublic(next);
+          const ok = await profile.updateField({ is_public: next });
+          if (!ok) { setProfilePublic(!next); return; }
+          toast.success(next ? 'Tu perfil vuelve a ser público' : 'Tu perfil ya no aparece en el directorio');
+        }} />
         {!isEmpresario && (
         <ToggleRow label="Mostrar tarifa en mi ficha" desc="Si está desactivado, aparece 'A consultar' en tu perfil" checked={showRate} onChange={async () => {
           const next = !showRate;
@@ -788,9 +805,19 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
         }} />
         )}
         {!isEmpresario && (
-        <ToggleRow label="Disponible en Flash Booking" desc="Empresarios pueden enviarte solicitudes urgentes" checked={allowFlash} onChange={() => setAllowFlash(v => !v)} />
+        <ToggleRow label="Disponible en Flash Booking" desc="Empresarios pueden enviarte solicitudes urgentes" checked={allowFlash} onChange={async () => {
+          const next = !allowFlash;
+          setAllowFlash(next);
+          const ok = await profile.updateField({ is_flash_active: next });
+          if (!ok) setAllowFlash(!next);
+        }} />
         )}
-        <ToggleRow label="Mostrar estado en línea" desc="Indica si estás activo en la plataforma" checked={showOnline} onChange={() => setShowOnline(v => !v)} />
+        <ToggleRow label="Mostrar estado en línea" desc="Indica si estás activo en la plataforma" checked={showOnline} onChange={async () => {
+          const next = !showOnline;
+          setShowOnline(next);
+          const ok = await profile.updateField({ show_online: next });
+          if (!ok) setShowOnline(!next);
+        }} />
         <div className="pt-3 mt-1 space-y-3" style={{ borderTop: '1px solid rgba(0,0,0,0.04)' }}>
           <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Tus derechos RGPD</p>
 

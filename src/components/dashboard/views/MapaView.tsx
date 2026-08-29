@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { MapPin, Search, Users, CheckCircle, ExternalLink } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { useProfile } from '@/hooks/useProfile';
+import { toast } from 'sonner';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
 
 const CITIES = [
@@ -25,6 +27,8 @@ interface CityPro {
 }
 
 const MapaView = () => {
+  const profile = useProfile();
+  const isEmpresario = profile.role === 'empresario';
   const [selectedCity, setSelectedCity] = useState<string>('Madrid');
   const [searchTerm, setSearchTerm] = useState('');
   const [allProfiles, setAllProfiles] = useState<CityPro[]>([]);
@@ -35,16 +39,28 @@ const MapaView = () => {
       .from('profiles')
       .select('user_id, display_name, role, specialty, zone, photo_url, is_verified')
       .limit(500)
-      .then(({ data }) => {
+      .then(({ data, error }) => {
+        // Sin manejar `error` ni rechazo, un fallo dejaba la vista en
+        // "Cargando…" para siempre y sin ninguna explicación.
+        if (error) {
+          console.error('[MapaView] load failed:', error.message);
+          toast.error('No se pudieron cargar los profesionales. Inténtalo de nuevo.');
+        }
         setAllProfiles(data ?? []);
+        setLoading(false);
+      }, (err: unknown) => {
+        console.error('[MapaView] load rejected:', err);
+        toast.error('No se pudieron cargar los profesionales. Inténtalo de nuevo.');
         setLoading(false);
       });
   }, []);
 
   const cityCount = (city: string) =>
-    allProfiles.filter(p => p.zone?.includes(city)).length;
+    allProfiles.filter(p => p.zone?.includes(city) && p.role !== 'empresario').length;
 
-  const cityProfiles = allProfiles.filter(p => p.zone?.includes(selectedCity));
+  // Esta vista sirve para DESCUBRIR TALENTO: incluir empresarios inflaba el
+  // contador "N profesionales en Madrid" con salas y otros contratantes.
+  const cityProfiles = allProfiles.filter(p => p.zone?.includes(selectedCity) && p.role !== 'empresario');
 
   const filteredCities = CITIES.filter(c =>
     c.toLowerCase().includes(searchTerm.toLowerCase())
@@ -126,7 +142,11 @@ const MapaView = () => {
                   Sin profesionales aún en {selectedCity}
                 </p>
                 <p className="text-xs text-muted-foreground max-w-[240px] mx-auto">
-                  Sé el primero en registrarte y aparecer aquí.
+                  {/* Al empresario se le invitaba a "registrarse y aparecer
+                      aquí", cuando él ya está registrado y viene a contratar. */}
+                  {isEmpresario
+                    ? 'Prueba con otra ciudad o publica una oferta urgente para que te contacten.'
+                    : 'Sé el primero en registrarte y aparecer aquí.'}
                 </p>
               </div>
             </div>

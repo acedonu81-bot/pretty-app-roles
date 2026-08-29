@@ -303,7 +303,13 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string): Pro
 
   if (city !== 'Todas') q = q.ilike('zone', `%${city}%`);
 
-  const { data, error } = await q;
+  // El toggle "Perfil público en el directorio" (Ajustes) debe tener efecto
+  // real aquí. Se aplica como filtro de consulta y no en la RLS: 20260822d
+  // quitó a propósito el gate de completitud de la policy porque ocultaba
+  // perfiles de golpe. Si la migración 20260829b aún no está aplicada la
+  // columna no existe y la consulta falla, así que se reintenta sin el filtro.
+  let { data, error } = await q.or('is_public.is.null,is_public.eq.true');
+  if (error) ({ data, error } = await q);
   if (error) throw error;
 
   // Sin gate de completitud por ahora — con poco volumen de usuarios,

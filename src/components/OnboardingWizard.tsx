@@ -233,7 +233,12 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
       const rate = parseFloat(hourlyRate);
       if (hourlyRate && !isNaN(rate) && rate > 0) updates.hourly_rate = rate;
     }
-    if (Object.keys(updates).length > 0) await profile.updateField(updates);
+    if (Object.keys(updates).length > 0) {
+      const ok = await profile.updateField(updates);
+      // No dar por completado el onboarding si los datos no llegaron a guardarse:
+      // markDone() escribe en localStorage y el wizard no vuelve a aparecer.
+      if (!ok) { setSavingQuick(false); return; }
+    }
     setSavingQuick(false);
     markDone();
     onNavigate(selectedRole === 'empresario' ? 'empresario' : 'profile');
@@ -242,8 +247,13 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
   const handleRoleConfirm = async () => {
     if (!selectedRole) return;
     setSaving(true);
-    await profile.updateField({ role: selectedRole });
+    const ok = await profile.updateField({ role: selectedRole });
     setSaving(false);
+    // Si el guardado falla (perfil aún sin hidratar, RLS, red), NO avanzar:
+    // updateField ya muestra el motivo, y seguir adelante marcaba el onboarding
+    // como hecho dejando el rol en 'pending' para siempre, sin volver a
+    // ofrecer el wizard para corregirlo.
+    if (!ok) return;
     setStep(1);
   };
 

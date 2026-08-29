@@ -69,13 +69,18 @@ const OfertaTab = () => {
         mapped.sort((a, b) => Number(b.isEarlyAdopter) - Number(a.isEarlyAdopter));
         setFlashProfiles(mapped);
         setLoadingProfiles(false);
+      }, (err: unknown) => {
+        // Sin este manejo, un fallo dejaba los skeletons cargando para siempre.
+        console.error('[OfertaTab] load rejected:', err);
+        toast.error('No se pudieron cargar los profesionales disponibles.');
+        setLoadingProfiles(false);
       });
   };
 
   useEffect(() => {
     fetchFlashProfiles();
     const channel = supabase
-      .channel('flash_profiles_realtime')
+      .channel(`flash_profiles_realtime_${Math.random().toString(36).slice(2)}`)
       .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, () => {
         fetchFlashProfiles();
       })

@@ -32,6 +32,11 @@ function buildMonthGrid(year: number, month: number) {
 const CalendarView = () => {
   const profile = useProfile();
   const { user } = useAuth();
+  // El empresario ORGANIZA eventos; no es contratado. Toda esta vista estaba
+  // escrita para quien recibe trabajos ("tus bolos", "fechas en las que no
+  // trabajo"), lo que para él es ruido o directamente falso.
+  const isEmpresario = profile.role === 'empresario';
+  const workWord = isEmpresario ? 'evento' : 'trabajo';
   const today = new Date();
   const [viewYear, setViewYear] = useState(today.getFullYear());
   const [viewMonth, setViewMonth] = useState(today.getMonth());
@@ -332,7 +337,7 @@ const CalendarView = () => {
       <div className="mb-6 flex items-start justify-between gap-3">
         <div className="min-w-0">
           <h2 className="text-2xl font-bold mb-1"><span className="text-gradient">Calendario</span></h2>
-          <p className="text-sm text-muted-foreground">Tu agenda de trabajos y eventos.</p>
+          <p className="text-sm text-muted-foreground">{isEmpresario ? 'Tu agenda de eventos.' : 'Tu agenda de trabajos y eventos.'}</p>
         </div>
         <div className="flex gap-2 flex-shrink-0">
           <button onClick={toggleAllAlerts}
@@ -343,7 +348,7 @@ const CalendarView = () => {
           <button onClick={() => setShowForm(true)}
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-            <Plus size={13} /> <span className="hidden sm:inline">Añadir</span> trabajo
+            <Plus size={13} /> <span className="hidden sm:inline">Añadir</span> {workWord}
           </button>
         </div>
       </div>
@@ -355,7 +360,7 @@ const CalendarView = () => {
           <CalendarIcon size={15} style={{ color: '#4285F4' }} />
         </div>
         <p className="text-xs text-muted-foreground flex-1">
-          Añade cada trabajo directamente a <strong style={{ color: '#1a1a1a' }}>Google Calendar</strong> o <strong style={{ color: '#1a1a1a' }}>Apple Calendar</strong> usando los botones de exportación en cada evento.
+          Añade cada {workWord} directamente a <strong style={{ color: '#1a1a1a' }}>Google Calendar</strong> o <strong style={{ color: '#1a1a1a' }}>Apple Calendar</strong> usando los botones de exportación en cada evento.
         </p>
       </div>
 
@@ -412,7 +417,12 @@ const CalendarView = () => {
           </div>
 
           {/* Bloqueo de disponibilidad — control grande y siempre visible,
-              no escondido en un botón de header, para que se descubra fácil. */}
+              no escondido en un botón de header, para que se descubra fácil.
+              Solo para profesionales: escribe en `availability`, que alimenta
+              la disponibilidad mostrada en la ficha pública de quien ES
+              contratado. Al empresario se le ofrecía igualmente, con el texto
+              "los empresarios verán tu disponibilidad" — dicho al empresario. */}
+          {!isEmpresario && (
           <div className="mt-5 pt-5" style={{ borderTop: '1px solid var(--nightlife-border)' }}>
             <button onClick={() => setAvailMode(m => !m)}
               className="w-full flex items-center justify-between gap-3 px-4 py-3.5 rounded-xl text-sm font-bold transition-all hover:scale-[1.01]"
@@ -438,13 +448,14 @@ const CalendarView = () => {
               </div>
             )}
           </div>
+          )}
         </div>
 
         {/* Sidebar */}
         <div className="flex flex-col gap-4">
           {/* Upcoming events */}
           <div className="glass-panel p-4">
-            <h3 className="text-sm font-bold mb-3">Próximos trabajos ({upcomingEvents.length})</h3>
+            <h3 className="text-sm font-bold mb-3">Próximos {isEmpresario ? 'eventos' : 'trabajos'} ({upcomingEvents.length})</h3>
             {upcomingEvents.length === 0 ? (
               <div className="text-center py-6">
                 <CalendarIcon size={24} className="mx-auto mb-2" style={{ color: 'rgba(0,0,0,0.08)' }} />
@@ -452,7 +463,7 @@ const CalendarView = () => {
                 <button onClick={() => setShowForm(true)}
                   className="mt-3 text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-105"
                   style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.2)' }}>
-                  + Añadir primer trabajo
+                  + Añadir primer {workWord}
                 </button>
               </div>
             ) : (
@@ -525,7 +536,7 @@ const CalendarView = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setShowForm(false)}>
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
           <div className="relative w-full max-w-sm glass-panel p-6 animate-[fadeIn_0.2s_ease]" onClick={e => e.stopPropagation()}>
-            <h3 className="text-base font-bold mb-4">Añadir trabajo / evento</h3>
+            <h3 className="text-base font-bold mb-4">Añadir {workWord}</h3>
             <div className="space-y-3">
               <div>
                 <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 block">Título *</label>
@@ -545,7 +556,7 @@ const CalendarView = () => {
               <div>
                 <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 block">Notas</label>
                 <input value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
-                  placeholder="Cache, horario, contacto..." className="nightlife-input text-sm w-full" maxLength={200} />
+                  placeholder={isEmpresario ? 'Presupuesto, horario, contacto...' : 'Cache, horario, contacto...'} className="nightlife-input text-sm w-full" maxLength={200} />
               </div>
             </div>
             <div className="flex gap-2 mt-5">

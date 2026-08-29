@@ -18,12 +18,20 @@ interface Solicitud {
   created_at: string | null;
 }
 
+// El resto de la app (Gastos, Historial, Ajustes, export RGPD, RLS de reseñas)
+// lee 'confirmed'/'completed'. Esta pestaña escribía 'accepted', un valor que
+// nadie más reconocía: el empresario nunca veía el trabajo aceptado en sus
+// métricas ni podía reseñarlo. Se escribe 'confirmed', y se mantienen aquí las
+// etiquetas de 'accepted'/'rejected' para los registros históricos ya guardados.
 const STATUS: Record<string, { label: string; color: string; bg: string }> = {
-  pending:  { label: 'Pendiente',  color: '#8A6D0F', bg: 'rgba(212,175,55,0.08)' },
-  accepted: { label: 'Aceptada',   color: '#22c55e', bg: 'rgba(34,197,94,0.08)' },
-  closed:   { label: 'Completada', color: '#22c55e', bg: 'rgba(34,197,94,0.08)' },
-  rejected: { label: 'Rechazada',  color: '#ff5f56', bg: 'rgba(255,95,86,0.08)' },
-  open:     { label: 'Abierta',    color: '#60a5fa', bg: 'rgba(96,165,250,0.08)' },
+  pending:   { label: 'Pendiente',  color: '#8A6D0F', bg: 'rgba(212,175,55,0.08)' },
+  confirmed: { label: 'Aceptada',   color: '#22c55e', bg: 'rgba(34,197,94,0.08)' },
+  accepted:  { label: 'Aceptada',   color: '#22c55e', bg: 'rgba(34,197,94,0.08)' },
+  completed: { label: 'Completada', color: '#22c55e', bg: 'rgba(34,197,94,0.08)' },
+  closed:    { label: 'Completada', color: '#22c55e', bg: 'rgba(34,197,94,0.08)' },
+  cancelled: { label: 'Cancelada',  color: '#ff5f56', bg: 'rgba(255,95,86,0.08)' },
+  rejected:  { label: 'Rechazada',  color: '#ff5f56', bg: 'rgba(255,95,86,0.08)' },
+  open:      { label: 'Abierta',    color: '#60a5fa', bg: 'rgba(96,165,250,0.08)' },
 };
 
 const fmt = (iso: string | null) => {
@@ -60,7 +68,10 @@ const SolicitudesTab = () => {
   useEffect(() => {
     if (!user) return;
     const channel = supabase
-      .channel('flash_bookings_realtime')
+      // Topic único: con un nombre global, un remonte rápido (cambiar de tab e
+      // ida y vuelta) hacía que el cleanup del montaje anterior matase la
+      // suscripción del nuevo y las solicitudes dejaran de llegar en vivo.
+      .channel(`flash_bookings_realtime_${user.id}_${Math.random().toString(36).slice(2)}`)
       .on('postgres_changes', {
         event: 'INSERT', schema: 'public', table: 'flash_bookings',
         filter: `professional_user_id=eq.${user.id}`,
@@ -69,7 +80,7 @@ const SolicitudesTab = () => {
     return () => { supabase.removeChannel(channel); };
   }, [user, fetch]);
 
-  const updateStatus = async (id: string, status: 'accepted' | 'rejected') => {
+  const updateStatus = async (id: string, status: 'confirmed' | 'rejected') => {
     if (updatingRef.current === id) return;
     updatingRef.current = id;
     setUpdating(id);
@@ -86,14 +97,14 @@ const SolicitudesTab = () => {
       return;
     }
     setItems(prev => prev.map(i => i.id === id ? { ...i, status } : i));
-    toast.success(status === 'accepted' ? '¡Solicitud aceptada!' : 'Solicitud rechazada');
+    toast.success(status === 'confirmed' ? '¡Solicitud aceptada!' : 'Solicitud rechazada');
 
     // Al cerrar el acuerdo (aceptar), el trabajo entra solo al calendario del
     // profesional y dispara el aviso "Nuevo trabajo" si lo tiene activado —
     // aplica a cualquier rol (DJ, peluquería, camarero...), no solo bolos de
     // música. Sustituye el disparo antiguo que vivía en el alta manual de
     // CalendarView.tsx: ahora el aviso solo suena cuando hay un acuerdo real.
-    if (status === 'accepted') {
+    if (status === 'confirmed') {
       const accepted = items.find(i => i.id === id);
       if (accepted?.event_date) {
         const { error: calError } = await supabase.from('calendar_events').insert({
@@ -127,7 +138,7 @@ const SolicitudesTab = () => {
     }
 
     // Badge Respuesta Rápida: si acepta en <1h desde que llegó la solicitud
-    if (status === 'accepted') {
+    if (status === 'confirmed') {
       const booking = items.find(i => i.id === id);
       const createdAt = booking?.created_at ? new Date(booking.created_at).getTime() : 0;
       const elapsed = Date.now() - createdAt;
@@ -143,18 +154,24 @@ const SolicitudesTab = () => {
           .from('profiles')
           .update({ fast_responder_count: newCount } as any)
           .eq('user_id', user!.id);
-        if (badgeError) { console.warn('[SolicitudesTab] fast_responder_count update failed:', badgeError); return; }
-        toast.success('⚡ ¡Badge Respuesta Rápida obtenido! Apareces destacado en el directorio 30 días.');
-        // Email de notificación al profesional
-        supabase.functions.invoke('send-email', {
-          body: {
-            type: 'fast_responder_badge',
-            data: {
-              professional_user_id: user!.id,
-              fast_responder_count: newCount,
+        // Si falla el contador del badge (cosmético) NO se puede cortar aquí:
+        // un `return` salía de toda la función y se saltaba el email de estado
+        // al empresario, que nunca se enteraba de que le habían aceptado.
+        if (badgeError) {
+          console.warn('[SolicitudesTab] fast_responder_count update failed:', badgeError);
+        } else {
+          toast.success('⚡ ¡Badge Respuesta Rápida obtenido! Apareces destacado en el directorio 30 días.');
+          // Email de notificación al profesional
+          supabase.functions.invoke('send-email', {
+            body: {
+              type: 'fast_responder_badge',
+              data: {
+                professional_user_id: user!.id,
+                fast_responder_count: newCount,
+              },
             },
-          },
-        }).catch((err: unknown) => console.warn('[SolicitudesTab] fast_responder email failed:', err));
+          }).catch((err: unknown) => console.warn('[SolicitudesTab] fast_responder email failed:', err));
+        }
       }
     }
 
@@ -277,7 +294,7 @@ const SolicitudesTab = () => {
                         <XCircle size={12} /> Rechazar
                       </button>
                       <button
-                        onClick={() => updateStatus(s.id, 'accepted')}
+                        onClick={() => updateStatus(s.id, 'confirmed')}
                         disabled={updating === s.id}
                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105 disabled:opacity-50"
                         style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
@@ -285,7 +302,7 @@ const SolicitudesTab = () => {
                       </button>
                     </div>
                   )}
-                  {s.status === 'accepted' && (
+                  {(s.status === 'confirmed' || s.status === 'accepted') && (
                     <button
                       onClick={() => setContractFor(s)}
                       className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"

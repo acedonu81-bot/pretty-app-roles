@@ -54,7 +54,12 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
       { label: 'Foto de perfil', done: !!photoUrl || !!profile.photo_url, hint: 'Añade una foto para generar más confianza.' },
       { label: 'Bio', done: !!(profile.bio && profile.bio.trim().length > 20), hint: 'Escribe al menos una frase sobre ti.' },
       { label: 'Ciudad', done: !!(profile.zone && profile.zone !== DEFAULT_ZONE), hint: 'Elige tu ciudad para aparecer en búsquedas locales.' },
-      { label: 'Especialidad', done: !!(profile.specialty && profile.specialty.trim().length > 0), hint: 'Añade tus géneros o especialidades.' },
+      // "Especialidad" solo para profesionales: al empresario se le contaba en
+      // el % de perfil completo aunque su control (roleTagConfig) no existe
+      // para su rol, así que no tenía forma directa de completarlo.
+      ...(profile.role !== 'empresario' ? [
+        { label: 'Especialidad', done: !!(profile.specialty && profile.specialty.trim().length > 0), hint: 'Añade tus géneros o especialidades.' },
+      ] : []),
       { label: 'Instagram', done: !!(profile.instagram && profile.instagram.trim().length > 0), hint: 'Enlaza tu Instagram para que te contacten.' },
       ...(profile.role === 'dj' || profile.role === 'rookie' ? [
         { label: 'Mix / Audio', done: !!(profile.audio_embed_url && (profile.audio_embed_url as string).trim().length > 0) || !!(profile.audio_session_urls && profile.audio_session_urls.length > 0), hint: 'Añade un enlace a tu mix o sesión.' },
@@ -202,7 +207,10 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     if (!user) return;
     (async () => {
       const [bookingsRes, convsRes] = await Promise.all([
-        supabase.from('flash_bookings' as any).select('id', { count: 'exact', head: true }).eq('professional_user_id', user.id),
+        // El empresario es `created_by`, nunca `professional_user_id`: contando
+        // solo esa columna su tarjeta mostraba 0 bookings aunque hubiera
+        // contratado decenas. Mismo criterio que SettingsView.
+        supabase.from('flash_bookings' as any).select('id', { count: 'exact', head: true }).or(`professional_user_id.eq.${user.id},created_by.eq.${user.id}`),
         supabase.from('conversations').select('id').or(`participant_a.eq.${user.id},participant_b.eq.${user.id}`).limit(50),
       ]);
       const convIds = ((convsRes.data ?? []) as { id: string }[]).map(c => c.id);
@@ -352,7 +360,9 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 </span>
               </div>
               <p className="text-[0.65rem] text-muted-foreground mb-3">
-                Los perfiles más completos aparecen antes en el directorio — foto, bio y portfolio suman posición real.
+                {profile.role === 'empresario'
+                  ? 'Un perfil completo da confianza a los profesionales que reciben tus solicitudes — foto, bio y ciudad ayudan a que te respondan.'
+                  : 'Los perfiles más completos aparecen antes en el directorio — foto, bio y portfolio suman posición real.'}
               </p>
               <div className="w-full h-1.5 rounded-full mb-3" style={{ background: 'rgba(0,0,0,0.05)' }}>
                 <div className="h-full rounded-full transition-all duration-500"
@@ -376,7 +386,9 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 ))}
               </div>
               <p className="text-[0.65rem] font-bold mt-3 pt-2.5" style={{ color: '#8A6D0F', borderTop: '1px solid rgba(212,175,55,0.15)' }}>
-                ⚡ Los perfiles completos salen primero en el directorio
+                {profile.role === 'empresario'
+                  ? '⚡ Un perfil completo consigue más respuestas de profesionales'
+                  : '⚡ Los perfiles completos salen primero en el directorio'}
               </p>
             </div>
           )}
@@ -384,7 +396,9 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
           <div className="glass-panel p-4">
             {([
               ['Bookings 2026', sideStats.bookings === null ? '—' : String(sideStats.bookings)],
-              ['Visitas perfil', String(profile.score ?? 0)],
+              // `score` no existe en el perfil cargado: esto renderizaba siempre
+              // un "0" con aspecto de dato real. Sin tracking de visitas, guion.
+              ['Visitas perfil', '—'],
               ['Mensajes recibidos', sideStats.messages === null ? '—' : String(sideStats.messages)],
             ] as [string, string][]).map(([k, v]) => (
               <div key={k} className="flex justify-between py-1.5 text-sm" style={{ borderBottom: '1px solid rgba(0,0,0,0.03)' }}>
@@ -561,7 +575,8 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             <p className="text-[0.75rem] font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(212,175,55,0.4)' }}>Identidad</p>
             <div className="mb-3">
               <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">
-                {(profile.role === 'dj' || profile.role === 'rookie') ? 'Nombre artístico' : 'Nombre profesional'}
+                {profile.role === 'empresario' ? 'Nombre de la empresa o sala'
+                  : (profile.role === 'dj' || profile.role === 'rookie') ? 'Nombre artístico' : 'Nombre profesional'}
               </label>
               <input type="text" value={displayName} onChange={e => setLocalName(e.target.value)} className="nightlife-input mt-1 text-base" />
             </div>

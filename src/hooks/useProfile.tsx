@@ -40,6 +40,12 @@ interface ProfileData {
   seeking_dance_partner: boolean;
   dance_level: string | null;
   dance_role: string | null;
+  // Privacidad (migración 20260829b). Opcionales en el tipo para que la app
+  // siga funcionando aunque la migración todavía no esté aplicada en el
+  // proyecto Supabase: se leen con fallback y no rompen Ajustes.
+  is_public?: boolean;
+  show_online?: boolean;
+  email_opt_out?: boolean;
 }
 
 export interface ProfileSummary {
@@ -79,6 +85,9 @@ const defaults: ProfileData = {
   annual_billing: false,
   is_live: false,
   is_flash_active: false,
+  is_public: true,
+  show_online: true,
+  email_opt_out: false,
   phone: null,
   specialty: null,
   instagram: null,
@@ -127,19 +136,41 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
   const refresh = useCallback(async () => {
     if (!user) return;
 
-    // Load all profiles for this user
-    const { data: rows } = await supabase
+    // Load all profiles for this user.
+    // Las columnas de privacidad (migración 20260829b) van en un select aparte:
+    // si la migración aún no está aplicada, Postgres rechaza TODA la consulta y
+    // el perfil no cargaría para nadie. Se pide primero con ellas y, si falla,
+    // se reintenta sin ellas usando los defaults.
+    const BASE_COLS = 'id, display_name, role, roles, photo_url, is_primary, subscription_tier, birthday, zone, hourly_rate, stream_url, stream_title, trial_started_at, annual_billing, is_live, is_flash_active, phone, specialty, instagram, bio, audio_embed_url, audio_session_urls, languages, genres, category, tiktok, bio_video_url, bg_music_url, portfolio_urls, referral_code, priority_badge_until, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, created_at';
+    const PRIVACY_COLS = 'is_public, show_online, email_opt_out';
+
+    let { data: rows, error: rowsError } = await supabase
       .from('profiles')
-      .select('id, display_name, role, roles, photo_url, is_primary, subscription_tier, birthday, zone, hourly_rate, stream_url, stream_title, trial_started_at, annual_billing, is_live, is_flash_active, phone, specialty, instagram, bio, audio_embed_url, audio_session_urls, languages, genres, category, tiktok, bio_video_url, bg_music_url, portfolio_urls, referral_code, priority_badge_until, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, created_at')
+      .select(`${BASE_COLS}, ${PRIVACY_COLS}`)
       .eq('user_id', user.id)
       .order('created_at', { ascending: true });
+
+    if (rowsError) {
+      ({ data: rows } = await supabase
+        .from('profiles')
+        .select(BASE_COLS)
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: true }));
+    }
 
     if (!rows || rows.length === 0) { setLoading(false); return; }
 
     // Find primary, fallback to first
     const primary = (rows.find((r: any) => r.is_primary) ?? rows[0]) as any;
     setProfileId(primary.id);
-    setData({ ...primary, roles: (primary.roles?.length ? primary.roles : [primary.role]) } as unknown as ProfileData);
+    setData({
+      ...primary,
+      roles: (primary.roles?.length ? primary.roles : [primary.role]),
+      // Fallback si la migración de privacidad aún no está aplicada.
+      is_public: primary.is_public ?? true,
+      show_online: primary.show_online ?? true,
+      email_opt_out: primary.email_opt_out ?? false,
+    } as unknown as ProfileData);
     setAllProfiles(rows.map((r: any) => ({
       id: r.id,
       display_name: r.display_name ?? '',

@@ -53,6 +53,8 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
   // compartir datos personales con terceros.
   const [legalAccepted, setLegalAccepted] = useState(false);
   const [legalError, setLegalError] = useState(false);
+  // Nº de solicitudes realmente enviadas, congelado antes de vaciar la cesta.
+  const [sentCount, setSentCount] = useState(0);
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
@@ -103,7 +105,10 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
         event_date: form.date || 'Por confirmar',
         event_location: form.location,
         event_description: `[${form.eventType}${estimatedHours > 0 ? ` · ${estimatedHours}h` : ''}] ${form.message}`,
-        agreed_price: null,
+        // Presupuesto estimado que se le mostró al organizador (tarifa × horas).
+        // Guardarlo como null hacía que el trabajo figurase a 0€ en el Historial
+        // y en Gastos del empresario, pese a haberle enseñado una cifra.
+        agreed_price: item.hourlyRate && estimatedHours > 0 ? item.hourlyRate * estimatedHours : null,
         status: 'pending',
         created_by: user?.id ?? null,
       };
@@ -135,6 +140,10 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
       }).catch((err: unknown) => console.warn('[EventCart] confirm email failed:', err));
     }
 
+    // Congelar el nº de envíos ANTES de vaciar: la pantalla de éxito lee este
+    // valor, y si leyera `items` (ya vacío tras clear()) diría "Los 0
+    // profesionales de tu evento recibirán tu mensaje".
+    setSentCount(items.length);
     setStatus('done');
     clear();
   }
@@ -156,7 +165,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
             <CheckCircle size={40} className="mx-auto mb-4" style={{ color: '#22c55e' }} />
             <h3 className="text-lg font-black mb-2" style={{ color: '#111' }}>¡Solicitudes enviadas!</h3>
             <p className="text-sm mb-6" style={{ color: '#333' }}>
-              {items.length === 1 ? 'El profesional' : `Los ${items.length} profesionales`} de tu evento {items.length === 1 ? 'recibirá' : 'recibirán'} tu mensaje y te contactará{items.length === 1 ? '' : 'n'} directamente.
+              {sentCount === 1 ? 'El profesional' : `Los ${sentCount} profesionales`} de tu evento {sentCount === 1 ? 'recibirá' : 'recibirán'} tu mensaje y te contactará{sentCount === 1 ? '' : 'n'} directamente.
             </p>
             <button onClick={onClose} className="px-6 py-2.5 rounded-xl text-sm font-bold"
               style={{ background: '#f5f4f0', border: '1px solid rgba(0,0,0,0.08)', color: '#222' }}>

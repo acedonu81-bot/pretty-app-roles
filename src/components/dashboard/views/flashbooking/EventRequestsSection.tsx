@@ -30,6 +30,13 @@ const daysLeft = (expires: string) => {
   return Math.max(0, Math.ceil(diff / 86400000));
 };
 
+// La fecha se pintaba en crudo ("2026-09-14"); el resto de la app usa formato es-ES.
+const fmtDate = (iso: string | null) => {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return isNaN(d.getTime()) ? iso : d.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
+};
+
 const EventRequestsSection = () => {
   const profile = useProfile();
   const { user } = useAuth();
@@ -62,8 +69,14 @@ const EventRequestsSection = () => {
       .gt('expires_at', new Date().toISOString())
       .order('created_at', { ascending: false })
       .limit(20)
-      .then(({ data }) => {
+      .then(({ data, error }) => {
+        // Sin manejar `error` ni rechazo, un fallo (RLS, tabla ausente) dejaba
+        // los skeletons pulsando indefinidamente o fingía "sin solicitudes".
+        if (error) console.error('[EventRequestsSection] load failed:', error.message);
         setRequests((data ?? []) as EventRequest[]);
+        setLoading(false);
+      }, (err: unknown) => {
+        console.error('[EventRequestsSection] load rejected:', err);
         setLoading(false);
       });
   }, []);
@@ -109,8 +122,8 @@ const EventRequestsSection = () => {
   return (
     <div className="mb-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
-        <div>
+      <div className="flex items-center justify-between gap-3 flex-wrap mb-4">
+        <div className="min-w-0">
           <h3 className="text-sm font-black" style={{ color: '#222', fontFamily: 'Syne, sans-serif' }}>
             Solicitudes de Evento
           </h3>
@@ -118,12 +131,16 @@ const EventRequestsSection = () => {
             {isEmpresario ? 'Publica lo que necesitas — los profesionales te contactan' : 'Clientes buscando profesionales ahora'}
           </p>
         </div>
-        <button
-          onClick={() => setShowForm(true)}
-          className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105"
-          style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-          <Plus size={12} /> Publicar evento
-        </button>
+        {/* Publicar una solicitud de evento es cosa del empresario: al
+            profesional (que viene a RESPONDERLAS) se le ofrecía el mismo CTA. */}
+        {isEmpresario && (
+          <button
+            onClick={() => setShowForm(true)}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105 flex-shrink-0"
+            style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+            <Plus size={12} /> Publicar evento
+          </button>
+        )}
       </div>
 
       {/* List */}
@@ -177,7 +194,7 @@ const EventRequestsSection = () => {
                     </span>
                     {req.event_date && (
                       <span className="flex items-center gap-1 text-xs" style={{ color: '#333' }}>
-                        <Calendar size={10} /> {req.event_date}
+                        <Calendar size={10} /> {fmtDate(req.event_date)}
                       </span>
                     )}
                     {(req.budget_min || req.budget_max) && (

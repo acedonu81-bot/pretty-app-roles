@@ -407,9 +407,13 @@ const Auth = () => {
             ? `¡Bienvenido! Eres el profesional nº ${proCount + 1} en unirte a XPEAK`
             : '¡Cuenta creada! Bienvenido a XPEAK';
           toast.success(welcomeMsg);
-          // Registro nuevo → dashboard para completar perfil/onboarding
-          // (el login normal sí va directo al swipe vía redirectParam).
-          navigate('/dashboard', { replace: true });
+          // Registro nuevo → dashboard para completar perfil/onboarding.
+          // EXCEPCIÓN: si el registro venía de un flujo que dejó trabajo a
+          // medias (carrito "Mi evento" → ?redirect=/directorio/...), volver
+          // ahí; si no, el borrador guardado en sessionStorage se queda
+          // huérfano y la solicitud que el usuario creía enviar nunca sale.
+          const explicitRedirect = searchParams.get('redirect');
+          navigate(explicitRedirect || '/dashboard', { replace: true });
         } else {
           setShowWelcome(true);
         }

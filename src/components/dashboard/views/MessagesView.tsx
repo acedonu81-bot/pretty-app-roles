@@ -8,6 +8,18 @@ import { toast } from 'sonner';
 import ConversationList from './messages/ConversationList';
 import ChatWindow, { EmptyChatPlaceholder } from './messages/ChatWindow';
 
+// Los resultados de búsqueda mostraban el rol tal cual sale de BD
+// ('photo-booth', 'grupo-musical'). Etiquetas legibles para el usuario.
+const ROLE_LABEL: Record<string, string> = {
+  dj: 'DJ / Artista', 'grupo-musical': 'Grupo musical', media: 'Media', fotografo: 'Fotógrafo',
+  makeup: 'Maquillaje', maquillaje: 'Maquillaje', peluqueria: 'Peluquería', staff: 'Staff / Camarero',
+  azafata: 'Azafata', promotor: 'Promotor', promotores: 'Promotor', catering: 'Catering',
+  mago: 'Mago', humorista: 'Humorista', animador: 'Animador', bailarin: 'Bailarín',
+  speaker: 'Speaker', vestuario: 'Vestuario', 'photo-booth': 'Photo Booth',
+  'diseno-grafico': 'Diseño gráfico', 'wedding-planner': 'Wedding Planner',
+  ambassador: 'Embajador', empresario: 'Empresa / Sala', rookie: 'Artista emergente',
+};
+
 interface Conversation {
   id: string;
   other_user_id: string;
@@ -442,12 +454,14 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
           onClick={e => { if (e.target === e.currentTarget) { setShowNewConv(false); setSearchUsers(''); setUserResults([]); } }}>
           <div className="rounded-2xl p-5 w-full max-w-sm"
             style={{ background: '#0a0a0e', border: '1px solid rgba(212,175,55,0.25)', boxShadow: '0 20px 60px rgba(0,0,0,0.8)' }}>
-            <p className="text-sm font-bold mb-3">Nueva conversación</p>
+            {/* Panel oscuro (#0a0a0e): los textos heredaban el color oscuro de
+                la UI clara y quedaban casi negros sobre negro, ilegibles. */}
+            <p className="text-sm font-bold mb-3" style={{ color: 'rgba(255,255,255,0.92)' }}>Nueva conversación</p>
             <input
               autoFocus
               value={searchUsers}
               onChange={e => searchUsersHandler(e.target.value)}
-              placeholder="Buscar profesional por nombre..."
+              placeholder="Buscar por nombre..."
               className="nightlife-input w-full text-sm mb-3"
             />
             {searchingUsers && <p className="text-xs text-muted-foreground text-center py-2">Buscando...</p>}
@@ -458,14 +472,15 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
               {userResults.map(u => (
                 <button key={u.user_id} onClick={() => startNewConversation(u.user_id, u.display_name || 'Usuario')}
                   className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all hover:scale-[1.01]"
-                  style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                  style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}>
                   <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-black flex-shrink-0"
                     style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
                     {(u.display_name || 'U').charAt(0).toUpperCase()}
                   </div>
-                  <div>
-                    <p className="text-sm font-bold">{u.display_name || 'Usuario'}</p>
-                    <p className="text-xs text-muted-foreground">{u.role}</p>
+                  <div className="min-w-0">
+                    <p className="text-sm font-bold truncate" style={{ color: 'rgba(255,255,255,0.92)' }}>{u.display_name || 'Usuario'}</p>
+                    {/* El rol se pintaba en crudo ('photo-booth', 'event_manager') */}
+                    <p className="text-xs truncate" style={{ color: 'rgba(255,255,255,0.55)' }}>{ROLE_LABEL[u.role] ?? u.role}</p>
                   </div>
                 </button>
               ))}

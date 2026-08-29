@@ -120,7 +120,7 @@ const DemandaTab = () => {
   /* ─── Realtime: nuevas ofertas aparecen sin refresh ─── */
   useEffect(() => {
     const channel = supabase
-      .channel('flash_jobs_realtime')
+      .channel(`flash_jobs_realtime_${Math.random().toString(36).slice(2)}`)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'flash_jobs' }, () => {
         fetchJobs();
       })
@@ -137,7 +137,7 @@ const DemandaTab = () => {
   useEffect(() => {
     if (!isEmpresario || !user?.id) return;
     const channel = supabase
-      .channel('flash_replies_realtime')
+      .channel(`flash_replies_realtime_${user.id}_${Math.random().toString(36).slice(2)}`)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'flash_bookings' }, (payload) => {
         const booking = payload.new as any;
         if (booking.created_by === user.id) return; // ignore own inserts
