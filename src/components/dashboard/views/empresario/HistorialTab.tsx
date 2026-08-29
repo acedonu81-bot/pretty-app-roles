@@ -451,7 +451,7 @@ const HistorialTab = () => {
             <p className="text-[0.75rem] text-muted-foreground">de {bookings.length} totales</p>
           </div>
         </div>
-        <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 mt-4 pt-4" style={{ borderTop: '1px solid rgba(212,175,55,0.1)' }}>
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mt-4 pt-4" style={{ borderTop: '1px solid rgba(212,175,55,0.1)' }}>
           {[
             { label: 'Completadas', value: completed.toString() },
             { label: 'Confirmadas', value: confirmed.toString() },

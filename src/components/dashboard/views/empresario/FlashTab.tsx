@@ -31,6 +31,7 @@ const FlashTab = () => {
   const [pay, setPay]           = useState('');
   const [location, setLocation] = useState('');
   const [role, setRole]         = useState('');
+  const [durationHours, setDurationHours] = useState<2 | 24>(24);
   const [submitting, setSubmitting] = useState(false);
   const [myJobs, setMyJobs] = useState<FlashJob[]>([]);
 
@@ -48,10 +49,24 @@ const FlashTab = () => {
 
   useEffect(() => { loadMyJobs(); }, [loadMyJobs]);
 
+  // Recarga periódica: refresca el countdown de "Mis ofertas activas" (antes
+  // se calculaba una sola vez y se quedaba congelado hasta el próximo render)
+  // y retira del listado las ofertas que ya caducaron.
+  useEffect(() => {
+    const iv = setInterval(loadMyJobs, 30000);
+    return () => clearInterval(iv);
+  }, [loadMyJobs]);
+
+  const [, forceTick] = useState(0);
+  useEffect(() => {
+    const iv = setInterval(() => forceTick(t => t + 1), 1000);
+    return () => clearInterval(iv);
+  }, []);
+
   const submit = async () => {
     if (!user || !title.trim()) { toast.error('Introduce al menos un título'); return; }
     setSubmitting(true);
-    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+    const expiresAt = new Date(Date.now() + durationHours * 60 * 60 * 1000).toISOString();
     const { error } = await supabase.from('flash_jobs').insert({
       employer_id: user.id,
       title: title.trim(),
@@ -63,9 +78,9 @@ const FlashTab = () => {
     } as any);
     setSubmitting(false);
     if (error) { toast.error('Error al publicar: ' + error.message); return; }
-    toast.success('Oferta publicada — visible 24h para todos los profesionales');
+    toast.success(`Oferta publicada — visible ${durationHours}h para todos los profesionales`);
     setShowForm(false);
-    setTitle(''); setDesc(''); setPay(''); setLocation(''); setRole('');
+    setTitle(''); setDesc(''); setPay(''); setLocation(''); setRole(''); setDurationHours(24);
     loadMyJobs();
   };
 
@@ -82,14 +97,14 @@ const FlashTab = () => {
         className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
         style={{ background: 'linear-gradient(90deg, #D4AF37, #B8941E)', color: '#000' }}>
         {showForm ? <X size={14} /> : <Plus size={14} />}
-        {showForm ? 'Cancelar' : 'Publicar Oferta Urgente (24h)'}
+        {showForm ? 'Cancelar' : 'Publicar Oferta Urgente'}
       </button>
 
       {showForm && (
         <div className="glass-panel p-5 animate-[fadeIn_0.25s_ease]">
           <div className="flex items-center gap-2 mb-4">
             <Zap size={14} style={{ color: '#8A6D0F' }} />
-            <h4 className="text-sm font-bold">Nueva Oferta Flash — caduca en 24h</h4>
+            <h4 className="text-sm font-bold">Nueva Oferta Flash — caduca en {durationHours}h</h4>
           </div>
           <div className="space-y-3">
             <input value={title} onChange={e => setTitle(e.target.value)}
@@ -98,6 +113,20 @@ const FlashTab = () => {
             <textarea value={desc} onChange={e => setDesc(e.target.value)}
               placeholder="Descripción del evento (horario, tipo de sala, requisitos...)" rows={3}
               maxLength={300} className="nightlife-input text-sm resize-none w-full" />
+            <div className="flex items-center gap-2 text-xs font-bold" style={{ color: '#333' }}>
+              Duración de la oferta:
+              <div className="flex rounded-lg overflow-hidden" style={{ border: '1px solid var(--nightlife-border)' }}>
+                {([2, 24] as const).map(h => (
+                  <button key={h} type="button" onClick={() => setDurationHours(h)}
+                    className="px-3 py-1.5 text-xs font-bold transition-all"
+                    style={durationHours === h
+                      ? { background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }
+                      : { background: 'transparent', color: '#666' }}>
+                    {h}h
+                  </button>
+                ))}
+              </div>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               <input value={pay} onChange={e => setPay(e.target.value)}
                 placeholder="Pago (ej: €350)" maxLength={30} className="nightlife-input text-sm" />

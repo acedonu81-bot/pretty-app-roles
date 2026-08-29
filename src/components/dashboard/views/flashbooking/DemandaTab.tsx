@@ -48,6 +48,8 @@ const DemandaTab = () => {
   const [newDesc, setNewDesc] = useState('');
   const [newLocation, setNewLocation] = useState('');
   const [newPay, setNewPay] = useState('');
+  const [newRole, setNewRole] = useState('');
+  const [durationHours, setDurationHours] = useState<2 | 24>(2);
   const [submitting, setSubmitting] = useState(false);
 
   const [replyingToOffer, setReplyingToOffer] = useState<string | null>(null);
@@ -170,25 +172,26 @@ const DemandaTab = () => {
   /* ─── Post new offer to Supabase ─── */
   const addOffer = async () => {
     if (!user || !newTitle.trim()) return;
-    for (const field of [newTitle, newDesc, newLocation, newPay].filter(Boolean)) {
+    for (const field of [newTitle, newDesc, newLocation, newPay, newRole].filter(Boolean)) {
       const { clean, reason } = sanitizeInput(field);
       if (!clean) { toast.error(reason); return; }
     }
     setSubmitting(true);
-    const expiresAt = new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString();
+    const expiresAt = new Date(Date.now() + durationHours * 60 * 60 * 1000).toISOString();
     const { error } = await supabase.from('flash_jobs').insert({
       employer_id: user.id,
       title: newTitle.trim(),
       description: newDesc.trim() || null,
       location: newLocation.trim() || 'Sin especificar',
       pay: newPay.trim() || 'A convenir',
+      role_needed: newRole.trim() || null,
       expires_at: expiresAt,
     } as any);
     setSubmitting(false);
     if (error) { toast.error('Error al publicar la oferta'); return; }
-    setNewTitle(''); setNewDesc(''); setNewLocation(''); setNewPay('');
+    setNewTitle(''); setNewDesc(''); setNewLocation(''); setNewPay(''); setNewRole(''); setDurationHours(2);
     setShowForm(false);
-    toast.success('Oferta publicada — visible 2h para todos los profesionales');
+    toast.success(`Oferta publicada — visible ${durationHours}h para todos los profesionales`);
     fetchJobs();
   };
 
@@ -262,7 +265,7 @@ const DemandaTab = () => {
       <div className="flex items-center gap-3 mb-4">
         <div className="flex-1 h-px" style={{ background: 'rgba(0,0,0,0.07)' }} />
         <span className="text-[10px] font-black tracking-widest uppercase" style={{ color: '#333' }}>
-          Flash Jobs · Urgentes 2h
+          Flash Jobs · Urgentes
         </span>
         <div className="flex-1 h-px" style={{ background: 'rgba(0,0,0,0.07)' }} />
       </div>
@@ -292,13 +295,28 @@ const DemandaTab = () => {
       {isEmpresario && showForm && (
         <div className="glass-panel p-5 mb-5 animate-[fadeIn_0.3s_ease]">
           <h3 className="text-xs font-bold mb-3 flex items-center gap-2">
-            <Megaphone size={13} style={{ color: '#8A6D0F' }} /> Nueva oferta urgente (caduca en 2h)
+            <Megaphone size={13} style={{ color: '#8A6D0F' }} /> Nueva oferta urgente (caduca en {durationHours}h)
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
             <input value={newTitle} onChange={e => setNewTitle(e.target.value)} placeholder="Título (ej: DJ Techno URGENTE)" maxLength={80} className="nightlife-input !py-2.5 text-sm" />
             <input value={newLocation} onChange={e => setNewLocation(e.target.value)} placeholder="Ubicación" maxLength={60} className="nightlife-input !py-2.5 text-sm" />
             <input value={newPay} onChange={e => setNewPay(e.target.value)} placeholder="Pago (ej: €300)" maxLength={30} className="nightlife-input !py-2.5 text-sm" />
-            <input value={newDesc} onChange={e => setNewDesc(e.target.value)} placeholder="Descripción breve" maxLength={200} className="nightlife-input !py-2.5 text-sm" />
+            <input value={newRole} onChange={e => setNewRole(e.target.value)} placeholder="Rol necesario (ej: DJ Techno)" maxLength={60} className="nightlife-input !py-2.5 text-sm" />
+            <input value={newDesc} onChange={e => setNewDesc(e.target.value)} placeholder="Descripción breve" maxLength={200} className="nightlife-input !py-2.5 text-sm md:col-span-2" />
+          </div>
+          <div className="flex items-center gap-2 text-xs font-bold mb-3" style={{ color: '#333' }}>
+            Duración:
+            <div className="flex rounded-lg overflow-hidden" style={{ border: '1px solid var(--nightlife-border)' }}>
+              {([2, 24] as const).map(h => (
+                <button key={h} type="button" onClick={() => setDurationHours(h)}
+                  className="px-3 py-1.5 text-xs font-bold transition-all"
+                  style={durationHours === h
+                    ? { background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }
+                    : { background: 'transparent', color: '#666' }}>
+                  {h}h
+                </button>
+              ))}
+            </div>
           </div>
           <button onClick={addOffer} disabled={submitting || !newTitle.trim()}
             className="btn-nightlife-primary !py-2.5 !px-6 text-xs disabled:opacity-50">
@@ -431,7 +449,7 @@ const DemandaTab = () => {
             </p>
             <p className="text-xs text-muted-foreground max-w-[280px] mx-auto leading-relaxed">
               {isEmpresario
-                ? 'Publica una oferta urgente con el botón de arriba. Caduca en 2h — ideal para necesidades de última hora.'
+                ? 'Publica una oferta urgente con el botón de arriba. Elige 2h para última hora o 24h para más visibilidad.'
                 : 'Los empresarios publicarán sus necesidades aquí. Revisa pronto para no perderte ninguna oportunidad.'}
             </p>
           </div>
