@@ -93,14 +93,22 @@ const ROLE_LABEL: Record<string, string> = {
   promotor: 'Promotor / RRPP', ambassador: 'Promotor / Embajador',
   speaker: 'Speaker / Presentador', design: 'Diseño & Visuales',
   monologo: 'Monologuista', empresario: 'Empresa / Sala',
+  azafata: 'Azafata', 'grupo-musical': 'Grupo musical', 'photo-booth': 'Photo Booth',
+  fotografo: 'Fotógrafo', 'wedding-planner': 'Wedding Planner',
+  'diseno-grafico': 'Diseño gráfico', promotores: 'Promotor / RRPP',
+  maquillaje: 'Maquillaje',
 };
 
 // Orden alineado con DashboardSidebar.tsx — evita que el selector quede
 // desactualizado cuando se añaden roles nuevos al sistema.
+// Faltaban azafata, grupo musical, photo-booth y wedding planner: quien
+// contratara uno de esos tenía que elegir "Staff / RRPP", y esa etiqueta
+// equivocada acababa impresa en el PDF del contrato.
 const CONTRACT_ROLE_OPTIONS = [
-  'dj', 'rookie', 'staff', 'event_manager', 'bailarin', 'makeup', 'peluqueria', 'media',
-  'mago', 'humorista', 'animador', 'catering', 'vestuario', 'promotor',
-  'speaker', 'design',
+  'dj', 'rookie', 'grupo-musical', 'staff', 'azafata', 'event_manager', 'bailarin',
+  'makeup', 'peluqueria', 'media', 'fotografo', 'photo-booth',
+  'mago', 'humorista', 'monologo', 'animador', 'catering', 'vestuario',
+  'promotor', 'speaker', 'wedding-planner', 'design', 'diseno-grafico',
 ];
 
 const fmtDate = (iso: string) => {
@@ -110,22 +118,74 @@ const fmtDate = (iso: string) => {
 
 const fmtEur = (n: number | null) => n != null ? `€${n.toFixed(2).replace('.', ',')}` : '—';
 
+interface ProSearchResult {
+  user_id: string;
+  display_name: string | null;
+  role: string | null;
+  photo_url: string | null;
+  zone: string | null;
+  specialty: string | null;
+  hourly_rate: number | null;
+  phone: string | null;
+  instagram: string | null;
+}
+
 const ContractView = () => {
   const { user } = useAuth();
   const [showModal, setShowModal] = useState(false);
   const [customName, setCustomName] = useState('');
   const [customRole, setCustomRole] = useState<string>('dj');
+  // Profesional REAL de XPEAK seleccionado en el buscador. Sin esto, el
+  // contrato se generaba con userId vacío y ContractModal se saltaba los tres
+  // efectos que dependen de él: alta en el calendario del profesional, aviso
+  // "Nuevo trabajo" y email contract_generated. Es decir: se generaba el
+  // contrato y el profesional no se enteraba nunca.
+  const [selectedPro, setSelectedPro] = useState<ProSearchResult | null>(null);
+  const [proQuery, setProQuery] = useState('');
+  const [proResults, setProResults] = useState<ProSearchResult[]>([]);
+  const [searchingPros, setSearchingPros] = useState(false);
   const [contracts, setContracts] = useState<ContractRow[]>([]);
   // Arranca en true: con `false` se pintaba "Sin contratos aún" en el primer
   // render, antes de que llegara la respuesta (parpadeo de historial vacío).
   const [loading, setLoading] = useState(true);
   const [csvYear, setCsvYear] = useState(new Date().getFullYear());
 
-  const professional: Profile = {
-    ...DEMO_PROFESSIONAL,
-    name: customName.trim() || 'Profesional',
-    role: customRole as Profile['role'],
-  };
+  const searchPros = useCallback(async (q: string) => {
+    setProQuery(q);
+    setSelectedPro(null);
+    if (q.trim().length < 2) { setProResults([]); return; }
+    setSearchingPros(true);
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('user_id, display_name, role, photo_url, zone, specialty, hourly_rate, phone, instagram')
+      .ilike('display_name', `%${q.trim()}%`)
+      .neq('role', 'empresario')
+      .not('display_name', 'is', null)
+      .limit(8);
+    setSearchingPros(false);
+    if (error) { console.error('[ContractView] search failed:', error.message); return; }
+    setProResults((data ?? []) as ProSearchResult[]);
+  }, []);
+
+  const professional: Profile = selectedPro
+    ? {
+        ...DEMO_PROFESSIONAL,
+        userId: selectedPro.user_id,
+        name: selectedPro.display_name || 'Profesional',
+        role: (selectedPro.role as Profile['role']) || 'dj',
+        specialty: selectedPro.specialty ?? '',
+        zone: selectedPro.zone ?? '',
+        location: selectedPro.zone ?? 'España',
+        price: selectedPro.hourly_rate ?? 0,
+        phone: selectedPro.phone ?? '',
+        instagram: selectedPro.instagram ?? '',
+        photo: selectedPro.photo_url ?? '',
+      }
+    : {
+        ...DEMO_PROFESSIONAL,
+        name: customName.trim() || 'Profesional',
+        role: customRole as Profile['role'],
+      };
 
   const fetchContracts = useCallback(async () => {
     if (!user) return;
@@ -339,47 +399,127 @@ const ContractView = () => {
           <FileText size={16} style={{ color: '#8A6D0F' }} />
           <h3 className="text-base font-bold">Generar contrato rápido</h3>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
-          <div>
-            <label className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-1.5 block">
-              Nombre del profesional
-            </label>
-            <input
-              className="w-full px-4 py-3 rounded-lg text-base outline-none"
-              style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#222' }}
-              placeholder="Ej: DJ Leinad"
-              value={customName}
-              onChange={e => setCustomName(e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-1.5 block">
-              Tipo de profesional
-            </label>
-            <select
-              className="w-full px-4 py-3 rounded-lg text-base outline-none"
-              style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#222', cursor: 'pointer' }}
-              value={customRole}
-              onChange={e => setCustomRole(e.target.value)}>
-              {CONTRACT_ROLE_OPTIONS.map(id => (
-                <option key={id} value={id} style={{ background: '#0a0a0e' }}>{ROLE_LABEL[id]}</option>
-              ))}
-            </select>
-          </div>
+        {/* Buscador de profesionales de XPEAK. Es el camino principal: solo
+            así el contrato queda vinculado a un usuario real y el profesional
+            recibe el aviso y el alta en su calendario. */}
+        <div className="mb-4">
+          <label className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-1.5 block">
+            Buscar profesional en XPEAK
+          </label>
+          {selectedPro ? (
+            <div className="flex items-center gap-3 px-4 py-3 rounded-lg"
+              style={{ background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.3)' }}>
+              <div className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-black flex-shrink-0 overflow-hidden"
+                style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+                {selectedPro.photo_url
+                  ? <img src={selectedPro.photo_url} alt={selectedPro.display_name ?? 'Profesional'} className="w-full h-full object-cover" />
+                  : (selectedPro.display_name || 'P').charAt(0).toUpperCase()}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-bold truncate" style={{ color: '#222' }}>{selectedPro.display_name}</p>
+                <p className="text-xs truncate" style={{ color: '#333' }}>
+                  {ROLE_LABEL[selectedPro.role ?? ''] ?? selectedPro.role}
+                  {selectedPro.zone ? ` · ${selectedPro.zone}` : ''}
+                </p>
+              </div>
+              <button onClick={() => { setSelectedPro(null); setProQuery(''); setProResults([]); }}
+                className="text-xs font-bold px-3 py-1.5 rounded-lg flex-shrink-0"
+                style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.08)', color: '#333' }}>
+                Cambiar
+              </button>
+            </div>
+          ) : (
+            <>
+              <input
+                className="w-full px-4 py-3 rounded-lg text-base outline-none"
+                style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#222' }}
+                placeholder="Escribe un nombre — ej: DJ Leinad"
+                value={proQuery}
+                onChange={e => searchPros(e.target.value)}
+              />
+              {searchingPros && <p className="text-xs text-muted-foreground mt-2">Buscando…</p>}
+              {!searchingPros && proResults.length > 0 && (
+                <div className="mt-2 flex flex-col gap-1 max-h-56 overflow-y-auto">
+                  {proResults.map(p => (
+                    <button key={p.user_id} onClick={() => { setSelectedPro(p); setProResults([]); }}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-all hover:scale-[1.01]"
+                      style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-black flex-shrink-0 overflow-hidden"
+                        style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+                        {p.photo_url
+                          ? <img src={p.photo_url} alt={p.display_name ?? 'Profesional'} className="w-full h-full object-cover" />
+                          : (p.display_name || 'P').charAt(0).toUpperCase()}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm font-bold truncate" style={{ color: '#222' }}>{p.display_name}</p>
+                        <p className="text-xs truncate" style={{ color: '#333' }}>
+                          {ROLE_LABEL[p.role ?? ''] ?? p.role}{p.zone ? ` · ${p.zone}` : ''}
+                        </p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+              {!searchingPros && proQuery.trim().length >= 2 && proResults.length === 0 && (
+                <p className="text-xs text-muted-foreground mt-2">
+                  Sin resultados en XPEAK. Puedes rellenarlo a mano abajo (el profesional no recibirá aviso automático).
+                </p>
+              )}
+            </>
+          )}
         </div>
+
+        {/* Alta manual: para contratar a alguien que no está en XPEAK. Se deja
+            claro que en ese caso no hay aviso automático. */}
+        {!selectedPro && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5 pt-4"
+            style={{ borderTop: '1px solid rgba(0,0,0,0.06)' }}>
+            <div>
+              <label className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-1.5 block">
+                O nombre manual
+              </label>
+              <input
+                className="w-full px-4 py-3 rounded-lg text-base outline-none"
+                style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#222' }}
+                placeholder="Ej: DJ Leinad"
+                value={customName}
+                onChange={e => setCustomName(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-1.5 block">
+                Tipo de profesional
+              </label>
+              <select
+                className="w-full px-4 py-3 rounded-lg text-base outline-none"
+                style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#222', cursor: 'pointer' }}
+                value={customRole}
+                onChange={e => setCustomRole(e.target.value)}>
+                {CONTRACT_ROLE_OPTIONS.map(id => (
+                  <option key={id} value={id} style={{ background: '#0a0a0e' }}>{ROLE_LABEL[id]}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        )}
         <button onClick={() => setShowModal(true)}
           className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-base hover:scale-105 transition-all"
           style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
           <FileText size={16} /> Abrir generador de contrato
           <ChevronRight size={16} />
         </button>
+        <p className="text-xs mt-3" style={{ color: selectedPro ? '#15803d' : '#333' }}>
+          {selectedPro
+            ? `✓ ${selectedPro.display_name} recibirá el aviso del contrato y se le añadirá el evento a su calendario.`
+            : 'Sin seleccionar un profesional de XPEAK, el contrato se genera igual pero nadie recibe aviso automático.'}
+        </p>
       </div>
 
       {/* ── Contract history ── */}
       <div className="glass-panel mb-6" style={{ border: '1px solid rgba(212,175,55,0.15)' }}>
-        <div className="flex items-center justify-between px-5 py-4"
+        <div className="flex items-center justify-between gap-3 flex-wrap px-5 py-4"
           style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 min-w-0">
             <FileText size={15} style={{ color: '#8A6D0F' }} />
             <h3 className="text-base font-bold">Historial de contratos</h3>
             {contracts.length > 0 && (
@@ -429,8 +569,53 @@ const ContractView = () => {
           </div>
         )}
 
+        {/* Móvil: tarjetas. La tabla de 8 columnas obligaba a hacer scroll
+            horizontal a ciegas hasta la última columna para descargar el PDF. */}
         {!loading && contracts.length > 0 && (
-          <div className="overflow-x-auto">
+          <div className="sm:hidden flex flex-col gap-2 p-3">
+            {contracts.map(c => (
+              <div key={c.id} className="rounded-xl p-3"
+                style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.06)' }}>
+                <div className="flex items-start justify-between gap-2 mb-2">
+                  <div className="min-w-0">
+                    <p className="text-sm font-bold truncate">{c.professional_name ?? '—'}</p>
+                    <p className="text-xs text-muted-foreground truncate">
+                      {ROLE_LABEL[c.professional_role ?? ''] ?? c.professional_role ?? ''}
+                    </p>
+                  </div>
+                  <span className="text-xs font-mono font-bold flex-shrink-0" style={{ color: '#8A6D0F' }}>{c.ref}</span>
+                </div>
+                <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground mb-2">
+                  {c.event_name && <span className="truncate max-w-full">{c.event_name}</span>}
+                  {c.event_date && <span>{fmtDate(c.event_date)}</span>}
+                  {c.venue && <span className="truncate max-w-full">{c.venue}</span>}
+                </div>
+                <div className="flex items-center justify-between gap-2 pt-2"
+                  style={{ borderTop: '1px solid rgba(0,0,0,0.05)' }}>
+                  <span className="text-sm font-bold" style={{ color: c.precio_neto ? '#8A6D0F' : '#333' }}>
+                    {fmtEur(c.precio_neto)}
+                  </span>
+                  <div className="flex items-center gap-1 flex-shrink-0">
+                    <button type="button" onClick={() => downloadPdf(c)}
+                      className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg"
+                      style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.25)', color: '#8A6D0F' }}>
+                      <Download size={12} /> PDF
+                    </button>
+                    <button type="button" onClick={() => deleteContract(c.id, c.ref)}
+                      title="Eliminar contrato"
+                      className="p-1.5 rounded-lg"
+                      style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)' }}>
+                      <Trash2 size={12} style={{ color: 'rgba(239,68,68,0.7)' }} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {!loading && contracts.length > 0 && (
+          <div className="overflow-x-auto hidden sm:block">
             <table className="w-full text-sm">
               <thead>
                 <tr style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
