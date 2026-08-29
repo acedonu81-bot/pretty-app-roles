@@ -111,7 +111,7 @@ export default function PublicContactModal({ professionalName, professionalUserI
           <form onSubmit={handleSubmit}>
             <div className="mb-5">
               <h3 className="text-lg font-black mb-0.5" style={{ color: '#111' }}>Escribe a {professionalName}</h3>
-              <p className="text-xs" style={{ color: '#333' }}>Sin registro. Gratis. Suele responder en minutos.</p>
+              <p className="text-xs" style={{ color: '#333' }}>Sin registro. Gratis.</p>
             </div>
 
             {isFlashActive && (

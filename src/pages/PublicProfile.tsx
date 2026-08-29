@@ -1047,7 +1047,7 @@ const PublicProfile = () => {
               {[
                 { icon: <Shield size={20} />, title: 'Sin comisión', desc: 'El precio acordado va directo al profesional.' },
                 { icon: <BadgeCheck size={20} />, title: 'Verificados', desc: 'Identidad y experiencia comprobadas por XPEAK.' },
-                { icon: <Clock size={20} />, title: 'Respuesta rápida', desc: 'Responden en menos de 24h.' },
+                { icon: <Clock size={20} />, title: 'Respuesta rápida', desc: 'Contacto directo con el profesional.' },
               ].map(({ icon, title, desc }) => (
                 <div key={title} className="p-4 rounded-2xl flex items-start gap-3" style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)' }}>
                   <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>{icon}</div>
