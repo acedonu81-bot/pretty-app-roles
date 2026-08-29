@@ -184,7 +184,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
           </button>
         )}
 
-        <div className="flex items-center gap-2 px-4 py-2.5 sm:py-2 rounded-full flex-1 max-w-[360px] transition-all"
+        <div className="flex items-center gap-2 px-4 py-2.5 sm:py-2 rounded-full flex-1 min-w-0 max-w-[360px] transition-all"
           style={{
             background: searchQuery ? 'rgba(212,175,55,0.05)' : '#f5f5f5',
             border: searchQuery ? '1px solid rgba(212,175,55,0.3)' : '1px solid rgba(0,0,0,0.1)',
@@ -208,7 +208,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
 
       </div>
 
-      <div className="flex items-center gap-5 relative flex-shrink-0">
+      <div className="flex items-center gap-3 sm:gap-5 relative flex-shrink-0">
         {/* Notification trigger — animated pulse orb. The ping rings are meant
             to expand past the button's own box (that's the pulse effect), so
             the fix for overlap with the avatar is extra gap on the flex
@@ -397,13 +397,21 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
           )}
         </div>
 
-        <button
-          onClick={() => navigate('/')}
-          className="text-xs py-1.5 px-3 flex items-center gap-2 rounded-full transition-colors"
-          style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid var(--nightlife-border)', color: 'var(--nightlife-text-secondary)' }}
-        >
-          <LogOut size={13} /> {!isMobile && 'Salir'}
-        </button>
+        {/* Oculto en móvil: en 390-412px de ancho, el botón "Menú + XPEAK +
+            búsqueda" a la izquierda y "notificaciones + avatar + Salir" a
+            la derecha no caben sin comprimirse/solaparse — y "Salir" ya
+            existe en Ajustes (SettingsView.tsx), accesible desde el bottom
+            nav. Quitarlo de aquí en móvil libera el espacio real que
+            faltaba, en vez de otro parche de tamaños/gaps. */}
+        {!isMobile && (
+          <button
+            onClick={() => navigate('/')}
+            className="text-xs py-1.5 px-3 flex items-center gap-2 rounded-full transition-colors"
+            style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid var(--nightlife-border)', color: 'var(--nightlife-text-secondary)' }}
+          >
+            <LogOut size={13} /> Salir
+          </button>
+        )}
       </div>
     </header>
   );

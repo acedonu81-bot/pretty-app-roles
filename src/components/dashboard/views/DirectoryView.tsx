@@ -38,7 +38,7 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
   const activeRoles = roles ?? [role];
   let query = supabase
     .from('profiles')
-    .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, category, is_verified, is_flash_active, is_early_adopter, is_early_adopter_override, priority_badge_until, score, role, seeking_dance_partner, dance_level, dance_role, created_at')
+    .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, instagram, category, is_verified, is_flash_active, is_early_adopter, is_early_adopter_override, priority_badge_until, score, role, seeking_dance_partner, dance_level, dance_role, created_at')
     .in('role', activeRoles)
     .limit(200);
 
@@ -115,7 +115,10 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
       badges: row.genres ?? [],
       description: row.bio || '',
       phone: '',
-      instagram: '',
+      // Antes hardcodeado a '' — el enlace real de Instagram del modal del
+      // dashboard (ProfessionalProfilePage.tsx) nunca se mostraba, aunque el
+      // profesional sí tuviera el campo relleno en Supabase.
+      instagram: row.instagram || '',
       topWeekend: false,
       photo: row.photo_url || '',
       subscriptionTier: (row.subscription_tier as Profile['subscriptionTier']) ?? 'free',

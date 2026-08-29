@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
-import { Clock, AlertTriangle, Play, Pause, CheckCircle, XCircle, Shield, Instagram, Trash2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Clock, AlertTriangle, Play, ChevronUp, CheckCircle, XCircle, Shield, Instagram, Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import SessionAudioPlayer from '@/components/SessionAudioPlayer';
 
 interface PendingProfile {
   id: string;
@@ -9,7 +10,8 @@ interface PendingProfile {
   role: string;
   zone: string | null;
   score: number;
-  audio_url: string | null;
+  audio_embed_url: string | null;
+  audio_session_urls: string[] | null;
   validation_submitted_at: string | null;
   category: string;
   user_id: string;
@@ -18,21 +20,32 @@ interface PendingProfile {
 
 const AdminValidations = () => {
   const [pending, setPending] = useState<PendingProfile[]>([]);
-  const [playingId, setPlayingId] = useState<string | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchPending();
   }, []);
 
   const fetchPending = async () => {
+    // audio_url (singular) es un campo legacy que ningún flujo de la app
+    // rellena — 0 perfiles lo tienen en producción, así que "Escuchar
+    // sesión" siempre decía "Sin audio subido" aunque el profesional sí
+    // tuviera sesiones reales guardadas en audio_session_urls/audio_embed_url
+    // (el mismo par de campos que ya usa el perfil público).
     const { data, error } = await supabase
       .from('profiles')
-      .select('id, display_name, role, zone, score, audio_url, validation_submitted_at, category, user_id, instagram')
+      .select('id, display_name, role, zone, score, audio_embed_url, audio_session_urls, validation_submitted_at, category, user_id, instagram')
       .eq('validation_status', 'pending')
       .order('validation_submitted_at', { ascending: true });
     if (error) { toast.error('Error al cargar validaciones pendientes'); return; }
     setPending((data ?? []) as PendingProfile[]);
+  };
+
+  const getSessionUrls = (p: PendingProfile): string[] => {
+    const urls: string[] = [];
+    if (p.audio_embed_url) urls.push(p.audio_embed_url);
+    if (p.audio_session_urls) urls.push(...p.audio_session_urls);
+    return urls;
   };
 
   // null → registros antiguos sin fecha de envío (previos a que se empezara a
@@ -118,20 +131,6 @@ const AdminValidations = () => {
     setPending(prev => prev.filter(p => p.validation_submitted_at));
   };
 
-  const toggleAudio = (id: string, url: string | null) => {
-    if (!url) { toast.error('Sin audio disponible'); return; }
-    if (playingId === id) {
-      audioRef.current?.pause();
-      setPlayingId(null);
-    } else {
-      if (audioRef.current) audioRef.current.pause();
-      audioRef.current = new Audio(url);
-      audioRef.current.play();
-      audioRef.current.onended = () => setPlayingId(null);
-      setPlayingId(id);
-    }
-  };
-
   return (
     <div className="glass-panel p-5 mb-6">
       <h3 className="text-sm font-bold mb-4 flex items-center gap-2 flex-wrap">
@@ -186,18 +185,31 @@ const AdminValidations = () => {
                   </span>
                 </div>
 
-                {/* Audio player */}
-                <div className="flex items-center gap-2 mb-3">
-                  <button onClick={() => toggleAudio(p.id, p.audio_url)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-all hover:scale-105"
-                    style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
-                    {playingId === p.id ? <Pause size={12} /> : <Play size={12} />}
-                    {playingId === p.id ? 'Pausar' : 'Escuchar sesión'}
-                  </button>
-                  {!p.audio_url && (
-                    <span className="text-[0.75rem] text-muted-foreground italic">Sin audio subido</span>
-                  )}
-                </div>
+                {/* Audio player(s) — puede haber varios: audio_embed_url +
+                    cada URL de audio_session_urls. Colapsado por defecto
+                    para no cargar N iframes de golpe con hasta 31 tarjetas. */}
+                {(() => {
+                  const sessionUrls = getSessionUrls(p);
+                  const isExpanded = expandedId === p.id;
+                  return (
+                    <div className="mb-3">
+                      <button onClick={() => setExpandedId(isExpanded ? null : p.id)}
+                        disabled={sessionUrls.length === 0}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-all hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
+                        style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: '#8A6D0F' }}>
+                        {isExpanded ? <ChevronUp size={12} /> : <Play size={12} />}
+                        {sessionUrls.length === 0
+                          ? 'Sin audio subido'
+                          : isExpanded ? 'Ocultar' : `Escuchar sesión${sessionUrls.length > 1 ? `es (${sessionUrls.length})` : ''}`}
+                      </button>
+                      {isExpanded && (
+                        <div className="flex flex-col gap-2 mt-2">
+                          {sessionUrls.map((url, i) => <SessionAudioPlayer key={i} url={url} />)}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
 
                 {/* Action buttons */}
                 <div className="flex gap-2">

@@ -5,6 +5,7 @@ import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, Headpho
 import { toast } from 'sonner';
 import { addToCart, useEventCart, MAX_CART_ITEMS } from '@/lib/eventCart';
 import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack } from '@/lib/streaming';
+import SessionAudioPlayer from '@/components/SessionAudioPlayer';
 import { profiles, toSlug } from '@/data/profiles';
 import { useAuth } from '@/hooks/useAuth';
 import PublicContactModal from '@/components/PublicContactModal';
@@ -245,51 +246,6 @@ const ReviewsSection = ({ professionalUserId, professionalName }: { professional
   );
 };
 
-
-/** Sesión del perfil: embed si es SoundCloud/Mixcloud/hearthis, <audio> si es archivo subido. */
-const SessionAudio = ({ url }: { url: string }) => {
-  const [embedSrc, setEmbedSrc] = useState<string | null>(null);
-  const parsed = useMemo(() => parseStreamUrl(url), [url]);
-
-  useEffect(() => {
-    if (!parsed) return;
-    if (!parsed.needsResolve) { setEmbedSrc(parsed.embedUrl); return; }
-    if (!parsed._hearthisUser) return;
-    const resolver = parsed._hearthisSlug
-      ? resolveHearthisTrack(parsed._hearthisUser, parsed._hearthisSlug)
-      : resolveHearthisProfile(parsed._hearthisUser);
-    resolver.then(u => setEmbedSrc(u));
-  }, [parsed]);
-
-  if (parsed) {
-    if (!embedSrc) return null;
-    return (
-      <iframe
-        src={embedSrc}
-        width="100%"
-        height={parsed.type === 'SoundCloud' ? 166 : 120}
-        allow="autoplay"
-        className="rounded-xl"
-        style={{ border: 'none' }}
-        title="Sesión de audio"
-      />
-    );
-  }
-  return (
-    <audio
-      src={url}
-      controls
-      className="w-full rounded-xl"
-      onError={(e) => {
-        const audio = e.currentTarget;
-        const p = document.createElement('p');
-        p.textContent = 'Sesión no disponible temporalmente';
-        p.style.cssText = 'font-size:11px;color:#444;padding:8px 12px;background:rgba(0,0,0,0.04);border-radius:8px;';
-        audio.replaceWith(p);
-      }}
-    />
-  );
-};
 
 const BASE_URL = 'https://xpeak.es';
 
@@ -998,7 +954,7 @@ const PublicProfile = () => {
               <div className="flex flex-col gap-3">
                 {extraMedia.audio_session_urls.slice(0, 5).map((url, i) => (
                   <div key={i} className="w-full">
-                    <SessionAudio url={url} />
+                    <SessionAudioPlayer url={url} />
                   </div>
                 ))}
               </div>

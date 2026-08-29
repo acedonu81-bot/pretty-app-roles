@@ -11,6 +11,7 @@ import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack, normalize
 import { useProfile as useMyProfile } from '@/hooks/useProfile';
 import GeometricAvatar from './GeometricAvatar';
 import ContractModal from './ContractModal';
+import SessionAudioPlayer from '@/components/SessionAudioPlayer';
 import type { Profile } from '@/data/profiles';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -146,6 +147,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
   const cfg = getRoleCfg(p.role);
   const [full, setFull] = useState<{
     audioEmbedUrl?: string | null;
+    audioSessionUrls?: string[];
     portfolioUrls?: string[];
     bio?: string;
     languages?: string[];
@@ -170,13 +172,18 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
     const load = async () => {
       const { data } = await supabase
         .from('profiles')
-        .select('audio_embed_url, portfolio_urls, bio, languages, genres, hourly_rate, is_verified, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role')
+        // audio_session_urls faltaba aquí — este modal (usado desde el
+        // dashboard) nunca mostraba la sección "Sesiones" que sí tiene el
+        // perfil público (PublicProfile.tsx), aunque el profesional tuviera
+        // varias sesiones reales guardadas (p. ej. Dj Poly, 2 en Mixcloud).
+        .select('audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, genres, hourly_rate, is_verified, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role')
         .eq('user_id', p.userId)
         .maybeSingle();
       if (!data) return;
 
       setFull({
         audioEmbedUrl: (data as any).audio_embed_url,
+        audioSessionUrls: (data as any).audio_session_urls ?? [],
         portfolioUrls: (data as any).portfolio_urls ?? [],
         bio: (data as any).bio || p.description,
         languages: (data as any).languages ?? p.languages ?? [],
@@ -464,6 +471,22 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                     <ExternalLink size={14} /> Escuchar set / audio
                   </a>
                 )}
+              </motion.div>
+            )}
+
+            {/* Sesiones — antes solo existían en el perfil público
+                (PublicProfile.tsx); este modal (dashboard) nunca las
+                consultaba ni las mostraba, aunque el profesional tuviera
+                varias guardadas. */}
+            {full.audioSessionUrls && full.audioSessionUrls.length > 0 && (
+              <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.11 }}
+                style={{ borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: 22 }}>
+                <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#444' }}>🎧 SESIONES</p>
+                <div className="flex flex-col gap-3">
+                  {full.audioSessionUrls.slice(0, 5).map((url, i) => (
+                    <SessionAudioPlayer key={i} url={url} />
+                  ))}
+                </div>
               </motion.div>
             )}
 
