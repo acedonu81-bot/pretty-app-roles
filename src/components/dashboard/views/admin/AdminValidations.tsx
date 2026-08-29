@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Clock, AlertTriangle, Play, Pause, CheckCircle, XCircle, Shield, Instagram } from 'lucide-react';
+import { Clock, AlertTriangle, Play, Pause, CheckCircle, XCircle, Shield, Instagram, Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -90,6 +90,34 @@ const AdminValidations = () => {
     setPending(prev => prev.filter(p => p.id !== profile.id));
   };
 
+  // Solicitudes "SIN FECHA" son registros antiguos, previos a que se
+  // empezara a guardar validation_submitted_at (fix del 29 ago) — no son
+  // rechazos de calidad reales, así que no se avisa por email como un
+  // rechazo normal (handleAction). Solo las saca de la cola de pendientes,
+  // el perfil y la cuenta del usuario no se tocan.
+  const handleDiscard = async (profile: PendingProfile) => {
+    const { error } = await supabase
+      .from('profiles')
+      .update({ validation_status: 'rejected', category: 'rejected' })
+      .eq('id', profile.id);
+    if (error) { toast.error('Error al descartar'); return; }
+    toast.success(`"${profile.display_name}" descartada de la cola`);
+    setPending(prev => prev.filter(p => p.id !== profile.id));
+  };
+
+  const handleDiscardAllWithoutDate = async () => {
+    const toDiscard = pending.filter(p => !p.validation_submitted_at);
+    if (toDiscard.length === 0) return;
+    if (!confirm(`¿Descartar las ${toDiscard.length} solicitudes SIN FECHA? Los perfiles no se borran, solo salen de esta cola.`)) return;
+    const { error } = await supabase
+      .from('profiles')
+      .update({ validation_status: 'rejected', category: 'rejected' })
+      .in('id', toDiscard.map(p => p.id));
+    if (error) { toast.error('Error al descartar en bloque'); return; }
+    toast.success(`${toDiscard.length} solicitudes sin fecha descartadas`);
+    setPending(prev => prev.filter(p => p.validation_submitted_at));
+  };
+
   const toggleAudio = (id: string, url: string | null) => {
     if (!url) { toast.error('Sin audio disponible'); return; }
     if (playingId === id) {
@@ -106,13 +134,20 @@ const AdminValidations = () => {
 
   return (
     <div className="glass-panel p-5 mb-6">
-      <h3 className="text-sm font-bold mb-4 flex items-center gap-2">
+      <h3 className="text-sm font-bold mb-4 flex items-center gap-2 flex-wrap">
         <Shield size={14} style={{ color: '#8A6D0F' }} />
         Validaciones Pendientes
         {pending.length > 0 && (
           <span className="text-[0.75rem] px-2 py-0.5 rounded-full font-bold" style={{ background: 'rgba(255,95,86,0.15)', color: '#ff5f56' }}>
             {pending.length}
           </span>
+        )}
+        {pending.some(p => !p.validation_submitted_at) && (
+          <button onClick={handleDiscardAllWithoutDate}
+            className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[0.75rem] font-bold transition-all hover:scale-105"
+            style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.1)', color: '#555' }}>
+            <Trash2 size={11} /> Descartar todas SIN FECHA ({pending.filter(p => !p.validation_submitted_at).length})
+          </button>
         )}
       </h3>
 
@@ -181,6 +216,13 @@ const AdminValidations = () => {
                     style={{ background: 'rgba(255,95,86,0.08)', border: '1px solid rgba(255,95,86,0.2)', color: '#ff5f56' }}>
                     <XCircle size={12} /> Rechazar
                   </button>
+                  {hours === null && (
+                    <button onClick={() => handleDiscard(p)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-all hover:scale-105"
+                      style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.1)', color: '#555' }}>
+                      <Trash2 size={12} /> Descartar
+                    </button>
+                  )}
                 </div>
               </div>
             );
