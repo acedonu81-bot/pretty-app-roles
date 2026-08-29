@@ -368,7 +368,7 @@ const Dashboard = () => {
           <ProfileIncompleteBanner onNavigate={handleViewChange} activeView={activeView} />
           <RecentBusinessViewLine />
           <TodaysRequestsLine />
-          <div className={`p-4 md:p-6 flex-1 md:pb-6 ${isMobile ? 'pb-[calc(64px+max(env(safe-area-inset-bottom),12px)+1.5rem)]' : 'pb-6'}`}
+          <div className={`p-3 md:p-6 flex-1 md:pb-6 ${isMobile ? 'pb-[calc(64px+max(env(safe-area-inset-bottom),12px)+1.5rem)]' : 'pb-6'}`}
             ref={viewContentRef}>
             <Suspense fallback={<div className="flex items-center justify-center py-20"><div className="w-6 h-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#D4AF37', borderTopColor: 'transparent' }} /></div>}>
               {renderView()}

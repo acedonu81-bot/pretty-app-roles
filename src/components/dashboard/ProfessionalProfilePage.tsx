@@ -12,6 +12,7 @@ import { useProfile as useMyProfile } from '@/hooks/useProfile';
 import GeometricAvatar from './GeometricAvatar';
 import ContractModal from './ContractModal';
 import SessionAudioPlayer from '@/components/SessionAudioPlayer';
+import { instagramUrl, extractInstagramHandle } from '@/lib/social';
 import type { Profile } from '@/data/profiles';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -517,10 +518,10 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
               <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.14 }}
                 className="flex gap-2 flex-wrap" style={{ borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: 22 }}>
                 {p.instagram && (
-                  <a href={`https://instagram.com/${p.instagram}`} target="_blank" rel="noopener noreferrer"
+                  <a href={instagramUrl(p.instagram)} target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all hover:scale-105"
                     style={{ background: 'rgba(225,48,108,0.08)', color: '#E1306C', border: '1px solid rgba(225,48,108,0.15)' }}>
-                    <Instagram size={13} /> @{p.instagram}
+                    <Instagram size={13} /> @{extractInstagramHandle(p.instagram)}
                   </a>
                 )}
                 {p.tiktok && (

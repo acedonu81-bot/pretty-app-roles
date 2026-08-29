@@ -6,6 +6,7 @@ import { useProfile } from '@/hooks/useProfile';
 import { toast } from 'sonner';
 import { ROLE_ES } from '@/lib/constants';
 import { buildWorkbook, downloadWorkbook } from '@/lib/csvExport';
+import { instagramUrl } from '@/lib/social';
 import type { Pro } from '@/types';
 import DiscoverTab from './empresario/DiscoverTab';
 import FlashTab from './empresario/FlashTab';
@@ -174,7 +175,7 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
           p.hourly_rate > 0 ? `€${p.hourly_rate}` : 'A consultar',
           p.is_verified ? 'Verificado ✓' : 'Sin verificar',
           p.is_flash_active ? 'Disponible ahora' : 'No disponible',
-          p.instagram ? `https://instagram.com/${p.instagram.replace('@', '')}` : '—',
+          p.instagram ? instagramUrl(p.instagram) : '—',
           notes[p.id] ?? '',
         ]),
       },

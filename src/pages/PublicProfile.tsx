@@ -14,6 +14,7 @@ import AvailabilityCalendar from '@/components/AvailabilityCalendar';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { isEarlyAdopter } from '@/lib/earlyAdopter';
+import { instagramUrl, extractInstagramHandle } from '@/lib/social';
 
 /* ── Reviews ─────────────────────────────────────────────────────────────── */
 interface Review {
@@ -640,7 +641,7 @@ const PublicProfile = () => {
             }
           } : {}),
           ...(profile.badges && profile.badges.length > 0 ? { "knowsAbout": profile.badges } : {}),
-          ...(sbProfile?.instagram ? { "sameAs": [`https://www.instagram.com/${sbProfile.instagram}`] } : {}),
+          ...(sbProfile?.instagram ? { "sameAs": [instagramUrl(sbProfile.instagram).replace('instagram.com', 'www.instagram.com')] } : {}),
           ...(seoReviews.length > 0 ? {
             "aggregateRating": {
               "@type": "AggregateRating",
@@ -797,10 +798,10 @@ const PublicProfile = () => {
               {/* Instagram */}
               {sbProfile?.instagram && (
                 <div className="mb-4">
-                  <a href={`https://instagram.com/${sbProfile.instagram}`} target="_blank" rel="noopener noreferrer"
+                  <a href={instagramUrl(sbProfile.instagram)} target="_blank" rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full transition-all hover:scale-105"
                     style={{ background: 'rgba(225,48,108,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(225,48,108,0.4)', color: '#fff' }}>
-                    <Instagram size={12} /> @{sbProfile.instagram}
+                    <Instagram size={12} /> @{extractInstagramHandle(sbProfile.instagram)}
                   </a>
                 </div>
               )}

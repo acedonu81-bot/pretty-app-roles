@@ -3,6 +3,7 @@ import { Image, Music, Video, ExternalLink, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
 import SessionAudioEmbed from '@/components/dashboard/SessionAudioEmbed';
+import { instagramUrl } from '@/lib/social';
 
 interface MediaProfile {
   user_id: string;
@@ -120,7 +121,7 @@ const MediaTab = () => {
             {/* Social links */}
             <div className="flex gap-2 flex-wrap">
               {p.instagram && (
-                <a href={`https://instagram.com/${p.instagram.replace('@', '')}`}
+                <a href={instagramUrl(p.instagram)}
                   target="_blank" rel="noopener noreferrer"
                   className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
                   style={{ background: 'rgba(225,48,108,0.08)', border: '1px solid rgba(225,48,108,0.2)', color: '#e1306c' }}>

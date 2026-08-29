@@ -3,6 +3,7 @@ import { Clock, AlertTriangle, Play, ChevronUp, CheckCircle, XCircle, Shield, In
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import SessionAudioPlayer from '@/components/SessionAudioPlayer';
+import { extractInstagramHandle } from '@/lib/social';
 
 interface PendingProfile {
   id: string;
@@ -181,7 +182,7 @@ const AdminValidations = () => {
                   <span>Score: <span className="font-bold" style={{ color: p.score >= 40 ? '#22c55e' : '#ff5f56' }}>{p.score}/100</span></span>
                   <span className="flex items-center gap-1">
                     <Instagram size={11} style={{ color: p.instagram ? '#8A6D0F' : '#ff5f56' }} />
-                    {p.instagram ? `@${p.instagram.replace(/^@/, '')}` : <span style={{ color: '#ff5f56' }}>Sin Instagram</span>}
+                    {p.instagram ? `@${extractInstagramHandle(p.instagram)}` : <span style={{ color: '#ff5f56' }}>Sin Instagram</span>}
                   </span>
                 </div>
 
