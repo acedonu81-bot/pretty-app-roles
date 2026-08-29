@@ -40,6 +40,10 @@ interface Props {
   onBookNow: (p: ReelsProfile) => void;
   onAddToCart: (p: ReelsProfile) => void;
   isInCart: (userId: string) => boolean;
+  // "Mi evento" es una función de empresario (contratar profesionales) — un
+  // profesional viendo el feed no tiene por qué poder añadir a un carrito
+  // que no le sirve, así que el botón "+" solo se muestra si es empresario.
+  showCartButton: boolean;
 }
 
 const initialFor = (name: string) => (name?.trim()?.[0] ?? '?').toUpperCase();
@@ -190,7 +194,7 @@ function ReelVideoSlide({ url, active, soundOn }: { url: string; active: boolean
  * scroll-snap-y del contenedor padre — el gesto vertical para cambiar de
  * perfil sigue funcionando sin importar en qué slide horizontal se esté.
  */
-function ReelSlider({ profile: p, eager, imgError, onImgError, soundOn, active, inCart, onOpenProfile, onBookNow, onAddToCart }: {
+function ReelSlider({ profile: p, eager, imgError, onImgError, soundOn, active, inCart, onOpenProfile, onBookNow, onAddToCart, showCartButton }: {
   profile: ReelsProfile;
   eager: boolean;
   imgError: boolean;
@@ -201,6 +205,7 @@ function ReelSlider({ profile: p, eager, imgError, onImgError, soundOn, active, 
   onOpenProfile: (p: ReelsProfile) => void;
   onBookNow: (p: ReelsProfile) => void;
   onAddToCart: (p: ReelsProfile) => void;
+  showCartButton: boolean;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [hIdx, setHIdx] = useState(0);
@@ -238,7 +243,7 @@ function ReelSlider({ profile: p, eager, imgError, onImgError, soundOn, active, 
                   photoUrl={slide.url}
                 />
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.4) 100%)' }} />
-                <div className="absolute bottom-0 left-0 right-0 z-20 p-5 max-w-sm" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 1.5rem)' }}>
+                <div className="swipe-card-info absolute bottom-0 left-0 right-0 z-20 p-5 max-w-sm" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 1.5rem)' }}>
                   <div className="flex flex-wrap gap-2 mb-3">
                     {p.is_flash_active && (
                       <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-black" style={{ background: '#15803d', color: '#fff' }}>
@@ -280,13 +285,15 @@ function ReelSlider({ profile: p, eager, imgError, onImgError, soundOn, active, 
                   )}
 
                   <div className="flex gap-2">
-                    <button onClick={() => onAddToCart(p)} disabled={inCart}
-                      className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 transition-all active:scale-95"
-                      style={inCart
-                        ? { background: 'rgba(34,197,94,0.2)', border: '1.5px solid rgba(34,197,94,0.5)' }
-                        : { background: 'rgba(255,255,255,0.12)', border: '1.5px solid rgba(255,255,255,0.25)', backdropFilter: 'blur(8px)' }}>
-                      {inCart ? <Check size={18} color="#22c55e" /> : <Plus size={18} color="#fff" />}
-                    </button>
+                    {showCartButton && (
+                      <button onClick={() => onAddToCart(p)} disabled={inCart}
+                        className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 transition-all active:scale-95"
+                        style={inCart
+                          ? { background: 'rgba(34,197,94,0.2)', border: '1.5px solid rgba(34,197,94,0.5)' }
+                          : { background: 'rgba(255,255,255,0.12)', border: '1.5px solid rgba(255,255,255,0.25)', backdropFilter: 'blur(8px)' }}>
+                        {inCart ? <Check size={18} color="#22c55e" /> : <Plus size={18} color="#fff" />}
+                      </button>
+                    )}
                     <button onClick={() => onOpenProfile(p)}
                       className="h-12 px-4 rounded-full flex items-center justify-center font-semibold text-sm flex-shrink-0"
                       style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.18)', color: 'rgba(255,255,255,0.85)' }}>
@@ -331,7 +338,7 @@ function ReelSlider({ profile: p, eager, imgError, onImgError, soundOn, active, 
   );
 }
 
-export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToCart, isInCart }: Props) {
+export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToCart, isInCart, showCartButton }: Props) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
   const [activeIdx, setActiveIdx] = useState(0);
@@ -503,6 +510,7 @@ export default function ReelsFeed({ profiles, onOpenProfile, onBookNow, onAddToC
               onOpenProfile={onOpenProfile}
               onBookNow={onBookNow}
               onAddToCart={onAddToCart}
+              showCartButton={showCartButton}
             />
           </div>
         );

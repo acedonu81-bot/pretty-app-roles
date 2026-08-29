@@ -10,6 +10,7 @@ import {
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useProfile } from '@/hooks/useProfile';
 import ReelsFeed from '@/components/ReelsFeed';
 import { addToCart, useEventCart, MAX_CART_ITEMS } from '@/lib/eventCart';
 import {
@@ -57,6 +58,7 @@ const ALL_SLUG = 'todos';
 export default function Descubrir() {
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
+  const { role: profileRole } = useProfile();
   const { items: cartItems } = useEventCart();
 
   // El feed swipe es una experiencia móvil. En desktop se ve mal (foto estirada,
@@ -156,6 +158,7 @@ export default function Descubrir() {
             else if (result === 'limit_reached') toast.error(`Máximo ${MAX_CART_ITEMS} profesionales por evento. Elimina alguno para añadir más.`);
           }}
           isInCart={(userId) => cartItems.some(i => i.userId === userId)}
+          showCartButton={profileRole === 'empresario'}
         />
       )}
 
