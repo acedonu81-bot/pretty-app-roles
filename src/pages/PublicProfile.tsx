@@ -329,6 +329,7 @@ interface RelatedProfile {
   role: string;
   specialty: string | null;
   zone: string | null;
+  photo_url: string | null;
 }
 
 const PublicProfile = () => {
@@ -450,7 +451,7 @@ const PublicProfile = () => {
           // Load related profiles
           supabase
             .from('profiles')
-            .select('user_id, display_name, role, specialty, zone')
+            .select('user_id, display_name, role, specialty, zone, photo_url')
             .eq('role', data.role)
             .neq('user_id', data.user_id)
             .not('display_name', 'is', null)
@@ -602,11 +603,12 @@ const PublicProfile = () => {
         href: `/p/${toSlug(r.display_name ?? '') || r.user_id}`,
         rating: 0,
         id: r.user_id,
+        photo: r.photo_url ?? '',
       }))
     : profiles
         .filter(p => p.role === profile.role && p.id !== (staticProfile?.id ?? -1))
         .slice(0, 3)
-        .map(p => ({ key: String(p.id), name: p.name, role: p.role, specialty: p.specialty, zone: p.zone ?? '', href: `/p/${toSlug(p.name)}`, rating: p.rating, id: p.id }));
+        .map(p => ({ key: String(p.id), name: p.name, role: p.role, specialty: p.specialty, zone: p.zone ?? '', href: `/p/${toSlug(p.name)}`, rating: p.rating, id: p.id, photo: p.photo ?? '' }));
 
   const fadeUp = { hidden: { opacity: 0, y: 28 }, show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } } };
   const stagger = { show: { transition: { staggerChildren: 0.1 } } };
@@ -1110,10 +1112,15 @@ const PublicProfile = () => {
                   <a key={r.key} href={r.href}
                     className="flex items-center gap-3 p-3 rounded-xl transition-all hover:scale-[1.01]"
                     style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.06)' }}>
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-black flex-shrink-0"
-                      style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-                      {(r.name || 'X').charAt(0).toUpperCase()}
-                    </div>
+                    {r.photo ? (
+                      <img src={r.photo} alt={r.name} loading="lazy"
+                        className="w-9 h-9 rounded-xl object-cover flex-shrink-0" />
+                    ) : (
+                      <div className="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-black flex-shrink-0"
+                        style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+                        {(r.name || 'X').charAt(0).toUpperCase()}
+                      </div>
+                    )}
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-bold truncate" style={{ color: '#222' }}>{r.name}</p>
                       <p className="text-xs truncate" style={{ color: '#444' }}>{r.specialty} {r.zone ? `· ${r.zone}` : ''}</p>

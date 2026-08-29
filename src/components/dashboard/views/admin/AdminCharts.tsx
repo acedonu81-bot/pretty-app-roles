@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { BarChart3, Activity } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
-interface PlanCounts { elite: number; premium: number; starter: number; free: number; total: number; }
+interface PlanCounts { elite: number; agency: number; free: number; total: number; }
 interface ZoneCount { zone: string; count: number; }
 
 const AdminCharts = () => {
@@ -12,24 +12,33 @@ const AdminCharts = () => {
 
   useEffect(() => {
     const load = async () => {
-      const [eliteRes, premRes, starterRes, freeRes, zoneRes] = await Promise.all([
+      // Tiers reales usados por la lógica de negocio activa (DashboardSidebar.tsx,
+      // AgencyView.tsx): free/agency/elite. Antes este componente usaba
+      // premium/business/starter — nombres que no existen en ningún otro sitio
+      // del código, así que en cuanto hubiera el primer usuario `agency` (el
+      // tier real, no contado en ningún bucket de antes), "Total" no habría
+      // sumado al total de usuarios y ese usuario habría desaparecido del breakdown.
+      const [eliteRes, agencyRes, freeRes, zoneRes] = await Promise.all([
         supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('subscription_tier', 'elite'),
-        supabase.from('profiles').select('id', { count: 'exact', head: true }).in('subscription_tier', ['premium', 'business']),
-        supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('subscription_tier', 'starter'),
+        supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('subscription_tier', 'agency'),
         supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('subscription_tier', 'free'),
         supabase.from('profiles').select('zone').not('zone', 'is', null).limit(500),
       ]);
 
       const elite = eliteRes.count ?? 0;
-      const premium = premRes.count ?? 0;
-      const starter = starterRes.count ?? 0;
+      const agency = agencyRes.count ?? 0;
       const free = freeRes.count ?? 0;
-      setPlans({ elite, premium, starter, free, total: elite + premium + starter + free });
+      setPlans({ elite, agency, free, total: elite + agency + free });
 
-      // Aggregate zones client-side from fetched data
+      // Aggregate zones client-side from fetched data. Algunos perfiles
+      // guardaron su zona como "Madrid, España" en vez de "Madrid" — sin
+      // normalizar, el heatmap las cuenta como dos ciudades distintas y
+      // "Madrid" aparece duplicado. Todo el negocio es España, así que el
+      // sufijo de país tras la coma se descarta al agrupar.
       const zoneCounts: Record<string, number> = {};
       (zoneRes.data ?? []).forEach((r: { zone: string | null }) => {
-        if (r.zone) zoneCounts[r.zone] = (zoneCounts[r.zone] ?? 0) + 1;
+        const zone = r.zone?.split(',')[0]?.trim();
+        if (zone) zoneCounts[zone] = (zoneCounts[zone] ?? 0) + 1;
       });
       const sorted = Object.entries(zoneCounts)
         .map(([zone, count]) => ({ zone, count }))
@@ -98,17 +107,16 @@ const AdminCharts = () => {
       <div className="glass-panel p-5 mb-6">
         <h3 className="text-sm font-bold mb-4">Distribución de Planes</h3>
         {loading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {Array(4).fill(0).map((_, i) => (
+          <div className="grid grid-cols-3 gap-4">
+            {Array(3).fill(0).map((_, i) => (
               <div key={i} className="h-16 rounded-lg animate-pulse" style={{ background: 'rgba(0,0,0,0.05)' }} />
             ))}
           </div>
         ) : plans ? (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             {[
               { label: 'Elite', count: plans.elite,   color: '#8A6D0F' },
-              { label: 'Premium', count: plans.premium, color: '#8B5CF6' },
-              { label: 'Starter', count: plans.starter, color: '#555' },
+              { label: 'Agency', count: plans.agency, color: '#8B5CF6' },
               { label: 'Free',   count: plans.free,    color: '#333' },
             ].map((p) => (
               <div key={p.label} className="text-center">

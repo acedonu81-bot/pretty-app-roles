@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type CSSProperties } from 'react';
 import { Tag, Plus, Check, X, Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -50,6 +50,26 @@ const AdminPromoCodes = () => {
     loadPromoCodes();
   };
 
+  // is_active es un flag manual que el admin enciende/apaga a mano — no
+  // considera por sí solo si el código ya caducó (valid_until) o se agotó
+  // (current_uses >= max_uses). Antes de este fix, un código caducado o
+  // agotado seguía mostrando el badge verde "Activo" hasta que alguien lo
+  // desactivara a mano. getRealStatus distingue los 3 motivos por los que
+  // un código deja de funcionar, sin tocar el propio is_active almacenado.
+  const getRealStatus = (c: PromoCode): { label: string; tone: 'active' | 'expired' | 'exhausted' | 'inactive' } => {
+    if (!c.is_active) return { label: 'Inactivo', tone: 'inactive' };
+    if (c.valid_until && new Date(c.valid_until) < new Date()) return { label: 'Caducado', tone: 'expired' };
+    if (c.max_uses != null && c.current_uses >= c.max_uses) return { label: 'Agotado', tone: 'exhausted' };
+    return { label: 'Activo', tone: 'active' };
+  };
+
+  const statusStyle: Record<'active' | 'expired' | 'exhausted' | 'inactive', CSSProperties> = {
+    active: { background: 'rgba(34,197,94,0.1)', color: '#22c55e', border: '1px solid rgba(34,197,94,0.2)' },
+    expired: { background: 'rgba(239,68,68,0.1)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.2)' },
+    exhausted: { background: 'rgba(249,115,22,0.1)', color: '#f97316', border: '1px solid rgba(249,115,22,0.2)' },
+    inactive: { background: 'rgba(0,0,0,0.04)', color: '#555', border: '1px solid rgba(0,0,0,0.08)' },
+  };
+
   const handleToggleCode = async (id: string, current: boolean) => {
     await (supabase.from as any)('promo_codes').update({ is_active: !current }).eq('id', id);
     loadPromoCodes();
@@ -98,7 +118,11 @@ const AdminPromoCodes = () => {
               className="nightlife-input text-sm w-full appearance-none"
             >
               <option value="">Todos los planes</option>
-              {['starter', 'business', 'agency'].map(p => (
+              {/* Tiers reales usados por la lógica de negocio (DashboardSidebar.tsx,
+                  AgencyView.tsx): free/agency/elite — no starter/business, que no
+                  existen en ningún otro sitio del código. Free se omite aquí porque
+                  no tiene sentido ofrecer un descuento sobre el plan gratuito. */}
+              {['agency', 'elite'].map(p => (
                 <option key={p} value={p}>{p.charAt(0).toUpperCase() + p.slice(1)}</option>
               ))}
             </select>
@@ -149,7 +173,7 @@ const AdminPromoCodes = () => {
         <div className="px-6 py-4 flex items-center gap-2" style={{ borderBottom: '1px solid rgba(212,175,55,0.08)' }}>
           <Tag size={16} style={{ color: '#D4AF37' }} />
           <h3 className="text-sm font-bold">Códigos activos</h3>
-          <span className="ml-auto text-xs text-muted-foreground">{promoCodes.filter(c => c.is_active).length} activos</span>
+          <span className="ml-auto text-xs text-muted-foreground">{promoCodes.filter(c => getRealStatus(c).tone === 'active').length} activos</span>
         </div>
         {loading ? (
           <p className="text-sm text-center py-10 animate-pulse text-muted-foreground">Cargando...</p>
@@ -176,14 +200,17 @@ const AdminPromoCodes = () => {
                       {c.valid_until ? new Date(c.valid_until).toLocaleDateString('es-ES') : '∞'}
                     </td>
                     <td className="px-4 py-3">
+                      {/* El botón sigue alternando is_active (control manual del
+                          admin); el texto/color reflejan el estado REAL del
+                          código — caducado o agotado se muestran así aunque
+                          is_active siga en true, en vez de decir "Activo". */}
                       <button
                         onClick={() => handleToggleCode(c.id, c.is_active)}
                         className="flex items-center gap-1 px-2 py-1 rounded text-[0.65rem] font-bold transition-all"
-                        style={c.is_active
-                          ? { background: 'rgba(34,197,94,0.1)', color: '#22c55e', border: '1px solid rgba(34,197,94,0.2)' }
-                          : { background: 'rgba(0,0,0,0.04)', color: '#555', border: '1px solid rgba(0,0,0,0.08)' }}
+                        style={statusStyle[getRealStatus(c).tone]}
                       >
-                        {c.is_active ? <><Check size={10} /> Activo</> : <><X size={10} /> Inactivo</>}
+                        {getRealStatus(c).tone === 'active' ? <Check size={10} /> : <X size={10} />}
+                        {' '}{getRealStatus(c).label}
                       </button>
                     </td>
                     <td className="px-4 py-3">

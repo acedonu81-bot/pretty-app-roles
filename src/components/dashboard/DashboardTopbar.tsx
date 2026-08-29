@@ -1,10 +1,10 @@
-import { Search, LogOut, Menu, Sparkles, Bell, X, MessageCircle, Gift } from 'lucide-react';
+import { Search, LogOut, Menu, Sparkles, Bell, X, MessageCircle, Gift, Zap } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProfile } from '@/hooks/useProfile';
 import { supabase } from '@/integrations/supabase/client';
 import { isNative } from '@/lib/capacitor';
-import NotificationBell from './NotificationBell';
+import { useDashboardBadges } from '@/hooks/useDashboardBadges';
 
 interface RealNotif { id: string; type: string; title: string; body: string | null; link: string | null; is_read: boolean; created_at: string; }
 
@@ -40,6 +40,14 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
     } catch { return new Set(); }
   });
   const [realNotifs, setRealNotifs] = useState<RealNotif[]>([]);
+  // Contadores en vivo (Flash Booking pendientes / mensajes sin leer) —
+  // antes vivían en un icono NotificationBell aparte, que en móvil quedaba
+  // pegado a este mismo orbe y al avatar (mismo tamaño, mismo dorado, sin
+  // espacio real para 3 elementos). Fusionado en un único icono: estos
+  // contadores no tienen concepto de "leído" (son un espejo en vivo, no
+  // eventos persistidos), así que se muestran aparte de `notifications`
+  // abajo y nunca se les aplica `markAllRead`.
+  const { flashBadge, msgBadge } = useDashboardBadges(userId, isEmpresario);
   const profile = useProfile();
 
   // Load real in-app notifications + subscribe to new ones (realtime)
@@ -97,7 +105,11 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
       link: n.link,
       real: true,
     })),
-    ...(!profile.display_name ? [{
+    // !profile.loading: display_name arranca en '' por defecto mientras el
+    // perfil real se está cargando (useProfile.tsx:68) — sin este guard, el
+    // badge de notificación se "encendía" un instante en cada carga (falso
+    // "perfil incompleto") y se apagaba solo en cuanto llegaba el nombre real.
+    ...(!profile.loading && !profile.display_name ? [{
       id: 'incomplete_profile',
       title: 'Perfil incompleto',
       desc: 'Añade tu nombre artístico y guarda para aparecer en el directorio.',
@@ -119,7 +131,8 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
     }] : []),
   ].filter(n => !dismissed.has(n.id));
 
-  const readAll = notifications.length === 0;
+  const liveBadgeTotal = flashBadge + msgBadge;
+  const readAll = notifications.length === 0 && liveBadgeTotal === 0;
 
   const markAllRead = async () => {
     const ids = new Set([...dismissed, ...notifications.map(n => n.id)]);
@@ -217,24 +230,24 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
           {/* Core orb */}
           <span className="relative flex items-center justify-center w-7 h-7 rounded-full transition-all duration-500"
             style={{
-              background: readAll || notifications.length === 0
+              background: readAll
                 ? 'radial-gradient(circle at 40% 35%, rgba(120,120,140,0.5), rgba(80,80,100,0.4))'
                 : showNotif
                   ? 'radial-gradient(circle at 40% 35%, #F5D77A, #D4AF37 60%, #B8941E)'
                   : 'radial-gradient(circle at 40% 35%, rgba(212,175,55,0.9), rgba(184,148,30,0.7))',
-              boxShadow: readAll || notifications.length === 0
+              boxShadow: readAll
                 ? 'none'
                 : showNotif
                   ? '0 0 16px rgba(212,175,55,0.7), 0 0 32px rgba(212,175,55,0.3), inset 0 1px 0 #444'
                   : '0 0 10px rgba(212,175,55,0.4), 0 0 20px rgba(212,175,55,0.15), inset 0 1px 0 #444',
             }}>
-            <span className="text-xs font-black" style={{ color: (readAll || notifications.length === 0) ? '#444' : '#000', lineHeight: 1 }}>
-              {(readAll || notifications.length === 0) ? '✓' : notifications.length}
+            <span className="text-xs font-black" style={{ color: readAll ? '#444' : '#000', lineHeight: 1 }}>
+              {readAll ? '✓' : notifications.length + liveBadgeTotal}
             </span>
           </span>
 
-          {/* Live dot — only when there are unread real notifications */}
-          {!readAll && notifications.length > 0 && (
+          {/* Live dot — only when there's something pending (real or live badge) */}
+          {!readAll && (
             <span className="absolute bottom-0.5 right-0.5 w-2 h-2 rounded-full border border-black"
               style={{ background: '#22c55e', boxShadow: '0 0 6px rgba(34,197,94,0.8)' }} />
           )}
@@ -264,7 +277,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
                 <span className="text-xs font-black tracking-wider" style={{ color: '#8A6D0F' }}>NOTIFICACIONES</span>
                 <span className="text-[0.75rem] font-bold px-1.5 py-0.5 rounded-full"
                   style={{ background: 'rgba(212,175,55,0.15)', color: '#8A6D0F' }}>
-                  {notifications.length}
+                  {notifications.length + liveBadgeTotal}
                 </span>
               </div>
               <button onClick={markAllRead}
@@ -273,6 +286,32 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
                 CERRAR
               </button>
             </div>
+
+            {/* Contadores en vivo (Flash Booking / mensajes) — sin concepto
+                de "leído", así que van aparte de la lista de abajo y CERRAR
+                no los afecta; se apagan solos cuando el contador real baja. */}
+            {liveBadgeTotal > 0 && (
+              <div className="border-b" style={{ borderColor: 'rgba(0,0,0,0.06)' }}>
+                {flashBadge > 0 && (
+                  <button type="button" onClick={() => { onViewChange?.('flashbooking'); setShowNotif(false); }}
+                    className="w-full flex items-center justify-between px-4 py-2.5 text-left transition-colors hover:bg-black/5">
+                    <span className="flex items-center gap-2 text-xs font-bold" style={{ color: '#222' }}>
+                      <Zap size={13} style={{ color: '#D4AF37' }} /> Flash Booking pendientes
+                    </span>
+                    <span className="text-xs font-black" style={{ color: '#8A6D0F' }}>{flashBadge}</span>
+                  </button>
+                )}
+                {msgBadge > 0 && (
+                  <button type="button" onClick={() => { onViewChange?.('messages'); setShowNotif(false); }}
+                    className="w-full flex items-center justify-between px-4 py-2.5 text-left transition-colors hover:bg-black/5">
+                    <span className="flex items-center gap-2 text-xs font-bold" style={{ color: '#222' }}>
+                      <MessageCircle size={13} style={{ color: '#4285F4' }} /> Mensajes sin leer
+                    </span>
+                    <span className="text-xs font-black" style={{ color: '#4285F4' }}>{msgBadge}</span>
+                  </button>
+                )}
+              </div>
+            )}
 
             {/* Items */}
             <div className="max-h-72 overflow-y-auto py-1">
@@ -332,20 +371,15 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
           </div>
         )}
 
-        {/* Campanita de badges en vivo (Flash Booking / mensajes sin leer).
-            Vive junto al avatar y es independiente del orbe de notificaciones
-            de arriba: aquel lista la tabla `notifications`, esta es la red de
-            seguridad in-app de los contadores del sidebar, sin depender de
-            permisos de Web Push. */}
-        {onViewChange && (
-          <NotificationBell userId={userId} isEmpresario={isEmpresario} onViewChange={onViewChange} />
-        )}
-
         {/* Avatar usuario logueado — cuadrado redondeado (mismo patrón que
-            ProfileSwitcher en el sidebar) y sin dorado brillante, a propósito
-            distinto del orbe circular de notificaciones: en móvil, sin el
-            nombre al lado, ambos quedaban como dos círculos dorados casi
-            idénticos pegados uno al otro. */}
+            ProfileSwitcher en el sidebar) y sin dorado brillante, distinto del
+            orbe circular de notificaciones a propósito: en móvil, con dos
+            elementos circulares dorados del mismo tamaño y sin nombre al
+            lado, quedaban pegados/solapados junto a la búsqueda. Los
+            contadores en vivo de Flash Booking/mensajes que antes vivían en
+            un icono NotificationBell aparte ahora están fusionados dentro
+            del propio orbe de arriba — un solo icono de notificaciones,
+            no dos compitiendo por el mismo espacio. */}
         <div className="flex items-center gap-2 pl-1 pr-2.5 py-1 rounded-2xl"
           style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
           <div className="w-7 h-7 rounded-lg overflow-hidden flex items-center justify-center text-xs font-black flex-shrink-0"
