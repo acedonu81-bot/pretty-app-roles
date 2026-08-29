@@ -714,6 +714,7 @@ const Auth = () => {
                   onVerify={token => { setCaptchaToken(token); setTurnstileStalled(false); }}
                   onExpire={() => setCaptchaToken(null)}
                   onStall={() => setTurnstileStalled(true)}
+                  onStallCleared={() => setTurnstileStalled(false)}
                 />
 
                 {/* El webview de Facebook/Instagram/TikTok rompe Turnstile igual que

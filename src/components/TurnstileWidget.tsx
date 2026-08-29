@@ -37,6 +37,7 @@ interface Props {
   onVerify: (token: string) => void;
   onExpire?: () => void;
   onStall?: () => void;
+  onStallCleared?: () => void;
 }
 
 /**
@@ -50,7 +51,7 @@ interface Props {
  */
 const STALL_MS = 8000;
 
-export default function TurnstileWidget({ onVerify, onExpire, onStall }: Props) {
+export default function TurnstileWidget({ onVerify, onExpire, onStall, onStallCleared }: Props) {
   const containerId = `turnstile-${useId().replace(/:/g, '')}`;
   const widgetIdRef = useRef<string | null>(null);
   const [stalled, setStalled] = useState(false);
@@ -92,7 +93,7 @@ export default function TurnstileWidget({ onVerify, onExpire, onStall }: Props) 
       {stalled && (
         <button
           type="button"
-          onClick={() => setRetryKey(k => k + 1)}
+          onClick={() => { onStallCleared?.(); setRetryKey(k => k + 1); }}
           className="flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-lg transition-all hover:scale-105"
           style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.25)', color: '#8A6D0F' }}>
           <RefreshCw size={12} /> La verificación de seguridad no responde — pulsa para reintentar
