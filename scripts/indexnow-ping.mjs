@@ -17,7 +17,10 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 const SITEMAP = path.join(ROOT, 'public', 'sitemap.xml');
-const KEY = '416d657b6dc8503d1f608ebcf67cf899';
+// Key generada por Bing Webmaster Tools al importar el sitio desde Search
+// Console — usar esta (no una key propia distinta) para que el panel de
+// Bing reconozca las notificaciones como del mismo sitio verificado.
+const KEY = '640b0fb68fcd4d7bbded0fc86210684d';
 const HOST = 'xpeak.es';
 
 function extractUrls(sitemapXml) {
