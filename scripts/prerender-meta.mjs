@@ -1334,6 +1334,17 @@ const ROLE_LABELS = {
   promotor: 'Promotor y RRPP', catering: 'Catering', mago: 'Mago e ilusionista',
   bailarin: 'Bailarín/a', humorista: 'Humorista', monologo: 'Monologuista',
   animador: 'Animador/a', speaker: 'Speaker', vestuario: 'Estilista', ambassador: 'Brand ambassador',
+  'grupo-musical': 'Grupo musical', event_manager: 'Coordinador/a de eventos',
+};
+
+// rol de perfil (BD) → slug de categoría en /contratar-{slug} — para enlazar
+// cada perfil con su landing de categoría (y de categoría×ciudad si hay zona).
+const ROLE_TO_CATEGORY_SLUG = {
+  dj: 'dj', staff: 'staff', camarero: 'camareros', makeup: 'maquillaje',
+  media: 'fotografo', promotor: 'promotores', catering: 'catering',
+  mago: 'mago', bailarin: 'bailarin', humorista: 'humorista',
+  monologo: 'monologo', animador: 'animador', speaker: 'speaker', vestuario: 'vestuario',
+  'grupo-musical': 'grupo-musical',
 };
 
 try {
@@ -1342,7 +1353,7 @@ try {
   const anonKey = env.SUPABASE_PUBLISHABLE_KEY || env.VITE_SUPABASE_PUBLISHABLE_KEY;
   if (supabaseUrl && anonKey) {
     const res = await fetch(
-      `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,zone,role,specialty,bio&role=neq.empresario&is_seed=eq.false&order=updated_at.desc&limit=1000`,
+      `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,zone,role,specialty,bio,photo_url,is_verified,updated_at&role=neq.empresario&is_seed=eq.false&order=updated_at.desc&limit=1000`,
       { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } }
     );
     if (res.ok) {
@@ -1362,11 +1373,33 @@ try {
         const routePath = `/p/${slug}`;
         if (existingPaths.has(routePath)) continue;
         const roleLabel = ROLE_LABELS[p.role] ?? 'Profesional de eventos';
-        const where = p.zone && p.zone !== 'España' ? ` en ${p.zone}` : ' en España';
+        const zone = p.zone && p.zone !== 'España' ? p.zone : null;
+        const where = zone ? ` en ${zone}` : ' en España';
         const bioSnippet = (p.bio ?? '').trim().slice(0, 150);
         const desc = bioSnippet
           ? `${p.display_name} — ${roleLabel}${where}. ${bioSnippet}${p.bio.length > 150 ? '…' : ''} Contacta y contrata en XPEAK sin comisión.`
           : `${p.display_name} — ${roleLabel}${where}. Perfil verificado en XPEAK: tarifas públicas, contacto directo y contrato digital. Sin comisión.`;
+
+        // Enlaces internos reales hacia la categoría (y ciudad si hay zona
+        // conocida) — conecta cada perfil con el resto del sitio, en vez de
+        // vivir aislado y solo alcanzable por sitemap.
+        const catSlug = ROLE_TO_CATEGORY_SLUG[p.role];
+        const zoneSlug = zone ? toSlug(zone) : null;
+        const categoryLink = catSlug ? `https://xpeak.es/contratar-${catSlug}` : 'https://xpeak.es/directorio';
+        const cityLink = catSlug && zoneSlug ? `https://xpeak.es/contratar-${catSlug}/${zoneSlug}` : null;
+
+        const personSchema = {
+          '@context': 'https://schema.org',
+          '@type': 'Person',
+          name: p.display_name,
+          jobTitle: roleLabel,
+          description: (p.bio ?? '').trim() || desc,
+          url: `https://xpeak.es${routePath}`,
+          ...(p.photo_url ? { image: p.photo_url } : {}),
+          ...(zone ? { address: { '@type': 'PostalAddress', addressLocality: zone, addressCountry: 'ES' } } : {}),
+          ...(p.is_verified ? { hasCredential: { '@type': 'EducationalOccupationalCredential', name: 'Perfil verificado XPEAK' } } : {}),
+          worksFor: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+        };
 
         ROUTES.push({
           path: routePath,
@@ -1375,7 +1408,17 @@ try {
           ogTitle: `${p.display_name} — ${roleLabel}${where}`,
           ogDesc: desc.slice(0, 200),
           ogType: 'profile',
-          bodyHtml: `<div style="max-width:720px;margin:0 auto;padding:48px 24px;color:#fff"><h1>${escHtml(p.display_name)}</h1><p><strong>${escHtml(roleLabel)}${escHtml(where)}</strong>${p.specialty ? ` · ${escHtml(p.specialty)}` : ''}</p>${p.bio ? `<p>${escHtml(p.bio)}</p>` : ''}<p><a href="https://xpeak.es/directorio">Ver más profesionales en el directorio de XPEAK</a></p></div>`,
+          jsonLd: personSchema,
+          bodyHtml: `<div style="max-width:720px;margin:0 auto;padding:48px 24px;color:#fff">` +
+            `<h1>${escHtml(p.display_name)}</h1>` +
+            `<p><strong>${escHtml(roleLabel)}${escHtml(where)}</strong>${p.specialty ? ` · ${escHtml(p.specialty)}` : ''}${p.is_verified ? ' · Perfil verificado' : ''}</p>` +
+            (p.photo_url ? `<img src="${escHtml(p.photo_url)}" alt="${escHtml(p.display_name)}" style="max-width:280px;border-radius:12px" loading="lazy" />` : '') +
+            (p.bio ? `<p>${escHtml(p.bio)}</p>` : '') +
+            `<p>Contrata a ${escHtml(p.display_name)} directamente en XPEAK: tarifas públicas, contacto directo y contrato digital automático. Sin comisión.</p>` +
+            `<p><a href="${categoryLink}">Ver más ${escHtml(roleLabel.toLowerCase())}s${zone ? '' : ' en España'}</a>` +
+            (cityLink ? ` · <a href="${cityLink}">${escHtml(roleLabel)} en ${escHtml(zone)}</a>` : '') +
+            ` · <a href="https://xpeak.es/directorio">Directorio completo</a></p>` +
+            `</div>`,
         });
         existingPaths.add(routePath);
         profileCount++;
@@ -1419,6 +1462,9 @@ for (const route of ROUTES) {
   }
   if (route.bodyHtml) {
     html = html.replace(/<div id="root">[\s\S]*?<\/div>\s*(?=<script|\n\s*<script|<\/body>|\n\s*<\/body>)/, `<div id="root">${route.bodyHtml}</div>\n  `);
+  }
+  if (route.jsonLd) {
+    html = html.replace('</head>', `  <script type="application/ld+json">${JSON.stringify(route.jsonLd)}</script>\n  </head>`);
   }
 
   const dir = path.join(DIST, route.path === '/' ? '' : route.path);

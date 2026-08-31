@@ -5,12 +5,13 @@ import FooterPublic from '@/components/FooterPublic';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { isEarlyAdopter } from '@/lib/earlyAdopter';
+import { toSlug } from '@/data/profiles';
 
 // Fecha de última modificación (congelada al renderizar; en prerender = build).
 // Señal de frescura para motores generativos, que penalizan contenido stale.
 const BUILD_DATE = new Date().toISOString().slice(0, 10);
 
-interface Prof { id: string; display_name: string; photo_url: string | null; bio: string | null; city: string | null; role: string; score: number; slug: string | null; is_verified: boolean; is_early_adopter: boolean; }
+interface Prof { id: string; display_name: string; photo_url: string | null; bio: string | null; city: string | null; role: string; score: number; slug: string; is_verified: boolean; is_early_adopter: boolean; }
 
 const ROLE_MAP: Record<string, string[]> = {
   dj: ['dj'], camareros: ['staff'], fotografo: ['media'], staff: ['staff', 'promotor'],
@@ -18,24 +19,39 @@ const ROLE_MAP: Record<string, string[]> = {
   'disco-movil': ['dj'], vestuario: ['staff'], azafata: ['azafata'],
 };
 
+// Durante el prerender de build (prerender-content.mjs), esta variable global
+// trae los profesionales ya resueltos para la ruta actual — renderToString es
+// síncrono y no espera al useEffect de abajo, así que sin esto el HTML servido
+// a crawlers nunca incluye profesionales reales ni enlaces a /p/:slug.
+// En el navegador normal esta variable nunca existe y el hook se comporta
+// exactamente igual que antes (fetch client-side vía Supabase).
+declare global {
+  // eslint-disable-next-line no-var
+  var __PRERENDER_PROFILES__: { profs: Prof[]; suggestions: Prof[] } | undefined;
+}
+
 function useCityProfessionals(ciudad: string, categorySlug: string) {
-  const [profs, setProfs] = useState<Prof[]>([]);
-  const [suggestions, setSuggestions] = useState<Prof[]>([]);
-  const [loaded, setLoaded] = useState(false);
+  const preloaded = typeof globalThis !== 'undefined' ? globalThis.__PRERENDER_PROFILES__ : undefined;
+  const [profs, setProfs] = useState<Prof[]>(preloaded?.profs ?? []);
+  const [suggestions, setSuggestions] = useState<Prof[]>(preloaded?.suggestions ?? []);
+  const [loaded, setLoaded] = useState(!!preloaded);
 
   useEffect(() => {
+    if (preloaded) return;
     setLoaded(false);
     setProfs([]);
     setSuggestions([]);
     const roles = ROLE_MAP[categorySlug] ?? ['dj'];
-    const map = (p: any): Prof => ({ id: p.user_id, display_name: p.display_name ?? 'Profesional', photo_url: p.photo_url, bio: p.bio, city: p.city, role: p.role, score: p.score ?? 0, slug: p.slug, is_verified: p.is_verified ?? false, is_early_adopter: isEarlyAdopter(p) });
+    // No existe columna slug en profiles — se deriva del nombre, igual que
+    // hace PublicProfile.tsx al resolver /p/:slug.
+    const map = (p: any): Prof => ({ id: p.user_id, display_name: p.display_name ?? 'Profesional', photo_url: p.photo_url, bio: p.bio, city: p.zone, role: p.role, score: p.score ?? 0, slug: toSlug(p.display_name ?? p.user_id), is_verified: p.is_verified ?? false, is_early_adopter: isEarlyAdopter(p) });
 
     supabase
       .from('profiles')
-      .select('user_id,display_name,photo_url,bio,city,role,score,slug,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,is_early_adopter_override')
+      .select('user_id,display_name,photo_url,bio,zone,role,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,is_early_adopter_override')
       .in('role', roles)
       .eq('is_primary', true)
-      .ilike('city', `%${ciudad}%`)
+      .ilike('zone', `%${ciudad}%`)
       .order('score', { ascending: false })
       .limit(6)
       .then(({ data }) => {
@@ -46,7 +62,7 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
           // No hay en esta ciudad — cargar sugerencias nacionales
           supabase
             .from('profiles')
-            .select('user_id,display_name,photo_url,bio,city,role,score,slug,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,is_early_adopter_override')
+            .select('user_id,display_name,photo_url,bio,zone,role,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,is_early_adopter_override')
             .in('role', roles)
             .eq('is_primary', true)
             .order('score', { ascending: false })

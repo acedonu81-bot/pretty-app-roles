@@ -18,6 +18,91 @@ const ROOT = path.join(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
 const APP = fs.readFileSync(path.join(ROOT, 'src', 'App.tsx'), 'utf8');
 
+function loadEnv() {
+  const envPath = path.join(ROOT, '.env');
+  const raw = fs.readFileSync(envPath, 'utf-8');
+  const env = {};
+  for (const line of raw.split('\n')) {
+    const m = line.match(/^([A-Z_]+)="?([^"]*)"?$/);
+    if (m) env[m[1]] = m[2];
+  }
+  return env;
+}
+
+// Mismo mapeo slug-categoría → roles-BD que ROLE_MAP en CityLanding.tsx —
+// debe mantenerse en sincronía si ese mapeo cambia.
+const ROLE_MAP = {
+  dj: ['dj'], camareros: ['staff'], fotografo: ['media'], staff: ['staff', 'promotor'],
+  catering: ['empresario'], maquillaje: ['makeup'], peluqueria: ['peluqueria'], promotores: ['promotor'],
+  'disco-movil': ['dj'], vestuario: ['staff'], azafata: ['azafata'],
+};
+
+// Una sola query trae todos los perfiles activos; se filtra/ordena en memoria
+// por ciudad+categoría al vuelo, igual que el hook useCityProfessionals hace
+// en el navegador — evita miles de round-trips (una por cada una de las
+// ~2.100 páginas ciudad×categoría).
+async function fetchAllProfilesForPrerender() {
+  try {
+    const env = loadEnv();
+    const supabaseUrl = env.SUPABASE_URL || env.VITE_SUPABASE_URL;
+    const anonKey = env.SUPABASE_PUBLISHABLE_KEY || env.VITE_SUPABASE_PUBLISHABLE_KEY;
+    if (!supabaseUrl || !anonKey) {
+      console.warn('  ⚠ Sin credenciales Supabase — páginas ciudad/categoría se prerenderizan sin profesionales');
+      return [];
+    }
+    const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,photo_url,bio,zone,role,score,is_verified,is_primary,is_early_adopter_override&role=neq.empresario&is_seed=eq.false&is_primary=eq.true&limit=1000`;
+    const res = await fetch(url, { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } });
+    if (!res.ok) {
+      console.warn('  ⚠ No se pudieron cargar profesionales para el prerender:', res.status);
+      return [];
+    }
+    return await res.json();
+  } catch (e) {
+    console.warn('  ⚠ Fetch de profesionales para prerender omitido:', e.message);
+    return [];
+  }
+}
+
+function toSlug(name) {
+  return name
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+function mapProfile(p) {
+  return {
+    id: p.user_id,
+    display_name: p.display_name ?? 'Profesional',
+    photo_url: p.photo_url,
+    bio: p.bio,
+    city: p.zone,
+    role: p.role,
+    score: p.score ?? 0,
+    slug: toSlug(p.display_name ?? p.user_id),
+    is_verified: p.is_verified ?? false,
+    is_early_adopter: !!p.is_early_adopter_override,
+  };
+}
+
+// Reproduce la lógica de useCityProfessionals: hasta 6 profesionales de la
+// ciudad (por score desc); si no hay ninguno, hasta 4 sugerencias nacionales.
+function resolveProfilesForCity(allProfiles, ciudad, categorySlug) {
+  const roles = ROLE_MAP[categorySlug] ?? ['dj'];
+  const byRole = allProfiles.filter(p => roles.includes(p.role));
+  const inCity = byRole
+    .filter(p => p.zone && p.zone.toLowerCase().includes(ciudad.toLowerCase()))
+    .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
+    .slice(0, 6);
+  if (inCity.length > 0) {
+    return { profs: inCity.map(mapProfile), suggestions: [] };
+  }
+  const suggestions = [...byRole].sort((a, b) => (b.score ?? 0) - (a.score ?? 0)).slice(0, 4);
+  return { profs: [], suggestions: suggestions.map(mapProfile) };
+}
+
 // Routes que nunca deben prerenderizarse con contenido (app privada / auth)
 const SKIP = new Set(['/auth', '/dashboard', '/admin-beta', '/baja-emails', '/eliminar-cuenta']);
 
@@ -128,6 +213,9 @@ globalThis.matchMedia ??= () => ({ matches: false, addEventListener() {}, remove
 
 const { renderPage } = await import(path.join(ROOT, 'dist-ssr', 'entry-prerender.js'));
 
+const allProfiles = await fetchAllProfilesForPrerender();
+console.log(`  → ${allProfiles.length} profesionales cargados para resolver contenido de páginas ciudad/categoría`);
+
 let ok = 0, failed = 0, missing = 0;
 const failures = [];
 for (const { routePath, file, routePattern } of routes) {
@@ -136,7 +224,16 @@ for (const { routePath, file, routePattern } of routes) {
     : path.join(DIST, routePath.slice(1), 'index.html');
   if (!fs.existsSync(htmlFile)) { missing++; continue; }
   try {
-    const { html, headScripts } = await renderPage(file, routePath, routePattern);
+    let preloadedProfiles;
+    if (file === 'CityLanding.tsx') {
+      const catSlug = routePattern.split('/contratar-')[1]?.split('/')[0];
+      const citySlug = routePath.split('/').pop();
+      const cityInfo = CITIES[citySlug];
+      if (cityInfo && catSlug) {
+        preloadedProfiles = resolveProfilesForCity(allProfiles, cityInfo.ciudad, catSlug);
+      }
+    }
+    const { html, headScripts } = await renderPage(file, routePath, routePattern, preloadedProfiles);
     let doc = fs.readFileSync(htmlFile, 'utf8');
     // Sustituye el shell vacío (incluido el texto oculto legacy) por contenido real
     doc = doc.replace(/<div id="root">[\s\S]*?<\/div>\s*(?=<\/body>|\n\s*<\/body>)/, `<div id="root">${html}</div>\n  `);

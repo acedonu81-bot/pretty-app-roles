@@ -15,13 +15,20 @@ const pages = import.meta.glob('./pages/*.tsx');
 // routePattern (ej. "/contratar-dj/:ciudad") es opcional — si se omite se usa
 // routePath tal cual. Sin pasar por una <Route> real con su patrón, useParams()
 // en el componente (p.ej. CityLanding leyendo :ciudad) nunca se popula en SSR.
-export async function renderPage(componentFile: string, routePath: string, routePattern?: string) {
+export async function renderPage(
+  componentFile: string,
+  routePath: string,
+  routePattern?: string,
+  preloadedProfiles?: unknown
+) {
   const loader = pages[`./pages/${componentFile}`];
   if (!loader) throw new Error(`Page not found: ${componentFile}`);
   const mod = (await loader()) as { default: React.ComponentType };
   const Page = mod.default;
   const helmetContext: Record<string, unknown> = {};
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  // @ts-expect-error — solo existe durante el prerender de build, ver CityLanding.tsx
+  globalThis.__PRERENDER_PROFILES__ = preloadedProfiles;
   const html = renderToString(
     <HelmetProvider context={helmetContext}>
       <QueryClientProvider client={queryClient}>
@@ -40,5 +47,7 @@ export async function renderPage(componentFile: string, routePath: string, route
   // esos tags en vez de sustituirlos, porque este paso solo añade al <head>.
   const preloadLinks = (helmet?.link?.toString() ?? '').match(/<link[^>]*rel="preload"[^>]*>/g)?.join('') ?? '';
   const headScripts = preloadLinks + (helmet?.script?.toString() ?? '');
+  // @ts-expect-error — limpiar para no filtrar entre renders de rutas distintas
+  globalThis.__PRERENDER_PROFILES__ = undefined;
   return { html, headScripts };
 }
