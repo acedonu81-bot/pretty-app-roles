@@ -565,7 +565,7 @@ const Landing = () => {
   return (
     <>
     <Helmet>
-      <title>XPEAK — Contratar DJ, Fotógrafo y Staff para Eventos | España</title>
+      <title>XPEAK | Contratar DJs, Staff y Profesionales para Eventos en España</title>
       {/* El preload real vive en index.html generado por prerender-meta.mjs
           (solo ruta '/') — un <link rel="preload"> aquí, vía react-helmet-async,
           no llega al navegador hasta después de montar React, perdiendo la
@@ -597,39 +597,6 @@ const Landing = () => {
           "name": item.q,
           "acceptedAnswer": { "@type": "Answer", "text": item.a }
         }))
-      })}</script>
-      <script type="application/ld+json">{JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "VideoObject",
-        "name": "XPEAK — Contratar DJs, Staff y Profesionales para Eventos en España",
-        "description": "XPEAK conecta salas, promotoras y organizadores con DJs, camareros, fotógrafos y staff verificados para eventos en España. Flash Booking.",
-        "thumbnailUrl": "https://xpeak.es/videos/hero-poster.jpg",
-        "uploadDate": "2026-01-01T00:00:00+01:00",
-        "contentUrl": "https://xpeak.es/videos/hero.mp4",
-        "duration": "PT10S",
-        "width": 1280,
-        "height": 720,
-        "publisher": { "@type": "Organization", "name": "XPEAK", "url": "https://xpeak.es" }
-      })}</script>
-      <script type="application/ld+json">{JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "XPEAK",
-        "url": "https://xpeak.es",
-        "logo": { "@type": "ImageObject", "url": "https://xpeak.es/favicon.png" },
-        "sameAs": ["https://www.instagram.com/xpeak.es"],
-        "description": "Directorio de profesionales verificados para bodas y eventos en España. DJs, fotógrafos, camareros, maquilladores y staff. Flash Booking."
-      })}</script>
-      <script type="application/ld+json">{JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "XPEAK",
-        "url": "https://xpeak.es",
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": { "@type": "EntryPoint", "urlTemplate": "https://xpeak.es/contratar-dj?q={search_term_string}" },
-          "query-input": "required name=search_term_string"
-        }
       })}</script>
     </Helmet>
     <div className="min-h-screen relative flex flex-col" data-landing="true" style={{ background: '#ffffff', color: '#222', overflowX: 'clip' }}>

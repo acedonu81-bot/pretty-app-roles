@@ -14,9 +14,16 @@ const BUILD_DATE = new Date().toISOString().slice(0, 10);
 interface Prof { id: string; display_name: string; photo_url: string | null; bio: string | null; city: string | null; role: string; score: number; slug: string; is_verified: boolean; is_early_adopter: boolean; }
 
 const ROLE_MAP: Record<string, string[]> = {
-  dj: ['dj'], camareros: ['staff'], fotografo: ['media'], staff: ['staff', 'promotor'],
+  dj: ['dj'], camareros: ['camarero', 'staff'], fotografo: ['media'], staff: ['staff', 'promotor'],
   catering: ['empresario'], maquillaje: ['makeup'], peluqueria: ['peluqueria'], promotores: ['promotor'],
-  'disco-movil': ['dj'], vestuario: ['staff'], azafata: ['azafata'],
+  'disco-movil': ['dj'], vestuario: ['vestuario', 'staff'], azafata: ['azafata'],
+  // Categorías que antes caían al fallback ['dj'] y por eso nunca encontraban
+  // a nadie, pese a existir esos roles en la BD (bailarin, grupo-musical…).
+  bailarin: ['bailarin'], 'grupo-musical': ['grupo-musical'],
+  humorista: ['humorista'], monologo: ['humorista'], monologos: ['humorista'],
+  mago: ['mago'], animador: ['animador'], animadores: ['animador'],
+  payaso: ['payaso'], payasos: ['payaso'], speaker: ['speaker'],
+  'photo-booth': ['photo-booth'],
 };
 
 // Durante el prerender de build (prerender-content.mjs), esta variable global
@@ -50,8 +57,14 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
       .from('profiles')
       .select('user_id,display_name,photo_url,bio,zone,role,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,is_early_adopter_override')
       .in('role', roles)
-      .eq('is_primary', true)
+      // is_primary marca el perfil principal de una cuenta de agencia con
+      // varios perfiles (useProfile.tsx). Filtrar por él aquí escondía a todo
+      // profesional con un único perfil, porque createProfile lo inserta como
+      // false y nada lo asciende: 31 de 34 perfiles quedaban invisibles en
+      // todas las páginas de ciudad. Se ordena por él, como hacen Landing.tsx
+      // y Auth.tsx, en vez de excluir.
       .ilike('zone', `%${ciudad}%`)
+      .order('is_primary', { ascending: false })
       .order('score', { ascending: false })
       .limit(6)
       .then(({ data }) => {
@@ -64,7 +77,7 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
             .from('profiles')
             .select('user_id,display_name,photo_url,bio,zone,role,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,is_early_adopter_override')
             .in('role', roles)
-            .eq('is_primary', true)
+            .order('is_primary', { ascending: false })
             .order('score', { ascending: false })
             .limit(4)
             .then(({ data: sug }) => {
@@ -647,10 +660,24 @@ export default function CityLanding() {
     sameAs: ['https://www.instagram.com/xpeak.es'],
   };
 
+  // Una ciudad sin profesionales renderiza "Aún no hay": es thin content y no
+  // debe indexarse. Sale también del sitemap (scripts/update-sitemap.mjs usa
+  // el mismo criterio de inventario). `follow` mantiene el flujo de enlaces
+  // hacia las páginas que sí tienen contenido. En cuanto entre el primer
+  // profesional de la ciudad, la página vuelve a ser indexable sola.
+  // Durante el prerender de build, __PRERENDER_PROFILES__ ya trae los datos
+  // resueltos, así que el HTML servido al crawler lleva el robots correcto.
+  const hasInventory = professionals.length > 0;
+  const shouldNoindex = profsLoaded && !hasInventory;
+
   return (
     <>
       <Helmet>
         <title>{h1} — XPEAK | Directorio Profesional de Eventos</title>
+        {/* Siempre explícito: si solo se emitiera el noindex, quedarían dos
+            etiquetas robots (la global de index.html y esta). Declarar ambos
+            casos hace que Helmet sustituya la global en vez de sumarse. */}
+        <meta name="robots" content={shouldNoindex ? 'noindex, follow' : 'index, follow'} />
         <meta name="description" content={catData.desc(cityData.ciudad)} />
         <link rel="canonical" href={`https://xpeak.es${canonicalBase}`} />
         <meta property="og:title" content={`${h1} — XPEAK`} />

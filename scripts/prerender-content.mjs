@@ -32,9 +32,14 @@ function loadEnv() {
 // Mismo mapeo slug-categoría → roles-BD que ROLE_MAP en CityLanding.tsx —
 // debe mantenerse en sincronía si ese mapeo cambia.
 const ROLE_MAP = {
-  dj: ['dj'], camareros: ['staff'], fotografo: ['media'], staff: ['staff', 'promotor'],
+  dj: ['dj'], camareros: ['camarero', 'staff'], fotografo: ['media'], staff: ['staff', 'promotor'],
   catering: ['empresario'], maquillaje: ['makeup'], peluqueria: ['peluqueria'], promotores: ['promotor'],
-  'disco-movil': ['dj'], vestuario: ['staff'], azafata: ['azafata'],
+  'disco-movil': ['dj'], vestuario: ['vestuario', 'staff'], azafata: ['azafata'],
+  bailarin: ['bailarin'], 'grupo-musical': ['grupo-musical'],
+  humorista: ['humorista'], monologo: ['humorista'], monologos: ['humorista'],
+  mago: ['mago'], animador: ['animador'], animadores: ['animador'],
+  payaso: ['payaso'], payasos: ['payaso'], speaker: ['speaker'],
+  'photo-booth': ['photo-booth'],
 };
 
 // Una sola query trae todos los perfiles activos; se filtra/ordena en memoria
@@ -50,7 +55,7 @@ async function fetchAllProfilesForPrerender() {
       console.warn('  ⚠ Sin credenciales Supabase — páginas ciudad/categoría se prerenderizan sin profesionales');
       return [];
     }
-    const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,photo_url,bio,zone,role,score,is_verified,is_primary,is_early_adopter_override&role=neq.empresario&is_seed=eq.false&is_primary=eq.true&limit=1000`;
+    const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,photo_url,bio,zone,role,score,is_verified,is_primary,is_early_adopter_override&role=neq.empresario&is_seed=eq.false&limit=1000`;
     const res = await fetch(url, { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } });
     if (!res.ok) {
       console.warn('  ⚠ No se pudieron cargar profesionales para el prerender:', res.status);
@@ -272,6 +277,17 @@ for (const { routePath, file, routePattern } of routes) {
     let doc = fs.readFileSync(htmlFile, 'utf8');
     // Sustituye el shell vacío (incluido el texto oculto legacy) por contenido real
     doc = doc.replace(/<div id="root">[\s\S]*?<\/div>\s*(?=<\/body>|\n\s*<\/body>)/, `<div id="root">${html}</div>\n  `);
+    // Una página ciudad×categoría sin profesionales renderiza "Aún no hay":
+    // es thin content y no debe indexarse. index.html trae un robots global
+    // "index, follow" que Helmet no puede sustituir en el HTML servido, así
+    // que se reescribe aquí. Mismo criterio de inventario que usa
+    // scripts/update-sitemap.mjs para excluirla del sitemap.
+    if (file === 'CityLanding.tsx' && !(preloadedProfiles?.profs?.length)) {
+      doc = doc.replace(
+        /<meta name="robots" content="index, follow"\s*\/>/,
+        '<meta name="robots" content="noindex, follow" />'
+      );
+    }
     // JSON-LD y demás scripts de Helmet que aún no estén en el head
     if (headScripts && !doc.includes(headScripts.slice(0, 120))) {
       doc = doc.replace('</head>', `${headScripts}\n</head>`);

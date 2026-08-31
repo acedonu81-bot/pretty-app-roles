@@ -38,7 +38,9 @@ function useRoleProfessionals(categorySlug: string) {
       .from('profiles')
       .select('user_id,display_name,photo_url,bio,city,role,score,slug,is_verified')
       .in('role', roles)
-      .eq('is_primary', true)
+      // Ver CityLanding.tsx: is_primary distingue el perfil principal de una
+      // agencia, no "perfil publicable". Filtrar por él escondía a casi todos.
+      .order('is_primary', { ascending: false })
       .order('score', { ascending: false })
       .limit(6)
       .then(({ data }) => { setProfs((data ?? []).map(map)); setLoaded(true); });

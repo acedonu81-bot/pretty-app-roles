@@ -7,6 +7,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { hasInventory, contentDate, extractObjectLiteral } from './city-inventory.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
@@ -42,7 +43,7 @@ function loadEnv() {
 
 // ─── Fetch all public profiles from Supabase ─────────────────────────────
 async function fetchProfiles(supabaseUrl, anonKey) {
-  const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,zone,updated_at,role&role=neq.empresario&is_seed=eq.false&order=updated_at.desc&limit=1000`;
+  const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,zone,updated_at,role,is_primary&role=neq.empresario&is_seed=eq.false&order=updated_at.desc&limit=1000`;
   const res = await fetch(url, {
     headers: {
       apikey: anonKey,
@@ -72,7 +73,7 @@ function url(loc, lastmod, changefreq, priority) {
 }
 
 // ─── Static URL list ──────────────────────────────────────────────────────
-function staticUrls(today) {
+function staticUrls(today, indexableCities, cityContentDates) {
   const lines = [];
   const categoryLandingDate = lastCommitDate('src/pages/CategoryLanding.tsx');
   const cityLandingDate = lastCommitDate('src/pages/CityLanding.tsx');
@@ -157,14 +158,27 @@ function staticUrls(today) {
   };
   const catsByCity = ['dj','camareros','fotografo','catering','maquillaje','peluqueria','staff','azafata','disco-movil','promotores','vestuario','mago','humorista','animador','animadores','bailarin','speaker','monologo','monologos','payaso','payasos','grupo-musical','photo-booth'];
 
+  // Solo se publican las ciudades con al menos un profesional real. Una página
+  // que dice "Aún no hay" es thin content: enseña a Google que el dominio
+  // publica páginas vacías y arrastra a las que sí tienen inventario.
+  // Las excluidas siguen siendo accesibles, pero salen del sitemap y
+  // CityLanding.tsx las marca noindex. En cuanto una ciudad gana su primer
+  // profesional vuelve a entrar sola en el siguiente build.
+  let skippedCities = 0;
   for (const cat of catsByCity) {
     lines.push(`\n  <!-- ${cat} por ciudad -->`);
     for (const city of cities) {
+      if (!indexableCities.has(`${cat}/${city}`)) { skippedCities++; continue; }
       const pri = parseFloat(cityPri[city] || '0.7');
       const adjusted = (Math.min(pri, 0.85)).toFixed(2);
-      lines.push(url(`https://xpeak.es/contratar-${cat}/${city}`, cityLandingDate, 'weekly', adjusted));
+      // lastmod del contenido (perfiles mostrados), no de la plantilla: si se
+      // usa la fecha del componente, miles de páginas cambian de fecha a la vez
+      // sin que su contenido cambie y Google deja de fiarse de la señal.
+      const lm = cityContentDates.get(`${cat}/${city}`) || cityLandingDate;
+      lines.push(url(`https://xpeak.es/contratar-${cat}/${city}`, lm, 'weekly', adjusted));
     }
   }
+  console.log(`   combinaciones indexables: ${indexableCities.size} — ${skippedCities} URLs ciudad×categoría omitidas por falta de inventario`);
 
   // Occasion landings — eje ocasión × rol (GEO/AEO). Fuente: ROLES_POR_OCASION
   // en src/pages/OccasionLanding.tsx (misma fuente que registra las rutas).
@@ -504,6 +518,35 @@ async function main() {
   const profiles = await fetchProfiles(supabaseUrl, anonKey);
   console.log(`✅ Found ${profiles.length} real profiles`);
 
+  // Ciudades indexables — se derivan del inventario real, no de una lista fija.
+  const CITIES = extractObjectLiteral(path.join(ROOT, 'src', 'pages', 'CityLanding.tsx'), 'CITIES');
+  // Salvaguarda: si Supabase falla, fetchProfiles devuelve [] y podaríamos el
+  // sitemap entero por error. Ante 0 perfiles se conserva la lista completa.
+  // El inventario se mide con el MISMO criterio que usa la página. Desde que
+  // CityLanding.tsx dejó de filtrar por is_primary (marcaba el perfil principal
+  // de una agencia, no "perfil publicable"), cuenta cualquier perfil real.
+  const inventoryProfiles = profiles;
+  // Set de claves "categoria/ciudad" con inventario real.
+  const CATS_BY_CITY = ['dj','camareros','fotografo','catering','maquillaje','peluqueria','staff','azafata','disco-movil','promotores','vestuario','mago','humorista','animador','animadores','bailarin','speaker','monologo','monologos','payaso','payasos','grupo-musical','photo-booth'];
+  const indexableCities = new Set();
+  const cityContentDates = new Map();
+  if (inventoryProfiles.length) {
+    for (const [citySlug, info] of Object.entries(CITIES)) {
+      if (!info?.ciudad) continue;
+      for (const cat of CATS_BY_CITY) {
+        if (hasInventory(inventoryProfiles, info.ciudad, cat)) {
+          indexableCities.add(`${cat}/${citySlug}`);
+          const d = contentDate(inventoryProfiles, info.ciudad, cat);
+          if (d) cityContentDates.set(`${cat}/${citySlug}`, d);
+        }
+      }
+    }
+  } else {
+    // Supabase caído: no podar nada.
+    for (const citySlug of Object.keys(CITIES)) for (const cat of CATS_BY_CITY) indexableCities.add(`${cat}/${citySlug}`);
+  }
+  if (!inventoryProfiles.length) console.warn('⚠️  0 perfiles: se mantiene la lista completa de ciudades (no se poda)');
+
   console.log('📍 Fetching upcoming dance socials from Supabase...');
   const socialEvents = await fetchSocialEvents(supabaseUrl, anonKey);
   console.log(`✅ Found ${socialEvents.length} upcoming events`);
@@ -532,7 +575,7 @@ async function main() {
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-${staticUrls(TODAY)}
+${staticUrls(TODAY, indexableCities, cityContentDates)}
 ${profileLines.join('\n')}
 ${eventLines.join('\n')}
 
