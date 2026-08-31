@@ -55,7 +55,7 @@ async function fetchAllProfilesForPrerender() {
       console.warn('  ⚠ Sin credenciales Supabase — páginas ciudad/categoría se prerenderizan sin profesionales');
       return [];
     }
-    const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,photo_url,bio,zone,role,score,is_verified,is_primary,is_early_adopter_override&role=neq.empresario&is_seed=eq.false&or=(is_public.is.null,is_public.eq.true)&limit=1000`;
+    const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,photo_url,bio,zone,role,roles,specialty,hourly_rate,is_flash_active,is_seed,audio_embed_url,audio_session_urls,portfolio_urls,score,is_verified,is_primary,is_early_adopter_override&role=neq.empresario&is_seed=eq.false&or=(is_public.is.null,is_public.eq.true)&limit=1000`;
     const res = await fetch(url, { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } });
     if (!res.ok) {
       console.warn('  ⚠ No se pudieron cargar profesionales para el prerender:', res.status);
@@ -106,6 +106,24 @@ function resolveProfilesForCity(allProfiles, ciudad, categorySlug) {
   }
   const suggestions = [...byRole].sort((a, b) => (b.score ?? 0) - (a.score ?? 0)).slice(0, 4);
   return { profs: [], suggestions: suggestions.map(mapProfile) };
+}
+
+// Replica la selección de DirectorioPublico.fetchDirectorioProfiles: expande
+// el dbRole a sus variantes, acepta el match por `role` singular o por el array
+// `roles`, descarta perfiles sin nombre y ordena por score. Sin esto el HTML
+// del directorio se servía sin un solo profesional ni enlace a /p/.
+function resolveProfilesForDirectorio(allProfiles, dbRole) {
+  const dbRoles = dbRole === 'staff' ? ['staff', 'camarero']
+    : dbRole === 'makeup' ? ['makeup', 'peluqueria']
+    : [dbRole];
+  return allProfiles
+    .filter(p => p.display_name
+      && (dbRoles.includes(p.role) || (Array.isArray(p.roles) && p.roles.some(r => dbRoles.includes(r)))))
+    .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
+    .slice(0, 60);
+  // Sin mapProfile: ese mapeo es para CityLanding (renombra user_id→id y
+  // zone→city). DirectorioPublico consume las filas tal cual vienen de
+  // Supabase, así que transformarlas rompería las tarjetas.
 }
 
 // Routes que nunca deben prerenderizarse con contenido (app privada / auth)
@@ -268,12 +286,18 @@ for (const { routePath, file, routePattern } of routes) {
         preloadedProfiles = resolveProfilesForCity(allProfiles, cityInfo.ciudad, catSlug);
       }
     }
+    let preloadedDirectorio;
+    if (file === 'DirectorioPublico.tsx') {
+      const roleSlug = routePath.split('/').pop();
+      const cfg = ROLE_CONFIG[roleSlug];
+      if (cfg?.dbRole) preloadedDirectorio = resolveProfilesForDirectorio(allProfiles, cfg.dbRole);
+    }
     if (file === 'SocialEvent.tsx') {
       const found = socialEvents.find(se => se.routePath === routePath);
       const organizer = found ? allProfiles.find(p => p.user_id === found.event.user_id) : null;
       preloadedSocialEvent = found ? { ...found.event, organizer_name: organizer?.display_name ?? null } : null;
     }
-    const { html, headScripts } = await renderPage(file, routePath, routePattern, preloadedProfiles, preloadedSocialEvent);
+    const { html, headScripts } = await renderPage(file, routePath, routePattern, preloadedProfiles, preloadedSocialEvent, preloadedDirectorio);
     let doc = fs.readFileSync(htmlFile, 'utf8');
     // Sustituye el shell vacío (incluido el texto oculto legacy) por contenido real
     doc = doc.replace(/<div id="root">[\s\S]*?<\/div>\s*(?=<\/body>|\n\s*<\/body>)/, `<div id="root">${html}</div>\n  `);

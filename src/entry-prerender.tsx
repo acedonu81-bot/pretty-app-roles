@@ -20,7 +20,8 @@ export async function renderPage(
   routePath: string,
   routePattern?: string,
   preloadedProfiles?: unknown,
-  preloadedSocialEvent?: unknown
+  preloadedSocialEvent?: unknown,
+  preloadedDirectorio?: unknown
 ) {
   const loader = pages[`./pages/${componentFile}`];
   if (!loader) throw new Error(`Page not found: ${componentFile}`);
@@ -32,6 +33,8 @@ export async function renderPage(
   globalThis.__PRERENDER_PROFILES__ = preloadedProfiles;
   // @ts-expect-error — solo existe durante el prerender de build, ver SocialEvent.tsx
   globalThis.__PRERENDER_SOCIAL_EVENT__ = preloadedSocialEvent;
+  // @ts-expect-error — solo existe durante el prerender de build, ver DirectorioPublico.tsx
+  globalThis.__PRERENDER_DIRECTORIO__ = preloadedDirectorio;
   const html = renderToString(
     <HelmetProvider context={helmetContext}>
       <QueryClientProvider client={queryClient}>
@@ -54,5 +57,7 @@ export async function renderPage(
   globalThis.__PRERENDER_PROFILES__ = undefined;
   // @ts-expect-error — limpiar para no filtrar entre renders de rutas distintas
   globalThis.__PRERENDER_SOCIAL_EVENT__ = undefined;
+  // @ts-expect-error — limpiar para no filtrar entre renders de rutas distintas
+  globalThis.__PRERENDER_DIRECTORIO__ = undefined;
   return { html, headScripts };
 }

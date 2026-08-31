@@ -365,11 +365,23 @@ export default function DirectorioPublico() {
   const { items: cartItems } = useEventCart();
   const { user, loading: authLoading } = useAuth();
 
+  // Durante el prerender de build, __PRERENDER_DIRECTORIO__ trae los perfiles
+  // ya resueltos: renderToString es síncrono y no espera al fetch, así que sin
+  // esto el HTML servido al crawler sale SIN profesionales ni enlaces a /p/
+  // (medido: 0 enlaces frente a los 6 de las páginas de ciudad). Además la
+  // foto del primer perfil es el elemento LCP, y al inyectarla React tras
+  // hidratar se descubría 1,7 s tarde. En el navegador la variable no existe
+  // y el comportamiento es exactamente el de antes.
+  const prerendered = typeof globalThis !== 'undefined'
+    ? (globalThis as any).__PRERENDER_DIRECTORIO__ as any[] | undefined
+    : undefined;
+
   const { data: baseProfiles = [], isLoading: loading, isError: fetchError } = useQuery({
     queryKey: ['directorio-publico', config.dbRole, city],
     queryFn: () => fetchDirectorioProfiles(config.dbRole, city),
     staleTime: 60_000,
     gcTime: 10 * 60_000,
+    ...(prerendered?.length ? { initialData: prerendered } : {}),
   });
 
   // Las valoraciones llegan por separado para no retrasar el listado. Mientras
