@@ -12,7 +12,6 @@ Ayudas a DJs, fotógrafos, staff, camareros, maquilladores y empresarios de even
 XPEAK ofrece:
 - Directorio de profesionales (DJs, fotógrafos, staff, camareros, diseño, promotores, catering, maquillaje)
 - Flash Booking: sistema de reserva rápida de profesionales para eventos
-- Fan Club: contenido exclusivo para fans suscritos (audio, fotos, texto)
 - Contratos PDF con firma digital
 - Planes: Free (1 perfil), Starter €9.99 (2 perfiles), Business €19.99 (3 perfiles), Agency €44.99 (5 perfiles)
 - Sello de Oro: verificación de identidad premium

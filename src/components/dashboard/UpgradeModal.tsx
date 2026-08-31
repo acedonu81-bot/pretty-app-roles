@@ -8,7 +8,6 @@ const ROLE_UPSELL: Record<string, { headline: string; features: string[]; cta: s
       'Posicionamiento #1–48 — te ven antes que nadie',
       'Link de sesión (Mixcloud, SoundCloud, hearthis.at)',
       'Streaming en vivo con chat de empresarios',
-      'Fan Club — cobra a tus seguidores directamente',
       'Flash Booking — aplica a ofertas urgentes de sala',
       'Estadísticas avanzadas de visitas y mensajes',
     ],
@@ -19,7 +18,6 @@ const ROLE_UPSELL: Record<string, { headline: string; features: string[]; cta: s
     features: [
       'Posicionamiento prioritario entre Promesas',
       'Streaming en vivo con chat',
-      'Fan Club — empieza a monetizar desde el primer día',
       'Flash Booking — no dejes pasar ninguna oferta',
       'Sello Business dorado en tu ficha',
     ],

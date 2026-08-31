@@ -97,7 +97,7 @@ const MockDJ = () => (
         ))}
       </div>
     </Panel>
-    <KpiGrid items={[{ val: '147', lbl: 'Visitas' }, { val: '12', lbl: 'Bookings' }, { val: '8', lbl: 'Fans VIP' }, { val: '4.9', lbl: 'Rating' }]} />
+    <KpiGrid items={[{ val: '147', lbl: 'Visitas' }, { val: '12', lbl: 'Bookings' }, { val: '€70', lbl: '/hora' }, { val: '4.9', lbl: 'Rating' }]} />
     <Panel style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
       <div style={{ width: 36, height: 36, borderRadius: 9, background: 'linear-gradient(135deg,#D4AF37,#B8941E)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, color: '#000', fontSize: 14, flexShrink: 0 }}>D</div>
       <div>

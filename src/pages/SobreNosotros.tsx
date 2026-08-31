@@ -131,7 +131,6 @@ const SobreNosotros = () => {
                 ['Flash Booking', 'Sistema de contratación urgente. Cubre un evento en menos de 1 hora.'],
                 ['Contratos digitales', 'Generación automática de contratos con validez legal en España.'],
                 ['Mensajería directa', 'Sin intermediarios. Profesional y cliente se comunican directamente.'],
-                ['Fan Club', 'Monetización de audiencia con suscripciones desde 4,99€/mes. Próximamente.'],
               ].map(([title, desc]) => (
                 <li key={title} className="flex items-start gap-3">
                   <span className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0" style={{ background: '#D4AF37' }} />

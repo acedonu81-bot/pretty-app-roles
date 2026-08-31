@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Building2, Users, Zap, Heart, TrendingUp, Radio, Star, BarChart3, RefreshCw, ChevronRight } from 'lucide-react';
+import { Building2, Users, Zap, TrendingUp, Radio, Star, BarChart3, RefreshCw, ChevronRight } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
@@ -29,7 +29,6 @@ interface ProfileStat {
   is_primary: boolean;
   flashCount: number;
   flashPending: number;
-  fanCount: number;
   voteCount: number;
   flashRevenue: number;
 }
@@ -52,13 +51,9 @@ const AgencyView = () => {
     setLoading(true);
     const profileIds = allProfiles.map(p => p.id);
 
-    const [flashRes, fanRes] = await Promise.all([
-      supabase.from('flash_bookings').select('professional_user_id, status, agreed_price').eq('professional_user_id', user!.id),
-      supabase.from('fan_subscriptions').select('professional_profile_id, status').in('professional_profile_id', profileIds).eq('status', 'active'),
-    ]);
+    const flashRes = await supabase.from('flash_bookings').select('professional_user_id, status, agreed_price').eq('professional_user_id', user!.id);
 
     const flashRows = flashRes.data ?? [];
-    const fanRows = fanRes.data ?? [];
 
     // vote counts per profile
     const voteCounts: Record<string, number> = {};
@@ -73,7 +68,6 @@ const AgencyView = () => {
 
     const result: ProfileStat[] = allProfiles.map(p => {
       const pFlash = flashRows.filter(f => f.professional_user_id === user!.id);
-      const pFans = fanRows.filter(f => f.professional_profile_id === p.id);
       return {
         id: p.id,
         display_name: p.display_name,
@@ -85,7 +79,6 @@ const AgencyView = () => {
         is_primary: p.is_primary,
         flashCount: pFlash.length,
         flashPending: pFlash.filter(f => f.status === 'pending').length,
-        fanCount: pFans.length,
         voteCount: voteCounts[p.id] ?? 0,
         flashRevenue: pFlash.reduce((s, f) => s + (f.agreed_price ?? 0), 0),
       };
@@ -149,7 +142,6 @@ const AgencyView = () => {
   // ── KPI agregados ──
   const totalFlash = stats.reduce((s, p) => s + p.flashCount, 0);
   const totalPending = stats.reduce((s, p) => s + p.flashPending, 0);
-  const totalFans = stats.reduce((s, p) => s + p.fanCount, 0);
   const totalRevenue = stats.reduce((s, p) => s + p.flashRevenue, 0);
   const liveCount = stats.filter(p => p.is_live).length;
   const topProfile = [...stats].sort((a, b) => b.flashCount - a.flashCount)[0];
@@ -179,10 +171,9 @@ const AgencyView = () => {
       </div>
 
       {/* KPI grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {[
           { label: 'Flash Bookings', value: loading ? '—' : totalFlash, sub: `${totalPending} pendientes`, icon: <Zap size={16} />, color: '#8A6D0F' },
-          { label: 'Fans activos', value: loading ? '—' : totalFans, sub: 'en todos los perfiles', icon: <Heart size={16} />, color: '#22c55e' },
           { label: 'Ingresos registrados', value: loading ? '—' : `€${totalRevenue.toFixed(0)}`, sub: 'caché acordado total', icon: <TrendingUp size={16} />, color: '#4285F4' },
           { label: 'En directo ahora', value: loading ? '—' : liveCount, sub: `de ${allProfiles.length} perfiles`, icon: <Radio size={16} />, color: '#ef4444' },
         ].map(kpi => (
@@ -268,10 +259,9 @@ const AgencyView = () => {
                   </div>
 
                   {/* Stats mini-grid */}
-                  <div className="grid grid-cols-3 gap-2 mb-3">
+                  <div className="grid grid-cols-2 gap-2 mb-3">
                     {[
                       { label: 'Bookings', value: p.flashCount, color: '#8A6D0F' },
-                      { label: 'Fans', value: p.fanCount, color: '#22c55e' },
                       { label: 'Votos', value: p.role === 'rookie' ? p.voteCount : '—', color: '#4285F4' },
                     ].map(s => (
                       <div key={s.label} className="rounded-lg p-2 text-center"

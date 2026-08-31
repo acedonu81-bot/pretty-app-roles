@@ -16,7 +16,6 @@ export interface SubscriptionPlan {
 export const TRIAL_DAYS = 15;
 export const ANNUAL_DISCOUNT = 0.30;
 export const BIRTHDAY_DISCOUNT = 0.40;
-export const FAN_COMMISSION = 0.12;       // 12% sobre ingresos fan club
 export const FLASH_COMMISSION = 0.05;    // 5% comisión Flash Booking confirmado
 
 // Streaming (Amazon IVS)
@@ -117,7 +116,6 @@ export const subscriptionPlans: SubscriptionPlan[] = [
       'Sello Business dorado',
       'Notificaciones Flash antes que nadie',
       'Soporte prioritario 24/7',
-      'Fan Club activado',
     ],
     textColor: '#D4AF37',
     annualEligible: true,

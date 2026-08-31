@@ -122,7 +122,6 @@ export const NAV_LABELS: Record<string, string> = {
   flashbooking: 'Flash Booking',
   topweekend:   'TOP Weekend',
   profile:      'Mi Perfil',
-  fanclub:      'Fan Club',
   stats:        'Estadísticas',
   subscription: 'Suscripción',
   calendar:     'Calendario',

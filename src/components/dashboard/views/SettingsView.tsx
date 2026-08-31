@@ -600,7 +600,6 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
         supabase.from('flash_bookings')
           .update({ professional_name: 'Profesional eliminado', professional_user_id: null } as any)
           .eq('professional_user_id', user.id),
-        supabase.from('fan_subscriptions').delete().eq('fan_user_id', user.id),
         // Estas tablas quedaban fuera del borrado y conservaban datos
         // personales: el contenido de los chats, reseñas escritas, ofertas
         // publicadas y días bloqueados. Las cascadas de auth.users no aplican
