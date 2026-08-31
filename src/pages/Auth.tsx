@@ -113,7 +113,6 @@ const Auth = () => {
   const [showRecovery, setShowRecovery] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const [recoveryLoading, setRecoveryLoading] = useState(false);
-  const [proCount, setProCount] = useState<number | null>(null);
   const isRegistering = useRef(false);
   // Vuelta de Google con ?code=... — el SDK aún no ha intercambiado el código
   // por una sesión. Sin esta pantalla, el usuario ve el login "normal" y le da
@@ -126,16 +125,6 @@ const Auth = () => {
   useEffect(() => {
     track('auth_view', { mode: isLogin ? 'login' : 'register', role: roleParam || 'none' });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    supabase.from('profiles')
-      .select('user_id', { count: 'exact', head: true })
-      .eq('is_seed', false)
-      .neq('role', 'empresario')
-      .then(({ count }) => {
-        if (typeof count === 'number') setProCount(count);
-      });
   }, []);
 
   useEffect(() => {
@@ -400,13 +389,7 @@ const Auth = () => {
           });
 
         if (signUpData.session) {
-          // proCount se cargó al abrir la página (antes de este registro), así
-          // que +1 es el número real de este usuario entre los profesionales —
-          // no se muestra para empresarios, que no cuentan en esa métrica.
-          const welcomeMsg = roleParam && roleParam !== 'empresario' && proCount !== null
-            ? `¡Bienvenido! Eres el profesional nº ${proCount + 1} en unirte a XPEAK`
-            : '¡Cuenta creada! Bienvenido a XPEAK';
-          toast.success(welcomeMsg);
+          toast.success('¡Cuenta creada! Bienvenido a XPEAK');
           // Registro nuevo → dashboard para completar perfil/onboarding.
           // EXCEPCIÓN: si el registro venía de un flujo que dejó trabajo a
           // medias (carrito "Mi evento" → ?redirect=/directorio/...), volver
@@ -506,19 +489,6 @@ const Auth = () => {
 
               {/* Social proof bottom */}
               <div className="mt-10 pt-8" style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}>
-                <div className="flex items-center gap-4 mb-4">
-                  <div>
-                    <p className="text-2xl font-black leading-none" style={{ color: '#111' }}>{proCount !== null ? proCount : '—'}</p>
-                    <p className="text-[0.65rem] mt-1" style={{ color: 'rgba(0,0,0,0.55)' }}>profesionales activos</p>
-                  </div>
-                  <div className="w-px h-9" style={{ background: 'rgba(0,0,0,0.12)' }} />
-                  <div>
-                    <div className="flex items-center gap-1">
-                      {[1,2,3,4,5].map(i => <span key={i} style={{ color: '#D4AF37', fontSize: '0.75rem' }}>★</span>)}
-                    </div>
-                    <p className="text-[0.65rem] mt-1" style={{ color: 'rgba(0,0,0,0.55)' }}>directorio de referencia</p>
-                  </div>
-                </div>
                 <div className="flex items-center gap-3">
                   <div className="flex -space-x-2">
                     {['L','S','M','C'].map((l,i) => (
@@ -560,9 +530,6 @@ const Auth = () => {
                         </span>
                       ))}
                     </div>
-                    <p className="text-[0.68rem] mt-2.5" style={{ color: 'rgba(0,0,0,0.5)' }}>
-                      <strong style={{ color: '#333' }}>{proCount !== null ? proCount : ''} profesionales</strong> ya publican su perfil aquí
-                    </p>
                   </>
                 )}
               </div>
