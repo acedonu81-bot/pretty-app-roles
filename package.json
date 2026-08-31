@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && node scripts/prerender-meta.mjs && vite build --ssr src/entry-prerender.tsx --outDir dist-ssr && node scripts/prerender-content.mjs && node scripts/prerender-reviews.mjs && node scripts/prerender-markdown.mjs && node scripts/update-sitemap.mjs",
+    "indexnow": "node scripts/indexnow-ping.mjs",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",

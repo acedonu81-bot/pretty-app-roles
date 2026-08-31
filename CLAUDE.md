@@ -26,6 +26,7 @@ scripts/            — prerender-meta.mjs, update-sitemap.mjs
 - `npx tsc --noEmit` — type check
 - `npx vercel --prod --yes` — deploy producción (Vercel no auto-despliega desde GitHub)
 - `git push origin main` — sube código a GitHub (token en macOS Keychain; sí funciona)
+- `npm run indexnow` — notifica a Bing/IndexNow las URLs del sitemap. Ejecutar SOLO tras un deploy real a producción, nunca en builds locales de prueba (spamea el ping)
 
 ## Convenciones
 - Responder siempre en español
