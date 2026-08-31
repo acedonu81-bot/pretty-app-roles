@@ -603,9 +603,12 @@ const Landing = () => {
         "@type": "VideoObject",
         "name": "XPEAK — Contratar DJs, Staff y Profesionales para Eventos en España",
         "description": "XPEAK conecta salas, promotoras y organizadores con DJs, camareros, fotógrafos y staff verificados para eventos en España. Flash Booking.",
-        "thumbnailUrl": "https://xpeak.es/og-image.jpg",
+        "thumbnailUrl": "https://xpeak.es/videos/hero-poster.jpg",
         "uploadDate": "2026-01-01T00:00:00+01:00",
-        "contentUrl": "https://xpeak.es/hero-dancefloor.mp4",
+        "contentUrl": "https://xpeak.es/videos/hero.mp4",
+        "duration": "PT10S",
+        "width": 1280,
+        "height": 720,
         "publisher": { "@type": "Organization", "name": "XPEAK", "url": "https://xpeak.es" }
       })}</script>
       <script type="application/ld+json">{JSON.stringify({
@@ -683,7 +686,22 @@ const Landing = () => {
       {/* ─ Hero ─ */}
       <main>
       <div className="relative" data-hero-dark="true" style={{ background: '#fff', overflowX: 'clip' }}>
-        {/* Hero background video — DJ + crowd + lights */}
+        {/* Hero background video — DJ + crowd + lights.
+            El primer fotograma va en un <picture> propio detrás del vídeo para
+            poder servir WebP (50 KB) en vez del poster JPG (87 KB): <video>
+            solo admite un poster y no negocia formato. El vídeo conserva el
+            poster JPG como red de seguridad si WebP no está disponible. */}
+        <picture aria-hidden="true">
+          <source srcSet="/videos/hero-poster.webp" type="image/webp" />
+          <img
+            src="/videos/hero-poster.jpg"
+            alt=""
+            fetchPriority="high"
+            decoding="async"
+            className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+            style={{ filter: 'saturate(1.2) brightness(0.5)', opacity: 0.9, objectPosition: 'center 30%' }}
+          />
+        </picture>
         <video
           autoPlay
           loop

@@ -46,6 +46,11 @@
       "continue": true
     },
     {
+      "src": "/(.*\\.(?:mp4|webm|mov|jpg|jpeg|png|webp|avif|svg|ico|woff2))",
+      "headers": { "Cache-Control": "public, max-age=0, s-maxage=31536000, stale-while-revalidate=86400" },
+      "continue": true
+    },
+    {
       "src": "/(.*)/index\\.md",
       "headers": { "Content-Type": "text/markdown; charset=utf-8", "Cache-Control": "public, max-age=3600" },
       "continue": true
