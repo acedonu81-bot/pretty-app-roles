@@ -908,13 +908,15 @@ const Landing = () => {
             );
           })}
         </div>
-        {/* Fila 3: las 2 categorías con menos inscritos */}
-        <div className="grid grid-cols-2 gap-3 md:gap-4" style={{ height: 180 }}>
+        {/* Fila 3: las 2 categorías con menos inscritos — mismo ancho de columna
+            que la fila de arriba (md:grid-cols-4), cada tarjeta ocupa 2 columnas
+            para llenar todo el contenedor en vez de quedar encogida a la izquierda. */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4" style={{ height: 180 }}>
           {categoryOrder.slice(3, 5).map((key, i) => {
             const card = BENTO_CARD_DATA[key];
             if (!card) return null;
             return (
-              <FadeIn key={key} delay={0.25 + i * 0.05} className="h-full">
+              <FadeIn key={key} delay={0.25 + i * 0.05} className="h-full md:col-span-2">
                 <BentoCard image={card.image} icon={card.icon} title={card.title} subtitle={card.subtitle} className="h-full"
                   isFresh={card.freshRoles.some(r => freshRoles.has(r))}
                   href={CATEGORY_DEST[key]} />
