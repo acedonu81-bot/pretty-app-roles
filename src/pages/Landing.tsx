@@ -131,6 +131,7 @@ import bentoMusica from '@/assets/bento-musica.jpg';
 import bentoGastro from '@/assets/bento-gastro.jpg';
 import bentoStaff from '@/assets/bento-staff.jpg';
 import bentoImagen from '@/assets/bento-imagen.jpg';
+const bentoAnimacion = 'https://images.pexels.com/photos/1405528/pexels-photo-1405528.jpeg?auto=compress&cs=tinysrgb&w=800';
 import LegalFooter from '@/components/LegalFooter';
 import DemoVideoModal from '@/components/DemoVideoModal';
 
@@ -198,9 +199,9 @@ const RotatingWord = () => {
 
 /* ── Bento card ── */
 const BentoCard = ({
-  image, icon, title, subtitle, className = '', href, children, isFresh = false,
+  image, icon, title, subtitle, className = '', href, children, isFresh = false, compact = false,
 }: {
-  image: string; icon: React.ReactNode; title: string; subtitle: string; className?: string; href: string; children?: React.ReactNode; isFresh?: boolean;
+  image: string; icon: React.ReactNode; title: string; subtitle: string; className?: string; href: string; children?: React.ReactNode; isFresh?: boolean; compact?: boolean;
 }) => {
   const cardRef = useRef<HTMLAnchorElement>(null);
   const mouseX = useMotionValue(0);
@@ -261,12 +262,12 @@ const BentoCard = ({
         </span>
       )}
       {/* Contenido */}
-      <div className="relative z-10 h-full flex flex-col justify-end p-5">
+      <div className={`relative z-10 h-full flex flex-col justify-end ${compact ? 'p-3' : 'p-5'}`}>
         {children && (
           <div className="mb-3">{children}</div>
         )}
-        <h3 className="text-xl font-bold text-gradient mb-1">{title}</h3>
-        <p className="text-sm" style={{ color: 'rgba(255,255,255,0.85)' }}>{subtitle}</p>
+        <h3 className={`${compact ? 'text-base' : 'text-xl'} font-bold text-gradient mb-1`}>{title}</h3>
+        <p className={compact ? 'text-xs' : 'text-sm'} style={{ color: 'rgba(255,255,255,0.85)' }}>{subtitle}</p>
         <p className="text-xs font-bold mt-2 tracking-widest uppercase transition-transform duration-300 group-hover:translate-x-1" style={{ color: '#D4AF37' }}>
           ¿Quién hay aquí? →
         </p>
@@ -293,6 +294,7 @@ const CATEGORY_DEST: Record<string, string> = {
   imagen: '/directorio/fotografo',
   staff: '/directorio/staff',
   belleza: '/directorio/maquillaje',
+  animacion: '/directorio/animador',
   empresario: '/auth?mode=register&role=empresario',
 };
 
@@ -446,6 +448,7 @@ const CATEGORY_ROLES: Record<string, string[]> = {
   imagen: ['media'],
   belleza: ['makeup', 'peluqueria'],
   gastro: ['catering'],
+  animacion: ['animador', 'mago', 'humorista', 'bailarin'],
 };
 
 /* Datos fijos de cada tarjeta del bento (imagen/icono/texto) — el ORDEN se decide
@@ -456,12 +459,16 @@ const BENTO_CARD_DATA: Record<string, { image: string; icon: React.ReactNode; ti
   imagen:  { image: bentoImagen, icon: <Camera size={20} />, title: 'Imagen & Media', subtitle: 'Fotógrafos, videógrafos y creadores', freshRoles: ['media'] },
   belleza: { image: '/images/pexels/2681751.jpg', icon: <Scissors size={20} />, title: 'Belleza & Estética', subtitle: 'Maquilladores y peluquería a domicilio', freshRoles: ['makeup', 'peluqueria'] },
   gastro:  { image: bentoGastro, icon: <UtensilsCrossed size={20} />, title: 'Gastro & Sala', subtitle: 'Bartenders, chefs y catering premium', freshRoles: ['catering'] },
+  animacion: { image: bentoAnimacion, icon: <Sparkles size={20} />, title: 'Animación', subtitle: 'Magos, humoristas, bailarines y animadores', freshRoles: ['animador', 'mago', 'humorista', 'bailarin'] },
 };
 
-/* Forma de cada una de las 5 posiciones del bento, de la más grande a la más pequeña.
-   La categoría con más inscritos ocupa la posición 0 (hueco grande), la que menos
-   la posición 4 (hueco pequeño) — así el bento se reordena solo, sin tocar código. */
-const BENTO_SLOT_CLASS = ['md:row-span-2', 'md:row-span-2', 'md:col-span-2', '', ''];
+/* Forma de cada una de las 6 posiciones del bento, de la más grande a la más
+   pequeña. La categoría con más inscritos ocupa la posición 0 (hueco más
+   ancho) — así el bento se reordena solo, sin tocar código. Grid base de 6
+   columnas por fila SIN row-span: cada fila reparte su propio ancho de forma
+   independiente (3+2+1=6, luego 2+2+2=6), así ninguna fila puede depender de
+   la altura de otra y dejar un hueco vacío si el contenido varía. */
+const BENTO_SLOT_CLASS = ['md:col-span-3', 'md:col-span-2', 'md:col-span-1', 'md:col-span-2', 'md:col-span-2', 'md:col-span-2'];
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -473,9 +480,9 @@ const Landing = () => {
   const [newsletterLoading, setNewsletterLoading] = useState(false);
   const [communityReviews, setCommunityReviews] = useState<{ reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string }[]>([]);
   const [freshRoles, setFreshRoles] = useState<Set<string>>(new Set());
-  // Orden de las 5 categorías del bento, de más a menos profesionales inscritos.
+  // Orden de las 6 categorías del bento, de más a menos profesionales inscritos.
   // Se recalcula en cada carga — nunca hardcodear un orden fijo aquí.
-  const [categoryOrder, setCategoryOrder] = useState<string[]>(['musica', 'staff', 'imagen', 'belleza', 'gastro']);
+  const [categoryOrder, setCategoryOrder] = useState<string[]>(['musica', 'staff', 'imagen', 'belleza', 'gastro', 'animacion']);
 
   // Login inteligente: si ya estás logueado como ORGANIZADOR, entras directo al
   // feed (es tu experiencia principal). Al profesional NO se le fuerza a ningún
@@ -892,33 +899,25 @@ const Landing = () => {
         {/*
           Bento asimétrico ordenado por nº real de profesionales inscritos por
           categoría (categoryOrder, calculado en runtime desde Supabase) — la
-          categoría con más inscritos siempre cae en el hueco más grande, sin
+          categoría con más inscritos siempre cae en el hueco más ancho, sin
           necesidad de tocar este código cuando la plataforma crezca.
+
+          Grid único de 6 columnas × 2 filas, SIN row-span: cada fila reparte
+          su propio ancho de forma independiente (3+2+1=6, luego 2+2+2=6). Dos
+          grids separados con alturas fijas en píxeles causaron un hueco vacío
+          real en producción (fila de arriba con row-span-2 vs fila de abajo
+          con alto fijo, sin relación entre sí) — este diseño no puede
+          reproducir ese bug porque ninguna celda depende de la altura de otra.
         */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 auto-rows-[170px] md:auto-rows-[260px] mb-3 md:mb-4">
-          {categoryOrder.slice(0, 3).map((key, i) => {
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-3 md:gap-4 auto-rows-[170px] md:auto-rows-[260px]">
+          {categoryOrder.slice(0, 6).map((key, i) => {
             const card = BENTO_CARD_DATA[key];
             if (!card) return null;
             return (
-              <FadeIn key={key} delay={i * 0.15} className={BENTO_SLOT_CLASS[i]}>
+              <FadeIn key={key} delay={i * 0.1} className={BENTO_SLOT_CLASS[i]}>
                 <BentoCard image={card.image} icon={card.icon} title={card.title} subtitle={card.subtitle} className="h-full"
                   isFresh={card.freshRoles.some(r => freshRoles.has(r))}
-                  href={CATEGORY_DEST[key]} />
-              </FadeIn>
-            );
-          })}
-        </div>
-        {/* Fila 3: las 2 categorías con menos inscritos — mismo ancho de columna
-            que la fila de arriba (md:grid-cols-4), cada tarjeta ocupa 2 columnas
-            para llenar todo el contenedor en vez de quedar encogida a la izquierda. */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4" style={{ height: 180 }}>
-          {categoryOrder.slice(3, 5).map((key, i) => {
-            const card = BENTO_CARD_DATA[key];
-            if (!card) return null;
-            return (
-              <FadeIn key={key} delay={0.25 + i * 0.05} className="h-full md:col-span-2">
-                <BentoCard image={card.image} icon={card.icon} title={card.title} subtitle={card.subtitle} className="h-full"
-                  isFresh={card.freshRoles.some(r => freshRoles.has(r))}
+                  compact={i === 2}
                   href={CATEGORY_DEST[key]} />
               </FadeIn>
             );
