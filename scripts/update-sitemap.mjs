@@ -43,7 +43,7 @@ function loadEnv() {
 
 // ─── Fetch all public profiles from Supabase ─────────────────────────────
 async function fetchProfiles(supabaseUrl, anonKey) {
-  const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,zone,updated_at,role,is_primary&role=neq.empresario&is_seed=eq.false&order=updated_at.desc&limit=1000`;
+  const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,zone,updated_at,role,is_primary&role=neq.empresario&is_seed=eq.false&or=(is_public.is.null,is_public.eq.true)&order=updated_at.desc&limit=1000`;
   const res = await fetch(url, {
     headers: {
       apikey: anonKey,

@@ -64,6 +64,9 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
       // todas las páginas de ciudad. Se ordena por él, como hacen Landing.tsx
       // y Auth.tsx, en vez de excluir.
       .ilike('zone', `%${ciudad}%`)
+      // Respeta is_public, que la RLS no filtra: un perfil marcado como no
+      // público (p.ej. el que tiene un email por nombre) no debe listarse.
+      .or('is_public.is.null,is_public.eq.true')
       .order('is_primary', { ascending: false })
       .order('score', { ascending: false })
       .limit(6)
@@ -77,6 +80,7 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
             .from('profiles')
             .select('user_id,display_name,photo_url,bio,zone,role,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,is_early_adopter_override')
             .in('role', roles)
+            .or('is_public.is.null,is_public.eq.true')
             .order('is_primary', { ascending: false })
             .order('score', { ascending: false })
             .limit(4)

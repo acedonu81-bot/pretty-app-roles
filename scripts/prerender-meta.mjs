@@ -1353,7 +1353,7 @@ try {
   const anonKey = env.SUPABASE_PUBLISHABLE_KEY || env.VITE_SUPABASE_PUBLISHABLE_KEY;
   if (supabaseUrl && anonKey) {
     const res = await fetch(
-      `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,zone,role,specialty,bio,photo_url,is_verified,updated_at,portfolio_urls&role=neq.empresario&is_seed=eq.false&order=updated_at.desc&limit=1000`,
+      `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,zone,role,specialty,bio,photo_url,is_verified,updated_at,portfolio_urls&role=neq.empresario&is_seed=eq.false&or=(is_public.is.null,is_public.eq.true)&order=updated_at.desc&limit=1000`,
       { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } }
     );
     // Posts públicos de la ficha (fan_tier IS NULL = no exclusivo de Fan Club)

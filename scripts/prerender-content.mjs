@@ -55,7 +55,7 @@ async function fetchAllProfilesForPrerender() {
       console.warn('  ⚠ Sin credenciales Supabase — páginas ciudad/categoría se prerenderizan sin profesionales');
       return [];
     }
-    const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,photo_url,bio,zone,role,score,is_verified,is_primary,is_early_adopter_override&role=neq.empresario&is_seed=eq.false&limit=1000`;
+    const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,photo_url,bio,zone,role,score,is_verified,is_primary,is_early_adopter_override&role=neq.empresario&is_seed=eq.false&or=(is_public.is.null,is_public.eq.true)&limit=1000`;
     const res = await fetch(url, { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } });
     if (!res.ok) {
       console.warn('  ⚠ No se pudieron cargar profesionales para el prerender:', res.status);

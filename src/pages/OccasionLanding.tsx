@@ -40,6 +40,7 @@ function useRoleProfessionals(categorySlug: string) {
       .in('role', roles)
       // Ver CityLanding.tsx: is_primary distingue el perfil principal de una
       // agencia, no "perfil publicable". Filtrar por él escondía a casi todos.
+      .or('is_public.is.null,is_public.eq.true')
       .order('is_primary', { ascending: false })
       .order('score', { ascending: false })
       .limit(6)
