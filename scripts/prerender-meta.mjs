@@ -1353,9 +1353,25 @@ try {
   const anonKey = env.SUPABASE_PUBLISHABLE_KEY || env.VITE_SUPABASE_PUBLISHABLE_KEY;
   if (supabaseUrl && anonKey) {
     const res = await fetch(
-      `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,zone,role,specialty,bio,photo_url,is_verified,updated_at&role=neq.empresario&is_seed=eq.false&order=updated_at.desc&limit=1000`,
+      `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,zone,role,specialty,bio,photo_url,is_verified,updated_at,portfolio_urls&role=neq.empresario&is_seed=eq.false&order=updated_at.desc&limit=1000`,
       { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } }
     );
+    // Posts públicos de la ficha (fan_tier IS NULL = no exclusivo de Fan Club)
+    // — agrupados por autor para inyectarlos en su página /p/:slug.
+    const postsByUser = new Map();
+    try {
+      const postsRes = await fetch(
+        `${supabaseUrl}/rest/v1/profile_posts?select=user_id,content,post_type,media_url,created_at&fan_tier=is.null&order=created_at.desc&limit=1000`,
+        { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } }
+      );
+      if (postsRes.ok) {
+        for (const post of await postsRes.json()) {
+          if (!postsByUser.has(post.user_id)) postsByUser.set(post.user_id, []);
+          const list = postsByUser.get(post.user_id);
+          if (list.length < 8) list.push(post);
+        }
+      }
+    } catch { /* profile_posts opcional — perfil se genera igual sin posts */ }
     if (res.ok) {
       const profiles = await res.json();
       const usedSlugs = new Set();
@@ -1388,6 +1404,9 @@ try {
         const categoryLink = catSlug ? `https://xpeak.es/contratar-${catSlug}` : 'https://xpeak.es/directorio';
         const cityLink = catSlug && zoneSlug ? `https://xpeak.es/contratar-${catSlug}/${zoneSlug}` : null;
 
+        const portfolioUrls = Array.isArray(p.portfolio_urls) ? p.portfolio_urls.filter(Boolean).slice(0, 9) : [];
+        const allImages = [p.photo_url, ...portfolioUrls].filter(Boolean);
+
         const personSchema = {
           '@context': 'https://schema.org',
           '@type': 'Person',
@@ -1395,11 +1414,29 @@ try {
           jobTitle: roleLabel,
           description: (p.bio ?? '').trim() || desc,
           url: `https://xpeak.es${routePath}`,
-          ...(p.photo_url ? { image: p.photo_url } : {}),
+          ...(allImages.length ? { image: allImages } : {}),
           ...(zone ? { address: { '@type': 'PostalAddress', addressLocality: zone, addressCountry: 'ES' } } : {}),
           ...(p.is_verified ? { hasCredential: { '@type': 'EducationalOccupationalCredential', name: 'Perfil verificado XPEAK' } } : {}),
           worksFor: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
         };
+
+        const portfolioHtml = portfolioUrls.length
+          ? `<p><strong>Portfolio</strong></p><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">` +
+            portfolioUrls.map((u, i) => `<img src="${escHtml(u)}" alt="${escHtml(p.display_name)} ${i + 1}" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px" loading="lazy" />`).join('') +
+            `</div>`
+          : '';
+
+        const userPosts = postsByUser.get(p.user_id) ?? [];
+        const postsHtml = userPosts.length
+          ? `<p><strong>Novedades</strong></p>` +
+            userPosts.map(post => {
+              const postDate = new Date(post.created_at).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+              const img = post.media_url && post.post_type === 'image'
+                ? `<img src="${escHtml(post.media_url)}" alt="Publicación de ${escHtml(p.display_name)}" style="max-width:400px;border-radius:8px" loading="lazy" />`
+                : '';
+              return `<div><p style="opacity:0.6;font-size:0.85em">${escHtml(postDate)}</p><p>${escHtml(post.content)}</p>${img}</div>`;
+            }).join('')
+          : '';
 
         ROUTES.push({
           path: routePath,
@@ -1414,6 +1451,8 @@ try {
             `<p><strong>${escHtml(roleLabel)}${escHtml(where)}</strong>${p.specialty ? ` · ${escHtml(p.specialty)}` : ''}${p.is_verified ? ' · Perfil verificado' : ''}</p>` +
             (p.photo_url ? `<img src="${escHtml(p.photo_url)}" alt="${escHtml(p.display_name)}" style="max-width:280px;border-radius:12px" loading="lazy" />` : '') +
             (p.bio ? `<p>${escHtml(p.bio)}</p>` : '') +
+            portfolioHtml +
+            postsHtml +
             `<p>Contrata a ${escHtml(p.display_name)} directamente en XPEAK: tarifas públicas, contacto directo y contrato digital automático. Sin comisión.</p>` +
             `<p><a href="${categoryLink}">Ver más ${escHtml(roleLabel.toLowerCase())}s${zone ? '' : ' en España'}</a>` +
             (cityLink ? ` · <a href="${cityLink}">${escHtml(roleLabel)} en ${escHtml(zone)}</a>` : '') +

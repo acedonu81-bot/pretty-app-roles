@@ -215,7 +215,11 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
     setSubmitting(true);
     const { data, error } = await supabase
       .from('profile_posts' as any)
-      .insert({ user_id: user.id, content: draft.trim(), media_url: mediaUrl || null, post_type: postType })
+      // fan_tier explícito a null: este composer no ofrece selector de
+      // audiencia y el usuario ve "Público" en pantalla — sin esto, la
+      // columna cae en su DEFAULT 'fan' (ver migración fan_posts_tier.sql)
+      // y el post nunca aparece en la ficha pública sin que nadie lo eligiera.
+      .insert({ user_id: user.id, content: draft.trim(), media_url: mediaUrl || null, post_type: postType, fan_tier: null })
       .select()
       .single();
     setSubmitting(false);
