@@ -796,7 +796,6 @@ export default function CategoryLanding() {
     description: data.desc,
     url: `https://xpeak.es/contratar-${data.slug}`,
     image: 'https://xpeak.es/og-image.jpg',
-    telephone: '',
     email: 'hola@xpeak.es',
     address: { '@type': 'PostalAddress', addressCountry: 'ES' },
     areaServed: { '@type': 'Country', name: 'España' },

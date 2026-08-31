@@ -619,7 +619,6 @@ export default function CityLanding() {
     description: catData.desc(cityData.ciudad),
     url: `https://xpeak.es${canonicalBase}`,
     image: 'https://xpeak.es/og-image.jpg',
-    telephone: '',
     email: 'hola@xpeak.es',
     address: {
       '@type': 'PostalAddress',

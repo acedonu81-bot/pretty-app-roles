@@ -50,7 +50,7 @@ const article = {
   description: 'Checklist interactivo con cuenta atrás por fecha para organizar un evento de empresa: qué contratar y cuándo, paso a paso.',
   datePublished: '2026-07-19',
   dateModified: '2026-07-19',
-  author: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador y CEO', url: 'https://xpeak.es/sobre-nosotros', worksFor: { '@type': 'Organization', name: 'XPEAK' } },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
 };
 
@@ -145,8 +145,11 @@ export default function ChecklistEventoEmpresa() {
           <h1 className="text-2xl sm:text-4xl font-black tracking-tight mb-2" style={{ lineHeight: 1.15 }}>
             Checklist para organizar tu evento de empresa
           </h1>
-          <p className="text-sm max-w-2xl leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
+          <p className="text-sm max-w-2xl leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.6)' }}>
             Marca las tareas hechas, pon la fecha de tu evento y sabrás exactamente qué toca esta semana. Se guarda automáticamente en tu navegador.
+          </p>
+          <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>
+            Por <a href="/sobre-nosotros" className="underline hover:opacity-80" style={{ color: '#D4AF37' }}>Daniel</a>, fundador de XPEAK y especialista en el sector de eventos y entretenimiento nocturno en España.
           </p>
         </section>
 

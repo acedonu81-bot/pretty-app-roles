@@ -106,6 +106,9 @@ export default function OrganizadoresLanding() {
           <p className="text-sm sm:text-lg mb-3 max-w-2xl leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
             Compara profesionales verificados, publica necesidades puntuales con Flash Booking y firma contratos digitales automáticos — todo desde un único panel, sin comisión.
           </p>
+          <p className="text-xs mb-3" style={{ color: 'rgba(255,255,255,0.4)' }}>
+            Por <a href="/sobre-nosotros" className="underline hover:opacity-80" style={{ color: '#D4AF37' }}>Daniel</a>, fundador de XPEAK y especialista en el sector de eventos y entretenimiento nocturno en España.
+          </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-6">
             <a href="/auth?mode=register&role=empresario"
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"

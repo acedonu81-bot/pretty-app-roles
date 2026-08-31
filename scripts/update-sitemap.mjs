@@ -5,6 +5,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -12,6 +13,20 @@ const ROOT = path.join(__dirname, '..');
 const OUT = path.join(ROOT, 'public', 'sitemap.xml');
 const OUT_DIST = path.join(ROOT, 'dist', 'sitemap.xml');
 const TODAY = new Date().toISOString().slice(0, 10);
+
+// Fecha real del último commit que tocó un archivo — evita declarar lastmod
+// falso (fecha del build) en páginas cuyo contenido no ha cambiado.
+const gitDateCache = new Map();
+function lastCommitDate(relPath) {
+  if (gitDateCache.has(relPath)) return gitDateCache.get(relPath);
+  let date = TODAY;
+  try {
+    const out = execSync(`git log -1 --format=%ad --date=short -- "${relPath}"`, { cwd: ROOT, encoding: 'utf8' }).trim();
+    if (out) date = out;
+  } catch {}
+  gitDateCache.set(relPath, date);
+  return date;
+}
 
 // ─── Load .env manually (no dotenv dep needed) ────────────────────────────
 function loadEnv() {
@@ -59,28 +74,33 @@ function url(loc, lastmod, changefreq, priority) {
 // ─── Static URL list ──────────────────────────────────────────────────────
 function staticUrls(today) {
   const lines = [];
+  const categoryLandingDate = lastCommitDate('src/pages/CategoryLanding.tsx');
+  const cityLandingDate = lastCommitDate('src/pages/CityLanding.tsx');
+  const directorioDate = lastCommitDate('src/pages/DirectorioPublico.tsx');
+  const landingDate = lastCommitDate('src/pages/Landing.tsx');
+  const sobreNosotrosDate = lastCommitDate('src/pages/SobreNosotros.tsx');
 
   // Core
   lines.push('  <!-- Core -->');
-  lines.push(url('https://xpeak.es/', today, 'weekly', '1.0'));
-  lines.push(url('https://xpeak.es/sobre-nosotros', today, 'monthly', '0.6'));
+  lines.push(url('https://xpeak.es/', landingDate, 'weekly', '1.0'));
+  lines.push(url('https://xpeak.es/sobre-nosotros', sobreNosotrosDate, 'monthly', '0.6'));
 
   // Category landings
   lines.push('\n  <!-- Category landings -->');
   const cats = ['dj','staff','azafata','fotografo','camareros','catering','maquillaje','peluqueria','promotores','vestuario','disco-movil','mago','humorista','animador','animadores','speaker','bailarin','payaso','payasos','grupo-musical','photo-booth','monologo'];
   const catPri = { dj: '0.9', staff: '0.9', azafata: '0.9', camareros: '0.9', catering: '0.9', fotografo: '0.8', maquillaje: '0.8', peluqueria: '0.8', promotores: '0.8', 'disco-movil': '0.8', vestuario: '0.7', mago: '0.8', humorista: '0.8', animador: '0.8', animadores: '0.8', speaker: '0.7', bailarin: '0.7', payaso: '0.7', payasos: '0.7', 'grupo-musical': '0.75', 'photo-booth': '0.75', monologo: '0.75' };
   for (const c of cats) {
-    lines.push(url(`https://xpeak.es/contratar-${c}`, today, 'weekly', catPri[c] || '0.8'));
+    lines.push(url(`https://xpeak.es/contratar-${c}`, categoryLandingDate, 'weekly', catPri[c] || '0.8'));
   }
 
   // Directorio público — páginas core de producto
   lines.push('\n  <!-- Directorio público -->');
   const dirSlugs = ['dj','fotografo','staff','azafata','camareros','maquillaje','promotores','catering','grupo-musical','animador','mago','humorista','bailarin','speaker','vestuario','photo-booth','wedding-planner','diseno-grafico'];
   for (const s of dirSlugs) {
-    lines.push(url(`https://xpeak.es/directorio/${s}`, today, 'daily', '0.9'));
+    lines.push(url(`https://xpeak.es/directorio/${s}`, directorioDate, 'daily', '0.9'));
   }
 
-  lines.push(url('https://xpeak.es/socials', today, 'daily', '0.8'));
+  lines.push(url('https://xpeak.es/socials', directorioDate, 'daily', '0.8'));
 
   // City landings — todas las capitales de provincia + grandes ciudades de España
   // IMPORTANTE: cada slug debe existir en CITIES de src/pages/CityLanding.tsx
@@ -142,7 +162,7 @@ function staticUrls(today) {
     for (const city of cities) {
       const pri = parseFloat(cityPri[city] || '0.7');
       const adjusted = (Math.min(pri, 0.85)).toFixed(2);
-      lines.push(url(`https://xpeak.es/contratar-${cat}/${city}`, today, 'weekly', adjusted));
+      lines.push(url(`https://xpeak.es/contratar-${cat}/${city}`, cityLandingDate, 'weekly', adjusted));
     }
   }
 
@@ -158,10 +178,11 @@ function staticUrls(today) {
       for (let i = bs; i < occSrc.length; i++) { if (occSrc[i] === '{') d++; else if (occSrc[i] === '}') { d--; if (d === 0) { end = i; break; } } }
       // eslint-disable-next-line no-eval
       const occRoles = eval(`(${occSrc.slice(bs, end + 1)})`);
+      const occasionDate = lastCommitDate('src/pages/OccasionLanding.tsx');
       lines.push('\n  <!-- Occasion × rol landings (GEO/AEO) -->');
       for (const [occSlug, roleSlugs] of Object.entries(occRoles)) {
         for (const roleSlug of roleSlugs) {
-          lines.push(url(`https://xpeak.es/${occSlug}/contratar-${roleSlug}`, today, 'weekly', '0.85'));
+          lines.push(url(`https://xpeak.es/${occSlug}/contratar-${roleSlug}`, occasionDate, 'weekly', '0.85'));
         }
       }
     }
@@ -171,15 +192,15 @@ function staticUrls(today) {
 
   // Special landings
   lines.push('\n  <!-- Special landings -->');
-  lines.push(url('https://xpeak.es/bodas', today, 'weekly', '0.90'));
-  lines.push(url('https://xpeak.es/presupuesto-boda', today, 'monthly', '0.85'));
-  lines.push(url('https://xpeak.es/checklist-evento-empresa', today, 'monthly', '0.82'));
-  lines.push(url('https://xpeak.es/organizar-eventos', today, 'weekly', '0.90'));
-  lines.push(url('https://xpeak.es/precios', today, 'monthly', '0.7'));
+  lines.push(url('https://xpeak.es/bodas', lastCommitDate('src/pages/BodasLanding.tsx'), 'weekly', '0.90'));
+  lines.push(url('https://xpeak.es/presupuesto-boda', lastCommitDate('src/pages/PresupuestoBoda.tsx'), 'monthly', '0.85'));
+  lines.push(url('https://xpeak.es/checklist-evento-empresa', lastCommitDate('src/pages/ChecklistEventoEmpresa.tsx'), 'monthly', '0.82'));
+  lines.push(url('https://xpeak.es/organizar-eventos', lastCommitDate('src/pages/OrganizadoresLanding.tsx'), 'weekly', '0.90'));
+  lines.push(url('https://xpeak.es/precios', lastCommitDate('src/pages/Precios.tsx'), 'monthly', '0.7'));
 
   // Blog index
   lines.push('\n  <!-- Blog -->');
-  lines.push(url('https://xpeak.es/blog', today, 'weekly', '0.7'));
+  lines.push(url('https://xpeak.es/blog', lastCommitDate('src/pages/BlogIndex.tsx'), 'weekly', '0.7'));
 
   // Blog posts (dates reflect actual publish dates)
   const posts = [
