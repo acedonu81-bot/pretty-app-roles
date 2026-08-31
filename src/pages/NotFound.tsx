@@ -13,6 +13,14 @@ const NotFound = () => {
 
   const isProfile = location.pathname.startsWith("/p/");
 
+  const CATEGORIES = [
+    { label: "DJ", to: "/contratar-dj" },
+    { label: "Catering", to: "/contratar-catering" },
+    { label: "Fotógrafos", to: "/contratar-fotografo" },
+    { label: "Camareros", to: "/contratar-camareros" },
+    { label: "Maquillaje", to: "/contratar-maquillaje" },
+  ];
+
   return (
     <div className="flex min-h-screen items-center justify-center" style={{ background: '#000' }}>
       <Helmet>
@@ -29,7 +37,7 @@ const NotFound = () => {
             ? "Este perfil no existe o ha sido eliminado. Puede que el profesional haya cambiado su URL."
             : "La página que buscas no existe o ha sido movida."}
         </p>
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8">
           <Link
             to="/"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-opacity hover:opacity-80"
@@ -46,6 +54,21 @@ const NotFound = () => {
             <Search size={15} />
             Buscar profesionales
           </Link>
+        </div>
+        <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.4)' }}>
+          O explora por categoría
+        </p>
+        <div className="flex flex-wrap gap-2 justify-center">
+          {CATEGORIES.map((c) => (
+            <Link
+              key={c.to}
+              to={c.to}
+              className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-opacity hover:opacity-80"
+              style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.75)', border: '1px solid rgba(255,255,255,0.1)' }}
+            >
+              {c.label}
+            </Link>
+          ))}
         </div>
       </div>
     </div>

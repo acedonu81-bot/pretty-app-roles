@@ -7,11 +7,23 @@ import FooterPublic from '@/components/FooterPublic';
 const LS_KEY = 'xpeak_checklist_empresa_v1';
 
 const CHECKLIST_PHASES = [
-  { phase: '8-12 semanas', color: '#e74c3c', label: 'Urgente', tasks: ['Definir objetivo, aforo y presupuesto total', 'Reservar espacio o local', 'Contactar catering y pedir 2-3 presupuestos'] },
-  { phase: '4-8 semanas', color: '#e67e22', label: 'Esencial', tasks: ['Cerrar DJ, música en vivo o entretenimiento', 'Confirmar staff y personal de sala', 'Definir producción audiovisual (pantallas, sonido, iluminación)'] },
-  { phase: '2-4 semanas', color: '#f39c12', label: 'Importante', tasks: ['Firmar contratos con todos los proveedores', 'Confirmar número final de asistentes al catering', 'Preparar timing detallado del evento'] },
-  { phase: 'Última semana', color: '#3498db', label: 'Final', tasks: ['Briefing final con cada proveedor', 'Confirmar horarios de montaje y acceso', 'Tener un plan B para imprevistos'] },
+  { phase: '8-12 semanas', color: '#e74c3c', label: 'Urgente', tasks: ['Definir objetivo, aforo y presupuesto total', 'Reservar espacio o local', 'Contactar catering y pedir 2-3 presupuestos', 'Bloquear la fecha con los proveedores clave antes de que se agote su disponibilidad'] },
+  { phase: '4-8 semanas', color: '#e67e22', label: 'Esencial', tasks: ['Cerrar DJ, música en vivo o entretenimiento', 'Confirmar staff y personal de sala', 'Definir producción audiovisual (pantallas, sonido, iluminación)', 'Reservar fotógrafo o videógrafo si el evento lo requiere'] },
+  { phase: '2-4 semanas', color: '#f39c12', label: 'Importante', tasks: ['Firmar contratos con todos los proveedores', 'Confirmar número final de asistentes al catering', 'Preparar timing detallado del evento', 'Enviar invitaciones o confirmaciones a los asistentes'] },
+  { phase: 'Última semana', color: '#3498db', label: 'Final', tasks: ['Briefing final con cada proveedor', 'Confirmar horarios de montaje y acceso', 'Tener un plan B para imprevistos', 'Designar una persona de contacto el día del evento'] },
 ];
+
+const faqStructured = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    { '@type': 'Question', name: '¿Con cuánta antelación hay que empezar a organizar un evento de empresa?', acceptedAnswer: { '@type': 'Answer', text: 'Para eventos de más de 50 personas, entre 2 y 3 meses de antelación. Para cenas o presentaciones pequeñas, 3-4 semanas suelen ser suficientes. La antelación depende sobre todo de si necesitas reservar espacio y catering, que son los proveedores que antes se agotan en fechas populares.' } },
+    { '@type': 'Question', name: '¿Qué proveedores hay que contratar primero?', acceptedAnswer: { '@type': 'Answer', text: 'El espacio y el catering se reservan primero porque son los que antes se agotan y condicionan la fecha disponible. Después DJ o música en vivo, y por último staff, fotografía y decoración, que suelen tener más disponibilidad de última hora.' } },
+    { '@type': 'Question', name: '¿Cuánto cuesta organizar un evento de empresa?', acceptedAnswer: { '@type': 'Answer', text: 'El coste varía mucho según aforo y ambición, pero como referencia orientativa: catering suele ser la partida mayor, seguido de espacio, entretenimiento (DJ o música en vivo) y staff. Pedir presupuesto directo a varios profesionales sin intermediarios es la forma más rápida de ajustar el precio real a tu evento.' } },
+    { '@type': 'Question', name: '¿Se puede organizar un evento de empresa sin agencia?', acceptedAnswer: { '@type': 'Answer', text: 'Sí, especialmente para eventos de hasta 100-150 personas. Con un checklist claro y comparando proveedores directamente, es perfectamente viable gestionarlo internamente y ahorrar la comisión de agencia.' } },
+    { '@type': 'Question', name: '¿Qué pasa si un proveedor cancela a última hora?', acceptedAnswer: { '@type': 'Answer', text: 'Por eso conviene tener un plan B identificado desde la fase de "Última semana": un segundo contacto de la misma categoría (DJ, catering, staff) al que puedas recurrir con poca antelación. Tener varios profesionales verificados guardados de la fase de presupuestos ayuda a reaccionar rápido.' } },
+  ],
+};
 
 const ALL_TASKS = CHECKLIST_PHASES.flatMap((p, pi) => p.tasks.map((t, ti) => ({ id: `${pi}-${ti}`, text: t, color: p.color, phase: p.phase })));
 
@@ -117,6 +129,7 @@ export default function ChecklistEventoEmpresa() {
         <meta property="og:site_name" content="XPEAK" />
         <meta name="twitter:card" content="summary_large_image" />
         <script type="application/ld+json">{JSON.stringify(article)}</script>
+        <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
       </Helmet>
 
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
@@ -204,6 +217,35 @@ export default function ChecklistEventoEmpresa() {
             })}
           </div>
         </div>
+
+        <section className="max-w-4xl mx-auto px-4 sm:px-6 pb-10">
+          <h2 className="text-xl sm:text-2xl font-black mb-3" style={{ color: '#D4AF37' }}>Cómo usar este checklist</h2>
+          <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.65)' }}>
+            El checklist está dividido en cuatro fases según el tiempo que falta para tu evento: desde las 8-12 semanas de antelación, cuando toca bloquear espacio y catering antes de que se agote la disponibilidad, hasta la última semana, donde el foco pasa a briefings y planes B. Introduce la fecha de tu evento arriba y la fase activa se resaltará automáticamente para que sepas qué tareas tocan ahora mismo.
+          </p>
+          <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.65)' }}>
+            El orden importa: el espacio y el catering condicionan la fecha y son los primeros en agotarse, así que se reservan antes que el resto. DJ, música en vivo y producción audiovisual van en la fase intermedia, y el staff, la fotografía y la decoración suelen tener más margen para cerrarse más tarde.
+          </p>
+          <h2 className="text-xl sm:text-2xl font-black mb-3 mt-6" style={{ color: '#D4AF37' }}>Proveedores que necesitarás</h2>
+          <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.65)' }}>
+            La mayoría de eventos de empresa —presentaciones, cenas, team building, galas o congresos— comparten un núcleo de proveedores: catering, staff de sala, DJ o música en vivo, y producción audiovisual. Puedes comparar profesionales verificados directamente en el directorio, sin comisión:
+          </p>
+          <ul className="text-sm leading-relaxed mb-3 list-disc pl-5 space-y-1" style={{ color: 'rgba(255,255,255,0.65)' }}>
+            <li><a href="/contratar-catering/madrid" className="underline hover:opacity-80" style={{ color: '#D4AF37' }}>Catering para eventos en Madrid</a></li>
+            <li><a href="/contratar-camareros/madrid" className="underline hover:opacity-80" style={{ color: '#D4AF37' }}>Camareros y staff de sala en Madrid</a></li>
+            <li><a href="/organizar-eventos" className="underline hover:opacity-80" style={{ color: '#D4AF37' }}>Guía completa para organizar cualquier tipo de evento</a></li>
+          </ul>
+
+          <h2 className="text-xl sm:text-2xl font-black mb-4 mt-8" style={{ color: '#D4AF37' }}>Preguntas frecuentes</h2>
+          <div className="space-y-4 mb-10">
+            {faqStructured.mainEntity.map((f) => (
+              <div key={f.name} className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <p className="text-sm font-black mb-1" style={{ color: '#fff' }}>{f.name}</p>
+                <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{f.acceptedAnswer.text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
 
         <section className="max-w-2xl mx-auto px-4 sm:px-6 pb-12">
           <div className="rounded-2xl p-6 sm:p-8" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.18)' }}>

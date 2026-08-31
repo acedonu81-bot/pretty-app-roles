@@ -113,6 +113,6 @@
 
     { "src": "^/assets/.+", "status": 404 },
 
-    { "src": "/(.*)", "dest": "/index.html" }
+    { "src": "/(.*)", "status": 404, "dest": "/index.html" }
   ]
 }
