@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import FooterPublic from '@/components/FooterPublic';
+import { toSlug } from '@/data/profiles';
 
 interface DanceSocial {
   id: string;
@@ -178,8 +179,9 @@ const Socials = () => {
           ) : (
             <div className="flex flex-col gap-3">
               {filtered.map(e => (
-                <div key={e.id} className="rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5"
-                  style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)' }}>
+                <a key={e.id} href={`/socials/${toSlug(e.event_name)}-${e.id.slice(0, 8)}`}
+                  className="rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 transition-transform hover:scale-[1.01]"
+                  style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', textDecoration: 'none' }}>
                   <div className="flex flex-col items-center justify-center rounded-lg px-3 py-2 flex-shrink-0"
                     style={{ background: 'rgba(212,175,55,0.08)', minWidth: 72 }}>
                     <span className="text-[0.65rem] font-black uppercase tracking-wider" style={{ color: '#8A6D0F' }}>
@@ -196,14 +198,11 @@ const Socials = () => {
                     </p>
                     {e.description && <p className="text-xs mt-1.5 line-clamp-2" style={{ color: '#666' }}>{e.description}</p>}
                   </div>
-                  {e.link_url && (
-                    <a href={e.link_url} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-lg flex-shrink-0 transition-all hover:scale-105"
-                      style={{ background: 'rgba(0,0,0,0.04)', color: '#222', border: '1px solid rgba(0,0,0,0.1)' }}>
-                      Más info <ExternalLink size={12} />
-                    </a>
-                  )}
-                </div>
+                  <span className="flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-lg flex-shrink-0"
+                    style={{ background: 'rgba(0,0,0,0.04)', color: '#222', border: '1px solid rgba(0,0,0,0.1)' }}>
+                    Ver evento <ExternalLink size={12} />
+                  </span>
+                </a>
               ))}
             </div>
           )}

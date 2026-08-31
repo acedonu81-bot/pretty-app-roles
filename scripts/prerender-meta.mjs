@@ -1434,6 +1434,91 @@ try {
   console.warn(`  ⚠ Prerender de perfiles omitido: ${e.message}`);
 }
 
+// ─── Eventos reales (dance_socials) → /socials/{slug} ─────────────────────
+// Mismo patrón que los perfiles: cada evento publicado por la comunidad
+// genera su propia página indexable con schema Event, en vez de vivir solo
+// dentro del listado de /socials.
+try {
+  const env = loadEnv();
+  const supabaseUrl = env.SUPABASE_URL || env.VITE_SUPABASE_URL;
+  const anonKey = env.SUPABASE_PUBLISHABLE_KEY || env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  if (supabaseUrl && anonKey) {
+    const today = new Date().toISOString().slice(0, 10);
+    const res = await fetch(
+      `${supabaseUrl}/rest/v1/dance_socials?select=id,event_name,style,city,venue,event_date,description,link_url,user_id&event_date=gte.${today}&order=event_date.asc&limit=500`,
+      { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } }
+    );
+    if (res.ok) {
+      const events = await res.json();
+      // Un solo fetch de perfiles para resolver el nombre del organizador de
+      // cada evento sin una query por evento.
+      const profilesRes = await fetch(
+        `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name`,
+        { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } }
+      );
+      const profilesById = new Map();
+      if (profilesRes.ok) {
+        for (const p of await profilesRes.json()) profilesById.set(p.user_id, p.display_name);
+      }
+
+      let eventCount = 0;
+      for (const e of events) {
+        const slug = `${toSlug(e.event_name)}-${e.id.slice(0, 8)}`;
+        const routePath = `/socials/${slug}`;
+        if (existingPaths.has(routePath)) continue;
+
+        const organizerName = profilesById.get(e.user_id) || null;
+        const dateLong = new Date(e.event_date + 'T00:00:00').toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        const descSnippet = (e.description ?? '').trim().slice(0, 150);
+        const desc = descSnippet
+          ? `${descSnippet}${e.description.length > 150 ? '…' : ''} ${dateLong} en ${e.venue ? `${e.venue}, ` : ''}${e.city}.`
+          : `${e.style} en ${e.venue ? `${e.venue}, ` : ''}${e.city}, el ${dateLong}. Agenda de socials de baile en XPEAK.`;
+
+        const eventSchema = {
+          '@context': 'https://schema.org',
+          '@type': 'Event',
+          name: e.event_name,
+          startDate: e.event_date,
+          eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+          eventStatus: 'https://schema.org/EventScheduled',
+          location: { '@type': 'Place', name: e.venue || e.city, address: { '@type': 'PostalAddress', addressLocality: e.city, addressCountry: 'ES' } },
+          description: desc,
+          url: `https://xpeak.es${routePath}`,
+          ...(organizerName ? { organizer: { '@type': 'Person', name: organizerName } } : {}),
+        };
+
+        const organizerSlug = organizerName ? toSlug(organizerName) : null;
+        ROUTES.push({
+          path: routePath,
+          title: `${e.event_name} — ${e.style} en ${e.city} | XPEAK`,
+          desc: desc.slice(0, 300),
+          ogTitle: `${e.event_name} — ${e.style} en ${e.city}`,
+          ogDesc: desc.slice(0, 200),
+          ogType: 'event',
+          jsonLd: eventSchema,
+          bodyHtml: `<div style="max-width:720px;margin:0 auto;padding:48px 24px;color:#fff">` +
+            `<h1>${escHtml(e.event_name)}</h1>` +
+            `<p><strong>${escHtml(e.style)}</strong> · ${escHtml(dateLong)} · ${e.venue ? `${escHtml(e.venue)}, ` : ''}${escHtml(e.city)}</p>` +
+            (e.description ? `<p>${escHtml(e.description)}</p>` : '') +
+            (e.link_url ? `<p><a href="${escHtml(e.link_url)}">Más información</a></p>` : '') +
+            (organizerName && organizerSlug ? `<p>Organizado por <a href="https://xpeak.es/p/${organizerSlug}">${escHtml(organizerName)}</a></p>` : '') +
+            `<p><a href="https://xpeak.es/socials">Ver toda la agenda de socials</a> · <a href="https://xpeak.es/directorio/bailarin">Directorio de bailarines</a></p>` +
+            `</div>`,
+        });
+        existingPaths.add(routePath);
+        eventCount++;
+      }
+      console.log(`  → ${eventCount} eventos reales con página propia (/socials/{slug})`);
+    } else {
+      console.warn(`  ⚠ No se pudieron cargar eventos (${res.status}) — se omite el prerender de /socials/{slug}`);
+    }
+  } else {
+    console.warn('  ⚠ Sin credenciales Supabase en .env — se omite el prerender de /socials/{slug}');
+  }
+} catch (e) {
+  console.warn(`  ⚠ Prerender de eventos omitido: ${e.message}`);
+}
+
 // ─── Main ──────────────────────────────────────────────────────────────────
 const shell = fs.readFileSync(path.join(DIST, 'index.html'), 'utf8');
 let count = 0;

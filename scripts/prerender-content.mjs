@@ -195,6 +195,35 @@ for (const roleSlug of Object.keys(ROLE_CONFIG)) {
 }
 console.log(`  → ${dirCount} rutas de directorio/rol añadidas al prerender de contenido`);
 
+// Rutas de eventos /socials/:slug → SocialEvent. Igual que /p/:slug, depende
+// de datos reales en Supabase — se resuelven con la misma consulta que
+// prerender-meta.mjs ya hace para generar la ruta con sus meta tags.
+const socialEvents = [];
+try {
+  const env = loadEnv();
+  const supabaseUrl = env.SUPABASE_URL || env.VITE_SUPABASE_URL;
+  const anonKey = env.SUPABASE_PUBLISHABLE_KEY || env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  if (supabaseUrl && anonKey) {
+    const today = new Date().toISOString().slice(0, 10);
+    const res = await fetch(
+      `${supabaseUrl}/rest/v1/dance_socials?select=id,event_name,style,city,venue,event_date,description,link_url,user_id&event_date=gte.${today}&order=event_date.asc&limit=500`,
+      { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } }
+    );
+    if (res.ok) {
+      const events = await res.json();
+      for (const e of events) {
+        const slug = `${toSlug(e.event_name)}-${e.id.slice(0, 8)}`;
+        const routePath = `/socials/${slug}`;
+        routes.push({ routePath, file: 'SocialEvent.tsx', routePattern: '/socials/:slug' });
+        socialEvents.push({ routePath, event: e });
+      }
+    }
+  }
+} catch (e) {
+  console.warn('  ⚠ No se pudieron cargar eventos para el prerender de /socials/:slug:', e.message);
+}
+console.log(`  → ${socialEvents.length} rutas de evento añadidas al prerender de contenido`);
+
 // Shims mínimos de navegador para componentes que los tocan durante el render
 const memStorage = () => {
   const s = new Map();
@@ -225,6 +254,7 @@ for (const { routePath, file, routePattern } of routes) {
   if (!fs.existsSync(htmlFile)) { missing++; continue; }
   try {
     let preloadedProfiles;
+    let preloadedSocialEvent;
     if (file === 'CityLanding.tsx') {
       const catSlug = routePattern.split('/contratar-')[1]?.split('/')[0];
       const citySlug = routePath.split('/').pop();
@@ -233,7 +263,12 @@ for (const { routePath, file, routePattern } of routes) {
         preloadedProfiles = resolveProfilesForCity(allProfiles, cityInfo.ciudad, catSlug);
       }
     }
-    const { html, headScripts } = await renderPage(file, routePath, routePattern, preloadedProfiles);
+    if (file === 'SocialEvent.tsx') {
+      const found = socialEvents.find(se => se.routePath === routePath);
+      const organizer = found ? allProfiles.find(p => p.user_id === found.event.user_id) : null;
+      preloadedSocialEvent = found ? { ...found.event, organizer_name: organizer?.display_name ?? null } : null;
+    }
+    const { html, headScripts } = await renderPage(file, routePath, routePattern, preloadedProfiles, preloadedSocialEvent);
     let doc = fs.readFileSync(htmlFile, 'utf8');
     // Sustituye el shell vacío (incluido el texto oculto legacy) por contenido real
     doc = doc.replace(/<div id="root">[\s\S]*?<\/div>\s*(?=<\/body>|\n\s*<\/body>)/, `<div id="root">${html}</div>\n  `);

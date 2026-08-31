@@ -482,6 +482,18 @@ const DEMO_SLUGS = [
   'ruben-vj','laura-promo','javi-street',
 ];
 
+// ─── Fetch upcoming dance socials from Supabase ───────────────────────────
+async function fetchSocialEvents(supabaseUrl, anonKey) {
+  const today = new Date().toISOString().slice(0, 10);
+  const url = `${supabaseUrl}/rest/v1/dance_socials?select=id,event_name,event_date,created_at&event_date=gte.${today}&order=event_date.asc&limit=500`;
+  const res = await fetch(url, { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } });
+  if (!res.ok) {
+    console.warn('⚠️  Could not fetch dance_socials from Supabase:', res.status);
+    return [];
+  }
+  return res.json();
+}
+
 // ─── Main ─────────────────────────────────────────────────────────────────
 async function main() {
   const env = loadEnv();
@@ -491,6 +503,10 @@ async function main() {
   console.log('📍 Fetching public profiles from Supabase...');
   const profiles = await fetchProfiles(supabaseUrl, anonKey);
   console.log(`✅ Found ${profiles.length} real profiles`);
+
+  console.log('📍 Fetching upcoming dance socials from Supabase...');
+  const socialEvents = await fetchSocialEvents(supabaseUrl, anonKey);
+  console.log(`✅ Found ${socialEvents.length} upcoming events`);
 
   const profileLines = ['\n  <!-- Perfiles reales -->'];
   const usedSlugs = new Set();
@@ -505,18 +521,27 @@ async function main() {
     profileLines.push(url(`https://xpeak.es/p/${slug}`, lastmod, 'weekly', '0.65'));
   }
 
+  const eventLines = ['\n  <!-- Eventos reales (dance_socials) -->'];
+  for (const e of socialEvents) {
+    if (!e.id || !e.event_name) continue;
+    const lastmod = e.created_at ? e.created_at.slice(0, 10) : TODAY;
+    const slug = `${toSlug(e.event_name)}-${e.id.slice(0, 8)}`;
+    eventLines.push(url(`https://xpeak.es/socials/${slug}`, lastmod, 'weekly', '0.6'));
+  }
+
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 ${staticUrls(TODAY)}
 ${profileLines.join('\n')}
+${eventLines.join('\n')}
 
 </urlset>`;
 
   fs.writeFileSync(OUT, sitemap, 'utf-8');
   if (fs.existsSync(path.dirname(OUT_DIST))) fs.writeFileSync(OUT_DIST, sitemap, 'utf-8');
   const lineCount = sitemap.split('\n').length;
-  console.log(`✅ sitemap.xml written — ${lineCount} lines, ${profiles.length} real profiles`);
+  console.log(`✅ sitemap.xml written — ${lineCount} lines, ${profiles.length} real profiles, ${socialEvents.length} events`);
 }
 
 main().catch(e => {
