@@ -8,6 +8,7 @@ import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import OffersWidget from '@/components/dashboard/OffersWidget';
 import { supabase } from '@/integrations/supabase/client';
 import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion, citiesForRegion } from '@/lib/regions';
+import { expandRole } from '@/lib/constants';
 import { isEarlyAdopter } from '@/lib/earlyAdopter';
 
 interface DirectoryViewProps {
@@ -35,7 +36,11 @@ async function fetchActiveEmployerCount(): Promise<number> {
 }
 
 async function fetchDirectoryProfiles(role: string, roles: string[] | undefined, filterRegion: string): Promise<Profile[]> {
-  const activeRoles = roles ?? [role];
+  // Expandir los alias legacy: sin esto, el directorio de 'staff' del dashboard
+  // se saltaba a los perfiles con role='camarero' (el rol retirado equivalente),
+  // y lo mismo con makeup/peluqueria. Se veian 6 camareros de 7, faltando
+  // justo el unico con foto.
+  const activeRoles = [...new Set((roles ?? [role]).flatMap(expandRole))];
   let query = supabase
     .from('profiles')
     .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, instagram, category, is_verified, is_flash_active, is_early_adopter, is_early_adopter_override, priority_badge_until, score, role, seeking_dance_partner, dance_level, dance_role, created_at')

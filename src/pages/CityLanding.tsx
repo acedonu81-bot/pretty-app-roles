@@ -15,7 +15,7 @@ interface Prof { id: string; display_name: string; photo_url: string | null; bio
 
 const ROLE_MAP: Record<string, string[]> = {
   dj: ['dj'], camareros: ['camarero', 'staff'], fotografo: ['media'], staff: ['staff', 'promotor'],
-  catering: ['empresario'], maquillaje: ['makeup'], peluqueria: ['peluqueria'], promotores: ['promotor'],
+  catering: ['catering'], maquillaje: ['makeup'], peluqueria: ['peluqueria'], promotores: ['promotor'],
   'disco-movil': ['dj'], vestuario: ['vestuario', 'staff'], azafata: ['azafata'],
   // Categorías que antes caían al fallback ['dj'] y por eso nunca encontraban
   // a nadie, pese a existir esos roles en la BD (bailarin, grupo-musical…).

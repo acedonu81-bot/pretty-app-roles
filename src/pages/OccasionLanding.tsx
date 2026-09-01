@@ -20,9 +20,15 @@ const BUILD_DATE = new Date().toISOString().slice(0, 10);
 interface Prof { id: string; display_name: string; photo_url: string | null; bio: string | null; city: string | null; role: string; score: number; slug: string | null; is_verified: boolean; }
 
 // Roles (categoría) → roles reales en la tabla profiles. Reutiliza la lógica de CityLanding.
+// Mismos roles que CityLanding y el directorio. Este mapa se habia quedado
+// atras: 'camareros' se saltaba el alias legacy 'camarero' (perdia perfiles),
+// 'catering' apuntaba a 'empresario' (que son salas, no caterings) y mago,
+// animador y grupo-musical caian en roles ajenos, asi que esas paginas
+// mostraban a gente de otro oficio.
 const ROLE_MAP: Record<string, string[]> = {
-  dj: ['dj'], fotografo: ['media'], catering: ['empresario'], camareros: ['staff'],
-  'grupo-musical': ['dj'], animador: ['staff'], mago: ['staff'], maquillaje: ['makeup'],
+  dj: ['dj'], fotografo: ['media'], catering: ['catering'],
+  camareros: ['staff', 'camarero'], 'grupo-musical': ['grupo-musical'],
+  animador: ['animador'], mago: ['mago'], maquillaje: ['makeup', 'peluqueria'],
 };
 
 function useRoleProfessionals(categorySlug: string) {

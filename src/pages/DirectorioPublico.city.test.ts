@@ -55,3 +55,24 @@ describe('alias de roles', () => {
     expect(canonicalRole(null)).toBeNull();
   });
 });
+
+// Regresión: el directorio del dashboard (DirectoryView) consultaba
+// .in('role', ['staff']) sin expandir el alias, así que se saltaba a los
+// perfiles con role='camarero' — se veían 6 camareros de 7, faltando justo el
+// único con foto. Cualquier vista que filtre por rol debe pasar por expandRole.
+describe('expandRole cubre a los camareros legacy en todas las vistas', () => {
+  it('una consulta de staff incluye camarero', () => {
+    const activeRoles = [...new Set(['staff'].flatMap(expandRole))];
+    expect(activeRoles).toContain('camarero');
+    expect(activeRoles).toContain('staff');
+  });
+
+  it('no duplica roles cuando ya vienen ambos alias', () => {
+    const activeRoles = [...new Set(['staff', 'camarero'].flatMap(expandRole))];
+    expect(activeRoles.sort()).toEqual(['camarero', 'staff']);
+  });
+
+  it('deja intactos los roles sin alias', () => {
+    expect([...new Set(['dj', 'mago'].flatMap(expandRole))].sort()).toEqual(['dj', 'mago']);
+  });
+});
