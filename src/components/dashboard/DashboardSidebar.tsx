@@ -49,14 +49,16 @@ const DIRECTORY_ITEMS: { id: string; label: string }[] = [
 ];
 const DIRECTORY_IDS = new Set(DIRECTORY_ITEMS.map(i => i.id));
 
-// Mismos nombres de categoría que la landing (Música, Gastro & Sala, Imagen
-// & Media, Staff & Promoción, Belleza & Estética) para que el sidebar del
-// dashboard no invente un vocabulario distinto al de marketing.
+// Mismos nombres de categoría que la landing y /descubrir. "Staff" y "Sala"
+// se han retirado del vocabulario: ambos significan camareros para media
+// España, así que "Staff & Promoción" (que son azafatas) y "Gastro & Sala"
+// (que sí son camareros) se confundían entre sí. Ahora cada etiqueta nombra
+// literalmente a quien contiene.
 const DIRECTORY_GROUPS: { label: string; ids: string[] }[] = [
   { label: 'Música', ids: ['dj', 'grupo-musical'] },
-  { label: 'Gastro & Sala', ids: ['staff', 'catering'] },
+  { label: 'Camareros & Catering', ids: ['staff', 'catering'] },
   { label: 'Imagen & Media', ids: ['media', 'photo-booth', 'design'] },
-  { label: 'Staff & Promoción', ids: ['azafata', 'event_manager', 'promotor', 'speaker'] },
+  { label: 'Azafatas & RRPP', ids: ['azafata', 'event_manager', 'promotor', 'speaker'] },
   { label: 'Belleza & Estética', ids: ['makeup', 'vestuario'] },
   { label: 'Entretenimiento', ids: ['bailarin', 'mago', 'humorista', 'animador'] },
 ];

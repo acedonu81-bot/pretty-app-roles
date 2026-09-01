@@ -39,14 +39,14 @@ const ROLE_ICON: Record<string, LucideIcon> = {
 };
 
 // Mismas 6 categorías que la landing y el sidebar del dashboard (Música,
-// Gastro & Sala, Imagen & Media, Staff & Promoción, Belleza & Estética,
+// Camareros & Catering, Imagen & Media, Azafatas & RRPP, Belleza & Estética,
 // Entretenimiento) — antes el menú listaba los 17 roles sueltos sin ninguna
 // agrupación, difícil de escanear de un vistazo.
 const ROLE_GROUPS: { label: string; slugs: string[] }[] = [
   { label: 'Música', slugs: ['dj', 'grupo-musical'] },
-  { label: 'Gastro & Sala', slugs: ['staff', 'catering'] },
+  { label: 'Camareros & Catering', slugs: ['staff', 'catering'] },
   { label: 'Imagen & Media', slugs: ['fotografo', 'photo-booth', 'diseno-grafico'] },
-  { label: 'Staff & Promoción', slugs: ['azafata', 'promotores', 'speaker', 'wedding-planner'] },
+  { label: 'Azafatas & RRPP', slugs: ['azafata', 'promotores', 'speaker', 'wedding-planner'] },
   { label: 'Belleza & Estética', slugs: ['maquillaje', 'vestuario'] },
   { label: 'Entretenimiento', slugs: ['animador', 'mago', 'humorista', 'bailarin'] },
 ];

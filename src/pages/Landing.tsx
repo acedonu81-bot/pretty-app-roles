@@ -292,7 +292,7 @@ const CATEGORY_DEST: Record<string, string> = {
   musica: '/directorio/dj',
   gastro: '/directorio/staff',
   imagen: '/directorio/fotografo',
-  staff: '/directorio/staff',
+  staff: '/directorio/azafata',
   belleza: '/directorio/maquillaje',
   animacion: '/directorio/animador',
   empresario: '/auth?mode=register&role=empresario',
@@ -310,7 +310,7 @@ const ROLE_DETAILS = [
     ],
   },
   {
-    key: 'gastro', title: 'Gastro & Sala', icon: <UtensilsCrossed size={28} />, tagline: 'Bartenders, chefs y catering premium',
+    key: 'gastro', title: 'Camareros & Catering', icon: <UtensilsCrossed size={28} />, tagline: 'Camareros, bartenders, chefs y catering',
     steps: [
       { icon: <UtensilsCrossed size={22} />, image: px(34321369), title: '¿Qué es este rol?',         body: 'Bartenders, camareros VIP, chefs de eventos y catering premium para hostelería nocturna y eventos exclusivos en toda Europa.' },
       { icon: <Video size={22} />,           image: px(544961),   title: 'Muestra tu talento',        body: 'Sube vídeos cortos de tus creaciones y cócteles. Tu portfolio habla por ti antes de cualquier entrevista.' },
@@ -328,7 +328,7 @@ const ROLE_DETAILS = [
     ],
   },
   {
-    key: 'staff', title: 'Staff & Promoción', icon: <Users size={28} />, tagline: 'RRPP, hostess, promotores y azafatas',
+    key: 'staff', title: 'Azafatas & RRPP', icon: <Users size={28} />, tagline: 'Azafatas, RRPP, promotores y speakers',
     steps: [
       { icon: <Users size={22} />,   image: px(2608517), title: '¿Qué es este rol?',                  body: 'Relaciones públicas, promotores, hostess, azafatas y coordinadores de acceso para clubs, festivales y eventos privados.' },
       { icon: <Globe size={22} />,   image: px(1763075), title: 'Primera plataforma formal para RRPP', body: 'XPEAK formaliza el trabajo de RRPP en España. Define tus tarifas y condiciones sin depender de contactos informales.' },
@@ -443,11 +443,18 @@ const categoryCountsPromise = supabase.from('profiles' as any)
 
 /* Categoría agregada del bento → roles reales que la componen (mismo mapeo que CATEGORY_DEST/isFresh). */
 const CATEGORY_ROLES: Record<string, string[]> = {
-  musica: ['dj'],
-  staff: ['staff', 'promotor'],
-  imagen: ['media'],
-  belleza: ['makeup', 'peluqueria'],
-  gastro: ['catering'],
+  musica: ['dj', 'grupo-musical'],
+  // 'staff' (camareros) cuenta en gastro, no aquí: es la agrupación del sidebar
+  // y de /descubrir, y además es a donde apunta CATEGORY_DEST.gastro. Contarlo
+  // en las dos categorías lo duplicaría en el ranking del bento.
+  staff: ['promotor', 'azafata', 'event_manager', 'speaker'],
+  imagen: ['media', 'photo-booth', 'design'],
+  belleza: ['makeup', 'peluqueria', 'vestuario'],
+  // 'camarero' es el rol legacy equivalente a 'staff' (ver ROLE_ALIASES).
+  // Contando solo 'catering' esta categoría daba 0 con 7 camareros dados de
+  // alta: quedaba la última del bento y sin marca de "nuevo", como si estuviera
+  // vacía, aunque al pulsarla lleva a /directorio/staff y sí hay gente.
+  gastro: ['staff', 'camarero', 'catering'],
   animacion: ['animador', 'mago', 'humorista', 'bailarin'],
 };
 
@@ -455,10 +462,10 @@ const CATEGORY_ROLES: Record<string, string[]> = {
    en runtime vía categoryOrder, nunca aquí. */
 const BENTO_CARD_DATA: Record<string, { image: string; icon: React.ReactNode; title: string; subtitle: string; freshRoles: string[] }> = {
   musica:  { image: bentoMusica, icon: <Music size={20} />, title: 'Música', subtitle: 'DJs, productores, artistas en vivo, VJs y técnicos de sonido', freshRoles: ['dj'] },
-  staff:   { image: bentoStaff, icon: <Users size={20} />, title: 'Staff & Promoción', subtitle: 'RRPP, hostess, promotores y azafatas', freshRoles: ['staff', 'promotor'] },
+  staff:   { image: bentoStaff, icon: <Users size={20} />, title: 'Azafatas & RRPP', subtitle: 'Azafatas, RRPP, promotores y speakers', freshRoles: ['promotor', 'azafata', 'event_manager', 'speaker'] },
   imagen:  { image: bentoImagen, icon: <Camera size={20} />, title: 'Imagen & Media', subtitle: 'Fotógrafos, videógrafos y creadores', freshRoles: ['media'] },
   belleza: { image: '/images/pexels/2681751.jpg', icon: <Scissors size={20} />, title: 'Belleza & Estética', subtitle: 'Maquilladores y peluquería a domicilio', freshRoles: ['makeup', 'peluqueria'] },
-  gastro:  { image: bentoGastro, icon: <UtensilsCrossed size={20} />, title: 'Gastro & Sala', subtitle: 'Bartenders, chefs y catering premium', freshRoles: ['catering'] },
+  gastro:  { image: bentoGastro, icon: <UtensilsCrossed size={20} />, title: 'Camareros & Catering', subtitle: 'Camareros, bartenders, chefs y catering', freshRoles: ['staff', 'camarero', 'catering'] },
   animacion: { image: bentoAnimacion, icon: <Sparkles size={20} />, title: 'Animación', subtitle: 'Magos, humoristas, bailarines y animadores', freshRoles: ['animador', 'mago', 'humorista', 'bailarin'] },
 };
 
