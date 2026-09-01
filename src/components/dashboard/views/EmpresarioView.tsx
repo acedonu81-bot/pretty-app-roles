@@ -275,11 +275,15 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
         )}
       </div>
 
-      {/* Tabs */}
-      <div className="flex gap-2 mb-5 flex-wrap">
+      {/* Tabs — en móvil una sola fila deslizable (antes flex-wrap apilaba los 8
+          tabs en 3-4 filas y comía media pantalla en 390px); en sm+ vuelven a
+          envolverse porque ahí sí caben. scrollbar-hide + scroll-px para que el
+          tab activo no quede pegado al borde al deslizar. */}
+      <div className="flex gap-2 mb-5 flex-nowrap overflow-x-auto no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap sm:overflow-visible"
+        style={{ scrollPaddingInline: '1rem', WebkitOverflowScrolling: 'touch' }}>
         {TABS.map(t => (
           <button key={t.id} onClick={() => setTab(t.id)}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-all"
+            className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-all flex-shrink-0 whitespace-nowrap"
             style={{
               background: tab === t.id ? 'rgba(212,175,55,0.12)' : 'rgba(0,0,0,0.03)',
               border: `1px solid ${tab === t.id ? 'rgba(212,175,55,0.3)' : 'var(--nightlife-border)'}`,
