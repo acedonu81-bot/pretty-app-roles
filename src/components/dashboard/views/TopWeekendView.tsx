@@ -99,10 +99,10 @@ const TopWeekendView = () => {
           <Crown size={28} style={{ color: 'rgba(212,175,55,0.2)' }} />
           <div>
             <p className="text-sm font-bold mb-1" style={{ color: '#333' }}>
-              Aún no hay perfiles TOP
+              Todavía no hay perfiles destacados
             </p>
             <p className="text-xs text-muted-foreground max-w-[260px] mx-auto leading-relaxed">
-              Cuando los profesionales se registren y completen sus perfiles aparecerán aquí.
+              Aquí aparecen los perfiles con foto y datos completos. Completa el tuyo y sube.
             </p>
           </div>
         </div>

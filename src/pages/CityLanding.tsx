@@ -819,9 +819,9 @@ export default function CityLanding() {
             ) : (
               <>
                 <div className="rounded-2xl p-6 mb-8 text-center" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                  <p className="text-base font-black mb-1">Aún no hay {catData.keyword} registrados en {cityData.ciudad}</p>
+                  <p className="text-base font-black mb-1">Todavía no hay {catData.keyword} en {cityData.ciudad}</p>
                   <p className="text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>
-                    Estamos creciendo. Mientras tanto, puedes contactar a estos profesionales que trabajan en toda España y se desplazan.
+                    Cuestión de tiempo.
                   </p>
                 </div>
                 {profSuggestions.length > 0 && (

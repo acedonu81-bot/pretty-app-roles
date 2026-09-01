@@ -194,12 +194,12 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
               <Users size={22} style={{ color: 'rgba(212,175,55,0.35)' }} />
             </div>
             <p className="text-sm font-bold">
-              {showFavoritesOnly ? 'Sin profesionales guardados' : 'Sin resultados con estos filtros'}
+              {showFavoritesOnly ? 'Tu lista de favoritos está vacía' : '¿Probamos con algún filtro menos?'}
             </p>
             <p className="text-xs text-muted-foreground max-w-[280px] mx-auto leading-relaxed">
               {showFavoritesOnly
-                ? 'Guarda profesionales desde la pestaña Descubrir para acceder rápido a ellos.'
-                : 'Prueba a ajustar la zona, el rol o ampliar el precio máximo.'}
+                ? 'Cuando alguien te convenza en Descubrir, guárdalo aquí y lo tendrás a un clic.'
+                : 'Ajustando la zona, el rol o el precio máximo suele aparecer alguien.'}
             </p>
           </div>
         )}

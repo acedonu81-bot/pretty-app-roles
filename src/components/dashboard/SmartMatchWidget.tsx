@@ -150,7 +150,7 @@ const SmartMatchWidget = ({ onViewProfile, onMessage }: Props) => {
 
           {!loading && query && results.length === 0 && (
             <div className="py-6 text-center rounded-xl" style={{ background: 'rgba(0,0,0,0.02)' }}>
-              <p className="text-xs" style={{ color: '#333' }}>No se encontraron profesionales con estos criterios. Prueba ampliando la búsqueda.</p>
+              <p className="text-xs" style={{ color: '#333' }}>Nadie encaja con todo a la vez. ¿Probamos pidiendo un poco menos?</p>
             </div>
           )}
 

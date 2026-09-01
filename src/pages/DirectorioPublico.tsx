@@ -595,8 +595,8 @@ export default function DirectorioPublico() {
 
           {!fetchError && !loading && profiles.length === 0 && city !== 'Todas' && (
             <div className="p-12 rounded-2xl text-center" style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)' }}>
-              <p className="text-sm font-bold mb-2">Sin resultados en {city}</p>
-              <p className="text-xs mb-4" style={{ color: '#444' }}>Prueba con otra ciudad o ve al directorio completo.</p>
+              <p className="text-sm font-bold mb-2">Todavía no hay nadie en {city}</p>
+              <p className="text-xs mb-4" style={{ color: '#444' }}>Pero muchos se desplazan. Míralos en el directorio completo.</p>
               <button onClick={() => setCity('Todas')} className="px-4 py-2 rounded-xl text-xs font-bold"
                 style={{ background: 'rgba(212,175,55,0.1)', color: '#7a6216', border: '1px solid rgba(212,175,55,0.35)' }}>
                 Ver todos

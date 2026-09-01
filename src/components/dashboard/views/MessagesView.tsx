@@ -466,7 +466,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
             />
             {searchingUsers && <p className="text-xs text-muted-foreground text-center py-2">Buscando...</p>}
             {!searchingUsers && userResults.length === 0 && searchUsers.length >= 2 && (
-              <p className="text-xs text-muted-foreground text-center py-2">Sin resultados</p>
+              <p className="text-xs text-muted-foreground text-center py-2">Nadie con ese nombre por aquí</p>
             )}
             <div className="flex flex-col gap-1 max-h-60 overflow-y-auto">
               {userResults.map(u => (

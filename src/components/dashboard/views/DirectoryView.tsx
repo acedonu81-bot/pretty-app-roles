@@ -346,10 +346,10 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
           </div>
           <div>
             <p className="text-sm font-bold mb-1" style={{ color: '#333' }}>
-              {searchQuery?.trim() ? `Sin resultados para "${searchQuery}"` : 'Sin resultados con estos filtros'}
+              {searchQuery?.trim() ? 'Nadie con ese nombre por aquí' : '¿Probamos con algún filtro menos?'}
             </p>
             <p className="text-xs text-muted-foreground mb-3 max-w-[260px] mx-auto">
-              Prueba cambiando la comunidad o quitando los filtros de disponibilidad o verificación.
+              Cambiando la comunidad, o quitando disponibilidad o verificación, seguro que aparece alguien.
             </p>
             {(filterRegion !== ALL_REGIONS_LABEL || filterFlash || filterVerified) && (
               <button onClick={() => { setFilterRegion(ALL_REGIONS_LABEL); setPresetRegion(ALL_REGIONS_LABEL); setFilterFlash(false); setFilterVerified(false); }}

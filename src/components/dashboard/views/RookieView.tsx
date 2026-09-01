@@ -333,9 +333,9 @@ const RookieView = () => {
             style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.1)' }}>
             <Award size={22} style={{ color: 'rgba(212,175,55,0.35)' }} />
           </div>
-          <p className="text-sm font-bold">Sé el primero en la escena</p>
+          <p className="text-sm font-bold">Todavía no hay más DJs Promesa por aquí</p>
           <p className="text-xs text-muted-foreground max-w-[280px] mx-auto leading-relaxed">
-            Aún no hay DJs Promesa registrados. Cuando un DJ se una con plan gratuito aparecerá aquí para recibir votos de la comunidad.
+            Aquí aparecerán otros DJs Promesa cuando se unan, para que la comunidad pueda votarles.
           </p>
         </div>
       ) : (

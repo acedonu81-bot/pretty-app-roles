@@ -142,8 +142,8 @@ export default function Descubrir() {
         </div>
       ) : profiles.length === 0 ? (
         <div className="fixed inset-0 z-[55] flex flex-col items-center justify-center gap-4 px-8 text-center" style={{ background: '#090909', color: '#fff' }}>
-          <p className="text-base font-black">Aún no hay {roleLabel.toLowerCase()} disponibles</p>
-          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>Prueba con otra categoría.</p>
+          <p className="text-base font-black">Por aquí no hay nadie todavía</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>Ningún {roleLabel.toLowerCase()} ha llegado aún a esta categoría. ¿Probamos con otra?</p>
           <button onClick={() => setMenuOpen(true)} className="mt-2 px-6 py-3 rounded-xl font-bold text-sm" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Elegir categoría</button>
         </div>
       ) : (
