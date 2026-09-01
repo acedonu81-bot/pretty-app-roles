@@ -68,15 +68,21 @@ const StatsTab = ({ pros, favorites }: Props) => {
             </div>
           ) : (
             <div className="flex items-center gap-4">
-              <ResponsiveContainer width="60%" height={160}>
-                <PieChart>
-                  <Pie data={pieData.filter(d => d.value > 0)} dataKey="value" cx="50%" cy="50%" innerRadius={40} outerRadius={72} paddingAngle={3} strokeWidth={0}>
-                    {pieData.filter(d => d.value > 0).map(entry => <Cell key={entry.name} fill={entry.color} opacity={0.9} />)}
-                  </Pie>
-                  <Tooltip content={<DarkTooltip />} />
-                </PieChart>
-              </ResponsiveContainer>
-              <div className="flex flex-col gap-2">
+              {/* El ResponsiveContainer necesita un padre con ancho medible; con
+                  width="60%" dentro de un flex sin base, en móvil el ancho
+                  colapsaba a ~0 y la tarta salía invisible (solo se veía la
+                  leyenda). Un wrapper flex-1 con min-w-0 le da base real. */}
+              <div className="flex-1 min-w-0">
+                <ResponsiveContainer width="100%" height={160}>
+                  <PieChart>
+                    <Pie data={pieData.filter(d => d.value > 0)} dataKey="value" cx="50%" cy="50%" innerRadius={40} outerRadius={72} paddingAngle={3} strokeWidth={0}>
+                      {pieData.filter(d => d.value > 0).map(entry => <Cell key={entry.name} fill={entry.color} opacity={0.9} />)}
+                    </Pie>
+                    <Tooltip content={<DarkTooltip />} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="flex flex-col gap-2 flex-shrink-0">
                 {pieData.map(d => (
                   <div key={d.name} className="flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: d.color }} />
