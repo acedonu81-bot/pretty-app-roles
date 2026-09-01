@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Users, Shield, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2 } from 'lucide-react';
+import { Users, Shield, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2, UserMinus } from 'lucide-react';
 import AdminMetrics from './admin/AdminMetrics';
 import AdminCharts from './admin/AdminCharts';
 import AdminValidations from './admin/AdminValidations';
@@ -9,6 +9,8 @@ import AdminFeatureRequests from './admin/AdminFeatureRequests';
 import AdminCancellations from './admin/AdminCancellations';
 import AdminReviews from './admin/AdminReviews';
 import AdminPromoCodes from './admin/AdminPromoCodes';
+import AdminDeletionAlert from './admin/AdminDeletionAlert';
+import AdminDeletions from './admin/AdminDeletions';
 
 const TABS = [
   { id: 'overview', label: 'General', icon: LayoutGrid },
@@ -17,6 +19,7 @@ const TABS = [
   { id: 'validations', label: 'Validaciones', icon: Shield },
   { id: 'content', label: 'Reseñas', icon: MessageSquare },
   { id: 'business', label: 'Negocio', icon: TrendingDown },
+  { id: 'deletions', label: 'Bajas', icon: UserMinus },
   { id: 'promos', label: 'Códigos Promo', icon: Tag },
 ] as const;
 type TabId = typeof TABS[number]['id'];
@@ -26,6 +29,10 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
+      {/* Fuera del sistema de pestañas a propósito: una baja hay que verla
+          entres por donde entres, no solo en la pestaña que toque. */}
+      <AdminDeletionAlert onOpenDeletions={() => setTab('deletions')} />
+
       <div className="mb-6">
         <h2 className="text-2xl font-bold mb-1">
           Panel <span className="text-gradient">Admin</span>
@@ -58,6 +65,7 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
         </>
       )}
       {tab === 'users' && <AdminUserManagement />}
+      {tab === 'deletions' && <AdminDeletions />}
       {tab === 'empresarios' && <AdminBusinesses />}
       {tab === 'validations' && <AdminValidations />}
       {tab === 'content' && <AdminReviews />}

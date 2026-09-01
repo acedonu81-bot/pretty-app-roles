@@ -113,6 +113,8 @@ function resolveProfilesForCity(allProfiles, ciudad, categorySlug) {
 // `roles`, descarta perfiles sin nombre y ordena por score. Sin esto el HTML
 // del directorio se servía sin un solo profesional ni enlace a /p/.
 function resolveProfilesForDirectorio(allProfiles, dbRole) {
+  // Mismos alias que lib/constants.ts (este script es .mjs y no importa TS;
+  // si se toca ROLE_ALIASES hay que reflejarlo aqui).
   const dbRoles = dbRole === 'staff' ? ['staff', 'camarero']
     : dbRole === 'makeup' ? ['makeup', 'peluqueria']
     : [dbRole];

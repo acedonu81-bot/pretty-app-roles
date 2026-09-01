@@ -53,7 +53,21 @@ const SidebarProvider = React.forwardRef<
 
   // This is the internal state of the sidebar.
   // We use openProp and setOpenProp for control from outside the component.
-  const [_open, _setOpen] = React.useState(defaultOpen);
+  //
+  // La cookie sidebar:state se escribia al plegar/desplegar pero no se leia
+  // nunca al montar, asi que el panel volvia a salir desplegado en cada carga
+  // e ignoraba lo que el usuario habia elegido. Ahora la preferencia guardada
+  // gana sobre defaultOpen; si no hay cookie se usa defaultOpen.
+  const [_open, _setOpen] = React.useState(() => {
+    if (typeof document === 'undefined') return defaultOpen;
+    const saved = document.cookie
+      .split('; ')
+      .find(c => c.startsWith(`${SIDEBAR_COOKIE_NAME}=`))
+      ?.split('=')[1];
+    if (saved === 'true') return true;
+    if (saved === 'false') return false;
+    return defaultOpen;
+  });
   const open = openProp ?? _open;
   const setOpen = React.useCallback(
     (value: boolean | ((value: boolean) => boolean)) => {

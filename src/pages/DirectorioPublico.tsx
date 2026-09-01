@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams, Navigate, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { Zap, MapPin, BadgeCheck, ChevronRight, Check, Plus, Users } from 'lucide-react';
@@ -13,6 +13,7 @@ import { addToCart, useEventCart, MAX_CART_ITEMS } from '@/lib/eventCart';
 import { useAuth } from '@/hooks/useAuth';
 import GhostProfileCards from '@/components/GhostProfileCards';
 import { isEarlyAdopter } from '@/lib/earlyAdopter';
+import { expandRole } from '@/lib/constants';
 
 // URL de perfil por slug de nombre (la misma que usan sitemap y prerender) en
 // vez de UUID — evita dos URLs indexables para el mismo perfil. PublicProfile
@@ -221,6 +222,17 @@ export const ALL_ROLES = [
 
 const CITIES = ['Todas', 'Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao', 'Málaga', 'Ibiza'];
 
+// El filtro de ciudad se leía solo del estado local, así que un enlace directo
+// a ?ciudad=madrid (o un crawler, que no hace clic) veía SIEMPRE 'Todas' y se
+// le servían perfiles de otras provincias como si fueran de la suya. Se
+// normaliza contra CITIES para no aceptar valores arbitrarios de la URL.
+export function cityFromParam(raw: string | null): string {
+  if (!raw) return 'Todas';
+  const norm = (v: string) => v.trim().toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  return CITIES.find(c => norm(c) === norm(raw)) ?? 'Todas';
+}
+
 // Sugerencias de categorías relacionadas cuando una queda sin resultados —
 // agrupadas por tipo de necesidad, no alfabético, para que la sugerencia tenga sentido real.
 const RELATED_ROLES: Record<string, string[]> = {
@@ -283,12 +295,10 @@ export async function fetchRatings(userIds: string[]): Promise<Record<string, { 
 }
 
 export async function fetchDirectorioProfiles(dbRole: string, city: string): Promise<DirProfile[]> {
-  // 'camarero' es un rol legacy (opción retirada de los selectores) — equivale a staff.
-  // 'makeup' y 'peluqueria' son roles distintos en BD (para SEO/registro propio),
-  // pero se muestran juntos en un único directorio "Maquillaje y Peluquería".
-  const dbRoles = dbRole === 'staff' ? ['staff', 'camarero']
-    : dbRole === 'makeup' ? ['makeup', 'peluqueria']
-    : [dbRole];
+  // Alias de rol (staff/camarero, makeup/peluqueria) desde el canon compartido
+  // en lib/constants — antes estaba duplicado aquí, en el prerender y en el
+  // panel de empresario, y las tres copias podían divergir.
+  const dbRoles = expandRole(dbRole);
   // Match por el array `roles` (overlaps) O por el `role` singular — algunos
   // perfiles reales tienen roles:[] pero role con valor (p.ej. altas antiguas),
   // y quedaban fuera del feed aunque sí salen en el directorio clásico.
@@ -358,7 +368,16 @@ export default function DirectorioPublico() {
   const { rol } = useParams<{ rol: string }>();
   const config = ROLE_CONFIG[rol ?? 'dj'] ?? ROLE_CONFIG.dj;
 
-  const [city, setCity] = useState('Todas');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const city = cityFromParam(searchParams.get('ciudad'));
+  // La ciudad vive en la URL, no en useState: así el enlace es compartible,
+  // el botón atrás funciona y el HTML servido a Google corresponde al filtro.
+  const setCity = (c: string) => {
+    const next = new URLSearchParams(searchParams);
+    if (c === 'Todas') next.delete('ciudad');
+    else next.set('ciudad', c);
+    setSearchParams(next, { replace: true });
+  };
   const [bookingPro, setBookingPro] = useState<DirProfile | null>(null);
   const [showMultiRequest, setShowMultiRequest] = useState(false);
   const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
@@ -376,7 +395,7 @@ export default function DirectorioPublico() {
     ? (globalThis as any).__PRERENDER_DIRECTORIO__ as any[] | undefined
     : undefined;
 
-  const { data: baseProfiles = [], isLoading: loading, isError: fetchError } = useQuery({
+  const { data: baseProfiles = [], isLoading: loading, isError: fetchError, refetch } = useQuery({
     queryKey: ['directorio-publico', config.dbRole, city],
     queryFn: () => fetchDirectorioProfiles(config.dbRole, city),
     staleTime: 60_000,
@@ -554,7 +573,7 @@ export default function DirectorioPublico() {
             <div className="p-12 rounded-2xl text-center" style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)' }}>
               <p className="text-sm font-bold mb-2">No se pudo cargar el directorio</p>
               <p className="text-xs mb-4" style={{ color: '#444' }}>Comprueba tu conexión y vuelve a intentarlo.</p>
-              <button onClick={() => { setCity(city); setFetchError(false); setLoading(true); }}
+              <button onClick={() => refetch()}
                 className="px-4 py-2 rounded-xl text-xs font-bold"
                 style={{ background: 'rgba(212,175,55,0.1)', color: '#7a6216', border: '1px solid rgba(212,175,55,0.35)' }}>
                 Reintentar

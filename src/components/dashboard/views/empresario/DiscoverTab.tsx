@@ -6,6 +6,7 @@ import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import type { Pro } from './types';
 import { ZONES } from './types';
 import { DJ_GENRES } from '@/lib/constants';
+import { canonicalRole } from '@/lib/constants';
 import { useAuth } from '@/hooks/useAuth';
 
 interface Props {
@@ -51,8 +52,10 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
 
   const filtered = pros.filter(p => {
     if (filterZone !== 'Todas' && p.zone !== filterZone) return false;
-    // 'camarero' es un rol legacy — cuenta como staff en el filtro
-    const effectiveRole = p.role === 'camarero' ? 'staff' : p.role;
+    // Alias de rol desde el canon compartido: aquí solo se contemplaba
+    // camarero->staff, así que un perfil 'peluqueria' se perdía al filtrar
+    // por 'makeup'.
+    const effectiveRole = canonicalRole(p.role);
     if (filterRole !== 'Todos' && effectiveRole !== filterRole) return false;
     if (filterGenre !== 'Todos' && !(p.genres ?? []).includes(filterGenre)) return false;
     if (p.hourly_rate > maxPrice) return false;

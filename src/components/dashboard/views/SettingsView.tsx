@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { exportUserDataZip } from '@/lib/exportUserData';
 import QRCode from 'qrcode';
 import { supabase } from '@/integrations/supabase/client';
+import ExitSurveyModal from '@/components/dashboard/ExitSurveyModal';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { sanitizeInput, containsPhoneNumber } from '@/lib/contentFilter';
@@ -192,6 +193,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
   const [showDeleteZone, setShowDeleteZone] = useState(false);
   const [deleteConfirmEmail, setDeleteConfirmEmail] = useState('');
   const [deleting, setDeleting] = useState(false);
+  const [showExitSurvey, setShowExitSurvey] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [otpCode, setOtpCode] = useState('');
   const [sendingOtp, setSendingOtp] = useState(false);
@@ -618,13 +620,21 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
         return;
       }
 
-      // 3. Cerrar sesión
-      await signOut();
-      toast.success('Datos personales suprimidos y sesión cerrada (RGPD Art. 17). La baja definitiva de la cuenta de acceso se completa desde soporte.');
+      // 3. Encuesta de salida antes de cerrar sesión: record_exit_survey valida
+      // auth.uid() contra el claim de la baja, así que necesita la sesión viva.
+      // Es opcional — el modal se puede cerrar sin responder.
+      setShowExitSurvey(true);
     } catch {
       toast.error('Error al eliminar la cuenta. Contacta con soporte.');
       setDeleting(false);
     }
+  };
+
+  // Cierra sesión al terminar (o saltarse) la encuesta de salida.
+  const finishAccountDeletion = async () => {
+    setShowExitSurvey(false);
+    await signOut();
+    toast.success('Datos personales suprimidos y sesión cerrada (RGPD Art. 17). La baja definitiva de la cuenta de acceso se completa desde soporte.');
   };
 
   const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -1121,6 +1131,8 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
           </div>
         )}
       </div>
+
+      {showExitSurvey && <ExitSurveyModal onDone={finishAccountDeletion} />}
     </div>
   );
 };
