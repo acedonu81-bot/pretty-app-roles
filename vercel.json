@@ -4,7 +4,6 @@
     { "source": "/:path(.*)", "has": [{ "type": "host", "value": "pretty-app-roles-(.*)\\.vercel\\.app" }], "destination": "https://xpeak.es/:path", "permanent": true }
   ],
   "routes": [
-    { "//": "/directorio?categoria=X mandaba SIEMPRE a /directorio/dj: el 308 ignoraba el query y ROLE_CONFIG[undefined] cae en el default. Cada alias va ahora a su categoria real (camarero->staff, que es el slug en BD)." },
     { "src": "/directorio", "has": [{ "type": "query", "key": "categoria", "value": "camarero" }], "status": 301, "headers": { "Location": "/directorio/staff" } },
     { "src": "/directorio", "has": [{ "type": "query", "key": "categoria", "value": "camareros" }], "status": 301, "headers": { "Location": "/directorio/staff" } },
     { "src": "/directorio", "has": [{ "type": "query", "key": "categoria", "value": "staff" }], "status": 301, "headers": { "Location": "/directorio/staff" } },
