@@ -176,6 +176,30 @@ async function solicitarPresupuesto(args: Record<string, unknown>, sessionId: st
   return { content: [{ type: 'text', text: `Solicitud enviada a ${payload.professional_name}. Le llegará por email y contactará directamente a ${payload.requester_contact} para confirmar disponibilidad y precio final.` }] };
 }
 
+// SEC-06: rate-limit por IP para la operación con efectos secundarios
+// (solicitar_presupuesto crea un flash_booking y dispara 3 emails). La
+// búsqueda de solo lectura queda sin fricción. Mismo mecanismo y tabla que
+// chat-ai, para que un endpoint público sin JWT no pueda martillear la
+// creación de solicitudes ni el envío de correos.
+const MCP_RATE_LIMIT_MAX = 8;
+const MCP_RATE_LIMIT_WINDOW_MIN = 10;
+
+async function isRateLimited(clientIp: string): Promise<boolean> {
+  const since = new Date(Date.now() - MCP_RATE_LIMIT_WINDOW_MIN * 60 * 1000).toISOString();
+  const { count } = await supabase
+    .from('edge_function_rate_limit_log' as any)
+    .select('id', { count: 'exact', head: true })
+    .eq('endpoint', 'mcp-solicitar')
+    .eq('client_ip', clientIp)
+    .gte('created_at', since);
+  // Registrar el intento ANTES de cualquier corte, para que fallos repetidos
+  // no impidan que el contador suba (mismo criterio que chat-ai).
+  try {
+    await supabase.from('edge_function_rate_limit_log' as any).insert({ endpoint: 'mcp-solicitar', client_ip: clientIp });
+  } catch { /* no crítico */ }
+  return typeof count === 'number' && count >= MCP_RATE_LIMIT_MAX;
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
 
@@ -210,7 +234,15 @@ serve(async (req) => {
         const toolName = params?.name;
         const args = params?.arguments ?? {};
         if (toolName === 'buscar_profesionales') return respond(await buscarProfesionales(args, sessionId));
-        if (toolName === 'solicitar_presupuesto') return respond(await solicitarPresupuesto(args, sessionId));
+        if (toolName === 'solicitar_presupuesto') {
+          const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+            ?? req.headers.get('x-real-ip')
+            ?? 'unknown';
+          if (await isRateLimited(clientIp)) {
+            return respond({ content: [{ type: 'text', text: 'Se ha alcanzado el límite de solicitudes recientes. Espera unos minutos antes de volver a intentarlo.' }], isError: true });
+          }
+          return respond(await solicitarPresupuesto(args, sessionId));
+        }
         return new Response(JSON.stringify({ jsonrpc: '2.0', id, error: { code: -32601, message: `Herramienta desconocida: ${toolName}` } }),
           { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
       }

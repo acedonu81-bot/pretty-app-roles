@@ -129,7 +129,10 @@
         "npm:vite@^5.4.19",
         "npm:vitest@^3.2.4",
         "npm:zod@^3.25.76"
-      ]
+      ],
+      "overrides": {
+        "picomatch": "^4.0.3"
+      }
     }
   }
 }

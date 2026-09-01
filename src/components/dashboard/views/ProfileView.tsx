@@ -909,13 +909,17 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             <div className="mb-3">
               {(() => {
                 const isMusical = profile.role === 'dj' || profile.role === 'rookie';
-                const label = isMusical ? 'Rider Técnico' : profile.role === 'makeup' ? 'Marcas / Productos' : profile.role === 'peluqueria' ? 'Servicios / Técnicas' : profile.role === 'media' ? 'Equipo técnico' : profile.role === 'event_manager' ? 'Servicios de coordinación' : 'Especialidad';
+                const label = isMusical ? 'Rider Técnico' : profile.role === 'makeup' ? 'Marcas / Productos' : profile.role === 'peluqueria' ? 'Servicios / Técnicas' : profile.role === 'media' ? 'Equipo técnico' : profile.role === 'event_manager' ? 'Servicios de coordinación' : (profile.role === 'staff' || profile.role === 'camarero') ? 'Servicios y equipamiento' : 'Especialidad';
                 const placeholder = isMusical
                   ? 'Ej: Pioneer CDJ-3000 + DJM-900NXS2. Mesa propia (si no hay Pioneer). 2 enchufes cerca de la cabina. Monitoreo lateral obligatorio.'
                   : profile.role === 'media' ? 'Ej: Sony A7 III + DJI Ronin SC. Entrego en 48h. Incluye edición y color grading.'
                   : profile.role === 'makeup' ? 'Ej: MAC, NARS, Charlotte Tilbury. Traigo maletín completo. Necesito mesa con espejo y luz natural.'
                   : profile.role === 'peluqueria' ? 'Ej: Peluquería a domicilio. Corte, color, peinados de novia y recogidos. Traigo todo el material necesario.'
                   : profile.role === 'event_manager' ? 'Ej: Coordinación integral de eventos. Gestión de artistas, catering, montaje y protocolo. Disponible en toda España.'
+                  : (profile.role === 'staff' || profile.role === 'camarero')
+                    ? 'Ej: Camarero de sala y barra. Coctelería básica. Traje propio. Inglés fluido. Experiencia en bodas de 200+ invitados.'
+                  : profile.role === 'catering'
+                    ? 'Ej: Catering para bodas y eventos de empresa. Menú cerrado o buffet. Opciones veganas y sin gluten. Personal de sala incluido.'
                   : 'Describe tu especialidad y requisitos...';
                 const PRESETS: Record<string, string[]> = {
                   dj:     ['CDJ-3000 + DJM-900NXS2', 'Mesa propia', '2 enchufes', 'Monitor lateral', 'Rider estándar Pioneer', 'Necesita backline', 'Acepta Serato', 'Acepta Traktor'],
@@ -923,7 +927,12 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                   makeup: ['Traigo maletín', 'Necesita espejo con luz', 'Solo marcas premium', 'Acepta prueba previa', 'Trabaja en equipo'],
                   peluqueria: ['Peluquería a domicilio', 'Peinado de novia', 'Traigo todo el material', 'Acepta prueba previa', 'Corte y color'],
                   media:  ['Cámara Sony A7', 'Drone DJI', 'Entrega 48h', 'Incluye edición', 'Raw disponible', 'Drone incluido'],
+                  // 'camarero' es el rol legacy equivalente a staff: sin esta
+                  // entrada, esos perfiles no veian ningun chip ni ejemplo y
+                  // rellenaban el campo con texto libre de motivacion.
                   staff:         ['Traje propio', 'Acreditación de sala', 'Idiomas: EN/FR', 'Experiencia VIP', 'Uniforme de sala'],
+                  camarero:      ['Traje propio', 'Acreditación de sala', 'Idiomas: EN/FR', 'Experiencia VIP', 'Uniforme de sala', 'Coctelería'],
+                  catering:      ['Menú cerrado', 'Buffet', 'Cocina en directo', 'Opciones veganas', 'Personal incluido'],
                   event_manager: ['Coordinación integral', 'Presupuesto detallado', 'Gestión de proveedores', 'On-site el día del evento', 'Experiencia en bodas', 'Experiencia en festivales'],
                 };
                 const presets = PRESETS[profile.role ?? ''] ?? [];
