@@ -2,7 +2,6 @@ import { Star, Users, Euro, BarChart3, Eye, MessageSquare, CheckCircle, Heart, T
 import {
   PieChart, Pie, Cell, Tooltip, ResponsiveContainer,
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
-  RadarChart, Radar, PolarGrid, PolarAngleAxis,
 } from 'recharts';
 import DarkTooltip from './DarkTooltip';
 import type { Pro } from './types';
@@ -32,24 +31,6 @@ const StatsTab = ({ pros, favorites }: Props) => {
     { name: 'DJ',     '€/hora avg': djCount     > 0 ? Math.round(djAvgRate)     : 0, color: '#8A6D0F' },
     { name: 'Staff',  '€/hora avg': staffCount  > 0 ? Math.round(staffAvgRate)  : 0, color: '#8B5CF6' },
     { name: 'Makeup', '€/hora avg': makeupCount > 0 ? Math.round(makeupAvgRate) : 0, color: '#EC4899' },
-  ];
-
-  const weeklyData = [
-    { dia: 'Lun', contrataciones: 3  },
-    { dia: 'Mar', contrataciones: 5  },
-    { dia: 'Mié', contrataciones: 2  },
-    { dia: 'Jue', contrataciones: 7  },
-    { dia: 'Vie', contrataciones: 11 },
-    { dia: 'Sáb', contrataciones: 18 },
-    { dia: 'Dom', contrataciones: 9  },
-  ];
-
-  const radarData = [
-    { metric: 'Fiabilidad',  dj: 85, staff: 78, makeup: 92 },
-    { metric: 'Puntualidad', dj: 80, staff: 90, makeup: 88 },
-    { metric: 'Calidad',     dj: 92, staff: 75, makeup: 95 },
-    { metric: 'Precio',      dj: 70, staff: 88, makeup: 82 },
-    { metric: 'Demanda',     dj: 95, staff: 65, makeup: 72 },
   ];
 
   return (
@@ -127,52 +108,30 @@ const StatsTab = ({ pros, favorites }: Props) => {
         </div>
       </div>
 
-      {/* Weekly sparkline */}
+      {/* Contrataciones por semana — estado vacío honesto hasta tener datos reales.
+          Antes mostraba un gráfico con valores inventados (Lun 3, Sáb 18…) bajo un
+          badge "DEMO"; la regla del proyecto es no exhibir cifras generadas como
+          si fueran datos del empresario. */}
       <div className="glass-panel p-5 mb-5">
-        <h4 className="text-sm font-bold mb-4 flex items-center gap-2">
-          <TrendingUp size={14} style={{ color: '#8A6D0F' }} /> Contrataciones esta semana
-          <span className="text-[0.75rem] font-bold px-1.5 py-0.5 rounded"
-            style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
-            DEMO
-          </span>
+        <h4 className="text-sm font-bold mb-3 flex items-center gap-2">
+          <TrendingUp size={14} style={{ color: '#8A6D0F' }} /> Contrataciones por semana
         </h4>
-        <ResponsiveContainer width="100%" height={120}>
-          <BarChart data={weeklyData} barSize={28} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.04)" vertical={false} />
-            <XAxis dataKey="dia" tick={{ fill: '#333', fontSize: 11 }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fill: '#333', fontSize: 10 }} axisLine={false} tickLine={false} />
-            <Tooltip content={<DarkTooltip />} cursor={{ fill: 'rgba(212,175,55,0.04)' }} />
-            <Bar dataKey="contrataciones" radius={[4, 4, 0, 0]} fill="url(#goldGradient)" />
-            <defs>
-              <linearGradient id="goldGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%"   stopColor="#D4AF37" stopOpacity={0.9} />
-                <stop offset="100%" stopColor="#B8941E" stopOpacity={0.4} />
-              </linearGradient>
-            </defs>
-          </BarChart>
-        </ResponsiveContainer>
+        <div className="py-8 text-center rounded-xl" style={{ background: 'rgba(0,0,0,0.02)', border: '1px dashed rgba(0,0,0,0.08)' }}>
+          <p className="text-sm font-bold" style={{ color: '#333' }}>Aún sin actividad</p>
+          <p className="text-xs mt-1" style={{ color: '#666' }}>Cuando empieces a contratar profesionales, verás aquí tu ritmo semanal real.</p>
+        </div>
       </div>
 
-      {/* Radar */}
+      {/* Índice de calidad por rol — se mostrará cuando existan valoraciones reales.
+          Antes: radar con valores fijos por rol (Fiabilidad 85, etc.) marcado "DEMO". */}
       <div className="glass-panel p-5">
-        <h4 className="text-sm font-bold mb-1 flex items-center gap-2">
+        <h4 className="text-sm font-bold mb-3 flex items-center gap-2">
           <Star size={14} style={{ color: '#8A6D0F' }} /> Índice de calidad por rol
-          <span className="text-[0.75rem] font-bold px-1.5 py-0.5 rounded"
-            style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
-            DEMO
-          </span>
         </h4>
-        <p className="text-xs text-muted-foreground mb-4">Datos de referencia — se actualizará con valoraciones reales de la plataforma.</p>
-        <ResponsiveContainer width="100%" height={200}>
-          <RadarChart data={radarData}>
-            <PolarGrid stroke="rgba(0,0,0,0.08)" />
-            <PolarAngleAxis dataKey="metric" tick={{ fill: '#333', fontSize: 10 }} />
-            <Radar name="DJ"     dataKey="dj"     stroke="#D4AF37" fill="#D4AF37" fillOpacity={0.15} />
-            <Radar name="Staff"  dataKey="staff"  stroke="#8B5CF6" fill="#8B5CF6" fillOpacity={0.12} />
-            <Radar name="Makeup" dataKey="makeup" stroke="#EC4899" fill="#EC4899" fillOpacity={0.12} />
-            <Tooltip content={<DarkTooltip />} />
-          </RadarChart>
-        </ResponsiveContainer>
+        <div className="py-8 text-center rounded-xl" style={{ background: 'rgba(0,0,0,0.02)', border: '1px dashed rgba(0,0,0,0.08)' }}>
+          <p className="text-sm font-bold" style={{ color: '#333' }}>Todavía no hay valoraciones suficientes</p>
+          <p className="text-xs mt-1" style={{ color: '#666' }}>Este índice se construye con las reseñas reales de la plataforma. Aparecerá en cuanto haya datos.</p>
+        </div>
         <div className="flex items-center justify-center gap-4 mt-2">
           {[['DJ', '#D4AF37'], ['Staff', '#8B5CF6'], ['Makeup', '#EC4899']].map(([n, c]) => (
             <div key={n} className="flex items-center gap-1.5">

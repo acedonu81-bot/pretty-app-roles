@@ -1,58 +1,48 @@
 import { Euro } from 'lucide-react';
 import { PAYMENT_BENCHMARK } from './types';
 
+/**
+ * Tarifas orientativas del sector para ayudar a un empresario nuevo a situarse.
+ * Antes este tab mostraba además unos porcentajes de forma de pago (Efectivo 42%,
+ * Transferencia 51%…) hardcodeados y presentados bajo el título "¿Cómo pagan otros
+ * empresarios?" — datos inventados sin fuente que se leían como métricas reales de
+ * la plataforma. Se han retirado: se mantiene solo el rango de tarifas, etiquetado
+ * honestamente como orientativo, y se retirará por completo en favor de datos reales
+ * cuando haya volumen de transacciones.
+ */
 const BenchmarkTab = () => (
   <div>
     <div className="glass-panel p-5 mb-4" style={{ border: '1px solid rgba(212,175,55,0.15)', background: 'rgba(212,175,55,0.02)' }}>
       <div className="flex items-center gap-2 mb-1">
         <Euro size={14} style={{ color: '#8A6D0F' }} />
-        <h4 className="text-sm font-bold">¿Cómo pagan otros empresarios?</h4>
+        <h4 className="text-sm font-bold">Tarifas orientativas del sector</h4>
         <span className="text-[0.75rem] font-bold px-1.5 py-0.5 rounded"
           style={{ background: 'rgba(212,175,55,0.08)', color: 'rgba(212,175,55,0.5)', border: '1px solid rgba(212,175,55,0.15)' }}>
-          DEMO
+          Orientativo
         </span>
       </div>
-      <p className="text-xs text-muted-foreground mb-5">Tarifas de referencia del sector. Se completará con datos reales cuando haya suficientes transacciones en la plataforma.</p>
+      <p className="text-xs text-muted-foreground mb-5">Rangos de referencia para hacerte una idea antes de negociar. No son datos de la plataforma; se sustituirán por tarifas reales cuando haya suficientes contrataciones.</p>
       <div className="space-y-5">
         {PAYMENT_BENCHMARK.map(b => (
           <div key={b.role} className="glass-panel p-4">
             <div className="flex items-center justify-between mb-3">
               <p className="text-sm font-bold">{b.role}</p>
               <span className="text-lg font-black" style={{ color: '#8A6D0F' }}>
-                €{b.avg}<span className="text-xs font-normal text-muted-foreground">/sesión avg</span>
+                €{b.min}–{b.max}<span className="text-xs font-normal text-muted-foreground">/sesión</span>
               </span>
             </div>
-            <div className="mb-3">
-              <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                <span>Mínimo €{b.min}</span><span>Máximo €{b.max}</span>
-              </div>
-              <div className="h-2 rounded-full relative overflow-hidden" style={{ background: 'rgba(0,0,0,0.05)' }}>
-                <div className="absolute top-0 bottom-0 w-1 rounded-full"
-                  style={{
-                    left: `${((b.avg - b.min) / (b.max - b.min)) * 100}%`,
-                    background: '#D4AF37',
-                    boxShadow: '0 0 6px rgba(212,175,55,0.8)',
-                  }} />
-              </div>
-            </div>
-            <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Forma de pago</p>
-            <div className="flex gap-2">
-              {[
-                { label: 'Efectivo',       pct: b.pct_cash,     color: '#22c55e' },
-                { label: 'Transferencia',  pct: b.pct_transfer,  color: '#3B82F6' },
-                { label: 'Plataforma',     pct: b.pct_platform,  color: '#8A6D0F' },
-              ].map(m => (
-                <div key={m.label} className="flex-1 rounded-lg p-2 text-center"
-                  style={{ background: `${m.color}10`, border: `1px solid ${m.color}22` }}>
-                  <p className="text-sm font-black" style={{ color: m.color }}>{m.pct}%</p>
-                  <p className="text-[0.7rem] text-muted-foreground">{m.label}</p>
-                </div>
-              ))}
+            <div className="h-2 rounded-full relative overflow-hidden" style={{ background: 'rgba(0,0,0,0.05)' }}>
+              <div className="absolute top-0 bottom-0 rounded-full"
+                style={{
+                  left: '8%',
+                  right: '8%',
+                  background: 'linear-gradient(90deg, rgba(212,175,55,0.25), rgba(212,175,55,0.7))',
+                }} />
             </div>
           </div>
         ))}
       </div>
-      <p className="text-[0.75rem] text-muted-foreground mt-4 text-center">Datos de referencia del sector nightlife España · Se actualizará con transacciones reales</p>
+      <p className="text-[0.75rem] text-muted-foreground mt-4 text-center">Rangos orientativos del sector nightlife en España · No representan transacciones reales</p>
     </div>
   </div>
 );
