@@ -133,7 +133,21 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
 
   const ROLE_TAGS: Record<string, { label: string; tags: string[] }> = {
     dj:        { label: 'Géneros musicales',    tags: DJ_GENRES },
-    rookie:    { label: 'Géneros musicales',    tags: ['Tech House','Deep House','House','Afro House','Techno','Melodic Techno','Minimal','Hard Techno','Trance','Drum & Bass','Reggaetón','Dembow','Moombahton','Hip Hop','Trap','Comercial','Top 40','Hits actuales','Remember','Pachanga','Disco','Nu-Disco','Funk','EDM'] },
+    // Musica en vivo: repertorio y formato, NO los generos de cabina de un DJ.
+    // Una cantante que se registro con el rol equivocado acabo etiquetada como
+    // "Remember, Comercial, Chillout" porque era lo unico que le encajaba
+    // minimamente de la lista de DJ (caso Aurora, 2 sep 2026).
+    'grupo-musical': { label: 'Repertorio y formato', tags: ['Pop español','Pop internacional','Rock','Versiones','Acústico','Voz y guitarra','Jazz','Bossa nova','Soul','Funk en vivo','Flamenco','Rumba','Copla','Boleros','Baladas','Música clásica','Góspel','Country','Indie','Cantautor','Ceremonia','Cóctel','Banda completa','Dúo','Trío'] },
+    azafata:    { label: 'Especialidades', tags: ['Azafata de congresos','Azafata de imagen','Ferias y stands','Protocolo','Acreditaciones','Recepción','Bienvenida','Sala VIP','Promoción','Azafata de eventos deportivos','Traducción / idiomas','Reparto de merchandising'] },
+    catering:   { label: 'Especialidades', tags: ['Catering de bodas','Cóctel','Banquete','Show cooking','Finger food','Barbacoa / brasa','Paellas','Cocina mediterránea','Cocina internacional','Menú vegano','Sin gluten','Food truck','Servicio de barra','Postres y repostería'] },
+    humorista:  { label: 'Estilos', tags: ['Monólogo','Stand-up','Humor blanco','Humor negro','Improvisación','Humor musical','Parodia','Presentación de eventos','Humor corporativo','Bodas','Despedidas','Clubs de comedia'] },
+    mago:       { label: 'Especialidades', tags: ['Magia de cerca','Magia de escenario','Mentalismo','Magia infantil','Magia cómica','Ilusionismo','Cartomagia','Magia de bodas','Walking magic','Grandes ilusiones'] },
+    animador:   { label: 'Especialidades', tags: ['Animación infantil','Fiestas de cumpleaños','Hinchables','Pintacaras','Globoflexia','Talleres','Juegos','Espectáculo infantil','Bodas','Comuniones','Parques','Hoteles'] },
+    payaso:     { label: 'Especialidades', tags: ['Payaso clásico','Clown','Circo','Malabares','Zancos','Espectáculo infantil','Cumpleaños','Comuniones','Ferias','Teatro de calle'] },
+    speaker:    { label: 'Especialidades', tags: ['Presentador de eventos','Maestro de ceremonias','Locución','Speaker corporativo','Conferencias','Galas','Bodas','Deportivo','Voz en off','Presentación en inglés'] },
+    vestuario:  { label: 'Servicios', tags: ['Estilismo','Vestuario de escena','Asesoría de imagen','Personal shopper','Alquiler de vestuario','Caracterización','Sastrería','Vestuario de novia','Producción de moda','Pasarela'] },
+    camarero:   { label: 'Especialidades', tags: ['Camarero/a de sala','Barra','Coctelería','Bartender','Flair','Vinos','Café','Servicio de bodas','Catering','Banquetes','Bottle service','Terraza'] },
+    'photo-booth': { label: 'Servicios', tags: ['Photocall','Cabina de fotos','Espejo mágico','360 booth','Impresión al momento','Atrezzo','GIFs','Libro de firmas','Bodas','Eventos corporativos'] },
     staff:         { label: 'Especialidades',         tags: ['Azafata','RRPP','Promotor','Camarero/a','Relaciones Públicas','Animación','Hostess','Sala VIP','Control de acceso','Taquilla','Chill-out','Bottle service','Coordinación'] },
     event_manager: { label: 'Áreas de coordinación', tags: ['Coordinación general','Producción de eventos','Montaje y decoración','Catering','Staff externo','Protocolo','Gestión de artistas','Logística','Presupuestos','Eventos corporativos','Bodas','Festivales','Clubbing','Outdoor'] },
     makeup:    { label: 'Servicios',             tags: ['Maquillaje nupcial','Caracterización','Maquillaje artístico','Estilismo','Nail art','Aerógrafo','Efectos especiales','Maquillaje masculino','Novias','Pasarela','Producción'] },
