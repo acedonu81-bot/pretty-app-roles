@@ -18,9 +18,12 @@ function completeness(p: Record<string, unknown>): { percent: number; missing: s
     { label: 'tu Instagram', done: typeof p.instagram === 'string' && p.instagram.trim().length > 0 },
     { label: 'tu tarifa', done: typeof p.hourly_rate === 'number' && p.hourly_rate > 0 },
   ];
-  if (p.role === 'dj' || p.role === 'rookie') {
+  // Los roles musicales piden audio; el resto, portfolio. 'rookie' se retiro el
+  // 2 sep 2026, y grupo-musical necesita audio igual que un DJ: pedirle
+  // "portfolio" a una cantante era pedirle lo que no aplica a su trabajo.
+  if (p.role === 'dj' || p.role === 'grupo-musical') {
     steps.push({
-      label: 'un mix o sesión de audio',
+      label: 'un audio o vídeo tuyo',
       done: (typeof p.audio_embed_url === 'string' && p.audio_embed_url.trim().length > 0)
         || (Array.isArray(p.audio_session_urls) && p.audio_session_urls.length > 0),
     });

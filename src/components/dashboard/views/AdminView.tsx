@@ -10,6 +10,7 @@ import AdminCancellations from './admin/AdminCancellations';
 import AdminReviews from './admin/AdminReviews';
 import AdminPromoCodes from './admin/AdminPromoCodes';
 import AdminDeletionAlert from './admin/AdminDeletionAlert';
+import AdminNewProfileAlert from './admin/AdminNewProfileAlert';
 import AdminDeletions from './admin/AdminDeletions';
 
 const TABS = [
@@ -29,8 +30,11 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
-      {/* Fuera del sistema de pestañas a propósito: una baja hay que verla
-          entres por donde entres, no solo en la pestaña que toque. */}
+      {/* Fuera del sistema de pestañas a propósito: un alta o una baja hay que
+          verlas entres por donde entres, no solo en la pestaña que toque.
+          El alta va primero porque es la accionable: revisar rol y zona a
+          tiempo evita que el perfil quede invisible en el directorio. */}
+      <AdminNewProfileAlert onOpenUsers={() => setTab('users')} />
       <AdminDeletionAlert onOpenDeletions={() => setTab('deletions')} />
 
       <div className="mb-6">
