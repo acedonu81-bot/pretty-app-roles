@@ -57,7 +57,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
   const currentMilestone = milestones.filter(m => voteCount >= m.votes).pop();
   const nextMilestone = milestones.find(m => voteCount < m.votes);
 
-  const isDJ = p.role === 'dj' || p.role === 'rookie';
+  const isDJ = p.role === 'dj';
   const audioUrl = (p as any).audio_embed_url || p.streamUrl;
   const audioLabel = audioUrl
     ? audioUrl.includes('mixcloud') ? 'Mixcloud'

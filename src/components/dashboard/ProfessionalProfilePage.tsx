@@ -43,13 +43,13 @@ const getRoleCfg = (role: string) => ROLE_CFG[role] ?? ROLE_CFG.dj;
 const RoleHeroAnim = ({ role, color }: { role: string; color: string }) => {
   const [bars, setBars] = useState(Array(18).fill(30));
   useEffect(() => {
-    if (role !== 'dj' && role !== 'rookie') return;
+    if (role !== 'dj') return;
     const iv = setInterval(() =>
       setBars(Array(18).fill(0).map(() => 15 + Math.random() * 85)), 140);
     return () => clearInterval(iv);
   }, [role]);
 
-  if (role === 'dj' || role === 'rookie') {
+  if (role === 'dj') {
     return (
       <div className="absolute bottom-0 left-0 right-0 flex items-end justify-center gap-[3px] overflow-hidden pointer-events-none" style={{ height: 80, opacity: 0.35 }}>
         {bars.map((h, i) => (
@@ -224,7 +224,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
     }
   }, [full.audioEmbedUrl, p.streamUrl]);
   const isCompany = me.role === 'empresario';
-  const isDJ = p.role === 'dj' || p.role === 'rookie';
+  const isDJ = p.role === 'dj';
   const bio = full.bio || p.description || '';
   const genres = full.genres?.length ? full.genres : p.badges;
   const langs = full.languages?.length ? full.languages : (p.languages ?? []);

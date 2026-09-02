@@ -57,7 +57,6 @@ const Section = ({ title, icon, children }: SectionProps) => (
 // quisiera un segundo perfil con uno de ellos no podía crearlo desde aquí.
 const ROLE_OPTIONS = [
   { value: 'dj',              label: 'DJ / Artista / Productor' },
-  { value: 'rookie',          label: 'Artista Promesa' },
   { value: 'grupo-musical',   label: 'Grupo musical' },
   { value: 'staff',           label: 'Camarero / Sala' },
   { value: 'azafata',         label: 'Azafata' },

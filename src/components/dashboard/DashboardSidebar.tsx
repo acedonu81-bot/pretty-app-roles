@@ -256,11 +256,8 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded 
     }
   }, [activeView]);
 
-  const homeView = role === 'dj' || role === 'rookie' ? 'dj' : (role ?? 'dj');
-  let directoryItems = DIRECTORY_ITEMS;
-  if (role !== 'dj' && role !== 'rookie') {
-    directoryItems = directoryItems.filter(i => i.id !== 'rookie');
-  }
+  const homeView = role === 'dj' ? 'dj' : (role ?? 'dj');
+  const directoryItems = DIRECTORY_ITEMS;
 
   return (
     <Sidebar collapsible={forceExpanded ? 'none' : 'icon'} style={{ '--sidebar-width': '272px' } as React.CSSProperties}>

@@ -61,7 +61,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
         { label: 'Especialidad', done: !!(profile.specialty && profile.specialty.trim().length > 0), hint: 'Añade tus géneros o especialidades.' },
       ] : []),
       { label: 'Instagram', done: !!(profile.instagram && profile.instagram.trim().length > 0), hint: 'Enlaza tu Instagram para que te contacten.' },
-      ...(profile.role === 'dj' || profile.role === 'rookie' ? [
+      ...(profile.role === 'dj' ? [
         { label: 'Mix / Audio', done: !!(profile.audio_embed_url && (profile.audio_embed_url as string).trim().length > 0) || !!(profile.audio_session_urls && profile.audio_session_urls.length > 0), hint: 'Añade un enlace a tu mix o sesión.' },
       ] : profile.role !== 'empresario' ? [
         { label: 'Portfolio', done: !!(profile.portfolio_urls && profile.portfolio_urls.length > 0), hint: 'Sube fotos o un vídeo corto de tu trabajo.' },
@@ -163,7 +163,6 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
 
   const ROLE_OPTIONS: { value: string; label: string }[] = [
     { value: 'dj',            label: 'DJ / Artista / Productor' },
-    { value: 'rookie',        label: 'Artista Promesa' },
     { value: 'staff',         label: 'Camarero' },
     { value: 'azafata',       label: 'Azafata' },
     { value: 'event_manager', label: 'Encargada de Eventos' },
@@ -576,7 +575,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             <div className="mb-3">
               <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">
                 {profile.role === 'empresario' ? 'Nombre de la empresa o sala'
-                  : (profile.role === 'dj' || profile.role === 'rookie') ? 'Nombre artístico' : 'Nombre profesional'}
+                  : (profile.role === 'dj') ? 'Nombre artístico' : 'Nombre profesional'}
               </label>
               <input type="text" value={displayName} onChange={e => setLocalName(e.target.value)} className="nightlife-input mt-1 text-base" />
             </div>
@@ -736,7 +735,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
 
                   {/* Dropdown panel */}
                   {genreOpen && (() => {
-                    const isDJ = profile.role === 'dj' || profile.role === 'rookie';
+                    const isDJ = profile.role === 'dj';
                     const DJ_GROUPS: { label: string; items: string[] }[] = [
                       { label: 'House', items: ['Tech House','Deep House','House','Afro House','Organic House','Funky House','Tribal House','Progressive House','Latin House'] },
                       { label: 'Techno', items: ['Techno','Melodic Techno','Minimal','Hard Techno','Industrial','Dub Techno'] },
@@ -908,7 +907,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             )}
             <div className="mb-3">
               {(() => {
-                const isMusical = profile.role === 'dj' || profile.role === 'rookie';
+                const isMusical = profile.role === 'dj';
                 const label = isMusical ? 'Rider Técnico' : profile.role === 'makeup' ? 'Marcas / Productos' : profile.role === 'peluqueria' ? 'Servicios / Técnicas' : profile.role === 'media' ? 'Equipo técnico' : profile.role === 'event_manager' ? 'Servicios de coordinación' : (profile.role === 'staff' || profile.role === 'camarero') ? 'Servicios y equipamiento' : 'Especialidad';
                 const placeholder = isMusical
                   ? 'Ej: Pioneer CDJ-3000 + DJM-900NXS2. Mesa propia (si no hay Pioneer). 2 enchufes cerca de la cabina. Monitoreo lateral obligatorio.'
@@ -1056,8 +1055,8 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
               )}
             </div>
           </div>
-          {(profile.role === 'dj' || profile.role === 'rookie') && <AudioUpload legacyEmbedUrl={profile.audio_embed_url} onMigrated={() => profile.updateField({ audio_embed_url: null })} />}
-          {profile.role !== 'dj' && profile.role !== 'rookie' && profile.role !== 'empresario' && <PortfolioUpload />}
+          {(profile.role === 'dj') && <AudioUpload legacyEmbedUrl={profile.audio_embed_url} onMigrated={() => profile.updateField({ audio_embed_url: null })} />}
+          {profile.role !== 'dj' && profile.role !== 'empresario' && <PortfolioUpload />}
 
           {/* Export ZIP - GDPR */}
           <div className="glass-panel p-5 flex items-center justify-between gap-4"

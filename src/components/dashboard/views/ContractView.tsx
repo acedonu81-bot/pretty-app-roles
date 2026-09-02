@@ -105,7 +105,7 @@ const ROLE_LABEL: Record<string, string> = {
 // contratara uno de esos tenía que elegir "Staff / RRPP", y esa etiqueta
 // equivocada acababa impresa en el PDF del contrato.
 const CONTRACT_ROLE_OPTIONS = [
-  'dj', 'rookie', 'grupo-musical', 'staff', 'azafata', 'event_manager', 'bailarin',
+  'dj', 'grupo-musical', 'staff', 'azafata', 'event_manager', 'bailarin',
   'makeup', 'peluqueria', 'media', 'fotografo', 'photo-booth',
   'mago', 'humorista', 'monologo', 'animador', 'catering', 'vestuario',
   'promotor', 'speaker', 'wedding-planner', 'design', 'diseno-grafico',

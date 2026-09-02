@@ -7,7 +7,7 @@ import CheckoutModal from '@/components/dashboard/CheckoutModal';
 import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import OffersWidget from '@/components/dashboard/OffersWidget';
 import { supabase } from '@/integrations/supabase/client';
-import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion, citiesForRegion } from '@/lib/regions';
+import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion } from '@/lib/regions';
 import { expandRole } from '@/lib/constants';
 import { isEarlyAdopter } from '@/lib/earlyAdopter';
 
@@ -43,17 +43,22 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
   const activeRoles = [...new Set((roles ?? [role]).flatMap(expandRole))];
   let query = supabase
     .from('profiles')
-    .select('id, user_id, display_name, photo_url, zone, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, instagram, category, is_verified, is_flash_active, is_early_adopter, is_early_adopter_override, priority_badge_until, score, role, seeking_dance_partner, dance_level, dance_role, created_at')
+    .select('id, user_id, display_name, photo_url, zone, region, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, instagram, category, is_verified, is_flash_active, is_early_adopter, is_early_adopter_override, priority_badge_until, score, role, seeking_dance_partner, dance_level, dance_role, created_at')
     .in('role', activeRoles)
     .limit(200);
 
   if (filterRegion !== ALL_REGIONS_LABEL) {
-    // zone guarda ciudad, no comunidad — filtrar por comunidad es un OR de
-    // ilike contra todas sus ciudades (ver src/lib/regions.ts).
-    const cities = citiesForRegion(filterRegion);
-    if (cities.length > 0) {
-      query = query.or(cities.map(c => `zone.ilike.%${c}%`).join(','));
-    }
+    // profiles.region es la comunidad ya derivada de zone en la BD (trigger
+    // profiles_set_region). Antes esto era un OR de zone ilike contra una lista
+    // de ciudades escrita a mano, y cualquier ciudad no listada desaparecia del
+    // filtro: una profesional de Benidorm (2 sep 2026) no salia en Comunidad
+    // Valenciana, y con ella 16 de ~37 perfiles quedaban invisibles.
+    //
+    // region IS NULL = perfil sin comunidad concreta (zone='España', el valor
+    // por defecto del alta). Se incluye siempre: quien trabaja en toda España
+    // tambien esta disponible en la comunidad que se filtre, y excluirlo solo
+    // moveria el bug de sitio.
+    query = query.or(`region.eq.${filterRegion},region.is.null`);
   }
 
   const reviewsPromise = supabase

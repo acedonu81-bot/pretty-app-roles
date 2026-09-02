@@ -124,7 +124,7 @@ const ROLE_DEFAULT_VIEW: Partial<Record<string, string>> = {
   pending: 'profile', dj: 'profile',
   vestuario: 'vestuario', design: 'design', promotor: 'promotor',
   staff: 'staff', azafata: 'azafata', makeup: 'makeup', peluqueria: 'peluqueria', media: 'media',
-  event_manager: 'event_manager', empresario: 'empresario', rookie: 'rookie',
+  event_manager: 'event_manager', empresario: 'empresario',
   camarero: 'staff', catering: 'staff',
 };
 

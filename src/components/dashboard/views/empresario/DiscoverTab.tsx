@@ -119,7 +119,6 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
                 { value: 'ambassador', label: 'Relaciones Públicas' },
                 { value: 'promotor', label: 'Promotor' },
                 { value: 'catering', label: 'Catering / Cocina' },
-                { value: 'rookie', label: 'Rookie' },
               ]}
               active={filterRole !== 'Todos'}
             />
