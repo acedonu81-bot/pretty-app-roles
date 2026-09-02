@@ -193,6 +193,12 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const [city, setCity] = useState('');
+  // 'Otra ciudad' abre un campo libre: la lista fija dejaba fuera a quien no
+  // vive en una de las 19 ciudades listadas (p.ej. Benidorm) y ademas le
+  // bloqueaba el boton de continuar. La BD normaliza el texto al guardarlo.
+  const [customCity, setCustomCity] = useState('');
+  const isOtherCity = city === 'Otra ciudad';
+  const effectiveCity = isOtherCity ? customCity.trim() : city;
   const [hourlyRate, setHourlyRate] = useState('');
   // No todos los roles pueden fijar un precio de antemano (Wedding Planner,
   // Magos, artistas con caché por evento) — "a consultar" es una respuesta
@@ -226,7 +232,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
     setSavingQuick(true);
     const updates: Record<string, unknown> = {};
     if (photoUrl) updates.photo_url = photoUrl;
-    if (city && city !== 'Otra ciudad') updates.zone = city;
+    if (effectiveCity) updates.zone = effectiveCity;
     if (priceOnRequest) {
       updates.hourly_rate = null;
     } else {
@@ -406,6 +412,17 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                       options={WIZARD_CITIES.map(c => ({ value: c, label: c }))}
                       placeholder="Elige tu ciudad"
                     />
+                    {isOtherCity && (
+                      <input
+                        type="text"
+                        value={customCity}
+                        onChange={e => setCustomCity(e.target.value)}
+                        placeholder="Escribe tu ciudad"
+                        maxLength={60}
+                        className="w-full mt-2 px-3 py-2 rounded-lg text-[0.85rem]"
+                        style={{ border: '1px solid rgba(10,9,8,0.15)', background: '#fff', color: '#222' }}
+                      />
+                    )}
                   </div>
 
                   <div className="px-1">
@@ -436,9 +453,9 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
 
                 {(() => {
                   const validRate = priceOnRequest || (!!hourlyRate && !isNaN(parseFloat(hourlyRate)) && parseFloat(hourlyRate) > 0);
-                  const canContinue = !!photoUrl && !!city && city !== 'Otra ciudad' && validRate;
+                  const canContinue = !!photoUrl && !!effectiveCity && validRate;
                   const missingLabel = !photoUrl ? 'Sube tu foto para continuar'
-                    : !city || city === 'Otra ciudad' ? 'Elige tu ciudad para continuar'
+                    : !effectiveCity ? 'Elige tu ciudad para continuar'
                     : !validRate ? 'Indica tu tarifa para continuar'
                     : 'Guardar y continuar';
                   return (
