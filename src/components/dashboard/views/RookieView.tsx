@@ -158,7 +158,7 @@ const RookieView = () => {
           <h2 className="text-2xl font-bold mb-1">DJs <span className="text-gradient">Promesa</span></h2>
           <p className="text-sm text-muted-foreground">Descubre y apoya los nuevos talentos de la escena.</p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-4">
           {Array.from({ length: 8 }).map((_, i) => (
             <div key={i} className="glass-panel p-4 animate-pulse">
               <div className="flex items-center gap-3 mb-3">
@@ -346,7 +346,7 @@ const RookieView = () => {
             </p>
             <p className="text-xs text-muted-foreground">Más recientes primero</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-4">
             {rookies.map(dj => (
               <RookiePublicCard key={dj.id} dj={dj} userId={user?.id} />
             ))}

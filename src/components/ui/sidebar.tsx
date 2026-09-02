@@ -13,7 +13,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state";
-const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 const SIDEBAR_WIDTH = "16rem";
 const SIDEBAR_WIDTH_MOBILE = "18rem";
 const SIDEBAR_WIDTH_ICON = "3rem";
@@ -54,20 +53,18 @@ const SidebarProvider = React.forwardRef<
   // This is the internal state of the sidebar.
   // We use openProp and setOpenProp for control from outside the component.
   //
-  // La cookie sidebar:state se escribia al plegar/desplegar pero no se leia
-  // nunca al montar, asi que el panel volvia a salir desplegado en cada carga
-  // e ignoraba lo que el usuario habia elegido. Ahora la preferencia guardada
-  // gana sobre defaultOpen; si no hay cookie se usa defaultOpen.
-  const [_open, _setOpen] = React.useState(() => {
-    if (typeof document === 'undefined') return defaultOpen;
-    const saved = document.cookie
-      .split('; ')
-      .find(c => c.startsWith(`${SIDEBAR_COOKIE_NAME}=`))
-      ?.split('=')[1];
-    if (saved === 'true') return true;
-    if (saved === 'false') return false;
-    return defaultOpen;
-  });
+  // El panel arranca siempre en defaultOpen (cerrado en el dashboard) y solo
+  // se despliega si el usuario lo abre a mano. No se persiste la eleccion:
+  // antes una cookie sidebar:state de 7 dias ganaba sobre defaultOpen y el
+  // panel seguia saliendo desplegado en cada carga.
+  const [_open, _setOpen] = React.useState(defaultOpen);
+  // Limpieza de la cookie sidebar:state que dejaron versiones anteriores: duraba
+  // 7 dias y mandaba sobre defaultOpen, asi que el panel salia desplegado aunque
+  // el dashboard pida arrancar cerrado.
+  React.useEffect(() => {
+    document.cookie = `${SIDEBAR_COOKIE_NAME}=; path=/; max-age=0`;
+  }, []);
+
   const open = openProp ?? _open;
   const setOpen = React.useCallback(
     (value: boolean | ((value: boolean) => boolean)) => {
@@ -77,9 +74,6 @@ const SidebarProvider = React.forwardRef<
       } else {
         _setOpen(openState);
       }
-
-      // This sets the cookie to keep the sidebar state.
-      document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
     },
     [setOpenProp, open],
   );

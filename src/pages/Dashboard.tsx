@@ -355,9 +355,9 @@ const Dashboard = () => {
           su CSS de layout, ver ui/sidebar.tsx) — por eso engloba también el
           <main>, no solo el <Sidebar>. En móvil el sidebar vive aparte en el
           Sheet de arriba, así que aquí solo se activa el colapso real en desktop.
-          Arranca plegado (icon-rail) a propósito: se abre con el botón del
-          borde. Si el usuario lo deja abierto, la cookie sidebar:state lo
-          recuerda en la siguiente visita (ver ui/sidebar.tsx). */}
+          Arranca plegado (icon-rail) a propósito y en cada carga: se abre solo
+          con el botón del borde y esa apertura no se persiste entre visitas
+          (ver ui/sidebar.tsx). */}
       <SidebarProvider defaultOpen={false} style={{ minHeight: 0, height: '100%' }} className="flex-1 min-w-0">
         {!isMobile && (
           <DashboardSidebarInner activeView={activeView} onViewChange={handleViewChange} />
