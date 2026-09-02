@@ -151,6 +151,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
     audioSessionUrls?: string[];
     portfolioUrls?: string[];
     bio?: string;
+    specialty?: string | null;
     languages?: string[];
     genres?: string[];
     hourlyRate?: number;
@@ -177,7 +178,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
         // dashboard) nunca mostraba la sección "Sesiones" que sí tiene el
         // perfil público (PublicProfile.tsx), aunque el profesional tuviera
         // varias sesiones reales guardadas (p. ej. Dj Poly, 2 en Mixcloud).
-        .select('audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, genres, hourly_rate, is_verified, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role')
+        .select('audio_embed_url, audio_session_urls, portfolio_urls, bio, specialty, languages, genres, hourly_rate, is_verified, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role')
         .eq('user_id', p.userId)
         .maybeSingle();
       if (!data) return;
@@ -187,6 +188,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
         audioSessionUrls: (data as any).audio_session_urls ?? [],
         portfolioUrls: (data as any).portfolio_urls ?? [],
         bio: (data as any).bio || p.description,
+        specialty: (data as any).specialty ?? null,
         languages: (data as any).languages ?? p.languages ?? [],
         genres: (data as any).genres ?? p.badges ?? [],
         hourlyRate: (data as any).hourly_rate ?? p.price,
@@ -226,6 +228,10 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
   const isCompany = me.role === 'empresario';
   const isDJ = p.role === 'dj';
   const bio = full.bio || p.description || '';
+  // specialty es texto libre donde los profesionales meten su rider tecnico y
+  // detalles de formato. La ficha no lo pedia en el select, asi que un rider
+  // completo (caso Aurora, 2 sep) quedaba guardado pero invisible al contratante.
+  const specialty = (full.specialty ?? '').trim();
   const genres = full.genres?.length ? full.genres : p.badges;
   const langs = full.languages?.length ? full.languages : (p.languages ?? []);
   const price = full.hourlyRate ?? p.price;
@@ -276,7 +282,10 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
           {/* ════════ HERO — foto full-width ════════ */}
           <div className="relative" style={{ height: 'clamp(360px, 52vh, 520px)' }}>
             {p.photo && !imgError ? (
-              <img src={p.photo} alt={p.name} className="absolute inset-0 w-full h-full object-cover object-top"
+              // object-position 50% 30%: object-top clavaba el borde superior de la
+              // foto y en retratos verticales cortaba la cara por la frente.
+              <img src={p.photo} alt={p.name} className="absolute inset-0 w-full h-full object-cover"
+                style={{ objectPosition: '50% 30%' }}
                 onError={() => setImgError(true)} />
             ) : (
               <div className="absolute inset-0"
@@ -349,6 +358,20 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
             {bio && (
               <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
                 className="text-[0.95rem] leading-relaxed" style={{ color: '#333' }}>{bio}</motion.p>
+            )}
+
+            {/* Formato y rider tecnico (profiles.specialty). Texto libre con
+                saltos de linea, por eso whitespace-pre-line: los profesionales
+                lo escriben como una lista de requisitos tecnicos. */}
+            {specialty && (
+              <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+                className="rounded-xl p-4"
+                style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.22)' }}>
+                <h3 className="text-[0.7rem] font-bold uppercase tracking-wider mb-2" style={{ color: '#8A6D0F' }}>
+                  Formato y requisitos técnicos
+                </h3>
+                <p className="text-[0.9rem] leading-relaxed whitespace-pre-line" style={{ color: '#333' }}>{specialty}</p>
+              </motion.div>
             )}
 
             {/* Géneros + idiomas */}

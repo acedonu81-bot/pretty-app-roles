@@ -279,6 +279,33 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       ${btn('Ver en panel admin →', 'https://xpeak.es/dashboard?view=admin')}`),
   }),
 
+  // 4-bis. Profesional — aviso al admin de cada alta nueva.
+  // Existia empresario_registered pero no su equivalente para profesionales,
+  // asi que un alta con datos raros podia pasar dias sin que nadie la viera:
+  // el 2 sep 2026 una cantante se registro con rol 'rookie' y zona Benidorm y
+  // quedo invisible en el directorio hasta que se detecto por casualidad.
+  // Incluye rol y zona precisamente para poder revisarlo el mismo dia.
+  profesional_registered: (d) => ({
+    subject: `Nuevo profesional — ${esc(d.name)} (${esc(d.role)}, ${esc(d.zone)})`,
+    to: ADMIN,
+    html: base(`
+      <div style="background:rgba(10,9,8,0.03);border:1px solid rgba(10,9,8,0.06);border-radius:8px;padding:16px;margin-bottom:20px;box-shadow:0 4px 14px rgba(10,9,8,0.08)">
+        <p style="margin:0 0 4px">${badge('Nuevo Profesional', '#D4AF37')}</p>
+        <p style="font-size:18px;font-weight:900;margin:6px 0 0">${esc(d.name)}</p>
+      </div>
+      ${rows([
+        ['Email', d.email],
+        ['Rol', d.role],
+        ['Zona', d.zone],
+        ['Fecha registro', new Date().toLocaleDateString('es-ES')],
+      ])}
+      <p style="font-size:13px;color:#6b6b6b;margin:18px 0 0">
+        Revisa que el rol y la zona sean correctos: un rol equivocado deja el
+        perfil fuera del directorio donde la gente lo busca.
+      </p>
+      ${btn('Ver en panel admin →', 'https://xpeak.es/dashboard?view=admin')}`),
+  }),
+
   // 5. Empresario — confirmación pendiente aprobación
   empresario_pending: (d) => ({
     subject: 'Tu cuenta empresario está pendiente de aprobación',

@@ -378,6 +378,23 @@ const Auth = () => {
           body: { type: 'welcome', data: { name: safeName, email, role: roleParam || 'profesional' } },
         }).catch((err: unknown) => console.warn('[email] welcome failed:', err));
 
+        // Aviso al admin de cada alta. Sin esto un registro con el rol o la
+        // zona equivocados puede quedar dias invisible en el directorio sin que
+        // nadie se entere (paso el 2 sep 2026 con una cantante de Benidorm).
+        supabase.functions.invoke('send-email', {
+          body: {
+            type: 'profesional_registered',
+            data: {
+              name: safeName,
+              email,
+              role: roleParam || 'profesional',
+              // El alta no pide ciudad todavia: nace como 'España' y el
+              // profesional la concreta luego en su perfil.
+              zone: 'España',
+            },
+          },
+        }).catch((err: unknown) => console.warn('[email] profesional_registered failed:', err));
+
         supabase.from('profiles')
           .select('user_id', { count: 'exact', head: true })
           .then(({ count }) => {
