@@ -111,7 +111,7 @@ const TopWeekendView = () => {
       {!loading && topProfiles.length > 0 && (
         <>
           <h3 className="text-sm font-bold mb-3" style={{ color: '#8A6D0F' }}>Más Destacados</h3>
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-4 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
             {topProfiles.map(p => (
               <ProfileCard key={p.userId ?? p.id} profile={p} />
             ))}
@@ -122,7 +122,7 @@ const TopWeekendView = () => {
       {!loading && restProfiles.length > 0 && (
         <>
           <h3 className="text-sm font-bold mb-3 text-muted-foreground">Otros Perfiles</h3>
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {restProfiles.map(p => (
               <ProfileCard key={p.userId ?? p.id} profile={p} />
             ))}

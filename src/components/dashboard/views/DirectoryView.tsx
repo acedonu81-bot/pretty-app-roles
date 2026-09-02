@@ -184,12 +184,9 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
     return true;
   });
 
-  // auto-fill + minmax: en pantallas grandes las fichas ganan ancho y se
-  // suman columnas de forma continua, en vez de topar en un numero fijo de
-  // columnas y dejar espacio muerto en monitores anchos.
   const gridClass = wideCards
-    ? 'grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-5'
-    : 'grid grid-cols-2 sm:grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-2 sm:gap-3';
+    ? 'grid grid-cols-1 sm:grid-cols-2 gap-5'
+    : 'grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3';
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
