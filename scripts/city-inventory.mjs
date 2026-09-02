@@ -109,10 +109,25 @@ export const ROLE_MAP = {
  */
 export function hasInventory(profiles, cityName, categorySlug) {
   // Mismo fallback que CityLanding.tsx: `ROLE_MAP[categorySlug] ?? ['dj']`.
-  // Las categorías sin mapeo (mago, bailarin, grupo-musical…) consultan el rol
-  // 'dj', así que su página solo tiene contenido si hay un DJ en la ciudad.
+  // Las categorías sin mapeo consultan el rol 'dj', así que su página solo
+  // tiene contenido si hay un DJ en la ciudad.
   const roles = ROLE_MAP[categorySlug] ?? ['dj'];
-  return profiles.some(p => matchesCity(p.zone, cityName) && roles.includes(p.role));
+  return profiles.some(p => matchesProfileCity(p, cityName) && roles.includes(p.role));
+}
+
+/**
+ * ¿Este perfil cuenta como inventario de esta ciudad?
+ *
+ * Por su zona literal (el pueblo que escribió) o por su city_ref, la ciudad
+ * grande de referencia que le asigna la BD. Sin lo segundo, quien vive en un
+ * pueblo no acredita inventario en ninguna parte: una profesional de Benidorm
+ * no contaba para Alicante y su página nunca se generaba.
+ */
+export function matchesProfileCity(profile, cityName) {
+  if (matchesCity(profile.zone, cityName)) return true;
+  const ref = profile.city_ref;
+  if (!ref) return false;
+  return fold(ref) === fold(cityName);
 }
 
 export function citiesWithInventory(profiles, cities) {
@@ -135,7 +150,7 @@ export function contentDate(profiles, cityName, categorySlug) {
   const roles = ROLE_MAP[categorySlug] ?? ['dj'];
   let latest = null;
   for (const p of profiles) {
-    if (!matchesCity(p.zone, cityName) || !roles.includes(p.role)) continue;
+    if (!matchesProfileCity(p, cityName) || !roles.includes(p.role)) continue;
     const d = p.updated_at ? String(p.updated_at).slice(0, 10) : null;
     if (d && (!latest || d > latest)) latest = d;
   }

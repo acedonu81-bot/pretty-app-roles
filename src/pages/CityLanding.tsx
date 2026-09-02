@@ -63,7 +63,13 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
       // false y nada lo asciende: 31 de 34 perfiles quedaban invisibles en
       // todas las páginas de ciudad. Se ordena por él, como hacen Landing.tsx
       // y Auth.tsx, en vez de excluir.
-      .ilike('zone', `%${ciudad}%`)
+      // Cuenta la zona literal (el pueblo que escribio el profesional) O su
+      // city_ref, la ciudad grande de referencia que le asigna la BD. Con solo
+      // el ilike, quien vive en un pueblo no aparecia en ninguna pagina de
+      // ciudad: una profesional de Benidorm no salia en Alicante. El sitemap
+      // usa este mismo criterio (matchesProfileCity en city-inventory.mjs); si
+      // los dos se desincronizan, se publican URLs que renderizan vacias.
+      .or(`zone.ilike.%${ciudad}%,city_ref.eq.${ciudad}`)
       // Respeta is_public, que la RLS no filtra: un perfil marcado como no
       // público (p.ej. el que tiene un email por nombre) no debe listarse.
       .or('is_public.is.null,is_public.eq.true')

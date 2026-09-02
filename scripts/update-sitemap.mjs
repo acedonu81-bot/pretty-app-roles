@@ -43,7 +43,7 @@ function loadEnv() {
 
 // ─── Fetch all public profiles from Supabase ─────────────────────────────
 async function fetchProfiles(supabaseUrl, anonKey) {
-  const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,zone,updated_at,role,is_primary&role=neq.empresario&is_seed=eq.false&or=(is_public.is.null,is_public.eq.true)&order=updated_at.desc&limit=1000`;
+  const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,zone,city_ref,updated_at,role,is_primary&role=neq.empresario&is_seed=eq.false&or=(is_public.is.null,is_public.eq.true)&order=updated_at.desc&limit=1000`;
   const res = await fetch(url, {
     headers: {
       apikey: anonKey,
@@ -531,12 +531,29 @@ async function main() {
   const indexableCities = new Set();
   const cityContentDates = new Map();
   if (inventoryProfiles.length) {
+    // Universo de ciudades = las de CITIES (que aportan copy editorial: venues,
+    // precios, estacionalidad) MAS las city_ref reales de los perfiles. Antes
+    // solo se recorria CITIES, asi que un profesional de una ciudad ausente de
+    // esa lista no generaba pagina por mucho inventario que hubiera: el 2 sep
+    // 2026 una profesional de Benidorm no tenia ninguna URL. city_ref la
+    // calcula la BD (city_ref_from_zone), asi que un pueblo pequeño cuenta como
+    // inventario de su ciudad grande de referencia.
+    const cityUniverse = new Map();
     for (const [citySlug, info] of Object.entries(CITIES)) {
-      if (!info?.ciudad) continue;
+      if (info?.ciudad) cityUniverse.set(citySlug, info.ciudad);
+    }
+    for (const p of inventoryProfiles) {
+      const ref = p.city_ref;
+      if (!ref) continue;
+      const slug = toSlug(ref);
+      if (!cityUniverse.has(slug)) cityUniverse.set(slug, ref);
+    }
+
+    for (const [citySlug, cityName] of cityUniverse) {
       for (const cat of CATS_BY_CITY) {
-        if (hasInventory(inventoryProfiles, info.ciudad, cat)) {
+        if (hasInventory(inventoryProfiles, cityName, cat)) {
           indexableCities.add(`${cat}/${citySlug}`);
-          const d = contentDate(inventoryProfiles, info.ciudad, cat);
+          const d = contentDate(inventoryProfiles, cityName, cat);
           if (d) cityContentDates.set(`${cat}/${citySlug}`, d);
         }
       }
