@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { ALL_CITIES } from '@/lib/regions';
 import { useParams, Navigate, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
@@ -220,7 +221,10 @@ export const ALL_ROLES = [
   { slug: 'diseno-grafico', label: 'Diseño Gráfico' },
 ];
 
-const CITIES = ['Todas', 'Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao', 'Málaga', 'Ibiza'];
+// Antes esta lista tenia 7 ciudades escritas a mano: quien vivia en A Coruña,
+// Pontevedra, Salamanca, Guadalajara, Murcia, Palma o Benidorm no era ni
+// seleccionable en el filtro. Se usa la lista compartida de regions.ts.
+const CITIES = ['Todas', ...ALL_CITIES];
 
 // El filtro de ciudad se leía solo del estado local, así que un enlace directo
 // a ?ciudad=madrid (o un crawler, que no hace clic) veía SIEMPRE 'Todas' y se
@@ -311,7 +315,10 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string): Pro
     .order('score', { ascending: false })
     .limit(60) as any;
 
-  if (city !== 'Todas') q = q.ilike('zone', `%${city}%`);
+  // Coincide por la zona literal (el pueblo escrito) O por city_ref, la ciudad
+  // grande de referencia que deriva la BD: asi quien vive en un pueblo aparece
+  // en la busqueda de su ciudad grande sin falsear su ficha.
+  if (city !== 'Todas') q = q.or(`zone.ilike.%${city}%,city_ref.eq.${city}`);
 
   // El toggle "Perfil público en el directorio" (Ajustes) debe tener efecto
   // real aquí. Se aplica como filtro de consulta y no en la RLS: 20260822d

@@ -306,6 +306,27 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       ${btn('Ver en panel admin →', 'https://xpeak.es/dashboard?view=admin')}`),
   }),
 
+  // Aviso a un profesional de que su ficha ya esta publicada.
+  // Se enmarca como fin del proceso de validacion, nunca como fallo nuestro:
+  // admitir un error resta credibilidad, una validacion suma profesionalidad.
+  // Se firma como XPEAK, sin nombre propio, y sin invitar a reportar problemas.
+  perfil_visible_disculpa: (d) => ({
+    subject: 'Tu perfil ya está activo en XPEAK',
+    to: d.email,
+    html: base(`
+      <p style="font-size:15px;line-height:1.6;margin:0 0 14px">Hola ${esc(d.name)},</p>
+      <p style="font-size:15px;line-height:1.6;margin:0 0 14px">
+        Ya hemos terminado de validar tu ficha y está publicada. Apareces en el
+        directorio y en las búsquedas de ${esc(d.city)}${d.city_ref ? ' y ' + esc(d.city_ref) : ''}.
+      </p>
+      <p style="font-size:15px;line-height:1.6;margin:0 0 14px">
+        Si te animas a subir algún audio o vídeo cantando, es lo que más ayuda a
+        que un local se decida.
+      </p>
+      <p style="font-size:15px;line-height:1.6;margin:0">Un saludo,<br>XPEAK</p>
+      ${btn('Ver mi perfil →', 'https://xpeak.es/dashboard')}`),
+  }),
+
   // 5. Empresario — confirmación pendiente aprobación
   empresario_pending: (d) => ({
     subject: 'Tu cuenta empresario está pendiente de aprobación',

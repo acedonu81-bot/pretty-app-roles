@@ -37,7 +37,7 @@ const MapaView = () => {
   useEffect(() => {
     supabase
       .from('profiles')
-      .select('user_id, display_name, role, specialty, zone, photo_url, is_verified')
+      .select('user_id, display_name, role, specialty, zone, city_ref, photo_url, is_verified')
       .limit(500)
       .then(({ data, error }) => {
         // Sin manejar `error` ni rechazo, un fallo dejaba la vista en
@@ -55,12 +55,23 @@ const MapaView = () => {
       });
   }, []);
 
+  // includes() era sensible a mayusculas y acentos y solo miraba zone, asi que
+  // quien vive en un pueblo (o escribio la ciudad con otra grafia) no aparecia
+  // en ningun mapa. Se compara normalizado y contra city_ref, la ciudad grande
+  // de referencia que deriva la BD.
+  const fold = (v: string) => v.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const inCity = (p: { zone?: string | null; city_ref?: string | null }, city: string) => {
+    const c = fold(city);
+    if (p.zone && fold(p.zone).includes(c)) return true;
+    return !!p.city_ref && fold(p.city_ref) === c;
+  };
+
   const cityCount = (city: string) =>
-    allProfiles.filter(p => p.zone?.includes(city) && p.role !== 'empresario').length;
+    allProfiles.filter(p => inCity(p, city) && p.role !== 'empresario').length;
 
   // Esta vista sirve para DESCUBRIR TALENTO: incluir empresarios inflaba el
   // contador "N profesionales en Madrid" con salas y otros contratantes.
-  const cityProfiles = allProfiles.filter(p => p.zone?.includes(selectedCity) && p.role !== 'empresario');
+  const cityProfiles = allProfiles.filter(p => inCity(p, selectedCity) && p.role !== 'empresario');
 
   const filteredCities = CITIES.filter(c =>
     c.toLowerCase().includes(searchTerm.toLowerCase())

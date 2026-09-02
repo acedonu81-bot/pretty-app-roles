@@ -93,12 +93,15 @@ async function buscarProfesionales(args: Record<string, unknown>, sessionId: str
   }
 
   let query = supabase.from('profiles')
-    .select('user_id, display_name, role, specialty, zone, hourly_rate, is_flash_active, is_verified, photo_url')
+    .select('user_id, display_name, role, specialty, zone, city_ref, hourly_rate, is_flash_active, is_verified, photo_url')
     .eq('role', rol)
     .order('is_flash_active', { ascending: false })
     .limit(10);
 
-  if (ciudad) query = query.ilike('zone', `%${ciudad}%`);
+  // Coincide por la zona literal o por city_ref, la ciudad grande de referencia
+  // que deriva la BD. Con solo el ilike el bot respondia "no hay nadie en X" a
+  // ciudades donde si hay profesionales de pueblos cercanos.
+  if (ciudad) query = query.or(`zone.ilike.%${ciudad}%,city_ref.eq.${ciudad}`);
   if (presupuestoMax) query = query.lte('hourly_rate', presupuestoMax);
 
   const { data, error } = await query;

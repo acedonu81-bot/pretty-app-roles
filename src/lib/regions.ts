@@ -38,3 +38,53 @@ export function setPresetRegion(region: string) {
 export function citiesForRegion(region: string): string[] {
   return REGIONS.find(r => r.label === region)?.cities ?? [];
 }
+
+/**
+ * Lista de ciudades para selectores y validacion de parametros de URL.
+ *
+ * Vivia duplicada a mano en Landing, DirectorioPublico (solo 7 ciudades),
+ * MapaView, OnboardingWizard y brand.ts, y cada copia se quedaba corta por su
+ * lado: el 2 sep 2026 una profesional de Benidorm no era ni seleccionable en
+ * el directorio publico. Se centraliza aqui para que ampliarla llegue a todos
+ * los sitios a la vez.
+ *
+ * No es la fuente de verdad de que existe: eso son los perfiles reales. Quien
+ * viva en un pueblo fuera de esta lista lo escribe igualmente y la BD le deriva
+ * region y city_ref (ver migraciones 20260902*).
+ */
+export const ALL_CITIES: string[] = [
+  // Grandes capitales y destinos de ocio
+  'Madrid','Barcelona','Valencia','Sevilla','Bilbao','Málaga','Ibiza',
+  'Palma de Mallorca','Zaragoza','Murcia','Alicante','Granada','Córdoba',
+  'San Sebastián','Santander','Valladolid','Santiago de Compostela','Pamplona',
+  'Vitoria-Gasteiz','Logroño',
+  // Galicia
+  'Vigo','A Coruña','Ourense','Lugo','Pontevedra','Ferrol',
+  // Asturias y Cantabria
+  'Oviedo','Gijón','Avilés',
+  // Canarias
+  'Tenerife','Las Palmas de Gran Canaria','Santa Cruz de Tenerife','Lanzarote','Fuerteventura','La Palma',
+  // Extremadura
+  'Badajoz','Cáceres','Mérida','Plasencia','Don Benito',
+  // Castilla y León
+  'Salamanca','Burgos','León','Segovia','Ávila','Zamora','Palencia','Soria','Ponferrada',
+  // Castilla-La Mancha
+  'Toledo','Ciudad Real','Albacete','Cuenca','Guadalajara','Talavera de la Reina','Puertollano',
+  // Andalucía (resto)
+  'Huelva','Jaén','Almería','Cádiz','Jerez de la Frontera','Marbella','Algeciras',
+  'Fuengirola','Torremolinos','Benalmádena','Ronda','Linares','Úbeda','Baeza','El Puerto de Santa María',
+  // Aragón (resto)
+  'Huesca','Teruel',
+  // Cataluña (resto)
+  'Tarragona','Lleida','Girona','Badalona','Hospitalet de Llobregat','Sabadell','Terrassa','Mataró','Reus','Sitges',
+  // C. Valenciana (resto)
+  'Castellón de la Plana','Elche','Torrevieja','Benidorm','Gandia','Dénia',
+  // Murcia (resto)
+  'Cartagena','Lorca',
+  // Baleares
+  'Menorca','Formentera',
+  // Madrid área
+  'Alcalá de Henares','Alcobendas','Getafe','Leganés','Móstoles','Torrejón de Ardoz',
+  // Ciudades autónomas
+  'Ceuta','Melilla',
+];

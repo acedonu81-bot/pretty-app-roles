@@ -27,7 +27,15 @@ describe('cityFromParam', () => {
 
   it('ignora valores que no son ciudades en vez de filtrar por basura', () => {
     expect(cityFromParam('<script>')).toBe('Todas');
-    expect(cityFromParam('Cuenca')).toBe('Todas');
+    expect(cityFromParam('Ciudad Inventada')).toBe('Todas');
+  });
+
+  // La lista tenia 7 ciudades a mano y dejaba fuera a ciudades con perfiles
+  // reales: quien vivia en Cuenca o A Coruña no era ni seleccionable.
+  it('acepta ciudades reales que antes no estaban en la lista corta', () => {
+    expect(cityFromParam('Cuenca')).toBe('Cuenca');
+    expect(cityFromParam('a coruna')).toBe('A Coruña');
+    expect(cityFromParam('benidorm')).toBe('Benidorm');
   });
 });
 

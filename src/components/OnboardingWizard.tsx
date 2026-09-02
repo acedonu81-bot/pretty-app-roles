@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { ALL_CITIES } from '@/lib/regions';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight, Megaphone, UtensilsCrossed, Laugh, PartyPopper, PersonStanding, MicVocal, Shirt, Scissors, Upload, Euro, Guitar } from 'lucide-react';
 import { toast } from 'sonner';
@@ -12,11 +13,9 @@ import NightlifeSelect from '@/components/ui/NightlifeSelect';
 // dentro del wizard. Quien necesite un barrio/ciudad más específico lo
 // ajusta luego en Mi Perfil (este selector no sustituye ese, solo evita
 // que la ficha quede publicada con "España" genérico desde el minuto 1.
-const WIZARD_CITIES = [
-  'Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Bilbao', 'Málaga', 'Zaragoza',
-  'Murcia', 'Alicante', 'Granada', 'A Coruña', 'Vigo', 'Palma de Mallorca',
-  'Ibiza', 'San Sebastián', 'Córdoba', 'Valladolid', 'Vitoria', 'Gijón', 'Otra ciudad',
-];
+// Lista compartida (src/lib/regions.ts) en vez de una copia corta a mano, que
+// dejaba fuera ciudades con perfiles reales. "Otra ciudad" abre campo libre.
+const WIZARD_CITIES = [...ALL_CITIES, 'Otra ciudad'];
 
 const ROLES = [
   { value: 'dj',           label: 'DJ / Artista',        desc: 'DJ o artista en solitario',         icon: Music2,         color: '#D4AF37' },

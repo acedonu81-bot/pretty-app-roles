@@ -58,9 +58,18 @@ function computeMatch(
   const cityQuery = query.city?.toLowerCase().trim() ?? '';
   const profileCity = normalizeCity(profile.zone);
 
-  if (cityQuery && profileCity.includes(cityQuery)) {
+  // city_ref es la ciudad grande de referencia que deriva la BD, asi que quien
+  // vive en un pueblo puntua igual en la busqueda de su ciudad grande.
+  const profileCityRef = (profile.city_ref ?? '').trim().toLowerCase();
+
+  if (cityQuery && (profileCity.includes(cityQuery) || profileCityRef === cityQuery)) {
     score += 30;
     reasons.push(`En ${profile.zone?.split(',')[0]}`);
+  } else if (cityQuery && (!profileCity || profileCity === 'espana' || profileCity === 'españa')) {
+    // Sin ciudad concreta (zone='España', el valor por defecto del alta) el
+    // profesional se ofrece para toda España: no coincide, pero penalizarlo
+    // -10 hundia a 14 de 37 perfiles en TODA busqueda con ciudad.
+    score += 0;
   } else if (cityQuery) {
     score -= 10;
   }
@@ -135,7 +144,7 @@ export function useSmartMatch(query: MatchQuery | null): { results: MatchedProfe
     const [profilesRes, reviewsRes, availRes] = await Promise.all([
       supabase
         .from('profiles')
-        .select('user_id, display_name, role, roles, specialty, zone, photo_url, hourly_rate, is_flash_active, is_verified, bio, audio_embed_url, audio_session_urls, portfolio_urls, score, fast_responder_count, is_early_adopter_override')
+        .select('user_id, display_name, role, roles, specialty, zone, city_ref, photo_url, hourly_rate, is_flash_active, is_verified, bio, audio_embed_url, audio_session_urls, portfolio_urls, score, fast_responder_count, is_early_adopter_override')
         .contains('roles', [query.role])
         .not('display_name', 'is', null)
         .limit(100),
