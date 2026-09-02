@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { X, Share, PlusSquare } from 'lucide-react';
 
 /**
@@ -36,6 +36,26 @@ export default function InstallPwaBanner() {
     return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
 
+  // El banner es `fixed` con z-60 sobre el feed, y los CTAs de cada tarjeta
+  // ("Ver perfil" / "Contactar") viven pegados abajo con z-20: sin esto el
+  // banner los tapaba por completo y el toque lo recibía el banner, no el
+  // botón — los dos únicos CTAs del feed quedaban muertos hasta cerrarlo.
+  // Publicamos su altura real para que el contenido de debajo se aparte, y la
+  // limpiamos al desmontar o al cerrarlo.
+  const bannerRef = useRef<HTMLDivElement>(null);
+  const visible = !isStandalone && !dismissed && (deferredPrompt || isIOS);
+  useEffect(() => {
+    const root = document.documentElement;
+    if (!visible) { root.style.removeProperty('--install-banner-space'); return; }
+    const el = bannerRef.current;
+    if (!el) return;
+    const apply = () => root.style.setProperty('--install-banner-space', `${el.offsetHeight + 12}px`);
+    apply();
+    const ro = new ResizeObserver(apply);
+    ro.observe(el);
+    return () => { ro.disconnect(); root.style.removeProperty('--install-banner-space'); };
+  }, [visible, showIosSteps]);
+
   if (isStandalone || dismissed) return null;
   // Solo mostrar si hay algo que ofrecer: prompt nativo de Android, o pasos de iOS.
   if (!deferredPrompt && !isIOS) return null;
@@ -52,7 +72,7 @@ export default function InstallPwaBanner() {
   };
 
   return (
-    <div className="fixed left-3 right-3 z-[60] rounded-2xl overflow-hidden"
+    <div ref={bannerRef} className="fixed left-3 right-3 z-[60] rounded-2xl overflow-hidden"
       style={{
         bottom: 'calc(1rem + env(safe-area-inset-bottom))',
         background: 'rgba(10,9,8,0.92)',

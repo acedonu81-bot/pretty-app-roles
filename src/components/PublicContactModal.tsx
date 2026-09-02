@@ -84,15 +84,16 @@ export default function PublicContactModal({ professionalName, professionalUserI
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center px-4 pb-4 sm:pb-0"
+    <div className="fixed inset-0 z-[70] flex items-end sm:items-center justify-center px-4 pb-4 sm:pb-0"
       style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(6px)' }}
       onClick={onClose}>
       <div className="w-full max-w-md rounded-2xl p-6 relative"
         style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.1)', boxShadow: '0 20px 60px rgba(0,0,0,0.2)' }}
         onClick={e => e.stopPropagation()}>
 
-        <button onClick={onClose} className="absolute top-4 right-4 p-1 rounded-lg hover:bg-black/5">
-          <X size={16} style={{ color: '#333' }} />
+        <button onClick={onClose} aria-label="Cerrar"
+          className="absolute top-2 right-2 w-11 h-11 flex items-center justify-center rounded-lg hover:bg-black/5">
+          <X size={18} style={{ color: '#333' }} />
         </button>
 
         {status === 'done' ? (
@@ -110,7 +111,7 @@ export default function PublicContactModal({ professionalName, professionalUserI
         ) : (
           <form onSubmit={handleSubmit}>
             <div className="mb-5">
-              <h3 className="text-lg font-black mb-0.5" style={{ color: '#111' }}>Escribe a {professionalName}</h3>
+              <h3 className="text-lg font-black mb-0.5 pr-10 break-words" style={{ color: '#111' }}>Escribe a {professionalName}</h3>
               <p className="text-xs" style={{ color: '#333' }}>Sin registro. Gratis.</p>
             </div>
 

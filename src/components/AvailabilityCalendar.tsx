@@ -49,16 +49,18 @@ const AvailabilityCalendar = ({ userId }: { userId: string }) => {
       </h3>
       <div className="rounded-2xl p-4" style={{ background: '#fafaf8', border: '1px solid rgba(0,0,0,0.06)' }}>
         <div className="flex items-center justify-between mb-3 relative">
-          <button onClick={prev} className="w-7 h-7 rounded flex items-center justify-center hover:bg-black/5">
-            <ChevronLeft size={16} style={{ color: '#222' }} />
+          <button onClick={prev} aria-label="Mes anterior"
+            className="w-11 h-11 -ml-2 rounded flex items-center justify-center hover:bg-black/5">
+            <ChevronLeft size={18} style={{ color: '#222' }} />
           </button>
           <button onClick={() => setShowJump(o => !o)}
-            className="flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-lg hover:bg-black/5" style={{ color: '#111' }}>
+            className="flex items-center gap-1 text-xs font-bold px-3 py-2.5 rounded-lg hover:bg-black/5" style={{ color: '#111' }}>
             {MONTH_NAMES[month]} {year}
             <ChevronDown size={12} style={{ color: '#666', transform: showJump ? 'rotate(180deg)' : undefined }} />
           </button>
-          <button onClick={next} className="w-7 h-7 rounded flex items-center justify-center hover:bg-black/5">
-            <ChevronRight size={16} style={{ color: '#222' }} />
+          <button onClick={next} aria-label="Mes siguiente"
+            className="w-11 h-11 -mr-2 rounded flex items-center justify-center hover:bg-black/5">
+            <ChevronRight size={18} style={{ color: '#222' }} />
           </button>
 
           {showJump && (

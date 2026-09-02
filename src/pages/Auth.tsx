@@ -613,6 +613,7 @@ const Auth = () => {
                       onChange={e => { setDisplayName(e.target.value); if (fieldError === 'name') setFieldError(null); }}
                       placeholder={roleParam === 'dj' ? 'DJ NombreArtístico' : 'Tu nombre profesional'}
                       maxLength={60}
+                      autoComplete="name"
                       className="nightlife-input !py-3 !pl-9 text-sm"
                       autoFocus
                     />
@@ -628,6 +629,8 @@ const Auth = () => {
                     onChange={e => setEmail(e.target.value)}
                     placeholder="tu@email.com"
                     maxLength={254}
+                    autoComplete="email"
+                    inputMode="email"
                     className="nightlife-input !py-3 !pl-9 text-sm"
                   />
                 </div>
@@ -642,13 +645,15 @@ const Auth = () => {
                     onChange={e => { setPassword(e.target.value); if (fieldError === 'password') setFieldError(null); }}
                     placeholder="Contraseña"
                     maxLength={128}
+                    autoComplete={isLogin ? 'current-password' : 'new-password'}
                     className="nightlife-input !py-3 !pl-9 !pr-10 text-sm"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-white transition-colors">
-                    {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+                    aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                    className="absolute right-1 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-muted-foreground hover:text-white transition-colors">
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                 </div>
 
@@ -786,6 +791,7 @@ const Auth = () => {
                       <div className="relative">
                         <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                         <input type="email" value={forgotEmail} onChange={e => setForgotEmail(e.target.value)}
+                          autoComplete="email" inputMode="email"
                           placeholder="tu@email.com" className="nightlife-input !py-2.5 !pl-9 text-sm" />
                       </div>
                       <TurnstileWidget onVerify={setForgotCaptchaToken} onExpire={() => setForgotCaptchaToken(null)} />
@@ -907,13 +913,15 @@ const Auth = () => {
                   onChange={e => setNewPassword(e.target.value)}
                   placeholder="Nueva contraseña (mín. 6 caracteres)"
                   maxLength={128}
+                  autoComplete="new-password"
                   autoFocus
                   className="w-full py-3 pl-9 pr-10 rounded-xl text-sm"
                   style={{ background: '#f5f5f5', border: '1px solid #e0e0e0', color: '#111' }}
                 />
                 <button type="button" onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: '#999' }}>
-                  {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+                  aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                  className="absolute right-1 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center" style={{ color: '#999' }}>
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
               <button type="submit" disabled={recoveryLoading}
