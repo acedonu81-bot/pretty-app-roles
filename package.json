@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/prerender-meta.mjs && vite build --ssr src/entry-prerender.tsx --outDir dist-ssr && node scripts/prerender-content.mjs && node scripts/prerender-reviews.mjs && node scripts/prerender-markdown.mjs && node scripts/update-sitemap.mjs",
+    "build": "vite build && node scripts/prerender-meta.mjs && vite build --ssr src/entry-prerender.tsx --outDir dist-ssr && node scripts/prerender-content.mjs && node scripts/prerender-reviews.mjs && node scripts/prerender-markdown.mjs && node scripts/update-sitemap.mjs && (test -n \"$VERCEL\" && node scripts/indexnow-ping.mjs || echo \"  → IndexNow omitido (build local)\")",
     "indexnow": "node scripts/indexnow-ping.mjs",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
