@@ -165,6 +165,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
   }>({});
   const [showContract, setShowContract] = useState(false);
   const [imgError, setImgError] = useState(false);
+  const [isSmallPhoto, setIsSmallPhoto] = useState(false);
   const [tab, setTab] = useState<'overview' | 'media' | 'contact'>('overview');
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -282,11 +283,27 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
           {/* ════════ HERO — foto full-width ════════ */}
           <div className="relative" style={{ height: 'clamp(360px, 52vh, 520px)' }}>
             {p.photo && !imgError ? (
-              // object-position 50% 30%: object-top clavaba el borde superior de la
-              // foto y en retratos verticales cortaba la cara por la frente.
-              <img src={p.photo} alt={p.name} className="absolute inset-0 w-full h-full object-cover"
-                style={{ objectPosition: '50% 30%' }}
-                onError={() => setImgError(true)} />
+              // Muchas fotos llegan reenviadas por WhatsApp, que las deja en
+              // ~250px: estiradas a los 520px del hero se ven pixeladas. Se pinta
+              // una copia ampliada y desenfocada de fondo y la foto encima a un
+              // tamano donde aun aguanta, en vez de estirarla a lo ancho.
+              // object-position 50% 30%: object-top clavaba el borde superior y
+              // en retratos verticales cortaba la cara por la frente.
+              <>
+                <img src={p.photo} alt="" aria-hidden="true"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  style={{ filter: 'blur(28px) saturate(1.15)', transform: 'scale(1.15)' }} />
+                <img src={p.photo} alt={p.name}
+                  className={isSmallPhoto ? 'absolute inset-0 w-full h-full object-contain' : 'absolute inset-0 w-full h-full object-cover'}
+                  style={isSmallPhoto ? undefined : { objectPosition: '50% 30%' }}
+                  onLoad={e => {
+                    const img = e.currentTarget;
+                    // Por debajo de 600px de ancho real, ampliar a todo el hero
+                    // destroza la imagen: se muestra contenida sobre el fondo.
+                    if (img.naturalWidth && img.naturalWidth < 600) setIsSmallPhoto(true);
+                  }}
+                  onError={() => setImgError(true)} />
+              </>
             ) : (
               <div className="absolute inset-0"
                 style={{ background: `linear-gradient(135deg, ${cfg.color}28 0%, #070710 70%), radial-gradient(ellipse at 30% 50%, ${cfg.glow} 0%, transparent 65%)` }}>

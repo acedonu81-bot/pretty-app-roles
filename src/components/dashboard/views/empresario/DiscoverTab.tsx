@@ -5,7 +5,7 @@ import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
 import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import type { Pro } from './types';
 import { ZONES } from './types';
-import { DJ_GENRES } from '@/lib/constants';
+import { DJ_GENRES, ROLE_TAGS } from '@/lib/constants';
 import { canonicalRole } from '@/lib/constants';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -26,6 +26,12 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
   const [filterZone, setFilterZone]   = useState('Todas');
   const [filterRole, setFilterRole]   = useState('Todos');
   const [filterGenre, setFilterGenre] = useState('Todos');
+
+  // Con un rol concreto se ofrecen sus etiquetas; con 'Todos' no hay una lista
+  // comun que tenga sentido, asi que se mantienen los generos musicales.
+  const roleTagConfig = filterRole === 'Todos'
+    ? { label: 'Estilo musical', tags: DJ_GENRES }
+    : ROLE_TAGS[filterRole];
   const [maxPrice, setMaxPrice]       = useState(1000);
   const [proNotes, setProNotes]       = useState<Record<string, string>>({});
   const [notesTarget, setNotesTarget] = useState<string | null>(null);
@@ -107,7 +113,12 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
             <label className="text-[0.75rem] text-muted-foreground font-bold uppercase mb-1 block">Rol</label>
             <NightlifeSelect
               value={filterRole}
-              onChange={setFilterRole}
+              onChange={(r) => {
+                setFilterRole(r);
+                // Cambiar de rol deja el estilo anterior sin sentido ("Barra"
+                // entre magos): siempre 0 resultados hasta reiniciar el filtro.
+                setFilterGenre('Todos');
+              }}
               options={[
                 { value: 'Todos', label: 'Todos' },
                 { value: 'dj', label: 'DJ' },
@@ -124,13 +135,17 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
             />
           </div>
         </div>
-        {(filterRole === 'Todos' || filterRole === 'dj') && (
+        {/* El selector solo existia para DJ y ofrecia DJ_GENRES: quien buscaba
+            musica en vivo, un mago o un camarero no tenia forma de filtrar por
+            especialidad, y una cantante no aparecia buscando "acustico". Ahora
+            cada rol muestra sus propias etiquetas (ROLE_TAGS). */}
+        {roleTagConfig && (
           <div className="mt-3">
-            <label className="text-[0.75rem] text-muted-foreground font-bold uppercase mb-1 block">Estilo musical</label>
+            <label className="text-[0.75rem] text-muted-foreground font-bold uppercase mb-1 block">{roleTagConfig.label}</label>
             <NightlifeSelect
               value={filterGenre}
               onChange={setFilterGenre}
-              options={[{ value: 'Todos', label: 'Todos' }, ...DJ_GENRES.map(g => ({ value: g, label: g }))]}
+              options={[{ value: 'Todos', label: 'Todos' }, ...roleTagConfig.tags.map(g => ({ value: g, label: g }))]}
               active={filterGenre !== 'Todos'}
             />
           </div>

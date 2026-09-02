@@ -10,7 +10,7 @@ import AudioUpload from '@/components/dashboard/AudioUpload';
 import { compressImage, MAX_RAW_IMAGE_MB } from '@/lib/image';
 import PortfolioUpload from '@/components/dashboard/PortfolioUpload';
 import { sanitizeInput } from '@/lib/contentFilter';
-import { DEFAULT_ZONE, DJ_GENRES } from '@/lib/constants';
+import { DEFAULT_ZONE, DJ_GENRES, ROLE_TAGS } from '@/lib/constants';
 
 const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {}) => {
   const { user } = useAuth();
@@ -131,32 +131,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   const savedCity = (city || profile.zone?.replace(', España', '') || '').trim();
   const provinceOfSaved = PROVINCE_LIST.find(p => PROVINCIAS[p].includes(savedCity)) ?? '';
 
-  const ROLE_TAGS: Record<string, { label: string; tags: string[] }> = {
-    dj:        { label: 'Géneros musicales',    tags: DJ_GENRES },
-    // Musica en vivo: repertorio y formato, NO los generos de cabina de un DJ.
-    // Una cantante que se registro con el rol equivocado acabo etiquetada como
-    // "Remember, Comercial, Chillout" porque era lo unico que le encajaba
-    // minimamente de la lista de DJ (caso Aurora, 2 sep 2026).
-    'grupo-musical': { label: 'Repertorio y formato', tags: ['Pop español','Pop internacional','Rock','Versiones','Acústico','Voz y guitarra','Jazz','Bossa nova','Soul','Funk en vivo','Flamenco','Rumba','Copla','Boleros','Baladas','Música clásica','Góspel','Country','Indie','Cantautor','Ceremonia','Cóctel','Banda completa','Dúo','Trío'] },
-    azafata:    { label: 'Especialidades', tags: ['Azafata de congresos','Azafata de imagen','Ferias y stands','Protocolo','Acreditaciones','Recepción','Bienvenida','Sala VIP','Promoción','Azafata de eventos deportivos','Traducción / idiomas','Reparto de merchandising'] },
-    catering:   { label: 'Especialidades', tags: ['Catering de bodas','Cóctel','Banquete','Show cooking','Finger food','Barbacoa / brasa','Paellas','Cocina mediterránea','Cocina internacional','Menú vegano','Sin gluten','Food truck','Servicio de barra','Postres y repostería'] },
-    humorista:  { label: 'Estilos', tags: ['Monólogo','Stand-up','Humor blanco','Humor negro','Improvisación','Humor musical','Parodia','Presentación de eventos','Humor corporativo','Bodas','Despedidas','Clubs de comedia'] },
-    mago:       { label: 'Especialidades', tags: ['Magia de cerca','Magia de escenario','Mentalismo','Magia infantil','Magia cómica','Ilusionismo','Cartomagia','Magia de bodas','Walking magic','Grandes ilusiones'] },
-    animador:   { label: 'Especialidades', tags: ['Animación infantil','Fiestas de cumpleaños','Hinchables','Pintacaras','Globoflexia','Talleres','Juegos','Espectáculo infantil','Bodas','Comuniones','Parques','Hoteles'] },
-    payaso:     { label: 'Especialidades', tags: ['Payaso clásico','Clown','Circo','Malabares','Zancos','Espectáculo infantil','Cumpleaños','Comuniones','Ferias','Teatro de calle'] },
-    speaker:    { label: 'Especialidades', tags: ['Presentador de eventos','Maestro de ceremonias','Locución','Speaker corporativo','Conferencias','Galas','Bodas','Deportivo','Voz en off','Presentación en inglés'] },
-    vestuario:  { label: 'Servicios', tags: ['Estilismo','Vestuario de escena','Asesoría de imagen','Personal shopper','Alquiler de vestuario','Caracterización','Sastrería','Vestuario de novia','Producción de moda','Pasarela'] },
-    camarero:   { label: 'Especialidades', tags: ['Camarero/a de sala','Barra','Coctelería','Bartender','Flair','Vinos','Café','Servicio de bodas','Catering','Banquetes','Bottle service','Terraza'] },
-    'photo-booth': { label: 'Servicios', tags: ['Photocall','Cabina de fotos','Espejo mágico','360 booth','Impresión al momento','Atrezzo','GIFs','Libro de firmas','Bodas','Eventos corporativos'] },
-    staff:         { label: 'Especialidades',         tags: ['Azafata','RRPP','Promotor','Camarero/a','Relaciones Públicas','Animación','Hostess','Sala VIP','Control de acceso','Taquilla','Chill-out','Bottle service','Coordinación'] },
-    event_manager: { label: 'Áreas de coordinación', tags: ['Coordinación general','Producción de eventos','Montaje y decoración','Catering','Staff externo','Protocolo','Gestión de artistas','Logística','Presupuestos','Eventos corporativos','Bodas','Festivales','Clubbing','Outdoor'] },
-    makeup:    { label: 'Servicios',             tags: ['Maquillaje nupcial','Caracterización','Maquillaje artístico','Estilismo','Nail art','Aerógrafo','Efectos especiales','Maquillaje masculino','Novias','Pasarela','Producción'] },
-    peluqueria:{ label: 'Servicios',             tags: ['Peluquería a domicilio','Peinado de novia','Recogidos','Corte','Color','Extensiones','Alisado','Tratamientos capilares','Peluquería infantil','Eventos','Día a día'] },
-    media:     { label: 'Especialidades',        tags: ['Fotografía de eventos','Vídeo','Reels & Contenido','Fotografía de DJ','Drone','Cobertura en directo','Fotografía de sala','Retrato','Edición de vídeo','Color grading','Motion graphics','Podcast'] },
-    design:    { label: 'Especialidades',        tags: ['Diseño gráfico','VJing','Mapping','LED wall','Visuales en vivo','Cartelería','Branding','Redes sociales','Ilustración','3D','Motion design'] },
-    promotor:  { label: 'Especialidades',        tags: ['Festivales','Clubs nocturnos','Eventos privados','Bodas','Corporativo','After','Terraza','Sala pequeña','Sala grande','Residencias','Giras'] },
-    bailarin:  { label: 'Estilos de baile',       tags: ['Salsa','Salsa cubana','Salsa en línea','Bachata','Bachata sensual','Kizomba','Zouk','Merengue','Cha cha cha','Cumbia','Coreografía primer baile','Baile de exhibición','Danza urbana','Reguetón/Perreo intenso','Danza contemporánea'] },
-  };
+;
 
   const DANCE_CLASS_STYLES = ['Salsa','Bachata','Kizomba','Zouk','Merengue','Baile de boda / primer baile','Danza urbana'];
 
