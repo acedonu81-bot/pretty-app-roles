@@ -138,7 +138,13 @@
     (function () {
       var arrancado = false;
       var pendientes = [];
-      window.__xpeakTracking = function (fn) { pendientes.push(fn); };
+      // En local no se carga ningun tracker: las visitas de desarrollo
+      // aparecian en Metricool y Analytics como trafico real (31 paginas vistas
+      // de localhost el 3 sep 2026) y ensuciaban las metricas de negocio.
+      var esLocal = /^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/.test(location.hostname)
+        || location.hostname.endsWith('.local')
+        || location.protocol === 'file:';
+      window.__xpeakTracking = function (fn) { if (!esLocal) pendientes.push(fn); };
       function arrancar() {
         if (arrancado) return;
         arrancado = true;
