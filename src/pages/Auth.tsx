@@ -6,6 +6,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { track, trackLead } from '@/lib/track';
 import TurnstileWidget from '@/components/TurnstileWidget';
+import { ALL_CITIES } from '@/lib/regions';
 
 const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { icon: LucideIcon; text: string }[] }> = {
   dj: {
@@ -101,6 +102,7 @@ const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
+  const [city, setCity] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [legalAccepted, setLegalAccepted] = useState(false);
@@ -340,7 +342,7 @@ const Auth = () => {
               role: KNOWN_ROLES.includes(roleParam) ? roleParam : 'pending',
               hourly_rate: 0,
               category: 'pending',
-              zone: 'España',
+              zone: city || 'España',
             },
             emailRedirectTo: `${SITE_URL}/auth`,
             captchaToken,
@@ -390,7 +392,7 @@ const Auth = () => {
               role: roleParam || 'profesional',
               // El alta no pide ciudad todavia: nace como 'España' y el
               // profesional la concreta luego en su perfil.
-              zone: 'España',
+              zone: city || 'España',
             },
           },
         }).catch((err: unknown) => console.warn('[email] profesional_registered failed:', err));
@@ -681,6 +683,27 @@ const Auth = () => {
                       className="nightlife-input !py-3 !pl-9 text-sm"
                       autoFocus
                     />
+                  </div>
+                )}
+
+                {/* Ciudad — solo en registro y solo para profesionales.
+                    Sin esto el alta guardaba zone:'España', que no coincide con
+                    ninguna pagina de ciudad: el filtro es zone ILIKE '%Ciudad%'
+                    OR city_ref = 'Ciudad'. Resultado: 5 de 8 camareros no
+                    aparecian en NINGUNA /contratar-camareros/:ciudad, que es
+                    justo la pagina a la que llega quien busca contratar. */}
+                {!isLogin && roleParam !== 'empresario' && (
+                  <div className="relative">
+                    <MapPin size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground z-10" />
+                    <select
+                      value={city}
+                      onChange={e => setCity(e.target.value)}
+                      className="nightlife-input !py-3 !pl-9 text-sm w-full"
+                      aria-label="Tu ciudad"
+                    >
+                      <option value="">¿En qué ciudad trabajas?</option>
+                      {ALL_CITIES.map(c => <option key={c} value={c}>{c}</option>)}
+                    </select>
                   </div>
                 )}
 

@@ -16,6 +16,9 @@ export interface ContractPrefill {
   fechaEvento?: string;
   nombreLocal?: string;
   direccionLocal?: string;
+  /** Importe realmente acordado en la reserva. Sin esto el formulario
+   *  arrancaba en 500 € y ese importe acababa en un documento firmado. */
+  precioNeto?: string;
 }
 
 interface Props { professional: Profile; onClose: () => void; onSaved?: () => void; prefill?: ContractPrefill; }
@@ -67,9 +70,16 @@ const ContractModal = ({ professional, onClose, onSaved, prefill }: Props) => {
     horaFin: '',
     nombreLocal: prefill?.nombreLocal ?? '',
     direccionLocal: prefill?.direccionLocal ?? '',
-    precioNeto: '500',
+    // Sin default: 500 € era una cifra inventada que se colaba en el PDF si
+    // nadie la tocaba — los 2 unicos contratos reales de produccion son
+    // exactamente de 500 €. Si la reserva trae importe acordado, se usa ese;
+    // si no, el campo va vacio y hay que escribirlo a mano (se valida > 0).
+    precioNeto: prefill?.precioNeto ?? '',
     formaPago: 'transferencia bancaria',
-    diasPago: '30',
+    // El plazo de cobro que haya declarado el profesional en sus condiciones
+    // manda sobre el default: si el tiene puesto "cobro a 7 dias" y el contrato
+    // dice 30, el documento contradice por escrito lo que el acepto.
+    diasPago: String((professional as any)?.payment_days_max ?? 30),
     equipoSonido: EVENT_TYPES[0].equip,
   });
 
@@ -510,7 +520,10 @@ La retribución acordada por la prestación es la siguiente:</p>
     <tr>
       <td>Precio neto acordado (base imponible)</td>
       <td>—</td>
-      <td><strong>€ ${esc(form.precioNeto||'0,00')}</strong></td>
+      <!-- fmt(), no el string crudo del input: escribir 500.5 imprimia
+           "€ 500.5" en la base y "€ 605,61" en el total, mezclando punto y coma
+           decimal en el mismo cuadro economico del documento firmado. -->
+      <td><strong>${price > 0 ? `€ ${fmt(price)}` : '—'}</strong></td>
     </tr>
     <tr>
       <td>IVA (21%) — art. 11 LIVA</td>
@@ -636,7 +649,13 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
         contratante_nombre: form.contratanteNombre || null,
         empresa_nombre:    form.empresaNombre || null,
         precio_neto:       price > 0 ? price : null,
-      });
+        // El documento tal y como se firma. El historial re-sirve ESTE en vez
+        // de generar otro: habia un segundo generador en ContractView cuyo PDF
+        // contradecia a este en cancelacion y plazo de pago, sobre la misma
+        // referencia. Un contrato se conserva, no se regenera.
+        contract_html:     html,
+        signed_at:         new Date().toISOString(),
+      } as any);
       if (saveError) {
         toast.error('No se pudo guardar el contrato en tu historial. El PDF se genera igualmente, pero no quedará guardado.');
       } else {

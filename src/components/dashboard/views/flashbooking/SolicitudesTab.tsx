@@ -53,7 +53,10 @@ const SolicitudesTab = () => {
     setLoading(true);
     const { data, error } = await supabase
       .from('flash_bookings' as any)
-      .select('id, requester_name, requester_contact, event_date, event_location, event_description, status, created_at')
+      // agreed_price hace falta para el contrato: sin él, ContractModal arrancaba
+      // con su default de 500 € y el profesional podía firmar un importe que
+      // nadie habia pactado.
+      .select('id, requester_name, requester_contact, event_date, event_location, event_description, status, created_at, agreed_price')
       .eq('professional_user_id', user.id)
       .order('created_at', { ascending: false })
       .limit(50);
@@ -340,6 +343,8 @@ const SolicitudesTab = () => {
             nombreEvento: contractFor.event_description ?? '',
             fechaEvento: contractFor.event_date ?? '',
             nombreLocal: contractFor.event_location ?? '',
+            // El importe acordado en la reserva manda sobre cualquier default.
+            precioNeto: contractFor.agreed_price != null ? String(contractFor.agreed_price) : '',
           } satisfies ContractPrefill}
           onClose={() => setContractFor(null)}
         />

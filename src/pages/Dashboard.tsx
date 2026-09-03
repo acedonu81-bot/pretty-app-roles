@@ -269,6 +269,10 @@ const Dashboard = () => {
   const renderView = () => {
     switch (activeView) {
       case 'dj': return <DJView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
+      // 'camarero' es alias de 'staff' (ROLE_ALIASES). Sin este case caía en el
+      // default y a un camarero se le abría la vista de DJs como pantalla de
+      // inicio: exactamente el rol que estamos a punto de captar en escuelas.
+      case 'camarero':
       case 'staff': return <StaffView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'azafata': return <AzafataView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'event_manager': return <EventManagerView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;

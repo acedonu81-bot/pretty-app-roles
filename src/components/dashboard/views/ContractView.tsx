@@ -315,6 +315,23 @@ const ContractView = () => {
   };
 
   const downloadPdf = async (c: ContractRow) => {
+    // Si el contrato guarda el documento tal y como se firmó, se sirve ESE.
+    // Antes esta función generaba un PDF nuevo con solo 6 estipulaciones que
+    // CONTRADECÍA al firmado (10 estipulaciones) en cancelación y plazo de
+    // pago, sobre la misma referencia XPEAK-XXXXXX. Un contrato no se
+    // regenera. El generador de abajo queda solo para los contratos antiguos
+    // que se guardaron antes de existir esta columna.
+    const guardado = (c as any).contract_html as string | null | undefined;
+    if (guardado) {
+      const w = window.open('', '_blank');
+      if (!w) { toast.error('Permite las ventanas emergentes para descargar el contrato'); return; }
+      w.document.write(guardado);
+      w.document.close();
+      w.focus();
+      setTimeout(() => w.print(), 400);
+      return;
+    }
+
     const safe = (v: string | null | undefined) =>
       String(v ?? '—').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     const iva = c.precio_neto != null ? (c.precio_neto * 0.21).toFixed(2) : '—';

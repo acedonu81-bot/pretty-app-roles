@@ -9,6 +9,7 @@ import { useProfile } from '@/hooks/useProfile';
 import AudioUpload from '@/components/dashboard/AudioUpload';
 import { compressImage, MAX_RAW_IMAGE_MB } from '@/lib/image';
 import PortfolioUpload from '@/components/dashboard/PortfolioUpload';
+import MisCondicionesSection from './profile/MisCondicionesSection';
 import { sanitizeInput } from '@/lib/contentFilter';
 import { DEFAULT_ZONE, DJ_GENRES, ROLE_TAGS } from '@/lib/constants';
 
@@ -669,6 +670,14 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 </p>
               </div>
             )}
+            {/* — Mis condiciones — Va FUERA del plegable de "más detalles" a
+                propósito: es lo que convierte la ficha en un pliego que escribe
+                el profesional en vez de una tarifa suelta que otro negocia.
+                Esconderlo tras un desplegable lo convertiría en un campo más. */}
+            <div className="mt-6 pt-6" style={{ borderTop: '1px solid rgba(0,0,0,0.06)' }}>
+              <MisCondicionesSection profile={profile} onSaved={profile.refresh} />
+            </div>
+
             {/* — Más detalles (opcional): todo lo secundario plegado para que la
                 ficha no abrume. Lo esencial (foto, nombre, ciudad, precio, bio)
                 queda siempre visible arriba. — */}

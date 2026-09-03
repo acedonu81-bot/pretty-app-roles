@@ -132,7 +132,7 @@ export default function BlogRRPPDiscoteca() {
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(5,150,105,0.04)', border: '1px solid rgba(5,150,105,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Quieres trabajar de RRPP en eventos?</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>Crea tu perfil en XPEAK gratis. Salas, clubs y promotoras en tu ciudad ven tu red de contactos y te contratan directamente para sus eventos. Sin comisión oculta.</p>
-              <a href="/auth?role=staff" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#059669,#B8941E)', color: '#000' }}>Crear mi perfil de RRPP gratis →</a>
+              <a href="/auth?role=staff&mode=register" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#059669,#B8941E)', color: '#000' }}>Crear mi perfil de RRPP gratis →</a>
             </div>
           </div>
                   <BlogEmailCapture variant="guia" intent="ser-profesional" articlePath="/blog/como-trabajar-de-rrpp-discoteca" />
