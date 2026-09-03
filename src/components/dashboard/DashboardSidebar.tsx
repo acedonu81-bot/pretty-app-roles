@@ -32,7 +32,7 @@ interface SidebarProps {
 const DIRECTORY_ITEMS: { id: string; label: string }[] = [
   { id: 'dj', label: 'DJs, Artistas & Música en Vivo' },
   { id: 'grupo-musical', label: 'Grupos Musicales' },
-  { id: 'staff', label: 'Camareros' },
+  { id: 'staff', label: 'Sala & Barra' },
   { id: 'azafata', label: 'Azafatas' },
   { id: 'event_manager', label: 'Encargadas de Eventos' },
   { id: 'bailarin', label: 'Instructores & Bailarines' },
@@ -57,7 +57,7 @@ const DIRECTORY_IDS = new Set(DIRECTORY_ITEMS.map(i => i.id));
 // literalmente a quien contiene.
 const DIRECTORY_GROUPS: { label: string; ids: string[] }[] = [
   { label: 'Música', ids: ['dj', 'grupo-musical'] },
-  { label: 'Camareros & Catering', ids: ['staff', 'catering'] },
+  { label: 'Sala, Barra & Catering', ids: ['staff', 'catering'] },
   { label: 'Imagen & Media', ids: ['media', 'photo-booth', 'design'] },
   { label: 'Azafatas & RRPP', ids: ['azafata', 'event_manager', 'promotor', 'speaker'] },
   { label: 'Belleza & Estética', ids: ['makeup', 'vestuario'] },

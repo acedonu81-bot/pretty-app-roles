@@ -23,7 +23,7 @@ const ROLE_CFG: Record<string, {
 }> = {
   dj:        { color: '#4285F4', glow: 'rgba(66,133,244,0.45)',   label: 'DJ · Artista',       emoji: '🎧', tagline: 'La pista empieza aquí',        icon: Music },
   rookie:    { color: '#FBBF24', glow: 'rgba(251,191,36,0.4)',    label: 'DJ Promesa',          emoji: '⭐', tagline: 'El próximo grande',             icon: Star },
-  staff:     { color: '#34D399', glow: 'rgba(52,211,153,0.35)',   label: 'Camarero',            emoji: '🎪', tagline: 'El engranaje invisible del show', icon: Users },
+  staff:     { color: '#34D399', glow: 'rgba(52,211,153,0.35)',   label: 'Sala & Barra',        emoji: '🎪', tagline: 'El engranaje invisible del show', icon: Users },
   azafata:   { color: '#F472B6', glow: 'rgba(244,114,182,0.35)',  label: 'Azafata',             emoji: '🎀', tagline: 'La primera impresión del evento', icon: Users },
   makeup:    { color: '#F472B6', glow: 'rgba(244,114,182,0.35)',  label: 'Maquillaje',            emoji:'💄', tagline: 'Arte en la piel',              icon: Star },
   peluqueria:{ color: '#EC4899', glow: 'rgba(236,72,153,0.35)',   label: 'Peluquería a Domicilio', emoji:'✂️', tagline: 'Estilo que llega hasta ti',   icon: Star },

@@ -122,7 +122,7 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
               options={[
                 { value: 'Todos', label: 'Todos' },
                 { value: 'dj', label: 'DJ' },
-                { value: 'staff', label: 'Camarero' },
+                { value: 'staff', label: 'Sala & Barra' },
                 { value: 'azafata', label: 'Azafata' },
                 { value: 'makeup', label: 'Estilismo / Makeup' },
                 { value: 'peluqueria', label: 'Peluquería a Domicilio' },

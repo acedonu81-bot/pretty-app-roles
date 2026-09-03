@@ -4,7 +4,7 @@ import { useSmartMatch, MatchedProfessional } from '@/hooks/useSmartMatch';
 
 const ROLES = [
   { value: 'dj', label: 'DJ / Artista' },
-  { value: 'staff', label: 'Camarero' },
+  { value: 'staff', label: 'Sala & Barra' },
   { value: 'azafata', label: 'Azafata' },
   { value: 'event_manager', label: 'Encargada de Eventos' },
   { value: 'makeup', label: 'Maquillaje' },

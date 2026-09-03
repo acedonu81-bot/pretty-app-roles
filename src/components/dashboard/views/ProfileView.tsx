@@ -152,7 +152,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
 
   const ROLE_OPTIONS: { value: string; label: string }[] = [
     { value: 'dj',            label: 'DJ / Artista / Productor' },
-    { value: 'staff',         label: 'Camarero' },
+    { value: 'staff',         label: 'Sala & Barra' },
     { value: 'azafata',       label: 'Azafata' },
     { value: 'event_manager', label: 'Encargada de Eventos' },
     { value: 'promotor',      label: 'Promotor' },

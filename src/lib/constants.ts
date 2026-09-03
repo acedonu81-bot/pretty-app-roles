@@ -7,13 +7,18 @@ export const ZONES = [
 ];
 
 /** Traducciones de roles internos al español para mostrar al usuario */
+// Etiquetas INTERNAS (dashboard y panel admin). No se usan en páginas
+// públicas ni en el SEO: ahí se dice "camareros" a propósito, porque es lo que
+// la gente escribe en Google ("camareros para boda Madrid") y lo que usan los
+// competidores. Dentro se nombra el oficio como se llama en el sector — sala y
+// barra — que es lo que reconoce un profesional formado.
 export const ROLE_ES: Record<string, string> = {
   dj:            'DJ / Artista / Música en Vivo',
-  staff:         'Camarero',
+  staff:         'Sala & Barra',
   azafata:       'Azafata',
   event_manager: 'Encargada de Eventos',
   promotor:      'Promotor & Maestro de Ceremonias',
-  camarero:      'Camarero / Barra',
+  camarero:      'Sala & Barra',
   catering:      'Catering / Cocina',
   makeup:        'Maquillaje / Estilismo',
   peluqueria:    'Peluquería a Domicilio',
