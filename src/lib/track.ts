@@ -1,23 +1,20 @@
 /**
- * Eventos personalizados: se mandan a Plausible (dashboard visual), Vercel
- * Web Analytics (consultable por API/MCP sin salir de Claude Code) y al
- * dataLayer de GTM (para que GA4 los reciba como eventos reales — antes
- * ningún track() llegaba a GA4, solo el page_view automático, por eso el
- * informe "Generar oportunidades de venta" marcaba 0 pese a haber usuarios
- * nuevos y registros reales).
+ * Eventos personalizados: van al dataLayer de GTM para que GA4 los reciba como
+ * eventos reales — antes ningún track() llegaba a GA4, solo el page_view
+ * automático, por eso el informe "Generar oportunidades de venta" marcaba 0
+ * pese a haber usuarios nuevos y registros reales.
+ *
+ * Plausible (trial caducado) y Vercel Web Analytics (panel no accesible en el
+ * plan gratuito) se retiraron el 3 sep 2026: sus scripts costaban arranque en
+ * cada visita y sus datos no se podían consultar. GA4 es la fuente única.
  */
-import { track as vercelTrack } from '@vercel/analytics';
-
 declare global {
   interface Window {
-    plausible?: (eventName: string, options?: { props?: Record<string, string | number | boolean> }) => void;
     dataLayer?: unknown[];
   }
 }
 
 export function track(eventName: string, props?: Record<string, string | number | boolean>) {
-  window.plausible?.(eventName, props ? { props } : undefined);
-  vercelTrack(eventName, props);
   window.dataLayer?.push({ event: eventName, ...props });
 }
 
@@ -34,9 +31,9 @@ export function trackLead(source: string, props?: Record<string, string | number
 
 /**
  * Detecta si la visita procede de un motor generativo (ChatGPT, Perplexity,
- * Gemini, Claude, Copilot…) y lo registra como evento Plausible "AI Referral"
- * con la fuente. Permite medir el impacto del trabajo GEO/AEO: cuánto tráfico
- * llega porque una IA citó/recomendó XPEAK. Se llama una vez al arrancar la app.
+ * Gemini, Claude, Copilot…) y lo registra como evento GA4 "AI Referral" con la
+ * fuente. Permite medir el impacto del trabajo GEO/AEO: cuánto tráfico llega
+ * porque una IA citó/recomendó XPEAK. Se llama una vez al arrancar la app.
  */
 const AI_SOURCES: { test: RegExp; name: string }[] = [
   { test: /chatgpt\.com|openai\.com/i, name: 'ChatGPT' },

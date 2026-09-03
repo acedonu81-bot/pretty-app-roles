@@ -1,19 +1,15 @@
 import { createRoot } from "react-dom/client";
-import { inject } from "@vercel/analytics";
-import { injectSpeedInsights } from "@vercel/speed-insights";
 import App from "./App.tsx";
 import "./index.css";
 import { initCapacitor } from "./lib/capacitor";
 import { trackAIReferral } from "./lib/track";
 
-inject({
-  beforeSend: (event) => {
-    const skip = ['/eliminar-cuenta', '/privacidad', '/cookies', '/terminos', '/aviso-legal'];
-    if (skip.some(p => event.url.includes(p))) return null;
-    return event;
-  },
-});
-injectSpeedInsights();
+// Vercel Analytics y Speed Insights retirados (3 sep 2026). Sus scripts se
+// inyectaban aquí, de forma síncrona y antes de createRoot, así que retrasaban
+// el arranque de React en la ruta crítica; y sus paneles no son accesibles en
+// el plan gratuito de este proyecto, de modo que se pagaba el coste sin poder
+// leer el dato. La analítica de referencia es GA4 vía GTM (index.html), que
+// además arranca diferido. Recuperables desde git si se cambia de plan.
 initCapacitor();
 trackAIReferral();
 

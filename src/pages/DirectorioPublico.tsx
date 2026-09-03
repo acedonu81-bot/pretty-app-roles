@@ -407,7 +407,18 @@ export default function DirectorioPublico() {
     queryFn: () => fetchDirectorioProfiles(config.dbRole, city),
     staleTime: 60_000,
     gcTime: 10 * 60_000,
-    ...(prerendered?.length ? { initialData: prerendered } : {}),
+    // Los datos del prerender son de build time, así que solo sirven para la
+    // vista inicial (sin filtro de ciudad): en cuanto se filtra, la queryKey
+    // cambia y react-query pide los de esa ciudad con normalidad.
+    //
+    // initialDataUpdatedAt: 0 los marca como ya caducados, así que pintan al
+    // instante (sin spinner ni round-trip en la carga inicial) pero se
+    // revalidan en segundo plano — el usuario ve el listado de inmediato y, si
+    // alguien se dio de alta después del último build, aparece al refrescarse
+    // sin que la primera pintura tenga que esperar a la red.
+    ...(prerendered?.length && city === 'Todas'
+      ? { initialData: prerendered, initialDataUpdatedAt: 0 }
+      : {}),
   });
 
   // Las valoraciones llegan por separado para no retrasar el listado. Mientras

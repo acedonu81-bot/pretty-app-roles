@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://plausible.io https://analytics.tiktok.com https://challenges.cloudflare.com https://connect.facebook.net https://tracker.metricool.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https: ; media-src 'self' blob: https://videos.pexels.com https://*.supabase.co; frame-src 'self' https://w.soundcloud.com https://www.youtube.com https://player.vimeo.com https://hearthis.at https://app.hearthis.at https://www.mixcloud.com https://player-widget.mixcloud.com https://player.twitch.tv https://open.spotify.com https://www.googletagmanager.com https://challenges.cloudflare.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.doubleclick.net https://plausible.io https://api.stripe.com https://api-v2.hearthis.at https://analytics.tiktok.com https://*.tiktok.com https://*.tiktokw.us https://*.tiktokcdn.com https://challenges.cloudflare.com https://connect.facebook.net https://www.facebook.com https://tracker.metricool.com; worker-src 'self' blob: ; object-src 'none';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://analytics.tiktok.com https://challenges.cloudflare.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https: ; media-src 'self' blob: https://videos.pexels.com https://*.supabase.co; frame-src 'self' https://w.soundcloud.com https://www.youtube.com https://player.vimeo.com https://hearthis.at https://app.hearthis.at https://www.mixcloud.com https://player-widget.mixcloud.com https://player.twitch.tv https://open.spotify.com https://www.googletagmanager.com https://challenges.cloudflare.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.doubleclick.net https://api.stripe.com https://api-v2.hearthis.at https://analytics.tiktok.com https://*.tiktok.com https://*.tiktokw.us https://*.tiktokcdn.com https://challenges.cloudflare.com https://connect.facebook.net https://www.facebook.com; worker-src 'self' blob: ; object-src 'none';" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
     <title>XPEAK | Contratar DJs, Staff y Profesionales para Eventos en España</title>
@@ -188,14 +188,20 @@
     <link rel="preload" href="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="https://fonts.gstatic.com/s/syne/v24/8vIH7w4qzmVxm2BL9G78HEY.woff2" as="font" type="font/woff2" crossorigin />
 
+    <!-- Hoja de estilos de las fuentes. Estaba como @import dentro de
+         src/index.css, lo que encadenaba las descargas: la petición no salía
+         hasta haber bajado y parseado el CSS del bundle (ms ~1.234 en móvil
+         4G). Declarada aquí, el navegador la descubre en el HTML inicial y la
+         descarga en paralelo con el resto. -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" />
+
     <!-- Preconnect: Supabase (API calls on mount) -->
     <link rel="preconnect" href="https://ddrqhwravupjzysriblq.supabase.co" />
 
-    <!-- Analytics (Plausible — GDPR, sin cookies, sin datos personales) -->
-    <script>window.__xpeakTracking(function(){var s=document.createElement('script');
-    s.defer=true;s.setAttribute('data-domain','xpeak.es');
-    s.setAttribute('data-exclude','/eliminar-cuenta, /privacidad, /cookies, /terminos, /aviso-legal');
-    s.src='https://plausible.io/js/script.exclusions.js';document.head.appendChild(s);});</script>
+    <!-- Plausible retirado (3 sep 2026): el trial caducó, así que el script se
+         descargaba y ejecutaba en cada visita sin que sus datos fueran
+         consultables. La analítica de referencia es GA4 vía GTM, que sigue
+         abajo. Si algún día se contrata Plausible, recuperar de git. -->
 
     <!-- TikTok Pixel — mide conversiones de la campaña de TikTok Ads -->
     <script>window.__xpeakTracking(function(){
@@ -221,8 +227,10 @@
     fbq('track', 'PageView');
     });</script>
 
-    <!-- Metricool — analítica de redes sociales/web para gestión de contenido -->
-    <script>window.__xpeakTracking(function(){function loadScript(a){var b=document.getElementsByTagName("head")[0],c=document.createElement("script");c.type="text/javascript",c.src="https://tracker.metricool.com/resources/be.js",c.onreadystatechange=a,c.onload=a,b.appendChild(c)}loadScript(function(){beTracker.t({hash:"6d4359c9aa1a8194c0ccc07912a3d25d"})});});</script>
+    <!-- Metricool retirado (3 sep 2026): duplicaba el recuento de visitas que ya
+         da GA4 y añadía una conexión más al arranque. Su valor está en la
+         analítica de redes sociales, que no necesita este pixel en la web.
+         Si se quiere recuperar el tracking web, está en git. -->
 
   </head>
 

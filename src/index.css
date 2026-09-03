@@ -1,4 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+/* Las fuentes se cargan con <link> desde index.html, no con @import.
+   Un @import aquí encadena las descargas: el navegador no descubre la fuente
+   hasta haber bajado y parseado este CSS, así que la petición a Google Fonts
+   no salía hasta el ms ~1.234 en móvil 4G y bloqueaba el render otros ~490 ms.
+   Con el <link> en el HTML, ambas descargas arrancan a la vez. */
 
 @tailwind base;
 @tailwind components;

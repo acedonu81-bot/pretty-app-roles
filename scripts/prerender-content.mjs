@@ -303,6 +303,36 @@ for (const { routePath, file, routePattern } of routes) {
     let doc = fs.readFileSync(htmlFile, 'utf8');
     // Sustituye el shell vacío (incluido el texto oculto legacy) por contenido real
     doc = doc.replace(/<div id="root">[\s\S]*?<\/div>\s*(?=<\/body>|\n\s*<\/body>)/, `<div id="root">${html}</div>\n  `);
+
+    // Hidratación sin round-trip: los mismos perfiles que acabamos de pintar en
+    // el HTML viajan también como JSON, y DirectorioPublico los usa como
+    // initialData de react-query (ver el `__PRERENDER_DIRECTORIO__` que ya leía
+    // allí). Sin esto el navegador tenía que descargar supabase-vendor.js
+    // (190 KB) y volver a pedir por red exactamente los datos que ya venían
+    // dentro del documento: medido en móvil 4G, la cadena crítica llegaba a
+    // 3,7 s porque la query no arrancaba hasta ~2,4 s.
+    //
+    // El JSON se escapa antes de incrustarlo: viene de la BD (nombres y bios
+    // que escribe cualquier profesional), así que un "</script>" en una bio
+    // cerraría la etiqueta y el resto del texto se ejecutaría como HTML. Se
+    // neutraliza `<` y los separadores de línea Unicode que rompen literales JS.
+    if (preloadedDirectorio?.length) {
+      const payload = JSON.stringify(preloadedDirectorio)
+        .replace(/</g, '\\u003c')
+        .replace(/\u2028/g, '\\u2028')
+        .replace(/\u2029/g, '\\u2029');
+      const tag = `<script>window.__PRERENDER_DIRECTORIO__=${payload}</script>`;
+      // Antes del <script type="module"> del bundle, no pegado a </head>: Vite
+      // inserta el suyo al final del head, as\u00ed que un replace de '</head>'
+      // dejar\u00eda el dato por detr\u00e1s. Hoy dar\u00eda igual (los m\u00f3dulos ES se ejecutan
+      // tras parsear el documento), pero depender de ese matiz es fr\u00e1gil: si el
+      // bundle pasara a cargarse de otro modo, React arrancar\u00eda sin el dato y
+      // volver\u00eda a pedirlo por red, justo lo que este bloque evita.
+      const bundleTag = doc.match(/<script type="module"[^>]*><\/script>/);
+      doc = bundleTag
+        ? doc.replace(bundleTag[0], `${tag}\n    ${bundleTag[0]}`)
+        : doc.replace('</head>', `  ${tag}\n  </head>`);
+    }
     // Una página ciudad×categoría sin profesionales renderiza "Aún no hay":
     // es thin content y no debe indexarse. index.html trae un robots global
     // "index, follow" que Helmet no puede sustituir en el HTML servido, así
