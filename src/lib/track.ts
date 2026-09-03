@@ -4,9 +4,7 @@
  * automático, por eso el informe "Generar oportunidades de venta" marcaba 0
  * pese a haber usuarios nuevos y registros reales.
  *
- * Plausible (trial caducado) y Vercel Web Analytics (panel no accesible en el
- * plan gratuito) se retiraron el 3 sep 2026: sus scripts costaban arranque en
- * cada visita y sus datos no se podían consultar. GA4 es la fuente única.
+ * GA4 vía GTM es la única fuente de analítica del proyecto.
  */
 declare global {
   interface Window {

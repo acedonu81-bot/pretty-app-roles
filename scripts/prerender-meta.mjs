@@ -1417,7 +1417,11 @@ try {
           ...(allImages.length ? { image: allImages } : {}),
           ...(zone ? { address: { '@type': 'PostalAddress', addressLocality: zone, addressCountry: 'ES' } } : {}),
           ...(p.is_verified ? { hasCredential: { '@type': 'EducationalOccupationalCredential', name: 'Perfil verificado XPEAK' } } : {}),
-          worksFor: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
+          // memberOf, no worksFor: los profesionales del directorio son
+          // autónomos listados en XPEAK, no empleados. Declararlos como
+          // "trabaja para XPEAK" es falso sobre personas reales y ensucia el
+          // grafo de entidades que justamente queremos que nos reconozca.
+          memberOf: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
         };
 
         const portfolioHtml = portfolioUrls.length
