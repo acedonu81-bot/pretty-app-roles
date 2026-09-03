@@ -47,6 +47,11 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
     if (form.website.trim()) { onClose(); return; }
     setStatus('sending');
 
+    // Si hay sesión, la solicitud queda atada a esa cuenta. Fijarlo a null
+    // hacía la fila ilegible para siempre del lado del organizador (la RLS
+    // filtra por created_by = auth.uid()): su Historial salía vacío aunque
+    // acabara de enviar la solicitud.
+    const { data: { user: sessionUser } } = await supabase.auth.getUser();
     const grp = groupTag();
     const locationText = form.location.trim() || (city !== 'Todas' ? city : '');
     const rows = pros.map(p => ({
@@ -59,7 +64,7 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
       event_location: locationText,
       event_description: `[${form.eventType}] ${form.message.trim()} [grupo:${grp}]`.trim(),
       status: 'pending',
-      created_by: null,
+      created_by: sessionUser?.id ?? null,
     }));
 
     const { error } = await supabase.from('flash_bookings' as any).insert(rows);

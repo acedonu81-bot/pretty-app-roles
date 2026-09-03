@@ -123,8 +123,15 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
     setLoading(true);
     const { data, error } = await supabase
       .from('profiles')
+      // Sin filtrar por is_flash_active: ese flag significa "estoy libre AHORA
+      // MISMO", no "existo". Filtrando por él, el empresario registrado veía 8
+      // de 35 profesionales — menos que un visitante anónimo en el directorio
+      // público, que no lo aplica. Es el mismo fallo que el filtro is_primary
+      // del 31 ago (escondía 31 de 34), en otra columna: un flag de estado
+      // usado como si fuera de existencia. Ordena (SmartMatch ya le suma
+      // puntos), nunca esconde.
       .select('user_id, display_name, role, zone, hourly_rate, specialty, subscription_tier, is_live, is_verified, photo_url, genres, bio, is_flash_active')
-      .eq('is_flash_active', true)
+      .not('display_name', 'is', null)
       .limit(200);
     setLoading(false);
     if (error) { toast.error('Error al cargar profesionales'); return; }
@@ -203,9 +210,10 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
     { id: 'benchmark' as const, label: 'Cómo pagan',   icon: Clock        },
   ];
 
+  // El filtro por is_flash_active estaba aquí además de en la query: quitarlo
+  // solo de un sitio no habría cambiado nada.
   const filteredPros = pros.filter(p =>
-    p.is_flash_active === true &&
-    (!searchQuery || (p.display_name ?? '').toLowerCase().includes(searchQuery.toLowerCase()))
+    !searchQuery || (p.display_name ?? '').toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (

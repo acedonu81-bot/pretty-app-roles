@@ -15,22 +15,30 @@ export function useDashboardBadges(userId: string | undefined, isEmpresario: boo
   const instanceId = useRef(Math.random().toString(36).slice(2)).current;
 
   const refreshFlashBadge = async (uid: string) => {
-    const { count } = await supabase.from('flash_bookings' as any)
-      .select('id', { count: 'exact', head: true })
-      .eq('professional_user_id', uid)
-      .eq('status', 'pending');
+    // Cada rol cuenta lo suyo. Antes el empresario salía antes de llegar aquí
+    // (`if (isEmpresario) return`) y se quedaba SIN NINGÚN aviso: cuando un
+    // profesional aceptaba o rechazaba su solicitud, no se enteraba por ningún
+    // canal — ni badge, ni campana, ni email si había dejado teléfono en vez de
+    // correo. Es el reverso exacto del fallo del 22 ago, y con la regla de casa
+    // ("los empresarios NO esperan") era el lado que menos podía permitírselo.
+    const q = supabase.from('flash_bookings' as any).select('id', { count: 'exact', head: true });
+    const { count } = isEmpresario
+      // Al que contrata le importa lo que le han respondido.
+      ? await q.eq('created_by', uid).in('status', ['confirmed', 'accepted', 'rejected', 'declined'])
+      // Al profesional, lo que tiene pendiente de contestar.
+      : await q.eq('professional_user_id', uid).eq('status', 'pending');
     setFlashBadge(count ?? 0);
   };
 
   useEffect(() => {
-    if (!userId || isEmpresario) return;
+    if (!userId) return;
     refreshFlashBadge(userId);
     const channel = supabase
       .channel(`sidebar_flash_bookings_${userId}_${instanceId}`)
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'flash_bookings', filter: `professional_user_id=eq.${userId}` }, () => {
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'flash_bookings', filter: `${isEmpresario ? 'created_by' : 'professional_user_id'}=eq.${userId}` }, () => {
         refreshFlashBadge(userId);
       })
-      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'flash_bookings', filter: `professional_user_id=eq.${userId}` }, () => {
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'flash_bookings', filter: `${isEmpresario ? 'created_by' : 'professional_user_id'}=eq.${userId}` }, () => {
         refreshFlashBadge(userId);
       })
       .subscribe();

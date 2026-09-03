@@ -29,6 +29,13 @@ export default function PublicContactModal({ professionalName, professionalUserI
     if (!form.name || !form.email || !form.eventType) return;
     setStatus('sending');
     try {
+      // Si resulta que hay sesión abierta, la solicitud se ata a esa cuenta.
+      // Con created_by fijo a null, la RLS de lectura
+      // (professional_user_id = auth.uid() OR created_by = auth.uid())
+      // dejaba la fila ilegible para SIEMPRE del lado del organizador: ni su
+      // Historial ni ninguna otra vista podían recuperarla. 34 de 36
+      // solicitudes acabaron así, incluidas las 5 de Ramón del 22 ago.
+      const { data: { user: sessionUser } } = await supabase.auth.getUser();
       const payload = {
         professional_user_id: professionalUserId,
         professional_name: professionalName,
@@ -39,7 +46,7 @@ export default function PublicContactModal({ professionalName, professionalUserI
         event_location: '',
         event_description: `[${form.eventType}] ${form.message}`,
         status: 'pending',
-        created_by: null,
+        created_by: sessionUser?.id ?? null,
         source: 'public_contact_modal',
       };
       // Insert real en flash_bookings — antes este formulario SOLO mandaba
