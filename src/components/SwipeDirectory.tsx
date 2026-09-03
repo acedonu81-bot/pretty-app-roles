@@ -149,13 +149,17 @@ export default function SwipeDirectory({ profiles, onClose, onOpenProfile, onBoo
         // para una tarjeta de perfil en móvil, sin depender de dvh.
         //
         // clamp(): la vista embebida vive dentro de la página del
-        // directorio, debajo de header + bloque de precios (~400px ya
-        // consumidos antes de que la card empiece). En pantallas bajas
-        // (Android gama media, ~740px de alto) 70vh se salía del viewport
-        // y los botones de acción quedaban inalcanzables sin scroll. Topar
-        // a 420px máximo asegura que la card completa quepa debajo de ese
-        // contenido en la mayoría de móviles reales.
-        height: embedded ? 'clamp(360px, 70vh, 420px)' : undefined,
+        // directorio, debajo de header + bloque de precios (~380px ya
+        // consumidos antes de que la card empiece). El "viewport" que reporta
+        // CSS (vh) es el de LAYOUT, no lo que el usuario ve — la barra de
+        // direcciones y la barra de gestos del navegador se comen 80-140px
+        // reales por debajo de eso. Un techo de 420px (con hero ~380px arriba)
+        // ya se salía en viewports de layout de 650-740px, que son comunes en
+        // móviles reales con la barra del navegador visible. Bajado a 320px:
+        // sigue siendo una card usable y dejan sitio a que los botones de
+        // acción, anclados al fondo de la card, queden dentro del viewport
+        // visible incluso cuando este es bastante más bajo que el de layout.
+        height: embedded ? 'clamp(280px, 60vh, 320px)' : undefined,
         // touch-action:none → el contenedor captura el gesto de swipe en vez
         // de cederlo al scroll nativo del navegador (causa del "bloqueo").
         // En embebido se deja 'pan-y' para no atrapar el scroll de la página.
@@ -223,10 +227,14 @@ export default function SwipeDirectory({ profiles, onClose, onOpenProfile, onBoo
       )}
 
       {/* Info inferior. pb-28 reserva espacio para la nav inferior fija del
-          móvil — en pantallas bajas (Android ~360x740) se reduce junto con
-          ocultar la bio, o los botones de acción quedaban fuera del viewport. */}
-      <div className="swipe-card-info absolute bottom-0 left-0 right-0 z-20 p-5 pb-28 sm:pb-8 [@media(max-height:760px)]:pb-16">
-        <div className="flex flex-wrap gap-2 mb-3">
+          móvil. El "740px" de max-height:760px es el viewport de LAYOUT, no
+          lo que el usuario ve — la barra de direcciones/gestos del navegador
+          se come 80-140px reales por debajo de eso, así que se añade un
+          segundo escalón a 600px (altura visible ya reducida) que aprieta
+          aún más el padding y quita specialty además de bio, priorizando que
+          los botones de acción siempre queden dentro del viewport visible. */}
+      <div className="swipe-card-info absolute bottom-0 left-0 right-0 z-20 p-5 pb-28 sm:pb-8 [@media(max-height:760px)]:pb-16 [@media(max-height:600px)]:pb-3 [@media(max-height:600px)]:p-3">
+        <div className="flex flex-wrap gap-2 mb-3 [@media(max-height:600px)]:mb-1.5">
           {p.is_flash_active && (
             <span className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-black" style={{ background: '#15803d', color: '#fff' }}>
               <Zap size={11} fill="#fff" /> Disponible ahora
@@ -239,10 +247,10 @@ export default function SwipeDirectory({ profiles, onClose, onOpenProfile, onBoo
           )}
         </div>
 
-        <h2 className="text-2xl font-black mb-1" style={{ color: '#fff' }}>{p.display_name}</h2>
-        {p.specialty && <p className="text-sm font-semibold mb-1" style={{ color: 'rgba(212,175,55,0.9)' }}>{p.specialty}</p>}
+        <h2 className="text-2xl font-black mb-1 [@media(max-height:600px)]:text-lg" style={{ color: '#fff' }}>{p.display_name}</h2>
+        {p.specialty && <p className="[@media(max-height:600px)]:hidden text-sm font-semibold mb-1" style={{ color: 'rgba(212,175,55,0.9)' }}>{p.specialty}</p>}
 
-        <div className="flex items-center gap-3 mb-2 flex-wrap text-xs" style={{ color: 'rgba(255,255,255,0.75)' }}>
+        <div className="flex items-center gap-3 mb-2 flex-wrap text-xs [@media(max-height:600px)]:mb-1.5" style={{ color: 'rgba(255,255,255,0.75)' }}>
           {p.zone && <span className="flex items-center gap-1"><MapPin size={11} />{p.zone.split(',')[0]}</span>}
           {p.reviewCount > 0 && <span className="flex items-center gap-1"><Star size={11} fill="#D4AF37" color="#D4AF37" />{p.avgRating} ({p.reviewCount})</span>}
           {p.hourly_rate > 0 ? <span className="font-black" style={{ color: '#fff' }}>desde {p.hourly_rate}€/h</span>
@@ -258,27 +266,27 @@ export default function SwipeDirectory({ profiles, onClose, onOpenProfile, onBoo
           </p>
         )}
 
-        <div className="flex gap-2 relative z-30">
+        <div className="flex gap-2 relative z-30 [@media(max-height:600px)]:gap-1.5">
           <button onClick={() => onAddToCart(p)} disabled={inCart}
-            className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 transition-all active:scale-95"
+            className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 transition-all active:scale-95 [@media(max-height:600px)]:w-9 [@media(max-height:600px)]:h-9"
             style={inCart
               ? { background: 'rgba(34,197,94,0.2)', border: '1.5px solid rgba(34,197,94,0.5)' }
               : { background: 'rgba(255,255,255,0.12)', border: '1.5px solid rgba(255,255,255,0.25)', backdropFilter: 'blur(8px)' }}>
             {inCart ? <Check size={18} color="#22c55e" /> : <Plus size={18} color="#fff" />}
           </button>
           <button onClick={() => onOpenProfile(p)}
-            className="flex-1 h-12 rounded-full flex items-center justify-center font-bold text-sm"
+            className="flex-1 h-12 rounded-full flex items-center justify-center font-bold text-sm [@media(max-height:600px)]:h-9"
             style={{ background: 'rgba(255,255,255,0.12)', border: '1.5px solid rgba(255,255,255,0.25)', color: '#fff', backdropFilter: 'blur(8px)' }}>
             Ver perfil completo
           </button>
           <button onClick={() => onBookNow(p)}
-            className="h-12 px-5 rounded-full flex items-center gap-1.5 font-black text-sm flex-shrink-0"
+            className="h-12 px-5 rounded-full flex items-center gap-1.5 font-black text-sm flex-shrink-0 [@media(max-height:600px)]:h-9"
             style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
             <MessageCircle size={16} /> <span className="hidden xs:inline">Contactar</span>
           </button>
         </div>
 
-        <p className="text-center text-[0.65rem] mt-3" style={{ color: 'rgba(255,255,255,0.35)' }}>
+        <p className="[@media(max-height:600px)]:hidden text-center text-[0.65rem] mt-3" style={{ color: 'rgba(255,255,255,0.35)' }}>
           {index + 1} / {profiles.length} · desliza para ver más
         </p>
       </div>

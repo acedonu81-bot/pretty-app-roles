@@ -1,4 +1,4 @@
-import { Search, LogOut, Menu, Sparkles, Bell, X, MessageCircle, Gift, Zap } from 'lucide-react';
+import { Search, LogOut, Menu, Sparkles, Bell, X, MessageCircle, Gift, Zap, CalendarCheck } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProfile } from '@/hooks/useProfile';
@@ -63,7 +63,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
       .limit(20);
     if (data) {
       // Respetar las preferencias de notificación de Ajustes (por tipo)
-      const typePref: Record<string, string> = { message: 'xpeak_notif_messages', flash: 'xpeak_notif_flash', top_weekend: 'xpeak_notif_topweekend' };
+      const typePref: Record<string, string> = { message: 'xpeak_notif_messages', flash: 'xpeak_notif_flash', booking: 'xpeak_notif_flash', top_weekend: 'xpeak_notif_topweekend' };
       const filtered = (data as unknown as RealNotif[]).filter(n => {
         const key = typePref[n.type];
         return !key || localStorage.getItem(key) !== 'false';
@@ -100,7 +100,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
       title: n.title,
       desc: n.body ?? '',
       time: timeAgo(n.created_at),
-      icon: (n.type === 'message' ? 'message' : 'spark') as 'message' | 'spark' | 'gift',
+      icon: (n.type === 'message' ? 'message' : n.type === 'booking' ? 'booking' : 'spark') as 'message' | 'spark' | 'gift' | 'booking',
       urgent: false,
       link: n.link,
       real: true,
@@ -257,8 +257,15 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
           <div
             className="z-50 rounded-2xl overflow-hidden"
             style={{
+              // top fijo en 64px asumía una topbar de altura constante, pero
+              // esta reserva safe-area-inset-top (paddingTop: max(0.75rem,
+              // env(...)) más arriba) — en un móvil con notch/isla dinámica
+              // la topbar real mide bastante más que 64px y el dropdown
+              // quedaba con la parte superior tapada detrás de ella. calc()
+              // replica el mismo padding que la propia topbar + su alto de
+              // contenido (~44px) en vez de asumir un valor fijo.
               position: isMobile ? 'fixed' : 'absolute',
-              top: isMobile ? 64 : 48,
+              top: isMobile ? 'calc(max(0.75rem, env(safe-area-inset-top)) + 44px)' : 48,
               left: isMobile ? 16 : undefined,
               right: isMobile ? 16 : 0,
               width: isMobile ? 'calc(100vw - 32px)' : 320,
@@ -343,6 +350,8 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
                       ? <MessageCircle size={12} style={{ color: '#8A6D0F' }} />
                       : n.icon === 'gift'
                       ? <Gift size={12} style={{ color: n.urgent ? '#ef4444' : '#D4AF37' }} />
+                      : n.icon === 'booking'
+                      ? <CalendarCheck size={12} style={{ color: '#8A6D0F' }} />
                       : <Sparkles size={12} style={{ color: '#8A6D0F' }} />}
                   </div>
                   <div className="flex-1 min-w-0">
