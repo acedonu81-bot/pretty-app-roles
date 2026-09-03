@@ -593,6 +593,63 @@ const ProfGrid = ({ profs }: { profs: Prof[] }) => (
   </div>
 );
 
+/**
+ * Rango de precio por categoría, no solo por ciudad.
+ *
+ * El precioMin/precioMax de CITIES está calibrado para DJ (60€–300€/h en
+ * Madrid, correcto). Pero se aplicaba tal cual a TODAS las categorías, así que
+ * /contratar-camareros/madrid anunciaba camareros a "60€–300€/hora" cuando el
+ * mercado real son 12€–20€/h — un factor de 10, contradiciendo además al propio
+ * blog de XPEAK, que sí da la cifra correcta. Iba también dentro del JSON-LD,
+ * o sea que se le enviaba a Google, y hundía la conversión de cualquier campaña
+ * de pago que aterrizara ahí.
+ *
+ * Cada factor reescala el rango base de la ciudad al oficio, conservando la
+ * diferencia entre ciudades caras y baratas que ya estaba bien calibrada. Los
+ * valores salen de tarifas de mercado en España (2026) y de la unidad que ya
+ * declara cada categoría en CATEGORIES: no es lo mismo /hora que /evento.
+ */
+const FACTOR_PRECIO: Record<string, [number, number]> = {
+  // Por hora — el camarero cobra una fracción de lo que cobra un DJ
+  dj: [1, 1],
+  camareros: [0.22, 0.07],   // 60→13€, 300→21€ en Madrid
+  staff: [0.22, 0.07],
+  azafata: [0.25, 0.08],     // 60→15€, 300→24€
+  // Por evento/jornada — importe total, no tarifa horaria
+  fotografo: [6, 2.5],       // 60→360€, 300→750€
+  'grupo-musical': [10, 4],  // 60→600€, 300→1.200€
+  'disco-movil': [6, 1.7],
+  'photo-booth': [5, 1.3],
+  mago: [4, 1.3],
+  animador: [3.5, 1],
+  bailarin: [3, 1],
+  humorista: [5, 2],
+  monologo: [5, 2],
+  monologos: [5, 2],
+  speaker: [8, 3.3],
+  promotores: [1.5, 0.4],
+  vestuario: [3, 1],
+  // Por servicio/persona
+  maquillaje: [0.9, 0.3],    // 60→54€, 300→90€
+  peluqueria: [0.7, 0.25],
+  catering: [0.5, 0.15],     // por persona: 60→30€, 300→45€
+};
+
+function precioPara(categorySlug: string, city: { precioMin: string; precioMax: string }): string {
+  const factor = FACTOR_PRECIO[categorySlug];
+  const min = parseInt(city.precioMin, 10);
+  const max = parseInt(city.precioMax, 10);
+  // Sin factor conocido o sin cifras parseables, se devuelve el rango tal cual
+  // en vez de inventar un número: una categoría nueva no debe publicar precios
+  // fabricados solo porque falte su entrada aquí.
+  if (!factor || Number.isNaN(min) || Number.isNaN(max)) {
+    return `${city.precioMin}–${city.precioMax}`;
+  }
+  // Redondeo a 5€ para que no queden cifras de falsa precisión (13,2€).
+  const r = (n: number) => Math.max(5, Math.round((n * 1) / 5) * 5);
+  return `${r(min * factor[0])}€–${r(max * factor[1])}€`;
+}
+
 export default function CityLanding() {
   const { ciudad } = useParams<{ ciudad: string }>();
   const { pathname } = useLocation();
@@ -613,7 +670,7 @@ export default function CityLanding() {
   const categorySlug = pathname.split('/')[1]?.replace('contratar-', '') ?? 'dj';
   const catData = CATEGORIES[categorySlug] ?? CATEGORIES['dj'];
 
-  const precio = `${cityData.precioMin}–${cityData.precioMax}`;
+  const precio = precioPara(categorySlug, cityData);
   const canonicalBase = `/contratar-${categorySlug}/${cityData.slug}`;
   const { profs: professionals, suggestions: profSuggestions, loaded: profsLoaded } = useCityProfessionals(cityData.ciudad, categorySlug);
   const h1 = `Contratar ${catData.keyword} en ${cityData.ciudad}`;
@@ -665,7 +722,9 @@ export default function CityLanding() {
       addressCountry: 'ES',
     },
     areaServed: { '@type': 'City', name: cityData.ciudad },
-    priceRange: `${cityData.precioMin} – ${cityData.precioMax}`,
+    // El mismo rango ajustado por categoría que se muestra en pantalla: antes
+    // este campo mandaba a Google el rango de DJ para todas las categorías.
+    priceRange: precio,
     openingHours: 'Mo-Su 00:00-24:00',
     sameAs: ['https://www.instagram.com/xpeak.es'],
   };
