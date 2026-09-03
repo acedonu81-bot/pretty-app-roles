@@ -42,6 +42,10 @@ const AdminPendingBookingsAlert = ({ onOpenBookings }: { onOpenBookings?: () => 
     let cancelled = false;
     (supabase.from('admin_pending_bookings' as any) as any)
       .select('id, requester_name, requester_contact, professional_name, event_date, event_location, created_at, horas_esperando')
+      // Solo lo reciente: una solicitud de hace semanas ya se conoce y su sitio
+      // es la pestaña Actividad, no un banner de alarma permanente que se
+      // acaba ignorando por costumbre.
+      .lt('horas_esperando', 48)
       .limit(20)
       .then(({ data }: { data: PendingBooking[] | null }) => {
         // Si la vista aún no existe (migración sin aplicar), el panel debe

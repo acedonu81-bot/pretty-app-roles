@@ -9,7 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useEffect, useState, useRef } from 'react';
 import { useDashboardBadges } from '@/hooks/useDashboardBadges';
-import { useAdminPendingBookings } from '@/hooks/useAdminPendingBookings';
+import { useAdminActivityAlert } from '@/hooks/useAdminActivityAlert';
 import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion } from '@/lib/regions';
 import { toast } from 'sonner';
 import {
@@ -240,8 +240,9 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded 
   const { role, subscription_tier } = useProfile();
   const { user } = useAuth();
   const { isAdmin } = useIsAdmin();
-  // Solicitudes de cliente que nadie ha respondido: pintan el escudo en verde.
-  const pendingBookings = useAdminPendingBookings(isAdmin);
+  // Verde solo si ha entrado algo NUEVO desde el último repaso. Sin número: un
+  // contador fijo se convierte en ruido y deja de mirarse.
+  const { hayNuevo } = useAdminActivityAlert(isAdmin);
   const { state, setOpen } = useSidebar();
   const collapsed = state === 'collapsed';
   const isAgency = subscription_tier === 'agency' || subscription_tier === 'elite';
@@ -442,8 +443,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded 
                 label="Panel Admin"
                 isActive={activeView === 'admin'}
                 onClick={() => onViewChange('admin')}
-                badge={pendingBookings}
-                iconAlert={pendingBookings > 0}
+                iconAlert={hayNuevo}
               />
             )}
           </SidebarMenu>

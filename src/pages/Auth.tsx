@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Mail, Lock, User, Eye, EyeOff, Zap, ShieldCheck, Users, FileText, MapPin, Target, BadgeCheck, Search, Wallet, type LucideIcon } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, Zap, ShieldCheck, Users, FileText, MapPin, Target, BadgeCheck, Search, Wallet, Sparkles, Building2, type LucideIcon } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { track, trackLead } from '@/lib/track';
@@ -563,6 +563,65 @@ const Auth = () => {
                 </p>
               </div>
 
+              {/* Selector de tipo de cuenta — solo al registrarse.
+                  Antes no existía: quien llegaba a /auth?mode=register sin más
+                  veía un formulario que asumía "profesional" en todo el texto
+                  ("Tu nombre profesional", "Publica tu perfil"). Un empresario
+                  no tenía forma de saber que esto también era para él, y la
+                  única vía era una URL con ?role=empresario que solo se
+                  enlazaba desde otras páginas.
+                  Las dos opciones pesan lo mismo a propósito: XPEAK necesita
+                  los dos lados del mercado, y el que pide es el que no espera. */}
+              {!isLogin && (
+                <div className="mb-5">
+                  <p className="text-[0.7rem] font-black uppercase tracking-wider mb-2" style={{ color: 'rgba(0,0,0,0.45)' }}>
+                    ¿Qué vienes a hacer?
+                  </p>
+                  <div className="grid grid-cols-2 gap-2.5">
+                    {([
+                      { rol: 'profesional', titulo: 'Ofrezco mis servicios', sub: 'DJ, camarero, fotógrafo…', icono: Sparkles },
+                      { rol: 'empresario',  titulo: 'Quiero contratar',      sub: 'Sala, boda, empresa',      icono: Building2 },
+                    ] as const).map(op => {
+                      const activo = op.rol === 'empresario'
+                        ? roleParam === 'empresario'
+                        : roleParam !== 'empresario';
+                      const Icono = op.icono;
+                      return (
+                        <button
+                          key={op.rol}
+                          type="button"
+                          onClick={() => {
+                            const p = new URLSearchParams(window.location.search);
+                            if (op.rol === 'empresario') p.set('role', 'empresario');
+                            else p.delete('role');
+                            p.set('mode', 'register');
+                            navigate(`/auth?${p.toString()}`, { replace: true });
+                          }}
+                          aria-pressed={activo}
+                          className="text-left p-3 rounded-xl transition-all hover:scale-[1.02]"
+                          style={activo
+                            ? {
+                                background: 'linear-gradient(135deg, rgba(212,175,55,0.16), rgba(184,148,30,0.08))',
+                                border: '2px solid #D4AF37',
+                                boxShadow: '0 4px 16px rgba(212,175,55,0.28)',
+                              }
+                            : {
+                                background: '#fff',
+                                border: '2px solid rgba(0,0,0,0.09)',
+                              }}
+                        >
+                          <Icono size={17} style={{ color: activo ? '#8A6D0F' : 'rgba(0,0,0,0.4)' }} />
+                          <p className="text-[0.8rem] font-black mt-1.5 leading-tight" style={{ color: activo ? '#6b5310' : '#111' }}>
+                            {op.titulo}
+                          </p>
+                          <p className="text-[0.65rem] mt-0.5" style={{ color: 'rgba(0,0,0,0.5)' }}>{op.sub}</p>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
               {/* === GOOGLE — primary CTA (oculto en webviews: OAuth bloqueado) === */}
               {!isInAppBrowser && (
               <button
@@ -611,7 +670,12 @@ const Auth = () => {
                     <input
                       value={displayName}
                       onChange={e => { setDisplayName(e.target.value); if (fieldError === 'name') setFieldError(null); }}
-                      placeholder={roleParam === 'dj' ? 'DJ NombreArtístico' : 'Tu nombre profesional'}
+                      placeholder={roleParam === 'dj' ? 'DJ NombreArtístico'
+                        // Un empresario no tiene "nombre profesional": tiene el
+                        // de su sala, empresa o el suyo propio. Pedirle lo otro
+                        // le dice que esta pantalla no es para él.
+                        : roleParam === 'empresario' ? 'Nombre de tu empresa o sala'
+                        : 'Tu nombre profesional'}
                       maxLength={60}
                       autoComplete="name"
                       className="nightlife-input !py-3 !pl-9 text-sm"

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useAdminActivityAlert } from '@/hooks/useAdminActivityAlert';
 import { UserPlus, CalendarClock, UserMinus, Star, Phone, RefreshCw, AlertTriangle } from 'lucide-react';
 
 // Línea temporal de TODO lo que pasa en XPEAK, en un solo sitio.
@@ -51,6 +52,10 @@ const hace = (iso: string): string => {
 };
 
 const AdminActivity = () => {
+  // Abrir esta pestaña ES revisarla: el escudo del sidebar se apaga y no
+  // vuelve a encenderse hasta que entre algo nuevo. Sin botón de "marcar
+  // leído" que haya que acordarse de pulsar.
+  const { marcarVisto } = useAdminActivityAlert(true);
   const [items, setItems] = useState<Movimiento[]>([]);
   const [filtro, setFiltro] = useState<typeof FILTROS[number]['id']>('todo');
   const [cargando, setCargando] = useState(true);
@@ -66,13 +71,17 @@ const AdminActivity = () => {
 
   useEffect(() => {
     cargar();
+    // Un respiro antes de marcar: si se entra y se sale al instante, lo nuevo
+    // sigue avisando en el siguiente vistazo.
+    const visto = setTimeout(() => { marcarVisto(); }, 1500);
     // Realtime sobre las dos tablas que generan los sucesos que urgen.
     const ch = supabase
       .channel('admin-activity')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'flash_bookings' }, cargar)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, cargar)
       .subscribe();
-    return () => { supabase.removeChannel(ch); };
+    return () => { clearTimeout(visto); supabase.removeChannel(ch); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Lo que espera acción va primero, por antiguo: quien lleva más tiempo

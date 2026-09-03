@@ -100,9 +100,33 @@ export default function PublicContactModal({ professionalName, professionalUserI
           <div className="text-center py-6">
             <CheckCircle size={40} className="mx-auto mb-4" style={{ color: '#22c55e' }} />
             <h3 className="text-lg font-black mb-2" style={{ color: '#111' }}>¡Solicitud enviada!</h3>
-            <p className="text-sm mb-6" style={{ color: '#333' }}>
-              <strong>{professionalName}</strong> recibirá tu mensaje y te contactará directamente.
+            {/* Sin prometer que le contactarán: eso no depende de XPEAK y el 22
+                ago 2026 no ocurrió — un cliente escribió a 5 profesionales, no
+                le respondió ninguno y se quedó esperando por esta misma
+                pantalla. Se dice lo que sí es cierto (que le ha llegado) y se
+                le da una salida: con cuenta puede ver la respuesta y escribir a
+                más de uno, en vez de depender de que uno solo conteste. */}
+            <p className="text-sm mb-5" style={{ color: '#333' }}>
+              Le ha llegado a <strong>{professionalName}</strong>. Si te responde, será al contacto que nos has dejado.
             </p>
+
+            <div className="rounded-xl p-4 mb-4 text-left"
+              style={{ background: 'linear-gradient(135deg, rgba(212,175,55,0.12), rgba(184,148,30,0.05))', border: '1.5px solid rgba(212,175,55,0.45)' }}>
+              <p className="text-sm font-black mb-1" style={{ color: '#6b5310' }}>
+                ¿Y si no te contesta?
+              </p>
+              <p className="text-xs leading-relaxed mb-3" style={{ color: '#333' }}>
+                Con una cuenta gratis puedes pedir presupuesto a varios profesionales a la vez
+                y ver quién te ha respondido, sin depender de uno solo.
+              </p>
+              <a
+                href={`/auth?mode=register&role=empresario&redirect=${encodeURIComponent(window.location.pathname)}`}
+                className="block w-full py-2.5 rounded-xl text-sm font-black text-center transition-transform hover:scale-[1.02]"
+                style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                Crear cuenta gratis →
+              </a>
+            </div>
+
             <button onClick={onClose} className="px-6 py-2.5 rounded-xl text-sm font-bold"
               style={{ background: '#f5f4f0', border: '1px solid rgba(0,0,0,0.08)', color: '#222' }}>
               Cerrar
