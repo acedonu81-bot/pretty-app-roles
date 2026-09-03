@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Users, Shield, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2, UserMinus } from 'lucide-react';
+import { Users, Shield, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2, UserMinus, Activity } from 'lucide-react';
 import AdminMetrics from './admin/AdminMetrics';
 import AdminCharts from './admin/AdminCharts';
 import AdminValidations from './admin/AdminValidations';
@@ -12,9 +12,11 @@ import AdminPromoCodes from './admin/AdminPromoCodes';
 import AdminDeletionAlert from './admin/AdminDeletionAlert';
 import AdminNewProfileAlert from './admin/AdminNewProfileAlert';
 import AdminPendingBookingsAlert from './admin/AdminPendingBookingsAlert';
+import AdminActivity from './admin/AdminActivity';
 import AdminDeletions from './admin/AdminDeletions';
 
 const TABS = [
+  { id: 'activity', label: 'Actividad', icon: Activity },
   { id: 'overview', label: 'General', icon: LayoutGrid },
   { id: 'users', label: 'Usuarios', icon: Users },
   { id: 'empresarios', label: 'Empresarios', icon: Building2 },
@@ -27,7 +29,7 @@ const TABS = [
 type TabId = typeof TABS[number]['id'];
 
 const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {}) => {
-  const [tab, setTab] = useState<TabId>('overview');
+  const [tab, setTab] = useState<TabId>('activity');
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
@@ -64,6 +66,7 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
         ))}
       </div>
 
+      {tab === 'activity' && <AdminActivity />}
       {tab === 'overview' && (
         <>
           <AdminMetrics />
