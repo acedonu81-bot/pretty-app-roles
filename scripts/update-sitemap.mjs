@@ -576,7 +576,12 @@ async function main() {
     const lastmod = p.updated_at ? p.updated_at.slice(0, 10) : TODAY;
     let slug = p.display_name ? toSlug(p.display_name) : null;
     if (slug && usedSlugs.has(slug) && p.zone) slug = `${slug}-${toSlug(p.zone)}`;
-    if (!slug || usedSlugs.has(slug)) slug = p.user_id;
+    // Sin nombre no hay slug, y el fallback al UUID metía en el sitemap URLs
+    // que el prerender no genera: Google recibía un 404 servido con el HTML de
+    // la portada (soft-404), que es peor que no listar la URL. Medido el 3 sep
+    // 2026: 2 de las 388 URLs del sitemap estaban así. Un perfil sin nombre
+    // tampoco tiene ficha que enseñar, así que se omite hasta que lo rellene.
+    if (!slug || usedSlugs.has(slug)) continue;
     usedSlugs.add(slug);
     profileLines.push(url(`https://xpeak.es/p/${slug}`, lastmod, 'weekly', '0.65'));
   }

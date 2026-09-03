@@ -240,6 +240,9 @@ export default function OccasionLanding() {
       <Helmet>
         <title>{`Contratar ${rol} para ${occ.label} sin comisión — XPEAK`}</title>
         <meta name="description" content={desc} />
+        {/* El noindex de las páginas sin inventario se aplica en el prerender
+            (prerender-content.mjs), no aquí: el robots global de index.html
+            gana en el HTML servido y Helmet no lo sustituye. */}
         <link rel="canonical" href={`https://xpeak.es${canonical}`} />
         <meta property="og:title" content={`Contratar ${rol} para ${occ.label} sin comisión — XPEAK`} />
         <meta property="og:description" content={desc} />

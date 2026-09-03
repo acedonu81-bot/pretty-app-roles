@@ -147,7 +147,11 @@ for (const m of APP.matchAll(/<Route path="([^"]+)" element={<(\w+)/g)) {
   if (routePath.includes(':') || routePath.includes('*')) continue;
   if (SKIP.has(routePath)) continue;
   const file = componentFiles.get(name);
-  if (file) routes.push({ routePath, file });
+  // OccasionLanding se registra más abajo con su roleSlug, que hace falta para
+  // saber si la categoría tiene inventario. Si se añadiera también aquí, la
+  // ruta se prerenderizaría dos veces y ganaría esta versión sin roleSlug,
+  // marcando como noindex páginas que sí tienen profesionales.
+  if (file && file !== 'OccasionLanding.tsx') routes.push({ routePath, file });
 }
 
 // Rutas dinámicas /contratar-:categoria/:ciudad → CityLanding. StaticRouter
@@ -203,7 +207,9 @@ for (const [occSlug, roleSlugs] of Object.entries(OCC_ROLES)) {
   for (const roleSlug of roleSlugs) {
     const routePath = `/${occSlug}/contratar-${roleSlug}`;
     if (!APP.includes(`path="${routePath}"`)) continue; // solo rutas realmente registradas
-    routes.push({ routePath, file: 'OccasionLanding.tsx' });
+    // roleSlug se guarda para poder comprobar más abajo si esa categoría tiene
+    // profesionales: sin inventario la página es solo plantilla y va a noindex.
+    routes.push({ routePath, file: 'OccasionLanding.tsx', roleSlug });
     occCount++;
   }
 }
@@ -272,7 +278,7 @@ console.log(`  → ${allProfiles.length} profesionales cargados para resolver co
 
 let ok = 0, failed = 0, missing = 0;
 const failures = [];
-for (const { routePath, file, routePattern } of routes) {
+for (const { routePath, file, routePattern, roleSlug: occRoleSlug } of routes) {
   const htmlFile = routePath === '/'
     ? path.join(DIST, 'index.html')
     : path.join(DIST, routePath.slice(1), 'index.html');
@@ -292,6 +298,13 @@ for (const { routePath, file, routePattern } of routes) {
     if (file === 'DirectorioPublico.tsx') {
       const roleSlug = routePath.split('/').pop();
       const cfg = ROLE_CONFIG[roleSlug];
+      if (cfg?.dbRole) preloadedDirectorio = resolveProfilesForDirectorio(allProfiles, cfg.dbRole);
+    }
+    // Las páginas ocasión×categoría no inyectan datos al HTML (no listan
+    // fichas), pero sí necesitan saber si su categoría tiene inventario para
+    // decidir el noindex de más abajo.
+    if (file === 'OccasionLanding.tsx' && occRoleSlug) {
+      const cfg = ROLE_CONFIG[occRoleSlug];
       if (cfg?.dbRole) preloadedDirectorio = resolveProfilesForDirectorio(allProfiles, cfg.dbRole);
     }
     if (file === 'SocialEvent.tsx') {
@@ -338,7 +351,23 @@ for (const { routePath, file, routePattern } of routes) {
     // "index, follow" que Helmet no puede sustituir en el HTML servido, así
     // que se reescribe aquí. Mismo criterio de inventario que usa
     // scripts/update-sitemap.mjs para excluirla del sitemap.
-    if (file === 'CityLanding.tsx' && !(preloadedProfiles?.profs?.length)) {
+    // Mismo criterio para el directorio de categoría: sin un solo profesional
+    // la página promete un listado y sirve un estado vacío. Medido el 3 sep
+    // 2026, 5 categorías (mago, animador, azafata, photo-booth, diseno-grafico)
+    // se indexaban con cero perfiles. Vuelve a indexarse sola en cuanto entra
+    // inventario, porque la condición se evalúa en cada build.
+    //
+    // Y para las páginas ocasión×categoría (/boda/contratar-dj), que son 100%
+    // plantilla: medido el mismo día, /boda/contratar-dj y /boda/contratar-
+    // fotografo solo difieren en 20 líneas (título, descripción y canonical),
+    // con el cuerpo idéntico palabra por palabra. Son 26 clones que arrastran
+    // la evaluación de calidad del dominio; sin perfiles del rol no aportan
+    // nada propio, así que se despublican hasta que haya inventario.
+    const sinInventario =
+      (file === 'CityLanding.tsx' && !(preloadedProfiles?.profs?.length)) ||
+      (file === 'DirectorioPublico.tsx' && !preloadedDirectorio?.length) ||
+      (file === 'OccasionLanding.tsx' && !preloadedDirectorio?.length);
+    if (sinInventario) {
       doc = doc.replace(
         /<meta name="robots" content="index, follow"\s*\/>/,
         '<meta name="robots" content="noindex, follow" />'

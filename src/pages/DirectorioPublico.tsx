@@ -457,6 +457,7 @@ export default function DirectorioPublico() {
   // Lead centralizado: solo profesionales reales (sin perfiles de ejemplo).
   const realPros = profiles.filter(p => !(p as any).is_seed);
 
+
   // Ancla de precio real: rango min-max de tarifas publicadas en la
   // categoría, calculado sobre los perfiles ya cargados (sin query extra).
   // Da contexto a cada tarjeta individual — un precio suelto sin referencia
@@ -476,6 +477,11 @@ export default function DirectorioPublico() {
       <Helmet>
         <title>{config.seoTitle}</title>
         <meta name="description" content={config.seoDesc} />
+        {/* El noindex de las categorías sin profesionales NO se pone aquí: el
+            robots global de index.html gana en el HTML servido y Helmet no lo
+            sustituye (mismo motivo documentado en prerender-content.mjs para
+            CityLanding). Se reescribe en el prerender, que es lo que lee el
+            crawler. */}
         <link rel="canonical" href={canonical} />
         <meta property="og:title" content={config.seoTitle} />
         <meta property="og:description" content={config.seoDesc} />
