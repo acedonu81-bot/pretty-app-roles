@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://analytics.tiktok.com https://challenges.cloudflare.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https: ; media-src 'self' blob: https://videos.pexels.com https://*.supabase.co; frame-src 'self' https://w.soundcloud.com https://www.youtube.com https://player.vimeo.com https://hearthis.at https://app.hearthis.at https://www.mixcloud.com https://player-widget.mixcloud.com https://player.twitch.tv https://open.spotify.com https://www.googletagmanager.com https://challenges.cloudflare.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.doubleclick.net https://api.stripe.com https://api-v2.hearthis.at https://analytics.tiktok.com https://*.tiktok.com https://*.tiktokw.us https://*.tiktokcdn.com https://challenges.cloudflare.com https://connect.facebook.net https://www.facebook.com; worker-src 'self' blob: ; object-src 'none';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://challenges.cloudflare.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https: ; media-src 'self' blob: https://videos.pexels.com https://*.supabase.co; frame-src 'self' https://w.soundcloud.com https://www.youtube.com https://player.vimeo.com https://hearthis.at https://app.hearthis.at https://www.mixcloud.com https://player-widget.mixcloud.com https://player.twitch.tv https://open.spotify.com https://www.googletagmanager.com https://challenges.cloudflare.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.doubleclick.net https://api.stripe.com https://api-v2.hearthis.at https://challenges.cloudflare.com https://connect.facebook.net https://www.facebook.com; worker-src 'self' blob: ; object-src 'none';" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
     <title>XPEAK | Contratar DJs, Staff y Profesionales para Eventos en España</title>
@@ -128,12 +128,13 @@
     </script>
 
     <!-- Arranque diferido del tracking.
-         Medido con Chrome (4G, CPU 4x): GTM 109ms + Meta 83ms + TikTok 48ms de
-         CPU en el hilo principal, compitiendo con el contenido justo cuando la
-         página intenta pintarse. Se registra exactamente lo mismo, pero después
-         de que la página esté usable: al primer gesto del usuario o a los 2,5s,
-         lo que ocurra antes. Así ninguna visita se pierde, ni siquiera la de
-         quien entra y se va enseguida. -->
+         Medido con Chrome (4G, CPU 4x) el 3 sep 2026: GTM 166ms + Meta 119ms de
+         CPU en el hilo principal, que es único — mientras se ejecutan, el móvil
+         no puede responder a un toque ni terminar de montar la página. Se
+         registra exactamente lo mismo, pero cuando la página ya está usable: al
+         primer gesto del usuario, o pasados 4s y en cuanto haya un hueco libre
+         de verdad, lo que ocurra antes. Ninguna visita se pierde: quien entra
+         y se va enseguida dispara igualmente el envío al ocultarse la pestaña. -->
     <script>
     (function () {
       var arrancado = false;
@@ -163,7 +164,25 @@
       for (var i = 0; i < eventos.length; i++) {
         window.addEventListener(eventos[i], arrancar, { passive: true, once: true });
       }
-      setTimeout(arrancar, 2500);
+      // GTM y Meta gastan ~550ms de CPU (medido en movil 4G, CPU 4x) y el hilo
+      // principal es unico: mientras corren, el movil no responde a un toque.
+      //
+      // Dos condiciones, en este orden, porque solo con una no basta:
+      //  - Espera minima de 4s. requestIdleCallback por si solo no sirve aqui:
+      //    Chrome da por "libre" el primer hueco en cuanto acaba el trabajo
+      //    inicial, y medido en produccion disparaba a los 786ms, 7ms despues
+      //    de volverse interactiva la pagina — antes incluso que el temporizador
+      //    de 2500ms al que sustituia.
+      //  - Y ademas, un hueco realmente libre. Pasados los 4s se espera al
+      //    primer idle (tope 3s mas) para no entrar a la fuerza si el usuario
+      //    esta haciendo scroll o el movil sigue ocupado.
+      //
+      // El primer gesto del usuario y el cierre de pestana siguen arrancandolo
+      // antes por su cuenta, asi que no se pierde ninguna visita.
+      setTimeout(function () {
+        if (window.requestIdleCallback) requestIdleCallback(arrancar, { timeout: 3000 });
+        else arrancar();
+      }, 4000);
       // Si el usuario cierra o cambia de pestaña antes de tiempo, se dispara ya
       // para no perder la visita.
       document.addEventListener('visibilitychange', function () {
@@ -203,8 +222,17 @@
          consultables. La analítica de referencia es GA4 vía GTM, que sigue
          abajo. Si algún día se contrata Plausible, recuperar de git. -->
 
-    <!-- TikTok Pixel — mide conversiones de la campaña de TikTok Ads -->
-    <script>window.__xpeakTracking(function(){
+    <!-- TikTok Pixel DESACTIVADO (3 sep 2026): la campana de TikTok Ads no
+         esta activa, asi que el pixel se descargaba y ejecutaba en cada visita
+         de cada usuario sin medir ninguna conversion — 106ms de CPU del hilo
+         principal medidos en movil 4G, compitiendo con la hidratacion de React
+         justo cuando la pagina intenta volverse interactiva.
+
+         PARA REACTIVARLO al relanzar campana: descomentar el bloque de abajo.
+         El envio de la conversion en Auth.tsx ya esta guardado tras un
+         if (window.ttq), asi que no hay nada mas que tocar.
+
+        <script>window.__xpeakTracking(function(){
     !function (w, d, t) {
       w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script");n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
 
@@ -212,6 +240,7 @@
       ttq.page();
     }(window, document, 'ttq');
     });</script>
+    -->
 
     <!-- Meta Pixel — mide conversiones (registro) de la campaña de Instagram Ads -->
     <script>window.__xpeakTracking(function(){
