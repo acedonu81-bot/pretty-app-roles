@@ -9,6 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useEffect, useState, useRef } from 'react';
 import { useDashboardBadges } from '@/hooks/useDashboardBadges';
+import { useAdminPendingBookings } from '@/hooks/useAdminPendingBookings';
 import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion } from '@/lib/regions';
 import { toast } from 'sonner';
 import {
@@ -151,13 +152,17 @@ const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }
   );
 };
 
-const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor }: {
+const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, iconAlert }: {
   icon: React.ComponentType<{ size?: number; style?: React.CSSProperties }>;
   label: string;
   isActive: boolean;
   onClick: () => void;
   badge?: number;
   badgeColor?: 'gold' | 'blue';
+  /** Tiñe el icono de verde y lo hace latir: algo reclama atención aquí.
+   *  Se ve incluso con el sidebar colapsado a iconos, que es cuando el número
+   *  del badge queda oculto. */
+  iconAlert?: boolean;
 }) => (
   <SidebarMenuItem>
     <SidebarMenuButton
@@ -174,7 +179,10 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor }: {
       {isActive && (
         <span className="absolute rounded-r-[3px] group-data-[collapsible=icon]:hidden" style={{ left: -14, top: '50%', transform: 'translateY(-50%)', width: 3, height: 16, background: 'linear-gradient(180deg,#D4AF37,#B8941E)' }} />
       )}
-      <span className="flex-shrink-0 flex items-center justify-center" style={{ width: 17, height: 17, color: isActive ? '#B8941E' : 'rgba(10,9,8,0.55)' }}>
+      <span
+        className={`flex-shrink-0 flex items-center justify-center${iconAlert ? ' motion-safe:animate-pulse' : ''}`}
+        style={{ width: 17, height: 17, color: iconAlert ? '#16a34a' : isActive ? '#B8941E' : 'rgba(10,9,8,0.55)' }}
+      >
         <Icon size={17} />
       </span>
       <span className="flex-1">{label}</span>
@@ -232,6 +240,8 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded 
   const { role, subscription_tier } = useProfile();
   const { user } = useAuth();
   const { isAdmin } = useIsAdmin();
+  // Solicitudes de cliente que nadie ha respondido: pintan el escudo en verde.
+  const pendingBookings = useAdminPendingBookings(isAdmin);
   const { state, setOpen } = useSidebar();
   const collapsed = state === 'collapsed';
   const isAgency = subscription_tier === 'agency' || subscription_tier === 'elite';
@@ -427,7 +437,14 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded 
           <SidebarMenu>
             <NavItem icon={Settings} label="Ajustes" isActive={activeView === 'settings'} onClick={() => onViewChange('settings')} />
             {isAdmin && (
-              <NavItem icon={Shield} label="Panel Admin" isActive={activeView === 'admin'} onClick={() => onViewChange('admin')} />
+              <NavItem
+                icon={Shield}
+                label="Panel Admin"
+                isActive={activeView === 'admin'}
+                onClick={() => onViewChange('admin')}
+                badge={pendingBookings}
+                iconAlert={pendingBookings > 0}
+              />
             )}
           </SidebarMenu>
         </div>

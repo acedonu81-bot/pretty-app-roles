@@ -11,6 +11,7 @@ import AdminReviews from './admin/AdminReviews';
 import AdminPromoCodes from './admin/AdminPromoCodes';
 import AdminDeletionAlert from './admin/AdminDeletionAlert';
 import AdminNewProfileAlert from './admin/AdminNewProfileAlert';
+import AdminPendingBookingsAlert from './admin/AdminPendingBookingsAlert';
 import AdminDeletions from './admin/AdminDeletions';
 
 const TABS = [
@@ -34,6 +35,7 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
           verlas entres por donde entres, no solo en la pestaña que toque.
           El alta va primero porque es la accionable: revisar rol y zona a
           tiempo evita que el perfil quede invisible en el directorio. */}
+      <AdminPendingBookingsAlert />
       <AdminNewProfileAlert onOpenUsers={() => setTab('users')} />
       <AdminDeletionAlert onOpenDeletions={() => setTab('deletions')} />
 
