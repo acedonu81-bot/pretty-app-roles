@@ -76,9 +76,17 @@ export const ROLE_TAGS: Record<string, { label: string; tags: string[] }> = {
     payaso:     { label: 'Especialidades', tags: ['Payaso clásico','Clown','Circo','Malabares','Zancos','Espectáculo infantil','Cumpleaños','Comuniones','Ferias','Teatro de calle'] },
     speaker:    { label: 'Especialidades', tags: ['Presentador de eventos','Maestro de ceremonias','Locución','Speaker corporativo','Conferencias','Galas','Bodas','Deportivo','Voz en off','Presentación en inglés'] },
     vestuario:  { label: 'Servicios', tags: ['Estilismo','Vestuario de escena','Asesoría de imagen','Personal shopper','Alquiler de vestuario','Caracterización','Sastrería','Vestuario de novia','Producción de moda','Pasarela'] },
-    camarero:   { label: 'Especialidades', tags: ['Camarero/a de sala','Barra','Coctelería','Bartender','Flair','Vinos','Café','Servicio de bodas','Catering','Banquetes','Bottle service','Terraza'] },
+    // Especialidades reales por las que un cliente pregunta al contratar. Un
+    // camarero que solo pone "camarero" compite por precio; uno que declara
+    // "sumiller" o "coctelería de autor" compite por perfil. Ordenadas de lo
+    // general a lo especialista, que es como las busca quien contrata.
+    camarero:   { label: 'Especialidades', tags: ['Camarero/a de sala','Barra','Coctelería','Bartender','Coctelería de autor','Flair','Sumiller','Vinos','Barista','Café de especialidad','Servicio de bodas','Banquetes','Protocolo y servicio de gala','Emplatado','Show cooking','Catering','Bottle service','Terraza','Barra libre','Ayudante de cocina','Office','Carnet de manipulador','Idiomas: EN/FR'] },
     'photo-booth': { label: 'Servicios', tags: ['Photocall','Cabina de fotos','Espejo mágico','360 booth','Impresión al momento','Atrezzo','GIFs','Libro de firmas','Bodas','Eventos corporativos'] },
-    staff:         { label: 'Especialidades',         tags: ['Azafata','RRPP','Promotor','Camarero/a','Relaciones Públicas','Animación','Hostess','Sala VIP','Control de acceso','Taquilla','Chill-out','Bottle service','Coordinación'] },
+    // staff recoge perfiles muy distintos (azafatas, RRPP y camareros), así que
+    // lleva también las especialidades de barra y sala: la mayoría de camareros
+    // se dan de alta con este rol, no con 'camarero', y sin estas etiquetas no
+    // podían declarar en qué son buenos.
+    staff:         { label: 'Especialidades',         tags: ['Camarero/a de sala','Barra','Coctelería','Bartender','Sumiller','Barista','Servicio de bodas','Banquetes','Protocolo y servicio de gala','Azafata','RRPP','Promotor','Relaciones Públicas','Animación','Hostess','Sala VIP','Control de acceso','Taquilla','Chill-out','Bottle service','Coordinación','Carnet de manipulador','Idiomas: EN/FR'] },
     event_manager: { label: 'Áreas de coordinación', tags: ['Coordinación general','Producción de eventos','Montaje y decoración','Catering','Staff externo','Protocolo','Gestión de artistas','Logística','Presupuestos','Eventos corporativos','Bodas','Festivales','Clubbing','Outdoor'] },
     makeup:    { label: 'Servicios',             tags: ['Maquillaje nupcial','Caracterización','Maquillaje artístico','Estilismo','Nail art','Aerógrafo','Efectos especiales','Maquillaje masculino','Novias','Pasarela','Producción'] },
     peluqueria:{ label: 'Servicios',             tags: ['Peluquería a domicilio','Peinado de novia','Recogidos','Corte','Color','Extensiones','Alisado','Tratamientos capilares','Peluquería infantil','Eventos','Día a día'] },
