@@ -91,6 +91,10 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
         <div className="absolute inset-0 rounded-t-2xl sm:rounded-b-none" style={{ overflow: 'hidden' }}>
           {hasPhoto ? (
             <img src={p.photo} alt={p.name} loading="lazy" className="w-full h-full object-cover"
+              // El hueco es apaisado en desktop (pb-62%): centrar el recorte de
+              // un retrato vertical caía en plena frente y cortaba la cabeza.
+              // 5% deja la cara completa sin dejar aire muerto arriba.
+              style={{ objectPosition: '50% 5%' }}
               onError={() => setImgError(true)} />
           ) : (
             /* Sin foto el hueco es grande (214px de alto en móvil): un avatar
