@@ -33,6 +33,10 @@ const ESTILO: Record<Movimiento['tipo'], { icon: typeof UserPlus; color: string;
 };
 
 const FILTROS = [
+  // "Nuevo" por defecto: la lista volcaba los 74 movimientos desde abril, así
+  // que lo recién ocurrido se perdía entre el histórico. El escudo del sidebar
+  // ya se apagaba bien, pero aquí no había forma de distinguir qué era nuevo.
+  { id: 'nuevo',     label: 'Nuevo' },
   { id: 'todo',      label: 'Todo' },
   { id: 'pendiente', label: 'Pendientes' },
   { id: 'solicitud', label: 'Solicitudes' },
@@ -61,7 +65,10 @@ const AdminActivity = () => {
   // rompen con "cannot add postgres_changes callbacks after subscribe()" y
   // tumban el dashboard entero a pantalla en blanco.
   const instanceId = useRef(Math.random().toString(36).slice(2)).current;
-  const [filtro, setFiltro] = useState<typeof FILTROS[number]['id']>('todo');
+  const [filtro, setFiltro] = useState<typeof FILTROS[number]['id']>('nuevo');
+  // Momento del último repaso, para separar lo nuevo del histórico. Se lee
+  // ANTES de marcar como visto (marcarVisto corre 1,5s después de montar).
+  const [vistoHasta, setVistoHasta] = useState<string | null>(null);
   const [cargando, setCargando] = useState(true);
 
   const cargar = async () => {
@@ -75,6 +82,16 @@ const AdminActivity = () => {
 
   useEffect(() => {
     cargar();
+    // La marca de "hasta cuándo he revisado" se lee ANTES de actualizarla:
+    // es lo que permite separar en pantalla lo nuevo del histórico, aunque
+    // marcarVisto la mueva a "ahora" un segundo y medio después.
+    (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data } = await (supabase.from('admin_activity_seen' as any) as any)
+        .select('seen_at').eq('user_id', user.id).maybeSingle();
+      if (data?.seen_at) setVistoHasta(data.seen_at as string);
+    })();
     // Un respiro antes de marcar: si se entra y se sale al instante, lo nuevo
     // sigue avisando en el siguiente vistazo.
     const visto = setTimeout(() => { marcarVisto(); }, 1500);
@@ -94,7 +111,12 @@ const AdminActivity = () => {
     .sort((a, b) => new Date(a.cuando).getTime() - new Date(b.cuando).getTime());
   const resto = items.filter(i => !i.pendiente);
 
-  const visibles = filtro === 'todo' ? [...pendientes, ...resto]
+  const nuevos = vistoHasta
+    ? items.filter(i => new Date(i.cuando) > new Date(vistoHasta))
+    : items;
+
+  const visibles = filtro === 'nuevo' ? nuevos
+    : filtro === 'todo' ? [...pendientes, ...resto]
     : filtro === 'pendiente' ? pendientes
     : filtro === 'solicitud' ? items.filter(i => i.tipo.startsWith('solicitud'))
     : items.filter(i => i.tipo === 'alta');
@@ -123,7 +145,8 @@ const AdminActivity = () => {
 
       <div className="flex gap-1.5 flex-wrap mb-4">
         {FILTROS.map(f => {
-          const n = f.id === 'todo' ? items.length
+          const n = f.id === 'nuevo' ? nuevos.length
+            : f.id === 'todo' ? items.length
             : f.id === 'pendiente' ? pendientes.length
             : f.id === 'solicitud' ? items.filter(i => i.tipo.startsWith('solicitud')).length
             : items.filter(i => i.tipo === 'alta').length;
@@ -146,8 +169,19 @@ const AdminActivity = () => {
       {visibles.length === 0 ? (
         <div className="px-4 py-10 text-center rounded-xl" style={{ background: 'rgba(0,0,0,0.02)' }}>
           <p className="text-sm font-bold" style={{ color: '#444' }}>
-            {cargando ? 'Cargando…' : 'Nada por aquí todavía.'}
+            {cargando ? 'Cargando…'
+              : filtro === 'nuevo' ? 'Nada nuevo desde tu última visita.'
+              : 'Nada por aquí todavía.'}
           </p>
+          {filtro === 'nuevo' && !cargando && items.length > 0 && (
+            <button
+              onClick={() => setFiltro('todo')}
+              className="mt-2 text-xs font-bold underline"
+              style={{ color: '#8A6D0F' }}
+            >
+              Ver todo el histórico ({items.length})
+            </button>
+          )}
         </div>
       ) : (
         <ul className="space-y-1.5">
