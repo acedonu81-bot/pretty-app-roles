@@ -689,12 +689,13 @@ export default function DirectorioPublico() {
                           loading={i < 4 ? 'eager' : 'lazy'}
                           fetchPriority={i < 4 ? 'high' : undefined}
                           onError={() => setImgErrors(e => ({ ...e, [p.user_id]: true }))}
-                          // 50% 30%: mismo criterio que ProfessionalProfilePage — la
-                          // mayoría son retratos verticales con la cara en el tercio
-                          // superior. object-center recortaba la frente en tarjetas
-                          // anchas (4:3 desktop); object-top corta demasiado.
+                          // 50% 8%: la tarjeta 4:3 (desktop) recorta ~50% del alto
+                          // de un retrato vertical típico — object-center caía en
+                          // plena frente. Medido contra una foto real (retrato con
+                          // poco margen superior): 30% seguía cortando el nacimiento
+                          // del pelo, 8% deja la cara completa con margen de sobra.
                           className="w-full h-full object-cover"
-                          style={{ objectPosition: '50% 30%' }} />
+                          style={{ objectPosition: '50% 8%' }} />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-5xl font-black"
                           style={{ background: 'linear-gradient(135deg,rgba(212,175,55,0.15),rgba(212,175,55,0.05))', color: '#D4AF37' }}>
