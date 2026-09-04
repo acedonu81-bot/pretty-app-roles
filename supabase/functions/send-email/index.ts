@@ -20,6 +20,24 @@ async function signEmail(email: string): Promise<string> {
 }
 
 const ADMIN = 'info@xpeak.site';
+
+// Los emails recibian el slug interno del rol: "Tu perfil como **staff** ya
+// esta activo". Un camarero no se llama staff a si mismo, y menos uno que
+// acaba de salir de una escuela de hosteleria. Mismo vocabulario que ROLE_ES
+// del frontend (no se puede importar: esta funcion corre en Deno, aislada).
+const ROL_ES: Record<string, string> = {
+  dj: 'DJ', staff: 'Sala & Barra', camarero: 'Sala & Barra', azafata: 'Azafata',
+  event_manager: 'Encargada de Eventos', promotor: 'Promotor & RRPP',
+  catering: 'Catering', makeup: 'Maquillaje', peluqueria: 'Peluquería',
+  media: 'Media & Fotografía', 'grupo-musical': 'Grupo Musical', mago: 'Mago',
+  humorista: 'Humorista', animador: 'Animador', bailarin: 'Bailarín',
+  speaker: 'Speaker', vestuario: 'Estilismo', 'photo-booth': 'Photo Booth',
+  empresario: 'Organizador',
+};
+const rolLegible = (r: unknown): string => {
+  const k = String(r ?? '').trim();
+  return ROL_ES[k] ?? (k ? k.charAt(0).toUpperCase() + k.slice(1) : 'profesional');
+};
 const FROM = 'XPEAK <info@xpeak.site>';
 
 // Escape user-supplied strings before inserting into HTML to prevent injection
@@ -135,7 +153,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     html: base(`
       <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Hola, ${esc(d.name)}</h2>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
-        Tu perfil como <strong style="color:#D4AF37">${esc(d.role)}</strong> ya está activo en XPEAK.
+        Tu perfil como <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong> ya está activo en XPEAK.
       </p>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
         Completa tu información para aparecer en el directorio y empezar a recibir contactos de empresarios de toda España.
@@ -154,7 +172,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     html: base(`
       <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Te faltan ${esc(String(d.missingCount))} pasos</h2>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
-        Ahora mismo hay organizadores buscando profesionales como tú en XPEAK, y tu perfil como <strong style="color:#D4AF37">${esc(d.role)}</strong> está al ${esc(String(d.percent))}% — les cuesta más confiar en contratarte sin esta información, y algunos directamente pasan al siguiente perfil.
+        Ahora mismo hay organizadores buscando profesionales como tú en XPEAK, y tu perfil como <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong> está al ${esc(String(d.percent))}% — les cuesta más confiar en contratarte sin esta información, y algunos directamente pasan al siguiente perfil.
       </p>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
         Solo te queda: ${esc(d.missingLabels)}.
@@ -286,7 +304,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   // quedo invisible en el directorio hasta que se detecto por casualidad.
   // Incluye rol y zona precisamente para poder revisarlo el mismo dia.
   profesional_registered: (d) => ({
-    subject: `Nuevo profesional — ${esc(d.name)} (${esc(d.role)}, ${esc(d.zone)})`,
+    subject: `Nuevo profesional — ${esc(d.name)} (${esc(rolLegible(d.role))}, ${esc(d.zone)})`,
     to: ADMIN,
     html: base(`
       <div style="background:rgba(10,9,8,0.03);border:1px solid rgba(10,9,8,0.06);border-radius:8px;padding:16px;margin-bottom:20px;box-shadow:0 4px 14px rgba(10,9,8,0.08)">
@@ -432,7 +450,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     html: base(`
       <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">¡Perfil aprobado!</h2>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
-        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, tu perfil como <strong style="color:#D4AF37">${esc(d.role)}</strong> ha sido verificado y ya apareces en el directorio de XPEAK.
+        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, tu perfil como <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong> ha sido verificado y ya apareces en el directorio de XPEAK.
       </p>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
         Completa tu bio, sube tu audio y activa tu disponibilidad para empezar a recibir contactos.
@@ -524,7 +542,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     html: base(`
       <h2 style="font-size:22px;font-weight:900;margin:0 0 6px;color:#0a0908">¡6 meses ya!</h2>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
-        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, hace exactamente 6 meses creaste tu perfil en XPEAK como <strong style="color:#D4AF37">${esc(d.role)}</strong>.<br><br>
+        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, hace exactamente 6 meses creaste tu perfil en XPEAK como <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong>.<br><br>
         ${d.views > 0 ? `Tu ficha ha recibido <strong style="color:#D4AF37">${esc(String(d.views))} visitas</strong> hasta hoy.` : 'Tu perfil está activo y listo para que lo encuentren.'}
       </p>
       <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.15);border-radius:10px;padding:16px;margin-bottom:20px;text-align:center;box-shadow:0 6px 16px rgba(212,175,55,0.16)">

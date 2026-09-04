@@ -674,9 +674,14 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 propósito: es lo que convierte la ficha en un pliego que escribe
                 el profesional en vez de una tarifa suelta que otro negocia.
                 Esconderlo tras un desplegable lo convertiría en un campo más. */}
-            <div className="mt-6 pt-6" style={{ borderTop: '1px solid rgba(0,0,0,0.06)' }}>
-              <MisCondicionesSection profile={profile} onSaved={profile.refresh} />
-            </div>
+            {/* Solo para roles que trabajan por horas y turnos. A un DJ,
+                "Office / fregado" o "mínimo de horas" no le dicen nada — le
+                contratan por bolo, no por jornada. */}
+            {['staff', 'camarero', 'azafata', 'catering', 'event_manager'].includes(profile.role) && (
+              <div className="mt-6 pt-6" style={{ borderTop: '1px solid rgba(0,0,0,0.06)' }}>
+                <MisCondicionesSection profile={profile} onSaved={profile.refresh} />
+              </div>
+            )}
 
             {/* — Más detalles (opcional): todo lo secundario plegado para que la
                 ficha no abrume. Lo esencial (foto, nombre, ciudad, precio, bio)
@@ -690,7 +695,11 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
               <ChevronDown size={16} style={{ color: '#8A6D0F', transform: showMore ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
             </button>
             {!showMore && (
-              <p className="text-xs text-muted-foreground mb-2 px-1">Géneros, clases, rider técnico y más. Opcional — puedes completarlo luego.</p>
+              <p className="text-xs text-muted-foreground mb-2 px-1">
+                {['staff','camarero','azafata','catering'].includes(profile.role)
+                  ? 'Tus especialidades (coctelería, sumiller, barista, protocolo…), equipamiento y más. Opcional.'
+                  : 'Géneros, clases, rider técnico y más. Opcional — puedes completarlo luego.'}
+              </p>
             )}
             <div style={{ display: showMore ? 'block' : 'none' }}>
             {/* — Habilidades — */}
