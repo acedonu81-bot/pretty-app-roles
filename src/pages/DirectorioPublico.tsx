@@ -13,6 +13,7 @@ import FooterPublic from '@/components/FooterPublic';
 import { addToCart, useEventCart, MAX_CART_ITEMS } from '@/lib/eventCart';
 import { useAuth } from '@/hooks/useAuth';
 import GhostProfileCards from '@/components/GhostProfileCards';
+import TruncatedDescription from '@/components/TruncatedDescription';
 import { isEarlyAdopter } from '@/lib/earlyAdopter';
 import { expandRole } from '@/lib/constants';
 
@@ -806,9 +807,11 @@ export default function DirectorioPublico() {
 
                     {/* Bio — desktop only */}
                     {p.bio && (
-                      <p className="hidden sm:block text-xs leading-relaxed mb-3 line-clamp-2" style={{ color: '#333' }}>
-                        "{p.bio.slice(0, 100)}{p.bio.length > 100 ? '…' : ''}"
-                      </p>
+                      <TruncatedDescription
+                        text={p.bio}
+                        className="hidden sm:block text-xs leading-relaxed mb-3"
+                        style={{ color: '#333' }}
+                      />
                     )}
 
                     {/* CTAs — 1 button on mobile, 2 on desktop */}

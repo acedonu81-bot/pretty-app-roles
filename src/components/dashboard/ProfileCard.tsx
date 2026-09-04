@@ -4,6 +4,7 @@ import { Star, MapPin, BadgeCheck, MessageCircle, FileText, Zap, Users } from 'l
 import { motion } from 'framer-motion';
 import { Profile } from '@/data/profiles';
 import GeometricAvatar from './GeometricAvatar';
+import TruncatedDescription from '@/components/TruncatedDescription';
 import VoteButton from './VoteButton';
 import LegalModal from '@/components/LegalModal';
 import ContractModal from './ContractModal';
@@ -223,9 +224,11 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
 
         {/* Descripción — desktop only */}
         {!compact && p.description && (
-          <p className="hidden sm:block text-xs leading-relaxed line-clamp-2" style={{ color: '#333' }}>
-            "{p.description}"
-          </p>
+          <TruncatedDescription
+            text={p.description}
+            className="hidden sm:block text-xs leading-relaxed"
+            style={{ color: '#333' }}
+          />
         )}
 
         {/* Badges géneros — desktop only */}
