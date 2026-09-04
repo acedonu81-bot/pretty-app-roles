@@ -45,4 +45,9 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+// Marca de AppErrorBoundary: si la app llegó a arrancar del todo, cualquier
+// crash futuro de "chunk viejo" es un caso nuevo y merece su propio intento de
+// auto-recarga, no quedar bloqueado por el intento de una sesión anterior.
+try { sessionStorage.removeItem('xpeak_chunk_reload_attempted'); } catch { /* noop */ }
+
 createRoot(document.getElementById("root")!).render(<App />);

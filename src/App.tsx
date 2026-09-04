@@ -7,6 +7,7 @@ import { lazy, Suspense } from "react";
 const Landing = lazy(() => import("./pages/Landing"));
 import NotFound from "./pages/NotFound";
 import CookieBanner from "./components/CookieBanner";
+import AppErrorBoundary from "./components/AppErrorBoundary";
 import EventCartWidget from "./components/EventCartWidget";
 
 // Code-split heavy routes — loaded on demand
@@ -367,11 +368,18 @@ const BlogCalculadoraTarifaDJ = lazy(() => import("./pages/BlogCalculadoraTarifa
 const queryClient = new QueryClient();
 
 const App = () => (
+  <AppErrorBoundary>
   <HelmetProvider>
   <QueryClientProvider client={queryClient}>
     <XPeakToastProvider>
     <TooltipProvider>
       <BrowserRouter basename={import.meta.env.BASE_URL} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        {/* Un solo pixel visible durante la carga (no un color plano a pantalla
+            completa) para que un "se queda pensando y luego en blanco" real se
+            pueda distinguir de este fallback esperado durante los ms que tarda
+            el chunk lazy. Si un import() falla del todo (chunk viejo tras un
+            deploy, red cortada), AppErrorBoundary de arriba lo atrapa y muestra
+            algo en vez de dejar esto colgado para siempre. */}
         <Suspense fallback={<div style={{ minHeight: '100vh', background: '#090909' }} />}>
           <Routes>
             <Route path="/" element={<Landing />} />
@@ -818,6 +826,7 @@ const App = () => (
     </XPeakToastProvider>
   </QueryClientProvider>
   </HelmetProvider>
+  </AppErrorBoundary>
 );
 
 export default App;

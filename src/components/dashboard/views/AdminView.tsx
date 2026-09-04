@@ -11,6 +11,7 @@ import AdminReviews from './admin/AdminReviews';
 import AdminPromoCodes from './admin/AdminPromoCodes';
 import AdminDeletionAlert from './admin/AdminDeletionAlert';
 import AdminNewProfileAlert from './admin/AdminNewProfileAlert';
+import AdminInvisibleProfilesAlert from './admin/AdminInvisibleProfilesAlert';
 import AdminPendingBookingsAlert from './admin/AdminPendingBookingsAlert';
 import AdminActivity from './admin/AdminActivity';
 import AdminDeletions from './admin/AdminDeletions';
@@ -39,6 +40,7 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
           tiempo evita que el perfil quede invisible en el directorio. */}
       <AdminPendingBookingsAlert />
       <AdminNewProfileAlert onOpenUsers={() => setTab('users')} />
+      <AdminInvisibleProfilesAlert onOpenUsers={() => setTab('users')} />
       <AdminDeletionAlert onOpenDeletions={() => setTab('deletions')} />
 
       <div className="mb-6">

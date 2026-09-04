@@ -51,10 +51,17 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
 
   // Profile completeness
   const completenessSteps = (() => {
-    const steps: { label: string; done: boolean; hint: string }[] = [
-      { label: 'Foto de perfil', done: !!photoUrl || !!profile.photo_url, hint: 'Añade una foto para generar más confianza.' },
+    const steps: { label: string; done: boolean; hint: string; bloqueante?: boolean }[] = [
+      // "bloqueante": no es que sumen posición, es que SIN esto no apareces en
+      // el sitio donde te buscan. Medido el 5 sep: 7 de 8 camareros sin foto,
+      // 5 de 8 con zona genérica ("España") en vez de ciudad — ninguno de esos
+      // 5 sale en /contratar-camareros/:ciudad, que es la página a la que
+      // llega quien busca contratar. El texto anterior ("suman posición")
+      // sonaba a mejora opcional cuando en realidad es la diferencia entre
+      // existir o no existir en el directorio.
+      { label: 'Foto de perfil', done: !!photoUrl || !!profile.photo_url, hint: 'Sin foto no puedes aparecer en el directorio.', bloqueante: true },
       { label: 'Bio', done: !!(profile.bio && profile.bio.trim().length > 20), hint: 'Escribe al menos una frase sobre ti.' },
-      { label: 'Ciudad', done: !!(profile.zone && profile.zone !== DEFAULT_ZONE), hint: 'Elige tu ciudad para aparecer en búsquedas locales.' },
+      { label: 'Ciudad', done: !!(profile.zone && profile.zone !== DEFAULT_ZONE), hint: 'Sin tu ciudad, nadie te encuentra al buscar en su zona.', bloqueante: true },
       // "Especialidad" solo para profesionales: al empresario se le contaba en
       // el % de perfil completo aunque su control (roleTagConfig) no existe
       // para su rol, así que no tenía forma directa de completarlo.
@@ -348,11 +355,23 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                   {completenessSteps.percent}%
                 </span>
               </div>
-              <p className="text-[0.65rem] text-muted-foreground mb-3">
-                {profile.role === 'empresario'
-                  ? 'Un perfil completo da confianza a los profesionales que reciben tus solicitudes — foto, bio y ciudad ayudan a que te respondan.'
-                  : 'Los perfiles más completos aparecen antes en el directorio — foto, bio y portfolio suman posición real.'}
-              </p>
+              {(() => {
+                const faltaBloqueante = completenessSteps.steps.some(s => s.bloqueante && !s.done);
+                if (faltaBloqueante && profile.role !== 'empresario') {
+                  return (
+                    <p className="text-[0.7rem] font-bold mb-3" style={{ color: '#dc2626' }}>
+                      Con esto sin rellenar, tu perfil no aparece en el directorio. No es una mejora, es lo mínimo para que te encuentren.
+                    </p>
+                  );
+                }
+                return (
+                  <p className="text-[0.65rem] text-muted-foreground mb-3">
+                    {profile.role === 'empresario'
+                      ? 'Un perfil completo da confianza a los profesionales que reciben tus solicitudes — foto, bio y ciudad ayudan a que te respondan.'
+                      : 'Los perfiles más completos aparecen antes en el directorio — bio y portfolio suman posición real.'}
+                  </p>
+                );
+              })()}
               <div className="w-full h-1.5 rounded-full mb-3" style={{ background: 'rgba(0,0,0,0.05)' }}>
                 <div className="h-full rounded-full transition-all duration-500"
                   style={{
@@ -364,11 +383,13 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 {completenessSteps.steps.filter(s => !s.done).slice(0, 3).map(s => (
                   <div key={s.label} className="flex items-start gap-2">
                     <div className="w-3.5 h-3.5 rounded-full flex-shrink-0 mt-0.5 flex items-center justify-center"
-                      style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.09)' }}>
-                      <div className="w-1 h-1 rounded-full" style={{ background: 'rgba(0,0,0,0.1)' }} />
+                      style={s.bloqueante
+                        ? { background: 'rgba(220,38,38,0.1)', border: '1px solid rgba(220,38,38,0.35)' }
+                        : { background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.09)' }}>
+                      <div className="w-1 h-1 rounded-full" style={{ background: s.bloqueante ? '#dc2626' : 'rgba(0,0,0,0.1)' }} />
                     </div>
                     <div>
-                      <p className="text-[0.7rem] font-bold leading-tight">{s.label}</p>
+                      <p className="text-[0.7rem] font-bold leading-tight" style={s.bloqueante ? { color: '#dc2626' } : undefined}>{s.label}</p>
                       <p className="text-[0.65rem] text-muted-foreground leading-tight">{s.hint}</p>
                     </div>
                   </div>
