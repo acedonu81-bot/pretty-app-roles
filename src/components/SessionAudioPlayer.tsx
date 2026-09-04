@@ -2,11 +2,9 @@ import { useState, useEffect, useMemo } from 'react';
 import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack } from '@/lib/streaming';
 
 // Extraído de PublicProfile.tsx (antes definido localmente ahí como
-// `SessionAudio`) para reusarlo en AdminValidations — el reproductor de
-// audio de Validaciones usaba <audio src={audio_url}>, un campo que nadie
-// rellena (los profesionales guardan sus sesiones en audio_session_urls /
+// `SessionAudio`). Reproduce las sesiones desde audio_session_urls /
 // audio_embed_url, que son casi siempre links externos de Mixcloud,
-// SoundCloud o HearThis, no archivos servidos directamente).
+// SoundCloud o HearThis, no archivos servidos directamente.
 const SessionAudioPlayer = ({ url }: { url: string }) => {
   const [embedSrc, setEmbedSrc] = useState<string | null>(null);
   const parsed = useMemo(() => parseStreamUrl(url), [url]);

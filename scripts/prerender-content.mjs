@@ -12,6 +12,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { profileHasRole } from './city-inventory.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
@@ -96,7 +97,7 @@ function mapProfile(p) {
 // ciudad (por score desc); si no hay ninguno, hasta 4 sugerencias nacionales.
 function resolveProfilesForCity(allProfiles, ciudad, categorySlug) {
   const roles = ROLE_MAP[categorySlug] ?? ['dj'];
-  const byRole = allProfiles.filter(p => roles.includes(p.role));
+  const byRole = allProfiles.filter(p => profileHasRole(p, roles));
   const inCity = byRole
     .filter(p => p.zone && p.zone.toLowerCase().includes(ciudad.toLowerCase()))
     .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))

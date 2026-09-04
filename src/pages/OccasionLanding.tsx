@@ -40,10 +40,17 @@ function useRoleProfessionals(categorySlug: string) {
     setProfs([]);
     const roles = ROLE_MAP[categorySlug] ?? ['dj'];
     const map = (p: any): Prof => ({ id: p.user_id, display_name: p.display_name ?? 'Profesional', photo_url: p.photo_url, bio: p.bio, city: p.city, role: p.role, score: p.score ?? 0, slug: p.slug, is_verified: p.is_verified ?? false });
+    // Match por el array `roles` ademas de por el `role` singular — ver
+    // CityLanding.tsx: filtrar solo por `role` deja fuera a quien tenga un
+    // segundo rol, que es donde se guarda.
+    const roleFilter = [
+      ...roles.map(r => `role.eq.${r}`),
+      ...roles.map(r => `roles.cs.{${r}}`),
+    ].join(',');
     supabase
       .from('profiles')
       .select('user_id,display_name,photo_url,bio,city,role,score,slug,is_verified')
-      .in('role', roles)
+      .or(roleFilter)
       // Ver CityLanding.tsx: is_primary distingue el perfil principal de una
       // agencia, no "perfil publicable". Filtrar por él escondía a casi todos.
       .or('is_public.is.null,is_public.eq.true')

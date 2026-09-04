@@ -41,10 +41,19 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
   // y lo mismo con makeup/peluqueria. Se veian 6 camareros de 7, faltando
   // justo el unico con foto.
   const activeRoles = [...new Set((roles ?? [role]).flatMap(expandRole))];
+  // Match por el array `roles` ADEMAS de por el `role` singular: quien se
+  // apunta a un segundo rol lo guarda en `roles`, y filtrar solo por `role`
+  // lo dejaba fuera de ese directorio. Aitana (4 sep 2026) tenia
+  // role='staff' y roles=['staff','azafata']: salia en sala/barra pero no
+  // en azafatas. Mismo criterio que ya usaba DirectorioPublico.
+  const orFilter = [
+    ...activeRoles.map(r => `role.eq.${r}`),
+    ...activeRoles.map(r => `roles.cs.{${r}}`),
+  ].join(',');
   let query = supabase
     .from('profiles')
-    .select('id, user_id, display_name, photo_url, zone, region, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, instagram, category, is_verified, is_flash_active, is_early_adopter, is_early_adopter_override, priority_badge_until, score, role, seeking_dance_partner, dance_level, dance_role, created_at')
-    .in('role', activeRoles)
+    .select('id, user_id, display_name, photo_url, zone, region, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, instagram, category, is_verified, is_flash_active, is_early_adopter, is_early_adopter_override, priority_badge_until, score, role, roles, seeking_dance_partner, dance_level, dance_role, created_at')
+    .or(orFilter)
     .limit(200);
 
   if (filterRegion !== ALL_REGIONS_LABEL) {

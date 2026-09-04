@@ -107,12 +107,28 @@ export const ROLE_MAP = {
  * DJs. Decidir solo por ciudad dejaría URLs en el sitemap que renderizan
  * "Aún no hay" — justo el thin content que queremos evitar.
  */
+/**
+ * ¿Este perfil ejerce alguno de estos roles? Mira el array `roles` ADEMAS del
+ * `role` singular: un segundo rol se guarda ahí, y comprobar solo `role`
+ * dejaba fuera del sitemap las páginas de ese rol (4 sep 2026: la única
+ * azafata tenía role='staff', roles=['staff','azafata'], así que ninguna
+ * página de azafatas llegaba a publicarse).
+ *
+ * Debe coincidir con el filtro de CityLanding.tsx / DirectorioPublico.tsx: si
+ * se desincronizan, se publican URLs que renderizan vacías o se ocultan
+ * páginas que sí tienen inventario.
+ */
+export function profileHasRole(p, roles) {
+  if (roles.includes(p.role)) return true;
+  return Array.isArray(p.roles) && p.roles.some(r => roles.includes(r));
+}
+
 export function hasInventory(profiles, cityName, categorySlug) {
   // Mismo fallback que CityLanding.tsx: `ROLE_MAP[categorySlug] ?? ['dj']`.
   // Las categorías sin mapeo consultan el rol 'dj', así que su página solo
   // tiene contenido si hay un DJ en la ciudad.
   const roles = ROLE_MAP[categorySlug] ?? ['dj'];
-  return profiles.some(p => matchesProfileCity(p, cityName) && roles.includes(p.role));
+  return profiles.some(p => matchesProfileCity(p, cityName) && profileHasRole(p, roles));
 }
 
 /**
@@ -150,7 +166,7 @@ export function contentDate(profiles, cityName, categorySlug) {
   const roles = ROLE_MAP[categorySlug] ?? ['dj'];
   let latest = null;
   for (const p of profiles) {
-    if (!matchesProfileCity(p, cityName) || !roles.includes(p.role)) continue;
+    if (!matchesProfileCity(p, cityName) || !profileHasRole(p, roles)) continue;
     const d = p.updated_at ? String(p.updated_at).slice(0, 10) : null;
     if (d && (!latest || d > latest)) latest = d;
   }

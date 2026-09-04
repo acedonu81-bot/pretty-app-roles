@@ -53,10 +53,19 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
     // hace PublicProfile.tsx al resolver /p/:slug.
     const map = (p: any): Prof => ({ id: p.user_id, display_name: p.display_name ?? 'Profesional', photo_url: p.photo_url, bio: p.bio, city: p.zone, role: p.role, score: p.score ?? 0, slug: toSlug(p.display_name ?? p.user_id), is_verified: p.is_verified ?? false, is_early_adopter: isEarlyAdopter(p) });
 
+    // Match por el array `roles` ademas de por el `role` singular: un segundo
+    // rol se guarda en `roles`, y filtrar solo por `role` dejaba fuera de esta
+    // pagina a quien lo tuviera (Aitana, 4 sep 2026: role='staff',
+    // roles=['staff','azafata'], no salia en ninguna pagina de azafatas).
+    const roleFilter = [
+      ...roles.map(r => `role.eq.${r}`),
+      ...roles.map(r => `roles.cs.{${r}}`),
+    ].join(',');
+
     supabase
       .from('profiles')
       .select('user_id,display_name,photo_url,bio,zone,role,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,is_early_adopter_override')
-      .in('role', roles)
+      .or(roleFilter)
       // is_primary marca el perfil principal de una cuenta de agencia con
       // varios perfiles (useProfile.tsx). Filtrar por él aquí escondía a todo
       // profesional con un único perfil, porque createProfile lo inserta como
@@ -85,7 +94,7 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
           supabase
             .from('profiles')
             .select('user_id,display_name,photo_url,bio,zone,role,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,is_early_adopter_override')
-            .in('role', roles)
+            .or(roleFilter)
             .or('is_public.is.null,is_public.eq.true')
             .order('is_primary', { ascending: false })
             .order('score', { ascending: false })

@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { Users, Shield, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2, UserMinus, Activity, ShieldCheck } from 'lucide-react';
+import { Users, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2, UserMinus, Activity, ShieldCheck } from 'lucide-react';
 import AdminMetrics from './admin/AdminMetrics';
 import AdminCharts from './admin/AdminCharts';
-import AdminValidations from './admin/AdminValidations';
 import AdminUserManagement from './admin/AdminUserManagement';
 import AdminBusinesses from './admin/AdminBusinesses';
 import AdminFeatureRequests from './admin/AdminFeatureRequests';
@@ -23,7 +22,6 @@ const TABS = [
   { id: 'overview', label: 'General', icon: LayoutGrid },
   { id: 'users', label: 'Usuarios', icon: Users },
   { id: 'empresarios', label: 'Empresarios', icon: Building2 },
-  { id: 'validations', label: 'Validaciones', icon: Shield },
   { id: 'content', label: 'Reseñas', icon: MessageSquare },
   { id: 'business', label: 'Negocio', icon: TrendingDown },
   { id: 'deletions', label: 'Bajas', icon: UserMinus },
@@ -81,7 +79,6 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
       {tab === 'users' && <AdminUserManagement />}
       {tab === 'deletions' && <AdminDeletions />}
       {tab === 'empresarios' && <AdminBusinesses />}
-      {tab === 'validations' && <AdminValidations />}
       {tab === 'content' && <AdminReviews />}
       {tab === 'business' && (
         <>
