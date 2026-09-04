@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { ShieldCheck, AlertTriangle, AlertOctagon, Info, RefreshCw } from 'lucide-react';
+import { ShieldCheck, AlertTriangle, AlertOctagon, Info, RefreshCw, X, CheckCheck } from 'lucide-react';
 
 /**
  * "El espía": qué está fallando ahora mismo, todo en un sitio.
@@ -21,6 +21,7 @@ interface Alerta {
   asunto: string;
   detalle: string;
   cuando: string | null;
+  clave: string;
 }
 
 const ESTILO = {
@@ -53,6 +54,19 @@ const AdminSaludSistema = () => {
 
   useEffect(() => { cargar(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [instanceId]);
 
+  // Descartar = "esto ya lo sé, no me lo vuelvas a enseñar". Sin esto el panel
+  // acumula lo mismo para siempre, se convierte en ruido y se deja de mirar —
+  // que es justo lo contrario de para lo que sirve.
+  const descartar = async (claves: string[]) => {
+    if (claves.length === 0) return;
+    const { data: { user } } = await supabase.auth.getUser();
+    await (supabase.from('admin_alertas_descartadas' as any) as any).upsert(
+      claves.map(clave => ({ clave, descartada_por: user?.id ?? null })),
+      { onConflict: 'clave' },
+    );
+    setAlertas(prev => prev.filter(a => !claves.includes(a.clave)));
+  };
+
   const criticas = alertas.filter(a => a.severidad === 'critico');
   const urgentes = alertas.filter(a => a.severidad === 'alto');
   const revisar  = alertas.filter(a => a.severidad === 'medio');
@@ -71,13 +85,25 @@ const AdminSaludSistema = () => {
             Todo lo que está fallando ahora mismo. Si está vacío, va bien.
           </p>
         </div>
-        <button
-          onClick={cargar}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border transition-opacity hover:opacity-70"
-          style={{ borderColor: 'rgba(0,0,0,0.12)' }}
-        >
-          <RefreshCw size={12} className={cargando ? 'animate-spin' : undefined} /> Comprobar
-        </button>
+        <div className="flex items-center gap-2">
+          {alertas.length > 0 && (
+            <button
+              onClick={() => descartar(alertas.map(a => a.clave))}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border transition-opacity hover:opacity-70"
+              style={{ borderColor: 'rgba(0,0,0,0.12)', color: '#666' }}
+              title="Marca todo lo de ahora como visto. Lo que entre nuevo sí volverá a aparecer."
+            >
+              <CheckCheck size={12} /> Limpiar todo
+            </button>
+          )}
+          <button
+            onClick={cargar}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border transition-opacity hover:opacity-70"
+            style={{ borderColor: 'rgba(0,0,0,0.12)' }}
+          >
+            <RefreshCw size={12} className={cargando ? 'animate-spin' : undefined} /> Comprobar
+          </button>
+        </div>
       </div>
 
       {/* Resumen de un vistazo */}
@@ -122,6 +148,15 @@ const AdminSaludSistema = () => {
                     <p className="text-sm font-bold mt-0.5 break-words">{a.asunto}</p>
                     <p className="text-xs mt-0.5" style={{ color: '#666' }}>{a.detalle}</p>
                   </div>
+                  <button
+                    onClick={() => descartar([a.clave])}
+                    aria-label="Descartar este aviso"
+                    title="Ya lo sé — no volver a mostrarlo"
+                    className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-opacity opacity-40 hover:opacity-100"
+                    style={{ color: e.color }}
+                  >
+                    <X size={14} strokeWidth={2.5} />
+                  </button>
                 </li>
               );
             })}

@@ -444,6 +444,28 @@ const BENTO_CARD_DATA: Record<string, { image: string; icon: React.ReactNode; ti
 const BENTO_SLOT_CLASS = ['md:col-span-3', 'md:col-span-2', 'md:col-span-1', 'md:col-span-2', 'md:col-span-2', 'md:col-span-2'];
 
 const Landing = () => {
+  // El vídeo de fondo (1,4 MB) espera a que la página esté pintada e inactiva,
+  // y se salta del todo en conexiones lentas o con ahorro de datos activado.
+  // Es decoración: debajo ya hay un <picture> con el poster.
+  const [mostrarVideoHero, setMostrarVideoHero] = useState(false);
+  useEffect(() => {
+    const conn = (navigator as any).connection;
+    const redLenta = conn && (conn.saveData === true || /2g|slow-2g|3g/.test(conn.effectiveType ?? ''));
+    const menosMovimiento = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (redLenta || menosMovimiento) return;
+
+    const activar = () => setMostrarVideoHero(true);
+    // requestIdleCallback: solo cuando el navegador no tiene nada mejor que
+    // hacer. El timeout es el tope por si nunca llega ese hueco.
+    const w = window as any;
+    if (w.requestIdleCallback) {
+      const id = w.requestIdleCallback(activar, { timeout: 2500 });
+      return () => w.cancelIdleCallback?.(id);
+    }
+    const t = setTimeout(activar, 1500);
+    return () => clearTimeout(t);
+  }, []);
+
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
   const [demoOpen, setDemoOpen] = useState(false);
@@ -642,19 +664,31 @@ const Landing = () => {
             style={{ filter: 'saturate(1.2) brightness(0.5)', opacity: 0.9, objectPosition: 'center 30%' }}
           />
         </picture>
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="none"
-          poster="/videos/hero-poster.jpg"
-          aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-          style={{ filter: 'saturate(1.2) brightness(0.5)', opacity: 0.9, objectPosition: 'center 30%' }}
-        >
-          <source src="/videos/hero.mp4" type="video/mp4" />
-        </video>
+        {/* hero.mp4 pesa 1,4 MB — el 99,9% del peso de toda la portada. Con
+            autoPlay el navegador lo descarga entero AUNQUE lleve preload="none"
+            (autoPlay lo anula), así que en 4G lento era lo único que hacía
+            sentir la página lenta. Medido: 1.406 KB de 1.407 KB totales.
+
+            Ahora solo se monta cuando: la página ya está pintada e inactiva
+            (requestIdleCallback), la conexión no es lenta ni con ahorro de
+            datos, y el usuario no pide reducir movimiento. Debajo ya hay un
+            <picture> con el poster, así que sin vídeo la portada se ve igual
+            de bien — solo pierde el movimiento de fondo. */}
+        {mostrarVideoHero && (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="none"
+            poster="/videos/hero-poster.jpg"
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+            style={{ filter: 'saturate(1.2) brightness(0.5)', opacity: 0.9, objectPosition: 'center 30%' }}
+          >
+            <source src="/videos/hero.mp4" type="video/mp4" />
+          </video>
+        )}
         {/* Gradient: subtle top → fades to white at bottom */}
         <div className="absolute inset-0 pointer-events-none" style={{
           background: 'linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.3) 70%, #ffffff 100%)'
