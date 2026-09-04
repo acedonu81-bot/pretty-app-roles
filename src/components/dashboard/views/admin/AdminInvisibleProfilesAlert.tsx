@@ -1,7 +1,15 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { EyeOff, Camera, MapPin } from 'lucide-react';
+import { EyeOff, Camera, MapPin, Check } from 'lucide-react';
 import { ROLE_ES } from '@/lib/constants';
+
+const DISMISS_KEY = 'xpeak_admin_invisible_profiles_dismissed';
+
+// Firma del conjunto actual (no solo el conteo): si cambia un solo user_id
+// —entra uno nuevo o se completa uno de los que había— el "visto" se invalida
+// y el aviso vuelve a aparecer, aunque el total dé la misma cifra.
+const signatureOf = (perfiles: Perfil[]) =>
+  perfiles.map(p => p.user_id).sort().join(',');
 
 // Aviso PERMANENTE de perfiles que no aparecen en ningún directorio de ciudad
 // hoy, sea el alta de ayer o de hace tres meses.
@@ -31,6 +39,15 @@ const roleLabel = (r: string | null) => (r ? ROLE_ES[r] ?? r : 'Sin rol');
 
 const AdminInvisibleProfilesAlert = ({ onOpenUsers }: { onOpenUsers?: () => void } = {}) => {
   const [perfiles, setPerfiles] = useState<Perfil[]>([]);
+  const [dismissedSignature, setDismissedSignature] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      setDismissedSignature(localStorage.getItem(DISMISS_KEY));
+    } catch {
+      // localStorage inaccesible (Safari privado, etc.) — el aviso se muestra siempre
+    }
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -43,6 +60,17 @@ const AdminInvisibleProfilesAlert = ({ onOpenUsers }: { onOpenUsers?: () => void
   }, []);
 
   if (perfiles.length === 0) return null;
+  if (dismissedSignature !== null && dismissedSignature === signatureOf(perfiles)) return null;
+
+  const handleDismiss = () => {
+    const signature = signatureOf(perfiles);
+    try {
+      localStorage.setItem(DISMISS_KEY, signature);
+    } catch {
+      // localStorage inaccesible — el click no persiste, pero no rompe nada
+    }
+    setDismissedSignature(signature);
+  };
 
   return (
     <div
@@ -89,8 +117,8 @@ const AdminInvisibleProfilesAlert = ({ onOpenUsers }: { onOpenUsers?: () => void
               )}
             </ul>
 
-            {onOpenUsers && (
-              <div className="flex flex-wrap gap-2 mt-3">
+            <div className="flex flex-wrap gap-2 mt-3">
+              {onOpenUsers && (
                 <button
                   onClick={onOpenUsers}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold"
@@ -98,8 +126,16 @@ const AdminInvisibleProfilesAlert = ({ onOpenUsers }: { onOpenUsers?: () => void
                 >
                   Ver usuarios
                 </button>
-              </div>
-            )}
+              )}
+              <button
+                onClick={handleDismiss}
+                title="Ocultar hasta que cambie la lista de perfiles"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold"
+                style={{ background: 'transparent', color: '#9a3412' }}
+              >
+                <Check size={12} strokeWidth={3} /> Visto
+              </button>
+            </div>
           </div>
         </div>
       </div>
