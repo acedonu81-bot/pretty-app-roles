@@ -487,8 +487,11 @@ body.is-native-app nav.sticky {
 /* Accessible gold text for small labels on white/light surfaces */
 .text-gold-on-light { color: var(--gold-on-light); }
 
+/* Cuadrado en desktop, no 4/3: las fotos de perfil son retratos verticales y
+   en un hueco apaisado solo cabía una franja — se cortaba la cabeza o el
+   cuerpo. Móvil se queda en 3/4, que ya encaja con un retrato. */
 .aspect-card-photo { aspect-ratio: 3/4; }
-@media (min-width: 640px) { .aspect-card-photo { aspect-ratio: 4/3; } }
+@media (min-width: 640px) { .aspect-card-photo { aspect-ratio: 1/1; } }
 
 /* Ticker de actividad reciente en el dashboard */
 @keyframes xpeakActivityTicker {

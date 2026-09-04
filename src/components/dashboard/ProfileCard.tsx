@@ -87,14 +87,18 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
       whileHover={{ boxShadow: '0 8px 28px rgba(0,0,0,0.12)' }}
     >
       {/* ── FOTO HERO ── */}
-      <div className="relative pb-[125%] sm:pb-[62%]">
+      {/* Cuadrado en desktop, no apaisado: con pb-62% solo cabía una franja de
+          un retrato vertical (el 42% de la foto), así que o se cortaba la
+          cabeza o el cuerpo — no había object-position que lo salvara. En
+          cuadrado entra el 67%: cara y torso, que es lo que se quiere ver.
+          Móvil ya iba bien porque su hueco es vertical. */}
+      <div className="relative pb-[125%] sm:pb-[100%]">
         <div className="absolute inset-0 rounded-t-2xl sm:rounded-b-none" style={{ overflow: 'hidden' }}>
           {hasPhoto ? (
             <img src={p.photo} alt={p.name} loading="lazy" className="w-full h-full object-cover"
-              // El hueco es apaisado en desktop (pb-62%): centrar el recorte de
-              // un retrato vertical caía en plena frente y cortaba la cabeza.
-              // 5% deja la cara completa sin dejar aire muerto arriba.
-              style={{ objectPosition: '50% 5%' }}
+              // Los retratos traen la cara en el tercio superior: centrar el
+              // recorte la dejaba a ras del borde. 10% da aire sobre la cabeza.
+              style={{ objectPosition: '50% 10%' }}
               onError={() => setImgError(true)} />
           ) : (
             /* Sin foto el hueco es grande (214px de alto en móvil): un avatar

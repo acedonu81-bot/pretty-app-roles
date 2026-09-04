@@ -689,13 +689,10 @@ export default function DirectorioPublico() {
                           loading={i < 4 ? 'eager' : 'lazy'}
                           fetchPriority={i < 4 ? 'high' : undefined}
                           onError={() => setImgErrors(e => ({ ...e, [p.user_id]: true }))}
-                          // 50% 8%: la tarjeta 4:3 (desktop) recorta ~50% del alto
-                          // de un retrato vertical típico — object-center caía en
-                          // plena frente. Medido contra una foto real (retrato con
-                          // poco margen superior): 30% seguía cortando el nacimiento
-                          // del pelo, 8% deja la cara completa con margen de sobra.
+                          // Los retratos traen la cara en el tercio superior:
+                          // centrar el recorte la dejaba a ras del borde.
                           className="w-full h-full object-cover"
-                          style={{ objectPosition: '50% 8%' }} />
+                          style={{ objectPosition: '50% 10%' }} />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-5xl font-black"
                           style={{ background: 'linear-gradient(135deg,rgba(212,175,55,0.15),rgba(212,175,55,0.05))', color: '#D4AF37' }}>
