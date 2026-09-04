@@ -689,7 +689,12 @@ export default function DirectorioPublico() {
                           loading={i < 4 ? 'eager' : 'lazy'}
                           fetchPriority={i < 4 ? 'high' : undefined}
                           onError={() => setImgErrors(e => ({ ...e, [p.user_id]: true }))}
-                          className="w-full h-full object-cover" />
+                          // 50% 30%: mismo criterio que ProfessionalProfilePage — la
+                          // mayoría son retratos verticales con la cara en el tercio
+                          // superior. object-center recortaba la frente en tarjetas
+                          // anchas (4:3 desktop); object-top corta demasiado.
+                          className="w-full h-full object-cover"
+                          style={{ objectPosition: '50% 30%' }} />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-5xl font-black"
                           style={{ background: 'linear-gradient(135deg,rgba(212,175,55,0.15),rgba(212,175,55,0.05))', color: '#D4AF37' }}>

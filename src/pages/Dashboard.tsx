@@ -142,19 +142,28 @@ const RoleDefaultView = ({ onViewChange }: { onViewChange: (v: string) => void }
 // La marca "onboarded" vive en localStorage, así que un dispositivo/navegador
 // nuevo (p.ej. el WebView del enlace "Ver mensaje" del email) nunca la tiene
 // y vuelve a mostrar el wizard aunque el perfil real ya esté completo en
-// Supabase. Este gate usa role/display_name reales para saltarlo y
+// Supabase. Este gate usa datos reales del perfil para saltarlo y
 // re-sincronizar la marca en ese dispositivo.
+//
+// role/display_name YA existen desde el alta (los pone handle_new_user), así
+// que comprobar solo eso cerraba el wizard en el mismo instante en que se
+// abría — nadie llegaba nunca al paso de foto/ciudad/tarifa. Empresario no
+// pasa por ese paso (ver OnboardingWizard "selectedRole !== 'empresario'"),
+// así que para el resto de roles también se exige foto real y ciudad real.
 const WizardGate = ({ showWizard, setShowWizard }: { showWizard: boolean; setShowWizard: (v: boolean) => void }) => {
   const { user } = useAuth();
-  const { role, display_name, loading } = useProfile();
+  const { role, display_name, photo_url, zone, loading } = useProfile();
   useEffect(() => {
     if (!showWizard || loading || !user) return;
-    const isComplete = !!role && role !== 'pending' && !!display_name?.trim();
+    const hasPhoto = !!photo_url && photo_url.length > 10;
+    const hasRealZone = !!zone?.trim() && zone !== 'España';
+    const isComplete = !!role && role !== 'pending' && !!display_name?.trim()
+      && (role === 'empresario' || (hasPhoto && hasRealZone));
     if (isComplete) {
       localStorage.setItem(`xpeak_onboarded_${user.id}`, '1');
       setShowWizard(false);
     }
-  }, [showWizard, loading, role, display_name, user, setShowWizard]);
+  }, [showWizard, loading, role, display_name, photo_url, zone, user, setShowWizard]);
   return null;
 };
 
