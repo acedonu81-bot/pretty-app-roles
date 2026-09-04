@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, Headphones, BookOpen, Video, Music, Instagram, Send, X, Shield, Check, Plus } from 'lucide-react';
 import { toast } from 'sonner';
 import { addToCart, useEventCart, MAX_CART_ITEMS } from '@/lib/eventCart';
+import CondicionesPublicas from '@/components/CondicionesPublicas';
 import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack } from '@/lib/streaming';
 import SessionAudioPlayer from '@/components/SessionAudioPlayer';
 import { profiles, toSlug } from '@/data/profiles';
@@ -262,6 +263,21 @@ interface SupabaseProfile {
   bio: string | null;
   photo_url: string | null;
   hourly_rate: number | null;
+  // "Mis condiciones" — lo que el profesional fija y quien contrata lee ANTES
+  // de escribirle. Todas opcionales: un perfil sin condiciones no muestra nada.
+  min_hours?: number | null;
+  overtime_after_hours?: number | null;
+  overtime_surcharge_pct?: number | null;
+  night_surcharge_pct?: number | null;
+  holiday_surcharge_pct?: number | null;
+  payment_days_max?: number | null;
+  travel_free_km?: number | null;
+  travel_fee?: number | null;
+  excluded_services?: string[] | null;
+  uniform_provided_by?: string | null;
+  available_weekdays?: number[] | null;
+  min_notice_hours?: number | null;
+  conditions_note?: string | null;
   genres: string[] | null;
   is_live: boolean;
   is_verified: boolean;
@@ -326,11 +342,11 @@ const PublicProfile = () => {
 
     const query = isUUID
       ? supabase.from('profiles')
-          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, is_early_adopter_override')
+          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, is_early_adopter_override, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note')
           .eq('user_id', slug)
           .maybeSingle()
       : supabase.from('profiles')
-          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, is_early_adopter_override')
+          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, is_early_adopter_override, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note')
           .not('display_name', 'is', null)
           .then(({ data, error }) => {
             // ILIKE no entiende acentos/e\u00f1es (slug.replace('-','%') nunca
@@ -884,6 +900,16 @@ const PublicProfile = () => {
               <p className="text-base leading-relaxed" style={{ color: '#333' }}>{profile.description}</p>
             </motion.div>
           )}
+
+          {/* Condiciones del profesional — antes de cualquier CTA de contacto:
+              quien escriba ya sabe a qué atenerse, y quien no las acepte no le
+              hace perder el tiempo. Si no ha declarado ninguna, no se pinta. */}
+          <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
+            {/* sbProfile, no profile: `profile` es un remapeo a camelCase que no
+                copia estas columnas, y duplicarlas ahi solo para esto seria un
+                sitio mas donde olvidarse de anadir la siguiente. */}
+            <CondicionesPublicas p={(sbProfile ?? {}) as any} nombre={profile.name} />
+          </motion.div>
 
           {/* Clases particulares (bailarines) */}
           {profile.role === 'bailarin' && (profile as any).offersClasses && (
