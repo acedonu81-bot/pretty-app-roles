@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 /**
@@ -17,6 +17,14 @@ import { supabase } from '@/integrations/supabase/client';
  */
 export function useAdminActivityAlert(isAdmin: boolean): { hayNuevo: boolean; marcarVisto: () => Promise<void> } {
   const [hayNuevo, setHayNuevo] = useState(false);
+  // supabase.channel(topic) devuelve la MISMA instancia si ya existe un canal
+  // con ese nombre. Este hook se monta a la vez en el sidebar y en la pestaña
+  // Actividad: con un nombre fijo, el segundo montaje intentaba añadir
+  // callbacks a un canal ya suscrito y Supabase lanza "cannot add
+  // postgres_changes callbacks after subscribe()" — un error de render sin
+  // capturar que tumbaba TODO el dashboard a pantalla en blanco. Mismo arreglo
+  // que ya llevaba useDashboardBadges por esta misma razón.
+  const instanceId = useRef(Math.random().toString(36).slice(2)).current;
 
   const comprobar = useCallback(async () => {
     const { data, error } = await (supabase.rpc as any)('admin_activity_nuevos');
@@ -39,7 +47,7 @@ export function useAdminActivityAlert(isAdmin: boolean): { hayNuevo: boolean; ma
     load();
     const timer = setInterval(load, 120_000);
     const channel = supabase
-      .channel('admin-activity-alert')
+      .channel(`admin-activity-alert-${instanceId}`)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'flash_bookings' }, load)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'profiles' }, load)
       .subscribe();
@@ -49,7 +57,7 @@ export function useAdminActivityAlert(isAdmin: boolean): { hayNuevo: boolean; ma
       clearInterval(timer);
       supabase.removeChannel(channel);
     };
-  }, [isAdmin, comprobar]);
+  }, [isAdmin, comprobar, instanceId]);
 
   return { hayNuevo, marcarVisto };
 }

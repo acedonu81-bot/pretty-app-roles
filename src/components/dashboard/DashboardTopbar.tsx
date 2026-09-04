@@ -1,5 +1,5 @@
 import { Search, LogOut, Menu, Sparkles, Bell, X, MessageCircle, Gift, Zap, CalendarCheck } from 'lucide-react';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProfile } from '@/hooks/useProfile';
 import { supabase } from '@/integrations/supabase/client';
@@ -33,6 +33,9 @@ interface TopbarProps {
 const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', onHome, userId, isEmpresario = false, onViewChange }: TopbarProps) => {
   const navigate = useNavigate();
   const [showNotif, setShowNotif] = useState(false);
+  // Único por instancia además de por usuario: dos montajes del mismo
+  // componente compartirían canal y el segundo fallaría al suscribirse.
+  const instanceIdNotif = useRef(Math.random().toString(36).slice(2)).current;
   const [dismissed, setDismissed] = useState<Set<string>>(() => {
     try {
       const s = localStorage.getItem('xpeak_notif_dismissed');
@@ -78,7 +81,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
     supabase.auth.getUser().then(({ data: { user } }) => {
       if (!user) return;
       channel = supabase
-        .channel('notif-' + user.id)
+        .channel(`notif-${user.id}-${instanceIdNotif}`)
         .on('postgres_changes',
           { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${user.id}` },
           () => loadNotifs())

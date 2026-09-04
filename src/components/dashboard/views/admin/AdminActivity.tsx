@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAdminActivityAlert } from '@/hooks/useAdminActivityAlert';
 import { UserPlus, CalendarClock, UserMinus, Star, Phone, RefreshCw, AlertTriangle } from 'lucide-react';
@@ -57,6 +57,10 @@ const AdminActivity = () => {
   // leído" que haya que acordarse de pulsar.
   const { marcarVisto } = useAdminActivityAlert(true);
   const [items, setItems] = useState<Movimiento[]>([]);
+  // Nombre de canal único por instancia: con uno fijo, dos montajes a la vez
+  // rompen con "cannot add postgres_changes callbacks after subscribe()" y
+  // tumban el dashboard entero a pantalla en blanco.
+  const instanceId = useRef(Math.random().toString(36).slice(2)).current;
   const [filtro, setFiltro] = useState<typeof FILTROS[number]['id']>('todo');
   const [cargando, setCargando] = useState(true);
 
@@ -76,7 +80,7 @@ const AdminActivity = () => {
     const visto = setTimeout(() => { marcarVisto(); }, 1500);
     // Realtime sobre las dos tablas que generan los sucesos que urgen.
     const ch = supabase
-      .channel('admin-activity')
+      .channel(`admin-activity-${instanceId}`)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'flash_bookings' }, cargar)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, cargar)
       .subscribe();

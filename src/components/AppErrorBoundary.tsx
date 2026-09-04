@@ -15,12 +15,12 @@ import { Component, type ErrorInfo, type ReactNode } from 'react';
  * todo o que vuelva a intentarlo.
  */
 interface Props { children: ReactNode }
-interface State { error: Error | null }
+interface State { error: Error | null; esAdmin: boolean }
 
 export default class AppErrorBoundary extends Component<Props, State> {
-  state: State = { error: null };
+  state: State = { error: null, esAdmin: false };
 
-  static getDerivedStateFromError(error: Error): State {
+  static getDerivedStateFromError(error: Error): Partial<State> {
     return { error };
   }
 
@@ -42,20 +42,33 @@ export default class AppErrorBoundary extends Component<Props, State> {
 
     // Best-effort: si esto también falla (p.ej. sin red), no debe impedir
     // que el usuario vea igualmente la pantalla de recuperación de abajo.
-    try {
-      fetch('https://ddrqhwravupjzysriblq.supabase.co/rest/v1/rpc/log_client_error', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          p_message: error.message,
-          p_stack: (error.stack ?? '').slice(0, 4000),
-          p_component_stack: (info.componentStack ?? '').slice(0, 4000),
-          p_url: window.location.href,
-          p_user_agent: navigator.userAgent,
-        }),
-        keepalive: true,
-      }).catch(() => {});
-    } catch { /* noop */ }
+    // Vía el cliente de supabase-js, no un fetch a pelo: la llamada directa
+    // omitía la cabecera `apikey` que Supabase exige SIEMPRE, así que el POST
+    // se rechazaba y client_errors quedaba vacía — un crash real reportado por
+    // el usuario no dejó ni una fila. Import dinámico para no arrastrar el
+    // cliente al arranque ni romper si el propio módulo es lo que falló.
+    // El detalle técnico solo se enseña a un admin: a un usuario normal le da
+    // mala imagen (parece la plataforma rota) y expone nombres de funciones y
+    // rutas internas del código. Para él basta el mensaje claro + Recargar.
+    import('@/integrations/supabase/client')
+      .then(async ({ supabase }) => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          const { data } = await supabase
+            .from('user_roles').select('role')
+            .eq('user_id', user.id).eq('role', 'admin').maybeSingle();
+          if (data) this.setState({ esAdmin: true });
+        }
+        return supabase;
+      })
+      .then((supabase: any) => (supabase.rpc as any)('log_client_error', {
+        p_message: error.message,
+        p_stack: (error.stack ?? '').slice(0, 4000),
+        p_component_stack: (info.componentStack ?? '').slice(0, 4000),
+        p_url: window.location.href,
+        p_user_agent: navigator.userAgent,
+      }))
+      .catch(() => { /* el detalle técnico visible de abajo es el respaldo */ });
   }
 
   render() {
@@ -72,6 +85,27 @@ export default class AppErrorBoundary extends Component<Props, State> {
         <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', maxWidth: 320 }}>
           Ya lo sabemos. Prueba a recargar — si sigue pasando, escríbenos.
         </p>
+        {/* Solo para admin: el envío a client_errors puede fallar (sin red,
+            RLS, CSP) y entonces el crash no deja rastro consultable. Tenerlo
+            aquí garantiza que siempre haya algo que leer, sin enseñarle un
+            volcado de código a un usuario normal. */}
+        {this.state.esAdmin && (
+        <details style={{ marginTop: 4, maxWidth: 520, width: '100%' }}>
+          <summary style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', cursor: 'pointer' }}>
+            Ver detalle técnico
+          </summary>
+          <pre style={{
+            marginTop: 8, padding: 12, borderRadius: 8, textAlign: 'left',
+            fontSize: 11, lineHeight: 1.5, color: '#fca5a5',
+            background: 'rgba(255,255,255,0.05)', overflow: 'auto', maxHeight: 260,
+            whiteSpace: 'pre-wrap', wordBreak: 'break-word',
+          }}>
+            {this.state.error.message}
+            {'\n\n'}
+            {(this.state.error.stack ?? '').slice(0, 1500)}
+          </pre>
+        </details>
+        )}
         <button
           onClick={() => { this.setState({ error: null }); window.location.reload(); }}
           style={{
