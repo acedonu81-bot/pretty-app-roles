@@ -1,5 +1,6 @@
 import { ExternalLink } from 'lucide-react';
 import { AFFILIATE_CATALOG, resolveAffiliateKey, hexToRgba } from '@/lib/affiliate';
+import { logAffiliateClick } from '@/lib/track';
 
 /**
  * Bloque de recursos/equipo recomendado con enlaces de afiliado Amazon (tag
@@ -51,6 +52,7 @@ export default function DJResourcesAffiliate({ role = 'dj' }: { role?: string })
             const Icon = r.icon;
             return (
               <a key={r.title} href={r.href} target="_blank" rel="sponsored noopener noreferrer"
+                onClick={() => logAffiliateClick(r.title)}
                 className="flex flex-col rounded-xl p-4 transition-all hover:scale-[1.02]"
                 style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)' }}>
                 <Icon size={20} style={{ color: accent }} className="mb-2" />

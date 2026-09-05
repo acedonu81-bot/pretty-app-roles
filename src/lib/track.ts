@@ -106,6 +106,7 @@ function referrerHost(): string {
 export async function logEvent(
   eventName: string,
   path: string = location.pathname,
+  detalle?: string,
 ) {
   try {
     const { supabase } = await import('@/integrations/supabase/client');
@@ -118,15 +119,26 @@ export async function logEvent(
     // `this` y la llamada revienta por dentro — y como aquí abajo hay un catch
     // silencioso, el fallo no dejaba ni rastro en consola ni petición de red.
     const sb = supabase as unknown as {
-      rpc: (fn: string, args: Record<string, unknown>) => Promise<unknown>;
+      rpc: (fn: string, args: Record<string, unknown>) => Promise<{ error: { message: string } | null }>;
     };
-    await sb.rpc('log_analytics_event', {
+    const base = {
       p_event_name: eventName,
       p_path: path,
       p_referrer: referrerHost(),
       p_device: deviceType(),
       p_session_id: sessionId(),
-    });
+    };
+
+    const r = await sb.rpc('log_analytics_event', { ...base, p_detalle: detalle ?? null });
+
+    // Postgres identifica las funciones por su lista de parámetros, así que
+    // mientras la migración que añade p_detalle no esté aplicada, la llamada
+    // con ese argumento no encuentra ninguna función y el evento se perdería
+    // entero. Se reintenta sin él: mejor registrar la visita sin su detalle
+    // que no registrar nada.
+    if (r?.error && /Could not find the function/i.test(r.error.message)) {
+      await sb.rpc('log_analytics_event', base);
+    }
   } catch (e) {
     // La analítica nunca rompe la app: en producción se traga el fallo. Pero
     // en desarrollo se avisa — un catch totalmente mudo aquí ya ocultó un bug
@@ -139,4 +151,46 @@ export async function logEvent(
 /** Visita de página. Se llama en cada cambio de ruta. */
 export function logPageView(path: string = location.pathname) {
   void logEvent('page_view', path);
+}
+
+/**
+ * Búsqueda dentro de XPEAK. `resultados` distingue las que encuentran algo de
+ * las que no: las segundas son la lista de lo que el catálogo no cubre, y ese
+ * dato no lo da ni GA4 ni Search Console porque no es búsqueda de Google.
+ *
+ * Se descartan términos de 1 carácter (teclear a medias) y se recorta a 120
+ * para no guardar textos largos pegados por error.
+ */
+export function logSearch(termino: string, resultados: number) {
+  const q = termino.trim().slice(0, 120);
+  if (q.length < 2) return;
+  void logEvent(resultados === 0 ? 'search_sin_resultados' : 'search', location.pathname, q);
+}
+
+/**
+ * Clic en un enlace de afiliado. Amazon informa de ventas, nunca de clics por
+ * producto: sin esto no se puede distinguir "nadie lo pincha" (problema de
+ * visibilidad) de "lo pinchan y no compran" (problema de producto).
+ */
+export function logAffiliateClick(producto: string) {
+  void logEvent('affiliate_click', location.pathname, producto.slice(0, 120));
+}
+
+/** Ficha de profesional abierta. Mide si el directorio se explora de verdad. */
+export function logProfileView(rolONombre: string) {
+  void logEvent('profile_view', location.pathname, rolONombre.slice(0, 120));
+}
+
+/** Intento de contacto: el paso previo a que el negocio ocurra. */
+export function logContactClick(contexto: string) {
+  void logEvent('contact_click', location.pathname, contexto.slice(0, 120));
+}
+
+/** Alta y acceso, para cerrar el embudo visita → registro. */
+export function logSignup(rol?: string) { void logEvent('signup', location.pathname, rol); }
+export function logLogin() { void logEvent('login'); }
+
+/** Filtro de rol usado en el directorio: qué categorías se buscan más. */
+export function logFiltroRol(rol: string) {
+  void logEvent('filtro_rol', location.pathname, rol.slice(0, 60));
 }

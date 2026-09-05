@@ -4,7 +4,7 @@ import { X, Zap, Calendar, MapPin, MessageSquare, Euro, Sparkles } from 'lucide-
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { trackLead } from '@/lib/track';
+import { trackLead, logEvent } from '@/lib/track';
 
 const EVENT_HOURS: Record<string, number> = {
   'Boda': 6, 'Comunión': 4, 'Evento corporativo': 5, 'Fiesta privada': 4,
@@ -63,6 +63,7 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
     if (error) { setSending(false); toast.error('Error al enviar la solicitud. Inténtalo de nuevo.'); return; }
 
     trackLead('flash_booking', { role: professionalRole || 'unknown' });
+    void logEvent('flash_request', location.pathname, professionalRole || 'desconocido');
 
     // Email a admin
     supabase.functions.invoke('send-email', { body: { type: 'flash_booking', data: payload } })

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { AnimatePresence } from 'framer-motion';
@@ -56,6 +56,7 @@ const OnboardingTour = lazy(() => import('@/components/dashboard/OnboardingTour'
 const OnboardingWizard = lazy(() => import('@/components/OnboardingWizard'));
 const AmbientBackground = lazy(() => import('@/components/AmbientBackground'));
 import { DEFAULT_ZONE } from '@/lib/constants';
+import { logProfileView } from '@/lib/track';
 
 const PROFILE_VIEWS = new Set(['profile', 'ficha', 'stats']);
 
@@ -195,7 +196,15 @@ const Dashboard = () => {
   });
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [messagesTarget, setMessagesTarget] = useState<{ userId: string; name: string } | null>(null);
-  const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
+  const [selectedProfile, setSelectedProfileRaw] = useState<Profile | null>(null);
+
+  // Envoltorio para registrar la apertura de ficha en un solo punto: se pasa
+  // como onViewProfile a las ~20 vistas de rol, así que hacerlo aquí evita
+  // repetir la llamada (y olvidarla) en cada una.
+  const setSelectedProfile = useCallback((p: Profile | null) => {
+    if (p) logProfileView(p.role ?? 'desconocido');
+    setSelectedProfileRaw(p);
+  }, []);
   const [searchQuery, setSearchQuery] = useState('');
   const [showWizard, setShowWizard] = useState(false);
   const isMobile = useIsMobile();
@@ -242,7 +251,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (!selectedProfile) return;
     window.history.pushState({ profileOpen: true }, '');
-    const onPop = () => setSelectedProfile(null);
+    const onPop = () => setSelectedProfileRaw(null);
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
   }, [selectedProfile]);

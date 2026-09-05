@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Crown, Users, Globe, Zap } from 'lucide-react';
 import { Profile } from '@/data/profiles';
@@ -11,6 +11,7 @@ import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion } from '@/
 import { expandRole } from '@/lib/constants';
 import { isEarlyAdopter } from '@/lib/earlyAdopter';
 import ResourcesBanner from '@/components/dashboard/ResourcesBanner';
+import { logSearch, logProfileView, logFiltroRol } from '@/lib/track';
 
 interface DirectoryViewProps {
   role: string;
@@ -198,6 +199,24 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
     if (filterDanceRole && p.danceRole !== filterDanceRole && p.danceRole !== 'ambos') return false;
     return true;
   });
+
+  // Se registra la búsqueda 900 ms después de la última tecla: sin esperar,
+  // "camarero" generaría 8 eventos (uno por letra) y el informe de términos
+  // sería ilegible. Con el número de resultados incluido, porque una búsqueda
+  // que devuelve 0 es la que dice qué inventario falta.
+  useEffect(() => {
+    const q = searchQuery?.trim();
+    if (!q || q.length < 2) return;
+    const t = setTimeout(() => logSearch(q, filteredProfiles.length), 900);
+    return () => clearTimeout(t);
+    // filteredProfiles.length y no el array: solo importa cuántos hay.
+  }, [searchQuery, filteredProfiles.length]);
+
+  // Qué categoría se explora. Con role/roles se sabe en qué vista está.
+  useEffect(() => {
+    const r = role ?? (roles?.length ? roles.join(',') : null);
+    if (r) logFiltroRol(r);
+  }, [role, roles]);
 
   const gridClass = wideCards
     ? 'grid grid-cols-1 sm:grid-cols-2 gap-5'

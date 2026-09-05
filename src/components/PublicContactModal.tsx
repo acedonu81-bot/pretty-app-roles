@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { X, Send, CheckCircle, Zap } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { trackLead } from '@/lib/track';
+import { trackLead, logContactClick } from '@/lib/track';
 
 interface Props {
   professionalName: string;
@@ -58,6 +58,7 @@ export default function PublicContactModal({ professionalName, professionalUserI
       if (insertError) throw insertError;
 
       trackLead('contact_modal', { role: professionalRole ?? 'unknown' });
+      logContactClick(professionalRole ?? 'desconocido');
 
       // Aviso a admin (registro interno)
       supabase.functions.invoke('send-email', { body: { type: 'flash_booking', data: payload } })

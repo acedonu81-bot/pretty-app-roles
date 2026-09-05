@@ -23,6 +23,10 @@ type Dia = { dia: string; visitas: number; sesiones: number; registros: number }
 type Hora = { hora: number; visitas: number };
 type Top = { tipo: string; valor: string; visitas: number };
 type Negocio = { dia: string; altas: number; solicitudes: number; mensajes: number };
+type Busqueda = { termino: string; veces: number; sin_resultados: number };
+type Afiliado = { producto: string; clics: number; desde: string };
+type Blog = { articulo: string; visitas: number; sesiones: number; desde_buscador: number };
+type Embudo = { paso: string; orden: number; cantidad: number };
 
 const GOLD = '#B8941E';
 const RANGOS = [7, 30, 90];
@@ -63,6 +67,10 @@ export default function AdminAnalytics() {
   const [porHora, setPorHora] = useState<Hora[]>([]);
   const [top, setTop] = useState<Top[]>([]);
   const [negocio, setNegocio] = useState<Negocio[]>([]);
+  const [busquedas, setBusquedas] = useState<Busqueda[]>([]);
+  const [afiliados, setAfiliados] = useState<Afiliado[]>([]);
+  const [blog, setBlog] = useState<Blog[]>([]);
+  const [embudo, setEmbudo] = useState<Embudo[]>([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -79,11 +87,15 @@ export default function AdminAnalytics() {
       rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown; error: { message: string } | null }>;
     };
 
-    const [d, h, t, n] = await Promise.all([
+    const [d, h, t, n, bus, afi, blg, emb] = await Promise.all([
       sb.rpc('panel_analytics_dia', { p_dias: dias }),
       sb.rpc('panel_analytics_hora', { p_dias: Math.min(dias, 30) }),
       sb.rpc('panel_analytics_top', { p_dias: dias, p_limite: 8 }),
       sb.rpc('panel_analytics_negocio', { p_dias: dias }),
+      sb.rpc('panel_analytics_busquedas', { p_dias: dias, p_limite: 15 }),
+      sb.rpc('panel_analytics_afiliados', { p_dias: dias, p_limite: 15 }),
+      sb.rpc('panel_analytics_blog', { p_dias: dias, p_limite: 15 }),
+      sb.rpc('panel_analytics_embudo', { p_dias: dias }),
     ]);
 
     const fallo = [d, h, t, n].find(r => r.error);
@@ -102,6 +114,13 @@ export default function AdminAnalytics() {
     setPorHora((h.data as Hora[]) ?? []);
     setTop((t.data as Top[]) ?? []);
     setNegocio((n.data as Negocio[]) ?? []);
+    // Las cuatro de abajo son de la segunda migración: si esa no está aplicada
+    // todavía, se quedan vacías y sus paneles muestran su propio aviso, en vez
+    // de tumbar el panel entero que sí funciona.
+    setBusquedas((bus.data as Busqueda[]) ?? []);
+    setAfiliados((afi.data as Afiliado[]) ?? []);
+    setBlog((blg.data as Blog[]) ?? []);
+    setEmbudo((emb.data as Embudo[]) ?? []);
     setCargando(false);
   }, [dias]);
 
@@ -234,6 +253,129 @@ export default function AdminAnalytics() {
             <Bar dataKey="mensajes" name="Mensajes" fill="#34D399" radius={[3, 3, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
+      </Panel>
+
+      {/* EMBUDO — la cifra que dice si el tráfico sirve para algo. 400 visitas
+          con 0 solicitudes es un problema distinto de 40 con 4, y la gráfica
+          de tráfico sola no los distingue. */}
+      {embudo.length > 0 && embudo.some(e => Number(e.cantidad) > 0) && (
+        <Panel title="Embudo" hint="De la visita al contacto. Cada paso son personas distintas, no clics.">
+          <div className="flex flex-col gap-2">
+            {embudo.map(e => {
+              const max = Math.max(...embudo.map(x => Number(x.cantidad) || 0), 1);
+              const pct = (Number(e.cantidad) / max) * 100;
+              const primero = Number(embudo[0]?.cantidad) || 0;
+              const conv = primero > 0 ? ((Number(e.cantidad) / primero) * 100).toFixed(1) : '0';
+              return (
+                <div key={e.paso} className="flex items-center gap-3">
+                  <span className="text-[0.75rem] font-bold w-44 flex-shrink-0" style={{ color: 'rgba(10,9,8,0.7)' }}>
+                    {e.paso}
+                  </span>
+                  <div className="flex-1 h-7 rounded-lg overflow-hidden" style={{ background: 'rgba(10,9,8,0.04)' }}>
+                    <div className="h-full rounded-lg flex items-center px-2 transition-all"
+                      style={{ width: `${Math.max(pct, 3)}%`, background: 'linear-gradient(90deg,#E0BC4B,#B8941E)' }}>
+                      <span className="text-[0.7rem] font-black" style={{ color: '#1a1208' }}>{e.cantidad}</span>
+                    </div>
+                  </div>
+                  <span className="text-[0.7rem] font-bold w-12 text-right flex-shrink-0" style={{ color: 'rgba(10,9,8,0.45)' }}>
+                    {conv}%
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </Panel>
+      )}
+
+      {/* BÚSQUEDAS INTERNAS — lo que la gente pide dentro de XPEAK. Las que dan
+          0 resultados son literalmente la lista de qué inventario falta. */}
+      <Panel
+        title="Qué buscan dentro de XPEAK"
+        hint="Términos escritos en el buscador. Los marcados en rojo no devolvieron ningún resultado: eso es inventario que te piden y no tienes."
+      >
+        {busquedas.length === 0 ? (
+          <p className="text-[0.75rem]" style={{ color: 'rgba(10,9,8,0.4)' }}>
+            Todavía nadie ha buscado (o falta aplicar la segunda migración).
+          </p>
+        ) : (
+          <div className="flex flex-col gap-1.5">
+            {busquedas.map(b => {
+              const vacia = Number(b.sin_resultados) > 0;
+              return (
+                <div key={b.termino} className="flex items-center gap-2 py-1">
+                  <span className="text-[0.78rem] flex-1 truncate" style={{ color: vacia ? '#b91c1c' : 'rgba(10,9,8,0.75)' }}>
+                    {b.termino}
+                  </span>
+                  {vacia && (
+                    <span className="text-[0.6rem] font-black px-1.5 py-0.5 rounded-full flex-shrink-0"
+                      style={{ background: 'rgba(220,38,38,0.1)', color: '#b91c1c' }}>
+                      {b.sin_resultados} sin resultados
+                    </span>
+                  )}
+                  <span className="text-[0.75rem] font-black flex-shrink-0 w-8 text-right" style={{ color: GOLD }}>
+                    {Number(b.veces) + Number(b.sin_resultados)}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </Panel>
+
+      {/* AFILIACIÓN — Amazon informa de ventas, nunca de clics por producto.
+          Sin esto no se distingue "nadie lo pincha" de "lo pinchan y no
+          compran", que son dos arreglos completamente distintos. */}
+      <Panel
+        title="Clics en enlaces de afiliado"
+        hint="Qué producto se pincha y desde dónde. Amazon solo reporta ventas, así que este es el único sitio donde ves el clic."
+      >
+        {afiliados.length === 0 ? (
+          <p className="text-[0.75rem]" style={{ color: 'rgba(10,9,8,0.4)' }}>
+            Sin clics todavía. Empieza a contar desde este despliegue.
+          </p>
+        ) : (
+          <div className="flex flex-col gap-1.5">
+            {afiliados.map(a => (
+              <div key={a.producto} className="flex items-center gap-2 py-1">
+                <span className="text-[0.78rem] flex-1 truncate" style={{ color: 'rgba(10,9,8,0.75)' }}>{a.producto}</span>
+                <span className="text-[0.6rem] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0"
+                  style={{ background: 'rgba(10,9,8,0.05)', color: 'rgba(10,9,8,0.5)' }}>
+                  {a.desde}
+                </span>
+                <span className="text-[0.75rem] font-black flex-shrink-0 w-8 text-right" style={{ color: GOLD }}>{a.clics}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </Panel>
+
+      {/* BLOG — ~380 URLs escritas a ciegas hasta ahora. */}
+      <Panel
+        title="Artículos del blog que funcionan"
+        hint="Visitas por artículo y cuántas vienen de un buscador. Lo que no aparece aquí, no lo lee nadie."
+      >
+        {blog.length === 0 ? (
+          <p className="text-[0.75rem]" style={{ color: 'rgba(10,9,8,0.4)' }}>
+            Sin visitas a artículos registradas todavía.
+          </p>
+        ) : (
+          <div className="flex flex-col gap-1.5">
+            {blog.map(b => (
+              <div key={b.articulo} className="flex items-center gap-2 py-1">
+                <span className="text-[0.78rem] flex-1 truncate" style={{ color: 'rgba(10,9,8,0.75)' }} title={b.articulo}>
+                  {b.articulo.replace('/blog/', '')}
+                </span>
+                {Number(b.desde_buscador) > 0 && (
+                  <span className="text-[0.6rem] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0"
+                    style={{ background: 'rgba(52,211,153,0.12)', color: '#047857' }}>
+                    {b.desde_buscador} de Google
+                  </span>
+                )}
+                <span className="text-[0.75rem] font-black flex-shrink-0 w-8 text-right" style={{ color: GOLD }}>{b.visitas}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </Panel>
 
       {/* Listas */}

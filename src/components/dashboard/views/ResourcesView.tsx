@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import { ExternalLink, ShoppingBag, BookOpen, Calculator, FileText, ArrowUpRight, Handshake, GraduationCap, Sparkles } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
+import { logAffiliateClick, logEvent } from '@/lib/track';
 import {
   AFFILIATE_CATALOG, resolveAffiliateKey, hexToRgba, partnersForRole,
 } from '@/lib/affiliate';
@@ -116,6 +118,10 @@ export default function ResourcesView() {
   const shops = role ? partnersForRole(role, 'tienda') : [];
   const accent = cat?.accent ?? GOLD;
 
+  // Cuánta gente abre de verdad el panel de Recursos: sin esto no se sabe si
+  // el banner de la home funciona o si la sección está muerta.
+  useEffect(() => { void logEvent('resources_view', '/recursos', key ?? 'sin-catalogo'); }, [key]);
+
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
       {/* HERO — el panel tiene que leerse como una sección del producto, no
@@ -229,6 +235,7 @@ export default function ResourcesView() {
               const Icon = r.icon;
               return (
                 <a key={r.title} href={r.href} target="_blank" rel="sponsored noopener noreferrer"
+                  onClick={() => logAffiliateClick(r.title)}
                   className="group flex flex-col rounded-2xl overflow-hidden transition-all hover:shadow-md hover:-translate-y-0.5"
                   style={{ background: '#fff', border: `1px solid ${hexToRgba(accent, 0.2)}` }}>
                   {/* Zona de imagen */}
