@@ -173,7 +173,7 @@ export default function ResourcesView() {
       {guides.length > 0 && (
         <section id="guias" className="mb-8 scroll-mt-4">
           <SectionTitle icon={BookOpen} hint="Escritas por XPEAK para tu oficio.">
-            Guías para {cat?.label.toLowerCase()}
+            Guías para {cat?.label}
           </SectionTitle>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {guides.map(g => (
@@ -222,7 +222,7 @@ export default function ResourcesView() {
       {cat && (
         <section id="equipo" className="mb-8 scroll-mt-4">
           <SectionTitle icon={ShoppingBag} hint="Material que usan profesionales del sector. Selección de XPEAK.">
-            Equipo para {cat.label.toLowerCase()}
+            Equipo para {cat.label}
           </SectionTitle>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             {cat.items.map(r => {
