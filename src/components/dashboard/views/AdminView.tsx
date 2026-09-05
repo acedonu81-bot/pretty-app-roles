@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Users, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2, UserMinus, Activity, ShieldCheck } from 'lucide-react';
+import { Users, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2, UserMinus, Activity, ShieldCheck, LineChart } from 'lucide-react';
 import AdminMetrics from './admin/AdminMetrics';
 import AdminCharts from './admin/AdminCharts';
 import AdminUserManagement from './admin/AdminUserManagement';
@@ -15,10 +15,12 @@ import AdminPendingBookingsAlert from './admin/AdminPendingBookingsAlert';
 import AdminActivity from './admin/AdminActivity';
 import AdminSaludSistema from './admin/AdminSaludSistema';
 import AdminDeletions from './admin/AdminDeletions';
+import AdminAnalytics from './admin/AdminAnalytics';
 
 const TABS = [
   { id: 'activity', label: 'Actividad', icon: Activity },
   { id: 'salud',    label: 'Salud',     icon: ShieldCheck },
+  { id: 'analytics', label: 'Tráfico', icon: LineChart },
   { id: 'overview', label: 'General', icon: LayoutGrid },
   { id: 'users', label: 'Usuarios', icon: Users },
   { id: 'empresarios', label: 'Empresarios', icon: Building2 },
@@ -70,6 +72,7 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
 
       {tab === 'activity' && <AdminActivity />}
       {tab === 'salud' && <AdminSaludSistema />}
+      {tab === 'analytics' && <AdminAnalytics />}
       {tab === 'overview' && (
         <>
           <AdminMetrics />

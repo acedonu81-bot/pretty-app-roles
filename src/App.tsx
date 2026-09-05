@@ -1,14 +1,15 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { XPeakToastProvider } from "@/lib/xpeak-toast";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 const Landing = lazy(() => import("./pages/Landing"));
 import NotFound from "./pages/NotFound";
 import CookieBanner from "./components/CookieBanner";
 import AppErrorBoundary from "./components/AppErrorBoundary";
 import EventCartWidget from "./components/EventCartWidget";
+import { logPageView } from "@/lib/track";
 
 // Code-split heavy routes — loaded on demand
 const Auth = lazy(() => import("./pages/Auth"));
@@ -367,6 +368,21 @@ const BlogCalculadoraTarifaDJ = lazy(() => import("./pages/BlogCalculadoraTarifa
 
 const queryClient = new QueryClient();
 
+/**
+ * Registra una visita en la analítica propia en cada cambio de ruta.
+ *
+ * Va DENTRO del BrowserRouter (necesita useLocation) y no renderiza nada. En
+ * una SPA el navegador solo dispara una carga real la primera vez, así que sin
+ * esto solo se contaría la página de entrada y no la navegación posterior.
+ */
+const RastreadorDeRutas = () => {
+  const location = useLocation();
+  useEffect(() => {
+    logPageView(location.pathname);
+  }, [location.pathname]);
+  return null;
+};
+
 const App = () => (
   <AppErrorBoundary>
   <HelmetProvider>
@@ -374,6 +390,7 @@ const App = () => (
     <XPeakToastProvider>
     <TooltipProvider>
       <BrowserRouter basename={import.meta.env.BASE_URL} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <RastreadorDeRutas />
         {/* Un solo pixel visible durante la carga (no un color plano a pantalla
             completa) para que un "se queda pensando y luego en blanco" real se
             pueda distinguir de este fallback esperado durante los ms que tarda

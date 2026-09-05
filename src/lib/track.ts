@@ -50,3 +50,82 @@ export function trackAIReferral() {
     if (hit) track('AI Referral', { source: hit.name, landing: location.pathname });
   } catch { /* referrer no disponible: sin efecto */ }
 }
+
+/* ---------------------------------------------------------------------------
+ * Analítica propia (tabla analytics_events en Supabase).
+ *
+ * GA4 se queda los datos y Vercel Analytics exige plan Pro, así que el panel
+ * de admin no tenía forma de responder "cuánta gente entró ayer y a qué hora".
+ * Esto guarda una copia mínima en la base de datos del propio proyecto.
+ *
+ * Deliberadamente NO se registra IP ni user-agent completo: solo ruta, origen
+ * y categoría de dispositivo. Así el registro no es un fichero de datos
+ * personales y no exige consentimiento previo de cookies.
+ * ------------------------------------------------------------------------- */
+
+const SESSION_KEY = 'xpeak_sid';
+
+/** Id de sesión efímero: distingue "1 persona viendo 8 páginas" de "8 personas". */
+function sessionId(): string {
+  try {
+    let sid = sessionStorage.getItem(SESSION_KEY);
+    if (!sid) {
+      sid = Math.random().toString(36).slice(2) + Date.now().toString(36);
+      sessionStorage.setItem(SESSION_KEY, sid);
+    }
+    return sid;
+  } catch {
+    // Modo privado o storage bloqueado: sin sesión, la visita cuenta igual.
+    return 'no-session';
+  }
+}
+
+function deviceType(): string {
+  const w = window.innerWidth;
+  if (w < 768) return 'mobile';
+  if (w < 1024) return 'tablet';
+  return 'desktop';
+}
+
+/** Solo el hostname del referrer: la URL completa puede llevar términos de búsqueda. */
+function referrerHost(): string {
+  try {
+    if (!document.referrer) return '';
+    const h = new URL(document.referrer).hostname;
+    return h === location.hostname ? '' : h;
+  } catch {
+    return '';
+  }
+}
+
+/**
+ * Registra un evento en la analítica propia. Nunca lanza ni bloquea: si la
+ * llamada falla (sin red, función no desplegada, RLS), la app sigue igual —
+ * la analítica jamás debe romper una pantalla al usuario.
+ */
+export async function logEvent(
+  eventName: string,
+  path: string = location.pathname,
+) {
+  try {
+    const { supabase } = await import('@/integrations/supabase/client');
+    // Cast: los tipos generados de Supabase (types.ts) no incluyen todavía las
+    // funciones de analítica; regenerarlos arrastraría el desfase que ya
+    // existe con contracts/leads/calendar_events y no toca hacerlo aquí.
+    const rpc = (supabase as unknown as {
+      rpc: (fn: string, args: Record<string, unknown>) => Promise<unknown>;
+    }).rpc;
+    await rpc('log_analytics_event', {
+      p_event_name: eventName,
+      p_path: path,
+      p_referrer: referrerHost(),
+      p_device: deviceType(),
+      p_session_id: sessionId(),
+    });
+  } catch { /* la analítica nunca rompe la app */ }
+}
+
+/** Visita de página. Se llama en cada cambio de ruta. */
+export function logPageView(path: string = location.pathname) {
+  void logEvent('page_view', path);
+}

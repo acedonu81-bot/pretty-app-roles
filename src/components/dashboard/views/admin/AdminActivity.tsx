@@ -22,6 +22,12 @@ interface Movimiento {
   contacto: string | null;
   ref: string;
   pendiente: boolean;
+  // Solo vienen informados en las solicitudes: qué pidió el cliente con sus
+  // palabras y para qué día es el evento. Sin esto la línea decía "Ramón ·
+  // sin responder · Valencia" y había que abrir la BD para saber si quería
+  // un camarero para el sábado o un DJ para diciembre.
+  que_pide?: string | null;
+  cuando_evento?: string | null;
 }
 
 const ESTILO: Record<Movimiento['tipo'], { icon: typeof UserPlus; color: string; fondo: string; etiqueta: string }> = {
@@ -214,7 +220,19 @@ const AdminActivity = () => {
                     <span className="text-sm font-bold truncate">{m.quien}</span>
                     {m.detalle && <span className="text-xs" style={{ color: '#555' }}>· {m.detalle}</span>}
                     {m.lugar && m.lugar !== '—' && <span className="text-xs" style={{ color: '#777' }}>· {m.lugar}</span>}
+                    {/* La fecha del evento es el dato que decide si esto corre
+                        prisa o no, así que va arriba y en negrita, no perdida
+                        entre el resto. */}
+                    {m.cuando_evento && (
+                      <span className="text-xs font-bold" style={{ color: e.color }}>· evento {m.cuando_evento}</span>
+                    )}
                   </div>
+
+                  {/* Lo que el cliente escribió. Es la diferencia entre saber
+                      qué quiere y tener que llamarle para preguntárselo. */}
+                  {m.que_pide && (
+                    <p className="text-xs mt-1 italic" style={{ color: '#666' }}>«{m.que_pide}»</p>
+                  )}
 
                   <div className="flex items-center gap-2 flex-wrap mt-1">
                     <span className="text-[0.7rem]" style={{ color: '#888' }}>{hace(m.cuando)}</span>
