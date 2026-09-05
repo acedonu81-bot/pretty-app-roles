@@ -72,16 +72,18 @@ export default function AdminAnalytics() {
     // Las cuatro llamadas son independientes: en paralelo, y si una falla se
     // muestran las demás en vez de dejar el panel entero en blanco.
     // Cast: types.ts no incluye todavía las funciones de analítica (mismo
-    // desfase que contracts/leads en el resto del repo).
-    const rpc = (supabase as unknown as {
+    // desfase que contracts/leads en el resto del repo). El cast va sobre el
+    // OBJETO y .rpc se llama sobre él: extraerlo a una variable suelta lo
+    // desliga de su `this` y la llamada falla por dentro.
+    const sb = supabase as unknown as {
       rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown; error: { message: string } | null }>;
-    }).rpc;
+    };
 
     const [d, h, t, n] = await Promise.all([
-      rpc('panel_analytics_dia', { p_dias: dias }),
-      rpc('panel_analytics_hora', { p_dias: Math.min(dias, 30) }),
-      rpc('panel_analytics_top', { p_dias: dias, p_limite: 8 }),
-      rpc('panel_analytics_negocio', { p_dias: dias }),
+      sb.rpc('panel_analytics_dia', { p_dias: dias }),
+      sb.rpc('panel_analytics_hora', { p_dias: Math.min(dias, 30) }),
+      sb.rpc('panel_analytics_top', { p_dias: dias, p_limite: 8 }),
+      sb.rpc('panel_analytics_negocio', { p_dias: dias }),
     ]);
 
     const fallo = [d, h, t, n].find(r => r.error);

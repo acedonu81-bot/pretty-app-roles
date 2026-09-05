@@ -112,17 +112,28 @@ export async function logEvent(
     // Cast: los tipos generados de Supabase (types.ts) no incluyen todavía las
     // funciones de analítica; regenerarlos arrastraría el desfase que ya
     // existe con contracts/leads/calendar_events y no toca hacerlo aquí.
-    const rpc = (supabase as unknown as {
+    //
+    // OJO: el cast se aplica al OBJETO y .rpc se invoca sobre él. Extraer el
+    // método a una variable suelta (const rpc = supabase.rpc) lo desliga de su
+    // `this` y la llamada revienta por dentro — y como aquí abajo hay un catch
+    // silencioso, el fallo no dejaba ni rastro en consola ni petición de red.
+    const sb = supabase as unknown as {
       rpc: (fn: string, args: Record<string, unknown>) => Promise<unknown>;
-    }).rpc;
-    await rpc('log_analytics_event', {
+    };
+    await sb.rpc('log_analytics_event', {
       p_event_name: eventName,
       p_path: path,
       p_referrer: referrerHost(),
       p_device: deviceType(),
       p_session_id: sessionId(),
     });
-  } catch { /* la analítica nunca rompe la app */ }
+  } catch (e) {
+    // La analítica nunca rompe la app: en producción se traga el fallo. Pero
+    // en desarrollo se avisa — un catch totalmente mudo aquí ya ocultó un bug
+    // real (llamada rpc desligada de su `this`): ni error en consola ni
+    // petición de red, así que parecía que el tracking "no hacía nada".
+    if (import.meta.env.DEV) console.warn('[analytics] evento no registrado:', e);
+  }
 }
 
 /** Visita de página. Se llama en cada cambio de ruta. */
