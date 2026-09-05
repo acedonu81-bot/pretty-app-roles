@@ -1,6 +1,6 @@
 import {
   LayoutGrid, Search, MessageSquare, Megaphone, Settings,
-  BarChart3, FileText, FileEdit, CalendarDays,
+  BarChart3, FileText, FileEdit, CalendarDays, Sparkles,
   ChevronDown, ChevronLeft, ChevronRight, Plus, User, Building2, Shield,
 } from 'lucide-react';
 import GeometricAvatar from './GeometricAvatar';
@@ -429,6 +429,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded 
           <SidebarMenu>
             <NavItem icon={CalendarDays} label="Calendario" isActive={activeView === 'calendar'} onClick={() => onViewChange('calendar')} />
             <NavItem icon={FileText} label="Contratos" isActive={activeView === 'contracts'} onClick={() => onViewChange('contracts')} />
+            <NavItem icon={Sparkles} label="Recursos" isActive={activeView === 'resources'} onClick={() => onViewChange('resources')} />
           </SidebarMenu>
         </div>
 

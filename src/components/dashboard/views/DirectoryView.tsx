@@ -10,6 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion } from '@/lib/regions';
 import { expandRole } from '@/lib/constants';
 import { isEarlyAdopter } from '@/lib/earlyAdopter';
+import ResourcesBanner from '@/components/dashboard/ResourcesBanner';
 
 interface DirectoryViewProps {
   role: string;
@@ -242,6 +243,8 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
           )}
         </div>
       )}
+
+      <ResourcesBanner onNavigate={onNavigate} />
 
       {/* Filtros */}
       <div className="flex items-center gap-2 mb-4 sm:mb-5 flex-nowrap sm:flex-wrap overflow-x-auto no-scrollbar -mx-1 px-1 sm:mx-0 sm:px-0">

@@ -49,6 +49,7 @@ const GrupoMusicalView = lazy(() => import('@/components/dashboard/views/GrupoMu
 const ContractView = lazy(() => import('@/components/dashboard/views/ContractView'));
 const FichaView = lazy(() => import('@/components/dashboard/views/FichaView'));
 const AgencyView = lazy(() => import('@/components/dashboard/views/AgencyView'));
+const ResourcesView = lazy(() => import('@/components/dashboard/views/ResourcesView'));
 const ProfessionalProfilePage = lazy(() => import('@/components/dashboard/ProfessionalProfilePage'));
 const SupportChat = lazy(() => import('@/components/dashboard/SupportChat'));
 const OnboardingTour = lazy(() => import('@/components/dashboard/OnboardingTour'));
@@ -314,6 +315,7 @@ const Dashboard = () => {
       case 'topweekend': return <TopWeekendView />;
       case 'stats': return <StatsView />;
       case 'agency': return <AgencyView />;
+      case 'resources': return <ResourcesView />;
       case 'admin': return (
         <AdminGuard>
           <AdminView onNavigate={nav} />
