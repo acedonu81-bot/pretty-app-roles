@@ -272,14 +272,27 @@ export const AFFILIATE_PARTNERS: AffiliatePartner[] = [
     network: 'TradeTracker',
     kind: 'tienda',
   },
+  // Cursos de PRODJ Academy (Profesional DJ), vendidos vía Hotmart. Son el
+  // MISMO temario sobre equipos distintos, así que se ofrecen los dos: quien
+  // pincha en Pioneer no quiere aprender en Denon ni al revés, y comprar el
+  // curso del equipo equivocado es dinero tirado.
+  //
+  // Los enlaces go.hotmart.com son las URL rastreables de la cuenta de
+  // afiliado: enlazar al curso de cualquier otra forma NO genera comisión.
   {
-    name: 'Curso Online DJ Profesional con equipos Pioneer DJ',
-    desc: 'Formación completa de DJ con equipos Pioneer: mezcla, estructura de sets y manejo de cabina. 100% online, acceso inmediato.',
+    name: 'PRODJ Academy — Curso DJ con equipos Pioneer',
+    desc: 'Formación completa sobre cabina Pioneer: mezcla, estructura de sets y manejo de equipo. 100% online, acceso inmediato.',
     roles: ['dj'],
-    // Enlace de afiliado propio (Hotmart, cuenta del usuario). Es la URL
-    // rastreable: cualquier otra forma de enlazar al curso NO genera comisión.
     url: 'https://go.hotmart.com/T107497976C?ap=bf9f',
-    network: 'Hotmart',
+    network: 'Profesional DJ',
+    kind: 'formacion',
+  },
+  {
+    name: 'PRODJ Academy — Curso DJ con equipos Denon',
+    desc: 'El mismo temario sobre cabina Denon (Prime, SC Live): para quien pincha con Engine DJ y no con Rekordbox.',
+    roles: ['dj'],
+    url: 'https://go.hotmart.com/J107498033J',
+    network: 'Profesional DJ',
     kind: 'formacion',
   },
   {
