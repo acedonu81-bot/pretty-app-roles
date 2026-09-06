@@ -15,6 +15,16 @@ export const isAndroid = Capacitor.getPlatform() === 'android';
 export async function initCapacitor(onBack?: () => boolean) {
   if (!isNative) return;
 
+  // Push nativo: registra los listeners al arrancar. Sin esto, tocar una
+  // notificación abre la app en la pantalla de inicio en vez de llevar a la
+  // oferta o al mensaje que la originó.
+  try {
+    const { escucharPushNativo } = await import('./pushNative');
+    await escucharPushNativo((ruta) => {
+      if (typeof window !== 'undefined') window.location.assign(ruta);
+    });
+  } catch { /* sin push: la app funciona igual */ }
+
   // Marca el body como app nativa → el CSS reserva el safe-area superior para
   // que ninguna pantalla quede tapada por la barra de estado (overlay:true).
   document.body.classList.add('is-native-app');

@@ -53,10 +53,6 @@
 	<string>XPEAK necesita acceso a tus fotos para subir imágenes a tu perfil y portafolio.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>XPEAK necesita permiso para guardar imágenes en tu galería.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>XPEAK necesita acceso al micrófono para el Escenario Virtual y streaming en directo.</string>
-	<key>NSFaceIDUsageDescription</key>
-	<string>XPEAK usa Face ID para un acceso rápido y seguro a tu cuenta.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

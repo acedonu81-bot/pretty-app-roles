@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Push notifications (APNs). Sin este entitlement iOS no entrega ninguna
+	     notificación remota, aunque el plugin esté instalado y el usuario haya
+	     aceptado el permiso: el registro falla en silencio.
+
+	     'development' funciona en TestFlight y en builds de depuración. Xcode
+	     lo cambia a 'production' automáticamente al archivar para la App Store,
+	     así que no hay que tocarlo al publicar. -->
+	<key>aps-environment</key>
+	<string>development</string>
+</dict>
+</plist>

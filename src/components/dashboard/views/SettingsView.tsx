@@ -11,6 +11,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { sanitizeInput, containsPhoneNumber } from '@/lib/contentFilter';
 import { requestPushPermission, revokePushPermission, isPushSubscribed, showLocalNotification, isPushSupported } from '@/lib/pushNotifications';
+import { esAppNativa, registrarPushNativo } from '@/lib/pushNative';
 
 const euLanguages = [
   '🇪🇸 Español', '🇬🇧 English', '🇩🇪 Deutsch', '🇫🇷 Français', '🇮🇹 Italiano',
@@ -866,7 +867,12 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
                     toast.success('Notificaciones desactivadas.');
                   } else {
                     if (!user) return;
-                    const ok = await requestPushPermission(user.id);
+                    // En la app nativa el push va por APNs/FCM, no por service
+                    // worker: la Web Push API de iOS solo funciona con la PWA
+                    // instalada desde Safari, nunca dentro de la app.
+                    const ok = esAppNativa()
+                      ? await registrarPushNativo(user.id)
+                      : await requestPushPermission(user.id);
                     if (ok) {
                       setPushEnabled(true);
                       await showLocalNotification('XPEAK', '¡Notificaciones activas! Te avisaremos cuando lleguen mensajes o bookings.', '/dashboard');
