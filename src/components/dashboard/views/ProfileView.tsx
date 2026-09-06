@@ -167,7 +167,12 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     { value: 'catering',      label: 'Catering / Cocina' },
     { value: 'makeup',        label: 'Maquillaje' },
     { value: 'peluqueria',    label: 'Peluquería a Domicilio' },
-    { value: 'media',         label: 'Foto & Vídeo' },
+    // La etiqueta debe ser la MISMA que la del directorio ("Media & Contenido"),
+    // o el usuario no relaciona lo que marca aqui con donde acaba apareciendo.
+    // Un DJ leia "Foto & Video" y lo marcaba pensando que subia fotos de sus
+    // sesiones, no que se ofrecia como fotografo contratable (caso real:
+    // Sairo, 7 sep 2026, aparecia en el directorio de Media siendo DJ).
+    { value: 'media',         label: 'Media & Contenido (te contratan como fotógrafo/videógrafo)' },
     { value: 'empresario',    label: 'Empresario / Sala' },
     { value: 'bailarin',      label: 'Bailarín / Danza' },
     { value: 'mago',          label: 'Mago & Ilusionista' },
@@ -179,10 +184,22 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   ];
   const activeRoles = (selectedRoles ?? (profile.roles?.length ? profile.roles : (profile.role ? [profile.role] : [])))
     .filter(r => r && r !== 'pending');
-  const toggleRole = (r: string) => {
+  // Anadir un oficio no es un ajuste menor: mete el perfil en otro directorio,
+  // le hace competir con esos profesionales y le llegaran peticiones de un
+  // servicio que quiza no ofrece. Antes se activaba con un clic silencioso, asi
+  // que se pide confirmacion explicita. Quitar un oficio no pregunta: nadie
+  // acaba en una categoria que no queria por desmarcar.
+  const [roleToConfirm, setRoleToConfirm] = useState<string | null>(null);
+
+  const applyRole = (r: string) => {
     const next = activeRoles.includes(r) ? activeRoles.filter(x => x !== r) : [...activeRoles, r];
     if (next.length === 0) return;
     setSelectedRoles(next);
+  };
+
+  const toggleRole = (r: string) => {
+    if (!activeRoles.includes(r)) { setRoleToConfirm(r); return; }
+    applyRole(r);
   };
   useEffect(() => {
     if (!referralIsNew) return;
@@ -258,7 +275,16 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     if (instagram !== null) updates.instagram = instagram.trim().replace(/^@/, '') || null;
     if (selectedLangs !== null) updates.languages = selectedLangs;
     if (selectedGenres !== null) updates.genres = selectedGenres;
-    if (selectedRoles !== null) { updates.roles = selectedRoles; updates.role = selectedRoles[0]; }
+    // `role` (el oficio principal: el que sale en la ficha, la tarjeta y el
+    // SEO) NO puede salir de selectedRoles[0]: ese array esta ordenado por
+    // orden de clic, asi que desmarcar y remarcar los oficios en otro orden
+    // convertia a un DJ en fotografo sin que el tocara nada mas. Solo cambia
+    // si el oficio principal actual deja de estar seleccionado, y entonces se
+    // conserva el primero que siga activo.
+    if (selectedRoles !== null) {
+      updates.roles = selectedRoles;
+      if (!selectedRoles.includes(profile.role)) updates.role = selectedRoles[0];
+    }
     if (offersClasses !== null) updates.offers_classes = offersClasses;
     if (classStyles !== null) updates.class_styles = classStyles;
     if (classPrice !== null) updates.class_price = classPrice.trim() === '' ? null : parseInt(classPrice) || 0;
@@ -640,6 +666,30 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                       </button>
                     );
                   })}
+                </div>
+              )}
+
+              {roleToConfirm && (
+                <div className="mt-2 p-3 rounded-lg" style={{ background: 'rgba(226,190,80,0.08)', border: '1px solid rgba(226,190,80,0.35)' }}>
+                  <p className="text-xs font-bold mb-1" style={{ color: '#8A6D0F' }}>
+                    ¿Te contratan como {ROLE_OPTIONS.find(o => o.value === roleToConfirm)?.label ?? roleToConfirm}?
+                  </p>
+                  <p className="text-xs text-muted-foreground mb-2.5">
+                    Aparecerás en ese directorio y los clientes te pedirán ese servicio.
+                    Si solo es algo que haces para ti, no lo marques.
+                  </p>
+                  <div className="flex gap-2">
+                    <button type="button" onClick={() => setRoleToConfirm(null)}
+                      className="flex-1 py-1.5 rounded-lg text-xs font-bold transition-all"
+                      style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#3d3d4e' }}>
+                      Cancelar
+                    </button>
+                    <button type="button" onClick={() => { applyRole(roleToConfirm); setRoleToConfirm(null); }}
+                      className="flex-1 py-1.5 rounded-lg text-xs font-bold transition-all"
+                      style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                      Sí, añadir
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
