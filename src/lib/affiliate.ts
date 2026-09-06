@@ -209,7 +209,11 @@ export const AFFILIATE_ROLE_ALIAS: Record<string, string> = {
   banda: 'grupo-musical', design: 'media', 'photo-booth': 'media',
   promotor: 'staff', event_manager: 'azafata', speaker: 'grupo-musical',
   ambassador: 'staff', humorista: 'grupo-musical', monologo: 'grupo-musical',
-  animador: 'bailarin', rookie: 'dj',
+  animador: 'bailarin',
+  // 'rookie' NO se mapea a 'dj': es un perfil sin oficio definido todavía, y
+  // enseñarle auriculares y controladora daba por hecho que era DJ. Sin alias,
+  // resolveAffiliateKey devuelve null y no se le muestra equipo de nadie.
+
 };
 
 /** Devuelve la clave de catálogo para un rol, o null si no hay equipo relevante. */

@@ -13,7 +13,11 @@ import { AFFILIATE_CATALOG, resolveAffiliateKey } from '@/lib/affiliate';
  * Dorado XPEAK y no un color de "anuncio": esto no es publicidad de un
  * tercero metida con calzador, es una sección del producto — y así se lee.
  */
-const ResourcesBanner = ({ onNavigate }: { onNavigate?: (view: string) => void }) => {
+const ResourcesBanner = ({ onNavigate, vistaActual }: {
+  onNavigate?: (view: string) => void;
+  /** Directorio que se está viendo ahora mismo (role de DirectoryView). */
+  vistaActual?: string;
+}) => {
   const { role } = useProfile();
   const key = role ? resolveAffiliateKey(role) : null;
   const cat = key ? AFFILIATE_CATALOG[key] : null;
@@ -21,6 +25,17 @@ const ResourcesBanner = ({ onNavigate }: { onNavigate?: (view: string) => void }
   // Sin catálogo para el rol no hay nada que prometer: mejor no pintar la
   // tarjeta que llevar a una sección medio vacía.
   if (!cat || !onNavigate) return null;
+
+  // SOLO en el directorio del propio oficio. DirectoryView es el componente
+  // compartido por las ~20 vistas de rol, así que montarlo ahí sin más sacaba
+  // el banner también cuando un camarero exploraba el directorio de DJs — y
+  // encima con SU equipo de camarero, que no pinta nada en esa pantalla.
+  // Ahí el usuario está buscando a otra persona, no comprando material suyo.
+  const vistaEsSuOficio =
+    !vistaActual ||
+    vistaActual === role ||
+    resolveAffiliateKey(vistaActual) === key;
+  if (!vistaEsSuOficio) return null;
 
   const count = cat.items.length;
   const Icon = cat.icon;
