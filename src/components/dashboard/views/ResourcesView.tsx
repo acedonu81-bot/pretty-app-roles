@@ -263,8 +263,11 @@ export default function ResourcesView() {
           tiendas: quien busca formarse no busca comprar un cable. */}
       {courses.length > 0 && (
         <section className="mb-8">
-          <SectionTitle icon={GraduationCap} hint="Academias y cursos del sector con acuerdo con XPEAK.">
-            Formación
+          {/* "Formación recomendada" y no "con acuerdo con XPEAK": es
+              afiliación, no un acuerdo comercial, y decirlo de más resta
+              credibilidad al resto del panel. */}
+          <SectionTitle icon={GraduationCap} hint="Cursos y academias del sector para tu oficio.">
+            Formación recomendada
           </SectionTitle>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {courses.map(p => (
