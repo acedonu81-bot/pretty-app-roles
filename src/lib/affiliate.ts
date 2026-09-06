@@ -55,6 +55,19 @@ export const AFFILIATE_CATALOG: Record<string, AffiliateCatalogEntry> = {
       { icon: Lightbulb, title: 'Set de iluminación LED para cabina', desc: 'Efectos básicos para verbenas y fiestas privadas sin técnico de luces.', href: A('iluminacion LED DJ fiesta') },
       { icon: Laptop, title: 'Soporte de portátil de aluminio', desc: 'Eleva el portátil a la altura de la mesa y libera espacio de trabajo.', href: P('B086V28W64') },
       { icon: Mic2, title: 'Sistema inalámbrico UHF (2 micros)', desc: 'Presentar y animar sin depender del equipo del local; el segundo micro, para el cliente.', href: P('B08N112VY2') },
+      // Denon DJ — la otra gran marca de cabina junto a Pioneer, y la que
+      // domina el "todo en uno" sin portátil (bodas, verbenas, bolos donde
+      // montas tú). No tiene programa de afiliados propio en España, así que
+      // va por Amazon, la afiliación ya activa.
+      //
+      // Van con búsqueda A() y NO con ASIN fijo a propósito: la Prime 4+ G2 es
+      // de lanzamiento reciente y su ASIN todavía se mueve (reediciones,
+      // packs, importadores). Un ASIN muerto no cobra comisión y no avisa;
+      // la búsqueda siempre lleva al listado vivo. Sustituir por P('ASIN')
+      // cuando el modelo lleve meses estable en Amazon.es.
+      { icon: Disc3, title: 'Denon DJ Prime 4+ G2', desc: 'La nueva generación del todo en uno: pantalla de 10", 4 canales y sin portátil.', href: A('Denon DJ Prime 4 G2') },
+      { icon: Disc3, title: 'Denon DJ SC Live 4', desc: 'Todo en uno con altavoces integrados: para el bolo donde el sonido lo pones tú.', href: A('Denon DJ SC Live 4') },
+      { icon: Headphones, title: 'Auriculares Denon DJ HP1100', desc: 'Monitorización cerrada para cabina ruidosa, por debajo del precio de los Pioneer.', href: A('Denon DJ HP1100 auriculares') },
     ],
   },
   camareros: {
@@ -260,11 +273,13 @@ export const AFFILIATE_PARTNERS: AffiliatePartner[] = [
     kind: 'tienda',
   },
   {
-    name: 'PRODJ Academy',
-    desc: 'Cursos online de DJ y producción musical, de iniciación a nivel avanzado. Más de una década formando DJs.',
+    name: 'Curso Online DJ Profesional con equipos Pioneer DJ',
+    desc: 'Formación completa de DJ con equipos Pioneer: mezcla, estructura de sets y manejo de cabina. 100% online, acceso inmediato.',
     roles: ['dj'],
-    url: null,
-    network: 'Hotmart / TradeTracker',
+    // Enlace de afiliado propio (Hotmart, cuenta del usuario). Es la URL
+    // rastreable: cualquier otra forma de enlazar al curso NO genera comisión.
+    url: 'https://go.hotmart.com/T107497976C?ap=bf9f',
+    network: 'Hotmart',
     kind: 'formacion',
   },
   {
