@@ -42,8 +42,12 @@ function loadEnv() {
 }
 
 // ─── Fetch all public profiles from Supabase ─────────────────────────────
+// Se excluye 'pending' además de 'empresario': son altas que no han elegido
+// oficio todavía, así que su ficha no describe ningún servicio. Indexarlas
+// manda a Google a páginas vacías, y eso penaliza al dominio entero — es
+// justo lo contrario de lo que busca tener 380 URLs indexables.
 async function fetchProfiles(supabaseUrl, anonKey) {
-  const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,zone,city_ref,updated_at,role,roles,is_primary&role=neq.empresario&is_seed=eq.false&or=(is_public.is.null,is_public.eq.true)&order=updated_at.desc&limit=1000`;
+  const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,zone,city_ref,updated_at,role,roles,is_primary&role=not.in.%28empresario,pending%29&is_seed=eq.false&or=(is_public.is.null,is_public.eq.true)&order=updated_at.desc&limit=1000`;
   const res = await fetch(url, {
     headers: {
       apikey: anonKey,

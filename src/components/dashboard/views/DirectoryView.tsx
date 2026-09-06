@@ -7,6 +7,7 @@ import CheckoutModal from '@/components/dashboard/CheckoutModal';
 import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import OffersWidget from '@/components/dashboard/OffersWidget';
 import { supabase } from '@/integrations/supabase/client';
+import { ROLE_ES } from '@/lib/constants';
 import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion } from '@/lib/regions';
 import { expandRole } from '@/lib/constants';
 import { isEarlyAdopter } from '@/lib/earlyAdopter';
@@ -219,6 +220,38 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
     if (r) logFiltroRol(r);
   }, [role, roles]);
 
+  // Cuando una búsqueda no devuelve nada, se mira si ESE MISMO término existe
+  // en otra categoría. "saxofonista bilbao" buscado desde el directorio de DJs
+  // no encuentra nada, pero un saxofonista está en Grupos Musicales: sin esto
+  // el usuario se queda en un callejón sin salida y se va.
+  const [enOtrasCategorias, setEnOtrasCategorias] = useState<{ rol: string; n: number }[]>([]);
+  useEffect(() => {
+    const q = searchQuery?.trim().toLowerCase();
+    if (!q || q.length < 3 || filteredProfiles.length > 0) { setEnOtrasCategorias([]); return; }
+    let vivo = true;
+    const t = setTimeout(async () => {
+      const { data } = await supabase
+        .from('profiles')
+        .select('role, display_name, specialty, zone, bio')
+        .not('display_name', 'is', null)
+        .not('role', 'in', '("empresario","pending")')
+        .limit(300);
+      if (!vivo || !data) return;
+      const encaja = (p: Record<string, unknown>) =>
+        [p.display_name, p.specialty, p.zone, p.bio]
+          .some(v => typeof v === 'string' && v.toLowerCase().includes(q));
+      const conteo: Record<string, number> = {};
+      for (const p of data) {
+        const r = (p as { role?: string }).role;
+        if (r && r !== role && encaja(p as Record<string, unknown>)) conteo[r] = (conteo[r] ?? 0) + 1;
+      }
+      setEnOtrasCategorias(
+        Object.entries(conteo).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([rol, n]) => ({ rol, n }))
+      );
+    }, 400);
+    return () => { vivo = false; clearTimeout(t); };
+  }, [searchQuery, filteredProfiles.length, role]);
+
   const gridClass = wideCards
     ? 'grid grid-cols-1 sm:grid-cols-2 gap-5'
     : 'grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3';
@@ -396,6 +429,24 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
                 style={{ background: 'rgba(212,175,55,0.08)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.2)' }}>
                 Quitar filtros
               </button>
+            )}
+
+            {/* Salida real: el término SÍ existe, pero en otra categoría. */}
+            {enOtrasCategorias.length > 0 && onNavigate && (
+              <div className="mt-4 pt-4 w-full" style={{ borderTop: '1px solid rgba(10,9,8,0.07)' }}>
+                <p className="text-xs font-bold mb-2.5" style={{ color: '#333' }}>
+                  Pero sí hay resultados en:
+                </p>
+                <div className="flex flex-wrap gap-1.5 justify-center">
+                  {enOtrasCategorias.map(({ rol, n }) => (
+                    <button key={rol} onClick={() => onNavigate(rol)}
+                      className="text-xs font-bold px-3 py-1.5 rounded-full transition-all hover:scale-105"
+                      style={{ background: 'rgba(37,99,235,0.08)', color: '#2563EB', border: '1px solid rgba(37,99,235,0.25)' }}>
+                      {ROLE_ES[rol] ?? rol} ({n}) →
+                    </button>
+                  ))}
+                </div>
+              </div>
             )}
           </div>
         </div>

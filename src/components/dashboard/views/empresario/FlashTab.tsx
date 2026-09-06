@@ -3,6 +3,7 @@ import { Plus, Clock, X, Zap, MapPin } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import { ROLE_ES } from '@/lib/constants';
 
 interface FlashJob {
   id: string;
@@ -63,6 +64,59 @@ const FlashTab = () => {
     return () => clearInterval(iv);
   }, []);
 
+  /**
+   * Envía el aviso a los profesionales cuyo rol coincide con el buscado.
+   * Devuelve a cuántos se avisó (0 si no había rol o nadie encaja).
+   *
+   * Si el organizador no especifica rol, NO se manda nada a nadie: un email
+   * masivo sin criterio es la forma más rápida de que la gente deje de abrir
+   * los correos de XPEAK.
+   */
+  const notificarProfesionales = async (o: {
+    rolBuscado: string; titulo: string; descripcion: string; pago: string; lugar: string;
+  }): Promise<number> => {
+    const q = o.rolBuscado.toLowerCase().trim();
+    if (!q) return 0;
+    try {
+      const { data } = await supabase
+        .from('profiles')
+        .select('user_id, display_name, role, zone')
+        .not('role', 'in', '("empresario","pending")')
+        .limit(300);
+      if (!data?.length) return 0;
+
+      // El campo es texto libre ("DJ", "camareros", "Bartender"), así que se
+      // compara en ambas direcciones contra el rol de BD y su etiqueta.
+      const destinatarios = data.filter((p) => {
+        const rol = String((p as { role?: string }).role ?? '').toLowerCase();
+        const etiqueta = (ROLE_ES[rol] ?? '').toLowerCase();
+        return rol.includes(q) || q.includes(rol) || (etiqueta && (etiqueta.includes(q) || q.includes(etiqueta)));
+      });
+      if (!destinatarios.length) return 0;
+
+      await Promise.allSettled(destinatarios.map((p) =>
+        supabase.functions.invoke('send-email', {
+          body: {
+            type: 'flash_job_nuevo',
+            data: {
+              user_id: (p as { user_id?: string }).user_id,
+              name: (p as { display_name?: string }).display_name ?? 'Profesional',
+              role_needed: o.rolBuscado,
+              title: o.titulo,
+              description: o.descripcion,
+              pay: o.pago,
+              location: o.lugar,
+            },
+          },
+        })
+      ));
+      return destinatarios.length;
+    } catch {
+      // El aviso es un extra: si falla, la oferta ya está publicada y visible.
+      return 0;
+    }
+  };
+
   const submit = async () => {
     if (!user || !title.trim()) { toast.error('Introduce al menos un título'); return; }
     setSubmitting(true);
@@ -78,7 +132,28 @@ const FlashTab = () => {
     } as any);
     setSubmitting(false);
     if (error) { toast.error('Error al publicar: ' + error.message); return; }
-    toast.success(`Oferta publicada — visible ${durationHours}h para todos los profesionales`);
+
+    // Avisar por email a los profesionales DEL ROL BUSCADO. Sin esto la oferta
+    // solo era una fila en la tabla: el toast prometía visibilidad pero nadie
+    // recibía nada, así que dependía de que alguien entrase al panel por
+    // casualidad — el mismo agujero del caso Ramón por el otro lado.
+    //
+    // Se notifica SOLO al rol pedido: mandar una oferta de camarero a los DJs
+    // es la vía rápida a que dejen de abrir los correos de XPEAK.
+    const rolBuscado = role.trim();
+    const avisados = await notificarProfesionales({
+      rolBuscado,
+      titulo: title.trim(),
+      descripcion: desc.trim(),
+      pago: pay.trim(),
+      lugar: location.trim(),
+    });
+
+    toast.success(
+      avisados > 0
+        ? `Oferta publicada — avisados ${avisados} profesionales por email`
+        : `Oferta publicada — visible ${durationHours}h en el panel`
+    );
     setShowForm(false);
     setTitle(''); setDesc(''); setPay(''); setLocation(''); setRole(''); setDurationHours(24);
     loadMyJobs();

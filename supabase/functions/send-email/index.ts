@@ -48,11 +48,30 @@ const UNSUB_PLACEHOLDER = '{{UNSUB_URL}}';
 
 const FONT = `-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif`;
 
-const base = (content: string) => `
+/**
+ * Texto de vista previa (preheader): lo que la bandeja muestra junto al asunto
+ * ANTES de abrir el correo. Sin él, Gmail rellena ese hueco con el primer
+ * texto que encuentre en el HTML — normalmente basura del layout.
+ *
+ * Va oculto en el cuerpo (los &zwnj;&nbsp; empujan cualquier resto para que no
+ * se cuele detrás) y solo lo lee el cliente de correo.
+ */
+const preheader = (texto: string) => `
+  <div style="display:none;font-size:1px;color:#FFFFFF;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden">
+    ${esc(texto)}
+    ${'&zwnj;&nbsp;'.repeat(60)}
+  </div>`;
+
+const base = (content: string, preview?: string) => `
 <div style="background:#E8E9EB;padding:40px 16px;font-family:${FONT}">
+${preview ? preheader(preview) : ''}
 <div style="max-width:520px;margin:0 auto;background:#FFFFFF;border-radius:16px;box-shadow:0 1px 3px rgba(10,9,8,0.06),0 12px 32px rgba(10,9,8,0.16),0 32px 64px rgba(10,9,8,0.14);overflow:hidden">
   <div style="text-align:center;padding:32px 32px 20px;border-bottom:1px solid rgba(212,175,55,0.25)">
-    <a href="https://xpeak.es" style="text-decoration:none;font-size:24px;font-weight:800;letter-spacing:1.5px;color:#0a0908">X<span style="color:#D4AF37">PEAK</span></a>
+    <a href="https://xpeak.es" style="text-decoration:none;display:inline-block">
+      <img src="https://xpeak.es/xpeak-icon-512.png" width="40" height="40" alt="XPEAK"
+        style="display:block;margin:0 auto 10px;border-radius:9px;border:0;outline:none;text-decoration:none">
+      <span style="font-size:24px;font-weight:800;letter-spacing:1.5px;color:#0a0908">X<span style="color:#D4AF37">PEAK</span></span>
+    </a>
   </div>
   <div style="padding:32px">
     ${content}
@@ -236,6 +255,37 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       ${btn('Ver mi enlace en mi perfil →', 'https://xpeak.es/dashboard')}
       <p style="color:#9CA3AF;font-size:12px;text-align:center;margin-top:16px">¿Tienes dudas? Responde directamente a este email.</p>
     `),
+  }),
+
+  // 2a. Oferta Flash publicada — aviso al PROFESIONAL del rol buscado.
+  //
+  // Antes, publicar una oferta solo escribía una fila en flash_jobs: el toast
+  // decía "visible 24h para todos los profesionales" pero nadie recibía aviso,
+  // así que la oferta dependía de que alguien entrase al panel por casualidad.
+  // Es el mismo agujero del caso Ramón (22 ago: 5 profesionales, 0 respuestas,
+  // nadie se enteró en 12 días) por el otro lado del flujo.
+  flash_job_nuevo: (d) => ({
+    subject: `Nueva oferta para ti: ${esc(d.title)}${d.location ? ` — ${esc(d.location)}` : ''}`,
+    to: d.email,
+    html: base(`
+      <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:8px;padding:16px;margin-bottom:20px">
+        <p style="margin:0 0 4px">${badge('Oferta urgente')}</p>
+        <p style="font-size:20px;font-weight:900;margin:6px 0 0;color:#0a0908">${esc(d.title)}</p>
+      </div>
+      <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+        Hola <strong>${esc(d.name)}</strong>, un organizador busca <strong>${esc(rolLegible(d.role_needed))}</strong> y tu perfil encaja.
+      </p>
+      ${rows([
+        ['Qué buscan', esc(d.role_needed ?? '—')],
+        ['Dónde', esc(d.location ?? 'Por concretar')],
+        ['Pago', esc(d.pay ?? 'A consultar')],
+        ['Detalles', esc(d.description ?? '—')],
+      ])}
+      <p style="color:#0a0908;font-size:13px;line-height:1.6;margin:16px 0 0">
+        Las ofertas Flash caducan rápido: quien responde primero suele llevarse el bolo.
+      </p>
+      ${btn('Ver la oferta →', 'https://xpeak.es/dashboard?view=flashbooking')}
+    `, `${esc(d.role_needed ?? 'Profesional')} — ${esc(d.location ?? 'España')} — ${esc(d.pay ?? 'A consultar')}`),
   }),
 
   // 2. Flash Booking — aviso a admin
@@ -614,6 +664,43 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     };
   },
 
+  // 13a-bis. El DJ que ademas organiza: perfil de Organizador con la misma cuenta.
+  //
+  // Muchos DJs no solo pinchan: montan la fiesta entera y contratan camareros,
+  // fotografo o azafatas. Hasta ahora nadie les habia dicho que pueden tener
+  // ese segundo perfil sin registrarse otra vez ni dar otro correo.
+  //
+  // Es la via mas directa a mas organizadores: gente que ya esta dentro, que
+  // ya monta eventos y que ya sabe lo que cuesta encontrar personal.
+  organizador_segundo_perfil: (d) => ({
+    subject: `${esc(d.name)}, si montas eventos puedes contratar desde tu cuenta`,
+    to: d.email,
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">¿Montas eventos además de pinchar?</h2>
+      <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+        Hola <strong>${esc(d.name)}</strong>. Muchos DJs no solo pinchan: montan la fiesta entera y necesitan
+        camareros, fotógrafo o azafatas. Si es tu caso, puedes tener un perfil de
+        <strong>Organizador</strong> en la misma cuenta que ya usas — sin registrarte otra vez y sin dar otro correo.
+      </p>
+      <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.25);border-radius:8px;padding:20px;margin:20px 0;box-shadow:0 8px 22px rgba(212,175,55,0.16)">
+        <p style="color:#7a6216;font-weight:700;font-size:15px;margin:0 0 12px">Cómo se hace (30 segundos):</p>
+        <p style="color:#0a0908;font-size:14px;line-height:1.9;margin:0">
+          <strong>1.</strong> Entra en XPEAK y abre <strong>Ajustes</strong>.<br>
+          <strong>2.</strong> Baja hasta <strong>Mis perfiles</strong> y pulsa <strong>Añadir perfil</strong>.<br>
+          <strong>3.</strong> Ponle nombre, elige el rol <strong>Empresa / Sala</strong> (última de la lista) y tu ciudad.<br>
+          <strong>4.</strong> Listo. Con el botón <strong>Cambiar</strong> pasas de uno a otro cuando quieras.
+        </p>
+      </div>
+      <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+        Tu perfil de DJ <strong>no se toca</strong>: sigue igual en el directorio, con tus géneros, tu tarifa y tus sesiones.
+        El de Organizador es aparte, y es el que te deja buscar profesionales por ciudad, ver quién está disponible
+        y mandar solicitudes.
+      </p>
+      ${btn('Crear mi perfil de Organizador →', 'https://xpeak.es/dashboard')}
+      <p style="color:#9CA3AF;font-size:12px;text-align:center;margin-top:16px">¿Alguna duda? Responde a este email.</p>
+    `),
+  }),
+
   // 13b. Nuevo mensaje en chat
   new_message: (d) => ({
     subject: `${esc(d.sender_name)} te ha enviado un mensaje en XPEAK`,
@@ -713,8 +800,31 @@ function minifyHtml(html: string): string {
   return html.replace(/>\s+</g, '><').replace(/[ \t]*\n[ \t]*/g, ' ').trim();
 }
 
+// RFC 2047 limita cada línea de cabecera codificada a 75 caracteres, y
+// denomailer no la pliega: mete un salto de línea crudo en mitad del
+// "=?utf-8?Q?...?=". El servidor lo lee como fin de cabeceras, así que el
+// resto del asunto y TODAS las cabeceras siguientes (From, To, Content-Type)
+// se derraman al cuerpo y el correo llega como texto plano con el MIME a la
+// vista. Pasó el 4 sep 2026 con "Nuevo profesional — Aitana López Montealegre
+// (Camarero y personal de sala, Madrid)": 82 caracteres que codificados son
+// 109. Cada carácter no-ASCII ocupa 3 (=C3=B3), así que el límite hay que
+// medirlo sobre la longitud CODIFICADA, no sobre la del texto.
+const SUBJECT_MAX_ENCODED = 60;
+function clampSubject(subject: string): string {
+  const encodedLen = (s: string) =>
+    [...s].reduce((n, ch) => n + (ch.charCodeAt(0) < 128 ? 1 : 3), 0);
+  if (encodedLen(subject) <= SUBJECT_MAX_ENCODED) return subject;
+  let out = '';
+  for (const ch of subject) {
+    if (encodedLen(out + ch) > SUBJECT_MAX_ENCODED - 1) break;
+    out += ch;
+  }
+  return out.trimEnd() + '…';
+}
+
 async function sendMail(to: string, subject: string, html: string, replyTo?: string) {
   html = minifyHtml(html);
+  subject = clampSubject(subject);
   const smtpPass = Deno.env.get('SMTP_PASS');
   if (!smtpPass) throw new Error('SMTP_PASS not configured');
   const client = new SMTPClient({
