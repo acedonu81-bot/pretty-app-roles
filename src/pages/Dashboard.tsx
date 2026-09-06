@@ -177,8 +177,16 @@ const ROLE_TO_VIEW: Record<string, string> = {
   event_manager: 'event_manager', empresario: 'empresario', catering: 'catering',
   mago: 'mago', bailarin: 'bailarin', humorista: 'humorista', animador: 'animador',
   speaker: 'speaker', monologo: 'monologo', ambassador: 'ambassador',
+  // Faltaban aquí y solo funcionaban por el `?? profileRole` de respaldo, que
+  // es frágil: cualquier vista cuyo id no coincida exactamente con el rol de BD
+  // se rompe en silencio.
+  'grupo-musical': 'grupo-musical', azafata: 'azafata', peluqueria: 'peluqueria',
   // photo-booth no tiene vista propia → usa la de media (fotografía/vídeo)
   'photo-booth': 'media',
+  // Sin rol elegido todavía: NO se le manda al directorio de DJs (ver más
+  // abajo), sino a completar su perfil.
+  pending: 'profile',
+  rookie: 'dj',
 };
 
 const Dashboard = () => {
@@ -238,7 +246,12 @@ const Dashboard = () => {
   // ni viene de un enlace con vista específica.
   const viewAdjusted = useRef(false);
   useEffect(() => {
-    if (viewAdjusted.current || !profileRole || profileRole === 'pending') return;
+    // 'pending' (registro sin pasar por el wizard de rol) ya NO se ignora.
+    // Antes se salía aquí sin ajustar nada y activeView se quedaba en su valor
+    // inicial —'dj'—, así que un grupo musical, una azafata o cualquiera que no
+    // terminase el wizard aterrizaba en el directorio de DJs y parecía que el
+    // sistema le había asignado ese rol.
+    if (viewAdjusted.current || !profileRole) return;
     const explicit = (location.state as { view?: string })?.view
       || new URLSearchParams(location.search).get('view')
       || localStorage.getItem('xpeak_view');
@@ -330,7 +343,10 @@ const Dashboard = () => {
           <AdminView onNavigate={nav} />
         </AdminGuard>
       );
-      default: return <DJView onNavigate={nav} onMessage={handleMessage} />;
+      // Un rol desconocido o sin definir NO debe caer en el directorio de DJs:
+      // era la causa de que perfiles nuevos "aparecieran como DJ". Se le manda
+      // a completar su perfil, que es lo que de verdad le falta.
+      default: return <ProfileView onNavigate={nav} />;
     }
   };
 

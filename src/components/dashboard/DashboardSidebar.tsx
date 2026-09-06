@@ -267,7 +267,11 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded 
     }
   }, [activeView]);
 
-  const homeView = role === 'dj' ? 'dj' : (role ?? 'dj');
+  // Sin rol definido, "Inicio" NO puede llevar al directorio de DJs: ese
+  // respaldo hacía que un grupo musical (o cualquiera que no terminase el
+  // wizard) viera la pantalla de DJs y creyera que se le había asignado ese
+  // rol. Sin rol, lo que necesita es completar su perfil.
+  const homeView = !role || role === 'pending' ? 'profile' : role;
   const directoryItems = DIRECTORY_ITEMS;
 
   return (
