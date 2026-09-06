@@ -152,6 +152,32 @@ export default function Descubrir() {
         <meta name="robots" content="noindex, follow" />
       </Helmet>
 
+      {/* Vía de alta para quien llega aquí sin cuenta.
+          "Quiero contratar" mandaba a esta pantalla, que solo deja MIRAR: no
+          había ni un enlace para registrarse, así que el organizador exploraba
+          perfiles y se quedaba sin salida — había que descubrir el "Acceder"
+          de la esquina superior derecha de la landing para poder darse de alta.
+          Un profesional sí tenía botón directo al registro; un empresario, no. */}
+      {!authLoading && !user && (
+        <div className="fixed bottom-0 left-0 right-0 z-[60] px-4 pb-4 pt-10"
+          style={{ background: 'linear-gradient(to top, rgba(9,9,9,0.97) 55%, rgba(9,9,9,0))', pointerEvents: 'none' }}>
+          <div className="max-w-md mx-auto flex items-center gap-2.5" style={{ pointerEvents: 'auto' }}>
+            <button
+              onClick={() => navigate('/auth?mode=register&role=empresario')}
+              className="flex-1 py-3 rounded-xl text-sm font-black transition-all hover:scale-[1.02]"
+              style={{ background: 'linear-gradient(135deg,#F4D35E,#D4AF37 45%,#B8941E)', color: '#000' }}>
+              Crear cuenta y contactar
+            </button>
+            <button
+              onClick={() => navigate('/auth')}
+              className="px-4 py-3 rounded-xl text-sm font-bold transition-all hover:scale-[1.02]"
+              style={{ background: 'rgba(255,255,255,0.1)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}>
+              Entrar
+            </button>
+          </div>
+        </div>
+      )}
+
       {loading ? (
         <div className="fixed inset-0 z-[55] flex flex-col items-center justify-center gap-4" style={{ background: '#090909', color: '#fff' }}>
           <Loader2 size={30} className="animate-spin" style={{ color: '#D4AF37' }} />

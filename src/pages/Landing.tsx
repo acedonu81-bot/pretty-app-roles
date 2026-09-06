@@ -726,7 +726,10 @@ const Landing = () => {
               <motion.button
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
-                onClick={() => navigate('/descubrir')}
+                onClick={() => {
+                  if (typeof window !== 'undefined' && (window as any).fbq) (window as any).fbq('track', 'Lead');
+                  navigate('/auth?mode=register&role=empresario');
+                }}
                 className="relative flex flex-col items-start justify-center gap-1 px-5 py-6 rounded-2xl text-left transition-all overflow-hidden"
                 style={{
                   background: 'linear-gradient(135deg,#F4D35E,#D4AF37 45%,#B8941E)',
