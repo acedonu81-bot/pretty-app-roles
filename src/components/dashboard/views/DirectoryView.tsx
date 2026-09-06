@@ -11,6 +11,7 @@ import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion } from '@/
 import { expandRole } from '@/lib/constants';
 import { isEarlyAdopter } from '@/lib/earlyAdopter';
 import ResourcesBanner from '@/components/dashboard/ResourcesBanner';
+import UltimaContratacion from '@/components/dashboard/UltimaContratacion';
 import { logSearch, logProfileView, logFiltroRol } from '@/lib/track';
 
 interface DirectoryViewProps {
@@ -262,6 +263,8 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
           )}
         </div>
       )}
+
+      <UltimaContratacion />
 
       <ResourcesBanner onNavigate={onNavigate} vistaActual={role} />
 

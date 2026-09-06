@@ -4,6 +4,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
 } from 'recharts';
 import DarkTooltip from './DarkTooltip';
+import { ROLE_ES } from '@/lib/constants';
 import type { Pro } from './types';
 
 interface Props {
@@ -24,6 +25,23 @@ const StatsTab = ({ pros, favorites }: Props) => {
     { name: 'Makeup', value: makeupCount, color: '#EC4899' },
   ];
 
+  // Top 3 categorías por número de profesionales, con su etiqueta en español.
+  const topCategorias = (() => {
+    const conteo: Record<string, number> = {};
+    for (const p of pros) if (p.role) conteo[p.role] = (conteo[p.role] ?? 0) + 1;
+    const colores = ['#8A6D0F', '#8B5CF6', '#F59E0B'];
+    const iconos = [TrendingUp, Eye, MessageSquare];
+    return Object.entries(conteo)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3)
+      .map(([rol, n], i) => ({
+        label: ROLE_ES[rol] ?? rol,
+        value: n,
+        icon: iconos[i],
+        color: colores[i],
+      }));
+  })();
+
   const djAvgRate     = pros.filter(p => p.role === 'dj').reduce((s, p) => s + (p.hourly_rate || 0), 0) / (djCount || 1);
   const staffAvgRate  = pros.filter(p => p.role === 'staff').reduce((s, p) => s + (p.hourly_rate || 0), 0) / (staffCount || 1);
   const makeupAvgRate = pros.filter(p => p.role === 'makeup').reduce((s, p) => s + (p.hourly_rate || 0), 0) / (makeupCount || 1);
@@ -40,9 +58,12 @@ const StatsTab = ({ pros, favorites }: Props) => {
         {[
           { label: 'Profesionales activos', value: totalPros,             icon: Users,         color: '#8A6D0F' },
           { label: 'Tarifa media/hora',     value: avgRate > 0 ? `€${avgRate}` : '—', icon: Euro, color: '#22c55e' },
-          { label: 'DJs',                   value: djCount,               icon: TrendingUp,    color: '#8A6D0F' },
-          { label: 'Staff',                 value: staffCount,            icon: Eye,           color: '#8B5CF6' },
-          { label: 'Estilismo',             value: makeupCount,           icon: MessageSquare, color: '#F59E0B' },
+          // Las tres categorías con más gente, calculadas sobre el inventario
+          // real. Antes eran DJs/Staff/Estilismo fijos: con 37 profesionales
+          // eso dejaba 12 sin representar (grupos musicales, bailarines,
+          // humoristas…), y un organizador leía el panel como si la plataforma
+          // solo tuviera esos tres oficios.
+          ...topCategorias,
           { label: 'Tus favoritos',         value: favorites.length,    icon: Heart,       color: '#EC4899' },
         ].map(s => (
           <div key={s.label} className="glass-panel p-4 flex flex-col gap-1">

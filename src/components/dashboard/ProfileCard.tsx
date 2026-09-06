@@ -170,12 +170,21 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
               <Zap size={9} fill="#000" /> Disponible
             </span>
           )}
-          {p.role === 'bailarin' && (p as any).seekingDancePartner && (
-            <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black"
-              style={{ background: 'rgba(212,175,55,0.9)', color: '#000' }}>
-              <Users size={9} /> Busca pareja{(p as any).danceRole === 'lead' ? ' (leader)' : (p as any).danceRole === 'follow' ? ' (follower)' : ''}
-            </span>
-          )}
+          {p.role === 'bailarin' && (p as any).seekingDancePartner && (() => {
+            // dance_role es lo que la persona ES al bailar ("Tu rol al bailar"
+            // en el perfil), pero la insignia decía "Busca pareja (leader)",
+            // que se lee como lo que BUSCA — y es justo lo contrario: un leader
+            // busca follower. Ahora se nombra a quien busca, que es el dato que
+            // le sirve a quien lee la tarjeta.
+            const rol = (p as any).danceRole;
+            const busca = rol === 'lead' ? 'follower' : rol === 'follow' ? 'leader' : null;
+            return (
+              <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black"
+                style={{ background: 'rgba(212,175,55,0.9)', color: '#000' }}>
+                <Users size={9} /> {busca ? `Busca ${busca}` : 'Busca pareja'}
+              </span>
+            );
+          })()}
         </div>
 
         {/* Name + specialty overlaid — desktop only */}

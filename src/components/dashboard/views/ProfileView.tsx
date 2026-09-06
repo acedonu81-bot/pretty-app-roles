@@ -891,6 +891,10 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                   {(seekingPartner ?? profile.seeking_dance_partner) && (
                     <div className="mb-3">
                       <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Tu rol al bailar</label>
+                      <p className="text-[0.7rem] mt-1" style={{ color: 'rgba(10,9,8,0.5)' }}>
+                        Elige lo que TÚ bailas. En tu tarjeta se mostrará a quién buscas:
+                        si eres leader, buscas follower (y al revés).
+                      </p>
                       <div className="flex flex-wrap gap-1.5 mt-2">
                         {[{ v: 'lead', l: 'Leader' }, { v: 'follow', l: 'Follower' }, { v: 'ambos', l: 'Ambos' }].map(r => {
                           const active = (danceRole ?? profile.dance_role) === r.v;

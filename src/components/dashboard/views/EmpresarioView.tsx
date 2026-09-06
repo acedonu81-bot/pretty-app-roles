@@ -146,7 +146,18 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
     // Sin foto siempre al final — mismo criterio que el directorio público y
     // el feed swipe (ver fetchDirectorioProfiles en DirectorioPublico.tsx):
     // un perfil sin foto no compite en igualdad, recupera posición en cuanto sube una.
-    filtered.sort((a: any, b: any) => Number(!!b.photo_url) - Number(!!a.photo_url));
+    // Orden por completitud de ficha, no solo por foto. Medido en producción:
+    // de 37 profesionales solo 10 tienen foto + bio + tarifa. Ordenando solo
+    // por foto, un organizador podía abrir varias fichas seguidas sin tarifa
+    // ni descripción y concluir que la plataforma está vacía. Nada se esconde
+    // —siguen todos listados—, pero lo completo se ve primero.
+    const puntos = (p: any) =>
+      (p.photo_url ? 4 : 0) +
+      (p.bio?.trim() ? 2 : 0) +
+      (p.hourly_rate > 0 ? 2 : 0) +
+      (p.specialty?.trim() ? 1 : 0) +
+      (p.is_verified ? 1 : 0);
+    filtered.sort((a: any, b: any) => puntos(b) - puntos(a));
     setPros(filtered.map((d: any) => ({ ...d, id: d.user_id })) as unknown as Pro[]);
   }, [user?.id]);
 
