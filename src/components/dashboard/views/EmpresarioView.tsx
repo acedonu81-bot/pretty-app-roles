@@ -130,7 +130,10 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
       // del 31 ago (escondía 31 de 34), en otra columna: un flag de estado
       // usado como si fuera de existencia. Ordena (SmartMatch ya le suma
       // puntos), nunca esconde.
-      .select('user_id, display_name, role, zone, hourly_rate, specialty, subscription_tier, is_live, is_verified, photo_url, genres, bio, is_flash_active')
+      // 'instagram' se pide porque el CSV exporta la columna "Instagram / WA":
+      // sin él salía "—" en TODAS las filas, y el organizador se descargaba un
+      // listado sin ninguna forma de contactar a nadie.
+      .select('user_id, display_name, role, zone, hourly_rate, specialty, subscription_tier, is_live, is_verified, photo_url, genres, bio, is_flash_active, instagram')
       .not('display_name', 'is', null)
       // Solo gente contratable. Sin esto el organizador veía en su directorio
       // otros empresarios (incluida la cuenta de QA) y perfiles 'pending', que
