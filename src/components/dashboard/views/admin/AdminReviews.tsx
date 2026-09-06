@@ -50,6 +50,12 @@ const AdminReviews = () => {
       if (error) { toast.error('Error al aprobar'); return; }
       toast.success('Reseña aprobada y visible');
     } else {
+      // Rechazar BORRA la reseña de forma definitiva: no hay papelera ni forma
+      // de recuperarla, y quien la escribió no puede volver a dejarla. Las
+      // otras dos acciones destructivas del panel (bajas y códigos promo) ya
+      // confirmaban; esta no, así que un clic de más en el botón equivocado
+      // destruía la reseña de un profesional sin remedio.
+      if (!confirm('¿Eliminar esta reseña? Se borra de forma definitiva y no se puede recuperar.')) return;
       const { error } = await supabase.from('reviews').delete().eq('id', id);
       if (error) { toast.error('Error al eliminar'); return; }
       toast.success('Reseña eliminada');

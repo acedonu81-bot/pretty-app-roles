@@ -30,6 +30,7 @@ const AdminMetrics = () => {
       const [
         { count: totalUsers },
         { count: businesses },
+        { count: realProfessionals },
         { count: activeFlash },
         { count: activeFlashRecent },
         { count: bookingsTotal },
@@ -39,6 +40,11 @@ const AdminMetrics = () => {
       ] = await Promise.all([
         supabase.from('profiles').select('id', { count: 'exact', head: true }),
         supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('role', 'empresario'),
+        // Profesionales de verdad: ni empresarios ni altas sin oficio elegido.
+        // Antes se calculaba como total - empresarios, así que los 'pending'
+        // engordaban la cifra de profesionales del panel (42-1=41 cuando los
+        // reales eran 39).
+        supabase.from('profiles').select('id', { count: 'exact', head: true }).not('role', 'in', '("empresario","pending")'),
         supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('is_flash_active', true),
         supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('is_flash_active', true).gte('updated_at', since24h),
         supabase.from('flash_bookings').select('id', { count: 'exact', head: true }),
@@ -48,7 +54,7 @@ const AdminMetrics = () => {
       ]);
       setMetrics({
         totalUsers: totalUsers ?? 0,
-        professionals: (totalUsers ?? 0) - (businesses ?? 0),
+        professionals: realProfessionals ?? 0,
         businesses: businesses ?? 0,
         activeFlash: activeFlash ?? 0,
         activeFlashRecent: activeFlashRecent ?? 0,

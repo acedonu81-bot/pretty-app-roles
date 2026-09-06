@@ -132,6 +132,13 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
       // puntos), nunca esconde.
       .select('user_id, display_name, role, zone, hourly_rate, specialty, subscription_tier, is_live, is_verified, photo_url, genres, bio, is_flash_active')
       .not('display_name', 'is', null)
+      // Solo gente contratable. Sin esto el organizador veía en su directorio
+      // otros empresarios (incluida la cuenta de QA) y perfiles 'pending', que
+      // son altas sin oficio elegido todavía: fichas que no puede contratar
+      // porque no ofrecen ningún servicio. Distinto del caso is_flash_active
+      // de arriba — allí se escondía inventario real; aquí se está mostrando
+      // lo que no es inventario.
+      .not('role', 'in', '("empresario","pending")')
       .limit(200);
     setLoading(false);
     if (error) { toast.error('Error al cargar profesionales'); return; }
