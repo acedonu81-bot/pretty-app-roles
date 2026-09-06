@@ -185,20 +185,36 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   // (dedupe vía email_logs), nunca si ya se completó. El perfil SÍ aparece
   // en el directorio (no hay gate de visibilidad), pero incompleto pierde
   // oportunidades reales frente a organizadores que ya están buscando.
-  profile_incomplete_reminder: (d) => ({
-    subject: `${esc(d.name)}, te faltan ${esc(String(d.missingCount))} pasos para que te contraten`,
+  profile_incomplete_reminder: (d) => {
+    // El organizador NO busca que le contraten: contrata él. El texto del
+    // profesional ("para que te contraten") le sonaría a error, así que la
+    // plantilla cambia el motivo — un perfil de sala vacío hace que su oferta
+    // parezca spam y baja la respuesta de los profesionales.
+    const esEmpresa = d.role === 'empresario';
+    return {
+    subject: esEmpresa
+      ? `${esc(d.name)}, completa tu perfil para que los profesionales confíen en tus ofertas`
+      : `${esc(d.name)}, te faltan ${esc(String(d.missingCount))} pasos para que te contraten`,
     to: d.email,
     html: base(`
       <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Te faltan ${esc(String(d.missingCount))} pasos</h2>
+      ${esEmpresa ? `
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Cuando envías una oferta, el profesional entra a ver quién se la manda. Tu perfil está al ${esc(String(d.percent))}%: sin logo ni descripción, muchos lo toman por spam y ni responden.
+      </p>` : `
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
         Ahora mismo hay organizadores buscando profesionales como tú en XPEAK, y tu perfil como <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong> está al ${esc(String(d.percent))}% — les cuesta más confiar en contratarte sin esta información, y algunos directamente pasan al siguiente perfil.
-      </p>
+      </p>`}
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
         Solo te queda: ${esc(d.missingLabels)}.
       </p>
-      ${btn('Terminar mi perfil →', 'https://xpeak.es/dashboard')}
-      <p style="color:#9CA3AF;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`),
-  }),
+      ${btn(esEmpresa ? 'Completar mi perfil de empresa →' : 'Terminar mi perfil →', 'https://xpeak.es/dashboard')}
+      <p style="color:#9CA3AF;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`,
+      esEmpresa
+        ? `Te faltan ${esc(String(d.missingCount))} datos: ${esc(d.missingLabels)}`
+        : `Perfil al ${esc(String(d.percent))}% — te faltan ${esc(String(d.missingCount))} pasos`),
+    };
+  },
 
   // 1a3. Recordatorio de trabajo mañana — cron diario (bolo-reminder-24h),
   // dedupe vía email_logs (una fila por evento, no por usuario). Type name

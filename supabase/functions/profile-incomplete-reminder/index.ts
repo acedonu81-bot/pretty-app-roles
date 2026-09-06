@@ -10,6 +10,21 @@ const corsHeaders = {
 // in sync by hand since one runs client-side (React state) and the other
 // server-side (raw row). If you change one, change the other.
 function completeness(p: Record<string, unknown>): { percent: number; missing: string[] } {
+  // A un organizador no se le piden tarifa, especialidad ni portfolio: no
+  // vende un servicio, contrata. Lo que necesita es que el profesional al que
+  // escribe pueda ver QUIÉN le está ofreciendo el bolo — un perfil de sala
+  // vacío hace que la oferta parezca spam y baja la respuesta.
+  if (p.role === 'empresario') {
+    const pasos = [
+      { label: 'el logo o una foto del local', done: !!p.photo_url },
+      { label: 'una descripción de tu sala o empresa', done: typeof p.bio === 'string' && p.bio.trim().length > 20 },
+      { label: 'tu ciudad', done: typeof p.zone === 'string' && p.zone.trim().length > 0 && p.zone !== 'España' },
+      { label: 'tu Instagram', done: typeof p.instagram === 'string' && p.instagram.trim().length > 0 },
+    ];
+    const ok = pasos.filter(s => s.done).length;
+    return { percent: Math.round((ok / pasos.length) * 100), missing: pasos.filter(s => !s.done).map(s => s.label) };
+  }
+
   const steps: { label: string; done: boolean }[] = [
     { label: 'una foto de perfil', done: !!p.photo_url },
     { label: 'una bio (mínimo una frase)', done: typeof p.bio === 'string' && p.bio.trim().length > 20 },
@@ -50,7 +65,11 @@ serve(async (req) => {
     .from('profiles')
     .select('user_id, display_name, role, photo_url, bio, zone, specialty, instagram, audio_embed_url, audio_session_urls, portfolio_urls, hourly_rate, created_at')
     .eq('is_seed', false)
-    .neq('role', 'empresario');
+    // Los empresarios ya NO se excluyen: también reciben su recordatorio, con
+    // criterios propios (ver completeness). Antes solo se avisaba a los
+    // profesionales, así que las salas se quedaban con el perfil vacío para
+    // siempre y nadie se lo decía.
+    .neq('role', 'pending');
 
   if (profilesError) {
     console.error('[profile-incomplete-reminder] fetch error', profilesError);
@@ -90,7 +109,7 @@ serve(async (req) => {
           type: 'profile_incomplete_reminder',
           data: {
             email: userData.user.email,
-            name: profile.display_name ?? 'Profesional',
+            name: profile.display_name ?? (profile.role === 'empresario' ? 'Organizador' : 'Profesional'),
             role: profile.role ?? 'profesional',
             percent,
             missingCount: missing.length,
