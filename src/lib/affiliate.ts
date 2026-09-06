@@ -319,6 +319,38 @@ export const AFFILIATE_PARTNERS: AffiliatePartner[] = [
     network: 'Por definir',
     kind: 'formacion',
   },
+  // ── Huecos por oficio, a la espera del enlace de afiliado ──
+  // Hotmart obliga a afiliarse producto a producto: el enlace se genera desde
+  // la cuenta, no hay uno global. Con url:null NO se pintan, así que dejarlos
+  // aquí no muestra nada roto — solo marca el sitio donde va cada uno.
+  //
+  // Al buscar en el marketplace, filtrar por idioma ESPAÑOL: por defecto salen
+  // en portugués (Hotmart es brasileña) y a un profesional de aquí no le
+  // sirven. Comprobado que existe catálogo real en español para estos tres.
+  {
+    name: 'Curso de maquillaje para novias',
+    desc: 'Especialización en maquillaje nupcial: preparación de piel, larga duración y trabajo en fotografía.',
+    roles: ['maquillaje', 'makeup'],
+    url: null,
+    network: 'Hotmart',
+    kind: 'formacion',
+  },
+  {
+    name: 'Curso de fotografía de bodas y edición',
+    desc: 'Cobertura de boda de principio a fin, más revelado en Lightroom y retoque en Photoshop.',
+    roles: ['media', 'fotografo'],
+    url: null,
+    network: 'Hotmart',
+    kind: 'formacion',
+  },
+  {
+    name: 'Curso de canto y técnica vocal',
+    desc: 'Técnica, afinación y proyección en directo para quien canta en bodas y eventos.',
+    roles: ['grupo-musical'],
+    url: null,
+    network: 'Hotmart',
+    kind: 'formacion',
+  },
 ];
 
 export function partnersForRole(role: string, kind?: 'formacion' | 'tienda'): AffiliatePartner[] {
