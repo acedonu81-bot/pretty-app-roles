@@ -67,3 +67,23 @@ describe('formación por oficio', () => {
     }
   });
 });
+
+/**
+ * Orden dentro de la sección de formación.
+ *
+ * 'peluqueria' y 'maquillaje' comparten catálogo (mismo directorio), así que a
+ * las dos les llegan los dos cursos. Sin ordenar por relevancia, cada una veía
+ * en cabecera la formación de la otra: la peluquera abría el panel y lo
+ * primero era un curso de maquillaje.
+ */
+describe('orden de la formación', () => {
+  it('cada oficio ve primero el curso de lo suyo', () => {
+    expect(partnersForRole('maquillaje', 'formacion')[0].name).toMatch(/Maquillaje/i);
+    expect(partnersForRole('peluqueria', 'formacion')[0].name).toMatch(/Peluquería/i);
+  });
+
+  it('un DJ solo ve cursos de cabina', () => {
+    const n = partnersForRole('dj', 'formacion').map(p => p.name);
+    expect(n.every(x => /PRODJ/i.test(x))).toBe(true);
+  });
+});

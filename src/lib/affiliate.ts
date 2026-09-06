@@ -328,23 +328,22 @@ export const AFFILIATE_PARTNERS: AffiliatePartner[] = [
   // en portugués (Hotmart es brasileña) y a un profesional de aquí no le
   // sirven. Comprobado que existe catálogo real en español para estos tres.
   {
-    name: 'Global Training 360º — Peluquería',
-    desc: 'Dos másters para peluqueros: gestión del negocio y maestría del corte. De Fernando Suarz.',
-    // 'peluqueria' comparte catálogo de equipo con 'maquillaje' (alias), pero
-    // este curso es SOLO de peluquería: se listan los dos roles porque quien
-    // trabaja imagen suele tocar ambos, y quien no lo necesite simplemente no
-    // lo pincha. Poner cursos de corte de pelo a una maquilladora pura sería
-    // ruido, así que va detrás de los suyos en la lista.
-    roles: ['peluqueria', 'maquillaje'],
-    url: 'https://go.hotmart.com/M107498351Q',
+    name: 'Curso de Maquillaje Online de Belleza Profesional',
+    desc: 'Formación completa para maquilladora profesional: técnica, preparación de piel y trabajo con clienta.',
+    roles: ['maquillaje', 'makeup'],
+    url: 'https://go.hotmart.com/K107498552T',
     network: 'Hotmart',
     kind: 'formacion',
   },
   {
-    name: 'Curso de maquillaje para novias',
-    desc: 'Especialización en maquillaje nupcial: preparación de piel, larga duración y trabajo en fotografía.',
-    roles: ['maquillaje', 'makeup'],
-    url: null,
+    name: 'Global Training 360º — Peluquería',
+    desc: 'Dos másters para peluqueros: gestión del negocio y maestría del corte. De Fernando Suarz.',
+    // Va DESPUÉS del de maquillaje porque partnersForRole respeta el orden de
+    // este array: a una maquilladora le salía primero un máster de corte de
+    // pelo y el suyo propio en segundo lugar. Se listan los dos roles porque
+    // quien trabaja imagen suele tocar ambos oficios.
+    roles: ['peluqueria', 'maquillaje'],
+    url: 'https://go.hotmart.com/M107498351Q',
     network: 'Hotmart',
     kind: 'formacion',
   },
@@ -368,9 +367,29 @@ export const AFFILIATE_PARTNERS: AffiliatePartner[] = [
 
 export function partnersForRole(role: string, kind?: 'formacion' | 'tienda'): AffiliatePartner[] {
   const key = resolveAffiliateKey(role) ?? role;
-  return AFFILIATE_PARTNERS.filter(p =>
+  const coincide = AFFILIATE_PARTNERS.filter(p =>
     p.url &&
     (kind ? p.kind === kind : true) &&
     (p.roles.includes(key) || p.roles.includes(role))
   );
+
+  // Primero lo del oficio EXACTO, después lo del oficio hermano.
+  //
+  // 'peluqueria' y 'maquillaje' comparten catálogo (son el mismo directorio),
+  // así que a las dos les llegan los dos cursos. Sin ordenar, a la peluquera
+  // le salía primero el de maquillaje y a la maquilladora el de corte de pelo:
+  // cada una veía en cabecera la formación de la otra. El array declara un
+  // orden fijo y no puede servir a ambas a la vez, así que se ordena aquí.
+  // Se compara con `role` TAL CUAL, no con `key`: resolveAffiliateKey mapea
+  // 'peluqueria' a 'maquillaje' (comparten catálogo de equipo), así que usar
+  // la clave hacía que ambas vieran el mismo orden y la peluquera siguiera
+  // recibiendo el curso de maquillaje en cabecera.
+  return [...coincide].sort((a, b) => {
+    const prioridad = (p: AffiliatePartner) => {
+      if (p.roles[0] === role) return 0;   // es de mi oficio y va primero
+      if (p.roles.includes(role)) return 1; // me aplica, pero no es lo primero
+      return 2;                             // llega por el oficio hermano
+    };
+    return prioridad(a) - prioridad(b);
+  });
 }
