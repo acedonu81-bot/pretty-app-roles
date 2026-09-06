@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { resolveAffiliateKey } from '@/lib/affiliate';
+import { resolveAffiliateKey, partnersForRole } from '@/lib/affiliate';
 
 /**
  * El banner de Recursos vivía en DirectoryView, el componente compartido por
@@ -39,5 +39,31 @@ describe('banner de recursos', () => {
   it('un grupo musical lo ve en su directorio, no en el de DJs', () => {
     expect(seVe('grupo-musical', 'grupo-musical')).toBe(true);
     expect(seVe('grupo-musical', 'dj')).toBe(false);
+  });
+});
+
+/**
+ * Cada oficio ve SOLO la formación de lo suyo. Un curso irrelevante en el
+ * panel resta credibilidad al resto: si a un camarero le aparece un máster de
+ * corte de pelo, deja de fiarse también del equipo recomendado.
+ */
+describe('formación por oficio', () => {
+  it('una peluquera ve su curso de peluquería', () => {
+    const n = partnersForRole('peluqueria', 'formacion').map(p => p.name);
+    expect(n.some(x => /Peluquería/i.test(x))).toBe(true);
+  });
+
+  it('un DJ ve los dos cursos de cabina (Pioneer y Denon), no el de peluquería', () => {
+    const n = partnersForRole('dj', 'formacion').map(p => p.name);
+    expect(n.filter(x => /PRODJ/i.test(x))).toHaveLength(2);
+    expect(n.some(x => /Peluquería/i.test(x))).toBe(false);
+  });
+
+  it('los partners sin enlace de afiliado no se muestran', () => {
+    // url:null = alta todavía no aprobada. Enlazar sin el enlace rastreable
+    // regala la venta, así que no se pinta nada.
+    for (const rol of ['dj', 'peluqueria', 'media', 'staff', 'grupo-musical']) {
+      expect(partnersForRole(rol, 'formacion').every(p => !!p.url)).toBe(true);
+    }
   });
 });

@@ -328,6 +328,19 @@ export const AFFILIATE_PARTNERS: AffiliatePartner[] = [
   // en portugués (Hotmart es brasileña) y a un profesional de aquí no le
   // sirven. Comprobado que existe catálogo real en español para estos tres.
   {
+    name: 'Global Training 360º — Peluquería',
+    desc: 'Dos másters para peluqueros: gestión del negocio y maestría del corte. De Fernando Suarz.',
+    // 'peluqueria' comparte catálogo de equipo con 'maquillaje' (alias), pero
+    // este curso es SOLO de peluquería: se listan los dos roles porque quien
+    // trabaja imagen suele tocar ambos, y quien no lo necesite simplemente no
+    // lo pincha. Poner cursos de corte de pelo a una maquilladora pura sería
+    // ruido, así que va detrás de los suyos en la lista.
+    roles: ['peluqueria', 'maquillaje'],
+    url: 'https://go.hotmart.com/M107498351Q',
+    network: 'Hotmart',
+    kind: 'formacion',
+  },
+  {
     name: 'Curso de maquillaje para novias',
     desc: 'Especialización en maquillaje nupcial: preparación de piel, larga duración y trabajo en fotografía.',
     roles: ['maquillaje', 'makeup'],
