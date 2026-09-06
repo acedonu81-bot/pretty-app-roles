@@ -73,8 +73,13 @@ export default function EventCartWidget() {
   return (
     <>
       {showHint && (
-        <div className="fixed bottom-20 right-5 z-40 max-w-[240px] p-3.5 rounded-xl animate-[fadeIn_0.3s_ease]"
-          style={{ background: '#161412', border: '1px solid rgba(212,175,55,0.3)', boxShadow: '0 8px 24px rgba(0,0,0,0.35)' }}>
+        <div className="fixed right-5 z-40 max-w-[240px] p-3.5 rounded-xl animate-[fadeIn_0.3s_ease]"
+          style={{
+            bottom: 'calc(10.5rem + env(safe-area-inset-bottom))',
+            background: '#161412',
+            border: '1px solid rgba(212,175,55,0.3)',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.35)',
+          }}>
           <button onClick={dismissHint} aria-label="Cerrar aviso" className="absolute top-2 right-2 opacity-50 hover:opacity-100 transition-opacity">
             <X size={13} color="#fff" />
           </button>
@@ -86,8 +91,17 @@ export default function EventCartWidget() {
       )}
       <button
         onClick={() => { setOpen(true); dismissHint(); }}
-        className="fixed bottom-5 right-5 z-40 flex items-center gap-2 pl-3 pr-4 py-3 rounded-full transition-all hover:scale-105"
-        style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 8px 24px rgba(212,175,55,0.4)' }}>
+        // El botón de soporte (SupportChat) ocupa la misma esquina: es un
+        // círculo de 56 px en `right-4` con `bottom: 1.5rem` en escritorio y
+        // `4.5rem + safe-area` en móvil, y va en z-50, así que tapaba a este.
+        // Este sube por encima en vez de competir por el mismo hueco.
+        className="fixed right-5 z-40 flex items-center gap-2 pl-3 pr-4 py-3 rounded-full transition-all hover:scale-105"
+        style={{
+          bottom: 'calc(5.75rem + env(safe-area-inset-bottom))',
+          background: 'linear-gradient(135deg,#D4AF37,#B8941E)',
+          color: '#000',
+          boxShadow: '0 8px 24px rgba(212,175,55,0.4)',
+        }}>
         <span className="relative">
           <ShoppingBag size={18} />
           <span className="absolute -top-2 -right-2 w-4 h-4 rounded-full flex items-center justify-center text-[0.6rem] font-black"

@@ -104,3 +104,52 @@ describe('enrutado de rol a vista', () => {
     expect(casesDelSwitch.has('grupo-musical')).toBe(true);
   });
 });
+
+/**
+ * Prioridad de la vista inicial del dashboard.
+ *
+ * "Cuando vuelves o cargas el dashboard te dirige a donde le da la gana": eran
+ * tres mecanismos compitiendo (estado inicial, RoleDefaultView con su propio
+ * mapa, y el efecto de ajuste), cada uno con su criterio. Ahora hay una única
+ * función y estos tests fijan su orden.
+ */
+describe('resolverVistaInicial', () => {
+  it('la navegación explícita gana a todo lo demás', async () => {
+    const { resolverVistaInicial } = await import('./Dashboard');
+    expect(resolverVistaInicial({
+      stateView: 'messages', queryView: 'flashbooking', guardada: 'calendar', rol: 'dj',
+    })).toBe('messages');
+  });
+
+  it('el ?view= de un enlace de email gana a la vista guardada', async () => {
+    const { resolverVistaInicial } = await import('./Dashboard');
+    expect(resolverVistaInicial({
+      queryView: 'flashbooking', guardada: 'calendar', rol: 'dj',
+    })).toBe('flashbooking');
+  });
+
+  it('sin navegación explícita, vuelve a donde estabas', async () => {
+    const { resolverVistaInicial } = await import('./Dashboard');
+    expect(resolverVistaInicial({ guardada: 'calendar', rol: 'dj' })).toBe('calendar');
+  });
+
+  it('sin vista guardada, abre la de su rol', async () => {
+    const { resolverVistaInicial } = await import('./Dashboard');
+    expect(resolverVistaInicial({ rol: 'grupo-musical' })).toBe('grupo-musical');
+    expect(resolverVistaInicial({ rol: 'staff' })).toBe('staff');
+  });
+
+  it('sin rol resuelto va al perfil, NUNCA al directorio de DJs', async () => {
+    const { resolverVistaInicial } = await import('./Dashboard');
+    expect(resolverVistaInicial({})).toBe('profile');
+    expect(resolverVistaInicial({ rol: 'pending' })).toBe('profile');
+    expect(resolverVistaInicial({ rol: 'rookie' })).toBe('profile');
+  });
+
+  it('es determinista: mismas entradas, misma salida', async () => {
+    const { resolverVistaInicial } = await import('./Dashboard');
+    const args = { guardada: 'stats', rol: 'dj' };
+    const r = Array.from({ length: 5 }, () => resolverVistaInicial(args));
+    expect(new Set(r).size).toBe(1);
+  });
+});

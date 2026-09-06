@@ -3,7 +3,7 @@ import {
   ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis,
   CartesianGrid, Tooltip, Legend,
 } from 'recharts';
-import { RefreshCw, Eye, Users, UserPlus, Send, Clock, Globe, Smartphone } from 'lucide-react';
+import { RefreshCw, Eye, Users, UserPlus, Send, Clock, Globe, Smartphone, HelpCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 /**
@@ -29,6 +29,34 @@ type Blog = { articulo: string; visitas: number; sesiones: number; desde_buscado
 type Embudo = { paso: string; orden: number; cantidad: number };
 
 const GOLD = '#B8941E';
+
+/**
+ * Explicación al pasar el ratón. Un panel de analítica sin esto obliga a
+ * recordar qué significa cada métrica: "sesiones" no es "visitas", y la
+ * diferencia entre ambas es justo lo que dice si la gente vuelve o no.
+ *
+ * Se usa <details>/CSS puro y no una librería de tooltip para que también
+ * funcione con toque en móvil, donde no hay hover.
+ */
+const Ayuda = ({ texto }: { texto: string }) => (
+  <span className="relative inline-flex group/ayuda align-middle ml-1">
+    <HelpCircle
+      size={12}
+      className="cursor-help flex-shrink-0"
+      style={{ color: 'rgba(10,9,8,0.3)' }}
+      tabIndex={0}
+      role="img"
+      aria-label={texto}
+    />
+    <span
+      role="tooltip"
+      className="pointer-events-none absolute left-1/2 bottom-full z-50 mb-2 w-56 -translate-x-1/2 rounded-xl p-2.5 text-[0.7rem] leading-relaxed opacity-0 transition-opacity group-hover/ayuda:opacity-100 group-focus-within/ayuda:opacity-100"
+      style={{ background: '#1a1208', color: 'rgba(255,255,255,0.92)', boxShadow: '0 8px 24px rgba(0,0,0,0.3)' }}
+    >
+      {texto}
+    </span>
+  </span>
+);
 const RANGOS = [7, 30, 90];
 
 const fmtDia = (d: string) => {
@@ -36,8 +64,8 @@ const fmtDia = (d: string) => {
   return `${date.getDate()}/${date.getMonth() + 1}`;
 };
 
-const Kpi = ({ icon: Icon, label, valor, sub }: {
-  icon: typeof Eye; label: string; valor: string | number; sub?: string;
+const Kpi = ({ icon: Icon, label, valor, sub, ayuda }: {
+  icon: typeof Eye; label: string; valor: string | number; sub?: string; ayuda?: string;
 }) => (
   <div className="rounded-2xl p-4" style={{ background: '#fff', border: '1px solid rgba(10,9,8,0.08)' }}>
     <div className="flex items-center gap-1.5 mb-2">
@@ -45,17 +73,20 @@ const Kpi = ({ icon: Icon, label, valor, sub }: {
       <span className="text-[0.65rem] font-extrabold uppercase tracking-wider" style={{ color: 'rgba(10,9,8,0.45)' }}>
         {label}
       </span>
+      {ayuda && <Ayuda texto={ayuda} />}
     </div>
     <p className="text-2xl font-black leading-none" style={{ color: '#0a0908' }}>{valor}</p>
     {sub && <p className="text-[0.7rem] mt-1.5" style={{ color: 'rgba(10,9,8,0.45)' }}>{sub}</p>}
   </div>
 );
 
-const Panel = ({ title, hint, children }: {
-  title: string; hint?: string; children: React.ReactNode;
+const Panel = ({ title, hint, ayuda, children }: {
+  title: string; hint?: string; ayuda?: string; children: React.ReactNode;
 }) => (
   <div className="rounded-2xl p-4 sm:p-5 mb-4" style={{ background: '#fff', border: '1px solid rgba(10,9,8,0.08)' }}>
-    <h3 className="text-sm font-black mb-0.5" style={{ color: '#0a0908' }}>{title}</h3>
+    <h3 className="text-sm font-black mb-0.5" style={{ color: '#0a0908' }}>
+      {title}{ayuda && <Ayuda texto={ayuda} />}
+    </h3>
     {hint && <p className="text-[0.7rem] mb-4" style={{ color: 'rgba(10,9,8,0.45)' }}>{hint}</p>}
     {children}
   </div>
@@ -188,14 +219,19 @@ export default function AdminAnalytics() {
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
-        <Kpi icon={Eye} label="Visitas" valor={totalVisitas} sub={`en ${dias} días`} />
-        <Kpi icon={Users} label="Sesiones" valor={totalSesiones} sub="personas distintas" />
-        <Kpi icon={UserPlus} label="Altas" valor={totalAltas} sub="perfiles nuevos" />
-        <Kpi icon={Send} label="Solicitudes" valor={totalSolicitudes} sub="Flash Booking" />
+        <Kpi icon={Eye} label="Visitas" valor={totalVisitas} sub={`en ${dias} días`}
+          ayuda="Páginas abiertas en total. Si una persona ve 5 páginas, cuentan 5 visitas. Excluye tu propio tráfico de admin." />
+        <Kpi icon={Users} label="Sesiones" valor={totalSesiones} sub="personas distintas"
+          ayuda="Personas distintas, no páginas. Si las visitas son muchas y las sesiones pocas, poca gente mira mucho; al revés, mucha gente entra y se va." />
+        <Kpi icon={UserPlus} label="Altas" valor={totalAltas} sub="perfiles nuevos"
+          ayuda="Perfiles creados en el periodo. Sale de la base de datos, así que tiene histórico completo desde el inicio del proyecto." />
+        <Kpi icon={Send} label="Solicitudes" valor={totalSolicitudes} sub="Flash Booking"
+          ayuda="Peticiones de contratación enviadas. Es la métrica que de verdad mide negocio: sin solicitudes, el tráfico no sirve de nada." />
       </div>
 
       {/* Tráfico por día */}
-      <Panel title="Tráfico por día" hint="Visitas y sesiones. Excluye tu propio tráfico de admin.">
+      <Panel title="Tráfico por día" hint="Visitas y sesiones. Excluye tu propio tráfico de admin."
+        ayuda="La línea dorada son páginas vistas; la azul, personas distintas. Empieza a contar desde que se instaló la analítica, así que los días anteriores salen a cero.">
         <ResponsiveContainer width="100%" height={220}>
           <AreaChart data={porDia}>
             <defs>
@@ -220,6 +256,7 @@ export default function AdminAnalytics() {
       {/* Por hora */}
       <Panel
         title="¿A qué hora entra tu gente?"
+        ayuda="Suma todas las visitas por hora del día (hora española). Sirve para decidir cuándo publicar en redes y cuándo lanzar campañas: publicar cuando tu gente duerme es tirar el alcance."
         hint={horaPunta && Number(horaPunta.visitas) > 0
           ? `Hora punta: ${horaPunta.hora}:00 h. Es cuándo publicar y cuándo lanzar campañas.`
           : 'Hora local de España. Se llena a medida que entren visitas.'}
@@ -238,7 +275,8 @@ export default function AdminAnalytics() {
       </Panel>
 
       {/* Actividad de negocio — tiene histórico completo, no depende del tracking nuevo */}
-      <Panel title="Actividad de la plataforma" hint="Altas, solicitudes y mensajes. Con histórico desde el inicio del proyecto.">
+      <Panel title="Actividad de la plataforma" hint="Altas, solicitudes y mensajes. Con histórico desde el inicio del proyecto."
+        ayuda="Se lee de las tablas reales (perfiles, solicitudes, mensajes), no del tracking web. Por eso aquí sí hay histórico completo aunque la analítica sea reciente.">
         <ResponsiveContainer width="100%" height={200}>
           <BarChart data={negocio}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(10,9,8,0.06)" vertical={false} />
@@ -259,7 +297,8 @@ export default function AdminAnalytics() {
           con 0 solicitudes es un problema distinto de 40 con 4, y la gráfica
           de tráfico sola no los distingue. */}
       {embudo.length > 0 && embudo.some(e => Number(e.cantidad) > 0) && (
-        <Panel title="Embudo" hint="De la visita al contacto. Cada paso son personas distintas, no clics.">
+        <Panel title="Embudo" hint="De la visita al contacto. Cada paso son personas distintas, no clics."
+          ayuda="Cuánta gente avanza de un paso al siguiente. El porcentaje compara con el primer paso. Una caída fuerte entre dos pasos señala exactamente dónde se pierde la gente.">
           <div className="flex flex-col gap-2">
             {embudo.map(e => {
               const max = Math.max(...embudo.map(x => Number(x.cantidad) || 0), 1);
@@ -292,6 +331,7 @@ export default function AdminAnalytics() {
       <Panel
         title="Qué buscan dentro de XPEAK"
         hint="Términos escritos en el buscador. Los marcados en rojo no devolvieron ningún resultado: eso es inventario que te piden y no tienes."
+        ayuda="Búsquedas hechas DENTRO de XPEAK, no en Google. Este dato no lo da ni Google Analytics ni Search Console. Un término en rojo repetido es una categoría o zona que deberías cubrir."
       >
         {busquedas.length === 0 ? (
           <p className="text-[0.75rem]" style={{ color: 'rgba(10,9,8,0.4)' }}>
@@ -328,6 +368,7 @@ export default function AdminAnalytics() {
       <Panel
         title="Clics en enlaces de afiliado"
         hint="Qué producto se pincha y desde dónde. Amazon solo reporta ventas, así que este es el único sitio donde ves el clic."
+        ayuda="Amazon informa de ventas pero nunca de clics por producto. Sin este dato no se distingue 'nadie lo pincha' (problema de visibilidad) de 'lo pinchan y no compran' (mal producto elegido): son dos arreglos distintos."
       >
         {afiliados.length === 0 ? (
           <p className="text-[0.75rem]" style={{ color: 'rgba(10,9,8,0.4)' }}>
@@ -353,6 +394,7 @@ export default function AdminAnalytics() {
       <Panel
         title="Artículos del blog que funcionan"
         hint="Visitas por artículo y cuántas vienen de un buscador. Lo que no aparece aquí, no lo lee nadie."
+        ayuda="La etiqueta verde cuenta las visitas llegadas desde Google o Bing: ese es el SEO funcionando de verdad, frente a las que llegan navegando desde dentro."
       >
         {blog.length === 0 ? (
           <p className="text-[0.75rem]" style={{ color: 'rgba(10,9,8,0.4)' }}>

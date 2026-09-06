@@ -86,11 +86,28 @@ export default function Descubrir() {
     try {
       let data: DirProfile[];
       if (slug === ALL_SLUG) {
-        // Feed mezclado: junta unos roles populares y baraja. 3 roles bastan
-        // para variedad y cargan rápido (menos fetches = feed más ágil).
-        const slugs = ['dj', 'fotografo', 'catering'];
+        // Feed mezclado: TODAS las categorías, no una lista fija.
+        //
+        // Antes eran tres slugs escritos a mano ('dj', 'fotografo', 'catering')
+        // elegidos por "populares". Medido contra producción: de 17 perfiles
+        // con foto solo salían 9 — los 4 grupos musicales, los 2 de maquillaje
+        // y los camareros no aparecían NUNCA en "Todos", mientras dos de los
+        // tres roles cargados estaban vacíos. Una lista fija de roles envejece
+        // en cuanto cambia el inventario, que es justo lo que pasó.
+        const slugs = Object.keys(ROLE_CONFIG);
         const lists = await Promise.all(slugs.map(s => fetchDirectorioProfiles(ROLE_CONFIG[s].dbRole, 'Todas').catch(() => [])));
-        data = dedupe(lists.flat());
+
+        // Intercalado (uno de cada categoría por ronda) en vez de concatenar.
+        // Con .flat() salían agrupados —los 9 DJs seguidos, luego el resto—,
+        // así que quien no quiere DJ abandona antes de llegar a nada más. El
+        // feed es de descubrimiento: la variedad tiene que verse desde la
+        // primera tarjeta.
+        const intercalado: DirProfile[] = [];
+        const maxLargo = Math.max(0, ...lists.map(l => l.length));
+        for (let i = 0; i < maxLargo; i++) {
+          for (const lista of lists) if (lista[i]) intercalado.push(lista[i]);
+        }
+        data = dedupe(intercalado);
       } else {
         data = await fetchDirectorioProfiles(ROLE_CONFIG[slug].dbRole, 'Todas');
       }

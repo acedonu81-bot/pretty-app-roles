@@ -122,24 +122,12 @@ const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: s
   );
 };
 
-const ROLE_DEFAULT_VIEW: Partial<Record<string, string>> = {
-  pending: 'profile', dj: 'profile',
-  vestuario: 'vestuario', design: 'design', promotor: 'promotor',
-  staff: 'staff', azafata: 'azafata', makeup: 'makeup', peluqueria: 'peluqueria', media: 'media',
-  event_manager: 'event_manager', empresario: 'empresario',
-  camarero: 'staff', catering: 'staff',
-};
-
-const RoleDefaultView = ({ onViewChange }: { onViewChange: (v: string) => void }) => {
-  const { role, loading } = useProfile();
-  useEffect(() => {
-    if (loading || !role) return;
-    if (localStorage.getItem('xpeak_view')) return;
-    const target = ROLE_DEFAULT_VIEW[role];
-    if (target) onViewChange(target);
-  }, [role, loading, onViewChange]);
-  return null;
-};
+// NOTA: aquí vivían ROLE_DEFAULT_VIEW y el componente RoleDefaultView, un
+// TERCER mecanismo que cambiaba la vista tras montar según su propio mapa —
+// con criterios distintos a ROLE_TO_VIEW (p.ej. mandaba los 'dj' a 'profile').
+// Competía en carrera con el estado inicial y con el efecto de ajuste, y por
+// eso recargar el dashboard te dejaba en un sitio distinto cada vez. Toda esa
+// decisión vive ahora en resolverVistaInicial().
 
 // La marca "onboarded" vive en localStorage, así que un dispositivo/navegador
 // nuevo (p.ej. el WebView del enlace "Ver mensaje" del email) nunca la tiene
@@ -192,19 +180,50 @@ const ROLE_TO_VIEW: Record<string, string> = {
   rookie: 'profile',
 };
 
+/**
+ * ÚNICO punto que decide qué vista abre el dashboard.
+ *
+ * Antes lo decidían tres mecanismos con criterios distintos: el estado inicial
+ * de activeView (que caía en 'dj'), el componente RoleDefaultView con su propio
+ * mapa ROLE_DEFAULT_VIEW, y un efecto con ROLE_TO_VIEW. Según cuál ganase la
+ * carrera, recargar el dashboard te dejaba en un sitio o en otro sin lógica
+ * aparente.
+ *
+ * Prioridad, de más a menos específica:
+ *   1. Navegación explícita (state del router o ?view=) — un enlace de email
+ *      manda a una sección concreta y eso siempre gana.
+ *   2. Última vista usada (localStorage) — donde el usuario estaba.
+ *   3. La vista propia de su rol.
+ *   4. 'profile' — sin rol resuelto se completa el perfil, nunca el directorio
+ *      de DJs.
+ */
+export function resolverVistaInicial(opts: {
+  stateView?: string | null;
+  queryView?: string | null;
+  guardada?: string | null;
+  rol?: string | null;
+}): string {
+  const { stateView, queryView, guardada, rol } = opts;
+  if (stateView) return stateView;
+  if (queryView) return queryView;
+  if (guardada) return guardada;
+  if (rol) return ROLE_TO_VIEW[rol] ?? rol;
+  return 'profile';
+}
+
 const Dashboard = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [activeView, setActiveView] = useState<string>(() => {
-    const fromState = (location.state as { view?: string })?.view;
-    if (fromState) return fromState;
+  const [activeView, setActiveView] = useState<string>(() => resolverVistaInicial({
+    stateView: (location.state as { view?: string })?.view,
     // Enlaces desde email (ej. "Nueva solicitud Flash Booking") pasan la vista
-    // por query param — sin esto, el botón del email siempre caía en la vista
-    // guardada en localStorage (o "dj" por defecto), nunca en la sección real.
-    const fromQuery = new URLSearchParams(location.search).get('view');
-    if (fromQuery) return fromQuery;
-    return localStorage.getItem('xpeak_view') || 'dj';
-  });
+    // por query param — sin esto, el botón del email caería en la vista
+    // guardada, nunca en la sección real.
+    queryView: new URLSearchParams(location.search).get('view'),
+    guardada: (() => { try { return localStorage.getItem('xpeak_view'); } catch { return null; } })(),
+    // El rol aún no está cargado en el primer render; lo aplica el efecto.
+    rol: null,
+  }));
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [messagesTarget, setMessagesTarget] = useState<{ userId: string; name: string } | null>(null);
   const [selectedProfile, setSelectedProfileRaw] = useState<Profile | null>(null);
@@ -255,12 +274,12 @@ const Dashboard = () => {
     // terminase el wizard aterrizaba en el directorio de DJs y parecía que el
     // sistema le había asignado ese rol.
     if (viewAdjusted.current || !profileRole) return;
-    const explicit = (location.state as { view?: string })?.view
-      || new URLSearchParams(location.search).get('view')
-      || localStorage.getItem('xpeak_view');
-    if (explicit) { viewAdjusted.current = true; return; }
-    const roleView = ROLE_TO_VIEW[profileRole] ?? profileRole;
-    setActiveView(roleView);
+    setActiveView(resolverVistaInicial({
+      stateView: (location.state as { view?: string })?.view,
+      queryView: new URLSearchParams(location.search).get('view'),
+      guardada: (() => { try { return localStorage.getItem('xpeak_view'); } catch { return null; } })(),
+      rol: profileRole,
+    }));
     viewAdjusted.current = true;
   }, [profileRole, location]);
 
@@ -369,7 +388,6 @@ const Dashboard = () => {
       <title>Dashboard | XPEAK</title>
       <meta name="robots" content="noindex, nofollow" />
     </Helmet>
-    <RoleDefaultView onViewChange={handleViewChange} />
     <WizardGate showWizard={showWizard} setShowWizard={setShowWizard} />
     {/* h-screen es 100vh, que en Chrome Android mide la ventana CON la barra de
         URL oculta — siempre más alto que el espacio visible real. Con el
