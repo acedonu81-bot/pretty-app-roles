@@ -439,9 +439,16 @@ const BENTO_CARD_DATA: Record<string, { image: string; icon: React.ReactNode; ti
    pequeña. La categoría con más inscritos ocupa la posición 0 (hueco más
    ancho) — así el bento se reordena solo, sin tocar código. Grid base de 6
    columnas por fila SIN row-span: cada fila reparte su propio ancho de forma
-   independiente (3+2+1=6, luego 2+2+2=6), así ninguna fila puede depender de
-   la altura de otra y dejar un hueco vacío si el contenido varía. */
-const BENTO_SLOT_CLASS = ['md:col-span-3', 'md:col-span-2', 'md:col-span-1', 'md:col-span-2', 'md:col-span-2', 'md:col-span-2'];
+   independiente, así ninguna fila puede depender de la altura de otra y dejar
+   un hueco vacío si el contenido varía.
+
+   El reparto era 3+2+1 en la primera fila: suma 6 y por tanto "cuadraba", pero
+   una tarjeta a 1/6 del ancho se queda en 176 px contra los 368 px de las
+   demás — medido en producción. A ese ancho la imagen se deforma y el título
+   se solapa con el subtítulo, que es como se veía "Animación" desde que se
+   añadió como sexta categoría (31 ago). Ahora las dos filas reparten 2+2+2:
+   seis tarjetas iguales, que además es lo que ya hacía bien la fila de abajo. */
+const BENTO_SLOT_CLASS = ['md:col-span-2', 'md:col-span-2', 'md:col-span-2', 'md:col-span-2', 'md:col-span-2', 'md:col-span-2'];
 
 const Landing = () => {
   // El vídeo de fondo (1,4 MB) espera a que la página esté pintada e inactiva,
