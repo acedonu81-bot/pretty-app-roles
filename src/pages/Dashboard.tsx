@@ -186,7 +186,10 @@ const ROLE_TO_VIEW: Record<string, string> = {
   // Sin rol elegido todavía: NO se le manda al directorio de DJs (ver más
   // abajo), sino a completar su perfil.
   pending: 'profile',
-  rookie: 'dj',
+  // 'rookie' (Promesa) es un profesional que empieza, no un DJ: mandarlo al
+  // directorio de DJs daba por hecho su oficio. Va a su perfil, como cualquier
+  // rol sin oficio resuelto.
+  rookie: 'profile',
 };
 
 const Dashboard = () => {

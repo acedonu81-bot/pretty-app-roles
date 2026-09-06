@@ -12,13 +12,29 @@ vi.mock('@/hooks/useAuth', () => ({
   useAuth: vi.fn(),
 }));
 
+/**
+ * Cadena del query builder de Supabase que usa el hook.
+ *
+ * IMPORTANTE: tiene que incluir TODOS los eslabones que llama el hook. Le
+ * faltaba `.not()` (el filtro que descarta zonas nulas), así que `.eq()`
+ * devolvía un objeto sin ese método, la llamada reventaba dentro del efecto y
+ * `setLoading(false)` no llegaba a ejecutarse nunca: los tests no fallaban por
+ * la aserción final sino por un waitFor que expiraba con loading en true.
+ *
+ * Cada eslabón se devuelve a sí mismo, así que añadir o reordenar filtros en
+ * el hook ya no rompe el mock.
+ */
 function mockViewRows(rows: any[]) {
-  const limit = vi.fn().mockResolvedValue({ data: rows, error: null });
-  const order = vi.fn().mockReturnValue({ limit });
-  const gte = vi.fn().mockReturnValue({ order });
-  const eq = vi.fn().mockReturnValue({ gte });
-  const select = vi.fn().mockReturnValue({ eq });
-  (supabase.from as any).mockReturnValue({ select });
+  const resultado = { data: rows, error: null };
+  const chain: any = {};
+  for (const metodo of ['select', 'eq', 'not', 'gte', 'order', 'limit']) {
+    chain[metodo] = vi.fn().mockReturnValue(chain);
+  }
+  // `limit` cierra la cadena: es await-eable y devuelve las filas.
+  chain.limit = vi.fn().mockResolvedValue(resultado);
+  // Por si en el futuro se await-ea la cadena sin llamar a limit.
+  chain.then = (resolve: any) => Promise.resolve(resultado).then(resolve);
+  (supabase.from as any).mockReturnValue(chain);
 }
 
 describe('useRecentBusinessView', () => {
