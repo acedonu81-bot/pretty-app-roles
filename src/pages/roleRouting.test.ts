@@ -114,7 +114,11 @@ describe('enrutado de rol a vista', () => {
  * función y estos tests fijan su orden.
  */
 describe('resolverVistaInicial', () => {
-  it('la navegación explícita gana a todo lo demás', async () => {
+  // El primer import de Dashboard.tsx arrastra el árbol entero de la app
+  // (Supabase, router, ~40 vistas lazy) y con los demás ficheros de test
+  // corriendo en paralelo puede pasar de los 5 s por defecto. No es lentitud
+  // de la función, que es un puñado de comparaciones: es el coste del módulo.
+  it('la navegación explícita gana a todo lo demás', { timeout: 30_000 }, async () => {
     const { resolverVistaInicial } = await import('./Dashboard');
     expect(resolverVistaInicial({
       stateView: 'messages', queryView: 'flashbooking', guardada: 'calendar', rol: 'dj',

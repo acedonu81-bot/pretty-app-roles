@@ -80,7 +80,38 @@ function sessionId(): string {
   }
 }
 
+/**
+ * Categoría de dispositivo. NO es huella digital: solo tres valores fijos.
+ *
+ * Antes se decidía únicamente por window.innerWidth (768-1023 = tablet), y eso
+ * mentía en los dos sentidos: un iPhone Pro Max girado mide 932 px y se
+ * contaba como tablet, un portátil con la ventana a media pantalla también, y
+ * un iPad Mini vertical (744 px) se contaba como móvil. Con pocas visitas al
+ * día, esos falsos positivos cambian por completo la lectura del panel.
+ *
+ * Ahora manda el user-agent, que sí distingue el aparato, y el ancho solo
+ * decide cuando el UA no dice nada (algunos navegadores de escritorio lo
+ * recortan).
+ */
 function deviceType(): string {
+  const ua = navigator.userAgent || '';
+
+  // iPadOS 13+ se anuncia como Macintosh: se detecta por ser táctil, que un
+  // Mac de verdad no es.
+  const esIPadModerno = /Macintosh/.test(ua) && navigator.maxTouchPoints > 1;
+  if (/iPad|Tablet|PlayBook|Silk/i.test(ua) || esIPadModerno) return 'tablet';
+
+  // Android sin "Mobile" en el UA es tablet — así lo especifica Google.
+  if (/Android/i.test(ua) && !/Mobile/i.test(ua)) return 'tablet';
+
+  if (/Mobi|iPhone|iPod|Windows Phone/i.test(ua)) return 'mobile';
+
+  // Sistema de escritorio declarado: es un ordenador aunque la ventana esté
+  // estrecha. Sin esto, alguien con el navegador a media pantalla (900 px) se
+  // contaba como tablet — y ese caso es mucho más común que un iPad real.
+  if (/Windows NT|Macintosh|X11|CrOS|Linux x86/i.test(ua)) return 'desktop';
+
+  // Sin pistas en el UA: el ancho como último recurso.
   const w = window.innerWidth;
   if (w < 768) return 'mobile';
   if (w < 1024) return 'tablet';
