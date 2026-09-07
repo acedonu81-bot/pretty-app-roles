@@ -53,10 +53,14 @@ describe('formación por oficio', () => {
     expect(n.some(x => /Peluquería/i.test(x))).toBe(true);
   });
 
-  it('un DJ ve los dos cursos de cabina (Pioneer y Denon), no el de peluquería', () => {
+  it('un DJ ve los dos cursos de cabina primero, y también ve el resto', () => {
+    // La formación se muestra a todos los oficios (decisión del 8 sep 2026):
+    // solo se filtra el EQUIPO físico por rol, no los cursos.
     const n = partnersForRole('dj', 'formacion').map(p => p.name);
     expect(n.filter(x => /PRODJ/i.test(x))).toHaveLength(2);
-    expect(n.some(x => /Peluquería/i.test(x))).toBe(false);
+    expect(n[0]).toMatch(/PRODJ/i);
+    expect(n[1]).toMatch(/PRODJ/i);
+    expect(n.some(x => /Peluquería/i.test(x))).toBe(true);
   });
 
   it('los partners sin enlace de afiliado no se muestran', () => {
@@ -82,8 +86,21 @@ describe('orden de la formación', () => {
     expect(partnersForRole('peluqueria', 'formacion')[0].name).toMatch(/Peluquería/i);
   });
 
-  it('un DJ solo ve cursos de cabina', () => {
+  it('un DJ ve TODOS los cursos (los suyos primero)', () => {
+    // Decisión del 8 sep 2026: al contrario que el equipo físico, la
+    // formación se muestra a todos — un curso tiene valor cruzado real y con
+    // el volumen actual no hay ruido que evitar. Enseñar más enlaces de
+    // afiliado a más gente es más clics, sin coste.
     const n = partnersForRole('dj', 'formacion').map(p => p.name);
-    expect(n.every(x => /PRODJ/i.test(x))).toBe(true);
+    expect(n[0]).toMatch(/PRODJ/i);
+    expect(n[1]).toMatch(/PRODJ/i);
+    expect(n.length).toBeGreaterThan(2);
+    expect(n.some(x => /Maquillaje/i.test(x))).toBe(true);
+  });
+
+  it('una maquilladora también ve el curso de DJ, pero detrás del suyo', () => {
+    const n = partnersForRole('maquillaje', 'formacion').map(p => p.name);
+    expect(n[0]).toMatch(/Maquillaje/i);
+    expect(n.some(x => /PRODJ/i.test(x))).toBe(true);
   });
 });

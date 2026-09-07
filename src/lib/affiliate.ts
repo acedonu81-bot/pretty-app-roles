@@ -367,28 +367,37 @@ export const AFFILIATE_PARTNERS: AffiliatePartner[] = [
 
 export function partnersForRole(role: string, kind?: 'formacion' | 'tienda'): AffiliatePartner[] {
   const key = resolveAffiliateKey(role) ?? role;
-  const coincide = AFFILIATE_PARTNERS.filter(p =>
-    p.url &&
-    (kind ? p.kind === kind : true) &&
-    (p.roles.includes(key) || p.roles.includes(role))
-  );
 
-  // Primero lo del oficio EXACTO, después lo del oficio hermano.
+  // Tiendas (equipo físico): SOLO el propio oficio. Enseñarle a un camarero un
+  // controlador DJ es ruido puro, cero relevancia — mismo criterio que ya
+  // aplica el escaparate de productos.
   //
-  // 'peluqueria' y 'maquillaje' comparten catálogo (son el mismo directorio),
-  // así que a las dos les llegan los dos cursos. Sin ordenar, a la peluquera
-  // le salía primero el de maquillaje y a la maquilladora el de corte de pelo:
-  // cada una veía en cabecera la formación de la otra. El array declara un
-  // orden fijo y no puede servir a ambas a la vez, así que se ordena aquí.
-  // Se compara con `role` TAL CUAL, no con `key`: resolveAffiliateKey mapea
-  // 'peluqueria' a 'maquillaje' (comparten catálogo de equipo), así que usar
-  // la clave hacía que ambas vieran el mismo orden y la peluquera siguiera
-  // recibiendo el curso de maquillaje en cabecera.
-  return [...coincide].sort((a, b) => {
+  // Formación (cursos): TODOS los usuarios ven TODOS los cursos disponibles,
+  // ordenados con el/los del propio oficio primero. A diferencia del equipo
+  // físico, un curso tiene valor cruzado real — un DJ con perfil secundario
+  // de grupo musical, un empresario que quiere recomendárselo a su plantilla,
+  // simple curiosidad — y con el volumen actual (un puñado de cursos) no hay
+  // ruido real que evitar. Más exposición de cada enlace es más clics, sin
+  // coste. Decisión del usuario, 8 sep 2026: "no le veo beneficio, es más al
+  // revés" a esconder cursos de otros oficios.
+  const candidatos = kind === 'formacion'
+    ? AFFILIATE_PARTNERS.filter(p => p.url && p.kind === 'formacion')
+    : AFFILIATE_PARTNERS.filter(p =>
+        p.url &&
+        (kind ? p.kind === kind : true) &&
+        (p.roles.includes(key) || p.roles.includes(role))
+      );
+
+  // Primero lo del oficio EXACTO, después lo del oficio hermano, después el
+  // resto. Se compara con `role` TAL CUAL, no con `key`: resolveAffiliateKey
+  // mapea 'peluqueria' a 'maquillaje' (comparten catálogo de equipo), así que
+  // usar la clave dejaba a ambas con el mismo orden — la peluquera veía el
+  // curso de maquillaje en cabecera y viceversa.
+  return [...candidatos].sort((a, b) => {
     const prioridad = (p: AffiliatePartner) => {
-      if (p.roles[0] === role) return 0;   // es de mi oficio y va primero
+      if (p.roles[0] === role) return 0;    // es de mi oficio y va primero
       if (p.roles.includes(role)) return 1; // me aplica, pero no es lo primero
-      return 2;                             // llega por el oficio hermano
+      return 2;                             // de otro oficio: se muestra igual, al final
     };
     return prioridad(a) - prioridad(b);
   });
