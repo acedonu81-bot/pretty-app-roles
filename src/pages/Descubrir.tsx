@@ -17,6 +17,7 @@ import {
   ALL_ROLES,
   ROLE_CONFIG,
   fetchDirectorioProfiles,
+  fetchAllDirectorioProfilesByRole,
   profileUrl,
   type DirProfile,
 } from '@/pages/DirectorioPublico';
@@ -94,8 +95,15 @@ export default function Descubrir() {
         // y los camareros no aparecían NUNCA en "Todos", mientras dos de los
         // tres roles cargados estaban vacíos. Una lista fija de roles envejece
         // en cuanto cambia el inventario, que es justo lo que pasó.
+        //
+        // La primera versión de "todos los roles" lanzaba 17 consultas a
+        // Supabase en paralelo (una por rol) y esperaba a la más lenta antes
+        // de pintar nada: medido con Chrome DevTools, 683-794ms cada una,
+        // render delay de 946ms. Un solo SELECT sin filtro de rol trae el
+        // mismo inventario en 1 round-trip y se agrupa por rol en el cliente.
         const slugs = Object.keys(ROLE_CONFIG);
-        const lists = await Promise.all(slugs.map(s => fetchDirectorioProfiles(ROLE_CONFIG[s].dbRole, 'Todas').catch(() => [])));
+        const byRole = await fetchAllDirectorioProfilesByRole('Todas').catch(() => ({} as Record<string, DirProfile[]>));
+        const lists = slugs.map(s => byRole[ROLE_CONFIG[s].dbRole] ?? []);
 
         // Intercalado (uno de cada categoría por ronda) en vez de concatenar.
         // Con .flat() salían agrupados —los 9 DJs seguidos, luego el resto—,

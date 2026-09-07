@@ -15,7 +15,7 @@ import { useAuth } from '@/hooks/useAuth';
 import GhostProfileCards from '@/components/GhostProfileCards';
 import TruncatedDescription from '@/components/TruncatedDescription';
 import { isEarlyAdopter } from '@/lib/earlyAdopter';
-import { expandRole } from '@/lib/constants';
+import { expandRole, canonicalRole } from '@/lib/constants';
 
 // URL de perfil por slug de nombre (la misma que usan sitemap y prerender) en
 // vez de UUID — evita dos URLs indexables para el mismo perfil. PublicProfile
@@ -370,6 +370,70 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string): Pro
     || ((b.score ?? 0) - (a.score ?? 0))
   );
   return enriched;
+}
+
+// Trae TODOS los perfiles públicos en un solo viaje y los agrupa por rol
+// canónico en el cliente — usado por el feed "Todos" de /descubrir, que antes
+// lanzaba una consulta a Supabase POR CADA rol (17 en paralelo) para luego
+// intercalar: medido con Chrome DevTools, cada una tardaba 683-794ms y el
+// feed no pintaba nada hasta que terminaba la más lenta (render delay 946ms
+// de un LCP de 969ms). Con inventario de esta escala (decenas de perfiles) un
+// solo SELECT sin filtro de rol trae lo mismo con 1 round-trip en vez de 17.
+export async function fetchAllDirectorioProfilesByRole(city: string): Promise<Record<string, DirProfile[]>> {
+  // Sin `.order('score')` a propósito: el único índice disponible es
+  // idx_profiles_role_score (role, score desc) — sirve para "role = X ORDER BY
+  // score" pero no para un ORDER BY score sin filtro de role, que fuerza un
+  // sort completo de la tabla en Postgres. Medido en producción: la primera
+  // versión de esta query (con order + limit 1000) tardó 2.573ms, MÁS que las
+  // 17 consultas por-rol combinadas que sustituye. Con el inventario actual
+  // (decenas de perfiles) ordenar en el cliente es gratis; si esto se
+  // convierte en cuello de botella con más volumen, crear un índice sin
+  // columna `role` en vez de reintroducir el ORDER BY en BD.
+  let q = supabase
+    .from('profiles')
+    .select('user_id, display_name, role, roles, specialty, zone, photo_url, bio_video_url, video_session_urls, hourly_rate, bio, is_flash_active, is_verified, is_seed, is_early_adopter, is_early_adopter_override, score, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls, updated_at, created_at, city_ref')
+    .not('display_name', 'is', null)
+    .limit(1000) as any;
+
+  if (city !== 'Todas') q = q.or(`zone.ilike.%${city}%,city_ref.eq.${city}`);
+
+  let { data, error } = await q.or('is_public.is.null,is_public.eq.true');
+  if (error) ({ data, error } = await q);
+  if (error) throw error;
+
+  const filtered = (data ?? [])
+    .map((p: any) => ({ ...p, is_early_adopter: isEarlyAdopter(p) }))
+    .filter((p: any) => p.display_name?.trim().length > 1);
+
+  const completeness = (p: any): number => {
+    const hasMedia = !!(p.audio_embed_url?.trim())
+      || (Array.isArray(p.audio_session_urls) && p.audio_session_urls.length > 0)
+      || (Array.isArray(p.portfolio_urls) && p.portfolio_urls.length > 0);
+    return (hasMedia ? 4 : 0) + (p.photo_url ? 2 : 0) + (p.bio?.trim() ? 1 : 0);
+  };
+  const enriched = filtered.map((p: any) => ({ ...p, avgRating: 0, reviewCount: 0 }));
+  enriched.sort((a: any, b: any) =>
+    (Number(!!b.photo_url) - Number(!!a.photo_url))
+    || (Number(b.is_early_adopter) - Number(a.is_early_adopter))
+    || (Number(b.is_verified) - Number(a.is_verified))
+    || (completeness(b) - completeness(a))
+    || ((b.score ?? 0) - (a.score ?? 0))
+  );
+
+  const byRole: Record<string, DirProfile[]> = {};
+  for (const p of enriched) {
+    // Un perfil puede declarar varios roles (array `roles`): entra en el feed
+    // de cada uno, igual que hacía la consulta por-rol original (roles.cs.{r}).
+    const canon = new Set<string>();
+    const primary = canonicalRole(p.role);
+    if (primary) canon.add(primary);
+    if (Array.isArray(p.roles)) for (const r of p.roles) {
+      const c = canonicalRole(r);
+      if (c) canon.add(c);
+    }
+    for (const c of canon) (byRole[c] ??= []).push(p);
+  }
+  return byRole;
 }
 
 export default function DirectorioPublico() {
