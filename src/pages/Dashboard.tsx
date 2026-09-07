@@ -46,6 +46,7 @@ const AdminView = lazy(() => import('@/components/dashboard/views/AdminView'));
 const EmpresarioView = lazy(() => import('@/components/dashboard/views/EmpresarioView'));
 const PhotoBoothView = lazy(() => import('@/components/dashboard/views/PhotoBoothView'));
 const TecnicoView = lazy(() => import('@/components/dashboard/views/TecnicoView'));
+const ExplorarView = lazy(() => import('@/components/dashboard/views/ExplorarView'));
 const GrupoMusicalView = lazy(() => import('@/components/dashboard/views/GrupoMusicalView'));
 const ContractView = lazy(() => import('@/components/dashboard/views/ContractView'));
 const FichaView = lazy(() => import('@/components/dashboard/views/FichaView'));
@@ -194,10 +195,21 @@ const ROLE_TO_VIEW: Record<string, string> = {
  *   1. Navegación explícita (state del router o ?view=) — un enlace de email
  *      manda a una sección concreta y eso siempre gana.
  *   2. Última vista usada (localStorage) — donde el usuario estaba.
- *   3. La vista propia de su rol.
+ *   3. 'explorar' — el mapa de gremios, para quien entra por primera vez.
  *   4. 'profile' — sin rol resuelto se completa el perfil, nunca el directorio
  *      de DJs.
+ *
+ * Por qué 'explorar' y no la vista del propio rol: quien entraba por primera
+ * vez caía en el listado de su gremio (un DJ veía DJs) sin haber visto nunca
+ * qué más hay aquí, y se quedaba sin saber por dónde moverse. En cuanto
+ * navega una vez, la vista guardada manda y ya no vuelve a ver el mapa.
+ *
+ * Excepciones, porque su destino actual ya está pensado para ellos:
+ * empresario (tiene panel propio: viene a contratar, no a explorar gremios)
+ * y pending/rookie (tienen que completar el perfil antes que nada).
  */
+const SIN_EXPLORAR = new Set(['empresario', 'pending', 'rookie']);
+
 export function resolverVistaInicial(opts: {
   stateView?: string | null;
   queryView?: string | null;
@@ -208,7 +220,8 @@ export function resolverVistaInicial(opts: {
   if (stateView) return stateView;
   if (queryView) return queryView;
   if (guardada) return guardada;
-  if (rol) return ROLE_TO_VIEW[rol] ?? rol;
+  if (rol && SIN_EXPLORAR.has(rol)) return ROLE_TO_VIEW[rol] ?? rol;
+  if (rol) return 'explorar';
   return 'profile';
 }
 
@@ -323,6 +336,7 @@ const Dashboard = () => {
 
   const renderView = () => {
     switch (activeView) {
+      case 'explorar': return <ExplorarView onNavigate={nav} />;
       case 'dj': return <DJView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       // 'camarero' es alias de 'staff' (ROLE_ALIASES). Sin este case caía en el
       // default y a un camarero se le abría la vista de DJs como pantalla de

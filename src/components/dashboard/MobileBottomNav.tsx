@@ -9,27 +9,19 @@ interface MobileBottomNavProps {
   unreadCount?: number;
 }
 
-// Sin entrada aquí, el rol cae al fallback 'dj' y al profesional se le abre
-// el directorio de DJs como pantalla de inicio. Faltaban la mitad de los roles
-// que ya existen en el wizard de alta, así que se completan de una vez.
-const roleToView: Record<string, string> = {
-  dj: 'dj', staff: 'staff', camarero: 'staff', azafata: 'azafata', makeup: 'makeup', peluqueria: 'peluqueria', media: 'media',
-  vestuario: 'vestuario', design: 'design', promotor: 'promotor',
-  event_manager: 'event_manager', empresario: 'empresario',
-  catering: 'catering', mago: 'mago', bailarin: 'bailarin', humorista: 'humorista',
-  animador: 'animador', speaker: 'speaker', 'photo-booth': 'photo-booth',
-  'grupo-musical': 'grupo-musical', tecnico: 'tecnico',
-};
-
+// Vistas de listado de gremio: con cualquiera de ellas abierta, el tab
+// "Inicio" sigue marcado, porque se llega a ellas desde el mapa de gremios.
 const dirViews = new Set(['dj','staff','azafata','makeup','peluqueria','media','vestuario','design','promotor','event_manager','empresario','catering','mago','bailarin','humorista','monologo','animador','speaker','ambassador','photo-booth','grupo-musical','tecnico']);
 
 const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount = 0 }: MobileBottomNavProps) => {
   const profile = useProfile();
   const navigate = useNavigate();
-  const dirView = roleToView[profile.role] ?? 'dj';
-
   const tabs = [
-    { id: dirView, icon: Home, label: 'Inicio', isActive: dirViews.has(activeView) },
+    // "Inicio" lleva al mapa de gremios, que es donde aterriza el dashboard.
+    // Antes iba al listado del propio gremio; se queda marcado como activo
+    // también en esos listados porque se llega a ellos desde aquí — sin eso,
+    // navegar a un rol dejaba la barra entera sin ningún tab encendido.
+    { id: 'explorar', icon: Home, label: 'Inicio', isActive: activeView === 'explorar' || dirViews.has(activeView) },
     { id: '__descubrir', icon: Sparkles, label: 'Descubrir', isActive: false },
     { id: 'flashbooking', icon: Zap, label: 'Flash', isActive: activeView === 'flashbooking' || activeView === 'flash' },
     { id: 'messages', icon: MessageSquare, label: 'Chat', isActive: activeView === 'messages', badge: unreadCount },

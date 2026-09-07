@@ -137,10 +137,28 @@ describe('resolverVistaInicial', () => {
     expect(resolverVistaInicial({ guardada: 'calendar', rol: 'dj' })).toBe('calendar');
   });
 
-  it('sin vista guardada, abre la de su rol', async () => {
+  // Antes, quien entraba por primera vez caía en el listado de su propio
+  // gremio (un DJ veía DJs) sin haber visto nunca un mapa de la plataforma:
+  // de ahí el "no sé por dónde moverme". Ahora aterriza en 'explorar', que
+  // enseña todos los gremios. En cuanto navega, la vista guardada manda y ya
+  // no vuelve a verlo.
+  it('sin vista guardada, un profesional aterriza en explorar', async () => {
     const { resolverVistaInicial } = await import('./Dashboard');
-    expect(resolverVistaInicial({ rol: 'grupo-musical' })).toBe('grupo-musical');
-    expect(resolverVistaInicial({ rol: 'staff' })).toBe('staff');
+    expect(resolverVistaInicial({ rol: 'grupo-musical' })).toBe('explorar');
+    expect(resolverVistaInicial({ rol: 'staff' })).toBe('explorar');
+    expect(resolverVistaInicial({ rol: 'tecnico' })).toBe('explorar');
+  });
+
+  it('la vista guardada sigue ganando al aterrizaje en explorar', async () => {
+    const { resolverVistaInicial } = await import('./Dashboard');
+    expect(resolverVistaInicial({ guardada: 'dj', rol: 'dj' })).toBe('dj');
+  });
+
+  // El empresario ya tiene un panel propio pensado para él: mandarlo a
+  // explorar los gremios sería un paso de más para quien viene a contratar.
+  it('el empresario mantiene su panel, no va a explorar', async () => {
+    const { resolverVistaInicial } = await import('./Dashboard');
+    expect(resolverVistaInicial({ rol: 'empresario' })).toBe('empresario');
   });
 
   it('sin rol resuelto va al perfil, NUNCA al directorio de DJs', async () => {

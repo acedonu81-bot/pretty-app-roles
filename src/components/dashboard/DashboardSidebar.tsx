@@ -314,6 +314,11 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded 
         <div className="mb-1">
           <GroupLabel>Explorar</GroupLabel>
           <SidebarMenu>
+            {/* Mapa visual de gremios — es la pantalla de aterrizaje, y desde
+                aquí se puede volver a ella en cualquier momento. Va antes que
+                el Directorio: quien no sabe navegar necesita ver el mapa, no
+                un desplegable de 18 roles. */}
+            <NavItem icon={LayoutGrid} label="Explorar categorías" isActive={activeView === 'explorar'} onClick={() => onViewChange('explorar')} />
             <SidebarMenuItem>
               <SidebarMenuButton
                 onClick={() => {
