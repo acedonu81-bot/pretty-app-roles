@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { ExternalLink, ShoppingBag, BookOpen, Calculator, FileText, ArrowUpRight, Handshake, GraduationCap, Sparkles } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ExternalLink, ShoppingBag, BookOpen, Calculator, FileText, ArrowUpRight, Handshake, GraduationCap, Sparkles, ChevronDown } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
 import { logAffiliateClick, logEvent } from '@/lib/track';
 import {
@@ -19,6 +19,18 @@ import {
  * oficio, contratos, calculadora) y después el equipo con afiliación. Al revés
  * el panel parece una tienda; así parece lo que es — herramientas del oficio,
  * de las cuales algunas se compran.
+ *
+ * "Recursos" es una entrada genérica del sidebar (grupo Herramientas, junto a
+ * Calendario y Contratos) — cualquiera puede llegar aquí sin pasar por su
+ * propio directorio. Antes el panel asumía SIEMPRE el rol de la cuenta, así
+ * que un DJ que entraba desde el sidebar veía "Todo lo que necesitas para
+ * trabajar de DJ" igual que si hubiera venido de su ficha — el hero forzaba
+ * un oficio en un sitio pensado como neutral. Ahora el rol de la cuenta solo
+ * PRESELECCIONA el selector (comodidad: la mayoría quiere ver lo suyo), pero
+ * el usuario elige explícitamente qué oficio consultar y puede quitarlo para
+ * quedarse con la vista universal. El banner dorado de la propia ficha
+ * (ResourcesBanner) no cambia: sigue siendo automático ahí porque el usuario
+ * ya está en su directorio, no en un sitio genérico.
  */
 
 type Guide = { title: string; desc: string; href: string };
@@ -114,13 +126,23 @@ const SectionTitle = ({ icon: Icon, children, hint, color }: {
   </div>
 );
 
+// Oficios con catálogo de equipo, en el mismo orden que el wizard de alta —
+// para que el selector no sea una bolsa desordenada de claves internas.
+const ROLES_CON_CATALOGO = Object.keys(AFFILIATE_CATALOG);
+
 export default function ResourcesView() {
   const { role, display_name } = useProfile();
-  const key = role ? resolveAffiliateKey(role) : null;
+  const propioKey = role ? resolveAffiliateKey(role) : null;
+
+  // El rol de la cuenta solo PRESELECCIONA (comodidad); el usuario puede
+  // quitarlo. Ver nota de arriba: el hero nunca fuerza un oficio de entrada.
+  const [selected, setSelected] = useState<string | null>(propioKey);
+
+  const key = selected;
   const cat = key ? AFFILIATE_CATALOG[key] : null;
   const guides = key ? GUIDES_BY_ROLE[key] ?? [] : [];
-  const courses = role ? partnersForRole(role, 'formacion') : [];
-  const shops = role ? partnersForRole(role, 'tienda') : [];
+  const courses = key ? partnersForRole(key, 'formacion') : [];
+  const shops = key ? partnersForRole(key, 'tienda') : [];
   const accent = cat?.accent ?? GOLD;
 
   // Cuánta gente abre de verdad el panel de Recursos: sin esto no se sabe si
@@ -129,9 +151,8 @@ export default function ResourcesView() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
-      {/* HERO — el panel tiene que leerse como una sección del producto, no
-          como una lista de enlaces. El dorado sobre negro es el mismo lenguaje
-          que la marca usa en la landing. */}
+      {/* HERO — siempre neutral, nunca nombra un oficio. El dorado sobre negro
+          es el mismo lenguaje que la marca usa en la landing. */}
       <div className="rounded-3xl p-6 sm:p-8 mb-7 relative overflow-hidden"
         style={{
           background: 'linear-gradient(115deg, #1a1208 0%, #2d2110 45%, #3d2d15 100%)',
@@ -150,26 +171,46 @@ export default function ResourcesView() {
             </span>
           </div>
           <h1 className="text-2xl sm:text-[2rem] font-black tracking-tight leading-tight" style={{ color: '#fff' }}>
-            {cat ? `Todo lo que necesitas para trabajar ${cat.prep ?? 'de'} ${cat.singular}` : 'Todo lo que necesitas para trabajar en eventos'}
+            Todo lo que necesitas para trabajar en eventos
           </h1>
           <p className="text-sm mt-2.5 max-w-xl leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>
-            Guías escritas para tu oficio, contrato listo para firmar, calculadora de tarifas
-            {cat ? ` y los ${cat.items.length} imprescindibles que usan los profesionales del sector.` : '.'}
+            Guías del sector, contrato listo para firmar y calculadora de tarifas para cualquier oficio.
+            Elige tu categoría abajo para ver también el equipo y la formación recomendada.
           </p>
+
+          {/* Selector de oficio: preseleccionado con el rol de la cuenta, pero
+              siempre visible y cambiable — es una elección explícita, no un
+              dato que el panel adivina por ti. */}
+          <div className="relative mt-5 inline-block">
+            <select
+              value={selected ?? ''}
+              onChange={e => setSelected(e.target.value || null)}
+              className="appearance-none rounded-full pl-4 pr-9 py-2.5 text-xs font-bold cursor-pointer outline-none"
+              style={{ background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.35)', color: '#E0BC4B' }}
+            >
+              <option value="" style={{ color: '#0a0908' }}>Ver equipo y guías de tu oficio…</option>
+              {ROLES_CON_CATALOGO.map(k => (
+                <option key={k} value={k} style={{ color: '#0a0908' }}>
+                  {AFFILIATE_CATALOG[k].label}
+                </option>
+              ))}
+            </select>
+            <ChevronDown size={14} className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2" style={{ color: '#E0BC4B' }} />
+          </div>
 
           {/* Anclas a las secciones: en móvil el panel es largo y el usuario no
               sabe qué hay abajo si no se lo dices. */}
-          <div className="flex flex-wrap items-center gap-2 mt-5">
+          <div className="flex flex-wrap items-center gap-2 mt-3">
+            <a href="#herramientas" className="px-3.5 py-2 rounded-full text-xs font-bold transition-all hover:scale-105"
+              style={{ background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.3)', color: '#E0BC4B' }}>
+              Contrato y calculadora
+            </a>
             {guides.length > 0 && (
               <a href="#guias" className="px-3.5 py-2 rounded-full text-xs font-bold transition-all hover:scale-105"
                 style={{ background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.3)', color: '#E0BC4B' }}>
                 {guides.length} guías
               </a>
             )}
-            <a href="#herramientas" className="px-3.5 py-2 rounded-full text-xs font-bold transition-all hover:scale-105"
-              style={{ background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.3)', color: '#E0BC4B' }}>
-              Contrato y calculadora
-            </a>
             {cat && (
               <a href="#equipo" className="px-3.5 py-2 rounded-full text-xs font-bold transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(135deg,#E0BC4B,#B8941E)', color: '#1a1208' }}>
@@ -180,7 +221,8 @@ export default function ResourcesView() {
         </div>
       </div>
 
-      {/* GUÍAS DEL OFICIO — primero lo que es nuestro y no cobra comisión */}
+      {/* GUÍAS DEL OFICIO — solo si se ha elegido uno; primero lo que es
+          nuestro y no cobra comisión */}
       {guides.length > 0 && (
         <section id="guias" className="mb-8 scroll-mt-4">
           <SectionTitle icon={BookOpen} hint="Escritas por XPEAK para tu oficio.">
@@ -334,12 +376,12 @@ export default function ResourcesView() {
         </section>
       )}
 
-      {/* Sin catálogo para este rol: el panel sigue teniendo sentido con las
-          herramientas universales, pero se dice claramente en vez de dejar un
-          hueco silencioso. */}
-      {!cat && (
+      {/* Dos casos distintos sin catálogo: no se ha elegido oficio (estado por
+          defecto, nada raro) vs. se eligió uno que aún no tiene selección de
+          equipo (limitación real, se dice claramente). */}
+      {!cat && key && (
         <p className="text-xs rounded-2xl p-4" style={{ background: 'rgba(10,9,8,0.03)', color: 'rgba(10,9,8,0.5)' }}>
-          Todavía no tenemos una selección de equipo para tu categoría. Las herramientas de arriba te sirven igual,
+          Todavía no tenemos una selección de equipo para esta categoría. Las herramientas de arriba te sirven igual,
           y estamos añadiendo oficios poco a poco.
         </p>
       )}
