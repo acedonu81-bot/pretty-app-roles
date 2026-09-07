@@ -130,18 +130,19 @@ const Auth = () => {
   }, []);
 
   useEffect(() => {
-    // Destino tras login: si el perfil está INCOMPLETO (recién registrado, sin
-    // rol/nombre), va al dashboard a completar la ficha — NO al feed. Si ya está
-    // completo, al feed (/descubrir). Evita que un usuario nuevo entre directo
-    // al swipe sin haber rellenado su perfil.
-    const goAfterLogin = async (userId: string) => {
+    // Destino tras login: SIEMPRE el dashboard (vista clásica).
+    //
+    // Antes, un perfil completo caía directo en el feed swipe de /descubrir.
+    // El swipe no termina de funcionar como el de Instagram y hay gente que se
+    // encontraba ahí metida sin haberlo pedido; la vista clásica cumple mejor
+    // como entrada. El swipe sigue disponible en /descubrir para quien lo
+    // busque a propósito (decisión del usuario, 7 sep 2026).
+    //
+    // Se respeta un ?redirect= explícito distinto del feed: ese sí lo pidió
+    // alguien (enlace de email, vuelta de OAuth a una sección concreta).
+    const goAfterLogin = async (_userId: string) => {
       if (redirectParam !== '/descubrir') { navigate(redirectParam, { replace: true }); return; }
-      const { data } = await supabase
-        .from('profiles').select('role, display_name').eq('user_id', userId)
-        .order('is_primary', { ascending: false }).limit(1);
-      const p = data?.[0];
-      const complete = !!p && p.role && p.role !== 'pending' && !!p.display_name?.trim();
-      navigate(complete ? '/descubrir' : '/dashboard', { replace: true });
+      navigate('/dashboard', { replace: true });
     };
 
     supabase.auth.getSession().then(({ data: { session } }) => {

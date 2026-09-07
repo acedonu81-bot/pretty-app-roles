@@ -521,9 +521,11 @@ const Landing = () => {
         if (cancelled) return;
         try { sessionStorage.setItem('xpeak_landing_seen', '1'); } catch { /* noop */ }
         const role = data?.[0]?.role;
-        // Solo el organizador salta directo al feed. Profesional y sin-perfil
-        // se quedan en la landing (con acceso claro a feed y a su cuenta).
-        if (role === 'empresario') navigate('/descubrir', { replace: true });
+        // El organizador salta a su panel (vista clásica), no al feed swipe:
+        // el swipe no termina de funcionar como el de Instagram y no debe ser
+        // la entrada por defecto de nadie (decisión del usuario, 7 sep 2026).
+        // Queda accesible en /descubrir para quien lo busque.
+        if (role === 'empresario') navigate('/dashboard', { replace: true });
       });
     return () => { cancelled = true; };
   }, [user, authLoading, navigate]);

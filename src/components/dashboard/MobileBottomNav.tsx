@@ -1,6 +1,4 @@
-import { Zap, MessageSquare, User, Home, Sparkles } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { useProfile } from '@/hooks/useProfile';
+import { Zap, MessageSquare, User, Home } from 'lucide-react';
 
 interface MobileBottomNavProps {
   activeView: string;
@@ -14,15 +12,16 @@ interface MobileBottomNavProps {
 const dirViews = new Set(['dj','staff','azafata','makeup','peluqueria','media','vestuario','design','promotor','event_manager','empresario','catering','mago','bailarin','humorista','monologo','animador','speaker','ambassador','photo-booth','grupo-musical','tecnico']);
 
 const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount = 0 }: MobileBottomNavProps) => {
-  const profile = useProfile();
-  const navigate = useNavigate();
   const tabs = [
     // "Inicio" lleva al mapa de gremios, que es donde aterriza el dashboard.
     // Antes iba al listado del propio gremio; se queda marcado como activo
     // también en esos listados porque se llega a ellos desde aquí — sin eso,
     // navegar a un rol dejaba la barra entera sin ningún tab encendido.
     { id: 'explorar', icon: Home, label: 'Inicio', isActive: activeView === 'explorar' || dirViews.has(activeView) },
-    { id: '__descubrir', icon: Sparkles, label: 'Descubrir', isActive: false },
+    // "Descubrir" (feed swipe) sale de la barra: el swipe no termina de
+    // funcionar como el de Instagram, así que deja de promocionarse como una
+    // de las 5 acciones principales. Sigue vivo en /descubrir para quien lo
+    // busque (decisión del usuario, 7 sep 2026).
     { id: 'flashbooking', icon: Zap, label: 'Flash', isActive: activeView === 'flashbooking' || activeView === 'flash' },
     { id: 'messages', icon: MessageSquare, label: 'Chat', isActive: activeView === 'messages', badge: unreadCount },
     { id: 'profile', icon: User, label: 'Perfil', isActive: activeView === 'profile' || activeView === 'settings' },
@@ -48,7 +47,7 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
         <button
           key={tab.id}
           type="button"
-          onClick={() => tab.id === '__descubrir' ? navigate('/descubrir') : onViewChange(tab.id)}
+          onClick={() => onViewChange(tab.id)}
           className="flex-1 flex flex-col items-center justify-center gap-0.5 transition-all active:scale-95 relative"
         >
           <div className="relative">
