@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ic_launcher_background">#D4AF37</color>
+    <!-- Crema, no el dorado de marca: el nuevo icono trae su propio fondo
+         crema integrado y un margen de seguridad transparente alrededor (la
+         máscara adaptativa de Android recorta ~33% del borde). Con fondo
+         dorado se veía un anillo dorado feo entre el crema del icono y el
+         borde de la máscara. -->
+    <color name="ic_launcher_background">#F7F4EE</color>
 </resources>
