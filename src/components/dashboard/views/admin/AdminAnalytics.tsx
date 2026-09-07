@@ -64,8 +64,12 @@ const fmtDia = (d: string) => {
   return `${date.getDate()}/${date.getMonth() + 1}`;
 };
 
-const Kpi = ({ icon: Icon, label, valor, sub, ayuda }: {
+const Kpi = ({ icon: Icon, label, valor, sub, ayuda, live }: {
   icon: typeof Eye; label: string; valor: string | number; sub?: string; ayuda?: string;
+  /** Punto verde pulsante junto al label — para datos que cambian solos, no
+   *  solo al pulsar "Actualizar" (mismo estilo que el badge "en directo" del
+   *  topbar: #22c55e con glow). */
+  live?: boolean;
 }) => (
   <div className="rounded-2xl p-4" style={{ background: '#fff', border: '1px solid rgba(10,9,8,0.08)' }}>
     <div className="flex items-center gap-1.5 mb-2">
@@ -73,6 +77,9 @@ const Kpi = ({ icon: Icon, label, valor, sub, ayuda }: {
       <span className="text-[0.65rem] font-extrabold uppercase tracking-wider" style={{ color: 'rgba(10,9,8,0.45)' }}>
         {label}
       </span>
+      {live && (
+        <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#22c55e', boxShadow: '0 0 6px #22c55e' }} />
+      )}
       {ayuda && <Ayuda texto={ayuda} />}
     </div>
     <p className="text-2xl font-black leading-none" style={{ color: '#0a0908' }}>{valor}</p>
@@ -104,6 +111,7 @@ export default function AdminAnalytics() {
   const [embudo, setEmbudo] = useState<Embudo[]>([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [online, setOnline] = useState<number | null>(null);
 
   const cargar = useCallback(async () => {
     setCargando(true);
@@ -156,6 +164,25 @@ export default function AdminAnalytics() {
   }, [dias]);
 
   useEffect(() => { cargar(); }, [cargar]);
+
+  // "Online ahora" se refresca solo, cada 30s, INDEPENDIENTE del resto del
+  // panel: es un dato en vivo (sesiones activas en los últimos 5 min), no
+  // histórico — recargarlo solo cuando cambia el rango de días lo dejaría
+  // congelado la mayor parte del tiempo que alguien tiene la pestaña abierta.
+  useEffect(() => {
+    const sb = supabase as unknown as {
+      rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown; error: { message: string } | null }>;
+    };
+    const cargarOnline = () => {
+      sb.rpc('panel_analytics_online_ahora', {}).then(r => {
+        const row = (r.data as { online: number }[] | null)?.[0];
+        setOnline(row ? Number(row.online) : null);
+      });
+    };
+    cargarOnline();
+    const id = setInterval(cargarOnline, 30_000);
+    return () => clearInterval(id);
+  }, []);
 
   const totalVisitas = porDia.reduce((s, d) => s + Number(d.visitas || 0), 0);
   const totalSesiones = porDia.reduce((s, d) => s + Number(d.sesiones || 0), 0);
@@ -218,7 +245,9 @@ export default function AdminAnalytics() {
       )}
 
       {/* KPIs */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-4">
+        <Kpi icon={Users} label="Online ahora" valor={online ?? '—'} sub="últimos 5 min" live
+          ayuda="Sesiones distintas con actividad en los últimos 5 minutos. Se actualiza sola cada 30s — no hace falta pulsar Actualizar. Excluye tu propio tráfico de admin." />
         <Kpi icon={Eye} label="Visitas" valor={totalVisitas} sub={`en ${dias} días`}
           ayuda="Páginas abiertas en total. Si una persona ve 5 páginas, cuentan 5 visitas. Excluye tu propio tráfico de admin." />
         <Kpi icon={Users} label="Sesiones" valor={totalSesiones} sub="personas distintas"
