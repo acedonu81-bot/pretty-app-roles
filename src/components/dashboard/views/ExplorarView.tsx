@@ -22,6 +22,28 @@ interface Props {
 const img = (id: string) => `/images/pexels/roles/${id}.jpg`;
 
 /**
+ * Sombras en capas, con el dorado de marca dentro (no solo en el borde).
+ *
+ * Sobre el blanco del dashboard, una sombra gris de 1px deja las tarjetas
+ * pegadas al fondo y planas. Estas usan el registro fuerte que ya emplean los
+ * modales del proyecto (0 20px 60px) en tres capas: contacto corto para
+ * definir el canto, difusa larga para la profundidad, y un halo dorado que
+ * tiñe el conjunto en vez de dejarlo en gris neutro.
+ */
+const SOMBRA = [
+  '0 2px 4px rgba(10,9,8,0.10)',
+  '0 12px 32px rgba(10,9,8,0.16)',
+  '0 4px 24px rgba(212,175,55,0.10)',
+].join(', ');
+
+/** Al pasar por encima: la tarjeta sube y el dorado se hace protagonista. */
+const SOMBRA_HOVER = [
+  '0 4px 8px rgba(10,9,8,0.12)',
+  '0 20px 60px rgba(10,9,8,0.26)',
+  '0 8px 36px rgba(212,175,55,0.42)',
+].join(', ');
+
+/**
  * Los gremios, agrupados igual que el sidebar y /descubrir para que las tres
  * navegaciones cuenten lo mismo. `view` es el id de vista del dashboard, que
  * no siempre coincide con el rol de BD (photo-booth usa la vista de media).
@@ -87,15 +109,18 @@ const Tarjeta = ({ item, onNavigate }: { item: { id: string; view: string; nombr
     type="button"
     onClick={() => onNavigate?.(item.view)}
     aria-label={`Ver ${item.nombre}`}
-    className="group relative w-full overflow-hidden rounded-2xl text-left transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] focus-visible:ring-offset-2"
+    className="group relative w-full overflow-hidden rounded-2xl text-left transition-all duration-300 hover:-translate-y-1 hover:scale-[1.015] active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] focus-visible:ring-offset-2"
     style={{
       aspectRatio: '3 / 2',
       background: '#ffffff',
-      border: '1px solid rgba(0,0,0,0.08)',
-      boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+      border: '1px solid rgba(0,0,0,0.06)',
+      // Sombra en capas (mismo registro que los modales del proyecto,
+      // 0 20px 60px): contacto corto + difusa larga, para que la tarjeta
+      // levante de la página en vez de quedarse pegada al blanco.
+      boxShadow: SOMBRA,
     }}
-    onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 8px 28px rgba(0,0,0,0.12)'; }}
-    onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)'; }}
+    onMouseEnter={e => { e.currentTarget.style.boxShadow = SOMBRA_HOVER; }}
+    onMouseLeave={e => { e.currentTarget.style.boxShadow = SOMBRA; }}
   >
     <img
       src={img(item.id)}
@@ -118,7 +143,8 @@ const Tarjeta = ({ item, onNavigate }: { item: { id: string; view: string; nombr
       <h3 className="text-sm sm:text-base font-semibold leading-tight text-white [text-shadow:0_1px_3px_rgba(0,0,0,0.9)]">{item.nombre}</h3>
       <p className="mt-0.5 text-[11px] sm:text-xs leading-snug text-white/85 line-clamp-2 [text-shadow:0_1px_2px_rgba(0,0,0,0.95)]">{item.gancho}</p>
     </div>
-    <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-black/5 transition-colors group-hover:ring-[#D4AF37]/70" />
+    {/* Filo dorado: sutil en reposo, marcado y de 2px al pasar por encima. */}
+    <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-[#D4AF37]/25 transition-all duration-300 group-hover:ring-2 group-hover:ring-[#D4AF37]" />
   </button>
 );
 
@@ -139,9 +165,11 @@ const ExplorarView = ({ onNavigate }: Props) => (
     <div className="grid grid-cols-2 gap-2.5 sm:gap-3 md:grid-cols-3 lg:grid-cols-4">
       {GRUPOS.map(grupo => (
         <div key={grupo.titulo} className="contents">
-          {/* --gold-on-light, no el #D4AF37 de marca: el dorado de marca sobre
-              blanco no llega al contraste AA para texto pequeño. */}
-          <h2 className="col-span-full mb-0.5 mt-3 text-xs font-semibold uppercase tracking-wider first:mt-0" style={{ color: 'var(--gold-on-light, #7a6216)' }}>
+          {/* El TEXTO va en --gold-on-light: el #D4AF37 de marca sobre blanco
+              no llega al contraste AA en tamaño pequeño. El filete decorativo
+              sí puede llevar el dorado de marca — no es texto. */}
+          <h2 className="col-span-full mb-1 mt-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider first:mt-0" style={{ color: 'var(--gold-on-light, #7a6216)' }}>
+            <span className="h-4 w-1 flex-shrink-0 rounded-full" style={{ background: 'linear-gradient(180deg,#D4AF37,#B8941E)', boxShadow: '0 0 8px rgba(212,175,55,0.6)' }} />
             {grupo.titulo}
           </h2>
           {grupo.items.map(item => (
