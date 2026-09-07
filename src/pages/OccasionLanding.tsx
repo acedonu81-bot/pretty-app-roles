@@ -181,9 +181,9 @@ export const OCCASIONS: Record<string, OccasionInfo> = {
 
 // Qué roles tienen sentido para cada ocasión (evita combinaciones absurdas)
 export const ROLES_POR_OCASION: Record<string, string[]> = {
-  boda: ['dj', 'fotografo', 'catering', 'camareros', 'grupo-musical', 'animador'],
+  boda: ['dj', 'fotografo', 'catering', 'camareros', 'grupo-musical', 'animador', 'tecnico-sonido'],
   cumpleanos: ['dj', 'fotografo', 'catering', 'animador', 'mago'],
-  'evento-empresa': ['dj', 'fotografo', 'catering', 'camareros', 'speaker'],
+  'evento-empresa': ['dj', 'fotografo', 'catering', 'camareros', 'speaker', 'tecnico-sonido'],
   comunion: ['fotografo', 'catering', 'animador', 'mago', 'dj'],
   'fiesta-privada': ['dj', 'fotografo', 'catering', 'camareros', 'animador'],
 };

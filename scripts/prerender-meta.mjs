@@ -802,6 +802,14 @@ const ROUTES = [
     ogType: 'website',
   },
   {
+    path: '/directorio/tecnico-sonido',
+    title: 'Contratar técnico de sonido y montaje para eventos en España — XPEAK',
+    desc: 'Directorio de técnicos de sonido, iluminación y montaje de escenario en España. Con equipo propio o solo mano de obra. Tarifa por jornada y contacto directo sin comisión.',
+    ogTitle: 'Directorio de técnicos de sonido y montaje — XPEAK',
+    ogDesc: 'Sonido, iluminación y montaje de escenario para bodas, festivales y eventos.',
+    ogType: 'website',
+  },
+  {
     path: '/socials',
     title: 'Agenda de Socials de Baile — Salsa, Bachata y Kizomba | XPEAK',
     desc: 'Socials y congresos de salsa, bachata y kizomba en toda España. Encuentra dónde bailar esta semana o publica tu evento gratis.',

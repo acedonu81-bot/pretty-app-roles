@@ -24,9 +24,14 @@ interface Props {
   onSaved?: () => void;
 }
 
+// Lista compartida por todos los roles. Las primeras son de sala y barra; las
+// últimas, de técnica y montaje — un técnico necesita poder decir que no pone
+// el equipo o que no hace rigging igual que un camarero dice que no friega.
 const SERVICIOS_EXCLUIBLES = [
   'Montaje de mobiliario', 'Desmontaje', 'Limpieza de sala', 'Office / fregado',
   'Carga y descarga', 'Cocina', 'Servir en barra libre', 'Recogida al cierre',
+  'Aporte de equipo propio', 'Montaje de escenario', 'Rigging / trabajo en altura',
+  'Alquiler de material', 'Pruebas de sonido previas',
 ];
 
 const DIAS = [

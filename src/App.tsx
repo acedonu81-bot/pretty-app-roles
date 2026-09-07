@@ -437,6 +437,7 @@ const App = () => (
             <Route path="/contratar-payasos" element={<CategoryLanding />} />
             <Route path="/contratar-grupo-musical" element={<CategoryLanding />} />
             <Route path="/contratar-photo-booth" element={<CategoryLanding />} />
+            <Route path="/contratar-tecnico-sonido" element={<CategoryLanding />} />
             <Route path="/contratar-monologo" element={<CategoryLanding />} />
             {/* City landings */}
             <Route path="/contratar-dj/:ciudad" element={<CityLanding />} />
@@ -462,6 +463,7 @@ const App = () => (
             <Route path="/contratar-vestuario/:ciudad" element={<CityLanding />} />
             <Route path="/contratar-grupo-musical/:ciudad" element={<CityLanding />} />
             <Route path="/contratar-photo-booth/:ciudad" element={<CityLanding />} />
+            <Route path="/contratar-tecnico-sonido/:ciudad" element={<CityLanding />} />
             {/* Occasion landings — eje ocasión × rol (GEO/AEO) */}
             <Route path="/boda/contratar-dj" element={<OccasionLanding />} />
             <Route path="/boda/contratar-fotografo" element={<OccasionLanding />} />

@@ -23,6 +23,7 @@ export const ROLE_ES: Record<string, string> = {
   makeup:        'Maquillaje / Estilismo',
   peluqueria:    'Peluquería a Domicilio',
   media:         'Media / Fotografía',
+  tecnico:       'Técnico de Sonido y Montaje',
 };
 
 /**
@@ -99,4 +100,9 @@ export const ROLE_TAGS: Record<string, { label: string; tags: string[] }> = {
     design:    { label: 'Especialidades',        tags: ['Diseño gráfico','VJing','Mapping','LED wall','Visuales en vivo','Cartelería','Branding','Redes sociales','Ilustración','3D','Motion design'] },
     promotor:  { label: 'Especialidades',        tags: ['Festivales','Clubs nocturnos','Eventos privados','Bodas','Corporativo','After','Terraza','Sala pequeña','Sala grande','Residencias','Giras'] },
     bailarin:  { label: 'Estilos de baile',       tags: ['Salsa','Salsa cubana','Salsa en línea','Bachata','Bachata sensual','Kizomba','Zouk','Merengue','Cha cha cha','Cumbia','Coreografía primer baile','Baile de exhibición','Danza urbana','Reguetón/Perreo intenso','Danza contemporánea'] },
+    // Un técnico se contrata por lo que sabe manejar, no por "técnico" a secas:
+    // quien busca sonido para una boda y quien busca montaje de escenario para
+    // un festival preguntan cosas distintas. Ordenadas por área (sonido, luces,
+    // montaje, vídeo) y con las marcas de mesa que se piden por nombre propio.
+    tecnico:   { label: 'Especialidades',         tags: ['Técnico de sonido','Sonido en directo','Mesa de mezclas','Monitores','Microfonía','P.A. / Line array','Backline','Pruebas de sonido','Técnico de iluminación','Diseño de iluminación','Luces de espectáculo','Máquinas de humo','Montaje de escenario','Desmontaje','Estructuras / truss','Rigging','Carga y descarga','Alquiler de equipo','Técnico de vídeo','Pantallas LED','Proyección','Streaming en directo','Bodas','Festivales','Salas y clubs','Eventos corporativos'] },
   }

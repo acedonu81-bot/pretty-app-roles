@@ -91,7 +91,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Helmet } from 'react-helmet-async';
 import { motion, useInView, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { Music, UtensilsCrossed, Users, Camera, Sparkles, X, ChevronLeft, ChevronRight, Building2, Scissors, Headphones, Zap, Star, CalendarDays, Search, Award, Globe, CheckCircle, Smartphone, Video, Heart } from 'lucide-react';
+import { Music, UtensilsCrossed, Users, Camera, Sparkles, X, ChevronLeft, ChevronRight, Building2, Scissors, Headphones, Zap, Star, CalendarDays, Search, Award, Globe, CheckCircle, Smartphone, Video, Heart, SlidersHorizontal } from 'lucide-react';
 import xpeakLogo from '@/assets/xpeak-logo.png';
 import bentoMusica from '@/assets/bento-musica.jpg';
 import bentoGastro from '@/assets/bento-gastro.jpg';
@@ -261,14 +261,15 @@ const CATEGORY_DEST: Record<string, string> = {
   staff: '/directorio/azafata',
   belleza: '/directorio/maquillaje',
   animacion: '/directorio/animador',
+  tecnica: '/directorio/tecnico-sonido',
   empresario: '/auth?mode=register&role=empresario',
 };
 
 const ROLE_DETAILS = [
   {
-    key: 'musica', title: 'Música', icon: <Music size={28} />, tagline: 'DJs, productores, artistas en vivo, VJs y técnicos de sonido',
+    key: 'musica', title: 'Música', icon: <Music size={28} />, tagline: 'DJs, productores, artistas en vivo y VJs',
     steps: [
-      { icon: <Headphones size={22} />, image: px(1540406), title: '¿Qué es este rol?',  body: 'DJs, productores, artistas en vivo, VJs y técnicos de sonido para bodas, festivales, eventos corporativos y privados en toda España.' },
+      { icon: <Headphones size={22} />, image: px(1540406), title: '¿Qué es este rol?',  body: 'DJs, productores, artistas en vivo y VJs para bodas, festivales, eventos corporativos y privados en toda España.' },
       { icon: <Music size={22} />,      image: px(164745),  title: 'Tu perfil, tu marca', body: 'Incrusta tus sesiones de Mixcloud o SoundCloud. Los organizadores escuchan tu trabajo antes de contactarte — sin intermediarios.' },
       { icon: <Zap size={22} />,        image: px(1190297), title: 'Flash Booking',       body: 'Activa tu disponibilidad en tiempo real y recibe ofertas urgentes de eventos que necesitan cubrir una fecha con pocas horas de antelación.' },
       { icon: <Star size={22} />,       image: px(1105666), title: 'Reputación verificada', body: 'Cada evento suma una valoración real. Tu historial habla más que cualquier recomendación de boca en boca y te abre puertas a mejores contratos.' },
@@ -309,6 +310,15 @@ const ROLE_DETAILS = [
       { icon: <Sparkles size={22} />,   image: px(2681751), title: 'Tu trabajo habla',          body: 'Sube fotos y vídeos de tus transformaciones. Los artistas y salas buscan talento visual antes de contactar.' },
       { icon: <Star size={22} />,       image: px(2681751), title: 'Especialización nocturna',  body: 'XPEAK es el único directorio donde artistas, managers y productoras buscan profesionales de belleza del sector nocturno.' },
       { icon: <Smartphone size={22} />, image: px(3685530), title: 'Contacto directo',          body: 'Sin agencias ni intermediarios. Artistas y productoras te encuentran en XPEAK y contactan directamente a través de la plataforma.' },
+    ],
+  },
+  {
+    key: 'tecnica', title: 'Técnica & Producción', icon: <SlidersHorizontal size={28} />, tagline: 'Técnicos de sonido, iluminación y montaje de escenario',
+    steps: [
+      { icon: <SlidersHorizontal size={22} />, image: px(1540406), title: '¿Qué es este rol?',      body: 'Técnicos de sonido, iluminadores y equipos de montaje para bodas, festivales, salas y eventos corporativos: desde cubrir una boda en finca hasta montar el escenario de un festival.' },
+      { icon: <Zap size={22} />,               image: px(1190297), title: 'Con equipo o sin equipo', body: 'Deja claro en tu ficha si aportas material propio (P.A., mesa, microfonía, luces) o trabajas como mano de obra sobre la instalación del local. Es la primera pregunta que hace quien contrata.' },
+      { icon: <CalendarDays size={22} />,      image: px(36933463), title: 'Tarifa por jornada',     body: 'Publica tu precio por jornada, por montaje o por evento, y tus condiciones: horas mínimas, carga y descarga, pruebas de sonido previas. Sin regateos por WhatsApp.' },
+      { icon: <Star size={22} />,              image: px(1105666), title: 'Reputación verificada',   body: 'Cada evento suma una valoración real. En un oficio que se mueve por contactos, tu historial en XPEAK te abre puertas fuera de tu círculo.' },
     ],
   },
   {
@@ -422,6 +432,7 @@ const CATEGORY_ROLES: Record<string, string[]> = {
   // vacía, aunque al pulsarla lleva a /directorio/staff y sí hay gente.
   gastro: ['staff', 'camarero', 'catering'],
   animacion: ['animador', 'mago', 'humorista', 'bailarin'],
+  tecnica: ['tecnico'],
 };
 
 /* Datos fijos de cada tarjeta del bento (imagen/icono/texto) — el ORDEN se decide

@@ -24,6 +24,7 @@ const ROLE_MAP: Record<string, string[]> = {
   mago: ['mago'], animador: ['animador'], animadores: ['animador'],
   payaso: ['payaso'], payasos: ['payaso'], speaker: ['speaker'],
   'photo-booth': ['photo-booth'],
+  'tecnico-sonido': ['tecnico'],
 };
 
 // Durante el prerender de build (prerender-content.mjs), esta variable global
@@ -517,6 +518,19 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
       { q: '¿El grupo musical puede actuar en exteriores?', a: `Sí, la mayoría cuenta con equipo propio adaptado a exteriores. Indica el espacio de tu evento en ${c} para que el proveedor dimensione correctamente el equipo de sonido.` },
     ],
   },
+  'tecnico-sonido': {
+    label: 'Técnico de Sonido y Montaje',
+    keyword: 'Técnico de Sonido',
+    unidad: '/jornada',
+    desc: (c) => `Contratar técnico de sonido en ${c} para bodas, festivales y eventos de empresa. Sonido, iluminación y montaje de escenario. Con equipo propio o solo mano de obra. Sin comisión.`,
+    intro: (c, venues) => `Cuando el local no tiene instalación o el evento crece, el sonido deja de ser cosa del DJ. XPEAK conecta organizadores de ${c} con técnicos de sonido, iluminadores y equipos de montaje verificados: desde cubrir una boda en finca hasta montar el escenario de un festival o dar servicio en salas como ${venues.slice(0,2).join(' y ')}.`,
+    faqs: (c, precio) => [
+      { q: `¿Cuánto cuesta un técnico de sonido en ${c}?`, a: `Un técnico de sonido en ${c} cobra entre ${precio} según el tamaño del evento y si aporta equipo propio. Solo mano de obra sobre la instalación del local sale más barato que un servicio con P.A., mesa e iluminación incluidos. En XPEAK cada perfil muestra su tarifa antes de que contactes.` },
+      { q: `¿El técnico trae el equipo o solo lo opera?`, a: 'Depende del perfil. Hay técnicos que trabajan como mano de obra sobre el equipo del local y otros que alquilan su propio material: altavoces, mesa de mezclas, microfonía e iluminación. Cada ficha indica en sus especialidades si incluye alquiler de equipo.' },
+      { q: `¿Necesito técnico de sonido si ya tengo DJ?`, a: 'Para una fiesta en un local con instalación, normalmente no. Sí lo necesitas si hay música en vivo con varios micros, si el evento es al aire libre o en finca sin instalación, si hay discursos y ceremonia además de baile, o si el aforo pide un P.A. de verdad.' },
+      { q: `¿Con cuánta antelación se contrata el montaje en ${c}?`, a: 'Entre 2 y 3 meses en temporada alta. El montaje suele pedir visita previa o plano del espacio, y el equipo se reserva igual que el personal. Para urgencias, el Flash Booking distribuye tu oferta a los técnicos disponibles en la zona.' },
+    ],
+  },
   'photo-booth': {
     label: 'Photo Booth',
     keyword: 'Photo Booth',
@@ -642,6 +656,7 @@ const FACTOR_PRECIO: Record<string, [number, number]> = {
   maquillaje: [0.9, 0.3],    // 60→54€, 300→90€
   peluqueria: [0.7, 0.25],
   catering: [0.5, 0.15],     // por persona: 60→30€, 300→45€
+  'tecnico-sonido': [2.5, 1],  // por jornada: 60→150€, 300→300€
 };
 
 function precioPara(categorySlug: string, city: { precioMin: string; precioMax: string }): string {

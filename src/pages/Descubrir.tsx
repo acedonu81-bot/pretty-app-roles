@@ -5,7 +5,7 @@ import {
   Sparkles, Loader2, Menu, X, LayoutDashboard, ArrowLeft,
   Disc3, Camera, Users, Wine, Palette, Megaphone, UtensilsCrossed,
   Music, PartyPopper, Wand2, Mic, Drama, Presentation, Shirt,
-  Aperture, CalendarHeart, PenTool, Grid3x3, type LucideIcon,
+  Aperture, CalendarHeart, PenTool, Grid3x3, SlidersHorizontal, type LucideIcon,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
@@ -37,6 +37,7 @@ const ROLE_ICON: Record<string, LucideIcon> = {
   animador: PartyPopper, mago: Wand2, humorista: Mic, bailarin: Drama,
   speaker: Presentation, vestuario: Shirt, 'photo-booth': Aperture,
   'wedding-planner': CalendarHeart, 'diseno-grafico': PenTool,
+  'tecnico-sonido': SlidersHorizontal,
 };
 
 // Mismas 6 categorías que la landing y el sidebar del dashboard (Música,
@@ -50,6 +51,7 @@ const ROLE_GROUPS: { label: string; slugs: string[] }[] = [
   { label: 'Azafatas & RRPP', slugs: ['azafata', 'promotores', 'speaker', 'wedding-planner'] },
   { label: 'Belleza & Estética', slugs: ['maquillaje', 'vestuario'] },
   { label: 'Entretenimiento', slugs: ['animador', 'mago', 'humorista', 'bailarin'] },
+  { label: 'Técnica & Producción', slugs: ['tecnico-sonido'] },
 ];
 
 const LAST_ROLE_KEY = 'xpeak_descubrir_last_role';

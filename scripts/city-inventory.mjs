@@ -90,7 +90,7 @@ export const ROLE_MAP = {
   humorista: ['humorista'], monologo: ['humorista'], monologos: ['humorista'],
   mago: ['mago'], animador: ['animador'], animadores: ['animador'],
   payaso: ['payaso'], payasos: ['payaso'], speaker: ['speaker'],
-  'photo-booth': ['photo-booth'],
+  'photo-booth': ['photo-booth'], 'tecnico-sonido': ['tecnico'],
 };
 
 /**

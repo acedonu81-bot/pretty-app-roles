@@ -9,13 +9,19 @@ interface MobileBottomNavProps {
   unreadCount?: number;
 }
 
+// Sin entrada aquí, el rol cae al fallback 'dj' y al profesional se le abre
+// el directorio de DJs como pantalla de inicio. Faltaban la mitad de los roles
+// que ya existen en el wizard de alta, así que se completan de una vez.
 const roleToView: Record<string, string> = {
-  dj: 'dj', staff: 'staff', azafata: 'azafata', makeup: 'makeup', peluqueria: 'peluqueria', media: 'media',
+  dj: 'dj', staff: 'staff', camarero: 'staff', azafata: 'azafata', makeup: 'makeup', peluqueria: 'peluqueria', media: 'media',
   vestuario: 'vestuario', design: 'design', promotor: 'promotor',
   event_manager: 'event_manager', empresario: 'empresario',
+  catering: 'catering', mago: 'mago', bailarin: 'bailarin', humorista: 'humorista',
+  animador: 'animador', speaker: 'speaker', 'photo-booth': 'photo-booth',
+  'grupo-musical': 'grupo-musical', tecnico: 'tecnico',
 };
 
-const dirViews = new Set(['dj','staff','azafata','makeup','peluqueria','media','vestuario','design','promotor','event_manager','empresario','catering','mago','bailarin','humorista','monologo','animador','speaker','ambassador']);
+const dirViews = new Set(['dj','staff','azafata','makeup','peluqueria','media','vestuario','design','promotor','event_manager','empresario','catering','mago','bailarin','humorista','monologo','animador','speaker','ambassador','photo-booth','grupo-musical','tecnico']);
 
 const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount = 0 }: MobileBottomNavProps) => {
   const profile = useProfile();

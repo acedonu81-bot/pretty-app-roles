@@ -697,6 +697,41 @@ export const CATEGORY_DATA: Record<string, {
       { title: 'Contrato digital incluido', body: 'Cierra el trato con contrato automático: precio, horario, equipo incluido y condiciones de cancelación.' },
     ],
   },
+  'tecnico-sonido': {
+    slug: 'tecnico-sonido',
+    emoji: '🎚️',
+    h1: 'Contratar Técnico de Sonido y Montaje',
+    tagline: 'Técnicos de sonido, iluminación y montaje de escenario para bodas, festivales y eventos en España',
+    desc: 'Contrata técnico de sonido, iluminación y montaje de escenario para bodas, festivales, salas y eventos corporativos. Con equipo propio o solo mano de obra. Sin comisión.',
+    intro: 'Cuando el local no tiene instalación o el evento crece, el sonido deja de ser cosa del DJ. XPEAK conecta organizadores con técnicos de sonido, iluminadores y equipos de montaje verificados en toda España: desde un técnico que cubre una boda hasta el equipo que monta el escenario de un festival. Perfiles con tarifa pública y contacto directo.',
+    keyword: 'Técnico de Sonido y Montaje',
+    keywords: 'contratar técnico de sonido España, técnico de sonido boda, técnico de sonido eventos Madrid, montaje de escenario, técnico de iluminación eventos, alquiler equipo sonido con técnico, montaje y desmontaje festival, técnico de sonido Barcelona',
+    precio: 'desde 150€/jornada',
+    cities: [
+      { name: 'Madrid', slug: 'madrid' },
+      { name: 'Barcelona', slug: 'barcelona' },
+      { name: 'Valencia', slug: 'valencia' },
+      { name: 'Sevilla', slug: 'sevilla' },
+      { name: 'Málaga', slug: 'malaga' },
+      { name: 'Bilbao', slug: 'bilbao' },
+      { name: 'Zaragoza', slug: 'zaragoza' },
+      { name: 'Murcia', slug: 'murcia' },
+      { name: 'Palma', slug: 'palma' },
+      { name: 'Ibiza', slug: 'ibiza' },
+    ],
+    roles: ['Técnico de sonido', 'Técnico de iluminación', 'Montaje de escenario', 'P.A. / Line array', 'Mesa de mezclas', 'Microfonía', 'Backline', 'Estructuras y truss', 'Rigging', 'Pantallas LED', 'Streaming en directo', 'Carga y descarga'],
+    faqs: [
+      { q: '¿Cuánto cuesta contratar un técnico de sonido en España?', a: 'Un técnico de sonido cobra entre 150€ y 400€ por jornada según el tamaño del evento y si aporta equipo propio. Solo mano de obra (el material lo pone el local o la productora) sale más barato que un servicio con P.A., mesa e iluminación incluidos. En XPEAK cada perfil muestra su tarifa antes de que contactes.' },
+      { q: '¿El técnico trae el equipo o solo va a operarlo?', a: 'Depende del perfil, y por eso conviene mirarlo antes de escribir. Hay técnicos que trabajan solo como mano de obra sobre el equipo del local y otros que alquilan su propio material (altavoces, mesa, microfonía, luces). Cada ficha en XPEAK indica en sus especialidades si incluye alquiler de equipo.' },
+      { q: '¿Necesito técnico de sonido si ya he contratado un DJ?', a: 'Para una fiesta normal en un local con instalación, no: el DJ se apaña. Necesitas técnico cuando hay música en vivo con varios micros, cuando el evento es al aire libre o en una finca sin instalación, cuando hay discursos y ceremonia además de baile, o cuando el aforo pide un P.A. de verdad. Si lo que buscas es DJ y equipo en un mismo paquete, mira la categoría de disco móvil.' },
+      { q: '¿Con cuánta antelación hay que contratar el montaje?', a: 'Para bodas y eventos de temporada alta, entre 2 y 3 meses. El montaje suele pedir visita previa o al menos plano del espacio, y el equipo tiene que reservarse igual que el personal. Para necesidades urgentes, el Flash Booking distribuye tu oferta a los técnicos disponibles en tu zona.' },
+    ],
+    steps: [
+      { title: 'Busca por especialidad', body: 'Filtra por ciudad y mira si el técnico aporta equipo o solo mano de obra. Tarifas visibles sin registro.' },
+      { title: 'Cuenta el evento', body: 'Aforo, si es interior o exterior, qué hay que sonorizar y si el local tiene instalación. Con eso el técnico te da precio cerrado.' },
+      { title: 'Cierra el contrato', body: 'Firma digital con horario de montaje, material incluido y condiciones. Listo para facturar.' },
+    ],
+  },
 };
 
 // Alias plurales — App.tsx registra tanto /contratar-animador como

@@ -130,6 +130,17 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
                 { value: 'ambassador', label: 'Relaciones Públicas' },
                 { value: 'promotor', label: 'Promotor' },
                 { value: 'catering', label: 'Catering / Cocina' },
+                // Faltaban roles que ya existen en el alta: un empresario no
+                // podía filtrar por ellos y parecía que no había nadie.
+                { value: 'grupo-musical', label: 'Grupo Musical' },
+                { value: 'bailarin', label: 'Bailarín / Danza' },
+                { value: 'mago', label: 'Mago / Ilusionista' },
+                { value: 'humorista', label: 'Humorista / Cómico' },
+                { value: 'animador', label: 'Animador / Payaso' },
+                { value: 'speaker', label: 'Speaker / Presentador' },
+                { value: 'photo-booth', label: 'Photo Booth' },
+                { value: 'vestuario', label: 'Estilista / Vestuario' },
+                { value: 'tecnico', label: 'Técnico de Sonido y Montaje' },
               ]}
               active={filterRole !== 'Todos'}
             />

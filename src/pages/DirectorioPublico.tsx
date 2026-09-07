@@ -200,6 +200,14 @@ export const ROLE_CONFIG: Record<string, {
     seoDesc: 'Directorio de diseñadores gráficos para bodas y eventos en España. Invitaciones, cartelería y visuales a medida. Contacto directo.',
     cta: 'Contratar diseñador',
   },
+  'tecnico-sonido': {
+    dbRole: 'tecnico',
+    title: 'Técnicos de sonido, iluminación y montaje',
+    subtitle: 'Técnicos de sonido, iluminación y montaje de escenario para bodas, festivales, salas y eventos de empresa. Con equipo propio o solo mano de obra.',
+    seoTitle: 'Contratar técnico de sonido y montaje para eventos en España — XPEAK',
+    seoDesc: 'Directorio de técnicos de sonido, iluminación y montaje de escenario en España. Perfiles reales, tarifa por jornada y contacto directo sin comisión.',
+    cta: 'Contratar técnico',
+  },
 };
 
 export const ALL_ROLES = [
@@ -220,6 +228,7 @@ export const ALL_ROLES = [
   { slug: 'photo-booth', label: 'Photo Booth' },
   { slug: 'wedding-planner', label: 'Wedding Planners' },
   { slug: 'diseno-grafico', label: 'Diseño Gráfico' },
+  { slug: 'tecnico-sonido', label: 'Técnicos de Sonido y Montaje' },
 ];
 
 // Antes esta lista tenia 7 ciudades escritas a mano: quien vivia en A Coruña,
@@ -253,6 +262,7 @@ const RELATED_ROLES: Record<string, string[]> = {
   vestuario: ['maquillaje', 'wedding-planner'],
   catering: ['staff', 'wedding-planner'],
   promotores: ['staff', 'dj'],
+  'tecnico-sonido': ['dj', 'grupo-musical', 'diseno-grafico'],
 };
 const DEFAULT_RELATED = ['dj', 'fotografo', 'staff'];
 
