@@ -3,7 +3,7 @@ import {
   ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis,
   CartesianGrid, Tooltip, Legend,
 } from 'recharts';
-import { RefreshCw, Eye, Users, UserPlus, Send, Clock, Globe, Smartphone, HelpCircle } from 'lucide-react';
+import { RefreshCw, Eye, Users, UserPlus, Send, Clock, Globe, Smartphone, HelpCircle, ChevronDown, Monitor, User as UserIcon } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 /**
@@ -27,6 +27,10 @@ type Busqueda = { termino: string; veces: number; sin_resultados: number };
 type Afiliado = { producto: string; clics: number; desde: string };
 type Blog = { articulo: string; visitas: number; sesiones: number; desde_buscador: number };
 type Embudo = { paso: string; orden: number; cantidad: number };
+type QuienOnline = {
+  session_id: string; ultima_pagina: string | null; device: string | null;
+  hace_segundos: number; display_name: string | null; rol: string | null;
+};
 
 const GOLD = '#B8941E';
 
@@ -59,33 +63,53 @@ const Ayuda = ({ texto }: { texto: string }) => (
 );
 const RANGOS = [7, 30, 90];
 
+const fmtHaceSegundos = (s: number) => s < 60 ? `hace ${s}s` : `hace ${Math.round(s / 60)} min`;
+
 const fmtDia = (d: string) => {
   const date = new Date(d + 'T00:00:00');
   return `${date.getDate()}/${date.getMonth() + 1}`;
 };
 
-const Kpi = ({ icon: Icon, label, valor, sub, ayuda, live }: {
+const Kpi = ({ icon: Icon, label, valor, sub, ayuda, live, onClick, abierto }: {
   icon: typeof Eye; label: string; valor: string | number; sub?: string; ayuda?: string;
   /** Punto verde pulsante junto al label — para datos que cambian solos, no
    *  solo al pulsar "Actualizar" (mismo estilo que el badge "en directo" del
    *  topbar: #22c55e con glow). */
   live?: boolean;
-}) => (
-  <div className="rounded-2xl p-4" style={{ background: '#fff', border: '1px solid rgba(10,9,8,0.08)' }}>
-    <div className="flex items-center gap-1.5 mb-2">
-      <Icon size={13} style={{ color: GOLD }} />
-      <span className="text-[0.65rem] font-extrabold uppercase tracking-wider" style={{ color: 'rgba(10,9,8,0.45)' }}>
-        {label}
-      </span>
-      {live && (
-        <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#22c55e', boxShadow: '0 0 6px #22c55e' }} />
-      )}
-      {ayuda && <Ayuda texto={ayuda} />}
-    </div>
-    <p className="text-2xl font-black leading-none" style={{ color: '#0a0908' }}>{valor}</p>
-    {sub && <p className="text-[0.7rem] mt-1.5" style={{ color: 'rgba(10,9,8,0.45)' }}>{sub}</p>}
-  </div>
-);
+  /** Si se pasa, la tarjeta entera es un desplegable (flecha + hover). */
+  onClick?: () => void;
+  abierto?: boolean;
+}) => {
+  const Wrap = onClick ? 'button' : 'div';
+  return (
+    <Wrap
+      type={onClick ? 'button' : undefined}
+      onClick={onClick}
+      className="rounded-2xl p-4 text-left w-full transition-colors"
+      style={{
+        background: '#fff',
+        border: `1px solid ${abierto ? 'rgba(212,175,55,0.4)' : 'rgba(10,9,8,0.08)'}`,
+        cursor: onClick ? 'pointer' : 'default',
+      }}
+    >
+      <div className="flex items-center gap-1.5 mb-2">
+        <Icon size={13} style={{ color: GOLD }} />
+        <span className="text-[0.65rem] font-extrabold uppercase tracking-wider" style={{ color: 'rgba(10,9,8,0.45)' }}>
+          {label}
+        </span>
+        {live && (
+          <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#22c55e', boxShadow: '0 0 6px #22c55e' }} />
+        )}
+        {ayuda && <Ayuda texto={ayuda} />}
+        {onClick && (
+          <ChevronDown size={13} className="ml-auto transition-transform" style={{ color: 'rgba(10,9,8,0.3)', transform: abierto ? 'rotate(180deg)' : undefined }} />
+        )}
+      </div>
+      <p className="text-2xl font-black leading-none" style={{ color: '#0a0908' }}>{valor}</p>
+      {sub && <p className="text-[0.7rem] mt-1.5" style={{ color: 'rgba(10,9,8,0.45)' }}>{sub}</p>}
+    </Wrap>
+  );
+};
 
 const Panel = ({ title, hint, ayuda, children }: {
   title: string; hint?: string; ayuda?: string; children: React.ReactNode;
@@ -112,6 +136,8 @@ export default function AdminAnalytics() {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [online, setOnline] = useState<number | null>(null);
+  const [quienOnline, setQuienOnline] = useState<QuienOnline[]>([]);
+  const [onlineAbierto, setOnlineAbierto] = useState(false);
 
   const cargar = useCallback(async () => {
     setCargando(true);
@@ -177,6 +203,12 @@ export default function AdminAnalytics() {
       sb.rpc('panel_analytics_online_ahora', {}).then(r => {
         const row = (r.data as { online: number }[] | null)?.[0];
         setOnline(row ? Number(row.online) : null);
+      });
+      // Va en la misma tanda que el contador, no solo cuando se despliega la
+      // lista: si solo cargara al abrir, el primer vistazo mostraría datos de
+      // hace hasta 30s, justo lo que este panel intenta evitar.
+      sb.rpc('panel_analytics_quien_online', {}).then(r => {
+        setQuienOnline((r.data as QuienOnline[] | null) ?? []);
       });
     };
     cargarOnline();
@@ -247,7 +279,8 @@ export default function AdminAnalytics() {
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-4">
         <Kpi icon={Users} label="Online ahora" valor={online ?? '—'} sub="últimos 5 min" live
-          ayuda="Sesiones distintas con actividad en los últimos 5 minutos. Se actualiza sola cada 30s — no hace falta pulsar Actualizar. Excluye tu propio tráfico de admin." />
+          onClick={() => setOnlineAbierto(o => !o)} abierto={onlineAbierto}
+          ayuda="Sesiones distintas con actividad en los últimos 5 minutos. Se actualiza sola cada 30s — no hace falta pulsar Actualizar. Excluye tu propio tráfico de admin. Toca la tarjeta para ver quién es y en qué página está." />
         <Kpi icon={Eye} label="Visitas" valor={totalVisitas} sub={`en ${dias} días`}
           ayuda="Páginas abiertas en total. Si una persona ve 5 páginas, cuentan 5 visitas. Excluye tu propio tráfico de admin." />
         <Kpi icon={Users} label="Sesiones" valor={totalSesiones} sub="personas distintas"
@@ -257,6 +290,39 @@ export default function AdminAnalytics() {
         <Kpi icon={Send} label="Solicitudes" valor={totalSolicitudes} sub="Flash Booking"
           ayuda="Peticiones de contratación enviadas. Es la métrica que de verdad mide negocio: sin solicitudes, el tráfico no sirve de nada." />
       </div>
+
+      {/* Quién está online: solo visible al desplegar el KPI de arriba. Sin
+          nombre para el tráfico anónimo (la mayoría) porque no hay más dato
+          que capturar sin guardar IP, que este proyecto decidió no hacer. */}
+      {onlineAbierto && (
+        <div className="rounded-2xl p-4 mb-4" style={{ background: '#fff', border: '1px solid rgba(212,175,55,0.25)' }}>
+          {quienOnline.length === 0 ? (
+            <p className="text-xs" style={{ color: 'rgba(10,9,8,0.45)' }}>Nadie navegando ahora mismo.</p>
+          ) : (
+            <div className="flex flex-col divide-y" style={{ borderColor: 'rgba(10,9,8,0.06)' }}>
+              {quienOnline.map(q => (
+                <div key={q.session_id} className="flex items-center gap-3 py-2.5 first:pt-0 last:pb-0">
+                  <span className="flex-shrink-0 flex items-center justify-center rounded-full"
+                    style={{ width: 30, height: 30, background: q.display_name ? 'rgba(212,175,55,0.12)' : 'rgba(10,9,8,0.05)' }}>
+                    <UserIcon size={14} style={{ color: q.display_name ? GOLD : 'rgba(10,9,8,0.35)' }} />
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-bold truncate" style={{ color: '#0a0908' }}>
+                      {q.display_name || 'Visitante'}
+                      {q.rol && <span className="font-normal" style={{ color: 'rgba(10,9,8,0.45)' }}> · {q.rol}</span>}
+                    </p>
+                    <p className="text-[0.7rem] truncate" style={{ color: 'rgba(10,9,8,0.5)' }}>{q.ultima_pagina || '/'}</p>
+                  </div>
+                  <div className="flex-shrink-0 flex items-center gap-2 text-[0.65rem]" style={{ color: 'rgba(10,9,8,0.4)' }}>
+                    <Monitor size={12} />
+                    <span>{fmtHaceSegundos(q.hace_segundos)}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Tráfico por día */}
       <Panel title="Tráfico por día" hint="Visitas y sesiones. Excluye tu propio tráfico de admin."
