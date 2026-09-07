@@ -94,13 +94,18 @@ const UNIVERSAL_TOOLS: { icon: typeof FileText; title: string; desc: string; hre
 
 const GOLD = '#B8941E';
 
-const SectionTitle = ({ icon: Icon, children, hint }: {
+const SectionTitle = ({ icon: Icon, children, hint, color }: {
   icon: typeof BookOpen; children: React.ReactNode; hint?: string;
+  /** Acento de la sección. Por defecto el dorado de marca; la formación usa
+   *  azul para separarse visualmente del equipo (aprender vs. comprar). */
+  color?: string;
 }) => (
   <div className="mb-3">
     <div className="flex items-center gap-2">
       <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
-        style={{ background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.25)', color: GOLD }}>
+        style={color
+          ? { background: hexToRgba(color, 0.12), border: `1px solid ${hexToRgba(color, 0.25)}`, color }
+          : { background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.25)', color: GOLD }}>
         <Icon size={15} />
       </div>
       <h2 className="text-[0.95rem] font-black" style={{ color: '#0a0908' }}>{children}</h2>
@@ -266,19 +271,41 @@ export default function ResourcesView() {
           {/* "Formación recomendada" y no "con acuerdo con XPEAK": es
               afiliación, no un acuerdo comercial, y decirlo de más resta
               credibilidad al resto del panel. */}
-          <SectionTitle icon={GraduationCap} hint="Cursos y academias del sector para tu oficio.">
+          <SectionTitle icon={GraduationCap} color="#2563EB" hint="Cursos y academias del sector para tu oficio.">
             Formación recomendada
           </SectionTitle>
+          {/* Azul de marca y no blanco sobre blanco: al lado del escaparate
+              dorado de productos, estas tarjetas eran invisibles —borde gris
+              al 8%, sin icono ni llamada a la acción—. El azul las separa del
+              equipo (comprar) y las agrupa como formación (aprender). */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {courses.map(p => (
               <a key={p.name} href={p.url!} target="_blank" rel="sponsored noopener noreferrer"
-                className="group flex flex-col rounded-2xl p-4 transition-all hover:shadow-sm"
-                style={{ background: '#fff', border: '1px solid rgba(10,9,8,0.08)' }}>
-                <div className="flex items-start justify-between gap-2">
-                  <p className="text-[0.88rem] font-bold leading-snug" style={{ color: '#0a0908' }}>{p.name}</p>
-                  <ExternalLink size={13} className="flex-shrink-0 mt-1" style={{ color: 'rgba(10,9,8,0.3)' }} />
+                className="group flex flex-col rounded-2xl p-4 transition-all hover:shadow-md hover:-translate-y-0.5 relative overflow-hidden"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(37,99,235,0.05), rgba(37,99,235,0.01))',
+                  border: '1px solid rgba(37,99,235,0.22)',
+                }}>
+                {/* Brillo suave en la esquina: da profundidad sin tapar texto */}
+                <span aria-hidden className="absolute pointer-events-none"
+                  style={{
+                    right: -40, top: -40, width: 130, height: 130, borderRadius: '50%',
+                    background: 'radial-gradient(circle, rgba(37,99,235,0.12) 0%, rgba(37,99,235,0) 70%)',
+                  }} />
+                <div className="relative flex items-start gap-3">
+                  <span className="flex items-center justify-center rounded-xl flex-shrink-0 transition-transform group-hover:scale-105"
+                    style={{ width: 38, height: 38, background: 'linear-gradient(135deg,#3B82F6,#2563EB)', color: '#fff' }}>
+                    <GraduationCap size={19} />
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[0.88rem] font-black leading-snug" style={{ color: '#0a0908' }}>{p.name}</p>
+                    <p className="text-xs leading-relaxed mt-1" style={{ color: 'rgba(10,9,8,0.6)' }}>{p.desc}</p>
+                  </div>
                 </div>
-                <p className="text-xs leading-relaxed mt-1.5" style={{ color: 'rgba(10,9,8,0.55)' }}>{p.desc}</p>
+                <span className="relative inline-flex items-center gap-1 text-[0.72rem] font-black mt-3 self-start px-2.5 py-1.5 rounded-full transition-all"
+                  style={{ background: 'rgba(37,99,235,0.1)', color: '#2563EB', border: '1px solid rgba(37,99,235,0.2)' }}>
+                  Ver el curso <ExternalLink size={10} />
+                </span>
               </a>
             ))}
           </div>
