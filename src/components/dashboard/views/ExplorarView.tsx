@@ -87,8 +87,15 @@ const Tarjeta = ({ item, onNavigate }: { item: { id: string; view: string; nombr
     type="button"
     onClick={() => onNavigate?.(item.view)}
     aria-label={`Ver ${item.nombre}`}
-    className="group relative w-full overflow-hidden rounded-xl text-left transition-transform duration-200 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0908]"
-    style={{ aspectRatio: '3 / 2' }}
+    className="group relative w-full overflow-hidden rounded-2xl text-left transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] focus-visible:ring-offset-2"
+    style={{
+      aspectRatio: '3 / 2',
+      background: '#ffffff',
+      border: '1px solid rgba(0,0,0,0.08)',
+      boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+    }}
+    onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 8px 28px rgba(0,0,0,0.12)'; }}
+    onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)'; }}
   >
     <img
       src={img(item.id)}
@@ -99,25 +106,27 @@ const Tarjeta = ({ item, onNavigate }: { item: { id: string; view: string; nombr
       height={600}
       className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
     />
-    {/* Dos capas a propósito: un velo uniforme que baja el contraste de las
-        fotos claras (magos, bailarines salían casi blancas) y un degradado
-        fuerte abajo. Con una sola capa, un título de dos líneas se salía de la
-        zona oscura y quedaba ilegible sobre la imagen. */}
-    <div className="absolute inset-0 bg-black/25" />
-    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 via-45% to-transparent" />
-    <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4">
-      <h3 className="text-sm sm:text-base font-semibold leading-tight text-white [text-shadow:0_1px_3px_rgba(0,0,0,0.8)]">{item.nombre}</h3>
-      <p className="mt-0.5 text-[11px] sm:text-xs leading-snug text-white/80 line-clamp-2 [text-shadow:0_1px_2px_rgba(0,0,0,0.9)]">{item.gancho}</p>
+    {/* El bloque de texto lleva SU PROPIO fondo degradado en vez de una franja
+        de altura fija: un título de dos líneas crecía por encima de la franja y
+        quedaba ilegible sobre la foto (pasaba en "DJs & Artistas", "Sala &
+        Barra", "Técnicos de Sonido"). Al ir el degradado en el mismo elemento
+        que el texto, la zona oscura crece con él y siempre lo cubre. */}
+    <div
+      className="absolute inset-x-0 bottom-0 p-3 pt-8 sm:p-4 sm:pt-10"
+      style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.45) 75%, transparent 100%)' }}
+    >
+      <h3 className="text-sm sm:text-base font-semibold leading-tight text-white [text-shadow:0_1px_3px_rgba(0,0,0,0.9)]">{item.nombre}</h3>
+      <p className="mt-0.5 text-[11px] sm:text-xs leading-snug text-white/85 line-clamp-2 [text-shadow:0_1px_2px_rgba(0,0,0,0.95)]">{item.gancho}</p>
     </div>
-    <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-white/10 transition-colors group-hover:ring-[#D4AF37]/60" />
+    <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-black/5 transition-colors group-hover:ring-[#D4AF37]/70" />
   </button>
 );
 
 const ExplorarView = ({ onNavigate }: Props) => (
   <div className="mx-auto w-full max-w-6xl px-3 py-4 sm:px-4 sm:py-6">
     <header className="mb-5 sm:mb-7">
-      <h1 className="text-xl sm:text-2xl font-bold text-white">Explorar XPEAK</h1>
-      <p className="mt-1 text-sm text-white/60">
+      <h1 className="text-xl sm:text-2xl font-bold" style={{ color: '#0a0908' }}>Explorar XPEAK</h1>
+      <p className="mt-1 text-sm" style={{ color: 'rgba(10,9,8,0.6)' }}>
         Todos los profesionales de la plataforma. Toca una categoría para ver quién hay.
       </p>
     </header>
@@ -130,7 +139,9 @@ const ExplorarView = ({ onNavigate }: Props) => (
     <div className="grid grid-cols-2 gap-2.5 sm:gap-3 md:grid-cols-3 lg:grid-cols-4">
       {GRUPOS.map(grupo => (
         <div key={grupo.titulo} className="contents">
-          <h2 className="col-span-full mb-0.5 mt-3 text-xs font-semibold uppercase tracking-wider text-[#D4AF37] first:mt-0">
+          {/* --gold-on-light, no el #D4AF37 de marca: el dorado de marca sobre
+              blanco no llega al contraste AA para texto pequeño. */}
+          <h2 className="col-span-full mb-0.5 mt-3 text-xs font-semibold uppercase tracking-wider first:mt-0" style={{ color: 'var(--gold-on-light, #7a6216)' }}>
             {grupo.titulo}
           </h2>
           {grupo.items.map(item => (
