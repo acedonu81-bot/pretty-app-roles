@@ -1,0 +1,841 @@
+<title>Demandas por Rol</title>
+<style>
+:root{
+  --bg:#faf8f4; --bg-raised:#ffffff; --bg-sunken:#f1ede4;
+  --text:#242019; --text-dim:#6b6255; --text-faint:#a39a8b;
+  --border:#e4ddd0; --border-strong:#cfc5b3;
+  --accent:#b8863b; --accent-soft:#f2e6cd; --accent-text:#8a641f;
+  --bad:#b34a3f; --bad-soft:#f5e3e0;
+  --good:#5c7a52; --good-soft:#e6ecdf;
+  --mono-bg:#f1ede0;
+  --shadow: 0 1px 2px rgba(36,32,25,.06), 0 4px 16px rgba(36,32,25,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1a1712; --bg-raised:#221e17; --bg-sunken:#151310;
+    --text:#efe9dd; --text-dim:#b3a894; --text-faint:#7d7263;
+    --border:#37312578; --border-strong:#453d2e;
+    --accent:#d9a75a; --accent-soft:#3a2f18; --accent-text:#e8c383;
+    --bad:#e08477; --bad-soft:#3a201d;
+    --good:#9bc189; --good-soft:#28301f;
+    --mono-bg:#221e17;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1a1712; --bg-raised:#221e17; --bg-sunken:#151310;
+  --text:#efe9dd; --text-dim:#b3a894; --text-faint:#7d7263;
+  --border:#37312578; --border-strong:#453d2e;
+  --accent:#d9a75a; --accent-soft:#3a2f18; --accent-text:#e8c383;
+  --bad:#e08477; --bad-soft:#3a201d;
+  --good:#9bc189; --good-soft:#28301f;
+  --mono-bg:#221e17;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+}
+
+*{box-sizing:border-box;}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:'Source Sans 3', system-ui, sans-serif;
+  font-size:16px; line-height:1.55;
+}
+h1,h2,h3,h4{font-family:'Fraunces', Georgia, serif; text-wrap:balance; margin:0;}
+code, .mono, .src, td.num{font-family:'JetBrains Mono', ui-monospace, monospace;}
+
+a{color:var(--accent-text);}
+
+.layout{display:flex; max-width:1400px; margin:0 auto;}
+
+/* ---- SIDEBAR NAV ---- */
+nav.toc{
+  width:230px; flex-shrink:0; position:sticky; top:0; align-self:flex-start;
+  height:100vh; overflow-y:auto; padding:28px 14px 40px 24px;
+  border-right:1px solid var(--border);
+}
+nav.toc .brand{
+  font-family:'Fraunces', serif; font-weight:600; font-size:1.05rem;
+  letter-spacing:.02em; margin-bottom:2px;
+}
+nav.toc .brand-sub{
+  font-size:.72rem; color:var(--text-faint); text-transform:uppercase;
+  letter-spacing:.08em; margin-bottom:22px; display:block;
+}
+nav.toc .group-label{
+  font-size:.68rem; text-transform:uppercase; letter-spacing:.09em;
+  color:var(--text-faint); margin:18px 0 6px; font-weight:600;
+}
+nav.toc a.role-link{
+  display:flex; gap:8px; align-items:baseline;
+  padding:5px 8px; border-radius:6px; font-size:.86rem;
+  color:var(--text-dim); text-decoration:none; line-height:1.3;
+}
+nav.toc a.role-link:hover{background:var(--bg-sunken); color:var(--text);}
+nav.toc a.role-link .n{color:var(--text-faint); font-size:.72rem; font-family:'JetBrains Mono',monospace; width:14px; flex-shrink:0;}
+
+/* ---- MAIN ---- */
+main{flex:1; min-width:0; padding:40px 56px 100px;}
+@media (max-width: 900px){
+  .layout{display:block;}
+  nav.toc{position:static; height:auto; width:auto; border-right:none; border-bottom:1px solid var(--border);}
+  main{padding:32px 24px 80px;}
+}
+
+header.hero{max-width:760px; margin-bottom:56px;}
+header.hero .eyebrow{
+  font-size:.78rem; text-transform:uppercase; letter-spacing:.1em;
+  color:var(--accent-text); font-weight:600; margin-bottom:14px; display:block;
+}
+header.hero h1{font-size:2.6rem; font-weight:600; margin-bottom:16px;}
+header.hero p.lede{font-size:1.08rem; color:var(--text-dim); max-width:640px;}
+.meta-row{display:flex; gap:24px; margin-top:22px; flex-wrap:wrap;}
+.meta-item{font-size:.82rem; color:var(--text-faint);}
+.meta-item strong{color:var(--text); display:block; font-family:'Fraunces',serif; font-size:1.3rem; font-weight:600;}
+
+section.role{
+  max-width:760px; padding-top:52px; margin-top:52px;
+  border-top:1px solid var(--border); scroll-margin-top:24px;
+}
+section.role:first-of-type{border-top:none;}
+
+.role-head{display:flex; align-items:baseline; gap:14px; margin-bottom:6px;}
+.role-num{font-family:'JetBrains Mono',monospace; color:var(--text-faint); font-size:.9rem;}
+.role-head h2{font-size:1.7rem;}
+.role-tag{
+  font-size:.72rem; color:var(--text-dim); background:var(--bg-sunken);
+  border:1px solid var(--border); padding:2px 9px; border-radius:100px;
+  font-family:'JetBrains Mono',monospace;
+}
+
+.finding-box{
+  background:var(--accent-soft); border:1px solid var(--border-strong);
+  border-left:3px solid var(--accent); border-radius:8px;
+  padding:16px 18px; margin:20px 0 24px; box-shadow:var(--shadow);
+}
+.finding-box .label{
+  font-size:.68rem; text-transform:uppercase; letter-spacing:.08em;
+  color:var(--accent-text); font-weight:700; margin-bottom:6px; display:block;
+}
+.finding-box p{margin:0; font-size:.95rem; color:var(--text);}
+
+h4.sub{font-size:.78rem; text-transform:uppercase; letter-spacing:.07em; color:var(--text-faint); margin:26px 0 12px; font-weight:600;}
+
+ol.demands{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px;}
+ol.demands li{
+  display:grid; grid-template-columns:22px 1fr; gap:10px;
+  font-size:.94rem; padding-bottom:12px; border-bottom:1px solid var(--border);
+}
+ol.demands li:last-child{border-bottom:none; padding-bottom:0;}
+ol.demands li .idx{color:var(--text-faint); font-family:'JetBrains Mono',monospace; font-size:.82rem;}
+ol.demands li .src{display:block; margin-top:4px; font-size:.76rem; color:var(--text-faint);}
+ol.demands li .src a{color:var(--text-faint); text-decoration:underline; text-decoration-color:var(--border-strong);}
+
+.needs-box{
+  background:var(--bg-raised); border:1px solid var(--border); border-radius:10px;
+  padding:16px 18px; margin-top:18px; box-shadow:var(--shadow);
+}
+.needs-box .label{font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--good); font-weight:700; margin-bottom:8px; display:block;}
+.needs-box ul{margin:0; padding-left:18px; font-size:.92rem;}
+.needs-box li{margin-bottom:5px;}
+
+/* legacy / minor roles compact list */
+.compact-roles{max-width:760px; padding-top:52px; margin-top:52px; border-top:1px solid var(--border);}
+.compact-roles h2{font-size:1.5rem; margin-bottom:6px;}
+.compact-roles > p{color:var(--text-dim); font-size:.92rem; margin-bottom:24px;}
+.compact-card{
+  background:var(--bg-raised); border:1px solid var(--border); border-radius:10px;
+  padding:18px 20px; margin-bottom:16px; box-shadow:var(--shadow);
+}
+.compact-card h3{font-size:1.15rem; margin-bottom:4px; display:flex; align-items:baseline; gap:8px;}
+.compact-card h3 .role-tag{font-size:.68rem;}
+.compact-card p{font-size:.9rem; margin:8px 0 0; color:var(--text-dim);}
+.compact-card p strong{color:var(--text); font-weight:600;}
+.weak-note{
+  display:inline-flex; align-items:center; gap:6px; margin-top:10px;
+  font-size:.78rem; color:var(--bad); background:var(--bad-soft);
+  padding:3px 10px; border-radius:100px; border:1px solid color-mix(in srgb, var(--bad) 30%, transparent);
+}
+
+/* Synthesis / matrix section */
+.synthesis{max-width:920px; padding-top:60px; margin-top:60px; border-top:2px solid var(--border-strong);}
+.synthesis .eyebrow{font-size:.78rem; text-transform:uppercase; letter-spacing:.1em; color:var(--accent-text); font-weight:600; margin-bottom:12px; display:block;}
+.synthesis h2{font-size:2rem; margin-bottom:14px;}
+.synthesis > p.intro{color:var(--text-dim); max-width:680px; margin-bottom:36px; font-size:1rem;}
+
+.pattern-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:16px; margin-bottom:44px;}
+.pattern-card{
+  background:var(--bg-raised); border:1px solid var(--border); border-radius:10px;
+  padding:18px 20px; box-shadow:var(--shadow);
+}
+.pattern-card .num{font-family:'JetBrains Mono',monospace; color:var(--accent-text); font-size:.8rem; font-weight:700;}
+.pattern-card h4{font-family:'Fraunces',serif; font-size:1.05rem; font-weight:600; margin:6px 0 8px;}
+.pattern-card p{font-size:.87rem; color:var(--text-dim); margin:0;}
+.pattern-card .roles-affected{
+  margin-top:10px; font-size:.72rem; color:var(--text-faint);
+  font-family:'JetBrains Mono',monospace;
+}
+
+table.matrix{width:100%; border-collapse:collapse; font-size:.86rem; margin-bottom:20px;}
+table.matrix th{
+  text-align:left; font-size:.7rem; text-transform:uppercase; letter-spacing:.06em;
+  color:var(--text-faint); font-weight:600; padding:8px 12px; border-bottom:2px solid var(--border-strong);
+}
+table.matrix td{padding:10px 12px; border-bottom:1px solid var(--border); vertical-align:top;}
+table.matrix tr:last-child td{border-bottom:none;}
+table.matrix td.role-cell{font-weight:600; white-space:nowrap;}
+.priority{
+  display:inline-block; font-size:.68rem; font-weight:700; padding:2px 8px;
+  border-radius:100px; font-family:'JetBrains Mono',monospace;
+}
+.priority.p1{background:var(--bad-soft); color:var(--bad);}
+.priority.p2{background:var(--accent-soft); color:var(--accent-text);}
+.priority.p3{background:var(--good-soft); color:var(--good);}
+
+.overflow-wrap{overflow-x:auto; margin-bottom:20px;}
+
+.closing{
+  background:var(--bg-sunken); border:1px solid var(--border); border-radius:12px;
+  padding:26px 28px; margin-top:8px;
+}
+.closing h3{font-size:1.2rem; margin-bottom:10px;}
+.closing p{font-size:.94rem; color:var(--text-dim); margin:0 0 10px;}
+.closing p:last-child{margin-bottom:0;}
+
+footer.doc-footer{max-width:920px; margin-top:60px; padding-top:20px; border-top:1px solid var(--border); font-size:.78rem; color:var(--text-faint);}
+</style>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<div class="layout">
+  <nav class="toc">
+    <span class="brand">XPEAK</span>
+    <span class="brand-sub">Demandas por rol · Sep 2026</span>
+
+    <div class="group-label">Sonido en vivo</div>
+    <a class="role-link" href="#dj"><span class="n">01</span>DJ / Artista</a>
+    <a class="role-link" href="#grupo-musical"><span class="n">02</span>Grupo musical</a>
+    <a class="role-link" href="#tecnico"><span class="n">03</span>Técnico de sonido</a>
+
+    <div class="group-label">Staff de evento</div>
+    <a class="role-link" href="#staff"><span class="n">04</span>Camarero / Staff</a>
+    <a class="role-link" href="#azafata"><span class="n">05</span>Azafata</a>
+    <a class="role-link" href="#promotor"><span class="n">06</span>Promotor / RRPP</a>
+
+    <div class="group-label">Imagen y catering</div>
+    <a class="role-link" href="#media"><span class="n">07</span>Fotógrafo / Vídeo</a>
+    <a class="role-link" href="#makeup"><span class="n">08</span>Maquilladora</a>
+    <a class="role-link" href="#peluqueria"><span class="n">09</span>Peluquería</a>
+    <a class="role-link" href="#catering"><span class="n">10</span>Catering / Chef</a>
+    <a class="role-link" href="#vestuario"><span class="n">11</span>Estilista / Vestuario</a>
+
+    <div class="group-label">Espectáculo</div>
+    <a class="role-link" href="#mago"><span class="n">12</span>Mago</a>
+    <a class="role-link" href="#humorista"><span class="n">13</span>Humorista</a>
+    <a class="role-link" href="#animador"><span class="n">14</span>Animador</a>
+    <a class="role-link" href="#bailarin"><span class="n">15</span>Bailarín</a>
+    <a class="role-link" href="#speaker"><span class="n">16</span>Speaker</a>
+    <a class="role-link" href="#photobooth"><span class="n">17</span>Photo Booth</a>
+
+    <div class="group-label">Síntesis</div>
+    <a class="role-link" href="#patrones">Patrones transversales</a>
+    <a class="role-link" href="#matriz">Matriz de aplicación</a>
+    <a class="role-link" href="#cierre">Resumen final</a>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <span class="eyebrow">Investigación de mercado · Roles profesionales</span>
+      <h1>Qué llevan pidiendo estos 17 oficios desde siempre</h1>
+      <p class="lede">Foros, sindicatos, convenios colectivos, reseñas de agencias y denuncias públicas de los 18 roles profesionales que da de alta XPEAK, cruzados para encontrar el hueco real que una plataforma puede cerrar en cada uno.</p>
+      <div class="meta-row">
+        <div class="meta-item"><strong>17</strong>roles investigados</div>
+        <div class="meta-item"><strong>4</strong>bloques de investigación</div>
+        <div class="meta-item"><strong>~80</strong>fuentes cruzadas</div>
+        <div class="meta-item"><strong>1</strong>patrón dominante</div>
+      </div>
+    </header>
+
+    <!-- ============ 01 DJ ============ -->
+    <section class="role" id="dj">
+      <div class="role-head">
+        <span class="role-num">01</span>
+        <h2>DJ / Artista</h2>
+        <span class="role-tag">estatus legal</span>
+      </div>
+
+      <div class="finding-box">
+        <span class="label">Lo poco obvio</span>
+        <p>Su reivindicación de más alto nivel no es económica: pelean por ser reconocidos como <strong>creadores</strong> de la sesión (aunque suene música de terceros) y por que el DJ en directo cuente legalmente como "música en vivo" — afecta a licencias de local y horarios, no solo a su caché.</p>
+      </div>
+
+      <h4 class="sub">Demandas verificadas</h4>
+      <ol class="demands">
+        <li><span class="idx">01</span><div>Competencia desleal de aficionados que pinchan gratis, normalizando el trabajo no pagado del sector.<span class="src">Hispasonic, foro "Complicado pinchar alguien amateur"</span></div></li>
+        <li><span class="idx">02</span><div>Dumping de precios: tarifas de 60-120€/evento cargando equipo propio, sensación de indefensión frente a quien acepta menos.<span class="src">Hispasonic, "Cuánto cobra actualmente un DJ"</span></div></li>
+        <li><span class="idx">03</span><div>Reconocimiento tardío como artista escénico — logrado en 2023, tras años de presión de AEDYP.<span class="src">BOE-A-2023-8673 · aedyp.es</span></div></li>
+        <li><span class="idx">04</span><div>Batalla legal abierta con Ministerio de Cultura por autoría de la sesión en directo.<span class="src">Infobae, abr. 2026</span></div></li>
+        <li><span class="idx">05</span><div>Ambigüedad fiscal: gran parte del sector opera sin alta de autónomo, recurriendo a gestorías que cobran ~5% por poner en nómina cada bolo.<span class="src">musicing.es · Hispasonic</span></div></li>
+        <li><span class="idx">06</span><div>Cancelaciones de última hora sin compensación, en ambas direcciones (DJ y organizador).<span class="src">35mm.es</span></div></li>
+      </ol>
+
+      <div class="needs-box">
+        <span class="label">Qué necesita de XPEAK</span>
+        <ul>
+          <li>Verificación/credencial que distinga profesional de amateur — palanca directa contra el dumping</li>
+          <li>Contrato estándar con cláusula de cancelación y señal ya integrada</li>
+          <li>Vía de alta correcta (artista vs. autónomo) integrada al flujo de reserva</li>
+          <li>Reputación e historial de bolos con más peso que el precio en el ranking</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 02 GRUPO MUSICAL ============ -->
+    <section class="role" id="grupo-musical">
+      <div class="role-head">
+        <span class="role-num">02</span>
+        <h2>Grupo musical</h2>
+        <span class="role-tag">anti-intermediario</span>
+      </div>
+
+      <div class="finding-box">
+        <span class="label">Lo poco obvio</span>
+        <p>El enemigo no es solo el cliente: es la <strong>capa de agencias de management</strong>, acusadas de cobrar 1.500-3.500€ sin resultados y de bloquear activamente la autogestión de las bandas. Un discurso anti-intermediario muy fuerte — valida un marketplace directo sin comisión oculta.</p>
+      </div>
+
+      <h4 class="sub">Demandas verificadas</h4>
+      <ol class="demands">
+        <li><span class="idx">01</span><div>Promotores que solo ofrecen % de taquilla, no caché fijo, y exigen que la banda haga su propia promoción.<span class="src">themetalcircus.com, "Promotores llorones"</span></div></li>
+        <li><span class="idx">02</span><div>Agencias que cobran caro y dan solo 3-4 bolos/año; abandonan a la banda si un promotor no paga.<span class="src">themetalcircus.com, "Agencias rock/metal España"</span></div></li>
+        <li><span class="idx">03</span><div>Costes ocultos (dietas, gasolina, alojamiento) negociados aparte, fuente constante de fricción.<span class="src">guitarristas.info</span></div></li>
+        <li><span class="idx">04</span><div>SGAE en bodas/eventos como foco recurrente de confusión sobre quién paga el canon.<span class="src">musiqua.es</span></div></li>
+        <li><span class="idx">05</span><div>Alta irregular como "falso autónomo" o esporádica sin protección.<span class="src">ampemusicos.com</span></div></li>
+      </ol>
+
+      <div class="needs-box">
+        <span class="label">Qué necesita de XPEAK</span>
+        <ul>
+          <li>Caché fijo garantizado con desglose de gastos, no solo % de taquilla</li>
+          <li>Depósito/señal retenido y liberado tras el evento — protege de salas morosas</li>
+          <li>Cálculo automático de si aplica SGAE, visible antes de cerrar el trato</li>
+          <li>Visibilidad directa sin comisión de management — el propio sector ya pide esto</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 03 TECNICO SONIDO ============ -->
+    <section class="role" id="tecnico">
+      <div class="role-head">
+        <span class="role-num">03</span>
+        <h2>Técnico de sonido y montaje</h2>
+        <span class="role-tag">precariedad estructural</span>
+      </div>
+
+      <div class="finding-box">
+        <span class="label">Lo poco obvio</span>
+        <p>El único rol con dolor <strong>legal-laboral puro</strong>, no solo comercial: 70% en fraude de falso autónomo, jornadas de hasta 24h seguidas y tarifas congeladas desde 2008. Piden un modelo de "intermitencia" al estilo francés, no solo mejor plataforma.</p>
+      </div>
+
+      <h4 class="sub">Demandas verificadas</h4>
+      <ol class="demands">
+        <li><span class="idx">01</span><div>"El 70% somos falsos autónomos" — empresas fijan horario y equipo pero evitan obligaciones laborales.<span class="src">infolibre.es, 2019, aún citado</span></div></li>
+        <li><span class="idx">02</span><div>Jornadas de 18-24h de montaje+evento+desmontaje sin pausas garantizadas.<span class="src">eldiario.es, "Infierno laboral técnicos de sonido"</span></div></li>
+        <li><span class="idx">03</span><div>Tarifas de 180-250€/jornada congeladas desde 2008; tras retenciones, menos de 50€ netos por cada 100 facturados.<span class="src">eldiario.es</span></div></li>
+        <li><span class="idx">04</span><div>Cancelación por lluvia u otra causa ajena = cero compensación, pese a bloquear la fecha.</div></li>
+        <li><span class="idx">05</span><div>Riders técnicos aceptados por contrato pero incumplidos el día del evento.<span class="src">Hispasonic, "Guía rider técnico"</span></div></li>
+        <li><span class="idx">06</span><div>Licitación pública al presupuesto más bajo traslada el recorte directamente al salario del técnico.<span class="src">infolibre.es</span></div></li>
+      </ol>
+
+      <div class="needs-box">
+        <span class="label">Qué necesita de XPEAK</span>
+        <ul>
+          <li>Cláusula de compensación mínima ante cancelación, integrada en el contrato tipo</li>
+          <li>Registro de horas con aviso de jornada máxima</li>
+          <li>Checklist de rider técnico vinculante, no un documento aparte que se ignora</li>
+          <li>Tarifas de referencia visibles para negociar frente a licitaciones a la baja</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 04 CAMARERO ============ -->
+    <section class="role" id="staff">
+      <div class="role-head">
+        <span class="role-num">04</span>
+        <h2>Camarero / Staff de eventos</h2>
+        <span class="role-tag">alta irregular</span>
+      </div>
+
+      <div class="finding-box">
+        <span class="label">Lo poco obvio</span>
+        <p>No solo se quejan los trabajadores: las propias agencias piden simplificar la carga administrativa (altas, bajas, penalización de 26,55€ por contrato corto). Una plataforma que resuelva ese papeleo aporta valor a <strong>ambos lados</strong>, no solo al profesional.</p>
+      </div>
+
+      <h4 class="sub">Demandas verificadas</h4>
+      <ol class="demands">
+        <li><span class="idx">01</span><div>"Trabajar de prueba" un día sin alta en Seguridad Social — la queja mejor documentada del sector, con multas de hasta 225.018€.<span class="src">eleconomista.es · infoemplea2.com</span></div></li>
+        <li><span class="idx">02</span><div>Convenios de hostelería bloqueados/en ultraactividad (Madrid, Granada) y salario base ~1.250€ + pluses.<span class="src">qamarero.com · elindependientedegranada.es</span></div></li>
+        <li><span class="idx">03</span><div>Horas extra no pagadas denunciadas de forma constante por UGT/CCOO.<span class="src">ugtclm.es</span></div></li>
+        <li><span class="idx">04</span><div>Apropiación de propinas por parte del empleador, con jornadas de 12h sobre contrato de 6h.<span class="src">infobae.com</span></div></li>
+        <li><span class="idx">05</span><div>Grupos de WhatsApp como método dominante de contratación de extras, sin ninguna garantía.</div></li>
+        <li><span class="idx">06</span><div>Tasa de no-show del 10-15% en ETTs/bolsas tradicionales, frente a &lt;3% en plataformas que solo cobran si el turno se cubre.</div></li>
+      </ol>
+
+      <div class="needs-box">
+        <span class="label">Qué necesita de XPEAK</span>
+        <ul>
+          <li>Pago garantizado y puntual, no dependiente de que el cliente pague después</li>
+          <li>Alta verificable en Seguridad Social desde el primer minuto</li>
+          <li>Reputación bilateral: filtra clientes que no pagan igual que filtra staff poco fiable</li>
+          <li>Condiciones visibles antes de aceptar (horas reales, propinas, transporte)</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 05 AZAFATA ============ -->
+    <section class="role" id="azafata">
+      <div class="role-head">
+        <span class="role-num">05</span>
+        <h2>Azafata de eventos</h2>
+        <span class="role-tag">falso TRADE</span>
+      </div>
+
+      <div class="finding-box">
+        <span class="label">Lo poco obvio</span>
+        <p>La propia patronal del sector (ADEAZA) presiona por flexibilizar aún más la contratación temporal — el choque real es entre el modelo de negocio (proyectos de 2-4 días) y el marco laboral español. Una micro-contratación legal y ágil resuelve el dolor de agencias <strong>y</strong> azafatas a la vez.</p>
+      </div>
+
+      <h4 class="sub">Demandas verificadas</h4>
+      <ol class="demands">
+        <li><span class="idx">01</span><div>Contratos de 2-4 días que impiden cualquier estabilidad, estructural del sector.<span class="src">eventoplus.com</span></div></li>
+        <li><span class="idx">02</span><div>Reclasificación creciente por Inspección de Trabajo de falsos TRADE: horario, herramientas y supervisión fijados por la empresa.<span class="src">wolterskluwer.com</span></div></li>
+        <li><span class="idx">03</span><div>Penalización de 26,55€ por contrato &lt;30 días encarece el servicio sin llegar a la trabajadora — hasta 796,50€ extra por equipo de 10.<span class="src">eventoplus.com</span></div></li>
+        <li><span class="idx">04</span><div>Desplazamiento a eventos lejanos no compensado.<span class="src">unaparejarentable.com</span></div></li>
+        <li><span class="idx">05</span><div>Cobro condicionado a devolver el uniforme "limpio y completo".<span class="src">acheazafatas.es</span></div></li>
+        <li><span class="idx">06</span><div>Convenio colectivo estatal específico existe (CCOO-Servicios / ADEAZA) pero su cumplimiento real varía mucho por agencia.<span class="src">ccoo-servicios.es</span></div></li>
+      </ol>
+
+      <div class="needs-box">
+        <span class="label">Qué necesita de XPEAK</span>
+        <ul>
+          <li>Claridad contractual desde el minuto uno — evitar la zona gris de falso TRADE</li>
+          <li>Dietas y desplazamiento visibles antes de aceptar el evento</li>
+          <li>Plazos de pago cumplidos y verificables, no promesas verbales</li>
+          <li>Cobro no condicionado a la devolución física de material</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 06 PROMOTOR ============ -->
+    <section class="role" id="promotor">
+      <div class="role-head">
+        <span class="role-num">06</span>
+        <h2>Promotor / RRPP</h2>
+        <span class="role-tag">vacío legal</span>
+      </div>
+
+      <div class="finding-box">
+        <span class="label">Lo poco obvio</span>
+        <p>La jurisprudencia (AP Valencia 248/2005) reconoce que el RRPP "obliga" a la discoteca frente a terceros — pero no existe el equivalente que obligue a la discoteca a pagarle a él. Es el rol más desprotegido institucionalmente de los 18: sin sindicato, sin convenio, sin asociación.</p>
+      </div>
+
+      <h4 class="sub">Demandas verificadas</h4>
+      <ol class="demands">
+        <li><span class="idx">01</span><div>Pago 100% a comisión, verificado a mano cuadrando con la sala cuántas personas entraron — sin tracking objetivo.<span class="src">premiumguest.com · indeed.es</span></div></li>
+        <li><span class="idx">02</span><div>Comisión variable (~20% entrada, 2-10% barra) sin estándar comparable entre locales.</div></li>
+        <li><span class="idx">03</span><div>Ambigüedad jurídica sobre su propio estatus: actúa como "factor mercantil de hecho" sin papel firmado.<span class="src">LinkedIn Pulse, Arangó Domingo</span></div></li>
+        <li><span class="idx">04</span><div>Casos documentados de trato sin contrato, sin factura, sin alta — solo foto y teléfono.</div></li>
+        <li><span class="idx">05</span><div>Fijo solo para "los mejores", casi siempre a cambio de exclusividad total.</div></li>
+      </ol>
+
+      <div class="needs-box">
+        <span class="label">Qué necesita de XPEAK</span>
+        <ul>
+          <li>Tracking objetivo de entradas atribuidas — cierra la disputa "cuántos conté yo"</li>
+          <li>Comisión pactada y visible por local antes de trabajar la noche</li>
+          <li>Historial/reputación pública de qué salas pagan bien y a tiempo</li>
+          <li>Mayor margen de diferenciación de los 18 roles: hoy compite solo contra WhatsApp + confianza verbal</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 07 FOTOGRAFO ============ -->
+    <section class="role" id="media">
+      <div class="role-head">
+        <span class="role-num">07</span>
+        <h2>Fotógrafo / Vídeo de eventos</h2>
+        <span class="role-tag">leads falsos</span>
+      </div>
+
+      <div class="finding-box">
+        <span class="label">Lo poco obvio</span>
+        <p>La estafa de "12 bodas garantizadas al año por 800€" que afectó a ~100 fotógrafos en Madrid revela que son especialmente vulnerables a promesas de <strong>estabilidad de agenda</strong> — más que al precio. Un calendario de disponibilidad fiable pesa más que bajar comisión.</p>
+      </div>
+
+      <h4 class="sub">Demandas verificadas</h4>
+      <ol class="demands">
+        <li><span class="idx">01</span><div>Leads falsos masivos en bodas.net: de 20 mensajes, 18 son falsos o de colegas espiando tarifas.<span class="src">sanchezcreativo.com · Trustpilot</span></div></li>
+        <li><span class="idx">02</span><div>Cuota que sube cuando el negocio funciona bien — modelo de suscripción que "atrapa" al fotógrafo.</div></li>
+        <li><span class="idx">03</span><div>Borrado de reseñas negativas sin justificación, denunciado por varios profesionales.</div></li>
+        <li><span class="idx">04</span><div>Ranking pagado, no por calidad — mejor posicionados son "mediocres" pero pagan más.</div></li>
+        <li><span class="idx">05</span><div>Estafa de 100 fotógrafos en Madrid con "12 bodas garantizadas" nunca cumplidas.<span class="src">eldistrito.es</span></div></li>
+        <li><span class="idx">06</span><div>Derechos de imagen: no puede publicar fotos sin consentimiento expreso y escrito (art. 18.1 CE).<span class="src">mariotrueba.com</span></div></li>
+      </ol>
+
+      <div class="needs-box">
+        <span class="label">Qué necesita de XPEAK</span>
+        <ul>
+          <li>Leads verificados, no plantillas genéricas enviadas a 10 proveedores a la vez</li>
+          <li>Comisión fija y transparente, sin escalada al crecer</li>
+          <li>Imposibilidad de borrar reseñas negativas legítimas</li>
+          <li>Gestión de consentimiento de imagen integrada en el contrato digital</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 08 MAQUILLAJE ============ -->
+    <section class="role" id="makeup">
+      <div class="role-head">
+        <span class="role-num">08</span>
+        <h2>Maquilladora a domicilio</h2>
+        <span class="role-tag">percepción de precio</span>
+      </div>
+
+      <div class="finding-box">
+        <span class="label">Lo poco obvio</span>
+        <p>El problema no es la plataforma marketplace en sí, sino la <strong>desinformación viral en redes</strong>: influencers difunden cifras de hasta 1.000€ (el rango real es 150-400€), lo que hace que "la gente no llame" por miedo a un precio inflado.</p>
+      </div>
+
+      <h4 class="sub">Demandas verificadas</h4>
+      <ol class="demands">
+        <li><span class="idx">01</span><div>Precios virales distorsionados perjudican a todo el gremio.<span class="src">elespanol.com</span></div></li>
+        <li><span class="idx">02</span><div>Trabajo invisibilizado: se percibe como "2 horas" cuando incluye meses de gestión y prueba previa.</div></li>
+        <li><span class="idx">03</span><div>Intrusismo a domicilio sin protocolo sanitario — riesgo de tiña y piojos documentado.<span class="src">elconfidencialdigital.com</span></div></li>
+        <li><span class="idx">04</span><div>Sobreprecio "nupcial" de 100-200% cuestionado por clientas sin entender el desglose.<span class="src">Foro bodas.net</span></div></li>
+        <li><span class="idx">05</span><div>Impago tras el servicio, casos virales de proveedoras que exigen cobrar antes o durante.</div></li>
+      </ol>
+
+      <div class="needs-box">
+        <span class="label">Qué necesita de XPEAK</span>
+        <ul>
+          <li>Señal/anticipo obligatorio y protegido por la plataforma</li>
+          <li>Distinción visible entre profesional verificado (formación, seguro) y aficionado</li>
+          <li>Desglose de precio claro (prueba + día + desplazamiento) para educar al cliente</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 09 PELUQUERIA ============ -->
+    <section class="role" id="peluqueria">
+      <div class="role-head">
+        <span class="role-num">09</span>
+        <h2>Peluquería a domicilio</h2>
+        <span class="role-tag">riesgo sanitario</span>
+      </div>
+
+      <div class="finding-box">
+        <span class="label">Lo poco obvio</span>
+        <p>Único rol donde la competencia desleal se enmarca como <strong>riesgo sanitario</strong> (contagio de tiña/piojos), no solo económico — un ángulo de "verificado y con protocolo sanitario" legítimo para diferenciar sin caer en cifras infladas.</p>
+      </div>
+
+      <h4 class="sub">Demandas verificadas</h4>
+      <ol class="demands">
+        <li><span class="idx">01</span><div>Intrusismo extendido: negocios sin título ni formación operando a domicilio.<span class="src">elconfidencialdigital.com</span></div></li>
+        <li><span class="idx">02</span><div>Márgenes bajos y ausencia de marco regulatorio específico que distinga al acreditado.</div></li>
+        <li><span class="idx">03</span><div>Clientas comparan con su peluquería de barrio y rechazan el recargo "nupcial" a domicilio.<span class="src">Foro bodas.net</span></div></li>
+        <li><span class="idx">04</span><div>En la práctica se vende en paquete con maquillaje — comparte casi todas sus quejas de comisión e impago.</div></li>
+      </ol>
+
+      <div class="needs-box">
+        <span class="label">Qué necesita de XPEAK</span>
+        <ul>
+          <li>Sello "profesional acreditado" (titulación/formación) como diferenciador visible</li>
+          <li>Marco normativo mostrado al cliente como protección explícita contra el intrusismo</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 10 CATERING ============ -->
+    <section class="role" id="catering">
+      <div class="role-head">
+        <span class="role-num">10</span>
+        <h2>Catering / Chef</h2>
+        <span class="role-tag">estacionalidad</span>
+      </div>
+
+      <div class="finding-box">
+        <span class="label">Lo poco obvio</span>
+        <p>Es el único rol donde la queja central <strong>no</strong> es la plataforma intermediaria — su enemigo histórico es la estacionalidad: "dependemos de seis meses fuertes para vivir los otros seis". Eventos corporativos fuera de temporada de bodas suavizarían esto.</p>
+      </div>
+
+      <h4 class="sub">Demandas verificadas</h4>
+      <ol class="demands">
+        <li><span class="idx">01</span><div>Cancelaciones sin penalización generan pérdidas graves y no reasignables.<span class="src">aecatering.es</span></div></li>
+        <li><span class="idx">02</span><div>Estacionalidad extrema: solo 2-3 meses fuertes al año hacen inviable cubrir gastos.</div></li>
+        <li><span class="idx">03</span><div>Presupuestos "imbatibles" que recortan personal/menaje y dañan la percepción de calidad del sector.<span class="src">momentsgourmet.com</span></div></li>
+        <li><span class="idx">04</span><div>Ambigüedad de IVA (10% comida vs 21% decoración/organización), fuente de conflicto con el cliente.<span class="src">Foro bodas.net</span></div></li>
+      </ol>
+
+      <div class="needs-box">
+        <span class="label">Qué necesita de XPEAK</span>
+        <ul>
+          <li>Cancelación con penalización escalonada integrada en el contrato</li>
+          <li>Presupuesto desglosado obligatorio (personal, menaje, transporte, horas extra)</li>
+          <li>Gestión de anticipos protegidos con reglas claras de reembolso</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 11 VESTUARIO ============ -->
+    <section class="role" id="vestuario">
+      <div class="role-head">
+        <span class="role-num">11</span>
+        <h2>Estilista / Vestuario</h2>
+        <span class="role-tag">categoría inmadura</span>
+      </div>
+
+      <div class="finding-box">
+        <span class="label">Lo poco obvio</span>
+        <p>Es el único de los 17 sin cuerpo de quejas históricas consolidado en España — ni asociación ni escándalo documentado. Hueco real para <strong>definir la categoría</strong> desde cero, antes de que lo haga la competencia.</p>
+      </div>
+
+      <h4 class="sub">Lo que sí hay</h4>
+      <ol class="demands">
+        <li><span class="idx">01</span><div>Se vende disperso dentro de "asesoría de imagen" general (Cronoshare, AMMDE, ASEDAI), no como categoría de evento propia.</div></li>
+        <li><span class="idx">02</span><div>Modelo "pago por lead" de Cronoshare genera desconfianza fuerte y transversal: se cobra al profesional por contactar, sin garantía de respuesta.<span class="src">OCU · opinionextrema.com</span></div></li>
+        <li><span class="idx">03</span><div>Compite con boutiques que ofrecen personal shopper gratis como añadido, diluyendo su valor como oficio propio.</div></li>
+      </ol>
+
+      <div class="needs-box">
+        <span class="label">Qué necesita de XPEAK</span>
+        <ul>
+          <li>Crear la categoría con expectativas claras (paquetes definidos), no resolver dolor preexistente</li>
+          <li>Evitar el modelo "pago por contacto" que ya genera rechazo generalizado en el sector</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 12-17 COMPACT: espectáculo ============ -->
+    <section class="role" id="mago">
+      <div class="role-head">
+        <span class="role-num">12</span>
+        <h2>Mago / Ilusionista</h2>
+        <span class="role-tag">pago-por-lead</span>
+      </div>
+
+      <div class="finding-box">
+        <span class="label">Lo poco obvio</span>
+        <p>Cita textual verificada en Trustpilot: "pagas 20€ por cliente, el cliente no te contrata y la plataforma te roba el dinero". El pago-por-lead sin conversión es la queja mejor documentada de todo el bloque de espectáculo.</p>
+      </div>
+
+      <h4 class="sub">Demandas verificadas</h4>
+      <ol class="demands">
+        <li><span class="idx">01</span><div>Cronoshare cobra por lead, no por resultado — testimonios repetidos de dinero perdido sin contratación.<span class="src">Trustpilot · GoWork</span></div></li>
+        <li><span class="idx">02</span><div>Gremio organizado desde 1956 (Club de Ilusionistas Profesionales) exigiendo acreditación frente al intrusismo.</div></li>
+        <li><span class="idx">03</span><div>Plagio de rutinas activo y sin protección legal en España (los trucos no son protegibles).<span class="src">magiapotagia.com</span></div></li>
+        <li><span class="idx">04</span><div>Seguro de RC obligatorio para licencia municipal — sanciones de hasta 601.012€ sin él.<span class="src">futuratickets.es</span></div></li>
+      </ol>
+
+      <div class="needs-box">
+        <span class="label">Qué necesita de XPEAK</span>
+        <ul>
+          <li>Modelo sin pago-por-lead — es el punto de dolor más citado textualmente de toda la investigación</li>
+          <li>Seguro RC y formación visibles en el perfil como diferenciador frente al intrusismo</li>
+          <li>Protección de portfolio/rutinas frente al plagio</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="role" id="humorista">
+      <div class="role-head">
+        <span class="role-num">13</span>
+        <h2>Humorista / Cómico</h2>
+        <span class="role-tag">gremio disperso</span>
+      </div>
+      <p style="font-size:.94rem; color:var(--text-dim); margin:14px 0;">Rango de precios amplio y opaco (220-1.500€) que facilita el regateo. Comisiones de agencias de representación estándar del 10-20% — más bajas de lo que se sospechaba. No hay asociación equivalente al gremio de magos: más disperso entre agencias comerciales.</p>
+      <span class="weak-note">⚠ Evidencia pública escasa — recomendable validar con entrevistas directas</span>
+    </section>
+
+    <section class="role" id="animador">
+      <div class="role-head">
+        <span class="role-num">14</span>
+        <h2>Animador / Payaso</h2>
+        <span class="role-tag">precio=riesgo</span>
+      </div>
+
+      <div class="finding-box">
+        <span class="label">Lo poco obvio</span>
+        <p>El propio mercado ya usa el precio bajo como <strong>proxy de riesgo</strong>: "menos de 100€ suele indicar ausencia de seguro RC, sin formación en primeros auxilios, sin contrato". Es la señal más accionable de todo el informe para un sello de verificación.</p>
+      </div>
+
+      <h4 class="sub">Demandas verificadas</h4>
+      <ol class="demands">
+        <li><span class="idx">01</span><div>Precio bajo como indicador reconocido de falta de seguro/formación, trasladando el riesgo a la familia.<span class="src">cronoshare.com</span></div></li>
+        <li><span class="idx">02</span><div>Pago en efectivo el día del evento es la norma, facilitando impagos y cancelaciones sin penalización.<span class="src">animacionespanda.es</span></div></li>
+        <li><span class="idx">03</span><div>Diferencial de precio regional 25-40% empuja a competir a la baja fuera de zona.</div></li>
+      </ol>
+
+      <div class="needs-box">
+        <span class="label">Qué necesita de XPEAK</span>
+        <ul>
+          <li>Sello de verificación (seguro + formación) — el mercado ya reconoce esta señal</li>
+          <li>Señal/depósito que traslade parte del riesgo de cancelación al cliente</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="role" id="bailarin">
+      <div class="role-head">
+        <span class="role-num">15</span>
+        <h2>Bailarín / Danza</h2>
+        <span class="role-tag">hallazgo más fuerte</span>
+      </div>
+
+      <div class="finding-box">
+        <span class="label">El hallazgo más contundente de todo el informe</span>
+        <p>Tres bailarinas denunciaron públicamente el Benidorm Fest 2025 (preselección Eurovisión) el 12 feb. 2025: falta de alta en SS, ensayos no pagados, ofertas compensadas solo con "visibilidad", pago en especie con ropa en vez de dinero — y lo describieron como <strong>sistémico, no un caso aislado</strong>.</p>
+      </div>
+
+      <h4 class="sub">Demandas verificadas</h4>
+      <ol class="demands">
+        <li><span class="idx">01</span><div>Denuncia de precariedad sistémica en Benidorm Fest 2025: altas incompletas, presión a ser autónomo, ensayos sin pagar.<span class="src">formulatv.com</span></div></li>
+        <li><span class="idx">02</span><div>Piden convenio colectivo específico de bailarines y desarrollo del Estatuto del Artista (comprometido desde 2018).<span class="src">sympathyforthelawyer.com</span></div></li>
+        <li><span class="idx">03</span><div>Salarios de referencia bajísimos: ~900€/mes en compañías públicas tras formación larga y exigente.</div></li>
+        <li><span class="idx">04</span><div>Convenio de salas de fiesta/discotecas (BOE 2023) es genérico de ocio nocturno, no específico de danza para eventos puntuales — hueco regulatorio real.<span class="src">boe.es</span></div></li>
+      </ol>
+
+      <div class="needs-box">
+        <span class="label">Qué necesita de XPEAK</span>
+        <ul>
+          <li>Contrato claro y trazabilidad de pago desde el primer bolo — su problema es laboral, no de verificación de profesionalidad</li>
+          <li>Nunca ofrecer "visibilidad" como forma de pago en la plataforma</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="role" id="speaker">
+      <div class="role-head">
+        <span class="role-num">16</span>
+        <h2>Speaker / Presentador</h2>
+        <span class="role-tag">datos insuficientes</span>
+      </div>
+      <p style="font-size:.94rem; color:var(--text-dim); margin:14px 0;">Precio de referencia más estandarizado (200-500€) que otros roles de espectáculo. Frecuentemente combinado con otro oficio (ej. mago-presentador), lo que limita la masa crítica de quejas gremiales visibles.</p>
+      <span class="weak-note">⚠ Rastro de demanda histórica más débil de los 17 roles — no construir producto sobre supuestos no verificados aquí</span>
+    </section>
+
+    <section class="role" id="photobooth">
+      <div class="role-head">
+        <span class="role-num">17</span>
+        <h2>Photo Booth</h2>
+        <span class="role-tag">producto, no artista</span>
+      </div>
+
+      <div class="finding-box">
+        <span class="label">Lo poco obvio</span>
+        <p>No existe gremio de fotomatón como el de magos o bailarines: el mercado se comporta como <strong>alquiler de equipo</strong>, no como servicio artístico. El diferenciador de compra es equipo+diseño+precio, no trayectoria — no forzarlo al mismo molde que los demás roles.</p>
+      </div>
+      <p style="font-size:.94rem; color:var(--text-dim); margin:14px 0;">Compite en Wallapop junto a fotógrafos de boda, precios de 170€ (1,5h) a 600€ (4h). Sin asociaciones, foros gremiales ni quejas estructuradas específicas del rol.</p>
+    </section>
+
+    <!-- ============ SÍNTESIS ============ -->
+    <section class="synthesis" id="patrones">
+      <span class="eyebrow">Síntesis</span>
+      <h2>Cuatro patrones que cruzan los 17 roles</h2>
+      <p class="intro">Ningún rol es idéntico a otro, pero cuatro problemas se repiten con la fuerza suficiente como para ser prioridad de producto en vez de mejora puntual.</p>
+
+      <div class="pattern-grid">
+        <div class="pattern-card">
+          <span class="num">01</span>
+          <h4>Pago-por-lead sin conversión</h4>
+          <p>El profesional paga por el contacto, no por el resultado. Documentado con cita textual en Cronoshare/bodas.net/Zankyou: "pagué y no conseguí ni un cliente".</p>
+          <div class="roles-affected">Mago · Fotógrafo · Estilista · (transversal a cualquier marketplace de leads)</div>
+        </div>
+        <div class="pattern-card">
+          <span class="num">02</span>
+          <h4>Precio bajo = señal de riesgo, no de ahorro</h4>
+          <p>El propio mercado ya interpreta la tarifa mínima como ausencia de seguro, formación y contrato. La oportunidad de un sello de verificación es directa.</p>
+          <div class="roles-affected">Animador · Mago · Peluquería · Maquillaje</div>
+        </div>
+        <div class="pattern-card">
+          <span class="num">03</span>
+          <h4>Alta irregular / falso autónomo</h4>
+          <p>De precariedad de bajo perfil (DJ, grupo musical) a denuncia pública de máximo perfil (bailarines, Benidorm Fest). El problema legal más grave del conjunto.</p>
+          <div class="roles-affected">Técnico de sonido (70%) · Azafata (falso TRADE) · Bailarín · DJ · Grupo musical</div>
+        </div>
+        <div class="pattern-card">
+          <span class="num">04</span>
+          <h4>Cero protección ante cancelación</h4>
+          <p>La cancelación de última hora —del cliente o del profesional— no tiene penalización estandarizada en ningún rol. El coste lo asume siempre quien tiene menos margen.</p>
+          <div class="roles-affected">Catering · Técnico de sonido · Animador · Grupo musical</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="synthesis" id="matriz" style="border-top:none; padding-top:0; margin-top:0;">
+      <h2>Matriz de aplicación a XPEAK</h2>
+      <p class="intro">Qué construir primero, por impacto (cuántos roles resuelve) y por gravedad del hallazgo.</p>
+
+      <div class="overflow-wrap">
+      <table class="matrix">
+        <thead>
+          <tr><th>Función a construir</th><th>Prioridad</th><th>Roles que resuelve</th><th>Por qué</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="role-cell">Pago garantizado / escrow por evento</td>
+            <td><span class="priority p1">P1</span></td>
+            <td>Camarero, azafata, grupo musical, catering, técnico</td>
+            <td>Impago e inseguridad de cobro es la queja más citada en todo el bloque de staff y sonido en vivo</td>
+          </tr>
+          <tr>
+            <td class="role-cell">Sello "verificado" (seguro RC + formación)</td>
+            <td><span class="priority p1">P1</span></td>
+            <td>Mago, animador, maquillaje, peluquería, DJ</td>
+            <td>El mercado ya usa el precio como proxy de esto — XPEAK puede hacerlo explícito y confiable</td>
+          </tr>
+          <tr>
+            <td class="role-cell">Contrato tipo con cláusula de cancelación</td>
+            <td><span class="priority p1">P1</span></td>
+            <td>Catering, técnico de sonido, grupo musical, animador</td>
+            <td>Cero protección estandarizada hoy en ningún rol ante cancelación de última hora</td>
+          </tr>
+          <tr>
+            <td class="role-cell">Sin pago-por-lead: cobro solo si hay contratación</td>
+            <td><span class="priority p2">P2</span></td>
+            <td>Mago, fotógrafo, estilista</td>
+            <td>Rechazo textual y verificado al modelo Cronoshare/bodas.net</td>
+          </tr>
+          <tr>
+            <td class="role-cell">Tracking objetivo de conversión</td>
+            <td><span class="priority p2">P2</span></td>
+            <td>Promotor / RRPP</td>
+            <td>Único rol sin ningún marco de protección hoy — mayor margen de diferenciación</td>
+          </tr>
+          <tr>
+            <td class="role-cell">Vía de alta correcta integrada (artista / TRADE)</td>
+            <td><span class="priority p2">P2</span></td>
+            <td>DJ, grupo musical, azafata, técnico, bailarín</td>
+            <td>Reduce fraude de falso autónomo sin que XPEAK asuma responsabilidad laboral directa</td>
+          </tr>
+          <tr>
+            <td class="role-cell">Definir categoría desde cero (paquetes de servicio)</td>
+            <td><span class="priority p3">P3</span></td>
+            <td>Estilista / Vestuario, Speaker</td>
+            <td>Sin dolor histórico que resolver — oportunidad de fijar el estándar antes que la competencia</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </section>
+
+    <section class="synthesis" id="cierre" style="border-top:none; padding-top:0; margin-top:0;">
+      <div class="closing">
+        <h3>Resumen final</h3>
+        <p>El hueco real no es "más leads" — es <strong>protección económica del bolo</strong>. Impago, cancelación sin penalización y alta irregular aparecen en 14 de los 17 roles investigados, con el caso más grave (bailarines, Benidorm Fest 2025) llegando a denuncia pública nacional. La verificación de profesionalidad es el segundo eje: el mercado ya sabe leer el precio bajo como señal de riesgo, así que un sello de confianza en XPEAK no educa al usuario desde cero, confirma algo que ya intuye.</p>
+        <p>El patrón que más diferencia a XPEAK frente a lo que ya existe (bodas.net, Zankyou, Cronoshare) es el rechazo explícito y documentado al modelo de <strong>pago-por-lead sin conversión</strong>. Es la única queja con citas textuales verificadas en varios roles a la vez — y XPEAK ya no cobra así.</p>
+      </div>
+    </section>
+
+    <footer class="doc-footer">
+      Investigación compilada el 8 sep. 2026 a partir de foros (Hispasonic, Guitarristas.info, Magiapotagia, comunidad bodas.net), reseñas de agencias (Trustpilot, GoWork, OCU), prensa (eldiario.es, infolibre.es, El Español, Infobae, FórmulaTV), fuentes legales (BOE, jurisprudencia AP Valencia) y asociaciones/sindicatos sectoriales (AEDYP, ADEAZA, CCOO-Servicios, UGT). No incluye los roles legacy sin alta activa (design, event_manager, monólogo, ambassador) ni el rol "empresario" (cliente/contratante, no profesional).
+    </footer>
+
+  </main>
+</div>
