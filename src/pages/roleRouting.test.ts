@@ -199,3 +199,53 @@ describe('resolverVistaDeBusqueda', () => {
     expect(resolverVistaDeBusqueda('')).toBeNull();
   });
 });
+
+/**
+ * El bug real reportado (9 sep 2026): resolverVistaDeBusqueda por sí sola
+ * quedó bien, pero handleSearch solo la consultaba cuando la vista activa NO
+ * era YA un directorio — y 'dj' (la home de casi todo el mundo) SÍ es un
+ * directorio. Resultado: estando en DJ y buscando "camarero" o "mago", te
+ * quedabas filtrando dentro de DJ en vez de saltar al directorio correcto.
+ * Estos tests cubren TODOS los oficios, no solo camarero, porque el fallo era
+ * estructural (la condición bloqueaba el salto para cualquier término).
+ */
+describe('resolverDestinoBusqueda', () => {
+  const DIRECTORIOS = new Set([
+    'dj', 'staff', 'azafata', 'event_manager', 'makeup', 'peluqueria', 'media',
+    'ambassador', 'vestuario', 'design', 'promotor', 'camarero', 'catering',
+  ]);
+
+  it('estando en DJ, buscar otro oficio SIEMPRE salta a su directorio', async () => {
+    const { resolverDestinoBusqueda } = await import('./Dashboard');
+    expect(resolverDestinoBusqueda('camarero', 'dj', DIRECTORIOS)).toBe('staff');
+    expect(resolverDestinoBusqueda('mago', 'dj', DIRECTORIOS)).toBe('mago');
+    expect(resolverDestinoBusqueda('fotografo', 'dj', DIRECTORIOS)).toBe('media');
+    expect(resolverDestinoBusqueda('azafata', 'dj', DIRECTORIOS)).toBe('azafata');
+  });
+
+  it('lo mismo al revés: estando en Staff, buscar "mago" salta a Mago, no se queda ni va a dj', async () => {
+    const { resolverDestinoBusqueda } = await import('./Dashboard');
+    expect(resolverDestinoBusqueda('mago', 'staff', DIRECTORIOS)).toBe('mago');
+  });
+
+  it('buscar el oficio en el que ya estás no navega a ningún sitio (sigue filtrando ahí)', async () => {
+    const { resolverDestinoBusqueda } = await import('./Dashboard');
+    expect(resolverDestinoBusqueda('dj', 'dj', DIRECTORIOS)).toBeNull();
+    expect(resolverDestinoBusqueda('camarero', 'staff', DIRECTORIOS)).toBeNull();
+  });
+
+  it('un término sin oficio reconocido, estando en un directorio, no te saca de ahí', async () => {
+    const { resolverDestinoBusqueda } = await import('./Dashboard');
+    expect(resolverDestinoBusqueda('saxofonista bilbao', 'dj', DIRECTORIOS)).toBeNull();
+  });
+
+  it('un término sin oficio reconocido, fuera de un directorio, manda a explorar (nunca a dj)', async () => {
+    const { resolverDestinoBusqueda } = await import('./Dashboard');
+    expect(resolverDestinoBusqueda('saxofonista bilbao', 'messages', DIRECTORIOS)).toBe('explorar');
+  });
+
+  it('campo vacío no navega a ningún sitio', async () => {
+    const { resolverDestinoBusqueda } = await import('./Dashboard');
+    expect(resolverDestinoBusqueda('', 'dj', DIRECTORIOS)).toBeNull();
+  });
+});

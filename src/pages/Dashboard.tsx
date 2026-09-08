@@ -266,6 +266,30 @@ export function resolverVistaDeBusqueda(q: string): string | null {
   return null;
 }
 
+/**
+ * Decide a qué vista debe saltar el buscador del topbar dado el término
+ * escrito y la vista donde ya está el usuario.
+ *
+ * EL bug (9 sep 2026): antes solo se intentaba resolver el oficio cuando la
+ * vista activa NO era ya un directorio. Como 'dj' SÍ es un directorio, quien
+ * estaba en DJ (la vista por defecto de casi todo el mundo) y buscaba
+ * "camarero" se quedaba filtrando dentro de DJ en vez de saltar a Staff —
+ * daba 0 resultados con toda razón, y el usuario veía "Directorio Artistas
+ * Musicales" para una búsqueda que no tenía nada que ver con música. Ahora
+ * SIEMPRE se resuelve el término primero; solo si no apunta a ningún oficio
+ * reconocido se respeta quedarse en el directorio actual (o ir a 'explorar'
+ * si ni siquiera se estaba en uno).
+ */
+export function resolverDestinoBusqueda(
+  q: string, activeView: string, directoryViews: Set<string>
+): string | null {
+  if (!q.trim()) return null;
+  const vistaDelTermino = resolverVistaDeBusqueda(q);
+  if (vistaDelTermino && vistaDelTermino !== activeView) return vistaDelTermino;
+  if (!vistaDelTermino && !directoryViews.has(activeView)) return 'explorar';
+  return null;
+}
+
 export function resolverVistaInicial(opts: {
   stateView?: string | null;
   queryView?: string | null;
@@ -384,11 +408,8 @@ const Dashboard = () => {
 
   const handleSearch = (q: string) => {
     setSearchQuery(q);
-    if (q.trim() && !directoryViews.has(activeView)) {
-      // Resuelve el oficio buscado (p.ej. "camarero" -> staff) en vez de
-      // forzar siempre el directorio de DJs — ver BUSQUEDA_POR_VISTA arriba.
-      handleViewChange(resolverVistaDeBusqueda(q) ?? 'explorar', true);
-    }
+    const destino = resolverDestinoBusqueda(q, activeView, directoryViews);
+    if (destino) handleViewChange(destino, true);
   };
 
   const handleMessage = (userId: string, name: string) => {
