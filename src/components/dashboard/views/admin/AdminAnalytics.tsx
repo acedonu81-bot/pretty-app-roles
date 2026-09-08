@@ -5,6 +5,7 @@ import {
 } from 'recharts';
 import { RefreshCw, Eye, Users, UserPlus, Send, Clock, Globe, Smartphone, HelpCircle, ChevronDown, Monitor, User as UserIcon } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { AFFILIATE_CATALOG, resolveAffiliateKey } from '@/lib/affiliate';
 
 /**
  * Analítica propia de XPEAK, leída de la base de datos del proyecto.
@@ -27,6 +28,7 @@ type Busqueda = { termino: string; veces: number; sin_resultados: number };
 type Afiliado = { producto: string; clics: number; desde: string };
 type Blog = { articulo: string; visitas: number; sesiones: number; desde_buscador: number };
 type Embudo = { paso: string; orden: number; cantidad: number };
+type Recurso = { oficio: string; visitas: number; sesiones: number };
 type QuienOnline = {
   session_id: string; ultima_pagina: string | null; device: string | null;
   hace_segundos: number; display_name: string | null; rol: string | null;
@@ -137,6 +139,7 @@ export default function AdminAnalytics() {
   const [afiliados, setAfiliados] = useState<Afiliado[]>([]);
   const [blog, setBlog] = useState<Blog[]>([]);
   const [embudo, setEmbudo] = useState<Embudo[]>([]);
+  const [recursos, setRecursos] = useState<Recurso[]>([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [online, setOnline] = useState<number | null>(null);
@@ -156,7 +159,7 @@ export default function AdminAnalytics() {
       rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown; error: { message: string } | null }>;
     };
 
-    const [d, h, t, n, bus, afi, blg, emb] = await Promise.all([
+    const [d, h, t, n, bus, afi, blg, emb, rec] = await Promise.all([
       sb.rpc('panel_analytics_dia', { p_dias: dias }),
       sb.rpc('panel_analytics_hora', { p_dias: Math.min(dias, 30) }),
       sb.rpc('panel_analytics_top', { p_dias: dias, p_limite: 8 }),
@@ -165,6 +168,7 @@ export default function AdminAnalytics() {
       sb.rpc('panel_analytics_afiliados', { p_dias: dias, p_limite: 15 }),
       sb.rpc('panel_analytics_blog', { p_dias: dias, p_limite: 15 }),
       sb.rpc('panel_analytics_embudo', { p_dias: dias }),
+      sb.rpc('panel_analytics_recursos', { p_dias: dias, p_limite: 20 }),
     ]);
 
     const fallo = [d, h, t, n].find(r => r.error);
@@ -190,6 +194,7 @@ export default function AdminAnalytics() {
     setAfiliados((afi.data as Afiliado[]) ?? []);
     setBlog((blg.data as Blog[]) ?? []);
     setEmbudo((emb.data as Embudo[]) ?? []);
+    setRecursos((rec.data as Recurso[]) ?? []);
     setCargando(false);
   }, [dias]);
 
@@ -228,6 +233,26 @@ export default function AdminAnalytics() {
   const horaPunta = porHora.length
     ? porHora.reduce((max, h) => (Number(h.visitas) > Number(max.visitas) ? h : max), porHora[0])
     : null;
+  const totalPorHora = porHora.reduce((s, h) => s + Number(h.visitas || 0), 0);
+  const pctHoraPunta = horaPunta && totalPorHora > 0
+    ? Math.round((Number(horaPunta.visitas) / totalPorHora) * 100) : 0;
+  // Franjas del día en vez de una sola hora: con poco volumen, una hora suelta
+  // es ruidosa (una visita de más la cambia entera), pero la franja aguanta
+  // mejor y es lo que de verdad hace falta para decidir cuándo publicar.
+  const FRANJAS: { nombre: string; desde: number; hasta: number }[] = [
+    { nombre: 'Madrugada (0-6h)', desde: 0, hasta: 6 },
+    { nombre: 'Mañana (6-13h)', desde: 6, hasta: 13 },
+    { nombre: 'Tarde (13-21h)', desde: 13, hasta: 21 },
+    { nombre: 'Noche (21-24h)', desde: 21, hasta: 24 },
+  ];
+  const visitasEnFranja = (f: { desde: number; hasta: number }) =>
+    porHora.filter(h => Number(h.hora) >= f.desde && Number(h.hora) < f.hasta)
+      .reduce((s, h) => s + Number(h.visitas || 0), 0);
+  const franjaPunta = totalPorHora > 0
+    ? FRANJAS.reduce((max, f) => visitasEnFranja(f) > visitasEnFranja(max) ? f : max, FRANJAS[0])
+    : null;
+  const pctFranjaPunta = franjaPunta && totalPorHora > 0
+    ? Math.round((visitasEnFranja(franjaPunta) / totalPorHora) * 100) : 0;
 
   const paginas = top.filter(t => t.tipo === 'pagina');
   const origenes = top.filter(t => t.tipo === 'origen');
@@ -355,9 +380,9 @@ export default function AdminAnalytics() {
       {/* Por hora */}
       <Panel
         title="¿A qué hora entra tu gente?"
-        ayuda="Suma todas las visitas por hora del día (hora española). Sirve para decidir cuándo publicar en redes y cuándo lanzar campañas: publicar cuando tu gente duerme es tirar el alcance."
-        hint={horaPunta && Number(horaPunta.visitas) > 0
-          ? `Hora punta: ${horaPunta.hora}:00 h. Es cuándo publicar y cuándo lanzar campañas.`
+        ayuda="Suma todas las visitas por hora del día (hora española). Sirve para decidir cuándo publicar en redes y cuándo lanzar campañas: publicar cuando tu gente duerme es tirar el alcance. La franja es más fiable que la hora exacta: con pocas visitas, una sola visita puede cambiar cuál es 'la hora punta', pero la franja aguanta mejor ese ruido."
+        hint={franjaPunta && totalPorHora > 0
+          ? `${franjaPunta.nombre} concentra el ${pctFranjaPunta}% de las visitas — es tu mejor franja para publicar y lanzar campañas. Dentro de ella, la hora más fuerte es las ${horaPunta?.hora}:00 h (${pctHoraPunta}% del total).`
           : 'Hora local de España. Se llena a medida que entren visitas.'}
       >
         <ResponsiveContainer width="100%" height={190}>
@@ -397,26 +422,40 @@ export default function AdminAnalytics() {
           de tráfico sola no los distingue. */}
       {embudo.length > 0 && embudo.some(e => Number(e.cantidad) > 0) && (
         <Panel title="Embudo" hint="De la visita al contacto. Cada paso son personas distintas, no clics."
-          ayuda="Cuánta gente avanza de un paso al siguiente. El porcentaje compara con el primer paso. Una caída fuerte entre dos pasos señala exactamente dónde se pierde la gente.">
+          ayuda="Barra: cuánta gente llegó a ese paso. % debajo del nombre: cuánto se cayó respecto al paso ANTERIOR (esto es lo que señala dónde se pierde la gente). % a la derecha: cuánto queda respecto al primer paso, para ver el cuadro completo.">
           <div className="flex flex-col gap-2">
-            {embudo.map(e => {
+            {embudo.map((e, i) => {
               const max = Math.max(...embudo.map(x => Number(x.cantidad) || 0), 1);
-              const pct = (Number(e.cantidad) / max) * 100;
+              const cantidad = Number(e.cantidad) || 0;
+              const pct = (cantidad / max) * 100;
               const primero = Number(embudo[0]?.cantidad) || 0;
-              const conv = primero > 0 ? ((Number(e.cantidad) / primero) * 100).toFixed(1) : '0';
+              const anterior = i > 0 ? Number(embudo[i - 1]?.cantidad) || 0 : null;
+              const conv = primero > 0 ? ((cantidad / primero) * 100).toFixed(1) : '0';
+              // Caída respecto al paso anterior: la cifra que de verdad dice
+              // "aquí es donde se pierde la gente", frente al % acumulado de
+              // la derecha, que mezcla todas las caídas anteriores en una.
+              const caida = anterior !== null && anterior > 0
+                ? Math.round(100 - (cantidad / anterior) * 100) : null;
               return (
                 <div key={e.paso} className="flex items-center gap-3">
-                  <span className="text-[0.75rem] font-bold w-44 flex-shrink-0" style={{ color: 'rgba(10,9,8,0.7)' }}>
-                    {e.paso}
-                  </span>
+                  <div className="w-44 flex-shrink-0">
+                    <span className="text-[0.75rem] font-bold block" style={{ color: 'rgba(10,9,8,0.7)' }}>
+                      {e.paso}
+                    </span>
+                    {caida !== null && (
+                      <span className="text-[0.65rem] font-bold" style={{ color: caida >= 50 ? '#dc2626' : 'rgba(10,9,8,0.4)' }}>
+                        {caida > 0 ? `-${caida}% desde "${embudo[i - 1].paso}"` : 'sin caída'}
+                      </span>
+                    )}
+                  </div>
                   <div className="flex-1 h-7 rounded-lg overflow-hidden" style={{ background: 'rgba(10,9,8,0.04)' }}>
                     <div className="h-full rounded-lg flex items-center px-2 transition-all"
                       style={{ width: `${Math.max(pct, 3)}%`, background: 'linear-gradient(90deg,#E0BC4B,#B8941E)' }}>
                       <span className="text-[0.7rem] font-black" style={{ color: '#1a1208' }}>{e.cantidad}</span>
                     </div>
                   </div>
-                  <span className="text-[0.7rem] font-bold w-12 text-right flex-shrink-0" style={{ color: 'rgba(10,9,8,0.45)' }}>
-                    {conv}%
+                  <span className="text-[0.7rem] font-bold w-24 text-right flex-shrink-0" style={{ color: 'rgba(10,9,8,0.45)' }}>
+                    {conv}% del total
                   </span>
                 </div>
               );
@@ -515,6 +554,42 @@ export default function AdminAnalytics() {
                 <span className="text-[0.75rem] font-black flex-shrink-0 w-8 text-right" style={{ color: GOLD }}>{b.visitas}</span>
               </div>
             ))}
+          </div>
+        )}
+      </Panel>
+
+      {/* RECURSOS — el panel "Recursos" del sidebar (equipo + formación por
+          oficio, ver ResourcesView.tsx) ya guardaba qué oficio consultaba cada
+          visita (evento resources_view + detalle), pero no existía ninguna
+          función que lo agregase: el dato estaba capturado y nadie lo veía
+          aquí (9 sep 2026). */}
+      <Panel
+        title="Quién consulta el panel de Recursos"
+        hint="Oficio elegido en el selector de Recursos. Dice qué gremios están mirando equipo y formación, más allá de su propio directorio."
+        ayuda="Cada vez que alguien abre 'Recursos' desde el sidebar y elige un oficio en el selector, queda registrado aquí. Sirve para decidir a qué oficio añadir equipo o cursos nuevos primero: el que más se consulta."
+      >
+        {recursos.length === 0 ? (
+          <p className="text-[0.75rem]" style={{ color: 'rgba(10,9,8,0.4)' }}>
+            Sin visitas al panel de Recursos registradas todavía.
+          </p>
+        ) : (
+          <div className="flex flex-col gap-1.5">
+            {recursos.map(r => {
+              const key = r.oficio === 'sin-catalogo' ? null : resolveAffiliateKey(r.oficio);
+              const label = r.oficio === 'sin-catalogo'
+                ? 'Sin oficio elegido (vista universal)'
+                : key ? AFFILIATE_CATALOG[key].label : r.oficio;
+              return (
+                <div key={r.oficio} className="flex items-center gap-2 py-1">
+                  <span className="text-[0.78rem] flex-1 truncate" style={{ color: 'rgba(10,9,8,0.75)' }}>{label}</span>
+                  <span className="text-[0.6rem] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0"
+                    style={{ background: 'rgba(10,9,8,0.05)', color: 'rgba(10,9,8,0.5)' }}>
+                    {r.sesiones} {Number(r.sesiones) === 1 ? 'persona' : 'personas'}
+                  </span>
+                  <span className="text-[0.75rem] font-black flex-shrink-0 w-8 text-right" style={{ color: GOLD }}>{r.visitas}</span>
+                </div>
+              );
+            })}
           </div>
         )}
       </Panel>

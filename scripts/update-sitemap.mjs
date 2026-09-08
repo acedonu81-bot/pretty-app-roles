@@ -238,6 +238,7 @@ function staticUrls(today, indexableCities, cityContentDates) {
     ['https://xpeak.es/blog/cuanto-cobra-un-estilista-de-eventos', '2026-07-16', '0.76'],
     ['https://xpeak.es/blog/estilista-de-boda-que-incluye', '2026-07-16', '0.74'],
     ['https://xpeak.es/blog/cuanto-cobra-un-humorista-eventos', '2026-07-16', '0.76'],
+    ['https://xpeak.es/blog/peluqueria-domicilio-eventos-precio', '2026-09-09', '0.78'],
     ['https://xpeak.es/blog/humorista-cena-empresa-como-elegir', '2026-07-16', '0.74'],
     ['https://xpeak.es/blog/animadores-comunion-precio', '2026-07-16', '0.78'],
     ['https://xpeak.es/blog/cuarteto-cuerda-boda-precio', '2026-07-16', '0.78'],

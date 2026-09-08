@@ -249,6 +249,7 @@ const BlogComunionCosto = lazy(() => import("./pages/BlogComunionCosto"));
 const BlogCantanteBodas = lazy(() => import("./pages/BlogCantanteBodas"));
 const BlogDJCorporativo = lazy(() => import("./pages/BlogDJCorporativo"));
 const BlogMaquillajeEventos = lazy(() => import("./pages/BlogMaquillajeEventos"));
+const BlogPeluqueriaEventos = lazy(() => import("./pages/BlogPeluqueriaEventos"));
 const BlogSaxofonistaBodas = lazy(() => import("./pages/BlogSaxofonistaBodas"));
 const BlogAnimadoresComunionPrecio = lazy(() => import("./pages/BlogAnimadoresComunionPrecio"));
 const BlogCuartetoCuerdaPrecio = lazy(() => import("./pages/BlogCuartetoCuerdaPrecio"));
@@ -716,6 +717,7 @@ const App = () => (
             <Route path="/blog/cantante-para-bodas-precio" element={<BlogCantanteBodas />} />
             <Route path="/blog/dj-para-eventos-corporativos-precio" element={<BlogDJCorporativo />} />
             <Route path="/blog/maquilladora-para-eventos-precio" element={<BlogMaquillajeEventos />} />
+            <Route path="/blog/peluqueria-domicilio-eventos-precio" element={<BlogPeluqueriaEventos />} />
             <Route path="/blog/saxofonista-para-bodas-precio" element={<BlogSaxofonistaBodas />} />
             <Route path="/blog/animadores-comunion-precio" element={<BlogAnimadoresComunionPrecio />} />
             <Route path="/blog/cuarteto-cuerda-boda-precio" element={<BlogCuartetoCuerdaPrecio />} />
