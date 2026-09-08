@@ -61,7 +61,11 @@ const Ayuda = ({ texto }: { texto: string }) => (
     </span>
   </span>
 );
-const RANGOS = [7, 30, 90];
+// 1 se muestra como "24 horas": los RPCs ya calculan la ventana con
+// now() - interval 'X days' (hora exacta, no día de calendario), así que
+// p_dias=1 cubre de verdad las últimas 24h y no hace falta tocar SQL.
+const RANGOS = [1, 7, 30, 90];
+const labelRango = (r: number) => r === 1 ? '24 horas' : `${r} días`;
 
 const fmtHaceSegundos = (s: number) => s < 60 ? `hace ${s}s` : `hace ${Math.round(s / 60)} min`;
 
@@ -260,7 +264,7 @@ export default function AdminAnalytics() {
               border: `1px solid ${dias === r ? 'rgba(212,175,55,0.4)' : 'rgba(0,0,0,0.08)'}`,
               color: dias === r ? '#8A6D0F' : '#444',
             }}>
-            {r} días
+            {labelRango(r)}
           </button>
         ))}
         <button onClick={cargar} disabled={cargando}
@@ -281,7 +285,7 @@ export default function AdminAnalytics() {
         <Kpi icon={Users} label="Online ahora" valor={online ?? '—'} sub="últimos 5 min" live
           onClick={() => setOnlineAbierto(o => !o)} abierto={onlineAbierto}
           ayuda="Sesiones distintas con actividad en los últimos 5 minutos. Se actualiza sola cada 30s — no hace falta pulsar Actualizar. Excluye tu propio tráfico de admin. Toca la tarjeta para ver quién es y en qué página está." />
-        <Kpi icon={Eye} label="Visitas" valor={totalVisitas} sub={`en ${dias} días`}
+        <Kpi icon={Eye} label="Visitas" valor={totalVisitas} sub={dias === 1 ? 'en 24 horas' : `en ${dias} días`}
           ayuda="Páginas abiertas en total. Si una persona ve 5 páginas, cuentan 5 visitas. Excluye tu propio tráfico de admin." />
         <Kpi icon={Users} label="Sesiones" valor={totalSesiones} sub="personas distintas"
           ayuda="Personas distintas, no páginas. Si las visitas son muchas y las sesiones pocas, poca gente mira mucho; al revés, mucha gente entra y se va." />
