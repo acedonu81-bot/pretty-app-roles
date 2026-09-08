@@ -581,6 +581,14 @@ const ROUTES = [
     ogType: 'website',
   },
   {
+    path: '/soporte',
+    title: 'Soporte | XPEAK — Ayuda y contacto',
+    desc: '¿Necesitas ayuda con XPEAK? Contacta con nuestro equipo de soporte por email y resolvemos tu duda lo antes posible.',
+    ogTitle: 'Soporte XPEAK',
+    ogDesc: 'Estamos aquí para ayudarte con cualquier duda sobre XPEAK.',
+    ogType: 'website',
+  },
+  {
     path: '/aviso-legal',
     title: 'Aviso Legal — XPEAK',
     desc: 'Aviso legal e información corporativa de XPEAK, plataforma profesional para eventos y ocio nocturno en España.',
