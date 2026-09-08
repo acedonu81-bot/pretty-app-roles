@@ -65,7 +65,7 @@ const SobreNosotros = () => {
               ['2026', 'Año de fundación'],
               ['España', 'Mercado principal'],
             ].map(([val, label]) => (
-              <div key={label} className="glass-panel p-4 text-center">
+              <div key={label} className="glass-panel p-4 text-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
                 <p className="text-2xl font-black" style={{ color: '#D4AF37' }}>{val}</p>
                 <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.6)' }}>{label}</p>
               </div>
@@ -73,7 +73,7 @@ const SobreNosotros = () => {
           </div>
 
           {/* Historia real */}
-          <div className="glass-panel p-6 md:p-8">
+          <div className="glass-panel p-6 md:p-8" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
             <h2 className="text-lg font-black mb-3" style={{ color: '#fff' }}>La historia de XPEAK</h2>
             <p className="mb-3">
               XPEAK nació en 2026 de una frustración real con el sector de eventos en España: los profesionales más talentosos — DJs, fotógrafos, coordinadores, camareros — dependían de contactos informales, grupos de WhatsApp y llamadas de última hora para conseguir trabajo.
@@ -87,7 +87,7 @@ const SobreNosotros = () => {
           </div>
 
           {/* Fundador — EEAT signal */}
-          <div className="glass-panel p-6 md:p-8">
+          <div className="glass-panel p-6 md:p-8" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
             <h2 className="text-lg font-black mb-4" style={{ color: '#fff' }}>El equipo fundador</h2>
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 font-black text-base"
@@ -108,7 +108,7 @@ const SobreNosotros = () => {
           </div>
 
           {/* Misión */}
-          <div className="glass-panel p-6 md:p-8">
+          <div className="glass-panel p-6 md:p-8" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
             <h2 className="text-lg font-black mb-3" style={{ color: '#fff' }}>Nuestra misión</h2>
             <p className="mb-3">
               Que cada profesional del sector de eventos tenga una vitrina digital profesional — y que cada organizador encuentre al profesional adecuado en minutos, no en días.
@@ -122,7 +122,7 @@ const SobreNosotros = () => {
           </div>
 
           {/* Funcionalidades */}
-          <div className="glass-panel p-6 md:p-8">
+          <div className="glass-panel p-6 md:p-8" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
             <h2 className="text-lg font-black mb-4" style={{ color: '#fff' }}>Qué ofrecemos</h2>
             <ul className="space-y-3">
               {[
@@ -141,7 +141,7 @@ const SobreNosotros = () => {
           </div>
 
           {/* Cobertura */}
-          <div className="glass-panel p-6 md:p-8">
+          <div className="glass-panel p-6 md:p-8" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
             <h2 className="text-lg font-black mb-3" style={{ color: '#fff' }}>Cobertura geográfica</h2>
             <p className="mb-3">
               XPEAK opera actualmente en toda España, con mayor concentración de profesionales en Madrid, Barcelona, Valencia, Sevilla, Bilbao e Ibiza.
@@ -152,7 +152,7 @@ const SobreNosotros = () => {
           </div>
 
           {/* Transparencia / trust */}
-          <div className="glass-panel p-6 md:p-8">
+          <div className="glass-panel p-6 md:p-8" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
             <h2 className="text-lg font-black mb-4" style={{ color: '#fff' }}>Transparencia y confianza</h2>
             <ul className="space-y-2">
               {[
@@ -171,7 +171,7 @@ const SobreNosotros = () => {
           </div>
 
           {/* Contacto */}
-          <div className="glass-panel p-6 md:p-8">
+          <div className="glass-panel p-6 md:p-8" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
             <h2 className="text-lg font-black mb-3" style={{ color: '#fff' }}>Contacto</h2>
             <p className="mb-4">¿Tienes preguntas, sugerencias o quieres colaborar con XPEAK?</p>
             <div className="space-y-2">

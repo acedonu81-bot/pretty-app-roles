@@ -20,6 +20,7 @@ const Terminos = lazy(() => import("./pages/Terminos"));
 const Cookies = lazy(() => import("./pages/Cookies"));
 const PublicProfile = lazy(() => import("./pages/PublicProfile"));
 const SobreNosotros = lazy(() => import("./pages/SobreNosotros"));
+const Soporte = lazy(() => import("./pages/Soporte"));
 const AvisoLegal = lazy(() => import("./pages/AvisoLegal"));
 const CityLanding = lazy(() => import("./pages/CityLanding"));
 const OccasionLanding = lazy(() => import("./pages/OccasionLanding"));
@@ -415,6 +416,7 @@ const App = () => (
             <Route path="/admin-beta" element={<Navigate to="/dashboard?view=admin" replace />} />
             <Route path="/p/:slug" element={<PublicProfile />} />
             <Route path="/sobre-nosotros" element={<SobreNosotros />} />
+            <Route path="/soporte" element={<Soporte />} />
             <Route path="/aviso-legal" element={<AvisoLegal />} />
             {/* Category landings */}
             <Route path="/contratar-dj" element={<CategoryLanding />} />

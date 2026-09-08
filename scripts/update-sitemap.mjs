@@ -84,11 +84,13 @@ function staticUrls(today, indexableCities, cityContentDates) {
   const directorioDate = lastCommitDate('src/pages/DirectorioPublico.tsx');
   const landingDate = lastCommitDate('src/pages/Landing.tsx');
   const sobreNosotrosDate = lastCommitDate('src/pages/SobreNosotros.tsx');
+  const soporteDate = lastCommitDate('src/pages/Soporte.tsx');
 
   // Core
   lines.push('  <!-- Core -->');
   lines.push(url('https://xpeak.es/', landingDate, 'weekly', '1.0'));
   lines.push(url('https://xpeak.es/sobre-nosotros', sobreNosotrosDate, 'monthly', '0.6'));
+  lines.push(url('https://xpeak.es/soporte', soporteDate, 'monthly', '0.5'));
 
   // Category landings
   lines.push('\n  <!-- Category landings -->');
