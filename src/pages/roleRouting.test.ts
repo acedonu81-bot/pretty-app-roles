@@ -249,3 +249,33 @@ describe('resolverDestinoBusqueda', () => {
     expect(resolverDestinoBusqueda('', 'dj', DIRECTORIOS)).toBeNull();
   });
 });
+
+/**
+ * El Set `directoryViews` de Dashboard.tsx (usado por handleSearch para saber
+ * si ya se está dentro de un directorio) estaba incompleto de origen: solo
+ * tenía 13 de las 19 vistas reales. Faltaban mago, bailarin, humorista,
+ * monologo, animador, speaker, photo-booth, grupo-musical y tecnico (9 sep
+ * 2026) — exactamente el patrón de "lista duplicada a mano" que ya mordió
+ * este repo antes. Este test lee el Set del código fuente y lo compara contra
+ * cada rol real del wizard, así que un oficio nuevo que se olvide añadir aquí
+ * rompe el test en vez de fallar en silencio en producción.
+ */
+describe('directoryViews cubre todos los oficios del wizard', () => {
+  const bloqueDirectoryViews = dashboard.match(/directoryViews = new Set\(\[([\s\S]*?)\]\)/)?.[1] ?? '';
+  const directoryViewsDeclarado = new Set(
+    [...bloqueDirectoryViews.matchAll(/'([a-z_-]+)'/g)].map(m => m[1])
+  );
+
+  it('se pudo leer el Set del código fuente (si esto falla, cambió la sintaxis)', () => {
+    expect(directoryViewsDeclarado.size).toBeGreaterThan(0);
+  });
+
+  it('todo rol del wizard cuya vista es un directorio está en directoryViews', () => {
+    // 'empresario' no es un directorio (tiene panel propio); el resto de
+    // roles del wizard sí lo son.
+    const rolesConDirectorio = rolesDelWizard.filter(r => r !== 'empresario');
+    const vistasEsperadas = rolesConDirectorio.map(r => ROLE_TO_VIEW[r] ?? r);
+    const faltan = vistasEsperadas.filter(v => !directoryViewsDeclarado.has(v));
+    expect(faltan).toEqual([]);
+  });
+});

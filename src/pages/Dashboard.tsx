@@ -404,7 +404,19 @@ const Dashboard = () => {
 
   const nav = (view: string) => handleViewChange(view);
 
-  const directoryViews = new Set(['dj', 'staff', 'azafata', 'event_manager', 'makeup', 'peluqueria', 'media', 'ambassador', 'vestuario', 'design', 'promotor', 'camarero', 'catering']);
+  // Todas las vistas que son un directorio de profesionales (todos los case
+  // del switch de abajo salvo explorar/settings/messages/etc, que no lo son).
+  // Estaba incompleto: faltaban mago, bailarin, humorista, monologo, animador,
+  // speaker, photo-booth, grupo-musical y tecnico. Con la lista corta, quien
+  // ya estaba en, por ejemplo, Técnico y buscaba un nombre propio (sin
+  // oficio reconocible) se consideraba "fuera de un directorio" y saltaba a
+  // 'explorar' en vez de quedarse filtrando donde ya estaba.
+  const directoryViews = new Set([
+    'dj', 'staff', 'azafata', 'event_manager', 'makeup', 'peluqueria', 'media',
+    'ambassador', 'vestuario', 'design', 'promotor', 'camarero', 'catering',
+    'mago', 'bailarin', 'humorista', 'monologo', 'animador', 'speaker',
+    'photo-booth', 'grupo-musical', 'tecnico',
+  ]);
 
   const handleSearch = (q: string) => {
     setSearchQuery(q);
