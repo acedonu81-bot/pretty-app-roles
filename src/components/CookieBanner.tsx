@@ -59,6 +59,25 @@ const CookieBanner = () => {
     return () => { clearTimeout(t); window.removeEventListener('scroll', onScroll); };
   }, []);
 
+  // Meta Pixel solo se carga en index.html si xpeak-cookie-consent YA tenía
+  // marketing:true en el arranque diferido inicial. Si el usuario acepta
+  // "Marketing" después (aquí, tras ver el banner), hay que cargarlo bajo
+  // demanda — si no, aceptar la casilla no tendría ningún efecto hasta
+  // recargar la página.
+  const cargarMetaPixelSiHaceFalta = () => {
+    if ((window as any).fbq) return;
+    const f = window as any, b = document, e = 'script', v = 'https://connect.facebook.net/en_US/fbevents.js';
+    let n: any, t: any, s: any;
+    if (f.fbq) return;
+    n = f.fbq = function (...args: unknown[]) { n.callMethod ? n.callMethod.apply(n, args) : n.queue.push(args); };
+    if (!f._fbq) f._fbq = n;
+    n.push = n; n.loaded = true; n.version = '2.0'; n.queue = [];
+    t = b.createElement(e); t.async = true; t.src = v;
+    s = b.getElementsByTagName(e)[0]; s.parentNode?.insertBefore(t, s);
+    n('init', '2436920620126360');
+    n('track', 'PageView');
+  };
+
   const save = (p: CookiePrefs) => {
     localStorage.setItem(COOKIE_KEY, JSON.stringify(p));
     // Sin este update, GTM/GA4 sigue en "denied" (el default de index.html) y
@@ -71,6 +90,7 @@ const CookieBanner = () => {
       ad_personalization: p.marketing ? 'granted' : 'denied',
       analytics_storage: p.analytics ? 'granted' : 'denied',
     });
+    if (p.marketing) cargarMetaPixelSiHaceFalta();
     setVisible(false);
   };
 

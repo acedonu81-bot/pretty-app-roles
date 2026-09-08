@@ -21,7 +21,7 @@ const Terminos = () => {
         <h1 className="text-3xl font-bold mb-2">
           📜 Términos y <span className="text-gradient">Condiciones</span>
         </h1>
-        <p className="text-xs mb-8" style={{ color: '#333' }}>Última actualización: 13 de junio de 2026</p>
+        <p className="text-xs mb-8" style={{ color: '#333' }}>Última actualización: 9 de septiembre de 2026</p>
 
         <div className="glass-panel p-6 md:p-8 space-y-6 text-sm leading-relaxed" style={{ color: 'rgba(22,20,18,0.78)' }}>
           <section>
@@ -35,69 +35,23 @@ const Terminos = () => {
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>3. Verificación de Identidad</h2>
-            <p className="mb-2">XPEAK ofrece un servicio opcional de verificación de identidad con las siguientes condiciones:</p>
-            <ul className="list-disc list-inside space-y-1" style={{ color: '#222' }}>
-              <li><strong style={{ color: '#111' }}>Coste:</strong> 9,99 € (pago único, no reembolsable).</li>
-              <li><strong style={{ color: '#111' }}>Proceso:</strong> Requiere validación manual por parte del equipo de XPEAK. El usuario deberá enviar documentación acreditativa (DNI/NIE o pasaporte) junto con una foto selfie de verificación.</li>
-              <li><strong style={{ color: '#111' }}>Alcance:</strong> La verificación confirma la identidad del usuario, pero <strong>no otorga prioridad en las búsquedas</strong> ni ventajas de posicionamiento dentro del directorio.</li>
-              <li><strong style={{ color: '#111' }}>Distintivo:</strong> Los perfiles verificados mostrarán una insignia de verificación visible para otros usuarios.</li>
-            </ul>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>3. Gratuidad del Servicio</h2>
+            <p>El acceso y uso de XPEAK es <strong style={{ color: '#111' }}>100% gratuito</strong>, tanto para profesionales como para empresarios/organizadores. XPEAK no cobra comisiones sobre los acuerdos alcanzados entre profesionales y empresarios, ni suscripciones, ni pagos de ningún tipo por el uso de la Plataforma. No existe actualmente ningún sistema de pago, pasarela de cobro ni procesador de tarjetas integrado en XPEAK.</p>
+            <p className="mt-2">XPEAK se reserva el derecho de introducir en el futuro servicios o funcionalidades de pago opcionales. En tal caso, se actualizarán estos Términos y se informará a los usuarios con antelación suficiente antes de su entrada en vigor, conforme a la sección 13 (Modificaciones).</p>
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>4. Niveles de Cuenta</h2>
-            <p className="mb-2">La Plataforma dispone de los siguientes niveles de suscripción:</p>
-            <ul className="list-disc list-inside space-y-2" style={{ color: '#222' }}>
-              <li>
-                <strong style={{ color: '#111' }}>Promesa (Gratuito):</strong> Perfil básico con funcionalidades limitadas. Requiere 500 votos de la comunidad para ascender a Profesional. Periodo de prueba de 15 días con acceso a funcionalidades Pro.
-              </li>
-              <li>
-                <strong style={{ color: '#111' }}>Pase Diario (4,99 €):</strong> Posicionamiento destacado durante 24 horas.
-              </li>
-              <li>
-                <strong style={{ color: '#111' }}>Pase Weekend (8,99 €):</strong> Posicionamiento destacado durante el fin de semana (viernes a domingo).
-              </li>
-              <li>
-                <strong style={{ color: '#111' }}>Profesional / Pro (29,99 €/mes):</strong> Perfil completo, sesiones ilimitadas, acceso a Flash Jobs y estadísticas avanzadas. Descuento del 30% en facturación anual.
-              </li>
-              <li>
-                <strong style={{ color: '#111' }}>Business (59,99 €/mes):</strong> Todas las funcionalidades Pro más herramientas de gestión empresarial, soporte prioritario y analíticas avanzadas. Descuento del 30% en facturación anual.
-              </li>
-              <li>
-                <strong style={{ color: '#111' }}>Agency (99,99 €/mes):</strong> Gestión de múltiples perfiles profesionales, panel de control centralizado, reportes personalizados y acceso API. Descuento del 30% en facturación anual.
-              </li>
-            </ul>
-            <p className="mt-2">XPEAK no cobra comisiones por contrato, únicamente por suscripción y pases.</p>
-          </section>
-
-          <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>5. Pagos y Derecho de Desistimiento</h2>
-            <p>Todos los pagos se procesan de forma segura a través de Stripe. XPEAK no almacena datos de tarjetas de crédito en sus servidores. Las suscripciones se renuevan automáticamente salvo cancelación previa. El usuario puede cancelar en cualquier momento desde su panel de configuración.</p>
-            <p className="mt-2"><strong style={{ color: '#111' }}>Derecho de desistimiento (Directiva 2011/83/UE · TRLGDCU art. 102):</strong> El usuario consumidor dispone de un plazo de <strong style={{ color: '#111' }}>14 días naturales</strong> desde la contratación para desistir del servicio sin necesidad de justificación y sin penalización, siempre que no haya comenzado la prestación efectiva del servicio digital con su consentimiento expreso. Para ejercer este derecho, comuníquelo a <span style={{ color: '#D4AF37' }}>info@xpeak.es</span> indicando su nombre, email de registro y el servicio contratado. El reembolso se realizará en el mismo medio de pago en un plazo máximo de 14 días.</p>
-            <p className="mt-2 text-sm" style={{ color: '#222' }}>El derecho de desistimiento no aplica a contenidos digitales que el usuario haya comenzado a utilizar con su consentimiento previo y renuncia expresa al desistimiento (art. 103.m TRLGDCU).</p>
-          </section>
-
-          <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>6. Descuentos</h2>
-            <ul className="list-disc list-inside space-y-1" style={{ color: '#222' }}>
-              <li><strong style={{ color: '#111' }}>Facturación anual:</strong> 30% de descuento sobre el precio mensual.</li>
-              <li><strong style={{ color: '#111' }}>Cumpleaños:</strong> 40% de descuento aplicable durante el mes de cumpleaños del usuario (requiere fecha de nacimiento verificada en el perfil).</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>7. Responsabilidad</h2>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>4. Responsabilidad</h2>
             <p>Cada usuario declara actuar bajo su propia responsabilidad legal. XPEAK no se hace responsable de la veracidad de los perfiles publicados, del cumplimiento de obligaciones fiscales o laborales de los usuarios, ni de los acuerdos alcanzados entre las partes a través de la Plataforma.</p>
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>8. Propiedad Intelectual</h2>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>5. Propiedad Intelectual</h2>
             <p>Los usuarios conservan la propiedad de todo el contenido que suban a la Plataforma (fotos, audios, vídeos). Al publicar contenido, el usuario otorga a XPEAK una licencia no exclusiva para mostrarlo dentro de la Plataforma con fines de promoción del perfil profesional.</p>
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>9. Derechos de Propiedad Intelectual sobre Contenidos Musicales</h2>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>6. Derechos de Propiedad Intelectual sobre Contenidos Musicales</h2>
             <p className="mb-2">Al subir sesiones de audio, mezclas, vídeos o cualquier contenido a la Plataforma, el usuario declara, garantiza y acepta que:</p>
             <ul className="list-disc list-inside space-y-1" style={{ color: '#222' }}>
               <li>Es el único autor y titular del contenido subido, <strong style={{ color: '#111' }}>o bien cuenta con todas las licencias, permisos y autorizaciones necesarias</strong> de los titulares de los derechos sobre las obras incorporadas (incluyendo, sin limitación, las entidades de gestión SGAE, AIE, AGEDI o equivalentes extranjeras).</li>
@@ -110,7 +64,7 @@ const Terminos = () => {
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>10. Naturaleza Jurídica de la Intermediación — XPEAK no es Empleador</h2>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>7. Naturaleza Jurídica de la Intermediación — XPEAK no es Empleador</h2>
             <p className="mb-2">
               <strong style={{ color: '#fff' }}>XPEAK opera exclusivamente como plataforma de intermediación tecnológica</strong> entre profesionales del sector del eventos y entretenimiento y los empresarios o entidades que requieren sus servicios. A todos los efectos legales:
             </p>
@@ -119,7 +73,7 @@ const Terminos = () => {
               <li>XPEAK no fija las tarifas de los profesionales, no asigna trabajos, no controla el modo de prestación de los servicios ni impone exclusividad.</li>
               <li>La relación contractual derivada de un acuerdo entre un profesional y un empresario es <strong style={{ color: '#111' }}>exclusiva entre dichas partes</strong>. XPEAK no es parte de dicho contrato.</li>
               <li>Los profesionales actúan como trabajadores autónomos o mediante su propia estructura empresarial, siendo responsables de sus obligaciones fiscales (IVA, IRPF) y de Seguridad Social.</li>
-              <li>XPEAK percibe una comisión de intermediación por las transacciones realizadas a través de la Plataforma, en calidad de mandatario o agente tecnológico, de conformidad con el art. 1.709 y ss. del Código Civil.</li>
+              <li>XPEAK no percibe comisión alguna por las transacciones realizadas entre profesionales y empresarios a través de la Plataforma (ver sección 3, Gratuidad del Servicio).</li>
               <li>Esta cláusula no resulta de aplicación a la eventual relación laboral que XPEAK pudiera mantener con su propio personal empleado.</li>
             </ul>
             <p className="mt-2" style={{ color: '#222' }}>
@@ -128,12 +82,12 @@ const Terminos = () => {
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>11. Edad Mínima</h2>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>8. Edad Mínima</h2>
             <p>El acceso y registro en XPEAK como profesional está reservado a personas mayores de <strong>18 años</strong>. XPEAK conecta a los usuarios con salas, promotoras y eventos del sector nocturno, por lo que se exige la mayoría de edad legal en España como condición para publicar un perfil profesional. Al registrarse, el usuario confirma que cumple con este requisito. XPEAK se reserva el derecho de cancelar sin previo aviso las cuentas de usuarios que no cumplan este requisito.</p>
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>12. Derechos del Usuario (RGPD)</h2>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>9. Derechos del Usuario (RGPD)</h2>
             <p className="mb-2">De conformidad con el Reglamento (UE) 2016/679 (RGPD) y la LOPDGDD, el usuario tiene derecho a:</p>
             <ul className="list-disc list-inside space-y-1" style={{ color: '#222' }}>
               <li><strong style={{ color: '#111' }}>Acceso</strong> a sus datos personales tratados por XPEAK.</li>
@@ -146,19 +100,19 @@ const Terminos = () => {
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>13. Limitación de Responsabilidad</h2>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>10. Limitación de Responsabilidad</h2>
             <p className="mb-2">En la máxima medida permitida por la legislación española aplicable:</p>
             <ul className="list-disc list-inside space-y-2" style={{ color: '#222' }}>
               <li>XPEAK <strong style={{ color: '#111' }}>no garantiza</strong> la disponibilidad, idoneidad, calidad ni legalidad de los servicios ofrecidos por los profesionales registrados.</li>
               <li>XPEAK <strong style={{ color: '#111' }}>no es responsable</strong> de los daños directos, indirectos, incidentales, especiales o consecuentes derivados del uso de la Plataforma o de los servicios contratados entre usuarios.</li>
-              <li>La responsabilidad máxima de XPEAK frente a cualquier usuario, por cualquier concepto, quedará limitada al importe efectivamente abonado por dicho usuario a XPEAK durante los <strong style={{ color: '#111' }}>3 meses anteriores</strong> al hecho causante del daño.</li>
+              <li>Dado que el acceso a la Plataforma es gratuito (sección 3), la responsabilidad de XPEAK frente a cualquier usuario, por cualquier concepto derivado del uso del servicio, se limita a lo estrictamente exigido por la legislación española aplicable.</li>
               <li>XPEAK no responde por incumplimientos, cancelaciones, accidentes, daños materiales o personales ocurridos durante la prestación del servicio entre profesional y cliente. Dicha responsabilidad recae exclusivamente sobre las partes contratantes.</li>
               <li>XPEAK no garantiza que la Plataforma esté libre de interrupciones, errores o virus, aunque aplica medidas razonables de seguridad.</li>
             </ul>
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>14. Política de Cancelaciones y Disputas entre Usuarios</h2>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>11. Política de Cancelaciones y Disputas entre Usuarios</h2>
             <p className="mb-2">Las condiciones de cancelación y devolución son pactadas <strong style={{ color: '#111' }}>directamente entre el profesional y el cliente</strong>. XPEAK no interviene en dichos acuerdos ni actúa como árbitro. No obstante:</p>
             <ul className="list-disc list-inside space-y-2" style={{ color: '#222' }}>
               <li>Cada profesional debe indicar en su perfil su política de cancelación (sin penalización / 50% si cancela con menos de 48h / 100% si cancela el día del evento, u otras condiciones acordadas libremente).</li>
@@ -169,7 +123,7 @@ const Terminos = () => {
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>15. Conducta Prohibida</h2>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>12. Conducta Prohibida</h2>
             <p className="mb-2">Queda expresamente prohibido el uso de la Plataforma para:</p>
             <ul className="list-disc list-inside space-y-1" style={{ color: '#222' }}>
               <li>Publicar información falsa, engañosa o suplantando la identidad de terceros.</li>
@@ -182,7 +136,7 @@ const Terminos = () => {
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-3" style={{ color: '#D4AF37' }}>15 bis. Prohibición Expresa de Raspado de Datos (Data Scraping)</h2>
+            <h2 className="text-base font-bold mb-3" style={{ color: '#D4AF37' }}>12 bis. Prohibición Expresa de Raspado de Datos (Data Scraping)</h2>
             <p className="mb-2">
               La base de datos de profesionales de XPEAK — incluyendo nombres, fotografías, tarifas, ubicaciones, especialidades, biografías y cualquier otro dato identificativo — constituye un activo empresarial propio protegido por la normativa de propiedad intelectual e industrial y por la <strong>Directiva 96/9/CE sobre protección jurídica de bases de datos</strong>, transpuesta al ordenamiento español mediante el Real Decreto Legislativo 1/1996, de 12 de abril, que aprueba el Texto Refundido de la Ley de Propiedad Intelectual (TRLPI).
             </p>
@@ -205,12 +159,12 @@ const Terminos = () => {
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>16. Modificaciones</h2>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>13. Modificaciones</h2>
             <p>XPEAK se reserva el derecho de modificar estos Términos y Condiciones en cualquier momento. Los cambios serán notificados a los usuarios registrados por correo electrónico y/o mediante aviso en la Plataforma con un mínimo de 15 días de antelación para cambios sustanciales.</p>
           </section>
 
           <section>
-            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>17. Legislación Aplicable</h2>
+            <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>14. Legislación Aplicable</h2>
             <p>Los presentes Términos se rigen por la legislación española. Para cualquier controversia, las partes se someten a los Juzgados y Tribunales de Madrid (España), con renuncia expresa a cualquier otro fuero que pudiera corresponderles.</p>
           </section>
 

@@ -237,8 +237,16 @@
     });</script>
     -->
 
-    <!-- Meta Pixel — mide conversiones (registro) de la campaña de Instagram Ads -->
+    <!-- Meta Pixel — mide conversiones (registro) de la campaña de Instagram Ads.
+         Cookie de terceros con fines publicitarios: solo debe cargar si el
+         usuario dio consentimiento explícito a la categoría "Marketing" del
+         banner (CookieBanner.tsx). Antes se cargaba SIEMPRE, incluso si el
+         usuario pulsaba "Solo necesarias" — incumplimiento del art. 22.2
+         LSSI-CE/RGPD-ePrivacy detectado en auditoría legal (9 sep 2026). -->
     <script>window.__xpeakTracking(function(){
+    var prefs = null;
+    try { prefs = JSON.parse(localStorage.getItem('xpeak-cookie-consent')); } catch (e) {}
+    if (!prefs || !prefs.marketing) return;
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
     n.callMethod.apply(n,arguments):n.queue.push(arguments)};

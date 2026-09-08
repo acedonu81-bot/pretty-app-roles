@@ -21,7 +21,7 @@ const Privacidad = () => {
         <h1 className="text-3xl font-bold mb-2">
           🔐 Política de <span className="text-gradient">Privacidad</span>
         </h1>
-        <p className="text-xs mb-8" style={{ color: '#333' }}>Fecha de entrada en vigor: 25 de marzo de 2026</p>
+        <p className="text-xs mb-8" style={{ color: '#333' }}>Última actualización: 9 de septiembre de 2026</p>
 
         <div className="glass-panel p-6 md:p-8 space-y-6 text-sm leading-relaxed" style={{ color: 'rgba(22,20,18,0.78)' }}>
           <section>
@@ -34,7 +34,7 @@ const Privacidad = () => {
             <p className="mb-2">Para el funcionamiento técnico de la plataforma, recogemos los siguientes datos:</p>
             <ul className="list-disc list-inside space-y-1" style={{ color: '#222' }}>
               <li><strong style={{ color: '#222' }}>Datos de Registro:</strong> Nombre, apellidos, correo electrónico y teléfono.</li>
-              <li><strong style={{ color: '#222' }}>Datos Profesionales:</strong> Categoría (DJ, Staff, MUA, Wardrobe), experiencia y zona de trabajo en España.</li>
+              <li><strong style={{ color: '#222' }}>Datos Profesionales:</strong> Categoría u oficio (DJ, camarero, fotógrafo/vídeo, maquillaje, peluquería, azafata, promotor, catering, mago, humorista, animador, bailarín, speaker, estilista/vestuario, técnico de sonido y montaje, entre otros), experiencia, tarifas y zona de trabajo en España.</li>
               <li><strong style={{ color: '#222' }}>Contenido Multimedia:</strong> Audios de sesiones (vía SoundCloud/Mixcloud), fotografías de perfil y de trabajos realizados.</li>
               <li><strong style={{ color: '#222' }}>Datos de Ubicación:</strong> Localización aproximada para filtrar eventos y profesionales cercanos en España.</li>
             </ul>
@@ -44,9 +44,9 @@ const Privacidad = () => {
             <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>3. Finalidad del Tratamiento</h2>
             <p className="mb-2">Tus datos se utilizan exclusivamente para:</p>
             <ul className="list-disc list-inside space-y-1" style={{ color: '#222' }}>
-              <li>Gestionar la conexión entre talento y empresas de eventos.</li>
-              <li>Permitir la votación pública y el cambio de estatus de Rookie a Profesional.</li>
-              <li>Enviar notificaciones automáticas sobre ofertas de trabajo ("Flash Jobs").</li>
+              <li>Gestionar la conexión entre profesionales del sector de eventos y empresarios/organizadores.</li>
+              <li>Mostrar tu perfil profesional en el directorio público correspondiente a tu oficio.</li>
+              <li>Enviar notificaciones sobre solicitudes de contratación de última hora ("Flash Booking") y mensajes recibidos.</li>
             </ul>
           </section>
 
@@ -65,6 +65,8 @@ const Privacidad = () => {
             <ul className="list-disc list-inside space-y-1" style={{ color: '#222' }}>
               <li><strong style={{ color: '#222' }}>Empresas del Sector:</strong> Tus datos profesionales y multimedia son públicos para los usuarios registrados como "Empresa" con el fin de facilitar tu contratación.</li>
               <li><strong style={{ color: '#222' }}>Supabase (infraestructura):</strong> Los datos se almacenan en servidores de Supabase Inc. ubicados en la Unión Europea (Irlanda, AWS eu-west-1). La transferencia está amparada por las Cláusulas Contractuales Estándar de la Comisión Europea conforme al art. 46.2.c del RGPD.</li>
+              <li><strong style={{ color: '#222' }}>Google Ireland Ltd. (Google Analytics 4 / Google Tag Manager):</strong> datos de navegación anónimos (páginas vistas, origen del tráfico), solo si aceptas la categoría "Analítica" en el banner de cookies. Más información en nuestra <Link to="/cookies" className="underline font-bold" style={{ color: '#D4AF37' }}>Política de Cookies</Link>.</li>
+              <li><strong style={{ color: '#222' }}>Meta Platforms Ireland Ltd. (Meta Pixel):</strong> datos de navegación para medir conversiones de nuestras campañas publicitarias, solo si aceptas la categoría "Marketing" en el banner de cookies.</li>
               <li><strong style={{ color: '#222' }}>Autoridades:</strong> Solo en caso de requerimiento legal administrativo o judicial conforme a la legislación española aplicable.</li>
             </ul>
             <p className="mt-2" style={{ color: '#222' }}>Para más información sobre las garantías de transferencia internacional puedes contactar con nosotros en info@xpeak.es (RGPD arts. 44–49).</p>

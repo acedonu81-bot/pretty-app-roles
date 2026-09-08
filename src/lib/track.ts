@@ -63,6 +63,28 @@ export function trackAIReferral() {
  * personales y no exige consentimiento previo de cookies.
  * ------------------------------------------------------------------------- */
 
+/**
+ * Detecta bots/crawlers conocidos por su user-agent, para no contarlos como
+ * visitas reales en el panel de admin. logPageView se dispara en un
+ * useEffect de React, así que requiere que el JS de la SPA se ejecute
+ * completo — y muchos crawlers modernos (Googlebot, headless Chrome de
+ * herramientas SEO, scrapers) sí lo hacen, contaminando "Visitas" y
+ * "¿A qué hora entra tu gente?" con patrones que no son personas (ej. visitar
+ * solo /aviso-legal y /terminos, o picos justo a medianoche).
+ *
+ * No cambia lo que se guarda en la tabla (sigue sin IP ni UA completo, por
+ * RGPD): solo evita ENVIAR el evento cuando el UA matchea un patrón conocido.
+ */
+const BOT_UA = /bot|crawl|spider|slurp|headless|phantom|puppeteer|playwright|lighthouse|pagespeed|gtmetrix|ahrefs|semrush|mj12bot|dotbot|petalbot|bytespider|yandex|baiduspider|facebookexternalhit|whatsapp|telegrambot|discordbot|slackbot|preview/i;
+
+function esBot(): boolean {
+  try {
+    return BOT_UA.test(navigator.userAgent || '');
+  } catch {
+    return false;
+  }
+}
+
 const SESSION_KEY = 'xpeak_sid';
 
 /** Id de sesión efímero: distingue "1 persona viendo 8 páginas" de "8 personas". */
@@ -139,6 +161,7 @@ export async function logEvent(
   path: string = location.pathname,
   detalle?: string,
 ) {
+  if (esBot()) return;
   try {
     const { supabase } = await import('@/integrations/supabase/client');
     // Cast: los tipos generados de Supabase (types.ts) no incluyen todavía las
