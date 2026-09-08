@@ -51,8 +51,9 @@ const AdminInvisibleProfilesAlert = ({ onOpenUsers }: { onOpenUsers?: () => void
 
   useEffect(() => {
     let cancelled = false;
-    (supabase.from('admin_perfiles_invisibles' as any) as any)
-      .select('user_id, display_name, role, zone, created_at, sin_foto, sin_ciudad_real')
+    // RPC en vez de leer la vista directamente (ver migración 20260909120000
+    // — la vista solo da SELECT a postgres/service_role).
+    (supabase.rpc as any)('panel_admin_perfiles_invisibles')
       .then(({ data }: { data: Perfil[] | null }) => {
         if (!cancelled) setPerfiles(data ?? []);
       });

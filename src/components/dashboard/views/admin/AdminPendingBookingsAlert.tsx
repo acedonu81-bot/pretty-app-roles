@@ -40,17 +40,16 @@ const AdminPendingBookingsAlert = ({ onOpenBookings }: { onOpenBookings?: () => 
 
   useEffect(() => {
     let cancelled = false;
-    (supabase.from('admin_pending_bookings' as any) as any)
-      .select('id, requester_name, requester_contact, professional_name, event_date, event_location, created_at, horas_esperando')
-      // Solo lo reciente: una solicitud de hace semanas ya se conoce y su sitio
-      // es la pestaña Actividad, no un banner de alarma permanente que se
-      // acaba ignorando por costumbre.
-      .lt('horas_esperando', 48)
-      .limit(20)
+    // RPC en vez de leer la vista directamente (ver migración 20260909120000
+    // — la vista solo da SELECT a postgres/service_role). El filtro de "solo
+    // lo reciente" (una solicitud de hace semanas ya se conoce y su sitio es
+    // la pestaña Actividad, no un banner de alarma permanente que se acaba
+    // ignorando por costumbre) se aplica aquí en vez de en la query.
+    (supabase.rpc as any)('panel_admin_pending_bookings')
       .then(({ data }: { data: PendingBooking[] | null }) => {
-        // Si la vista aún no existe (migración sin aplicar), el panel debe
+        // Si la función aún no existe (migración sin aplicar), el panel debe
         // seguir usable: sin datos, sin banner.
-        if (!cancelled) setPending(data ?? []);
+        if (!cancelled) setPending((data ?? []).filter(b => b.horas_esperando < 48).slice(0, 20));
       });
     return () => { cancelled = true; };
   }, []);

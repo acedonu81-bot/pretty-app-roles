@@ -79,10 +79,10 @@ const AdminActivity = () => {
 
   const cargar = async () => {
     setCargando(true);
-    const { data } = await (supabase.from('admin_activity' as any) as any)
-      .select('*')
-      .limit(300);
-    setItems((data as Movimiento[]) ?? []);
+    // RPC en vez de leer la vista directamente (ver migración 20260909120000
+    // — la vista solo da SELECT a postgres/service_role).
+    const { data } = await (supabase.rpc as any)('panel_admin_activity');
+    setItems(((data as Movimiento[]) ?? []).slice(0, 300));
     setCargando(false);
   };
 

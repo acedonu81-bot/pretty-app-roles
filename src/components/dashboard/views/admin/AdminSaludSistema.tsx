@@ -47,8 +47,11 @@ const AdminSaludSistema = () => {
 
   const cargar = async () => {
     setCargando(true);
-    const { data } = await (supabase.from('admin_salud_sistema' as any) as any).select('*').limit(200);
-    setAlertas((data as Alerta[]) ?? []);
+    // RPC en vez de leer la vista directamente: la vista solo da SELECT a
+    // postgres/service_role (fuga de emails cerrada, ver migración
+    // 20260909120000) — cualquier usuario autenticado podía leerla antes.
+    const { data } = await (supabase.rpc as any)('panel_admin_salud_sistema');
+    setAlertas(((data as Alerta[]) ?? []).slice(0, 200));
     setCargando(false);
   };
 
