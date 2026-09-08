@@ -368,25 +368,18 @@ export const AFFILIATE_PARTNERS: AffiliatePartner[] = [
 export function partnersForRole(role: string, kind?: 'formacion' | 'tienda'): AffiliatePartner[] {
   const key = resolveAffiliateKey(role) ?? role;
 
-  // Tiendas (equipo físico): SOLO el propio oficio. Enseñarle a un camarero un
-  // controlador DJ es ruido puro, cero relevancia — mismo criterio que ya
-  // aplica el escaparate de productos.
-  //
-  // Formación (cursos): TODOS los usuarios ven TODOS los cursos disponibles,
-  // ordenados con el/los del propio oficio primero. A diferencia del equipo
-  // físico, un curso tiene valor cruzado real — un DJ con perfil secundario
-  // de grupo musical, un empresario que quiere recomendárselo a su plantilla,
-  // simple curiosidad — y con el volumen actual (un puñado de cursos) no hay
-  // ruido real que evitar. Más exposición de cada enlace es más clics, sin
-  // coste. Decisión del usuario, 8 sep 2026: "no le veo beneficio, es más al
-  // revés" a esconder cursos de otros oficios.
-  const candidatos = kind === 'formacion'
-    ? AFFILIATE_PARTNERS.filter(p => p.url && p.kind === 'formacion')
-    : AFFILIATE_PARTNERS.filter(p =>
-        p.url &&
-        (kind ? p.kind === kind : true) &&
-        (p.roles.includes(key) || p.roles.includes(role))
-      );
+  // Tiendas y formación: SOLO el propio oficio. Enseñarle a un DJ el curso de
+  // Peluquería (o a un camarero un controlador DJ) es ruido puro, cero
+  // relevancia — mismo criterio en ambas secciones. Se aplicó primero solo a
+  // tienda; el panel genérico "Recursos" del sidebar seguía mostrando TODOS
+  // los cursos de formación aunque el usuario hubiera elegido un oficio
+  // concreto en el selector — contradice la regla de que un sitio genérico no
+  // debe asumir ni cruzar oficios (9 sep 2026).
+  const candidatos = AFFILIATE_PARTNERS.filter(p =>
+    p.url &&
+    (kind ? p.kind === kind : true) &&
+    (p.roles.includes(key) || p.roles.includes(role))
+  );
 
   // Primero lo del oficio EXACTO, después lo del oficio hermano, después el
   // resto. Se compara con `role` TAL CUAL, no con `key`: resolveAffiliateKey

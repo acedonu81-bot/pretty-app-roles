@@ -175,3 +175,27 @@ describe('resolverVistaInicial', () => {
     expect(new Set(r).size).toBe(1);
   });
 });
+
+/**
+ * El buscador del topbar, cuando se escribe fuera de un directorio, mandaba
+ * SIEMPRE al directorio de DJs sin mirar el texto — mismo antipatrón que
+ * resolverVistaInicial ya corrigió para el aterrizaje inicial. Un visitante
+ * que buscaba "camarero" caía filtrando el listado de DJs y la analítica lo
+ * registraba como "búsqueda sin resultados", aunque camareros sí existen en
+ * XPEAK (9 sep 2026).
+ */
+describe('resolverVistaDeBusqueda', () => {
+  it('reconoce el oficio buscado y no cae siempre en dj', async () => {
+    const { resolverVistaDeBusqueda } = await import('./Dashboard');
+    expect(resolverVistaDeBusqueda('camarero')).toBe('staff');
+    expect(resolverVistaDeBusqueda('camare')).toBe('staff');
+    expect(resolverVistaDeBusqueda('fotografo')).toBe('media');
+    expect(resolverVistaDeBusqueda('dj')).toBe('dj');
+  });
+
+  it('un término que no matchea ningún oficio no fuerza ningún directorio', async () => {
+    const { resolverVistaDeBusqueda } = await import('./Dashboard');
+    expect(resolverVistaDeBusqueda('saxofonista bilbao')).toBeNull();
+    expect(resolverVistaDeBusqueda('')).toBeNull();
+  });
+});

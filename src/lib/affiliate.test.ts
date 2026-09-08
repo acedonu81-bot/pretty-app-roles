@@ -53,14 +53,16 @@ describe('formación por oficio', () => {
     expect(n.some(x => /Peluquería/i.test(x))).toBe(true);
   });
 
-  it('un DJ ve los dos cursos de cabina primero, y también ve el resto', () => {
-    // La formación se muestra a todos los oficios (decisión del 8 sep 2026):
-    // solo se filtra el EQUIPO físico por rol, no los cursos.
+  it('un DJ ve los dos cursos de cabina, y NO ve el de peluquería', () => {
+    // Revertido el 9 sep 2026: la decisión del 8 sep (formación visible a
+    // todos los oficios) contradecía la regla general de que un panel
+    // genérico no debe cruzar oficios — un DJ no debe ver cursos de otro
+    // oficio en "Recursos" del sidebar.
     const n = partnersForRole('dj', 'formacion').map(p => p.name);
     expect(n.filter(x => /PRODJ/i.test(x))).toHaveLength(2);
     expect(n[0]).toMatch(/PRODJ/i);
     expect(n[1]).toMatch(/PRODJ/i);
-    expect(n.some(x => /Peluquería/i.test(x))).toBe(true);
+    expect(n.some(x => /Peluquería/i.test(x))).toBe(false);
   });
 
   it('los partners sin enlace de afiliado no se muestran', () => {
@@ -86,21 +88,17 @@ describe('orden de la formación', () => {
     expect(partnersForRole('peluqueria', 'formacion')[0].name).toMatch(/Peluquería/i);
   });
 
-  it('un DJ ve TODOS los cursos (los suyos primero)', () => {
-    // Decisión del 8 sep 2026: al contrario que el equipo físico, la
-    // formación se muestra a todos — un curso tiene valor cruzado real y con
-    // el volumen actual no hay ruido que evitar. Enseñar más enlaces de
-    // afiliado a más gente es más clics, sin coste.
+  it('un DJ ve solo sus cursos, no los de otro oficio', () => {
     const n = partnersForRole('dj', 'formacion').map(p => p.name);
     expect(n[0]).toMatch(/PRODJ/i);
     expect(n[1]).toMatch(/PRODJ/i);
-    expect(n.length).toBeGreaterThan(2);
-    expect(n.some(x => /Maquillaje/i.test(x))).toBe(true);
+    expect(n).toHaveLength(2);
+    expect(n.some(x => /Maquillaje/i.test(x))).toBe(false);
   });
 
-  it('una maquilladora también ve el curso de DJ, pero detrás del suyo', () => {
+  it('una maquilladora no ve el curso de DJ', () => {
     const n = partnersForRole('maquillaje', 'formacion').map(p => p.name);
     expect(n[0]).toMatch(/Maquillaje/i);
-    expect(n.some(x => /PRODJ/i.test(x))).toBe(true);
+    expect(n.some(x => /PRODJ/i.test(x))).toBe(false);
   });
 });

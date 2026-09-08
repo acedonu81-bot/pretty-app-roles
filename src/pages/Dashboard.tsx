@@ -210,6 +210,62 @@ const ROLE_TO_VIEW: Record<string, string> = {
  */
 const SIN_EXPLORAR = new Set(['empresario', 'pending', 'rookie']);
 
+// Términos por los que alguien buscaría cada directorio desde el buscador del
+// topbar. Sirve para resolver a qué vista mandar una búsqueda escrita fuera de
+// un directorio (ver handleSearch) — antes SIEMPRE mandaba a 'dj' sin mirar el
+// texto, así que buscar "camarero" te dejaba filtrando el directorio de DJs y
+// devolvía 0 resultados aunque camareros sí existen en XPEAK. Mismo bug de
+// fondo que ya se corrigió para el aterrizaje inicial (ver roleRouting.test.ts
+// y el comentario de ROLE_TO_VIEW): un valor cae en 'dj' por defecto en vez de
+// resolverse de verdad.
+// Cubre los 18 oficios que ofrece hoy el wizard de alta (OnboardingWizard.tsx)
+// más 'staff' (alias de 'camarero') y los roles legado que ya no se dan de
+// alta pero pueden seguir teniendo perfiles reales (design, event_manager,
+// monologo, ambassador) — estos últimos con menos sinónimos porque nadie
+// nuevo elige ya ese oficio, pero un perfil existente sigue siendo buscable.
+const BUSQUEDA_POR_VISTA: Record<string, string[]> = {
+  dj: ['dj', 'disc jockey', 'pincha', 'discomovil'],
+  'grupo-musical': ['grupo musical', 'grupo', 'banda', 'orquesta', 'musico', 'musicos'],
+  media: ['fotografo', 'fotografa', 'foto', 'video', 'videografo', 'videografa'],
+  makeup: ['maquillaje', 'maquilladora', 'maquillador', 'makeup'],
+  peluqueria: ['peluqueria', 'peluquero', 'peluquera'],
+  staff: ['camarero', 'camarera', 'camare', 'staff', 'sala y barra'],
+  azafata: ['azafata', 'azafato', 'hostess', 'congreso'],
+  promotor: ['promotor', 'rrpp', 'promocion'],
+  catering: ['catering', 'chef', 'cocina', 'cocinero'],
+  mago: ['mago', 'maga', 'magia', 'ilusionista'],
+  humorista: ['humorista', 'comico', 'comica', 'monologuista', 'stand-up', 'standup'],
+  animador: ['animador', 'animadora', 'payaso'],
+  bailarin: ['bailarin', 'bailarina', 'danza', 'gogo'],
+  speaker: ['speaker', 'presentador', 'presentadora', 'maestro de ceremonias', 'ponente'],
+  vestuario: ['vestuario', 'estilista', 'styling', 'moda'],
+  'photo-booth': ['photo booth', 'photobooth', 'cabina de fotos', 'fotomaton'],
+  tecnico: ['tecnico', 'tecnica', 'sonido', 'iluminacion', 'montaje de escenario'],
+  // Legado: sin alta activa, sinónimos mínimos por si queda algún perfil real.
+  design: ['diseno', 'diseño', 'decoracion'],
+  event_manager: ['event manager', 'organizador de eventos', 'wedding planner'],
+  monologo: ['monologo', 'monologuista'],
+  ambassador: ['ambassador', 'embajador', 'embajadora'],
+};
+
+/** Rol al que apunta un término escrito en el buscador, o null si no matchea ninguno. */
+export function resolverVistaDeBusqueda(q: string): string | null {
+  const texto = q.trim().toLowerCase();
+  if (!texto) return null;
+  // Comparar también palabra a palabra: sinónimos de varias palabras ("sala y
+  // barra", "maestro de ceremonias") deben reconocerse aunque el usuario solo
+  // escriba una de ellas ("barra", "ceremonias"), no solo el principio.
+  const palabras = texto.split(/\s+/);
+  for (const [vista, terminos] of Object.entries(BUSQUEDA_POR_VISTA)) {
+    const matchea = terminos.some(t =>
+      t.startsWith(texto) || texto.startsWith(t) ||
+      t.split(/\s+/).some(palabraTermino => palabras.some(p => palabraTermino.startsWith(p) || p.startsWith(palabraTermino)))
+    );
+    if (matchea) return vista;
+  }
+  return null;
+}
+
 export function resolverVistaInicial(opts: {
   stateView?: string | null;
   queryView?: string | null;
@@ -311,11 +367,15 @@ const Dashboard = () => {
     }
   }, [loading, user, navigate]);
 
-  const handleViewChange = (view: string) => {
+  // keepSearch: la navegación disparada por handleSearch necesita que el
+  // término sobreviva al cambio de vista para que el directorio de destino
+  // pueda filtrar con él — de lo contrario este mismo setSearchQuery('')
+  // borraba la búsqueda un instante antes de que se usara.
+  const handleViewChange = (view: string, keepSearch = false) => {
     setActiveView(view);
     localStorage.setItem('xpeak_view', view);
     if (isMobile) setSidebarOpen(false);
-    setSearchQuery('');
+    if (!keepSearch) setSearchQuery('');
   };
 
   const nav = (view: string) => handleViewChange(view);
@@ -325,7 +385,9 @@ const Dashboard = () => {
   const handleSearch = (q: string) => {
     setSearchQuery(q);
     if (q.trim() && !directoryViews.has(activeView)) {
-      handleViewChange('dj');
+      // Resuelve el oficio buscado (p.ej. "camarero" -> staff) en vez de
+      // forzar siempre el directorio de DJs — ver BUSQUEDA_POR_VISTA arriba.
+      handleViewChange(resolverVistaDeBusqueda(q) ?? 'explorar', true);
     }
   };
 
