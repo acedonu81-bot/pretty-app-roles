@@ -15,7 +15,7 @@ import { useAuth } from '@/hooks/useAuth';
 import GhostProfileCards from '@/components/GhostProfileCards';
 import TruncatedDescription from '@/components/TruncatedDescription';
 import { isEarlyAdopter } from '@/lib/earlyAdopter';
-import { expandRole, canonicalRole } from '@/lib/constants';
+import { expandRole, canonicalRole, PROFILE_PHOTO_GATE_DATE } from '@/lib/constants';
 
 // URL de perfil por slug de nombre (la misma que usan sitemap y prerender) en
 // vez de UUID — evita dos URLs indexables para el mismo perfil. PublicProfile
@@ -345,10 +345,18 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string): Pro
   // Retomar cuando haya volumen que lo justifique, avisando antes a los
   // usuarios existentes.
   //
+  // Excepción, desde el 9 sep 2026: los perfiles NUEVOS sin foto sí quedan
+  // fuera del directorio (no solo relegados al final). No es retroactivo —
+  // los perfiles ya existentes sin foto siguen visibles como hasta ahora,
+  // solo se corta la entrada de altas nuevas sin foto. Ver PROFILE_PHOTO_GATE_DATE.
+  const noPhotoGated = (data ?? []).filter((p: any) =>
+    !!p.photo_url || p.role === 'empresario' || new Date(p.created_at) < PROFILE_PHOTO_GATE_DATE
+  );
+
   // is_early_adopter ya no viene del campo manual de BD — se recalcula aquí
   // según si el perfil está de verdad completo (foto+bio+media). Así el aro
   // azul se gana/pierde solo, sin depender de que un admin lo active a mano.
-  const filtered = (data ?? []).map((p: any) => ({ ...p, is_early_adopter: isEarlyAdopter(p) }));
+  const filtered = noPhotoGated.map((p: any) => ({ ...p, is_early_adopter: isEarlyAdopter(p) }));
 
   // Las valoraciones NO se piden aquí. Antes iban en un await encadenado
   // (necesita los user_id de la consulta anterior), así que el listado no
@@ -411,7 +419,13 @@ export async function fetchAllDirectorioProfilesByRole(city: string): Promise<Re
   if (error) ({ data, error } = await q);
   if (error) throw error;
 
-  const filtered = (data ?? [])
+  // Ver PROFILE_PHOTO_GATE_DATE: perfiles nuevos sin foto quedan fuera del
+  // directorio, no solo relegados al final. No retroactivo.
+  const noPhotoGated = (data ?? []).filter((p: any) =>
+    !!p.photo_url || p.role === 'empresario' || new Date(p.created_at) < PROFILE_PHOTO_GATE_DATE
+  );
+
+  const filtered = noPhotoGated
     .map((p: any) => ({ ...p, is_early_adopter: isEarlyAdopter(p) }))
     .filter((p: any) => p.display_name?.trim().length > 1);
 

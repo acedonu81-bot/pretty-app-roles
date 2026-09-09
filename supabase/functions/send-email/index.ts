@@ -216,6 +216,26 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     };
   },
 
+  // 1a2b. Foto subida pero no válida (textura/producto/imagen borrosa en vez
+  // de una foto real) — caso puntual, sin cron asociado. Distinto de
+  // profile_incomplete_reminder porque ahí SÍ hay una imagen en photo_url, el
+  // problema no es que falte sino que no sirve para el directorio.
+  photo_invalid_reminder: (d) => ({
+    subject: `${esc(d.name)}, tu foto de perfil no se ve bien en XPEAK`,
+    to: d.email,
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Revisa tu foto de perfil</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Hemos visto que la imagen subida a tu perfil como <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong> no muestra tu cara — parece un fondo o una foto de producto en vez de tu foto real. Los organizadores confían más en perfiles con una foto clara de la persona con la que van a trabajar.
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
+        Sube una foto tuya real desde tu panel para que tu perfil vuelva a estar completo.
+      </p>
+      ${btn('Cambiar mi foto →', 'https://xpeak.es/dashboard')}
+      <p style="color:#9CA3AF;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`,
+      'Tu foto de perfil no muestra tu cara'),
+  }),
+
   // 1a3. Recordatorio de trabajo mañana — cron diario (bolo-reminder-24h),
   // dedupe vía email_logs (una fila por evento, no por usuario). Type name
   // conserva "bolo" por compatibilidad con la función ya desplegada; el

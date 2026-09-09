@@ -106,3 +106,10 @@ export const ROLE_TAGS: Record<string, { label: string; tags: string[] }> = {
     // montaje, vídeo) y con las marcas de mesa que se piden por nombre propio.
     tecnico:   { label: 'Especialidades',         tags: ['Técnico de sonido','Sonido en directo','Mesa de mezclas','Monitores','Microfonía','P.A. / Line array','Backline','Pruebas de sonido','Técnico de iluminación','Diseño de iluminación','Luces de espectáculo','Máquinas de humo','Montaje de escenario','Desmontaje','Estructuras / truss','Rigging','Carga y descarga','Alquiler de equipo','Técnico de vídeo','Pantallas LED','Proyección','Streaming en directo','Bodas','Festivales','Salas y clubs','Eventos corporativos'] },
   }
+
+// Desde esta fecha, un profesional (no empresario) nuevo sin foto de perfil
+// no aparece en el directorio público ni en búsquedas — no es retroactivo,
+// los perfiles ya existentes sin foto siguen visibles como hasta ahora.
+// Punto único de verdad: usar esta constante en cada sitio que liste el
+// directorio, no reescribir la fecha a mano (ver reference_listas_duplicadas_a_mano).
+export const PROFILE_PHOTO_GATE_DATE = new Date('2026-09-09T00:00:00Z');
