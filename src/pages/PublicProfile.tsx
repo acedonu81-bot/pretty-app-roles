@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, Headphones, BookOpen, Video, Music, Instagram, Send, X, Shield, Check, Plus } from 'lucide-react';
+import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, Headphones, BookOpen, Video, Music, Instagram, Send, X, Shield, Check, Plus, Share2, Link2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { addToCart, useEventCart, MAX_CART_ITEMS } from '@/lib/eventCart';
 import CondicionesPublicas from '@/components/CondicionesPublicas';
@@ -43,6 +43,62 @@ const StarRating = ({ value, onChange }: { value: number; onChange?: (v: number)
     ))}
   </div>
 );
+
+const ShareProfileButton = ({ name, roleLabel, url }: { name: string; roleLabel: string; url: string }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const shareText = `Mira el perfil de ${name} (${roleLabel}) en XPEAK`;
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: `${name} — XPEAK`, text: shareText, url });
+      } catch {
+        // usuario canceló el share nativo — no hacer nada
+      }
+      return;
+    }
+    setMenuOpen(v => !v);
+  };
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(url);
+    toast.success('Enlace copiado');
+    setMenuOpen(false);
+  };
+
+  const handleWhatsapp = () => {
+    window.open(`https://wa.me/?text=${encodeURIComponent(`${shareText}: ${url}`)}`, '_blank', 'noopener,noreferrer');
+    setMenuOpen(false);
+  };
+
+  return (
+    <div className="relative inline-block">
+      <button type="button" onClick={handleShare} aria-label="Compartir perfil"
+        className="inline-flex items-center justify-center w-8 h-8 rounded-full transition-all hover:scale-105 active:scale-95"
+        style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.25)', color: '#fff' }}>
+        <Share2 size={14} />
+      </button>
+      {menuOpen && (
+        <>
+          <div className="fixed inset-0 z-40" onClick={() => setMenuOpen(false)} />
+          <div className="absolute left-0 top-full mt-2 z-50 rounded-xl overflow-hidden shadow-lg"
+            style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', minWidth: 180 }}>
+            <button type="button" onClick={handleCopy}
+              className="w-full flex items-center gap-2 px-4 py-3 text-sm font-semibold text-left hover:bg-black/5"
+              style={{ color: '#222' }}>
+              <Link2 size={14} /> Copiar enlace
+            </button>
+            <button type="button" onClick={handleWhatsapp}
+              className="w-full flex items-center gap-2 px-4 py-3 text-sm font-semibold text-left hover:bg-black/5"
+              style={{ color: '#222' }}>
+              <MessageCircle size={14} /> WhatsApp
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
 
 const EVENT_TYPES = ['Boda','Comunión','Evento corporativo','Fiesta privada','Festival','Cumpleaños','Inauguración','Otro'];
 
@@ -317,6 +373,14 @@ const PublicProfile = () => {
   const { user: authUser } = useAuth();
   const { items: cartItems } = useEventCart();
   const [showContact, setShowContact] = useState(false);
+
+  const handleContactClick = () => {
+    if (!authUser) {
+      navigate(`/auth?mode=register&role=empresario&redirect=${encodeURIComponent(window.location.pathname)}`);
+      return;
+    }
+    setShowContact(true);
+  };
   const [scrolledPastHero, setScrolledPastHero] = useState(false);
   const [audioEmbed, setAudioEmbed] = useState<ReturnType<typeof parseStreamUrl>>(null);
   const [seoReviews, setSeoReviews] = useState<{ rating: number }[]>([]);
@@ -710,7 +774,7 @@ const PublicProfile = () => {
             )}
             {scrolledPastHero && (
               <button
-                onClick={() => setShowContact(true)}
+                onClick={handleContactClick}
                 className="hidden md:flex items-center gap-1.5 px-4 py-2 rounded-xl font-black text-sm transition-all hover:scale-105 active:scale-95"
                 style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 4px 15px rgba(212,175,55,0.3)' }}>
                 <MessageCircle size={14} /> Contactar gratis
@@ -743,11 +807,14 @@ const PublicProfile = () => {
             initial="hidden" animate="show" variants={stagger}>
 
             <motion.div variants={fadeUp}>
-              {/* Role badge */}
-              <span className="inline-flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full mb-3"
-                style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.25)', color: '#fff' }}>
-                {roleLabel[profile.role] ?? profile.role}
-              </span>
+              {/* Role badge + compartir */}
+              <div className="flex items-center gap-2 mb-3">
+                <span className="inline-flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
+                  style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.25)', color: '#fff' }}>
+                  {roleLabel[profile.role] ?? profile.role}
+                </span>
+                <ShareProfileButton name={profile.name} roleLabel={roleLabel[profile.role] ?? profile.role} url={profileUrl} />
+              </div>
 
               {/* Early Adopter badge — mismo criterio que en el directorio (isEarlyAdopter.ts) */}
               {profile.isEarlyAdopter && (
@@ -829,7 +896,7 @@ const PublicProfile = () => {
                     if (authUser && sbProfile?.user_id) {
                       navigate('/dashboard', { state: { view: 'messages', messageUserId: sbProfile.user_id, messageName: profile.name } });
                     } else {
-                      setShowContact(true);
+                      handleContactClick();
                     }
                   }}
                   className="flex items-center gap-2 px-7 py-3.5 rounded-2xl font-black text-base transition-all hover:scale-105 active:scale-95"
@@ -932,7 +999,7 @@ const PublicProfile = () => {
                   Desde €{(profile as any).classPrice}<span className="font-medium" style={{ color: '#666' }}>/hora</span>
                 </p>
               )}
-              <button onClick={() => setShowContact(true)}
+              <button onClick={handleContactClick}
                 className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition-all hover:scale-[1.02]"
                 style={{ background: '#D4AF37', color: '#000' }}>
                 <MessageCircle size={15} /> Contactar para clases
@@ -950,7 +1017,7 @@ const PublicProfile = () => {
                 {(profile as any).danceRole === 'lead' ? ' — leader' : (profile as any).danceRole === 'follow' ? ' — follower' : (profile as any).danceRole === 'ambos' ? ' — baila ambos roles' : ''}
                 {(profile as any).danceLevel ? `, nivel ${(profile as any).danceLevel.toLowerCase()}` : ''}.
               </p>
-              <button onClick={() => setShowContact(true)}
+              <button onClick={handleContactClick}
                 className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition-all hover:scale-[1.02]"
                 style={{ background: '#D4AF37', color: '#000' }}>
                 <MessageCircle size={15} /> Contactar
@@ -1148,7 +1215,7 @@ const PublicProfile = () => {
               if (authUser && sbProfile?.user_id) {
                 navigate('/dashboard', { state: { view: 'messages', messageUserId: sbProfile.user_id, messageName: profile.name } });
               } else {
-                setShowContact(true);
+                handleContactClick();
               }
             }}
             className="flex-1 min-w-0 flex items-center justify-center gap-2 py-4 rounded-2xl font-black text-base leading-tight text-center transition-all active:scale-95"
