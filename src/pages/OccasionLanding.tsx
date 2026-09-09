@@ -5,6 +5,7 @@ import FooterPublic from '@/components/FooterPublic';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { CATEGORIES } from '@/pages/CityLanding';
+import { PROFILE_PHOTO_GATE_DATE } from '@/lib/constants';
 
 /**
  * OccasionLanding — eje ocasión × rol (ej: /boda/contratar-dj).
@@ -49,7 +50,7 @@ function useRoleProfessionals(categorySlug: string) {
     ].join(',');
     supabase
       .from('profiles')
-      .select('user_id,display_name,photo_url,bio,city,role,score,slug,is_verified')
+      .select('user_id,display_name,photo_url,bio,city,role,score,slug,is_verified,created_at')
       .or(roleFilter)
       // Ver CityLanding.tsx: is_primary distingue el perfil principal de una
       // agencia, no "perfil publicable". Filtrar por él escondía a casi todos.
@@ -57,7 +58,15 @@ function useRoleProfessionals(categorySlug: string) {
       .order('is_primary', { ascending: false })
       .order('score', { ascending: false })
       .limit(6)
-      .then(({ data }) => { setProfs((data ?? []).map(map)); setLoaded(true); });
+      .then(({ data }) => {
+        // Ver PROFILE_PHOTO_GATE_DATE: perfiles nuevos sin foto quedan fuera,
+        // no retroactivo.
+        const gated = (data ?? []).filter((p: any) =>
+          !!p.photo_url || new Date(p.created_at) < PROFILE_PHOTO_GATE_DATE
+        );
+        setProfs(gated.map(map));
+        setLoaded(true);
+      });
   }, [categorySlug]);
 
   return { profs, loaded };

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { isEarlyAdopter } from '@/lib/earlyAdopter';
+import { PROFILE_PHOTO_GATE_DATE } from '@/lib/constants';
 
 export interface MatchedProfessional {
   user_id: string;
@@ -144,7 +145,7 @@ export function useSmartMatch(query: MatchQuery | null): { results: MatchedProfe
     const [profilesRes, reviewsRes, availRes] = await Promise.all([
       supabase
         .from('profiles')
-        .select('user_id, display_name, role, roles, specialty, zone, city_ref, photo_url, hourly_rate, is_flash_active, is_verified, bio, audio_embed_url, audio_session_urls, portfolio_urls, score, fast_responder_count, is_early_adopter_override')
+        .select('user_id, display_name, role, roles, specialty, zone, city_ref, photo_url, hourly_rate, is_flash_active, is_verified, bio, audio_embed_url, audio_session_urls, portfolio_urls, score, fast_responder_count, is_early_adopter_override, created_at')
         .contains('roles', [query.role])
         .not('display_name', 'is', null)
         .limit(100),
@@ -154,7 +155,11 @@ export function useSmartMatch(query: MatchQuery | null): { results: MatchedProfe
         : Promise.resolve({ data: [] }),
     ]);
 
-    const profiles = profilesRes.data ?? [];
+    // Ver PROFILE_PHOTO_GATE_DATE: perfiles nuevos sin foto quedan fuera del
+    // matching, no retroactivo.
+    const profiles = (profilesRes.data ?? []).filter((p: any) =>
+      !!p.photo_url || new Date(p.created_at) < PROFILE_PHOTO_GATE_DATE
+    );
     const reviews = reviewsRes.data ?? [];
     const blocked = new Set((availRes.data ?? []).map((r: any) => r.user_id));
 

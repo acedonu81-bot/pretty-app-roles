@@ -46,8 +46,13 @@ function loadEnv() {
 // oficio todavía, así que su ficha no describe ningún servicio. Indexarlas
 // manda a Google a páginas vacías, y eso penaliza al dominio entero — es
 // justo lo contrario de lo que busca tener 380 URLs indexables.
+// Desde el 9 sep 2026: un perfil nuevo sin foto no genera URL indexable — ver
+// PROFILE_PHOTO_GATE_DATE en src/lib/constants.ts (mismo corte, no
+// retroactivo: perfiles ya existentes sin foto siguen indexados como antes).
+const PROFILE_PHOTO_GATE_DATE = new Date('2026-09-09T00:00:00Z');
+
 async function fetchProfiles(supabaseUrl, anonKey) {
-  const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,zone,city_ref,updated_at,role,roles,is_primary&role=not.in.%28empresario,pending%29&is_seed=eq.false&or=(is_public.is.null,is_public.eq.true)&order=updated_at.desc&limit=1000`;
+  const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,zone,city_ref,updated_at,created_at,role,roles,is_primary,photo_url&role=not.in.%28empresario,pending%29&is_seed=eq.false&or=(is_public.is.null,is_public.eq.true)&order=updated_at.desc&limit=1000`;
   const res = await fetch(url, {
     headers: {
       apikey: anonKey,
@@ -59,7 +64,8 @@ async function fetchProfiles(supabaseUrl, anonKey) {
     console.warn('⚠️  Could not fetch profiles from Supabase:', res.status);
     return [];
   }
-  return res.json();
+  const rows = await res.json();
+  return rows.filter(p => !!p.photo_url || new Date(p.created_at) < PROFILE_PHOTO_GATE_DATE);
 }
 
 function toSlug(name) {

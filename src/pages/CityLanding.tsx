@@ -6,6 +6,12 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { isEarlyAdopter } from '@/lib/earlyAdopter';
 import { toSlug } from '@/data/profiles';
+import { PROFILE_PHOTO_GATE_DATE } from '@/lib/constants';
+
+// Ver PROFILE_PHOTO_GATE_DATE en lib/constants: perfiles nuevos sin foto
+// quedan fuera del listado público, no retroactivo.
+const gateNoPhoto = <T extends { photo_url: string | null; created_at?: string }>(rows: T[]): T[] =>
+  rows.filter(p => !!p.photo_url || !p.created_at || new Date(p.created_at) < PROFILE_PHOTO_GATE_DATE);
 
 // Fecha de última modificación (congelada al renderizar; en prerender = build).
 // Señal de frescura para motores generativos, que penalizan contenido stale.
@@ -65,7 +71,7 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
 
     supabase
       .from('profiles')
-      .select('user_id,display_name,photo_url,bio,zone,role,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,is_early_adopter_override')
+      .select('user_id,display_name,photo_url,bio,zone,role,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,is_early_adopter_override,created_at')
       .or(roleFilter)
       // is_primary marca el perfil principal de una cuenta de agencia con
       // varios perfiles (useProfile.tsx). Filtrar por él aquí escondía a todo
@@ -87,21 +93,22 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
       .order('score', { ascending: false })
       .limit(6)
       .then(({ data }) => {
-        if (data?.length) {
-          setProfs(data.map(map));
+        const gated = gateNoPhoto(data ?? []);
+        if (gated.length) {
+          setProfs(gated.map(map));
           setLoaded(true);
         } else {
           // No hay en esta ciudad — cargar sugerencias nacionales
           supabase
             .from('profiles')
-            .select('user_id,display_name,photo_url,bio,zone,role,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,is_early_adopter_override')
+            .select('user_id,display_name,photo_url,bio,zone,role,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,is_early_adopter_override,created_at')
             .or(roleFilter)
             .or('is_public.is.null,is_public.eq.true')
             .order('is_primary', { ascending: false })
             .order('score', { ascending: false })
             .limit(4)
             .then(({ data: sug }) => {
-              setSuggestions((sug ?? []).map(map));
+              setSuggestions(gateNoPhoto(sug ?? []).map(map));
               setLoaded(true);
             });
         }
