@@ -342,7 +342,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
             <div className="absolute top-5 left-5 flex items-center gap-1.5">
               <span className="text-xs font-black px-3 py-1 rounded-full"
                 style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.25)', color: '#fff' }}>
-                {cfg.emoji} {cfg.label}
+                {cfg.label}
               </span>
               {p.isLive && (
                 <span className="flex items-center gap-1 text-[0.65rem] font-black px-2 py-0.5 rounded-full"
