@@ -5,8 +5,9 @@ import {
   X, MessageCircle, FileText, ShoppingBag, MapPin, Globe,
   Zap, CheckCircle, Crown, ExternalLink, Star,
   Music, Camera, Users, Radio, Megaphone, Clock,
-  Instagram, ChevronLeft,
+  Instagram, ChevronLeft, Share2, Link2,
 } from 'lucide-react';
+import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack, normalizeStreamUrl } from '@/lib/streaming';
 import { useProfile as useMyProfile } from '@/hooks/useProfile';
@@ -14,7 +15,64 @@ import GeometricAvatar from './GeometricAvatar';
 import ContractModal from './ContractModal';
 import SessionAudioPlayer from '@/components/SessionAudioPlayer';
 import { instagramUrl, extractInstagramHandle } from '@/lib/social';
+import { toSlug } from '@/data/profiles';
 import type { Profile } from '@/data/profiles';
+
+const ShareProfileButton = ({ name, roleLabel, url }: { name: string; roleLabel: string; url: string }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const shareText = `Mira el perfil de ${name} (${roleLabel}) en XPEAK`;
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: `${name} — XPEAK`, text: shareText, url });
+      } catch {
+        // usuario canceló el share nativo — no hacer nada
+      }
+      return;
+    }
+    setMenuOpen(v => !v);
+  };
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(url);
+    toast.success('Enlace copiado');
+    setMenuOpen(false);
+  };
+
+  const handleWhatsapp = () => {
+    window.open(`https://wa.me/?text=${encodeURIComponent(`${shareText}: ${url}`)}`, '_blank', 'noopener,noreferrer');
+    setMenuOpen(false);
+  };
+
+  return (
+    <div className="relative inline-block">
+      <button type="button" onClick={handleShare} aria-label="Compartir perfil"
+        className="inline-flex items-center justify-center w-7 h-7 rounded-full transition-all hover:scale-105 active:scale-95"
+        style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.25)', color: '#fff' }}>
+        <Share2 size={13} />
+      </button>
+      {menuOpen && (
+        <>
+          <div className="fixed inset-0 z-[115]" onClick={() => setMenuOpen(false)} />
+          <div className="absolute left-0 top-full mt-2 z-[120] rounded-xl overflow-hidden shadow-lg"
+            style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', minWidth: 180 }}>
+            <button type="button" onClick={handleCopy}
+              className="w-full flex items-center gap-2 px-4 py-3 text-sm font-semibold text-left hover:bg-black/5"
+              style={{ color: '#222' }}>
+              <Link2 size={14} /> Copiar enlace
+            </button>
+            <button type="button" onClick={handleWhatsapp}
+              className="w-full flex items-center gap-2 px-4 py-3 text-sm font-semibold text-left hover:bg-black/5"
+              style={{ color: '#222' }}>
+              <MessageCircle size={14} /> WhatsApp
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Role visual config
@@ -338,12 +396,14 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
             {/* Gradiente abajo */}
             <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,0.55) 72%, rgba(0,0,0,0.92) 100%)' }} />
 
-            {/* Role pill + LIVE */}
+            {/* Role pill + compartir + LIVE */}
             <div className="absolute top-5 left-5 flex items-center gap-1.5">
               <span className="text-xs font-black px-3 py-1 rounded-full"
                 style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.25)', color: '#fff' }}>
                 {cfg.label}
               </span>
+              <ShareProfileButton name={p.name} roleLabel={cfg.label}
+                url={`https://xpeak.es/p/${p.slug || toSlug(p.name)}`} />
               {p.isLive && (
                 <span className="flex items-center gap-1 text-[0.65rem] font-black px-2 py-0.5 rounded-full"
                   style={{ background: '#E53935', color: '#fff', boxShadow: '0 0 10px rgba(229,57,53,0.6)' }}>
