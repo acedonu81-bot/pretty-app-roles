@@ -53,6 +53,56 @@ export const canonicalRole = (role: string | null | undefined): string | null =>
   return role;
 };
 
+/**
+ * Cómo llama cada rol a "un trabajo conseguido" — un DJ tiene "bolos", una
+ * azafata o un fotógrafo tienen "eventos" o "encargos", no "bolos". Usado en
+ * el popup de social-proof de la landing y en cualquier copy que celebre una
+ * contratación cerrada.
+ */
+export const JOB_WORD: Record<string, string> = {
+  dj: 'bolo',
+  staff: 'evento',
+  camarero: 'evento',
+  azafata: 'evento',
+  event_manager: 'evento',
+  promotor: 'evento',
+  catering: 'encargo',
+  makeup: 'encargo',
+  peluqueria: 'encargo',
+  media: 'encargo',
+  tecnico: 'montaje',
+  'grupo-musical': 'bolo',
+  humorista: 'actuación',
+  animador: 'evento',
+  payaso: 'actuación',
+  vestuario: 'encargo',
+  'photo-booth': 'evento',
+  bailarin: 'actuación',
+  mago: 'actuación',
+  speaker: 'evento',
+};
+
+export const jobWord = (role: string | null | undefined): string =>
+  (role && JOB_WORD[canonicalRole(role) ?? role]) || 'trabajo';
+
+/**
+ * Etiqueta de rol tal como se guarda en event_requests.roles_needed (texto
+ * libre del formulario de oferta, ej. "DJ / Artista") → slug real de
+ * profiles.role. Única fuente: antes vivía duplicada dentro de
+ * EventRequestsSection — ver reference_listas_duplicadas_a_mano.
+ */
+export const ROL_UI_A_SLUG: Record<string, string> = {
+  'DJ / Artista': 'dj',
+  'Fotógrafo': 'media',
+  'Camarero / Staff': 'staff',
+  'Maquilladora': 'makeup',
+  'Grupo musical': 'grupo-musical',
+  'Animador': 'animador',
+  'Promotor / RRPP': 'promotor',
+  'Photo Booth': 'photo-booth',
+  'Catering': 'catering',
+};
+
 /** Zona por defecto cuando el usuario no ha configurado su ciudad */
 export const DEFAULT_ZONE = 'Madrid Centro';
 

@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { ROLE_TAGS } from '@/lib/constants';
+import { ROLE_TAGS, ROL_UI_A_SLUG, jobWord, canonicalRole } from '@/lib/constants';
 
 interface EventRequest {
   id: string;
@@ -41,21 +41,10 @@ const FAMILIAS_DJ: { label: string; incluye: string[] }[] = [
   { label: 'Ambiente / Chill', incluye: ['Ambient','Downtempo','Chillout'] },
 ];
 
-// Etiqueta del formulario → slug real de profiles.role, para poder leer
-// ROLE_TAGS y saber qué especialidades tiene ese rol (lo mismo que ya declara
-// cada profesional en su perfil).
+// Etiqueta del formulario → slug real de profiles.role: ROL_UI_A_SLUG vive en
+// constants.ts para poder leer ROLE_TAGS y saber qué especialidades tiene ese
+// rol (lo mismo que ya declara cada profesional en su perfil).
 const ROLES_LIST = ['DJ / Artista', 'Fotógrafo', 'Camarero / Staff', 'Maquilladora', 'Grupo musical', 'Animador', 'Promotor / RRPP', 'Photo Booth', 'Catering'];
-const ROL_UI_A_SLUG: Record<string, string> = {
-  'DJ / Artista': 'dj',
-  'Fotógrafo': 'media',
-  'Camarero / Staff': 'staff',
-  'Maquilladora': 'makeup',
-  'Grupo musical': 'grupo-musical',
-  'Animador': 'animador',
-  'Promotor / RRPP': 'promotor',
-  'Photo Booth': 'photo-booth',
-  'Catering': 'catering',
-};
 
 // Opciones de estilo para un rol pedido: familias para DJ, tags sueltos (los
 // mismos que declara el profesional en su perfil) para el resto.
@@ -91,9 +80,9 @@ const EventRequestsSection = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [savingEdit, setSavingEdit] = useState(false);
 
-  const [responses, setResponses] = useState<Record<string, { id: string; name: string; photo: string | null; message: string | null; hired_at: string | null }[]>>({});
+  const [responses, setResponses] = useState<Record<string, { id: string; name: string; photo: string | null; message: string | null; chosen_at: string | null; hired_at: string | null }[]>>({});
   const [hiring, setHiring] = useState<string | null>(null);
-  const [applied, setApplied] = useState<Record<string, boolean>>({});
+  const [applied, setApplied] = useState<Record<string, { responseId: string; chosenAt: string | null }>>({});
   const [applyText, setApplyText] = useState<Record<string, string>>({});
   const [applying, setApplying] = useState<string | null>(null);
 
@@ -139,14 +128,14 @@ const EventRequestsSection = () => {
     if (!user?.id || !isEmpresario || requests.length === 0) return;
     let cancelado = false;
     (async () => {
-      const agrupado: Record<string, { id: string; name: string; photo: string | null; message: string | null; hired_at: string | null }[]> = {};
+      const agrupado: Record<string, { id: string; name: string; photo: string | null; message: string | null; chosen_at: string | null; hired_at: string | null }[]> = {};
       for (const req of requests) {
         const { data } = await (supabase.rpc as any)('interesados_en_oferta', { p_request_id: req.id });
-        const filas = (data ?? []) as { id: string; nombre: string; foto: string | null; mensaje: string | null; hired_at: string | null }[];
+        const filas = (data ?? []) as { id: string; nombre: string; foto: string | null; mensaje: string | null; chosen_at: string | null; hired_at: string | null }[];
         if (filas.length > 0) {
           agrupado[req.id] = filas.map(f => ({
             id: f.id, name: f.nombre, photo: f.foto,
-            message: f.mensaje, hired_at: f.hired_at,
+            message: f.mensaje, chosen_at: f.chosen_at, hired_at: f.hired_at,
           }));
         }
       }
@@ -161,34 +150,65 @@ const EventRequestsSection = () => {
     if (!user?.id || isEmpresario) return;
     supabase
       .from('event_request_responses' as any)
-      .select('request_id')
+      .select('id, request_id, chosen_at, hired_at')
       .eq('professional_user_id', user.id)
+      .is('hired_at', null)
       .then(({ data }) => {
         if (!data) return;
-        setApplied(Object.fromEntries((data as { request_id: string }[]).map(r => [r.request_id, true])));
+        setApplied(Object.fromEntries(
+          (data as { id: string; request_id: string; chosen_at: string | null }[])
+            .map(r => [r.request_id, { responseId: r.id, chosenAt: r.chosen_at }])
+        ));
       }, () => {});
   }, [user?.id, isEmpresario]);
 
-  // Marcar a quién se contrata. El trigger de BD avisa al elegido, avisa a los
-  // descartados (que si no se quedan esperando) y cierra la oferta.
-  const hireProfessional = async (req: EventRequest, responseId: string, nombre: string) => {
+  // Elegir un candidato: NO cierra la oferta todavía. Avisa al elegido y
+  // espera su confirmación (aceptar/rechazar) — hasta entonces la oferta
+  // sigue abierta y los demás inscritos no ven ningún cambio.
+  const chooseProfessional = async (req: EventRequest, responseId: string, nombre: string) => {
+    setHiring(responseId);
+    const { error } = await supabase
+      .from('event_request_responses' as any)
+      .update({ chosen_at: new Date().toISOString() })
+      .eq('id', responseId);
+    setHiring(null);
+
+    if (error) { toast.error('No se pudo avisar al profesional.'); return; }
+
+    setResponses(prev => ({
+      ...prev,
+      [req.id]: (prev[req.id] ?? []).map(r =>
+        r.id === responseId ? { ...r, chosen_at: new Date().toISOString() } : r
+      ),
+    }));
+    toast.success(`Avisado ${nombre} — en cuanto confirme, se cierra la oferta.`);
+  };
+
+  // El profesional preseleccionado acepta: esto SÍ dispara notify_contratacion
+  // (avisa a los descartados, cierra la oferta).
+  const acceptChoice = async (responseId: string, reqId: string) => {
     setHiring(responseId);
     const { error } = await supabase
       .from('event_request_responses' as any)
       .update({ hired_at: new Date().toISOString() })
       .eq('id', responseId);
     setHiring(null);
+    if (error) { toast.error('No se pudo confirmar.'); return; }
+    setRequests(prev => prev.filter(r => r.id !== reqId));
+    toast.success('¡Bolo confirmado!');
+  };
 
-    if (error) { toast.error('No se pudo confirmar la contratación.'); return; }
-
-    setResponses(prev => ({
-      ...prev,
-      [req.id]: (prev[req.id] ?? []).map(r =>
-        r.id === responseId ? { ...r, hired_at: new Date().toISOString() } : r
-      ),
-    }));
-    setRequests(prev => prev.filter(r => r.id !== req.id));
-    toast.success(`¡Contratación confirmada con ${nombre}!`);
+  // El profesional rechaza: chosen_at vuelve a NULL, la oferta sigue abierta
+  // para que el organizador elija a otro.
+  const rejectChoice = async (responseId: string) => {
+    setHiring(responseId);
+    const { error } = await supabase
+      .from('event_request_responses' as any)
+      .update({ chosen_at: null })
+      .eq('id', responseId);
+    setHiring(null);
+    if (error) { toast.error('No se pudo rechazar.'); return; }
+    toast('Has rechazado la oferta.');
   };
 
   const applyToRequest = async (req: EventRequest) => {
@@ -464,8 +484,8 @@ const EventRequestsSection = () => {
                             {responses[req.id].map(resp => (
                               <div key={resp.id} className="px-3 py-2 rounded-xl"
                                 style={{
-                                  background: resp.hired_at ? 'rgba(34,197,94,0.08)' : 'rgba(212,175,55,0.06)',
-                                  border: `1px solid ${resp.hired_at ? 'rgba(34,197,94,0.3)' : 'rgba(212,175,55,0.18)'}`,
+                                  background: resp.hired_at ? 'rgba(34,197,94,0.08)' : resp.chosen_at ? 'rgba(212,175,55,0.1)' : 'rgba(212,175,55,0.06)',
+                                  border: `1px solid ${resp.hired_at ? 'rgba(34,197,94,0.3)' : resp.chosen_at ? 'rgba(212,175,55,0.4)' : 'rgba(212,175,55,0.18)'}`,
                                 }}>
                                 <div className="flex items-center justify-between gap-2">
                                   <div className="flex items-center gap-2 min-w-0">
@@ -486,13 +506,17 @@ const EventRequestsSection = () => {
                                       style={{ color: '#16a34a' }}>
                                       <Check size={11} /> CONTRATADO
                                     </span>
+                                  ) : resp.chosen_at ? (
+                                    <span className="text-[10px] font-black flex-shrink-0" style={{ color: '#8A6D0F' }}>
+                                      ESPERANDO SU CONFIRMACIÓN
+                                    </span>
                                   ) : (
                                     <button type="button"
-                                      onClick={() => hireProfessional(req, resp.id, resp.name)}
+                                      onClick={() => chooseProfessional(req, resp.id, resp.name)}
                                       disabled={hiring === resp.id}
                                       className="px-2.5 py-1 rounded-lg text-[10px] font-black transition-all hover:scale-105 disabled:opacity-60 flex-shrink-0"
                                       style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-                                      {hiring === resp.id ? '…' : 'Contratar'}
+                                      {hiring === resp.id ? '…' : 'Elegir'}
                                     </button>
                                   )}
                                 </div>
@@ -507,6 +531,29 @@ const EventRequestsSection = () => {
                             Aún no se ha apuntado nadie. Te avisaremos en tus notificaciones.
                           </p>
                         )
+                      ) : applied[req.id]?.chosenAt ? (
+                        <div className="flex flex-col gap-2">
+                          <div className="px-3 py-2 rounded-xl text-xs font-bold text-center"
+                            style={{ background: 'rgba(212,175,55,0.12)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.35)' }}>
+                            ¡Te han elegido para este {jobWord(canonicalRole(ROL_UI_A_SLUG[req.roles_needed?.[0]]))}! Confirma antes de que el organizador elija a otro.
+                          </div>
+                          <div className="flex gap-2">
+                            <button type="button"
+                              onClick={() => acceptChoice(applied[req.id].responseId, req.id)}
+                              disabled={hiring === applied[req.id].responseId}
+                              className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-bold transition-all hover:scale-105 disabled:opacity-60"
+                              style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+                              <Check size={12} /> {hiring === applied[req.id].responseId ? '…' : 'Aceptar'}
+                            </button>
+                            <button type="button"
+                              onClick={() => rejectChoice(applied[req.id].responseId)}
+                              disabled={hiring === applied[req.id].responseId}
+                              className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-bold transition-all hover:bg-black/5 disabled:opacity-60"
+                              style={{ background: 'transparent', color: '#666', border: '1px solid rgba(0,0,0,0.15)' }}>
+                              <X size={12} /> Rechazar
+                            </button>
+                          </div>
+                        </div>
                       ) : applied[req.id] ? (
                         <div className="flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-bold"
                           style={{ background: 'rgba(34,197,94,0.1)', color: '#16a34a', border: '1px solid rgba(34,197,94,0.25)' }}>

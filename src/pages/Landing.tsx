@@ -100,6 +100,7 @@ import bentoImagen from '@/assets/bento-imagen.jpg';
 const bentoAnimacion = 'https://images.pexels.com/photos/1405528/pexels-photo-1405528.jpeg?auto=compress&cs=tinysrgb&w=800';
 import LegalFooter from '@/components/LegalFooter';
 import DemoVideoModal from '@/components/DemoVideoModal';
+import GigWonPopup from '@/components/GigWonPopup';
 
 const SupportChat = lazy(() => import('@/components/dashboard/SupportChat'));
 
@@ -1065,6 +1066,7 @@ const Landing = () => {
       </main>
       <LegalFooter />
       <DemoVideoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
+      <GigWonPopup />
       <Suspense fallback={null}><div className="hidden sm:block"><SupportChat /></div></Suspense>
     </div>
     </>
