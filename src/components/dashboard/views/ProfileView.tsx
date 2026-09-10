@@ -829,7 +829,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                     const groups = isDJ ? DJ_GROUPS.map(g => ({ ...g, items: g.items.filter(i => availableTags.has(i)) })).filter(g => g.items.length > 0) : null;
                     return (
                     <div className="mt-1 rounded-xl overflow-hidden animate-[fadeIn_0.15s_ease]"
-                      style={{ background: 'rgba(12,12,16,0.97)', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 8px 32px rgba(0,0,0,0.6)' }}>
+                      style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.1)', boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}>
                       <div className="p-3 max-h-64 overflow-y-auto space-y-3"
                         style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(212,175,55,0.3) transparent' }}>
                         {groups ? groups.map(group => (
@@ -840,9 +840,9 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                                 <button key={g} type="button" onClick={() => toggleGenre(g)}
                                   className="text-xs font-semibold px-2.5 py-1 rounded-lg transition-all hover:scale-105"
                                   style={{
-                                    background: activeGenres.includes(g) ? 'rgba(226,190,80,0.2)' : 'rgba(255,255,255,0.08)',
-                                    border: `1px solid ${activeGenres.includes(g) ? 'rgba(226,190,80,0.5)' : 'rgba(255,255,255,0.15)'}`,
-                                    color: activeGenres.includes(g) ? '#E2BE50' : 'rgba(255,255,255,0.85)',
+                                    background: activeGenres.includes(g) ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.04)',
+                                    border: `1px solid ${activeGenres.includes(g) ? 'rgba(212,175,55,0.5)' : 'rgba(0,0,0,0.08)'}`,
+                                    color: activeGenres.includes(g) ? '#8A6D0F' : '#333',
                                   }}>
                                   {g}
                                 </button>
@@ -861,11 +861,11 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                           </button>
                         ))}
                       </div>
-                      <div className="flex items-center justify-between px-3 py-2" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-                        <span className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>{activeGenres.length} seleccionados</span>
+                      <div className="flex items-center justify-between px-3 py-2" style={{ borderTop: '1px solid rgba(0,0,0,0.05)' }}>
+                        <span className="text-xs text-muted-foreground">{activeGenres.length} seleccionados</span>
                         <button type="button" onClick={() => setGenreOpen(false)}
                           className="text-xs font-bold px-3 py-1 rounded-lg transition-all"
-                          style={{ background: 'rgba(212,175,55,0.2)', color: '#E2BE50', border: '1px solid rgba(212,175,55,0.4)' }}>
+                          style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.2)' }}>
                           Cerrar
                         </button>
                       </div>
