@@ -388,6 +388,25 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     `, `${esc(d.titulo)} te ha elegido para el evento`),
   }),
 
+  // 2d2. Preselección: el organizador eligió, pero el bolo NO es firme hasta
+  // que el profesional confirma dentro de la app (doble aceptación, 11 sep
+  // 2026) — a diferencia de "contratado", aquí falta un paso, así que el
+  // texto y el CTA insisten en "confirma" y no en "ya es tuyo".
+  preseleccionado: (d) => ({
+    subject: `${esc(d.titulo)} quiere contratarte — confirma tu plaza`,
+    to: d.email,
+    html: base(`
+      <div style="background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.3);border-radius:8px;padding:16px;margin-bottom:20px">
+        <p style="font-size:20px;font-weight:900;margin:0;color:#0a0908">¡Te han elegido!</p>
+      </div>
+      <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+        <strong>${esc(d.titulo)}</strong> quiere contratarte, pero el bolo todavía no es firme:
+        entra en XPEAK y confirma tu plaza antes de que elija a otro profesional.
+      </p>
+      ${btn('Confirmar ahora →', 'https://xpeak.es/dashboard?view=flashbooking')}
+    `, `${esc(d.titulo)} quiere contratarte — confirma tu plaza`),
+  }),
+
   // 2e. Al día siguiente del bolo: pedir la valoración.
   //
   // Es el momento con más probabilidad de respuesta: el evento está fresco.

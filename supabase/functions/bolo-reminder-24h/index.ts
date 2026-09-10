@@ -1,6 +1,10 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
+// Sin esto el aviso de "mañana tienes X" solo llegaba por email — en la app
+// nativa iOS/Android nadie mira el correo, mira el push. Best-effort: si
+// falla, el email ya salió y el recordatorio no se pierde del todo.
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -41,12 +45,17 @@ serve(async (req) => {
 
   for (const ev of events) {
     try {
+      // bolo_24h sigue siendo el maestro (campana/push, ya existía); si el
+      // usuario lo desactivó del todo, ni push ni email. email_bolo_24h es
+      // un gate adicional SOLO para el email, para poder querer push sí /
+      // email no sin desactivar el aviso entero.
       const { data: pref } = await admin
         .from('alert_preferences' as any)
-        .select('bolo_24h')
+        .select('bolo_24h, email_bolo_24h')
         .eq('user_id', ev.user_id)
         .maybeSingle();
       if (!pref || !(pref as any).bolo_24h) continue;
+      const emailHabilitado = (pref as any).email_bolo_24h !== false;
 
       const logKey = `bolo_reminder_24h_${ev.id}`;
       const { data: existing } = await admin
@@ -55,41 +64,51 @@ serve(async (req) => {
         .eq('user_id', ev.user_id)
         .eq('type', logKey)
         .maybeSingle();
-      if (existing) continue;
 
-      const { data: userData, error: userError } = await admin.auth.admin.getUserById(ev.user_id);
-      if (userError || !userData?.user?.email) {
-        console.warn('[bolo-reminder-24h] no email for', ev.user_id);
-        continue;
+      if (!existing && emailHabilitado) {
+        const { data: userData, error: userError } = await admin.auth.admin.getUserById(ev.user_id);
+        if (userError || !userData?.user?.email) {
+          console.warn('[bolo-reminder-24h] no email for', ev.user_id);
+        } else {
+          const res = await fetch(`${supabaseUrl}/functions/v1/send-email`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${serviceKey}` },
+            body: JSON.stringify({
+              type: 'bolo_reminder_24h',
+              data: {
+                email: userData.user.email,
+                title: ev.title,
+                date: ev.event_date,
+                location: ev.location ?? '',
+              },
+            }),
+          });
+
+          if (!res.ok) {
+            console.error('[bolo-reminder-24h] send failed for', ev.user_id, await res.text());
+            errors.push(ev.user_id);
+          } else {
+            try {
+              await admin.from('email_logs' as any).insert({
+                user_id: ev.user_id,
+                type: logKey,
+                sent_at: new Date().toISOString(),
+              });
+            } catch { /* non-critical */ }
+          }
+        }
       }
 
-      const res = await fetch(`${supabaseUrl}/functions/v1/send-email`, {
+      fetch(`${supabaseUrl}/functions/v1/send-push`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${serviceKey}` },
         body: JSON.stringify({
-          type: 'bolo_reminder_24h',
-          data: {
-            email: userData.user.email,
-            title: ev.title,
-            date: ev.event_date,
-            location: ev.location ?? '',
-          },
-        }),
-      });
-
-      if (!res.ok) {
-        console.error('[bolo-reminder-24h] send failed for', ev.user_id, await res.text());
-        errors.push(ev.user_id);
-        continue;
-      }
-
-      try {
-        await admin.from('email_logs' as any).insert({
           user_id: ev.user_id,
-          type: logKey,
-          sent_at: new Date().toISOString(),
-        });
-      } catch { /* non-critical */ }
+          title: `Mañana tienes: ${ev.title}`,
+          body: ev.location ? `Recuerda: ${ev.location}` : 'No olvides revisar los detalles.',
+          url: '/dashboard?view=calendar',
+        }),
+      }).catch(() => { /* non-critical */ });
 
       sent++;
     } catch (e) {

@@ -187,6 +187,11 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
   const [notifMessages, setNotifMessages] = useState(() => localStorage.getItem('xpeak_notif_messages') !== 'false');
   const [notifFlash, setNotifFlash] = useState(() => localStorage.getItem('xpeak_notif_flash') !== 'false');
   const [notifTopWeekend, setNotifTopWeekend] = useState(() => localStorage.getItem('xpeak_notif_topweekend') !== 'false');
+  const [notifBolo24h, setNotifBolo24h] = useState(() => localStorage.getItem('xpeak_notif_bolo24h') !== 'false');
+  // Emails: hasta hoy solo existía el opt-out global (email_opt_out). Estos
+  // dos son por categoría, igual que ya existía para push/campana.
+  const [emailFlash, setEmailFlash] = useState(() => localStorage.getItem('xpeak_email_flash') !== 'false');
+  const [emailBolo24h, setEmailBolo24h] = useState(() => localStorage.getItem('xpeak_email_bolo24h') !== 'false');
 
 
   // Account deletion
@@ -230,7 +235,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
   useEffect(() => {
     if (!user) return;
     supabase.from('alert_preferences' as any)
-      .select('notif_messages, notif_flash, notif_top_weekend')
+      .select('notif_messages, notif_flash, notif_top_weekend, bolo_24h, email_flash, email_bolo_24h')
       .eq('user_id', user.id)
       .maybeSingle()
       .then(({ data, error }) => {
@@ -239,6 +244,9 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
         if (typeof row.notif_messages === 'boolean') setNotifMessages(row.notif_messages);
         if (typeof row.notif_flash === 'boolean') setNotifFlash(row.notif_flash);
         if (typeof row.notif_top_weekend === 'boolean') setNotifTopWeekend(row.notif_top_weekend);
+        if (typeof row.bolo_24h === 'boolean') setNotifBolo24h(row.bolo_24h);
+        if (typeof row.email_flash === 'boolean') setEmailFlash(row.email_flash);
+        if (typeof row.email_bolo_24h === 'boolean') setEmailBolo24h(row.email_bolo_24h);
       });
   }, [user]);
 
@@ -902,23 +910,43 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
           );
         })()}
 
+        {/* Notificaciones push (campana + push nativo/web) — solo tiene sentido
+            si el maestro de arriba está activo, pero se dejan visibles igual
+            para no perder la preferencia guardada si luego se reactiva. */}
+        <p className="text-[10px] font-black uppercase tracking-wider mt-4 mb-1.5" style={{ color: '#999' }}>
+          Notificaciones (push y campana)
+        </p>
         <ToggleRow label="Mensajes nuevos" desc="Alerta cuando recibes un mensaje directo" checked={notifMessages}
           onChange={() => { const v = !notifMessages; setNotifMessages(v); persistNotifPref('notif_messages', 'xpeak_notif_messages', v); }} />
         <ToggleRow
           label="Flash Booking"
-          desc={isEmpresario ? 'Respuestas a tus publicaciones de trabajo urgente' : 'Ofertas urgentes de empresarios'}
+          desc={isEmpresario ? 'Respuestas a tus publicaciones de trabajo urgente' : 'Nuevas ofertas, te eligen, te contratan'}
           checked={notifFlash}
           onChange={() => { const v = !notifFlash; setNotifFlash(v); persistNotifPref('notif_flash', 'xpeak_notif_flash', v); }} />
         {!isEmpresario && (
           <ToggleRow label="Top Weekend" desc="Cuando tu perfil asciende al ranking" checked={notifTopWeekend}
             onChange={() => { const v = !notifTopWeekend; setNotifTopWeekend(v); persistNotifPref('notif_top_weekend', 'xpeak_notif_topweekend', v); }} />
         )}
+        <ToggleRow label="Recordatorio de bolo (24h antes)" desc="Aviso el día antes de un evento en tu calendario" checked={notifBolo24h}
+          onChange={() => { const v = !notifBolo24h; setNotifBolo24h(v); persistNotifPref('bolo_24h', 'xpeak_notif_bolo24h', v); }} />
+
+        <p className="text-[10px] font-black uppercase tracking-wider mt-5 mb-1.5" style={{ color: '#999' }}>
+          Emails
+        </p>
         <ToggleRow label="Emails de mensajes" desc="Recibir email cuando alguien te escribe por chat"
           checked={!profile.email_opt_out}
           onChange={async () => {
             const next = !profile.email_opt_out;
             await profile.updateField({ email_opt_out: next });
             toast.success(next ? 'Emails de mensajes desactivados' : 'Emails de mensajes activados');
+          }} />
+        <ToggleRow
+          label="Emails de Flash Booking"
+          desc={isEmpresario ? 'Email cuando alguien responde a tu oferta' : 'Email de nuevas ofertas, preseleccionado, contratado'}
+          checked={emailFlash}
+          onChange={() => { const v = !emailFlash; setEmailFlash(v); persistNotifPref('email_flash', 'xpeak_email_flash', v); }} />
+        <ToggleRow label="Email de recordatorio de bolo (24h antes)" desc="Email el día antes de un evento en tu calendario" checked={emailBolo24h}
+          onChange={() => { const v = !emailBolo24h; setEmailBolo24h(v); persistNotifPref('email_bolo_24h', 'xpeak_email_bolo24h', v);
           }} />
       </Section>
 
