@@ -293,6 +293,53 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     `),
   }),
 
+  // 2c. La oferta se cubrió — aviso a quien se apuntó y no salió elegido.
+  //
+  // 10 sep 2026: dos DJs se apuntaron al Burger Gourmet Fest en 17 minutos y el
+  // organizador cerró el bolo por teléfono con otro de fuera. Solo se les avisó
+  // por campana, que ninguno vio. Quien responde rápido y se queda esperando sin
+  // noticias es el que deja de responder la próxima vez.
+  oferta_cubierta: (d) => ({
+    subject: `La oferta de ${esc(d.titulo)} ya está cubierta`,
+    to: d.email,
+    html: base(`
+      <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+        Hola <strong>${esc(d.name)}</strong>, gracias por responder tan rápido a la oferta
+        de <strong>${esc(d.titulo)}</strong>.
+      </p>
+      <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+        La plaza ya está cubierta, así que puedes liberar esa fecha. Te avisamos para que
+        no te quedes esperando.
+      </p>
+      <p style="color:#0a0908;font-size:13px;line-height:1.6;margin:0 0 8px">
+        Responder de los primeros es justo lo que hay que hacer: en las próximas ofertas
+        cuenta a tu favor.
+      </p>
+      ${btn('Ver ofertas abiertas →', 'https://xpeak.es/dashboard?view=flashbooking')}
+    `, `El bolo se ha cerrado con otro profesional`),
+  }),
+
+  // 2d. Contratación cerrada — aviso al profesional elegido.
+  contratado: (d) => ({
+    subject: `¡Te han contratado para ${esc(d.titulo)}!`,
+    to: d.email,
+    html: base(`
+      <div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.25);border-radius:8px;padding:16px;margin-bottom:20px">
+        <p style="font-size:20px;font-weight:900;margin:0;color:#0a0908">¡El bolo es tuyo!</p>
+      </div>
+      <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+        Hola <strong>${esc(d.name)}</strong>, <strong>${esc(d.titulo)}</strong> te ha elegido
+        para el evento. Entra en XPEAK para ver los detalles y hablar directamente con quien
+        te contrata.
+      </p>
+      ${rows([
+        ['Dónde', esc(d.lugar ?? 'Por concretar')],
+        ['Cuándo', esc(d.fecha ?? 'Por concretar')],
+      ])}
+      ${btn('Ver los detalles →', 'https://xpeak.es/dashboard?view=flashbooking')}
+    `, `${esc(d.titulo)} te ha elegido para el evento`),
+  }),
+
   // 2a. Oferta Flash publicada — aviso al PROFESIONAL del rol buscado.
   //
   // Antes, publicar una oferta solo escribía una fila en flash_jobs: el toast
