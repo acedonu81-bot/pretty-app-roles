@@ -354,6 +354,33 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     `, `${esc(d.titulo)} te ha elegido para el evento`),
   }),
 
+  // 2e. Al día siguiente del bolo: pedir la valoración.
+  //
+  // Es el momento con más probabilidad de respuesta: el evento está fresco.
+  // Se pide a las dos partes, y se les invita a contar cómo fue — una reseña
+  // con historia vale mucho más que cinco estrellas sueltas.
+  pedir_valoracion: (d) => ({
+    subject: `¿Cómo fue ${esc(d.titulo)}?`,
+    to: d.email,
+    html: base(`
+      <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+        Hola <strong>${esc(d.name)}</strong>, ayer fue <strong>${esc(d.titulo)}</strong>.
+        ${d.es_organizador
+          ? `¿Qué tal salió con <strong>${esc(d.otra_parte)}</strong>?`
+          : `¿Qué tal la experiencia con <strong>${esc(d.otra_parte)}</strong>?`}
+      </p>
+      <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+        Cuéntanoslo en dos líneas. ${d.es_organizador
+          ? 'Tu valoración ayuda a otros organizadores a elegir con criterio.'
+          : 'Las valoraciones son lo que hace que te contraten la próxima vez.'}
+      </p>
+      ${btn('Dejar mi valoración →', `https://xpeak.es/dashboard?view=valorar&e=${encodeURIComponent(String(d.ref ?? ''))}`)}
+      <p style="color:#9CA3AF;font-size:12px;margin-top:20px">
+        Un minuto de tu tiempo. Si prefieres no valorar, ignora este correo.
+      </p>
+    `, `Cuéntanos qué tal fue ${esc(d.titulo)}`),
+  }),
+
   // 2a. Oferta Flash publicada — aviso al PROFESIONAL del rol buscado.
   //
   // Antes, publicar una oferta solo escribía una fila en flash_jobs: el toast
