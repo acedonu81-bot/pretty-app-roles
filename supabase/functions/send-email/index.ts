@@ -108,10 +108,31 @@ const confirmSeal = () => `
     <div class="xpk-pop" style="position:relative;width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,rgba(212,175,55,0.22),rgba(212,175,55,0.08));border:1px solid rgba(212,175,55,0.45);box-shadow:0 8px 20px rgba(212,175,55,0.32);display:table;animation:xpk-pop 0.55s cubic-bezier(0.34,1.56,0.64,1)"><div style="display:table-cell;text-align:center;vertical-align:middle;font-size:26px;font-weight:800;color:#7a6216">✓</div></div>
   </div>`;
 
+/**
+ * Tabla etiqueta/valor de los correos.
+ *
+ * La etiqueta ocupaba 140px fijos y el valor el resto, así que un texto largo
+ * (la descripción de un evento, por ejemplo) se aplastaba en una columna
+ * estrecha y salía partido en dos palabras por línea — ilegible en móvil, que
+ * es donde se leen casi todos.
+ *
+ * Ahora, si el valor pasa de 60 caracteres, la etiqueta va encima y el texto
+ * ocupa el ancho completo. Los valores cortos (fecha, lugar, pago) siguen en
+ * dos columnas, que para ellos se lee mejor.
+ */
 const rows = (pairs: [string, string][]) =>
-  `<table style="width:100%;border-collapse:collapse">${pairs.map(([k, v]) =>
-    `<tr><td style="padding:10px 0;color:#9CA3AF;font-size:12px;width:140px;border-bottom:1px solid rgba(10,9,8,0.06)">${esc(k)}</td><td style="padding:10px 0;color:#0a0908;font-size:13px;font-weight:600;border-bottom:1px solid rgba(10,9,8,0.06)">${esc(v) || '—'}</td></tr>`
-  ).join('')}</table>`;
+  `<table style="width:100%;border-collapse:collapse">${pairs.map(([k, v]) => {
+    const val = esc(v) || '—';
+    const borde = 'border-bottom:1px solid rgba(10,9,8,0.06)';
+    if (val.length > 60) {
+      return `<tr><td colspan="2" style="padding:10px 0;${borde}">`
+        + `<div style="color:#9CA3AF;font-size:12px;margin-bottom:4px">${esc(k)}</div>`
+        + `<div style="color:#0a0908;font-size:13px;font-weight:600;line-height:1.6">${val}</div>`
+        + `</td></tr>`;
+    }
+    return `<tr><td style="padding:10px 12px 10px 0;color:#9CA3AF;font-size:12px;white-space:nowrap;${borde}">${esc(k)}</td>`
+      + `<td style="padding:10px 0;color:#0a0908;font-size:13px;font-weight:600;line-height:1.6;${borde}">${val}</td></tr>`;
+  }).join('')}</table>`;
 
 const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to: string; replyTo?: string }> = {
 
