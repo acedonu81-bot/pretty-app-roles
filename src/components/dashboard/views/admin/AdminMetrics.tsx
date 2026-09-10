@@ -12,6 +12,9 @@ interface Metrics {
   bookingsPending: number;
   bookingsAccepted: number;
   bookingsRejected: number;
+  eventRequestsTotal: number;
+  eventRequestsOpen: number;
+  eventRequestsHired: number;
 }
 
 const AdminMetrics = () => {
@@ -37,6 +40,9 @@ const AdminMetrics = () => {
         { count: bookingsPending },
         { count: bookingsAccepted },
         { count: bookingsRejected },
+        { count: eventRequestsTotal },
+        { count: eventRequestsOpen },
+        { count: eventRequestsHired },
       ] = await Promise.all([
         supabase.from('profiles').select('id', { count: 'exact', head: true }),
         supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('role', 'empresario'),
@@ -51,6 +57,12 @@ const AdminMetrics = () => {
         supabase.from('flash_bookings').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
         supabase.from('flash_bookings').select('id', { count: 'exact', head: true }).in('status', ['confirmed', 'accepted', 'completed']),
         supabase.from('flash_bookings').select('id', { count: 'exact', head: true }).eq('status', 'rejected'),
+        // Las ofertas de evento son la otra mitad del Flash Booking y no se
+        // contaban: el panel decía "0 solicitudes" con una oferta viva y dos
+        // profesionales apuntados.
+        supabase.from('event_requests' as any).select('id', { count: 'exact', head: true }),
+        supabase.from('event_requests' as any).select('id', { count: 'exact', head: true }).eq('status', 'open'),
+        supabase.from('event_request_responses' as any).select('id', { count: 'exact', head: true }).not('hired_at', 'is', null),
       ]);
       setMetrics({
         totalUsers: totalUsers ?? 0,
@@ -62,6 +74,9 @@ const AdminMetrics = () => {
         bookingsPending: bookingsPending ?? 0,
         bookingsAccepted: bookingsAccepted ?? 0,
         bookingsRejected: bookingsRejected ?? 0,
+        eventRequestsTotal: eventRequestsTotal ?? 0,
+        eventRequestsOpen: eventRequestsOpen ?? 0,
+        eventRequestsHired: eventRequestsHired ?? 0,
       });
       setLoading(false);
     };
@@ -80,9 +95,13 @@ const AdminMetrics = () => {
   ] : [];
 
   const bookingKpis = metrics ? [
-    { label: 'Solicitudes Totales', value: metrics.bookingsTotal,    color: '#8A6D0F' },
-    { label: 'Pendientes',          value: metrics.bookingsPending,  color: '#D97706' },
-    { label: 'Aceptadas',           value: metrics.bookingsAccepted, color: '#22c55e' },
+    // Incluye flash_bookings (cliente → un profesional) y event_requests
+    // (organizador → oferta abierta): son las dos caras del Flash Booking.
+    // Antes solo se contaba la primera y el panel decía "0 solicitudes" con
+    // una oferta viva y profesionales apuntados.
+    { label: 'Solicitudes Totales', value: metrics.bookingsTotal + metrics.eventRequestsTotal, color: '#8A6D0F' },
+    { label: 'Pendientes',          value: metrics.bookingsPending + metrics.eventRequestsOpen, color: '#D97706' },
+    { label: 'Aceptadas',           value: metrics.bookingsAccepted + metrics.eventRequestsHired, color: '#22c55e' },
     { label: 'Rechazadas',          value: metrics.bookingsRejected, color: '#dc2626' },
   ] : [];
 

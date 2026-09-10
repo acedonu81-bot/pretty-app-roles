@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Calendar, MapPin, Euro, Users, Plus, X, Send, ChevronDown, ChevronUp, Check } from 'lucide-react';
+import { Calendar, MapPin, Euro, Users, Plus, X, Send, ChevronDown, ChevronUp, Check, Pencil } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
@@ -12,6 +12,7 @@ interface EventRequest {
   event_type: string;
   city: string;
   event_date: string | null;
+  event_dates: string[] | null;
   budget_min: number | null;
   budget_max: number | null;
   roles_needed: string[];
@@ -63,6 +64,8 @@ const EventRequestsSection = () => {
   const [showForm, setShowForm] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [savingEdit, setSavingEdit] = useState(false);
 
   const [responses, setResponses] = useState<Record<string, { id: string; name: string; photo: string | null; message: string | null; hired_at: string | null }[]>>({});
   const [hiring, setHiring] = useState<string | null>(null);
@@ -74,7 +77,8 @@ const EventRequestsSection = () => {
     client_name: '',
     event_type: '',
     city: '',
-    event_date: '',
+    event_dates: [] as string[],
+    estilos: [] as string[],
     budget_min: '',
     budget_max: '',
     roles_needed: [] as string[],
@@ -202,6 +206,57 @@ const EventRequestsSection = () => {
     }
   };
 
+  // El organizador se equivoca en la ciudad o el pago y hasta ahora tenía que
+  // borrar la oferta entera y publicar otra — perdiendo las respuestas que ya
+  // tuviera. Reutiliza el mismo modal de publicar, precargado.
+  const startEdit = (req: EventRequest) => {
+    setForm({
+      client_name: req.client_name,
+      event_type: req.event_type,
+      city: req.city,
+      event_dates: req.event_dates ?? (req.event_date ? [req.event_date] : []),
+      estilos: [],
+      budget_min: req.budget_min?.toString() ?? '',
+      budget_max: req.budget_max?.toString() ?? '',
+      roles_needed: req.roles_needed ?? [],
+      description: req.description ?? '',
+      contact_email: req.contact_email ?? '',
+      contact_phone: req.contact_phone ?? '',
+    });
+    setEditingId(req.id);
+    setShowForm(true);
+  };
+
+  const saveEdit = async () => {
+    if (!editingId || !form.client_name || !form.event_type || !form.city) return;
+    setSavingEdit(true);
+    const { data, error } = await supabase
+      .from('event_requests' as any)
+      .update({
+        client_name: form.client_name.trim(),
+        event_type: form.event_type,
+        city: form.city.trim(),
+        event_date: form.event_dates[0] || null,
+        event_dates: form.event_dates.length > 0 ? form.event_dates : null,
+        budget_min: form.budget_min ? parseInt(form.budget_min) : null,
+        budget_max: form.budget_max ? parseInt(form.budget_max) : null,
+        roles_needed: form.roles_needed,
+        description: form.description.trim() || null,
+        contact_email: form.contact_email.trim() || null,
+        contact_phone: form.contact_phone.trim() || null,
+      })
+      .eq('id', editingId)
+      .select()
+      .single();
+    setSavingEdit(false);
+    if (error) { toast.error('No se pudo guardar el cambio.'); return; }
+    setRequests(prev => prev.map(r => r.id === editingId ? (data as EventRequest) : r));
+    setShowForm(false);
+    setEditingId(null);
+    setForm({ client_name: '', event_type: '', city: '', event_dates: [], estilos: [], budget_min: '', budget_max: '', roles_needed: [], description: '', contact_email: '', contact_phone: '' });
+    toast.success('Oferta actualizada.');
+  };
+
   const toggleRole = (r: string) => {
     setForm(f => ({
       ...f,
@@ -222,7 +277,11 @@ const EventRequestsSection = () => {
         client_user_id: user?.id ?? null,
         event_type: form.event_type,
         city: form.city.trim(),
-        event_date: form.event_date || null,
+        // event_date conserva la primera fecha por compatibilidad (la lee el
+        // trigger de aviso y el cron de valoración); event_dates lleva todas.
+        event_date: form.event_dates[0] || null,
+        event_dates: form.event_dates.length > 0 ? form.event_dates : null,
+        estilos: form.estilos.length > 0 ? form.estilos : null,
         budget_min: form.budget_min ? parseInt(form.budget_min) : null,
         budget_max: form.budget_max ? parseInt(form.budget_max) : null,
         roles_needed: form.roles_needed,
@@ -237,7 +296,7 @@ const EventRequestsSection = () => {
     toast.success('¡Solicitud publicada! Los profesionales podrán contactarte.');
     setRequests(prev => [data as EventRequest, ...prev]);
     setShowForm(false);
-    setForm({ client_name: '', event_type: '', city: '', event_date: '', budget_min: '', budget_max: '', roles_needed: [], description: '', contact_email: '', contact_phone: '' });
+    setForm({ client_name: '', event_type: '', city: '', event_dates: [], estilos: [], budget_min: '', budget_max: '', roles_needed: [], description: '', contact_email: '', contact_phone: '' });
   };
 
   return (
@@ -306,6 +365,16 @@ const EventRequestsSection = () => {
                         {req.client_name}
                       </p>
                     </div>
+                    {/* Solo el dueño de la oferta la edita. Antes había que
+                        borrarla y publicar otra, perdiendo las respuestas ya
+                        recibidas. */}
+                    {req.client_user_id === user?.id && (
+                      <button type="button" onClick={() => startEdit(req)}
+                        className="flex-shrink-0 flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold transition-all hover:scale-105"
+                        style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#555' }}>
+                        <Pencil size={10} /> Editar
+                      </button>
+                    )}
                   </div>
 
                   {/* Meta */}
@@ -313,7 +382,11 @@ const EventRequestsSection = () => {
                     <span className="flex items-center gap-1 text-xs" style={{ color: '#333' }}>
                       <MapPin size={10} /> {req.city}
                     </span>
-                    {req.event_date && (
+                    {req.event_dates && req.event_dates.length > 1 ? (
+                      <span className="flex items-center gap-1 text-xs" style={{ color: '#333' }}>
+                        <Calendar size={10} /> {req.event_dates.map(fmtDate).join(' y ')}
+                      </span>
+                    ) : req.event_date && (
                       <span className="flex items-center gap-1 text-xs" style={{ color: '#333' }}>
                         <Calendar size={10} /> {fmtDate(req.event_date)}
                       </span>
@@ -447,21 +520,25 @@ const EventRequestsSection = () => {
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-4"
           style={{ background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}
-          onClick={e => { if (e.target === e.currentTarget) setShowForm(false); }}>
+          onClick={e => { if (e.target === e.currentTarget) { setShowForm(false); setEditingId(null); } }}>
           <div className="w-full max-w-lg rounded-3xl overflow-hidden"
             style={{ background: '#fff', boxShadow: '0 24px 64px rgba(0,0,0,0.2)', maxHeight: '90vh', overflowY: 'auto' }}>
             <div className="sticky top-0 flex items-center justify-between px-6 py-4"
               style={{ background: '#fff', borderBottom: '1px solid rgba(0,0,0,0.07)', zIndex: 1 }}>
               <div>
-                <h4 className="font-black text-base" style={{ fontFamily: 'Syne, sans-serif' }}>Publicar solicitud de evento</h4>
-                <p className="text-xs" style={{ color: '#333' }}>Visible 7 días para todos los profesionales</p>
+                <h4 className="font-black text-base" style={{ fontFamily: 'Syne, sans-serif' }}>
+                  {editingId ? 'Editar solicitud de evento' : 'Publicar solicitud de evento'}
+                </h4>
+                <p className="text-xs" style={{ color: '#333' }}>
+                  {editingId ? 'Los profesionales ya apuntados verán los cambios' : 'Visible 7 días para todos los profesionales'}
+                </p>
               </div>
-              <button onClick={() => setShowForm(false)} className="p-1.5 rounded-lg hover:bg-black/5">
+              <button onClick={() => { setShowForm(false); setEditingId(null); }} className="p-1.5 rounded-lg hover:bg-black/5">
                 <X size={16} style={{ color: '#333' }} />
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-4">
+            <form onSubmit={e => { e.preventDefault(); editingId ? saveEdit() : handleSubmit(e); }} className="p-6 flex flex-col gap-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="sm:col-span-2">
                   <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>TU NOMBRE O EMPRESA *</label>
@@ -490,10 +567,40 @@ const EventRequestsSection = () => {
                 </div>
 
                 <div>
-                  <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>FECHA DEL EVENTO</label>
-                  <input type="date" value={form.event_date} onChange={e => setForm(f => ({ ...f, event_date: e.target.value }))}
+                  <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>
+                    FECHAS DEL EVENTO
+                  </label>
+                  {/* Varias fechas: el Burger Gourmet Fest era viernes Y sábado
+                      y solo cabía una, así que el segundo día acabó explicado
+                      en la descripción, donde ningún recordatorio lo lee. */}
+                  {form.event_dates.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mb-2">
+                      {form.event_dates.map(d => (
+                        <span key={d} className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-bold"
+                          style={{ background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.35)', color: '#8A6D0F' }}>
+                          {new Date(d + 'T12:00:00').toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })}
+                          <button type="button" aria-label={`Quitar ${d}`}
+                            onClick={() => setForm(f => ({ ...f, event_dates: f.event_dates.filter(x => x !== d) }))}
+                            className="opacity-60 hover:opacity-100">
+                            <X size={10} />
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  <input type="date" value=""
+                    onChange={e => {
+                      const v = e.target.value;
+                      if (!v) return;
+                      setForm(f => f.event_dates.includes(v)
+                        ? f
+                        : { ...f, event_dates: [...f.event_dates, v].sort() });
+                    }}
                     className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none"
                     style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
+                  <p className="text-[10px] mt-1" style={{ color: '#888' }}>
+                    Añade un día cada vez si el evento dura varias jornadas.
+                  </p>
                 </div>
 
                 <div>
@@ -529,6 +636,39 @@ const EventRequestsSection = () => {
                 </div>
               </div>
 
+              {/* Estilo de música: solo si se pide DJ. Antes una oferta de DJ
+                  avisaba a los 47 géneros por igual — al de techno le llegaba
+                  una boda de pachanga — y eso quema la lista rápido. */}
+              {form.roles_needed.includes('DJ / Artista') && (
+                <div>
+                  <label className="text-xs font-black mb-2 block" style={{ color: '#333' }}>
+                    ¿QUÉ ESTILO DE MÚSICA QUIERES?
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {ESTILOS_MUSICA.map(e => {
+                      const sel = e.label === 'De todo un poco'
+                        ? form.estilos.length === 0
+                        : e.incluye.every(g => form.estilos.includes(g)) && form.estilos.length > 0;
+                      return (
+                        <button key={e.label} type="button"
+                          onClick={() => setForm(f => ({
+                            ...f,
+                            estilos: e.label === 'De todo un poco' ? [] : e.incluye,
+                          }))}
+                          className="px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all"
+                          style={{
+                            background: sel ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.04)',
+                            border: `1px solid ${sel ? 'rgba(212,175,55,0.5)' : 'rgba(0,0,0,0.08)'}`,
+                            color: sel ? '#B8941E' : '#222',
+                          }}>
+                          {e.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
               <div>
                 <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>DESCRIPCIÓN</label>
                 <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
@@ -554,14 +694,18 @@ const EventRequestsSection = () => {
                 </div>
               </div>
 
-              <p className="text-[10px]" style={{ color: '#333' }}>
-                Al publicar aceptas que los profesionales de XPEAK puedan ver y responder a tu solicitud. Visible 7 días.
-              </p>
+              {!editingId && (
+                <p className="text-[10px]" style={{ color: '#333' }}>
+                  Al publicar aceptas que los profesionales de XPEAK puedan ver y responder a tu solicitud. Visible 7 días.
+                </p>
+              )}
 
-              <button type="submit" disabled={submitting}
+              <button type="submit" disabled={submitting || savingEdit}
                 className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-black text-sm transition-all"
-                style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', opacity: submitting ? 0.7 : 1 }}>
-                <Send size={14} /> {submitting ? 'Publicando...' : 'Publicar solicitud'}
+                style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', opacity: (submitting || savingEdit) ? 0.7 : 1 }}>
+                <Send size={14} /> {editingId
+                  ? (savingEdit ? 'Guardando...' : 'Guardar cambios')
+                  : (submitting ? 'Publicando...' : 'Publicar solicitud')}
               </button>
             </form>
           </div>
