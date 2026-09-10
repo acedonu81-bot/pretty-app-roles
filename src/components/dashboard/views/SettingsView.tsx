@@ -630,11 +630,19 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
     }
   };
 
-  // Cierra sesión al terminar (o saltarse) la encuesta de salida.
+  // Cierra la baja: borra auth.users vía Edge Function (requiere service_role,
+  // por eso no puede hacerse desde el cliente) y luego cierra sesión. Antes
+  // esto quedaba "pendiente de soporte", lo cual incumple el borrado
+  // inmediato que exige Apple (guideline 5.1.1(v)) en apps con alta de cuenta.
   const finishAccountDeletion = async () => {
     setShowExitSurvey(false);
+    const { error } = await supabase.functions.invoke('delete-account');
     await signOut();
-    toast.success('Datos personales suprimidos y sesión cerrada (RGPD Art. 17). La baja definitiva de la cuenta de acceso se completa desde soporte.');
+    if (error) {
+      toast.error('Tus datos se han suprimido, pero hubo un problema dando de baja el acceso. Contacta con soporte para completarlo.');
+    } else {
+      toast.success('Cuenta eliminada por completo (RGPD Art. 17).');
+    }
   };
 
   const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -1056,9 +1064,9 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
               style={{ background: 'rgba(255,95,86,0.04)', border: '1px solid rgba(255,95,86,0.1)' }}>
               <p className="font-bold mb-1" style={{ color: '#ff5f56' }}>Eliminar cuenta permanentemente</p>
               <p className="text-muted-foreground">
-                Al eliminar tu cuenta, todos tus datos personales serán anonimizados de forma inmediata conforme al{' '}
-                <span className="font-bold">RGPD Art. 17</span> (derecho al olvido). El registro de autenticación
-                se purgará en un plazo de 30 días. Esta acción no se puede deshacer.
+                Al eliminar tu cuenta, todos tus datos personales y tu acceso serán suprimidos de forma inmediata
+                conforme al <span className="font-bold">RGPD Art. 17</span> (derecho al olvido). Esta acción no se
+                puede deshacer.
               </p>
             </div>
 
