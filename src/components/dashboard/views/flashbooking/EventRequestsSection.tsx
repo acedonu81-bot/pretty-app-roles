@@ -49,7 +49,8 @@ const EventRequestsSection = () => {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  const [responses, setResponses] = useState<Record<string, { id: string; name: string; message: string | null }[]>>({});
+  const [responses, setResponses] = useState<Record<string, { id: string; name: string; message: string | null; hired_at: string | null }[]>>({});
+  const [hiring, setHiring] = useState<string | null>(null);
   const [applied, setApplied] = useState<Record<string, boolean>>({});
   const [applyText, setApplyText] = useState<Record<string, string>>({});
   const [applying, setApplying] = useState<string | null>(null);
@@ -93,10 +94,10 @@ const EventRequestsSection = () => {
     if (!user?.id || !isEmpresario || requests.length === 0) return;
     supabase
       .from('event_request_responses' as any)
-      .select('id, request_id, message, professional_user_id')
+      .select('id, request_id, message, professional_user_id, hired_at')
       .in('request_id', requests.map(r => r.id))
       .then(async ({ data }) => {
-        const rows = (data ?? []) as { id: string; request_id: string; message: string | null; professional_user_id: string }[];
+        const rows = (data ?? []) as { id: string; request_id: string; message: string | null; professional_user_id: string; hired_at: string | null }[];
         if (rows.length === 0) return;
         const { data: profs } = await supabase
           .from('profiles')
@@ -105,12 +106,13 @@ const EventRequestsSection = () => {
         const nombres = Object.fromEntries(
           (profs ?? []).map((p: { user_id: string; display_name: string | null }) => [p.user_id, p.display_name || 'Profesional'])
         );
-        const agrupado: Record<string, { id: string; name: string; message: string | null }[]> = {};
+        const agrupado: Record<string, { id: string; name: string; message: string | null; hired_at: string | null }[]> = {};
         rows.forEach(r => {
           (agrupado[r.request_id] ??= []).push({
             id: r.id,
             name: nombres[r.professional_user_id] ?? 'Profesional',
             message: r.message,
+            hired_at: r.hired_at,
           });
         });
         setResponses(agrupado);
@@ -130,6 +132,28 @@ const EventRequestsSection = () => {
         setApplied(Object.fromEntries((data as { request_id: string }[]).map(r => [r.request_id, true])));
       }, () => {});
   }, [user?.id, isEmpresario]);
+
+  // Marcar a quién se contrata. El trigger de BD avisa al elegido, avisa a los
+  // descartados (que si no se quedan esperando) y cierra la oferta.
+  const hireProfessional = async (req: EventRequest, responseId: string, nombre: string) => {
+    setHiring(responseId);
+    const { error } = await supabase
+      .from('event_request_responses' as any)
+      .update({ hired_at: new Date().toISOString() })
+      .eq('id', responseId);
+    setHiring(null);
+
+    if (error) { toast.error('No se pudo confirmar la contratación.'); return; }
+
+    setResponses(prev => ({
+      ...prev,
+      [req.id]: (prev[req.id] ?? []).map(r =>
+        r.id === responseId ? { ...r, hired_at: new Date().toISOString() } : r
+      ),
+    }));
+    setRequests(prev => prev.filter(r => r.id !== req.id));
+    toast.success(`¡Contratación confirmada con ${nombre}!`);
+  };
 
   const applyToRequest = async (req: EventRequest) => {
     if (!user?.id) { toast.error('Inicia sesión para apuntarte.'); return; }
@@ -334,8 +358,27 @@ const EventRequestsSection = () => {
                             </p>
                             {responses[req.id].map(resp => (
                               <div key={resp.id} className="px-3 py-2 rounded-xl"
-                                style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.18)' }}>
-                                <p className="text-xs font-bold" style={{ color: '#111' }}>{resp.name}</p>
+                                style={{
+                                  background: resp.hired_at ? 'rgba(34,197,94,0.08)' : 'rgba(212,175,55,0.06)',
+                                  border: `1px solid ${resp.hired_at ? 'rgba(34,197,94,0.3)' : 'rgba(212,175,55,0.18)'}`,
+                                }}>
+                                <div className="flex items-center justify-between gap-2">
+                                  <p className="text-xs font-bold" style={{ color: '#111' }}>{resp.name}</p>
+                                  {resp.hired_at ? (
+                                    <span className="flex items-center gap-1 text-[10px] font-black"
+                                      style={{ color: '#16a34a' }}>
+                                      <Check size={11} /> CONTRATADO
+                                    </span>
+                                  ) : (
+                                    <button type="button"
+                                      onClick={() => hireProfessional(req, resp.id, resp.name)}
+                                      disabled={hiring === resp.id}
+                                      className="px-2.5 py-1 rounded-lg text-[10px] font-black transition-all hover:scale-105 disabled:opacity-60 flex-shrink-0"
+                                      style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+                                      {hiring === resp.id ? '…' : 'Contratar'}
+                                    </button>
+                                  )}
+                                </div>
                                 {resp.message && (
                                   <p className="text-xs mt-0.5" style={{ color: '#333' }}>{resp.message}</p>
                                 )}

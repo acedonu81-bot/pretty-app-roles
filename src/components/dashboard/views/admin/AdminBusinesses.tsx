@@ -39,9 +39,13 @@ const AdminBusinesses = () => {
       if (businesses.length === 0) { setRows([]); setLoading(false); return; }
 
       const ids = businesses.map(b => b.user_id);
-      const [{ data: bookings }, { data: jobs }] = await Promise.all([
+      // event_requests va aparte: las ofertas publicadas desde Flash Booking
+      // viven en su propia tabla y sin esto un organizador con una oferta viva
+      // salía como "Inactivo" con 0 en todo (caso Burger Gourmet Fest, 10 sep).
+      const [{ data: bookings }, { data: jobs }, { data: reqs }] = await Promise.all([
         supabase.from('flash_bookings').select('created_by, agreed_price, status, created_at').in('created_by', ids),
         supabase.from('flash_jobs').select('employer_id, created_at').in('employer_id', ids),
+        supabase.from('event_requests' as any).select('client_user_id, created_at').in('client_user_id', ids),
       ]);
 
       const bookingsByBiz = new Map<string, { count: number; spend: number; lastAt: string | null }>();
@@ -62,6 +66,17 @@ const AdminBusinesses = () => {
         const cur = jobsByBiz.get(key) ?? { count: 0, lastAt: null };
         cur.count += 1;
         if (!cur.lastAt || (j.created_at as string) > cur.lastAt) cur.lastAt = j.created_at as string;
+        jobsByBiz.set(key, cur);
+      });
+
+      // Las ofertas de evento cuentan como "flash job" en la columna: para
+      // quien administra son lo mismo (el organizador pidió gente).
+      ((reqs ?? []) as { client_user_id: string | null; created_at: string }[]).forEach(r => {
+        const key = r.client_user_id ?? '';
+        if (!key) return;
+        const cur = jobsByBiz.get(key) ?? { count: 0, lastAt: null };
+        cur.count += 1;
+        if (!cur.lastAt || r.created_at > cur.lastAt) cur.lastAt = r.created_at;
         jobsByBiz.set(key, cur);
       });
 
