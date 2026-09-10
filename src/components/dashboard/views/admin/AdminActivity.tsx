@@ -98,16 +98,22 @@ const AdminActivity = () => {
         .select('seen_at').eq('user_id', user.id).maybeSingle();
       if (data?.seen_at) setVistoHasta(data.seen_at as string);
     })();
-    // Un respiro antes de marcar: si se entra y se sale al instante, lo nuevo
-    // sigue avisando en el siguiente vistazo.
-    const visto = setTimeout(() => { marcarVisto(); }, 1500);
+    // OJO: marcar como visto va en el cleanup, al SALIR de la pestaña.
+    //
+    // Antes corría a los 1,5s de entrar, y con eso "Nuevo" no podía funcionar:
+    // se leía vistoHasta y la marca se movía a "ahora" acto seguido, así que en
+    // la siguiente visita todo lo ocurrido entre medias quedaba fuera de la
+    // ventana y el panel decía "Nada nuevo" con 92 movimientos detrás.
+    //
+    // Al marcar en la salida, lo que entra MIENTRAS miras la pestaña sigue
+    // contando como nuevo la próxima vez.
     // Realtime sobre las dos tablas que generan los sucesos que urgen.
     const ch = supabase
       .channel(`admin-activity-${instanceId}`)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'flash_bookings' }, cargar)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, cargar)
       .subscribe();
-    return () => { clearTimeout(visto); supabase.removeChannel(ch); };
+    return () => { marcarVisto(); supabase.removeChannel(ch); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

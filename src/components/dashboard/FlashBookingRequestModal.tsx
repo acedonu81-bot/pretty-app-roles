@@ -98,7 +98,7 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center p-4"
+        className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
         onClick={onClose}
       >
         <div className="absolute inset-0 bg-black/75 backdrop-blur-md" />
@@ -108,8 +108,16 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
           exit={{ opacity: 0, scale: 0.95 }}
           transition={{ type: 'spring', stiffness: 300, damping: 28 }}
           onClick={e => e.stopPropagation()}
-          className="relative w-full max-w-md rounded-2xl overflow-hidden"
-          style={{ background: '#ffffff', border: '1px solid rgba(212,175,55,0.2)' }}
+          className="relative w-full max-w-md rounded-t-2xl sm:rounded-2xl overflow-y-auto flex flex-col"
+          style={{
+            background: '#ffffff',
+            border: '1px solid rgba(212,175,55,0.2)',
+            // En móvil el modal se centraba sin tope de altura: con el teclado
+            // abierto el botón de enviar quedaba fuera de pantalla y no había
+            // forma de pulsarlo. Ahora se ancla abajo y hace scroll por dentro.
+            maxHeight: '90dvh',
+            paddingBottom: 'env(safe-area-inset-bottom)',
+          }}
         >
           {/* Header */}
           <div className="flex items-center gap-3 px-5 pt-5 pb-4" style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
