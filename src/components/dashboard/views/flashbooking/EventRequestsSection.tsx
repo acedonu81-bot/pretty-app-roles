@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Calendar, MapPin, Euro, Users, Plus, X, Send, ChevronDown, ChevronUp } from 'lucide-react';
+import { Calendar, MapPin, Euro, Users, Plus, X, Send, ChevronDown, ChevronUp, Check } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 interface EventRequest {
   id: string;
   client_name: string;
+  client_user_id: string | null;
   event_type: string;
   city: string;
   event_date: string | null;
@@ -48,6 +49,11 @@ const EventRequestsSection = () => {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
+  const [responses, setResponses] = useState<Record<string, { id: string; name: string; message: string | null }[]>>({});
+  const [applied, setApplied] = useState<Record<string, boolean>>({});
+  const [applyText, setApplyText] = useState<Record<string, string>>({});
+  const [applying, setApplying] = useState<string | null>(null);
+
   const [form, setForm] = useState({
     client_name: '',
     event_type: '',
@@ -80,6 +86,89 @@ const EventRequestsSection = () => {
         setLoading(false);
       });
   }, []);
+
+  // Quién se ha apuntado a MIS ofertas. La RLS solo devuelve las respuestas de
+  // ofertas propias, así que no hace falta filtrar por request_id aquí.
+  useEffect(() => {
+    if (!user?.id || !isEmpresario || requests.length === 0) return;
+    supabase
+      .from('event_request_responses' as any)
+      .select('id, request_id, message, professional_user_id')
+      .in('request_id', requests.map(r => r.id))
+      .then(async ({ data }) => {
+        const rows = (data ?? []) as { id: string; request_id: string; message: string | null; professional_user_id: string }[];
+        if (rows.length === 0) return;
+        const { data: profs } = await supabase
+          .from('profiles')
+          .select('user_id, display_name')
+          .in('user_id', rows.map(r => r.professional_user_id));
+        const nombres = Object.fromEntries(
+          (profs ?? []).map((p: { user_id: string; display_name: string | null }) => [p.user_id, p.display_name || 'Profesional'])
+        );
+        const agrupado: Record<string, { id: string; name: string; message: string | null }[]> = {};
+        rows.forEach(r => {
+          (agrupado[r.request_id] ??= []).push({
+            id: r.id,
+            name: nombres[r.professional_user_id] ?? 'Profesional',
+            message: r.message,
+          });
+        });
+        setResponses(agrupado);
+      }, () => {});
+  }, [user?.id, isEmpresario, requests]);
+
+  // Candidaturas ya enviadas: sin esto el botón "Me interesa" reaparecía al
+  // recargar y el profesional creía que no se había apuntado.
+  useEffect(() => {
+    if (!user?.id || isEmpresario) return;
+    supabase
+      .from('event_request_responses' as any)
+      .select('request_id')
+      .eq('professional_user_id', user.id)
+      .then(({ data }) => {
+        if (!data) return;
+        setApplied(Object.fromEntries((data as { request_id: string }[]).map(r => [r.request_id, true])));
+      }, () => {});
+  }, [user?.id, isEmpresario]);
+
+  const applyToRequest = async (req: EventRequest) => {
+    if (!user?.id) { toast.error('Inicia sesión para apuntarte.'); return; }
+    setApplying(req.id);
+    const { error } = await supabase.from('event_request_responses' as any).insert({
+      request_id: req.id,
+      professional_user_id: user.id,
+      message: (applyText[req.id] ?? '').trim() || null,
+    });
+    setApplying(null);
+
+    if (error) {
+      // 23505 = ya existe: se había apuntado antes, no es un fallo que contar.
+      if ((error as { code?: string }).code === '23505') {
+        setApplied(a => ({ ...a, [req.id]: true }));
+        toast.info('Ya te habías apuntado a esta oferta.');
+        return;
+      }
+      toast.error('No se pudo enviar. Inténtalo de nuevo.');
+      return;
+    }
+
+    setApplied(a => ({ ...a, [req.id]: true }));
+    toast.success('¡Enviado! El organizador ya lo ve en su panel.');
+
+    // Email de refuerzo al organizador. La campana ya la escribe el trigger;
+    // si el correo falla, el aviso principal sigue estando.
+    if (req.client_user_id) {
+      supabase.functions.invoke('send-email', {
+        body: {
+          type: 'new_message',
+          data: {
+            user_id: req.client_user_id,
+            sender_name: profile.display_name || 'Un profesional',
+          },
+        },
+      }).catch(() => {});
+    }
+  };
 
   const toggleRole = (r: string) => {
     setForm(f => ({
@@ -233,27 +322,55 @@ const EventRequestsSection = () => {
                           {req.description}
                         </p>
                       )}
-                      <div className="flex flex-col gap-2">
-                        {req.contact_email && (
-                          <a href={`mailto:${req.contact_email}`}
-                            className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105"
-                            style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-                            <Send size={11} /> Contactar por email
-                          </a>
-                        )}
-                        {req.contact_phone && (
-                          <a href={`tel:${req.contact_phone}`}
-                            className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105"
-                            style={{ background: 'rgba(0,0,0,0.05)', color: '#444', border: '1px solid rgba(0,0,0,0.08)' }}>
-                            📞 {req.contact_phone}
-                          </a>
-                        )}
-                        {!req.contact_email && !req.contact_phone && (
+                      {/* El contacto se hace DENTRO de XPEAK. Antes se pintaban
+                          mailto: y tel: con los datos del organizador: la
+                          conversación se iba fuera y no quedaba registro de
+                          quién se había apuntado ni de si el bolo se cerró. */}
+                      {isEmpresario ? (
+                        (responses[req.id]?.length ?? 0) > 0 ? (
+                          <div className="flex flex-col gap-2">
+                            <p className="text-[10px] font-black uppercase tracking-wider" style={{ color: '#8A6D0F' }}>
+                              {responses[req.id].length} interesado{responses[req.id].length > 1 ? 's' : ''}
+                            </p>
+                            {responses[req.id].map(resp => (
+                              <div key={resp.id} className="px-3 py-2 rounded-xl"
+                                style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.18)' }}>
+                                <p className="text-xs font-bold" style={{ color: '#111' }}>{resp.name}</p>
+                                {resp.message && (
+                                  <p className="text-xs mt-0.5" style={{ color: '#333' }}>{resp.message}</p>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
                           <p className="text-xs text-center py-2" style={{ color: '#333' }}>
-                            El cliente no dejó datos de contacto directo.
+                            Aún no se ha apuntado nadie. Te avisaremos en tus notificaciones.
                           </p>
-                        )}
-                      </div>
+                        )
+                      ) : applied[req.id] ? (
+                        <div className="flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-bold"
+                          style={{ background: 'rgba(34,197,94,0.1)', color: '#16a34a', border: '1px solid rgba(34,197,94,0.25)' }}>
+                          <Check size={12} /> Te has apuntado — el organizador ya lo sabe
+                        </div>
+                      ) : (
+                        <div className="flex flex-col gap-2">
+                          <textarea
+                            value={applyText[req.id] ?? ''}
+                            onChange={e => setApplyText(t => ({ ...t, [req.id]: e.target.value }))}
+                            placeholder="Preséntate en una línea (opcional): disponibilidad, equipo, experiencia…"
+                            rows={2} maxLength={300}
+                            className="w-full px-3 py-2 rounded-xl text-xs focus:outline-none resize-none"
+                            style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
+                          <button
+                            type="button"
+                            onClick={() => applyToRequest(req)}
+                            disabled={applying === req.id}
+                            className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold transition-all hover:scale-105 disabled:opacity-60"
+                            style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+                            <Send size={11} /> {applying === req.id ? 'Enviando…' : 'Me interesa este bolo'}
+                          </button>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

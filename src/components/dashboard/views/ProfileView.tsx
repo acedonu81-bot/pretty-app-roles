@@ -1107,10 +1107,13 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 <ChevronDown size={14} className="transition-transform duration-200" style={{ transform: langOpen ? 'rotate(180deg)' : 'none' }} />
               </button>
 
-              {/* Dropdown panel */}
+              {/* Dropdown panel — fondo claro como el resto del formulario: era
+                  casi negro (rgba(12,12,16,0.97)) mientras los idiomas no
+                  seleccionados se pintan en #333, así que el panel salía en
+                  negro con el texto invisible encima. */}
               {langOpen && (
                 <div className="mt-1 rounded-xl overflow-hidden animate-[fadeIn_0.15s_ease]"
-                  style={{ background: 'rgba(12,12,16,0.97)', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 8px 32px rgba(0,0,0,0.6)' }}>
+                  style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.1)', boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}>
                   <div className="flex flex-wrap gap-1.5 p-3 max-h-48 overflow-y-auto"
                     style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(212,175,55,0.3) transparent' }}>
                     {EU_LANGS.map(lang => (
