@@ -7,7 +7,11 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
  * Protocol (JSON-RPC 2.0 sobre HTTP). Dos herramientas:
  *   - buscar_profesionales: lectura pública, sin fricción.
  *   - solicitar_presupuesto: mismo insert en flash_bookings que ya usa
- *     el formulario web (mismo rate-limit, misma RLS, mismos emails).
+ *     el formulario web (mismos emails). Rate-limit propio, más estricto
+ *     que el del formulario web: este endpoint no puede exigir el registro
+ *     que sí exige el resto de la web desde el 09 sep 2026 (un agente de IA
+ *     no tiene forma de autenticarse como un usuario XPEAK real), así que
+ *     se trata como lead sin calificar — email obligatorio, origen marcado.
  *
  * Cada llamada queda registrada en mcp_query_log — es el activo de
  * retroalimentación: qué pregunta la gente vía IA, si eso convierte.
@@ -22,7 +26,21 @@ const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 
-const KNOWN_ROLES = ['dj', 'staff', 'makeup', 'promotor', 'fotografo', 'catering', 'mago', 'humorista', 'animador', 'bailarin', 'speaker', 'vestuario', 'photo-booth'];
+// Misma lista que KNOWN_ROLES en src/pages/Auth.tsx (fuente de verdad del
+// signup) — las edge functions no comparten build con el frontend, así que
+// se duplica a mano. Si se añade un rol nuevo al signup y no aquí, el MCP
+// responde "rol no reconocido" a profesionales que sí existen (bug real
+// encontrado en la auditoría del 10 sep 2026).
+const KNOWN_ROLES = ['dj', 'grupo-musical', 'media', 'makeup', 'peluqueria', 'staff', 'azafata', 'promotor', 'empresario', 'catering', 'mago', 'humorista', 'animador', 'bailarin', 'speaker', 'vestuario', 'photo-booth', 'tecnico'];
+
+// Alias de rol — misma fuente que ROLE_ALIASES en src/lib/constants.ts.
+// Sin esto, buscar_profesionales con rol="staff" no encontraba a quien está
+// guardado en BD como "camarero" (y viceversa para makeup/peluqueria).
+const ROLE_ALIASES: Record<string, string[]> = {
+  staff: ['staff', 'camarero'],
+  makeup: ['makeup', 'peluqueria'],
+};
+const expandRole = (dbRole: string): string[] => ROLE_ALIASES[dbRole] ?? [dbRole];
 
 const TOOLS = [
   {
@@ -94,7 +112,12 @@ async function buscarProfesionales(args: Record<string, unknown>, sessionId: str
 
   let query = supabase.from('profiles')
     .select('user_id, display_name, role, specialty, zone, city_ref, hourly_rate, is_flash_active, is_verified, photo_url')
-    .eq('role', rol)
+    .in('role', expandRole(rol))
+    // Un profesional que se ocultó del directorio (is_public=false) no debe
+    // aparecer tampoco vía agentes de IA — mismo filtro que fetchDirectorioProfiles
+    // en DirectorioPublico.tsx. Bug real encontrado el 10 sep 2026: el MCP
+    // exponía y permitía "reservar" un perfil que su dueño había ocultado.
+    .eq('is_public', true)
     .order('is_flash_active', { ascending: false })
     .limit(10);
 
@@ -138,15 +161,29 @@ async function solicitarPresupuesto(args: Record<string, unknown>, sessionId: st
     }
   }
 
+  // El MCP es un endpoint anónimo (un agente de IA no puede autenticarse
+  // como un usuario XPEAK real, no hay login desde ChatGPT/Perplexity), así
+  // que no puede cumplir el mismo gate de registro que se exige al resto de
+  // la web desde el 09 sep 2026 (ver migración
+  // 20260909150000_flash_bookings_require_auth_for_professional.sql).
+  // En vez de romper la herramienta (que XPEAK promueve activamente para
+  // GEO), se trata como un lead sin calificar: se exige al menos un email
+  // de contacto verificable en forma, y se etiqueta el origen sin ambigüedad
+  // en el email al profesional/admin (ver event_description más abajo).
+  const contacto = String(args.contacto_solicitante).trim();
+  if (!contacto.includes('@') || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contacto)) {
+    return { content: [{ type: 'text', text: 'contacto_solicitante debe ser un email válido — un agente de IA no puede verificar un teléfono, y sin email el profesional no puede confirmar quién pregunta.' }], isError: true };
+  }
+
   const payload = {
     professional_name: String(args.professional_name).trim().slice(0, 100),
     professional_role: String(args.professional_role).trim().slice(0, 50),
     professional_user_id: String(args.professional_user_id).trim(),
     requester_name: String(args.nombre_solicitante).trim().slice(0, 100),
-    requester_contact: String(args.contacto_solicitante).trim().slice(0, 150),
+    requester_contact: contacto.slice(0, 150),
     event_date: String(args.fecha_evento).trim().slice(0, 100),
     event_location: typeof args.ubicacion_evento === 'string' ? args.ubicacion_evento.trim().slice(0, 150) : '',
-    event_description: typeof args.descripcion === 'string' ? args.descripcion.trim().slice(0, 500) : '',
+    event_description: `[Lead vía agente IA, sin verificar] ${typeof args.descripcion === 'string' ? args.descripcion.trim().slice(0, 480) : ''}`.trim(),
     status: 'pending',
     created_by: null,
     source: 'mcp_agent',
@@ -184,7 +221,11 @@ async function solicitarPresupuesto(args: Record<string, unknown>, sessionId: st
 // búsqueda de solo lectura queda sin fricción. Mismo mecanismo y tabla que
 // chat-ai, para que un endpoint público sin JWT no pueda martillear la
 // creación de solicitudes ni el envío de correos.
-const MCP_RATE_LIMIT_MAX = 8;
+// Bajado de 8 a 4 el 10 sep 2026: este endpoint no exige el registro que sí
+// exige el resto de la web desde el 09 sep, así que el límite por IP es la
+// única barrera real contra abuso — se aprieta a la vez que se añade el
+// requisito de email válido.
+const MCP_RATE_LIMIT_MAX = 4;
 const MCP_RATE_LIMIT_WINDOW_MIN = 10;
 
 async function isRateLimited(clientIp: string): Promise<boolean> {
