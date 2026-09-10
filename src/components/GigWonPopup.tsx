@@ -45,7 +45,13 @@ const fmtDates = (g: Gig): string => {
     : `${fmt(first, true)} - ${fmt(last, true)}`;
 };
 
-const GigWonPopup = () => {
+interface GigWonPopupProps {
+  /** 'bottom-left' en la landing pública; 'top-left' en el dashboard, junto
+   * a la barra de búsqueda del topbar. */
+  position?: 'bottom-left' | 'top-left';
+}
+
+const GigWonPopup = ({ position = 'bottom-left' }: GigWonPopupProps) => {
   const [gigs, setGigs] = useState<Gig[]>([]);
   const [index, setIndex] = useState(0);
   const [visible, setVisible] = useState(false);
@@ -90,11 +96,11 @@ const GigWonPopup = () => {
     <AnimatePresence>
       {visible && (
         <motion.div
-          initial={{ opacity: 0, y: 20, x: -12 }}
+          initial={{ opacity: 0, y: position === 'top-left' ? -16 : 20, x: -12 }}
           animate={{ opacity: 1, y: 0, x: 0 }}
-          exit={{ opacity: 0, y: 12 }}
+          exit={{ opacity: 0, y: position === 'top-left' ? -12 : 12 }}
           transition={{ duration: 0.35, ease: 'easeOut' }}
-          className="fixed z-40 bottom-5 left-5 max-w-xs rounded-2xl overflow-hidden hidden sm:block"
+          className={`fixed z-40 ${position === 'top-left' ? 'top-20 left-5' : 'bottom-5 left-5'} max-w-xs rounded-2xl overflow-hidden hidden sm:block`}
           style={{ background: '#0a0908', border: '1px solid rgba(212,175,55,0.35)', boxShadow: '0 8px 28px rgba(0,0,0,0.35)' }}
         >
           <div className="flex items-start gap-3 px-4 py-3.5">

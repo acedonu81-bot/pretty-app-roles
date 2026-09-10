@@ -5,6 +5,7 @@ import { useProfile } from '@/hooks/useProfile';
 import { supabase } from '@/integrations/supabase/client';
 import { isNative } from '@/lib/capacitor';
 import { useDashboardBadges } from '@/hooks/useDashboardBadges';
+import GigWonPopup from '@/components/GigWonPopup';
 
 interface RealNotif { id: string; type: string; title: string; body: string | null; link: string | null; is_read: boolean; created_at: string; }
 
@@ -425,6 +426,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
           </button>
         )}
       </div>
+      <GigWonPopup position="top-left" />
     </header>
   );
 };
