@@ -35,6 +35,20 @@ const VerificationSection = () => {
       }).eq('user_id', user.id);
       if (updateErr) throw updateErr;
       toast.success('Vídeo enviado. El equipo XPEAK lo revisará en 24–48h.');
+
+      // Aviso al admin. Sin esto nadie se entera de que hay una solicitud
+      // en cola pese a que la UI promete revisión en 24-48h.
+      supabase.functions.invoke('send-email', {
+        body: {
+          type: 'verification_request',
+          data: {
+            name: profile.display_name,
+            email: user.email,
+            role: profile.role,
+            zone: profile.zone,
+          },
+        },
+      }).catch((err: unknown) => console.warn('[VerificationSection] admin email failed:', err));
     } catch {
       toast.error('Error al subir el vídeo. Inténtalo de nuevo.');
     } finally {

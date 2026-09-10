@@ -92,6 +92,21 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
       },
     }).catch((err: unknown) => console.warn('[MultiRequestModal] admin email failed:', err));
 
+    // Confirmación al solicitante (si dio email).
+    if (form.contact.includes('@')) {
+      supabase.functions.invoke('send-email', {
+        body: {
+          type: 'flash_booking_confirm',
+          data: {
+            professional_name: `${rows.length} ${categoryLabel.toLowerCase()}`,
+            requester_contact: form.contact.trim(),
+            event_date: form.date || 'Por confirmar',
+            event_location: locationText,
+          },
+        },
+      }).catch((err: unknown) => console.warn('[MultiRequestModal] confirm email failed:', err));
+    }
+
     // Notificación a cada profesional (best-effort, nunca bloquea el flujo).
     pros.forEach(p => {
       supabase.functions.invoke('send-email', {

@@ -60,6 +60,17 @@ const AdminUserManagement = () => {
     if (error) { toast.error('Error'); return; }
     toast.success(user.is_verified ? 'Verificación eliminada' : 'Perfil verificado con Sello Dorado');
     setUsers(prev => prev.map(u => u.id === user.id ? { ...u, is_verified: !u.is_verified } : u));
+
+    // Aviso al profesional. Solo al conceder el sello — quitarlo es una
+    // acción administrativa sin plantilla de "sello retirado" y no se avisa.
+    if (!user.is_verified) {
+      supabase.functions.invoke('send-email', {
+        body: {
+          type: 'admin_approved',
+          data: { user_id: user.user_id, name: user.display_name, role: user.role },
+        },
+      }).catch((err: unknown) => console.warn('[AdminUserManagement] approved email failed:', err));
+    }
   };
 
   const toggleEarlyAdopterOverride = async (user: DBProfile) => {

@@ -243,6 +243,23 @@ const DemandaTab = () => {
       });
       if (bookingErr) throw bookingErr;
 
+      // Aviso al empresario. Sin esto solo se enteraba abriendo la app —
+      // MessagesView sí lo hace para el chat normal, esta pantalla no.
+      if (employerId) {
+        const senderName = currentUser.display_name || 'Un profesional';
+        supabase.from('notifications' as any).insert({
+          user_id: employerId,
+          type: 'message',
+          title: `${senderName} te ha escrito`,
+          body: msgText.length > 80 ? msgText.slice(0, 80) + '…' : msgText,
+          link: '/dashboard',
+        }).then(({ error }) => { if (error) console.warn('notif insert:', error.message); });
+
+        supabase.functions.invoke('send-email', {
+          body: { type: 'new_message', data: { user_id: employerId, sender_name: senderName } },
+        }).catch((err: unknown) => console.warn('[DemandaTab] new_message email failed:', err));
+      }
+
       const time = new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
       setSentMessages(prev => ({
         ...prev,

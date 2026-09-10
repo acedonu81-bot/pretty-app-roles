@@ -568,8 +568,12 @@ const Landing = () => {
     setNewsletterLoading(true);
     try {
       const { supabase } = await import('@/integrations/supabase/client');
-      await (supabase.from as any)('newsletter_leads').insert({ email: newsletterEmail.trim().toLowerCase() });
+      const cleanEmail = newsletterEmail.trim().toLowerCase();
+      await (supabase.from as any)('newsletter_leads').insert({ email: cleanEmail });
       setNewsletterDone(true);
+      supabase.functions.invoke('send-email', {
+        body: { type: 'lead_welcome', data: { email: cleanEmail, intent: 'newsletter', variant: 'landing' } },
+      }).catch(() => {}); // silencioso si falla
     } catch {
       navigate('/auth');
     } finally {

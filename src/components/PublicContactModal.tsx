@@ -69,6 +69,12 @@ export default function PublicContactModal({ professionalName, professionalUserI
           body: { type: 'booking_received', data: payload },
         }).catch((err: unknown) => console.warn('[PublicContactModal] professional email failed:', err));
       }
+      // Confirmación al solicitante (si dio email).
+      if (form.email.includes('@')) {
+        supabase.functions.invoke('send-email', {
+          body: { type: 'flash_booking_confirm', data: payload },
+        }).catch((err: unknown) => console.warn('[PublicContactModal] confirm email failed:', err));
+      }
       setStatus('done');
       // Anonymous activity signal — must never block the contact flow if it fails.
       // Skip entirely for static/demo profiles (professionalRole is null): logging a
