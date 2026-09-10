@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import { ROLE_TAGS } from '@/lib/constants';
 
 interface EventRequest {
   id: string;
@@ -26,12 +27,11 @@ interface EventRequest {
 
 const EVENT_TYPES = ['Boda', 'Comunión', 'Evento corporativo', 'Fiesta privada', 'Festival', 'Cumpleaños', 'Inauguración', 'Concierto', 'Otro'];
 
-// Estilos que puede pedir un organizador. Agrupados en familias en vez de los
-// 47 géneros sueltos de DJ_GENRES: quien contrata no distingue Tech House de
-// Minimal, pide "electrónica" o "de todo". Cada familia se expande a los
-// géneros reales del perfil para decidir a quién se avisa.
-const ESTILOS_MUSICA: { label: string; incluye: string[] }[] = [
-  { label: 'De todo un poco', incluye: [] },
+// Familias para agrupar los géneros de DJ: quien contrata no distingue Tech
+// House de Minimal, pide "electrónica" o "de todo". El resto de roles no
+// necesita agrupar (sus tags de ROLE_TAGS ya son pocos y concretos, tipo
+// "Magia de bodas" o "Payaso clásico"), así que se ofrecen sueltos.
+const FAMILIAS_DJ: { label: string; incluye: string[] }[] = [
   { label: 'House / Electrónica', incluye: ['Tech House','Deep House','House','Afro House','Organic House','Funky House','Tribal House','Progressive House','Latin House','Electro','Nu-Disco'] },
   { label: 'Techno', incluye: ['Techno','Melodic Techno','Minimal','Hard Techno','Industrial','Dub Techno'] },
   { label: 'Comercial / Hits', incluye: ['Comercial','Top 40','Hits actuales','EDM'] },
@@ -40,7 +40,31 @@ const ESTILOS_MUSICA: { label: string; incluye: string[] }[] = [
   { label: 'Remember / Pachanga', incluye: ['Remember','Pachanga','Disco','Funk'] },
   { label: 'Ambiente / Chill', incluye: ['Ambient','Downtempo','Chillout'] },
 ];
+
+// Etiqueta del formulario → slug real de profiles.role, para poder leer
+// ROLE_TAGS y saber qué especialidades tiene ese rol (lo mismo que ya declara
+// cada profesional en su perfil).
 const ROLES_LIST = ['DJ / Artista', 'Fotógrafo', 'Camarero / Staff', 'Maquilladora', 'Grupo musical', 'Animador', 'Promotor / RRPP', 'Photo Booth', 'Catering'];
+const ROL_UI_A_SLUG: Record<string, string> = {
+  'DJ / Artista': 'dj',
+  'Fotógrafo': 'media',
+  'Camarero / Staff': 'staff',
+  'Maquilladora': 'makeup',
+  'Grupo musical': 'grupo-musical',
+  'Animador': 'animador',
+  'Promotor / RRPP': 'promotor',
+  'Photo Booth': 'photo-booth',
+  'Catering': 'catering',
+};
+
+// Opciones de estilo para un rol pedido: familias para DJ, tags sueltos (los
+// mismos que declara el profesional en su perfil) para el resto.
+const opcionesEstilo = (rolesUI: string[]): { label: string; incluye: string[] }[] => {
+  if (rolesUI.includes('DJ / Artista')) return FAMILIAS_DJ;
+  const slug = rolesUI.map(r => ROL_UI_A_SLUG[r]).find(s => s && ROLE_TAGS[s]);
+  if (!slug) return [];
+  return ROLE_TAGS[slug].tags.map(t => ({ label: t, incluye: [t] }));
+};
 
 const daysLeft = (expires: string) => {
   const diff = new Date(expires).getTime() - Date.now();
@@ -636,38 +660,51 @@ const EventRequestsSection = () => {
                 </div>
               </div>
 
-              {/* Estilo de música: solo si se pide DJ. Antes una oferta de DJ
+              {/* Especialidad pedida: no solo para DJ. Antes una oferta de DJ
                   avisaba a los 47 géneros por igual — al de techno le llegaba
-                  una boda de pachanga — y eso quema la lista rápido. */}
-              {form.roles_needed.includes('DJ / Artista') && (
-                <div>
-                  <label className="text-xs font-black mb-2 block" style={{ color: '#333' }}>
-                    ¿QUÉ ESTILO DE MÚSICA QUIERES?
-                  </label>
-                  <div className="flex flex-wrap gap-2">
-                    {ESTILOS_MUSICA.map(e => {
-                      const sel = e.label === 'De todo un poco'
-                        ? form.estilos.length === 0
-                        : e.incluye.every(g => form.estilos.includes(g)) && form.estilos.length > 0;
-                      return (
-                        <button key={e.label} type="button"
-                          onClick={() => setForm(f => ({
-                            ...f,
-                            estilos: e.label === 'De todo un poco' ? [] : e.incluye,
-                          }))}
-                          className="px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all"
-                          style={{
-                            background: sel ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.04)',
-                            border: `1px solid ${sel ? 'rgba(212,175,55,0.5)' : 'rgba(0,0,0,0.08)'}`,
-                            color: sel ? '#B8941E' : '#222',
-                          }}>
-                          {e.label}
-                        </button>
-                      );
-                    })}
+                  una boda de pachanga — y lo mismo pasaba en el resto de
+                  roles (a un mago de bodas le llegaba una oferta de magia
+                  infantil). Se usan las mismas tags que cada rol declara en
+                  su perfil (ROLE_TAGS), así no hay que mantener dos listas. */}
+              {(() => {
+                const opciones = opcionesEstilo(form.roles_needed);
+                if (opciones.length === 0) return null;
+                const esDJ = form.roles_needed.includes('DJ / Artista');
+                return (
+                  <div>
+                    <label className="text-xs font-black mb-2 block" style={{ color: '#333' }}>
+                      {esDJ ? '¿QUÉ ESTILO DE MÚSICA QUIERES?' : '¿ALGUNA ESPECIALIDAD CONCRETA?'}
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      <button type="button"
+                        onClick={() => setForm(f => ({ ...f, estilos: [] }))}
+                        className="px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all"
+                        style={{
+                          background: form.estilos.length === 0 ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.04)',
+                          border: `1px solid ${form.estilos.length === 0 ? 'rgba(212,175,55,0.5)' : 'rgba(0,0,0,0.08)'}`,
+                          color: form.estilos.length === 0 ? '#B8941E' : '#222',
+                        }}>
+                        De todo un poco
+                      </button>
+                      {opciones.map(e => {
+                        const sel = e.incluye.every(g => form.estilos.includes(g)) && form.estilos.length > 0;
+                        return (
+                          <button key={e.label} type="button"
+                            onClick={() => setForm(f => ({ ...f, estilos: e.incluye }))}
+                            className="px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all"
+                            style={{
+                              background: sel ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.04)',
+                              border: `1px solid ${sel ? 'rgba(212,175,55,0.5)' : 'rgba(0,0,0,0.08)'}`,
+                              color: sel ? '#B8941E' : '#222',
+                            }}>
+                            {e.label}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              )}
+                );
+              })()}
 
               <div>
                 <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>DESCRIPCIÓN</label>
