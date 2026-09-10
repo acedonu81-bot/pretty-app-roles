@@ -480,6 +480,14 @@ export default function DirectorioPublico() {
   const { items: cartItems } = useEventCart();
   const { user, loading: authLoading } = useAuth();
 
+  const requireAuthThen = (action: () => void) => {
+    if (!user) {
+      window.location.href = `/auth?mode=register&role=empresario&redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`;
+      return;
+    }
+    action();
+  };
+
   // Durante el prerender de build, __PRERENDER_DIRECTORIO__ trae los perfiles
   // ya resueltos: renderToString es síncrono y no espera al fetch, así que sin
   // esto el HTML servido al crawler sale SIN profesionales ni enlaces a /p/
@@ -610,7 +618,7 @@ export default function DirectorioPublico() {
 
             <div className="flex flex-wrap gap-2.5">
               {realPros.length >= 2 && (
-                <button onClick={() => setShowMultiRequest(true)}
+                <button onClick={() => requireAuthThen(() => setShowMultiRequest(true))}
                   className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-black text-sm transition-all hover:scale-[1.02] active:scale-95"
                   style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 6px 20px rgba(212,175,55,0.3)' }}>
                   <Users size={16} /> Pide presupuesto a varios de golpe
@@ -632,7 +640,7 @@ export default function DirectorioPublico() {
                 embedded
                 profiles={profiles.filter(p => !!p.photo_url)}
                 onOpenProfile={(p) => { window.location.href = profileUrl(p as DirProfile); }}
-                onBookNow={(p) => setBookingPro(p as DirProfile)}
+                onBookNow={(p) => requireAuthThen(() => setBookingPro(p as DirProfile))}
                 onAddToCart={(p) => {
                   const prof = p as DirProfile;
                   const result = addToCart({ userId: prof.user_id, displayName: prof.display_name, role: prof.role, photoUrl: prof.photo_url, hourlyRate: prof.hourly_rate, zone: prof.zone });
@@ -912,7 +920,7 @@ export default function DirectorioPublico() {
                         style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.12)', color: '#333' }}>
                         Ver perfil
                       </a>
-                      <button onClick={() => setBookingPro(p)}
+                      <button onClick={() => requireAuthThen(() => setBookingPro(p))}
                         className="flex-1 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
                         style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 2px 10px rgba(212,175,55,0.25)' }}>
                         Solicitar presupuesto

@@ -921,6 +921,9 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
       <Section title="Privacidad" icon={<Shield size={15} />}>
         <ToggleRow label="Perfil público en el directorio" desc="Si está desactivado, no apareces en el directorio público" checked={profilePublic} onChange={async () => {
           const next = !profilePublic;
+          if (!next && !window.confirm('Vas a desaparecer del directorio público: nadie podrá encontrarte ni contactarte desde XPEAK hasta que lo vuelvas a activar. ¿Seguro que quieres desactivarlo?')) {
+            return;
+          }
           setProfilePublic(next);
           const ok = await profile.updateField({ is_public: next });
           if (!ok) { setProfilePublic(!next); return; }

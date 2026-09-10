@@ -53,6 +53,18 @@ scripts/            — prerender-meta.mjs, update-sitemap.mjs
 - No crear archivos .md de documentación salvo que se pida
 - Máxima autonomía: actuar antes de preguntar, escalar solo si es técnicamente imposible
 
+## App iOS (Capacitor) — actualizar tras un fix en la web
+La app de iOS es un build congelado (snapshot) del código en el momento de compilar. Un fix desplegado en xpeak.es NO llega solo al iPhone — hay que repetir este proceso:
+1. `npm run build` (o asegurarse de que `dist/` está actualizado)
+2. `npx cap sync ios` — copia el build web al proyecto iOS y sincroniza plugins
+3. Subir el **Version** en `ios/App/App.xcodeproj` si es un cambio visible al usuario (Settings → General → Version), y siempre subir el **Build number** (aunque la Version no cambie)
+4. `npx cap open ios` → seleccionar destino **"Any iOS Device (arm64)"** → **Product → Archive**
+5. En el Organizer: **Distribute App → App Store Connect → Upload**
+6. En App Store Connect (appstoreconnect.apple.com → XPEAK → Distribución): esperar a que el build termine de procesarse (10-60 min), añadirlo a la nueva versión, y **Añadir a revisión**
+- Certificado de firma: **Apple Distribution**, perfil **"XPEAK App Store Distribution"** (ya generado, en `~/Library/MobileDevice/Provisioning Profiles/`) — si Xcode no lo reconoce, cerrar y reabrir Xcode
+- Las actualizaciones (a diferencia del primer envío) suelen revisarse más rápido, pero cuentan con el mismo plazo de hasta 48h
+- Bugs de la propia app nativa (permisos, push notifications, splash screen, comportamiento específico de Capacitor) no se arreglan solo con la web — requieren tocar `capacitor.config.ts` o el proyecto `ios/`
+
 ## Verificación obligatoria antes de dar un fix por cerrado
 - Invocar la skill `verify-flows` tras tocar código de registro, directorio, carrito "Mi evento", perfil público o Flash Booking
 - Un `tsc --noEmit` limpio NO es suficiente — reproducir la acción real (clic, rellenar, eliminar) en el navegador antes de decir "arreglado"
