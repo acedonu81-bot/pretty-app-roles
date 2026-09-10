@@ -116,7 +116,12 @@ const GlobalPlayer = () => {
 
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 z-50 flex items-center gap-4 px-4 md:px-6 py-2.5 backdrop-blur-xl"
+      // En móvil se pegaba al borde inferior y tapaba la barra de navegación
+      // (MobileBottomNav, 64px + safe-area) que también vive en bottom-0: con
+      // el reproductor abierto los iconos quedaban inalcanzables. bottom-16
+      // (64px) lo eleva justo encima de ella; md:bottom-0 lo vuelve a pegar
+      // abajo en escritorio, donde no hay nav que evitar.
+      className="fixed bottom-16 md:bottom-0 left-0 right-0 z-50 flex items-center gap-4 px-4 md:px-6 py-2.5 pb-[max(env(safe-area-inset-bottom),10px)] md:pb-2.5 backdrop-blur-xl"
       style={{
         background: 'rgba(0,0,0,0.92)',
         borderTop: '1px solid rgba(212,175,55,0.15)',

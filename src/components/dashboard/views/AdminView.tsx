@@ -16,6 +16,7 @@ import AdminActivity from './admin/AdminActivity';
 import AdminSaludSistema from './admin/AdminSaludSistema';
 import AdminDeletions from './admin/AdminDeletions';
 import AdminAnalytics from './admin/AdminAnalytics';
+import AdminConversations from './admin/AdminConversations';
 
 const TABS = [
   { id: 'activity', label: 'Actividad', icon: Activity },
@@ -87,6 +88,7 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
         <>
           <AdminFeatureRequests />
           <AdminCancellations />
+          <AdminConversations />
         </>
       )}
       {tab === 'promos' && <AdminPromoCodes />}
