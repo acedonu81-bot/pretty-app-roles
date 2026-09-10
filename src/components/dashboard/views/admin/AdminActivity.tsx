@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAdminActivityAlert } from '@/hooks/useAdminActivityAlert';
-import { UserPlus, CalendarClock, UserMinus, Star, Phone, RefreshCw, AlertTriangle } from 'lucide-react';
+import { UserPlus, CalendarClock, UserMinus, Star, Phone, RefreshCw, AlertTriangle, X } from 'lucide-react';
+import { toast } from 'sonner';
 
 // Línea temporal de TODO lo que pasa en XPEAK, en un solo sitio.
 //
@@ -76,6 +77,21 @@ const AdminActivity = () => {
   // ANTES de marcar como visto (marcarVisto corre 1,5s después de montar).
   const [vistoHasta, setVistoHasta] = useState<string | null>(null);
   const [cargando, setCargando] = useState(true);
+
+  const [borrando, setBorrando] = useState<string | null>(null);
+
+  const borrar = async (m: Movimiento) => {
+    setBorrando(m.ref);
+    const { data, error } = await (supabase.rpc as any)('admin_borrar_actividad', {
+      p_tipo: m.tipo, p_ref: m.ref,
+    });
+    setBorrando(null);
+    if (error || data === false) {
+      toast.error(error?.message ?? 'No se pudo borrar.');
+      return;
+    }
+    setItems(prev => prev.filter(i => !(i.tipo === m.tipo && i.ref === m.ref)));
+  };
 
   const cargar = async () => {
     setCargando(true);
@@ -217,6 +233,23 @@ const AdminActivity = () => {
                 >
                   <Icon size={14} strokeWidth={2.5} />
                 </span>
+
+                {/* Borrar: el histórico se llena de pruebas ("Block Test",
+                    correos @xpeak-verify.internal) y duplicados que tapan lo
+                    que hay que atender. Las altas no se borran desde aquí —
+                    eso es eliminar la cuenta de alguien real. */}
+                {m.tipo !== 'alta' && (
+                  <button
+                    type="button"
+                    onClick={() => borrar(m)}
+                    disabled={borrando === m.ref}
+                    title="Borrar del historial"
+                    className="order-last flex-shrink-0 w-6 h-6 rounded-lg flex items-center justify-center transition-all hover:bg-black/10 disabled:opacity-40"
+                    style={{ color: '#999' }}
+                  >
+                    <X size={13} strokeWidth={2.5} />
+                  </button>
+                )}
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-baseline gap-2 flex-wrap">

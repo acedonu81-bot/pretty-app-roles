@@ -24,6 +24,21 @@ interface EventRequest {
 }
 
 const EVENT_TYPES = ['Boda', 'Comunión', 'Evento corporativo', 'Fiesta privada', 'Festival', 'Cumpleaños', 'Inauguración', 'Concierto', 'Otro'];
+
+// Estilos que puede pedir un organizador. Agrupados en familias en vez de los
+// 47 géneros sueltos de DJ_GENRES: quien contrata no distingue Tech House de
+// Minimal, pide "electrónica" o "de todo". Cada familia se expande a los
+// géneros reales del perfil para decidir a quién se avisa.
+const ESTILOS_MUSICA: { label: string; incluye: string[] }[] = [
+  { label: 'De todo un poco', incluye: [] },
+  { label: 'House / Electrónica', incluye: ['Tech House','Deep House','House','Afro House','Organic House','Funky House','Tribal House','Progressive House','Latin House','Electro','Nu-Disco'] },
+  { label: 'Techno', incluye: ['Techno','Melodic Techno','Minimal','Hard Techno','Industrial','Dub Techno'] },
+  { label: 'Comercial / Hits', incluye: ['Comercial','Top 40','Hits actuales','EDM'] },
+  { label: 'Reggaetón / Latino', incluye: ['Reggaetón','Dembow','Moombahton','Dancehall','Latin House'] },
+  { label: 'Hip Hop / R&B', incluye: ['Hip Hop','Trap','R&B','Afrobeats','Amapiano'] },
+  { label: 'Remember / Pachanga', incluye: ['Remember','Pachanga','Disco','Funk'] },
+  { label: 'Ambiente / Chill', incluye: ['Ambient','Downtempo','Chillout'] },
+];
 const ROLES_LIST = ['DJ / Artista', 'Fotógrafo', 'Camarero / Staff', 'Maquilladora', 'Grupo musical', 'Animador', 'Promotor / RRPP', 'Photo Booth', 'Catering'];
 
 const daysLeft = (expires: string) => {

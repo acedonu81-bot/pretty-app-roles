@@ -62,6 +62,19 @@ const preheader = (texto: string) => `
     ${'&zwnj;&nbsp;'.repeat(60)}
   </div>`;
 
+/**
+ * Los clientes de correo (iOS Mail y Gmail sobre todo) convierten en enlaces
+ * lo que les parece un teléfono, una fecha o una dirección: "697417407" o
+ * "20:00 a 23:00" salían en azul y subrayados sin que nadie los pusiera así.
+ *
+ * No hay <head> donde meter <meta name="format-detection">, así que se
+ * neutraliza con el truco que funciona en todos: envolver el cuerpo en un
+ * <a> inerte cuyo color hereda el texto. El autolink sigue creándose, pero
+ * hereda el color del contenedor en vez del azul por defecto.
+ */
+const noAutolink = (html: string) =>
+  `<a href="#" style="color:inherit;text-decoration:none;pointer-events:none;cursor:default" tabindex="-1">${html}</a>`;
+
 const base = (content: string, preview?: string) => `
 <div style="background:#E8E9EB;padding:40px 16px;font-family:${FONT}">
 ${preview ? preheader(preview) : ''}
@@ -127,11 +140,11 @@ const rows = (pairs: [string, string][]) =>
     if (val.length > 60) {
       return `<tr><td colspan="2" style="padding:10px 0;${borde}">`
         + `<div style="color:#9CA3AF;font-size:12px;margin-bottom:4px">${esc(k)}</div>`
-        + `<div style="color:#0a0908;font-size:13px;font-weight:600;line-height:1.6">${val}</div>`
+        + `<div style="color:#0a0908;font-size:13px;font-weight:600;line-height:1.6">${noAutolink(val)}</div>`
         + `</td></tr>`;
     }
     return `<tr><td style="padding:10px 12px 10px 0;color:#9CA3AF;font-size:12px;white-space:nowrap;${borde}">${esc(k)}</td>`
-      + `<td style="padding:10px 0;color:#0a0908;font-size:13px;font-weight:600;line-height:1.6;${borde}">${val}</td></tr>`;
+      + `<td style="padding:10px 0;color:#0a0908;font-size:13px;font-weight:600;line-height:1.6;${borde}">${noAutolink(val)}</td></tr>`;
   }).join('')}</table>`;
 
 const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to: string; replyTo?: string }> = {
