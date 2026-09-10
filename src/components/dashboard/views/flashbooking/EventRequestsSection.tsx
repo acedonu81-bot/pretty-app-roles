@@ -79,8 +79,10 @@ const EventRequestsSection = () => {
   const [submitting, setSubmitting] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [savingEdit, setSavingEdit] = useState(false);
+  const [cancelling, setCancelling] = useState<string | null>(null);
 
-  const [responses, setResponses] = useState<Record<string, { id: string; name: string; photo: string | null; message: string | null; chosen_at: string | null; hired_at: string | null }[]>>({});
+  const [responses, setResponses] = useState<Record<string, { id: string; name: string; photo: string | null; message: string | null; slot_id: string | null; chosen_at: string | null; hired_at: string | null }[]>>({});
+  const [slots, setSlots] = useState<Record<string, { id: string; role: string }[]>>({});
   const [hiring, setHiring] = useState<string | null>(null);
   const [applied, setApplied] = useState<Record<string, { responseId: string; chosenAt: string | null }>>({});
   const [applyText, setApplyText] = useState<Record<string, string>>({});
@@ -94,7 +96,7 @@ const EventRequestsSection = () => {
     estilos: [] as string[],
     budget_min: '',
     budget_max: '',
-    roles_needed: [] as string[],
+    roleCounts: {} as Record<string, number>,
     description: '',
     contact_email: '',
     contact_phone: '',
@@ -128,14 +130,14 @@ const EventRequestsSection = () => {
     if (!user?.id || !isEmpresario || requests.length === 0) return;
     let cancelado = false;
     (async () => {
-      const agrupado: Record<string, { id: string; name: string; photo: string | null; message: string | null; chosen_at: string | null; hired_at: string | null }[]> = {};
+      const agrupado: Record<string, { id: string; name: string; photo: string | null; message: string | null; slot_id: string | null; chosen_at: string | null; hired_at: string | null }[]> = {};
       for (const req of requests) {
         const { data } = await (supabase.rpc as any)('interesados_en_oferta', { p_request_id: req.id });
-        const filas = (data ?? []) as { id: string; nombre: string; foto: string | null; mensaje: string | null; chosen_at: string | null; hired_at: string | null }[];
+        const filas = (data ?? []) as { id: string; nombre: string; foto: string | null; mensaje: string | null; slot_id: string | null; chosen_at: string | null; hired_at: string | null }[];
         if (filas.length > 0) {
           agrupado[req.id] = filas.map(f => ({
             id: f.id, name: f.nombre, photo: f.foto,
-            message: f.mensaje, chosen_at: f.chosen_at, hired_at: f.hired_at,
+            message: f.mensaje, slot_id: f.slot_id, chosen_at: f.chosen_at, hired_at: f.hired_at,
           }));
         }
       }
@@ -143,6 +145,25 @@ const EventRequestsSection = () => {
     })();
     return () => { cancelado = true; };
   }, [user?.id, isEmpresario, requests]);
+
+  // Plazas de cada oferta (1 DJ + 2 camareros = 3 filas: dj, camarero, camarero).
+  useEffect(() => {
+    if (requests.length === 0) return;
+    let cancelado = false;
+    (async () => {
+      const { data } = await supabase
+        .from('event_request_slots' as any)
+        .select('id, role, request_id')
+        .in('request_id', requests.map(r => r.id));
+      if (cancelado || !data) return;
+      const agrupado: Record<string, { id: string; role: string }[]> = {};
+      for (const s of data as { id: string; role: string; request_id: string }[]) {
+        (agrupado[s.request_id] ??= []).push({ id: s.id, role: s.role });
+      }
+      setSlots(agrupado);
+    })();
+    return () => { cancelado = true; };
+  }, [requests]);
 
   // Candidaturas ya enviadas: sin esto el botón "Me interesa" reaparecía al
   // recargar y el profesional creía que no se había apuntado.
@@ -211,20 +232,63 @@ const EventRequestsSection = () => {
     toast('Has rechazado la oferta.');
   };
 
+  // El organizador cierra su propia oferta a mano — si nadie se apunta, o ya
+  // no la necesita, no hay que esperar a que expire sola.
+  const cancelRequest = async (req: EventRequest) => {
+    if (!window.confirm('¿Cancelar esta oferta? Ya no aparecerá para los profesionales.')) return;
+    setCancelling(req.id);
+    const { error } = await supabase
+      .from('event_requests' as any)
+      .update({ status: 'closed' })
+      .eq('id', req.id);
+    setCancelling(null);
+    if (error) { toast.error('No se pudo cancelar.'); return; }
+    setRequests(prev => prev.filter(r => r.id !== req.id));
+    toast.success('Oferta cancelada.');
+  };
+
+  // Quitar UNA plaza sin cubrir (ej. tiene DJ pero ya no encuentra camareros
+  // y no quiere seguir esperando esa plaza) — no toca las demás plazas ni
+  // cierra la oferta entera.
+  const removeSlot = async (slotId: string, roleLabel: string) => {
+    if (!window.confirm(`¿Seguro que ya no necesitas ${roleLabel}? Se quitará esa plaza de la oferta.`)) return;
+    setCancelling(slotId);
+    const { error } = await supabase
+      .from('event_request_slots' as any)
+      .delete()
+      .eq('id', slotId);
+    setCancelling(null);
+    if (error) { toast.error('No se pudo quitar esa plaza.'); return; }
+    setSlots(prev => {
+      const next = { ...prev };
+      for (const reqId of Object.keys(next)) {
+        next[reqId] = next[reqId].filter(s => s.id !== slotId);
+      }
+      return next;
+    });
+    toast.success('Plaza eliminada.');
+  };
+
   const applyToRequest = async (req: EventRequest) => {
     if (!user?.id) { toast.error('Inicia sesión para apuntarte.'); return; }
+    // Con varios roles en una misma oferta (1 DJ + 2 camareros), el
+    // profesional se apunta automáticamente a UNA plaza libre de su propio
+    // rol — nunca elige él, solo se filtra por lo que ya declara su perfil.
+    const miPlaza = (slots[req.id] ?? []).find(s => ROL_UI_A_SLUG[s.role] === canonicalRole(profile.role));
+    if (!miPlaza) { toast.error('No hay ninguna plaza de tu rol en esta oferta.'); return; }
     setApplying(req.id);
-    const { error } = await supabase.from('event_request_responses' as any).insert({
+    const { data, error } = await supabase.from('event_request_responses' as any).insert({
       request_id: req.id,
+      slot_id: miPlaza.id,
       professional_user_id: user.id,
       message: (applyText[req.id] ?? '').trim() || null,
-    });
+    }).select().single();
     setApplying(null);
 
     if (error) {
       // 23505 = ya existe: se había apuntado antes, no es un fallo que contar.
       if ((error as { code?: string }).code === '23505') {
-        setApplied(a => ({ ...a, [req.id]: true }));
+        setApplied(a => ({ ...a, [req.id]: { responseId: '', chosenAt: null } }));
         toast.info('Ya te habías apuntado a esta oferta.');
         return;
       }
@@ -232,7 +296,7 @@ const EventRequestsSection = () => {
       return;
     }
 
-    setApplied(a => ({ ...a, [req.id]: true }));
+    setApplied(a => ({ ...a, [req.id]: { responseId: (data as { id: string }).id, chosenAt: null } }));
     toast.success('¡Enviado! El organizador ya lo ve en su panel.');
 
     // Email de refuerzo al organizador. La campana ya la escribe el trigger;
@@ -262,7 +326,9 @@ const EventRequestsSection = () => {
       estilos: [],
       budget_min: req.budget_min?.toString() ?? '',
       budget_max: req.budget_max?.toString() ?? '',
-      roles_needed: req.roles_needed ?? [],
+      // Las plazas ya no se editan aquí (pueden tener respuestas): se añaden
+      // o quitan una a una desde la propia tarjeta de la oferta.
+      roleCounts: {},
       description: req.description ?? '',
       contact_email: req.contact_email ?? '',
       contact_phone: req.contact_phone ?? '',
@@ -284,7 +350,6 @@ const EventRequestsSection = () => {
         event_dates: form.event_dates.length > 0 ? form.event_dates : null,
         budget_min: form.budget_min ? parseInt(form.budget_min) : null,
         budget_max: form.budget_max ? parseInt(form.budget_max) : null,
-        roles_needed: form.roles_needed,
         description: form.description.trim() || null,
         contact_email: form.contact_email.trim() || null,
         contact_phone: form.contact_phone.trim() || null,
@@ -297,22 +362,42 @@ const EventRequestsSection = () => {
     setRequests(prev => prev.map(r => r.id === editingId ? (data as EventRequest) : r));
     setShowForm(false);
     setEditingId(null);
-    setForm({ client_name: '', event_type: '', city: '', event_dates: [], estilos: [], budget_min: '', budget_max: '', roles_needed: [], description: '', contact_email: '', contact_phone: '' });
+    setForm({ client_name: '', event_type: '', city: '', event_dates: [], estilos: [], budget_min: '', budget_max: '', roleCounts: {}, description: '', contact_email: '', contact_phone: '' });
     toast.success('Oferta actualizada.');
   };
 
-  const toggleRole = (r: string) => {
-    setForm(f => ({
-      ...f,
-      roles_needed: f.roles_needed.includes(r)
-        ? f.roles_needed.filter(x => x !== r)
-        : [...f.roles_needed, r],
-    }));
+  // Añadir una plaza más de un rol que la oferta YA tenía, sin tocar el
+  // formulario de edición — la X de la tarjeta quita, este botón suma.
+  const addSlot = async (req: EventRequest, role: string) => {
+    const { data, error } = await supabase
+      .from('event_request_slots' as any)
+      .insert({ request_id: req.id, role })
+      .select()
+      .single();
+    if (error || !data) { toast.error('No se pudo añadir la plaza.'); return; }
+    setSlots(prev => ({ ...prev, [req.id]: [...(prev[req.id] ?? []), data as { id: string; role: string }] }));
   };
+
+  // Cantidad por rol, tipo carrito: +/- sube o baja, nunca baja de 0. El array
+  // plano que espera roles_needed (compatibilidad con lo que ya lee el resto
+  // del código) se deriva repitiendo cada rol tantas veces como su cantidad.
+  const setRoleCount = (r: string, delta: number) => {
+    setForm(f => {
+      const current = f.roleCounts[r] ?? 0;
+      const next = Math.max(0, current + delta);
+      const roleCounts = { ...f.roleCounts };
+      if (next === 0) delete roleCounts[r]; else roleCounts[r] = next;
+      return { ...f, roleCounts };
+    });
+  };
+
+  const rolesNeededFlat = (counts: Record<string, number>): string[] =>
+    Object.entries(counts).flatMap(([role, n]) => Array(n).fill(role));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.client_name || !form.event_type || !form.city) return;
+    const roles_needed = rolesNeededFlat(form.roleCounts);
+    if (!form.client_name || !form.event_type || !form.city || roles_needed.length === 0) return;
     setSubmitting(true);
     const { data, error } = await (supabase
       .from('event_requests' as any)
@@ -328,19 +413,28 @@ const EventRequestsSection = () => {
         estilos: form.estilos.length > 0 ? form.estilos : null,
         budget_min: form.budget_min ? parseInt(form.budget_min) : null,
         budget_max: form.budget_max ? parseInt(form.budget_max) : null,
-        roles_needed: form.roles_needed,
+        roles_needed,
         description: form.description.trim() || null,
         contact_email: form.contact_email.trim() || null,
         contact_phone: form.contact_phone.trim() || null,
       })
       .select()
       .single() as any);
+    if (error) { setSubmitting(false); toast.error('Error al publicar. Inténtalo de nuevo.'); return; }
+
+    // Una plaza por unidad: "2 camareros" son 2 filas, cada una con su propio
+    // estado independiente (ver event_request_slots).
+    const nuevaOferta = data as EventRequest;
+    const { error: slotsError } = await supabase
+      .from('event_request_slots' as any)
+      .insert(roles_needed.map(role => ({ request_id: nuevaOferta.id, role })));
     setSubmitting(false);
-    if (error) { toast.error('Error al publicar. Inténtalo de nuevo.'); return; }
+    if (slotsError) { toast.error('La oferta se creó pero hubo un problema con las plazas.'); }
+
     toast.success('¡Solicitud publicada! Los profesionales podrán contactarte.');
-    setRequests(prev => [data as EventRequest, ...prev]);
+    setRequests(prev => [nuevaOferta, ...prev]);
     setShowForm(false);
-    setForm({ client_name: '', event_type: '', city: '', event_dates: [], estilos: [], budget_min: '', budget_max: '', roles_needed: [], description: '', contact_email: '', contact_phone: '' });
+    setForm({ client_name: '', event_type: '', city: '', event_dates: [], estilos: [], budget_min: '', budget_max: '', roleCounts: {}, description: '', contact_email: '', contact_phone: '' });
   };
 
   return (
@@ -413,11 +507,20 @@ const EventRequestsSection = () => {
                         borrarla y publicar otra, perdiendo las respuestas ya
                         recibidas. */}
                     {req.client_user_id === user?.id && (
-                      <button type="button" onClick={() => startEdit(req)}
-                        className="flex-shrink-0 flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold transition-all hover:scale-105"
-                        style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#555' }}>
-                        <Pencil size={10} /> Editar
-                      </button>
+                      <div className="flex-shrink-0 flex items-center gap-1.5">
+                        <button type="button" onClick={() => startEdit(req)}
+                          className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold transition-all hover:scale-105"
+                          style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#555' }}>
+                          <Pencil size={10} /> Editar
+                        </button>
+                        <button type="button" onClick={() => cancelRequest(req)}
+                          disabled={cancelling === req.id}
+                          title="Cancelar toda la oferta"
+                          className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold transition-all hover:scale-105 disabled:opacity-60"
+                          style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.2)', color: '#dc2626' }}>
+                          <X size={10} /> {cancelling === req.id ? '…' : 'Cancelar'}
+                        </button>
+                      </div>
                     )}
                   </div>
 
@@ -445,15 +548,31 @@ const EventRequestsSection = () => {
                     )}
                   </div>
 
-                  {/* Roles */}
-                  {req.roles_needed?.length > 0 && (
+                  {/* Roles agrupados por cantidad + cuántos ya están cubiertos —
+                      "2 Sala & Barra · 1/2 cubiertos" en vez de repetir el chip. */}
+                  {(slots[req.id]?.length ?? 0) > 0 && (
                     <div className="flex flex-wrap gap-1 mb-3">
-                      {req.roles_needed.map(r => (
-                        <span key={r} className="px-2 py-0.5 rounded-full text-[10px] font-semibold"
-                          style={{ background: 'rgba(0,0,0,0.04)', color: '#333', border: '1px solid rgba(0,0,0,0.07)' }}>
-                          {r}
-                        </span>
-                      ))}
+                      {Object.entries(
+                        (slots[req.id] ?? []).reduce((acc, s) => {
+                          (acc[s.role] ??= []).push(s.id);
+                          return acc;
+                        }, {} as Record<string, string[]>)
+                      ).map(([role, slotIds]) => {
+                        const cubiertos = (responses[req.id] ?? []).filter(
+                          r2 => r2.hired_at && slotIds.includes(r2.slot_id ?? '')
+                        ).length;
+                        return (
+                          <span key={role} className="px-2 py-0.5 rounded-full text-[10px] font-semibold"
+                            style={{
+                              background: cubiertos === slotIds.length ? 'rgba(34,197,94,0.1)' : 'rgba(0,0,0,0.04)',
+                              color: cubiertos === slotIds.length ? '#16a34a' : '#333',
+                              border: `1px solid ${cubiertos === slotIds.length ? 'rgba(34,197,94,0.3)' : 'rgba(0,0,0,0.07)'}`,
+                            }}>
+                            {slotIds.length > 1 ? `${slotIds.length} ${role}` : role}
+                            {cubiertos > 0 && ` · ${cubiertos}/${slotIds.length} cubiertos`}
+                          </span>
+                        );
+                      })}
                     </div>
                   )}
 
@@ -476,55 +595,82 @@ const EventRequestsSection = () => {
                           conversación se iba fuera y no quedaba registro de
                           quién se había apuntado ni de si el bolo se cerró. */}
                       {isEmpresario ? (
-                        (responses[req.id]?.length ?? 0) > 0 ? (
-                          <div className="flex flex-col gap-2">
-                            <p className="text-[10px] font-black uppercase tracking-wider" style={{ color: '#8A6D0F' }}>
-                              {responses[req.id].length} interesado{responses[req.id].length > 1 ? 's' : ''}
-                            </p>
-                            {responses[req.id].map(resp => (
-                              <div key={resp.id} className="px-3 py-2 rounded-xl"
-                                style={{
-                                  background: resp.hired_at ? 'rgba(34,197,94,0.08)' : resp.chosen_at ? 'rgba(212,175,55,0.1)' : 'rgba(212,175,55,0.06)',
-                                  border: `1px solid ${resp.hired_at ? 'rgba(34,197,94,0.3)' : resp.chosen_at ? 'rgba(212,175,55,0.4)' : 'rgba(212,175,55,0.18)'}`,
-                                }}>
-                                <div className="flex items-center justify-between gap-2">
-                                  <div className="flex items-center gap-2 min-w-0">
-                                    {resp.photo ? (
-                                      <img src={resp.photo} alt={resp.name}
-                                        className="w-7 h-7 rounded-full object-cover flex-shrink-0"
-                                        style={{ border: '1px solid rgba(0,0,0,0.08)' }} />
-                                    ) : (
-                                      <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-black flex-shrink-0"
-                                        style={{ background: 'rgba(0,0,0,0.06)', color: '#666' }}>
-                                        {resp.name.charAt(0).toUpperCase()}
-                                      </div>
+                        (slots[req.id]?.length ?? 0) > 0 ? (
+                          <div className="flex flex-col gap-4">
+                            {slots[req.id].map(slot => {
+                              const candidatos = (responses[req.id] ?? []).filter(r2 => r2.slot_id === slot.id);
+                              const cubierta = candidatos.some(c => c.hired_at);
+                              return (
+                                <div key={slot.id}>
+                                  <div className="flex items-center justify-between mb-1.5">
+                                    <p className="text-[10px] font-black uppercase tracking-wider" style={{ color: '#8A6D0F' }}>
+                                      {slot.role} — {candidatos.length} interesado{candidatos.length === 1 ? '' : 's'}
+                                    </p>
+                                    {candidatos.length === 0 && (
+                                      <button type="button"
+                                        onClick={() => removeSlot(slot.id, slot.role)}
+                                        disabled={cancelling === slot.id}
+                                        title={`Ya no necesito ${slot.role}`}
+                                        className="p-1 rounded-lg hover:bg-black/5 disabled:opacity-50">
+                                        <X size={12} style={{ color: '#999' }} />
+                                      </button>
                                     )}
-                                    <p className="text-xs font-bold truncate" style={{ color: '#111' }}>{resp.name}</p>
                                   </div>
-                                  {resp.hired_at ? (
-                                    <span className="flex items-center gap-1 text-[10px] font-black"
-                                      style={{ color: '#16a34a' }}>
-                                      <Check size={11} /> CONTRATADO
-                                    </span>
-                                  ) : resp.chosen_at ? (
-                                    <span className="text-[10px] font-black flex-shrink-0" style={{ color: '#8A6D0F' }}>
-                                      ESPERANDO SU CONFIRMACIÓN
-                                    </span>
+                                  {candidatos.length === 0 ? (
+                                    <p className="text-xs text-center py-2 rounded-xl" style={{ color: '#888', background: 'rgba(0,0,0,0.02)' }}>
+                                      Aún no se ha apuntado nadie.
+                                    </p>
                                   ) : (
-                                    <button type="button"
-                                      onClick={() => chooseProfessional(req, resp.id, resp.name)}
-                                      disabled={hiring === resp.id}
-                                      className="px-2.5 py-1 rounded-lg text-[10px] font-black transition-all hover:scale-105 disabled:opacity-60 flex-shrink-0"
-                                      style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-                                      {hiring === resp.id ? '…' : 'Elegir'}
-                                    </button>
+                                    <div className="flex flex-col gap-2">
+                                      {candidatos.map(resp => (
+                                        <div key={resp.id} className="px-3 py-2 rounded-xl"
+                                          style={{
+                                            background: resp.hired_at ? 'rgba(34,197,94,0.08)' : resp.chosen_at ? 'rgba(212,175,55,0.1)' : 'rgba(212,175,55,0.06)',
+                                            border: `1px solid ${resp.hired_at ? 'rgba(34,197,94,0.3)' : resp.chosen_at ? 'rgba(212,175,55,0.4)' : 'rgba(212,175,55,0.18)'}`,
+                                          }}>
+                                          <div className="flex items-center justify-between gap-2">
+                                            <div className="flex items-center gap-2 min-w-0">
+                                              {resp.photo ? (
+                                                <img src={resp.photo} alt={resp.name}
+                                                  className="w-7 h-7 rounded-full object-cover flex-shrink-0"
+                                                  style={{ border: '1px solid rgba(0,0,0,0.08)' }} />
+                                              ) : (
+                                                <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-black flex-shrink-0"
+                                                  style={{ background: 'rgba(0,0,0,0.06)', color: '#666' }}>
+                                                  {resp.name.charAt(0).toUpperCase()}
+                                                </div>
+                                              )}
+                                              <p className="text-xs font-bold truncate" style={{ color: '#111' }}>{resp.name}</p>
+                                            </div>
+                                            {resp.hired_at ? (
+                                              <span className="flex items-center gap-1 text-[10px] font-black"
+                                                style={{ color: '#16a34a' }}>
+                                                <Check size={11} /> CONTRATADO
+                                              </span>
+                                            ) : resp.chosen_at ? (
+                                              <span className="text-[10px] font-black flex-shrink-0" style={{ color: '#8A6D0F' }}>
+                                                ESPERANDO SU CONFIRMACIÓN
+                                              </span>
+                                            ) : cubierta ? null : (
+                                              <button type="button"
+                                                onClick={() => chooseProfessional(req, resp.id, resp.name)}
+                                                disabled={hiring === resp.id}
+                                                className="px-2.5 py-1 rounded-lg text-[10px] font-black transition-all hover:scale-105 disabled:opacity-60 flex-shrink-0"
+                                                style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+                                                {hiring === resp.id ? '…' : 'Elegir'}
+                                              </button>
+                                            )}
+                                          </div>
+                                          {resp.message && (
+                                            <p className="text-xs mt-0.5" style={{ color: '#333' }}>{resp.message}</p>
+                                          )}
+                                        </div>
+                                      ))}
+                                    </div>
                                   )}
                                 </div>
-                                {resp.message && (
-                                  <p className="text-xs mt-0.5" style={{ color: '#333' }}>{resp.message}</p>
-                                )}
-                              </div>
-                            ))}
+                              );
+                            })}
                           </div>
                         ) : (
                           <p className="text-xs text-center py-2" style={{ color: '#333' }}>
@@ -535,7 +681,7 @@ const EventRequestsSection = () => {
                         <div className="flex flex-col gap-2">
                           <div className="px-3 py-2 rounded-xl text-xs font-bold text-center"
                             style={{ background: 'rgba(212,175,55,0.12)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.35)' }}>
-                            ¡Te han elegido para este {jobWord(canonicalRole(ROL_UI_A_SLUG[req.roles_needed?.[0]]))}! Confirma antes de que el organizador elija a otro.
+                            ¡Te han elegido para este {jobWord(profile.role)}! Confirma antes de que el organizador elija a otro.
                           </div>
                           <div className="flex gap-2">
                             <button type="button"
@@ -688,20 +834,35 @@ const EventRequestsSection = () => {
               </div>
 
               <div>
-                <label className="text-xs font-black mb-2 block" style={{ color: '#333' }}>¿QUÉ PROFESIONALES NECESITAS?</label>
-                <div className="flex flex-wrap gap-2">
+                <label className="text-xs font-black mb-1 block" style={{ color: '#333' }}>¿QUÉ PROFESIONALES NECESITAS?</label>
+                <p className="text-[10px] mb-2" style={{ color: '#888' }}>
+                  Ej. 1 DJ y 2 camareros — cada uno se elige y confirma por separado.
+                </p>
+                <div className="flex flex-col gap-1.5">
                   {ROLES_LIST.map(r => {
-                    const sel = form.roles_needed.includes(r);
+                    const count = form.roleCounts[r] ?? 0;
                     return (
-                      <button key={r} type="button" onClick={() => toggleRole(r)}
-                        className="px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all"
+                      <div key={r} className="flex items-center justify-between gap-2 px-3 py-2 rounded-xl"
                         style={{
-                          background: sel ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.04)',
-                          border: `1px solid ${sel ? 'rgba(212,175,55,0.5)' : 'rgba(0,0,0,0.08)'}`,
-                          color: sel ? '#B8941E' : '#222',
+                          background: count > 0 ? 'rgba(212,175,55,0.1)' : 'rgba(0,0,0,0.03)',
+                          border: `1px solid ${count > 0 ? 'rgba(212,175,55,0.4)' : 'rgba(0,0,0,0.07)'}`,
                         }}>
-                        {r}
-                      </button>
+                        <span className="text-xs font-semibold" style={{ color: count > 0 ? '#B8941E' : '#333' }}>{r}</span>
+                        <div className="flex items-center gap-2 flex-shrink-0">
+                          <button type="button" onClick={() => setRoleCount(r, -1)}
+                            disabled={count === 0}
+                            className="w-6 h-6 rounded-lg flex items-center justify-center text-sm font-black disabled:opacity-30"
+                            style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.15)', color: '#333' }}>
+                            −
+                          </button>
+                          <span className="w-4 text-center text-sm font-black" style={{ color: '#111' }}>{count}</span>
+                          <button type="button" onClick={() => setRoleCount(r, 1)}
+                            className="w-6 h-6 rounded-lg flex items-center justify-center text-sm font-black"
+                            style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+                            +
+                          </button>
+                        </div>
+                      </div>
                     );
                   })}
                 </div>
@@ -714,9 +875,10 @@ const EventRequestsSection = () => {
                   infantil). Se usan las mismas tags que cada rol declara en
                   su perfil (ROLE_TAGS), así no hay que mantener dos listas. */}
               {(() => {
-                const opciones = opcionesEstilo(form.roles_needed);
+                const rolesSeleccionados = Object.keys(form.roleCounts);
+                const opciones = opcionesEstilo(rolesSeleccionados);
                 if (opciones.length === 0) return null;
-                const esDJ = form.roles_needed.includes('DJ / Artista');
+                const esDJ = rolesSeleccionados.includes('DJ / Artista');
                 return (
                   <div>
                     <label className="text-xs font-black mb-2 block" style={{ color: '#333' }}>
@@ -784,8 +946,9 @@ const EventRequestsSection = () => {
                 </p>
               )}
 
-              <button type="submit" disabled={submitting || savingEdit}
-                className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-black text-sm transition-all"
+              <button type="submit"
+                disabled={submitting || savingEdit || (!editingId && Object.keys(form.roleCounts).length === 0)}
+                className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-black text-sm transition-all disabled:opacity-40"
                 style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', opacity: (submitting || savingEdit) ? 0.7 : 1 }}>
                 <Send size={14} /> {editingId
                   ? (savingEdit ? 'Guardando...' : 'Guardar cambios')
