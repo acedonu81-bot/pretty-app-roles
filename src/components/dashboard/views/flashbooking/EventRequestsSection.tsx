@@ -49,7 +49,7 @@ const EventRequestsSection = () => {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  const [responses, setResponses] = useState<Record<string, { id: string; name: string; message: string | null; hired_at: string | null }[]>>({});
+  const [responses, setResponses] = useState<Record<string, { id: string; name: string; photo: string | null; message: string | null; hired_at: string | null }[]>>({});
   const [hiring, setHiring] = useState<string | null>(null);
   const [applied, setApplied] = useState<Record<string, boolean>>({});
   const [applyText, setApplyText] = useState<Record<string, string>>({});
@@ -88,35 +88,28 @@ const EventRequestsSection = () => {
       });
   }, []);
 
-  // Quién se ha apuntado a MIS ofertas. La RLS solo devuelve las respuestas de
-  // ofertas propias, así que no hace falta filtrar por request_id aquí.
+  // Quién se ha apuntado a MIS ofertas, ya ordenado por completitud de perfil:
+  // cuando varios responden al mismo bolo, el organizador decide en segundos y
+  // un perfil sin foto no compite. La RPC hace el orden en BD y comprueba que
+  // la oferta es de quien pregunta.
   useEffect(() => {
     if (!user?.id || !isEmpresario || requests.length === 0) return;
-    supabase
-      .from('event_request_responses' as any)
-      .select('id, request_id, message, professional_user_id, hired_at')
-      .in('request_id', requests.map(r => r.id))
-      .then(async ({ data }) => {
-        const rows = (data ?? []) as { id: string; request_id: string; message: string | null; professional_user_id: string; hired_at: string | null }[];
-        if (rows.length === 0) return;
-        const { data: profs } = await supabase
-          .from('profiles')
-          .select('user_id, display_name')
-          .in('user_id', rows.map(r => r.professional_user_id));
-        const nombres = Object.fromEntries(
-          (profs ?? []).map((p: { user_id: string; display_name: string | null }) => [p.user_id, p.display_name || 'Profesional'])
-        );
-        const agrupado: Record<string, { id: string; name: string; message: string | null; hired_at: string | null }[]> = {};
-        rows.forEach(r => {
-          (agrupado[r.request_id] ??= []).push({
-            id: r.id,
-            name: nombres[r.professional_user_id] ?? 'Profesional',
-            message: r.message,
-            hired_at: r.hired_at,
-          });
-        });
-        setResponses(agrupado);
-      }, () => {});
+    let cancelado = false;
+    (async () => {
+      const agrupado: Record<string, { id: string; name: string; photo: string | null; message: string | null; hired_at: string | null }[]> = {};
+      for (const req of requests) {
+        const { data } = await (supabase.rpc as any)('interesados_en_oferta', { p_request_id: req.id });
+        const filas = (data ?? []) as { id: string; nombre: string; foto: string | null; mensaje: string | null; hired_at: string | null }[];
+        if (filas.length > 0) {
+          agrupado[req.id] = filas.map(f => ({
+            id: f.id, name: f.nombre, photo: f.foto,
+            message: f.mensaje, hired_at: f.hired_at,
+          }));
+        }
+      }
+      if (!cancelado) setResponses(agrupado);
+    })();
+    return () => { cancelado = true; };
   }, [user?.id, isEmpresario, requests]);
 
   // Candidaturas ya enviadas: sin esto el botón "Me interesa" reaparecía al
@@ -363,7 +356,19 @@ const EventRequestsSection = () => {
                                   border: `1px solid ${resp.hired_at ? 'rgba(34,197,94,0.3)' : 'rgba(212,175,55,0.18)'}`,
                                 }}>
                                 <div className="flex items-center justify-between gap-2">
-                                  <p className="text-xs font-bold" style={{ color: '#111' }}>{resp.name}</p>
+                                  <div className="flex items-center gap-2 min-w-0">
+                                    {resp.photo ? (
+                                      <img src={resp.photo} alt={resp.name}
+                                        className="w-7 h-7 rounded-full object-cover flex-shrink-0"
+                                        style={{ border: '1px solid rgba(0,0,0,0.08)' }} />
+                                    ) : (
+                                      <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-black flex-shrink-0"
+                                        style={{ background: 'rgba(0,0,0,0.06)', color: '#666' }}>
+                                        {resp.name.charAt(0).toUpperCase()}
+                                      </div>
+                                    )}
+                                    <p className="text-xs font-bold truncate" style={{ color: '#111' }}>{resp.name}</p>
+                                  </div>
                                   {resp.hired_at ? (
                                     <span className="flex items-center gap-1 text-[10px] font-black"
                                       style={{ color: '#16a34a' }}>

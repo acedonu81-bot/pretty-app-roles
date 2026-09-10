@@ -315,7 +315,21 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         Responder de los primeros es justo lo que hay que hacer: en las próximas ofertas
         cuenta a tu favor.
       </p>
-      ${btn('Ver ofertas abiertas →', 'https://xpeak.es/dashboard?view=flashbooking')}
+      ${Array.isArray(d.falta) && d.falta.length > 0 ? `
+      <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:8px;padding:16px;margin:20px 0">
+        <p style="font-size:13px;font-weight:700;margin:0 0 8px;color:#0a0908">
+          Para la próxima, súbete estas posibilidades
+        </p>
+        <p style="font-size:13px;line-height:1.6;margin:0 0 10px;color:#0a0908">
+          Cuando varios se apuntan al mismo bolo, el organizador ve primero los perfiles
+          más completos. En el tuyo falta:
+        </p>
+        <ul style="margin:0;padding-left:18px;color:#0a0908;font-size:13px;line-height:1.9">
+          ${d.falta.map((f: string) => `<li>${esc(f)}</li>`).join('')}
+        </ul>
+      </div>
+      ${btn('Completar mi perfil →', 'https://xpeak.es/dashboard?view=perfil')}
+      ` : btn('Ver ofertas abiertas →', 'https://xpeak.es/dashboard?view=flashbooking')}
     `, `El bolo se ha cerrado con otro profesional`),
   }),
 
