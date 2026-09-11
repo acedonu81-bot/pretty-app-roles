@@ -290,6 +290,13 @@ export function resolverDestinoBusqueda(
   return null;
 }
 
+// Vista sentinela que pasa Auth.tsx tras login: ignora la última vista
+// guardada en localStorage (que ganaría si no fuera por esto) pero sigue
+// respetando el destino propio de empresario/pending/rookie — el pedido del
+// usuario (11 sep 2026) era "no aterrizar donde se invente", no romper esos
+// flujos ya pensados a propósito.
+export const VISTA_TRAS_LOGIN = '__post_login__';
+
 export function resolverVistaInicial(opts: {
   stateView?: string | null;
   queryView?: string | null;
@@ -297,6 +304,10 @@ export function resolverVistaInicial(opts: {
   rol?: string | null;
 }): string {
   const { stateView, queryView, guardada, rol } = opts;
+  if (stateView === VISTA_TRAS_LOGIN) {
+    if (rol && SIN_EXPLORAR.has(rol)) return ROLE_TO_VIEW[rol] ?? rol;
+    return 'explorar';
+  }
   if (stateView) return stateView;
   if (queryView) return queryView;
   if (guardada) return guardada;
@@ -329,7 +340,10 @@ const Dashboard = () => {
     if (p) logProfileView(p.role ?? 'desconocido');
     setSelectedProfileRaw(p);
   }, []);
-  const [searchQuery, setSearchQuery] = useState('');
+  // El buscador de Landing pasa el término escrito en location.state.search
+  // junto con la vista ya resuelta — sin esto llegabas a la vista correcta
+  // pero el campo de búsqueda aparecía vacío y perdías lo que habías escrito.
+  const [searchQuery, setSearchQuery] = useState<string>(() => (location.state as { search?: string })?.search ?? '');
   const [showWizard, setShowWizard] = useState(false);
   const isMobile = useIsMobile();
   const { user, loading } = useAuth();

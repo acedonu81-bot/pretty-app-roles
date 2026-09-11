@@ -5,6 +5,7 @@ import { Mail, Lock, User, Eye, EyeOff, Zap, ShieldCheck, Users, FileText, MapPi
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { track, trackLead, logSignup, logLogin } from '@/lib/track';
+import { VISTA_TRAS_LOGIN } from '@/pages/Dashboard';
 import TurnstileWidget from '@/components/TurnstileWidget';
 import { ALL_CITIES } from '@/lib/regions';
 
@@ -130,7 +131,13 @@ const Auth = () => {
   }, []);
 
   useEffect(() => {
-    // Destino tras login: SIEMPRE el dashboard (vista clásica).
+    // Destino tras login: SIEMPRE el dashboard, en la vista Explorar (mapa de
+    // categorías) — nunca la última vista guardada en localStorage, que es lo
+    // que resolverVistaInicial usaría por defecto (11 sep 2026: el usuario
+    // pidió que el login no aterrice "donde se invente"). Pasar `view:
+    // 'explorar'` explícito en el state gana esa prioridad sin tocar
+    // resolverVistaInicial, así que navegar DENTRO de la app y recargar sigue
+    // respetando la última vista como antes.
     //
     // Antes, un perfil completo caía directo en el feed swipe de /descubrir.
     // El swipe no termina de funcionar como el de Instagram y hay gente que se
@@ -142,7 +149,7 @@ const Auth = () => {
     // alguien (enlace de email, vuelta de OAuth a una sección concreta).
     const goAfterLogin = async (_userId: string) => {
       if (redirectParam !== '/descubrir') { navigate(redirectParam, { replace: true }); return; }
-      navigate('/dashboard', { replace: true });
+      navigate('/dashboard', { replace: true, state: { view: VISTA_TRAS_LOGIN } });
     };
 
     supabase.auth.getSession().then(({ data: { session } }) => {

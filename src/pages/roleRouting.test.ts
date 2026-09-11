@@ -174,6 +174,31 @@ describe('resolverVistaInicial', () => {
     const r = Array.from({ length: 5 }, () => resolverVistaInicial(args));
     expect(new Set(r).size).toBe(1);
   });
+
+  // Pedido del usuario (11 sep 2026): tras hacer login SIEMPRE debe aterrizar
+  // en Explorar, sin importar dónde estuviera navegando la última vez — a
+  // diferencia de "sin navegación explícita, vuelve a donde estabas" de
+  // arriba, que sigue aplicando cuando NO vienes de un login.
+  describe('VISTA_TRAS_LOGIN (sentinela que pasa Auth.tsx)', () => {
+    it('ignora la vista guardada y aterriza en explorar', async () => {
+      const { resolverVistaInicial, VISTA_TRAS_LOGIN } = await import('./Dashboard');
+      expect(resolverVistaInicial({
+        stateView: VISTA_TRAS_LOGIN, guardada: 'calendar', rol: 'dj',
+      })).toBe('explorar');
+    });
+
+    it('respeta igualmente el panel propio de empresario/pending/rookie', async () => {
+      const { resolverVistaInicial, VISTA_TRAS_LOGIN } = await import('./Dashboard');
+      expect(resolverVistaInicial({ stateView: VISTA_TRAS_LOGIN, rol: 'empresario' })).toBe('empresario');
+      expect(resolverVistaInicial({ stateView: VISTA_TRAS_LOGIN, rol: 'pending' })).toBe('profile');
+      expect(resolverVistaInicial({ stateView: VISTA_TRAS_LOGIN, rol: 'rookie' })).toBe('profile');
+    });
+
+    it('sin rol aún cargado (primer render tras login) también va a explorar', async () => {
+      const { resolverVistaInicial, VISTA_TRAS_LOGIN } = await import('./Dashboard');
+      expect(resolverVistaInicial({ stateView: VISTA_TRAS_LOGIN, guardada: 'calendar' })).toBe('explorar');
+    });
+  });
 });
 
 /**

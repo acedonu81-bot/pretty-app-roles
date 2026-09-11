@@ -1,5 +1,14 @@
 import { useState, useRef, useEffect, useCallback, useMemo, lazy, Suspense } from 'react';
 import { ALL_CITIES } from '@/lib/regions';
+import { resolverVistaDeBusqueda } from '@/pages/Dashboard';
+import { ROLE_CONFIG } from '@/pages/DirectorioPublico';
+
+// dbRole (el que usa resolverVistaDeBusqueda, ej. 'media') → slug de
+// /directorio/:slug (ej. 'fotografo'). Derivado de ROLE_CONFIG en vez de
+// mantener un segundo mapeo a mano que se desincronice del real.
+const DBROLE_TO_DIRECTORIO_SLUG: Record<string, string> = Object.fromEntries(
+  Object.entries(ROLE_CONFIG).map(([slug, cfg]) => [cfg.dbRole, slug])
+);
 
 
 
@@ -790,13 +799,18 @@ const Landing = () => {
                 const fd = new FormData(e.currentTarget as HTMLFormElement);
                 const q = (fd.get('q') as string) || '';
                 const city = cityValue;
+                // 'dj' es el único fallback seguro: si el término no matchea
+                // ningún oficio conocido, seguimos mostrando algo con contenido
+                // real en vez de una vista vacía o un directorio genérico.
+                const dbRole = resolverVistaDeBusqueda(q) ?? 'dj';
                 if (user) {
-                  navigate('/dashboard', { state: { view: 'directorio', search: q, city } });
+                  navigate('/dashboard', { state: { view: dbRole, search: q, city } });
                 } else {
+                  const slug = DBROLE_TO_DIRECTORIO_SLUG[dbRole] ?? 'dj';
                   const params = new URLSearchParams();
                   if (q) params.set('q', q);
                   if (city) params.set('city', city);
-                  navigate('/directorio/dj' + (params.toString() ? '?' + params.toString() : ''));
+                  navigate(`/directorio/${slug}` + (params.toString() ? '?' + params.toString() : ''));
                 }
               }}
               className="w-full flex gap-2 mt-1"

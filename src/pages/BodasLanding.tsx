@@ -1,10 +1,13 @@
 import { Helmet } from 'react-helmet-async';
-import { Zap, Star, Shield, ArrowRight } from 'lucide-react';
+import {
+  Zap, Star, Shield, ArrowRight, Headphones, Wine, Camera, UtensilsCrossed,
+  Sparkles, Music2, Mic2, Disc3,
+} from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 
 const SERVICIOS = [
   {
-    emoji: '🎧',
+    icon: Headphones,
     title: 'DJ de boda',
     desc: 'Profesionales con experiencia en bodas, no en clubs. Saben gestionar ceremonia, cóctel, cena y baile.',
     href: '/contratar-dj',
@@ -12,7 +15,7 @@ const SERVICIOS = [
     tag: 'Más solicitado',
   },
   {
-    emoji: '🍾',
+    icon: Wine,
     title: 'Catering de boda',
     desc: 'Banquetes sentados, cócteles, barra libre y menús personalizados. Opciones vegetarianas y sin gluten.',
     href: '/contratar-catering',
@@ -20,7 +23,7 @@ const SERVICIOS = [
     tag: 'Imprescindible',
   },
   {
-    emoji: '📸',
+    icon: Camera,
     title: 'Fotógrafo de boda',
     desc: 'Cobertura completa: ceremonia, reportaje de pareja y banquete. Con o sin videógrafo incluido.',
     href: '/contratar-fotografo',
@@ -28,7 +31,7 @@ const SERVICIOS = [
     tag: '',
   },
   {
-    emoji: '🍽️',
+    icon: UtensilsCrossed,
     title: 'Camareros de boda',
     desc: 'Personal de sala profesional para el cóctel y el banquete. Ratio correcto según tus invitados.',
     href: '/contratar-camareros',
@@ -36,7 +39,7 @@ const SERVICIOS = [
     tag: '',
   },
   {
-    emoji: '💄',
+    icon: Sparkles,
     title: 'Maquillaje nupcial',
     desc: 'Maquilladores especializados en novias. Incluye prueba previa y servicio el día del evento.',
     href: '/contratar-maquillaje',
@@ -44,7 +47,7 @@ const SERVICIOS = [
     tag: '',
   },
   {
-    emoji: '🎻',
+    icon: Music2,
     title: 'Música en vivo',
     desc: 'Solistas, cuartetos de cuerda, grupos de jazz o bandas. Para la ceremonia o el cóctel.',
     href: '/blog/musica-en-vivo-para-bodas',
@@ -52,7 +55,7 @@ const SERVICIOS = [
     tag: '',
   },
   {
-    emoji: '🎤',
+    icon: Mic2,
     title: 'Maestro de ceremonias',
     desc: 'El MC conduce el evento, anima los discursos y mantiene el ritmo de la noche.',
     href: '/blog/maestro-de-ceremonias-boda-precio-guia',
@@ -60,7 +63,7 @@ const SERVICIOS = [
     tag: '',
   },
   {
-    emoji: '🎵',
+    icon: Disc3,
     title: 'Disco móvil',
     desc: 'DJ + equipo completo de sonido, luces y efectos. Ideal para fincas sin instalación propia.',
     href: '/contratar-disco-movil',
@@ -93,12 +96,12 @@ const FAQS = [
 ];
 
 const BLOG_POSTS = [
-  { href: '/blog/10-errores-contratar-dj-boda', emoji: '🎧', title: 'Los 10 errores al contratar un DJ para tu boda', desc: 'Sin contrato, reservar tarde, confundir perfiles… evítalos todos.' },
-  { href: '/blog/cuanto-cuesta-una-boda-en-espana', emoji: '💰', title: '¿Cuánto cuesta una boda en España en 2026?', desc: 'Desglose real por partidas: catering, DJ, fotógrafo y más.' },
-  { href: '/blog/cuantos-camareros-necesito-para-mi-boda', emoji: '🍽️', title: 'Cuántos camareros necesito para mi boda', desc: 'Tabla de ratios por número de invitados y tipo de servicio.' },
-  { href: '/blog/musica-en-vivo-para-bodas', emoji: '🎻', title: 'Música en vivo para bodas: precios 2026', desc: 'Solistas, bandas, jazz y cuartetos de cuerda. Cuándo elegir cada formato.' },
-  { href: '/blog/maestro-de-ceremonias-boda-precio-guia', emoji: '🎤', title: 'Maestro de ceremonias: precio y guía 2026', desc: 'Qué hace el MC, cuánto cobra y cómo elegirlo.' },
-  { href: '/blog/contratar-fotografo-de-bodas', emoji: '📸', title: 'Cómo contratar un fotógrafo de boda en España', desc: 'Precios por ciudad, qué incluye y cómo elegir el profesional.' },
+  { href: '/blog/10-errores-contratar-dj-boda', icon: Headphones, title: 'Los 10 errores al contratar un DJ para tu boda', desc: 'Sin contrato, reservar tarde, confundir perfiles… evítalos todos.' },
+  { href: '/blog/cuanto-cuesta-una-boda-en-espana', icon: Star, title: '¿Cuánto cuesta una boda en España en 2026?', desc: 'Desglose real por partidas: catering, DJ, fotógrafo y más.' },
+  { href: '/blog/cuantos-camareros-necesito-para-mi-boda', icon: UtensilsCrossed, title: 'Cuántos camareros necesito para mi boda', desc: 'Tabla de ratios por número de invitados y tipo de servicio.' },
+  { href: '/blog/musica-en-vivo-para-bodas', icon: Music2, title: 'Música en vivo para bodas: precios 2026', desc: 'Solistas, bandas, jazz y cuartetos de cuerda. Cuándo elegir cada formato.' },
+  { href: '/blog/maestro-de-ceremonias-boda-precio-guia', icon: Mic2, title: 'Maestro de ceremonias: precio y guía 2026', desc: 'Qué hace el MC, cuánto cobra y cómo elegirlo.' },
+  { href: '/blog/contratar-fotografo-de-bodas', icon: Camera, title: 'Cómo contratar un fotógrafo de boda en España', desc: 'Precios por ciudad, qué incluye y cómo elegir el profesional.' },
 ];
 
 export default function BodasLanding() {
@@ -142,7 +145,7 @@ export default function BodasLanding() {
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
       </Helmet>
 
-      <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>
+      <div className="min-h-screen" style={{ background: '#fff', color: '#222' }}>
 
         {/* Nav */}
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto">
@@ -160,14 +163,14 @@ export default function BodasLanding() {
         {/* Hero */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pt-10 sm:pt-14 pb-12 sm:pb-16">
           <div className="flex items-center gap-2 mb-4">
-            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#D4AF37' }}>
-              💒 España · Bodas 2026
+            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#7a6216' }}>
+              España · Bodas 2026
             </span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-4 leading-tight">
             Todos los proveedores para tu boda
           </h1>
-          <p className="text-sm sm:text-lg mb-8 max-w-2xl leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
+          <p className="text-sm sm:text-lg mb-8 max-w-2xl leading-relaxed" style={{ color: 'rgba(0,0,0,0.6)' }}>
             DJ, catering, fotógrafo, camareros, maquillaje y música en vivo. Profesionales verificados en toda España. Flash Booking en menos de 1h. Sin comisión para novios y organizadores.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
@@ -178,14 +181,14 @@ export default function BodasLanding() {
             </a>
             <a href="/auth"
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
-              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }}>
+              style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.12)', color: '#222' }}>
               Publicar oferta gratis <ArrowRight size={14} />
             </a>
           </div>
         </section>
 
         {/* Stats */}
-        <section className="border-y" style={{ borderColor: 'rgba(255,255,255,0.06)', background: 'rgba(212,175,55,0.03)' }}>
+        <section className="border-y" style={{ borderColor: 'rgba(0,0,0,0.06)', background: 'rgba(212,175,55,0.05)' }}>
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-8">
             {[
               { label: 'Flash Booking', value: 'En menos de 1h', icon: <Zap size={16} /> },
@@ -194,11 +197,11 @@ export default function BodasLanding() {
             ].map(s => (
               <div key={s.label} className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>
+                  style={{ background: 'rgba(212,175,55,0.12)', color: '#7a6216' }}>
                   {s.icon}
                 </div>
                 <div>
-                  <p className="text-xs uppercase tracking-widest font-bold mb-0.5" style={{ color: 'rgba(255,255,255,0.35)' }}>{s.label}</p>
+                  <p className="text-xs uppercase tracking-widest font-bold mb-0.5" style={{ color: 'rgba(0,0,0,0.4)' }}>{s.label}</p>
                   <p className="text-sm font-black">{s.value}</p>
                 </div>
               </div>
@@ -209,30 +212,33 @@ export default function BodasLanding() {
         {/* Servicios */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
           <h2 className="text-xl sm:text-2xl font-black mb-2">Proveedores de boda en XPEAK</h2>
-          <p className="text-sm mb-8" style={{ color: 'rgba(255,255,255,0.6)' }}>
+          <p className="text-sm mb-8" style={{ color: 'rgba(0,0,0,0.6)' }}>
             Todos los profesionales que necesitas, verificados y con contrato digital automático.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {SERVICIOS.map(s => (
               <a key={s.href} href={s.href}
                 className="flex items-start gap-4 p-5 rounded-xl transition-all hover:scale-[1.02] group"
-                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
-                <span className="text-3xl flex-shrink-0">{s.emoji}</span>
+                style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+                <div className="w-11 h-11 rounded-lg flex items-center justify-center flex-shrink-0"
+                  style={{ background: 'rgba(212,175,55,0.12)', color: '#7a6216' }}>
+                  <s.icon size={20} />
+                </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <p className="text-sm font-black">{s.title}</p>
                     {s.tag && (
                       <span className="text-xs font-bold px-2 py-0.5 rounded"
-                        style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}>
+                        style={{ background: 'rgba(212,175,55,0.12)', color: '#7a6216', border: '1px solid rgba(212,175,55,0.25)' }}>
                         {s.tag}
                       </span>
                     )}
                   </div>
-                  <p className="text-xs leading-relaxed mb-2" style={{ color: 'rgba(255,255,255,0.6)' }}>{s.desc}</p>
-                  <p className="text-xs font-bold" style={{ color: 'rgba(212,175,55,0.7)' }}>{s.precio}</p>
+                  <p className="text-xs leading-relaxed mb-2" style={{ color: 'rgba(0,0,0,0.6)' }}>{s.desc}</p>
+                  <p className="text-xs font-bold" style={{ color: '#7a6216' }}>{s.precio}</p>
                 </div>
                 <ArrowRight size={14} className="flex-shrink-0 mt-1 transition-transform group-hover:translate-x-1"
-                  style={{ color: 'rgba(255,255,255,0.2)' }} />
+                  style={{ color: 'rgba(0,0,0,0.2)' }} />
               </a>
             ))}
           </div>
@@ -244,9 +250,9 @@ export default function BodasLanding() {
           <div className="space-y-4">
             {FAQS.map(faq => (
               <div key={faq.q} className="p-5 rounded-xl"
-                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)' }}>
                 <p className="text-sm font-bold mb-2">{faq.q}</p>
-                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>{faq.a}</p>
+                <p className="text-xs leading-relaxed" style={{ color: 'rgba(0,0,0,0.55)' }}>{faq.a}</p>
               </div>
             ))}
           </div>
@@ -255,18 +261,21 @@ export default function BodasLanding() {
         {/* Guías del blog */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-12 sm:pb-16">
           <h2 className="text-xl sm:text-2xl font-black mb-2">Guías para organizar tu boda</h2>
-          <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.6)' }}>
+          <p className="text-sm mb-6" style={{ color: 'rgba(0,0,0,0.6)' }}>
             Todo lo que necesitas saber antes de contratar.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {BLOG_POSTS.map(post => (
               <a key={post.href} href={post.href}
                 className="flex items-start gap-4 p-5 rounded-xl transition-all hover:scale-[1.02]"
-                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
-                <span className="text-2xl flex-shrink-0">{post.emoji}</span>
+                style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                  style={{ background: 'rgba(212,175,55,0.12)', color: '#7a6216' }}>
+                  <post.icon size={18} />
+                </div>
                 <div>
                   <p className="text-sm font-black leading-snug mb-1.5">{post.title}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{post.desc}</p>
+                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(0,0,0,0.6)' }}>{post.desc}</p>
                 </div>
               </a>
             ))}
@@ -276,9 +285,9 @@ export default function BodasLanding() {
         {/* CTA final */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-16 sm:pb-20 text-center">
           <div className="rounded-2xl p-7 sm:p-10"
-            style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
+            style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)' }}>
             <h2 className="text-xl sm:text-3xl font-black mb-3">¿Organizas una boda en España?</h2>
-            <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>
+            <p className="text-sm mb-6" style={{ color: 'rgba(0,0,0,0.55)' }}>
               Únete gratis — sin comisión, contratos automáticos, Flash Booking en menos de 1h.
             </p>
             <a href="/auth"

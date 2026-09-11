@@ -17,7 +17,6 @@ export default function EventCartWidget() {
   // volver a pulsar "Mi evento" y encontrar el formulario en blanco.
   const [open, setOpen] = useState(() => !!sessionStorage.getItem(DRAFT_KEY));
   const [showHint, setShowHint] = useState(false);
-  const [overSwipeCard, setOverSwipeCard] = useState(false);
   const location = useLocation();
 
   const dismissHint = () => {
@@ -33,35 +32,8 @@ export default function EventCartWidget() {
     }
   }, [items.length]);
 
-  // La vista Swipe del directorio (móvil) tiene sus propios botones
-  // "Ver perfil completo"/"Contactar" anclados al fondo de la tarjeta —
-  // este FAB fixed puede solaparlos según cuánto contenido haya encima
-  // (no hay padding que lo resuelva en todas las alturas de pantalla, la
-  // tarjeta vive en el flujo normal de la página, no a pantalla completa).
-  // Se oculta mientras la tarjeta esté en viewport; el swipe ya tiene su
-  // propio botón "+" para añadir al carrito, así que no se pierde acceso.
-  useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => setOverSwipeCard(entries.some(e => e.isIntersecting)),
-      { threshold: 0.15 }
-    );
-    const observed = new Set<Element>();
-    const sync = () => {
-      document.querySelectorAll('.swipe-card-info').forEach(el => {
-        if (!observed.has(el)) { io.observe(el); observed.add(el); }
-      });
-    };
-    // La tarjeta Swipe se monta de forma asíncrona (tras cargar perfiles),
-    // después de que este widget ya esté montado — un MutationObserver
-    // detecta cuándo aparece en el DOM, en vez de solo comprobar una vez.
-    const mo = new MutationObserver(sync);
-    mo.observe(document.body, { childList: true, subtree: true });
-    sync();
-    return () => { io.disconnect(); mo.disconnect(); };
-  }, [location.pathname]);
-
   const hidden = HIDDEN_PREFIXES.some(p => location.pathname.startsWith(p));
-  const visible = !hidden && items.length > 0 && !overSwipeCard;
+  const visible = !hidden && items.length > 0;
 
   useEffect(() => {
     document.body.classList.toggle('has-event-cart-widget', visible);
@@ -91,26 +63,27 @@ export default function EventCartWidget() {
       )}
       <button
         onClick={() => { setOpen(true); dismissHint(); }}
-        // El botón de soporte (SupportChat) ocupa la misma esquina: es un
-        // círculo de 56 px en `right-4` con `bottom: 1.5rem` en escritorio y
-        // `4.5rem + safe-area` en móvil, y va en z-50, así que tapaba a este.
-        // Este sube por encima en vez de competir por el mismo hueco.
-        className="fixed right-4 sm:right-5 z-40 flex items-center gap-1.5 sm:gap-2 pl-2.5 sm:pl-3 pr-3 sm:pr-4 py-2 sm:py-3 rounded-full transition-all hover:scale-105"
+        aria-label={`Mi evento — ${items.length} profesional${items.length === 1 ? '' : 'es'}`}
+        // Mismo tamaño que el círculo de SupportChat (44px/56px) en vez de la
+        // píldora ancha con texto de antes — un solo FAB de peso visual
+        // comparable al de soporte, no dos "botones grandes" compitiendo.
+        // El botón de soporte ocupa la misma esquina (`right-4`, z-50), así
+        // que este sube por encima en vez de competir por el mismo hueco.
+        className="fixed right-4 sm:right-5 z-40 w-11 h-11 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-all hover:scale-105"
         style={{
           bottom: 'calc(5.75rem + env(safe-area-inset-bottom))',
           background: 'linear-gradient(135deg,#D4AF37,#B8941E)',
           color: '#000',
-          boxShadow: '0 8px 24px rgba(212,175,55,0.4)',
+          boxShadow: '0 4px 14px rgba(212,175,55,0.35)',
         }}>
         <span className="relative">
-          <ShoppingBag size={15} className="sm:hidden" />
-          <ShoppingBag size={18} className="hidden sm:block" />
+          <ShoppingBag size={18} className="sm:hidden" />
+          <ShoppingBag size={22} className="hidden sm:block" />
           <span className="absolute -top-1.5 -right-1.5 sm:-top-2 sm:-right-2 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full flex items-center justify-center text-[0.55rem] sm:text-[0.6rem] font-black"
             style={{ background: '#111', color: '#D4AF37' }}>
             {items.length}
           </span>
         </span>
-        <span className="text-[0.7rem] sm:text-xs font-black">Mi evento</span>
       </button>
 
       {open && (

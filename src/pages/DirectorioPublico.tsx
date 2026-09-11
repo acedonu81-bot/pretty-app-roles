@@ -8,7 +8,6 @@ import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import FlashBookingRequestModal from '@/components/dashboard/FlashBookingRequestModal';
 import MultiRequestModal from '@/components/MultiRequestModal';
-import SwipeDirectory from '@/components/SwipeDirectory';
 import FooterPublic from '@/components/FooterPublic';
 import { addToCart, useEventCart, MAX_CART_ITEMS } from '@/lib/eventCart';
 import { useAuth } from '@/hooks/useAuth';
@@ -630,28 +629,6 @@ export default function DirectorioPublico() {
             </div>
           </div>
 
-          {/* Vista Swipe: por defecto en móvil, embebida en el flujo (no
-              modal) — sin botón, tal como TikTok. El grid clásico con SEO
-              sigue existiendo debajo, oculto visualmente en móvil, visible
-              en desktop. */}
-          {!fetchError && !loading && profiles.filter(p => !!p.photo_url).length >= 2 && (
-            <div className="sm:hidden -mx-4 mb-6 rounded-2xl overflow-hidden">
-              <SwipeDirectory
-                embedded
-                profiles={profiles.filter(p => !!p.photo_url)}
-                onOpenProfile={(p) => { window.location.href = profileUrl(p as DirProfile); }}
-                onBookNow={(p) => requireAuthThen(() => setBookingPro(p as DirProfile))}
-                onAddToCart={(p) => {
-                  const prof = p as DirProfile;
-                  const result = addToCart({ userId: prof.user_id, displayName: prof.display_name, role: prof.role, photoUrl: prof.photo_url, hourlyRate: prof.hourly_rate, zone: prof.zone });
-                  if (result === 'added') toast.success(`${prof.display_name} añadido a "Mi evento"`);
-                  else if (result === 'limit_reached') toast.error(`Máximo ${MAX_CART_ITEMS} profesionales por evento. Elimina alguno para añadir más.`);
-                }}
-                isInCart={(userId) => cartItems.some(i => i.userId === userId)}
-              />
-            </div>
-          )}
-
           {/* Tabs por rol */}
           <div className="relative mb-6">
             <div className="flex overflow-x-auto no-scrollbar gap-2 pb-1">
@@ -764,7 +741,7 @@ export default function DirectorioPublico() {
           )}
 
           {!fetchError && !loading && profiles.length > 0 && (
-            <div className={`${profiles.length >= 2 ? 'hidden sm:grid' : 'grid'} grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4`}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {profiles.map((p, i) => (
                 <div key={p.user_id} className="rounded-2xl overflow-hidden flex flex-col bg-white"
                   style={{

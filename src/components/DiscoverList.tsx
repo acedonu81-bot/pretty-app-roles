@@ -1,21 +1,38 @@
 import { useEffect, useRef, useState } from 'react';
 import { MapPin, Zap, BadgeCheck, Star, Plus, Check, MessageCircle } from 'lucide-react';
 import InstallPwaBanner from '@/components/InstallPwaBanner';
-import type { ReelsProfile } from '@/components/ReelsFeed';
 
 /**
- * DiscoverList — sustituye al feed swipe (ReelsFeed) en /descubrir para móvil.
- *
- * Motivo (pedido del usuario): en el feed a pantalla completa se pisaban tres
- * gestos en la misma zona táctil — swipe vertical (cambiar de perfil), swipe
- * horizontal (fotos/vídeo del portfolio) y el tap en "+"/Contactar — y los
- * usuarios se confundían constantemente entre pasar de perfil y añadir al
- * carrito. Aquí no hay gestos ambiguos: es scroll normal de página (como
- * cualquier lista), cada ficha es compacta (no ocupa toda la pantalla) y las
- * acciones viven en una barra fija abajo que siempre actúa sobre el perfil
- * que esté centrado en pantalla en ese momento — nunca hay que "acertar" el
- * botón de una ficha en movimiento.
+ * DiscoverList — lista de /descubrir. Reemplazó a un feed swipe a pantalla
+ * completa (pedido del usuario): ahí se pisaban tres gestos en la misma zona
+ * táctil — swipe vertical (cambiar de perfil), swipe horizontal (fotos/vídeo
+ * del portfolio) y el tap en "+"/Contactar — y los usuarios se confundían
+ * constantemente entre pasar de perfil y añadir al carrito. Aquí no hay
+ * gestos ambiguos: es scroll normal de página (como cualquier lista), cada
+ * ficha es compacta (no ocupa toda la pantalla) y las acciones viven en una
+ * barra fija abajo que siempre actúa sobre el perfil que esté centrado en
+ * pantalla en ese momento — nunca hay que "acertar" el botón de una ficha en
+ * movimiento.
  */
+
+export interface ReelsProfile {
+  user_id: string;
+  display_name: string;
+  role: string;
+  photo_url: string | null;
+  portfolio_urls?: string[] | null;
+  bio_video_url?: string | null;
+  video_session_urls?: string[] | null;
+  zone: string | null;
+  specialty: string | null;
+  hourly_rate: number;
+  bio: string | null;
+  is_verified: boolean;
+  is_flash_active: boolean;
+  is_early_adopter?: boolean;
+  avgRating: number;
+  reviewCount: number;
+}
 
 interface Props {
   profiles: ReelsProfile[];
