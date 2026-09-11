@@ -679,13 +679,22 @@ export default function DirectorioPublico() {
             </div>
           )}
 
+          {/* Mismas columnas (1/2/3) y misma forma de tarjeta (aspect-card-photo)
+              que el grid real de abajo — antes el skeleton usaba 2/3/4 columnas
+              y una tarjeta compacta de avatar+texto, así que al llegar los
+              datos reales el layout entero se reflowaba de golpe (medido: CLS
+              0.07, salto de 419ms tras cargar). Igualar dimensiones deja el
+              alto y el nº de columnas estables entre skeleton y contenido
+              real, así solo cambia el contenido interno de cada tarjeta. */}
           {!fetchError && loading && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="rounded-2xl p-4 animate-pulse" style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)' }}>
-                  <div className="w-16 h-16 rounded-xl bg-black/5 mx-auto mb-3" />
-                  <div className="h-3 bg-black/5 rounded mb-2 w-3/4 mx-auto" />
-                  <div className="h-2 bg-black/5 rounded w-1/2 mx-auto" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="rounded-2xl overflow-hidden flex flex-col bg-white animate-pulse" style={{ border: '1px solid rgba(0,0,0,0.1)' }}>
+                  <div className="relative aspect-card-photo bg-black/5" />
+                  <div className="p-3 sm:p-4 flex flex-col flex-1">
+                    <div className="h-3 bg-black/5 rounded mb-2 w-3/4" />
+                    <div className="h-2 bg-black/5 rounded w-1/2" />
+                  </div>
                 </div>
               ))}
             </div>
