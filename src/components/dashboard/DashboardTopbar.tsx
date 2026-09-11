@@ -210,6 +210,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
           )}
         </div>
 
+        {!isMobile && <GigWonPopup variant="inline" />}
       </div>
 
       <div className="flex items-center gap-3 sm:gap-5 relative flex-shrink-0">
@@ -426,7 +427,6 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
           </button>
         )}
       </div>
-      <GigWonPopup variant="dashboard" />
     </header>
   );
 };

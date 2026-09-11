@@ -55,10 +55,11 @@ const fmtDates = (g: Gig): string => {
 };
 
 interface GigWonPopupProps {
-  /** 'landing' queda pegado bajo el nav (el hero tiene texto grande justo
-   * debajo, no hay hueco centrado libre); 'dashboard' va centrado bajo el
-   * topbar, donde sí hay espacio libre. */
-  variant?: 'landing' | 'dashboard';
+  /** 'landing' queda fixed, pegado bajo el nav público (el hero tiene texto
+   * grande justo debajo, no hay hueco centrado libre para superponerlo).
+   * 'inline' no usa position:fixed — fluye en el flujo normal del padre,
+   * pensado para el topbar del dashboard, a la derecha de la búsqueda. */
+  variant?: 'landing' | 'inline';
 }
 
 const signatureOf = (g: Gig) => `${g.role ?? ''}|${g.event_date ?? ''}|${(g.event_dates ?? []).join(',')}`;
@@ -99,8 +100,8 @@ const GigWonPopup = ({ variant = 'landing' }: GigWonPopupProps) => {
 
   return (
     <div
-      className={`fixed z-[60] left-1/2 -translate-x-1/2 rounded-full overflow-hidden hidden sm:block ${
-        variant === 'landing' ? 'top-3' : 'top-24'
+      className={`rounded-full overflow-hidden hidden sm:block flex-shrink-0 ${
+        variant === 'landing' ? 'fixed z-[60] top-3 left-1/2 -translate-x-1/2' : ''
       }`}
       style={{
         background: '#0f3d2e',
