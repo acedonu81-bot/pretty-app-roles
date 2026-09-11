@@ -400,7 +400,9 @@ const EventRequestsSection = () => {
   };
 
   const saveEdit = async () => {
-    if (!editingId || !form.client_name || !form.event_type || !form.city) return;
+    if (!editingId) return;
+    const falta = camposIncompletos(form, rolesNeededFlat(form.roleCounts));
+    if (falta) { toast.error(`Falta: ${falta}`); return; }
     setSavingEdit(true);
     const { data, error } = await supabase
       .from('event_requests' as any)
@@ -456,10 +458,40 @@ const EventRequestsSection = () => {
   const rolesNeededFlat = (counts: Record<string, number>): string[] =>
     Object.entries(counts).flatMap(([role, n]) => Array(n).fill(role));
 
+  // Todos los campos son obligatorios para publicar — una oferta a medias
+  // (sin fecha, sin presupuesto, sin descripción) no le sirve al profesional
+  // que la ve para decidir si le interesa. El contacto con el elegido se
+  // hace por el chat interno de XPEAK, no por email/teléfono del formulario
+  // — por eso no se piden aquí.
+  const camposIncompletos = (f: typeof form, roles_needed: string[]): string | null => {
+    if (!f.client_name.trim()) return 'tu nombre o empresa';
+    if (!f.event_type) return 'el tipo de evento';
+    if (!f.city.trim()) return 'la ciudad';
+    if (f.event_dates.length === 0) return 'al menos una fecha';
+    if (!f.budget_min || !f.budget_max) return 'el presupuesto (mínimo y máximo)';
+    if (roles_needed.length === 0) return 'qué profesionales necesitas';
+    if (!f.description.trim()) return 'la descripción del evento';
+    return null;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const roles_needed = rolesNeededFlat(form.roleCounts);
-    if (!form.client_name || !form.event_type || !form.city || roles_needed.length === 0) return;
+    const falta = camposIncompletos(form, roles_needed);
+    if (falta) { toast.error(`Falta: ${falta}`); return; }
+    // Publicar avisa de verdad a profesionales reales (push + email) en
+    // segundos. El 10 sep 2026 una oferta de prueba con nombre "Verify Test
+    // Co" se publicó, avisó a 19 profesionales y contrató a uno real
+    // (Gonzalo DJ) antes de borrarla — nadie se dio cuenta de que no era una
+    // oferta real hasta que el profesional preguntó por qué no veía los
+    // detalles. No se bloquea (puede ser un nombre real de empresa), solo se
+    // pide confirmar.
+    if (/\b(test|prueba|verify|demo)\b/i.test(form.client_name)) {
+      const seguro = window.confirm(
+        `"${form.client_name}" parece un nombre de prueba. Al publicar se avisa YA a profesionales reales por email y push — ¿seguro que quieres continuar?`
+      );
+      if (!seguro) return;
+    }
     setSubmitting(true);
     const { data, error } = await (supabase
       .from('event_requests' as any)
@@ -994,26 +1026,9 @@ const EventRequestsSection = () => {
                   style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>EMAIL DE CONTACTO</label>
-                  <input type="email" value={form.contact_email} onChange={e => setForm(f => ({ ...f, contact_email: e.target.value }))}
-                    placeholder="tu@email.com"
-                    className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none"
-                    style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
-                </div>
-                <div>
-                  <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>TELÉFONO</label>
-                  <input type="tel" value={form.contact_phone} onChange={e => setForm(f => ({ ...f, contact_phone: e.target.value }))}
-                    placeholder="+34 600 000 000"
-                    className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none"
-                    style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
-                </div>
-              </div>
-
               {!editingId && (
                 <p className="text-[10px]" style={{ color: '#333' }}>
-                  Al publicar aceptas que los profesionales de XPEAK puedan ver y responder a tu solicitud. Visible 7 días.
+                  Al publicar aceptas que los profesionales de XPEAK puedan ver y responder a tu solicitud. Visible 7 días. El contacto con el profesional elegido se hace dentro de XPEAK (chat), no hace falta dar tu email ni tu teléfono.
                 </p>
               )}
 
