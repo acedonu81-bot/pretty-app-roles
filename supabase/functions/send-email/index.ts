@@ -983,17 +983,37 @@ function minifyHtml(html: string): string {
 // resto del asunto y TODAS las cabeceras siguientes (From, To, Content-Type)
 // se derraman al cuerpo y el correo llega como texto plano con el MIME a la
 // vista. Pasó el 4 sep 2026 con "Nuevo profesional — Aitana López Montealegre
-// (Camarero y personal de sala, Madrid)": 82 caracteres que codificados son
-// 109. Cada carácter no-ASCII ocupa 3 (=C3=B3), así que el límite hay que
-// medirlo sobre la longitud CODIFICADA, no sobre la del texto.
-const SUBJECT_MAX_ENCODED = 60;
+// (Camarero y personal de sala, Madrid)" y de nuevo el 11 sep con "...David
+// Anderson González Franco (DJ,…" — el límite anterior (60, contando 3 por
+// carácter no-ASCII) subestimaba el Q-encoding real: éste codifica por BYTE
+// UTF-8, no por carácter, así que un guion largo "—" (3 bytes) pesa 9
+// caracteres codificados (=E2=80=94), no 3. Con el cálculo viejo, un asunto
+// "válido" a 60 podía superar los 75 de línea real y denomailer lo partía
+// a mitad de un carácter multi-byte, dejando bytes huérfanos ilegibles.
+// Límite real: 75 (línea) − 12 (overhead fijo de "=?UTF-8?Q?" + "?=") = 63,
+// medido sobre bytes UTF-8 codificados, no caracteres.
+const SUBJECT_MAX_ENCODED = 63;
+function qEncodedByteLen(s: string): number {
+  const bytes = new TextEncoder().encode(s);
+  let n = 0;
+  for (const b of bytes) {
+    // Imprimible ASCII no reservado por Q-encoding va literal (1 char);
+    // todo lo demás (incluido el espacio, que se codifica "_" pero cuenta
+    // igual) sale como "=XX" (3 chars).
+    if (b >= 33 && b <= 126 && b !== 0x3D && b !== 0x3F && b !== 0x5F) n += 1;
+    else n += b === 0x20 ? 1 : 3;
+  }
+  return n;
+}
 function clampSubject(subject: string): string {
-  const encodedLen = (s: string) =>
-    [...s].reduce((n, ch) => n + (ch.charCodeAt(0) < 128 ? 1 : 3), 0);
-  if (encodedLen(subject) <= SUBJECT_MAX_ENCODED) return subject;
+  if (qEncodedByteLen(subject) <= SUBJECT_MAX_ENCODED) return subject;
+  // El "…" final también pesa (3 bytes UTF-8 → 9 caracteres Q-encoded):
+  // reservarle sitio de antemano, no añadirlo después del recorte.
+  const ELLIPSIS_COST = qEncodedByteLen('…');
+  const budget = SUBJECT_MAX_ENCODED - ELLIPSIS_COST;
   let out = '';
   for (const ch of subject) {
-    if (encodedLen(out + ch) > SUBJECT_MAX_ENCODED - 1) break;
+    if (qEncodedByteLen(out + ch) > budget) break;
     out += ch;
   }
   return out.trimEnd() + '…';
