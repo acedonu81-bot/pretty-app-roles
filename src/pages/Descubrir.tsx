@@ -11,7 +11,7 @@ import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
-import ReelsFeed from '@/components/ReelsFeed';
+import DiscoverList from '@/components/DiscoverList';
 import { addToCart, useEventCart, MAX_CART_ITEMS } from '@/lib/eventCart';
 import {
   ALL_ROLES,
@@ -200,7 +200,7 @@ export default function Descubrir() {
           <button onClick={() => setMenuOpen(true)} className="mt-2 px-6 py-3 rounded-xl font-bold text-sm" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Elegir categoría</button>
         </div>
       ) : (
-        <ReelsFeed
+        <DiscoverList
           profiles={profiles as any}
           onOpenProfile={(p) => { window.location.href = profileUrl(p as DirProfile); }}
           onBookNow={(p) => { window.location.href = profileUrl(p as DirProfile); }}
@@ -212,6 +212,7 @@ export default function Descubrir() {
           }}
           isInCart={(userId) => cartItems.some(i => i.userId === userId)}
           showCartButton={profileRole === 'empresario'}
+          hideActionBar={!authLoading && !user}
         />
       )}
 

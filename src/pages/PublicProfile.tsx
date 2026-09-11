@@ -947,6 +947,15 @@ const PublicProfile = () => {
           {/* Video — mobile-first: show before bio for max impact */}
           {extraMedia.bio_video_url && (() => {
             const url = extraMedia.bio_video_url!;
+            if (/\.(mp4|webm|mov|m4v)(\?|$)/i.test(url)) {
+              return (
+                <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
+                  <div className="rounded-2xl overflow-hidden" style={{ aspectRatio: '16/9', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}>
+                    <video src={url} controls playsInline className="w-full h-full object-cover" />
+                  </div>
+                </motion.div>
+              );
+            }
             const yt = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/))([a-zA-Z0-9_-]{11})/);
             const vm = url.match(/vimeo\.com\/(\d+)/);
             const embed = yt ? `https://www.youtube.com/embed/${yt[1]}` : vm ? `https://player.vimeo.com/video/${vm[1]}` : null;
