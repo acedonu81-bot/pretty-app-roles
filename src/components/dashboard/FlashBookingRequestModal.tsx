@@ -79,11 +79,15 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
         body: { type: 'booking_received', data: { ...payload, professional_user_id: professionalUserId } },
       }).catch((err: unknown) => console.warn('[FlashBooking] professional email failed:', err));
 
+      const pushExtra = [
+        form.price ? `Caché: ${form.price}€` : null,
+        form.description.trim() || null,
+      ].filter(Boolean).join('. ');
       supabase.functions.invoke('send-push', {
         body: {
           user_id: professionalUserId,
           title: 'Nueva solicitud Flash Booking',
-          body: `${form.name} quiere contratarte para el ${form.date}`,
+          body: `${form.name} quiere contratarte para el ${form.date}` + (pushExtra ? `. ${pushExtra}` : ''),
           url: '/dashboard?view=flashbooking&tab=solicitudes',
         },
       }).catch((err: unknown) => console.warn('[FlashBooking] push failed:', err));
