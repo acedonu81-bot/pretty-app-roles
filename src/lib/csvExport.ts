@@ -5,7 +5,7 @@
  * con `dataBar: true` llevan una barra de color proporcional al valor (no hay
  * gráficos nativos vía ExcelJS, esto sustituye a la "gráfica de evolución").
  */
-import ExcelJS from 'exceljs';
+import type ExcelJS from 'exceljs';
 
 export type CsvCell = string | number;
 export type CsvRow = CsvCell[];
@@ -24,7 +24,12 @@ const GOLD_BORDER = 'FFB8941E';
 const DARK = 'FF0A0908';
 const STRIPE = 'FFF7F5EF';
 
+// ExcelJS pesa ~940 KB — con import estático se descargaba en cuanto
+// cualquier organizador abría su panel (EmpresarioView lo importa), aunque
+// nunca pidiera exportar nada. Import dinámico: solo entra en juego cuando
+// de verdad se llama a buildWorkbook/downloadWorkbook.
 export async function buildWorkbook(title: string, sections: CsvSection[]): Promise<ExcelJS.Workbook> {
+  const { default: ExcelJS } = await import('exceljs');
   const width = Math.max(...sections.map(s => s.header.length));
   const wb = new ExcelJS.Workbook();
   wb.creator = 'XPEAK';

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { FileText, AlertCircle, Scale, ShieldCheck, BookOpen, Download, Trash2, RefreshCw, ChevronRight } from 'lucide-react';
-import ExcelJS from 'exceljs';
+import type ExcelJS from 'exceljs';
 import ContractModal from '@/components/dashboard/ContractModal';
 import type { Profile } from '@/data/profiles';
 import { supabase } from '@/integrations/supabase/client';
@@ -228,7 +228,11 @@ const ContractView = () => {
     const GOLD = 'FFD4AF37';
     const DARK = 'FF0A0908';
 
-    const wb = new ExcelJS.Workbook();
+    // ExcelJS pesa ~940 KB — import dinámico para que no entre en el chunk
+    // de ContractView (se descargaría cada vez que alguien solo quiere VER
+    // sus contratos, no exportarlos).
+    const { default: ExcelJSLib } = await import('exceljs');
+    const wb = new ExcelJSLib.Workbook();
     wb.creator = 'XPEAK';
     wb.created = new Date();
     const ws = wb.addWorksheet(`Contratos ${csvYear}`, {
