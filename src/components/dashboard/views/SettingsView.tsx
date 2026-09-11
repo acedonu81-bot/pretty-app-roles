@@ -3,7 +3,6 @@ import { compressImage, MAX_RAW_IMAGE_MB } from '@/lib/image';
 import { Camera, Bell, Shield, LogOut, ChevronRight, Trash2, AlertTriangle, Download, FileText, QrCode, Archive, BellOff, Users, Plus, Check, X } from 'lucide-react';
 import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import { toast } from 'sonner';
-import { exportUserDataZip } from '@/lib/exportUserData';
 import QRCode from 'qrcode';
 import { supabase } from '@/integrations/supabase/client';
 import ExitSurveyModal from '@/components/dashboard/ExitSurveyModal';
@@ -1018,7 +1017,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
                 <p className="text-xs text-muted-foreground">perfil · bookings · favoritos · conversaciones</p>
               </div>
             </div>
-            <button onClick={() => user && exportUserDataZip(user)}
+            <button onClick={() => user && import('@/lib/exportUserData').then(m => m.exportUserDataZip(user))}
               className="flex-shrink-0 text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-105"
               style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.25)' }}>
               Descargar

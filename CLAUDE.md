@@ -68,3 +68,9 @@ La app de iOS es un build congelado (snapshot) del código en el momento de comp
 ## Verificación obligatoria antes de dar un fix por cerrado
 - Invocar la skill `verify-flows` tras tocar código de registro, directorio, carrito "Mi evento", perfil público o Flash Booking
 - Un `tsc --noEmit` limpio NO es suficiente — reproducir la acción real (clic, rellenar, eliminar) en el navegador antes de decir "arreglado"
+
+## Librerías pesadas — SIEMPRE import() dinámico, nunca estático
+`npm run build` corre `scripts/check-bundle-size.mjs` y **falla si algún chunk supera 300 KB** sin estar en la allowlist del script. Motivo real (11 sep 2026): ExcelJS (938 KB) se importaba de forma estática en `EmpresarioView`/`ContractView` — se descargaba en cada visita al panel de organizador aunque nadie exportara nada, y el peso se fue acumulando semana a semana con cada función nueva de exportar. Al añadir cualquier librería pesada (PDF, Excel, gráficos, editor de texto enriquecido...):
+- Importarla con `const { default: X } = await import('paquete')` **dentro de la función que la usa**, nunca en el top-level del archivo.
+- Si el componente que la usa se abre casi siempre (settings, panel principal), el import dinámico debe estar en el `onClick`/handler, no solo dentro del componente lazy — un componente `lazy()` sigue descargando todo lo que importe en su top-level en cuanto se monta.
+- Verificar tras el build: `node scripts/check-bundle-size.mjs` debe decir "OK". Si falla, el mensaje indica el chunk culpable.

@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Trash2, Camera, Star, Radio, ChevronDown, X, Download, ShoppingBag, Plus, Package, Tag, Image as ImageIcon, Music, Shirt, Sparkles, FileEdit, Copy, Check, Share2 } from 'lucide-react';
 import NightlifeSelect from '@/components/ui/NightlifeSelect';
-import { exportUserDataZip } from '@/lib/exportUserData';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -1155,7 +1154,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
               </p>
             </div>
             <button
-              onClick={() => user && exportUserDataZip(user)}
+              onClick={() => user && import('@/lib/exportUserData').then(m => m.exportUserDataZip(user))}
               className="flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               <Download size={13} /> Descargar ZIP
