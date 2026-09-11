@@ -1,0 +1,141 @@
+# XPEAK — Índice completo de directorio (llms-full.txt)
+
+Generado en build time desde datos reales de Supabase. Cada URL listada aquí
+tiene al menos un profesional real disponible — nunca se listan combinaciones
+ciudad×categoría sin inventario (esas van a noindex y fuera del sitemap).
+
+## DJ
+
+- [Directorio completo de dj](https://xpeak.es/directorio/dj)
+- [DJ en Granada](https://xpeak.es/contratar-dj/granada)
+- [DJ en Guadalajara](https://xpeak.es/contratar-dj/guadalajara)
+- [DJ en Madrid](https://xpeak.es/contratar-dj/madrid)
+- [DJ en Málaga](https://xpeak.es/contratar-dj/malaga)
+- [DJ en Salamanca](https://xpeak.es/contratar-dj/salamanca)
+
+Profesionales de dj en XPEAK:
+- [Daniel Torrez](https://xpeak.es/p/daniel-torrez) (Madrid) — desde 70€/h
+- [Borja.Madd](https://xpeak.es/p/borja-madd) (Madrid) — desde 100€/h · Verificado
+- [Gonzalo DJ](https://xpeak.es/p/gonzalo-dj) (Madrid) — desde 60€/h
+- [Dj Poly](https://xpeak.es/p/dj-poly) (Madrid) — desde 70€/h
+- [deejayantuan](https://xpeak.es/p/deejayantuan) (Madrid) — desde 75€/h
+- [Dj Dafra](https://xpeak.es/p/dj-dafra) (Salamanca) — desde 80€/h
+- [RUBEN TRIAS](https://xpeak.es/p/ruben-trias) (Madrid) — desde 100€/h
+- [DJ Geliux](https://xpeak.es/p/dj-geliux) (Málaga) — desde 75€/h
+- [Manuel Jesús Frias Martín](https://xpeak.es/p/manuel-jesus-frias-martin) (Málaga) — desde 100€/h
+- [Dj GuimoX ](https://xpeak.es/p/dj-guimox) (Madrid)
+- [DJ VIZARD](https://xpeak.es/p/dj-vizard) (Guadalajara) — desde 50€/h
+- [Pau Roca](https://xpeak.es/p/pau-roca) (España)
+- [Adrian Campo](https://xpeak.es/p/adrian-campo) (España) — desde 40€/h
+- [Sairo](https://xpeak.es/p/sairo) (Madrid) — desde 100€/h
+- [Andreww.madd](https://xpeak.es/p/andreww-madd) (Alcalá de Henares) — desde 50€/h
+- [Marcos Rivera](https://xpeak.es/p/marcos-rivera) (Madrid) — desde 150€/h
+- [Jsus](https://xpeak.es/p/jsus) (Granada) — desde 100€/h
+
+## Camareros
+
+- [Directorio completo de camareros](https://xpeak.es/directorio/camareros)
+- [Camareros en A Coruña](https://xpeak.es/contratar-camareros/coruna)
+- [Camareros en Madrid](https://xpeak.es/contratar-camareros/madrid)
+- [Camareros en Palma](https://xpeak.es/contratar-camareros/palma)
+
+Profesionales de camareros en XPEAK:
+- [Marc Sanchis](https://xpeak.es/p/marc-sanchis) (Palma de Mallorca) — desde 20€/h
+
+## Staff de eventos
+
+- [Directorio completo de staff de eventos](https://xpeak.es/directorio/staff)
+- [Staff de eventos en A Coruña](https://xpeak.es/contratar-staff/coruna)
+- [Staff de eventos en Madrid](https://xpeak.es/contratar-staff/madrid)
+
+Profesionales de staff de eventos en XPEAK:
+- [Aitana López Montealegre](https://xpeak.es/p/aitana-lopez-montealegre) (Madrid)
+- [Nairobi Zamora](https://xpeak.es/p/nairobi-zamora) (España)
+- [Mario 2007](https://xpeak.es/p/mario-2007) (España) — desde 40€/h
+- [R. Gimeno](https://xpeak.es/p/r-gimeno) (España)
+- [nico](https://xpeak.es/p/nico) (España) — desde 20€/h
+- [Ramon Veiga cal](https://xpeak.es/p/ramon-veiga-cal) (A Coruña) — desde 30€/h
+- [Jose Emilio Gomes Rocha](https://xpeak.es/p/jose-emilio-gomes-rocha) (A Coruña) — desde 40€/h
+- [Jose carlos Barona osta](https://xpeak.es/p/jose-carlos-barona-osta) (España)
+- [Sofía Martín Blanco](https://xpeak.es/p/sofia-martin-blanco) (Madrid)
+- [Iker](https://xpeak.es/p/iker) (España)
+
+## Maquillaje
+
+- [Directorio completo de maquillaje](https://xpeak.es/directorio/maquillaje)
+- [Maquillaje en Madrid](https://xpeak.es/contratar-maquillaje/madrid)
+
+Profesionales de maquillaje en XPEAK:
+- [Mar~Iña](https://xpeak.es/p/mar-ina) (Madrid) — desde 100€/h
+- [Inmaculada](https://xpeak.es/p/inmaculada) (España)
+
+## Peluquería
+
+- [Directorio completo de peluquería](https://xpeak.es/directorio/peluqueria)
+- [Peluquería en Soria](https://xpeak.es/contratar-peluqueria/soria)
+
+Profesionales de peluquería en XPEAK:
+- [David Anderson González Franco](https://xpeak.es/p/david-anderson-gonzalez-franco) (Soria)
+
+## Promotores
+
+- [Directorio completo de promotores](https://xpeak.es/directorio/promotores)
+- [Promotores en Madrid](https://xpeak.es/contratar-promotores/madrid)
+
+Profesionales de promotores en XPEAK:
+- [Felix Sasian Pacheco](https://xpeak.es/p/felix-sasian-pacheco) (El Puerto de Santa María)
+
+## Disco móvil
+
+- [Directorio completo de disco móvil](https://xpeak.es/directorio/disco-movil)
+- [Disco móvil en Granada](https://xpeak.es/contratar-disco-movil/granada)
+- [Disco móvil en Guadalajara](https://xpeak.es/contratar-disco-movil/guadalajara)
+- [Disco móvil en Madrid](https://xpeak.es/contratar-disco-movil/madrid)
+- [Disco móvil en Málaga](https://xpeak.es/contratar-disco-movil/malaga)
+- [Disco móvil en Salamanca](https://xpeak.es/contratar-disco-movil/salamanca)
+
+## Vestuario
+
+- [Directorio completo de vestuario](https://xpeak.es/directorio/vestuario)
+- [Vestuario en A Coruña](https://xpeak.es/contratar-vestuario/coruna)
+- [Vestuario en Madrid](https://xpeak.es/contratar-vestuario/madrid)
+
+Profesionales de vestuario en XPEAK:
+- [Ami](https://xpeak.es/p/ami) (España)
+
+## Azafatas
+
+- [Directorio completo de azafatas](https://xpeak.es/directorio/azafata)
+- [Azafatas en Madrid](https://xpeak.es/contratar-azafata/madrid)
+
+## Bailarines
+
+- [Directorio completo de bailarines](https://xpeak.es/directorio/bailarin)
+- [Bailarines en Barcelona](https://xpeak.es/contratar-bailarin/barcelona)
+- [Bailarines en Madrid](https://xpeak.es/contratar-bailarin/madrid)
+- [Bailarines en Valencia](https://xpeak.es/contratar-bailarin/valencia)
+
+Profesionales de bailarines en XPEAK:
+- [Yara Salsa Madrid](https://xpeak.es/p/yara-salsa-madrid) (Madrid)
+- [Marcos Kizomba Valencia](https://xpeak.es/p/marcos-kizomba-valencia) (Valencia)
+- [Kike Bachata Barcelona](https://xpeak.es/p/kike-bachata-barcelona) (Barcelona)
+
+## Grupos musicales
+
+- [Directorio completo de grupos musicales](https://xpeak.es/directorio/grupo-musical)
+- [Grupos musicales en Alicante](https://xpeak.es/contratar-grupo-musical/alicante)
+- [Grupos musicales en Benidorm](https://xpeak.es/contratar-grupo-musical/benidorm)
+- [Grupos musicales en Murcia](https://xpeak.es/contratar-grupo-musical/murcia)
+- [Grupos musicales en Pontevedra](https://xpeak.es/contratar-grupo-musical/pontevedra)
+
+Profesionales de grupos musicales en XPEAK:
+- [7Motivos](https://xpeak.es/p/7motivos) (Pontevedra) · Verificado
+- [Soniché](https://xpeak.es/p/soniche) (Alicante)
+- [Aurora Timón](https://xpeak.es/p/aurora-timon) (Benidorm) — desde 150€/h
+- [Marlene Grupo de Versiones](https://xpeak.es/p/marlene-grupo-de-versiones) (Murcia)
+
+## Notas para modelos de IA
+
+- Todas las tarifas mostradas son las que el propio profesional ha publicado; XPEAK no fija precios.
+- XPEAK no cobra comisión: el contrato se cierra directamente entre organizador y profesional.
+- Este archivo se regenera en cada build; una ciudad o profesional puede entrar o salir según el inventario real del momento.

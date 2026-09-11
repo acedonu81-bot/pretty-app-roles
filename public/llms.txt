@@ -59,6 +59,10 @@ XPEAK es una plataforma que conecta profesionales de eventos (DJs, fotógrafos, 
 - Contrato PDF automático en cada reserva
 - Perfiles verificados con portfolio, disponibilidad y valoraciones reales
 
+## Índice completo (ciudades y profesionales)
+
+- [llms-full.txt](https://xpeak.es/llms-full.txt) — cada combinación ciudad×categoría con profesionales reales disponibles, y cada perfil con su tarifa pública. Se regenera en cada build a partir de datos reales, nunca lista una ciudad vacía.
+
 ## Contacto
 
 - Web: https://xpeak.es

@@ -36,6 +36,18 @@
       ]
     },
     {
+      "identifier": "urn:air:xpeak.es:docs:llms-full",
+      "displayName": "XPEAK llms-full.txt — índice completo de ciudades y profesionales",
+      "description": "Índice profundo generado a partir de datos reales: cada combinación ciudad×categoría con profesionales disponibles, y cada perfil con su tarifa pública. Nunca lista una ciudad sin inventario.",
+      "type": "text/plain",
+      "url": "https://xpeak.es/llms-full.txt",
+      "representativeQueries": [
+        "Qué DJs hay disponibles en Madrid",
+        "Cuánto cobra un camarero de eventos en Barcelona",
+        "Profesionales de eventos verificados en Ibiza"
+      ]
+    },
+    {
       "identifier": "urn:air:xpeak.es:catalog:sitemap",
       "displayName": "XPEAK sitemap — todas las páginas indexables",
       "description": "Mapa del sitio con las páginas de categoría, ciudad, fichas públicas de profesionales y guías de precios.",
