@@ -426,7 +426,7 @@ const DashboardTopbar = ({ onMenuToggle, isMobile, onSearch, searchQuery = '', o
           </button>
         )}
       </div>
-      <GigWonPopup position="top-left" />
+      <GigWonPopup variant="dashboard" />
     </header>
   );
 };

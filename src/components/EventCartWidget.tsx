@@ -95,7 +95,7 @@ export default function EventCartWidget() {
         // círculo de 56 px en `right-4` con `bottom: 1.5rem` en escritorio y
         // `4.5rem + safe-area` en móvil, y va en z-50, así que tapaba a este.
         // Este sube por encima en vez de competir por el mismo hueco.
-        className="fixed right-5 z-40 flex items-center gap-2 pl-3 pr-4 py-3 rounded-full transition-all hover:scale-105"
+        className="fixed right-4 sm:right-5 z-40 flex items-center gap-1.5 sm:gap-2 pl-2.5 sm:pl-3 pr-3 sm:pr-4 py-2 sm:py-3 rounded-full transition-all hover:scale-105"
         style={{
           bottom: 'calc(5.75rem + env(safe-area-inset-bottom))',
           background: 'linear-gradient(135deg,#D4AF37,#B8941E)',
@@ -103,13 +103,14 @@ export default function EventCartWidget() {
           boxShadow: '0 8px 24px rgba(212,175,55,0.4)',
         }}>
         <span className="relative">
-          <ShoppingBag size={18} />
-          <span className="absolute -top-2 -right-2 w-4 h-4 rounded-full flex items-center justify-center text-[0.6rem] font-black"
+          <ShoppingBag size={15} className="sm:hidden" />
+          <ShoppingBag size={18} className="hidden sm:block" />
+          <span className="absolute -top-1.5 -right-1.5 sm:-top-2 sm:-right-2 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full flex items-center justify-center text-[0.55rem] sm:text-[0.6rem] font-black"
             style={{ background: '#111', color: '#D4AF37' }}>
             {items.length}
           </span>
         </span>
-        <span className="text-xs font-black">Mi evento</span>
+        <span className="text-[0.7rem] sm:text-xs font-black">Mi evento</span>
       </button>
 
       {open && (

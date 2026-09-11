@@ -10,8 +10,17 @@ import { ROLE_ES, ROL_UI_A_SLUG, jobWord } from '@/lib/constants';
 //
 // Estático a propósito (11 sep 2026): la primera versión aparecía/desaparecía
 // sola cada pocos segundos y resultaba molesta — el usuario pidió quitar la
-// animación de temporizador. Ahora se muestra el más reciente una vez, fijo,
-// hasta que se cierra a mano.
+// animación de temporizador. Ahora se muestra el más reciente una vez, con
+// un pulso de intensidad mayor→menor en bucle (tipo llamada entrante, ver
+// @keyframes callPulse en index.css) en vez de quedarse liso, y solo se
+// cierra a mano con la X.
+//
+// El cierre se recuerda en localStorage con la firma del bolo concreto (rol +
+// fechas — la RPC no devuelve id, a propósito no identifica a nadie), mismo
+// patrón que AdminInvisibleProfilesAlert: si vuelve a aparecer el MISMO bolo
+// no se repite, pero uno nuevo sí — el usuario pidió que no "salte" otra vez
+// en sesiones futuras tras cerrarlo.
+const DISMISS_KEY = 'xpeak_gigwon_dismissed';
 
 interface Gig {
   role: string | null;
@@ -46,14 +55,25 @@ const fmtDates = (g: Gig): string => {
 };
 
 interface GigWonPopupProps {
-  /** 'bottom-left' en la landing pública; 'top-left' en el dashboard, junto
-   * a la barra de búsqueda del topbar. */
-  position?: 'bottom-left' | 'top-left';
+  /** 'landing' queda pegado bajo el nav (el hero tiene texto grande justo
+   * debajo, no hay hueco centrado libre); 'dashboard' va centrado bajo el
+   * topbar, donde sí hay espacio libre. */
+  variant?: 'landing' | 'dashboard';
 }
 
-const GigWonPopup = ({ position = 'bottom-left' }: GigWonPopupProps) => {
+const signatureOf = (g: Gig) => `${g.role ?? ''}|${g.event_date ?? ''}|${(g.event_dates ?? []).join(',')}`;
+
+const GigWonPopup = ({ variant = 'landing' }: GigWonPopupProps) => {
   const [gig, setGig] = useState<Gig | null>(null);
-  const [dismissed, setDismissed] = useState(false);
+  const [dismissedSignature, setDismissedSignature] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      setDismissedSignature(localStorage.getItem(DISMISS_KEY));
+    } catch {
+      // localStorage inaccesible (Safari privado, etc.) — el aviso se muestra siempre
+    }
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -64,35 +84,47 @@ const GigWonPopup = ({ position = 'bottom-left' }: GigWonPopupProps) => {
     return () => { cancelled = true; };
   }, []);
 
-  if (dismissed || !gig) return null;
+  if (!gig) return null;
+  const signature = signatureOf(gig);
+  if (dismissedSignature === signature) return null;
+
+  const handleDismiss = () => {
+    try { localStorage.setItem(DISMISS_KEY, signature); } catch { /* no persiste, no rompe nada */ }
+    setDismissedSignature(signature);
+  };
+
   const dates = fmtDates(gig);
   const slug = roleSlug(gig.role);
   const label = jobWord(slug);
 
   return (
     <div
-      className={`fixed z-40 ${position === 'top-left' ? 'top-20 left-5' : 'bottom-5 left-5'} max-w-xs rounded-2xl overflow-hidden hidden sm:block`}
-      style={{ background: '#0a0908', border: '1px solid rgba(212,175,55,0.35)', boxShadow: '0 8px 28px rgba(0,0,0,0.35)' }}
+      className={`fixed z-[60] left-1/2 -translate-x-1/2 rounded-full overflow-hidden hidden sm:block ${
+        variant === 'landing' ? 'top-3' : 'top-24'
+      }`}
+      style={{
+        background: '#0f3d2e',
+        border: '1px solid rgba(74,222,128,0.35)',
+        animation: 'callPulse 2.4s ease-in-out infinite',
+      }}
     >
-      <div className="flex items-start gap-3 px-4 py-3.5">
-        <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
-          style={{ background: 'rgba(212,175,55,0.15)' }}>
-          <PartyPopper size={16} style={{ color: '#D4AF37' }} />
+      <div className="flex items-center gap-2 pl-3 pr-2 py-2">
+        <div className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center"
+          style={{ background: 'rgba(74,222,128,0.18)' }}>
+          <PartyPopper size={13} style={{ color: '#4ade80' }} />
         </div>
-        <div className="min-w-0">
-          <p className="text-sm font-bold" style={{ color: '#fff' }}>
-            Nuevo {label} conseguido
-          </p>
-          <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.65)' }}>
+        <p className="text-xs font-bold whitespace-nowrap" style={{ color: '#fff' }}>
+          Nuevo {label} conseguido
+          <span className="font-normal ml-1.5" style={{ color: 'rgba(255,255,255,0.7)' }}>
             {roleLabel(gig.role)}{dates ? ` · ${dates}` : ''}
-          </p>
-        </div>
+          </span>
+        </p>
         <button
-          onClick={() => setDismissed(true)}
-          className="flex-shrink-0 p-1 rounded-lg hover:bg-white/10 -mr-1 -mt-1"
+          onClick={handleDismiss}
+          className="flex-shrink-0 p-1 rounded-lg hover:bg-white/10"
           aria-label="Cerrar"
         >
-          <X size={14} style={{ color: 'rgba(255,255,255,0.5)' }} />
+          <X size={12} style={{ color: 'rgba(255,255,255,0.55)' }} />
         </button>
       </div>
     </div>

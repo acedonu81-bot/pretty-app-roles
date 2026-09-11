@@ -331,6 +331,14 @@ body.is-native-app nav.sticky {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Pulso de intensidad mayor→menor→mayor, en bucle — tipo llamada entrante.
+   Usado en GigWonPopup: el usuario pidió que el aviso "respire" en vez de
+   quedarse liso o aparecer/desaparecer con temporizador. */
+@keyframes callPulse {
+  0%, 100% { box-shadow: 0 10px 32px rgba(15,61,46,0.4), 0 0 0 0 rgba(74,222,128,0.45); }
+  50% { box-shadow: 0 10px 32px rgba(15,61,46,0.4), 0 0 0 10px rgba(74,222,128,0); }
+}
+
 @keyframes viewEnter {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
