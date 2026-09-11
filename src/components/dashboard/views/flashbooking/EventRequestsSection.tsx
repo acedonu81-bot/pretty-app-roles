@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Calendar, MapPin, Euro, Users, Plus, X, Send, ChevronDown, ChevronUp, Check, Pencil } from 'lucide-react';
+import { Calendar, MapPin, Euro, Users, Plus, X, Send, ChevronDown, ChevronUp, Check, Pencil, FileText } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { ROLE_TAGS, ROL_UI_A_SLUG, jobWord, canonicalRole } from '@/lib/constants';
+import ContractModal, { type ContractPrefill } from '@/components/dashboard/ContractModal';
+import type { Profile } from '@/data/profiles';
 
 interface EventRequest {
   id: string;
@@ -81,7 +83,10 @@ const EventRequestsSection = () => {
   const [savingEdit, setSavingEdit] = useState(false);
   const [cancelling, setCancelling] = useState<string | null>(null);
 
-  const [responses, setResponses] = useState<Record<string, { id: string; name: string; photo: string | null; message: string | null; slot_id: string | null; chosen_at: string | null; hired_at: string | null }[]>>({});
+  const [responses, setResponses] = useState<Record<string, { id: string; professionalUserId: string; name: string; photo: string | null; message: string | null; slot_id: string | null; chosen_at: string | null; hired_at: string | null }[]>>({});
+  const [contractFor, setContractFor] = useState<{ req: EventRequest; professionalUserId: string; name: string } | null>(null);
+  const [contractProfile, setContractProfile] = useState<Profile | null>(null);
+  const [loadingContract, setLoadingContract] = useState(false);
   const [slots, setSlots] = useState<Record<string, { id: string; role: string }[]>>({});
   const [hiring, setHiring] = useState<string | null>(null);
   const [applied, setApplied] = useState<Record<string, { responseId: string; chosenAt: string | null }>>({});
@@ -103,24 +108,50 @@ const EventRequestsSection = () => {
   });
 
   useEffect(() => {
+    // El empresario necesita seguir viendo SU oferta ya cerrada (contratación
+    // hecha) para poder generar el contrato después — antes desaparecía del
+    // listado en cuanto pasaba a 'closed' y no había forma de volver a abrirla.
+    // expires_at es la caducidad de la oferta ABIERTA: una vez cerrada puede
+    // ya haber pasado, así que esa rama filtra por created_at en su lugar.
+    //
+    // El profesional CONTRATADO tiene el mismo problema: en cuanto la oferta
+    // se cierra (justo al ser elegido) desaparecía de su lista y el email
+    // "¡El bolo es tuyo!" llevaba a una vista vacía (11 sep 2026, caso Gonzalo
+    // DJ / Burger Gourmet Fest). Se resuelve con una subquery a sus propias
+    // event_request_responses con hired_at relleno — igual que el empresario,
+    // solo ve sus propias contrataciones cerradas, no las de otros.
+    const catorceDiasAtras = new Date(Date.now() - 14 * 86400000).toISOString();
     supabase
       .from('event_requests' as any)
-      .select('*')
-      .eq('status', 'open')
-      .gt('expires_at', new Date().toISOString())
+      .select(isEmpresario || !user?.id ? '*' : '*, event_request_responses(hired_at, professional_user_id)')
+      .or(
+        isEmpresario && user?.id
+          ? `and(status.eq.open,expires_at.gt.${new Date().toISOString()}),and(status.eq.closed,client_user_id.eq.${user.id},created_at.gt.${catorceDiasAtras})`
+          : `and(status.eq.open,expires_at.gt.${new Date().toISOString()}),and(status.eq.closed,created_at.gt.${catorceDiasAtras})`
+      )
       .order('created_at', { ascending: false })
       .limit(20)
       .then(({ data, error }) => {
         // Sin manejar `error` ni rechazo, un fallo (RLS, tabla ausente) dejaba
         // los skeletons pulsando indefinidamente o fingía "sin solicitudes".
         if (error) console.error('[EventRequestsSection] load failed:', error.message);
-        setRequests((data ?? []) as EventRequest[]);
+        let rows = (data ?? []) as (EventRequest & { event_request_responses?: { hired_at: string | null; professional_user_id: string }[] })[];
+        // Para el profesional, una oferta 'closed' solo debe quedarse si él
+        // mismo fue el contratado (hired_at relleno en su respuesta) — nunca
+        // las cerradas de otros profesionales.
+        if (!isEmpresario && user?.id) {
+          rows = rows.filter(r =>
+            r.status === 'open' ||
+            (r.event_request_responses ?? []).some(resp => resp.professional_user_id === user.id && resp.hired_at)
+          );
+        }
+        setRequests(rows as EventRequest[]);
         setLoading(false);
       }, (err: unknown) => {
         console.error('[EventRequestsSection] load rejected:', err);
         setLoading(false);
       });
-  }, []);
+  }, [isEmpresario, user?.id]);
 
   // Quién se ha apuntado a MIS ofertas, ya ordenado por completitud de perfil:
   // cuando varios responden al mismo bolo, el organizador decide en segundos y
@@ -130,13 +161,13 @@ const EventRequestsSection = () => {
     if (!user?.id || !isEmpresario || requests.length === 0) return;
     let cancelado = false;
     (async () => {
-      const agrupado: Record<string, { id: string; name: string; photo: string | null; message: string | null; slot_id: string | null; chosen_at: string | null; hired_at: string | null }[]> = {};
+      const agrupado: Record<string, { id: string; professionalUserId: string; name: string; photo: string | null; message: string | null; slot_id: string | null; chosen_at: string | null; hired_at: string | null }[]> = {};
       for (const req of requests) {
         const { data } = await (supabase.rpc as any)('interesados_en_oferta', { p_request_id: req.id });
-        const filas = (data ?? []) as { id: string; nombre: string; foto: string | null; mensaje: string | null; slot_id: string | null; chosen_at: string | null; hired_at: string | null }[];
+        const filas = (data ?? []) as { id: string; professional_user_id: string; nombre: string; foto: string | null; mensaje: string | null; slot_id: string | null; chosen_at: string | null; hired_at: string | null }[];
         if (filas.length > 0) {
           agrupado[req.id] = filas.map(f => ({
-            id: f.id, name: f.nombre, photo: f.foto,
+            id: f.id, professionalUserId: f.professional_user_id, name: f.nombre, photo: f.foto,
             message: f.mensaje, slot_id: f.slot_id, chosen_at: f.chosen_at, hired_at: f.hired_at,
           }));
         }
@@ -230,6 +261,37 @@ const EventRequestsSection = () => {
     setHiring(null);
     if (error) { toast.error('No se pudo rechazar.'); return; }
     toast('Has rechazado la oferta.');
+  };
+
+  // El profesional ya está contratado (hired_at) pero ContractModal exige un
+  // Profile completo, no solo el id — se carga bajo demanda al pulsar el botón.
+  const openContract = async (req: EventRequest, professionalUserId: string, name: string) => {
+    setLoadingContract(true);
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('user_id', professionalUserId)
+      .single();
+    setLoadingContract(false);
+    if (error || !data) { toast.error('No se pudo cargar el perfil del profesional.'); return; }
+    const p = data as Record<string, any>;
+    setContractProfile({
+      id: 0,
+      userId: p.user_id,
+      name: p.display_name || name,
+      role: (p.role as Profile['role']) || 'dj',
+      specialty: p.specialty ?? '',
+      rating: 0, reviews: 0,
+      location: p.zone ?? '', zone: p.zone ?? '', experience: '',
+      price: p.hourly_rate ?? 0, priceUnit: '/hora',
+      avatar: '', gradient: '', badges: [], description: p.bio ?? '',
+      phone: p.phone ?? '', instagram: p.instagram ?? '',
+      topWeekend: false, photo: p.photo_url ?? '',
+      subscriptionTier: (p.subscription_tier as Profile['subscriptionTier']) ?? 'free',
+      isFlashActive: p.is_flash_active ?? false,
+      profileViews: 0, contactClicks: 0,
+    });
+    setContractFor({ req, professionalUserId, name });
   };
 
   // El organizador cierra su propia oferta a mano — si nadie se apunta, o ya
@@ -643,10 +705,19 @@ const EventRequestsSection = () => {
                                               <p className="text-xs font-bold truncate" style={{ color: '#111' }}>{resp.name}</p>
                                             </div>
                                             {resp.hired_at ? (
-                                              <span className="flex items-center gap-1 text-[10px] font-black"
-                                                style={{ color: '#16a34a' }}>
-                                                <Check size={11} /> CONTRATADO
-                                              </span>
+                                              <div className="flex items-center gap-2 flex-shrink-0">
+                                                <span className="flex items-center gap-1 text-[10px] font-black"
+                                                  style={{ color: '#16a34a' }}>
+                                                  <Check size={11} /> CONTRATADO
+                                                </span>
+                                                <button type="button"
+                                                  onClick={() => openContract(req, resp.professionalUserId, resp.name)}
+                                                  disabled={loadingContract}
+                                                  className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-black transition-all hover:scale-105 disabled:opacity-60"
+                                                  style={{ background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.35)', color: '#8A6D0F' }}>
+                                                  <FileText size={10} /> {loadingContract ? '…' : 'Contrato'}
+                                                </button>
+                                              </div>
                                             ) : resp.chosen_at ? (
                                               <span className="text-[10px] font-black flex-shrink-0" style={{ color: '#8A6D0F' }}>
                                                 ESPERANDO SU CONFIRMACIÓN
@@ -957,6 +1028,22 @@ const EventRequestsSection = () => {
             </form>
           </div>
         </div>
+      )}
+
+      {contractFor && contractProfile && (
+        <ContractModal
+          professional={contractProfile}
+          prefill={{
+            contratanteNombre: contractFor.req.client_name,
+            nombreEvento: contractFor.req.event_type,
+            fechaEvento: contractFor.req.event_dates?.[0] ?? contractFor.req.event_date ?? '',
+            nombreLocal: contractFor.req.city,
+            precioNeto: contractFor.req.budget_max != null
+              ? String(contractFor.req.budget_max)
+              : contractFor.req.budget_min != null ? String(contractFor.req.budget_min) : '',
+          } satisfies ContractPrefill}
+          onClose={() => { setContractFor(null); setContractProfile(null); }}
+        />
       )}
     </div>
   );
