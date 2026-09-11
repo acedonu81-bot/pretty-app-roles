@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { CheckCircle, XCircle, Clock, Calendar, MapPin, User, RefreshCw, Phone, FileText } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, Calendar, MapPin, User, RefreshCw, Phone, FileText, Star } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
@@ -11,6 +11,7 @@ interface Solicitud {
   id: string;
   requester_name: string | null;
   requester_contact: string | null;
+  created_by: string | null;
   event_date: string | null;
   event_location: string | null;
   event_description: string | null;
@@ -47,6 +48,9 @@ const SolicitudesTab = () => {
   const [updating, setUpdating] = useState<string | null>(null);
   const updatingRef = useRef<string | null>(null);
   const [contractFor, setContractFor] = useState<Solicitud | null>(null);
+  // Reseñas al organizador: qué created_by ya valoró este profesional + booking abierto en el modal.
+  const [reviewedIds, setReviewedIds] = useState<Set<string>>(new Set());
+  const [reviewing, setReviewing] = useState<Solicitud | null>(null);
 
   const fetch = useCallback(async () => {
     if (!user) return;
@@ -56,13 +60,24 @@ const SolicitudesTab = () => {
       // agreed_price hace falta para el contrato: sin él, ContractModal arrancaba
       // con su default de 500 € y el profesional podía firmar un importe que
       // nadie habia pactado.
-      .select('id, requester_name, requester_contact, event_date, event_location, event_description, status, created_at, agreed_price')
+      .select('id, requester_name, requester_contact, created_by, event_date, event_location, event_description, status, created_at, agreed_price')
       .eq('professional_user_id', user.id)
       .order('created_at', { ascending: false })
       .limit(50);
     setLoading(false);
     if (error) { toast.error('Error al cargar solicitudes'); return; }
     setItems((data ?? []) as Solicitud[]);
+
+    // Cargar qué organizadores ya valoró este profesional (para ocultar el botón).
+    const reviewedTargets = (data ?? []).map((b: any) => b.created_by).filter(Boolean) as string[];
+    if (reviewedTargets.length) {
+      const { data: rev } = await supabase
+        .from('reviews')
+        .select('reviewed_user_id')
+        .eq('reviewer_id', user.id)
+        .in('reviewed_user_id', reviewedTargets);
+      setReviewedIds(new Set((rev ?? []).map(r => r.reviewed_user_id).filter(Boolean) as string[]));
+    }
   }, [user]);
 
   useEffect(() => { fetch(); }, [fetch]);
@@ -306,12 +321,28 @@ const SolicitudesTab = () => {
                     </div>
                   )}
                   {(s.status === 'confirmed' || s.status === 'accepted') && (
-                    <button
-                      onClick={() => setContractFor(s)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
-                      style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.3)', color: '#8A6D0F' }}>
-                      <FileText size={12} /> Generar contrato
-                    </button>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setContractFor(s)}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105"
+                        style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.3)', color: '#8A6D0F' }}>
+                        <FileText size={12} /> Generar contrato
+                      </button>
+                      {s.created_by && (
+                        reviewedIds.has(s.created_by) ? (
+                          <span className="flex items-center gap-1 text-[0.7rem] font-bold px-2" style={{ color: '#22c55e' }}>
+                            <Star size={11} fill="#22c55e" /> Valorado
+                          </span>
+                        ) : (
+                          <button
+                            onClick={() => setReviewing(s)}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black transition-all hover:scale-105"
+                            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                            <Star size={11} /> Valorar
+                          </button>
+                        )
+                      )}
+                    </div>
                   )}
                 </div>
               </div>
@@ -349,8 +380,92 @@ const SolicitudesTab = () => {
           onClose={() => setContractFor(null)}
         />
       )}
+
+      {reviewing && (
+        <ReviewOrganizadorModal
+          solicitud={reviewing}
+          reviewerId={user?.id ?? ''}
+          onClose={() => setReviewing(null)}
+          onDone={(targetId) => {
+            setReviewedIds(prev => new Set(prev).add(targetId));
+            setReviewing(null);
+          }}
+        />
+      )}
     </div>
   );
 };
+
+// Modal para que el profesional valore al organizador que le contrató. La
+// reseña queda ligada a created_by (reviewed_user_id) y con approved:false
+// (se publica tras moderación admin, igual que las reseñas a profesionales).
+function ReviewOrganizadorModal({ solicitud, reviewerId, onClose, onDone }: {
+  solicitud: Solicitud;
+  reviewerId: string;
+  onClose: () => void;
+  onDone: (targetId: string) => void;
+}) {
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState('');
+  const [saving, setSaving] = useState(false);
+
+  const submit = async () => {
+    if (!solicitud.created_by || rating < 1) return;
+    if (comment.trim().length < 5) { toast.error('Escribe un comentario breve (mín. 5 caracteres).'); return; }
+    setSaving(true);
+    const { data: reviewerProfile } = await supabase
+      .from('profiles')
+      .select('display_name')
+      .eq('user_id', reviewerId)
+      .maybeSingle();
+    const { error } = await supabase.from('reviews').insert({
+      reviewed_user_id: solicitud.created_by,
+      reviewer_id: reviewerId || null,
+      reviewer_name: reviewerProfile?.display_name || 'Profesional',
+      reviewer_role: 'Profesional',
+      event_type: null,
+      rating,
+      comment: comment.trim().slice(0, 500),
+      approved: false,
+    } as any);
+    setSaving(false);
+    if (error) { toast.error('No se pudo enviar la valoración. Inténtalo de nuevo.'); return; }
+    toast.success('¡Gracias! Tu valoración se publicará tras revisión.');
+    onDone(solicitud.created_by);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.5)' }}>
+      <div className="w-full max-w-sm rounded-2xl p-5" style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)' }}>
+        <p className="text-sm font-black mb-1">Valorar a {solicitud.requester_name || 'este organizador'}</p>
+        <p className="text-xs text-muted-foreground mb-4">Tu valoración se publicará tras revisión.</p>
+        <div className="flex gap-1 mb-4">
+          {[1, 2, 3, 4, 5].map(n => (
+            <button key={n} type="button" onClick={() => setRating(n)}>
+              <Star size={22} fill={n <= rating ? '#D4AF37' : 'none'} stroke="#D4AF37" />
+            </button>
+          ))}
+        </div>
+        <textarea
+          rows={3}
+          value={comment}
+          onChange={e => setComment(e.target.value)}
+          placeholder="¿Qué tal la experiencia con este organizador?"
+          className="nightlife-input text-sm w-full resize-y mb-4"
+        />
+        <div className="flex gap-2">
+          <button onClick={onClose} className="flex-1 py-2.5 rounded-lg text-xs font-bold"
+            style={{ background: 'rgba(0,0,0,0.03)', color: '#3d3d4e', border: '1px solid var(--nightlife-border)' }}>
+            Cancelar
+          </button>
+          <button onClick={submit} disabled={saving} className="flex-1 py-2.5 rounded-lg text-xs font-black disabled:opacity-50"
+            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+            {saving ? 'Enviando…' : 'Enviar valoración'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default SolicitudesTab;

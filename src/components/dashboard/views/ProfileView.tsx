@@ -25,6 +25,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   const [rider, setRider] = useState<string | null>(null);
   const [bio, setBio] = useState<string | null>(null);
   const [instagram, setInstagram] = useState<string | null>(null);
+  const [googleReviewUrl, setGoogleReviewUrl] = useState<string | null>(null);
   const [hourlyRate, setHourlyRate] = useState<string | null>(null);
   const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
   const [savingAvailability, setSavingAvailability] = useState(false);
@@ -272,6 +273,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     if (rider !== null) updates.specialty = rider;
     if (bio !== null) updates.bio = bio;
     if (instagram !== null) updates.instagram = instagram.trim().replace(/^@/, '') || null;
+    if (googleReviewUrl !== null) updates.google_review_url = googleReviewUrl.trim() || null;
     if (selectedLangs !== null) updates.languages = selectedLangs;
     if (selectedGenres !== null) updates.genres = selectedGenres;
     // `role` (el oficio principal: el que sale en la ficha, la tarjeta y el
@@ -1070,6 +1072,17 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
               <input value={instagram ?? profile.instagram ?? ''}
                 onChange={e => setInstagram(e.target.value)}
                 placeholder="tu_usuario (sin @)"
+                className="nightlife-input mt-1 text-base" />
+            </div>
+            <div className="mb-3">
+              <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Enlace de reseña de Google</label>
+              <p className="text-xs text-muted-foreground mb-1">
+                Si tienes ficha de Google Business, pega aquí el enlace para dejarte una reseña.
+                Se lo ofreceremos a quien te valore en XPEAK, para que también la deje en Google si quiere.
+              </p>
+              <input value={googleReviewUrl ?? profile.google_review_url ?? ''}
+                onChange={e => setGoogleReviewUrl(e.target.value)}
+                placeholder="https://search.google.com/local/writereview?placeid=..."
                 className="nightlife-input mt-1 text-base" />
             </div>
             <div style={{ borderTop: '1px solid rgba(0,0,0,0.04)', paddingTop: '1.25rem', marginTop: '0.5rem' }}>

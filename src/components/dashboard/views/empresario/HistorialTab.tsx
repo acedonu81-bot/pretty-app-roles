@@ -38,6 +38,8 @@ const HistorialTab = () => {
   // Reseñas: qué profesionales ya valoró este usuario + booking abierto en el modal.
   const [reviewedIds, setReviewedIds] = useState<Set<string>>(new Set());
   const [reviewing, setReviewing] = useState<Booking | null>(null);
+  // Reputación propia: reseñas que profesionales han dejado sobre este organizador.
+  const [ownReviews, setOwnReviews] = useState<{ rating: number }[]>([]);
 
   const fetchBookings = useCallback(async () => {
     if (!user) return;
@@ -62,6 +64,13 @@ const HistorialTab = () => {
         .in('reviewed_user_id', reviewedTargets);
       setReviewedIds(new Set((rev ?? []).map(r => r.reviewed_user_id).filter(Boolean) as string[]));
     }
+
+    const { data: own } = await supabase
+      .from('reviews')
+      .select('rating')
+      .eq('reviewed_user_id', user.id)
+      .eq('approved', true);
+    setOwnReviews(own ?? []);
   }, [user]);
 
   useEffect(() => { fetchBookings(); }, [fetchBookings]);
@@ -608,10 +617,20 @@ const HistorialTab = () => {
         <p className="font-bold mb-1 flex items-center gap-1.5" style={{ color: '#8A6D0F' }}>
           <Euro size={12} /> Tu reputación atrae mejor talento
         </p>
-        <p className="text-muted-foreground leading-relaxed">
-          Los profesionales con puntuación 4.5+ en XPEAK priorizan empleadores con reputación alta.
-          Valora a tus contratados y paga en el plazo acordado para subir tu score.
-        </p>
+        {ownReviews.length > 0 ? (
+          <p className="text-muted-foreground leading-relaxed flex items-center gap-1.5">
+            <Star size={12} fill="#D4AF37" stroke="#D4AF37" />
+            <span className="font-bold" style={{ color: '#D4AF37' }}>
+              {(ownReviews.reduce((s, r) => s + r.rating, 0) / ownReviews.length).toFixed(1)}
+            </span>
+            basado en {ownReviews.length} valoración{ownReviews.length > 1 ? 'es' : ''} de profesionales que has contratado.
+          </p>
+        ) : (
+          <p className="text-muted-foreground leading-relaxed">
+            Los profesionales con puntuación 4.5+ en XPEAK priorizan empleadores con reputación alta.
+            Valora a tus contratados y paga en el plazo acordado para subir tu score.
+          </p>
+        )}
       </div>
 
       {reviewing && (
@@ -645,10 +664,17 @@ function ReviewModal({ booking, reviewerId, onClose, onDone }: {
     if (!booking.professional_user_id || rating < 1) return;
     if (comment.trim().length < 5) { toast.error('Escribe un comentario breve (mín. 5 caracteres).'); return; }
     setSaving(true);
+    // reviewer_name se guardaba fijo como 'Organizador': todo profesional veía
+    // reseñas anónimas idénticas en vez del nombre real de quien le contrató.
+    const { data: reviewerProfile } = await supabase
+      .from('profiles')
+      .select('display_name')
+      .eq('user_id', reviewerId)
+      .maybeSingle();
     const { error } = await supabase.from('reviews').insert({
       reviewed_user_id: booking.professional_user_id,
       reviewer_id: reviewerId || null,
-      reviewer_name: 'Organizador',
+      reviewer_name: reviewerProfile?.display_name || 'Organizador',
       reviewer_role: 'Organizador',
       event_type: booking.professional_role || null,
       rating,

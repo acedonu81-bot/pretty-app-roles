@@ -102,11 +102,16 @@ const ShareProfileButton = ({ name, roleLabel, url }: { name: string; roleLabel:
 
 const EVENT_TYPES = ['Boda','Comunión','Evento corporativo','Fiesta privada','Festival','Cumpleaños','Inauguración','Otro'];
 
-const ReviewsSection = ({ professionalUserId, professionalName }: { professionalUserId: string; professionalName: string }) => {
+const ReviewsSection = ({ professionalUserId, professionalName, googleReviewUrl }: { professionalUserId: string; professionalName: string; googleReviewUrl: string | null }) => {
   const { user } = useAuth();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  // Tras dejar la reseña en XPEAK, se ofrece el mismo gesto para Google si el
+  // profesional tiene ficha configurada. No existe API para publicar una
+  // reseña de XPEAK en Google Business Profile de forma automática — esto es
+  // un enlace directo al formulario de Google, no una sincronización.
+  const [justSubmitted, setJustSubmitted] = useState(false);
   // Rol/nombre ya no se piden a mano — vienen de un booking completado real,
   // verificado server-side (RLS exige flash_bookings.status='completed' con
   // este usuario y este profesional). Sin esto, cualquier visitante anónimo
@@ -174,6 +179,7 @@ const ReviewsSection = ({ professionalUserId, professionalName }: { professional
     }).catch((err: unknown) => console.warn('[email] new_review_pending failed:', err));
     setShowForm(false);
     setForm({ event_type: '', rating: 5, comment: '' });
+    setJustSubmitted(true);
   };
 
   return (
@@ -201,6 +207,21 @@ const ReviewsSection = ({ professionalUserId, professionalName }: { professional
           </button>
         )}
       </div>
+
+      {justSubmitted && googleReviewUrl && (
+        <div className="flex items-center justify-between gap-3 mb-4 p-3 rounded-xl"
+          style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
+          <p className="text-xs" style={{ color: '#444' }}>
+            ¿Le dejas también unas líneas en Google? Ayuda mucho a {professionalName}.
+          </p>
+          <a href={googleReviewUrl} target="_blank" rel="noopener noreferrer"
+            onClick={() => setJustSubmitted(false)}
+            className="shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:opacity-80"
+            style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+            También en Google
+          </a>
+        </div>
+      )}
 
       {/* Solo puede valorar quien contrató de verdad (booking completado con
           este profesional) — evita reseñas falsas de gente que nunca contrató. */}
@@ -1158,6 +1179,7 @@ const PublicProfile = () => {
               <ReviewsSection
                 professionalUserId={sbProfile.user_id}
                 professionalName={sbProfile.display_name ?? profile.name}
+                googleReviewUrl={sbProfile.google_review_url ?? null}
               />
             </motion.div>
           )}

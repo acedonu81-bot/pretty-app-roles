@@ -427,7 +427,9 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
           ? 'Tu valoración ayuda a otros organizadores a elegir con criterio.'
           : 'Las valoraciones son lo que hace que te contraten la próxima vez.'}
       </p>
-      ${btn('Dejar mi valoración →', `https://xpeak.es/dashboard?view=valorar&e=${encodeURIComponent(String(d.ref ?? ''))}`)}
+      ${d.es_organizador
+        ? btn('Dejar mi valoración →', `https://xpeak.es/p/${esc(d.ref ?? '')}`)
+        : btn('Ver mi historial →', 'https://xpeak.es/dashboard?view=historial')}
       <p style="color:#9CA3AF;font-size:12px;margin-top:20px">
         Un minuto de tu tiempo. Si prefieres no valorar, ignora este correo.
       </p>
