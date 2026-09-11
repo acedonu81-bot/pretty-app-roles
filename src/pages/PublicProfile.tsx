@@ -319,6 +319,7 @@ interface SupabaseProfile {
   bio: string | null;
   photo_url: string | null;
   hourly_rate: number | null;
+  created_at: string;
   // "Mis condiciones" — lo que el profesional fija y quien contrata lee ANTES
   // de escribirle. Todas opcionales: un perfil sin condiciones no muestra nada.
   min_hours?: number | null;
@@ -359,6 +360,17 @@ interface RelatedProfile {
   specialty: string | null;
   zone: string | null;
   photo_url: string | null;
+}
+
+// Antigüedad real en XPEAK (profiles.created_at) — nunca "eventos completados"
+// ni cifras similares, porque esa columna no existe y no hay que inventarla.
+function antiguedadEnXpeak(createdAt: string | undefined): string | null {
+  if (!createdAt) return null;
+  const months = Math.floor((Date.now() - new Date(createdAt).getTime()) / (1000 * 60 * 60 * 24 * 30));
+  if (months < 1) return null; // recién llegado: no aporta como señal de confianza
+  if (months < 12) return `En XPEAK desde hace ${months} ${months === 1 ? 'mes' : 'meses'}`;
+  const years = Math.floor(months / 12);
+  return `En XPEAK desde hace ${years} ${years === 1 ? 'año' : 'años'}`;
 }
 
 const PublicProfile = () => {
@@ -406,11 +418,11 @@ const PublicProfile = () => {
 
     const query = isUUID
       ? supabase.from('profiles')
-          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, is_early_adopter_override, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note')
+          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, is_early_adopter_override, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note')
           .eq('user_id', slug)
           .maybeSingle()
       : supabase.from('profiles')
-          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, is_early_adopter_override, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note')
+          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, is_early_adopter_override, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note')
           .not('display_name', 'is', null)
           .then(({ data, error }) => {
             // ILIKE no entiende acentos/e\u00f1es (slug.replace('-','%') nunca
@@ -607,10 +619,12 @@ const PublicProfile = () => {
   const priceStr = (profile as any).price > 0 ? ` Tarifa desde ${(profile as any).price}€/h.` : '';
   const availStr = (profile as any).isFlashActive ? ' Disponible ahora.' : '';
   const verifiedStr = '';
+  const antiguedad = antiguedadEnXpeak(sbProfile?.created_at);
+  const antiguedadStr = antiguedad ? ` ${antiguedad}.` : '';
   const pageTitle = profile.specialty
     ? `Contratar ${profile.name} — ${profile.specialty} en ${cityShort} | XPEAK`
     : `${profile.name} — Profesional de eventos en ${cityShort} | XPEAK`;
-  const pageDesc = `Contrata a ${profile.name}${profile.specialty ? `, ${profile.specialty}` : ''} en ${cityShort}.${priceStr}${availStr}${verifiedStr} ${profile.description ? profile.description.slice(0, 100) + (profile.description.length > 100 ? '…' : '') : 'Contacta directamente en XPEAK sin comisión.'}`;
+  const pageDesc = `Contrata a ${profile.name}${profile.specialty ? `, ${profile.specialty}` : ''} en ${cityShort}.${priceStr}${availStr}${verifiedStr}${antiguedadStr} ${profile.description ? profile.description.slice(0, 100) + (profile.description.length > 100 ? '…' : '') : 'Contacta directamente en XPEAK sin comisión.'}`;
   const ogImage = profile.photo && profile.photo.trim().length > 5
     ? profile.photo
     : `${BASE_URL}/og-image.jpg`;
@@ -851,6 +865,12 @@ const PublicProfile = () => {
                   <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
                     style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
                     👀 {weeklyViews} vistas esta semana
+                  </span>
+                )}
+                {antiguedad && (
+                  <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
+                    <Clock size={11} /> {antiguedad}
                   </span>
                 )}
                 {profile.badges.slice(0, 3).map(b => (

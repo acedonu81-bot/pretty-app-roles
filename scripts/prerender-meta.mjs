@@ -1335,6 +1335,17 @@ function loadEnv() {
   return env;
 }
 
+// Misma lógica que src/pages/PublicProfile.tsx (antiguedadEnXpeak) — dato
+// real de profiles.created_at, nunca "eventos completados" inventado.
+function antiguedadEnXpeak(createdAt) {
+  if (!createdAt) return null;
+  const months = Math.floor((Date.now() - new Date(createdAt).getTime()) / (1000 * 60 * 60 * 24 * 30));
+  if (months < 1) return null;
+  if (months < 12) return `En XPEAK desde hace ${months} ${months === 1 ? 'mes' : 'meses'}`;
+  const years = Math.floor(months / 12);
+  return `En XPEAK desde hace ${years} ${years === 1 ? 'año' : 'años'}`;
+}
+
 function toSlug(name) {
   return name
     .toLowerCase()
@@ -1369,7 +1380,7 @@ try {
   const anonKey = env.SUPABASE_PUBLISHABLE_KEY || env.VITE_SUPABASE_PUBLISHABLE_KEY;
   if (supabaseUrl && anonKey) {
     const res = await fetch(
-      `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,zone,role,specialty,bio,photo_url,is_verified,updated_at,portfolio_urls&role=neq.empresario&is_seed=eq.false&or=(is_public.is.null,is_public.eq.true)&order=updated_at.desc&limit=1000`,
+      `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,zone,role,specialty,bio,photo_url,is_verified,updated_at,created_at,portfolio_urls&role=neq.empresario&is_seed=eq.false&or=(is_public.is.null,is_public.eq.true)&order=updated_at.desc&limit=1000`,
       { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } }
     );
     // Posts públicos de la ficha (fan_tier IS NULL = no exclusivo de Fan Club)
@@ -1407,10 +1418,12 @@ try {
         const roleLabel = ROLE_LABELS[p.role] ?? 'Profesional de eventos';
         const zone = p.zone && p.zone !== 'España' ? p.zone : null;
         const where = zone ? ` en ${zone}` : ' en España';
+        const antiguedad = antiguedadEnXpeak(p.created_at);
+        const antiguedadSuffix = antiguedad ? ` ${antiguedad}.` : '';
         const bioSnippet = (p.bio ?? '').trim().slice(0, 150);
         const desc = bioSnippet
-          ? `${p.display_name} — ${roleLabel}${where}. ${bioSnippet}${p.bio.length > 150 ? '…' : ''} Contacta y contrata en XPEAK sin comisión.`
-          : `${p.display_name} — ${roleLabel}${where}. Perfil verificado en XPEAK: tarifas públicas, contacto directo y contrato digital. Sin comisión.`;
+          ? `${p.display_name} — ${roleLabel}${where}. ${bioSnippet}${p.bio.length > 150 ? '…' : ''} Contacta y contrata en XPEAK sin comisión.${antiguedadSuffix}`
+          : `${p.display_name} — ${roleLabel}${where}. Perfil verificado en XPEAK: tarifas públicas, contacto directo y contrato digital. Sin comisión.${antiguedadSuffix}`;
 
         // Enlaces internos reales hacia la categoría (y ciudad si hay zona
         // conocida) — conecta cada perfil con el resto del sitio, en vez de
@@ -1468,7 +1481,7 @@ try {
           jsonLd: personSchema,
           bodyHtml: `<div style="max-width:720px;margin:0 auto;padding:48px 24px;color:#fff">` +
             `<h1>${escHtml(p.display_name)}</h1>` +
-            `<p><strong>${escHtml(roleLabel)}${escHtml(where)}</strong>${p.specialty ? ` · ${escHtml(p.specialty)}` : ''}${p.is_verified ? ' · Perfil verificado' : ''}</p>` +
+            `<p><strong>${escHtml(roleLabel)}${escHtml(where)}</strong>${p.specialty ? ` · ${escHtml(p.specialty)}` : ''}${p.is_verified ? ' · Perfil verificado' : ''}${antiguedad ? ` · ${escHtml(antiguedad)}` : ''}</p>` +
             (p.photo_url ? `<img src="${escHtml(p.photo_url)}" alt="${escHtml(p.display_name)}" style="max-width:280px;border-radius:12px" loading="lazy" />` : '') +
             (p.bio ? `<p>${escHtml(p.bio)}</p>` : '') +
             portfolioHtml +
