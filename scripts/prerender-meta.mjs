@@ -1399,7 +1399,16 @@ try {
         }
       }
     } catch { /* profile_posts opcional — perfil se genera igual sin posts */ }
-    if (res.ok) {
+    // Sin perfiles no se genera NINGUNA ficha /p/:slug y el build seguía
+    // adelante como si nada, publicando un sitio sin profesionales. Mismo
+    // criterio que update-sitemap.mjs desde el incidente del 11 sep 2026:
+    // mejor abortar y conservar el build anterior que publicar uno vacío.
+    if (!res.ok) {
+      console.error(`❌ prerender-meta: Supabase devolvió HTTP ${res.status} al pedir profiles.`);
+      console.error('   Se aborta el build: sin perfiles no habría ninguna ficha /p/:slug que prerenderizar.');
+      process.exit(1);
+    }
+    {
       const profiles = await res.json();
       const usedSlugs = new Set();
       let profileCount = 0;
@@ -1496,14 +1505,17 @@ try {
         profileCount++;
       }
       console.log(`  → ${profileCount} perfiles reales con meta tags únicos`);
-    } else {
-      console.warn(`  ⚠ No se pudieron cargar perfiles (${res.status}) — se omite el prerender de /p/`);
     }
   } else {
     console.warn('  ⚠ Sin credenciales Supabase en .env — se omite el prerender de /p/');
   }
 } catch (e) {
-  console.warn(`  ⚠ Prerender de perfiles omitido: ${e.message}`);
+  // Un fallo de red aquí dejaba el sitio sin ninguna ficha /p/:slug y el build
+  // continuaba con un warning que pasaba desapercibido (11 sep 2026: Supabase
+  // caído, dos builds publicables generados sin un solo profesional).
+  console.error(`❌ prerender-meta: fallo al cargar perfiles de Supabase: ${e.message}`);
+  console.error('   Se aborta el build en vez de publicar un sitio sin fichas de profesional.');
+  process.exit(1);
 }
 
 // ─── Eventos reales (dance_socials) → /socials/{slug} ─────────────────────

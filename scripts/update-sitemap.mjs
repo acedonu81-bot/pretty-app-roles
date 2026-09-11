@@ -51,21 +51,41 @@ function loadEnv() {
 // retroactivo: perfiles ya existentes sin foto siguen indexados como antes).
 const PROFILE_PHOTO_GATE_DATE = new Date('2026-09-09T00:00:00Z');
 
+// Un fallo de Supabase NO puede degradarse a "0 perfiles": con la lista vacía
+// este script escribía un sitemap sin ninguna ficha y con las ~2.200 URLs
+// ciudad×categoría sin podar (exactamente al revés de lo que toca), y ese
+// archivo sobrescribía el bueno en public/ y dist/. Pasó dos veces el 11 sep
+// 2026 durante una caída de PostgREST y hubo que revertirlo a mano las dos.
+// Abortar deja intacto el sitemap anterior, que siempre es mejor que uno vacío.
+function abortarPorSupabase(que, detalle) {
+  console.error(`❌ update-sitemap: no se pudo leer ${que} de Supabase (${detalle}).`);
+  console.error('   Se aborta el build SIN tocar sitemap.xml — un sitemap vacío es peor que uno desactualizado.');
+  console.error('   Comprueba el estado del proyecto y repite el build cuando responda.');
+  process.exit(1);
+}
+
 async function fetchProfiles(supabaseUrl, anonKey) {
   const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,zone,city_ref,updated_at,created_at,role,roles,is_primary,photo_url&role=not.in.%28empresario,pending%29&is_seed=eq.false&or=(is_public.is.null,is_public.eq.true)&order=updated_at.desc&limit=1000`;
-  const res = await fetch(url, {
-    headers: {
-      apikey: anonKey,
-      Authorization: `Bearer ${anonKey}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  if (!res.ok) {
-    console.warn('⚠️  Could not fetch profiles from Supabase:', res.status);
-    return [];
+  let res;
+  try {
+    res = await fetch(url, {
+      headers: {
+        apikey: anonKey,
+        Authorization: `Bearer ${anonKey}`,
+        'Content-Type': 'application/json',
+      },
+    });
+  } catch (e) {
+    abortarPorSupabase('profiles', e.message);
   }
+  if (!res.ok) abortarPorSupabase('profiles', `HTTP ${res.status}`);
   const rows = await res.json();
-  return rows.filter(p => !!p.photo_url || new Date(p.created_at) < PROFILE_PHOTO_GATE_DATE);
+  const visibles = rows.filter(p => !!p.photo_url || new Date(p.created_at) < PROFILE_PHOTO_GATE_DATE);
+  // Responder 200 con una lista vacía también es anómalo: hay 40+ perfiles
+  // reales publicados. Si algún día no quedara ninguno de verdad, este guard
+  // salta y se quita a mano, que es justo la revisión que uno querría.
+  if (visibles.length === 0) abortarPorSupabase('profiles', '0 perfiles visibles, algo va mal');
+  return visibles;
 }
 
 function toSlug(name) {
@@ -513,11 +533,15 @@ const DEMO_SLUGS = [
 async function fetchSocialEvents(supabaseUrl, anonKey) {
   const today = new Date().toISOString().slice(0, 10);
   const url = `${supabaseUrl}/rest/v1/dance_socials?select=id,event_name,event_date,created_at&event_date=gte.${today}&order=event_date.asc&limit=500`;
-  const res = await fetch(url, { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } });
-  if (!res.ok) {
-    console.warn('⚠️  Could not fetch dance_socials from Supabase:', res.status);
-    return [];
+  let res;
+  try {
+    res = await fetch(url, { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } });
+  } catch (e) {
+    abortarPorSupabase('dance_socials', e.message);
   }
+  if (!res.ok) abortarPorSupabase('dance_socials', `HTTP ${res.status}`);
+  // A diferencia de profiles, 0 eventos SÍ es un estado legítimo (no siempre
+  // hay socials futuras publicadas), así que aquí no se comprueba la longitud.
   return res.json();
 }
 
@@ -533,49 +557,43 @@ async function main() {
 
   // Ciudades indexables — se derivan del inventario real, no de una lista fija.
   const CITIES = extractObjectLiteral(path.join(ROOT, 'src', 'pages', 'CityLanding.tsx'), 'CITIES');
-  // Salvaguarda: si Supabase falla, fetchProfiles devuelve [] y podaríamos el
-  // sitemap entero por error. Ante 0 perfiles se conserva la lista completa.
-  // El inventario se mide con el MISMO criterio que usa la página. Desde que
-  // CityLanding.tsx dejó de filtrar por is_primary (marcaba el perfil principal
-  // de una agencia, no "perfil publicable"), cuenta cualquier perfil real.
+  // Aquí `profiles` siempre trae filas reales: fetchProfiles aborta el build si
+  // Supabase falla o devuelve 0. El inventario se mide con el MISMO criterio
+  // que usa la página. Desde que CityLanding.tsx dejó de filtrar por is_primary
+  // (marcaba el perfil principal de una agencia, no "perfil publicable"),
+  // cuenta cualquier perfil real.
   const inventoryProfiles = profiles;
   // Set de claves "categoria/ciudad" con inventario real.
   const CATS_BY_CITY = ['dj','camareros','fotografo','catering','maquillaje','peluqueria','staff','azafata','disco-movil','promotores','vestuario','mago','humorista','animador','animadores','bailarin','speaker','monologo','monologos','payaso','payasos','grupo-musical','photo-booth'];
   const indexableCities = new Set();
   const cityContentDates = new Map();
-  if (inventoryProfiles.length) {
-    // Universo de ciudades = las de CITIES (que aportan copy editorial: venues,
-    // precios, estacionalidad) MAS las city_ref reales de los perfiles. Antes
-    // solo se recorria CITIES, asi que un profesional de una ciudad ausente de
-    // esa lista no generaba pagina por mucho inventario que hubiera: el 2 sep
-    // 2026 una profesional de Benidorm no tenia ninguna URL. city_ref la
-    // calcula la BD (city_ref_from_zone), asi que un pueblo pequeño cuenta como
-    // inventario de su ciudad grande de referencia.
-    const cityUniverse = new Map();
-    for (const [citySlug, info] of Object.entries(CITIES)) {
-      if (info?.ciudad) cityUniverse.set(citySlug, info.ciudad);
-    }
-    for (const p of inventoryProfiles) {
-      const ref = p.city_ref;
-      if (!ref) continue;
-      const slug = toSlug(ref);
-      if (!cityUniverse.has(slug)) cityUniverse.set(slug, ref);
-    }
+  // Universo de ciudades = las de CITIES (que aportan copy editorial: venues,
+  // precios, estacionalidad) MAS las city_ref reales de los perfiles. Antes
+  // solo se recorria CITIES, asi que un profesional de una ciudad ausente de
+  // esa lista no generaba pagina por mucho inventario que hubiera: el 2 sep
+  // 2026 una profesional de Benidorm no tenia ninguna URL. city_ref la
+  // calcula la BD (city_ref_from_zone), asi que un pueblo pequeño cuenta como
+  // inventario de su ciudad grande de referencia.
+  const cityUniverse = new Map();
+  for (const [citySlug, info] of Object.entries(CITIES)) {
+    if (info?.ciudad) cityUniverse.set(citySlug, info.ciudad);
+  }
+  for (const p of inventoryProfiles) {
+    const ref = p.city_ref;
+    if (!ref) continue;
+    const slug = toSlug(ref);
+    if (!cityUniverse.has(slug)) cityUniverse.set(slug, ref);
+  }
 
-    for (const [citySlug, cityName] of cityUniverse) {
-      for (const cat of CATS_BY_CITY) {
-        if (hasInventory(inventoryProfiles, cityName, cat)) {
-          indexableCities.add(`${cat}/${citySlug}`);
-          const d = contentDate(inventoryProfiles, cityName, cat);
-          if (d) cityContentDates.set(`${cat}/${citySlug}`, d);
-        }
+  for (const [citySlug, cityName] of cityUniverse) {
+    for (const cat of CATS_BY_CITY) {
+      if (hasInventory(inventoryProfiles, cityName, cat)) {
+        indexableCities.add(`${cat}/${citySlug}`);
+        const d = contentDate(inventoryProfiles, cityName, cat);
+        if (d) cityContentDates.set(`${cat}/${citySlug}`, d);
       }
     }
-  } else {
-    // Supabase caído: no podar nada.
-    for (const citySlug of Object.keys(CITIES)) for (const cat of CATS_BY_CITY) indexableCities.add(`${cat}/${citySlug}`);
   }
-  if (!inventoryProfiles.length) console.warn('⚠️  0 perfiles: se mantiene la lista completa de ciudades (no se poda)');
 
   console.log('📍 Fetching upcoming dance socials from Supabase...');
   const socialEvents = await fetchSocialEvents(supabaseUrl, anonKey);
