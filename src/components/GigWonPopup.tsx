@@ -1,23 +1,23 @@
-import { useEffect, useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import { PartyPopper, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { ROLE_ES, ROL_UI_A_SLUG, jobWord } from '@/lib/constants';
 
-// Social-proof en la landing: "Nuevo bolo conseguido · DJ · 11-12 sept 2026".
-// Solo rol + fechas, nunca nombre/empresa/ciudad — ver
-// feedback_no_sacar_contacto_fuera_app. Si no hay contrataciones reales en
-// los últimos 7 días (bolos_recientes_publico), no se muestra nada: nunca
-// datos inventados.
+// Social-proof: "Nuevo bolo conseguido · DJ · 11-12 sept 2026". Solo rol +
+// fechas, nunca nombre/empresa/ciudad — ver feedback_no_sacar_contacto_fuera_app.
+// Si no hay contrataciones reales en los últimos 7 días (bolos_recientes_publico),
+// no se muestra nada: nunca datos inventados.
+//
+// Estático a propósito (11 sep 2026): la primera versión aparecía/desaparecía
+// sola cada pocos segundos y resultaba molesta — el usuario pidió quitar la
+// animación de temporizador. Ahora se muestra el más reciente una vez, fijo,
+// hasta que se cierra a mano.
 
 interface Gig {
   role: string | null;
   event_date: string | null;
   event_dates: string[] | null;
 }
-
-const SHOW_MS = 6000;
-const GAP_MS = 14000;
 
 const roleLabel = (roleUI: string | null): string => {
   if (!roleUI) return 'un profesional';
@@ -52,81 +52,50 @@ interface GigWonPopupProps {
 }
 
 const GigWonPopup = ({ position = 'bottom-left' }: GigWonPopupProps) => {
-  const [gigs, setGigs] = useState<Gig[]>([]);
-  const [index, setIndex] = useState(0);
-  const [visible, setVisible] = useState(false);
+  const [gig, setGig] = useState<Gig | null>(null);
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     (supabase.rpc as any)('bolos_recientes_publico')
       .then(({ data }: { data: Gig[] | null }) => {
-        if (!cancelled && data?.length) setGigs(data);
+        if (!cancelled && data?.length) setGig(data[0]);
       });
     return () => { cancelled = true; };
   }, []);
 
-  useEffect(() => {
-    if (gigs.length === 0 || dismissed) return;
-    const showTimer = setTimeout(() => setVisible(true), 4000);
-    return () => clearTimeout(showTimer);
-  }, [gigs.length, dismissed]);
-
-  const advance = useCallback(() => {
-    setVisible(false);
-    setTimeout(() => {
-      setIndex(i => (i + 1) % gigs.length);
-      setVisible(true);
-    }, GAP_MS);
-  }, [gigs.length]);
-
-  useEffect(() => {
-    if (!visible) return;
-    const t = setTimeout(advance, SHOW_MS);
-    return () => clearTimeout(t);
-  }, [visible, advance]);
-
-  if (dismissed || gigs.length === 0) return null;
-  const gig = gigs[index];
+  if (dismissed || !gig) return null;
   const dates = fmtDates(gig);
   const slug = roleSlug(gig.role);
   const label = jobWord(slug);
 
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          initial={{ opacity: 0, y: position === 'top-left' ? -16 : 20, x: -12 }}
-          animate={{ opacity: 1, y: 0, x: 0 }}
-          exit={{ opacity: 0, y: position === 'top-left' ? -12 : 12 }}
-          transition={{ duration: 0.35, ease: 'easeOut' }}
-          className={`fixed z-40 ${position === 'top-left' ? 'top-20 left-5' : 'bottom-5 left-5'} max-w-xs rounded-2xl overflow-hidden hidden sm:block`}
-          style={{ background: '#0a0908', border: '1px solid rgba(212,175,55,0.35)', boxShadow: '0 8px 28px rgba(0,0,0,0.35)' }}
+    <div
+      className={`fixed z-40 ${position === 'top-left' ? 'top-20 left-5' : 'bottom-5 left-5'} max-w-xs rounded-2xl overflow-hidden hidden sm:block`}
+      style={{ background: '#0a0908', border: '1px solid rgba(212,175,55,0.35)', boxShadow: '0 8px 28px rgba(0,0,0,0.35)' }}
+    >
+      <div className="flex items-start gap-3 px-4 py-3.5">
+        <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
+          style={{ background: 'rgba(212,175,55,0.15)' }}>
+          <PartyPopper size={16} style={{ color: '#D4AF37' }} />
+        </div>
+        <div className="min-w-0">
+          <p className="text-sm font-bold" style={{ color: '#fff' }}>
+            Nuevo {label} conseguido
+          </p>
+          <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.65)' }}>
+            {roleLabel(gig.role)}{dates ? ` · ${dates}` : ''}
+          </p>
+        </div>
+        <button
+          onClick={() => setDismissed(true)}
+          className="flex-shrink-0 p-1 rounded-lg hover:bg-white/10 -mr-1 -mt-1"
+          aria-label="Cerrar"
         >
-          <div className="flex items-start gap-3 px-4 py-3.5">
-            <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
-              style={{ background: 'rgba(212,175,55,0.15)' }}>
-              <PartyPopper size={16} style={{ color: '#D4AF37' }} />
-            </div>
-            <div className="min-w-0">
-              <p className="text-sm font-bold" style={{ color: '#fff' }}>
-                Nuevo {label} conseguido
-              </p>
-              <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.65)' }}>
-                {roleLabel(gig.role)}{dates ? ` · ${dates}` : ''}
-              </p>
-            </div>
-            <button
-              onClick={() => setDismissed(true)}
-              className="flex-shrink-0 p-1 rounded-lg hover:bg-white/10 -mr-1 -mt-1"
-              aria-label="Cerrar"
-            >
-              <X size={14} style={{ color: 'rgba(255,255,255,0.5)' }} />
-            </button>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+          <X size={14} style={{ color: 'rgba(255,255,255,0.5)' }} />
+        </button>
+      </div>
+    </div>
   );
 };
 
