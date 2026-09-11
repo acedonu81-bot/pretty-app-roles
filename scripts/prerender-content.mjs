@@ -56,7 +56,7 @@ async function fetchAllProfilesForPrerender() {
       console.warn('  ⚠ Sin credenciales Supabase — páginas ciudad/categoría se prerenderizan sin profesionales');
       return [];
     }
-    const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,photo_url,bio,zone,role,roles,specialty,hourly_rate,is_flash_active,is_seed,audio_embed_url,audio_session_urls,portfolio_urls,score,is_verified,is_primary,is_early_adopter_override&role=neq.empresario&is_seed=eq.false&or=(is_public.is.null,is_public.eq.true)&limit=1000`;
+    const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,photo_url,bio,zone,role,roles,specialty,hourly_rate,is_flash_active,is_seed,audio_embed_url,audio_session_urls,portfolio_urls,score,is_verified,is_primary,is_early_adopter_override,created_at&role=neq.empresario&is_seed=eq.false&or=(is_public.is.null,is_public.eq.true)&limit=1000`;
     const res = await fetch(url, { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } });
     if (!res.ok) {
       console.warn('  ⚠ No se pudieron cargar profesionales para el prerender:', res.status);
@@ -113,6 +113,10 @@ function resolveProfilesForCity(allProfiles, ciudad, categorySlug) {
 // el dbRole a sus variantes, acepta el match por `role` singular o por el array
 // `roles`, descarta perfiles sin nombre y ordena por score. Sin esto el HTML
 // del directorio se servía sin un solo profesional ni enlace a /p/.
+// Mismo valor que PROFILE_PHOTO_GATE_DATE en src/lib/constants.ts (este
+// script es .mjs y no importa TS) — si se toca allí, reflejarlo aquí también.
+const PROFILE_PHOTO_GATE_DATE = new Date('2026-09-09T00:00:00Z');
+
 function resolveProfilesForDirectorio(allProfiles, dbRole) {
   // Mismos alias que lib/constants.ts (este script es .mjs y no importa TS;
   // si se toca ROLE_ALIASES hay que reflejarlo aqui).
@@ -121,7 +125,14 @@ function resolveProfilesForDirectorio(allProfiles, dbRole) {
     : [dbRole];
   return allProfiles
     .filter(p => p.display_name
-      && (dbRoles.includes(p.role) || (Array.isArray(p.roles) && p.roles.some(r => dbRoles.includes(r)))))
+      && (dbRoles.includes(p.role) || (Array.isArray(p.roles) && p.roles.some(r => dbRoles.includes(r))))
+      // Mismo gate que fetchDirectorioProfiles (DirectorioPublico.tsx): un
+      // perfil nuevo sin foto no es indexable. Sin este filtro, el conjunto
+      // prerenderizado no coincidía 1:1 con el que trae el fetch en vivo, y
+      // React Query siempre acababa repintando el grid al llegar la
+      // respuesta real — CLS 0.07 medido en producción el 11 sep 2026,
+      // aunque initialData ya estuviera bien inyectado.
+      && (!!p.photo_url || new Date(p.created_at) < PROFILE_PHOTO_GATE_DATE))
     .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
     .slice(0, 60);
   // Sin mapProfile: ese mapeo es para CityLanding (renombra user_id→id y
