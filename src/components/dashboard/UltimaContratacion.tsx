@@ -38,31 +38,17 @@ const UltimaContratacion = () => {
     let vivo = true;
     (async () => {
       try {
-        const desde = new Date(Date.now() - 60 * 86_400_000).toISOString();
-        const sb = supabase as unknown as {
-          from: (t: string) => {
-            select: (c: string) => {
-              in: (col: string, v: string[]) => {
-                gte: (col: string, v: string) => {
-                  order: (col: string, o: { ascending: boolean }) => {
-                    limit: (n: number) => Promise<{ data: unknown }>;
-                  };
-                };
-              };
-            };
-          };
-        };
+        // Dos sistemas de contratación conviven: flash_bookings (antiguo,
+        // SolicitudesTab) y event_request_responses (actual, Flash Booking
+        // con plazas) — y ninguno de los dos tenía política RLS de SELECT
+        // para 'anon', así que este banner llevaba desaparecido de TODA la
+        // web para un visitante real desde siempre, sin ningún error
+        // visible (solo se veía logueado como el propio dueño de la fila
+        // o admin). La función pública expone solo lo mínimo necesario.
+        const { data } = await (supabase.rpc as any)('ultima_contratacion_publica');
+        const fila = (data as { professional_user_id?: string; fecha?: string }[] | null)?.[0];
 
-        const { data } = await sb
-          .from('flash_bookings')
-          .select('professional_user_id, created_at')
-          .in('status', ['confirmed', 'completed'])
-          .gte('created_at', desde)
-          .order('created_at', { ascending: false })
-          .limit(1);
-
-        const fila = (data as { professional_user_id?: string; created_at?: string }[] | null)?.[0];
-        if (!fila?.professional_user_id || !vivo) return;
+        if (!fila?.professional_user_id || !fila.fecha || !vivo) return;
 
         const { data: perfil } = await supabase
           .from('profiles')
@@ -74,7 +60,7 @@ const UltimaContratacion = () => {
         setDato({
           nombre: perfil.display_name,
           rol: ROLE_ES[perfil.role as string] ?? (perfil.role as string) ?? '',
-          fecha: fila.created_at ?? new Date().toISOString(),
+          fecha: fila.fecha,
         });
       } catch {
         // Sin datos o sin permiso: no se muestra nada. Nunca un valor de relleno.
