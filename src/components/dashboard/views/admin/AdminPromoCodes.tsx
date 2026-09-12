@@ -71,13 +71,18 @@ const AdminPromoCodes = () => {
   };
 
   const handleToggleCode = async (id: string, current: boolean) => {
-    await (supabase.from as any)('promo_codes').update({ is_active: !current }).eq('id', id);
+    // Sin comprobar error, un fallo de RLS (o cualquier otro) se veía como
+    // "el botón no hace nada": la fila se recargaba igual y quedaba tal cual,
+    // sin ningún aviso de que el cambio no se guardó.
+    const { error } = await (supabase.from as any)('promo_codes').update({ is_active: !current }).eq('id', id);
+    if (error) { toast.error('No se pudo cambiar el estado: ' + error.message); return; }
     loadPromoCodes();
   };
 
   const handleDeleteCode = async (id: string, code: string) => {
     if (!confirm(`¿Eliminar el código "${code}"? Esta acción no se puede deshacer.`)) return;
-    await (supabase.from as any)('promo_codes').delete().eq('id', id);
+    const { error } = await (supabase.from as any)('promo_codes').delete().eq('id', id);
+    if (error) { toast.error('No se pudo eliminar: ' + error.message); return; }
     toast.success('Código eliminado');
     loadPromoCodes();
   };

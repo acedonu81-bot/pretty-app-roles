@@ -63,8 +63,20 @@ const AdminSaludSistema = () => {
   const descartar = async (claves: string[]) => {
     if (claves.length === 0) return;
     const { data: { user } } = await supabase.auth.getUser();
+    // perfil_invisible es el único tipo donde "ya lo sé" no debe ser para
+    // siempre: el usuario puede arreglar su foto/zona en cualquier momento, o
+    // no hacerlo nunca — un descarte permanente silenció 21 perfiles reales
+    // durante más de una semana sin que nadie se enterara de que seguían sin
+    // foto (caso real, 4-12 sep 2026). Los demás tipos (crash, alta sin
+    // volver) sí quedan descartados para siempre, como hasta ahora.
     await (supabase.from('admin_alertas_descartadas' as any) as any).upsert(
-      claves.map(clave => ({ clave, descartada_por: user?.id ?? null })),
+      claves.map(clave => ({
+        clave,
+        descartada_por: user?.id ?? null,
+        reevaluar_en: clave.startsWith('perfil_invisible|')
+          ? new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+          : null,
+      })),
       { onConflict: 'clave' },
     );
     setAlertas(prev => prev.filter(a => !claves.includes(a.clave)));
