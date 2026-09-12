@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAdminActivityAlert } from '@/hooks/useAdminActivityAlert';
-import { UserPlus, CalendarClock, UserMinus, Star, Phone, RefreshCw, AlertTriangle, X } from 'lucide-react';
+import { UserPlus, CalendarClock, UserMinus, Star, Phone, RefreshCw, AlertTriangle, X, HelpCircle, Mail } from 'lucide-react';
 import { toast } from 'sonner';
 
 // Línea temporal de TODO lo que pasa en XPEAK, en un solo sitio.
@@ -29,6 +29,17 @@ interface Movimiento {
   // un camarero para el sábado o un DJ para diciembre.
   que_pide?: string | null;
   cuando_evento?: string | null;
+  // Con esto se busca en email_send_log qué se le mandó a esta persona en
+  // concreto. Puede venir null (bajas, reseñas, ofertas sin usuario resuelto).
+  user_id?: string | null;
+}
+
+interface EmailEnviado {
+  id: string;
+  type: string;
+  subject: string;
+  html: string;
+  sent_at: string;
 }
 
 const ESTILO: Record<Movimiento['tipo'], { icon: typeof UserPlus; color: string; fondo: string; etiqueta: string }> = {
@@ -49,6 +60,85 @@ const FILTROS = [
   { id: 'solicitud', label: 'Solicitudes' },
   { id: 'alta',      label: 'Altas' },
 ] as const;
+
+// Icono "?" con los emails mandados a esta persona: al pasar el ratón se
+// carga (una vez, se cachea en el propio estado) y se pinta el HTML real en
+// un iframe — así el CSS del email (tablas, estilos inline) no pelea con el
+// del panel. "Ahora quiero tener control absoluto" (12 sep 2026, con pocos
+// usuarios); se quitará cuando haya demasiada gente para mirarlos uno a uno.
+const EmailsTooltip = ({ userId }: { userId: string }) => {
+  const [abierto, setAbierto] = useState(false);
+  const [cargando, setCargando] = useState(false);
+  const [emails, setEmails] = useState<EmailEnviado[] | null>(null);
+  const [activo, setActivo] = useState(0);
+
+  const cargar = async () => {
+    if (emails !== null || cargando) return;
+    setCargando(true);
+    const { data, error } = await (supabase.rpc as any)('admin_emails_de_usuario', { p_user_id: userId });
+    setCargando(false);
+    if (error) { setEmails([]); return; }
+    setEmails((data as EmailEnviado[]) ?? []);
+  };
+
+  return (
+    <span
+      className="relative inline-flex"
+      onMouseEnter={() => { setAbierto(true); cargar(); }}
+      onMouseLeave={() => setAbierto(false)}
+    >
+      <button type="button" className="inline-flex items-center justify-center w-4 h-4 rounded-full hover:opacity-70" style={{ color: '#999' }}>
+        <HelpCircle size={13} />
+      </button>
+      {abierto && (
+        <div
+          className="absolute z-50 top-5 left-0 rounded-xl overflow-hidden shadow-2xl"
+          style={{ width: 340, background: '#fff', border: '1px solid rgba(0,0,0,0.12)' }}
+          onClick={e => e.stopPropagation()}
+        >
+          <div className="px-3 py-2 flex items-center gap-1.5" style={{ borderBottom: '1px solid rgba(0,0,0,0.08)', background: 'rgba(0,0,0,0.02)' }}>
+            <Mail size={12} style={{ color: '#8A6D0F' }} />
+            <span className="text-xs font-bold">Emails enviados</span>
+          </div>
+          {cargando && <p className="text-xs px-3 py-4 text-center" style={{ color: '#888' }}>Cargando…</p>}
+          {!cargando && emails?.length === 0 && (
+            <p className="text-xs px-3 py-4 text-center" style={{ color: '#888' }}>Ningún email registrado todavía.</p>
+          )}
+          {!cargando && emails && emails.length > 0 && (
+            <>
+              <div className="flex gap-1 px-2 pt-2 flex-wrap">
+                {emails.map((e, i) => (
+                  <button
+                    key={e.id}
+                    type="button"
+                    onClick={() => setActivo(i)}
+                    className="px-2 py-1 rounded-lg text-[0.65rem] font-bold truncate max-w-[100px]"
+                    style={i === activo
+                      ? { background: '#0a0908', color: '#fff' }
+                      : { background: 'rgba(0,0,0,0.05)', color: '#555' }}
+                    title={e.subject}
+                  >
+                    {e.type}
+                  </button>
+                ))}
+              </div>
+              <div className="px-3 pt-1.5 pb-1">
+                <p className="text-[0.65rem]" style={{ color: '#888' }}>{new Date(emails[activo].sent_at).toLocaleString('es-ES')}</p>
+                <p className="text-xs font-bold truncate">{emails[activo].subject}</p>
+              </div>
+              <iframe
+                title="preview-email"
+                srcDoc={emails[activo].html}
+                sandbox=""
+                style={{ width: '100%', height: 280, border: 'none', background: '#fff' }}
+              />
+            </>
+          )}
+        </div>
+      )}
+    </span>
+  );
+};
 
 const hace = (iso: string): string => {
   const m = Math.floor((Date.now() - new Date(iso).getTime()) / 60000);
@@ -257,6 +347,7 @@ const AdminActivity = () => {
                       {e.etiqueta}
                     </span>
                     <span className="text-sm font-bold truncate">{m.quien}</span>
+                    {m.user_id && <EmailsTooltip userId={m.user_id} />}
                     {m.detalle && <span className="text-xs" style={{ color: '#555' }}>· {m.detalle}</span>}
                     {m.lugar && m.lugar !== '—' && <span className="text-xs" style={{ color: '#777' }}>· {m.lugar}</span>}
                     {/* La fecha del evento es el dato que decide si esto corre

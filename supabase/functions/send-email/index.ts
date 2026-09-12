@@ -1143,6 +1143,26 @@ serve(async (req) => {
 
     await sendMail(to, subject, html, replyTo);
 
+    // Log para el panel admin ("control absoluto" — 12 sep 2026): qué email
+    // se le mandó a quién, con el HTML tal cual salió. No debe tumbar el
+    // envío si falla — el correo ya salió, perder solo el registro es un mal
+    // menor frente a decirle al usuario que su email no se envió.
+    try {
+      const logClient = createClient(
+        Deno.env.get('SUPABASE_URL') ?? '',
+        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+      );
+      await logClient.from('email_send_log' as any).insert({
+        user_id: data?.user_id ?? data?.professional_user_id ?? null,
+        to_email: to,
+        type,
+        subject,
+        html,
+      });
+    } catch (logErr) {
+      console.warn('[send-email] log failed:', logErr);
+    }
+
     return new Response(JSON.stringify({ ok: true }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
   } catch (e) {
     console.error('[send-email]', e);
