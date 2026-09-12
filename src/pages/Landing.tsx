@@ -100,7 +100,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Helmet } from 'react-helmet-async';
 import { motion, useInView, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { Music, UtensilsCrossed, Users, Camera, Sparkles, X, ChevronLeft, ChevronRight, Building2, Scissors, Headphones, Zap, Star, CalendarDays, Search, Award, Globe, CheckCircle, Smartphone, Video, Heart, SlidersHorizontal } from 'lucide-react';
+import { Music, UtensilsCrossed, Users, Camera, Sparkles, X, ChevronLeft, ChevronRight, Building2, Scissors, Headphones, Zap, Star, CalendarDays, Search, Award, Globe, CheckCircle, Smartphone, Video, Heart, SlidersHorizontal, LayoutDashboard } from 'lucide-react';
 import xpeakLogo from '@/assets/xpeak-logo.png';
 import bentoMusica from '@/assets/bento-musica.jpg';
 import bentoGastro from '@/assets/bento-gastro.jpg';
@@ -662,19 +662,37 @@ const Landing = () => {
             ))}
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
-            <button onClick={() => navigate('/auth')}
-              className="text-xs font-semibold px-4 py-2 rounded-lg transition-all hover:bg-black/5"
-              style={{ color: '#444' }}>
-              Acceder
-            </button>
-            <motion.button
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => navigate('/descubrir')}
-              className="text-xs font-bold px-3 sm:px-5 py-2.5 rounded-xl flex items-center gap-1.5"
-              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              <Sparkles size={13} /><span className="hidden sm:inline">Descubrir</span><span className="sm:hidden">Ver</span>
-            </motion.button>
+            {/* Logueado (profesional que se queda en la landing, ver efecto
+                arriba): antes era un botón de texto gris casi invisible, el
+                mismo peso que el "Acceder" de un visitante sin cuenta. Es la
+                acción principal para quien ya tiene cuenta, así que lleva el
+                mismo tratamiento (fondo, sombra, tamaño) que el CTA dorado. */}
+            {user ? (
+              <motion.button
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={() => navigate('/dashboard')}
+                className="text-xs sm:text-sm font-black px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl flex items-center gap-1.5"
+                style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 8px 24px rgba(212,175,55,0.35)' }}>
+                <LayoutDashboard size={15} /><span className="hidden sm:inline">Mi Panel</span><span className="sm:hidden">Panel</span>
+              </motion.button>
+            ) : (
+              <>
+                <button onClick={() => navigate('/auth')}
+                  className="text-xs font-semibold px-4 py-2 rounded-lg transition-all hover:bg-black/5"
+                  style={{ color: '#444' }}>
+                  Acceder
+                </button>
+                <motion.button
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => navigate('/descubrir')}
+                  className="text-xs font-bold px-3 sm:px-5 py-2.5 rounded-xl flex items-center gap-1.5"
+                  style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+                  <Sparkles size={13} /><span className="hidden sm:inline">Descubrir</span><span className="sm:hidden">Ver</span>
+                </motion.button>
+              </>
+            )}
           </div>
         </div>
       </nav>
@@ -802,9 +820,18 @@ const Landing = () => {
                 // 'dj' es el único fallback seguro: si el término no matchea
                 // ningún oficio conocido, seguimos mostrando algo con contenido
                 // real en vez de una vista vacía o un directorio genérico.
-                const dbRole = resolverVistaDeBusqueda(q) ?? 'dj';
+                const vistaResuelta = resolverVistaDeBusqueda(q);
+                const dbRole = vistaResuelta ?? 'dj';
+                // Si "mago" ya resolvió la categoría (vistaResuelta), NO se
+                // reutiliza como filtro de texto dentro de ella: DirectoryView
+                // filtra por nombre/bio/zona, y un mago real (p.ej. "Andres
+                // Madruga", bio vacía) no contiene la palabra "mago" en ningún
+                // campo — la búsqueda que sí acertó de categoría terminaba
+                // devolviendo 0 resultados por su propio término (bug real,
+                // 12 sep 2026: "busco mago y no salen resultados").
+                const searchFilter = vistaResuelta ? '' : q;
                 if (user) {
-                  navigate('/dashboard', { state: { view: dbRole, search: q, city } });
+                  navigate('/dashboard', { state: { view: dbRole, search: searchFilter, city } });
                 } else {
                   const slug = DBROLE_TO_DIRECTORIO_SLUG[dbRole] ?? 'dj';
                   const params = new URLSearchParams();

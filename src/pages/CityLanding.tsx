@@ -73,6 +73,11 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
       .from('profiles')
       .select('user_id,display_name,photo_url,bio,zone,role,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,is_early_adopter_override,created_at')
       .or(roleFilter)
+      // Un empresario puede tener 'mago' en `roles` (segundo oficio marcado
+      // por error o dato legacy) y coincidir con roleFilter via roles.cs — se
+      // excluye explicitamente porque busca y contrata, no le contratan
+      // (caso real: MAGIG DREAMS, 12 sep 2026).
+      .neq('role', 'empresario')
       // is_primary marca el perfil principal de una cuenta de agencia con
       // varios perfiles (useProfile.tsx). Filtrar por él aquí escondía a todo
       // profesional con un único perfil, porque createProfile lo inserta como
@@ -103,6 +108,7 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
             .from('profiles')
             .select('user_id,display_name,photo_url,bio,zone,role,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,is_early_adopter_override,created_at')
             .or(roleFilter)
+            .neq('role', 'empresario')
             .or('is_public.is.null,is_public.eq.true')
             .order('is_primary', { ascending: false })
             .order('score', { ascending: false })

@@ -433,8 +433,13 @@ const Dashboard = () => {
   ]);
 
   const handleSearch = (q: string) => {
-    setSearchQuery(q);
     const destino = resolverDestinoBusqueda(q, activeView, directoryViews);
+    // Si el término resolvió un oficio y saltamos a su directorio (destino),
+    // NO se reutiliza también como filtro de texto ahí dentro: DirectoryView
+    // filtra por nombre/bio/zona, y un profesional real puede no tener la
+    // palabra del oficio en ningún campo — "mago" acertaba la categoría y acto
+    // seguido la vaciaba con su propio término (bug real, 12 sep 2026).
+    setSearchQuery(destino ? '' : q);
     if (destino) handleViewChange(destino, true);
   };
 

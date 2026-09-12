@@ -285,17 +285,22 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-        className="w-full max-w-md rounded-2xl overflow-hidden"
-        style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 24px 64px rgba(0,0,0,0.3)' }}
+        className="w-full max-w-md rounded-2xl overflow-hidden flex flex-col"
+        style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 24px 64px rgba(0,0,0,0.3)', maxHeight: '90vh' }}
       >
         {/* Progress bar */}
-        <div className="h-1 w-full" style={{ background: 'rgba(0,0,0,0.06)' }}>
+        <div className="h-1 w-full flex-shrink-0" style={{ background: 'rgba(0,0,0,0.06)' }}>
           <motion.div className="h-full" animate={{ width: step === 0 ? '50%' : '100%' }}
             transition={{ duration: 0.4 }}
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)' }} />
         </div>
 
-        <div className="p-7">
+        {/* El botón principal vive en un footer fijo fuera del área con
+            scroll: antes estaba al final de cada paso y en móvil, con
+            formularios largos (foto+ciudad+tarifa), quedaba fuera de la
+            pantalla — el usuario rellenaba todo y no lo encontraba sin hacer
+            scroll extra dentro del propio modal. Así queda siempre a la vista. */}
+        <div className="p-7 overflow-y-auto flex-1">
           <AnimatePresence mode="wait">
 
             {/* Step 0 — Elegir rol */}
@@ -362,16 +367,6 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                     </button>
                   );
                 })()}
-
-                <button onClick={handleRoleConfirm} disabled={!selectedRole || saving}
-                  className="w-full py-3.5 rounded-xl font-black text-sm flex items-center justify-center gap-2 transition-all"
-                  style={{
-                    background: selectedRole ? 'linear-gradient(135deg,#D4AF37,#B8941E)' : 'rgba(0,0,0,0.08)',
-                    color: selectedRole ? '#000' : '#333',
-                    cursor: selectedRole ? 'pointer' : 'not-allowed',
-                  }}>
-                  {saving ? 'Guardando...' : 'Continuar'} <ArrowRight size={15} />
-                </button>
               </motion.div>
             )}
 
@@ -459,25 +454,6 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                   </div>
                 </div>
 
-                {(() => {
-                  const validRate = priceOnRequest || (!!hourlyRate && !isNaN(parseFloat(hourlyRate)) && parseFloat(hourlyRate) > 0);
-                  const canContinue = !!photoUrl && !!effectiveCity && validRate;
-                  const missingLabel = !photoUrl ? 'Sube tu foto para continuar'
-                    : !effectiveCity ? 'Elige tu ciudad para continuar'
-                    : !validRate ? 'Indica tu tarifa para continuar'
-                    : 'Guardar y continuar';
-                  return (
-                    <button onClick={handleQuickSave} disabled={savingQuick || uploadingPhoto || !canContinue}
-                      className="w-full py-3.5 rounded-xl font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] mb-2"
-                      style={{
-                        background: canContinue ? 'linear-gradient(135deg,#D4AF37,#B8941E)' : 'rgba(0,0,0,0.15)',
-                        color: canContinue ? '#000' : '#666',
-                        cursor: canContinue ? 'pointer' : 'not-allowed',
-                      }}>
-                      {savingQuick ? 'Guardando...' : missingLabel} <ChevronRight size={15} />
-                    </button>
-                  );
-                })()}
               </motion.div>
             )}
 
@@ -508,11 +484,6 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                   ))}
                 </div>
 
-                <button onClick={goToProfile}
-                  className="w-full py-3.5 rounded-xl font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] mb-2"
-                  style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-                  Completar mi perfil <ChevronRight size={15} />
-                </button>
                 <button onClick={markDone} className="w-full py-2 text-xs font-semibold"
                   style={{ color: '#333' }}>
                   Lo haré después
@@ -520,6 +491,48 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
               </motion.div>
             )}
           </AnimatePresence>
+        </div>
+
+        {/* Footer fijo con el botón principal — siempre visible, fuera del
+            área con scroll (ver comentario junto al overflow-y-auto arriba). */}
+        <div className="p-7 pt-4 flex-shrink-0" style={{ borderTop: '1px solid rgba(0,0,0,0.06)' }}>
+          {step === 0 && (
+            <button onClick={handleRoleConfirm} disabled={!selectedRole || saving}
+              className="w-full py-3.5 rounded-xl font-black text-sm flex items-center justify-center gap-2 transition-all"
+              style={{
+                background: selectedRole ? 'linear-gradient(135deg,#D4AF37,#B8941E)' : 'rgba(0,0,0,0.08)',
+                color: selectedRole ? '#000' : '#333',
+                cursor: selectedRole ? 'pointer' : 'not-allowed',
+              }}>
+              {saving ? 'Guardando...' : 'Continuar'} <ArrowRight size={15} />
+            </button>
+          )}
+          {step === 1 && selectedRole !== 'empresario' && (() => {
+            const validRate = priceOnRequest || (!!hourlyRate && !isNaN(parseFloat(hourlyRate)) && parseFloat(hourlyRate) > 0);
+            const canContinue = !!photoUrl && !!effectiveCity && validRate;
+            const missingLabel = !photoUrl ? 'Sube tu foto para continuar'
+              : !effectiveCity ? 'Elige tu ciudad para continuar'
+              : !validRate ? 'Indica tu tarifa para continuar'
+              : 'Guardar y continuar';
+            return (
+              <button onClick={handleQuickSave} disabled={savingQuick || uploadingPhoto || !canContinue}
+                className="w-full py-3.5 rounded-xl font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
+                style={{
+                  background: canContinue ? 'linear-gradient(135deg,#D4AF37,#B8941E)' : 'rgba(0,0,0,0.15)',
+                  color: canContinue ? '#000' : '#666',
+                  cursor: canContinue ? 'pointer' : 'not-allowed',
+                }}>
+                {savingQuick ? 'Guardando...' : missingLabel} <ChevronRight size={15} />
+              </button>
+            );
+          })()}
+          {step === 1 && selectedRole === 'empresario' && (
+            <button onClick={goToProfile}
+              className="w-full py-3.5 rounded-xl font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
+              style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
+              Completar mi perfil <ChevronRight size={15} />
+            </button>
+          )}
         </div>
       </motion.div>
     </div>

@@ -192,7 +192,18 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   const [roleToConfirm, setRoleToConfirm] = useState<string | null>(null);
 
   const applyRole = (r: string) => {
-    const next = activeRoles.includes(r) ? activeRoles.filter(x => x !== r) : [...activeRoles, r];
+    let next: string[];
+    if (activeRoles.includes(r)) {
+      next = activeRoles.filter(x => x !== r);
+    } else if (r === 'empresario') {
+      // Empresario busca y contrata, no le contratan: no puede convivir con
+      // oficios de profesional o aparecería como buscable en su propio
+      // directorio (caso real: MAGIG DREAMS, 12 sep 2026, roles=['empresario',
+      // 'mago','humorista'] salia listado en /magos siendo una empresa).
+      next = [r];
+    } else {
+      next = [...activeRoles.filter(x => x !== 'empresario'), r];
+    }
     if (next.length === 0) return;
     setSelectedRoles(next);
   };

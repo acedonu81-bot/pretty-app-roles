@@ -280,12 +280,17 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded 
     <Sidebar collapsible={forceExpanded ? 'none' : 'icon'} style={{ '--sidebar-width': '272px' } as React.CSSProperties}>
       <SidebarHeader className="p-0 overflow-hidden" style={{ background: '#faf9f6' }}>
         <div className="w-full px-5 pt-[22px] pb-4 flex items-center justify-between group-data-[collapsible=icon]:w-[--sidebar-width-icon] group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:flex-col group-data-[collapsible=icon]:gap-2 group-data-[collapsible=icon]:items-center" style={{ borderBottom: '1px solid rgba(10,9,8,0.05)' }}>
-          <button onClick={() => onViewChange(homeView)} className="text-left transition-opacity hover:opacity-70">
+          {/* La marca lleva a la landing pública (no a "Inicio" del dashboard):
+              tiene información que no vive dentro del panel (categorías, FAQ,
+              cómo funciona...). `?stay=1` evita el redirect automático a
+              /dashboard que sufre un empresario logueado (ver Landing.tsx) —
+              sin eso, pulsar el logo devolvía al mismo sitio sin moverse. */}
+          <a href="/?stay=1" className="text-left transition-opacity hover:opacity-70">
             <h2 className="text-[1.3rem] font-black tracking-[0.02em] font-display group-data-[collapsible=icon]:text-[1.1rem]">
               X<span className="text-gradient group-data-[collapsible=icon]:hidden">PEAK</span>
             </h2>
             <p className="text-[0.62rem] mt-1 tracking-[0.14em] uppercase font-extrabold group-data-[collapsible=icon]:hidden" style={{ color: 'rgba(10,9,8,0.35)' }}>España · Directorio Profesional</p>
-          </button>
+          </a>
           {!forceExpanded && <SidebarCollapseToggle />}
         </div>
         <div className="pt-3">

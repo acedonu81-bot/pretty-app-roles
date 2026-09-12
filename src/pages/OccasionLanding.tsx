@@ -52,6 +52,9 @@ function useRoleProfessionals(categorySlug: string) {
       .from('profiles')
       .select('user_id,display_name,photo_url,bio,city,role,score,slug,is_verified,created_at')
       .or(roleFilter)
+      // Ver CityLanding.tsx: excluye empresarios que tengan este oficio en
+      // `roles` por dato legacy o error — buscan y contratan, no les contratan.
+      .neq('role', 'empresario')
       // Ver CityLanding.tsx: is_primary distingue el perfil principal de una
       // agencia, no "perfil publicable". Filtrar por él escondía a casi todos.
       .or('is_public.is.null,is_public.eq.true')

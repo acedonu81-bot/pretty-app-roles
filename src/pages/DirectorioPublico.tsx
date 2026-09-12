@@ -321,6 +321,11 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string): Pro
     .from('profiles')
     .select('user_id, display_name, role, roles, specialty, zone, photo_url, bio_video_url, video_session_urls, hourly_rate, bio, is_flash_active, is_verified, is_seed, is_early_adopter, is_early_adopter_override, score, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls, updated_at, created_at')
     .or(orFilter)
+    // Un empresario que tenga esta categoria en su array `roles` (segundo
+    // oficio marcado por error o dato legacy) hace match por roles.cs — se
+    // excluye porque busca y contrata, no le contratan (caso real: MAGIG
+    // DREAMS, 12 sep 2026, salia listado en /magos siendo una empresa).
+    .neq('role', 'empresario')
     .not('display_name', 'is', null)
     .order('score', { ascending: false })
     .limit(60) as any;
@@ -445,6 +450,10 @@ export async function fetchAllDirectorioProfilesByRole(city: string): Promise<Re
 
   const byRole: Record<string, DirProfile[]> = {};
   for (const p of enriched) {
+    // Un empresario no debe aparecer en ningun feed de oficio aunque tenga
+    // ese oficio en `roles` (dato legacy o marcado por error): busca y
+    // contrata, no le contratan (caso real: MAGIG DREAMS, 12 sep 2026).
+    if (p.role === 'empresario') continue;
     // Un perfil puede declarar varios roles (array `roles`): entra en el feed
     // de cada uno, igual que hacía la consulta por-rol original (roles.cs.{r}).
     const canon = new Set<string>();
