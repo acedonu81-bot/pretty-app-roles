@@ -143,6 +143,7 @@ export default function AdminAnalytics() {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [online, setOnline] = useState<number | null>(null);
+  const [usuariosUnicos, setUsuariosUnicos] = useState<number | null>(null);
   const [quienOnline, setQuienOnline] = useState<QuienOnline[]>([]);
   const [onlineAbierto, setOnlineAbierto] = useState(false);
 
@@ -159,7 +160,7 @@ export default function AdminAnalytics() {
       rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown; error: { message: string } | null }>;
     };
 
-    const [d, h, t, n, bus, afi, blg, emb, rec] = await Promise.all([
+    const [d, h, t, n, bus, afi, blg, emb, rec, uu] = await Promise.all([
       sb.rpc('panel_analytics_dia', { p_dias: dias }),
       sb.rpc('panel_analytics_hora', { p_dias: Math.min(dias, 30) }),
       sb.rpc('panel_analytics_top', { p_dias: dias, p_limite: 8 }),
@@ -169,6 +170,10 @@ export default function AdminAnalytics() {
       sb.rpc('panel_analytics_blog', { p_dias: dias, p_limite: 15 }),
       sb.rpc('panel_analytics_embudo', { p_dias: dias }),
       sb.rpc('panel_analytics_recursos', { p_dias: dias, p_limite: 20 }),
+      // Personas distintas del PERIODO COMPLETO (no la suma día a día que ya
+      // hace "sesiones" en panel_analytics_dia, que duplica a quien vuelve
+      // varios días). Sustituye a "Visitas" (páginas vistas, no gente).
+      sb.rpc('panel_analytics_usuarios_unicos', { p_dias: dias }),
     ]);
 
     const fallo = [d, h, t, n].find(r => r.error);
@@ -195,6 +200,8 @@ export default function AdminAnalytics() {
     setBlog((blg.data as Blog[]) ?? []);
     setEmbudo((emb.data as Embudo[]) ?? []);
     setRecursos((rec.data as Recurso[]) ?? []);
+    const uuRow = (uu.data as { usuarios: number }[] | null)?.[0];
+    setUsuariosUnicos(uuRow ? Number(uuRow.usuarios) : null);
     setCargando(false);
   }, [dias]);
 
@@ -225,7 +232,6 @@ export default function AdminAnalytics() {
     return () => clearInterval(id);
   }, []);
 
-  const totalVisitas = porDia.reduce((s, d) => s + Number(d.visitas || 0), 0);
   const totalSesiones = porDia.reduce((s, d) => s + Number(d.sesiones || 0), 0);
   const totalAltas = negocio.reduce((s, d) => s + Number(d.altas || 0), 0);
   const totalSolicitudes = negocio.reduce((s, d) => s + Number(d.solicitudes || 0), 0);
@@ -310,10 +316,10 @@ export default function AdminAnalytics() {
         <Kpi icon={Users} label="Online ahora" valor={online ?? '—'} sub="últimos 5 min" live
           onClick={() => setOnlineAbierto(o => !o)} abierto={onlineAbierto}
           ayuda="Sesiones distintas con actividad en los últimos 5 minutos. Se actualiza sola cada 30s — no hace falta pulsar Actualizar. Excluye tu propio tráfico de admin. Toca la tarjeta para ver quién es y en qué página está." />
-        <Kpi icon={Eye} label="Visitas" valor={totalVisitas} sub={dias === 1 ? 'en 24 horas' : `en ${dias} días`}
-          ayuda="Páginas abiertas en total. Si una persona ve 5 páginas, cuentan 5 visitas. Excluye tu propio tráfico de admin." />
-        <Kpi icon={Users} label="Sesiones" valor={totalSesiones} sub="personas distintas"
-          ayuda="Personas distintas, no páginas. Si las visitas son muchas y las sesiones pocas, poca gente mira mucho; al revés, mucha gente entra y se va." />
+        <Kpi icon={Eye} label="Usuarios" valor={usuariosUnicos ?? '—'} sub={dias === 1 ? 'hoy' : `en ${dias} días`}
+          ayuda="Personas distintas que han entrado, sin duplicar a quien vuelve varios días dentro del periodo. Excluye tu propio tráfico de admin." />
+        <Kpi icon={Users} label="Sesiones" valor={totalSesiones} sub="entradas por día, sumadas"
+          ayuda="Personas distintas por día, sumadas — quien entra 3 días cuenta 3 veces (a diferencia de 'Usuarios', que no duplica). Útil para ver el pulso diario, no el total de gente real." />
         <Kpi icon={UserPlus} label="Altas" valor={totalAltas} sub="perfiles nuevos"
           ayuda="Perfiles creados en el periodo. Sale de la base de datos, así que tiene histórico completo desde el inicio del proyecto." />
         <Kpi icon={Send} label="Solicitudes" valor={totalSolicitudes} sub="Flash Booking"
