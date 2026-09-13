@@ -26,8 +26,15 @@ interface HiredContract {
   detalle: Record<string, unknown>;
 }
 
+interface ReviewInfo { rating: number; comment: string | null; approved: boolean }
 interface ContractDetail {
-  review: { rating: number; comment: string | null; approved: boolean } | null;
+  // Un contrato puede tener reseña en cada dirección de forma independiente
+  // (organizador→profesional y profesional→organizador) — antes solo se
+  // consultaba una, así que un contrato con solo la reseña inversa (caso
+  // real: Gonzalo DJ valoró a Burger Gourmet, no al revés) mostraba "sin
+  // reseña todavía" aunque sí hubiera una.
+  reviewOrganizadorAProfesional: ReviewInfo | null;
+  reviewProfesionalAOrganizador: ReviewInfo | null;
   chat: { hablaron: boolean; numMensajes: number; ultimoMensaje: string | null };
 }
 
@@ -106,12 +113,13 @@ const AdminHiredContracts = () => {
     const key = `${c.source}_${c.id}`;
     if (expandedId === key) { setExpandedId(null); return; }
     setExpandedId(key);
-    if (details[key]) return; // ya cargado
-
+    // Sin caché: el estado (reseñas, chat) cambia con el tiempo, así que se
+    // recarga cada vez que se expande en vez de quedarse con el primer
+    // resultado para siempre.
     setDetails(prev => ({ ...prev, [key]: 'loading' }));
 
     if (!c.organizadorId || !c.profesionalId) {
-      setDetails(prev => ({ ...prev, [key]: { review: null, chat: { hablaron: false, numMensajes: 0, ultimoMensaje: null } } }));
+      setDetails(prev => ({ ...prev, [key]: { reviewOrganizadorAProfesional: null, reviewProfesionalAOrganizador: null, chat: { hablaron: false, numMensajes: 0, ultimoMensaje: null } } }));
       return;
     }
 
@@ -119,7 +127,7 @@ const AdminHiredContracts = () => {
     // es, así que leerlas directo siempre daría 0 filas. panel_admin_contrato_chat
     // es un RPC SECURITY DEFINER que comprueba es_admin() y solo expone el
     // hecho (sí/no, cuántos, cuándo), nunca el contenido del chat.
-    const [{ data: reviewRows }, { data: chatRows }] = await Promise.all([
+    const [{ data: rowsOrgAProf }, { data: rowsProfAOrg }, { data: chatRows }] = await Promise.all([
       supabase
         .from('reviews')
         .select('rating, comment, approved')
@@ -127,15 +135,24 @@ const AdminHiredContracts = () => {
         .eq('reviewed_user_id', c.profesionalId)
         .order('created_at', { ascending: false })
         .limit(1),
+      supabase
+        .from('reviews')
+        .select('rating, comment, approved')
+        .eq('reviewer_id', c.profesionalId)
+        .eq('reviewed_user_id', c.organizadorId)
+        .order('created_at', { ascending: false })
+        .limit(1),
       (supabase.rpc as any)('panel_admin_contrato_chat', { p_user_a: c.organizadorId, p_user_b: c.profesionalId }),
     ]);
 
     const chat = chatRows?.[0];
+    const toReview = (rows: typeof rowsOrgAProf) => rows?.[0] ? { rating: rows[0].rating, comment: rows[0].comment, approved: rows[0].approved } : null;
 
     setDetails(prev => ({
       ...prev,
       [key]: {
-        review: reviewRows?.[0] ? { rating: reviewRows[0].rating, comment: reviewRows[0].comment, approved: reviewRows[0].approved } : null,
+        reviewOrganizadorAProfesional: toReview(rowsOrgAProf),
+        reviewProfesionalAOrganizador: toReview(rowsProfAOrg),
         chat: {
           hablaron: chat?.hablaron ?? false,
           numMensajes: chat?.num_mensajes ?? 0,
@@ -206,15 +223,29 @@ const AdminHiredContracts = () => {
                         )}
                       </div>
 
-                      <div className="flex items-center gap-1.5">
-                        <Star size={12} style={{ color: detail.review ? '#D4AF37' : '#ccc' }} />
-                        {detail.review ? (
+                      <div className="flex items-start gap-1.5">
+                        <Star size={12} className="mt-0.5" style={{ color: detail.reviewOrganizadorAProfesional ? '#D4AF37' : '#ccc' }} />
+                        {detail.reviewOrganizadorAProfesional ? (
                           <p style={{ color: '#444' }}>
-                            {detail.review.rating}/5{detail.review.approved ? '' : ' (pendiente de aprobar)'}
-                            {detail.review.comment ? ` — "${detail.review.comment}"` : ''}
+                            {c.organizador} → {c.profesional}: {detail.reviewOrganizadorAProfesional.rating}/5
+                            {detail.reviewOrganizadorAProfesional.approved ? '' : ' (pendiente de aprobar)'}
+                            {detail.reviewOrganizadorAProfesional.comment ? ` — "${detail.reviewOrganizadorAProfesional.comment}"` : ''}
                           </p>
                         ) : (
-                          <p style={{ color: '#999' }}>Sin reseña todavía</p>
+                          <p style={{ color: '#999' }}>{c.organizador} no ha valorado a {c.profesional} todavía</p>
+                        )}
+                      </div>
+
+                      <div className="flex items-start gap-1.5">
+                        <Star size={12} className="mt-0.5" style={{ color: detail.reviewProfesionalAOrganizador ? '#D4AF37' : '#ccc' }} />
+                        {detail.reviewProfesionalAOrganizador ? (
+                          <p style={{ color: '#444' }}>
+                            {c.profesional} → {c.organizador}: {detail.reviewProfesionalAOrganizador.rating}/5
+                            {detail.reviewProfesionalAOrganizador.approved ? '' : ' (pendiente de aprobar)'}
+                            {detail.reviewProfesionalAOrganizador.comment ? ` — "${detail.reviewProfesionalAOrganizador.comment}"` : ''}
+                          </p>
+                        ) : (
+                          <p style={{ color: '#999' }}>{c.profesional} no ha valorado a {c.organizador} todavía</p>
                         )}
                       </div>
 

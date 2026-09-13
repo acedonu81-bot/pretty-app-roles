@@ -887,27 +887,25 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   // Cuando el admin aprueba una reseña, se avisa a quien la recibió y se le
   // invita a dejar la suya también — cierra el ciclo de reciprocidad en vez
   // de que cada parte solo se entere entrando por su cuenta al panel.
-  te_han_dejado_una_resena: (d) => {
-    const estrellas = '★'.repeat(Math.max(0, Math.min(5, Number(d.rating) || 0))) + '☆'.repeat(5 - Math.max(0, Math.min(5, Number(d.rating) || 0)));
-    return {
-      subject: `${esc(d.reviewer_name)} te ha dejado una reseña en XPEAK`,
-      to: d.email,
-      html: base(`
-        <h2 style="font-size:20px;font-weight:900;margin:0 0 12px;line-height:1.3">Te han dejado una reseña</h2>
-        <p style="color:#4b5563;font-size:14px;line-height:1.75;margin:0 0 16px">
-          Hola ${esc(d.name || '')}, <strong>${esc(d.reviewer_name)}</strong> acaba de valorar tu colaboración en XPEAK.
-        </p>
-        <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:10px;padding:16px;margin-bottom:20px">
-          <p style="color:#D4AF37;font-size:16px;font-weight:700;margin:0 0 6px;letter-spacing:2px">${estrellas}</p>
-          ${d.comment ? `<p style="color:#4b5563;font-size:13px;margin:0;font-style:italic">"${esc(d.comment)}"</p>` : ''}
-        </div>
-        <p style="color:#4b5563;font-size:14px;line-height:1.75;margin:0 0 4px">
-          ¿Por qué no dejas tú también tu reseña? Ayudas a que la comunidad de XPEAK siga creciendo con confianza real entre organizadores y profesionales.
-        </p>
-        ${btn('Dejar mi reseña →', 'https://xpeak.es/dashboard')}
-      `),
-    };
-  },
+  //
+  // Gancho deliberado (13 sep 2026): no se muestra el rating ni el
+  // comentario en el email — solo dentro del panel, tras entrar. Enseñarlo
+  // aquí mataría la razón de hacer clic; el objetivo es tráfico real al
+  // dashboard, no informar por email.
+  te_han_dejado_una_resena: (d) => ({
+    subject: `${esc(d.reviewer_name)} te ha dejado una reseña en XPEAK`,
+    to: d.email,
+    html: base(`
+      <h2 style="font-size:20px;font-weight:900;margin:0 0 12px;line-height:1.3">Te han dejado una reseña</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.75;margin:0 0 20px">
+        Hola ${esc(d.name || '')}, <strong>${esc(d.reviewer_name)}</strong> acaba de valorar tu colaboración en XPEAK. Entra a tu panel para verla.
+      </p>
+      ${btn('Ver mi reseña →', 'https://xpeak.es/dashboard')}
+      <p style="color:#4b5563;font-size:13px;line-height:1.75;margin:20px 0 0;text-align:center">
+        ¿Por qué no dejas tú también la tuya? Ayudas a que la comunidad de XPEAK siga creciendo con confianza real entre organizadores y profesionales.
+      </p>
+    `),
+  }),
 
   resenas_ya_disponibles: (d) => ({
     subject: 'Las reseñas ya funcionan con normalidad — XPEAK',
