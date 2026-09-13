@@ -39,6 +39,24 @@ const ROLES = [
 
 const EMPRESARIO_ROLE = { value: 'empresario', label: 'Busco talento — Empresario', desc: 'Sala, promotora, agencia o evento privado: busco y contrato profesionales', icon: Briefcase, color: '#D4AF37' };
 
+// Frases de "anuncio de clasificados" en vez de ficha profesional (13 sep
+// 2026): "INFO AL DM" y similares apareciendo en bios reales — remiten al
+// idioma de Instagram/Wallapop en vez de contar la experiencia real, y XPEAK
+// quiere leerse como directorio curado, no tablón de anuncios. No es un
+// filtro perfecto (se puede rodear), pero corta los casos más obvios.
+const GENERIC_AD_PATTERNS = [
+  /\bal\s*dm\b/i,
+  /\bpor\s*dm\b/i,
+  /\binfo\s*al?\s*dm\b/i,
+  /\bcontact[ae]me?\s*(por|al)?\s*(dm|privado|whats?app)\b/i,
+  /\bescr[ií]beme\b/i,
+  /\bdisponible\s*para\s*(todo|cualquier)/i,
+  /\bbusco\s*(eventos?|trabajo|clientes?)\b/i,
+];
+function tieneFraseGenerica(texto: string): boolean {
+  return GENERIC_AD_PATTERNS.some(re => re.test(texto));
+}
+
 const TIPS: Record<string, { title: string; tips: [string, string][] }> = {
   dj: {
     title: 'Tu perfil de DJ está listo',
@@ -208,6 +226,11 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
   const isOtherCity = city === 'Otra ciudad';
   const effectiveCity = isOtherCity ? customCity.trim() : city;
   const [hourlyRate, setHourlyRate] = useState('');
+  // Bio obligatoria desde el alta (13 sep 2026): sin esto, 6 de los últimos
+  // 10 perfiles publicados tenían bio vacía — la ficha se lee como anuncio
+  // suelto ("INFO AL DM") en vez de perfil profesional curado. Mismo patrón
+  // que foto/ciudad/tarifa: bloquea canContinue hasta un mínimo de 40 chars.
+  const [bio, setBio] = useState('');
   // No todos los roles pueden fijar un precio de antemano (Wedding Planner,
   // Magos, artistas con caché por evento) — "a consultar" es una respuesta
   // válida, no un campo vacío por descuido.
@@ -241,6 +264,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
     const updates: Record<string, unknown> = {};
     if (photoUrl) updates.photo_url = photoUrl;
     if (effectiveCity) updates.zone = effectiveCity;
+    if (bio.trim()) updates.bio = bio.trim();
     if (priceOnRequest) {
       updates.hourly_rate = null;
     } else {
@@ -452,6 +476,27 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                       </span>
                     </label>
                   </div>
+
+                  <div className="px-1">
+                    <p className="text-[0.65rem] font-bold mb-1.5" style={{ color: '#222' }}>Cuéntanos sobre ti</p>
+                    <textarea
+                      value={bio}
+                      onChange={(e) => setBio(e.target.value)}
+                      placeholder="Tu experiencia, estilo y qué te hace diferente. Evita solo 'contáctame por DM': cuenta algo real de tu trabajo."
+                      rows={3}
+                      maxLength={600}
+                      className="w-full px-3 py-2.5 rounded-xl text-xs outline-none resize-none"
+                      style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.1)', color: '#111' }}
+                    />
+                    <p className="text-[0.6rem] mt-1" style={{ color: bio.trim().length >= 40 ? '#22c55e' : '#888' }}>
+                      {bio.trim().length}/40 caracteres mínimo
+                    </p>
+                    {tieneFraseGenerica(bio) && (
+                      <p className="text-[0.6rem] mt-1 font-semibold" style={{ color: '#dc2626' }}>
+                        Evita frases tipo "info al DM" o "busco eventos" — cuenta tu experiencia real
+                      </p>
+                    )}
+                  </div>
                 </div>
 
               </motion.div>
@@ -509,10 +554,14 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
           )}
           {step === 1 && selectedRole !== 'empresario' && (() => {
             const validRate = priceOnRequest || (!!hourlyRate && !isNaN(parseFloat(hourlyRate)) && parseFloat(hourlyRate) > 0);
-            const canContinue = !!photoUrl && !!effectiveCity && validRate;
+            const bioTooGeneric = tieneFraseGenerica(bio);
+            const validBio = bio.trim().length >= 40 && !bioTooGeneric;
+            const canContinue = !!photoUrl && !!effectiveCity && validRate && validBio;
             const missingLabel = !photoUrl ? 'Sube tu foto para continuar'
               : !effectiveCity ? 'Elige tu ciudad para continuar'
               : !validRate ? 'Indica tu tarifa para continuar'
+              : bioTooGeneric ? 'Cuenta tu experiencia real, no un anuncio genérico'
+              : bio.trim().length < 40 ? 'Cuéntanos sobre ti para continuar'
               : 'Guardar y continuar';
             return (
               <button onClick={handleQuickSave} disabled={savingQuick || uploadingPhoto || !canContinue}
