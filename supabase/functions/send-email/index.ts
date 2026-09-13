@@ -477,6 +477,28 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     `, `${esc(d.role_needed ?? 'Profesional')} — ${esc(d.location ?? 'España')} — ${esc(d.pay ?? 'A consultar')}`),
   }),
 
+  // 1b. Reseña nueva pendiente de aprobar — aviso a admin (13 sep 2026).
+  // Antes solo se veía entrando a la pestaña "Reseñas" del panel: si el admin
+  // no navegaba ahí, una reseña podía quedar semanas sin aprobar/rechazar sin
+  // que nadie se enterara. Complementa el badge en AdminView.tsx (ver
+  // admin_reviews_badge_trigger.sql), no lo sustituye — el badge es para
+  // cuando ya estás en el panel, este email es para cuando no lo estás.
+  resena_pendiente: (d) => ({
+    subject: `Nueva reseña pendiente — ${esc(d.reviewer_name)} → ${esc(d.professional_name)}`,
+    to: ADMIN,
+    html: base(`
+      <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:8px;padding:16px;margin-bottom:20px">
+        <p style="margin:0 0 4px">${badge('Reseña pendiente')}</p>
+        <p style="font-size:18px;font-weight:900;margin:6px 0 0">${esc(d.reviewer_name)} → ${esc(d.professional_name)}</p>
+      </div>
+      ${rows([
+        ['Puntuación', `${'★'.repeat(Number(d.rating) || 0)}${'☆'.repeat(5 - (Number(d.rating) || 0))}`],
+        ['Comentario', d.comment],
+      ])}
+      ${btn('Revisar en el panel →', 'https://xpeak.es/dashboard?view=admin')}
+    `, `Nueva reseña de ${esc(d.reviewer_name)} pendiente de aprobación`),
+  }),
+
   // 2. Flash Booking — aviso a admin
   flash_booking: (d) => ({
     subject: `Flash Booking — ${esc(d.professional_name)} — ${esc(d.event_date ?? 'Sin fecha')}`,

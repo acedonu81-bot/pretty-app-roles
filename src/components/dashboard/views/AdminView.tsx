@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Users, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2, UserMinus, Activity, ShieldCheck, LineChart } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 import AdminMetrics from './admin/AdminMetrics';
 import AdminCharts from './admin/AdminCharts';
+import AdminHiredContracts from './admin/AdminHiredContracts';
 import AdminUserManagement from './admin/AdminUserManagement';
 import AdminBusinesses from './admin/AdminBusinesses';
 import AdminFeatureRequests from './admin/AdminFeatureRequests';
@@ -35,6 +37,32 @@ type TabId = typeof TABS[number]['id'];
 const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {}) => {
   const [tab, setTab] = useState<TabId>('activity');
 
+  // Badge de reseñas pendientes en la tab "Reseñas" (13 sep 2026): antes solo
+  // se veían entrando a esa pestaña en concreto, así que si el admin no
+  // navegaba ahí no se enteraba de que había algo esperando aprobación.
+  // Mismo patrón que useDashboardBadges (realtime + refetch en INSERT/UPDATE),
+  // pero local a este componente porque solo lo necesita el admin.
+  const [reviewsBadge, setReviewsBadge] = useState(0);
+  const instanceId = useRef(Math.random().toString(36).slice(2)).current;
+
+  useEffect(() => {
+    const refresh = async () => {
+      const { count } = await supabase
+        .from('reviews')
+        .select('id', { count: 'exact', head: true })
+        .eq('approved', false);
+      setReviewsBadge(count ?? 0);
+    };
+    refresh();
+    const channel = supabase
+      .channel(`admin_reviews_badge_${instanceId}`)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'reviews' }, refresh)
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'reviews' }, refresh)
+      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'reviews' }, refresh)
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [instanceId]);
+
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
       {/* Fuera del sistema de pestañas a propósito: un alta o una baja hay que
@@ -67,6 +95,12 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
           >
             <t.icon size={13} />
             {t.label}
+            {t.id === 'content' && reviewsBadge > 0 && (
+              <span className="flex items-center justify-center rounded-full text-[0.65rem] font-black"
+                style={{ minWidth: 16, height: 16, padding: '0 4px', background: '#dc2626', color: '#fff' }}>
+                {reviewsBadge}
+              </span>
+            )}
           </button>
         ))}
       </div>
@@ -77,6 +111,7 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
       {tab === 'overview' && (
         <>
           <AdminMetrics />
+          <AdminHiredContracts />
           <AdminCharts />
         </>
       )}
