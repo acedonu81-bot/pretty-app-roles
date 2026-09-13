@@ -430,6 +430,16 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       ${d.es_organizador
         ? btn('Dejar mi valoración →', `https://xpeak.es/p/${esc(d.ref ?? '')}`)
         : btn('Ver mi historial →', 'https://xpeak.es/dashboard?view=historial')}
+      ${!d.es_organizador ? `
+      <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:8px;padding:16px;margin-top:20px">
+        <p style="color:#0a0908;font-size:13px;line-height:1.6;margin:0 0 10px">
+          <strong>¿Te está funcionando XPEAK?</strong> Aprovecha y coméntaselo a otros profesionales que conozcas — DJs, fotógrafos, camareros, maquilladores, cualquier oficio de eventos. Cuantos más seamos, más bolos hay para repartir entre todos.
+        </p>
+        <p style="color:#0a0908;font-size:13px;line-height:1.6;margin:0">
+          Y si nos quieres seguir la pista: <a href="https://www.instagram.com/xpeaksite" style="color:#B8941E;font-weight:700;text-decoration:none">@xpeaksite en Instagram</a>.
+        </p>
+      </div>
+      ` : ''}
       <p style="color:#9CA3AF;font-size:12px;margin-top:20px">
         Un minuto de tu tiempo. Si prefieres no valorar, ignora este correo.
       </p>

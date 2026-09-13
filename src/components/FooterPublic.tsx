@@ -102,7 +102,7 @@ export default function FooterPublic() {
             <span className="text-[0.65rem]" style={{ color: '#333' }}>El directorio profesional de eventos en España</span>
           </div>
           <div className="flex items-center gap-4">
-            <a href="https://www.instagram.com/xpeak.es" target="_blank" rel="noopener noreferrer"
+            <a href="https://www.instagram.com/xpeaksite" target="_blank" rel="noopener noreferrer"
               className="text-[0.65rem] transition-opacity hover:opacity-80" style={{ color: '#333' }}>
               @xpeak.es
             </a>

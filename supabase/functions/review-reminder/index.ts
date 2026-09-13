@@ -41,7 +41,24 @@ serve(async (req) => {
     return new Response(JSON.stringify({ error: bookingsError.message }), { status: 500, headers: corsHeaders });
   }
 
-  if (!bookings || bookings.length === 0) {
+  // Segunda vía de contratación: event_requests / event_request_responses.
+  // No pasa por flash_bookings, así que el bloque de arriba nunca la veía —
+  // el caso real (13 sep 2026) fue un evento del 11 sep contratado por esta
+  // vía (hired_at en event_request_responses) que nunca disparó el email de
+  // valoración. review_asked_at ya existía en el esquema para esto, solo
+  // faltaba la pieza que lo dispara.
+  const { data: hiredResponses, error: hiredError } = await admin
+    .from('event_request_responses' as any)
+    .select('id, request_id, professional_user_id, hired_at, review_asked_at, event_requests!inner(id, client_user_id, client_name, event_date)')
+    .not('hired_at', 'is', null)
+    .is('review_asked_at', null)
+    .eq('event_requests.event_date', targetStr);
+
+  if (hiredError) {
+    console.error('[review-reminder] event_request_responses fetch error', hiredError);
+  }
+
+  if (!bookings?.length && !hiredResponses?.length) {
     return new Response(JSON.stringify({ sent: 0, message: 'No bookings 3 days ago' }), { headers: corsHeaders });
   }
 
@@ -136,8 +153,67 @@ serve(async (req) => {
     }
   }
 
+  for (const r of (hiredResponses as any[]) || []) {
+    const request = r.event_requests;
+    const clientUserId = request?.client_user_id;
+    if (!clientUserId) continue;
+    try {
+      const { data: profProfile } = await admin
+        .from('profiles')
+        .select('display_name')
+        .eq('user_id', r.professional_user_id)
+        .maybeSingle();
+      const profName = profProfile?.display_name || 'el profesional';
+      const clientName = request?.client_name || 'Organizador';
+
+      // Organizador → valora al profesional (solo si aún no lo valoró).
+      const { data: existingReview } = await admin
+        .from('reviews')
+        .select('id')
+        .eq('reviewer_id', clientUserId)
+        .eq('reviewed_user_id', r.professional_user_id)
+        .maybeSingle();
+
+      if (!existingReview) {
+        await sendReminder(r.request_id, clientUserId, `request_organizador_${r.id}`, {
+          name: clientName,
+          titulo: `tu evento con ${profName}`,
+          otra_parte: profName,
+          es_organizador: true,
+          ref: r.professional_user_id as string,
+        });
+      }
+
+      // Profesional → valora al organizador (solo si aún no lo valoró).
+      const { data: existingReviewReverse } = await admin
+        .from('reviews')
+        .select('id')
+        .eq('reviewer_id', r.professional_user_id)
+        .eq('reviewed_user_id', clientUserId)
+        .maybeSingle();
+
+      if (!existingReviewReverse) {
+        await sendReminder(r.request_id, r.professional_user_id, `request_profesional_${r.id}`, {
+          name: profName,
+          titulo: `el evento con ${clientName}`,
+          otra_parte: clientName,
+          es_organizador: false,
+          ref: clientUserId,
+        });
+      }
+
+      await admin
+        .from('event_request_responses' as any)
+        .update({ review_asked_at: new Date().toISOString() })
+        .eq('id', r.id);
+    } catch (e) {
+      console.error('[review-reminder] unexpected error for request response', r.id, e);
+      errors.push(r.id);
+    }
+  }
+
   return new Response(
-    JSON.stringify({ sent, errors: errors.length, checked: bookings.length }),
+    JSON.stringify({ sent, errors: errors.length, checked: (bookings?.length || 0) + (hiredResponses?.length || 0) }),
     { headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
   );
 });
