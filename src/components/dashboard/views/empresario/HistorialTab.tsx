@@ -45,7 +45,7 @@ const HistorialTab = () => {
   const [reviewedIds, setReviewedIds] = useState<Set<string>>(new Set());
   const [reviewing, setReviewing] = useState<Booking | null>(null);
   // Reputación propia: reseñas que profesionales han dejado sobre este organizador.
-  const [ownReviews, setOwnReviews] = useState<{ rating: number }[]>([]);
+  const [ownReviews, setOwnReviews] = useState<{ rating: number; comment: string | null; reviewer_name: string | null; created_at: string | null }[]>([]);
 
   const fetchBookings = useCallback(async () => {
     if (!user) return;
@@ -112,9 +112,10 @@ const HistorialTab = () => {
 
     const { data: own } = await supabase
       .from('reviews')
-      .select('rating')
+      .select('rating, comment, reviewer_name, created_at')
       .eq('reviewed_user_id', user.id)
-      .eq('approved', true);
+      .eq('approved', true)
+      .order('created_at', { ascending: false });
     setOwnReviews(own ?? []);
   }, [user]);
 
@@ -663,13 +664,28 @@ const HistorialTab = () => {
           <Euro size={12} /> Tu reputación atrae mejor talento
         </p>
         {ownReviews.length > 0 ? (
-          <p className="text-muted-foreground leading-relaxed flex items-center gap-1.5">
-            <Star size={12} fill="#D4AF37" stroke="#D4AF37" />
-            <span className="font-bold" style={{ color: '#D4AF37' }}>
-              {(ownReviews.reduce((s, r) => s + r.rating, 0) / ownReviews.length).toFixed(1)}
-            </span>
-            basado en {ownReviews.length} valoración{ownReviews.length > 1 ? 'es' : ''} de profesionales que has contratado.
-          </p>
+          <>
+            <p className="text-muted-foreground leading-relaxed flex items-center gap-1.5 mb-3">
+              <Star size={12} fill="#D4AF37" stroke="#D4AF37" />
+              <span className="font-bold" style={{ color: '#D4AF37' }}>
+                {(ownReviews.reduce((s, r) => s + r.rating, 0) / ownReviews.length).toFixed(1)}
+              </span>
+              basado en {ownReviews.length} valoración{ownReviews.length > 1 ? 'es' : ''} de profesionales que has contratado.
+            </p>
+            <div className="space-y-2">
+              {ownReviews.map((r, i) => (
+                <div key={i} className="p-2.5 rounded-lg" style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold" style={{ color: '#222' }}>{r.reviewer_name || 'Profesional'}</span>
+                    <span className="flex items-center gap-0.5" style={{ color: '#D4AF37' }}>
+                      <Star size={10} fill="#D4AF37" stroke="#D4AF37" /> {r.rating}
+                    </span>
+                  </div>
+                  {r.comment && <p style={{ color: '#555' }}>{r.comment}</p>}
+                </div>
+              ))}
+            </div>
+          </>
         ) : (
           <p className="text-muted-foreground leading-relaxed">
             Los profesionales con puntuación 4.5+ en XPEAK priorizan empleadores con reputación alta.
