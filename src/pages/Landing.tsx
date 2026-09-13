@@ -746,8 +746,10 @@ const Landing = () => {
           background: 'linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.3) 70%, #ffffff 100%)'
         }} />
       <header className="relative max-w-[1200px] mx-auto px-5 md:px-8 pt-6 pb-8 md:pt-10 md:pb-16 text-center">
-        <FadeIn delay={0.1}>
-          <h1
+        {/* Sin FadeIn: es el LCP de la portada, no puede depender de JS/
+            animación para pintarse — con opacity:0 hasta que Framer Motion
+            hidrata, el navegador tarda de más en marcarlo como "pintado". */}
+        <h1
             aria-label="Los mejores profesionales para tu evento en España — DJ, fotógrafo, camareros y staff verificados"
             className="text-3xl sm:text-5xl md:text-8xl font-black mb-3 md:mb-7 max-w-5xl mx-auto tracking-tight text-center font-display"
             style={{ lineHeight: 1.1, paddingBottom: '0.15em', overflow: 'visible' }}
@@ -755,7 +757,6 @@ const Landing = () => {
             <span className="block" style={{ color: 'rgba(255,255,255,0.95)' }}>Los mejores profesionales</span>
             <span className="block" style={{ minHeight: '1.3em' }}><span className="text-gradient">para </span><RotatingWord /></span>
           </h1>
-        </FadeIn>
         {/* Selector de las dos vías reales de tráfico: quien quiere
             CONTRATAR (organizador) y quien quiere ANUNCIARSE (profesional).
             Antes había un solo CTA hacia "Descubrir profesionales" con la

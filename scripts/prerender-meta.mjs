@@ -19,8 +19,8 @@ const ROUTES = [
   // Landing
   {
     path: '/',
-    title: 'XPEAK | Contratar DJs, Staff y Profesionales para Eventos en España',
-    desc: 'Contrata DJs verificados, fotógrafos, staff de sala y profesionales para tus eventos. Flash Booking en menos de 1h. Contratos automáticos. Gratis para salas y promotoras. Toda España.',
+    title: 'XPEAK | Profesionales para Eventos en España',
+    desc: 'Contrata DJs, fotógrafos, camareros y profesionales verificados para bodas y eventos en España. Sin comisiones y Flash Booking en menos de 1h.',
     ogTitle: 'XPEAK | Contratar DJs, Staff y Profesionales para Eventos',
     ogDesc: 'Contrata DJs, fotógrafos, staff de sala y profesionales verificados para tus eventos en España. Flash Booking en menos de 1h.',
     ogType: 'website',

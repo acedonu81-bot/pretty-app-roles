@@ -6,8 +6,8 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://challenges.cloudflare.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https: ; media-src 'self' blob: https://videos.pexels.com https://*.supabase.co; frame-src 'self' https://w.soundcloud.com https://www.youtube.com https://player.vimeo.com https://hearthis.at https://app.hearthis.at https://www.mixcloud.com https://player-widget.mixcloud.com https://player.twitch.tv https://open.spotify.com https://www.googletagmanager.com https://challenges.cloudflare.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.doubleclick.net https://api.stripe.com https://api-v2.hearthis.at https://challenges.cloudflare.com https://connect.facebook.net https://www.facebook.com; worker-src 'self' blob: ; object-src 'none';" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
-    <title>XPEAK | Contratar DJs, Staff y Profesionales para Eventos en España</title>
-    <meta name="description" content="Contrata DJs, fotógrafos, camareros, maquilladores y profesionales verificados para bodas, comuniones y eventos en España. Flash Booking en menos de 1h. Contratos automáticos. Gratis para organizadores." />
+    <title>XPEAK | Profesionales para Eventos en España</title>
+    <meta name="description" content="Contrata DJs, fotógrafos, camareros y profesionales verificados para bodas y eventos en España. Sin comisiones y Flash Booking en menos de 1h." />
     <meta name="author" content="XPEAK" />
     <meta name="robots" content="index, follow" />
     <meta name="impact-site-verification" content="764ac10e-10cf-4b5c-b890-8ca327c1fc88" />
@@ -205,6 +205,12 @@
     <!-- Preload critical fonts to remove them from the render-blocking chain -->
     <link rel="preload" href="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="https://fonts.gstatic.com/s/syne/v24/8vIH7w4qzmVxm2BL9G78HEY.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- Preload del poster del hero: es el LCP de la portada (Landing.tsx) y
+         estaba solo en el <picture> del JSX, así que el navegador no lo
+         descubría hasta parsear/hidratar React. Medido con Geoptie (13 sep
+         2026): LCP 6.6s sin este preload. -->
+    <link rel="preload" href="/videos/hero-poster.webp" as="image" type="image/webp" fetchpriority="high" />
 
     <!-- Hoja de estilos de las fuentes. Estaba como @import dentro de
          src/index.css, lo que encadenaba las descargas: la petición no salía
