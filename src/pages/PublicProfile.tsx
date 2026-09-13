@@ -132,15 +132,38 @@ const ReviewsSection = ({ professionalUserId, professionalName, googleReviewUrl 
 
   useEffect(() => {
     if (!professionalUserId || !user) { setEligibleBooking(null); return; }
-    supabase
-      .from('flash_bookings')
-      .select('requester_name')
-      .eq('created_by', user.id)
-      .eq('professional_user_id', professionalUserId)
-      .in('status', ['confirmed', 'accepted', 'completed'])
-      .limit(1)
-      .maybeSingle()
-      .then(({ data }) => setEligibleBooking(data ?? null));
+    let cancelled = false;
+    (async () => {
+      const { data: flashBooking } = await supabase
+        .from('flash_bookings')
+        .select('requester_name')
+        .eq('created_by', user.id)
+        .eq('professional_user_id', professionalUserId)
+        .in('status', ['confirmed', 'accepted', 'completed'])
+        .limit(1)
+        .maybeSingle();
+      if (cancelled) return;
+      if (flashBooking) { setEligibleBooking(flashBooking); return; }
+
+      // Segunda vía de contratación (13 sep 2026): event_requests /
+      // event_request_responses. El botón "Valorar" solo miraba
+      // flash_bookings, así que un organizador que contrató por esta vía
+      // (caso real: Burger Gourmet Fest → Gonzalo DJ, 11 sep) nunca veía el
+      // formulario aunque el email le pidiera valorar — la contratación era
+      // real pero invisible para esta comprobación.
+      const { data: hiredResponse } = await supabase
+        .from('event_request_responses' as any)
+        .select('id, event_requests!inner(client_user_id, client_name)')
+        .not('hired_at', 'is', null)
+        .eq('professional_user_id', professionalUserId)
+        .eq('event_requests.client_user_id', user.id)
+        .limit(1)
+        .maybeSingle();
+      if (cancelled) return;
+      const requesterName = (hiredResponse as any)?.event_requests?.client_name;
+      setEligibleBooking(requesterName ? { requester_name: requesterName } : null);
+    })();
+    return () => { cancelled = true; };
   }, [professionalUserId, user]);
 
   const avgRating = reviews.length ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length) : 0;

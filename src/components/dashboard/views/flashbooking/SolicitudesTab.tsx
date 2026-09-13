@@ -17,6 +17,13 @@ interface Solicitud {
   event_description: string | null;
   status: string | null;
   created_at: string | null;
+  agreed_price?: number | null;
+  // 'request' = viene de event_request_responses (13 sep 2026): esta tabla
+  // no tiene pending/reject (la respuesta ya nace "sent" y solo pasa a
+  // hired_at o se queda así), así que no tiene sentido mostrarle a este tipo
+  // de fila los botones de Aceptar/Rechazar — sí Generar contrato y Valorar,
+  // idénticos a un flash_booking confirmado.
+  source: 'flash' | 'request';
 }
 
 // El resto de la app (Gastos, Historial, Ajustes, export RGPD, RLS de reseñas)
@@ -55,21 +62,52 @@ const SolicitudesTab = () => {
   const fetch = useCallback(async () => {
     if (!user) return;
     setLoading(true);
-    const { data, error } = await supabase
-      .from('flash_bookings' as any)
-      // agreed_price hace falta para el contrato: sin él, ContractModal arrancaba
-      // con su default de 500 € y el profesional podía firmar un importe que
-      // nadie habia pactado.
-      .select('id, requester_name, requester_contact, created_by, event_date, event_location, event_description, status, created_at, agreed_price')
-      .eq('professional_user_id', user.id)
-      .order('created_at', { ascending: false })
-      .limit(50);
+    const [{ data, error }, { data: hiredResponses, error: hiredError }] = await Promise.all([
+      supabase
+        .from('flash_bookings' as any)
+        // agreed_price hace falta para el contrato: sin él, ContractModal arrancaba
+        // con su default de 500 € y el profesional podía firmar un importe que
+        // nadie habia pactado.
+        .select('id, requester_name, requester_contact, created_by, event_date, event_location, event_description, status, created_at, agreed_price')
+        .eq('professional_user_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(50),
+      // Segunda vía de contratación (13 sep 2026): esta pestaña solo leía
+      // flash_bookings, así que una contratación real por event_requests
+      // (caso Burger Gourmet Fest → Gonzalo DJ, 11 sep) era invisible aquí —
+      // ni aparecía en la lista, ni se podía generar contrato ni valorar,
+      // aunque el email de valoración sí se mandara.
+      supabase
+        .from('event_request_responses' as any)
+        .select('id, hired_at, event_requests!inner(client_user_id, client_name, event_date, city, description)')
+        .not('hired_at', 'is', null)
+        .eq('professional_user_id', user.id)
+        .order('hired_at', { ascending: false })
+        .limit(50),
+    ]);
     setLoading(false);
     if (error) { toast.error('Error al cargar solicitudes'); return; }
-    setItems((data ?? []) as Solicitud[]);
+    if (hiredError) console.warn('[SolicitudesTab] event_request_responses fetch error:', hiredError);
+
+    const flashItems: Solicitud[] = ((data ?? []) as any[]).map(b => ({ ...b, source: 'flash' as const }));
+    const requestItems: Solicitud[] = ((hiredResponses ?? []) as any[]).map(r => ({
+      id: r.id,
+      requester_name: r.event_requests?.client_name ?? null,
+      requester_contact: null,
+      created_by: r.event_requests?.client_user_id ?? null,
+      event_date: r.event_requests?.event_date ?? null,
+      event_location: r.event_requests?.city ?? null,
+      event_description: r.event_requests?.description ?? null,
+      status: 'confirmed',
+      created_at: r.hired_at,
+      agreed_price: null,
+      source: 'request' as const,
+    }));
+    const all = [...flashItems, ...requestItems].sort((a, b) => (b.created_at ?? '').localeCompare(a.created_at ?? ''));
+    setItems(all);
 
     // Cargar qué organizadores ya valoró este profesional (para ocultar el botón).
-    const reviewedTargets = (data ?? []).map((b: any) => b.created_by).filter(Boolean) as string[];
+    const reviewedTargets = all.map(b => b.created_by).filter(Boolean) as string[];
     if (reviewedTargets.length) {
       const { data: rev } = await supabase
         .from('reviews')
