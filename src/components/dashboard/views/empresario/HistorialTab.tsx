@@ -16,6 +16,12 @@ interface Booking {
   agreed_price: number | null;
   status: string | null;
   created_at: string | null;
+  // 'request' = viene de event_request_responses, la segunda vía de
+  // contratación (13 sep 2026): mismo criterio que SolicitudesTab.tsx en el
+  // lado del profesional — sin esto, un organizador que contrató por esta
+  // vía (caso real: Burger Gourmet Fest → Gonzalo DJ, 11 sep) nunca veía la
+  // contratación en su historial ni podía valorar al profesional.
+  source?: 'flash' | 'request';
 }
 
 const STATUS_LABEL: Record<string, { label: string; color: string; bg: string }> = {
@@ -44,18 +50,57 @@ const HistorialTab = () => {
   const fetchBookings = useCallback(async () => {
     if (!user) return;
     setLoading(true);
-    const { data, error } = await supabase
-      .from('flash_bookings')
-      .select('id, professional_name, professional_role, professional_user_id, event_date, event_location, event_description, agreed_price, status, created_at')
-      .eq('created_by', user.id)
-      .order('created_at', { ascending: false })
-      .limit(50);
+    const [{ data, error }, { data: hiredResponses, error: hiredError }] = await Promise.all([
+      supabase
+        .from('flash_bookings')
+        .select('id, professional_name, professional_role, professional_user_id, event_date, event_location, event_description, agreed_price, status, created_at')
+        .eq('created_by', user.id)
+        .order('created_at', { ascending: false })
+        .limit(50),
+      // Segunda vía de contratación (13 sep 2026): mismo motivo que en
+      // SolicitudesTab.tsx — sin esto, una contratación real por event_requests
+      // era invisible en el historial del organizador.
+      supabase
+        .from('event_request_responses' as any)
+        .select('id, hired_at, professional_user_id, event_requests!inner(client_user_id, event_date, city, description)')
+        .not('hired_at', 'is', null)
+        .order('hired_at', { ascending: false })
+        .limit(50),
+    ]);
     setLoading(false);
     if (error) { toast.error('Error al cargar el historial'); return; }
-    setBookings(data ?? []);
+    if (hiredError) console.warn('[HistorialTab] event_request_responses fetch error:', hiredError);
+
+    const ownRequests = ((hiredResponses ?? []) as any[]).filter(r => r.event_requests?.client_user_id === user.id);
+    const profIds = [...new Set(ownRequests.map(r => r.professional_user_id).filter(Boolean))];
+    let nameMap = new Map<string, { display_name: string; role: string | null }>();
+    if (profIds.length > 0) {
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('user_id, display_name, role')
+        .in('user_id', profIds);
+      nameMap = new Map((profiles ?? []).map((p: any) => [p.user_id, { display_name: p.display_name, role: p.role }]));
+    }
+
+    const flashItems: Booking[] = ((data ?? []) as any[]).map(b => ({ ...b, source: 'flash' as const }));
+    const requestItems: Booking[] = ownRequests.map(r => ({
+      id: r.id,
+      professional_name: nameMap.get(r.professional_user_id)?.display_name || 'Profesional',
+      professional_role: nameMap.get(r.professional_user_id)?.role ?? null,
+      professional_user_id: r.professional_user_id ?? null,
+      event_date: r.event_requests?.event_date ?? null,
+      event_location: r.event_requests?.city ?? null,
+      event_description: r.event_requests?.description ?? null,
+      agreed_price: null,
+      status: 'confirmed',
+      created_at: r.hired_at,
+      source: 'request' as const,
+    }));
+    const all = [...flashItems, ...requestItems].sort((a, b) => (b.created_at ?? '').localeCompare(a.created_at ?? ''));
+    setBookings(all);
 
     // Cargar qué profesionales ya valoró este usuario (para ocultar el botón).
-    const reviewedTargets = (data ?? []).map(b => b.professional_user_id).filter(Boolean) as string[];
+    const reviewedTargets = all.map(b => b.professional_user_id).filter(Boolean) as string[];
     if (reviewedTargets.length) {
       const { data: rev } = await supabase
         .from('reviews')
