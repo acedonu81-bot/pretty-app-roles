@@ -757,6 +757,20 @@ const Landing = () => {
             <span className="block" style={{ color: 'rgba(255,255,255,0.95)' }}>Los mejores profesionales</span>
             <span className="block" style={{ minHeight: '1.3em' }}><span className="text-gradient">para </span><RotatingWord /></span>
           </h1>
+        {/* Subtítulo con las keywords del H1 en texto visible (no solo en el
+            aria-label): dos auditorías SEO/GEO independientes (Geoptie y
+            Seobility, 13 sep 2026) señalaron que "DJ, fotógrafo, camareros,
+            staff" no aparecían en el cuerpo cerca del H1, solo en el
+            aria-label — un motor de búsqueda/IA da más peso al texto que
+            puede leer directamente. Oculto en móvil (hidden, no display:none
+            condicional por JS): el viewport de 390px ya no tenía margen y
+            empujaba el selector "¿Qué quieres hacer?" y la barra de
+            búsqueda fuera de la vista inicial. Un crawler sigue leyendo el
+            texto en el DOM igual en cualquier tamaño, solo cambia lo que ve
+            el usuario humano. */}
+        <p className="hidden md:block text-lg font-medium mb-8 max-w-2xl mx-auto" style={{ color: 'rgba(255,255,255,0.75)' }}>
+          DJs, fotógrafos, camareros y staff verificados en toda España
+        </p>
         {/* Selector de las dos vías reales de tráfico: quien quiere
             CONTRATAR (organizador) y quien quiere ANUNCIARSE (profesional).
             Antes había un solo CTA hacia "Descubrir profesionales" con la
