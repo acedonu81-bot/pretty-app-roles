@@ -13,7 +13,7 @@ import { expandRole } from '@/lib/constants';
 import { isEarlyAdopter } from '@/lib/earlyAdopter';
 import ResourcesBanner from '@/components/dashboard/ResourcesBanner';
 import UltimaContratacion from '@/components/dashboard/UltimaContratacion';
-import { logSearch, logProfileView, logFiltroRol } from '@/lib/track';
+import { logSearch, logProfileView, logFiltroRol, logEvent } from '@/lib/track';
 
 interface DirectoryViewProps {
   role: string;
@@ -256,6 +256,39 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
     return () => { vivo = false; clearTimeout(t); };
   }, [searchQuery, filteredProfiles.length, role]);
 
+  // Formulario "avísame": solo cuando la búsqueda no encuentra nada en NINGUNA
+  // categoría (enOtrasCategorias vacío). Si el término existe en otra vista,
+  // ese botón ya es salida suficiente — pedir el email ahí sería fricción de más.
+  const [leadEmail, setLeadEmail] = useState('');
+  const [leadStatus, setLeadStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const q = searchQuery?.trim();
+  const mostrarFormularioLead = !!q && q.length >= 3 && filteredProfiles.length === 0 && enOtrasCategorias.length === 0;
+
+  const handleLeadSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!leadEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(leadEmail)) return;
+    setLeadStatus('loading');
+    const rolActual = role ?? (roles?.length ? roles.join(',') : '');
+    const regionActual = filterRegion !== ALL_REGIONS_LABEL ? filterRegion : null;
+    const { error } = await supabase.from('leads').upsert(
+      {
+        email: leadEmail.toLowerCase().trim(),
+        source: 'busqueda_sin_resultados',
+        intent: `${rolActual} · ${q}`,
+        article_path: regionActual,
+        // Columnas estructuradas para el matching automático (trigger en
+        // profiles): `intent` es texto libre para que lo lea un humano, pero
+        // el trigger necesita comparar valores exactos, no una frase.
+        lead_role: rolActual || null,
+        lead_region: regionActual,
+      },
+      { onConflict: 'email' }
+    );
+    if (error && error.code !== '23505') { setLeadStatus('error'); return; }
+    void logEvent('lead_busqueda_sin_resultados', location.pathname, q);
+    setLeadStatus('success');
+  };
+
   const gridClass = wideCards
     ? 'grid grid-cols-1 sm:grid-cols-2 gap-5'
     : 'grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3';
@@ -450,6 +483,41 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
                     </button>
                   ))}
                 </div>
+              </div>
+            )}
+
+            {/* Hueco real de inventario: el término no existe en ninguna categoría. */}
+            {mostrarFormularioLead && (
+              <div className="mt-4 pt-4 w-full" style={{ borderTop: '1px solid rgba(10,9,8,0.07)' }}>
+                {leadStatus === 'success' ? (
+                  <p className="text-xs font-bold" style={{ color: '#22c55e' }}>
+                    ✓ Te avisamos en cuanto haya alguien de "{q}"
+                  </p>
+                ) : (
+                  <>
+                    <p className="text-xs font-bold mb-2.5" style={{ color: '#333' }}>
+                      ¿Buscas "{q}" y no aparece nadie? Te avisamos en cuanto se registre alguien.
+                    </p>
+                    <form onSubmit={handleLeadSubmit} className="flex flex-col sm:flex-row gap-2 max-w-xs mx-auto">
+                      <input
+                        type="email"
+                        value={leadEmail}
+                        onChange={e => setLeadEmail(e.target.value)}
+                        placeholder="tu@email.com"
+                        className="flex-1 px-3 py-1.5 rounded-full text-xs outline-none"
+                        style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.12)' }}
+                      />
+                      <button type="submit" disabled={leadStatus === 'loading'}
+                        className="text-xs font-bold px-3 py-1.5 rounded-full transition-all hover:scale-105 flex-shrink-0"
+                        style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.25)' }}>
+                        {leadStatus === 'loading' ? 'Enviando…' : 'Avisarme'}
+                      </button>
+                    </form>
+                    {leadStatus === 'error' && (
+                      <p className="text-xs mt-2" style={{ color: '#dc2626' }}>Error al guardar. Inténtalo de nuevo.</p>
+                    )}
+                  </>
+                )}
               </div>
             )}
           </div>

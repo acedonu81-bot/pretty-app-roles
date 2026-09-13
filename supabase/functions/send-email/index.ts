@@ -875,6 +875,31 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     };
   },
 
+  // Aviso a un lead (email capturado en una búsqueda del panel sin
+  // resultados, DirectoryView) cuando se completa un perfil que encaja con lo
+  // que buscaba. No se expone el perfil ni contacto directo: el CTA fuerza
+  // crear cuenta de organizador, mismo embudo que lead_welcome — nunca se
+  // saca el contacto de un profesional fuera de la app.
+  lead_match_found: (d) => {
+    const rol = rolLegible(d.role);
+    const zona = esc(d.zone || 'España');
+    return {
+      subject: `Ya hay un ${rol} en ${zona} — XPEAK`,
+      to: d.email,
+      html: base(`
+        <h2 style="font-size:20px;font-weight:900;margin:0 0 12px;line-height:1.3">Buenas noticias: ya hay disponibilidad</h2>
+        <p style="color:#4b5563;font-size:14px;line-height:1.75;margin:0 0 20px">
+          Buscabas ${esc(rol)} en ${zona} y no había nadie en XPEAK. Ya se ha registrado un profesional que encaja — puedes verlo y contactarlo creando tu cuenta de organizador, gratis.
+        </p>
+        ${btn('Ver profesional disponible →', 'https://xpeak.es/auth?mode=register&role=empresario')}
+        <div style="background:rgba(10,9,8,0.03);border:1px solid rgba(10,9,8,0.05);border-radius:8px;padding:14px;margin-top:4px">
+          <p style="color:#9CA3AF;font-size:11px;margin:0 0 6px;text-transform:uppercase;letter-spacing:1px">Por qué XPEAK</p>
+          <p style="font-size:12px;color:#6B7280;margin:0;line-height:1.6">✓ Directorio verificado · ✓ Contratos automáticos · ✓ Flash Booking en 1h · ✓ 0€ comisión</p>
+        </div>
+      `),
+    };
+  },
+
   // 13a-bis. El DJ que ademas organiza: perfil de Organizador con la misma cuenta.
   //
   // Muchos DJs no solo pinchan: montan la fiesta entera y contratan camareros,
