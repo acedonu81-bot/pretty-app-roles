@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, ChevronDown, Star, MessageCircle } from 'lucide-react';
 
 // Banner de contratos completados (13 sep 2026): quién contrató a quién y
 // qué día, juntando las dos vías reales de contratación —
@@ -8,18 +8,34 @@ import { CheckCircle2 } from 'lucide-react';
 // (hired_at no nulo) — porque son caras del mismo hecho de negocio y antes
 // solo se veían por separado como conteos sueltos en AdminMetrics, sin
 // nombres ni fechas.
+//
+// Ampliado el 13 sep 2026 para desplegarse por fila: al hacer clic se ve si
+// hubo reseña, si hablaron por chat (sin leer el contenido — privacidad del
+// chat entre usuarios) y el detalle propio de cada vía. Fetch bajo demanda
+// solo al expandir: con 30+30 contratos cargarlo todo de golpe no aporta
+// nada si el admin solo mira 2 o 3.
 
 interface HiredContract {
   id: string;
   source: 'flash' | 'request';
   organizador: string;
+  organizadorId: string | null;
   profesional: string;
+  profesionalId: string | null;
   fecha: string; // fecha del contrato (hired_at / created_at), no del evento
+  detalle: Record<string, unknown>;
+}
+
+interface ContractDetail {
+  review: { rating: number; comment: string | null; approved: boolean } | null;
+  chat: { hablaron: boolean; numMensajes: number; ultimoMensaje: string | null };
 }
 
 const AdminHiredContracts = () => {
   const [contracts, setContracts] = useState<HiredContract[]>([]);
   const [loading, setLoading] = useState(true);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [details, setDetails] = useState<Record<string, ContractDetail | 'loading'>>({});
 
   useEffect(() => {
     let cancelled = false;
@@ -27,13 +43,13 @@ const AdminHiredContracts = () => {
       const [{ data: flash }, { data: requests }] = await Promise.all([
         supabase
           .from('flash_bookings')
-          .select('id, requester_name, professional_name, created_at')
+          .select('id, requester_name, professional_name, created_at, created_by, professional_user_id, status, agreed_price, event_date, event_location')
           .in('status', ['confirmed', 'accepted', 'completed'])
           .order('created_at', { ascending: false })
           .limit(30),
         supabase
           .from('event_request_responses' as any)
-          .select('id, hired_at, professional_user_id, event_requests!inner(client_name)')
+          .select('id, hired_at, professional_user_id, message, status, chosen_at, review_asked_at, event_requests!inner(client_name, client_user_id)')
           .not('hired_at', 'is', null)
           .order('hired_at', { ascending: false })
           .limit(30),
@@ -45,8 +61,11 @@ const AdminHiredContracts = () => {
         id: b.id,
         source: 'flash',
         organizador: b.requester_name || 'Organizador',
+        organizadorId: b.created_by ?? null,
         profesional: b.professional_name || 'Profesional',
+        profesionalId: b.professional_user_id ?? null,
         fecha: b.created_at,
+        detalle: { status: b.status, agreed_price: b.agreed_price, event_date: b.event_date, event_location: b.event_location },
       }));
 
       // El nombre del profesional no está en event_request_responses, solo el
@@ -68,8 +87,11 @@ const AdminHiredContracts = () => {
         id: r.id,
         source: 'request',
         organizador: r.event_requests?.client_name || 'Organizador',
+        organizadorId: r.event_requests?.client_user_id ?? null,
         profesional: nameMap.get(r.professional_user_id) || 'Profesional',
+        profesionalId: r.professional_user_id ?? null,
         fecha: r.hired_at,
+        detalle: { status: r.status, message: r.message, chosen_at: r.chosen_at, review_asked_at: r.review_asked_at },
       }));
 
       const all = [...flashRows, ...requestRows].sort((a, b) => b.fecha.localeCompare(a.fecha));
@@ -80,8 +102,55 @@ const AdminHiredContracts = () => {
     return () => { cancelled = true; };
   }, []);
 
+  const toggle = async (c: HiredContract) => {
+    const key = `${c.source}_${c.id}`;
+    if (expandedId === key) { setExpandedId(null); return; }
+    setExpandedId(key);
+    if (details[key]) return; // ya cargado
+
+    setDetails(prev => ({ ...prev, [key]: 'loading' }));
+
+    if (!c.organizadorId || !c.profesionalId) {
+      setDetails(prev => ({ ...prev, [key]: { review: null, chat: { hablaron: false, numMensajes: 0, ultimoMensaje: null } } }));
+      return;
+    }
+
+    // conversations/messages tienen RLS "solo participantes" — el admin no lo
+    // es, así que leerlas directo siempre daría 0 filas. panel_admin_contrato_chat
+    // es un RPC SECURITY DEFINER que comprueba es_admin() y solo expone el
+    // hecho (sí/no, cuántos, cuándo), nunca el contenido del chat.
+    const [{ data: reviewRows }, { data: chatRows }] = await Promise.all([
+      supabase
+        .from('reviews')
+        .select('rating, comment, approved')
+        .eq('reviewer_id', c.organizadorId)
+        .eq('reviewed_user_id', c.profesionalId)
+        .order('created_at', { ascending: false })
+        .limit(1),
+      (supabase.rpc as any)('panel_admin_contrato_chat', { p_user_a: c.organizadorId, p_user_b: c.profesionalId }),
+    ]);
+
+    const chat = chatRows?.[0];
+
+    setDetails(prev => ({
+      ...prev,
+      [key]: {
+        review: reviewRows?.[0] ? { rating: reviewRows[0].rating, comment: reviewRows[0].comment, approved: reviewRows[0].approved } : null,
+        chat: {
+          hablaron: chat?.hablaron ?? false,
+          numMensajes: chat?.num_mensajes ?? 0,
+          ultimoMensaje: chat?.ultimo_mensaje ?? null,
+        },
+      },
+    }));
+  };
+
   if (loading) return null;
   if (contracts.length === 0) return null;
+
+  const fmtFecha = (iso: string | null) => iso
+    ? new Date(iso).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })
+    : null;
 
   return (
     <div className="glass-panel p-5 mb-6">
@@ -93,20 +162,79 @@ const AdminHiredContracts = () => {
           {contracts.length}
         </span>
       </h3>
-      <div className="space-y-2 max-h-72 overflow-y-auto">
-        {contracts.map(c => (
-          <div key={`${c.source}_${c.id}`} className="flex items-center justify-between p-3 rounded-xl"
-            style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.06)' }}>
-            <p className="text-sm" style={{ color: '#222' }}>
-              <span className="font-bold">{c.organizador}</span>
-              <span style={{ color: '#888' }}> → </span>
-              <span className="font-bold">{c.profesional}</span>
-            </p>
-            <p className="text-xs" style={{ color: '#888' }}>
-              {new Date(c.fecha).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}
-            </p>
-          </div>
-        ))}
+      <div className="space-y-2 max-h-[32rem] overflow-y-auto">
+        {contracts.map(c => {
+          const key = `${c.source}_${c.id}`;
+          const isOpen = expandedId === key;
+          const detail = details[key];
+          return (
+            <div key={key} className="rounded-xl overflow-hidden"
+              style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.06)' }}>
+              <button onClick={() => toggle(c)}
+                className="w-full flex items-center justify-between p-3 text-left transition-colors hover:bg-black/[0.02]">
+                <p className="text-sm" style={{ color: '#222' }}>
+                  <span className="font-bold">{c.organizador}</span>
+                  <span style={{ color: '#888' }}> → </span>
+                  <span className="font-bold">{c.profesional}</span>
+                </p>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <p className="text-xs" style={{ color: '#888' }}>{fmtFecha(c.fecha)}</p>
+                  <ChevronDown size={14} style={{ color: '#999', transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }} />
+                </div>
+              </button>
+
+              {isOpen && (
+                <div className="px-3 pb-3 text-xs space-y-2.5" style={{ borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: 10 }}>
+                  {detail === 'loading' || !detail ? (
+                    <p style={{ color: '#999' }}>Cargando…</p>
+                  ) : (
+                    <>
+                      <div>
+                        <p className="font-bold mb-1" style={{ color: '#555' }}>Contrato</p>
+                        {c.source === 'flash' ? (
+                          <p style={{ color: '#444' }}>
+                            Estado: {String(c.detalle.status)}
+                            {c.detalle.agreed_price ? ` · Precio: ${c.detalle.agreed_price}€` : ''}
+                            {c.detalle.event_date ? ` · Evento: ${c.detalle.event_date}` : ''}
+                            {c.detalle.event_location ? ` (${c.detalle.event_location})` : ''}
+                          </p>
+                        ) : (
+                          <p style={{ color: '#444' }}>
+                            Estado: {String(c.detalle.status)}
+                            {c.detalle.review_asked_at ? ' · Reseña ya solicitada' : ' · Reseña no solicitada aún'}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-1.5">
+                        <Star size={12} style={{ color: detail.review ? '#D4AF37' : '#ccc' }} />
+                        {detail.review ? (
+                          <p style={{ color: '#444' }}>
+                            {detail.review.rating}/5{detail.review.approved ? '' : ' (pendiente de aprobar)'}
+                            {detail.review.comment ? ` — "${detail.review.comment}"` : ''}
+                          </p>
+                        ) : (
+                          <p style={{ color: '#999' }}>Sin reseña todavía</p>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-1.5">
+                        <MessageCircle size={12} style={{ color: detail.chat.hablaron ? '#2563EB' : '#ccc' }} />
+                        {detail.chat.hablaron ? (
+                          <p style={{ color: '#444' }}>
+                            Hablaron por chat ({detail.chat.numMensajes} mensajes, último {fmtFecha(detail.chat.ultimoMensaje)})
+                          </p>
+                        ) : (
+                          <p style={{ color: '#999' }}>Nunca se escribieron por chat</p>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -2111,6 +2111,14 @@ export type Database = {
           veces_visto_este_mensaje: number
         }[]
       }
+      panel_admin_contrato_chat: {
+        Args: { p_user_a: string; p_user_b: string }
+        Returns: {
+          hablaron: boolean
+          num_mensajes: number
+          ultimo_mensaje: string
+        }[]
+      }
       panel_admin_pending_bookings: {
         Args: never
         Returns: {
