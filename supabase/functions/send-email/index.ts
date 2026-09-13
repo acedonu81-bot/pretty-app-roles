@@ -880,6 +880,47 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   // que buscaba. No se expone el perfil ni contacto directo: el CTA fuerza
   // crear cuenta de organizador, mismo embudo que lead_welcome — nunca se
   // saca el contacto de un profesional fuera de la app.
+  // Aviso puntual (13 sep 2026): el sistema de reseñas estuvo bloqueado por
+  // un bug de RLS todo el día — se envía a los dos usuarios reales afectados
+  // (Burguer Gourmet Festival I y Gonzalo DJ) para que sepan que ya pueden
+  // valorar con normalidad. No es una plantilla recurrente/automatizada.
+  // Cuando el admin aprueba una reseña, se avisa a quien la recibió y se le
+  // invita a dejar la suya también — cierra el ciclo de reciprocidad en vez
+  // de que cada parte solo se entere entrando por su cuenta al panel.
+  te_han_dejado_una_resena: (d) => {
+    const estrellas = '★'.repeat(Math.max(0, Math.min(5, Number(d.rating) || 0))) + '☆'.repeat(5 - Math.max(0, Math.min(5, Number(d.rating) || 0)));
+    return {
+      subject: `${esc(d.reviewer_name)} te ha dejado una reseña en XPEAK`,
+      to: d.email,
+      html: base(`
+        <h2 style="font-size:20px;font-weight:900;margin:0 0 12px;line-height:1.3">Te han dejado una reseña</h2>
+        <p style="color:#4b5563;font-size:14px;line-height:1.75;margin:0 0 16px">
+          Hola ${esc(d.name || '')}, <strong>${esc(d.reviewer_name)}</strong> acaba de valorar tu colaboración en XPEAK.
+        </p>
+        <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:10px;padding:16px;margin-bottom:20px">
+          <p style="color:#D4AF37;font-size:16px;font-weight:700;margin:0 0 6px;letter-spacing:2px">${estrellas}</p>
+          ${d.comment ? `<p style="color:#4b5563;font-size:13px;margin:0;font-style:italic">"${esc(d.comment)}"</p>` : ''}
+        </div>
+        <p style="color:#4b5563;font-size:14px;line-height:1.75;margin:0 0 4px">
+          ¿Por qué no dejas tú también tu reseña? Ayudas a que la comunidad de XPEAK siga creciendo con confianza real entre organizadores y profesionales.
+        </p>
+        ${btn('Dejar mi reseña →', 'https://xpeak.es/dashboard')}
+      `),
+    };
+  },
+
+  resenas_ya_disponibles: (d) => ({
+    subject: 'Las reseñas ya funcionan con normalidad — XPEAK',
+    to: d.email,
+    html: base(`
+      <h2 style="font-size:20px;font-weight:900;margin:0 0 12px;line-height:1.3">Ya puedes dejar tu reseña</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.75;margin:0 0 20px">
+        Hola ${esc(d.name || '')}, debido a unos problemas técnicos, el sistema de reseñas de XPEAK ha estado fuera de servicio durante el día de hoy. Ya está solucionado y puedes valorar tu contratación con total normalidad, igual que la otra parte implicada.
+      </p>
+      ${btn('Ir a mi panel →', 'https://xpeak.es/dashboard')}
+    `),
+  }),
+
   lead_match_found: (d) => {
     const rol = rolLegible(d.role);
     const zona = esc(d.zone || 'España');

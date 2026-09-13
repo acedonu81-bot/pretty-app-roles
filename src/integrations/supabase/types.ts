@@ -1619,6 +1619,7 @@ export type Database = {
           event_type: string | null
           id: string
           rating: number
+          rejected_at: string | null
           reviewed_user_id: string | null
           reviewer_avatar: string | null
           reviewer_email: string | null
@@ -1634,6 +1635,7 @@ export type Database = {
           event_type?: string | null
           id?: string
           rating: number
+          rejected_at?: string | null
           reviewed_user_id?: string | null
           reviewer_avatar?: string | null
           reviewer_email?: string | null
@@ -1649,6 +1651,7 @@ export type Database = {
           event_type?: string | null
           id?: string
           rating?: number
+          rejected_at?: string | null
           reviewed_user_id?: string | null
           reviewer_avatar?: string | null
           reviewer_email?: string | null
