@@ -414,7 +414,7 @@ const FaqSection = () => {
 // de montar" antes de empezar a pedir los datos. El useEffect de abajo
 // simplemente consume esta misma promesa si ya está en marcha.
 const communityReviewsPromise = supabase.from('reviews')
-  .select('reviewer_name, reviewer_role, reviewer_avatar, comment')
+  .select('reviewer_name, reviewer_role, reviewer_avatar, comment, rating, event_type')
   .eq('approved', true).order('created_at', { ascending: false }).limit(6);
 
 const freshRolesPromise = supabase.from('profiles' as any)
@@ -501,7 +501,7 @@ const Landing = () => {
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterDone, setNewsletterDone] = useState(false);
   const [newsletterLoading, setNewsletterLoading] = useState(false);
-  const [communityReviews, setCommunityReviews] = useState<{ reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string }[]>([]);
+  const [communityReviews, setCommunityReviews] = useState<{ reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string; rating: number | null; event_type: string | null }[]>([]);
   const [freshRoles, setFreshRoles] = useState<Set<string>>(new Set());
   // Orden de las 6 categorías del bento, de más a menos profesionales inscritos.
   // Se recalcula en cada carga — nunca hardcodear un orden fijo aquí.
@@ -541,7 +541,7 @@ const Landing = () => {
   }, [user, authLoading, navigate]);
 
   useEffect(() => {
-    communityReviewsPromise.then(({ data }) => { if (data && data.length > 0) setCommunityReviews(data as { reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string }[]); });
+    communityReviewsPromise.then(({ data }) => { if (data && data.length > 0) setCommunityReviews(data as { reviewer_name: string; reviewer_role: string; reviewer_avatar: string | null; comment: string; rating: number | null; event_type: string | null }[]); });
   }, []);
 
   useEffect(() => {
@@ -1012,19 +1012,38 @@ const Landing = () => {
               La comunidad <span className="text-gradient">habla</span>
             </h2>
           </FadeIn>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {communityReviews.slice(0, 3).map((r) => ({
               name: r.reviewer_name, role: r.reviewer_role,
               avatar: r.reviewer_avatar ?? r.reviewer_name.charAt(0).toUpperCase(),
               text: r.comment,
+              rating: r.rating ?? 5,
+              // Sin event_type real todavía no se inventa uno: se cae a la
+              // referencia genérica "trabajo contratado en XPEAK" para que la
+              // tarjeta nunca quede en el aire sin decir a qué se refiere.
+              contexto: r.event_type?.trim() || 'trabajo contratado en XPEAK',
             })).map((t, i) => (
               <FadeIn key={t.name} delay={i * 0.08}>
-                <div className="relative rounded-2xl h-64 flex flex-col justify-between p-5"
-                  style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 2px 10px rgba(0,0,0,0.06)' }}>
-                  <p className="text-sm leading-relaxed" style={{ color: 'rgba(0,0,0,0.75)' }}>
+                <div className="relative rounded-2xl flex flex-col gap-3.5 p-6 transition-transform hover:-translate-y-1"
+                  style={{
+                    background: '#fff',
+                    border: '2px solid #111',
+                    boxShadow: '7px 7px 0 0 #D4AF37',
+                  }}>
+                  <div className="flex items-center gap-0.5">
+                    {Array.from({ length: 5 }).map((_, s) => (
+                      <Star key={s} size={16}
+                        fill={s < t.rating ? '#D4AF37' : 'none'}
+                        color={s < t.rating ? '#D4AF37' : 'rgba(0,0,0,0.2)'} />
+                    ))}
+                  </div>
+                  <p className="text-sm leading-relaxed font-medium" style={{ color: '#111' }}>
                     "{t.text}"
                   </p>
-                  <div className="flex items-center gap-2">
+                  <p className="text-[0.68rem] font-bold uppercase tracking-wide" style={{ color: '#B8941E' }}>
+                    Sobre: {t.contexto}
+                  </p>
+                  <div className="flex items-center gap-2 mt-auto pt-3" style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}>
                     <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-black flex-shrink-0"
                       style={{ background: 'rgba(212,175,55,0.12)', color: '#B8941E', border: '1px solid rgba(212,175,55,0.3)' }}>
                       {t.avatar}
