@@ -73,9 +73,19 @@ const UltimaContratacion = () => {
 
   return (
     <div
-      className="flex items-center gap-2.5 mb-4 px-3.5 py-2.5 rounded-xl"
+      className="xpk-ultima-contratacion flex items-center gap-2.5 mb-4 px-3.5 py-2.5 rounded-xl"
       style={{ background: 'rgba(37,99,235,0.07)', border: '1px solid rgba(37,99,235,0.2)' }}
     >
+      <style>{`
+        @keyframes xpk-pulso-vida {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.55; }
+        }
+        .xpk-ultima-contratacion { animation: xpk-pulso-vida 2.4s ease-in-out infinite; }
+        @media (prefers-reduced-motion: reduce) {
+          .xpk-ultima-contratacion { animation: none; }
+        }
+      `}</style>
       <span
         className="flex items-center justify-center rounded-full flex-shrink-0"
         style={{ width: 22, height: 22, background: 'rgba(37,99,235,0.14)', color: AZUL }}

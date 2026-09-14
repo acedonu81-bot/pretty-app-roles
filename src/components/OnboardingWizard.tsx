@@ -8,6 +8,7 @@ import { useProfile } from '@/hooks/useProfile';
 import { supabase } from '@/integrations/supabase/client';
 import { compressImage, MAX_RAW_IMAGE_MB } from '@/lib/image';
 import NightlifeSelect from '@/components/ui/NightlifeSelect';
+import { sanitizeInput } from '@/lib/contentFilter';
 
 // Ciudades principales — lista corta a propósito para elegir en segundos
 // dentro del wizard. Quien necesite un barrio/ciudad más específico lo
@@ -260,6 +261,14 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
   };
 
   const handleQuickSave = async () => {
+    // El bloqueo de teléfonos/contacto (sanitizeInput) solo se aplicaba en
+    // ProfileView — este wizard escribía la bio directo a Supabase sin pasar
+    // por él, así que un número de teléfono colado aquí durante el registro
+    // nunca se filtraba (caso real: peluquero nuevo con el móvil en la bio).
+    if (bio.trim()) {
+      const { clean, reason } = sanitizeInput(bio.trim(), 'bio');
+      if (!clean) { toast.error(reason); return; }
+    }
     setSavingQuick(true);
     const updates: Record<string, unknown> = {};
     if (photoUrl) updates.photo_url = photoUrl;

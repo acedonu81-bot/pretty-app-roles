@@ -270,6 +270,31 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       'Tu foto de perfil no muestra tu cara'),
   }),
 
+  // 1a2c. Último aviso — solo a perfiles SIN foto (no confundir con
+  // profile_incomplete_reminder, que cubre cualquier dato que falte y no
+  // amenaza con nada). Envío puntual, un único disparo manual, 14 sep 2026:
+  // la base de usuarios ya está creciendo y las primeras contrataciones
+  // reales han empezado, así que un perfil sin cara empieza a perder
+  // oportunidades de verdad frente a los que sí tienen foto.
+  photo_last_call: (d) => ({
+    subject: `${esc(d.name)}, último aviso: tu perfil sigue sin foto`,
+    to: d.email,
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Tu perfil sigue sin foto</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        XPEAK está creciendo muy rápido y ya se han cerrado las primeras contrataciones a través de la plataforma. Cada vez más organizadores entran a buscar profesionales como tú.
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Tu perfil como <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong> todavía no tiene foto, y sin ella un organizador no confía en contratarte: pasa directamente al siguiente perfil.
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
+        Sube tu foto y completa la información que se te pide en el panel — es lo único que falta para que tu perfil siga apareciendo en el directorio. Si no se actualiza, tu perfil se ocultará del panel hasta que subas contenido.
+      </p>
+      ${btn('Completar mi perfil ahora →', 'https://xpeak.es/dashboard')}
+      <p style="color:#9CA3AF;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`,
+      'Último aviso: sube tu foto para seguir apareciendo'),
+  }),
+
   // 1a3. Recordatorio de trabajo mañana — cron diario (bolo-reminder-24h),
   // dedupe vía email_logs (una fila por evento, no por usuario). Type name
   // conserva "bolo" por compatibilidad con la función ya desplegada; el
