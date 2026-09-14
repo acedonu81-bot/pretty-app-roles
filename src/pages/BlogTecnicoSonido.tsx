@@ -181,7 +181,7 @@ const faqStructured = {
                 <p className="text-sm font-black mb-0.5">¿Buscas técnico de sonido para tu evento?</p>
                 <p className="text-xs" style={{ color: '#333' }}>Directorio verificado · Tarifas públicas · Sin comisión</p>
               </div>
-              <a href="/auth"
+              <a href="/contratar-tecnico-sonido"
                 className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-xs transition-all hover:scale-105"
                 style={{ background: 'rgba(109,40,217,0.1)', color: '#6D28D9', border: '1px solid rgba(109,40,217,0.25)', whiteSpace: 'nowrap' }}>
                 Ver técnicos →

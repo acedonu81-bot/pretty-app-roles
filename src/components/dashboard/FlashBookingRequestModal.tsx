@@ -159,12 +159,12 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
               <div>
                 <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: '#222' }}>Tu nombre *</label>
                 <input value={form.name} onChange={e => set('name', e.target.value)}
-                  placeholder="Sala Berlín / Pedro G." className="nightlife-input text-sm !py-2 w-full" />
+                  placeholder="Sala Berlín / Pedro G." className="nightlife-input text-base !py-2 w-full" />
               </div>
               <div>
                 <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: '#222' }}>Contacto (tel/email) *</label>
                 <input value={form.contact} onChange={e => set('contact', e.target.value)}
-                  placeholder="+34 600..." className="nightlife-input text-sm !py-2 w-full" />
+                  placeholder="+34 600..." className="nightlife-input text-base !py-2 w-full" />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -173,14 +173,14 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
                   <Calendar size={10} /> Fecha del evento *
                 </label>
                 <input type="date" value={form.date} onChange={e => set('date', e.target.value)}
-                  className="nightlife-input text-sm !py-2 w-full" />
+                  className="nightlife-input text-base !py-2 w-full" />
               </div>
               <div>
                 <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: '#222' }}>
                   <MapPin size={10} /> Lugar
                 </label>
                 <input value={form.location} onChange={e => set('location', e.target.value)}
-                  placeholder="Sala / Ciudad" className="nightlife-input text-sm !py-2 w-full" />
+                  placeholder="Sala / Ciudad" className="nightlife-input text-base !py-2 w-full" />
               </div>
             </div>
             <div>
@@ -188,7 +188,7 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
                 Tipo de evento
               </label>
               <select value={form.eventType} onChange={e => set('eventType', e.target.value)}
-                className="nightlife-input text-sm !py-2 w-full appearance-none">
+                className="nightlife-input text-base !py-2 w-full appearance-none">
                 <option value="">Seleccionar...</option>
                 {EVENT_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
               </select>
@@ -212,14 +212,14 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
                 </label>
                 <textarea value={form.description} onChange={e => set('description', e.target.value)}
                   placeholder="Aforo, horario, detalles..." rows={3}
-                  className="nightlife-input text-sm !py-2 w-full resize-none" />
+                  className="nightlife-input text-base !py-2 w-full resize-none" />
               </div>
               <div>
                 <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: '#222' }}>
                   <Euro size={10} /> Caché acordado (€)
                 </label>
                 <input type="number" min="0" step="0.01" value={form.price} onChange={e => set('price', e.target.value)}
-                  placeholder={estimatedPrice ? `~${estimatedPrice}` : 'ej. 300'} className="nightlife-input text-sm !py-2 w-full" />
+                  placeholder={estimatedPrice ? `~${estimatedPrice}` : 'ej. 300'} className="nightlife-input text-base !py-2 w-full" />
                 <p className="text-[0.65rem] mt-1" style={{ color: 'rgba(0,0,0,0.1)' }}>Opcional — para tu registro de gastos</p>
               </div>
             </div>

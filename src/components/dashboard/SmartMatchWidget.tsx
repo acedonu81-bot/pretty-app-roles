@@ -113,26 +113,26 @@ const SmartMatchWidget = ({ onViewProfile, onMessage }: Props) => {
         <div className="px-4 pb-4">
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
             <select value={role} onChange={e => setRole(e.target.value)}
-              className="px-2.5 py-2 rounded-xl text-xs focus:outline-none appearance-none"
+              className="px-2.5 py-2 rounded-xl text-base focus:outline-none appearance-none"
               style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.1)' }}>
               {ROLES.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
             </select>
             <input value={city} onChange={e => setCity(e.target.value)}
               placeholder="Ciudad (ej: Madrid)"
-              className="px-2.5 py-2 rounded-xl text-xs focus:outline-none"
+              className="px-2.5 py-2 rounded-xl text-base focus:outline-none"
               style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.1)' }} />
             <input type="date" value={eventDate} onChange={e => setEventDate(e.target.value)}
-              className="px-2.5 py-2 rounded-xl text-xs focus:outline-none"
+              className="px-2.5 py-2 rounded-xl text-base focus:outline-none"
               style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.1)' }} />
             <select value={eventType} onChange={e => setEventType(e.target.value)}
-              className="px-2.5 py-2 rounded-xl text-xs focus:outline-none appearance-none"
+              className="px-2.5 py-2 rounded-xl text-base focus:outline-none appearance-none"
               style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.1)' }}>
               <option value="">Tipo de evento</option>
               {EVENT_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
             </select>
             <input type="number" value={maxBudget} onChange={e => setMaxBudget(e.target.value)}
               placeholder="Presupuesto máx (€)"
-              className="px-2.5 py-2 rounded-xl text-xs focus:outline-none"
+              className="px-2.5 py-2 rounded-xl text-base focus:outline-none"
               style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.1)' }} />
             <button onClick={search}
               className="flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105"

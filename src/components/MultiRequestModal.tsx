@@ -171,19 +171,19 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
                 <div>
                   <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: '#222' }}>Tu nombre *</label>
                   <input value={form.name} onChange={e => set('name', e.target.value)}
-                    placeholder="Nombre" className="nightlife-input text-sm !py-2 w-full" required />
+                    placeholder="Nombre" className="nightlife-input text-base !py-2 w-full" required />
                 </div>
                 <div>
                   <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: '#222' }}>Contacto (tel/email) *</label>
                   <input value={form.contact} onChange={e => set('contact', e.target.value)}
-                    placeholder="+34 600... / tu@email" className="nightlife-input text-sm !py-2 w-full" required />
+                    placeholder="+34 600... / tu@email" className="nightlife-input text-base !py-2 w-full" required />
                 </div>
               </div>
 
               <div>
                 <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: '#222' }}>Tipo de evento *</label>
                 <select value={form.eventType} onChange={e => set('eventType', e.target.value)}
-                  className="nightlife-input text-sm !py-2 w-full appearance-none" required>
+                  className="nightlife-input text-base !py-2 w-full appearance-none" required>
                   <option value="">Selecciona...</option>
                   {EVENT_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
@@ -193,12 +193,12 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
                 <div>
                   <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: '#222' }}>Fecha</label>
                   <input type="date" value={form.date} onChange={e => set('date', e.target.value)}
-                    className="nightlife-input text-sm !py-2 w-full" />
+                    className="nightlife-input text-base !py-2 w-full" />
                 </div>
                 <div>
                   <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: '#222' }}>Lugar / ciudad</label>
                   <input value={form.location} onChange={e => set('location', e.target.value)}
-                    placeholder={city !== 'Todas' ? city : 'Ciudad'} className="nightlife-input text-sm !py-2 w-full" />
+                    placeholder={city !== 'Todas' ? city : 'Ciudad'} className="nightlife-input text-base !py-2 w-full" />
                 </div>
               </div>
 
@@ -206,7 +206,7 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
                 <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: '#222' }}>Cuéntales qué necesitas (opcional)</label>
                 <textarea value={form.message} onChange={e => set('message', e.target.value)}
                   placeholder="Nº de invitados, horario, estilo, presupuesto aproximado..." rows={3}
-                  className="nightlife-input text-sm !py-2 w-full resize-none" />
+                  className="nightlife-input text-base !py-2 w-full resize-none" />
               </div>
             </div>
 

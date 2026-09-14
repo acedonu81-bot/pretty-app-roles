@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 interface BlogEmailCaptureProps {
-  intent?: 'contratar-dj' | 'ser-profesional' | 'contratar-staff' | 'contratar-makeup' | 'contratar-fotografo' | 'contratar-musico' | 'contratar-bailarin' | 'general';
+  intent?: 'contratar-dj' | 'ser-profesional' | 'contratar-staff' | 'contratar-makeup' | 'contratar-fotografo' | 'contratar-musico' | 'contratar-bailarin' | 'contratar-peluqueria' | 'general';
   articlePath?: string;
   variant?: 'presupuestos' | 'plantilla' | 'guia';
 }
@@ -14,6 +14,7 @@ const PROFILE_LABEL: Record<string, string> = {
   'contratar-fotografo': 'fotógrafos',
   'contratar-musico': 'músicos',
   'contratar-bailarin': 'bailarines e instructores',
+  'contratar-peluqueria': 'peluqueras a domicilio',
   'ser-profesional': 'profesionales',
   'general': 'profesionales',
 };

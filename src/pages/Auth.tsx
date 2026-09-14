@@ -674,7 +674,7 @@ const Auth = () => {
                         : 'Tu nombre profesional'}
                       maxLength={60}
                       autoComplete="name"
-                      className="nightlife-input !py-3 !pl-9 text-sm"
+                      className="nightlife-input !py-3 !pl-9 text-base"
                       autoFocus
                     />
                   </div>
@@ -692,7 +692,7 @@ const Auth = () => {
                     <select
                       value={city}
                       onChange={e => setCity(e.target.value)}
-                      className="nightlife-input !py-3 !pl-9 text-sm w-full"
+                      className="nightlife-input !py-3 !pl-9 text-base w-full"
                       aria-label="Tu ciudad"
                     >
                       <option value="">¿En qué ciudad trabajas?</option>
@@ -712,7 +712,7 @@ const Auth = () => {
                     maxLength={254}
                     autoComplete="email"
                     inputMode="email"
-                    className="nightlife-input !py-3 !pl-9 text-sm"
+                    className="nightlife-input !py-3 !pl-9 text-base"
                   />
                 </div>
 
@@ -727,7 +727,7 @@ const Auth = () => {
                     placeholder="Contraseña"
                     maxLength={128}
                     autoComplete={isLogin ? 'current-password' : 'new-password'}
-                    className="nightlife-input !py-3 !pl-9 !pr-10 text-sm"
+                    className="nightlife-input !py-3 !pl-9 !pr-10 text-base"
                   />
                   <button
                     type="button"
@@ -873,7 +873,7 @@ const Auth = () => {
                         <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                         <input type="email" value={forgotEmail} onChange={e => setForgotEmail(e.target.value)}
                           autoComplete="email" inputMode="email"
-                          placeholder="tu@email.com" className="nightlife-input !py-2.5 !pl-9 text-sm" />
+                          placeholder="tu@email.com" className="nightlife-input !py-2.5 !pl-9 text-base" />
                       </div>
                       <TurnstileWidget onVerify={setForgotCaptchaToken} onExpire={() => setForgotCaptchaToken(null)} />
                       <div className="flex gap-2">

@@ -221,26 +221,26 @@ const Socials = () => {
               <div className="flex flex-col gap-3">
                 <input placeholder="Nombre del evento" value={form.event_name}
                   onChange={e => setForm(f => ({ ...f, event_name: e.target.value }))}
-                  className="nightlife-input text-sm" />
+                  className="nightlife-input text-base" />
                 <select value={form.style} onChange={e => setForm(f => ({ ...f, style: e.target.value }))}
-                  className="nightlife-input text-sm">
+                  className="nightlife-input text-base">
                   {STYLES.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
                 <input placeholder="Ciudad" value={form.city}
                   onChange={e => setForm(f => ({ ...f, city: e.target.value }))}
-                  className="nightlife-input text-sm" />
+                  className="nightlife-input text-base" />
                 <input placeholder="Sala / dirección (opcional)" value={form.venue}
                   onChange={e => setForm(f => ({ ...f, venue: e.target.value }))}
-                  className="nightlife-input text-sm" />
+                  className="nightlife-input text-base" />
                 <input type="date" value={form.event_date}
                   onChange={e => setForm(f => ({ ...f, event_date: e.target.value }))}
-                  className="nightlife-input text-sm" />
+                  className="nightlife-input text-base" />
                 <textarea placeholder="Descripción (opcional)" value={form.description}
                   onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-                  className="nightlife-input text-sm" rows={3} />
+                  className="nightlife-input text-base" rows={3} />
                 <input placeholder="Enlace (Instagram, entradas...) (opcional)" value={form.link_url}
                   onChange={e => setForm(f => ({ ...f, link_url: e.target.value }))}
-                  className="nightlife-input text-sm" />
+                  className="nightlife-input text-base" />
                 <button onClick={handleSubmit} disabled={saving}
                   className="mt-2 px-4 py-2.5 rounded-lg text-sm font-bold transition-all hover:scale-[1.02] disabled:opacity-50"
                   style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>

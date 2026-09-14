@@ -411,7 +411,7 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
             onChange={e => setLinkInput(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleAddLink()}
             placeholder="https://soundcloud.com/... · mixcloud.com/... · hearthis.at/..."
-            className="nightlife-input text-xs flex-1"
+            className="nightlife-input text-base flex-1"
           />
           <button onClick={handleAddLink}
             className="px-3 py-2 rounded-lg text-xs font-bold"

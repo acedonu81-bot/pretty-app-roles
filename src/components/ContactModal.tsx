@@ -74,31 +74,31 @@ const ContactModal = ({ open, onClose }: Props) => {
                 <div>
                   <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(255,255,255,0.6)' }}>Nombre *</label>
                   <input value={form.name} onChange={e => set('name', e.target.value)}
-                    placeholder="Tu nombre" className="nightlife-input text-sm !py-2 w-full" />
+                    placeholder="Tu nombre" className="nightlife-input text-base !py-2 w-full" />
                 </div>
                 <div>
                   <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(255,255,255,0.6)' }}>Email *</label>
                   <input type="email" value={form.email} onChange={e => set('email', e.target.value)}
-                    placeholder="tu@email.com" className="nightlife-input text-sm !py-2 w-full" />
+                    placeholder="tu@email.com" className="nightlife-input text-base !py-2 w-full" />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(255,255,255,0.6)' }}>Teléfono</label>
                   <input value={form.phone} onChange={e => set('phone', e.target.value)}
-                    placeholder="+34 600..." className="nightlife-input text-sm !py-2 w-full" />
+                    placeholder="+34 600..." className="nightlife-input text-base !py-2 w-full" />
                 </div>
                 <div>
                   <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(255,255,255,0.6)' }}>Asunto</label>
                   <input value={form.subject} onChange={e => set('subject', e.target.value)}
-                    placeholder="Consulta, soporte..." className="nightlife-input text-sm !py-2 w-full" />
+                    placeholder="Consulta, soporte..." className="nightlife-input text-base !py-2 w-full" />
                 </div>
               </div>
               <div>
                 <label className="text-xs font-bold uppercase tracking-wide mb-1 block" style={{ color: 'rgba(255,255,255,0.6)' }}>Mensaje *</label>
                 <textarea value={form.message} onChange={e => set('message', e.target.value)}
                   placeholder="¿En qué podemos ayudarte?" rows={4}
-                  className="nightlife-input text-sm !py-2 w-full resize-none" />
+                  className="nightlife-input text-base !py-2 w-full resize-none" />
               </div>
             </div>
 

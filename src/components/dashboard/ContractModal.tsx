@@ -736,7 +736,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
   };
 
   // ── Shared styles ──────────────────────────────────────────────────────────
-  const inp = "w-full px-4 py-3 rounded-xl text-sm outline-none transition-all";
+  const inp = "w-full px-4 py-3 rounded-xl text-base outline-none transition-all";
   const inpStyle = { background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#222' } as const;
   const lbl = "text-xs font-bold uppercase tracking-wider mb-1.5 block";
   const lblStyle = { color: '#222' };
