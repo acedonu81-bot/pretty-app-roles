@@ -46,8 +46,11 @@ const HistorialTab = () => {
   const [reviewing, setReviewing] = useState<Booking | null>(null);
   // Reputación propia: reseñas que profesionales han dejado sobre este organizador.
   const [ownReviews, setOwnReviews] = useState<{ id: string; rating: number; comment: string | null; reviewer_name: string | null; created_at: string | null; llego_puntual: boolean | null; cumplio_acordado: boolean | null; volveria_contratar: boolean | null; reviewed_user_id: string }[]>([]);
+  // Reseñas que ESTE empresario escribió sobre profesionales (reviewer_id = user.id).
+  // Son las que puede completar con las 3 preguntas nuevas si son anteriores a esta feature.
+  const [ownWrittenReviews, setOwnWrittenReviews] = useState<{ id: string; llego_puntual: boolean | null; cumplio_acordado: boolean | null; volveria_contratar: boolean | null; reviewed_user_id: string }[]>([]);
   // Reseña propia antigua a completar (las 3 preguntas nuevas en null).
-  const [completingReview, setCompletingReview] = useState<typeof ownReviews[number] | null>(null);
+  const [completingReview, setCompletingReview] = useState<typeof ownWrittenReviews[number] | null>(null);
 
   const fetchBookings = useCallback(async () => {
     if (!user) return;
@@ -119,6 +122,14 @@ const HistorialTab = () => {
       .eq('approved', true)
       .order('created_at', { ascending: false });
     setOwnReviews(own ?? []);
+
+    // Reseñas que este empresario ESCRIBIÓ sobre profesionales (para completar
+    // las antiguas sin llego_puntual/cumplio_acordado/volveria_contratar).
+    const { data: written } = await supabase
+      .from('reviews')
+      .select('id, llego_puntual, cumplio_acordado, volveria_contratar, reviewed_user_id')
+      .eq('reviewer_id', user.id);
+    setOwnWrittenReviews(written ?? []);
   }, [user]);
 
   useEffect(() => { fetchBookings(); }, [fetchBookings]);
@@ -684,13 +695,6 @@ const HistorialTab = () => {
                     </span>
                   </div>
                   {r.comment && <p style={{ color: '#555' }}>{r.comment}</p>}
-                  {isReviewIncomplete(r) && (
-                    <button onClick={() => setCompletingReview(r)}
-                      className="mt-2 px-2.5 py-1 rounded-lg text-[0.7rem] font-bold"
-                      style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.25)', color: '#8A6D0F' }}>
-                      Completa tu valoración
-                    </button>
-                  )}
                 </div>
               ))}
             </div>
@@ -702,6 +706,26 @@ const HistorialTab = () => {
           </p>
         )}
       </div>
+
+      {ownWrittenReviews.some(isReviewIncomplete) && (
+        <div className="p-4 rounded-xl text-xs" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
+          <p className="font-bold mb-2 flex items-center gap-1.5" style={{ color: '#8A6D0F' }}>
+            <Star size={12} /> Completa tus valoraciones anteriores
+          </p>
+          <div className="space-y-2">
+            {ownWrittenReviews.filter(isReviewIncomplete).map(r => (
+              <div key={r.id} className="flex items-center justify-between p-2.5 rounded-lg" style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
+                <span className="text-muted-foreground">Reseña pendiente de completar</span>
+                <button onClick={() => setCompletingReview(r)}
+                  className="px-2.5 py-1 rounded-lg text-[0.7rem] font-bold"
+                  style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.25)', color: '#8A6D0F' }}>
+                  Completa tu valoración
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {reviewing && (
         <ReviewModal
@@ -720,7 +744,7 @@ const HistorialTab = () => {
           review={completingReview}
           onClose={() => setCompletingReview(null)}
           onDone={(answers) => {
-            setOwnReviews(prev => prev.map(r => r.id === completingReview.id
+            setOwnWrittenReviews(prev => prev.map(r => r.id === completingReview.id
               ? { ...r, ...answers }
               : r));
             setCompletingReview(null);
