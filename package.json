@@ -17,7 +17,10 @@
     "cap:sync": "npx cap sync",
     "cap:open:ios": "npx cap open ios",
     "cap:open:android": "npx cap open android",
+    "ios:build-num": "node scripts/ios-bump-build.mjs --check",
+    "ios:bump": "node scripts/ios-bump-build.mjs",
     "build:ios": "npm run build && npx cap sync ios",
+    "release:ios": "node scripts/ios-bump-build.mjs && npm run build && npx cap sync ios && npx cap open ios",
     "build:android": "npm run build && npx cap sync android"
   },
   "dependencies": {
