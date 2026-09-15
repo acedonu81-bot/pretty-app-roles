@@ -77,10 +77,9 @@ async function main() {
     console.warn('⚠️  llms-full.txt no actualizado (Supabase no disponible) — se conserva el existente');
     return;
   }
-  // Perfil sin foto tras el gate de foto obligatoria (9 sep 2026): mismo
-  // criterio que update-sitemap.mjs, no lo hace indexable en ningún sitio.
-  const PROFILE_PHOTO_GATE_DATE = new Date('2026-09-09T00:00:00Z');
-  const visibleProfiles = profiles.filter(p => !!p.photo_url || new Date(p.created_at) < PROFILE_PHOTO_GATE_DATE);
+  // Sin foto no se publica, retroactivo desde el 16 sep 2026 (mismo
+  // criterio que update-sitemap.mjs) — no es indexable en ningún sitio.
+  const visibleProfiles = profiles.filter(p => !!p.photo_url);
 
   const CITIES = extractObjectLiteral(path.join(ROOT, 'src', 'pages', 'CityLanding.tsx'), 'CITIES');
   const cityUniverse = new Map();

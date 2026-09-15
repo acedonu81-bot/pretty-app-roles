@@ -46,10 +46,7 @@ function loadEnv() {
 // oficio todavía, así que su ficha no describe ningún servicio. Indexarlas
 // manda a Google a páginas vacías, y eso penaliza al dominio entero — es
 // justo lo contrario de lo que busca tener 380 URLs indexables.
-// Desde el 9 sep 2026: un perfil nuevo sin foto no genera URL indexable — ver
-// PROFILE_PHOTO_GATE_DATE en src/lib/constants.ts (mismo corte, no
-// retroactivo: perfiles ya existentes sin foto siguen indexados como antes).
-const PROFILE_PHOTO_GATE_DATE = new Date('2026-09-09T00:00:00Z');
+// Sin foto no genera URL indexable, retroactivo desde el 16 sep 2026.
 
 // Un fallo de Supabase NO puede degradarse a "0 perfiles": con la lista vacía
 // este script escribía un sitemap sin ninguna ficha y con las ~2.200 URLs
@@ -80,7 +77,7 @@ async function fetchProfiles(supabaseUrl, anonKey) {
   }
   if (!res.ok) abortarPorSupabase('profiles', `HTTP ${res.status}`);
   const rows = await res.json();
-  const visibles = rows.filter(p => !!p.photo_url || new Date(p.created_at) < PROFILE_PHOTO_GATE_DATE);
+  const visibles = rows.filter(p => !!p.photo_url);
   // Responder 200 con una lista vacía también es anómalo: hay 40+ perfiles
   // reales publicados. Si algún día no quedara ninguno de verdad, este guard
   // salta y se quita a mano, que es justo la revisión que uno querría.

@@ -97,7 +97,9 @@ function mapProfile(p) {
 // ciudad (por score desc); si no hay ninguno, hasta 4 sugerencias nacionales.
 function resolveProfilesForCity(allProfiles, ciudad, categorySlug) {
   const roles = ROLE_MAP[categorySlug] ?? ['dj'];
-  const byRole = allProfiles.filter(p => profileHasRole(p, roles));
+  // Mismo gate que gateNoPhoto en CityLanding.tsx: sin foto no se publica,
+  // retroactivo desde el 16 sep 2026.
+  const byRole = allProfiles.filter(p => profileHasRole(p, roles) && !!p.photo_url);
   const inCity = byRole
     .filter(p => p.zone && p.zone.toLowerCase().includes(ciudad.toLowerCase()))
     .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
@@ -113,10 +115,6 @@ function resolveProfilesForCity(allProfiles, ciudad, categorySlug) {
 // el dbRole a sus variantes, acepta el match por `role` singular o por el array
 // `roles`, descarta perfiles sin nombre y ordena por score. Sin esto el HTML
 // del directorio se servía sin un solo profesional ni enlace a /p/.
-// Mismo valor que PROFILE_PHOTO_GATE_DATE en src/lib/constants.ts (este
-// script es .mjs y no importa TS) — si se toca allí, reflejarlo aquí también.
-const PROFILE_PHOTO_GATE_DATE = new Date('2026-09-09T00:00:00Z');
-
 function resolveProfilesForDirectorio(allProfiles, dbRole) {
   // Mismos alias que lib/constants.ts (este script es .mjs y no importa TS;
   // si se toca ROLE_ALIASES hay que reflejarlo aqui).
@@ -126,13 +124,13 @@ function resolveProfilesForDirectorio(allProfiles, dbRole) {
   return allProfiles
     .filter(p => p.display_name
       && (dbRoles.includes(p.role) || (Array.isArray(p.roles) && p.roles.some(r => dbRoles.includes(r))))
-      // Mismo gate que fetchDirectorioProfiles (DirectorioPublico.tsx): un
-      // perfil nuevo sin foto no es indexable. Sin este filtro, el conjunto
-      // prerenderizado no coincidía 1:1 con el que trae el fetch en vivo, y
-      // React Query siempre acababa repintando el grid al llegar la
-      // respuesta real — CLS 0.07 medido en producción el 11 sep 2026,
-      // aunque initialData ya estuviera bien inyectado.
-      && (!!p.photo_url || new Date(p.created_at) < PROFILE_PHOTO_GATE_DATE))
+      // Mismo gate que fetchDirectorioProfiles (DirectorioPublico.tsx), sin
+      // foto no se publica — retroactivo desde el 16 sep 2026. Sin este
+      // filtro, el conjunto prerenderizado no coincidía 1:1 con el que trae
+      // el fetch en vivo, y React Query siempre acababa repintando el grid
+      // al llegar la respuesta real — CLS 0.07 medido en producción el 11
+      // sep 2026, aunque initialData ya estuviera bien inyectado.
+      && !!p.photo_url)
     .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
     .slice(0, 60);
   // Sin mapProfile: ese mapeo es para CityLanding (renombra user_id→id y
