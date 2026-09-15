@@ -27,6 +27,9 @@ interface Review {
   comment: string;
   created_at: string;
   approved: boolean;
+  llego_puntual: boolean | null;
+  cumplio_acordado: boolean | null;
+  volveria_contratar: boolean | null;
 }
 
 const StarRating = ({ value, onChange }: { value: number; onChange?: (v: number) => void }) => (
@@ -123,7 +126,7 @@ const ReviewsSection = ({ professionalUserId, professionalName, googleReviewUrl 
     if (!professionalUserId) return;
     supabase
       .from('reviews')
-      .select('id, reviewer_name, reviewer_role, event_type, rating, comment, created_at, approved')
+      .select('id, reviewer_name, reviewer_role, event_type, rating, comment, created_at, approved, llego_puntual, cumplio_acordado, volveria_contratar')
       .eq('reviewed_user_id', professionalUserId)
       .eq('approved', true)
       .order('created_at', { ascending: false })
@@ -205,6 +208,8 @@ const ReviewsSection = ({ professionalUserId, professionalName, googleReviewUrl 
     setJustSubmitted(true);
   };
 
+  const questionStats = reviewQuestionStats(reviews);
+
   return (
     <div className="mt-6">
       {/* Header */}
@@ -256,6 +261,12 @@ const ReviewsSection = ({ professionalUserId, professionalName, googleReviewUrl 
       {user && eligibleBooking === null && (
         <p className="text-xs mb-3" style={{ color: '#666' }}>
           Solo pueden valorar organizadores que hayan completado un booking con {professionalName}.
+        </p>
+      )}
+
+      {reviews.length > 0 && questionStats.length > 0 && (
+        <p className="text-xs mb-3" style={{ color: '#666' }}>
+          {questionStats.map((s) => `${s.percent}% ${s.label}`).join(' · ')}
         </p>
       )}
 
@@ -395,6 +406,7 @@ interface SupabaseProfile {
   seeking_dance_partner: boolean | null;
   dance_level: string | null;
   dance_role: string | null;
+  response_bucket: string | null;
 }
 
 interface RelatedProfile {
@@ -415,6 +427,36 @@ function antiguedadEnXpeak(createdAt: string | undefined): string | null {
   if (months < 12) return `En XPEAK desde hace ${months} ${months === 1 ? 'mes' : 'meses'}`;
   const years = Math.floor(months / 12);
   return `En XPEAK desde hace ${years} ${years === 1 ? 'año' : 'años'}`;
+}
+
+export function reviewQuestionStats(
+  reviews: { llego_puntual: boolean | null; cumplio_acordado: boolean | null; volveria_contratar: boolean | null }[],
+): { label: string; percent: number }[] {
+  const questions: { key: 'llego_puntual' | 'cumplio_acordado' | 'volveria_contratar'; label: string }[] = [
+    { key: 'llego_puntual', label: 'dice que llegó puntual' },
+    { key: 'cumplio_acordado', label: 'cumplió lo acordado' },
+    { key: 'volveria_contratar', label: 'repetiría' },
+  ];
+
+  const stats: { label: string; percent: number }[] = [];
+  for (const q of questions) {
+    const answered = reviews.filter((r) => r[q.key] !== null);
+    if (answered.length === 0) continue;
+    const yes = answered.filter((r) => r[q.key] === true).length;
+    stats.push({ label: q.label, percent: Math.round((yes / answered.length) * 100) });
+  }
+  return stats;
+}
+
+export function responseBucketLabel(bucket: string | null): string | null {
+  switch (bucket) {
+    case 'minutos': return 'Responde en minutos';
+    case 'menos_1h': return 'Responde en menos de 1 hora';
+    case 'unas_horas': return 'Responde en unas horas';
+    case '1_dia': return 'Responde en 1 día';
+    case 'mas_1_dia': return 'Suele tardar en responder';
+    default: return null;
+  }
 }
 
 const PublicProfile = () => {
@@ -462,11 +504,11 @@ const PublicProfile = () => {
 
     const query = isUUID
       ? supabase.from('profiles')
-          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, is_early_adopter_override, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note')
+          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, is_early_adopter_override, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket')
           .eq('user_id', slug)
           .maybeSingle()
       : supabase.from('profiles')
-          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, is_early_adopter_override, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note')
+          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, is_early_adopter_override, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket')
           .not('display_name', 'is', null)
           .then(({ data, error }) => {
             // ILIKE no entiende acentos/e\u00f1es (slug.replace('-','%') nunca
@@ -707,6 +749,7 @@ const PublicProfile = () => {
 
   const fadeUp = { hidden: { opacity: 0, y: 28 }, show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } } };
   const stagger = { show: { transition: { staggerChildren: 0.1 } } };
+  const responseBucketText = responseBucketLabel(sbProfile?.response_bucket ?? null);
 
   return (
     <>
@@ -897,6 +940,12 @@ const PublicProfile = () => {
                   <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
                     style={{ background: 'rgba(212,175,55,0.85)', color: '#000', backdropFilter: 'blur(8px)' }}>
                     <Star size={11} fill="#000" /> {(seoReviews.reduce((s, r) => s + r.rating, 0) / seoReviews.length).toFixed(1)} ({seoReviews.length})
+                  </span>
+                )}
+                {responseBucketText && (
+                  <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
+                    ⚡ {responseBucketText}
                   </span>
                 )}
                 {profile.isVerified && (

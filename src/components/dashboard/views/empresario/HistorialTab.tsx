@@ -45,7 +45,12 @@ const HistorialTab = () => {
   const [reviewedIds, setReviewedIds] = useState<Set<string>>(new Set());
   const [reviewing, setReviewing] = useState<Booking | null>(null);
   // Reputación propia: reseñas que profesionales han dejado sobre este organizador.
-  const [ownReviews, setOwnReviews] = useState<{ rating: number; comment: string | null; reviewer_name: string | null; created_at: string | null }[]>([]);
+  const [ownReviews, setOwnReviews] = useState<{ id: string; rating: number; comment: string | null; reviewer_name: string | null; created_at: string | null; llego_puntual: boolean | null; cumplio_acordado: boolean | null; volveria_contratar: boolean | null; reviewed_user_id: string }[]>([]);
+  // Reseñas que ESTE empresario escribió sobre profesionales (reviewer_id = user.id).
+  // Son las que puede completar con las 3 preguntas nuevas si son anteriores a esta feature.
+  const [ownWrittenReviews, setOwnWrittenReviews] = useState<{ id: string; llego_puntual: boolean | null; cumplio_acordado: boolean | null; volveria_contratar: boolean | null; reviewed_user_id: string }[]>([]);
+  // Reseña propia antigua a completar (las 3 preguntas nuevas en null).
+  const [completingReview, setCompletingReview] = useState<typeof ownWrittenReviews[number] | null>(null);
 
   const fetchBookings = useCallback(async () => {
     if (!user) return;
@@ -112,11 +117,19 @@ const HistorialTab = () => {
 
     const { data: own } = await supabase
       .from('reviews')
-      .select('rating, comment, reviewer_name, created_at')
+      .select('id, rating, comment, reviewer_name, created_at, llego_puntual, cumplio_acordado, volveria_contratar, reviewed_user_id')
       .eq('reviewed_user_id', user.id)
       .eq('approved', true)
       .order('created_at', { ascending: false });
     setOwnReviews(own ?? []);
+
+    // Reseñas que este empresario ESCRIBIÓ sobre profesionales (para completar
+    // las antiguas sin llego_puntual/cumplio_acordado/volveria_contratar).
+    const { data: written } = await supabase
+      .from('reviews')
+      .select('id, llego_puntual, cumplio_acordado, volveria_contratar, reviewed_user_id')
+      .eq('reviewer_id', user.id);
+    setOwnWrittenReviews(written ?? []);
   }, [user]);
 
   useEffect(() => { fetchBookings(); }, [fetchBookings]);
@@ -694,6 +707,26 @@ const HistorialTab = () => {
         )}
       </div>
 
+      {ownWrittenReviews.some(isReviewIncomplete) && (
+        <div className="p-4 rounded-xl text-xs" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
+          <p className="font-bold mb-2 flex items-center gap-1.5" style={{ color: '#8A6D0F' }}>
+            <Star size={12} /> Completa tus valoraciones anteriores
+          </p>
+          <div className="space-y-2">
+            {ownWrittenReviews.filter(isReviewIncomplete).map(r => (
+              <div key={r.id} className="flex items-center justify-between p-2.5 rounded-lg" style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
+                <span className="text-muted-foreground">Reseña pendiente de completar</span>
+                <button onClick={() => setCompletingReview(r)}
+                  className="px-2.5 py-1 rounded-lg text-[0.7rem] font-bold"
+                  style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.25)', color: '#8A6D0F' }}>
+                  Completa tu valoración
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {reviewing && (
         <ReviewModal
           booking={reviewing}
@@ -705,9 +738,129 @@ const HistorialTab = () => {
           }}
         />
       )}
+
+      {completingReview && (
+        <CompleteReviewModal
+          review={completingReview}
+          onClose={() => setCompletingReview(null)}
+          onDone={(answers) => {
+            setOwnWrittenReviews(prev => prev.map(r => r.id === completingReview.id
+              ? { ...r, ...answers }
+              : r));
+            setCompletingReview(null);
+          }}
+        />
+      )}
     </div>
   );
 };
+
+export function canSubmitReview(
+  rating: number,
+  comment: string,
+  llegoPuntual: boolean | null,
+  cumplioAcordado: boolean | null,
+  volveriaContratar: boolean | null,
+): boolean {
+  if (rating < 1) return false;
+  if (comment.trim().length < 5) return false;
+  if (llegoPuntual === null || cumplioAcordado === null || volveriaContratar === null) return false;
+  return true;
+}
+
+export function isReviewIncomplete(review: {
+  llego_puntual: boolean | null;
+  cumplio_acordado: boolean | null;
+  volveria_contratar: boolean | null;
+}): boolean {
+  return review.llego_puntual === null || review.cumplio_acordado === null || review.volveria_contratar === null;
+}
+
+function YesNoToggle({ label, value, onChange }: { label: string; value: boolean | null; onChange: (v: boolean) => void }) {
+  return (
+    <div className="mb-3">
+      <p className="text-xs font-bold mb-1.5" style={{ color: '#333' }}>{label}</p>
+      <div className="flex gap-2">
+        <button type="button" onClick={() => onChange(true)}
+          className="flex-1 py-2 rounded-lg text-xs font-bold transition-all"
+          style={{
+            background: value === true ? 'linear-gradient(90deg,#D4AF37,#B8941E)' : 'rgba(0,0,0,0.04)',
+            color: value === true ? '#000' : '#666',
+            border: value === true ? 'none' : '1px solid rgba(0,0,0,0.08)',
+          }}>
+          Sí
+        </button>
+        <button type="button" onClick={() => onChange(false)}
+          className="flex-1 py-2 rounded-lg text-xs font-bold transition-all"
+          style={{
+            background: value === false ? 'linear-gradient(90deg,#D4AF37,#B8941E)' : 'rgba(0,0,0,0.04)',
+            color: value === false ? '#000' : '#666',
+            border: value === false ? 'none' : '1px solid rgba(0,0,0,0.08)',
+          }}>
+          No
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// Modal para completar reseñas propias antiguas cuyas 3 preguntas nuevas
+// quedaron en null (creadas antes de que existieran). Reutiliza YesNoToggle.
+function CompleteReviewModal({ review, onClose, onDone }: {
+  review: { id: string; reviewed_user_id: string };
+  onClose: () => void;
+  onDone: (answers: { llego_puntual: boolean; cumplio_acordado: boolean; volveria_contratar: boolean }) => void;
+}) {
+  const [llegoPuntual, setLlegoPuntual] = useState<boolean | null>(null);
+  const [cumplioAcordado, setCumplioAcordado] = useState<boolean | null>(null);
+  const [volveriaContratar, setVolveriaContratar] = useState<boolean | null>(null);
+  const [saving, setSaving] = useState(false);
+
+  const submit = async () => {
+    if (llegoPuntual === null || cumplioAcordado === null || volveriaContratar === null) {
+      toast.error('Responde las 3 preguntas antes de enviar.');
+      return;
+    }
+    setSaving(true);
+    // RPC en vez de .update() directo: reviews no tiene policy de UPDATE para
+    // el autor (solo admin), así que un .update() aquí fallaba en silencio
+    // (200 con 0 filas, sin error) y la reseña nunca se completaba de verdad.
+    // completar_preguntas_resena() es SECURITY DEFINER y solo toca estas 3
+    // columnas — no puede reescribir rating/comment/approved.
+    const { error } = await supabase.rpc('completar_preguntas_resena', {
+      p_review_id: review.id,
+      p_llego_puntual: llegoPuntual,
+      p_cumplio_acordado: cumplioAcordado,
+      p_volveria_contratar: volveriaContratar,
+    });
+    setSaving(false);
+    if (error) { toast.error('No se pudo guardar. Inténtalo de nuevo.'); return; }
+    toast.success('¡Gracias por completar tu valoración!');
+    onDone({ llego_puntual: llegoPuntual, cumplio_acordado: cumplioAcordado, volveria_contratar: volveriaContratar });
+  };
+
+  return (
+    <div className="fixed inset-0 z-[90] flex items-end sm:items-center justify-center p-4" role="dialog" aria-modal="true">
+      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.5)' }} onClick={onClose} />
+      <div className="relative w-full max-w-md rounded-2xl p-5" style={{ background: '#fff', boxShadow: '0 20px 60px rgba(0,0,0,0.25)' }}>
+        <div className="flex items-center justify-between mb-3">
+          <p className="text-base font-black" style={{ color: '#111' }}>Completa tu valoración</p>
+          <button onClick={onClose} aria-label="Cerrar" className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'rgba(0,0,0,0.05)' }}>
+            <XCircle size={16} color="#666" />
+          </button>
+        </div>
+        <YesNoToggle label="¿Llegó puntual al evento?" value={llegoPuntual} onChange={setLlegoPuntual} />
+        <YesNoToggle label="¿Cumplió con lo acordado?" value={cumplioAcordado} onChange={setCumplioAcordado} />
+        <YesNoToggle label="¿Volverías a contratarlo/a?" value={volveriaContratar} onChange={setVolveriaContratar} />
+        <button onClick={submit} disabled={saving}
+          className="w-full py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105 disabled:opacity-50 mt-2"
+          style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+          {saving ? 'Enviando…' : 'Enviar'}
+        </button>
+      </div>
+    </div>
+  );
+}
 
 // Modal para valorar a un profesional contratado. La reseña queda ligada al
 // professional_user_id y con approved:false (se publica tras moderación admin).
@@ -720,10 +873,17 @@ function ReviewModal({ booking, reviewerId, onClose, onDone }: {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');
   const [saving, setSaving] = useState(false);
+  const [llegoPuntual, setLlegoPuntual] = useState<boolean | null>(null);
+  const [cumplioAcordado, setCumplioAcordado] = useState<boolean | null>(null);
+  const [volveriaContratar, setVolveriaContratar] = useState<boolean | null>(null);
 
   const submit = async () => {
-    if (!booking.professional_user_id || rating < 1) return;
-    if (comment.trim().length < 5) { toast.error('Escribe un comentario breve (mín. 5 caracteres).'); return; }
+    if (!booking.professional_user_id) return;
+    if (!canSubmitReview(rating, comment, llegoPuntual, cumplioAcordado, volveriaContratar)) {
+      if (comment.trim().length < 5) { toast.error('Escribe un comentario breve (mín. 5 caracteres).'); return; }
+      toast.error('Responde las 3 preguntas antes de enviar tu valoración.');
+      return;
+    }
     setSaving(true);
     // reviewer_name se guardaba fijo como 'Organizador': todo profesional veía
     // reseñas anónimas idénticas en vez del nombre real de quien le contrató.
@@ -740,6 +900,9 @@ function ReviewModal({ booking, reviewerId, onClose, onDone }: {
       event_type: booking.professional_role || null,
       rating,
       comment: comment.trim().slice(0, 500),
+      llego_puntual: llegoPuntual,
+      cumplio_acordado: cumplioAcordado,
+      volveria_contratar: volveriaContratar,
       approved: false,
     } as any);
     setSaving(false);
@@ -766,6 +929,10 @@ function ReviewModal({ booking, reviewerId, onClose, onDone }: {
             </button>
           ))}
         </div>
+
+        <YesNoToggle label="¿Llegó puntual al evento?" value={llegoPuntual} onChange={setLlegoPuntual} />
+        <YesNoToggle label="¿Cumplió con lo acordado?" value={cumplioAcordado} onChange={setCumplioAcordado} />
+        <YesNoToggle label="¿Volverías a contratarlo/a?" value={volveriaContratar} onChange={setVolveriaContratar} />
 
         <textarea
           value={comment}
