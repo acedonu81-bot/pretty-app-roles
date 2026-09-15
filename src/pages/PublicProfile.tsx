@@ -27,6 +27,9 @@ interface Review {
   comment: string;
   created_at: string;
   approved: boolean;
+  llego_puntual: boolean | null;
+  cumplio_acordado: boolean | null;
+  volveria_contratar: boolean | null;
 }
 
 const StarRating = ({ value, onChange }: { value: number; onChange?: (v: number) => void }) => (
@@ -123,7 +126,7 @@ const ReviewsSection = ({ professionalUserId, professionalName, googleReviewUrl 
     if (!professionalUserId) return;
     supabase
       .from('reviews')
-      .select('id, reviewer_name, reviewer_role, event_type, rating, comment, created_at, approved')
+      .select('id, reviewer_name, reviewer_role, event_type, rating, comment, created_at, approved, llego_puntual, cumplio_acordado, volveria_contratar')
       .eq('reviewed_user_id', professionalUserId)
       .eq('approved', true)
       .order('created_at', { ascending: false })
@@ -256,6 +259,12 @@ const ReviewsSection = ({ professionalUserId, professionalName, googleReviewUrl 
       {user && eligibleBooking === null && (
         <p className="text-xs mb-3" style={{ color: '#666' }}>
           Solo pueden valorar organizadores que hayan completado un booking con {professionalName}.
+        </p>
+      )}
+
+      {reviews.length > 0 && reviewQuestionStats(reviews).length > 0 && (
+        <p className="text-xs mb-3" style={{ color: '#666' }}>
+          {reviewQuestionStats(reviews).map((s) => `${s.percent}% ${s.label}`).join(' · ')}
         </p>
       )}
 
@@ -416,6 +425,25 @@ function antiguedadEnXpeak(createdAt: string | undefined): string | null {
   if (months < 12) return `En XPEAK desde hace ${months} ${months === 1 ? 'mes' : 'meses'}`;
   const years = Math.floor(months / 12);
   return `En XPEAK desde hace ${years} ${years === 1 ? 'año' : 'años'}`;
+}
+
+export function reviewQuestionStats(
+  reviews: { llego_puntual: boolean | null; cumplio_acordado: boolean | null; volveria_contratar: boolean | null }[],
+): { label: string; percent: number }[] {
+  const questions: { key: 'llego_puntual' | 'cumplio_acordado' | 'volveria_contratar'; label: string }[] = [
+    { key: 'llego_puntual', label: 'dice que llegó puntual' },
+    { key: 'cumplio_acordado', label: 'cumplió lo acordado' },
+    { key: 'volveria_contratar', label: 'repetiría' },
+  ];
+
+  const stats: { label: string; percent: number }[] = [];
+  for (const q of questions) {
+    const answered = reviews.filter((r) => r[q.key] !== null);
+    if (answered.length === 0) continue;
+    const yes = answered.filter((r) => r[q.key] === true).length;
+    stats.push({ label: q.label, percent: Math.round((yes / answered.length) * 100) });
+  }
+  return stats;
 }
 
 export function responseBucketLabel(bucket: string | null): string | null {
