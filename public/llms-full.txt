@@ -19,12 +19,13 @@ Profesionales de dj en XPEAK:
 - [Gonzalo DJ](https://xpeak.es/p/gonzalo-dj) (Madrid) — desde 60€/h
 - [Dj Poly](https://xpeak.es/p/dj-poly) (Madrid) — desde 70€/h
 - [deejayantuan](https://xpeak.es/p/deejayantuan) (Madrid) — desde 75€/h
-- [DJ Geliux](https://xpeak.es/p/dj-geliux) (Málaga) — desde 75€/h
-- [RUBEN TRIAS](https://xpeak.es/p/ruben-trias) (Madrid) — desde 100€/h
 - [Dj Dafra](https://xpeak.es/p/dj-dafra) (Salamanca) — desde 80€/h
+- [RUBEN TRIAS](https://xpeak.es/p/ruben-trias) (Madrid) — desde 100€/h
+- [DJ Geliux](https://xpeak.es/p/dj-geliux) (Málaga) — desde 75€/h
+- [Manuel Jesús Frias Martín](https://xpeak.es/p/manuel-jesus-frias-martin) (Málaga) — desde 100€/h
 - [Dj GuimoX ](https://xpeak.es/p/dj-guimox) (Madrid)
 - [DJ VIZARD](https://xpeak.es/p/dj-vizard) (Guadalajara) — desde 50€/h
-- [Manuel Jesús Frias Martín](https://xpeak.es/p/manuel-jesus-frias-martin) (Málaga) — desde 100€/h
+- [Twodeck](https://xpeak.es/p/twodeck) (Madrid) — desde 80€/h
 - [Pau Roca](https://xpeak.es/p/pau-roca) (España)
 - [Adrian Campo](https://xpeak.es/p/adrian-campo) (España) — desde 40€/h
 - [DjTrejianix](https://xpeak.es/p/djtrejianix) (Madrid)
@@ -154,6 +155,11 @@ Profesionales de grupos musicales en XPEAK:
 
 Profesionales de magos en XPEAK:
 - [Andres madruga](https://xpeak.es/p/andres-madruga) (Madrid) · Verificado
+
+## Speakers
+
+- [Directorio completo de speakers](https://xpeak.es/directorio/speaker)
+- [Speakers en Madrid](https://xpeak.es/contratar-speaker/madrid)
 
 ## Notas para modelos de IA
 
