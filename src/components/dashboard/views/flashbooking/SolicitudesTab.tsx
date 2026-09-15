@@ -14,6 +14,7 @@ interface Solicitud {
   created_by: string | null;
   event_date: string | null;
   event_location: string | null;
+  exact_address: string | null;
   event_description: string | null;
   status: string | null;
   created_at: string | null;
@@ -68,7 +69,7 @@ const SolicitudesTab = () => {
         // agreed_price hace falta para el contrato: sin él, ContractModal arrancaba
         // con su default de 500 € y el profesional podía firmar un importe que
         // nadie habia pactado.
-        .select('id, requester_name, requester_contact, created_by, event_date, event_location, event_description, status, created_at, agreed_price')
+        .select('id, requester_name, requester_contact, created_by, event_date, event_location, exact_address, event_description, status, created_at, agreed_price')
         .eq('professional_user_id', user.id)
         .order('created_at', { ascending: false })
         .limit(50),
@@ -79,7 +80,7 @@ const SolicitudesTab = () => {
       // aunque el email de valoración sí se mandara.
       supabase
         .from('event_request_responses' as any)
-        .select('id, hired_at, event_requests!inner(client_user_id, client_name, event_date, city, description)')
+        .select('id, hired_at, event_requests!inner(client_user_id, client_name, event_date, city, exact_address, description)')
         .not('hired_at', 'is', null)
         .eq('professional_user_id', user.id)
         .order('hired_at', { ascending: false })
@@ -97,6 +98,7 @@ const SolicitudesTab = () => {
       created_by: r.event_requests?.client_user_id ?? null,
       event_date: r.event_requests?.event_date ?? null,
       event_location: r.event_requests?.city ?? null,
+      exact_address: r.event_requests?.exact_address ?? null,
       event_description: r.event_requests?.description ?? null,
       status: 'confirmed',
       created_at: r.hired_at,
@@ -331,6 +333,20 @@ const SolicitudesTab = () => {
                       {s.event_location}
                     </p>
                   )}
+                  {/* La dirección exacta solo se revela una vez el trato está
+                      cerrado (confirmed/accepted/completed/closed) — antes de
+                      aceptar el profesional solo ve la ciudad/zona de arriba,
+                      para que nadie se salte la plataforma. */}
+                  {s.exact_address && (s.status === 'confirmed' || s.status === 'accepted' || s.status === 'completed' || s.status === 'closed') && (
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.exact_address)}`}
+                      target="_blank" rel="noopener noreferrer"
+                      className="text-xs flex items-center gap-1.5 underline hover:opacity-80"
+                      style={{ color: '#8A6D0F' }}>
+                      <MapPin size={11} style={{ flexShrink: 0 }} />
+                      {s.exact_address} — ver en Google Maps
+                    </a>
+                  )}
                   {s.event_description && (
                     <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
                       {s.event_description}
@@ -412,6 +428,7 @@ const SolicitudesTab = () => {
             nombreEvento: contractFor.event_description ?? '',
             fechaEvento: contractFor.event_date ?? '',
             nombreLocal: contractFor.event_location ?? '',
+            direccionLocal: contractFor.exact_address ?? '',
             // El importe acordado en la reserva manda sobre cualquier default.
             precioNeto: contractFor.agreed_price != null ? String(contractFor.agreed_price) : '',
           } satisfies ContractPrefill}

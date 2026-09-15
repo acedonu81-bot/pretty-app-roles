@@ -14,6 +14,7 @@ interface EventRequest {
   client_user_id: string | null;
   event_type: string;
   city: string;
+  exact_address: string | null;
   event_date: string | null;
   event_dates: string[] | null;
   budget_min: number | null;
@@ -97,6 +98,7 @@ const EventRequestsSection = () => {
     client_name: '',
     event_type: '',
     city: '',
+    exact_address: '',
     event_dates: [] as string[],
     estilos: [] as string[],
     budget_min: '',
@@ -384,6 +386,7 @@ const EventRequestsSection = () => {
       client_name: req.client_name,
       event_type: req.event_type,
       city: req.city,
+      exact_address: req.exact_address ?? '',
       event_dates: req.event_dates ?? (req.event_date ? [req.event_date] : []),
       estilos: [],
       budget_min: req.budget_min?.toString() ?? '',
@@ -410,6 +413,7 @@ const EventRequestsSection = () => {
         client_name: form.client_name.trim(),
         event_type: form.event_type,
         city: form.city.trim(),
+        exact_address: form.exact_address.trim() || null,
         event_date: form.event_dates[0] || null,
         event_dates: form.event_dates.length > 0 ? form.event_dates : null,
         budget_min: form.budget_min ? parseInt(form.budget_min) : null,
@@ -426,7 +430,7 @@ const EventRequestsSection = () => {
     setRequests(prev => prev.map(r => r.id === editingId ? (data as EventRequest) : r));
     setShowForm(false);
     setEditingId(null);
-    setForm({ client_name: '', event_type: '', city: '', event_dates: [], estilos: [], budget_min: '', budget_max: '', roleCounts: {}, description: '', contact_email: '', contact_phone: '' });
+    setForm({ client_name: '', event_type: '', city: '', exact_address: '', event_dates: [], estilos: [], budget_min: '', budget_max: '', roleCounts: {}, description: '', contact_email: '', contact_phone: '' });
     toast.success('Oferta actualizada.');
   };
 
@@ -500,6 +504,7 @@ const EventRequestsSection = () => {
         client_user_id: user?.id ?? null,
         event_type: form.event_type,
         city: form.city.trim(),
+        exact_address: form.exact_address.trim() || null,
         // event_date conserva la primera fecha por compatibilidad (la lee el
         // trigger de aviso y el cron de valoración); event_dates lleva todas.
         event_date: form.event_dates[0] || null,
@@ -528,7 +533,7 @@ const EventRequestsSection = () => {
     toast.success('¡Solicitud publicada! Los profesionales podrán contactarte.');
     setRequests(prev => [nuevaOferta, ...prev]);
     setShowForm(false);
-    setForm({ client_name: '', event_type: '', city: '', event_dates: [], estilos: [], budget_min: '', budget_max: '', roleCounts: {}, description: '', contact_email: '', contact_phone: '' });
+    setForm({ client_name: '', event_type: '', city: '', exact_address: '', event_dates: [], estilos: [], budget_min: '', budget_max: '', roleCounts: {}, description: '', contact_email: '', contact_phone: '' });
   };
 
   return (
@@ -886,6 +891,19 @@ const EventRequestsSection = () => {
                     style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
                 </div>
 
+                <div className="sm:col-span-2">
+                  <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>
+                    DIRECCIÓN EXACTA (opcional)
+                  </label>
+                  {/* Solo la ve el profesional una vez confirmado el evento
+                      (SolicitudesTab). Antes de eso el resto de profesionales
+                      solo ve la ciudad, para que nadie se salte la plataforma. */}
+                  <input value={form.exact_address} onChange={e => setForm(f => ({ ...f, exact_address: e.target.value }))}
+                    placeholder="Calle Mayor 1, 28001 Madrid"
+                    className="w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none"
+                    style={{ background: '#f9f8f6', border: '1px solid rgba(0,0,0,0.1)' }} />
+                </div>
+
                 <div>
                   <label className="text-xs font-black mb-1.5 block" style={{ color: '#333' }}>
                     FECHAS DEL EVENTO
@@ -1053,6 +1071,7 @@ const EventRequestsSection = () => {
             nombreEvento: contractFor.req.event_type,
             fechaEvento: contractFor.req.event_dates?.[0] ?? contractFor.req.event_date ?? '',
             nombreLocal: contractFor.req.city,
+            direccionLocal: contractFor.req.exact_address ?? '',
             precioNeto: contractFor.req.budget_max != null
               ? String(contractFor.req.budget_max)
               : contractFor.req.budget_min != null ? String(contractFor.req.budget_min) : '',

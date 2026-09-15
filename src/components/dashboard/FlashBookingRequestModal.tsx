@@ -21,7 +21,7 @@ interface Props {
 
 const FlashBookingRequestModal = ({ professionalName, professionalRole, professionalUserId, onClose }: Props) => {
   const { user } = useAuth();
-  const [form, setForm] = useState({ name: '', contact: '', date: '', location: '', description: '', price: '', eventType: '', website: '' });
+  const [form, setForm] = useState({ name: '', contact: '', date: '', location: '', exactAddress: '', description: '', price: '', eventType: '', website: '' });
   const [sending, setSending] = useState(false);
   const [hourlyRate, setHourlyRate] = useState<number | null>(null);
 
@@ -52,6 +52,7 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
       requester_contact: form.contact,
       event_date: form.date,
       event_location: form.location,
+      exact_address: form.exactAddress.trim() || null,
       event_description: form.description,
       agreed_price: form.price ? parseFloat(form.price) : null,
       status: 'pending',
@@ -182,6 +183,13 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
                 <input value={form.location} onChange={e => set('location', e.target.value)}
                   placeholder="Sala / Ciudad" className="nightlife-input text-base !py-2 w-full" />
               </div>
+            </div>
+            <div>
+              <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: '#222' }}>
+                <MapPin size={10} /> Dirección exacta (opcional)
+              </label>
+              <input value={form.exactAddress} onChange={e => set('exactAddress', e.target.value)}
+                placeholder="Calle Mayor 1, 28001 Madrid" className="nightlife-input text-base !py-2 w-full" />
             </div>
             <div>
               <label className="text-xs font-bold uppercase tracking-wide mb-1 flex items-center gap-1" style={{ color: '#222' }}>

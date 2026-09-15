@@ -179,7 +179,7 @@ export default function BlogMejoresPlataformasContratarDJ() {
               <tbody>
                 {PLATFORMS.map((p, i) => (
                   <tr key={p.name} style={{ background: p.destacado ? 'rgba(212,175,55,0.06)' : i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)' }}>
-                    <td className="px-2 sm:px-4 py-3 font-black whitespace-nowrap" style={{ color: p.destacado ? '#D4AF37' : '#fff', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
+                    <td className="px-2 sm:px-4 py-3 font-black whitespace-nowrap" style={{ color: p.destacado ? '#D4AF37' : '#111', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
                       {p.name}{p.destacado && <span className="ml-1.5 text-[0.6rem] px-1.5 py-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>propia</span>}
                     </td>
                     <td className="px-2 sm:px-4 py-3" style={{ color: '#222', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{p.comision}</td>
