@@ -471,6 +471,31 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     `, `Cuéntanos qué tal fue ${esc(d.titulo)}`),
   }),
 
+  // 2f. Reseña antigua sin las 3 preguntas nuevas: invitar a completarla.
+  //
+  // Reseñas aprobadas antes de añadir llego_puntual / cumplio_acordado /
+  // volveria_contratar se quedaron incompletas. Se recuerda al empresario
+  // que puede volver a la ficha del profesional y terminarla.
+  completar_valoracion: (d) => ({
+    subject: 'Termina tu valoración en XPEAK',
+    to: d.email,
+    html: base(`
+      <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+        Hola, dejaste una valoración en XPEAK pero desde entonces añadimos tres
+        preguntas nuevas que ayudan mucho más a otros organizadores: si el
+        profesional llegó puntual, si cumplió lo acordado y si volverías a
+        contratarlo.
+      </p>
+      <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
+        Solo te llevará un minuto completarla.
+      </p>
+      ${btn('Completar mi valoración →', `https://xpeak.es/p/${esc(d.ref ?? '')}`)}
+      <p style="color:#9CA3AF;font-size:12px;margin-top:20px">
+        Si prefieres no completarla, ignora este correo.
+      </p>
+    `, 'Termina tu valoración en XPEAK'),
+  }),
+
   // 2a. Oferta Flash publicada — aviso al PROFESIONAL del rol buscado.
   //
   // Antes, publicar una oferta solo escribía una fila en flash_jobs: el toast
