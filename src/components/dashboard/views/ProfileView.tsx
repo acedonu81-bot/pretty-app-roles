@@ -234,7 +234,9 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
         // El empresario es `created_by`, nunca `professional_user_id`: contando
         // solo esa columna su tarjeta mostraba 0 bookings aunque hubiera
         // contratado decenas. Mismo criterio que SettingsView.
-        supabase.from('flash_bookings' as any).select('id', { count: 'exact', head: true }).or(`professional_user_id.eq.${user.id},created_by.eq.${user.id}`),
+        // El .or() contaba DOS veces el autorregistro (mismo uuid en las dos
+        // columnas); es_autorregistro=false lo deja fuera para todos los roles.
+        supabase.from('flash_bookings' as any).select('id', { count: 'exact', head: true }).or(`professional_user_id.eq.${user.id},created_by.eq.${user.id}`).eq('es_autorregistro', false),
         supabase.from('conversations').select('id').or(`participant_a.eq.${user.id},participant_b.eq.${user.id}`).limit(50),
       ]);
       const convIds = ((convsRes.data ?? []) as { id: string }[]).map(c => c.id);

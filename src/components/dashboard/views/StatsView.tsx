@@ -126,9 +126,14 @@ const StatsView = () => {
         supabase.from('conversations')
           .select('id', { count: 'exact', head: true })
           .or(`participant_a.eq.${user.id},participant_b.eq.${user.id}`),
+        // es_autorregistro excluye los bolos que el propio profesional se
+        // apunta (ya cerrados por fuera): son historial valido, pero no
+        // contrataciones conseguidas a traves de XPEAK y no deben inflar
+        // sus stats. Vale para cualquier rol.
         supabase.from('flash_bookings' as any)
           .select('id', { count: 'exact', head: true })
-          .eq('professional_user_id', user.id),
+          .eq('professional_user_id', user.id)
+          .eq('es_autorregistro', false),
       ]);
 
       // ── 2. My conversations ─────────────────────────

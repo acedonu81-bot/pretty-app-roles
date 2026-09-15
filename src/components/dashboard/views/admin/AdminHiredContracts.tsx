@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { CheckCircle2, ChevronDown, Star, MessageCircle } from 'lucide-react';
+import { CheckCircle2, ChevronDown, Star, MessageCircle, Info } from 'lucide-react';
 
 // Banner de contratos completados (13 sep 2026): quién contrató a quién y
 // qué día, juntando las dos vías reales de contratación —
@@ -23,6 +23,11 @@ interface HiredContract {
   profesional: string;
   profesionalId: string | null;
   fecha: string; // fecha del contrato (hired_at / created_at), no del evento
+  // true cuando quien crea la solicitud y el profesional son el mismo usuario:
+  // el profesional apuntando un bolo que ya tenía cerrado por fuera (caso real
+  // 15 sep 2026: Dj Poly registrando "edu / 150€ / 19-sep"). No es un contrato
+  // entre dos partes, así que no suma en el contador ni se le mira chat/reseña.
+  autoRegistro: boolean;
   detalle: Record<string, unknown>;
 }
 
@@ -50,7 +55,7 @@ const AdminHiredContracts = () => {
       const [{ data: flash }, { data: requests }] = await Promise.all([
         supabase
           .from('flash_bookings')
-          .select('id, requester_name, professional_name, created_at, created_by, professional_user_id, status, agreed_price, event_date, event_location')
+          .select('id, requester_name, professional_name, created_at, created_by, professional_user_id, status, agreed_price, event_date, event_location, es_autorregistro')
           .in('status', ['confirmed', 'accepted', 'completed'])
           .order('created_at', { ascending: false })
           .limit(30),
@@ -72,6 +77,7 @@ const AdminHiredContracts = () => {
         profesional: b.professional_name || 'Profesional',
         profesionalId: b.professional_user_id ?? null,
         fecha: b.created_at,
+        autoRegistro: b.es_autorregistro === true,
         detalle: { status: b.status, agreed_price: b.agreed_price, event_date: b.event_date, event_location: b.event_location },
       }));
 
@@ -98,6 +104,8 @@ const AdminHiredContracts = () => {
         profesional: nameMap.get(r.professional_user_id) || 'Profesional',
         profesionalId: r.professional_user_id ?? null,
         fecha: r.hired_at,
+        // Esta via siempre tiene cliente y profesional distintos.
+        autoRegistro: false,
         detalle: { status: r.status, message: r.message, chosen_at: r.chosen_at, review_asked_at: r.review_asked_at },
       }));
 
@@ -169,6 +177,14 @@ const AdminHiredContracts = () => {
     ? new Date(iso).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })
     : null;
 
+  // El contador solo cuenta contratos entre dos partes distintas. Los
+  // autorregistros siguen listados (son historial real del profesional),
+  // pero aparte y sin sumar, para no leer como demanda que no existio.
+  const realCount = contracts.filter(c => !c.autoRegistro).length;
+  const autoCount = contracts.length - realCount;
+
+  const AUTO_TOOLTIP = 'El profesional se registró él mismo este bolo: quien lo creó y el profesional contratado son la misma cuenta. Suele ser un trabajo ya cerrado por fuera que apunta para tener historial. Es legítimo, pero no cuenta como contratación conseguida en XPEAK y no suma en las métricas.';
+
   return (
     <div className="glass-panel p-5 mb-6">
       <h3 className="text-sm font-bold mb-4 flex items-center gap-2">
@@ -176,8 +192,15 @@ const AdminHiredContracts = () => {
         Contratos Completados
         <span className="text-[0.75rem] px-2 py-0.5 rounded-full font-bold"
           style={{ background: 'rgba(34,197,94,0.12)', color: '#16a34a' }}>
-          {contracts.length}
+          {realCount}
         </span>
+        {autoCount > 0 && (
+          <span title={AUTO_TOOLTIP}
+            className="text-[0.7rem] px-2 py-0.5 rounded-full font-bold cursor-help"
+            style={{ background: 'rgba(148,163,184,0.16)', color: '#64748b' }}>
+            +{autoCount} autorregistro{autoCount > 1 ? 's' : ''}
+          </span>
+        )}
       </h3>
       <div className="space-y-2 max-h-[32rem] overflow-y-auto">
         {contracts.map(c => {
@@ -189,10 +212,19 @@ const AdminHiredContracts = () => {
               style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.06)' }}>
               <button onClick={() => toggle(c)}
                 className="w-full flex items-center justify-between p-3 text-left transition-colors hover:bg-black/[0.02]">
-                <p className="text-sm" style={{ color: '#222' }}>
-                  <span className="font-bold">{c.organizador}</span>
-                  <span style={{ color: '#888' }}> → </span>
-                  <span className="font-bold">{c.profesional}</span>
+                <p className="text-sm flex items-center gap-2 flex-wrap" style={{ color: '#222' }}>
+                  <span>
+                    <span className="font-bold">{c.organizador}</span>
+                    <span style={{ color: '#888' }}> → </span>
+                    <span className="font-bold">{c.profesional}</span>
+                  </span>
+                  {c.autoRegistro && (
+                    <span title={AUTO_TOOLTIP}
+                      className="text-[0.65rem] px-1.5 py-0.5 rounded-full font-bold cursor-help"
+                      style={{ background: 'rgba(148,163,184,0.16)', color: '#64748b' }}>
+                      Autorregistro
+                    </span>
+                  )}
                 </p>
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <p className="text-xs" style={{ color: '#888' }}>{fmtFecha(c.fecha)}</p>
@@ -223,6 +255,23 @@ const AdminHiredContracts = () => {
                         )}
                       </div>
 
+                      {c.autoRegistro ? (
+                        // Sin dos partes distintas, "no ha valorado" y "nunca
+                        // se escribieron por chat" no significan nada: no hay
+                        // con quien hablar ni a quien valorar. Se explica en
+                        // su lugar por que este contrato no suma.
+                        <div className="flex items-start gap-1.5 rounded-lg p-2"
+                          style={{ background: 'rgba(148,163,184,0.10)' }}>
+                          <Info size={12} className="mt-0.5 flex-shrink-0" style={{ color: '#64748b' }} />
+                          <p style={{ color: '#475569' }}>
+                            <span className="font-bold">Registro propio, no cuenta como contrato.</span>{' '}
+                            {c.profesional} creó esta solicitud desde su propia cuenta, así que no hay
+                            segunda parte: ni chat ni reseñas entre dos personas. Suele ser un bolo
+                            ya cerrado por fuera que se apunta para tener historial. No suma en las métricas.
+                          </p>
+                        </div>
+                      ) : (
+                      <>
                       <div className="flex items-start gap-1.5">
                         <Star size={12} className="mt-0.5" style={{ color: detail.reviewOrganizadorAProfesional ? '#D4AF37' : '#ccc' }} />
                         {detail.reviewOrganizadorAProfesional ? (
@@ -259,6 +308,8 @@ const AdminHiredContracts = () => {
                           <p style={{ color: '#999' }}>Nunca se escribieron por chat</p>
                         )}
                       </div>
+                      </>
+                      )}
                     </>
                   )}
                 </div>

@@ -8,6 +8,9 @@ import { track, trackLead, logSignup, logLogin } from '@/lib/track';
 import { VISTA_TRAS_LOGIN } from '@/pages/Dashboard';
 import TurnstileWidget from '@/components/TurnstileWidget';
 import { ALL_CITIES } from '@/lib/regions';
+import { isNative } from '@/lib/capacitor';
+import { Browser } from '@capacitor/browser';
+import { App as CapacitorApp } from '@capacitor/app';
 
 const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { icon: LucideIcon; text: string }[] }> = {
   dj: {
@@ -157,6 +160,31 @@ const Auth = () => {
       else if (oauthCallbackPending) setOauthCallbackPending(false);
     });
 
+    // Vuelta del login de Google en la app nativa: Browser.open() abrió
+    // accounts.google.com fuera de la WebView, y Google redirige al deep link
+    // com.xpeak.app://auth?code=... en vez de a una URL web. iOS entrega esa
+    // URL aquí en vez de cargarla, así que hay que cerrar el navegador y pasarle
+    // el código a Supabase a mano — sin esto la sesión nunca se crea y el
+    // usuario se queda mirando la pantalla de Google en Safari/browser in-app.
+    let urlOpenHandle: { remove: () => void } | undefined;
+    if (isNative) {
+      CapacitorApp.addListener('appUrlOpen', async ({ url }) => {
+        if (!url.startsWith('com.xpeak.app://auth')) return;
+        await Browser.close().catch(() => {});
+        const parsed = new URL(url.replace('com.xpeak.app://', 'https://placeholder/'));
+        const code = parsed.searchParams.get('code');
+        if (!code) return;
+        const { error } = await supabase.auth.exchangeCodeForSession(code);
+        if (error) {
+          console.error('[Auth] exchangeCodeForSession error:', error);
+          authAlert('Error al completar el login con Google. Inténtalo de nuevo.');
+          setGoogleLoading(false);
+        }
+        // exchangeCodeForSession crea la sesión y dispara SIGNED_IN en el
+        // onAuthStateChange de abajo, que hace la redirección.
+      }).then((handle) => { urlOpenHandle = handle; });
+    }
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'PASSWORD_RECOVERY') {
         setShowRecovery(true);
@@ -171,7 +199,7 @@ const Auth = () => {
         setOauthCallbackPending(false);
       }
     });
-    return () => subscription.unsubscribe();
+    return () => { urlOpenHandle?.remove(); subscription.unsubscribe(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate, redirectParam]);
 
@@ -192,6 +220,30 @@ const Auth = () => {
     const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin);
     track('auth_google_click', { mode: isLogin ? 'login' : 'register' });
     setGoogleLoading(true);
+
+    // En la app nativa, Google bloquea el login OAuth dentro de la WebView de
+    // Capacitor y lo fuerza a Safari — que no vuelve solo a la app porque
+    // xpeak.es/auth es una URL web normal, no un deep link. Solución: pedir la
+    // URL de Google sin que el SDK navegue (skipBrowserRedirect), abrirla en un
+    // navegador in-app (Browser.open) que sí puede cerrarse por código, y usar
+    // como redirectTo el deep link com.xpeak.app://auth — el listener
+    // appUrlOpen de abajo lo captura y mete el token en Supabase manualmente.
+    if (isNative) {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: 'com.xpeak.app://auth', skipBrowserRedirect: true },
+      });
+      if (error || !data?.url) {
+        console.error('[Auth] Google OAuth error:', error);
+        track('auth_google_error', { message: error?.message || 'no_url' });
+        authAlert('Error al conectar con Google. Inténtalo de nuevo.');
+        setGoogleLoading(false);
+        return;
+      }
+      await Browser.open({ url: data.url, presentationStyle: 'popover' });
+      return;
+    }
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo: `${SITE_URL}/auth` },
@@ -314,7 +366,10 @@ const Auth = () => {
         clearRateLimit();
         track('auth_success', { mode: 'login' });
         toast.success('¡Bienvenido de vuelta!');
-        navigate(redirectParam);
+        // Mismo criterio que el efecto de sesión ya activa (línea ~151):
+        // login SIEMPRE al dashboard salvo ?redirect= explícito distinto del feed.
+        if (redirectParam !== '/descubrir') navigate(redirectParam, { replace: true });
+        else navigate('/dashboard', { replace: true, state: { view: VISTA_TRAS_LOGIN } });
       } else {
         if (!displayName.trim()) {
           track('auth_validation_error', { mode: 'register', reason: 'missing_name' });

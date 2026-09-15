@@ -53,10 +53,13 @@ const AdminMetrics = () => {
         supabase.from('profiles').select('id', { count: 'exact', head: true }).not('role', 'in', '("empresario","pending")'),
         supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('is_flash_active', true),
         supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('is_flash_active', true).gte('updated_at', since24h),
-        supabase.from('flash_bookings').select('id', { count: 'exact', head: true }),
-        supabase.from('flash_bookings').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
-        supabase.from('flash_bookings').select('id', { count: 'exact', head: true }).in('status', ['confirmed', 'accepted', 'completed']),
-        supabase.from('flash_bookings').select('id', { count: 'exact', head: true }).eq('status', 'rejected'),
+        // Todos los conteos excluyen es_autorregistro: un bolo que el
+        // profesional se apunta a si mismo no es demanda real y falseaba
+        // "solicitudes" y "aceptadas" del panel.
+        supabase.from('flash_bookings').select('id', { count: 'exact', head: true }).eq('es_autorregistro', false),
+        supabase.from('flash_bookings').select('id', { count: 'exact', head: true }).eq('status', 'pending').eq('es_autorregistro', false),
+        supabase.from('flash_bookings').select('id', { count: 'exact', head: true }).in('status', ['confirmed', 'accepted', 'completed']).eq('es_autorregistro', false),
+        supabase.from('flash_bookings').select('id', { count: 'exact', head: true }).eq('status', 'rejected').eq('es_autorregistro', false),
         // Las ofertas de evento son la otra mitad del Flash Booking y no se
         // contaban: el panel decía "0 solicitudes" con una oferta viva y dos
         // profesionales apuntados.
