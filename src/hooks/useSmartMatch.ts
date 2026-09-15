@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { isEarlyAdopter } from '@/lib/earlyAdopter';
-import { PROFILE_PHOTO_GATE_DATE } from '@/lib/constants';
 
 export interface MatchedProfessional {
   user_id: string;
@@ -155,11 +154,9 @@ export function useSmartMatch(query: MatchQuery | null): { results: MatchedProfe
         : Promise.resolve({ data: [] }),
     ]);
 
-    // Ver PROFILE_PHOTO_GATE_DATE: perfiles nuevos sin foto quedan fuera del
-    // matching, no retroactivo.
-    const profiles = (profilesRes.data ?? []).filter((p: any) =>
-      !!p.photo_url || new Date(p.created_at) < PROFILE_PHOTO_GATE_DATE
-    );
+    // Sin foto no se publica, retroactivo desde el 16 sep 2026 (ver
+    // DirectorioPublico.tsx para el motivo).
+    const profiles = (profilesRes.data ?? []).filter((p: any) => !!p.photo_url);
     const reviews = reviewsRes.data ?? [];
     const blocked = new Set((availRes.data ?? []).map((r: any) => r.user_id));
 

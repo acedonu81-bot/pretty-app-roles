@@ -14,7 +14,7 @@ import { useAuth } from '@/hooks/useAuth';
 import GhostProfileCards from '@/components/GhostProfileCards';
 import TruncatedDescription from '@/components/TruncatedDescription';
 import { isEarlyAdopter } from '@/lib/earlyAdopter';
-import { expandRole, canonicalRole, PROFILE_PHOTO_GATE_DATE } from '@/lib/constants';
+import { expandRole, canonicalRole } from '@/lib/constants';
 
 // URL de perfil por slug de nombre (la misma que usan sitemap y prerender) en
 // vez de UUID — evita dos URLs indexables para el mismo perfil. PublicProfile
@@ -344,18 +344,12 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string): Pro
   if (error) ({ data, error } = await q);
   if (error) throw error;
 
-  // Sin gate de completitud por ahora — con poco volumen de usuarios,
-  // exigir foto/bio echaba del directorio a la mayoría de perfiles reales.
-  // Retomar cuando haya volumen que lo justifique, avisando antes a los
-  // usuarios existentes.
-  //
-  // Excepción, desde el 9 sep 2026: los perfiles NUEVOS sin foto sí quedan
-  // fuera del directorio (no solo relegados al final). No es retroactivo —
-  // los perfiles ya existentes sin foto siguen visibles como hasta ahora,
-  // solo se corta la entrada de altas nuevas sin foto. Ver PROFILE_PHOTO_GATE_DATE.
-  const noPhotoGated = (data ?? []).filter((p: any) =>
-    !!p.photo_url || p.role === 'empresario' || new Date(p.created_at) < PROFILE_PHOTO_GATE_DATE
-  );
+  // Sin foto no se publica, con carácter retroactivo desde el 16 sep 2026:
+  // el aviso "sube tu foto" (profile_incomplete_reminder) ya se envió a
+  // todos los perfiles incompletos existentes (2-15 sep 2026) y se cerró el
+  // plazo. Antes esto solo aplicaba a altas nuevas y dejaba visibles
+  // indefinidamente a los perfiles previos sin foto.
+  const noPhotoGated = (data ?? []).filter((p: any) => !!p.photo_url || p.role === 'empresario');
 
   // is_early_adopter ya no viene del campo manual de BD — se recalcula aquí
   // según si el perfil está de verdad completo (foto+bio+media). Así el aro
@@ -423,11 +417,9 @@ export async function fetchAllDirectorioProfilesByRole(city: string): Promise<Re
   if (error) ({ data, error } = await q);
   if (error) throw error;
 
-  // Ver PROFILE_PHOTO_GATE_DATE: perfiles nuevos sin foto quedan fuera del
-  // directorio, no solo relegados al final. No retroactivo.
-  const noPhotoGated = (data ?? []).filter((p: any) =>
-    !!p.photo_url || p.role === 'empresario' || new Date(p.created_at) < PROFILE_PHOTO_GATE_DATE
-  );
+  // Sin foto no se publica, retroactivo desde el 16 sep 2026 (ver el otro
+  // uso de este filtro más arriba en este archivo para el motivo).
+  const noPhotoGated = (data ?? []).filter((p: any) => !!p.photo_url || p.role === 'empresario');
 
   const filtered = noPhotoGated
     .map((p: any) => ({ ...p, is_early_adopter: isEarlyAdopter(p) }))

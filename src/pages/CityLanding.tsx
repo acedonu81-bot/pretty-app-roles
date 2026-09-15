@@ -6,12 +6,10 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { isEarlyAdopter } from '@/lib/earlyAdopter';
 import { toSlug } from '@/data/profiles';
-import { PROFILE_PHOTO_GATE_DATE } from '@/lib/constants';
-
-// Ver PROFILE_PHOTO_GATE_DATE en lib/constants: perfiles nuevos sin foto
-// quedan fuera del listado público, no retroactivo.
-const gateNoPhoto = <T extends { photo_url: string | null; created_at?: string }>(rows: T[]): T[] =>
-  rows.filter(p => !!p.photo_url || !p.created_at || new Date(p.created_at) < PROFILE_PHOTO_GATE_DATE);
+// Sin foto no se publica, retroactivo desde el 16 sep 2026 (ver
+// DirectorioPublico.tsx para el motivo).
+const gateNoPhoto = <T extends { photo_url: string | null }>(rows: T[]): T[] =>
+  rows.filter(p => !!p.photo_url);
 
 // Fecha de última modificación (congelada al renderizar; en prerender = build).
 // Señal de frescura para motores generativos, que penalizan contenido stale.

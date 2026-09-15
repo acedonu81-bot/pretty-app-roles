@@ -5,7 +5,6 @@ import FooterPublic from '@/components/FooterPublic';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { CATEGORIES } from '@/pages/CityLanding';
-import { PROFILE_PHOTO_GATE_DATE } from '@/lib/constants';
 
 /**
  * OccasionLanding — eje ocasión × rol (ej: /boda/contratar-dj).
@@ -62,11 +61,9 @@ function useRoleProfessionals(categorySlug: string) {
       .order('score', { ascending: false })
       .limit(6)
       .then(({ data }) => {
-        // Ver PROFILE_PHOTO_GATE_DATE: perfiles nuevos sin foto quedan fuera,
-        // no retroactivo.
-        const gated = (data ?? []).filter((p: any) =>
-          !!p.photo_url || new Date(p.created_at) < PROFILE_PHOTO_GATE_DATE
-        );
+        // Sin foto no se publica, retroactivo desde el 16 sep 2026 (ver
+        // DirectorioPublico.tsx para el motivo).
+        const gated = (data ?? []).filter((p: any) => !!p.photo_url);
         setProfs(gated.map(map));
         setLoaded(true);
       });

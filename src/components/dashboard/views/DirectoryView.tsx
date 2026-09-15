@@ -62,6 +62,12 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
     // error de alta — buscan y contratan, no les contratan (caso real: MAGIG
     // DREAMS, 12 sep 2026, salia en /magos).
     .neq('role', 'empresario')
+    // Sin foto no se publica: el aviso "sube tu foto" (profile_incomplete_reminder)
+    // ya se envió a todos los perfiles incompletos (2-15 sep 2026) sin que
+    // hubiera un filtro real que lo hiciera cumplir — se quedaban visibles
+    // indefinidamente con el icono placeholder o, en un caso, con el email
+    // como nombre (txetxiuriarte@hotmail.com, 16 sep 2026).
+    .not('photo_url', 'is', null)
     .limit(200);
 
   if (filterRegion !== ALL_REGIONS_LABEL) {
