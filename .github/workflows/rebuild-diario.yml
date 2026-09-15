@@ -1,0 +1,62 @@
+# Rebuild diario para que las altas nuevas existan para Google.
+#
+# El sitemap, el prerender y llms-full.txt se generan en tiempo de build
+# leyendo Supabase. Un profesional que se da de alta hoy no aparece en
+# Google hasta que alguien vuelve a desplegar: sin esto, cada alta depende
+# de que un humano se acuerde de lanzar un deploy a mano.
+#
+# El deploy no coge el dominio solo, así que el alias va explícito al final.
+
+name: Rebuild diario (SEO)
+
+on:
+  schedule:
+    # 05:15 UTC — de madrugada en España, fuera de horas de alta.
+    - cron: '15 5 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-produccion
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+
+      - run: npm ci
+
+      # Las variables (Supabase, VITE_SITE_URL...) viven en el proyecto de
+      # Vercel: `vercel pull` las trae, así que GitHub solo guarda el token.
+      - name: Traer entorno de producción
+        run: npx vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build
+        run: npx vercel build --prod --token="$VERCEL_TOKEN"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+      - name: Desplegar y apuntar xpeak.es
+        run: |
+          set -euo pipefail
+          url=$(npx vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN")
+          echo "Deployment: $url"
+          npx vercel alias set "$url" xpeak.es --token="$VERCEL_TOKEN"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+      - name: Comprobar que el sitio responde
+        run: |
+          set -euo pipefail
+          code=$(curl -s -o /dev/null -w '%{http_code}' https://xpeak.es/sitemap.xml)
+          echo "sitemap.xml -> $code"
+          test "$code" = "200"
