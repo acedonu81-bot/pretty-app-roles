@@ -709,6 +709,47 @@ const HistorialTab = () => {
   );
 };
 
+export function canSubmitReview(
+  rating: number,
+  comment: string,
+  llegoPuntual: boolean | null,
+  cumplioAcordado: boolean | null,
+  volveriaContratar: boolean | null,
+): boolean {
+  if (rating < 1) return false;
+  if (comment.trim().length < 5) return false;
+  if (llegoPuntual === null || cumplioAcordado === null || volveriaContratar === null) return false;
+  return true;
+}
+
+function YesNoToggle({ label, value, onChange }: { label: string; value: boolean | null; onChange: (v: boolean) => void }) {
+  return (
+    <div className="mb-3">
+      <p className="text-xs font-bold mb-1.5" style={{ color: '#333' }}>{label}</p>
+      <div className="flex gap-2">
+        <button type="button" onClick={() => onChange(true)}
+          className="flex-1 py-2 rounded-lg text-xs font-bold transition-all"
+          style={{
+            background: value === true ? 'linear-gradient(90deg,#D4AF37,#B8941E)' : 'rgba(0,0,0,0.04)',
+            color: value === true ? '#000' : '#666',
+            border: value === true ? 'none' : '1px solid rgba(0,0,0,0.08)',
+          }}>
+          Sí
+        </button>
+        <button type="button" onClick={() => onChange(false)}
+          className="flex-1 py-2 rounded-lg text-xs font-bold transition-all"
+          style={{
+            background: value === false ? 'linear-gradient(90deg,#D4AF37,#B8941E)' : 'rgba(0,0,0,0.04)',
+            color: value === false ? '#000' : '#666',
+            border: value === false ? 'none' : '1px solid rgba(0,0,0,0.08)',
+          }}>
+          No
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // Modal para valorar a un profesional contratado. La reseña queda ligada al
 // professional_user_id y con approved:false (se publica tras moderación admin).
 function ReviewModal({ booking, reviewerId, onClose, onDone }: {
@@ -720,10 +761,17 @@ function ReviewModal({ booking, reviewerId, onClose, onDone }: {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');
   const [saving, setSaving] = useState(false);
+  const [llegoPuntual, setLlegoPuntual] = useState<boolean | null>(null);
+  const [cumplioAcordado, setCumplioAcordado] = useState<boolean | null>(null);
+  const [volveriaContratar, setVolveriaContratar] = useState<boolean | null>(null);
 
   const submit = async () => {
-    if (!booking.professional_user_id || rating < 1) return;
-    if (comment.trim().length < 5) { toast.error('Escribe un comentario breve (mín. 5 caracteres).'); return; }
+    if (!booking.professional_user_id) return;
+    if (!canSubmitReview(rating, comment, llegoPuntual, cumplioAcordado, volveriaContratar)) {
+      if (comment.trim().length < 5) { toast.error('Escribe un comentario breve (mín. 5 caracteres).'); return; }
+      toast.error('Responde las 3 preguntas antes de enviar tu valoración.');
+      return;
+    }
     setSaving(true);
     // reviewer_name se guardaba fijo como 'Organizador': todo profesional veía
     // reseñas anónimas idénticas en vez del nombre real de quien le contrató.
@@ -740,6 +788,9 @@ function ReviewModal({ booking, reviewerId, onClose, onDone }: {
       event_type: booking.professional_role || null,
       rating,
       comment: comment.trim().slice(0, 500),
+      llego_puntual: llegoPuntual,
+      cumplio_acordado: cumplioAcordado,
+      volveria_contratar: volveriaContratar,
       approved: false,
     } as any);
     setSaving(false);
@@ -766,6 +817,10 @@ function ReviewModal({ booking, reviewerId, onClose, onDone }: {
             </button>
           ))}
         </div>
+
+        <YesNoToggle label="¿Llegó puntual al evento?" value={llegoPuntual} onChange={setLlegoPuntual} />
+        <YesNoToggle label="¿Cumplió con lo acordado?" value={cumplioAcordado} onChange={setCumplioAcordado} />
+        <YesNoToggle label="¿Volverías a contratarlo/a?" value={volveriaContratar} onChange={setVolveriaContratar} />
 
         <textarea
           value={comment}
