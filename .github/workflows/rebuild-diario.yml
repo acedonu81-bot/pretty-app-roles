@@ -19,6 +19,12 @@ concurrency:
   group: deploy-produccion
   cancel-in-progress: false
 
+# .vercel/ no está versionado, así que el CLI necesita saber por env a qué
+# proyecto apunta. No son secretos: identifican el proyecto, no dan acceso.
+env:
+  VERCEL_ORG_ID: team_OV4G4L5FcJzF6eGsfxYiApsL
+  VERCEL_PROJECT_ID: prj_w3gLxBFmA7ipbZiUgOaYoIiemCwY
+
 jobs:
   rebuild:
     runs-on: ubuntu-latest
