@@ -395,6 +395,7 @@ interface SupabaseProfile {
   seeking_dance_partner: boolean | null;
   dance_level: string | null;
   dance_role: string | null;
+  response_bucket: string | null;
 }
 
 interface RelatedProfile {
@@ -415,6 +416,17 @@ function antiguedadEnXpeak(createdAt: string | undefined): string | null {
   if (months < 12) return `En XPEAK desde hace ${months} ${months === 1 ? 'mes' : 'meses'}`;
   const years = Math.floor(months / 12);
   return `En XPEAK desde hace ${years} ${years === 1 ? 'año' : 'años'}`;
+}
+
+export function responseBucketLabel(bucket: string | null): string | null {
+  switch (bucket) {
+    case 'minutos': return 'Responde en minutos';
+    case 'menos_1h': return 'Responde en menos de 1 hora';
+    case 'unas_horas': return 'Responde en unas horas';
+    case '1_dia': return 'Responde en 1 día';
+    case 'mas_1_dia': return 'Suele tardar en responder';
+    default: return null;
+  }
 }
 
 const PublicProfile = () => {
@@ -462,11 +474,11 @@ const PublicProfile = () => {
 
     const query = isUUID
       ? supabase.from('profiles')
-          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, is_early_adopter_override, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note')
+          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, is_early_adopter_override, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket')
           .eq('user_id', slug)
           .maybeSingle()
       : supabase.from('profiles')
-          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, is_early_adopter_override, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note')
+          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, is_early_adopter_override, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket')
           .not('display_name', 'is', null)
           .then(({ data, error }) => {
             // ILIKE no entiende acentos/e\u00f1es (slug.replace('-','%') nunca
@@ -897,6 +909,12 @@ const PublicProfile = () => {
                   <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
                     style={{ background: 'rgba(212,175,55,0.85)', color: '#000', backdropFilter: 'blur(8px)' }}>
                     <Star size={11} fill="#000" /> {(seoReviews.reduce((s, r) => s + r.rating, 0) / seoReviews.length).toFixed(1)} ({seoReviews.length})
+                  </span>
+                )}
+                {responseBucketLabel(sbProfile?.response_bucket ?? null) && (
+                  <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
+                    ⚡ {responseBucketLabel(sbProfile?.response_bucket ?? null)}
                   </span>
                 )}
                 {profile.isVerified && (
