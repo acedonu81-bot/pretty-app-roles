@@ -440,9 +440,9 @@ export function canSubmitReview(
 Run: `npx vitest run src/components/dashboard/views/empresario/reviewQuestions.test.ts`
 Expected: PASS.
 
-- [ ] **Step 5: Añadir el toggle Sí/No reutilizable dentro de `ReviewModal`**
+- [ ] **Step 5: Añadir el toggle Sí/No reutilizable a nivel de módulo**
 
-En `src/components/dashboard/views/empresario/HistorialTab.tsx`, dentro de la función `ReviewModal` (mismo archivo, antes del `return`), añadir un pequeño subcomponente local:
+En `src/components/dashboard/views/empresario/HistorialTab.tsx`, **a nivel de módulo** (fuera de la función `ReviewModal`, no anidado dentro de ella) — Task 7 reutiliza este mismo componente desde `CompleteReviewModal`, otro componente distinto en el mismo archivo, así que debe quedar accesible fuera de cualquiera de los dos:
 
 ```tsx
 function YesNoToggle({ label, value, onChange }: { label: string; value: boolean | null; onChange: (v: boolean) => void }) {
