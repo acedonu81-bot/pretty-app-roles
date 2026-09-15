@@ -822,9 +822,17 @@ function CompleteReviewModal({ review, onClose, onDone }: {
       return;
     }
     setSaving(true);
-    const { error } = await supabase.from('reviews')
-      .update({ llego_puntual: llegoPuntual, cumplio_acordado: cumplioAcordado, volveria_contratar: volveriaContratar })
-      .eq('id', review.id);
+    // RPC en vez de .update() directo: reviews no tiene policy de UPDATE para
+    // el autor (solo admin), así que un .update() aquí fallaba en silencio
+    // (200 con 0 filas, sin error) y la reseña nunca se completaba de verdad.
+    // completar_preguntas_resena() es SECURITY DEFINER y solo toca estas 3
+    // columnas — no puede reescribir rating/comment/approved.
+    const { error } = await supabase.rpc('completar_preguntas_resena', {
+      p_review_id: review.id,
+      p_llego_puntual: llegoPuntual,
+      p_cumplio_acordado: cumplioAcordado,
+      p_volveria_contratar: volveriaContratar,
+    });
     setSaving(false);
     if (error) { toast.error('No se pudo guardar. Inténtalo de nuevo.'); return; }
     toast.success('¡Gracias por completar tu valoración!');

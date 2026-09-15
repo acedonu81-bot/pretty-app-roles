@@ -208,6 +208,8 @@ const ReviewsSection = ({ professionalUserId, professionalName, googleReviewUrl 
     setJustSubmitted(true);
   };
 
+  const questionStats = reviewQuestionStats(reviews);
+
   return (
     <div className="mt-6">
       {/* Header */}
@@ -262,9 +264,9 @@ const ReviewsSection = ({ professionalUserId, professionalName, googleReviewUrl 
         </p>
       )}
 
-      {reviews.length > 0 && reviewQuestionStats(reviews).length > 0 && (
+      {reviews.length > 0 && questionStats.length > 0 && (
         <p className="text-xs mb-3" style={{ color: '#666' }}>
-          {reviewQuestionStats(reviews).map((s) => `${s.percent}% ${s.label}`).join(' · ')}
+          {questionStats.map((s) => `${s.percent}% ${s.label}`).join(' · ')}
         </p>
       )}
 
@@ -747,6 +749,7 @@ const PublicProfile = () => {
 
   const fadeUp = { hidden: { opacity: 0, y: 28 }, show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } } };
   const stagger = { show: { transition: { staggerChildren: 0.1 } } };
+  const responseBucketText = responseBucketLabel(sbProfile?.response_bucket ?? null);
 
   return (
     <>
@@ -939,10 +942,10 @@ const PublicProfile = () => {
                     <Star size={11} fill="#000" /> {(seoReviews.reduce((s, r) => s + r.rating, 0) / seoReviews.length).toFixed(1)} ({seoReviews.length})
                   </span>
                 )}
-                {responseBucketLabel(sbProfile?.response_bucket ?? null) && (
+                {responseBucketText && (
                   <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
                     style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
-                    ⚡ {responseBucketLabel(sbProfile?.response_bucket ?? null)}
+                    ⚡ {responseBucketText}
                   </span>
                 )}
                 {profile.isVerified && (

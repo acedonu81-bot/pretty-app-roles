@@ -489,7 +489,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
         Solo te llevará un minuto completarla.
       </p>
-      ${btn('Completar mi valoración →', `https://xpeak.es/p/${esc(d.ref ?? '')}`)}
+      ${btn('Completar mi valoración →', `https://xpeak.es/dashboard?view=empresario&tab=historial`)}
       <p style="color:#9CA3AF;font-size:12px;margin-top:20px">
         Si prefieres no completarla, ignora este correo.
       </p>

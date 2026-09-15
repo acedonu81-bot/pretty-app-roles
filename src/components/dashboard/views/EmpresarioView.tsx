@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Zap, Heart, Search, Lock, BarChart3, Euro, CheckCircle, Image, X, Building2, Clock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -113,7 +114,16 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
   const { role, loading: profileLoading } = useProfile();
 
   // All hooks must be declared before any early return
-  const [tab, setTab] = useState<'discover' | 'flash' | 'favorites' | 'stats' | 'benchmark' | 'media' | 'historial' | 'gastos'>('discover');
+  const location = useLocation();
+  // El email "Termina tu valoración en XPEAK" (completar_valoracion) enlaza
+  // a /dashboard?view=empresario&tab=historial para abrir directamente el
+  // historial con el aviso de reseñas pendientes de completar, en vez de
+  // caer en la pestaña por defecto (discover). Mismo patrón que ?tab= en
+  // FlashBookingWallView.
+  const tabFromQuery = new URLSearchParams(location.search).get('tab');
+  const [tab, setTab] = useState<'discover' | 'flash' | 'favorites' | 'stats' | 'benchmark' | 'media' | 'historial' | 'gastos'>(
+    tabFromQuery === 'historial' ? 'historial' : 'discover'
+  );
   const [pros, setPros] = useState<Pro[]>([]);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
