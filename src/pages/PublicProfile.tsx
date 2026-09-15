@@ -893,6 +893,12 @@ const PublicProfile = () => {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2 mb-6">
+                {seoReviews.length > 0 && (
+                  <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(212,175,55,0.85)', color: '#000', backdropFilter: 'blur(8px)' }}>
+                    <Star size={11} fill="#000" /> {(seoReviews.reduce((s, r) => s + r.rating, 0) / seoReviews.length).toFixed(1)} ({seoReviews.length})
+                  </span>
+                )}
                 {profile.isVerified && (
                   <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
                     style={{ background: 'rgba(212,175,55,0.85)', color: '#000', backdropFilter: 'blur(8px)' }}>
