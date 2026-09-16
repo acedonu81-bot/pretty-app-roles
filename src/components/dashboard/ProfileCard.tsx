@@ -9,7 +9,6 @@ import VoteButton from './VoteButton';
 import LegalModal from '@/components/LegalModal';
 import ContractModal from './ContractModal';
 import { useProfile } from '@/hooks/useProfile';
-import { useWeeklyProfileViews } from '@/hooks/useWeeklyProfileViews';
 
 const HearthisIcon = ({ size = 14 }: { size?: number }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
@@ -42,11 +41,13 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
   const [showContract, setShowContract] = useState(false);
   const [imgError, setImgError] = useState(false);
   const realProfileId = (p as any).userId ?? p.userId ?? null;
-  // Nadie más que el propio dueño del perfil ve cuántas vistas tiene su
-  // ficha (RLS de profile_business_views ya lo restringe a nivel de BD;
-  // esto evita también pedir el dato para cards de otros profesionales).
-  const isOwnCard = !!currentUser.user_id && currentUser.user_id === realProfileId;
-  const weeklyViews = useWeeklyProfileViews(isOwnCard ? realProfileId : null);
+  // Visible en cualquier card, no solo la propia (17 sep 2026): la idea es
+  // que un profesional vea las vistas de otros y se fije en qué hace bien
+  // quien le va mejor — mismo espíritu que el rating, que ya es público.
+  // Calculado en fetchDirectoryProfiles (una sola query agregada para todo
+  // el listado) en vez de un RPC por card, para no disparar 40+ peticiones
+  // simultáneas en un listado de 20 perfiles.
+  const weeklyViews = p.weeklyViews ?? null;
   const [voteCount, setVoteCount] = useState(0);
   const [hasVotedToday, setHasVotedToday] = useState(false);
 
@@ -369,11 +370,11 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
         </div>
       </div>
 
-      {/* Vistas de la semana — solo en tu propia card, nunca en la de otro
-          profesional. Umbral de 3 (igual que el badge de PublicProfile.tsx):
-          "1 vista esta semana" desanima más de lo que motiva. */}
-      {isOwnCard && weeklyViews && weeklyViews.count >= 3 && (
-        <div className="hidden sm:flex items-center justify-between px-3.5 py-2 text-xs"
+      {/* Vistas de la semana — visible en cualquier card, no solo la propia.
+          Umbral de 3 (igual que el badge de PublicProfile.tsx): "1 vista
+          esta semana" desanima más de lo que motiva. */}
+      {weeklyViews && weeklyViews.count >= 3 && (
+        <div className="flex items-center justify-between px-3.5 py-2 text-xs"
           style={{ background: 'rgba(212,175,55,0.06)', borderTop: '1px solid rgba(212,175,55,0.15)' }}>
           <span style={{ color: '#22c55e', fontWeight: 700 }}>
             {weeklyViews.count} vistas <span style={{ color: '#9c9584', fontWeight: 400 }}>esta semana</span>
