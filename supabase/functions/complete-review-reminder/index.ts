@@ -7,6 +7,14 @@ import { isDemoAccount } from './isDemoAccount.ts';
 // volveria_contratar en null). Mismo patrón de deduplicación por
 // email_logs que review-reminder. Nunca se envía a cuentas demo
 // (demo.*@xpeak.es) — ver isDemoAccount.ts.
+//
+// Las 3 preguntas nuevas solo tienen sentido en reseñas empresario→
+// profesional (ReviewModal en HistorialTab.tsx, reviewer_role:
+// 'Organizador'). El sistema de reseñas también admite la dirección
+// contraria, profesional→empresario (SolicitudesTab.tsx, reviewer_role:
+// 'Profesional') — sin este filtro, ese caso disparaba el email pidiendo
+// a un profesional que responda si "el profesional llegó puntual",
+// preguntas que no le corresponden (caso real: Gonzalo DJ, 16 sep 2026).
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -24,6 +32,7 @@ serve(async (req) => {
     .from('reviews')
     .select('id, reviewer_id, reviewed_user_id')
     .eq('approved', true)
+    .eq('reviewer_role', 'Organizador')
     .or('llego_puntual.is.null,cumplio_acordado.is.null,volveria_contratar.is.null')
     .not('reviewer_id', 'is', null);
 
@@ -68,11 +77,12 @@ serve(async (req) => {
       continue;
     }
 
-    await admin.from('email_logs' as any).insert({
+    const { error: logError } = await admin.from('email_logs' as any).insert({
       user_id: r.reviewer_id,
       type: logKey,
       sent_at: new Date().toISOString(),
-    }).catch(() => { /* non-critical */ });
+    });
+    if (logError) console.error('[complete-review-reminder] email_logs insert failed for', r.reviewer_id, logError);
 
     sent++;
   }

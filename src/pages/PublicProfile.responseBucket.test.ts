@@ -2,8 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { responseBucketLabel } from './PublicProfile';
 
 describe('responseBucketLabel', () => {
-  it('returns null when there is no bucket', () => {
-    expect(responseBucketLabel(null)).toBeNull();
+  it('returns a neutral fallback when there is no bucket, never null', () => {
+    expect(responseBucketLabel(null)).toBe('Nuevo en XPEAK');
   });
 
   it('maps each bucket to its Spanish label', () => {
@@ -14,7 +14,7 @@ describe('responseBucketLabel', () => {
     expect(responseBucketLabel('mas_1_dia')).toBe('Suele tardar en responder');
   });
 
-  it('returns null for an unrecognized bucket', () => {
-    expect(responseBucketLabel('bucket_invalido')).toBeNull();
+  it('returns the neutral fallback for an unrecognized bucket', () => {
+    expect(responseBucketLabel('bucket_invalido')).toBe('Nuevo en XPEAK');
   });
 });

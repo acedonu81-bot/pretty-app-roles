@@ -448,14 +448,17 @@ export function reviewQuestionStats(
   return stats;
 }
 
-export function responseBucketLabel(bucket: string | null): string | null {
+export function responseBucketLabel(bucket: string | null): string {
   switch (bucket) {
     case 'minutos': return 'Responde en minutos';
     case 'menos_1h': return 'Responde en menos de 1 hora';
     case 'unas_horas': return 'Responde en unas horas';
     case '1_dia': return 'Responde en 1 día';
     case 'mas_1_dia': return 'Suele tardar en responder';
-    default: return null;
+    // Sin dato aún calculado por el cron (nunca ha respondido a un primer
+    // mensaje de un empresario) — no se deja la cabecera sin este indicador,
+    // se muestra un estado neutro en vez de ocultar el chip por completo.
+    default: return 'Nuevo en XPEAK';
   }
 }
 
@@ -942,12 +945,10 @@ const PublicProfile = () => {
                     <Star size={11} fill="#000" /> {(seoReviews.reduce((s, r) => s + r.rating, 0) / seoReviews.length).toFixed(1)} ({seoReviews.length})
                   </span>
                 )}
-                {responseBucketText && (
-                  <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
-                    style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
-                    ⚡ {responseBucketText}
-                  </span>
-                )}
+                <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
+                  style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
+                  {sbProfile?.response_bucket ? '⚡' : '✨'} {responseBucketText}
+                </span>
                 {profile.isVerified && (
                   <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
                     style={{ background: 'rgba(212,175,55,0.85)', color: '#000', backdropFilter: 'blur(8px)' }}>
