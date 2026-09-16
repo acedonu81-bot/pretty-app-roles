@@ -11,6 +11,7 @@ import { useProfile } from '@/hooks/useProfile';
 import { sanitizeInput, containsPhoneNumber } from '@/lib/contentFilter';
 import { requestPushPermission, revokePushPermission, isPushSubscribed, showLocalNotification, isPushSupported } from '@/lib/pushNotifications';
 import { esAppNativa, registrarPushNativo } from '@/lib/pushNative';
+import { isEligibleForNewBadge } from '@/lib/newOnPlatform';
 
 const euLanguages = [
   '🇪🇸 Español', '🇬🇧 English', '🇩🇪 Deutsch', '🇫🇷 Français', '🇮🇹 Italiano',
@@ -277,6 +278,8 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
   const isDj = profile.role === 'dj' || (profile.roles ?? []).includes('dj');
   const experienceLevel = localExperienceLevel ?? profile.experience_level ?? null;
   const emergenteAnios = localEmergenteAnios ?? (profile.emergente_anios != null ? String(profile.emergente_anios) : '');
+  const isGrupoMusical = profile.role === 'grupo-musical' || (profile.roles ?? []).includes('grupo-musical');
+  const eligibleForNewBadge = isGrupoMusical && isEligibleForNewBadge(profile);
   const displayName = localName ?? profile.display_name;
   const city = localCity ?? profile.zone ?? 'Madrid Centro';
   const rate = localRate ?? profile.hourly_rate;
@@ -840,6 +843,26 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
                 </p>
               </>
             )}
+          </div>
+        )}
+
+        {/* Badge "Nuevo en XPEAK" para grupos musicales (16 sep 2026): opt-in,
+            no automático por fecha — un grupo consolidado que se da de alta
+            hoy es "nuevo en la plataforma" pero no "nuevo en el sector", así
+            que decide él si quiere la etiqueta. Solo visible mientras es
+            elegible (created_at < 180 días, ver newOnPlatform.ts). */}
+        {eligibleForNewBadge && (
+          <div className="mb-4 p-4 rounded-xl" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}>
+            <ToggleRow
+              label='Mostrar "Nuevo en XPEAK"'
+              desc="Si sois nuevos en el sector, esta etiqueta lo indica en el directorio. Si ya tenéis trayectoria fuera de XPEAK, mejor no activarla — no compite por experiencia, solo avisa de que acabáis de llegar aquí."
+              checked={profile.show_new_badge === true}
+              onChange={async () => {
+                const next = !profile.show_new_badge;
+                if (!await profile.updateField({ show_new_badge: next })) return;
+                toast.success(next ? 'Etiqueta "Nuevo en XPEAK" activada.' : 'Etiqueta desactivada.');
+              }}
+            />
           </div>
         )}
 

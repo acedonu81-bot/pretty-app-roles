@@ -11,6 +11,7 @@ import { ROLE_ES } from '@/lib/constants';
 import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion } from '@/lib/regions';
 import { expandRole } from '@/lib/constants';
 import { isEarlyAdopter } from '@/lib/earlyAdopter';
+import { isNewOnPlatform } from '@/lib/newOnPlatform';
 import ResourcesBanner from '@/components/dashboard/ResourcesBanner';
 import UltimaContratacion from '@/components/dashboard/UltimaContratacion';
 import { logSearch, logProfileView, logFiltroRol, logEvent } from '@/lib/track';
@@ -62,7 +63,7 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
   ].join(',');
   let query = supabase
     .from('profiles')
-    .select('id, user_id, display_name, photo_url, zone, region, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, instagram, category, is_verified, is_flash_active, is_early_adopter, is_early_adopter_override, priority_badge_until, score, role, roles, seeking_dance_partner, dance_level, dance_role, created_at, experience_level')
+    .select('id, user_id, display_name, photo_url, zone, region, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, instagram, category, is_verified, is_flash_active, is_early_adopter, is_early_adopter_override, priority_badge_until, score, role, roles, seeking_dance_partner, dance_level, dance_role, created_at, experience_level, show_new_badge')
     .or(orFilter)
     // Excluye empresarios que tengan este oficio en `roles` por dato legacy o
     // error de alta — buscan y contratan, no les contratan (caso real: MAGIG
@@ -181,6 +182,7 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
       isEarlyAdopter: isEarlyAdopter(row as any),
       hasPriorityBadge: !!((row as any).priority_badge_until && new Date((row as any).priority_badge_until) > new Date()),
       isNew: !!((row as any).created_at && (Date.now() - new Date((row as any).created_at).getTime()) < 30 * 24 * 60 * 60 * 1000),
+      showNewBadge: isNewOnPlatform(row as any),
       seekingDancePartner: (row as any).seeking_dance_partner ?? false,
       danceLevel: (row as any).dance_level ?? null,
       danceRole: (row as any).dance_role ?? null,

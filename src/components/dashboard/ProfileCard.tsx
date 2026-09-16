@@ -75,6 +75,10 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
   const priceOnRequest = showsPrice && !(p.price > 0);
   const isEarlyAdopter = (p as any).isEarlyAdopter ?? false;
   const isNew = (p as any).isNew ?? false;
+  // Opt-in, no automático por fecha: ver src/lib/newOnPlatform.ts — un grupo
+  // consolidado que se da de alta hoy es "nuevo en la plataforma" pero no
+  // "nuevo en el sector", así que el propio grupo decide si lo activa.
+  const showNewBadge = p.showNewBadge ?? false;
 
   return (
     <motion.div
@@ -134,6 +138,11 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
                 style={{ background: 'rgba(96,165,250,0.95)', color: '#fff' }}>
                 ⭐ Early
               </span>
+            ) : showNewBadge ? (
+              <span className="flex items-center gap-0.5 px-2 py-1 rounded-full text-[0.6rem] font-black"
+                style={{ background: 'rgba(212,175,55,0.95)', color: '#000' }}>
+                <Users size={9} /> Nuevo en XPEAK
+              </span>
             ) : isNew ? (
               <span className="flex items-center gap-0.5 px-2 py-1 rounded-full text-[0.6rem] font-black"
                 style={{ background: 'rgba(212,175,55,0.95)', color: '#000' }}>
@@ -148,7 +157,15 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
               ⭐ Early Adopter
             </span>
           )}
-          {!isEarlyAdopter && isNew && (
+          {/* Grupos musicales, opt-in: se muestra en vez de "Nuevo" genérico
+              cuando el propio grupo lo activa en Ajustes — ver newOnPlatform.ts */}
+          {showNewBadge && (
+            <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black"
+              style={{ background: 'rgba(212,175,55,0.9)', color: '#000' }}>
+              <Users size={9} /> Nuevo en XPEAK
+            </span>
+          )}
+          {!isEarlyAdopter && !showNewBadge && isNew && (
             <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black"
               style={{ background: 'rgba(212,175,55,0.9)', color: '#000' }}>
               Nuevo

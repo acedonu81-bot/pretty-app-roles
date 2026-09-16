@@ -14,6 +14,7 @@ import { useAuth } from '@/hooks/useAuth';
 import GhostProfileCards from '@/components/GhostProfileCards';
 import TruncatedDescription from '@/components/TruncatedDescription';
 import { isEarlyAdopter } from '@/lib/earlyAdopter';
+import { isNewOnPlatform } from '@/lib/newOnPlatform';
 import { expandRole, canonicalRole } from '@/lib/constants';
 
 // URL de perfil por slug de nombre (la misma que usan sitemap y prerender) en
@@ -334,7 +335,7 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string, expe
   const orFilter = dbRoles.map(r => `role.eq.${r}`).join(',') + ',' + dbRoles.map(r => `roles.cs.{${r}}`).join(',');
   let q = supabase
     .from('profiles')
-    .select('user_id, display_name, role, roles, specialty, zone, photo_url, bio_video_url, video_session_urls, hourly_rate, bio, is_flash_active, is_verified, is_seed, is_early_adopter, is_early_adopter_override, score, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls, updated_at, created_at, experience_level')
+    .select('user_id, display_name, role, roles, specialty, zone, photo_url, bio_video_url, video_session_urls, hourly_rate, bio, is_flash_active, is_verified, is_seed, is_early_adopter, is_early_adopter_override, score, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls, updated_at, created_at, experience_level, show_new_badge')
     .or(orFilter)
     // Un empresario que tenga esta categoria en su array `roles` (segundo
     // oficio marcado por error o dato legacy) hace match por roles.cs — se
@@ -848,6 +849,15 @@ export default function DirectorioPublico() {
                         <span className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
                           style={{ background: 'rgba(96,165,250,0.9)', color: '#000' }}>
                           ⭐ Early Adopter
+                        </span>
+                      )}
+                      {/* Grupos musicales, opt-in — ver src/lib/newOnPlatform.ts.
+                          No es "Nuevo" por fecha de alta: solo se muestra si el
+                          propio grupo lo activó en Ajustes. */}
+                      {isNewOnPlatform(p as any) && (
+                        <span className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
+                          style={{ background: 'rgba(212,175,55,0.9)', color: '#000' }}>
+                          <Users size={10} /> Nuevo en XPEAK
                         </span>
                       )}
                       {p.is_flash_active && (

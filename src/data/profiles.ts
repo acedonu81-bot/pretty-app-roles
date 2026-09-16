@@ -36,6 +36,7 @@ export interface Profile {
   userId?: string;
   slug?: string;
   isEarlyAdopter?: boolean;
+  showNewBadge?: boolean;
   hasPriorityBadge?: boolean;
   seekingDancePartner?: boolean;
   danceLevel?: string | null;
