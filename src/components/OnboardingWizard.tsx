@@ -258,6 +258,12 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
     if (error) { toast.error('Error al subir foto: ' + error.message); return; }
     const { data: urlData } = supabase.storage.from('audio-sessions').getPublicUrl(path);
     setPhotoUrl(urlData.publicUrl);
+    // Guardar de inmediato, no esperar a handleQuickSave: si el usuario cierra
+    // el wizard o no llega a pulsar el guardado conjunto, la foto queda subida
+    // en Storage pero profiles.photo_url nunca se actualiza — caso real 16 sept,
+    // perfil con foto en Storage pero photo_url null y updated_at sin tocar.
+    const ok = await profile.updateField({ photo_url: urlData.publicUrl });
+    if (!ok) toast.error('La foto se subió pero no se pudo guardar en tu perfil. Inténtalo de nuevo.');
   };
 
   const handleQuickSave = async () => {

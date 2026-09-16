@@ -480,6 +480,15 @@ const PublicProfile = () => {
       navigate(`/auth?mode=register&role=empresario&redirect=${encodeURIComponent(window.location.pathname)}`);
       return;
     }
+    // Un profesional puede llegar a su propia ficha pública (vista previa,
+    // compartir enlace) y encontrar el mismo botón que ve un cliente. Sin este
+    // corte, "contactarse a sí mismo" genera un flash_booking real marcado
+    // es_autorregistro (caso real 16 sep: Gonzalo DJ) — confuso y contamina
+    // Actividad aunque no cuente en métricas de demanda.
+    if (sbProfile && authUser.id === sbProfile.user_id) {
+      toast.info('Esta es tu ficha pública — así te ven tus clientes. No puedes contactarte a ti mismo.');
+      return;
+    }
     setShowContact(true);
   };
   const [scrolledPastHero, setScrolledPastHero] = useState(false);
