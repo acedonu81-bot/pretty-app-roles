@@ -1,10 +1,10 @@
 {
   "redirects": [
     { "source": "/:path(.*)", "has": [{ "type": "host", "value": "www.xpeak.es" }], "destination": "https://xpeak.es/:path", "permanent": true },
-    { "source": "/:path(.*)", "has": [{ "type": "host", "value": "pretty-app-roles-(.*)\\.vercel\\.app" }], "destination": "https://xpeak.es/:path", "permanent": true },
-    { "source": "/directorio/emergentes", "destination": "/directorio/djs-emergentes", "permanent": true }
+    { "source": "/:path(.*)", "has": [{ "type": "host", "value": "pretty-app-roles-(.*)\\.vercel\\.app" }], "destination": "https://xpeak.es/:path", "permanent": true }
   ],
   "routes": [
+    { "src": "/directorio/emergentes", "status": 301, "headers": { "Location": "/directorio/djs-emergentes" } },
     { "src": "/directorio", "has": [{ "type": "query", "key": "categoria", "value": "camarero" }], "status": 301, "headers": { "Location": "/directorio/staff" } },
     { "src": "/directorio", "has": [{ "type": "query", "key": "categoria", "value": "camareros" }], "status": 301, "headers": { "Location": "/directorio/staff" } },
     { "src": "/directorio", "has": [{ "type": "query", "key": "categoria", "value": "staff" }], "status": 301, "headers": { "Location": "/directorio/staff" } },
