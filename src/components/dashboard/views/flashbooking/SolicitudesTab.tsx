@@ -43,6 +43,14 @@ const STATUS: Record<string, { label: string; color: string; bg: string }> = {
   open:      { label: 'Abierta',    color: '#60a5fa', bg: 'rgba(96,165,250,0.08)' },
 };
 
+// La dirección exacta solo se revela con el trato ya cerrado. Mientras la
+// solicitud está pendiente (o se rechazó/canceló) el profesional ve únicamente
+// la ciudad/zona, para que nadie pueda ir por su cuenta saltándose la
+// plataforma con una reserva que aún no ha aceptado.
+const ESTADOS_TRATO_CERRADO = ['confirmed', 'accepted', 'completed', 'closed'];
+export const puedeVerDireccionExacta = (status: string | null) =>
+  ESTADOS_TRATO_CERRADO.includes(status ?? '');
+
 const fmt = (iso: string | null) => {
   if (!iso) return '—';
   return new Date(iso).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -333,11 +341,7 @@ const SolicitudesTab = () => {
                       {s.event_location}
                     </p>
                   )}
-                  {/* La dirección exacta solo se revela una vez el trato está
-                      cerrado (confirmed/accepted/completed/closed) — antes de
-                      aceptar el profesional solo ve la ciudad/zona de arriba,
-                      para que nadie se salte la plataforma. */}
-                  {s.exact_address && (s.status === 'confirmed' || s.status === 'accepted' || s.status === 'completed' || s.status === 'closed') && (
+                  {s.exact_address && puedeVerDireccionExacta(s.status) && (
                     <a
                       href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.exact_address)}`}
                       target="_blank" rel="noopener noreferrer"
