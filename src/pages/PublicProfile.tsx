@@ -947,7 +947,7 @@ const PublicProfile = () => {
                 )}
                 <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
                   style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
-                  {sbProfile?.response_bucket ? '⚡' : '✨'} {responseBucketText}
+                  <Zap size={11} /> {responseBucketText}
                 </span>
                 {profile.isVerified && (
                   <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
