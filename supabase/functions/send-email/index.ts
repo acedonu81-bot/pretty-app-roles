@@ -802,6 +802,28 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       <p style="color:#9CA3AF;font-size:12px;text-align:center">¿Tienes preguntas? Escríbenos a <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a></p>`),
   }),
 
+  // 11b. Foto de portada retirada por política de contacto (16 sep 2026):
+  // la imagen incluía un teléfono visible, saltándose el contacto interno
+  // que XPEAK garantiza a quien contrata. Tono: nunca "hemos detectado un
+  // fallo tuyo", sino explicar la política y agradecer, sin admitir fallos.
+  photo_policy_violation: (d) => ({
+    subject: `Tu foto de perfil en XPEAK — acción necesaria`,
+    to: d.email,
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Sobre tu foto de perfil</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, estamos encantados de contar contigo en XPEAK.
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Nuestras políticas no permiten que la foto de portada del perfil muestre datos de contacto (teléfono, redes, webs externas): todo el contacto entre profesionales y organizadores pasa por dentro de XPEAK, así queda protegido para ambas partes.
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
+        Hemos retirado temporalmente tu foto de portada. Puedes subir una nueva sin datos de contacto visibles en cualquier momento desde tu panel.
+      </p>
+      ${btn('Subir nueva foto →', 'https://xpeak.es/dashboard?view=settings')}
+      <p style="color:#9CA3AF;font-size:12px;text-align:center">¿Dudas? Escríbenos a <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a></p>`),
+  }),
+
   // 12. Flash Booking — aviso al profesional (nueva solicitud recibida)
   booking_received: (d) => ({
     subject: `Nueva solicitud Flash Booking — ${esc(d.event_date ?? 'Fecha por confirmar')}`,
