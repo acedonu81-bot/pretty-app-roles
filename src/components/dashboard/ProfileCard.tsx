@@ -9,6 +9,7 @@ import VoteButton from './VoteButton';
 import LegalModal from '@/components/LegalModal';
 import ContractModal from './ContractModal';
 import { useProfile } from '@/hooks/useProfile';
+import { useWeeklyProfileViews } from '@/hooks/useWeeklyProfileViews';
 
 const HearthisIcon = ({ size = 14 }: { size?: number }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
@@ -41,6 +42,11 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
   const [showContract, setShowContract] = useState(false);
   const [imgError, setImgError] = useState(false);
   const realProfileId = (p as any).userId ?? p.userId ?? null;
+  // Nadie más que el propio dueño del perfil ve cuántas vistas tiene su
+  // ficha (RLS de profile_business_views ya lo restringe a nivel de BD;
+  // esto evita también pedir el dato para cards de otros profesionales).
+  const isOwnCard = !!currentUser.user_id && currentUser.user_id === realProfileId;
+  const weeklyViews = useWeeklyProfileViews(isOwnCard ? realProfileId : null);
   const [voteCount, setVoteCount] = useState(0);
   const [hasVotedToday, setHasVotedToday] = useState(false);
 
@@ -362,6 +368,24 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
           </div>
         </div>
       </div>
+
+      {/* Vistas de la semana — solo en tu propia card, nunca en la de otro
+          profesional. Umbral de 3 (igual que el badge de PublicProfile.tsx):
+          "1 vista esta semana" desanima más de lo que motiva. */}
+      {isOwnCard && weeklyViews && weeklyViews.count >= 3 && (
+        <div className="hidden sm:flex items-center justify-between px-3.5 py-2 text-xs"
+          style={{ background: 'rgba(212,175,55,0.06)', borderTop: '1px solid rgba(212,175,55,0.15)' }}>
+          <span style={{ color: '#22c55e', fontWeight: 700 }}>
+            {weeklyViews.count} vistas <span style={{ color: '#9c9584', fontWeight: 400 }}>esta semana</span>
+          </span>
+          {weeklyViews.delta !== 0 && (
+            <span style={{ color: weeklyViews.delta > 0 ? '#22c55e' : '#9c9584', fontWeight: 700 }}>
+              {weeklyViews.delta > 0 ? '↑' : '↓'} {Math.abs(weeklyViews.delta)}
+              <span style={{ color: '#9c9584', fontWeight: 400 }}> vs. semana pasada</span>
+            </span>
+          )}
+        </div>
+      )}
 
       <LegalModal open={showLegal} onClose={() => setShowLegal(false)} onAccept={() => { setAccepted(true); localStorage.setItem('xpeak_norms_accepted', 'true'); }} />
       {showContract && <ContractModal professional={p} onClose={() => setShowContract(false)} />}
