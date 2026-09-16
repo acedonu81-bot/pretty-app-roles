@@ -183,10 +183,12 @@ const NavItem = ({ icon: Icon, label, isActive, onClick, badge, badgeColor, icon
         <span className="absolute rounded-r-[3px] group-data-[collapsible=icon]:hidden" style={{ left: -14, top: '50%', transform: 'translateY(-50%)', width: 3, height: 16, background: 'linear-gradient(180deg,#D4AF37,#B8941E)' }} />
       )}
       <span
-        className={`flex-shrink-0 flex items-center justify-center${iconAlert ? ' motion-safe:animate-pulse' : ''}`}
-        style={{ width: 17, height: 17, color: iconAlert ? '#16a34a' : isActive ? '#B8941E' : 'rgba(10,9,8,0.55)' }}
+        className={`flex-shrink-0 flex items-center justify-center rounded-full${iconAlert ? ' motion-safe:[animation:adminAlertPulse_1.4s_ease-in-out_infinite]' : ''}`}
+        style={iconAlert
+          ? { width: 26, height: 26, margin: -4.5, color: '#fff', background: '#16a34a' }
+          : { width: 17, height: 17, color: isActive ? '#B8941E' : 'rgba(10,9,8,0.55)' }}
       >
-        <Icon size={17} />
+        <Icon size={iconAlert ? 15 : 17} />
       </span>
       <span className="flex-1">{label}</span>
     </SidebarMenuButton>
