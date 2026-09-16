@@ -50,6 +50,10 @@ const OfertaTab = () => {
       .from('profiles')
       .select('id, user_id, display_name, photo_url, specialty, zone, hourly_rate, role, bio, audio_embed_url, audio_session_urls, portfolio_urls, score, genres, is_early_adopter_override')
       .eq('is_flash_active', true)
+      // Emergentes (16 sep 2026): sin Flash Booking directo mientras suben de
+      // nivel — protege la métrica de "responde en X" de los profesionales
+      // verificados. Se contacta por mensaje desde su ficha, no aquí.
+      .is('experience_level', null)
       .order('score', { ascending: false })
       .then(({ data }) => {
         // is_early_adopter ya no viene de BD — se calcula aquí, así que el

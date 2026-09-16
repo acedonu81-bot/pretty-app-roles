@@ -48,6 +48,7 @@ const PhotoBoothView = lazy(() => import('@/components/dashboard/views/PhotoBoot
 const TecnicoView = lazy(() => import('@/components/dashboard/views/TecnicoView'));
 const ExplorarView = lazy(() => import('@/components/dashboard/views/ExplorarView'));
 const GrupoMusicalView = lazy(() => import('@/components/dashboard/views/GrupoMusicalView'));
+const EmergentesView = lazy(() => import('@/components/dashboard/views/EmergentesView'));
 const ContractView = lazy(() => import('@/components/dashboard/views/ContractView'));
 const FichaView = lazy(() => import('@/components/dashboard/views/FichaView'));
 const AgencyView = lazy(() => import('@/components/dashboard/views/AgencyView'));
@@ -429,7 +430,7 @@ const Dashboard = () => {
     'dj', 'staff', 'azafata', 'event_manager', 'makeup', 'peluqueria', 'media',
     'ambassador', 'vestuario', 'design', 'promotor', 'camarero', 'catering',
     'mago', 'bailarin', 'humorista', 'monologo', 'animador', 'speaker',
-    'photo-booth', 'grupo-musical', 'tecnico',
+    'photo-booth', 'grupo-musical', 'tecnico', 'emergentes',
   ]);
 
   const handleSearch = (q: string) => {
@@ -475,6 +476,7 @@ const Dashboard = () => {
       case 'speaker':   return <SpeakerView   onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'photo-booth': return <PhotoBoothView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'grupo-musical': return <GrupoMusicalView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
+      case 'emergentes': return <EmergentesView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'tecnico':   return <TecnicoView   onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'settings': return <SettingsView onNavigate={nav} />;
       case 'empresario': return <EmpresarioView onMessage={handleMessage} />;

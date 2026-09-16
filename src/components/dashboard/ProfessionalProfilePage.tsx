@@ -228,6 +228,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
   const [full, setFull] = useState<{
     audioEmbedUrl?: string | null;
     audioSessionUrls?: string[];
+    videoSessionUrls?: string[];
     portfolioUrls?: string[];
     bio?: string;
     specialty?: string | null;
@@ -258,7 +259,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
         // dashboard) nunca mostraba la sección "Sesiones" que sí tiene el
         // perfil público (PublicProfile.tsx), aunque el profesional tuviera
         // varias sesiones reales guardadas (p. ej. Dj Poly, 2 en Mixcloud).
-        .select('audio_embed_url, audio_session_urls, portfolio_urls, bio, specialty, languages, genres, hourly_rate, is_verified, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role')
+        .select('audio_embed_url, audio_session_urls, video_session_urls, portfolio_urls, bio, specialty, languages, genres, hourly_rate, is_verified, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role')
         .eq('user_id', p.userId)
         .maybeSingle();
       if (!data) return;
@@ -266,6 +267,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
       setFull({
         audioEmbedUrl: (data as any).audio_embed_url,
         audioSessionUrls: (data as any).audio_session_urls ?? [],
+        videoSessionUrls: (data as any).video_session_urls ?? [],
         portfolioUrls: (data as any).portfolio_urls ?? [],
         bio: (data as any).bio || p.description,
         specialty: (data as any).specialty ?? null,
@@ -612,6 +614,23 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
               </motion.div>
             )}
 
+            {/* Clips de vídeo — mismo patrón que Sesiones: este modal (dashboard)
+                no consultaba video_session_urls, aunque el profesional tuviera
+                clips guardados y visibles en el perfil público (PublicProfile.tsx). */}
+            {full.videoSessionUrls && full.videoSessionUrls.length > 0 && (
+              <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.115 }}
+                style={{ borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: 22 }}>
+                <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#444' }}>🎬 CLIPS</p>
+                <div className="flex flex-col gap-3">
+                  {full.videoSessionUrls.slice(0, 3).map((url, i) => (
+                    <video key={i} src={url} controls preload="metadata"
+                      className="w-full rounded-xl mx-auto"
+                      style={{ maxHeight: '50vh', objectFit: 'contain', background: '#000' }} />
+                  ))}
+                </div>
+              </motion.div>
+            )}
+
             {/* Portfolio grid */}
             {full.portfolioUrls && full.portfolioUrls.length > 0 && (
               <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}
@@ -656,7 +675,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
             )}
 
             {/* Empty media hint si no hay nada */}
-            {!audioEmbed && !hasLive && (!full.portfolioUrls || full.portfolioUrls.length === 0) && (
+            {!audioEmbed && !hasLive && (!full.portfolioUrls || full.portfolioUrls.length === 0) && (!full.videoSessionUrls || full.videoSessionUrls.length === 0) && (
               <div className="rounded-xl p-8 text-center flex flex-col items-center gap-2"
                 style={{ borderTop: '1px solid rgba(0,0,0,0.06)', marginTop: 4 }}>
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center"

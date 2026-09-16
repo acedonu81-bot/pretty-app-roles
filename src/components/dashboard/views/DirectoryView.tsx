@@ -25,6 +25,12 @@ interface DirectoryViewProps {
   wideCards?: boolean;
   searchQuery?: string;
   onViewProfile?: (profile: Profile) => void;
+  // Emergentes: 'only' filtra solo perfiles marcados como emergente (para el
+  // directorio EmergentesView), 'exclude' los saca del directorio normal de
+  // DJs para no mezclar profesionales con perfiles que aún se están iniciando.
+  // Sin especificar, se comporta como antes (no filtra por este campo) —
+  // relevante para gremios donde 'emergente' aún no aplica.
+  experienceLevel?: 'only' | 'exclude';
 }
 
 const REGION_OPTIONS = [ALL_REGIONS_LABEL, ...REGIONS.map(r => r.label)].map(r => ({ value: r, label: r }));
@@ -39,7 +45,7 @@ async function fetchActiveEmployerCount(): Promise<number> {
   return new Set(data.map((j: any) => j.employer_id)).size;
 }
 
-async function fetchDirectoryProfiles(role: string, roles: string[] | undefined, filterRegion: string): Promise<Profile[]> {
+async function fetchDirectoryProfiles(role: string, roles: string[] | undefined, filterRegion: string, experienceLevel?: 'only' | 'exclude'): Promise<Profile[]> {
   // Expandir los alias legacy: sin esto, el directorio de 'staff' del dashboard
   // se saltaba a los perfiles con role='camarero' (el rol retirado equivalente),
   // y lo mismo con makeup/peluqueria. Se veian 6 camareros de 7, faltando
@@ -56,7 +62,7 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
   ].join(',');
   let query = supabase
     .from('profiles')
-    .select('id, user_id, display_name, photo_url, zone, region, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, instagram, category, is_verified, is_flash_active, is_early_adopter, is_early_adopter_override, priority_badge_until, score, role, roles, seeking_dance_partner, dance_level, dance_role, created_at')
+    .select('id, user_id, display_name, photo_url, zone, region, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, instagram, category, is_verified, is_flash_active, is_early_adopter, is_early_adopter_override, priority_badge_until, score, role, roles, seeking_dance_partner, dance_level, dance_role, created_at, experience_level')
     .or(orFilter)
     // Excluye empresarios que tengan este oficio en `roles` por dato legacy o
     // error de alta — buscan y contratan, no les contratan (caso real: MAGIG
@@ -69,6 +75,15 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
     // como nombre (txetxiuriarte@hotmail.com, 16 sep 2026).
     .not('photo_url', 'is', null)
     .limit(200);
+
+  // Emergentes (16 sep 2026): un perfil que se marca a sí mismo como
+  // "estoy empezando" sale del directorio normal (exclude) y solo aparece
+  // en su propio directorio (only). Ortogonal al filtro de rol de arriba.
+  if (experienceLevel === 'only') {
+    query = query.eq('experience_level', 'emergente');
+  } else if (experienceLevel === 'exclude') {
+    query = query.is('experience_level', null);
+  }
 
   if (filterRegion !== ALL_REGIONS_LABEL) {
     // profiles.region es la comunidad ya derivada de zone en la BD (trigger
@@ -172,7 +187,7 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
     };});
 }
 
-const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wideCards, searchQuery, onViewProfile }: DirectoryViewProps) => {
+const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wideCards, searchQuery, onViewProfile, experienceLevel }: DirectoryViewProps) => {
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [checkoutItem, setCheckoutItem] = useState<{ name: string; price: number; description: string } | null>(null);
   // Preselecciona la comunidad elegida en el sidebar (persiste entre
@@ -185,8 +200,8 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
   const [filterDanceRole, setFilterDanceRole] = useState<'' | 'lead' | 'follow'>('');
 
   const { data: realProfiles = [], isLoading: loadingProfiles } = useQuery({
-    queryKey: ['directory-profiles', role, roles, filterRegion],
-    queryFn: () => fetchDirectoryProfiles(role, roles, filterRegion),
+    queryKey: ['directory-profiles', role, roles, filterRegion, experienceLevel],
+    queryFn: () => fetchDirectoryProfiles(role, roles, filterRegion, experienceLevel),
     staleTime: 60_000, // datos frescos 1 min — cambiar de rol y volver no re-fetchea
     gcTime: 10 * 60_000, // mantiene en caché 10 min aunque el componente se desmonte
   });

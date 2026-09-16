@@ -49,11 +49,16 @@ export interface DirProfile {
   avgRating: number;
   reviewCount: number;
   updated_at: string | null;
+  experience_level?: string | null;
 }
 
 export const ROLE_CONFIG: Record<string, {
   dbRole: string; title: string; subtitle: string;
   seoTitle: string; seoDesc: string; cta: string;
+  // Emergentes: filtra por experience_level en vez de (o además de) rol.
+  // 'exclude' saca a los emergentes del directorio normal de DJs, 'only'
+  // los aísla en su propio directorio.
+  experienceLevel?: 'only' | 'exclude';
 }> = {
   dj: {
     dbRole: 'dj',
@@ -62,6 +67,16 @@ export const ROLE_CONFIG: Record<string, {
     seoTitle: 'Contratar DJ para eventos en España — Directorio XPEAK',
     seoDesc: 'Directorio de DJs para bodas, comuniones y eventos en España. Perfiles verificados, precios reales y contacto directo sin comisión.',
     cta: 'Contratar este DJ',
+    experienceLevel: 'exclude',
+  },
+  emergentes: {
+    dbRole: 'dj',
+    title: 'DJs emergentes: talento que se está iniciando',
+    subtitle: 'DJs que empiezan su carrera, en proceso de verificación por XPEAK. Contacta por mensaje para conocer su trabajo.',
+    seoTitle: 'DJs emergentes para eventos — Directorio XPEAK',
+    seoDesc: 'Directorio de DJs emergentes en España: talento que se está iniciando, revisado por el equipo de XPEAK a medida que sube de nivel.',
+    cta: 'Contactar por mensaje',
+    experienceLevel: 'only',
   },
   fotografo: {
     dbRole: 'media',
@@ -308,7 +323,7 @@ export async function fetchRatings(userIds: string[]): Promise<Record<string, { 
   return out;
 }
 
-export async function fetchDirectorioProfiles(dbRole: string, city: string): Promise<DirProfile[]> {
+export async function fetchDirectorioProfiles(dbRole: string, city: string, experienceLevel?: 'only' | 'exclude'): Promise<DirProfile[]> {
   // Alias de rol (staff/camarero, makeup/peluqueria) desde el canon compartido
   // en lib/constants — antes estaba duplicado aquí, en el prerender y en el
   // panel de empresario, y las tres copias podían divergir.
@@ -319,7 +334,7 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string): Pro
   const orFilter = dbRoles.map(r => `role.eq.${r}`).join(',') + ',' + dbRoles.map(r => `roles.cs.{${r}}`).join(',');
   let q = supabase
     .from('profiles')
-    .select('user_id, display_name, role, roles, specialty, zone, photo_url, bio_video_url, video_session_urls, hourly_rate, bio, is_flash_active, is_verified, is_seed, is_early_adopter, is_early_adopter_override, score, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls, updated_at, created_at')
+    .select('user_id, display_name, role, roles, specialty, zone, photo_url, bio_video_url, video_session_urls, hourly_rate, bio, is_flash_active, is_verified, is_seed, is_early_adopter, is_early_adopter_override, score, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls, updated_at, created_at, experience_level')
     .or(orFilter)
     // Un empresario que tenga esta categoria en su array `roles` (segundo
     // oficio marcado por error o dato legacy) hace match por roles.cs — se
@@ -329,6 +344,12 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string): Pro
     .not('display_name', 'is', null)
     .order('score', { ascending: false })
     .limit(60) as any;
+
+  // Emergentes: mismo criterio que DirectoryView.tsx (dashboard). 'only' aísla
+  // el directorio público /directorio/emergentes, 'exclude' saca a los
+  // emergentes de /directorio/dj para no mezclarlos con profesionales.
+  if (experienceLevel === 'only') q = q.eq('experience_level', 'emergente');
+  else if (experienceLevel === 'exclude') q = q.is('experience_level', null);
 
   // Coincide por la zona literal (el pueblo escrito) O por city_ref, la ciudad
   // grande de referencia que deriva la BD: asi quien vive en un pueblo aparece
@@ -500,8 +521,8 @@ export default function DirectorioPublico() {
     : undefined;
 
   const { data: baseProfiles = [], isLoading: loading, isError: fetchError, refetch } = useQuery({
-    queryKey: ['directorio-publico', config.dbRole, city],
-    queryFn: () => fetchDirectorioProfiles(config.dbRole, city),
+    queryKey: ['directorio-publico', config.dbRole, city, config.experienceLevel],
+    queryFn: () => fetchDirectorioProfiles(config.dbRole, city, config.experienceLevel),
     staleTime: 60_000,
     gcTime: 10 * 60_000,
     // Los datos del prerender son de build time, así que solo sirven para la
@@ -907,11 +928,23 @@ export default function DirectorioPublico() {
                         style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.12)', color: '#333' }}>
                         Ver perfil
                       </a>
-                      <button onClick={() => requireAuthThen(() => setBookingPro(p))}
-                        className="flex-1 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
-                        style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 2px 10px rgba(212,175,55,0.25)' }}>
-                        Solicitar presupuesto
-                      </button>
+                      {/* Emergentes (16 sep 2026): sin Flash Booking directo mientras suben
+                          de nivel — protege la métrica de "responde en X" de los
+                          profesionales verificados. Se contacta por mensaje desde su
+                          ficha, no con una solicitud de presupuesto directa. */}
+                      {p.experience_level === 'emergente' ? (
+                        <a href={profileUrl(p)}
+                          className="flex-1 text-center py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
+                          style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 2px 10px rgba(212,175,55,0.25)' }}>
+                          Contactar por mensaje
+                        </a>
+                      ) : (
+                        <button onClick={() => requireAuthThen(() => setBookingPro(p))}
+                          className="flex-1 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
+                          style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 2px 10px rgba(212,175,55,0.25)' }}>
+                          Solicitar presupuesto
+                        </button>
+                      )}
                       <button
                         onClick={() => {
                           const result = addToCart({ userId: p.user_id, displayName: p.display_name, role: p.role, photoUrl: p.photo_url, hourlyRate: p.hourly_rate, zone: p.zone });

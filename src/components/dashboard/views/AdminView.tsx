@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Users, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2, UserMinus, Activity, ShieldCheck, LineChart } from 'lucide-react';
+import { Users, MessageSquare, TrendingDown, Tag, LayoutGrid, Building2, UserMinus, Activity, ShieldCheck, LineChart, Sparkles } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import AdminMetrics from './admin/AdminMetrics';
 import AdminCharts from './admin/AdminCharts';
@@ -19,6 +19,7 @@ import AdminSaludSistema from './admin/AdminSaludSistema';
 import AdminDeletions from './admin/AdminDeletions';
 import AdminAnalytics from './admin/AdminAnalytics';
 import AdminConversations from './admin/AdminConversations';
+import AdminEmergentes from './admin/AdminEmergentes';
 
 const TABS = [
   { id: 'activity', label: 'Actividad', icon: Activity },
@@ -27,6 +28,7 @@ const TABS = [
   { id: 'overview', label: 'General', icon: LayoutGrid },
   { id: 'users', label: 'Usuarios', icon: Users },
   { id: 'empresarios', label: 'Empresarios', icon: Building2 },
+  { id: 'emergentes', label: 'Emergentes', icon: Sparkles },
   { id: 'content', label: 'Reseñas', icon: MessageSquare },
   { id: 'business', label: 'Negocio', icon: TrendingDown },
   { id: 'deletions', label: 'Bajas', icon: UserMinus },
@@ -118,6 +120,7 @@ const AdminView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {})
       {tab === 'users' && <AdminUserManagement />}
       {tab === 'deletions' && <AdminDeletions />}
       {tab === 'empresarios' && <AdminBusinesses />}
+      {tab === 'emergentes' && <AdminEmergentes />}
       {tab === 'content' && <AdminReviews />}
       {tab === 'business' && (
         <>

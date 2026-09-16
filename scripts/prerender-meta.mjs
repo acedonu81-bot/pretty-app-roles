@@ -674,6 +674,14 @@ const ROUTES = [
     ogType: 'website',
   },
   {
+    path: '/directorio/emergentes',
+    title: 'DJs emergentes para eventos — Directorio XPEAK',
+    desc: 'Directorio de DJs emergentes en España: talento que se está iniciando, revisado por el equipo de XPEAK a medida que sube de nivel.',
+    ogTitle: 'DJs emergentes — XPEAK',
+    ogDesc: 'DJs que se están iniciando en España. Contacta por mensaje para conocer su trabajo.',
+    ogType: 'website',
+  },
+  {
     path: '/directorio/fotografo',
     title: 'Contratar fotógrafo para eventos en España — Directorio XPEAK',
     desc: 'Directorio de fotógrafos para bodas y eventos en España. Portfolios reales, precios visibles, contacto directo.',

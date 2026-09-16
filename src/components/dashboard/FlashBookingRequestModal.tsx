@@ -24,11 +24,18 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
   const [form, setForm] = useState({ name: '', contact: '', date: '', location: '', exactAddress: '', description: '', price: '', eventType: '', website: '' });
   const [sending, setSending] = useState(false);
   const [hourlyRate, setHourlyRate] = useState<number | null>(null);
+  // Emergentes (16 sep 2026): defensa en profundidad además de los puntos de
+  // entrada ya bloqueados (OfertaTab y DirectorioPublico) — si el modal se
+  // llega a abrir igualmente para un emergente, el envío se corta aquí.
+  const [isEmergente, setIsEmergente] = useState(false);
 
   useEffect(() => {
     if (!professionalUserId) return;
-    supabase.from('profiles').select('hourly_rate').eq('user_id', professionalUserId).maybeSingle()
-      .then(({ data }) => { if (data?.hourly_rate) setHourlyRate(data.hourly_rate as number); });
+    supabase.from('profiles').select('hourly_rate, experience_level').eq('user_id', professionalUserId).maybeSingle()
+      .then(({ data }) => {
+        if (data?.hourly_rate) setHourlyRate(data.hourly_rate as number);
+        setIsEmergente(data?.experience_level === 'emergente');
+      });
   }, [professionalUserId]);
 
   const estimatedPrice = hourlyRate && form.eventType ? hourlyRate * (EVENT_HOURS[form.eventType] ?? 4) : null;
@@ -37,6 +44,7 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
 
   const send = async () => {
     if (!user) { toast.error('Inicia sesión para contactar con profesionales.'); return; }
+    if (isEmergente) { toast.error('Este perfil aún no admite Flash Booking directo. Contáctalo por mensaje.'); return; }
     if (!form.name.trim() || !form.contact.trim() || !form.date.trim()) {
       toast.error('Rellena tu nombre, contacto y fecha del evento.');
       return;

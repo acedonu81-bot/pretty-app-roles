@@ -86,6 +86,17 @@ const PROFILE_ROLE_LABEL: Record<string, string> = Object.fromEntries(
   ROLE_OPTIONS.map(o => [o.value, o.label])
 );
 
+// Emergentes: el sub-nivel inicial es solo orientativo, calculado a partir
+// de los años declarados por el propio usuario. NUNCA decide el ascenso de
+// verdad ni la graduación a profesional — eso lo hace siempre un admin a
+// mano en el panel (ver AdminEmergentes.tsx), tras revisar sesiones subidas
+// e Instagram. Esto evita que declarar más años "suba" el nivel sin control.
+const subNivelPorAnios = (anios: number): 'principiante' | 'medio' | 'avanzado' => {
+  if (anios < 2) return 'principiante';
+  if (anios < 5) return 'medio';
+  return 'avanzado';
+};
+
 const MultiProfileSection = () => {
   const { allProfiles, maxProfiles, switchProfile, createProfile, profileId } = useProfile();
   const [adding, setAdding] = useState(false);
@@ -180,6 +191,8 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
   const [localRate, setLocalRate] = useState<number | null>(null);
   const [localBirthday, setLocalBirthday] = useState<string | null>(null);
   const [localPhone, setLocalPhone] = useState<string | null>(null);
+  const [localExperienceLevel, setLocalExperienceLevel] = useState<string | null>(null);
+  const [localEmergenteAnios, setLocalEmergenteAnios] = useState<string | null>(null);
 
   // Notification prefs — backed by localStorage + Web Push
   const [pushEnabled, setPushEnabled] = useState(() => isPushSubscribed());
@@ -261,6 +274,9 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
   // Persist audio quality when it changes
 
   const isEmpresario = profile.role === 'empresario';
+  const isDj = profile.role === 'dj' || (profile.roles ?? []).includes('dj');
+  const experienceLevel = localExperienceLevel ?? profile.experience_level ?? null;
+  const emergenteAnios = localEmergenteAnios ?? (profile.emergente_anios != null ? String(profile.emergente_anios) : '');
   const displayName = localName ?? profile.display_name;
   const city = localCity ?? profile.zone ?? 'Madrid Centro';
   const rate = localRate ?? profile.hourly_rate;
@@ -697,12 +713,34 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
         return;
       }
     }
+    // Emergentes: si declara años, se recalcula el sub-nivel orientativo a
+    // partir de ellos. Si desmarca "Emergente", se limpian sub-nivel y años
+    // para no dejar datos huérfanos de un estado que ya no aplica.
+    if (localEmergenteAnios !== null && localEmergenteAnios.trim()) {
+      const anios = Number(localEmergenteAnios);
+      if (Number.isNaN(anios) || anios < 0) {
+        toast.error('Introduce un número de años válido.');
+        return;
+      }
+    }
+
     const updates: Record<string, unknown> = {};
     if (localName !== null) updates.display_name = localName;
     if (localCity !== null) updates.zone = localCity;
     if (localRate !== null) updates.hourly_rate = localRate;
     if (localBirthday !== null) updates.birthday = localBirthday || null;
     if (localPhone !== null) updates.phone = localPhone || null;
+    if (localExperienceLevel !== null) {
+      updates.experience_level = localExperienceLevel || null;
+      if (localExperienceLevel === 'emergente') {
+        const anios = emergenteAnios.trim() ? Number(emergenteAnios) : null;
+        updates.emergente_anios = anios;
+        updates.emergente_sub_nivel = anios != null ? subNivelPorAnios(anios) : 'principiante';
+      } else {
+        updates.emergente_anios = null;
+        updates.emergente_sub_nivel = null;
+      }
+    }
     if (Object.keys(updates).length > 0) {
       setSaving(true);
       const ok = await profile.updateField(updates);
@@ -771,6 +809,39 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
           </div>
           )}
         </div>
+
+        {/* Emergentes: solo para DJs. No es un oficio más (no va en `roles[]`)
+            sino un atributo aparte, para no repetir el bug de 'rookie'
+            mezclado con oficios reales y filtrado en 2 sitios con etiquetas
+            distintas. Activarlo saca al perfil del directorio normal de DJs
+            y lo mete en el directorio "Emergentes". */}
+        {isDj && (
+          <div className="mb-4 p-4 rounded-xl" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}>
+            <label className="block text-xs font-bold mb-1.5" style={{ color: '#8A6D0F' }}>¿Cómo te consideras?</label>
+            <NightlifeSelect
+              value={experienceLevel ?? 'profesional'}
+              onChange={v => setLocalExperienceLevel(v === 'emergente' ? 'emergente' : null)}
+              options={[
+                { value: 'profesional', label: 'Profesional' },
+                { value: 'emergente', label: 'Estoy empezando (Emergentes)' },
+              ]}
+              active
+            />
+            {experienceLevel === 'emergente' && (
+              <>
+                <div className="mt-3">
+                  <label className="block text-xs text-muted-foreground mb-1.5 font-medium">Años pinchando (orientativo)</label>
+                  <input type="number" min={0} step={0.5} value={emergenteAnios}
+                    onChange={e => setLocalEmergenteAnios(e.target.value)}
+                    placeholder="ej. 1.5" className="nightlife-input text-sm w-full sm:w-40" />
+                </div>
+                <p className="text-[0.7rem] text-muted-foreground mt-2 leading-snug">
+                  Aparecerás en el directorio <strong>Emergentes</strong>, separado del de profesionales. Sube tus sesiones y añade tu Instagram: un admin las revisa y así vas subiendo de nivel dentro de Emergentes, hasta graduarte a profesional. El ascenso siempre lo confirma una persona, nunca es automático por los años que declares.
+                </p>
+              </>
+            )}
+          </div>
+        )}
 
         {/* XPEAK aún no tiene traducciones: el selector guardaba el idioma y
             decía "Idioma guardado", pero la interfaz seguía en español y el

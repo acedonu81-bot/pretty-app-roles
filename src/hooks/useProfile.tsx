@@ -65,6 +65,14 @@ interface ProfileData {
   is_public?: boolean;
   show_online?: boolean;
   email_opt_out?: boolean;
+  // Emergentes (migración 20260916): experience_level='emergente' saca al
+  // perfil del directorio normal y lo mete en el directorio Emergentes.
+  // El sub-nivel es autodeclarado y solo informativo; el ascenso de
+  // sub-nivel y la graduación (experience_level -> null) las decide un
+  // admin a mano, nunca automáticas por años declarados.
+  experience_level?: string | null;
+  emergente_sub_nivel?: string | null;
+  emergente_anios?: number | null;
 }
 
 export interface ProfileSummary {
@@ -134,6 +142,9 @@ const defaults: ProfileData = {
   seeking_dance_partner: false,
   dance_level: null,
   dance_role: null,
+  experience_level: null,
+  emergente_sub_nivel: null,
+  emergente_anios: null,
 };
 
 const ProfileContext = createContext<ProfileCtx>({
@@ -168,10 +179,11 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     // se reintenta sin ellas usando los defaults.
     const BASE_COLS = 'id, user_id, display_name, role, roles, photo_url, is_primary, subscription_tier, birthday, zone, hourly_rate, stream_url, stream_title, trial_started_at, annual_billing, is_live, is_flash_active, phone, specialty, instagram, bio, audio_embed_url, audio_session_urls, languages, genres, category, tiktok, bio_video_url, bg_music_url, portfolio_urls, referral_code, priority_badge_until, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, created_at, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, blocked_dates, min_notice_hours, conditions_note';
     const PRIVACY_COLS = 'is_public, show_online, email_opt_out';
+    const EMERGENTE_COLS = 'experience_level, emergente_sub_nivel, emergente_anios';
 
     let { data: rows, error: rowsError } = await supabase
       .from('profiles')
-      .select(`${BASE_COLS}, ${PRIVACY_COLS}`)
+      .select(`${BASE_COLS}, ${PRIVACY_COLS}, ${EMERGENTE_COLS}`)
       .eq('user_id', user.id)
       .order('created_at', { ascending: true });
 
@@ -195,6 +207,9 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
       is_public: primary.is_public ?? true,
       show_online: primary.show_online ?? true,
       email_opt_out: primary.email_opt_out ?? false,
+      experience_level: primary.experience_level ?? null,
+      emergente_sub_nivel: primary.emergente_sub_nivel ?? null,
+      emergente_anios: primary.emergente_anios ?? null,
     } as unknown as ProfileData);
     setAllProfiles(rows.map((r: any) => ({
       id: r.id,
