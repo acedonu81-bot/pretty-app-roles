@@ -674,7 +674,7 @@ const ROUTES = [
     ogType: 'website',
   },
   {
-    path: '/directorio/emergentes',
+    path: '/directorio/djs-emergentes',
     title: 'DJs emergentes para eventos — Directorio XPEAK',
     desc: 'Directorio de DJs emergentes en España: talento que se está iniciando, revisado por el equipo de XPEAK a medida que sube de nivel.',
     ogTitle: 'DJs emergentes — XPEAK',

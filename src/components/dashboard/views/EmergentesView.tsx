@@ -11,7 +11,7 @@ interface Props { onNavigate?: (view: string) => void; onMessage?: (userId: stri
 const EmergentesView = ({ onNavigate, onMessage, searchQuery, onViewProfile }: Props) => (
   <DirectoryView
     role="dj"
-    title="Emergentes"
+    title="DJs Emergentes"
     subtitle="DJs que se están iniciando. Contacta por mensaje para conocerlos — sin Flash Booking directo mientras suben de nivel."
     onNavigate={onNavigate}
     onMessage={onMessage}

@@ -823,7 +823,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
               onChange={v => setLocalExperienceLevel(v === 'emergente' ? 'emergente' : null)}
               options={[
                 { value: 'profesional', label: 'Profesional' },
-                { value: 'emergente', label: 'Estoy empezando (Emergentes)' },
+                { value: 'emergente', label: 'Estoy empezando (DJs Emergentes)' },
               ]}
               active
             />
@@ -836,7 +836,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
                     placeholder="ej. 1.5" className="nightlife-input text-sm w-full sm:w-40" />
                 </div>
                 <p className="text-[0.7rem] text-muted-foreground mt-2 leading-snug">
-                  Aparecerás en el directorio <strong>Emergentes</strong>, separado del de profesionales. Sube tus sesiones y añade tu Instagram: un admin las revisa y así vas subiendo de nivel dentro de Emergentes, hasta graduarte a profesional. El ascenso siempre lo confirma una persona, nunca es automático por los años que declares.
+                  Aparecerás en el directorio <strong>DJs Emergentes</strong>, separado del de profesionales. Sube tus sesiones y añade tu Instagram: un admin las revisa y así vas subiendo de nivel dentro de DJs Emergentes, hasta graduarte a profesional. El ascenso siempre lo confirma una persona, nunca es automático por los años que declares.
                 </p>
               </>
             )}

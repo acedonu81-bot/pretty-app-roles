@@ -32,7 +32,7 @@ interface SidebarProps {
 const DIRECTORY_ITEMS: { id: string; label: string }[] = [
   { id: 'dj', label: 'DJs, Artistas & Música en Vivo' },
   { id: 'grupo-musical', label: 'Grupos Musicales' },
-  { id: 'emergentes', label: 'Emergentes' },
+  { id: 'emergentes', label: 'DJs Emergentes' },
   { id: 'staff', label: 'Sala & Barra' },
   { id: 'azafata', label: 'Azafatas' },
   { id: 'event_manager', label: 'Encargadas de Eventos' },
@@ -67,7 +67,7 @@ const DIRECTORY_GROUPS: { label: string; ids: string[] }[] = [
   { label: 'Técnica & Producción', ids: ['tecnico'] },
 ];
 
-const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Camarero', azafata: 'Azafata', camarero: 'Camarero', makeup: 'Maquillaje', peluqueria: 'Peluquería', media: 'Media', empresario: 'Sala / Club', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', promotor: 'Promotor & RRPP', ambassador: 'Embajador', design: 'Diseño', mago: 'Mago & Ilusionista', bailarin: 'Instructor / Bailarín', humorista: 'Humorista & Cómico', monologo: 'Monólogo & Stand-Up', animador: 'Payaso & Animador', speaker: 'Speaker & Presentador', 'photo-booth': 'Photo Booth', tecnico: 'Técnico de Sonido y Montaje', emergentes: 'Emergentes' };
+const ROLE_LABEL: Record<string, string> = { dj: 'DJ', staff: 'Camarero', azafata: 'Azafata', camarero: 'Camarero', makeup: 'Maquillaje', peluqueria: 'Peluquería', media: 'Media', empresario: 'Sala / Club', event_manager: 'Eventos', rookie: 'Promesa', vestuario: 'Estilista', catering: 'Catering & Chef', promotor: 'Promotor & RRPP', ambassador: 'Embajador', design: 'Diseño', mago: 'Mago & Ilusionista', bailarin: 'Instructor / Bailarín', humorista: 'Humorista & Cómico', monologo: 'Monólogo & Stand-Up', animador: 'Payaso & Animador', speaker: 'Speaker & Presentador', 'photo-booth': 'Photo Booth', tecnico: 'Técnico de Sonido y Montaje', emergentes: 'DJs Emergentes' };
 
 const ProfileSwitcher = ({ onViewChange }: { onViewChange: (v: string) => void }) => {
   const { display_name, role, photo_url, allProfiles, switchProfile, maxProfiles, profileId } = useProfile();

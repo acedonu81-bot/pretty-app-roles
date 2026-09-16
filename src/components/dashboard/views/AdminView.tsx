@@ -28,7 +28,7 @@ const TABS = [
   { id: 'overview', label: 'General', icon: LayoutGrid },
   { id: 'users', label: 'Usuarios', icon: Users },
   { id: 'empresarios', label: 'Empresarios', icon: Building2 },
-  { id: 'emergentes', label: 'Emergentes', icon: Sparkles },
+  { id: 'emergentes', label: 'DJs Emergentes', icon: Sparkles },
   { id: 'content', label: 'Reseñas', icon: MessageSquare },
   { id: 'business', label: 'Negocio', icon: TrendingDown },
   { id: 'deletions', label: 'Bajas', icon: UserMinus },

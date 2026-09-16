@@ -54,7 +54,7 @@ const GRUPOS: { titulo: string; items: { id: string; view: string; nombre: strin
     items: [
       { id: 'dj', view: 'dj', nombre: 'DJs & Artistas', gancho: 'DJs, productores y música en vivo' },
       { id: 'grupo-musical', view: 'grupo-musical', nombre: 'Grupos Musicales', gancho: 'Bandas, orquestas y versiones' },
-      { id: 'emergentes', view: 'emergentes', nombre: 'Emergentes', gancho: 'DJs que se están iniciando' },
+      { id: 'emergentes', view: 'emergentes', nombre: 'DJs Emergentes', gancho: 'DJs que se están iniciando' },
     ],
   },
   {

@@ -63,7 +63,7 @@ const AdminEmergentes = () => {
   };
 
   const graduate = async (p: EmergenteProfile) => {
-    if (!window.confirm(`¿Graduar a ${p.display_name || 'este perfil'} a profesional? Saldrá del directorio Emergentes y entrará en el directorio normal.`)) return;
+    if (!window.confirm(`¿Graduar a ${p.display_name || 'este perfil'} a profesional? Saldrá del directorio DJs Emergentes y entrará en el directorio normal.`)) return;
     const { error } = await supabase
       .from('profiles')
       .update({
@@ -81,7 +81,7 @@ const AdminEmergentes = () => {
     <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(212,175,55,0.03)', border: '1px solid rgba(212,175,55,0.1)' }}>
       <div className="px-6 py-4" style={{ borderBottom: '1px solid rgba(212,175,55,0.08)' }}>
         <h2 className="text-base font-bold" style={{ color: '#1a1a1a' }}>
-          Emergentes <span className="text-muted-foreground">({profiles.length})</span>
+          DJs Emergentes <span className="text-muted-foreground">({profiles.length})</span>
         </h2>
         <p className="text-xs text-muted-foreground mt-1">
           Revisar Instagram y sesiones subidas antes de subir de nivel o graduar a profesional. El ascenso siempre es manual, nunca automático por años declarados.
@@ -91,7 +91,7 @@ const AdminEmergentes = () => {
       {loading ? (
         <p className="text-sm text-center py-12 animate-pulse text-muted-foreground">Cargando...</p>
       ) : profiles.length === 0 ? (
-        <p className="text-sm text-center py-12 text-muted-foreground">No hay perfiles en Emergentes.</p>
+        <p className="text-sm text-center py-12 text-muted-foreground">No hay perfiles en DJs Emergentes.</p>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -138,7 +138,7 @@ const AdminEmergentes = () => {
                         style={{ background: 'rgba(59,130,246,0.1)', color: '#2563eb' }}>
                         <ArrowUpCircle size={13} />
                       </button>
-                      <button onClick={() => graduate(p)} title="Graduar a profesional (sale de Emergentes)"
+                      <button onClick={() => graduate(p)} title="Graduar a profesional (sale de DJs Emergentes)"
                         className="p-1.5 rounded-md transition-all hover:scale-110"
                         style={{ background: 'rgba(34,197,94,0.1)', color: '#22c55e' }}>
                         <GraduationCap size={13} />

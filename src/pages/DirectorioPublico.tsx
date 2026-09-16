@@ -69,7 +69,7 @@ export const ROLE_CONFIG: Record<string, {
     cta: 'Contratar este DJ',
     experienceLevel: 'exclude',
   },
-  emergentes: {
+  'djs-emergentes': {
     dbRole: 'dj',
     title: 'DJs emergentes: talento que se está iniciando',
     subtitle: 'DJs que empiezan su carrera, en proceso de verificación por XPEAK. Contacta por mensaje para conocer su trabajo.',
@@ -589,6 +589,11 @@ export default function DirectorioPublico() {
   // 'peluqueria' se fusionó con 'maquillaje' en un único directorio —
   // redirige enlaces/índice viejos en vez de caer al fallback (DJs).
   if (rol === 'peluqueria') return <Navigate to="/directorio/maquillaje" replace />;
+
+  // 'emergentes' se renombró a 'djs-emergentes' (16 sep 2026, minutos después
+  // de su primer deploy) para dejar hueco a un futuro 'grupos-emergentes' sin
+  // que ambos queden mal nombrados. Redirige por si algo ya la indexó/visitó.
+  if (rol === 'emergentes') return <Navigate to="/directorio/djs-emergentes" replace />;
 
   return (
     <>
