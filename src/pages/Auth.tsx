@@ -240,7 +240,7 @@ const Auth = () => {
         setGoogleLoading(false);
         return;
       }
-      await Browser.open({ url: data.url, presentationStyle: 'popover' });
+      await Browser.open({ url: data.url, presentationStyle: 'fullscreen' });
       return;
     }
 
