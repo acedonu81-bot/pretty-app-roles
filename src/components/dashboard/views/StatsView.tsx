@@ -103,12 +103,14 @@ const DonutChart = ({ segments, size = 140 }: { segments: DonutSegment[]; size?:
 };
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
+import { useScarcitySignal } from '@/hooks/useScarcitySignal';
 import { supabase } from '@/integrations/supabase/client';
 const MONTH_LABELS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 
 const StatsView = () => {
   const profile = useProfile();
   const { user } = useAuth();
+  const scarcity = useScarcitySignal(user?.id);
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth(); // 0-indexed
 
@@ -242,6 +244,23 @@ const StatsView = () => {
           </div>
         ))}
       </div>
+
+      {!scarcity.loading && scarcity.weeklyProfileViews > 0 && (
+        <div className="glass-panel p-5 mb-6">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#22c55e', boxShadow: '0 0 6px #22c55e' }} />
+            <h3 className="text-sm font-bold">Actividad de esta semana</h3>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            <span className="font-bold" style={{ color: '#222' }}>{scarcity.weeklyProfileViews}</span>{' '}
+            {scarcity.weeklyProfileViews === 1 ? 'organizador ha visto' : 'organizadores han visto'} tu perfil esta semana
+            {scarcity.weeklyContactRequests > 0 && (
+              <> y <span className="font-bold" style={{ color: '#222' }}>{scarcity.weeklyContactRequests}</span>{' '}
+              {scarcity.weeklyContactRequests === 1 ? 'te ha contactado' : 'te han contactado'} por Flash Booking</>
+            )}.
+          </p>
+        </div>
+      )}
 
       {/* ── Activity Wheel ── */}
       <div className="glass-panel p-5 mb-6">

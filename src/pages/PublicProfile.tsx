@@ -9,6 +9,7 @@ import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack } from '@/
 import SessionAudioPlayer from '@/components/SessionAudioPlayer';
 import { profiles, toSlug } from '@/data/profiles';
 import { useAuth } from '@/hooks/useAuth';
+import { useScarcitySignal } from '@/hooks/useScarcitySignal';
 import PublicContactModal from '@/components/PublicContactModal';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
 import AvailabilityCalendar from '@/components/AvailabilityCalendar';
@@ -466,6 +467,7 @@ const PublicProfile = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [sbProfile, setSbProfile] = useState<SupabaseProfile | null>(null);
+  const scarcity = useScarcitySignal(sbProfile?.user_id);
   const [related, setRelated] = useState<RelatedProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [publicPosts, setPublicPosts] = useState<{ id: string; content: string; post_type: string; created_at: string; media_url: string | null }[]>([]);
@@ -1251,6 +1253,14 @@ const PublicProfile = () => {
                   </div>
                 ))}
               </div>
+            </motion.div>
+          )}
+
+          {sbProfile && !scarcity.loading && scarcity.weeklyContactRequests > 0 && (
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
+              <p className="text-xs" style={{ color: '#8A6D0F' }}>
+                Contactado por {scarcity.weeklyContactRequests} {scarcity.weeklyContactRequests === 1 ? 'empresario' : 'empresarios'} esta semana
+              </p>
             </motion.div>
           )}
 
