@@ -17,7 +17,13 @@ function buildGrid(year: number, month: number) {
   return cells;
 }
 
-const AvailabilityCalendar = ({ userId }: { userId: string }) => {
+interface AvailabilityCalendarProps {
+  userId: string;
+  mode?: 'edit' | 'view-request';
+  onRequestDate?: (date: string) => void;
+}
+
+const AvailabilityCalendar = ({ userId, mode = 'edit', onRequestDate }: AvailabilityCalendarProps) => {
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
@@ -99,10 +105,13 @@ const AvailabilityCalendar = ({ userId }: { userId: string }) => {
             const isToday = dateStr === todayStr;
             const isPast = cell.current && dateStr < todayStr;
             const isAvailable = cell.current && !isBlocked && !isPast;
+            const isClickable = mode === 'view-request' && isAvailable;
             return (
               <div key={i}
+                onClick={isClickable ? () => onRequestDate?.(dateStr) : undefined}
                 className="w-full aspect-square flex items-center justify-center rounded text-[0.65rem] font-bold"
                 style={{
+                  cursor: isClickable ? 'pointer' : 'default',
                   color: !cell.current
                     ? 'rgba(22,20,18,0.22)'
                     : isBlocked ? '#fff'

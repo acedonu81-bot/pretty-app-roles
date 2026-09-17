@@ -16,12 +16,13 @@ interface Props {
   professionalName: string;
   professionalRole: string;
   professionalUserId?: string;
+  prefilledDate?: string;
   onClose: () => void;
 }
 
-const FlashBookingRequestModal = ({ professionalName, professionalRole, professionalUserId, onClose }: Props) => {
+const FlashBookingRequestModal = ({ professionalName, professionalRole, professionalUserId, prefilledDate, onClose }: Props) => {
   const { user } = useAuth();
-  const [form, setForm] = useState({ name: '', contact: '', date: '', location: '', exactAddress: '', description: '', price: '', eventType: '', website: '' });
+  const [form, setForm] = useState({ name: '', contact: '', date: prefilledDate ?? '', location: '', exactAddress: '', description: '', price: '', eventType: '', website: '' });
   const [sending, setSending] = useState(false);
   const [hourlyRate, setHourlyRate] = useState<number | null>(null);
   // Emergentes (16 sep 2026): defensa en profundidad además de los puntos de
