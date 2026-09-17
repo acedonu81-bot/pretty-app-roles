@@ -395,7 +395,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
           sin visitas recientes no muestra nada, en vez de "nunca visto"
           o una fecha antigua al lado de otros con actividad. */}
       {p.lastViewedAt && (
-        <div className="px-3.5 py-2 text-xs" style={{ borderTop: '1px solid rgba(0,0,0,0.06)', color: '#9c9584' }}>
+        <div className="px-3.5 py-2 text-xs" style={{ borderTop: '1px solid rgba(0,0,0,0.06)', color: '#6b6458' }}>
           Visto {timeAgo(p.lastViewedAt)}
         </div>
       )}
