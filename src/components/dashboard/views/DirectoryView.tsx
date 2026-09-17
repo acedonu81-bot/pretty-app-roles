@@ -105,34 +105,10 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
     .select('reviewed_user_id, rating')
     .eq('approved', true);
 
-  // Vistas de la semana visibles en cualquier card (17 sep 2026), no solo la
-  // propia — una sola query agregada en vez de 2 RPC por card (podían ser
-  // 40+ peticiones simultáneas en un listado de 20 perfiles). Trae 14 días
-  // de una vez y se agrega en JS: semana actual vs. anterior.
-  const viewsPromise = supabase
-    .from('profile_business_views')
-    .select('viewed_user_id, created_at')
-    .gte('created_at', new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString());
-
-  const [{ data }, { data: reviewsData }, { data: viewsData, error: viewsError }] = await Promise.all([
-    query.order('score', { ascending: false }), reviewsPromise, viewsPromise,
+  const [{ data }, { data: reviewsData }] = await Promise.all([
+    query.order('score', { ascending: false }), reviewsPromise,
   ]);
   if (!data) return [];
-  if (viewsError) console.error('[DirectoryView] profile_business_views fetch error:', viewsError);
-
-  const now = Date.now();
-  const currentWeekCounts = new Map<string, number>();
-  const previousWeekCounts = new Map<string, number>();
-  (viewsData ?? []).forEach((v: any) => {
-    if (!v.viewed_user_id) return;
-    const ageDays = (now - new Date(v.created_at).getTime()) / (24 * 60 * 60 * 1000);
-    const target = ageDays <= 7 ? currentWeekCounts : previousWeekCounts;
-    target.set(v.viewed_user_id, (target.get(v.viewed_user_id) ?? 0) + 1);
-  });
-  const weeklyViewsMap = new Map<string, { count: number; delta: number }>();
-  currentWeekCounts.forEach((count, userId) => {
-    weeklyViewsMap.set(userId, { count, delta: count - (previousWeekCounts.get(userId) ?? 0) });
-  });
 
   const ratingMap = new Map<string, { sum: number; count: number }>();
   (reviewsData ?? []).forEach((r: any) => {
@@ -209,7 +185,12 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
       hasPriorityBadge: !!((row as any).priority_badge_until && new Date((row as any).priority_badge_until) > new Date()),
       isNew: !!((row as any).created_at && (Date.now() - new Date((row as any).created_at).getTime()) < 30 * 24 * 60 * 60 * 1000),
       showNewBadge: isNewOnPlatform(row as any),
-      weeklyViews: weeklyViewsMap.get(row.user_id) ?? null,
+      // RLS de profile_business_views solo permite leer las vistas propias
+      // (select_own) — una query sin filtro de usuario aquí solo devolvía las
+      // filas de quien mira el listado, así que solo su propia card mostraba
+      // el conteo mientras el resto quedaba en null en silencio (17 sep 2026).
+      // El conteo real de vistas vive en el dashboard propio del profesional.
+      weeklyViews: null,
       seekingDancePartner: (row as any).seeking_dance_partner ?? false,
       danceLevel: (row as any).dance_level ?? null,
       danceRole: (row as any).dance_role ?? null,
