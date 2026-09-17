@@ -176,15 +176,15 @@ export default function BlogDJBodaVsDiscoteca() {
               <h2 className="text-xl sm:text-2xl font-black mb-3">¿Cuál necesitas para tu evento?</h2>
               <div className="space-y-3">
                 {[
-                  { evento: 'Boda', recomendacion: 'DJ de bodas con experiencia en presentaciones y micro', icono: '💍' },
-                  { evento: 'Club o discoteca', recomendacion: 'DJ residente o freelance especializado en el género de la sala', icono: '🎧' },
-                  { evento: 'Festival', recomendacion: 'DJ de sala con carrera y capacidad para actuar en escenario grande', icono: '🎪' },
-                  { evento: 'Evento corporativo', recomendacion: 'DJ versátil con experiencia en eventos de empresa y música ambiental', icono: '🏢' },
-                  { evento: 'Fiesta privada', recomendacion: 'DJ flexible que adapte el set a tus preferencias en tiempo real', icono: '🎉' },
-                  { evento: 'Inauguración / pop-up', recomendacion: 'DJ ambient o deep house con equipo compacto y discreción', icono: '🏪' },
-                ].map(({ evento, recomendacion, icono }) => (
+                  { evento: 'Boda', recomendacion: 'DJ de bodas con experiencia en presentaciones y micro' },
+                  { evento: 'Club o discoteca', recomendacion: 'DJ residente o freelance especializado en el género de la sala' },
+                  { evento: 'Festival', recomendacion: 'DJ de sala con carrera y capacidad para actuar en escenario grande' },
+                  { evento: 'Evento corporativo', recomendacion: 'DJ versátil con experiencia en eventos de empresa y música ambiental' },
+                  { evento: 'Fiesta privada', recomendacion: 'DJ flexible que adapte el set a tus preferencias en tiempo real' },
+                  { evento: 'Inauguración / pop-up', recomendacion: 'DJ ambient o deep house con equipo compacto y discreción' },
+                ].map(({ evento, recomendacion }) => (
                   <div key={evento} className="p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)' }}>
-                    <p className="text-sm font-bold mb-1">{icono} {evento}</p>
+                    <p className="text-sm font-bold mb-1">{evento}</p>
                     <p className="text-xs" style={{ color: '#444' }}>{recomendacion}</p>
                   </div>
                 ))}

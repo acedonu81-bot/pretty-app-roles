@@ -869,7 +869,7 @@ export default function DirectorioPublico() {
                       {(p as any).fast_responder_count >= 1 && (
                         <span className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
                           style={{ background: 'rgba(251,146,60,0.9)', color: '#000' }}>
-                          ⚡ Respuesta rápida
+                          Respuesta rápida
                         </span>
                       )}
                     </div>

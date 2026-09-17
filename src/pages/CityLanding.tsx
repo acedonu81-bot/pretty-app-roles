@@ -162,7 +162,7 @@ export const CITIES: Record<string, CityInfo> = {
   },
   ibiza:     { ciudad: 'Ibiza',     slug: 'ibiza',     venues: ['Amnesia', 'Pacha', 'DC-10', 'Hi Ibiza', 'Ushuaïa'],                           precioMin: '150€', precioMax: '2000€',
     seasonal: {
-      badge: '🎉 Temporada Ibiza',
+      badge: 'Temporada Ibiza',
       months: 'Mayo – Septiembre',
       highlight: 'Ibiza es el epicentro mundial de eventos privados en villa, pool parties y yates de mayo a octubre. Los mejores profesionales se agotan con semanas de antelación.',
       keywords: ['DJ villa Ibiza', 'DJ fiesta privada Ibiza', 'DJ pool party Ibiza', 'DJ eventos Ibiza', 'camareros temporada Ibiza', 'personal extra hostelería Ibiza'],
@@ -619,7 +619,7 @@ const ProfGrid = ({ profs }: { profs: Prof[] }) => (
         </div>
         <div style={{ padding: '12px 14px' }}>
           <p style={{ fontWeight: 900, fontSize: 14, color: '#fff', margin: '0 0 4px' }}>{p.display_name}</p>
-          {p.city && <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', margin: '0 0 6px', display: 'flex', alignItems: 'center', gap: 4 }}><span>📍</span>{p.city}</p>}
+          {p.city && <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', margin: '0 0 6px', display: 'flex', alignItems: 'center', gap: 4 }}>{p.city}</p>}
           {p.bio && <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)', margin: 0, lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{p.bio}</p>}
         </div>
       </a>

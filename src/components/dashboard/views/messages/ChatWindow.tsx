@@ -359,7 +359,6 @@ export const EmptyChatPlaceholder = () => (
         style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.12)' }}>
         <MessageSquare size={32} style={{ color: 'rgba(212,175,55,0.3)' }} />
       </div>
-      <span className="absolute -top-1 -right-1 text-lg">✨</span>
     </div>
     <div>
       <p className="text-base font-bold mb-1">Selecciona una conversación</p>

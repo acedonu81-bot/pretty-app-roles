@@ -13,7 +13,7 @@ const TodaysRequestsLine = () => {
 
   return (
     <p className="mx-4 md:mx-6 mt-2 text-xs font-semibold" style={{ color: '#22c55e' }}>
-      ⚡ {text}
+      {text}
     </p>
   );
 };

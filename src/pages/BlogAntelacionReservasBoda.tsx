@@ -52,34 +52,33 @@ export default function BlogAntelacionReservasBoda() {
             <h2 className="text-xl font-black mt-8 mb-4">Calendario de reservas para una boda</h2>
 
             {[
-              { plazo: '12-18 meses antes', icon: '🏰', proveedores: [
+              { plazo: '12-18 meses antes', proveedores: [
                 { nombre: 'Finca / venue', nota: 'Las mejores fincas se reservan 1-2 años antes en temporada alta.' },
                 { nombre: 'Catering de boda', nota: 'Los servicios de catering premium tienen agenda llena con mucha antelación.' },
               ]},
-              { plazo: '6-12 meses antes', icon: '📸', proveedores: [
+              { plazo: '6-12 meses antes', proveedores: [
                 { nombre: 'Fotógrafo de boda', nota: 'Los fotógrafos top de bodas en España tienen lista de espera. Reserva cuanto antes.', link: '/blog/fotografo-boda' },
                 { nombre: 'Videógrafo', nota: 'Similar al fotógrafo: alta demanda en verano y fines de semana.' },
                 { nombre: 'DJ para boda', nota: 'Los DJs especializados en bodas tienen agenda muy cargada de abril a octubre.', link: '/contratar-dj' },
                 { nombre: 'Grupo musical en vivo', nota: 'Bandas y grupos de jazz para cócteles: se contratan con 6-9 meses de antelación.' },
               ]},
-              { plazo: '3-6 meses antes', icon: '🍾', proveedores: [
+              { plazo: '3-6 meses antes', proveedores: [
                 { nombre: 'Disco móvil (si no tienes DJ)', nota: 'Opción completa con equipo incluido para fincas sin instalación.', link: '/contratar-disco-movil' },
                 { nombre: 'Maquilladora de novia', nota: 'Las maquilladores especializadas en bodas tienen agenda limitada.', link: '/contratar-maquillaje' },
                 { nombre: 'Wedding planner', nota: 'Si contratas un organizador externo, hazlo lo antes posible.' },
                 { nombre: 'Maestro de ceremonias', nota: 'Para bodas civiles con ceremonia emotiva y personalizada.' },
               ]},
-              { plazo: '1-3 meses antes', icon: '🍽️', proveedores: [
+              { plazo: '1-3 meses antes', proveedores: [
                 { nombre: 'Camareros y personal de sala', nota: 'Más flexibles que otros proveedores. En XPEAK puedes contratar con pocas semanas.', link: '/contratar-camareros' },
                 { nombre: 'Personal de apoyo (azafatas, seguridad)', nota: 'Se pueden contratar con 2-4 semanas de antelación.', link: '/contratar-staff' },
               ]},
-              { plazo: 'Última hora (Flash Booking)', icon: '⚡', proveedores: [
+              { plazo: 'Última hora (Flash Booking)', proveedores: [
                 { nombre: 'DJ de sustitución', nota: 'Si tu DJ cancela, usa Flash Booking. Respuesta garantizada en <1 hora.', link: '/contratar-dj' },
                 { nombre: 'Camarero extra de última hora', nota: 'Flash Booking cubre bajas inesperadas en el personal de sala.', link: '/contratar-camareros' },
               ]},
             ].map(section => (
               <div key={section.plazo} className="mb-6">
                 <div className="flex items-center gap-2 mb-3">
-                  <span style={{ fontSize: '1.2rem' }}>{section.icon}</span>
                   <h3 className="text-base font-black" style={{ color: '#D4AF37' }}>{section.plazo}</h3>
                 </div>
                 <div className="space-y-2 ml-7">

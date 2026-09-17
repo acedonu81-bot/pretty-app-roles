@@ -988,7 +988,7 @@ const PublicProfile = () => {
                 {weeklyViews !== null && weeklyViews >= 3 && (
                   <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
                     style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
-                    👀 {weeklyViews} vistas esta semana
+                    {weeklyViews} vistas esta semana
                   </span>
                 )}
                 {antiguedad && (
@@ -1084,7 +1084,7 @@ const PublicProfile = () => {
               )}
             </div>
             <p className="text-xs mt-1" style={{ color: '#333' }}>
-              {profile.zone && `📍 ${profile.zone} · `}Contrato directo · Pago acordado con el profesional
+              {profile.zone && `${profile.zone} · `}Contrato directo · Pago acordado con el profesional
             </p>
           </motion.div>
 

@@ -23,7 +23,7 @@ const useCountUp = (target: number, duration = 900) => {
 import { Eye, MessageCircle, TrendingUp, Zap, BarChart2, CheckCircle } from 'lucide-react';
 
 // ── SVG Donut Chart ─────────────────────────────────────────────────────────
-interface DonutSegment { value: number; color: string; label: string; icon: string }
+interface DonutSegment { value: number; color: string; label: string }
 
 const DonutChart = ({ segments, size = 140 }: { segments: DonutSegment[]; size?: number }) => {
   const r = 38;
@@ -288,10 +288,10 @@ const StatsView = () => {
         <DonutChart
           size={150}
           segments={[
-            { value: stats.views,         color: '#4285F4', label: 'Visitas al perfil',           icon: '👁' },
-            { value: stats.messages,      color: '#60A5FA', label: 'Mensajes recibidos',          icon: '💬' },
-            { value: stats.conversations, color: '#34D399', label: 'Conversaciones activas',      icon: '🗣' },
-            { value: stats.bookings,      color: '#8A6D0F', label: 'Solicitudes Flash Booking',   icon: '⚡' },
+            { value: stats.views,         color: '#4285F4', label: 'Visitas al perfil' },
+            { value: stats.messages,      color: '#60A5FA', label: 'Mensajes recibidos' },
+            { value: stats.conversations, color: '#34D399', label: 'Conversaciones activas' },
+            { value: stats.bookings,      color: '#8A6D0F', label: 'Solicitudes Flash Booking' },
           ]}
         />
       </div>

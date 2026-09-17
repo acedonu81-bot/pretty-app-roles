@@ -83,7 +83,7 @@ const WhoIsHiringFeed = () => {
                 )}
               </div>
               {c.zone && (
-                <p className="text-xs truncate" style={{ color: '#333' }}>📍 {c.zone}</p>
+                <p className="text-xs truncate" style={{ color: '#333' }}>{c.zone}</p>
               )}
               {c.bio && (
                 <p className="text-xs line-clamp-1 mt-0.5" style={{ color: '#333' }}>{c.bio}</p>

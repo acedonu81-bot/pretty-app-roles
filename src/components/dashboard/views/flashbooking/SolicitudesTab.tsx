@@ -226,7 +226,7 @@ const SolicitudesTab = () => {
         if (badgeError) {
           console.warn('[SolicitudesTab] fast_responder_count update failed:', badgeError);
         } else {
-          toast.success('⚡ ¡Badge Respuesta Rápida obtenido! Apareces destacado en el directorio 30 días.');
+          toast.success('¡Badge Respuesta Rápida obtenido! Apareces destacado en el directorio 30 días.');
           // Email de notificación al profesional
           supabase.functions.invoke('send-email', {
             body: {

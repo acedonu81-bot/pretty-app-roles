@@ -78,34 +78,34 @@ const ShareProfileButton = ({ name, roleLabel, url }: { name: string; roleLabel:
 // Role visual config
 // ─────────────────────────────────────────────────────────────────────────────
 const ROLE_CFG: Record<string, {
-  color: string; glow: string; label: string; emoji: string; tagline: string; icon: React.ElementType;
+  color: string; glow: string; label: string; tagline: string; icon: React.ElementType;
 }> = {
-  dj:        { color: '#4285F4', glow: 'rgba(66,133,244,0.45)',   label: 'DJ · Artista',       emoji: '🎧', tagline: 'La pista empieza aquí',        icon: Music },
-  rookie:    { color: '#FBBF24', glow: 'rgba(251,191,36,0.4)',    label: 'DJ Promesa',          emoji: '⭐', tagline: 'El próximo grande',             icon: Star },
-  staff:     { color: '#34D399', glow: 'rgba(52,211,153,0.35)',   label: 'Sala & Barra',        emoji: '🎪', tagline: 'El engranaje invisible del show', icon: Users },
-  azafata:   { color: '#F472B6', glow: 'rgba(244,114,182,0.35)',  label: 'Azafata',             emoji: '🎀', tagline: 'La primera impresión del evento', icon: Users },
-  makeup:    { color: '#F472B6', glow: 'rgba(244,114,182,0.35)',  label: 'Maquillaje',            emoji:'💄', tagline: 'Arte en la piel',              icon: Star },
-  peluqueria:{ color: '#EC4899', glow: 'rgba(236,72,153,0.35)',   label: 'Peluquería a Domicilio', emoji:'✂️', tagline: 'Estilo que llega hasta ti',   icon: Star },
-  media:     { color: '#A78BFA', glow: 'rgba(167,139,250,0.4)',   label: 'Media · Contenido',   emoji: '📸', tagline: 'Cada frame es eterno',          icon: Camera },
-  ambassador:{ color: '#FB923C', glow: 'rgba(251,146,60,0.35)',   label: 'Promotor',            emoji: '📣', tagline: 'La energía que llena salas',    icon: Megaphone },
-  vestuario: { color: '#D4AF37', glow: 'rgba(212,175,55,0.35)',   label: 'Vestuario',           emoji: '👗', tagline: 'Estilo que habla',              icon: Crown },
-  design:    { color: '#22D3EE', glow: 'rgba(34,211,238,0.35)',   label: 'VJing · Diseño',      emoji: '🎨', tagline: 'El visual de tu evento',        icon: Camera },
-  promotor:  { color: '#FB923C', glow: 'rgba(251,146,60,0.35)',   label: 'Promotor',            emoji: '📣', tagline: 'La energía que llena salas',    icon: Megaphone },
-  empresario:{ color: '#D4AF37', glow: 'rgba(212,175,55,0.4)',    label: 'Empresario · Venue',  emoji: '🏛️', tagline: 'Tu espacio, tus eventos',       icon: Crown },
+  dj:        { color: '#4285F4', glow: 'rgba(66,133,244,0.45)',   label: 'DJ · Artista',       tagline: 'La pista empieza aquí',        icon: Music },
+  rookie:    { color: '#FBBF24', glow: 'rgba(251,191,36,0.4)',    label: 'DJ Promesa',          tagline: 'El próximo grande',             icon: Star },
+  staff:     { color: '#34D399', glow: 'rgba(52,211,153,0.35)',   label: 'Sala & Barra',        tagline: 'El engranaje invisible del show', icon: Users },
+  azafata:   { color: '#F472B6', glow: 'rgba(244,114,182,0.35)',  label: 'Azafata',             tagline: 'La primera impresión del evento', icon: Users },
+  makeup:    { color: '#F472B6', glow: 'rgba(244,114,182,0.35)',  label: 'Maquillaje',            tagline: 'Arte en la piel',              icon: Star },
+  peluqueria:{ color: '#EC4899', glow: 'rgba(236,72,153,0.35)',   label: 'Peluquería a Domicilio', tagline: 'Estilo que llega hasta ti',   icon: Star },
+  media:     { color: '#A78BFA', glow: 'rgba(167,139,250,0.4)',   label: 'Media · Contenido',   tagline: 'Cada frame es eterno',          icon: Camera },
+  ambassador:{ color: '#FB923C', glow: 'rgba(251,146,60,0.35)',   label: 'Promotor',            tagline: 'La energía que llena salas',    icon: Megaphone },
+  vestuario: { color: '#D4AF37', glow: 'rgba(212,175,55,0.35)',   label: 'Vestuario',           tagline: 'Estilo que habla',              icon: Crown },
+  design:    { color: '#22D3EE', glow: 'rgba(34,211,238,0.35)',   label: 'VJing · Diseño',      tagline: 'El visual de tu evento',        icon: Camera },
+  promotor:  { color: '#FB923C', glow: 'rgba(251,146,60,0.35)',   label: 'Promotor',            tagline: 'La energía que llena salas',    icon: Megaphone },
+  empresario:{ color: '#D4AF37', glow: 'rgba(212,175,55,0.4)',    label: 'Empresario · Venue',  tagline: 'Tu espacio, tus eventos',       icon: Crown },
   // Faltaban los 10 de abajo, y como getRoleCfg caía en ROLE_CFG.dj, la ficha
   // de un grupo musical, un mago o un catering se presentaba como
   // "DJ · Artista". El rol se guardaba bien: lo que mentía era esta etiqueta.
-  'grupo-musical': { color: '#DB2777', glow: 'rgba(219,39,119,0.4)',  label: 'Grupo Musical',       emoji: '🎸', tagline: 'Música en directo',             icon: Music },
-  catering:  { color: '#B45309', glow: 'rgba(180,83,9,0.35)',     label: 'Catering · Chef',     emoji: '🍽️', tagline: 'El sabor de la noche',          icon: Star },
-  mago:      { color: '#7C3AED', glow: 'rgba(124,58,237,0.4)',    label: 'Mago · Ilusionista',  emoji: '🎩', tagline: 'Lo imposible, en directo',      icon: Star },
-  bailarin:  { color: '#DB2777', glow: 'rgba(219,39,119,0.35)',   label: 'Instructor · Bailarín', emoji: '💃', tagline: 'El cuerpo también habla',     icon: Users },
-  humorista: { color: '#F59E0B', glow: 'rgba(245,158,11,0.35)',   label: 'Humorista · Cómico',  emoji: '🎤', tagline: 'La sala entera riendo',         icon: Megaphone },
-  monologo:  { color: '#F59E0B', glow: 'rgba(245,158,11,0.35)',   label: 'Monólogo · Stand-Up', emoji: '🎤', tagline: 'Una hora, mil risas',           icon: Megaphone },
-  animador:  { color: '#22D3EE', glow: 'rgba(34,211,238,0.35)',   label: 'Payaso · Animador',   emoji: '🤹', tagline: 'Que nadie se aburra',           icon: Star },
-  speaker:   { color: '#4285F4', glow: 'rgba(66,133,244,0.35)',   label: 'Speaker · Presentador', emoji: '🎙️', tagline: 'La voz que conduce el evento', icon: Megaphone },
-  'photo-booth': { color: '#A78BFA', glow: 'rgba(167,139,250,0.35)', label: 'Photo Booth',      emoji: '📷', tagline: 'El recuerdo que se llevan',     icon: Camera },
-  event_manager: { color: '#F472B6', glow: 'rgba(244,114,182,0.35)', label: 'Encargada de Eventos', emoji: '📋', tagline: 'Todo bajo control',         icon: Users },
-  camarero:  { color: '#34D399', glow: 'rgba(52,211,153,0.35)',   label: 'Sala & Barra',        emoji: '🍸', tagline: 'El engranaje invisible del show', icon: Users },
+  'grupo-musical': { color: '#DB2777', glow: 'rgba(219,39,119,0.4)',  label: 'Grupo Musical',       tagline: 'Música en directo',             icon: Music },
+  catering:  { color: '#B45309', glow: 'rgba(180,83,9,0.35)',     label: 'Catering · Chef',     tagline: 'El sabor de la noche',          icon: Star },
+  mago:      { color: '#7C3AED', glow: 'rgba(124,58,237,0.4)',    label: 'Mago · Ilusionista',  tagline: 'Lo imposible, en directo',      icon: Star },
+  bailarin:  { color: '#DB2777', glow: 'rgba(219,39,119,0.35)',   label: 'Instructor · Bailarín', tagline: 'El cuerpo también habla',     icon: Users },
+  humorista: { color: '#F59E0B', glow: 'rgba(245,158,11,0.35)',   label: 'Humorista · Cómico',  tagline: 'La sala entera riendo',         icon: Megaphone },
+  monologo:  { color: '#F59E0B', glow: 'rgba(245,158,11,0.35)',   label: 'Monólogo · Stand-Up', tagline: 'Una hora, mil risas',           icon: Megaphone },
+  animador:  { color: '#22D3EE', glow: 'rgba(34,211,238,0.35)',   label: 'Payaso · Animador',   tagline: 'Que nadie se aburra',           icon: Star },
+  speaker:   { color: '#4285F4', glow: 'rgba(66,133,244,0.35)',   label: 'Speaker · Presentador', tagline: 'La voz que conduce el evento', icon: Megaphone },
+  'photo-booth': { color: '#A78BFA', glow: 'rgba(167,139,250,0.35)', label: 'Photo Booth',      tagline: 'El recuerdo que se llevan',     icon: Camera },
+  event_manager: { color: '#F472B6', glow: 'rgba(244,114,182,0.35)', label: 'Encargada de Eventos', tagline: 'Todo bajo control',         icon: Users },
+  camarero:  { color: '#34D399', glow: 'rgba(52,211,153,0.35)',   label: 'Sala & Barra',        tagline: 'El engranaje invisible del show', icon: Users },
 };
 
 /** Sin entrada propia NO se cae en 'dj': eso etiquetaba de DJ a quien no lo es.
@@ -113,7 +113,7 @@ const ROLE_CFG: Record<string, {
 const getRoleCfg = (role: string) => ROLE_CFG[role] ?? {
   color: '#B8941E', glow: 'rgba(212,175,55,0.35)',
   label: (ROLE_ES[role] ?? role ?? 'Profesional'),
-  emoji: '✨', tagline: 'Profesional de eventos', icon: Star,
+  tagline: 'Profesional de eventos', icon: Star,
 };
 
 // ─────────────────────────────────────────────────────────────────────────────

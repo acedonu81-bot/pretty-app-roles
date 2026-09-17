@@ -105,15 +105,14 @@ export default function BlogWeddingPlanner() {
               <p className="text-base leading-relaxed mb-4" style={{ color: '#222' }}>El wedding planner no es solo "alguien que decora". Sus funciones varían mucho según el paquete contratado, pero en la planificación integral suelen incluir:</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {[
-                  { icon: '📋', title: 'Gestión de proveedores', desc: 'Búsqueda, negociación de precios y firma de contratos con todos los proveedores.' },
-                  { icon: '📅', title: 'Timeline del día', desc: 'Plan minuto a minuto de la boda: llegadas, ceremonias, banquete y fiesta.' },
-                  { icon: '🎨', title: 'Diseño y concepto', desc: 'En modalidades premium incluye dirección artística, paleta de colores y decoración.' },
-                  { icon: '💸', title: 'Control del presupuesto', desc: 'Seguimiento de pagos, señales y facturación para no salirse del presupuesto.' },
-                  { icon: '🚨', title: 'Gestión de imprevistos', desc: 'Plan B ante lluvia, cancelaciones de última hora o retrasos de proveedores.' },
-                  { icon: '📍', title: 'Presencia el día de la boda', desc: 'Coordinación in situ para que los novios no tengan que preocuparse de nada.' },
+                  { title: 'Gestión de proveedores', desc: 'Búsqueda, negociación de precios y firma de contratos con todos los proveedores.' },
+                  { title: 'Timeline del día', desc: 'Plan minuto a minuto de la boda: llegadas, ceremonias, banquete y fiesta.' },
+                  { title: 'Diseño y concepto', desc: 'En modalidades premium incluye dirección artística, paleta de colores y decoración.' },
+                  { title: 'Control del presupuesto', desc: 'Seguimiento de pagos, señales y facturación para no salirse del presupuesto.' },
+                  { title: 'Gestión de imprevistos', desc: 'Plan B ante lluvia, cancelaciones de última hora o retrasos de proveedores.' },
+                  { title: 'Presencia el día de la boda', desc: 'Coordinación in situ para que los novios no tengan que preocuparse de nada.' },
                 ].map(f => (
                   <div key={f.title} className="p-4 rounded-xl flex gap-3" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.06)' }}>
-                    <span className="text-xl flex-shrink-0">{f.icon}</span>
                     <div>
                       <h3 className="text-xs font-bold mb-1">{f.title}</h3>
                       <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>{f.desc}</p>

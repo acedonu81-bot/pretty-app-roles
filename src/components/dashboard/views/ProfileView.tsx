@@ -437,8 +437,8 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
               </div>
               <p className="text-[0.65rem] font-bold mt-3 pt-2.5" style={{ color: '#8A6D0F', borderTop: '1px solid rgba(212,175,55,0.15)' }}>
                 {profile.role === 'empresario'
-                  ? '⚡ Un perfil completo consigue más respuestas de profesionales'
-                  : '⚡ Los perfiles completos salen primero en el directorio'}
+                  ? 'Un perfil completo consigue más respuestas de profesionales'
+                  : 'Los perfiles completos salen primero en el directorio'}
               </p>
             </div>
           )}
