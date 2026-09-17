@@ -9,9 +9,12 @@ import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack } from '@/
 import SessionAudioPlayer from '@/components/SessionAudioPlayer';
 import { profiles, toSlug } from '@/data/profiles';
 import { useAuth } from '@/hooks/useAuth';
+import { useScarcitySignal } from '@/hooks/useScarcitySignal';
 import PublicContactModal from '@/components/PublicContactModal';
 import GeometricAvatar from '@/components/dashboard/GeometricAvatar';
 import AvailabilityCalendar from '@/components/AvailabilityCalendar';
+import FlashBookingRequestModal from '@/components/dashboard/FlashBookingRequestModal';
+import CalendarHowItWorksModal from '@/components/CalendarHowItWorksModal';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { isEarlyAdopter } from '@/lib/earlyAdopter';
@@ -466,6 +469,18 @@ const PublicProfile = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [sbProfile, setSbProfile] = useState<SupabaseProfile | null>(null);
+  const scarcity = useScarcitySignal(sbProfile?.user_id);
+  const [flashBookingDate, setFlashBookingDate] = useState<string | null>(null);
+  const [showCalendarHelp, setShowCalendarHelp] = useState(false);
+
+  useEffect(() => {
+    if (!sbProfile) return;
+    const seenKey = 'xpeak_calendar_intro_seen_organizador';
+    if (!localStorage.getItem(seenKey)) {
+      setShowCalendarHelp(true);
+      localStorage.setItem(seenKey, '1');
+    }
+  }, [sbProfile]);
   const [related, setRelated] = useState<RelatedProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [publicPosts, setPublicPosts] = useState<{ id: string; content: string; post_type: string; created_at: string; media_url: string | null }[]>([]);
@@ -1254,11 +1269,50 @@ const PublicProfile = () => {
             </motion.div>
           )}
 
+          {/* Mismo umbral (3) que weeklyViews más abajo: un número bajo
+              no debe leerse como señal negativa, y evita duplicar dos
+              contadores de actividad semanal con criterios distintos. */}
+          {sbProfile && !scarcity.loading && scarcity.weeklyContactRequests >= 3 && (
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
+              <p className="text-xs" style={{ color: '#8A6D0F' }}>
+                Contactado por {scarcity.weeklyContactRequests} {scarcity.weeklyContactRequests === 1 ? 'empresario' : 'empresarios'} esta semana
+              </p>
+            </motion.div>
+          )}
+
           {/* Availability */}
           {sbProfile && (
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
-              <AvailabilityCalendar userId={sbProfile.user_id} />
+              <div className="flex items-center justify-between mb-1">
+                <span />
+                <button
+                  onClick={() => setShowCalendarHelp(true)}
+                  className="text-xs font-semibold underline"
+                  style={{ color: '#8A6D0F' }}
+                >
+                  ¿Cómo funciona?
+                </button>
+              </div>
+              <AvailabilityCalendar
+                userId={sbProfile.user_id}
+                mode="view-request"
+                onRequestDate={(date) => setFlashBookingDate(date)}
+              />
             </motion.div>
+          )}
+
+          {flashBookingDate && (
+            <FlashBookingRequestModal
+              professionalName={profile.name}
+              professionalRole={profile.role}
+              professionalUserId={sbProfile?.user_id}
+              prefilledDate={flashBookingDate}
+              onClose={() => setFlashBookingDate(null)}
+            />
+          )}
+
+          {showCalendarHelp && (
+            <CalendarHowItWorksModal audience="organizador" onClose={() => setShowCalendarHelp(false)} />
           )}
 
           {/* Reviews */}
