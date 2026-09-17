@@ -135,7 +135,7 @@ const PRECIO_FIESTA: Record<string, string> = {
 const buildFaqs = (occLabel: string, occLong: string, antelacion: string) =>
   (rol: string, precio: string) => [
     { q: `¿Cuánto cuesta contratar ${rol.toLowerCase()} para ${occLong}?`, a: `El precio orientativo de ${rol.toLowerCase()} para ${occLong} en España es ${precio}, según experiencia, duración y zona. En XPEAK todos los perfiles muestran su tarifa pública antes de contactar, sin sorpresas.` },
-    { q: `¿XPEAK cobra comisión por contratar ${rol.toLowerCase()} para ${occLong}?`, a: 'No. XPEAK es completamente gratuito para quien organiza el evento. El contrato se cierra directamente entre tú y el profesional, sin comisión ni intermediarios.' },
+    { q: `¿XPEAK cobra comisión por contratar ${rol.toLowerCase()} para ${occLong}?`, a: 'No. El contrato se cierra directamente entre tú y el profesional, sin intermediarios.' },
     { q: `¿Con cuánta antelación debo contratar ${rol.toLowerCase()} para ${occLong}?`, a: `${antelacion} Para reservas urgentes, el Flash Booking de XPEAK encuentra disponibilidad en menos de 1 hora.` },
     { q: `¿Los ${rol.toLowerCase()} de XPEAK están verificados?`, a: 'Sí. Cada semana se verifican perfiles: identidad, experiencia y trabajos previos. Puedes ver valoraciones reales antes de contratar.' },
   ];
@@ -145,45 +145,45 @@ export const OCCASIONS: Record<string, OccasionInfo> = {
     label: 'Boda', slug: 'boda', labelLong: 'tu boda',
     precio: PRECIO_BODA,
     answer: (rol) =>
-      `Para contratar ${rol.toLowerCase()} para una boda en España sin comisión, publica tu evento en XPEAK y recibe propuestas de profesionales verificados en menos de 1 hora. El precio orientativo es ${PRECIO_BODA[rol] ?? 'variable según el servicio'} y el contrato se firma directamente con el profesional, sin intermediarios ni comisión para quien contrata.`,
+      `Para contratar ${rol.toLowerCase()} para una boda en España, publica tu evento en XPEAK y recibe propuestas de profesionales verificados en menos de 1 hora. El precio orientativo es ${PRECIO_BODA[rol] ?? 'variable según el servicio'} y el contrato se firma directamente con el profesional, sin intermediarios.`,
     intro: (rol) =>
-      `Una boda es uno de los eventos donde más importa acertar con el ${rol.toLowerCase()}. En XPEAK conectas directamente con ${rol.toLowerCase()} verificados con experiencia en bodas de toda España: comparas perfiles, precios públicos y valoraciones, y cierras el contrato sin pagar ninguna comisión. Publica tu boda y recibe propuestas reales en menos de una hora con Flash Booking.`,
+      `Una boda es uno de los eventos donde más importa acertar con el ${rol.toLowerCase()}. En XPEAK conectas directamente con ${rol.toLowerCase()} verificados con experiencia en bodas de toda España: comparas perfiles, precios públicos y valoraciones, y cierras el contrato directamente. Publica tu boda y recibe propuestas reales en menos de una hora con Flash Booking.`,
     faqs: buildFaqs('Boda', 'una boda', 'Los mejores profesionales de boda se reservan con 3–6 meses de antelación, sobre todo en temporada alta (mayo–octubre).'),
   },
   cumpleanos: {
     label: 'Cumpleaños', slug: 'cumpleanos', labelLong: 'tu cumpleaños',
     precio: PRECIO_CUMPLE,
     answer: (rol) =>
-      `Para contratar ${rol.toLowerCase()} para un cumpleaños en España sin comisión, publica tu fiesta en XPEAK y recibe propuestas de profesionales verificados en menos de 1 hora. El precio orientativo es ${PRECIO_CUMPLE[rol] ?? 'variable según el servicio'} y contratas directamente al profesional, sin intermediarios ni comisión.`,
+      `Para contratar ${rol.toLowerCase()} para un cumpleaños en España, publica tu fiesta en XPEAK y recibe propuestas de profesionales verificados en menos de 1 hora. El precio orientativo es ${PRECIO_CUMPLE[rol] ?? 'variable según el servicio'} y contratas directamente al profesional, sin intermediarios.`,
     intro: (rol) =>
-      `Un cumpleaños memorable empieza por elegir bien el ${rol.toLowerCase()}. En XPEAK encuentras ${rol.toLowerCase()} verificados para fiestas de cumpleaños de todas las edades en toda España: precios públicos, valoraciones reales y contratación sin comisión. Publica tu fiesta y recibe propuestas en menos de una hora.`,
+      `Un cumpleaños memorable empieza por elegir bien el ${rol.toLowerCase()}. En XPEAK encuentras ${rol.toLowerCase()} verificados para fiestas de cumpleaños de todas las edades en toda España: precios públicos, valoraciones reales y contratación directa. Publica tu fiesta y recibe propuestas en menos de una hora.`,
     faqs: buildFaqs('Cumpleaños', 'un cumpleaños', 'Para cumpleaños suele bastar con 2–4 semanas de antelación, aunque en fechas señaladas conviene reservar antes.'),
   },
   'evento-empresa': {
     label: 'Evento de Empresa', slug: 'evento-empresa', labelLong: 'tu evento de empresa',
     precio: PRECIO_EMPRESA,
     answer: (rol) =>
-      `Para contratar ${rol.toLowerCase()} para un evento de empresa en España sin comisión, publica tu evento en XPEAK y recibe propuestas de profesionales verificados con factura en menos de 1 hora. El precio orientativo es ${PRECIO_EMPRESA[rol] ?? 'variable según el servicio'}, con contrato y factura directos, sin comisión para la empresa.`,
+      `Para contratar ${rol.toLowerCase()} para un evento de empresa en España, publica tu evento en XPEAK y recibe propuestas de profesionales verificados con factura en menos de 1 hora. El precio orientativo es ${PRECIO_EMPRESA[rol] ?? 'variable según el servicio'}, con contrato y factura directos.`,
     intro: (rol) =>
-      `Los eventos corporativos exigen ${rol.toLowerCase()} fiables y con factura. En XPEAK conectas con ${rol.toLowerCase()} verificados con experiencia en juntas, cenas de empresa, galas y team building por toda España: precios públicos, contrato digital y factura, sin comisión. Publica tu evento y recibe propuestas en menos de una hora.`,
+      `Los eventos corporativos exigen ${rol.toLowerCase()} fiables y con factura. En XPEAK conectas con ${rol.toLowerCase()} verificados con experiencia en juntas, cenas de empresa, galas y team building por toda España: precios públicos, contrato digital y factura. Publica tu evento y recibe propuestas en menos de una hora.`,
     faqs: buildFaqs('Evento de Empresa', 'un evento de empresa', 'Para eventos corporativos recomendamos reservar con 3–8 semanas de antelación según el tamaño del evento.'),
   },
   comunion: {
     label: 'Comunión', slug: 'comunion', labelLong: 'tu comunión',
     precio: PRECIO_COMUNION,
     answer: (rol) =>
-      `Para contratar ${rol.toLowerCase()} para una comunión en España sin comisión, publica tu celebración en XPEAK y recibe propuestas de profesionales verificados en menos de 1 hora. El precio orientativo es ${PRECIO_COMUNION[rol] ?? 'variable según el servicio'} y contratas directamente al profesional, sin comisión.`,
+      `Para contratar ${rol.toLowerCase()} para una comunión en España, publica tu celebración en XPEAK y recibe propuestas de profesionales verificados en menos de 1 hora. El precio orientativo es ${PRECIO_COMUNION[rol] ?? 'variable según el servicio'} y contratas directamente al profesional.`,
     intro: (rol) =>
-      `Una comunión reúne a toda la familia y merece un buen ${rol.toLowerCase()}. En XPEAK encuentras ${rol.toLowerCase()} verificados especializados en comuniones por toda España: precios públicos, valoraciones y contratación sin comisión. Publica tu celebración y recibe propuestas en menos de una hora.`,
+      `Una comunión reúne a toda la familia y merece un buen ${rol.toLowerCase()}. En XPEAK encuentras ${rol.toLowerCase()} verificados especializados en comuniones por toda España: precios públicos, valoraciones y contratación directa. Publica tu celebración y recibe propuestas en menos de una hora.`,
     faqs: buildFaqs('Comunión', 'una comunión', 'La temporada de comuniones (mayo–junio) concentra mucha demanda: reserva con 2–4 meses de antelación.'),
   },
   'fiesta-privada': {
     label: 'Fiesta Privada', slug: 'fiesta-privada', labelLong: 'tu fiesta privada',
     precio: PRECIO_FIESTA,
     answer: (rol) =>
-      `Para contratar ${rol.toLowerCase()} para una fiesta privada en España sin comisión, publica tu evento en XPEAK y recibe propuestas de profesionales verificados en menos de 1 hora. El precio orientativo es ${PRECIO_FIESTA[rol] ?? 'variable según el servicio'} y contratas directamente al profesional, sin intermediarios.`,
+      `Para contratar ${rol.toLowerCase()} para una fiesta privada en España, publica tu evento en XPEAK y recibe propuestas de profesionales verificados en menos de 1 hora. El precio orientativo es ${PRECIO_FIESTA[rol] ?? 'variable según el servicio'} y contratas directamente al profesional, sin intermediarios.`,
     intro: (rol) =>
-      `Una fiesta privada en villa, ático o local necesita un ${rol.toLowerCase()} a la altura. En XPEAK conectas con ${rol.toLowerCase()} verificados con experiencia en eventos privados por toda España, incluidos destinos como Ibiza y Marbella: precios públicos, contrato directo y sin comisión. Publica tu fiesta y recibe propuestas en menos de una hora.`,
+      `Una fiesta privada en villa, ático o local necesita un ${rol.toLowerCase()} a la altura. En XPEAK conectas con ${rol.toLowerCase()} verificados con experiencia en eventos privados por toda España, incluidos destinos como Ibiza y Marbella: precios públicos y contrato directo. Publica tu fiesta y recibe propuestas en menos de una hora.`,
     faqs: buildFaqs('Fiesta Privada', 'una fiesta privada', 'Para fiestas privadas conviene reservar con 2–4 semanas; en destinos y fechas de temporada alta, con más margen.'),
   },
 };
@@ -238,7 +238,7 @@ export default function OccasionLanding() {
     // Señal de frescura: las IAs priorizan contenido con dateModified reciente.
     // En SSR/prerender se congela con la fecha del build (lo que leen los bots).
     dateModified: BUILD_DATE,
-    offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR', description: 'Sin comisión para quien contrata' },
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
   };
   const breadcrumbData = {
     '@context': 'https://schema.org', '@type': 'BreadcrumbList',
@@ -254,13 +254,13 @@ export default function OccasionLanding() {
   return (
     <>
       <Helmet>
-        <title>{`Contratar ${rol} para ${occ.label} sin comisión — XPEAK`}</title>
+        <title>{`Contratar ${rol} para ${occ.label} — XPEAK`}</title>
         <meta name="description" content={desc} />
         {/* El noindex de las páginas sin inventario se aplica en el prerender
             (prerender-content.mjs), no aquí: el robots global de index.html
             gana en el HTML servido y Helmet no lo sustituye. */}
         <link rel="canonical" href={`https://xpeak.es${canonical}`} />
-        <meta property="og:title" content={`Contratar ${rol} para ${occ.label} sin comisión — XPEAK`} />
+        <meta property="og:title" content={`Contratar ${rol} para ${occ.label} — XPEAK`} />
         <meta property="og:description" content={desc} />
         <meta property="og:url" content={`https://xpeak.es${canonical}`} />
         <meta property="og:type" content="website" />
@@ -278,7 +278,7 @@ export default function OccasionLanding() {
           <div className="flex items-center gap-3 sm:gap-4">
             <a href="/blog" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>Blog</a>
             <a href="/precios" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>Precios</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse</a>
           </div>
         </nav>
 
@@ -291,7 +291,7 @@ export default function OccasionLanding() {
           <p className="text-sm sm:text-lg mb-8 max-w-2xl leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{occ.intro(rol)}</p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a href="/auth" className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              <Zap size={15} /> Publicar {occ.label.toLowerCase()} gratis
+              <Zap size={15} /> Publicar {occ.label.toLowerCase()}
             </a>
             <a href={`/directorio/${categorySlug}`} className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }}>
               Ver directorio <ArrowRight size={14} />
@@ -342,7 +342,7 @@ export default function OccasionLanding() {
           <h2 className="text-xl sm:text-2xl font-black mb-6 sm:mb-8">Cómo contratar {rol} para {occ.labelLong} con XPEAK</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
-              { step: '01', title: 'Crea tu cuenta gratis', body: 'Regístrate como organizador en menos de 2 minutos. Sin tarjeta.' },
+              { step: '01', title: 'Crea tu cuenta', body: 'Regístrate como organizador en menos de 2 minutos. Sin tarjeta.' },
               { step: '02', title: 'Publica tu evento', body: `Describe ${occ.labelLong}, fecha, horario y presupuesto. Flash Booking lo distribuye al instante.` },
               { step: '03', title: 'Cierra el contrato', body: 'Elige al profesional y firma el contrato digital con un clic. PDF listo para facturación.' },
             ].map(s => (
@@ -384,9 +384,9 @@ export default function OccasionLanding() {
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-16 sm:pb-20 text-center">
           <div className="rounded-2xl p-7 sm:p-10" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
             <h2 className="text-xl sm:text-3xl font-black mb-3">¿Buscas {rol} para {occ.labelLong}?</h2>
-            <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>Únete gratis — sin comisión, contratos automáticos, Flash Booking en menos de 1h.</p>
+            <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>Únete — contratos automáticos, Flash Booking en menos de 1h.</p>
             <a href="/auth" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              <Zap size={15} /> Empezar gratis
+              <Zap size={15} /> Empezar
             </a>
           </div>
         </section>

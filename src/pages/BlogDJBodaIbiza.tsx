@@ -19,7 +19,7 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'DJ bodas Ibiza', item: 'https://xpeak.es/blog/dj-bodas-ibiza' }] };
 const PRECIOS = [{ servicio: 'Solo pista de baile (4-5h)', precio: '700–1.500€' }, { servicio: 'Cóctel + pista', precio: '1.000–2.000€' }, { servicio: 'Servicio completo', precio: '1.500–3.500€' }, { servicio: 'Pack premium bodas de lujo', precio: '2.500–6.000€' }];
 const ZONAS = [{ zona: 'Norte de Ibiza', fincas: 'Santa Eulalia, San Carlos, Sant Joan', nota: 'Las villas más exclusivas de Europa' }, { zona: 'Centro', fincas: 'Santa Gertrudis, Sant Miquel', nota: 'Fincas con encanto, más íntimas' }, { zona: 'Sur', fincas: 'Es Caló, Ses Salines', nota: 'Bodas de playa únicas' }, { zona: 'Formentera', fincas: 'La Savina, Es Pujols', nota: 'Para bodas muy íntimas e íntimas' }];
-const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Ibiza', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Ibiza. Presupuestos gratuitos, contratos digitales y 0% comisión.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Ibiza' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-ibiza', offers: { '@type': 'Offer', description: 'Presupuestos gratuitos de DJs verificados', price: '0', priceCurrency: 'EUR' } };
+const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Ibiza', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Ibiza. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Ibiza' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-ibiza', offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' } };
 
 export default function BlogDJBodaIbiza() {
   return (
@@ -46,7 +46,7 @@ export default function BlogDJBodaIbiza() {
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse</a>
           </div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">

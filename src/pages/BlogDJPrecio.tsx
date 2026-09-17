@@ -103,7 +103,7 @@ const faqStructured = {
           <a href="/auth"
             className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-            Unirse gratis
+            Unirse
           </a>
         </nav>
 
@@ -196,7 +196,7 @@ const faqStructured = {
             Si ya tienes claro el precio, usa nuestra{' '}
             <a href="/blog/calculadora-tarifa-dj" style={{ color: '#D4AF37' }}>calculadora de tarifa DJ</a>{' '}
             o descarga la{' '}
-            <a href="/plantilla-contrato-dj" style={{ color: '#D4AF37' }}>plantilla de contrato gratis</a>.
+            <a href="/plantilla-contrato-dj" style={{ color: '#D4AF37' }}>plantilla de contrato</a>.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10">
             {CITIES.map(c => (
@@ -280,7 +280,7 @@ const faqStructured = {
                 Más de 9 DJs ya tienen perfil verificado en XPEAK. Aparece en el directorio, activa Flash Booking para fechas disponibles y genera contratos en segundos.
               </p>
               <div className="flex flex-wrap gap-3 mb-5">
-                {['Perfil gratuito', 'Tarifas públicas', 'Flash Booking', 'Contratos automáticos'].map(f => (
+                {['Tarifas públicas', 'Flash Booking', 'Contratos automáticos'].map(f => (
                   <span key={f} className="flex items-center gap-1.5 text-xs font-bold"
                     style={{ color: 'rgba(212,175,55,0.8)' }}>
                     <Star size={10} style={{ color: '#D4AF37' }} /> {f}
@@ -290,7 +290,7 @@ const faqStructured = {
               <a href="/auth?mode=register&role=dj"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105 hover:shadow-lg"
                 style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-                <Zap size={15} /> Crear mi perfil DJ — es gratis
+                <Zap size={15} /> Crear mi perfil DJ
               </a>
             </div>
 

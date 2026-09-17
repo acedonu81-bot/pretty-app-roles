@@ -19,7 +19,7 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'DJ bodas Zaragoza', item: 'https://xpeak.es/blog/dj-bodas-zaragoza' }] };
 const PRECIOS = [{ servicio: 'Solo pista de baile (4-5h)', precio: '350–750€' }, { servicio: 'Cóctel + pista', precio: '550–1.100€' }, { servicio: 'Servicio completo', precio: '700–1.600€' }, { servicio: 'Pack premium', precio: '1.000–2.000€' }];
 const ZONAS = [{ zona: 'Valle del Ebro / Canal Imperial', fincas: 'Utebo, La Muela, Épila', nota: 'Fincas con jardines junto al agua' }, { zona: 'Cinco Villas', fincas: 'Ejea, Sos del Rey Católico', nota: 'Masías aragonesas tradicionales' }, { zona: 'Prepirineo aragonés', fincas: 'Huesca limítrofe, Monzón', nota: 'Fincas rurales espectaculares' }, { zona: 'Zaragoza capital', fincas: 'Aljafería, hoteles 5*', nota: 'Palacios históricos y modernos' }];
-const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Zaragoza', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Zaragoza. Presupuestos gratuitos, contratos digitales y 0% comisión.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Zaragoza' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-zaragoza', offers: { '@type': 'Offer', description: 'Presupuestos gratuitos de DJs verificados', price: '0', priceCurrency: 'EUR' } };
+const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Zaragoza', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Zaragoza. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Zaragoza' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-zaragoza', offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' } };
 
 export default function BlogDJBodaZaragoza() {
   return (
@@ -46,7 +46,7 @@ export default function BlogDJBodaZaragoza() {
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse</a>
           </div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">

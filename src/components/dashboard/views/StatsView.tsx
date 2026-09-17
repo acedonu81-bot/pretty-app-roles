@@ -386,8 +386,8 @@ const StatsView = () => {
           style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}>
           <CheckCircle size={20} style={{ color: '#8A6D0F' }} />
           <div className="flex-1">
-            <p className="text-sm font-bold">Plataforma gratuita</p>
-            <p className="text-xs text-muted-foreground">Todas las funciones disponibles sin coste ni comisiones.</p>
+            <p className="text-sm font-bold">Free</p>
+            <p className="text-xs text-muted-foreground">Todas las funciones disponibles en tu plan.</p>
           </div>
           <span className="text-[0.75rem] font-bold px-2 py-1 rounded"
             style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F' }}>ACTIVO</span>

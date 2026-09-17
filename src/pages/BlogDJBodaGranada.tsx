@@ -19,7 +19,7 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'DJ bodas Granada', item: 'https://xpeak.es/blog/dj-bodas-granada' }] };
 const PRECIOS = [{ servicio: 'Solo pista de baile (4-5h)', precio: '300–700€' }, { servicio: 'Cóctel + pista', precio: '500–1.000€' }, { servicio: 'Servicio completo', precio: '650–1.500€' }, { servicio: 'Pack premium', precio: '900–1.900€' }];
 const ZONAS = [{ zona: 'Vega granadina', fincas: 'La Zubia, Ogíjares, Dílar, Armilla', nota: 'Cortijos con jardín, los más demandados' }, { zona: 'Valle de Lecrín', fincas: 'Vélez de Benaudalla, Padul', nota: 'Fincas entre naranjos y olivos' }, { zona: 'Sierra Nevada / Alpujarras', fincas: 'Capileira, Trevélez, Órgiva', nota: 'Para bodas íntimas en entorno único' }, { zona: 'Granada capital', fincas: 'Alhambra, hoteles históricos', nota: 'Máxima exclusividad, restricciones horario' }];
-const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Granada', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Granada. Presupuestos gratuitos, contratos digitales y 0% comisión.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Granada' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-granada', offers: { '@type': 'Offer', description: 'Presupuestos gratuitos de DJs verificados', price: '0', priceCurrency: 'EUR' } };
+const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Granada', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Granada. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Granada' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-granada', offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' } };
 
 export default function BlogDJBodaGranada() {
   return (
@@ -46,7 +46,7 @@ export default function BlogDJBodaGranada() {
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse</a>
           </div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">

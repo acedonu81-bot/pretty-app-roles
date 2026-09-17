@@ -345,8 +345,8 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
 
             <p className="text-[0.65rem] text-center mt-3" style={{ color: '#333' }}>
               {user
-                ? 'Sin comisión · Cada profesional te contactará directamente'
-                : 'Cuenta gratis en 30 segundos · No perderás lo que has escrito'}
+                ? 'Cada profesional te contactará directamente'
+                : 'Cuenta en 30 segundos · No perderás lo que has escrito'}
             </p>
           </form>
         )}

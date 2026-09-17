@@ -242,7 +242,7 @@ const CancellationModal = ({ open, onOpenChange, planId, planName }: Cancellatio
             <div>
               <p className="text-sm font-bold">Tu suscripción ha sido cancelada</p>
               <p className="text-xs text-muted-foreground mt-2">
-                Tu acceso al plan {planName} se mantendrá hasta el final del periodo de facturación actual. Después pasarás automáticamente al plan gratuito.
+                Tu acceso al plan {planName} se mantendrá hasta el final del periodo de facturación actual. Después pasarás automáticamente al plan Free.
               </p>
               <p className="text-xs text-muted-foreground mt-2">
                 Siempre puedes volver a suscribirte cuando quieras.

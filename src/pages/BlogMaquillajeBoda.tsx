@@ -101,7 +101,7 @@ export default function BlogMaquillajeBoda() {
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
             <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#DB2777,#B8941E)', color: '#000' }}>
-              Unirse gratis
+              Unirse
             </a>
           </div>
         </nav>
@@ -225,7 +225,7 @@ export default function BlogMaquillajeBoda() {
             </section>
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(219,39,119,0.04)', border: '1px solid rgba(219,39,119,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas maquilladora verificada para tu evento?</p>
-              <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>En XPEAK puedes contratar maquilladoras profesionales con portfolio verificado. Gratis para empresarios y organizadores.</p>
+              <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>En XPEAK puedes contratar maquilladoras profesionales con portfolio verificado.</p>
               <a href="/contratar-maquillaje" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(90deg,#DB2777,#B8941E)', color: '#000' }}>
                 Ver maquilladoras en XPEAK →

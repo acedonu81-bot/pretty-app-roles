@@ -82,7 +82,7 @@ const faqStructured = {
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#B45309' }}>XPEAK</a>
           <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#B45309,#B8941E)', color: '#000' }}>
-            Unirse gratis
+            Unirse
           </a>
         </nav>
         <a href="/blog" className="block px-4 sm:px-6 pb-2 max-w-3xl mx-auto text-xs" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
@@ -147,7 +147,7 @@ const faqStructured = {
 
           <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(180,83,9,0.05)', border: '1px solid rgba(180,83,9,0.15)' }}>
             <p className="text-sm font-black mb-1">Compara proveedores de catering en España</p>
-            <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>Perfiles verificados, tarifas públicas y contratos digitales. Sin comisión.</p>
+            <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>Perfiles verificados, tarifas públicas y contratos digitales.</p>
             <a href="/contratar-catering" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-xs font-black transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#B45309,#B8941E)', color: '#000' }}>
               Ver catering →

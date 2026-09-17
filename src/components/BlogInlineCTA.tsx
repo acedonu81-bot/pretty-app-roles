@@ -6,10 +6,10 @@ interface BlogInlineCTAProps {
 
 const CONFIG = {
   dj: {
-    pro: { label: '¿Eres DJ?', cta: 'Publica tu tarifa gratis →', href: '/auth?mode=register&role=dj' },
+    pro: { label: '¿Eres DJ?', cta: 'Publica tu tarifa →', href: '/auth?mode=register&role=dj' },
     org: { label: '¿Buscas DJ para tu evento?', cta: 'Ver DJs disponibles →', href: '/contratar-dj' },
     upgrade: {
-      eyebrow: 'XPEAK · Gratis · Sin comisión',
+      eyebrow: 'XPEAK · Directorio verificado',
       headline: 'Encuentra DJ verificado para tu evento con Flash Booking',
       sub: 'DJs con portfolio verificado, tarifas públicas y contrato digital automático. Flash Booking: respuesta en menos de 1 hora.',
       cta: 'Ver DJs disponibles →',
@@ -18,10 +18,10 @@ const CONFIG = {
     },
   },
   staff: {
-    pro: { label: '¿Eres camarero o staff?', cta: 'Crea tu perfil gratis →', href: '/auth?mode=register&role=staff' },
+    pro: { label: '¿Eres camarero o staff?', cta: 'Crea tu perfil →', href: '/auth?mode=register&role=staff' },
     org: { label: '¿Necesitas camareros o staff?', cta: 'Ver staff disponible →', href: '/contratar-staff' },
     upgrade: {
-      eyebrow: 'XPEAK · Gratis · Sin comisión',
+      eyebrow: 'XPEAK · Directorio verificado',
       headline: 'Encuentra camareros y staff verificado para tu evento',
       sub: 'Personal con experiencia comprobada. Flash Booking disponible para urgencias en menos de 1 hora.',
       cta: 'Ver staff disponible →',
@@ -30,10 +30,10 @@ const CONFIG = {
     },
   },
   azafata: {
-    pro: { label: '¿Eres azafata?', cta: 'Crea tu perfil gratis →', href: '/auth?mode=register&role=azafata' },
+    pro: { label: '¿Eres azafata?', cta: 'Crea tu perfil →', href: '/auth?mode=register&role=azafata' },
     org: { label: '¿Necesitas azafatas para tu evento?', cta: 'Ver azafatas disponibles →', href: '/contratar-azafata' },
     upgrade: {
-      eyebrow: 'XPEAK · Gratis · Sin comisión',
+      eyebrow: 'XPEAK · Directorio verificado',
       headline: 'Encuentra azafatas verificadas para tu evento',
       sub: 'Profesionales con experiencia comprobada en ferias, congresos y eventos corporativos. Flash Booking disponible para urgencias en menos de 1 hora.',
       cta: 'Ver azafatas disponibles →',
@@ -42,10 +42,10 @@ const CONFIG = {
     },
   },
   makeup: {
-    pro: { label: '¿Eres maquilladora?', cta: 'Publica tu tarifa gratis →', href: '/auth?mode=register&role=makeup' },
+    pro: { label: '¿Eres maquilladora?', cta: 'Publica tu tarifa →', href: '/auth?mode=register&role=makeup' },
     org: { label: '¿Buscas maquilladora para tu evento?', cta: 'Ver maquilladoras →', href: '/contratar-maquillaje' },
     upgrade: {
-      eyebrow: 'XPEAK · Gratis · Sin comisión',
+      eyebrow: 'XPEAK · Directorio verificado',
       headline: 'Encuentra maquilladora profesional verificada para tu evento',
       sub: 'Portfolios reales, tarifas públicas y contrato digital automático. Sin intermediarios.',
       cta: 'Ver maquilladoras →',
@@ -54,10 +54,10 @@ const CONFIG = {
     },
   },
   peluqueria: {
-    pro: { label: '¿Eres peluquera a domicilio?', cta: 'Publica tu tarifa gratis →', href: '/auth?mode=register&role=peluqueria' },
+    pro: { label: '¿Eres peluquera a domicilio?', cta: 'Publica tu tarifa →', href: '/auth?mode=register&role=peluqueria' },
     org: { label: '¿Buscas peluquera a domicilio?', cta: 'Ver peluqueras →', href: '/contratar-peluqueria' },
     upgrade: {
-      eyebrow: 'XPEAK · Gratis · Sin comisión',
+      eyebrow: 'XPEAK · Directorio verificado',
       headline: 'Encuentra peluquera a domicilio cerca de ti',
       sub: 'Para tu evento o para el día a día. Portfolios reales, tarifas públicas y contrato digital automático.',
       cta: 'Ver peluqueras a domicilio →',
@@ -66,10 +66,10 @@ const CONFIG = {
     },
   },
   fotografo: {
-    pro: { label: '¿Eres fotógrafo?', cta: 'Publica tu tarifa gratis →', href: '/auth?mode=register&role=media' },
+    pro: { label: '¿Eres fotógrafo?', cta: 'Publica tu tarifa →', href: '/auth?mode=register&role=media' },
     org: { label: '¿Buscas fotógrafo?', cta: 'Ver fotógrafos →', href: '/contratar-fotografo' },
     upgrade: {
-      eyebrow: 'XPEAK · Gratis · Sin comisión',
+      eyebrow: 'XPEAK · Directorio verificado',
       headline: 'Encuentra fotógrafo verificado para tu boda o evento',
       sub: 'Portfolios reales, tarifas públicas y contrato digital. Flash Booking disponible para fechas urgentes.',
       cta: 'Ver fotógrafos disponibles →',
@@ -78,15 +78,15 @@ const CONFIG = {
     },
   },
   general: {
-    pro: { label: '¿Eres profesional de eventos?', cta: 'Publica tu tarifa gratis →', href: '/auth?mode=register&role=profesional' },
+    pro: { label: '¿Eres profesional de eventos?', cta: 'Publica tu tarifa →', href: '/auth?mode=register&role=profesional' },
     org: { label: '¿Necesitas talento para tu evento?', cta: 'Ver profesionales →', href: '/auth' },
     upgrade: {
-      eyebrow: 'XPEAK · Gratis · Sin compromiso',
+      eyebrow: 'XPEAK · Directorio verificado',
       headline: 'Recibe presupuestos de profesionales verificados para tu evento',
       sub: 'DJs, staff, azafatas y más. Directorio verificado, 0€ comisión.',
       cta: 'Solicitar presupuestos →',
       href: '/auth?mode=register',
-      badge: 'Gratis, sin compromiso',
+      badge: 'Directorio verificado',
     },
   },
 };

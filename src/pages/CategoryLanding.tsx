@@ -65,7 +65,7 @@ export const CATEGORY_DATA: Record<string, {
     emoji: '🎧',
     h1: 'Contratar DJ para Boda y Eventos en España',
     tagline: 'DJs profesionales verificados para bodas, fiestas y eventos en toda España',
-    desc: 'Contrata DJ para boda, fiesta privada o evento en España. Precio DJ desde 40€/hora. DJ para bodas Madrid, Barcelona e Ibiza. Flash Booking en menos de 1h. Sin comisión.',
+    desc: 'Contrata DJ para boda, fiesta privada o evento en España. Precio DJ desde 40€/hora. DJ para bodas Madrid, Barcelona e Ibiza. Flash Booking en menos de 1h..',
     intro: 'XPEAK es la plataforma de referencia para contratar DJ en Madrid, Barcelona, Ibiza, Valencia, Sevilla y toda España. DJ para bodas, fiestas privadas y eventos corporativos. Perfiles verificados, precio público y contratos digitales en minutos. 0% comisión para organizadores.',
     keyword: 'DJ',
     keywords: 'contratar dj madrid, contratar dj barcelona, contratar dj ibiza, contratar dj para boda, dj para fiestas madrid, precio dj madrid, dj eventos madrid, dj fiestas privadas barcelona, DJ boda España, contratar DJ profesional',
@@ -86,7 +86,7 @@ export const CATEGORY_DATA: Record<string, {
     faqs: [
       { q: '¿Cuánto cuesta contratar un DJ en España?', a: 'Los precios varían entre 40€/hora para DJs emergentes y más de 400€/hora para residentes de clubs reconocidos. En XPEAK todos los perfiles muestran su tarifa pública antes de contactar.' },
       { q: '¿Qué es el Flash Booking?', a: 'Flash Booking es el sistema de ofertas urgentes de XPEAK. Publicas una oferta con fecha, zona y presupuesto, y los DJs disponibles en tu ciudad responden en menos de 60 minutos. Ideal para sustituciones de última hora.' },
-      { q: '¿XPEAK cobra comisión?', a: 'No. XPEAK es completamente gratuito para salas, promotoras y organizadores. El contrato se cierra directamente entre las partes. Sin intermediarios ni porcentajes sobre el caché.' },
+      { q: '¿XPEAK cobra comisión?', a: 'No. El contrato se cierra directamente entre las partes. Sin intermediarios ni porcentajes sobre el caché.' },
       { q: '¿Los DJs están verificados?', a: 'Sí. Los perfiles en XPEAK son verificados manualmente. Incluyen experiencia, géneros, equipos, mezclas de muestra y referencias de venues.' },
     ],
     steps: [
@@ -100,7 +100,7 @@ export const CATEGORY_DATA: Record<string, {
     emoji: '🎪',
     h1: 'Contratar Staff de Eventos',
     tagline: 'Hostesses, RR.PP. y promotores verificados en España',
-    desc: 'Contrata staff profesional para tus eventos: hostesses, relaciones públicas, promotores y personal de sala. Flash Booking disponible. Sin comisión.',
+    desc: 'Contrata staff profesional para tus eventos: hostesses, relaciones públicas, promotores y personal de sala. Flash Booking disponible..',
     intro: 'Encuentra el personal de eventos que necesitas para tu sala, festival o evento corporativo. XPEAK conecta promotoras y organizadores con staff profesional verificado en toda España, con contratos digitales listos en minutos.',
     keyword: 'Staff de Eventos',
     keywords: 'contratar staff eventos España, hostesses España, relaciones públicas eventos, promotores de sala, personal eventos España',
@@ -133,7 +133,7 @@ export const CATEGORY_DATA: Record<string, {
     emoji: '🎀',
     h1: 'Contratar Azafatas para Eventos',
     tagline: 'Azafatas verificadas para ferias, congresos y eventos corporativos en España',
-    desc: 'Contrata azafatas profesionales para ferias, congresos, eventos corporativos y presentaciones. Perfiles verificados, contrato digital automático. Flash Booking disponible. Sin comisión.',
+    desc: 'Contrata azafatas profesionales para ferias, congresos, eventos corporativos y presentaciones. Perfiles verificados, contrato digital automático. Flash Booking disponible..',
     intro: 'XPEAK conecta empresas, agencias y organizadores con azafatas profesionales verificadas en toda España. Desde recepción de congresos hasta stands feriales y presentaciones de producto, con contratos digitales listos en minutos.',
     keyword: 'Azafatas de Eventos',
     keywords: 'contratar azafatas eventos España, azafatas ferias, azafatas congresos, azafatas para stands, personal azafatas España',
@@ -166,7 +166,7 @@ export const CATEGORY_DATA: Record<string, {
     emoji: '📸',
     h1: 'Contratar Fotógrafo de Eventos',
     tagline: 'Fotógrafos y videógrafos profesionales para eventos en España',
-    desc: 'Contrata fotógrafos y videógrafos especializados en eventos nocturnos, festivales y celebraciones. Perfiles verificados, entrega rápida. Sin comisión.',
+    desc: 'Contrata fotógrafos y videógrafos especializados en eventos nocturnos, festivales y celebraciones. Perfiles verificados, entrega rápida..',
     intro: 'XPEAK conecta salas, promotoras y organizadores con fotógrafos y videógrafos profesionales especializados en el sector de los eventos. Desde cobertura de clubs hasta producción audiovisual para festivales, con contratos digitales en minutos.',
     keyword: 'Fotógrafo de Eventos',
     keywords: 'contratar fotógrafo eventos España, fotógrafo club nocturno, videógrafo eventos, fotógrafo festival España, fotografía nocturna eventos',
@@ -199,7 +199,7 @@ export const CATEGORY_DATA: Record<string, {
     emoji: '🍽️',
     h1: 'Contratar Camareros para Eventos y Bodas',
     tagline: 'Camareros por horas, personal extra y servicio completo para bodas, hostelería y eventos de empresa',
-    desc: 'Contrata camareros profesionales para bodas, eventos corporativos y fiestas privadas en España. Perfiles verificados, contrato digital automático, Flash Booking en menos de 1h. Gratis para organizadores.',
+    desc: 'Contrata camareros profesionales para bodas, eventos corporativos y fiestas privadas en España. Perfiles verificados, contrato digital automático, Flash Booking en menos de 1h.',
     intro: 'XPEAK conecta organizadores de bodas, agencias de eventos y empresas con camareros profesionales verificados en toda España. Desde servicios de barra para bodas hasta personal de sala para cenas corporativas de 500 personas, encuentra el personal que necesitas con contrato digital en minutos.',
     keyword: 'Camareros',
     keywords: 'contratar camareros madrid, camareros para eventos madrid, camareros por horas madrid, camareros extra madrid, contratar camareros barcelona, personal de sala barcelona, camareros temporada ibiza, personal extra hostelería, camareros para bodas, catering personal sala',
@@ -234,7 +234,7 @@ export const CATEGORY_DATA: Record<string, {
     emoji: '🍾',
     h1: 'Contratar Catering para Eventos',
     tagline: 'Servicios de catering profesional para bodas, eventos corporativos y celebraciones',
-    desc: 'Catering para eventos Madrid y Barcelona: bodas, cenas corporativas y fiestas privadas desde 25€/persona. Menús personalizados, servicio completo. Flash Booking disponible. Sin comisión para organizadores.',
+    desc: 'Catering para eventos Madrid y Barcelona: bodas, cenas corporativas y fiestas privadas desde 25€/persona. Menús personalizados, servicio completo. Flash Booking disponible..',
     intro: 'XPEAK incluye proveedores de catering especializados en eventos en toda España. Desde banquetes de boda hasta coffee breaks corporativos, catas de vino y cenas de gala. Compara perfiles, solicita menús y cierra contratos digitales en minutos sin intermediarios.',
     keyword: 'Catering',
     keywords: 'catering para eventos madrid, contratar catering madrid, catering empresas madrid, catering bodas madrid, catering para eventos barcelona, catering empresas barcelona, catering bodas barcelona, catering por persona España, catering cena empresa, catering boda precio',
@@ -300,7 +300,7 @@ export const CATEGORY_DATA: Record<string, {
     h1: 'Peluquería para Bodas y Eventos',
     tagline: 'Peluqueras y peluqueros profesionales para tu evento',
     desc: 'Encuentra peluquera cerca de ti en España. Corte, color, peinados de novia y recogidos. Perfiles verificados, contrato digital en minutos.',
-    intro: 'XPEAK conecta a clientas y clientes con peluqueras y peluqueros profesionales en toda España. Encuentra profesionales verificados cerca de ti, con portafolio real y contacto directo sin comisión.',
+    intro: 'XPEAK conecta a clientas y clientes con peluqueras y peluqueros profesionales en toda España. Encuentra profesionales verificados cerca de ti, con portafolio real y contacto directo.',
     keyword: 'Peluquera/o',
     keywords: 'peluquera a domicilio, peluquería a domicilio cerca de mí, peluqueras a domicilio cerca de mí, peluquera y maquilladora a domicilio, peluquería novia, peluquería novias, peluquera a domicilio Madrid Barcelona',
     precio: 'desde 35€/servicio',
@@ -329,7 +329,7 @@ export const CATEGORY_DATA: Record<string, {
     emoji: '📣',
     h1: 'Contratar Promotores de Eventos',
     tagline: 'Promotores y RRPP profesionales para discotecas, festivales y eventos nocturnos',
-    desc: 'Contrata promotores y relaciones públicas profesionales para discotecas, festivales y eventos en España. Perfiles verificados, resultados medibles, contratos automáticos. Sin comisión.',
+    desc: 'Contrata promotores y relaciones públicas profesionales para discotecas, festivales y eventos en España. Perfiles verificados, resultados medibles, contratos automáticos..',
     intro: 'XPEAK reúne los mejores promotores y relaciones públicas del sector del eventos y entretenimiento y los eventos en España. Profesionales con cartera de clientes activa, experiencia en clubs y festivales, disponibles para acuerdos puntuales o de temporada con contratos digitales en minutos.',
     keyword: 'Promotor',
     keywords: 'contratar promotor discoteca España, relaciones públicas eventos nocturnos, promotor sala Madrid Barcelona, RRPP eventos, promotor festival España, personal RRPP discoteca',
@@ -392,7 +392,7 @@ export const CATEGORY_DATA: Record<string, {
     emoji: '🎤',
     h1: 'Contratar Humorista y Monologuista para Eventos',
     tagline: 'Humoristas, monologuistas y cómicos de stand-up para bodas, cenas de empresa y eventos',
-    desc: 'Contrata humoristas y monologuistas profesionales para bodas, cenas de empresa y eventos en España. Cómicos verificados, guión personalizado. Flash Booking disponible. Sin comisión.',
+    desc: 'Contrata humoristas y monologuistas profesionales para bodas, cenas de empresa y eventos en España. Cómicos verificados, guión personalizado. Flash Booking disponible..',
     intro: 'XPEAK conecta organizadores con humoristas y monologuistas profesionales en toda España. Desde el monólogo de bodas hasta el espectáculo de stand-up para cenas corporativas, con guión adaptado a tu evento y contratos digitales en minutos.',
     keyword: 'Humorista',
     keywords: 'contratar humorista boda España, monologuista eventos empresa, stand-up cena corporativa, cómico para eventos Madrid Barcelona, humor bodas España, contratar monologuista precio',
@@ -425,7 +425,7 @@ export const CATEGORY_DATA: Record<string, {
     emoji: '🎪',
     h1: 'Contratar Animador y Payaso para Eventos',
     tagline: 'Animadores infantiles, payasos y artistas de entretenimiento para cumpleaños, bodas y eventos',
-    desc: 'Contrata animadores y payasos profesionales para cumpleaños infantiles, bodas, comuniones y eventos familiares en España. Perfiles verificados, animación garantizada. Sin comisión.',
+    desc: 'Contrata animadores y payasos profesionales para cumpleaños infantiles, bodas, comuniones y eventos familiares en España. Perfiles verificados, animación garantizada..',
     intro: 'XPEAK conecta familias y organizadores con animadores y payasos profesionales en toda España. Desde la animación infantil para cumpleaños hasta el espectáculo de magia para bodas y comuniones, con contratos digitales en minutos y perfiles verificados.',
     keyword: 'Animador',
     keywords: 'contratar animador infantil España, payaso cumpleaños Madrid Barcelona, animación bodas, animadores comuniones, contratar payaso precio España, animación infantil profesional',
@@ -460,7 +460,7 @@ export const CATEGORY_DATA: Record<string, {
     emoji: '🎙️',
     h1: 'Contratar Speaker y Ponente para Eventos',
     tagline: 'Speakers, conferenciantes y ponentes profesionales para congresos, cenas de empresa y eventos corporativos',
-    desc: 'Contrata speakers y conferenciantes profesionales para congresos, teambuilding y eventos corporativos en España. Ponentes verificados, temas especializados. Flash Booking. Sin comisión.',
+    desc: 'Contrata speakers y conferenciantes profesionales para congresos, teambuilding y eventos corporativos en España. Ponentes verificados, temas especializados. Flash Booking..',
     intro: 'XPEAK conecta empresas y organizadores con speakers y ponentes profesionales en toda España. Desde keynotes motivacionales hasta conferencias técnicas especializadas, con perfiles verificados y contratos digitales en minutos.',
     keyword: 'Speaker',
     keywords: 'contratar speaker congreso España, ponente eventos empresa Madrid Barcelona, conferenciante motivacional, speaker corporativo precio España, ponente evento tecnología',
@@ -493,7 +493,7 @@ export const CATEGORY_DATA: Record<string, {
     emoji: '🎩',
     h1: 'Contratar Mago para Eventos y Bodas',
     tagline: 'Magos y ilusionistas profesionales para bodas, cenas de empresa, cumpleaños y eventos',
-    desc: 'Contrata magos e ilusionistas profesionales para bodas, eventos corporativos y celebraciones en España. Actuaciones personalizadas verificadas. Flash Booking disponible. Sin comisión.',
+    desc: 'Contrata magos e ilusionistas profesionales para bodas, eventos corporativos y celebraciones en España. Actuaciones personalizadas verificadas. Flash Booking disponible..',
     intro: 'XPEAK conecta organizadores con magos e ilusionistas profesionales en toda España. Magia de cerca para cócteles de boda, espectáculos de grand illusion para galas corporativas y shows infantiles para comuniones, con contratos digitales en minutos.',
     keyword: 'Mago',
     keywords: 'contratar mago boda España, ilusionista eventos empresa, mago cóctel boda Madrid Barcelona, mago para cumpleaños precio España, actuación de magia evento',
@@ -526,7 +526,7 @@ export const CATEGORY_DATA: Record<string, {
     emoji: '💃',
     h1: 'Contratar Bailarín, Bailarina e Instructor de Baile',
     tagline: 'Bailarines, compañías de danza e instructores de salsa, bachata y kizomba para eventos y clases',
-    desc: 'Contrata bailarines y bailarinas profesionales para bodas, shows de entretenimiento y eventos corporativos en España, o encuentra instructor de salsa, bachata y kizomba para clases particulares. Perfiles verificados. Sin comisión.',
+    desc: 'Contrata bailarines y bailarinas profesionales para bodas, shows de entretenimiento y eventos corporativos en España, o encuentra instructor de salsa, bachata y kizomba para clases particulares. Perfiles verificados..',
     intro: 'XPEAK conecta organizadores con bailarines y compañías de danza profesionales en toda España — desde el espectáculo flamenco para galas hasta la coreografía sorpresa de boda — y también con instructores de salsa, bachata y kizomba disponibles para clases particulares. Perfiles verificados y contratos digitales en minutos.',
     keyword: 'Bailarín',
     keywords: 'contratar bailarín boda España, compañía de danza eventos Madrid Barcelona, bailaora flamenca eventos, bailarín profesional precio España, show de baile corporativo, instructor de salsa bachata, clases particulares de baile',
@@ -559,7 +559,7 @@ export const CATEGORY_DATA: Record<string, {
     emoji: '🤡',
     h1: 'Contratar Payaso para Fiestas y Eventos',
     tagline: 'Payasos profesionales para cumpleaños infantiles, bodas, comuniones y eventos familiares',
-    desc: 'Contrata payasos profesionales para cumpleaños infantiles, bodas y eventos familiares en España. Animadores verificados, espectáculo garantizado. Flash Booking disponible. Sin comisión.',
+    desc: 'Contrata payasos profesionales para cumpleaños infantiles, bodas y eventos familiares en España. Animadores verificados, espectáculo garantizado. Flash Booking disponible..',
     intro: 'XPEAK conecta familias y organizadores con payasos y animadores profesionales en toda España. Magia, globoflexia, pintacaras y humor para niños de todas las edades, con contratos digitales en minutos.',
     keyword: 'Payaso',
     keywords: 'contratar payaso cumpleaños España, payaso infantil Madrid Barcelona, payaso para fiestas precio, animador payaso eventos familiares, payaso profesional boda España',
@@ -592,7 +592,7 @@ export const CATEGORY_DATA: Record<string, {
     emoji: '📸',
     h1: 'Contratar Photo Booth para Boda y Eventos en España',
     tagline: 'Cabinas de fotos profesionales con impresión al instante y álbum digital',
-    desc: 'Alquila un photo booth para tu boda, comunión o evento de empresa. Precio desde 300€. Con atrezzo, impresión al instante y álbum digital. Sin comisión.',
+    desc: 'Alquila un photo booth para tu boda, comunión o evento de empresa. Precio desde 300€. Con atrezzo, impresión al instante y álbum digital..',
     intro: 'Un photo booth es uno de los elementos que más éxito tiene en bodas, comuniones y eventos de empresa. XPEAK conecta organizadores con proveedores de photo booth profesionales en toda España.',
     keyword: 'Photo Booth',
     keywords: 'alquilar photo booth boda, photo booth eventos españa, cabina fotos boda precio, photobooth comunión, photo booth 360 evento empresa',
@@ -615,7 +615,7 @@ export const CATEGORY_DATA: Record<string, {
     emoji: '🎵',
     h1: 'Contratar Grupo Musical para Boda y Eventos en España',
     tagline: 'Bandas, grupos de jazz, cuartetos y música en vivo para cualquier evento',
-    desc: 'Contrata grupos musicales para bodas, comuniones y eventos. Jazz, flamenco, pop, rock, cuarteto de cuerda. Precio desde 350€. Sin comisión.',
+    desc: 'Contrata grupos musicales para bodas, comuniones y eventos. Jazz, flamenco, pop, rock, cuarteto de cuerda. Precio desde 350€..',
     intro: 'XPEAK conecta organizadores con grupos musicales profesionales en toda España. Desde cuartetos de cuerda para ceremonias hasta bandas de pop-rock para bodas y grupos de jazz para eventos de empresa.',
     keyword: 'Grupo Musical',
     keywords: 'contratar grupo musical boda, banda musical eventos españa, cuarteto cuerda boda, música en vivo evento, grupo jazz evento empresa',
@@ -638,7 +638,7 @@ export const CATEGORY_DATA: Record<string, {
     emoji: '🎤',
     h1: 'Contratar Monologuista para Eventos en España',
     tagline: 'Cómicos de stand-up y monologuistas con guion personalizado para cenas de empresa y bodas',
-    desc: 'Contrata monologuista o cómico de stand-up para cenas de empresa, bodas y eventos en España. Guion personalizado. Sin comisión.',
+    desc: 'Contrata monologuista o cómico de stand-up para cenas de empresa, bodas y eventos en España. Guion personalizado..',
     intro: 'XPEAK conecta organizadores con monologuistas y cómicos de stand-up verificados en toda España: desde shows de 20-30 minutos para cenas de empresa hasta actuaciones completas de 60 minutos para bodas y festivales de humor.',
     keyword: 'Monologuista',
     keywords: 'contratar monologuista, cómico stand up eventos, monólogo cena de empresa, humorista boda España, contratar cómico evento',
@@ -667,7 +667,7 @@ export const CATEGORY_DATA: Record<string, {
     emoji: '🎵',
     h1: 'Contratar Disco Móvil para Eventos',
     tagline: 'DJ con equipo completo de sonido, luces y efectos para bodas, comuniones y fiestas privadas',
-    desc: 'Contrata disco móvil profesional para bodas, comuniones, cumpleaños y fiestas privadas en España. DJ + equipo completo incluido. Flash Booking. Sin comisión.',
+    desc: 'Contrata disco móvil profesional para bodas, comuniones, cumpleaños y fiestas privadas en España. DJ + equipo completo incluido. Flash Booking..',
     intro: 'Una disco móvil incluye DJ profesional y equipo completo: altavoces, mesa de mezclas, iluminación de colores, máquina de humo y efectos. Ideal para bodas en fincas, comuniones y fiestas donde el local no tiene instalación propia. XPEAK conecta organizadores con DJs de disco móvil verificados en toda España.',
     keyword: 'Disco Móvil',
     keywords: 'contratar disco móvil España, disco móvil boda, disco móvil comunión, alquiler disco móvil Madrid Barcelona, DJ con equipo boda, disco móvil precio España, disco movil fiestas privadas',
@@ -702,7 +702,7 @@ export const CATEGORY_DATA: Record<string, {
     emoji: '🎚️',
     h1: 'Contratar Técnico de Sonido y Montaje',
     tagline: 'Técnicos de sonido, iluminación y montaje de escenario para bodas, festivales y eventos en España',
-    desc: 'Contrata técnico de sonido, iluminación y montaje de escenario para bodas, festivales, salas y eventos corporativos. Con equipo propio o solo mano de obra. Sin comisión.',
+    desc: 'Contrata técnico de sonido, iluminación y montaje de escenario para bodas, festivales, salas y eventos corporativos. Con equipo propio o solo mano de obra..',
     intro: 'Cuando el local no tiene instalación o el evento crece, el sonido deja de ser cosa del DJ. XPEAK conecta organizadores con técnicos de sonido, iluminadores y equipos de montaje verificados en toda España: desde un técnico que cubre una boda hasta el equipo que monta el escenario de un festival. Perfiles con tarifa pública y contacto directo.',
     keyword: 'Técnico de Sonido y Montaje',
     keywords: 'contratar técnico de sonido España, técnico de sonido boda, técnico de sonido eventos Madrid, montaje de escenario, técnico de iluminación eventos, alquiler equipo sonido con técnico, montaje y desmontaje festival, técnico de sonido Barcelona',
@@ -802,7 +802,7 @@ export default function CategoryLanding() {
     description: data.desc,
     url: `https://xpeak.es/contratar-${data.slug}`,
     serviceType: `Contratación de ${data.keyword}`,
-    offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR', description: 'Registro gratuito para salas y promotoras' },
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
   };
 
   const faqStructured = {
@@ -871,7 +871,7 @@ export default function CategoryLanding() {
             <a href="/auth"
               className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              Unirse gratis
+              Unirse
             </a>
           </div>
         </nav>
@@ -1020,7 +1020,7 @@ export default function CategoryLanding() {
           <div className="rounded-2xl p-7 sm:p-10" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
             <h2 className="text-xl sm:text-3xl font-black mb-3">¿Buscas {data.keyword} para tu evento?</h2>
             <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>
-              Contacta directamente — sin registro, sin comisión, respuesta directa del profesional.
+              Contacta directamente — sin registro, respuesta directa del profesional.
             </p>
             <a href={directorioHref(data.slug)}
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"

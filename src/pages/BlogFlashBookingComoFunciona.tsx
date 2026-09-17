@@ -21,9 +21,8 @@ const faqLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    { "@type": "Question", "name": "¿Qué es el Flash Booking de XPEAK?", "acceptedAnswer": { "@type": "Answer", "text": "Flash Booking es el sistema de contratación urgente de XPEAK. Publicas una oferta con fecha, ciudad y presupuesto y los profesionales disponibles en tu zona responden en menos de 60 minutos. Es gratuito para organizadores." } },
+    { "@type": "Question", "name": "¿Qué es el Flash Booking de XPEAK?", "acceptedAnswer": { "@type": "Answer", "text": "Flash Booking es el sistema de contratación urgente de XPEAK. Publicas una oferta con fecha, ciudad y presupuesto y los profesionales disponibles en tu zona responden en menos de 60 minutos." } },
     { "@type": "Question", "name": "¿Cuánto tarda en responder un profesional con Flash Booking?", "acceptedAnswer": { "@type": "Answer", "text": "El tiempo medio de primera respuesta es inferior a 60 minutos. Los profesionales con disponibilidad activa reciben una notificación inmediata y pueden aceptar la oferta directamente desde la app." } },
-    { "@type": "Question", "name": "¿Flash Booking tiene coste para las salas y organizadores?", "acceptedAnswer": { "@type": "Answer", "text": "No. Flash Booking es completamente gratuito para salas, promotoras y organizadores. XPEAK no cobra comisión sobre ninguna contratación." } },
   ]
 };
 
@@ -32,7 +31,7 @@ export default function BlogFlashBookingComoFunciona() {
     <>
       <Helmet>
         <title>Cómo Funciona el Flash Booking de XPEAK — Contratar Profesionales en &lt;1 Hora</title>
-        <meta name="description" content="Guía completa del Flash Booking de XPEAK. Cómo contratar DJ, camareros o fotógrafo verificado para tu evento con confirmación en menos de 60 minutos. Gratis para organizadores." />
+        <meta name="description" content="Guía completa del Flash Booking de XPEAK. Cómo contratar DJ, camareros o fotógrafo verificado para tu evento con confirmación en menos de 60 minutos." />
         <link rel="canonical" href="https://xpeak.es/blog/como-funciona-flash-booking-xpeak" />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
         <script type="application/ld+json">{JSON.stringify(faqLd)}</script>
@@ -51,7 +50,7 @@ export default function BlogFlashBookingComoFunciona() {
 
             <h2 className="text-xl font-black mt-8 mb-4">Cómo funciona paso a paso</h2>
             {[
-              { n: '01', title: 'Crea tu cuenta gratis', body: 'Regístrate como sala, promotora u organizador. El proceso tarda menos de 2 minutos. Sin tarjeta de crédito. Acceso inmediato al panel de Flash Booking.' },
+              { n: '01', title: 'Crea tu cuenta', body: 'Regístrate como sala, promotora u organizador. El proceso tarda menos de 2 minutos. Sin tarjeta de crédito. Acceso inmediato al panel de Flash Booking.' },
               { n: '02', title: 'Publica tu oferta', body: 'Describe el evento: categoría profesional que necesitas (DJ, camareros, fotógrafo…), ciudad, fecha y hora, duración estimada y presupuesto orientativo.' },
               { n: '03', title: 'Los profesionales reciben la notificación', body: 'Todos los profesionales verificados con disponibilidad activa en tu zona reciben una notificación inmediata en la app. Pueden ver los detalles y aceptar o declinar la oferta en segundos.' },
               { n: '04', title: 'Recibes las candidaturas', body: 'Las respuestas llegan en tiempo real a tu panel. Puedes ver el perfil completo de cada profesional: portfolio, valoraciones, tarifas y disponibilidad confirmada.' },
@@ -95,9 +94,8 @@ export default function BlogFlashBookingComoFunciona() {
 
             <h2 className="text-xl font-black mt-8 mb-3">Preguntas frecuentes</h2>
             {[
-              { q: '¿Qué es el Flash Booking de XPEAK?', a: 'Flash Booking es el sistema de contratación urgente de XPEAK. Publicas una oferta con fecha, ciudad y presupuesto y los profesionales disponibles en tu zona responden en menos de 60 minutos. Es gratuito para organizadores.' },
+              { q: '¿Qué es el Flash Booking de XPEAK?', a: 'Flash Booking es el sistema de contratación urgente de XPEAK. Publicas una oferta con fecha, ciudad y presupuesto y los profesionales disponibles en tu zona responden en menos de 60 minutos.' },
               { q: '¿Cuánto tarda en responder un profesional?', a: 'El tiempo medio de primera respuesta es inferior a 60 minutos. Los profesionales con disponibilidad activa reciben una notificación inmediata y pueden aceptar desde la app.' },
-              { q: '¿Flash Booking tiene coste para salas y organizadores?', a: 'No. Flash Booking es completamente gratuito para salas, promotoras y organizadores. XPEAK no cobra comisión sobre ninguna contratación.' },
             ].map(({ q, a }) => (
               <div key={q} className="mb-4 p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
                 <p className="font-black mb-2">{q}</p>
@@ -107,8 +105,8 @@ export default function BlogFlashBookingComoFunciona() {
 
             <div className="mt-8 p-5 rounded-2xl text-center" style={{ background: 'rgba(109,40,217,0.06)', border: '1px solid rgba(109,40,217,0.2)' }}>
               <p className="font-black text-lg mb-2">⚡ Prueba el Flash Booking ahora</p>
-              <p style={{ color: '#444', fontSize: '0.9rem', marginBottom: '1rem' }}>Crea tu cuenta gratis y publica tu primera oferta en menos de 2 minutos.</p>
-              <a href="/auth" className="inline-block px-6 py-3 rounded-xl font-black text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>Empezar gratis →</a>
+              <p style={{ color: '#444', fontSize: '0.9rem', marginBottom: '1rem' }}>Crea tu cuenta y publica tu primera oferta en menos de 2 minutos.</p>
+              <a href="/auth" className="inline-block px-6 py-3 rounded-xl font-black text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>Empezar →</a>
             </div>
 
             <BlogAuthor />

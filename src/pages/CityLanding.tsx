@@ -302,9 +302,9 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     keyword: 'DJ',
     unidad: '/hora',
     desc: (c) => {
-      if (c === 'Ibiza') return 'DJ villa Ibiza, DJ fiesta privada Ibiza, DJ pool party Ibiza. DJs verificados disponibles en temporada. Flash Booking en menos de 1h. Contratos digitales. Sin comisión.';
-      if (c === 'Palma') return 'DJ villa Mallorca, DJ pool party Palma, DJ fiestas privadas Mallorca. Temporada mayo-octubre. Flash Booking en menos de 1h. Sin comisión.';
-      return `DJs verificados en ${c}: Tech House, Techno, Comercial y más. Flash Booking en menos de 1h. Contratos automáticos. Sin comisión.`;
+      if (c === 'Ibiza') return 'DJ villa Ibiza, DJ fiesta privada Ibiza, DJ pool party Ibiza. DJs verificados disponibles en temporada. Flash Booking en menos de 1h. Contratos digitales..';
+      if (c === 'Palma') return 'DJ villa Mallorca, DJ pool party Palma, DJ fiestas privadas Mallorca. Temporada mayo-octubre. Flash Booking en menos de 1h..';
+      return `DJs verificados en ${c}: Tech House, Techno, Comercial y más. Flash Booking en menos de 1h. Contratos automáticos..`;
     },
     intro: (c, venues) => {
       if (c === 'Ibiza') return 'Ibiza es el destino número uno para DJs y eventos privados en Europa. Villas, yates, pool parties y clubs de clase mundial como Amnesia, Pacha o DC-10. XPEAK conecta organizadores con DJs verificados disponibles en Ibiza para fiestas privadas, eventos en villa y clubs. Temporada activa de mayo a octubre.';
@@ -319,7 +319,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
         a: c === 'Ibiza'
           ? 'Sí. XPEAK tiene DJs especializados en eventos privados en villa: conocen la normativa de ruido de Ibiza, trabajan con equipo silencioso o indoor y tienen experiencia con grupos internacionales. Puedes publicar tu oferta de villa y recibir candidaturas en menos de 1 hora.'
           : `Publica una oferta urgente y recibe respuestas de DJs disponibles en ${c} en menos de 60 minutos. Ideal para sustituciones de última hora.` },
-      { q: '¿XPEAK cobra comisión?', a: 'No. XPEAK es completamente gratuito para salas y promotoras. El contrato se cierra directamente entre tú y el profesional.' },
+      { q: '¿XPEAK cobra comisión?', a: 'No. El contrato se cierra directamente entre tú y el profesional.' },
       ...(c === 'Ibiza' ? [{ q: '¿Con cuánta antelación hay que contratar DJ en Ibiza en temporada?', a: 'En temporada alta (junio–septiembre) los mejores DJs de Ibiza se agotan con 2–4 semanas de antelación. Si tu evento es en julio o agosto, reserva con al menos 1 mes. Para urgencias, el Flash Booking de XPEAK puede encontrar disponibilidad en menos de 1 hora.' }] : []),
     ],
   },
@@ -330,7 +330,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     desc: (c) => {
       if (c === 'Ibiza') return 'Camareros temporada Ibiza: personal extra hostelería Ibiza para villas, yates y pool parties. Contratación por horas, por noches o por temporada. Flash Booking en <1h.';
       if (c === 'Palma') return 'Camareros temporada Mallorca: personal extra para villas, fincas y resorts. Por horas o por temporada. Flash Booking disponible. 0% comisión.';
-      return `Camareros profesionales en ${c} para bodas, eventos de empresa y fiestas privadas. Flash Booking en menos de 1h. Contrato digital automático. Gratis para organizadores.`;
+      return `Camareros profesionales en ${c} para bodas, eventos de empresa y fiestas privadas. Flash Booking en menos de 1h. Contrato digital automático.`;
     },
     intro: (c) => {
       if (c === 'Ibiza') return 'Ibiza necesita cientos de camareros extra cada temporada (mayo–septiembre). XPEAK conecta villas, clubs, restaurantes y organizadores de eventos con camareros y bartenders verificados disponibles en Ibiza: por horas, por noches o para toda la temporada. Personal extra hostelería disponible en menos de 1 hora con Flash Booking.';
@@ -352,7 +352,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     label: 'Staff de Eventos',
     keyword: 'Staff',
     unidad: '/hora',
-    desc: (c) => `Staff profesional en ${c} para eventos, discotecas y festivales: hostesses, RRPP, promotores y coordinadores. Flash Booking en menos de 1h. Sin comisión.`,
+    desc: (c) => `Staff profesional en ${c} para eventos, discotecas y festivales: hostesses, RRPP, promotores y coordinadores. Flash Booking en menos de 1h..`,
     intro: (c) => `XPEAK conecta salas, festivales y organizadores con staff profesional verificado en ${c}: hostesses, relaciones públicas, coordinadores de sala, promotores y personal de producción. Contrato digital en minutos, sin intermediarios.`,
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta el staff de eventos en ${c}?`, a: `El precio del staff profesional en ${c} varía entre ${precio}/hora según el perfil: hostesses desde 15€, coordinadores desde 25€, RRPP con lista propia desde 100€/noche.` },
@@ -364,7 +364,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     label: 'Azafatas',
     keyword: 'Azafatas',
     unidad: '/hora',
-    desc: (c) => `Azafatas profesionales en ${c} para ferias, congresos y eventos corporativos. Flash Booking en menos de 1h. Sin comisión.`,
+    desc: (c) => `Azafatas profesionales en ${c} para ferias, congresos y eventos corporativos. Flash Booking en menos de 1h..`,
     intro: (c) => `XPEAK conecta empresas, agencias y organizadores con azafatas verificadas en ${c}: recepción, protocolo, stands feriales y presentaciones de producto. Contrato digital en minutos, sin intermediarios.`,
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta contratar azafatas en ${c}?`, a: `El precio de las azafatas en ${c} varía entre ${precio}/hora según el perfil: recepción desde 15€, stands desde 18€, imagen o protocolo desde 22€.` },
@@ -376,7 +376,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     label: 'Fotógrafo',
     keyword: 'Fotógrafo',
     unidad: '/evento',
-    desc: (c) => `Fotógrafos profesionales en ${c} para bodas, eventos nocturnos y celebraciones. Perfiles verificados, entrega rápida. Flash Booking disponible. Sin comisión.`,
+    desc: (c) => `Fotógrafos profesionales en ${c} para bodas, eventos nocturnos y celebraciones. Perfiles verificados, entrega rápida. Flash Booking disponible..`,
     intro: (c) => `Encuentra fotógrafos y videógrafos especializados en eventos en ${c}: bodas, clubs, festivales y eventos corporativos. XPEAK conecta organizadores con profesionales verificados, con portfolio real y disponibilidad confirmada.`,
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta contratar un fotógrafo de eventos en ${c}?`, a: `Un fotógrafo profesional de eventos en ${c} cobra entre ${precio} por evento completo. Las bodas suelen incluir ceremonia, cóctel y banquete. Eventos de una noche desde 300€.` },
@@ -388,7 +388,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     label: 'Catering',
     keyword: 'Catering',
     unidad: '/persona',
-    desc: (c) => `Catering profesional en ${c} para bodas, eventos corporativos y celebraciones privadas. Menús personalizados, servicio completo, contratos automáticos. Sin comisión.`,
+    desc: (c) => `Catering profesional en ${c} para bodas, eventos corporativos y celebraciones privadas. Menús personalizados, servicio completo, contratos automáticos..`,
     intro: (c) => `Encuentra proveedores de catering para cualquier tipo de evento en ${c}: banquetes de boda, coffee breaks corporativos, cenas de gala y fiestas privadas. XPEAK te conecta directamente con el proveedor, sin intermediarios ni comisiones.`,
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta el catering para una boda en ${c}?`, a: `El catering para bodas en ${c} cuesta entre ${precio} por comensal según el menú y el servicio. Banquete sentado completo con vinos: 70€–120€/persona. Bufé: 50€–80€/persona.` },
@@ -400,7 +400,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     label: 'Disco Móvil',
     keyword: 'Disco Móvil',
     unidad: '/evento',
-    desc: (c) => `Contratar disco móvil en ${c}: DJs con equipo completo (sonido, luces, humo) para bodas, comuniones y fiestas privadas. Flash Booking. Sin comisión.`,
+    desc: (c) => `Contratar disco móvil en ${c}: DJs con equipo completo (sonido, luces, humo) para bodas, comuniones y fiestas privadas. Flash Booking..`,
     intro: (c) => `Una disco móvil en ${c} incluye DJ profesional + equipo completo de sonido, iluminación y efectos. Ideal para bodas, comuniones, cumpleaños y fiestas privadas donde el local no tiene instalación propia. XPEAK conecta organizadores con DJs que llevan su propio setup listo para actuar.`,
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta una disco móvil en ${c}?`, a: `Una disco móvil completa en ${c} cuesta entre ${precio} por evento, incluyendo DJ, equipo de sonido, luces y efectos. El precio varía según la duración y el nivel del equipo.` },
@@ -412,7 +412,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     label: 'Speaker',
     keyword: 'Speaker y Presentador',
     unidad: '/evento',
-    desc: (c) => `Contratar speaker o presentador en ${c} para eventos corporativos, congresos y galas. Ponentes motivacionales, MCs y presentadores verificados. Flash Booking. Sin comisión.`,
+    desc: (c) => `Contratar speaker o presentador en ${c} para eventos corporativos, congresos y galas. Ponentes motivacionales, MCs y presentadores verificados. Flash Booking..`,
     intro: (c) => `Encuentra speakers, ponentes y presentadores profesionales en ${c} para conferencias, congresos, cenas de empresa y galas. XPEAK conecta organizadores con comunicadores verificados: desde keynote speakers motivacionales hasta MCs bilingües con experiencia en grandes eventos.`,
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta contratar un speaker en ${c}?`, a: `Un speaker profesional en ${c} cobra entre ${precio} por evento según su especialidad y trayectoria. Presentadores de eventos desde 300€; keynote speakers con experiencia internacional desde 1.000€.` },
@@ -424,7 +424,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     label: 'Mago',
     keyword: 'Mago e Ilusionista',
     unidad: '/evento',
-    desc: (c) => `Contratar mago o ilusionista en ${c} para bodas, eventos de empresa y fiestas privadas. Magia de cerca y shows de escenario. Flash Booking. Sin comisión.`,
+    desc: (c) => `Contratar mago o ilusionista en ${c} para bodas, eventos de empresa y fiestas privadas. Magia de cerca y shows de escenario. Flash Booking..`,
     intro: (c) => `Encuentra magos e ilusionistas profesionales en ${c} para cualquier tipo de evento: magia de cerca en mesas para bodas y cenas de empresa, shows de escenario para convenciones y fiestas privadas. XPEAK conecta organizadores con magos verificados con experiencia demostrable.`,
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta contratar un mago en ${c}?`, a: `Un mago profesional en ${c} cobra entre ${precio} por evento. Magia de cerca para bodas (pase entre mesas): 200€–400€. Shows de escenario de 30–60 min: 400€–800€.` },
@@ -436,7 +436,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     label: 'Bailarín / Instructor',
     keyword: 'Bailarín, Compañía de Danza e Instructor',
     unidad: '/evento',
-    desc: (c) => `Contratar bailarines en ${c} para bodas, eventos y espectáculos: flamenco, baile moderno, latino y danza contemporánea. También instructores de salsa y bachata para clases. Shows desde 30 min. Flash Booking. Sin comisión.`,
+    desc: (c) => `Contratar bailarines en ${c} para bodas, eventos y espectáculos: flamenco, baile moderno, latino y danza contemporánea. También instructores de salsa y bachata para clases. Shows desde 30 min. Flash Booking..`,
     intro: (c) => `Encuentra bailarines y compañías de danza en ${c} para amenizar cualquier evento: flamenco para bodas y eventos internacionales, shows de baile moderno para convenciones, danza contemporánea para galas y espectáculos de apertura. XPEAK conecta organizadores con bailarines profesionales verificados.`,
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta contratar bailarines en ${c}?`, a: `Un espectáculo de baile en ${c} cuesta entre ${precio} por show según la duración y el número de bailarines. Shows de flamenco desde 300€; compañías de 4–6 bailarines desde 600€.` },
@@ -448,7 +448,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     label: 'Estilista / Vestuario',
     keyword: 'Estilista',
     unidad: '/día',
-    desc: (c) => `Contratar estilista o profesional del vestuario en ${c} para bodas, producciones audiovisuales y eventos de moda. Portafolio real, perfiles verificados. Flash Booking. Sin comisión.`,
+    desc: (c) => `Contratar estilista o profesional del vestuario en ${c} para bodas, producciones audiovisuales y eventos de moda. Portafolio real, perfiles verificados. Flash Booking..`,
     intro: (c) => `Encuentra estilistas, diseñadores de vestuario y personal de armario en ${c}: desde el estilismo integral para bodas hasta la coordinación de vestuario en rodajes, videoclips y espectáculos. XPEAK conecta organizadores con profesionales del vestuario verificados con portafolio real.`,
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta contratar un estilista en ${c}?`, a: `Un estilista integral para boda en ${c} (novia, novio y séquito) cobra entre 300€ y 1.500€ según el alcance. Producciones audiovisuales: ${precio} por jornada.` },
@@ -460,7 +460,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     label: 'Monólogo',
     keyword: 'Monologuista y Stand-Up',
     unidad: '/actuación',
-    desc: (c) => `Contratar monologuista o cómico de stand-up en ${c} para cenas de empresa, bodas y eventos. Guión personalizado. Flash Booking. Sin comisión.`,
+    desc: (c) => `Contratar monologuista o cómico de stand-up en ${c} para cenas de empresa, bodas y eventos. Guión personalizado. Flash Booking..`,
     intro: (c) => `Encuentra monologuistas y cómicos de stand-up en ${c} para cualquier evento: cenas de empresa, bodas, convenciones, fiestas privadas y festivales de humor. XPEAK conecta organizadores con profesionales del humor verificados con experiencia demostrable y guión adaptable a cada ocasión.`,
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta contratar un monologuista en ${c}?`, a: `Un monólogo profesional en ${c} cuesta entre ${precio} por actuación según la duración y el perfil del cómico. Actuaciones de 20-30 min para cenas de empresa: 300€–600€. Shows de stand-up de 45-60 min: 500€–1.200€.` },
@@ -473,7 +473,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     label: 'Monólogos',
     keyword: 'Monologuista y Stand-Up',
     unidad: '/actuación',
-    desc: (c) => `Contratar monologuistas en ${c} para cenas de empresa, bodas y eventos. Stand-up comedy con guión personalizado. Flash Booking. Sin comisión.`,
+    desc: (c) => `Contratar monologuistas en ${c} para cenas de empresa, bodas y eventos. Stand-up comedy con guión personalizado. Flash Booking..`,
     intro: (c) => `Encuentra monologuistas y cómicos de stand-up en ${c} para cualquier tipo de evento. XPEAK conecta organizadores con los mejores cómicos verificados de ${c}: desde stand-up comedy para festivales hasta monólogos a medida para cenas corporativas y bodas.`,
     faqs: (c, precio) => [
       { q: `¿Cuánto cobran los monologuistas en ${c}?`, a: `Los monologuistas profesionales en ${c} cobran entre ${precio} por actuación. Monólogos cortos de 20 min: desde 250€. Shows completos de 60 min: desde 600€.` },
@@ -485,7 +485,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     label: 'Humorista',
     keyword: 'Humorista y Cómico',
     unidad: '/evento',
-    desc: (c) => `Contratar humorista o monologuista en ${c} para cenas de empresa, bodas y eventos privados. Stand-up comedy, monólogos personalizados e impro. Flash Booking. Sin comisión.`,
+    desc: (c) => `Contratar humorista o monologuista en ${c} para cenas de empresa, bodas y eventos privados. Stand-up comedy, monólogos personalizados e impro. Flash Booking..`,
     intro: (c) => `Encuentra humoristas, monologuistas y cómicos en ${c} para amenizar cenas de empresa, bodas, fiestas privadas y eventos corporativos. XPEAK conecta organizadores con humoristas profesionales con experiencia en eventos: desde stand-up comedy hasta dinámicas de impro para team building.`,
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta contratar un humorista en ${c}?`, a: `Un monólogo profesional en ${c} cuesta entre ${precio} por actuación. Shows de 20–30 min para cenas de empresa: 300€–600€. Actuaciones de stand-up de 45–60 min: 500€–1.000€.` },
@@ -497,7 +497,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     label: 'Maquilladora',
     keyword: 'Maquilladora',
     unidad: '/servicio',
-    desc: (c) => `Contratar maquilladora en ${c} para bodas, eventos y sesiones fotográficas. Maquillaje profesional y artístico. Flash Booking. Sin comisión.`,
+    desc: (c) => `Contratar maquilladora en ${c} para bodas, eventos y sesiones fotográficas. Maquillaje profesional y artístico. Flash Booking..`,
     intro: (c) => `Encuentra maquilladoras profesionales en ${c} para bodas, sesiones de fotos, eventos de moda y TV. XPEAK conecta organizadores y novias con maquilladoras verificadas con portfolio real y experiencia en eventos.`,
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta una maquilladora profesional en ${c}?`, a: `El maquillaje profesional en ${c} cuesta entre ${precio} por servicio. Maquillaje de novia completo: 150€–300€. Maquillaje artístico para eventos: 80€–200€.` },
@@ -509,7 +509,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     label: 'Peluquera a domicilio',
     keyword: 'Peluquera a Domicilio',
     unidad: '/servicio',
-    desc: (c) => `Peluquera a domicilio en ${c}: corte, color y peinados de novia. Para tu evento o para el día a día, sin salir de casa. Flash Booking. Sin comisión.`,
+    desc: (c) => `Peluquera a domicilio en ${c}: corte, color y peinados de novia. Para tu evento o para el día a día, sin salir de casa. Flash Booking..`,
     intro: (c) => `Encuentra peluqueras y peluqueros a domicilio en ${c}, cerca de ti. Ya sea para el peinado de una boda, un evento puntual o un servicio recurrente en casa, XPEAK conecta a clientas con profesionales verificados con portfolio real.`,
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta una peluquera a domicilio en ${c}?`, a: `Una peluquera a domicilio en ${c} cuesta entre ${precio} por servicio. Corte y peinado básico: 25€–60€. Peinado de novia con prueba previa: 80€–200€.` },
@@ -521,7 +521,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     label: 'Grupo Musical',
     keyword: 'Grupo Musical',
     unidad: '/evento',
-    desc: (c) => `Contratar grupo musical en ${c} para bodas y eventos: cuartetos de cuerda, jazz, flamenco y bandas pop-rock. Música en vivo. Flash Booking. Sin comisión.`,
+    desc: (c) => `Contratar grupo musical en ${c} para bodas y eventos: cuartetos de cuerda, jazz, flamenco y bandas pop-rock. Música en vivo. Flash Booking..`,
     intro: (c) => `Encuentra grupos musicales profesionales en ${c} para cualquier momento de tu evento: cuartetos de cuerda para la ceremonia, jazz o flamenco para el cóctel, banda completa para la fiesta. XPEAK conecta organizadores con músicos verificados en ${c}.`,
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta contratar un grupo musical en ${c}?`, a: `Un grupo musical en ${c} cuesta entre ${precio} según el número de músicos y la duración. Un dúo acústico o saxofonista parte de 300€; una banda completa de 5-6 músicos puede superar los 1.500€.` },
@@ -533,7 +533,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     label: 'Técnico de Sonido y Montaje',
     keyword: 'Técnico de Sonido',
     unidad: '/jornada',
-    desc: (c) => `Contratar técnico de sonido en ${c} para bodas, festivales y eventos de empresa. Sonido, iluminación y montaje de escenario. Con equipo propio o solo mano de obra. Sin comisión.`,
+    desc: (c) => `Contratar técnico de sonido en ${c} para bodas, festivales y eventos de empresa. Sonido, iluminación y montaje de escenario. Con equipo propio o solo mano de obra..`,
     intro: (c, venues) => `Cuando el local no tiene instalación o el evento crece, el sonido deja de ser cosa del DJ. XPEAK conecta organizadores de ${c} con técnicos de sonido, iluminadores y equipos de montaje verificados: desde cubrir una boda en finca hasta montar el escenario de un festival o dar servicio en salas como ${venues.slice(0,2).join(' y ')}.`,
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta un técnico de sonido en ${c}?`, a: `Un técnico de sonido en ${c} cobra entre ${precio} según el tamaño del evento y si aporta equipo propio. Solo mano de obra sobre la instalación del local sale más barato que un servicio con P.A., mesa e iluminación incluidos. En XPEAK cada perfil muestra su tarifa antes de que contactes.` },
@@ -546,7 +546,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     label: 'Photo Booth',
     keyword: 'Photo Booth',
     unidad: '/evento',
-    desc: (c) => `Alquilar photo booth en ${c} para bodas, comuniones y eventos de empresa. Impresión al instante y álbum digital. Flash Booking. Sin comisión.`,
+    desc: (c) => `Alquilar photo booth en ${c} para bodas, comuniones y eventos de empresa. Impresión al instante y álbum digital. Flash Booking..`,
     intro: (c) => `Encuentra proveedores de photo booth en ${c} para tu boda, comunión o evento de empresa: cabina clásica con impresión, photo booth 360 para vídeos o espejo glamour. XPEAK conecta organizadores con proveedores verificados en ${c}.`,
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta un photo booth en ${c}?`, a: `Un photo booth en ${c} cuesta entre ${precio} según el tipo (clásico, 360 o espejo glamour), la duración y extras como impresión ilimitada o libro de firmas.` },
@@ -559,8 +559,8 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     keyword: 'Promotor y RRPP',
     unidad: '/noche',
     desc: (c) => {
-      if (c === 'A Coruña') return 'Promotor y RRPP en A Coruña para discotecas, festivales y eventos privados. Gestión de listas VIP, captación de público y relaciones públicas. Perfiles verificados. Sin comisión.';
-      return `Contratar promotor o RRPP en ${c} para clubs, festivales y eventos. Gestión de listas VIP, captación de público y relaciones públicas. Flash Booking. Sin comisión.`;
+      if (c === 'A Coruña') return 'Promotor y RRPP en A Coruña para discotecas, festivales y eventos privados. Gestión de listas VIP, captación de público y relaciones públicas. Perfiles verificados..';
+      return `Contratar promotor o RRPP en ${c} para clubs, festivales y eventos. Gestión de listas VIP, captación de público y relaciones públicas. Flash Booking..`;
     },
     intro: (c, venues) => {
       if (c === 'A Coruña') return `A Coruña tiene una escena de ocio nocturno consolidada, con salas como ${venues.slice(0,2).join(' y ')} entre las más activas de Galicia. XPEAK conecta discotecas, promotoras y organizadores con promotores y RRPP verificados en A Coruña: gestión de listas VIP, captación de público y coordinación de puerta.`;
@@ -577,7 +577,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     label: 'Animador',
     keyword: 'Payaso y Animador de Eventos',
     unidad: '/evento',
-    desc: (c) => `Contratar payaso o animador en ${c} para cumpleaños, bodas, eventos corporativos y festivales. Animación infantil, magia y circo. Flash Booking. Sin comisión.`,
+    desc: (c) => `Contratar payaso o animador en ${c} para cumpleaños, bodas, eventos corporativos y festivales. Animación infantil, magia y circo. Flash Booking..`,
     intro: (c) => `Encuentra payasos, animadores y artistas de calle en ${c} para todo tipo de eventos. XPEAK conecta organizadores con animadores profesionales verificados en ${c}: desde animación infantil con magia y globoflexia hasta artistas de circo y mimo para eventos corporativos y festivales.`,
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta contratar un payaso o animador en ${c}?`, a: `Un animador o payaso profesional en ${c} cuesta entre ${precio} por evento. Animación infantil básica (60 min): 150€–250€. Shows de circo o animación adultos: 300€–600€.` },
@@ -590,7 +590,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     label: 'Payaso',
     keyword: 'Payaso Profesional',
     unidad: '/evento',
-    desc: (c) => `Contratar payaso profesional en ${c} para cumpleaños infantiles, bodas y fiestas. Magia, globoflexia y animación. Flash Booking. Sin comisión.`,
+    desc: (c) => `Contratar payaso profesional en ${c} para cumpleaños infantiles, bodas y fiestas. Magia, globoflexia y animación. Flash Booking..`,
     intro: (c) => `Encuentra payasos profesionales en ${c} para cumpleaños, comuniones y todo tipo de celebraciones. XPEAK conecta familias y organizadores con los mejores payasos verificados en ${c} con portfolio de actuaciones y opiniones reales de clientes.`,
     faqs: (c, precio) => [
       { q: `¿Cuánto cobra un payaso en ${c}?`, a: `Un payaso profesional en ${c} cobra entre ${precio} por actuación. Shows de 60 min para cumpleaños: 150€–300€. Actuaciones con más de 2 horas o efectos especiales: desde 350€.` },
@@ -720,7 +720,7 @@ export default function CityLanding() {
     url: `https://xpeak.es${canonicalBase}`,
     serviceType: `Contratación de ${catData.keyword}`,
     dateModified: BUILD_DATE,
-    offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR', description: 'Registro gratuito para salas y promotoras' },
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
   };
 
   const faqStructured = {
@@ -808,7 +808,7 @@ export default function CityLanding() {
             <a href="/auth"
               className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              Unirse gratis
+              Unirse
             </a>
           </div>
         </nav>
@@ -828,7 +828,7 @@ export default function CityLanding() {
             <a href="/auth"
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              <Zap size={15} /> Publicar oferta gratis
+              <Zap size={15} /> Publicar oferta
             </a>
             <a href={`/directorio/${categorySlug}`}
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
@@ -946,7 +946,7 @@ export default function CityLanding() {
           <h2 className="text-xl sm:text-2xl font-black mb-6 sm:mb-8">Cómo contratar {catData.keyword} en {cityData.ciudad} con XPEAK</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
-              { step: '01', title: 'Crea tu cuenta gratis', body: `Regístrate como sala, promotora u organizador en menos de 2 minutos. Sin tarjeta.` },
+              { step: '01', title: 'Crea tu cuenta', body: `Regístrate como sala, promotora u organizador en menos de 2 minutos. Sin tarjeta.` },
               { step: '02', title: 'Publica tu oferta', body: `Describe el evento en ${cityData.ciudad}, fecha, horario y presupuesto. Flash Booking lo distribuye al instante.` },
               { step: '03', title: 'Cierra el contrato', body: `Elige al profesional, firma el contrato digital con un clic. PDF listo para facturación.` },
             ].map(s => (
@@ -992,13 +992,13 @@ export default function CityLanding() {
             <h2 className="text-xl sm:text-3xl font-black mb-3">¿Buscas {catData.keyword} en {cityData.ciudad}?</h2>
             <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>
               {['promotores', 'azafata', 'peluqueria'].includes(categorySlug)
-                ? 'Únete gratis — sin comisión, contratos automáticos, Flash Booking para necesidades urgentes.'
-                : 'Únete gratis — sin comisión, contratos automáticos, Flash Booking en menos de 1h.'}
+                ? 'Únete — contratos automáticos, Flash Booking para necesidades urgentes.'
+                : 'Únete — contratos automáticos, Flash Booking en menos de 1h.'}
             </p>
             <a href="/auth"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              <Zap size={15} /> Empezar gratis en {cityData.ciudad}
+              <Zap size={15} /> Empezar en {cityData.ciudad}
             </a>
           </div>
         </section>

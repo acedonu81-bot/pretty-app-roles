@@ -105,7 +105,7 @@ export default function BlogMusicaEnVivoBodas() {
           <a href="/auth"
             className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#DB2777,#B8941E)', color: '#000' }}>
-            Unirse gratis
+            Unirse
           </a>
         </nav>
 
@@ -252,7 +252,7 @@ export default function BlogMusicaEnVivoBodas() {
             <a href="/directorio/grupo-musical"
               className="inline-flex items-center gap-2 px-7 py-3 rounded-xl font-black text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#DB2777,#B8941E)', color: '#000' }}>
-              <Zap size={14} /> Ver músicos en XPEAK — gratis
+              <Zap size={14} /> Ver músicos en XPEAK
             </a>
           </div>
 

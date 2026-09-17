@@ -98,7 +98,7 @@ export const subscriptionPlans: SubscriptionPlan[] = [
       'Estadísticas básicas (visitas, mensajes)',
       'Aparición en búsquedas mejorada',
       'Compra packs de streaming (1h, 5h, 15h, 30h)',
-      '15 días gratis al usar una función',
+      '15 días de prueba al usar una función',
     ],
     textColor: '#A8C5DA',
     annualEligible: true,

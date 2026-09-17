@@ -688,7 +688,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
 
             {/* Nota de confianza */}
             <p className="text-center text-[11px]" style={{ color: '#999', paddingTop: 6 }}>
-              Contrato directo · Sin comisión · Pago acordado entre las partes
+              Contrato directo · Pago acordado entre las partes
             </p>
           </div>
 

@@ -4,7 +4,7 @@ import FooterPublic from '@/components/FooterPublic';
 
 const PLANES = [
   {
-    nombre: 'Gratis — Profesional',
+    nombre: 'Profesional',
     precio: '0€',
     periodo: 'para siempre',
     target: 'DJs, fotógrafos, camareros, staff',
@@ -21,11 +21,11 @@ const PLANES = [
     noIncluye: [
       'Badge verificado prioritario',
     ],
-    cta: 'Crear perfil gratis',
+    cta: 'Crear perfil',
     href: '/auth',
   },
   {
-    nombre: 'Gratis — Empresario',
+    nombre: 'Empresario',
     precio: '0€',
     periodo: 'para siempre',
     target: 'Salas, promotoras, organizadores',
@@ -38,20 +38,19 @@ const PLANES = [
       'Contratos digitales automáticos',
       'Mensajería con profesionales',
       'Historial de contrataciones',
-      'Sin comisión sobre el caché',
     ],
     noIncluye: [
       'Gestión de pagos integrada (próx.)',
     ],
-    cta: 'Unirse gratis',
+    cta: 'Unirse',
     href: '/auth',
     gold: true,
   },
 ];
 
 const FAQ = [
-  { q: '¿XPEAK cobra comisión sobre el caché del profesional?', a: 'No. XPEAK es completamente gratuito tanto para profesionales como para empresarios y promotoras. El acuerdo económico se cierra directamente entre las partes. No cobramos porcentaje sobre el caché ni tarifa por contratación.' },
-  { q: '¿Cuándo habrá planes de pago?', a: 'Estamos desarrollando funcionalidades premium opcionales: badge de verificación prioritaria y analytics avanzados. Estas funcionalidades tendrán coste, pero el acceso básico siempre será gratuito.' },
+  { q: '¿XPEAK cobra comisión sobre el caché del profesional?', a: 'No. El acuerdo económico se cierra directamente entre las partes. No cobramos porcentaje sobre el caché ni tarifa por contratación.' },
+  { q: '¿Cuándo habrá planes de pago?', a: 'Estamos desarrollando funcionalidades premium opcionales: badge de verificación prioritaria y analytics avanzados.' },
   { q: '¿Qué incluye el contrato digital?', a: 'El contrato generado por XPEAK incluye: datos fiscales de ambas partes, descripción del servicio, fecha, precio acordado, IRPF calculado automáticamente si el profesional es autónomo, y cláusulas de cancelación estándar del sector. Disponible en PDF listo para firma.' },
 ];
 
@@ -74,11 +73,11 @@ export default function Precios() {
   return (
     <>
       <Helmet>
-        <title>Precios XPEAK — Gratis para profesionales y empresarios de eventos</title>
-        <meta name="description" content="XPEAK es gratis para DJs, fotógrafos, camareros y staff. También gratis para salas, promotoras y organizadores. Sin comisión. Contratos digitales incluidos." />
+        <title>Precios XPEAK — Para profesionales y empresarios de eventos</title>
+        <meta name="description" content="Precios de XPEAK para DJs, fotógrafos, camareros y staff, y para salas, promotoras y organizadores. Contratos digitales incluidos." />
         <link rel="canonical" href="https://xpeak.es/precios" />
-        <meta property="og:title" content="Precios XPEAK — Gratis para todos" />
-        <meta property="og:description" content="XPEAK es gratis para profesionales y empresarios de eventos. Sin comisión. Contratos digitales automáticos." />
+        <meta property="og:title" content="Precios XPEAK" />
+        <meta property="og:description" content="Precios de XPEAK para profesionales y empresarios de eventos. Contratos digitales automáticos." />
         <meta property="og:url" content="https://xpeak.es/precios" />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="https://xpeak.es/og-image.jpg" />
@@ -94,7 +93,7 @@ export default function Precios() {
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-            Unirse gratis
+            Unirse
           </a>
         </nav>
 
@@ -102,9 +101,9 @@ export default function Precios() {
 
           <div className="text-center mb-12">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Precios</p>
-            <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-4">Gratis. Sin trampa.</h1>
+            <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-4">Precios</h1>
             <p className="text-sm max-w-md mx-auto" style={{ color: '#3d3d4e' }}>
-              XPEAK no cobra comisión sobre ningún caché ni contratación. El acceso básico es gratuito para siempre, tanto para profesionales como para empresarios. Sin tarjeta de crédito, sin permanencia.
+              Sin tarjeta de crédito, sin permanencia.
             </p>
           </div>
 
@@ -168,7 +167,7 @@ export default function Precios() {
             <p className="text-xs mb-5" style={{ color: '#3d3d4e' }}>Escríbenos a hola@xpeak.es o usa el chat de soporte en el dashboard.</p>
             <a href="/auth" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-black transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              Empezar gratis →
+              Empezar →
             </a>
           </div>
 

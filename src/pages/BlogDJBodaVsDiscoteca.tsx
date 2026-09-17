@@ -80,7 +80,7 @@ export default function BlogDJBodaVsDiscoteca() {
           <a href="/auth"
             className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-            Unirse gratis
+            Unirse
           </a>
         </nav>
         <a href="/blog" className="block px-4 sm:px-6 pb-2 max-w-3xl mx-auto text-xs" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
@@ -234,7 +234,7 @@ export default function BlogDJBodaVsDiscoteca() {
               <a href="/contratar-dj"
                 className="inline-flex items-center gap-2 px-7 py-3 rounded-xl font-black text-sm transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-                <Zap size={14} /> Buscar DJ gratis
+                <Zap size={14} /> Buscar DJ
               </a>
               <a href="/contratar-dj"
                 className="inline-flex items-center gap-2 px-7 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"

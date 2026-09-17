@@ -51,7 +51,7 @@ export default function BlogMaquilladoraConseguirClientes() {
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#DB2777' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#DB2777,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#DB2777,#B8941E)', color: '#000' }}>Unirse</a>
           </div>
         </nav>
 
@@ -135,8 +135,8 @@ export default function BlogMaquilladoraConseguirClientes() {
 
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(219,39,119,0.04)', border: '1px solid rgba(219,39,119,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Eres maquilladora y quieres más clientas?</p>
-              <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>Crea tu perfil en XPEAK gratis. Novias y organizadores de eventos en tu zona ven tu portfolio, leen tus reseñas y te contactan directamente. Sin comisión oculta.</p>
-              <a href="/auth?role=maquillaje" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#DB2777,#B8941E)', color: '#000' }}>Crear mi perfil de maquilladora gratis →</a>
+              <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>Crea tu perfil en XPEAK. Novias y organizadores de eventos en tu zona ven tu portfolio, leen tus reseñas y te contactan directamente.</p>
+              <a href="/auth?role=maquillaje" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#DB2777,#B8941E)', color: '#000' }}>Crear mi perfil de maquilladora →</a>
             </div>
           </div>
                   <BlogEmailCapture variant="guia" intent="ser-profesional" articlePath="/blog/maquilladora-conseguir-clientes" />

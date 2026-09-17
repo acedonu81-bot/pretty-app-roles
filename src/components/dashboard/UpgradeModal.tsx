@@ -201,7 +201,7 @@ const UpgradeModal = ({ open, onClose, role, trigger, onNavigateSubscription }: 
           <div>
             <p className="text-xs text-muted-foreground">Desde</p>
             <p className="text-xl font-black" style={{ color: '#8A6D0F' }}>€14,99 <span className="text-xs font-normal text-muted-foreground">/mes</span></p>
-            <p className="text-xs text-muted-foreground">€10,49/mes con plan anual · 15 días gratis</p>
+            <p className="text-xs text-muted-foreground">€10,49/mes con plan anual · 15 días de prueba</p>
           </div>
           <Shield size={28} style={{ color: 'rgba(212,175,55,0.3)' }} />
         </div>
@@ -214,7 +214,7 @@ const UpgradeModal = ({ open, onClose, role, trigger, onNavigateSubscription }: 
           {upsell.cta}
         </button>
         <button onClick={onClose} className="text-xs text-muted-foreground text-center hover:text-foreground transition-colors">
-          Seguir con el plan gratuito
+          Seguir con el plan Free
         </button>
       </div>
       </div>

@@ -112,7 +112,7 @@ export default function BlogMagoPrecioEventos() {
               className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#7C3AED,#B8941E)', color: '#000' }}
             >
-              Unirse gratis
+              Unirse
             </a>
           </div>
         </nav>
@@ -263,7 +263,7 @@ export default function BlogMagoPrecioEventos() {
             >
               <p className="text-sm font-black mb-2">Contrata un mago verificado para tu evento</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>
-                XPEAK tiene magos con vídeos reales de actuación, reseñas verificadas y contrato digital incluido. Solicita presupuesto gratis.
+                XPEAK tiene magos con vídeos reales de actuación, reseñas verificadas y contrato digital incluido. Solicita presupuesto.
               </p>
               <a
                 href="/contratar-mago"

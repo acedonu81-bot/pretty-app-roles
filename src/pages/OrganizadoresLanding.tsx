@@ -3,7 +3,7 @@ import { Zap, Shield, ArrowRight, FileText, Search, Wallet, Calendar, MessageSqu
 import FooterPublic from '@/components/FooterPublic';
 
 const H1 = 'Organizar Eventos en España — Gestiona Todo desde un Solo Panel';
-const DESC = 'Organiza bodas, eventos de empresa y celebraciones con XPEAK: compara profesionales verificados, publica necesidades puntuales con Flash Booking y firma contratos digitales automáticos. Sin comisión.';
+const DESC = 'Organiza bodas, eventos de empresa y celebraciones con XPEAK: compara profesionales verificados, publica necesidades puntuales con Flash Booking y firma contratos digitales automáticos.';
 
 const structuredData = {
   '@context': 'https://schema.org',
@@ -14,11 +14,11 @@ const structuredData = {
   description: DESC,
   url: 'https://xpeak.es/organizar-eventos',
   serviceType: 'Gestión y organización de eventos',
-  offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR', description: 'Registro gratuito para organizadores y empresas' },
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
 };
 
 const FAQS = [
-  { q: '¿XPEAK cobra comisión por organizar un evento?', a: 'No. XPEAK es completamente gratuito para organizadores, empresas y particulares. El trato y el pago se cierran directamente con el profesional, sin intermediarios ni porcentajes sobre el presupuesto.' },
+  { q: '¿XPEAK cobra comisión por organizar un evento?', a: 'No. El trato y el pago se cierran directamente con el profesional, sin intermediarios ni porcentajes sobre el presupuesto.' },
   { q: '¿Qué es el Flash Booking y cómo me ayuda a organizar un evento?', a: 'Flash Booking es el sistema de XPEAK para cubrir necesidades puntuales: publicas qué necesitas (DJ, camareros, fotógrafo...) y los profesionales disponibles en tu zona pueden responder directamente. Útil para bajas de última hora o eventos con poca antelación, aunque la disponibilidad depende de cada categoría y ciudad.' },
   { q: '¿Puedo gestionar varios proveedores del mismo evento desde XPEAK?', a: 'Sí. Puedes añadir DJ, staff, catering, fotógrafo y cualquier otro perfil a un mismo evento desde el carrito "Mi evento", comparar presupuestos y contactarlos todos con un único mensaje.' },
   { q: '¿Los contratos que genera XPEAK son legales?', a: 'Sí. Los contratos digitales de XPEAK incluyen los datos fiscales de ambas partes, cláusulas de cancelación y condiciones del servicio. Se descargan en PDF listos para tu gestoría o contabilidad.' },
@@ -53,7 +53,7 @@ const PARA_QUIEN = [
   { title: 'Particulares', body: 'Organizas tu propia boda, comunión o fiesta privada y quieres comparar precios reales sin llamar a diez sitios distintos.' },
   { title: 'Empresas', body: 'Gestionas eventos corporativos, presentaciones o team buildings y necesitas proveedores fiables con factura correcta.' },
   { title: 'Agencias y wedding planners', body: 'Coordinas varios eventos a la vez y necesitas un panel único para comparar, contratar y controlar gastos de cada proveedor.' },
-  { title: 'Salas y discotecas', body: 'Buscas DJs, staff y promotores de forma recurrente y quieres un directorio con disponibilidad real, sin comisión por contratación.' },
+  { title: 'Salas y discotecas', body: 'Buscas DJs, staff y promotores de forma recurrente y quieres un directorio con disponibilidad real.' },
 ];
 
 export default function OrganizadoresLanding() {
@@ -87,7 +87,7 @@ export default function OrganizadoresLanding() {
             <a href="/auth?mode=register&role=empresario"
               className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              Unirse gratis
+              Unirse
             </a>
           </div>
         </nav>
@@ -104,7 +104,7 @@ export default function OrganizadoresLanding() {
           </div>
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-4 leading-tight">{H1}</h1>
           <p className="text-sm sm:text-lg mb-3 max-w-2xl leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
-            Compara profesionales verificados, publica necesidades puntuales con Flash Booking y firma contratos digitales automáticos — todo desde un único panel, sin comisión.
+            Compara profesionales verificados, publica necesidades puntuales con Flash Booking y firma contratos digitales automáticos — todo desde un único panel.
           </p>
           <p className="text-xs mb-3" style={{ color: 'rgba(255,255,255,0.4)' }}>
             Por <a href="/sobre-nosotros" className="underline hover:opacity-80" style={{ color: '#D4AF37' }}>Daniel</a>, fundador de XPEAK y especialista en el sector de eventos y entretenimiento nocturno en España.
@@ -113,7 +113,7 @@ export default function OrganizadoresLanding() {
             <a href="/auth?mode=register&role=empresario"
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              Empezar gratis <ArrowRight size={14} />
+              Empezar <ArrowRight size={14} />
             </a>
             <a href="/directorio/dj"
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
@@ -243,12 +243,12 @@ export default function OrganizadoresLanding() {
           <div className="rounded-2xl p-7 sm:p-10" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
             <h2 className="text-xl sm:text-3xl font-black mb-3">¿Organizas un evento en España?</h2>
             <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>
-              Únete gratis — sin comisión, contratos automáticos y Flash Booking para necesidades puntuales.
+              Únete — contratos automáticos y Flash Booking para necesidades puntuales.
             </p>
             <a href="/auth?mode=register&role=empresario"
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              Empezar gratis <ArrowRight size={14} />
+              Empezar <ArrowRight size={14} />
             </a>
           </div>
         </section>

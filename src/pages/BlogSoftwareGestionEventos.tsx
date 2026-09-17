@@ -22,7 +22,7 @@ const faqStructured = {
   mainEntity: [
     { '@type': 'Question', name: '¿Necesito un software para organizar un solo evento pequeño?', acceptedAnswer: { '@type': 'Answer', text: 'Para un evento único y pequeño (menos de 30 personas), una hoja de cálculo puede ser suficiente. A partir de eventos con 4-5 proveedores distintos, o si organizas eventos de forma recurrente, una herramienta dedicada ahorra tiempo real.' } },
     { '@type': 'Question', name: '¿Qué diferencia hay entre un directorio de proveedores y un software de gestión?', acceptedAnswer: { '@type': 'Answer', text: 'Un directorio solo te ayuda a encontrar proveedores. Un software de gestión completo además centraliza la comunicación, genera contratos, controla el presupuesto y guarda el historial de cada evento organizado.' } },
-    { '@type': 'Question', name: '¿Cuánto cuesta un software de gestión de eventos?', acceptedAnswer: { '@type': 'Answer', text: 'Varía mucho: desde herramientas gratuitas con funciones básicas hasta software empresarial de varios cientos de euros al mes para agencias grandes. Para organizadores particulares o empresas medianas, existen opciones gratuitas sin comisión sobre la contratación.' } },
+    { '@type': 'Question', name: '¿Cuánto cuesta un software de gestión de eventos?', acceptedAnswer: { '@type': 'Answer', text: 'Varía mucho: desde herramientas con funciones básicas hasta software empresarial de varios cientos de euros al mes para agencias grandes.' } },
     { '@type': 'Question', name: '¿Sirve lo mismo para bodas que para eventos de empresa?', acceptedAnswer: { '@type': 'Answer', text: 'Las necesidades base son las mismas (comparar proveedores, contratar, controlar presupuesto), pero conviene que la herramienta tenga categorías específicas de cada sector: catering y DJ para bodas, staff y producción audiovisual para eventos corporativos.' } },
   ],
 };
@@ -63,7 +63,7 @@ export default function BlogSoftwareGestionEventos() {
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
             <a href="/auth?mode=register&role=empresario" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#0D9488,#B8941E)', color: '#000' }}>
-              Unirse gratis
+              Unirse
             </a>
           </div>
         </nav>
@@ -89,7 +89,7 @@ export default function BlogSoftwareGestionEventos() {
                   { func: 'Mensajería centralizada', desc: 'Hablar con cada proveedor desde la misma plataforma, con historial por evento — no mezclado con WhatsApp personal.' },
                   { func: 'Contratos digitales', desc: 'Generar y firmar contratos sin depender de plantillas de Word sueltas ni imprimir papel.' },
                   { func: 'Control de presupuesto', desc: 'Ver el gasto acumulado por evento y por partida, no solo la suma final al terminar.' },
-                  { func: 'Sin comisión sobre la contratación', desc: 'Que el coste de usar la herramienta no encarezca artificialmente lo que pagas a cada proveedor.' },
+                  { func: 'Coste bajo control', desc: 'Que el coste de usar la herramienta no encarezca artificialmente lo que pagas a cada proveedor.' },
                 ].map((row, i) => (
                   <div key={row.func} className="p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <p className="text-xs font-black mb-1">{row.func}</p>
@@ -120,9 +120,6 @@ export default function BlogSoftwareGestionEventos() {
 
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(13,148,136,0.04)', border: '1px solid rgba(13,148,136,0.12)' }}>
               <p className="text-sm font-black mb-2">Directorio, contratos y presupuesto en un solo panel</p>
-              <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>
-                XPEAK es gratuito para organizadores, sin comisión sobre la contratación.
-              </p>
               <a href="/organizar-eventos" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#0D9488,#B8941E)', color: '#000' }}>
                 Ver panel de organización →
               </a>

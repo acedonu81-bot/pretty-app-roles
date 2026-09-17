@@ -133,7 +133,7 @@ export default function BlogEventoEmpresaIdeas() {
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#6D28D9' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>Unirse</a>
           </div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
@@ -179,7 +179,7 @@ export default function BlogEventoEmpresaIdeas() {
 
             <section className="rounded-2xl p-6 sm:p-8 text-center" style={{ background: 'rgba(109,40,217,0.05)', border: '1px solid rgba(109,40,217,0.15)' }}>
               <p className="text-base font-black mb-2">Organiza tu evento de empresa con XPEAK</p>
-              <p className="text-xs mb-5" style={{ color: '#444' }}>DJs, magos, grupos musicales, bartenders y animadores. Perfiles verificados, precio publico y contratos digitales. Sin comision.</p>
+              <p className="text-xs mb-5" style={{ color: '#444' }}>DJs, magos, grupos musicales, bartenders y animadores. Perfiles verificados, precio publico y contratos digitales.</p>
               <a href="/directorio/dj"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-black text-sm transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>

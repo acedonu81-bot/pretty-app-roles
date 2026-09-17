@@ -134,7 +134,6 @@ export default function PublicContactModal({ professionalName, professionalUserI
           <form onSubmit={handleSubmit}>
             <div className="mb-5">
               <h3 className="text-lg font-black mb-0.5 pr-10 break-words" style={{ color: '#111' }}>Escribe a {professionalName}</h3>
-              <p className="text-xs" style={{ color: '#333' }}>Gratis. Sin comisión.</p>
             </div>
 
             {isFlashActive && (
@@ -200,11 +199,11 @@ export default function PublicContactModal({ professionalName, professionalUserI
               className="w-full mt-4 py-3 rounded-xl font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
               style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', opacity: status === 'sending' ? 0.7 : 1 }}>
               <Send size={15} />
-              {status === 'sending' ? 'Enviando…' : 'Enviar solicitud gratis'}
+              {status === 'sending' ? 'Enviando…' : 'Enviar solicitud'}
             </button>
 
             <p className="text-[0.65rem] text-center mt-3" style={{ color: '#333' }}>
-              Sin comisión · Respuesta directa del profesional
+              Respuesta directa del profesional
             </p>
           </form>
         )}

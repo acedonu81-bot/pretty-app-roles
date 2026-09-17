@@ -37,7 +37,7 @@ const PROFESSIONAL_STEPS: TourStep[] = [
     icon: <Zap size={20} />,
     title: 'Flash Booking',
     body: 'Activa tu disponibilidad y los empresarios te ven en tiempo real. Recibe ofertas urgentes sin moverte del sofá.',
-    highlight: 'Sin intermediarios, sin comisiones ocultas.',
+    highlight: 'Sin intermediarios.',
     view: 'flashbooking',
     cta: 'Ver Flash Booking →',
   },
@@ -60,7 +60,7 @@ const EMPRESARIO_STEPS: TourStep[] = [
   {
     icon: <Building2 size={20} />,
     title: '¡Bienvenido/a a XPEAK!',
-    body: 'El marketplace de talento para eventos. Contrata DJs, staff, fotógrafos y maquillaje — sin comisiones, directo con el profesional.',
+    body: 'El marketplace de talento para eventos. Contrata DJs, staff, fotógrafos y maquillaje directo con el profesional.',
     highlight: 'Empieza a buscar.',
   },
   {
@@ -94,7 +94,7 @@ const EMPRESARIO_STEPS: TourStep[] = [
   {
     icon: <CheckCircle size={20} />,
     title: '¡Todo listo!',
-    body: 'Empieza buscando en el Directorio o publica tu primera oferta Flash. Todo gratis, sin comisión.',
+    body: 'Empieza buscando en el Directorio o publica tu primera oferta Flash.',
     highlight: 'El talento que necesitas, cuando lo necesitas.',
   },
 ];

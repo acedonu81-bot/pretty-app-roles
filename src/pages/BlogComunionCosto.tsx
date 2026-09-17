@@ -79,7 +79,7 @@ const faqStructured = {
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#6D28D9' }}>XPEAK</a>
           <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>
-            Unirse gratis
+            Unirse
           </a>
         </nav>
 
@@ -183,12 +183,12 @@ const faqStructured = {
             <div className="p-6 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ background: 'rgba(0,0,0,0.02)' }}>
               <div>
                 <p className="text-sm font-black mb-0.5">¿Eres DJ o fotógrafo de comuniones?</p>
-                <p className="text-xs" style={{ color: '#333' }}>Crea tu perfil gratis y empieza a recibir solicitudes</p>
+                <p className="text-xs" style={{ color: '#333' }}>Crea tu perfil y empieza a recibir solicitudes</p>
               </div>
               <a href="/auth?mode=register"
                 className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-xs transition-all hover:scale-105"
                 style={{ background: 'rgba(109,40,217,0.1)', color: '#6D28D9', border: '1px solid rgba(109,40,217,0.25)', whiteSpace: 'nowrap' }}>
-                Crear perfil gratis →
+                Crear perfil →
               </a>
             </div>
           </div>

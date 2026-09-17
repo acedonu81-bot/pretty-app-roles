@@ -104,7 +104,7 @@ const Socials = () => {
     <>
       <Helmet>
         <title>Agenda de Socials de Baile — Salsa, Bachata y Kizomba | XPEAK</title>
-        <meta name="description" content="Socials y congresos de salsa, bachata y kizomba en toda España. Encuentra dónde bailar esta semana o publica tu evento gratis." />
+        <meta name="description" content="Socials y congresos de salsa, bachata y kizomba en toda España. Encuentra dónde bailar esta semana o publica tu evento." />
         <link rel="canonical" href={`${BASE_URL}/socials`} />
         <meta property="og:title" content="Agenda de Socials de Baile — XPEAK" />
         <meta property="og:description" content="Socials y congresos de salsa, bachata y kizomba en toda España." />
@@ -141,7 +141,7 @@ const Socials = () => {
               Socials y congresos de salsa, bachata y kizomba
             </h1>
             <p className="text-sm leading-relaxed max-w-xl" style={{ color: '#333' }}>
-              Eventos publicados por bailarines y promotores de la comunidad. Filtra por ciudad y estilo, o publica el tuyo gratis.
+              Eventos publicados por bailarines y promotores de la comunidad. Filtra por ciudad y estilo, o publica el tuyo.
             </p>
           </div>
 

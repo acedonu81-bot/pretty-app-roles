@@ -76,7 +76,7 @@ const faqStructured = {
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#059669' }}>XPEAK</a>
           <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#059669,#B8941E)', color: '#000' }}>
-            Unirse gratis
+            Unirse
           </a>
         </nav>
 
@@ -168,18 +168,18 @@ const faqStructured = {
               </span>
               <h2 className="text-xl font-black mb-2 leading-snug">Crea tu perfil y recibe solicitudes de ferias y eventos</h2>
               <p className="text-base mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                Publica tu experiencia, idiomas y disponibilidad en XPEAK. Gratis.
+                Publica tu experiencia, idiomas y disponibilidad en XPEAK.
               </p>
               <a href="/auth?mode=register"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(90deg,#059669,#B8941E)', color: '#000' }}>
-                <Zap size={15} /> Crear mi perfil — gratis
+                <Zap size={15} /> Crear mi perfil
               </a>
             </div>
             <div className="p-6 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ background: 'rgba(0,0,0,0.02)' }}>
               <div>
                 <p className="text-sm font-black mb-0.5">¿Necesitas personal de imagen para tu feria?</p>
-                <p className="text-xs" style={{ color: '#333' }}>Directorio verificado · Flash Booking para urgencias · Sin comisión</p>
+                <p className="text-xs" style={{ color: '#333' }}>Directorio verificado · Flash Booking para urgencias</p>
               </div>
               <a href="/contratar-staff"
                 className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-xs transition-all hover:scale-105"

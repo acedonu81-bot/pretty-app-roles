@@ -64,7 +64,7 @@ export default function BlogContratoDJ() {
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse</a>
           </div>
         </nav>
 
@@ -135,7 +135,7 @@ export default function BlogContratoDJ() {
               <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
                 Cuando contratas un DJ a través de XPEAK, el contrato se genera automáticamente con todos los datos fiscales correctos: nombre, NIF, fecha, duración, caché, señal, IVA e IRPF. Ambas partes lo firman digitalmente desde el móvil. Sin PDFs, sin imprimir, sin ir al notario.
                 Si quieres una plantilla editable en Word para usar fuera de la plataforma, descarga nuestra{' '}
-                <a href="/plantilla-contrato-dj" style={{ color: '#D4AF37' }}>plantilla de contrato DJ gratis</a>.
+                <a href="/plantilla-contrato-dj" style={{ color: '#D4AF37' }}>plantilla de contrato DJ</a>.
                 Antes de firmar cualquier contrato, asegúrate de conocer{' '}
                 <a href="/blog/cuanto-cobra-un-dj-en-espana" style={{ color: '#D4AF37' }}>cuánto cobra un DJ en España</a>{' '}
                 para no pagar de más.

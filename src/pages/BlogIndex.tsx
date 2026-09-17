@@ -69,7 +69,7 @@ export default function BlogIndex() {
             <a href="/precios" className="text-xs font-bold hidden sm:block transition-opacity hover:opacity-70" style={{ color: '#444' }}>Precios</a>
             <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              Unirse gratis
+              Unirse
             </a>
           </div>
         </nav>
@@ -145,7 +145,7 @@ export default function BlogIndex() {
           <div className="mt-12 pt-8" style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}>
             <p className="text-xs text-center" style={{ color: '#555' }}>
               ¿Buscas profesionales verificados?{' '}
-              <a href="/auth" className="underline font-bold" style={{ color: '#8A6D0F' }}>Únete gratis a XPEAK</a>
+              <a href="/auth" className="underline font-bold" style={{ color: '#8A6D0F' }}>Únete a XPEAK</a>
             </p>
           </div>
 

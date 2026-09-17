@@ -44,7 +44,7 @@ export default function BlogPrecioBailarin() {
       <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#DB2777' }}>XPEAK</a>
-          <div className="flex items-center gap-3"><a href="/blog" className="text-xs font-bold " style={{ color: '#3d3d4e' }}>Blog</a><a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#DB2777,#B8941E)', color: '#000' }}>Unirse gratis</a></div>
+          <div className="flex items-center gap-3"><a href="/blog" className="text-xs font-bold " style={{ color: '#3d3d4e' }}>Blog</a><a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#DB2777,#B8941E)', color: '#000' }}>Unirse</a></div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
           <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
@@ -82,7 +82,7 @@ export default function BlogPrecioBailarin() {
             <section>
               <h2 className="text-lg font-black mb-3">Por qué contratar bailarín o instructor en XPEAK</h2>
               <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
-                A diferencia de otros directorios que cobran comisión al profesional o requieren plan de pago para destacar, en XPEAK publicar tu perfil y contactar es <strong style={{ color: '#111' }}>100% gratis, sin comisión</strong>. Para eventos con fecha urgente, el <strong style={{ color: '#111' }}>Flash Booking</strong> conecta con bailarines disponibles en horas, no días. Y cada contratación incluye <strong style={{ color: '#111' }}>contrato digital automático</strong>, sin que tengas que redactarlo tú.
+                Para eventos con fecha urgente, el <strong style={{ color: '#111' }}>Flash Booking</strong> conecta con bailarines disponibles en horas, no días. Y cada contratación incluye <strong style={{ color: '#111' }}>contrato digital automático</strong>, sin que tengas que redactarlo tú.
               </p>
             </section>
             <section>
@@ -115,7 +115,7 @@ export default function BlogPrecioBailarin() {
             </div>
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(219,39,119,0.04)', border: '1px solid rgba(219,39,119,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas bailarín para tu evento o instructor de salsa/bachata?</p>
-              <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>XPEAK conecta organizadores con bailarines e instructores verificados en toda España. Gratis, sin comisión, contrato digital automático.</p>
+              <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>XPEAK conecta organizadores con bailarines e instructores verificados en toda España. Contrato digital automático.</p>
               <a href="/contratar-bailarin" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#DB2777,#B8941E)', color: '#000' }}>Ver bailarines en XPEAK →</a>
             </div>
           </div>

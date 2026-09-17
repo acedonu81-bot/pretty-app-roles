@@ -21,22 +21,22 @@ const PROFILE_LABEL: Record<string, string> = {
 
 const COPY = {
   'presupuestos': {
-    headline: (label: string) => `Recibe 3 presupuestos de ${label} verificados gratis`,
+    headline: (label: string) => `Recibe 3 presupuestos de ${label} verificados`,
     sub: 'Sin registro. Sin compromiso. En menos de 24 horas.',
     cta: 'Enviar presupuestos a mi email →',
-    badge: 'Gratis · Sin spam',
+    badge: 'Sin spam',
   },
   'plantilla': {
-    headline: () => 'Descarga la plantilla de contrato gratis',
+    headline: () => 'Descarga la plantilla de contrato',
     sub: 'Formato Word editable con todas las cláusulas legales. Sin registro.',
-    cta: 'Descargar plantilla gratis →',
+    cta: 'Descargar plantilla →',
     badge: 'PDF + Word · Actualizado 2026',
   },
   'guia': {
-    headline: () => 'Guía completa de precios 2026 — gratis',
+    headline: () => 'Guía completa de precios 2026',
     sub: 'Tarifas reales por ciudad, tipo de evento y horas. Descárgala al instante.',
     cta: 'Recibir guía en mi email →',
-    badge: 'Gratis · Sin spam',
+    badge: 'Sin spam',
   },
 };
 

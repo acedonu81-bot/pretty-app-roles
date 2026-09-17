@@ -50,7 +50,7 @@ export default function BlogTrabajarCamareroEventos() {
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#2563EB' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#2563EB,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#2563EB,#B8941E)', color: '#000' }}>Unirse</a>
           </div>
         </nav>
 
@@ -132,8 +132,8 @@ export default function BlogTrabajarCamareroEventos() {
 
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(37,99,235,0.04)', border: '1px solid rgba(37,99,235,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Trabajas de camarero en eventos?</p>
-              <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>Crea tu perfil en XPEAK gratis. Organizadores de bodas y comuniones en tu zona ven tu disponibilidad y te contratan directamente. Sin comisión. Sin intermediarios.</p>
-              <a href="/auth?role=staff&mode=register" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#2563EB,#B8941E)', color: '#000' }}>Crear mi perfil de camarero gratis →</a>
+              <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>Crea tu perfil en XPEAK. Organizadores de bodas y comuniones en tu zona ven tu disponibilidad y te contratan directamente. Sin intermediarios.</p>
+              <a href="/auth?role=staff&mode=register" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#2563EB,#B8941E)', color: '#000' }}>Crear mi perfil de camarero →</a>
             </div>
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="general" articlePath="/blog/como-trabajar-de-camarero-eventos" />

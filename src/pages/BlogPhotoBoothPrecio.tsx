@@ -130,7 +130,7 @@ export default function BlogPhotoBoothPrecio() {
               className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#4F46E5,#B8941E)', color: '#000' }}
             >
-              Unirse gratis
+              Unirse
             </a>
           </div>
         </nav>
@@ -287,7 +287,7 @@ export default function BlogPhotoBoothPrecio() {
             >
               <p className="text-sm font-black mb-2">Solicita presupuesto para tu boda o evento</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>
-                XPEAK tiene proveedores de photo booth verificados con galería de trabajos reales. Presupuesto gratis en 24h.
+                XPEAK tiene proveedores de photo booth verificados con galería de trabajos reales. Presupuesto en 24h.
               </p>
               <a
                 href="/presupuesto-boda"

@@ -82,7 +82,7 @@ const SobreNosotros = () => {
               Los organizadores de eventos, por su parte, perdían horas buscando profesionales disponibles, sin poder comparar precios ni verificar experiencia. No existía una plataforma específica para el sector.
             </p>
             <p>
-              Decidimos construirla. XPEAK digitaliza el proceso completo: directorio verificado, Flash Booking en menos de 1 hora, contratos digitales automáticos y mensajería directa entre profesionales y clientes. Sin comisiones, sin intermediarios.
+              Decidimos construirla. XPEAK digitaliza el proceso completo: directorio verificado, Flash Booking en menos de 1 hora, contratos digitales automáticos y mensajería directa entre profesionales y clientes. Sin intermediarios.
             </p>
           </div>
 
@@ -127,7 +127,7 @@ const SobreNosotros = () => {
             <ul className="space-y-3">
               {[
                 ['Perfiles verificados', 'Bio, fotos, portfolio y tarifas públicas. Verificación manual por el equipo de XPEAK.'],
-                ['Directorio profesional', 'Búsqueda por especialidad, ciudad y disponibilidad. Acceso público y gratuito.'],
+                ['Directorio profesional', 'Búsqueda por especialidad, ciudad y disponibilidad. Acceso público.'],
                 ['Flash Booking', 'Sistema de contratación urgente. Cubre un evento en menos de 1 hora.'],
                 ['Contratos digitales', 'Generación automática de contratos con validez legal en España.'],
                 ['Mensajería directa', 'Sin intermediarios. Profesional y cliente se comunican directamente.'],

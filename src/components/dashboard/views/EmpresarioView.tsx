@@ -266,7 +266,7 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
         style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.12)' }}>
         {[
           { n: '1', t: 'Busca profesionales por zona y presupuesto' },
-          { n: '2', t: 'Contacta gratis, sin comisión' },
+          { n: '2', t: 'Contacta directamente' },
           { n: '3', t: 'Cierra el trato directamente con él' },
         ].map((step, i) => (
           <div key={step.n} className="flex items-center gap-3 sm:flex-shrink-0">

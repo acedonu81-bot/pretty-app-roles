@@ -163,7 +163,7 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
               <h3 className="text-lg font-black" style={{ color: '#111' }}>Pide presupuesto a varios</h3>
             </div>
             <p className="text-xs mb-4" style={{ color: '#333' }}>
-              Un solo formulario. Lo enviamos a {pros.length} {categoryLabel.toLowerCase()}{city !== 'Todas' ? ` de ${city}` : ''} y te responden los disponibles. Sin registro, gratis.
+              Un solo formulario. Lo enviamos a {pros.length} {categoryLabel.toLowerCase()}{city !== 'Todas' ? ` de ${city}` : ''} y te responden los disponibles. Sin registro.
             </p>
 
             <div className="space-y-3">
@@ -222,7 +222,7 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
                 : <><Zap size={15} /> Pedir presupuesto a {pros.length}</>}
             </button>
             <p className="text-center text-[0.7rem] mt-2" style={{ color: '#666' }}>
-              Sin registro · Sin comisión · Te responden directamente
+              Sin registro · Te responden directamente
             </p>
           </form>
         )}

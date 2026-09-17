@@ -15,7 +15,7 @@ import { App as CapacitorApp } from '@capacitor/app';
 const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { icon: LucideIcon; text: string }[] }> = {
   dj: {
     tagline: 'Publica tu tarifa y que te encuentren salas y promotoras.',
-    sub: 'Crea tu perfil gratis y aparece cuando busquen un DJ en tu zona.',
+    sub: 'Crea tu perfil y aparece cuando busquen un DJ en tu zona.',
     bullets: [
       { icon: Target, text: 'Tu perfil visible en Google y en el directorio' },
       { icon: FileText, text: 'Contratos digitales automáticos' },
@@ -51,7 +51,7 @@ const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { ic
   },
   profesional: {
     tagline: 'El directorio de referencia para profesionales de eventos.',
-    sub: 'Crea tu perfil gratis y publica tu tarifa. Tardas menos de 2 minutos.',
+    sub: 'Crea tu perfil y publica tu tarifa. Tardas menos de 2 minutos.',
     bullets: [
       { icon: Target, text: 'Visible para salas y promotoras de España' },
       { icon: FileText, text: 'Contratos automáticos con PDF' },
@@ -71,7 +71,7 @@ const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { ic
   // salto a un mensaje genérico que no reconoce por qué la persona hizo clic.
   pontuprecio: {
     tagline: 'Pon tu precio. Deja de aceptar lo que otros imponen.',
-    sub: 'Publica tu tarifa gratis y que te contraten directamente por ella. Sin intermediarios.',
+    sub: 'Publica tu tarifa y que te contraten directamente por ella. Sin intermediarios.',
     bullets: [
       { icon: Wallet, text: 'Tú decides tu tarifa — 0% comisión' },
       { icon: Target, text: 'Tu perfil visible para salas y organizadores' },
@@ -82,7 +82,7 @@ const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { ic
 
 const DEFAULT_CONTENT = {
   tagline: 'El directorio de referencia para profesionales de eventos.',
-  sub: 'Publica tu perfil, consigue trabajo. Gratis, sin comisiones.',
+  sub: 'Publica tu perfil, consigue trabajo.',
   bullets: [
     { icon: Target, text: 'Tu perfil visible en Google y en el directorio' },
     { icon: Wallet, text: '0% comisión — cobras todo lo tuyo' },
@@ -495,7 +495,7 @@ const Auth = () => {
     <div className="min-h-screen flex flex-col" style={{ background: '#ffffff', color: '#222' }}>
       <Helmet>
         <title>Acceder o Registrarse | XPEAK — Directorio Profesional de Eventos</title>
-        <meta name="description" content="Únete a XPEAK gratis. Crea tu perfil profesional como DJ, fotógrafo, staff o empresario y empieza a conectar con el sector de eventos en España." />
+        <meta name="description" content="Únete a XPEAK. Crea tu perfil profesional como DJ, fotógrafo, staff o empresario y empieza a conectar con el sector de eventos en España." />
         <link rel="canonical" href="https://xpeak.es/auth" />
         <meta name="robots" content="noindex, follow" />
       </Helmet>
@@ -550,7 +550,7 @@ const Auth = () => {
                       style={{ background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.3)' }}>
                       <ShieldCheck size={15} style={{ color: '#8B6A00' }} strokeWidth={2.2} />
                     </span>
-                    <span className="text-sm font-medium" style={{ color: '#222' }}>Gratis · 0% comisión</span>
+                    <span className="text-sm font-medium" style={{ color: '#222' }}>0% comisión</span>
                   </div>
                 </div>
               </div>
@@ -605,11 +605,11 @@ const Auth = () => {
               {/* Heading */}
               <div className="mb-6">
                 <h3 className="text-lg font-black mb-1 leading-normal pb-0.5" style={{ color: '#111' }}>
-                  {isLogin ? 'Accede a XPEAK' : 'Crear cuenta gratis'}
+                  {isLogin ? 'Accede a XPEAK' : 'Crear cuenta'}
                 </h3>
                 <p className="text-xs" style={{ color: 'rgba(0,0,0,0.6)' }}>
                   {isLogin
-                    ? '¿Primera vez? → Pulsa "Crear cuenta gratis" abajo.'
+                    ? '¿Primera vez? → Pulsa "Crear cuenta" abajo.'
                     : 'Solo 30 segundos · Sin tarjeta de crédito · 0% comisión'}
                 </p>
               </div>
@@ -896,8 +896,8 @@ const Auth = () => {
                       : isLogin
                         ? 'Iniciar Sesión'
                         : roleParam === 'empresario'
-                          ? 'Empezar a contratar gratis →'
-                          : 'Publicar mi perfil gratis →'}
+                          ? 'Empezar a contratar →'
+                          : 'Publicar mi perfil →'}
                 </button>
 
               </form>
@@ -957,7 +957,7 @@ const Auth = () => {
                   onClick={() => { track('auth_toggle_mode', { to: isLogin ? 'register' : 'login' }); setIsLogin(!isLogin); setShowForgot(false); setForgotSent(false); }}
                   className="text-xs font-bold transition-opacity hover:opacity-80"
                   style={{ color: '#8B6A00' }}>
-                  {isLogin ? 'Crear cuenta gratis →' : 'Inicia sesión →'}
+                  {isLogin ? 'Crear cuenta →' : 'Inicia sesión →'}
                 </button>
               </div>
 

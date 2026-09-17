@@ -76,7 +76,7 @@ const faqStructured = {
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#6D28D9' }}>XPEAK</a>
           <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>
-            Unirse gratis
+            Unirse
           </a>
         </nav>
 
@@ -168,18 +168,18 @@ const faqStructured = {
               </span>
               <h2 className="text-xl font-black mb-2 leading-snug">Publica tu perfil y recibe solicitudes de eventos</h2>
               <p className="text-base mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                Crea tu perfil en XPEAK, publica tus tarifas y activa Flash Booking para disponibilidad urgente. Gratis.
+                Crea tu perfil en XPEAK, publica tus tarifas y activa Flash Booking para disponibilidad urgente.
               </p>
               <a href="/auth?mode=register"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>
-                <Zap size={15} /> Crear mi perfil — gratis
+                <Zap size={15} /> Crear mi perfil
               </a>
             </div>
             <div className="p-6 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ background: 'rgba(0,0,0,0.02)' }}>
               <div>
                 <p className="text-sm font-black mb-0.5">¿Buscas técnico de sonido para tu evento?</p>
-                <p className="text-xs" style={{ color: '#333' }}>Directorio verificado · Tarifas públicas · Sin comisión</p>
+                <p className="text-xs" style={{ color: '#333' }}>Directorio verificado · Tarifas públicas</p>
               </div>
               <a href="/contratar-tecnico-sonido"
                 className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-xs transition-all hover:scale-105"

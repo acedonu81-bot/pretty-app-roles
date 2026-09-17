@@ -722,7 +722,7 @@ const PublicProfile = () => {
   const pageTitle = profile.specialty
     ? `Contratar ${profile.name} — ${profile.specialty} en ${cityShort} | XPEAK`
     : `${profile.name} — Profesional de eventos en ${cityShort} | XPEAK`;
-  const pageDesc = `Contrata a ${profile.name}${profile.specialty ? `, ${profile.specialty}` : ''} en ${cityShort}.${priceStr}${availStr}${verifiedStr}${antiguedadStr} ${profile.description ? profile.description.slice(0, 100) + (profile.description.length > 100 ? '…' : '') : 'Contacta directamente en XPEAK sin comisión.'}`;
+  const pageDesc = `Contrata a ${profile.name}${profile.specialty ? `, ${profile.specialty}` : ''} en ${cityShort}.${priceStr}${availStr}${verifiedStr}${antiguedadStr} ${profile.description ? profile.description.slice(0, 100) + (profile.description.length > 100 ? '…' : '') : 'Contacta directamente en XPEAK.'}`;
   const ogImage = profile.photo && profile.photo.trim().length > 5
     ? profile.photo
     : `${BASE_URL}/og-image.jpg`;
@@ -890,7 +890,7 @@ const PublicProfile = () => {
                 onClick={handleContactClick}
                 className="hidden md:flex items-center gap-1.5 px-4 py-2 rounded-xl font-black text-sm transition-all hover:scale-105 active:scale-95"
                 style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 4px 15px rgba(212,175,55,0.3)' }}>
-                <MessageCircle size={14} /> Contactar gratis
+                <MessageCircle size={14} /> Contactar
               </button>
             )}
           </div>
@@ -1062,7 +1062,7 @@ const PublicProfile = () => {
               {(profile as any).price > 0 ? (
                 <>
                   <span className="text-3xl font-black" style={{ color: '#111' }}>{(profile as any).price}€</span>
-                  <span className="text-sm font-semibold ml-1" style={{ color: '#333' }}>/hora · sin comisión</span>
+                  <span className="text-sm font-semibold ml-1" style={{ color: '#333' }}>/hora</span>
                 </>
               ) : (
                 <span className="text-2xl font-black" style={{ color: '#111' }}>Precio a consultar</span>
@@ -1277,7 +1277,7 @@ const PublicProfile = () => {
             <h2 className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Por qué contratar en XPEAK</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {[
-                { icon: <Shield size={20} />, title: 'Sin comisión', desc: 'El precio acordado va directo al profesional.' },
+                { icon: <Shield size={20} />, title: 'Contacto directo', desc: 'El precio acordado va directo al profesional.' },
                 { icon: <BadgeCheck size={20} />, title: 'Verificados', desc: 'Identidad y experiencia comprobadas por XPEAK.' },
                 { icon: <Clock size={20} />, title: 'Respuesta rápida', desc: 'Contacto directo con el profesional.' },
               ].map(({ icon, title, desc }) => (

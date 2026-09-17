@@ -19,11 +19,11 @@ export default function PlantillaContratoDJ() {
   return (
     <>
       <Helmet>
-        <title>Plantilla Contrato DJ Gratis 2026 | Descarga Word y PDF — XPEAK</title>
-        <meta name="description" content="Descarga gratis la plantilla de contrato para DJ. Formato Word editable con todas las cláusulas legales para eventos y bodas en España. Actualizado 2026." />
+        <title>Plantilla Contrato DJ 2026 | Descarga Word y PDF — XPEAK</title>
+        <meta name="description" content="Descarga la plantilla de contrato para DJ. Formato Word editable con todas las cláusulas legales para eventos y bodas en España. Actualizado 2026." />
         <link rel="canonical" href="https://xpeak.es/plantilla-contrato-dj" />
-        <meta property="og:title" content="Plantilla Contrato DJ Gratis 2026 — XPEAK" />
-        <meta property="og:description" content="Plantilla de contrato DJ para eventos y bodas. Word editable, con cláusulas de cancelación, rider técnico e IVA/IRPF. Gratis." />
+        <meta property="og:title" content="Plantilla Contrato DJ 2026 — XPEAK" />
+        <meta property="og:description" content="Plantilla de contrato DJ para eventos y bodas. Word editable, con cláusulas de cancelación, rider técnico e IVA/IRPF." />
         <meta property="og:url" content="https://xpeak.es/plantilla-contrato-dj" />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="https://xpeak.es/og-image.jpg" />
@@ -43,7 +43,7 @@ export default function PlantillaContratoDJ() {
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
             <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
-              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
+              style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse</a>
           </div>
         </nav>
 
@@ -54,10 +54,10 @@ export default function PlantillaContratoDJ() {
 
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>
-              DJ · Recurso gratuito · XPEAK
+              DJ · Recurso · XPEAK
             </p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">
-              Plantilla de contrato para DJ: descarga gratis en Word y PDF (2026)
+              Plantilla de contrato para DJ: descarga en Word y PDF (2026)
             </h1>
             <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>
               Plantilla de contrato DJ editable con todas las cláusulas necesarias para eventos y bodas en España. Válida legalmente, con IVA, IRPF y cláusula de cancelación incluidos.

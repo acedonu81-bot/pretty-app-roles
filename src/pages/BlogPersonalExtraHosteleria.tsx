@@ -23,7 +23,7 @@ const faqStructured = {
   mainEntity: [
     { '@type': 'Question', name: '¿Cuánto cuesta un camarero extra por horas en hostelería?', acceptedAnswer: { '@type': 'Answer', text: 'En 2026, un camarero de sala cuesta 12€-16€/hora (96€-128€ la jornada de 8h) y un bartender 14€-20€/hora. Perfiles más cualificados como jefe de sala (18€-25€/h) o maitre (20€-30€/h) suben la tarifa. Los precios varían según ciudad, experiencia y convenio colectivo de hostelería.' } },
     { '@type': 'Question', name: '¿Cuáles son los picos de temporada en hostelería?', acceptedAnswer: { '@type': 'Answer', text: 'Son cuatro: el verano en costa e islas (junio-septiembre), las bodas y eventos privados (abril-octubre), la campaña de Navidad y Nochevieja (noviembre-enero) y los eventos corporativos (septiembre-noviembre y febrero-abril). Cada pico demanda un tipo de personal extra distinto.' } },
-    { '@type': 'Question', name: '¿Cómo contrato personal extra para mi negocio?', acceptedAnswer: { '@type': 'Answer', text: 'En XPEAK creas una cuenta de empresario gratis, publicas una oferta con el perfil, número de personas, fecha y ciudad, recibes candidaturas de camareros verificados con disponibilidad confirmada y firmas el contrato digital automático con un clic. Para urgencias, el Flash Booking da respuesta en menos de 1 hora.' } },
+    { '@type': 'Question', name: '¿Cómo contrato personal extra para mi negocio?', acceptedAnswer: { '@type': 'Answer', text: 'En XPEAK creas una cuenta de empresario, publicas una oferta con el perfil, número de personas, fecha y ciudad, recibes candidaturas de camareros verificados con disponibilidad confirmada y firmas el contrato digital automático con un clic. Para urgencias, el Flash Booking da respuesta en menos de 1 hora.' } },
   ],
 };
 
@@ -118,7 +118,7 @@ export default function BlogPersonalExtraHosteleria() {
 
             <h2 className="text-xl font-black mt-8 mb-3">Cómo contratar personal extra en XPEAK</h2>
             <ol style={{ color: '#222', lineHeight: 2.2, paddingLeft: '1.2rem' }}>
-              <li>Crea tu cuenta de <strong style={{ color: '#111' }}>empresario en XPEAK</strong> (gratis, sin tarjeta).</li>
+              <li>Crea tu cuenta de <strong style={{ color: '#111' }}>empresario en XPEAK</strong> (sin tarjeta).</li>
               <li>Publica una oferta con el perfil, número de personas, fecha y ciudad.</li>
               <li>Recibe candidaturas de camareros verificados con disponibilidad confirmada.</li>
               <li>Firma el contrato digital automático con un clic.</li>

@@ -337,7 +337,7 @@ const EscenarioVirtualView = () => {
         )}
 
         <p className="text-center text-xs mt-8" style={{ color: 'rgba(0,0,0,0.1)' }}>
-          Los directos se actualizan en tiempo real · Sin comisiones de contratación
+          Los directos se actualizan en tiempo real
         </p>
       </div>
     );

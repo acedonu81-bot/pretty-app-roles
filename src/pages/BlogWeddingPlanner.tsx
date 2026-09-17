@@ -57,7 +57,7 @@ export default function BlogWeddingPlanner() {
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#6D28D9' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>Unirse</a>
           </div>
         </nav>
 
@@ -292,9 +292,9 @@ export default function BlogWeddingPlanner() {
             {/* CTA */}
             <div className="p-6 sm:p-8 rounded-2xl text-center" style={{ background: 'rgba(109,40,217,0.06)', border: '1px solid rgba(109,40,217,0.2)' }}>
               <h2 className="text-lg font-black mb-2">¿Eres wedding planner o profesional de eventos?</h2>
-              <p className="text-sm mb-5" style={{ color: '#3d3d4e' }}>Crea tu perfil en XPEAK y recibe solicitudes de bodas y eventos en toda España. Gratis.</p>
+              <p className="text-sm mb-5" style={{ color: '#3d3d4e' }}>Crea tu perfil en XPEAK y recibe solicitudes de bodas y eventos en toda España.</p>
               <a href="/auth" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>
-                Crear perfil profesional gratis
+                Crear perfil profesional
               </a>
             </div>
 

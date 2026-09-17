@@ -73,7 +73,7 @@ export default function BlogCalculadoraTarifaDJ() {
     mainEntity: [
       { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda en España?', acceptedAnswer: { '@type': 'Answer', text: 'La tarifa base de un DJ para boda parte de unos 1.000€ y varía según la ciudad, las horas de servicio y la experiencia del DJ. En Madrid o Barcelona el precio sube en torno a un 25% respecto a otras ciudades, y añadir equipo de luces suma entre 150€ y 300€.' } },
       { '@type': 'Question', name: '¿De qué depende el precio de un DJ?', acceptedAnswer: { '@type': 'Answer', text: 'El precio depende del tipo de evento (una boda cuesta más que un cumpleaños o una fiesta privada), la ciudad, el número de horas de servicio y el nivel del DJ (junior, medio o senior). Incluir equipo de luces también incrementa la tarifa.' } },
-      { '@type': 'Question', name: '¿La calculadora da un precio real?', acceptedAnswer: { '@type': 'Answer', text: 'La calculadora ofrece una estimación orientativa basada en tarifas reales de DJs en España en 2026. Para presupuestos reales de DJs verificados en tu zona, en XPEAK introduces los detalles de tu evento y recibes 3 propuestas en menos de 24 horas, gratis y sin compromiso.' } },
+      { '@type': 'Question', name: '¿La calculadora da un precio real?', acceptedAnswer: { '@type': 'Answer', text: 'La calculadora ofrece una estimación orientativa basada en tarifas reales de DJs en España en 2026. Para presupuestos reales de DJs verificados en tu zona, en XPEAK introduces los detalles de tu evento y recibes 3 propuestas en menos de 24 horas.' } },
     ],
   };
 
@@ -98,7 +98,7 @@ export default function BlogCalculadoraTarifaDJ() {
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse</a>
           </div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
@@ -191,7 +191,7 @@ export default function BlogCalculadoraTarifaDJ() {
             <section>
               <h2 className="text-base font-black mb-3">¿Cómo consigo presupuestos reales?</h2>
               <p className="text-base leading-relaxed" style={{ color: '#222' }}>
-                La calculadora da una estimación orientativa. Para tener presupuestos reales de DJs verificados en tu zona, usa XPEAK: introduce los detalles de tu evento y recibes 3 propuestas en menos de 24h, gratis y sin compromiso.
+                La calculadora da una estimación orientativa. Para tener presupuestos reales de DJs verificados en tu zona, usa XPEAK: introduce los detalles de tu evento y recibes 3 propuestas en menos de 24h.
               </p>
             </section>
 
@@ -213,7 +213,7 @@ export default function BlogCalculadoraTarifaDJ() {
                 {[
                   { href: '/blog/cuanto-cobra-un-dj-en-espana', cat: 'DJ', title: 'Cuánto cobra un DJ en España: precios 2026' },
                   { href: '/blog/como-contratar-un-dj', cat: 'Guía', title: 'Cómo contratar un DJ: guía completa' },
-                  { href: '/plantilla-contrato-dj', cat: 'Recurso', title: 'Plantilla contrato DJ gratis — Word y PDF' },
+                  { href: '/plantilla-contrato-dj', cat: 'Recurso', title: 'Plantilla contrato DJ — Word y PDF' },
                 ].map(link => (
                   <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
                     <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>

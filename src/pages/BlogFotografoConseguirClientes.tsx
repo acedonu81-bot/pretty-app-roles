@@ -21,8 +21,8 @@ const ESTRATEGIAS = [
   { num: '01', titulo: 'Portfolio online bien curado', desc: 'Tu web o perfil de plataforma es lo primero que ven los clientes. Muestra 20-30 fotos máximo por tipo de evento, de distintos momentos y condiciones de luz. Menos es más — mejor 20 fotos perfectas que 100 mediocres.' },
   { num: '02', titulo: 'Instagram como escaparate activo', desc: 'Publica de forma consistente: un feed con tu estilo propio, stories de making-of y reels con antes/después de edición. Los novios pasan horas en Instagram buscando el estilo que quieren para su boda. Si tu perfil tiene coherencia visual, te encontrarán.' },
   { num: '03', titulo: 'Plataformas especializadas en eventos', desc: 'XPEAK conecta fotógrafos con organizadores de bodas, comuniones y eventos corporativos. Tu perfil incluye portfolio, reseñas verificadas y disponibilidad. Los clientes que entran a buscar ya tienen intención de contratar.' },
-  { num: '04', titulo: 'Google My Business para fotógrafo local', desc: '"Fotógrafo de bodas en Madrid" genera miles de búsquedas al mes. Un perfil de Google Business con fotos de bodas reales, reseñas y ubicación te coloca en el mapa de los que buscan local. Es gratis y tarda 1 hora en configurar.' },
-  { num: '05', titulo: 'Networking con wedding planners y venues', desc: 'Las fincas y los wedding planners son proveedores de referencia para los novios. Si estás en su lista de recomendados, tienes un flujo constante sin hacer marketing. Ofrece sesiones gratuitas en una finca nueva a cambio de figurar en su web.' },
+  { num: '04', titulo: 'Google My Business para fotógrafo local', desc: '"Fotógrafo de bodas en Madrid" genera miles de búsquedas al mes. Un perfil de Google Business con fotos de bodas reales, reseñas y ubicación te coloca en el mapa de los que buscan local. Tarda 1 hora en configurar.' },
+  { num: '05', titulo: 'Networking con wedding planners y venues', desc: 'Las fincas y los wedding planners son proveedores de referencia para los novios. Si estás en su lista de recomendados, tienes un flujo constante sin hacer marketing. Ofrece una sesión en una finca nueva a cambio de figurar en su web.' },
   { num: '06', titulo: 'Reseñas y testimonios en cada proyecto', desc: 'Tras cada boda, pide a los novios que dejen reseña en Google y en tu perfil de plataforma. Una reseña auténtica con fotos del evento vale más que cualquier anuncio de pago. Automatiza el pedido de reseña con un email automático 2 semanas después de la entrega.' },
   { num: '07', titulo: 'Precios claros y paquetes definidos', desc: 'Los clientes odian pedir presupuesto sin saber el rango. Publica tus precios desde en tu web o perfil — "desde X€" elimina la fricción y filtra clientes que no son tu cliente ideal. La transparencia de precios es un diferenciador en fotografía.' },
 ];
@@ -52,7 +52,7 @@ export default function BlogFotografoConseguirClientes() {
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#4F46E5' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#4F46E5,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#4F46E5,#B8941E)', color: '#000' }}>Unirse</a>
           </div>
         </nav>
 
@@ -116,8 +116,8 @@ export default function BlogFotografoConseguirClientes() {
 
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(79,70,229,0.04)', border: '1px solid rgba(79,70,229,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Eres fotógrafo y buscas más clientes?</p>
-              <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>Crea tu perfil en XPEAK gratis. Organizadores de bodas y comuniones en tu zona ven tu portfolio, leen tus reseñas y te contratan directamente. Sin comisión oculta.</p>
-              <a href="/auth?role=fotografo" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#4F46E5,#B8941E)', color: '#000' }}>Crear mi perfil de fotógrafo gratis →</a>
+              <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>Crea tu perfil en XPEAK. Organizadores de bodas y comuniones en tu zona ven tu portfolio, leen tus reseñas y te contratan directamente.</p>
+              <a href="/auth?role=fotografo" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#4F46E5,#B8941E)', color: '#000' }}>Crear mi perfil de fotógrafo →</a>
             </div>
           </div>
                   <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/fotografo-como-conseguir-clientes" />

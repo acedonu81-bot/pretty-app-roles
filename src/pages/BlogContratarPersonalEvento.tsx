@@ -60,7 +60,7 @@ export default function BlogContratarPersonalEvento() {
       <div className="min-h-screen" style={{ background: '#ffffff', color: '#111' }}>
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-3xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#059669' }}>XPEAK</a>
-          <div className="flex items-center gap-3"><a href="/blog" className="text-xs font-bold" style={{ color: '#3d3d4e' }}>Blog</a><a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#059669,#B8941E)', color: '#000' }}>Unirse gratis</a></div>
+          <div className="flex items-center gap-3"><a href="/blog" className="text-xs font-bold" style={{ color: '#3d3d4e' }}>Blog</a><a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#059669,#B8941E)', color: '#000' }}>Unirse</a></div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
           <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
@@ -174,7 +174,7 @@ export default function BlogContratarPersonalEvento() {
             <section className="rounded-2xl p-6 text-center" style={{ background: 'rgba(5,150,105,0.06)', border: '1px solid rgba(5,150,105,0.2)' }}>
               <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#059669' }}>Encuentra personal verificado en XPEAK</p>
               <h3 className="text-xl font-black mb-3">DJs, camareros, fotógrafos, azafatas y más</h3>
-              <p className="text-sm mb-5" style={{ color: '#3d3d4e' }}>Perfiles reales con portfolio, tarifas visibles y contacto directo. Sin comisiones de intermediario.</p>
+              <p className="text-sm mb-5" style={{ color: '#3d3d4e' }}>Perfiles reales con portfolio, tarifas visibles y contacto directo.</p>
               <a href="/auth" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#059669,#B8941E)', color: '#000' }}>
                 Ver profesionales disponibles →
               </a>

@@ -77,7 +77,7 @@ const faqStructured = {
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-            Unirse gratis
+            Unirse
           </a>
         </nav>
 
@@ -169,7 +169,7 @@ const faqStructured = {
               </span>
               <h2 className="text-xl font-black mb-2 leading-snug">DJs con experiencia corporativa verificada en XPEAK</h2>
               <p className="text-base mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                Tarifas públicas, Flash Booking para fechas urgentes y contratos automáticos. Sin comisión.
+                Tarifas públicas, Flash Booking para fechas urgentes y contratos automáticos.
               </p>
               <a href="/contratar-dj"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
@@ -180,7 +180,7 @@ const faqStructured = {
             <div className="p-6 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ background: 'rgba(0,0,0,0.02)' }}>
               <div>
                 <p className="text-sm font-black mb-0.5">¿Eres DJ con experiencia corporativa?</p>
-                <p className="text-xs" style={{ color: '#333' }}>Publica tu perfil y tus tarifas. Gratis.</p>
+                <p className="text-xs" style={{ color: '#333' }}>Publica tu perfil y tus tarifas.</p>
               </div>
               <a href="/auth?mode=register&role=dj"
                 className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-xs transition-all hover:scale-105"

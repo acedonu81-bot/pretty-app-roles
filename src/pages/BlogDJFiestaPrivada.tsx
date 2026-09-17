@@ -76,7 +76,7 @@ const faqStructured = {
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-            Unirse gratis
+            Unirse
           </a>
         </nav>
 
@@ -174,12 +174,12 @@ const faqStructured = {
               </span>
               <h2 className="text-xl font-black mb-2 leading-snug">Publica tu tarifa y recibe bookings para fiestas privadas</h2>
               <p className="text-base mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                Activa Flash Booking y aparece en el directorio de DJs disponibles en tu ciudad. Gratis.
+                Activa Flash Booking y aparece en el directorio de DJs disponibles en tu ciudad.
               </p>
               <a href="/auth?mode=register&role=dj"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-                <Zap size={15} /> Crear mi perfil DJ — gratis
+                <Zap size={15} /> Crear mi perfil DJ
               </a>
             </div>
             <div className="p-6 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ background: 'rgba(0,0,0,0.02)' }}>

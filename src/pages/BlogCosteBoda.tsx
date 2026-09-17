@@ -46,7 +46,7 @@ const FAQ = [
   },
   {
     q: '¿Cómo ahorrar en una boda sin perder calidad?',
-    a: 'Las mayores oportunidades de ahorro son: elegir fecha entre semana o en temporada baja (noviembre–febrero), apostar por un catering tipo bufé en lugar de menú servido, contratar fotógrafo local en lugar de muy conocido, y usar plataformas como XPEAK para contratar DJ y personal sin comisiones de intermediarios.',
+    a: 'Las mayores oportunidades de ahorro son: elegir fecha entre semana o en temporada baja (noviembre–febrero), apostar por un catering tipo bufé en lugar de menú servido, contratar fotógrafo local en lugar de muy conocido, y usar plataformas como XPEAK para contratar DJ y personal directamente, sin intermediarios.',
   },
   {
     q: '¿Cuánto cobra un DJ para una boda en España?',
@@ -124,7 +124,7 @@ const faqStructured = {
           <a href="/auth"
             className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#DB2777,#B8941E)', color: '#000' }}>
-            Unirse gratis
+            Unirse
           </a>
         </nav>
         <a href="/blog" className="block px-4 sm:px-6 pb-2 max-w-3xl mx-auto text-xs" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
@@ -337,7 +337,7 @@ const faqStructured = {
               {[
                 { num: '01', tip: 'Elige fecha en temporada baja', desc: 'Los proveedores bajan precios un 15–30% en noviembre, enero y febrero. Los fines de semana de verano tienen recargo en casi todos los servicios.' },
                 { num: '02', tip: 'Bufé en lugar de menú servido', desc: 'El bufé reduce el coste de camareros un 30% y suele tener mejor valoración por parte de los invitados: más variedad y menos esperas.' },
-                { num: '03', tip: 'Contrata DJ y personal directamente sin intermediarios', desc: 'Plataformas como XPEAK te conectan directamente con el profesional sin comisión de agencia. El ahorro puede ser de 200€ a 500€ solo en el DJ.' },
+                { num: '03', tip: 'Contrata DJ y personal directamente sin intermediarios', desc: 'Plataformas como XPEAK te conectan directamente con el profesional. El ahorro puede ser de 200€ a 500€ solo en el DJ.' },
                 { num: '04', tip: 'Optimiza el número de camareros', desc: 'Muchas parejas contratan más personal del necesario por miedo al caos. Con los ratios correctos y un buen maitre, 100 invitados funcionan perfectamente con 10–11 camareros.' },
                 { num: '05', tip: 'Pide pack foto + vídeo al mismo proveedor', desc: 'Contratar fotógrafo y videógrafo por separado cuesta un 20–30% más que el pack combinado. Negocia ambos con el mismo profesional.' },
               ].map(c => (
@@ -369,7 +369,7 @@ const faqStructured = {
           <div className="rounded-2xl p-6 sm:p-8 text-center" style={{ background: 'linear-gradient(135deg, rgba(219,39,119,0.1) 0%, rgba(219,39,119,0.04) 100%)', border: '1px solid rgba(219,39,119,0.25)' }}>
             <p className="text-lg sm:text-xl font-black mb-2">Contrata a los mejores profesionales para tu boda</p>
             <p className="text-sm mb-6" style={{ color: '#222' }}>
-              DJs, fotógrafos, camareros y staff verificados en toda España. Precio cerrado desde el primer contacto. Sin comisiones ocultas.
+              DJs, fotógrafos, camareros y staff verificados en toda España. Precio cerrado desde el primer contacto.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a href="/contratar-dj"

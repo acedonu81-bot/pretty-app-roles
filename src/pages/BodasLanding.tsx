@@ -87,7 +87,7 @@ const FAQS = [
   },
   {
     q: '¿XPEAK cobra comisión por contratar proveedores?',
-    a: 'No. XPEAK es completamente gratuito para organizadores y parejas. El acuerdo se cierra directamente entre el organizador y el profesional, sin intermediarios ni porcentajes sobre el precio.',
+    a: 'No. El acuerdo se cierra directamente entre el organizador y el profesional, sin intermediarios ni porcentajes sobre el precio.',
   },
   {
     q: '¿Puedo contratar varios proveedores a la vez?',
@@ -111,7 +111,7 @@ export default function BodasLanding() {
     name: 'Proveedores de Boda en España — XPEAK',
     provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     areaServed: { '@type': 'Country', name: 'España' },
-    description: 'Directorio de profesionales para bodas en España: DJs, catering, fotógrafos, camareros, maquillaje y música en vivo. Flash Booking en menos de 1h. Gratis para novios y organizadores.',
+    description: 'Directorio de profesionales para bodas en España: DJs, catering, fotógrafos, camareros, maquillaje y música en vivo. Flash Booking en menos de 1h.',
     url: 'https://xpeak.es/bodas',
     serviceType: 'Contratación de proveedores de boda',
   };
@@ -130,7 +130,7 @@ export default function BodasLanding() {
     <>
       <Helmet>
         <title>Proveedores para Bodas en España 2026 — DJ, Catering, Fotógrafo | XPEAK</title>
-        <meta name="description" content="Contrata DJ, catering, fotógrafo, camareros, maquillaje y música en vivo para tu boda en España. Profesionales verificados, Flash Booking en menos de 1h. Gratis para novios." />
+        <meta name="description" content="Contrata DJ, catering, fotógrafo, camareros, maquillaje y música en vivo para tu boda en España. Profesionales verificados, Flash Booking en menos de 1h." />
         <meta name="keywords" content="proveedores boda España, contratar DJ boda, catering boda España, fotógrafo boda, camareros boda, maquillaje novia, música en vivo boda, maestro de ceremonias boda" />
         <link rel="canonical" href="https://xpeak.es/bodas" />
         <meta property="og:title" content="Proveedores para Bodas en España 2026 — XPEAK" />
@@ -155,7 +155,7 @@ export default function BodasLanding() {
             <a href="/auth"
               className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              Unirse gratis
+              Unirse
             </a>
           </div>
         </nav>
@@ -171,7 +171,7 @@ export default function BodasLanding() {
             Todos los proveedores para tu boda
           </h1>
           <p className="text-sm sm:text-lg mb-8 max-w-2xl leading-relaxed" style={{ color: 'rgba(0,0,0,0.6)' }}>
-            DJ, catering, fotógrafo, camareros, maquillaje y música en vivo. Profesionales verificados en toda España. Flash Booking en menos de 1h. Sin comisión para novios y organizadores.
+            DJ, catering, fotógrafo, camareros, maquillaje y música en vivo. Profesionales verificados en toda España. Flash Booking en menos de 1h.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a href="/presupuesto-boda"
@@ -182,7 +182,7 @@ export default function BodasLanding() {
             <a href="/auth"
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
               style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.12)', color: '#222' }}>
-              Publicar oferta gratis <ArrowRight size={14} />
+              Publicar oferta <ArrowRight size={14} />
             </a>
           </div>
         </section>
@@ -288,12 +288,12 @@ export default function BodasLanding() {
             style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)' }}>
             <h2 className="text-xl sm:text-3xl font-black mb-3">¿Organizas una boda en España?</h2>
             <p className="text-sm mb-6" style={{ color: 'rgba(0,0,0,0.55)' }}>
-              Únete gratis — sin comisión, contratos automáticos, Flash Booking en menos de 1h.
+              Únete — contratos automáticos, Flash Booking en menos de 1h.
             </p>
             <a href="/auth"
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              <Zap size={15} /> Empezar gratis
+              <Zap size={15} /> Empezar
             </a>
           </div>
         </section>

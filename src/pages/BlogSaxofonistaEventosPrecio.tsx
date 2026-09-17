@@ -112,7 +112,7 @@ export default function BlogSaxofonistaEventosPrecio() {
               className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}
             >
-              Unirse gratis
+              Unirse
             </a>
           </div>
         </nav>
@@ -265,7 +265,7 @@ export default function BlogSaxofonistaEventosPrecio() {
             >
               <p className="text-sm font-black mb-2">Ver saxofonistas disponibles en tu zona</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>
-                XPEAK tiene músicos verificados con vídeos reales de actuación. Solicita presupuesto gratis y recibe propuestas en 24h.
+                XPEAK tiene músicos verificados con vídeos reales de actuación. Solicita presupuesto y recibe propuestas en 24h.
               </p>
               <a
                 href="/directorio/grupo-musical"

@@ -192,7 +192,7 @@ const TIPS: Record<string, { title: string; tips: [string, string][] }> = {
     tips: [
       ['Explora el directorio', 'Filtra profesionales por rol y ciudad'],
       ['Publica un Flash Job', 'Encuentra staff para esta noche'],
-      ['Contacta directamente', 'Sin intermediarios, sin comisión'],
+      ['Contacta directamente', 'Sin intermediarios'],
     ],
   },
 };

@@ -820,6 +820,19 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
         Hemos retirado temporalmente tu foto de portada. Puedes subir una nueva sin datos de contacto visibles en cualquier momento desde tu panel.
       </p>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 20px">
+        <tr>
+          <td width="48%" style="background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.25);border-radius:8px;padding:12px;vertical-align:top">
+            <p style="margin:0 0 4px;font-size:12px;font-weight:900;color:#DC2626">✗ Evitar</p>
+            <p style="margin:0;font-size:12px;color:#6b7280;line-height:1.5">Teléfono, WhatsApp, Instagram o web escritos sobre la foto</p>
+          </td>
+          <td width="4%"></td>
+          <td width="48%" style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.25);border-radius:8px;padding:12px;vertical-align:top">
+            <p style="margin:0 0 4px;font-size:12px;font-weight:900;color:#16A34A">✓ Correcto</p>
+            <p style="margin:0;font-size:12px;color:#6b7280;line-height:1.5">Tu foto o cartel, sin datos de contacto visibles</p>
+          </td>
+        </tr>
+      </table>
       ${btn('Subir nueva foto →', 'https://xpeak.es/dashboard?view=settings')}
       <p style="color:#9CA3AF;font-size:12px;text-align:center">¿Dudas? Escríbenos a <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a></p>`),
   }),

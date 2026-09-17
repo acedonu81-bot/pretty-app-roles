@@ -78,7 +78,7 @@ export default function BlogPeluqueriaEventos() {
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#DB2777' }}>XPEAK</a>
           <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#DB2777,#B8941E)', color: '#000' }}>
-            Unirse gratis
+            Unirse
           </a>
         </nav>
 
@@ -170,12 +170,12 @@ export default function BlogPeluqueriaEventos() {
               </span>
               <h2 className="text-xl font-black mb-2 leading-snug">Publica tu perfil y recibe bookings de eventos</h2>
               <p className="text-base mb-5 leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                Sube tu portfolio, publica tus tarifas y activa Flash Booking para disponibilidad de última hora. Gratis.
+                Sube tu portfolio, publica tus tarifas y activa Flash Booking para disponibilidad de última hora.
               </p>
               <a href="/auth?mode=register&role=peluqueria"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(90deg,#DB2777,#B8941E)', color: '#000' }}>
-                <Zap size={15} /> Crear mi perfil — gratis
+                <Zap size={15} /> Crear mi perfil
               </a>
             </div>
             <div className="p-6 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ background: 'rgba(0,0,0,0.02)' }}>

@@ -8,7 +8,7 @@ interface BlogScrollCTAProps {
 const CONFIG = {
   dj: {
     label: '¿Buscas DJ para tu evento?',
-    sub: 'Recibe 3 presupuestos reales de DJs verificados — gratis y sin compromiso.',
+    sub: 'Recibe 3 presupuestos reales de DJs verificados.',
     cta: 'Solicitar presupuestos →',
     href: '/auth?mode=register&intent=contratar-dj',
   },
@@ -20,19 +20,19 @@ const CONFIG = {
   },
   azafata: {
     label: '¿Necesitas azafatas para tu evento?',
-    sub: 'Recibe presupuestos de azafatas verificadas — gratis y sin compromiso.',
+    sub: 'Recibe presupuestos de azafatas verificadas.',
     cta: 'Solicitar presupuestos →',
     href: '/auth?mode=register&intent=contratar-azafata',
   },
   fotografo: {
     label: '¿Buscas fotógrafo para tu evento?',
-    sub: 'Portfolios reales y tarifas públicas — gratis y sin compromiso.',
+    sub: 'Portfolios reales y tarifas públicas.',
     cta: 'Ver fotógrafos disponibles →',
     href: '/auth?mode=register&intent=contratar-fotografo',
   },
   bailarin: {
     label: '¿Buscas instructor o bailarín?',
-    sub: 'Bailarines para eventos e instructores de salsa/bachata — gratis y sin compromiso.',
+    sub: 'Bailarines para eventos e instructores de salsa/bachata.',
     cta: 'Ver bailarines disponibles →',
     href: '/auth?mode=register&intent=contratar-bailarin',
   },

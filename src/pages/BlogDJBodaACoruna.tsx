@@ -32,7 +32,7 @@ const ZONAS = [
   { zona: 'Interior — Terra de Soneira', fincas: 'Casas rurales y fincas agropecuarias', nota: 'Muy económico, mucho espacio' },
 ];
 
-const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en A Coruña', description: 'Encuentra y contrata DJs verificados para bodas y eventos en A Coruña. Presupuestos gratuitos, contratos digitales y 0% comisión.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'A Coruña' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-a-coruna', offers: { '@type': 'Offer', description: 'Presupuestos gratuitos de DJs verificados', price: '0', priceCurrency: 'EUR' } };
+const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en A Coruña', description: 'Encuentra y contrata DJs verificados para bodas y eventos en A Coruña. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'A Coruña' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-a-coruna', offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' } };
 
 export default function BlogDJBodaACoruna() {
   return (
@@ -59,7 +59,7 @@ export default function BlogDJBodaACoruna() {
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse</a>
           </div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">

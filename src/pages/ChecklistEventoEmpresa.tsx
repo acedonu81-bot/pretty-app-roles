@@ -119,7 +119,7 @@ export default function ChecklistEventoEmpresa() {
     <>
       <Helmet>
         <title>Checklist para organizar un evento de empresa (2026) | XPEAK</title>
-        <meta name="description" content="Checklist interactivo con cuenta atrás por fecha para organizar un evento de empresa: qué contratar y cuándo, paso a paso. Gratis, sin registro." />
+        <meta name="description" content="Checklist interactivo con cuenta atrás por fecha para organizar un evento de empresa: qué contratar y cuándo, paso a paso. Sin registro." />
         <link rel="canonical" href="https://xpeak.es/checklist-evento-empresa" />
         <meta property="og:title" content="Checklist para organizar un evento de empresa — XPEAK" />
         <meta property="og:description" content="Checklist interactivo con cuenta atrás: qué contratar y cuándo para tu evento de empresa." />
@@ -136,7 +136,7 @@ export default function ChecklistEventoEmpresa() {
         <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-4xl mx-auto">
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <a href="/auth?mode=register&role=empresario" className="px-3 py-2 rounded-lg text-xs font-bold" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-            Unirse gratis
+            Unirse
           </a>
         </nav>
 
@@ -231,7 +231,7 @@ export default function ChecklistEventoEmpresa() {
           </p>
           <h2 className="text-xl sm:text-2xl font-black mb-3 mt-6" style={{ color: '#D4AF37' }}>Proveedores que necesitarás</h2>
           <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.65)' }}>
-            La mayoría de eventos de empresa —presentaciones, cenas, team building, galas o congresos— comparten un núcleo de proveedores: catering, staff de sala, DJ o música en vivo, y producción audiovisual. Puedes comparar profesionales verificados directamente en el directorio, sin comisión:
+            La mayoría de eventos de empresa —presentaciones, cenas, team building, galas o congresos— comparten un núcleo de proveedores: catering, staff de sala, DJ o música en vivo, y producción audiovisual. Puedes comparar profesionales verificados directamente en el directorio:
           </p>
           <ul className="text-sm leading-relaxed mb-3 list-disc pl-5 space-y-1" style={{ color: 'rgba(255,255,255,0.65)' }}>
             <li><a href="/contratar-catering/madrid" className="underline hover:opacity-80" style={{ color: '#D4AF37' }}>Catering para eventos en Madrid</a></li>
@@ -268,7 +268,7 @@ export default function ChecklistEventoEmpresa() {
                   <div>
                     <p className="text-lg font-black" style={{ lineHeight: 1.2 }}>¿Quieres que los profesionales te contacten?</p>
                     <p className="text-sm mt-1" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                      Solo tu nombre y contacto. Sin comisión.
+                      Solo tu nombre y contacto.
                     </p>
                   </div>
                 </div>

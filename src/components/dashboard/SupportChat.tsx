@@ -44,7 +44,7 @@ const KB: KBEntry[] = [
   {
     id: 'about',
     patterns: [/qué es xpeak|que es xpeak|para qu[eé] sirve|explícame xpeak|explicame xpeak|cuéntame.*xpeak|información.*xpeak|info.*xpeak/i],
-    answer: '**XPEAK** es el marketplace profesional de la industria del entretenimiento nocturno en Europa.\n\nNació para eliminar los intermediarios entre artistas y venues. Todo ocurre en la plataforma:\n\n• **Directorio** — DJs, staff, maquilladores, media, promotores y embajadores\n• **Flash Booking** — contratación urgente con ofertas que caducan en 2h\n• **Contratos** — documentos legales generados en segundos\n• **Mensajería** — comunicación directa entre partes sin comisiones\n• **Calendario** — gestión de agenda y disponibilidad\n• **Estadísticas** — datos reales de quién visita tu perfil\n\nActualmente activo en **España** con expansión a toda Europa prevista para 2026.',
+    answer: '**XPEAK** es el marketplace profesional de la industria del entretenimiento nocturno en Europa.\n\nNació para eliminar los intermediarios entre artistas y venues. Todo ocurre en la plataforma:\n\n• **Directorio** — DJs, staff, maquilladores, media, promotores y embajadores\n• **Flash Booking** — contratación urgente con ofertas que caducan en 2h\n• **Contratos** — documentos legales generados en segundos\n• **Mensajería** — comunicación directa entre partes\n• **Calendario** — gestión de agenda y disponibilidad\n• **Estadísticas** — datos reales de quién visita tu perfil\n\nActualmente activo en **España** con expansión a toda Europa prevista para 2026.',
     followUps: ['¿Cómo me registro?', '¿Qué roles hay?', '¿Cómo consigo más bookings?'],
   },
 
@@ -172,7 +172,7 @@ const KB: KBEntry[] = [
   {
     id: 'subscription',
     patterns: [/suscripci|precio.*plan|plan.*precio|cuánto.*cuesta|cuanto.*cuesta|gratis.*qué incluye|free.*plan|starter|business.*plan|elite.*plan|agency.*plan|diferencia.*planes/i],
-    answer: '**XPEAK es completamente gratuito** durante su fase de crecimiento.\n\nTodo incluido sin coste:\n\n• Perfil activo y visible en el directorio europeo\n• Flash Booking — contratación en tiempo real\n• Mensajería directa con clientes y profesionales\n• Calendario y gestión de disponibilidad\n• Generación de contratos legales en PDF\n• Estadísticas de visitas a tu perfil\n\nSin tarjeta de crédito · Sin contratos · Sin comisiones.',
+    answer: 'Tu plan incluye:\n\n• Perfil activo y visible en el directorio europeo\n• Flash Booking — contratación en tiempo real\n• Mensajería directa con clientes y profesionales\n• Calendario y gestión de disponibilidad\n• Generación de contratos legales en PDF\n• Estadísticas de visitas a tu perfil\n\nSin tarjeta de crédito · Sin contratos.',
     followUps: ['¿Cómo completo mi perfil?', '¿Cómo consigo más bookings?'],
   },
 
@@ -180,7 +180,7 @@ const KB: KBEntry[] = [
   {
     id: 'billing',
     patterns: [/cancelar.*plan|cancelar.*suscripci|reembolso|devoluci|cobro.*incorrecto|método de pago|tarjeta.*pago|cambiar.*tarjeta|factura.*suscripci|stripe/i],
-    answer: 'XPEAK es completamente **gratuito** — no hay planes de pago ni cobros.\n\nNo se requiere tarjeta de crédito. No hay suscripciones ni cargos periódicos.\n\nSi tienes alguna duda sobre pagos o cobros, escríbenos a **soporte@xpeak.es** — lo aclaramos enseguida.',
+    answer: 'No se requiere tarjeta de crédito. No hay suscripciones ni cargos periódicos.\n\nSi tienes alguna duda sobre pagos o cobros, escríbenos a **soporte@xpeak.es** — lo aclaramos enseguida.',
     followUps: ['¿Qué incluye la plataforma?', '¿Cómo contacto con soporte?'],
   },
 
@@ -188,7 +188,7 @@ const KB: KBEntry[] = [
   {
     id: 'verification',
     patterns: [/sello.*oro|verificaci|badge.*verificado|cómo.*verificar|como.*verificar|obtener.*sello|solicitar.*verificaci|video.*verificaci|vídeo.*verificaci/i],
-    answer: 'El **Sello de Oro XPEAK** es la verificación de calidad de la plataforma.\n\n**Requisitos para solicitarlo:**\n1. Perfil completo (foto, bio, géneros, ciudad)\n2. Vídeo de demostración subido (mínimo 2 minutos mostrando tu trabajo real)\n3. Historial limpio en la plataforma (sin reportes)\n\n**Proceso:**\n1. Graba un vídeo — puede ser una actuación real, session grabada o contenido propio\n2. Súbelo a YouTube, Drive o Vimeo (enlace sin contraseña)\n3. Ve a **Mi Perfil → Sección Verificación → Solicitar Sello**\n4. El equipo lo revisa en **24-48 horas laborables**\n5. Si se aprueba, el badge aparece en tu tarjeta y perfil inmediatamente\n\n**Qué consigues:**\n• Posición destacada en el directorio (por encima de los no verificados)\n• Mayor tasa de conversión — los empresarios confían más\n• El sello es **completamente gratuito**',
+    answer: 'El **Sello de Oro XPEAK** es la verificación de calidad de la plataforma.\n\n**Requisitos para solicitarlo:**\n1. Perfil completo (foto, bio, géneros, ciudad)\n2. Vídeo de demostración subido (mínimo 2 minutos mostrando tu trabajo real)\n3. Historial limpio en la plataforma (sin reportes)\n\n**Proceso:**\n1. Graba un vídeo — puede ser una actuación real, session grabada o contenido propio\n2. Súbelo a YouTube, Drive o Vimeo (enlace sin contraseña)\n3. Ve a **Mi Perfil → Sección Verificación → Solicitar Sello**\n4. El equipo lo revisa en **24-48 horas laborables**\n5. Si se aprueba, el badge aparece en tu tarjeta y perfil inmediatamente\n\n**Qué consigues:**\n• Posición destacada en el directorio (por encima de los no verificados)\n• Mayor tasa de conversión — los empresarios confían más',
     followUps: ['¿Qué tipo de vídeo necesito?', '¿Cuánto tarda la revisión?'],
   },
 

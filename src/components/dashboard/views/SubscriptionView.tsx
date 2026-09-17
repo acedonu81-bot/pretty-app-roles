@@ -13,10 +13,9 @@ const SubscriptionView = () => (
   <div className="max-w-lg mx-auto py-10 px-4">
     <div className="text-center mb-8">
       <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#8A6D0F' }}>Plan actual</p>
-      <h2 className="text-3xl font-black mb-2">Plataforma gratuita</h2>
+      <h2 className="text-3xl font-black mb-2">Free</h2>
       <p className="text-sm" style={{ color: '#222' }}>
-        XPEAK es completamente gratis durante su fase de crecimiento.<br />
-        Todas las funciones disponibles sin coste ni comisiones.
+        Todas las funciones disponibles en tu plan.
       </p>
     </div>
 

@@ -76,7 +76,7 @@ export default function BlogComoContratarPromotoresDiscoteca() {
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
             <a href="/auth?mode=register&role=empresario" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D97706,#B8941E)', color: '#000' }}>
-              Unirse gratis
+              Unirse
             </a>
           </div>
         </nav>
@@ -133,7 +133,7 @@ export default function BlogComoContratarPromotoresDiscoteca() {
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(217,119,6,0.04)', border: '1px solid rgba(217,119,6,0.12)' }}>
               <p className="text-sm font-black mb-2">Encuentra promotores verificados para tu sala</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>
-                Compara perfiles, tarifas públicas y contacta directamente. Gratis, sin comisión.
+                Compara perfiles, tarifas públicas y contacta directamente.
               </p>
               <a href="/directorio/promotores" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D97706,#B8941E)', color: '#000' }}>
                 Ver directorio de promotores →

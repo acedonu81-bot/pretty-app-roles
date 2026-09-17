@@ -102,7 +102,7 @@ export default function BlogMusicaBoda() {
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
             <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              Unirse gratis
+              Unirse
             </a>
           </div>
         </nav>
@@ -184,7 +184,7 @@ export default function BlogMusicaBoda() {
                 Antes de contratar, infórmate sobre{' '}
                 <a href="/blog/contrato-dj-que-debe-incluir" style={{ color: '#D4AF37' }}>qué debe incluir un contrato de DJ</a>{' '}
                 y descarga la{' '}
-                <a href="/plantilla-contrato-dj" style={{ color: '#D4AF37' }}>plantilla gratuita</a>.
+                <a href="/plantilla-contrato-dj" style={{ color: '#D4AF37' }}>plantilla</a>.
               </p>
               <div className="grid grid-cols-3 gap-3">
                 {[

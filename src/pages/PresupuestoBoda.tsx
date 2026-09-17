@@ -405,7 +405,7 @@ export default function PresupuestoBoda() {
     <>
       <Helmet>
         <title>Planificador de Boda 2026 — Calculadora de Presupuesto y Checklist | XPEAK</title>
-        <meta name="description" content="Calcula el presupuesto de tu boda por ciudad, añade servicios, ve el coste por invitado, propinas y checklist interactivo. Gratis y sin registro." />
+        <meta name="description" content="Calcula el presupuesto de tu boda por ciudad, añade servicios, ve el coste por invitado, propinas y checklist interactivo. Sin registro." />
         <link rel="canonical" href="https://xpeak.es/presupuesto-boda" />
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
       </Helmet>
@@ -417,7 +417,7 @@ export default function PresupuestoBoda() {
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/bodas" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>← Bodas</a>
-            <a href="/auth" className="px-3 py-2 rounded-lg text-xs font-bold" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 py-2 rounded-lg text-xs font-bold" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse</a>
           </div>
         </nav>
 
@@ -699,7 +699,7 @@ export default function PresupuestoBoda() {
                     <p className="text-xs font-black mb-2 flex items-center gap-1.5" style={{ color: '#27ae60' }}><TrendingDown size={12} /> ¿Cuánto ahorras contratando directo?</p>
                     <div className="space-y-1 text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
                       <div className="flex justify-between"><span>Con agencia tradicional (~17%)</span><span className="font-bold" style={{ color: '#e74c3c' }}>+{fmt(ahorro)}</span></div>
-                      <div className="flex justify-between"><span>Con XPEAK (sin comisión)</span><span className="font-bold" style={{ color: '#27ae60' }}>0 €</span></div>
+                      <div className="flex justify-between"><span>Con XPEAK</span><span className="font-bold" style={{ color: '#27ae60' }}>0 €</span></div>
                     </div>
                     <p className="text-xs mt-2" style={{ color: 'rgba(255,255,255,0.3)' }}>Tu ahorro estimado: <strong style={{ color: '#27ae60' }}>{fmt(ahorro)}</strong></p>
                   </div>
@@ -707,7 +707,7 @@ export default function PresupuestoBoda() {
                   <a href="/auth" className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl font-black text-sm" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
                     <Zap size={14} /> Contratar estos servicios
                   </a>
-                  <p className="text-xs text-center" style={{ color: 'rgba(255,255,255,0.2)' }}>Sin comisión · Flash Booking · Contratos PDF</p>
+                  <p className="text-xs text-center" style={{ color: 'rgba(255,255,255,0.2)' }}>Flash Booking · Contratos PDF</p>
                 </>
               )}
 
@@ -832,7 +832,7 @@ export default function PresupuestoBoda() {
                   <div>
                     <p className="text-lg font-black" style={{ lineHeight: 1.2 }}>¿Quieres que los profesionales te contacten?</p>
                     <p className="text-sm mt-1" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                      Compartimos tu presupuesto de <strong style={{ color: '#D4AF37' }}>{fmt(totalMin)}</strong> con los profesionales disponibles en tu zona. Recibes respuestas en menos de 24h. Sin comisión.
+                      Compartimos tu presupuesto de <strong style={{ color: '#D4AF37' }}>{fmt(totalMin)}</strong> con los profesionales disponibles en tu zona. Recibes respuestas en menos de 24h.
                     </p>
                   </div>
                 </div>
@@ -849,9 +849,9 @@ export default function PresupuestoBoda() {
                     className="nightlife-input sm:col-span-2 resize-none" rows={3} style={{ colorScheme: 'dark' }} />
                   <button type="submit" disabled={sendingLead} className="sm:col-span-2 py-3.5 rounded-xl font-black text-sm flex items-center justify-center gap-2"
                     style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000', opacity: sendingLead ? 0.7 : 1 }}>
-                    {sendingLead ? 'Enviando…' : <><Send size={15} /> Enviar solicitud gratuita</>}
+                    {sendingLead ? 'Enviando…' : <><Send size={15} /> Enviar solicitud</>}
                   </button>
-                  <p className="text-xs text-center sm:col-span-2" style={{ color: 'rgba(255,255,255,0.2)' }}>Sin comisión · Sin registro previo · Respuesta en &lt;24h</p>
+                  <p className="text-xs text-center sm:col-span-2" style={{ color: 'rgba(255,255,255,0.2)' }}>Sin registro previo · Respuesta en &lt;24h</p>
                 </form>
               </>
             )}
@@ -917,11 +917,11 @@ export default function PresupuestoBoda() {
           <div className="rounded-2xl p-7 sm:p-10 text-center" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
             <h2 className="text-xl sm:text-2xl font-black mb-3" style={{ lineHeight: 1.15, paddingBottom: '0.1em', overflow: 'visible' }}>¿Lista para contratar?</h2>
             <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.6)' }}>
-              XPEAK conecta novios con los mejores profesionales de boda en España. Sin comisión, contratos digitales y Flash Booking en menos de 1h.
+              XPEAK conecta novios con los mejores profesionales de boda en España. Contratos digitales y Flash Booking en menos de 1h.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a href="/auth" className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-black text-sm" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-                <Zap size={15} /> Publicar oferta gratis
+                <Zap size={15} /> Publicar oferta
               </a>
               <a href="/bodas" className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-black text-sm" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }}>
                 Ver todos los servicios

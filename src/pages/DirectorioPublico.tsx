@@ -66,7 +66,7 @@ export const ROLE_CONFIG: Record<string, {
     title: 'DJs para eventos en España',
     subtitle: 'Contrata DJs para bodas, comuniones, fiestas privadas y eventos corporativos. Sin intermediarios.',
     seoTitle: 'Contratar DJ para eventos en España — Directorio XPEAK',
-    seoDesc: 'Directorio de DJs para bodas, comuniones y eventos en España. Perfiles verificados, precios reales y contacto directo sin comisión.',
+    seoDesc: 'Directorio de DJs para bodas, comuniones y eventos en España. Perfiles verificados, precios reales y contacto directo.',
     cta: 'Contratar este DJ',
     experienceLevel: 'exclude',
   },
@@ -220,7 +220,7 @@ export const ROLE_CONFIG: Record<string, {
     title: 'Técnicos de sonido, iluminación y montaje',
     subtitle: 'Técnicos de sonido, iluminación y montaje de escenario para bodas, festivales, salas y eventos de empresa. Con equipo propio o solo mano de obra.',
     seoTitle: 'Contratar técnico de sonido y montaje para eventos en España — XPEAK',
-    seoDesc: 'Directorio de técnicos de sonido, iluminación y montaje de escenario en España. Perfiles reales, tarifa por jornada y contacto directo sin comisión.',
+    seoDesc: 'Directorio de técnicos de sonido, iluminación y montaje de escenario en España. Perfiles reales, tarifa por jornada y contacto directo.',
     cta: 'Contratar técnico',
   },
 };
@@ -743,12 +743,12 @@ export default function DirectorioPublico() {
             <div className="p-12 rounded-2xl text-center" style={{ background: '#ffffff', border: '1px solid rgba(212,175,55,0.3)' }}>
               <p className="text-sm font-black mb-2" style={{ color: '#111' }}>Categoría recién abierta</p>
               <p className="text-xs mb-5 max-w-sm mx-auto" style={{ color: '#444' }}>
-                Estamos verificando los primeros perfiles. Si trabajas en este sector, este es el mejor momento: publícate gratis y sal el primero en las búsquedas.
+                Estamos verificando los primeros perfiles. Si trabajas en este sector, este es el mejor momento: publícate y sal el primero en las búsquedas.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-2 mb-6">
                 <a href={`/auth?mode=register&role=${config.dbRole}`} className="px-5 py-2.5 rounded-xl text-xs font-black"
                   style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-                  Publicar mi perfil gratis →
+                  Publicar mi perfil →
                 </a>
               </div>
               {(() => {
@@ -994,12 +994,12 @@ export default function DirectorioPublico() {
           <div className="mt-16 p-6 rounded-2xl text-center" style={{ background: 'linear-gradient(135deg,rgba(212,175,55,0.08),rgba(249,115,22,0.06))', border: '1px solid rgba(212,175,55,0.2)' }}>
             <p className="text-sm font-black mb-1" style={{ color: '#111' }}>¿Eres profesional y quieres aparecer aquí?</p>
             <p className="text-xs mb-4" style={{ color: '#333' }}>
-              Crea tu perfil gratis en XPEAK. Los organizadores de tu ciudad te encontrarán y podrán contactarte directamente.
+              Crea tu perfil en XPEAK. Los organizadores de tu ciudad te encontrarán y podrán contactarte directamente.
             </p>
             <a href="/auth?role=profesional"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
-              Crear mi perfil gratis <ChevronRight size={14} />
+              Crear mi perfil <ChevronRight size={14} />
             </a>
           </div>
         </main>

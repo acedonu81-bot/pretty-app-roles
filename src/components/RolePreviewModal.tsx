@@ -411,8 +411,7 @@ const RolePreviewModal = ({ initialRole = 'dj', onClose }: Props) => {
             </div>
 
             <div style={{ marginTop: 20, padding: '10px 12px', borderRadius: 10, background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}>
-              <div style={{ fontSize: 10, fontWeight: 700, color: '#D4AF37', marginBottom: 4 }}>Gratis para siempre</div>
-              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', lineHeight: 1.6 }}>Plan base sin coste. Sin comisiones por contrato. Actualiza a PRO cuando quieras más visibilidad.</div>
+              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', lineHeight: 1.6 }}>Actualiza a PRO cuando quieras más visibilidad.</div>
             </div>
           </div>
         </div>
@@ -421,7 +420,7 @@ const RolePreviewModal = ({ initialRole = 'dj', onClose }: Props) => {
         <div style={{ padding: '12px 20px', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0, background: '#080808' }}>
           <div style={{ display: 'flex', items: 'center', gap: 6 }}>
             <Zap size={12} style={{ color: '#D4AF37' }} />
-            <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)' }}>Perfil activo en 2 minutos · Sin comisiones por contrato</span>
+            <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)' }}>Perfil activo en 2 minutos</span>
           </div>
           <button onClick={onClose}
             style={{ padding: '7px 18px', borderRadius: 9, background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000', fontSize: 11, fontWeight: 700, border: 'none', cursor: 'pointer' }}>

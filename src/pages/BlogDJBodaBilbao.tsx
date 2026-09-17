@@ -29,7 +29,7 @@ const ZONAS = [
   { zona: 'Gipuzkoa', fincas: 'San Sebastián, Zarautz, Tolosa', nota: 'Bodas de alto standing' },
   { zona: 'Álava / Rioja Alavesa', fincas: 'Vitoria, Laguardia, Elciego', nota: 'Bodegas con encanto' },
 ];
-const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Bilbao', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Bilbao. Presupuestos gratuitos, contratos digitales y 0% comisión.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Bilbao' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-bilbao', offers: { '@type': 'Offer', description: 'Presupuestos gratuitos de DJs verificados', price: '0', priceCurrency: 'EUR' } };
+const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Bilbao', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Bilbao. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Bilbao' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-bilbao', offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' } };
 
 export default function BlogDJBodaBilbao() {
   return (
@@ -56,7 +56,7 @@ export default function BlogDJBodaBilbao() {
           <a href="/" className="text-lg font-black tracking-tight" style={{ color: '#D4AF37' }}>XPEAK</a>
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
-            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse gratis</a>
+            <a href="/auth" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Unirse</a>
           </div>
         </nav>
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">

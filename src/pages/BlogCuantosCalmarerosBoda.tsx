@@ -75,7 +75,7 @@ const faqStructured = {
           <a href="/auth"
             className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#2563EB,#B8941E)', color: '#000' }}>
-            Unirse gratis
+            Unirse
           </a>
         </nav>
         <a href="/blog" className="block px-4 sm:px-6 pb-2 max-w-3xl mx-auto text-xs" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
@@ -232,7 +232,7 @@ const faqStructured = {
             <div className="mt-12 rounded-2xl p-7 text-center" style={{ background: 'rgba(37,99,235,0.05)', border: '1px solid rgba(37,99,235,0.15)' }}>
             <h2 className="text-xl font-black mb-2">Contrata el personal perfecto para tu boda</h2>
             <p className="text-sm mb-5" style={{ color: '#444' }}>
-              Gratis para organizadores · Camareros verificados · Contrato digital automático
+              Camareros verificados · Contrato digital automático
             </p>
             <a href="/contratar-camareros"
               className="inline-flex items-center gap-2 px-7 py-3 rounded-xl font-black text-sm transition-all hover:scale-105"

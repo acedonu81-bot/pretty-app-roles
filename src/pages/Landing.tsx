@@ -344,10 +344,9 @@ const ROLE_DETAILS = [
 
 /* ── Landing ── */
 const FAQ_ITEMS = [
-  { q: '¿Es gratis registrarse?', a: 'Sí. XPEAK es completamente gratuito durante su fase de crecimiento. Todas las funciones — perfil, Flash Booking, mensajería, estadísticas y contratos — están disponibles sin coste ni comisiones.' },
   { q: '¿Necesito experiencia profesional para unirme?', a: 'No. Hay un rol específico llamado "Artista Promesa" pensado para quienes están empezando. La comunidad te puede apoyar con votos para que asciendan a Profesional.' },
   { q: '¿Cómo funciona el Flash Booking?', a: 'Un empresario publica una oferta urgente (fecha, lugar, caché). Los profesionales disponibles en esa zona reciben una notificación y pueden responder. El empresario elige al candidato. El empresario elige al candidato ideal.' },
-  { q: '¿Organizo eventos o bodas? ¿Cómo me registro?', a: 'Elige el rol "Empresario" al registrarte. Es totalmente gratuito y sin límites para contratar: búsqueda en el directorio, Flash Booking ilimitado y mensajería directa. XPEAK no cobra comisiones por contratación. El trato es directo entre organizador y profesional.' },
+  { q: '¿Organizo eventos o bodas? ¿Cómo me registro?', a: 'Elige el rol "Empresario" al registrarte, sin límites para contratar: búsqueda en el directorio, Flash Booking ilimitado y mensajería directa. El trato es directo entre organizador y profesional.' },
   { q: '¿En qué ciudades funciona?', a: 'En toda España: Madrid, Barcelona, Valencia, Sevilla, Ibiza, Málaga y más de 40 ciudades. Si no encuentras tu ciudad, puedes registrarte igualmente — los organizadores buscan por zona.' },
   { q: '¿Cómo se verifican los perfiles?', a: 'Los perfiles verificados son revisados manualmente por el equipo de XPEAK. Puedes solicitar verificación desde tu panel de perfil una vez que tengas la información completa.' },
   { q: '¿Puedo cancelar mi suscripción en cualquier momento?', a: 'Sí. Sin permanencia ni penalizaciones. Puedes cancelar desde Mi Perfil > Plan y sigues teniendo acceso hasta el final del período pagado.' },
@@ -603,10 +602,10 @@ const Landing = () => {
           DevTools). En dev (sin prerender) el navegador simplemente descubre
           el poster un poco más tarde vía el propio <video poster>, sin preload
           — no hay forma de adelantarlo sin HTML estático real. */}
-      <meta name="description" content="Encuentra y contrata DJ, fotógrafo, camarero, staff y catering para festivales, clubs, eventos privados y bodas en España. Profesionales verificados. Flash Booking. Gratis." />
+      <meta name="description" content="Encuentra y contrata DJ, fotógrafo, camarero, staff y catering para festivales, clubs, eventos privados y bodas en España. Profesionales verificados. Flash Booking." />
       <link rel="canonical" href="https://xpeak.es/" />
       <meta property="og:title" content="XPEAK | Contratar DJs, Staff y Profesionales para Eventos en España" />
-      <meta property="og:description" content="Contrata DJs, fotógrafos, camareros, maquilladores y profesionales verificados para bodas, comuniones y eventos en España. Flash Booking. Gratis para organizadores." />
+      <meta property="og:description" content="Contrata DJs, fotógrafos, camareros, maquilladores y profesionales verificados para bodas, comuniones y eventos en España. Flash Booking." />
       <meta property="og:type" content="website" />
       <meta property="og:url" content="https://xpeak.es/" />
       <meta property="og:image" content="https://xpeak.es/og-image.jpg" />
@@ -1114,7 +1113,7 @@ const Landing = () => {
             <span style={{ display: 'inline-block', paddingBottom: '0.35em' }}>Recibe bookings.</span>
           </h2>
           <p className="text-sm mb-8 max-w-sm mx-auto" style={{ color: '#333' }}>
-            Los organizadores ven tu perfil, tu tarifa y te contactan directamente. Sin intermediarios. Sin comisiones.
+            Los organizadores ven tu perfil, tu tarifa y te contactan directamente. Sin intermediarios.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-3">
             <motion.button
@@ -1133,7 +1132,7 @@ const Landing = () => {
             </motion.button>
           </div>
           <p className="mt-5 text-xs" style={{ color: '#444' }}>
-            Registro gratuito · Sin tarjeta de crédito
+            Sin tarjeta de crédito
           </p>
         </div>
       </FadeIn>

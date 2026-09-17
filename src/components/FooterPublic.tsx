@@ -19,7 +19,7 @@ const FOOTER_LINKS = {
   xpeak: [
     { label: 'Cómo funciona', href: '/' },
     { label: 'Precios', href: '/precios' },
-    { label: 'Únete gratis', href: '/auth' },
+    { label: 'Únete', href: '/auth' },
     { label: 'Sobre nosotros', href: '/sobre-nosotros' },
   ],
   legal: [

@@ -39,7 +39,7 @@ const breadcrumb = {
 
 const FUNCIONES = [
   { funcion: 'Captación de público', detalle: 'Difunde el evento en su red de contactos y redes sociales para atraer asistentes objetivo de la sala.' },
-  { funcion: 'Gestión de listas VIP', detalle: 'Organiza quién entra gratis, quién con descuento y quién con consumición, coordinando con la puerta la noche del evento.' },
+  { funcion: 'Gestión de listas VIP', detalle: 'Organiza quién entra sin coste, quién con descuento y quién con consumición, coordinando con la puerta la noche del evento.' },
   { funcion: 'Coordinación de puerta', detalle: 'Está presente o en contacto directo con el equipo de acceso para resolver incidencias de lista en tiempo real.' },
   { funcion: 'Relación con clientes habituales', detalle: 'Mantiene el contacto con grupos y clientes recurrentes entre eventos, no solo el día de la fiesta.' },
   { funcion: 'Difusión en redes (opcional)', detalle: 'Algunos perfiles incluyen creación de contenido y stories para promocionar el evento, como servicio adicional.' },
@@ -71,7 +71,7 @@ export default function BlogQueHacePromotorEventos() {
           <div className="flex items-center gap-3">
             <a href="/blog" className="text-xs font-bold hidden sm:block" style={{ color: '#3d3d4e' }}>Blog</a>
             <a href="/auth?mode=register&role=promotor" className="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D97706,#B8941E)', color: '#000' }}>
-              Unirse gratis
+              Unirse
             </a>
           </div>
         </nav>
@@ -116,7 +116,7 @@ export default function BlogQueHacePromotorEventos() {
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(217,119,6,0.04)', border: '1px solid rgba(217,119,6,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas promotores para tu sala o evento?</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>
-                Compara perfiles verificados de promotores y RRPP en tu ciudad. Gratis, sin comisión.
+                Compara perfiles verificados de promotores y RRPP en tu ciudad.
               </p>
               <a href="/directorio/promotores" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D97706,#B8941E)', color: '#000' }}>
                 Ver directorio de promotores →

@@ -780,6 +780,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
           <div>
             <p className="text-sm font-bold">Foto de perfil</p>
             <p className="text-xs text-muted-foreground">Haz clic para cambiar · se optimiza automáticamente</p>
+            <p className="text-xs text-muted-foreground/80 mt-0.5">No debe mostrar teléfono, redes ni webs — el contacto se gestiona dentro de XPEAK.</p>
           </div>
           <input ref={photoRef} type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
         </div>
@@ -1142,7 +1143,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
               <QrCode size={14} style={{ color: '#8A6D0F', flexShrink: 0 }} />
               <div>
                 <p className="text-xs font-bold">QR de Perfil</p>
-                <p className="text-xs text-muted-foreground">PNG 400×500px con tu URL pública · Gratis siempre</p>
+                <p className="text-xs text-muted-foreground">PNG 400×500px con tu URL pública</p>
               </div>
             </div>
             <button onClick={handleDownloadQR}

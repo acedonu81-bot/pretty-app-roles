@@ -93,8 +93,8 @@ export const COPY = {
 
   /** Trial states */
   trial: {
-    notStarted: 'Usa Flash Booking, streaming o sube una sesión para activar tus 15 días gratis',
-    active: (days: number) => `Te quedan ${days} ${days === 1 ? 'día' : 'días'} de acceso gratuito`,
+    notStarted: 'Usa Flash Booking, streaming o sube una sesión para activar tus 15 días de prueba',
+    active: (days: number) => `Te quedan ${days} ${days === 1 ? 'día' : 'días'} de acceso`,
     expiring: (days: number) => `¡Solo quedan ${days} ${days === 1 ? 'día' : 'días'}! Suscríbete para no perder el acceso.`,
     expired: 'Tu periodo de prueba ha finalizado. Suscríbete al plan anual y ahorra un 30%.',
   },
