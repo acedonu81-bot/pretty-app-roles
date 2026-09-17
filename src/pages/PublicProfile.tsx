@@ -470,6 +470,17 @@ const PublicProfile = () => {
   const navigate = useNavigate();
   const [sbProfile, setSbProfile] = useState<SupabaseProfile | null>(null);
   const scarcity = useScarcitySignal(sbProfile?.user_id);
+  const [flashBookingDate, setFlashBookingDate] = useState<string | null>(null);
+  const [showCalendarHelp, setShowCalendarHelp] = useState(false);
+
+  useEffect(() => {
+    if (!sbProfile) return;
+    const seenKey = 'xpeak_calendar_intro_seen_organizador';
+    if (!localStorage.getItem(seenKey)) {
+      setShowCalendarHelp(true);
+      localStorage.setItem(seenKey, '1');
+    }
+  }, [sbProfile]);
   const [related, setRelated] = useState<RelatedProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [publicPosts, setPublicPosts] = useState<{ id: string; content: string; post_type: string; created_at: string; media_url: string | null }[]>([]);
@@ -766,18 +777,6 @@ const PublicProfile = () => {
   const fadeUp = { hidden: { opacity: 0, y: 28 }, show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } } };
   const stagger = { show: { transition: { staggerChildren: 0.1 } } };
   const responseBucketText = responseBucketLabel(sbProfile?.response_bucket ?? null);
-
-  const [flashBookingDate, setFlashBookingDate] = useState<string | null>(null);
-  const [showCalendarHelp, setShowCalendarHelp] = useState(false);
-
-  useEffect(() => {
-    if (!sbProfile) return;
-    const seenKey = 'xpeak_calendar_intro_seen_organizador';
-    if (!localStorage.getItem(seenKey)) {
-      setShowCalendarHelp(true);
-      localStorage.setItem(seenKey, '1');
-    }
-  }, [sbProfile]);
 
   return (
     <>
