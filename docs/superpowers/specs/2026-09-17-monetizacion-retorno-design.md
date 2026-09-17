@@ -173,11 +173,15 @@ Cada pieza es desplegable de forma independiente; no hay dependencias
 entre 1, 3 y 4 salvo que las tres comparten el estilo visual del punto
 0.
 
-## Preguntas abiertas para resolver en la fase de plan/implementación
+## Preguntas abiertas — resueltas
 
-- Esquema exacto de `profile_business_views` (columnas reales) — no
-  verificado en esta sesión.
-- Si usar `profiles.zone` o `profiles.region` para el agrupado de la
-  pieza 3 (cuál tiene mejor cobertura de datos reales hoy).
-- Ubicación exacta de montaje de las tarjetas nuevas dentro del
-  dashboard del profesional (qué vista/archivo).
+- **`profile_business_views`**: columnas reales son `id`,
+  `viewed_user_id`, `viewer_zone`, `created_at`. No existe
+  `profile_user_id` — la pieza 1 debe filtrar por `viewed_user_id`.
+- **`zone` vs `region`**: `zone` tiene cobertura 25/25 perfiles reales,
+  `region` solo 15/25. La pieza 3 agrupa por `profiles.zone`.
+- **Montaje de tarjetas nuevas**: `StatsView.tsx`
+  (`src/components/dashboard/views/StatsView.tsx`, 400 líneas, no usa
+  hoy `profile_business_views` ni `hourly_rate`) es la vista natural
+  para las tarjetas de señal de escasez (pieza 1, lado profesional) e
+  insight de mercado (pieza 3).
