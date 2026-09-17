@@ -14,6 +14,10 @@ import { useProfile as useMyProfile } from '@/hooks/useProfile';
 import GeometricAvatar from './GeometricAvatar';
 import ContractModal from './ContractModal';
 import SessionAudioPlayer from '@/components/SessionAudioPlayer';
+import AvailabilityCalendar from '@/components/AvailabilityCalendar';
+import FlashBookingRequestModal from './FlashBookingRequestModal';
+import CalendarHowItWorksModal from '@/components/CalendarHowItWorksModal';
+import { useScarcitySignal } from '@/hooks/useScarcitySignal';
 import { instagramUrl, extractInstagramHandle } from '@/lib/social';
 import { toSlug } from '@/data/profiles';
 import type { Profile } from '@/data/profiles';
@@ -225,6 +229,18 @@ interface Props {
 const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
   const me = useMyProfile();
   const cfg = getRoleCfg(p.role);
+  const scarcity = useScarcitySignal(p.userId);
+  const [flashBookingDate, setFlashBookingDate] = useState<string | null>(null);
+  const [showCalendarHelp, setShowCalendarHelp] = useState(false);
+
+  useEffect(() => {
+    if (!p.userId) return;
+    const seenKey = 'xpeak_calendar_intro_seen_organizador';
+    if (!localStorage.getItem(seenKey)) {
+      setShowCalendarHelp(true);
+      localStorage.setItem(seenKey, '1');
+    }
+  }, [p.userId]);
   const [full, setFull] = useState<{
     audioEmbedUrl?: string | null;
     audioSessionUrls?: string[];
@@ -497,7 +513,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
             {p.role === 'bailarin' && full.offersClasses && (
               <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 }}
                 className="rounded-2xl p-5" style={{ background: `${cfg.color}0A`, border: `1px solid ${cfg.color}25` }}>
-                <p className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#7a6216' }}>💃 Clases particulares</p>
+                <p className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#7a6216' }}>Clases particulares</p>
                 <p className="text-sm mb-3" style={{ color: '#333' }}>{p.name} también da clases particulares de baile.</p>
                 {full.classStyles && full.classStyles.length > 0 && (
                   <div className="flex flex-wrap gap-1.5 mb-3">
@@ -526,7 +542,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
             {p.role === 'bailarin' && full.seekingDancePartner && (
               <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.07 }}
                 className="rounded-2xl p-5" style={{ background: `${cfg.color}0A`, border: `1px solid ${cfg.color}25` }}>
-                <p className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#7a6216' }}>🤝 Busca pareja de baile</p>
+                <p className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#7a6216' }}>Busca pareja de baile</p>
                 <p className="text-sm mb-3" style={{ color: '#333' }}>
                   {p.name} está buscando pareja de baile fija
                   {full.danceRole === 'lead' ? ' — leader' : full.danceRole === 'follow' ? ' — follower' : full.danceRole === 'ambos' ? ' — baila ambos roles' : ''}
@@ -565,7 +581,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
               <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
                 style={{ borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: 22 }}>
                 <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#444' }}>
-                  🎵 {audioEmbed?.type ?? 'Audio'}
+                  {audioEmbed?.type ?? 'Audio'}
                 </p>
 
                 {audioLoading && (
@@ -605,7 +621,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
             {full.audioSessionUrls && full.audioSessionUrls.length > 0 && (
               <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.11 }}
                 style={{ borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: 22 }}>
-                <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#444' }}>🎧 SESIONES</p>
+                <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#444' }}>SESIONES</p>
                 <div className="flex flex-col gap-3">
                   {full.audioSessionUrls.slice(0, 5).map((url, i) => (
                     <SessionAudioPlayer key={i} url={url} />
@@ -620,7 +636,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
             {full.videoSessionUrls && full.videoSessionUrls.length > 0 && (
               <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.115 }}
                 style={{ borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: 22 }}>
-                <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#444' }}>🎬 CLIPS</p>
+                <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#444' }}>CLIPS</p>
                 <div className="flex flex-col gap-3">
                   {full.videoSessionUrls.slice(0, 3).map((url, i) => (
                     <video key={i} src={url} controls preload="metadata"
@@ -651,6 +667,51 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                   ))}
                 </div>
               </motion.div>
+            )}
+
+            {/* Disponibilidad + solicitud directa — llevado aquí desde
+                PublicProfile.tsx (17 sep 2026): este modal, abierto al
+                pinchar una ficha dentro del dashboard, nunca tuvo el
+                calendario ni la señal de escasez, solo la vista pública
+                standalone (/p/:slug) los tenía. */}
+            {p.userId && (
+              <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.13 }}
+                style={{ borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: 22 }}>
+                {!scarcity.loading && scarcity.weeklyContactRequests >= 3 && (
+                  <p className="text-xs mb-2" style={{ color: '#8A6D0F' }}>
+                    Contactado por {scarcity.weeklyContactRequests} {scarcity.weeklyContactRequests === 1 ? 'empresario' : 'empresarios'} esta semana
+                  </p>
+                )}
+                <div className="flex items-center justify-between mb-1">
+                  <span />
+                  <button
+                    onClick={() => setShowCalendarHelp(true)}
+                    className="text-xs font-semibold underline"
+                    style={{ color: '#8A6D0F' }}
+                  >
+                    ¿Cómo funciona?
+                  </button>
+                </div>
+                <AvailabilityCalendar
+                  userId={p.userId}
+                  mode="view-request"
+                  onRequestDate={(date) => setFlashBookingDate(date)}
+                />
+              </motion.div>
+            )}
+
+            {flashBookingDate && (
+              <FlashBookingRequestModal
+                professionalName={p.name}
+                professionalRole={p.role}
+                professionalUserId={p.userId}
+                prefilledDate={flashBookingDate}
+                onClose={() => setFlashBookingDate(null)}
+              />
+            )}
+
+            {showCalendarHelp && (
+              <CalendarHowItWorksModal audience="organizador" onClose={() => setShowCalendarHelp(false)} />
             )}
 
             {/* Redes sociales — registrados */}
