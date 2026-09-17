@@ -119,6 +119,21 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
     ratingMap.set(r.reviewed_user_id, entry);
   });
 
+  // "Visto hace X" en cada card (18 sep 2026): mismo problema de RLS que
+  // weeklyViews más abajo — profile_business_views solo deja leer las
+  // propias filas, así que una query directa aquí solo traería la vista
+  // del propio profesional. last_viewed_batch es un RPC security definer
+  // que trae, en una sola llamada, la última vista de TODOS los perfiles
+  // del listado (solo si fue en las últimas 48h — si no, se omite del
+  // resultado, no se expone "nunca visto" ni fechas viejas).
+  const userIds = data.map(row => row.user_id).filter(Boolean);
+  const { data: lastViewedRows } = userIds.length > 0
+    ? await supabase.rpc('last_viewed_batch', { p_user_ids: userIds })
+    : { data: [] as { user_id: string; last_viewed_at: string }[] };
+  const lastViewedMap = new Map<string, string>(
+    (lastViewedRows ?? []).map((r: { user_id: string; last_viewed_at: string }) => [r.user_id, r.last_viewed_at]),
+  );
+
   return data
     .filter(row => row.display_name && row.display_name.trim().length > 1)
     .sort((a, b) => {
@@ -191,6 +206,7 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
       // el conteo mientras el resto quedaba en null en silencio (17 sep 2026).
       // El conteo real de vistas vive en el dashboard propio del profesional.
       weeklyViews: null,
+      lastViewedAt: lastViewedMap.get(row.user_id) ?? null,
       seekingDancePartner: (row as any).seeking_dance_partner ?? false,
       danceLevel: (row as any).dance_level ?? null,
       danceRole: (row as any).dance_role ?? null,

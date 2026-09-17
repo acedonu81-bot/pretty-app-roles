@@ -9,6 +9,7 @@ import VoteButton from './VoteButton';
 import LegalModal from '@/components/LegalModal';
 import ContractModal from './ContractModal';
 import { useProfile } from '@/hooks/useProfile';
+import { timeAgo } from '@/lib/timeAgo';
 
 const HearthisIcon = ({ size = 14 }: { size?: number }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
@@ -385,6 +386,17 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
               <span style={{ color: '#9c9584', fontWeight: 400 }}> vs. semana pasada</span>
             </span>
           )}
+        </div>
+      )}
+
+      {/* Última vez visto — solo si hubo actividad en las últimas 48h
+          (last_viewed_batch ya filtra esto en la query, no aquí). Mismo
+          criterio de "ocultar en vez de mostrar un dato flojo": un perfil
+          sin visitas recientes no muestra nada, en vez de "nunca visto"
+          o una fecha antigua al lado de otros con actividad. */}
+      {p.lastViewedAt && (
+        <div className="px-3.5 py-2 text-xs" style={{ borderTop: '1px solid rgba(0,0,0,0.06)', color: '#9c9584' }}>
+          Visto {timeAgo(p.lastViewedAt)}
         </div>
       )}
 
