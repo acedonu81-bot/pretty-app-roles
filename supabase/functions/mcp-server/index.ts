@@ -124,7 +124,12 @@ async function buscarProfesionales(args: Record<string, unknown>, sessionId: str
   // Coincide por la zona literal o por city_ref, la ciudad grande de referencia
   // que deriva la BD. Con solo el ilike el bot respondia "no hay nadie en X" a
   // ciudades donde si hay profesionales de pueblos cercanos.
-  if (ciudad) query = query.or(`zone.ilike.%${ciudad}%,city_ref.eq.${ciudad}`);
+  // ciudad es texto libre de un agente de IA (sin whitelist, a diferencia de
+  // DirectorioPublico.tsx/CityLanding.tsx) y se interpola dentro de un filtro
+  // .or() de PostgREST: sin sanear, una coma o paréntesis en el valor inyecta
+  // condiciones extra al filtro (auditoría de seguridad 17 sep 2026).
+  const ciudadSegura = ciudad.replace(/[,()."*]/g, '').slice(0, 80);
+  if (ciudadSegura) query = query.or(`zone.ilike.%${ciudadSegura}%,city_ref.eq.${ciudadSegura}`);
   if (presupuestoMax) query = query.lte('hourly_rate', presupuestoMax);
 
   const { data, error } = await query;
