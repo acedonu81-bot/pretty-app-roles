@@ -104,6 +104,7 @@ const DonutChart = ({ segments, size = 140 }: { segments: DonutSegment[]; size?:
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
 import { useScarcitySignal } from '@/hooks/useScarcitySignal';
+import { useMarketRateInsight } from '@/hooks/useMarketRateInsight';
 import { supabase } from '@/integrations/supabase/client';
 const MONTH_LABELS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 
@@ -111,6 +112,7 @@ const StatsView = () => {
   const profile = useProfile();
   const { user } = useAuth();
   const scarcity = useScarcitySignal(user?.id);
+  const marketRate = useMarketRateInsight(user?.id);
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth(); // 0-indexed
 
@@ -258,6 +260,21 @@ const StatsView = () => {
               <> y <span className="font-bold" style={{ color: '#222' }}>{scarcity.weeklyContactRequests}</span>{' '}
               {scarcity.weeklyContactRequests === 1 ? 'te ha contactado' : 'te han contactado'} por Flash Booking</>
             )}.
+          </p>
+        </div>
+      )}
+
+      {!marketRate.loading && marketRate.percentDiff !== null && (
+        <div className="glass-panel p-5 mb-6">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-1.5 h-1.5 rounded-full" style={{ background: '#8A6D0F' }} />
+            <h3 className="text-sm font-bold">Tu tarifa frente al mercado</h3>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Tu tarifa está un <span className="font-bold" style={{ color: marketRate.percentDiff >= 0 ? '#15803d' : '#c0392b' }}>
+              {Math.abs(marketRate.percentDiff)}%
+            </span>{' '}
+            {marketRate.percentDiff >= 0 ? 'por encima' : 'por debajo'} de la media de tu categoría en tu zona.
           </p>
         </div>
       )}
