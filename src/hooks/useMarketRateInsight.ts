@@ -38,7 +38,9 @@ export const useMarketRateInsight = (userId: string | undefined): MarketRateInsi
           .eq('category', category)
           .eq('zone', zone)
           .neq('user_id', userId)
-          .gt('hourly_rate', 0);
+          .gt('hourly_rate', 0)
+          .not('email', 'ilike', '%xpeak.es%')
+          .not('email', 'ilike', '%demo%');
 
         const peerRates = (peers ?? []).map((p: { hourly_rate: number }) => p.hourly_rate);
 

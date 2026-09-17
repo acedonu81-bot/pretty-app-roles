@@ -1269,7 +1269,10 @@ const PublicProfile = () => {
             </motion.div>
           )}
 
-          {sbProfile && !scarcity.loading && scarcity.weeklyContactRequests > 0 && (
+          {/* Mismo umbral (3) que weeklyViews más abajo: un número bajo
+              no debe leerse como señal negativa, y evita duplicar dos
+              contadores de actividad semanal con criterios distintos. */}
+          {sbProfile && !scarcity.loading && scarcity.weeklyContactRequests >= 3 && (
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
               <p className="text-xs" style={{ color: '#8A6D0F' }}>
                 Contactado por {scarcity.weeklyContactRequests} {scarcity.weeklyContactRequests === 1 ? 'empresario' : 'empresarios'} esta semana

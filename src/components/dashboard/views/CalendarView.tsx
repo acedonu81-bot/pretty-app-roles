@@ -457,9 +457,10 @@ const CalendarView = () => {
                   onClick={() => { if (availMode && cell.currentMonth) toggleBlocked(dateStr); }}
                   className={`py-2 rounded relative transition-all ${!cell.currentMonth ? 'text-black/15' : 'hover:bg-black/5 cursor-pointer'}`}
                   style={{
-                    background: isBlocked ? 'rgba(255,95,86,0.12)' : tod ? 'rgba(212,175,55,0.15)' : evs.length > 0 ? 'rgba(212,175,55,0.05)' : 'rgba(0,0,0,0.02)',
-                    border: isBlocked ? '1px solid rgba(255,95,86,0.35)' : tod ? '1px solid rgba(212,175,55,0.5)' : evs.length > 0 ? '1px solid rgba(212,175,55,0.25)' : '1px solid transparent',
-                    color: isBlocked ? '#ff5f56' : tod ? '#D4AF37' : undefined,
+                    background: isBlocked ? '#d94848' : tod ? 'rgba(212,175,55,0.15)' : evs.length > 0 ? 'rgba(212,175,55,0.05)' : 'rgba(0,0,0,0.02)',
+                    border: isBlocked ? 'none' : tod ? '1px solid rgba(212,175,55,0.5)' : evs.length > 0 ? '1px solid rgba(212,175,55,0.25)' : '1px solid transparent',
+                    boxShadow: isBlocked ? '0 4px 10px -3px rgba(196,45,45,0.35)' : undefined,
+                    color: isBlocked ? '#fff' : tod ? '#D4AF37' : undefined,
                     fontWeight: tod || evs.length > 0 || isBlocked ? 700 : undefined,
                     textDecoration: isBlocked ? 'line-through' : undefined,
                   }}>

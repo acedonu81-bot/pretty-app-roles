@@ -14,10 +14,13 @@ function mockProfiles(me: { hourly_rate: number; category: string; zone: string 
     const eqSelf = vi.fn().mockReturnValue({ maybeSingle });
     const selectSelf = vi.fn().mockReturnValue({ eq: eqSelf });
 
-    const gt = vi.fn().mockResolvedValue({
+    const finalResult = Promise.resolve({
       data: peers.map(hourly_rate => ({ hourly_rate })),
       error: null,
     });
+    const notEmail2 = vi.fn().mockReturnValue(finalResult);
+    const notEmail1 = vi.fn().mockReturnValue({ not: notEmail2 });
+    const gt = vi.fn().mockReturnValue({ not: notEmail1 });
     const neq = vi.fn().mockReturnValue({ gt });
     const eqZone = vi.fn().mockReturnValue({ neq });
     const eqCategory = vi.fn().mockReturnValue({ eq: eqZone });

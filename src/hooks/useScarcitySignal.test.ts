@@ -4,7 +4,7 @@ import { useScarcitySignal } from './useScarcitySignal';
 import { supabase } from '@/integrations/supabase/client';
 
 vi.mock('@/integrations/supabase/client', () => ({
-  supabase: { from: vi.fn() },
+  supabase: { from: vi.fn(), rpc: vi.fn() },
 }));
 
 function mockCounts(viewsCount: number, bookingsCount: number) {
@@ -15,13 +15,13 @@ function mockCounts(viewsCount: number, bookingsCount: number) {
       const select = vi.fn().mockReturnValue({ eq });
       return { select };
     }
-    if (table === 'flash_bookings') {
-      const gte = vi.fn().mockResolvedValue({ count: bookingsCount, error: null });
-      const eq = vi.fn().mockReturnValue({ gte });
-      const select = vi.fn().mockReturnValue({ eq });
-      return { select };
-    }
     throw new Error(`unexpected table ${table}`);
+  });
+  (supabase.rpc as any).mockImplementation((fn: string) => {
+    if (fn === 'flash_bookings_last_7_days') {
+      return Promise.resolve({ data: bookingsCount, error: null });
+    }
+    throw new Error(`unexpected rpc ${fn}`);
   });
 }
 
@@ -48,5 +48,6 @@ describe('useScarcitySignal', () => {
     expect(result.current.weeklyProfileViews).toBe(0);
     expect(result.current.weeklyContactRequests).toBe(0);
     expect(supabase.from).not.toHaveBeenCalled();
+    expect(supabase.rpc).not.toHaveBeenCalled();
   });
 });
