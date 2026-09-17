@@ -220,7 +220,7 @@ describe('resolverVistaDeBusqueda', () => {
 
   it('un término que no matchea ningún oficio no fuerza ningún directorio', async () => {
     const { resolverVistaDeBusqueda } = await import('./Dashboard');
-    expect(resolverVistaDeBusqueda('saxofonista bilbao')).toBeNull();
+    expect(resolverVistaDeBusqueda('zzznotfound bilbao')).toBeNull();
     expect(resolverVistaDeBusqueda('')).toBeNull();
   });
 });
@@ -261,12 +261,12 @@ describe('resolverDestinoBusqueda', () => {
 
   it('un término sin oficio reconocido, estando en un directorio, no te saca de ahí', async () => {
     const { resolverDestinoBusqueda } = await import('./Dashboard');
-    expect(resolverDestinoBusqueda('saxofonista bilbao', 'dj', DIRECTORIOS)).toBeNull();
+    expect(resolverDestinoBusqueda('zzznotfound bilbao', 'dj', DIRECTORIOS)).toBeNull();
   });
 
   it('un término sin oficio reconocido, fuera de un directorio, manda a explorar (nunca a dj)', async () => {
     const { resolverDestinoBusqueda } = await import('./Dashboard');
-    expect(resolverDestinoBusqueda('saxofonista bilbao', 'messages', DIRECTORIOS)).toBe('explorar');
+    expect(resolverDestinoBusqueda('zzznotfound bilbao', 'messages', DIRECTORIOS)).toBe('explorar');
   });
 
   it('campo vacío no navega a ningún sitio', async () => {
