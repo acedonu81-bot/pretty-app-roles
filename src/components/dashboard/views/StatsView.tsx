@@ -104,6 +104,7 @@ const DonutChart = ({ segments, size = 140 }: { segments: DonutSegment[]; size?:
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
 import { useScarcitySignal } from '@/hooks/useScarcitySignal';
+import { timeAgo } from '@/lib/timeAgo';
 import { useMarketRateInsight } from '@/hooks/useMarketRateInsight';
 import { supabase } from '@/integrations/supabase/client';
 const MONTH_LABELS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
@@ -261,6 +262,11 @@ const StatsView = () => {
               {scarcity.weeklyContactRequests === 1 ? 'te ha contactado' : 'te han contactado'} por Flash Booking</>
             )}.
           </p>
+          {scarcity.lastViewedAt && (
+            <p className="text-xs text-muted-foreground mt-1">
+              Última vez visto {timeAgo(scarcity.lastViewedAt)}
+            </p>
+          )}
         </div>
       )}
 

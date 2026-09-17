@@ -4,12 +4,14 @@ import { supabase } from '@/integrations/supabase/client';
 interface ScarcitySignal {
   weeklyProfileViews: number;
   weeklyContactRequests: number;
+  lastViewedAt: string | null;
   loading: boolean;
 }
 
 export const useScarcitySignal = (userId: string | undefined): ScarcitySignal => {
   const [weeklyProfileViews, setWeeklyProfileViews] = useState(0);
   const [weeklyContactRequests, setWeeklyContactRequests] = useState(0);
+  const [lastViewedAt, setLastViewedAt] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -29,15 +31,26 @@ export const useScarcitySignal = (userId: string | undefined): ScarcitySignal =>
         .eq('viewed_user_id', userId)
         .gte('created_at', sevenDaysAgo),
       supabase.rpc('flash_bookings_last_7_days', { p_professional_user_id: userId }),
-    ]).then(([viewsRes, bookingsRes]) => {
+      // "Última vez visto" en vez de un contador "en directo": con el
+      // volumen real de hoy, un contador de visitantes simultáneos daría
+      // 0 casi siempre — contraproducente. Esto es honesto con poco
+      // tráfico y sigue dando sensación de actividad reciente.
+      supabase.from('profile_business_views')
+        .select('created_at')
+        .eq('viewed_user_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle(),
+    ]).then(([viewsRes, bookingsRes, lastViewRes]) => {
       if (cancelled) return;
       setWeeklyProfileViews(viewsRes.count ?? 0);
       setWeeklyContactRequests((bookingsRes.data as number | null) ?? 0);
+      setLastViewedAt((lastViewRes.data as { created_at: string } | null)?.created_at ?? null);
       setLoading(false);
     });
 
     return () => { cancelled = true; };
   }, [userId]);
 
-  return { weeklyProfileViews, weeklyContactRequests, loading };
+  return { weeklyProfileViews, weeklyContactRequests, lastViewedAt, loading };
 };
