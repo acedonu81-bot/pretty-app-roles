@@ -47,7 +47,11 @@ const AvailabilityCalendar = ({ userId }: { userId: string }) => {
         <Calendar size={16} style={{ color: '#D4AF37' }} />
         Disponibilidad
       </h3>
-      <div className="rounded-2xl p-4" style={{ background: '#fafaf8', border: '1px solid rgba(0,0,0,0.06)' }}>
+      <div className="rounded-2xl p-4" style={{
+  background: '#fdfcfa',
+  border: '1px solid rgba(0,0,0,0.06)',
+  boxShadow: '0 12px 28px -14px rgba(20,16,8,0.16), 0 3px 8px -2px rgba(20,16,8,0.08)',
+}}>
         <div className="flex items-center justify-between mb-3 relative">
           <button onClick={prev} aria-label="Mes anterior"
             className="w-11 h-11 -ml-2 rounded flex items-center justify-center hover:bg-black/5">
@@ -97,13 +101,26 @@ const AvailabilityCalendar = ({ userId }: { userId: string }) => {
             const isAvailable = cell.current && !isBlocked && !isPast;
             return (
               <div key={i}
-                className="w-full aspect-square flex items-center justify-center rounded text-[0.65rem]"
+                className="w-full aspect-square flex items-center justify-center rounded text-[0.65rem] font-bold"
                 style={{
-                  color: !cell.current ? 'rgba(22,20,18,0.25)' : isBlocked ? '#c0392b' : isPast ? 'rgba(22,20,18,0.35)' : isToday ? '#8A6D0F' : isAvailable ? '#15803d' : '#222',
-                  background: isBlocked ? 'rgba(220,38,38,0.1)' : isToday ? 'rgba(212,175,55,0.16)' : isAvailable ? 'rgba(21,128,61,0.1)' : 'transparent',
-                  fontWeight: isToday || isBlocked || isAvailable ? 700 : 400,
+                  color: !cell.current
+                    ? 'rgba(22,20,18,0.22)'
+                    : isBlocked ? '#fff'
+                    : isPast ? 'rgba(22,20,18,0.35)'
+                    : isToday ? '#33270a'
+                    : isAvailable ? '#fff'
+                    : '#222',
+                  background: isBlocked
+                    ? '#d94848'
+                    : isToday ? '#D4AF37'
+                    : isAvailable ? '#2fa561'
+                    : 'transparent',
+                  boxShadow: isBlocked
+                    ? '0 4px 10px -3px rgba(196,45,45,0.35)'
+                    : isToday ? '0 5px 12px -3px rgba(212,175,55,0.45)'
+                    : isAvailable ? '0 4px 10px -3px rgba(21,140,74,0.4)'
+                    : 'none',
                   textDecoration: isBlocked ? 'line-through' : undefined,
-                  border: isToday ? '1.5px solid #D4AF37' : '1px solid transparent',
                 }}>
                 {cell.day}
               </div>
@@ -111,14 +128,14 @@ const AvailabilityCalendar = ({ userId }: { userId: string }) => {
           })}
         </div>
 
-        <div className="flex items-center gap-4 mt-3 pt-2" style={{ borderTop: '1px solid rgba(0,0,0,0.05)' }}>
+        <div className="flex items-center gap-4 mt-3 pt-2" style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}>
           <div className="flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#15803d' }} />
-            <span className="text-[0.65rem] font-semibold" style={{ color: '#222' }}>Disponible</span>
+            <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#2fa561', boxShadow: '0 2px 5px rgba(21,140,74,0.4)' }} />
+            <span className="text-[0.65rem] font-semibold" style={{ color: '#3a3626' }}>Disponible</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#c0392b' }} />
-            <span className="text-[0.65rem] font-semibold" style={{ color: '#222' }}>No disponible</span>
+            <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#d94848', boxShadow: '0 2px 5px rgba(196,45,45,0.35)' }} />
+            <span className="text-[0.65rem] font-semibold" style={{ color: '#3a3626' }}>No disponible</span>
           </div>
         </div>
       </div>
