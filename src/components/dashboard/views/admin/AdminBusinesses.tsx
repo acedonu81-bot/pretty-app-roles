@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Building2, Search, MessageCircle, Zap, Euro, Calendar, ExternalLink } from 'lucide-react';
+import { Building2, Search, MessageCircle, Zap, Euro, Calendar, ExternalLink, Instagram, Phone, Mail, ImageOff } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 interface BusinessProfile {
@@ -7,6 +7,10 @@ interface BusinessProfile {
   display_name: string;
   zone: string | null;
   photo_url: string | null;
+  bio: string | null;
+  instagram: string | null;
+  phone: string | null;
+  email: string | null;
   is_verified: boolean;
   created_at: string;
 }
@@ -30,7 +34,7 @@ const AdminBusinesses = () => {
     const load = async () => {
       const { data: profiles } = await supabase
         .from('profiles')
-        .select('user_id, display_name, zone, photo_url, is_verified, created_at')
+        .select('user_id, display_name, zone, photo_url, bio, instagram, phone, email, is_verified, created_at')
         .eq('role', 'empresario')
         .order('created_at', { ascending: false })
         .limit(500);
@@ -105,6 +109,7 @@ const AdminBusinesses = () => {
     return rows.filter(r =>
       (r.display_name || '').toLowerCase().includes(q)
       || (r.zone || '').toLowerCase().includes(q)
+      || (r.bio || '').toLowerCase().includes(q)
     );
   }, [rows, query]);
 
@@ -113,6 +118,7 @@ const AdminBusinesses = () => {
 
   const fmtDate = (iso: string | null) => iso ? new Date(iso).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' }) : '—';
   const fmtEur = (n: number) => n.toLocaleString('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+  const igHandle = (v: string | null) => (v || '').replace(/^@/, '').trim();
 
   return (
     <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(212,175,55,0.03)', border: '1px solid rgba(212,175,55,0.1)' }}>
@@ -130,7 +136,7 @@ const AdminBusinesses = () => {
           <input
             value={query}
             onChange={e => setQuery(e.target.value)}
-            placeholder="Buscar por nombre o zona..."
+            placeholder="Buscar por nombre, zona o bio..."
             className="nightlife-input text-sm w-full !pl-9"
           />
         </div>
@@ -146,69 +152,88 @@ const AdminBusinesses = () => {
       ) : filtered.length === 0 ? (
         <p className="text-sm text-center py-12 text-muted-foreground">Sin resultados para "{query}".</p>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr style={{ borderBottom: '1px solid rgba(212,175,55,0.08)' }}>
-                {['Empresa', 'Zona', 'Registrado', 'Bookings', 'Gasto', 'Flash Jobs', 'Última actividad', 'Ficha'].map(h => (
-                  <th key={h} className="text-left px-4 py-3 text-[0.65rem] font-bold uppercase tracking-wider whitespace-nowrap text-muted-foreground">{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map(r => {
-                const lastActivity = [r.activity.lastBookingAt, r.activity.lastFlashJobAt]
-                  .filter(Boolean)
-                  .sort((a, b) => (b as string).localeCompare(a as string))[0] ?? null;
-                const isActive = r.activity.bookingsCount > 0 || r.activity.flashJobsCount > 0;
-                return (
-                  <tr key={r.user_id} className="transition-colors hover:bg-black/[0.02]" style={{ borderBottom: '1px solid rgba(0,0,0,0.04)' }}>
-                    <td className="px-4 py-3 whitespace-nowrap">
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold" style={{ color: '#1a1a1a' }}>
-                          {r.display_name || <span className="font-normal text-muted-foreground">Sin nombre</span>}
-                        </span>
-                        {r.is_verified && (
-                          <span className="text-[0.6rem] font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(212,175,55,0.15)', color: '#8A6D0F' }}>✓</span>
-                        )}
-                        {!isActive && (
-                          <span className="text-[0.6rem] font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(0,0,0,0.05)', color: '#888' }}>Inactivo</span>
-                        )}
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-muted-foreground">{r.zone || '—'}</td>
-                    <td className="px-4 py-3 whitespace-nowrap text-muted-foreground">{fmtDate(r.created_at)}</td>
-                    <td className="px-4 py-3 whitespace-nowrap">
-                      <span className="flex items-center gap-1 font-mono tabular-nums" style={{ color: '#333' }}>
-                        <MessageCircle size={11} style={{ color: '#8A6D0F' }} /> {r.activity.bookingsCount}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap font-mono tabular-nums" style={{ color: r.activity.bookingsSpend > 0 ? '#22c55e' : '#888' }}>
-                      {r.activity.bookingsSpend > 0 ? fmtEur(r.activity.bookingsSpend) : '—'}
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap">
-                      <span className="flex items-center gap-1 font-mono tabular-nums" style={{ color: '#333' }}>
-                        <Zap size={11} style={{ color: '#D4AF37' }} /> {r.activity.flashJobsCount}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-muted-foreground">
-                      <span className="flex items-center gap-1">
-                        <Calendar size={11} /> {fmtDate(lastActivity)}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3">
-                      <a href={`/p/${r.user_id}`} target="_blank" rel="noopener noreferrer"
-                        className="p-1.5 rounded-md transition-all hover:scale-110 inline-flex"
-                        style={{ background: 'rgba(139,92,246,0.1)', color: '#8B5CF6' }}
-                        title="Ver ficha pública">
-                        <ExternalLink size={13} />
+        <div className="grid gap-4 p-4 sm:p-6" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
+          {filtered.map(r => {
+            const lastActivity = [r.activity.lastBookingAt, r.activity.lastFlashJobAt]
+              .filter(Boolean)
+              .sort((a, b) => (b as string).localeCompare(a as string))[0] ?? null;
+            const isActive = r.activity.bookingsCount > 0 || r.activity.flashJobsCount > 0;
+            const ig = igHandle(r.instagram);
+            return (
+              <div key={r.user_id} className="rounded-2xl overflow-hidden flex flex-col"
+                style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.06)', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+                <div className="relative aspect-[16/10] flex-shrink-0" style={{ background: 'rgba(0,0,0,0.04)' }}>
+                  {r.photo_url ? (
+                    <img src={r.photo_url} alt={r.display_name || 'Empresario'} className="w-full h-full object-cover" loading="lazy" />
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center gap-1.5" style={{ color: 'rgba(0,0,0,0.25)' }}>
+                      <ImageOff size={22} />
+                      <span className="text-[0.65rem] font-bold uppercase tracking-wider">Sin foto</span>
+                    </div>
+                  )}
+                  <div className="absolute top-2 left-2 flex items-center gap-1.5">
+                    {r.is_verified && (
+                      <span className="text-[0.6rem] font-bold px-1.5 py-0.5 rounded backdrop-blur-sm" style={{ background: 'rgba(212,175,55,0.85)', color: '#1a1a1a' }}>✓ Verificado</span>
+                    )}
+                    {!isActive && (
+                      <span className="text-[0.6rem] font-bold px-1.5 py-0.5 rounded backdrop-blur-sm" style={{ background: 'rgba(0,0,0,0.55)', color: '#fff' }}>Inactivo</span>
+                    )}
+                  </div>
+                  <a href={`/p/${r.user_id}`} target="_blank" rel="noopener noreferrer"
+                    className="absolute top-2 right-2 p-1.5 rounded-md transition-all hover:scale-110 backdrop-blur-sm"
+                    style={{ background: 'rgba(255,255,255,0.85)', color: '#8B5CF6' }}
+                    title="Ver ficha pública">
+                    <ExternalLink size={13} />
+                  </a>
+                </div>
+
+                <div className="p-4 flex flex-col gap-2.5 flex-1">
+                  <div>
+                    <p className="font-bold text-sm leading-tight" style={{ color: '#1a1a1a' }}>
+                      {r.display_name || <span className="font-normal text-muted-foreground">Sin nombre</span>}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-0.5">{r.zone || 'Sin zona'} · Alta {fmtDate(r.created_at)}</p>
+                  </div>
+
+                  {r.bio ? (
+                    <p className="text-xs leading-relaxed line-clamp-3" style={{ color: '#444' }}>{r.bio}</p>
+                  ) : (
+                    <p className="text-xs italic text-muted-foreground">Sin descripción</p>
+                  )}
+
+                  <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs" style={{ color: '#666' }}>
+                    {ig && (
+                      <a href={`https://instagram.com/${ig}`} target="_blank" rel="noopener noreferrer"
+                        className="flex items-center gap-1 hover:underline" style={{ color: '#C13584' }}>
+                        <Instagram size={11} /> @{ig}
                       </a>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                    )}
+                    {r.phone && (
+                      <span className="flex items-center gap-1"><Phone size={11} /> {r.phone}</span>
+                    )}
+                    {r.email && (
+                      <span className="flex items-center gap-1 truncate max-w-[160px]"><Mail size={11} /> {r.email}</span>
+                    )}
+                  </div>
+
+                  <div className="mt-auto pt-2.5 flex items-center justify-between text-xs" style={{ borderTop: '1px solid rgba(0,0,0,0.05)' }}>
+                    <span className="flex items-center gap-1 font-mono tabular-nums" style={{ color: '#333' }}>
+                      <MessageCircle size={11} style={{ color: '#8A6D0F' }} /> {r.activity.bookingsCount}
+                    </span>
+                    <span className="font-mono tabular-nums" style={{ color: r.activity.bookingsSpend > 0 ? '#22c55e' : '#888' }}>
+                      {r.activity.bookingsSpend > 0 ? fmtEur(r.activity.bookingsSpend) : '—'}
+                    </span>
+                    <span className="flex items-center gap-1 font-mono tabular-nums" style={{ color: '#333' }}>
+                      <Zap size={11} style={{ color: '#D4AF37' }} /> {r.activity.flashJobsCount}
+                    </span>
+                    <span className="flex items-center gap-1 text-muted-foreground">
+                      <Calendar size={11} /> {fmtDate(lastActivity)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
 
