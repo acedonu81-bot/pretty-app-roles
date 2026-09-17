@@ -524,6 +524,14 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         Las ofertas Flash caducan rápido: quien responde primero suele llevarse el bolo.
       </p>
       ${btn('Ver la oferta →', 'https://xpeak.es/dashboard?view=flashbooking')}
+      ${d.sin_foto ? `
+      <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:8px;padding:16px;margin-top:20px">
+        <p style="color:#0a0908;font-size:13px;font-weight:700;line-height:1.6;margin:0 0 6px">Tu perfil todavía no tiene foto</p>
+        <p style="color:#4b5563;font-size:13px;line-height:1.6;margin:0 0 14px">
+          Esta oferta te ha llegado por tu rol, pero sin foto tu perfil no aparece en el directorio — el organizador nunca podrá encontrarte ni ver tu propuesta. Súbela ahora para no perderte la próxima.
+        </p>
+        ${btn('Subir mi foto →', 'https://xpeak.es/dashboard')}
+      </div>` : ''}
     `, `${esc(d.role_needed ?? 'Profesional')} — ${esc(d.location ?? 'España')} — ${esc(d.pay ?? 'A consultar')}`),
   }),
 

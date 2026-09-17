@@ -226,7 +226,7 @@ const SIN_EXPLORAR = new Set(['empresario', 'pending', 'rookie']);
 // nuevo elige ya ese oficio, pero un perfil existente sigue siendo buscable.
 const BUSQUEDA_POR_VISTA: Record<string, string[]> = {
   dj: ['dj', 'disc jockey', 'pincha', 'discomovil'],
-  'grupo-musical': ['grupo musical', 'grupo', 'banda', 'orquesta', 'musico', 'musicos'],
+  'grupo-musical': ['grupo musical', 'grupo', 'banda', 'orquesta', 'musico', 'musicos', 'saxofonista', 'saxofon', 'violinista', 'trio musical', 'cuarteto'],
   media: ['fotografo', 'fotografa', 'foto', 'video', 'videografo', 'videografa'],
   makeup: ['maquillaje', 'maquilladora', 'maquillador', 'makeup'],
   peluqueria: ['peluqueria', 'peluquero', 'peluquera'],

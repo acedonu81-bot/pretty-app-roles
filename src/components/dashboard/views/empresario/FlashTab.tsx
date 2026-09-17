@@ -80,7 +80,7 @@ const FlashTab = () => {
     try {
       const { data } = await supabase
         .from('profiles')
-        .select('user_id, display_name, role, zone')
+        .select('user_id, display_name, role, zone, photo_url')
         .not('role', 'in', '("empresario","pending")')
         .limit(300);
       if (!data?.length) return 0;
@@ -106,6 +106,7 @@ const FlashTab = () => {
               description: o.descripcion,
               pay: o.pago,
               location: o.lugar,
+              sin_foto: !(p as { photo_url?: string }).photo_url,
             },
           },
         })
