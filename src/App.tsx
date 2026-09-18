@@ -421,10 +421,16 @@ const App = () => (
                 eran duplicados exactos de lo que ya existe en /dashboard). */}
             <Route path="/admin-beta" element={<Navigate to="/dashboard?view=admin" replace />} />
             <Route path="/p/:slug" element={<PublicProfile />} />
+            {!isNative && (
+              <>
             <Route path="/sobre-nosotros" element={<SobreNosotros />} />
+              </>
+            )}
             <Route path="/soporte" element={<Soporte />} />
             <Route path="/aviso-legal" element={<AvisoLegal />} />
             {/* Category landings */}
+            {!isNative && (
+              <>
             <Route path="/contratar-dj" element={<CategoryLanding />} />
             <Route path="/contratar-staff" element={<CategoryLanding />} />
             <Route path="/contratar-azafata" element={<CategoryLanding />} />
@@ -473,6 +479,8 @@ const App = () => (
             <Route path="/contratar-grupo-musical/:ciudad" element={<CityLanding />} />
             <Route path="/contratar-photo-booth/:ciudad" element={<CityLanding />} />
             <Route path="/contratar-tecnico-sonido/:ciudad" element={<CityLanding />} />
+              </>
+            )}
             {/* Occasion landings — eje ocasión × rol (GEO/AEO) */}
             <Route path="/boda/contratar-dj" element={<OccasionLanding />} />
             <Route path="/boda/contratar-fotografo" element={<OccasionLanding />} />
@@ -501,6 +509,8 @@ const App = () => (
             <Route path="/fiesta-privada/contratar-camareros" element={<OccasionLanding />} />
             <Route path="/fiesta-privada/contratar-animador" element={<OccasionLanding />} />
             {/* Blog */}
+            {!isNative && (
+              <>
             <Route path="/blog" element={<BlogIndex />} />
             <Route path="/blog/cuanto-cobra-un-dj-en-espana" element={<BlogDJPrecio />} />
             <Route path="/blog/mejores-plataformas-contratar-dj-espana" element={<BlogMejoresPlataformasContratarDJ />} />
@@ -706,8 +716,12 @@ const App = () => (
             <Route path="/blog/maquillaje-eventos-torrevieja" element={<BlogMaquillajeTorrevieja />} />
             <Route path="/blog/contratar-barman-evento-privado" element={<BlogBarmanEventos />} />
             <Route path="/blog/dj-boda-civil-precio-canciones" element={<BlogDJBodaCivil />} />
+              </>
+            )}
             <Route path="/precios" element={<Precios />} />
             <Route path="/baja-emails" element={<BajaEmails />} />
+            {!isNative && (
+              <>
             <Route path="/blog/catering-boda-precio-por-persona" element={<BlogCateringBoda />} />
             <Route path="/blog/videografo-bodas-precio" element={<BlogVideografoBodas />} />
             <Route path="/blog/tendencias-bodas-2026" element={<BlogTendenciasBodas />} />
@@ -757,8 +771,12 @@ const App = () => (
             <Route path="/blog/como-trabajar-de-rrpp-discoteca" element={<BlogRRPPDiscoteca />} />
             {/* Directorio público — sin login */}
             <Route path="/directorio/:rol" element={<DirectorioPublico />} />
+              </>
+            )}
             <Route path="/socials" element={<Socials />} />
             <Route path="/socials/:slug" element={<SocialEvent />} />
+            {!isNative && (
+              <>
             <Route path="/blog/dj-bodas-sevilla" element={<BlogDJBodaSevilla />} />
             <Route path="/blog/dj-bodas-bilbao" element={<BlogDJBodaBilbao />} />
             <Route path="/blog/dj-bodas-mallorca" element={<BlogDJBodaMallorca />} />
@@ -798,7 +816,11 @@ const App = () => (
             <Route path="/blog/dj-bodas-lleida" element={<BlogDJBodaLleida />} />
             <Route path="/blog/dj-bodas-castellon" element={<BlogDJBodaCastellon />} />
             <Route path="/blog/dj-bodas-albacete" element={<BlogDJBodaAlbacete />} />
+              </>
+            )}
             <Route path="/plantilla-contrato-dj" element={<PlantillaContratoDJ />} />
+            {!isNative && (
+              <>
             <Route path="/blog/como-contratar-un-dj" element={<BlogComoContratarDJ />} />
             <Route path="/blog/dj-empresa-precio" element={<BlogDJEmpresa />} />
             <Route path="/blog/calculadora-tarifa-dj" element={<BlogCalculadoraTarifaDJ />} />
@@ -824,8 +846,12 @@ const App = () => (
             <Route path="/blog/fiesta-privada-villa-ibiza" element={<BlogFiestaVillaIbiza />} />
             <Route path="/blog/fotografo-comunion-barcelona" element={<BlogFotografoComunionBarcelona />} />
             <Route path="/blog/como-organizar-fiesta-de-empresa" element={<BlogOrganizarFiestaEmpresa />} />
+              </>
+            )}
             <Route path="/bodas" element={<BodasLanding />} />
             <Route path="/organizar-eventos" element={<OrganizadoresLanding />} />
+            {!isNative && (
+              <>
             <Route path="/blog/organizar-evento-empresa-paso-a-paso" element={<BlogOrganizarEventoEmpresaPasoAPaso />} />
             <Route path="/blog/comparar-presupuestos-proveedores-eventos" element={<BlogComoCompararPresupuestosEventos />} />
             <Route path="/blog/contrato-proveedores-eventos" element={<BlogContratoProveedoresEventos />} />
@@ -843,6 +869,8 @@ const App = () => (
             <Route path="/blog/estilista-de-boda-que-incluye" element={<BlogEstilistaBodaQueIncluye />} />
             <Route path="/blog/cuanto-cobra-un-humorista-eventos" element={<BlogCuantoCobraHumoristaEventos />} />
             <Route path="/blog/humorista-cena-empresa-como-elegir" element={<BlogHumoristaCenaEmpresaComoElegir />} />
+              </>
+            )}
             <Route path="/presupuesto-boda" element={<PresupuestoBoda />} />
             <Route path="/checklist-evento-empresa" element={<ChecklistEventoEmpresa />} />
             <Route path="*" element={<NotFound />} />
