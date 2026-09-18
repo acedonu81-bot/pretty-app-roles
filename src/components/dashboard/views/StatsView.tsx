@@ -126,8 +126,14 @@ const StatsView = () => {
     if (!user) return;
     const load = async () => {
       // ── 1. Basic stats ──────────────────────────────
-      const [scoreRes, convsRes, bookingsRes] = await Promise.all([
-        supabase.from('profiles').select('score').eq('user_id', user.id).maybeSingle(),
+      // "Visitas al perfil" viene de profile_business_views (visitas reales
+      // registradas), NO de profiles.score: ese campo es el ranking interno
+      // del directorio y un admin puede inflarlo a mano (boostScore en
+      // AdminUserManagement), lo que hacía mostrar cifras falsas aquí.
+      const [viewsRes, convsRes, bookingsRes] = await Promise.all([
+        supabase.from('profile_business_views')
+          .select('id', { count: 'exact', head: true })
+          .eq('viewed_user_id', user.id),
         supabase.from('conversations')
           .select('id', { count: 'exact', head: true })
           .or(`participant_a.eq.${user.id},participant_b.eq.${user.id}`),
@@ -190,7 +196,7 @@ const StatsView = () => {
       });
 
       setStats({
-        views: (scoreRes.data?.score as number) ?? 0,
+        views: viewsRes.count ?? 0,
         messages: msgCount,
         bookings: bookingsRes.count ?? 0,
         conversations: convsRes.count ?? 0,
