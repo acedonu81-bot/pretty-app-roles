@@ -32,7 +32,17 @@ export function NativeStackTransition({ activeKey, direction, children }: Native
   }
 
   return (
-    <AnimatePresence mode="wait" custom={direction} initial={false}>
+    // popLayout (no "wait"): con "wait" AnimatePresence espera a que la vista
+    // saliente termine de desmontarse antes de montar la entrante — con 0.28s
+    // de transición eso se percibe como un frame en blanco entre secciones,
+    // más notorio cuanto más pesada es la vista (fetch de datos, listas
+    // largas). popLayout saca la saliente del flujo (position: absolute
+    // interno) mientras anima fuera, así que la entrante ya está montada y
+    // visible en su lugar mientras la anterior todavía se desvanece — sin
+    // hueco en blanco. Es seguro aquí: el saliente absolute no necesita que
+    // el contenedor tenga altura fija, porque es la entrante (en flujo
+    // normal) la que determina la altura real del <main> con overflow-y-auto.
+    <AnimatePresence mode="popLayout" custom={direction} initial={false}>
       <motion.div
         key={activeKey}
         custom={direction}
