@@ -116,6 +116,39 @@ body.is-native-app nav.sticky {
   }
 }
 
+/* ── Claymorphism tokens (solo app nativa) ── */
+body.is-native-app {
+  --clay-shadow-light: -8px -8px 16px rgba(255,255,255,0.9);
+  --clay-shadow-dark: 10px 10px 22px rgba(150,130,90,0.28);
+  --clay-shadow-inset-light: inset -5px -5px 10px rgba(255,255,255,0.7);
+  --clay-shadow-inset-dark: inset 6px 6px 12px rgba(150,130,90,0.20);
+  --clay-radius-sm: 14px;
+  --clay-radius-md: 18px;
+  --clay-radius-lg: 22px;
+  --clay-radius-xl: 28px;
+}
+
+body.is-native-app .clay-card {
+  border-radius: var(--clay-radius-lg);
+  background: var(--background);
+  box-shadow: var(--clay-shadow-light), var(--clay-shadow-dark);
+}
+
+body.is-native-app .clay-card-inset {
+  border-radius: var(--clay-radius-md);
+  background: var(--background);
+  box-shadow: var(--clay-shadow-inset-light), var(--clay-shadow-inset-dark);
+}
+
+body.is-native-app .clay-btn-primary {
+  border: none;
+  border-radius: var(--clay-radius-md);
+  background: linear-gradient(155deg, #E9C866, #D4AF37 60%, #B8941E);
+  box-shadow: 6px 8px 16px rgba(150,120,40,0.35), -4px -4px 10px rgba(255,244,210,0.6), inset 0 1px 0 rgba(255,255,255,0.35);
+  color: #241C08;
+  font-weight: 700;
+}
+
 @layer base {
   * {
     @apply border-border;
