@@ -1,4 +1,5 @@
 import { Zap, MessageSquare, User, Home, type LucideIcon } from 'lucide-react';
+import { haptics } from '@/lib/haptics';
 
 interface MobileBottomNavProps {
   activeView: string;
@@ -84,7 +85,10 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
       <button
         type="button"
         aria-label="¿Qué estás organizando?"
-        onClick={() => onViewChange('flashbooking')}
+        onClick={() => {
+          haptics.tap();
+          onViewChange('flashbooking');
+        }}
         className="tab-fab"
       >
         <Zap className="w-6 h-6" />
