@@ -349,11 +349,15 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
 
   // Gesto de pull-to-refresh: solo se arma cuando el scroll está en el tope
   // (pullStartY != null), evita disparar durante scroll normal hacia abajo.
+  // El dashboard scrollea dentro de <main class="overflow-y-auto"> (ver
+  // Dashboard.tsx), no en window — hay que medir el scrollTop de ese
+  // contenedor real, no window.scrollY (que aquí siempre es 0).
   const pullStartY = useRef<number | null>(null);
   const PULL_THRESHOLD_PX = 70;
   const handleTouchStart = (e: React.TouchEvent) => {
     if (!isNative) return;
-    if (window.scrollY <= 0) pullStartY.current = e.touches[0].clientY;
+    const scroller = e.currentTarget.closest('main');
+    if (scroller && scroller.scrollTop <= 0) pullStartY.current = e.touches[0].clientY;
   };
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (!isNative || pullStartY.current === null) return;

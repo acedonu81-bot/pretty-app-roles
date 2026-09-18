@@ -74,11 +74,15 @@ const ActivityFeedWidget = () => {
   // Pull-to-refresh (solo app nativa, Task 6): reutiliza el refetch del
   // propio hook, la misma query que ya alimenta el poll de 60s.
   const { isRefreshing, triggerRefresh } = usePullToRefresh(refetch);
+  // El dashboard scrollea dentro de <main class="overflow-y-auto"> (ver
+  // Dashboard.tsx), no en window — hay que medir el scrollTop de ese
+  // contenedor real, no window.scrollY (que aquí siempre es 0).
   const pullStartY = useRef<number | null>(null);
   const PULL_THRESHOLD_PX = 70;
   const handleTouchStart = (e: React.TouchEvent) => {
     if (!isNative) return;
-    if (window.scrollY <= 0) pullStartY.current = e.touches[0].clientY;
+    const scroller = e.currentTarget.closest('main');
+    if (scroller && scroller.scrollTop <= 0) pullStartY.current = e.touches[0].clientY;
   };
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (!isNative || pullStartY.current === null) return;
