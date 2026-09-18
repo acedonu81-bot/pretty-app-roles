@@ -8,6 +8,7 @@ import DashboardTopbar from '@/components/dashboard/DashboardTopbar';
 import RecentBusinessViewLine from '@/components/dashboard/RecentBusinessViewLine';
 import TodaysRequestsLine from '@/components/dashboard/TodaysRequestsLine';
 import MobileBottomNav from '@/components/dashboard/MobileBottomNav';
+import { NativeStackTransition } from '@/components/dashboard/NativeStackTransition';
 import AdminGuard from '@/components/AdminGuard';
 import type { Profile } from '@/data/profiles';
 import { useProfile } from '@/hooks/useProfile';
@@ -62,6 +63,10 @@ import { DEFAULT_ZONE } from '@/lib/constants';
 import { logProfileView } from '@/lib/track';
 
 const PROFILE_VIEWS = new Set(['profile', 'ficha', 'stats']);
+
+// "Home" del stack nativo (ver NativeStackTransition): entrar en cualquier
+// otra vista es un nivel hacia adelante; volver aquí es un "back".
+const HOME_VIEWS = new Set(['explorar', 'profile']);
 
 const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: string) => void; activeView: string }) => {
   const ctx = useProfile();
@@ -410,7 +415,14 @@ const Dashboard = () => {
   // término sobreviva al cambio de vista para que el directorio de destino
   // pueda filtrar con él — de lo contrario este mismo setSearchQuery('')
   // borraba la búsqueda un instante antes de que se usara.
+  // Dirección del slide nativo (ver NativeStackTransition, solo tiene efecto
+  // visual dentro de Capacitor). 'explorar' y 'profile' se tratan como "home"
+  // del stack — cualquier otra vista es un nivel hacia adelante, y volver a
+  // home es "back".
+  const [navDirection, setNavDirection] = useState<'forward' | 'back'>('forward');
+
   const handleViewChange = (view: string, keepSearch = false) => {
+    setNavDirection(HOME_VIEWS.has(view) ? 'back' : 'forward');
     setActiveView(view);
     localStorage.setItem('xpeak_view', view);
     if (isMobile) setSidebarOpen(false);
@@ -567,7 +579,9 @@ const Dashboard = () => {
           <div className={`p-3 md:p-6 flex-1 md:pb-6 ${isMobile ? 'pb-[calc(64px+max(env(safe-area-inset-bottom),12px)+1.5rem)]' : 'pb-6'}`}
             ref={viewContentRef}>
             <Suspense fallback={<div className="flex items-center justify-center py-20"><div className="w-6 h-6 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#D4AF37', borderTopColor: 'transparent' }} /></div>}>
-              {renderView()}
+              <NativeStackTransition activeKey={activeView} direction={navDirection}>
+                {renderView()}
+              </NativeStackTransition>
             </Suspense>
           </div>
         </main>
