@@ -9,6 +9,7 @@ import RecentBusinessViewLine from '@/components/dashboard/RecentBusinessViewLin
 import TodaysRequestsLine from '@/components/dashboard/TodaysRequestsLine';
 import MobileBottomNav from '@/components/dashboard/MobileBottomNav';
 import { NativeStackTransition } from '@/components/dashboard/NativeStackTransition';
+import { isNative } from '@/lib/capacitor';
 import { useSwipeBack } from '@/hooks/useSwipeBack';
 import AdminGuard from '@/components/AdminGuard';
 import type { Profile } from '@/data/profiles';
@@ -366,6 +367,12 @@ const Dashboard = () => {
   // para tener el mismo fade de entrada sin destruir el DOM.
   const viewContentRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
+    // En nativo, NativeStackTransition (Task 5) ya anima la transición
+    // completa (slide horizontal + opacity, ver ese componente) — si además
+    // se dispara este fade+translateY CSS, ambas animaciones se solapan y
+    // el resultado es un jank visual (opacidad compuesta dos veces, mezcla
+    // de movimiento vertical con horizontal). Solo aplica en web.
+    if (isNative) return;
     const el = viewContentRef.current;
     if (!el) return;
     el.style.animation = 'none';
