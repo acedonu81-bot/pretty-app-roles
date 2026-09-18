@@ -1,4 +1,4 @@
-import { Zap, MessageSquare, User, Home } from 'lucide-react';
+import { Zap, MessageSquare, User, Home, type LucideIcon } from 'lucide-react';
 
 interface MobileBottomNavProps {
   activeView: string;
@@ -7,22 +7,54 @@ interface MobileBottomNavProps {
   unreadCount?: number;
 }
 
+interface Tab {
+  id: string;
+  icon: LucideIcon;
+  label: string;
+  isActive: boolean;
+  badge?: number;
+}
+
 // Vistas de listado de gremio: con cualquiera de ellas abierta, el tab
 // "Inicio" sigue marcado, porque se llega a ellas desde el mapa de gremios.
 const dirViews = new Set(['dj','staff','azafata','makeup','peluqueria','media','vestuario','design','promotor','event_manager','empresario','catering','mago','bailarin','humorista','monologo','animador','speaker','ambassador','photo-booth','grupo-musical','tecnico']);
 
+const TabButton = ({ tab, onClick }: { tab: Tab; onClick: () => void }) => (
+  <button
+    type="button"
+    onClick={onClick}
+    aria-current={tab.isActive ? 'true' : undefined}
+    className="flex-1 flex flex-col items-center justify-center gap-0.5 transition-all active:scale-95 relative"
+  >
+    <div className="relative">
+      <tab.icon
+        size={22}
+        strokeWidth={tab.isActive ? 2.5 : 1.8}
+        style={{ color: tab.isActive ? '#D4AF37' : '#444' }}
+      />
+      {tab.badge != null && tab.badge > 0 && (
+        <span className="absolute -top-1 -right-1.5 min-w-[14px] h-[14px] px-0.5 rounded-full flex items-center justify-center text-[0.6rem] font-black"
+          style={{ background: '#ef4444', color: '#fff' }}>
+          {tab.badge > 9 ? '9+' : tab.badge}
+        </span>
+      )}
+    </div>
+    <span className="text-[0.65rem] font-semibold"
+      style={{ color: tab.isActive ? '#D4AF37' : '#444' }}>
+      {tab.label}
+    </span>
+  </button>
+);
+
 const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount = 0 }: MobileBottomNavProps) => {
-  const tabs = [
-    // "Inicio" lleva al mapa de gremios, que es donde aterriza el dashboard.
-    // Antes iba al listado del propio gremio; se queda marcado como activo
-    // también en esos listados porque se llega a ellos desde aquí — sin eso,
-    // navegar a un rol dejaba la barra entera sin ningún tab encendido.
+  // "Inicio" lleva al mapa de gremios, que es donde aterriza el dashboard.
+  // Antes iba al listado del propio gremio; se queda marcado como activo
+  // también en esos listados porque se llega a ellos desde aquí — sin eso,
+  // navegar a un rol dejaba la barra entera sin ningún tab encendido.
+  const leftTabs: Tab[] = [
     { id: 'explorar', icon: Home, label: 'Inicio', isActive: activeView === 'explorar' || dirViews.has(activeView) },
-    // "Descubrir" (feed swipe) sale de la barra: el swipe no termina de
-    // funcionar como el de Instagram, así que deja de promocionarse como una
-    // de las 5 acciones principales. Sigue vivo en /descubrir para quien lo
-    // busque (decisión del usuario, 7 sep 2026).
-    { id: 'flashbooking', icon: Zap, label: 'Flash', isActive: activeView === 'flashbooking' || activeView === 'flash' },
+  ];
+  const rightTabs: Tab[] = [
     { id: 'messages', icon: MessageSquare, label: 'Chat', isActive: activeView === 'messages', badge: unreadCount },
     { id: 'profile', icon: User, label: 'Perfil', isActive: activeView === 'profile' || activeView === 'settings' },
   ];
@@ -43,31 +75,23 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
         height: 'calc(64px + max(env(safe-area-inset-bottom), 12px))',
       }}
     >
-      {tabs.map(tab => (
-        <button
-          key={tab.id}
-          type="button"
-          onClick={() => onViewChange(tab.id)}
-          className="flex-1 flex flex-col items-center justify-center gap-0.5 transition-all active:scale-95 relative"
-        >
-          <div className="relative">
-            <tab.icon
-              size={22}
-              strokeWidth={tab.isActive ? 2.5 : 1.8}
-              style={{ color: tab.isActive ? '#D4AF37' : '#444' }}
-            />
-            {tab.badge != null && tab.badge > 0 && (
-              <span className="absolute -top-1 -right-1.5 min-w-[14px] h-[14px] px-0.5 rounded-full flex items-center justify-center text-[0.6rem] font-black"
-                style={{ background: '#ef4444', color: '#fff' }}>
-                {tab.badge > 9 ? '9+' : tab.badge}
-              </span>
-            )}
-          </div>
-          <span className="text-[0.65rem] font-semibold"
-            style={{ color: tab.isActive ? '#D4AF37' : '#444' }}>
-            {tab.label}
-          </span>
-        </button>
+      {leftTabs.map(tab => (
+        <TabButton key={tab.id} tab={tab} onClick={() => onViewChange(tab.id)} />
+      ))}
+
+      {/* FAB elevado de Flash Booking: sin label de texto, icono de rayo
+          centrado, extraído de la lista de tabs (mockup validado 18 sep). */}
+      <button
+        type="button"
+        aria-label="¿Qué estás organizando?"
+        onClick={() => onViewChange('flashbooking')}
+        className="tab-fab"
+      >
+        <Zap className="w-6 h-6" />
+      </button>
+
+      {rightTabs.map(tab => (
+        <TabButton key={tab.id} tab={tab} onClick={() => onViewChange(tab.id)} />
       ))}
     </nav>
   );
