@@ -3,6 +3,7 @@ import App from "./App.tsx";
 import "./index.css";
 import { initCapacitor } from "./lib/capacitor";
 import { trackAIReferral } from "./lib/track";
+import { supabase } from "./integrations/supabase/client";
 
 // Vercel Analytics y Speed Insights retirados (3 sep 2026). Sus scripts se
 // inyectaban aquí, de forma síncrona y antes de createRoot, así que retrasaban
@@ -10,7 +11,8 @@ import { trackAIReferral } from "./lib/track";
 // el plan gratuito de este proyecto, de modo que se pagaba el coste sin poder
 // leer el dato. La analítica de referencia es GA4 vía GTM (index.html), que
 // además arranca diferido. Recuperables desde git si se cambia de plan.
-initCapacitor();
+const sessionReady = supabase.auth.getSession();
+initCapacitor(undefined, sessionReady);
 trackAIReferral();
 
 // Purga de emergencia: dispositivos con el Service Worker antiguo ('xpeak-v2')

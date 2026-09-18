@@ -10,6 +10,8 @@ import CookieBanner from "./components/CookieBanner";
 import AppErrorBoundary from "./components/AppErrorBoundary";
 import EventCartWidget from "./components/EventCartWidget";
 import { logPageView } from "@/lib/track";
+import { NativeRootRedirect, useNativeGuardedPath } from "./lib/nativeEntry";
+import { isNative } from "./lib/capacitor";
 
 // Code-split heavy routes — loaded on demand
 const Auth = lazy(() => import("./pages/Auth"));
@@ -379,9 +381,13 @@ const queryClient = new QueryClient();
  */
 const RastreadorDeRutas = () => {
   const location = useLocation();
+  const blocked = useNativeGuardedPath(location.pathname);
   useEffect(() => {
     logPageView(location.pathname);
   }, [location.pathname]);
+  if (blocked) {
+    return <Navigate to="/auth" replace />;
+  }
   return null;
 };
 
@@ -401,7 +407,7 @@ const App = () => (
             algo en vez de dejar esto colgado para siempre. */}
         <Suspense fallback={<div style={{ minHeight: '100vh', background: '#090909' }} />}>
           <Routes>
-            <Route path="/" element={<Landing />} />
+            <Route path="/" element={isNative ? <NativeRootRedirect /> : <Landing />} />
             <Route path="/descubrir" element={<Descubrir />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/dashboard" element={<Dashboard />} />

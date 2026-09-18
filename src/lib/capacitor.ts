@@ -12,7 +12,7 @@ export const isAndroid = Capacitor.getPlatform() === 'android';
  * Call once on app mount. Sets up native chrome, keyboard behavior,
  * and the Android hardware back button.
  */
-export async function initCapacitor(onBack?: () => boolean) {
+export async function initCapacitor(onBack?: () => boolean, waitFor?: Promise<unknown>) {
   if (!isNative) return;
 
   // Push nativo: registra los listeners al arrancar. Sin esto, tocar una
@@ -59,7 +59,12 @@ export async function initCapacitor(onBack?: () => boolean) {
     }
   });
 
-  // Hide splash after app is ready
+  // Hide splash after app is ready — si se pasó una promesa a esperar
+  // (resolución de sesión), el splash se queda hasta que resuelva o
+  // pasen 2s como tope de seguridad para no bloquear la app si algo falla.
+  if (waitFor) {
+    await Promise.race([waitFor, new Promise((r) => setTimeout(r, 2000))]);
+  }
   await SplashScreen.hide({ fadeOutDuration: 300 });
 }
 
