@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 // Contenido extraído literal de src/pages/Privacidad.tsx (sin Helmet,
 // AmbientBackground ni LegalFooter — esos quedan solo para la ruta web
 // /privacidad). Ver src/pages/Privacidad.tsx para la fuente original.
@@ -45,7 +47,7 @@ export function PrivacidadContent() {
         <ul className="list-disc list-inside space-y-1" style={{ color: '#222' }}>
           <li><strong style={{ color: '#222' }}>Empresas del Sector:</strong> Tus datos profesionales y multimedia son públicos para los usuarios registrados como "Empresa" con el fin de facilitar tu contratación.</li>
           <li><strong style={{ color: '#222' }}>Supabase (infraestructura):</strong> Los datos se almacenan en servidores de Supabase Inc. ubicados en la Unión Europea (Irlanda, AWS eu-west-1). La transferencia está amparada por las Cláusulas Contractuales Estándar de la Comisión Europea conforme al art. 46.2.c del RGPD.</li>
-          <li><strong style={{ color: '#222' }}>Google Ireland Ltd. (Google Analytics 4 / Google Tag Manager):</strong> datos de navegación anónimos (páginas vistas, origen del tráfico), solo si aceptas la categoría "Analítica" en el banner de cookies. Más información en nuestra <a href="/cookies" className="underline font-bold" style={{ color: '#D4AF37' }}>Política de Cookies</a>.</li>
+          <li><strong style={{ color: '#222' }}>Google Ireland Ltd. (Google Analytics 4 / Google Tag Manager):</strong> datos de navegación anónimos (páginas vistas, origen del tráfico), solo si aceptas la categoría "Analítica" en el banner de cookies. Más información en nuestra <Link to="/cookies" className="underline font-bold" style={{ color: '#D4AF37' }}>Política de Cookies</Link>.</li>
           <li><strong style={{ color: '#222' }}>Meta Platforms Ireland Ltd. (Meta Pixel):</strong> datos de navegación para medir conversiones de nuestras campañas publicitarias, solo si aceptas la categoría "Marketing" en el banner de cookies.</li>
           <li><strong style={{ color: '#222' }}>Autoridades:</strong> Solo en caso de requerimiento legal administrativo o judicial conforme a la legislación española aplicable.</li>
         </ul>

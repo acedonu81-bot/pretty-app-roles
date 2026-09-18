@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 // Contenido extraído literal de src/pages/Soporte.tsx (sin Helmet,
 // AmbientBackground, logo ni LegalFooter — esos quedan solo para la ruta web
 // /soporte). Ver src/pages/Soporte.tsx para la fuente original.
@@ -28,10 +30,10 @@ export function SoporteContent() {
           </div>
         </div>
         <div className="mt-6 flex flex-wrap gap-3">
-          <a href="/sobre-nosotros" className="text-xs underline" style={{ color: 'rgba(255,255,255,0.35)' }}>Sobre nosotros</a>
-          <a href="/privacidad" className="text-xs underline" style={{ color: 'rgba(255,255,255,0.35)' }}>Política de privacidad</a>
-          <a href="/terminos" className="text-xs underline" style={{ color: 'rgba(255,255,255,0.35)' }}>Términos de uso</a>
-          <a href="/eliminar-cuenta" className="text-xs underline" style={{ color: 'rgba(255,255,255,0.35)' }}>Eliminar cuenta</a>
+          <Link to="/sobre-nosotros" className="text-xs underline" style={{ color: 'rgba(255,255,255,0.35)' }}>Sobre nosotros</Link>
+          <Link to="/privacidad" className="text-xs underline" style={{ color: 'rgba(255,255,255,0.35)' }}>Política de privacidad</Link>
+          <Link to="/terminos" className="text-xs underline" style={{ color: 'rgba(255,255,255,0.35)' }}>Términos de uso</Link>
+          <Link to="/eliminar-cuenta" className="text-xs underline" style={{ color: 'rgba(255,255,255,0.35)' }}>Eliminar cuenta</Link>
         </div>
       </div>
 
