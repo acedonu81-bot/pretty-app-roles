@@ -38,6 +38,7 @@ Que un usuario que abre la app no pueda notar, ni por asomo, que es una web envu
 ### 4. Navegación de la app (tabs)
 - Se conserva y rediseña visualmente `MobileBottomNav` (ya existe) con el estilo clay.
 - Se elimina cualquier chrome heredado de la web dentro del flujo nativo: topbar de landing, footer, menú hamburguesa — quedan sin montar gracias al guard del punto 1, no hace falta ocultarlos con CSS.
+- El tab central (posición 3 de 5) es un FAB elevado y diferenciado (icono de rayo, sin etiqueta de texto) para la acción de mayor intención — abrir una solicitud/Flash Booking. Los otros 4 tabs llevan icono + etiqueta corta, con badge de notificación (punto/contador) cuando aplica (ej. mensajes sin leer). Mockup de referencia validado con el usuario: https://claude.ai/artifact/7z4daXxjxwMbykLbAZ5vHm
 
 ## Fuera de alcance (esta fase)
 
