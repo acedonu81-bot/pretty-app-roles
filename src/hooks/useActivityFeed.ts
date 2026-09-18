@@ -151,7 +151,7 @@ async function fetchCombined(sinceIso: string): Promise<ActivityItem[]> {
   return buildCombinedItems(signups, contacts);
 }
 
-export function useActivityFeed(): { items: ActivityItem[]; loading: boolean } {
+export function useActivityFeed(): { items: ActivityItem[]; loading: boolean; refetch: () => Promise<void> } {
   const [items, setItems] = useState<ActivityItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -176,5 +176,7 @@ export function useActivityFeed(): { items: ActivityItem[]; loading: boolean } {
     return () => clearInterval(interval);
   }, [load]);
 
-  return { items, loading };
+  // Expuesta para pull-to-refresh en ActivityFeedWidget (Task 6) — reutiliza
+  // exactamente la misma query que el poll automático, no una nueva.
+  return { items, loading, refetch: load };
 }

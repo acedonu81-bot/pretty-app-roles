@@ -7,6 +7,9 @@ import { sanitizeInput } from '@/lib/contentFilter';
 import { toast } from 'sonner';
 import ConversationList from './messages/ConversationList';
 import ChatWindow, { EmptyChatPlaceholder } from './messages/ChatWindow';
+import { usePullToRefresh } from '@/hooks/usePullToRefresh';
+import { isNative } from '@/lib/capacitor';
+import { RefreshCw } from 'lucide-react';
 
 // Los resultados de búsqueda mostraban el rol tal cual sale de BD
 // ('photo-booth', 'grupo-musical'). Etiquetas legibles para el usuario.
@@ -196,6 +199,22 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
       await loadConversations();
     }
   }, [user, loadMessages, loadConversations, blockedUserIds]);
+
+  // Pull-to-refresh (solo app nativa, Task 6): reutiliza loadConversations,
+  // la misma función que el mount inicial y el polling realtime.
+  const { isRefreshing, triggerRefresh } = usePullToRefresh(loadConversations);
+  const pullStartY = useRef<number | null>(null);
+  const PULL_THRESHOLD_PX = 70;
+  const handleListTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!isNative) return;
+    if (e.currentTarget.scrollTop <= 0) pullStartY.current = e.touches[0].clientY;
+  };
+  const handleListTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!isNative || pullStartY.current === null) return;
+    const delta = e.changedTouches[0].clientY - pullStartY.current;
+    pullStartY.current = null;
+    if (delta > PULL_THRESHOLD_PX && !isRefreshing) triggerRefresh();
+  };
 
   useEffect(() => { loadConversations(); }, [loadConversations]);
   useEffect(() => {
@@ -401,7 +420,14 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
         <div className="flex flex-col sm:grid h-full" style={{ gridTemplateColumns: 'minmax(0,280px) 1fr' }}>
 
           {/* Lista de conversaciones — siempre visible en desktop; en móvil oculta al abrir un chat */}
-          <div className={`${mobileShowChat ? 'hidden' : 'flex'} sm:flex flex-col h-full overflow-hidden`}>
+          <div className={`${mobileShowChat ? 'hidden' : 'flex'} sm:flex flex-col h-full overflow-hidden`}
+            onTouchStart={handleListTouchStart} onTouchEnd={handleListTouchEnd}>
+            {isNative && isRefreshing && (
+              <div className="clay-card flex items-center justify-center gap-2 py-2 m-2 text-xs font-bold flex-shrink-0"
+                style={{ color: '#8A6D0F' }}>
+                <RefreshCw size={14} className="animate-spin" /> Actualizando…
+              </div>
+            )}
             <ConversationList
               conversations={conversations}
               loading={loading}

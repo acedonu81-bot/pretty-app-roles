@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Crown, Users, Globe, Zap } from 'lucide-react';
 import { Profile } from '@/data/profiles';
@@ -15,6 +15,9 @@ import { isNewOnPlatform } from '@/lib/newOnPlatform';
 import ResourcesBanner from '@/components/dashboard/ResourcesBanner';
 import UltimaContratacion from '@/components/dashboard/UltimaContratacion';
 import { logSearch, logProfileView, logFiltroRol, logEvent } from '@/lib/track';
+import { usePullToRefresh } from '@/hooks/usePullToRefresh';
+import { isNative } from '@/lib/capacitor';
+import { RefreshCw } from 'lucide-react';
 
 interface DirectoryViewProps {
   role: string;
@@ -225,12 +228,16 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
   const [filterSeekingPartner, setFilterSeekingPartner] = useState(false);
   const [filterDanceRole, setFilterDanceRole] = useState<'' | 'lead' | 'follow'>('');
 
-  const { data: realProfiles = [], isLoading: loadingProfiles } = useQuery({
+  const { data: realProfiles = [], isLoading: loadingProfiles, refetch: refetchProfiles } = useQuery({
     queryKey: ['directory-profiles', role, roles, filterRegion, experienceLevel],
     queryFn: () => fetchDirectoryProfiles(role, roles, filterRegion, experienceLevel),
     staleTime: 60_000, // datos frescos 1 min — cambiar de rol y volver no re-fetchea
     gcTime: 10 * 60_000, // mantiene en caché 10 min aunque el componente se desmonte
   });
+
+  // Pull-to-refresh (solo app nativa, Task 6): reutiliza el refetch de
+  // react-query, la misma query que ya alimenta el listado.
+  const { isRefreshing, triggerRefresh } = usePullToRefresh(async () => { await refetchProfiles(); });
 
   const { data: activeEmployerCount = 0 } = useQuery({
     queryKey: ['directory-active-employers'],
@@ -340,8 +347,29 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
     ? 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5'
     : 'grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3';
 
+  // Gesto de pull-to-refresh: solo se arma cuando el scroll está en el tope
+  // (pullStartY != null), evita disparar durante scroll normal hacia abajo.
+  const pullStartY = useRef<number | null>(null);
+  const PULL_THRESHOLD_PX = 70;
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!isNative) return;
+    if (window.scrollY <= 0) pullStartY.current = e.touches[0].clientY;
+  };
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!isNative || pullStartY.current === null) return;
+    const delta = e.changedTouches[0].clientY - pullStartY.current;
+    pullStartY.current = null;
+    if (delta > PULL_THRESHOLD_PX && !isRefreshing) triggerRefresh();
+  };
+
   return (
-    <div className="animate-[fadeIn_0.4s_ease]">
+    <div className="animate-[fadeIn_0.4s_ease]" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+      {isNative && isRefreshing && (
+        <div className="clay-card flex items-center justify-center gap-2 py-2 mb-3 text-xs font-bold"
+          style={{ color: '#8A6D0F' }}>
+          <RefreshCw size={14} className="animate-spin" /> Actualizando…
+        </div>
+      )}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3 sm:mb-5">
         <div>
           <h2 className="text-xl sm:text-2xl font-bold mb-0.5 sm:mb-1 overflow-visible sm:pb-2" style={{ lineHeight: 1.2 }}>

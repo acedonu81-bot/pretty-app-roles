@@ -1,5 +1,8 @@
-import { Sparkles, MapPin, MessageCircle } from 'lucide-react';
+import { useRef } from 'react';
+import { Sparkles, MapPin, MessageCircle, RefreshCw } from 'lucide-react';
 import { useActivityFeed, ActivityItem } from '@/hooks/useActivityFeed';
+import { usePullToRefresh } from '@/hooks/usePullToRefresh';
+import { isNative } from '@/lib/capacitor';
 
 function minutesAgo(iso: string): number {
   return Math.floor((Date.now() - new Date(iso).getTime()) / 60_000);
@@ -66,7 +69,23 @@ const Lane = ({ items, durationSeconds }: { items: ActivityItem[]; durationSecon
 };
 
 const ActivityFeedWidget = () => {
-  const { items } = useActivityFeed();
+  const { items, refetch } = useActivityFeed();
+
+  // Pull-to-refresh (solo app nativa, Task 6): reutiliza el refetch del
+  // propio hook, la misma query que ya alimenta el poll de 60s.
+  const { isRefreshing, triggerRefresh } = usePullToRefresh(refetch);
+  const pullStartY = useRef<number | null>(null);
+  const PULL_THRESHOLD_PX = 70;
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!isNative) return;
+    if (window.scrollY <= 0) pullStartY.current = e.touches[0].clientY;
+  };
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!isNative || pullStartY.current === null) return;
+    const delta = e.changedTouches[0].clientY - pullStartY.current;
+    pullStartY.current = null;
+    if (delta > PULL_THRESHOLD_PX && !isRefreshing) triggerRefresh();
+  };
 
   if (items.length === 0) return null;
 
@@ -75,7 +94,14 @@ const ActivityFeedWidget = () => {
 
   return (
     <div className="mx-4 md:mx-6 mt-4 rounded-xl px-4 py-3 overflow-hidden"
-      style={{ background: '#ffffff', border: '1px solid rgba(212,175,55,0.2)' }}>
+      style={{ background: '#ffffff', border: '1px solid rgba(212,175,55,0.2)' }}
+      onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+      {isNative && isRefreshing && (
+        <div className="clay-card flex items-center justify-center gap-2 py-1.5 mb-2 text-xs font-bold"
+          style={{ color: '#8A6D0F' }}>
+          <RefreshCw size={12} className="animate-spin" /> Actualizando…
+        </div>
+      )}
       <div className="flex items-center gap-2 mb-3">
         <Sparkles size={13} style={{ color: '#8A6D0F' }} />
         <span className="text-xs font-black tracking-wider" style={{ color: '#8A6D0F' }}>
