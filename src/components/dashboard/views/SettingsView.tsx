@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { compressImage, MAX_RAW_IMAGE_MB } from '@/lib/image';
-import { Camera, Bell, Shield, LogOut, ChevronRight, Trash2, AlertTriangle, Download, FileText, QrCode, Archive, BellOff, Users, Plus, Check, X } from 'lucide-react';
+import { Camera, Bell, Shield, LogOut, ChevronRight, Trash2, AlertTriangle, Download, FileText, QrCode, Archive, BellOff, Users, Plus, Check, X, Scale, Cookie, UserX, LifeBuoy } from 'lucide-react';
 import NightlifeSelect from '@/components/ui/NightlifeSelect';
 import { toast } from 'sonner';
 import QRCode from 'qrcode';
@@ -1150,6 +1150,80 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
               className="flex-shrink-0 text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-105"
               style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.25)' }}>
               Descargar
+            </button>
+          </div>
+        </div>
+      </Section>
+
+      {/* ── Legal y soporte: mismo contenido que las páginas web /privacidad,
+          /terminos, /cookies, /eliminar-cuenta y /soporte (que se mantienen
+          intactas), abierto aquí como pantalla interna del dashboard para no
+          salir de la app. Mismo patrón visual de fila que "Tus derechos
+          RGPD" arriba (icono + label/desc + botón). ── */}
+      <Section title="Legal y soporte" icon={<Scale size={15} />}>
+        <div className="space-y-3">
+          <div className="rounded-xl p-3 flex items-center justify-between gap-3"
+            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
+            <div className="flex items-center gap-2.5">
+              <Shield size={14} style={{ color: '#8A6D0F', flexShrink: 0 }} />
+              <p className="text-xs font-bold">Política de privacidad</p>
+            </div>
+            <button onClick={() => onNavigate?.('legal-privacidad')}
+              className="flex-shrink-0 text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-105"
+              style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.25)' }}>
+              Ver
+            </button>
+          </div>
+
+          <div className="rounded-xl p-3 flex items-center justify-between gap-3"
+            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
+            <div className="flex items-center gap-2.5">
+              <FileText size={14} style={{ color: '#8A6D0F', flexShrink: 0 }} />
+              <p className="text-xs font-bold">Términos y condiciones</p>
+            </div>
+            <button onClick={() => onNavigate?.('legal-terminos')}
+              className="flex-shrink-0 text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-105"
+              style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.25)' }}>
+              Ver
+            </button>
+          </div>
+
+          <div className="rounded-xl p-3 flex items-center justify-between gap-3"
+            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
+            <div className="flex items-center gap-2.5">
+              <Cookie size={14} style={{ color: '#8A6D0F', flexShrink: 0 }} />
+              <p className="text-xs font-bold">Política de cookies</p>
+            </div>
+            <button onClick={() => onNavigate?.('legal-cookies')}
+              className="flex-shrink-0 text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-105"
+              style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.25)' }}>
+              Ver
+            </button>
+          </div>
+
+          <div className="rounded-xl p-3 flex items-center justify-between gap-3"
+            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
+            <div className="flex items-center gap-2.5">
+              <UserX size={14} style={{ color: '#8A6D0F', flexShrink: 0 }} />
+              <p className="text-xs font-bold">Cómo eliminar tu cuenta</p>
+            </div>
+            <button onClick={() => onNavigate?.('legal-eliminar-cuenta')}
+              className="flex-shrink-0 text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-105"
+              style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.25)' }}>
+              Ver
+            </button>
+          </div>
+
+          <div className="rounded-xl p-3 flex items-center justify-between gap-3"
+            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
+            <div className="flex items-center gap-2.5">
+              <LifeBuoy size={14} style={{ color: '#8A6D0F', flexShrink: 0 }} />
+              <p className="text-xs font-bold">Soporte</p>
+            </div>
+            <button onClick={() => onNavigate?.('legal-soporte')}
+              className="flex-shrink-0 text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:scale-105"
+              style={{ background: 'rgba(212,175,55,0.1)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.25)' }}>
+              Ver
             </button>
           </div>
         </div>

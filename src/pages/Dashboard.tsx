@@ -55,6 +55,7 @@ const ContractView = lazy(() => import('@/components/dashboard/views/ContractVie
 const FichaView = lazy(() => import('@/components/dashboard/views/FichaView'));
 const AgencyView = lazy(() => import('@/components/dashboard/views/AgencyView'));
 const ResourcesView = lazy(() => import('@/components/dashboard/views/ResourcesView'));
+const LegalView = lazy(() => import('@/components/dashboard/views/LegalView').then(m => ({ default: m.LegalView })));
 const ProfessionalProfilePage = lazy(() => import('@/components/dashboard/ProfessionalProfilePage'));
 const SupportChat = lazy(() => import('@/components/dashboard/SupportChat'));
 const OnboardingTour = lazy(() => import('@/components/dashboard/OnboardingTour'));
@@ -502,6 +503,15 @@ const Dashboard = () => {
       case 'emergentes': return <EmergentesView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'tecnico':   return <TecnicoView   onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'settings': return <SettingsView onNavigate={nav} />;
+      // Páginas legales/soporte como pantallas internas: mismo texto que las
+      // rutas web /privacidad, /terminos, etc. (que se mantienen intactas),
+      // aquí dentro del shell del dashboard para quien navega sin salir de
+      // la app (útil especialmente en la app nativa iOS).
+      case 'legal-privacidad': return <LegalView document="privacidad" />;
+      case 'legal-terminos': return <LegalView document="terminos" />;
+      case 'legal-cookies': return <LegalView document="cookies" />;
+      case 'legal-eliminar-cuenta': return <LegalView document="eliminar-cuenta" />;
+      case 'legal-soporte': return <LegalView document="soporte" />;
       case 'empresario': return <EmpresarioView onMessage={handleMessage} />;
       case 'messages': return <MessagesView initialUserId={messagesTarget?.userId} initialName={messagesTarget?.name} />;
       case 'calendar':   return <CalendarView />;
