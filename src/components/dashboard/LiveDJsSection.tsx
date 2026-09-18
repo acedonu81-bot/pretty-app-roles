@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import GeometricAvatar from './GeometricAvatar';
+import { isNative } from '@/lib/capacitor';
 
 interface LiveProfile {
   id: string;
@@ -73,7 +74,7 @@ const LiveDJsSection = ({ onNavigate }: { onNavigate?: () => void }) => {
             <button
               key={p.id}
               onClick={onNavigate}
-              className="flex items-center gap-3 px-4 py-3 rounded-2xl flex-none transition-all hover:scale-[1.02] active:scale-95"
+              className={`flex items-center gap-3 px-4 py-3 rounded-2xl flex-none transition-all hover:scale-[1.02] active:scale-95${isNative ? ' clay-card' : ''}`}
               style={{
                 background: 'rgba(0,0,0,0.03)',
                 border: `1px solid ${color}28`,

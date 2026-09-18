@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Sparkles, MapPin, Star, Zap, BadgeCheck, ChevronDown, ChevronUp, Search } from 'lucide-react';
 import { useSmartMatch, MatchedProfessional } from '@/hooks/useSmartMatch';
+import { isNative } from '@/lib/capacitor';
 
 const ROLES = [
   { value: 'dj', label: 'DJ / Artista' },
@@ -94,7 +95,7 @@ const SmartMatchWidget = ({ onViewProfile, onMessage }: Props) => {
   };
 
   return (
-    <div className="rounded-2xl overflow-hidden mb-5"
+    <div className={`rounded-2xl overflow-hidden mb-5${isNative ? ' clay-card' : ''}`}
       style={{ background: 'linear-gradient(135deg, rgba(212,175,55,0.04), rgba(212,175,55,0.01))', border: '1px solid rgba(212,175,55,0.15)' }}>
       <button onClick={() => setExpanded(e => !e)}
         className="w-full flex items-center gap-2.5 px-4 py-3 text-left">
@@ -135,7 +136,7 @@ const SmartMatchWidget = ({ onViewProfile, onMessage }: Props) => {
               className="px-2.5 py-2 rounded-xl text-base focus:outline-none"
               style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.1)' }} />
             <button onClick={search}
-              className="flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105"
+              className={`flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105${isNative ? ' clay-btn-primary' : ''}`}
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               <Search size={12} /> Buscar
             </button>

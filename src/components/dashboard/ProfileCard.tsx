@@ -10,6 +10,7 @@ import LegalModal from '@/components/LegalModal';
 import ContractModal from './ContractModal';
 import { useProfile } from '@/hooks/useProfile';
 import { timeAgo } from '@/lib/timeAgo';
+import { isNative } from '@/lib/capacitor';
 
 const HearthisIcon = ({ size = 14 }: { size?: number }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
@@ -90,7 +91,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
 
   return (
     <motion.div
-      className="rounded-2xl overflow-x-hidden flex flex-col transition-all duration-200 hover:scale-[1.01]"
+      className={`rounded-2xl overflow-x-hidden flex flex-col transition-all duration-200 hover:scale-[1.01]${isNative ? ' clay-card' : ''}`}
       style={{
         background: '#ffffff',
         border: isEarlyAdopter ? '4px solid rgba(96,165,250,0.7)' : '1px solid rgba(0,0,0,0.08)',
@@ -330,7 +331,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
           {/* Mobile: single primary CTA → opens profile (Airbnb-style card→detail) */}
           {onViewProfile && (
             <button type="button" onClick={() => onViewProfile(p)}
-              className="sm:hidden w-full py-2.5 rounded-xl text-[0.8rem] font-bold transition-all active:scale-[0.98]"
+              className={`sm:hidden w-full py-2.5 rounded-xl text-[0.8rem] font-bold transition-all active:scale-[0.98]${isNative ? ' clay-btn-primary' : ''}`}
               style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               Ver perfil
             </button>

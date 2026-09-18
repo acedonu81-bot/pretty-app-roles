@@ -93,7 +93,7 @@ const ActivityFeedWidget = () => {
   const laneB = items.filter((_, i) => i % 2 === 1);
 
   return (
-    <div className="mx-4 md:mx-6 mt-4 rounded-xl px-4 py-3 overflow-hidden"
+    <div className={`mx-4 md:mx-6 mt-4 rounded-xl px-4 py-3 overflow-hidden${isNative ? ' clay-card' : ''}`}
       style={{ background: '#ffffff', border: '1px solid rgba(212,175,55,0.2)' }}
       onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
       {isNative && isRefreshing && (
