@@ -13,6 +13,15 @@ export function useSwipeBack(onBack: () => void): void {
   const startX = useRef<number | null>(null);
   const startY = useRef<number | null>(null);
 
+  // El caller (Dashboard.tsx) pasa una arrow function inline nueva en cada
+  // render — si el efecto dependiera de [onBack] directamente, los listeners
+  // de window se quitarían y volverían a añadir en cada render de Dashboard
+  // (que re-renderiza con frecuencia: mensajes en tiempo real, contexto de
+  // perfil, búsqueda). Guardamos el callback en un ref actualizado en cada
+  // render y dejamos que el efecto de listeners se registre una sola vez.
+  const onBackRef = useRef(onBack);
+  onBackRef.current = onBack;
+
   useEffect(() => {
     if (!isNative || !isIOS) return;
 
@@ -32,7 +41,7 @@ export function useSwipeBack(onBack: () => void): void {
       const deltaX = touch.clientX - startX.current;
       const deltaY = Math.abs(touch.clientY - (startY.current ?? 0));
       if (deltaX > SWIPE_THRESHOLD_PX && deltaY < 60) {
-        onBack();
+        onBackRef.current();
       }
       startX.current = null;
     }
@@ -43,5 +52,5 @@ export function useSwipeBack(onBack: () => void): void {
       window.removeEventListener('touchstart', handleStart);
       window.removeEventListener('touchend', handleEnd);
     };
-  }, [onBack]);
+  }, []);
 }
