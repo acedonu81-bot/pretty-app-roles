@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { FileEdit, Plus, Trash2, Music, Video, Image as ImageIcon, Type, ExternalLink, Loader2, Globe, AlertCircle, X, Upload } from 'lucide-react';
+import { FileEdit, Plus, Trash2, Music, Video, Image as ImageIcon, Type, ExternalLink, Loader2, Globe, AlertCircle, X, Upload, Calendar } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
@@ -151,13 +151,14 @@ const TABS: { id: Tab; label: string; icon: React.FC<any> }[] = [
 interface Props {
   targetUserId?: string;
   targetName?: string;
+  onNavigate?: (view: string) => void;
 }
 
 const BLUE = '#4285F4';
 const BLUE_BG = 'rgba(66,133,244,0.12)';
 const BLUE_BORDER = 'rgba(66,133,244,0.35)';
 
-const FichaView = ({ targetUserId, targetName }: Props = {}) => {
+const FichaView = ({ targetUserId, targetName, onNavigate }: Props = {}) => {
   const { user } = useAuth();
   const profile = useProfile();
   const [tab, setTab] = useState<Tab>('posts');
@@ -335,6 +336,20 @@ const FichaView = ({ targetUserId, targetName }: Props = {}) => {
           </a>
         )}
       </div>
+
+      {/* Aviso de disponibilidad: la ficha no tiene forma de marcar "no
+          trabajo este día" — eso vive en la sección Calendario, y sin este
+          aviso el profesional no tiene motivo para ir a buscarlo ahí. */}
+      {isOwn && profile.role !== 'empresario' && (
+        <button onClick={() => onNavigate?.('calendar')}
+          className="w-full flex items-center gap-3 px-4 py-3 mb-5 rounded-xl text-left transition-all hover:scale-[1.01]"
+          style={{ background: 'rgba(255,95,86,0.06)', border: '1px solid rgba(255,95,86,0.18)' }}>
+          <Calendar size={16} style={{ color: '#ff5f56', flexShrink: 0 }} />
+          <span className="text-xs font-semibold flex-1" style={{ color: '#3d3d4e' }}>
+            ¿Hay días en los que no trabajas? Bloquéalos en <strong style={{ color: '#ff5f56' }}>Calendario</strong> para que no te contacten esos días.
+          </span>
+        </button>
+      )}
 
       {/* Tabs */}
       <div className="flex gap-2 mb-5 flex-wrap">

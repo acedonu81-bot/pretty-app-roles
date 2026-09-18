@@ -484,7 +484,7 @@ const Dashboard = () => {
       case 'calendar':   return <CalendarView />;
       case 'contracts':  return <ContractView />;
       case 'profile': return <ProfileView onNavigate={nav} />;
-      case 'ficha':   return <FichaView />;
+      case 'ficha':   return <FichaView onNavigate={handleViewChange} />;
       case 'mapa': return <MapaView />;
       case 'flashbooking':
       case 'flash': return <FlashBookingWallView />;
