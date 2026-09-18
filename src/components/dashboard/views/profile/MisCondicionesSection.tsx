@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Clock, Wallet, Ban, Shirt, CalendarX, Car, Check, Eye } from 'lucide-react';
+import { isNative } from '@/lib/capacitor';
 
 /**
  * "Mis condiciones" — el profesional fija las reglas, no las acepta.
@@ -235,7 +236,7 @@ export default function MisCondicionesSection({ profile, onSaved }: Props) {
         </Bloque>
 
         <button onClick={guardar} disabled={saving}
-          className="w-full py-3.5 rounded-xl font-black text-sm transition-all hover:scale-[1.01] disabled:opacity-50"
+          className={`w-full py-3.5 rounded-xl font-black text-sm transition-all hover:scale-[1.01] disabled:opacity-50${isNative ? ' clay-btn-primary' : ''}`}
           style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
           {saving ? 'Guardando…' : 'Guardar mis condiciones'}
         </button>
@@ -319,7 +320,7 @@ export default function MisCondicionesSection({ profile, onSaved }: Props) {
 const Bloque = ({ icon: Icon, titulo, nota, children }: {
   icon: any; titulo: string; nota?: string; children: React.ReactNode;
 }) => (
-  <div className="rounded-2xl p-4" style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)' }}>
+  <div className={`rounded-2xl p-4${isNative ? ' clay-card' : ''}`} style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)' }}>
     <div className="flex items-start gap-2.5 mb-3">
       <span className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
         style={{ background: 'rgba(212,175,55,0.12)', color: '#8A6D0F' }}>
