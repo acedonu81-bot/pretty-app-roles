@@ -9,6 +9,7 @@ import RecentBusinessViewLine from '@/components/dashboard/RecentBusinessViewLin
 import TodaysRequestsLine from '@/components/dashboard/TodaysRequestsLine';
 import MobileBottomNav from '@/components/dashboard/MobileBottomNav';
 import { NativeStackTransition } from '@/components/dashboard/NativeStackTransition';
+import { useSwipeBack } from '@/hooks/useSwipeBack';
 import AdminGuard from '@/components/AdminGuard';
 import type { Profile } from '@/data/profiles';
 import { useProfile } from '@/hooks/useProfile';
@@ -430,6 +431,16 @@ const Dashboard = () => {
   };
 
   const nav = (view: string) => handleViewChange(view);
+
+  // Swipe-back desde el borde izquierdo (solo iOS nativo, ver useSwipeBack):
+  // vuelve al "home" del stack, igual que el back gesture nativo. Reutiliza
+  // HOME_VIEWS (ya definido arriba para NativeStackTransition) para no
+  // duplicar el criterio de qué vistas cuentan como home.
+  useSwipeBack(() => {
+    if (!HOME_VIEWS.has(activeView)) {
+      handleViewChange('explorar');
+    }
+  });
 
   // Todas las vistas que son un directorio de profesionales (todos los case
   // del switch de abajo salvo explorar/settings/messages/etc, que no lo son).
