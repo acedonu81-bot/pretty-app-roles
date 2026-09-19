@@ -1087,6 +1087,50 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       </p>`),
   }),
 
+  // 13c. Mensaje sin responder pasadas ~24h — segundo aviso, más directo
+  unread_message_reminder: (d) => ({
+    subject: `Aún no has respondido a ${esc(d.sender_name)} en XPEAK`,
+    to: d.email,
+    html: base(`
+      <div style="text-align:center">
+        ${avatarCircle(esc(d.sender_name).charAt(0).toUpperCase())}
+        <h2 style="font-size:20px;font-weight:900;margin:0 0 8px;color:#0a0908"><span style="color:#D4AF37">${esc(d.sender_name)}</span> sigue esperando respuesta</h2>
+        <p style="color:#6B7280;font-size:14px;line-height:1.7;margin:0 0 6px">
+          Te escribió ayer y aún no has entrado a verlo. Una respuesta rápida marca la diferencia.
+        </p>
+      </div>
+      ${btn('Responder ahora →', 'https://xpeak.es/dashboard')}
+      <p style="color:#9CA3AF;font-size:11px;text-align:center;margin:0">
+        Puedes desactivar estas notificaciones en Ajustes → Privacidad.
+      </p>`),
+  }),
+
+  // 13d. Digest semanal al admin: perfiles sin foto 7+ días después del
+  // aviso automático. No se manda al usuario — decide el admin cuándo
+  // disparar photo_last_call a mano (amenaza con ocultar el perfil, no se
+  // automatiza sin criterio humano).
+  photo_missing_digest: (d) => ({
+    subject: `${esc(String(d.count))} perfiles sin foto llevan 7+ días sin subirla`,
+    to: ADMIN,
+    html: base(`
+      <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:8px;padding:16px;margin-bottom:20px">
+        <p style="margin:0 0 4px">${badge('Digest semanal')}</p>
+        <p style="font-size:20px;font-weight:900;margin:6px 0 0;color:#0a0908">${esc(String(d.count))} perfiles sin foto</p>
+      </div>
+      <table style="width:100%;border-collapse:collapse">
+        ${(d.profiles as Array<{ name: string; role: string; zone: string; days: number }>).map((p) => `
+        <tr>
+          <td style="padding:10px 0;border-bottom:1px solid rgba(10,9,8,0.06);font-size:13px;color:#0a0908;font-weight:600">${esc(p.name)}</td>
+          <td style="padding:10px 0;border-bottom:1px solid rgba(10,9,8,0.06);font-size:13px;color:#6B7280">${esc(rolLegible(p.role))} · ${esc(p.zone)}</td>
+          <td style="padding:10px 0;border-bottom:1px solid rgba(10,9,8,0.06);font-size:12px;color:#9CA3AF;text-align:right;white-space:nowrap">${esc(String(p.days))}d</td>
+        </tr>`).join('')}
+      </table>
+      <p style="color:#6B7280;font-size:12px;line-height:1.6;margin:16px 0 0">
+        Ya recibieron el aviso automático de perfil incompleto hace más de una semana. Si quieres mandarles el último aviso (photo_last_call), dispáralo a mano desde el panel — no se envía solo.
+      </p>
+      ${btn('Ver en panel admin →', 'https://xpeak.es/dashboard?view=admin')}`),
+  }),
+
   // 14. Badge Respuesta Rápida — notificación al profesional
   fast_responder_badge: (d) => ({
     subject: '¡Has ganado el badge Respuesta Rápida en XPEAK!',
