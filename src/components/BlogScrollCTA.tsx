@@ -167,7 +167,7 @@ export default function BlogScrollCTA({ role = 'general', storageKey }: BlogScro
       style={{ transform: visible ? 'translateY(0)' : 'translateY(100%)' }}
     >
       <div
-        className={`mx-auto max-w-3xl mb-3 mx-3 sm:mx-auto rounded-2xl px-4 py-4 sm:px-6 sm:py-4 flex items-center justify-between gap-4 ${pulse ? 'xpeak-cta-pulse' : ''}`}
+        className={`max-w-3xl mx-3 mb-3 sm:mx-auto rounded-2xl px-4 py-4 sm:px-6 sm:py-4 flex items-center justify-between gap-4 ${pulse ? 'xpeak-cta-pulse' : ''}`}
         style={{
           background: 'linear-gradient(90deg,#FFFDF7,#FBF3DD)',
           border: '3px solid #D4AF37',
@@ -198,10 +198,11 @@ export default function BlogScrollCTA({ role = 'general', storageKey }: BlogScro
         <div className="flex items-center gap-2 flex-shrink-0">
           <a
             href={c.href}
-            className="inline-flex items-center px-5 py-2.5 rounded-xl text-sm font-black transition-all hover:scale-105 whitespace-nowrap"
+            className="inline-flex items-center px-3 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all hover:scale-105 whitespace-nowrap"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 2px 20px rgba(212,175,55,0.4)' }}
           >
-            {c.cta}
+            <span className="sm:hidden">Crear perfil →</span>
+            <span className="hidden sm:inline">{c.cta}</span>
           </a>
           <button
             onClick={() => { setDismissed(true); sessionStorage.setItem(key, '1'); }}
