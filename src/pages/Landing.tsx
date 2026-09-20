@@ -116,7 +116,11 @@ const SupportChat = lazy(() => import('@/components/dashboard/SupportChat'));
 /* ── Fade-in wrapper ── */
 const FadeIn = ({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) => {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-40px' });
+  // El margen superior compensa el nav sticky (~84px): sin él, useInView
+  // consideraba "visible" un título que seguía tapado detrás del header
+  // durante el scroll, así que la animación de entrada arrancaba a medio
+  // ocultar (visto en "Antes de contratar, infórmate").
+  const inView = useInView(ref, { once: true, margin: '-84px 0px -40px 0px' });
   return (
     <motion.div
       ref={ref}

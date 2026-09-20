@@ -213,6 +213,13 @@ const ReviewsSection = ({ professionalUserId, professionalName, googleReviewUrl 
 
   const questionStats = reviewQuestionStats(reviews);
 
+  // Sin reseñas y sin nadie que pueda dejar una ahora mismo (visitante
+  // anónimo o sin booking elegible): no hay nada que mostrar ni que hacer
+  // aquí, así que la sección entera se oculta en vez de exponer el hueco
+  // vacío ("sé el primero en valorar" resta confianza más de lo que suma).
+  const hasNothingToShow = reviews.length === 0 && !(eligibleBooking && eligibleBooking !== 'loading');
+  if (hasNothingToShow) return null;
+
   return (
     <div className="mt-6">
       {/* Header */}
@@ -255,13 +262,16 @@ const ReviewsSection = ({ professionalUserId, professionalName, googleReviewUrl 
       )}
 
       {/* Solo puede valorar quien contrató de verdad (booking completado con
-          este profesional) — evita reseñas falsas de gente que nunca contrató. */}
-      {!user && (
+          este profesional) — evita reseñas falsas de gente que nunca contrató.
+          Este aviso solo tiene sentido cuando SÍ hay algo que valorar/ver: con
+          0 reseñas, mostrar "solo puede valorar quien..." + "sé el primero"
+          juntos subraya la falta de tracción en vez de ocultarla. */}
+      {reviews.length > 0 && !user && (
         <p className="text-xs mb-3" style={{ color: '#666' }}>
           Solo pueden valorar organizadores que hayan completado un booking con {professionalName}.
         </p>
       )}
-      {user && eligibleBooking === null && (
+      {reviews.length > 0 && user && eligibleBooking === null && (
         <p className="text-xs mb-3" style={{ color: '#666' }}>
           Solo pueden valorar organizadores que hayan completado un booking con {professionalName}.
         </p>
@@ -274,12 +284,7 @@ const ReviewsSection = ({ professionalUserId, professionalName, googleReviewUrl 
       )}
 
       {/* Reviews list */}
-      {reviews.length === 0 ? (
-        <div className="py-6 text-center rounded-2xl" style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.05)' }}>
-          <div className="flex justify-center mb-2"><StarRating value={0} /></div>
-          <p className="text-xs" style={{ color: '#444' }}>Sé el primero en valorar a {professionalName}</p>
-        </div>
-      ) : (
+      {reviews.length === 0 ? null : (
         <div className="flex flex-col gap-3">
           {reviews.map(r => (
             <div key={r.id} className="p-4 rounded-2xl" style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.06)' }}>
@@ -916,7 +921,10 @@ const PublicProfile = () => {
           {/* Fondo: foto a pantalla completa o gradiente */}
           {profile.photo && profile.photo.trim().length > 5 ? (
             <div className="absolute inset-0 z-0">
-              <img src={profile.photo} alt={profile.name} className="w-full h-full object-cover object-top" />
+              {/* El hero mide hasta 80vw de alto: con object-top la cara
+                  queda fuera de encuadre en la mayoría de fotos (retrato
+                  vertical estirado). 50% 15% la mantiene visible. */}
+              <img src={profile.photo} alt={profile.name} className="w-full h-full object-cover" style={{ objectPosition: '50% 15%' }} />
             </div>
           ) : (
             <div className="absolute inset-0 z-0" style={{ background: 'linear-gradient(135deg, #C8820A 0%, #D4511A 35%, #C23460 65%, #8B1A6B 100%)' }}>
@@ -944,14 +952,6 @@ const PublicProfile = () => {
                 <ShareProfileButton name={profile.name} roleLabel={roleLabel[profile.role] ?? profile.role} url={profileUrl} />
               </div>
 
-              {/* Early Adopter badge — mismo criterio que en el directorio (isEarlyAdopter.ts) */}
-              {profile.isEarlyAdopter && (
-                <span className="inline-flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full mb-3 ml-2"
-                  style={{ background: '#3B82F6', color: '#fff' }}>
-                  ⭐ EARLY ADOPTER
-                </span>
-              )}
-
               {/* Nombre grande */}
               <h1 className="font-black tracking-tight mb-1" style={{ fontSize: 'clamp(1.8rem, 8vw, 5rem)', lineHeight: 1.05, letterSpacing: '-0.03em', color: '#fff', textShadow: '0 2px 20px rgba(0,0,0,0.4)' }}>
                 {profile.name}
@@ -961,57 +961,16 @@ const PublicProfile = () => {
                 <p className="text-xs sm:text-sm font-semibold mb-3 truncate max-w-[80vw]" style={{ color: 'rgba(255,255,255,0.75)' }}>{profile.specialty}</p>
               )}
 
-              {/* Tags */}
+              {/* Tags — solo lo que ayuda a decidir de un vistazo lleva el
+                  dorado sólido (verificado, en vivo). El resto (vistas,
+                  antigüedad, badges de rol) va en un tono neutro para no
+                  competir entre sí: con 7-9 chips del mismo peso, nada
+                  destacaba. */}
               <div className="flex flex-wrap gap-2 mb-6">
-                {seoReviews.length > 0 && (
-                  <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
-                    style={{ background: 'rgba(212,175,55,0.85)', color: '#000', backdropFilter: 'blur(8px)' }}>
-                    <Star size={11} fill="#000" /> {(seoReviews.reduce((s, r) => s + r.rating, 0) / seoReviews.length).toFixed(1)} ({seoReviews.length})
-                  </span>
-                )}
-                <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
-                  style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
-                  <Zap size={11} /> {responseBucketText}
-                </span>
                 {profile.isVerified && (
                   <span className="flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-full"
                     style={{ background: 'rgba(212,175,55,0.85)', color: '#000', backdropFilter: 'blur(8px)' }}>
                     <BadgeCheck size={12} /> Verificado por XPEAK
-                  </span>
-                )}
-                {profile.zone && (
-                  <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
-                    style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
-                    <MapPin size={11} /> {profile.zone}
-                  </span>
-                )}
-                {weeklyViews !== null && weeklyViews >= 3 && (
-                  <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
-                    style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
-                    {weeklyViews} vistas esta semana
-                  </span>
-                )}
-                {antiguedad && (
-                  <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
-                    style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
-                    <Clock size={11} /> {antiguedad}
-                  </span>
-                )}
-                {profile.badges.slice(0, 3).map(b => (
-                  <span key={b} className="text-xs font-bold px-3 py-1.5 rounded-full"
-                    style={{ background: 'rgba(212,175,55,0.85)', color: '#000', backdropFilter: 'blur(8px)' }}>
-                    {b}
-                  </span>
-                ))}
-                {(profile as any).price > 0 ? (
-                  <span className="text-xs font-bold px-3 py-1.5 rounded-full"
-                    style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
-                    Desde {(profile as any).price}€/h
-                  </span>
-                ) : (
-                  <span className="text-xs font-bold px-3 py-1.5 rounded-full"
-                    style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
-                    Precio a consultar
                   </span>
                 )}
                 {profile.isLive && (
@@ -1020,6 +979,51 @@ const PublicProfile = () => {
                     <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping inline-block" /> EN VIVO
                   </span>
                 )}
+                {seoReviews.length > 0 && (
+                  <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
+                    <Star size={11} fill="#fff" /> {(seoReviews.reduce((s, r) => s + r.rating, 0) / seoReviews.length).toFixed(1)} ({seoReviews.length})
+                  </span>
+                )}
+                {profile.zone && (
+                  <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
+                    <MapPin size={11} /> {profile.zone}
+                  </span>
+                )}
+                {(profile as any).price > 0 ? (
+                  <span className="text-xs font-semibold px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
+                    Desde {(profile as any).price}€/h
+                  </span>
+                ) : (
+                  <span className="text-xs font-semibold px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
+                    Precio a consultar
+                  </span>
+                )}
+                <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
+                  style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.75)' }}>
+                  <Zap size={11} /> {responseBucketText}
+                </span>
+                {weeklyViews !== null && weeklyViews >= 3 && (
+                  <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.75)' }}>
+                    {weeklyViews} vistas esta semana
+                  </span>
+                )}
+                {antiguedad && (
+                  <span className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.75)' }}>
+                    <Clock size={11} /> {antiguedad}
+                  </span>
+                )}
+                {profile.badges.slice(0, 2).map(b => (
+                  <span key={b} className="text-xs font-semibold px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.75)' }}>
+                    {b}
+                  </span>
+                ))}
               </div>
 
               {/* Instagram */}

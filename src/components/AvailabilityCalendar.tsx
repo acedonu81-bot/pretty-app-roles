@@ -23,12 +23,26 @@ interface AvailabilityCalendarProps {
   onRequestDate?: (date: string) => void;
 }
 
+function buildNext14Days(today: Date) {
+  const days: { date: Date; dateStr: string }[] = [];
+  for (let i = 0; i < 14; i++) {
+    const d = new Date(today);
+    d.setDate(d.getDate() + i);
+    days.push({ date: d, dateStr: d.toISOString().slice(0, 10) });
+  }
+  return days;
+}
+
 const AvailabilityCalendar = ({ userId, mode = 'edit', onRequestDate }: AvailabilityCalendarProps) => {
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
   const [blocked, setBlocked] = useState<Set<string>>(new Set());
   const [showJump, setShowJump] = useState(false);
+  // El organizador solo necesita reservar una fecha cercana: un mes entero
+  // casi todo verde no aporta información y ocupa mucho espacio. El
+  // profesional (modo edit, gestiona bloqueos) sí necesita el mes completo.
+  const [showFullMonth, setShowFullMonth] = useState(mode !== 'view-request');
 
   useEffect(() => {
     if (!userId) return;
@@ -46,6 +60,67 @@ const AvailabilityCalendar = ({ userId, mode = 'edit', onRequestDate }: Availabi
 
   const cells = buildGrid(year, month);
   const todayStr = today.toISOString().slice(0, 10);
+
+  if (!showFullMonth) {
+    const next14 = buildNext14Days(today);
+    return (
+      <div className="mt-6">
+        <h3 className="text-base font-black mb-3 flex items-center gap-2" style={{ color: '#222', fontFamily: 'Syne, sans-serif' }}>
+          <Calendar size={16} style={{ color: '#D4AF37' }} />
+          Disponibilidad
+        </h3>
+        <div className="rounded-2xl p-4" style={{
+          background: '#fdfcfa',
+          border: '1px solid rgba(0,0,0,0.06)',
+          boxShadow: '0 12px 28px -14px rgba(20,16,8,0.16), 0 3px 8px -2px rgba(20,16,8,0.08)',
+        }}>
+          <div className="grid grid-cols-7 gap-1.5">
+            {next14.map(({ date, dateStr }) => {
+              const isBlocked = blocked.has(dateStr);
+              const isToday = dateStr === todayStr;
+              const isAvailable = !isBlocked;
+              const isClickable = mode === 'view-request' && isAvailable;
+              return (
+                <button key={dateStr}
+                  type="button"
+                  disabled={!isClickable}
+                  onClick={isClickable ? () => onRequestDate?.(dateStr) : undefined}
+                  className="flex flex-col items-center justify-center rounded-lg py-2 gap-0.5"
+                  style={{
+                    cursor: isClickable ? 'pointer' : 'default',
+                    color: isBlocked ? '#fff' : isToday ? '#33270a' : '#fff',
+                    background: isBlocked ? '#d94848' : isToday ? '#D4AF37' : '#2fa561',
+                    boxShadow: isBlocked
+                      ? '0 4px 10px -3px rgba(196,45,45,0.35)'
+                      : isToday ? '0 5px 12px -3px rgba(212,175,55,0.45)'
+                      : '0 4px 10px -3px rgba(21,140,74,0.4)',
+                    textDecoration: isBlocked ? 'line-through' : undefined,
+                  }}>
+                  <span className="text-[0.55rem] font-bold uppercase opacity-80">{DAY_LABELS[(date.getDay() + 6) % 7]}</span>
+                  <span className="text-xs font-black">{date.getDate()}</span>
+                </button>
+              );
+            })}
+          </div>
+          <div className="flex items-center justify-between mt-3 pt-2" style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#2fa561' }} />
+                <span className="text-[0.65rem] font-semibold" style={{ color: '#3a3626' }}>Disponible</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#d94848' }} />
+                <span className="text-[0.65rem] font-semibold" style={{ color: '#3a3626' }}>No disponible</span>
+              </div>
+            </div>
+            <button onClick={() => setShowFullMonth(true)} className="text-xs font-semibold underline" style={{ color: '#8A6D0F' }}>
+              Ver mes completo
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mt-6">
@@ -137,15 +212,22 @@ const AvailabilityCalendar = ({ userId, mode = 'edit', onRequestDate }: Availabi
           })}
         </div>
 
-        <div className="flex items-center gap-4 mt-3 pt-2" style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}>
-          <div className="flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#2fa561', boxShadow: '0 2px 5px rgba(21,140,74,0.4)' }} />
-            <span className="text-[0.65rem] font-semibold" style={{ color: '#3a3626' }}>Disponible</span>
+        <div className="flex items-center justify-between mt-3 pt-2" style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1.5">
+              <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#2fa561', boxShadow: '0 2px 5px rgba(21,140,74,0.4)' }} />
+              <span className="text-[0.65rem] font-semibold" style={{ color: '#3a3626' }}>Disponible</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#d94848', boxShadow: '0 2px 5px rgba(196,45,45,0.35)' }} />
+              <span className="text-[0.65rem] font-semibold" style={{ color: '#3a3626' }}>No disponible</span>
+            </div>
           </div>
-          <div className="flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#d94848', boxShadow: '0 2px 5px rgba(196,45,45,0.35)' }} />
-            <span className="text-[0.65rem] font-semibold" style={{ color: '#3a3626' }}>No disponible</span>
-          </div>
+          {mode === 'view-request' && (
+            <button onClick={() => setShowFullMonth(false)} className="text-xs font-semibold underline" style={{ color: '#8A6D0F' }}>
+              Ver menos
+            </button>
+          )}
         </div>
       </div>
     </div>

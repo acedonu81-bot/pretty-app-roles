@@ -548,9 +548,9 @@ const Auth = () => {
                   <div className="flex items-center gap-3">
                     <span className="flex items-center justify-center w-8 h-8 rounded-lg flex-shrink-0"
                       style={{ background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.3)' }}>
-                      <ShieldCheck size={15} style={{ color: '#8B6A00' }} strokeWidth={2.2} />
+                      <FileText size={15} style={{ color: '#8B6A00' }} strokeWidth={2.2} />
                     </span>
-                    <span className="text-sm font-medium" style={{ color: '#222' }}>0% comisión</span>
+                    <span className="text-sm font-medium" style={{ color: '#222' }}>Contratos digitales incluidos</span>
                   </div>
                 </div>
               </div>
