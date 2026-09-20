@@ -15,7 +15,8 @@ import { AFFILIATE_CATALOG, resolveAffiliateKey } from '@/lib/affiliate';
  * herramienta que cuesta leer cuando lo que quieres es "cuánta gente entró
  * ayer y a qué hora". Aquí eso son dos gráficas.
  *
- * Las cifras excluyen el tráfico de cuentas admin: con GA4 ya pasó que 454
+ * Las cifras excluyen el tráfico propio —cuentas admin y las demo @xpeak.es,
+ * ver es_trafico_propio() en la base de datos—: con GA4 ya pasó que 454
  * sesiones brutas incluían ~85 propias (previews de Vercel y logins de
  * prueba), y eso hace tomar decisiones sobre humo.
  */
@@ -315,9 +316,9 @@ export default function AdminAnalytics() {
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-4">
         <Kpi icon={Users} label="Online ahora" valor={online ?? '—'} sub="últimos 5 min" live
           onClick={() => setOnlineAbierto(o => !o)} abierto={onlineAbierto}
-          ayuda="Sesiones distintas con actividad en los últimos 5 minutos. Se actualiza sola cada 30s — no hace falta pulsar Actualizar. Excluye tu propio tráfico de admin. Toca la tarjeta para ver quién es y en qué página está." />
+          ayuda="Sesiones distintas con actividad en los últimos 5 minutos. Se actualiza sola cada 30s — no hace falta pulsar Actualizar. Excluye tu propio tráfico de admin y el de las cuentas demo. Toca la tarjeta para ver quién es y en qué página está." />
         <Kpi icon={Eye} label="Usuarios" valor={usuariosUnicos ?? '—'} sub={dias === 1 ? 'hoy' : `en ${dias} días`}
-          ayuda="Personas distintas que han entrado, sin duplicar a quien vuelve varios días dentro del periodo. Excluye tu propio tráfico de admin." />
+          ayuda="Personas distintas que han entrado, sin duplicar a quien vuelve varios días dentro del periodo. Excluye tu propio tráfico de admin y el de las cuentas demo." />
         <Kpi icon={Users} label="Sesiones" valor={totalSesiones} sub="entradas por día, sumadas"
           ayuda="Personas distintas por día, sumadas — quien entra 3 días cuenta 3 veces (a diferencia de 'Usuarios', que no duplica). Útil para ver el pulso diario, no el total de gente real." />
         <Kpi icon={UserPlus} label="Altas" valor={totalAltas} sub="perfiles nuevos"
@@ -360,7 +361,7 @@ export default function AdminAnalytics() {
       )}
 
       {/* Tráfico por día */}
-      <Panel title="Tráfico por día" hint="Visitas y sesiones. Excluye tu propio tráfico de admin."
+      <Panel title="Tráfico por día" hint="Visitas y sesiones. Excluye tu propio tráfico de admin y el de las cuentas demo."
         ayuda="La línea dorada son páginas vistas; la azul, personas distintas. Empieza a contar desde que se instaló la analítica, así que los días anteriores salen a cero.">
         <ResponsiveContainer width="100%" height={220}>
           <AreaChart data={porDia}>
