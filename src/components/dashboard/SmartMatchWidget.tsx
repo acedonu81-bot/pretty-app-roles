@@ -38,7 +38,6 @@ const MatchCard = ({ m, onContact }: { m: MatchedProfessional; onContact: (userI
         <a href={`/p/${m.user_id}`} className="text-sm font-bold hover:opacity-70 truncate" style={{ color: '#111' }}>
           {m.display_name}
         </a>
-        {m.is_early_adopter && <span className="w-2 h-2 rounded-full" style={{ background: '#3b82f6' }} />}
       </div>
       {m.specialty && <p className="text-xs truncate" style={{ color: '#8A6D0F' }}>{m.specialty}</p>}
       <div className="flex flex-wrap gap-1.5 mt-1.5">

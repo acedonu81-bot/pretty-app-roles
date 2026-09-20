@@ -613,9 +613,6 @@ const ProfGrid = ({ profs }: { profs: Prof[] }) => (
             ? <img src={p.photo_url} alt={p.display_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} loading="lazy" />
             : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36, fontWeight: 900, color: '#D4AF37' }}>{p.display_name.charAt(0)}</div>
           }
-          <div style={{ position: 'absolute', top: 8, right: 8, display: 'flex', gap: 4 }}>
-            {p.is_early_adopter && <span style={{ background: '#3B82F6', color: '#fff', fontSize: 9, fontWeight: 900, padding: '2px 6px', borderRadius: 4 }}>⭐ EARLY</span>}
-          </div>
         </div>
         <div style={{ padding: '12px 14px' }}>
           <p style={{ fontWeight: 900, fontSize: 14, color: '#fff', margin: '0 0 4px' }}>{p.display_name}</p>

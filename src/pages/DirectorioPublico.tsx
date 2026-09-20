@@ -831,11 +831,6 @@ export default function DirectorioPublico() {
                             style={{ background: 'rgba(212,175,55,0.95)', color: '#000' }}>
                             <BadgeCheck size={10} /> Verificado
                           </span>
-                        ) : (p as any).is_early_adopter ? (
-                          <span className="flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
-                            style={{ background: 'rgba(96,165,250,0.95)', color: '#fff' }}>
-                            ⭐ Early
-                          </span>
                         ) : null}
                       </span>
                       {/* Desktop: full set */}

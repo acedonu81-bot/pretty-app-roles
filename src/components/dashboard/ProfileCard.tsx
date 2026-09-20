@@ -82,7 +82,6 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
   // Magos, artistas con caché por evento) — "A consultar" en vez de dejar
   // el precio en blanco sin explicación.
   const priceOnRequest = showsPrice && !(p.price > 0);
-  const isEarlyAdopter = (p as any).isEarlyAdopter ?? false;
   const isNew = (p as any).isNew ?? false;
   // Opt-in, no automático por fecha: ver src/lib/newOnPlatform.ts — un grupo
   // consolidado que se da de alta hoy es "nuevo en la plataforma" pero no
@@ -94,8 +93,8 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
       className={`rounded-2xl overflow-x-hidden flex flex-col transition-all duration-200 hover:scale-[1.01]${isNative ? ' clay-card' : ''}`}
       style={{
         background: '#ffffff',
-        border: isEarlyAdopter ? '4px solid rgba(96,165,250,0.7)' : '1px solid rgba(0,0,0,0.08)',
-        boxShadow: isEarlyAdopter ? '0 0 20px rgba(96,165,250,0.2), 0 1px 3px rgba(0,0,0,0.06)' : '0 1px 3px rgba(0,0,0,0.06)',
+        border: '1px solid rgba(0,0,0,0.08)',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
       }}
       whileHover={{ boxShadow: '0 8px 28px rgba(0,0,0,0.12)' }}
     >
@@ -163,7 +162,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
               <Users size={9} /> Nuevo en XPEAK
             </span>
           )}
-          {!isEarlyAdopter && !showNewBadge && isNew && (
+          {!showNewBadge && isNew && (
             <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black"
               style={{ background: 'rgba(212,175,55,0.9)', color: '#000' }}>
               Nuevo
