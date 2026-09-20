@@ -130,7 +130,7 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
 
         {/* Badges top-left — single most-relevant badge on mobile, full set on desktop */}
         <div className="absolute top-2.5 left-2.5 flex gap-1.5 flex-wrap z-10">
-          {/* Mobile: only ONE badge, priority Disponible > Pro > Early Adopter */}
+          {/* Mobile: only ONE badge, priority Disponible > Pro > Nuevo */}
           <span className="sm:hidden">
             {p.isFlashActive ? (
               <span className="flex items-center gap-0.5 px-2 py-1 rounded-full text-[0.6rem] font-black"
@@ -141,11 +141,6 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
               <span className="flex items-center gap-0.5 px-2 py-1 rounded-full text-[0.6rem] font-black"
                 style={{ background: 'rgba(37,99,235,0.95)', color: '#fff' }}>
                 <BadgeCheck size={9} /> Prioridad
-              </span>
-            ) : isEarlyAdopter ? (
-              <span className="flex items-center gap-0.5 px-2 py-1 rounded-full text-[0.6rem] font-black"
-                style={{ background: 'rgba(96,165,250,0.95)', color: '#fff' }}>
-                ⭐ Early
               </span>
             ) : showNewBadge ? (
               <span className="flex items-center gap-0.5 px-2 py-1 rounded-full text-[0.6rem] font-black"
@@ -160,12 +155,6 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
             ) : null}
           </span>
           {/* Desktop: full set */}
-          {isEarlyAdopter && (
-            <span className="hidden sm:flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[0.6rem] font-black"
-              style={{ background: 'rgba(96,165,250,0.9)', color: '#000' }}>
-              ⭐ Early Adopter
-            </span>
-          )}
           {/* Grupos musicales, opt-in: se muestra en vez de "Nuevo" genérico
               cuando el propio grupo lo activa en Ajustes — ver newOnPlatform.ts */}
           {showNewBadge && (

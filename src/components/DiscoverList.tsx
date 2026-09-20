@@ -79,12 +79,6 @@ function ProfileCard({ p, imgError, onImgError, cardRef }: {
               <BadgeCheck size={10} /> Verificado
             </span>
           )}
-          {p.is_early_adopter && (
-            <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[0.65rem] font-black"
-              style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-              <Star size={10} fill="#000" /> Fundador
-            </span>
-          )}
         </div>
       </div>
 

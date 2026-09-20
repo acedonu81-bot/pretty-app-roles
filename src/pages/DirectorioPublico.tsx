@@ -845,12 +845,6 @@ export default function DirectorioPublico() {
                           <BadgeCheck size={10} /> Verificado por XPEAK
                         </span>
                       )}
-                      {(p as any).is_early_adopter && (
-                        <span className="hidden sm:flex items-center gap-1 px-2 py-1 rounded-full text-[0.65rem] font-black"
-                          style={{ background: 'rgba(96,165,250,0.9)', color: '#000' }}>
-                          ⭐ Early Adopter
-                        </span>
-                      )}
                       {/* Grupos musicales, opt-in — ver src/lib/newOnPlatform.ts.
                           No es "Nuevo" por fecha de alta: solo se muestra si el
                           propio grupo lo activó en Ajustes. */}
