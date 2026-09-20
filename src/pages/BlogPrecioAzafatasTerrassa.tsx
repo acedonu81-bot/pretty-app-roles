@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasTerrassa() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-terrassa' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata" storageKey="xpeak_scrollcta_precio_azafatas_terrassa" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_terrassa_v2" />
       </div>
     </>
   );

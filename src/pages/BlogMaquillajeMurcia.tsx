@@ -106,7 +106,7 @@ export default function BlogMaquillajeMurcia() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-murcia' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maquillaje_murcia" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_murcia_v2" />
       </div>
     </>
   );

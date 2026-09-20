@@ -107,7 +107,7 @@ export default function BlogCamarerosOviedo() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-oviedo' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_oviedo" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_oviedo_v2" />
       </div>
     </>
   );

@@ -107,7 +107,7 @@ export default function BlogPrecioAzafatasLogrono() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-logrono' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata" storageKey="xpeak_scrollcta_precio_azafatas_logrono" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_logrono_v2" />
       </div>
     </>
   );

@@ -107,7 +107,7 @@ export default function BlogCamarerosSevilla() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-sevilla' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_sevilla" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_sevilla_v2" />
       </div>
     </>
   );

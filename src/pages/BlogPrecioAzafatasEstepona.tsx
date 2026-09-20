@@ -107,7 +107,7 @@ export default function BlogPrecioAzafatasEstepona() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-estepona' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata" storageKey="xpeak_scrollcta_precio_azafatas_estepona" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_estepona_v2" />
       </div>
     </>
   );

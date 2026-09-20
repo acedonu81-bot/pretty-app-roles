@@ -106,7 +106,7 @@ export default function BlogCamarerosMostoles() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-mostoles' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_mostoles" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_mostoles_v2" />
       </div>
     </>
   );

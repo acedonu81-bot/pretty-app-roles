@@ -106,7 +106,7 @@ export default function BlogMaquillajeAlicante() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-alicante' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maquillaje_alicante" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_alicante_v2" />
       </div>
     </>
   );

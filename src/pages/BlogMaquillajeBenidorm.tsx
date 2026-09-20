@@ -106,7 +106,7 @@ export default function BlogMaquillajeBenidorm() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-benidorm' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maquillaje_benidorm" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_benidorm_v2" />
       </div>
     </>
   );

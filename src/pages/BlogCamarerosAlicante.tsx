@@ -107,7 +107,7 @@ export default function BlogCamarerosAlicante() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-alicante' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_alicante" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_alicante_v2" />
       </div>
     </>
   );

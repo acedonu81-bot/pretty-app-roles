@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasBenidorm() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-benidorm' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata" storageKey="xpeak_scrollcta_precio_azafatas_benidorm" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_benidorm_v2" />
       </div>
     </>
   );

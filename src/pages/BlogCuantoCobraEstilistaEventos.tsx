@@ -126,7 +126,7 @@ export default function BlogCuantoCobraEstilistaEventos() {
 
         <BlogRelatedPosts currentSlug='/blog/cuanto-cobra-un-estilista-de-eventos' tag='Vestuario' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_estilista_precio" />
+        <BlogScrollCTA role="vestuario_pro" storageKey="xpeak_scrollcta_estilista_precio_v2" />
       </div>
     </>
   );

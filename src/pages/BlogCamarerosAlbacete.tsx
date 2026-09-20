@@ -106,7 +106,7 @@ export default function BlogCamarerosAlbacete() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-albacete' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_albacete" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_albacete_v2" />
       </div>
     </>
   );

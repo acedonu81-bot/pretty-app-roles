@@ -157,7 +157,7 @@ const faqStructured = {
           <BlogEmailCapture variant="guia" intent="ser-profesional" articlePath="/blog/promotores-de-eventos-que-hacen" />
       <BlogRelatedPosts currentSlug='/blog/promotores-de-eventos-que-hacen' tag='Staff' />
         <FooterPublic />
-      <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_promotores_eventos" />
+      <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_promotores_eventos_v2" />
       </div>
     </>
   );

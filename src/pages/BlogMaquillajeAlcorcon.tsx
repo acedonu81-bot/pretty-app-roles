@@ -106,7 +106,7 @@ export default function BlogMaquillajeAlcorcon() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-alcorcon' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maquillaje_alcorcon" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_alcorcon_v2" />
       </div>
     </>
   );

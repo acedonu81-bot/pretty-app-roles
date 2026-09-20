@@ -106,7 +106,7 @@ export default function BlogCamarerosSalamanca() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-salamanca' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_salamanca" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_salamanca_v2" />
       </div>
     </>
   );

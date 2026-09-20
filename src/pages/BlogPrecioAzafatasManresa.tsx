@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasManresa() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-manresa' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata" storageKey="xpeak_scrollcta_precio_azafatas_manresa" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_manresa_v2" />
       </div>
     </>
   );

@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasAlcorcon() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-alcorcon' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata" storageKey="xpeak_scrollcta_precio_azafatas_alcorcon" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_alcorcon_v2" />
       </div>
     </>
   );

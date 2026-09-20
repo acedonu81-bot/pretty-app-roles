@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasDenia() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-denia' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata" storageKey="xpeak_scrollcta_precio_azafatas_denia" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_denia_v2" />
       </div>
     </>
   );

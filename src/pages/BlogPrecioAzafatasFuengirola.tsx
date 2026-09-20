@@ -107,7 +107,7 @@ export default function BlogPrecioAzafatasFuengirola() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-fuengirola' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata" storageKey="xpeak_scrollcta_precio_azafatas_fuengirola" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_fuengirola_v2" />
       </div>
     </>
   );

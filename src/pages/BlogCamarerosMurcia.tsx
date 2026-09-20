@@ -107,7 +107,7 @@ export default function BlogCamarerosMurcia() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-murcia' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_murcia" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_murcia_v2" />
       </div>
     </>
   );

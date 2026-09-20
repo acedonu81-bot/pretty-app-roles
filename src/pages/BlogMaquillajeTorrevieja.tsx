@@ -106,7 +106,7 @@ export default function BlogMaquillajeTorrevieja() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-torrevieja' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maquillaje_torrevieja" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_torrevieja_v2" />
       </div>
     </>
   );

@@ -140,7 +140,7 @@ export default function BlogRRPPDiscoteca() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/como-trabajar-de-rrpp-discoteca' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_rrpp_discoteca" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_rrpp_discoteca_v2" />
       </div>
     </>
   );

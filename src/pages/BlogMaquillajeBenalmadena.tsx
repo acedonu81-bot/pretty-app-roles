@@ -106,7 +106,7 @@ export default function BlogMaquillajeBenalmadena() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-benalmadena' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maquillaje_benalmadena" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_benalmadena_v2" />
       </div>
     </>
   );

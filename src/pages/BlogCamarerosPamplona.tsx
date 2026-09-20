@@ -107,7 +107,7 @@ export default function BlogCamarerosPamplona() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-pamplona' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_pamplona" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_pamplona_v2" />
       </div>
     </>
   );

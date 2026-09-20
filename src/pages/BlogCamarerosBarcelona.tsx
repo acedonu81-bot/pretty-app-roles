@@ -107,7 +107,7 @@ export default function BlogCamarerosBarcelona() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-barcelona' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_barcelona" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_barcelona_v2" />
       </div>
     </>
   );

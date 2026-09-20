@@ -107,7 +107,7 @@ export default function BlogPrecioAzafatasVitoria() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-vitoria' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata" storageKey="xpeak_scrollcta_precio_azafatas_vitoria" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_vitoria_v2" />
       </div>
     </>
   );

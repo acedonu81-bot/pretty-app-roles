@@ -107,7 +107,7 @@ export default function BlogCamarerosEstepona() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-estepona' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_estepona" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_estepona_v2" />
       </div>
     </>
   );

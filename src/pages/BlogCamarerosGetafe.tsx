@@ -106,7 +106,7 @@ export default function BlogCamarerosGetafe() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-getafe' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_getafe" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_getafe_v2" />
       </div>
     </>
   );

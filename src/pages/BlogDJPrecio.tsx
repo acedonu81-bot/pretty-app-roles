@@ -361,7 +361,7 @@ const faqStructured = {
         </article>
         <BlogRelatedPosts currentSlug='/blog/cuanto-cobra-un-dj-en-espana' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_precio" />
+        <BlogScrollCTA role="dj_pro" storageKey="xpeak_scrollcta_dj_precio_v2" />
       </div>
     </>
   );

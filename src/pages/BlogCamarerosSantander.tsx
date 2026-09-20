@@ -107,7 +107,7 @@ export default function BlogCamarerosSantander() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-santander' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_santander" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_santander_v2" />
       </div>
     </>
   );

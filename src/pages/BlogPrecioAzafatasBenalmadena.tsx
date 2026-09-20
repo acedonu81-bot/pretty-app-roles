@@ -107,7 +107,7 @@ export default function BlogPrecioAzafatasBenalmadena() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-benalmadena' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata" storageKey="xpeak_scrollcta_precio_azafatas_benalmadena" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_benalmadena_v2" />
       </div>
     </>
   );

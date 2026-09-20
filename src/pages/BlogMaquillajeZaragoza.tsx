@@ -106,7 +106,7 @@ export default function BlogMaquillajeZaragoza() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-zaragoza' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maquillaje_zaragoza" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_zaragoza_v2" />
       </div>
     </>
   );

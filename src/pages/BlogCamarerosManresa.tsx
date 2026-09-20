@@ -106,7 +106,7 @@ export default function BlogCamarerosManresa() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-manresa' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_manresa" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_manresa_v2" />
       </div>
     </>
   );

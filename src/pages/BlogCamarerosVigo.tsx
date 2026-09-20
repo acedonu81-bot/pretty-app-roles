@@ -107,7 +107,7 @@ export default function BlogCamarerosVigo() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-vigo' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_vigo" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_vigo_v2" />
       </div>
     </>
   );

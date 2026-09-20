@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasJerez() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-jerez' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata" storageKey="xpeak_scrollcta_precio_azafatas_jerez" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_jerez_v2" />
       </div>
     </>
   );

@@ -107,7 +107,7 @@ export default function BlogCamarerosElche() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-elche' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_elche" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_elche_v2" />
       </div>
     </>
   );

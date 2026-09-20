@@ -107,7 +107,7 @@ export default function BlogCamarerosHuesca() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-huesca' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_huesca" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_huesca_v2" />
       </div>
     </>
   );

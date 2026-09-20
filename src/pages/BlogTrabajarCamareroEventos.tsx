@@ -141,7 +141,7 @@ export default function BlogTrabajarCamareroEventos() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/como-trabajar-de-camarero-eventos' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_trabajar_camarero_eventos" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_trabajar_camarero_eventos_v2" />
       </div>
     </>
   );

@@ -107,7 +107,7 @@ export default function BlogCamarerosValladolid() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-valladolid' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_valladolid" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_valladolid_v2" />
       </div>
     </>
   );

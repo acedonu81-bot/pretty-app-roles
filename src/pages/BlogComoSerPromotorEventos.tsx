@@ -144,7 +144,7 @@ export default function BlogComoSerPromotorEventos() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/como-ser-promotor-eventos' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_como_ser_promotor_eventos" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_como_ser_promotor_eventos_v2" />
       </div>
     </>
   );

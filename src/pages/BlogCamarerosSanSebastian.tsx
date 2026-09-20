@@ -107,7 +107,7 @@ export default function BlogCamarerosSanSebastian() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-sansebastian' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_san_sebastian" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_san_sebastian_v2" />
       </div>
     </>
   );

@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasHospitalet() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-hospitalet' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata" storageKey="xpeak_scrollcta_precio_azafatas_hospitalet" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_hospitalet_v2" />
       </div>
     </>
   );

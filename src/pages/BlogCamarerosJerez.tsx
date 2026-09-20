@@ -106,7 +106,7 @@ export default function BlogCamarerosJerez() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-jerez' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_jerez" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_jerez_v2" />
       </div>
     </>
   );

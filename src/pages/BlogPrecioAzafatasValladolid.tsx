@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasValladolid() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-valladolid' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata" storageKey="xpeak_scrollcta_precio_azafatas_valladolid" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_valladolid_v2" />
       </div>
     </>
   );

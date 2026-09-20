@@ -124,7 +124,7 @@ export default function BlogPrecioBailarin() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-bailarin-instructor-salsa-bachata' tag='Bailarin' />
         <FooterPublic />
-        <BlogScrollCTA role="bailarin" storageKey="xpeak_scrollcta_precio_bailarin" />
+        <BlogScrollCTA role="bailarin_pro" storageKey="xpeak_scrollcta_precio_bailarin_v2" />
       </div>
     </>
   );

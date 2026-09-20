@@ -106,7 +106,7 @@ export default function BlogMaquillajeFuengirola() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-fuengirola' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maquillaje_fuengirola" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_fuengirola_v2" />
       </div>
     </>
   );

@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasSantander() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-santander' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata" storageKey="xpeak_scrollcta_precio_azafatas_santander" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_santander_v2" />
       </div>
     </>
   );

@@ -106,7 +106,7 @@ export default function BlogCamarerosLeganes() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-leganes' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_leganes" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_leganes_v2" />
       </div>
     </>
   );

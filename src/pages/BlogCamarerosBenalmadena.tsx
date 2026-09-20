@@ -107,7 +107,7 @@ export default function BlogCamarerosBenalmadena() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-benalmadena' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_benalmadena" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_benalmadena_v2" />
       </div>
     </>
   );

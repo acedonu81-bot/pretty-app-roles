@@ -107,7 +107,7 @@ export default function BlogCamarerosTarragona() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-tarragona' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_tarragona" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_tarragona_v2" />
       </div>
     </>
   );

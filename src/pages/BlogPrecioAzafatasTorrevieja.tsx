@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasTorrevieja() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-torrevieja' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata" storageKey="xpeak_scrollcta_precio_azafatas_torrevieja" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_torrevieja_v2" />
       </div>
     </>
   );

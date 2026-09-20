@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasVigo() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-vigo' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata" storageKey="xpeak_scrollcta_precio_azafatas_vigo" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_vigo_v2" />
       </div>
     </>
   );

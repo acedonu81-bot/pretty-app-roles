@@ -107,7 +107,7 @@ export default function BlogCamarerosTorremolinos() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-torremolinos' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_torremolinos" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_torremolinos_v2" />
       </div>
     </>
   );

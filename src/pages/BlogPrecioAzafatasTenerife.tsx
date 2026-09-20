@@ -107,7 +107,7 @@ export default function BlogPrecioAzafatasTenerife() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-tenerife' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata" storageKey="xpeak_scrollcta_precio_azafatas_tenerife" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_tenerife_v2" />
       </div>
     </>
   );

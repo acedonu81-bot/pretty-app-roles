@@ -107,7 +107,7 @@ export default function BlogMaquillajeLasPalmas() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-laspalmas' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maquillaje_las_palmas" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_las_palmas_v2" />
       </div>
     </>
   );

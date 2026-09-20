@@ -107,7 +107,7 @@ export default function BlogCamarerosTorrevieja() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-torrevieja' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_torrevieja" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_torrevieja_v2" />
       </div>
     </>
   );

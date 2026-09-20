@@ -142,7 +142,7 @@ export default function BlogDJBodaACoruna() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-a-coruna' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_acoruna" />
+        <BlogScrollCTA role="dj_pro" storageKey="xpeak_scrollcta_dj_acoruna_v2" />
       </div>
     </>
   );

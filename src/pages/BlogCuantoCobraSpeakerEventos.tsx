@@ -127,7 +127,7 @@ export default function BlogCuantoCobraSpeakerEventos() {
 
         <BlogRelatedPosts currentSlug='/blog/cuanto-cobra-un-speaker-de-eventos' tag='Speaker' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_speaker_precio" />
+        <BlogScrollCTA role="speaker_pro" storageKey="xpeak_scrollcta_speaker_precio_v2" />
       </div>
     </>
   );

@@ -106,7 +106,7 @@ export default function BlogCamarerosHospitalet() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-hospitalet' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_hospitalet" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_hospitalet_v2" />
       </div>
     </>
   );

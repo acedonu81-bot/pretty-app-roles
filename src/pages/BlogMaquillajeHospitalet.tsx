@@ -106,7 +106,7 @@ export default function BlogMaquillajeHospitalet() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-hospitalet' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maquillaje_hospitalet" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_hospitalet_v2" />
       </div>
     </>
   );

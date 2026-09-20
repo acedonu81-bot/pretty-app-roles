@@ -106,7 +106,7 @@ export default function BlogCamarerosTerrassa() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-terrassa' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_terrassa" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_terrassa_v2" />
       </div>
     </>
   );

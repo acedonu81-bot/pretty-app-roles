@@ -107,7 +107,7 @@ export default function BlogCamarerosLasPalmas() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-laspalmas' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_las_palmas" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_las_palmas_v2" />
       </div>
     </>
   );

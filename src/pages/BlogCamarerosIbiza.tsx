@@ -107,7 +107,7 @@ export default function BlogCamarerosIbiza() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-ibiza' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_ibiza" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_ibiza_v2" />
       </div>
     </>
   );

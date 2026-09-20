@@ -107,7 +107,7 @@ export default function BlogCamarerosLogrono() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-logrono' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_logrono" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_logrono_v2" />
       </div>
     </>
   );

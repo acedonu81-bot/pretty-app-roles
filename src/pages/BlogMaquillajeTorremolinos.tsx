@@ -106,7 +106,7 @@ export default function BlogMaquillajeTorremolinos() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-torremolinos' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maquillaje_torremolinos" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_torremolinos_v2" />
       </div>
     </>
   );

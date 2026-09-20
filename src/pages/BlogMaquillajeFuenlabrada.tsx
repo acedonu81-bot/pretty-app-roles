@@ -106,7 +106,7 @@ export default function BlogMaquillajeFuenlabrada() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-fuenlabrada' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maquillaje_fuenlabrada" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_fuenlabrada_v2" />
       </div>
     </>
   );

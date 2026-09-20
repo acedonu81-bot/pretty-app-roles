@@ -107,7 +107,7 @@ export default function BlogCamarerosSegovia() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-segovia' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_segovia" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_segovia_v2" />
       </div>
     </>
   );

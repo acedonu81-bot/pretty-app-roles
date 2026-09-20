@@ -140,7 +140,7 @@ export default function BlogPrecioAzafatas() {
       <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-eventos-espana' tag='Staff' />
         <FooterPublic />
-      <BlogScrollCTA role="azafata" storageKey="xpeak_scrollcta_precio_azafatas" />
+      <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_v2" />
       </div>
     </>
   );

@@ -107,7 +107,7 @@ export default function BlogCamarerosValencia() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-valencia' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_valencia" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_valencia_v2" />
       </div>
     </>
   );

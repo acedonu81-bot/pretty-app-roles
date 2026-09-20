@@ -106,7 +106,7 @@ export default function BlogMaquillajeSanSebastian() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-sansebastian' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maquillaje_san_sebastian" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_san_sebastian_v2" />
       </div>
     </>
   );

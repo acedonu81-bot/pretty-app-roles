@@ -107,7 +107,7 @@ export default function BlogCamarerosSitges() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-sitges' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_sitges" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_sitges_v2" />
       </div>
     </>
   );

@@ -107,7 +107,7 @@ export default function BlogCamarerosZaragoza() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-zaragoza' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_zaragoza" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_zaragoza_v2" />
       </div>
     </>
   );

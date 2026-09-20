@@ -107,7 +107,7 @@ export default function BlogCamarerosGijon() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-gijon' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_gijon" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_gijon_v2" />
       </div>
     </>
   );

@@ -106,7 +106,7 @@ export default function BlogCamarerosFuenlabrada() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-fuenlabrada' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_fuenlabrada" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_fuenlabrada_v2" />
       </div>
     </>
   );

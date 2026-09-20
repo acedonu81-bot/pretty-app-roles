@@ -106,7 +106,7 @@ export default function BlogCamarerosBenidorm() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-benidorm' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_benidorm" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_benidorm_v2" />
       </div>
     </>
   );

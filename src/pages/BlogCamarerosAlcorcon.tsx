@@ -106,7 +106,7 @@ export default function BlogCamarerosAlcorcon() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-alcorcon' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_alcorcon" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_alcorcon_v2" />
       </div>
     </>
   );

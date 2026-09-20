@@ -107,7 +107,7 @@ export default function BlogCamarerosTenerife() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-tenerife' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_tenerife" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_tenerife_v2" />
       </div>
     </>
   );

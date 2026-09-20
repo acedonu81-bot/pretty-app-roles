@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasAlbacete() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-albacete' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata" storageKey="xpeak_scrollcta_precio_azafatas_albacete" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_albacete_v2" />
       </div>
     </>
   );

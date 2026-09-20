@@ -145,7 +145,7 @@ export default function BlogCuantoCobraPromotorRRPP() {
 
         <BlogRelatedPosts currentSlug='/blog/cuanto-cobra-un-promotor-rrpp' tag='Promotores' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_promotor_precio" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_promotor_precio_v2" />
       </div>
     </>
   );

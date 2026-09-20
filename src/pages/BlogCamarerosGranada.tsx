@@ -107,7 +107,7 @@ export default function BlogCamarerosGranada() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-granada' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_granada" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_granada_v2" />
       </div>
     </>
   );

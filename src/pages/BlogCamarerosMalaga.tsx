@@ -107,7 +107,7 @@ export default function BlogCamarerosMalaga() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-malaga' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_malaga" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_malaga_v2" />
       </div>
     </>
   );

@@ -107,7 +107,7 @@ export default function BlogCamarerosSantiago() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-santiago' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_camareros_santiago" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_santiago_v2" />
       </div>
     </>
   );

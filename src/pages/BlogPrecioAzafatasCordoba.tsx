@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasCordoba() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-cordoba' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata" storageKey="xpeak_scrollcta_precio_azafatas_cordoba" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_cordoba_v2" />
       </div>
     </>
   );

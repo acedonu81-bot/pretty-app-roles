@@ -1,18 +1,30 @@
 interface BlogTopCTAProps {
   label: string;
   href: string;
+  text?: string;
+  highlight?: boolean;
 }
 
-export default function BlogTopCTA({ label, href }: BlogTopCTAProps) {
+export default function BlogTopCTA({ label, href, text, highlight }: BlogTopCTAProps) {
   return (
-    <div className="flex items-center justify-between gap-3 my-4 px-4 py-3 rounded-xl"
-      style={{ background: 'rgba(212,175,55,0.07)', border: '1px solid rgba(212,175,55,0.2)' }}>
-      <p className="text-xs font-bold" style={{ color: '#222' }}>
-        Flash Booking — profesionales verificados en menos de 1h
+    <div
+      className="flex items-center justify-between gap-3 my-4 px-4 py-3 rounded-xl"
+      style={
+        highlight
+          ? { background: 'linear-gradient(90deg,#D4AF37,#B8941E)', border: '1px solid #B8941E' }
+          : { background: 'rgba(212,175,55,0.07)', border: '1px solid rgba(212,175,55,0.2)' }
+      }
+    >
+      <p className="text-xs font-bold" style={{ color: highlight ? '#000' : '#222' }}>
+        {text ?? 'Flash Booking — profesionales verificados en menos de 1h'}
       </p>
       <a href={href}
         className="flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-black transition-all hover:scale-105 whitespace-nowrap"
-        style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
+        style={
+          highlight
+            ? { background: '#000', color: '#D4AF37' }
+            : { background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }
+        }>
         {label}
       </a>
     </div>
