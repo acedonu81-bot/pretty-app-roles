@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import { toast } from 'sonner';
+import { isNative } from '@/lib/capacitor';
 
 const VerificationSection = () => {
   const { user } = useAuth();
@@ -58,7 +59,7 @@ const VerificationSection = () => {
   };
 
   return (
-    <div className="glass-panel p-5 relative overflow-hidden"
+    <div className={`glass-panel p-5 relative overflow-hidden${isNative ? ' clay-card' : ''}`}
       style={{
         border: syncedStatus === 'approved'
           ? '1px solid rgba(212,175,55,0.5)'

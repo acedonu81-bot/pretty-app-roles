@@ -11,6 +11,7 @@ import PortfolioUpload from '@/components/dashboard/PortfolioUpload';
 import MisCondicionesSection from './profile/MisCondicionesSection';
 import { sanitizeInput } from '@/lib/contentFilter';
 import { DEFAULT_ZONE, DJ_GENRES, ROLE_TAGS } from '@/lib/constants';
+import { isNative } from '@/lib/capacitor';
 
 const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {}) => {
   const { user } = useAuth();
@@ -369,7 +370,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
 
       <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-4">
         <div className="flex flex-col gap-4">
-          <div className="glass-panel p-5 text-center">
+          <div className={`glass-panel p-5 text-center${isNative ? ' clay-card' : ''}`}>
             <div className="relative cursor-pointer group mx-auto w-20 h-20 mb-3" onClick={() => photoRef.current?.click()}>
               <div className="w-20 h-20 rounded-lg overflow-hidden flex items-center justify-center text-2xl font-bold"
                 style={{ background: photoUrl ? undefined : 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
@@ -388,7 +389,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
           </div>
           {/* — Completitud del perfil — */}
           {completenessSteps.percent < 100 && (
-            <div className="glass-panel p-4">
+            <div className={`glass-panel p-4${isNative ? ' clay-card' : ''}`}>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: 'rgba(212,175,55,0.7)' }}>Perfil completo</span>
                 <span className="text-sm font-black" style={{ color: completenessSteps.percent >= 80 ? '#22c55e' : completenessSteps.percent >= 50 ? '#D4AF37' : '#ff5f56' }}>
@@ -443,7 +444,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             </div>
           )}
 
-          <div className="glass-panel p-4">
+          <div className={`glass-panel p-4${isNative ? ' clay-card' : ''}`}>
             {([
               ['Bookings 2026', sideStats.bookings === null ? '—' : String(sideStats.bookings)],
               // `score` no existe en el perfil cargado: esto renderizaba siempre
@@ -460,7 +461,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
 
           {/* — Compartir perfil — */}
           {user && (
-            <div className="glass-panel p-4">
+            <div className={`glass-panel p-4${isNative ? ' clay-card' : ''}`}>
               <div className="flex items-center gap-2 mb-3">
                 <Share2 size={13} style={{ color: '#8A6D0F' }} />
                 <span className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: 'rgba(212,175,55,0.7)' }}>Comparte tu perfil</span>
@@ -523,7 +524,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
 
           {/* — Invita y gana prioridad — */}
           {user && profile.role !== 'empresario' && (
-            <div className="glass-panel p-4" style={referralIsNew ? { border: '1px solid rgba(37,99,235,0.35)', boxShadow: '0 0 0 1px rgba(37,99,235,0.08)' } : undefined}>
+            <div className={`glass-panel p-4${isNative ? ' clay-card' : ''}`} style={referralIsNew ? { border: '1px solid rgba(37,99,235,0.35)', boxShadow: '0 0 0 1px rgba(37,99,235,0.08)' } : undefined}>
               <div className="flex items-center gap-2 mb-1">
                 <Star size={13} style={{ color: '#2563eb' }} />
                 <span className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: '#2563eb' }}>Invita y gana prioridad</span>
@@ -589,7 +590,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                   setIsAvailable(current); // revert on error
                 }
               }}
-              className="glass-panel p-4 w-full text-left transition-all hover:scale-[1.01]"
+              className={`glass-panel p-4 w-full text-left transition-all hover:scale-[1.01]${isNative ? ' clay-card' : ''}`}
               style={{
                 border: `1px solid ${(isAvailable ?? profile.is_flash_active) ? 'rgba(34,197,94,0.35)' : 'rgba(0,0,0,0.05)'}`,
                 background: (isAvailable ?? profile.is_flash_active) ? 'rgba(34,197,94,0.06)' : 'rgba(255,255,255,0.02)',
@@ -618,7 +619,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="glass-panel p-5">
+          <div className={`glass-panel p-5${isNative ? ' clay-card' : ''}`}>
             <h4 className="text-base font-bold mb-4">Información</h4>
 
             {/* — Identidad — */}
@@ -1169,7 +1170,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
           {profile.role !== 'dj' && profile.role !== 'empresario' && <PortfolioUpload />}
 
           {/* Export ZIP - GDPR */}
-          <div className="glass-panel p-5 flex items-center justify-between gap-4"
+          <div className={`glass-panel p-5 flex items-center justify-between gap-4${isNative ? ' clay-card' : ''}`}
             style={{ border: '1px solid rgba(212,175,55,0.2)' }}>
             <div>
               <h4 className="text-sm font-bold flex items-center gap-2">
@@ -1188,7 +1189,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
           </div>
 
           {/* Media deletion - GDPR */}
-          <div className="glass-panel p-5">
+          <div className={`glass-panel p-5${isNative ? ' clay-card' : ''}`}>
             <h4 className="text-base font-bold mb-2 flex items-center gap-2">
               <Trash2 size={16} style={{ color: '#ff5f56' }} /> Gestión de Contenido Multimedia
             </h4>
@@ -1238,7 +1239,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
               </div>
             )}
           </div>
-          <div className="glass-panel p-5">
+          <div className={`glass-panel p-5${isNative ? ' clay-card' : ''}`}>
             <h4 className="text-base font-bold mb-4">Valoraciones</h4>
             <div className="flex flex-col items-center py-6 gap-3">
               <div className="w-12 h-12 rounded-xl flex items-center justify-center"
