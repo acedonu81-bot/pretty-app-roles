@@ -1,5 +1,3 @@
-import { isNative } from '@/lib/capacitor';
-
 /**
  * Pantalla de aterrizaje del dashboard: el mapa de la plataforma.
  *
@@ -42,24 +40,6 @@ const SOMBRA = [
 const SOMBRA_HOVER = [
   '0 4px 8px rgba(10,9,8,0.12)',
   '0 20px 60px rgba(10,9,8,0.26)',
-  '0 8px 36px rgba(212,175,55,0.42)',
-].join(', ');
-
-/**
- * Variante nativa (claymorphism): la tarjeta lleva foto de fondo, así que la
- * doble sombra clara/oscura de .clay-card (pensada para superficies planas)
- * no encaja dentro de la imagen — se aplica solo por fuera, como elevación
- * del conjunto, manteniendo el degradado y el filo dorado tal cual.
- */
-const SOMBRA_NATIVA = [
-  '-6px -6px 14px rgba(255,255,255,0.7)',
-  '8px 10px 20px rgba(150,130,90,0.22)',
-  '0 4px 24px rgba(212,175,55,0.12)',
-].join(', ');
-
-const SOMBRA_NATIVA_HOVER = [
-  '-6px -6px 14px rgba(255,255,255,0.75)',
-  '10px 14px 28px rgba(150,130,90,0.32)',
   '0 8px 36px rgba(212,175,55,0.42)',
 ].join(', ');
 
@@ -130,7 +110,7 @@ const Tarjeta = ({ item, onNavigate }: { item: { id: string; view: string; nombr
     type="button"
     onClick={() => onNavigate?.(item.view)}
     aria-label={`Ver ${item.nombre}`}
-    className={`group relative w-full overflow-hidden text-left transition-all duration-300 hover:-translate-y-1 hover:scale-[1.015] active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] focus-visible:ring-offset-2 ${isNative ? 'rounded-[28px]' : 'rounded-2xl'}`}
+    className="group relative w-full overflow-hidden rounded-2xl text-left transition-all duration-300 hover:-translate-y-1 hover:scale-[1.015] active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] focus-visible:ring-offset-2"
     style={{
       aspectRatio: '3 / 2',
       background: '#ffffff',
@@ -138,10 +118,10 @@ const Tarjeta = ({ item, onNavigate }: { item: { id: string; view: string; nombr
       // Sombra en capas (mismo registro que los modales del proyecto,
       // 0 20px 60px): contacto corto + difusa larga, para que la tarjeta
       // levante de la página en vez de quedarse pegada al blanco.
-      boxShadow: isNative ? SOMBRA_NATIVA : SOMBRA,
+      boxShadow: SOMBRA,
     }}
-    onMouseEnter={e => { e.currentTarget.style.boxShadow = isNative ? SOMBRA_NATIVA_HOVER : SOMBRA_HOVER; }}
-    onMouseLeave={e => { e.currentTarget.style.boxShadow = isNative ? SOMBRA_NATIVA : SOMBRA; }}
+    onMouseEnter={e => { e.currentTarget.style.boxShadow = SOMBRA_HOVER; }}
+    onMouseLeave={e => { e.currentTarget.style.boxShadow = SOMBRA; }}
   >
     <img
       src={img(item.id)}
@@ -165,7 +145,7 @@ const Tarjeta = ({ item, onNavigate }: { item: { id: string; view: string; nombr
       <p className="mt-0.5 text-[11px] sm:text-xs leading-snug text-white/85 line-clamp-2 [text-shadow:0_1px_2px_rgba(0,0,0,0.95)]">{item.gancho}</p>
     </div>
     {/* Filo dorado: sutil en reposo, marcado y de 2px al pasar por encima. */}
-    <div className={`pointer-events-none absolute inset-0 ring-1 ring-inset ring-[#D4AF37]/25 transition-all duration-300 group-hover:ring-2 group-hover:ring-[#D4AF37] ${isNative ? 'rounded-[28px]' : 'rounded-2xl'}`} />
+    <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-[#D4AF37]/25 transition-all duration-300 group-hover:ring-2 group-hover:ring-[#D4AF37]" />
   </button>
 );
 
