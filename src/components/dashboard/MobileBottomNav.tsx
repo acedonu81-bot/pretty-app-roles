@@ -1,5 +1,4 @@
 import { Zap, MessageSquare, User, Home, type LucideIcon } from 'lucide-react';
-import { haptics } from '@/lib/haptics';
 
 interface MobileBottomNavProps {
   activeView: string;
@@ -52,10 +51,14 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
   // Antes iba al listado del propio gremio; se queda marcado como activo
   // también en esos listados porque se llega a ellos desde aquí — sin eso,
   // navegar a un rol dejaba la barra entera sin ningún tab encendido.
-  const leftTabs: Tab[] = [
+  // Tab bar simétrico de 4: Inicio, Flash Booking, Chat, Perfil — todos con
+  // el mismo peso visual, sin FAB elevado (se probó centrado con un hueco
+  // invisible y quedó descentrado con solo 3 tabs reales; resucitar el tab
+  // de Descubrir no es una opción porque ya no funciona bien, así que se
+  // simplifica a un tab bar plano de verdad en vez de fingir simetría).
+  const tabs: Tab[] = [
     { id: 'explorar', icon: Home, label: 'Inicio', isActive: activeView === 'explorar' || dirViews.has(activeView) },
-  ];
-  const rightTabs: Tab[] = [
+    { id: 'flashbooking', icon: Zap, label: 'Flash', isActive: activeView === 'flashbooking' || activeView === 'flash' },
     { id: 'messages', icon: MessageSquare, label: 'Chat', isActive: activeView === 'messages', badge: unreadCount },
     { id: 'profile', icon: User, label: 'Perfil', isActive: activeView === 'profile' || activeView === 'settings' },
   ];
@@ -77,36 +80,9 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
         position: 'fixed',
       }}
     >
-      {leftTabs.map(tab => (
+      {tabs.map(tab => (
         <TabButton key={tab.id} tab={tab} onClick={() => onViewChange(tab.id)} />
       ))}
-
-      {/* Hueco invisible del mismo ancho que el FAB: solo 3 tabs reales
-          (Inicio, Chat, Perfil) reparten el espacio 1-2 alrededor del FAB, así
-          que sin este hueco el flex lo deja descentrado hacia la izquierda. El
-          FAB en sí se posiciona absoluto centrado respecto al <nav> completo,
-          independiente del flujo flex de los tabs. */}
-      <div className="w-[76px] flex-shrink-0" aria-hidden="true" />
-
-      {rightTabs.map(tab => (
-        <TabButton key={tab.id} tab={tab} onClick={() => onViewChange(tab.id)} />
-      ))}
-
-      {/* FAB elevado de Flash Booking: sin label de texto, icono de rayo
-          centrado, extraído de la lista de tabs (mockup validado 18 sep).
-          Centrado absoluto respecto al <nav>, no al flujo flex de los tabs. */}
-      <button
-        type="button"
-        aria-label="¿Qué estás organizando?"
-        onClick={() => {
-          haptics.tap();
-          onViewChange('flashbooking');
-        }}
-        className="tab-fab"
-        style={{ position: 'absolute', left: '50%', top: 0, transform: 'translateX(-50%)' }}
-      >
-        <Zap className="w-6 h-6" />
-      </button>
     </nav>
   );
 };

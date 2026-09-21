@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import MobileBottomNav from '../MobileBottomNav';
 
 describe('MobileBottomNav', () => {
-  it('el FAB central llama onViewChange con flashbooking', () => {
+  it('el tab Flash llama onViewChange con flashbooking', () => {
     const onViewChange = vi.fn();
     render(
       <MobileBottomNav
@@ -13,21 +13,8 @@ describe('MobileBottomNav', () => {
         unreadCount={0}
       />
     );
-    const fab = screen.getByLabelText('¿Qué estás organizando?');
-    fireEvent.click(fab);
+    fireEvent.click(screen.getByText('Flash').closest('button')!);
     expect(onViewChange).toHaveBeenCalledWith('flashbooking');
-  });
-
-  it('el FAB no muestra texto/label visible, solo el icono', () => {
-    render(
-      <MobileBottomNav
-        activeView="explorar"
-        onViewChange={vi.fn()}
-        onMenuToggle={vi.fn()}
-        unreadCount={0}
-      />
-    );
-    expect(screen.queryByText('Flash')).not.toBeInTheDocument();
   });
 
   it('el badge de chat muestra el número de no leídos', () => {
@@ -54,7 +41,7 @@ describe('MobileBottomNav', () => {
     expect(screen.getByText('Perfil').closest('button')).toHaveAttribute('aria-current', 'true');
   });
 
-  it('los 3 tabs normales (Inicio, Chat, Perfil) siguen presentes', () => {
+  it('los 4 tabs (Inicio, Flash, Chat, Perfil) siguen presentes, con el mismo peso visual', () => {
     render(
       <MobileBottomNav
         activeView="explorar"
@@ -64,6 +51,7 @@ describe('MobileBottomNav', () => {
       />
     );
     expect(screen.getByText('Inicio')).toBeInTheDocument();
+    expect(screen.getByText('Flash')).toBeInTheDocument();
     expect(screen.getByText('Chat')).toBeInTheDocument();
     expect(screen.getByText('Perfil')).toBeInTheDocument();
   });
