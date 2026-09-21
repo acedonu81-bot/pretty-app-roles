@@ -251,7 +251,7 @@ export default function MisCondicionesSection({ profile, onSaved }: Props) {
           </p>
         </div>
 
-        <div className={`rounded-2xl p-5${isNative ? ' clay-card' : ''}`} style={{ background: '#0a0908', color: '#fff' }}>
+        <div className="rounded-2xl p-5" style={{ background: '#0a0908', color: '#fff' }}>
           <p className="text-[0.65rem] font-black uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>
             Mis condiciones
           </p>
