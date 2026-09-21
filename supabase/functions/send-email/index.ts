@@ -1200,6 +1200,30 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         ¿Ayuda? <a href="mailto:info@xpeak.site" style="color:#D4AF37">info@xpeak.site</a>
       </p>`),
   }),
+
+  // Aviso puntual a un local externo (no usuario de XPEAK) de que aparece en
+  // la guía de locales del blog. Usa el mismo layout base() que el resto de
+  // plantillas: un email nuevo sin la identidad visual de marca ya asentada
+  // del dominio (logo, footer, estructura reconocible) cae en spam mucho más
+  // fácil, aunque DKIM/SPF/DMARC estén correctos — lo comprobamos en vivo el
+  // 21 sep con la primera versión en texto plano. Sí lleva List-Unsubscribe
+  // aunque el destinatario no tenga perfil en el sistema: ayuda a la
+  // entregabilidad y es la práctica esperada por los proveedores de correo.
+  outreach_local: (d: any) => ({
+    to: d.email,
+    subject: 'Os hemos incluido en nuestra guía de locales para eventos en Madrid',
+    replyTo: ADMIN,
+    html: base(`
+      <p style="color:#1a1a1a;font-size:15px;line-height:1.7;margin:0 0 16px">Hola,</p>
+      <p style="color:#1a1a1a;font-size:15px;line-height:1.7;margin:0 0 16px">Somos XPEAK, un directorio de profesionales para eventos como DJs, camareros y fotógrafos en España.</p>
+      <p style="color:#1a1a1a;font-size:15px;line-height:1.7;margin:0 0 16px">Acabamos de publicar una guía de locales para fiestas y eventos en Madrid, y os hemos incluido porque nos parece un espacio que encaja muy bien.</p>
+      <p style="color:#1a1a1a;font-size:15px;line-height:1.7;margin:0 0 16px">Enlace al post: <a href="https://xpeak.es/blog/locales-para-eventos-madrid" style="color:#0D9488">xpeak.es/blog/locales-para-eventos-madrid</a></p>
+      <p style="color:#1a1a1a;font-size:15px;line-height:1.7;margin:0 0 16px">No es un directorio de pago ni os pedimos nada a cambio.</p>
+      <p style="color:#1a1a1a;font-size:15px;line-height:1.7;margin:0 0 16px">Un detalle de transparencia. Como no queríamos usar ninguna foto vuestra sin permiso, de momento tenéis puesta una foto genérica del tipo de local. Si nos mandáis una foto real vuestra, la cambiamos encantados.</p>
+      <p style="color:#1a1a1a;font-size:15px;line-height:1.7;margin:0 0 16px">Si tenéis curiosidad, también podéis echar un vistazo a nuestro <a href="https://xpeak.es/descubrir" style="color:#0D9488">directorio de profesionales</a>, por si os sirve de referencia para vuestros propios eventos o para recomendarlo a quien organice algo en vuestro local.</p>
+      <p style="color:#1a1a1a;font-size:15px;line-height:1.7;margin:0">Un saludo<br>Daniel, XPEAK</p>
+    `, 'Os hemos incluido en nuestra guía de locales para eventos en Madrid'),
+  }),
 };
 
 // denomailer codifica el body en quoted-printable y convierte todo "espacio +
@@ -1254,8 +1278,36 @@ function clampSubject(subject: string): string {
   return out.trimEnd() + '…';
 }
 
+// SpamAssassin penaliza un correo que SOLO trae HTML (MIME_HTML_ONLY,
+// HTML_MIME_NO_HTML_TAG, MPART_ALT_DIFF) — detectado el 21 sep vía
+// mail-tester en la plantilla `welcome`, la más enviada del sistema. Un
+// texto plano fiel, aunque tosco, basta para que el cliente lo reconozca
+// como multipart/alternative real en vez de "HTML disfrazado de texto".
+// No hace falta preservar el layout, solo dar una alternativa legible.
+function htmlToPlainText(html: string): string {
+  return html
+    .replace(/<style[\s\S]*?<\/style>/gi, '')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/(p|div|h[1-6]|li|tr)>/gi, '\n')
+    .replace(/<a\s+[^>]*href=["']([^"']+)["'][^>]*>(.*?)<\/a>/gi, (_m, href, text) => {
+      const label = text.replace(/<[^>]+>/g, '').trim();
+      return label && label !== href ? `${label} (${href})` : href;
+    })
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
 async function sendMail(to: string, subject: string, html: string, replyTo?: string, unsubUrl?: string) {
   html = minifyHtml(html);
+  const content = htmlToPlainText(html);
   subject = clampSubject(subject);
   const smtpPass = Deno.env.get('SMTP_PASS');
   if (!smtpPass) throw new Error('SMTP_PASS not configured');
@@ -1278,6 +1330,7 @@ async function sendMail(to: string, subject: string, html: string, replyTo?: str
       replyTo: replyTo ?? ADMIN,
       subject,
       html,
+      content,
       // Gmail/Yahoo exigen List-Unsubscribe + one-click desde feb 2024 en envíos
       // automatizados; sin estas cabeceras penalizan la entrega aunque el enlace
       // de baja esté en el HTML. Reutiliza el mismo token HMAC firmado.

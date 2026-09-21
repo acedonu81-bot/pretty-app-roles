@@ -366,6 +366,19 @@ const ROUTES = [
   { path: '/blog/musica-para-bodas-guia',              title: 'Música para bodas: DJ, banda en directo o lista de reproducción — guía 2026 — XPEAK',  desc: 'Comparativa completa DJ vs banda vs cuarteto vs playlist para bodas. Precios, ventajas y cuándo elegir cada opción para tu boda en España.',           ogTitle: 'Música para bodas: DJ vs banda 2026 — XPEAK Blog', ogDesc: 'Comparativa DJ vs banda en directo para tu boda. Precios y cuándo elegir cada opción.',           ogType: 'article' },
   { path: '/blog/fotografia-eventos-nocturnos',        title: 'Fotografía en eventos nocturnos: precios y cómo contratar en España (2026) — XPEAK',   desc: 'Cuánto cobra un fotógrafo de discoteca o eventos nocturnos en España. Precios por tipo de evento, equipo necesario y cómo elegir el perfil correcto.',  ogTitle: 'Fotografía eventos nocturnos: precios 2026 — XPEAK', ogDesc: 'Cuánto cobra un fotógrafo de eventos nocturnos en España. Precios y guía de contratación.', ogType: 'article' },
 
+  // Directorio genérico de profesionales. Sin esta entrada, /descubrir nunca
+  // se prerenderizaba y caía en el catch-all de vercel.json que sirve
+  // index.html pero fuerza status 404 — Google y cualquier verificador de
+  // enlaces (detectado el 21 sep vía mail-tester al enlazarla desde un email)
+  // la trataban como página inexistente aunque el contenido cargase bien en
+  // el navegador.
+  { path: '/descubrir', title: 'Descubre profesionales para tu evento — XPEAK', desc: 'Directorio de DJs, camareros, fotógrafos y más profesionales para eventos en España. Compara perfiles verificados y contrata desde un mismo carrito.', ogTitle: 'Descubre profesionales para tu evento — XPEAK', ogDesc: 'Directorio de profesionales para eventos en España: DJs, camareros, fotógrafos y más.', ogType: 'website' },
+  // Página pública de baja de emails, enlazada desde el footer de TODOS los
+  // correos del sistema (List-Unsubscribe). Mismo bug que /descubrir: sin
+  // prerender caía en el catch-all 404 de vercel.json, restando puntos de
+  // SpamAssassin en cada email enviado (detectado el 21 sep vía mail-tester).
+  { path: '/baja-emails', title: 'Baja de emails — XPEAK', desc: 'Cancela la suscripción a los correos de XPEAK.', ogTitle: 'Baja de emails — XPEAK', ogDesc: 'Cancela la suscripción a los correos de XPEAK.', ogType: 'website' },
+
   // Precios
   { path: '/precios', title: 'Precios XPEAK — Para profesionales y empresarios de eventos', desc: 'Precios de XPEAK para DJs, fotógrafos, camareros y staff, y para salas, promotoras y organizadores. Contratos digitales incluidos.', ogTitle: 'Precios XPEAK — Para profesionales y empresarios de eventos', ogDesc: 'Precios de XPEAK para profesionales y empresarios de eventos. Contratos digitales automáticos.', ogType: 'website' },
   { path: '/blog/precio-azafatas-eventos-espana',  title: 'Precio de azafatas para eventos en España: guía completa 2026 — XPEAK', desc: 'Tarifas reales de azafatas para ferias, congresos y eventos corporativos en España. Perfiles, precios por jornada y qué incluye. Guía 2026.', ogTitle: 'Precio azafatas eventos España 2026 — XPEAK Blog', ogDesc: 'Cuánto cobran las azafatas para eventos y ferias en España. Tarifas por perfil y ciudad.', ogType: 'article' },

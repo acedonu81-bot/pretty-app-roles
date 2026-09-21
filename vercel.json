@@ -154,6 +154,8 @@
 
     { "src": "^/p/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", "dest": "/index.html" },
 
+    { "src": "^/dashboard$", "dest": "/index.html" },
+
     { "src": "/(.*)", "status": 404, "dest": "/index.html" }
   ]
 }
