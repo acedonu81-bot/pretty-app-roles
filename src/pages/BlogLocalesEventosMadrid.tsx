@@ -59,7 +59,6 @@ const emblematicos: Local[] = [
 
 const salas: Local[] = [
   { nombre: 'Sala BaoBao', zona: 'Chamberí', tipo: 'Discoteca, aforo 380', web: 'https://baobaomadrid.com', foto: G_DISCO[0], fotoReal: false },
-  { nombre: 'Black Star Madrid', zona: 'Chamartín', tipo: 'Discoteca / bar de copas', web: 'https://blackstarmadrid.es', foto: G_DISCO[2], fotoReal: false },
   { nombre: 'Privados Madrid', zona: 'Leganés', tipo: '15 salas privadas', web: 'https://privadosmadrid.com', foto: G_DISCO[0], fotoReal: false },
   { nombre: 'B12 Madrid', zona: 'Centro', tipo: 'Discoteca', web: 'https://www.b12madrid.com', foto: G_DISCO[1], fotoReal: false },
   { nombre: 'Terminal 55', zona: 'Centro', tipo: 'Discoteca', web: 'https://terminal55madrid.com', foto: G_DISCO[2], fotoReal: false },
@@ -67,10 +66,10 @@ const salas: Local[] = [
   { nombre: 'Copérnico The Club', zona: 'Moncloa', tipo: 'Sala / discoteca', web: 'https://salacopernico.es', foto: G_DISCO[1], fotoReal: false },
   { nombre: 'NEXT Clubbing', zona: 'Cuzco', tipo: 'Club de música electrónica', web: 'https://nextclubbing.com', foto: G_DISCO[2], fotoReal: false },
   { nombre: 'Cristo Social Club', zona: 'Salamanca', tipo: 'Espacio elegante para eventos', web: 'https://xceed.me/es/madrid/venue/cristo-social-club', foto: G_DISCO[0], fotoReal: false },
-  { nombre: 'Calle 365', zona: 'Las Letras', tipo: 'Speakeasy inmersivo', foto: G_DISCO[1], fotoReal: false },
+  { nombre: 'Calle 365', zona: 'Las Letras', tipo: 'Speakeasy inmersivo', web: 'https://www.instagram.com/calle_365', foto: G_DISCO[1], fotoReal: false },
   { nombre: 'Costa Breve', zona: 'Las Letras', tipo: 'Eventos privados', web: 'https://grupocostabreve.com', foto: G_DISCO[2], fotoReal: false },
   { nombre: 'Malavita Night Bar', zona: 'Chamberí', tipo: 'Cumpleaños y fiestas privadas', web: 'https://malavitanightbar.com', foto: G_DISCO[0], fotoReal: false },
-  { nombre: 'Sala Kubik', zona: 'Puerta de Toledo', tipo: 'Espacio multifuncional, aforo 120', foto: G_DISCO[1], fotoReal: false },
+  { nombre: 'Sala Kubik', zona: 'Puerta de Toledo', tipo: 'Espacio multifuncional, aforo 120', web: 'https://www.instagram.com/salakubikmadrid', foto: G_DISCO[1], fotoReal: false },
 ];
 
 const bares: Local[] = [
