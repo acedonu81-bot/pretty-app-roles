@@ -74,14 +74,27 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
         // inset, y respeta el valor real cuando sí lo hace.
         paddingBottom: 'max(env(safe-area-inset-bottom), 12px)',
         height: 'calc(64px + max(env(safe-area-inset-bottom), 12px))',
+        position: 'fixed',
       }}
     >
       {leftTabs.map(tab => (
         <TabButton key={tab.id} tab={tab} onClick={() => onViewChange(tab.id)} />
       ))}
 
+      {/* Hueco invisible del mismo ancho que el FAB: solo 3 tabs reales
+          (Inicio, Chat, Perfil) reparten el espacio 1-2 alrededor del FAB, así
+          que sin este hueco el flex lo deja descentrado hacia la izquierda. El
+          FAB en sí se posiciona absoluto centrado respecto al <nav> completo,
+          independiente del flujo flex de los tabs. */}
+      <div className="w-[76px] flex-shrink-0" aria-hidden="true" />
+
+      {rightTabs.map(tab => (
+        <TabButton key={tab.id} tab={tab} onClick={() => onViewChange(tab.id)} />
+      ))}
+
       {/* FAB elevado de Flash Booking: sin label de texto, icono de rayo
-          centrado, extraído de la lista de tabs (mockup validado 18 sep). */}
+          centrado, extraído de la lista de tabs (mockup validado 18 sep).
+          Centrado absoluto respecto al <nav>, no al flujo flex de los tabs. */}
       <button
         type="button"
         aria-label="¿Qué estás organizando?"
@@ -90,13 +103,10 @@ const MobileBottomNav = ({ activeView, onViewChange, onMenuToggle, unreadCount =
           onViewChange('flashbooking');
         }}
         className="tab-fab"
+        style={{ position: 'absolute', left: '50%', top: 0, transform: 'translateX(-50%)' }}
       >
         <Zap className="w-6 h-6" />
       </button>
-
-      {rightTabs.map(tab => (
-        <TabButton key={tab.id} tab={tab} onClick={() => onViewChange(tab.id)} />
-      ))}
     </nav>
   );
 };
