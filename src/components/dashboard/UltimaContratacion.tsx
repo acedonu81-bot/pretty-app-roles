@@ -13,8 +13,9 @@ import { ROLE_ES } from '@/lib/constants';
  * perfiles y todos se conocen.
  *
  * Muestra solo el nombre del profesional contratado (que es público, ya está
- * en su ficha del directorio), su rol y la fecha. Nunca el nombre de quien
- * contrata ni el precio acordado.
+ * en su ficha del directorio), su rol y —solo si la contratación tiene menos
+ * de 7 días— el "hace cuánto". Nunca el nombre de quien contrata ni el precio
+ * acordado.
  *
  * ROTACIÓN: la función trae hasta 10 contrataciones recientes (más nueva
  * primero) y el banner va rotando entre ellas cada 5s. Es una cola natural:
@@ -28,14 +29,19 @@ type Contratacion = { nombre: string; rol: string; fecha: string };
 const AZUL = '#2563EB';
 const INTERVALO_ROTACION_MS = 5000;
 
-function haceCuanto(iso: string): string {
+/**
+ * Devuelve el "hace cuánto" SOLO mientras la contratación es reciente (< 7
+ * días). A partir de ahí devuelve null y el banner se pinta sin fecha: decir
+ * "hace 3 semanas" convierte la prueba social en prueba de lo contrario —
+ * transmite que nadie contrata desde hace un mes. Sin fecha, la contratación
+ * sigue siendo real y el banner no miente, simplemente no subraya la antigüedad.
+ */
+function haceCuanto(iso: string): string | null {
   const dias = Math.floor((Date.now() - new Date(iso).getTime()) / 86_400_000);
   if (dias <= 0) return 'hoy';
   if (dias === 1) return 'ayer';
   if (dias < 7) return `hace ${dias} días`;
-  if (dias < 14) return 'hace una semana';
-  if (dias < 31) return `hace ${Math.floor(dias / 7)} semanas`;
-  return `hace ${Math.floor(dias / 30)} ${Math.floor(dias / 30) === 1 ? 'mes' : 'meses'}`;
+  return null;
 }
 
 const UltimaContratacion = () => {
@@ -96,6 +102,7 @@ const UltimaContratacion = () => {
 
   const dato = cola[indice];
   if (!dato) return null;
+  const cuando = haceCuanto(dato.fecha);
 
   return (
     <div
@@ -127,7 +134,7 @@ const UltimaContratacion = () => {
         <span className="font-black" style={{ color: AZUL }}>Última contratación:</span>{' '}
         <span className="font-bold">{dato.nombre}</span>
         {dato.rol && <span style={{ color: 'rgba(10,9,8,0.6)' }}> · {dato.rol}</span>}
-        <span style={{ color: 'rgba(10,9,8,0.5)' }}> · {haceCuanto(dato.fecha)}</span>
+        {cuando && <span style={{ color: 'rgba(10,9,8,0.5)' }}> · {cuando}</span>}
       </p>
     </div>
   );
