@@ -274,6 +274,7 @@ const BlogOrganizarEventoEmpresaPasoAPaso = lazy(() => import("./pages/BlogOrgan
 const BlogComoCompararPresupuestosEventos = lazy(() => import("./pages/BlogComoCompararPresupuestosEventos"));
 const BlogContratoProveedoresEventos = lazy(() => import("./pages/BlogContratoProveedoresEventos"));
 const BlogGestionarVariosProveedoresEvento = lazy(() => import("./pages/BlogGestionarVariosProveedoresEvento"));
+const BlogLocalesEventosMadrid = lazy(() => import("./pages/BlogLocalesEventosMadrid"));
 const BlogSoftwareGestionEventos = lazy(() => import("./pages/BlogSoftwareGestionEventos"));
 const BlogCuantoCobraPromotorRRPP = lazy(() => import("./pages/BlogCuantoCobraPromotorRRPP"));
 const BlogQueHacePromotorEventos = lazy(() => import("./pages/BlogQueHacePromotorEventos"));
@@ -856,6 +857,7 @@ const App = () => (
             <Route path="/blog/comparar-presupuestos-proveedores-eventos" element={<BlogComoCompararPresupuestosEventos />} />
             <Route path="/blog/contrato-proveedores-eventos" element={<BlogContratoProveedoresEventos />} />
             <Route path="/blog/gestionar-varios-proveedores-evento" element={<BlogGestionarVariosProveedoresEvento />} />
+            <Route path="/blog/locales-para-eventos-madrid" element={<BlogLocalesEventosMadrid />} />
             <Route path="/blog/software-para-organizar-eventos" element={<BlogSoftwareGestionEventos />} />
             <Route path="/blog/cuanto-cobra-un-promotor-rrpp" element={<BlogCuantoCobraPromotorRRPP />} />
             <Route path="/blog/que-hace-un-promotor-de-eventos" element={<BlogQueHacePromotorEventos />} />
