@@ -415,8 +415,8 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
         </div>
       </div>
 
-      <div className={`flex-1 overflow-hidden relative ${isNative ? 'clay-card' : 'rounded-2xl sm:rounded-2xl'}`}
-        style={isNative ? undefined : { border: '1px solid rgba(0,0,0,0.08)', background: '#ffffff' }}>
+      <div className="flex-1 overflow-hidden rounded-2xl sm:rounded-2xl relative"
+        style={{ border: '1px solid rgba(0,0,0,0.08)', background: '#ffffff' }}>
         <div className="flex flex-col sm:grid h-full" style={{ gridTemplateColumns: 'minmax(0,280px) 1fr' }}>
 
           {/* Lista de conversaciones — siempre visible en desktop; en móvil oculta al abrir un chat */}
