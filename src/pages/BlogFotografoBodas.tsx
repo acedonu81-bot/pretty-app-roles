@@ -206,7 +206,7 @@ const faqStructured = {
           <BlogAuthor />
           <BlogShare />
         </article>
-          <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/contratar-fotografo-de-bodas" />
+          <BlogEmailCapture variant="presupuestos" intent="contratar-fotografo" articlePath="/blog/contratar-fotografo-de-bodas" />
       <BlogRelatedPosts currentSlug='/blog/contratar-fotografo-de-bodas' tag='Fotografía' />
         <FooterPublic />
       <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_bodas" />

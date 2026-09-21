@@ -210,7 +210,7 @@ export default function BlogFotografiaEventosNocturnos() {
               </a>
             </div>
           </div>
-                  <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/fotografia-eventos-nocturnos" />
+                  <BlogEmailCapture variant="presupuestos" intent="contratar-fotografo" articlePath="/blog/fotografia-eventos-nocturnos" />
 </main>
       <DJResourcesAffiliate role="fotografo" />
       <BlogAuthor />

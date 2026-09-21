@@ -120,7 +120,7 @@ const ContactModal = ({ open, onClose }: Props) => {
                 <Send size={14} />
                 {sending ? 'Enviando...' : 'Enviar mensaje'}
               </button>
-              <p className="text-center text-xs mt-2" style={{ color: 'rgba(255,255,255,0.25)' }}>
+              <p className="text-center text-xs mt-2" style={{ color: 'rgba(255,255,255,0.35)' }}>
                 Te responderemos en menos de 24h.
               </p>
             </div>

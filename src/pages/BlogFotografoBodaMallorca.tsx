@@ -108,10 +108,10 @@ export default function BlogFotografoBodaMallorca() {
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(79,70,229,0.04)', border: '1px solid rgba(79,70,229,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas fotógrafo para tu boda en Mallorca?</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>XPEAK tiene fotógrafos verificados para bodas en Mallorca y Baleares. Portfolios reales y contrato digital automático.</p>
-              <a href="/contratar-fotografo/palma-de-mallorca" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#4F46E5,#B8941E)', color: '#000' }}>Ver fotógrafos en Mallorca →</a>
+              <a href="/contratar-fotografo/palma" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#4F46E5,#B8941E)', color: '#000' }}>Ver fotógrafos en Mallorca →</a>
             </div>
           </div>
-                  <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/fotografo-boda-mallorca" />
+                  <BlogEmailCapture variant="presupuestos" intent="contratar-fotografo" articlePath="/blog/fotografo-boda-mallorca" />
 </main>
         <DJResourcesAffiliate role="fotografo" />
         <BlogAuthor />

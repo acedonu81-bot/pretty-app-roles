@@ -358,7 +358,7 @@ const RolePreviewModal = ({ initialRole = 'dj', onClose }: Props) => {
               <div style={{ display: 'flex', gap: 4 }}>
                 {['#ff5f56','#ffbd2e','#27c93f'].map(c => <span key={c} style={{ width: 8, height: 8, borderRadius: 999, background: c }} />)}
               </div>
-              <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)', flex: 1, textAlign: 'center' }}>XPEAK · {roleData.label}</span>
+              <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', flex: 1, textAlign: 'center' }}>XPEAK · {roleData.label}</span>
             </div>
 
             <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
@@ -395,7 +395,7 @@ const RolePreviewModal = ({ initialRole = 'dj', onClose }: Props) => {
               {activeRole === 'empresario' && 'Encuentra profesionales verificados, lanza Flash Bookings urgentes y gestiona todos tus contratos desde un panel centralizado.'}
             </div>
 
-            <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1.5, color: 'rgba(255,255,255,0.25)', marginBottom: 8 }}>Funciones incluidas</div>
+            <div style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1.5, color: 'rgba(255,255,255,0.35)', marginBottom: 8 }}>Funciones incluidas</div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
               {features.map(f => (
                 <span key={f.label} style={{

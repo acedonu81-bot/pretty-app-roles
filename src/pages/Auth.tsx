@@ -1051,7 +1051,7 @@ const Auth = () => {
                   maxLength={128}
                   autoComplete="new-password"
                   autoFocus
-                  className="w-full py-3 pl-9 pr-10 rounded-xl text-sm"
+                  className="w-full py-3 pl-9 pr-10 rounded-xl text-base"
                   style={{ background: '#f5f5f5', border: '1px solid #e0e0e0', color: '#111' }}
                 />
                 <button type="button" onClick={() => setShowPassword(!showPassword)}

@@ -55,7 +55,7 @@ const CitySearch = ({ value, onChange }: { value: string; onChange: (v: string) 
         autoComplete="off"
         onChange={e => { setQuery(e.target.value); onChange(''); setOpen(true); }}
         onFocus={() => setOpen(true)}
-        className="w-full py-3.5 px-4 rounded-xl text-sm focus:outline-none"
+        className="w-full py-3.5 px-4 rounded-xl text-base focus:outline-none"
         style={{
           background: '#FFFFFF',
           border: `1px solid ${open && suggestions.length ? 'rgba(212,175,55,0.5)' : 'rgba(212,175,55,0.3)'}`,
@@ -861,7 +861,7 @@ const Landing = () => {
                 <input
                   name="q"
                   placeholder="O busca directamente: DJ, fotógrafo…"
-                  className="w-full pl-10 pr-4 py-3 rounded-xl text-sm focus:outline-none"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl text-base focus:outline-none"
                   style={{ background: '#FFFFFF', border: '1px solid rgba(212,175,55,0.3)', color: '#111' }}
                 />
               </div>

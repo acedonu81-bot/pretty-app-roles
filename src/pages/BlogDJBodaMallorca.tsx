@@ -130,7 +130,7 @@ export default function BlogDJBodaMallorca() {
             <div className="p-6 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
               <p className="text-sm font-black mb-2">¿Buscas DJ para tu boda en Mallorca?</p>
               <p className="text-xs mb-4" style={{ color: '#3d3d4e' }}>XPEAK tiene DJs con experiencia en bodas de lujo en Mallorca, incluyendo bodas internacionales en inglés y alemán. Perfiles verificados y contrato digital.</p>
-              <a href="/contratar-dj/palma-de-mallorca" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver DJs de bodas en Mallorca →</a>
+              <a href="/contratar-dj/palma" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Ver DJs de bodas en Mallorca →</a>
             </div>
           </div>
                   <DJResourcesAffiliate role="dj" />

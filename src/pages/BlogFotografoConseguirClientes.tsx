@@ -120,7 +120,7 @@ export default function BlogFotografoConseguirClientes() {
               <a href="/auth?role=fotografo" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#4F46E5,#B8941E)', color: '#000' }}>Crear mi perfil de fotógrafo →</a>
             </div>
           </div>
-                  <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/fotografo-como-conseguir-clientes" />
+                  <BlogEmailCapture variant="presupuestos" intent="contratar-fotografo" articlePath="/blog/fotografo-como-conseguir-clientes" />
 </main>
         <DJResourcesAffiliate role="fotografo" />
         <BlogAuthor />

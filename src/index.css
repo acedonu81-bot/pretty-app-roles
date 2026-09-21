@@ -149,7 +149,7 @@ body.is-native-app .clay-btn-primary {
   font-weight: 700;
 }
 
-body.is-native-app .tab-fab {
+.tab-fab {
   width: 56px;
   height: 56px;
   margin-top: -26px;
