@@ -507,7 +507,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
       {loadingProfiles && (
         <div className={`${gridClass} mb-5`}>
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="glass-panel p-4 animate-pulse">
+            <div key={i} className={`glass-panel p-4 animate-pulse${isNative ? ' clay-card' : ''}`}>
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-lg bg-white/5 flex-shrink-0" />
                 <div className="flex-1">
@@ -527,7 +527,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
       )}
 
       {!loadingProfiles && filteredProfiles.length === 0 && (
-        <div className="glass-panel p-10 flex flex-col items-center text-center gap-3 mb-5">
+        <div className={`glass-panel p-10 flex flex-col items-center text-center gap-3 mb-5${isNative ? ' clay-card' : ''}`}>
           <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
             style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.12)' }}>
             <Users size={20} style={{ color: 'rgba(212,175,55,0.35)' }} />
