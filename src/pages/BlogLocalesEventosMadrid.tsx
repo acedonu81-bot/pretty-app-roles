@@ -60,8 +60,6 @@ const emblematicos: Local[] = [
 const salas: Local[] = [
   { nombre: 'Sala BaoBao', zona: 'Chamberí', tipo: 'Discoteca, aforo 380', web: 'https://baobaomadrid.com', foto: G_DISCO[0], fotoReal: false },
   { nombre: 'Privados Madrid', zona: 'Leganés', tipo: '15 salas privadas', web: 'https://privadosmadrid.com', foto: G_DISCO[0], fotoReal: false },
-  { nombre: 'B12 Madrid', zona: 'Centro', tipo: 'Discoteca', web: 'https://www.b12madrid.com', foto: G_DISCO[1], fotoReal: false },
-  { nombre: 'Terminal 55', zona: 'Centro', tipo: 'Discoteca', web: 'https://terminal55madrid.com', foto: G_DISCO[2], fotoReal: false },
   { nombre: 'Bodeguita de Enmedio', zona: 'Centro / La Latina', tipo: 'Sala de eventos', web: 'https://bodeguitadeenmedio.es', foto: G_DISCO[0], fotoReal: false },
   { nombre: 'Copérnico The Club', zona: 'Moncloa', tipo: 'Sala / discoteca', web: 'https://salacopernico.es', foto: G_DISCO[1], fotoReal: false },
   { nombre: 'NEXT Clubbing', zona: 'Cuzco', tipo: 'Club de música electrónica', web: 'https://nextclubbing.com', foto: G_DISCO[2], fotoReal: false },
@@ -73,9 +71,7 @@ const salas: Local[] = [
 ];
 
 const bares: Local[] = [
-  { nombre: 'Trastevere', zona: 'Centro', tipo: 'Bar con terraza', web: 'https://trasteverebar.com', foto: G_BAR[0], fotoReal: false },
   { nombre: 'Pizpireta Bar', zona: 'Centro', tipo: 'Bar de dos plantas', web: 'https://pizpiretabar.com', foto: G_BAR[0], fotoReal: false },
-  { nombre: 'Casa Vieja', zona: 'Centro', tipo: 'Bar de fiestas privadas', web: 'https://casaviejabar.com', foto: G_BAR[1], fotoReal: false },
   { nombre: 'Folie', zona: 'Hortaleza', tipo: 'Café espectáculo', web: 'https://foliebar.es', foto: G_BAR[0], fotoReal: false },
   { nombre: 'Marvelous Bar', zona: 'Chamberí', tipo: 'Bar para fiestas privadas', web: 'https://www.marvelousbar.es', foto: G_BAR[1], fotoReal: false },
   { nombre: 'Bar Daily', zona: 'Chamberí', tipo: 'Bar para fiestas y cumpleaños', web: 'https://bardaily.com', foto: G_BAR[0], fotoReal: false },
