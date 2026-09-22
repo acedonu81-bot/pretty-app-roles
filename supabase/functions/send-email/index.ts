@@ -206,10 +206,10 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     html: base(`
       <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Hola, ${esc(d.name)}</h2>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
-        Tu perfil como <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong> ya está activo en XPEAK.
+        Tu perfil como <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong> se está revisando por nuestra política de verificación. En cuanto lo aprobemos, aparecerás en el directorio y podrás recibir contactos de empresarios de toda España.
       </p>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
-        Completa tu información para aparecer en el directorio y empezar a recibir contactos de empresarios de toda España.
+        Mientras tanto, completa tu información — cuanto más completo esté tu perfil, antes lo revisamos.
       </p>
       ${btn('Completar mi perfil →', 'https://xpeak.es/dashboard')}
       <p style="color:#9CA3AF;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`),
@@ -803,6 +803,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
         Hola <strong style="color:#0a0908">${esc(d.name)}</strong>, hemos revisado tu perfil y en este momento no cumple los criterios mínimos para aparecer en el directorio.
       </p>
+      ${d.reason ? `<p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px"><strong>Motivo:</strong> ${esc(d.reason)}</p>` : ''}
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
         Puedes completar tu perfil con más información (audio, bio, zona) y volver a solicitar validación cuando esté listo.
       </p>
