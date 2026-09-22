@@ -153,13 +153,22 @@ const Tarjeta = ({ item, onNavigate }: { item: { id: string; view: string; nombr
         que sobresale de la tarjeta por ambos lados (fuera del overflow-hidden
         del botón, que si no la recortaría) en vez de un badge contenido, para
         que se note de verdad sin depender de un contador que hoy saldría en
-        0 o 1. */}
+        0 o 1. Misma transición de hover que el botón (group-hover:-translate-y-1
+        scale-[1.015]) para que se mueva junto a la tarjeta y no se quede
+        clavada mientras la tarjeta sube debajo. */}
     {item.nuevo && (
       <div
-        className="pointer-events-none absolute -right-2 top-3.5 z-10 rotate-[38deg] px-6 py-1 text-[10px] font-bold uppercase tracking-wide"
-        style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#0a0908', boxShadow: '0 2px 8px rgba(212,175,55,0.5)' }}
+        className="pointer-events-none absolute -right-2.5 top-3.5 z-10 rotate-[38deg] transition-all duration-300 group-hover:-translate-y-1 group-hover:scale-[1.015]"
+        style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}
       >
-        Nueva
+        <div className="relative flex items-center px-4 py-1 text-xs font-bold text-white" style={{ background: '#c0392b' }}>
+          Nueva
+          {/* Puntas del lazo: triángulos en cada extremo, mismo rojo pero un
+              punto más oscuro, para que lea como cinta con cola y no como un
+              rectángulo plano pegado en diagonal. */}
+          <span className="absolute -left-1.5 top-0 h-full w-1.5" style={{ background: '#932c1f', clipPath: 'polygon(100% 0, 0 50%, 100% 100%)' }} />
+          <span className="absolute -right-1.5 top-0 h-full w-1.5" style={{ background: '#932c1f', clipPath: 'polygon(0 0, 100% 50%, 0 100%)' }} />
+        </div>
       </div>
     )}
   </div>
