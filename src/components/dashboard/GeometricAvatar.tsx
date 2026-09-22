@@ -159,11 +159,46 @@ const AmbassadorIcon = ({ seed, size }: { seed: number; size: number }) => {
   );
 };
 
+// Building for Local Events
+const Building2Icon = ({ seed, size }: { seed: number; size: number }) => {
+  const shift = seedHash(seed, 8) % 6;
+  return (
+    <svg viewBox="0 0 100 100" width={size} height={size}>
+      <rect width="100" height="100" fill={BLACK} />
+      {/* Main building structure */}
+      <rect x="25" y="28" width="50" height="56" fill="none" stroke={GOLD} strokeWidth="1.5" opacity="0.7" />
+      {/* Roof/top accent */}
+      <path d="M25,28 L50,16 L75,28" fill="none" stroke={GOLD_LIGHT} strokeWidth="1.5" opacity="0.6" />
+      {/* Windows grid */}
+      {[0, 1, 2].map(row =>
+        [0, 1, 2, 3].map(col => (
+          <rect
+            key={`${row}-${col}`}
+            x={30 + col * 12}
+            y={35 + row * 14 + shift}
+            width="8"
+            height="8"
+            rx="1"
+            fill="none"
+            stroke={GOLD}
+            strokeWidth="0.8"
+            opacity={0.4 + (row % 2) * 0.25}
+          />
+        ))
+      )}
+      {/* Door */}
+      <rect x="44" y="72" width="12" height="12" rx="1" fill="none" stroke={GOLD_LIGHT} strokeWidth="1" opacity="0.6" />
+      {/* Foundation line */}
+      <line x1="25" y1="84" x2="75" y2="84" stroke={GOLD} strokeWidth="0.8" opacity="0.3" />
+    </svg>
+  );
+};
+
 const GeometricAvatar = ({ role, seed, size = 48, className, isLive }: GeometricAvatarProps) => {
   const IconMap: Record<string, typeof DJIcon> = {
     dj: DJIcon, staff: StaffIcon, azafata: StaffIcon, makeup: MakeupIcon, peluqueria: MakeupIcon, vestuario: MakeupIcon,
     media: MediaIcon, design: DesignIcon, promotor: PromotorIcon, ambassador: AmbassadorIcon,
-    tecnico: DesignIcon, local_eventos: DesignIcon,
+    tecnico: DesignIcon, local_eventos: Building2Icon,
   };
   const Icon = IconMap[role] || DJIcon;
 
