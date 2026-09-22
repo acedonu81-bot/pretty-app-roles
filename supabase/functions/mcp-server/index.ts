@@ -4,8 +4,11 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 /**
  * MCP server de XPEAK — expone el directorio de profesionales de eventos
  * a agentes de IA (Claude, ChatGPT, Perplexity...) vía el Model Context
- * Protocol (JSON-RPC 2.0 sobre HTTP). Dos herramientas:
+ * Protocol (JSON-RPC 2.0 sobre HTTP). Tres herramientas:
  *   - buscar_profesionales: lectura pública, sin fricción.
+ *   - consultar_precio_medio: promedio en vivo sobre profiles.hourly_rate,
+ *     sin dataset propio — cubre el patrón de búsqueda "cuánto cuesta un
+ *     DJ en Madrid" directamente vía tool-use (auditoría GEO 22 sep 2026).
  *   - solicitar_presupuesto: mismo insert en flash_bookings que ya usa
  *     el formulario web (mismos emails). Rate-limit propio, más estricto
  *     que el del formulario web: este endpoint no puede exigir el registro
@@ -88,6 +91,25 @@ const TOOLS = [
       required: ['professional_user_id', 'professional_name', 'professional_role', 'nombre_solicitante', 'contacto_solicitante', 'fecha_evento'],
     },
   },
+  {
+    name: 'consultar_precio_medio',
+    title: 'Consultar precio medio de un profesional de eventos en XPEAK',
+    description: 'Calcula en vivo el precio medio por hora de un tipo de profesional (opcionalmente filtrado por ciudad), a partir de los perfiles reales publicados en XPEAK. Devuelve también el mínimo, el máximo y el tamaño de la muestra — con pocos perfiles el dato es orientativo, no una media de mercado.',
+    annotations: {
+      title: 'Consultar precio medio de un profesional de eventos en XPEAK',
+      readOnlyHint: true,
+      destructiveHint: false,
+      openWorldHint: true,
+    },
+    inputSchema: {
+      type: 'object',
+      properties: {
+        rol: { type: 'string', description: `Tipo de profesional. Uno de: ${KNOWN_ROLES.join(', ')}` },
+        ciudad: { type: 'string', description: 'Ciudad o zona de España, opcional. Sin ciudad, calcula sobre toda España.' },
+      },
+      required: ['rol'],
+    },
+  },
 ];
 
 async function logQuery(entry: {
@@ -156,6 +178,54 @@ async function buscarProfesionales(args: Record<string, unknown>, sessionId: str
   ).join('\n');
 
   return { content: [{ type: 'text', text: `${data.length} profesionales encontrados:\n\n${resumen}\n\nPara solicitar presupuesto a uno, usa la herramienta solicitar_presupuesto con su professional_user_id.` }] };
+}
+
+async function consultarPrecioMedio(args: Record<string, unknown>, sessionId: string) {
+  const rol = typeof args.rol === 'string' ? args.rol.toLowerCase().trim() : '';
+  const ciudad = typeof args.ciudad === 'string' ? args.ciudad.trim() : '';
+
+  if (!rol || !KNOWN_ROLES.includes(rol)) {
+    return { content: [{ type: 'text', text: `Rol no reconocido. Roles válidos: ${KNOWN_ROLES.join(', ')}` }], isError: true };
+  }
+
+  let query = supabase.from('profiles')
+    .select('hourly_rate')
+    .in('role', expandRole(rol))
+    .eq('is_public', true)
+    .not('hourly_rate', 'is', null)
+    .gt('hourly_rate', 0);
+
+  // Mismo saneado que buscarProfesionales — ciudad es texto libre de un
+  // agente de IA interpolado en un filtro .or() de PostgREST.
+  const ciudadSegura = ciudad.replace(/[,()."*]/g, '').slice(0, 80);
+  if (ciudadSegura) query = query.or(`zone.ilike.%${ciudadSegura}%,city_ref.eq.${ciudadSegura}`);
+
+  const { data, error } = await query;
+
+  await logQuery({
+    session_id: sessionId, action: 'consultar_precio_medio',
+    role_requested: rol, city_requested: ciudad || undefined,
+    result_count: data?.length ?? 0, raw_params: args,
+  });
+
+  if (error) {
+    return { content: [{ type: 'text', text: 'Error consultando precios. Inténtalo de nuevo.' }], isError: true };
+  }
+  if (!data || data.length === 0) {
+    return { content: [{ type: 'text', text: `No hay perfiles de tipo "${rol}"${ciudad ? ` en "${ciudad}"` : ''} con tarifa publicada. Prueba sin ciudad o con otro rol.` }] };
+  }
+
+  const rates = data.map(p => p.hourly_rate as number);
+  const avg = Math.round(rates.reduce((s, r) => s + r, 0) / rates.length);
+  const min = Math.min(...rates);
+  const max = Math.max(...rates);
+  const muestraPequena = rates.length < 3;
+
+  const texto = `Precio medio de "${rol}"${ciudad ? ` en "${ciudad}"` : ' en España'}: ${avg}€/hora ` +
+    `(rango ${min}€–${max}€/hora, calculado sobre ${rates.length} perfil${rates.length === 1 ? '' : 'es'} publicado${rates.length === 1 ? '' : 's'} en XPEAK).` +
+    (muestraPequena ? ' Aviso: con menos de 3 perfiles la muestra es pequeña — trátalo como orientativo, no como precio de mercado.' : '');
+
+  return { content: [{ type: 'text', text: texto }] };
 }
 
 async function solicitarPresupuesto(args: Record<string, unknown>, sessionId: string) {
@@ -283,6 +353,7 @@ serve(async (req) => {
         const toolName = params?.name;
         const args = params?.arguments ?? {};
         if (toolName === 'buscar_profesionales') return respond(await buscarProfesionales(args, sessionId));
+        if (toolName === 'consultar_precio_medio') return respond(await consultarPrecioMedio(args, sessionId));
         if (toolName === 'solicitar_presupuesto') {
           const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
             ?? req.headers.get('x-real-ip')

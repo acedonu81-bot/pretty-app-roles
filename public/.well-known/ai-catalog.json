@@ -12,7 +12,7 @@
     {
       "identifier": "urn:air:xpeak.es:mcp:directorio",
       "displayName": "XPEAK MCP — buscar profesionales y pedir presupuesto",
-      "description": "Servidor MCP con dos herramientas: buscar profesionales de eventos verificados por rol, ciudad y presupuesto, y crear solicitudes reales de presupuesto (Flash Booking) que el profesional responde por email.",
+      "description": "Servidor MCP con tres herramientas: buscar profesionales de eventos verificados por rol, ciudad y presupuesto, consultar el precio medio por hora de un tipo de profesional, y crear solicitudes reales de presupuesto (Flash Booking) que el profesional responde por email.",
       "type": "application/mcp-server-card+json",
       "url": "https://xpeak.es/.well-known/mcp/server-card.json",
       "representativeQueries": [

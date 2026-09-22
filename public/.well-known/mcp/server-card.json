@@ -22,6 +22,10 @@
       "description": "Busca profesionales de eventos disponibles en XPEAK por rol, ciudad y presupuesto. Devuelve perfiles reales con precio por hora, valoración y disponibilidad inmediata."
     },
     {
+      "name": "consultar_precio_medio",
+      "description": "Calcula en vivo el precio medio por hora de un tipo de profesional, opcionalmente filtrado por ciudad, a partir de los perfiles reales publicados en XPEAK."
+    },
+    {
       "name": "solicitar_presupuesto",
       "description": "Crea una solicitud real de presupuesto (Flash Booking) a un profesional concreto. El profesional la recibe por email y contacta directamente — no reserva ni cobra nada automáticamente."
     }
