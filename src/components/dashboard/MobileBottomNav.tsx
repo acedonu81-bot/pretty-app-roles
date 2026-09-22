@@ -17,7 +17,7 @@ interface Tab {
 
 // Vistas de listado de gremio: con cualquiera de ellas abierta, el tab
 // "Inicio" sigue marcado, porque se llega a ellas desde el mapa de gremios.
-const dirViews = new Set(['dj','staff','azafata','makeup','peluqueria','media','vestuario','design','promotor','event_manager','empresario','catering','mago','bailarin','humorista','monologo','animador','speaker','ambassador','photo-booth','grupo-musical','tecnico']);
+const dirViews = new Set(['dj','staff','azafata','makeup','peluqueria','media','vestuario','design','promotor','event_manager','empresario','catering','mago','bailarin','humorista','monologo','animador','speaker','ambassador','photo-booth','grupo-musical','tecnico','local_eventos']);
 
 const TabButton = ({ tab, onClick }: { tab: Tab; onClick: () => void }) => (
   <button

@@ -24,6 +24,7 @@ export const ROLE_ES: Record<string, string> = {
   peluqueria:    'Peluquería a Domicilio',
   media:         'Media / Fotografía',
   tecnico:       'Técnico de Sonido y Montaje',
+  local_eventos: 'Locales para eventos',
 };
 
 /**
@@ -71,6 +72,7 @@ export const JOB_WORD: Record<string, string> = {
   peluqueria: 'encargo',
   media: 'encargo',
   tecnico: 'montaje',
+  local_eventos: 'reserva',
   'grupo-musical': 'bolo',
   humorista: 'actuación',
   animador: 'evento',
@@ -155,4 +157,5 @@ export const ROLE_TAGS: Record<string, { label: string; tags: string[] }> = {
     // un festival preguntan cosas distintas. Ordenadas por área (sonido, luces,
     // montaje, vídeo) y con las marcas de mesa que se piden por nombre propio.
     tecnico:   { label: 'Especialidades',         tags: ['Técnico de sonido','Sonido en directo','Mesa de mezclas','Monitores','Microfonía','P.A. / Line array','Backline','Pruebas de sonido','Técnico de iluminación','Diseño de iluminación','Luces de espectáculo','Máquinas de humo','Montaje de escenario','Desmontaje','Estructuras / truss','Rigging','Carga y descarga','Alquiler de equipo','Técnico de vídeo','Pantallas LED','Proyección','Streaming en directo','Bodas','Festivales','Salas y clubs','Eventos corporativos'] },
+    local_eventos: { label: 'Tipo de espacio', tags: ['Discoteca', 'Sala de fiestas', 'Bar de eventos', 'Rooftop / terraza', 'Finca', 'Casa rural', 'Salón de bodas', 'Espacio diáfano', 'Permite pernoctar', 'Zona chill-out', 'Barra libre incluida', 'Catering propio', 'DJ booth', 'Parking privado', 'Acceso adaptado'] },
   }
