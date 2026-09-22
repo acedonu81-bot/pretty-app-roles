@@ -29,7 +29,7 @@ export default function BlogDJCorporativo() {
     '@type': 'Article',
     headline: 'DJ para eventos corporativos: precio y qué pedir en España (2026)',
     description: 'Cuánto cuesta contratar un DJ para un evento corporativo en España. Precios para afterworks, galas, fiestas de empresa y presentaciones.',
-    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-23',
     dateModified: '2026-05-23',

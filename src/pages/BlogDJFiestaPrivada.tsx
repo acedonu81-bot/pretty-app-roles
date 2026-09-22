@@ -28,7 +28,7 @@ export default function BlogDJFiestaPrivada() {
     '@type': 'Article',
     headline: 'DJ para fiesta privada: precios y qué incluye en España (2026)',
     description: 'Cuánto cuesta contratar un DJ para una fiesta privada en España. Precios por número de personas, horas y tipo de evento.',
-    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-23',
     dateModified: '2026-05-23',

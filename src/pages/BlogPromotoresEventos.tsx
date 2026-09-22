@@ -26,7 +26,7 @@ export default function BlogPromotoresEventos() {
     '@type': 'Article',
     headline: 'Promotores de eventos: qué hacen y cuánto cobran en España (2026)',
     description: 'Guía completa sobre los promotores de eventos en España 2026: tipos de promotores, funciones, tarifas y cómo contratarlos con métricas reales.',
-    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-03',
     dateModified: '2026-05-03',

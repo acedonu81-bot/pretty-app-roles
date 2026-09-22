@@ -28,7 +28,7 @@ export default function BlogPersonalImagen() {
     '@type': 'Article',
     headline: 'Personal de imagen para ferias y congresos: precios en España (2026)',
     description: 'Cuánto cuesta contratar azafatas, promotoras y modelos para ferias y congresos en España. Precios por perfil, jornada y cómo elegir el equipo correcto.',
-    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-23',
     dateModified: '2026-05-23',

@@ -10,7 +10,7 @@ const article = {
   description: 'Precios reales de promotores y RRPP en España: tarifa por noche, comisión por entrada vendida y diferencias entre ciudades y tipo de sala.',
   datePublished: '2026-07-16',
   dateModified: '2026-07-16',
-  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
   url: 'https://xpeak.es/blog/cuanto-cobra-un-promotor-rrpp',

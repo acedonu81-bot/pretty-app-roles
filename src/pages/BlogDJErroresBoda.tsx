@@ -35,7 +35,7 @@ export default function BlogDJErroresBoda() {
     headline: 'Los 10 errores al contratar un DJ para una boda (y cómo evitarlos)',
     datePublished: '2026-05-18',
     dateModified: '2026-05-18',
-    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     description: 'Guía para novios: los 10 errores más comunes al contratar un DJ para la boda y cómo evitarlos para que la noche salga perfecta.',
   };

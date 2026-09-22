@@ -49,7 +49,7 @@ export default function BlogCalculadoraTarifaDJ() {
     '@type': 'Article',
     headline: "Calculadora de tarifa DJ 2026: precio estimado para tu evento",
     description: "Calcula cuánto cuesta un DJ para tu evento. Introduce el tipo de evento, ciudad y horas y obtén un precio estimado real para 2026.",
-    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-06-07',
     dateModified: '2026-06-07',

@@ -29,7 +29,7 @@ export default function BlogDJEmpresa() {
     '@type': 'Article',
     headline: "DJ para eventos de empresa: precio y cómo contratar 2026",
     description: "Cuánto cuesta un DJ para un evento corporativo o fiesta de empresa. Precios 2026, qué incluye, qué música pone y cómo elegir el perfil correcto.",
-    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-06-07',
     dateModified: '2026-06-07',

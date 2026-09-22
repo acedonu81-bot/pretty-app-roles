@@ -22,6 +22,7 @@ const Terminos = lazy(() => import("./pages/Terminos"));
 const Cookies = lazy(() => import("./pages/Cookies"));
 const PublicProfile = lazy(() => import("./pages/PublicProfile"));
 const SobreNosotros = lazy(() => import("./pages/SobreNosotros"));
+const AutorDaniel = lazy(() => import("./pages/AutorDaniel"));
 const Soporte = lazy(() => import("./pages/Soporte"));
 const AvisoLegal = lazy(() => import("./pages/AvisoLegal"));
 const CityLanding = lazy(() => import("./pages/CityLanding"));
@@ -425,6 +426,7 @@ const App = () => (
             {!isNative && (
               <>
             <Route path="/sobre-nosotros" element={<SobreNosotros />} />
+            <Route path="/autor/daniel" element={<AutorDaniel />} />
               </>
             )}
             <Route path="/soporte" element={<Soporte />} />

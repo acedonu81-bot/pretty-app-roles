@@ -594,6 +594,14 @@ const ROUTES = [
     ogType: 'website',
   },
   {
+    path: '/autor/daniel',
+    title: 'Daniel, Fundador de XPEAK | Autor',
+    desc: 'Daniel es el fundador de XPEAK y autor de las guías del blog: precios, contratos y tendencias del sector de eventos en España.',
+    ogTitle: 'Daniel — Fundador de XPEAK',
+    ogDesc: 'Autor de las guías del blog de XPEAK sobre precios y contratación de profesionales de eventos.',
+    ogType: 'profile',
+  },
+  {
     path: '/soporte',
     title: 'Soporte | XPEAK — Ayuda y contacto',
     desc: '¿Necesitas ayuda con XPEAK? Contacta con nuestro equipo de soporte por email y resolvemos tu duda lo antes posible.',

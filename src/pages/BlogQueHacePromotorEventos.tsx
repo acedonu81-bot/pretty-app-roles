@@ -10,7 +10,7 @@ const article = {
   description: 'Funciones reales de un promotor o RRPP en clubs y eventos: gestión de listas VIP, captación de público, coordinación de puerta y diferencias con el RRPP de marca.',
   datePublished: '2026-07-16',
   dateModified: '2026-07-16',
-  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
   url: 'https://xpeak.es/blog/que-hace-un-promotor-de-eventos',

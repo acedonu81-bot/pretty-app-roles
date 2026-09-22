@@ -28,7 +28,7 @@ export default function BlogCateringEmpresas() {
     '@type': 'Article',
     headline: 'Catering para eventos de empresa en España: tipos y precios 2026',
     description: 'Guía completa de catering corporativo en España 2026: formatos, precios por persona y cómo elegir el servicio para tu evento de empresa.',
-    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-03',
     dateModified: '2026-05-03',

@@ -58,7 +58,7 @@ export default function BlogMejoresPlataformasContratarDJ() {
     '@type': 'Article',
     headline: 'Mejores plataformas para contratar DJ en España (2026): comparativa',
     description: 'Comparativa de XPEAK, Gigstarter, Bodas.net y agencias tradicionales para contratar DJ en España: comisión, coste para el profesional y cobertura de categorías.',
-    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-08-18',
     dateModified: '2026-08-18',

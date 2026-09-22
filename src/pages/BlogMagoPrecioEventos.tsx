@@ -10,7 +10,7 @@ const article = {
   description: 'Precios reales de magos para eventos corporativos, bodas y fiestas en España 2026. Tarifas por tipo de magia y qué buscar antes de contratar.',
   datePublished: '2026-06-01',
   dateModified: '2026-06-01',
-  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: {
     '@type': 'Organization',
     name: 'XPEAK',

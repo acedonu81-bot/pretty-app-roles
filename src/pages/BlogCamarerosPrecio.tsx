@@ -37,7 +37,7 @@ const faqStructured = {
     headline: 'Cuánto cobra un camarero de eventos por horas en España (2026)',
     datePublished: '2026-04-01',
     dateModified: '2026-06-08',
-    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     description: 'Guía completa de precios de camareros para eventos en España 2026: bodas, empresas, fiestas privadas. Cuánto cobran y cuántos necesitas.',
   };

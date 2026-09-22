@@ -28,7 +28,7 @@ export default function BlogTecnicoSonido() {
     '@type': 'Article',
     headline: 'Técnico de sonido para eventos: funciones y precios en España (2026)',
     description: 'Cuánto cuesta un técnico de sonido para bodas, conciertos y eventos corporativos en España. Funciones, diferencias FOH/monitor y cuándo es necesario.',
-    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-23',
     dateModified: '2026-05-23',

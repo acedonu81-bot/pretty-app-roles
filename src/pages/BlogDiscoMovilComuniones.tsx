@@ -26,7 +26,7 @@ export default function BlogDiscoMovilComuniones() {
     '@type': 'Article',
     headline: 'Disco móvil para comuniones: precios y qué incluye en 2026',
     description: 'Guía completa para contratar una disco móvil para tu comunión en España: precios por paquete, qué incluye y cómo elegir bien.',
-    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-03',
     dateModified: '2026-05-03',

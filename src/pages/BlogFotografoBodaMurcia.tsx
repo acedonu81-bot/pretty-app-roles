@@ -14,7 +14,7 @@ const article = {
   headline: 'Fotógrafo para bodas en Murcia: precio y guía 2026',
   description: 'Cuánto cuesta un fotógrafo para una boda en Murcia. Precios reales 2026, haciendas y fincas del Segura, huerta murciana y Mar Menor.',
   datePublished: '2026-06-08', dateModified: '2026-06-08',
-  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   url: 'https://xpeak.es/blog/fotografo-boda-murcia',
 };

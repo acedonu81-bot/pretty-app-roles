@@ -10,7 +10,7 @@ const article = {
   description: 'Show de baile, animación de pista o clase exprés de salsa/bachata: qué formato de bailarín encaja mejor en cada tipo de evento.',
   datePublished: '2026-07-16',
   dateModified: '2026-07-16',
-  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
   url: 'https://xpeak.es/blog/bailarines-para-eventos',

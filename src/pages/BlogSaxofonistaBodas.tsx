@@ -27,7 +27,7 @@ export default function BlogSaxofonistaBodas() {
     '@type': 'Article',
     headline: 'Saxofonista para bodas: precio y repertorio en España (2026)',
     description: 'Cuánto cuesta contratar un saxofonista para una boda en España. Precios por momento del evento, qué géneros toca y si es mejor solo o con DJ.',
-    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-23',
     dateModified: '2026-05-23',

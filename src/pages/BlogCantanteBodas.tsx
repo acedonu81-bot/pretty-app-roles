@@ -28,7 +28,7 @@ export default function BlogCantanteBodas() {
     '@type': 'Article',
     headline: 'Cantante para bodas: precio y cómo contratar en España (2026)',
     description: 'Cuánto cuesta un cantante para una boda en España. Precios por formato (solista, dúo, trío, banda), momentos del evento y cómo elegir.',
-    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-23',
     dateModified: '2026-05-23',

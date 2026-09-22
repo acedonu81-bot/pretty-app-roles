@@ -10,7 +10,7 @@ const article = {
   description: 'Cláusulas imprescindibles en el contrato con DJ, catering, fotógrafo o cualquier proveedor de eventos: cancelación, pagos, incumplimientos y qué evitar.',
   datePublished: '2026-07-16',
   dateModified: '2026-07-16',
-  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
   url: 'https://xpeak.es/blog/contrato-proveedores-eventos',

@@ -35,7 +35,7 @@ const faqStructured = {
     headline: 'Cuántos camareros necesito para mi boda: la guía definitiva 2026',
     datePublished: '2026-04-15',
     dateModified: '2026-06-08',
-    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     description: 'Guía definitiva 2026: cuántos camareros necesitas para tu boda según el número de invitados, formato del servicio y tipo de evento.',
   };

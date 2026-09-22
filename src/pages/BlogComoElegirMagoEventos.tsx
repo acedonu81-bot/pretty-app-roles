@@ -10,7 +10,7 @@ const article = {
   description: 'Guía para elegir mago de eventos: diferencias entre magia de cerca, de escenario e infantil, y qué preguntar antes de contratar.',
   datePublished: '2026-07-16',
   dateModified: '2026-07-16',
-  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
   url: 'https://xpeak.es/blog/como-elegir-mago-para-tu-evento',

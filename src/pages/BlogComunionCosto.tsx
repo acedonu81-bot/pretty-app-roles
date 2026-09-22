@@ -31,7 +31,7 @@ export default function BlogComunionCosto() {
     '@type': 'Article',
     headline: '¿Cuánto cuesta una comunión en España? Presupuesto completo 2026',
     description: 'Desglose real del coste de una comunión en España. Catering, DJ, fotógrafo, animación y decoración: precios por partida para 2026.',
-    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-23',
     dateModified: '2026-05-23',

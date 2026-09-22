@@ -30,7 +30,7 @@ export default function BlogPeluqueriaEventos() {
     '@type': 'Article',
     headline: 'Peluquería a domicilio para eventos: precios y qué incluye en España (2026)',
     description: 'Cuánto cobra una peluquera a domicilio para bodas, eventos corporativos y el día a día en España. Precios por servicio y qué incluye cada paquete.',
-    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-09-09',
     dateModified: '2026-09-09',

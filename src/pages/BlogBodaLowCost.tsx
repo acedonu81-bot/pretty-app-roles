@@ -15,7 +15,7 @@ const articleSchema = {
   '@type': 'Article',
   headline: 'Boda low cost: checklist completo de todo lo que necesitas contratar',
   description: 'Guía completa para organizar una boda con presupuesto ajustado en España 2026. Checklist de DJ, fotógrafo, catering, flores, maquillaje y más. Ahorra sin renunciar a calidad.',
-  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   datePublished: '2026-06-07',
   dateModified: '2026-06-07',

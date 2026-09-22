@@ -45,7 +45,7 @@ export default function BlogDJPrecio() {
     '@type': 'Article',
     headline: '¿Cuánto cobra un DJ en España? Tarifas y precios 2026',
     description: 'Guía completa de precios de DJs en España por experiencia, ciudad y tipo de evento. Tarifas reales, IVA e IRPF, Flash Booking.',
-    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-04-28',
     dateModified: '2026-06-08',

@@ -64,7 +64,7 @@ export default function BlogCosteBoda() {
     '@type': 'Article',
     headline: '¿Cuánto cuesta una boda en España en 2026? Guía de presupuesto',
     description: 'Guía completa con el coste real de una boda en España en 2026: desglose por partidas, precio según número de invitados y ciudad. DJ, catering, fotógrafo, personal.',
-    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-04-30',
     dateModified: '2026-06-08',

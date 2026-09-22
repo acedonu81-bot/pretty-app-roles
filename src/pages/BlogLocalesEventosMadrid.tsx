@@ -10,7 +10,7 @@ const article = {
   description: 'Discotecas, terrazas, azoteas y fincas para despedidas en Madrid y alrededores, con web y contacto directo de cada espacio.',
   datePublished: '2026-09-21',
   dateModified: '2026-09-21',
-  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/img/locales-madrid/generico-discoteca-1.jpg',
   url: 'https://xpeak.es/blog/locales-para-eventos-madrid',

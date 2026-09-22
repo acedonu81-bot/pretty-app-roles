@@ -49,7 +49,7 @@ export default function BlogDJBodaVsDiscoteca() {
     headline: 'DJ para bodas vs DJ para discoteca: diferencias, precios y cómo elegir en 2026',
     datePublished: '2026-04-20',
     dateModified: '2026-06-08',
-    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     description: 'Diferencias entre un DJ de boda y un DJ de discoteca: habilidades, equipamiento, precios y cómo elegir el perfil correcto para tu evento.',
   };

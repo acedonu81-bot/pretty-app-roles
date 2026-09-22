@@ -10,7 +10,7 @@ const article = {
   description: 'Precios reales de saxofonistas para bodas, cócteles y eventos en España 2026. Tarifas por tipo de actuación y qué incluye el servicio.',
   datePublished: '2026-06-01',
   dateModified: '2026-06-01',
-  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: {
     '@type': 'Organization',
     name: 'XPEAK',

@@ -45,7 +45,7 @@ const structuredData = {
   '@type': 'Article',
   headline: 'Maestro de Ceremonias para Bodas: precio y guía completa 2026',
   description: 'Cuánto cuesta un maestro de ceremonias para una boda en España. Precios por experiencia y ciudad, funciones, diferencias con animador y cómo contratar.',
-  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   datePublished: '2026-05-16',
   dateModified: '2026-05-16',

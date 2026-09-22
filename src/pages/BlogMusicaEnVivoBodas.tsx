@@ -47,7 +47,7 @@ const structuredData = {
   '@type': 'Article',
   headline: 'Música en Vivo para Bodas: grupos, solistas y cuartetos — guía y precios 2026',
   description: 'Guía completa de música en vivo para bodas en España. Formatos, precios por ciudad, cuándo ponerla y cómo combinarla con DJ.',
-  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
   datePublished: '2026-05-16',
   dateModified: '2026-05-16',

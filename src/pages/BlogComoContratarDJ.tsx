@@ -32,7 +32,7 @@ export default function BlogComoContratarDJ() {
     '@type': 'Article',
     headline: "Cómo contratar un DJ para tu evento: guía completa 2026",
     description: "Guía paso a paso para contratar un DJ en España. Qué preguntar, qué incluye el precio, cómo comparar presupuestos y qué contrato firmar. 2026.",
-    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-06-07',
     dateModified: '2026-06-07',

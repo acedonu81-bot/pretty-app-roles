@@ -30,7 +30,7 @@ export default function BlogMaquillajeEventos() {
     '@type': 'Article',
     headline: 'Maquilladora para eventos: precios y qué incluye en España (2026)',
     description: 'Cuánto cobra una maquilladora para bodas, eventos corporativos y sesiones de foto en España. Precios por servicio y qué incluye cada paquete.',
-    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+    author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-05-23',
     dateModified: '2026-05-23',

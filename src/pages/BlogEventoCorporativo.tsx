@@ -13,7 +13,7 @@ const article = {
   description: 'Guía práctica para organizar eventos de empresa en España: presupuesto, proveedores, timeline y checklist completo.',
   datePublished: '2026-05-03',
   dateModified: '2026-05-25',
-  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es' },
+  author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } },
   image: 'https://xpeak.es/og-image.jpg',
   url: 'https://xpeak.es/blog/como-organizar-evento-corporativo',
