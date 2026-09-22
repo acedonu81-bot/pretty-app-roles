@@ -105,6 +105,12 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
         : null
     : null;
   const allowsOvernight = isLocalEventos ? (p as any).allowsOvernight : null;
+  // Perfil de ejemplo (id fijo, ccbceb86...) del rol local_eventos: se
+  // muestra en el directorio para que la categoría no se vea vacía, pero no
+  // es un local real que vaya a contestar — se desactiva solo el botón de
+  // contacto de ESTA ficha en concreto, sin etiquetarla como "demo" y sin
+  // tocar la lógica de ningún otro perfil ni del resto de roles.
+  const isEjemploNoAccionable = p.id === 'ccbceb86-556c-49b0-b09f-d325989e188e';
 
   return (
     <motion.div
@@ -386,11 +392,13 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
               </button>
             )}
             <button type="button"
+              disabled={isEjemploNoAccionable}
               onClick={() => {
+                if (isEjemploNoAccionable) return;
                 if (!accepted) { setShowLegal(true); return; }
                 if (onMessage && p.userId) onMessage(p.userId, p.name);
               }}
-              className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105"
+              className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
               style={{
                 background: 'rgba(0,0,0,0.04)',
                 border: '1px solid rgba(0,0,0,0.08)',

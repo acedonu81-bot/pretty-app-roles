@@ -496,6 +496,14 @@ const PublicProfile = () => {
   const [showContact, setShowContact] = useState(false);
 
   const handleContactClick = () => {
+    // Perfil de ejemplo del rol local_eventos (id fijo, ccbceb86...): se
+    // muestra en el directorio para que la categoría no se vea vacía, pero
+    // no hay nadie real al otro lado que vaya a responder. Se bloquea solo
+    // esta ficha en concreto, sin etiqueta visible de "demo".
+    if (sbProfile?.id === 'ccbceb86-556c-49b0-b09f-d325989e188e') {
+      toast.info('Esta ficha es un ejemplo — de momento no se puede contactar.');
+      return;
+    }
     if (!authUser) {
       navigate(`/auth?mode=register&role=empresario&redirect=${encodeURIComponent(window.location.pathname)}`);
       return;
