@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import FooterPublic from '@/components/FooterPublic';
 import BlogRelatedPosts from '@/components/BlogRelatedPosts';
 import BlogScrollCTA from '@/components/BlogScrollCTA';
+import { EMBLEMATICOS as emblematicos, SALAS as salas, BARES as bares, TERRAZAS as terrazas, HUERTAS_LATINA as huertasLatina, FINCAS as fincas, LocalInvestigado } from '@/data/localesEventosMadrid';
 
 const article = {
   '@context': 'https://schema.org',
@@ -37,73 +38,8 @@ const breadcrumb = {
   ],
 };
 
-type Local = { nombre: string; zona: string; tipo: string; web?: string; foto: string; fotoReal: boolean };
 
-const IMG = '/img/locales-madrid/';
-// Fotos genéricas por categoría, coherentes con el tipo de espacio. Se rotan
-// para no repetir la misma imagen en tarjetas contiguas. Cuando un local
-// responde al email de aviso con una foto propia, se sustituye aquí y
-// `fotoReal` pasa a true.
-const G_DISCO = [IMG + 'generico-discoteca-1.jpg', IMG + 'generico-discoteca-2.jpg', IMG + 'generico-discoteca-3.jpg'];
-const G_BAR = [IMG + 'generico-bar-1.jpg', IMG + 'generico-bar-2.jpg'];
-const G_ROOFTOP = [IMG + 'generico-rooftop-1.jpg', IMG + 'generico-rooftop-2.jpg'];
-const G_FINCA = [IMG + 'generico-finca-1.jpg', IMG + 'generico-finca-2.jpg'];
-
-const emblematicos: Local[] = [
-  { nombre: 'Teatro Barceló', zona: 'Centro', tipo: 'Discoteca histórica, hasta 1.200 personas', web: 'https://teatrobarcelo.com', foto: G_DISCO[0], fotoReal: false },
-  { nombre: 'Teatro Kapital', zona: 'Atocha', tipo: 'Discoteca de 7 plantas', web: 'https://teatrokapital.com', foto: G_DISCO[1], fotoReal: false },
-  { nombre: 'Sala El Sol', zona: 'Gran Vía', tipo: 'Sala de conciertos desde 1979, cuna de la Movida', web: 'https://salaelsol.com', foto: G_DISCO[2], fotoReal: false },
-  { nombre: 'Teatro Eslava', zona: 'Sol', tipo: 'Discoteca histórica junto a Puerta del Sol', web: 'https://teatroeslava.com', foto: G_DISCO[0], fotoReal: false },
-  { nombre: 'Serrano 41', zona: 'Salamanca', tipo: 'Discoteca con terraza de verano', web: 'https://madridlux.com/es/discoteca/serrano41-madrid', foto: G_DISCO[1], fotoReal: false },
-];
-
-const salas: Local[] = [
-  { nombre: 'Sala BaoBao', zona: 'Chamberí', tipo: 'Discoteca, aforo 380', web: 'https://baobaomadrid.com', foto: G_DISCO[0], fotoReal: false },
-  { nombre: 'Privados Madrid', zona: 'Leganés', tipo: '15 salas privadas', web: 'https://privadosmadrid.com', foto: G_DISCO[0], fotoReal: false },
-  { nombre: 'Bodeguita de Enmedio', zona: 'Centro / La Latina', tipo: 'Sala de eventos', web: 'https://bodeguitadeenmedio.es', foto: G_DISCO[0], fotoReal: false },
-  { nombre: 'Copérnico The Club', zona: 'Moncloa', tipo: 'Sala / discoteca', web: 'https://salacopernico.es', foto: G_DISCO[1], fotoReal: false },
-  { nombre: 'NEXT Clubbing', zona: 'Cuzco', tipo: 'Club de música electrónica', web: 'https://nextclubbing.com', foto: G_DISCO[2], fotoReal: false },
-  { nombre: 'Cristo Social Club', zona: 'Salamanca', tipo: 'Espacio elegante para eventos', web: 'https://xceed.me/es/madrid/venue/cristo-social-club', foto: G_DISCO[0], fotoReal: false },
-  { nombre: 'Calle 365', zona: 'Las Letras', tipo: 'Speakeasy inmersivo', web: 'https://www.instagram.com/calle_365', foto: G_DISCO[1], fotoReal: false },
-  { nombre: 'Costa Breve', zona: 'Las Letras', tipo: 'Eventos privados', web: 'https://grupocostabreve.com', foto: G_DISCO[2], fotoReal: false },
-  { nombre: 'Malavita Night Bar', zona: 'Chamberí', tipo: 'Cumpleaños y fiestas privadas', web: 'https://malavitanightbar.com', foto: G_DISCO[0], fotoReal: false },
-  { nombre: 'Sala Kubik', zona: 'Puerta de Toledo', tipo: 'Espacio multifuncional, aforo 120', web: 'https://www.instagram.com/salakubikmadrid', foto: G_DISCO[1], fotoReal: false },
-];
-
-const bares: Local[] = [
-  { nombre: 'Pizpireta Bar', zona: 'Centro', tipo: 'Bar de dos plantas', web: 'https://pizpiretabar.com', foto: G_BAR[0], fotoReal: false },
-  { nombre: 'Folie', zona: 'Hortaleza', tipo: 'Café espectáculo', web: 'https://foliebar.es', foto: G_BAR[0], fotoReal: false },
-  { nombre: 'Marvelous Bar', zona: 'Chamberí', tipo: 'Bar para fiestas privadas', web: 'https://www.marvelousbar.es', foto: G_BAR[1], fotoReal: false },
-  { nombre: 'Bar Daily', zona: 'Chamberí', tipo: 'Bar para fiestas y cumpleaños', web: 'https://bardaily.com', foto: G_BAR[0], fotoReal: false },
-  { nombre: 'GramaBar', zona: 'Centro', tipo: 'Bar / restaurante con eventos', web: 'https://gramabar.com', foto: G_BAR[1], fotoReal: false },
-];
-
-const terrazas: Local[] = [
-  { nombre: 'La Catorce Sky Bar', zona: 'Gran Vía', tipo: 'Rooftop con vistas al centro', web: 'https://lacatorcemadrid.es', foto: G_ROOFTOP[0], fotoReal: false },
-  { nombre: 'Doñaluz — The Madrid Rooftop', zona: 'Centro / Montera', tipo: 'Rooftop', web: 'https://donaluzmadrid.com', foto: G_ROOFTOP[0], fotoReal: false },
-  { nombre: 'Ella Sky Bar', zona: 'Gran Vía', tipo: 'Rooftop con vistas a Callao', web: 'https://ellaskybar.es', foto: G_ROOFTOP[1], fotoReal: false },
-  { nombre: 'Irreverente Madrid', zona: 'Chamberí', tipo: 'Club + rooftop', web: 'https://irreverentemadrid.es', foto: G_ROOFTOP[0], fotoReal: false },
-  { nombre: 'La Azotea Caribú', zona: 'Salamanca', tipo: 'Rooftop de 460m²', foto: G_ROOFTOP[1], fotoReal: false },
-  { nombre: 'La Guarida Creativa', zona: 'Móstoles / zona sur', tipo: 'Terraza chill-out', web: 'https://laguaridacreativa.es', foto: G_ROOFTOP[0], fotoReal: false },
-  { nombre: 'Areia Chill Out', zona: 'Chueca', tipo: 'Bar chill-out', web: 'https://www.areiachillout.com', foto: G_ROOFTOP[1], fotoReal: false },
-  { nombre: 'Lobsterie', zona: 'Chueca', tipo: 'Bar con eventos privados', web: 'https://lobsterie.com', foto: G_ROOFTOP[0], fotoReal: false },
-];
-
-const huertasLatina: Local[] = [
-  { nombre: 'Café Central', zona: 'Huertas', tipo: 'Sala de conciertos y jazz histórica', web: 'https://www.cafecentralmadrid.com', foto: G_BAR[0], fotoReal: false },
-  { nombre: 'Tablao Flamenco 1911', zona: 'Huertas / Plaza Santa Ana', tipo: 'Tablao flamenco desde 1911', web: 'https://tablaoflamenco1911.com', foto: G_BAR[1], fotoReal: false },
-  { nombre: 'ContraClub', zona: 'La Latina', tipo: 'Sala de conciertos y eventos', web: 'https://contraclub.es', foto: G_DISCO[0], fotoReal: false },
-];
-
-const fincas: Local[] = [
-  { nombre: 'Finca Valaurea', zona: 'Colmenar de Oreja (Madrid)', tipo: 'Finca para bodas y celebraciones', web: 'https://fincavalaurea.es', foto: G_FINCA[0], fotoReal: false },
-  { nombre: 'Finca El Destino', zona: 'El Berrueco (Madrid)', tipo: 'Finca con piscina, sierra norte', web: 'https://fincaeldestino.com', foto: G_FINCA[0], fotoReal: false },
-  { nombre: 'Antigua Fábrica de Harinas', zona: 'Torremocha de Jarama (Madrid)', tipo: 'Finca para eventos al aire libre', web: 'https://antiguafabricadeharinas.com', foto: G_FINCA[1], fotoReal: false },
-  { nombre: 'Finca Los Tablares', zona: 'Colmenar de Oreja (Madrid)', tipo: 'Finca de 2 hectáreas', web: 'https://fincalostablares.com', foto: G_FINCA[0], fotoReal: false },
-  { nombre: 'Poblado Medieval', zona: 'Puente del Congosto (a 1h de Madrid)', tipo: 'Complejo para despedidas con alojamiento', web: 'https://www.pobladomedieval.es', foto: G_FINCA[1], fotoReal: false },
-];
-
-function VenueCard({ local }: { local: Local }) {
+function VenueCard({ local }: { local: LocalInvestigado }) {
   return (
     <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(10,9,8,0.09)' }}>
       <div className="relative" style={{ aspectRatio: '4/3' }}>
@@ -128,7 +64,7 @@ function VenueCard({ local }: { local: Local }) {
   );
 }
 
-function Featured({ local }: { local: Local }) {
+function Featured({ local }: { local: LocalInvestigado }) {
   return (
     <div className="grid md:grid-cols-2 rounded-3xl overflow-hidden mb-4" style={{ border: '1px solid rgba(10,9,8,0.09)' }}>
       <div style={{ aspectRatio: '16/11' }}>
@@ -159,7 +95,7 @@ function SectionDivider({ id, title }: { id: string; title: string }) {
   );
 }
 
-function Grid({ locales }: { locales: Local[] }) {
+function Grid({ locales }: { locales: LocalInvestigado[] }) {
   return (
     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {locales.map((l) => <VenueCard key={l.nombre} local={l} />)}
