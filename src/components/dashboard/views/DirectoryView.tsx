@@ -213,6 +213,11 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
       seekingDancePartner: (row as any).seeking_dance_partner ?? false,
       danceLevel: (row as any).dance_level ?? null,
       danceRole: (row as any).dance_role ?? null,
+      venueCapacity: (row as any).venue_capacity ?? null,
+      allowsOvernight: (row as any).allows_overnight ?? null,
+      pricePerHour: (row as any).price_per_hour ?? null,
+      pricePerEvent: (row as any).price_per_event ?? null,
+      distanceFromMadridKm: (row as any).distance_from_madrid_km ?? null,
     };});
 }
 
