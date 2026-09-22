@@ -789,6 +789,7 @@ const DIRECTORIO_SLUG: Record<string, string> = {
   animador: 'animador', animadores: 'animador', payaso: 'animador', payasos: 'animador',
   speaker: 'speaker', mago: 'mago', bailarin: 'bailarin',
   'photo-booth': 'photo-booth', 'grupo-musical': 'grupo-musical',
+  'locales-eventos': 'locales-eventos',
 };
 const directorioHref = (slug: string) => `/directorio/${DIRECTORIO_SLUG[slug] ?? 'dj'}`;
 
