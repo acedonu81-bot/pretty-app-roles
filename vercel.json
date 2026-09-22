@@ -115,7 +115,7 @@
     {
       "src": "/",
       "headers": {
-        "Link": "</.well-known/ai-catalog.json>; rel=\"ai-catalog\"; type=\"application/json\", </.well-known/mcp/server-card.json>; rel=\"mcp-server-card\"; type=\"application/json\", </.well-known/agent-card.json>; rel=\"agent-card\"; type=\"application/json\", </.well-known/api-catalog>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"describedby\"; type=\"text/plain\", </sitemap.xml>; rel=\"sitemap\"; type=\"application/xml\""
+        "Link": "</.well-known/ai-catalog.json>; rel=\"ai-catalog\"; type=\"application/json\", </.well-known/mcp/server-card.json>; rel=\"mcp-server-card\"; type=\"application/json\", </.well-known/agent-card.json>; rel=\"agent-card\"; type=\"application/json\", </.well-known/api-catalog.json>; rel=\"api-catalog\"; type=\"application/linkset+json\", </llms.txt>; rel=\"describedby\"; type=\"text/plain\", </sitemap.xml>; rel=\"sitemap\"; type=\"application/xml\""
       },
       "continue": true
     },
@@ -132,7 +132,7 @@
       "continue": true
     },
     {
-      "src": "/\\.well-known/api-catalog",
+      "src": "/\\.well-known/api-catalog\\.json",
       "headers": {
         "Content-Type": "application/linkset+json; charset=utf-8",
         "Access-Control-Allow-Origin": "*",
