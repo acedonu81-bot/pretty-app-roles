@@ -12,7 +12,7 @@ const COPY = {
     steps: [
       'Marca en verde los días que tienes libres y en rojo los que ya están ocupados.',
       'Cuando un organizador vea tu ficha, solo podrá solicitar los días que marques en verde.',
-      'Cada solicitud llega a tu pestaña "Solicitudes" — tú decides si la aceptas o la rechazas.',
+      'Cada solicitud llega a tu pestaña "Solicitudes": tú decides si la aceptas o la rechazas.',
     ],
   },
   organizador: {
@@ -20,7 +20,7 @@ const COPY = {
     steps: [
       'Los días en verde están libres; los días en rojo ya están ocupados.',
       'Pulsa un día libre para abrir la solicitud de Flash Booking con esa fecha ya rellenada.',
-      'El profesional recibirá tu solicitud y decidirá si la acepta — la fecha no queda confirmada hasta entonces.',
+      'El profesional recibirá tu solicitud y decidirá si la acepta: la fecha no queda confirmada hasta entonces.',
     ],
   },
 };
