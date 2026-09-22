@@ -510,7 +510,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                         type="text"
                         value={instagram}
                         onChange={(e) => setInstagram(e.target.value)}
-                        placeholder="@tunombre"
+                        placeholder="tu_usuario (sin @)"
                         maxLength={60}
                         className="w-full pl-9 pr-4 py-3 rounded-xl text-xs font-semibold outline-none"
                         style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.1)', color: '#111' }}
