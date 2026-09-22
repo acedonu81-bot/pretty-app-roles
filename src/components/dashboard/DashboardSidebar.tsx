@@ -30,8 +30,8 @@ interface SidebarProps {
 // relación con la marca) — un único acento dorado indica "activo",
 // coherente con el resto de XPEAK.
 const DIRECTORY_ITEMS: { id: string; label: string }[] = [
-  { id: 'dj', label: 'DJs, Artistas & Música en Vivo' },
   { id: 'grupo-musical', label: 'Grupos Musicales' },
+  { id: 'dj', label: 'DJs, Artistas & Música en Vivo' },
   { id: 'emergentes', label: 'DJs Emergentes' },
   { id: 'staff', label: 'Sala & Barra' },
   { id: 'azafata', label: 'Azafatas' },

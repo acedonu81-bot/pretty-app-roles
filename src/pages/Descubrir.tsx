@@ -46,7 +46,7 @@ const ROLE_ICON: Record<string, LucideIcon> = {
 // Entretenimiento) — antes el menú listaba los 17 roles sueltos sin ninguna
 // agrupación, difícil de escanear de un vistazo.
 const ROLE_GROUPS: { label: string; slugs: string[] }[] = [
-  { label: 'Música', slugs: ['dj', 'grupo-musical'] },
+  { label: 'Música', slugs: ['grupo-musical', 'dj'] },
   { label: 'Camareros & Catering', slugs: ['staff', 'catering'] },
   { label: 'Imagen & Media', slugs: ['fotografo', 'photo-booth', 'diseno-grafico'] },
   { label: 'Azafatas & RRPP', slugs: ['azafata', 'promotores', 'speaker', 'wedding-planner'] },
