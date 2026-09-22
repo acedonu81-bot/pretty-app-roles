@@ -30,19 +30,13 @@ function TarjetaLocalInvestigado({ local }: { local: LocalInvestigado }) {
   return (
     <div
       className="rounded-2xl overflow-hidden flex flex-col"
-      style={{ background: '#faf9f7', border: '1.5px dashed rgba(212,175,55,0.4)', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}
+      style={{ background: '#ffffff', border: '1px solid rgba(212,175,55,0.25)', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}
     >
       <div className="relative pb-[100%]">
         <div className="absolute inset-0" style={{ overflow: 'hidden' }}>
-          <img src={local.foto} alt={local.nombre} loading="lazy" className="w-full h-full object-cover" style={{ filter: 'saturate(0.75)' }} />
+          <img src={local.foto} alt={local.nombre} loading="lazy" className="w-full h-full object-cover" />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)' }} />
         </div>
-        <span
-          className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[0.6rem] font-bold uppercase tracking-wide"
-          style={{ background: 'rgba(250,249,247,0.9)', color: '#8a6d1a', border: '1px solid rgba(212,175,55,0.3)' }}
-        >
-          Sin ficha activa
-        </span>
         <div className="absolute bottom-0 left-0 right-0 p-3">
           <h3 className="text-sm font-black line-clamp-2" style={{ color: '#fff', textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>{local.nombre}</h3>
           <p className="text-xs" style={{ color: '#F5D77A' }}>{local.zona}</p>
@@ -78,24 +72,33 @@ function ListadoSinFicha() {
 
   return (
     <div className="mx-auto w-full max-w-6xl px-3 pb-8 sm:px-4">
-      <div className="mt-8 mb-1 flex items-center gap-2">
-        <span className="h-4 w-1 flex-shrink-0 rounded-full" style={{ background: 'linear-gradient(180deg,#D4AF37,#B8941E)' }} />
-        <h2 className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--gold-on-light, #7a6216)' }}>
-          Otros locales de Madrid (aún sin ficha en XPEAK)
-        </h2>
-      </div>
-      <p className="mb-4 text-xs" style={{ color: 'rgba(10,9,8,0.55)' }}>
-        Locales investigados y verificados por XPEAK. Contacto directo con el local, sin mensajería interna.
-      </p>
-
-      {porCategoria.map(({ cat, locales }) => (
-        <div key={cat} className="mb-6">
-          <h3 className="mb-2 text-xs font-semibold" style={{ color: '#0a0908' }}>{CATEGORIA_LABEL[cat]}</h3>
-          <div className="grid grid-cols-2 gap-2.5 sm:gap-3 md:grid-cols-3 lg:grid-cols-4">
-            {locales.map(local => <TarjetaLocalInvestigado key={local.nombre} local={local} />)}
-          </div>
+      {/* Panel con fondo propio (crema/dorado) para que toda la sección se
+          lea de un vistazo como algo distinto del directorio de fichas
+          reales de arriba — antes solo se diferenciaba tarjeta a tarjeta
+          (borde punteado) y no se notaba lo suficiente. */}
+      <div
+        className="mt-8 rounded-2xl p-4 sm:p-5"
+        style={{ background: 'linear-gradient(180deg, rgba(212,175,55,0.09), rgba(212,175,55,0.03))', border: '1px solid rgba(212,175,55,0.25)' }}
+      >
+        <div className="mb-1 flex items-center gap-2">
+          <span className="h-4 w-1 flex-shrink-0 rounded-full" style={{ background: 'linear-gradient(180deg,#D4AF37,#B8941E)' }} />
+          <h2 className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--gold-on-light, #7a6216)' }}>
+            Otros locales de Madrid (aún sin ficha en XPEAK)
+          </h2>
         </div>
-      ))}
+        <p className="mb-4 text-xs" style={{ color: 'rgba(10,9,8,0.6)' }}>
+          Locales investigados y verificados por XPEAK. Contacto directo con el local, sin mensajería interna.
+        </p>
+
+        {porCategoria.map(({ cat, locales }) => (
+          <div key={cat} className="mb-6 last:mb-0">
+            <h3 className="mb-2 text-xs font-semibold" style={{ color: '#0a0908' }}>{CATEGORIA_LABEL[cat]}</h3>
+            <div className="grid grid-cols-2 gap-2.5 sm:gap-3 md:grid-cols-3 lg:grid-cols-4">
+              {locales.map(local => <TarjetaLocalInvestigado key={local.nombre} local={local} />)}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
