@@ -555,7 +555,7 @@ export default function PresupuestoBoda() {
                           </div>
                           <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>{s.note}</p>
                           <div className="flex items-center justify-between mt-0.5">
-                            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.22)' }}><Clock size={9} className="inline mr-1" style={{ color: '#D4AF37', opacity: 0.5 }} />{s.bookWhen}</p>
+                            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}><Clock size={9} className="inline mr-1" style={{ color: '#D4AF37', opacity: 0.5 }} />{s.bookWhen}</p>
                             {s.priceType === 'fixed' && <p className="text-xs font-bold" style={{ color: 'rgba(212,175,55,0.5)' }}>desde {fmt(Math.round(s.priceMin * cityMult))}</p>}
                           </div>
                         </div>
@@ -633,7 +633,7 @@ export default function PresupuestoBoda() {
 
               {cart.length === 0 ? (
                 <div className="rounded-2xl p-8 text-center" style={{ background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(255,255,255,0.1)' }}>
-                  <ShoppingCart size={24} style={{ color: 'rgba(255,255,255,0.15)', marginBottom: 8 }} />
+                  <ShoppingCart size={24} style={{ color: 'rgba(255,255,255,0.35)', marginBottom: 8 }} />
                   <p className="text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>Añade servicios desde la izquierda.</p>
                 </div>
               ) : (
@@ -660,7 +660,7 @@ export default function PresupuestoBoda() {
                             {s.hasPersons && id !== 'catering' && <Counter label={s.personsLabel!} value={persons} min={1} onInc={() => updateCart(id, 'persons', 1)} onDec={() => updateCart(id, 'persons', -1)} />}
                           </div>
                         )}
-                        {id === 'catering' && <p className="text-xs mb-2" style={{ color: 'rgba(255,255,255,0.25)' }}>{guests} invitados · {fmt(Math.round(s.perPersonMin! * cityMult))}–{fmt(Math.round(s.perPersonMax! * cityMult))}/p</p>}
+                        {id === 'catering' && <p className="text-xs mb-2" style={{ color: 'rgba(255,255,255,0.35)' }}>{guests} invitados · {fmt(Math.round(s.perPersonMin! * cityMult))}–{fmt(Math.round(s.perPersonMax! * cityMult))}/p</p>}
                         <div className="flex items-center justify-between">
                           <div className="flex-1 h-1 rounded-full mr-3 overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
                             <div className="h-full rounded-full" style={{ width: `${Math.round((pMax / Math.max(totalMax, 1)) * 100)}%`, background: 'rgba(212,175,55,0.5)' }} />

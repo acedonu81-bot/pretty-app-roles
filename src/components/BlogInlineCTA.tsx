@@ -77,6 +77,18 @@ const CONFIG = {
       badge: 'Flash Booking <1h',
     },
   },
+  bailarin: {
+    pro: { label: '¿Eres bailarín o instructor?', cta: 'Publica tu tarifa →', href: '/auth?mode=register&role=bailarin' },
+    org: { label: '¿Buscas bailarín o instructor?', cta: 'Ver bailarines →', href: '/contratar-bailarin' },
+    upgrade: {
+      eyebrow: 'XPEAK · Directorio verificado',
+      headline: 'Encuentra bailarín o instructor verificado para tu evento',
+      sub: 'Bailarines para eventos e instructores de salsa/bachata. Portfolios reales y contrato digital automático.',
+      cta: 'Ver bailarines disponibles →',
+      href: '/auth?mode=register&intent=contratar-bailarin',
+      badge: 'Directorio verificado',
+    },
+  },
   general: {
     pro: { label: '¿Eres profesional de eventos?', cta: 'Publica tu tarifa →', href: '/auth?mode=register&role=profesional' },
     org: { label: '¿Necesitas talento para tu evento?', cta: 'Ver profesionales →', href: '/auth' },

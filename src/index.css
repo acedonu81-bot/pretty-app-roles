@@ -149,6 +149,21 @@ body.is-native-app .clay-btn-primary {
   font-weight: 700;
 }
 
+.tab-fab {
+  width: 56px;
+  height: 56px;
+  margin-top: -26px;
+  border-radius: var(--clay-radius-lg);
+  background: linear-gradient(155deg, #E9C866, #D4AF37 55%, #B8941E);
+  box-shadow: 6px 8px 16px rgba(150,120,40,0.4), -4px -4px 10px rgba(255,244,210,0.55), 0 0 0 6px var(--background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  color: #241C08;
+  flex: none;
+}
+
 @layer base {
   * {
     @apply border-border;

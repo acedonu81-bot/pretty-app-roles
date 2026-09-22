@@ -135,7 +135,7 @@ export default function BlogFotografoBodaMadrid() {
               <a href="/contratar-fotografo/madrid" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#4F46E5,#B8941E)', color: '#000' }}>Ver fotógrafos en Madrid →</a>
             </div>
           </div>
-                  <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/fotografo-boda-madrid" />
+                  <BlogEmailCapture variant="presupuestos" intent="contratar-fotografo" articlePath="/blog/fotografo-boda-madrid" />
 </main>
         <DJResourcesAffiliate role="fotografo" />
         <BlogAuthor />
