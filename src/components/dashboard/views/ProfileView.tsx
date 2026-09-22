@@ -9,6 +9,7 @@ import AudioUpload from '@/components/dashboard/AudioUpload';
 import { compressImage, MAX_RAW_IMAGE_MB } from '@/lib/image';
 import PortfolioUpload from '@/components/dashboard/PortfolioUpload';
 import MisCondicionesSection from './profile/MisCondicionesSection';
+import LocalEventosExtraFields from '@/components/dashboard/LocalEventosExtraFields';
 import { sanitizeInput } from '@/lib/contentFilter';
 import { DEFAULT_ZONE, DJ_GENRES, ROLE_TAGS } from '@/lib/constants';
 
@@ -45,6 +46,11 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   const [seekingPartner, setSeekingPartner] = useState<boolean | null>(null);
   const [danceLevel, setDanceLevel] = useState<string | null>(null);
   const [danceRole, setDanceRole] = useState<string | null>(null);
+  const [venueCapacity, setVenueCapacity] = useState<number | null>(null);
+  const [allowsOvernight, setAllowsOvernight] = useState<boolean | null>(null);
+  const [pricePerHour, setPricePerHour] = useState<number | null>(null);
+  const [pricePerEvent, setPricePerEvent] = useState<number | null>(null);
+  const [distanceFromMadridKm, setDistanceFromMadridKm] = useState<number | null>(null);
 
   const rawPhoto = profile.photo_url;
   const photoUrl = rawPhoto && rawPhoto.trim().length > 5 && !rawPhoto.endsWith("''") ? rawPhoto : null;
@@ -305,6 +311,11 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
     if (seekingPartner !== null) updates.seeking_dance_partner = seekingPartner;
     if (danceLevel !== null) updates.dance_level = danceLevel;
     if (danceRole !== null) updates.dance_role = danceRole;
+    if (venueCapacity !== null) updates.venue_capacity = venueCapacity;
+    if (allowsOvernight !== null) updates.allows_overnight = allowsOvernight;
+    if (pricePerHour !== null) updates.price_per_hour = pricePerHour;
+    if (pricePerEvent !== null) updates.price_per_event = pricePerEvent;
+    if (distanceFromMadridKm !== null) updates.distance_from_madrid_km = distanceFromMadridKm;
     // is_flash_active is saved immediately on toggle — skip here
     if (Object.keys(updates).length > 0) {
       setSaving(true);
@@ -1164,6 +1175,22 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 </div>
               )}
             </div>
+            {activeRoles.includes('local_eventos') && (
+              <LocalEventosExtraFields
+                venueCapacity={venueCapacity ?? profile.venue_capacity ?? null}
+                allowsOvernight={allowsOvernight ?? profile.allows_overnight ?? null}
+                pricePerHour={pricePerHour ?? profile.price_per_hour ?? null}
+                pricePerEvent={pricePerEvent ?? profile.price_per_event ?? null}
+                distanceFromMadridKm={distanceFromMadridKm ?? profile.distance_from_madrid_km ?? null}
+                onChange={(field, value) => {
+                  if (field === 'venueCapacity') setVenueCapacity(value as number | null);
+                  else if (field === 'allowsOvernight') setAllowsOvernight(value as boolean | null);
+                  else if (field === 'pricePerHour') setPricePerHour(value as number | null);
+                  else if (field === 'pricePerEvent') setPricePerEvent(value as number | null);
+                  else setDistanceFromMadridKm(value as number | null);
+                }}
+              />
+            )}
           </div>
           {(profile.role === 'dj') && <AudioUpload legacyEmbedUrl={profile.audio_embed_url} onMigrated={() => profile.updateField({ audio_embed_url: null })} />}
           {profile.role !== 'dj' && profile.role !== 'empresario' && <PortfolioUpload />}
