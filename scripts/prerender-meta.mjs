@@ -847,6 +847,14 @@ const ROUTES = [
     ogType: 'website',
   },
   {
+    path: '/directorio/locales-eventos',
+    title: 'Alquilar locales para eventos en España — XPEAK',
+    desc: 'Directorio de locales para bodas, fiestas corporativas y eventos privados en España. Espacios únicos con opciones de catering. Contacto directo con propietarios.',
+    ogTitle: 'Alquilar locales para eventos — XPEAK',
+    ogDesc: 'Locales para bodas, fiestas y eventos privados en toda España. Espacios con catering incluido.',
+    ogType: 'website',
+  },
+  {
     path: '/socials',
     title: 'Agenda de Socials de Baile — Salsa, Bachata y Kizomba | XPEAK',
     desc: 'Socials y congresos de salsa, bachata y kizomba en toda España. Encuentra dónde bailar esta semana o publica tu evento gratis.',

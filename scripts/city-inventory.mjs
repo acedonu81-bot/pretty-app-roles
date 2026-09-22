@@ -91,6 +91,7 @@ export const ROLE_MAP = {
   mago: ['mago'], animador: ['animador'], animadores: ['animador'],
   payaso: ['payaso'], payasos: ['payaso'], speaker: ['speaker'],
   'photo-booth': ['photo-booth'], 'tecnico-sonido': ['tecnico'],
+  'locales-eventos': ['local_eventos'],
 };
 
 /**

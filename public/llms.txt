@@ -29,6 +29,7 @@ XPEAK es una plataforma que conecta profesionales de eventos (DJs, fotógrafos, 
 - [Estilistas y vestuario](https://xpeak.es/contratar-vestuario)
 - [Photo Booth](https://xpeak.es/contratar-photo-booth)
 - [Técnicos de sonido y montaje](https://xpeak.es/contratar-tecnico-sonido)
+- [Locales para eventos](https://xpeak.es/contratar-locales-eventos)
 - [Wedding planners](https://xpeak.es/contratar-wedding-planner)
 - [Diseño gráfico e invitaciones](https://xpeak.es/contratar-diseno-grafico)
 
