@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { ALL_CITIES } from '@/lib/regions';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight, Megaphone, UtensilsCrossed, Laugh, PartyPopper, PersonStanding, MicVocal, Shirt, Scissors, Upload, Euro, Guitar, SlidersHorizontal } from 'lucide-react';
+import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight, Megaphone, UtensilsCrossed, Laugh, PartyPopper, PersonStanding, MicVocal, Shirt, Scissors, Upload, Euro, Guitar, SlidersHorizontal, Instagram } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
@@ -232,6 +232,10 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
   // suelto ("INFO AL DM") en vez de perfil profesional curado. Mismo patrón
   // que foto/ciudad/tarifa: bloquea canContinue hasta un mínimo de 40 chars.
   const [bio, setBio] = useState('');
+  // Opcional, no bloquea canContinue — a diferencia de foto/ciudad/tarifa/bio,
+  // un perfil sin Instagram sigue siendo publicable, solo pierde la señal de
+  // confianza extra que ya usa el banner del dashboard (instagramOnlyMissing).
+  const [instagram, setInstagram] = useState('');
   // No todos los roles pueden fijar un precio de antemano (Wedding Planner,
   // Magos, artistas con caché por evento) — "a consultar" es una respuesta
   // válida, no un campo vacío por descuido.
@@ -275,11 +279,17 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
       const { clean, reason } = sanitizeInput(bio.trim(), 'bio');
       if (!clean) { toast.error(reason); return; }
     }
+    const cleanInstagram = instagram.trim().replace(/^@/, '');
+    if (cleanInstagram) {
+      const { clean, reason } = sanitizeInput(cleanInstagram, 'default');
+      if (!clean) { toast.error(reason); return; }
+    }
     setSavingQuick(true);
     const updates: Record<string, unknown> = {};
     if (photoUrl) updates.photo_url = photoUrl;
     if (effectiveCity) updates.zone = effectiveCity;
     if (bio.trim()) updates.bio = bio.trim();
+    if (cleanInstagram) updates.instagram = cleanInstagram;
     if (priceOnRequest) {
       updates.hourly_rate = null;
     } else {
@@ -490,6 +500,23 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                         Mi precio varía según el evento — mostrar "A consultar"
                       </span>
                     </label>
+                  </div>
+
+                  <div className="px-1">
+                    <p className="text-[0.65rem] font-bold mb-1.5" style={{ color: '#222' }}>Tu Instagram <span className="font-normal" style={{ color: '#888' }}>(opcional)</span></p>
+                    <div className="relative">
+                      <Instagram size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#888' }} />
+                      <input
+                        type="text"
+                        value={instagram}
+                        onChange={(e) => setInstagram(e.target.value)}
+                        placeholder="@tunombre"
+                        maxLength={60}
+                        className="w-full pl-9 pr-4 py-3 rounded-xl text-xs font-semibold outline-none"
+                        style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.1)', color: '#111' }}
+                      />
+                    </div>
+                    <p className="text-[0.65rem] mt-1" style={{ color: '#333' }}>Da confianza a quien te contrate</p>
                   </div>
 
                   <div className="px-1">
