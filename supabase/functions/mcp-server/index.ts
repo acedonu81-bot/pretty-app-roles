@@ -34,7 +34,7 @@ const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 // se duplica a mano. Si se añade un rol nuevo al signup y no aquí, el MCP
 // responde "rol no reconocido" a profesionales que sí existen (bug real
 // encontrado en la auditoría del 10 sep 2026).
-const KNOWN_ROLES = ['dj', 'grupo-musical', 'media', 'makeup', 'peluqueria', 'staff', 'azafata', 'promotor', 'empresario', 'catering', 'mago', 'humorista', 'animador', 'bailarin', 'speaker', 'vestuario', 'photo-booth', 'tecnico'];
+const KNOWN_ROLES = ['dj', 'grupo-musical', 'media', 'makeup', 'peluqueria', 'staff', 'azafata', 'promotor', 'empresario', 'catering', 'mago', 'humorista', 'animador', 'bailarin', 'speaker', 'vestuario', 'photo-booth', 'tecnico', 'local_eventos'];
 
 // Alias de rol — misma fuente que ROLE_ALIASES en src/lib/constants.ts.
 // Sin esto, buscar_profesionales con rol="staff" no encontraba a quien está

@@ -26,7 +26,7 @@ Sin autenticación (`auth.type: none`).
 Busca profesionales por rol, ciudad y presupuesto máximo por hora.
 
 **Parámetros:**
-- `rol` (string, requerido) — uno de: `dj`, `staff`, `makeup`, `promotor`, `fotografo`, `catering`, `mago`, `humorista`, `animador`, `bailarin`, `speaker`, `vestuario`, `photo-booth`, `tecnico-sonido`, `local_eventos`
+- `rol` (string, requerido) — uno de: `dj`, `staff`, `makeup`, `promotor`, `media`, `catering`, `mago`, `humorista`, `animador`, `bailarin`, `speaker`, `vestuario`, `photo-booth`, `tecnico`, `local_eventos`
 - `ciudad` (string, opcional) — ciudad o zona de España, ej. `"Madrid"`
 - `presupuesto_max` (number, opcional) — presupuesto máximo por hora en euros
 
