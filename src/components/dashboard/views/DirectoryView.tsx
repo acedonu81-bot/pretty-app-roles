@@ -66,7 +66,7 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
   ].join(',');
   let query = supabase
     .from('profiles')
-    .select('id, user_id, display_name, photo_url, zone, region, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, instagram, category, is_verified, is_flash_active, is_early_adopter, is_early_adopter_override, priority_badge_until, score, role, roles, seeking_dance_partner, dance_level, dance_role, created_at, experience_level, show_new_badge')
+    .select('id, user_id, display_name, photo_url, zone, region, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, instagram, category, is_verified, is_flash_active, is_early_adopter, is_early_adopter_override, priority_badge_until, score, role, roles, seeking_dance_partner, dance_level, dance_role, created_at, experience_level, show_new_badge, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
     .or(orFilter)
     // Excluye empresarios que tengan este oficio en `roles` por dato legacy o
     // error de alta — buscan y contratan, no les contratan (caso real: MAGIG

@@ -43,6 +43,11 @@ export interface Profile {
   seekingDancePartner?: boolean;
   danceLevel?: string | null;
   danceRole?: string | null;
+  venueCapacity?: number | null;
+  allowsOvernight?: boolean | null;
+  pricePerHour?: number | null;
+  pricePerEvent?: number | null;
+  distanceFromMadridKm?: number | null;
 }
 
 /** Genera slug SEO-friendly desde nombre: "Dani Tech" → "dani-tech" */
