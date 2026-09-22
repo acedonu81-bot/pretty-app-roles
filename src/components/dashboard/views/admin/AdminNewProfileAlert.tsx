@@ -9,6 +9,11 @@ import { ROLE_ES } from '@/lib/constants';
 // quedo invisible en el directorio sin que nadie se enterara. El email de aviso
 // ayuda, pero un correo se pierde; el panel es donde se entra a mirar.
 //
+// Desde el 22 sep 2026 un alta en validation_status='pending' tambien esta
+// oculta al publico via RLS (ver spec docs/superpowers/specs/2026-09-22-revision-alta-nueva-design.md),
+// asi que este panel dejo de ser solo un aviso: es donde se aprueba o rechaza,
+// y hasta que eso pasa el perfil no es visible para nadie salvo su dueno.
+//
 // Verde y no rojo porque un alta es una buena noticia — lo que urge no es
 // alarmarse, es revisar que el rol y la zona son correctos antes de que pasen
 // dias. Por eso se marcan en ambar los datos que suelen venir mal.
@@ -28,12 +33,15 @@ const roleLabel = (r: string | null) => (r ? ROLE_ES[r] ?? r : 'Sin rol');
 const AdminNewProfileAlert = ({ onOpenUsers }: { onOpenUsers?: () => void } = {}) => {
   const [pending, setPending] = useState<NewProfile[]>([]);
   const [acking, setAcking] = useState(false);
+  const [rejectingId, setRejectingId] = useState<string | null>(null);
+  const [rejectReason, setRejectReason] = useState('');
+  const [processingId, setProcessingId] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
     (supabase.from('profiles') as any)
       .select('user_id, display_name, role, zone, region, photo_url, created_at')
-      .is('admin_seen_at', null)
+      .eq('validation_status', 'pending')
       .eq('is_seed', false)
       .order('created_at', { ascending: false })
       .limit(50)
@@ -55,6 +63,40 @@ const AdminNewProfileAlert = ({ onOpenUsers }: { onOpenUsers?: () => void } = {}
       .in('user_id', ids);
     if (error) { setAcking(false); return; }
     setPending([]);
+  };
+
+  const approveProfile = async (p: NewProfile) => {
+    setProcessingId(p.user_id);
+    const { error } = await (supabase.from('profiles') as any)
+      .update({ validation_status: 'approved' })
+      .eq('user_id', p.user_id);
+    if (error) { setProcessingId(null); return; }
+    setPending(prev => prev.filter(x => x.user_id !== p.user_id));
+    setProcessingId(null);
+    supabase.functions.invoke('send-email', {
+      body: {
+        type: 'admin_approved',
+        data: { user_id: p.user_id, name: p.display_name, role: p.role },
+      },
+    }).catch((err: unknown) => console.warn('[AdminNewProfileAlert] approved email failed:', err));
+  };
+
+  const rejectProfile = async (p: NewProfile, reason: string) => {
+    setProcessingId(p.user_id);
+    const { error } = await (supabase.from('profiles') as any)
+      .update({ validation_status: 'rejected' })
+      .eq('user_id', p.user_id);
+    if (error) { setProcessingId(null); return; }
+    setPending(prev => prev.filter(x => x.user_id !== p.user_id));
+    setProcessingId(null);
+    setRejectingId(null);
+    setRejectReason('');
+    supabase.functions.invoke('send-email', {
+      body: {
+        type: 'admin_rejected',
+        data: { user_id: p.user_id, name: p.display_name, reason },
+      },
+    }).catch((err: unknown) => console.warn('[AdminNewProfileAlert] rejected email failed:', err));
   };
 
   return (
@@ -84,18 +126,65 @@ const AdminNewProfileAlert = ({ onOpenUsers }: { onOpenUsers?: () => void } = {}
                 const sinZona = !p.region;
                 const sinFoto = !p.photo_url || p.photo_url.length < 10;
                 return (
-                  <li key={p.user_id} className="text-xs flex flex-wrap items-center gap-x-2 gap-y-0.5" style={{ color: '#166534' }}>
-                    <span className="font-bold">{p.display_name || 'Sin nombre'}</span>
-                    <span>· {roleLabel(p.role)}</span>
-                    <span>· {p.zone || 'sin zona'}</span>
-                    <span>· {new Date(p.created_at).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</span>
-                    {sinZona && (
-                      <span className="px-1.5 py-0.5 rounded font-bold inline-flex items-center gap-1" style={{ background: 'rgba(217,119,6,0.14)', color: '#92400e' }}>
-                        <AlertTriangle size={10} strokeWidth={3} /> sin comunidad
-                      </span>
-                    )}
-                    {sinFoto && (
-                      <span className="px-1.5 py-0.5 rounded font-bold" style={{ background: 'rgba(217,119,6,0.14)', color: '#92400e' }}>sin foto</span>
+                  <li key={p.user_id} className="text-xs" style={{ color: '#166534' }}>
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                      <span className="font-bold">{p.display_name || 'Sin nombre'}</span>
+                      <span>· {roleLabel(p.role)}</span>
+                      <span>· {p.zone || 'sin zona'}</span>
+                      <span>· {new Date(p.created_at).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</span>
+                      {sinZona && (
+                        <span className="px-1.5 py-0.5 rounded font-bold inline-flex items-center gap-1" style={{ background: 'rgba(217,119,6,0.14)', color: '#92400e' }}>
+                          <AlertTriangle size={10} strokeWidth={3} /> sin comunidad
+                        </span>
+                      )}
+                      {sinFoto && (
+                        <span className="px-1.5 py-0.5 rounded font-bold" style={{ background: 'rgba(217,119,6,0.14)', color: '#92400e' }}>sin foto</span>
+                      )}
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2 mt-1.5">
+                      <a
+                        href={`/p/${p.user_id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 font-bold underline"
+                        style={{ color: '#14532d' }}
+                      >
+                        Ver ficha completa →
+                      </a>
+                      <button
+                        onClick={() => approveProfile(p)}
+                        disabled={processingId === p.user_id}
+                        className="px-2 py-1 rounded font-bold disabled:opacity-50"
+                        style={{ background: '#16a34a', color: '#fff' }}
+                      >
+                        Aprobar
+                      </button>
+                      <button
+                        onClick={() => setRejectingId(rejectingId === p.user_id ? null : p.user_id)}
+                        disabled={processingId === p.user_id}
+                        className="px-2 py-1 rounded font-bold disabled:opacity-50"
+                        style={{ background: '#fff', color: '#b91c1c', border: '1px solid #b91c1c' }}
+                      >
+                        Rechazar
+                      </button>
+                    </div>
+                    {rejectingId === p.user_id && (
+                      <div className="flex flex-wrap items-center gap-2 mt-1.5">
+                        <input
+                          value={rejectReason}
+                          onChange={e => setRejectReason(e.target.value)}
+                          placeholder="Motivo del rechazo (se envía al profesional)"
+                          className="nightlife-input text-xs flex-1 min-w-[200px]"
+                        />
+                        <button
+                          onClick={() => rejectProfile(p, rejectReason)}
+                          disabled={processingId === p.user_id || !rejectReason.trim()}
+                          className="px-2 py-1 rounded font-bold disabled:opacity-50"
+                          style={{ background: '#b91c1c', color: '#fff' }}
+                        >
+                          Confirmar rechazo
+                        </button>
+                      </div>
                     )}
                   </li>
                 );
