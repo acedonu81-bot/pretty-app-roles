@@ -58,7 +58,7 @@ const GRUPOS: { titulo: string; items: { id: string; view: string; nombre: strin
     ],
   },
   {
-    titulo: 'Sala, Barra & Catering',
+    titulo: 'Sala, Barra, Catering & Locales',
     items: [
       { id: 'staff', view: 'staff', nombre: 'Sala & Barra', gancho: 'Camareros, bartenders y personal de sala' },
       { id: 'catering', view: 'catering', nombre: 'Catering & Chef', gancho: 'Cocina, barra y showcooking' },

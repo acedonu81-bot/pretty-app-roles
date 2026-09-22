@@ -60,7 +60,7 @@ const DIRECTORY_IDS = new Set(DIRECTORY_ITEMS.map(i => i.id));
 // literalmente a quien contiene.
 const DIRECTORY_GROUPS: { label: string; ids: string[] }[] = [
   { label: 'Música', ids: ['dj', 'grupo-musical', 'emergentes'] },
-  { label: 'Sala, Barra & Catering', ids: ['staff', 'catering', 'local_eventos'] },
+  { label: 'Sala, Barra, Catering & Locales', ids: ['staff', 'catering', 'local_eventos'] },
   { label: 'Imagen & Media', ids: ['media', 'photo-booth', 'design'] },
   { label: 'Azafatas & RRPP', ids: ['azafata', 'event_manager', 'promotor', 'speaker'] },
   { label: 'Belleza & Estética', ids: ['makeup', 'vestuario'] },
