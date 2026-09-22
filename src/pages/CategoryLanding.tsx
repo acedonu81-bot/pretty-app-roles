@@ -836,7 +836,7 @@ export default function CategoryLanding() {
     areaServed: { '@type': 'Country', name: 'España' },
     priceRange: data.precio,
     openingHours: 'Mo-Su 00:00-24:00',
-    sameAs: ['https://www.instagram.com/xpeaksite'],
+    sameAs: ['https://www.instagram.com/xpeaksite', 'https://www.tiktok.com/@xpeak30'],
   };
 
   return (

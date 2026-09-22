@@ -758,7 +758,7 @@ export default function CityLanding() {
     // este campo mandaba a Google el rango de DJ para todas las categorías.
     priceRange: precio,
     openingHours: 'Mo-Su 00:00-24:00',
-    sameAs: ['https://www.instagram.com/xpeaksite'],
+    sameAs: ['https://www.instagram.com/xpeaksite', 'https://www.tiktok.com/@xpeak30'],
   };
 
   // Una ciudad sin profesionales renderiza "Aún no hay": es thin content y no
