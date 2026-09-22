@@ -62,6 +62,7 @@ const GRUPOS: { titulo: string; items: { id: string; view: string; nombre: strin
     items: [
       { id: 'staff', view: 'staff', nombre: 'Sala & Barra', gancho: 'Camareros, bartenders y personal de sala' },
       { id: 'catering', view: 'catering', nombre: 'Catering & Chef', gancho: 'Cocina, barra y showcooking' },
+      { id: 'local_eventos', view: 'local_eventos', nombre: 'Locales para eventos', gancho: 'Discotecas, salas, terrazas y fincas' },
     ],
   },
   {

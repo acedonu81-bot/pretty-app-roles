@@ -141,6 +141,7 @@ const DiscoverTab = ({ pros, favorites, onToggleFavorite, onExportCSV, onMessage
                 { value: 'photo-booth', label: 'Photo Booth' },
                 { value: 'vestuario', label: 'Estilista / Vestuario' },
                 { value: 'tecnico', label: 'Técnico de Sonido y Montaje' },
+                { value: 'local_eventos', label: 'Locales para eventos' },
               ]}
               active={filterRole !== 'Todos'}
             />

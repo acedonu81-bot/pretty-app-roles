@@ -59,6 +59,7 @@ const ResourcesView = lazy(() => import('@/components/dashboard/views/ResourcesV
 const LegalView = lazy(() => import('@/components/dashboard/views/LegalView').then(m => ({ default: m.LegalView })));
 const ProfessionalProfilePage = lazy(() => import('@/components/dashboard/ProfessionalProfilePage'));
 const SupportChat = lazy(() => import('@/components/dashboard/SupportChat'));
+const LocalEventosView = lazy(() => import('@/components/dashboard/views/LocalEventosView'));
 const OnboardingTour = lazy(() => import('@/components/dashboard/OnboardingTour'));
 const OnboardingWizard = lazy(() => import('@/components/OnboardingWizard'));
 const AmbientBackground = lazy(() => import('@/components/AmbientBackground'));
@@ -250,6 +251,7 @@ const BUSQUEDA_POR_VISTA: Record<string, string[]> = {
   vestuario: ['vestuario', 'estilista', 'styling', 'moda'],
   'photo-booth': ['photo booth', 'photobooth', 'cabina de fotos', 'fotomaton'],
   tecnico: ['tecnico', 'tecnica', 'sonido', 'iluminacion', 'montaje de escenario'],
+  local_eventos: ['local', 'locales', 'evento', 'eventos', 'finca', 'discoteca', 'sala', 'terraza', 'despedida'],
   // Legado: sin alta activa, sinónimos mínimos por si queda algún perfil real.
   design: ['diseno', 'diseño', 'decoracion'],
   event_manager: ['event manager', 'organizador de eventos', 'wedding planner'],
@@ -461,7 +463,7 @@ const Dashboard = () => {
     'dj', 'staff', 'azafata', 'event_manager', 'makeup', 'peluqueria', 'media',
     'ambassador', 'vestuario', 'design', 'promotor', 'camarero', 'catering',
     'mago', 'bailarin', 'humorista', 'monologo', 'animador', 'speaker',
-    'photo-booth', 'grupo-musical', 'tecnico', 'emergentes',
+    'photo-booth', 'grupo-musical', 'tecnico', 'emergentes', 'local_eventos',
   ]);
 
   const handleSearch = (q: string) => {
@@ -509,6 +511,7 @@ const Dashboard = () => {
       case 'grupo-musical': return <GrupoMusicalView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'emergentes': return <EmergentesView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'tecnico':   return <TecnicoView   onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
+      case 'local_eventos': return <LocalEventosView onNavigate={nav} onMessage={handleMessage} searchQuery={searchQuery} onViewProfile={setSelectedProfile} />;
       case 'settings': return <SettingsView onNavigate={nav} />;
       // Páginas legales/soporte como pantallas internas: mismo texto que las
       // rutas web /privacidad, /terminos, etc. (que se mantienen intactas),
