@@ -732,6 +732,41 @@ export const CATEGORY_DATA: Record<string, {
       { title: 'Cierra el contrato', body: 'Firma digital con horario de montaje, material incluido y condiciones. Listo para facturar.' },
     ],
   },
+  'locales-eventos': {
+    slug: 'locales-eventos',
+    emoji: '🏛️',
+    h1: 'Alquiler de Locales y Fincas para Eventos',
+    tagline: 'Discotecas, salas, terrazas y fincas para bodas, cumpleaños y eventos de empresa en toda España',
+    desc: 'Alquila local o finca para tu evento en España. Discotecas, salas privadas, terrazas y fincas con aforo desde 100 hasta 1.200 personas. Precio y contacto directo con quien gestiona el espacio.',
+    intro: 'XPEAK conecta organizadores con locales y fincas para eventos en toda España: discotecas y salas privadas para cumpleaños y despedidas, terrazas y rooftops para eventos de empresa, y fincas para bodas al aire libre. Cada ficha muestra aforo, tipo de espacio, precio orientativo y contacto directo con quien gestiona la reserva, sin intermediarios.',
+    keyword: 'Locales para Eventos',
+    keywords: 'alquiler de locales para eventos, alquiler de discoteca para fiesta privada, finca para bodas Madrid, sala de eventos alquiler, local para cumpleaños Madrid, alquiler sala privada despedida de soltero, finca eventos precio, local con barra libre eventos',
+    precio: 'desde 400€/evento',
+    cities: [
+      { name: 'Madrid', slug: 'madrid' },
+      { name: 'Barcelona', slug: 'barcelona' },
+      { name: 'Valencia', slug: 'valencia' },
+      { name: 'Sevilla', slug: 'sevilla' },
+      { name: 'Málaga', slug: 'malaga' },
+      { name: 'Bilbao', slug: 'bilbao' },
+      { name: 'Zaragoza', slug: 'zaragoza' },
+      { name: 'Murcia', slug: 'murcia' },
+      { name: 'Palma', slug: 'palma' },
+      { name: 'Ibiza', slug: 'ibiza' },
+    ],
+    roles: ['Discoteca', 'Sala privada', 'Terraza / rooftop', 'Finca para bodas', 'Bar de eventos', 'Espacio con catering propio', 'Espacio diáfano', 'Salón con barra incluida'],
+    faqs: [
+      { q: '¿Cuánto cuesta alquilar un local para un evento en España?', a: 'Una sala privada o bar para una fiesta pequeña (hasta 80 personas) suele arrancar en torno a 400-800€ la noche. Una discoteca o sala con aforo medio (200-400 personas) va de 1.000€ a 3.000€ según ciudad y día de la semana. Una finca para boda con exclusividad de todo el día se mueve entre 3.000€ y 12.000€ o más, dependiendo de si el precio incluye catering. En XPEAK cada ficha muestra el rango de precio orientativo del espacio.' },
+      { q: '¿El precio incluye catering o hay que contratarlo aparte?', a: 'Depende del local. Muchas discotecas y salas solo cobran el alquiler del espacio y dejan que traigas tu propio catering o DJ; otras, sobre todo fincas para bodas, exigen usar su servicio de catering propio o tienen una lista cerrada de proveedores homologados. Conviene preguntarlo antes de reservar, y cada ficha lo indica cuando el local lo especifica.' },
+      { q: '¿Qué aforo necesito según el tipo de evento?', a: 'Para un cumpleaños o despedida entre amigos, una sala o bar de 80-150 personas suele sobrar. Para una boda con banquete y baile, lo habitual son fincas o salones de 150-300 invitados. Para un evento de empresa grande o una fiesta con entrada, hay discotecas y salas de hasta 800-1.200 personas. XPEAK permite filtrar por aforo para no visitar espacios que no encajan.' },
+      { q: '¿Hay que dejar fianza para reservar un local o finca?', a: 'Sí, es lo habitual: la mayoría de espacios piden una fianza (normalmente entre el 20% y el 50% del precio total) para bloquear la fecha, que se devuelve o se descuenta del pago final si no hay incidencias. El horario límite también varía mucho según licencia y zona, así que conviene confirmarlo con el local antes de cerrar la reserva.' },
+    ],
+    steps: [
+      { title: 'Filtra por ciudad y aforo', body: 'Busca discotecas, salas, terrazas o fincas según el tamaño y tipo de tu evento. Precio orientativo visible sin registro.' },
+      { title: 'Contacta con el local', body: 'Pregunta fecha, fianza, si el catering es propio o libre, y horario. Cada ficha tiene contacto directo con quien gestiona el espacio.' },
+      { title: 'Cierra la reserva', body: 'Acuerda condiciones y fianza directamente con el local. Sin comisión de XPEAK sobre el alquiler.' },
+    ],
+  },
 };
 
 // Alias plurales — App.tsx registra tanto /contratar-animador como

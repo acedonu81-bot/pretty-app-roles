@@ -29,6 +29,7 @@ const ROLE_MAP: Record<string, string[]> = {
   dj: ['dj'], fotografo: ['media'], catering: ['catering'],
   camareros: ['staff', 'camarero'], 'grupo-musical': ['grupo-musical'],
   animador: ['animador'], mago: ['mago'], maquillaje: ['makeup', 'peluqueria'],
+  'locales-eventos': ['local_eventos'],
 };
 
 function useRoleProfessionals(categorySlug: string) {
@@ -113,6 +114,7 @@ type OccasionInfo = {
 const PRECIO_BODA: Record<string, string> = {
   DJ: '400€–900€', Fotógrafo: '800€–2.500€', Catering: '60€–140€/persona',
   Camareros: '120€–180€/servicio', 'Grupo Musical': '900€–3.000€', Animador: '150€–400€', Mago: '250€–600€',
+  'Local para eventos': '3.000€–12.000€',
 };
 const PRECIO_CUMPLE: Record<string, string> = {
   DJ: '200€–500€', Fotógrafo: '250€–600€', Catering: '25€–50€/persona',
@@ -121,6 +123,7 @@ const PRECIO_CUMPLE: Record<string, string> = {
 const PRECIO_EMPRESA: Record<string, string> = {
   DJ: '350€–800€', Fotógrafo: '400€–1.200€', Catering: '40€–90€/persona',
   Camareros: '120€–180€/servicio', Speaker: '600€–3.000€', 'Grupo Musical': '800€–2.500€',
+  'Local para eventos': '600€–4.000€',
 };
 const PRECIO_COMUNION: Record<string, string> = {
   Fotógrafo: '300€–800€', Catering: '30€–65€/persona', Camareros: '100€–160€/servicio',
@@ -129,6 +132,7 @@ const PRECIO_COMUNION: Record<string, string> = {
 const PRECIO_FIESTA: Record<string, string> = {
   DJ: '250€–700€', Fotógrafo: '250€–600€', Catering: '30€–70€/persona',
   Camareros: '100€–170€/servicio', Animador: '120€–300€', Mago: '180€–450€',
+  'Local para eventos': '400€–2.500€',
 };
 
 // Constructor de FAQs genérico por ocasión — coherente entre todas
@@ -190,11 +194,11 @@ export const OCCASIONS: Record<string, OccasionInfo> = {
 
 // Qué roles tienen sentido para cada ocasión (evita combinaciones absurdas)
 export const ROLES_POR_OCASION: Record<string, string[]> = {
-  boda: ['dj', 'fotografo', 'catering', 'camareros', 'grupo-musical', 'animador', 'tecnico-sonido'],
+  boda: ['dj', 'fotografo', 'catering', 'camareros', 'grupo-musical', 'animador', 'tecnico-sonido', 'locales-eventos'],
   cumpleanos: ['dj', 'fotografo', 'catering', 'animador', 'mago'],
-  'evento-empresa': ['dj', 'fotografo', 'catering', 'camareros', 'speaker', 'tecnico-sonido'],
+  'evento-empresa': ['dj', 'fotografo', 'catering', 'camareros', 'speaker', 'tecnico-sonido', 'locales-eventos'],
   comunion: ['fotografo', 'catering', 'animador', 'mago', 'dj'],
-  'fiesta-privada': ['dj', 'fotografo', 'catering', 'camareros', 'animador'],
+  'fiesta-privada': ['dj', 'fotografo', 'catering', 'camareros', 'animador', 'locales-eventos'],
 };
 
 export default function OccasionLanding() {

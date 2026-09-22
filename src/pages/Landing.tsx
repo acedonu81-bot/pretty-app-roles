@@ -276,6 +276,7 @@ const CATEGORY_DEST: Record<string, string> = {
   belleza: '/directorio/maquillaje',
   animacion: '/directorio/animador',
   tecnica: '/directorio/tecnico-sonido',
+  locales: '/directorio/locales-eventos',
   empresario: '/auth?mode=register&role=empresario',
 };
 
@@ -333,6 +334,15 @@ const ROLE_DETAILS = [
       { icon: <Zap size={22} />,               image: px(1190297), title: 'Con equipo o sin equipo', body: 'Deja claro en tu ficha si aportas material propio (P.A., mesa, microfonía, luces) o trabajas como mano de obra sobre la instalación del local. Es la primera pregunta que hace quien contrata.' },
       { icon: <CalendarDays size={22} />,      image: px(36933463), title: 'Tarifa por jornada',     body: 'Publica tu precio por jornada, por montaje o por evento, y tus condiciones: horas mínimas, carga y descarga, pruebas de sonido previas. Sin regateos por WhatsApp.' },
       { icon: <Star size={22} />,              image: px(1105666), title: 'Reputación verificada',   body: 'Cada evento suma una valoración real. En un oficio que se mueve por contactos, tu historial en XPEAK te abre puertas fuera de tu círculo.' },
+    ],
+  },
+  {
+    key: 'locales', title: 'Locales para Eventos', icon: <Building2 size={28} />, tagline: 'Discotecas, salas, terrazas y fincas para bodas y eventos',
+    steps: [
+      { icon: <Building2 size={22} />,    image: px(1763075),  title: '¿Qué es este rol?',        body: 'Discotecas, salas privadas, terrazas y fincas que se alquilan para bodas, cumpleaños, despedidas y eventos de empresa en toda España.' },
+      { icon: <Camera size={22} />,       image: px(3379934),  title: 'Tu espacio, tu ficha',      body: 'Sube fotos reales del local, indica aforo, tipo de espacio y si el catering es propio o libre. Los organizadores comparan antes de escribir.' },
+      { icon: <CalendarDays size={22} />, image: px(36933463), title: 'Precio y condiciones claros', body: 'Publica tu precio orientativo, fianza y horario. Menos mensajes preguntando lo mismo, más reservas directas.' },
+      { icon: <Star size={22} />,         image: px(1105666),  title: 'Reputación verificada',     body: 'Cada evento suma una valoración real. Tu historial en XPEAK te distingue de un anuncio suelto en redes.' },
     ],
   },
   {
@@ -446,6 +456,7 @@ const CATEGORY_ROLES: Record<string, string[]> = {
   gastro: ['staff', 'camarero', 'catering'],
   animacion: ['animador', 'mago', 'humorista', 'bailarin'],
   tecnica: ['tecnico'],
+  locales: ['local_eventos'],
 };
 
 /* Datos fijos de cada tarjeta del bento (imagen/icono/texto) — el ORDEN se decide

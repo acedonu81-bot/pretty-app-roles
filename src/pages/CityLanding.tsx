@@ -29,6 +29,7 @@ const ROLE_MAP: Record<string, string[]> = {
   payaso: ['payaso'], payasos: ['payaso'], speaker: ['speaker'],
   'photo-booth': ['photo-booth'],
   'tecnico-sonido': ['tecnico'],
+  'locales-eventos': ['local_eventos'],
 };
 
 // Durante el prerender de build (prerender-content.mjs), esta variable global
@@ -586,6 +587,19 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
       { q: '¿Hay animadores disponibles para eventos corporativos?', a: 'Sí. Artistas de circo, zanqueros, mimos y animadores de team building son muy demandados en eventos de empresa. Usa Flash Booking si necesitas un animador con urgencia para tu evento.' },
     ],
   },
+  'locales-eventos': {
+    label: 'Local para eventos',
+    keyword: 'Local para eventos',
+    unidad: '/evento',
+    desc: (c) => `Alquiler de locales y fincas para eventos en ${c}: discotecas, salas privadas, terrazas y fincas para bodas, cumpleaños y despedidas. Contacto directo con quien gestiona el espacio.`,
+    intro: (c, venues) => `Encuentra locales y fincas para tu evento en ${c}: desde salas privadas y bares para un cumpleaños o despedida, hasta discotecas para eventos con más aforo, o fincas para una boda al aire libre. XPEAK conecta organizadores con espacios verificados en ${c}, con precio orientativo y contacto directo, en salas del estilo de ${venues.slice(0,2).join(' y ')}.`,
+    faqs: (c, precio) => [
+      { q: `¿Cuánto cuesta alquilar un local para un evento en ${c}?`, a: `Un local o sala en ${c} cuesta entre ${precio} por evento, según aforo, día de la semana y si incluye catering. Una sala pequeña para 80-100 personas suele estar en la parte baja del rango; una discoteca con aforo grande o una finca con exclusividad de todo el día, en la parte alta.` },
+      { q: `¿El alquiler del local en ${c} incluye catering?`, a: 'Depende del espacio. Muchas salas y discotecas solo cobran el alquiler y dejan traer catering externo; otras, sobre todo fincas para bodas, exigen su propio servicio o una lista cerrada de proveedores. Cada ficha en XPEAK lo indica cuando el local lo especifica.' },
+      { q: `¿Qué aforo tienen los locales disponibles en ${c}?`, a: `Varía mucho según el tipo de espacio: salas y bares privados suelen moverse entre 80 y 200 personas, y discotecas o fincas grandes llegan a los 800-1.200. Filtra por aforo en el directorio de ${c} para no perder tiempo con espacios que no encajan.` },
+      { q: `¿Hay que dejar fianza para reservar un local en ${c}?`, a: 'Sí, es lo habitual: entre el 20% y el 50% del precio total para bloquear la fecha, que se devuelve o se descuenta del pago final si no hay incidencias. Confirma también el horario límite con el local antes de cerrar, porque varía según licencia y zona.' },
+    ],
+  },
   payaso: {
     label: 'Payaso',
     keyword: 'Payaso Profesional',
@@ -665,6 +679,9 @@ const FACTOR_PRECIO: Record<string, [number, number]> = {
   peluqueria: [0.7, 0.25],
   catering: [0.5, 0.15],     // por persona: 60→30€, 300→45€
   'tecnico-sonido': [2.5, 1],  // por jornada: 60→150€, 300→300€
+  // Por evento — el precio ya es el alquiler final del local, no escala por
+  // duración como un técnico por horas extra. Madrid: 60→390€, 300→2.400€.
+  'locales-eventos': [6.5, 8],
 };
 
 function precioPara(categorySlug: string, city: { precioMin: string; precioMax: string }): string {

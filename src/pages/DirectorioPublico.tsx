@@ -223,6 +223,14 @@ export const ROLE_CONFIG: Record<string, {
     seoDesc: 'Directorio de técnicos de sonido, iluminación y montaje de escenario en España. Perfiles reales, tarifa por jornada y contacto directo.',
     cta: 'Contratar técnico',
   },
+  'locales-eventos': {
+    dbRole: 'local_eventos',
+    title: 'Locales y fincas para eventos',
+    subtitle: 'Discotecas, salas, terrazas y fincas para bodas, cumpleaños, despedidas y eventos de empresa en toda España. Contacto directo con quien gestiona el espacio.',
+    seoTitle: 'Alquiler de locales y fincas para eventos en España — XPEAK',
+    seoDesc: 'Directorio de locales, salas y fincas para alquilar en tu evento: bodas, cumpleaños, despedidas y eventos de empresa. Aforo, precio y contacto directo.',
+    cta: 'Contratar este local',
+  },
 };
 
 export const ALL_ROLES = [
@@ -244,6 +252,7 @@ export const ALL_ROLES = [
   { slug: 'wedding-planner', label: 'Wedding Planners' },
   { slug: 'diseno-grafico', label: 'Diseño Gráfico' },
   { slug: 'tecnico-sonido', label: 'Técnicos de Sonido y Montaje' },
+  { slug: 'locales-eventos', label: 'Locales para eventos' },
 ];
 
 // Antes esta lista tenia 7 ciudades escritas a mano: quien vivia en A Coruña,
@@ -278,6 +287,7 @@ const RELATED_ROLES: Record<string, string[]> = {
   catering: ['staff', 'wedding-planner'],
   promotores: ['staff', 'dj'],
   'tecnico-sonido': ['dj', 'grupo-musical', 'diseno-grafico'],
+  'locales-eventos': ['dj', 'catering', 'staff'],
 };
 const DEFAULT_RELATED = ['dj', 'fotografo', 'staff'];
 
