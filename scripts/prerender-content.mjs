@@ -164,6 +164,16 @@ for (const m of APP.matchAll(/<Route path="([^"]+)" element={<(\w+)/g)) {
   if (file && file !== 'OccasionLanding.tsx') routes.push({ routePath, file });
 }
 
+// La home ("/") usa `element={isNative ? <NativeRootRedirect /> : <Landing />}`
+// (App.tsx) para saltar la landing dentro de la app de iOS — el regex de arriba
+// exige `element={<Componente` y nunca matchea un ternario, así que "/" se
+// quedaba fuera de `routes` y el crawler (isNative siempre false en Node) veía
+// el shell vacío en vez de Landing. Confirmado 22 sep 2026 con auditoría GEO:
+// curl a xpeak.es/ devolvía <div id="root"></div>, 473 bytes de body.
+if (!routes.some(r => r.routePath === '/')) {
+  routes.push({ routePath: '/', file: componentFiles.get('Landing') });
+}
+
 // Rutas dinámicas /contratar-:categoria/:ciudad → CityLanding. StaticRouter
 // soporta cualquier location string, así que basta con expandir cada
 // combinación real (misma fuente que prerender-meta.mjs) y apuntarlas todas
