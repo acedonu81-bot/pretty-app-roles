@@ -493,6 +493,7 @@ const App = () => (
             <Route path="/boda/contratar-camareros" element={<OccasionLanding />} />
             <Route path="/boda/contratar-grupo-musical" element={<OccasionLanding />} />
             <Route path="/boda/contratar-animador" element={<OccasionLanding />} />
+            <Route path="/boda/contratar-locales-eventos" element={<OccasionLanding />} />
             <Route path="/cumpleanos/contratar-dj" element={<OccasionLanding />} />
             <Route path="/cumpleanos/contratar-fotografo" element={<OccasionLanding />} />
             <Route path="/cumpleanos/contratar-catering" element={<OccasionLanding />} />
@@ -503,6 +504,7 @@ const App = () => (
             <Route path="/evento-empresa/contratar-catering" element={<OccasionLanding />} />
             <Route path="/evento-empresa/contratar-camareros" element={<OccasionLanding />} />
             <Route path="/evento-empresa/contratar-speaker" element={<OccasionLanding />} />
+            <Route path="/evento-empresa/contratar-locales-eventos" element={<OccasionLanding />} />
             <Route path="/comunion/contratar-fotografo" element={<OccasionLanding />} />
             <Route path="/comunion/contratar-catering" element={<OccasionLanding />} />
             <Route path="/comunion/contratar-animador" element={<OccasionLanding />} />
@@ -513,6 +515,7 @@ const App = () => (
             <Route path="/fiesta-privada/contratar-catering" element={<OccasionLanding />} />
             <Route path="/fiesta-privada/contratar-camareros" element={<OccasionLanding />} />
             <Route path="/fiesta-privada/contratar-animador" element={<OccasionLanding />} />
+            <Route path="/fiesta-privada/contratar-locales-eventos" element={<OccasionLanding />} />
             {/* Blog */}
             {!isNative && (
               <>
