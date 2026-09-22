@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Star, MapPin, BadgeCheck, MessageCircle, FileText, Zap, Users } from 'lucide-react';
+import { Star, MapPin, BadgeCheck, MessageCircle, FileText, Zap, Users, Building2, Moon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Profile } from '@/data/profiles';
 import GeometricAvatar from './GeometricAvatar';
@@ -76,7 +76,10 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
     : null : null;
 
   const hasPhoto = p.photo && p.photo.length > 5 && !imgError;
-  const showsPrice = !['makeup', 'peluqueria', 'vestuario', 'media', 'design'].includes(p.role);
+  // local_eventos no usa el precio genérico (hourly_rate): tiene su propio
+  // precio/hora y precio/evento, mostrado más abajo junto al aforo — mostrar
+  // también "A consultar" aquí sería redundante o directamente engañoso.
+  const showsPrice = !['makeup', 'peluqueria', 'vestuario', 'media', 'design', 'local_eventos'].includes(p.role);
   const priceLabel = showsPrice && p.price > 0 ? `${p.price}€${p.priceUnit}` : null;
   // No todos los roles pueden fijar tarifa de antemano (Wedding Planner,
   // Magos, artistas con caché por evento) — "A consultar" en vez de dejar
@@ -87,6 +90,21 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
   // consolidado que se da de alta hoy es "nuevo en la plataforma" pero no
   // "nuevo en el sector", así que el propio grupo decide si lo activa.
   const showNewBadge = p.showNewBadge ?? false;
+
+  // Locales para eventos: aforo + precio orientativo (precio/evento si lo
+  // declaran, si no precio/hora) — el copy SEO público promete que "cada
+  // ficha muestra aforo y precio orientativo" y hasta ahora estos 5 campos
+  // (guardados en BD) no se pintaban en ningún sitio.
+  const isLocalEventos = p.role === ('local_eventos' as any) || (p as any).roles?.includes?.('local_eventos');
+  const venueCapacity = isLocalEventos ? (p as any).venueCapacity : null;
+  const venuePriceLabel = isLocalEventos
+    ? (p as any).pricePerEvent > 0
+      ? `${(p as any).pricePerEvent}€/evento`
+      : (p as any).pricePerHour > 0
+        ? `${(p as any).pricePerHour}€/hora`
+        : null
+    : null;
+  const allowsOvernight = isLocalEventos ? (p as any).allowsOvernight : null;
 
   return (
     <motion.div
@@ -260,6 +278,31 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
             className="hidden sm:block text-xs leading-relaxed"
             style={{ color: '#333' }}
           />
+        )}
+
+        {/* Locales para eventos: aforo, precio orientativo, pernocta — visible
+            en móvil y desktop (son datos de decisión, no adorno). */}
+        {isLocalEventos && (venueCapacity || venuePriceLabel || allowsOvernight) && (
+          <div className="flex flex-wrap gap-1.5">
+            {venueCapacity && (
+              <span className="flex items-center gap-1 text-[0.65rem] font-semibold px-1.5 py-0.5 rounded"
+                style={{ background: 'rgba(212,175,55,0.08)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.15)' }}>
+                <Building2 size={10} /> Aforo {venueCapacity}
+              </span>
+            )}
+            {venuePriceLabel && (
+              <span className="text-[0.65rem] font-semibold px-1.5 py-0.5 rounded"
+                style={{ background: 'rgba(212,175,55,0.08)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.15)' }}>
+                {venuePriceLabel}
+              </span>
+            )}
+            {allowsOvernight && (
+              <span className="flex items-center gap-1 text-[0.65rem] font-semibold px-1.5 py-0.5 rounded"
+                style={{ background: 'rgba(212,175,55,0.08)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.15)' }}>
+                <Moon size={10} /> Permite pernoctar
+              </span>
+            )}
+          </div>
         )}
 
         {/* Badges géneros — desktop only */}

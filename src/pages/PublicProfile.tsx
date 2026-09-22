@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, Headphones, BookOpen, Video, Music, Instagram, Send, X, Shield, Check, Plus, Share2, Link2 } from 'lucide-react';
+import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, Headphones, BookOpen, Video, Music, Instagram, Send, X, Shield, Check, Plus, Share2, Link2, Building2, Moon, Navigation } from 'lucide-react';
 import { toast } from 'sonner';
 import { addToCart, useEventCart, MAX_CART_ITEMS } from '@/lib/eventCart';
 import CondicionesPublicas from '@/components/CondicionesPublicas';
@@ -536,11 +536,11 @@ const PublicProfile = () => {
 
     const query = isUUID
       ? supabase.from('profiles')
-          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, is_early_adopter_override, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket')
+          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, is_early_adopter_override, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
           .eq('user_id', slug)
           .maybeSingle()
       : supabase.from('profiles')
-          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, is_early_adopter_override, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket')
+          .select('user_id, display_name, role, specialty, zone, bio, photo_url, hourly_rate, created_at, genres, is_live, is_verified, is_seed, is_flash_active, subscription_tier, stream_url, instagram, audio_embed_url, audio_session_urls, portfolio_urls, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, is_early_adopter_override, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, min_notice_hours, conditions_note, response_bucket, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
           .not('display_name', 'is', null)
           .then(({ data, error }) => {
             // ILIKE no entiende acentos/e\u00f1es (slug.replace('-','%') nunca
@@ -710,6 +710,11 @@ const PublicProfile = () => {
     seekingDancePartner: sbProfile.seeking_dance_partner ?? false,
     danceLevel: sbProfile.dance_level ?? null,
     danceRole: sbProfile.dance_role ?? null,
+    venueCapacity: (sbProfile as any).venue_capacity ?? null,
+    allowsOvernight: (sbProfile as any).allows_overnight ?? null,
+    pricePerHour: (sbProfile as any).price_per_hour ?? null,
+    pricePerEvent: (sbProfile as any).price_per_event ?? null,
+    distanceFromMadridKm: (sbProfile as any).distance_from_madrid_km ?? null,
     id: 0,
   } : staticProfile!;
 
@@ -1134,6 +1139,69 @@ const PublicProfile = () => {
                 sitio mas donde olvidarse de anadir la siguiente. */}
             <CondicionesPublicas p={(sbProfile ?? {}) as any} nombre={profile.name} />
           </motion.div>
+
+          {/* Detalles del espacio (locales para eventos) — aforo, pernocta,
+              precio/hora, precio/evento y distancia desde Madrid: 5 campos
+              que ya se guardaban en BD pero no se mostraban en ningún sitio,
+              pese a que el copy SEO público afirma "cada ficha muestra
+              aforo". Solo se pinta si el local declaró al menos uno. */}
+          {profile.role === 'local_eventos' && (
+            (profile as any).venueCapacity || (profile as any).allowsOvernight ||
+            (profile as any).pricePerHour > 0 || (profile as any).pricePerEvent > 0 ||
+            (profile as any).distanceFromMadridKm > 0
+          ) && (
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}
+              className="rounded-2xl p-5" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
+              <h2 className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Detalles del espacio</h2>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {(profile as any).venueCapacity > 0 && (
+                  <div className="flex items-start gap-2">
+                    <Building2 size={15} style={{ color: '#8A6D0F', marginTop: 1 }} />
+                    <div>
+                      <p className="text-sm font-bold" style={{ color: '#222' }}>{(profile as any).venueCapacity} personas</p>
+                      <p className="text-xs" style={{ color: '#666' }}>Aforo</p>
+                    </div>
+                  </div>
+                )}
+                {(profile as any).allowsOvernight && (
+                  <div className="flex items-start gap-2">
+                    <Moon size={15} style={{ color: '#8A6D0F', marginTop: 1 }} />
+                    <div>
+                      <p className="text-sm font-bold" style={{ color: '#222' }}>Sí</p>
+                      <p className="text-xs" style={{ color: '#666' }}>Permite pernoctar</p>
+                    </div>
+                  </div>
+                )}
+                {(profile as any).pricePerHour > 0 && (
+                  <div className="flex items-start gap-2">
+                    <Clock size={15} style={{ color: '#8A6D0F', marginTop: 1 }} />
+                    <div>
+                      <p className="text-sm font-bold" style={{ color: '#222' }}>{(profile as any).pricePerHour}€<span className="font-medium" style={{ color: '#666' }}>/hora</span></p>
+                      <p className="text-xs" style={{ color: '#666' }}>Precio orientativo</p>
+                    </div>
+                  </div>
+                )}
+                {(profile as any).pricePerEvent > 0 && (
+                  <div className="flex items-start gap-2">
+                    <BadgeCheck size={15} style={{ color: '#8A6D0F', marginTop: 1 }} />
+                    <div>
+                      <p className="text-sm font-bold" style={{ color: '#222' }}>{(profile as any).pricePerEvent}€<span className="font-medium" style={{ color: '#666' }}>/evento</span></p>
+                      <p className="text-xs" style={{ color: '#666' }}>Precio orientativo</p>
+                    </div>
+                  </div>
+                )}
+                {(profile as any).distanceFromMadridKm > 0 && (
+                  <div className="flex items-start gap-2">
+                    <Navigation size={15} style={{ color: '#8A6D0F', marginTop: 1 }} />
+                    <div>
+                      <p className="text-sm font-bold" style={{ color: '#222' }}>{(profile as any).distanceFromMadridKm} km</p>
+                      <p className="text-xs" style={{ color: '#666' }}>Desde Madrid</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
 
           {/* Clases particulares (bailarines) */}
           {profile.role === 'bailarin' && (profile as any).offersClasses && (
