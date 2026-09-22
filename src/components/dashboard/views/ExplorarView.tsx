@@ -48,7 +48,7 @@ const SOMBRA_HOVER = [
  * navegaciones cuenten lo mismo. `view` es el id de vista del dashboard, que
  * no siempre coincide con el rol de BD (photo-booth usa la vista de media).
  */
-const GRUPOS: { titulo: string; items: { id: string; view: string; nombre: string; gancho: string }[] }[] = [
+const GRUPOS: { titulo: string; items: { id: string; view: string; nombre: string; gancho: string; nuevo?: boolean }[] }[] = [
   {
     titulo: 'Música',
     items: [
@@ -62,7 +62,7 @@ const GRUPOS: { titulo: string; items: { id: string; view: string; nombre: strin
     items: [
       { id: 'staff', view: 'staff', nombre: 'Sala & Barra', gancho: 'Camareros, bartenders y personal de sala' },
       { id: 'catering', view: 'catering', nombre: 'Catering & Chef', gancho: 'Cocina, barra y showcooking' },
-      { id: 'local_eventos', view: 'local_eventos', nombre: 'Locales para eventos', gancho: 'Discotecas, salas, terrazas y fincas' },
+      { id: 'local_eventos', view: 'local_eventos', nombre: 'Locales para eventos', gancho: 'Discotecas, salas, terrazas y fincas', nuevo: true },
     ],
   },
   {
@@ -106,48 +106,63 @@ const GRUPOS: { titulo: string; items: { id: string; view: string; nombre: strin
   },
 ];
 
-const Tarjeta = ({ item, onNavigate }: { item: { id: string; view: string; nombre: string; gancho: string }; onNavigate?: (v: string) => void }) => (
-  <button
-    type="button"
-    onClick={() => onNavigate?.(item.view)}
-    aria-label={`Ver ${item.nombre}`}
-    className="group relative w-full overflow-hidden rounded-2xl text-left transition-all duration-300 hover:-translate-y-1 hover:scale-[1.015] active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] focus-visible:ring-offset-2"
-    style={{
-      aspectRatio: '3 / 2',
-      background: '#ffffff',
-      border: '1px solid rgba(0,0,0,0.06)',
-      // Sombra en capas (mismo registro que los modales del proyecto,
-      // 0 20px 60px): contacto corto + difusa larga, para que la tarjeta
-      // levante de la página en vez de quedarse pegada al blanco.
-      boxShadow: SOMBRA,
-    }}
-    onMouseEnter={e => { e.currentTarget.style.boxShadow = SOMBRA_HOVER; }}
-    onMouseLeave={e => { e.currentTarget.style.boxShadow = SOMBRA; }}
-  >
-    <img
-      src={img(item.id)}
-      alt=""
-      loading="lazy"
-      decoding="async"
-      width={900}
-      height={600}
-      className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-    />
-    {/* El bloque de texto lleva SU PROPIO fondo degradado en vez de una franja
-        de altura fija: un título de dos líneas crecía por encima de la franja y
-        quedaba ilegible sobre la foto (pasaba en "DJs & Artistas", "Sala &
-        Barra", "Técnicos de Sonido"). Al ir el degradado en el mismo elemento
-        que el texto, la zona oscura crece con él y siempre lo cubre. */}
-    <div
-      className="absolute inset-x-0 bottom-0 p-3 pt-8 sm:p-4 sm:pt-10"
-      style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.45) 75%, transparent 100%)' }}
+const Tarjeta = ({ item, onNavigate }: { item: { id: string; view: string; nombre: string; gancho: string; nuevo?: boolean }; onNavigate?: (v: string) => void }) => (
+  <div className="group relative">
+    <button
+      type="button"
+      onClick={() => onNavigate?.(item.view)}
+      aria-label={`Ver ${item.nombre}`}
+      className="relative w-full overflow-hidden rounded-2xl text-left transition-all duration-300 group-hover:-translate-y-1 group-hover:scale-[1.015] active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] focus-visible:ring-offset-2"
+      style={{
+        aspectRatio: '3 / 2',
+        background: '#ffffff',
+        border: '1px solid rgba(0,0,0,0.06)',
+        // Sombra en capas (mismo registro que los modales del proyecto,
+        // 0 20px 60px): contacto corto + difusa larga, para que la tarjeta
+        // levante de la página en vez de quedarse pegada al blanco.
+        boxShadow: SOMBRA,
+      }}
+      onMouseEnter={e => { e.currentTarget.style.boxShadow = SOMBRA_HOVER; }}
+      onMouseLeave={e => { e.currentTarget.style.boxShadow = SOMBRA; }}
     >
-      <h3 className="text-sm sm:text-base font-semibold leading-tight text-white [text-shadow:0_1px_3px_rgba(0,0,0,0.9)]">{item.nombre}</h3>
-      <p className="mt-0.5 text-[11px] sm:text-xs leading-snug text-white/85 line-clamp-2 [text-shadow:0_1px_2px_rgba(0,0,0,0.95)]">{item.gancho}</p>
-    </div>
-    {/* Filo dorado: sutil en reposo, marcado y de 2px al pasar por encima. */}
-    <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-[#D4AF37]/25 transition-all duration-300 group-hover:ring-2 group-hover:ring-[#D4AF37]" />
-  </button>
+      <img
+        src={img(item.id)}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        width={900}
+        height={600}
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+      />
+      {/* El bloque de texto lleva SU PROPIO fondo degradado en vez de una franja
+          de altura fija: un título de dos líneas crecía por encima de la franja y
+          quedaba ilegible sobre la foto (pasaba en "DJs & Artistas", "Sala &
+          Barra", "Técnicos de Sonido"). Al ir el degradado en el mismo elemento
+          que el texto, la zona oscura crece con él y siempre lo cubre. */}
+      <div
+        className="absolute inset-x-0 bottom-0 p-3 pt-8 sm:p-4 sm:pt-10"
+        style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0.45) 75%, transparent 100%)' }}
+      >
+        <h3 className="text-sm sm:text-base font-semibold leading-tight text-white [text-shadow:0_1px_3px_rgba(0,0,0,0.9)]">{item.nombre}</h3>
+        <p className="mt-0.5 text-[11px] sm:text-xs leading-snug text-white/85 line-clamp-2 [text-shadow:0_1px_2px_rgba(0,0,0,0.95)]">{item.gancho}</p>
+      </div>
+      {/* Filo dorado: sutil en reposo, marcado y de 2px al pasar por encima. */}
+      <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-[#D4AF37]/25 transition-all duration-300 group-hover:ring-2 group-hover:ring-[#D4AF37]" />
+    </button>
+    {/* Categoría recién lanzada, con poca oferta todavía — cinta diagonal
+        que sobresale de la tarjeta por ambos lados (fuera del overflow-hidden
+        del botón, que si no la recortaría) en vez de un badge contenido, para
+        que se note de verdad sin depender de un contador que hoy saldría en
+        0 o 1. */}
+    {item.nuevo && (
+      <div
+        className="pointer-events-none absolute -right-2 top-3.5 z-10 rotate-[38deg] px-6 py-1 text-[10px] font-bold uppercase tracking-wide"
+        style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#0a0908', boxShadow: '0 2px 8px rgba(212,175,55,0.5)' }}
+      >
+        Nueva
+      </div>
+    )}
+  </div>
 );
 
 const ExplorarView = ({ onNavigate }: Props) => (
