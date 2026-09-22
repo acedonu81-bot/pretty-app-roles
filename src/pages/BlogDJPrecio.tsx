@@ -134,7 +134,7 @@ const faqStructured = {
 
           {/* Intro */}
           <p className="text-base leading-relaxed mb-6" style={{ color: '#222' }}>
-            La pregunta que más reciben salas, promotoras y organizadores cuando van a contratar un DJ es siempre la misma: <strong style={{ color: '#111' }}>¿cuánto cuesta?</strong> La respuesta honesta es que depende de tres variables — experiencia, ciudad y tipo de evento — y que la horquilla va de 30€ a más de 500€/hora. Esta guía desglosa esos números con datos reales de la plataforma XPEAK.
+            La pregunta que más reciben salas, promotoras y organizadores cuando van a contratar un DJ es siempre la misma: <strong style={{ color: '#111' }}>¿cuánto cuesta?</strong> La respuesta honesta es que depende de tres variables — experiencia, ciudad y tipo de evento — y que la horquilla va de 30€ a más de 500€/hora. Esta guía desglosa esos números a partir de tarifas públicas del sector y de los perfiles verificados en el directorio de XPEAK.
           </p>
 
           <BlogAnswerBox
