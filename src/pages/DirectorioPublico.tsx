@@ -946,7 +946,16 @@ export default function DirectorioPublico() {
                           de nivel — protege la métrica de "responde en X" de los
                           profesionales verificados. Se contacta por mensaje desde su
                           ficha, no con una solicitud de presupuesto directa. */}
-                      {p.experience_level === 'emergente' ? (
+                      {/* Perfil de ejemplo del rol local_eventos (user_id fijo): no hay
+                          nadie real detrás que vaya a responder — se desactiva solo
+                          esta ficha, sin etiqueta de "demo" visible. */}
+                      {p.user_id === '9bf7c5e7-68fd-472f-843d-5bed981701ae' ? (
+                        <button disabled
+                          className="flex-1 py-2.5 rounded-xl text-xs font-black cursor-not-allowed"
+                          style={{ background: 'rgba(0,0,0,0.06)', color: 'rgba(0,0,0,0.35)' }}>
+                          No disponible
+                        </button>
+                      ) : p.experience_level === 'emergente' ? (
                         <a href={profileUrl(p)}
                           className="flex-1 text-center py-2.5 rounded-xl text-xs font-black transition-all hover:scale-105"
                           style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 2px 10px rgba(212,175,55,0.25)' }}>
@@ -960,14 +969,15 @@ export default function DirectorioPublico() {
                         </button>
                       )}
                       <button
+                        disabled={p.user_id === '9bf7c5e7-68fd-472f-843d-5bed981701ae' || cartItems.some(i => i.userId === p.user_id)}
                         onClick={() => {
+                          if (p.user_id === '9bf7c5e7-68fd-472f-843d-5bed981701ae') return;
                           const result = addToCart({ userId: p.user_id, displayName: p.display_name, role: p.role, photoUrl: p.photo_url, hourlyRate: p.hourly_rate, zone: p.zone });
                           if (result === 'added') toast.success(`${p.display_name} añadido a "Mi evento"`, { description: 'Añade varios profesionales y pide presupuesto conjunto desde el botón dorado de abajo a la derecha.' });
                           else if (result === 'limit_reached') toast.error(`Máximo ${MAX_CART_ITEMS} profesionales por evento. Elimina alguno para añadir más.`);
                         }}
-                        disabled={cartItems.some(i => i.userId === p.user_id)}
                         title={cartItems.some(i => i.userId === p.user_id) ? 'Ya está en tu evento' : 'Añadir a "Mi evento"'}
-                        className="flex-shrink-0 flex items-center justify-center gap-1.5 px-3 sm:px-3.5 py-2.5 rounded-xl transition-all hover:scale-105 disabled:hover:scale-100"
+                        className="flex-shrink-0 flex items-center justify-center gap-1.5 px-3 sm:px-3.5 py-2.5 rounded-xl transition-all hover:scale-105 disabled:hover:scale-100 disabled:opacity-40"
                         style={cartItems.some(i => i.userId === p.user_id)
                           ? { background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)', color: '#22c55e' }
                           : { background: '#ffffff', border: '1px solid rgba(0,0,0,0.12)', color: '#333' }}>
