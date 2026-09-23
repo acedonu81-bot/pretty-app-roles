@@ -172,7 +172,9 @@ const LandingMegaMenu = () => {
             aria-controls={`mega-${tab.id}`}
             onMouseEnter={() => { cancelClose(); setOpen(tab.id); }}
             onFocus={() => setOpen(tab.id)}
-            onClick={() => setOpen(isOpen ? null : tab.id)}
+            // Solo abre: el hover ya lo abrió, y un toggle aquí lo cerraba
+            // al hacer clic (parpadeo). Se cierra al salir, con Escape o fuera.
+            onClick={() => setOpen(tab.id)}
             className="flex items-center gap-1 text-xs font-semibold px-3 py-2 rounded-lg transition-colors whitespace-nowrap"
             style={{ color: isOpen ? '#1a1208' : '#444', background: isOpen ? 'rgba(212,175,55,0.12)' : 'transparent' }}>
             {tab.label}
@@ -187,17 +189,23 @@ const LandingMegaMenu = () => {
         style={{ width: 'min(760px, calc(100vw - 48px))' }}>
       <AnimatePresence>
         {active && (
+          // Una sola key mientras el menú esté abierto: al pasar de una pestaña
+          // a otra el panel NO se desmonta (antes sí, y cada cambio repetía la
+          // animación de entrada y saltaba de altura). Solo el contenido
+          // interior hace un fundido corto; la altura mínima fija evita que el
+          // panel crezca/encoja entre pestañas.
           <motion.div
-            key={active.id}
-            id={`mega-${active.id}`}
+            key="mega-panel"
             initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.16, ease: 'easeOut' }}
+            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="pt-3 pointer-events-auto"
           >
-            <div className="rounded-2xl overflow-hidden flex"
-              style={{ background: '#ffffff', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 18px 48px rgba(0,0,0,0.14)' }}>
+            <div id={`mega-${active.id}`} className="rounded-2xl overflow-hidden flex"
+              style={{ minHeight: 308, background: 'linear-gradient(90deg,#ffffff calc(100% - 210px),#120d06 calc(100% - 210px))', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 18px 48px rgba(0,0,0,0.14)' }}>
+            <motion.div key={active.id} className="flex flex-1"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.18, ease: 'easeOut' }}>
               <div className="flex-1 p-6">
                 {active.kind === 'list' ? (
                   <div className="grid grid-cols-3 gap-6">
@@ -244,7 +252,7 @@ const LandingMegaMenu = () => {
               </div>
 
               <div className="w-[210px] flex-shrink-0 p-6 flex flex-col justify-between"
-                style={{ background: 'linear-gradient(160deg,#1a1208,#0a0908)', color: '#fff' }}>
+                style={{ color: '#fff' }}>
                 <div>
                   <Sparkles size={16} style={{ color: GOLD }} />
                   <p className="text-sm font-black mt-2 mb-1.5">{active.cta.title}</p>
@@ -256,6 +264,7 @@ const LandingMegaMenu = () => {
                   {active.cta.button}
                 </MenuLink>
               </div>
+            </motion.div>
             </div>
           </motion.div>
         )}
