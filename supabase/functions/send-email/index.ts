@@ -283,6 +283,28 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       'Los perfiles completos reciben más contactos de organizadores'),
   }),
 
+  // 1a2a2. Empresario que en realidad ofrece servicios (23 sep 2026, caso
+  // Vulcano Grill): se le añade un perfil profesional en la misma cuenta y se
+  // le avisa de que ya aparece en el directorio de su categoría.
+  perfil_profesional_anadido: (d) => ({
+    subject: `${esc(d.name)}, ya apareces en el directorio de ${esc(rolLegible(d.role))}`,
+    to: d.email,
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Hola, ${esc(d.name)}</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Como ofreces tus servicios para eventos, hemos activado en tu cuenta un perfil de <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong> con tu foto y tu descripción. Ya apareces en el directorio y los organizadores que buscan ${esc(rolLegible(d.role)).toLowerCase()} en ${esc(d.zone)} pueden encontrarte y escribirte.
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Tu cuenta de organizador sigue igual, por si también quieres contratar. Puedes cambiar de un perfil a otro en <strong>Ajustes → Mis perfiles</strong>.
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
+        Para recibir más contactos, añade tu precio orientativo y algunas fotos de tu trabajo.
+      </p>
+      ${btn('Ver mi perfil →', 'https://xpeak.es/dashboard')}
+      <p style="color:#9CA3AF;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`,
+      'Los organizadores ya pueden encontrarte en XPEAK'),
+  }),
+
   // 1a2b. Foto subida pero no válida (textura/producto/imagen borrosa en vez
   // de una foto real) — caso puntual, sin cron asociado. Distinto de
   // profile_incomplete_reminder porque ahí SÍ hay una imagen en photo_url, el

@@ -320,7 +320,40 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
     setStep(1);
   };
 
-  const goToProfile = () => {
+  // Empresario que además ofrece servicios (23 sep 2026, caso Vulcano Grill:
+  // food truck registrado como organizador, con foto y bio completas pero
+  // invisible — los perfiles de empresario no salen en el directorio). Si
+  // marca un servicio, se le crea también el perfil profesional en la misma
+  // cuenta y se le lleva a completarlo; el de organizador se queda.
+  const [ofreceServicio, setOfreceServicio] = useState('');
+  const [creandoServicio, setCreandoServicio] = useState(false);
+
+  const goToProfile = async () => {
+    if (selectedRole === 'empresario' && ofreceServicio && user) {
+      setCreandoServicio(true);
+      const { data: nuevo, error } = await supabase
+        .from('profiles')
+        .insert({
+          user_id: user.id,
+          display_name: profile.display_name || 'Mi perfil',
+          role: ofreceServicio,
+          zone: profile.zone || 'España',
+          hourly_rate: 0,
+          is_primary: false,
+          category: 'professional',
+          subscription_tier: profile.subscription_tier,
+          validation_status: 'approved',
+        } as any)
+        .select('id')
+        .single();
+      setCreandoServicio(false);
+      if (error || !nuevo) { toast.error('No se pudo crear tu perfil de servicios: ' + (error?.message ?? '')); return; }
+      await profile.switchProfile((nuevo as { id: string }).id);
+      toast.success('Completa tu perfil para aparecer en el directorio. Tu cuenta de organizador sigue en Ajustes → Mis perfiles.');
+      markDone();
+      onNavigate('profile');
+      return;
+    }
     markDone();
     onNavigate(selectedRole === 'empresario' ? 'empresario' : 'profile');
   };
@@ -571,6 +604,22 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                   ))}
                 </div>
 
+                <div className="rounded-xl px-4 py-3.5 mb-4" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
+                  <p className="text-xs font-black mb-1" style={{ color: '#111' }}>¿También ofreces servicios para eventos?</p>
+                  <p className="text-[0.7rem] mb-2.5" style={{ color: '#444' }}>
+                    Food truck, catering, sala, música… Como organizador no apareces en el directorio. Si ofreces algo, crea también tu perfil profesional para que te encuentren.
+                  </p>
+                  <select
+                    value={ofreceServicio}
+                    onChange={e => setOfreceServicio(e.target.value)}
+                    aria-label="Servicio que ofreces"
+                    className="nightlife-input !py-2.5 text-sm w-full">
+                    <option value="">No, solo busco profesionales</option>
+                    {ROLES.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
+                    <option value="local_eventos">Local / sala para eventos</option>
+                  </select>
+                </div>
+
                 <button onClick={markDone} className="w-full py-2 text-xs font-semibold"
                   style={{ color: '#333' }}>
                   Lo haré después
@@ -618,10 +667,12 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
             );
           })()}
           {step === 1 && selectedRole === 'empresario' && (
-            <button onClick={goToProfile}
+            <button onClick={goToProfile} disabled={creandoServicio}
               className="w-full py-3.5 rounded-xl font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
               style={{ background: 'linear-gradient(135deg,#D4AF37,#B8941E)', color: '#000' }}>
-              Completar mi perfil <ChevronRight size={15} />
+              {creandoServicio ? 'Creando perfil...'
+                : ofreceServicio ? 'Crear también mi perfil profesional'
+                : 'Completar mi perfil'} <ChevronRight size={15} />
             </button>
           )}
         </div>
