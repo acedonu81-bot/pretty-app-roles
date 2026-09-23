@@ -25,6 +25,7 @@ const TAG_COLORS: Record<string, string> = {
   Speaker: 'rgba(37,99,235,0.1)',
   Vestuario: 'rgba(190,24,93,0.1)',
   Humorista: 'rgba(217,119,6,0.1)',
+  'Healthy Zone': 'rgba(31,138,91,0.12)',
 };
 const TAG_TEXT: Record<string, string> = {
   DJ: '#8A6D0F', Bodas: '#be185d', Fotografía: '#4338ca',
@@ -32,6 +33,7 @@ const TAG_TEXT: Record<string, string> = {
   Maquillaje: '#be185d', Eventos: '#6d28d9', Organizadores: '#0d9488',
   Promotores: '#d97706', Mago: '#7c3aed', Bailarin: '#be185d', Animador: '#ea580c',
   Speaker: '#1d4ed8', Vestuario: '#be185d', Humorista: '#d97706',
+  'Healthy Zone': '#1F8A5B',
 };
 
 const ALL_TAGS = ['Todos', ...Array.from(new Set(POSTS.map(p => p.tag)))];

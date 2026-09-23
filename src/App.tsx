@@ -282,6 +282,11 @@ const BlogQueHacePromotorEventos = lazy(() => import("./pages/BlogQueHacePromoto
 const BlogComoContratarPromotoresDiscoteca = lazy(() => import("./pages/BlogComoContratarPromotoresDiscoteca"));
 const BlogComoElegirMagoEventos = lazy(() => import("./pages/BlogComoElegirMagoEventos"));
 const BlogTiposAnimacionEventos = lazy(() => import("./pages/BlogTiposAnimacionEventos"));
+const HealthyZone = lazy(() => import("./pages/HealthyZone"));
+const BlogTardeoPrivadoMadrid = lazy(() => import("./pages/BlogTardeoPrivadoMadrid"));
+const BlogAfterworkEmpresaMadrid = lazy(() => import("./pages/BlogAfterworkEmpresaMadrid"));
+const BlogEventosSinAlcohol = lazy(() => import("./pages/BlogEventosSinAlcohol"));
+const BlogJornadaBienestarEmpresa = lazy(() => import("./pages/BlogJornadaBienestarEmpresa"));
 const BlogBailarinesParaEventos = lazy(() => import("./pages/BlogBailarinesParaEventos"));
 const BlogCuantoCobraSpeakerEventos = lazy(() => import("./pages/BlogCuantoCobraSpeakerEventos"));
 const BlogComoElegirPresentadorEventoEmpresa = lazy(() => import("./pages/BlogComoElegirPresentadorEventoEmpresa"));
@@ -871,6 +876,11 @@ const App = () => (
             <Route path="/blog/como-contratar-promotores-discoteca" element={<BlogComoContratarPromotoresDiscoteca />} />
             <Route path="/blog/como-elegir-mago-para-tu-evento" element={<BlogComoElegirMagoEventos />} />
             <Route path="/blog/tipos-de-animacion-para-eventos" element={<BlogTiposAnimacionEventos />} />
+            <Route path="/healthy-zone" element={<HealthyZone />} />
+            <Route path="/blog/tardeo-privado-madrid" element={<BlogTardeoPrivadoMadrid />} />
+            <Route path="/blog/afterwork-empresa-madrid" element={<BlogAfterworkEmpresaMadrid />} />
+            <Route path="/blog/eventos-sin-alcohol" element={<BlogEventosSinAlcohol />} />
+            <Route path="/blog/jornada-bienestar-empresa" element={<BlogJornadaBienestarEmpresa />} />
             <Route path="/blog/bailarines-para-eventos" element={<BlogBailarinesParaEventos />} />
             <Route path="/blog/cuanto-cobra-un-speaker-de-eventos" element={<BlogCuantoCobraSpeakerEventos />} />
             <Route path="/blog/como-elegir-presentador-evento-empresa" element={<BlogComoElegirPresentadorEventoEmpresa />} />
