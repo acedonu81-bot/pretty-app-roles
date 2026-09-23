@@ -1,0 +1,98 @@
+XPEAK — Auditorías semanales preparadas el 23/09/2026
+ESTADO: NO DESPLEGADO. Requiere aprobación explícita final antes de estos pasos.
+
+Arquitectura
+GitHub Actions ya está activo en acedonu81-bot/pretty-app-roles. El nuevo workflow
+usa horario nativo Europe/Madrid: jueves 09:00 SEO/AEO/GEO; viernes 09:00 seguridad.
+El ordenador puede estar apagado. GitHub puede retrasar o perder un disparo; no
+es un servicio con garantía de puntualidad. Recuperación: workflow_dispatch,
+tipo seo/security; calcula el último jueves/viernes a las 09:00 de Madrid.
+Los informes completos de una misma fecha no se duplican; los parciales/fallidos
+pueden reintentarse. No dispara correo ni mensajes a terceros.
+
+Los informes se guardan en public.weekly_audit_reports de Supabase, con RLS y
+lectura solo para administradores. No se publican artifacts, issues ni contenido
+de informes en GitHub, que es PÚBLICO. No hay retención automática: conservar hasta
+que el administrador decida otra política. Panel: Administración > Salud del
+sistema > Auditorías semanales. Lista últimas 26; informe legible y descargable.
+Un fallo del motor se persiste como fallo si el gateway sigue accesible. Un fallo
+del gateway queda rojo en GitHub y se detecta por informe ausente/antiguo en panel.
+El usuario debe consultar el panel; no hay aviso push/email nuevo.
+
+La única credencial nueva en GitHub será AUDIT_RUNNER_TOKEN: aleatoria, >=40
+caracteres, compartida con la Edge Function. Permite exclusivamente guardar
+informes, consultar referencia anterior y leer un resumen de metadatos. NO es
+service_role ni token de administración. La clave de servicio permanece dentro
+de Supabase. Guardar credenciales por stdin/archivo temporal 0600 y borrarlo al
+terminar; no imprimirlas. No hay llamadas a servicios de IA de pago.
+
+ALERTA DE DESPLIEGUE VERIFICADA
+El 23/09/2026, xpeak.es y www.xpeak.es señalan dpl_HxLPbDjDD1xDaHDdQE5EBkoQqYSm,
+pretty-app-roles-cf4hc5oaf-acedonu81-bots-projects.vercel.app. www redirige a apex.
+MCP v17 coincide byte a byte con supabase/functions/mcp-server/index.ts local.
+Migraciones 20260923110406 y 20260923150000 aplicadas. Tres funciones antiguas
+con search_path=pg_catalog, public. No se deduce esto solo del deploy Vercel.
+origin/main sigue en 1ce2fd7; d8f4983 (copy de Claude) está solo en local.
+Hay cambios sin commit adicionales ya potencialmente desplegados. Rebuild diario
+(SEO) está activo: puede volver a publicar código anterior. No se ha pausado.
+Antes de activar: pedir autorización para pausar temporalmente ese workflow,
+revisar/sincronizar los cambios que deban conservarse y reactivarlo solo cuando
+la rama remota represente la versión de producción deseada. No subir a ciegas.
+
+PASOS TRAS APROBACIÓN (NO EJECUTADOS)
+1. Resolver el riesgo del rebuild diario anterior, conservando copy y cambios ajenos.
+2. Aplicar SOLAMENTE 20260923155000_weekly_audit_reports.sql en transacción y
+   registrar su versión en historial. No usar db push indiscriminado: hay otras
+   migraciones locales históricas no equivalentes al estado remoto.
+3. Crear AUDIT_RUNNER_TOKEN en secretos Supabase y GitHub (sin exponer su valor).
+4. Desplegar únicamente weekly-audit-gateway al proyecto ddrqhwravupjzysriblq,
+   --no-verify-jwt. Su autenticación propia se verifica antes de cualquier acceso.
+5. Publicar archivos de auditoría y cambios puntuales del panel/config; no mezclar
+   otros cambios sin revisión. Desplegar frontend conservando el estado acordado.
+6. Activar workflow en main. Lanzar seo/security manualmente, verificar informes
+   en base de datos y panel como admin; usuario normal y anon no deben acceder.
+   Las pruebas manuales anteriores al primer jueves usan la semana anterior.
+7. Confirmar próxima fecha, estado del workflow y enlace al panel. Mantener las
+   dos automatizaciones Codex locales PAUSED.
+
+VALIDACIÓN REALIZADA
+- Pruebas Node: invierno/verano, ambos cambios de hora, retrasos/recuperación,
+  robots, URLs permitidas, comparación sin falsos resueltos y patrones secretos.
+- Pruebas Deno: autenticación fail-closed, input/tamaño, errores sin filtraciones,
+  guardar/leer previo/reintento y deduplicación de informe completo.
+- PostgreSQL temporal PGlite: SQL ejecutable, anon denegado, usuario no admin sin
+  filas, admin lee, escrituras y snapshot restringidos. Sin tocar base productiva.
+- Tres pruebas de interfaz: leer/cerrar, HTML como texto, errores y ausencia de informes.
+- Vite build OK en carpeta temporal; no ejecuta prerender ni IndexNow.
+- tsc -p tsconfig.app.json: 162 errores fuera de archivos de auditorías; no se
+  declara proyecto global libre de errores. tsc sin proyecto no detectaba estos.
+- Dos auditorías públicas reales de prueba guardadas localmente, fecha de prueba
+  23/09/2026: 20 URLs SEO (19 destinos únicos); seguridad sin avisos npm y sin
+  tablas públicas sin RLS ni funciones definer sin search_path. Revisar 5 RPC anon
+  (observación informativa, no prueba de fuga). No son auditorías exhaustivas.
+
+REPETIR PRUEBAS
+node --test scripts/audits/core.test.mjs
+node --check scripts/audits/run.mjs
+node --check scripts/audits/gateway.mjs
+deno test --no-lock --allow-env supabase/functions/weekly-audit-gateway/index.deno-test.ts
+npx --no-install vitest run src/components/dashboard/views/admin/AdminAuditReports.test.tsx
+Para SQL: instalar @electric-sql/pglite@0.3.14 en directorio temporal aislado y pasar
+PGLITE_MODULE=/ruta/temporal/node_modules/@electric-sql/pglite/dist/index.js
+node scripts/audits/sql-test.mjs
+
+COBERTURA Y LÍMITES
+SEO: robots, sitemap, estados, títulos/descripciones/canonical/h1/noindex, JSON-LD
+sintáctico, duplicados exactos, anclas. AEO/GEO: estructura de respuestas como
+heurística, acceso de bots, llms.txt. Sin Search Console/GA4, posiciones, citas IA,
+menciones externas ni evaluación editorial. HTTP no equivale a Core Web Vitals.
+Seguridad: cabeceras, npm audit del lockfile, patrones en código versionado,
+metadatos RLS/funciones. No explotación, datos de negocio, pruebas de roles reales,
+Auth/MFA ni historial Git completo. Un informe completo significa que terminó
+esa cobertura, no que todo el sitio sea seguro o que toda la SEO esté auditada.
+
+REFERENCIAS DE INFRAESTRUCTURA CONSULTADAS
+https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#onschedule
+https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule
+https://supabase.com/docs/guides/api/securing-your-api
+https://supabase.com/changelog

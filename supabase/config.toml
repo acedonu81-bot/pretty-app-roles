@@ -23,8 +23,10 @@ secret = "env(TURNSTILE_SECRET_KEY)"
 [functions.mcp-server]
 # Endpoint público pensado para ser llamado directamente por agentes de
 # IA externos (Claude, ChatGPT, etc.) sin que tengan que conocer ninguna
-# clave de Supabase — el propio código ya limita qué se puede hacer
-# (búsqueda de solo lectura + el mismo insert con RLS/rate-limit que usa
-# el resto de la web), así que desactivar el JWT no abre nada que no
-# estuviera ya público.
+# clave de Supabase. Como este endpoint usa la clave service_role, el código
+# valida el perfil destinatario y limita la frecuencia antes de crear reservas.
+verify_jwt = false
+
+# Token limitado propio; el gateway valida Authorization antes de actuar.
+[functions.weekly-audit-gateway]
 verify_jwt = false

@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import AdminAuditReports from './AdminAuditReports';
 import { supabase } from '@/integrations/supabase/client';
 import { ShieldCheck, AlertTriangle, AlertOctagon, Info, RefreshCw, X, CheckCheck } from 'lucide-react';
 
@@ -93,6 +94,7 @@ const AdminSaludSistema = () => {
 
   return (
     <div>
+      <AdminAuditReports />
       <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
         <div>
           <h3 className="text-lg font-extrabold">Salud del sistema</h3>

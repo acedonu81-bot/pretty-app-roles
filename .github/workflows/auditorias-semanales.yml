@@ -1,0 +1,58 @@
+name: Auditorías semanales Xpeak
+on:
+  schedule:
+    - cron: '0 9 * * 4'
+      timezone: Europe/Madrid
+    - cron: '0 9 * * 5'
+      timezone: Europe/Madrid
+  workflow_dispatch:
+    inputs:
+      kind:
+        description: Auditoría que se desea ejecutar o recuperar
+        type: choice
+        required: true
+        options: [seo, security]
+permissions:
+  contents: read
+concurrency:
+  group: xpeak-weekly-audits
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      AUDIT_DIR: ${{ runner.temp }}/xpeak-audits
+      KIND: ${{ inputs.kind || (github.event.schedule == '0 9 * * 4' && 'seo' || 'security') }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Reservar fecha y leer referencia privada
+        id: prepare
+        run: node scripts/audits/gateway.mjs prepare "$KIND"
+        env:
+          AUDIT_RUNNER_TOKEN: ${{ secrets.AUDIT_RUNNER_TOKEN }}
+      - name: Instalar dependencias sin ejecutar scripts
+        if: steps.prepare.outputs.skip != 'true'
+        run: npm ci --ignore-scripts --no-audit --no-fund > "$RUNNER_TEMP/audit-install.log" 2>&1
+      - name: Ejecutar auditoría no destructiva
+        if: steps.prepare.outputs.skip != 'true'
+        run: node scripts/audits/run.mjs "$KIND"
+        env:
+          AUDIT_DATE: ${{ steps.prepare.outputs.date }}
+      - name: Guardar informe privado y entregar enlace
+        if: always() && steps.prepare.outcome == 'success' && steps.prepare.outputs.skip != 'true'
+        run: node scripts/audits/gateway.mjs publish "$KIND"
+        env:
+          AUDIT_RUNNER_TOKEN: ${{ secrets.AUDIT_RUNNER_TOKEN }}
+          AUDIT_DATE: ${{ steps.prepare.outputs.date }}
+      - name: Estado de fallo
+        if: failure()
+        run: echo 'La auditoría no terminó correctamente. Revisa el último informe y la fecha en el panel de Xpeak. No se ha modificado el negocio.' >> "$GITHUB_STEP_SUMMARY"
+      - name: Eliminar copias temporales
+        if: always()
+        run: rm -rf -- "$AUDIT_DIR"
