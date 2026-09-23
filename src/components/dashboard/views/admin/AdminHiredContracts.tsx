@@ -3,21 +3,28 @@ import { supabase } from '@/integrations/supabase/client';
 import { CheckCircle2, ChevronDown, Star, MessageCircle, Info } from 'lucide-react';
 
 // Banner de contratos completados (13 sep 2026): quién contrató a quién y
-// qué día, juntando las dos vías reales de contratación —
-// flash_bookings (confirmed/completed) y event_request_responses
-// (hired_at no nulo) — porque son caras del mismo hecho de negocio y antes
-// solo se veían por separado como conteos sueltos en AdminMetrics, sin
-// nombres ni fechas.
+// qué día, juntando las tres vías reales de contratación —
+// flash_bookings (confirmed/completed), event_request_responses
+// (hired_at no nulo) y contracts (el flujo directo de ContractModal) —
+// porque son caras del mismo hecho de negocio y antes solo se veían por
+// separado como conteos sueltos en AdminMetrics, sin nombres ni fechas.
+//
+// Añadida la tercera vía (contracts) el 23 sep 2026: el panel solo leía
+// flash_bookings y event_request_responses, así que cualquier contrato
+// creado por el flujo directo (ContractModal → insert en `contracts`)
+// era invisible aquí aunque existiera en la base de datos — caso real:
+// el primer contrato del sistema (19 jun 2026, ref XPEAK-L821X2) nunca
+// apareció en este panel por este motivo.
 //
 // Ampliado el 13 sep 2026 para desplegarse por fila: al hacer clic se ve si
 // hubo reseña, si hablaron por chat (sin leer el contenido — privacidad del
 // chat entre usuarios) y el detalle propio de cada vía. Fetch bajo demanda
-// solo al expandir: con 30+30 contratos cargarlo todo de golpe no aporta
+// solo al expandir: con 30+30+30 contratos cargarlo todo de golpe no aporta
 // nada si el admin solo mira 2 o 3.
 
 interface HiredContract {
   id: string;
-  source: 'flash' | 'request';
+  source: 'flash' | 'request' | 'contract';
   organizador: string;
   organizadorId: string | null;
   profesional: string;
@@ -52,7 +59,7 @@ const AdminHiredContracts = () => {
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
-      const [{ data: flash }, { data: requests }] = await Promise.all([
+      const [{ data: flash }, { data: requests }, { data: direct }] = await Promise.all([
         supabase
           .from('flash_bookings')
           .select('id, requester_name, professional_name, created_at, created_by, professional_user_id, status, agreed_price, event_date, event_location, es_autorregistro')
@@ -64,6 +71,16 @@ const AdminHiredContracts = () => {
           .select('id, hired_at, professional_user_id, message, status, chosen_at, review_asked_at, event_requests!inner(client_name, client_user_id)')
           .not('hired_at', 'is', null)
           .order('hired_at', { ascending: false })
+          .limit(30),
+        // Tercera vía: contratos creados directamente desde ContractModal
+        // (insert en `contracts`). No tiene organizador con cuenta propia
+        // — el contratante puede ser alguien sin registro (contratante_nombre
+        // / empresa_nombre) — así que organizadorId queda null y esa fila
+        // no lleva reseña/chat cruzado, solo el detalle del propio contrato.
+        supabase
+          .from('contracts')
+          .select('id, user_id, ref, professional_name, professional_role, event_name, event_type, event_date, venue, city, contratante_nombre, empresa_nombre, precio_neto, created_at, signed_at')
+          .order('created_at', { ascending: false })
           .limit(30),
       ]);
 
@@ -109,7 +126,29 @@ const AdminHiredContracts = () => {
         detalle: { status: r.status, message: r.message, chosen_at: r.chosen_at, review_asked_at: r.review_asked_at },
       }));
 
-      const all = [...flashRows, ...requestRows].sort((a, b) => b.fecha.localeCompare(a.fecha));
+      const directRows: HiredContract[] = (direct ?? []).map((c: any) => ({
+        id: c.id,
+        source: 'contract',
+        organizador: c.contratante_nombre || c.empresa_nombre || 'Organizador',
+        organizadorId: null,
+        profesional: c.professional_name || 'Profesional',
+        profesionalId: c.user_id ?? null,
+        fecha: c.created_at,
+        autoRegistro: false,
+        detalle: {
+          ref: c.ref,
+          role: c.professional_role,
+          event_name: c.event_name,
+          event_type: c.event_type,
+          event_date: c.event_date,
+          venue: c.venue,
+          city: c.city,
+          precio_neto: c.precio_neto,
+          signed_at: c.signed_at,
+        },
+      }));
+
+      const all = [...flashRows, ...requestRows, ...directRows].sort((a, b) => b.fecha.localeCompare(a.fecha));
       setContracts(all);
       setLoading(false);
     };
@@ -247,6 +286,15 @@ const AdminHiredContracts = () => {
                             {c.detalle.event_date ? ` · Evento: ${c.detalle.event_date}` : ''}
                             {c.detalle.event_location ? ` (${c.detalle.event_location})` : ''}
                           </p>
+                        ) : c.source === 'contract' ? (
+                          <p style={{ color: '#444' }}>
+                            Ref: {String(c.detalle.ref ?? '—')} · Rol: {String(c.detalle.role ?? '—')}
+                            {c.detalle.precio_neto ? ` · Precio: ${c.detalle.precio_neto}€` : ''}
+                            {c.detalle.event_name ? ` · Evento: ${c.detalle.event_name}` : ''}
+                            {c.detalle.venue ? ` (${c.detalle.venue})` : ''}
+                            {c.detalle.city ? `, ${c.detalle.city}` : ''}
+                            {c.detalle.signed_at ? ' · Firmado' : ' · Sin firmar'}
+                          </p>
                         ) : (
                           <p style={{ color: '#444' }}>
                             Estado: {String(c.detalle.status)}
@@ -255,7 +303,23 @@ const AdminHiredContracts = () => {
                         )}
                       </div>
 
-                      {c.autoRegistro ? (
+                      {c.source === 'contract' ? (
+                        // El flujo directo (ContractModal) no siempre tiene
+                        // organizador con cuenta propia — puede ser un
+                        // contratante_nombre/empresa_nombre sin registro —
+                        // así que no hay cuenta contra la que cruzar chat ni
+                        // reseñas. No es lo mismo que un autorregistro (ahí
+                        // sí hay una cuenta pero es la misma en ambos lados).
+                        <div className="flex items-start gap-1.5 rounded-lg p-2"
+                          style={{ background: 'rgba(148,163,184,0.10)' }}>
+                          <Info size={12} className="mt-0.5 flex-shrink-0" style={{ color: '#64748b' }} />
+                          <p style={{ color: '#475569' }}>
+                            <span className="font-bold">Contrato directo, sin cuenta de organizador vinculada.</span>{' '}
+                            El contratante no siempre tiene cuenta en XPEAK en este flujo, así que no hay
+                            chat ni reseñas cruzadas que mostrar aquí.
+                          </p>
+                        </div>
+                      ) : c.autoRegistro ? (
                         // Sin dos partes distintas, "no ha valorado" y "nunca
                         // se escribieron por chat" no significan nada: no hay
                         // con quien hablar ni a quien valorar. Se explica en

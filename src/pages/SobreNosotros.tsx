@@ -7,7 +7,8 @@ import xpeakLogo from '@/assets/xpeak-logo.png';
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "XPEAK",
+  "name": "XPEAK — Profesionales para eventos en España",
+  "alternateName": "XPEAK",
   "url": "https://xpeak.es",
   "logo": "https://xpeak.es/xpeak-icon-512.png",
   "foundingDate": "2026",
@@ -20,7 +21,8 @@ const jsonLd = {
     "availableLanguage": "Spanish"
   },
   "sameAs": [
-    "https://www.instagram.com/xpeaksite"
+    "https://www.instagram.com/xpeaksite",
+    "https://www.tiktok.com/@xpeak30"
   ],
   "founder": {
     "@type": "Person",
@@ -35,7 +37,7 @@ const SobreNosotros = () => {
     <div className="min-h-screen flex flex-col overflow-hidden relative" style={{ background: '#090909' }}>
       <Helmet>
         <title>Sobre Nosotros | XPEAK — Plataforma profesional de eventos en España</title>
-        <meta name="description" content="Conoce la historia y el equipo detrás de XPEAK. Fundada en 2026, conectamos más de 31 profesionales verificados del sector de eventos con organizadores en toda España." />
+        <meta name="description" content="Conoce XPEAK, marketplace español de profesionales para eventos: cómo funciona, qué revisa la verificación manual y cómo contactar con el equipo." />
         <link rel="canonical" href="https://xpeak.es/sobre-nosotros" />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
@@ -52,18 +54,18 @@ const SobreNosotros = () => {
             <h1 className="text-3xl font-black tracking-tight">
               Sobre <span className="text-gradient">XPEAK</span>
             </h1>
-            <p className="text-xs text-muted-foreground mt-1">La plataforma profesional de eventos en España</p>
+            <p className="text-xs text-muted-foreground mt-1">Marketplace español de profesionales para eventos</p>
           </div>
         </div>
 
         <div className="space-y-6 text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>
 
-          {/* Stats rápidas */}
+          {/* Contexto de la empresa, sin cifras que envejezcan entre builds. */}
           <div className="grid grid-cols-3 gap-3">
             {[
-              ['31+', 'Profesionales verificados'],
-              ['2026', 'Año de fundación'],
               ['España', 'Mercado principal'],
+              ['2026', 'Año de fundación'],
+              ['Manual', 'Revisión de perfiles'],
             ].map(([val, label]) => (
               <div key={label} className="glass-panel p-4 text-center" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
                 <p className="text-2xl font-black" style={{ color: '#D4AF37' }}>{val}</p>
@@ -117,7 +119,7 @@ const SobreNosotros = () => {
               Creemos que el talento no debería depender de quién conoces, sino de cómo te muestras. XPEAK da a los profesionales las herramientas que antes solo tenían las grandes agencias.
             </p>
             <blockquote className="border-l-2 pl-4 italic mt-4" style={{ borderColor: '#D4AF37', color: 'rgba(255,255,255,0.5)' }}>
-              "El sector de eventos mueve miles de millones al año en España. Los profesionales merecen una plataforma a su altura."
+              "Los profesionales merecen una plataforma que muestre su trabajo y facilite el contacto directo con organizadores."
             </blockquote>
           </div>
 
@@ -126,10 +128,10 @@ const SobreNosotros = () => {
             <h2 className="text-lg font-black mb-4" style={{ color: '#fff' }}>Qué ofrecemos</h2>
             <ul className="space-y-3">
               {[
-                ['Perfiles verificados', 'Bio, fotos, portfolio y tarifas públicas. Verificación manual por el equipo de XPEAK.'],
+                ['Perfiles verificados', 'El equipo de XPEAK revisa manualmente los perfiles que solicitan verificación cuando tienen completa la información. La insignia no sustituye la comprobación de referencias, disponibilidad, precio y condiciones.'],
                 ['Directorio profesional', 'Búsqueda por especialidad, ciudad y disponibilidad. Acceso público.'],
-                ['Flash Booking', 'Sistema de contratación urgente. Cubre un evento en menos de 1 hora.'],
-                ['Contratos digitales', 'Generación automática de contratos con validez legal en España.'],
+                ['Flash Booking', 'Flujo para publicar necesidades urgentes y recibir respuestas de profesionales disponibles. El tiempo depende de la oferta en cada zona.'],
+                ['Contratos digitales', 'Generación de documentos digitales con los datos acordados entre las partes. Revisa el contenido y las condiciones antes de firmar.'],
                 ['Mensajería directa', 'Sin intermediarios. Profesional y cliente se comunican directamente.'],
               ].map(([title, desc]) => (
                 <li key={title} className="flex items-start gap-3">
@@ -157,8 +159,8 @@ const SobreNosotros = () => {
             <ul className="space-y-2">
               {[
                 '0% de comisión para salas y organizadores — siempre.',
-                'Verificación manual de cada perfil profesional antes de publicarlo.',
-                'Contratos con validez legal bajo legislación española.',
+                'Revisión manual de los perfiles que solicitan verificación y completan su información.',
+                'El organizador y el profesional acuerdan directamente el precio y las condiciones del servicio.',
                 'Política de privacidad conforme al RGPD europeo.',
                 'Datos almacenados en servidores europeos (Supabase EU-West).',
               ].map(item => (

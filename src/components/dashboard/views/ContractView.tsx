@@ -4,6 +4,7 @@ import type ExcelJS from 'exceljs';
 import ContractModal from '@/components/dashboard/ContractModal';
 import type { Profile } from '@/data/profiles';
 import { supabase } from '@/integrations/supabase/client';
+import DOMPurify from 'dompurify';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -329,7 +330,8 @@ const ContractView = () => {
     if (guardado) {
       const w = window.open('', '_blank');
       if (!w) { toast.error('Permite las ventanas emergentes para descargar el contrato'); return; }
-      w.document.write(guardado);
+      w.opener = null;
+      w.document.write(DOMPurify.sanitize(guardado, { USE_PROFILES: { html: true } }));
       w.document.close();
       w.focus();
       setTimeout(() => w.print(), 400);

@@ -1,14 +1,18 @@
-# XPEAK — Directorio Profesional de Eventos en España
+# XPEAK — Marketplace español de profesionales para eventos
 
-XPEAK es una plataforma que conecta profesionales de eventos (DJs, fotógrafos, camareros, maquilladores, maestros de ceremonias, estilistas y catering) con organizadores de bodas, comuniones, eventos corporativos y festivales en España.
+XPEAK es un marketplace español que conecta organizadores con profesionales para bodas, comuniones, eventos corporativos, festivales y otros eventos. Incluye DJs, fotógrafos, camareros, maquilladores, maestros de ceremonias, estilistas y catering.
 
 ## Qué es XPEAK
 
-- Directorio verificado de profesionales para eventos en España
-- Contratación directa sin comisiones
+- Directorio de profesionales para eventos en España
+- Contratación y acuerdo de precio directamente entre organizador y profesional; XPEAK no cobra comisión al organizador por el contrato
 - Contratos PDF automáticos en cada reserva
 - Flash Booking para disponibilidad urgente
 - Gratis para organizadores de eventos
+
+## Verificación
+
+La verificación es una revisión manual de la información de los perfiles que la solicitan. La insignia indica que el equipo de XPEAK ha revisado el perfil; no garantiza disponibilidad, referencias ni el resultado del evento. El organizador debe acordar directamente el precio y las condiciones con el profesional.
 
 ## Profesionales disponibles
 

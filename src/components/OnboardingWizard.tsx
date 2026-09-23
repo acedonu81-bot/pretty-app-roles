@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { ALL_CITIES } from '@/lib/regions';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight, Megaphone, UtensilsCrossed, Laugh, PartyPopper, PersonStanding, MicVocal, Shirt, Scissors, Upload, Euro, Guitar, SlidersHorizontal, Instagram } from 'lucide-react';
+import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight, Megaphone, UtensilsCrossed, Laugh, PartyPopper, PersonStanding, MicVocal, Shirt, Scissors, Upload, Euro, Guitar, SlidersHorizontal, Instagram, Building2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
@@ -36,6 +36,7 @@ const ROLES = [
   { value: 'vestuario',    label: 'Estilista / Vestuario', desc: 'Moda, vestuario y styling',       icon: Shirt,          color: '#10b981' },
   { value: 'photo-booth',  label: 'Photo Booth',         desc: 'Cabinas de fotos y espejos 360',    icon: Camera,         color: '#f43f5e' },
   { value: 'tecnico',      label: 'Técnico de Sonido y Montaje', desc: 'Sonido, iluminación y montaje de escenario', icon: SlidersHorizontal, color: '#38bdf8' },
+  { value: 'local_eventos', label: 'Local para eventos', desc: 'Salas, fincas, terrazas y espacios para celebraciones', icon: Building2, color: '#f59e0b' },
 ];
 
 const EMPRESARIO_ROLE = { value: 'empresario', label: 'Busco talento — Empresario', desc: 'Sala, promotora, agencia o evento privado: busco y contrato profesionales', icon: Briefcase, color: '#D4AF37' };

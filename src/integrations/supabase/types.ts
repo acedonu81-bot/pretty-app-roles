@@ -1065,6 +1065,21 @@ export type Database = {
         }
         Relationships: []
       }
+      profile_vote_counts: {
+        Row: {
+          profile_id: string
+          vote_count: number
+        }
+        Insert: {
+          profile_id: string
+          vote_count?: number
+        }
+        Update: {
+          profile_id?: string
+          vote_count?: number
+        }
+        Relationships: []
+      }
       profile_business_views: {
         Row: {
           created_at: string

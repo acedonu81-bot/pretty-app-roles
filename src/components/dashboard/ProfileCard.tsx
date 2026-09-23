@@ -55,8 +55,8 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
 
   useEffect(() => {
     if (!isRookie || !realProfileId) return;
-    supabase.from('votes' as any).select('id', { count: 'exact', head: true }).eq('profile_id', realProfileId)
-      .then(({ count }) => setVoteCount(count ?? 0));
+    supabase.from('profile_vote_counts').select('vote_count').eq('profile_id', realProfileId)
+      .maybeSingle().then(({ data }) => setVoteCount(data?.vote_count ?? 0));
     if (currentUser.id) {
       supabase.from('votes' as any).select('id').eq('profile_id', realProfileId).eq('voter_id', currentUser.id)
         .maybeSingle().then(({ data }) => setHasVotedToday(!!data));

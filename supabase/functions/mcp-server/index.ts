@@ -250,10 +250,30 @@ async function solicitarPresupuesto(args: Record<string, unknown>, sessionId: st
     return { content: [{ type: 'text', text: 'contacto_solicitante debe ser un email válido — un agente de IA no puede verificar un teléfono, y sin email el profesional no puede confirmar quién pregunta.' }], isError: true };
   }
 
+  const professionalUserId = String(args.professional_user_id).trim();
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(professionalUserId)) {
+    return { content: [{ type: 'text', text: 'No se pudo validar el profesional seleccionado.' }], isError: true };
+  }
+  const { data: profile, error: profileError } = await supabase
+    .from('profiles')
+    .select('user_id, display_name, role, is_seed_profile, is_public, validation_status')
+    .eq('user_id', professionalUserId)
+    .eq('is_primary', true)
+    .maybeSingle();
+  if (profileError || !profile || profile.is_seed_profile || profile.is_public === false || profile.validation_status !== 'approved') {
+    return { content: [{ type: 'text', text: 'El profesional seleccionado no está disponible para recibir solicitudes.' }], isError: true };
+  }
+  const requestedName = String(args.professional_name).trim();
+  const requestedRole = String(args.professional_role).trim();
+  if ((profile.display_name && requestedName.toLowerCase() !== profile.display_name.trim().toLowerCase())
+      || (profile.role && requestedRole.toLowerCase() !== profile.role.trim().toLowerCase())) {
+    return { content: [{ type: 'text', text: 'Los datos del profesional seleccionado no coinciden con su perfil publicado.' }], isError: true };
+  }
+
   const payload = {
-    professional_name: String(args.professional_name).trim().slice(0, 100),
-    professional_role: String(args.professional_role).trim().slice(0, 50),
-    professional_user_id: String(args.professional_user_id).trim(),
+    professional_name: profile.display_name || requestedName.slice(0, 100),
+    professional_role: profile.role || requestedRole.slice(0, 50),
+    professional_user_id: professionalUserId,
     requester_name: String(args.nombre_solicitante).trim().slice(0, 100),
     requester_contact: contacto.slice(0, 150),
     event_date: String(args.fecha_evento).trim().slice(0, 100),
@@ -355,7 +375,7 @@ serve(async (req) => {
         if (toolName === 'buscar_profesionales') return respond(await buscarProfesionales(args, sessionId));
         if (toolName === 'consultar_precio_medio') return respond(await consultarPrecioMedio(args, sessionId));
         if (toolName === 'solicitar_presupuesto') {
-          const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+          const clientIp = req.headers.get('x-forwarded-for')?.split(',').at(-1)?.trim()
             ?? req.headers.get('x-real-ip')
             ?? 'unknown';
           if (await isRateLimited(clientIp)) {
