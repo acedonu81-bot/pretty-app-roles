@@ -745,15 +745,18 @@ const Landing = () => {
             animación para pintarse — con opacity:0 hasta que Framer Motion
             hidrata, el navegador tarda de más en marcarlo como "pintado". */}
         <h1
-            aria-label="Profesionales para eventos en España: DJs, fotógrafos, camareros y staff"
+            aria-label="Los mejores profesionales para tu evento en España — DJ, fotógrafo, camareros y staff verificados"
             className="text-3xl sm:text-5xl md:text-8xl font-black mb-3 md:mb-7 max-w-5xl mx-auto tracking-tight text-center font-display"
             style={{ lineHeight: 1.1, paddingBottom: '0.15em', overflow: 'visible' }}
           >
-            <span className="block" style={{ color: 'rgba(255,255,255,0.95)' }}>Profesionales para</span>
-            <span className="block" style={{ minHeight: '1.3em' }}><span className="text-gradient"><RotatingWord /></span></span>
+            <span className="block" style={{ color: 'rgba(255,255,255,0.95)' }}>Los mejores profesionales</span>
+            <span className="block" style={{ minHeight: '1.3em' }}><span className="text-gradient">para </span><RotatingWord /></span>
           </h1>
-        <p className="text-base md:text-lg font-medium mb-8 max-w-2xl mx-auto" style={{ color: 'rgba(255,255,255,0.75)' }}>
-          XPEAK conecta organizadores con DJs, fotógrafos, camareros y otros profesionales para eventos en España.
+        {/* Subtítulo con las keywords del H1 en texto visible (no solo en el
+            aria-label): auditorías SEO/GEO del 13 sep 2026. Oculto en móvil
+            para no empujar el selector "¿Qué quieres hacer?" fuera de la vista. */}
+        <p className="hidden md:block text-lg font-medium mb-8 max-w-2xl mx-auto" style={{ color: 'rgba(255,255,255,0.75)' }}>
+          DJs, fotógrafos, camareros y staff verificados en toda España
         </p>
         {/* Selector de las dos vías reales de tráfico: quien quiere
             CONTRATAR (organizador) y quien quiere ANUNCIARSE (profesional).
