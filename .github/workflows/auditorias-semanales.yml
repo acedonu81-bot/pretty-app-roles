@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      AUDIT_DIR: ${{ runner.temp }}/xpeak-audits
+      AUDIT_DIR: /tmp/xpeak-audits
       KIND: ${{ inputs.kind || (github.event.schedule == '0 9 * * 4' && 'seo' || 'security') }}
     steps:
       - uses: actions/checkout@v4
