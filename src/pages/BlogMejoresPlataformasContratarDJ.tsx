@@ -13,7 +13,6 @@ import BlogTopCTA from '@/components/BlogTopCTA';
 const PLATFORMS = [
   {
     name: 'XPEAK',
-    comision: '0%',
     cuotaProfesional: '0€',
     contacto: 'Directo, sin intermediación',
     cobertura: 'DJs, fotógrafos, staff, catering, animación y más (13 categorías)',
@@ -21,7 +20,6 @@ const PLATFORMS = [
   },
   {
     name: 'Gigstarter',
-    comision: '0% al contratante',
     cuotaProfesional: 'No especificada públicamente',
     contacto: 'Directo con el artista',
     cobertura: 'DJs, bandas y solistas (música en vivo)',
@@ -29,7 +27,6 @@ const PLATFORMS = [
   },
   {
     name: 'Bodas.net',
-    comision: '0% para el organizador',
     cuotaProfesional: 'Suscripción Premium (~106€/6 meses) para no quedar relegado',
     contacto: 'A través de la plataforma, leads pueden ser poco cualificados',
     cobertura: 'Solo proveedores de boda, no eventos corporativos',
@@ -37,7 +34,6 @@ const PLATFORMS = [
   },
   {
     name: 'Agencia de contratación tradicional',
-    comision: '20%-40% sobre el caché',
     cuotaProfesional: 'Comisión por reserva',
     contacto: 'Intermediado por la agencia',
     cobertura: 'Depende de la cartera propia de la agencia',
@@ -46,9 +42,9 @@ const PLATFORMS = [
 ];
 
 const FAQ = [
-  { q: '¿Cuál es la plataforma más barata para contratar un DJ en España?', a: 'XPEAK y Gigstarter no cobran comisión al organizador. La diferencia está en el profesional: en XPEAK el perfil no tiene cuota de visibilidad, mientras que en portales tipo Bodas.net el profesional suele pagar una suscripción Premium para no quedar relegado frente a otros perfiles.' },
+  { q: '¿Cuál es la plataforma más barata para contratar un DJ en España?', a: 'La diferencia principal está en lo que paga el profesional: en XPEAK el perfil no tiene cuota de visibilidad, mientras que en portales tipo Bodas.net el profesional suele pagar una suscripción Premium para no quedar relegado frente a otros perfiles.' },
   { q: '¿Qué plataforma tiene más categorías de profesionales, no solo DJs?', a: 'XPEAK cubre 13 categorías (DJs, fotógrafos, staff, camareros, catering, animación, magos, humoristas, bailarines, speakers, estilistas, photo booth, wedding planners), útil si necesitas varios perfiles para el mismo evento. Gigstarter y Bodas.net están más centrados en música en vivo o bodas respectivamente.' },
-  { q: '¿Es mejor contratar directo o por agencia?', a: 'Contratar directo (XPEAK, Gigstarter) evita la comisión del 20-40% que cobran las agencias tradicionales sobre el caché del profesional. La agencia tiene sentido si necesitas gestión completa del evento, no solo un proveedor puntual.' },
+  { q: '¿Es mejor contratar directo o por agencia?', a: 'Contratar directamente con el profesional evita la comisión del 20-40% que cobran las agencias tradicionales sobre el caché del profesional. La agencia tiene sentido si necesitas gestión completa del evento, no solo un proveedor puntual.' },
   { q: '¿Bodas.net cobra a los novios o a los proveedores?', a: 'A los novios/organizadores no les cobra por buscar o contactar. El coste está en el lado del proveedor: para aparecer bien posicionado suele requerir una suscripción Premium de pago, lo que puede sesgar qué perfiles ves primero.' },
 ];
 
@@ -57,7 +53,7 @@ export default function BlogMejoresPlataformasContratarDJ() {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: 'Mejores plataformas para contratar DJ en España (2026): comparativa',
-    description: 'Comparativa de XPEAK, Gigstarter, Bodas.net y agencias tradicionales para contratar DJ en España: comisión, coste para el profesional y cobertura de categorías.',
+    description: 'Comparativa de XPEAK, Gigstarter, Bodas.net y agencias tradicionales para contratar DJ en España: coste para el profesional, contacto y cobertura de categorías.',
     author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
     publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     datePublished: '2026-08-18',
@@ -100,18 +96,18 @@ export default function BlogMejoresPlataformasContratarDJ() {
     <>
       <Helmet>
         <title>Mejores Plataformas para Contratar DJ en España (2026) | XPEAK</title>
-        <meta name="description" content="Comparativa 2026 de XPEAK, Gigstarter, Bodas.net y agencias tradicionales para contratar DJ en España: comisión, coste real y cobertura de categorías." />
+        <meta name="description" content="Comparativa 2026 de XPEAK, Gigstarter, Bodas.net y agencias tradicionales para contratar DJ en España: coste real, contacto y cobertura de categorías." />
         <meta name="keywords" content="mejores plataformas contratar DJ, comparativa contratar DJ España, XPEAK vs Gigstarter, XPEAK vs Bodas.net" />
         <link rel="canonical" href="https://xpeak.es/blog/mejores-plataformas-contratar-dj-espana" />
         <meta property="og:title" content="Mejores Plataformas para Contratar DJ en España (2026)" />
-        <meta property="og:description" content="Comparativa de XPEAK, Gigstarter, Bodas.net y agencias tradicionales: comisión, coste real y cobertura." />
+        <meta property="og:description" content="Comparativa de XPEAK, Gigstarter, Bodas.net y agencias tradicionales: coste real, contacto y cobertura." />
         <meta property="og:url" content="https://xpeak.es/blog/mejores-plataformas-contratar-dj-espana" />
         <meta property="og:type" content="article" />
         <meta property="og:image" content="https://xpeak.es/og-image.jpg" />
         <meta property="og:site_name" content="XPEAK" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Mejores Plataformas para Contratar DJ en España (2026)" />
-        <meta name="twitter:description" content="Comparativa de XPEAK, Gigstarter, Bodas.net y agencias tradicionales: comisión, coste real y cobertura." />
+        <meta name="twitter:description" content="Comparativa de XPEAK, Gigstarter, Bodas.net y agencias tradicionales: coste real, contacto y cobertura." />
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
@@ -159,10 +155,10 @@ export default function BlogMejoresPlataformasContratarDJ() {
 
           <BlogAnswerBox
             question="¿Cuál es la mejor plataforma para contratar un DJ en España en 2026?"
-            answer="Depende de qué priorices. XPEAK y Gigstarter no cobran comisión al organizador; la diferencia está en el profesional, donde XPEAK tampoco cobra cuota de visibilidad y cubre además otras 12 categorías de eventos (fotógrafos, staff, catering, animación...). Bodas.net tiene el mayor volumen pero cobra suscripción Premium al proveedor para no quedar relegado. Las agencias tradicionales siguen siendo las más caras, con comisiones del 20-40% sobre el caché."
+            answer="Depende de qué priorices. La diferencia principal está en el profesional: XPEAK no cobra cuota de visibilidad y cubre además otras 12 categorías de eventos (fotógrafos, staff, catering, animación...). Bodas.net tiene el mayor volumen pero cobra suscripción Premium al proveedor para no quedar relegado. Las agencias tradicionales siguen siendo las más caras, con comisiones del 20-40% sobre el caché."
           />
 
-          <h2 className="text-xl font-black mb-4">Comparativa: comisión, coste y cobertura</h2>
+          <h2 className="text-xl font-black mb-4">Comparativa: coste y cobertura</h2>
           <p className="text-base mb-5 leading-relaxed" style={{ color: '#222' }}>
             Tabla comparativa con datos públicos de cada plataforma, actualizada en agosto de 2026:
           </p>
@@ -170,7 +166,7 @@ export default function BlogMejoresPlataformasContratarDJ() {
             <table className="w-full text-xs min-w-[640px]">
               <thead>
                 <tr style={{ background: 'rgba(0,0,0,0.04)' }}>
-                  {['Plataforma', 'Comisión organizador', 'Coste profesional', 'Contacto', 'Cobertura'].map(h => (
+                  {['Plataforma', 'Coste profesional', 'Contacto', 'Cobertura'].map(h => (
                     <th key={h} className="px-2 sm:px-4 py-3 text-left font-bold uppercase tracking-wider whitespace-nowrap"
                       style={{ color: '#333', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>{h}</th>
                   ))}
@@ -182,7 +178,6 @@ export default function BlogMejoresPlataformasContratarDJ() {
                     <td className="px-2 sm:px-4 py-3 font-black whitespace-nowrap" style={{ color: p.destacado ? '#D4AF37' : '#111', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
                       {p.name}{p.destacado && <span className="ml-1.5 text-[0.6rem] px-1.5 py-0.5 rounded-full" style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37' }}>propia</span>}
                     </td>
-                    <td className="px-2 sm:px-4 py-3" style={{ color: '#222', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{p.comision}</td>
                     <td className="px-2 sm:px-4 py-3" style={{ color: '#222', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{p.cuotaProfesional}</td>
                     <td className="px-2 sm:px-4 py-3" style={{ color: '#444', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{p.contacto}</td>
                     <td className="px-2 sm:px-4 py-3" style={{ color: '#444', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>{p.cobertura}</td>
@@ -192,7 +187,7 @@ export default function BlogMejoresPlataformasContratarDJ() {
             </table>
           </div>
           <p className="text-[0.65rem] mb-10" style={{ color: '#666' }}>
-            Datos de comisión y cobertura recogidos de la información pública de cada plataforma en agosto de 2026. Las condiciones pueden cambiar: consulta siempre la fuente oficial antes de decidir.
+            Datos de coste y cobertura recogidos de la información pública de cada plataforma en agosto de 2026. Las condiciones pueden cambiar: consulta siempre la fuente oficial antes de decidir.
           </p>
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/mejores-plataformas-contratar-dj-espana" />
