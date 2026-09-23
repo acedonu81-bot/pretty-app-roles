@@ -55,6 +55,7 @@ serve(async (req) => {
       .select('id')
       .eq('user_id', r.reviewer_id)
       .eq('type', logKey)
+      .limit(1)
       .maybeSingle();
     if (existingLog) continue;
 

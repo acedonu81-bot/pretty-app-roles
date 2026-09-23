@@ -77,6 +77,7 @@ serve(async (req) => {
       .select('id')
       .eq('user_id', userId)
       .eq('type', logKey)
+      .limit(1)
       .maybeSingle();
     if (existingLog) return;
 

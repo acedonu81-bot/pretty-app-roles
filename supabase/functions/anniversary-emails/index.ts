@@ -59,6 +59,7 @@ serve(async (req) => {
         .select('id')
         .eq('user_id', profile.user_id)
         .eq('type', 'six_months_anniversary')
+        .limit(1)
         .maybeSingle();
 
       if (existing) {

@@ -77,6 +77,7 @@ serve(async (req) => {
         .select('id')
         .eq('user_id', profile.user_id)
         .eq('type', 'organizador_segundo_perfil')
+        .limit(1)
         .maybeSingle();
       if (existing) continue;
 

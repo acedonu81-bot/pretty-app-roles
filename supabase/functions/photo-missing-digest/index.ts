@@ -66,6 +66,7 @@ serve(async (req) => {
     .select('id')
     .eq('user_id', ADMIN_LOG_MARKER)
     .eq('type', logType)
+    .limit(1)
     .maybeSingle();
   if (existing) {
     return new Response(JSON.stringify({ found: overdue.length, sent: 0, message: 'Digest already sent this week' }), { headers: corsHeaders });

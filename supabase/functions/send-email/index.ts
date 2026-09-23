@@ -264,6 +264,25 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     };
   },
 
+  // 1a2a. Aviso puntual (23 sep 2026) a profesionales recientes: ya se
+  // cierran contrataciones y un perfil completo recibe más oportunidades.
+  // Sin cifras: el volumen real aún es bajo y no se inventan números.
+  oportunidades_contrataciones: (d) => ({
+    subject: `${esc(d.name)}, ya se están cerrando contrataciones en XPEAK`,
+    to: d.email,
+    html: base(`
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Hola, ${esc(d.name)}</h2>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Organizadores de eventos ya están contratando profesionales a través de XPEAK. Cuando buscan, comparan perfiles y escriben primero a los que tienen la información completa: foto, descripción, tarifa y ejemplos de su trabajo.
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
+        Para que tu perfil como <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong> tenga más oportunidades, te falta añadir: ${esc(d.missingLabels)}. Son pocos minutos.
+      </p>
+      ${btn('Completar mi perfil →', 'https://xpeak.es/dashboard')}
+      <p style="color:#9CA3AF;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`,
+      'Los perfiles completos reciben más contactos de organizadores'),
+  }),
+
   // 1a2b. Foto subida pero no válida (textura/producto/imagen borrosa en vez
   // de una foto real) — caso puntual, sin cron asociado. Distinto de
   // profile_incomplete_reminder porque ahí SÍ hay una imagen en photo_url, el

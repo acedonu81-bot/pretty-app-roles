@@ -63,6 +63,7 @@ serve(async (req) => {
         .select('id')
         .eq('user_id', ev.user_id)
         .eq('type', logKey)
+        .limit(1)
         .maybeSingle();
 
       if (!existing && emailHabilitado) {
