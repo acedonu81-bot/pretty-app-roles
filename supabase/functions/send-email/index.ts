@@ -200,20 +200,34 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   }),
 
   // 1. Bienvenida al nuevo usuario
-  welcome: (d) => ({
+  // Registro directo sin aprobación manual desde el 22 sep 2026: el texto ya
+  // no habla de revisión. Un profesional solo aparece en el directorio con
+  // foto (filtro de foto obligatoria); un empresario no aparece, contrata.
+  welcome: (d) => {
+    const esEmpresa = d.role === 'empresario';
+    return {
     subject: `Bienvenido a XPEAK, ${esc(d.name)}`,
     to: d.email,
     html: base(`
       <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Hola, ${esc(d.name)}</h2>
+      ${esEmpresa ? `
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
-        Tu perfil como <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong> se está revisando por nuestra política de verificación. En cuanto lo aprobemos, aparecerás en el directorio y podrás recibir contactos de empresarios de toda España.
+        Tu cuenta de organizador ya está activa. Puedes buscar DJs, fotógrafos, camareros y otros profesionales por zona, escribirles directamente o publicar una oferta con Flash Booking para que te respondan los que estén disponibles.
       </p>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
-        Mientras tanto, completa tu información — cuanto más completo esté tu perfil, antes lo revisamos.
+        Añade un logo y una breve descripción de tu negocio: los profesionales miran quién les escribe antes de responder.
       </p>
-      ${btn('Completar mi perfil →', 'https://xpeak.es/dashboard')}
+      ${btn('Buscar profesionales →', 'https://xpeak.es/dashboard')}` : `
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Tu perfil como <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong> ya está activo. En cuanto subas una foto de perfil, aparecerás en el directorio y los organizadores de toda España podrán encontrarte y contactarte.
+      </p>
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
+        Completa también tu descripción, tarifa y ejemplos de tu trabajo: cuanto más completo esté tu perfil, más fácil es que te contraten.
+      </p>
+      ${btn('Completar mi perfil →', 'https://xpeak.es/dashboard')}`}
       <p style="color:#9CA3AF;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`),
-  }),
+    };
+  },
 
   // 1a2. Recordatorio si el perfil sigue incompleto — solo se manda una vez
   // (dedupe vía email_logs), nunca si ya se completó. El perfil SÍ aparece
