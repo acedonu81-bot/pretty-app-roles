@@ -100,6 +100,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Helmet } from 'react-helmet-async';
 import { motion, useInView, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import LandingMegaMenu from '@/components/LandingMegaMenu';
 import { Music, UtensilsCrossed, Users, Camera, Sparkles, X, ChevronLeft, ChevronRight, Building2, Scissors, Headphones, Zap, Star, CalendarDays, Search, Award, Globe, CheckCircle, Smartphone, Video, Heart, SlidersHorizontal, LayoutDashboard } from 'lucide-react';
 import xpeakLogo from '@/assets/xpeak-logo.png';
 import bentoMusica from '@/assets/bento-musica.jpg';
@@ -641,21 +642,7 @@ const Landing = () => {
             style={{ color: '#1a1208' }}>
             X<span className="text-gradient">PEAK</span>
           </button>
-          <div className="hidden md:flex items-center gap-5 absolute left-1/2 -translate-x-1/2">
-            {[
-              { label: 'Descubrir', href: '/descubrir' },
-              { label: 'Profesionales', href: '/directorio/dj' },
-              { label: 'Eventos', href: '#como-funciona' },
-              { label: 'Categorías', href: '#categorias' },
-              { label: 'FAQ', href: '#faq' },
-            ].map(link => (
-              <a key={link.label} href={link.href}
-                className="text-xs font-semibold transition-all hover:opacity-60"
-                style={{ color: '#444' }}>
-                {link.label}
-              </a>
-            ))}
-          </div>
+          <LandingMegaMenu />
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Logueado (profesional que se queda en la landing, ver efecto
                 arriba): antes era un botón de texto gris casi invisible, el
