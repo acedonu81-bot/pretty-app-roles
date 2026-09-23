@@ -329,7 +329,8 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
     setLeadStatus('loading');
     const rolActual = role ?? (roles?.length ? roles.join(',') : '');
     const regionActual = filterRegion !== ALL_REGIONS_LABEL ? filterRegion : null;
-    const { error } = await supabase.from('leads').upsert(
+    // insert, no upsert: ver BlogEmailCapture (la RLS rechaza ON CONFLICT DO UPDATE).
+    const { error } = await supabase.from('leads').insert(
       {
         email: leadEmail.toLowerCase().trim(),
         source: 'busqueda_sin_resultados',
@@ -340,8 +341,7 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
         // el trigger necesita comparar valores exactos, no una frase.
         lead_role: rolActual || null,
         lead_region: regionActual,
-      },
-      { onConflict: 'email' }
+      }
     );
     if (error && error.code !== '23505') { setLeadStatus('error'); return; }
     void logEvent('lead_busqueda_sin_resultados', location.pathname, q);

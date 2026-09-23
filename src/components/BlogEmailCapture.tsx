@@ -61,9 +61,11 @@ export default function BlogEmailCapture({
     setStatus('loading');
     setErrorMsg('');
 
-    const { error } = await supabase.from('leads').upsert(
-      { email: email.toLowerCase().trim(), source: 'blog', article_path: articlePath, intent },
-      { onConflict: 'email' }
+    // insert y no upsert: la RLS de leads solo permite INSERT a anon, y el
+    // ON CONFLICT DO UPDATE de upsert exige también SELECT/UPDATE, así que
+    // fallaba siempre. Un email repetido da 23505 y se trata como éxito.
+    const { error } = await supabase.from('leads').insert(
+      { email: email.toLowerCase().trim(), source: 'blog', article_path: articlePath, intent }
     );
 
     if (error && error.code !== '23505') {
