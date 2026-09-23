@@ -116,7 +116,7 @@ export default function BlogAntelacionReservasBoda() {
 
             <div className="mt-8 p-5 rounded-2xl text-center" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
               <p className="font-black text-lg mb-2">Contrata tus proveedores de boda en XPEAK</p>
-              <p style={{ color: '#444', fontSize: '0.9rem', marginBottom: '1rem' }}>DJ, fotógrafo, camareros y catering verificados. Contratos digitales automáticos. 0% comisión.</p>
+              <p style={{ color: '#444', fontSize: '0.9rem', marginBottom: '1rem' }}>DJ, fotógrafo, camareros y catering verificados. Contratos digitales automáticos.</p>
               <a href="/auth" className="inline-block px-6 py-3 rounded-xl font-black text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>Buscar profesionales →</a>
             </div>
 

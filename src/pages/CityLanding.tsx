@@ -330,7 +330,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     unidad: '/hora',
     desc: (c) => {
       if (c === 'Ibiza') return 'Camareros temporada Ibiza: personal extra hostelería Ibiza para villas, yates y pool parties. Contratación por horas, por noches o por temporada. Flash Booking en <1h.';
-      if (c === 'Palma') return 'Camareros temporada Mallorca: personal extra para villas, fincas y resorts. Por horas o por temporada. Flash Booking disponible. 0% comisión.';
+      if (c === 'Palma') return 'Camareros temporada Mallorca: personal extra para villas, fincas y resorts. Por horas o por temporada. Flash Booking disponible.';
       return `Camareros profesionales en ${c} para bodas, eventos de empresa y fiestas privadas. Flash Booking en menos de 1h. Contrato digital automático.`;
     },
     intro: (c) => {
@@ -734,7 +734,7 @@ export default function CityLanding() {
     url: `https://xpeak.es${canonicalBase}`,
     serviceType: `Contratación de ${catData.keyword}`,
     dateModified: BUILD_DATE,
-    offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+    termsOfService: 'El precio del profesional se consulta en su perfil y se acuerda directamente entre las partes.',
   };
 
   const faqStructured = {
@@ -755,27 +755,6 @@ export default function CityLanding() {
       { '@type': 'ListItem', position: 2, name: `Contratar ${catData.keyword}`, item: `https://xpeak.es/contratar-${categorySlug}` },
       { '@type': 'ListItem', position: 3, name: cityData.ciudad, item: `https://xpeak.es${canonicalBase}` },
     ],
-  };
-
-  const localBusinessData = {
-    '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
-    name: `XPEAK — ${catData.keyword} en ${cityData.ciudad}`,
-    description: catData.desc(cityData.ciudad),
-    url: `https://xpeak.es${canonicalBase}`,
-    image: 'https://xpeak.es/og-image.jpg',
-    email: 'hola@xpeak.es',
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: cityData.ciudad,
-      addressCountry: 'ES',
-    },
-    areaServed: { '@type': 'City', name: cityData.ciudad },
-    // El mismo rango ajustado por categoría que se muestra en pantalla: antes
-    // este campo mandaba a Google el rango de DJ para todas las categorías.
-    priceRange: precio,
-    openingHours: 'Mo-Su 00:00-24:00',
-    sameAs: ['https://www.instagram.com/xpeaksite', 'https://www.tiktok.com/@xpeak30'],
   };
 
   // Una ciudad sin profesionales renderiza "Aún no hay": es thin content y no
@@ -809,7 +788,6 @@ export default function CityLanding() {
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbData)}</script>
-        <script type="application/ld+json">{JSON.stringify(localBusinessData)}</script>
       </Helmet>
 
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>

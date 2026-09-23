@@ -94,7 +94,7 @@ const LegalFooter = () => {
               © {new Date().getFullYear()} XPEAK — España. Todos los derechos reservados.
             </p>
             <p className="text-[0.65rem] text-center max-w-md" style={{ color: 'rgba(255,255,255,0.6)' }}>
-              Plataforma de intermediación técnica. Cada usuario actúa bajo su propia responsabilidad legal. XPEAK no cobra comisiones por contrato.
+              Plataforma de intermediación técnica. Cada usuario actúa bajo su propia responsabilidad legal.
             </p>
           </div>
 

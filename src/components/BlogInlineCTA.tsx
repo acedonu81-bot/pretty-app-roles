@@ -95,7 +95,7 @@ const CONFIG = {
     upgrade: {
       eyebrow: 'XPEAK · Directorio verificado',
       headline: 'Recibe presupuestos de profesionales verificados para tu evento',
-      sub: 'DJs, staff, azafatas y más. Directorio verificado, 0€ comisión.',
+      sub: 'DJs, staff, azafatas y más. Directorio verificado, contacto directo.',
       cta: 'Solicitar presupuestos →',
       href: '/auth?mode=register',
       badge: 'Directorio verificado',
@@ -138,7 +138,7 @@ export default function BlogInlineCTA({ role = 'general', variant = 'default' }:
       <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <p className="text-[0.6rem] font-black uppercase tracking-widest mb-1" style={{ color: 'rgba(212,175,55,0.6)' }}>
-            XPEAK · Directorio verificado · 0€ comisión
+            XPEAK · Directorio verificado
           </p>
           <p className="text-sm font-bold" style={{ color: '#111' }}>{c.pro.label}</p>
           <p className="text-xs mt-0.5" style={{ color: '#333' }}>

@@ -18,7 +18,7 @@ const structuredData = {
 };
 
 const FAQS = [
-  { q: '¿XPEAK cobra comisión por organizar un evento?', a: 'No. El trato y el pago se cierran directamente con el profesional, sin intermediarios ni porcentajes sobre el presupuesto.' },
+  { q: '¿Cómo se gestiona el pago con el profesional?', a: 'El trato y el pago se cierran directamente con el profesional, sin intermediarios en la transacción.' },
   { q: '¿Qué es el Flash Booking y cómo me ayuda a organizar un evento?', a: 'Flash Booking es el sistema de XPEAK para cubrir necesidades puntuales: publicas qué necesitas (DJ, camareros, fotógrafo...) y los profesionales disponibles en tu zona pueden responder directamente. Útil para bajas de última hora o eventos con poca antelación, aunque la disponibilidad depende de cada categoría y ciudad.' },
   { q: '¿Puedo gestionar varios proveedores del mismo evento desde XPEAK?', a: 'Sí. Puedes añadir DJ, staff, catering, fotógrafo y cualquier otro perfil a un mismo evento desde el carrito "Mi evento", comparar presupuestos y contactarlos todos con un único mensaje.' },
   { q: '¿Los contratos que genera XPEAK son legales?', a: 'Sí. Los contratos digitales de XPEAK incluyen los datos fiscales de ambas partes, cláusulas de cancelación y condiciones del servicio. Se descargan en PDF listos para tu gestoría o contabilidad.' },
@@ -127,7 +127,7 @@ export default function OrganizadoresLanding() {
         <section className="border-y" style={{ borderColor: 'rgba(255,255,255,0.06)', background: 'rgba(212,175,55,0.03)' }}>
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-8">
             {[
-              { label: 'Comisión XPEAK', value: '0€ siempre', icon: <Shield size={16} /> },
+              { label: 'Pago', value: 'Directo con el profesional', icon: <Shield size={16} /> },
               { label: 'Flash Booking', value: 'Para necesidades urgentes', icon: <Zap size={16} /> },
               { label: 'Contrato digital', value: 'Listo en 1 clic', icon: <FileText size={16} /> },
             ].map(s => (

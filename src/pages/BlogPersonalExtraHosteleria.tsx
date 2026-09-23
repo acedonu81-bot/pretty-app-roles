@@ -139,7 +139,7 @@ export default function BlogPersonalExtraHosteleria() {
 
             <div className="mt-8 p-5 rounded-2xl" style={{ background: 'rgba(37,99,235,0.06)', border: '1px solid rgba(37,99,235,0.2)' }}>
               <p className="font-black text-lg mb-2">¿Necesitas camareros extra para esta temporada?</p>
-              <p style={{ color: '#444', fontSize: '0.9rem', marginBottom: '1rem' }}>XPEAK conecta salas, restaurantes y hoteles con camareros por horas verificados en toda España. 0% comisión. Contratos automáticos.</p>
+              <p style={{ color: '#444', fontSize: '0.9rem', marginBottom: '1rem' }}>XPEAK conecta salas, restaurantes y hoteles con camareros por horas verificados en toda España. Contratos automáticos.</p>
               <a href="/contratar-camareros" className="inline-block px-6 py-3 rounded-xl font-black text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#2563EB,#B8941E)', color: '#000' }}>Ver camareros disponibles →</a>
             </div>
 

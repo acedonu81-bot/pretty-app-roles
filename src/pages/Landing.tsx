@@ -358,18 +358,17 @@ const ROLE_DETAILS = [
 
 /* ── Landing ── */
 const FAQ_ITEMS = [
-  { q: '¿Necesito experiencia profesional para unirme?', a: 'No. Hay un rol específico llamado "Artista Promesa" pensado para quienes están empezando. La comunidad te puede apoyar con votos para que asciendan a Profesional.' },
-  { q: '¿Cómo funciona el Flash Booking?', a: 'Un empresario publica una oferta urgente (fecha, lugar, caché). Los profesionales disponibles en esa zona reciben una notificación y pueden responder. El empresario elige al candidato. El empresario elige al candidato ideal.' },
-  { q: '¿Organizo eventos o bodas? ¿Cómo me registro?', a: 'Elige el rol "Empresario" al registrarte, sin límites para contratar: búsqueda en el directorio, Flash Booking ilimitado y mensajería directa. El trato es directo entre organizador y profesional.' },
-  { q: '¿En qué ciudades funciona?', a: 'En toda España: Madrid, Barcelona, Valencia, Sevilla, Ibiza, Málaga y más de 40 ciudades. Si no encuentras tu ciudad, puedes registrarte igualmente — los organizadores buscan por zona.' },
-  { q: '¿Cómo se verifican los perfiles?', a: 'Los perfiles verificados son revisados manualmente por el equipo de XPEAK. Puedes solicitar verificación desde tu panel de perfil una vez que tengas la información completa.' },
-  { q: '¿Puedo cancelar mi suscripción en cualquier momento?', a: 'Sí. Sin permanencia ni penalizaciones. Puedes cancelar desde Mi Perfil > Plan y sigues teniendo acceso hasta el final del período pagado.' },
+  { q: '¿Necesito experiencia profesional para unirme?', a: 'No es imprescindible tener una trayectoria larga. XPEAK permite a profesionales emergentes crear su perfil y mostrar su trabajo; la información y el portfolio ayudan a los organizadores a valorar si encajan con su evento.' },
+  { q: '¿Cómo funciona el Flash Booking?', a: 'Un organizador publica una necesidad urgente con la fecha, el lugar y el presupuesto. Los profesionales que pueden atenderla reciben la oferta y pueden responder; después, el organizador revisa las candidaturas y elige con quién contactar.' },
+  { q: '¿Cómo contacto con profesionales para mi evento?', a: 'Crea una cuenta de organizador, busca por tipo de servicio y zona, compara la información de los perfiles y contacta directamente con los profesionales disponibles. Antes de reservar, confirma con ellos el precio, el alcance del servicio y las condiciones.' },
+  { q: '¿En qué ciudades puedo encontrar profesionales?', a: 'XPEAK publica profesionales de distintas ciudades de España, incluidas Madrid, Barcelona, Valencia, Sevilla, Málaga e Ibiza. La disponibilidad depende del servicio y de cada perfil; consulta la ficha y confirma la fecha directamente con el profesional.' },
+  { q: '¿Qué significa que un perfil está verificado?', a: 'El equipo de XPEAK revisa manualmente los perfiles que solicitan la verificación y comprueba la información facilitada antes de activar esa indicación. La verificación no sustituye a que el organizador confirme referencias, disponibilidad, precio y condiciones para su evento.' },
+  { q: '¿Puedo cancelar mi suscripción?', a: 'Las condiciones dependen del plan contratado. Revisa el apartado «Plan» de tu perfil para consultar el ciclo de facturación, la fecha efectiva de cancelación y el acceso que conservarás; si necesitas ayuda, contacta con soporte antes de renovar.' },
 ];
 
 
 
 const FaqSection = () => {
-  const [open, setOpen] = useState<number | null>(null);
   return (
     <section className="max-w-[800px] mx-auto px-6 md:px-8 pb-16 md:pb-24">
       <FadeIn className="text-center mb-10">
@@ -381,39 +380,21 @@ const FaqSection = () => {
       <div className="flex flex-col gap-2">
         {FAQ_ITEMS.map((item, i) => (
           <FadeIn key={i} delay={i * 0.04}>
-            <div
-              className="glass-panel overflow-hidden transition-all cursor-pointer"
-              style={{ background: '#FFFFFF', border: open === i ? '1px solid rgba(212,175,55,0.2)' : '1px solid rgba(0,0,0,0.08)', boxShadow: '0 1px 6px rgba(0,0,0,0.05)' }}
-              onClick={() => setOpen(open === i ? null : i)}
+            <details
+              key={item.q}
+              className="group glass-panel overflow-hidden transition-all"
+              style={{ background: '#FFFFFF', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 1px 6px rgba(0,0,0,0.05)' }}
             >
-              <div className="flex items-center justify-between px-5 py-4 gap-3">
-                <p className="text-sm font-bold leading-snug" style={{ color: open === i ? '#8B6A00' : '#333' }}>
+              <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-4 gap-3 [&::-webkit-details-marker]:hidden">
+                <span className="text-sm font-bold leading-snug text-[#333] group-open:text-[#8B6A00]">
                   {item.q}
-                </p>
-                <motion.span
-                  animate={{ rotate: open === i ? 45 : 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="flex-shrink-0 text-lg font-light leading-none"
-                  style={{ color: open === i ? '#8B6A00' : '#444' }}>
+                </span>
+                <span className="flex-shrink-0 text-lg font-light leading-none text-[#444] transition-transform group-open:rotate-45" aria-hidden="true">
                   +
-                </motion.span>
-              </div>
-              <AnimatePresence initial={false}>
-                {open === i && (
-                  <motion.div
-                    key="content"
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    <p className="px-5 pb-5 text-sm leading-relaxed" style={{ color: '#444' }}>
-                      {item.a}
-                    </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+                </span>
+              </summary>
+              <p className="px-5 pb-5 text-sm leading-relaxed text-[#444]">{item.a}</p>
+            </details>
           </FadeIn>
         ))}
       </div>
@@ -764,26 +745,15 @@ const Landing = () => {
             animación para pintarse — con opacity:0 hasta que Framer Motion
             hidrata, el navegador tarda de más en marcarlo como "pintado". */}
         <h1
-            aria-label="Los mejores profesionales para tu evento en España — DJ, fotógrafo, camareros y staff verificados"
+            aria-label="Profesionales para eventos en España: DJs, fotógrafos, camareros y staff"
             className="text-3xl sm:text-5xl md:text-8xl font-black mb-3 md:mb-7 max-w-5xl mx-auto tracking-tight text-center font-display"
             style={{ lineHeight: 1.1, paddingBottom: '0.15em', overflow: 'visible' }}
           >
-            <span className="block" style={{ color: 'rgba(255,255,255,0.95)' }}>Los mejores profesionales</span>
-            <span className="block" style={{ minHeight: '1.3em' }}><span className="text-gradient">para </span><RotatingWord /></span>
+            <span className="block" style={{ color: 'rgba(255,255,255,0.95)' }}>Profesionales para</span>
+            <span className="block" style={{ minHeight: '1.3em' }}><span className="text-gradient"><RotatingWord /></span></span>
           </h1>
-        {/* Subtítulo con las keywords del H1 en texto visible (no solo en el
-            aria-label): dos auditorías SEO/GEO independientes (Geoptie y
-            Seobility, 13 sep 2026) señalaron que "DJ, fotógrafo, camareros,
-            staff" no aparecían en el cuerpo cerca del H1, solo en el
-            aria-label — un motor de búsqueda/IA da más peso al texto que
-            puede leer directamente. Oculto en móvil (hidden, no display:none
-            condicional por JS): el viewport de 390px ya no tenía margen y
-            empujaba el selector "¿Qué quieres hacer?" y la barra de
-            búsqueda fuera de la vista inicial. Un crawler sigue leyendo el
-            texto en el DOM igual en cualquier tamaño, solo cambia lo que ve
-            el usuario humano. */}
-        <p className="hidden md:block text-lg font-medium mb-8 max-w-2xl mx-auto" style={{ color: 'rgba(255,255,255,0.75)' }}>
-          DJs, fotógrafos, camareros y staff verificados en toda España
+        <p className="text-base md:text-lg font-medium mb-8 max-w-2xl mx-auto" style={{ color: 'rgba(255,255,255,0.75)' }}>
+          XPEAK conecta organizadores con DJs, fotógrafos, camareros y otros profesionales para eventos en España.
         </p>
         {/* Selector de las dos vías reales de tráfico: quien quiere
             CONTRATAR (organizador) y quien quiere ANUNCIARSE (profesional).
@@ -889,7 +859,7 @@ const Landing = () => {
           <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-1 mt-5">
             {[
               '✓ Verificados cada semana',
-              '✓ 0€ comisión',
+              '✓ Contacto directo',
               '✓ Sin tarjeta',
             ].map(t => (
               <span key={t} className="text-xs font-bold" style={{ color: 'rgba(255,255,255,0.85)' }}>{t}</span>

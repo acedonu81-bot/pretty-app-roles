@@ -66,7 +66,7 @@ export const CATEGORY_DATA: Record<string, {
     h1: 'Contratar DJ para Boda y Eventos en España',
     tagline: 'DJs profesionales verificados para bodas, fiestas y eventos en toda España',
     desc: 'Contrata DJ para boda, fiesta privada o evento en España. Precio DJ desde 40€/hora. DJ para bodas Madrid, Barcelona e Ibiza. Flash Booking en menos de 1h..',
-    intro: 'XPEAK es la plataforma de referencia para contratar DJ en Madrid, Barcelona, Ibiza, Valencia, Sevilla y toda España. DJ para bodas, fiestas privadas y eventos corporativos. Perfiles verificados, precio público y contratos digitales en minutos. 0% comisión para organizadores.',
+    intro: 'XPEAK es la plataforma de referencia para contratar DJ en Madrid, Barcelona, Ibiza, Valencia, Sevilla y toda España. DJ para bodas, fiestas privadas y eventos corporativos. Perfiles verificados, precio público y contratos digitales en minutos.',
     keyword: 'DJ',
     keywords: 'contratar dj madrid, contratar dj barcelona, contratar dj ibiza, contratar dj para boda, dj para fiestas madrid, precio dj madrid, dj eventos madrid, dj fiestas privadas barcelona, DJ boda España, contratar DJ profesional',
     precio: 'desde 40€/hora',
@@ -86,7 +86,7 @@ export const CATEGORY_DATA: Record<string, {
     faqs: [
       { q: '¿Cuánto cuesta contratar un DJ en España?', a: 'Los precios varían entre 40€/hora para DJs emergentes y más de 400€/hora para residentes de clubs reconocidos. En XPEAK todos los perfiles muestran su tarifa pública antes de contactar.' },
       { q: '¿Qué es el Flash Booking?', a: 'Flash Booking es el sistema de ofertas urgentes de XPEAK. Publicas una oferta con fecha, zona y presupuesto, y los DJs disponibles en tu ciudad responden en menos de 60 minutos. Ideal para sustituciones de última hora.' },
-      { q: '¿XPEAK cobra comisión?', a: 'No. El contrato se cierra directamente entre las partes. Sin intermediarios ni porcentajes sobre el caché.' },
+      { q: '¿Cómo se gestiona el pago?', a: 'El contrato se cierra directamente entre las partes, sin intermediarios en la transacción.' },
       { q: '¿Los DJs están verificados?', a: 'Sí. Los perfiles en XPEAK son verificados manualmente. Incluyen experiencia, géneros, equipos, mezclas de muestra y referencias de venues.' },
     ],
     steps: [
@@ -838,7 +838,6 @@ export default function CategoryLanding() {
     description: data.desc,
     url: `https://xpeak.es/contratar-${data.slug}`,
     serviceType: `Contratación de ${data.keyword}`,
-    offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
   };
 
   const faqStructured = {
@@ -860,21 +859,6 @@ export default function CategoryLanding() {
     ],
   };
 
-  const localBusinessData = {
-    '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
-    name: `XPEAK — ${data.h1}`,
-    description: data.desc,
-    url: `https://xpeak.es/contratar-${data.slug}`,
-    image: 'https://xpeak.es/og-image.jpg',
-    email: 'hola@xpeak.es',
-    address: { '@type': 'PostalAddress', addressCountry: 'ES' },
-    areaServed: { '@type': 'Country', name: 'España' },
-    priceRange: data.precio,
-    openingHours: 'Mo-Su 00:00-24:00',
-    sameAs: ['https://www.instagram.com/xpeaksite', 'https://www.tiktok.com/@xpeak30'],
-  };
-
   return (
     <>
       <Helmet>
@@ -893,7 +877,6 @@ export default function CategoryLanding() {
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbData)}</script>
-        <script type="application/ld+json">{JSON.stringify(localBusinessData)}</script>
       </Helmet>
 
       <div className="min-h-screen" style={{ background: '#090909', color: '#fff' }}>

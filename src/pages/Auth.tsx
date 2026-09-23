@@ -19,7 +19,7 @@ const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { ic
     bullets: [
       { icon: Target, text: 'Tu perfil visible en Google y en el directorio' },
       { icon: FileText, text: 'Contratos digitales automáticos' },
-      { icon: Wallet, text: '0% comisión — cobras todo lo tuyo' },
+      { icon: Wallet, text: 'Cobras directamente del contratante' },
     ],
   },
   staff: {
@@ -28,7 +28,7 @@ const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { ic
     bullets: [
       { icon: Target, text: 'Tu perfil visible para empresarios de tu zona' },
       { icon: FileText, text: 'Contratos digitales sin papeleo' },
-      { icon: Wallet, text: '0% comisión — cobras todo lo tuyo' },
+      { icon: Wallet, text: 'Cobras directamente del contratante' },
     ],
   },
   azafata: {
@@ -37,7 +37,7 @@ const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { ic
     bullets: [
       { icon: Target, text: 'Tu perfil visible para empresarios de tu zona' },
       { icon: FileText, text: 'Contratos digitales sin papeleo' },
-      { icon: Wallet, text: '0% comisión — cobras todo lo tuyo' },
+      { icon: Wallet, text: 'Cobras directamente del contratante' },
     ],
   },
   peluqueria: {
@@ -46,7 +46,7 @@ const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { ic
     bullets: [
       { icon: Target, text: 'Tu perfil visible para clientas de tu zona' },
       { icon: FileText, text: 'Contratos digitales sin papeleo' },
-      { icon: Wallet, text: '0% comisión — cobras todo lo tuyo' },
+      { icon: Wallet, text: 'Cobras directamente del contratante' },
     ],
   },
   profesional: {
@@ -55,7 +55,7 @@ const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { ic
     bullets: [
       { icon: Target, text: 'Visible para salas y promotoras de España' },
       { icon: FileText, text: 'Contratos automáticos con PDF' },
-      { icon: Wallet, text: '0% comisión — cobras todo lo tuyo' },
+      { icon: Wallet, text: 'Cobras directamente del contratante' },
     ],
   },
   empresario: {
@@ -64,7 +64,7 @@ const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { ic
     bullets: [
       { icon: Search, text: 'Filtra por ciudad, precio y disponibilidad' },
       { icon: FileText, text: 'Contrato automático — sin papeleo' },
-      { icon: Wallet, text: '0€ comisión — el trato es directo' },
+      { icon: Wallet, text: 'Trato directo con el profesional' },
     ],
   },
   // Continúa el gancho del anuncio de Instagram "Pon tu precio" — evita el
@@ -73,7 +73,7 @@ const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { ic
     tagline: 'Pon tu precio. Deja de aceptar lo que otros imponen.',
     sub: 'Publica tu tarifa y que te contraten directamente por ella. Sin intermediarios.',
     bullets: [
-      { icon: Wallet, text: 'Tú decides tu tarifa — 0% comisión' },
+      { icon: Wallet, text: 'Tú decides tu tarifa' },
       { icon: Target, text: 'Tu perfil visible para salas y organizadores' },
       { icon: FileText, text: 'Contratos digitales automáticos' },
     ],
@@ -85,7 +85,7 @@ const DEFAULT_CONTENT = {
   sub: 'Publica tu perfil, consigue trabajo.',
   bullets: [
     { icon: Target, text: 'Tu perfil visible en Google y en el directorio' },
-    { icon: Wallet, text: '0% comisión — cobras todo lo tuyo' },
+    { icon: Wallet, text: 'Cobras directamente del contratante' },
     { icon: MapPin, text: 'Visible en toda España' },
   ],
 };
@@ -610,7 +610,7 @@ const Auth = () => {
                 <p className="text-xs" style={{ color: 'rgba(0,0,0,0.6)' }}>
                   {isLogin
                     ? '¿Primera vez? → Pulsa "Crear cuenta" abajo.'
-                    : 'Solo 30 segundos · Sin tarjeta de crédito · 0% comisión'}
+                    : 'Solo 30 segundos · Sin tarjeta de crédito'}
                 </p>
               </div>
 

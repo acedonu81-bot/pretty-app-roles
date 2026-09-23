@@ -33,7 +33,7 @@ const CONFIG = {
   },
   staff_pro: {
     label: '¿Eres camarero o staff de eventos?',
-    sub: 'Publica tu perfil gratis y que los organizadores te encuentren a ti.',
+    sub: 'Publica tu perfil y que los organizadores te encuentren a ti.',
     cta: 'Crear mi perfil →',
     href: '/auth?mode=register&role=staff',
   },
@@ -57,7 +57,7 @@ const CONFIG = {
   },
   general: {
     label: '¿Buscas profesionales para tu evento?',
-    sub: 'Directorio verificado de DJs, staff y azafatas. 0€ comisión.',
+    sub: 'Directorio verificado de DJs, staff y azafatas.',
     cta: 'Ver profesionales →',
     href: '/auth?mode=register',
   },
@@ -75,7 +75,7 @@ const CONFIG = {
   },
   azafata_pro: {
     label: '¿Eres azafata de eventos?',
-    sub: 'Publica tu perfil gratis y que te encuentren directamente.',
+    sub: 'Publica tu perfil y que te encuentren directamente.',
     cta: 'Crear mi perfil →',
     href: '/auth?mode=register&role=azafata',
   },
@@ -87,7 +87,7 @@ const CONFIG = {
   },
   mago_pro: {
     label: '¿Eres mago de eventos?',
-    sub: 'Publica tu perfil gratis y que te encuentren directamente.',
+    sub: 'Publica tu perfil y que te encuentren directamente.',
     cta: 'Crear mi perfil →',
     href: '/auth?mode=register&role=mago',
   },
@@ -105,19 +105,19 @@ const CONFIG = {
   },
   makeup_pro: {
     label: '¿Eres maquilladora de eventos?',
-    sub: 'Publica tu perfil gratis y consigue clientas de tu zona.',
+    sub: 'Publica tu perfil y consigue clientas de tu zona.',
     cta: 'Crear mi perfil →',
     href: '/auth?mode=register&role=makeup',
   },
   vestuario_pro: {
     label: '¿Eres estilista o profesional de vestuario?',
-    sub: 'Publica tu perfil gratis y que te encuentren directamente.',
+    sub: 'Publica tu perfil y que te encuentren directamente.',
     cta: 'Crear mi perfil →',
     href: '/auth?mode=register&role=vestuario',
   },
   profesional_pro: {
     label: '¿Eres profesional de eventos?',
-    sub: 'Publica tu perfil y que te contraten directamente. 0% comisión.',
+    sub: 'Publica tu perfil y que te contraten directamente.',
     cta: 'Crear mi perfil →',
     href: '/auth?mode=register&role=profesional',
   },

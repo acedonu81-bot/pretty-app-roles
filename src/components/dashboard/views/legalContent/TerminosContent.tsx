@@ -15,9 +15,9 @@ export function TerminosContent() {
       </section>
 
       <section>
-        <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>3. Gratuidad del Servicio</h2>
-        <p>El acceso y uso de XPEAK es <strong style={{ color: '#111' }}>100% gratuito</strong>, tanto para profesionales como para empresarios/organizadores. XPEAK no cobra comisiones sobre los acuerdos alcanzados entre profesionales y empresarios, ni suscripciones, ni pagos de ningún tipo por el uso de la Plataforma. No existe actualmente ningún sistema de pago, pasarela de cobro ni procesador de tarjetas integrado en XPEAK.</p>
-        <p className="mt-2">XPEAK se reserva el derecho de introducir en el futuro servicios o funcionalidades de pago opcionales. En tal caso, se actualizarán estos Términos y se informará a los usuarios con antelación suficiente antes de su entrada en vigor, conforme a la sección 13 (Modificaciones).</p>
+        <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>3. Condiciones económicas del Servicio</h2>
+        <p>El acceso y uso actual de XPEAK no requiere el pago de ninguna cuota o suscripción, tanto para profesionales como para empresarios/organizadores. No existe actualmente ningún sistema de pago, pasarela de cobro ni procesador de tarjetas integrado en XPEAK.</p>
+        <p className="mt-2">XPEAK se reserva el derecho de introducir en el futuro servicios, funcionalidades o modelos de cobro (incluyendo, entre otros, suscripciones o comisiones sobre transacciones). En tal caso, se actualizarán estos Términos y se informará a los usuarios con antelación suficiente antes de su entrada en vigor, conforme a la sección 13 (Modificaciones).</p>
       </section>
 
       <section>
