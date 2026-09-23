@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAdminActivityAlert } from '@/hooks/useAdminActivityAlert';
-import { UserPlus, CalendarClock, UserMinus, Star, Phone, RefreshCw, AlertTriangle, X, HelpCircle, Mail } from 'lucide-react';
+import { UserPlus, CalendarClock, UserMinus, Star, Phone, RefreshCw, AlertTriangle, X, HelpCircle, Mail, CheckCheck } from 'lucide-react';
 import { toast } from 'sonner';
 
 // Línea temporal de TODO lo que pasa en XPEAK, en un solo sitio.
@@ -153,9 +153,8 @@ const hace = (iso: string): string => {
 };
 
 const AdminActivity = () => {
-  // Abrir esta pestaña ES revisarla: el escudo del sidebar se apaga y no
-  // vuelve a encenderse hasta que entre algo nuevo. Sin botón de "marcar
-  // leído" que haya que acordarse de pulsar.
+  // Salir de esta pestaña la marca como revisada (el escudo del sidebar se
+  // apaga al instante) y además hay un botón "Marcar como visto" explícito.
   const { marcarVisto } = useAdminActivityAlert(true);
   const [items, setItems] = useState<Movimiento[]>([]);
   // Nombre de canal único por instancia: con uno fijo, dos montajes a la vez
@@ -252,13 +251,28 @@ const AdminActivity = () => {
             )}
           </p>
         </div>
-        <button
-          onClick={cargar}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border transition-opacity hover:opacity-70"
-          style={{ borderColor: 'rgba(0,0,0,0.12)' }}
-        >
-          <RefreshCw size={12} className={cargando ? 'animate-spin' : undefined} /> Actualizar
-        </button>
+        <div className="flex items-center gap-2">
+          {/* Botón explícito (23 sep 2026): marcar al salir de la pestaña no
+              era evidente y el escudo verde parecía no quitarse nunca. */}
+          <button
+            onClick={async () => {
+              await marcarVisto();
+              setVistoHasta(new Date().toISOString());
+              toast.success('Actividad marcada como vista');
+            }}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-opacity hover:opacity-80"
+            style={{ background: '#16a34a', color: '#fff' }}
+          >
+            <CheckCheck size={12} /> Marcar como visto
+          </button>
+          <button
+            onClick={cargar}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border transition-opacity hover:opacity-70"
+            style={{ borderColor: 'rgba(0,0,0,0.12)' }}
+          >
+            <RefreshCw size={12} className={cargando ? 'animate-spin' : undefined} /> Actualizar
+          </button>
+        </div>
       </div>
 
       <div className="flex gap-1.5 flex-wrap mb-4">

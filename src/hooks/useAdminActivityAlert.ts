@@ -15,6 +15,8 @@ import { supabase } from '@/integrations/supabase/client';
  * que encenderse por cualquier cosa nueva (solicitud, alta, baja, reseña), no
  * solo por un tipo, o el resto vuelve a pasar desapercibido.
  */
+const VISTO_EVENT = 'xpeak:admin-actividad-vista';
+
 export function useAdminActivityAlert(isAdmin: boolean): { hayNuevo: boolean; marcarVisto: () => Promise<void> } {
   const [hayNuevo, setHayNuevo] = useState(false);
   // supabase.channel(topic) devuelve la MISMA instancia si ya existe un canal
@@ -33,9 +35,20 @@ export function useAdminActivityAlert(isAdmin: boolean): { hayNuevo: boolean; ma
     if (!error) setHayNuevo((data ?? 0) > 0);
   }, []);
 
+  // El hook se monta dos veces (sidebar + pestaña Actividad) con estados
+  // independientes: marcar visto desde la pestaña no apagaba el escudo del
+  // sidebar hasta su siguiente sondeo (2 min), y parecía que no se quitaba.
+  // Un evento de ventana avisa a todas las instancias a la vez.
   const marcarVisto = useCallback(async () => {
     await (supabase.rpc as any)('admin_activity_marcar_visto');
     setHayNuevo(false);
+    window.dispatchEvent(new Event(VISTO_EVENT));
+  }, []);
+
+  useEffect(() => {
+    const onVisto = () => setHayNuevo(false);
+    window.addEventListener(VISTO_EVENT, onVisto);
+    return () => window.removeEventListener(VISTO_EVENT, onVisto);
   }, []);
 
   useEffect(() => {
