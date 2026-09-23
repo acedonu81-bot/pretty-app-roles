@@ -1462,14 +1462,14 @@ serve(async (req) => {
         Deno.env.get('SUPABASE_URL') ?? '',
         Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
       );
-      // Use profile's user_id if already resolved; otherwise look up by email
+      // Por user_id si viene resuelto; si no, por email del destinatario (los
+      // crons solo mandan el email). Antes solo se miraba con user_id y con
+      // .single(), que falla con varios perfiles: el opt-out se ignoraba.
       const resolvedUserId = data?.user_id ?? data?.professional_user_id ?? null;
-      if (resolvedUserId) {
-        const { data: profile } = await optOutClient
-          .from('profiles').select('email_opt_out').eq('user_id', resolvedUserId).single();
-        if (profile?.email_opt_out) {
-          return new Response(JSON.stringify({ ok: true, skipped: 'opt_out' }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
-        }
+      const { data: optedOut } = await optOutClient
+        .rpc('email_opted_out', { p_user_id: resolvedUserId, p_email: to });
+      if (optedOut) {
+        return new Response(JSON.stringify({ ok: true, skipped: 'opt_out' }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
       }
     }
 
