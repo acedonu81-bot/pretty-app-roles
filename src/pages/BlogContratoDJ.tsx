@@ -14,14 +14,14 @@ const article = { '@context': 'https://schema.org', '@type': 'Article', headline
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Es obligatorio hacer un contrato con el DJ?', acceptedAnswer: { '@type': 'Answer', text: 'No es obligatorio legalmente, pero sí es muy recomendable. Un contrato protege a ambas partes: al organizador le garantiza que el DJ cumple lo acordado, y al DJ le protege ante cancelaciones de última hora. Sin contrato, cualquier incumplimiento es mucho más difícil de reclamar.' } },
   { '@type': 'Question', name: '¿Qué señal o anticipo se paga al contratar un DJ?', acceptedAnswer: { '@type': 'Answer', text: 'Lo habitual es pagar una señal del 30-50% del caché total al firmar el contrato, y el resto 48-72 horas antes del evento o al terminar la actuación. La señal sirve para reservar la fecha y cubre los costes de preparación del DJ.' } },
-  { '@type': 'Question', name: '¿Qué pasa si tengo que cancelar la actuación del DJ?', acceptedAnswer: { '@type': 'Answer', text: 'Depende de lo que diga el contrato. Lo estándar en España: cancelación con más de 30 días de antelación — sin coste o pérdida de la señal. Entre 15 y 30 días — 50% del caché. Menos de 15 días — 100% del caché. Siempre debe estar especificado en el contrato antes de firmar.' } },
+  { '@type': 'Question', name: '¿Qué pasa si tengo que cancelar la actuación del DJ?', acceptedAnswer: { '@type': 'Answer', text: 'Depende de lo que diga el contrato. Lo estándar en España: cancelación con más de 30 días de antelación, sin coste o pérdida de la señal. Entre 15 y 30 días: 50% del caché. Menos de 15 días: 100% del caché. Siempre debe estar especificado en el contrato antes de firmar.' } },
   { '@type': 'Question', name: '¿El contrato debe incluir el IVA e IRPF?', acceptedAnswer: { '@type': 'Answer', text: 'Sí. Si el DJ actúa como autónomo, debe emitir factura con IVA al 21% y retención de IRPF al 15% (o 7% si es su primer año). El precio del contrato debe especificar si es antes o después de impuestos. XPEAK genera automáticamente el contrato con todos los datos fiscales correctos.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Contrato DJ qué debe incluir', item: 'https://xpeak.es/blog/contrato-dj-que-debe-incluir' }] };
 
 const CLAUSULAS = [
   { clausula: 'Datos de las partes', detalle: 'Nombre completo o razón social, DNI/NIF y domicilio del DJ y del organizador' },
-  { clausula: 'Fecha, hora y lugar', detalle: 'Dirección exacta del evento, hora de inicio y hora de fin — incluyendo montaje y desmontaje' },
+  { clausula: 'Fecha, hora y lugar', detalle: 'Dirección exacta del evento, hora de inicio y hora de fin: incluyendo montaje y desmontaje' },
   { clausula: 'Duración del servicio', detalle: 'Horas exactas de actuación. ¿Qué pasa si el evento se alarga? ¿Hay coste por hora extra?' },
   { clausula: 'Caché total e impuestos', detalle: 'Precio base, IVA (21%) e IRPF (15%). Forma de pago: señal y resto' },
   { clausula: 'Equipo incluido', detalle: 'Lista del material que lleva el DJ: CDJs, altavoces, subwoofer, luces, micro inalámbrico, etc.' },
@@ -32,7 +32,7 @@ const CLAUSULAS = [
 ];
 
 const ERRORES = [
-  { error: 'No especificar las horas de montaje', consecuencia: 'El DJ llega 2h antes y tú pagas por ese tiempo — o no llega con tiempo suficiente y hay retrasos' },
+  { error: 'No especificar las horas de montaje', consecuencia: 'El DJ llega 2h antes y tú pagas por ese tiempo, o no llega con tiempo suficiente y hay retrasos' },
   { error: 'Precio "cerrado" sin especificar IVA', consecuencia: 'Al facturar, el DJ añade el 21% y el precio real sube un 21%' },
   { error: 'No incluir equipo de luces en el contrato', consecuencia: 'El día del evento el DJ llega sin iluminación porque "no estaba acordado"' },
   { error: 'Sin cláusula de horas extra', consecuencia: 'La fiesta se alarga, el DJ para en seco o exige un pago no acordado en el momento' },
@@ -46,7 +46,7 @@ export default function BlogContratoDJ() {
         <title>Contrato DJ: qué debe incluir 2026 | XPEAK</title>
         <meta name="description" content="Qué cláusulas debe tener un contrato de DJ para eventos. Checklist legal completo, errores frecuentes y cómo protegerte antes de firmar. Guía 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/contrato-dj-que-debe-incluir" />
-        <meta property="og:title" content="Contrato DJ: qué debe incluir 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Contrato DJ: qué debe incluir 2026 | XPEAK Blog" />
         <meta property="og:description" content="Checklist legal para contratos de DJ. Cláusulas obligatorias y errores que cuestan dinero." />
         <meta property="og:url" content="https://xpeak.es/blog/contrato-dj-que-debe-incluir" />
         <meta property="og:type" content="article" />
@@ -84,7 +84,7 @@ export default function BlogContratoDJ() {
               <source srcSet="/images/blog/contrato-dj-clausulas-modelo.webp" type="image/webp" />
               <img
                 src="/images/blog/contrato-dj-clausulas-modelo.jpg"
-                alt="Controladora de DJ profesional en evento — modelo de contrato DJ con cláusulas legales 2026"
+                alt="Controladora de DJ profesional en evento: modelo de contrato DJ con cláusulas legales 2026"
                 className="w-full rounded-xl my-6 object-cover"
                 style={{ maxHeight: 320, filter: 'brightness(0.9)' }}
                 loading="lazy"

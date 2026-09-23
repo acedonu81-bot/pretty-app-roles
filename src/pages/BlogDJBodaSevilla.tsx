@@ -11,7 +11,7 @@ import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para bodas en Sevilla: precio y cómo contratar en 2026', description: 'Cuánto cuesta un DJ para una boda en Sevilla. Precios reales 2026, zonas de celebración y cómo contratar el mejor DJ en Andalucía.', datePublished: '2026-06-02', dateModified: '2026-06-02', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-bodas-sevilla' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
-  { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda en Sevilla?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ para boda en Sevilla cuesta entre 600€ y 1.800€ para el servicio completo. Los precios en Sevilla están ligeramente por debajo de Madrid y Barcelona — en la media nacional o un 5-10% por encima. Para bodas solo con pista de baile (4-5h), el rango es 350-800€.' } },
+  { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda en Sevilla?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ para boda en Sevilla cuesta entre 600€ y 1.800€ para el servicio completo. Los precios en Sevilla están ligeramente por debajo de Madrid y Barcelona: en la media nacional o un 5-10% por encima. Para bodas solo con pista de baile (4-5h), el rango es 350-800€.' } },
   { '@type': 'Question', name: '¿Cuándo es la temporada alta de bodas en Sevilla?', acceptedAnswer: { '@type': 'Answer', text: 'En Sevilla la temporada alta es primavera tardía y otoño: octubre, noviembre, marzo y abril. El verano sevillano (julio-agosto) es muy caluroso y muchas parejas lo evitan. Septiembre tiene mucha demanda. Para bodas en octubre o noviembre, reserva con 10-12 meses de antelación.' } },
   { '@type': 'Question', name: '¿Qué zonas son más populares para bodas en Sevilla?', acceptedAnswer: { '@type': 'Answer', text: 'Las zonas más populares son: fincas de la campiña sevillana (Carmona, Écija, Utrera), cortijos con jardín en la Sierra Norte (Cazalla, Constantina), haciendas en el Aljarafe (Castilleja, Bollullos) y palacios y hoteles en el centro de Sevilla. Las haciendas son el formato más tradicional y demandado.' } },
   { '@type': 'Question', name: '¿El DJ cobra desplazamiento en fincas fuera de Sevilla?', acceptedAnswer: { '@type': 'Answer', text: 'La mayoría de DJs sevillanos cubren desplazamientos dentro de un radio de 60 km sin coste adicional. Para fincas en Huelva, Cádiz o Córdoba, suelen cobrar entre 0,20€ y 0,35€/km adicional. Las fincas de la Sierra Norte (80-100 km) suelen incluir suplemento de 50-100€.' } },
@@ -19,10 +19,10 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'DJ bodas Sevilla', item: 'https://xpeak.es/blog/dj-bodas-sevilla' }] };
 
 const PRECIOS = [
-  { servicio: 'Solo pista de baile (4-5h)', precio: '350–800€' },
-  { servicio: 'Cóctel + pista de baile', precio: '550–1.100€' },
-  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '700–1.600€' },
-  { servicio: 'Pack premium con equipo de luces profesional', precio: '1.000–2.000€' },
+  { servicio: 'Solo pista de baile (4-5h)', precio: '350-800€' },
+  { servicio: 'Cóctel + pista de baile', precio: '550-1.100€' },
+  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '700-1.600€' },
+  { servicio: 'Pack premium con equipo de luces profesional', precio: '1.000-2.000€' },
 ];
 
 const ZONAS = [
@@ -41,7 +41,7 @@ export default function BlogDJBodaSevilla() {
         <title>DJ para bodas en Sevilla: precio 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un DJ para una boda en Sevilla. Precios reales 2026, zonas (haciendas, campiña, Aljarafe) y cómo contratar el mejor DJ en Andalucía." />
         <link rel="canonical" href="https://xpeak.es/blog/dj-bodas-sevilla" />
-        <meta property="og:title" content="DJ para bodas en Sevilla: precio 2026 — XPEAK Blog" />
+        <meta property="og:title" content="DJ para bodas en Sevilla: precio 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precios reales de DJs de boda en Sevilla. Haciendas, campiña y cómo elegir el perfil correcto." />
         <meta property="og:url" content="https://xpeak.es/blog/dj-bodas-sevilla" />
         <meta property="og:type" content="article" />
@@ -67,7 +67,7 @@ export default function BlogDJBodaSevilla() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>DJ · Sevilla · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para bodas en Sevilla: precio y cómo contratar en 2026</h1>
-            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Sevilla es la capital de la boda andaluza. Haciendas, cortijos y patios coloniales concentran algunos de los eventos más espectaculares de España. Precios más competitivos que Madrid — te contamos exactamente cuánto y cómo elegir bien.</p>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Sevilla es la capital de la boda andaluza. Haciendas, cortijos y patios coloniales concentran algunos de los eventos más espectaculares de España. Precios más competitivos que Madrid: te contamos exactamente cuánto y cómo elegir bien.</p>
             <time className="text-xs mt-3 block" style={{ color: '#666' }}>2 junio 2026</time>
             <BlogAnswerBox
               question="¿Cuánto cuesta un DJ para una boda en Sevilla?"

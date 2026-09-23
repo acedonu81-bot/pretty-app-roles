@@ -17,12 +17,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Catering boda precio por persona', item: 'https://xpeak.es/blog/catering-boda-precio-por-persona' }] };
 
 const PRECIOS = [
-  { formato: 'Cóctel de pie (2h)', precio: '25–45€/persona', incluye: 'Canapés, bebidas, 1-2 camareros/20 pax' },
-  { formato: 'Banquete 3 platos (sin alcohol)', precio: '45–70€/persona', incluye: 'Menú completo, agua y refrescos' },
-  { formato: 'Banquete con vino y cava', precio: '65–100€/persona', incluye: 'Lo anterior + vino mesa + cava para el brindis' },
-  { formato: 'Menú premium + maridaje', precio: '100–150€/persona', incluye: 'Vinos seleccionados, quesos, postres elaborados' },
-  { formato: 'Barra libre nocturna (3h)', precio: '15–30€/persona', incluye: 'Combinados, cervezas, refrescos, 1 barman/50 pax' },
-  { formato: 'Todo incluido (cóctel + banquete + barra)', precio: '90–180€/persona', incluye: 'El paquete más contratado en bodas españolas' },
+  { formato: 'Cóctel de pie (2h)', precio: '25-45€/persona', incluye: 'Canapés, bebidas, 1-2 camareros/20 pax' },
+  { formato: 'Banquete 3 platos (sin alcohol)', precio: '45-70€/persona', incluye: 'Menú completo, agua y refrescos' },
+  { formato: 'Banquete con vino y cava', precio: '65-100€/persona', incluye: 'Lo anterior + vino mesa + cava para el brindis' },
+  { formato: 'Menú premium + maridaje', precio: '100-150€/persona', incluye: 'Vinos seleccionados, quesos, postres elaborados' },
+  { formato: 'Barra libre nocturna (3h)', precio: '15-30€/persona', incluye: 'Combinados, cervezas, refrescos, 1 barman/50 pax' },
+  { formato: 'Todo incluido (cóctel + banquete + barra)', precio: '90-180€/persona', incluye: 'El paquete más contratado en bodas españolas' },
 ];
 
 export default function BlogCateringBoda() {
@@ -32,7 +32,7 @@ export default function BlogCateringBoda() {
         <title>Catering boda: precio por persona 2026 | XPEAK</title>
         <meta name="description" content="¿Cuánto cuesta el catering de una boda en España? Precios por persona según menú y formato. Qué incluye, cuándo pagar y cómo negociar con el proveedor." />
         <link rel="canonical" href="https://xpeak.es/blog/catering-boda-precio-por-persona" />
-        <meta property="og:title" content="Catering boda: precio por persona 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Catering boda: precio por persona 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precios reales del catering de boda en España. Por persona, por formato y todo lo que incluye." />
         <meta property="og:url" content="https://xpeak.es/blog/catering-boda-precio-por-persona" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />
@@ -71,7 +71,7 @@ export default function BlogCateringBoda() {
               <h2 className="text-lg font-black mb-3">¿Qué factores disparan (o reducen) el precio?</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
-                  { t: 'Encarece el catering', puntos: ['Menú con productos de temporada premium', 'Boda en temporada alta (mayo–septiembre)', 'Ciudad grande (Madrid, Barcelona, Sevilla)', 'Equipo propio de catering en finca exclusiva', 'Servicio a mesa vs buffet libre'], c: '#ff5f56' },
+                  { t: 'Encarece el catering', puntos: ['Menú con productos de temporada premium', 'Boda en temporada alta (mayo-septiembre)', 'Ciudad grande (Madrid, Barcelona, Sevilla)', 'Equipo propio de catering en finca exclusiva', 'Servicio a mesa vs buffet libre'], c: '#ff5f56' },
                   { t: 'Abarata el catering', puntos: ['Buffet o servicio mixto en lugar de menú cerrado', 'Boda entre semana o en temporada baja', 'Finca con cocina propia integrada', 'Menú de temporada sin carta de vinos seleccionados', 'Menos de 80 invitados (economía de escala)'], c: '#22c55e' },
                 ].map(d => (
                   <div key={d.t} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.06)' }}>
@@ -84,7 +84,7 @@ export default function BlogCateringBoda() {
             <section>
               <h2 className="text-lg font-black mb-3">Lo que nunca incluye el precio por persona</h2>
               <div className="p-5 rounded-xl space-y-2" style={{ background: 'rgba(255,95,86,0.04)', border: '1px solid rgba(255,95,86,0.15)' }}>
-                {['Tarta nupcial (se presupuesta aparte: 150–600€)', 'Decoración floral de las mesas', 'Sillas o carpas si el espacio no las tiene', 'Transporte del personal si la finca está fuera de ciudad', 'Propinas al personal (no obligatorias pero habituales: 10–15€/camarero)'].map(item => (
+                {['Tarta nupcial (se presupuesta aparte: 150-600€)', 'Decoración floral de las mesas', 'Sillas o carpas si el espacio no las tiene', 'Transporte del personal si la finca está fuera de ciudad', 'Propinas al personal (no obligatorias pero habituales: 10-15€/camarero)'].map(item => (
                   <p key={item} className="text-xs flex items-start gap-2" style={{ color: '#222' }}>
                     <span style={{ color: '#ff5f56' }}>✗</span>{item}
                   </p>

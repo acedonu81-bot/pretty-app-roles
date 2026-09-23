@@ -20,10 +20,10 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'DJ bodas Barcelona', item: 'https://xpeak.es/blog/dj-bodas-barcelona' }] };
 
 const PRECIOS = [
-  { servicio: 'Solo pista de baile (4-5h)', precio: '500–1.000€' },
-  { servicio: 'Cóctel + pista de baile', precio: '700–1.300€' },
-  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '900–2.000€' },
-  { servicio: 'Pack premium con equipo de luces profesional', precio: '1.200–2.500€' },
+  { servicio: 'Solo pista de baile (4-5h)', precio: '500-1.000€' },
+  { servicio: 'Cóctel + pista de baile', precio: '700-1.300€' },
+  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '900-2.000€' },
+  { servicio: 'Pack premium con equipo de luces profesional', precio: '1.200-2.500€' },
 ];
 
 const ZONAS = [
@@ -42,7 +42,7 @@ export default function BlogDJBodaBarcelona() {
         <title>DJ para bodas en Barcelona: precio 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un DJ para una boda en Barcelona. Precios reales 2026, zonas de celebración (Maresme, Penedès, Costa) y cómo contratar el mejor DJ en Cataluña." />
         <link rel="canonical" href="https://xpeak.es/blog/dj-bodas-barcelona" />
-        <meta property="og:title" content="DJ para bodas en Barcelona: precio 2026 — XPEAK Blog" />
+        <meta property="og:title" content="DJ para bodas en Barcelona: precio 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precios reales de DJs de boda en Barcelona. Zonas, Maresme, Penedès y cómo elegir el perfil correcto." />
         <meta property="og:url" content="https://xpeak.es/blog/dj-bodas-barcelona" />
         <meta property="og:type" content="article" />
@@ -71,7 +71,7 @@ export default function BlogDJBodaBarcelona() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>DJ · Barcelona · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para bodas en Barcelona: precio y cómo contratar en 2026</h1>
-            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Barcelona es el segundo mercado de bodas más grande de España. El Maresme, el Penedès y los rooftops de la ciudad mueven miles de bodas cada año — te contamos cuánto cuesta un DJ y cómo encontrar el correcto.</p>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Barcelona es el segundo mercado de bodas más grande de España. El Maresme, el Penedès y los rooftops de la ciudad mueven miles de bodas cada año: te contamos cuánto cuesta un DJ y cómo encontrar el correcto.</p>
             <time className="text-xs mt-3 block" style={{ color: '#666' }}>28 mayo 2026</time>
             <BlogAnswerBox
               question="¿Cuánto cuesta un DJ para una boda en Barcelona?"
@@ -117,7 +117,7 @@ export default function BlogDJBodaBarcelona() {
                 El mercado de bodas en Barcelona es exigente y cosmopolita. Muchas fincas del Maresme y Garraf tienen limitaciones de horario nocturno y restricciones de decibelios marcadas por los ayuntamientos costeros. Un DJ con experiencia en la zona conoce estos límites y trabaja con equipos capaces de sonar bien a menor volumen sin perder impacto.
               </p>
               <p className="text-base leading-relaxed" style={{ color: '#222' }}>
-                Otro factor diferencial en Barcelona es la presencia de invitados internacionales en bodas de expats o turistas residentes. Los DJs con repertorio bilingüe y experiencia en mezclar géneros (comercial español, pop internacional, tech house suave) son muy cotizados. Para fincas de más de 150 invitados en el Penedès, el sistema de audio exterior es clave — muchos DJs trabajan con riders específicos para exteriores.
+                Otro factor diferencial en Barcelona es la presencia de invitados internacionales en bodas de expats o turistas residentes. Los DJs con repertorio bilingüe y experiencia en mezclar géneros (comercial español, pop internacional, tech house suave) son muy cotizados. Para fincas de más de 150 invitados en el Penedès, el sistema de audio exterior es clave: muchos DJs trabajan con riders específicos para exteriores.
               </p>
             </section>
 

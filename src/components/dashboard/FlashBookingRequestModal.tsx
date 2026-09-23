@@ -151,7 +151,7 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
           {!user ? (
             <div className="p-5 text-center">
               <p className="text-sm mb-4" style={{ color: '#333' }}>
-                Inicia sesión para contactar con {professionalName} — así evitamos spam y sabe que habla con alguien real.
+                Inicia sesión para contactar con {professionalName}: así evitamos spam y sabe que habla con alguien real.
               </p>
               <a href={`/auth?role=empresario&mode=register&redirect=${encodeURIComponent(location.pathname)}`}
                 className="inline-block px-6 py-2.5 rounded-xl text-sm font-black"
@@ -237,7 +237,7 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
                 </label>
                 <input type="number" min="0" step="0.01" value={form.price} onChange={e => set('price', e.target.value)}
                   placeholder={estimatedPrice ? `~${estimatedPrice}` : 'ej. 300'} className="nightlife-input text-base !py-2 w-full" />
-                <p className="text-[0.65rem] mt-1" style={{ color: 'rgba(0,0,0,0.1)' }}>Opcional — para tu registro de gastos</p>
+                <p className="text-[0.65rem] mt-1" style={{ color: 'rgba(0,0,0,0.1)' }}>Opcional: para tu registro de gastos</p>
               </div>
             </div>
           </div>

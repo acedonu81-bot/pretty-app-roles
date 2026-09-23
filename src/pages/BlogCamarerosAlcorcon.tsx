@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Camareros Alcorcón', item: 'https://xpeak.es/blog/camareros-eventos-alcorcon' }] };
 
 const PRECIOS = [
-  { perfil: 'Camarero/a de sala', tarifa: '11–16€/hora', nota: 'Cóctel, cena sentada o buffet' },
-  { perfil: 'Bartender / coctelería', tarifa: '14–20€/hora', nota: 'Barra libre en bodas y eventos' },
-  { perfil: 'Jefe de sala / coordinador', tarifa: '19–28€/hora', nota: 'Gestión del equipo en boda o evento grande' },
-  { perfil: 'Servicio boda completo (6-7h)', tarifa: '110–200€/persona', nota: 'Cóctel + cena + barra' },
-  { perfil: 'Barra libre con bartender (4h)', tarifa: '140–300€', nota: 'Incluye montaje y desmontaje' },
-  { perfil: 'Personal para eventos comerciales', tarifa: '12–19€/hora', nota: 'Catering en centros comerciales' },
+  { perfil: 'Camarero/a de sala', tarifa: '11-16€/hora', nota: 'Cóctel, cena sentada o buffet' },
+  { perfil: 'Bartender / coctelería', tarifa: '14-20€/hora', nota: 'Barra libre en bodas y eventos' },
+  { perfil: 'Jefe de sala / coordinador', tarifa: '19-28€/hora', nota: 'Gestión del equipo en boda o evento grande' },
+  { perfil: 'Servicio boda completo (6-7h)', tarifa: '110-200€/persona', nota: 'Cóctel + cena + barra' },
+  { perfil: 'Barra libre con bartender (4h)', tarifa: '140-300€', nota: 'Incluye montaje y desmontaje' },
+  { perfil: 'Personal para eventos comerciales', tarifa: '12-19€/hora', nota: 'Catering en centros comerciales' },
 ];
 
 export default function BlogCamarerosAlcorcon() {
@@ -33,7 +33,7 @@ export default function BlogCamarerosAlcorcon() {
         <title>Precio camareros para eventos en Alcorcón 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran los camareros y bartenders para bodas y eventos corporativos en Alcorcón. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/camareros-eventos-alcorcon" />
-        <meta property="og:title" content="Precio camareros eventos Alcorcón 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio camareros eventos Alcorcón 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de camareros y bartenders para bodas y eventos corporativos en Alcorcón." />
         <meta property="og:url" content="https://xpeak.es/blog/camareros-eventos-alcorcon" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

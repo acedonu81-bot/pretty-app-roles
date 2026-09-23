@@ -15,15 +15,15 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
   { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de boda en Madrid?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de boda en Madrid cuesta entre 1.500€ y 4.500€ para el reportaje completo. Madrid tiene la oferta más amplia de España y también los precios más altos. El rango medio para un reportaje completo (10-12h + álbum) es 2.500-3.500€. Para bodas en fincas de la Sierra o el sur, algunos fotógrafos añaden suplemento de desplazamiento de 50-150€.' } },
   { '@type': 'Question', name: '¿Qué incluye el reportaje de boda en Madrid?', acceptedAnswer: { '@type': 'Answer', text: 'Un reportaje completo de boda en Madrid incluye: preparativos en casa (novia y novio), ceremonia civil o religiosa, sesión exterior (golden hour en jardines o finca), cóctel y banquete hasta el baile. La entrega suele ser de 400-800 fotos editadas en alta resolución, en un plazo de 4-8 semanas. El álbum impreso se negocia aparte en muchos casos.' } },
   { '@type': 'Question', name: '¿Con cuánta antelación reservar el fotógrafo de boda en Madrid?', acceptedAnswer: { '@type': 'Answer', text: 'Madrid es el mercado de bodas más competitivo de España. Para bodas en sábados de mayo, junio o septiembre, reserva el fotógrafo con 12-18 meses de antelación. Los mejores fotógrafos de Madrid tienen agenda llena con 1-2 años de anticipación. Muchas parejas reservan el fotógrafo antes que la finca.' } },
-  { '@type': 'Question', name: '¿Qué diferencia a los fotógrafos de boda de Madrid?', acceptedAnswer: { '@type': 'Answer', text: 'Madrid tiene una gran diversidad de estilos: desde el reportaje documental puro hasta el editorial de moda con mucha influencia del fotógrafo argentino-español que domina el mercado premium. Los fotógrafos madrileños son especialmente buenos en interiores con poca luz (fincas con bóveda, palacios, hoteles históricos) — un skill muy demandado dada la arquitectura de los venues de la Comunidad.' } },
+  { '@type': 'Question', name: '¿Qué diferencia a los fotógrafos de boda de Madrid?', acceptedAnswer: { '@type': 'Answer', text: 'Madrid tiene una gran diversidad de estilos: desde el reportaje documental puro hasta el editorial de moda con mucha influencia del fotógrafo argentino-español que domina el mercado premium. Los fotógrafos madrileños son especialmente buenos en interiores con poca luz (fincas con bóveda, palacios, hoteles históricos): un skill muy demandado dada la arquitectura de los venues de la Comunidad.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Fotógrafo boda Madrid', item: 'https://xpeak.es/blog/fotografo-boda-madrid' }] };
 
 const PRECIOS = [
-  { servicio: 'Reportaje básico (ceremonia + cóctel, 4-5h)', precio: '900–1.800€' },
-  { servicio: 'Reportaje completo (10-12h, sin álbum)', precio: '1.500–3.000€' },
-  { servicio: 'Reportaje completo con álbum de lujo', precio: '2.500–4.500€' },
-  { servicio: 'Pack fotógrafo + videógrafo', precio: '3.500–6.500€' },
+  { servicio: 'Reportaje básico (ceremonia + cóctel, 4-5h)', precio: '900-1.800€' },
+  { servicio: 'Reportaje completo (10-12h, sin álbum)', precio: '1.500-3.000€' },
+  { servicio: 'Reportaje completo con álbum de lujo', precio: '2.500-4.500€' },
+  { servicio: 'Pack fotógrafo + videógrafo', precio: '3.500-6.500€' },
 ];
 
 const ZONAS = [
@@ -40,7 +40,7 @@ export default function BlogFotografoBodaMadrid() {
         <title>Fotógrafo para bodas en Madrid: precio 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un fotógrafo de boda en Madrid. Precios reales 2026, zonas más demandadas (Sierra, Sur, capital) y cómo reservar con antelación." />
         <link rel="canonical" href="https://xpeak.es/blog/fotografo-boda-madrid" />
-        <meta property="og:title" content="Fotógrafo para bodas en Madrid: precio 2026 — XPEAK" />
+        <meta property="og:title" content="Fotógrafo para bodas en Madrid: precio 2026 | XPEAK" />
         <meta property="og:description" content="Precios reales de fotógrafos de boda en Madrid. Zonas, estilos y cuándo reservar." />
         <meta property="og:url" content="https://xpeak.es/blog/fotografo-boda-madrid" />
         <meta property="og:type" content="article" />
@@ -65,7 +65,7 @@ export default function BlogFotografoBodaMadrid() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#4F46E5' }}>Fotografía · Madrid · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Fotógrafo para bodas en Madrid: precio y guía 2026</h1>
-            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Madrid concentra más del 25% de las bodas de España y tiene la mayor densidad de fotógrafos especializados. Precios más altos que la media nacional — pero también la mayor variedad de estilos y perfiles.</p>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Madrid concentra más del 25% de las bodas de España y tiene la mayor densidad de fotógrafos especializados. Precios más altos que la media nacional, pero también la mayor variedad de estilos y perfiles.</p>
             <time className="text-xs mt-3 block" style={{ color: '#666' }}>2 junio 2026</time>
           <BlogAnswerBox
             question="¿Cuánto cuesta un fotógrafo para una boda en Madrid?"

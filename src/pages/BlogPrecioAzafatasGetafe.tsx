@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Getafe', item: 'https://xpeak.es/blog/precio-azafatas-getafe' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de congresos / jornadas', tarifa: '110–160€/día', nota: 'Universidad Carlos III y actos institucionales' },
-  { perfil: 'Azafata de imagen', tarifa: '130–190€/día', nota: 'Presentaciones corporativas' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '150–200€/día', nota: 'Jornadas académicas con ponentes internacionales' },
-  { perfil: 'Azafata de protocolo institucional', tarifa: '140–200€/día', nota: 'Actos del ayuntamiento y organismos públicos' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '160–230€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '70–110€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de congresos / jornadas', tarifa: '110-160€/día', nota: 'Universidad Carlos III y actos institucionales' },
+  { perfil: 'Azafata de imagen', tarifa: '130-190€/día', nota: 'Presentaciones corporativas' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '150-200€/día', nota: 'Jornadas académicas con ponentes internacionales' },
+  { perfil: 'Azafata de protocolo institucional', tarifa: '140-200€/día', nota: 'Actos del ayuntamiento y organismos públicos' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '160-230€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '70-110€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasGetafe() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasGetafe() {
         <title>Precio azafatas para eventos en Getafe 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos corporativos y universitarios en Getafe. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-getafe" />
-        <meta property="og:title" content="Precio azafatas eventos Getafe 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Getafe 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para eventos corporativos y universitarios en Getafe." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-getafe" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

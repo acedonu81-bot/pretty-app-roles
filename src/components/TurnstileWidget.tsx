@@ -96,7 +96,7 @@ export default function TurnstileWidget({ onVerify, onExpire, onStall, onStallCl
           onClick={() => { onStallCleared?.(); setRetryKey(k => k + 1); }}
           className="flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-lg transition-all hover:scale-105"
           style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.25)', color: '#8A6D0F' }}>
-          <RefreshCw size={12} /> La verificación de seguridad no responde — pulsa para reintentar
+          <RefreshCw size={12} /> La verificación de seguridad no responde: pulsa para reintentar
         </button>
       )}
     </div>

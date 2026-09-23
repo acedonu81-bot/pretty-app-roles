@@ -165,7 +165,7 @@ const ContractModal = ({ professional, onClose, onSaved, prefill }: Props) => {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Contrato ${esc(ref)} — ${esc(professional.name)}</title>
+<title>Contrato ${esc(ref)} · ${esc(professional.name)}</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
   @page { margin: 0; size: A4; }
@@ -481,7 +481,7 @@ const ContractModal = ({ professional, onClose, onSaved, prefill }: Props) => {
 <div class="event-box">
   <div class="event-field"><div class="lbl">Nombre del evento</div><div class="val">${esc(form.nombreEvento||'—')}</div></div>
   <div class="event-field"><div class="lbl">Fecha</div><div class="val">${form.fechaEvento ? esc(new Date(form.fechaEvento + 'T00:00:00').toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })) : '—'}</div></div>
-  <div class="event-field"><div class="lbl">Horario</div><div class="val">${esc(form.horaInicio||'—')} – ${esc(form.horaFin||'—')}</div></div>
+  <div class="event-field"><div class="lbl">Horario</div><div class="val">${esc(form.horaInicio||'—')} - ${esc(form.horaFin||'—')}</div></div>
   <div class="event-field"><div class="lbl">Local</div><div class="val">${esc(form.nombreLocal||'—')}</div></div>
   <div class="event-field"><div class="lbl">Dirección</div><div class="val">${esc(form.direccionLocal||'—')}</div></div>
   <div class="event-field"><div class="lbl">Tipo de evento</div><div class="val">${esc(eventTypeLabel)}</div></div>
@@ -526,7 +526,7 @@ La retribución acordada por la prestación es la siguiente:</p>
       <td><strong>${price > 0 ? `€ ${fmt(price)}` : '—'}</strong></td>
     </tr>
     <tr>
-      <td>IVA (21%) — art. 11 LIVA</td>
+      <td>IVA (21%): art. 11 LIVA</td>
       <td>21% s/base</td>
       <td>${price > 0 ? `€ ${fmt(iva)}` : '—'}</td>
     </tr>
@@ -614,7 +614,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
 <div class="footer">
   <strong>XPEAK</strong> · Plataforma Profesional de Eventos · xpeak.es<br>
   Ref. ${esc(ref)} · C.Civil arts. 1254 ss. · ET art. 1.1 · LPI RDL 1/1996 · RGPD 2016/679 · LOPDGDD LO 3/2018<br>
-  ${hasSig ? `✦ Firmado digitalmente por ${esc(form.contratanteNombre||'el contratante')} · ${esc(form.fechaFirma)} · Ref. ${esc(ref)}` : '✦ Documento generado electrónicamente — pendiente de firma por las partes'}
+  ${hasSig ? `✦ Firmado digitalmente por ${esc(form.contratanteNombre||'el contratante')} · ${esc(form.fechaFirma)} · Ref. ${esc(ref)}` : '✦ Documento generado electrónicamente: pendiente de firma por las partes'}
 </div>
 
 </div><!-- /doc-wrap -->
@@ -670,7 +670,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
     if (professional.userId && form.fechaEvento) {
       supabase.from('calendar_events').insert({
         user_id: professional.userId,
-        title: form.contratanteNombre ? `Trabajo — ${form.contratanteNombre}` : 'Trabajo confirmado',
+        title: form.contratanteNombre ? `Trabajo: ${form.contratanteNombre}` : 'Trabajo confirmado',
         event_date: form.fechaEvento,
         location: form.nombreLocal || null,
         notes: form.nombreEvento || null,
@@ -690,7 +690,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
                 // resuelve profesional_user_id → email en otras plantillas,
                 // así que se pasa el id y se deja resolver server-side.
                 professional_user_id: professional.userId,
-                title: form.contratanteNombre ? `Trabajo — ${form.contratanteNombre}` : 'Trabajo confirmado',
+                title: form.contratanteNombre ? `Trabajo: ${form.contratanteNombre}` : 'Trabajo confirmado',
                 date: form.fechaEvento,
                 location: form.nombreLocal || null,
               },
@@ -822,7 +822,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
                 </div>
               </div>
 
-              <p className={sec} style={secStyle}>— CONTRATANTE —</p>
+              <p className={sec} style={secStyle}>CONTRATANTE</p>
               <div className="grid grid-cols-2 gap-3">
                 <div className="col-span-2 sm:col-span-1">
                   <label className={lbl} style={lblStyle}>Nombre completo *</label>
@@ -908,7 +908,7 @@ con renuncia expresa a cualquier otro fuero que pudiera corresponder.</p>
           {/* ── STEP 3: Condiciones ── */}
           {step === 3 && (
             <div className="space-y-4">
-              <p className={sec} style={secStyle}>— CONDICIONES ECONÓMICAS —</p>
+              <p className={sec} style={secStyle}>CONDICIONES ECONÓMICAS</p>
               <div className="grid grid-cols-2 gap-3">
                 <div className="col-span-2 sm:col-span-1">
                   <label className={lbl} style={lblStyle}>Base imponible € (sin IVA) *</label>

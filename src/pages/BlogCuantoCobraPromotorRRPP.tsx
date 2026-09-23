@@ -38,10 +38,10 @@ const breadcrumb = {
 };
 
 const PRECIOS = [
-  { concepto: 'Tarifa fija por noche (ciudad mediana)', precio: '40€ – 100€' },
-  { concepto: 'Tarifa fija por noche (gran ciudad / temporada alta)', precio: '80€ – 200€' },
-  { concepto: 'Comisión por entrada vendida', precio: '1€ – 5€ / entrada' },
-  { concepto: 'Gestión de redes sociales (adicional)', precio: '50€ – 150€ / mes' },
+  { concepto: 'Tarifa fija por noche (ciudad mediana)', precio: '40€-100€' },
+  { concepto: 'Tarifa fija por noche (gran ciudad / temporada alta)', precio: '80€-200€' },
+  { concepto: 'Comisión por entrada vendida', precio: '1€-5€ / entrada' },
+  { concepto: 'Gestión de redes sociales (adicional)', precio: '50€-150€ / mes' },
 ];
 
 const FACTORES = [
@@ -58,7 +58,7 @@ export default function BlogCuantoCobraPromotorRRPP() {
         <title>Cuánto cobra un promotor o RRPP en España (2026) | XPEAK</title>
         <meta name="description" content="Precios reales de promotores y RRPP en España: tarifa por noche, comisión por entrada vendida y qué factores cambian el precio." />
         <link rel="canonical" href="https://xpeak.es/blog/cuanto-cobra-un-promotor-rrpp" />
-        <meta property="og:title" content="Cuánto cobra un promotor o RRPP en España — XPEAK Blog" />
+        <meta property="og:title" content="Cuánto cobra un promotor o RRPP en España | XPEAK Blog" />
         <meta property="og:description" content="Tarifas reales: fijo por noche, comisión por entrada y factores que cambian el precio." />
         <meta property="og:url" content="https://xpeak.es/blog/cuanto-cobra-un-promotor-rrpp" />
         <meta property="og:type" content="article" />

@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Granada', item: 'https://xpeak.es/blog/precio-azafatas-granada' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '100–150€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '120–190€/día', nota: 'Eventos culturales y de marca' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '135–185€/día', nota: 'Turismo internacional y congresos' },
-  { perfil: 'Azafata de protocolo', tarifa: '140–200€/día', nota: 'Bodas en cármenes del Albaicín' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '150–220€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento universitario (4h)', tarifa: '65–105€', nota: 'Jornadas y congresos académicos' },
+  { perfil: 'Azafata de stand / feria', tarifa: '100-150€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '120-190€/día', nota: 'Eventos culturales y de marca' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '135-185€/día', nota: 'Turismo internacional y congresos' },
+  { perfil: 'Azafata de protocolo', tarifa: '140-200€/día', nota: 'Bodas en cármenes del Albaicín' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '150-220€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento universitario (4h)', tarifa: '65-105€', nota: 'Jornadas y congresos académicos' },
 ];
 
 export default function BlogPrecioAzafatasGranada() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasGranada() {
         <title>Precio azafatas para eventos en Granada 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos, congresos y bodas en Granada. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-granada" />
-        <meta property="og:title" content="Precio azafatas eventos Granada 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Granada 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para congresos, bodas y eventos culturales en Granada." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-granada" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

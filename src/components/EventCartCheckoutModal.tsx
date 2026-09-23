@@ -179,7 +179,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
               tabIndex={-1} autoComplete="off"
               style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
             <div className="mb-4">
-              <h3 className="text-lg font-black mb-0.5" style={{ color: '#111' }}>Tu evento — {items.length} profesional{items.length !== 1 ? 'es' : ''}</h3>
+              <h3 className="text-lg font-black mb-0.5" style={{ color: '#111' }}>Tu evento: {items.length} profesional{items.length !== 1 ? 'es' : ''}</h3>
               <p className="text-xs" style={{ color: '#333' }}>Un mensaje, un envío. Cada uno te contactará directamente.</p>
             </div>
 
@@ -297,7 +297,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
                     Presupuesto estimado ({estimatedHours}h)
                     {itemsWithoutRate > 0 && (
                       <span className="block text-[0.65rem] mt-0.5" style={{ color: '#333' }}>
-                        +{itemsWithoutRate} profesional{itemsWithoutRate !== 1 ? 'es' : ''} sin tarifa pública — a consultar
+                        +{itemsWithoutRate} profesional{itemsWithoutRate !== 1 ? 'es' : ''} sin tarifa pública: a consultar
                       </span>
                     )}
                   </p>
@@ -326,7 +326,7 @@ export default function EventCartCheckoutModal({ onClose }: Props) {
                 className="w-5 h-5 flex-shrink-0 mt-0.5 rounded-md accent-[#D4AF37]"
               />
               <span className="text-[0.7rem] leading-relaxed" style={{ color: legalError ? '#b91c1c' : 'rgba(0,0,0,0.65)' }}>
-                {legalError && <span className="font-bold">☝️ Marca esta casilla para continuar — </span>}
+                {legalError && <span className="font-bold">☝️ Marca esta casilla para continuar</span>}
                 Acepto que mi nombre y contacto se compartan con cada profesional seleccionado, según la{' '}
                 <a href="/privacidad" target="_blank" rel="noopener" onClick={e => e.stopPropagation()} className="underline" style={{ color: '#8B6A00' }}>Política de Privacidad</a>.
               </span>

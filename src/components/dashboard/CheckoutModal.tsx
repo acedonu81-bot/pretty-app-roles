@@ -60,9 +60,9 @@ const CheckoutModal = ({ open, onClose, item }: CheckoutModalProps) => {
             <p className="text-xl font-black mb-1" style={{ color: '#8A6D0F' }}>€{total}</p>
             {selectedExtras.length > 0 && (
               <div className="text-xs text-muted-foreground mb-4 space-y-0.5">
-                <p>{item.name} — €{item.price}</p>
+                <p>{item.name}: €{item.price}</p>
                 {crossSellServices.filter(s => selectedExtras.includes(s.id)).map(s => (
-                  <p key={s.id}>{s.label} — €{s.price}</p>
+                  <p key={s.id}>{s.label}: €{s.price}</p>
                 ))}
               </div>
             )}

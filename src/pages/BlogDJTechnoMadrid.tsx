@@ -31,17 +31,17 @@ const breadcrumb = {
 const faqStructured = {
   '@context': 'https://schema.org', '@type': 'FAQPage',
   mainEntity: [
-    { '@type': 'Question', name: '¿Cuánto cobra un DJ de techno en Madrid?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ de techno en Madrid cobra entre 100€ y 800€ por sesión de 3–4 horas en clubs underground. Los DJs con bookings internacionales o residencias en clubs top cobran 500€–1.500€. Para eventos privados los precios son negociables.' } },
-    { '@type': 'Question', name: '¿Cuáles son los mejores clubs de techno en Madrid?', acceptedAnswer: { '@type': 'Answer', text: 'La escena techno madrileña tiene referentes como Fabrik, Teatro Kapital (planta techno), Mondo Disko, Sala Caracol y Sala El Sol. El circuito underground de salas medianas (200–600 personas) es muy activo los viernes y sábados.' } },
+    { '@type': 'Question', name: '¿Cuánto cobra un DJ de techno en Madrid?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ de techno en Madrid cobra entre 100€ y 800€ por sesión de 3-4 horas en clubs underground. Los DJs con bookings internacionales o residencias en clubs top cobran 500€-1.500€. Para eventos privados los precios son negociables.' } },
+    { '@type': 'Question', name: '¿Cuáles son los mejores clubs de techno en Madrid?', acceptedAnswer: { '@type': 'Answer', text: 'La escena techno madrileña tiene referentes como Fabrik, Teatro Kapital (planta techno), Mondo Disko, Sala Caracol y Sala El Sol. El circuito underground de salas medianas (200-600 personas) es muy activo los viernes y sábados.' } },
     { '@type': 'Question', name: '¿Cómo consigo un DJ de techno para un evento privado en Madrid?', acceptedAnswer: { '@type': 'Answer', text: 'Plataformas como XPEAK permiten buscar DJs especializados en techno en Madrid con tarifas públicas y disponibilidad en tiempo real. También puedes contactar directamente con los residentes de los clubs o con agencias de booking especializadas.' } },
   ],
 };
 
 const TARIFAS = [
-  { nivel: 'DJ emergente (< 2 años)', escenario: 'Afterhour, sala pequeña', tarifa: '80€ – 200€', nota: 'Sesiones de 3–4h' },
-  { nivel: 'DJ semi-profesional', escenario: 'Sala mediana, evento privado', tarifa: '200€ – 500€', nota: 'Portfolio sólido, redes activas' },
-  { nivel: 'DJ residente reconocido', escenario: 'Club top, festival local', tarifa: '500€ – 1.200€', nota: 'Colaboraciones, publicaciones' },
-  { nivel: 'DJ artista internacional', escenario: 'Macrofestival, booking exclusivo', tarifa: '1.500€ – 5.000€+', nota: 'Rider técnico, management' },
+  { nivel: 'DJ emergente (< 2 años)', escenario: 'Afterhour, sala pequeña', tarifa: '80€-200€', nota: 'Sesiones de 3-4h' },
+  { nivel: 'DJ semi-profesional', escenario: 'Sala mediana, evento privado', tarifa: '200€-500€', nota: 'Portfolio sólido, redes activas' },
+  { nivel: 'DJ residente reconocido', escenario: 'Club top, festival local', tarifa: '500€-1.200€', nota: 'Colaboraciones, publicaciones' },
+  { nivel: 'DJ artista internacional', escenario: 'Macrofestival, booking exclusivo', tarifa: '1.500€-5.000€+', nota: 'Rider técnico, management' },
 ];
 
 export default function BlogDJTechnoMadrid() {
@@ -69,7 +69,7 @@ export default function BlogDJTechnoMadrid() {
           <p className="text-[#555] text-sm mb-8">Actualizado junio 2026 · 8 min lectura</p>
 
           <BlogAnswerBox question="¿Cuánto cobra un DJ de techno en Madrid?">
-            Un DJ de techno en Madrid cobra entre <strong>100€ y 800€</strong> por sesión en clubs. Los artistas con booking internacional o residencias en salas top pueden facturar 500€–1.500€ por noche. Para eventos privados o corporativos los precios dependen de la duración y el perfil.
+            Un DJ de techno en Madrid cobra entre <strong>100€ y 800€</strong> por sesión en clubs. Los artistas con booking internacional o residencias en salas top pueden facturar 500€-1.500€ por noche. Para eventos privados o corporativos los precios dependen de la duración y el perfil.
           </BlogAnswerBox>
 
           <p className="text-[#333] mb-6">
@@ -101,10 +101,10 @@ export default function BlogDJTechnoMadrid() {
           <h2 className="text-2xl font-bold mt-10 mb-4">La escena techno de Madrid en 2026</h2>
           <p className="text-[#333] mb-4">Madrid concentra el mayor mercado nocturno de España. La escena techno local tiene varias capas:</p>
           <ul className="space-y-3 mb-8 text-[#333]">
-            <li><strong className="text-[#111]">Clubs mainstream-techno</strong> (Fabrik, Kapital) — Programación internacional, 1.500–5.000 asistentes, DJs con cachés de 2.000€+.</li>
-            <li><strong className="text-[#111]">Salas medianas underground</strong> (200–600 pax) — El corazón de la escena local. Residentes que empujan subgéneros: dark techno, industrial, hypnotic.</li>
-            <li><strong className="text-[#111]">Afterhours y lofts privados</strong> — Sesiones de 06:00 a 14:00. Muy activo en invierno. Precios competitivos (100–300€/sesión).</li>
-            <li><strong className="text-[#111]">Eventos de marca / corporativos</strong> — Empresas tech y agencias de moda contratan DJs techno de imagen. Precios 500–1.500€/noche.</li>
+            <li><strong className="text-[#111]">Clubs mainstream-techno</strong> (Fabrik, Kapital): Programación internacional, 1.500-5.000 asistentes, DJs con cachés de 2.000€+.</li>
+            <li><strong className="text-[#111]">Salas medianas underground</strong> (200-600 pax): El corazón de la escena local. Residentes que empujan subgéneros: dark techno, industrial, hypnotic.</li>
+            <li><strong className="text-[#111]">Afterhours y lofts privados</strong>: Sesiones de 06:00 a 14:00. Muy activo en invierno. Precios competitivos (100-300€/sesión).</li>
+            <li><strong className="text-[#111]">Eventos de marca / corporativos</strong>: Empresas tech y agencias de moda contratan DJs techno de imagen. Precios 500-1.500€/noche.</li>
           </ul>
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Qué piden las salas a un DJ de techno</h2>

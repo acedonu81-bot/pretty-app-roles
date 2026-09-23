@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: "Azafatas L'Hospitalet", item: 'https://xpeak.es/blog/precio-azafatas-hospitalet' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria Gran Via', tarifa: '145–195€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '165–250€/día', nota: 'Eventos de marca y presentaciones' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '175–225€/día', nota: 'Muy demandada en ferias de Gran Via' },
-  { perfil: 'Azafata trilingüe', tarifa: '210–295€/día', nota: 'Ferias internacionales del recinto' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '185–275€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '85–130€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria Gran Via', tarifa: '145-195€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '165-250€/día', nota: 'Eventos de marca y presentaciones' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '175-225€/día', nota: 'Muy demandada en ferias de Gran Via' },
+  { perfil: 'Azafata trilingüe', tarifa: '210-295€/día', nota: 'Ferias internacionales del recinto' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '185-275€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '85-130€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasHospitalet() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasHospitalet() {
         <title>Precio azafatas para eventos en L'Hospitalet 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para ferias en Fira Gran Via y eventos corporativos en L'Hospitalet. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-hospitalet" />
-        <meta property="og:title" content="Precio azafatas eventos L'Hospitalet 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos L'Hospitalet 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para ferias en Gran Via y eventos corporativos en L'Hospitalet." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-hospitalet" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

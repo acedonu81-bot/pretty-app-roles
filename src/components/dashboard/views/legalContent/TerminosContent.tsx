@@ -44,7 +44,7 @@ export function TerminosContent() {
       </section>
 
       <section>
-        <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>7. Naturaleza Jurídica de la Intermediación — XPEAK no es Empleador</h2>
+        <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>7. Naturaleza Jurídica de la Intermediación: XPEAK no es Empleador</h2>
         <p className="mb-2">
           <strong style={{ color: '#111' }}>XPEAK opera exclusivamente como plataforma de intermediación tecnológica</strong> entre profesionales del sector del eventos y entretenimiento y los empresarios o entidades que requieren sus servicios. A todos los efectos legales:
         </p>
@@ -118,7 +118,7 @@ export function TerminosContent() {
       <section>
         <h2 className="text-base font-bold mb-3" style={{ color: '#D4AF37' }}>12 bis. Prohibición Expresa de Raspado de Datos (Data Scraping)</h2>
         <p className="mb-2">
-          La base de datos de profesionales de XPEAK — incluyendo nombres, fotografías, tarifas, ubicaciones, especialidades, biografías y cualquier otro dato identificativo — constituye un activo empresarial propio protegido por la normativa de propiedad intelectual e industrial y por la <strong>Directiva 96/9/CE sobre protección jurídica de bases de datos</strong>, transpuesta al ordenamiento español mediante el Real Decreto Legislativo 1/1996, de 12 de abril, que aprueba el Texto Refundido de la Ley de Propiedad Intelectual (TRLPI).
+          La base de datos de profesionales de XPEAK, incluyendo nombres, fotografías, tarifas, ubicaciones, especialidades, biografías y cualquier otro dato identificativo, constituye un activo empresarial propio protegido por la normativa de propiedad intelectual e industrial y por la <strong>Directiva 96/9/CE sobre protección jurídica de bases de datos</strong>, transpuesta al ordenamiento español mediante el Real Decreto Legislativo 1/1996, de 12 de abril, que aprueba el Texto Refundido de la Ley de Propiedad Intelectual (TRLPI).
         </p>
         <p className="mb-2">
           Queda <strong>expresamente prohibido, sin autorización escrita previa de XPEAK</strong>, todo acceso, extracción, reutilización, copia, publicación o redistribución de la base de datos o de partes sustanciales de la misma, así como cualquier actuación que tenga por efecto eludir las medidas técnicas de protección habilitadas en la Plataforma. En particular, se prohíbe:

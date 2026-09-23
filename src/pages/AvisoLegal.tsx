@@ -26,7 +26,7 @@ const AvisoLegal = () => (
 
       <Section title="1. Datos identificativos del titular">
         <p><span className="font-bold text-white">Denominación:</span> XPEAK</p>
-        <p><span className="font-bold text-white">NIF/CIF:</span> <span style={{ color: '#D4AF37' }}>Pendiente de actualización — contactar: info@xpeak.es</span></p>
+        <p><span className="font-bold text-white">NIF/CIF:</span> <span style={{ color: '#D4AF37' }}>Pendiente de actualización: contactar: info@xpeak.es</span></p>
         <p><span className="font-bold text-white">Domicilio:</span> España</p>
         <p><span className="font-bold text-white">Email:</span> info@xpeak.es</p>
         <p><span className="font-bold text-white">Contacto legal:</span> legal@xpeak.es</p>

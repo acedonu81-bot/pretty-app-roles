@@ -243,7 +243,7 @@ const ContractView = () => {
     // ── Título de marca ──
     ws.mergeCells('A1:N1');
     const titleCell = ws.getCell('A1');
-    titleCell.value = `XPEAK — Resumen de contratos ${csvYear}`;
+    titleCell.value = `XPEAK: Resumen de contratos ${csvYear}`;
     titleCell.font = { name: 'Calibri', size: 14, bold: true, color: { argb: 'FFFFFFFF' } };
     titleCell.alignment = { vertical: 'middle', horizontal: 'left' };
     titleCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: DARK } };
@@ -372,7 +372,7 @@ const ContractView = () => {
       `<div style="border-top:1px solid #333;padding-top:8px;font-size:11px;color:#555;"><p>Firma del Contratante</p><br/><br/><p>${safe(c.contratante_nombre)}</p></div>`,
       `<div style="border-top:1px solid #333;padding-top:8px;font-size:11px;color:#555;"><p>Firma del Profesional</p><br/><br/><p>${safe(c.professional_name)}</p></div>`,
       `</div>`,
-      `<p style="margin-top:48px;font-size:11px;color:#888;border-top:1px solid #ddd;padding-top:12px;text-align:center;">Generado el ${safe(fmtDate(c.created_at))} · XPEAK — xpeak.es · Documento orientativo, no vinculante sin firma</p>`,
+      `<p style="margin-top:48px;font-size:11px;color:#888;border-top:1px solid #ddd;padding-top:12px;text-align:center;">Generado el ${safe(fmtDate(c.created_at))} · XPEAK: xpeak.es · Documento orientativo, no vinculante sin firma</p>`,
     ].join('');
     container.appendChild(inner);
     document.body.appendChild(container);
@@ -454,7 +454,7 @@ const ContractView = () => {
               <input
                 className="w-full px-4 py-3 rounded-lg text-base outline-none"
                 style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)', color: '#222' }}
-                placeholder="Escribe un nombre — ej: DJ Leinad"
+                placeholder="Escribe un nombre: ej: DJ Leinad"
                 value={proQuery}
                 onChange={e => searchPros(e.target.value)}
               />

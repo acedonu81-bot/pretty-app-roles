@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Camareros Sevilla', item: 'https://xpeak.es/blog/camareros-eventos-sevilla' }] };
 
 const PRECIOS = [
-  { perfil: 'Camarero/a de sala', tarifa: '10–16€/hora', nota: 'Cóctel, cena sentada o buffet' },
-  { perfil: 'Bartender / coctelería', tarifa: '13–20€/hora', nota: 'Barra libre y coctelería de autor' },
-  { perfil: 'Jefe de sala / coordinador', tarifa: '18–26€/hora', nota: 'Gestión del equipo en boda o evento grande' },
-  { perfil: 'Servicio boda completo (6-7h)', tarifa: '100–200€/persona', nota: 'Cóctel + cena + barra' },
-  { perfil: 'Barra libre con bartender (4h)', tarifa: '130–300€', nota: 'Incluye montaje y desmontaje' },
-  { perfil: 'Personal de cocina de apoyo', tarifa: '11–17€/hora', nota: 'Emplatado y logística en directo' },
+  { perfil: 'Camarero/a de sala', tarifa: '10-16€/hora', nota: 'Cóctel, cena sentada o buffet' },
+  { perfil: 'Bartender / coctelería', tarifa: '13-20€/hora', nota: 'Barra libre y coctelería de autor' },
+  { perfil: 'Jefe de sala / coordinador', tarifa: '18-26€/hora', nota: 'Gestión del equipo en boda o evento grande' },
+  { perfil: 'Servicio boda completo (6-7h)', tarifa: '100-200€/persona', nota: 'Cóctel + cena + barra' },
+  { perfil: 'Barra libre con bartender (4h)', tarifa: '130-300€', nota: 'Incluye montaje y desmontaje' },
+  { perfil: 'Personal de cocina de apoyo', tarifa: '11-17€/hora', nota: 'Emplatado y logística en directo' },
 ];
 
 export default function BlogCamarerosSevilla() {
@@ -33,7 +33,7 @@ export default function BlogCamarerosSevilla() {
         <title>Precio camareros para eventos en Sevilla 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran los camareros y bartenders para bodas y eventos corporativos en Sevilla. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/camareros-eventos-sevilla" />
-        <meta property="og:title" content="Precio camareros eventos Sevilla 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio camareros eventos Sevilla 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de camareros y bartenders para bodas y eventos corporativos en Sevilla." />
         <meta property="og:url" content="https://xpeak.es/blog/camareros-eventos-sevilla" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

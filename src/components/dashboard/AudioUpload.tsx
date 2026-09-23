@@ -362,9 +362,9 @@ const AudioUpload = ({ legacyEmbedUrl, onMigrated }: AudioUploadProps = {}) => {
             <Music size={17} style={{ color: '#D4AF37' }} />
           </span>
           <div>
-            <p className="text-sm font-black mb-1" style={{ color: '#8A6D0F' }}>Sube tu primera sesión — es tu mejor tarjeta de presentación</p>
+            <p className="text-sm font-black mb-1" style={{ color: '#8A6D0F' }}>Sube tu primera sesión: es tu mejor tarjeta de presentación</p>
             <p className="text-xs leading-relaxed" style={{ color: 'var(--nightlife-text-secondary)' }}>
-              Los organizadores escuchan antes de contactar: los perfiles con sesión reciben más visitas, salen mejor posicionados en el directorio y en Google. Pega un enlace de SoundCloud, Mixcloud o hearthis.at — tardas 10 segundos.
+              Los organizadores escuchan antes de contactar: los perfiles con sesión reciben más visitas, salen mejor posicionados en el directorio y en Google. Pega un enlace de SoundCloud, Mixcloud o hearthis.at: tardas 10 segundos.
             </p>
           </div>
         </div>

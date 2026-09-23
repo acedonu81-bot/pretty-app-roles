@@ -13,17 +13,17 @@ import BlogTopCTA from '@/components/BlogTopCTA';
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo para bodas en Barcelona: precio y guía 2026', description: 'Cuánto cuesta un fotógrafo para una boda en Barcelona. Precios reales 2026, estilos más demandados y cómo contratar el mejor fotógrafo en Cataluña.', datePublished: '2026-06-02', dateModified: '2026-06-02', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-boda-barcelona' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de boda en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de boda en Barcelona cuesta entre 1.400€ y 4.000€ para el reportaje completo. Barcelona tiene una escena fotográfica muy activa con muchos profesionales de nivel internacional. El rango medio para un reportaje completo con álbum es 2.000-3.000€. Para bodas solo de ceremonia y cóctel (4-5h) el rango es 800-1.500€.' } },
-  { '@type': 'Question', name: '¿Qué estilo fotográfico es más popular en bodas de Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'En Barcelona predominan dos estilos: el reportaje documental (fotoperiodismo de boda) — natural, sin posados forzados, con mucha luz ambiente — y el editorial mediterráneo, con sesiones golden hour en entornos naturales del Maresme o Penedès. El estilo oscuro y moody tiene menos presencia que en Madrid. Los novios barceloneses suelen priorizar autenticidad sobre perfección técnica.' } },
+  { '@type': 'Question', name: '¿Qué estilo fotográfico es más popular en bodas de Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'En Barcelona predominan dos estilos: el reportaje documental (fotoperiodismo de boda), natural, sin posados forzados, con mucha luz ambiente, y el editorial mediterráneo, con sesiones golden hour en entornos naturales del Maresme o Penedès. El estilo oscuro y moody tiene menos presencia que en Madrid. Los novios barceloneses suelen priorizar autenticidad sobre perfección técnica.' } },
   { '@type': 'Question', name: '¿Con cuánta antelación reservar el fotógrafo en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'Para bodas en sábados de junio o septiembre en Barcelona, reserva con 12-14 meses de antelación. Los mejores fotógrafos de estilo documental en Barcelona tienen lista de espera. Para bodas en otoño-invierno o entre semana, 6-8 meses suelen ser suficientes.' } },
-  { '@type': 'Question', name: '¿Vale la pena contratar fotógrafo y videógrafo juntos en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'Sí, muchos fotógrafos de bodas en Barcelona trabajan con videomakers de confianza y ofrecen packs con descuento del 10-20%. El pack fotógrafo + videógrafo en Barcelona ronda los 3.000-5.500€. Si el presupuesto es ajustado, prioriza el fotógrafo — las fotos tienen más uso a largo plazo que el vídeo.' } },
+  { '@type': 'Question', name: '¿Vale la pena contratar fotógrafo y videógrafo juntos en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'Sí, muchos fotógrafos de bodas en Barcelona trabajan con videomakers de confianza y ofrecen packs con descuento del 10-20%. El pack fotógrafo + videógrafo en Barcelona ronda los 3.000-5.500€. Si el presupuesto es ajustado, prioriza el fotógrafo: las fotos tienen más uso a largo plazo que el vídeo.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Fotógrafo boda Barcelona', item: 'https://xpeak.es/blog/fotografo-boda-barcelona' }] };
 
 const PRECIOS = [
-  { servicio: 'Reportaje básico (ceremonia + cóctel, 4-5h)', precio: '800–1.500€' },
-  { servicio: 'Reportaje completo (8-10h, sin álbum)', precio: '1.400–2.500€' },
-  { servicio: 'Reportaje completo con álbum impreso', precio: '2.000–4.000€' },
-  { servicio: 'Pack fotógrafo + videógrafo', precio: '3.000–5.500€' },
+  { servicio: 'Reportaje básico (ceremonia + cóctel, 4-5h)', precio: '800-1.500€' },
+  { servicio: 'Reportaje completo (8-10h, sin álbum)', precio: '1.400-2.500€' },
+  { servicio: 'Reportaje completo con álbum impreso', precio: '2.000-4.000€' },
+  { servicio: 'Pack fotógrafo + videógrafo', precio: '3.000-5.500€' },
 ];
 
 export default function BlogFotografoBodaBarcelona() {
@@ -33,7 +33,7 @@ export default function BlogFotografoBodaBarcelona() {
         <title>Fotógrafo para bodas en Barcelona: precio 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un fotógrafo de boda en Barcelona. Precios reales 2026, estilos más demandados (documental, editorial) y cuándo reservar." />
         <link rel="canonical" href="https://xpeak.es/blog/fotografo-boda-barcelona" />
-        <meta property="og:title" content="Fotógrafo para bodas en Barcelona: precio 2026 — XPEAK" />
+        <meta property="og:title" content="Fotógrafo para bodas en Barcelona: precio 2026 | XPEAK" />
         <meta property="og:description" content="Precios reales de fotógrafos de boda en Barcelona. Estilos, packs y cuándo reservar." />
         <meta property="og:url" content="https://xpeak.es/blog/fotografo-boda-barcelona" />
         <meta property="og:type" content="article" />
@@ -58,7 +58,7 @@ export default function BlogFotografoBodaBarcelona() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#4F46E5' }}>Fotografía · Barcelona · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Fotógrafo para bodas en Barcelona: precio y guía 2026</h1>
-            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Barcelona tiene una de las escenas de fotografía de bodas más activas de Europa. Desde el documental puro hasta el editorial mediterráneo — precios reales y cómo encontrar el estilo que se adapta a tu boda.</p>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Barcelona tiene una de las escenas de fotografía de bodas más activas de Europa. Desde el documental puro hasta el editorial mediterráneo: precios reales y cómo encontrar el estilo que se adapta a tu boda.</p>
             <time className="text-xs mt-3 block" style={{ color: '#666' }}>2 junio 2026</time>
           <BlogAnswerBox
             question="¿Cuánto cuesta un fotógrafo para una boda en Barcelona?"

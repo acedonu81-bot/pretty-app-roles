@@ -9,16 +9,16 @@ import BlogAuthor from '@/components/BlogAuthor';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const TABLE = [
-  { tipo: 'Cumpleaños íntimo (< 30 p.)', horas: '3–4 h', rango: '150€ – 350€', incluye: 'Equipo básico, listas o mezcla' },
-  { tipo: 'Fiesta privada (30–80 p.)', horas: '4–5 h', rango: '300€ – 600€', incluye: 'Setup completo, micro, luces básicas' },
-  { tipo: 'Evento privado grande (80–200 p.)', horas: '5–6 h', rango: '600€ – 1.200€', incluye: 'Equipo profesional, técnico incluido' },
-  { tipo: 'Fiesta de empresa / evento premium', horas: '4–6 h', rango: '800€ – 2.000€', incluye: 'DJ de referencia + producción' },
+  { tipo: 'Cumpleaños íntimo (< 30 p.)', horas: '3-4 h', rango: '150€-350€', incluye: 'Equipo básico, listas o mezcla' },
+  { tipo: 'Fiesta privada (30-80 p.)', horas: '4-5 h', rango: '300€-600€', incluye: 'Setup completo, micro, luces básicas' },
+  { tipo: 'Evento privado grande (80-200 p.)', horas: '5-6 h', rango: '600€-1.200€', incluye: 'Equipo profesional, técnico incluido' },
+  { tipo: 'Fiesta de empresa / evento premium', horas: '4-6 h', rango: '800€-2.000€', incluye: 'DJ de referencia + producción' },
 ];
 
 const FAQ = [
   { q: '¿Cuánto cuesta un DJ para una fiesta privada?', a: 'Entre 150€ y 600€ para eventos hasta 80 personas. El precio depende de las horas, si el DJ lleva equipo propio y el nivel de experiencia. Para fiestas más grandes con DJ de nombre, puede superar los 1.200€.' },
   { q: '¿El DJ tiene que llevar su propio equipo?', a: 'Depende del acuerdo. Los DJs emergentes a menudo no llevan equipo y necesitan que el local lo ponga. Los profesionales suelen llevar setup completo (controladora, altavoces, subwoofer, luces). Compruébalo siempre antes de contratar.' },
-  { q: '¿Con cuánta antelación hay que contratar el DJ?', a: 'Para fiestas en fines de semana en temporada alta (mayo–octubre), al menos 4–6 semanas de antelación. En temporada baja puedes cerrar con 1–2 semanas. El Flash Booking de XPEAK cubre disponibilidad de última hora.' },
+  { q: '¿Con cuánta antelación hay que contratar el DJ?', a: 'Para fiestas en fines de semana en temporada alta (mayo-octubre), al menos 4-6 semanas de antelación. En temporada baja puedes cerrar con 1-2 semanas. El Flash Booking de XPEAK cubre disponibilidad de última hora.' },
   { q: '¿El DJ acepta peticiones de canciones?', a: 'La mayoría sí, especialmente para fiestas privadas. Es habitual preparar una lista de reproducción base y compartirla antes del evento para que el DJ la adapte al ambiente y los gustos del grupo.' },
 ];
 
@@ -141,10 +141,10 @@ const faqStructured = {
           </p>
           <ul className="space-y-3 mb-10">
             {[
-              { label: 'Equipo de sonido', text: 'Altavoces, subwoofer y mesa de mezclas. Muchos DJs emergentes no lo llevan y hay que alquilarlo aparte (100–300€ extra).' },
+              { label: 'Equipo de sonido', text: 'Altavoces, subwoofer y mesa de mezclas. Muchos DJs emergentes no lo llevan y hay que alquilarlo aparte (100-300€ extra).' },
               { label: 'Iluminación básica', text: 'Algunos DJs incluyen focos LED o strobe. Para fiestas grandes conviene contratar un técnico de iluminación separado.' },
-              { label: 'Desplazamiento', text: 'En zonas alejadas de la ciudad puede aplicarse un suplemento de 20–50€ por gastos de transporte y montaje.' },
-              { label: 'Horas de prueba de sonido', text: 'El montaje y prueba suele tardar 1–2 horas antes del evento. Confirma si eso está incluido o se cobra aparte.' },
+              { label: 'Desplazamiento', text: 'En zonas alejadas de la ciudad puede aplicarse un suplemento de 20-50€ por gastos de transporte y montaje.' },
+              { label: 'Horas de prueba de sonido', text: 'El montaje y prueba suele tardar 1-2 horas antes del evento. Confirma si eso está incluido o se cobra aparte.' },
             ].map(item => (
               <li key={item.label} className="flex gap-3">
                 <Star size={13} className="flex-shrink-0 mt-0.5" style={{ color: '#D4AF37' }} />
@@ -185,7 +185,7 @@ const faqStructured = {
             <div className="p-6 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ background: 'rgba(0,0,0,0.02)' }}>
               <div>
                 <p className="text-sm font-black mb-0.5">¿Buscas DJ para tu fiesta?</p>
-                <p className="text-xs" style={{ color: '#333' }}>Directorio con tarifas públicas · Flash Booking disponible · 0 comisión</p>
+                <p className="text-xs" style={{ color: '#333' }}>Directorio con tarifas públicas · Flash Booking disponible</p>
               </div>
               <a href="/contratar-dj"
                 className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-xs transition-all hover:scale-105"

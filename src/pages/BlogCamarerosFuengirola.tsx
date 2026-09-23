@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Camareros Fuengirola', item: 'https://xpeak.es/blog/camareros-eventos-fuengirola' }] };
 
 const PRECIOS = [
-  { perfil: 'Camarero/a de sala', tarifa: '12–18€/hora', nota: 'Cóctel, cena sentada o buffet' },
-  { perfil: 'Bartender / coctelería', tarifa: '16–23€/hora', nota: 'Barra libre en hoteles y eventos' },
-  { perfil: 'Jefe de sala / coordinador', tarifa: '22–31€/hora', nota: 'Gestión del equipo en evento grande' },
-  { perfil: 'Servicio boda completo (6-7h)', tarifa: '135–250€/persona', nota: 'Cóctel + cena + barra' },
-  { perfil: 'Barra libre con bartender (4h)', tarifa: '165–370€', nota: 'Incluye montaje y desmontaje' },
-  { perfil: 'Personal de cocina de apoyo', tarifa: '13€–21€/hora', nota: 'Emplatado y logística en directo' },
+  { perfil: 'Camarero/a de sala', tarifa: '12-18€/hora', nota: 'Cóctel, cena sentada o buffet' },
+  { perfil: 'Bartender / coctelería', tarifa: '16-23€/hora', nota: 'Barra libre en hoteles y eventos' },
+  { perfil: 'Jefe de sala / coordinador', tarifa: '22-31€/hora', nota: 'Gestión del equipo en evento grande' },
+  { perfil: 'Servicio boda completo (6-7h)', tarifa: '135-250€/persona', nota: 'Cóctel + cena + barra' },
+  { perfil: 'Barra libre con bartender (4h)', tarifa: '165-370€', nota: 'Incluye montaje y desmontaje' },
+  { perfil: 'Personal de cocina de apoyo', tarifa: '13€-21€/hora', nota: 'Emplatado y logística en directo' },
 ];
 
 export default function BlogCamarerosFuengirola() {
@@ -33,7 +33,7 @@ export default function BlogCamarerosFuengirola() {
         <title>Precio camareros para eventos en Fuengirola 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran los camareros y bartenders para eventos hoteleros y celebraciones en Fuengirola. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/camareros-eventos-fuengirola" />
-        <meta property="og:title" content="Precio camareros eventos Fuengirola 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio camareros eventos Fuengirola 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de camareros y bartenders para eventos hoteleros en Fuengirola." />
         <meta property="og:url" content="https://xpeak.es/blog/camareros-eventos-fuengirola" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

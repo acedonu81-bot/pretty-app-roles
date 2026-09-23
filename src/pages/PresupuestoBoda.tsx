@@ -49,23 +49,23 @@ const CITIES = [
 
 const SERVICES: ServiceDef[] = [
   {
-    id: 'catering', title: 'Catering', subtitle: '40–45% del presupuesto total',
+    id: 'catering', title: 'Catering', subtitle: '40-45% del presupuesto total',
     note: 'Banquete, cóctel y barra libre incluidos',
     href: '/contratar-catering', dirHref: '/directorio/catering',
     priceType: 'per-person', priceMin: 0, priceMax: 0, perPersonMin: 55, perPersonMax: 150,
     hasQuantity: false, hasHours: false, hasPersons: true, personsLabel: 'Invitados',
-    bookWhen: '9–12 meses antes', essential: true, tipPct: 5,
+    bookWhen: '9-12 meses antes', essential: true, tipPct: 5,
   },
   {
-    id: 'fotografo', title: 'Fotógrafo de boda', subtitle: '10–12% del presupuesto',
-    note: 'Reportaje completo, entrega 4–6 semanas',
+    id: 'fotografo', title: 'Fotógrafo de boda', subtitle: '10-12% del presupuesto',
+    note: 'Reportaje completo, entrega 4-6 semanas',
     href: '/contratar-fotografo', dirHref: '/directorio/fotografo',
     priceType: 'fixed', priceMin: 900, priceMax: 2800,
     hasQuantity: false, hasHours: false, hasPersons: false,
     bookWhen: '12 meses antes', essential: true, tipPct: 10,
   },
   {
-    id: 'dj', title: 'DJ de boda', subtitle: '5–10% del presupuesto',
+    id: 'dj', title: 'DJ de boda', subtitle: '5-10% del presupuesto',
     note: 'Ceremonia, cóctel, cena y pista de baile',
     href: '/contratar-dj', dirHref: '/directorio/dj',
     priceType: 'fixed', priceMin: 450, priceMax: 1400,
@@ -73,8 +73,8 @@ const SERVICES: ServiceDef[] = [
     bookWhen: '9 meses antes', essential: true, tipPct: 10,
   },
   {
-    id: 'camareros', title: 'Camareros', subtitle: '5–8% del presupuesto',
-    note: '1 camarero por cada 10–12 invitados',
+    id: 'camareros', title: 'Camareros', subtitle: '5-8% del presupuesto',
+    note: '1 camarero por cada 10-12 invitados',
     href: '/contratar-camareros', dirHref: '/directorio/camareros',
     priceType: 'per-unit-hour', priceMin: 0, priceMax: 0, unitPriceMin: 12, unitPriceMax: 22,
     hasQuantity: true, quantityLabel: 'Camareros', quantityMin: 1,
@@ -83,12 +83,12 @@ const SERVICES: ServiceDef[] = [
     guestFormula: (g) => Math.max(2, Math.ceil(g / 12)),
   },
   {
-    id: 'videografo', title: 'Videógrafo', subtitle: '5–8% del presupuesto',
+    id: 'videografo', title: 'Videógrafo', subtitle: '5-8% del presupuesto',
     note: 'Tráiler + vídeo completo con montaje',
     href: '/blog/videografo-bodas-precio', dirHref: '/directorio/fotografo',
     priceType: 'fixed', priceMin: 600, priceMax: 2200,
     hasQuantity: false, hasHours: false, hasPersons: false,
-    bookWhen: '9–12 meses antes', tipPct: 10,
+    bookWhen: '9-12 meses antes', tipPct: 10,
   },
   {
     id: 'musica', title: 'Música en vivo', subtitle: 'Ceremonia o cóctel',
@@ -107,21 +107,21 @@ const SERVICES: ServiceDef[] = [
     bookWhen: '6 meses antes', tipPct: 8,
   },
   {
-    id: 'maquillaje', title: 'Maquillaje nupcial', subtitle: '3–5% del presupuesto',
+    id: 'maquillaje', title: 'Maquillaje nupcial', subtitle: '3-5% del presupuesto',
     note: 'Prueba previa + día del evento',
     href: '/contratar-maquillaje', dirHref: '/directorio/maquillaje',
     priceType: 'per-person', priceMin: 0, priceMax: 0, perPersonMin: 150, perPersonMax: 400,
     hasQuantity: false, hasHours: false, hasPersons: true, personsLabel: 'Personas',
-    bookWhen: '3–4 meses antes', tipPct: 10,
+    bookWhen: '3-4 meses antes', tipPct: 10,
   },
   {
     id: 'barman', title: 'Barman / Bartender', subtitle: 'Barra libre y cócteles',
-    note: '1 barman por cada 40–50 invitados',
+    note: '1 barman por cada 40-50 invitados',
     href: '/contratar-camareros', dirHref: '/directorio/camareros',
     priceType: 'per-unit-hour', priceMin: 0, priceMax: 0, unitPriceMin: 15, unitPriceMax: 25,
     hasQuantity: true, quantityLabel: 'Barmans', quantityMin: 1,
     hasHours: true, hoursDefault: 6, hasPersons: false,
-    bookWhen: '4–6 meses antes', tipPct: 10,
+    bookWhen: '4-6 meses antes', tipPct: 10,
     guestFormula: (g) => Math.max(1, Math.ceil(g / 45)),
   },
   {
@@ -146,7 +146,7 @@ const SERVICES: ServiceDef[] = [
     href: '/blog/saxofonista-bodas-precio', dirHref: '/directorio/grupo-musical',
     priceType: 'fixed', priceMin: 300, priceMax: 800,
     hasQuantity: false, hasHours: false, hasPersons: false,
-    bookWhen: '4–6 meses antes', tipPct: 8,
+    bookWhen: '4-6 meses antes', tipPct: 8,
   },
   {
     id: 'peluqueria', title: 'Peluquería nupcial', subtitle: 'Recogido o peinado de novia',
@@ -154,7 +154,7 @@ const SERVICES: ServiceDef[] = [
     href: '/contratar-maquillaje', dirHref: '/directorio/maquillaje',
     priceType: 'per-person', priceMin: 0, priceMax: 0, perPersonMin: 100, perPersonMax: 280,
     hasQuantity: false, hasHours: false, hasPersons: true, personsLabel: 'Personas',
-    bookWhen: '3–4 meses antes', tipPct: 10,
+    bookWhen: '3-4 meses antes', tipPct: 10,
   },
   {
     id: 'photobooth', title: 'Photo Booth', subtitle: 'Diversión garantizada',
@@ -162,10 +162,10 @@ const SERVICES: ServiceDef[] = [
     href: '/directorio/fotografo', dirHref: '/directorio/fotografo',
     priceType: 'fixed', priceMin: 300, priceMax: 700,
     hasQuantity: false, hasHours: false, hasPersons: false,
-    bookWhen: '3–4 meses antes',
+    bookWhen: '3-4 meses antes',
   },
   {
-    id: 'flores', title: 'Florista y decoración', subtitle: '8–12% del presupuesto',
+    id: 'flores', title: 'Florista y decoración', subtitle: '8-12% del presupuesto',
     note: 'Centros de mesa, ramo nupcial y arco',
     href: '/bodas',
     priceType: 'fixed', priceMin: 800, priceMax: 3500,
@@ -178,10 +178,10 @@ const SERVICES: ServiceDef[] = [
 
 const CHECKLIST_PHASES = [
   { phase: '12+ meses', color: '#e74c3c', label: 'Urgente', tasks: ['Definir presupuesto total', 'Reservar venue / finca', 'Contratar fotógrafo', 'Contratar videógrafo', 'Elegir fecha definitiva'] },
-  { phase: '9–11 meses', color: '#e67e22', label: 'Esencial', tasks: ['Contratar catering', 'Contratar DJ o banda', 'Enviar save the dates', 'Elegir vestido / traje', 'Reservar luna de miel'] },
-  { phase: '6–8 meses', color: '#f39c12', label: 'Importante', tasks: ['Florista y decoración', 'Maestro de ceremonias', 'Planificar música ceremonia', 'Camareros y staff', 'Elegir menú con catering'] },
-  { phase: '3–5 meses', color: '#27ae60', label: 'Preparación', tasks: ['Maquilladora / peluquería', 'Prueba de maquillaje', 'Enviar invitaciones físicas', 'Lista musical con DJ', 'Confirmar alojamiento invitados'] },
-  { phase: '1–2 meses', color: '#3498db', label: 'Últimos detalles', tasks: ['Confirmar todos los proveedores', 'Timings hora a hora', 'Sobres de pago preparados', 'Ensayo ceremonia', 'Confirmar menú definitivo'] },
+  { phase: '9-11 meses', color: '#e67e22', label: 'Esencial', tasks: ['Contratar catering', 'Contratar DJ o banda', 'Enviar save the dates', 'Elegir vestido / traje', 'Reservar luna de miel'] },
+  { phase: '6-8 meses', color: '#f39c12', label: 'Importante', tasks: ['Florista y decoración', 'Maestro de ceremonias', 'Planificar música ceremonia', 'Camareros y staff', 'Elegir menú con catering'] },
+  { phase: '3-5 meses', color: '#27ae60', label: 'Preparación', tasks: ['Maquilladora / peluquería', 'Prueba de maquillaje', 'Enviar invitaciones físicas', 'Lista musical con DJ', 'Confirmar alojamiento invitados'] },
+  { phase: '1-2 meses', color: '#3498db', label: 'Últimos detalles', tasks: ['Confirmar todos los proveedores', 'Timings hora a hora', 'Sobres de pago preparados', 'Ensayo ceremonia', 'Confirmar menú definitivo'] },
   { phase: '1 semana', color: '#9b59b6', label: 'Final', tasks: ['Reunión con proveedores clave', 'Confirmar horarios llegada', 'Lista música final al DJ', 'Seating plan definitivo', 'Descansar y disfrutar'] },
 ];
 
@@ -391,11 +391,11 @@ export default function PresupuestoBoda() {
   }
 
   const FAQS = [
-    { q: '¿Con cuánta antelación hay que contratar el fotógrafo?', a: 'El fotógrafo es el proveedor que más rápido se reserva. Los buenos fotógrafos de boda en España se agotan entre 9 y 12 meses antes, especialmente para temporada alta (mayo–octubre).' },
-    { q: '¿Cuántos camareros necesito para 100 personas?', a: 'Para un banquete sentado con servicio completo necesitas 1 camarero por cada 10–12 invitados: unos 8–10 para 100 personas. La calculadora lo ajusta automáticamente.' },
-    { q: '¿Cuánto cuesta una boda media en España 2026?', a: 'Entre 20.000€ y 30.000€ para 100–130 invitados. El catering representa el 40–45% del total. En Madrid y Barcelona el coste es un 20–30% superior.' },
-    { q: '¿Necesito un wedding planner?', a: 'Lo que recomiendan los expertos es contratar al menos una coordinadora del día (desde 350€). El wedding planner completo (1.500–6.000€) es ideal si no tienes tiempo.' },
-    { q: '¿Los precios cambian según la ciudad?', a: 'Sí. Madrid y Barcelona son un 20–30% más caros que la media nacional. Ibiza hasta un 35% más. El interior de Castilla, Galicia y Canarias son un 10–15% más económicos. Usa el selector de ciudad en la calculadora.' },
+    { q: '¿Con cuánta antelación hay que contratar el fotógrafo?', a: 'El fotógrafo es el proveedor que más rápido se reserva. Los buenos fotógrafos de boda en España se agotan entre 9 y 12 meses antes, especialmente para temporada alta (mayo-octubre).' },
+    { q: '¿Cuántos camareros necesito para 100 personas?', a: 'Para un banquete sentado con servicio completo necesitas 1 camarero por cada 10-12 invitados: unos 8-10 para 100 personas. La calculadora lo ajusta automáticamente.' },
+    { q: '¿Cuánto cuesta una boda media en España 2026?', a: 'Entre 20.000€ y 30.000€ para 100-130 invitados. El catering representa el 40-45% del total. En Madrid y Barcelona el coste es un 20-30% superior.' },
+    { q: '¿Necesito un wedding planner?', a: 'Lo que recomiendan los expertos es contratar al menos una coordinadora del día (desde 350€). El wedding planner completo (1.500-6.000€) es ideal si no tienes tiempo.' },
+    { q: '¿Los precios cambian según la ciudad?', a: 'Sí. Madrid y Barcelona son un 20-30% más caros que la media nacional. Ibiza hasta un 35% más. El interior de Castilla, Galicia y Canarias son un 10-15% más económicos. Usa el selector de ciudad en la calculadora.' },
     { q: '¿Qué es el Flash Booking de XPEAK?', a: 'Sistema de contratación urgente: publicas tu necesidad y los profesionales disponibles responden en menos de 60 minutos. Ideal para sustituciones de última hora.' },
   ];
 
@@ -404,7 +404,7 @@ export default function PresupuestoBoda() {
   return (
     <>
       <Helmet>
-        <title>Planificador de Boda 2026 — Calculadora de Presupuesto y Checklist | XPEAK</title>
+        <title>Planificador de Boda 2026: Calculadora de Presupuesto y Checklist | XPEAK</title>
         <meta name="description" content="Calcula el presupuesto de tu boda por ciudad, añade servicios, ve el coste por invitado, propinas y checklist interactivo. Sin registro." />
         <link rel="canonical" href="https://xpeak.es/presupuesto-boda" />
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
@@ -464,7 +464,7 @@ export default function PresupuestoBoda() {
               <div>
                 <p className="text-xs font-black" style={{ color: '#e74c3c' }}>Temporada alta detectada</p>
                 <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                  Tu boda es en temporada alta (abr–sep). Los proveedores se reservan con hasta 14 meses de antelación. Contrata fotógrafo, DJ y catering <strong style={{ color: '#fff' }}>lo antes posible.</strong>
+                  Tu boda es en temporada alta (abr-sep). Los proveedores se reservan con hasta 14 meses de antelación. Contrata fotógrafo, DJ y catering <strong style={{ color: '#fff' }}>lo antes posible.</strong>
                 </p>
               </div>
             </div>
@@ -660,7 +660,7 @@ export default function PresupuestoBoda() {
                             {s.hasPersons && id !== 'catering' && <Counter label={s.personsLabel!} value={persons} min={1} onInc={() => updateCart(id, 'persons', 1)} onDec={() => updateCart(id, 'persons', -1)} />}
                           </div>
                         )}
-                        {id === 'catering' && <p className="text-xs mb-2" style={{ color: 'rgba(255,255,255,0.35)' }}>{guests} invitados · {fmt(Math.round(s.perPersonMin! * cityMult))}–{fmt(Math.round(s.perPersonMax! * cityMult))}/p</p>}
+                        {id === 'catering' && <p className="text-xs mb-2" style={{ color: 'rgba(255,255,255,0.35)' }}>{guests} invitados · {fmt(Math.round(s.perPersonMin! * cityMult))}-{fmt(Math.round(s.perPersonMax! * cityMult))}/p</p>}
                         <div className="flex items-center justify-between">
                           <div className="flex-1 h-1 rounded-full mr-3 overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
                             <div className="h-full rounded-full" style={{ width: `${Math.round((pMax / Math.max(totalMax, 1)) * 100)}%`, background: 'rgba(212,175,55,0.5)' }} />
@@ -715,7 +715,7 @@ export default function PresupuestoBoda() {
                 <div className="rounded-2xl p-4" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)' }}>
                   <p className="text-xs font-black mb-3 flex items-center gap-1.5" style={{ color: '#D4AF37' }}><CalendarDays size={12} /> Contratar ahora</p>
                   {SERVICES.filter(s => {
-                    const mm: Record<string, number> = { '12 meses antes': 12, '9–12 meses antes': 9, '9 meses antes': 9, '6 meses antes': 6, '4–6 meses antes': 4, '3–4 meses antes': 3, '3 meses antes': 3 };
+                    const mm: Record<string, number> = { '12 meses antes': 12, '9-12 meses antes': 9, '9 meses antes': 9, '6 meses antes': 6, '4-6 meses antes': 4, '3-4 meses antes': 3, '3 meses antes': 3 };
                     return monthsLeft <= (mm[s.bookWhen] ?? 0) + 2;
                   }).slice(0, 5).map(s => (
                     <div key={s.id} className="flex items-center justify-between py-1.5 border-b text-xs" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
@@ -741,7 +741,7 @@ export default function PresupuestoBoda() {
                 <div className="h-full rounded-full transition-all duration-500" style={{ width: `${Math.round((doneCount / totalCount) * 100)}%`, background: 'linear-gradient(90deg,#D4AF37,#B8941E)' }} />
               </div>
               <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>
-                {Math.round((doneCount / totalCount) * 100)}% completado {doneCount === totalCount && '— ¡Todo listo!'}
+                {Math.round((doneCount / totalCount) * 100)}% completado {doneCount === totalCount && '¡Todo listo!'}
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -788,7 +788,7 @@ export default function PresupuestoBoda() {
             <div className="mb-6 rounded-2xl p-5" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
               <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: 'rgba(212,175,55,0.6)' }}>Propina total recomendada</p>
               <p className="text-3xl font-black" style={{ color: '#D4AF37' }}>{fmt(totalTip)}</p>
-              <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>Basado en los servicios que tienes en la calculadora. Solo es una orientación — nunca obligatoria.</p>
+              <p className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>Basado en los servicios que tienes en la calculadora. Solo es una orientación: nunca obligatoria.</p>
             </div>
             {propinas.length === 0 ? (
               <p className="text-sm text-center" style={{ color: 'rgba(255,255,255,0.3)' }}>Añade servicios en la calculadora para ver las propinas recomendadas.</p>
@@ -862,7 +862,7 @@ export default function PresupuestoBoda() {
         <section className="max-w-3xl mx-auto px-4 sm:px-6 pb-12">
           <h2 className="text-xl sm:text-2xl font-black mb-5" style={{ lineHeight: 1.15, paddingBottom: '0.1em', overflow: 'visible' }}>Distribución típica del presupuesto de boda</h2>
           <div className="rounded-xl p-5" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)' }}>
-            {([['Catering (banquete + bebidas)', '40–45%', 0.42], ['Venue / Finca', '15–20%', 0.17], ['Fotografía y vídeo', '10–15%', 0.12], ['Flores y decoración', '8–12%', 0.10], ['DJ o música en vivo', '5–10%', 0.07], ['Personal de sala', '5–8%', 0.06], ['Maquillaje y peluquería', '3–5%', 0.04], ['MC y coordinación', '3–5%', 0.03]] as [string, string, number][]).map(([label, pct, ratio]) => (
+            {([['Catering (banquete + bebidas)', '40-45%', 0.42], ['Venue / Finca', '15-20%', 0.17], ['Fotografía y vídeo', '10-15%', 0.12], ['Flores y decoración', '8-12%', 0.10], ['DJ o música en vivo', '5-10%', 0.07], ['Personal de sala', '5-8%', 0.06], ['Maquillaje y peluquería', '3-5%', 0.04], ['MC y coordinación', '3-5%', 0.03]] as [string, string, number][]).map(([label, pct, ratio]) => (
               <div key={label} className="py-2 border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
                 <div className="flex justify-between text-xs mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>
                   <span>{label}</span>

@@ -38,10 +38,10 @@ const breadcrumb = {
 };
 
 const PRECIOS = [
-  { concepto: 'Estilista integral boda (novia + novio + séquito)', precio: '300€ – 1.500€' },
-  { concepto: 'Asesoramiento de imagen individual', precio: '80€ – 200€ / sesión' },
+  { concepto: 'Estilista integral boda (novia + novio + séquito)', precio: '300€-1.500€' },
+  { concepto: 'Asesoramiento de imagen individual', precio: '80€-200€ / sesión' },
   { concepto: 'Coordinación de vestuario en rodaje', precio: 'Por jornada, según producción' },
-  { concepto: 'Personal shopper para evento puntual', precio: '80€ – 200€' },
+  { concepto: 'Personal shopper para evento puntual', precio: '80€-200€' },
 ];
 
 export default function BlogCuantoCobraEstilistaEventos() {
@@ -51,7 +51,7 @@ export default function BlogCuantoCobraEstilistaEventos() {
         <title>Cuánto cobra un estilista de eventos (2026) | XPEAK</title>
         <meta name="description" content="Precios reales de estilistas para bodas, producciones audiovisuales y personal shopper de eventos en España." />
         <link rel="canonical" href="https://xpeak.es/blog/cuanto-cobra-un-estilista-de-eventos" />
-        <meta property="og:title" content="Cuánto cobra un estilista de eventos — XPEAK Blog" />
+        <meta property="og:title" content="Cuánto cobra un estilista de eventos | XPEAK Blog" />
         <meta property="og:description" content="Precios reales de estilistas y profesionales de vestuario para eventos." />
         <meta property="og:url" content="https://xpeak.es/blog/cuanto-cobra-un-estilista-de-eventos" />
         <meta property="og:type" content="article" />

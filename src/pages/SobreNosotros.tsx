@@ -34,7 +34,7 @@ const SobreNosotros = () => {
   return (
     <div className="min-h-screen flex flex-col overflow-hidden relative" style={{ background: '#090909' }}>
       <Helmet>
-        <title>Sobre Nosotros | XPEAK — Plataforma profesional de eventos en España</title>
+        <title>Sobre Nosotros | XPEAK: Plataforma profesional de eventos en España</title>
         <meta name="description" content="Conoce la historia y el equipo detrás de XPEAK. Fundada en 2026, conectamos más de 31 profesionales verificados del sector de eventos con organizadores en toda España." />
         <link rel="canonical" href="https://xpeak.es/sobre-nosotros" />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
@@ -76,7 +76,7 @@ const SobreNosotros = () => {
           <div className="glass-panel p-6 md:p-8" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
             <h2 className="text-lg font-black mb-3" style={{ color: '#fff' }}>La historia de XPEAK</h2>
             <p className="mb-3">
-              XPEAK nació en 2026 de una frustración real con el sector de eventos en España: los profesionales más talentosos — DJs, fotógrafos, coordinadores, camareros — dependían de contactos informales, grupos de WhatsApp y llamadas de última hora para conseguir trabajo.
+              XPEAK nació en 2026 de una frustración real con el sector de eventos en España: los profesionales más talentosos, DJs, fotógrafos, coordinadores, camareros, dependían de contactos informales, grupos de WhatsApp y llamadas de última hora para conseguir trabajo.
             </p>
             <p className="mb-3">
               Los organizadores de eventos, por su parte, perdían horas buscando profesionales disponibles, sin poder comparar precios ni verificar experiencia. No existía una plataforma específica para el sector.
@@ -95,7 +95,7 @@ const SobreNosotros = () => {
                 D
               </div>
               <div>
-                <p className="font-black text-white">Daniel — Fundador y CEO</p>
+                <p className="font-black text-white">Daniel: Fundador y CEO</p>
                 <p className="text-xs mt-1 mb-2" style={{ color: 'rgba(255,255,255,0.6)' }}>Madrid, España</p>
                 <p style={{ color: 'rgba(255,255,255,0.65)' }}>
                   Especialista en el sector de eventos y entretenimiento nocturno en España. Con experiencia directa en el ecosistema de salas, festivales y eventos privados, fundó XPEAK para resolver los problemas que él mismo vivió al intentar conectar talento con oportunidades en el sector.
@@ -111,7 +111,7 @@ const SobreNosotros = () => {
           <div className="glass-panel p-6 md:p-8" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
             <h2 className="text-lg font-black mb-3" style={{ color: '#fff' }}>Nuestra misión</h2>
             <p className="mb-3">
-              Que cada profesional del sector de eventos tenga una vitrina digital profesional — y que cada organizador encuentre al profesional adecuado en minutos, no en días.
+              Que cada profesional del sector de eventos tenga una vitrina digital profesional, y que cada organizador encuentre al profesional adecuado en minutos, no en días.
             </p>
             <p className="mb-3">
               Creemos que el talento no debería depender de quién conoces, sino de cómo te muestras. XPEAK da a los profesionales las herramientas que antes solo tenían las grandes agencias.
@@ -134,7 +134,7 @@ const SobreNosotros = () => {
               ].map(([title, desc]) => (
                 <li key={title} className="flex items-start gap-3">
                   <span className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0" style={{ background: '#D4AF37' }} />
-                  <span><strong style={{ color: '#fff' }}>{title}</strong> — {desc}</span>
+                  <span><strong style={{ color: '#fff' }}>{title}</strong> · {desc}</span>
                 </li>
               ))}
             </ul>
@@ -156,7 +156,6 @@ const SobreNosotros = () => {
             <h2 className="text-lg font-black mb-4" style={{ color: '#fff' }}>Transparencia y confianza</h2>
             <ul className="space-y-2">
               {[
-                '0% de comisión para salas y organizadores — siempre.',
                 'Verificación manual de cada perfil profesional antes de publicarlo.',
                 'Contratos con validez legal bajo legislación española.',
                 'Política de privacidad conforme al RGPD europeo.',

@@ -286,7 +286,7 @@ const ROLE_DETAILS = [
     key: 'musica', title: 'Música', icon: <Music size={28} />, tagline: 'DJs, productores, artistas en vivo y VJs',
     steps: [
       { icon: <Headphones size={22} />, image: px(1540406), title: '¿Qué es este rol?',  body: 'DJs, productores, artistas en vivo y VJs para bodas, festivales, eventos corporativos y privados en toda España.' },
-      { icon: <Music size={22} />,      image: px(164745),  title: 'Tu perfil, tu marca', body: 'Incrusta tus sesiones de Mixcloud o SoundCloud. Los organizadores escuchan tu trabajo antes de contactarte — sin intermediarios.' },
+      { icon: <Music size={22} />,      image: px(164745),  title: 'Tu perfil, tu marca', body: 'Incrusta tus sesiones de Mixcloud o SoundCloud. Los organizadores escuchan tu trabajo antes de contactarte, sin intermediarios.' },
       { icon: <Zap size={22} />,        image: px(1190297), title: 'Flash Booking',       body: 'Activa tu disponibilidad en tiempo real y recibe ofertas urgentes de eventos que necesitan cubrir una fecha con pocas horas de antelación.' },
       { icon: <Star size={22} />,       image: px(1105666), title: 'Reputación verificada', body: 'Cada evento suma una valoración real. Tu historial habla más que cualquier recomendación de boca en boca y te abre puertas a mejores contratos.' },
       { icon: <Heart size={22} />,      image: px(2747449), title: 'Mi Ficha Pública',    body: 'Comparte posts, audio, vídeo e imágenes con organizadores y fans. Tu ficha es tu tarjeta de presentación permanente en xpeak.es.' },
@@ -307,7 +307,7 @@ const ROLE_DETAILS = [
       { icon: <Camera size={22} />,  image: px(3379934), title: '¿Qué es este rol?', body: 'Fotógrafos de eventos, videógrafos, realizadores de contenido y técnicos visuales especializados en el entretenimiento nocturno.' },
       { icon: <Video size={22} />,   image: px(196644),  title: 'Portfolio visual',  body: 'Sube imágenes y vídeos cortos de tu trabajo real. Una galería que muestra tu estilo mejor que cualquier CV.' },
       { icon: <Search size={22} />,  image: px(3379934), title: 'Visibilidad SEO',   body: 'Tu perfil aparece indexado en buscadores. Salas, productoras y agencias de Europa te encuentran cuando te necesitan.' },
-      { icon: <Zap size={22} />,     image: px(196644),  title: 'Booking directo',   body: 'Los empresarios filtran por especialidad, zona y precio. Contacto directo sin agencias ni comisiones ocultas.' },
+      { icon: <Zap size={22} />,     image: px(196644),  title: 'Booking directo',   body: 'Los empresarios filtran por especialidad, zona y precio. Contacto directo sin agencias.' },
     ],
   },
   {
@@ -315,7 +315,7 @@ const ROLE_DETAILS = [
     steps: [
       { icon: <Users size={22} />,   image: px(2608517), title: '¿Qué es este rol?',                  body: 'Relaciones públicas, promotores, hostess, azafatas y coordinadores de acceso para clubs, festivales y eventos privados.' },
       { icon: <Globe size={22} />,   image: px(1763075), title: 'Primera plataforma formal para RRPP', body: 'XPEAK formaliza el trabajo de RRPP en España. Define tus tarifas y condiciones sin depender de contactos informales.' },
-      { icon: <Zap size={22} />,     image: px(2608517), title: 'Ingresos transparentes',              body: 'Publica tus tarifas y disponibilidad. Sin intermediarios ni comisiones. El empresario ve tu perfil y te contacta directamente.' },
+      { icon: <Zap size={22} />,     image: px(2608517), title: 'Ingresos transparentes',              body: 'Publica tus tarifas y disponibilidad. Sin intermediarios. El empresario ve tu perfil y te contacta directamente.' },
       { icon: <Award size={22} />,   image: px(1763075), title: 'Construye reputación',                body: 'Valoraciones verificadas de cada evento. Tu historial habla más que cualquier recomendación de boca en boca.' },
     ],
   },
@@ -732,7 +732,7 @@ const Landing = () => {
             animación para pintarse — con opacity:0 hasta que Framer Motion
             hidrata, el navegador tarda de más en marcarlo como "pintado". */}
         <h1
-            aria-label="Los mejores profesionales para tu evento en España — DJ, fotógrafo, camareros y staff verificados"
+            aria-label="Los mejores profesionales para tu evento en España: DJ, fotógrafo, camareros y staff verificados"
             className="text-3xl sm:text-5xl md:text-8xl font-black mb-3 md:mb-7 max-w-5xl mx-auto tracking-tight text-center font-display"
             style={{ lineHeight: 1.1, paddingBottom: '0.15em', overflow: 'visible' }}
           >

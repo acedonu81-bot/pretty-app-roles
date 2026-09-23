@@ -65,7 +65,7 @@ const welcomeMessages: Record<string, { icon: any; title: string; subject: strin
     icon: Building2,
     title: 'Empresario',
     subject: 'El talento que necesitas está aquí.',
-    body: 'Ya puedes explorar el directorio nacional. Filtra por categoría y provincia para encontrar al profesional ideal. No cobramos comisiones por la contratación; el trato es directo entre tú y el talento. Reporta cualquier duda a info@xpeak.es.',
+    body: 'Ya puedes explorar el directorio nacional. Filtra por categoría y provincia para encontrar al profesional ideal. El trato es directo entre tú y el talento. Reporta cualquier duda a info@xpeak.es.',
   },
 };
 

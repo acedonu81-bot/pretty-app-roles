@@ -31,17 +31,17 @@ const breadcrumb = {
 const faqStructured = {
   '@context': 'https://schema.org', '@type': 'FAQPage',
   mainEntity: [
-    { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de bodas en Tenerife?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de bodas en Tenerife cuesta entre 1.000€ y 3.500€. Las bodas de destino internacionales suelen contratar fotógrafos de fuera con presupuestos más altos (2.500€–5.000€), mientras las parejas locales tienen acceso a excelentes profesionales en el rango 1.000–2.000€.' } },
-    { '@type': 'Question', name: '¿Se puede fotografiar en el Teide?', acceptedAnswer: { '@type': 'Answer', text: 'Las sesiones fotográficas en el Parque Nacional del Teide requieren autorización del Cabildo de Tenerife. El proceso tarda 15–30 días y tiene coste variable. Para postbodas al amanecer en el Teide es una de las experiencias más demandadas de España.' } },
-    { '@type': 'Question', name: '¿Tenerife tiene temporada alta para bodas?', acceptedAnswer: { '@type': 'Answer', text: 'Tenerife tiene clima estable todo el año, lo que la hace popular en invierno para bodas de destino de parejas europeas (alemanas, británicas, escandinavas). La temporada más intensa es octubre–mayo.' } },
+    { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de bodas en Tenerife?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de bodas en Tenerife cuesta entre 1.000€ y 3.500€. Las bodas de destino internacionales suelen contratar fotógrafos de fuera con presupuestos más altos (2.500€-5.000€), mientras las parejas locales tienen acceso a excelentes profesionales en el rango 1.000-2.000€.' } },
+    { '@type': 'Question', name: '¿Se puede fotografiar en el Teide?', acceptedAnswer: { '@type': 'Answer', text: 'Las sesiones fotográficas en el Parque Nacional del Teide requieren autorización del Cabildo de Tenerife. El proceso tarda 15-30 días y tiene coste variable. Para postbodas al amanecer en el Teide es una de las experiencias más demandadas de España.' } },
+    { '@type': 'Question', name: '¿Tenerife tiene temporada alta para bodas?', acceptedAnswer: { '@type': 'Answer', text: 'Tenerife tiene clima estable todo el año, lo que la hace popular en invierno para bodas de destino de parejas europeas (alemanas, británicas, escandinavas). La temporada más intensa es octubre-mayo.' } },
   ],
 };
 
 const PRICES = [
-  { perfil: 'Fotógrafo local emergente', rango: '800€ – 1.200€', nota: 'Conoce la isla, buena relación precio/calidad' },
-  { perfil: 'Fotógrafo profesional', rango: '1.200€ – 2.200€', nota: 'Reportaje completo, postboda opcional' },
-  { perfil: 'Fotógrafo premium', rango: '2.200€ – 3.500€', nota: 'Sesión Teide, edición artística' },
-  { perfil: 'Fotógrafo destino internacional', rango: '3.000€ – 6.000€', nota: 'Viajes incluidos, parejas extranjeras' },
+  { perfil: 'Fotógrafo local emergente', rango: '800€-1.200€', nota: 'Conoce la isla, buena relación precio/calidad' },
+  { perfil: 'Fotógrafo profesional', rango: '1.200€-2.200€', nota: 'Reportaje completo, postboda opcional' },
+  { perfil: 'Fotógrafo premium', rango: '2.200€-3.500€', nota: 'Sesión Teide, edición artística' },
+  { perfil: 'Fotógrafo destino internacional', rango: '3.000€-6.000€', nota: 'Viajes incluidos, parejas extranjeras' },
 ];
 
 export default function BlogFotografoBodaTenerife() {
@@ -96,11 +96,11 @@ export default function BlogFotografoBodaTenerife() {
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Localizaciones imprescindibles para fotos de boda en Tenerife</h2>
           <ul className="space-y-3 mb-8 text-[#333]">
-            <li><strong className="text-[#111]">Parque Nacional del Teide</strong> — Al amanecer el volcán emerge entre nubes. Requiere permiso del Cabildo. Impresionante.</li>
-            <li><strong className="text-[#111]">Acantilados de Los Gigantes</strong> — Paredes volcánicas de 600m sobre el mar. Ideal para bodas en barco o sesiones al atardecer.</li>
-            <li><strong className="text-[#111]">Pueblo de La Orotava</strong> — Casas coloniales, jardines centenarios y arquitectura canaria. El escenario más fotogénico del interior.</li>
-            <li><strong className="text-[#111]">Bosque de Anaga</strong> — Laurisilva con niebla y luz filtrada. Para reportajes con atmósfera mágica.</li>
-            <li><strong className="text-[#111]">Playa de Las Teresitas</strong> — Arena dorada y palmeras. La postal canaria clásica para postbodas.</li>
+            <li><strong className="text-[#111]">Parque Nacional del Teide</strong>: Al amanecer el volcán emerge entre nubes. Requiere permiso del Cabildo. Impresionante.</li>
+            <li><strong className="text-[#111]">Acantilados de Los Gigantes</strong>: Paredes volcánicas de 600m sobre el mar. Ideal para bodas en barco o sesiones al atardecer.</li>
+            <li><strong className="text-[#111]">Pueblo de La Orotava</strong>: Casas coloniales, jardines centenarios y arquitectura canaria. El escenario más fotogénico del interior.</li>
+            <li><strong className="text-[#111]">Bosque de Anaga</strong>: Laurisilva con niebla y luz filtrada. Para reportajes con atmósfera mágica.</li>
+            <li><strong className="text-[#111]">Playa de Las Teresitas</strong>: Arena dorada y palmeras. La postal canaria clásica para postbodas.</li>
           </ul>
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-fotografo" articlePath="/blog/fotografo-boda-tenerife" />

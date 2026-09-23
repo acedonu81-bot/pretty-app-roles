@@ -31,17 +31,17 @@ const breadcrumb = {
 const faqStructured = {
   '@context': 'https://schema.org', '@type': 'FAQPage',
   mainEntity: [
-    { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de bodas en Córdoba?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de bodas en Córdoba cuesta entre 750€ y 2.000€. Las bodas con acceso a la Mezquita-Catedral o los Patios cordobeses pueden incluir extras por permisos o coordinación con el Cabildo (200–400€).' } },
+    { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de bodas en Córdoba?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de bodas en Córdoba cuesta entre 750€ y 2.000€. Las bodas con acceso a la Mezquita-Catedral o los Patios cordobeses pueden incluir extras por permisos o coordinación con el Cabildo (200-400€).' } },
     { '@type': 'Question', name: '¿Se puede fotografiar dentro de la Mezquita-Catedral de Córdoba?', acceptedAnswer: { '@type': 'Answer', text: 'Las sesiones fotográficas privadas en el interior de la Mezquita-Catedral requieren autorización especial del Cabildo. La Puerta del Perdón y los alrededores son libremente accesibles para reportajes exteriores.' } },
-    { '@type': 'Question', name: '¿Cuándo es la mejor época para bodas en Córdoba?', acceptedAnswer: { '@type': 'Answer', text: 'La primavera (marzo–mayo) es la época dorada, especialmente durante el Festival de los Patios en mayo. El otoño (septiembre–noviembre) es también excelente. El verano (julio–agosto) es muy caluroso con temperaturas superiores a 40°C.' } },
+    { '@type': 'Question', name: '¿Cuándo es la mejor época para bodas en Córdoba?', acceptedAnswer: { '@type': 'Answer', text: 'La primavera (marzo-mayo) es la época dorada, especialmente durante el Festival de los Patios en mayo. El otoño (septiembre-noviembre) es también excelente. El verano (julio-agosto) es muy caluroso con temperaturas superiores a 40°C.' } },
   ],
 };
 
 const PRICES = [
-  { perfil: 'Fotógrafo emergente', rango: '650€ – 950€', nota: 'Conoce la ciudad, buen precio' },
-  { perfil: 'Fotógrafo profesional', rango: '950€ – 1.700€', nota: 'Cobertura completa, álbum digital' },
-  { perfil: 'Fotógrafo premium', rango: '1.700€ – 2.500€', nota: 'Edición artística, acceso Patios' },
-  { perfil: 'Fotógrafo de referencia', rango: '2.500€ – 4.000€', nota: 'Premiado, publicaciones nacionales' },
+  { perfil: 'Fotógrafo emergente', rango: '650€-950€', nota: 'Conoce la ciudad, buen precio' },
+  { perfil: 'Fotógrafo profesional', rango: '950€-1.700€', nota: 'Cobertura completa, álbum digital' },
+  { perfil: 'Fotógrafo premium', rango: '1.700€-2.500€', nota: 'Edición artística, acceso Patios' },
+  { perfil: 'Fotógrafo de referencia', rango: '2.500€-4.000€', nota: 'Premiado, publicaciones nacionales' },
 ];
 
 export default function BlogFotografoBodaCordoba() {
@@ -96,11 +96,11 @@ export default function BlogFotografoBodaCordoba() {
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Mejores localizaciones para fotos de boda en Córdoba</h2>
           <ul className="space-y-3 mb-8 text-[#333]">
-            <li><strong className="text-[#111]">Mezquita-Catedral</strong> — El monumento más fotografiado de Andalucía. El Patio de los Naranjos en primavera es absolutamente único.</li>
-            <li><strong className="text-[#111]">Judería y Calleja de las Flores</strong> — La postal más icónica de Córdoba. Libre de permisos, ideal para reportajes íntimos.</li>
-            <li><strong className="text-[#111]">Patios Cordobeses</strong> — Durante mayo (Festival de Patios UNESCO) los geranios en cascada crean decorados naturales imposibles.</li>
-            <li><strong className="text-[#111]">Alcázar de los Reyes Cristianos</strong> — Jardines, fuentes y murallas medievales. Sesiones postboda en los jardines al atardecer.</li>
-            <li><strong className="text-[#111]">Haciendas del Valle de los Pedroches</strong> — Para bodas rurales con dehesa y encinas centenarias al fondo.</li>
+            <li><strong className="text-[#111]">Mezquita-Catedral</strong>: El monumento más fotografiado de Andalucía. El Patio de los Naranjos en primavera es absolutamente único.</li>
+            <li><strong className="text-[#111]">Judería y Calleja de las Flores</strong>: La postal más icónica de Córdoba. Libre de permisos, ideal para reportajes íntimos.</li>
+            <li><strong className="text-[#111]">Patios Cordobeses</strong>: Durante mayo (Festival de Patios UNESCO) los geranios en cascada crean decorados naturales imposibles.</li>
+            <li><strong className="text-[#111]">Alcázar de los Reyes Cristianos</strong>: Jardines, fuentes y murallas medievales. Sesiones postboda en los jardines al atardecer.</li>
+            <li><strong className="text-[#111]">Haciendas del Valle de los Pedroches</strong>: Para bodas rurales con dehesa y encinas centenarias al fondo.</li>
           </ul>
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-fotografo" articlePath="/blog/fotografo-boda-cordoba" />

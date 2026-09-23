@@ -54,7 +54,7 @@ export const BARES: LocalInvestigado[] = [
 
 export const TERRAZAS: LocalInvestigado[] = [
   { nombre: 'La Catorce Sky Bar', zona: 'Gran Vía', tipo: 'Rooftop con vistas al centro', web: 'https://lacatorcemadrid.es', foto: G_ROOFTOP[0], fotoReal: false, categoria: 'terraza' },
-  { nombre: 'Doñaluz — The Madrid Rooftop', zona: 'Centro / Montera', tipo: 'Rooftop', web: 'https://donaluzmadrid.com', foto: G_ROOFTOP[1], fotoReal: false, categoria: 'terraza' },
+  { nombre: 'Doñaluz: The Madrid Rooftop', zona: 'Centro / Montera', tipo: 'Rooftop', web: 'https://donaluzmadrid.com', foto: G_ROOFTOP[1], fotoReal: false, categoria: 'terraza' },
   { nombre: 'Ella Sky Bar', zona: 'Gran Vía', tipo: 'Rooftop con vistas a Callao', web: 'https://ellaskybar.es', foto: G_ROOFTOP[2], fotoReal: false, categoria: 'terraza' },
   { nombre: 'Irreverente Madrid', zona: 'Chamberí', tipo: 'Club + rooftop', web: 'https://irreverentemadrid.es', foto: G_ROOFTOP[3], fotoReal: false, categoria: 'terraza' },
   { nombre: 'La Azotea Caribú', zona: 'Salamanca', tipo: 'Rooftop de 460m²', foto: G_ROOFTOP[4], fotoReal: false, categoria: 'terraza' },

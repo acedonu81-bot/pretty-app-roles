@@ -7,11 +7,11 @@ import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
 const PAQUETES = [
-  { paquete: 'Básico (4h)', precio: '400€ – 650€', incluye: 'DJ + equipo de sonido + luces de color básicas' },
-  { paquete: 'Estándar (6h)', precio: '600€ – 900€', incluye: 'DJ + sonido + iluminación completa + máquina de humo' },
-  { paquete: 'Premium (8h)', precio: '800€ – 1.300€', incluye: 'DJ + sonido + luces + efectos (cañón confeti, humo, CO2)' },
-  { paquete: 'Comunión completa', precio: '700€ – 1.100€', incluye: 'Música en el convite + baile con equipo completo' },
-  { paquete: 'Pack foto + disco móvil', precio: '1.200€ – 2.000€', incluye: 'DJ con equipo + fotógrafo del evento' },
+  { paquete: 'Básico (4h)', precio: '400€-650€', incluye: 'DJ + equipo de sonido + luces de color básicas' },
+  { paquete: 'Estándar (6h)', precio: '600€-900€', incluye: 'DJ + sonido + iluminación completa + máquina de humo' },
+  { paquete: 'Premium (8h)', precio: '800€-1.300€', incluye: 'DJ + sonido + luces + efectos (cañón confeti, humo, CO2)' },
+  { paquete: 'Comunión completa', precio: '700€-1.100€', incluye: 'Música en el convite + baile con equipo completo' },
+  { paquete: 'Pack foto + disco móvil', precio: '1.200€-2.000€', incluye: 'DJ con equipo + fotógrafo del evento' },
 ];
 
 const FAQ = [

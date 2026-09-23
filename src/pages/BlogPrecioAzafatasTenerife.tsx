@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Tenerife', item: 'https://xpeak.es/blog/precio-azafatas-tenerife' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '140–195€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '165–255€/día', nota: 'Eventos de marca y hoteles de lujo' },
-  { perfil: 'Azafata bilingüe (inglés/alemán)', tarifa: '175–235€/día', nota: 'Muy demandada por el turismo internacional' },
-  { perfil: 'Azafata de protocolo', tarifa: '180–250€/día', nota: 'Bodas de lujo en fincas del sur' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '195–290€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '90–150€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '140-195€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '165-255€/día', nota: 'Eventos de marca y hoteles de lujo' },
+  { perfil: 'Azafata bilingüe (inglés/alemán)', tarifa: '175-235€/día', nota: 'Muy demandada por el turismo internacional' },
+  { perfil: 'Azafata de protocolo', tarifa: '180-250€/día', nota: 'Bodas de lujo en fincas del sur' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '195-290€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '90-150€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasTenerife() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasTenerife() {
         <title>Precio azafatas para eventos en Tenerife 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos corporativos y bodas de lujo en Tenerife. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-tenerife" />
-        <meta property="og:title" content="Precio azafatas eventos Tenerife 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Tenerife 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para bodas de lujo y eventos corporativos en Tenerife." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-tenerife" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

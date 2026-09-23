@@ -52,7 +52,7 @@ async function main() {
   const env = readEnv();
   const supabaseUrl = env.SUPABASE_URL || env.VITE_SUPABASE_URL;
   const key = env.SUPABASE_PUBLISHABLE_KEY || env.VITE_SUPABASE_PUBLISHABLE_KEY;
-  if (!supabaseUrl || !key) { console.warn('  ⚠ Sin credenciales Supabase — se omite prerender de reseñas'); return; }
+  if (!supabaseUrl || !key) { console.warn('  ⚠ Sin credenciales Supabase: se omite prerender de reseñas'); return; }
 
   // Perfiles reales (mismo criterio que sitemap) para mapear user_id → slug
   const profiles = await sbFetch(supabaseUrl, key,

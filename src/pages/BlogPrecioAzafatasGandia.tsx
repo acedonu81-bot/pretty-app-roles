@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Gandía', item: 'https://xpeak.es/blog/precio-azafatas-gandia' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '125–165€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen / playa', tarifa: '145–210€/día', nota: 'Activaciones de marca en temporada alta' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '155–195€/día', nota: 'Eventos con turismo internacional en verano' },
-  { perfil: 'Azafata de protocolo (UPV Gandía)', tarifa: '130–175€/día', nota: 'Jornadas académicas y actos institucionales' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '170–230€/día', nota: 'Gestión de equipo en eventos de verano' },
-  { perfil: 'Pack evento en playa (4h)', tarifa: '80–125€', nota: 'Sube en julio y agosto' },
+  { perfil: 'Azafata de stand / feria', tarifa: '125-165€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen / playa', tarifa: '145-210€/día', nota: 'Activaciones de marca en temporada alta' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '155-195€/día', nota: 'Eventos con turismo internacional en verano' },
+  { perfil: 'Azafata de protocolo (UPV Gandía)', tarifa: '130-175€/día', nota: 'Jornadas académicas y actos institucionales' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '170-230€/día', nota: 'Gestión de equipo en eventos de verano' },
+  { perfil: 'Pack evento en playa (4h)', tarifa: '80-125€', nota: 'Sube en julio y agosto' },
 ];
 
 export default function BlogPrecioAzafatasGandia() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasGandia() {
         <title>Precio azafatas para eventos en Gandía 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos de playa y corporativos en Gandía. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-gandia" />
-        <meta property="og:title" content="Precio azafatas eventos Gandía 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Gandía 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para eventos de playa y universitarios en Gandía." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-gandia" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

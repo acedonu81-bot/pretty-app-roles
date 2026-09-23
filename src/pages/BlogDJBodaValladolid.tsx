@@ -13,16 +13,16 @@ const article = { '@context': 'https://schema.org', '@type': 'Article', headline
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda en Valladolid?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ para boda en Valladolid cuesta entre 500€ y 1.400€ para el servicio completo. La provincia tiene precios similares a la media castellana, más económicos que Madrid o Barcelona. Para bodas en bodegas de la Ribera del Duero el rango puede subir hasta 1.800€ por venues de mayor exclusividad.' } },
   { '@type': 'Question', name: '¿Cuándo es la temporada alta de bodas en Valladolid?', acceptedAnswer: { '@type': 'Answer', text: 'Junio, septiembre y octubre son los meses más demandados. El invierno en Valladolid es frío y los veranos son calurosos pero secos, lo que hace que la primavera tardía y el otoño sean ideales. Las bodegas de Ribera del Duero tienen una demanda especial en época de vendimia (septiembre-octubre).' } },
-  { '@type': 'Question', name: '¿Las bodegas de Ribera del Duero organizan bodas con DJ?', acceptedAnswer: { '@type': 'Answer', text: 'Sí. Muchas bodegas de la Ribera del Duero (Pesquera, Vega Sicilia, Pago de Carraovejas) tienen salas de eventos y organizan bodas completas. Es un venue muy demandado. Algunos tienen sus propios proveedores de DJ, pero puedes llevar el tuyo propio — confirma con la bodega sus condiciones.' } },
+  { '@type': 'Question', name: '¿Las bodegas de Ribera del Duero organizan bodas con DJ?', acceptedAnswer: { '@type': 'Answer', text: 'Sí. Muchas bodegas de la Ribera del Duero (Pesquera, Vega Sicilia, Pago de Carraovejas) tienen salas de eventos y organizan bodas completas. Es un venue muy demandado. Algunos tienen sus propios proveedores de DJ, pero puedes llevar el tuyo propio: confirma con la bodega sus condiciones.' } },
   { '@type': 'Question', name: '¿Hay DJs en Valladolid especializados en bodas?', acceptedAnswer: { '@type': 'Answer', text: 'Sí. Valladolid tiene una escena de DJs de boda consolidada, con profesionales especializados en la mezcla pop/variados que funciona para bodas de 150-300 personas con invitados de varias generaciones. También hay DJs jóvenes con perfil más electrónico para bodas más modernas.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'DJ bodas Valladolid', item: 'https://xpeak.es/blog/dj-bodas-valladolid' }] };
 
 const PRECIOS = [
-  { servicio: 'Solo pista de baile (4-5h)', precio: '280–680€' },
-  { servicio: 'Cóctel + pista de baile', precio: '450–1.000€' },
-  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '580–1.400€' },
-  { servicio: 'Pack bodega Ribera del Duero', precio: '900–1.800€' },
+  { servicio: 'Solo pista de baile (4-5h)', precio: '280-680€' },
+  { servicio: 'Cóctel + pista de baile', precio: '450-1.000€' },
+  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '580-1.400€' },
+  { servicio: 'Pack bodega Ribera del Duero', precio: '900-1.800€' },
 ];
 
 const ZONAS = [
@@ -41,7 +41,7 @@ export default function BlogDJBodaValladolid() {
         <title>DJ para bodas en Valladolid: precio 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un DJ para una boda en Valladolid. Precios reales 2026, bodegas Ribera del Duero, fincas castellanas y cómo contratar el mejor DJ." />
         <link rel="canonical" href="https://xpeak.es/blog/dj-bodas-valladolid" />
-        <meta property="og:title" content="DJ para bodas en Valladolid: precio 2026 — XPEAK Blog" />
+        <meta property="og:title" content="DJ para bodas en Valladolid: precio 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precios reales de DJs de boda en Valladolid. Bodegas, palacios y cómo elegir el perfil correcto." />
         <meta property="og:url" content="https://xpeak.es/blog/dj-bodas-valladolid" />
         <meta property="og:type" content="article" />

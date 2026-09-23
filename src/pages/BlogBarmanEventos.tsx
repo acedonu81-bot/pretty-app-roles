@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Contratar barman evento privado', item: 'https://xpeak.es/blog/contratar-barman-evento-privado' }] };
 
 const PAQUETES = [
-  { pack: 'Barman básico (4h, sin alcohol)', precio: '150–250€', para: 'Fiestas privadas pequeñas' },
-  { pack: 'Barman + coctelería clásica (5h)', precio: '250–400€', para: 'Bodas, cumpleaños VIP' },
-  { pack: 'Pack barra libre (barman + equipo + productos)', precio: '18–35€/persona', para: 'Lo más contratado en bodas' },
-  { pack: 'Barman flair / show (pirotecnia de botellas)', precio: '300–600€', para: 'Eventos espectáculo, lanzamientos' },
-  { pack: 'Pack cóctel de bienvenida (1-2h, 50-100 pax)', precio: '400–700€', para: 'Recepción de bodas o eventos' },
-  { pack: 'Barman semanal (clubs, restaurantes)', precio: '600–1.200€/semana', para: 'Cobertura de temporada' },
+  { pack: 'Barman básico (4h, sin alcohol)', precio: '150-250€', para: 'Fiestas privadas pequeñas' },
+  { pack: 'Barman + coctelería clásica (5h)', precio: '250-400€', para: 'Bodas, cumpleaños VIP' },
+  { pack: 'Pack barra libre (barman + equipo + productos)', precio: '18-35€/persona', para: 'Lo más contratado en bodas' },
+  { pack: 'Barman flair / show (pirotecnia de botellas)', precio: '300-600€', para: 'Eventos espectáculo, lanzamientos' },
+  { pack: 'Pack cóctel de bienvenida (1-2h, 50-100 pax)', precio: '400-700€', para: 'Recepción de bodas o eventos' },
+  { pack: 'Barman semanal (clubs, restaurantes)', precio: '600-1.200€/semana', para: 'Cobertura de temporada' },
 ];
 
 export default function BlogBarmanEventos() {
@@ -33,7 +33,7 @@ export default function BlogBarmanEventos() {
         <title>Barman evento privado: precio 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta contratar un barman o coctelero para un evento privado en España. Tarifas, paquetes y diferencias con camarero de barra. Guía 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/contratar-barman-evento-privado" />
-        <meta property="og:title" content="Contratar barman evento privado: precios 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Contratar barman evento privado: precios 2026 | XPEAK Blog" />
         <meta property="og:description" content="Cuánto cuesta contratar un barman para un evento privado en España. Tarifas y paquetes." />
         <meta property="og:url" content="https://xpeak.es/blog/contratar-barman-evento-privado" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

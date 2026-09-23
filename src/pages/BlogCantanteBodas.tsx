@@ -9,16 +9,16 @@ import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
 const TABLE = [
-  { formato: 'Solista voz (sin banda)', momento: 'Ceremonia / cóctel', rango: '300€ – 700€', notas: 'Piano o backing track de acompañamiento' },
-  { formato: 'Dúo voz + guitarra', momento: 'Ceremonia + cóctel', rango: '500€ – 1.000€', incluye: 'Repertorio variado, acústico' },
-  { formato: 'Trío jazz / soul', momento: 'Cóctel', rango: '800€ – 1.800€', notas: 'Voz + bajo + guitarra o piano' },
-  { formato: 'Cantante pop con banda completa', momento: 'Banquete / pista', rango: '1.500€ – 4.000€', notas: 'Grupo 4–6 músicos, repertorio top40' },
+  { formato: 'Solista voz (sin banda)', momento: 'Ceremonia / cóctel', rango: '300€-700€', notas: 'Piano o backing track de acompañamiento' },
+  { formato: 'Dúo voz + guitarra', momento: 'Ceremonia + cóctel', rango: '500€-1.000€', incluye: 'Repertorio variado, acústico' },
+  { formato: 'Trío jazz / soul', momento: 'Cóctel', rango: '800€-1.800€', notas: 'Voz + bajo + guitarra o piano' },
+  { formato: 'Cantante pop con banda completa', momento: 'Banquete / pista', rango: '1.500€-4.000€', notas: 'Grupo 4-6 músicos, repertorio top40' },
 ];
 
 const FAQ = [
   { q: '¿Cuánto cuesta un cantante para una boda?', a: 'Depende del formato. Un solista para la ceremonia o cóctel cuesta entre 300€ y 700€. Un cantante pop con banda completa para el banquete puede superar los 2.000€. La mayoría de parejas combina cantante en la ceremonia con DJ para la pista.' },
   { q: '¿Es mejor un cantante o un DJ para la pista de baile?', a: 'Depende del estilo de boda. Una banda en directo aporta energía y exclusividad, pero cuesta entre 3 y 5 veces más que un DJ. La fórmula más habitual en bodas españolas es cantante en ceremonia/cóctel + DJ para la pista de baile.' },
-  { q: '¿Los cantantes de bodas aceptan peticiones de canciones?', a: 'Generalmente sí, dentro de su repertorio. La mayoría comparte una lista de canciones disponibles antes del evento y permite elegir hasta 3–5 temas específicos. Canciones fuera del repertorio pueden implicar un coste adicional por ensayo.' },
+  { q: '¿Los cantantes de bodas aceptan peticiones de canciones?', a: 'Generalmente sí, dentro de su repertorio. La mayoría comparte una lista de canciones disponibles antes del evento y permite elegir hasta 3-5 temas específicos. Canciones fuera del repertorio pueden implicar un coste adicional por ensayo.' },
   { q: '¿Qué equipo necesita un cantante para una boda?', a: 'Un solista necesita micrófono, sistema de PA (altavoces) y monitor de escenario. Algunos lo llevan incluido; otros requieren que el local lo provea. Siempre hay que confirmarlo en el contrato.' },
 ];
 
@@ -104,7 +104,7 @@ const faqStructured = {
             <p className="text-sm font-bold mb-1" style={{ color: '#DB2777' }}>Resumen rápido</p>
             <p className="text-sm leading-relaxed" style={{ color: '#333' }}>
               Un solista para la ceremonia o cóctel cuesta entre <strong style={{ color: '#111' }}>300€ y 700€</strong>.
-              Una banda completa para el banquete puede llegar a <strong style={{ color: '#111' }}>3.000€ – 4.000€</strong>.
+              Una banda completa para el banquete puede llegar a <strong style={{ color: '#111' }}>3.000€-4.000€</strong>.
               La fórmula más frecuente: cantante en la ceremonia + DJ en la pista de baile.
             </p>
           </div>
@@ -138,8 +138,8 @@ const faqStructured = {
           <h2 className="text-xl font-black mb-4">¿En qué momento de la boda actúa el cantante?</h2>
           <ul className="space-y-3 mb-10">
             {[
-              { label: 'Ceremonia civil o religiosa', text: 'El momento más emotivo. Un solista con voz y guitarra o piano es el formato más popular. Suele durar 30–60 minutos (entrada, firma, salida).' },
-              { label: 'Cóctel de bienvenida', text: 'Música ambiental mientras los invitados esperan y felicitan a los novios. Duración habitual: 60–90 minutos. Jazz, soul o pop acústico son los géneros más demandados.' },
+              { label: 'Ceremonia civil o religiosa', text: 'El momento más emotivo. Un solista con voz y guitarra o piano es el formato más popular. Suele durar 30-60 minutos (entrada, firma, salida).' },
+              { label: 'Cóctel de bienvenida', text: 'Música ambiental mientras los invitados esperan y felicitan a los novios. Duración habitual: 60-90 minutos. Jazz, soul o pop acústico son los géneros más demandados.' },
               { label: 'Banquete y pista de baile', text: 'Para animar la pista se necesita una banda completa o DJ. Un solista puede actuar durante los primeros platos como transición entre el cóctel y el baile.' },
             ].map(item => (
               <li key={item.label} className="flex gap-3">
@@ -216,7 +216,7 @@ const faqStructured = {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
                 { href: '/blog/profesionales-bodas', tag: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026', desc: 'DJ, fotógrafo, catering y más. Todo lo que necesitas para tu boda.' },
-                { href: '/blog/musica-en-vivo-para-bodas', tag: 'Bodas', title: 'Música en vivo para bodas — guía 2026', desc: 'Grupos, solistas, tríos y cuartetos. Cuánto cuesta cada formato.' },
+                { href: '/blog/musica-en-vivo-para-bodas', tag: 'Bodas', title: 'Música en vivo para bodas: guía 2026', desc: 'Grupos, solistas, tríos y cuartetos. Cuánto cuesta cada formato.' },
                 { href: '/blog/saxofonista-para-bodas-precio', tag: 'Bodas', title: 'Saxofonista para bodas: precio 2026', desc: 'Qué aporta el saxo y cuánto cuesta en boda.' },
                 { href: '/blog/musica-para-bodas-guia', tag: 'Bodas', title: 'DJ vs banda en directo: ¿qué elegir?', desc: 'Comparativa completa para la pista de baile de tu boda.' },
               ].map(p => (

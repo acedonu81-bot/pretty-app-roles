@@ -75,19 +75,15 @@ const SERVICIOS = [
 const FAQS = [
   {
     q: '¿Cuánto cuesta una boda en España en 2026?',
-    a: 'El presupuesto medio de una boda en España es de 20.000€ a 30.000€. Las partidas principales son catering (40–50%), fotografía (10–15%), DJ o música en vivo (8–12%), camareros (8–10%) y maquillaje (3–5%). En ciudades como Madrid o Barcelona el coste es un 20–30% superior a la media nacional.',
+    a: 'El presupuesto medio de una boda en España es de 20.000€ a 30.000€. Las partidas principales son catering (40-50%), fotografía (10-15%), DJ o música en vivo (8-12%), camareros (8-10%) y maquillaje (3-5%). En ciudades como Madrid o Barcelona el coste es un 20-30% superior a la media nacional.',
   },
   {
     q: '¿Con cuánta antelación debo contratar los proveedores?',
-    a: 'Para bodas en temporada alta (mayo–octubre): 9–12 meses para catering y fotógrafo, 6–9 meses para DJ y camareros. Para bodas en temporada baja o fechas entre semana, 3–6 meses suele ser suficiente. Si necesitas proveedores con poca antelación, el Flash Booking de XPEAK puede conseguirte disponibilidad en menos de 1 hora.',
+    a: 'Para bodas en temporada alta (mayo-octubre): 9-12 meses para catering y fotógrafo, 6-9 meses para DJ y camareros. Para bodas en temporada baja o fechas entre semana, 3-6 meses suele ser suficiente. Si necesitas proveedores con poca antelación, el Flash Booking de XPEAK puede conseguirte disponibilidad en menos de 1 hora.',
   },
   {
     q: '¿Cuántos camareros necesito para mi boda?',
-    a: 'La regla general es 1 camarero por cada 15–20 invitados en servicio de cóctel, y 1 por cada 10 en cena sentada con servicio completo. Para un banquete de 100 personas necesitarás entre 5 y 8 camareros más 1 jefe de sala.',
-  },
-  {
-    q: '¿XPEAK cobra comisión por contratar proveedores?',
-    a: 'No. El acuerdo se cierra directamente entre el organizador y el profesional, sin intermediarios ni porcentajes sobre el precio.',
+    a: 'La regla general es 1 camarero por cada 15-20 invitados en servicio de cóctel, y 1 por cada 10 en cena sentada con servicio completo. Para un banquete de 100 personas necesitarás entre 5 y 8 camareros más 1 jefe de sala.',
   },
   {
     q: '¿Puedo contratar varios proveedores a la vez?',
@@ -108,7 +104,7 @@ export default function BodasLanding() {
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    name: 'Proveedores de Boda en España — XPEAK',
+    name: 'Proveedores de Boda en España | XPEAK',
     provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
     areaServed: { '@type': 'Country', name: 'España' },
     description: 'Directorio de profesionales para bodas en España: DJs, catering, fotógrafos, camareros, maquillaje y música en vivo. Flash Booking en menos de 1h.',
@@ -129,11 +125,11 @@ export default function BodasLanding() {
   return (
     <>
       <Helmet>
-        <title>Proveedores para Bodas en España 2026 — DJ, Catering, Fotógrafo | XPEAK</title>
+        <title>Proveedores para Bodas en España 2026: DJ, Catering, Fotógrafo | XPEAK</title>
         <meta name="description" content="Contrata DJ, catering, fotógrafo, camareros, maquillaje y música en vivo para tu boda en España. Profesionales verificados, Flash Booking en menos de 1h." />
         <meta name="keywords" content="proveedores boda España, contratar DJ boda, catering boda España, fotógrafo boda, camareros boda, maquillaje novia, música en vivo boda, maestro de ceremonias boda" />
         <link rel="canonical" href="https://xpeak.es/bodas" />
-        <meta property="og:title" content="Proveedores para Bodas en España 2026 — XPEAK" />
+        <meta property="og:title" content="Proveedores para Bodas en España 2026 | XPEAK" />
         <meta property="og:description" content="Directorio de profesionales para bodas: DJ, catering, fotógrafo, camareros, maquillaje y música en vivo. Flash Booking en menos de 1h." />
         <meta property="og:url" content="https://xpeak.es/bodas" />
         <meta property="og:type" content="website" />
@@ -192,8 +188,8 @@ export default function BodasLanding() {
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-8">
             {[
               { label: 'Flash Booking', value: 'En menos de 1h', icon: <Zap size={16} /> },
-              { label: 'Presupuesto medio boda', value: '20.000–30.000€', icon: <Star size={16} /> },
-              { label: 'Comisión para novios', value: '0%', icon: <Shield size={16} /> },
+              { label: 'Presupuesto medio boda', value: '20.000-30.000€', icon: <Star size={16} /> },
+              { label: 'Contratos', value: 'Automáticos', icon: <Shield size={16} /> },
             ].map(s => (
               <div key={s.label} className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
@@ -288,7 +284,7 @@ export default function BodasLanding() {
             style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)' }}>
             <h2 className="text-xl sm:text-3xl font-black mb-3">¿Organizas una boda en España?</h2>
             <p className="text-sm mb-6" style={{ color: 'rgba(0,0,0,0.55)' }}>
-              Únete — contratos automáticos, Flash Booking en menos de 1h.
+              Únete: contratos automáticos, Flash Booking en menos de 1h.
             </p>
             <a href="/auth"
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"

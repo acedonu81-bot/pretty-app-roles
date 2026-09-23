@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Valencia', item: 'https://xpeak.es/blog/precio-azafatas-valencia' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria Feria Valencia', tarifa: '110–160€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '140–220€/día', nota: 'Eventos de marca y protocolo' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '150–200€/día', nota: 'Demandada en ferias sectoriales' },
-  { perfil: 'Azafata trilingüe', tarifa: '185–270€/día', nota: 'Ferias con presencia internacional' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '165–250€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '75–120€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria Feria Valencia', tarifa: '110-160€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '140-220€/día', nota: 'Eventos de marca y protocolo' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '150-200€/día', nota: 'Demandada en ferias sectoriales' },
+  { perfil: 'Azafata trilingüe', tarifa: '185-270€/día', nota: 'Ferias con presencia internacional' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '165-250€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '75-120€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasValencia() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasValencia() {
         <title>Precio azafatas para eventos en Valencia 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos y Feria Valencia. Tarifas por perfil actualizadas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-valencia" />
-        <meta property="og:title" content="Precio azafatas eventos Valencia 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Valencia 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para Feria Valencia y eventos corporativos." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-valencia" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

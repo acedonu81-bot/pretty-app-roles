@@ -10,7 +10,7 @@ import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ residente de discoteca: precio, funciones y cómo contratarlo en España (2026)', description: 'Qué hace un DJ residente, cuánto cobra y cómo diferenciarlo de un DJ invitado. Precios por ciudad y tipo de sala en España 2026.', datePublished: '2026-05-07',
   dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-residente-discoteca-precio' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
-  { '@type': 'Question', name: '¿Cuánto cobra un DJ residente de discoteca?', acceptedAnswer: { '@type': 'Answer', text: 'En España, un DJ residente en sala pequeña o mediana cobra entre 200€ y 600€ por noche. En salas de referencia de grandes ciudades (Madrid, Barcelona, Ibiza), el rango es 600€–2.000€. Los cachés mensuales para residencias largas oscilan entre 1.500€ y 8.000€/mes dependiendo del nivel del artista y la sala.' } },
+  { '@type': 'Question', name: '¿Cuánto cobra un DJ residente de discoteca?', acceptedAnswer: { '@type': 'Answer', text: 'En España, un DJ residente en sala pequeña o mediana cobra entre 200€ y 600€ por noche. En salas de referencia de grandes ciudades (Madrid, Barcelona, Ibiza), el rango es 600€-2.000€. Los cachés mensuales para residencias largas oscilan entre 1.500€ y 8.000€/mes dependiendo del nivel del artista y la sala.' } },
   { '@type': 'Question', name: '¿Qué diferencia hay entre DJ residente y DJ invitado?', acceptedAnswer: { '@type': 'Answer', text: 'El DJ residente toca regularmente en la misma sala (semanalmente o en fechas fijas) y se convierte en imagen del club. El DJ invitado actúa puntualmente, normalmente como acto principal o en sesiones especiales. Los invitados suelen cobrar entre 2x y 10x más que el residente de la misma sala.' } },
   { '@type': 'Question', name: '¿Cuántas horas toca un DJ residente?', acceptedAnswer: { '@type': 'Answer', text: 'Normalmente entre 3 y 5 horas por noche. En salas con varios DJs, el residente suele tocar en los horarios de apertura (warm-up) o cierre (closing). Si hay un headliner invitado, el residente toca antes y después del headliner.' } },
   { '@type': 'Question', name: '¿Cómo contratar un DJ residente para mi discoteca?', acceptedAnswer: { '@type': 'Answer', text: 'Puedes contactar directamente con DJs locales de tu ciudad a través de plataformas especializadas como XPEAK. Antes de confirmar, escucha al menos 2-3 mixes del artista, comprueba que su estilo encaja con tu sala, y acuerda por escrito: fechas, cachés, equipo incluido y cláusula de exclusividad.' } },
@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'DJ residente discoteca precio', item: 'https://xpeak.es/blog/dj-residente-discoteca-precio' }] };
 
 const PRECIOS_CIUDAD = [
-  { ciudad: 'Madrid', sala_pequeña: '200–400€', sala_mediana: '400–800€', sala_grande: '800–2.500€' },
-  { ciudad: 'Barcelona', sala_pequeña: '250–450€', sala_mediana: '450–900€', sala_grande: '900–3.000€' },
-  { ciudad: 'Ibiza (temporada)', sala_pequeña: '400–700€', sala_mediana: '700–2.000€', sala_grande: '2.000–10.000€' },
-  { ciudad: 'Sevilla', sala_pequeña: '150–300€', sala_mediana: '300–600€', sala_grande: '600–1.500€' },
-  { ciudad: 'Valencia', sala_pequeña: '150–350€', sala_mediana: '350–700€', sala_grande: '700–2.000€' },
-  { ciudad: 'Resto España', sala_pequeña: '120–250€', sala_mediana: '250–500€', sala_grande: '500–1.200€' },
+  { ciudad: 'Madrid', sala_pequeña: '200-400€', sala_mediana: '400-800€', sala_grande: '800-2.500€' },
+  { ciudad: 'Barcelona', sala_pequeña: '250-450€', sala_mediana: '450-900€', sala_grande: '900-3.000€' },
+  { ciudad: 'Ibiza (temporada)', sala_pequeña: '400-700€', sala_mediana: '700-2.000€', sala_grande: '2.000-10.000€' },
+  { ciudad: 'Sevilla', sala_pequeña: '150-300€', sala_mediana: '300-600€', sala_grande: '600-1.500€' },
+  { ciudad: 'Valencia', sala_pequeña: '150-350€', sala_mediana: '350-700€', sala_grande: '700-2.000€' },
+  { ciudad: 'Resto España', sala_pequeña: '120-250€', sala_mediana: '250-500€', sala_grande: '500-1.200€' },
 ];
 
 export default function BlogDJResidenteDiscoteca() {
@@ -33,7 +33,7 @@ export default function BlogDJResidenteDiscoteca() {
         <title>DJ residente discoteca: precio y funciones 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobra un DJ residente en España. Precios por ciudad y tipo de sala, diferencias con DJ invitado y cómo contratar el residente perfecto para tu club." />
         <link rel="canonical" href="https://xpeak.es/blog/dj-residente-discoteca-precio" />
-        <meta property="og:title" content="DJ residente discoteca: precio 2026 — XPEAK Blog" />
+        <meta property="og:title" content="DJ residente discoteca: precio 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precios de DJ residente en discotecas de España. Por ciudad, tipo de sala y nivel de artista." />
         <meta property="og:url" content="https://xpeak.es/blog/dj-residente-discoteca-precio" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />
@@ -52,7 +52,7 @@ export default function BlogDJResidenteDiscoteca() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>DJ · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ residente de discoteca: precio, funciones y cómo contratarlo en España (2026)</h1>
-            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>El DJ residente es el corazón sonoro de una sala. Ni es un headliner de festival ni un DJ de boda — es un artista que conoce tu público como nadie. Esta guía te explica qué buscar y cuánto pagar.</p>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>El DJ residente es el corazón sonoro de una sala. Ni es un headliner de festival ni un DJ de boda: es un artista que conoce tu público como nadie. Esta guía te explica qué buscar y cuánto pagar.</p>
             <time className="text-xs mt-3 block" style={{ color: '#666' }}>7 mayo 2026</time>
           </div>
           <div className="space-y-10">
@@ -65,7 +65,7 @@ export default function BlogDJResidenteDiscoteca() {
                   <tbody>{PRECIOS_CIUDAD.map((row, i) => (<tr key={row.ciudad} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)', borderBottom: '1px solid rgba(0,0,0,0.04)' }}><td className="px-4 py-3 font-bold">{row.ciudad}</td><td className="px-4 py-3 text-center" style={{ color: '#3d3d4e' }}>{row.sala_pequeña}</td><td className="px-4 py-3 text-center font-bold" style={{ color: '#D4AF37' }}>{row.sala_mediana}</td><td className="px-4 py-3 text-center hidden sm:table-cell" style={{ color: '#D4AF37' }}>{row.sala_grande}</td></tr>))}</tbody>
                 </table>
               </div>
-              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios por noche (caché por sesión). Ibiza incluye temporada alta (junio–septiembre).</p>
+              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios por noche (caché por sesión). Ibiza incluye temporada alta (junio-septiembre).</p>
             </section>
 
             <section>

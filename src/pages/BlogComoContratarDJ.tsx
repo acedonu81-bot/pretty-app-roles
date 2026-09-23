@@ -56,7 +56,7 @@ export default function BlogComoContratarDJ() {
         <title>Cómo contratar un DJ para tu evento: guía completa 2026 | XPEAK</title>
         <meta name="description" content="Guía paso a paso para contratar un DJ en España. Qué preguntar, qué incluye el precio, cómo comparar presupuestos y qué contrato firmar. 2026." />
         <link rel="canonical" href={`https://xpeak.es/blog/${slug}`} />
-        <meta property="og:title" content="Cómo contratar un DJ: guía completa 2026 — XPEAK" />
+        <meta property="og:title" content="Cómo contratar un DJ: guía completa 2026 | XPEAK" />
         <meta property="og:description" content="6 pasos para contratar el DJ perfecto para tu evento. Preguntas clave, precios y qué contrato firmar." />
         <meta property="og:url" content={`https://xpeak.es/blog/${slug}`} />
         <meta property="og:type" content="article" />
@@ -127,7 +127,7 @@ export default function BlogComoContratarDJ() {
                   { href: '/blog/cuanto-cobra-un-dj-en-espana', cat: 'DJ', title: 'Cuánto cobra un DJ en España: precios 2026' },
                   { href: '/blog/contrato-dj-que-debe-incluir', cat: 'DJ', title: 'Contrato para DJ: qué debe incluir' },
                   { href: '/blog/dj-para-eventos', cat: 'Hub DJ', title: 'DJ para eventos: guía completa 2026' },
-                  { href: '/plantilla-contrato-dj', cat: 'Recurso', title: 'Plantilla contrato DJ — descarga Word' },
+                  { href: '/plantilla-contrato-dj', cat: 'Recurso', title: 'Plantilla contrato DJ: descarga Word' },
                 ].map(link => (
                   <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
                     <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>

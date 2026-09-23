@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Castellón', item: 'https://xpeak.es/blog/precio-azafatas-castellon' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria comercial', tarifa: '110–150€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '130–190€/día', nota: 'Presentaciones y actos de empresa' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '145–180€/día', nota: 'Ferias del sector cerámico con visitantes extranjeros' },
-  { perfil: 'Azafata de protocolo / Magdalena', tarifa: '120–170€/día', nota: 'Actos institucionales y desfiles en marzo' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '160–220€/día', nota: 'Gestión de equipo en eventos grandes' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '70–115€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria comercial', tarifa: '110-150€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '130-190€/día', nota: 'Presentaciones y actos de empresa' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '145-180€/día', nota: 'Ferias del sector cerámico con visitantes extranjeros' },
+  { perfil: 'Azafata de protocolo / Magdalena', tarifa: '120-170€/día', nota: 'Actos institucionales y desfiles en marzo' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '160-220€/día', nota: 'Gestión de equipo en eventos grandes' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '70-115€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasCastellon() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasCastellon() {
         <title>Precio azafatas para eventos en Castellón 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos y ferias comerciales en Castellón de la Plana. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-castellon" />
-        <meta property="og:title" content="Precio azafatas eventos Castellón 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Castellón 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para ferias y eventos corporativos en Castellón." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-castellon" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

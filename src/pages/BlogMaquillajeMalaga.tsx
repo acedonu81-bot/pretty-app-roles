@@ -12,18 +12,18 @@ const article = { '@context': 'https://schema.org', '@type': 'Article', headline
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cobra una maquilladora para eventos en Málaga?', acceptedAnswer: { '@type': 'Answer', text: 'En Málaga una maquilladora para novia cobra entre 100€ y 260€, con un repunte en verano por el turismo de bodas en la Costa del Sol. Para eventos corporativos, el precio por persona ronda 32€-70€. Las bodas internacionales suelen pedir maquillaje resistente al calor y la humedad.' } },
   { '@type': 'Question', name: '¿Dónde se concentra la demanda de maquilladoras en Málaga?', acceptedAnswer: { '@type': 'Answer', text: 'La Costa del Sol (Marbella, Estepona, Benalmádena) concentra una demanda muy alta de maquillaje de novia para bodas de lujo, con presencia importante de clientela internacional. En la capital, los hoteles del centro y el entorno del puerto generan demanda de maquillaje para eventos de verano.' } },
-  { '@type': 'Question', name: '¿Con cuánta antelación reservar maquilladora para una boda en Málaga?', acceptedAnswer: { '@type': 'Answer', text: 'Para bodas en la Costa del Sol en temporada alta (junio-septiembre), reserva con 3-4 meses de antelación — es la zona con más presión de fechas de toda Andalucía. Fuera de temporada alta, 4-6 semanas suele bastar.' } },
+  { '@type': 'Question', name: '¿Con cuánta antelación reservar maquilladora para una boda en Málaga?', acceptedAnswer: { '@type': 'Answer', text: 'Para bodas en la Costa del Sol en temporada alta (junio-septiembre), reserva con 3-4 meses de antelación: es la zona con más presión de fechas de toda Andalucía. Fuera de temporada alta, 4-6 semanas suele bastar.' } },
   { '@type': 'Question', name: '¿Es más caro el maquillaje de novia que el de invitada en Málaga?', acceptedAnswer: { '@type': 'Answer', text: 'Sí. El maquillaje de novia incluye prueba previa y una sesión más larga (60-90 min), por lo que cuesta entre 100€ y 260€. El de madrina o invitada especial es más rápido (45-60 min) y ronda los 60€-125€ en Málaga.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Maquillaje Málaga', item: 'https://xpeak.es/blog/maquillaje-eventos-malaga' }] };
 
 const PRECIOS = [
-  { perfil: 'Maquillaje novia (solo)', tarifa: '100–260€', nota: 'Incluye prueba previa' },
-  { perfil: 'Maquillaje novia + peinado', tarifa: '200–450€', nota: 'Servicio integral más demandado' },
-  { perfil: 'Madrina / invitada especial', tarifa: '60–125€', nota: 'Sin prueba previa habitualmente' },
-  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '350–710€', nota: 'Desplazamiento a la Costa del Sol incluido' },
-  { perfil: 'Evento corporativo / azafata', tarifa: '32–70€/persona', nota: 'Maquillaje fast-track profesional' },
-  { perfil: 'Sesión foto / vídeo', tarifa: '85–210€', nota: 'HD, resistente al calor, retoque incluido' },
+  { perfil: 'Maquillaje novia (solo)', tarifa: '100-260€', nota: 'Incluye prueba previa' },
+  { perfil: 'Maquillaje novia + peinado', tarifa: '200-450€', nota: 'Servicio integral más demandado' },
+  { perfil: 'Madrina / invitada especial', tarifa: '60-125€', nota: 'Sin prueba previa habitualmente' },
+  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '350-710€', nota: 'Desplazamiento a la Costa del Sol incluido' },
+  { perfil: 'Evento corporativo / azafata', tarifa: '32-70€/persona', nota: 'Maquillaje fast-track profesional' },
+  { perfil: 'Sesión foto / vídeo', tarifa: '85-210€', nota: 'HD, resistente al calor, retoque incluido' },
 ];
 
 export default function BlogMaquillajeMalaga() {
@@ -33,7 +33,7 @@ export default function BlogMaquillajeMalaga() {
         <title>Precio maquilladora para eventos en Málaga 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobra una maquilladora para bodas y eventos en Málaga y la Costa del Sol. Tarifas por servicio 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/maquillaje-eventos-malaga" />
-        <meta property="og:title" content="Precio maquilladora eventos Málaga 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio maquilladora eventos Málaga 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de maquilladoras para bodas y eventos en Málaga y la Costa del Sol." />
         <meta property="og:url" content="https://xpeak.es/blog/maquillaje-eventos-malaga" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

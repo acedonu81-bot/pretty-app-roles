@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Girona', item: 'https://xpeak.es/blog/precio-azafatas-girona' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '130–175€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '160–230€/día', nota: 'Eventos gastronómicos y de producto' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '165–220€/día', nota: 'Muy demandada por turismo internacional' },
-  { perfil: 'Azafata de protocolo', tarifa: '150–225€/día', nota: 'Actos institucionales en el Barri Vell' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '180–260€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '80–135€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '130-175€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '160-230€/día', nota: 'Eventos gastronómicos y de producto' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '165-220€/día', nota: 'Muy demandada por turismo internacional' },
+  { perfil: 'Azafata de protocolo', tarifa: '150-225€/día', nota: 'Actos institucionales en el Barri Vell' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '180-260€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '80-135€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasGirona() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasGirona() {
         <title>Precio azafatas para eventos en Girona 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos, congresos y bodas en Girona. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-girona" />
-        <meta property="og:title" content="Precio azafatas eventos Girona 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Girona 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para eventos culturales, gastronómicos y corporativos en Girona." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-girona" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

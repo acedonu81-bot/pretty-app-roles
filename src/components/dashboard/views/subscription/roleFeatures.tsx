@@ -23,7 +23,7 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
       ],
       business: [
         'Todo lo de Starter',
-        'Posicionamiento #1–48 en el directorio',
+        'Posicionamiento #1-48 en el directorio',
         'Link de sesión (hearthis / Mixcloud / SoundCloud)',
         'Streaming en vivo (1h/mes incluida, +€2.99/h)',
         'Flash Booking: aplica a ofertas urgentes',
@@ -88,14 +88,14 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
     ],
     plans: {
       starter: [
-        'Badge verificado — más contratos',
+        'Badge verificado: más contratos',
         'Especialidades ilimitadas (hostess, RRPP...)',
         'Estadísticas de visitas básicas',
         'Aparecer en búsquedas por zona y especialidad',
       ],
       business: [
         'Todo lo de Starter',
-        'Posicionamiento #1–48 en directorio',
+        'Posicionamiento #1-48 en directorio',
         'Flash Booking: aplica a urgencias de sala',
         'Historial de eventos verificado',
         'Estadísticas avanzadas',
@@ -106,7 +106,7 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
         'Gestión de equipo (hasta 5 perfiles)',
         'Panel de empresa de personal',
         'Visibilidad máxima garantizada',
-        'Sello Agencia — para empresas de staff',
+        'Sello Agencia: para empresas de staff',
       ],
     },
   },
@@ -122,14 +122,14 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
     ],
     plans: {
       starter: [
-        'Badge verificado — más contratos',
+        'Badge verificado: más contratos',
         'Especialidades ilimitadas (protocolo, stands, ferias...)',
         'Estadísticas de visitas básicas',
         'Aparecer en búsquedas por zona y especialidad',
       ],
       business: [
         'Todo lo de Starter',
-        'Posicionamiento #1–48 en directorio',
+        'Posicionamiento #1-48 en directorio',
         'Flash Booking: aplica a urgencias de ferias y congresos',
         'Historial de eventos verificado',
         'Estadísticas avanzadas',
@@ -140,7 +140,7 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
         'Gestión de equipo (hasta 5 perfiles)',
         'Panel de empresa de personal',
         'Visibilidad máxima garantizada',
-        'Sello Agencia — para empresas de azafatas',
+        'Sello Agencia: para empresas de azafatas',
       ],
     },
   },
@@ -381,9 +381,9 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
     label: 'Empresario / Sala',
     free: [
       'Buscar y contactar talento en el directorio sin límites',
-      'Flash Booking ilimitado — publica ofertas urgentes',
+      'Flash Booking ilimitado: publica ofertas urgentes',
       'Mensajería directa sin límite de conversaciones',
-      'Favoritos ilimitados — guarda tu roster',
+      'Favoritos ilimitados: guarda tu roster',
       'Ver tarifas y portfolios de todos los profesionales',
     ],
     plans: {
@@ -424,14 +424,14 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
     ],
     plans: {
       starter: [
-        'Badge verificada — más solicitudes',
+        'Badge verificada: más solicitudes',
         'Portafolio de eventos realizados',
         'Estadísticas de visitas básicas',
         'Aparecer en búsquedas por zona y especialidad',
       ],
       business: [
         'Todo lo de Starter',
-        'Posicionamiento #1–48 en directorio',
+        'Posicionamiento #1-48 en directorio',
         'Flash Booking: recibe urgencias de coordinación',
         'Historial de eventos verificado',
         'Estadísticas avanzadas',
@@ -442,7 +442,7 @@ export const ROLE_FEATURES: Record<string, { icon: React.ReactNode; label: strin
         'Gestión de equipo coordinador (hasta 5 perfiles)',
         'Panel de agencia de eventos',
         'Visibilidad máxima garantizada',
-        'Sello Agencia — para empresas de coordinación',
+        'Sello Agencia: para empresas de coordinación',
       ],
     },
   },

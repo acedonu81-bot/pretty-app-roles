@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Maquillaje Pamplona', item: 'https://xpeak.es/blog/maquillaje-eventos-pamplona' }] };
 
 const PRECIOS = [
-  { perfil: 'Maquillaje novia (solo)', tarifa: '95–235€', nota: 'Incluye prueba previa' },
-  { perfil: 'Maquillaje novia + peinado', tarifa: '195–420€', nota: 'Servicio integral más demandado' },
-  { perfil: 'Madrina / invitada especial', tarifa: '55–115€', nota: 'Sin prueba previa habitualmente' },
-  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '330–650€', nota: 'Desplazamiento a finca de Navarra incluido' },
-  { perfil: 'Evento corporativo / azafata', tarifa: '30–68€/persona', nota: 'Maquillaje fast-track profesional' },
-  { perfil: 'Peña / evento San Fermín', tarifa: '45–90€', nota: 'Julio: reserva con máxima antelación' },
+  { perfil: 'Maquillaje novia (solo)', tarifa: '95-235€', nota: 'Incluye prueba previa' },
+  { perfil: 'Maquillaje novia + peinado', tarifa: '195-420€', nota: 'Servicio integral más demandado' },
+  { perfil: 'Madrina / invitada especial', tarifa: '55-115€', nota: 'Sin prueba previa habitualmente' },
+  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '330-650€', nota: 'Desplazamiento a finca de Navarra incluido' },
+  { perfil: 'Evento corporativo / azafata', tarifa: '30-68€/persona', nota: 'Maquillaje fast-track profesional' },
+  { perfil: 'Peña / evento San Fermín', tarifa: '45-90€', nota: 'Julio: reserva con máxima antelación' },
 ];
 
 export default function BlogMaquillajePamplona() {
@@ -33,7 +33,7 @@ export default function BlogMaquillajePamplona() {
         <title>Precio maquilladora para eventos en Pamplona 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobra una maquilladora para bodas en fincas de Navarra y eventos en Pamplona, con el pico de San Fermín. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/maquillaje-eventos-pamplona" />
-        <meta property="og:title" content="Precio maquilladora eventos Pamplona 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio maquilladora eventos Pamplona 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de maquilladoras para bodas en fincas de Navarra y eventos en Pamplona." />
         <meta property="og:url" content="https://xpeak.es/blog/maquillaje-eventos-pamplona" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

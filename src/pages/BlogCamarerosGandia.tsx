@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Camareros Gandía', item: 'https://xpeak.es/blog/camareros-eventos-gandia' }] };
 
 const PRECIOS = [
-  { perfil: 'Camarero/a de sala', tarifa: '13–18€/hora', nota: 'Cóctel, cena sentada o buffet' },
-  { perfil: 'Bartender / coctelería', tarifa: '16–23€/hora', nota: 'Barra libre en chiringuitos y eventos de playa' },
-  { perfil: 'Jefe de sala / coordinador', tarifa: '21–30€/hora', nota: 'Gestión del equipo en boda o evento grande' },
-  { perfil: 'Servicio boda completo (6-7h)', tarifa: '150–250€/persona', nota: 'Cóctel + cena + barra, sube en verano' },
-  { perfil: 'Barra libre con bartender (4h)', tarifa: '180–360€', nota: 'Incluye montaje y desmontaje' },
-  { perfil: 'Personal para eventos de playa', tarifa: '14–20€/hora', nota: 'Julio-agosto, alta demanda' },
+  { perfil: 'Camarero/a de sala', tarifa: '13-18€/hora', nota: 'Cóctel, cena sentada o buffet' },
+  { perfil: 'Bartender / coctelería', tarifa: '16-23€/hora', nota: 'Barra libre en chiringuitos y eventos de playa' },
+  { perfil: 'Jefe de sala / coordinador', tarifa: '21-30€/hora', nota: 'Gestión del equipo en boda o evento grande' },
+  { perfil: 'Servicio boda completo (6-7h)', tarifa: '150-250€/persona', nota: 'Cóctel + cena + barra, sube en verano' },
+  { perfil: 'Barra libre con bartender (4h)', tarifa: '180-360€', nota: 'Incluye montaje y desmontaje' },
+  { perfil: 'Personal para eventos de playa', tarifa: '14-20€/hora', nota: 'Julio-agosto, alta demanda' },
 ];
 
 export default function BlogCamarerosGandia() {
@@ -33,7 +33,7 @@ export default function BlogCamarerosGandia() {
         <title>Precio camareros para eventos en Gandía 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran los camareros y bartenders para bodas y eventos de playa en Gandía. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/camareros-eventos-gandia" />
-        <meta property="og:title" content="Precio camareros eventos Gandía 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio camareros eventos Gandía 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de camareros y bartenders para bodas y eventos de playa en Gandía." />
         <meta property="og:url" content="https://xpeak.es/blog/camareros-eventos-gandia" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

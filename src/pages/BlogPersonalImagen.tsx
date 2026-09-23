@@ -8,18 +8,18 @@ import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
 const TABLE = [
-  { perfil: 'Azafata de feria / congreso', jornada: 'Media (5h) / Completa (8h)', rango: '80€ – 180€/día', notas: 'Imagen de marca, atención al visitante' },
-  { perfil: 'Promotora de calle', jornada: 'Media / Completa', rango: '60€ – 120€/día', notas: 'Reparto de material, encuestas, sampling' },
-  { perfil: 'Modelo para evento / showroom', jornada: 'Por hora', rango: '30€ – 80€/h', notas: 'Presentación de producto, catálogo' },
-  { perfil: 'Presentadora de evento', jornada: 'Por actuación', rango: '200€ – 600€', notas: 'Con o sin guion, bilingual disponible' },
-  { perfil: 'Pack equipo de 5 promotoras', jornada: 'Completa', rango: '400€ – 800€/día', notas: 'Coordinador incluido en packs grandes' },
+  { perfil: 'Azafata de feria / congreso', jornada: 'Media (5h) / Completa (8h)', rango: '80€-180€/día', notas: 'Imagen de marca, atención al visitante' },
+  { perfil: 'Promotora de calle', jornada: 'Media / Completa', rango: '60€-120€/día', notas: 'Reparto de material, encuestas, sampling' },
+  { perfil: 'Modelo para evento / showroom', jornada: 'Por hora', rango: '30€-80€/h', notas: 'Presentación de producto, catálogo' },
+  { perfil: 'Presentadora de evento', jornada: 'Por actuación', rango: '200€-600€', notas: 'Con o sin guion, bilingual disponible' },
+  { perfil: 'Pack equipo de 5 promotoras', jornada: 'Completa', rango: '400€-800€/día', notas: 'Coordinador incluido en packs grandes' },
 ];
 
 const FAQ = [
   { q: '¿Qué es el personal de imagen para eventos?', a: 'Es el equipo de azafatas, promotoras, modelos y presentadoras que representan la marca en ferias, congresos, lanzamientos de producto y eventos corporativos. Su función es mejorar la imagen de la empresa, captar leads y facilitar la experiencia del visitante.' },
-  { q: '¿Cuántas azafatas necesito para una feria?', a: 'Depende del tamaño del stand y el flujo esperado de visitantes. Una regla general: 1 azafata por cada 20–30 m² de stand, con un mínimo de 2 para no dejar el espacio desatendido. Para stands grandes (más de 100 m²) lo habitual es 4–6 personas.' },
+  { q: '¿Cuántas azafatas necesito para una feria?', a: 'Depende del tamaño del stand y el flujo esperado de visitantes. Una regla general: 1 azafata por cada 20-30 m² de stand, con un mínimo de 2 para no dejar el espacio desatendido. Para stands grandes (más de 100 m²) lo habitual es 4-6 personas.' },
   { q: '¿La ropa la pone la empresa o la azafata?', a: 'Depende del acuerdo. Para eventos de marca, la empresa suele proporcionar el uniforme o código de vestimenta (colores corporativos, traje de chaqueta específico). Para eventos genéricos, las azafatas llevan ropa según el dress code acordado.' },
-  { q: '¿Con cuánta antelación hay que contratar el personal de imagen?', a: 'Para ferias grandes (FITUR, IFEMA, MWC) con al menos 4–6 semanas. Para eventos corporativos más pequeños, 1–2 semanas suele ser suficiente. El Flash Booking de XPEAK cubre disponibilidad de última hora para perfiles verificados.' },
+  { q: '¿Con cuánta antelación hay que contratar el personal de imagen?', a: 'Para ferias grandes (FITUR, IFEMA, MWC) con al menos 4-6 semanas. Para eventos corporativos más pequeños, 1-2 semanas suele ser suficiente. El Flash Booking de XPEAK cubre disponibilidad de última hora para perfiles verificados.' },
 ];
 
 export default function BlogPersonalImagen() {
@@ -97,14 +97,14 @@ const faqStructured = {
           <p className="text-sm mb-8" style={{ color: '#555' }}>XPEAK · 23 de mayo de 2026 · 4 min de lectura</p>
 
           <p className="text-base leading-relaxed mb-6" style={{ color: '#222' }}>
-            Las ferias y congresos son una de las mayores inversiones de marketing para muchas empresas. El personal de imagen — azafatas, promotoras, modelos y presentadoras — es lo que convierte un stand en una experiencia memorable. Esta guía recoge los precios reales del mercado español en 2026 y explica cuántas personas necesitas según el tamaño del evento.
+            Las ferias y congresos son una de las mayores inversiones de marketing para muchas empresas. El personal de imagen, azafatas, promotoras, modelos y presentadoras, es lo que convierte un stand en una experiencia memorable. Esta guía recoge los precios reales del mercado español en 2026 y explica cuántas personas necesitas según el tamaño del evento.
           </p>
 
           <div className="p-4 rounded-xl mb-8" style={{ background: 'rgba(5,150,105,0.06)', border: '1px solid rgba(5,150,105,0.15)' }}>
             <p className="text-sm font-bold mb-1" style={{ color: '#059669' }}>Resumen rápido</p>
             <p className="text-sm leading-relaxed" style={{ color: '#333' }}>
-              Azafata de feria: <strong style={{ color: '#111' }}>80€ – 180€/día</strong>. Promotora de calle: <strong style={{ color: '#111' }}>60€ – 120€/día</strong>.
-              Pack de 5 promotoras con coordinador: <strong style={{ color: '#111' }}>400€ – 800€/día</strong>.
+              Azafata de feria: <strong style={{ color: '#111' }}>80€-180€/día</strong>. Promotora de calle: <strong style={{ color: '#111' }}>60€-120€/día</strong>.
+              Pack de 5 promotoras con coordinador: <strong style={{ color: '#111' }}>400€-800€/día</strong>.
             </p>
           </div>
 
@@ -135,7 +135,7 @@ const faqStructured = {
           <h2 className="text-xl font-black mb-4">Qué debes exigir al personal de imagen</h2>
           <ul className="space-y-3 mb-10">
             {[
-              { label: 'Briefing previo de producto o servicio', text: 'El personal de imagen debe conocer bien lo que representa. Organiza una sesión de formación de 1–2 horas antes del evento para trasladar mensajes clave y preguntas frecuentes.' },
+              { label: 'Briefing previo de producto o servicio', text: 'El personal de imagen debe conocer bien lo que representa. Organiza una sesión de formación de 1-2 horas antes del evento para trasladar mensajes clave y preguntas frecuentes.' },
               { label: 'Imagen y dicción', text: 'Exige portfolio fotográfico actualizado y, si es para presentaciones, un vídeo o prueba de dicción. Para eventos bilingües, confirma el nivel real de idiomas.' },
               { label: 'Puntualidad y cobertura de contingencias', text: 'Solicita siempre una sustituta de guardia para jornadas largas (más de 2 días). Las bajas de última hora pueden arruinar la presencia en una feria clave.' },
               { label: 'Contrato con métricas', text: 'Define KPIs: número de leads captados, folletos entregados, encuestas completadas. El personal de imagen con objetivos medibles aporta mucho más valor.' },

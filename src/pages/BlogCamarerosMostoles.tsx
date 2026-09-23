@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Camareros Móstoles', item: 'https://xpeak.es/blog/camareros-eventos-mostoles' }] };
 
 const PRECIOS = [
-  { perfil: 'Camarero/a de sala', tarifa: '11–16€/hora', nota: 'Cóctel, cena sentada o buffet' },
-  { perfil: 'Bartender / coctelería', tarifa: '14–20€/hora', nota: 'Barra libre en bodas y eventos' },
-  { perfil: 'Jefe de sala / coordinador', tarifa: '19–28€/hora', nota: 'Gestión del equipo en boda o evento grande' },
-  { perfil: 'Servicio boda completo (6-7h)', tarifa: '110–200€/persona', nota: 'Cóctel + cena + barra' },
-  { perfil: 'Barra libre con bartender (4h)', tarifa: '140–300€', nota: 'Incluye montaje y desmontaje' },
-  { perfil: 'Personal para celebraciones familiares', tarifa: '11–17€/hora', nota: 'Comuniones, bautizos y aniversarios' },
+  { perfil: 'Camarero/a de sala', tarifa: '11-16€/hora', nota: 'Cóctel, cena sentada o buffet' },
+  { perfil: 'Bartender / coctelería', tarifa: '14-20€/hora', nota: 'Barra libre en bodas y eventos' },
+  { perfil: 'Jefe de sala / coordinador', tarifa: '19-28€/hora', nota: 'Gestión del equipo en boda o evento grande' },
+  { perfil: 'Servicio boda completo (6-7h)', tarifa: '110-200€/persona', nota: 'Cóctel + cena + barra' },
+  { perfil: 'Barra libre con bartender (4h)', tarifa: '140-300€', nota: 'Incluye montaje y desmontaje' },
+  { perfil: 'Personal para celebraciones familiares', tarifa: '11-17€/hora', nota: 'Comuniones, bautizos y aniversarios' },
 ];
 
 export default function BlogCamarerosMostoles() {
@@ -33,7 +33,7 @@ export default function BlogCamarerosMostoles() {
         <title>Precio camareros para eventos en Móstoles 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran los camareros y bartenders para bodas y eventos en Móstoles. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/camareros-eventos-mostoles" />
-        <meta property="og:title" content="Precio camareros eventos Móstoles 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio camareros eventos Móstoles 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de camareros y bartenders para bodas y eventos en Móstoles." />
         <meta property="og:url" content="https://xpeak.es/blog/camareros-eventos-mostoles" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

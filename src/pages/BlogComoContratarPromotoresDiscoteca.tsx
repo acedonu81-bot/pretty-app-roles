@@ -57,7 +57,7 @@ export default function BlogComoContratarPromotoresDiscoteca() {
         <title>Cómo contratar promotores para tu discoteca (2026) | XPEAK</title>
         <meta name="description" content="Guía práctica para salas: cómo elegir promotores, qué modelo de pago conviene y errores comunes al gestionar un equipo de promotores." />
         <link rel="canonical" href="https://xpeak.es/blog/como-contratar-promotores-discoteca" />
-        <meta property="og:title" content="Cómo contratar promotores para tu discoteca — XPEAK Blog" />
+        <meta property="og:title" content="Cómo contratar promotores para tu discoteca | XPEAK Blog" />
         <meta property="og:description" content="Guía práctica para salas: cómo elegir promotores y qué modelo de pago conviene." />
         <meta property="og:url" content="https://xpeak.es/blog/como-contratar-promotores-discoteca" />
         <meta property="og:type" content="article" />

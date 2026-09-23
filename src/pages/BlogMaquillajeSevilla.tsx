@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Maquillaje Sevilla', item: 'https://xpeak.es/blog/maquillaje-eventos-sevilla' }] };
 
 const PRECIOS = [
-  { perfil: 'Maquillaje novia (solo)', tarifa: '85–220€', nota: 'Incluye prueba previa' },
-  { perfil: 'Maquillaje novia + peinado', tarifa: '170–390€', nota: 'Servicio integral más demandado' },
-  { perfil: 'Madrina / invitada especial', tarifa: '45–100€', nota: 'Sin prueba previa habitualmente' },
-  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '290–590€', nota: 'Desplazamiento a hacienda incluido' },
-  { perfil: 'Evento corporativo / azafata', tarifa: '28–60€/persona', nota: 'Maquillaje fast-track profesional' },
-  { perfil: 'Maquillaje Feria de Abril', tarifa: '45–100€', nota: 'Estilo flamenco, muy demandado en abril' },
+  { perfil: 'Maquillaje novia (solo)', tarifa: '85-220€', nota: 'Incluye prueba previa' },
+  { perfil: 'Maquillaje novia + peinado', tarifa: '170-390€', nota: 'Servicio integral más demandado' },
+  { perfil: 'Madrina / invitada especial', tarifa: '45-100€', nota: 'Sin prueba previa habitualmente' },
+  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '290-590€', nota: 'Desplazamiento a hacienda incluido' },
+  { perfil: 'Evento corporativo / azafata', tarifa: '28-60€/persona', nota: 'Maquillaje fast-track profesional' },
+  { perfil: 'Maquillaje Feria de Abril', tarifa: '45-100€', nota: 'Estilo flamenco, muy demandado en abril' },
 ];
 
 export default function BlogMaquillajeSevilla() {
@@ -33,7 +33,7 @@ export default function BlogMaquillajeSevilla() {
         <title>Precio maquilladora para eventos en Sevilla 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobra una maquilladora para bodas y eventos en Sevilla, incluida la Feria de Abril. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/maquillaje-eventos-sevilla" />
-        <meta property="og:title" content="Precio maquilladora eventos Sevilla 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio maquilladora eventos Sevilla 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de maquilladoras para bodas y eventos en Sevilla." />
         <meta property="og:url" content="https://xpeak.es/blog/maquillaje-eventos-sevilla" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

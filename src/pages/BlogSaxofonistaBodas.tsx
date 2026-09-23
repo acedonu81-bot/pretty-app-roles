@@ -8,14 +8,14 @@ import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
 const TABLE = [
-  { momento: 'Ceremonia (entrada + firma + salida)', duracion: '30–60 min', rango: '250€ – 500€', estilo: 'Clásico, jazz, pop en versión saxo' },
-  { momento: 'Cóctel de bienvenida', duracion: '60–90 min', rango: '300€ – 600€', estilo: 'Jazz, bossa nova, lounge' },
-  { momento: 'Ceremonia + cóctel', duracion: '2–2.5 h', rango: '450€ – 850€', estilo: 'Pack más contratado en bodas' },
-  { momento: 'Sesión junto a DJ en pista', duracion: '2–3 h', rango: '400€ – 700€', estilo: 'House, deep house, nu disco con saxo en directo' },
+  { momento: 'Ceremonia (entrada + firma + salida)', duracion: '30-60 min', rango: '250€-500€', estilo: 'Clásico, jazz, pop en versión saxo' },
+  { momento: 'Cóctel de bienvenida', duracion: '60-90 min', rango: '300€-600€', estilo: 'Jazz, bossa nova, lounge' },
+  { momento: 'Ceremonia + cóctel', duracion: '2-2.5 h', rango: '450€-850€', estilo: 'Pack más contratado en bodas' },
+  { momento: 'Sesión junto a DJ en pista', duracion: '2-3 h', rango: '400€-700€', estilo: 'House, deep house, nu disco con saxo en directo' },
 ];
 
 const FAQ = [
-  { q: '¿Cuánto cuesta un saxofonista para una boda?', a: 'Entre 250€ y 850€ dependiendo del momento del día y la duración. El pack más habitual (ceremonia + cóctel) ronda los 500€ – 700€. Los saxofonistas que actúan en directo sobre bases de DJ cuestan un poco más por la complejidad técnica.' },
+  { q: '¿Cuánto cuesta un saxofonista para una boda?', a: 'Entre 250€ y 850€ dependiendo del momento del día y la duración. El pack más habitual (ceremonia + cóctel) ronda los 500€-700€. Los saxofonistas que actúan en directo sobre bases de DJ cuestan un poco más por la complejidad técnica.' },
   { q: '¿Es mejor un saxofonista solo o con DJ?', a: 'Depende del momento. Para ceremonia y cóctel, el saxo solo (o con piano/guitarra) es perfecto. Para animar la pista de baile, la combinación saxo + DJ es muy efectiva: aporta la energía del directo sobre la potencia de la música electrónica.' },
   { q: '¿Qué géneros toca un saxofonista de bodas?', a: 'Jazz, bossa nova, pop en versión instrumental, soul y deep house son los géneros más demandados. Muchos saxofonistas de bodas tienen también un repertorio de canciones románticas adaptadas para la ceremonia.' },
   { q: '¿El saxofonista necesita equipo de sonido?', a: 'Para bodas en espacios grandes o al aire libre, sí. El saxo lleva micro y el sistema de PA puede ser del propio músico o del local. Para ceremonias en iglesias o espacios acústicos, muchas veces no hace falta amplificación.' },
@@ -103,7 +103,7 @@ const faqStructured = {
             <p className="text-sm font-bold mb-1" style={{ color: '#DB2777' }}>Resumen rápido</p>
             <p className="text-sm leading-relaxed" style={{ color: '#333' }}>
               Un saxofonista para boda cuesta entre <strong style={{ color: '#111' }}>250€ y 850€</strong> según el momento del día y la duración.
-              El pack más habitual (ceremonia + cóctel) ronda los <strong style={{ color: '#111' }}>500€ – 700€</strong>.
+              El pack más habitual (ceremonia + cóctel) ronda los <strong style={{ color: '#111' }}>500€-700€</strong>.
             </p>
           </div>
 
@@ -193,7 +193,7 @@ const faqStructured = {
               {[
                 { href: '/blog/profesionales-bodas', tag: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026', desc: 'DJ, fotógrafo, catering y más. Todo lo que necesitas para tu boda.' },
                 { href: '/blog/cantante-para-bodas-precio', tag: 'Bodas', title: 'Cantante para bodas: precio 2026', desc: 'Formatos de música en vivo y precios.' },
-                { href: '/blog/musica-en-vivo-para-bodas', tag: 'Bodas', title: 'Música en vivo para bodas — guía 2026', desc: 'Guía completa de opciones de música en vivo.' },
+                { href: '/blog/musica-en-vivo-para-bodas', tag: 'Bodas', title: 'Música en vivo para bodas: guía 2026', desc: 'Guía completa de opciones de música en vivo.' },
                 { href: '/blog/cuanto-cobra-un-dj-en-espana', tag: 'DJ', title: '¿Cuánto cobra un DJ en España?', desc: 'Precios de DJ para combinar con saxo en boda.' },
               ].map(p => (
                 <a key={p.href} href={p.href}

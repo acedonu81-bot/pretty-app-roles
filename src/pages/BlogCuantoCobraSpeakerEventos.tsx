@@ -38,11 +38,11 @@ const breadcrumb = {
 };
 
 const PRECIOS = [
-  { concepto: 'Presentador / MC evento pequeño', precio: '300€ – 600€' },
-  { concepto: 'Presentador / MC gala grande', precio: '800€ – 2.000€' },
-  { concepto: 'Keynote speaker nacional', precio: '800€ – 1.500€' },
+  { concepto: 'Presentador / MC evento pequeño', precio: '300€-600€' },
+  { concepto: 'Presentador / MC gala grande', precio: '800€-2.000€' },
+  { concepto: 'Keynote speaker nacional', precio: '800€-1.500€' },
   { concepto: 'Speaker internacional reconocido', precio: '3.000€ +' },
-  { concepto: 'Suplemento por bilingüe', precio: '+20% – 40%' },
+  { concepto: 'Suplemento por bilingüe', precio: '+20%-40%' },
 ];
 
 export default function BlogCuantoCobraSpeakerEventos() {
@@ -52,7 +52,7 @@ export default function BlogCuantoCobraSpeakerEventos() {
         <title>Cuánto cobra un speaker o presentador de eventos (2026) | XPEAK</title>
         <meta name="description" content="Precios reales de speakers, ponentes y presentadores de eventos en España: keynote speakers, MCs bilingües y presentadores de gala." />
         <link rel="canonical" href="https://xpeak.es/blog/cuanto-cobra-un-speaker-de-eventos" />
-        <meta property="og:title" content="Cuánto cobra un speaker de eventos — XPEAK Blog" />
+        <meta property="og:title" content="Cuánto cobra un speaker de eventos | XPEAK Blog" />
         <meta property="og:description" content="Precios reales de speakers y presentadores de eventos en España." />
         <meta property="og:url" content="https://xpeak.es/blog/cuanto-cobra-un-speaker-de-eventos" />
         <meta property="og:type" content="article" />

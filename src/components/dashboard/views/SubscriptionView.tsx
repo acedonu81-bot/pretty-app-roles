@@ -2,7 +2,7 @@ import { CheckCircle } from 'lucide-react';
 
 const FEATURES = [
   'Perfil público en el directorio europeo',
-  'Flash Booking — contratos en tiempo real',
+  'Flash Booking: contratos en tiempo real',
   'Mensajería directa con clientes y profesionales',
   'Calendario y gestión de contratos',
   'Estadísticas de visitas a tu perfil',

@@ -14,15 +14,15 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
   { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda en Málaga?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ para boda en Málaga cuesta entre 600€ y 1.800€ para el servicio completo. La Costa del Sol (Marbella, Estepona) tiene precios más altos por la concentración de bodas internacionales y de lujo, llegando hasta 2.500€ para servicios premium. Para bodas solo con pista (4-5h) el rango es 350-800€.' } },
   { '@type': 'Question', name: '¿Cuándo es temporada alta de bodas en Málaga?', acceptedAnswer: { '@type': 'Answer', text: 'En Málaga la temporada alta es mayo-junio y septiembre-octubre. El clima permite bodas prácticamente todo el año, aunque julio y agosto son muy calurosos en el interior. La Costa del Sol tiene demanda también en invierno por bodas de extranjeros residentes. Los sábados de septiembre y octubre se reservan con 12-14 meses de antelación.' } },
   { '@type': 'Question', name: '¿Qué diferencia hay entre contratar un DJ en Marbella vs Málaga capital?', acceptedAnswer: { '@type': 'Answer', text: 'Marbella y la Costa del Sol tienen un mercado de bodas de lujo con clientes internacionales y presupuestos muy altos. Los DJs especializados en esa zona cobran un 30-50% más que en Málaga capital o el interior. Si tu boda es en Marbella, busca DJs con experiencia en bodas internacionales y con capacidad para adaptar el repertorio a distintas culturas.' } },
-  { '@type': 'Question', name: '¿El DJ habla inglés para bodas internacionales en la Costa del Sol?', acceptedAnswer: { '@type': 'Answer', text: 'Sí, muchos DJs de la Costa del Sol tienen experiencia con bodas de clientes extranjeros (ingleses, escandinavos, alemanes) y pueden hacer el MC en inglés o bilingüe. Es un diferencial importante en esa zona — especifica en tu búsqueda que necesitas DJ con inglés si es tu caso.' } },
+  { '@type': 'Question', name: '¿El DJ habla inglés para bodas internacionales en la Costa del Sol?', acceptedAnswer: { '@type': 'Answer', text: 'Sí, muchos DJs de la Costa del Sol tienen experiencia con bodas de clientes extranjeros (ingleses, escandinavos, alemanes) y pueden hacer el MC en inglés o bilingüe. Es un diferencial importante en esa zona: especifica en tu búsqueda que necesitas DJ con inglés si es tu caso.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'DJ bodas Málaga', item: 'https://xpeak.es/blog/dj-bodas-malaga' }] };
 
 const PRECIOS = [
-  { servicio: 'Solo pista de baile (4-5h)', precio: '350–800€' },
-  { servicio: 'Cóctel + pista de baile', precio: '550–1.200€' },
-  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '700–1.800€' },
-  { servicio: 'Pack premium Costa del Sol / Marbella', precio: '1.200–2.500€' },
+  { servicio: 'Solo pista de baile (4-5h)', precio: '350-800€' },
+  { servicio: 'Cóctel + pista de baile', precio: '550-1.200€' },
+  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '700-1.800€' },
+  { servicio: 'Pack premium Costa del Sol / Marbella', precio: '1.200-2.500€' },
 ];
 
 const ZONAS = [
@@ -41,7 +41,7 @@ export default function BlogDJBodaMalaga() {
         <title>DJ para bodas en Málaga: precio 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un DJ para una boda en Málaga. Precios reales 2026, Costa del Sol, Serranía de Ronda y cómo contratar el mejor DJ en la provincia." />
         <link rel="canonical" href="https://xpeak.es/blog/dj-bodas-malaga" />
-        <meta property="og:title" content="DJ para bodas en Málaga: precio 2026 — XPEAK Blog" />
+        <meta property="og:title" content="DJ para bodas en Málaga: precio 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precios reales de DJs de boda en Málaga. Costa del Sol, Ronda y cómo elegir el perfil correcto." />
         <meta property="og:url" content="https://xpeak.es/blog/dj-bodas-malaga" />
         <meta property="og:type" content="article" />

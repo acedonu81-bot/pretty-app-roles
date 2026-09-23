@@ -153,7 +153,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   // entrar manualmente al Panel Admin sin ningún aviso de que hay algo que
   // revisar. Va al admin, no al profesional (es quien puede aprobar/rechazar).
   new_review_pending: (d) => ({
-    subject: `Nueva reseña pendiente — ${esc(d.professionalName)} (${d.rating}★)`,
+    subject: `Nueva reseña pendiente: ${esc(d.professionalName)} (${d.rating}★)`,
     to: ADMIN,
     html: base(`
       ${avatarCircle(String(d.rating))}
@@ -174,7 +174,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
 
   // 0. Early Adopter — primeros 20 profesionales
   early_adopter: (d) => ({
-    subject: `${esc(d.name)}, eres Early Adopter de XPEAK — posición Elite 6 meses gratis`,
+    subject: `${esc(d.name)}, eres Early Adopter de XPEAK: posición Elite 6 meses gratis`,
     to: d.email,
     html: base(`
       <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#D4AF37">Eres Early Adopter de XPEAK</h2>
@@ -182,13 +182,13 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         Hola <strong>${esc(d.name)}</strong>, eres uno de los primeros profesionales en confiar en XPEAK desde el primer día. Eso tiene valor real para nosotros y queremos recompensarte.
       </p>
       <div style="background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.3);border-radius:8px;padding:20px;margin:20px 0;box-shadow:0 8px 22px rgba(212,175,55,0.2)">
-        <p style="color:#D4AF37;font-weight:700;font-size:15px;margin:0 0 12px">Tu recompensa — válida hasta diciembre 2026:</p>
+        <p style="color:#D4AF37;font-weight:700;font-size:15px;margin:0 0 12px">Tu recompensa, válida hasta diciembre 2026:</p>
         <ul style="color:#0a0908;line-height:2.2;margin:0;padding-left:20px;font-size:14px">
-          <li>Posición <strong style="color:#D4AF37">Elite</strong> en el directorio — 6 meses gratis</li>
+          <li>Posición <strong style="color:#D4AF37">Elite</strong> en el directorio, 6 meses gratis</li>
           <li>Apareces el <strong style="color:#D4AF37">primero en todas las búsquedas</strong> de tu ciudad</li>
           <li>Badge exclusivo <strong style="color:#D4AF37">Early Adopter</strong> en tu ficha</li>
           <li>Acceso prioritario a todas las nuevas funciones</li>
-          <li>Línea directa con el equipo — responde a este email</li>
+          <li>Línea directa con el equipo: responde a este email</li>
         </ul>
       </div>
       <p style="color:#4b5563;font-size:13px;line-height:1.7;margin:0 0 24px">
@@ -251,7 +251,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         Cuando envías una oferta, el profesional entra a ver quién se la manda. Tu perfil está al ${esc(String(d.percent))}%: sin logo ni descripción, muchos lo toman por spam y ni responden.
       </p>` : `
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
-        Ahora mismo hay organizadores buscando profesionales como tú en XPEAK, y tu perfil como <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong> está al ${esc(String(d.percent))}% — les cuesta más confiar en contratarte sin esta información, y algunos directamente pasan al siguiente perfil.
+        Ahora mismo hay organizadores buscando profesionales como tú en XPEAK, y tu perfil como <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong> está al ${esc(String(d.percent))}%: les cuesta más confiar en contratarte sin esta información, y algunos directamente pasan al siguiente perfil.
       </p>`}
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
         Solo te queda: ${esc(d.missingLabels)}.
@@ -260,7 +260,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       <p style="color:#9CA3AF;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`,
       esEmpresa
         ? `Te faltan ${esc(String(d.missingCount))} datos: ${esc(d.missingLabels)}`
-        : `Perfil al ${esc(String(d.percent))}% — te faltan ${esc(String(d.missingCount))} pasos`),
+        : `Perfil al ${esc(String(d.percent))}%: te faltan ${esc(String(d.missingCount))} pasos`),
     };
   },
 
@@ -315,7 +315,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     html: base(`
       <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Revisa tu foto de perfil</h2>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
-        Hemos visto que la imagen subida a tu perfil como <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong> no muestra tu cara — parece un fondo o una foto de producto en vez de tu foto real. Los organizadores confían más en perfiles con una foto clara de la persona con la que van a trabajar.
+        Hemos visto que la imagen subida a tu perfil como <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong> no muestra tu cara: parece un fondo o una foto de producto en vez de tu foto real. Los organizadores confían más en perfiles con una foto clara de la persona con la que van a trabajar.
       </p>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
         Sube una foto tuya real desde tu panel para que tu perfil vuelva a estar completo.
@@ -343,7 +343,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         Tu perfil como <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong> todavía no tiene foto, y sin ella un organizador no confía en contratarte: pasa directamente al siguiente perfil.
       </p>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
-        Sube tu foto y completa la información que se te pide en el panel — es lo único que falta para que tu perfil siga apareciendo en el directorio. Si no se actualiza, tu perfil se ocultará del panel hasta que subas contenido.
+        Sube tu foto y completa la información que se te pide en el panel: es lo único que falta para que tu perfil siga apareciendo en el directorio. Si no se actualiza, tu perfil se ocultará del panel hasta que subas contenido.
       </p>
       ${btn('Completar mi perfil ahora →', 'https://xpeak.es/dashboard')}
       <p style="color:#9CA3AF;font-size:12px;text-align:center">Cualquier duda, responde a este email.</p>`,
@@ -363,7 +363,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         <strong style="color:#D4AF37">${esc(d.title)}</strong>
       </p>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
-        ${esc(new Date(String(d.date) + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }))}${d.location ? ` — ${esc(d.location)}` : ''}
+        ${esc(new Date(String(d.date) + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }))}${d.location ? ` · ${esc(d.location)}` : ''}
       </p>
       ${btn('Ver mi calendario →', 'https://xpeak.es/dashboard?view=calendar')}
       <p style="color:#9CA3AF;font-size:12px;text-align:center">Puedes desactivar este aviso desde tu Calendario en XPEAK.</p>`),
@@ -382,7 +382,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         <strong style="color:#D4AF37">${esc(d.title)}</strong>
       </p>
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
-        ${esc(new Date(String(d.date) + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }))}${d.location ? ` — ${esc(String(d.location))}` : ''}
+        ${esc(new Date(String(d.date) + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }))}${d.location ? ` · ${esc(String(d.location))}` : ''}
       </p>
       ${btn('Ver mi calendario →', 'https://xpeak.es/dashboard?view=calendar')}
       <p style="color:#9CA3AF;font-size:12px;text-align:center">Puedes desactivar este aviso desde tu Calendario en XPEAK.</p>`),
@@ -395,7 +395,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     html: base(`
       <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#2563eb">Invita y gana prioridad</h2>
       <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
-        Hola <strong>${esc(d.name)}</strong>, tienes disponible tu propio enlace de invitación en XPEAK — y cada profesional que invites y complete su perfil te da <strong style="color:#2563eb">+6 meses de badge azul de prioridad</strong>, apareciendo antes que el resto en el directorio de tu ciudad.
+        Hola <strong>${esc(d.name)}</strong>, tienes disponible tu propio enlace de invitación en XPEAK, y cada profesional que invites y complete su perfil te da <strong style="color:#2563eb">+6 meses de badge azul de prioridad</strong>, apareciendo antes que el resto en el directorio de tu ciudad.
       </p>
       <div style="background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.25);border-radius:8px;padding:20px;margin:20px 0;box-shadow:0 8px 22px rgba(37,99,235,0.18)">
         <p style="color:#2563eb;font-weight:700;font-size:15px;margin:0 0 12px">Tu enlace de invitación:</p>
@@ -473,7 +473,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   // 2026) — a diferencia de "contratado", aquí falta un paso, así que el
   // texto y el CTA insisten en "confirma" y no en "ya es tuyo".
   preseleccionado: (d) => ({
-    subject: `${esc(d.titulo)} quiere contratarte — confirma tu plaza`,
+    subject: `${esc(d.titulo)} quiere contratarte: confirma tu plaza`,
     to: d.email,
     html: base(`
       <div style="background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.3);border-radius:8px;padding:16px;margin-bottom:20px">
@@ -484,7 +484,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         entra en XPEAK y confirma tu plaza antes de que elija a otro profesional.
       </p>
       ${btn('Confirmar ahora →', 'https://xpeak.es/dashboard?view=flashbooking')}
-    `, `${esc(d.titulo)} quiere contratarte — confirma tu plaza`),
+    `, `${esc(d.titulo)} quiere contratarte: confirma tu plaza`),
   }),
 
   // 2e. Al día siguiente del bolo: pedir la valoración.
@@ -559,7 +559,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   // Es el mismo agujero del caso Ramón (22 ago: 5 profesionales, 0 respuestas,
   // nadie se enteró en 12 días) por el otro lado del flujo.
   flash_job_nuevo: (d) => ({
-    subject: `Nueva oferta para ti: ${esc(d.title)}${d.location ? ` — ${esc(d.location)}` : ''}`,
+    subject: `Nueva oferta para ti: ${esc(d.title)}${d.location ? ` · ${esc(d.location)}` : ''}`,
     to: d.email,
     html: base(`
       <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:8px;padding:16px;margin-bottom:20px">
@@ -583,11 +583,11 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:8px;padding:16px;margin-top:20px">
         <p style="color:#0a0908;font-size:13px;font-weight:700;line-height:1.6;margin:0 0 6px">Tu perfil todavía no tiene foto</p>
         <p style="color:#4b5563;font-size:13px;line-height:1.6;margin:0 0 14px">
-          Esta oferta te ha llegado por tu rol, pero sin foto tu perfil no aparece en el directorio — el organizador nunca podrá encontrarte ni ver tu propuesta. Súbela ahora para no perderte la próxima.
+          Esta oferta te ha llegado por tu rol, pero sin foto tu perfil no aparece en el directorio: el organizador nunca podrá encontrarte ni ver tu propuesta. Súbela ahora para no perderte la próxima.
         </p>
         ${btn('Subir mi foto →', 'https://xpeak.es/dashboard')}
       </div>` : ''}
-    `, `${esc(d.role_needed ?? 'Profesional')} — ${esc(d.location ?? 'España')} — ${esc(d.pay ?? 'A consultar')}`),
+    `, `${esc(d.role_needed ?? 'Profesional')} · ${esc(d.location ?? 'España')} · ${esc(d.pay ?? 'A consultar')}`),
   }),
 
   // 1b. Reseña nueva pendiente de aprobar — aviso a admin (13 sep 2026).
@@ -597,7 +597,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   // admin_reviews_badge_trigger.sql), no lo sustituye — el badge es para
   // cuando ya estás en el panel, este email es para cuando no lo estás.
   resena_pendiente: (d) => ({
-    subject: `Nueva reseña pendiente — ${esc(d.reviewer_name)} → ${esc(d.professional_name)}`,
+    subject: `Nueva reseña pendiente: ${esc(d.reviewer_name)} → ${esc(d.professional_name)}`,
     to: ADMIN,
     html: base(`
       <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:8px;padding:16px;margin-bottom:20px">
@@ -614,7 +614,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
 
   // 2. Flash Booking — aviso a admin
   flash_booking: (d) => ({
-    subject: `Flash Booking — ${esc(d.professional_name)} — ${esc(d.event_date ?? 'Sin fecha')}`,
+    subject: `Flash Booking: ${esc(d.professional_name)} · ${esc(d.event_date ?? 'Sin fecha')}`,
     to: ADMIN,
     replyTo: d.requester_contact?.includes('@') ? d.requester_contact : ADMIN,
     html: base(`
@@ -656,7 +656,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
 
   // 4. Empresario registrado — aviso admin
   empresario_registered: (d) => ({
-    subject: `Nuevo empresario registrado — ${esc(d.name)}`,
+    subject: `Nuevo empresario registrado: ${esc(d.name)}`,
     to: ADMIN,
     html: base(`
       <div style="background:rgba(10,9,8,0.03);border:1px solid rgba(10,9,8,0.06);border-radius:8px;padding:16px;margin-bottom:20px;box-shadow:0 4px 14px rgba(10,9,8,0.08)">
@@ -678,7 +678,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   // quedo invisible en el directorio hasta que se detecto por casualidad.
   // Incluye rol y zona precisamente para poder revisarlo el mismo dia.
   profesional_registered: (d) => ({
-    subject: `Nuevo profesional — ${esc(d.name)} (${esc(rolLegible(d.role))}, ${esc(d.zone)})`,
+    subject: `Nuevo profesional: ${esc(d.name)} (${esc(rolLegible(d.role))}, ${esc(d.zone)})`,
     to: ADMIN,
     html: base(`
       <div style="background:rgba(10,9,8,0.03);border:1px solid rgba(10,9,8,0.06);border-radius:8px;padding:16px;margin-bottom:20px;box-shadow:0 4px 14px rgba(10,9,8,0.08)">
@@ -736,12 +736,12 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
 
   // 6. Cancelación de suscripción — aviso admin
   subscription_cancelled: (d) => ({
-    subject: `Cancelación — ${esc(d.name)} — Plan ${esc(d.plan)}`,
+    subject: `Cancelación: ${esc(d.name)}: Plan ${esc(d.plan)}`,
     to: ADMIN,
     html: base(`
       <div style="background:rgba(255,95,86,0.06);border:1px solid rgba(255,95,86,0.2);border-radius:8px;padding:16px;margin-bottom:20px;box-shadow:0 6px 16px rgba(255,95,86,0.18)">
         <p style="margin:0 0 4px">${badge('Cancelación', '#ff5f56')}</p>
-        <p style="font-size:18px;font-weight:900;margin:6px 0 0">${esc(d.name)} — ${esc(d.plan)}</p>
+        <p style="font-size:18px;font-weight:900;margin:6px 0 0">${esc(d.name)} · ${esc(d.plan)}</p>
       </div>
       ${rows([
         ['Email', d.email],
@@ -753,7 +753,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
 
   // 7. Fan se suscribe — aviso al profesional (in-app por ahora, email futuro)
   fan_subscribed: (d) => ({
-    subject: `Nuevo fan — ${esc(d.fan_name)} se ha suscrito a tu perfil`,
+    subject: `Nuevo fan: ${esc(d.fan_name)} se ha suscrito a tu perfil`,
     to: ADMIN, // hasta que haya email del profesional en DB
     html: base(`
       <h2 style="font-size:18px;font-weight:900;margin:0 0 10px;color:#0a0908">Nuevo suscriptor</h2>
@@ -765,7 +765,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
 
   // 8. Formulario de contacto
   contact_form: (d) => ({
-    subject: `Contacto web — ${esc(d.subject ?? 'Sin asunto')}`,
+    subject: `Contacto web: ${esc(d.subject ?? 'Sin asunto')}`,
     to: ADMIN,
     replyTo: d.email,
     html: base(`
@@ -787,7 +787,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
 
   // 9. Solicitud de verificación sello dorado — aviso admin
   verification_request: (d) => ({
-    subject: `Solicitud verificación — ${esc(d.name)}`,
+    subject: `Solicitud verificación: ${esc(d.name)}`,
     to: ADMIN,
     html: base(`
       <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:8px;padding:16px;margin-bottom:20px;box-shadow:0 6px 16px rgba(212,175,55,0.16)">
@@ -804,7 +804,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
 
   // 10. Feature request — confirmación al usuario
   feature_request: (d) => ({
-    subject: `Sugerencia recibida — XPEAK`,
+    subject: `Sugerencia recibida | XPEAK`,
     to: d.email,
     html: base(`
       <h2 style="font-size:18px;font-weight:900;margin:0 0 10px">Gracias por tu sugerencia</h2>
@@ -813,13 +813,13 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         La analizaremos y si entra en el roadmap te avisaremos.
       </p>
       <p style="color:#9CA3AF;font-size:12px;text-align:center">
-        XPEAK está en fase beta — tu feedback es fundamental.
+        XPEAK está en fase beta: tu feedback es fundamental.
       </p>`),
   }),
 
   // 9. Validación aprobada — profesional
   admin_approved: (d) => ({
-    subject: `Perfil aprobado — Bienvenido a XPEAK, ${esc(d.name)}`,
+    subject: `Perfil aprobado: Bienvenido a XPEAK, ${esc(d.name)}`,
     to: d.email,
     html: base(`
       <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">¡Perfil aprobado!</h2>
@@ -835,7 +835,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
 
   // 10. Validación rookie
   admin_rookie: (d) => ({
-    subject: `Acceso Rookie activado — XPEAK`,
+    subject: `Acceso Rookie activado | XPEAK`,
     to: d.email,
     html: base(`
       <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Bienvenido como Rookie</h2>
@@ -871,7 +871,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   // que XPEAK garantiza a quien contrata. Tono: nunca "hemos detectado un
   // fallo tuyo", sino explicar la política y agradecer, sin admitir fallos.
   photo_policy_violation: (d) => ({
-    subject: `Tu foto de perfil en XPEAK — acción necesaria`,
+    subject: `Tu foto de perfil en XPEAK: acción necesaria`,
     to: d.email,
     html: base(`
       <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">Sobre tu foto de perfil</h2>
@@ -903,11 +903,11 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
 
   // 12. Flash Booking — aviso al profesional (nueva solicitud recibida)
   booking_received: (d) => ({
-    subject: `Nueva solicitud Flash Booking — ${esc(d.event_date ?? 'Fecha por confirmar')}`,
+    subject: `Nueva solicitud Flash Booking: ${esc(d.event_date ?? 'Fecha por confirmar')}`,
     to: d.email ?? ADMIN,
     html: base(`
       <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:8px;padding:16px;margin-bottom:20px;box-shadow:0 6px 16px rgba(212,175,55,0.16)">
-        <p style="margin:0 0 4px">${badge('Flash Booking — Nueva solicitud')}</p>
+        <p style="margin:0 0 4px">${badge('Flash Booking: Nueva solicitud')}</p>
         <p style="font-size:20px;font-weight:900;margin:6px 0 0">De: ${esc(d.requester_name ?? 'Empresario')}</p>
       </div>
       ${rows([
@@ -924,7 +924,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
 
   // 13b. Contrato generado — avisa al profesional de que existe un contrato con su nombre
   contract_generated: (d) => ({
-    subject: `Se ha generado un contrato contigo — ${esc(d.event_type ?? 'evento')}`,
+    subject: `Se ha generado un contrato contigo: ${esc(d.event_type ?? 'evento')}`,
     to: d.email,
     html: base(`
       <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:8px;padding:16px;margin-bottom:20px;box-shadow:0 6px 16px rgba(212,175,55,0.16)">
@@ -941,7 +941,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         ['Importe', d.amount ? `${d.amount}€` : '—'],
       ])}
       <p style="color:#9CA3AF;font-size:12px;text-align:center;margin-top:16px">
-        Revisa el documento con calma antes de firmar. XPEAK no gestiona el envío del PDF — pídeselo directamente al contratante si no lo has recibido.
+        Revisa el documento con calma antes de firmar. XPEAK no gestiona el envío del PDF: pídeselo directamente al contratante si no lo has recibido.
       </p>`),
   }),
 
@@ -957,7 +957,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       </p>
       <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.15);border-radius:10px;padding:16px;margin-bottom:20px;text-align:center;box-shadow:0 6px 16px rgba(212,175,55,0.16)">
         <p style="color:#6B7280;font-size:11px;margin:0 0 6px;text-transform:uppercase;letter-spacing:1px">Consejo del momento</p>
-        <p style="font-size:14px;font-weight:600;margin:0;line-height:1.6">Actualiza tu foto y bio — los perfiles actualizados reciben hasta 3× más contactos.</p>
+        <p style="font-size:14px;font-weight:600;margin:0;line-height:1.6">Actualiza tu foto y bio: los perfiles actualizados reciben hasta 3× más contactos.</p>
       </div>
       ${btn('Ver mi perfil y actualizarlo →', 'https://xpeak.es/dashboard')}
       <p style="color:#9CA3AF;font-size:12px;text-align:center">
@@ -981,14 +981,14 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       : 'Conectamos con los mejores profesionales para tu evento';
 
     const body = isProf
-      ? `Crear tu perfil en XPEAK es gratis y te permite aparecer en el directorio, recibir ofertas de Flash Booking y firmar contratos digitales directamente con los clientes. Sin comisiones.`
+      ? `Crear tu perfil en XPEAK te permite aparecer en el directorio, recibir ofertas de Flash Booking y firmar contratos digitales directamente con los clientes.`
       : isPlantilla
       ? `Adjuntamos el enlace a la plantilla de contrato para DJ con todas las cláusulas legales. Puedes editarla directamente o usarla para contratar tu DJ en XPEAK sin coste extra.`
       : isGuia
-      ? `En XPEAK puedes comparar precios reales de DJs verificados en toda España — por ciudad, tipo de evento y horas. Todo transparente, sin llamadas ni intermediarios.`
+      ? `En XPEAK puedes comparar precios reales de DJs verificados en toda España: por ciudad, tipo de evento y horas. Todo transparente, sin llamadas ni intermediarios.`
       : `En XPEAK encuentras DJs, fotógrafos, camareros y staff verificados en toda España. Tarifas públicas, contratos automáticos y Flash Booking en menos de 1h. Completamente gratis para organizadores.`;
 
-    const ctaText = isProf ? 'Crear mi perfil gratis →' : 'Ver profesionales disponibles →';
+    const ctaText = isProf ? 'Crear mi perfil →' : 'Ver profesionales disponibles →';
     const ctaUrl = isProf
       ? 'https://xpeak.es/auth?mode=register&role=profesional'
       : 'https://xpeak.es/auth?mode=register&role=empresario';
@@ -1001,10 +1001,10 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       subject: isProf
         ? 'Crea tu perfil en XPEAK y empieza a conseguir contratos'
         : isPlantilla
-        ? 'Tu plantilla de contrato DJ — XPEAK'
+        ? 'Tu plantilla de contrato DJ | XPEAK'
         : isGuia
-        ? 'Guía de precios DJ 2026 — XPEAK'
-        : 'Tu consulta sobre profesionales para eventos — XPEAK',
+        ? 'Guía de precios DJ 2026 | XPEAK'
+        : 'Tu consulta sobre profesionales para eventos | XPEAK',
       to: d.email,
       html: base(`
         <h2 style="font-size:20px;font-weight:900;margin:0 0 12px;line-height:1.3">${esc(headline)}</h2>
@@ -1017,7 +1017,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         ${btn(ctaText, ctaUrl)}
         <div style="background:rgba(10,9,8,0.03);border:1px solid rgba(10,9,8,0.05);border-radius:8px;padding:14px;margin-top:4px">
           <p style="color:#9CA3AF;font-size:11px;margin:0 0 6px;text-transform:uppercase;letter-spacing:1px">Por qué XPEAK</p>
-          <p style="font-size:12px;color:#6B7280;margin:0;line-height:1.6">✓ Directorio verificado · ✓ Contratos automáticos · ✓ Flash Booking en 1h · ✓ 0€ comisión</p>
+          <p style="font-size:12px;color:#6B7280;margin:0;line-height:1.6">✓ Directorio verificado · ✓ Contratos automáticos · ✓ Flash Booking en 1h</p>
         </div>
         ${articleNote}
       `),
@@ -1057,7 +1057,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   }),
 
   resenas_ya_disponibles: (d) => ({
-    subject: 'Las reseñas ya funcionan con normalidad — XPEAK',
+    subject: 'Las reseñas ya funcionan con normalidad | XPEAK',
     to: d.email,
     html: base(`
       <h2 style="font-size:20px;font-weight:900;margin:0 0 12px;line-height:1.3">Ya puedes dejar tu reseña</h2>
@@ -1072,17 +1072,17 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
     const rol = rolLegible(d.role);
     const zona = esc(d.zone || 'España');
     return {
-      subject: `Ya hay un ${rol} en ${zona} — XPEAK`,
+      subject: `Ya hay un ${rol} en ${zona} | XPEAK`,
       to: d.email,
       html: base(`
         <h2 style="font-size:20px;font-weight:900;margin:0 0 12px;line-height:1.3">Buenas noticias: ya hay disponibilidad</h2>
         <p style="color:#4b5563;font-size:14px;line-height:1.75;margin:0 0 20px">
-          Buscabas ${esc(rol)} en ${zona} y no había nadie en XPEAK. Ya se ha registrado un profesional que encaja — puedes verlo y contactarlo creando tu cuenta de organizador, gratis.
+          Buscabas ${esc(rol)} en ${zona} y no había nadie en XPEAK. Ya se ha registrado un profesional que encaja: puedes verlo y contactarlo creando tu cuenta de organizador, gratis.
         </p>
         ${btn('Ver profesional disponible →', 'https://xpeak.es/auth?mode=register&role=empresario')}
         <div style="background:rgba(10,9,8,0.03);border:1px solid rgba(10,9,8,0.05);border-radius:8px;padding:14px;margin-top:4px">
           <p style="color:#9CA3AF;font-size:11px;margin:0 0 6px;text-transform:uppercase;letter-spacing:1px">Por qué XPEAK</p>
-          <p style="font-size:12px;color:#6B7280;margin:0;line-height:1.6">✓ Directorio verificado · ✓ Contratos automáticos · ✓ Flash Booking en 1h · ✓ 0€ comisión</p>
+          <p style="font-size:12px;color:#6B7280;margin:0;line-height:1.6">✓ Directorio verificado · ✓ Contratos automáticos · ✓ Flash Booking en 1h</p>
         </div>
       `),
     };
@@ -1104,7 +1104,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
         Hola <strong>${esc(d.name)}</strong>. Muchos DJs no solo pinchan: montan la fiesta entera y necesitan
         camareros, fotógrafo o azafatas. Si es tu caso, puedes tener un perfil de
-        <strong>Organizador</strong> en la misma cuenta que ya usas — sin registrarte otra vez y sin dar otro correo.
+        <strong>Organizador</strong> en la misma cuenta que ya usas, sin registrarte otra vez y sin dar otro correo.
       </p>
       <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.25);border-radius:8px;padding:20px;margin:20px 0;box-shadow:0 8px 22px rgba(212,175,55,0.16)">
         <p style="color:#7a6216;font-weight:700;font-size:15px;margin:0 0 12px">Cómo se hace (30 segundos):</p>
@@ -1182,7 +1182,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         </tr>`).join('')}
       </table>
       <p style="color:#6B7280;font-size:12px;line-height:1.6;margin:16px 0 0">
-        Ya recibieron el aviso automático de perfil incompleto hace más de una semana. Si quieres mandarles el último aviso (photo_last_call), dispáralo a mano desde el panel — no se envía solo.
+        Ya recibieron el aviso automático de perfil incompleto hace más de una semana. Si quieres mandarles el último aviso (photo_last_call), dispáralo a mano desde el panel: no se envía solo.
       </p>
       ${btn('Ver en panel admin →', 'https://xpeak.es/dashboard?view=admin')}`),
   }),
@@ -1203,7 +1203,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         ${[
           ['Badge visible', 'El badge "Respuesta rápida" aparece en tu ficha del directorio.'],
           ['Posición destacada', 'Subes posiciones en los resultados del directorio frente a profesionales sin badge.'],
-          ['Más visibilidad', 'Los organizadores ven tu badge antes de contactar — genera más confianza y más bookings.'],
+          ['Más visibilidad', 'Los organizadores ven tu badge antes de contactar: genera más confianza y más bookings.'],
         ].map(([k, v]) => `
         <tr>
           <td style="padding:10px 14px;background:rgba(212,175,55,0.07);border-radius:8px;vertical-align:top;width:40%">
@@ -1226,7 +1226,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   booking_status_update: (d) => ({
     subject: d.status === 'confirmed'
       ? `${esc(d.professional_name ?? 'El profesional')} ha aceptado tu solicitud`
-      : `Tu solicitud Flash Booking — actualización`,
+      : `Tu solicitud Flash Booking: actualización`,
     to: d.email,
     html: base(d.status === 'confirmed' ? `
       ${confirmSeal()}

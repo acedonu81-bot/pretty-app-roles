@@ -112,34 +112,33 @@ type OccasionInfo = {
 
 // Rango orientativo por rol y ocasión (precio típico, string libre)
 const PRECIO_BODA: Record<string, string> = {
-  DJ: '400€–900€', Fotógrafo: '800€–2.500€', Catering: '60€–140€/persona',
-  Camareros: '120€–180€/servicio', 'Grupo Musical': '900€–3.000€', Animador: '150€–400€', Mago: '250€–600€',
-  'Local para eventos': '3.000€–12.000€',
+  DJ: '400€-900€', Fotógrafo: '800€-2.500€', Catering: '60€-140€/persona',
+  Camareros: '120€-180€/servicio', 'Grupo Musical': '900€-3.000€', Animador: '150€-400€', Mago: '250€-600€',
+  'Local para eventos': '3.000€-12.000€',
 };
 const PRECIO_CUMPLE: Record<string, string> = {
-  DJ: '200€–500€', Fotógrafo: '250€–600€', Catering: '25€–50€/persona',
-  Camareros: '100€–150€/servicio', Animador: '100€–250€', Mago: '150€–350€',
+  DJ: '200€-500€', Fotógrafo: '250€-600€', Catering: '25€-50€/persona',
+  Camareros: '100€-150€/servicio', Animador: '100€-250€', Mago: '150€-350€',
 };
 const PRECIO_EMPRESA: Record<string, string> = {
-  DJ: '350€–800€', Fotógrafo: '400€–1.200€', Catering: '40€–90€/persona',
-  Camareros: '120€–180€/servicio', Speaker: '600€–3.000€', 'Grupo Musical': '800€–2.500€',
-  'Local para eventos': '600€–4.000€',
+  DJ: '350€-800€', Fotógrafo: '400€-1.200€', Catering: '40€-90€/persona',
+  Camareros: '120€-180€/servicio', Speaker: '600€-3.000€', 'Grupo Musical': '800€-2.500€',
+  'Local para eventos': '600€-4.000€',
 };
 const PRECIO_COMUNION: Record<string, string> = {
-  Fotógrafo: '300€–800€', Catering: '30€–65€/persona', Camareros: '100€–160€/servicio',
-  Animador: '120€–300€', Mago: '180€–400€', DJ: '250€–550€',
+  Fotógrafo: '300€-800€', Catering: '30€-65€/persona', Camareros: '100€-160€/servicio',
+  Animador: '120€-300€', Mago: '180€-400€', DJ: '250€-550€',
 };
 const PRECIO_FIESTA: Record<string, string> = {
-  DJ: '250€–700€', Fotógrafo: '250€–600€', Catering: '30€–70€/persona',
-  Camareros: '100€–170€/servicio', Animador: '120€–300€', Mago: '180€–450€',
-  'Local para eventos': '400€–2.500€',
+  DJ: '250€-700€', Fotógrafo: '250€-600€', Catering: '30€-70€/persona',
+  Camareros: '100€-170€/servicio', Animador: '120€-300€', Mago: '180€-450€',
+  'Local para eventos': '400€-2.500€',
 };
 
 // Constructor de FAQs genérico por ocasión — coherente entre todas
 const buildFaqs = (occLabel: string, occLong: string, antelacion: string) =>
   (rol: string, precio: string) => [
     { q: `¿Cuánto cuesta contratar ${rol.toLowerCase()} para ${occLong}?`, a: `El precio orientativo de ${rol.toLowerCase()} para ${occLong} en España es ${precio}, según experiencia, duración y zona. En XPEAK todos los perfiles muestran su tarifa pública antes de contactar, sin sorpresas.` },
-    { q: `¿XPEAK cobra comisión por contratar ${rol.toLowerCase()} para ${occLong}?`, a: 'No. El contrato se cierra directamente entre tú y el profesional, sin intermediarios.' },
     { q: `¿Con cuánta antelación debo contratar ${rol.toLowerCase()} para ${occLong}?`, a: `${antelacion} Para reservas urgentes, el Flash Booking de XPEAK encuentra disponibilidad en menos de 1 hora.` },
     { q: `¿Los ${rol.toLowerCase()} de XPEAK están verificados?`, a: 'Sí. Cada semana se verifican perfiles: identidad, experiencia y trabajos previos. Puedes ver valoraciones reales antes de contratar.' },
   ];
@@ -152,7 +151,7 @@ export const OCCASIONS: Record<string, OccasionInfo> = {
       `Para contratar ${rol.toLowerCase()} para una boda en España, publica tu evento en XPEAK y recibe propuestas de profesionales verificados en menos de 1 hora. El precio orientativo es ${PRECIO_BODA[rol] ?? 'variable según el servicio'} y el contrato se firma directamente con el profesional, sin intermediarios.`,
     intro: (rol) =>
       `Una boda es uno de los eventos donde más importa acertar con el ${rol.toLowerCase()}. En XPEAK conectas directamente con ${rol.toLowerCase()} verificados con experiencia en bodas de toda España: comparas perfiles, precios públicos y valoraciones, y cierras el contrato directamente. Publica tu boda y recibe propuestas reales en menos de una hora con Flash Booking.`,
-    faqs: buildFaqs('Boda', 'una boda', 'Los mejores profesionales de boda se reservan con 3–6 meses de antelación, sobre todo en temporada alta (mayo–octubre).'),
+    faqs: buildFaqs('Boda', 'una boda', 'Los mejores profesionales de boda se reservan con 3-6 meses de antelación, sobre todo en temporada alta (mayo-octubre).'),
   },
   cumpleanos: {
     label: 'Cumpleaños', slug: 'cumpleanos', labelLong: 'tu cumpleaños',
@@ -161,7 +160,7 @@ export const OCCASIONS: Record<string, OccasionInfo> = {
       `Para contratar ${rol.toLowerCase()} para un cumpleaños en España, publica tu fiesta en XPEAK y recibe propuestas de profesionales verificados en menos de 1 hora. El precio orientativo es ${PRECIO_CUMPLE[rol] ?? 'variable según el servicio'} y contratas directamente al profesional, sin intermediarios.`,
     intro: (rol) =>
       `Un cumpleaños memorable empieza por elegir bien el ${rol.toLowerCase()}. En XPEAK encuentras ${rol.toLowerCase()} verificados para fiestas de cumpleaños de todas las edades en toda España: precios públicos, valoraciones reales y contratación directa. Publica tu fiesta y recibe propuestas en menos de una hora.`,
-    faqs: buildFaqs('Cumpleaños', 'un cumpleaños', 'Para cumpleaños suele bastar con 2–4 semanas de antelación, aunque en fechas señaladas conviene reservar antes.'),
+    faqs: buildFaqs('Cumpleaños', 'un cumpleaños', 'Para cumpleaños suele bastar con 2-4 semanas de antelación, aunque en fechas señaladas conviene reservar antes.'),
   },
   'evento-empresa': {
     label: 'Evento de Empresa', slug: 'evento-empresa', labelLong: 'tu evento de empresa',
@@ -170,7 +169,7 @@ export const OCCASIONS: Record<string, OccasionInfo> = {
       `Para contratar ${rol.toLowerCase()} para un evento de empresa en España, publica tu evento en XPEAK y recibe propuestas de profesionales verificados con factura en menos de 1 hora. El precio orientativo es ${PRECIO_EMPRESA[rol] ?? 'variable según el servicio'}, con contrato y factura directos.`,
     intro: (rol) =>
       `Los eventos corporativos exigen ${rol.toLowerCase()} fiables y con factura. En XPEAK conectas con ${rol.toLowerCase()} verificados con experiencia en juntas, cenas de empresa, galas y team building por toda España: precios públicos, contrato digital y factura. Publica tu evento y recibe propuestas en menos de una hora.`,
-    faqs: buildFaqs('Evento de Empresa', 'un evento de empresa', 'Para eventos corporativos recomendamos reservar con 3–8 semanas de antelación según el tamaño del evento.'),
+    faqs: buildFaqs('Evento de Empresa', 'un evento de empresa', 'Para eventos corporativos recomendamos reservar con 3-8 semanas de antelación según el tamaño del evento.'),
   },
   comunion: {
     label: 'Comunión', slug: 'comunion', labelLong: 'tu comunión',
@@ -179,7 +178,7 @@ export const OCCASIONS: Record<string, OccasionInfo> = {
       `Para contratar ${rol.toLowerCase()} para una comunión en España, publica tu celebración en XPEAK y recibe propuestas de profesionales verificados en menos de 1 hora. El precio orientativo es ${PRECIO_COMUNION[rol] ?? 'variable según el servicio'} y contratas directamente al profesional.`,
     intro: (rol) =>
       `Una comunión reúne a toda la familia y merece un buen ${rol.toLowerCase()}. En XPEAK encuentras ${rol.toLowerCase()} verificados especializados en comuniones por toda España: precios públicos, valoraciones y contratación directa. Publica tu celebración y recibe propuestas en menos de una hora.`,
-    faqs: buildFaqs('Comunión', 'una comunión', 'La temporada de comuniones (mayo–junio) concentra mucha demanda: reserva con 2–4 meses de antelación.'),
+    faqs: buildFaqs('Comunión', 'una comunión', 'La temporada de comuniones (mayo-junio) concentra mucha demanda: reserva con 2-4 meses de antelación.'),
   },
   'fiesta-privada': {
     label: 'Fiesta Privada', slug: 'fiesta-privada', labelLong: 'tu fiesta privada',
@@ -188,7 +187,7 @@ export const OCCASIONS: Record<string, OccasionInfo> = {
       `Para contratar ${rol.toLowerCase()} para una fiesta privada en España, publica tu evento en XPEAK y recibe propuestas de profesionales verificados en menos de 1 hora. El precio orientativo es ${PRECIO_FIESTA[rol] ?? 'variable según el servicio'} y contratas directamente al profesional, sin intermediarios.`,
     intro: (rol) =>
       `Una fiesta privada en villa, ático o local necesita un ${rol.toLowerCase()} a la altura. En XPEAK conectas con ${rol.toLowerCase()} verificados con experiencia en eventos privados por toda España, incluidos destinos como Ibiza y Marbella: precios públicos y contrato directo. Publica tu fiesta y recibe propuestas en menos de una hora.`,
-    faqs: buildFaqs('Fiesta Privada', 'una fiesta privada', 'Para fiestas privadas conviene reservar con 2–4 semanas; en destinos y fechas de temporada alta, con más margen.'),
+    faqs: buildFaqs('Fiesta Privada', 'una fiesta privada', 'Para fiestas privadas conviene reservar con 2-4 semanas; en destinos y fechas de temporada alta, con más margen.'),
   },
 };
 
@@ -258,13 +257,13 @@ export default function OccasionLanding() {
   return (
     <>
       <Helmet>
-        <title>{`Contratar ${rol} para ${occ.label} — XPEAK`}</title>
+        <title>{`Contratar ${rol} para ${occ.label} | XPEAK`}</title>
         <meta name="description" content={desc} />
         {/* El noindex de las páginas sin inventario se aplica en el prerender
             (prerender-content.mjs), no aquí: el robots global de index.html
             gana en el HTML servido y Helmet no lo sustituye. */}
         <link rel="canonical" href={`https://xpeak.es${canonical}`} />
-        <meta property="og:title" content={`Contratar ${rol} para ${occ.label} — XPEAK`} />
+        <meta property="og:title" content={`Contratar ${rol} para ${occ.label} | XPEAK`} />
         <meta property="og:description" content={desc} />
         <meta property="og:url" content={`https://xpeak.es${canonical}`} />
         <meta property="og:type" content="website" />
@@ -316,7 +315,7 @@ export default function OccasionLanding() {
             {[
               { label: `Precio ${rol} para ${occ.label.toLowerCase()}`, value: precio, icon: <Star size={16} /> },
               { label: 'Flash Booking', value: 'En menos de 1h', icon: <Zap size={16} /> },
-              { label: 'Comisión XPEAK', value: '0% para quien contrata', icon: <Shield size={16} /> },
+              { label: 'Contratos', value: 'Automáticos', icon: <Shield size={16} /> },
             ].map(s => (
               <div key={s.label} className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>{s.icon}</div>
@@ -360,7 +359,7 @@ export default function OccasionLanding() {
         </section>
 
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-12 sm:pb-16">
-          <h2 className="text-xl sm:text-2xl font-black mb-6 sm:mb-8">Preguntas frecuentes — {rol} para {occ.label}</h2>
+          <h2 className="text-xl sm:text-2xl font-black mb-6 sm:mb-8">Preguntas frecuentes: {rol} para {occ.label}</h2>
           <div className="space-y-4">
             {occ.faqs(rol, precio).map(faq => (
               <div key={faq.q} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
@@ -388,7 +387,7 @@ export default function OccasionLanding() {
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-16 sm:pb-20 text-center">
           <div className="rounded-2xl p-7 sm:p-10" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
             <h2 className="text-xl sm:text-3xl font-black mb-3">¿Buscas {rol} para {occ.labelLong}?</h2>
-            <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>Únete — contratos automáticos, Flash Booking en menos de 1h.</p>
+            <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>Únete: contratos automáticos, Flash Booking en menos de 1h.</p>
             <a href="/auth" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}>
               <Zap size={15} /> Empezar
             </a>

@@ -48,7 +48,7 @@ const faqStructured = {
         <title>Cuánto cobra un camarero de eventos 2026 | XPEAK</title>
         <meta name="description" content="Guía completa de precios de camareros para eventos en España 2026: bodas, empresas y fiestas privadas. Cuánto cobran y cuántos necesitas contratar." />
         <link rel="canonical" href="https://xpeak.es/blog/cuanto-cobra-un-camarero-de-eventos" />
-        <meta property="og:title" content="Cuánto cobra un camarero de eventos en España 2026 — XPEAK" />
+        <meta property="og:title" content="Cuánto cobra un camarero de eventos en España 2026 | XPEAK" />
         <meta property="og:type" content="article" />
         <meta property="og:url" content="https://xpeak.es/blog/cuanto-cobra-un-camarero-de-eventos" />
         <meta property="og:image" content="https://xpeak.es/og-image.jpg" />
@@ -91,19 +91,19 @@ const faqStructured = {
             Cuánto cobra un camarero de eventos por horas en España (2026)
           </h1>
           <p className="text-base sm:text-base mb-8 leading-relaxed" style={{ color: '#333' }}>
-            Si estás organizando una boda, un evento de empresa o una fiesta privada y necesitas personal de sala, esta guía te da los precios reales del mercado en 2026 — sin intermediarios, sin letra pequeña.
+            Si estás organizando una boda, un evento de empresa o una fiesta privada y necesitas personal de sala, esta guía te da los precios reales del mercado en 2026, sin intermediarios, sin letra pequeña.
           </p>
 
           <div className="p-5 rounded-xl mb-8" style={{ background: 'rgba(37,99,235,0.05)', border: '1px solid rgba(37,99,235,0.15)' }}>
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#2563EB' }}>Resumen de precios 2026</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {[
-                ['Camarero/a de sala', '10€ – 18€/hora'],
-                ['Barman / Bartender', '15€ – 22€/hora'],
-                ['Jefe de sala', '20€ – 30€/hora'],
-                ['Servicio boda completo (4–6h)', '120€ – 250€/persona'],
-                ['Barra libre con bartender', '150€ – 350€ (4h)'],
-                ['Personal de cocina', '12€ – 20€/hora'],
+                ['Camarero/a de sala', '10€-18€/hora'],
+                ['Barman / Bartender', '15€-22€/hora'],
+                ['Jefe de sala', '20€-30€/hora'],
+                ['Servicio boda completo (4-6h)', '120€-250€/persona'],
+                ['Barra libre con bartender', '150€-350€ (4h)'],
+                ['Personal de cocina', '12€-20€/hora'],
               ].map(([rol, precio]) => (
                 <div key={rol} className="flex items-center justify-between p-3 rounded-lg"
                   style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>

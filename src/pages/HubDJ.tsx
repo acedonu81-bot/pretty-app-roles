@@ -35,7 +35,7 @@ export default function HubDJ() {
         <title>DJ para eventos España: guía completa 2026 | XPEAK</title>
         <meta name="description" content="Todo sobre contratar DJ para bodas, cumpleaños, fiestas privadas y eventos corporativos en España. Precios reales, tipos de DJ y qué incluye el servicio." />
         <link rel="canonical" href="https://xpeak.es/blog/dj-para-eventos" />
-        <meta property="og:title" content="DJ para eventos España: guía completa 2026 — XPEAK" />
+        <meta property="og:title" content="DJ para eventos España: guía completa 2026 | XPEAK" />
         <meta property="og:description" content="Precios, tipos de DJ y cómo contratar para cualquier evento en España." />
         <meta property="og:url" content="https://xpeak.es/blog/dj-para-eventos" />
         <meta property="og:type" content="article" />
@@ -94,11 +94,11 @@ export default function HubDJ() {
               <h2 className="text-lg font-black mb-4">Precios de DJ según tipo de evento</h2>
               <div className="space-y-2">
                 {[
-                  { tipo: 'Boda completa (ceremonia + cóctel + cena + pista)', precio: '700–1.500€' },
-                  { tipo: 'Fiesta privada / cumpleaños (4h)', precio: '350–700€' },
-                  { tipo: 'Evento corporativo / afterwork', precio: '500–1.200€' },
-                  { tipo: 'Discoteca / sala nocturna (noche)', precio: '300–2.500€' },
-                  { tipo: 'Comunión (disco móvil, 3-4h)', precio: '250–500€' },
+                  { tipo: 'Boda completa (ceremonia + cóctel + cena + pista)', precio: '700-1.500€' },
+                  { tipo: 'Fiesta privada / cumpleaños (4h)', precio: '350-700€' },
+                  { tipo: 'Evento corporativo / afterwork', precio: '500-1.200€' },
+                  { tipo: 'Discoteca / sala nocturna (noche)', precio: '300-2.500€' },
+                  { tipo: 'Comunión (disco móvil, 3-4h)', precio: '250-500€' },
                 ].map((row, i) => (
                   <div key={row.tipo} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <p className="text-xs font-medium">{row.tipo}</p>

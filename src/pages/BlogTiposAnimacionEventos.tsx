@@ -51,7 +51,7 @@ export default function BlogTiposAnimacionEventos() {
         <title>Tipos de animación para eventos: cuál elegir (2026) | XPEAK</title>
         <meta name="description" content="Animación infantil, de circo, mimo o team building: qué tipo de animador encaja mejor según el evento y el público." />
         <link rel="canonical" href="https://xpeak.es/blog/tipos-de-animacion-para-eventos" />
-        <meta property="og:title" content="Tipos de animación para eventos — XPEAK Blog" />
+        <meta property="og:title" content="Tipos de animación para eventos | XPEAK Blog" />
         <meta property="og:description" content="Qué tipo de animador elegir según el evento y el público objetivo." />
         <meta property="og:url" content="https://xpeak.es/blog/tipos-de-animacion-para-eventos" />
         <meta property="og:type" content="article" />

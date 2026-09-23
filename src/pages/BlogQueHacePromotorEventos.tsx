@@ -52,7 +52,7 @@ export default function BlogQueHacePromotorEventos() {
         <title>Qué hace exactamente un promotor de eventos (2026) | XPEAK</title>
         <meta name="description" content="Funciones reales de un promotor o RRPP: captación de público, gestión de listas VIP, coordinación de puerta y diferencias con el RRPP de marca." />
         <link rel="canonical" href="https://xpeak.es/blog/que-hace-un-promotor-de-eventos" />
-        <meta property="og:title" content="Qué hace un promotor de eventos — XPEAK Blog" />
+        <meta property="og:title" content="Qué hace un promotor de eventos | XPEAK Blog" />
         <meta property="og:description" content="Funciones reales de un promotor o RRPP en clubs y eventos." />
         <meta property="og:url" content="https://xpeak.es/blog/que-hace-un-promotor-de-eventos" />
         <meta property="og:type" content="article" />

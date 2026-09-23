@@ -51,7 +51,7 @@ export default function BlogComoElegirPresentadorEventoEmpresa() {
         <title>Cómo elegir presentador para un evento de empresa (2026) | XPEAK</title>
         <meta name="description" content="MC, keynote speaker o presentador bilingüe: cómo elegir el perfil correcto según el tipo de evento corporativo." />
         <link rel="canonical" href="https://xpeak.es/blog/como-elegir-presentador-evento-empresa" />
-        <meta property="og:title" content="Cómo elegir presentador para un evento de empresa — XPEAK Blog" />
+        <meta property="og:title" content="Cómo elegir presentador para un evento de empresa | XPEAK Blog" />
         <meta property="og:description" content="Qué perfil de presentador elegir según el tipo de evento corporativo." />
         <meta property="og:url" content="https://xpeak.es/blog/como-elegir-presentador-evento-empresa" />
         <meta property="og:type" content="article" />

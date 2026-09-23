@@ -44,7 +44,7 @@ export default function BlogSoftwareGestionEventos() {
         <title>Software para organizar eventos: qué debe tener y cómo elegirlo (2026) | XPEAK</title>
         <meta name="description" content="Qué funciones debe tener una herramienta de gestión de eventos: directorio de proveedores, contratos, presupuesto y comunicación centralizada." />
         <link rel="canonical" href="https://xpeak.es/blog/software-para-organizar-eventos" />
-        <meta property="og:title" content="Software para organizar eventos: qué debe tener — XPEAK Blog" />
+        <meta property="og:title" content="Software para organizar eventos: qué debe tener | XPEAK Blog" />
         <meta property="og:description" content="Cómo elegir una herramienta de gestión de eventos: funciones clave y qué evitar." />
         <meta property="og:url" content="https://xpeak.es/blog/software-para-organizar-eventos" />
         <meta property="og:type" content="article" />
@@ -86,7 +86,7 @@ export default function BlogSoftwareGestionEventos() {
               <div className="space-y-3">
                 {[
                   { func: 'Directorio con precios públicos', desc: 'Poder comparar profesionales sin tener que preguntar el precio a cada uno por privado.' },
-                  { func: 'Mensajería centralizada', desc: 'Hablar con cada proveedor desde la misma plataforma, con historial por evento — no mezclado con WhatsApp personal.' },
+                  { func: 'Mensajería centralizada', desc: 'Hablar con cada proveedor desde la misma plataforma, con historial por evento: no mezclado con WhatsApp personal.' },
                   { func: 'Contratos digitales', desc: 'Generar y firmar contratos sin depender de plantillas de Word sueltas ni imprimir papel.' },
                   { func: 'Control de presupuesto', desc: 'Ver el gasto acumulado por evento y por partida, no solo la suma final al terminar.' },
                   { func: 'Coste bajo control', desc: 'Que el coste de usar la herramienta no encarezca artificialmente lo que pagas a cada proveedor.' },

@@ -175,7 +175,7 @@ const SolicitudesTab = () => {
       if (accepted?.event_date) {
         const { error: calError } = await supabase.from('calendar_events').insert({
           user_id: user!.id,
-          title: accepted.requester_name ? `Trabajo — ${accepted.requester_name}` : 'Trabajo confirmado',
+          title: accepted.requester_name ? `Trabajo: ${accepted.requester_name}` : 'Trabajo confirmado',
           event_date: accepted.event_date,
           location: accepted.event_location || null,
           notes: accepted.event_description || null,
@@ -193,7 +193,7 @@ const SolicitudesTab = () => {
               type: 'bolo_new_confirmation',
               data: {
                 email: user.email,
-                title: accepted.requester_name ? `Trabajo — ${accepted.requester_name}` : 'Trabajo confirmado',
+                title: accepted.requester_name ? `Trabajo: ${accepted.requester_name}` : 'Trabajo confirmado',
                 date: accepted.event_date,
                 location: accepted.event_location,
               },
@@ -348,7 +348,7 @@ const SolicitudesTab = () => {
                       className="text-xs flex items-center gap-1.5 underline hover:opacity-80"
                       style={{ color: '#8A6D0F' }}>
                       <MapPin size={11} style={{ flexShrink: 0 }} />
-                      {s.exact_address} — ver en Google Maps
+                      {s.exact_address}: ver en Google Maps
                     </a>
                   )}
                   {s.event_description && (

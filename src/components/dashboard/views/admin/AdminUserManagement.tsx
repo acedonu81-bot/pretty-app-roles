@@ -241,7 +241,7 @@ const AdminUserManagement = () => {
         {ACTIONS.map(a => (
           <span key={a.label} className="flex items-center gap-1.5">
             <a.icon size={11} />
-            <strong style={{ color: '#555' }}>{a.label}</strong> — {a.hint}
+            <strong style={{ color: '#555' }}>{a.label}</strong> · {a.hint}
           </span>
         ))}
       </div>

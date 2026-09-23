@@ -31,13 +31,13 @@ export default function BlogDiscoMovilVerbenas() {
   return (
     <>
       <Helmet>
-        <title>Disco Móvil para Verbenas y Fiestas de Pueblo — Precios 2026 | XPEAK</title>
+        <title>Disco Móvil para Verbenas y Fiestas de Pueblo: Precios 2026 | XPEAK</title>
         <meta name="description" content="Cómo contratar disco móvil u orquesta para fiestas de pueblo y verbenas. Precios, diferencias DJ vs orquesta, qué incluye el equipo y cómo contratarlo en España." />
         <link rel="canonical" href="https://xpeak.es/blog/disco-movil-verbenas-fiestas-pueblo" />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
       </Helmet>
-      <div style={{ background: '#0A0A0A', color: '#F5F5F0', minHeight: '100vh' }}>
+      <div style={{ background: '#ffffff', color: '#111', minHeight: '100vh' }}>
         <div className="max-w-2xl mx-auto px-4 py-12">
           <a href="/blog" style={{ color: '#D4AF37', fontSize: '0.8rem', fontWeight: 700 }}>← Blog XPEAK</a>
           <article className="mt-6">
@@ -60,7 +60,7 @@ export default function BlogDiscoMovilVerbenas() {
               </thead>
               <tbody>
                 {[
-                  ['Precio orientativo', '400€ – 1.200€', '2.000€ – 8.000€'],
+                  ['Precio orientativo', '400€-1.200€', '2.000€-8.000€'],
                   ['Repertorio', 'Ilimitado (cualquier estilo)', 'Fijo o semifijo'],
                   ['Equipo', 'Incluido (sonido + luces)', 'Necesita técnico aparte'],
                   ['Montaje', '2-3 horas', '4-6 horas'],
@@ -98,10 +98,10 @@ export default function BlogDiscoMovilVerbenas() {
               </thead>
               <tbody>
                 {[
-                  ['4 horas', '400€ – 700€', 'Equipo básico, luces LED'],
-                  ['6 horas', '600€ – 900€', 'Equipo completo, máquina humo'],
-                  ['8 horas (noche completa)', '800€ – 1.200€', 'Equipo premium, efectos especiales'],
-                  ['2 días (fiestas pueblo)', '1.200€ – 2.000€', 'Equipo completo + 2 actuaciones'],
+                  ['4 horas', '400€-700€', 'Equipo básico, luces LED'],
+                  ['6 horas', '600€-900€', 'Equipo completo, máquina humo'],
+                  ['8 horas (noche completa)', '800€-1.200€', 'Equipo premium, efectos especiales'],
+                  ['2 días (fiestas pueblo)', '1.200€-2.000€', 'Equipo completo + 2 actuaciones'],
                 ].map(([dur, precio, incl]) => (
                   <tr key={dur} style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
                     <td style={{ padding: '10px 0', fontWeight: 700 }}>{dur}</td>

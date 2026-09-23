@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Fuengirola', item: 'https://xpeak.es/blog/precio-azafatas-fuengirola' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '140–190€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '160–240€/día', nota: 'Eventos hoteleros y de marca' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '175–230€/día', nota: 'Imprescindible por turismo internacional' },
-  { perfil: 'Azafata multilingüe', tarifa: '200–290€/día', nota: 'Animación turística y grandes hoteles' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '190–270€/día', nota: 'Gestión de equipo en evento hotelero' },
-  { perfil: 'Pack evento en hotel (4h)', tarifa: '90–150€', nota: 'Primera línea de playa' },
+  { perfil: 'Azafata de stand / feria', tarifa: '140-190€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '160-240€/día', nota: 'Eventos hoteleros y de marca' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '175-230€/día', nota: 'Imprescindible por turismo internacional' },
+  { perfil: 'Azafata multilingüe', tarifa: '200-290€/día', nota: 'Animación turística y grandes hoteles' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '190-270€/día', nota: 'Gestión de equipo en evento hotelero' },
+  { perfil: 'Pack evento en hotel (4h)', tarifa: '90-150€', nota: 'Primera línea de playa' },
 ];
 
 export default function BlogPrecioAzafatasFuengirola() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasFuengirola() {
         <title>Precio azafatas para eventos en Fuengirola 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos hoteleros y turismo familiar en Fuengirola. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-fuengirola" />
-        <meta property="og:title" content="Precio azafatas eventos Fuengirola 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Fuengirola 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para eventos hoteleros y turismo familiar en Fuengirola." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-fuengirola" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

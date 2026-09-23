@@ -16,7 +16,7 @@ export default function BlogTopCTA({ label, href, text, highlight }: BlogTopCTAP
       }
     >
       <p className="text-xs font-bold" style={{ color: highlight ? '#000' : '#222' }}>
-        {text ?? 'Flash Booking — profesionales verificados en menos de 1h'}
+        {text ?? 'Flash Booking: profesionales verificados en menos de 1h'}
       </p>
       <a href={href}
         className="flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-black transition-all hover:scale-105 whitespace-nowrap"

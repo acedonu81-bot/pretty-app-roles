@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Gijón', item: 'https://xpeak.es/blog/precio-azafatas-gijon' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '120–170€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '140–210€/día', nota: 'Bodas en sidrerías y espacios con vistas al mar' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '150–200€/día', nota: 'Turismo de costa en verano' },
-  { perfil: 'Azafata de protocolo', tarifa: '150–215€/día', nota: 'Eventos institucionales y corporativos' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '165–240€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '75–120€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '120-170€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '140-210€/día', nota: 'Bodas en sidrerías y espacios con vistas al mar' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '150-200€/día', nota: 'Turismo de costa en verano' },
+  { perfil: 'Azafata de protocolo', tarifa: '150-215€/día', nota: 'Eventos institucionales y corporativos' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '165-240€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '75-120€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasGijon() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasGijon() {
         <title>Precio azafatas para eventos en Gijón 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos y bodas con vistas al Cantábrico en Gijón. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-gijon" />
-        <meta property="og:title" content="Precio azafatas eventos Gijón 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Gijón 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para bodas y eventos en Gijón y la costa asturiana." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-gijon" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

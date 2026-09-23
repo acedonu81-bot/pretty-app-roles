@@ -42,7 +42,7 @@ export default function BlogCalculadoraTarifaDJ() {
   const multExp = experiencia === 'junior' ? 0.7 : experiencia === 'medio' ? 1 : 1.4;
   const extraLuces = luces ? 200 : 0;
   const precio = Math.round((base * multCiudad * multHoras * multExp + extraLuces) / 50) * 50;
-  const rango = `${Math.round(precio * 0.8)}€ – ${Math.round(precio * 1.2)}€`;
+  const rango = `${Math.round(precio * 0.8)}€ - ${Math.round(precio * 1.2)}€`;
 
   const articleSchema = {
     '@context': 'https://schema.org',
@@ -83,7 +83,7 @@ export default function BlogCalculadoraTarifaDJ() {
         <title>Calculadora de tarifa DJ 2026: precio estimado para tu evento | XPEAK</title>
         <meta name="description" content="Calcula cuánto cuesta un DJ para tu evento. Introduce el tipo de evento, ciudad y horas y obtén un precio estimado real para 2026." />
         <link rel="canonical" href={`https://xpeak.es/blog/${slug}`} />
-        <meta property="og:title" content="Calculadora tarifa DJ 2026 — XPEAK" />
+        <meta property="og:title" content="Calculadora tarifa DJ 2026 | XPEAK" />
         <meta property="og:description" content="Calcula el precio de un DJ para tu boda, empresa o fiesta privada. Estimación real 2026." />
         <meta property="og:url" content={`https://xpeak.es/blog/${slug}`} />
         <meta property="og:type" content="website" />
@@ -213,7 +213,7 @@ export default function BlogCalculadoraTarifaDJ() {
                 {[
                   { href: '/blog/cuanto-cobra-un-dj-en-espana', cat: 'DJ', title: 'Cuánto cobra un DJ en España: precios 2026' },
                   { href: '/blog/como-contratar-un-dj', cat: 'Guía', title: 'Cómo contratar un DJ: guía completa' },
-                  { href: '/plantilla-contrato-dj', cat: 'Recurso', title: 'Plantilla contrato DJ — Word y PDF' },
+                  { href: '/plantilla-contrato-dj', cat: 'Recurso', title: 'Plantilla contrato DJ: Word y PDF' },
                 ].map(link => (
                   <a key={link.href} href={link.href} className="flex items-center gap-3 p-3 rounded-xl transition-all hover:opacity-80" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)', textDecoration: 'none' }}>
                     <span className="text-[0.6rem] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.15)' }}>{link.cat}</span>

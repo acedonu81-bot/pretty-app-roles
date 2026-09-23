@@ -41,7 +41,7 @@ export default function HubBodas() {
         <title>Profesionales para bodas España: guía 2026 | XPEAK</title>
         <meta name="description" content="Guía completa para contratar DJ, fotógrafo, camareros, catering y maquilladora para tu boda en España. Precios reales y consejos por partida." />
         <link rel="canonical" href="https://xpeak.es/blog/profesionales-bodas" />
-        <meta property="og:title" content="Profesionales para bodas España: guía completa 2026 — XPEAK" />
+        <meta property="og:title" content="Profesionales para bodas España: guía completa 2026 | XPEAK" />
         <meta property="og:description" content="DJ, fotógrafo, camareros, catering y más para tu boda. Precios reales y guías por partida." />
         <meta property="og:url" content="https://xpeak.es/blog/profesionales-bodas" />
         <meta property="og:type" content="article" />
@@ -97,14 +97,14 @@ export default function HubBodas() {
               <h2 className="text-lg font-black mb-4">Presupuesto orientativo por partida (100 invitados)</h2>
               <div className="space-y-2">
                 {[
-                  { partida: 'Catering (menú + servicio)', precio: '8.000–18.000€' },
-                  { partida: 'DJ + equipo de sonido e iluminación', precio: '700–1.500€' },
-                  { partida: 'Fotógrafo de bodas', precio: '1.500–3.500€' },
-                  { partida: 'Camareros de sala (6-8 personas)', precio: '600–1.200€' },
-                  { partida: 'Videógrafo', precio: '1.000–2.500€' },
-                  { partida: 'Maquillaje y peluquería', precio: '400–900€' },
-                  { partida: 'Flores y decoración', precio: '1.500–4.000€' },
-                  { partida: 'Wedding planner (coordinación del día)', precio: '800–2.000€' },
+                  { partida: 'Catering (menú + servicio)', precio: '8.000-18.000€' },
+                  { partida: 'DJ + equipo de sonido e iluminación', precio: '700-1.500€' },
+                  { partida: 'Fotógrafo de bodas', precio: '1.500-3.500€' },
+                  { partida: 'Camareros de sala (6-8 personas)', precio: '600-1.200€' },
+                  { partida: 'Videógrafo', precio: '1.000-2.500€' },
+                  { partida: 'Maquillaje y peluquería', precio: '400-900€' },
+                  { partida: 'Flores y decoración', precio: '1.500-4.000€' },
+                  { partida: 'Wedding planner (coordinación del día)', precio: '800-2.000€' },
                 ].map((row, i) => (
                   <div key={row.partida} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <p className="text-xs font-medium">{row.partida}</p>

@@ -8,18 +8,18 @@ import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
 const TABLE = [
-  { partida: 'Catering (comida + bebida)', rango: '40€ – 80€/persona', notas: 'Banquete completo en restaurante o finca' },
-  { partida: 'DJ / Disco móvil', rango: '300€ – 700€', notas: 'Equipo + sesión 4–5 horas' },
-  { partida: 'Fotógrafo', rango: '400€ – 900€', notas: 'Ceremonia + banquete + álbum digital' },
-  { partida: 'Videógrafo', rango: '400€ – 800€', notas: 'Vídeo resumen editado del día' },
-  { partida: 'Animación infantil', rango: '200€ – 500€', notas: 'Monitor + taller + juegos 2–3 horas' },
-  { partida: 'Flores y decoración', rango: '200€ – 600€', notas: 'Iglesia, mesa presidencial y centro' },
-  { partida: 'Traje / Vestido', rango: '200€ – 800€', notas: 'Amplio rango según diseñador' },
-  { partida: 'Invitaciones + detalles', rango: '100€ – 350€', notas: 'Por 80–120 invitados' },
+  { partida: 'Catering (comida + bebida)', rango: '40€-80€/persona', notas: 'Banquete completo en restaurante o finca' },
+  { partida: 'DJ / Disco móvil', rango: '300€-700€', notas: 'Equipo + sesión 4-5 horas' },
+  { partida: 'Fotógrafo', rango: '400€-900€', notas: 'Ceremonia + banquete + álbum digital' },
+  { partida: 'Videógrafo', rango: '400€-800€', notas: 'Vídeo resumen editado del día' },
+  { partida: 'Animación infantil', rango: '200€-500€', notas: 'Monitor + taller + juegos 2-3 horas' },
+  { partida: 'Flores y decoración', rango: '200€-600€', notas: 'Iglesia, mesa presidencial y centro' },
+  { partida: 'Traje / Vestido', rango: '200€-800€', notas: 'Amplio rango según diseñador' },
+  { partida: 'Invitaciones + detalles', rango: '100€-350€', notas: 'Por 80-120 invitados' },
 ];
 
 const FAQ = [
-  { q: '¿Cuánto cuesta una comunión de media en España?', a: 'Una comunión para 80–100 personas tiene un coste total de entre 6.000€ y 15.000€. La partida más cara es siempre el catering, que puede representar el 40–50% del presupuesto total.' },
+  { q: '¿Cuánto cuesta una comunión de media en España?', a: 'Una comunión para 80-100 personas tiene un coste total de entre 6.000€ y 15.000€. La partida más cara es siempre el catering, que puede representar el 40-50% del presupuesto total.' },
   { q: '¿Cuántos invitados es lo habitual en una comunión?', a: 'La media en España está entre 60 y 120 invitados. Las comuniones íntimas (familiares) tienen entre 20 y 40 personas, lo que reduce considerablemente el presupuesto.' },
   { q: '¿Se puede ahorrar en el DJ de la comunión?', a: 'Sí. Una disco móvil básica para comunión cuesta entre 300€ y 500€ y suele incluir equipo y animación para niños. Es una opción más económica que contratar un DJ de sala.' },
   { q: '¿El fotógrafo de la comunión también hace vídeo?', a: 'Depende. Muchos fotógrafos ofrecen paquetes combinados foto+vídeo con descuento frente a contratar por separado. Es la opción más común en comuniones para reducir coordinación y coste.' },
@@ -58,7 +58,7 @@ const faqStructured = {
     <>
       <Helmet>
         <title>Cuánto cuesta una comunión en España 2026 | XPEAK</title>
-        <meta name="description" content="Desglose real del coste de una comunión en España 2026. Catering, DJ, fotógrafo, animación y decoración: precios por partida para 80–100 invitados." />
+        <meta name="description" content="Desglose real del coste de una comunión en España 2026. Catering, DJ, fotógrafo, animación y decoración: precios por partida para 80-100 invitados." />
         <meta name="keywords" content="cuánto cuesta una comunión, precio comunión España, presupuesto comunión 2026, comunión precio total" />
         <link rel="canonical" href="https://xpeak.es/blog/cuanto-cuesta-una-comunion-en-espana" />
         <meta property="og:title" content="¿Cuánto cuesta una comunión en España? Presupuesto 2026" />
@@ -106,14 +106,14 @@ const faqStructured = {
           <div className="p-4 rounded-xl mb-8" style={{ background: 'rgba(109,40,217,0.06)', border: '1px solid rgba(109,40,217,0.15)' }}>
             <p className="text-sm font-bold mb-1" style={{ color: '#6D28D9' }}>Resumen rápido</p>
             <p className="text-sm leading-relaxed" style={{ color: '#333' }}>
-              Una comunión para <strong style={{ color: '#111' }}>80–100 invitados</strong> cuesta entre <strong style={{ color: '#111' }}>8.000€ y 15.000€</strong> de media.
-              El catering es la partida más cara (40–50% del total). DJ, fotógrafo y animación suman entre 1.000€ y 2.500€.
+              Una comunión para <strong style={{ color: '#111' }}>80-100 invitados</strong> cuesta entre <strong style={{ color: '#111' }}>8.000€ y 15.000€</strong> de media.
+              El catering es la partida más cara (40-50% del total). DJ, fotógrafo y animación suman entre 1.000€ y 2.500€.
             </p>
           </div>
 
           <h2 className="text-xl font-black mb-4">Desglose de costes por partida</h2>
           <p className="text-base mb-5 leading-relaxed" style={{ color: '#222' }}>
-            Estos son los rangos reales de cada partida para una comunión de 80–100 personas en España:
+            Estos son los rangos reales de cada partida para una comunión de 80-100 personas en España:
           </p>
           <div className="overflow-x-auto mb-10 rounded-xl" style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
             <table className="w-full text-xs min-w-[480px]">
@@ -140,7 +140,7 @@ const faqStructured = {
           <h2 className="text-xl font-black mb-4">Cómo ahorrar sin sacrificar calidad</h2>
           <ul className="space-y-3 mb-10">
             {[
-              { label: 'Fecha de temporada baja', text: 'Las comuniones en octubre o noviembre tienen precios de catering y DJ un 20–30% más bajos que en mayo, la temporada alta.' },
+              { label: 'Fecha de temporada baja', text: 'Las comuniones en octubre o noviembre tienen precios de catering y DJ un 20-30% más bajos que en mayo, la temporada alta.' },
               { label: 'Paquetes combinados', text: 'Muchos fotógrafos ofrecen foto+vídeo con descuento. Algunos DJs también hacen paquetes con animación para niños.' },
               { label: 'Menú cerrado vs. a la carta', text: 'Un menú cerrado negociado con el restaurante es siempre más económico que un servicio a la carta o personalizado.' },
             ].map(item => (

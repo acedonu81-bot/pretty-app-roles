@@ -12,18 +12,18 @@ const article = { '@context': 'https://schema.org', '@type': 'Article', headline
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cobra un camarero de eventos en Málaga?', acceptedAnswer: { '@type': 'Answer', text: 'En Málaga un camarero de eventos cobra entre 11€ y 18€/hora bruto, con un repunte notable en verano por el turismo y las bodas en la Costa del Sol. Los bartenders con experiencia cobran entre 15€ y 22€/hora. Para una boda completa (6-7h), el presupuesto de sala suele estar entre 800€ y 1.900€.' } },
   { '@type': 'Question', name: '¿Dónde hay más demanda de camareros para eventos en Málaga?', acceptedAnswer: { '@type': 'Answer', text: 'La Costa del Sol (Marbella, Estepona, Benalmádena) concentra una demanda muy alta de camareros y bartenders para bodas de lujo e eventos de verano, con presencia importante de clientes internacionales. En la capital, el Palacio de Ferias y Congresos (FYCMA) mueve personal para eventos corporativos y ferias sectoriales.' } },
-  { '@type': 'Question', name: '¿Con cuánta antelación reservar camareros para una boda en Málaga?', acceptedAnswer: { '@type': 'Answer', text: 'Para bodas en la Costa del Sol en temporada alta (junio-septiembre), reserva con 3-4 meses de antelación — es la zona con más presión de fechas de toda Andalucía por el turismo de bodas internacional. Fuera de temporada alta, 4-6 semanas suele bastar.' } },
+  { '@type': 'Question', name: '¿Con cuánta antelación reservar camareros para una boda en Málaga?', acceptedAnswer: { '@type': 'Answer', text: 'Para bodas en la Costa del Sol en temporada alta (junio-septiembre), reserva con 3-4 meses de antelación: es la zona con más presión de fechas de toda Andalucía por el turismo de bodas internacional. Fuera de temporada alta, 4-6 semanas suele bastar.' } },
   { '@type': 'Question', name: '¿Cuántos camareros necesito para una boda en Málaga?', acceptedAnswer: { '@type': 'Answer', text: 'La proporción estándar es 1 camarero por cada 10 invitados en cena sentada y 1 por cada 15-20 en formato cóctel. Para una boda de 100 invitados en la Costa del Sol, lo habitual es contar con 7-9 camareros más 1-2 bartenders para la barra libre.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Camareros Málaga', item: 'https://xpeak.es/blog/camareros-eventos-malaga' }] };
 
 const PRECIOS = [
-  { perfil: 'Camarero/a de sala', tarifa: '11–18€/hora', nota: 'Cóctel, cena sentada o buffet' },
-  { perfil: 'Bartender / coctelería', tarifa: '15–22€/hora', nota: 'Barra libre y coctelería de autor' },
-  { perfil: 'Jefe de sala / coordinador', tarifa: '20–29€/hora', nota: 'Gestión del equipo en boda o evento grande' },
-  { perfil: 'Servicio boda completo (6-7h)', tarifa: '130–230€/persona', nota: 'Cóctel + cena + barra' },
-  { perfil: 'Barra libre con bartender (4h)', tarifa: '150–340€', nota: 'Incluye montaje y desmontaje' },
-  { perfil: 'Personal de cocina de apoyo', tarifa: '12–19€/hora', nota: 'Emplatado y logística en directo' },
+  { perfil: 'Camarero/a de sala', tarifa: '11-18€/hora', nota: 'Cóctel, cena sentada o buffet' },
+  { perfil: 'Bartender / coctelería', tarifa: '15-22€/hora', nota: 'Barra libre y coctelería de autor' },
+  { perfil: 'Jefe de sala / coordinador', tarifa: '20-29€/hora', nota: 'Gestión del equipo en boda o evento grande' },
+  { perfil: 'Servicio boda completo (6-7h)', tarifa: '130-230€/persona', nota: 'Cóctel + cena + barra' },
+  { perfil: 'Barra libre con bartender (4h)', tarifa: '150-340€', nota: 'Incluye montaje y desmontaje' },
+  { perfil: 'Personal de cocina de apoyo', tarifa: '12-19€/hora', nota: 'Emplatado y logística en directo' },
 ];
 
 export default function BlogCamarerosMalaga() {
@@ -33,7 +33,7 @@ export default function BlogCamarerosMalaga() {
         <title>Precio camareros para eventos en Málaga 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran los camareros y bartenders para bodas y eventos en Málaga y la Costa del Sol. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/camareros-eventos-malaga" />
-        <meta property="og:title" content="Precio camareros eventos Málaga 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio camareros eventos Málaga 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de camareros y bartenders para bodas y eventos en Málaga y la Costa del Sol." />
         <meta property="og:url" content="https://xpeak.es/blog/camareros-eventos-malaga" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

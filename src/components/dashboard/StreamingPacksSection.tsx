@@ -84,7 +84,7 @@ const StreamingPacksSection = () => {
             <span className="font-bold" style={{ color: '#22c55e' }}>
               {includedHours}h{isAgency ? ' en pool compartido' : ''} incluidas al mes
             </span>
-            {' '}— sin coste adicional. Compra packs para emitir más.
+            {' '}: sin coste adicional. Compra packs para emitir más.
           </div>
         )}
 

@@ -12,25 +12,25 @@ const article = { '@context': 'https://schema.org', '@type': 'Article', headline
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo para una comunión?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo para comunión en España cuesta entre 300€ y 1.200€ según el paquete. Solo ceremonia (1-2h): 250-450€. Ceremonia + banquete (4-6h): 500-900€. Pack completo con álbum impreso: 700-1.500€. El precio varía según la ciudad y la experiencia del fotógrafo.' } },
   { '@type': 'Question', name: '¿Qué incluye el reportaje fotográfico de una comunión?', acceptedAnswer: { '@type': 'Answer', text: 'El reportaje completo incluye fotos de la preparación en casa, la ceremonia religiosa o civil, las fotos familiares en el exterior, el cóctel y el banquete. Se entregan entre 200 y 500 fotos editadas en alta resolución, normalmente en galería digital privada en 3-6 semanas.' } },
-  { '@type': 'Question', name: '¿Necesito también videógrafo para la comunión?', acceptedAnswer: { '@type': 'Answer', text: 'Depende de tu presupuesto. Muchos fotógrafos ofrecen packs combinados fotógrafo + videógrafo por 900-2.000€. Si el presupuesto es ajustado, prioriza el fotógrafo — las fotos tienen más valor a largo plazo. Si tienes margen, el vídeo de la comunión suele ser muy emotivo para la familia.' } },
+  { '@type': 'Question', name: '¿Necesito también videógrafo para la comunión?', acceptedAnswer: { '@type': 'Answer', text: 'Depende de tu presupuesto. Muchos fotógrafos ofrecen packs combinados fotógrafo + videógrafo por 900-2.000€. Si el presupuesto es ajustado, prioriza el fotógrafo: las fotos tienen más valor a largo plazo. Si tienes margen, el vídeo de la comunión suele ser muy emotivo para la familia.' } },
   { '@type': 'Question', name: '¿Con cuánta antelación reservar el fotógrafo de la comunión?', acceptedAnswer: { '@type': 'Answer', text: 'Las comuniones se concentran en mayo y junio, que son los meses más saturados para fotógrafos de eventos. Reserva con al menos 6-8 meses de antelación. Si la comunión es en sábado de mayo, empieza a buscar en octubre-noviembre del año anterior.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Fotógrafo comunión precio', item: 'https://xpeak.es/blog/fotografo-para-comunion-precio' }] };
 
 const PAQUETES = [
-  { pack: 'Solo ceremonia (1-2h)', precio: '250–450€', incluye: 'Iglesia/civil + fotos familia exterior' },
-  { pack: 'Ceremonia + banquete (4-6h)', precio: '500–900€', incluye: 'Todo el evento, 200-400 fotos editadas' },
-  { pack: 'Pack completo con álbum', precio: '700–1.500€', incluye: 'Reportaje completo + álbum impreso 30×30' },
-  { pack: 'Fotógrafo + videógrafo', precio: '900–2.000€', incluye: 'Pack combinado, 2 profesionales' },
+  { pack: 'Solo ceremonia (1-2h)', precio: '250-450€', incluye: 'Iglesia/civil + fotos familia exterior' },
+  { pack: 'Ceremonia + banquete (4-6h)', precio: '500-900€', incluye: 'Todo el evento, 200-400 fotos editadas' },
+  { pack: 'Pack completo con álbum', precio: '700-1.500€', incluye: 'Reportaje completo + álbum impreso 30×30' },
+  { pack: 'Fotógrafo + videógrafo', precio: '900-2.000€', incluye: 'Pack combinado, 2 profesionales' },
 ];
 
 const CIUDADES = [
-  { ciudad: 'Madrid', precio: '600–1.400€' },
-  { ciudad: 'Barcelona', precio: '600–1.500€' },
-  { ciudad: 'Valencia', precio: '450–1.100€' },
-  { ciudad: 'Sevilla', precio: '400–1.000€' },
-  { ciudad: 'Zaragoza / Bilbao', precio: '350–900€' },
-  { ciudad: 'Ciudades medias', precio: '300–750€' },
+  { ciudad: 'Madrid', precio: '600-1.400€' },
+  { ciudad: 'Barcelona', precio: '600-1.500€' },
+  { ciudad: 'Valencia', precio: '450-1.100€' },
+  { ciudad: 'Sevilla', precio: '400-1.000€' },
+  { ciudad: 'Zaragoza / Bilbao', precio: '350-900€' },
+  { ciudad: 'Ciudades medias', precio: '300-750€' },
 ];
 
 export default function BlogFotografoComunion() {
@@ -40,7 +40,7 @@ export default function BlogFotografoComunion() {
         <title>Fotógrafo para comunión: precio y guía 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un fotógrafo para una comunión en España. Precios por paquetes, qué incluye el reportaje y cuándo reservar. Guía completa 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/fotografo-para-comunion-precio" />
-        <meta property="og:title" content="Fotógrafo para comunión: precio y guía 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Fotógrafo para comunión: precio y guía 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precios de fotógrafos para comuniones en España. Paquetes, qué incluye y cuándo reservar." />
         <meta property="og:url" content="https://xpeak.es/blog/fotografo-para-comunion-precio" />
         <meta property="og:type" content="article" />

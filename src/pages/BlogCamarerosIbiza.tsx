@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Camareros Ibiza', item: 'https://xpeak.es/blog/camareros-eventos-ibiza' }] };
 
 const PRECIOS = [
-  { perfil: 'Camarero/a de sala', tarifa: '18–26€/hora', nota: 'Fiestas privadas en villas y beach clubs' },
-  { perfil: 'Bartender / coctelería premium', tarifa: '24–38€/hora', nota: 'Barra libre y coctelería de autor' },
-  { perfil: 'Jefe de sala / coordinador', tarifa: '32–50€/hora', nota: 'Gestión del equipo en evento privado grande' },
-  { perfil: 'Servicio evento en villa (6-7h)', tarifa: '260–480€/persona', nota: 'Estándar de servicio internacional' },
-  { perfil: 'Barra libre con bartender (4h)', tarifa: '300–600€', nota: 'Incluye montaje y desmontaje' },
-  { perfil: 'Personal de apoyo en yate/evento náutico', tarifa: '22–34€/hora', nota: 'Servicio a bordo, experiencia imprescindible' },
+  { perfil: 'Camarero/a de sala', tarifa: '18-26€/hora', nota: 'Fiestas privadas en villas y beach clubs' },
+  { perfil: 'Bartender / coctelería premium', tarifa: '24-38€/hora', nota: 'Barra libre y coctelería de autor' },
+  { perfil: 'Jefe de sala / coordinador', tarifa: '32-50€/hora', nota: 'Gestión del equipo en evento privado grande' },
+  { perfil: 'Servicio evento en villa (6-7h)', tarifa: '260-480€/persona', nota: 'Estándar de servicio internacional' },
+  { perfil: 'Barra libre con bartender (4h)', tarifa: '300-600€', nota: 'Incluye montaje y desmontaje' },
+  { perfil: 'Personal de apoyo en yate/evento náutico', tarifa: '22-34€/hora', nota: 'Servicio a bordo, experiencia imprescindible' },
 ];
 
 export default function BlogCamarerosIbiza() {
@@ -33,7 +33,7 @@ export default function BlogCamarerosIbiza() {
         <title>Precio camareros para eventos en Ibiza 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran los camareros y bartenders para fiestas privadas, villas y yates en Ibiza. Tarifas de temporada alta 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/camareros-eventos-ibiza" />
-        <meta property="og:title" content="Precio camareros eventos Ibiza 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio camareros eventos Ibiza 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de camareros y bartenders para villas, yates y clubes en Ibiza." />
         <meta property="og:url" content="https://xpeak.es/blog/camareros-eventos-ibiza" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

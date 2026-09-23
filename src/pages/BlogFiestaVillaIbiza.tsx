@@ -37,7 +37,7 @@ export default function BlogFiestaVillaIbiza() {
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
       </Helmet>
-      <div style={{ background: '#0A0A0A', color: '#F5F5F0', minHeight: '100vh' }}>
+      <div style={{ background: '#ffffff', color: '#111', minHeight: '100vh' }}>
         <div className="max-w-2xl mx-auto px-4 py-12">
           <a href="/blog" style={{ color: '#D4AF37', fontSize: '0.8rem', fontWeight: 700 }}>← Blog XPEAK</a>
           <article className="mt-6">
@@ -54,16 +54,16 @@ export default function BlogFiestaVillaIbiza() {
               Las Islas Baleares tienen una normativa estricta sobre ruido que afecta a las fiestas en villas privadas:
             </p>
             <ul style={{ color: '#222', lineHeight: 2, paddingLeft: '1.2rem', marginBottom: '1.5rem' }}>
-              <li><strong style={{ color: '#111' }}>Horario diurno (7h–23h):</strong> nivel máximo 45-50 dB en el exterior.</li>
-              <li><strong style={{ color: '#111' }}>Horario nocturno (23h–7h):</strong> nivel máximo 35-40 dB. La música amplificada exterior está muy limitada.</li>
+              <li><strong style={{ color: '#111' }}>Horario diurno (7h-23h):</strong> nivel máximo 45-50 dB en el exterior.</li>
+              <li><strong style={{ color: '#111' }}>Horario nocturno (23h-7h):</strong> nivel máximo 35-40 dB. La música amplificada exterior está muy limitada.</li>
               <li><strong style={{ color: '#111' }}>Consejo práctico:</strong> Instala el equipo de sonido en interior o en zonas cerradas si la fiesta se prolonga hasta la madrugada. Muchas villas disponen de espacios interiores acondicionados.</li>
             </ul>
             <p style={{ color: '#444', fontSize: '0.82rem' }}>* Consulta siempre el Reglamento de Ruidos de la Comunitat Autònoma de les Illes Balears y el plan de ordenación del municipio donde se encuentra la villa.</p>
 
             <h2 className="text-xl font-black mt-8 mb-3">Proveedores que necesitas para tu fiesta en villa</h2>
             {[
-              { emoji: '🎧', title: 'DJ villa Ibiza', desc: 'Un DJ profesional con experiencia en eventos privados de villa. Diferente al DJ de club: sabe leer audiencias pequeñas y adaptarse al ambiente íntimo. Precio orientativo: 300€–1.200€ según duración y nombre.', link: '/contratar-dj/ibiza' },
-              { emoji: '🍽️', title: 'Camareros Ibiza', desc: 'Personal de servicio para cócteles, cenas y barra libre. Esencial para fiestas de más de 20 personas. Precio: 14€–20€/hora por persona.', link: '/contratar-camareros/ibiza' },
+              { emoji: '🎧', title: 'DJ villa Ibiza', desc: 'Un DJ profesional con experiencia en eventos privados de villa. Diferente al DJ de club: sabe leer audiencias pequeñas y adaptarse al ambiente íntimo. Precio orientativo: 300€-1.200€ según duración y nombre.', link: '/contratar-dj/ibiza' },
+              { emoji: '🍽️', title: 'Camareros Ibiza', desc: 'Personal de servicio para cócteles, cenas y barra libre. Esencial para fiestas de más de 20 personas. Precio: 14€-20€/hora por persona.', link: '/contratar-camareros/ibiza' },
               { emoji: '🍾', title: 'Catering villa Ibiza', desc: 'Servicios de finger food, cenas en villa y barra de cócteles. Muchos caterings en Ibiza ofrecen paquetes específicos para villas con equipo propio.', link: '/contratar-catering/ibiza' },
               { emoji: '📸', title: 'Fotógrafo / videógrafo', desc: 'Para inmortalizar la fiesta. Los mejores fotógrafos de fiestas privadas en Ibiza trabajan de forma discreta y tienen experiencia con privacidad de clientes.', link: '/contratar-fotografo/ibiza' },
             ].map(p => (
@@ -87,11 +87,11 @@ export default function BlogFiestaVillaIbiza() {
               </thead>
               <tbody>
                 {[
-                  ['DJ (5h)', '400€–600€', '600€–1.200€'],
-                  ['Camareros (2–4 personas, 6h)', '180€–480€', '360€–720€'],
-                  ['Catering / cóctel', '600€–1.000€', '1.250€–2.500€'],
-                  ['Fotógrafo (3h)', '300€–500€', '300€–500€'],
-                  ['Total orientativo', '~1.500€–2.600€', '~2.500€–5.000€'],
+                  ['DJ (5h)', '400€-600€', '600€-1.200€'],
+                  ['Camareros (2-4 personas, 6h)', '180€-480€', '360€-720€'],
+                  ['Catering / cóctel', '600€-1.000€', '1.250€-2.500€'],
+                  ['Fotógrafo (3h)', '300€-500€', '300€-500€'],
+                  ['Total orientativo', '~1.500€-2.600€', '~2.500€-5.000€'],
                 ].map(([prov, p20, p50]) => (
                   <tr key={prov} style={{ borderBottom: '1px solid rgba(0,0,0,0.05)', fontWeight: prov.startsWith('Total') ? 700 : 'normal' }}>
                     <td style={{ padding: '10px 0' }}>{prov}</td>

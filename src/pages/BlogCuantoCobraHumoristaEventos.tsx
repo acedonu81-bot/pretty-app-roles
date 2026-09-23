@@ -38,10 +38,10 @@ const breadcrumb = {
 };
 
 const PRECIOS = [
-  { concepto: 'Show 20-30 min (cena de empresa)', precio: '300€ – 600€' },
-  { concepto: 'Stand-up 45-60 min', precio: '500€ – 1.000€' },
-  { concepto: 'Monólogo personalizado para boda', precio: '400€ – 800€' },
-  { concepto: 'Show de impro (varios actores)', precio: '600€ – 1.200€' },
+  { concepto: 'Show 20-30 min (cena de empresa)', precio: '300€-600€' },
+  { concepto: 'Stand-up 45-60 min', precio: '500€-1.000€' },
+  { concepto: 'Monólogo personalizado para boda', precio: '400€-800€' },
+  { concepto: 'Show de impro (varios actores)', precio: '600€-1.200€' },
 ];
 
 export default function BlogCuantoCobraHumoristaEventos() {
@@ -51,7 +51,7 @@ export default function BlogCuantoCobraHumoristaEventos() {
         <title>Cuánto cobra un humorista para eventos (2026) | XPEAK</title>
         <meta name="description" content="Precios reales de humoristas y monologuistas para eventos en España: cenas de empresa, bodas y shows de stand-up." />
         <link rel="canonical" href="https://xpeak.es/blog/cuanto-cobra-un-humorista-eventos" />
-        <meta property="og:title" content="Cuánto cobra un humorista para eventos — XPEAK Blog" />
+        <meta property="og:title" content="Cuánto cobra un humorista para eventos | XPEAK Blog" />
         <meta property="og:description" content="Precios reales de humoristas para cenas de empresa y bodas." />
         <meta property="og:url" content="https://xpeak.es/blog/cuanto-cobra-un-humorista-eventos" />
         <meta property="og:type" content="article" />

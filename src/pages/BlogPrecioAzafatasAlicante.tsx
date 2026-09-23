@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Alicante', item: 'https://xpeak.es/blog/precio-azafatas-alicante' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '115–165€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '140–210€/día', nota: 'Eventos de marca y presentaciones' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '150–215€/día', nota: 'Muy demandada por turismo europeo' },
-  { perfil: 'Azafata de protocolo', tarifa: '155–225€/día', nota: 'Bodas y eventos institucionales' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '165–240€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento de playa (4h)', tarifa: '75–120€', nota: 'Beach club o finca costera' },
+  { perfil: 'Azafata de stand / feria', tarifa: '115-165€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '140-210€/día', nota: 'Eventos de marca y presentaciones' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '150-215€/día', nota: 'Muy demandada por turismo europeo' },
+  { perfil: 'Azafata de protocolo', tarifa: '155-225€/día', nota: 'Bodas y eventos institucionales' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '165-240€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento de playa (4h)', tarifa: '75-120€', nota: 'Beach club o finca costera' },
 ];
 
 export default function BlogPrecioAzafatasAlicante() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasAlicante() {
         <title>Precio azafatas para eventos en Alicante 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos, bodas y ferias en Alicante y la Costa Blanca. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-alicante" />
-        <meta property="og:title" content="Precio azafatas eventos Alicante 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Alicante 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para bodas en la Costa Blanca y eventos corporativos en Alicante." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-alicante" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

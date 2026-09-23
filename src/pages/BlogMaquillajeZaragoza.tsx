@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Maquillaje Zaragoza', item: 'https://xpeak.es/blog/maquillaje-eventos-zaragoza' }] };
 
 const PRECIOS = [
-  { perfil: 'Maquillaje novia (solo)', tarifa: '90–220€', nota: 'Incluye prueba previa' },
-  { perfil: 'Maquillaje novia + peinado', tarifa: '180–400€', nota: 'Servicio integral más demandado' },
-  { perfil: 'Madrina / invitada especial', tarifa: '55–105€', nota: 'Sin prueba previa habitualmente' },
-  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '300–620€', nota: 'Desplazamiento a finca incluido' },
-  { perfil: 'Evento corporativo / azafata', tarifa: '30–65€/persona', nota: 'Maquillaje fast-track profesional' },
-  { perfil: 'Sesión foto / vídeo', tarifa: '75–180€', nota: 'HD, flash-friendly, retoque incluido' },
+  { perfil: 'Maquillaje novia (solo)', tarifa: '90-220€', nota: 'Incluye prueba previa' },
+  { perfil: 'Maquillaje novia + peinado', tarifa: '180-400€', nota: 'Servicio integral más demandado' },
+  { perfil: 'Madrina / invitada especial', tarifa: '55-105€', nota: 'Sin prueba previa habitualmente' },
+  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '300-620€', nota: 'Desplazamiento a finca incluido' },
+  { perfil: 'Evento corporativo / azafata', tarifa: '30-65€/persona', nota: 'Maquillaje fast-track profesional' },
+  { perfil: 'Sesión foto / vídeo', tarifa: '75-180€', nota: 'HD, flash-friendly, retoque incluido' },
 ];
 
 export default function BlogMaquillajeZaragoza() {
@@ -33,7 +33,7 @@ export default function BlogMaquillajeZaragoza() {
         <title>Precio maquilladora para eventos en Zaragoza 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobra una maquilladora para bodas y eventos corporativos en Zaragoza. Tarifas por servicio 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/maquillaje-eventos-zaragoza" />
-        <meta property="og:title" content="Precio maquilladora eventos Zaragoza 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio maquilladora eventos Zaragoza 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de maquilladoras para bodas y eventos corporativos en Zaragoza." />
         <meta property="og:url" content="https://xpeak.es/blog/maquillaje-eventos-zaragoza" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

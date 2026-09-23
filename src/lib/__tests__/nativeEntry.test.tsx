@@ -41,7 +41,7 @@ vi.mock('@/integrations/supabase/client', () => ({
 vi.mock('../capacitor', () => ({ isNative: true }));
 
 describe('useNativeGuardedPath', () => {
-  it('NO bloquea "/" de forma síncrona aunque isRouteBlockedInNative("/") sea true — evita ganar la carrera contra NativeRootRedirect', async () => {
+  it('NO bloquea "/" de forma síncrona aunque isRouteBlockedInNative("/") sea true: evita ganar la carrera contra NativeRootRedirect', async () => {
     const { useNativeGuardedPath } = await import('../nativeEntry');
     expect(useNativeGuardedPath('/')).toBe(false);
   });

@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Badalona', item: 'https://xpeak.es/blog/precio-azafatas-badalona' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '140–190€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '165–250€/día', nota: 'Eventos de marca y presentaciones corporativas' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '175–225€/día', nota: 'Demandada en eventos ligados a Barcelona' },
-  { perfil: 'Azafata trilingüe', tarifa: '210–300€/día', nota: 'Eventos internacionales del área metropolitana' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '185–280€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '85–135€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '140-190€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '165-250€/día', nota: 'Eventos de marca y presentaciones corporativas' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '175-225€/día', nota: 'Demandada en eventos ligados a Barcelona' },
+  { perfil: 'Azafata trilingüe', tarifa: '210-300€/día', nota: 'Eventos internacionales del área metropolitana' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '185-280€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '85-135€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasBadalona() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasBadalona() {
         <title>Precio azafatas para eventos en Badalona 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos corporativos y ferias en Badalona. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-badalona" />
-        <meta property="og:title" content="Precio azafatas eventos Badalona 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Badalona 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para eventos corporativos en Badalona, área metropolitana de Barcelona." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-badalona" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

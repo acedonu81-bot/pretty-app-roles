@@ -103,10 +103,10 @@ const Socials = () => {
   return (
     <>
       <Helmet>
-        <title>Agenda de Socials de Baile — Salsa, Bachata y Kizomba | XPEAK</title>
+        <title>Agenda de Socials de Baile: Salsa, Bachata y Kizomba | XPEAK</title>
         <meta name="description" content="Socials y congresos de salsa, bachata y kizomba en toda España. Encuentra dónde bailar esta semana o publica tu evento." />
         <link rel="canonical" href={`${BASE_URL}/socials`} />
-        <meta property="og:title" content="Agenda de Socials de Baile — XPEAK" />
+        <meta property="og:title" content="Agenda de Socials de Baile | XPEAK" />
         <meta property="og:description" content="Socials y congresos de salsa, bachata y kizomba en toda España." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`${BASE_URL}/socials`} />

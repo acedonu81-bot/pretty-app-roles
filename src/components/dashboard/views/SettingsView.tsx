@@ -320,7 +320,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
         meta: {
           exported_at: new Date().toISOString(),
           platform: 'XPEAK',
-          legal_basis: 'RGPD Art. 20 — Derecho a la portabilidad de los datos',
+          legal_basis: 'RGPD Art. 20: Derecho a la portabilidad de los datos',
           user_id: user.id,
           email: user.email,
         },
@@ -780,7 +780,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
           <div>
             <p className="text-sm font-bold">Foto de perfil</p>
             <p className="text-xs text-muted-foreground">Haz clic para cambiar · se optimiza automáticamente</p>
-            <p className="text-xs text-muted-foreground/80 mt-0.5">No debe mostrar teléfono, redes ni webs — el contacto se gestiona dentro de XPEAK.</p>
+            <p className="text-xs text-muted-foreground/80 mt-0.5">No debe mostrar teléfono, redes ni webs: el contacto se gestiona dentro de XPEAK.</p>
           </div>
           <input ref={photoRef} type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
         </div>
@@ -856,7 +856,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
           <div className="mb-4 p-4 rounded-xl" style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.15)' }}>
             <ToggleRow
               label='Mostrar "Nuevo en XPEAK"'
-              desc="Si sois nuevos en el sector, esta etiqueta lo indica en el directorio. Si ya tenéis trayectoria fuera de XPEAK, mejor no activarla — no compite por experiencia, solo avisa de que acabáis de llegar aquí."
+              desc="Si sois nuevos en el sector, esta etiqueta lo indica en el directorio. Si ya tenéis trayectoria fuera de XPEAK, mejor no activarla: no compite por experiencia, solo avisa de que acabáis de llegar aquí."
               checked={profile.show_new_badge === true}
               onChange={async () => {
                 const next = !profile.show_new_badge;
@@ -1271,7 +1271,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
               <>
                 <div>
                   <p className="text-xs text-muted-foreground mb-1.5">
-                    Paso 1 — Escribe tu email{' '}
+                    Paso 1: Escribe tu email{' '}
                     <span className="font-bold" style={{ color: '#ff5f56' }}>{user?.email}</span>{' '}
                     para recibir el código de confirmación:
                   </p>
@@ -1307,7 +1307,7 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground mb-1.5">
-                    Paso 2 — Introduce el código de 6 dígitos:
+                    Paso 2: Introduce el código de 6 dígitos:
                   </p>
                   <input
                     type="text"

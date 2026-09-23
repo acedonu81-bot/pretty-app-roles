@@ -9,19 +9,19 @@ import BlogAuthor from '@/components/BlogAuthor';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const TABLE = [
-  { servicio: 'Maquillaje novia (solo)', duracion: '60–90 min', rango: '100€ – 250€', notas: 'Incluye prueba previa' },
-  { servicio: 'Maquillaje novia + peinado', duracion: '2–3 h', rango: '200€ – 450€', notas: 'Servicio integral más demandado' },
-  { servicio: 'Madrina / invitada especial', duracion: '45–60 min', rango: '60€ – 120€', notas: 'Sin prueba previa habitualmente' },
-  { servicio: 'Pack boda (novia + 3 personas)', duracion: '4–5 h', rango: '350€ – 700€', notas: 'Maquilladora se desplaza al domicilio' },
-  { servicio: 'Evento corporativo / azafata', duracion: '20–30 min/persona', rango: '30€ – 70€/persona', notas: 'Maquillaje fast-track profesional' },
-  { servicio: 'Sesión foto / vídeo', duracion: '60–90 min', rango: '80€ – 200€', notas: 'HD, flash-friendly, retoque incluido' },
+  { servicio: 'Maquillaje novia (solo)', duracion: '60-90 min', rango: '100€-250€', notas: 'Incluye prueba previa' },
+  { servicio: 'Maquillaje novia + peinado', duracion: '2-3 h', rango: '200€-450€', notas: 'Servicio integral más demandado' },
+  { servicio: 'Madrina / invitada especial', duracion: '45-60 min', rango: '60€-120€', notas: 'Sin prueba previa habitualmente' },
+  { servicio: 'Pack boda (novia + 3 personas)', duracion: '4-5 h', rango: '350€-700€', notas: 'Maquilladora se desplaza al domicilio' },
+  { servicio: 'Evento corporativo / azafata', duracion: '20-30 min/persona', rango: '30€-70€/persona', notas: 'Maquillaje fast-track profesional' },
+  { servicio: 'Sesión foto / vídeo', duracion: '60-90 min', rango: '80€-200€', notas: 'HD, flash-friendly, retoque incluido' },
 ];
 
 const FAQ = [
-  { q: '¿Cuánto cuesta una maquilladora para eventos?', a: 'Depende del tipo de evento. Para bodas, el precio de la novia oscila entre 100€ y 250€. Para eventos corporativos o sesiones de foto, entre 30€ y 70€ por persona. El desplazamiento puede suponer un suplemento de 20–50€ según la distancia.' },
+  { q: '¿Cuánto cuesta una maquilladora para eventos?', a: 'Depende del tipo de evento. Para bodas, el precio de la novia oscila entre 100€ y 250€. Para eventos corporativos o sesiones de foto, entre 30€ y 70€ por persona. El desplazamiento puede suponer un suplemento de 20-50€ según la distancia.' },
   { q: '¿La maquilladora lleva sus propios productos?', a: 'Sí, siempre. Una maquilladora profesional lleva su maletín completo con productos de marcas profesionales (MAC, NARS, Charlotte Tilbury, etc.). Solo debes comunicar alergias o preferencias de acabado (natural, glam, smoky).' },
   { q: '¿Es necesaria la prueba de maquillaje para una boda?', a: 'Se recomienda siempre, especialmente para la novia. La prueba (incluida habitualmente en el precio de boda) permite ajustar colores, comprobar la durabilidad y resolver nervios antes del gran día.' },
-  { q: '¿Con cuánta antelación hay que reservar la maquilladora?', a: 'Para bodas en temporada alta (mayo–julio, septiembre–octubre), al menos 3–4 meses. Para eventos corporativos o sesiones de foto, con 1–2 semanas suele ser suficiente.' },
+  { q: '¿Con cuánta antelación hay que reservar la maquilladora?', a: 'Para bodas en temporada alta (mayo-julio, septiembre-octubre), al menos 3-4 meses. Para eventos corporativos o sesiones de foto, con 1-2 semanas suele ser suficiente.' },
 ];
 
 export default function BlogMaquillajeEventos() {
@@ -105,8 +105,8 @@ const faqStructured = {
           <div className="p-4 rounded-xl mb-8" style={{ background: 'rgba(219,39,119,0.06)', border: '1px solid rgba(219,39,119,0.15)' }}>
             <p className="text-sm font-bold mb-1" style={{ color: '#DB2777' }}>Resumen rápido</p>
             <p className="text-sm leading-relaxed" style={{ color: '#333' }}>
-              Maquillaje de novia: <strong style={{ color: '#111' }}>100€ – 250€</strong>. Pack boda completo (4 personas): <strong style={{ color: '#111' }}>350€ – 700€</strong>.
-              Eventos corporativos por persona: <strong style={{ color: '#111' }}>30€ – 70€</strong>. Todas las profesionales llevan su propio maletín.
+              Maquillaje de novia: <strong style={{ color: '#111' }}>100€-250€</strong>. Pack boda completo (4 personas): <strong style={{ color: '#111' }}>350€-700€</strong>.
+              Eventos corporativos por persona: <strong style={{ color: '#111' }}>30€-70€</strong>. Todas las profesionales llevan su propio maletín.
             </p>
           </div>
 
@@ -139,8 +139,8 @@ const faqStructured = {
             {[
               { label: 'Maletín profesional completo', text: 'Productos de gama alta (primers, bases, correctores, sombras, labiales, fixers). No necesitas llevar nada.' },
               { label: 'Adaptación al tipo de piel', text: 'Maquillaje adaptado a piel seca, grasa o mixta, y al tono natural. Las buenas profesionales hacen una breve consulta antes de empezar.' },
-              { label: 'Durabilidad larga jornada', text: 'El maquillaje de evento está formulado para durar 8–12 horas con fijadores profesionales, resistente a la humedad y al calor.' },
-              { label: 'Desplazamiento', text: 'Muchas maquilladores se desplazan al domicilio o al hotel. Confirma si el desplazamiento tiene suplemento (habitualmente 20–50€ fuera de un radio de 20km).' },
+              { label: 'Durabilidad larga jornada', text: 'El maquillaje de evento está formulado para durar 8-12 horas con fijadores profesionales, resistente a la humedad y al calor.' },
+              { label: 'Desplazamiento', text: 'Muchas maquilladores se desplazan al domicilio o al hotel. Confirma si el desplazamiento tiene suplemento (habitualmente 20-50€ fuera de un radio de 20km).' },
             ].map(item => (
               <li key={item.label} className="flex gap-3">
                 <Star size={13} className="flex-shrink-0 mt-0.5" style={{ color: '#DB2777' }} />

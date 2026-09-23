@@ -9,19 +9,19 @@ import BlogAuthor from '@/components/BlogAuthor';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const TABLE = [
-  { servicio: 'Peinado novia (solo)', duracion: '60–90 min', rango: '80€ – 180€', notas: 'Incluye prueba previa' },
-  { servicio: 'Peinado novia + recogido invitadas', duracion: '3–4 h', rango: '200€ – 400€', notas: 'Servicio integral más demandado' },
-  { servicio: 'Madrina / invitada especial', duracion: '30–45 min', rango: '40€ – 80€', notas: 'Sin prueba previa habitualmente' },
-  { servicio: 'Pack boda (novia + 3 personas)', duracion: '3–5 h', rango: '250€ – 550€', notas: 'La peluquera se desplaza al domicilio' },
-  { servicio: 'Evento corporativo / azafata', duracion: '15–20 min/persona', rango: '20€ – 40€/persona', notas: 'Recogido rápido y uniforme' },
-  { servicio: 'Corte y peinado a domicilio', duracion: '45–60 min', rango: '30€ – 60€', notas: 'Fuera de evento, servicio de día a día' },
+  { servicio: 'Peinado novia (solo)', duracion: '60-90 min', rango: '80€-180€', notas: 'Incluye prueba previa' },
+  { servicio: 'Peinado novia + recogido invitadas', duracion: '3-4 h', rango: '200€-400€', notas: 'Servicio integral más demandado' },
+  { servicio: 'Madrina / invitada especial', duracion: '30-45 min', rango: '40€-80€', notas: 'Sin prueba previa habitualmente' },
+  { servicio: 'Pack boda (novia + 3 personas)', duracion: '3-5 h', rango: '250€-550€', notas: 'La peluquera se desplaza al domicilio' },
+  { servicio: 'Evento corporativo / azafata', duracion: '15-20 min/persona', rango: '20€-40€/persona', notas: 'Recogido rápido y uniforme' },
+  { servicio: 'Corte y peinado a domicilio', duracion: '45-60 min', rango: '30€-60€', notas: 'Fuera de evento, servicio de día a día' },
 ];
 
 const FAQ = [
-  { q: '¿Cuánto cuesta una peluquera a domicilio para un evento?', a: 'Depende del tipo de evento. Para bodas, el peinado de novia oscila entre 80€ y 180€. Para eventos corporativos, entre 20€ y 40€ por persona. El desplazamiento puede suponer un suplemento de 15–40€ según la distancia.' },
+  { q: '¿Cuánto cuesta una peluquera a domicilio para un evento?', a: 'Depende del tipo de evento. Para bodas, el peinado de novia oscila entre 80€ y 180€. Para eventos corporativos, entre 20€ y 40€ por persona. El desplazamiento puede suponer un suplemento de 15-40€ según la distancia.' },
   { q: '¿La peluquera lleva su propio material?', a: 'Sí, siempre. Una peluquera profesional a domicilio lleva su propio kit completo (planchas, tenacillas, secador, horquillas, laca y productos de fijación). Solo debes tener el pelo limpio y seco, o comunicarlo con antelación si prefieres lavado incluido.' },
   { q: '¿Es necesaria la prueba de peinado para una boda?', a: 'Se recomienda siempre, especialmente para la novia. La prueba (incluida habitualmente en el precio de boda) permite ajustar el recogido, comprobar que aguanta toda la jornada y resolver dudas de estilo antes del gran día.' },
-  { q: '¿Con cuánta antelación hay que reservar la peluquera?', a: 'Para bodas en temporada alta (mayo–julio, septiembre–octubre), al menos 3–4 meses. Para eventos corporativos o servicios puntuales, con 1–2 semanas suele ser suficiente.' },
+  { q: '¿Con cuánta antelación hay que reservar la peluquera?', a: 'Para bodas en temporada alta (mayo-julio, septiembre-octubre), al menos 3-4 meses. Para eventos corporativos o servicios puntuales, con 1-2 semanas suele ser suficiente.' },
 ];
 
 export default function BlogPeluqueriaEventos() {
@@ -105,8 +105,8 @@ export default function BlogPeluqueriaEventos() {
           <div className="p-4 rounded-xl mb-8" style={{ background: 'rgba(219,39,119,0.06)', border: '1px solid rgba(219,39,119,0.15)' }}>
             <p className="text-sm font-bold mb-1" style={{ color: '#DB2777' }}>Resumen rápido</p>
             <p className="text-sm leading-relaxed" style={{ color: '#333' }}>
-              Peinado de novia: <strong style={{ color: '#111' }}>80€ – 180€</strong>. Pack boda completo (4 personas): <strong style={{ color: '#111' }}>250€ – 550€</strong>.
-              Eventos corporativos por persona: <strong style={{ color: '#111' }}>20€ – 40€</strong>. Todas las profesionales llevan su propio material.
+              Peinado de novia: <strong style={{ color: '#111' }}>80€-180€</strong>. Pack boda completo (4 personas): <strong style={{ color: '#111' }}>250€-550€</strong>.
+              Eventos corporativos por persona: <strong style={{ color: '#111' }}>20€-40€</strong>. Todas las profesionales llevan su propio material.
             </p>
           </div>
 
@@ -139,8 +139,8 @@ export default function BlogPeluqueriaEventos() {
             {[
               { label: 'Kit profesional completo', text: 'Planchas, tenacillas, secador de alta potencia, horquillas y productos de fijación de gama profesional. No necesitas tener nada preparado salvo indicación previa.' },
               { label: 'Adaptación al tipo de pelo', text: 'Peinado adaptado a pelo fino, grueso, rizado o con extensiones. Las buenas profesionales hacen una breve consulta antes de empezar.' },
-              { label: 'Durabilidad larga jornada', text: 'El peinado de evento está pensado para aguantar 8–12 horas con fijadores profesionales, resistente a la humedad y al baile.' },
-              { label: 'Desplazamiento', text: 'La mayoría de peluqueras se desplazan al domicilio o al hotel. Confirma si el desplazamiento tiene suplemento (habitualmente 15–40€ fuera de un radio de 20km).' },
+              { label: 'Durabilidad larga jornada', text: 'El peinado de evento está pensado para aguantar 8-12 horas con fijadores profesionales, resistente a la humedad y al baile.' },
+              { label: 'Desplazamiento', text: 'La mayoría de peluqueras se desplazan al domicilio o al hotel. Confirma si el desplazamiento tiene suplemento (habitualmente 15-40€ fuera de un radio de 20km).' },
             ].map(item => (
               <li key={item.label} className="flex gap-3">
                 <Star size={13} className="flex-shrink-0 mt-0.5" style={{ color: '#DB2777' }} />

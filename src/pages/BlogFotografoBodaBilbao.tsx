@@ -18,10 +18,10 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Fotógrafo boda Bilbao', item: 'https://xpeak.es/blog/fotografo-boda-bilbao' }] };
 const PRECIOS = [
-  { servicio: 'Reportaje básico (4-5h, sin álbum)', precio: '800–1.400€' },
-  { servicio: 'Reportaje completo (8-10h, sin álbum)', precio: '1.300–2.200€' },
-  { servicio: 'Reportaje completo con álbum impreso', precio: '1.800–3.200€' },
-  { servicio: 'Pack fotógrafo + videógrafo', precio: '2.800–5.000€' },
+  { servicio: 'Reportaje básico (4-5h, sin álbum)', precio: '800-1.400€' },
+  { servicio: 'Reportaje completo (8-10h, sin álbum)', precio: '1.300-2.200€' },
+  { servicio: 'Reportaje completo con álbum impreso', precio: '1.800-3.200€' },
+  { servicio: 'Pack fotógrafo + videógrafo', precio: '2.800-5.000€' },
 ];
 export default function BlogFotografoBodaBilbao() {
   return (
@@ -30,7 +30,7 @@ export default function BlogFotografoBodaBilbao() {
         <title>Fotógrafo para bodas en Bilbao: precio 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un fotógrafo de boda en Bilbao. Precios reales 2026, Caseríos vascos, arquitectura industrial y la luz especial del Cantábrico." />
         <link rel="canonical" href="https://xpeak.es/blog/fotografo-boda-bilbao" />
-        <meta property="og:title" content="Fotógrafo para bodas en Bilbao: precio 2026 — XPEAK" />
+        <meta property="og:title" content="Fotógrafo para bodas en Bilbao: precio 2026 | XPEAK" />
         <meta property="og:description" content="Precios fotógrafos boda Bilbao. Caseríos vascos, arquitectura industrial y la luz especial del Cantábrico." />
         <meta property="og:url" content="https://xpeak.es/blog/fotografo-boda-bilbao" />
         <meta property="og:type" content="article" />

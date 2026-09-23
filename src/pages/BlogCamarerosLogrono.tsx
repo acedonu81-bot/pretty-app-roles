@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Camareros Logroño', item: 'https://xpeak.es/blog/camareros-eventos-logrono' }] };
 
 const PRECIOS = [
-  { perfil: 'Camarero/a de sala', tarifa: '10–16€/hora', nota: 'Cóctel, cena sentada o buffet' },
-  { perfil: 'Bartender / coctelería', tarifa: '13–20€/hora', nota: 'Barra libre y coctelería de autor' },
-  { perfil: 'Camarero especializado en catas', tarifa: '13–19€/hora', nota: 'Bodegas y eventos vitivinícolas' },
-  { perfil: 'Jefe de sala / coordinador', tarifa: '18–26€/hora', nota: 'Gestión del equipo en boda o evento grande' },
-  { perfil: 'Servicio boda completo (6-7h)', tarifa: '115–205€/persona', nota: 'Cóctel + cena + barra, bodegas y fincas riojanas' },
-  { perfil: 'Barra libre con bartender (4h)', tarifa: '140–305€', nota: 'Incluye montaje y desmontaje' },
+  { perfil: 'Camarero/a de sala', tarifa: '10-16€/hora', nota: 'Cóctel, cena sentada o buffet' },
+  { perfil: 'Bartender / coctelería', tarifa: '13-20€/hora', nota: 'Barra libre y coctelería de autor' },
+  { perfil: 'Camarero especializado en catas', tarifa: '13-19€/hora', nota: 'Bodegas y eventos vitivinícolas' },
+  { perfil: 'Jefe de sala / coordinador', tarifa: '18-26€/hora', nota: 'Gestión del equipo en boda o evento grande' },
+  { perfil: 'Servicio boda completo (6-7h)', tarifa: '115-205€/persona', nota: 'Cóctel + cena + barra, bodegas y fincas riojanas' },
+  { perfil: 'Barra libre con bartender (4h)', tarifa: '140-305€', nota: 'Incluye montaje y desmontaje' },
 ];
 
 export default function BlogCamarerosLogrono() {
@@ -33,7 +33,7 @@ export default function BlogCamarerosLogrono() {
         <title>Precio camareros para eventos en Logroño 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran los camareros y bartenders para catas en bodegas y bodas en fincas riojanas en Logroño. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/camareros-eventos-logrono" />
-        <meta property="og:title" content="Precio camareros eventos Logroño 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio camareros eventos Logroño 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de camareros y bartenders para bodegas, catas y bodas en Logroño." />
         <meta property="og:url" content="https://xpeak.es/blog/camareros-eventos-logrono" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

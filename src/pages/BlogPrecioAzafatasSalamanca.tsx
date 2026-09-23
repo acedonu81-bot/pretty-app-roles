@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Salamanca', item: 'https://xpeak.es/blog/precio-azafatas-salamanca' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '100–140€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '120–180€/día', nota: 'Eventos de marca y protocolo' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '130–170€/día', nota: 'Congresos y jornadas internacionales' },
-  { perfil: 'Azafata de protocolo institucional', tarifa: '140–200€/día', nota: 'Actos universitarios y académicos' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '150–210€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '65–100€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '100-140€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '120-180€/día', nota: 'Eventos de marca y protocolo' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '130-170€/día', nota: 'Congresos y jornadas internacionales' },
+  { perfil: 'Azafata de protocolo institucional', tarifa: '140-200€/día', nota: 'Actos universitarios y académicos' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '150-210€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '65-100€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasSalamanca() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasSalamanca() {
         <title>Precio azafatas para eventos en Salamanca 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos, actos universitarios y bodas en Salamanca. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-salamanca" />
-        <meta property="og:title" content="Precio azafatas eventos Salamanca 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Salamanca 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para actos universitarios y bodas en Salamanca." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-salamanca" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

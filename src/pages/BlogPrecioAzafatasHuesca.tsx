@@ -18,11 +18,11 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Huesca', item: 'https://xpeak.es/blog/precio-azafatas-huesca' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '95–135€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '105–165€/día', nota: 'Eventos institucionales y turísticos' },
-  { perfil: 'Azafata bilingüe (inglés/francés)', tarifa: '115–175€/día', nota: 'Turismo de montaña con visitantes internacionales' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '125–185€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '55–90€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '95-135€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '105-165€/día', nota: 'Eventos institucionales y turísticos' },
+  { perfil: 'Azafata bilingüe (inglés/francés)', tarifa: '115-175€/día', nota: 'Turismo de montaña con visitantes internacionales' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '125-185€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '55-90€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasHuesca() {
@@ -32,7 +32,7 @@ export default function BlogPrecioAzafatasHuesca() {
         <title>Precio azafatas para eventos en Huesca 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos y bodas en Huesca y el Alto Aragón. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-huesca" />
-        <meta property="og:title" content="Precio azafatas eventos Huesca 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Huesca 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para eventos y bodas en Huesca." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-huesca" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

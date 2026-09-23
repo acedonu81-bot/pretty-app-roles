@@ -44,7 +44,7 @@ const KB: KBEntry[] = [
   {
     id: 'about',
     patterns: [/qué es xpeak|que es xpeak|para qu[eé] sirve|explícame xpeak|explicame xpeak|cuéntame.*xpeak|información.*xpeak|info.*xpeak/i],
-    answer: '**XPEAK** es el marketplace profesional de la industria del entretenimiento nocturno en Europa.\n\nNació para eliminar los intermediarios entre artistas y venues. Todo ocurre en la plataforma:\n\n• **Directorio** — DJs, staff, maquilladores, media, promotores y embajadores\n• **Flash Booking** — contratación urgente con ofertas que caducan en 2h\n• **Contratos** — documentos legales generados en segundos\n• **Mensajería** — comunicación directa entre partes\n• **Calendario** — gestión de agenda y disponibilidad\n• **Estadísticas** — datos reales de quién visita tu perfil\n\nActualmente activo en **España** con expansión a toda Europa prevista para 2026.',
+    answer: '**XPEAK** es el marketplace profesional de la industria del entretenimiento nocturno en Europa.\n\nNació para eliminar los intermediarios entre artistas y venues. Todo ocurre en la plataforma:\n\n• **Directorio**, DJs, staff, maquilladores, media, promotores y embajadores\n• **Flash Booking**, contratación urgente con ofertas que caducan en 2h\n• **Contratos**, documentos legales generados en segundos\n• **Mensajería**, comunicación directa entre partes\n• **Calendario**, gestión de agenda y disponibilidad\n• **Estadísticas**, datos reales de quién visita tu perfil\n\nActualmente activo en **España** con expansión a toda Europa prevista para 2026.',
     followUps: ['¿Cómo me registro?', '¿Qué roles hay?', '¿Cómo consigo más bookings?'],
   },
 
@@ -52,7 +52,7 @@ const KB: KBEntry[] = [
   {
     id: 'register',
     patterns: [/registr|crear cuenta|cuenta nueva|sign up|cómo me uno|como me uno|acceder|login|iniciar sesión|contraseña olvidada|password|recuperar.*cuenta/i],
-    answer: 'Para crear tu cuenta en XPEAK:\n\n1. Ve a la pantalla de inicio → **"Entrar"**\n2. Regístrate con **email + contraseña** o con **Google** (un clic)\n3. Elige tu **rol profesional** (DJ, Staff, Makeup, Media…)\n4. Confirma tu email si es por correo\n\n**Si no puedes entrar:**\n• Contraseña incorrecta → usa **"¿Olvidaste tu contraseña?"** en el login\n• No recibes el email → revisa la carpeta de spam\n• Cuenta bloqueada → escribe a soporte@xpeak.es\n\nNo hay verificación manual al registrarse — accedes al instante.',
+    answer: 'Para crear tu cuenta en XPEAK:\n\n1. Ve a la pantalla de inicio → **"Entrar"**\n2. Regístrate con **email + contraseña** o con **Google** (un clic)\n3. Elige tu **rol profesional** (DJ, Staff, Makeup, Media…)\n4. Confirma tu email si es por correo\n\n**Si no puedes entrar:**\n• Contraseña incorrecta → usa **"¿Olvidaste tu contraseña?"** en el login\n• No recibes el email → revisa la carpeta de spam\n• Cuenta bloqueada → escribe a soporte@xpeak.es\n\nNo hay verificación manual al registrarse: accedes al instante.',
     followUps: ['¿Cómo completo mi perfil?', '¿Puedo cambiar mi rol después?'],
   },
 
@@ -60,7 +60,7 @@ const KB: KBEntry[] = [
   {
     id: 'profile',
     patterns: [/mi perfil|editar.*perfil|completar.*perfil|campos.*perfil|foto.*perfil|avatar|bio|descripci|rider.*técnico|rider tecnico|tarifa|precio.*hora|géneros|generos|idioma.*perfil/i],
-    answer: 'Tu perfil en **Mi Cuenta → Mi Perfil** tiene estos campos clave:\n\n**Básicos (obligatorios para aparecer):**\n• Foto profesional — la primera impresión lo es todo\n• Nombre artístico o profesional\n• Ciudad principal — determina en qué búsquedas locales apareces\n• Rol y especialidades/géneros\n\n**Avanzados (multiplican visitas x5):**\n• Bio (2-4 líneas): quién eres, qué ofreces y por qué contratarte\n• Tarifa — precio orientativo por sesión o por hora\n• Rider técnico — especifica equipo que necesitas o que aportas\n• Idiomas — si hablas inglés o francés, apareces en búsquedas internacionales\n• Audio embed — enlaza tu mejor mix o sesión\n• Toggle de disponibilidad — actívalo cuando estés libre para eventos\n\n**Tip:** Los perfiles con foto, audio Y géneros seleccionados reciben 5 veces más contactos que los incompletos.',
+    answer: 'Tu perfil en **Mi Cuenta → Mi Perfil** tiene estos campos clave:\n\n**Básicos (obligatorios para aparecer):**\n• Foto profesional, la primera impresión lo es todo\n• Nombre artístico o profesional\n• Ciudad principal, determina en qué búsquedas locales apareces\n• Rol y especialidades/géneros\n\n**Avanzados (multiplican visitas x5):**\n• Bio (2-4 líneas): quién eres, qué ofreces y por qué contratarte\n• Tarifa, precio orientativo por sesión o por hora\n• Rider técnico, especifica equipo que necesitas o que aportas\n• Idiomas, si hablas inglés o francés, apareces en búsquedas internacionales\n• Audio embed, enlaza tu mejor mix o sesión\n• Toggle de disponibilidad, actívalo cuando estés libre para eventos\n\n**Tip:** Los perfiles con foto, audio Y géneros seleccionados reciben 5 veces más contactos que los incompletos.',
     followUps: ['¿Qué pongo en el rider técnico?', '¿Cómo escribo una buena bio?', '¿Cómo subo mi mix?'],
   },
 
@@ -68,7 +68,7 @@ const KB: KBEntry[] = [
   {
     id: 'bio',
     patterns: [/bio|descripción.*perfil|descripcion.*perfil|cómo.*presentar|como.*presentar|qué poner en la bio|que poner.*bio|texto.*perfil/i],
-    answer: 'Una buena bio en XPEAK sigue esta estructura:\n\n**Línea 1 — Quién eres:**\nEj: "DJ residente en Madrid especializado en Tech House y Melodic Techno con 8 años de experiencia en salas de capacidad 500+"\n\n**Línea 2 — Qué ofreces:**\nEj: "Sesiones de 2-4h adaptadas al público del local, con equipo propio opcional"\n\n**Línea 3 — Por qué contratarte:**\nEj: "Residencias en [Sala X], colaboraciones con sellos [Y y Z], vídeo demostrativo disponible"\n\n**Lo que NO hacer:**\n• Frases genéricas como "apasionado de la música"\n• Más de 4 líneas (nadie las lee)\n• Escribir en mayúsculas\n\nLa bio la ven los empresarios antes de decidir si te escriben.',
+    answer: 'Una buena bio en XPEAK sigue esta estructura:\n\n**Línea 1, Quién eres:**\nEj: "DJ residente en Madrid especializado en Tech House y Melodic Techno con 8 años de experiencia en salas de capacidad 500+"\n\n**Línea 2, Qué ofreces:**\nEj: "Sesiones de 2-4h adaptadas al público del local, con equipo propio opcional"\n\n**Línea 3, Por qué contratarte:**\nEj: "Residencias en [Sala X], colaboraciones con sellos [Y y Z], vídeo demostrativo disponible"\n\n**Lo que NO hacer:**\n• Frases genéricas como "apasionado de la música"\n• Más de 4 líneas (nadie las lee)\n• Escribir en mayúsculas\n\nLa bio la ven los empresarios antes de decidir si te escriben.',
     followUps: ['¿Qué pongo en el rider técnico?', '¿Cómo mejoro mi posición en el directorio?'],
   },
 
@@ -84,7 +84,7 @@ const KB: KBEntry[] = [
   {
     id: 'audio',
     patterns: [/subir.*audio|subir.*mix|enlazar.*mix|soundcloud|mixcloud|hearthis|embed.*audio|audio.*embed|mix.*perfil|sesión.*escuchar|sesion.*escuchar/i],
-    answer: 'Para que los empresarios escuchen tu trabajo desde tu ficha:\n\n1. Sube tu mejor mix a **SoundCloud**, **Mixcloud** o **hearthis.at** (son gratuitos)\n2. Copia la URL pública del mix (no la privada)\n3. En XPEAK ve a **Mi Perfil → Redes & Plataformas**\n4. Pega la URL en el campo correspondiente y guarda\n\n**Qué mix subir:**\n• Duración recomendada: 45-90 minutos\n• Que represente bien el estilo con el que quieres que te contraten\n• Si tienes varios estilos, pon el más comercial/versátil\n\n**El audio aparece embebido** en tu ficha pública — los empresarios lo escuchan sin salir de XPEAK, lo que aumenta significativamente los contactos.',
+    answer: 'Para que los empresarios escuchen tu trabajo desde tu ficha:\n\n1. Sube tu mejor mix a **SoundCloud**, **Mixcloud** o **hearthis.at** (son gratuitos)\n2. Copia la URL pública del mix (no la privada)\n3. En XPEAK ve a **Mi Perfil → Redes & Plataformas**\n4. Pega la URL en el campo correspondiente y guarda\n\n**Qué mix subir:**\n• Duración recomendada: 45-90 minutos\n• Que represente bien el estilo con el que quieres que te contraten\n• Si tienes varios estilos, pon el más comercial/versátil\n\n**El audio aparece embebido** en tu ficha pública, los empresarios lo escuchan sin salir de XPEAK, lo que aumenta significativamente los contactos.',
     followUps: ['¿Puedo enlazar también vídeo?', '¿Qué géneros selecciono en el perfil?'],
   },
 
@@ -92,7 +92,7 @@ const KB: KBEntry[] = [
   {
     id: 'flashbooking',
     patterns: [/flash booking|flash book|booking.*urgente|oferta.*urgente|urgente.*booking|última hora|ultima hora|disponible.*ahora|disponib.*toggle/i],
-    answer: '**Flash Booking** es el sistema de contratación de última hora de XPEAK.\n\n**Cómo funciona para profesionales:**\n1. Activa el toggle **"Disponible ahora"** en Mi Perfil\n2. Apareces destacado en la sección Flash Booking visible para todos los empresarios\n3. Cuando recibes una oferta, te llega por **Mensajes** con detalles del evento\n4. Respondes directamente — sin intermediarios ni porcentajes\n5. Si aceptas, generáis el contrato desde Herramientas\n\n**Cómo funciona para empresarios:**\n1. Ve a **En Vivo → Flash Booking**\n2. Publica la oferta: rol, fecha, ciudad, duración y caché ofrecido\n3. La oferta es visible **2 horas** para los profesionales disponibles\n4. Recibes respuestas directamente en tus Mensajes',
+    answer: '**Flash Booking** es el sistema de contratación de última hora de XPEAK.\n\n**Cómo funciona para profesionales:**\n1. Activa el toggle **"Disponible ahora"** en Mi Perfil\n2. Apareces destacado en la sección Flash Booking visible para todos los empresarios\n3. Cuando recibes una oferta, te llega por **Mensajes** con detalles del evento\n4. Respondes directamente, sin intermediarios ni porcentajes\n5. Si aceptas, generáis el contrato desde Herramientas\n\n**Cómo funciona para empresarios:**\n1. Ve a **En Vivo → Flash Booking**\n2. Publica la oferta: rol, fecha, ciudad, duración y caché ofrecido\n3. La oferta es visible **2 horas** para los profesionales disponibles\n4. Recibes respuestas directamente en tus Mensajes',
     followUps: ['¿Qué pasa si nadie responde en 2 horas?', '¿Cómo negocio el precio?'],
   },
 
@@ -100,7 +100,7 @@ const KB: KBEntry[] = [
   {
     id: 'flashexpiry',
     patterns: [/caduca|expirar|expira|2 horas|dos horas|nadie.*responde|sin respuesta.*flash|oferta.*vence/i],
-    answer: 'Una oferta Flash **caduca automáticamente a las 2 horas** de publicarse.\n\nSi nadie responde en ese tiempo:\n• La oferta desaparece del muro de Flash Booking\n• El empresario puede volver a publicarla con los mismos datos (no hay límite de intentos)\n• También puede buscar directamente en el Directorio y contactar manualmente\n\n**Por qué puede no haber respuestas:**\n• Pocos profesionales del rol y ciudad tienen disponibilidad activa\n• La franja horaria es muy próxima (menos de 3h)\n• El caché ofrecido está por debajo del mercado\n\n**Consejo:** Ofrece el caché real desde el principio — los profesionales ven todas las ofertas simultáneamente y priorizan las mejor pagadas.',
+    answer: 'Una oferta Flash **caduca automáticamente a las 2 horas** de publicarse.\n\nSi nadie responde en ese tiempo:\n• La oferta desaparece del muro de Flash Booking\n• El empresario puede volver a publicarla con los mismos datos (no hay límite de intentos)\n• También puede buscar directamente en el Directorio y contactar manualmente\n\n**Por qué puede no haber respuestas:**\n• Pocos profesionales del rol y ciudad tienen disponibilidad activa\n• La franja horaria es muy próxima (menos de 3h)\n• El caché ofrecido está por debajo del mercado\n\n**Consejo:** Ofrece el caché real desde el principio, los profesionales ven todas las ofertas simultáneamente y priorizan las mejor pagadas.',
     followUps: ['¿Cómo publico una nueva oferta?', '¿Cuántos profesionales hay disponibles?'],
   },
 
@@ -108,7 +108,7 @@ const KB: KBEntry[] = [
   {
     id: 'negotiation',
     patterns: [/negoci|negociación|negociacion|precio.*discutir|cómo.*precio|como.*precio|caché.*negoci|cache.*negoci|cuánto.*cobrar|cuanto.*cobrar|tarifa.*justa/i],
-    answer: 'XPEAK no impone precios ni cobra comisión sobre el acuerdo económico.\n\n**La negociación ocurre en Mensajes:**\n• Inicia indicando tu disponibilidad y tarifa base\n• El empresario puede contraoferta — tú decides si aceptas\n• No hay presión: si no hay acuerdo, la conversación queda archivada\n\n**Referencias de mercado en España (2025):**\n• DJ sesión club 4h — entre €150 y €800 según experiencia y sala\n• Staff / azafata noche — entre €80 y €200\n• Fotógrafo evento — entre €150 y €500\n• Maquillaje artístico — entre €80 y €250\n\n**Tip:** Si has publicado tarifa en el perfil, los empresarios llegan habiendo visto ese precio — reduce el regateo.',
+    answer: 'XPEAK no impone precios: el acuerdo económico lo fijáis vosotros.\n\n**La negociación ocurre en Mensajes:**\n• Inicia indicando tu disponibilidad y tarifa base\n• El empresario puede contraoferta, tú decides si aceptas\n• No hay presión: si no hay acuerdo, la conversación queda archivada\n\n**Referencias de mercado en España (2025):**\n• DJ sesión club 4h, entre €150 y €800 según experiencia y sala\n• Staff / azafata noche, entre €80 y €200\n• Fotógrafo evento, entre €150 y €500\n• Maquillaje artístico, entre €80 y €250\n\n**Tip:** Si has publicado tarifa en el perfil, los empresarios llegan habiendo visto ese precio, reduce el regateo.',
     followUps: ['¿Cómo genero el contrato tras acordar?', '¿Qué incluye el contrato?'],
   },
 
@@ -124,7 +124,7 @@ const KB: KBEntry[] = [
   {
     id: 'cancellation',
     patterns: [/cancelaci|cancelar.*evento|evento.*cancel|penalizaci|no.*puedo.*ir|fuerza mayor|anular.*booking/i],
-    answer: 'Las cancelaciones se gestionan según lo acordado en el **contrato generado en XPEAK**.\n\n**Penalización estándar en los contratos XPEAK:**\n• Cancelación con más de 15 días de antelación → sin penalización\n• Entre 7 y 15 días → 25% del caché acordado\n• Entre 2 y 7 días → 50% del caché\n• Menos de 48 horas → 100% del caché\n\nEstas cláusulas son editables al generar el contrato — puedes acordar otras condiciones.\n\n**Si no hay contrato firmado**, la cancelación no tiene consecuencias legales directas en XPEAK — la plataforma actúa como canal de comunicación, no como árbitro.\n\n**Fuerza mayor** (enfermedad acreditada, fallecimiento familiar, etc.) suele eximir la penalización — consúltalo con la otra parte directamente.',
+    answer: 'Las cancelaciones se gestionan según lo acordado en el **contrato generado en XPEAK**.\n\n**Penalización estándar en los contratos XPEAK:**\n• Cancelación con más de 15 días de antelación → sin penalización\n• Entre 7 y 15 días → 25% del caché acordado\n• Entre 2 y 7 días → 50% del caché\n• Menos de 48 horas → 100% del caché\n\nEstas cláusulas son editables al generar el contrato, puedes acordar otras condiciones.\n\n**Si no hay contrato firmado**, la cancelación no tiene consecuencias legales directas en XPEAK: la plataforma actúa como canal de comunicación, no como árbitro.\n\n**Fuerza mayor** (enfermedad acreditada, fallecimiento familiar, etc.) suele eximir la penalización: consúltalo con la otra parte directamente.',
     followUps: ['¿Cómo genero un contrato?', '¿Puedo valorar negativamente a alguien?'],
   },
 
@@ -140,7 +140,7 @@ const KB: KBEntry[] = [
   {
     id: 'directory',
     patterns: [/directorio|cómo.*buscar|como.*buscar|filtrar.*profesional|filtros.*directorio|encontrar.*dj|encontrar.*staff|aparecer.*directorio|búsqueda.*directorio/i],
-    answer: 'El **Directorio** tiene varias secciones:\n\n• **DJs & Artistas** — todos los géneros, de techno a comercial\n• **DJs Emergentes** — DJs que se están iniciando, directorio separado del de profesionales\n• **Sala, Barra & Catering** — camareros, bartenders, sumilleres, chefs y catering\n• **Azafatas & RRPP** — azafatas, promotores, encargadas y speakers\n• **Maquillaje & Peluquería** — imagen artística, nupcial y editorial\n• **Media & Contenido** — fotógrafos, videógrafos, creadores de reels\n• **Panel Empresario** — vista específica con herramientas de contratación\n\n**Filtros disponibles en cada sección:**\n• Ciudad (busca radio local)\n• Disponibilidad ahora (Flash Booking activo)\n• Géneros / especialidades\n\n**Orden de resultados:**\nPrimero aparecen los verificados, luego por actividad y perfil completo.',
+    answer: 'El **Directorio** tiene varias secciones:\n\n• **DJs & Artistas**, todos los géneros, de techno a comercial\n• **DJs Emergentes**, DJs que se están iniciando, directorio separado del de profesionales\n• **Sala, Barra & Catering**, camareros, bartenders, sumilleres, chefs y catering\n• **Azafatas & RRPP**, azafatas, promotores, encargadas y speakers\n• **Maquillaje & Peluquería**, imagen artística, nupcial y editorial\n• **Media & Contenido**, fotógrafos, videógrafos, creadores de reels\n• **Panel Empresario**, vista específica con herramientas de contratación\n\n**Filtros disponibles en cada sección:**\n• Ciudad (busca radio local)\n• Disponibilidad ahora (Flash Booking activo)\n• Géneros / especialidades\n\n**Orden de resultados:**\nPrimero aparecen los verificados, luego por actividad y perfil completo.',
     followUps: ['¿Cómo mejoro mi posición en resultados?', '¿Puedo buscar por precio?'],
   },
 
@@ -148,7 +148,7 @@ const KB: KBEntry[] = [
   {
     id: 'ranking',
     patterns: [/posicionamiento|ranking|aparecer.*primero|mejorar.*visibilidad|algoritmo|orden.*resultados|cómo.*destaco|como.*destaco/i],
-    answer: 'El orden en que apareces en el directorio sigue esta jerarquía:\n\n**1. Perfil verificado** — badge de calidad XPEAK — posición más alta\n**2. Perfil completo** — foto + bio + géneros + audio\n**3. Actividad reciente** — perfiles con más interacciones suben\n**4. Disponibilidad activa** — con el toggle ON apareces destacado en Flash Booking\n\n**Para subir rápido:**\n• Completa el 100% de tu perfil (foto, bio, géneros, idiomas, audio)\n• Mantén el toggle de disponibilidad activo los fines de semana\n• Responde rápido a los mensajes (la actividad influye en el ranking)',
+    answer: 'El orden en que apareces en el directorio sigue esta jerarquía:\n\n**1. Perfil verificado**, badge de calidad XPEAK, posición más alta\n**2. Perfil completo**: foto + bio + géneros + audio\n**3. Actividad reciente**: perfiles con más interacciones suben\n**4. Disponibilidad activa**, con el toggle ON apareces destacado en Flash Booking\n\n**Para subir rápido:**\n• Completa el 100% de tu perfil (foto, bio, géneros, idiomas, audio)\n• Mantén el toggle de disponibilidad activo los fines de semana\n• Responde rápido a los mensajes (la actividad influye en el ranking)',
     followUps: ['¿Cómo completo mi perfil?', '¿Cómo activo Flash Booking?'],
   },
 
@@ -156,7 +156,7 @@ const KB: KBEntry[] = [
   {
     id: 'roles',
     patterns: [/qué roles hay|que roles hay|tipos de.*perfil|categorías.*xpeak|categorias.*xpeak|cambiar.*rol|qué rol.*elegir|que rol.*elegir|staff.*qué hace|staff.*que hace/i],
-    answer: 'XPEAK tiene estos roles profesionales:\n\n**DJs & Artistas** — Música electrónica, sesiones en directo, residencias\n**DJs Emergentes** — No es un rol nuevo: un DJ marca en Ajustes que está empezando y pasa a un directorio separado, con un proceso de ascenso revisado por el equipo hasta graduarse a profesional\n**Sala, Barra & Catering** — Camareros, bartenders, sumilleres, chefs de eventos y catering\n**Azafatas & RRPP** — Azafatas, RRPP, promotores de sala, hostess, encargadas de eventos\n**Maquillaje & Peluquería** — Artistas de imagen para artistas, bodas y producción\n**Media & Contenido** — Fotógrafos, videógrafos, drone, reels, motion graphics\n**Embajador** — Representación de marcas de bebidas, tecnología o ropa en eventos\n**Promotor** — Organización de fiestas, management de artistas, booking de salas\n**Empresario** — Clubs, salas, festivales, agencias de booking, hoteles con eventos\n\n**Cambiar de rol:** Ve a **Ajustes** → sección de perfil → selecciona nuevo rol. Ten en cuenta que el contenido específico (géneros, especialidades) se resetea al cambiar.',
+    answer: 'XPEAK tiene estos roles profesionales:\n\n**DJs & Artistas**, Música electrónica, sesiones en directo, residencias\n**DJs Emergentes**, No es un rol nuevo: un DJ marca en Ajustes que está empezando y pasa a un directorio separado, con un proceso de ascenso revisado por el equipo hasta graduarse a profesional\n**Sala, Barra & Catering**, Camareros, bartenders, sumilleres, chefs de eventos y catering\n**Azafatas & RRPP**, Azafatas, RRPP, promotores de sala, hostess, encargadas de eventos\n**Maquillaje & Peluquería**, Artistas de imagen para artistas, bodas y producción\n**Media & Contenido**, Fotógrafos, videógrafos, drone, reels, motion graphics\n**Embajador**, Representación de marcas de bebidas, tecnología o ropa en eventos\n**Promotor**, Organización de fiestas, management de artistas, booking de salas\n**Empresario**, Clubs, salas, festivales, agencias de booking, hoteles con eventos\n\n**Cambiar de rol:** Ve a **Ajustes** → sección de perfil → selecciona nuevo rol. Ten en cuenta que el contenido específico (géneros, especialidades) se resetea al cambiar.',
     followUps: ['¿Puedo tener varios roles?', '¿Cómo edito las especialidades?'],
   },
 
@@ -164,7 +164,7 @@ const KB: KBEntry[] = [
   {
     id: 'rookie',
     patterns: [/dj promesa|artista promesa|rookie|junior|emergente|nuevo.*dj|principiante|diferencia.*dj.*promesa/i],
-    answer: 'La sección **DJ / Artista Promesa** está diseñada para talento emergente.\n\n**Diferencias clave con el directorio principal de DJs:**\n• Aparece en una sección separada que los empresarios filtran específicamente cuando buscan precios más accesibles o apostar por talento nuevo\n• Las tarifas son generalmente más bajas (€50-€200 vs €150-€800 en DJ senior)\n• Menor competencia — menos perfiles, más visibilidad relativa\n• Ideal para residencias locales, fiestas privadas y aperturas de sala\n\n**Cuándo "graduarse":**\nNo hay un límite automático. Cuando consideres que tu experiencia y caché están al nivel del directorio principal, cambia tu rol en Ajustes.\n\n**Los empresarios que miran Promesas buscan:** precio ajustado, energía fresca y flexibilidad horaria.',
+    answer: 'La sección **DJ / Artista Promesa** está diseñada para talento emergente.\n\n**Diferencias clave con el directorio principal de DJs:**\n• Aparece en una sección separada que los empresarios filtran específicamente cuando buscan precios más accesibles o apostar por talento nuevo\n• Las tarifas son generalmente más bajas (€50-€200 vs €150-€800 en DJ senior)\n• Menor competencia, menos perfiles, más visibilidad relativa\n• Ideal para residencias locales, fiestas privadas y aperturas de sala\n\n**Cuándo "graduarse":**\nNo hay un límite automático. Cuando consideres que tu experiencia y caché están al nivel del directorio principal, cambia tu rol en Ajustes.\n\n**Los empresarios que miran Promesas buscan:** precio ajustado, energía fresca y flexibilidad horaria.',
     followUps: ['¿Cómo cambio de rol?', '¿Qué géneros debo seleccionar?'],
   },
 
@@ -172,7 +172,7 @@ const KB: KBEntry[] = [
   {
     id: 'subscription',
     patterns: [/suscripci|precio.*plan|plan.*precio|cuánto.*cuesta|cuanto.*cuesta|gratis.*qué incluye|free.*plan|starter|business.*plan|elite.*plan|agency.*plan|diferencia.*planes/i],
-    answer: 'Tu plan incluye:\n\n• Perfil activo y visible en el directorio europeo\n• Flash Booking — contratación en tiempo real\n• Mensajería directa con clientes y profesionales\n• Calendario y gestión de disponibilidad\n• Generación de contratos legales en PDF\n• Estadísticas de visitas a tu perfil\n\nSin tarjeta de crédito · Sin contratos.',
+    answer: 'Tu plan incluye:\n\n• Perfil activo y visible en el directorio europeo\n• Flash Booking, contratación en tiempo real\n• Mensajería directa con clientes y profesionales\n• Calendario y gestión de disponibilidad\n• Generación de contratos legales en PDF\n• Estadísticas de visitas a tu perfil\n\nSin tarjeta de crédito · Sin contratos.',
     followUps: ['¿Cómo completo mi perfil?', '¿Cómo consigo más bookings?'],
   },
 
@@ -180,7 +180,7 @@ const KB: KBEntry[] = [
   {
     id: 'billing',
     patterns: [/cancelar.*plan|cancelar.*suscripci|reembolso|devoluci|cobro.*incorrecto|método de pago|tarjeta.*pago|cambiar.*tarjeta|factura.*suscripci|stripe/i],
-    answer: 'No se requiere tarjeta de crédito. No hay suscripciones ni cargos periódicos.\n\nSi tienes alguna duda sobre pagos o cobros, escríbenos a **soporte@xpeak.es** — lo aclaramos enseguida.',
+    answer: 'No se requiere tarjeta de crédito. No hay suscripciones ni cargos periódicos.\n\nSi tienes alguna duda sobre pagos o cobros, escríbenos a **soporte@xpeak.es**: lo aclaramos enseguida.',
     followUps: ['¿Qué incluye la plataforma?', '¿Cómo contacto con soporte?'],
   },
 
@@ -188,7 +188,7 @@ const KB: KBEntry[] = [
   {
     id: 'verification',
     patterns: [/sello.*oro|verificaci|badge.*verificado|cómo.*verificar|como.*verificar|obtener.*sello|solicitar.*verificaci|video.*verificaci|vídeo.*verificaci/i],
-    answer: 'El **Sello de Oro XPEAK** es la verificación de calidad de la plataforma.\n\n**Requisitos para solicitarlo:**\n1. Perfil completo (foto, bio, géneros, ciudad)\n2. Vídeo de demostración subido (mínimo 2 minutos mostrando tu trabajo real)\n3. Historial limpio en la plataforma (sin reportes)\n\n**Proceso:**\n1. Graba un vídeo — puede ser una actuación real, session grabada o contenido propio\n2. Súbelo a YouTube, Drive o Vimeo (enlace sin contraseña)\n3. Ve a **Mi Perfil → Sección Verificación → Solicitar Sello**\n4. El equipo lo revisa en **24-48 horas laborables**\n5. Si se aprueba, el badge aparece en tu tarjeta y perfil inmediatamente\n\n**Qué consigues:**\n• Posición destacada en el directorio (por encima de los no verificados)\n• Mayor tasa de conversión — los empresarios confían más',
+    answer: 'El **Sello de Oro XPEAK** es la verificación de calidad de la plataforma.\n\n**Requisitos para solicitarlo:**\n1. Perfil completo (foto, bio, géneros, ciudad)\n2. Vídeo de demostración subido (mínimo 2 minutos mostrando tu trabajo real)\n3. Historial limpio en la plataforma (sin reportes)\n\n**Proceso:**\n1. Graba un vídeo: puede ser una actuación real, session grabada o contenido propio\n2. Súbelo a YouTube, Drive o Vimeo (enlace sin contraseña)\n3. Ve a **Mi Perfil → Sección Verificación → Solicitar Sello**\n4. El equipo lo revisa en **24-48 horas laborables**\n5. Si se aprueba, el badge aparece en tu tarjeta y perfil inmediatamente\n\n**Qué consigues:**\n• Posición destacada en el directorio (por encima de los no verificados)\n• Mayor tasa de conversión, los empresarios confían más',
     followUps: ['¿Qué tipo de vídeo necesito?', '¿Cuánto tarda la revisión?'],
   },
 
@@ -196,7 +196,7 @@ const KB: KBEntry[] = [
   {
     id: 'stats',
     patterns: [/estadísticas|estadisticas|métricas|visitas.*perfil|clics.*contacto|cómo.*interpretar.*stats|que significan.*stats|rendimiento.*perfil/i],
-    answer: 'En **Mi Cuenta → Estadísticas** tienes un panel de rendimiento con estos datos:\n\n**Visitas al perfil** — número de veces que alguien ha abierto tu ficha completa. Un perfil completo y activo recibe entre 30 y 150 visitas semanales en temporada alta.\n\n**Clics de contacto** — cuántas personas han pulsado "Mensaje" desde tu perfil. Si este número es bajo respecto a las visitas, tu bio o tarifa puede estar ahuyentando contactos.\n\n**Mensajes recibidos** — conversaciones iniciadas. Un ratio visitas/mensajes sano es 1 mensaje por cada 10-15 visitas.\n\n**Evolución mensual** — gráfica de tendencia. Identifica picos para entender qué acciones generan más visibilidad y repítelas.',
+    answer: 'En **Mi Cuenta → Estadísticas** tienes un panel de rendimiento con estos datos:\n\n**Visitas al perfil**, número de veces que alguien ha abierto tu ficha completa. Un perfil completo y activo recibe entre 30 y 150 visitas semanales en temporada alta.\n\n**Clics de contacto**: cuántas personas han pulsado "Mensaje" desde tu perfil. Si este número es bajo respecto a las visitas, tu bio o tarifa puede estar ahuyentando contactos.\n\n**Mensajes recibidos**: conversaciones iniciadas. Un ratio visitas/mensajes sano es 1 mensaje por cada 10-15 visitas.\n\n**Evolución mensual**: gráfica de tendencia. Identifica picos para entender qué acciones generan más visibilidad y repítelas.',
     followUps: ['¿Cómo mejoro mi ratio de contactos?', '¿Cómo activo Flash Booking?'],
   },
 
@@ -204,7 +204,7 @@ const KB: KBEntry[] = [
   {
     id: 'calendar',
     patterns: [/calendario|agenda.*xpeak|fechas.*ocupadas|bloquer.*fecha|gestionar.*fechas|disponibilidad.*calendario/i],
-    answer: 'El **Calendario** en **Herramientas → Calendario** es tu gestor de agenda profesional.\n\n**Qué puedes hacer:**\n• Marcar días como **ocupados** (evento ya contratado)\n• Marcar días como **disponible** (para que los empresarios lo vean)\n• Añadir notas privadas a cada fecha\n• Ver todos tus compromisos del mes en una vista limpia\n\n**Integración con Flash Booking:**\nSi marcas un día como ocupado en el Calendario, el toggle de Flash Booking se desactiva automáticamente para esa fecha, evitando que recibas ofertas que no puedes atender.\n\n**Consejo práctico:** Actualiza el calendario cada lunes — los empresarios que planifican el fin de semana lo consultan activamente. Un calendario actualizado transmite profesionalidad.',
+    answer: 'El **Calendario** en **Herramientas → Calendario** es tu gestor de agenda profesional.\n\n**Qué puedes hacer:**\n• Marcar días como **ocupados** (evento ya contratado)\n• Marcar días como **disponible** (para que los empresarios lo vean)\n• Añadir notas privadas a cada fecha\n• Ver todos tus compromisos del mes en una vista limpia\n\n**Integración con Flash Booking:**\nSi marcas un día como ocupado en el Calendario, el toggle de Flash Booking se desactiva automáticamente para esa fecha, evitando que recibas ofertas que no puedes atender.\n\n**Consejo práctico:** Actualiza el calendario cada lunes, los empresarios que planifican el fin de semana lo consultan activamente. Un calendario actualizado transmite profesionalidad.',
     followUps: ['¿Se integra con Google Calendar?', '¿Cómo activo Flash Booking?'],
   },
 
@@ -220,7 +220,7 @@ const KB: KBEntry[] = [
   {
     id: 'empresario',
     patterns: [/panel.*empresario|cómo.*contratar|como.*contratar|soy.*empresario|soy.*sala|soy.*club|busco.*dj|buscar.*artista|organizo.*evento/i],
-    answer: 'Como empresario, XPEAK te da todo lo que necesitas en un solo lugar.\n\n**Flujo de contratación completo:**\n1. **Busca** en el Directorio filtrando por rol + ciudad + disponibilidad\n2. **Escucha** el audio o mira el vídeo del profesional antes de contactar\n3. **Contacta** directamente con el botón Mensaje — sin intermediarios\n4. **Acuerda** precio y condiciones en el chat\n5. **Genera el contrato** en Herramientas → Contratos con datos de ambas partes\n6. **Firma** y archiva el PDF\n\n**Para urgencias:** Publica en **Flash Booking** con fecha, rol, ciudad y caché — en 2h tienes respuestas de profesionales disponibles.\n\n**Panel Empresario** (Directorio → Panel Empresario) agrupa todas las herramientas de búsqueda en una vista optimizada.',
+    answer: 'Como empresario, XPEAK te da todo lo que necesitas en un solo lugar.\n\n**Flujo de contratación completo:**\n1. **Busca** en el Directorio filtrando por rol + ciudad + disponibilidad\n2. **Escucha** el audio o mira el vídeo del profesional antes de contactar\n3. **Contacta** directamente con el botón Mensaje, sin intermediarios\n4. **Acuerda** precio y condiciones en el chat\n5. **Genera el contrato** en Herramientas → Contratos con datos de ambas partes\n6. **Firma** y archiva el PDF\n\n**Para urgencias:** Publica en **Flash Booking** con fecha, rol, ciudad y caché, en 2h tienes respuestas de profesionales disponibles.\n\n**Panel Empresario** (Directorio → Panel Empresario) agrupa todas las herramientas de búsqueda en una vista optimizada.',
     followUps: ['¿Cómo publico un Flash Booking?'],
   },
 
@@ -228,7 +228,7 @@ const KB: KBEntry[] = [
   {
     id: 'settings',
     patterns: [/ajustes|configuración.*cuenta|cambiar.*email|cambiar.*contraseña|notificaciones.*configurar|preferencias.*cuenta/i],
-    answer: 'En **Configuración → Ajustes** tienes control total sobre tu cuenta:\n\n**Cuenta:**\n• Cambiar email (requiere confirmación en el nuevo correo)\n• Cambiar contraseña (requiere la contraseña actual)\n\n**Notificaciones:**\n• Mensajes nuevos — activable por email y/o push\n• Nuevas ofertas Flash Booking en tu zona\n• Actualizaciones de la plataforma\n\n**Privacidad:**\n• Quién puede enviarte mensajes (todos / solo verificados / nadie)\n• Visibilidad del perfil (público / oculto del directorio)\n• Mostrar u ocultar tarifa en el perfil público\n\n**Cuenta:**\n• Exportar datos ZIP (RGPD)\n• Eliminar cuenta permanentemente',
+    answer: 'En **Configuración → Ajustes** tienes control total sobre tu cuenta:\n\n**Cuenta:**\n• Cambiar email (requiere confirmación en el nuevo correo)\n• Cambiar contraseña (requiere la contraseña actual)\n\n**Notificaciones:**\n• Mensajes nuevos, activable por email y/o push\n• Nuevas ofertas Flash Booking en tu zona\n• Actualizaciones de la plataforma\n\n**Privacidad:**\n• Quién puede enviarte mensajes (todos / solo verificados / nadie)\n• Visibilidad del perfil (público / oculto del directorio)\n• Mostrar u ocultar tarifa en el perfil público\n\n**Cuenta:**\n• Exportar datos ZIP (RGPD)\n• Eliminar cuenta permanentemente',
     followUps: ['¿Cómo bloqueo a alguien?', '¿Cómo elimino mi cuenta?'],
   },
 
@@ -236,7 +236,7 @@ const KB: KBEntry[] = [
   {
     id: 'block',
     patterns: [/bloquear|reportar.*usuario|usuario.*falso|perfil.*falso|spam|acoso|comportamiento.*inapropiado|denunciar/i],
-    answer: 'XPEAK tiene mecanismos para mantener la comunidad profesional.\n\n**Bloquear un usuario:**\n• Entra en su perfil → menú de opciones (tres puntos) → "Bloquear"\n• El usuario bloqueado no puede enviarte mensajes ni ver tu perfil\n\n**Reportar un perfil falso o comportamiento inadecuado:**\n• Desde el perfil del usuario → "Reportar"\n• Selecciona el motivo: perfil falso, spam, contenido inapropiado, acoso\n• El equipo revisa los reportes en 24-48h\n• Tras 3 reportes verificados, la cuenta se suspende automáticamente\n\n**Si recibes un mensaje de acoso:**\nReenvíalo a soporte@xpeak.es con el ID del mensaje — se tramita como caso prioritario.',
+    answer: 'XPEAK tiene mecanismos para mantener la comunidad profesional.\n\n**Bloquear un usuario:**\n• Entra en su perfil → menú de opciones (tres puntos) → "Bloquear"\n• El usuario bloqueado no puede enviarte mensajes ni ver tu perfil\n\n**Reportar un perfil falso o comportamiento inadecuado:**\n• Desde el perfil del usuario → "Reportar"\n• Selecciona el motivo: perfil falso, spam, contenido inapropiado, acoso\n• El equipo revisa los reportes en 24-48h\n• Tras 3 reportes verificados, la cuenta se suspende automáticamente\n\n**Si recibes un mensaje de acoso:**\nReenvíalo a soporte@xpeak.es con el ID del mensaje: se tramita como caso prioritario.',
     followUps: ['¿Cómo configuro quién puede escribirme?', '¿Cómo contacto con soporte?'],
   },
 
@@ -244,7 +244,7 @@ const KB: KBEntry[] = [
   {
     id: 'gdpr',
     patterns: [/rgpd|gdpr|privacidad.*datos|mis datos|exportar datos|portabilidad|derecho.*olvido|eliminar.*datos|política.*privacidad/i],
-    answer: 'XPEAK cumple con el **RGPD** europeo y la **LOPDGDD** española.\n\n**Tus derechos en XPEAK:**\n• **Acceso** — puedes solicitar qué datos tenemos sobre ti en cualquier momento\n• **Rectificación** — edita tus datos directamente desde Mi Perfil o Ajustes\n• **Supresión ("derecho al olvido")** — elimina tu cuenta desde Ajustes → se borran todos tus datos en 30 días\n• **Portabilidad** — descarga un ZIP con todos tus datos (mensajes, perfil, estadísticas) desde Ajustes → Exportar datos\n• **Oposición al tratamiento** — escribe a privacidad@xpeak.es\n\n**Datos que no almacenamos:**\n• Contraseñas en texto plano (encriptadas con bcrypt)\n\nLa política de privacidad completa está en **xpeak.es/privacidad**.',
+    answer: 'XPEAK cumple con el **RGPD** europeo y la **LOPDGDD** española.\n\n**Tus derechos en XPEAK:**\n• **Acceso**, puedes solicitar qué datos tenemos sobre ti en cualquier momento\n• **Rectificación**, edita tus datos directamente desde Mi Perfil o Ajustes\n• **Supresión ("derecho al olvido")**, elimina tu cuenta desde Ajustes → se borran todos tus datos en 30 días\n• **Portabilidad**, descarga un ZIP con todos tus datos (mensajes, perfil, estadísticas) desde Ajustes → Exportar datos\n• **Oposición al tratamiento**, escribe a privacidad@xpeak.es\n\n**Datos que no almacenamos:**\n• Contraseñas en texto plano (encriptadas con bcrypt)\n\nLa política de privacidad completa está en **xpeak.es/privacidad**.',
     followUps: ['¿Cómo elimino mi cuenta?', '¿Cómo exporto mis datos?'],
   },
 
@@ -260,7 +260,7 @@ const KB: KBEntry[] = [
   {
     id: 'bug',
     patterns: [/no funciona|error.*técnico|error tecnico|bug|pantalla.*blanca|se cuelga|no carga|fallo.*app|problema.*técnico|problema tecnico|lento.*carga/i],
-    answer: 'Pasos para resolver problemas técnicos en XPEAK:\n\n**Paso 1 — Soluciones rápidas:**\n• Recarga la página: **Ctrl+R** (Windows) / **Cmd+R** (Mac)\n• Cierra el navegador completamente y vuelve a abrir\n• Prueba en **modo incógnito** (descarta problemas de caché o extensiones)\n\n**Paso 2 — Limpieza de caché:**\n• Chrome: Menú → Más herramientas → Borrar datos de navegación → Imágenes y archivos en caché\n• Safari: Preferencias → Avanzado → Mostrar menú Desarrollo → Vaciar cachés\n\n**Paso 3 — Si persiste:**\nEscribe a **soporte@xpeak.es** con:\n• Qué acción estabas haciendo\n• Qué mensaje de error aparece (captura de pantalla si es posible)\n• Navegador y versión (Chrome 124, Safari 17…)\n• Dispositivo (Mac, Windows, iPhone, Android)\n\nTiempo de respuesta: 24-48h laborables.',
+    answer: 'Pasos para resolver problemas técnicos en XPEAK:\n\n**Paso 1, Soluciones rápidas:**\n• Recarga la página: **Ctrl+R** (Windows) / **Cmd+R** (Mac)\n• Cierra el navegador completamente y vuelve a abrir\n• Prueba en **modo incógnito** (descarta problemas de caché o extensiones)\n\n**Paso 2, Limpieza de caché:**\n• Chrome: Menú → Más herramientas → Borrar datos de navegación → Imágenes y archivos en caché\n• Safari: Preferencias → Avanzado → Mostrar menú Desarrollo → Vaciar cachés\n\n**Paso 3, Si persiste:**\nEscribe a **soporte@xpeak.es** con:\n• Qué acción estabas haciendo\n• Qué mensaje de error aparece (captura de pantalla si es posible)\n• Navegador y versión (Chrome 124, Safari 17…)\n• Dispositivo (Mac, Windows, iPhone, Android)\n\nTiempo de respuesta: 24-48h laborables.',
     followUps: ['¿Hay app móvil de XPEAK?', '¿Cómo contacto con soporte?'],
   },
 
@@ -268,7 +268,7 @@ const KB: KBEntry[] = [
   {
     id: 'mobile',
     patterns: [/app móvil|app movil|aplicación.*móvil|aplicacion.*movil|ios|android|iphone.*xpeak|play store|app store|descargar.*app/i],
-    answer: 'Actualmente XPEAK es una **aplicación web** (PWA) — funciona desde el navegador de tu móvil sin necesidad de descargar nada.\n\n**Cómo usarla en móvil:**\n• Abre **xpeak.es** desde Safari (iPhone) o Chrome (Android)\n• El diseño está optimizado para móvil — interfaz bottom navigation con accesos rápidos\n\n**Para instalarla como app:**\n• **iPhone/Safari:** Compartir → "Añadir a pantalla de inicio" → aparece como icono de app\n• **Android/Chrome:** Menú → "Añadir a pantalla de inicio" o la notificación automática de instalación\n\nUna vez instalada funciona como una app nativa, con acceso directo y sin barra de navegación del navegador.\n\n**App nativa (iOS + Android)** está en el roadmap para 2026.',
+    answer: 'Actualmente XPEAK es una **aplicación web** (PWA): funciona desde el navegador de tu móvil sin necesidad de descargar nada.\n\n**Cómo usarla en móvil:**\n• Abre **xpeak.es** desde Safari (iPhone) o Chrome (Android)\n• El diseño está optimizado para móvil: interfaz bottom navigation con accesos rápidos\n\n**Para instalarla como app:**\n• **iPhone/Safari:** Compartir → "Añadir a pantalla de inicio" → aparece como icono de app\n• **Android/Chrome:** Menú → "Añadir a pantalla de inicio" o la notificación automática de instalación\n\nUna vez instalada funciona como una app nativa, con acceso directo y sin barra de navegación del navegador.\n\n**App nativa (iOS + Android)** está en el roadmap para 2026.',
     followUps: ['¿Funciona sin conexión?', '¿Hay notificaciones push?'],
   },
 
@@ -276,7 +276,7 @@ const KB: KBEntry[] = [
   {
     id: 'support',
     patterns: [/soporte|hablar con alguien|hablar con persona|equipo.*xpeak|contactar.*equipo|email soporte|soporte@/i],
-    answer: 'El equipo de XPEAK está disponible por:\n\n**Email:** soporte@xpeak.es\n• Tiempo de respuesta habitual: **24-48h** en días laborables (L-V)\n• Para urgencias relacionadas con eventos en menos de 48h, escribe con asunto **"URGENTE — [descripción breve]"** — se priorizan\n\n**Qué incluir en tu email para resolución más rápida:**\n• Tu nombre de usuario o email de cuenta\n• Descripción clara del problema o pregunta\n• Capturas de pantalla si hay un error visual\n• Plataforma (web / iPhone / Android)\n\n**Para reportes de usuarios:** usa la función de reporte dentro de la plataforma o envía el perfil del usuario al email.',
+    answer: 'El equipo de XPEAK está disponible por:\n\n**Email:** soporte@xpeak.es\n• Tiempo de respuesta habitual: **24-48h** en días laborables (L-V)\n• Para urgencias relacionadas con eventos en menos de 48h, escribe con asunto **"URGENTE, [descripción breve]"**, se priorizan\n\n**Qué incluir en tu email para resolución más rápida:**\n• Tu nombre de usuario o email de cuenta\n• Descripción clara del problema o pregunta\n• Capturas de pantalla si hay un error visual\n• Plataforma (web / iPhone / Android)\n\n**Para reportes de usuarios:** usa la función de reporte dentro de la plataforma o envía el perfil del usuario al email.',
     followUps: ['¿Hay soporte en fin de semana?', '¿Qué tipo de problemas resolvéis?'],
   },
 
@@ -284,7 +284,7 @@ const KB: KBEntry[] = [
   {
     id: 'morebookings',
     patterns: [/más bookings|mas bookings|más contratos|mas contratos|conseguir.*trabajo|primer.*booking|cómo.*conseguir.*evento|como.*conseguir.*evento|no me contratan/i],
-    answer: 'Para conseguir más bookings en XPEAK, sigue este checklist:\n\n**Perfil (base):**\n✓ Foto profesional de alta calidad (no selfie, no foto de fiesta)\n✓ Bio clara con especialidad, experiencia y propuesta de valor\n✓ Géneros/especialidades correctamente etiquetados\n✓ Tarifa visible (los empresarios prefieren saber el precio antes de escribir)\n✓ Audio embed con tu mejor mix\n\n**Visibilidad:**\n✓ Activa disponibilidad los **jueves-domingos** — es cuando más buscan los empresarios\n✓ Mantén el calendario actualizado\n✓ Activa el toggle Flash Booking cuando estés libre — apareces destacado\n\n**Conversión:**\n✓ Responde los mensajes en menos de 2 horas — la velocidad de respuesta influye en las estadísticas de perfil\n✓ Tras acordar verbalmente, genera el contrato inmediatamente',
+    answer: 'Para conseguir más bookings en XPEAK, sigue este checklist:\n\n**Perfil (base):**\n✓ Foto profesional de alta calidad (no selfie, no foto de fiesta)\n✓ Bio clara con especialidad, experiencia y propuesta de valor\n✓ Géneros/especialidades correctamente etiquetados\n✓ Tarifa visible (los empresarios prefieren saber el precio antes de escribir)\n✓ Audio embed con tu mejor mix\n\n**Visibilidad:**\n✓ Activa disponibilidad los **jueves-domingos**, es cuando más buscan los empresarios\n✓ Mantén el calendario actualizado\n✓ Activa el toggle Flash Booking cuando estés libre, apareces destacado\n\n**Conversión:**\n✓ Responde los mensajes en menos de 2 horas, la velocidad de respuesta influye en las estadísticas de perfil\n✓ Tras acordar verbalmente, genera el contrato inmediatamente',
     followUps: ['¿Cómo completo mi perfil?', '¿Cómo activo Flash Booking?'],
   },
 
@@ -300,7 +300,7 @@ const KB: KBEntry[] = [
   {
     id: 'profileprivacy',
     patterns: [/quién.*ve.*perfil|quien.*ve.*perfil|ocultar.*perfil|perfil.*privado|quién puede.*contactar|quien puede.*contactar|privacidad.*perfil/i],
-    answer: 'Tienes control sobre la visibilidad de tu perfil desde **Ajustes → Privacidad**:\n\n**Visibilidad del perfil:**\n• **Público** (por defecto) — apareces en el directorio y el mapa\n• **Solo búsqueda directa** — no apareces en el directorio general pero sí si alguien busca tu nombre exacto\n• **Oculto** — perfil invisible para todos (útil si estás de pausa)\n\n**Quién puede enviarte mensajes:**\n• Todos los usuarios registrados\n• Nadie (solo tú puedes iniciar conversaciones)\n\n**Tu tarifa:**\n• Puedes elegir mostrarla u ocultarla del perfil público\n• Si la ocultas, los empresarios te preguntarán directamente en el chat\n\n**Lo que siempre es público:**\n• Nombre, rol y ciudad (necesarios para aparecer en el directorio)',
+    answer: 'Tienes control sobre la visibilidad de tu perfil desde **Ajustes → Privacidad**:\n\n**Visibilidad del perfil:**\n• **Público** (por defecto), apareces en el directorio y el mapa\n• **Solo búsqueda directa**, no apareces en el directorio general pero sí si alguien busca tu nombre exacto\n• **Oculto**, perfil invisible para todos (útil si estás de pausa)\n\n**Quién puede enviarte mensajes:**\n• Todos los usuarios registrados\n• Nadie (solo tú puedes iniciar conversaciones)\n\n**Tu tarifa:**\n• Puedes elegir mostrarla u ocultarla del perfil público\n• Si la ocultas, los empresarios te preguntarán directamente en el chat\n\n**Lo que siempre es público:**\n• Nombre, rol y ciudad (necesarios para aparecer en el directorio)',
     followUps: ['¿Cómo bloqueo a un usuario específico?', '¿Puedo pausar temporalmente mi perfil?'],
   },
 
@@ -308,7 +308,7 @@ const KB: KBEntry[] = [
   {
     id: 'animadores',
     patterns: [/payaso|animador|animación infantil|animacion infantil|cumpleaños.*niños|cumpleanos.*ninos|magia.*niños|globoflexia|circo.*evento|mimo|zancos|malabares|artista.*calle/i],
-    answer: 'XPEAK tiene una sección dedicada a **Payasos & Animadores** con profesionales para todo tipo de eventos.\n\n**Qué encontrarás:**\n• Payasos profesionales para cumpleaños y comuniones (3-12 años)\n• Animadores temáticos: princesas, superhéroes, dinosaurios\n• Artistas de circo: malabares, zancos, monociclo\n• Mimos y artistas de calle para inauguraciones y festivales\n• Animación adultos: pool parties, team building, juegos gigantes\n\n**Precios orientativos en España:**\n• Show infantil 60 min: 150€ – 300€\n• Artista de circo para evento: 300€ – 600€\n• Animación adultos en hotel/resort: 400€ – 800€\n\n**Cómo contratar:** Busca en el Directorio → "Payasos & Animadores" o usa Flash Booking si necesitas uno con urgencia.',
+    answer: 'XPEAK tiene una sección dedicada a **Payasos & Animadores** con profesionales para todo tipo de eventos.\n\n**Qué encontrarás:**\n• Payasos profesionales para cumpleaños y comuniones (3-12 años)\n• Animadores temáticos: princesas, superhéroes, dinosaurios\n• Artistas de circo: malabares, zancos, monociclo\n• Mimos y artistas de calle para inauguraciones y festivales\n• Animación adultos: pool parties, team building, juegos gigantes\n\n**Precios orientativos en España:**\n• Show infantil 60 min: 150€-300€\n• Artista de circo para evento: 300€-600€\n• Animación adultos en hotel/resort: 400€-800€\n\n**Cómo contratar:** Busca en el Directorio → "Payasos & Animadores" o usa Flash Booking si necesitas uno con urgencia.',
     followUps: ['¿Cómo publico un Flash Booking?', '¿Cómo contacto a un profesional?'],
   },
 
@@ -316,7 +316,7 @@ const KB: KBEntry[] = [
   {
     id: 'humor',
     patterns: [/humorista|monólogo|monologo|stand.?up|cómico|comico|monologuista|humor.*corporativo|cena.*empresa.*humor|risas.*evento/i],
-    answer: 'La sección **Humor, Monólogos & Stand-Up** reúne a los mejores cómicos para eventos corporativos, bodas y festivales.\n\n**Tipos de profesionales:**\n• **Monologuistas** — guión personalizado con referencias a tu empresa o evento\n• **Stand-Up** — shows de 20-60 min para festivales y salas\n• **Improv / Teatro** — dinámicas participativas para team building\n• **Presentadores con humor** — conducción de galas y cenas\n\n**Cuándo contratar:**\n• Cenas de empresa: un monólogo de 20-30 min después de cenar funciona perfectamente\n• Bodas: los monólogos blancos son tendencia para entretener entre el banquete y el baile\n• Festivales: sets de stand-up para llenar el escenario entre actuaciones principales\n\n**Precio orientativo:** 250€ – 800€ por actuación según duración y experiencia.',
+    answer: 'La sección **Humor, Monólogos & Stand-Up** reúne a los mejores cómicos para eventos corporativos, bodas y festivales.\n\n**Tipos de profesionales:**\n• **Monologuistas**, guión personalizado con referencias a tu empresa o evento\n• **Stand-Up**, shows de 20-60 min para festivales y salas\n• **Improv / Teatro**, dinámicas participativas para team building\n• **Presentadores con humor**, conducción de galas y cenas\n\n**Cuándo contratar:**\n• Cenas de empresa: un monólogo de 20-30 min después de cenar funciona perfectamente\n• Bodas: los monólogos blancos son tendencia para entretener entre el banquete y el baile\n• Festivales: sets de stand-up para llenar el escenario entre actuaciones principales\n\n**Precio orientativo:** 250€-800€ por actuación según duración y experiencia.',
     followUps: ['¿Cómo busco un monologuista?', '¿Puedo personalizar el guión?'],
   },
 
@@ -332,7 +332,7 @@ const KB: KBEntry[] = [
   {
     id: 'speakers',
     patterns: [/speaker|presentador|maestro de ceremonias|maestro.*ceremonias|mc\b|conferenciante|conferencias.*evento|ponente/i],
-    answer: 'Los **Speakers & Presentadores** de XPEAK están disponibles para eventos corporativos, galas y conferencias.\n\n**Perfiles disponibles:**\n• Speakers motivacionales para eventos de empresa\n• Maestros de ceremonias para bodas y galas\n• Presentadores de TV y radio para eventos de marca\n• Moderadores de conferencias y mesas redondas\n\n**Diferencia entre Speaker y MC:**\n• **Speaker:** da una charla propia (45-90 min) sobre un tema específico\n• **MC / Presentador:** conduce el evento, presenta actuaciones y mantiene el ritmo\n\n**Precio orientativo:**\n• MC para boda: 400€ – 1.200€\n• Speaker corporativo: 500€ – 3.000€ según perfil\n\nBusca en Directorio → "Speakers & Presentadores".',
+    answer: 'Los **Speakers & Presentadores** de XPEAK están disponibles para eventos corporativos, galas y conferencias.\n\n**Perfiles disponibles:**\n• Speakers motivacionales para eventos de empresa\n• Maestros de ceremonias para bodas y galas\n• Presentadores de TV y radio para eventos de marca\n• Moderadores de conferencias y mesas redondas\n\n**Diferencia entre Speaker y MC:**\n• **Speaker:** da una charla propia (45-90 min) sobre un tema específico\n• **MC / Presentador:** conduce el evento, presenta actuaciones y mantiene el ritmo\n\n**Precio orientativo:**\n• MC para boda: 400€-1.200€\n• Speaker corporativo: 500€-3.000€ según perfil\n\nBusca en Directorio → "Speakers & Presentadores".',
     followUps: ['¿Cómo contacto a un speaker?', '¿Puedo usar Flash Booking para urgencias?'],
   },
 
@@ -340,7 +340,7 @@ const KB: KBEntry[] = [
   {
     id: 'cities',
     patterns: [/qué ciudades|que ciudades|dónde.*opera|donde.*opera|disponible.*ciudad|provincia.*xpeak|cobertura.*geográfica|cobertura geografica|mi ciudad.*xpeak|xpeak.*mi ciudad/i],
-    answer: 'XPEAK cubre **toda España** con más de 85 ciudades indexadas:\n\n**Grandes ciudades:** Madrid, Barcelona, Valencia, Sevilla, Bilbao, Málaga, Zaragoza, Murcia, Alicante, Granada, Valladolid, San Sebastián...\n\n**Islas:** Ibiza, Mallorca, Menorca, Formentera, Tenerife, Las Palmas, Lanzarote, Fuerteventura, La Palma\n\n**Costa:** Marbella, Benidorm, Sitges, Torremolinos, Fuengirola, Gandia, Dénia, Torrevieja, Calpe...\n\n**Ciudades medianas:** Salamanca, Toledo, Burgos, Segovia, Pamplona, Logroño, Vitoria, Oviedo, Gijón, Vigo, Santiago, Pontevedra...\n\nSi tu ciudad no aparece en los filtros, pon la capital de provincia más cercana — los profesionales trabajan en toda su región.\n\n**Expansión a Europa:** Portugal, Francia, Italia y Alemania están previstos para 2026.',
+    answer: 'XPEAK cubre **toda España** con más de 85 ciudades indexadas:\n\n**Grandes ciudades:** Madrid, Barcelona, Valencia, Sevilla, Bilbao, Málaga, Zaragoza, Murcia, Alicante, Granada, Valladolid, San Sebastián...\n\n**Islas:** Ibiza, Mallorca, Menorca, Formentera, Tenerife, Las Palmas, Lanzarote, Fuerteventura, La Palma\n\n**Costa:** Marbella, Benidorm, Sitges, Torremolinos, Fuengirola, Gandia, Dénia, Torrevieja, Calpe...\n\n**Ciudades medianas:** Salamanca, Toledo, Burgos, Segovia, Pamplona, Logroño, Vitoria, Oviedo, Gijón, Vigo, Santiago, Pontevedra...\n\nSi tu ciudad no aparece en los filtros, pon la capital de provincia más cercana: los profesionales trabajan en toda su región.\n\n**Expansión a Europa:** Portugal, Francia, Italia y Alemania están previstos para 2026.',
     followUps: ['¿Hay profesionales en mi ciudad?', '¿Puedo trabajar en varias ciudades?'],
   },
 
@@ -348,7 +348,7 @@ const KB: KBEntry[] = [
   {
     id: 'publishoffer',
     patterns: [/publicar.*oferta|crear.*oferta|nueva.*oferta|oferta.*trabajo|publicar.*flash|cómo.*publico|como.*publico|necesito.*dj|necesito.*camarero|busco.*staff/i],
-    answer: 'Para publicar una oferta de trabajo en XPEAK:\n\n**Opción 1 — Flash Booking (urgente):**\n1. Ve a **En Vivo → Flash Booking**\n2. Pulsa "Nueva oferta"\n3. Rellena: rol, fecha, ciudad, duración y caché ofrecido\n4. La oferta es visible 2 horas para todos los profesionales disponibles en tu zona\n5. Recibes respuestas directamente en Mensajes\n\n**Opción 2 — Contacto directo:**\n1. Busca en el Directorio filtrando por rol y ciudad\n2. Abre la ficha del profesional que te interesa\n3. Pulsa **"Mensaje"** para iniciar la conversación\n4. Negocia condiciones y genera el contrato desde Herramientas\n\n**Cuándo usar cada uno:**\n• Flash Booking → evento en menos de 48h o urgencia\n• Contacto directo → planificación con más de 1 semana de antelación',
+    answer: 'Para publicar una oferta de trabajo en XPEAK:\n\n**Opción 1, Flash Booking (urgente):**\n1. Ve a **En Vivo → Flash Booking**\n2. Pulsa "Nueva oferta"\n3. Rellena: rol, fecha, ciudad, duración y caché ofrecido\n4. La oferta es visible 2 horas para todos los profesionales disponibles en tu zona\n5. Recibes respuestas directamente en Mensajes\n\n**Opción 2: Contacto directo:**\n1. Busca en el Directorio filtrando por rol y ciudad\n2. Abre la ficha del profesional que te interesa\n3. Pulsa **"Mensaje"** para iniciar la conversación\n4. Negocia condiciones y genera el contrato desde Herramientas\n\n**Cuándo usar cada uno:**\n• Flash Booking → evento en menos de 48h o urgencia\n• Contacto directo → planificación con más de 1 semana de antelación',
     followUps: ['¿Qué precio debo ofrecer?', '¿Cómo genero el contrato?'],
   },
 
@@ -356,7 +356,7 @@ const KB: KBEntry[] = [
   {
     id: 'catering',
     patterns: [/catering|chef|cocinero|servicio.*comida|comida.*evento|menú.*evento|canapés|canapes|banquete|servicio.*mesa.*boda/i],
-    answer: 'La sección **Catering & Chef** de XPEAK incluye:\n\n• **Chefs privados** para cenas íntimas y eventos en villa\n• **Empresas de catering** para bodas, comuniones y corporativos\n• **Bartenders** especializados en coctelería creativa\n• **Pasteleros** para tartas de boda y postres artísticos\n\n**Precio orientativo:**\n• Chef privado (10 personas): 200€ – 500€\n• Catering completo boda (100 personas): 4.000€ – 15.000€\n• Bartender para evento: 150€ – 400€\n\n**Para bodas:** muchos caterings de XPEAK también incluyen montaje de mesa, decoración floral y coordinación de servicio. Consulta en el perfil de cada profesional qué incluye su oferta.',
+    answer: 'La sección **Catering & Chef** de XPEAK incluye:\n\n• **Chefs privados** para cenas íntimas y eventos en villa\n• **Empresas de catering** para bodas, comuniones y corporativos\n• **Bartenders** especializados en coctelería creativa\n• **Pasteleros** para tartas de boda y postres artísticos\n\n**Precio orientativo:**\n• Chef privado (10 personas): 200€-500€\n• Catering completo boda (100 personas): 4.000€-15.000€\n• Bartender para evento: 150€-400€\n\n**Para bodas:** muchos caterings de XPEAK también incluyen montaje de mesa, decoración floral y coordinación de servicio. Consulta en el perfil de cada profesional qué incluye su oferta.',
     followUps: ['¿Cómo contacto a un catering?', '¿Puedo ver menús antes de contratar?'],
   },
 
@@ -364,7 +364,7 @@ const KB: KBEntry[] = [
   {
     id: 'photographers',
     patterns: [/fotógrafo|fotografo|videógrafo|videografo|fotos.*evento|vídeo.*evento|video.*evento|drone.*evento|fotografía.*boda|fotografia.*boda|reel.*evento/i],
-    answer: 'La sección **Media & Contenido** tiene fotógrafos y videógrafos para cualquier tipo de evento.\n\n**Especialidades disponibles:**\n• Fotografía de bodas y comuniones\n• Fotografía de eventos nocturnos y clubs\n• Videografía de bodas con edición cinematográfica\n• Drone para vistas aéreas (con licencia AESA)\n• Creadores de Reels e Instagram para marcas y artistas\n• Retransmisión en directo para streams de eventos\n\n**Cómo elegir al fotógrafo correcto:**\n• Revisa su portfolio completo antes de contactar\n• Pregunta por los derechos de las fotos (entrega en RAW o solo JPG editado)\n• Confirma cuántas horas incluye el precio y si hay edición\n• Para bodas: solicita reportaje completo de una boda anterior\n\n**Precio orientativo:** fotógrafo de boda 6h: 800€ – 2.500€.',
+    answer: 'La sección **Media & Contenido** tiene fotógrafos y videógrafos para cualquier tipo de evento.\n\n**Especialidades disponibles:**\n• Fotografía de bodas y comuniones\n• Fotografía de eventos nocturnos y clubs\n• Videografía de bodas con edición cinematográfica\n• Drone para vistas aéreas (con licencia AESA)\n• Creadores de Reels e Instagram para marcas y artistas\n• Retransmisión en directo para streams de eventos\n\n**Cómo elegir al fotógrafo correcto:**\n• Revisa su portfolio completo antes de contactar\n• Pregunta por los derechos de las fotos (entrega en RAW o solo JPG editado)\n• Confirma cuántas horas incluye el precio y si hay edición\n• Para bodas: solicita reportaje completo de una boda anterior\n\n**Precio orientativo:** fotógrafo de boda 6h: 800€-2.500€.',
     followUps: ['¿Cómo solicito ver el portfolio?', '¿Qué incluye la entrega de fotos?'],
   },
 

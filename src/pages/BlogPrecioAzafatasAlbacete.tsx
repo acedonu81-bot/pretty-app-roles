@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Albacete', item: 'https://xpeak.es/blog/precio-azafatas-albacete' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '90–130€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '110–160€/día', nota: 'Eventos de marca y protocolo' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '120–150€/día', nota: 'Demanda puntual en congresos' },
-  { perfil: 'Azafata Feria de Albacete', tarifa: '110–150€/día', nota: 'Septiembre, pico de demanda' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '140–190€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '60–90€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '90-130€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '110-160€/día', nota: 'Eventos de marca y protocolo' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '120-150€/día', nota: 'Demanda puntual en congresos' },
+  { perfil: 'Azafata Feria de Albacete', tarifa: '110-150€/día', nota: 'Septiembre, pico de demanda' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '140-190€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '60-90€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasAlbacete() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasAlbacete() {
         <title>Precio azafatas para eventos en Albacete 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para la Feria de Albacete, bodas y eventos corporativos. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-albacete" />
-        <meta property="og:title" content="Precio azafatas eventos Albacete 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Albacete 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para la Feria de Albacete y eventos locales." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-albacete" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

@@ -11,24 +11,24 @@ const article = { '@context': 'https://schema.org', '@type': 'Article', headline
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una comunión?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ para comunión en España cuesta entre 300€ y 700€ para una sesión de 3-4 horas. El precio incluye equipo básico (altavoces, CDJs, luces de ambiente) y gestión de peticiones en directo. La disco móvil es la opción más económica (200-400€) pero ofrece menos personalización.' } },
   { '@type': 'Question', name: '¿Qué música se pone en una comunión?', acceptedAnswer: { '@type': 'Answer', text: 'Lo habitual es dividir la pista en dos momentos: durante el banquete se pone música de fondo suave o pop actual para los adultos; al final de la comida, cuando empieza el baile, se mezclan hits infantiles y juveniles (reggaeton, hits del momento) con música de los 80-90 para que bailen los mayores también.' } },
-  { '@type': 'Question', name: '¿DJ o disco móvil para una comunión?', acceptedAnswer: { '@type': 'Answer', text: 'La disco móvil (250-500€) suele incluir pantalla de vídeo con videoclips, máquina de humo y karaoke — ideal para comuniones con niños de 8-12 años. El DJ profesional (350-700€) ofrece mejor sonido, más personalización y mayor experiencia en gestión de pista. Para menos de 50 invitados, la disco móvil suele ser suficiente.' } },
+  { '@type': 'Question', name: '¿DJ o disco móvil para una comunión?', acceptedAnswer: { '@type': 'Answer', text: 'La disco móvil (250-500€) suele incluir pantalla de vídeo con videoclips, máquina de humo y karaoke: ideal para comuniones con niños de 8-12 años. El DJ profesional (350-700€) ofrece mejor sonido, más personalización y mayor experiencia en gestión de pista. Para menos de 50 invitados, la disco móvil suele ser suficiente.' } },
   { '@type': 'Question', name: '¿Cuántas horas necesito al DJ en una comunión?', acceptedAnswer: { '@type': 'Answer', text: 'Lo mínimo para una comunión es 3 horas: el cóctel de bienvenida (opcional, fondo suave), el banquete (música de fondo) y la pista de baile (2-3 horas). Si quieres cubrir también la salida de la iglesia o ceremonia civil, añade 30-60 minutos extra.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'DJ para comunión precio', item: 'https://xpeak.es/blog/dj-para-comunion-precio' }] };
 
 const PRECIOS = [
-  { horas: '2 horas', precio: '180–320€', uso: 'Solo pista de baile al final' },
-  { horas: '3 horas', precio: '280–480€', uso: 'Lo más habitual en comuniones' },
-  { horas: '4 horas', precio: '350–600€', uso: 'Cóctel + banquete + pista' },
-  { horas: '5 horas', precio: '450–750€', uso: 'Comunión larga con cena' },
+  { horas: '2 horas', precio: '180-320€', uso: 'Solo pista de baile al final' },
+  { horas: '3 horas', precio: '280-480€', uso: 'Lo más habitual en comuniones' },
+  { horas: '4 horas', precio: '350-600€', uso: 'Cóctel + banquete + pista' },
+  { horas: '5 horas', precio: '450-750€', uso: 'Comunión larga con cena' },
 ];
 
 const EXTRAS = [
-  { item: 'Pantalla LED + videoclips', precio: '+80–150€' },
-  { item: 'Micrófono inalámbrico (discursos)', precio: '+40–70€' },
-  { item: 'Máquina de humo / espuma', precio: '+50–100€' },
-  { item: 'Photocall con pantalla', precio: '+100–200€' },
-  { item: 'Karaoke infantil', precio: '+60–120€' },
+  { item: 'Pantalla LED + videoclips', precio: '+80-150€' },
+  { item: 'Micrófono inalámbrico (discursos)', precio: '+40-70€' },
+  { item: 'Máquina de humo / espuma', precio: '+50-100€' },
+  { item: 'Photocall con pantalla', precio: '+100-200€' },
+  { item: 'Karaoke infantil', precio: '+60-120€' },
 ];
 
 export default function BlogDJComunion() {
@@ -38,7 +38,7 @@ export default function BlogDJComunion() {
         <title>DJ para comunión: precio y qué incluye 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un DJ para una comunión en España. Precios por horas, diferencias con la disco móvil y qué música poner para niños y adultos." />
         <link rel="canonical" href="https://xpeak.es/blog/dj-para-comunion-precio" />
-        <meta property="og:title" content="DJ para comunión: precio y qué incluye 2026 — XPEAK Blog" />
+        <meta property="og:title" content="DJ para comunión: precio y qué incluye 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precios de DJ para comuniones en España. Disco móvil vs DJ y qué música se pone." />
         <meta property="og:url" content="https://xpeak.es/blog/dj-para-comunion-precio" />
         <meta property="og:type" content="article" />
@@ -124,11 +124,11 @@ export default function BlogDJComunion() {
               <h2 className="text-lg font-black mb-3">Qué música se pone en una comunión</h2>
               <div className="space-y-3">
                 {[
-                  { momento: 'Cóctel de bienvenida', musica: 'Pop suave, fondo sin letra, lounge — para que los adultos conversen' },
+                  { momento: 'Cóctel de bienvenida', musica: 'Pop suave, fondo sin letra, lounge: para que los adultos conversen' },
                   { momento: 'Durante el banquete', musica: 'Pop actual a volumen bajo, éxitos reconocibles, sin reggaeton todavía' },
                   { momento: 'Primer baile / tarta', musica: 'La canción que elija el/la protagonista. Momento especial' },
-                  { momento: 'Pista de baile (inicio)', musica: 'Hits del momento, género mixto — para enganchar a los primeros' },
-                  { momento: 'Pista de baile (pleno)', musica: 'Reggaeton, pop latino, TikTok hits — los niños se vuelven locos' },
+                  { momento: 'Pista de baile (inicio)', musica: 'Hits del momento, género mixto: para enganchar a los primeros' },
+                  { momento: 'Pista de baile (pleno)', musica: 'Reggaeton, pop latino, TikTok hits: los niños se vuelven locos' },
                   { momento: 'Cierre', musica: 'Clásicos de los 80-90 para que bailen también los mayores' },
                 ].map((m, i) => (
                   <div key={m.momento} className="p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>

@@ -12,10 +12,10 @@ import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 const slug = 'dj-bodas-san-sebastian';
 const ciudad = 'San Sebastián';
 const PRECIOS = [
-  { servicio: 'Solo pista de baile (4-5h)', precio: '400–900€' },
-  { servicio: 'Cóctel + pista de baile', precio: '600–1.300€' },
-  { servicio: 'Servicio completo', precio: '800–2.000€' },
-  { servicio: 'Pack caserío premium', precio: '1.200–2.500€' },
+  { servicio: 'Solo pista de baile (4-5h)', precio: '400-900€' },
+  { servicio: 'Cóctel + pista de baile', precio: '600-1.300€' },
+  { servicio: 'Servicio completo', precio: '800-2.000€' },
+  { servicio: 'Pack caserío premium', precio: '1.200-2.500€' },
 ];
 const ZONAS = [
   { zona: 'San Sebastián capital', fincas: 'Palacios, hoteles con vistas al Cantábrico', nota: 'Bodas urbanas elegantes' },
@@ -39,7 +39,7 @@ export default function BlogDJBodaSanSebastian() {
         <title>DJ para bodas en San Sebastián: precio 2026 | XPEAK</title>
         <meta name="description" content={`Cuánto cuesta un DJ para una boda en ${ciudad}. Precios reales 2026, caseríos vascos y cómo contratar el mejor DJ en Gipuzkoa.`} />
         <link rel="canonical" href={`https://xpeak.es/blog/${slug}`} />
-        <meta property="og:title" content={`DJ para bodas en ${ciudad}: precio 2026 — XPEAK Blog`} />
+        <meta property="og:title" content={`DJ para bodas en ${ciudad}: precio 2026 | XPEAK Blog`} />
         <meta property="og:url" content={`https://xpeak.es/blog/${slug}`} />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />
         <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />

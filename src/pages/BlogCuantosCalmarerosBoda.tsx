@@ -41,12 +41,12 @@ const faqStructured = {
   };
 
   const RATIOS = [
-    { invitados: '50', coctel: 2, cena: 3, barra: 1, total: '4–6' },
-    { invitados: '75', coctel: 3, cena: 5, barra: 1, total: '6–8' },
-    { invitados: '100', coctel: 3, cena: 6, barra: 2, total: '8–10' },
-    { invitados: '150', coctel: 4, cena: 8, barra: 2, total: '11–14' },
-    { invitados: '200', coctel: 5, cena: 12, barra: 3, total: '14–18' },
-    { invitados: '300', coctel: 7, cena: 18, barra: 4, total: '20–26' },
+    { invitados: '50', coctel: 2, cena: 3, barra: 1, total: '4-6' },
+    { invitados: '75', coctel: 3, cena: 5, barra: 1, total: '6-8' },
+    { invitados: '100', coctel: 3, cena: 6, barra: 2, total: '8-10' },
+    { invitados: '150', coctel: 4, cena: 8, barra: 2, total: '11-14' },
+    { invitados: '200', coctel: 5, cena: 12, barra: 3, total: '14-18' },
+    { invitados: '300', coctel: 7, cena: 18, barra: 4, total: '20-26' },
   ];
 
   return (
@@ -55,7 +55,7 @@ const faqStructured = {
         <title>Cuántos camareros para mi boda: guía 2026 | XPEAK</title>
         <meta name="description" content="Guía definitiva 2026: cuántos camareros necesitas para tu boda según los invitados y el tipo de servicio. Tabla de ratios y consejos prácticos." />
         <link rel="canonical" href="https://xpeak.es/blog/cuantos-camareros-necesito-para-mi-boda" />
-        <meta property="og:title" content="Cuántos camareros necesito para mi boda 2026 — XPEAK" />
+        <meta property="og:title" content="Cuántos camareros necesito para mi boda 2026 | XPEAK" />
         <meta property="og:type" content="article" />
         <meta property="og:url" content="https://xpeak.es/blog/cuantos-camareros-necesito-para-mi-boda" />
         <meta property="og:image" content="https://xpeak.es/og-image.jpg" />
@@ -139,9 +139,9 @@ const faqStructured = {
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
                 {[
-                  { formato: '🥂 Cóctel', ratio: '1 / 15–20 personas' },
-                  { formato: '🍽️ Cena sentada', ratio: '1 / 8–10 personas' },
-                  { formato: '🍹 Barra libre', ratio: '1 bartender / 30–40 personas' },
+                  { formato: '🥂 Cóctel', ratio: '1 / 15-20 personas' },
+                  { formato: '🍽️ Cena sentada', ratio: '1 / 8-10 personas' },
+                  { formato: '🍹 Barra libre', ratio: '1 bartender / 30-40 personas' },
                 ].map(({ formato, ratio }) => (
                   <div key={formato} className="p-4 rounded-xl text-center"
                     style={{ background: 'rgba(37,99,235,0.05)', border: '1px solid rgba(37,99,235,0.15)' }}>
@@ -176,10 +176,10 @@ const faqStructured = {
               </p>
               <div className="space-y-2">
                 {[
-                  { inv: '50 invitados', rango: '400€ – 900€' },
-                  { inv: '100 invitados', rango: '800€ – 1.800€' },
-                  { inv: '150 invitados', rango: '1.200€ – 2.800€' },
-                  { inv: '200 invitados', rango: '1.600€ – 3.800€' },
+                  { inv: '50 invitados', rango: '400€-900€' },
+                  { inv: '100 invitados', rango: '800€-1.800€' },
+                  { inv: '150 invitados', rango: '1.200€-2.800€' },
+                  { inv: '200 invitados', rango: '1.600€-3.800€' },
                 ].map(({ inv, rango }) => (
                   <div key={inv} className="flex items-center justify-between p-3 rounded-lg text-sm"
                     style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>

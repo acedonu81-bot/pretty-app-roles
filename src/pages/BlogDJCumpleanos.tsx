@@ -43,27 +43,27 @@ const breadcrumb = {
 };
 
 const PRECIOS_HORAS = [
-  { horas: '2 horas', precio: '200–350€', uso: 'Aperitivo o cierre de fiesta' },
-  { horas: '3 horas', precio: '280–500€', uso: 'Cumpleaños informal, terraza' },
-  { horas: '4 horas', precio: '350–650€', uso: 'Lo más habitual en cumpleaños' },
-  { horas: '5 horas', precio: '450–800€', uso: 'Fiesta larga con cena y baile' },
-  { horas: '6+ horas', precio: '550–1.200€', uso: 'Cumpleaños VIP o evento nocturno' },
+  { horas: '2 horas', precio: '200-350€', uso: 'Aperitivo o cierre de fiesta' },
+  { horas: '3 horas', precio: '280-500€', uso: 'Cumpleaños informal, terraza' },
+  { horas: '4 horas', precio: '350-650€', uso: 'Lo más habitual en cumpleaños' },
+  { horas: '5 horas', precio: '450-800€', uso: 'Fiesta larga con cena y baile' },
+  { horas: '6+ horas', precio: '550-1.200€', uso: 'Cumpleaños VIP o evento nocturno' },
 ];
 
 const PRECIOS_TIPO = [
-  { tipo: 'DJ residente / local', precio: '200–450€', perfil: '2-4 años de experiencia, géneros variados' },
-  { tipo: 'DJ semicomercial', precio: '400–700€', perfil: 'Experiencia en bodas y eventos privados' },
-  { tipo: 'DJ con nombre en la zona', precio: '600–1.200€', perfil: 'Conocido en la escena local' },
-  { tipo: 'DJ con nombre nacional', precio: '1.500–5.000€', perfil: 'Redes sociales y sala de referencia' },
+  { tipo: 'DJ residente / local', precio: '200-450€', perfil: '2-4 años de experiencia, géneros variados' },
+  { tipo: 'DJ semicomercial', precio: '400-700€', perfil: 'Experiencia en bodas y eventos privados' },
+  { tipo: 'DJ con nombre en la zona', precio: '600-1.200€', perfil: 'Conocido en la escena local' },
+  { tipo: 'DJ con nombre nacional', precio: '1.500-5.000€', perfil: 'Redes sociales y sala de referencia' },
 ];
 
 const EQUIPOS = [
   { item: 'Equipo básico', incluye: '2 CDJs o Denon, mezclador, 2 altavoces PA', precio: 'Incluido (≤4h)' },
-  { item: 'Iluminación de ambiente', incluye: 'Par LEDs, moonflower, strobos', precio: '+80–150€' },
-  { item: 'Pantalla/proyector', incluye: 'Visuales y karaoke', precio: '+100–200€' },
-  { item: 'Micro inalámbrico', incluye: 'Para discursos y karaoke', precio: '+40–80€' },
-  { item: 'Máquina de humo/haze', incluye: 'Ambientación visual', precio: '+50–100€' },
-  { item: 'Subwoofer extra', incluye: 'Para espacios grandes (+100 personas)', precio: '+80–120€' },
+  { item: 'Iluminación de ambiente', incluye: 'Par LEDs, moonflower, strobos', precio: '+80-150€' },
+  { item: 'Pantalla/proyector', incluye: 'Visuales y karaoke', precio: '+100-200€' },
+  { item: 'Micro inalámbrico', incluye: 'Para discursos y karaoke', precio: '+40-80€' },
+  { item: 'Máquina de humo/haze', incluye: 'Ambientación visual', precio: '+50-100€' },
+  { item: 'Subwoofer extra', incluye: 'Para espacios grandes (+100 personas)', precio: '+80-120€' },
 ];
 
 export default function BlogDJCumpleanos() {
@@ -73,14 +73,14 @@ export default function BlogDJCumpleanos() {
         <title>DJ para cumpleaños: precio y qué incluye 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta contratar un DJ para un cumpleaños en España. Precios por horas, tipo de equipo y cómo elegir el DJ correcto para tu fiesta." />
         <link rel="canonical" href="https://xpeak.es/blog/dj-para-cumpleanos-precio" />
-        <meta property="og:title" content="DJ para cumpleaños: precios 2026 — XPEAK Blog" />
+        <meta property="og:title" content="DJ para cumpleaños: precios 2026 | XPEAK Blog" />
         <meta property="og:description" content="Cuánto cuesta contratar un DJ para un cumpleaños en España. Precios por horas y qué incluye el servicio." />
         <meta property="og:url" content="https://xpeak.es/blog/dj-para-cumpleanos-precio" />
         <meta property="og:type" content="article" />
         <meta property="og:image" content="https://xpeak.es/og-image.jpg" />
         <meta property="og:site_name" content="XPEAK" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="DJ para cumpleaños: precios 2026 — XPEAK Blog" />
+        <meta name="twitter:title" content="DJ para cumpleaños: precios 2026 | XPEAK Blog" />
         <meta name="twitter:description" content="Cuánto cuesta contratar un DJ para un cumpleaños en España." />
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(article)}</script>
@@ -189,7 +189,7 @@ export default function BlogDJCumpleanos() {
                 Para un cumpleaños privado, el perfil ideal es un DJ con experiencia en eventos sociales, no un techno-DJ de sala. La diferencia es la gestión de peticiones y el rango musical.
               </p>
               <p className="text-base leading-relaxed" style={{ color: '#222' }}>
-                Un DJ de eventos privados sabe cómo manejar peticiones en directo, adaptar el ritmo a la edad de los invitados y dar paso a momentos especiales (soplar las velas, discursos). Un DJ de discoteca está entrenado para mantener un piso de baile durante horas con un género definido — muy diferente.
+                Un DJ de eventos privados sabe cómo manejar peticiones en directo, adaptar el ritmo a la edad de los invitados y dar paso a momentos especiales (soplar las velas, discursos). Un DJ de discoteca está entrenado para mantener un piso de baile durante horas con un género definido: muy diferente.
               </p>
             </section>
 

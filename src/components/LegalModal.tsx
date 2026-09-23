@@ -1,7 +1,7 @@
 import { createPortal } from 'react-dom';
 import { Shield, X } from 'lucide-react';
 
-const legalText = `AVISO DE INTERMEDIACIÓN Y PROTECCIÓN DE DATOS – XPEAK
+const legalText = `AVISO DE INTERMEDIACIÓN Y PROTECCIÓN DE DATOS | XPEAK
 
 Naturaleza del Servicio: XPEAK actúa exclusivamente como un directorio profesional y plataforma de intermediación tecnológica. La plataforma facilita el contacto entre profesionales independientes y empresas u organizadores de eventos.
 

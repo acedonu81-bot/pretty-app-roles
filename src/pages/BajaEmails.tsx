@@ -30,7 +30,7 @@ export default function BajaEmails() {
   return (
     <>
       <Helmet>
-        <title>Anular suscripción — XPEAK</title>
+        <title>Anular suscripción | XPEAK</title>
         <meta name="robots" content="noindex" />
       </Helmet>
       <div className="min-h-screen flex items-center justify-center px-4" style={{ background: '#090909', color: '#fff' }}>

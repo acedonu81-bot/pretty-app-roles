@@ -18,10 +18,10 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Fotógrafo boda Málaga', item: 'https://xpeak.es/blog/fotografo-boda-malaga' }] };
 const PRECIOS = [
-  { servicio: 'Reportaje básico (4-5h, sin álbum)', precio: '1.200–3.500€' },
-  { servicio: 'Reportaje completo (8-10h, sin álbum)', precio: '1.500–2.500€' },
-  { servicio: 'Reportaje completo con álbum impreso', precio: '2.000–4.000€' },
-  { servicio: 'Pack fotógrafo + videógrafo', precio: '3.000–6.000€' },
+  { servicio: 'Reportaje básico (4-5h, sin álbum)', precio: '1.200-3.500€' },
+  { servicio: 'Reportaje completo (8-10h, sin álbum)', precio: '1.500-2.500€' },
+  { servicio: 'Reportaje completo con álbum impreso', precio: '2.000-4.000€' },
+  { servicio: 'Pack fotógrafo + videógrafo', precio: '3.000-6.000€' },
 ];
 export default function BlogFotografoBodaMalaga() {
   return (
@@ -30,7 +30,7 @@ export default function BlogFotografoBodaMalaga() {
         <title>Fotógrafo para bodas en Málaga: precio 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un fotógrafo de boda en Málaga. Precios reales 2026, Costa del Sol, Serranía de Ronda y el glamour internacional del mercado de lujo." />
         <link rel="canonical" href="https://xpeak.es/blog/fotografo-boda-malaga" />
-        <meta property="og:title" content="Fotógrafo para bodas en Málaga: precio 2026 — XPEAK" />
+        <meta property="og:title" content="Fotógrafo para bodas en Málaga: precio 2026 | XPEAK" />
         <meta property="og:description" content="Precios fotógrafos boda Málaga. Costa del Sol, Serranía de Ronda y el glamour internacional del mercado de lujo." />
         <meta property="og:url" content="https://xpeak.es/blog/fotografo-boda-malaga" />
         <meta property="og:type" content="article" />

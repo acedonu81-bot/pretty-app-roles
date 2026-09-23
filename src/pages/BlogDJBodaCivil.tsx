@@ -15,7 +15,7 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
   { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda civil en España?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ para boda civil en España cuesta entre 600€ y 1.500€ para el servicio completo (ceremonia + cóctel + cena + pista de baile). Si solo contratas para la pista de baile (4-5h), el precio baja a 350-700€.' } },
   { '@type': 'Question', name: '¿Qué canciones se ponen en la entrada de la novia en una boda civil?', acceptedAnswer: { '@type': 'Answer', text: 'Las más elegidas para entrada de novia en boda civil: "A Thousand Years" (Christina Perri), "Canon in D" (Pachelbel versión contemporánea), "La vie en rose" (versión jazz), "Perfect" (Ed Sheeran versión instrumental), "Thinking Out Loud" (Ed Sheeran). La ventaja de la boda civil es que no hay restricciones religiosas.' } },
   { '@type': 'Question', name: '¿El DJ cubre también la ceremonia civil?', acceptedAnswer: { '@type': 'Answer', text: 'Sí, muchos DJs de bodas incluyen un servicio de sonido y música para la ceremonia. Necesitas un equipo más pequeño (bafle + reproductor) y una lista de canciones para entrada, firma y salida. Algunos DJs cobran esto como extra (100-200€), otros lo incluyen en el pack total.' } },
-  { '@type': 'Question', name: '¿Se puede poner reggaeton o música urbana en una boda civil?', acceptedAnswer: { '@type': 'Answer', text: 'En una boda civil puedes poner absolutamente cualquier música — no hay restricciones religiosas. Lo habitual es combinar estilos: música suave o romántica para ceremonia y cóctel, y pasar a música más animada (pop, urbano, años 80-90) a medida que avanza la noche.' } },
+  { '@type': 'Question', name: '¿Se puede poner reggaeton o música urbana en una boda civil?', acceptedAnswer: { '@type': 'Answer', text: 'En una boda civil puedes poner absolutamente cualquier música: no hay restricciones religiosas. Lo habitual es combinar estilos: música suave o romántica para ceremonia y cóctel, y pasar a música más animada (pop, urbano, años 80-90) a medida que avanza la noche.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'DJ boda civil precio', item: 'https://xpeak.es/blog/dj-boda-civil-precio-canciones' }] };
 
@@ -26,7 +26,7 @@ const MOMENTOS = [
   { momento: 'Salida de la pareja', estilo: 'Alegre, celebración', ejemplo: 'Signed, Sealed, Delivered; Happy; Crazy in Love' },
   { momento: 'Cóctel de bienvenida', estilo: 'Dinámico pero no muy alto', ejemplo: 'Pop actual, indie, funky house' },
   { momento: 'Cena', estilo: 'Ambiente, conversación posible', ejemplo: 'Nu jazz, lounge, pop internacional' },
-  { momento: 'Vals / primer baile', estilo: 'La canción de los novios', ejemplo: 'La que elijáis — es vuestro momento' },
+  { momento: 'Vals / primer baile', estilo: 'La canción de los novios', ejemplo: 'La que elijáis: es vuestro momento' },
   { momento: 'Pista de baile', estilo: 'Progresivo, lecturas del ambiente', ejemplo: 'Pop, años 80/90, urbano, electrónica según invitados' },
 ];
 
@@ -37,7 +37,7 @@ export default function BlogDJBodaCivil() {
         <title>DJ boda civil: precio y canciones 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un DJ para boda civil en España y qué canciones poner en la entrada, firma, cóctel y fiesta. Guía completa 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/dj-boda-civil-precio-canciones" />
-        <meta property="og:title" content="DJ para boda civil: precio y canciones 2026 — XPEAK Blog" />
+        <meta property="og:title" content="DJ para boda civil: precio y canciones 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precio del DJ para boda civil y guía de canciones por momento: entrada, firma, cóctel y pista de baile." />
         <meta property="og:url" content="https://xpeak.es/blog/dj-boda-civil-precio-canciones" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />
@@ -72,7 +72,7 @@ export default function BlogDJBodaCivil() {
 
             <section>
               <h2 className="text-lg font-black mb-3">Precio del DJ para boda civil según servicio contratado</h2>
-              <div className="space-y-2">{[{ s: 'Solo pista de baile (4-5h)', p: '350–700€' }, { s: 'Cóctel + pista de baile', p: '500–900€' }, { s: 'Ceremonia + cóctel + cena + pista', p: '700–1.500€' }, { s: 'Pack completo con equipo de luces', p: '900–1.800€' }].map((item, i) => (<div key={item.s} className="flex items-center justify-between p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.04)' }}><p className="text-xs font-medium">{item.s}</p><span className="text-xs font-bold" style={{ color: '#D4AF37' }}>{item.p}</span></div>))}</div>
+              <div className="space-y-2">{[{ s: 'Solo pista de baile (4-5h)', p: '350-700€' }, { s: 'Cóctel + pista de baile', p: '500-900€' }, { s: 'Ceremonia + cóctel + cena + pista', p: '700-1.500€' }, { s: 'Pack completo con equipo de luces', p: '900-1.800€' }].map((item, i) => (<div key={item.s} className="flex items-center justify-between p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.04)' }}><p className="text-xs font-medium">{item.s}</p><span className="text-xs font-bold" style={{ color: '#D4AF37' }}>{item.p}</span></div>))}</div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos España 2026. Sin IVA. Variable según ciudad y experiencia del DJ.</p>
             </section>
             <section>

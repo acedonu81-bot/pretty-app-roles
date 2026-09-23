@@ -22,7 +22,7 @@ const faqStructured = {
     {
       '@type': 'Question',
       name: '¿Cuánto cobra un DJ de boda frente a un DJ residente de discoteca?',
-      acceptedAnswer: { '@type': 'Answer', text: 'Un DJ residente de club cobra entre 200€ y 800€ por una noche completa (5-6h). Un DJ de boda (ceremonia, cena y fiesta, 6-8h) cobra entre 400€ y 1.500€, y hasta 800€-3.000€ en versión premium con animación y luces incluidas — el precio es mayor porque el servicio incluye más horas, más versatilidad musical y equipo propio de sonido e iluminación.' },
+      acceptedAnswer: { '@type': 'Answer', text: 'Un DJ residente de club cobra entre 200€ y 800€ por una noche completa (5-6h). Un DJ de boda (ceremonia, cena y fiesta, 6-8h) cobra entre 400€ y 1.500€, y hasta 800€-3.000€ en versión premium con animación y luces incluidas: el precio es mayor porque el servicio incluye más horas, más versatilidad musical y equipo propio de sonido e iluminación.' },
     },
     {
       '@type': 'Question',
@@ -60,7 +60,7 @@ export default function BlogDJBodaVsDiscoteca() {
         <title>DJ bodas vs discoteca: diferencias 2026 | XPEAK</title>
         <meta name="description" content="¿Son lo mismo un DJ de boda y un DJ de discoteca? Diferencias en habilidades, equipamiento y precios. Guía para elegir el perfil correcto en 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/dj-para-bodas-vs-discoteca" />
-        <meta property="og:title" content="DJ para bodas vs DJ para discoteca 2026 — XPEAK" />
+        <meta property="og:title" content="DJ para bodas vs DJ para discoteca 2026 | XPEAK" />
         <meta property="og:type" content="article" />
         <meta property="og:url" content="https://xpeak.es/blog/dj-para-bodas-vs-discoteca" />
         <meta property="og:image" content="https://xpeak.es/og-image.jpg" />
@@ -154,11 +154,11 @@ export default function BlogDJBodaVsDiscoteca() {
               <h2 className="text-xl sm:text-2xl font-black mb-3">¿Cuánto cobra cada tipo de DJ?</h2>
               <div className="space-y-3">
                 {[
-                  { tipo: 'DJ residente de club (noche completa, 5-6h)', precio: '200€ – 800€' },
-                  { tipo: 'DJ de sala para evento especial (2-3h)', precio: '150€ – 500€' },
-                  { tipo: 'DJ de boda (ceremonia + cena + fiesta, 6-8h)', precio: '400€ – 1.500€' },
-                  { tipo: 'DJ de boda premium (con animación y luces)', precio: '800€ – 3.000€' },
-                  { tipo: 'DJ para evento corporativo (3-4h)', precio: '300€ – 1.000€' },
+                  { tipo: 'DJ residente de club (noche completa, 5-6h)', precio: '200€-800€' },
+                  { tipo: 'DJ de sala para evento especial (2-3h)', precio: '150€-500€' },
+                  { tipo: 'DJ de boda (ceremonia + cena + fiesta, 6-8h)', precio: '400€-1.500€' },
+                  { tipo: 'DJ de boda premium (con animación y luces)', precio: '800€-3.000€' },
+                  { tipo: 'DJ para evento corporativo (3-4h)', precio: '300€-1.000€' },
                   { tipo: 'DJ internacional / conocido', precio: '+2.000€' },
                 ].map(({ tipo, precio }) => (
                   <div key={tipo} className="flex items-center justify-between p-3 rounded-lg text-sm"

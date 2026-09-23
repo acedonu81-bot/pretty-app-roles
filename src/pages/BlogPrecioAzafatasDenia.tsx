@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Dénia', item: 'https://xpeak.es/blog/precio-azafatas-denia' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '140–185€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen gastronómica', tarifa: '165–240€/día', nota: 'Eventos gourmet y presentaciones de producto' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '175–225€/día', nota: 'Turismo internacional vía puerto y aeropuerto' },
-  { perfil: 'Azafata trilingüe', tarifa: '200–290€/día', nota: 'Eventos náuticos y turismo de calidad' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '190–260€/día', nota: 'Gestión de equipo en eventos grandes' },
-  { perfil: 'Pack evento en puerto (4h)', tarifa: '90–140€', nota: 'Sube en temporada alta (junio-septiembre)' },
+  { perfil: 'Azafata de stand / feria', tarifa: '140-185€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen gastronómica', tarifa: '165-240€/día', nota: 'Eventos gourmet y presentaciones de producto' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '175-225€/día', nota: 'Turismo internacional vía puerto y aeropuerto' },
+  { perfil: 'Azafata trilingüe', tarifa: '200-290€/día', nota: 'Eventos náuticos y turismo de calidad' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '190-260€/día', nota: 'Gestión de equipo en eventos grandes' },
+  { perfil: 'Pack evento en puerto (4h)', tarifa: '90-140€', nota: 'Sube en temporada alta (junio-septiembre)' },
 ];
 
 export default function BlogPrecioAzafatasDenia() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasDenia() {
         <title>Precio azafatas para eventos en Dénia 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos gastronómicos y náuticos en Dénia. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-denia" />
-        <meta property="og:title" content="Precio azafatas eventos Dénia 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Dénia 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para eventos gastronómicos y turísticos en Dénia." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-denia" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

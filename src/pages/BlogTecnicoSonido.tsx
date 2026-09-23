@@ -8,18 +8,18 @@ import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
 const TABLE = [
-  { evento: 'Boda o comunión (sala con PA)', horas: '6–10 h', rango: '200€ – 400€', notas: 'Montaje, prueba, ceremonia y recepción' },
-  { evento: 'Concierto o evento musical en sala', horas: '8–12 h', rango: '300€ – 600€', notas: 'FOH + monitor, según riders' },
-  { evento: 'Evento corporativo / convención', horas: '6–8 h', rango: '250€ – 500€', notas: 'Micros de solapa, PA, línea para vídeo' },
-  { evento: 'Festival (técnico de escenario)', horas: '10–14 h', rango: '400€ – 800€', notas: 'Gestión de múltiples riders de artista' },
-  { evento: 'Sesión club / discoteca', horas: '4–6 h', rango: '150€ – 300€', notas: 'Asistencia a DJ, control de volumen' },
+  { evento: 'Boda o comunión (sala con PA)', horas: '6-10 h', rango: '200€-400€', notas: 'Montaje, prueba, ceremonia y recepción' },
+  { evento: 'Concierto o evento musical en sala', horas: '8-12 h', rango: '300€-600€', notas: 'FOH + monitor, según riders' },
+  { evento: 'Evento corporativo / convención', horas: '6-8 h', rango: '250€-500€', notas: 'Micros de solapa, PA, línea para vídeo' },
+  { evento: 'Festival (técnico de escenario)', horas: '10-14 h', rango: '400€-800€', notas: 'Gestión de múltiples riders de artista' },
+  { evento: 'Sesión club / discoteca', horas: '4-6 h', rango: '150€-300€', notas: 'Asistencia a DJ, control de volumen' },
 ];
 
 const FAQ = [
   { q: '¿Cuándo necesito contratar un técnico de sonido?', a: 'Siempre que el evento supere las 100 personas o incluya actuaciones en directo (bandas, cantantes, DJ con backline). Para eventos pequeños en locales con PA instalado, el DJ o el venue pueden encargarse. Para conciertos, festivales o galas de empresa, el técnico es imprescindible.' },
   { q: '¿Qué diferencia hay entre técnico FOH y técnico de monitor?', a: 'El técnico FOH (Front of House) mezcla el sonido que escucha el público desde la mesa principal. El técnico de monitor mezcla el sonido que escuchan los artistas en el escenario. En eventos grandes se necesitan ambos; en eventos medianos, uno puede hacer las dos funciones.' },
   { q: '¿El técnico de sonido lleva su propio equipo?', a: 'Depende del acuerdo. Algunos técnicos trabajan con el PA del venue; otros son autónomos y llevan su propio sistema (PA, mesa, procesadores). Un técnico con equipo propio cuesta más pero da más garantías de calidad.' },
-  { q: '¿Con cuánta antelación hay que contratar el técnico de sonido?', a: 'Para bodas y eventos corporativos, con 2–4 semanas es suficiente. Para festivales y conciertos, al menos 1–2 meses para coordinar riders de artistas y confirmaciones técnicas con el venue.' },
+  { q: '¿Con cuánta antelación hay que contratar el técnico de sonido?', a: 'Para bodas y eventos corporativos, con 2-4 semanas es suficiente. Para festivales y conciertos, al menos 1-2 meses para coordinar riders de artistas y confirmaciones técnicas con el venue.' },
 ];
 
 export default function BlogTecnicoSonido() {
@@ -104,7 +104,7 @@ const faqStructured = {
             <p className="text-sm font-bold mb-1" style={{ color: '#6D28D9' }}>Resumen rápido</p>
             <p className="text-sm leading-relaxed" style={{ color: '#333' }}>
               Un técnico de sonido para eventos cuesta entre <strong style={{ color: '#111' }}>150€ y 800€</strong> según el tipo y duración del evento.
-              Para bodas: <strong style={{ color: '#111' }}>200€ – 400€</strong>. Para festivales y conciertos: <strong style={{ color: '#111' }}>400€ – 800€</strong> o más.
+              Para bodas: <strong style={{ color: '#111' }}>200€-400€</strong>. Para festivales y conciertos: <strong style={{ color: '#111' }}>400€-800€</strong> o más.
             </p>
           </div>
 
@@ -135,7 +135,7 @@ const faqStructured = {
           <h2 className="text-xl font-black mb-4">Qué hace exactamente un técnico de sonido</h2>
           <ul className="space-y-3 mb-10">
             {[
-              { label: 'Montaje y prueba de sonido', text: 'Llega 2–4 horas antes del evento para montar el sistema de PA, conectar todos los inputs (micros, instrumentos, líneas) y hacer la prueba de sonido con los artistas.' },
+              { label: 'Montaje y prueba de sonido', text: 'Llega 2-4 horas antes del evento para montar el sistema de PA, conectar todos los inputs (micros, instrumentos, líneas) y hacer la prueba de sonido con los artistas.' },
               { label: 'Mezcla en tiempo real', text: 'Durante el evento ajusta volúmenes, ecualizadores y efectos en tiempo real para que el sonido sea óptimo en cada momento: discurso, actuación, baile.' },
               { label: 'Gestión de riders técnicos', text: 'En eventos con artistas, coordina los riders técnicos (lista de necesidades de sonido) y asegura que el venue cumple los requisitos antes del día del evento.' },
               { label: 'Prevención de problemas', text: 'Evita acoples, distorsión y cortes de sonido. Detecta problemas técnicos antes de que afecten al espectáculo.' },

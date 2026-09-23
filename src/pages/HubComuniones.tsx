@@ -13,7 +13,7 @@ const ARTICLES = [
 
 const FAQ = [
   { q: '¿Cuánto cuesta una comunión en España en 2026?', a: 'El presupuesto medio de una comunión en España ronda los 6.000-15.000€ para 80-100 invitados. Las partidas principales son: catering (50-60%), fotografía (8-12%), música/DJ (5-10%), animación infantil (4-8%) y decoración (5-10%). En Madrid y Barcelona los precios son un 20-30% más altos.' },
-  { q: '¿DJ o disco móvil para una comunión?', a: 'La disco móvil (250-500€) incluye pantalla, karaoke y máquina de espuma — perfecta para niños de 8-12 años. El DJ profesional (350-700€) tiene mejor sonido y más personalización. Para más de 60 invitados o si quieres que los adultos también disfruten, el DJ marca la diferencia.' },
+  { q: '¿DJ o disco móvil para una comunión?', a: 'La disco móvil (250-500€) incluye pantalla, karaoke y máquina de espuma: perfecta para niños de 8-12 años. El DJ profesional (350-700€) tiene mejor sonido y más personalización. Para más de 60 invitados o si quieres que los adultos también disfruten, el DJ marca la diferencia.' },
   { q: '¿Qué animación se contrata para una comunión?', a: 'Lo más habitual: animadores con talleres de magia, gymkanas, hinchables y bailes. Para menos de 20 niños, un animador es suficiente. Para más, lo ideal es 1 animador por cada 10-15 niños. El coste varía entre 150-400€ para una sesión de 2-3 horas.' },
   { q: '¿Con cuánta antelación organizar una comunión?', a: 'Las comuniones se celebran mayoritariamente en mayo y junio. Empieza a reservar los proveedores principales (finca o restaurante, fotógrafo, catering) con 8-12 meses de antelación. DJ, animadores y decoración pueden reservarse con 3-4 meses.' },
 ];
@@ -31,7 +31,7 @@ export default function HubComuniones() {
         <title>Comuniones España: guía completa presupuesto 2026 | XPEAK</title>
         <meta name="description" content="Todo para organizar una comunión en España. Presupuesto real por partidas, DJ, fotógrafo, catering y animación infantil. Guía completa 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/comuniones-guia-completa" />
-        <meta property="og:title" content="Comuniones España: guía completa presupuesto 2026 — XPEAK" />
+        <meta property="og:title" content="Comuniones España: guía completa presupuesto 2026 | XPEAK" />
         <meta property="og:description" content="DJ, fotógrafo, catering y animación para tu comunión. Presupuesto real y guías por partida." />
         <meta property="og:url" content="https://xpeak.es/blog/comuniones-guia-completa" />
         <meta property="og:type" content="article" />
@@ -79,12 +79,12 @@ export default function HubComuniones() {
               <h2 className="text-lg font-black mb-4">Presupuesto orientativo comunión 80-100 invitados</h2>
               <div className="space-y-2">
                 {[
-                  { partida: 'Catering (menú + servicio)', precio: '4.000–10.000€', pct: '55%' },
-                  { partida: 'Fotografía (reportaje completo)', precio: '500–1.200€', pct: '10%' },
-                  { partida: 'DJ o disco móvil', precio: '300–700€', pct: '6%' },
-                  { partida: 'Animación infantil', precio: '200–500€', pct: '5%' },
-                  { partida: 'Decoración y detalles', precio: '300–800€', pct: '7%' },
-                  { partida: 'Invitaciones y recordatorios', precio: '150–400€', pct: '3%' },
+                  { partida: 'Catering (menú + servicio)', precio: '4.000-10.000€', pct: '55%' },
+                  { partida: 'Fotografía (reportaje completo)', precio: '500-1.200€', pct: '10%' },
+                  { partida: 'DJ o disco móvil', precio: '300-700€', pct: '6%' },
+                  { partida: 'Animación infantil', precio: '200-500€', pct: '5%' },
+                  { partida: 'Decoración y detalles', precio: '300-800€', pct: '7%' },
+                  { partida: 'Invitaciones y recordatorios', precio: '150-400€', pct: '3%' },
                 ].map((row, i) => (
                   <div key={row.partida} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <div>

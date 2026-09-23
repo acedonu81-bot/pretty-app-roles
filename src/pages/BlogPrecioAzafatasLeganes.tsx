@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Leganés', item: 'https://xpeak.es/blog/precio-azafatas-leganes' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de congresos universitarios', tarifa: '110–160€/día', nota: 'Campus Universidad Carlos III' },
-  { perfil: 'Azafata de imagen', tarifa: '130–190€/día', nota: 'Presentaciones corporativas y tecnológicas' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '150–200€/día', nota: 'Congresos con ponentes internacionales' },
-  { perfil: 'Azafata de protocolo institucional', tarifa: '140–200€/día', nota: 'Actos del ayuntamiento y organismos públicos' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '160–230€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '70–110€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de congresos universitarios', tarifa: '110-160€/día', nota: 'Campus Universidad Carlos III' },
+  { perfil: 'Azafata de imagen', tarifa: '130-190€/día', nota: 'Presentaciones corporativas y tecnológicas' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '150-200€/día', nota: 'Congresos con ponentes internacionales' },
+  { perfil: 'Azafata de protocolo institucional', tarifa: '140-200€/día', nota: 'Actos del ayuntamiento y organismos públicos' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '160-230€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '70-110€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasLeganes() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasLeganes() {
         <title>Precio azafatas para eventos en Leganés 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para congresos universitarios y eventos tecnológicos en Leganés. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-leganes" />
-        <meta property="og:title" content="Precio azafatas eventos Leganés 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Leganés 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para congresos universitarios y eventos tecnológicos en Leganés." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-leganes" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

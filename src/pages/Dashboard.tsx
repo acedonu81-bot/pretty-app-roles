@@ -118,8 +118,8 @@ const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: s
             : (<>Perfil al <strong style={{ color: '#D4AF37' }}>{percent}%</strong></>)}
           <span className="hidden sm:inline">
             {instagramOnlyMissing
-              ? ' — da confianza a quien te contrate'
-              : ' — los perfiles con foto, bio y portfolio salen primero en el directorio'}
+              ? ' · da confianza a quien te contrate'
+              : ' · los perfiles con foto, bio y portfolio salen primero en el directorio'}
           </span>
         </span>
       </div>

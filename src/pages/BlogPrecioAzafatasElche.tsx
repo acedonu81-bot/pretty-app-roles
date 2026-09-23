@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Elche', item: 'https://xpeak.es/blog/precio-azafatas-elche' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria del calzado', tarifa: '110–150€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '130–185€/día', nota: 'Presentaciones y showrooms de marca' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '145–180€/día', nota: 'Ferias con compradores internacionales' },
-  { perfil: 'Azafata de protocolo institucional', tarifa: '120–165€/día', nota: 'Actos culturales y Misteri d\'Elx' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '160–215€/día', nota: 'Gestión de equipo en eventos grandes' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '70–115€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria del calzado', tarifa: '110-150€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '130-185€/día', nota: 'Presentaciones y showrooms de marca' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '145-180€/día', nota: 'Ferias con compradores internacionales' },
+  { perfil: 'Azafata de protocolo institucional', tarifa: '120-165€/día', nota: 'Actos culturales y Misteri d\'Elx' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '160-215€/día', nota: 'Gestión de equipo en eventos grandes' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '70-115€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasElche() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasElche() {
         <title>Precio azafatas para eventos en Elche 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos y ferias del calzado en Elche. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-elche" />
-        <meta property="og:title" content="Precio azafatas eventos Elche 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Elche 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para ferias y eventos corporativos en Elche." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-elche" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

@@ -51,7 +51,7 @@ export default function BlogComoElegirMagoEventos() {
         <title>Cómo elegir mago para tu evento (2026) | XPEAK</title>
         <meta name="description" content="Guía para elegir mago de eventos: diferencias entre magia de cerca, de escenario e infantil, y qué preguntar antes de contratar." />
         <link rel="canonical" href="https://xpeak.es/blog/como-elegir-mago-para-tu-evento" />
-        <meta property="og:title" content="Cómo elegir mago para tu evento — XPEAK Blog" />
+        <meta property="og:title" content="Cómo elegir mago para tu evento | XPEAK Blog" />
         <meta property="og:description" content="Tipos de magia y qué preguntar antes de contratar un mago para tu evento." />
         <meta property="og:url" content="https://xpeak.es/blog/como-elegir-mago-para-tu-evento" />
         <meta property="og:type" content="article" />

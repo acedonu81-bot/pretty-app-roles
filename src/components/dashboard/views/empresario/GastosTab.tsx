@@ -96,7 +96,7 @@ const GastosTab = () => {
   const exportCSV = async () => {
     if (yearBookings.length === 0) { toast.error('No hay gastos que exportar'); return; }
 
-    const wb = await buildWorkbook(`Panel de Gastos — Año ${yearFilter}`, [
+    const wb = await buildWorkbook(`Panel de Gastos: Año ${yearFilter}`, [
       {
         title: 'RESUMEN',
         header: ['Concepto', 'Valor'],

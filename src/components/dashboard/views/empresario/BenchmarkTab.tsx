@@ -28,7 +28,7 @@ const BenchmarkTab = () => (
             <div className="flex items-center justify-between mb-3">
               <p className="text-sm font-bold">{b.role}</p>
               <span className="text-lg font-black" style={{ color: '#8A6D0F' }}>
-                €{b.min}–{b.max}<span className="text-xs font-normal text-muted-foreground">/sesión</span>
+                €{b.min}-{b.max}<span className="text-xs font-normal text-muted-foreground">/sesión</span>
               </span>
             </div>
             <div className="h-2 rounded-full relative overflow-hidden" style={{ background: 'rgba(0,0,0,0.05)' }}>

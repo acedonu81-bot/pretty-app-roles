@@ -83,7 +83,7 @@ export const COPY = {
 
   /** Upgrade nudges */
   upgrade: {
-    freeLimit:     'Estás en Free — solo ves una parte del directorio.',
+    freeLimit:     'Estás en Free: solo ves una parte del directorio.',
     flashBooking:  'Flash Booking requiere plan Starter o superior.',
     messaging:     'Los mensajes directos requieren plan Starter o superior.',
     streaming:     'El streaming requiere plan Business o superior.',

@@ -54,12 +54,12 @@ const breadcrumb = {
 };
 
 const PRECIOS = [
-  { tipo: 'Animador infantil (2h)', precio: '150–300€', incluye: 'Juegos, pintacaras, globoflexia' },
-  { tipo: 'Karaoke + juegos (2-3h)', precio: '200–400€', incluye: 'Equipo de karaoke, micro, juegos grupales' },
-  { tipo: 'Espectáculo de magia (45-60 min)', precio: '250–500€', incluye: 'Show completo con participación del público' },
-  { tipo: 'Monitora + taller manualidades (2h)', precio: '180–320€', incluye: 'Material incluido, temática a elegir' },
-  { tipo: 'Hinchables (todo el dia)', precio: '150–300€', incluye: 'Montaje, desmontaje y vigilancia opcional' },
-  { tipo: 'Pack completo comunión (4-5h)', precio: '400–700€', incluye: 'Animacion + magia + karaoke' },
+  { tipo: 'Animador infantil (2h)', precio: '150-300€', incluye: 'Juegos, pintacaras, globoflexia' },
+  { tipo: 'Karaoke + juegos (2-3h)', precio: '200-400€', incluye: 'Equipo de karaoke, micro, juegos grupales' },
+  { tipo: 'Espectáculo de magia (45-60 min)', precio: '250-500€', incluye: 'Show completo con participación del público' },
+  { tipo: 'Monitora + taller manualidades (2h)', precio: '180-320€', incluye: 'Material incluido, temática a elegir' },
+  { tipo: 'Hinchables (todo el dia)', precio: '150-300€', incluye: 'Montaje, desmontaje y vigilancia opcional' },
+  { tipo: 'Pack completo comunión (4-5h)', precio: '400-700€', incluye: 'Animacion + magia + karaoke' },
 ];
 
 export default function BlogAnimadoresComunionPrecio() {
@@ -69,7 +69,7 @@ export default function BlogAnimadoresComunionPrecio() {
         <title>Animadores para comunión: precios 2026 España | XPEAK</title>
         <meta name="description" content="Cuánto cuestan los animadores para comunión en España. Animación infantil, karaoke, magia e hinchables. Precios y consejos para elegir bien." />
         <link rel="canonical" href="https://xpeak.es/blog/animadores-comunion-precio" />
-        <meta property="og:title" content="Animadores para comunión: precios 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Animadores para comunión: precios 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precios de animadores para comunión en España. Tipos de animación, cuándo contratarlos y qué incluye cada servicio." />
         <meta property="og:url" content="https://xpeak.es/blog/animadores-comunion-precio" />
         <meta property="og:type" content="article" />

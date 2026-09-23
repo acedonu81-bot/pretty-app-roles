@@ -12,18 +12,18 @@ const article = { '@context': 'https://schema.org', '@type': 'Article', headline
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cobran las azafatas de eventos en Madrid?', acceptedAnswer: { '@type': 'Answer', text: 'En Madrid, una azafata de eventos cobra entre 13€ y 20€/hora bruto, algo por encima de la media nacional por el volumen de ferias en IFEMA. Las agencias facturan al cliente entre 130€ y 200€/día por perfil. Ferias grandes como FITUR o el Salón del Automóvil suben la demanda y la tarifa un 15-20%.' } },
   { '@type': 'Question', name: '¿Dónde se concentran los eventos y ferias en Madrid?', acceptedAnswer: { '@type': 'Answer', text: 'IFEMA (Feria de Madrid) es el gran polo ferial: FITUR, ARCO, Salón del Automóvil, MWC (algunos años). También hay mucha demanda corporativa en el eje Castellana-AZCA para presentaciones de producto y eventos de empresa, y en el Palacio de Congresos para congresos médicos y profesionales.' } },
-  { '@type': 'Question', name: '¿Con cuánta antelación reservar azafatas para una feria en IFEMA?', acceptedAnswer: { '@type': 'Answer', text: 'Para ferias grandes de IFEMA (FITUR, ARCO) reserva con 6-10 semanas de antelación — los perfiles bilingües y con experiencia en el sector se agotan primero. Para eventos corporativos puntuales en Madrid capital, 2-3 semanas suele ser suficiente.' } },
+  { '@type': 'Question', name: '¿Con cuánta antelación reservar azafatas para una feria en IFEMA?', acceptedAnswer: { '@type': 'Answer', text: 'Para ferias grandes de IFEMA (FITUR, ARCO) reserva con 6-10 semanas de antelación: los perfiles bilingües y con experiencia en el sector se agotan primero. Para eventos corporativos puntuales en Madrid capital, 2-3 semanas suele ser suficiente.' } },
   { '@type': 'Question', name: '¿Qué perfil de azafata se pide más en Madrid?', acceptedAnswer: { '@type': 'Answer', text: 'El perfil bilingüe (inglés) es el más demandado por el volumen de ferias internacionales en IFEMA. También hay demanda alta de azafatas de imagen para eventos de marcas de lujo y presentaciones corporativas en el eje Castellana.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Madrid', item: 'https://xpeak.es/blog/precio-azafatas-madrid' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria IFEMA', tarifa: '130–190€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '160–260€/día', nota: 'Eventos de marca y protocolo' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '170–230€/día', nota: 'Muy demandada en ferias IFEMA' },
-  { perfil: 'Azafata trilingüe', tarifa: '210–310€/día', nota: 'Ferias internacionales (MWC, FITUR)' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '190–290€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '85–140€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria IFEMA', tarifa: '130-190€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '160-260€/día', nota: 'Eventos de marca y protocolo' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '170-230€/día', nota: 'Muy demandada en ferias IFEMA' },
+  { perfil: 'Azafata trilingüe', tarifa: '210-310€/día', nota: 'Ferias internacionales (MWC, FITUR)' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '190-290€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '85-140€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasMadrid() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasMadrid() {
         <title>Precio azafatas para eventos en Madrid 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos, ferias IFEMA y congresos en Madrid. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-madrid" />
-        <meta property="og:title" content="Precio azafatas eventos Madrid 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Madrid 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para ferias IFEMA y eventos corporativos en Madrid." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-madrid" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

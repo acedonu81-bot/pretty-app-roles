@@ -38,7 +38,7 @@ const ROLES = [
   { value: 'tecnico',      label: 'Técnico de Sonido y Montaje', desc: 'Sonido, iluminación y montaje de escenario', icon: SlidersHorizontal, color: '#38bdf8' },
 ];
 
-const EMPRESARIO_ROLE = { value: 'empresario', label: 'Busco talento — Empresario', desc: 'Sala, promotora, agencia o evento privado: busco y contrato profesionales', icon: Briefcase, color: '#D4AF37' };
+const EMPRESARIO_ROLE = { value: 'empresario', label: 'Busco talento: Empresario', desc: 'Sala, promotora, agencia o evento privado: busco y contrato profesionales', icon: Briefcase, color: '#D4AF37' };
 
 // Frases de "anuncio de clasificados" en vez de ficha profesional (13 sep
 // 2026): "INFO AL DM" y similares apareciendo en bios reales — remiten al
@@ -465,7 +465,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                   <h2 className="text-lg font-black mb-1" style={{ fontFamily: 'Syne, sans-serif', color: '#111' }}>
                     {roleData.title}
                   </h2>
-                  <p className="text-xs" style={{ color: '#333' }}>Rellena esto ahora — tu ficha se ve 3× mejor desde el primer día</p>
+                  <p className="text-xs" style={{ color: '#333' }}>Rellena esto ahora: tu ficha se ve 3× mejor desde el primer día</p>
                 </div>
 
                 <div className="flex flex-col gap-3 mb-5">
@@ -530,7 +530,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                         onChange={(e) => setPriceOnRequest(e.target.checked)}
                         className="w-3.5 h-3.5 accent-current" style={{ accentColor: '#D4AF37' }} />
                       <span className="text-[0.65rem] font-semibold" style={{ color: '#333' }}>
-                        Mi precio varía según el evento — mostrar "A consultar"
+                        Mi precio varía según el evento: mostrar "A consultar"
                       </span>
                     </label>
                   </div>
@@ -568,7 +568,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                     </p>
                     {tieneFraseGenerica(bio) && (
                       <p className="text-[0.6rem] mt-1 font-semibold" style={{ color: '#dc2626' }}>
-                        Evita frases tipo "info al DM" o "busco eventos" — cuenta tu experiencia real
+                        Evita frases tipo "info al DM" o "busco eventos": cuenta tu experiencia real
                       </p>
                     )}
                   </div>

@@ -44,7 +44,7 @@ export default function BlogComoCompararPresupuestosEventos() {
         <title>Cómo comparar presupuestos de proveedores de eventos (2026) | XPEAK</title>
         <meta name="description" content="Método práctico para comparar presupuestos de DJ, catering, fotógrafo y staff sin perder días en llamadas y correos cruzados." />
         <link rel="canonical" href="https://xpeak.es/blog/comparar-presupuestos-proveedores-eventos" />
-        <meta property="og:title" content="Cómo comparar presupuestos de proveedores de eventos — XPEAK Blog" />
+        <meta property="og:title" content="Cómo comparar presupuestos de proveedores de eventos | XPEAK Blog" />
         <meta property="og:description" content="Método práctico para comparar presupuestos de eventos sin perder tiempo en gestiones sueltas." />
         <meta property="og:url" content="https://xpeak.es/blog/comparar-presupuestos-proveedores-eventos" />
         <meta property="og:type" content="article" />
@@ -84,7 +84,7 @@ export default function BlogComoCompararPresupuestosEventos() {
             <section>
               <h2 className="text-lg font-black mb-4">Por qué el proceso habitual es lento</h2>
               <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
-                El flujo típico —buscar en Instagram, mandar mensaje, esperar respuesta, negociar precio por privado— puede tardar días por cada proveedor. Si necesitas comparar DJ, catering, fotógrafo y staff, el proceso completo fácilmente supera las dos semanas solo en la fase de presupuestos.
+                El flujo típico buscar en Instagram, mandar mensaje, esperar respuesta, negociar precio por privado puede tardar días por cada proveedor. Si necesitas comparar DJ, catering, fotógrafo y staff, el proceso completo fácilmente supera las dos semanas solo en la fase de presupuestos.
               </p>
               <p className="text-base leading-relaxed" style={{ color: '#222' }}>
                 El problema no es solo el tiempo: al negociar precio en privado con cada uno, es difícil saber si estás pagando de más, porque no tienes ninguna referencia pública de mercado.
@@ -97,7 +97,7 @@ export default function BlogComoCompararPresupuestosEventos() {
                 {[
                   { item: 'Precio con IVA incluido', desc: 'Muchos autónomos dan el precio sin IVA. Pide siempre el total final para comparar de forma justa.' },
                   { item: 'Qué incluye exactamente', desc: 'Horas de servicio, equipo (sonido, luces, cámara extra), desplazamiento y montaje/desmontaje.' },
-                  { item: 'Condiciones de cancelación', desc: 'Qué porcentaje se pierde según cuándo canceles — protege tanto a ti como al proveedor.' },
+                  { item: 'Condiciones de cancelación', desc: 'Qué porcentaje se pierde según cuándo canceles: protege tanto a ti como al proveedor.' },
                   { item: 'Forma de pago', desc: 'Señal habitual del 30-50% al reservar, resto antes o después del evento según lo acordado.' },
                 ].map((row, i) => (
                   <div key={row.item} className="p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>

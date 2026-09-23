@@ -13,15 +13,15 @@ const article = { '@context': 'https://schema.org', '@type': 'Article', headline
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de boda en Sevilla?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de boda en Sevilla cuesta entre 1.000€ y 2.800€ para el reportaje completo. Los precios en Sevilla están en la media nacional o ligeramente por encima en el segmento premium. El reportaje completo con álbum ronda los 1.400-2.500€. Para reportajes de 5-6h sin álbum, el rango es 700-1.200€.' } },
   { '@type': 'Question', name: '¿Qué hace especial la fotografía de bodas en Sevilla?', acceptedAnswer: { '@type': 'Answer', text: 'Sevilla tiene una luz dorada característica en las horas de atardecer que los fotógrafos aprovechan al máximo en haciendas y patios. La arquitectura barroca, los azulejos, los naranjos y las rejas forjadas crean backdrops únicos. Los fotógrafos sevillanos especializados en bodas en haciendas saben cómo trabajar con espacios de sombras fuertes y contraluces mediterráneos.' } },
-  { '@type': 'Question', name: '¿Con cuánta antelación reservar el fotógrafo en Sevilla?', acceptedAnswer: { '@type': 'Answer', text: 'Para bodas en octubre y noviembre en Sevilla (temporada alta), reserva con 8-10 meses de antelación. Para bodas en marzo o abril (primavera sevillana), los fotógrafos se llenan también rápido. El verano sevillano es muy caluroso — si tu boda es en julio o agosto, reserva antes porque los fotógrafos con experiencia en bodas en calor extremo son pocos.' } },
+  { '@type': 'Question', name: '¿Con cuánta antelación reservar el fotógrafo en Sevilla?', acceptedAnswer: { '@type': 'Answer', text: 'Para bodas en octubre y noviembre en Sevilla (temporada alta), reserva con 8-10 meses de antelación. Para bodas en marzo o abril (primavera sevillana), los fotógrafos se llenan también rápido. El verano sevillano es muy caluroso: si tu boda es en julio o agosto, reserva antes porque los fotógrafos con experiencia en bodas en calor extremo son pocos.' } },
   { '@type': 'Question', name: '¿Vale la pena hacer la sesión en el centro histórico de Sevilla?', acceptedAnswer: { '@type': 'Answer', text: 'Sí, aunque requiere permisos y planificación. La Catedral, el Alcázar, la Giralda y el barrio de Santa Cruz son localizaciones espectaculares pero necesitan autorización municipal. Los fotógrafos con experiencia en Sevilla conocen los horarios de menor afluencia turística (amanecer y atardecer) y los rincones alternativos igual de fotogénicos sin necesidad de permisos.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Fotógrafo boda Sevilla', item: 'https://xpeak.es/blog/fotografo-boda-sevilla' }] };
 const PRECIOS = [
-  { servicio: 'Reportaje básico (5-6h, sin álbum)', precio: '700–1.200€' },
-  { servicio: 'Reportaje completo (8-10h, sin álbum)', precio: '1.000–1.800€' },
-  { servicio: 'Reportaje completo con álbum impreso', precio: '1.400–2.800€' },
-  { servicio: 'Pack fotógrafo + videógrafo', precio: '2.200–4.500€' },
+  { servicio: 'Reportaje básico (5-6h, sin álbum)', precio: '700-1.200€' },
+  { servicio: 'Reportaje completo (8-10h, sin álbum)', precio: '1.000-1.800€' },
+  { servicio: 'Reportaje completo con álbum impreso', precio: '1.400-2.800€' },
+  { servicio: 'Pack fotógrafo + videógrafo', precio: '2.200-4.500€' },
 ];
 export default function BlogFotografoBodaSevilla() {
   return (
@@ -30,7 +30,7 @@ export default function BlogFotografoBodaSevilla() {
         <title>Fotógrafo para bodas en Sevilla: precio 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un fotógrafo de boda en Sevilla. Precios reales 2026, haciendas andaluzas, luz sevillana y cómo elegir en Andalucía." />
         <link rel="canonical" href="https://xpeak.es/blog/fotografo-boda-sevilla" />
-        <meta property="og:title" content="Fotógrafo para bodas en Sevilla: precio 2026 — XPEAK" />
+        <meta property="og:title" content="Fotógrafo para bodas en Sevilla: precio 2026 | XPEAK" />
         <meta property="og:description" content="Precios fotógrafos boda Sevilla. Haciendas, patios y la luz dorada andaluza." />
         <meta property="og:url" content="https://xpeak.es/blog/fotografo-boda-sevilla" />
         <meta property="og:type" content="article" />

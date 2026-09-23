@@ -8,19 +8,19 @@ import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
 const TABLE = [
-  { perfil: 'Maestro de ceremonias junior', experiencia: '< 2 años', rango: '300€ – 600€', nota: 'Bodas pequeñas, eventos locales' },
-  { perfil: 'MC profesional', experiencia: '2–5 años', rango: '600€ – 1.200€', nota: 'Bodas civiles, eventos de empresa' },
-  { perfil: 'MC senior / presentador', experiencia: '5–10 años', rango: '1.200€ – 2.500€', nota: 'Bodas grandes, galas, festivales' },
+  { perfil: 'Maestro de ceremonias junior', experiencia: '< 2 años', rango: '300€-600€', nota: 'Bodas pequeñas, eventos locales' },
+  { perfil: 'MC profesional', experiencia: '2-5 años', rango: '600€-1.200€', nota: 'Bodas civiles, eventos de empresa' },
+  { perfil: 'MC senior / presentador', experiencia: '5-10 años', rango: '1.200€-2.500€', nota: 'Bodas grandes, galas, festivales' },
   { perfil: 'Presentador TV / referente', experiencia: '+10 años', rango: '2.500€+', nota: 'Galas nacionales, marca personal reconocida' },
 ];
 
 const CIUDADES = [
-  { ciudad: 'Madrid', rango: '700€ – 2.000€', note: 'Mayor oferta y competencia, mercado de referencia' },
-  { ciudad: 'Barcelona', rango: '800€ – 2.200€', note: 'Alta demanda en bodas de destino y eventos internacionales' },
-  { ciudad: 'Valencia', rango: '500€ – 1.500€', note: 'Mercado creciente, precios algo más competitivos' },
-  { ciudad: 'Sevilla', rango: '400€ – 1.200€', note: 'Fuerte tradición nupcial, muchas bodas religiosas y civiles' },
-  { ciudad: 'Bilbao', rango: '500€ – 1.400€', note: 'Menos oferta, pero bodas de alto presupuesto' },
-  { ciudad: 'Málaga / Costa del Sol', rango: '600€ – 1.800€', note: 'Temporada alta junio–septiembre, bodas de destino' },
+  { ciudad: 'Madrid', rango: '700€-2.000€', note: 'Mayor oferta y competencia, mercado de referencia' },
+  { ciudad: 'Barcelona', rango: '800€-2.200€', note: 'Alta demanda en bodas de destino y eventos internacionales' },
+  { ciudad: 'Valencia', rango: '500€-1.500€', note: 'Mercado creciente, precios algo más competitivos' },
+  { ciudad: 'Sevilla', rango: '400€-1.200€', note: 'Fuerte tradición nupcial, muchas bodas religiosas y civiles' },
+  { ciudad: 'Bilbao', rango: '500€-1.400€', note: 'Menos oferta, pero bodas de alto presupuesto' },
+  { ciudad: 'Málaga / Costa del Sol', rango: '600€-1.800€', note: 'Temporada alta junio-septiembre, bodas de destino' },
 ];
 
 const FUNCIONES = [
@@ -33,11 +33,11 @@ const FUNCIONES = [
 ];
 
 const FAQ = [
-  { q: '¿Es obligatorio contratar un maestro de ceremonias para una boda?', a: 'No es obligatorio, pero sí muy recomendable para bodas de más de 80 invitados o bodas civiles sin guión oficial. Sin MC, los tiempos se dilatan y los invitados pierden el hilo del evento. Un MC profesional ahorra al menos 30–45 minutos de retrasos acumulados.' },
+  { q: '¿Es obligatorio contratar un maestro de ceremonias para una boda?', a: 'No es obligatorio, pero sí muy recomendable para bodas de más de 80 invitados o bodas civiles sin guión oficial. Sin MC, los tiempos se dilatan y los invitados pierden el hilo del evento. Un MC profesional ahorra al menos 30-45 minutos de retrasos acumulados.' },
   { q: '¿Qué diferencia hay entre MC, presentador y animador?', a: 'El MC (maestro de ceremonias) conduce todo el evento con guión y coordinación logística. El presentador se centra en los momentos formales (entradas, discursos). El animador propone juegos y dinámicas de entretenimiento. Muchos profesionales combinan los tres perfiles.' },
-  { q: '¿Cuánto tiempo antes hay que contratar al MC?', a: 'Lo ideal es cerrarlo con 6–9 meses de antelación para bodas de verano, que es la temporada alta. En fechas de septiembre a mayo puedes encontrar disponibilidad con 2–3 meses de margen.' },
+  { q: '¿Cuánto tiempo antes hay que contratar al MC?', a: 'Lo ideal es cerrarlo con 6-9 meses de antelación para bodas de verano, que es la temporada alta. En fechas de septiembre a mayo puedes encontrar disponibilidad con 2-3 meses de margen.' },
   { q: '¿El MC trabaja con el DJ o son servicios separados?', a: 'Son servicios separados, pero deben coordinarse. Un buen MC tiene reunión previa con el DJ para sincronizar entradas, canciones especiales y timing del banquete. En XPEAK puedes contratar ambos perfiles y compartir el briefing de evento entre ellos.' },
-  { q: '¿Cuántas horas incluye el servicio de maestro de ceremonias?', a: 'Lo habitual son 6–8 horas: desde la recepción de invitados hasta el inicio del baile libre. Algunos MC cobran por horas adicionales si el evento se alarga.' },
+  { q: '¿Cuántas horas incluye el servicio de maestro de ceremonias?', a: 'Lo habitual son 6-8 horas: desde la recepción de invitados hasta el inicio del baile libre. Algunos MC cobran por horas adicionales si el evento se alarga.' },
 ];
 
 const structuredData = {
@@ -136,7 +136,7 @@ export default function BlogMaestroCeremonias() {
           <div className="p-4 rounded-xl mb-8" style={{ background: 'rgba(219,39,119,0.06)', border: '1px solid rgba(219,39,119,0.15)' }}>
             <p className="text-sm font-bold mb-1" style={{ color: '#DB2777' }}>Resumen rápido</p>
             <p className="text-sm leading-relaxed" style={{ color: '#333' }}>
-              Un maestro de ceremonias para bodas en España cuesta entre <strong style={{ color: '#111' }}>600€ y 1.500€</strong> de media por evento completo (6–8 horas).
+              Un maestro de ceremonias para bodas en España cuesta entre <strong style={{ color: '#111' }}>600€ y 1.500€</strong> de media por evento completo (6-8 horas).
               El precio depende de la experiencia, la ciudad y si incluye reuniones de coordinación previas.
               Las bodas de más de 100 invitados casi siempre necesitan MC profesional para mantener el ritmo del evento.
             </p>
@@ -144,7 +144,7 @@ export default function BlogMaestroCeremonias() {
 
           <h2 className="text-xl font-black mb-4">¿Qué hace exactamente un maestro de ceremonias?</h2>
           <p className="text-base mb-5 leading-relaxed" style={{ color: '#222' }}>
-            El MC no es un animador que hace juegos —aunque puede hacerlos. Su función principal es <strong style={{ color: '#111' }}>conducir el guión del evento</strong> de principio a fin, coordinándose con todos los proveedores (DJ, catering, fotógrafo) para que cada momento ocurra en el momento correcto:
+            El MC no es un animador que hace juegos aunque puede hacerlos. Su función principal es <strong style={{ color: '#111' }}>conducir el guión del evento</strong> de principio a fin, coordinándose con todos los proveedores (DJ, catering, fotógrafo) para que cada momento ocurra en el momento correcto:
           </p>
           <div className="space-y-3 mb-10">
             {FUNCIONES.map(f => (
@@ -222,7 +222,7 @@ export default function BlogMaestroCeremonias() {
                   ['Tono', 'Elegante, formal o íntimo según la boda', 'Festivo, energético'],
                   ['Coordinación', 'Con todos los proveedores', 'Principalmente con el DJ'],
                   ['Guión', 'Personalizado y detallado', 'Estándar con variaciones'],
-                  ['Precio medio', '600€ – 1.500€', '300€ – 800€'],
+                  ['Precio medio', '600€-1.500€', '300€-800€'],
                 ].map(([car, mc, anim], i) => (
                   <tr key={car} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.015)' }}>
                     <td className="px-3 sm:px-4 py-3 font-bold text-xs" style={{ borderBottom: '1px solid rgba(0,0,0,0.05)', color: '#333' }}>{car}</td>
@@ -275,7 +275,7 @@ export default function BlogMaestroCeremonias() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
                 { href: '/blog/profesionales-bodas', tag: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026', desc: 'DJ, fotógrafo, catering y más. Todo lo que necesitas para tu boda.' },
-                { href: '/blog/musica-en-vivo-para-bodas', tag: 'Bodas', title: 'Música en vivo para bodas — grupos y precios 2026', desc: 'Solistas, bandas, jazz y cuartetos. Cuánto cuesta cada formato.' },
+                { href: '/blog/musica-en-vivo-para-bodas', tag: 'Bodas', title: 'Música en vivo para bodas: grupos y precios 2026', desc: 'Solistas, bandas, jazz y cuartetos. Cuánto cuesta cada formato.' },
                 { href: '/blog/cuanto-cobra-un-dj-en-espana', tag: 'DJ', title: '¿Cuánto cobra un DJ en España? Tarifas 2026', desc: 'Precio real de un DJ para boda, festival o evento corporativo.' },
                 { href: '/blog/cuanto-cuesta-una-boda-en-espana', tag: 'Bodas', title: '¿Cuánto cuesta una boda en España en 2026?', desc: 'Presupuesto completo por partida: catering, música, fotos y más.' },
               ].map(p => (

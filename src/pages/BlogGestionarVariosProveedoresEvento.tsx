@@ -44,7 +44,7 @@ export default function BlogGestionarVariosProveedoresEvento() {
         <title>Cómo gestionar varios proveedores en un evento sin perder el control (2026) | XPEAK</title>
         <meta name="description" content="Coordinar DJ, catering, fotógrafo y staff a la vez sin liarte con mensajes cruzados y hojas de cálculo sueltas." />
         <link rel="canonical" href="https://xpeak.es/blog/gestionar-varios-proveedores-evento" />
-        <meta property="og:title" content="Cómo gestionar varios proveedores de un evento — XPEAK Blog" />
+        <meta property="og:title" content="Cómo gestionar varios proveedores de un evento | XPEAK Blog" />
         <meta property="og:description" content="Sistema práctico para coordinar varios proveedores de un mismo evento sin perder el control." />
         <meta property="og:url" content="https://xpeak.es/blog/gestionar-varios-proveedores-evento" />
         <meta property="og:type" content="article" />
@@ -116,7 +116,7 @@ export default function BlogGestionarVariosProveedoresEvento() {
             <section>
               <h2 className="text-lg font-black mb-4">Un solo lugar, no cuatro</h2>
               <p className="text-base leading-relaxed" style={{ color: '#222' }}>
-                La mejora más grande no es un truco de productividad, es reducir el número de sitios donde vive la información. Si el presupuesto, la mensajería y el contrato de cada proveedor están en la misma plataforma, no hace falta cruzar datos entre aplicaciones distintas — y es mucho más difícil que algo se pierda.
+                La mejora más grande no es un truco de productividad, es reducir el número de sitios donde vive la información. Si el presupuesto, la mensajería y el contrato de cada proveedor están en la misma plataforma, no hace falta cruzar datos entre aplicaciones distintas, y es mucho más difícil que algo se pierda.
               </p>
             </section>
 

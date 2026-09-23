@@ -37,7 +37,7 @@ const TAG_TEXT: Record<string, string> = {
 const ALL_TAGS = ['Todos', ...Array.from(new Set(POSTS.map(p => p.tag)))];
 
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }] };
-const itemList = { '@context': 'https://schema.org', '@type': 'ItemList', name: 'Blog XPEAK — Guías para eventos en España', url: 'https://xpeak.es/blog', numberOfItems: POSTS.length, itemListElement: POSTS.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `https://xpeak.es${p.slug}`, name: p.title })) };
+const itemList = { '@context': 'https://schema.org', '@type': 'ItemList', name: 'Blog XPEAK: Guías para eventos en España', url: 'https://xpeak.es/blog', numberOfItems: POSTS.length, itemListElement: POSTS.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `https://xpeak.es${p.slug}`, name: p.title })) };
 
 export default function BlogIndex() {
   const [activeTag, setActiveTag] = useState('Todos');
@@ -46,10 +46,10 @@ export default function BlogIndex() {
   return (
     <>
       <Helmet>
-        <title>Blog XPEAK — Guías para contratar profesionales de eventos en España</title>
+        <title>Blog XPEAK: Guías para contratar profesionales de eventos en España</title>
         <meta name="description" content="Guías y consejos para contratar DJs, camareros, fotógrafos y staff para eventos en España. Precios, ratios y todo lo que necesitas saber." />
         <link rel="canonical" href="https://xpeak.es/blog" />
-        <meta property="og:title" content="Blog XPEAK — Guías para eventos en España" />
+        <meta property="og:title" content="Blog XPEAK: Guías para eventos en España" />
         <meta property="og:description" content="Guías y consejos para contratar profesionales de eventos en España. Precios y ratios." />
         <meta property="og:url" content="https://xpeak.es/blog" />
         <meta property="og:type" content="website" />

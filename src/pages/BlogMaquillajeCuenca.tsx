@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Maquillaje Cuenca', item: 'https://xpeak.es/blog/maquillaje-eventos-cuenca' }] };
 
 const PRECIOS = [
-  { perfil: 'Maquillaje novia (solo)', tarifa: '72–170€', nota: 'Incluye prueba previa' },
-  { perfil: 'Maquillaje novia + peinado', tarifa: '148–310€', nota: 'Servicio integral más demandado' },
-  { perfil: 'Madrina / invitada especial', tarifa: '42–88€', nota: 'Sin prueba previa habitualmente' },
-  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '240–460€', nota: 'Desplazamiento incluido en la zona' },
-  { perfil: 'Evento corporativo / azafata', tarifa: '25–52€/persona', nota: 'Maquillaje fast-track profesional' },
-  { perfil: 'Sesión foto / vídeo', tarifa: '58–135€', nota: 'Retoque incluido' },
+  { perfil: 'Maquillaje novia (solo)', tarifa: '72-170€', nota: 'Incluye prueba previa' },
+  { perfil: 'Maquillaje novia + peinado', tarifa: '148-310€', nota: 'Servicio integral más demandado' },
+  { perfil: 'Madrina / invitada especial', tarifa: '42-88€', nota: 'Sin prueba previa habitualmente' },
+  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '240-460€', nota: 'Desplazamiento incluido en la zona' },
+  { perfil: 'Evento corporativo / azafata', tarifa: '25-52€/persona', nota: 'Maquillaje fast-track profesional' },
+  { perfil: 'Sesión foto / vídeo', tarifa: '58-135€', nota: 'Retoque incluido' },
 ];
 
 export default function BlogMaquillajeCuenca() {
@@ -33,7 +33,7 @@ export default function BlogMaquillajeCuenca() {
         <title>Precio maquilladora para eventos en Cuenca 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobra una maquilladora para bodas en el casco histórico de Cuenca. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/maquillaje-eventos-cuenca" />
-        <meta property="og:title" content="Precio maquilladora eventos Cuenca 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio maquilladora eventos Cuenca 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de maquilladoras para bodas y eventos en Cuenca." />
         <meta property="og:url" content="https://xpeak.es/blog/maquillaje-eventos-cuenca" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

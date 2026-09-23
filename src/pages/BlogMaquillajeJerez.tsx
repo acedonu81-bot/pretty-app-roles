@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Maquillaje Jerez', item: 'https://xpeak.es/blog/maquillaje-eventos-jerez' }] };
 
 const PRECIOS = [
-  { perfil: 'Maquillaje novia (solo)', tarifa: '95–220€', nota: 'Incluye prueba previa' },
-  { perfil: 'Maquillaje novia + peinado', tarifa: '190–400€', nota: 'Servicio integral más demandado' },
-  { perfil: 'Madrina / invitada especial', tarifa: '55–110€', nota: 'Sin prueba previa habitualmente' },
-  { perfil: 'Maquillaje flamenco Feria de Jerez', tarifa: '40–75€', nota: 'Mayo, alta demanda puntual' },
-  { perfil: 'Pack boda en bodega (novia + 3 personas)', tarifa: '340–650€', nota: 'Desplazamiento incluido' },
-  { perfil: 'Evento corporativo / azafata', tarifa: '30–60€/persona', nota: 'Maquillaje fast-track profesional' },
+  { perfil: 'Maquillaje novia (solo)', tarifa: '95-220€', nota: 'Incluye prueba previa' },
+  { perfil: 'Maquillaje novia + peinado', tarifa: '190-400€', nota: 'Servicio integral más demandado' },
+  { perfil: 'Madrina / invitada especial', tarifa: '55-110€', nota: 'Sin prueba previa habitualmente' },
+  { perfil: 'Maquillaje flamenco Feria de Jerez', tarifa: '40-75€', nota: 'Mayo, alta demanda puntual' },
+  { perfil: 'Pack boda en bodega (novia + 3 personas)', tarifa: '340-650€', nota: 'Desplazamiento incluido' },
+  { perfil: 'Evento corporativo / azafata', tarifa: '30-60€/persona', nota: 'Maquillaje fast-track profesional' },
 ];
 
 export default function BlogMaquillajeJerez() {
@@ -33,7 +33,7 @@ export default function BlogMaquillajeJerez() {
         <title>Precio maquilladora para eventos en Jerez 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobra una maquilladora para bodas en bodegas y la Feria de Jerez. Tarifas por servicio 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/maquillaje-eventos-jerez" />
-        <meta property="og:title" content="Precio maquilladora eventos Jerez 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio maquilladora eventos Jerez 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de maquilladoras para bodas en bodegas y Feria de Jerez." />
         <meta property="og:url" content="https://xpeak.es/blog/maquillaje-eventos-jerez" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

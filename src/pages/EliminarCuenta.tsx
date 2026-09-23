@@ -20,7 +20,7 @@ export default function EliminarCuenta() {
 
           <div className="space-y-8">
             <section>
-              <h2 className="text-xl font-bold mb-3" style={{ color: '#D4AF37' }}>Opción 1 — Desde la app (recomendado)</h2>
+              <h2 className="text-xl font-bold mb-3" style={{ color: '#D4AF37' }}>Opción 1: Desde la app (recomendado)</h2>
               <ol className="list-decimal list-inside space-y-2 text-neutral-300">
                 <li>Inicia sesión en XPEAK</li>
                 <li>Ve a tu perfil → Ajustes</li>
@@ -32,7 +32,7 @@ export default function EliminarCuenta() {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold mb-3" style={{ color: '#D4AF37' }}>Opción 2 — Por email</h2>
+              <h2 className="text-xl font-bold mb-3" style={{ color: '#D4AF37' }}>Opción 2: Por email</h2>
               <p className="text-neutral-300 mb-3">Envía un email a <a href="mailto:acedonu81@gmail.com" className="underline" style={{ color: '#D4AF37' }}>acedonu81@gmail.com</a> con el asunto <strong>"Solicitud eliminación de cuenta"</strong> e indica:</p>
               <ul className="list-disc list-inside space-y-1 text-neutral-300">
                 <li>El email con el que estás registrado en XPEAK</li>

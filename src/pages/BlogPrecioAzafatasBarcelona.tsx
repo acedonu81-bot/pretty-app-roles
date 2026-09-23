@@ -12,18 +12,18 @@ const article = { '@context': 'https://schema.org', '@type': 'Article', headline
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cobran las azafatas de eventos en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'En Barcelona una azafata de eventos cobra entre 13€ y 20€/hora bruto, en línea con Madrid por el volumen de ferias internacionales que pasan por Fira de Barcelona. Las agencias facturan al cliente entre 130€ y 200€/día. Durante el Mobile World Congress la demanda de perfiles multilingües dispara la tarifa un 20-30%.' } },
   { '@type': 'Question', name: '¿Qué ferias mueven más azafatas en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'Fira de Barcelona (recintos de Montjuïc y Gran Via) concentra la mayoría de ferias grandes: el Mobile World Congress es el evento con más demanda de personal del año, seguido de salones sectoriales de alimentación, construcción y automoción. También hay bastante demanda de azafatas de imagen en el Barcelona International Convention Centre para congresos médicos.' } },
-  { '@type': 'Question', name: '¿Con cuánta antelación reservar azafatas para el MWC en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'Para el Mobile World Congress reserva con 3-4 meses de antelación — es el evento que más satura el mercado de azafatas de toda España y los perfiles con inglés se agotan primero. Para ferias sectoriales más pequeñas en Fira de Barcelona, 4-6 semanas suele bastar.' } },
+  { '@type': 'Question', name: '¿Con cuánta antelación reservar azafatas para el MWC en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'Para el Mobile World Congress reserva con 3-4 meses de antelación: es el evento que más satura el mercado de azafatas de toda España y los perfiles con inglés se agotan primero. Para ferias sectoriales más pequeñas en Fira de Barcelona, 4-6 semanas suele bastar.' } },
   { '@type': 'Question', name: '¿Qué perfil de azafata se pide más en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'El perfil trilingüe (inglés + otro idioma) tiene más salida en Barcelona que en el resto de España por el carácter internacional de ferias como el MWC. También hay demanda constante de azafatas de imagen para el sector moda y diseño, muy presente en la ciudad.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Barcelona', item: 'https://xpeak.es/blog/precio-azafatas-barcelona' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria Fira BCN', tarifa: '130–190€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '160–260€/día', nota: 'Eventos de marca y moda' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '170–230€/día', nota: 'Estándar en ferias internacionales' },
-  { perfil: 'Azafata trilingüe', tarifa: '220–320€/día', nota: 'Muy demandada en el MWC' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '190–290€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '85–140€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria Fira BCN', tarifa: '130-190€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '160-260€/día', nota: 'Eventos de marca y moda' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '170-230€/día', nota: 'Estándar en ferias internacionales' },
+  { perfil: 'Azafata trilingüe', tarifa: '220-320€/día', nota: 'Muy demandada en el MWC' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '190-290€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '85-140€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasBarcelona() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasBarcelona() {
         <title>Precio azafatas para eventos en Barcelona 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos, Fira de Barcelona y congresos. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-barcelona" />
-        <meta property="og:title" content="Precio azafatas eventos Barcelona 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Barcelona 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para Fira de Barcelona y eventos corporativos." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-barcelona" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

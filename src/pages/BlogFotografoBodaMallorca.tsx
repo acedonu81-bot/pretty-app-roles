@@ -14,14 +14,14 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
   { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de boda en Mallorca?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de boda en Mallorca cuesta entre 1.500€ y 5.000€ para el reportaje completo. Es el mercado más caro de España después de Marbella. El 60-70% de las bodas en Mallorca son internacionales (alemanas, británicas, escandinavas) con presupuestos muy altos. Para bodas locales o nacionales, los precios son más accesibles: 1.500-2.500€ con álbum.' } },
   { '@type': 'Question', name: '¿Qué estilo fotográfico es más popular en Mallorca?', acceptedAnswer: { '@type': 'Answer', text: 'En Mallorca predomina el estilo romántico natural con mucho golden hour: atardeceres sobre el Mediterráneo, fincas con cipreses y olivos centenarios, luz cálida y dorada. La influencia alemana y escandinava ha traído un estilo muy limpio, con mucho espacio en los encuadres y postprocesado suave. Es uno de los estilos más valorados internacionalmente.' } },
   { '@type': 'Question', name: '¿Con cuánta antelación reservar el fotógrafo en Mallorca?', acceptedAnswer: { '@type': 'Answer', text: 'Para bodas en mayo-octubre en Mallorca (temporada alta), reserva el fotógrafo con 14-18 meses de antelación. Los mejores fotógrafos especializados en Mallorca tienen agenda completa con 2 años de anticipación para fechas peak. Para bodas fuera de temporada (noviembre-abril), 6-8 meses son suficientes.' } },
-  { '@type': 'Question', name: '¿Qué tener en cuenta al contratar fotógrafo en Mallorca?', acceptedAnswer: { '@type': 'Answer', text: 'Sí, imprescindible para el mercado internacional. La gran mayoría de bodas en Mallorca son de parejas extranjeras — inglés es obligatorio y alemán muy valorado. Un fotógrafo que se comunica bien en el idioma de los novios genera mucha más confianza y mejores retratos porque puede dirigir a los clientes naturalmente.' } },
+  { '@type': 'Question', name: '¿Qué tener en cuenta al contratar fotógrafo en Mallorca?', acceptedAnswer: { '@type': 'Answer', text: 'Sí, imprescindible para el mercado internacional. La gran mayoría de bodas en Mallorca son de parejas extranjeras: inglés es obligatorio y alemán muy valorado. Un fotógrafo que se comunica bien en el idioma de los novios genera mucha más confianza y mejores retratos porque puede dirigir a los clientes naturalmente.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Fotógrafo boda Mallorca', item: 'https://xpeak.es/blog/fotografo-boda-mallorca' }] };
 const PRECIOS = [
-  { servicio: 'Reportaje básico (4-5h, sin álbum)', precio: '1.000–1.800€' },
-  { servicio: 'Reportaje completo (8-10h, sin álbum)', precio: '1.600–3.000€' },
-  { servicio: 'Reportaje completo con álbum impreso', precio: '2.500–5.000€' },
-  { servicio: 'Pack fotógrafo + videógrafo', precio: '4.000–8.000€' },
+  { servicio: 'Reportaje básico (4-5h, sin álbum)', precio: '1.000-1.800€' },
+  { servicio: 'Reportaje completo (8-10h, sin álbum)', precio: '1.600-3.000€' },
+  { servicio: 'Reportaje completo con álbum impreso', precio: '2.500-5.000€' },
+  { servicio: 'Pack fotógrafo + videógrafo', precio: '4.000-8.000€' },
 ];
 export default function BlogFotografoBodaMallorca() {
   return (
@@ -30,7 +30,7 @@ export default function BlogFotografoBodaMallorca() {
         <title>Fotógrafo para bodas en Mallorca: precio 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un fotógrafo de boda en Mallorca. Precios reales 2026, Fincas de lujo, UNESCO Tramuntana y el mercado de bodas internacionales más activo de España." />
         <link rel="canonical" href="https://xpeak.es/blog/fotografo-boda-mallorca" />
-        <meta property="og:title" content="Fotógrafo para bodas en Mallorca: precio 2026 — XPEAK" />
+        <meta property="og:title" content="Fotógrafo para bodas en Mallorca: precio 2026 | XPEAK" />
         <meta property="og:description" content="Precios fotógrafos boda Mallorca. Fincas de lujo, UNESCO Tramuntana y el mercado de bodas internacionales más activo de España." />
         <meta property="og:url" content="https://xpeak.es/blog/fotografo-boda-mallorca" />
         <meta property="og:type" content="article" />

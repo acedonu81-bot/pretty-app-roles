@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Camareros Jerez', item: 'https://xpeak.es/blog/camareros-eventos-jerez' }] };
 
 const PRECIOS = [
-  { perfil: 'Camarero/a de sala', tarifa: '11–17€/hora', nota: 'Cóctel, cena sentada o buffet' },
-  { perfil: 'Bartender / coctelería', tarifa: '15–21€/hora', nota: 'Barra libre y coctelería' },
-  { perfil: 'Jefe de sala / coordinador', tarifa: '20–29€/hora', nota: 'Gestión del equipo en boda o feria' },
-  { perfil: 'Servicio boda en bodega (6-7h)', tarifa: '130–235€/persona', nota: 'Cóctel + cena + barra' },
-  { perfil: 'Barra libre con bartender (4h)', tarifa: '150–340€', nota: 'Incluye montaje y desmontaje' },
-  { perfil: 'Personal caseta Feria de Jerez', tarifa: '12–19€/hora', nota: 'Mayo, alta demanda puntual' },
+  { perfil: 'Camarero/a de sala', tarifa: '11-17€/hora', nota: 'Cóctel, cena sentada o buffet' },
+  { perfil: 'Bartender / coctelería', tarifa: '15-21€/hora', nota: 'Barra libre y coctelería' },
+  { perfil: 'Jefe de sala / coordinador', tarifa: '20-29€/hora', nota: 'Gestión del equipo en boda o feria' },
+  { perfil: 'Servicio boda en bodega (6-7h)', tarifa: '130-235€/persona', nota: 'Cóctel + cena + barra' },
+  { perfil: 'Barra libre con bartender (4h)', tarifa: '150-340€', nota: 'Incluye montaje y desmontaje' },
+  { perfil: 'Personal caseta Feria de Jerez', tarifa: '12-19€/hora', nota: 'Mayo, alta demanda puntual' },
 ];
 
 export default function BlogCamarerosJerez() {
@@ -33,7 +33,7 @@ export default function BlogCamarerosJerez() {
         <title>Precio camareros para eventos en Jerez 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran los camareros y bartenders para bodas de bodega y la Feria de Jerez. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/camareros-eventos-jerez" />
-        <meta property="og:title" content="Precio camareros eventos Jerez 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio camareros eventos Jerez 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de camareros y bartenders para bodas de bodega y Feria de Jerez." />
         <meta property="og:url" content="https://xpeak.es/blog/camareros-eventos-jerez" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

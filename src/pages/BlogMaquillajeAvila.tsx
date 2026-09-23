@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Maquillaje Ávila', item: 'https://xpeak.es/blog/maquillaje-eventos-avila' }] };
 
 const PRECIOS = [
-  { perfil: 'Maquillaje novia (solo)', tarifa: '70–165€', nota: 'Incluye prueba previa' },
-  { perfil: 'Maquillaje novia + peinado', tarifa: '145–300€', nota: 'Servicio integral más demandado' },
-  { perfil: 'Madrina / invitada especial', tarifa: '40–85€', nota: 'Sin prueba previa habitualmente' },
-  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '230–440€', nota: 'Desplazamiento incluido en la zona' },
-  { perfil: 'Evento corporativo / azafata', tarifa: '25–50€/persona', nota: 'Maquillaje fast-track profesional' },
-  { perfil: 'Sesión foto / vídeo', tarifa: '55–130€', nota: 'Retoque incluido' },
+  { perfil: 'Maquillaje novia (solo)', tarifa: '70-165€', nota: 'Incluye prueba previa' },
+  { perfil: 'Maquillaje novia + peinado', tarifa: '145-300€', nota: 'Servicio integral más demandado' },
+  { perfil: 'Madrina / invitada especial', tarifa: '40-85€', nota: 'Sin prueba previa habitualmente' },
+  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '230-440€', nota: 'Desplazamiento incluido en la zona' },
+  { perfil: 'Evento corporativo / azafata', tarifa: '25-50€/persona', nota: 'Maquillaje fast-track profesional' },
+  { perfil: 'Sesión foto / vídeo', tarifa: '55-130€', nota: 'Retoque incluido' },
 ];
 
 export default function BlogMaquillajeAvila() {
@@ -33,7 +33,7 @@ export default function BlogMaquillajeAvila() {
         <title>Precio maquilladora para eventos en Ávila 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobra una maquilladora para bodas y eventos institucionales en Ávila. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/maquillaje-eventos-avila" />
-        <meta property="og:title" content="Precio maquilladora eventos Ávila 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio maquilladora eventos Ávila 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de maquilladoras para bodas y eventos en Ávila." />
         <meta property="og:url" content="https://xpeak.es/blog/maquillaje-eventos-avila" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

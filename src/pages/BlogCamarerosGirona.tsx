@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Camareros Girona', item: 'https://xpeak.es/blog/camareros-eventos-girona' }] };
 
 const PRECIOS = [
-  { perfil: 'Camarero/a de sala', tarifa: '12–17€/hora', nota: 'Cóctel, cena sentada o buffet' },
-  { perfil: 'Bartender / coctelería', tarifa: '16–23€/hora', nota: 'Barra libre y coctelería de autor' },
-  { perfil: 'Jefe de sala / coordinador', tarifa: '21–30€/hora', nota: 'Gestión del equipo en boda o evento grande' },
-  { perfil: 'Servicio boda completo (6-7h)', tarifa: '135–240€/persona', nota: 'Cóctel + cena + barra' },
-  { perfil: 'Barra libre con bartender (4h)', tarifa: '160–350€', nota: 'Incluye montaje y desmontaje' },
-  { perfil: 'Personal de sala eventos gastronómicos', tarifa: '15–24€/hora', nota: 'Servicio de alto nivel en la zona de restaurantes de prestigio' },
+  { perfil: 'Camarero/a de sala', tarifa: '12-17€/hora', nota: 'Cóctel, cena sentada o buffet' },
+  { perfil: 'Bartender / coctelería', tarifa: '16-23€/hora', nota: 'Barra libre y coctelería de autor' },
+  { perfil: 'Jefe de sala / coordinador', tarifa: '21-30€/hora', nota: 'Gestión del equipo en boda o evento grande' },
+  { perfil: 'Servicio boda completo (6-7h)', tarifa: '135-240€/persona', nota: 'Cóctel + cena + barra' },
+  { perfil: 'Barra libre con bartender (4h)', tarifa: '160-350€', nota: 'Incluye montaje y desmontaje' },
+  { perfil: 'Personal de sala eventos gastronómicos', tarifa: '15-24€/hora', nota: 'Servicio de alto nivel en la zona de restaurantes de prestigio' },
 ];
 
 export default function BlogCamarerosGirona() {
@@ -33,7 +33,7 @@ export default function BlogCamarerosGirona() {
         <title>Precio camareros para eventos en Girona 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran los camareros y bartenders para bodas y eventos gastronómicos en Girona. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/camareros-eventos-girona" />
-        <meta property="og:title" content="Precio camareros eventos Girona 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio camareros eventos Girona 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de camareros y bartenders para bodas y eventos gastronómicos en Girona." />
         <meta property="og:url" content="https://xpeak.es/blog/camareros-eventos-girona" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

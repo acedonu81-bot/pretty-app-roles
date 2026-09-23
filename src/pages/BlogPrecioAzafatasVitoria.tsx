@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Vitoria-Gasteiz', item: 'https://xpeak.es/blog/precio-azafatas-vitoria' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '130–180€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '150–220€/día', nota: 'Eventos corporativos y bodas' },
-  { perfil: 'Azafata de protocolo institucional', tarifa: '165–235€/día', nota: 'Sede de instituciones vascas' },
-  { perfil: 'Azafata bilingüe (euskera/castellano)', tarifa: '160–215€/día', nota: 'Muy valorada en eventos oficiales' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '175–250€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '80–130€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '130-180€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '150-220€/día', nota: 'Eventos corporativos y bodas' },
+  { perfil: 'Azafata de protocolo institucional', tarifa: '165-235€/día', nota: 'Sede de instituciones vascas' },
+  { perfil: 'Azafata bilingüe (euskera/castellano)', tarifa: '160-215€/día', nota: 'Muy valorada en eventos oficiales' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '175-250€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '80-130€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasVitoria() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasVitoria() {
         <title>Precio azafatas para eventos en Vitoria-Gasteiz 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos institucionales y corporativos en Vitoria-Gasteiz. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-vitoria" />
-        <meta property="og:title" content="Precio azafatas eventos Vitoria-Gasteiz 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Vitoria-Gasteiz 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para eventos institucionales y corporativos en Vitoria-Gasteiz." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-vitoria" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

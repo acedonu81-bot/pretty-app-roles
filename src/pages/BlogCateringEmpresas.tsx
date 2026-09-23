@@ -8,12 +8,12 @@ import BlogAuthor from '@/components/BlogAuthor';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const FORMATOS = [
-  { formato: 'Coffee break', precio: '8€ – 18€/persona', cuando: 'Reuniones y formaciones de media jornada' },
-  { formato: 'Cóctel / Finger food', precio: '20€ – 45€/persona', cuando: 'Presentaciones de producto, inauguraciones' },
-  { formato: 'Almuerzo de trabajo (bufé)', precio: '25€ – 50€/persona', cuando: 'Teambuilding, jornadas de empresa de día' },
-  { formato: 'Cena de gala sentada', precio: '55€ – 120€/persona', cuando: 'Premios, celebraciones anuales, fin de año' },
-  { formato: 'Barra libre premium', precio: '20€ – 40€/persona/hora', cuando: 'Fiestas de empresa y eventos nocturnos' },
-  { formato: 'Food trucks / Street food', precio: '15€ – 35€/persona', cuando: 'Teambuilding outdoor, festivales corporativos' },
+  { formato: 'Coffee break', precio: '8€-18€/persona', cuando: 'Reuniones y formaciones de media jornada' },
+  { formato: 'Cóctel / Finger food', precio: '20€-45€/persona', cuando: 'Presentaciones de producto, inauguraciones' },
+  { formato: 'Almuerzo de trabajo (bufé)', precio: '25€-50€/persona', cuando: 'Teambuilding, jornadas de empresa de día' },
+  { formato: 'Cena de gala sentada', precio: '55€-120€/persona', cuando: 'Premios, celebraciones anuales, fin de año' },
+  { formato: 'Barra libre premium', precio: '20€-40€/persona/hora', cuando: 'Fiestas de empresa y eventos nocturnos' },
+  { formato: 'Food trucks / Street food', precio: '15€-35€/persona', cuando: 'Teambuilding outdoor, festivales corporativos' },
 ];
 
 const FAQ = [

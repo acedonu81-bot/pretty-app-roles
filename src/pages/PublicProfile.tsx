@@ -57,7 +57,7 @@ const ShareProfileButton = ({ name, roleLabel, url }: { name: string; roleLabel:
   const handleShare = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({ title: `${name} — XPEAK`, text: shareText, url });
+        await navigator.share({ title: `${name} | XPEAK`, text: shareText, url });
       } catch {
         // usuario canceló el share nativo — no hacer nada
       }
@@ -501,7 +501,7 @@ const PublicProfile = () => {
     // no hay nadie real al otro lado que vaya a responder. Se bloquea solo
     // esta ficha en concreto, sin etiqueta visible de "demo".
     if (sbProfile?.id === 'ccbceb86-556c-49b0-b09f-d325989e188e') {
-      toast.info('Esta ficha es un ejemplo — de momento no se puede contactar.');
+      toast.info('Esta ficha es un ejemplo: de momento no se puede contactar.');
       return;
     }
     if (!authUser) {
@@ -514,7 +514,7 @@ const PublicProfile = () => {
     // es_autorregistro (caso real 16 sep: Gonzalo DJ) — confuso y contamina
     // Actividad aunque no cuente en métricas de demanda.
     if (sbProfile && authUser.id === sbProfile.user_id) {
-      toast.info('Esta es tu ficha pública — así te ven tus clientes. No puedes contactarte a ti mismo.');
+      toast.info('Esta es tu ficha pública: así te ven tus clientes. No puedes contactarte a ti mismo.');
       return;
     }
     setShowContact(true);
@@ -753,8 +753,8 @@ const PublicProfile = () => {
   const antiguedad = antiguedadEnXpeak(sbProfile?.created_at);
   const antiguedadStr = antiguedad ? ` ${antiguedad}.` : '';
   const pageTitle = profile.specialty
-    ? `Contratar ${profile.name} — ${profile.specialty} en ${cityShort} | XPEAK`
-    : `${profile.name} — Profesional de eventos en ${cityShort} | XPEAK`;
+    ? `Contratar ${profile.name} · ${profile.specialty} en ${cityShort} | XPEAK`
+    : `${profile.name}: Profesional de eventos en ${cityShort} | XPEAK`;
   const pageDesc = `Contrata a ${profile.name}${profile.specialty ? `, ${profile.specialty}` : ''} en ${cityShort}.${priceStr}${availStr}${verifiedStr}${antiguedadStr} ${profile.description ? profile.description.slice(0, 100) + (profile.description.length > 100 ? '…' : '') : 'Contacta directamente en XPEAK.'}`;
   const ogImage = profile.photo && profile.photo.trim().length > 5
     ? profile.photo
@@ -1247,7 +1247,7 @@ const PublicProfile = () => {
               <h2 className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#D4AF37' }}>🤝 Busca pareja de baile</h2>
               <p className="text-sm mb-3" style={{ color: '#333' }}>
                 {profile.name} está buscando pareja de baile fija
-                {(profile as any).danceRole === 'lead' ? ' — leader' : (profile as any).danceRole === 'follow' ? ' — follower' : (profile as any).danceRole === 'ambos' ? ' — baila ambos roles' : ''}
+                {(profile as any).danceRole === 'lead' ? ' · leader' : (profile as any).danceRole === 'follow' ? ' · follower' : (profile as any).danceRole === 'ambos' ? ' · baila ambos roles' : ''}
                 {(profile as any).danceLevel ? `, nivel ${(profile as any).danceLevel.toLowerCase()}` : ''}.
               </p>
               <button onClick={handleContactClick}

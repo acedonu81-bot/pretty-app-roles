@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Maquillaje Mataró', item: 'https://xpeak.es/blog/maquillaje-eventos-mataro' }] };
 
 const PRECIOS = [
-  { perfil: 'Maquillaje novia (solo)', tarifa: '100–245€', nota: 'Incluye prueba previa' },
-  { perfil: 'Maquillaje novia + peinado', tarifa: '210–435€', nota: 'Servicio integral más demandado' },
-  { perfil: 'Madrina / invitada especial', tarifa: '60€–115€', nota: 'Sin prueba previa habitualmente' },
-  { perfil: 'Pack boda de playa (novia + 3 personas)', tarifa: '360–690€', nota: 'Maquillaje waterproof incluido' },
-  { perfil: 'Evento corporativo / azafata', tarifa: '32–68€/persona', nota: 'Maquillaje fast-track profesional' },
-  { perfil: 'Sesión foto / vídeo', tarifa: '85–205€', nota: 'HD, flash-friendly, retoque incluido' },
+  { perfil: 'Maquillaje novia (solo)', tarifa: '100-245€', nota: 'Incluye prueba previa' },
+  { perfil: 'Maquillaje novia + peinado', tarifa: '210-435€', nota: 'Servicio integral más demandado' },
+  { perfil: 'Madrina / invitada especial', tarifa: '60€-115€', nota: 'Sin prueba previa habitualmente' },
+  { perfil: 'Pack boda de playa (novia + 3 personas)', tarifa: '360-690€', nota: 'Maquillaje waterproof incluido' },
+  { perfil: 'Evento corporativo / azafata', tarifa: '32-68€/persona', nota: 'Maquillaje fast-track profesional' },
+  { perfil: 'Sesión foto / vídeo', tarifa: '85-205€', nota: 'HD, flash-friendly, retoque incluido' },
 ];
 
 export default function BlogMaquillajeMataro() {
@@ -33,7 +33,7 @@ export default function BlogMaquillajeMataro() {
         <title>Precio maquilladora para eventos en Mataró 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobra una maquilladora para bodas de playa y eventos en Mataró. Tarifas por servicio 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/maquillaje-eventos-mataro" />
-        <meta property="og:title" content="Precio maquilladora eventos Mataró 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio maquilladora eventos Mataró 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de maquilladoras para bodas de playa y eventos en Mataró." />
         <meta property="og:url" content="https://xpeak.es/blog/maquillaje-eventos-mataro" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

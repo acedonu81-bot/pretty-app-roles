@@ -13,15 +13,15 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
   { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de comunión en Madrid?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de comunión en Madrid cuesta entre 400€ y 1.500€. El reportaje completo (ceremonia + sesión exterior + banquete) ronda los 600-1.200€. Los precios en Madrid son un 20-30% superiores a la media nacional. Un reportaje básico de 2-3h puede conseguirse desde 350-600€.' } },
   { '@type': 'Question', name: '¿Cuánto dura un reportaje de comunión?', acceptedAnswer: { '@type': 'Answer', text: 'Un reportaje de comunión completo dura entre 5 y 8 horas: 1h de preparativos en casa, 1-1.5h de ceremonia, 30-45 min de sesión exterior, 1-2h de cóctel y 1-2h de banquete. Muchos fotógrafos ofrecen paquetes de 4-5h sin los preparativos, más económicos, si el banquete es corto.' } },
   { '@type': 'Question', name: '¿Con cuánta antelación reservar el fotógrafo de comunión en Madrid?', acceptedAnswer: { '@type': 'Answer', text: 'En Madrid, mayo y junio están copados. Para comuniones en esos meses (especialmente sábados), reserva con 6-8 meses de antelación mínimo. Los fotógrafos especializados en comuniones en Madrid se agotan antes que en otras ciudades. Para comuniones en septiembre o entre semana, 3-4 meses son suficientes.' } },
-  { '@type': 'Question', name: '¿Qué diferencia al fotógrafo de comunión del de bodas?', acceptedAnswer: { '@type': 'Answer', text: 'El fotógrafo de comunión trabaja con niños de 9-12 años — requiere más paciencia, capacidad para dirigir grupos de niños y dominar el movimiento rápido. La edición también es diferente: tonos más cálidos, encuadres más amplios para capturar el dinamismo. Los reportajes son más cortos (5-8h vs 10-12h de boda) y el precio es proporcionalmente menor.' } },
+  { '@type': 'Question', name: '¿Qué diferencia al fotógrafo de comunión del de bodas?', acceptedAnswer: { '@type': 'Answer', text: 'El fotógrafo de comunión trabaja con niños de 9-12 años: requiere más paciencia, capacidad para dirigir grupos de niños y dominar el movimiento rápido. La edición también es diferente: tonos más cálidos, encuadres más amplios para capturar el dinamismo. Los reportajes son más cortos (5-8h vs 10-12h de boda) y el precio es proporcionalmente menor.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Fotógrafo comunión Madrid', item: 'https://xpeak.es/blog/fotografo-comunion-madrid' }] };
 
 const PRECIOS = [
-  { servicio: 'Reportaje básico (ceremonia, 2-3h)', precio: '350–650€' },
-  { servicio: 'Reportaje completo (ceremonia + exterior + banquete)', precio: '600–1.200€' },
-  { servicio: 'Pack fotógrafo + vídeo de comunión', precio: '900–1.800€' },
-  { servicio: 'Reportaje con álbum impreso de lujo', precio: '1.000–2.000€' },
+  { servicio: 'Reportaje básico (ceremonia, 2-3h)', precio: '350-650€' },
+  { servicio: 'Reportaje completo (ceremonia + exterior + banquete)', precio: '600-1.200€' },
+  { servicio: 'Pack fotógrafo + vídeo de comunión', precio: '900-1.800€' },
+  { servicio: 'Reportaje con álbum impreso de lujo', precio: '1.000-2.000€' },
 ];
 
 const MOMENTOS = [
@@ -38,7 +38,7 @@ export default function BlogFotografoComunionMadrid() {
         <title>Fotógrafo comunión Madrid: precio y guía 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un fotógrafo para una comunión en Madrid. Precios reales 2026, cuándo reservar y cómo elegir al mejor fotógrafo de comuniones en la capital." />
         <link rel="canonical" href="https://xpeak.es/blog/fotografo-comunion-madrid" />
-        <meta property="og:title" content="Fotógrafo comunión Madrid: precio y guía 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Fotógrafo comunión Madrid: precio y guía 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precios reales de fotógrafos de comunión en Madrid. Paquetes, momentos clave y cuándo reservar." />
         <meta property="og:url" content="https://xpeak.es/blog/fotografo-comunion-madrid" />
         <meta property="og:type" content="article" />
@@ -66,7 +66,7 @@ export default function BlogFotografoComunionMadrid() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#4F46E5' }}>Fotografía · Madrid · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Fotógrafo para comunión en Madrid: precio y guía 2026</h1>
-            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Madrid tiene los fotógrafos de comunión más demandados de España — y los más caros. Precios reales, paquetes y todo lo que necesitas saber para no quedarte sin fotógrafo en mayo o junio.</p>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Madrid tiene los fotógrafos de comunión más demandados de España, y los más caros. Precios reales, paquetes y todo lo que necesitas saber para no quedarte sin fotógrafo en mayo o junio.</p>
             <time className="text-xs mt-3 block" style={{ color: '#666' }}>28 mayo 2026</time>
           </div>
 
@@ -99,13 +99,13 @@ export default function BlogFotografoComunionMadrid() {
                   </div>
                 ))}
               </div>
-              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Habla con el fotógrafo sobre cuál es tu prioridad — no todos los paquetes cubren los 4 momentos.</p>
+              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Habla con el fotógrafo sobre cuál es tu prioridad: no todos los paquetes cubren los 4 momentos.</p>
             </section>
 
             <section>
               <h2 className="text-lg font-black mb-3">Por qué Madrid es diferente para los fotógrafos de comunión</h2>
               <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
-                En Madrid se celebran más comuniones en mayo y junio que en cualquier otra ciudad de España. Esto significa que los fotógrafos especializados en niños tienen la agenda completamente llena desde febrero. No esperes a decidirte — si tienes fecha, reserva ya.
+                En Madrid se celebran más comuniones en mayo y junio que en cualquier otra ciudad de España. Esto significa que los fotógrafos especializados en niños tienen la agenda completamente llena desde febrero. No esperes a decidirte: si tienes fecha, reserva ya.
               </p>
               <p className="text-base leading-relaxed" style={{ color: '#222' }}>
                 Otro factor diferencial es que muchas comuniones en Madrid se celebran en restaurantes con jardín o fincas a las afueras (Pozuelo, Las Rozas, Majadahonda), lo que requiere desplazamiento y a veces suplemento. Los mejores fotógrafos de comunión en Madrid combinan experiencia trabajando con niños, buena gestión de grupos grandes y capacidad para sacar sesiones exteriores rápidas entre ceremonia y banquete.

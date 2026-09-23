@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Jerez', item: 'https://xpeak.es/blog/precio-azafatas-jerez' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '120–165€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de cata / bodega', tarifa: '130–180€/día', nota: 'Catas de sherry y visitas de grupo' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '150–200€/día', nota: 'Turismo internacional de bodegas' },
-  { perfil: 'Azafata de imagen', tarifa: '140–195€/día', nota: 'Eventos corporativos y de marca' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '160–220€/día', nota: 'Feria de Jerez y eventos grandes' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '75–120€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '120-165€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de cata / bodega', tarifa: '130-180€/día', nota: 'Catas de sherry y visitas de grupo' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '150-200€/día', nota: 'Turismo internacional de bodegas' },
+  { perfil: 'Azafata de imagen', tarifa: '140-195€/día', nota: 'Eventos corporativos y de marca' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '160-220€/día', nota: 'Feria de Jerez y eventos grandes' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '75-120€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasJerez() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasJerez() {
         <title>Precio azafatas para eventos en Jerez 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para catas de bodega, Feria de Jerez y eventos ecuestres. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-jerez" />
-        <meta property="og:title" content="Precio azafatas eventos Jerez 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Jerez 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para catas de bodega, Feria de Jerez y eventos ecuestres." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-jerez" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />
@@ -52,7 +52,7 @@ export default function BlogPrecioAzafatasJerez() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#059669' }}>Staff · Jerez de la Frontera · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Precio de azafatas para eventos en Jerez de la Frontera: guía 2026</h1>
-            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Jerez de la Frontera es una plaza comercial de interior con un sector vitivinícola propio —las bodegas de jerez— y una fuerte tradición ecuestre. Sus tarifas de azafatas están en línea con la media nacional, con picos de demanda en la Feria de Jerez de mayo.</p>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Jerez de la Frontera es una plaza comercial de interior con un sector vitivinícola propio las bodegas de jerez y una fuerte tradición ecuestre. Sus tarifas de azafatas están en línea con la media nacional, con picos de demanda en la Feria de Jerez de mayo.</p>
             <time className="text-xs mt-3 block" style={{ color: '#666' }}>8 julio 2026</time>
             <BlogAnswerBox
               question="¿Cuánto cobran las azafatas en Jerez?"

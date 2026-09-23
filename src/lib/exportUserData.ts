@@ -187,21 +187,21 @@ export const exportUserDataZip = async (user: User) => {
     ]);
 
     // ── 6. README.txt ──────────────────────────────────────────────────
-    const readme = `XPEAK — Exportación de datos personales
+    const readme = `XPEAK: Exportación de datos personales
 ========================================
 Exportado el: ${new Date().toISOString()}
 Usuario: ${displayName} (${user.email})
-Base legal: RGPD Art. 20 — Derecho a la portabilidad de los datos
+Base legal: RGPD Art. 20: Derecho a la portabilidad de los datos
 
 ARCHIVOS INCLUIDOS
 ------------------
-perfil.csv         — Todos tus datos de perfil
-bookings.csv       — Historial completo de Flash Bookings, tanto los que
+perfil.csv: Todos tus datos de perfil
+bookings.csv: Historial completo de Flash Bookings, tanto los que
                       has creado como empresario como aquellos en los que
                       te contrataron como profesional
-favoritos.csv      — Perfiles que has guardado
-conversaciones.csv — Registro de conversaciones
-resumen_anual.csv  — KPIs de actividad y resumen ejecutivo
+favoritos.csv: Perfiles que has guardado
+conversaciones.csv: Registro de conversaciones
+resumen_anual.csv: KPIs de actividad y resumen ejecutivo
 
 NOTA LEGAL
 ----------

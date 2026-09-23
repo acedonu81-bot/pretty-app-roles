@@ -21,7 +21,7 @@ const faqStructured = {
   '@type': 'FAQPage',
   mainEntity: [
     { '@type': 'Question', name: '¿Con cuánta antelación hay que empezar a organizar un evento de empresa?', acceptedAnswer: { '@type': 'Answer', text: 'Para eventos de más de 50 personas, entre 2 y 4 meses de antelación. Para cenas o presentaciones pequeñas, 3-4 semanas suelen ser suficientes. La antelación depende sobre todo de si necesitas reservar espacio y catering, que son los proveedores que antes se agotan en fechas populares.' } },
-    { '@type': 'Question', name: '¿Qué porcentaje del presupuesto se destina a cada partida?', acceptedAnswer: { '@type': 'Answer', text: 'Como orientación: catering 35-40%, espacio/alquiler 20-25%, entretenimiento (DJ, música en vivo) 10-15%, staff y azafatas 10%, producción audiovisual y decoración 10-15%. Varía según el tipo de evento — una gala de premios pesa más en producción, un team building pesa más en actividades.' } },
+    { '@type': 'Question', name: '¿Qué porcentaje del presupuesto se destina a cada partida?', acceptedAnswer: { '@type': 'Answer', text: 'Como orientación: catering 35-40%, espacio/alquiler 20-25%, entretenimiento (DJ, música en vivo) 10-15%, staff y azafatas 10%, producción audiovisual y decoración 10-15%. Varía según el tipo de evento: una gala de premios pesa más en producción, un team building pesa más en actividades.' } },
     { '@type': 'Question', name: '¿Qué proveedores hay que contratar primero?', acceptedAnswer: { '@type': 'Answer', text: 'El espacio y el catering son los que se agotan antes y condicionan la fecha, así que se reservan primero. Después DJ o música en vivo, y por último staff, fotografía y decoración, que suelen tener más disponibilidad de última hora.' } },
     { '@type': 'Question', name: '¿Se puede organizar un evento de empresa sin agencia?', acceptedAnswer: { '@type': 'Answer', text: 'Sí, especialmente para eventos de hasta 100-150 personas. Con un buen checklist y comparando proveedores directamente (sin intermediarios), es perfectamente viable gestionarlo internamente y ahorrar la comisión de agencia, que suele ser del 10-20% del presupuesto total.' } },
   ],
@@ -58,7 +58,7 @@ export default function BlogOrganizarEventoEmpresaPasoAPaso() {
         <title>Cómo organizar un evento de empresa paso a paso (2026) | XPEAK</title>
         <meta name="description" content="Checklist completo para organizar un evento corporativo en España: presupuesto por partidas, timeline de contratación y errores más comunes a evitar." />
         <link rel="canonical" href="https://xpeak.es/blog/organizar-evento-empresa-paso-a-paso" />
-        <meta property="og:title" content="Cómo organizar un evento de empresa paso a paso — XPEAK Blog" />
+        <meta property="og:title" content="Cómo organizar un evento de empresa paso a paso | XPEAK Blog" />
         <meta property="og:description" content="Checklist completo: presupuesto por partidas, timeline y errores a evitar al organizar un evento corporativo." />
         <meta property="og:url" content="https://xpeak.es/blog/organizar-evento-empresa-paso-a-paso" />
         <meta property="og:type" content="article" />

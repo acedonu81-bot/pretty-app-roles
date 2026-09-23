@@ -19,10 +19,10 @@ export default function PlantillaContratoDJ() {
   return (
     <>
       <Helmet>
-        <title>Plantilla Contrato DJ 2026 | Descarga Word y PDF — XPEAK</title>
+        <title>Plantilla Contrato DJ 2026 | Descarga Word y PDF | XPEAK</title>
         <meta name="description" content="Descarga la plantilla de contrato para DJ. Formato Word editable con todas las cláusulas legales para eventos y bodas en España. Actualizado 2026." />
         <link rel="canonical" href="https://xpeak.es/plantilla-contrato-dj" />
-        <meta property="og:title" content="Plantilla Contrato DJ 2026 — XPEAK" />
+        <meta property="og:title" content="Plantilla Contrato DJ 2026 | XPEAK" />
         <meta property="og:description" content="Plantilla de contrato DJ para eventos y bodas. Word editable, con cláusulas de cancelación, rider técnico e IVA/IRPF." />
         <meta property="og:url" content="https://xpeak.es/plantilla-contrato-dj" />
         <meta property="og:type" content="website" />
@@ -104,7 +104,7 @@ export default function PlantillaContratoDJ() {
                 {[
                   { t: 'Protege tu dinero', d: 'Un contrato con cláusula de cancelación evita que pierdas la señal si el DJ no aparece.' },
                   { t: 'Evita sorpresas de precio', d: 'Sin contrato, el DJ puede añadir extras (horas, equipo) el día del evento.' },
-                  { t: 'Garantiza la actuación prometida', d: 'Playlist, equipo, hora de inicio y fin — todo queda por escrito.' },
+                  { t: 'Garantiza la actuación prometida', d: 'Playlist, equipo, hora de inicio y fin: todo queda por escrito.' },
                   { t: 'Obligatorio para facturar', d: 'Si el DJ emite factura (IVA + IRPF), necesitas el contrato para la deducción.' },
                 ].map(item => (
                   <div key={item.t} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>

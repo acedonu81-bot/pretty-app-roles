@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Camareros Torremolinos', item: 'https://xpeak.es/blog/camareros-eventos-torremolinos' }] };
 
 const PRECIOS = [
-  { perfil: 'Camarero/a de sala', tarifa: '12–19€/hora', nota: 'Cóctel, cena sentada o buffet' },
-  { perfil: 'Bartender / coctelería', tarifa: '16–24€/hora', nota: 'Barra libre en hoteles y clubs de playa' },
-  { perfil: 'Jefe de sala / coordinador', tarifa: '23–32€/hora', nota: 'Gestión del equipo en evento grande' },
-  { perfil: 'Servicio boda completo (6-7h)', tarifa: '140–260€/persona', nota: 'Cóctel + cena + barra' },
-  { perfil: 'Barra libre con bartender (4h)', tarifa: '170–380€', nota: 'Incluye montaje y desmontaje' },
-  { perfil: 'Personal de cocina de apoyo', tarifa: '13€–22€/hora', nota: 'Emplatado y logística en directo' },
+  { perfil: 'Camarero/a de sala', tarifa: '12-19€/hora', nota: 'Cóctel, cena sentada o buffet' },
+  { perfil: 'Bartender / coctelería', tarifa: '16-24€/hora', nota: 'Barra libre en hoteles y clubs de playa' },
+  { perfil: 'Jefe de sala / coordinador', tarifa: '23-32€/hora', nota: 'Gestión del equipo en evento grande' },
+  { perfil: 'Servicio boda completo (6-7h)', tarifa: '140-260€/persona', nota: 'Cóctel + cena + barra' },
+  { perfil: 'Barra libre con bartender (4h)', tarifa: '170-380€', nota: 'Incluye montaje y desmontaje' },
+  { perfil: 'Personal de cocina de apoyo', tarifa: '13€-22€/hora', nota: 'Emplatado y logística en directo' },
 ];
 
 export default function BlogCamarerosTorremolinos() {
@@ -33,7 +33,7 @@ export default function BlogCamarerosTorremolinos() {
         <title>Precio camareros para eventos en Torremolinos 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran los camareros y bartenders para eventos en hoteles y clubs de playa en Torremolinos. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/camareros-eventos-torremolinos" />
-        <meta property="og:title" content="Precio camareros eventos Torremolinos 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio camareros eventos Torremolinos 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de camareros y bartenders para eventos en hoteles y clubs de playa en Torremolinos." />
         <meta property="og:url" content="https://xpeak.es/blog/camareros-eventos-torremolinos" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

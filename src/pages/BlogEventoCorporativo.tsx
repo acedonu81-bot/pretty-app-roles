@@ -41,21 +41,21 @@ const breadcrumb = {
 };
 
 const TIMELINE = [
-  { fase: '3–6 meses antes', tareas: ['Definir objetivo y formato del evento', 'Establecer presupuesto total', 'Elegir fecha (evitar puentes y vacaciones)', 'Buscar y reservar el venue', 'Contratar catering y AV/sonido'] },
-  { fase: '2–3 meses antes', tareas: ['Confirmar programa y agenda', 'Contratar DJ, fotógrafo, presentador', 'Diseñar invitaciones y comunicación', 'Gestionar inscripciones/asistencia', 'Confirmar requisitos técnicos con venue'] },
-  { fase: '4–6 semanas antes', tareas: ['Enviar invitaciones formales', 'Confirmar número exacto de asistentes', 'Cierre de menú con catering', 'Briefing a todos los proveedores', 'Contratar seguro de evento si aplica'] },
-  { fase: '1–2 semanas antes', tareas: ['Visita técnica al venue', 'Confirmar horarios con cada proveedor', 'Preparar materiales y decoración', 'Rehearsal si hay presentaciones', 'Plan B para imprevistos (lluvia, técnicos)'] },
+  { fase: '3-6 meses antes', tareas: ['Definir objetivo y formato del evento', 'Establecer presupuesto total', 'Elegir fecha (evitar puentes y vacaciones)', 'Buscar y reservar el venue', 'Contratar catering y AV/sonido'] },
+  { fase: '2-3 meses antes', tareas: ['Confirmar programa y agenda', 'Contratar DJ, fotógrafo, presentador', 'Diseñar invitaciones y comunicación', 'Gestionar inscripciones/asistencia', 'Confirmar requisitos técnicos con venue'] },
+  { fase: '4-6 semanas antes', tareas: ['Enviar invitaciones formales', 'Confirmar número exacto de asistentes', 'Cierre de menú con catering', 'Briefing a todos los proveedores', 'Contratar seguro de evento si aplica'] },
+  { fase: '1-2 semanas antes', tareas: ['Visita técnica al venue', 'Confirmar horarios con cada proveedor', 'Preparar materiales y decoración', 'Rehearsal si hay presentaciones', 'Plan B para imprevistos (lluvia, técnicos)'] },
   { fase: 'Día del evento', tareas: ['Coordinador presente desde 2h antes', 'Check técnico de AV y sonido', 'Recepción y acreditación de asistentes', 'Seguir el run of show al minuto', 'Fotos de todos los momentos clave'] },
 ];
 
 const PRESUPUESTO = [
-  { partida: 'Venue', porcentaje: '30–40%', nota: 'Mayor variable. Incluye alquiler + tasas.' },
-  { partida: 'Catering', porcentaje: '25–35%', nota: 'Coffee breaks, cócteles, cenas.' },
-  { partida: 'AV / Sonido / Iluminación', porcentaje: '10–15%', nota: 'Pantallas, micro, streaming.' },
-  { partida: 'Entretenimiento (DJ, música)', porcentaje: '5–10%', nota: 'Según formato del evento.' },
-  { partida: 'Fotografía / Video', porcentaje: '5–8%', nota: 'Documentación y contenido.' },
-  { partida: 'Decoración y señalética', porcentaje: '5–8%', nota: 'Branding del evento.' },
-  { partida: 'Imprevistos', porcentaje: '5–10%', nota: 'Siempre reservar este margen.' },
+  { partida: 'Venue', porcentaje: '30-40%', nota: 'Mayor variable. Incluye alquiler + tasas.' },
+  { partida: 'Catering', porcentaje: '25-35%', nota: 'Coffee breaks, cócteles, cenas.' },
+  { partida: 'AV / Sonido / Iluminación', porcentaje: '10-15%', nota: 'Pantallas, micro, streaming.' },
+  { partida: 'Entretenimiento (DJ, música)', porcentaje: '5-10%', nota: 'Según formato del evento.' },
+  { partida: 'Fotografía / Video', porcentaje: '5-8%', nota: 'Documentación y contenido.' },
+  { partida: 'Decoración y señalética', porcentaje: '5-8%', nota: 'Branding del evento.' },
+  { partida: 'Imprevistos', porcentaje: '5-10%', nota: 'Siempre reservar este margen.' },
 ];
 
 export default function BlogEventoCorporativo() {
@@ -65,14 +65,14 @@ export default function BlogEventoCorporativo() {
         <title>Evento corporativo: guía paso a paso 2026 | XPEAK</title>
         <meta name="description" content="Guía completa para organizar eventos de empresa en España. Presupuesto, proveedores, timeline y checklist completo para tu evento corporativo." />
         <link rel="canonical" href="https://xpeak.es/blog/como-organizar-evento-corporativo" />
-        <meta property="og:title" content="Organizar evento corporativo: guía completa 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Organizar evento corporativo: guía completa 2026 | XPEAK Blog" />
         <meta property="og:description" content="Guía práctica para organizar eventos de empresa en España: presupuesto, proveedores, timeline y checklist completo." />
         <meta property="og:url" content="https://xpeak.es/blog/como-organizar-evento-corporativo" />
         <meta property="og:type" content="article" />
         <meta property="og:image" content="https://xpeak.es/og-image.jpg" />
         <meta property="og:site_name" content="XPEAK" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Organizar evento corporativo: guía 2026 — XPEAK Blog" />
+        <meta name="twitter:title" content="Organizar evento corporativo: guía 2026 | XPEAK Blog" />
         <meta name="twitter:description" content="Cómo organizar eventos de empresa en España. Presupuesto, proveedores y checklist." />
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(article)}</script>

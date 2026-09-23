@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Lleida', item: 'https://xpeak.es/blog/precio-azafatas-lleida' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '110–150€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '130–190€/día', nota: 'Eventos de marca y bodas en fincas del Segrià' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '140–180€/día', nota: 'Ferias agroalimentarias con presencia internacional' },
-  { perfil: 'Azafata de protocolo', tarifa: '130–200€/día', nota: 'Actos institucionales del centro' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '155–220€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '65–110€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '110-150€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '130-190€/día', nota: 'Eventos de marca y bodas en fincas del Segrià' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '140-180€/día', nota: 'Ferias agroalimentarias con presencia internacional' },
+  { perfil: 'Azafata de protocolo', tarifa: '130-200€/día', nota: 'Actos institucionales del centro' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '155-220€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '65-110€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasLleida() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasLleida() {
         <title>Precio azafatas para eventos en Lleida 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para ferias, eventos y bodas en Lleida. Tarifas económicas de interior 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-lleida" />
-        <meta property="og:title" content="Precio azafatas eventos Lleida 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Lleida 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para ferias agroalimentarias, eventos y bodas en Lleida." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-lleida" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

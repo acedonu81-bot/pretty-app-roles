@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Maquillaje Las Palmas', item: 'https://xpeak.es/blog/maquillaje-eventos-laspalmas' }] };
 
 const PRECIOS = [
-  { perfil: 'Maquillaje novia (solo)', tarifa: '120–290€', nota: 'Incluye prueba previa' },
-  { perfil: 'Maquillaje novia + peinado', tarifa: '240–500€', nota: 'Servicio integral más demandado' },
-  { perfil: 'Madrina / invitada especial', tarifa: '70–140€', nota: 'Sin prueba previa habitualmente' },
-  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '410–790€', nota: 'Desplazamiento a hotel/finca incluido' },
-  { perfil: 'Evento corporativo / azafata', tarifa: '38–80€/persona', nota: 'Maquillaje fast-track profesional' },
-  { perfil: 'Sesión foto / vídeo', tarifa: '95–235€', nota: 'HD, flash-friendly, retoque incluido' },
+  { perfil: 'Maquillaje novia (solo)', tarifa: '120-290€', nota: 'Incluye prueba previa' },
+  { perfil: 'Maquillaje novia + peinado', tarifa: '240-500€', nota: 'Servicio integral más demandado' },
+  { perfil: 'Madrina / invitada especial', tarifa: '70-140€', nota: 'Sin prueba previa habitualmente' },
+  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '410-790€', nota: 'Desplazamiento a hotel/finca incluido' },
+  { perfil: 'Evento corporativo / azafata', tarifa: '38-80€/persona', nota: 'Maquillaje fast-track profesional' },
+  { perfil: 'Sesión foto / vídeo', tarifa: '95-235€', nota: 'HD, flash-friendly, retoque incluido' },
 ];
 
 export default function BlogMaquillajeLasPalmas() {
@@ -33,7 +33,7 @@ export default function BlogMaquillajeLasPalmas() {
         <title>Precio maquilladora para eventos en Las Palmas 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobra una maquilladora para bodas y eventos corporativos en Las Palmas de Gran Canaria. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/maquillaje-eventos-laspalmas" />
-        <meta property="og:title" content="Precio maquilladora eventos Las Palmas 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio maquilladora eventos Las Palmas 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de maquilladoras para bodas y eventos corporativos en Las Palmas de Gran Canaria." />
         <meta property="og:url" content="https://xpeak.es/blog/maquillaje-eventos-laspalmas" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

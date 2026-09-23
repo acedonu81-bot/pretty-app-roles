@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Zaragoza', item: 'https://xpeak.es/blog/precio-azafatas-zaragoza' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '110–160€/día', nota: 'Jornada completa 8h, recinto Montañana' },
-  { perfil: 'Azafata de imagen', tarifa: '130–200€/día', nota: 'Eventos de marca y protocolo' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '145–190€/día', nota: 'Ferias sectoriales con visitantes internacionales' },
-  { perfil: 'Azafata de protocolo', tarifa: '150–210€/día', nota: 'Bodas y actos institucionales' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '160–230€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '70–110€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '110-160€/día', nota: 'Jornada completa 8h, recinto Montañana' },
+  { perfil: 'Azafata de imagen', tarifa: '130-200€/día', nota: 'Eventos de marca y protocolo' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '145-190€/día', nota: 'Ferias sectoriales con visitantes internacionales' },
+  { perfil: 'Azafata de protocolo', tarifa: '150-210€/día', nota: 'Bodas y actos institucionales' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '160-230€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '70-110€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasZaragoza() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasZaragoza() {
         <title>Precio azafatas para eventos en Zaragoza 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos y ferias en Zaragoza. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-zaragoza" />
-        <meta property="og:title" content="Precio azafatas eventos Zaragoza 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Zaragoza 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para ferias y eventos corporativos en Zaragoza." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-zaragoza" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

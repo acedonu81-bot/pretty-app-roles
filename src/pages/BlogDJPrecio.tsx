@@ -12,27 +12,27 @@ import BlogAuthor from '@/components/BlogAuthor';
 import BlogTopCTA from '@/components/BlogTopCTA';
 
 const TABLE = [
-  { perfil: 'DJ emergente / rookie', experiencia: '< 1 año', rango: '30€ – 60€/h', nota: 'Bodas pequeñas, cumpleaños' },
-  { perfil: 'DJ semi-profesional', experiencia: '1–3 años', rango: '60€ – 120€/h', nota: 'Bares, salas pequeñas, eventos' },
-  { perfil: 'DJ profesional', experiencia: '3–7 años', rango: '120€ – 250€/h', nota: 'Salas medianas, festivales locales' },
-  { perfil: 'DJ de referencia', experiencia: '+7 años', rango: '250€ – 500€/h', nota: 'Clubs nacionales, festivales' },
+  { perfil: 'DJ emergente / rookie', experiencia: '< 1 año', rango: '30€-60€/h', nota: 'Bodas pequeñas, cumpleaños' },
+  { perfil: 'DJ semi-profesional', experiencia: '1-3 años', rango: '60€-120€/h', nota: 'Bares, salas pequeñas, eventos' },
+  { perfil: 'DJ profesional', experiencia: '3-7 años', rango: '120€-250€/h', nota: 'Salas medianas, festivales locales' },
+  { perfil: 'DJ de referencia', experiencia: '+7 años', rango: '250€-500€/h', nota: 'Clubs nacionales, festivales' },
   { perfil: 'DJ artista internacional', experiencia: 'Booking exclusivo', rango: '500€+/h', nota: 'Macrofestivales, residencias' },
 ];
 
 const CITIES = [
-  { ciudad: 'Madrid', rango: '80€ – 300€/h', note: 'Mayor oferta y demanda de España' },
-  { ciudad: 'Barcelona', rango: '100€ – 400€/h', note: 'Referente europeo, DJs internacionales' },
-  { ciudad: 'Valencia', rango: '60€ – 250€/h', note: 'Mercado creciente, Lower Festival' },
-  { ciudad: 'Sevilla', rango: '50€ – 200€/h', note: 'Fuerte tradición de eventos privados' },
-  { ciudad: 'Bilbao / País Vasco', rango: '70€ – 220€/h', note: 'BBK Live, escena techno activa' },
-  { ciudad: 'Málaga / Costa del Sol', rango: '60€ – 280€/h', note: 'Temporada alta junio–septiembre' },
+  { ciudad: 'Madrid', rango: '80€-300€/h', note: 'Mayor oferta y demanda de España' },
+  { ciudad: 'Barcelona', rango: '100€-400€/h', note: 'Referente europeo, DJs internacionales' },
+  { ciudad: 'Valencia', rango: '60€-250€/h', note: 'Mercado creciente, Lower Festival' },
+  { ciudad: 'Sevilla', rango: '50€-200€/h', note: 'Fuerte tradición de eventos privados' },
+  { ciudad: 'Bilbao / País Vasco', rango: '70€-220€/h', note: 'BBK Live, escena techno activa' },
+  { ciudad: 'Málaga / Costa del Sol', rango: '60€-280€/h', note: 'Temporada alta junio-septiembre' },
 ];
 
 const FAQ = [
   { q: '¿Se puede negociar el precio con un DJ?', a: 'Sí. La mayoría de los DJs tienen márgenes de negociación, especialmente para contratos de temporada o más de una fecha. Plataformas como XPEAK muestran tarifas públicas de referencia para que la negociación parta de datos reales.' },
   { q: '¿El precio incluye equipo de sonido?', a: 'Depende del DJ. Muchos DJs emergentes no llevan equipo; los profesionales suelen tener setup propio (controladora, monitores). Comprueba en el perfil si el equipo está incluido o si necesitas contratar técnico de sonido aparte.' },
   { q: '¿Hay que pagar IRPF al contratar un DJ?', a: 'Si el DJ es autónomo (epígrafe 962 de IAE), la factura incluirá un 15% de retención de IRPF. El empresario descuenta ese porcentaje del pago y lo ingresa a Hacienda. Los contratos generados en XPEAK incluyen este cálculo automáticamente.' },
-  { q: '¿Cuánto vale un DJ para una boda en España?', a: 'Un DJ para boda en España cuesta entre 400€ y 1.200€ por actuación completa (4–6h), incluyendo equipo. El precio depende de la ciudad, duración y si incluye música en la ceremonia y cóctel.' },
+  { q: '¿Cuánto vale un DJ para una boda en España?', a: 'Un DJ para boda en España cuesta entre 400€ y 1.200€ por actuación completa (4-6h), incluyendo equipo. El precio depende de la ciudad, duración y si incluye música en la ceremonia y cóctel.' },
   { q: '¿Cuánto cobra un DJ por una hora?', a: 'La tarifa por hora oscila entre 30€ (DJ emergente) y 500€+ (artista de referencia). Para eventos privados (bodas, cumpleaños, comuniones), lo habitual es contratar un bloque de 4-6 horas, no por hora suelta.' },
   { q: '¿Cuánto cobra un DJ para una fiesta de 18 cumpleaños o discomóvil?', a: 'Para fiestas de cumpleaños y discomóviles con equipo propio, el rango típico es 150€-400€ por 3-4 horas, dependiendo de si incluye iluminación y microfonía para juegos.' },
   { q: '¿Qué diferencia hay entre contratar un DJ por agencia o directamente?', a: 'Las agencias suelen añadir un 20-40% de comisión sobre la tarifa del DJ. Contratar directamente (por ejemplo, a través del directorio de XPEAK, sin intermediarios) permite pagar el precio real que fija el propio profesional.' },
@@ -134,18 +134,18 @@ const faqStructured = {
 
           {/* Intro */}
           <p className="text-base leading-relaxed mb-6" style={{ color: '#222' }}>
-            La pregunta que más reciben salas, promotoras y organizadores cuando van a contratar un DJ es siempre la misma: <strong style={{ color: '#111' }}>¿cuánto cuesta?</strong> La respuesta honesta es que depende de tres variables — experiencia, ciudad y tipo de evento — y que la horquilla va de 30€ a más de 500€/hora. Esta guía desglosa esos números a partir de tarifas públicas del sector y de los perfiles verificados en el directorio de XPEAK.
+            La pregunta que más reciben salas, promotoras y organizadores cuando van a contratar un DJ es siempre la misma: <strong style={{ color: '#111' }}>¿cuánto cuesta?</strong> La respuesta honesta es que depende de tres variables, experiencia, ciudad y tipo de evento, y que la horquilla va de 30€ a más de 500€/hora. Esta guía desglosa esos números a partir de tarifas públicas del sector y de los perfiles verificados en el directorio de XPEAK.
           </p>
 
           <BlogAnswerBox
             question="¿Cuánto cobra un DJ en España en 2026?"
-            answer="Un DJ profesional en España cobra entre 60€ y 300€/hora. Para bodas y eventos privados el presupuesto total es de 400€ – 1.200€ por actuación completa. Barcelona y Madrid son las ciudades más caras; las medianas del interior, las más económicas. El precio varía según experiencia, equipo incluido y tipo de evento."
+            answer="Un DJ profesional en España cobra entre 60€ y 300€/hora. Para bodas y eventos privados el presupuesto total es de 400€-1.200€ por actuación completa. Barcelona y Madrid son las ciudades más caras; las medianas del interior, las más económicas. El precio varía según experiencia, equipo incluido y tipo de evento."
           />
           <picture>
             <source srcSet="/images/blog/cuanto-cobra-dj-espana-2026.webp" type="image/webp" />
             <img
               src="/images/blog/cuanto-cobra-dj-espana-2026.jpg"
-              alt="DJ profesional en cabina con controladora y luces de evento — precios de DJ en España 2026"
+              alt="DJ profesional en cabina con controladora y luces de evento: precios de DJ en España 2026"
               className="w-full rounded-xl my-6 object-cover"
               style={{ maxHeight: 320, filter: 'brightness(0.9)' }}
               loading="lazy"
@@ -242,8 +242,8 @@ const faqStructured = {
           <ol className="space-y-3 mb-10">
             {[
               { n: '01', text: 'Usa Flash Booking para fechas urgentes. La competencia entre DJs disponibles en tu zona te garantiza precios de mercado real, no tarifas infladas.' },
-              { n: '02', text: 'Negocia contratos de temporada. Si necesitas un DJ fijo para los viernes o los veranos, ofrece 4–8 fechas cerradas a cambio de un descuento del 15–25%.' },
-              { n: '03', text: 'Filtra por tarifa en el directorio XPEAK antes de contactar. Evita conversaciones que acaban en "está fuera de presupuesto" — todos los precios son públicos.' },
+              { n: '02', text: 'Negocia contratos de temporada. Si necesitas un DJ fijo para los viernes o los veranos, ofrece 4-8 fechas cerradas a cambio de un descuento del 15-25%.' },
+              { n: '03', text: 'Filtra por tarifa en el directorio XPEAK antes de contactar. Evita conversaciones que acaban en "está fuera de presupuesto": todos los precios son públicos.' },
             ].map(item => (
               <li key={item.n} className="flex gap-3">
                 <span className="text-2xl font-black flex-shrink-0" style={{ color: 'rgba(212,175,55,0.2)', lineHeight: '1.1' }}>{item.n}</span>
@@ -300,7 +300,7 @@ const faqStructured = {
               <div>
                 <p className="text-sm font-black mb-0.5">¿Buscas DJ para tu sala o evento?</p>
                 <p className="text-xs" style={{ color: '#333' }}>
-                  Directorio con tarifas públicas · Flash Booking para esta noche · 0 comisión
+                  Directorio con tarifas públicas · Flash Booking para esta noche
                 </p>
               </div>
               <a href="/contratar-dj"
@@ -340,7 +340,7 @@ const faqStructured = {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
                 { href: '/blog/dj-para-eventos', tag: 'Hub DJ', title: 'DJ para eventos: guía completa de precios 2026', desc: 'Precios, perfiles y cómo contratar DJ para cada tipo de evento en España.' },
-                { href: '/blog/musica-en-vivo-para-bodas', tag: 'Bodas', title: 'Música en vivo para bodas — grupos y precios 2026', desc: 'Solistas, bandas, jazz y cuartetos. Cuánto cuesta cada formato.' },
+                { href: '/blog/musica-en-vivo-para-bodas', tag: 'Bodas', title: 'Música en vivo para bodas: grupos y precios 2026', desc: 'Solistas, bandas, jazz y cuartetos. Cuánto cuesta cada formato.' },
                 { href: '/blog/maestro-de-ceremonias-boda-precio-guia', tag: 'Bodas', title: 'Maestro de ceremonias: precio y guía 2026', desc: 'Qué hace un MC, cuánto cobra y cómo elegirlo para tu boda.' },
                 { href: '/blog/cuanto-cuesta-una-boda-en-espana', tag: 'Bodas', title: '¿Cuánto cuesta una boda en España en 2026?', desc: 'Presupuesto completo por partida: catering, música, fotos y más.' },
               ].map(p => (

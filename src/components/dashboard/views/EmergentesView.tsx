@@ -12,7 +12,7 @@ const EmergentesView = ({ onNavigate, onMessage, searchQuery, onViewProfile }: P
   <DirectoryView
     role="dj"
     title="DJs Emergentes"
-    subtitle="DJs que se están iniciando. Contacta por mensaje para conocerlos — sin Flash Booking directo mientras suben de nivel."
+    subtitle="DJs que se están iniciando. Contacta por mensaje para conocerlos, sin Flash Booking directo mientras suben de nivel."
     onNavigate={onNavigate}
     onMessage={onMessage}
     searchQuery={searchQuery}

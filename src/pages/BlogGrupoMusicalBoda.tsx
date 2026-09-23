@@ -31,18 +31,18 @@ const faqStructured = {
   '@context': 'https://schema.org', '@type': 'FAQPage',
   mainEntity: [
     { '@type': 'Question', name: '¿Cuánto cuesta un grupo musical para una boda?', acceptedAnswer: { '@type': 'Answer', text: 'Un grupo musical para una boda en España cuesta entre 1.200€ y 5.000€ según el número de músicos, repertorio y ciudad. Un dúo acústico para el cóctel parte desde 600€; una orquesta de 8 piezas para el banquete puede superar los 4.000€.' } },
-    { '@type': 'Question', name: '¿Qué tipo de grupo musical es mejor para una boda?', acceptedAnswer: { '@type': 'Answer', text: 'Depende del momento: dúo o trío para la ceremonia y el cóctel (acústico, íntimo), banda de 4–6 para el banquete (versiones pop/rock/soul), y DJ para el cierre nocturno. Muchas parejas combinan grupo en vivo + DJ.' } },
+    { '@type': 'Question', name: '¿Qué tipo de grupo musical es mejor para una boda?', acceptedAnswer: { '@type': 'Answer', text: 'Depende del momento: dúo o trío para la ceremonia y el cóctel (acústico, íntimo), banda de 4-6 para el banquete (versiones pop/rock/soul), y DJ para el cierre nocturno. Muchas parejas combinan grupo en vivo + DJ.' } },
     { '@type': 'Question', name: '¿El grupo musical necesita equipo de sonido propio?', acceptedAnswer: { '@type': 'Answer', text: 'Los grupos profesionales suelen incluir su propio PA (sistema de amplificación). Para bodas en exteriores o fincas grandes, verifica que el equipo cubre el aforo. Algunos grupos cobran extra por el técnico de sonido en venues grandes.' } },
-    { '@type': 'Question', name: '¿Con cuánta antelación contratar un grupo musical para boda?', acceptedAnswer: { '@type': 'Answer', text: 'Los mejores grupos de bodas se reservan con 9–12 meses de antelación para temporada alta (mayo–octubre). Fuera de temporada o para bodas en días laborables, 3–4 meses pueden ser suficientes.' } },
+    { '@type': 'Question', name: '¿Con cuánta antelación contratar un grupo musical para boda?', acceptedAnswer: { '@type': 'Answer', text: 'Los mejores grupos de bodas se reservan con 9-12 meses de antelación para temporada alta (mayo-octubre). Fuera de temporada o para bodas en días laborables, 3-4 meses pueden ser suficientes.' } },
   ],
 };
 
 const TIPOS = [
-  { tipo: 'Dúo acústico (guitarra + voz)', momento: 'Ceremonia / cóctel', rango: '400€ – 900€', nota: 'Ambiente íntimo, versiones acústicas' },
-  { tipo: 'Trío jazz / swing', momento: 'Cóctel / aperitivo', rango: '800€ – 1.600€', nota: 'Elegante, jazz standards, bossa nova' },
-  { tipo: 'Cuarteto de cuerdas', momento: 'Ceremonia clásica', rango: '900€ – 1.800€', nota: 'Clásico, música barroca y pop clásico' },
-  { tipo: 'Banda pop / rock (5–7 músicos)', momento: 'Banquete / fiesta', rango: '1.500€ – 3.500€', nota: 'Versiones hits, muy festivo' },
-  { tipo: 'Orquesta (8–12 músicos)', momento: 'Banquete completo', rango: '3.000€ – 6.000€', nota: 'Show completo, canto y baile' },
+  { tipo: 'Dúo acústico (guitarra + voz)', momento: 'Ceremonia / cóctel', rango: '400€-900€', nota: 'Ambiente íntimo, versiones acústicas' },
+  { tipo: 'Trío jazz / swing', momento: 'Cóctel / aperitivo', rango: '800€-1.600€', nota: 'Elegante, jazz standards, bossa nova' },
+  { tipo: 'Cuarteto de cuerdas', momento: 'Ceremonia clásica', rango: '900€-1.800€', nota: 'Clásico, música barroca y pop clásico' },
+  { tipo: 'Banda pop / rock (5-7 músicos)', momento: 'Banquete / fiesta', rango: '1.500€-3.500€', nota: 'Versiones hits, muy festivo' },
+  { tipo: 'Orquesta (8-12 músicos)', momento: 'Banquete completo', rango: '3.000€-6.000€', nota: 'Show completo, canto y baile' },
 ];
 
 export default function BlogGrupoMusicalBoda() {
@@ -70,11 +70,11 @@ export default function BlogGrupoMusicalBoda() {
           <p className="text-[#555] text-sm mb-8">Actualizado junio 2026 · 9 min lectura</p>
 
           <BlogAnswerBox question="¿Cuánto cuesta un grupo musical para una boda?">
-            Un grupo musical para boda en España cuesta entre <strong>400€ y 6.000€</strong> según el formato. Un dúo acústico para el cóctel parte desde 400€; una banda completa de 6 músicos para el banquete ronda los 2.000–3.500€; una orquesta de 10+ piezas puede superar los 5.000€.
+            Un grupo musical para boda en España cuesta entre <strong>400€ y 6.000€</strong> según el formato. Un dúo acústico para el cóctel parte desde 400€; una banda completa de 6 músicos para el banquete ronda los 2.000-3.500€; una orquesta de 10+ piezas puede superar los 5.000€.
           </BlogAnswerBox>
 
           <p className="text-[#333] mb-6">
-            La música en vivo marca la diferencia entre una boda memorable y una boda corriente. El grupo musical crea momentos únicos que ningún playlist puede reproducir. Pero contratar el grupo equivocado — o pagarlo de más — es uno de los errores más frecuentes en la planificación de bodas.
+            La música en vivo marca la diferencia entre una boda memorable y una boda corriente. El grupo musical crea momentos únicos que ningún playlist puede reproducir. Pero contratar el grupo equivocado, o pagarlo de más, es uno de los errores más frecuentes en la planificación de bodas.
           </p>
 
           <BlogInlineCTA role="staff" text="¿Buscas grupo musical para tu boda? Compara artistas verificados y tarifas reales en XPEAK." />
@@ -101,12 +101,12 @@ export default function BlogGrupoMusicalBoda() {
 
           <h2 className="text-2xl font-bold mt-10 mb-4">¿Qué incluye el precio de un grupo musical para boda?</h2>
           <ul className="list-disc list-inside space-y-2 text-[#333] mb-6">
-            <li>Actuación en vivo según el tiempo acordado (generalmente 2–4 pases de 45 min)</li>
+            <li>Actuación en vivo según el tiempo acordado (generalmente 2-4 pases de 45 min)</li>
             <li>Sistema de sonido (PA) propio para venues de hasta 150 personas</li>
             <li>Repertorio personalizable (top de la novia, primer baile, etc.)</li>
             <li>Comunicación previa para adaptar el set-list a tus gustos</li>
           </ul>
-          <p className="text-[#333] mb-8">Extras habituales con coste adicional: técnico de sonido para venues grandes (+200–400€), desplazamientos superiores a 100 km, alojamiento si la boda es en zona rural alejada, segundo pase nocturno más allá de lo contratado.</p>
+          <p className="text-[#333] mb-8">Extras habituales con coste adicional: técnico de sonido para venues grandes (+200-400€), desplazamientos superiores a 100 km, alojamiento si la boda es en zona rural alejada, segundo pase nocturno más allá de lo contratado.</p>
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Grupo musical + DJ: la combinación perfecta</h2>
           <p className="text-[#333] mb-6">La tendencia dominante en bodas 2026 es combinar <strong>grupo musical en vivo para el cóctel y el banquete</strong> (ambiente, primeros bailes) con un <strong>DJ para el cierre nocturno</strong> (de 00:00 a 04:00). Esta combinación maximiza el ambiente en cada momento y suele costar entre 2.500€ y 5.000€ en total por ambos servicios.</p>

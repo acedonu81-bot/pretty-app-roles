@@ -17,12 +17,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'RRPP discoteca trabajo', item: 'https://xpeak.es/blog/como-trabajar-de-rrpp-discoteca' }] };
 
 const PASOS = [
-  { titulo: 'Entiende cómo funciona el modelo de comisión', desc: 'El RRPP no cobra salario fijo — cobra por resultados. Cuantas más personas lleves a la sala, más ganas. Antes de empezar, negocia con la sala qué cuenta como "tu lista": solo entrada directa, o también mesas que reserves. Pon todo por escrito.' },
+  { titulo: 'Entiende cómo funciona el modelo de comisión', desc: 'El RRPP no cobra salario fijo: cobra por resultados. Cuantas más personas lleves a la sala, más ganas. Antes de empezar, negocia con la sala qué cuenta como "tu lista": solo entrada directa, o también mesas que reserves. Pon todo por escrito.' },
   { titulo: 'Empieza por salas donde ya conoces gente', desc: 'Tu primer contrato será más fácil de conseguir en una sala donde ya tienes relación con el equipo o donde ya eres cliente habitual. La confianza previa facilita la conversación y te da margen para demostrar resultados sin presión excesiva.' },
-  { titulo: 'Construye tu base de seguidores en Instagram', desc: 'Instagram es la herramienta principal del RRPP moderno. Un perfil activo, con stories de los eventos, acceso de tu lista y ambiente de noche te permite captar nuevos clientes pasivamente. Los seguidores locales son oro — los de otra ciudad no te sirven de nada.' },
+  { titulo: 'Construye tu base de seguidores en Instagram', desc: 'Instagram es la herramienta principal del RRPP moderno. Un perfil activo, con stories de los eventos, acceso de tu lista y ambiente de noche te permite captar nuevos clientes pasivamente. Los seguidores locales son oro: los de otra ciudad no te sirven de nada.' },
   { titulo: 'Gestiona tu lista con profesionalidad', desc: 'Usa Google Sheets, Notion o una app específica para llevar el control de quién confirma, quién entra y quién queda pendiente. Las salas valoran a los RRPP que llegan con la lista hecha, sin improvisación en puerta. La gestión limpia = más confianza = mejores condiciones.' },
   { titulo: 'Trabaja con varias salas a la vez', desc: 'Los RRPP senior trabajan con 3-4 salas distintas en noches diferentes (viernes una, sábado otra, domingos en verano otra). Esto multiplica tus ingresos y diversifica tu riesgo. Si una sala baja el nivel o cierra, sigues con las otras.' },
-  { titulo: 'Regístrate en plataformas para conseguir contratos', desc: 'XPEAK conecta RRPP y promotores con salas y clubes que buscan profesionales verificados para sus eventos. Tu perfil muestra tu red, ciudad de trabajo y resultados previos. Los dueños de sala buscan activamente RRPP confiables — estar visible es el primer paso.' },
+  { titulo: 'Regístrate en plataformas para conseguir contratos', desc: 'XPEAK conecta RRPP y promotores con salas y clubes que buscan profesionales verificados para sus eventos. Tu perfil muestra tu red, ciudad de trabajo y resultados previos. Los dueños de sala buscan activamente RRPP confiables: estar visible es el primer paso.' },
 ];
 
 export default function BlogRRPPDiscoteca() {
@@ -32,7 +32,7 @@ export default function BlogRRPPDiscoteca() {
         <title>Cómo trabajar de RRPP en discoteca en España 2026 | XPEAK</title>
         <meta name="description" content="Guía completa para trabajar de relaciones públicas en discotecas y clubs. Cuánto cobra un RRPP, cómo funciona la comisión y cómo conseguir los primeros contratos." />
         <link rel="canonical" href="https://xpeak.es/blog/como-trabajar-de-rrpp-discoteca" />
-        <meta property="og:title" content="Cómo trabajar de RRPP en discoteca en España 2026 — XPEAK" />
+        <meta property="og:title" content="Cómo trabajar de RRPP en discoteca en España 2026 | XPEAK" />
         <meta property="og:description" content="Guía práctica para RRPP de discoteca. Modelos de comisión, cómo empezar y cómo conseguir contratos con salas." />
         <meta property="og:url" content="https://xpeak.es/blog/como-trabajar-de-rrpp-discoteca" />
         <meta property="og:type" content="article" />
@@ -60,7 +60,7 @@ export default function BlogRRPPDiscoteca() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#059669' }}>Para RRPP · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Cómo trabajar de RRPP en discoteca en España: guía 2026</h1>
-            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>El trabajo de relaciones públicas en discotecas es uno de los más flexibles del sector: sin horario fijo, cobras por resultados y puedes trabajar con varias salas a la vez. Lo que necesitas no es un título — es red de contactos, capacidad de gestión y saber estructurar tu negocio desde el principio.</p>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>El trabajo de relaciones públicas en discotecas es uno de los más flexibles del sector: sin horario fijo, cobras por resultados y puedes trabajar con varias salas a la vez. Lo que necesitas no es un título: es red de contactos, capacidad de gestión y saber estructurar tu negocio desde el principio.</p>
             <time className="text-xs mt-3 block" style={{ color: '#666' }}>2 junio 2026</time>
           </div>
 
@@ -69,9 +69,9 @@ export default function BlogRRPPDiscoteca() {
               <h2 className="text-lg font-black mb-4">Cuánto cobra un RRPP de discoteca</h2>
               <div className="space-y-2">
                 {[
-                  { nivel: 'RRPP en prácticas (primeros 3 meses)', cobro: '2–4€ / persona' },
-                  { nivel: 'RRPP activo con lista propia', cobro: '3–6€ / persona o 5-10% consumo' },
-                  { nivel: 'RRPP senior con varias salas', cobro: '5–8€ / persona o 10-15% consumo' },
+                  { nivel: 'RRPP en prácticas (primeros 3 meses)', cobro: '2-4€ / persona' },
+                  { nivel: 'RRPP activo con lista propia', cobro: '3-6€ / persona o 5-10% consumo' },
+                  { nivel: 'RRPP senior con varias salas', cobro: '5-8€ / persona o 10-15% consumo' },
                   { nivel: 'Head of RRPP / jefe de equipo', cobro: 'Fijo + comisión de su equipo' },
                 ].map((row, i) => (
                   <div key={row.nivel} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>

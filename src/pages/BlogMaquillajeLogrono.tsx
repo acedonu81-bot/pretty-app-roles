@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Maquillaje Logroño', item: 'https://xpeak.es/blog/maquillaje-eventos-logrono' }] };
 
 const PRECIOS = [
-  { perfil: 'Maquillaje novia (solo)', tarifa: '90–220€', nota: 'Incluye prueba previa' },
-  { perfil: 'Maquillaje novia + peinado', tarifa: '185–400€', nota: 'Servicio integral más demandado' },
-  { perfil: 'Madrina / invitada especial', tarifa: '50–105€', nota: 'Sin prueba previa habitualmente' },
-  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '310–620€', nota: 'Desplazamiento a bodega incluido' },
-  { perfil: 'Cata / evento vitivinícola', tarifa: '28–62€/persona', nota: 'Maquillaje fast-track para presentaciones' },
-  { perfil: 'Sesión foto / vídeo', tarifa: '75–185€', nota: 'HD, retoque incluido' },
+  { perfil: 'Maquillaje novia (solo)', tarifa: '90-220€', nota: 'Incluye prueba previa' },
+  { perfil: 'Maquillaje novia + peinado', tarifa: '185-400€', nota: 'Servicio integral más demandado' },
+  { perfil: 'Madrina / invitada especial', tarifa: '50-105€', nota: 'Sin prueba previa habitualmente' },
+  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '310-620€', nota: 'Desplazamiento a bodega incluido' },
+  { perfil: 'Cata / evento vitivinícola', tarifa: '28-62€/persona', nota: 'Maquillaje fast-track para presentaciones' },
+  { perfil: 'Sesión foto / vídeo', tarifa: '75-185€', nota: 'HD, retoque incluido' },
 ];
 
 export default function BlogMaquillajeLogrono() {
@@ -33,7 +33,7 @@ export default function BlogMaquillajeLogrono() {
         <title>Precio maquilladora para eventos en Logroño 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobra una maquilladora para bodas en bodegas riojanas y catas de vino en Logroño. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/maquillaje-eventos-logrono" />
-        <meta property="og:title" content="Precio maquilladora eventos Logroño 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio maquilladora eventos Logroño 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de maquilladoras para bodas en bodegas riojanas y eventos vitivinícolas en Logroño." />
         <meta property="og:url" content="https://xpeak.es/blog/maquillaje-eventos-logrono" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

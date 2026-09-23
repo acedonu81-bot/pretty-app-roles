@@ -18,11 +18,11 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Ávila', item: 'https://xpeak.es/blog/precio-azafatas-avila' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '90–125€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '95–150€/día', nota: 'Eventos institucionales y culturales' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '105–160€/día', nota: 'Demanda baja, turismo internacional limitado' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '115–175€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '50–85€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '90-125€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '95-150€/día', nota: 'Eventos institucionales y culturales' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '105-160€/día', nota: 'Demanda baja, turismo internacional limitado' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '115-175€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '50-85€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasAvila() {
@@ -32,7 +32,7 @@ export default function BlogPrecioAzafatasAvila() {
         <title>Precio azafatas para eventos en Ávila 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos institucionales y culturales en Ávila. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-avila" />
-        <meta property="og:title" content="Precio azafatas eventos Ávila 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Ávila 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para eventos institucionales y culturales en Ávila." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-avila" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

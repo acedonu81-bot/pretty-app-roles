@@ -42,7 +42,7 @@ export async function buildWorkbook(title: string, sections: CsvSection[]): Prom
 
   ws.mergeCells(1, 1, 1, width);
   const titleCell = ws.getCell(1, 1);
-  titleCell.value = `XPEAK — ${title}`;
+  titleCell.value = `XPEAK: ${title}`;
   titleCell.font = { name: 'Calibri', size: 14, bold: true, color: { argb: 'FFFFFFFF' } };
   titleCell.alignment = { vertical: 'middle', horizontal: 'left' };
   titleCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: DARK } };
@@ -128,7 +128,7 @@ export function buildCsv(title: string, sections: Omit<CsvSection, 'dataBarColum
   const generatedAt = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
 
   const lines: CsvCell[][] = [
-    pad([`XPEAK — ${title}`]),
+    pad([`XPEAK: ${title}`]),
     pad([`Generado el ${generatedAt}`]),
   ];
 

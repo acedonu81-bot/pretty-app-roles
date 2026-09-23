@@ -37,7 +37,7 @@ const PLATFORMS = [
   },
   {
     name: 'Agencia de contratación tradicional',
-    comision: '20% – 40% sobre el caché',
+    comision: '20%-40% sobre el caché',
     cuotaProfesional: 'Comisión por reserva',
     contacto: 'Intermediado por la agencia',
     cobertura: 'Depende de la cartera propia de la agencia',
@@ -192,7 +192,7 @@ export default function BlogMejoresPlataformasContratarDJ() {
             </table>
           </div>
           <p className="text-[0.65rem] mb-10" style={{ color: '#666' }}>
-            Datos de comisión y cobertura recogidos de la información pública de cada plataforma en agosto de 2026. Las condiciones pueden cambiar — consulta siempre la fuente oficial antes de decidir.
+            Datos de comisión y cobertura recogidos de la información pública de cada plataforma en agosto de 2026. Las condiciones pueden cambiar: consulta siempre la fuente oficial antes de decidir.
           </p>
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/mejores-plataformas-contratar-dj-espana" />
@@ -201,7 +201,7 @@ export default function BlogMejoresPlataformasContratarDJ() {
           <h2 className="text-xl font-black mb-4">Qué mirar antes de elegir plataforma</h2>
           <ul className="space-y-3 mb-10">
             {[
-              { label: 'Quién paga la comisión', text: 'Si no cobran al organizador, revisa si cobran al profesional — esa cuota suele acabar reflejada en el precio final que te pasan.' },
+              { label: 'Quién paga la comisión', text: 'Si no cobran al organizador, revisa si cobran al profesional: esa cuota suele acabar reflejada en el precio final que te pasan.' },
               { label: 'Contacto directo o intermediado', text: 'El contacto directo con el profesional (sin pasar por un centro de leads) suele dar respuestas más rápidas y presupuestos más ajustados.' },
               { label: 'Cobertura real de categorías', text: 'Si necesitas varios perfiles para el mismo evento (DJ + catering + staff), una plataforma multi-categoría evita gestionar 3-4 herramientas distintas.' },
               { label: 'Transparencia de precios', text: 'Los directorios con tarifas públicas por perfil evitan el ida-y-vuelta de "mándame presupuesto" antes de saber si encaja en tu rango.' },
@@ -260,7 +260,7 @@ export default function BlogMejoresPlataformasContratarDJ() {
               <div>
                 <p className="text-sm font-black mb-0.5">¿Buscas DJ para tu sala o evento?</p>
                 <p className="text-xs" style={{ color: '#333' }}>
-                  Directorio con tarifas públicas · Flash Booking para esta noche · 0 comisión
+                  Directorio con tarifas públicas · Flash Booking para esta noche
                 </p>
               </div>
               <a href="/contratar-dj"

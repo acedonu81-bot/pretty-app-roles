@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Málaga', item: 'https://xpeak.es/blog/precio-azafatas-malaga' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria FYCMA', tarifa: '105–155€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '135–210€/día', nota: 'Eventos de marca y turismo' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '145–200€/día', nota: 'Muy demandada por sector tech y turismo' },
-  { perfil: 'Azafata trilingüe', tarifa: '180–265€/día', nota: 'Eventos con presencia internacional' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '160–245€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '70–115€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria FYCMA', tarifa: '105-155€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '135-210€/día', nota: 'Eventos de marca y turismo' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '145-200€/día', nota: 'Muy demandada por sector tech y turismo' },
+  { perfil: 'Azafata trilingüe', tarifa: '180-265€/día', nota: 'Eventos con presencia internacional' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '160-245€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '70-115€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasMalaga() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasMalaga() {
         <title>Precio azafatas para eventos en Málaga 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos, FYCMA y ferias tech en Málaga. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-malaga" />
-        <meta property="og:title" content="Precio azafatas eventos Málaga 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Málaga 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para congresos y eventos tech en Málaga." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-malaga" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

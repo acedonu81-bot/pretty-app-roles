@@ -8,44 +8,44 @@ import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
 const FORMATOS = [
-  { tipo: 'Solista con guitarra o piano', rango: '400€ – 900€', desc: 'Ideal para ceremonias íntimas y cóctel. Repertorio melódico, crea ambiente sin ocupar espacio.' },
-  { tipo: 'Dúo (voz + instrumento)', rango: '600€ – 1.200€', desc: 'Mayor presencia sonora que el solista. Perfecto para cócteles de boda y aperitivos.' },
-  { tipo: 'Trío / cuarteto de jazz o swing', rango: '900€ – 2.000€', desc: 'Opción premium para bodas con banquete. Muy demandado para estilos gatsby, vintage o elegante.' },
-  { tipo: 'Banda pop / rock (5–8 músicos)', rango: '1.500€ – 4.000€', desc: 'Para novios que quieren baile en directo. Toca los grandes éxitos y crea una atmósfera única.' },
-  { tipo: 'Cuarteto de cuerda clásico', rango: '800€ – 1.800€', desc: 'Ceremonias religiosas, entradas y salidas nupciales. Repertorio clásico y pop adaptado.' },
-  { tipo: 'Grupo flamenco / fusión', rango: '700€ – 2.500€', desc: 'Bodas con identidad española. Muy demandado en Andalucía, Sevilla y Costa del Sol.' },
+  { tipo: 'Solista con guitarra o piano', rango: '400€-900€', desc: 'Ideal para ceremonias íntimas y cóctel. Repertorio melódico, crea ambiente sin ocupar espacio.' },
+  { tipo: 'Dúo (voz + instrumento)', rango: '600€-1.200€', desc: 'Mayor presencia sonora que el solista. Perfecto para cócteles de boda y aperitivos.' },
+  { tipo: 'Trío / cuarteto de jazz o swing', rango: '900€-2.000€', desc: 'Opción premium para bodas con banquete. Muy demandado para estilos gatsby, vintage o elegante.' },
+  { tipo: 'Banda pop / rock (5-8 músicos)', rango: '1.500€-4.000€', desc: 'Para novios que quieren baile en directo. Toca los grandes éxitos y crea una atmósfera única.' },
+  { tipo: 'Cuarteto de cuerda clásico', rango: '800€-1.800€', desc: 'Ceremonias religiosas, entradas y salidas nupciales. Repertorio clásico y pop adaptado.' },
+  { tipo: 'Grupo flamenco / fusión', rango: '700€-2.500€', desc: 'Bodas con identidad española. Muy demandado en Andalucía, Sevilla y Costa del Sol.' },
 ];
 
 const MOMENTOS = [
   { momento: 'Entrada de invitados y espera', formato: 'Solista, cuarteto de cuerda', nota: 'Tono suave, ambiente elegante antes de la emoción' },
-  { momento: 'Entrada de la novia / novios', formato: 'Cuarteto de cuerda, solista', nota: 'Momento cumbre — la canción elegida en directo multiplica la emoción' },
+  { momento: 'Entrada de la novia / novios', formato: 'Cuarteto de cuerda, solista', nota: 'Momento cumbre: la canción elegida en directo multiplica la emoción' },
   { momento: 'Firma y momentos solemnes', formato: 'Cuarteto de cuerda, solo piano', nota: 'Pausa musical suave mientras se firma' },
   { momento: 'Salida de la ceremonia', formato: 'Banda pop, dúo festivo', nota: 'Energía alta, aplausos, transición a celebración' },
-  { momento: 'Cóctel y aperitivo', formato: 'Jazz trio, dúo, solista', nota: 'Lo más popular para música en vivo — todos circulan y la banda anima de fondo' },
+  { momento: 'Cóctel y aperitivo', formato: 'Jazz trio, dúo, solista', nota: 'Lo más popular para música en vivo: todos circulan y la banda anima de fondo' },
   { momento: 'Baile y pista', formato: 'Banda pop / rock, DJ tras la banda', nota: 'Si el presupuesto permite solo un momento en directo, que sea este' },
 ];
 
 const CIUDADES = [
-  { ciudad: 'Madrid', rango: '800€ – 3.500€', note: 'Mayor oferta de grupos profesionales, todas las formaciones disponibles' },
-  { ciudad: 'Barcelona', rango: '900€ – 4.000€', note: 'Alta demanda en bodas internacionales, grupos con repertorio en inglés' },
-  { ciudad: 'Sevilla / Andalucía', rango: '600€ – 2.500€', note: 'Fuerte tradición flamenca, grupos de fusión muy populares' },
-  { ciudad: 'Valencia', rango: '700€ – 2.800€', note: 'Mercado creciente, buena oferta de jazz y pop' },
-  { ciudad: 'Ibiza / Baleares', rango: '1.000€ – 4.500€', note: 'Temporada alta inflaciona precios junio–septiembre, mucha demanda internacional' },
-  { ciudad: 'Bilbao / País Vasco', rango: '700€ – 2.200€', note: 'Bodas de alto presupuesto, grupos folk y jazz muy activos' },
+  { ciudad: 'Madrid', rango: '800€-3.500€', note: 'Mayor oferta de grupos profesionales, todas las formaciones disponibles' },
+  { ciudad: 'Barcelona', rango: '900€-4.000€', note: 'Alta demanda en bodas internacionales, grupos con repertorio en inglés' },
+  { ciudad: 'Sevilla / Andalucía', rango: '600€-2.500€', note: 'Fuerte tradición flamenca, grupos de fusión muy populares' },
+  { ciudad: 'Valencia', rango: '700€-2.800€', note: 'Mercado creciente, buena oferta de jazz y pop' },
+  { ciudad: 'Ibiza / Baleares', rango: '1.000€-4.500€', note: 'Temporada alta inflaciona precios junio-septiembre, mucha demanda internacional' },
+  { ciudad: 'Bilbao / País Vasco', rango: '700€-2.200€', note: 'Bodas de alto presupuesto, grupos folk y jazz muy activos' },
 ];
 
 const FAQ = [
   { q: '¿Merece la pena contratar música en vivo para una boda?', a: 'Sí, si el presupuesto lo permite. La música en vivo crea momentos únicos e irrepetibles que los invitados recuerdan durante años. El cóctel con trío de jazz o el cuarteto de cuerda en la ceremonia son los momentos con mejor relación impacto-precio. No es necesario tener música en vivo durante todo el evento.' },
   { q: '¿Se puede combinar música en vivo con DJ?', a: 'Es la fórmula más habitual y económica. La banda toca durante el cóctel (1,5h) y parte del banquete, y el DJ cubre el resto de la noche. Así tienes lo mejor de los dos mundos sin el coste de una banda de 6 horas completas.' },
   { q: '¿Qué formato de música en vivo es más económico para una boda?', a: 'El solista con guitarra o piano es la opción más económica (desde 400€) y perfecta para ceremonias íntimas o cócteles. Un dúo (desde 600€) añade más presencia sin disparar el presupuesto. El cuarteto de cuerda (desde 800€) es ideal si buscas elegancia clásica.' },
-  { q: '¿Con cuánta antelación hay que contratar músicos para una boda?', a: 'Para bodas de verano (junio–septiembre), lo ideal es contratar con 8–12 meses de antelación. Los buenos grupos se reservan muy pronto para temporada alta. Fuera de temporada alta, 3–6 meses suelen ser suficientes.' },
+  { q: '¿Con cuánta antelación hay que contratar músicos para una boda?', a: 'Para bodas de verano (junio-septiembre), lo ideal es contratar con 8-12 meses de antelación. Los buenos grupos se reservan muy pronto para temporada alta. Fuera de temporada alta, 3-6 meses suelen ser suficientes.' },
   { q: '¿Los músicos llevan su propio equipo de sonido?', a: 'Depende del formato. Los solistas y dúos suelen llevar su propio sistema de amplificación. Las bandas de más de 4 músicos pueden requerir técnico de sonido externo y rider técnico. Compruébalo siempre antes de firmar el contrato.' },
 ];
 
 const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'Article',
-  headline: 'Música en Vivo para Bodas: grupos, solistas y cuartetos — guía y precios 2026',
+  headline: 'Música en Vivo para Bodas: grupos, solistas y cuartetos, guía y precios 2026',
   description: 'Guía completa de música en vivo para bodas en España. Formatos, precios por ciudad, cuándo ponerla y cómo combinarla con DJ.',
   author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' },
   publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' },
@@ -125,21 +125,21 @@ export default function BlogMusicaEnVivoBodas() {
             <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#DB2777' }}>Blog · Guía de bodas</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-black tracking-tight mb-4 leading-tight">
-            Música en Vivo para Bodas: grupos, solistas y cuartetos — guía y precios 2026
+            Música en Vivo para Bodas: grupos, solistas y cuartetos, guía y precios 2026
           </h1>
           <p className="text-sm mb-8" style={{ color: '#555' }}>
             XPEAK · 16 de mayo de 2026 · 7 min de lectura
           </p>
 
           <p className="text-base leading-relaxed mb-6" style={{ color: '#222' }}>
-            La música en vivo es el elemento que más recuerdan los invitados de una boda. El cuarteto de cuerda en la ceremonia, el trío de jazz durante el cóctel o la banda que arranca el baile son momentos que no se olvidan. Pero elegir el formato correcto —y pagarlo sin arruinar el presupuesto— requiere saber exactamente qué opciones existen y cuánto cuesta cada una en España.
+            La música en vivo es el elemento que más recuerdan los invitados de una boda. El cuarteto de cuerda en la ceremonia, el trío de jazz durante el cóctel o la banda que arranca el baile son momentos que no se olvidan. Pero elegir el formato correcto y pagarlo sin arruinar el presupuesto requiere saber exactamente qué opciones existen y cuánto cuesta cada una en España.
           </p>
 
           <div className="p-4 rounded-xl mb-8" style={{ background: 'rgba(219,39,119,0.06)', border: '1px solid rgba(219,39,119,0.15)' }}>
             <p className="text-sm font-bold mb-1" style={{ color: '#DB2777' }}>Resumen rápido</p>
             <p className="text-sm leading-relaxed" style={{ color: '#333' }}>
               La música en vivo para bodas cuesta entre <strong style={{ color: '#111' }}>400€ (solista) y 4.000€ (banda completa)</strong> en España.
-              La opción con mejor relación impacto-precio es el <strong style={{ color: '#111' }}>trío de jazz para el cóctel (900–1.500€)</strong>.
+              La opción con mejor relación impacto-precio es el <strong style={{ color: '#111' }}>trío de jazz para el cóctel (900-1.500€)</strong>.
               Lo más habitual es combinar música en vivo en el cóctel con DJ para la noche.
             </p>
           </div>
@@ -206,9 +206,9 @@ export default function BlogMusicaEnVivoBodas() {
           </p>
           <ol className="space-y-3 mb-10">
             {[
-              { n: '01', text: 'Cuarteto de cuerda o solista en la ceremonia (1–1,5h). Máximo impacto emocional, menor coste porque el formato es pequeño.' },
-              { n: '02', text: 'Trío de jazz o dúo durante el cóctel (1,5h). El momento donde los invitados más agradecen la música en vivo — están de pie, circulando y el grupo crea ambiente sin competir con conversaciones.' },
-              { n: '03', text: 'DJ para el banquete y pista de baile (4–6h). Más versatilidad musical, sin pausas entre temas y con la energía que una banda de boda no puede mantener 6 horas seguidas.' },
+              { n: '01', text: 'Cuarteto de cuerda o solista en la ceremonia (1-1,5h). Máximo impacto emocional, menor coste porque el formato es pequeño.' },
+              { n: '02', text: 'Trío de jazz o dúo durante el cóctel (1,5h). El momento donde los invitados más agradecen la música en vivo: están de pie, circulando y el grupo crea ambiente sin competir con conversaciones.' },
+              { n: '03', text: 'DJ para el banquete y pista de baile (4-6h). Más versatilidad musical, sin pausas entre temas y con la energía que una banda de boda no puede mantener 6 horas seguidas.' },
             ].map(item => (
               <li key={item.n} className="flex gap-3">
                 <span className="text-2xl font-black flex-shrink-0" style={{ color: 'rgba(219,39,119,0.2)', lineHeight: '1.1' }}>{item.n}</span>

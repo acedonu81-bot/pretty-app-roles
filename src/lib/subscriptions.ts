@@ -43,7 +43,7 @@ export const STREAMING_PACKS: StreamingPack[] = [
   },
   {
     id: 'pack_s',
-    label: 'Pack S — 5 horas',
+    label: 'Pack S: 5 horas',
     hours: 5,
     price: 19.99,
     pricePerHour: 4.00,
@@ -52,14 +52,14 @@ export const STREAMING_PACKS: StreamingPack[] = [
   },
   {
     id: 'pack_m',
-    label: 'Pack M — 15 horas',
+    label: 'Pack M: 15 horas',
     hours: 15,
     price: 54.99,
     pricePerHour: 3.67,
   },
   {
     id: 'pack_l',
-    label: 'Pack L — 30 horas',
+    label: 'Pack L: 30 horas',
     hours: 30,
     price: 99.99,
     pricePerHour: 3.33,
@@ -110,7 +110,7 @@ export const subscriptionPlans: SubscriptionPlan[] = [
     monthlyPrice: 14.99,
     defaultPeriod: '/mes',
     features: [
-      'Posicionamiento prioritario #1–48',
+      'Posicionamiento prioritario #1-48',
       'Estadísticas avanzadas + exportar',
       '1h streaming en vivo/mes incluida (+ €2.99/h extra)',
       'Sello Business dorado',

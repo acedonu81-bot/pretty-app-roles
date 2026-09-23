@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Camareros Dénia', item: 'https://xpeak.es/blog/camareros-eventos-denia' }] };
 
 const PRECIOS = [
-  { perfil: 'Camarero/a de sala', tarifa: '14–19€/hora', nota: 'Cóctel, cena sentada o buffet' },
-  { perfil: 'Bartender / coctelería de autor', tarifa: '17–25€/hora', nota: 'Nivel gastronómico alto de la zona' },
-  { perfil: 'Jefe de sala / coordinador', tarifa: '23–33€/hora', nota: 'Gestión del equipo en boda o evento grande' },
-  { perfil: 'Servicio boda completo (6-7h)', tarifa: '170–280€/persona', nota: 'Cóctel + cena gourmet + barra' },
-  { perfil: 'Barra libre con bartender (4h)', tarifa: '200–400€', nota: 'Incluye montaje y desmontaje' },
-  { perfil: 'Personal para eventos gastronómicos', tarifa: '15€–22€/hora', nota: 'Presentaciones y catas de producto' },
+  { perfil: 'Camarero/a de sala', tarifa: '14-19€/hora', nota: 'Cóctel, cena sentada o buffet' },
+  { perfil: 'Bartender / coctelería de autor', tarifa: '17-25€/hora', nota: 'Nivel gastronómico alto de la zona' },
+  { perfil: 'Jefe de sala / coordinador', tarifa: '23-33€/hora', nota: 'Gestión del equipo en boda o evento grande' },
+  { perfil: 'Servicio boda completo (6-7h)', tarifa: '170-280€/persona', nota: 'Cóctel + cena gourmet + barra' },
+  { perfil: 'Barra libre con bartender (4h)', tarifa: '200-400€', nota: 'Incluye montaje y desmontaje' },
+  { perfil: 'Personal para eventos gastronómicos', tarifa: '15€-22€/hora', nota: 'Presentaciones y catas de producto' },
 ];
 
 export default function BlogCamarerosDenia() {
@@ -33,7 +33,7 @@ export default function BlogCamarerosDenia() {
         <title>Precio camareros para eventos en Dénia 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran los camareros y bartenders para bodas y eventos gastronómicos en Dénia. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/camareros-eventos-denia" />
-        <meta property="og:title" content="Precio camareros eventos Dénia 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio camareros eventos Dénia 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de camareros y bartenders para bodas y eventos gastronómicos en Dénia." />
         <meta property="og:url" content="https://xpeak.es/blog/camareros-eventos-denia" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

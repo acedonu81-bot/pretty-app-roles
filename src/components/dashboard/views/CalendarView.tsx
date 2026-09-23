@@ -374,7 +374,7 @@ const CalendarView = () => {
     a.download = `${ev.title.replace(/[^a-z0-9áéíóúüñ]/gi, '_')}.ics`;
     a.click();
     URL.revokeObjectURL(url);
-    toast.success('Archivo .ics descargado — ábrelo para añadir al calendario');
+    toast.success('Archivo .ics descargado: ábrelo para añadir al calendario');
   };
 
   return (
@@ -490,7 +490,7 @@ const CalendarView = () => {
               style={{ background: availMode ? 'rgba(255,95,86,0.12)' : 'rgba(255,95,86,0.06)', border: availMode ? '1px solid rgba(255,95,86,0.4)' : '1px solid rgba(255,95,86,0.18)', color: '#ff5f56' }}>
               <span className="flex items-center gap-2">
                 {availMode ? <EyeOff size={16} /> : <Eye size={16} />}
-                {availMode ? 'Editando disponibilidad — pulsa un día para (des)bloquearlo' : 'Bloquear fechas en las que no trabajo'}
+                {availMode ? 'Editando disponibilidad: pulsa un día para (des)bloquearlo' : 'Bloquear fechas en las que no trabajo'}
               </span>
               <span className="text-xs px-2 py-1 rounded-full flex-shrink-0" style={{ background: 'rgba(255,95,86,0.15)' }}>
                 {availMode ? 'Salir' : 'Activar'}

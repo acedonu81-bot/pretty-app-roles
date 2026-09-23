@@ -12,7 +12,7 @@ import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo de boda: guía de precios y cómo elegir el mejor (2026)', description: 'Cuánto cuesta un fotógrafo de boda en España en 2026. Precios reales, estilos, qué incluye el reportaje y cómo elegir al fotógrafo perfecto para tu boda.', datePublished: '2026-05-10', dateModified: '2026-06-01', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-boda' };
 
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
-  { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de boda en España?', acceptedAnswer: { '@type': 'Answer', text: 'El precio medio de un fotógrafo de boda en España oscila entre 1.200€ y 3.500€ para un reportaje completo. En ciudades como Madrid o Barcelona los precios son más altos (1.800–4.500€), mientras que en ciudades medianas se pueden encontrar buenos profesionales desde 900€. El precio depende del número de horas, si incluye álbum y la experiencia del fotógrafo.' } },
+  { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de boda en España?', acceptedAnswer: { '@type': 'Answer', text: 'El precio medio de un fotógrafo de boda en España oscila entre 1.200€ y 3.500€ para un reportaje completo. En ciudades como Madrid o Barcelona los precios son más altos (1.800-4.500€), mientras que en ciudades medianas se pueden encontrar buenos profesionales desde 900€. El precio depende del número de horas, si incluye álbum y la experiencia del fotógrafo.' } },
   { '@type': 'Question', name: '¿Qué incluye un reportaje de boda?', acceptedAnswer: { '@type': 'Answer', text: 'Un reportaje de boda completo incluye preparativos de los novios, ceremonia civil o religiosa, sesión de pareja (golden hour), cóctel y banquete hasta el primer baile. La entrega suele ser de 400-800 fotos editadas en alta resolución en 4-8 semanas. El álbum impreso puede estar incluido o ser un extra según el paquete.' } },
   { '@type': 'Question', name: '¿Con cuánta antelación reservar el fotógrafo de boda?', acceptedAnswer: { '@type': 'Answer', text: 'Lo ideal es reservar el fotógrafo de boda con 12-18 meses de antelación, especialmente para bodas en primavera (mayo-junio) u otoño (septiembre-octubre). Los mejores fotógrafos de España tienen agenda llena con 1-2 años de anticipación. Muchas parejas reservan al fotógrafo antes que a la finca o el catering.' } },
   { '@type': 'Question', name: '¿Qué estilo fotográfico elegir para mi boda?', acceptedAnswer: { '@type': 'Answer', text: 'Los principales estilos de fotografía de boda son: reportaje documental (captura momentos naturales sin posados), estilo editorial o de moda (fotos muy trabajadas con posados elaborados), y estilo clásico (formal y atemporal). Lo más recomendable es ver varios bodas completas del fotógrafo para verificar que su estilo encaja con lo que buscas.' } },
@@ -25,11 +25,11 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
 ] };
 
 const PRECIOS = [
-  { servicio: 'Reportaje básico (ceremonia + cóctel, 4-5h)', precio: '800–1.500€' },
-  { servicio: 'Reportaje completo (10-12h, sin álbum)', precio: '1.200–2.800€' },
-  { servicio: 'Reportaje completo con álbum de lujo', precio: '2.000–4.500€' },
-  { servicio: 'Pack fotógrafo + videógrafo', precio: '3.000–6.000€' },
-  { servicio: 'Preboda (sesión de pareja previa)', precio: '200–600€' },
+  { servicio: 'Reportaje básico (ceremonia + cóctel, 4-5h)', precio: '800-1.500€' },
+  { servicio: 'Reportaje completo (10-12h, sin álbum)', precio: '1.200-2.800€' },
+  { servicio: 'Reportaje completo con álbum de lujo', precio: '2.000-4.500€' },
+  { servicio: 'Pack fotógrafo + videógrafo', precio: '3.000-6.000€' },
+  { servicio: 'Preboda (sesión de pareja previa)', precio: '200-600€' },
 ];
 
 const ESTILOS = [
@@ -46,7 +46,7 @@ export default function BlogFotografoBoda() {
         <title>Fotógrafo de boda: precio y guía completa 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un fotógrafo de boda en España en 2026. Precios reales, estilos, qué incluye el reportaje y cómo contratar al mejor fotógrafo para tu boda." />
         <link rel="canonical" href="https://xpeak.es/blog/fotografo-boda" />
-        <meta property="og:title" content="Fotógrafo de boda: precio y guía 2026 — XPEAK" />
+        <meta property="og:title" content="Fotógrafo de boda: precio y guía 2026 | XPEAK" />
         <meta property="og:description" content="Guía completa para contratar fotógrafo de boda. Precios 2026, estilos y qué incluye el reportaje." />
         <meta property="og:url" content="https://xpeak.es/blog/fotografo-boda" />
         <meta property="og:type" content="article" />
@@ -103,7 +103,7 @@ export default function BlogFotografoBoda() {
                 {[
                   'Preparativos de novia y novio (en paralelo si hay segundo fotógrafo)',
                   'Ceremonia civil o religiosa completa',
-                  'Sesión de pareja exterior — golden hour o jardines de la finca',
+                  'Sesión de pareja exterior: golden hour o jardines de la finca',
                   'Cóctel: detalles, invitados, momentos espontáneos',
                   'Banquete y primer baile',
                   'Entrega de 400-800 fotos editadas en alta resolución (en 4-8 semanas)',
@@ -136,7 +136,7 @@ export default function BlogFotografoBoda() {
               <p className="text-base leading-relaxed mb-4" style={{ color: '#3d3d4e' }}>No te quedes solo con las fotos del perfil de Instagram. Sigue estos pasos:</p>
               <ol className="space-y-4">
                 {[
-                  { titulo: 'Ver bodas completas, no solo las mejores fotos', desc: 'Pide ver una o dos bodas completas de principio a fin. Las mejores fotos siempre quedan bien — lo importante es ver el nivel general.' },
+                  { titulo: 'Ver bodas completas, no solo las mejores fotos', desc: 'Pide ver una o dos bodas completas de principio a fin. Las mejores fotos siempre quedan bien: lo importante es ver el nivel general.' },
                   { titulo: 'Reunión previa (en persona o videollamada)', desc: 'La química con el fotógrafo es fundamental. Pasará todo el día con vosotros. Si no os sentís cómodos en la reunión, probablemente tampoco el día de la boda.' },
                   { titulo: 'Contrato por escrito', desc: 'Fecha, horas incluidas, entrega estimada, número de fotos, derechos de imagen y condiciones de cancelación. Sin contrato, no hay garantías.' },
                   { titulo: 'Comprobar disponibilidad de backup', desc: 'Pregunta qué pasa si el fotógrafo se pone enfermo el día de la boda. Un profesional serio tiene un plan de contingencia o acuerdos con colegas.' },

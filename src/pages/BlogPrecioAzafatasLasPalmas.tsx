@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Las Palmas', item: 'https://xpeak.es/blog/precio-azafatas-laspalmas' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '135–190€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '160–245€/día', nota: 'Eventos de marca y hoteles' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '170–225€/día', nota: 'Muy demandada por el turismo internacional' },
-  { perfil: 'Azafata de protocolo', tarifa: '170–235€/día', nota: 'Eventos corporativos y portuarios' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '185–275€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '85–145€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '135-190€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '160-245€/día', nota: 'Eventos de marca y hoteles' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '170-225€/día', nota: 'Muy demandada por el turismo internacional' },
+  { perfil: 'Azafata de protocolo', tarifa: '170-235€/día', nota: 'Eventos corporativos y portuarios' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '185-275€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '85-145€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasLasPalmas() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasLasPalmas() {
         <title>Precio azafatas para eventos en Las Palmas 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos corporativos y turismo internacional en Las Palmas de Gran Canaria. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-laspalmas" />
-        <meta property="og:title" content="Precio azafatas eventos Las Palmas 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Las Palmas 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para eventos corporativos y turismo internacional en Las Palmas." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-laspalmas" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

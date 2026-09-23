@@ -30,7 +30,7 @@ const faqStructured = {
       name: '¿Cuánto cobra un saxofonista para una boda?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Un saxofonista para boda en España cobra entre 400€ y 1.000€ por servicio completo (ceremonia + cóctel). Si solo se contrata para el cóctel, el rango habitual es 400–700€. Para bodas de alto nivel en grandes ciudades los precios pueden superar los 1.000€ si el músico va acompañado de DJ o backing track profesional.',
+        text: 'Un saxofonista para boda en España cobra entre 400€ y 1.000€ por servicio completo (ceremonia + cóctel). Si solo se contrata para el cóctel, el rango habitual es 400-700€. Para bodas de alto nivel en grandes ciudades los precios pueden superar los 1.000€ si el músico va acompañado de DJ o backing track profesional.',
       },
     },
     {
@@ -46,7 +46,7 @@ const faqStructured = {
       name: '¿El saxofonista lleva su propio equipo de sonido?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Depende del profesional. La mayoría incluye micrófono para el saxo y altavoz de pequeño formato para espacios de hasta 80–100 personas. Para eventos más grandes, es recomendable contratar sonorización aparte o verificar que el espacio dispone de PA propio. Consúltalo siempre antes de cerrar contrato.',
+        text: 'Depende del profesional. La mayoría incluye micrófono para el saxo y altavoz de pequeño formato para espacios de hasta 80-100 personas. Para eventos más grandes, es recomendable contratar sonorización aparte o verificar que el espacio dispone de PA propio. Consúltalo siempre antes de cerrar contrato.',
       },
     },
     {
@@ -54,7 +54,7 @@ const faqStructured = {
       name: '¿Se puede contratar un saxofonista junto a un DJ?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Sí, es una de las combinaciones más populares en bodas y eventos de empresa. El DJ pone la base electrónica o el backing track y el saxofonista improvisa encima en directo. Este formato suele tener un coste de 700–1.500€ dependiendo de la duración y los dos perfiles por separado.',
+        text: 'Sí, es una de las combinaciones más populares en bodas y eventos de empresa. El DJ pone la base electrónica o el backing track y el saxofonista improvisa encima en directo. Este formato suele tener un coste de 700-1.500€ dependiendo de la duración y los dos perfiles por separado.',
       },
     },
   ],
@@ -71,12 +71,12 @@ const breadcrumb = {
 };
 
 const PRECIOS = [
-  { tipo: 'Ceremonia civil o religiosa (solo saxo)', precio: '300–500€' },
-  { tipo: 'Cóctel (60–90 min)', precio: '400–700€' },
-  { tipo: 'Ceremonia + cóctel (paquete boda completo)', precio: '600–1.000€' },
-  { tipo: 'Tarifa por hora (para eventos corporativos)', precio: '80–150€/hora' },
-  { tipo: 'Saxofonista + DJ en directo (combo)', precio: '700–1.500€' },
-  { tipo: 'Gala corporativa o evento premium', precio: '800–1.800€' },
+  { tipo: 'Ceremonia civil o religiosa (solo saxo)', precio: '300-500€' },
+  { tipo: 'Cóctel (60-90 min)', precio: '400-700€' },
+  { tipo: 'Ceremonia + cóctel (paquete boda completo)', precio: '600-1.000€' },
+  { tipo: 'Tarifa por hora (para eventos corporativos)', precio: '80-150€/hora' },
+  { tipo: 'Saxofonista + DJ en directo (combo)', precio: '700-1.500€' },
+  { tipo: 'Gala corporativa o evento premium', precio: '800-1.800€' },
 ];
 
 export default function BlogSaxofonistaEventosPrecio() {
@@ -89,7 +89,7 @@ export default function BlogSaxofonistaEventosPrecio() {
           content="Precios reales de saxofonistas para bodas y eventos en España 2026. Tarifas por ceremonia, cóctel y boda completa. Qué incluye y cómo contratar."
         />
         <link rel="canonical" href="https://xpeak.es/blog/saxofonista-precio-espana" />
-        <meta property="og:title" content="Cuánto cobra un saxofonista para eventos y bodas en España 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Cuánto cobra un saxofonista para eventos y bodas en España 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas reales de saxofonistas en España. Ceremonia, cóctel, boda completa y tarifa por hora." />
         <meta property="og:url" content="https://xpeak.es/blog/saxofonista-precio-espana" />
         <meta property="og:type" content="article" />
@@ -142,10 +142,10 @@ export default function BlogSaxofonistaEventosPrecio() {
               </p>
               <div className="space-y-3">
                 {[
-                  { tipo: 'Ceremonia civil o religiosa', desc: 'El saxofonista ameniza la entrada, el intercambio de anillos y la salida de los novios. Duración habitual: 30–45 minutos. Repertorio suave, baladas y temas instrumentales.' },
-                  { tipo: 'Cóctel de bienvenida', desc: 'La actuación más frecuente. El músico toca en directo mientras los invitados picotean. Duración: 60–90 min. Repertorio más dinámico: lounge, jazz, versiones pop instrumentales.' },
+                  { tipo: 'Ceremonia civil o religiosa', desc: 'El saxofonista ameniza la entrada, el intercambio de anillos y la salida de los novios. Duración habitual: 30-45 minutos. Repertorio suave, baladas y temas instrumentales.' },
+                  { tipo: 'Cóctel de bienvenida', desc: 'La actuación más frecuente. El músico toca en directo mientras los invitados picotean. Duración: 60-90 min. Repertorio más dinámico: lounge, jazz, versiones pop instrumentales.' },
                   { tipo: 'Saxofonista + DJ en directo', desc: 'Combinación muy demandada en bodas modernas y eventos de empresa. El DJ pone la base y el saxo improvisa encima. Resultado: sonido electrónico con presencia de instrumento en vivo.' },
-                  { tipo: 'Gala corporativa o show', desc: 'Actuación preparada de 30–60 minutos con escenografía, backing tracks y posible vestuario especial. Habitual en cenas de empresa, presentaciones de producto y premios.' },
+                  { tipo: 'Gala corporativa o show', desc: 'Actuación preparada de 30-60 minutos con escenografía, backing tracks y posible vestuario especial. Habitual en cenas de empresa, presentaciones de producto y premios.' },
                 ].map((item, i) => (
                   <div
                     key={item.tipo}
@@ -181,7 +181,7 @@ export default function BlogSaxofonistaEventosPrecio() {
                 ))}
               </div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>
-                Precios orientativos sin IVA para España 2026. Las ciudades grandes (Madrid, Barcelona, Sevilla) suelen ser un 15–25% más caras.
+                Precios orientativos sin IVA para España 2026. Las ciudades grandes (Madrid, Barcelona, Sevilla) suelen ser un 15-25% más caras.
               </p>
             </section>
 
@@ -189,7 +189,7 @@ export default function BlogSaxofonistaEventosPrecio() {
             <section>
               <h2 className="text-lg font-black mb-4">Qué incluye el precio de un saxofonista</h2>
               <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
-                En la mayoría de los casos, la tarifa de un saxofonista profesional cubre la actuación en sí, el desplazamiento dentro de un radio razonable (50–80 km del domicilio del músico), el saxo y sus accesorios, y un sistema de amplificación básico para espacios de hasta 80–100 personas.
+                En la mayoría de los casos, la tarifa de un saxofonista profesional cubre la actuación en sí, el desplazamiento dentro de un radio razonable (50-80 km del domicilio del músico), el saxo y sus accesorios, y un sistema de amplificación básico para espacios de hasta 80-100 personas.
               </p>
               <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
                 Lo que habitualmente no está incluido: desplazamientos de larga distancia (más de 100 km), alojamiento si el evento requiere pernocta, equipo de sonido para grandes espacios o festivales, y las horas de ensayo previo si el cliente pide un repertorio muy específico.
@@ -209,7 +209,7 @@ export default function BlogSaxofonistaEventosPrecio() {
                 Pide siempre un vídeo de actuación real, no solo grabaciones de estudio. La calidad en directo puede variar mucho y es el mejor indicador del nivel del músico. Busca perfiles con reseñas de bodas o eventos similares al tuyo.
               </p>
               <p className="text-base leading-relaxed" style={{ color: '#222' }}>
-                Reserva con al menos 3–4 meses de antelación para bodas en temporada alta (mayo–junio, septiembre–octubre). Para eventos de empresa con menos urgencia en la fecha, 4–6 semanas suelen ser suficientes.
+                Reserva con al menos 3-4 meses de antelación para bodas en temporada alta (mayo-junio, septiembre-octubre). Para eventos de empresa con menos urgencia en la fecha, 4-6 semanas suelen ser suficientes.
               </p>
             </section>
 

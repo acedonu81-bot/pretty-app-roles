@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Maquillaje Palma', item: 'https://xpeak.es/blog/maquillaje-eventos-palma' }] };
 
 const PRECIOS = [
-  { perfil: 'Maquillaje novia (solo)', tarifa: '160–380€', nota: 'Incluye prueba previa' },
-  { perfil: 'Maquillaje novia + peinado', tarifa: '300–620€', nota: 'Servicio integral más demandado' },
-  { perfil: 'Madrina / invitada especial', tarifa: '90–170€', nota: 'Sin prueba previa habitualmente' },
-  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '520–980€', nota: 'Desplazamiento a villa/finca incluido' },
-  { perfil: 'Evento corporativo / azafata', tarifa: '45–95€/persona', nota: 'Maquillaje fast-track profesional' },
-  { perfil: 'Sesión foto / vídeo', tarifa: '130–280€', nota: 'HD, flash-friendly, retoque incluido' },
+  { perfil: 'Maquillaje novia (solo)', tarifa: '160-380€', nota: 'Incluye prueba previa' },
+  { perfil: 'Maquillaje novia + peinado', tarifa: '300-620€', nota: 'Servicio integral más demandado' },
+  { perfil: 'Madrina / invitada especial', tarifa: '90-170€', nota: 'Sin prueba previa habitualmente' },
+  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '520-980€', nota: 'Desplazamiento a villa/finca incluido' },
+  { perfil: 'Evento corporativo / azafata', tarifa: '45-95€/persona', nota: 'Maquillaje fast-track profesional' },
+  { perfil: 'Sesión foto / vídeo', tarifa: '130-280€', nota: 'HD, flash-friendly, retoque incluido' },
 ];
 
 export default function BlogMaquillajePalma() {
@@ -33,7 +33,7 @@ export default function BlogMaquillajePalma() {
         <title>Precio maquilladora para eventos en Palma 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobra una maquilladora para bodas de lujo en villas y fincas de Mallorca. Tarifas de temporada alta 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/maquillaje-eventos-palma" />
-        <meta property="og:title" content="Precio maquilladora eventos Palma de Mallorca 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio maquilladora eventos Palma de Mallorca 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de maquilladoras para bodas de lujo y eventos en Mallorca." />
         <meta property="og:url" content="https://xpeak.es/blog/maquillaje-eventos-palma" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

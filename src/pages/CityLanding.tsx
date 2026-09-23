@@ -145,7 +145,7 @@ export const CITIES: Record<string, CityInfo> = {
   malaga:    { ciudad: 'Málaga',    slug: 'malaga',    venues: ['Teatro Cervantes', 'Sala Velvet', 'Liceo', 'Sojo Club', 'Theatro Club'],        precioMin: '40€',  precioMax: '180€',
     seasonal: {
       badge: '☀️ Costa del Sol',
-      months: 'Abril – Octubre',
+      months: 'Abril a Octubre',
       highlight: 'Málaga y la Costa del Sol concentran una alta demanda de profesionales para bodas en finca, terrazas de hotel y eventos privados en verano.',
       keywords: ['DJ Málaga verano', 'DJ bodas Costa del Sol', 'camareros eventos Málaga', 'DJ terraza Málaga', 'personal extra hostelería Málaga'],
     },
@@ -156,7 +156,7 @@ export const CITIES: Record<string, CityInfo> = {
   palma:     { ciudad: 'Palma',     slug: 'palma',     venues: ['Pacha Mallorca', 'Tito\'s', 'Nikki Beach', 'Bésame', 'Es Gremi'],            precioMin: '60€',  precioMax: '350€',
     seasonal: {
       badge: '🌴 Temporada Alta',
-      months: 'Mayo – Octubre',
+      months: 'Mayo a Octubre',
       highlight: 'Mallorca concentra cientos de eventos privados en fincas, villas y yates de junio a septiembre. La demanda de DJs y camareros se multiplica x3 en verano.',
       keywords: ['DJ Mallorca verano', 'DJ villa Mallorca', 'camareros temporada Palma', 'DJ pool party Mallorca', 'personal extra hostelería Mallorca'],
     },
@@ -164,20 +164,20 @@ export const CITIES: Record<string, CityInfo> = {
   ibiza:     { ciudad: 'Ibiza',     slug: 'ibiza',     venues: ['Amnesia', 'Pacha', 'DC-10', 'Hi Ibiza', 'Ushuaïa'],                           precioMin: '150€', precioMax: '2000€',
     seasonal: {
       badge: 'Temporada Ibiza',
-      months: 'Mayo – Septiembre',
+      months: 'Mayo a Septiembre',
       highlight: 'Ibiza es el epicentro mundial de eventos privados en villa, pool parties y yates de mayo a octubre. Los mejores profesionales se agotan con semanas de antelación.',
       keywords: ['DJ villa Ibiza', 'DJ fiesta privada Ibiza', 'DJ pool party Ibiza', 'DJ eventos Ibiza', 'camareros temporada Ibiza', 'personal extra hostelería Ibiza'],
     },
   },
   alicante:      { ciudad: 'Alicante',           slug: 'alicante',      venues: ['Sala Stereo', 'Oz Club', 'Arena Discoteca', 'Chocolat Club', 'Sala Oz'],          precioMin: '40€', precioMax: '200€',
-    seasonal: { badge: '☀️ Costa Blanca', months: 'Abril – Octubre', highlight: 'Alicante y la Costa Blanca concentran bodas en finca, fiestas en villa y eventos de playa con alta demanda en verano.', keywords: ['DJ Alicante verano', 'DJ bodas Costa Blanca', 'camareros eventos Alicante'] },
+    seasonal: { badge: '☀️ Costa Blanca', months: 'Abril a Octubre', highlight: 'Alicante y la Costa Blanca concentran bodas en finca, fiestas en villa y eventos de playa con alta demanda en verano.', keywords: ['DJ Alicante verano', 'DJ bodas Costa Blanca', 'camareros eventos Alicante'] },
   },
   granada:       { ciudad: 'Granada',            slug: 'granada',       venues: ['Sala Industrial Copera', 'El Camborio', 'Clandestino', 'Suite Granada', 'Planta Baja'], precioMin: '35€', precioMax: '180€' },
   cordoba:       { ciudad: 'Córdoba',            slug: 'cordoba',       venues: ['Teatro Cómico', 'Sala Zero', 'Week Club', 'El Tablón', 'Sala Noches'],              precioMin: '30€', precioMax: '160€' },
   valladolid:    { ciudad: 'Valladolid',         slug: 'valladolid',    venues: ['Sala Cuatro', 'Tótem Club', 'Malandar Valladolid', 'Planta Baja', 'Le Club'],       precioMin: '30€', precioMax: '150€' },
   sansebastian:  { ciudad: 'San Sebastián',      slug: 'sansebastian',  venues: ['Bataplan', 'Ku Discoteca', 'Etxekalte', 'Sala Dabadaba', 'Mau Mau'],               precioMin: '60€', precioMax: '280€' },
   santander:     { ciudad: 'Santander',          slug: 'santander',     venues: ['Sala El Tren', 'Pub Wenceslao', 'Suite Santander', 'Nuit Club', 'La Parka'],        precioMin: '35€', precioMax: '160€',
-    seasonal: { badge: '🌊 Verano Cantábrico', months: 'Junio – Septiembre', highlight: 'Santander activa su temporada de eventos en verano: bodas en finca, terrazas de hotel y fiestas privadas junto al mar.', keywords: ['DJ Santander verano', 'DJ eventos Cantabria', 'camareros bodas Santander'] },
+    seasonal: { badge: '🌊 Verano Cantábrico', months: 'Junio a Septiembre', highlight: 'Santander activa su temporada de eventos en verano: bodas en finca, terrazas de hotel y fiestas privadas junto al mar.', keywords: ['DJ Santander verano', 'DJ eventos Cantabria', 'camareros bodas Santander'] },
   },
   coruna:        { ciudad: 'A Coruña',           slug: 'coruna',        venues: ['Mardi Gras', 'Plastic', 'Discoteca Playa Club', 'Suite Coruña', 'Metrópolis'],      precioMin: '35€', precioMax: '170€' },
   tenerife:      { ciudad: 'Tenerife',           slug: 'tenerife',      venues: ['Papagayo Beach Club', 'Monkey Beach Club', 'Café Latino', 'Tramps Tenerife', 'Prisma'], precioMin: '50€', precioMax: '300€',
@@ -187,7 +187,7 @@ export const CITIES: Record<string, CityInfo> = {
     seasonal: { badge: '🌴 Gran Canaria', months: 'Todo el año', highlight: 'Las Palmas y Gran Canaria tienen demanda constante de DJs y personal de eventos todo el año, con picos en Carnaval y verano.', keywords: ['DJ Las Palmas eventos', 'DJ Gran Canaria', 'camareros eventos Las Palmas'] },
   },
   lapalma:       { ciudad: 'La Palma',           slug: 'lapalma',       venues: ['Sala El Tiempo', 'Discoteca Folías', 'Club Náutico La Palma', 'Terraza Parador', 'La Bodeguita'], precioMin: '35€', precioMax: '180€',
-    seasonal: { badge: '🌋 Isla Bonita', months: 'Todo el año', highlight: 'La Palma crece en turismo de lujo y bodas en entorno natural único. La isla sufre escasez crónica de profesionales — XPEAK cubre esa demanda.', keywords: ['DJ La Palma Canarias', 'DJ bodas La Palma', 'camareros eventos La Palma', 'personal eventos isla La Palma'] },
+    seasonal: { badge: '🌋 Isla Bonita', months: 'Todo el año', highlight: 'La Palma crece en turismo de lujo y bodas en entorno natural único. La isla sufre escasez crónica de profesionales. XPEAK cubre esa demanda.', keywords: ['DJ La Palma Canarias', 'DJ bodas La Palma', 'camareros eventos La Palma', 'personal eventos isla La Palma'] },
   },
   lanzarote:     { ciudad: 'Lanzarote',          slug: 'lanzarote',     venues: ['Jameos del Agua', 'La Cueva del Diablo', 'Papagayo Lanzarote', 'Suite Lanzarote', 'Costa Teguise Club'], precioMin: '50€', precioMax: '280€',
     seasonal: { badge: '🌋 Lanzarote', months: 'Todo el año', highlight: 'Lanzarote combina turismo internacional todo el año con bodas en entornos volcánicos únicos. Alta demanda de DJs y personal para hoteles y eventos privados.', keywords: ['DJ Lanzarote eventos', 'DJ bodas Lanzarote', 'camareros hoteles Lanzarote'] },
@@ -196,10 +196,10 @@ export const CITIES: Record<string, CityInfo> = {
     seasonal: { badge: '🏄 Fuerteventura', months: 'Todo el año', highlight: 'Fuerteventura concentra resorts internacionales, kite surf y bodas en playa. Demanda constante de DJs y personal para eventos en hotel y fiestas privadas.', keywords: ['DJ Fuerteventura bodas', 'DJ eventos Fuerteventura', 'camareros resorts Fuerteventura'] },
   },
   menorca:       { ciudad: 'Menorca',            slug: 'menorca',       venues: ['Cova d\'en Xoroi', 'Es Cau', 'Suite Mahón', 'Casino San Clemente', 'Cafe Balear'],   precioMin: '60€', precioMax: '320€',
-    seasonal: { badge: '🌿 Menorca', months: 'Mayo – Octubre', highlight: 'Menorca es destino de lujo y bodas exclusivas. Cova den Xoroi es uno de los clubs más icónicos de España. Alta demanda de profesionales para eventos privados y bodas en finca.', keywords: ['DJ Menorca bodas', 'DJ Menorca eventos', 'camareros bodas Menorca', 'DJ Cova den Xoroi'] },
+    seasonal: { badge: '🌿 Menorca', months: 'Mayo a Octubre', highlight: 'Menorca es destino de lujo y bodas exclusivas. Cova den Xoroi es uno de los clubs más icónicos de España. Alta demanda de profesionales para eventos privados y bodas en finca.', keywords: ['DJ Menorca bodas', 'DJ Menorca eventos', 'camareros bodas Menorca', 'DJ Cova den Xoroi'] },
   },
   formentera:    { ciudad: 'Formentera',         slug: 'formentera',    venues: ['Beso Beach', 'Juan y Andrea', 'Hostal La Savina', 'Es Pujols Club', 'Fonda Pepe'],   precioMin: '120€', precioMax: '1500€',
-    seasonal: { badge: '🏝️ Formentera', months: 'Junio – Septiembre', highlight: 'Formentera es el destino más exclusivo del Mediterráneo. Fiestas privadas en villa, yates y beach clubs de lujo con DJs de primer nivel. Demanda altísima y oferta casi inexistente.', keywords: ['DJ Formentera villa', 'DJ fiesta privada Formentera', 'DJ Formentera verano', 'camareros Formentera'] },
+    seasonal: { badge: '🏝️ Formentera', months: 'Junio a Septiembre', highlight: 'Formentera es el destino más exclusivo del Mediterráneo. Fiestas privadas en villa, yates y beach clubs de lujo con DJs de primer nivel. Demanda altísima y oferta casi inexistente.', keywords: ['DJ Formentera villa', 'DJ fiesta privada Formentera', 'DJ Formentera verano', 'camareros Formentera'] },
   },
   // Ciudades ampliadas — cobertura nacional completa
   vigo:          { ciudad: 'Vigo',               slug: 'vigo',          venues: ['Pub Modus', 'Discoteca Acuario', 'Sala Radar', 'Why Not Vigo', 'Chaman Club'],        precioMin: '35€', precioMax: '160€' },
@@ -213,11 +213,11 @@ export const CITIES: Record<string, CityInfo> = {
   toledo:        { ciudad: 'Toledo',             slug: 'toledo',        venues: ['Sala Lava', 'Discoteca Manhattan', 'Pub El Corral', 'Circus Club', 'La Sala'],        precioMin: '30€', precioMax: '140€' },
   albacete:      { ciudad: 'Albacete',           slug: 'albacete',      venues: ['Sala Big Ben', 'Discoteca Sphaerum', 'Pub San Juan', 'Club Génesis', 'La Riviera'],   precioMin: '25€', precioMax: '130€' },
   marbella:      { ciudad: 'Marbella',           slug: 'marbella',      venues: ['Ocean Club', 'Nikki Beach Marbella', 'Suite 88', 'Olivia Valere', 'Buddha'],          precioMin: '80€', precioMax: '600€',
-    seasonal: { badge: '☀️ Costa del Sol VIP', months: 'Mayo – Octubre', highlight: 'Marbella es el destino premium de la Costa del Sol. Beach clubs, fincas de lujo y villas de alta gama concentran la mayor demanda de DJs y staff de alto nivel.', keywords: ['DJ Marbella villa', 'DJ Marbella boda', 'camareros Marbella beach club'] } },
+    seasonal: { badge: '☀️ Costa del Sol VIP', months: 'Mayo a Octubre', highlight: 'Marbella es el destino premium de la Costa del Sol. Beach clubs, fincas de lujo y villas de alta gama concentran la mayor demanda de DJs y staff de alto nivel.', keywords: ['DJ Marbella villa', 'DJ Marbella boda', 'camareros Marbella beach club'] } },
   benidorm:      { ciudad: 'Benidorm',           slug: 'benidorm',      venues: ['Penélope Club', 'Ku Benidorm', 'Disco 9 Club', 'Benidorm Palace', 'Sala Pub'],        precioMin: '40€', precioMax: '250€',
-    seasonal: { badge: '🌞 Temporada Benidorm', months: 'Abril – Octubre', highlight: 'Benidorm concentra la mayor densidad de clubs y hoteles por habitante de España. Alta demanda de DJs y personal de hostelería todo el verano.', keywords: ['DJ Benidorm verano', 'camareros hoteles Benidorm'] } },
+    seasonal: { badge: '🌞 Temporada Benidorm', months: 'Abril a Octubre', highlight: 'Benidorm concentra la mayor densidad de clubs y hoteles por habitante de España. Alta demanda de DJs y personal de hostelería todo el verano.', keywords: ['DJ Benidorm verano', 'camareros hoteles Benidorm'] } },
   sitges:        { ciudad: 'Sitges',             slug: 'sitges',        venues: ['Atlantida Sitges', 'Privilege Sitges', 'El Patio', 'Organic Club', 'Bar Parrot'],     precioMin: '60€', precioMax: '300€',
-    seasonal: { badge: '🌊 Sitges', months: 'Mayo – Octubre', highlight: 'Sitges concentra eventos, festivales y bodas todo el verano. Alta demanda de DJs y personal para eventos de playa y fiestas privadas.', keywords: ['DJ Sitges eventos', 'DJ Sitges boda', 'camareros Sitges'] } },
+    seasonal: { badge: '🌊 Sitges', months: 'Mayo a Octubre', highlight: 'Sitges concentra eventos, festivales y bodas todo el verano. Alta demanda de DJs y personal para eventos de playa y fiestas privadas.', keywords: ['DJ Sitges eventos', 'DJ Sitges boda', 'camareros Sitges'] } },
   tarragona:     { ciudad: 'Tarragona',          slug: 'tarragona',     venues: ['Sala Zeppelin', 'Discoteca Tequila', 'Pub Saratoga', 'Club Cocoa', 'Sala B5'],       precioMin: '40€', precioMax: '180€' },
   lleida:        { ciudad: 'Lleida',             slug: 'lleida',        venues: ['Sala Capitol', 'Discoteca Cheers', 'Pub Molino', 'Club Lotus', 'Sala Indiana'],       precioMin: '25€', precioMax: '130€' },
   girona:        { ciudad: 'Girona',             slug: 'girona',        venues: ['Sala Platea', 'Pub La Sala', 'Club Borsalino', 'Discoteca Rocambola', 'Neon Club'],   precioMin: '40€', precioMax: '180€' },
@@ -247,21 +247,21 @@ export const CITIES: Record<string, CityInfo> = {
     seasonal: { badge: '🌴 Sur Tenerife', months: 'Todo el año', highlight: 'Costa Adeje y el sur de Tenerife concentran hoteles de lujo, bodas internacionales y eventos privados todo el año.', keywords: ['DJ Costa Adeje', 'DJ bodas sur Tenerife', 'camareros hoteles Costa Adeje'] } },
   // Municipios grandes
   fuengirola:    { ciudad: 'Fuengirola',          slug: 'fuengirola',    venues: ['Marenostrum Resort', 'Sala Mango', 'Pub Sea Garden', 'Club Yate', 'La Quinta'],      precioMin: '45€', precioMax: '220€',
-    seasonal: { badge: '☀️ Costa del Sol', months: 'Abril – Octubre', highlight: 'Fuengirola es uno de los municipios turísticos más activos de la Costa del Sol, con alta demanda de DJs y personal para hoteles y eventos en verano.', keywords: ['DJ Fuengirola verano', 'camareros eventos Fuengirola', 'DJ bodas Fuengirola'] } },
+    seasonal: { badge: '☀️ Costa del Sol', months: 'Abril a Octubre', highlight: 'Fuengirola es uno de los municipios turísticos más activos de la Costa del Sol, con alta demanda de DJs y personal para hoteles y eventos en verano.', keywords: ['DJ Fuengirola verano', 'camareros eventos Fuengirola', 'DJ bodas Fuengirola'] } },
   torremolinos:  { ciudad: 'Torremolinos',        slug: 'torremolinos',  venues: ['Sala Waikiki', 'Discoteca Palladium', 'Pub Nogalera', 'Club Havana', 'La Taberna'],  precioMin: '40€', precioMax: '200€',
-    seasonal: { badge: '☀️ Costa del Sol', months: 'Abril – Octubre', highlight: 'Torremolinos concentra clubs y hoteles de playa con alta demanda de DJs y staff en verano. Ambiente cosmopolita y eventos LGBTQ+.', keywords: ['DJ Torremolinos verano', 'DJ Torremolinos clubs', 'camareros Torremolinos'] } },
+    seasonal: { badge: '☀️ Costa del Sol', months: 'Abril a Octubre', highlight: 'Torremolinos concentra clubs y hoteles de playa con alta demanda de DJs y staff en verano. Ambiente cosmopolita y eventos LGBTQ+.', keywords: ['DJ Torremolinos verano', 'DJ Torremolinos clubs', 'camareros Torremolinos'] } },
   benalmadena:   { ciudad: 'Benalmádena',         slug: 'benalmadena',   venues: ['Casino Torrequebrada', 'Sala Fortuna', 'Pub Puerto Marina', 'Club Kiu', 'La Arena'], precioMin: '40€', precioMax: '200€',
-    seasonal: { badge: '☀️ Costa del Sol', months: 'Abril – Octubre', highlight: 'Benalmádena y su Puerto Marina concentran restaurantes, clubs y eventos en verano. Casino Torrequebrada es referencia de entretenimiento en la Costa del Sol.', keywords: ['DJ Benalmádena', 'camareros Puerto Marina', 'DJ eventos Benalmádena'] } },
+    seasonal: { badge: '☀️ Costa del Sol', months: 'Abril a Octubre', highlight: 'Benalmádena y su Puerto Marina concentran restaurantes, clubs y eventos en verano. Casino Torrequebrada es referencia de entretenimiento en la Costa del Sol.', keywords: ['DJ Benalmádena', 'camareros Puerto Marina', 'DJ eventos Benalmádena'] } },
   estepona:      { ciudad: 'Estepona',            slug: 'estepona',      venues: ['Sala La Rada', 'Discoteca Suite', 'Pub Bodegas', 'Club Cosmo', 'La Terraza'],        precioMin: '45€', precioMax: '250€',
-    seasonal: { badge: '☀️ Costa del Sol', months: 'Mayo – Octubre', highlight: 'Estepona está en auge con nuevos complejos de lujo y campos de golf. Alta demanda de DJs y personal para eventos en villas y fincas.', keywords: ['DJ Estepona', 'camareros Estepona eventos', 'DJ boda Estepona'] } },
+    seasonal: { badge: '☀️ Costa del Sol', months: 'Mayo a Octubre', highlight: 'Estepona está en auge con nuevos complejos de lujo y campos de golf. Alta demanda de DJs y personal para eventos en villas y fincas.', keywords: ['DJ Estepona', 'camareros Estepona eventos', 'DJ boda Estepona'] } },
   gandia:        { ciudad: 'Gandía',              slug: 'gandia',        venues: ['Discoteca Spook', 'Sala Norte', 'Pub Heaven', 'Club Ítaca', 'La Crema'],            precioMin: '35€', precioMax: '180€',
-    seasonal: { badge: '🌊 Valencia Coast', months: 'Junio – Septiembre', highlight: 'Gandía es el destino de eventos y entretenimiento más activo de la Comunidad Valenciana en verano. Spook Factory es referencia nacional de música electrónica.', keywords: ['DJ Gandía verano', 'DJ Spook Gandía', 'camareros eventos Gandía'] } },
+    seasonal: { badge: '🌊 Valencia Coast', months: 'Junio a Septiembre', highlight: 'Gandía es el destino de eventos y entretenimiento más activo de la Comunidad Valenciana en verano. Spook Factory es referencia nacional de música electrónica.', keywords: ['DJ Gandía verano', 'DJ Spook Gandía', 'camareros eventos Gandía'] } },
   denia:         { ciudad: 'Dénia',               slug: 'denia',         venues: ['Sala La Pedrera', 'Pub El Quinto', 'Club Faralló', 'La Raqueta', 'Terraza Tramontana'], precioMin: '40€', precioMax: '200€',
-    seasonal: { badge: '🌊 Costa Blanca Norte', months: 'Mayo – Septiembre', highlight: 'Dénia combina turismo familiar y de lujo con bodas en finca y eventos privados. Alta demanda de DJs y camareros en verano.', keywords: ['DJ Dénia bodas', 'camareros eventos Dénia', 'DJ fiesta privada Dénia'] } },
+    seasonal: { badge: '🌊 Costa Blanca Norte', months: 'Mayo a Septiembre', highlight: 'Dénia combina turismo familiar y de lujo con bodas en finca y eventos privados. Alta demanda de DJs y camareros en verano.', keywords: ['DJ Dénia bodas', 'camareros eventos Dénia', 'DJ fiesta privada Dénia'] } },
   calpe:         { ciudad: 'Calpe',               slug: 'calpe',         venues: ['Club Salinas', 'Pub El Peñón', 'Discoteca Infinity', 'Terraza Ifach', 'La Lonja'],   precioMin: '40€', precioMax: '200€',
-    seasonal: { badge: '🌊 Costa Blanca', months: 'Mayo – Septiembre', highlight: 'Calpe y el Peñón de Ifach son referencia en bodas con vistas al mar y eventos privados de lujo en la Costa Blanca.', keywords: ['DJ Calpe boda', 'camareros Calpe eventos', 'DJ fiesta privada Calpe'] } },
+    seasonal: { badge: '🌊 Costa Blanca', months: 'Mayo a Septiembre', highlight: 'Calpe y el Peñón de Ifach son referencia en bodas con vistas al mar y eventos privados de lujo en la Costa Blanca.', keywords: ['DJ Calpe boda', 'camareros Calpe eventos', 'DJ fiesta privada Calpe'] } },
   javea:         { ciudad: 'Jávea',               slug: 'javea',         venues: ['Club Náutico Jávea', 'Pub Tossalet', 'Discoteca Pirámide', 'La Siesta', 'El Arenal Club'], precioMin: '50€', precioMax: '280€',
-    seasonal: { badge: '🌊 Costa Blanca', months: 'Mayo – Septiembre', highlight: 'Jávea es destino premium en la Costa Blanca con alta concentración de residentes europeos. Bodas en villa y eventos exclusivos todo el verano.', keywords: ['DJ Jávea bodas', 'camareros Jávea eventos', 'DJ villa Jávea'] } },
+    seasonal: { badge: '🌊 Costa Blanca', months: 'Mayo a Septiembre', highlight: 'Jávea es destino premium en la Costa Blanca con alta concentración de residentes europeos. Bodas en villa y eventos exclusivos todo el verano.', keywords: ['DJ Jávea bodas', 'camareros Jávea eventos', 'DJ villa Jávea'] } },
   talavera:      { ciudad: 'Talavera de la Reina', slug: 'talavera',     venues: ['Sala Kalipso', 'Discoteca La Fábrica', 'Pub Aljibe', 'Club Menfis', 'La Vega'],     precioMin: '25€', precioMax: '130€' },
   getafe:        { ciudad: 'Getafe',              slug: 'getafe',        venues: ['Sala Bonavista', 'Discoteca Area', 'Pub Getafe Center', 'Club 4', 'La Esquina'],     precioMin: '30€', precioMax: '150€' },
   alcorcon:      { ciudad: 'Alcorcón',            slug: 'alcorcon',      venues: ['Sala Independencia', 'Pub Alcazar', 'Discoteca Fenix', 'Club Base', 'La Pista'],     precioMin: '30€', precioMax: '150€' },
@@ -278,9 +278,9 @@ export const CITIES: Record<string, CityInfo> = {
   reus:          { ciudad: 'Reus',                slug: 'reus',          venues: ['Sala Fortuny', 'Pub La Cartuja', 'Discoteca Cosmos', 'Club Eros', 'El Mercat'],     precioMin: '30€', precioMax: '150€' },
   elda:          { ciudad: 'Elda',                slug: 'elda',          venues: ['Sala Altea', 'Pub La Molineta', 'Discoteca Metrópolis', 'Club Alce', 'La Cueva'],   precioMin: '25€', precioMax: '130€' },
   torrevieja:    { ciudad: 'Torrevieja',          slug: 'torrevieja',    venues: ['Sala Mar', 'Pub Playa', 'Discoteca Picadilly', 'Club Nix', 'La Caleta'],            precioMin: '35€', precioMax: '180€',
-    seasonal: { badge: '🌊 Costa Blanca Sur', months: 'Mayo – Octubre', highlight: 'Torrevieja concentra turismo europeo y residentes del norte con alta demanda de DJs y personal para eventos en verano.', keywords: ['DJ Torrevieja verano', 'camareros Torrevieja', 'DJ bodas Torrevieja'] } },
+    seasonal: { badge: '🌊 Costa Blanca Sur', months: 'Mayo a Octubre', highlight: 'Torrevieja concentra turismo europeo y residentes del norte con alta demanda de DJs y personal para eventos en verano.', keywords: ['DJ Torrevieja verano', 'camareros Torrevieja', 'DJ bodas Torrevieja'] } },
   orihuela:      { ciudad: 'Orihuela Costa',      slug: 'orihuela',      venues: ['Sala Zenia', 'Pub La Manga', 'Discoteca Dreams', 'Club Playa Flamenca', 'La Cala'],  precioMin: '35€', precioMax: '180€',
-    seasonal: { badge: '🌊 Costa Blanca Sur', months: 'Mayo – Octubre', highlight: 'Orihuela Costa y La Zenia concentran urbanizaciones de lujo con bodas en finca y eventos privados en temporada alta.', keywords: ['DJ Orihuela Costa', 'camareros Orihuela eventos', 'DJ bodas Orihuela'] } },
+    seasonal: { badge: '🌊 Costa Blanca Sur', months: 'Mayo a Octubre', highlight: 'Orihuela Costa y La Zenia concentran urbanizaciones de lujo con bodas en finca y eventos privados en temporada alta.', keywords: ['DJ Orihuela Costa', 'camareros Orihuela eventos', 'DJ bodas Orihuela'] } },
   valdemoro:     { ciudad: 'Valdemoro',           slug: 'valdemoro',     venues: ['Sala Central', 'Pub La Plaza', 'Discoteca Oasis', 'Club Zona', 'El Gato'],          precioMin: '25€', precioMax: '130€' },
   pozuelo:       { ciudad: 'Pozuelo de Alarcón',  slug: 'pozuelo',       venues: ['Sala Pozuelo', 'Pub La Dehesa', 'Discoteca Campus', 'Club Alto', 'La Finca'],       precioMin: '40€', precioMax: '200€' },
   majadahonda:   { ciudad: 'Majadahonda',         slug: 'majadahonda',   venues: ['Sala Majadahonda', 'Pub La Estación', 'Discoteca Classic', 'Club Monte', 'El Lago'], precioMin: '40€', precioMax: '200€' },
@@ -314,14 +314,13 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     },
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta contratar un DJ en ${c}?`, a: c === 'Ibiza'
-        ? `El precio de un DJ en Ibiza varía entre ${precio}/hora según el nombre del artista y el tipo de evento. Un DJ para villa privada cuesta orientativamente 300€–800€ por noche. DJs residentes de clubs reconocidos pueden superar los 2.000€. En XPEAK todos los perfiles muestran su tarifa pública.`
+        ? `El precio de un DJ en Ibiza varía entre ${precio}/hora según el nombre del artista y el tipo de evento. Un DJ para villa privada cuesta orientativamente 300€-800€ por noche. DJs residentes de clubs reconocidos pueden superar los 2.000€. En XPEAK todos los perfiles muestran su tarifa pública.`
         : `El precio de un DJ en ${c} varía entre ${precio}/hora según experiencia y equipo. En XPEAK todos los perfiles muestran su tarifa pública antes de contactar.` },
       { q: c === 'Ibiza' ? '¿Puedo contratar DJ para una fiesta en villa de Ibiza?' : `¿Cómo funciona el Flash Booking en ${c}?`,
         a: c === 'Ibiza'
           ? 'Sí. XPEAK tiene DJs especializados en eventos privados en villa: conocen la normativa de ruido de Ibiza, trabajan con equipo silencioso o indoor y tienen experiencia con grupos internacionales. Puedes publicar tu oferta de villa y recibir candidaturas en menos de 1 hora.'
           : `Publica una oferta urgente y recibe respuestas de DJs disponibles en ${c} en menos de 60 minutos. Ideal para sustituciones de última hora.` },
-      { q: '¿XPEAK cobra comisión?', a: 'No. El contrato se cierra directamente entre tú y el profesional.' },
-      ...(c === 'Ibiza' ? [{ q: '¿Con cuánta antelación hay que contratar DJ en Ibiza en temporada?', a: 'En temporada alta (junio–septiembre) los mejores DJs de Ibiza se agotan con 2–4 semanas de antelación. Si tu evento es en julio o agosto, reserva con al menos 1 mes. Para urgencias, el Flash Booking de XPEAK puede encontrar disponibilidad en menos de 1 hora.' }] : []),
+      ...(c === 'Ibiza' ? [{ q: '¿Con cuánta antelación hay que contratar DJ en Ibiza en temporada?', a: 'En temporada alta (junio-septiembre) los mejores DJs de Ibiza se agotan con 2-4 semanas de antelación. Si tu evento es en julio o agosto, reserva con al menos 1 mes. Para urgencias, el Flash Booking de XPEAK puede encontrar disponibilidad en menos de 1 hora.' }] : []),
     ],
   },
   camareros: {
@@ -334,18 +333,18 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
       return `Camareros profesionales en ${c} para bodas, eventos de empresa y fiestas privadas. Flash Booking en menos de 1h. Contrato digital automático.`;
     },
     intro: (c) => {
-      if (c === 'Ibiza') return 'Ibiza necesita cientos de camareros extra cada temporada (mayo–septiembre). XPEAK conecta villas, clubs, restaurantes y organizadores de eventos con camareros y bartenders verificados disponibles en Ibiza: por horas, por noches o para toda la temporada. Personal extra hostelería disponible en menos de 1 hora con Flash Booking.';
+      if (c === 'Ibiza') return 'Ibiza necesita cientos de camareros extra cada temporada (mayo-septiembre). XPEAK conecta villas, clubs, restaurantes y organizadores de eventos con camareros y bartenders verificados disponibles en Ibiza: por horas, por noches o para toda la temporada. Personal extra hostelería disponible en menos de 1 hora con Flash Booking.';
       if (c === 'Palma') return 'Mallorca concentra una alta demanda de camareros extra en temporada estival. XPEAK conecta hoteles, fincas y organizadores de eventos en Palma con personal de sala verificado disponible para bodas, pool parties y eventos corporativos. Contratación por horas o por temporada.';
       return `Encuentra camareros y personal de sala en ${c} para cualquier tipo de evento: bodas, cenas corporativas, fiestas privadas y catering. XPEAK conecta organizadores con profesionales verificados con experiencia demostrable, disponibles para acuerdos puntuales o de temporada.`;
     },
     faqs: (c, precio) => [
       { q: `¿Cuánto cobran los camareros en ${c}?`, a: c === 'Ibiza'
-        ? `Los camareros en Ibiza cobran entre ${precio}/hora en temporada, con suplemento nocturno habitual de 2–4€/hora. Para eventos de villa o yate el precio puede ser superior al incluir desplazamiento y posible alojamiento. En XPEAK todos los perfiles muestran su tarifa pública.`
+        ? `Los camareros en Ibiza cobran entre ${precio}/hora en temporada, con suplemento nocturno habitual de 2-4€/hora. Para eventos de villa o yate el precio puede ser superior al incluir desplazamiento y posible alojamiento. En XPEAK todos los perfiles muestran su tarifa pública.`
         : `Los camareros profesionales en ${c} cobran entre ${precio}/hora. Para eventos de boda o corporativos con servicio completo el precio suele incluir desplazamiento y uniforme.` },
       { q: `¿Cuántos camareros necesito para mi evento en ${c}?`, a: 'La regla estándar es 1 camarero por cada 15-20 personas en formato cóctel, y 1 por cada 8-10 en cena sentada con servicio completo.' },
       { q: c === 'Ibiza' ? '¿Puedo contratar camareros por temporada en Ibiza?' : '¿Puedo contratar camareros para una sola noche?',
         a: c === 'Ibiza'
-          ? 'Sí. XPEAK permite acuerdos de temporada completa (mayo–octubre) con contrato digital automático. También contrataciones puntuales para una sola noche o evento. El Flash Booking cubre urgencias en menos de 1 hora.'
+          ? 'Sí. XPEAK permite acuerdos de temporada completa (mayo-octubre) con contrato digital automático. También contrataciones puntuales para una sola noche o evento. El Flash Booking cubre urgencias en menos de 1 hora.'
           : `Sí. XPEAK permite contrataciones puntuales en ${c}. El Flash Booking notifica a los profesionales disponibles en tu zona al instante.` },
     ],
   },
@@ -382,7 +381,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     faqs: (c, precio) => [
       { q: `¿Cuánto cuesta contratar un fotógrafo de eventos en ${c}?`, a: `Un fotógrafo profesional de eventos en ${c} cobra entre ${precio} por evento completo. Las bodas suelen incluir ceremonia, cóctel y banquete. Eventos de una noche desde 300€.` },
       { q: `¿Puedo contratar fotógrafo y videógrafo juntos en ${c}?`, a: `Sí. Muchos perfiles en XPEAK ofrecen pack foto + vídeo con descuento. Contratar ambos con el mismo profesional suele ser un 20% más económico.` },
-      { q: '¿En cuánto tiempo recibo las fotos?', a: 'La mayoría de fotógrafos en XPEAK entregan una selección de fotos editadas en 2–5 días y el reportaje completo en 2–4 semanas. Los plazos están especificados en cada perfil.' },
+      { q: '¿En cuánto tiempo recibo las fotos?', a: 'La mayoría de fotógrafos en XPEAK entregan una selección de fotos editadas en 2-5 días y el reportaje completo en 2-4 semanas. Los plazos están especificados en cada perfil.' },
     ],
   },
   catering: {
@@ -390,11 +389,11 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     keyword: 'Catering',
     unidad: '/persona',
     desc: (c) => `Catering profesional en ${c} para bodas, eventos corporativos y celebraciones privadas. Menús personalizados, servicio completo, contratos automáticos..`,
-    intro: (c) => `Encuentra proveedores de catering para cualquier tipo de evento en ${c}: banquetes de boda, coffee breaks corporativos, cenas de gala y fiestas privadas. XPEAK te conecta directamente con el proveedor, sin intermediarios ni comisiones.`,
+    intro: (c) => `Encuentra proveedores de catering para cualquier tipo de evento en ${c}: banquetes de boda, coffee breaks corporativos, cenas de gala y fiestas privadas. XPEAK te conecta directamente con el proveedor, sin intermediarios.`,
     faqs: (c, precio) => [
-      { q: `¿Cuánto cuesta el catering para una boda en ${c}?`, a: `El catering para bodas en ${c} cuesta entre ${precio} por comensal según el menú y el servicio. Banquete sentado completo con vinos: 70€–120€/persona. Bufé: 50€–80€/persona.` },
+      { q: `¿Cuánto cuesta el catering para una boda en ${c}?`, a: `El catering para bodas en ${c} cuesta entre ${precio} por comensal según el menú y el servicio. Banquete sentado completo con vinos: 70€-120€/persona. Bufé: 50€-80€/persona.` },
       { q: `¿Qué incluye un servicio de catering completo en ${c}?`, a: 'Un catering completo incluye aperitivo, cóctel, banquete, barra libre, montaje, personal de sala y limpieza. En XPEAK cada proveedor detalla exactamente qué está incluido.' },
-      { q: '¿Con cuánta antelación debo contratar el catering?', a: 'Para bodas, mínimo 3–6 meses. Para eventos corporativos de menos de 50 personas el Flash Booking puede conseguirte disponibilidad en menos de una semana.' },
+      { q: '¿Con cuánta antelación debo contratar el catering?', a: 'Para bodas, mínimo 3-6 meses. Para eventos corporativos de menos de 50 personas el Flash Booking puede conseguirte disponibilidad en menos de una semana.' },
     ],
   },
   'disco-movil': {
@@ -428,7 +427,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     desc: (c) => `Contratar mago o ilusionista en ${c} para bodas, eventos de empresa y fiestas privadas. Magia de cerca y shows de escenario. Flash Booking..`,
     intro: (c) => `Encuentra magos e ilusionistas profesionales en ${c} para cualquier tipo de evento: magia de cerca en mesas para bodas y cenas de empresa, shows de escenario para convenciones y fiestas privadas. XPEAK conecta organizadores con magos verificados con experiencia demostrable.`,
     faqs: (c, precio) => [
-      { q: `¿Cuánto cuesta contratar un mago en ${c}?`, a: `Un mago profesional en ${c} cobra entre ${precio} por evento. Magia de cerca para bodas (pase entre mesas): 200€–400€. Shows de escenario de 30–60 min: 400€–800€.` },
+      { q: `¿Cuánto cuesta contratar un mago en ${c}?`, a: `Un mago profesional en ${c} cobra entre ${precio} por evento. Magia de cerca para bodas (pase entre mesas): 200€-400€. Shows de escenario de 30-60 min: 400€-800€.` },
       { q: `¿Qué tipos de espectáculos de magia hay en ${c}?`, a: 'Magia de cerca (close-up) entre los asistentes, shows de escenario con grandes ilusiones, magia infantil y familiar, y magia corporativa con branding de la empresa integrado en el show.' },
       { q: '¿Un mago es adecuado para una boda?', a: 'Sí, es uno de los entretenimientos más valorados en bodas. El mago pasa por las mesas durante el cóctel o la cena creando momentos únicos y rompiendo el hielo entre los invitados.' },
     ],
@@ -440,7 +439,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     desc: (c) => `Contratar bailarines en ${c} para bodas, eventos y espectáculos: flamenco, baile moderno, latino y danza contemporánea. También instructores de salsa y bachata para clases. Shows desde 30 min. Flash Booking..`,
     intro: (c) => `Encuentra bailarines y compañías de danza en ${c} para amenizar cualquier evento: flamenco para bodas y eventos internacionales, shows de baile moderno para convenciones, danza contemporánea para galas y espectáculos de apertura. XPEAK conecta organizadores con bailarines profesionales verificados.`,
     faqs: (c, precio) => [
-      { q: `¿Cuánto cuesta contratar bailarines en ${c}?`, a: `Un espectáculo de baile en ${c} cuesta entre ${precio} por show según la duración y el número de bailarines. Shows de flamenco desde 300€; compañías de 4–6 bailarines desde 600€.` },
+      { q: `¿Cuánto cuesta contratar bailarines en ${c}?`, a: `Un espectáculo de baile en ${c} cuesta entre ${precio} por show según la duración y el número de bailarines. Shows de flamenco desde 300€; compañías de 4-6 bailarines desde 600€.` },
       { q: `¿Qué estilos de baile puedo contratar en ${c}?`, a: `En XPEAK encontrarás bailarines de flamenco, baile latino (salsa, bachata), hip hop, danza contemporánea, ballet y baile nupcial para la primera danza de bodas en ${c}.` },
       { q: '¿Puedo contratar bailarines para una boda civil?', a: 'Sí. El espectáculo de baile es muy popular durante el cóctel o la apertura del banquete. También hay bailarines especializados en coreografías sorpresa para la primera danza de los novios.' },
     ],
@@ -464,7 +463,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     desc: (c) => `Contratar monologuista o cómico de stand-up en ${c} para cenas de empresa, bodas y eventos. Guión personalizado. Flash Booking..`,
     intro: (c) => `Encuentra monologuistas y cómicos de stand-up en ${c} para cualquier evento: cenas de empresa, bodas, convenciones, fiestas privadas y festivales de humor. XPEAK conecta organizadores con profesionales del humor verificados con experiencia demostrable y guión adaptable a cada ocasión.`,
     faqs: (c, precio) => [
-      { q: `¿Cuánto cuesta contratar un monologuista en ${c}?`, a: `Un monólogo profesional en ${c} cuesta entre ${precio} por actuación según la duración y el perfil del cómico. Actuaciones de 20-30 min para cenas de empresa: 300€–600€. Shows de stand-up de 45-60 min: 500€–1.200€.` },
+      { q: `¿Cuánto cuesta contratar un monologuista en ${c}?`, a: `Un monólogo profesional en ${c} cuesta entre ${precio} por actuación según la duración y el perfil del cómico. Actuaciones de 20-30 min para cenas de empresa: 300€-600€. Shows de stand-up de 45-60 min: 500€-1.200€.` },
       { q: `¿El monologuista puede personalizar el guión para mi empresa en ${c}?`, a: 'Sí. La mayoría de monologuistas en XPEAK ofrecen guión 100% personalizado con referencias a tu empresa, sector, equipo o ciudad. Es el formato más demandado para cenas de empresa y convenciones.' },
       { q: `¿Un monólogo funciona para una boda en ${c}?`, a: 'Absolutamente. El monólogo de boda es el entretenimiento que más recuerdan los invitados. El cómico recoge anécdotas de la pareja y los invitados para crear un show único e irrepetible de 20-30 minutos.' },
       { q: '¿Cuánto dura una actuación de stand-up para eventos?', a: 'Lo más habitual es 20-30 minutos para cenas y bodas (formato cóctel o sobremesa) y 45-60 minutos para shows de teatro o festivales. Puedes especificar la duración exacta al hacer la solicitud.' },
@@ -489,7 +488,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     desc: (c) => `Contratar humorista o monologuista en ${c} para cenas de empresa, bodas y eventos privados. Stand-up comedy, monólogos personalizados e impro. Flash Booking..`,
     intro: (c) => `Encuentra humoristas, monologuistas y cómicos en ${c} para amenizar cenas de empresa, bodas, fiestas privadas y eventos corporativos. XPEAK conecta organizadores con humoristas profesionales con experiencia en eventos: desde stand-up comedy hasta dinámicas de impro para team building.`,
     faqs: (c, precio) => [
-      { q: `¿Cuánto cuesta contratar un humorista en ${c}?`, a: `Un monólogo profesional en ${c} cuesta entre ${precio} por actuación. Shows de 20–30 min para cenas de empresa: 300€–600€. Actuaciones de stand-up de 45–60 min: 500€–1.000€.` },
+      { q: `¿Cuánto cuesta contratar un humorista en ${c}?`, a: `Un monólogo profesional en ${c} cuesta entre ${precio} por actuación. Shows de 20-30 min para cenas de empresa: 300€-600€. Actuaciones de stand-up de 45-60 min: 500€-1.000€.` },
       { q: `¿El humorista puede personalizar el monólogo para mi empresa en ${c}?`, a: 'Sí. La mayoría de humoristas en XPEAK ofrecen guion personalizado con referencias a la empresa, el sector o los asistentes. Especifícalo al hacer la solicitud.' },
       { q: '¿Un humorista es adecuado para una cena de empresa?', a: 'Es uno de los entretenimientos más demandados para cenas corporativas. Un buen monólogo rompe el hielo, genera risas compartidas y crea un recuerdo positivo del evento entre los empleados.' },
     ],
@@ -501,7 +500,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     desc: (c) => `Contratar maquilladora en ${c} para bodas, eventos y sesiones fotográficas. Maquillaje profesional y artístico. Flash Booking..`,
     intro: (c) => `Encuentra maquilladoras profesionales en ${c} para bodas, sesiones de fotos, eventos de moda y TV. XPEAK conecta organizadores y novias con maquilladoras verificadas con portfolio real y experiencia en eventos.`,
     faqs: (c, precio) => [
-      { q: `¿Cuánto cuesta una maquilladora profesional en ${c}?`, a: `El maquillaje profesional en ${c} cuesta entre ${precio} por servicio. Maquillaje de novia completo: 150€–300€. Maquillaje artístico para eventos: 80€–200€.` },
+      { q: `¿Cuánto cuesta una maquilladora profesional en ${c}?`, a: `El maquillaje profesional en ${c} cuesta entre ${precio} por servicio. Maquillaje de novia completo: 150€-300€. Maquillaje artístico para eventos: 80€-200€.` },
       { q: `¿La maquilladora va al domicilio en ${c}?`, a: 'La mayoría de maquilladoras en XPEAK ofrecen servicio a domicilio o en el propio venue del evento. Especifícalo en tu solicitud y confirma el desplazamiento.' },
       { q: '¿Puedo contratar maquillaje para varias personas?', a: 'Sí. Para bodas y eventos grupales muchas maquilladoras trabajan en equipo o tienen asistentes. Indica el número de personas al hacer la solicitud para recibir presupuesto ajustado.' },
     ],
@@ -513,7 +512,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     desc: (c) => `Peluquera a domicilio en ${c}: corte, color y peinados de novia. Para tu evento o para el día a día, sin salir de casa. Flash Booking..`,
     intro: (c) => `Encuentra peluqueras y peluqueros a domicilio en ${c}, cerca de ti. Ya sea para el peinado de una boda, un evento puntual o un servicio recurrente en casa, XPEAK conecta a clientas con profesionales verificados con portfolio real.`,
     faqs: (c, precio) => [
-      { q: `¿Cuánto cuesta una peluquera a domicilio en ${c}?`, a: `Una peluquera a domicilio en ${c} cuesta entre ${precio} por servicio. Corte y peinado básico: 25€–60€. Peinado de novia con prueba previa: 80€–200€.` },
+      { q: `¿Cuánto cuesta una peluquera a domicilio en ${c}?`, a: `Una peluquera a domicilio en ${c} cuesta entre ${precio} por servicio. Corte y peinado básico: 25€-60€. Peinado de novia con prueba previa: 80€-200€.` },
       { q: `¿La peluquería a domicilio en ${c} es solo para bodas?`, a: 'No. Aunque los peinados de novia y eventos son un caso de uso frecuente, la mayoría de profesionales también ofrecen servicio a domicilio para el día a día: cortes, color y tratamientos capilares.' },
       { q: `¿Cómo encuentro una peluquera a domicilio cerca de mí en ${c}?`, a: 'Filtra por tu zona en el directorio de XPEAK y contacta directamente con las profesionales disponibles, o usa Flash Booking para recibir disponibilidad urgente.' },
     ],
@@ -581,7 +580,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     desc: (c) => `Contratar payaso o animador en ${c} para cumpleaños, bodas, eventos corporativos y festivales. Animación infantil, magia y circo. Flash Booking..`,
     intro: (c) => `Encuentra payasos, animadores y artistas de calle en ${c} para todo tipo de eventos. XPEAK conecta organizadores con animadores profesionales verificados en ${c}: desde animación infantil con magia y globoflexia hasta artistas de circo y mimo para eventos corporativos y festivales.`,
     faqs: (c, precio) => [
-      { q: `¿Cuánto cuesta contratar un payaso o animador en ${c}?`, a: `Un animador o payaso profesional en ${c} cuesta entre ${precio} por evento. Animación infantil básica (60 min): 150€–250€. Shows de circo o animación adultos: 300€–600€.` },
+      { q: `¿Cuánto cuesta contratar un payaso o animador en ${c}?`, a: `Un animador o payaso profesional en ${c} cuesta entre ${precio} por evento. Animación infantil básica (60 min): 150€-250€. Shows de circo o animación adultos: 300€-600€.` },
       { q: `¿Qué servicios incluye un animador infantil en ${c}?`, a: 'Los animadores infantiles en XPEAK suelen incluir magia, globoflexia, juegos y cuentacuentos. Algunos ofrecen también pintacaras y talleres de manualidades. Consulta el perfil de cada profesional para ver qué incluye su show.' },
       { q: `¿Puedo contratar un animador para una boda en ${c}?`, a: 'Sí. Muchos animadores en XPEAK tienen experiencia en bodas, tanto para entretener a los niños durante el banquete como para dinamizar al público adulto con juegos, humor o espectáculos de circo.' },
       { q: '¿Hay animadores disponibles para eventos corporativos?', a: 'Sí. Artistas de circo, zanqueros, mimos y animadores de team building son muy demandados en eventos de empresa. Usa Flash Booking si necesitas un animador con urgencia para tu evento.' },
@@ -607,7 +606,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
     desc: (c) => `Contratar payaso profesional en ${c} para cumpleaños infantiles, bodas y fiestas. Magia, globoflexia y animación. Flash Booking..`,
     intro: (c) => `Encuentra payasos profesionales en ${c} para cumpleaños, comuniones y todo tipo de celebraciones. XPEAK conecta familias y organizadores con los mejores payasos verificados en ${c} con portfolio de actuaciones y opiniones reales de clientes.`,
     faqs: (c, precio) => [
-      { q: `¿Cuánto cobra un payaso en ${c}?`, a: `Un payaso profesional en ${c} cobra entre ${precio} por actuación. Shows de 60 min para cumpleaños: 150€–300€. Actuaciones con más de 2 horas o efectos especiales: desde 350€.` },
+      { q: `¿Cuánto cobra un payaso en ${c}?`, a: `Un payaso profesional en ${c} cobra entre ${precio} por actuación. Shows de 60 min para cumpleaños: 150€-300€. Actuaciones con más de 2 horas o efectos especiales: desde 350€.` },
       { q: `¿A partir de qué edad es adecuado un payaso para niños en ${c}?`, a: 'Los payasos en XPEAK adaptan su show a la edad del público. Para niños de 3-5 años: globoflexia y cuentacuentos. Para 6-12 años: magia, juegos participativos y humor. Especifícalo al hacer la reserva.' },
       { q: '¿El payaso lleva su propio material?', a: 'Sí. Todos los animadores en XPEAK llevan su propio material: disfraces, globos, efectos mágicos y música. Solo necesitas un espacio mínimo de 3x3m para el show.' },
     ],
@@ -692,11 +691,11 @@ function precioPara(categorySlug: string, city: { precioMin: string; precioMax: 
   // en vez de inventar un número: una categoría nueva no debe publicar precios
   // fabricados solo porque falte su entrada aquí.
   if (!factor || Number.isNaN(min) || Number.isNaN(max)) {
-    return `${city.precioMin}–${city.precioMax}`;
+    return `${city.precioMin}-${city.precioMax}`;
   }
   // Redondeo a 5€ para que no queden cifras de falsa precisión (13,2€).
   const r = (n: number) => Math.max(5, Math.round((n * 1) / 5) * 5);
-  return `${r(min * factor[0])}€–${r(max * factor[1])}€`;
+  return `${r(min * factor[0])}€-${r(max * factor[1])}€`;
 }
 
 export default function CityLanding() {
@@ -770,14 +769,14 @@ export default function CityLanding() {
   return (
     <>
       <Helmet>
-        <title>{h1} — XPEAK | Directorio Profesional de Eventos</title>
+        <title>{h1} | XPEAK | Directorio Profesional de Eventos</title>
         {/* Siempre explícito: si solo se emitiera el noindex, quedarían dos
             etiquetas robots (la global de index.html y esta). Declarar ambos
             casos hace que Helmet sustituya la global en vez de sumarse. */}
         <meta name="robots" content={shouldNoindex ? 'noindex, follow' : 'index, follow'} />
         <meta name="description" content={catData.desc(cityData.ciudad)} />
         <link rel="canonical" href={`https://xpeak.es${canonicalBase}`} />
-        <meta property="og:title" content={`${h1} — XPEAK`} />
+        <meta property="og:title" content={`${h1} | XPEAK`} />
         <meta property="og:description" content={catData.desc(cityData.ciudad)} />
         <meta property="og:url" content={`https://xpeak.es${canonicalBase}`} />
         <meta property="og:type" content="website" />
@@ -862,7 +861,7 @@ export default function CityLanding() {
             {[
               { label: `Precio ${catData.keyword} en ${cityData.ciudad}`, value: `${precio}${catData.unidad}`, icon: <Star size={16} /> },
               { label: 'Flash Booking', value: ['promotores', 'azafata', 'peluqueria'].includes(categorySlug) ? 'Necesidades urgentes' : 'En menos de 1h', icon: <Zap size={16} /> },
-              { label: 'Comisión XPEAK', value: '0% para salas', icon: <Shield size={16} /> },
+              { label: 'Contratos', value: 'Automáticos', icon: <Shield size={16} /> },
             ].map(s => (
               <div key={s.label} className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
@@ -952,7 +951,7 @@ export default function CityLanding() {
         </section>
 
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-12 sm:pb-16">
-          <h2 className="text-xl sm:text-2xl font-black mb-6 sm:mb-8">Preguntas frecuentes — {catData.keyword} en {cityData.ciudad}</h2>
+          <h2 className="text-xl sm:text-2xl font-black mb-6 sm:mb-8">Preguntas frecuentes: {catData.keyword} en {cityData.ciudad}</h2>
           <div className="space-y-4">
             {catData.faqs(cityData.ciudad, precio).map(faq => (
               <div key={faq.q} className="p-5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
@@ -984,8 +983,8 @@ export default function CityLanding() {
             <h2 className="text-xl sm:text-3xl font-black mb-3">¿Buscas {catData.keyword} en {cityData.ciudad}?</h2>
             <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>
               {['promotores', 'azafata', 'peluqueria'].includes(categorySlug)
-                ? 'Únete — contratos automáticos, Flash Booking para necesidades urgentes.'
-                : 'Únete — contratos automáticos, Flash Booking en menos de 1h.'}
+                ? 'Únete: contratos automáticos, Flash Booking para necesidades urgentes.'
+                : 'Únete: contratos automáticos, Flash Booking en menos de 1h.'}
             </p>
             <a href="/auth"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"

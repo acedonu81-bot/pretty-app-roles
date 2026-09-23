@@ -278,7 +278,7 @@ const AdminHiredContracts = () => {
                           <p style={{ color: '#444' }}>
                             {c.organizador} → {c.profesional}: {detail.reviewOrganizadorAProfesional.rating}/5
                             {detail.reviewOrganizadorAProfesional.approved ? '' : ' (pendiente de aprobar)'}
-                            {detail.reviewOrganizadorAProfesional.comment ? ` — "${detail.reviewOrganizadorAProfesional.comment}"` : ''}
+                            {detail.reviewOrganizadorAProfesional.comment ? ` · "${detail.reviewOrganizadorAProfesional.comment}"` : ''}
                           </p>
                         ) : (
                           <p style={{ color: '#999' }}>{c.organizador} no ha valorado a {c.profesional} todavía</p>
@@ -291,7 +291,7 @@ const AdminHiredContracts = () => {
                           <p style={{ color: '#444' }}>
                             {c.profesional} → {c.organizador}: {detail.reviewProfesionalAOrganizador.rating}/5
                             {detail.reviewProfesionalAOrganizador.approved ? '' : ' (pendiente de aprobar)'}
-                            {detail.reviewProfesionalAOrganizador.comment ? ` — "${detail.reviewProfesionalAOrganizador.comment}"` : ''}
+                            {detail.reviewProfesionalAOrganizador.comment ? ` · "${detail.reviewProfesionalAOrganizador.comment}"` : ''}
                           </p>
                         ) : (
                           <p style={{ color: '#999' }}>{c.profesional} no ha valorado a {c.organizador} todavía</p>

@@ -10,30 +10,30 @@ const article = { '@context': 'https://schema.org', '@type': 'Article', headline
   dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/wedding-planner-precio-espana' };
 
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
-  { '@type': 'Question', name: '¿Cuánto cobra un wedding planner en España?', acceptedAnswer: { '@type': 'Answer', text: 'El precio de un wedding planner en España varía entre 800€ y 6.000€ según el paquete. La coordinación del día cuesta entre 800€ y 2.000€. La planificación parcial (últimos 3 meses) ronda los 1.500–3.500€. La planificación integral desde cero suele costar entre 3.000€ y 8.000€ o un porcentaje del presupuesto total de la boda (normalmente entre el 8% y el 15%).' } },
+  { '@type': 'Question', name: '¿Cuánto cobra un wedding planner en España?', acceptedAnswer: { '@type': 'Answer', text: 'El precio de un wedding planner en España varía entre 800€ y 6.000€ según el paquete. La coordinación del día cuesta entre 800€ y 2.000€. La planificación parcial (últimos 3 meses) ronda los 1.500-3.500€. La planificación integral desde cero suele costar entre 3.000€ y 8.000€ o un porcentaje del presupuesto total de la boda (normalmente entre el 8% y el 15%).' } },
   { '@type': 'Question', name: '¿Qué hace exactamente un wedding planner?', acceptedAnswer: { '@type': 'Answer', text: 'Un wedding planner coordina todos los proveedores de la boda (catering, DJ, fotógrafo, floristería, etc.), gestiona el timeline del evento, negocia contratos en nombre de los novios, supervisa el montaje y está presente el día de la boda para resolver cualquier imprevisto. Según el paquete, puede encargarse de la búsqueda de espacios, el diseño de la decoración o simplemente coordinar el día.' } },
   { '@type': 'Question', name: '¿Vale la pena contratar un wedding planner?', acceptedAnswer: { '@type': 'Answer', text: 'Para bodas de más de 60 invitados o presupuesto superior a 15.000€, el wedding planner suele amortizarse: ahorra entre 10% y 20% en proveedores gracias a descuentos por volumen, evita errores costosos de última hora y libera a los novios del estrés logístico. Para bodas pequeñas o íntimas, un coordinador del día puede ser suficiente.' } },
   { '@type': 'Question', name: '¿Cuál es la diferencia entre wedding planner y coordinador del día?', acceptedAnswer: { '@type': 'Answer', text: 'El coordinador del día (o "day-of coordinator") solo actúa durante las últimas semanas antes de la boda y el día del evento para ejecutar un plan ya organizado por los propios novios. El wedding planner integral gestiona todo el proceso desde el principio: busca proveedores, negocia, acompaña en visitas y diseña la experiencia completa.' } },
-  { '@type': 'Question', name: '¿Con cuánto tiempo de antelación hay que contratar un wedding planner?', acceptedAnswer: { '@type': 'Answer', text: 'Para bodas en temporada alta (mayo–octubre) se recomienda contratar el wedding planner con 12–18 meses de antelación. Para coordinadores de día, 4–6 meses es suficiente. Los mejores planificadores de bodas en España se agotan rápidamente en fin de semana de temporada alta, especialmente en Madrid, Barcelona y el Mediterráneo.' } },
+  { '@type': 'Question', name: '¿Con cuánto tiempo de antelación hay que contratar un wedding planner?', acceptedAnswer: { '@type': 'Answer', text: 'Para bodas en temporada alta (mayo-octubre) se recomienda contratar el wedding planner con 12-18 meses de antelación. Para coordinadores de día, 4-6 meses es suficiente. Los mejores planificadores de bodas en España se agotan rápidamente en fin de semana de temporada alta, especialmente en Madrid, Barcelona y el Mediterráneo.' } },
 ] };
 
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Wedding Planner precio España', item: 'https://xpeak.es/blog/wedding-planner-precio-espana' }] };
 
 const PRECIOS = [
-  { paquete: 'Coordinación del día', precio: '800–2.000€', incluye: 'Presencia el día de la boda, gestión de proveedores y timeline' },
-  { paquete: 'Planificación parcial (3 meses)', precio: '1.500–3.500€', incluye: 'Revisión de contratos, confirmación de proveedores, coordinación completa el día' },
-  { paquete: 'Planificación integral', precio: '3.000–8.000€', incluye: 'Búsqueda de espacio, selección de proveedores, diseño, presencia completa' },
-  { paquete: 'Porcentaje sobre presupuesto', precio: '8–15% del total', incluye: 'Planificación integral para bodas de gran presupuesto (>40.000€)' },
-  { paquete: 'Diseño y decoración', precio: '1.500–5.000€', incluye: 'Concepto visual, coordinación con floristería, montaje decorativo' },
-  { paquete: 'Destino (boda fuera de ciudad)', precio: '+500–2.000€', incluye: 'Suplemento por desplazamiento, gestión logística de proveedores locales' },
+  { paquete: 'Coordinación del día', precio: '800-2.000€', incluye: 'Presencia el día de la boda, gestión de proveedores y timeline' },
+  { paquete: 'Planificación parcial (3 meses)', precio: '1.500-3.500€', incluye: 'Revisión de contratos, confirmación de proveedores, coordinación completa el día' },
+  { paquete: 'Planificación integral', precio: '3.000-8.000€', incluye: 'Búsqueda de espacio, selección de proveedores, diseño, presencia completa' },
+  { paquete: 'Porcentaje sobre presupuesto', precio: '8-15% del total', incluye: 'Planificación integral para bodas de gran presupuesto (>40.000€)' },
+  { paquete: 'Diseño y decoración', precio: '1.500-5.000€', incluye: 'Concepto visual, coordinación con floristería, montaje decorativo' },
+  { paquete: 'Destino (boda fuera de ciudad)', precio: '+500-2.000€', incluye: 'Suplemento por desplazamiento, gestión logística de proveedores locales' },
 ];
 
 const CHECKLIST = [
-  { fase: '12–18 meses antes', tareas: ['Fijar fecha y presupuesto total', 'Contratar wedding planner', 'Reservar espacio o finca', 'Definir número aproximado de invitados'] },
-  { fase: '9–12 meses antes', tareas: ['Contratar catering', 'Reservar fotógrafo y videógrafo', 'Elegir DJ o banda', 'Visitar floristería y definir estilo'] },
-  { fase: '6–9 meses antes', tareas: ['Enviar invitaciones', 'Contratar personal de sala', 'Elegir vestido y traje', 'Definir menú con el catering'] },
-  { fase: '1–3 meses antes', tareas: ['Confirmar todos los proveedores', 'Ensayo de ceremonia', 'Plan B para lluvia', 'Entrega de timeline al planner'] },
-  { fase: 'Semana de la boda', tareas: ['Reunión final con el planner', 'Confirmar llegadas y horarios', 'Preparar sobres con pagos finales', 'Descansar — el planner se encarga del resto'] },
+  { fase: '12-18 meses antes', tareas: ['Fijar fecha y presupuesto total', 'Contratar wedding planner', 'Reservar espacio o finca', 'Definir número aproximado de invitados'] },
+  { fase: '9-12 meses antes', tareas: ['Contratar catering', 'Reservar fotógrafo y videógrafo', 'Elegir DJ o banda', 'Visitar floristería y definir estilo'] },
+  { fase: '6-9 meses antes', tareas: ['Enviar invitaciones', 'Contratar personal de sala', 'Elegir vestido y traje', 'Definir menú con el catering'] },
+  { fase: '1-3 meses antes', tareas: ['Confirmar todos los proveedores', 'Ensayo de ceremonia', 'Plan B para lluvia', 'Entrega de timeline al planner'] },
+  { fase: 'Semana de la boda', tareas: ['Reunión final con el planner', 'Confirmar llegadas y horarios', 'Preparar sobres con pagos finales', 'Descansar: el planner se encarga del resto'] },
 ];
 
 export default function BlogWeddingPlanner() {
@@ -129,7 +129,7 @@ export default function BlogWeddingPlanner() {
                 {[
                   {
                     title: 'Coordinador del día',
-                    precio: '800–2.000€',
+                    precio: '800-2.000€',
                     ideal: 'Bodas organizadas por los propios novios que necesitan apoyo solo el día del evento',
                     pros: ['Precio muy asequible', 'Libera a los novios el día de la boda', 'Ideal si ya tienes todos los proveedores cerrados'],
                     contras: ['No negocia proveedores', 'No hace seguimiento de meses', 'Llega cuando el trabajo ya está hecho'],
@@ -137,7 +137,7 @@ export default function BlogWeddingPlanner() {
                   },
                   {
                     title: 'Wedding Planner integral',
-                    precio: '3.000–8.000€',
+                    precio: '3.000-8.000€',
                     ideal: 'Bodas de más de 80 invitados o presupuesto superior a 20.000€',
                     pros: ['Ahorra dinero negociando proveedores', 'Elimina el estrés durante meses', 'Experiencia con imprevistos y soluciones'],
                     contras: ['Inversión inicial alta', 'Necesitas confiar en su criterio', 'Proceso de selección importante'],
@@ -168,7 +168,7 @@ export default function BlogWeddingPlanner() {
                 {[
                   { factor: 'Número de invitados', detalle: 'A más invitados, más proveedores y más complejidad logística. Una boda de 200 personas requiere el doble de coordinación que una de 80.' },
                   { factor: 'Experiencia y reputación', detalle: 'Los planificadores con más de 5 años de experiencia y cartera de referencias cobran entre un 30% y un 50% más. La reputación tiene precio porque evita errores costosos.' },
-                  { factor: 'Ciudad y temporada', detalle: 'Madrid y Barcelona son un 20–30% más caros que el resto de España. Mayo–septiembre (temporada alta) puede suponer un suplemento del 10–15%.' },
+                  { factor: 'Ciudad y temporada', detalle: 'Madrid y Barcelona son un 20-30% más caros que el resto de España. Mayo-septiembre (temporada alta) puede suponer un suplemento del 10-15%.' },
                   { factor: 'Complejidad de la boda', detalle: 'Bodas destino, ceremonias en idioma extranjero, proveedores internacionales o eventos de varios días multiplican el trabajo y el precio.' },
                   { factor: 'Servicios adicionales', detalle: 'Diseño floral, dirección artística, iluminación especial o gestión de invitados VIP se presupuestan como extras sobre el paquete base.' },
                 ].map((item, i) => (
@@ -251,7 +251,7 @@ export default function BlogWeddingPlanner() {
               </div>
               <div className="p-4 rounded-xl" style={{ background: 'rgba(109,40,217,0.06)', border: '1px solid rgba(109,40,217,0.15)' }}>
                 <p className="text-sm leading-relaxed" style={{ color: '#111' }}>
-                  <strong style={{ color: '#6D28D9' }}>Dato clave:</strong> Un buen wedding planner negocia descuentos con proveedores habituales que suelen cubrir entre el 30% y el 70% de su propio honorario. En bodas con presupuesto de 30.000€, un ahorro del 10% en proveedores ya supera los 3.000€ — lo que cuesta el planificador.
+                  <strong style={{ color: '#6D28D9' }}>Dato clave:</strong> Un buen wedding planner negocia descuentos con proveedores habituales que suelen cubrir entre el 30% y el 70% de su propio honorario. En bodas con presupuesto de 30.000€, un ahorro del 10% en proveedores ya supera los 3.000€, lo que cuesta el planificador.
                 </p>
               </div>
             </section>

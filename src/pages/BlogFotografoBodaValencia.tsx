@@ -11,17 +11,17 @@ import BlogAnswerBox from '@/components/BlogAnswerBox';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Fotógrafo para bodas en Valencia: precio y guía 2026', description: 'Cuánto cuesta un fotógrafo para una boda en Valencia. Precios reales 2026, fincas de L\'Albufera, estilo mediterráneo y cuándo reservar en la Comunitat.', datePublished: '2026-06-03', dateModified: '2026-06-03', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/fotografo-boda-valencia' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
-  { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de boda en Valencia?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de boda en Valencia cuesta entre 1.100€ y 3.000€ para el reportaje completo. Los precios en Valencia son ligeramente inferiores a Madrid y Barcelona — en la media nacional o hasta un 10% por encima. El reportaje completo con álbum ronda los 1.500-2.500€. Para reportajes de 4-5h sin álbum, el rango es 700-1.200€.' } },
+  { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de boda en Valencia?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de boda en Valencia cuesta entre 1.100€ y 3.000€ para el reportaje completo. Los precios en Valencia son ligeramente inferiores a Madrid y Barcelona: en la media nacional o hasta un 10% por encima. El reportaje completo con álbum ronda los 1.500-2.500€. Para reportajes de 4-5h sin álbum, el rango es 700-1.200€.' } },
   { '@type': 'Question', name: '¿Qué estilo fotográfico es más popular en bodas de Valencia?', acceptedAnswer: { '@type': 'Answer', text: 'En Valencia predomina el estilo mediterráneo luminoso: colores cálidos, mucha luz natural y localizaciones exteriores al atardecer. L\'Albufera y los arrozales son un backdrop muy fotogénico que los fotógrafos valencianos aprovechan para sesiones golden hour únicas en España. El estilo documental natural es el más demandado, con postprocesado cálido y saturado.' } },
-  { '@type': 'Question', name: '¿Con cuánta antelación reservar el fotógrafo en Valencia?', acceptedAnswer: { '@type': 'Answer', text: 'Para bodas en junio y septiembre en Valencia, reserva con 8-12 meses de antelación. El mercado valenciano es muy activo en primavera tardía y otoño. Los mejores fotógrafos con estilo mediterráneo reconocido se agotan con mucha anticipación. Para bodas en julio o agosto, el calor extremo del interior aconseja buscar fincas con piscina — y los fotógrafos con experiencia en ese contexto.' } },
-  { '@type': 'Question', name: '¿Merece la pena hacer sesión en L\'Albufera?', acceptedAnswer: { '@type': 'Answer', text: 'Sí, absolutamente. La sesión en barca por L\'Albufera al atardecer es única — el reflejo del cielo en el agua y la luz dorada dan resultados espectaculares. Muchos fotógrafos valencianos la ofrecen como sesión post-boda (trash the dress o simplemente sesión de pareja). Dura 1-2 horas y tiene un coste adicional de 150-300€ sobre el precio del reportaje base.' } },
+  { '@type': 'Question', name: '¿Con cuánta antelación reservar el fotógrafo en Valencia?', acceptedAnswer: { '@type': 'Answer', text: 'Para bodas en junio y septiembre en Valencia, reserva con 8-12 meses de antelación. El mercado valenciano es muy activo en primavera tardía y otoño. Los mejores fotógrafos con estilo mediterráneo reconocido se agotan con mucha anticipación. Para bodas en julio o agosto, el calor extremo del interior aconseja buscar fincas con piscina, y los fotógrafos con experiencia en ese contexto.' } },
+  { '@type': 'Question', name: '¿Merece la pena hacer sesión en L\'Albufera?', acceptedAnswer: { '@type': 'Answer', text: 'Sí, absolutamente. La sesión en barca por L\'Albufera al atardecer es única: el reflejo del cielo en el agua y la luz dorada dan resultados espectaculares. Muchos fotógrafos valencianos la ofrecen como sesión post-boda (trash the dress o simplemente sesión de pareja). Dura 1-2 horas y tiene un coste adicional de 150-300€ sobre el precio del reportaje base.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Fotógrafo boda Valencia', item: 'https://xpeak.es/blog/fotografo-boda-valencia' }] };
 const PRECIOS = [
-  { servicio: 'Reportaje básico (4-5h, sin álbum)', precio: '700–1.200€' },
-  { servicio: 'Reportaje completo (8-10h, sin álbum)', precio: '1.100–2.000€' },
-  { servicio: 'Reportaje completo con álbum impreso', precio: '1.500–3.000€' },
-  { servicio: 'Pack fotógrafo + videógrafo', precio: '2.500–5.000€' },
+  { servicio: 'Reportaje básico (4-5h, sin álbum)', precio: '700-1.200€' },
+  { servicio: 'Reportaje completo (8-10h, sin álbum)', precio: '1.100-2.000€' },
+  { servicio: 'Reportaje completo con álbum impreso', precio: '1.500-3.000€' },
+  { servicio: 'Pack fotógrafo + videógrafo', precio: '2.500-5.000€' },
 ];
 export default function BlogFotografoBodaValencia() {
   return (
@@ -30,7 +30,7 @@ export default function BlogFotografoBodaValencia() {
         <title>Fotógrafo para bodas en Valencia: precio 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un fotógrafo de boda en Valencia. Precios reales 2026, estilo mediterráneo, L'Albufera y cuándo reservar en la Comunitat Valenciana." />
         <link rel="canonical" href="https://xpeak.es/blog/fotografo-boda-valencia" />
-        <meta property="og:title" content="Fotógrafo para bodas en Valencia: precio 2026 — XPEAK" />
+        <meta property="og:title" content="Fotógrafo para bodas en Valencia: precio 2026 | XPEAK" />
         <meta property="og:description" content="Precios fotógrafos boda Valencia. Estilo mediterráneo, L'Albufera y cuándo reservar." />
         <meta property="og:url" content="https://xpeak.es/blog/fotografo-boda-valencia" />
         <meta property="og:type" content="article" />

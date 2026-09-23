@@ -69,7 +69,7 @@ const TOOLS = [
   {
     name: 'solicitar_presupuesto',
     title: 'Solicitar presupuesto a un profesional de XPEAK',
-    description: 'Crea una solicitud real de presupuesto ("Flash Booking") a un profesional concreto de XPEAK. El profesional recibe la solicitud por email y contacta directamente al organizador — esto NO reserva ni cobra nada automáticamente, solo inicia el contacto, igual que el botón "Solicitar presupuesto" de la web.',
+    description: 'Crea una solicitud real de presupuesto ("Flash Booking") a un profesional concreto de XPEAK. El profesional recibe la solicitud por email y contacta directamente al organizador: esto NO reserva ni cobra nada automáticamente, solo inicia el contacto, igual que el botón "Solicitar presupuesto" de la web.',
     annotations: {
       title: 'Solicitar presupuesto a un profesional de XPEAK',
       readOnlyHint: false,
@@ -94,7 +94,7 @@ const TOOLS = [
   {
     name: 'consultar_precio_medio',
     title: 'Consultar precio medio de un profesional de eventos en XPEAK',
-    description: 'Calcula en vivo el precio medio por hora de un tipo de profesional (opcionalmente filtrado por ciudad), a partir de los perfiles reales publicados en XPEAK. Devuelve también el mínimo, el máximo y el tamaño de la muestra — con pocos perfiles el dato es orientativo, no una media de mercado.',
+    description: 'Calcula en vivo el precio medio por hora de un tipo de profesional (opcionalmente filtrado por ciudad), a partir de los perfiles reales publicados en XPEAK. Devuelve también el mínimo, el máximo y el tamaño de la muestra, con pocos perfiles el dato es orientativo, no una media de mercado.',
     annotations: {
       title: 'Consultar precio medio de un profesional de eventos en XPEAK',
       readOnlyHint: true,
@@ -171,10 +171,10 @@ async function buscarProfesionales(args: Record<string, unknown>, sessionId: str
   }
 
   const resumen = data.map(p =>
-    `- ${p.display_name} (${p.specialty || p.role}) — ${p.zone} — ${p.hourly_rate}€/hora` +
-    `${p.is_flash_active ? ' — disponibilidad inmediata (Flash Booking)' : ''}` +
-    `${p.is_verified ? ' — verificado' : ''} — user_id: ${p.user_id}` +
-    ` — perfil: https://xpeak.es/p/${p.user_id}`
+    `- ${p.display_name} (${p.specialty || p.role}): ${p.zone} · ${p.hourly_rate}€/hora` +
+    `${p.is_flash_active ? ' · disponibilidad inmediata (Flash Booking)' : ''}` +
+    `${p.is_verified ? ' · verificado' : ''}: user_id: ${p.user_id}` +
+    ` · perfil: https://xpeak.es/p/${p.user_id}`
   ).join('\n');
 
   return { content: [{ type: 'text', text: `${data.length} profesionales encontrados:\n\n${resumen}\n\nPara solicitar presupuesto a uno, usa la herramienta solicitar_presupuesto con su professional_user_id.` }] };
@@ -222,8 +222,8 @@ async function consultarPrecioMedio(args: Record<string, unknown>, sessionId: st
   const muestraPequena = rates.length < 3;
 
   const texto = `Precio medio de "${rol}"${ciudad ? ` en "${ciudad}"` : ' en España'}: ${avg}€/hora ` +
-    `(rango ${min}€–${max}€/hora, calculado sobre ${rates.length} perfil${rates.length === 1 ? '' : 'es'} publicado${rates.length === 1 ? '' : 's'} en XPEAK).` +
-    (muestraPequena ? ' Aviso: con menos de 3 perfiles la muestra es pequeña — trátalo como orientativo, no como precio de mercado.' : '');
+    `(rango ${min}€-${max}€/hora, calculado sobre ${rates.length} perfil${rates.length === 1 ? '' : 'es'} publicado${rates.length === 1 ? '' : 's'} en XPEAK).` +
+    (muestraPequena ? ' Aviso: con menos de 3 perfiles la muestra es pequeña, trátalo como orientativo, no como precio de mercado.' : '');
 
   return { content: [{ type: 'text', text: texto }] };
 }
@@ -247,7 +247,7 @@ async function solicitarPresupuesto(args: Record<string, unknown>, sessionId: st
   // en el email al profesional/admin (ver event_description más abajo).
   const contacto = String(args.contacto_solicitante).trim();
   if (!contacto.includes('@') || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contacto)) {
-    return { content: [{ type: 'text', text: 'contacto_solicitante debe ser un email válido — un agente de IA no puede verificar un teléfono, y sin email el profesional no puede confirmar quién pregunta.' }], isError: true };
+    return { content: [{ type: 'text', text: 'contacto_solicitante debe ser un email válido: un agente de IA no puede verificar un teléfono, y sin email el profesional no puede confirmar quién pregunta.' }], isError: true };
   }
 
   const payload = {

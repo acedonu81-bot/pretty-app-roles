@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Pamplona', item: 'https://xpeak.es/blog/precio-azafatas-pamplona' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '130–180€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '150–220€/día', nota: 'Bodas en fincas de Navarra' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '155–210€/día', nota: 'Eventos corporativos y agroalimentarios' },
-  { perfil: 'Azafata de protocolo', tarifa: '160–225€/día', nota: 'Eventos institucionales y de empresa' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '175–250€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '80–130€', nota: 'Acto único, media jornada, fuera de San Fermín' },
+  { perfil: 'Azafata de stand / feria', tarifa: '130-180€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '150-220€/día', nota: 'Bodas en fincas de Navarra' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '155-210€/día', nota: 'Eventos corporativos y agroalimentarios' },
+  { perfil: 'Azafata de protocolo', tarifa: '160-225€/día', nota: 'Eventos institucionales y de empresa' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '175-250€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '80-130€', nota: 'Acto único, media jornada, fuera de San Fermín' },
 ];
 
 export default function BlogPrecioAzafatasPamplona() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasPamplona() {
         <title>Precio azafatas para eventos en Pamplona 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos corporativos y bodas en fincas de Navarra en Pamplona. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-pamplona" />
-        <meta property="og:title" content="Precio azafatas eventos Pamplona 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Pamplona 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para eventos corporativos y bodas en Pamplona." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-pamplona" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

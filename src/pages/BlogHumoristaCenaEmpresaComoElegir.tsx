@@ -51,7 +51,7 @@ export default function BlogHumoristaCenaEmpresaComoElegir() {
         <title>Cómo elegir humorista para la cena de empresa (2026) | XPEAK</title>
         <meta name="description" content="Qué preguntar antes de contratar un humorista para un evento corporativo: tono, personalización y duración recomendada." />
         <link rel="canonical" href="https://xpeak.es/blog/humorista-cena-empresa-como-elegir" />
-        <meta property="og:title" content="Cómo elegir humorista para la cena de empresa — XPEAK Blog" />
+        <meta property="og:title" content="Cómo elegir humorista para la cena de empresa | XPEAK Blog" />
         <meta property="og:description" content="Qué preguntar antes de contratar un humorista para tu evento corporativo." />
         <meta property="og:url" content="https://xpeak.es/blog/humorista-cena-empresa-como-elegir" />
         <meta property="og:type" content="article" />

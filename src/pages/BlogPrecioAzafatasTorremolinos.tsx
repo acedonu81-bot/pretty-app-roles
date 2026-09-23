@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Torremolinos', item: 'https://xpeak.es/blog/precio-azafatas-torremolinos' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '145–195€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '165–250€/día', nota: 'Eventos hoteleros y de club de playa' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '180–235€/día', nota: 'Imprescindible por turismo internacional' },
-  { perfil: 'Azafata multilingüe', tarifa: '210–300€/día', nota: 'Eventos internacionales en hoteles grandes' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '195–280€/día', nota: 'Gestión de equipo en evento hotelero' },
-  { perfil: 'Pack evento en club de playa (4h)', tarifa: '95–160€', nota: 'La Carihuela y alrededores' },
+  { perfil: 'Azafata de stand / feria', tarifa: '145-195€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '165-250€/día', nota: 'Eventos hoteleros y de club de playa' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '180-235€/día', nota: 'Imprescindible por turismo internacional' },
+  { perfil: 'Azafata multilingüe', tarifa: '210-300€/día', nota: 'Eventos internacionales en hoteles grandes' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '195-280€/día', nota: 'Gestión de equipo en evento hotelero' },
+  { perfil: 'Pack evento en club de playa (4h)', tarifa: '95-160€', nota: 'La Carihuela y alrededores' },
 ];
 
 export default function BlogPrecioAzafatasTorremolinos() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasTorremolinos() {
         <title>Precio azafatas para eventos en Torremolinos 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos en hoteles y clubs de playa en Torremolinos. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-torremolinos" />
-        <meta property="og:title" content="Precio azafatas eventos Torremolinos 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Torremolinos 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para eventos en hoteles y clubs de playa en Torremolinos." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-torremolinos" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

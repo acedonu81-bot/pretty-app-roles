@@ -18,23 +18,23 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Catering comuniones precio por persona', item: 'https://xpeak.es/blog/catering-comuniones-precio-persona' }] };
 
 const FORMATOS = [
-  { formato: 'Cóctel de aperitivo (1-2h)', precio: '15–30€/persona', incluye: 'Canapés, pinchos, bebidas básicas', ideal: 'Como previa al banquete sentado' },
-  { formato: 'Banquete sentado (3 platos)', precio: '40–65€/persona', incluye: 'Entrantes, principal, postre, vino y agua', ideal: 'Comuniones formales, familias numerosas' },
-  { formato: 'Buffet variado', precio: '30–55€/persona', incluye: 'Múltiples opciones, libre acceso', ideal: 'Comuniones dinámicas con niños' },
-  { formato: 'Cóctel + banquete (fórmula mixta)', precio: '55–85€/persona', incluye: 'Aperitivo de pie + menú sentado', ideal: 'La opción más elegida en 2026' },
-  { formato: 'Merienda-cena', precio: '25–45€/persona', incluye: 'Bocaditos salados, dulces, refrescos', ideal: 'Comuniones vespertinas o con mucho público joven' },
-  { formato: 'Todo incluido (espacio + catering)', precio: '65–120€/persona', incluye: 'Espacio, menú, personal, tarta y barra libre', ideal: 'Quienes quieren zero estrés' },
+  { formato: 'Cóctel de aperitivo (1-2h)', precio: '15-30€/persona', incluye: 'Canapés, pinchos, bebidas básicas', ideal: 'Como previa al banquete sentado' },
+  { formato: 'Banquete sentado (3 platos)', precio: '40-65€/persona', incluye: 'Entrantes, principal, postre, vino y agua', ideal: 'Comuniones formales, familias numerosas' },
+  { formato: 'Buffet variado', precio: '30-55€/persona', incluye: 'Múltiples opciones, libre acceso', ideal: 'Comuniones dinámicas con niños' },
+  { formato: 'Cóctel + banquete (fórmula mixta)', precio: '55-85€/persona', incluye: 'Aperitivo de pie + menú sentado', ideal: 'La opción más elegida en 2026' },
+  { formato: 'Merienda-cena', precio: '25-45€/persona', incluye: 'Bocaditos salados, dulces, refrescos', ideal: 'Comuniones vespertinas o con mucho público joven' },
+  { formato: 'Todo incluido (espacio + catering)', precio: '65-120€/persona', incluye: 'Espacio, menú, personal, tarta y barra libre', ideal: 'Quienes quieren zero estrés' },
 ];
 
 const EXTRAS = [
-  { extra: 'Barra libre de destilados', precio: '+8–15€/persona' },
-  { extra: 'Tarta de comunión personalizada', precio: '150–400€ según tamaño' },
-  { extra: 'Animación infantil (payaso, talleres)', precio: '200–500€ (3h)' },
-  { extra: 'Disco móvil para niños', precio: '300–600€' },
-  { extra: 'Photocall personalizado', precio: '150–350€' },
-  { extra: 'Camarero/a extra', precio: '15–22€/hora' },
-  { extra: 'Menú especial niños', precio: '+5–10€/niño' },
-  { extra: 'Decoración floral de mesa', precio: '200–600€ dependiendo de las mesas' },
+  { extra: 'Barra libre de destilados', precio: '+8-15€/persona' },
+  { extra: 'Tarta de comunión personalizada', precio: '150-400€ según tamaño' },
+  { extra: 'Animación infantil (payaso, talleres)', precio: '200-500€ (3h)' },
+  { extra: 'Disco móvil para niños', precio: '300-600€' },
+  { extra: 'Photocall personalizado', precio: '150-350€' },
+  { extra: 'Camarero/a extra', precio: '15-22€/hora' },
+  { extra: 'Menú especial niños', precio: '+5-10€/niño' },
+  { extra: 'Decoración floral de mesa', precio: '200-600€ dependiendo de las mesas' },
 ];
 
 export default function BlogCateringComuniones() {
@@ -44,7 +44,7 @@ export default function BlogCateringComuniones() {
         <title>Catering comuniones: precio por persona 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta el catering de una comunión en España. Precios por persona, formatos de menú (banquete, cóctel, buffet), extras y cómo elegir el servicio correcto." />
         <link rel="canonical" href="https://xpeak.es/blog/catering-comuniones-precio-persona" />
-        <meta property="og:title" content="Catering comuniones: precio por persona 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Catering comuniones: precio por persona 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precios reales del catering para comuniones en España. Formatos, extras y qué incluye cada paquete." />
         <meta property="og:url" content="https://xpeak.es/blog/catering-comuniones-precio-persona" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />
@@ -72,9 +72,9 @@ export default function BlogCateringComuniones() {
               <h2 className="text-lg font-black mb-2">Precio del catering de comunión: resumen rápido</h2>
               <div className="grid grid-cols-3 gap-3 mb-4">
                 {[
-                  { label: 'Cóctel aperitivo', precio: '15–30€', nota: 'por persona' },
-                  { label: 'Banquete completo', precio: '40–65€', nota: 'por persona' },
-                  { label: 'Todo incluido', precio: '65–120€', nota: 'por persona' },
+                  { label: 'Cóctel aperitivo', precio: '15-30€', nota: 'por persona' },
+                  { label: 'Banquete completo', precio: '40-65€', nota: 'por persona' },
+                  { label: 'Todo incluido', precio: '65-120€', nota: 'por persona' },
                 ].map(c => (
                   <div key={c.label} className="p-3 rounded-xl text-center" style={{ background: 'rgba(180,83,9,0.06)', border: '1px solid rgba(180,83,9,0.15)' }}>
                     <p className="text-[0.65rem] text-muted-foreground mb-1">{c.label}</p>
@@ -83,7 +83,7 @@ export default function BlogCateringComuniones() {
                   </div>
                 ))}
               </div>
-              <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Para una comunión de 80 invitados con banquete completo y cóctel previo, el presupuesto de catering ronda los <strong style={{ color: '#B45309' }}>4.800€–6.800€</strong>. El precio por persona baja a medida que aumentan los invitados.</p>
+              <p className="text-sm leading-relaxed" style={{ color: '#3d3d4e' }}>Para una comunión de 80 invitados con banquete completo y cóctel previo, el presupuesto de catering ronda los <strong style={{ color: '#B45309' }}>4.800€-6.800€</strong>. El precio por persona baja a medida que aumentan los invitados.</p>
             </section>
 
             <section>

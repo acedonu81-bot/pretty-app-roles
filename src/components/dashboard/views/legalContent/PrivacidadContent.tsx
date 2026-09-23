@@ -51,19 +51,19 @@ export function PrivacidadContent() {
           <li><strong style={{ color: '#222' }}>Meta Platforms Ireland Ltd. (Meta Pixel):</strong> datos de navegación para medir conversiones de nuestras campañas publicitarias, solo si aceptas la categoría "Marketing" en el banner de cookies.</li>
           <li><strong style={{ color: '#222' }}>Autoridades:</strong> Solo en caso de requerimiento legal administrativo o judicial conforme a la legislación española aplicable.</li>
         </ul>
-        <p className="mt-2" style={{ color: '#222' }}>Para más información sobre las garantías de transferencia internacional puedes contactar con nosotros en info@xpeak.es (RGPD arts. 44–49).</p>
+        <p className="mt-2" style={{ color: '#222' }}>Para más información sobre las garantías de transferencia internacional puedes contactar con nosotros en info@xpeak.es (RGPD arts. 44-49).</p>
       </section>
 
       <section>
         <h2 className="text-base font-bold mb-2" style={{ color: '#D4AF37' }}>7. Tus Derechos</h2>
         <p className="mb-3">Conforme al RGPD (UE) 2016/679 y la LOPDGDD (LO 3/2018) tienes los siguientes derechos:</p>
         <ul className="list-disc pl-5 space-y-1.5" style={{ color: '#222' }}>
-          <li><strong style={{ color: '#222' }}>Acceso (Art. 15)</strong> — solicitar confirmación de si tratamos tus datos y obtener una copia.</li>
-          <li><strong style={{ color: '#222' }}>Rectificación (Art. 16)</strong> — corregir datos inexactos o incompletos.</li>
-          <li><strong style={{ color: '#222' }}>Supresión (Art. 17)</strong> — solicitar el borrado de tus datos cuando ya no sean necesarios o retires el consentimiento. En la plataforma puedes ejercerlo desde <em>Ajustes → Eliminar cuenta</em>.</li>
-          <li><strong style={{ color: '#222' }}>Portabilidad (Art. 20)</strong> — recibir tus datos en formato estructurado (JSON/CSV) desde <em>Ajustes → Exportar datos</em>.</li>
-          <li><strong style={{ color: '#222' }}>Limitación del tratamiento (Art. 18)</strong> — solicitar que suspendamos el tratamiento mientras se resuelve una impugnación.</li>
-          <li><strong style={{ color: '#222' }}>Oposición (Art. 21)</strong> — oponerte al tratamiento basado en interés legítimo, incluyendo elaboración de perfiles con fines de marketing directo.</li>
+          <li><strong style={{ color: '#222' }}>Acceso (Art. 15)</strong>: solicitar confirmación de si tratamos tus datos y obtener una copia.</li>
+          <li><strong style={{ color: '#222' }}>Rectificación (Art. 16)</strong>: corregir datos inexactos o incompletos.</li>
+          <li><strong style={{ color: '#222' }}>Supresión (Art. 17)</strong>: solicitar el borrado de tus datos cuando ya no sean necesarios o retires el consentimiento. En la plataforma puedes ejercerlo desde <em>Ajustes → Eliminar cuenta</em>.</li>
+          <li><strong style={{ color: '#222' }}>Portabilidad (Art. 20)</strong>: recibir tus datos en formato estructurado (JSON/CSV) desde <em>Ajustes → Exportar datos</em>.</li>
+          <li><strong style={{ color: '#222' }}>Limitación del tratamiento (Art. 18)</strong>: solicitar que suspendamos el tratamiento mientras se resuelve una impugnación.</li>
+          <li><strong style={{ color: '#222' }}>Oposición (Art. 21)</strong>: oponerte al tratamiento basado en interés legítimo, incluyendo elaboración de perfiles con fines de marketing directo.</li>
         </ul>
         <p className="text-sm mt-3" style={{ color: '#222' }}>Para ejercer cualquiera de estos derechos envía un correo a <span style={{ color: '#D4AF37' }}>info@xpeak.es</span> con una copia de tu DNI o documento equivalente. Responderemos en el plazo máximo de <strong>30 días naturales</strong> (RGPD Art. 12.3).</p>
       </section>

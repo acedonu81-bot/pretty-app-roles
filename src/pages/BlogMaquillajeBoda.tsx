@@ -158,7 +158,7 @@ export default function BlogMaquillajeBoda() {
                 {PRECIOS_CIUDAD.map(c => (
                   <div key={c.ciudad} className="p-4 rounded-xl text-center" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <p className="text-xs font-bold mb-2">{c.ciudad}</p>
-                    <p className="text-base font-black" style={{ color: '#DB2777' }}>{c.min}–{c.max}€</p>
+                    <p className="text-base font-black" style={{ color: '#DB2777' }}>{c.min}-{c.max}€</p>
                     <p className="text-[0.6rem] mt-1" style={{ color: '#3d3d4e' }}>pack completo</p>
                   </div>
                 ))}

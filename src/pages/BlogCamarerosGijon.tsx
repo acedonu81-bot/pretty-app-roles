@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Camareros Gijón', item: 'https://xpeak.es/blog/camareros-eventos-gijon' }] };
 
 const PRECIOS = [
-  { perfil: 'Camarero/a de sala', tarifa: '11–16€/hora', nota: 'Cóctel, sidrería o cena sentada' },
-  { perfil: 'Bartender / coctelería', tarifa: '14€–21€/hora', nota: 'Barra libre en eventos de costa' },
-  { perfil: 'Jefe de sala / coordinador', tarifa: '19–28€/hora', nota: 'Gestión del equipo en boda o evento grande' },
-  { perfil: 'Servicio boda completo (6-7h)', tarifa: '120–220€/persona', nota: 'Cóctel + cena + barra' },
-  { perfil: 'Barra libre con bartender (4h)', tarifa: '150–330€', nota: 'Incluye montaje y desmontaje' },
-  { perfil: 'Personal de apoyo Semana Grande', tarifa: '12–19€/hora', nota: 'Alta demanda en agosto' },
+  { perfil: 'Camarero/a de sala', tarifa: '11-16€/hora', nota: 'Cóctel, sidrería o cena sentada' },
+  { perfil: 'Bartender / coctelería', tarifa: '14€-21€/hora', nota: 'Barra libre en eventos de costa' },
+  { perfil: 'Jefe de sala / coordinador', tarifa: '19-28€/hora', nota: 'Gestión del equipo en boda o evento grande' },
+  { perfil: 'Servicio boda completo (6-7h)', tarifa: '120-220€/persona', nota: 'Cóctel + cena + barra' },
+  { perfil: 'Barra libre con bartender (4h)', tarifa: '150-330€', nota: 'Incluye montaje y desmontaje' },
+  { perfil: 'Personal de apoyo Semana Grande', tarifa: '12-19€/hora', nota: 'Alta demanda en agosto' },
 ];
 
 export default function BlogCamarerosGijon() {
@@ -33,7 +33,7 @@ export default function BlogCamarerosGijon() {
         <title>Precio camareros para eventos en Gijón 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran los camareros y bartenders para bodas y eventos con vistas al mar en Gijón. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/camareros-eventos-gijon" />
-        <meta property="og:title" content="Precio camareros eventos Gijón 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio camareros eventos Gijón 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de camareros y bartenders para bodas y eventos en Gijón." />
         <meta property="og:url" content="https://xpeak.es/blog/camareros-eventos-gijon" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

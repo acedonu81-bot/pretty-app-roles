@@ -29,7 +29,7 @@ const ShareProfileButton = ({ name, roleLabel, url }: { name: string; roleLabel:
   const handleShare = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({ title: `${name} — XPEAK`, text: shareText, url });
+        await navigator.share({ title: `${name} | XPEAK`, text: shareText, url });
       } catch {
         // usuario canceló el share nativo — no hacer nada
       }
@@ -545,7 +545,7 @@ const ProfessionalProfilePage = ({ profile: p, onClose, onMessage }: Props) => {
                 <p className="text-xs font-black uppercase tracking-widest mb-2" style={{ color: '#7a6216' }}>Busca pareja de baile</p>
                 <p className="text-sm mb-3" style={{ color: '#333' }}>
                   {p.name} está buscando pareja de baile fija
-                  {full.danceRole === 'lead' ? ' — leader' : full.danceRole === 'follow' ? ' — follower' : full.danceRole === 'ambos' ? ' — baila ambos roles' : ''}
+                  {full.danceRole === 'lead' ? ' · leader' : full.danceRole === 'follow' ? ' · follower' : full.danceRole === 'ambos' ? ' · baila ambos roles' : ''}
                   {full.danceLevel ? `, nivel ${full.danceLevel.toLowerCase()}` : ''}.
                 </p>
                 <button onClick={contact}

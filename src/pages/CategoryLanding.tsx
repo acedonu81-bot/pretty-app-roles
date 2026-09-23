@@ -152,7 +152,7 @@ export const CATEGORY_DATA: Record<string, {
     faqs: [
       { q: '¿Cuánto cuesta contratar azafatas para un evento?', a: 'El precio varía según el perfil: azafatas de recepción desde 15€/hora, azafatas de stand desde 18€/hora, azafatas de imagen o protocolo desde 22€/hora. En XPEAK todos los perfiles muestran sus tarifas públicas.' },
       { q: '¿Puedo contratar azafatas para un solo día de feria?', a: 'Sí. XPEAK permite contrataciones puntuales para una jornada, un evento o varios días consecutivos de feria o congreso, con contrato digital automático.' },
-      { q: '¿Cómo funciona el Flash Booking para azafatas?', a: 'Publica tu necesidad con fecha, ubicación y número de azafatas. El sistema notifica al instante a los perfiles disponibles en tu zona, útil para necesidades urgentes — aunque la disponibilidad depende de cada ciudad.' },
+      { q: '¿Cómo funciona el Flash Booking para azafatas?', a: 'Publica tu necesidad con fecha, ubicación y número de azafatas. El sistema notifica al instante a los perfiles disponibles en tu zona, útil para necesidades urgentes, aunque la disponibilidad depende de cada ciudad.' },
       { q: '¿Qué diferencia hay entre azafata y hostess?', a: 'Una azafata suele trabajar en ferias, congresos y eventos corporativos con funciones de protocolo, información y apoyo comercial. Una hostess trabaja principalmente en eventos privados y de ocio nocturno. Ambos perfiles están disponibles en XPEAK.' },
     ],
     steps: [
@@ -186,7 +186,7 @@ export const CATEGORY_DATA: Record<string, {
       { q: '¿Cuánto cuesta contratar un fotógrafo para un evento?', a: 'Los precios varían según la duración y el tipo de entrega: sesiones de 3h desde 80€, cobertura completa de club desde 150€, producción de vídeo desde 300€. Todos los perfiles muestran tarifas públicas en XPEAK.' },
       { q: '¿Puedo contratar un fotógrafo para contenido de redes sociales?', a: 'Sí. XPEAK incluye perfiles especializados en contenido para Instagram, TikTok y redes sociales de clubs y festivales, con entrega en 24-48h.' },
       { q: '¿Cómo garantiza XPEAK la calidad de los fotógrafos?', a: 'Cada perfil incluye portafolio verificado con trabajos reales en venues y eventos. Los clientes pueden valorar a los profesionales tras cada contratación.' },
-      { q: '¿Puedo contratar fotógrafo y DJ a la vez?', a: 'Sí. Con XPEAK puedes gestionar varias contrataciones en paralelo — DJ, fotógrafo y staff — todo desde el mismo panel, con contratos digitales independientes.' },
+      { q: '¿Puedo contratar fotógrafo y DJ a la vez?', a: 'Sí. Con XPEAK puedes gestionar varias contrataciones en paralelo, DJ, fotógrafo y staff, todo desde el mismo panel, con contratos digitales independientes.' },
     ],
     steps: [
       { title: 'Busca en el directorio', body: 'Explora perfiles con tarifa pública y portfolio. Sin registro.' },
@@ -527,7 +527,7 @@ export const CATEGORY_DATA: Record<string, {
     h1: 'Contratar Bailarín, Bailarina e Instructor de Baile',
     tagline: 'Bailarines, compañías de danza e instructores de salsa, bachata y kizomba para eventos y clases',
     desc: 'Contrata bailarines y bailarinas profesionales para bodas, shows de entretenimiento y eventos corporativos en España, o encuentra instructor de salsa, bachata y kizomba para clases particulares. Perfiles verificados..',
-    intro: 'XPEAK conecta organizadores con bailarines y compañías de danza profesionales en toda España — desde el espectáculo flamenco para galas hasta la coreografía sorpresa de boda — y también con instructores de salsa, bachata y kizomba disponibles para clases particulares. Perfiles verificados y contratos digitales en minutos.',
+    intro: 'XPEAK conecta organizadores con bailarines y compañías de danza profesionales en toda España, desde el espectáculo flamenco para galas hasta la coreografía sorpresa de boda, y también con instructores de salsa, bachata y kizomba disponibles para clases particulares. Perfiles verificados y contratos digitales en minutos.',
     keyword: 'Bailarín',
     keywords: 'contratar bailarín boda España, compañía de danza eventos Madrid Barcelona, bailaora flamenca eventos, bailarín profesional precio España, show de baile corporativo, instructor de salsa bachata, clases particulares de baile',
     precio: 'desde 200€/actuación',
@@ -689,7 +689,7 @@ export const CATEGORY_DATA: Record<string, {
       { q: '¿Cuánto cuesta una disco móvil en España?', a: 'Una disco móvil completa en España cuesta entre 400€ y 1.500€ por evento, incluyendo DJ, equipo de sonido profesional, iluminación y efectos. El precio varía según la duración (4h, 6h, 8h) y el nivel del equipo.' },
       { q: '¿Qué diferencia hay entre un DJ y una disco móvil?', a: 'Un DJ de disco móvil trae su propio equipo completo: altavoces, mesa de mezclas, luces LED de colores, máquina de humo y cañón de confeti. No necesitas contratar técnico de sonido ni alquilar equipo aparte. Es la solución completa para bodas y eventos en locales sin instalación.' },
       { q: '¿La disco móvil es adecuada para bodas?', a: 'Sí, es la opción más popular para bodas en fincas rurales y masías. El DJ llega con todo el material, lo monta antes del evento y lo recoge al terminar. Muchos incluyen música en el cóctel y la ceremonia civil.' },
-      { q: '¿Cuánto tiempo antes debo contratar la disco móvil para mi boda?', a: 'Para bodas, recomendamos contratar con al menos 3–6 meses de antelación. Si necesitas disco móvil con poca antelación, el Flash Booking de XPEAK puede encontrarte disponibilidad en menos de 1 hora.' },
+      { q: '¿Cuánto tiempo antes debo contratar la disco móvil para mi boda?', a: 'Para bodas, recomendamos contratar con al menos 3-6 meses de antelación. Si necesitas disco móvil con poca antelación, el Flash Booking de XPEAK puede encontrarte disponibilidad en menos de 1 hora.' },
     ],
     steps: [
       { title: 'Busca tu DJ con equipo', body: 'Filtra por ciudad, fecha y tipo de evento. Compara portfolios, valoraciones y equipos incluidos.' },
@@ -764,7 +764,7 @@ export const CATEGORY_DATA: Record<string, {
     steps: [
       { title: 'Filtra por ciudad y aforo', body: 'Busca discotecas, salas, terrazas o fincas según el tamaño y tipo de tu evento. Precio orientativo visible sin registro.' },
       { title: 'Contacta con el local', body: 'Pregunta fecha, fianza, si el catering es propio o libre, y horario. Cada ficha tiene contacto directo con quien gestiona el espacio.' },
-      { title: 'Cierra la reserva', body: 'Acuerda condiciones y fianza directamente con el local. Sin comisión de XPEAK sobre el alquiler.' },
+      { title: 'Cierra la reserva', body: 'Acuerda condiciones y fianza directamente con el local.' },
     ],
   },
 };
@@ -862,11 +862,11 @@ export default function CategoryLanding() {
   return (
     <>
       <Helmet>
-        <title>{data.h1} — XPEAK | Directorio Profesional de Eventos</title>
+        <title>{data.h1} | XPEAK | Directorio Profesional de Eventos</title>
         <meta name="description" content={data.desc} />
         <meta name="keywords" content={data.keywords} />
         <link rel="canonical" href={`https://xpeak.es/contratar-${data.slug}`} />
-        <meta property="og:title" content={`${data.h1} — XPEAK`} />
+        <meta property="og:title" content={`${data.h1} | XPEAK`} />
         <meta property="og:description" content={data.desc} />
         <meta property="og:url" content={`https://xpeak.es/contratar-${data.slug}`} />
         <meta property="og:type" content="website" />
@@ -922,7 +922,7 @@ export default function CategoryLanding() {
             <a href="/auth?mode=register&role=profesional"
               className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105"
               style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }}>
-              Soy profesional — crear perfil
+              Soy profesional: crear perfil
             </a>
           </div>
         </section>
@@ -933,7 +933,7 @@ export default function CategoryLanding() {
             {[
               { label: `Precio medio ${data.keyword}`, value: data.precio, icon: <Star size={16} /> },
               { label: 'Flash Booking', value: ['promotores', 'azafata', 'peluqueria'].includes(data.slug) ? 'Necesidades urgentes' : 'En menos de 1h', icon: <Zap size={16} /> },
-              { label: 'Comisión XPEAK', value: '0% para salas', icon: <Shield size={16} /> },
+              { label: 'Contratos', value: 'Automáticos', icon: <Shield size={16} /> },
             ].map(s => (
               <div key={s.label} className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
@@ -1039,7 +1039,7 @@ export default function CategoryLanding() {
           <div className="rounded-2xl p-7 sm:p-10" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
             <h2 className="text-xl sm:text-3xl font-black mb-3">¿Buscas {data.keyword} para tu evento?</h2>
             <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>
-              Contacta directamente — sin registro, respuesta directa del profesional.
+              Contacta directamente, sin registro, respuesta directa del profesional.
             </p>
             <a href={directorioHref(data.slug)}
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"

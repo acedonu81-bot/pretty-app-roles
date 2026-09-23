@@ -158,7 +158,7 @@ export default function Descubrir() {
   return (
     <>
       <Helmet>
-        <title>Descubrir profesionales para tu evento — XPEAK</title>
+        <title>Descubrir profesionales para tu evento | XPEAK</title>
         <meta name="description" content="Desliza y encuentra al profesional perfecto para tu evento en España. DJs, fotógrafos, catering y más." />
         <link rel="canonical" href="https://xpeak.es/descubrir" />
         <meta name="robots" content="noindex, follow" />

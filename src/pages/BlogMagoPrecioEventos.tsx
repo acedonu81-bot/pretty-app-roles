@@ -30,7 +30,7 @@ const faqStructured = {
       name: '¿Cuánto cuesta contratar un mago para un evento de empresa?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Un mago para evento corporativo en España cuesta entre 500€ y 1.500€ dependiendo del formato. La magia de mesa o close-up durante un cóctel (2–3h mezclado con los asistentes) ronda los 500–900€. Un show de escenario de 30–45 minutos para una gala cuesta entre 700€ y 1.500€. Los magos con mayor trayectoria en el circuito corporativo pueden superar los 2.000€.',
+        text: 'Un mago para evento corporativo en España cuesta entre 500€ y 1.500€ dependiendo del formato. La magia de mesa o close-up durante un cóctel (2-3h mezclado con los asistentes) ronda los 500-900€. Un show de escenario de 30-45 minutos para una gala cuesta entre 700€ y 1.500€. Los magos con mayor trayectoria en el circuito corporativo pueden superar los 2.000€.',
       },
     },
     {
@@ -38,7 +38,7 @@ const faqStructured = {
       name: '¿Cuánto cuesta un mago para una boda?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Para bodas en España el rango habitual es 400–800€. La opción más frecuente es magia de cerca durante el cóctel (60–90 minutos pasando entre los invitados). Si además se quiere un momento de show ante todos los asistentes (gag o número especial), el precio sube entre 100 y 300€ adicionales.',
+        text: 'Para bodas en España el rango habitual es 400-800€. La opción más frecuente es magia de cerca durante el cóctel (60-90 minutos pasando entre los invitados). Si además se quiere un momento de show ante todos los asistentes (gag o número especial), el precio sube entre 100 y 300€ adicionales.',
       },
     },
     {
@@ -54,7 +54,7 @@ const faqStructured = {
       name: '¿Con cuánta antelación hay que contratar un mago?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Para bodas y eventos en temporada alta (mayo, junio, septiembre, octubre), reserva con 3–6 meses de antelación. Los mejores perfiles se agotan antes en esas fechas. Para eventos corporativos sin fecha fija o en semana, 4–6 semanas suelen ser suficientes. Confirma siempre con señal de reserva (30% del total) para asegurar la fecha.',
+        text: 'Para bodas y eventos en temporada alta (mayo, junio, septiembre, octubre), reserva con 3-6 meses de antelación. Los mejores perfiles se agotan antes en esas fechas. Para eventos corporativos sin fecha fija o en semana, 4-6 semanas suelen ser suficientes. Confirma siempre con señal de reserva (30% del total) para asegurar la fecha.',
       },
     },
   ],
@@ -71,12 +71,12 @@ const breadcrumb = {
 };
 
 const PRECIOS = [
-  { tipo: 'Magia de mesa / close-up (2–3h cóctel)', precio: '150–350€/hora · 400–700€ pack' },
-  { tipo: 'Show completo 30 minutos (escenario)', precio: '300–600€' },
-  { tipo: 'Show 60 minutos (gala o cena empresa)', precio: '500–1.000€' },
-  { tipo: 'Gala corporativa premium o evento grande', precio: '800–2.000€' },
-  { tipo: 'Boda: cóctel + momento show', precio: '400–800€' },
-  { tipo: 'Magia virtual / evento online', precio: '200–500€' },
+  { tipo: 'Magia de mesa / close-up (2-3h cóctel)', precio: '150-350€/hora · 400-700€ pack' },
+  { tipo: 'Show completo 30 minutos (escenario)', precio: '300-600€' },
+  { tipo: 'Show 60 minutos (gala o cena empresa)', precio: '500-1.000€' },
+  { tipo: 'Gala corporativa premium o evento grande', precio: '800-2.000€' },
+  { tipo: 'Boda: cóctel + momento show', precio: '400-800€' },
+  { tipo: 'Magia virtual / evento online', precio: '200-500€' },
 ];
 
 export default function BlogMagoPrecioEventos() {
@@ -89,7 +89,7 @@ export default function BlogMagoPrecioEventos() {
           content="Precios reales de magos para eventos de empresa, bodas y fiestas en España 2026. Magia close-up, shows de escenario y galas corporativas."
         />
         <link rel="canonical" href="https://xpeak.es/blog/mago-precio-eventos-espana" />
-        <meta property="og:title" content="Cuánto cobra un mago para eventos y fiestas en España 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Cuánto cobra un mago para eventos y fiestas en España 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas reales de magos en España. Close-up, escenario, boda y empresa. Precios 2026." />
         <meta property="og:url" content="https://xpeak.es/blog/mago-precio-eventos-espana" />
         <meta property="og:type" content="article" />
@@ -144,7 +144,7 @@ export default function BlogMagoPrecioEventos() {
                 {[
                   {
                     tipo: 'Magia de cerca o close-up',
-                    desc: 'El mago circula entre los grupos durante el cóctel o la cena realizando juegos a pocos centímetros. Cartas, monedas y objetos cotidianos. Muy impactante a nivel individual, ideal para eventos de 20–150 personas.',
+                    desc: 'El mago circula entre los grupos durante el cóctel o la cena realizando juegos a pocos centímetros. Cartas, monedas y objetos cotidianos. Muy impactante a nivel individual, ideal para eventos de 20-150 personas.',
                   },
                   {
                     tipo: 'Magia de salón o macromagia',
@@ -193,7 +193,7 @@ export default function BlogMagoPrecioEventos() {
                 ))}
               </div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>
-                Precios orientativos sin IVA para España 2026. Madrid y Barcelona pueden ser un 20–30% más caros.
+                Precios orientativos sin IVA para España 2026. Madrid y Barcelona pueden ser un 20-30% más caros.
               </p>
             </section>
 

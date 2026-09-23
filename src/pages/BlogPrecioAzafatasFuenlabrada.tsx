@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Fuenlabrada', item: 'https://xpeak.es/blog/precio-azafatas-fuenlabrada' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de eventos corporativos', tarifa: '110–155€/día', nota: 'Presentaciones en polígonos industriales' },
-  { perfil: 'Azafata de imagen', tarifa: '125–185€/día', nota: 'Eventos de marca y jornadas de empresa' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '145–195€/día', nota: 'Eventos con clientes o proveedores internacionales' },
-  { perfil: 'Azafata de protocolo institucional', tarifa: '130–185€/día', nota: 'Actos del ayuntamiento y ferias locales' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '155–220€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '65–105€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de eventos corporativos', tarifa: '110-155€/día', nota: 'Presentaciones en polígonos industriales' },
+  { perfil: 'Azafata de imagen', tarifa: '125-185€/día', nota: 'Eventos de marca y jornadas de empresa' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '145-195€/día', nota: 'Eventos con clientes o proveedores internacionales' },
+  { perfil: 'Azafata de protocolo institucional', tarifa: '130-185€/día', nota: 'Actos del ayuntamiento y ferias locales' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '155-220€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '65-105€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasFuenlabrada() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasFuenlabrada() {
         <title>Precio azafatas para eventos en Fuenlabrada 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos corporativos e industriales en Fuenlabrada. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-fuenlabrada" />
-        <meta property="og:title" content="Precio azafatas eventos Fuenlabrada 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Fuenlabrada 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para eventos corporativos e industriales en Fuenlabrada." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-fuenlabrada" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

@@ -144,7 +144,7 @@ export default function PublicContactModal({ professionalName, professionalUserI
                 }}
                 className="w-full mb-4 flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-sm transition-all hover:scale-[1.02]"
                 style={{ background: 'rgba(34,197,94,0.1)', border: '1.5px solid rgba(34,197,94,0.5)', color: '#16a34a' }}>
-                <Zap size={15} /> Flash Booking — Reserva urgente
+                <Zap size={15} /> Flash Booking: Reserva urgente
               </button>
             )}
 

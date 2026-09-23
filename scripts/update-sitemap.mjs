@@ -56,7 +56,7 @@ function loadEnv() {
 // Abortar deja intacto el sitemap anterior, que siempre es mejor que uno vacío.
 function abortarPorSupabase(que, detalle) {
   console.error(`❌ update-sitemap: no se pudo leer ${que} de Supabase (${detalle}).`);
-  console.error('   Se aborta el build SIN tocar sitemap.xml — un sitemap vacío es peor que uno desactualizado.');
+  console.error('   Se aborta el build SIN tocar sitemap.xml: un sitemap vacío es peor que uno desactualizado.');
   console.error('   Comprueba el estado del proyecto y repite el build cuando responda.');
   process.exit(1);
 }
@@ -121,7 +121,7 @@ function buildBlogPostEntries() {
   for (const slug of slugs) {
     const component = routeToComponent[slug];
     if (!component) {
-      console.warn(`⚠️  update-sitemap: ${slug} está en BLOG_POSTS pero no tiene <Route> en App.tsx — se omite.`);
+      console.warn(`⚠️  update-sitemap: ${slug} está en BLOG_POSTS pero no tiene <Route> en App.tsx: se omite.`);
       continue;
     }
     const file = importMap[component];
@@ -241,7 +241,7 @@ function staticUrls(today, indexableCities, cityContentDates) {
       lines.push(url(`https://xpeak.es/contratar-${cat}/${city}`, lm, 'weekly', adjusted));
     }
   }
-  console.log(`   combinaciones indexables: ${indexableCities.size} — ${skippedCities} URLs ciudad×categoría omitidas por falta de inventario`);
+  console.log(`   combinaciones indexables: ${indexableCities.size} · ${skippedCities} URLs ciudad×categoría omitidas por falta de inventario`);
 
   // Occasion landings — eje ocasión × rol (GEO/AEO). Fuente: ROLES_POR_OCASION
   // en src/pages/OccasionLanding.tsx (misma fuente que registra las rutas).
@@ -413,7 +413,7 @@ ${eventLines.join('\n')}
   fs.writeFileSync(OUT, sitemap, 'utf-8');
   if (fs.existsSync(path.dirname(OUT_DIST))) fs.writeFileSync(OUT_DIST, sitemap, 'utf-8');
   const lineCount = sitemap.split('\n').length;
-  console.log(`✅ sitemap.xml written — ${lineCount} lines, ${profiles.length} real profiles, ${socialEvents.length} events`);
+  console.log(`✅ sitemap.xml written: ${lineCount} lines, ${profiles.length} real profiles, ${socialEvents.length} events`);
 }
 
 main().catch(e => {

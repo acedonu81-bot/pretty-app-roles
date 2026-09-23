@@ -191,7 +191,7 @@ const DemandaTab = () => {
     if (error) { toast.error('Error al publicar la oferta'); return; }
     setNewTitle(''); setNewDesc(''); setNewLocation(''); setNewPay(''); setNewRole(''); setDurationHours(2);
     setShowForm(false);
-    toast.success(`Oferta publicada — visible ${durationHours}h para todos los profesionales`);
+    toast.success(`Oferta publicada: visible ${durationHours}h para todos los profesionales`);
     fetchJobs();
   };
 
@@ -258,7 +258,7 @@ const DemandaTab = () => {
         [offer.id]: [...(prev[offer.id] ?? []), { text: msgText, time }],
       }));
       setReplyText('');
-      toast.success('Solicitud enviada — visible en tus Solicitudes y en Mensajes.');
+      toast.success('Solicitud enviada: visible en tus Solicitudes y en Mensajes.');
     } catch {
       toast.error('Error al enviar. Inténtalo de nuevo.');
     } finally {
@@ -419,7 +419,7 @@ const DemandaTab = () => {
                     )}
                     <p className="text-xs text-muted-foreground mb-2">
                       Mensaje a <span className="font-bold" style={{ color: '#8A6D0F' }}>{offer.author}</span>
-                      {msgs.length === 0 && ' — También aparecerá en Mensajes'}
+                      {msgs.length === 0 && ' · También aparecerá en Mensajes'}
                     </p>
                     <div className="flex gap-2">
                       <textarea

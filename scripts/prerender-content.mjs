@@ -54,7 +54,7 @@ async function fetchAllProfilesForPrerender() {
     const supabaseUrl = env.SUPABASE_URL || env.VITE_SUPABASE_URL;
     const anonKey = env.SUPABASE_PUBLISHABLE_KEY || env.VITE_SUPABASE_PUBLISHABLE_KEY;
     if (!supabaseUrl || !anonKey) {
-      console.warn('  ⚠ Sin credenciales Supabase — páginas ciudad/categoría se prerenderizan sin profesionales');
+      console.warn('  ⚠ Sin credenciales Supabase: páginas ciudad/categoría se prerenderizan sin profesionales');
       return [];
     }
     const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,photo_url,bio,zone,role,roles,specialty,hourly_rate,is_flash_active,is_seed,audio_embed_url,audio_session_urls,portfolio_urls,score,is_verified,is_primary,is_early_adopter_override,created_at&role=neq.empresario&is_seed=eq.false&or=(is_public.is.null,is_public.eq.true)&limit=1000`;

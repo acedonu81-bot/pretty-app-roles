@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Bilbao', item: 'https://xpeak.es/blog/precio-azafatas-bilbao' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria BEC', tarifa: '115–165€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '145–225€/día', nota: 'Eventos de marca y protocolo' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '155–210€/día', nota: 'Demandada en ferias industriales' },
-  { perfil: 'Azafata trilingüe', tarifa: '190–275€/día', nota: 'Ferias con presencia internacional' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '170–255€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '75–125€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria BEC', tarifa: '115-165€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '145-225€/día', nota: 'Eventos de marca y protocolo' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '155-210€/día', nota: 'Demandada en ferias industriales' },
+  { perfil: 'Azafata trilingüe', tarifa: '190-275€/día', nota: 'Ferias con presencia internacional' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '170-255€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '75-125€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasBilbao() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasBilbao() {
         <title>Precio azafatas para eventos en Bilbao 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos, ferias del BEC y congresos en Bilbao. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-bilbao" />
-        <meta property="og:title" content="Precio azafatas eventos Bilbao 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Bilbao 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para el BEC y eventos corporativos en Bilbao." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-bilbao" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

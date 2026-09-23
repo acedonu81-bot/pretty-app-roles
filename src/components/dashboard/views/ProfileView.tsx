@@ -418,8 +418,8 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 return (
                   <p className="text-[0.65rem] text-muted-foreground mb-3">
                     {profile.role === 'empresario'
-                      ? 'Un perfil completo da confianza a los profesionales que reciben tus solicitudes — foto, bio y ciudad ayudan a que te respondan.'
-                      : 'Los perfiles más completos aparecen antes en el directorio — bio y portfolio suman posición real.'}
+                      ? 'Un perfil completo da confianza a los profesionales que reciben tus solicitudes: foto, bio y ciudad ayudan a que te respondan.'
+                      : 'Los perfiles más completos aparecen antes en el directorio: bio y portfolio suman posición real.'}
                   </p>
                 );
               })()}
@@ -552,7 +552,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                 )}
               </div>
               <p className="text-[0.72rem] mb-3" style={{ color: '#3d3d4e' }}>
-                Cada profesional que invites y complete su perfil te da <strong style={{ color: 'inherit' }}>+6 meses</strong> de badge azul de prioridad — apareces antes en el directorio.
+                Cada profesional que invites y complete su perfil te da <strong style={{ color: 'inherit' }}>+6 meses</strong> de badge azul de prioridad: apareces antes en el directorio.
               </p>
               <div className="flex items-center gap-2">
                 <div className="flex-1 px-3 py-2 rounded-lg text-[0.7rem] font-mono truncate"
@@ -649,7 +649,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                   <span className="text-xs font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(212,175,55,0.15)', color: '#8A6D0F' }}>Elige tu especialidad</span>
                 )}
               </label>
-              <p className="text-[0.7rem] text-muted-foreground mb-1.5">Puedes elegir varias — aparecerás en el directorio de cada una.</p>
+              <p className="text-[0.7rem] text-muted-foreground mb-1.5">Puedes elegir varias: aparecerás en el directorio de cada una.</p>
 
               {activeRoles.length > 0 && (
                 <div className="flex flex-wrap gap-1.5 mb-2">
@@ -746,8 +746,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
               <div className="mb-3">
                 <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">
                   Caché / Tarifa por hora
-                  <span className="ml-2 normal-case tracking-normal font-normal" style={{ color: '#333' }}>
-                    — solo visible para empresarios
+                  <span className="ml-2 normal-case tracking-normal font-normal" style={{ color: '#333' }}> · solo visible para empresarios
                   </span>
                 </label>
                 <div className="relative mt-1">
@@ -794,7 +793,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
               <p className="text-xs text-muted-foreground mb-2 px-1">
                 {['staff','camarero','azafata','catering'].includes(profile.role)
                   ? 'Tus especialidades (coctelería, sumiller, barista, protocolo…), equipamiento y más. Opcional.'
-                  : 'Géneros, clases, rider técnico y más. Opcional — puedes completarlo luego.'}
+                  : 'Géneros, clases, rider técnico y más. Opcional: puedes completarlo luego.'}
               </p>
             )}
             <div style={{ display: showMore ? 'block' : 'none' }}>
@@ -1054,7 +1053,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
                     <p className="text-xs text-muted-foreground mt-0.5 mb-2">
                       {profile.role === 'empresario'
                         ? 'Describe tu tipo de sala, aforo y eventos que organizas. Ayuda a los profesionales a entender tu negocio.'
-                        : 'Los empresarios y técnicos de sonido verán esto. Sé específico — ahorra emails.'}
+                        : 'Los empresarios y técnicos de sonido verán esto. Sé específico: ahorra emails.'}
                     </p>
                     {presets.length > 0 && (
                       <div className="flex flex-wrap gap-1.5 mb-2">
@@ -1248,7 +1247,7 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
             )}
             {deleteStep === 2 && (
               <div className="rounded-lg p-4" style={{ background: 'rgba(255,95,86,0.08)', border: '1px solid rgba(255,95,86,0.35)' }}>
-                <p className="text-xs font-bold mb-1" style={{ color: '#ff5f56' }}>⚠ CONFIRMACIÓN FINAL — acción irreversible</p>
+                <p className="text-xs font-bold mb-1" style={{ color: '#ff5f56' }}>⚠ CONFIRMACIÓN FINAL: acción irreversible</p>
                 <p className="text-xs mb-3" style={{ color: '#333' }}>No podrás recuperar ningún archivo después de esto.</p>
                 <div className="flex gap-2">
                   <button onClick={() => setDeleteStep(0)}

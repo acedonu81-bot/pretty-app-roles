@@ -109,14 +109,14 @@ export default function BlogDJErroresBoda() {
         <title>10 errores al contratar DJ para tu boda | XPEAK</title>
         <meta name="description" content="Los 10 errores más frecuentes al contratar un DJ para una boda en España: sin contrato, reservar tarde, confundir perfiles. Guía práctica para novios 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/10-errores-contratar-dj-boda" />
-        <meta property="og:title" content="Los 10 errores al contratar un DJ para una boda — XPEAK" />
+        <meta property="og:title" content="Los 10 errores al contratar un DJ para una boda | XPEAK" />
         <meta property="og:description" content="Guía para novios: los 10 errores más comunes al contratar un DJ para la boda y cómo evitarlos para que la noche salga perfecta." />
         <meta property="og:type" content="article" />
         <meta property="og:url" content="https://xpeak.es/blog/10-errores-contratar-dj-boda" />
         <meta property="og:image" content="https://xpeak.es/og-image.jpg" />
         <meta property="og:site_name" content="XPEAK" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Los 10 errores al contratar un DJ para una boda — XPEAK" />
+        <meta name="twitter:title" content="Los 10 errores al contratar un DJ para una boda | XPEAK" />
         <meta name="twitter:description" content="Guía para novios: los 10 errores más comunes al contratar un DJ para la boda y cómo evitarlos." />
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(articleStructured)}</script>
@@ -230,7 +230,7 @@ export default function BlogDJErroresBoda() {
               { href: '/blog/profesionales-bodas', cat: 'Hub Bodas', title: 'Profesionales para bodas: guía completa 2026' },
               { href: '/blog/dj-para-bodas-vs-discoteca', emoji: '🆚', title: 'DJ de boda vs DJ de discoteca: diferencias clave', desc: 'Por qué no son lo mismo y cómo elegir el perfil correcto.' },
               { href: '/blog/cuanto-cobra-un-dj-en-espana', emoji: '💰', title: '¿Cuánto cobra un DJ en España? Precios 2026', desc: 'Tarifas reales por tipo de evento, experiencia y ciudad.' },
-              { href: '/blog/musica-para-bodas-guia', emoji: '🎵', title: 'Música para bodas: DJ, banda o lista — guía completa', desc: 'Comparativa completa de opciones musicales para tu boda.' },
+              { href: '/blog/musica-para-bodas-guia', emoji: '🎵', title: 'Música para bodas: DJ, banda o lista, guía completa', desc: 'Comparativa completa de opciones musicales para tu boda.' },
               { href: '/blog/cuanto-cuesta-una-boda-en-espana', emoji: '💒', title: '¿Cuánto cuesta una boda en España en 2026?', desc: 'Presupuesto completo por partidas: DJ, catering, fotos y más.' },
             ].map(post => (
               <a key={post.href} href={post.href}

@@ -48,7 +48,7 @@ const fecha = (d: string) =>
 function diagnostico(d: Deletion): { texto: string; color: string } {
   const sinContacto = d.messages_received === 0 && d.bookings_received === 0;
   if (sinContacto && d.favorited_by === 0) {
-    return { texto: 'Nadie le contactó ni le guardó en favoritos — falta de demanda', color: '#dc2626' };
+    return { texto: 'Nadie le contactó ni le guardó en favoritos: falta de demanda', color: '#dc2626' };
   }
   if (sinContacto) {
     return { texto: `Le guardaron ${d.favorited_by} vez/veces pero nadie le escribió`, color: '#ea580c' };

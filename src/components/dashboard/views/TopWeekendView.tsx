@@ -84,7 +84,7 @@ const TopWeekendView = () => {
       <div className="p-3 mb-5 rounded-lg flex items-center gap-2" style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)' }}>
         <Crown size={14} style={{ color: '#8A6D0F' }} />
         <span className="text-xs font-medium" style={{ color: '#8A6D0F' }}>
-          Profesionales verificados y con perfil completo — los más listos para contratar
+          Profesionales verificados y con perfil completo: los más listos para contratar
         </span>
       </div>
 

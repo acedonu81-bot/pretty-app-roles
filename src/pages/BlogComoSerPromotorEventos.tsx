@@ -17,7 +17,7 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Cómo ser promotor eventos', item: 'https://xpeak.es/blog/como-ser-promotor-eventos' }] };
 
 const PASOS = [
-  { titulo: 'Entiende exactamente qué hace un promotor', desc: 'El promotor no es el que organiza el evento — es el que llena la sala. Su trabajo es llevar asistentes: gestionar listas de invitados, hacer captación activa en redes y mover su red de contactos para garantizar aforo. Sin resultados medibles, no hay contrato.' },
+  { titulo: 'Entiende exactamente qué hace un promotor', desc: 'El promotor no es el que organiza el evento: es el que llena la sala. Su trabajo es llevar asistentes: gestionar listas de invitados, hacer captación activa en redes y mover su red de contactos para garantizar aforo. Sin resultados medibles, no hay contrato.' },
   { titulo: 'Empieza con eventos pequeños', desc: 'No intentes entrar directamente a las salas grandes. Ofrécete a promotoras pequeñas, fiestas universitarias o eventos de bares para demostrar que puedes llevar gente. Con 2-3 eventos documentados (cuántas personas llevaste, qué noche era) ya tienes un argumento.' },
   { titulo: 'Construye tu lista de contactos como activo', desc: 'Tu lista de WhatsApp, seguidores de Instagram y base de contactos es tu principal activo. Cuanto más grande y fiel sea, más vale tu trabajo. Los promotores que cobran más son los que pueden garantizar 100+ personas por noche con antelación.' },
   { titulo: 'Define tus condiciones desde el principio', desc: 'Antes de aceptar un trabajo, negocia: tarifa fija vs comisión, condiciones de acceso para tu lista (¿consumición mínima?), cómo se mide tu rendimiento y cuándo cobras. Un contrato o email de confirmación es suficiente para protegerte.' },
@@ -26,9 +26,9 @@ const PASOS = [
 ];
 
 const MODELOS = [
-  { modelo: 'Tarifa fija por evento', desc: '150–600€ por noche', pros: 'Seguridad económica, sin riesgo' },
-  { modelo: 'Comisión por asistente', desc: '1–5€ por persona captada', pros: 'Sin límite de ingresos' },
-  { modelo: '% sobre taquilla', desc: '5–15% de la recaudación', pros: 'Ideal en eventos de pago' },
+  { modelo: 'Tarifa fija por evento', desc: '150-600€ por noche', pros: 'Seguridad económica, sin riesgo' },
+  { modelo: 'Comisión por asistente', desc: '1-5€ por persona captada', pros: 'Sin límite de ingresos' },
+  { modelo: '% sobre taquilla', desc: '5-15% de la recaudación', pros: 'Ideal en eventos de pago' },
   { modelo: 'Modelo mixto', desc: 'Fija + comisión', pros: 'El más habitual y equilibrado' },
 ];
 
@@ -39,7 +39,7 @@ export default function BlogComoSerPromotorEventos() {
         <title>Cómo ser promotor de eventos en España: guía 2026 | XPEAK</title>
         <meta name="description" content="Guía completa para ser promotor de eventos. Qué hace un promotor, cuánto cobra, modelos de pago y cómo conseguir los primeros contratos con salas y promotoras." />
         <link rel="canonical" href="https://xpeak.es/blog/como-ser-promotor-eventos" />
-        <meta property="og:title" content="Cómo ser promotor de eventos en España: guía 2026 — XPEAK" />
+        <meta property="og:title" content="Cómo ser promotor de eventos en España: guía 2026 | XPEAK" />
         <meta property="og:description" content="Guía práctica para promotores de eventos. Modelos de cobro, cómo empezar y cómo encontrar salas que te contraten." />
         <meta property="og:url" content="https://xpeak.es/blog/como-ser-promotor-eventos" />
         <meta property="og:type" content="article" />
@@ -67,7 +67,7 @@ export default function BlogComoSerPromotorEventos() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#059669' }}>Para Promotores · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Cómo ser promotor de eventos en España: guía completa 2026</h1>
-            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>El promotor de eventos es uno de los perfiles más demandados en la industria del ocio nocturno y los eventos privados. No necesitas título ni experiencia previa — necesitas red de contactos, capacidad de gestión y saber cómo estructurar tu trabajo desde el primer día.</p>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>El promotor de eventos es uno de los perfiles más demandados en la industria del ocio nocturno y los eventos privados. No necesitas título ni experiencia previa: necesitas red de contactos, capacidad de gestión y saber cómo estructurar tu trabajo desde el primer día.</p>
             <time className="text-xs mt-3 block" style={{ color: '#666' }}>2 junio 2026</time>
           </div>
 

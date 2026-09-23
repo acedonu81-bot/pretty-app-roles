@@ -14,22 +14,22 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
   { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda en Alicante?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ para boda en Alicante cuesta entre 550€ y 1.600€ para el servicio completo. En zonas premium de la Costa Blanca (Jávea, Altea, Benissa) los precios suben hasta 2.200€ por la alta demanda de bodas internacionales de clientes británicos y alemanes.' } },
   { '@type': 'Question', name: '¿Alicante tiene muchas bodas de extranjeros?', acceptedAnswer: { '@type': 'Answer', text: 'Sí. La Costa Blanca Norte (Jávea, Moraira, Altea, Calpe) es uno de los destinos de boda internacional más activos de España. Muchos clientes son británicos, alemanes y escandinavos residentes en la zona. Los DJs de esta área deben tener capacidad de actuar como MC en inglés.' } },
   { '@type': 'Question', name: '¿Cuándo es la temporada alta de bodas en Alicante?', acceptedAnswer: { '@type': 'Answer', text: 'Mayo-junio y septiembre-octubre son los meses preferidos. El clima de Alicante permite bodas al aire libre prácticamente todo el año, aunque julio y agosto son muy calurosos. La Costa Blanca Norte tiene demanda sostenida durante los 12 meses por los residentes extranjeros.' } },
-  { '@type': 'Question', name: '¿Debo contratar un DJ local de Alicante o puede venir de fuera?', acceptedAnswer: { '@type': 'Answer', text: 'Ambas opciones funcionan. Los DJs locales conocen las fincas y tienen red de contactos en la zona (sonido, luces, catering), lo que facilita la coordinación. Un DJ de fuera puede venir si cubre sus gastos de desplazamiento y alojamiento — añadir 100-200€ al presupuesto.' } },
+  { '@type': 'Question', name: '¿Debo contratar un DJ local de Alicante o puede venir de fuera?', acceptedAnswer: { '@type': 'Answer', text: 'Ambas opciones funcionan. Los DJs locales conocen las fincas y tienen red de contactos en la zona (sonido, luces, catering), lo que facilita la coordinación. Un DJ de fuera puede venir si cubre sus gastos de desplazamiento y alojamiento: añadir 100-200€ al presupuesto.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'DJ bodas Alicante', item: 'https://xpeak.es/blog/dj-bodas-alicante' }] };
 
 const PRECIOS = [
-  { servicio: 'Solo pista de baile (4-5h)', precio: '300–750€' },
-  { servicio: 'Cóctel + pista de baile', precio: '500–1.100€' },
-  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '650–1.600€' },
-  { servicio: 'Pack Costa Blanca Norte premium', precio: '1.000–2.200€' },
+  { servicio: 'Solo pista de baile (4-5h)', precio: '300-750€' },
+  { servicio: 'Cóctel + pista de baile', precio: '500-1.100€' },
+  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '650-1.600€' },
+  { servicio: 'Pack Costa Blanca Norte premium', precio: '1.000-2.200€' },
 ];
 
 const ZONAS = [
   { zona: 'Alicante capital', fincas: 'Masías y fincas en el interior, castillo de Santa Bárbara', nota: 'Buen precio, fácil acceso' },
   { zona: 'Costa Blanca Norte', fincas: 'Jávea, Altea, Moraira, Calpe', nota: 'Bodas internacionales' },
   { zona: 'Costa Blanca Sur', fincas: 'Torrevieja, Guardamar, Benidorm', nota: 'Ambiente más festivo' },
-  { zona: 'L\'Alcoià / interior', fincas: 'Alcoy, Villena, Elda — fincas amplias', nota: 'Económico y privado' },
+  { zona: 'L\'Alcoià / interior', fincas: 'Alcoy, Villena, Elda: fincas amplias', nota: 'Económico y privado' },
 ];
 
 const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en Alicante', description: 'Encuentra y contrata DJs verificados para bodas y eventos en Alicante. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'Alicante' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-alicante', offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' } };
@@ -41,7 +41,7 @@ export default function BlogDJBodaAlicante() {
         <title>DJ para bodas en Alicante: precio 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un DJ para una boda en Alicante. Precios reales 2026, Costa Blanca, bodas internacionales y cómo contratar el mejor DJ." />
         <link rel="canonical" href="https://xpeak.es/blog/dj-bodas-alicante" />
-        <meta property="og:title" content="DJ para bodas en Alicante: precio 2026 — XPEAK Blog" />
+        <meta property="og:title" content="DJ para bodas en Alicante: precio 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precios reales de DJs de boda en Alicante. Costa Blanca Norte y cómo elegir el perfil correcto." />
         <meta property="og:url" content="https://xpeak.es/blog/dj-bodas-alicante" />
         <meta property="og:type" content="article" />

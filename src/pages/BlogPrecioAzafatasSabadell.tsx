@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Sabadell', item: 'https://xpeak.es/blog/precio-azafatas-sabadell' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '130–180€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '155–235€/día', nota: 'Eventos de empresa y actos institucionales' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '165–215€/día', nota: 'Eventos con clientes internacionales' },
-  { perfil: 'Azafata trilingüe', tarifa: '195–280€/día', nota: 'Presentaciones de proveedores internacionales' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '175–260€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '80–125€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '130-180€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '155-235€/día', nota: 'Eventos de empresa y actos institucionales' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '165-215€/día', nota: 'Eventos con clientes internacionales' },
+  { perfil: 'Azafata trilingüe', tarifa: '195-280€/día', nota: 'Presentaciones de proveedores internacionales' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '175-260€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '80-125€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasSabadell() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasSabadell() {
         <title>Precio azafatas para eventos en Sabadell 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos corporativos y ferias en Sabadell. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-sabadell" />
-        <meta property="og:title" content="Precio azafatas eventos Sabadell 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Sabadell 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para eventos corporativos en Sabadell." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-sabadell" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

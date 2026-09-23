@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Marbella', item: 'https://xpeak.es/blog/precio-azafatas-marbella' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '180–240€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '210–320€/día', nota: 'Eventos de marca en Puerto Banús' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '220–290€/día', nota: 'Imprescindible por clientela internacional' },
-  { perfil: 'Azafata trilingüe', tarifa: '260–380€/día', nota: 'Bodas y eventos de villas de lujo' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '250–360€/día', nota: 'Gestión de equipo en boda o evento grande' },
-  { perfil: 'Pack evento en villa/hotel 5* (4h)', tarifa: '120–200€', nota: 'Milla de Oro y alrededores' },
+  { perfil: 'Azafata de stand / feria', tarifa: '180-240€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '210-320€/día', nota: 'Eventos de marca en Puerto Banús' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '220-290€/día', nota: 'Imprescindible por clientela internacional' },
+  { perfil: 'Azafata trilingüe', tarifa: '260-380€/día', nota: 'Bodas y eventos de villas de lujo' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '250-360€/día', nota: 'Gestión de equipo en boda o evento grande' },
+  { perfil: 'Pack evento en villa/hotel 5* (4h)', tarifa: '120-200€', nota: 'Milla de Oro y alrededores' },
 ];
 
 export default function BlogPrecioAzafatasMarbella() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasMarbella() {
         <title>Precio azafatas para eventos en Marbella 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para bodas de lujo y eventos en Puerto Banús, Marbella. Tarifas de temporada alta 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-marbella" />
-        <meta property="og:title" content="Precio azafatas eventos Marbella 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Marbella 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para Puerto Banús, villas y bodas de lujo en Marbella." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-marbella" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

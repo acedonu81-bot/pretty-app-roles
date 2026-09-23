@@ -9,36 +9,36 @@ import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
 const PARTIDAS = [
-  { icon: UtensilsCrossed, label: 'Catering y banquete', min: 8000, max: 25000, nota: 'Partida más alta. €50–150/comensal según menú y servicio.' },
+  { icon: UtensilsCrossed, label: 'Catering y banquete', min: 8000, max: 25000, nota: 'Partida más alta. €50-150/comensal según menú y servicio.' },
   { icon: Flower2,         label: 'Finca / Venue',       min: 3000, max: 15000, nota: 'Precio muy variable. Fincas rurales más económicas que hoteles.' },
-  { icon: Camera,          label: 'Fotógrafo y vídeo',   min: 1200, max: 4500,  nota: 'Pack foto + vídeo: €2.000–3.500. Solo foto: desde €1.200.' },
-  { icon: Music,           label: 'DJ para boda',         min: 400,  max: 1800,  nota: 'Incluye equipo. Precio por actuación completa (4–6h).' },
-  { icon: Users,           label: 'Camareros y personal', min: 600,  max: 2500,  nota: '€80–120/camarero/jornada. Mínimo 1 por cada 8–10 invitados.' },
+  { icon: Camera,          label: 'Fotógrafo y vídeo',   min: 1200, max: 4500,  nota: 'Pack foto + vídeo: €2.000-3.500. Solo foto: desde €1.200.' },
+  { icon: Music,           label: 'DJ para boda',         min: 400,  max: 1800,  nota: 'Incluye equipo. Precio por actuación completa (4-6h).' },
+  { icon: Users,           label: 'Camareros y personal', min: 600,  max: 2500,  nota: '€80-120/camarero/jornada. Mínimo 1 por cada 8-10 invitados.' },
   { icon: Flower2,         label: 'Flores y decoración',  min: 800,  max: 4000,  nota: 'Centros de mesa, arco floral, tocado novia incluidos.' },
   { icon: Users,           label: 'Maquillaje y estilismo', min: 300, max: 1200, nota: 'Novia + madres. Pack completo con peluquería.' },
   { icon: Car,             label: 'Transporte',           min: 400,  max: 1500,  nota: 'Coche nupcial + bus para invitados si el venue es alejado.' },
 ];
 
 const RANGOS = [
-  { tipo: 'Boda íntima', invitados: '< 50 invitados', rango: '8.000€ – 18.000€', color: '#22c55e' },
-  { tipo: 'Boda media',  invitados: '50–120 invitados', rango: '18.000€ – 35.000€', color: '#DB2777' },
-  { tipo: 'Boda grande', invitados: '120–200 invitados', rango: '35.000€ – 55.000€', color: '#ff9f40' },
-  { tipo: 'Boda premium', invitados: '+200 invitados', rango: '55.000€ – 100.000€+', color: '#ff5f56' },
+  { tipo: 'Boda íntima', invitados: '< 50 invitados', rango: '8.000€-18.000€', color: '#22c55e' },
+  { tipo: 'Boda media',  invitados: '50-120 invitados', rango: '18.000€-35.000€', color: '#DB2777' },
+  { tipo: 'Boda grande', invitados: '120-200 invitados', rango: '35.000€-55.000€', color: '#ff9f40' },
+  { tipo: 'Boda premium', invitados: '+200 invitados', rango: '55.000€-100.000€+', color: '#ff5f56' },
 ];
 
 const CIUDADES = [
-  { ciudad: 'Madrid',    rango: '25.000€ – 50.000€', nota: 'Precio medio más alto de España' },
-  { ciudad: 'Barcelona', rango: '22.000€ – 45.000€', nota: 'Gran oferta de venues y proveedores' },
-  { ciudad: 'Valencia',  rango: '18.000€ – 38.000€', nota: 'Buena relación calidad-precio' },
-  { ciudad: 'Sevilla',   rango: '16.000€ – 35.000€', nota: 'Tradición fuerte, venues únicos' },
-  { ciudad: 'Málaga',    rango: '17.000€ – 40.000€', nota: 'Bodas al aire libre muy demandadas' },
-  { ciudad: 'Islas Baleares', rango: '30.000€ – 80.000€+', nota: 'Destino de bodas de lujo en España' },
+  { ciudad: 'Madrid',    rango: '25.000€-50.000€', nota: 'Precio medio más alto de España' },
+  { ciudad: 'Barcelona', rango: '22.000€-45.000€', nota: 'Gran oferta de venues y proveedores' },
+  { ciudad: 'Valencia',  rango: '18.000€-38.000€', nota: 'Buena relación calidad-precio' },
+  { ciudad: 'Sevilla',   rango: '16.000€-35.000€', nota: 'Tradición fuerte, venues únicos' },
+  { ciudad: 'Málaga',    rango: '17.000€-40.000€', nota: 'Bodas al aire libre muy demandadas' },
+  { ciudad: 'Islas Baleares', rango: '30.000€-80.000€+', nota: 'Destino de bodas de lujo en España' },
 ];
 
 const FAQ = [
   {
     q: '¿Cuánto cuesta de media una boda en España en 2026?',
-    a: 'Una boda media en España cuesta entre 20.000€ y 35.000€ para 100–130 invitados. El precio varía mucho según la ciudad, el tipo de venue y el nivel de servicio. En grandes ciudades como Madrid o Barcelona el presupuesto medio supera los 25.000€.',
+    a: 'Una boda media en España cuesta entre 20.000€ y 35.000€ para 100-130 invitados. El precio varía mucho según la ciudad, el tipo de venue y el nivel de servicio. En grandes ciudades como Madrid o Barcelona el presupuesto medio supera los 25.000€.',
   },
   {
     q: '¿Cuál es la partida más cara de una boda?',
@@ -46,15 +46,15 @@ const FAQ = [
   },
   {
     q: '¿Cómo ahorrar en una boda sin perder calidad?',
-    a: 'Las mayores oportunidades de ahorro son: elegir fecha entre semana o en temporada baja (noviembre–febrero), apostar por un catering tipo bufé en lugar de menú servido, contratar fotógrafo local en lugar de muy conocido, y usar plataformas como XPEAK para contratar DJ y personal directamente, sin intermediarios.',
+    a: 'Las mayores oportunidades de ahorro son: elegir fecha entre semana o en temporada baja (noviembre-febrero), apostar por un catering tipo bufé en lugar de menú servido, contratar fotógrafo local en lugar de muy conocido, y usar plataformas como XPEAK para contratar DJ y personal directamente, sin intermediarios.',
   },
   {
     q: '¿Cuánto cobra un DJ para una boda en España?',
-    a: 'Un DJ profesional para boda en España cuesta entre 400€ y 1.800€ por actuación completa (cóctel + baile, 4–6 horas), incluyendo equipo de sonido. El precio depende de la ciudad, experiencia del DJ y si incluye actuación en la ceremonia. En XPEAK puedes ver tarifas reales de DJs verificados en tu ciudad.',
+    a: 'Un DJ profesional para boda en España cuesta entre 400€ y 1.800€ por actuación completa (cóctel + baile, 4-6 horas), incluyendo equipo de sonido. El precio depende de la ciudad, experiencia del DJ y si incluye actuación en la ceremonia. En XPEAK puedes ver tarifas reales de DJs verificados en tu ciudad.',
   },
   {
     q: '¿Cuántos camareros necesito para mi boda?',
-    a: 'La regla general es 1 camarero por cada 8–10 invitados en servicio de menú, y 1 por cada 15 en formato bufé. Para 100 invitados necesitarás entre 10 y 12 camareros. Añade 1–2 extras para la barra libre y el café. Consulta nuestra guía completa de camareros para bodas.',
+    a: 'La regla general es 1 camarero por cada 8-10 invitados en servicio de menú, y 1 por cada 15 en formato bufé. Para 100 invitados necesitarás entre 10 y 12 camareros. Añade 1-2 extras para la barra libre y el café. Consulta nuestra guía completa de camareros para bodas.',
   },
 ];
 
@@ -166,11 +166,11 @@ const faqStructured = {
           <div className="rounded-2xl p-5 mb-10" style={{ background: 'rgba(219,39,119,0.06)', border: '1px solid rgba(219,39,119,0.2)' }}>
             <p className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: '#DB2777' }}>Resumen rápido</p>
             <ul className="space-y-1.5 text-sm" style={{ color: '#222' }}>
-              <li>💰 Boda media en España (100 invitados): <strong style={{ color: '#111' }}>20.000€ – 35.000€</strong></li>
-              <li>🍽️ Partida más cara: <strong style={{ color: '#111' }}>catering (35–45% del total)</strong></li>
-              <li>🎧 DJ para boda: <strong style={{ color: '#111' }}>400€ – 1.800€</strong></li>
-              <li>📸 Fotógrafo: <strong style={{ color: '#111' }}>1.200€ – 4.500€</strong></li>
-              <li>🍾 Camareros: <strong style={{ color: '#111' }}>1 por cada 8–10 invitados</strong></li>
+              <li>💰 Boda media en España (100 invitados): <strong style={{ color: '#111' }}>20.000€-35.000€</strong></li>
+              <li>🍽️ Partida más cara: <strong style={{ color: '#111' }}>catering (35-45% del total)</strong></li>
+              <li>🎧 DJ para boda: <strong style={{ color: '#111' }}>400€-1.800€</strong></li>
+              <li>📸 Fotógrafo: <strong style={{ color: '#111' }}>1.200€-4.500€</strong></li>
+              <li>🍾 Camareros: <strong style={{ color: '#111' }}>1 por cada 8-10 invitados</strong></li>
             </ul>
           </div>
 
@@ -216,7 +216,7 @@ const faqStructured = {
                         </div>
                       </td>
                       <td style={{ ...tdStyle, fontWeight: 700, color: '#DB2777', whiteSpace: 'nowrap' }}>
-                        {p.min.toLocaleString('es-ES')}€ – {p.max.toLocaleString('es-ES')}€
+                        {p.min.toLocaleString('es-ES')}€ - {p.max.toLocaleString('es-ES')}€
                       </td>
                       <td style={{ ...tdStyle, color: '#444' }}>{p.nota}</td>
                     </tr>
@@ -267,9 +267,9 @@ const faqStructured = {
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
               {[
-                { tipo: 'DJ básico', precio: '400€ – 700€', desc: 'Solo música, equipo propio básico. Ideal para bodas íntimas.' },
-                { tipo: 'DJ profesional', precio: '700€ – 1.200€', desc: 'Equipo completo, música en cóctel y baile (5–6h).' },
-                { tipo: 'DJ de referencia', precio: '1.200€ – 1.800€', desc: 'DJ con nombre, setup premium, iluminación incluida.' },
+                { tipo: 'DJ básico', precio: '400€-700€', desc: 'Solo música, equipo propio básico. Ideal para bodas íntimas.' },
+                { tipo: 'DJ profesional', precio: '700€-1.200€', desc: 'Equipo completo, música en cóctel y baile (5-6h).' },
+                { tipo: 'DJ de referencia', precio: '1.200€-1.800€', desc: 'DJ con nombre, setup premium, iluminación incluida.' },
               ].map(d => (
                 <div key={d.tipo} className="rounded-xl p-4" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.07)' }}>
                   <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: '#333' }}>{d.tipo}</p>
@@ -305,10 +305,10 @@ const faqStructured = {
                 </thead>
                 <tbody>
                   {[
-                    { tipo: 'Menú servido', ratio: '1 por cada 8–10 invitados', precio: '90€ – 120€' },
-                    { tipo: 'Bufé', ratio: '1 por cada 12–15 invitados', precio: '80€ – 110€' },
-                    { tipo: 'Cóctel / barra libre', ratio: '1 por cada 15 invitados', precio: '80€ – 120€' },
-                    { tipo: 'Maitre / jefe de sala', ratio: '1 por evento', precio: '120€ – 180€' },
+                    { tipo: 'Menú servido', ratio: '1 por cada 8-10 invitados', precio: '90€-120€' },
+                    { tipo: 'Bufé', ratio: '1 por cada 12-15 invitados', precio: '80€-110€' },
+                    { tipo: 'Cóctel / barra libre', ratio: '1 por cada 15 invitados', precio: '80€-120€' },
+                    { tipo: 'Maitre / jefe de sala', ratio: '1 por evento', precio: '120€-180€' },
                   ].map((r, i) => (
                     <tr key={i}>
                       <td style={{ ...tdStyle, fontWeight: 600 }}>{r.tipo}</td>
@@ -335,11 +335,11 @@ const faqStructured = {
             <h2 className="text-xl sm:text-2xl font-black mb-5">5 formas de ahorrar sin renunciar a la calidad</h2>
             <div className="space-y-3">
               {[
-                { num: '01', tip: 'Elige fecha en temporada baja', desc: 'Los proveedores bajan precios un 15–30% en noviembre, enero y febrero. Los fines de semana de verano tienen recargo en casi todos los servicios.' },
+                { num: '01', tip: 'Elige fecha en temporada baja', desc: 'Los proveedores bajan precios un 15-30% en noviembre, enero y febrero. Los fines de semana de verano tienen recargo en casi todos los servicios.' },
                 { num: '02', tip: 'Bufé en lugar de menú servido', desc: 'El bufé reduce el coste de camareros un 30% y suele tener mejor valoración por parte de los invitados: más variedad y menos esperas.' },
                 { num: '03', tip: 'Contrata DJ y personal directamente sin intermediarios', desc: 'Plataformas como XPEAK te conectan directamente con el profesional. El ahorro puede ser de 200€ a 500€ solo en el DJ.' },
-                { num: '04', tip: 'Optimiza el número de camareros', desc: 'Muchas parejas contratan más personal del necesario por miedo al caos. Con los ratios correctos y un buen maitre, 100 invitados funcionan perfectamente con 10–11 camareros.' },
-                { num: '05', tip: 'Pide pack foto + vídeo al mismo proveedor', desc: 'Contratar fotógrafo y videógrafo por separado cuesta un 20–30% más que el pack combinado. Negocia ambos con el mismo profesional.' },
+                { num: '04', tip: 'Optimiza el número de camareros', desc: 'Muchas parejas contratan más personal del necesario por miedo al caos. Con los ratios correctos y un buen maitre, 100 invitados funcionan perfectamente con 10-11 camareros.' },
+                { num: '05', tip: 'Pide pack foto + vídeo al mismo proveedor', desc: 'Contratar fotógrafo y videógrafo por separado cuesta un 20-30% más que el pack combinado. Negocia ambos con el mismo profesional.' },
               ].map(c => (
                 <div key={c.num} className="flex gap-4 rounded-xl p-4" style={{ background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.06)' }}>
                   <span className="text-2xl font-black flex-shrink-0 w-8" style={{ color: 'rgba(219,39,119,0.3)' }}>{c.num}</span>

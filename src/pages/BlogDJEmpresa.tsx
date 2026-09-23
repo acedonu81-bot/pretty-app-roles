@@ -16,11 +16,11 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 ] };
 
 const PRECIOS = [
-  { tipo: 'Cocktail o cena (3-4h)', precio: '400–900€' },
-  { tipo: 'Fiesta de empresa completa (5-6h)', precio: '600–1.400€' },
-  { tipo: 'Cena + pista de baile (hasta 8h)', precio: '800–2.000€' },
-  { tipo: 'DJ + MC (presentador corporativo)', precio: '900–2.500€' },
-  { tipo: 'Evento multinacional / incentivos', precio: '1.200–3.500€' },
+  { tipo: 'Cocktail o cena (3-4h)', precio: '400-900€' },
+  { tipo: 'Fiesta de empresa completa (5-6h)', precio: '600-1.400€' },
+  { tipo: 'Cena + pista de baile (hasta 8h)', precio: '800-2.000€' },
+  { tipo: 'DJ + MC (presentador corporativo)', precio: '900-2.500€' },
+  { tipo: 'Evento multinacional / incentivos', precio: '1.200-3.500€' },
 ];
 
 export default function BlogDJEmpresa() {
@@ -53,7 +53,7 @@ export default function BlogDJEmpresa() {
         <title>DJ para eventos de empresa: precio y cómo contratar 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un DJ para un evento corporativo o fiesta de empresa. Precios 2026, qué incluye, qué música pone y cómo elegir el perfil correcto." />
         <link rel="canonical" href={`https://xpeak.es/blog/${slug}`} />
-        <meta property="og:title" content="DJ para eventos de empresa: precio 2026 — XPEAK" />
+        <meta property="og:title" content="DJ para eventos de empresa: precio 2026 | XPEAK" />
         <meta property="og:description" content="Precios y guía para contratar DJ en eventos corporativos. Fiesta de empresa, cocktail, cena de Navidad." />
         <meta property="og:url" content={`https://xpeak.es/blog/${slug}`} />
         <meta property="og:type" content="article" />
@@ -76,7 +76,7 @@ export default function BlogDJEmpresa() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>DJ · Empresas · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para eventos de empresa: precio y cómo contratar en 2026</h1>
-            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Desde la cena de Navidad hasta el team building o el incentive de fin de año — el DJ corporativo es uno de los servicios más demandados en eventos de empresa. Te explicamos precios, qué pedir y cómo elegir el perfil correcto.</p>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Desde la cena de Navidad hasta el team building o el incentive de fin de año: el DJ corporativo es uno de los servicios más demandados en eventos de empresa. Te explicamos precios, qué pedir y cómo elegir el perfil correcto.</p>
             <time className="text-xs mt-3 block" style={{ color: '#666' }}>6 junio 2026</time>
           </div>
           <div className="space-y-10">

@@ -33,15 +33,15 @@ const faqStructured = {
   mainEntity: [
     { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de bodas en Alicante?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de bodas en Alicante cuesta entre 800€ y 2.200€. Las bodas en fincas y haciendas del interior o frente al Mediterráneo tienen precios similares a otras ciudades levantinas.' } },
     { '@type': 'Question', name: '¿Cuál es la mejor época para bodas fotográficas en Alicante?', acceptedAnswer: { '@type': 'Answer', text: 'La luz mediterránea es excepcional de octubre a abril: menos calor, cielos más dramáticos y atardeceres de oro. El verano tiene más horas de sol pero el calor y el turismo complican la logística.' } },
-    { '@type': 'Question', name: '¿Qué incluye el precio del fotógrafo de bodas en Alicante?', acceptedAnswer: { '@type': 'Answer', text: 'Normalmente incluye 8–10 horas de cobertura, 300–600 fotos editadas, galería online y entrega en alta resolución. El álbum impreso, segundo fotógrafo y sesión postboda son extras.' } },
+    { '@type': 'Question', name: '¿Qué incluye el precio del fotógrafo de bodas en Alicante?', acceptedAnswer: { '@type': 'Answer', text: 'Normalmente incluye 8-10 horas de cobertura, 300-600 fotos editadas, galería online y entrega en alta resolución. El álbum impreso, segundo fotógrafo y sesión postboda son extras.' } },
   ],
 };
 
 const PRICES = [
-  { perfil: 'Fotógrafo emergente', rango: '600€ – 950€', nota: 'Buen precio, portfolio creciente' },
-  { perfil: 'Fotógrafo profesional', rango: '950€ – 1.700€', nota: 'Cobertura completa, álbum digital' },
-  { perfil: 'Fotógrafo premium', rango: '1.700€ – 2.800€', nota: 'Edición artística, postboda incluida' },
-  { perfil: 'Fotógrafo de referencia', rango: '2.800€ – 4.000€', nota: 'Premios nacionales, publicaciones' },
+  { perfil: 'Fotógrafo emergente', rango: '600€-950€', nota: 'Buen precio, portfolio creciente' },
+  { perfil: 'Fotógrafo profesional', rango: '950€-1.700€', nota: 'Cobertura completa, álbum digital' },
+  { perfil: 'Fotógrafo premium', rango: '1.700€-2.800€', nota: 'Edición artística, postboda incluida' },
+  { perfil: 'Fotógrafo de referencia', rango: '2.800€-4.000€', nota: 'Premios nacionales, publicaciones' },
 ];
 
 export default function BlogFotografoBodaAlicante() {
@@ -69,7 +69,7 @@ export default function BlogFotografoBodaAlicante() {
           <p className="text-[#555] text-sm mb-8">Actualizado junio 2026 · 7 min lectura</p>
 
           <BlogAnswerBox question="¿Cuánto cuesta un fotógrafo de bodas en Alicante?">
-            Un fotógrafo de bodas en Alicante cuesta entre <strong>800€ y 2.200€</strong>. La Costa Blanca atrae fotógrafos con gran nivel técnico gracias a la luz mediterránea. La temporada más cara es junio–septiembre.
+            Un fotógrafo de bodas en Alicante cuesta entre <strong>800€ y 2.200€</strong>. La Costa Blanca atrae fotógrafos con gran nivel técnico gracias a la luz mediterránea. La temporada más cara es junio-septiembre.
           </BlogAnswerBox>
 
           <p className="text-[#333] mb-6">Alicante combina playas de postal, el Castillo de Santa Bárbara y fincas en el interior con viñedos. Un escenario excepcional para bodas y para los fotógrafos que saben aprovechar la luz única del Mediterráneo.</p>
@@ -96,10 +96,10 @@ export default function BlogFotografoBodaAlicante() {
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Mejores localizaciones para fotos de boda en Alicante</h2>
           <ul className="space-y-3 mb-8 text-[#333]">
-            <li><strong className="text-[#111]">Castillo de Santa Bárbara</strong> — Vistas panorámicas sobre la ciudad y el mar. La Golden Hour desde aquí es espectacular.</li>
-            <li><strong className="text-[#111]">Playa del Postiguet</strong> — Arena blanca y aguas turquesas como telón de fondo de una sesión de postboda.</li>
-            <li><strong className="text-[#111]">Explanada de España</strong> — Palmeras y mosaico de mármol. Icónica para fotos urbanas con identidad alicantina.</li>
-            <li><strong className="text-[#111]">Fincas en Novelda / Villena</strong> — Campos de viñas y olivos para bodas íntimas en el interior provincial.</li>
+            <li><strong className="text-[#111]">Castillo de Santa Bárbara</strong>: Vistas panorámicas sobre la ciudad y el mar. La Golden Hour desde aquí es espectacular.</li>
+            <li><strong className="text-[#111]">Playa del Postiguet</strong>: Arena blanca y aguas turquesas como telón de fondo de una sesión de postboda.</li>
+            <li><strong className="text-[#111]">Explanada de España</strong>: Palmeras y mosaico de mármol. Icónica para fotos urbanas con identidad alicantina.</li>
+            <li><strong className="text-[#111]">Fincas en Novelda / Villena</strong>: Campos de viñas y olivos para bodas íntimas en el interior provincial.</li>
           </ul>
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-fotografo" articlePath="/blog/fotografo-boda-alicante" />

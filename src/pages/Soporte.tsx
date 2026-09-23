@@ -8,7 +8,7 @@ const Soporte = () => {
   return (
     <div className="min-h-screen flex flex-col overflow-hidden relative" style={{ background: '#090909' }}>
       <Helmet>
-        <title>Soporte | XPEAK — Ayuda y contacto</title>
+        <title>Soporte | XPEAK: Ayuda y contacto</title>
         <meta name="description" content="¿Necesitas ayuda con XPEAK? Contacta con nuestro equipo de soporte por email y resolvemos tu duda lo antes posible." />
         <link rel="canonical" href="https://xpeak.es/soporte" />
       </Helmet>

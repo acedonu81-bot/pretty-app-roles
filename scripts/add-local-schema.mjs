@@ -39,7 +39,7 @@ for (const file of files) {
   const slug = slugMatch ? slugMatch[1] : '';
 
   const serviceSchema = `
-const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: \`DJs para bodas en ${ciudad}\`, description: \`Encuentra y contrata DJs verificados para bodas y eventos en ${ciudad}. Presupuestos gratuitos, contratos digitales y 0% comisión.\`, serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: '${ciudad}' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: \`https://xpeak.es/blog/${slug}\`, offers: { '@type': 'Offer', description: 'Presupuestos gratuitos de DJs verificados', price: '0', priceCurrency: 'EUR' } };`;
+const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: \`DJs para bodas en ${ciudad}\`, description: \`Encuentra y contrata DJs verificados para bodas y eventos en ${ciudad}. Presupuestos y contratos digitales.\`, serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: '${ciudad}' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: \`https://xpeak.es/blog/${slug}\`, offers: { '@type': 'Offer', description: 'Presupuestos gratuitos de DJs verificados', price: '0', priceCurrency: 'EUR' } };`;
 
   // Insertar la variable justo antes del export default
   content = content.replace(

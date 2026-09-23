@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Mataró', item: 'https://xpeak.es/blog/precio-azafatas-mataro' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '135–185€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '160–245€/día', nota: 'Eventos de marca y bodas de costa' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '170–220€/día', nota: 'Eventos vinculados al área metropolitana' },
-  { perfil: 'Azafata trilingüe', tarifa: '200–290€/día', nota: 'Presentaciones internacionales' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '180–270€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '82–130€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '135-185€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '160-245€/día', nota: 'Eventos de marca y bodas de costa' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '170-220€/día', nota: 'Eventos vinculados al área metropolitana' },
+  { perfil: 'Azafata trilingüe', tarifa: '200-290€/día', nota: 'Presentaciones internacionales' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '180-270€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '82-130€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasMataro() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasMataro() {
         <title>Precio azafatas para eventos en Mataró 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos y bodas de costa en Mataró, Maresme. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-mataro" />
-        <meta property="og:title" content="Precio azafatas eventos Mataró 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Mataró 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para eventos y bodas de costa en Mataró." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-mataro" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

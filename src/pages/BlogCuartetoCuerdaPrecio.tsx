@@ -54,12 +54,12 @@ const breadcrumb = {
 };
 
 const PRECIOS = [
-  { formato: 'Solo ceremonia (45-60 min)', precio: '350–600€', para: 'Entrada, firma, salida de la iglesia o sala' },
-  { formato: 'Ceremonia + cóctel (2-3h)', precio: '600–1.000€', para: 'El formato más contratado para bodas' },
-  { formato: 'Evento completo (4-5h)', precio: '800–1.500€', para: 'Ceremonia, cóctel y parte de la recepción' },
-  { formato: 'Dúo acústico', precio: '200–400€', para: 'Alternativa íntima y económica' },
-  { formato: 'Trío de cuerda', precio: '350–700€', para: 'Equilibrio entre coste y sonido completo' },
-  { formato: 'Cuarteto con amplificación', precio: '+100–200€', para: 'Exteriores o espacios con ruido ambiente' },
+  { formato: 'Solo ceremonia (45-60 min)', precio: '350-600€', para: 'Entrada, firma, salida de la iglesia o sala' },
+  { formato: 'Ceremonia + cóctel (2-3h)', precio: '600-1.000€', para: 'El formato más contratado para bodas' },
+  { formato: 'Evento completo (4-5h)', precio: '800-1.500€', para: 'Ceremonia, cóctel y parte de la recepción' },
+  { formato: 'Dúo acústico', precio: '200-400€', para: 'Alternativa íntima y económica' },
+  { formato: 'Trío de cuerda', precio: '350-700€', para: 'Equilibrio entre coste y sonido completo' },
+  { formato: 'Cuarteto con amplificación', precio: '+100-200€', para: 'Exteriores o espacios con ruido ambiente' },
 ];
 
 export default function BlogCuartetoCuerdaPrecio() {
@@ -69,7 +69,7 @@ export default function BlogCuartetoCuerdaPrecio() {
         <title>Cuarteto de cuerda para boda: precios 2026 España | XPEAK</title>
         <meta name="description" content="Cuánto cuesta contratar un cuarteto de cuerda para boda en España. Precios por duración, cuándo reservarlo y alternativas como dúo o trío." />
         <link rel="canonical" href="https://xpeak.es/blog/cuarteto-cuerda-boda-precio" />
-        <meta property="og:title" content="Cuarteto de cuerda para boda: precios 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Cuarteto de cuerda para boda: precios 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precios reales de cuartetos de cuerda para bodas en España. Solo ceremonia, ceremonia y cóctel o evento completo." />
         <meta property="og:url" content="https://xpeak.es/blog/cuarteto-cuerda-boda-precio" />
         <meta property="og:type" content="article" />
@@ -164,10 +164,10 @@ export default function BlogCuartetoCuerdaPrecio() {
               </p>
               <div className="space-y-3">
                 {[
-                  { nombre: 'Trío de cuerda', desc: 'Violin, viola y cello. Sonido muy completo. Un 20-30% más económico que el cuarteto.', precio: '350–700€' },
-                  { nombre: 'Dúo de violín y piano', desc: 'Ideal para ceremonias íntimas en interiores. Elegante y emocionante con menos músicos.', precio: '200–450€' },
-                  { nombre: 'Violín y guitarra clásica', desc: 'Opción cálida y versátil, funciona muy bien en exteriores sin necesitar amplificación.', precio: '180–380€' },
-                  { nombre: 'Saxofón y piano', desc: 'Para quienes prefieren un sonido más jazzístico en el cóctel. Muy popular en eventos de empresa.', precio: '250–500€' },
+                  { nombre: 'Trío de cuerda', desc: 'Violin, viola y cello. Sonido muy completo. Un 20-30% más económico que el cuarteto.', precio: '350-700€' },
+                  { nombre: 'Dúo de violín y piano', desc: 'Ideal para ceremonias íntimas en interiores. Elegante y emocionante con menos músicos.', precio: '200-450€' },
+                  { nombre: 'Violín y guitarra clásica', desc: 'Opción cálida y versátil, funciona muy bien en exteriores sin necesitar amplificación.', precio: '180-380€' },
+                  { nombre: 'Saxofón y piano', desc: 'Para quienes prefieren un sonido más jazzístico en el cóctel. Muy popular en eventos de empresa.', precio: '250-500€' },
                 ].map(a => (
                   <div key={a.nombre} className="flex items-start gap-4 p-4 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <div className="flex-1">

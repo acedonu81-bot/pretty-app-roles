@@ -2,7 +2,7 @@
   "$schema": "https://modelcontextprotocol.io/schemas/draft/server-card.json",
   "serverInfo": {
     "name": "xpeak",
-    "title": "XPEAK — Directorio profesional de eventos en España",
+    "title": "XPEAK | Directorio profesional de eventos en España",
     "version": "1.0.0",
     "websiteUrl": "https://xpeak.es"
   },
@@ -27,7 +27,7 @@
     },
     {
       "name": "solicitar_presupuesto",
-      "description": "Crea una solicitud real de presupuesto (Flash Booking) a un profesional concreto. El profesional la recibe por email y contacta directamente — no reserva ni cobra nada automáticamente."
+      "description": "Crea una solicitud real de presupuesto (Flash Booking) a un profesional concreto. El profesional la recibe por email y contacta directamente: no reserva ni cobra nada automáticamente."
     }
   ],
   "auth": {

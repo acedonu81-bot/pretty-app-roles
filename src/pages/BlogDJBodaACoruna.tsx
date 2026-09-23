@@ -13,23 +13,23 @@ const article = { '@context': 'https://schema.org', '@type': 'Article', headline
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda en A Coruña?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ para boda en A Coruña cuesta entre 500€ y 1.400€ para el servicio completo. Galicia tiene un nivel de precios similar a la media española. Las bodas en pazos (casas nobles gallegas) suelen tener presupuestos más altos por la exclusividad del venue, con DJs cobrando entre 800€ y 1.600€.' } },
   { '@type': 'Question', name: '¿Cuándo es la mejor época para casarse en A Coruña?', acceptedAnswer: { '@type': 'Answer', text: 'Junio, julio y agosto son los meses preferidos por mejor clima. Galicia tiene lluvia frecuente en otoño e invierno, así que para bodas al exterior los meses de verano son los más seguros. Septiembre puede ser bueno si el tiempo acompaña. Las bodas de interior en pazos o salones funcionan todo el año.' } },
-  { '@type': 'Question', name: '¿Qué son los pazos y son buenos para bodas?', acceptedAnswer: { '@type': 'Answer', text: 'Los pazos son casas nobiliarias gallegas, muchas del siglo XVII-XVIII, con jardines, capilla y gran capacidad. Son los venues de boda más demandados en Galicia. Algunos son hoteles rurales o tienen servicio de catering propio. Suelen pedir una lista de proveedores aprobados — comprueba que tu DJ puede trabajar allí.' } },
+  { '@type': 'Question', name: '¿Qué son los pazos y son buenos para bodas?', acceptedAnswer: { '@type': 'Answer', text: 'Los pazos son casas nobiliarias gallegas, muchas del siglo XVII-XVIII, con jardines, capilla y gran capacidad. Son los venues de boda más demandados en Galicia. Algunos son hoteles rurales o tienen servicio de catering propio. Suelen pedir una lista de proveedores aprobados: comprueba que tu DJ puede trabajar allí.' } },
   { '@type': 'Question', name: '¿Los DJs gallegos conocen la música tradicional para la gaita en bodas?', acceptedAnswer: { '@type': 'Answer', text: 'La mayoría de bodas gallegas incluyen gaita en la ceremonia o el cóctel, con un gaiteiro (músico de gaita), no con el DJ. El DJ toma el relevo en la cena y pista. Algunos DJs locales saben integrar música celta o fusión gallega en sus sesiones si el cliente lo pide.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'DJ bodas A Coruña', item: 'https://xpeak.es/blog/dj-bodas-a-coruna' }] };
 
 const PRECIOS = [
-  { servicio: 'Solo pista de baile (4-5h)', precio: '300–700€' },
-  { servicio: 'Cóctel + pista de baile', precio: '480–1.050€' },
-  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '600–1.400€' },
-  { servicio: 'Pack pazo gallego premium', precio: '900–1.800€' },
+  { servicio: 'Solo pista de baile (4-5h)', precio: '300-700€' },
+  { servicio: 'Cóctel + pista de baile', precio: '480-1.050€' },
+  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '600-1.400€' },
+  { servicio: 'Pack pazo gallego premium', precio: '900-1.800€' },
 ];
 
 const ZONAS = [
   { zona: 'A Coruña capital', fincas: 'Casas de indianos, fincas en el entorno urbano', nota: 'Buen acceso, variedad de venues' },
   { zona: 'Rías Altas', fincas: 'Pazos en Betanzos, Ferrol, Pontedeume', nota: 'Entorno verde e histórico' },
   { zona: 'Costa da Morte', fincas: 'Fincas con vistas al Atlántico', nota: 'Íntimo y espectacular' },
-  { zona: 'Interior — Terra de Soneira', fincas: 'Casas rurales y fincas agropecuarias', nota: 'Muy económico, mucho espacio' },
+  { zona: 'Interior: Terra de Soneira', fincas: 'Casas rurales y fincas agropecuarias', nota: 'Muy económico, mucho espacio' },
 ];
 
 const serviceSchema = { '@context': 'https://schema.org', '@type': 'Service', name: 'DJs para bodas en A Coruña', description: 'Encuentra y contrata DJs verificados para bodas y eventos en A Coruña. Contratos digitales.', serviceType: 'DJ para bodas y eventos', areaServed: { '@type': 'City', name: 'A Coruña' }, provider: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es' }, url: 'https://xpeak.es/blog/dj-bodas-a-coruna', offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' } };
@@ -41,7 +41,7 @@ export default function BlogDJBodaACoruna() {
         <title>DJ para bodas en A Coruña: precio 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un DJ para una boda en A Coruña. Precios reales 2026, pazos gallegos, fincas y cómo contratar el mejor DJ en Galicia." />
         <link rel="canonical" href="https://xpeak.es/blog/dj-bodas-a-coruna" />
-        <meta property="og:title" content="DJ para bodas en A Coruña: precio 2026 — XPEAK Blog" />
+        <meta property="og:title" content="DJ para bodas en A Coruña: precio 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precios reales de DJs de boda en A Coruña. Pazos gallegos y cómo elegir el perfil correcto." />
         <meta property="og:url" content="https://xpeak.es/blog/dj-bodas-a-coruna" />
         <meta property="og:type" content="article" />
@@ -85,7 +85,7 @@ export default function BlogDJBodaACoruna() {
                   </div>
                 ))}
               </div>
-              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos 2026. Sin IVA. Algunos pazos tienen lista de proveedores aprobados — verifica antes de contratar.</p>
+              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos 2026. Sin IVA. Algunos pazos tienen lista de proveedores aprobados: verifica antes de contratar.</p>
             </section>
             <BlogInlineCTA role="dj" variant="upgrade" />
             <section>

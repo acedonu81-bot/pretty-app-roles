@@ -201,7 +201,7 @@ const HistorialTab = () => {
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>XPEAK — Historial de Contrataciones</title>
+<title>XPEAK: Historial de Contrataciones</title>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family: 'Segoe UI', Arial, sans-serif; background:#fff; color:#111; padding:40px; }
@@ -274,7 +274,7 @@ const HistorialTab = () => {
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>XPEAK — Contrato de Prestación de Servicios</title>
+<title>XPEAK: Contrato de Prestación de Servicios</title>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family: 'Georgia', serif; background:#fff; color:#111; padding:50px 60px; font-size:12px; line-height:1.7; }
@@ -366,7 +366,7 @@ const HistorialTab = () => {
     <div class="field"></div>
   </div>
   <div>
-    <div class="field-label">Horario (inicio — fin)</div>
+    <div class="field-label">Horario (inicio: fin)</div>
     <div class="field"></div>
   </div>
 </div>

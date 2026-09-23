@@ -18,10 +18,10 @@ const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList'
 
 const PASOS = [
   { paso: 'Documéntate correctamente', desc: 'DNI/NIE actualizado, número de seguridad social. Si quieres trabajar como autónomo: alta en Hacienda (modelo 037) y en RETA. Muchos camareros empiezan con contratos temporales de empresas de catering, sin ser autónomos.' },
-  { paso: 'Consigue tu primera experiencia', desc: 'Eventos informales, cócteles de empresa, fiestas privadas. Apúntate a agencias de staffing de hostelería en tu ciudad. Acepta los primeros trabajos aunque paguen poco — las referencias lo valen todo en este sector.' },
+  { paso: 'Consigue tu primera experiencia', desc: 'Eventos informales, cócteles de empresa, fiestas privadas. Apúntate a agencias de staffing de hostelería en tu ciudad. Acepta los primeros trabajos aunque paguen poco: las referencias lo valen todo en este sector.' },
   { paso: 'Aprende el protocolo básico de bodas', desc: 'Servicio de mesa, bandeja, descorche de vino, atención a los novios y mesa presidencial. Las bodas son los eventos mejor pagados y los que más trabajo generan en temporada. Conocer el protocolo te hace más contratado.' },
   { paso: 'Crea tu perfil en plataformas de eventos', desc: 'XPEAK conecta a camareros de eventos con organizadores que buscan personal puntual para bodas, comuniones y eventos corporativos. Tu perfil incluye experiencia, disponibilidad y zona de trabajo.' },
-  { paso: 'Trabaja tu disponibilidad y puntualidad', desc: 'En eventos, la puntualidad es crítica. Llegar tarde a una boda puede arruinar una relación laboral completa. Los organizadores repiten con los camareros que son fiables — la continuidad es tu mejor activo.' },
+  { paso: 'Trabaja tu disponibilidad y puntualidad', desc: 'En eventos, la puntualidad es crítica. Llegar tarde a una boda puede arruinar una relación laboral completa. Los organizadores repiten con los camareros que son fiables: la continuidad es tu mejor activo.' },
   { paso: 'Especialízate para cobrar más', desc: 'Barista, coctelero, sumiller básico, maitre... cada especialización te permite cobrar un 20-40% más. Un camarero que sabe maridaje y habla inglés es mucho más difícil de encontrar y puede pedir más.' },
 ];
 
@@ -32,7 +32,7 @@ export default function BlogTrabajarCamareroEventos() {
         <title>Cómo trabajar de camarero en eventos en España 2026 | XPEAK</title>
         <meta name="description" content="Guía completa para trabajar de camarero en bodas, comuniones y eventos en España. Requisitos, cuánto cobras, cómo buscar trabajo y plataformas donde registrarte." />
         <link rel="canonical" href="https://xpeak.es/blog/como-trabajar-de-camarero-eventos" />
-        <meta property="og:title" content="Cómo trabajar de camarero en eventos en España 2026 — XPEAK" />
+        <meta property="og:title" content="Cómo trabajar de camarero en eventos en España 2026 | XPEAK" />
         <meta property="og:description" content="Guía práctica para camareros de eventos. Requisitos, cuánto cobrar y cómo encontrar trabajo en bodas y comuniones." />
         <meta property="og:url" content="https://xpeak.es/blog/como-trabajar-de-camarero-eventos" />
         <meta property="og:type" content="article" />
@@ -69,11 +69,11 @@ export default function BlogTrabajarCamareroEventos() {
               <h2 className="text-lg font-black mb-4">Cuánto cobra un camarero de eventos</h2>
               <div className="space-y-2">
                 {[
-                  { perfil: 'Camarero sin experiencia (primer año)', tarifa: '70–90€ / jornada' },
-                  { perfil: 'Camarero con 1-3 años en eventos', tarifa: '90–130€ / jornada' },
-                  { perfil: 'Camarero senior / protocolo de bodas', tarifa: '120–160€ / jornada' },
-                  { perfil: 'Jefe de sala / maitre de evento', tarifa: '150–220€ / jornada' },
-                  { perfil: 'Barista o coctelero especializado', tarifa: '130–200€ / jornada' },
+                  { perfil: 'Camarero sin experiencia (primer año)', tarifa: '70-90€ / jornada' },
+                  { perfil: 'Camarero con 1-3 años en eventos', tarifa: '90-130€ / jornada' },
+                  { perfil: 'Camarero senior / protocolo de bodas', tarifa: '120-160€ / jornada' },
+                  { perfil: 'Jefe de sala / maitre de evento', tarifa: '150-220€ / jornada' },
+                  { perfil: 'Barista o coctelero especializado', tarifa: '130-200€ / jornada' },
                 ].map((row, i) => (
                   <div key={row.perfil} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <p className="text-xs font-medium">{row.perfil}</p>

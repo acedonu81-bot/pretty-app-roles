@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Camareros Marbella', item: 'https://xpeak.es/blog/camareros-eventos-marbella' }] };
 
 const PRECIOS = [
-  { perfil: 'Camarero/a de sala', tarifa: '15–20€/hora', nota: 'Cóctel, cena sentada o buffet de lujo' },
-  { perfil: 'Bartender / coctelería de autor', tarifa: '20–30€/hora', nota: 'Barra libre premium en villas y hoteles 5*' },
-  { perfil: 'Jefe de sala / coordinador', tarifa: '26–38€/hora', nota: 'Gestión de equipo en boda o evento de lujo' },
-  { perfil: 'Servicio boda completo (6-7h)', tarifa: '190–360€/persona', nota: 'Cóctel + cena + barra en villa o hotel 5*' },
-  { perfil: 'Barra libre con bartender (4h)', tarifa: '220–420€', nota: 'Incluye montaje y desmontaje' },
-  { perfil: 'Personal evento en Puerto Banús', tarifa: '18–26€/hora', nota: 'Eventos de marca de clientela internacional' },
+  { perfil: 'Camarero/a de sala', tarifa: '15-20€/hora', nota: 'Cóctel, cena sentada o buffet de lujo' },
+  { perfil: 'Bartender / coctelería de autor', tarifa: '20-30€/hora', nota: 'Barra libre premium en villas y hoteles 5*' },
+  { perfil: 'Jefe de sala / coordinador', tarifa: '26-38€/hora', nota: 'Gestión de equipo en boda o evento de lujo' },
+  { perfil: 'Servicio boda completo (6-7h)', tarifa: '190-360€/persona', nota: 'Cóctel + cena + barra en villa o hotel 5*' },
+  { perfil: 'Barra libre con bartender (4h)', tarifa: '220-420€', nota: 'Incluye montaje y desmontaje' },
+  { perfil: 'Personal evento en Puerto Banús', tarifa: '18-26€/hora', nota: 'Eventos de marca de clientela internacional' },
 ];
 
 export default function BlogCamarerosMarbella() {
@@ -33,7 +33,7 @@ export default function BlogCamarerosMarbella() {
         <title>Precio camareros para eventos en Marbella 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran los camareros y bartenders para bodas de lujo en villas y hoteles 5* de Marbella. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/camareros-eventos-marbella" />
-        <meta property="og:title" content="Precio camareros eventos Marbella 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio camareros eventos Marbella 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de camareros y bartenders para bodas de lujo en Marbella." />
         <meta property="og:url" content="https://xpeak.es/blog/camareros-eventos-marbella" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

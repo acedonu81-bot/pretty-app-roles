@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Camareros Torrevieja', item: 'https://xpeak.es/blog/camareros-eventos-torrevieja' }] };
 
 const PRECIOS = [
-  { perfil: 'Camarero/a de sala', tarifa: '13–18€/hora', nota: 'Cóctel, cena sentada o buffet' },
-  { perfil: 'Bartender / coctelería', tarifa: '16–23€/hora', nota: 'Barra libre y coctelería de autor' },
-  { perfil: 'Jefe de sala / coordinador', tarifa: '21–30€/hora', nota: 'Gestión del equipo en boda o evento grande' },
-  { perfil: 'Servicio boda completo (6-7h)', tarifa: '150–260€/persona', nota: 'Cóctel + cena + barra' },
-  { perfil: 'Barra libre con bartender (4h)', tarifa: '180–370€', nota: 'Incluye montaje y desmontaje' },
-  { perfil: 'Camarero con inglés (clubes sociales)', tarifa: '15–21€/hora', nota: 'Muy solicitado por residentes internacionales' },
+  { perfil: 'Camarero/a de sala', tarifa: '13-18€/hora', nota: 'Cóctel, cena sentada o buffet' },
+  { perfil: 'Bartender / coctelería', tarifa: '16-23€/hora', nota: 'Barra libre y coctelería de autor' },
+  { perfil: 'Jefe de sala / coordinador', tarifa: '21-30€/hora', nota: 'Gestión del equipo en boda o evento grande' },
+  { perfil: 'Servicio boda completo (6-7h)', tarifa: '150-260€/persona', nota: 'Cóctel + cena + barra' },
+  { perfil: 'Barra libre con bartender (4h)', tarifa: '180-370€', nota: 'Incluye montaje y desmontaje' },
+  { perfil: 'Camarero con inglés (clubes sociales)', tarifa: '15-21€/hora', nota: 'Muy solicitado por residentes internacionales' },
 ];
 
 export default function BlogCamarerosTorrevieja() {
@@ -33,7 +33,7 @@ export default function BlogCamarerosTorrevieja() {
         <title>Precio camareros para eventos en Torrevieja 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran los camareros y bartenders para bodas y eventos internacionales en Torrevieja. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/camareros-eventos-torrevieja" />
-        <meta property="og:title" content="Precio camareros eventos Torrevieja 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio camareros eventos Torrevieja 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de camareros y bartenders para eventos internacionales en Torrevieja." />
         <meta property="og:url" content="https://xpeak.es/blog/camareros-eventos-torrevieja" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

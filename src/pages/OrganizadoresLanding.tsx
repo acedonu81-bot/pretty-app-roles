@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { Zap, Shield, ArrowRight, FileText, Search, Wallet, Calendar, MessageSquare, CheckCircle } from 'lucide-react';
 import FooterPublic from '@/components/FooterPublic';
 
-const H1 = 'Organizar Eventos en España — Gestiona Todo desde un Solo Panel';
+const H1 = 'Organizar Eventos en España: Gestiona Todo desde un Solo Panel';
 const DESC = 'Organiza bodas, eventos de empresa y celebraciones con XPEAK: compara profesionales verificados, publica necesidades puntuales con Flash Booking y firma contratos digitales automáticos.';
 
 const structuredData = {
@@ -64,7 +64,7 @@ export default function OrganizadoresLanding() {
         <meta name="description" content={DESC} />
         <meta name="keywords" content="organizar eventos España, gestión de eventos, software para organizar eventos, herramienta gestión bodas, cómo organizar un evento de empresa, panel de gestión de proveedores eventos" />
         <link rel="canonical" href="https://xpeak.es/organizar-eventos" />
-        <meta property="og:title" content={`${H1} — XPEAK`} />
+        <meta property="og:title" content={`${H1} | XPEAK`} />
         <meta property="og:description" content={DESC} />
         <meta property="og:url" content="https://xpeak.es/organizar-eventos" />
         <meta property="og:type" content="website" />
@@ -104,7 +104,7 @@ export default function OrganizadoresLanding() {
           </div>
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight mb-4 leading-tight">{H1}</h1>
           <p className="text-sm sm:text-lg mb-3 max-w-2xl leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
-            Compara profesionales verificados, publica necesidades puntuales con Flash Booking y firma contratos digitales automáticos — todo desde un único panel.
+            Compara profesionales verificados, publica necesidades puntuales con Flash Booking y firma contratos digitales automáticos: todo desde un único panel.
           </p>
           <p className="text-xs mb-3" style={{ color: 'rgba(255,255,255,0.4)' }}>
             Por <a href="/sobre-nosotros" className="underline hover:opacity-80" style={{ color: '#D4AF37' }}>Daniel</a>, fundador de XPEAK y especialista en el sector de eventos y entretenimiento nocturno en España.
@@ -243,7 +243,7 @@ export default function OrganizadoresLanding() {
           <div className="rounded-2xl p-7 sm:p-10" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
             <h2 className="text-xl sm:text-3xl font-black mb-3">¿Organizas un evento en España?</h2>
             <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.5)' }}>
-              Únete — contratos automáticos y Flash Booking para necesidades puntuales.
+              Únete: contratos automáticos y Flash Booking para necesidades puntuales.
             </p>
             <a href="/auth?mode=register&role=empresario"
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-black text-sm transition-all hover:scale-105"

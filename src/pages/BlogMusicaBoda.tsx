@@ -11,7 +11,7 @@ import BlogAuthor from '@/components/BlogAuthor';
 const article = {
   '@context': 'https://schema.org',
   '@type': 'Article',
-  headline: 'Música para bodas: DJ, banda en directo o lista de reproducción — guía 2026',
+  headline: 'Música para bodas: DJ, banda en directo o lista de reproducción, guía 2026',
   description: 'Comparativa completa entre DJ, banda en directo y música grabada para bodas en España. Precios, ventajas y cuándo elegir cada opción.',
   datePublished: '2026-05-03',
   dateModified: '2026-05-25',
@@ -45,28 +45,28 @@ const breadcrumb = {
 const COMPARATIVA = [
   {
     opcion: 'DJ de bodas',
-    precio: '600–1.500€',
+    precio: '600-1.500€',
     ventajas: ['Versatilidad musical total', 'Ocupa poco espacio', 'Gestión de peticiones en directo', 'Incluye equipo de sonido', 'Cubre toda la jornada (8h+)'],
     desventajas: ['Menos espectacular visualmente', 'Depende de grabaciones'],
     ideal: 'La mayoría de bodas, especialmente si quieres variedad musical',
   },
   {
     opcion: 'Banda en directo',
-    precio: '2.500–6.000€',
+    precio: '2.500-6.000€',
     ventajas: ['Impacto visual y emocional', 'Toque exclusivo y memorable', 'Interacción con los invitados', 'Perfecta para bodas de lujo'],
     desventajas: ['Coste elevado', 'Necesita espacio y camerino', 'Repertorio limitado', 'Descansos entre actuaciones'],
     ideal: 'Bodas de más de 100 invitados con presupuesto alto',
   },
   {
     opcion: 'Cuarteto / Trío',
-    precio: '800–2.000€',
+    precio: '800-2.000€',
     ventajas: ['Elegante para ceremonia y cóctel', 'Más asequible que banda completa', 'Repertorio clásico y pop versiones'],
     desventajas: ['Limitado para pista de baile', 'Suele complementar, no reemplazar al DJ'],
     ideal: 'Ceremonia, cocktail o entrada de la novia',
   },
   {
     opcion: 'Spotify / Lista propia',
-    precio: '0–80€',
+    precio: '0-80€',
     ventajas: ['Control total del repertorio', 'Sin coste de artista', 'Simple'],
     desventajas: ['Sin gestión en vivo', 'Problemas técnicos frecuentes', 'Sin lectura del ambiente', 'Nada especial'],
     ideal: 'Solo para bodas muy íntimas o con presupuesto extremadamente ajustado',
@@ -80,14 +80,14 @@ export default function BlogMusicaBoda() {
         <title>Música para bodas: DJ, banda o playlist 2026 | XPEAK</title>
         <meta name="description" content="Comparativa DJ vs banda en directo vs música grabada para bodas. Precios, ventajas y cuándo elegir cada opción para tu boda en España." />
         <link rel="canonical" href="https://xpeak.es/blog/musica-para-bodas-guia" />
-        <meta property="og:title" content="Música para bodas: guía completa 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Música para bodas: guía completa 2026 | XPEAK Blog" />
         <meta property="og:description" content="DJ vs banda en directo vs lista propia para bodas. Precios, ventajas y cuándo elegir cada opción." />
         <meta property="og:url" content="https://xpeak.es/blog/musica-para-bodas-guia" />
         <meta property="og:type" content="article" />
         <meta property="og:image" content="https://xpeak.es/og-image.jpg" />
         <meta property="og:site_name" content="XPEAK" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Música para bodas: DJ vs banda 2026 — XPEAK Blog" />
+        <meta name="twitter:title" content="Música para bodas: DJ vs banda 2026 | XPEAK Blog" />
         <meta name="twitter:description" content="Comparativa DJ vs banda en directo para tu boda. Guía de precios y cuándo elegir cada opción." />
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(article)}</script>
@@ -115,7 +115,7 @@ export default function BlogMusicaBoda() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Bodas · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">
-              Música para bodas: DJ, banda en directo o lista de reproducción — guía 2026
+              Música para bodas: DJ, banda en directo o lista de reproducción, guía 2026
             </h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>
               La música es lo que hace bailar a tus invitados a las 3 de la mañana. Comparativa honesta de todas las opciones con precios reales y cuándo elegir cada una.
@@ -129,7 +129,7 @@ export default function BlogMusicaBoda() {
               <source srcSet="/images/blog/musica-para-bodas-dj-banda.webp" type="image/webp" />
               <img
                 src="/images/blog/musica-para-bodas-dj-banda.jpg"
-                alt="Público en evento de música en directo — guía de música para bodas: DJ vs banda 2026"
+                alt="Público en evento de música en directo: guía de música para bodas: DJ vs banda 2026"
                 className="w-full rounded-xl my-6 object-cover"
                 style={{ maxHeight: 320, filter: 'brightness(0.85)' }}
                 loading="lazy"

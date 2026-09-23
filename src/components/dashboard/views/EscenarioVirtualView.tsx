@@ -79,7 +79,7 @@ const ReportModal = ({
         </div>
 
         <p className="text-xs text-muted-foreground mb-3">
-          Motivo del reporte — revisaremos el contenido en menos de 24 horas.
+          Motivo del reporte: revisaremos el contenido en menos de 24 horas.
         </p>
 
         <div className="flex flex-col gap-1.5 mb-3">
@@ -231,7 +231,7 @@ const EscenarioVirtualView = () => {
             Talento <span className="text-gradient">en Directo</span>
           </h2>
           <p className="text-sm text-muted-foreground">
-            Profesionales emitiendo ahora mismo. Escúchalos y contacta al instante — sin intermediarios.
+            Profesionales emitiendo ahora mismo. Escúchalos y contacta al instante, sin intermediarios.
           </p>
         </div>
 
@@ -260,7 +260,7 @@ const EscenarioVirtualView = () => {
             <div>
               <p className="text-sm font-bold mb-1">Nadie emite en este momento</p>
               <p className="text-xs max-w-xs leading-relaxed" style={{ color: '#222' }}>
-                Los directos aparecen aquí en tiempo real. Vuelve los viernes y sábados por la tarde — es cuando más profesionales están en vivo.
+                Los directos aparecen aquí en tiempo real. Vuelve los viernes y sábados por la tarde: es cuando más profesionales están en vivo.
               </p>
             </div>
             <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs mt-1"
@@ -402,7 +402,7 @@ const EscenarioVirtualView = () => {
             <button
               type="button"
               onClick={() => {
-                setStreamTitle('Demo — Tech House Session Live');
+                setStreamTitle('Demo: Tech House Session Live');
                 setStreamUrl('https://www.youtube.com/watch?v=36YnV9STBqc');
               }}
               className="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold mb-3 transition-all hover:scale-[1.01]"
@@ -467,7 +467,7 @@ const EscenarioVirtualView = () => {
                 ) : (
                 <iframe
                   src={streamEmbed.embedUrl}
-                  title={`Stream en directo — ${streamEmbed.type}`}
+                  title={`Stream en directo: ${streamEmbed.type}`}
                   className="absolute inset-0 w-full h-full"
                   allowFullScreen
                   allow="autoplay; encrypted-media"

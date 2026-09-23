@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Terrassa', item: 'https://xpeak.es/blog/precio-azafatas-terrassa' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '130–180€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen / protocolo', tarifa: '160–240€/día', nota: 'Actos institucionales y culturales' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '165–215€/día', nota: 'Eventos culturales con visitantes internacionales' },
-  { perfil: 'Azafata trilingüe', tarifa: '195–280€/día', nota: 'Actos institucionales de mayor formato' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '175–260€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '80–130€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '130-180€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen / protocolo', tarifa: '160-240€/día', nota: 'Actos institucionales y culturales' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '165-215€/día', nota: 'Eventos culturales con visitantes internacionales' },
+  { perfil: 'Azafata trilingüe', tarifa: '195-280€/día', nota: 'Actos institucionales de mayor formato' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '175-260€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '80-130€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasTerrassa() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasTerrassa() {
         <title>Precio azafatas para eventos en Terrassa 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos culturales, institucionales y bodas en Terrassa. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-terrassa" />
-        <meta property="og:title" content="Precio azafatas eventos Terrassa 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Terrassa 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para eventos culturales e institucionales en Terrassa." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-terrassa" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

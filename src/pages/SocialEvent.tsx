@@ -73,7 +73,7 @@ export default function SocialEvent() {
   }
 
   const url = `${BASE_URL}/socials/${slug}`;
-  const title = `${event.event_name} — ${event.style} en ${event.city} | XPEAK`;
+  const title = `${event.event_name} · ${event.style} en ${event.city} | XPEAK`;
   const desc = event.description?.trim()
     ? `${event.description.trim().slice(0, 150)}${event.description.length > 150 ? '…' : ''} ${formatDateLong(event.event_date)} en ${event.venue ? `${event.venue}, ` : ''}${event.city}.`
     : `${event.style} en ${event.venue ? `${event.venue}, ` : ''}${event.city}, el ${formatDateLong(event.event_date)}. Agenda de socials de baile en XPEAK.`;

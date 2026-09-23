@@ -63,7 +63,7 @@ const ROLE_CONTENT: Record<string, { tagline: string; sub: string; bullets: { ic
     sub: 'Profesionales verificados con tarifa pública. Contacto directo, sin intermediarios.',
     bullets: [
       { icon: Search, text: 'Filtra por ciudad, precio y disponibilidad' },
-      { icon: FileText, text: 'Contrato automático — sin papeleo' },
+      { icon: FileText, text: 'Contrato automático, sin papeleo' },
       { icon: Wallet, text: 'Trato directo con el profesional' },
     ],
   },
@@ -212,7 +212,7 @@ const Auth = () => {
 
   const handleCopyAuthLink = () => {
     navigator.clipboard.writeText(window.location.href)
-      .then(() => toast.success('Enlace copiado — pégalo en Chrome o Safari'))
+      .then(() => toast.success('Enlace copiado: pégalo en Chrome o Safari'))
       .catch(() => authAlert('Copia el enlace de la barra de arriba y ábrelo en Chrome o Safari'));
   };
 
@@ -273,7 +273,7 @@ const Auth = () => {
     setForgotLoading(false);
     if (error) { authAlert(error.message); return; }
     setForgotSent(true);
-    toast.success('Email enviado — revisa tu bandeja de entrada');
+    toast.success('Email enviado: revisa tu bandeja de entrada');
   };
 
   // Respaldo con alert() nativo: el toast personalizado (xpeak-toast) no
@@ -494,7 +494,7 @@ const Auth = () => {
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#ffffff', color: '#222' }}>
       <Helmet>
-        <title>Acceder o Registrarse | XPEAK — Directorio Profesional de Eventos</title>
+        <title>Acceder o Registrarse | XPEAK: Directorio Profesional de Eventos</title>
         <meta name="description" content="Únete a XPEAK. Crea tu perfil profesional como DJ, fotógrafo, staff o empresario y empieza a conectar con el sector de eventos en España." />
         <link rel="canonical" href="https://xpeak.es/auth" />
         <meta name="robots" content="noindex, follow" />
@@ -824,7 +824,7 @@ const Auth = () => {
                       className="w-6 h-6 flex-shrink-0 rounded-md accent-[#D4AF37]"
                     />
                     <span className="text-xs leading-relaxed" style={{ color: fieldError === 'legal' ? '#b91c1c' : 'rgba(0,0,0,0.65)' }}>
-                      {fieldError === 'legal' && <span className="font-bold">☝️ Marca esta casilla para continuar — </span>}
+                      {fieldError === 'legal' && <span className="font-bold">☝️ Marca esta casilla para continuar</span>}
                       Acepto la{' '}
                       <Link to="/privacidad" target="_blank" onClick={e => e.stopPropagation()} className="underline" style={{ color: '#8B6A00' }}>Privacidad</Link>,{' '}
                       <Link to="/terminos" target="_blank" onClick={e => e.stopPropagation()} className="underline" style={{ color: '#8B6A00' }}>Términos</Link>{' '}
@@ -873,7 +873,7 @@ const Auth = () => {
                     <p className="font-bold mb-1.5">La verificación de seguridad no responde.</p>
                     <p className="mb-2.5">
                       Puede que tu red, VPN o un bloqueador de anuncios esté impidiendo la verificación.
-                      Prueba a continuar con Google en su lugar — no depende de esta verificación.
+                      Prueba a continuar con Google en su lugar: no depende de esta verificación.
                     </p>
                     <button type="button" onClick={handleGoogleSignIn} disabled={googleLoading}
                       className="w-full py-2.5 rounded-lg font-bold text-xs transition-all hover:scale-[1.01] disabled:opacity-60"

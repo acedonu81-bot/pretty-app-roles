@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Camareros Palma', item: 'https://xpeak.es/blog/camareros-eventos-palma' }] };
 
 const PRECIOS = [
-  { perfil: 'Camarero/a de sala', tarifa: '15–22€/hora', nota: 'Cóctel, cena sentada o buffet' },
-  { perfil: 'Bartender / coctelería', tarifa: '20–32€/hora', nota: 'Barra libre y coctelería de autor' },
-  { perfil: 'Jefe de sala / coordinador', tarifa: '28–42€/hora', nota: 'Gestión del equipo en boda de lujo' },
-  { perfil: 'Servicio boda completo en villa (6-7h)', tarifa: '220–420€/persona', nota: 'Cóctel + cena + barra, estándar internacional' },
-  { perfil: 'Barra libre con bartender (4h)', tarifa: '260–520€', nota: 'Incluye montaje y desmontaje' },
-  { perfil: 'Personal de apoyo en yate/evento náutico', tarifa: '18–28€/hora', nota: 'Servicio a bordo, experiencia valorada' },
+  { perfil: 'Camarero/a de sala', tarifa: '15-22€/hora', nota: 'Cóctel, cena sentada o buffet' },
+  { perfil: 'Bartender / coctelería', tarifa: '20-32€/hora', nota: 'Barra libre y coctelería de autor' },
+  { perfil: 'Jefe de sala / coordinador', tarifa: '28-42€/hora', nota: 'Gestión del equipo en boda de lujo' },
+  { perfil: 'Servicio boda completo en villa (6-7h)', tarifa: '220-420€/persona', nota: 'Cóctel + cena + barra, estándar internacional' },
+  { perfil: 'Barra libre con bartender (4h)', tarifa: '260-520€', nota: 'Incluye montaje y desmontaje' },
+  { perfil: 'Personal de apoyo en yate/evento náutico', tarifa: '18-28€/hora', nota: 'Servicio a bordo, experiencia valorada' },
 ];
 
 export default function BlogCamarerosPalma() {
@@ -33,7 +33,7 @@ export default function BlogCamarerosPalma() {
         <title>Precio camareros para eventos en Palma 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran los camareros y bartenders para bodas de lujo y eventos privados en Mallorca. Tarifas de temporada alta 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/camareros-eventos-palma" />
-        <meta property="og:title" content="Precio camareros eventos Palma de Mallorca 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio camareros eventos Palma de Mallorca 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de camareros y bartenders para bodas de lujo y eventos náuticos en Mallorca." />
         <meta property="og:url" content="https://xpeak.es/blog/camareros-eventos-palma" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Santander', item: 'https://xpeak.es/blog/precio-azafatas-santander' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '115–160€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '135–195€/día', nota: 'Eventos institucionales y de marca' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '150–200€/día', nota: 'Congresos y turismo internacional' },
-  { perfil: 'Azafata de protocolo', tarifa: '150–210€/día', nota: 'Bodas en fincas de la costa cántabra' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '160–230€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '70–115€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '115-160€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '135-195€/día', nota: 'Eventos institucionales y de marca' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '150-200€/día', nota: 'Congresos y turismo internacional' },
+  { perfil: 'Azafata de protocolo', tarifa: '150-210€/día', nota: 'Bodas en fincas de la costa cántabra' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '160-230€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '70-115€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasSantander() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasSantander() {
         <title>Precio azafatas para eventos en Santander 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos institucionales, congresos y bodas en la costa de Santander. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-santander" />
-        <meta property="og:title" content="Precio azafatas eventos Santander 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Santander 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para congresos, eventos institucionales y bodas en la costa de Santander." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-santander" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

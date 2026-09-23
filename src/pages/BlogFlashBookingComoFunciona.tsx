@@ -30,13 +30,13 @@ export default function BlogFlashBookingComoFunciona() {
   return (
     <>
       <Helmet>
-        <title>Cómo Funciona el Flash Booking de XPEAK — Contratar Profesionales en &lt;1 Hora</title>
+        <title>Cómo Funciona el Flash Booking de XPEAK: Contratar Profesionales en &lt;1 Hora</title>
         <meta name="description" content="Guía completa del Flash Booking de XPEAK. Cómo contratar DJ, camareros o fotógrafo verificado para tu evento con confirmación en menos de 60 minutos." />
         <link rel="canonical" href="https://xpeak.es/blog/como-funciona-flash-booking-xpeak" />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
         <script type="application/ld+json">{JSON.stringify(faqLd)}</script>
       </Helmet>
-      <div style={{ background: '#0A0A0A', color: '#F5F5F0', minHeight: '100vh' }}>
+      <div style={{ background: '#ffffff', color: '#111', minHeight: '100vh' }}>
         <div className="max-w-2xl mx-auto px-4 py-12">
           <a href="/blog" style={{ color: '#6D28D9', fontSize: '0.8rem', fontWeight: 700 }}>← Blog XPEAK</a>
           <article className="mt-6">

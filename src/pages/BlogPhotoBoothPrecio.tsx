@@ -30,7 +30,7 @@ const faqStructured = {
       name: '¿Cuánto cuesta un photo booth para una boda en España?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'El precio de un photo booth para boda en España varía según el tipo: el básico sin impresión (3 horas, entrega digital) cuesta entre 300 y 450€. Con impresión instantánea el rango sube a 450–700€. El photo booth 360° o selfie cabina premium puede costar entre 600 y 900€. Los precios en Madrid y Barcelona suelen ser un 15–25% más caros que en otras ciudades.',
+        text: 'El precio de un photo booth para boda en España varía según el tipo: el básico sin impresión (3 horas, entrega digital) cuesta entre 300 y 450€. Con impresión instantánea el rango sube a 450-700€. El photo booth 360° o selfie cabina premium puede costar entre 600 y 900€. Los precios en Madrid y Barcelona suelen ser un 15-25% más caros que en otras ciudades.',
       },
     },
     {
@@ -38,7 +38,7 @@ const faqStructured = {
       name: '¿Cuántas horas dura un servicio de photo booth?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'El servicio estándar es de 3 horas de funcionamiento activo, que normalmente se sitúan durante el cóctel y las primeras horas de pista de baile. Muchos proveedores ofrecen paquetes de 4 o 5 horas con un coste adicional de 80–150€ por hora extra. Más de 5 horas en un mismo evento es infrecuente.',
+        text: 'El servicio estándar es de 3 horas de funcionamiento activo, que normalmente se sitúan durante el cóctel y las primeras horas de pista de baile. Muchos proveedores ofrecen paquetes de 4 o 5 horas con un coste adicional de 80-150€ por hora extra. Más de 5 horas en un mismo evento es infrecuente.',
       },
     },
     {
@@ -54,7 +54,7 @@ const faqStructured = {
       name: '¿Qué diferencia hay entre photo booth digital y con impresión?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'El photo booth digital entrega las fotos en el momento por QR o enlace, sin papel. Es más económico y ecológico. El servicio con impresión instantánea añade una impresora térmica que entrega copias físicas en 10–20 segundos. Muchas parejas eligen la versión con impresión porque los invitados se llevan un recuerdo físico del evento. El precio de diferencia es de 100–200€.',
+        text: 'El photo booth digital entrega las fotos en el momento por QR o enlace, sin papel. Es más económico y ecológico. El servicio con impresión instantánea añade una impresora térmica que entrega copias físicas en 10-20 segundos. Muchas parejas eligen la versión con impresión porque los invitados se llevan un recuerdo físico del evento. El precio de diferencia es de 100-200€.',
       },
     },
   ],
@@ -74,26 +74,26 @@ const TIPOS = [
   {
     nombre: 'Photo booth básico (digital, sin impresión)',
     desc: 'Cabina o marco con cámara, entrega de fotos por QR o enlace. Sin papel. Incluye atrezzo básico y montaje. Ideal si el presupuesto ajustado es prioridad.',
-    precio: '300–450€',
+    precio: '300-450€',
     horas: '3h',
   },
   {
     nombre: 'Photo booth con impresión instantánea',
-    desc: 'El clásico: cámara + impresora térmica que entrega copias en 10–20 segundos. Incluye atrezzo, álbum para los novios y galería digital. El más solicitado en bodas.',
-    precio: '450–700€',
-    horas: '3–4h',
+    desc: 'El clásico: cámara + impresora térmica que entrega copias en 10-20 segundos. Incluye atrezzo, álbum para los novios y galería digital. El más solicitado en bodas.',
+    precio: '450-700€',
+    horas: '3-4h',
   },
   {
     nombre: 'Photo booth 360°',
     desc: 'Plataforma giratoria con cámara que graba vídeos en cámara lenta de 360°. El resultado se entrega como vídeo breve para redes. Muy popular en eventos de empresa y bodas modernas.',
-    precio: '600–900€',
+    precio: '600-900€',
     horas: '3h',
   },
   {
     nombre: 'Selfie booth o mirror booth',
     desc: 'Espejo interactivo táctil con cámara incorporada. Permite firmas digitales, marcos personalizados y animaciones. Estética más elegante, muy usada en galas y eventos premium.',
-    precio: '550–850€',
-    horas: '3–4h',
+    precio: '550-850€',
+    horas: '3-4h',
   },
 ];
 
@@ -107,7 +107,7 @@ export default function BlogPhotoBoothPrecio() {
           content="Precios reales de photo booth para bodas y eventos en España 2026. Tipos, qué incluye y cómo elegir entre básico, impresión y 360°."
         />
         <link rel="canonical" href="https://xpeak.es/blog/photobooth-precio-boda-evento" />
-        <meta property="og:title" content="Cuánto cuesta un photo booth para boda o evento en España 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Cuánto cuesta un photo booth para boda o evento en España 2026 | XPEAK Blog" />
         <meta property="og:description" content="Guía de precios de photo booth en España 2026. Digital, impresión, 360° y mirror booth." />
         <meta property="og:url" content="https://xpeak.es/blog/photobooth-precio-boda-evento" />
         <meta property="og:type" content="article" />
@@ -146,7 +146,7 @@ export default function BlogPhotoBoothPrecio() {
               Cuánto cuesta un photo booth para boda o evento en España 2026
             </h1>
             <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>
-              El photo booth se ha convertido en uno de los elementos más solicitados en bodas y eventos en España. Da igual si buscas el clásico con impresión, el moderno 360° o la elegante mirror booth — en esta guía encontrarás los precios reales de 2026 y todo lo que incluye cada modalidad.
+              El photo booth se ha convertido en uno de los elementos más solicitados en bodas y eventos en España. Da igual si buscas el clásico con impresión, el moderno 360° o la elegante mirror booth: en esta guía encontrarás los precios reales de 2026 y todo lo que incluye cada modalidad.
             </p>
             <time className="text-xs mt-3 block" style={{ color: '#666' }}>1 junio 2026</time>
           </div>
@@ -183,13 +183,13 @@ export default function BlogPhotoBoothPrecio() {
               <h2 className="text-lg font-black mb-4">Precios por modalidad (España 2026)</h2>
               <div className="space-y-2">
                 {[
-                  { concepto: 'Photo booth básico digital (3h)', precio: '300–450€' },
-                  { concepto: 'Photo booth con impresión (3h)', precio: '450–700€' },
-                  { concepto: 'Photo booth 360° (3h)', precio: '600–900€' },
-                  { concepto: 'Mirror booth o selfie booth (3h)', precio: '550–850€' },
-                  { concepto: 'Hora adicional (cualquier tipo)', precio: '80–150€/h' },
-                  { concepto: 'Personalización de marcos y plantillas', precio: '50–120€' },
-                  { concepto: 'Álbum impreso para los novios', precio: '60–150€' },
+                  { concepto: 'Photo booth básico digital (3h)', precio: '300-450€' },
+                  { concepto: 'Photo booth con impresión (3h)', precio: '450-700€' },
+                  { concepto: 'Photo booth 360° (3h)', precio: '600-900€' },
+                  { concepto: 'Mirror booth o selfie booth (3h)', precio: '550-850€' },
+                  { concepto: 'Hora adicional (cualquier tipo)', precio: '80-150€/h' },
+                  { concepto: 'Personalización de marcos y plantillas', precio: '50-120€' },
+                  { concepto: 'Álbum impreso para los novios', precio: '60-150€' },
                 ].map((row, i) => (
                   <div
                     key={row.concepto}
@@ -204,7 +204,7 @@ export default function BlogPhotoBoothPrecio() {
                   </div>
                 ))}
               </div>
-              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos sin IVA. Madrid y Barcelona son un 15–25% más caros.</p>
+              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos sin IVA. Madrid y Barcelona son un 15-25% más caros.</p>
             </section>
 
             {/* QUÉ INCLUYE */}

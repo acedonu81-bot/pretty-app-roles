@@ -71,14 +71,14 @@ export default function BlogFotografiaEventosNocturnos() {
         <title>Fotografía eventos nocturnos: precios 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobra un fotógrafo de discoteca o eventos nocturnos en España. Precios por tipo de evento, equipo necesario y cómo elegir el fotógrafo correcto." />
         <link rel="canonical" href="https://xpeak.es/blog/fotografia-eventos-nocturnos" />
-        <meta property="og:title" content="Fotografía eventos nocturnos: precios 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Fotografía eventos nocturnos: precios 2026 | XPEAK Blog" />
         <meta property="og:description" content="Cuánto cobra un fotógrafo de discoteca en España. Precios, qué incluye y cómo elegir el perfil correcto." />
         <meta property="og:url" content="https://xpeak.es/blog/fotografia-eventos-nocturnos" />
         <meta property="og:type" content="article" />
         <meta property="og:image" content="https://xpeak.es/og-image.jpg" />
         <meta property="og:site_name" content="XPEAK" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Fotografía eventos nocturnos: precios 2026 — XPEAK Blog" />
+        <meta name="twitter:title" content="Fotografía eventos nocturnos: precios 2026 | XPEAK Blog" />
         <meta name="twitter:description" content="Precios y guía para contratar fotógrafo de eventos nocturnos en España." />
         <meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />
         <script type="application/ld+json">{JSON.stringify(article)}</script>

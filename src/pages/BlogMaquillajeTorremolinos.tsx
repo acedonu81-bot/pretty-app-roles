@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Maquillaje Torremolinos', item: 'https://xpeak.es/blog/maquillaje-eventos-torremolinos' }] };
 
 const PRECIOS = [
-  { perfil: 'Maquillaje novia (solo)', tarifa: '120–270€', nota: 'Incluye prueba previa' },
-  { perfil: 'Maquillaje novia + peinado', tarifa: '240–490€', nota: 'Servicio integral más demandado' },
-  { perfil: 'Madrina / invitada especial', tarifa: '65–130€', nota: 'Sin prueba previa habitualmente' },
-  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '400–760€', nota: 'Desplazamiento a hotel incluido' },
-  { perfil: 'Evento corporativo / azafata', tarifa: '35–75€/persona', nota: 'Maquillaje fast-track profesional' },
-  { perfil: 'Sesión foto / vídeo', tarifa: '95–220€', nota: 'HD, flash-friendly, retoque incluido' },
+  { perfil: 'Maquillaje novia (solo)', tarifa: '120-270€', nota: 'Incluye prueba previa' },
+  { perfil: 'Maquillaje novia + peinado', tarifa: '240-490€', nota: 'Servicio integral más demandado' },
+  { perfil: 'Madrina / invitada especial', tarifa: '65-130€', nota: 'Sin prueba previa habitualmente' },
+  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '400-760€', nota: 'Desplazamiento a hotel incluido' },
+  { perfil: 'Evento corporativo / azafata', tarifa: '35-75€/persona', nota: 'Maquillaje fast-track profesional' },
+  { perfil: 'Sesión foto / vídeo', tarifa: '95-220€', nota: 'HD, flash-friendly, retoque incluido' },
 ];
 
 export default function BlogMaquillajeTorremolinos() {
@@ -33,7 +33,7 @@ export default function BlogMaquillajeTorremolinos() {
         <title>Precio maquilladora para eventos en Torremolinos 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobra una maquilladora para bodas y eventos en hoteles y clubs de playa en Torremolinos. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/maquillaje-eventos-torremolinos" />
-        <meta property="og:title" content="Precio maquilladora eventos Torremolinos 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio maquilladora eventos Torremolinos 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de maquilladoras para bodas y eventos en hoteles y clubs de playa en Torremolinos." />
         <meta property="og:url" content="https://xpeak.es/blog/maquillaje-eventos-torremolinos" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

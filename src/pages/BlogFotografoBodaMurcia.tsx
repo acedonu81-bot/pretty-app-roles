@@ -32,16 +32,16 @@ const faqStructured = {
   '@context': 'https://schema.org', '@type': 'FAQPage',
   mainEntity: [
     { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de bodas en Murcia?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de bodas en Murcia cuesta entre 700€ y 1.900€. Los precios son más accesibles que en Madrid o Barcelona, con fotógrafos de gran nivel que conocen las fincas y haciendas de la región.' } },
-    { '@type': 'Question', name: '¿Cuál es la mejor época para bodas en Murcia?', acceptedAnswer: { '@type': 'Answer', text: 'La primavera (marzo–mayo) y el otoño (septiembre–noviembre) son las épocas ideales. El verano murciano con calores de 40°C+ complica la logística fotográfica y la comodidad de los invitados.' } },
+    { '@type': 'Question', name: '¿Cuál es la mejor época para bodas en Murcia?', acceptedAnswer: { '@type': 'Answer', text: 'La primavera (marzo-mayo) y el otoño (septiembre-noviembre) son las épocas ideales. El verano murciano con calores de 40°C+ complica la logística fotográfica y la comodidad de los invitados.' } },
     { '@type': 'Question', name: '¿Qué localizaciones únicas tiene Murcia para bodas?', acceptedAnswer: { '@type': 'Answer', text: 'Las haciendas y fincas en la huerta murciana, bodegas en Jumilla o Yecla, y el Mar Menor para sesiones costeras. La Catedral de Murcia y el Casino son opciones urbanas icónicas.' } },
   ],
 };
 
 const PRICES = [
-  { perfil: 'Fotógrafo emergente', rango: '600€ – 900€', nota: 'Gran relación calidad/precio' },
-  { perfil: 'Fotógrafo profesional', rango: '900€ – 1.500€', nota: 'Reportaje completo, álbum digital' },
-  { perfil: 'Fotógrafo premium', rango: '1.500€ – 2.400€', nota: 'Edición artística, sesión postboda' },
-  { perfil: 'Fotógrafo de referencia', rango: '2.400€ – 3.500€', nota: 'Premiado, publicaciones nacionales' },
+  { perfil: 'Fotógrafo emergente', rango: '600€-900€', nota: 'Gran relación calidad/precio' },
+  { perfil: 'Fotógrafo profesional', rango: '900€-1.500€', nota: 'Reportaje completo, álbum digital' },
+  { perfil: 'Fotógrafo premium', rango: '1.500€-2.400€', nota: 'Edición artística, sesión postboda' },
+  { perfil: 'Fotógrafo de referencia', rango: '2.400€-3.500€', nota: 'Premiado, publicaciones nacionales' },
 ];
 
 export default function BlogFotografoBodaMurcia() {
@@ -96,10 +96,10 @@ export default function BlogFotografoBodaMurcia() {
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Mejores localizaciones para fotos de boda en Murcia</h2>
           <ul className="space-y-3 mb-8 text-[#333]">
-            <li><strong className="text-[#111]">Catedral de Murcia</strong> — Fachada barroca única en España. El centro histórico ofrece rincones fotogénicos a pie de calle.</li>
-            <li><strong className="text-[#111]">Haciendas de la Vega del Segura</strong> — Fincas históricas con naranjos y palmeras. El escenario más demandado de la región.</li>
-            <li><strong className="text-[#111]">Bodegas de Jumilla / Yecla</strong> — Viñedos y arquitectura winery para bodas con encanto rural.</li>
-            <li><strong className="text-[#111]">Mar Menor (Los Alcázares, Santiago de la Ribera)</strong> — Puestas de sol sobre la laguna más grande de Europa.</li>
+            <li><strong className="text-[#111]">Catedral de Murcia</strong>: Fachada barroca única en España. El centro histórico ofrece rincones fotogénicos a pie de calle.</li>
+            <li><strong className="text-[#111]">Haciendas de la Vega del Segura</strong>: Fincas históricas con naranjos y palmeras. El escenario más demandado de la región.</li>
+            <li><strong className="text-[#111]">Bodegas de Jumilla / Yecla</strong>: Viñedos y arquitectura winery para bodas con encanto rural.</li>
+            <li><strong className="text-[#111]">Mar Menor (Los Alcázares, Santiago de la Ribera)</strong>: Puestas de sol sobre la laguna más grande de Europa.</li>
           </ul>
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-fotografo" articlePath="/blog/fotografo-boda-murcia" />

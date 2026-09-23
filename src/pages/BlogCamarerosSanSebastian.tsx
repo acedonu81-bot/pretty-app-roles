@@ -12,18 +12,18 @@ const article = { '@context': 'https://schema.org', '@type': 'Article', headline
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cobra un camarero de eventos en San Sebastián?', acceptedAnswer: { '@type': 'Answer', text: 'En San Sebastián, un camarero de eventos cobra entre 14€ y 22€/hora bruto, por encima de la media nacional por el prestigio gastronómico de la ciudad. Los bartenders con experiencia en coctelería de autor cobran entre 18€ y 26€/hora. Durante el Zinemaldia en septiembre las tarifas suben de forma notable.' } },
   { '@type': 'Question', name: '¿Dónde hay más demanda de camareros para eventos en San Sebastián?', acceptedAnswer: { '@type': 'Answer', text: 'El entorno de la Playa de la Concha concentra bodas y eventos privados en villas de alto nivel. El Zinemaldia (Festival de Cine) en septiembre genera el mayor pico de demanda del año, con cócteles, galas y eventos de alfombra roja. El sector gastronómico de prestigio de la ciudad mantiene demanda alta todo el año.' } },
-  { '@type': 'Question', name: '¿Con cuánta antelación reservar camareros para el Zinemaldia en San Sebastián?', acceptedAnswer: { '@type': 'Answer', text: 'Para eventos del Zinemaldia en septiembre, reserva con 2-3 meses de antelación — es el pico más fuerte del año y el personal con experiencia en eventos de alta gama se agota primero. Para bodas junto a la Concha en temporada alta, 3-4 meses.' } },
+  { '@type': 'Question', name: '¿Con cuánta antelación reservar camareros para el Zinemaldia en San Sebastián?', acceptedAnswer: { '@type': 'Answer', text: 'Para eventos del Zinemaldia en septiembre, reserva con 2-3 meses de antelación: es el pico más fuerte del año y el personal con experiencia en eventos de alta gama se agota primero. Para bodas junto a la Concha en temporada alta, 3-4 meses.' } },
   { '@type': 'Question', name: '¿Cuántos camareros necesito para una boda en San Sebastián?', acceptedAnswer: { '@type': 'Answer', text: 'La proporción estándar es 1 camarero por cada 10 invitados en cena sentada y 1 por cada 15-20 en formato cóctel. Para una boda de 100 invitados en una villa junto a la Concha, lo habitual es contar con 8-10 camareros más 1-2 bartenders de coctelería de autor.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Camareros San Sebastián', item: 'https://xpeak.es/blog/camareros-eventos-sansebastian' }] };
 
 const PRECIOS = [
-  { perfil: 'Camarero/a de sala', tarifa: '14–20€/hora', nota: 'Cóctel, cena sentada o buffet de alta gama' },
-  { perfil: 'Bartender / coctelería de autor', tarifa: '18–26€/hora', nota: 'Barra libre y coctelería de prestigio' },
-  { perfil: 'Jefe de sala / coordinador', tarifa: '24–34€/hora', nota: 'Gestión del equipo en boda o evento grande' },
-  { perfil: 'Servicio boda completo (6-7h)', tarifa: '160–290€/persona', nota: 'Cóctel + cena + barra, entorno Concha' },
-  { perfil: 'Servicio Zinemaldia (jornada)', tarifa: '190–320€', nota: 'Galas y cócteles de septiembre' },
-  { perfil: 'Personal de cocina de apoyo', tarifa: '15–24€/hora', nota: 'Emplatado y logística en directo' },
+  { perfil: 'Camarero/a de sala', tarifa: '14-20€/hora', nota: 'Cóctel, cena sentada o buffet de alta gama' },
+  { perfil: 'Bartender / coctelería de autor', tarifa: '18-26€/hora', nota: 'Barra libre y coctelería de prestigio' },
+  { perfil: 'Jefe de sala / coordinador', tarifa: '24-34€/hora', nota: 'Gestión del equipo en boda o evento grande' },
+  { perfil: 'Servicio boda completo (6-7h)', tarifa: '160-290€/persona', nota: 'Cóctel + cena + barra, entorno Concha' },
+  { perfil: 'Servicio Zinemaldia (jornada)', tarifa: '190-320€', nota: 'Galas y cócteles de septiembre' },
+  { perfil: 'Personal de cocina de apoyo', tarifa: '15-24€/hora', nota: 'Emplatado y logística en directo' },
 ];
 
 export default function BlogCamarerosSanSebastian() {
@@ -33,7 +33,7 @@ export default function BlogCamarerosSanSebastian() {
         <title>Precio camareros para eventos en San Sebastián 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran los camareros y bartenders para bodas junto a la Concha y eventos del Zinemaldia. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/camareros-eventos-sansebastian" />
-        <meta property="og:title" content="Precio camareros eventos San Sebastián 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio camareros eventos San Sebastián 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de camareros y bartenders para bodas y eventos del Zinemaldia en San Sebastián." />
         <meta property="og:url" content="https://xpeak.es/blog/camareros-eventos-sansebastian" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

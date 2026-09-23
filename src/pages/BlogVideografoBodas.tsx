@@ -9,7 +9,7 @@ import BlogAuthor from '@/components/BlogAuthor';
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'Videógrafo para bodas: precio y qué incluye el vídeo en España (2026)', description: 'Cuánto cuesta contratar un videógrafo para tu boda. Precios por tipo de vídeo, duración, ciudad y diferencias con el fotógrafo. Guía 2026.', datePublished: '2026-05-04',
   dateModified: '2026-05-25', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/videografo-bodas-precio' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
-  { '@type': 'Question', name: '¿Cuánto cobra un videógrafo de bodas en España?', acceptedAnswer: { '@type': 'Answer', text: 'El precio de un videógrafo de bodas en España varía entre 600€ y 3.000€ dependiendo del nivel de experiencia, ciudad y paquete. Un vídeo de highlights de 3-5 minutos cuesta entre 800€ y 1.500€ con un profesional de nivel medio. Los videógrafos más reconocidos con estilo cinematográfico pueden cobrar 2.500–4.000€.' } },
+  { '@type': 'Question', name: '¿Cuánto cobra un videógrafo de bodas en España?', acceptedAnswer: { '@type': 'Answer', text: 'El precio de un videógrafo de bodas en España varía entre 600€ y 3.000€ dependiendo del nivel de experiencia, ciudad y paquete. Un vídeo de highlights de 3-5 minutos cuesta entre 800€ y 1.500€ con un profesional de nivel medio. Los videógrafos más reconocidos con estilo cinematográfico pueden cobrar 2.500-4.000€.' } },
   { '@type': 'Question', name: '¿Qué incluye el paquete de vídeo de boda?', acceptedAnswer: { '@type': 'Answer', text: 'Lo habitual es: grabación el día de la boda (8-10h), edición y postproducción, vídeo de highlights (3-5 min), vídeo completo de la ceremonia y el banquete (30-90 min), entrega en archivo digital y enlace para compartir. Los paquetes premium añaden un segundo cámara, sesión previa (preboda) y película cinematográfica de autor.' } },
   { '@type': 'Question', name: '¿Es mejor contratar fotógrafo o videógrafo para la boda?', acceptedAnswer: { '@type': 'Answer', text: 'La foto captura momentos congelados para siempre; el vídeo conserva las emociones en movimiento: votos, risas, música. Si el presupuesto obliga a elegir, muchas parejas priorizan la fotografía. Pero si hay margen, el vídeo añade una dimensión emocional que las fotos no pueden dar. Idealmente, contratar ambos con estilo visual coherente.' } },
   { '@type': 'Question', name: '¿Con cuánta antelación contratar el videógrafo de la boda?', acceptedAnswer: { '@type': 'Answer', text: 'Los mejores videógrafos de boda en España se reservan con 12-18 meses de antelación para fechas de temporada alta (mayo-octubre). Para bodas de invierno o entre semana, 6-8 meses suele ser suficiente. Confirmar siempre disponibilidad antes de cerrar la fecha de la boda.' } },
@@ -17,20 +17,20 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Videógrafo bodas precio', item: 'https://xpeak.es/blog/videografo-bodas-precio' }] };
 
 const PAQUETES = [
-  { pack: 'Highlights (3-5 min)', precio: '600–1.200€', incluye: '1 cámara, edición básica, entrega digital' },
-  { pack: 'Pack estándar', precio: '1.000–1.800€', incluye: 'Highlights + vídeo ceremonia completa' },
-  { pack: 'Pack completo', precio: '1.500–2.500€', incluye: 'Día completo (10h), 2 cámaras, película corta' },
-  { pack: 'Pack cinematográfico', precio: '2.000–4.000€', incluye: 'Drone, segunda cámara, preboda, película de autor' },
-  { pack: 'Foto + vídeo combinado', precio: '2.500–5.000€', incluye: 'Fotógrafo y videógrafo del mismo estudio' },
+  { pack: 'Highlights (3-5 min)', precio: '600-1.200€', incluye: '1 cámara, edición básica, entrega digital' },
+  { pack: 'Pack estándar', precio: '1.000-1.800€', incluye: 'Highlights + vídeo ceremonia completa' },
+  { pack: 'Pack completo', precio: '1.500-2.500€', incluye: 'Día completo (10h), 2 cámaras, película corta' },
+  { pack: 'Pack cinematográfico', precio: '2.000-4.000€', incluye: 'Drone, segunda cámara, preboda, película de autor' },
+  { pack: 'Foto + vídeo combinado', precio: '2.500-5.000€', incluye: 'Fotógrafo y videógrafo del mismo estudio' },
 ];
 
 const CIUDADES = [
-  { ciudad: 'Madrid', rango: '1.200–3.500€' },
-  { ciudad: 'Barcelona', rango: '1.200–3.800€' },
-  { ciudad: 'Valencia', rango: '900–2.500€' },
-  { ciudad: 'Sevilla', rango: '800–2.200€' },
-  { ciudad: 'Bilbao', rango: '900–2.500€' },
-  { ciudad: 'Resto de España', rango: '600–2.000€' },
+  { ciudad: 'Madrid', rango: '1.200-3.500€' },
+  { ciudad: 'Barcelona', rango: '1.200-3.800€' },
+  { ciudad: 'Valencia', rango: '900-2.500€' },
+  { ciudad: 'Sevilla', rango: '800-2.200€' },
+  { ciudad: 'Bilbao', rango: '900-2.500€' },
+  { ciudad: 'Resto de España', rango: '600-2.000€' },
 ];
 
 export default function BlogVideografoBodas() {
@@ -40,7 +40,7 @@ export default function BlogVideografoBodas() {
         <title>Videógrafo bodas: precio y qué incluye 2026 | XPEAK</title>
         <meta name="description" content="¿Cuánto cuesta un videógrafo de boda en España? Precios por paquete, ciudad y tipo de vídeo. Diferencias con el fotógrafo y cuándo contratar." />
         <link rel="canonical" href="https://xpeak.es/blog/videografo-bodas-precio" />
-        <meta property="og:title" content="Videógrafo bodas: precio 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Videógrafo bodas: precio 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precios reales de videógrafos de boda en España. Por paquete, ciudad y tipo de producción." />
         <meta property="og:url" content="https://xpeak.es/blog/videografo-bodas-precio" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />
@@ -90,8 +90,8 @@ export default function BlogVideografoBodas() {
               <h2 className="text-lg font-black mb-3">Videógrafo vs fotógrafo: ¿qué diferencia hay?</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
-                  { t: 'Fotógrafo de boda', puntos: ['Captura momentos congelados en alta resolución', 'Álbum físico y galería digital entregables', 'Edición disponible en 4-8 semanas', 'Precio medio: 1.000–2.500€', 'Prioridad si el presupuesto es limitado'], c: '#818cf8' },
-                  { t: 'Videógrafo de boda', puntos: ['Conserva emociones, música y voz en movimiento', 'Highlights + película larga entregables', 'Edición disponible en 6-12 semanas', 'Precio medio: 1.000–2.500€', 'Complemento ideal si hay presupuesto'], c: '#4F46E5' },
+                  { t: 'Fotógrafo de boda', puntos: ['Captura momentos congelados en alta resolución', 'Álbum físico y galería digital entregables', 'Edición disponible en 4-8 semanas', 'Precio medio: 1.000-2.500€', 'Prioridad si el presupuesto es limitado'], c: '#818cf8' },
+                  { t: 'Videógrafo de boda', puntos: ['Conserva emociones, música y voz en movimiento', 'Highlights + película larga entregables', 'Edición disponible en 6-12 semanas', 'Precio medio: 1.000-2.500€', 'Complemento ideal si hay presupuesto'], c: '#4F46E5' },
                 ].map(d => (
                   <div key={d.t} className="p-5 rounded-xl" style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <h3 className="text-xs font-bold mb-3" style={{ color: d.c }}>{d.t}</h3>

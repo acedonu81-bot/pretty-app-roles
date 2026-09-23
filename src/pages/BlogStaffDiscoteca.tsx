@@ -8,12 +8,12 @@ import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
 const PERFILES = [
-  { perfil: 'Hostess / Azafata', tarifa: '15€ – 22€/h', turno: '40€ – 80€/noche', nota: 'Recepción, lista de invitados, mesa VIP' },
-  { perfil: 'Relaciones Públicas (RRPP)', tarifa: '80€ – 300€/noche', turno: '+ % taquilla', nota: 'Captación de público con lista propia' },
-  { perfil: 'Camarero/a de sala', tarifa: '12€ – 18€/h', turno: '50€ – 90€/noche', nota: 'Barra y mesas VIP, servicio nocturno' },
-  { perfil: 'Coordinador/a de sala', tarifa: '20€ – 35€/h', turno: '80€ – 150€/noche', nota: 'Gestión del personal y operativa del evento' },
-  { perfil: 'Seguridad / Control de acceso', tarifa: '18€ – 28€/h', turno: '60€ – 120€/noche', nota: 'Requiere TIP (Tarjeta de Identificación Profesional)' },
-  { perfil: 'Promotor/a de calle', tarifa: '10€ – 15€/h', turno: '30€ – 60€/noche', nota: 'Distribución de flyers y captación presencial' },
+  { perfil: 'Hostess / Azafata', tarifa: '15€-22€/h', turno: '40€-80€/noche', nota: 'Recepción, lista de invitados, mesa VIP' },
+  { perfil: 'Relaciones Públicas (RRPP)', tarifa: '80€-300€/noche', turno: '+ % taquilla', nota: 'Captación de público con lista propia' },
+  { perfil: 'Camarero/a de sala', tarifa: '12€-18€/h', turno: '50€-90€/noche', nota: 'Barra y mesas VIP, servicio nocturno' },
+  { perfil: 'Coordinador/a de sala', tarifa: '20€-35€/h', turno: '80€-150€/noche', nota: 'Gestión del personal y operativa del evento' },
+  { perfil: 'Seguridad / Control de acceso', tarifa: '18€-28€/h', turno: '60€-120€/noche', nota: 'Requiere TIP (Tarjeta de Identificación Profesional)' },
+  { perfil: 'Promotor/a de calle', tarifa: '10€-15€/h', turno: '30€-60€/noche', nota: 'Distribución de flyers y captación presencial' },
 ];
 
 const FAQ = [

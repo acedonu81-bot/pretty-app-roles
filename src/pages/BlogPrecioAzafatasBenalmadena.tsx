@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Benalmádena', item: 'https://xpeak.es/blog/precio-azafatas-benalmadena' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '145–195€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '165–250€/día', nota: 'Eventos en Puerto Marina y hoteles' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '180–235€/día', nota: 'Imprescindible por turismo internacional' },
-  { perfil: 'Azafata multilingüe', tarifa: '210–300€/día', nota: 'Eventos de mayor formato en hoteles grandes' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '195–280€/día', nota: 'Gestión de equipo en evento grande' },
-  { perfil: 'Pack evento en Puerto Marina (4h)', tarifa: '95–160€', nota: 'Puerto deportivo y de ocio' },
+  { perfil: 'Azafata de stand / feria', tarifa: '145-195€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '165-250€/día', nota: 'Eventos en Puerto Marina y hoteles' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '180-235€/día', nota: 'Imprescindible por turismo internacional' },
+  { perfil: 'Azafata multilingüe', tarifa: '210-300€/día', nota: 'Eventos de mayor formato en hoteles grandes' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '195-280€/día', nota: 'Gestión de equipo en evento grande' },
+  { perfil: 'Pack evento en Puerto Marina (4h)', tarifa: '95-160€', nota: 'Puerto deportivo y de ocio' },
 ];
 
 export default function BlogPrecioAzafatasBenalmadena() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasBenalmadena() {
         <title>Precio azafatas para eventos en Benalmádena 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos en Puerto Marina y hoteles de Benalmádena. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-benalmadena" />
-        <meta property="og:title" content="Precio azafatas eventos Benalmádena 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Benalmádena 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para eventos en Puerto Marina y hoteles de Benalmádena." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-benalmadena" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

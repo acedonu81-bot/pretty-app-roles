@@ -19,10 +19,10 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'DJ bodas Córdoba', item: 'https://xpeak.es/blog/dj-bodas-cordoba' }] };
 
 const PRECIOS = [
-  { servicio: 'Solo pista de baile (4-5h)', precio: '270–650€' },
-  { servicio: 'Cóctel + pista de baile', precio: '420–950€' },
-  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '550–1.400€' },
-  { servicio: 'Pack hacienda o cortijo premium', precio: '800–1.800€' },
+  { servicio: 'Solo pista de baile (4-5h)', precio: '270-650€' },
+  { servicio: 'Cóctel + pista de baile', precio: '420-950€' },
+  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '550-1.400€' },
+  { servicio: 'Pack hacienda o cortijo premium', precio: '800-1.800€' },
 ];
 
 const ZONAS = [
@@ -41,7 +41,7 @@ export default function BlogDJBodaCordoba() {
         <title>DJ para bodas en Córdoba: precio 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un DJ para una boda en Córdoba. Precios reales 2026, haciendas del Guadalquivir, cortijos y cómo contratar el mejor DJ." />
         <link rel="canonical" href="https://xpeak.es/blog/dj-bodas-cordoba" />
-        <meta property="og:title" content="DJ para bodas en Córdoba: precio 2026 — XPEAK Blog" />
+        <meta property="og:title" content="DJ para bodas en Córdoba: precio 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precios reales de DJs de boda en Córdoba. Haciendas, patios históricos y cómo elegir el perfil correcto." />
         <meta property="og:url" content="https://xpeak.es/blog/dj-bodas-cordoba" />
         <meta property="og:type" content="article" />

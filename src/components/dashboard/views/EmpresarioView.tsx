@@ -197,7 +197,7 @@ const EmpresarioView = ({ onMessage }: EmpresarioViewProps) => {
   };
 
   const exportCSV = async (proList: Pro[], notes: Record<string, string>) => {
-    const wb = await buildWorkbook('Talentos — Directorio', [
+    const wb = await buildWorkbook('Talentos: Directorio', [
       {
         title: 'RESUMEN',
         header: ['Concepto', 'Valor'],

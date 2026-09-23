@@ -21,12 +21,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Precio azafatas eventos', item: 'https://xpeak.es/blog/precio-azafatas-eventos-espana' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '120–180€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '150–250€/día', nota: 'Eventos de marca y protocolo' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '160–220€/día', nota: '+20-30% sobre tarifa base' },
-  { perfil: 'Azafata trilingüe', tarifa: '200–300€/día', nota: 'Para ferias internacionales' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '180–280€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '80–130€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '120-180€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '150-250€/día', nota: 'Eventos de marca y protocolo' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '160-220€/día', nota: '+20-30% sobre tarifa base' },
+  { perfil: 'Azafata trilingüe', tarifa: '200-300€/día', nota: 'Para ferias internacionales' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '180-280€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '80-130€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatas() {
@@ -36,7 +36,7 @@ export default function BlogPrecioAzafatas() {
         <title>Precio azafatas para eventos España 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos, ferias y congresos en España. Tarifas por horas, perfil y ciudad. Guía completa 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-eventos-espana" />
-        <meta property="og:title" content="Precio azafatas eventos España 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos España 2026 | XPEAK Blog" />
         <meta property="og:description" content="Cuánto cobran las azafatas para eventos y ferias en España. Tarifas por perfil y ciudad." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-eventos-espana" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />
@@ -65,7 +65,7 @@ export default function BlogPrecioAzafatas() {
               <source srcSet="/images/blog/precio-azafatas-eventos-espana.webp" type="image/webp" />
               <img
                 src="/images/blog/precio-azafatas-eventos-espana.jpg"
-                alt="Azafatas de eventos en feria profesional — precio y tarifas de azafatas en España 2026"
+                alt="Azafatas de eventos en feria profesional: precio y tarifas de azafatas en España 2026"
                 className="w-full rounded-xl my-6 object-cover"
                 style={{ maxHeight: 320, filter: 'brightness(0.9)' }}
                 loading="lazy"

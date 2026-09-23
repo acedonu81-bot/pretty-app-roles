@@ -49,7 +49,6 @@ const PLANES = [
 ];
 
 const FAQ = [
-  { q: '¿XPEAK cobra comisión sobre el caché del profesional?', a: 'No. El acuerdo económico se cierra directamente entre las partes. No cobramos porcentaje sobre el caché ni tarifa por contratación.' },
   { q: '¿Cuándo habrá planes de pago?', a: 'Estamos desarrollando funcionalidades premium opcionales: badge de verificación prioritaria y analytics avanzados.' },
   { q: '¿Qué incluye el contrato digital?', a: 'El contrato generado por XPEAK incluye: datos fiscales de ambas partes, descripción del servicio, fecha, precio acordado, IRPF calculado automáticamente si el profesional es autónomo, y cláusulas de cancelación estándar del sector. Disponible en PDF listo para firma.' },
 ];
@@ -73,7 +72,7 @@ export default function Precios() {
   return (
     <>
       <Helmet>
-        <title>Precios XPEAK — Para profesionales y empresarios de eventos</title>
+        <title>Precios XPEAK: Para profesionales y empresarios de eventos</title>
         <meta name="description" content="Precios de XPEAK para DJs, fotógrafos, camareros y staff, y para salas, promotoras y organizadores. Contratos digitales incluidos." />
         <link rel="canonical" href="https://xpeak.es/precios" />
         <meta property="og:title" content="Precios XPEAK" />

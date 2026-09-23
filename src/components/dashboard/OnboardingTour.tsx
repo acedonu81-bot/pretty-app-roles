@@ -16,7 +16,7 @@ const PROFESSIONAL_STEPS: TourStep[] = [
   {
     icon: <User size={20} />,
     title: '¡Ya estás dentro!',
-    body: 'XPEAK es donde los profesionales de eventos consiguen bookings sin intermediarios ni comisiones. Este tour dura 60 segundos.',
+    body: 'XPEAK es donde los profesionales de eventos consiguen bookings sin intermediarios. Este tour dura 60 segundos.',
     highlight: 'Empieza a explorar.',
   },
   {

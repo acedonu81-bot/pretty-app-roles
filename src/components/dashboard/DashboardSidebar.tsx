@@ -364,7 +364,7 @@ export const DashboardSidebarInner = ({ activeView, onViewChange, forceExpanded 
                   toast.success(
                     region === ALL_REGIONS_LABEL
                       ? 'Filtro de comunidad quitado'
-                      : `Filtrando por ${region} — se aplica al entrar a un rol`
+                      : `Filtrando por ${region}: se aplica al entrar a un rol`
                   );
                 }}
                 className="mb-1.5 w-full text-[0.72rem] font-bold rounded-lg px-2 py-1.5 outline-none"

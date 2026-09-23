@@ -37,7 +37,7 @@ export default function BlogAntelacionReservasBoda() {
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
       </Helmet>
-      <div style={{ background: '#0A0A0A', color: '#F5F5F0', minHeight: '100vh' }}>
+      <div style={{ background: '#ffffff', color: '#111', minHeight: '100vh' }}>
         <div className="max-w-2xl mx-auto px-4 py-12">
           <a href="/blog" style={{ color: '#D4AF37', fontSize: '0.8rem', fontWeight: 700 }}>← Blog XPEAK</a>
           <article className="mt-6">
@@ -99,7 +99,7 @@ export default function BlogAntelacionReservasBoda() {
               Si tu boda es en temporada alta (mayo-septiembre) y empiezas a buscar DJ o fotógrafo con menos de 3 meses, lo más probable es que los mejores profesionales ya estén ocupados. Tendrás que elegir entre profesionales menos experimentados o pagar una prima por disponibilidad urgente.
             </p>
             <p style={{ color: '#222', lineHeight: 1.8 }}>
-              Para emergencias reales — un DJ que cancela a última hora, personal de sala que no aparece — existe <a href="/contratar-dj" style={{ color: '#D4AF37', fontWeight: 700 }}>Flash Booking de XPEAK</a>: publicas la necesidad y recibes respuestas de profesionales disponibles en tu zona en menos de 60 minutos.
+              Para emergencias reales, un DJ que cancela a última hora, personal de sala que no aparece, existe <a href="/contratar-dj" style={{ color: '#D4AF37', fontWeight: 700 }}>Flash Booking de XPEAK</a>: publicas la necesidad y recibes respuestas de profesionales disponibles en tu zona en menos de 60 minutos.
             </p>
 
             <section className="mt-8">

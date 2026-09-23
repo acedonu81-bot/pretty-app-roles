@@ -17,12 +17,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Animadores infantiles comuniones', item: 'https://xpeak.es/blog/animadores-infantiles-comuniones-cumpleanos' }] };
 
 const SERVICIOS = [
-  { servicio: 'Monitor + juegos (2h, hasta 20 niños)', precio: '150–220€', para: 'Cumpleaños infantiles, fiestas en casa' },
-  { servicio: 'Pack animación comunión (3h)', precio: '200–350€', para: 'El más contratado, incluye pintacaras' },
-  { servicio: 'Espectáculo de magia (45-60 min)', precio: '200–400€', para: 'Momento especial dentro del evento' },
-  { servicio: 'Talleres temáticos (2h, material incluido)', precio: '180–320€', para: 'Manualidades, cocina, arte' },
-  { servicio: 'Gymkana + juegos al aire libre (3h)', precio: '250–450€', para: 'Fincas con espacio exterior' },
-  { servicio: 'Pack completo con inflable (4h)', precio: '350–600€', para: 'El paquete más completo para comuniones grandes' },
+  { servicio: 'Monitor + juegos (2h, hasta 20 niños)', precio: '150-220€', para: 'Cumpleaños infantiles, fiestas en casa' },
+  { servicio: 'Pack animación comunión (3h)', precio: '200-350€', para: 'El más contratado, incluye pintacaras' },
+  { servicio: 'Espectáculo de magia (45-60 min)', precio: '200-400€', para: 'Momento especial dentro del evento' },
+  { servicio: 'Talleres temáticos (2h, material incluido)', precio: '180-320€', para: 'Manualidades, cocina, arte' },
+  { servicio: 'Gymkana + juegos al aire libre (3h)', precio: '250-450€', para: 'Fincas con espacio exterior' },
+  { servicio: 'Pack completo con inflable (4h)', precio: '350-600€', para: 'El paquete más completo para comuniones grandes' },
 ];
 
 export default function BlogAnimadoresInfantiles() {
@@ -32,7 +32,7 @@ export default function BlogAnimadoresInfantiles() {
         <title>Animadores infantiles: precios 2026 España | XPEAK</title>
         <meta name="description" content="¿Cuánto cuestan los animadores infantiles para comuniones y cumpleaños en España? Precios por tipo de servicio, número de niños y actividades incluidas." />
         <link rel="canonical" href="https://xpeak.es/blog/animadores-infantiles-comuniones-cumpleanos" />
-        <meta property="og:title" content="Animadores infantiles comuniones: precios 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Animadores infantiles comuniones: precios 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precios reales de animadores infantiles para comuniones y cumpleaños en España. Qué incluye cada paquete." />
         <meta property="og:url" content="https://xpeak.es/blog/animadores-infantiles-comuniones-cumpleanos" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />
@@ -72,7 +72,7 @@ export default function BlogAnimadoresInfantiles() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {[
                   { rango: 'Hasta 15 niños', monitores: '1 monitor', nota: 'Para cumpleaños pequeños' },
-                  { rango: '15–30 niños', monitores: '2 monitores', nota: 'El más habitual en comuniones' },
+                  { rango: '15-30 niños', monitores: '2 monitores', nota: 'El más habitual en comuniones' },
                   { rango: 'Más de 30 niños', monitores: '3+ monitores', nota: 'Necesario en comuniones grandes' },
                 ].map(r => (
                   <div key={r.rango} className="p-4 rounded-xl text-center" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.06)' }}>

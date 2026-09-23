@@ -29,7 +29,7 @@ export default function HubFotografia() {
         <title>Fotógrafos para eventos España: guía completa 2026 | XPEAK</title>
         <meta name="description" content="Todo sobre contratar fotógrafo para bodas, comuniones y eventos en España. Precios reales, diferencias por tipo de evento y qué incluye el servicio." />
         <link rel="canonical" href="https://xpeak.es/blog/fotografos-eventos" />
-        <meta property="og:title" content="Fotógrafos para eventos España: guía completa 2026 — XPEAK" />
+        <meta property="og:title" content="Fotógrafos para eventos España: guía completa 2026 | XPEAK" />
         <meta property="og:description" content="Precios de fotógrafos para bodas, comuniones y eventos en España. Guías por tipo de evento." />
         <meta property="og:url" content="https://xpeak.es/blog/fotografos-eventos" />
         <meta property="og:type" content="article" />
@@ -77,11 +77,11 @@ export default function HubFotografia() {
               <h2 className="text-lg font-black mb-4">Precios por tipo de evento fotográfico</h2>
               <div className="space-y-2">
                 {[
-                  { tipo: 'Boda completa (8-12h + álbum)', precio: '1.500–3.500€' },
-                  { tipo: 'Comunión (4-6h)', precio: '400–1.200€' },
-                  { tipo: 'Evento corporativo / afterwork', precio: '350–1.000€' },
-                  { tipo: 'Evento nocturno / discoteca', precio: '250–600€/noche' },
-                  { tipo: 'Pack fotógrafo + videógrafo boda', precio: '2.500–5.500€' },
+                  { tipo: 'Boda completa (8-12h + álbum)', precio: '1.500-3.500€' },
+                  { tipo: 'Comunión (4-6h)', precio: '400-1.200€' },
+                  { tipo: 'Evento corporativo / afterwork', precio: '350-1.000€' },
+                  { tipo: 'Evento nocturno / discoteca', precio: '250-600€/noche' },
+                  { tipo: 'Pack fotógrafo + videógrafo boda', precio: '2.500-5.500€' },
                 ].map((row, i) => (
                   <div key={row.tipo} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <p className="text-xs font-medium">{row.tipo}</p>

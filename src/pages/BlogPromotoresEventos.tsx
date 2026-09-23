@@ -7,11 +7,11 @@ import BlogShare from '@/components/BlogShare';
 import BlogAuthor from '@/components/BlogAuthor';
 
 const PERFILES = [
-  { perfil: 'Promotor de calle', tarifa: '30€ – 80€/noche', kpi: 'Personas captadas, flyers distribuidos' },
-  { perfil: 'RRPP con lista propia', tarifa: '100€ – 400€/noche', kpi: 'Reservas, taquilla atribuida, lista VIP' },
-  { perfil: 'Promotor digital', tarifa: '300€ – 1.000€/mes', kpi: 'Seguidores, alcance, ventas de entradas online' },
-  { perfil: 'Brand ambassador', tarifa: '150€ – 350€/evento', kpi: 'Interacciones, contenido generado, leads' },
-  { perfil: 'Promotor de festival', tarifa: '200€ – 800€/evento', kpi: 'Entradas vendidas, campings, acreditaciones' },
+  { perfil: 'Promotor de calle', tarifa: '30€-80€/noche', kpi: 'Personas captadas, flyers distribuidos' },
+  { perfil: 'RRPP con lista propia', tarifa: '100€-400€/noche', kpi: 'Reservas, taquilla atribuida, lista VIP' },
+  { perfil: 'Promotor digital', tarifa: '300€-1.000€/mes', kpi: 'Seguidores, alcance, ventas de entradas online' },
+  { perfil: 'Brand ambassador', tarifa: '150€-350€/evento', kpi: 'Interacciones, contenido generado, leads' },
+  { perfil: 'Promotor de festival', tarifa: '200€-800€/evento', kpi: 'Entradas vendidas, campings, acreditaciones' },
 ];
 
 const FAQ = [

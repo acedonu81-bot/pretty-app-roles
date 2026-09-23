@@ -18,11 +18,11 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Segovia', item: 'https://xpeak.es/blog/precio-azafatas-segovia' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '100–140€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '110–170€/día', nota: 'Eventos institucionales y turísticos' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '120–180€/día', nota: 'Turismo internacional del casco histórico' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '130–190€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '60–95€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '100-140€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '110-170€/día', nota: 'Eventos institucionales y turísticos' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '120-180€/día', nota: 'Turismo internacional del casco histórico' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '130-190€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '60-95€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasSegovia() {
@@ -32,7 +32,7 @@ export default function BlogPrecioAzafatasSegovia() {
         <title>Precio azafatas para eventos en Segovia 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos y bodas en Segovia. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-segovia" />
-        <meta property="og:title" content="Precio azafatas eventos Segovia 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Segovia 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para eventos y bodas en Segovia." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-segovia" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

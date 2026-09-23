@@ -92,7 +92,7 @@ export default function ChecklistEventoEmpresa() {
     if (!form.name.trim() || !form.contact.trim()) return;
     setSending(true);
     const payload = {
-      professional_name: 'Solicitud general — Evento de empresa',
+      professional_name: 'Solicitud general: Evento de empresa',
       professional_role: 'general',
       requester_name: form.name,
       requester_contact: form.contact,
@@ -121,7 +121,7 @@ export default function ChecklistEventoEmpresa() {
         <title>Checklist para organizar un evento de empresa (2026) | XPEAK</title>
         <meta name="description" content="Checklist interactivo con cuenta atrás por fecha para organizar un evento de empresa: qué contratar y cuándo, paso a paso. Sin registro." />
         <link rel="canonical" href="https://xpeak.es/checklist-evento-empresa" />
-        <meta property="og:title" content="Checklist para organizar un evento de empresa — XPEAK" />
+        <meta property="og:title" content="Checklist para organizar un evento de empresa | XPEAK" />
         <meta property="og:description" content="Checklist interactivo con cuenta atrás: qué contratar y cuándo para tu evento de empresa." />
         <meta property="og:url" content="https://xpeak.es/checklist-evento-empresa" />
         <meta property="og:type" content="website" />
@@ -231,7 +231,7 @@ export default function ChecklistEventoEmpresa() {
           </p>
           <h2 className="text-xl sm:text-2xl font-black mb-3 mt-6" style={{ color: '#D4AF37' }}>Proveedores que necesitarás</h2>
           <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.65)' }}>
-            La mayoría de eventos de empresa —presentaciones, cenas, team building, galas o congresos— comparten un núcleo de proveedores: catering, staff de sala, DJ o música en vivo, y producción audiovisual. Puedes comparar profesionales verificados directamente en el directorio:
+            La mayoría de eventos de empresa presentaciones, cenas, team building, galas o congresos comparten un núcleo de proveedores: catering, staff de sala, DJ o música en vivo, y producción audiovisual. Puedes comparar profesionales verificados directamente en el directorio:
           </p>
           <ul className="text-sm leading-relaxed mb-3 list-disc pl-5 space-y-1" style={{ color: 'rgba(255,255,255,0.65)' }}>
             <li><a href="/contratar-catering/madrid" className="underline hover:opacity-80" style={{ color: '#D4AF37' }}>Catering para eventos en Madrid</a></li>

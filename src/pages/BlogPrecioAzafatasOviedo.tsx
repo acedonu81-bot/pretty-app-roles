@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Oviedo', item: 'https://xpeak.es/blog/precio-azafatas-oviedo' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '125–175€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '145–215€/día', nota: 'Bodas en casco histórico y fincas' },
-  { perfil: 'Azafata de protocolo institucional', tarifa: '160–230€/día', nota: 'Eventos oficiales y corporativos' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '150–205€/día', nota: 'Congresos y eventos empresariales' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '170–245€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '78–125€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '125-175€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '145-215€/día', nota: 'Bodas en casco histórico y fincas' },
+  { perfil: 'Azafata de protocolo institucional', tarifa: '160-230€/día', nota: 'Eventos oficiales y corporativos' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '150-205€/día', nota: 'Congresos y eventos empresariales' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '170-245€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '78-125€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasOviedo() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasOviedo() {
         <title>Precio azafatas para eventos en Oviedo 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos corporativos e institucionales en Oviedo. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-oviedo" />
-        <meta property="og:title" content="Precio azafatas eventos Oviedo 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Oviedo 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para eventos institucionales y bodas en Oviedo." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-oviedo" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

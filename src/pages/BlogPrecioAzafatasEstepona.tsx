@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Estepona', item: 'https://xpeak.es/blog/precio-azafatas-estepona' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '150–200€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '170–260€/día', nota: 'Eventos de marca y hoteleros' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '190–250€/día', nota: 'Muy solicitada por turismo internacional' },
-  { perfil: 'Azafata trilingüe', tarifa: '220–320€/día', nota: 'Bodas y eventos de villas' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '210–300€/día', nota: 'Gestión de equipo en boda o evento grande' },
-  { perfil: 'Pack evento en villa/hotel (4h)', tarifa: '100–170€', nota: 'Estepona y alrededores' },
+  { perfil: 'Azafata de stand / feria', tarifa: '150-200€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '170-260€/día', nota: 'Eventos de marca y hoteleros' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '190-250€/día', nota: 'Muy solicitada por turismo internacional' },
+  { perfil: 'Azafata trilingüe', tarifa: '220-320€/día', nota: 'Bodas y eventos de villas' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '210-300€/día', nota: 'Gestión de equipo en boda o evento grande' },
+  { perfil: 'Pack evento en villa/hotel (4h)', tarifa: '100-170€', nota: 'Estepona y alrededores' },
 ];
 
 export default function BlogPrecioAzafatasEstepona() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasEstepona() {
         <title>Precio azafatas para eventos en Estepona 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para bodas en villas y eventos hoteleros en Estepona. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-estepona" />
-        <meta property="og:title" content="Precio azafatas eventos Estepona 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Estepona 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para bodas en villas y eventos hoteleros en Estepona." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-estepona" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

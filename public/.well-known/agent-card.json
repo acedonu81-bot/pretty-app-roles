@@ -1,7 +1,7 @@
 {
   "protocolVersion": "0.3.0",
   "name": "xpeak",
-  "description": "Directorio profesional de eventos en España: busca profesionales verificados (DJs, fotógrafos, camareros, catering, maquilladoras, animadores, magos, humoristas, bailarines, speakers, photo booth) por rol, ciudad y presupuesto, y solicita presupuesto real directamente al profesional, sin comisiones.",
+  "description": "Directorio profesional de eventos en España: busca profesionales verificados (DJs, fotógrafos, camareros, catering, maquilladoras, animadores, magos, humoristas, bailarines, speakers, photo booth) por rol, ciudad y presupuesto, y solicita presupuesto real directamente al profesional.",
   "url": "https://xpeak.es",
   "preferredTransport": "JSONRPC",
   "provider": {
@@ -29,7 +29,7 @@
     {
       "id": "solicitar_presupuesto",
       "name": "Solicitar presupuesto (Flash Booking)",
-      "description": "Crea una solicitud real de presupuesto a un profesional concreto. El profesional la recibe por email y contacta directamente — no reserva ni cobra nada automáticamente.",
+      "description": "Crea una solicitud real de presupuesto a un profesional concreto. El profesional la recibe por email y contacta directamente: no reserva ni cobra nada automáticamente.",
       "tags": ["eventos", "presupuesto", "españa"],
       "examples": [
         "Quiero pedir presupuesto a un mago para un evento infantil"

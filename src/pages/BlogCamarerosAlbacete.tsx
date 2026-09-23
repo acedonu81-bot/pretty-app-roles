@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Camareros Albacete', item: 'https://xpeak.es/blog/camareros-eventos-albacete' }] };
 
 const PRECIOS = [
-  { perfil: 'Camarero/a de sala', tarifa: '9–13€/hora', nota: 'Cóctel, cena sentada o buffet' },
-  { perfil: 'Bartender / coctelería', tarifa: '12–17€/hora', nota: 'Barra libre en bodas y eventos' },
-  { perfil: 'Jefe de sala / coordinador', tarifa: '16–22€/hora', nota: 'Gestión del equipo en boda o evento grande' },
-  { perfil: 'Servicio boda completo (6-7h)', tarifa: '95–170€/persona', nota: 'Cóctel + cena + barra' },
-  { perfil: 'Barra libre con bartender (4h)', tarifa: '120–250€', nota: 'Incluye montaje y desmontaje' },
-  { perfil: 'Personal Feria de Albacete', tarifa: '10–15€/hora', nota: 'Septiembre, pico de demanda' },
+  { perfil: 'Camarero/a de sala', tarifa: '9-13€/hora', nota: 'Cóctel, cena sentada o buffet' },
+  { perfil: 'Bartender / coctelería', tarifa: '12-17€/hora', nota: 'Barra libre en bodas y eventos' },
+  { perfil: 'Jefe de sala / coordinador', tarifa: '16-22€/hora', nota: 'Gestión del equipo en boda o evento grande' },
+  { perfil: 'Servicio boda completo (6-7h)', tarifa: '95-170€/persona', nota: 'Cóctel + cena + barra' },
+  { perfil: 'Barra libre con bartender (4h)', tarifa: '120-250€', nota: 'Incluye montaje y desmontaje' },
+  { perfil: 'Personal Feria de Albacete', tarifa: '10-15€/hora', nota: 'Septiembre, pico de demanda' },
 ];
 
 export default function BlogCamarerosAlbacete() {
@@ -33,7 +33,7 @@ export default function BlogCamarerosAlbacete() {
         <title>Precio camareros para eventos en Albacete 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran los camareros y bartenders para bodas, la Feria de Albacete y eventos corporativos. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/camareros-eventos-albacete" />
-        <meta property="og:title" content="Precio camareros eventos Albacete 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio camareros eventos Albacete 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de camareros y bartenders para la Feria de Albacete y bodas locales." />
         <meta property="og:url" content="https://xpeak.es/blog/camareros-eventos-albacete" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

@@ -12,19 +12,19 @@ const article = { '@context': 'https://schema.org', '@type': 'Article', headline
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto puede ganar un fotógrafo de eventos freelance en España?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de eventos activo puede ganar entre 20.000€ y 60.000€ al año. Una boda completa paga 1.500-3.500€, una comunión 400-1.200€ y un evento corporativo 400-1.000€. Con 2 bodas y 2-3 comuniones al mes en temporada alta (mayo-septiembre) es posible superar los 4.000€ mensuales brutos.' } },
   { '@type': 'Question', name: '¿Necesito estudios de fotografía para trabajar en eventos?', acceptedAnswer: { '@type': 'Answer', text: 'No son imprescindibles, pero sí necesitas dominar la técnica: exposición, ISO, enfoque en movimiento, flash de boda y edición (Lightroom/Capture One). Muchos fotógrafos de bodas son autodidactas con portafolio sólido. Lo que sí valoran los clientes es el estilo consistente y las referencias de eventos anteriores.' } },
-  { '@type': 'Question', name: '¿Cómo fijo el precio como fotógrafo de eventos?', acceptedAnswer: { '@type': 'Answer', text: 'Calcula: horas de shooting + horas de edición (ratio aproximado 1:3) + coste de equipo + desplazamiento + impuestos. Para una boda de 8h de shooting, son 24h de edición adicionales. A 30€/hora de trabajo real, son 960€ de coste antes de beneficio. Suma seguro de equipo, copia de seguridad y IRPF — el precio de mercado no es solo "lo que dura la boda".' } },
+  { '@type': 'Question', name: '¿Cómo fijo el precio como fotógrafo de eventos?', acceptedAnswer: { '@type': 'Answer', text: 'Calcula: horas de shooting + horas de edición (ratio aproximado 1:3) + coste de equipo + desplazamiento + impuestos. Para una boda de 8h de shooting, son 24h de edición adicionales. A 30€/hora de trabajo real, son 960€ de coste antes de beneficio. Suma seguro de equipo, copia de seguridad y IRPF: el precio de mercado no es solo "lo que dura la boda".' } },
   { '@type': 'Question', name: '¿Merece la pena especializarse en bodas o ser generalista?', acceptedAnswer: { '@type': 'Answer', text: 'La especialización paga más. Un fotógrafo especialista en bodas puede cobrar 2.500€ de media, mientras que un generalista cobra 1.200-1.500€. La razón: los novios buscan estilos muy concretos, confían más en alguien que solo hace bodas y están dispuestos a pagar más por esa seguridad. Lo mismo aplica para comuniones, eventos corporativos o fotografía nocturna.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Fotógrafo conseguir clientes', item: 'https://xpeak.es/blog/fotografo-como-conseguir-clientes' }] };
 
 const ESTRATEGIAS = [
-  { num: '01', titulo: 'Portfolio online bien curado', desc: 'Tu web o perfil de plataforma es lo primero que ven los clientes. Muestra 20-30 fotos máximo por tipo de evento, de distintos momentos y condiciones de luz. Menos es más — mejor 20 fotos perfectas que 100 mediocres.' },
+  { num: '01', titulo: 'Portfolio online bien curado', desc: 'Tu web o perfil de plataforma es lo primero que ven los clientes. Muestra 20-30 fotos máximo por tipo de evento, de distintos momentos y condiciones de luz. Menos es más: mejor 20 fotos perfectas que 100 mediocres.' },
   { num: '02', titulo: 'Instagram como escaparate activo', desc: 'Publica de forma consistente: un feed con tu estilo propio, stories de making-of y reels con antes/después de edición. Los novios pasan horas en Instagram buscando el estilo que quieren para su boda. Si tu perfil tiene coherencia visual, te encontrarán.' },
   { num: '03', titulo: 'Plataformas especializadas en eventos', desc: 'XPEAK conecta fotógrafos con organizadores de bodas, comuniones y eventos corporativos. Tu perfil incluye portfolio, reseñas verificadas y disponibilidad. Los clientes que entran a buscar ya tienen intención de contratar.' },
   { num: '04', titulo: 'Google My Business para fotógrafo local', desc: '"Fotógrafo de bodas en Madrid" genera miles de búsquedas al mes. Un perfil de Google Business con fotos de bodas reales, reseñas y ubicación te coloca en el mapa de los que buscan local. Tarda 1 hora en configurar.' },
   { num: '05', titulo: 'Networking con wedding planners y venues', desc: 'Las fincas y los wedding planners son proveedores de referencia para los novios. Si estás en su lista de recomendados, tienes un flujo constante sin hacer marketing. Ofrece una sesión en una finca nueva a cambio de figurar en su web.' },
   { num: '06', titulo: 'Reseñas y testimonios en cada proyecto', desc: 'Tras cada boda, pide a los novios que dejen reseña en Google y en tu perfil de plataforma. Una reseña auténtica con fotos del evento vale más que cualquier anuncio de pago. Automatiza el pedido de reseña con un email automático 2 semanas después de la entrega.' },
-  { num: '07', titulo: 'Precios claros y paquetes definidos', desc: 'Los clientes odian pedir presupuesto sin saber el rango. Publica tus precios desde en tu web o perfil — "desde X€" elimina la fricción y filtra clientes que no son tu cliente ideal. La transparencia de precios es un diferenciador en fotografía.' },
+  { num: '07', titulo: 'Precios claros y paquetes definidos', desc: 'Los clientes odian pedir presupuesto sin saber el rango. Publica tus precios desde en tu web o perfil: "desde X€" elimina la fricción y filtra clientes que no son tu cliente ideal. La transparencia de precios es un diferenciador en fotografía.' },
 ];
 
 export default function BlogFotografoConseguirClientes() {
@@ -34,7 +34,7 @@ export default function BlogFotografoConseguirClientes() {
         <title>Cómo conseguir clientes como fotógrafo de eventos 2026 | XPEAK</title>
         <meta name="description" content="7 estrategias para que fotógrafos freelance consigan más clientes en bodas, comuniones y eventos en España. Portfolio, Instagram, plataformas y precios." />
         <link rel="canonical" href="https://xpeak.es/blog/fotografo-como-conseguir-clientes" />
-        <meta property="og:title" content="Cómo conseguir clientes como fotógrafo de eventos 2026 — XPEAK" />
+        <meta property="og:title" content="Cómo conseguir clientes como fotógrafo de eventos 2026 | XPEAK" />
         <meta property="og:description" content="Guía práctica para fotógrafos freelance de bodas y eventos. Portfolio, Instagram, plataformas y precios." />
         <meta property="og:url" content="https://xpeak.es/blog/fotografo-como-conseguir-clientes" />
         <meta property="og:type" content="article" />
@@ -62,7 +62,7 @@ export default function BlogFotografoConseguirClientes() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#4F46E5' }}>Para Fotógrafos · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Cómo conseguir clientes como fotógrafo de eventos en España: guía 2026</h1>
-            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>El mercado de fotografía de eventos en España crece cada año — pero también crece la competencia. Estas 7 estrategias marcan la diferencia entre un fotógrafo que lucha por conseguir clientes y uno con agenda llena de mayo a octubre.</p>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>El mercado de fotografía de eventos en España crece cada año, pero también crece la competencia. Estas 7 estrategias marcan la diferencia entre un fotógrafo que lucha por conseguir clientes y uno con agenda llena de mayo a octubre.</p>
             <time className="text-xs mt-3 block" style={{ color: '#666' }}>2 junio 2026</time>
           </div>
 

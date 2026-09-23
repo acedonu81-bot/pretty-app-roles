@@ -265,7 +265,7 @@ export type AffiliatePartner = {
 
 export const AFFILIATE_PARTNERS: AffiliatePartner[] = [
   {
-    name: 'Profesional DJ — tienda',
+    name: 'Profesional DJ: tienda',
     desc: 'Controladoras, altavoces, cascos e iluminación de cabina. Una de las tiendas de referencia en España.',
     roles: ['dj', 'grupo-musical'],
     url: null,
@@ -280,7 +280,7 @@ export const AFFILIATE_PARTNERS: AffiliatePartner[] = [
   // Los enlaces go.hotmart.com son las URL rastreables de la cuenta de
   // afiliado: enlazar al curso de cualquier otra forma NO genera comisión.
   {
-    name: 'PRODJ Academy — Curso DJ con equipos Pioneer',
+    name: 'PRODJ Academy: Curso DJ con equipos Pioneer',
     desc: 'Formación completa sobre cabina Pioneer: mezcla, estructura de sets y manejo de equipo. 100% online, acceso inmediato.',
     roles: ['dj'],
     url: 'https://go.hotmart.com/T107497976C?ap=bf9f',
@@ -288,7 +288,7 @@ export const AFFILIATE_PARTNERS: AffiliatePartner[] = [
     kind: 'formacion',
   },
   {
-    name: 'PRODJ Academy — Curso DJ con equipos Denon',
+    name: 'PRODJ Academy: Curso DJ con equipos Denon',
     desc: 'El mismo temario sobre cabina Denon (Prime, SC Live): para quien pincha con Engine DJ y no con Rekordbox.',
     roles: ['dj'],
     url: 'https://go.hotmart.com/J107498033J',
@@ -336,7 +336,7 @@ export const AFFILIATE_PARTNERS: AffiliatePartner[] = [
     kind: 'formacion',
   },
   {
-    name: 'Global Training 360º — Peluquería',
+    name: 'Global Training 360º: Peluquería',
     desc: 'Dos másters para peluqueros: gestión del negocio y maestría del corte. De Fernando Suarz.',
     // Va DESPUÉS del de maquillaje porque partnersForRole respeta el orden de
     // este array: a una maquilladora le salía primero un máster de corte de

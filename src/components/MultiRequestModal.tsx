@@ -142,7 +142,7 @@ export default function MultiRequestModal({ categoryLabel, city, pros, onClose }
             <CheckCircle size={40} className="mx-auto mb-4" style={{ color: '#22c55e' }} />
             <h3 className="text-lg font-black mb-2" style={{ color: '#111' }}>Enviado a {sentCount} profesional{sentCount > 1 ? 'es' : ''}</h3>
             <p className="text-sm mb-6" style={{ color: '#333' }}>
-              Los que estén disponibles para tu fecha te contactarán directamente. Recibirás varias respuestas — quédate con la que más te convenza.
+              Los que estén disponibles para tu fecha te contactarán directamente. Recibirás varias respuestas: quédate con la que más te convenza.
             </p>
             <button onClick={onClose} className="px-6 py-2.5 rounded-xl text-sm font-bold"
               style={{ background: '#f5f4f0', border: '1px solid rgba(0,0,0,0.08)', color: '#222' }}>

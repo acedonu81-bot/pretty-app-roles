@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Toledo', item: 'https://xpeak.es/blog/precio-azafatas-toledo' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '100–140€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '120–180€/día', nota: 'Eventos de marca y protocolo' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '130–170€/día', nota: 'Turismo internacional y congresos' },
-  { perfil: 'Azafata de recepción para bodas', tarifa: '110–160€/día', nota: 'Palacios y conventos del casco histórico' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '150–210€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '65–100€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '100-140€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '120-180€/día', nota: 'Eventos de marca y protocolo' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '130-170€/día', nota: 'Turismo internacional y congresos' },
+  { perfil: 'Azafata de recepción para bodas', tarifa: '110-160€/día', nota: 'Palacios y conventos del casco histórico' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '150-210€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '65-100€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasToledo() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasToledo() {
         <title>Precio azafatas para eventos en Toledo 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para bodas en espacios históricos y eventos corporativos en Toledo. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-toledo" />
-        <meta property="og:title" content="Precio azafatas eventos Toledo 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Toledo 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para bodas históricas y eventos corporativos en Toledo." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-toledo" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

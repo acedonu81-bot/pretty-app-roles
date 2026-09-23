@@ -12,17 +12,17 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
   { '@type': 'Question', name: '¿Cuánto cobra un bailarín para una boda o evento en España?', acceptedAnswer: { '@type': 'Answer', text: 'Un show de baile profesional (flamenco, latino, danza contemporánea) para boda o evento cuesta entre 200€ y 600€ según duración, número de bailarines y si incluye coreografía personalizada. Los shows de compañía (4-6 bailarines) suben hasta 800-1.500€.' } },
   { '@type': 'Question', name: '¿Cuánto cuesta una clase particular de salsa o bachata?', acceptedAnswer: { '@type': 'Answer', text: 'Una clase particular de salsa, bachata o kizomba con instructor cuesta entre 25€ y 50€/hora en formato individual, y entre 15€ y 30€ por persona en formato pareja o grupo reducido (3-4 personas). Los packs de varias clases suelen tener descuento por volumen.' } },
   { '@type': 'Question', name: '¿Qué diferencia hay entre un bailarín de shows y un instructor de baile?', acceptedAnswer: { '@type': 'Answer', text: 'El bailarín de shows actúa en eventos (bodas, galas, corporativos) con coreografías de espectáculo, normalmente en solitario o compañía. El instructor enseña pasos y técnica a particulares o parejas, en clases sueltas o cursos. Muchos profesionales ofrecen ambos servicios.' } },
-  { '@type': 'Question', name: '¿Con cuánta antelación reservar bailarín o instructor?', acceptedAnswer: { '@type': 'Answer', text: 'Para shows en bodas y eventos, reserva con 4-8 semanas de antelación, especialmente en temporada alta (mayo-septiembre). Para clases particulares, muchos instructores tienen disponibilidad esta misma semana — XPEAK permite contactar directamente y ver agenda real.' } },
+  { '@type': 'Question', name: '¿Con cuánta antelación reservar bailarín o instructor?', acceptedAnswer: { '@type': 'Answer', text: 'Para shows en bodas y eventos, reserva con 4-8 semanas de antelación, especialmente en temporada alta (mayo-septiembre). Para clases particulares, muchos instructores tienen disponibilidad esta misma semana. XPEAK permite contactar directamente y ver agenda real.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Precio bailarín e instructor', item: 'https://xpeak.es/blog/precio-bailarin-instructor-salsa-bachata' }] };
 
 const PRECIOS = [
-  { perfil: 'Show individual (flamenco, latino, contemporáneo)', tarifa: '200–400€', nota: 'Actuación de 15-30 min' },
-  { perfil: 'Show en pareja', tarifa: '350–600€', nota: 'Coreografía sincronizada' },
-  { perfil: 'Compañía (4-6 bailarines)', tarifa: '800–1.500€', nota: 'Shows de mayor formato para galas' },
-  { perfil: 'Coreografía personalizada primer baile', tarifa: '150–300€', nota: 'Clases + montaje de la coreografía' },
-  { perfil: 'Clase particular individual', tarifa: '25–50€/hora', nota: 'Salsa, bachata, kizomba' },
-  { perfil: 'Clase en pareja o grupo reducido', tarifa: '15–30€/persona/hora', nota: '3-4 personas, precio por cabeza' },
+  { perfil: 'Show individual (flamenco, latino, contemporáneo)', tarifa: '200-400€', nota: 'Actuación de 15-30 min' },
+  { perfil: 'Show en pareja', tarifa: '350-600€', nota: 'Coreografía sincronizada' },
+  { perfil: 'Compañía (4-6 bailarines)', tarifa: '800-1.500€', nota: 'Shows de mayor formato para galas' },
+  { perfil: 'Coreografía personalizada primer baile', tarifa: '150-300€', nota: 'Clases + montaje de la coreografía' },
+  { perfil: 'Clase particular individual', tarifa: '25-50€/hora', nota: 'Salsa, bachata, kizomba' },
+  { perfil: 'Clase en pareja o grupo reducido', tarifa: '15-30€/persona/hora', nota: '3-4 personas, precio por cabeza' },
 ];
 
 export default function BlogPrecioBailarin() {
@@ -32,7 +32,7 @@ export default function BlogPrecioBailarin() {
         <title>Precio bailarín e instructor de salsa/bachata España 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobra un bailarín para eventos y cuánto cuesta una clase de salsa, bachata o kizomba en España. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-bailarin-instructor-salsa-bachata" />
-        <meta property="og:title" content="Precio bailarín e instructor salsa/bachata 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio bailarín e instructor salsa/bachata 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de bailarines para eventos e instructores de salsa y bachata en España." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-bailarin-instructor-salsa-bachata" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />
@@ -76,7 +76,7 @@ export default function BlogPrecioBailarin() {
                 'Show de evento: espectáculo de 15-30 min, coreografía cerrada, ideal para bodas, galas y actos corporativos que buscan un momento de impacto visual.',
                 'Coreografía de primer baile: el instructor enseña a la pareja de novios una coreografía a medida en varias sesiones antes de la boda.',
                 'Clases particulares de salsa/bachata/kizomba: sesiones regulares para aprender a bailar, en formato individual, pareja o grupo reducido.',
-                'Muchos profesionales de XPEAK ofrecen ambos servicios — shows para eventos y clases particulares — bajo el mismo perfil.',
+                'Muchos profesionales de XPEAK ofrecen ambos servicios, shows para eventos y clases particulares, bajo el mismo perfil.',
               ].map((item,i) => (<div key={i} className="flex items-start gap-3 p-3 rounded-lg" style={{ background: 'rgba(0,0,0,0.02)' }}><span className="text-xs font-black shrink-0 mt-0.5" style={{ color: '#DB2777' }}>✓</span><p className="text-xs" style={{ color: '#111' }}>{item}</p></div>))}</div>
             </section>
             <section>

@@ -34,7 +34,7 @@ const VerificationSection = () => {
         verification_submitted_at: new Date().toISOString(),
       }).eq('user_id', user.id);
       if (updateErr) throw updateErr;
-      toast.success('Vídeo enviado. El equipo XPEAK lo revisará en 24–48h.');
+      toast.success('Vídeo enviado. El equipo XPEAK lo revisará en 24-48h.');
 
       // Aviso al admin. Sin esto nadie se entera de que hay una solicitud
       // en cola pese a que la UI promete revisión en 24-48h.
@@ -96,7 +96,7 @@ const VerificationSection = () => {
             {syncedStatus === 'approved'
               ? 'Tu perfil aparece con la estrella dorada en todas las búsquedas.'
               : syncedStatus === 'pending'
-                ? 'El equipo XPEAK está revisando tu vídeo. Plazo: 24–48h.'
+                ? 'El equipo XPEAK está revisando tu vídeo. Plazo: 24-48h.'
                 : 'Aparece primero en búsquedas. Los empresarios filtran por este sello.'}
           </p>
         </div>
@@ -108,10 +108,10 @@ const VerificationSection = () => {
             style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.1)' }}>
             <p className="text-xs font-bold mb-3" style={{ color: '#8A6D0F' }}>Qué necesitas enviar:</p>
             {[
-              { icon: Film,      text: 'Vídeo de 30–90 segundos demostrando tu habilidad en directo' },
+              { icon: Film,      text: 'Vídeo de 30-90 segundos demostrando tu habilidad en directo' },
               { icon: Headphones, text: 'Calidad mínima: 720p, buena iluminación' },
-              { icon: ScanLine,  text: 'Sin filtros, sin música superpuesta — que se vea el trabajo real' },
-              { icon: UserCheck, text: 'Revisión manual por el equipo XPEAK en 24–48h' },
+              { icon: ScanLine,  text: 'Sin filtros, sin música superpuesta, que se vea el trabajo real' },
+              { icon: UserCheck, text: 'Revisión manual por el equipo XPEAK en 24-48h' },
             ].map(({ icon: Icon, text }) => (
               <div key={text} className="flex items-start gap-2.5">
                 <Icon size={13} style={{ color: 'rgba(212,175,55,0.5)', flexShrink: 0, marginTop: 1 }} />
@@ -146,7 +146,7 @@ const VerificationSection = () => {
           style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}>
           <CheckCircle size={16} style={{ color: '#8A6D0F' }} className="flex-shrink-0" />
           <div>
-            <p className="text-xs font-bold" style={{ color: '#8A6D0F' }}>Sello activo — tu perfil es prioritario en búsquedas</p>
+            <p className="text-xs font-bold" style={{ color: '#8A6D0F' }}>Sello activo: tu perfil es prioritario en búsquedas</p>
             <p className="text-xs text-muted-foreground">Los empresarios ven tu ★ en todas las listas y filtros.</p>
           </div>
         </div>

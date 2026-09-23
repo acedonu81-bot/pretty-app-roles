@@ -31,18 +31,18 @@ const breadcrumb = {
 const faqStructured = {
   '@context': 'https://schema.org', '@type': 'FAQPage',
   mainEntity: [
-    { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de comunión en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de comunión en Barcelona cuesta entre 400€ y 1.200€. El precio incluye normalmente la cobertura del día (ceremonia + banquete, 5–7 horas) y una galería online. Barcelona tiene precios un 15–20% superiores a la media nacional por el coste de vida.' } },
-    { '@type': 'Question', name: '¿Qué incluye el reportaje de comunión en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'El paquete estándar incluye cobertura del día completo (preparativos, iglesia o civiles, banquete), 200–400 fotos editadas en alta resolución, galería online privada y entrega en 3–4 semanas. El álbum impreso es un extra en la mayoría de packs.' } },
-    { '@type': 'Question', name: '¿Cuándo reservar fotógrafo de comunión en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'Las comuniones en Barcelona se concentran en mayo y junio. Los fotógrafos de referencia se agotan con 6–9 meses de antelación. Reserva antes de diciembre para asegurar el fotógrafo que quieres en tu fecha.' } },
-    { '@type': 'Question', name: '¿Hace falta sesión previa de estudio para la comunión?', acceptedAnswer: { '@type': 'Answer', text: 'Muchas familias contratan una sesión de estudio o de parque 1–2 semanas antes del día para conseguir fotos más intimistas y artísticas sin las prisas del día. Tiene un coste adicional de 150–300€ pero los resultados son muy diferentes.' } },
+    { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de comunión en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de comunión en Barcelona cuesta entre 400€ y 1.200€. El precio incluye normalmente la cobertura del día (ceremonia + banquete, 5-7 horas) y una galería online. Barcelona tiene precios un 15-20% superiores a la media nacional por el coste de vida.' } },
+    { '@type': 'Question', name: '¿Qué incluye el reportaje de comunión en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'El paquete estándar incluye cobertura del día completo (preparativos, iglesia o civiles, banquete), 200-400 fotos editadas en alta resolución, galería online privada y entrega en 3-4 semanas. El álbum impreso es un extra en la mayoría de packs.' } },
+    { '@type': 'Question', name: '¿Cuándo reservar fotógrafo de comunión en Barcelona?', acceptedAnswer: { '@type': 'Answer', text: 'Las comuniones en Barcelona se concentran en mayo y junio. Los fotógrafos de referencia se agotan con 6-9 meses de antelación. Reserva antes de diciembre para asegurar el fotógrafo que quieres en tu fecha.' } },
+    { '@type': 'Question', name: '¿Hace falta sesión previa de estudio para la comunión?', acceptedAnswer: { '@type': 'Answer', text: 'Muchas familias contratan una sesión de estudio o de parque 1-2 semanas antes del día para conseguir fotos más intimistas y artísticas sin las prisas del día. Tiene un coste adicional de 150-300€ pero los resultados son muy diferentes.' } },
   ],
 };
 
 const PRICES = [
-  { perfil: 'Fotógrafo emergente', rango: '350€ – 600€', nota: 'Cobertura básica, galería digital' },
-  { perfil: 'Fotógrafo profesional', rango: '600€ – 950€', nota: 'Día completo, edición cuidada' },
-  { perfil: 'Fotógrafo premium', rango: '950€ – 1.400€', nota: 'Sesión previa incluida, álbum' },
-  { perfil: 'Fotógrafo de referencia', rango: '1.400€ – 2.000€', nota: 'Reportaje artístico, publicaciones' },
+  { perfil: 'Fotógrafo emergente', rango: '350€-600€', nota: 'Cobertura básica, galería digital' },
+  { perfil: 'Fotógrafo profesional', rango: '600€-950€', nota: 'Día completo, edición cuidada' },
+  { perfil: 'Fotógrafo premium', rango: '950€-1.400€', nota: 'Sesión previa incluida, álbum' },
+  { perfil: 'Fotógrafo de referencia', rango: '1.400€-2.000€', nota: 'Reportaje artístico, publicaciones' },
 ];
 
 export default function BlogFotografoComunionBarcelona() {
@@ -70,7 +70,7 @@ export default function BlogFotografoComunionBarcelona() {
           <p className="text-[#555] text-sm mb-8">Actualizado junio 2026 · 7 min lectura</p>
 
           <BlogAnswerBox question="¿Cuánto cuesta un fotógrafo de comunión en Barcelona?">
-            Un fotógrafo de comunión en Barcelona cuesta entre <strong>400€ y 1.200€</strong>. Los fotógrafos de referencia con agenda llena se sitúan en el rango 900–1.400€. Barcelona tiene precios un 15–20% superiores a la media nacional.
+            Un fotógrafo de comunión en Barcelona cuesta entre <strong>400€ y 1.200€</strong>. Los fotógrafos de referencia con agenda llena se sitúan en el rango 900-1.400€. Barcelona tiene precios un 15-20% superiores a la media nacional.
           </BlogAnswerBox>
 
           <p className="text-[#333] mb-6">Barcelona concentra una gran cantidad de fotógrafos especializados en comuniones con estilos muy distintos: desde el reportaje clásico y formal hasta el estilo documental natural o la sesión de moda artística. La clave es elegir el estilo que conecte con la personalidad del niño o niña.</p>
@@ -97,11 +97,11 @@ export default function BlogFotografoComunionBarcelona() {
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Mejores localizaciones para fotos de comunión en Barcelona</h2>
           <ul className="space-y-3 mb-8 text-[#333]">
-            <li><strong className="text-[#111]">Park Güell</strong> — Las terrazas y el camino del Viaducte son icónicas. Requiere reserva de entrada. Luz excepcional al atardecer.</li>
-            <li><strong className="text-[#111]">Barrio Gótico</strong> — Callejuelas medievales y fachadas con encanto. Ideal para el reportaje documental.</li>
-            <li><strong className="text-[#111]">Barceloneta / Paseo Marítimo</strong> — Luz mediterránea y ambiente relajado. Muy popular para sesiones casuales al atardecer.</li>
-            <li><strong className="text-[#111]">Parque de la Ciutadella</strong> — Fuente monumental y naturaleza. Sin coste de acceso, muy versátil para diferentes estilos.</li>
-            <li><strong className="text-[#111]">El Born / Eixample</strong> — Arquitectura modernista como telón de fondo para reportajes urbanos de moda.</li>
+            <li><strong className="text-[#111]">Park Güell</strong>: Las terrazas y el camino del Viaducte son icónicas. Requiere reserva de entrada. Luz excepcional al atardecer.</li>
+            <li><strong className="text-[#111]">Barrio Gótico</strong>: Callejuelas medievales y fachadas con encanto. Ideal para el reportaje documental.</li>
+            <li><strong className="text-[#111]">Barceloneta / Paseo Marítimo</strong>: Luz mediterránea y ambiente relajado. Muy popular para sesiones casuales al atardecer.</li>
+            <li><strong className="text-[#111]">Parque de la Ciutadella</strong>: Fuente monumental y naturaleza. Sin coste de acceso, muy versátil para diferentes estilos.</li>
+            <li><strong className="text-[#111]">El Born / Eixample</strong>: Arquitectura modernista como telón de fondo para reportajes urbanos de moda.</li>
           </ul>
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-fotografo" articlePath="/blog/fotografo-comunion-barcelona" />

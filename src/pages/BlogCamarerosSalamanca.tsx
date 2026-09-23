@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Camareros Salamanca', item: 'https://xpeak.es/blog/camareros-eventos-salamanca' }] };
 
 const PRECIOS = [
-  { perfil: 'Camarero/a de sala', tarifa: '10–14€/hora', nota: 'Cóctel, cena sentada o buffet' },
-  { perfil: 'Bartender / coctelería', tarifa: '13–19€/hora', nota: 'Barra libre en bodas y eventos' },
-  { perfil: 'Jefe de sala / coordinador', tarifa: '18–25€/hora', nota: 'Gestión del equipo en boda o evento grande' },
-  { perfil: 'Servicio boda completo (6-7h)', tarifa: '100–190€/persona', nota: 'Cóctel + cena + barra' },
-  { perfil: 'Barra libre con bartender (4h)', tarifa: '130–280€', nota: 'Incluye montaje y desmontaje' },
-  { perfil: 'Personal de cocina de apoyo', tarifa: '11–17€/hora', nota: 'Emplatado y logística en directo' },
+  { perfil: 'Camarero/a de sala', tarifa: '10-14€/hora', nota: 'Cóctel, cena sentada o buffet' },
+  { perfil: 'Bartender / coctelería', tarifa: '13-19€/hora', nota: 'Barra libre en bodas y eventos' },
+  { perfil: 'Jefe de sala / coordinador', tarifa: '18-25€/hora', nota: 'Gestión del equipo en boda o evento grande' },
+  { perfil: 'Servicio boda completo (6-7h)', tarifa: '100-190€/persona', nota: 'Cóctel + cena + barra' },
+  { perfil: 'Barra libre con bartender (4h)', tarifa: '130-280€', nota: 'Incluye montaje y desmontaje' },
+  { perfil: 'Personal de cocina de apoyo', tarifa: '11-17€/hora', nota: 'Emplatado y logística en directo' },
 ];
 
 export default function BlogCamarerosSalamanca() {
@@ -33,7 +33,7 @@ export default function BlogCamarerosSalamanca() {
         <title>Precio camareros para eventos en Salamanca 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran los camareros y bartenders para bodas en fincas charras y eventos en Salamanca. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/camareros-eventos-salamanca" />
-        <meta property="og:title" content="Precio camareros eventos Salamanca 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio camareros eventos Salamanca 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de camareros y bartenders para bodas y eventos en Salamanca." />
         <meta property="og:url" content="https://xpeak.es/blog/camareros-eventos-salamanca" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

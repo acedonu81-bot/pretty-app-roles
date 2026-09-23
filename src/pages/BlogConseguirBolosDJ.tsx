@@ -18,8 +18,8 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Cómo conseguir bolos DJ', item: 'https://xpeak.es/blog/como-conseguir-bolos-dj' }] };
 
 const ESTRATEGIAS = [
-  { num: '01', titulo: 'Regístrate en plataformas especializadas', desc: 'Plataformas como XPEAK te conectan directamente con organizadores de bodas, comuniones y eventos corporativos que ya están buscando DJ. No tienes que buscar tú — los clientes llegan a tu perfil.' },
-  { num: '02', titulo: 'Crea un perfil en Instagram y TikTok', desc: 'Sube clips de tus sesiones, transiciones y setup. No necesitas muchos seguidores — necesitas contenido específico que aparezca cuando alguien busca "DJ boda Madrid" o "DJ para mi fiesta". El contenido local orgánico funciona mejor que los anuncios.' },
+  { num: '01', titulo: 'Regístrate en plataformas especializadas', desc: 'Plataformas como XPEAK te conectan directamente con organizadores de bodas, comuniones y eventos corporativos que ya están buscando DJ. No tienes que buscar tú: los clientes llegan a tu perfil.' },
+  { num: '02', titulo: 'Crea un perfil en Instagram y TikTok', desc: 'Sube clips de tus sesiones, transiciones y setup. No necesitas muchos seguidores: necesitas contenido específico que aparezca cuando alguien busca "DJ boda Madrid" o "DJ para mi fiesta". El contenido local orgánico funciona mejor que los anuncios.' },
   { num: '03', titulo: 'Publica tus mixes en SoundCloud y Mixcloud', desc: 'Los organizadores de bodas y promotores escuchan muestras antes de contratar. Un mix de 30 minutos grabado bien, etiquetado con géneros y ciudad, es tu mejor carta de presentación. Sube uno por tipo de evento: boda, comunión, fiesta privada.' },
   { num: '04', titulo: 'Empieza por cumpleaños y comuniones', desc: 'El mercado de bodas es el más lucrativo pero el más competitivo. Si estás empezando, cumpleaños y comuniones son la puerta de entrada: presupuestos más bajos, clientes más accesibles y referencias que luego te llevan a bodas.' },
   { num: '05', titulo: 'Fija un precio que no te arruine', desc: 'Cobrar barato para ganar clientes funciona a corto plazo pero te quema. Calcula tus costes reales (equipo, desplazamiento, tiempo de montaje y desmontaje) y añade beneficio. Un DJ que cobra poco genera desconfianza en bodas y eventos premium.' },
@@ -35,7 +35,7 @@ export default function BlogConseguirBolosDJ() {
         <title>Cómo conseguir bolos como DJ en España 2026 | XPEAK</title>
         <meta name="description" content="8 estrategias para conseguir más bolos como DJ freelance en España. Plataformas, redes sociales, precios y cómo posicionarte en el mercado de bodas y eventos." />
         <link rel="canonical" href="https://xpeak.es/blog/como-conseguir-bolos-dj" />
-        <meta property="og:title" content="Cómo conseguir bolos como DJ en España: 8 estrategias 2026 — XPEAK" />
+        <meta property="og:title" content="Cómo conseguir bolos como DJ en España: 8 estrategias 2026 | XPEAK" />
         <meta property="og:description" content="Guía práctica para DJs freelance. Plataformas, redes sociales, precios y cómo diferenciarte en el mercado." />
         <meta property="og:url" content="https://xpeak.es/blog/como-conseguir-bolos-dj" />
         <meta property="og:type" content="article" />
@@ -63,7 +63,7 @@ export default function BlogConseguirBolosDJ() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>Para DJs · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">Cómo conseguir bolos como DJ en España: 8 estrategias para 2026</h1>
-            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>España mueve más de 180.000 bodas al año, miles de comuniones y decenas de miles de eventos privados. El trabajo está ahí — el problema es que pocos DJs saben cómo llegar a ese mercado. Aquí van las 8 estrategias que funcionan en 2026.</p>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>España mueve más de 180.000 bodas al año, miles de comuniones y decenas de miles de eventos privados. El trabajo está ahí: el problema es que pocos DJs saben cómo llegar a ese mercado. Aquí van las 8 estrategias que funcionan en 2026.</p>
             <time className="text-xs mt-3 block" style={{ color: '#666' }}>2 junio 2026</time>
           </div>
 

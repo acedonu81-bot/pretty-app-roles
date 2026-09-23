@@ -41,70 +41,70 @@ const IDEAS = [
     num: '01',
     titulo: 'Team building gastronómico',
     desc: 'Los equipos compiten cocinando platos bajo la guia de un chef profesional. Ideal para grupos de hasta 40 personas. Las variantes mas populares son la paella, los pintxos vascos o la cocina mediterránea. Combina trabajo en equipo, creatividad y una cena al final.',
-    precio: '50–90€ por persona',
+    precio: '50-90€ por persona',
     ideal: 'Cenas de empresa de fin de año o bienvenida a nuevos equipos.',
   },
   {
     num: '02',
     titulo: 'Escape room privado',
     desc: 'Una sala de escape reservada en exclusiva para el equipo. Muchos proveedores ofrecen modalidad en vuestras propias instalaciones con material montado al momento. La presión del tiempo y la resolución de puzzles en equipo generan conversaciones que el trabajo diario no facilita.',
-    precio: '25–50€ por persona',
+    precio: '25-50€ por persona',
     ideal: 'Grupos de 10 a 30 personas. Onboarding o cierres de proyecto.',
   },
   {
     num: '03',
     titulo: 'Taller de coctelería',
     desc: 'Un bartender profesional enseña a preparar cócteles clásicos y versiones sin alcohol. Cada persona prepara sus propias bebidas. La actividad es muy social, no requiere habilidad previa y el resultado es la cena o aperitivo del mismo evento.',
-    precio: '40–80€ por persona',
+    precio: '40-80€ por persona',
     ideal: 'Afterworks, presentaciones de producto o celebraciones de hitos.',
   },
   {
     num: '04',
     titulo: 'Actuación de magia close-up',
     desc: 'Un mago profesional circula entre las mesas o grupos haciendo trucos a pocos centimetros de los asistentes. No necesita escenario ni preparacion especial del espacio. Es uno de los formatos que mas conversacion genera despues del evento.',
-    precio: '250–600€ por actuacion (1-2h)',
+    precio: '250-600€ por actuacion (1-2h)',
     ideal: 'Cokteles, recepciones y cenas de gala. Grupos de cualquier tamaño.',
   },
   {
     num: '05',
     titulo: 'Photobooth 360',
     desc: 'Una plataforma giratoria con cámara que graba vídeos cortos al estilo de las redes sociales. Los empleados suben al plato, el sistema genera el clip con música y efectos, y pueden descargarlo al instante. Genera contenido que la gente comparte voluntariamente.',
-    precio: '400–800€ (3-4h de servicio)',
+    precio: '400-800€ (3-4h de servicio)',
     ideal: 'Fiestas de empresa, presentaciones de marca o lanzamientos de producto.',
   },
   {
     num: '06',
     titulo: 'Cuarteto de jazz en vivo',
     desc: 'Un cuarteto de jazz crea una atmosfera completamente distinta a cualquier playlist. La musica en directo hace que las conversaciones fluyan de forma diferente. Funciona especialmente bien en cenas de empresa con invitados externos o clientes.',
-    precio: '500–1.200€ (2-3h)',
+    precio: '500-1.200€ (2-3h)',
     ideal: 'Cenas de gala, presentaciones a clientes, eventos de marca.',
   },
   {
     num: '07',
     titulo: 'DJ set privado',
     desc: 'Un DJ profesional con equipo propio convierte cualquier sala en una experiencia de fiesta. A diferencia del playlist en Spotify, el DJ lee la energia del grupo y adapta la musica en tiempo real. Muchos DJs especializados en eventos corporativos saben gestionar el paso de cena a afterwork sin cortar la velada.',
-    precio: '300–800€ (3-4h con equipo)',
+    precio: '300-800€ (3-4h con equipo)',
     ideal: 'Fiestas de empresa, premios anuales, apertura de oficinas.',
   },
   {
     num: '08',
     titulo: 'Taller de flamenco',
     desc: 'Un bailaor o bailaora profesional con guitarrista en directo enseña los elementos basicos del flamenco. No hace falta experiencia. La combinacion de ritmo, palmas y movimiento genera un ambiente muy festivo. Especialmente impactante con equipos internacionales o en eventos con visitantes extranjeros.',
-    precio: '400–900€ (1.5-2h con musico incluido)',
+    precio: '400-900€ (1.5-2h con musico incluido)',
     ideal: 'Eventos con asistentes internacionales, team days culturales.',
   },
   {
     num: '09',
     titulo: 'Quiz night corporativo',
     desc: 'Un presentador profesional conduce una noche de preguntas y respuestas por equipos con categorias personalizadas para la empresa: historia de la compañia, trivia del sector, cultura general. Muy competitivo, muy divertido y no necesita espacio especial.',
-    precio: '300–600€ (2h de actividad)',
+    precio: '300-600€ (2h de actividad)',
     ideal: 'Afterwork en sala privada de bar o restaurante. Grupos de 20-100 personas.',
   },
   {
     num: '10',
     titulo: 'Yincana urbana',
     desc: 'Los equipos compiten resolviendo retos y pistas por el centro de la ciudad o por las instalaciones de la empresa. Hay versiones digitales con app y versiones clasicas con sobre y mapa. La yincana genera conversacion espontanea y competitividad sana entre departamentos.',
-    precio: '30–60€ por persona',
+    precio: '30-60€ por persona',
     ideal: 'Team days, bienvenidas a nuevos empleados, integración de equipos remotos.',
   },
 ];
@@ -116,7 +116,7 @@ export default function BlogEventoEmpresaIdeas() {
         <title>10 ideas para eventos de empresa originales en España 2026 | XPEAK</title>
         <meta name="description" content="10 ideas originales para eventos de empresa en España: team building gastronómico, escape room, DJ privado, magia, flamenco y más. Precios y cuándo es ideal cada opción." />
         <link rel="canonical" href="https://xpeak.es/blog/ideas-eventos-empresa-originales" />
-        <meta property="og:title" content="10 ideas para eventos de empresa originales 2026 — XPEAK Blog" />
+        <meta property="og:title" content="10 ideas para eventos de empresa originales 2026 | XPEAK Blog" />
         <meta property="og:description" content="Ideas originales para eventos de empresa en España. Precios orientativos y cuándo usar cada formato." />
         <meta property="og:url" content="https://xpeak.es/blog/ideas-eventos-empresa-originales" />
         <meta property="og:type" content="article" />

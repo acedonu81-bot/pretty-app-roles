@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Maquillaje Benalmádena', item: 'https://xpeak.es/blog/maquillaje-eventos-benalmadena' }] };
 
 const PRECIOS = [
-  { perfil: 'Maquillaje novia (solo)', tarifa: '120–270€', nota: 'Incluye prueba previa' },
-  { perfil: 'Maquillaje novia + peinado', tarifa: '240–490€', nota: 'Servicio integral más demandado' },
-  { perfil: 'Madrina / invitada especial', tarifa: '65–130€', nota: 'Sin prueba previa habitualmente' },
-  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '400–760€', nota: 'Desplazamiento a hotel o Puerto Marina incluido' },
-  { perfil: 'Evento corporativo / azafata', tarifa: '35–75€/persona', nota: 'Maquillaje fast-track profesional' },
-  { perfil: 'Sesión foto / vídeo', tarifa: '95–220€', nota: 'HD, flash-friendly, retoque incluido' },
+  { perfil: 'Maquillaje novia (solo)', tarifa: '120-270€', nota: 'Incluye prueba previa' },
+  { perfil: 'Maquillaje novia + peinado', tarifa: '240-490€', nota: 'Servicio integral más demandado' },
+  { perfil: 'Madrina / invitada especial', tarifa: '65-130€', nota: 'Sin prueba previa habitualmente' },
+  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '400-760€', nota: 'Desplazamiento a hotel o Puerto Marina incluido' },
+  { perfil: 'Evento corporativo / azafata', tarifa: '35-75€/persona', nota: 'Maquillaje fast-track profesional' },
+  { perfil: 'Sesión foto / vídeo', tarifa: '95-220€', nota: 'HD, flash-friendly, retoque incluido' },
 ];
 
 export default function BlogMaquillajeBenalmadena() {
@@ -33,7 +33,7 @@ export default function BlogMaquillajeBenalmadena() {
         <title>Precio maquilladora para eventos en Benalmádena 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobra una maquilladora para bodas y eventos en Puerto Marina y hoteles de Benalmádena. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/maquillaje-eventos-benalmadena" />
-        <meta property="og:title" content="Precio maquilladora eventos Benalmádena 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio maquilladora eventos Benalmádena 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de maquilladoras para bodas y eventos en Puerto Marina y hoteles de Benalmádena." />
         <meta property="og:url" content="https://xpeak.es/blog/maquillaje-eventos-benalmadena" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

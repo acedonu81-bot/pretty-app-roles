@@ -83,7 +83,7 @@ export default class AppErrorBoundary extends Component<Props, State> {
           Algo ha fallado al cargar esta pantalla.
         </p>
         <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', maxWidth: 320 }}>
-          Ya lo sabemos. Prueba a recargar — si sigue pasando, escríbenos.
+          Ya lo sabemos. Prueba a recargar: si sigue pasando, escríbenos.
         </p>
         {/* Solo para admin: el envío a client_errors puede fallar (sin red,
             RLS, CSP) y entonces el crash no deja rastro consultable. Tenerlo

@@ -7,7 +7,7 @@
         { "href": "https://xpeak.es/llms-full.txt", "type": "text/plain" }
       ],
       "service-desc": [
-        { "href": "https://xpeak.es/.well-known/mcp/server-card.json", "type": "application/json", "title": "XPEAK MCP server — buscar profesionales y pedir presupuesto" }
+        { "href": "https://xpeak.es/.well-known/mcp/server-card.json", "type": "application/json", "title": "XPEAK MCP server: buscar profesionales y pedir presupuesto" }
       ],
       "item": [
         { "href": "https://xpeak.es/sitemap.xml", "type": "application/xml" },

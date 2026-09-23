@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Torrevieja', item: 'https://xpeak.es/blog/precio-azafatas-torrevieja' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '135–175€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '155–220€/día', nota: 'Activaciones de marca en paseo marítimo' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '165–210€/día', nota: 'Muy demandada por población internacional residente' },
-  { perfil: 'Azafata multilingüe (3+ idiomas)', tarifa: '195–270€/día', nota: 'Eventos con clientela europea muy diversa' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '180–245€/día', nota: 'Gestión de equipo en eventos grandes' },
-  { perfil: 'Pack evento en paseo marítimo (4h)', tarifa: '85–135€', nota: 'Sube en temporada alta de verano' },
+  { perfil: 'Azafata de stand / feria', tarifa: '135-175€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '155-220€/día', nota: 'Activaciones de marca en paseo marítimo' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '165-210€/día', nota: 'Muy demandada por población internacional residente' },
+  { perfil: 'Azafata multilingüe (3+ idiomas)', tarifa: '195-270€/día', nota: 'Eventos con clientela europea muy diversa' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '180-245€/día', nota: 'Gestión de equipo en eventos grandes' },
+  { perfil: 'Pack evento en paseo marítimo (4h)', tarifa: '85-135€', nota: 'Sube en temporada alta de verano' },
 ];
 
 export default function BlogPrecioAzafatasTorrevieja() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasTorrevieja() {
         <title>Precio azafatas para eventos en Torrevieja 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos con clientela internacional en Torrevieja. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-torrevieja" />
-        <meta property="og:title" content="Precio azafatas eventos Torrevieja 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Torrevieja 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para eventos internacionales en Torrevieja." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-torrevieja" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

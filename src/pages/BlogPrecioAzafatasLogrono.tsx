@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Logroño', item: 'https://xpeak.es/blog/precio-azafatas-logrono' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '115–160€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de catas y bodega', tarifa: '130–190€/día', nota: 'Conocimiento del sector vitivinícola valorado' },
-  { perfil: 'Azafata de imagen', tarifa: '135–200€/día', nota: 'Bodas en fincas y bodegas riojanas' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '145–195€/día', nota: 'Turismo enológico internacional' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '160–230€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '70–115€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '115-160€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de catas y bodega', tarifa: '130-190€/día', nota: 'Conocimiento del sector vitivinícola valorado' },
+  { perfil: 'Azafata de imagen', tarifa: '135-200€/día', nota: 'Bodas en fincas y bodegas riojanas' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '145-195€/día', nota: 'Turismo enológico internacional' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '160-230€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '70-115€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasLogrono() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasLogrono() {
         <title>Precio azafatas para eventos en Logroño 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para catas de vino, eventos en bodegas y bodas en Logroño. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-logrono" />
-        <meta property="og:title" content="Precio azafatas eventos Logroño 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Logroño 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para catas, bodegas y bodas en Logroño y La Rioja." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-logrono" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

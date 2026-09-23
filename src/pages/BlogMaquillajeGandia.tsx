@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Maquillaje Gandía', item: 'https://xpeak.es/blog/maquillaje-eventos-gandia' }] };
 
 const PRECIOS = [
-  { perfil: 'Maquillaje novia (solo)', tarifa: '110–260€', nota: 'Incluye prueba previa' },
-  { perfil: 'Maquillaje novia + peinado', tarifa: '220–460€', nota: 'Servicio integral más demandado, sube en verano' },
-  { perfil: 'Madrina / invitada especial', tarifa: '65–125€', nota: 'Sin prueba previa habitualmente' },
-  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '370–720€', nota: 'Desplazamiento a finca incluido' },
-  { perfil: 'Evento corporativo / azafata', tarifa: '35–70€/persona', nota: 'Maquillaje fast-track profesional' },
-  { perfil: 'Maquillaje evento de playa', tarifa: '50–100€', nota: 'Resistente al agua, temporada alta' },
+  { perfil: 'Maquillaje novia (solo)', tarifa: '110-260€', nota: 'Incluye prueba previa' },
+  { perfil: 'Maquillaje novia + peinado', tarifa: '220-460€', nota: 'Servicio integral más demandado, sube en verano' },
+  { perfil: 'Madrina / invitada especial', tarifa: '65-125€', nota: 'Sin prueba previa habitualmente' },
+  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '370-720€', nota: 'Desplazamiento a finca incluido' },
+  { perfil: 'Evento corporativo / azafata', tarifa: '35-70€/persona', nota: 'Maquillaje fast-track profesional' },
+  { perfil: 'Maquillaje evento de playa', tarifa: '50-100€', nota: 'Resistente al agua, temporada alta' },
 ];
 
 export default function BlogMaquillajeGandia() {
@@ -33,7 +33,7 @@ export default function BlogMaquillajeGandia() {
         <title>Precio maquilladora para eventos en Gandía 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobra una maquilladora para bodas y eventos de playa en Gandía. Tarifas por servicio 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/maquillaje-eventos-gandia" />
-        <meta property="og:title" content="Precio maquilladora eventos Gandía 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio maquilladora eventos Gandía 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de maquilladoras para bodas y eventos de playa en Gandía." />
         <meta property="og:url" content="https://xpeak.es/blog/maquillaje-eventos-gandia" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

@@ -12,16 +12,16 @@ import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para bodas en Mallorca: precio y cómo contratar en 2026', description: 'Cuánto cuesta un DJ para una boda en Mallorca. Precios reales 2026, fincas de lujo, bodas internacionales y cómo contratar el mejor DJ en las Islas Baleares.', datePublished: '2026-06-03', dateModified: '2026-06-03', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-bodas-mallorca' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda en Mallorca?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ para boda en Mallorca cuesta entre 900€ y 3.000€ para el servicio completo. Mallorca tiene uno de los mercados de bodas de lujo más activos de Europa, con muchas bodas de parejas alemanas, británicas y escandinavas con presupuestos muy altos. Para bodas locales o nacionales el rango es 800-1.800€; para bodas internacionales de lujo puede superar los 3.000€.' } },
-  { '@type': 'Question', name: '¿Cuándo es la temporada de bodas en Mallorca?', acceptedAnswer: { '@type': 'Answer', text: 'La temporada alta de bodas en Mallorca es de mayo a octubre. El mes más popular es septiembre por el calor más suave y la luz dorada del atardecer. Julio y agosto tienen bodas pero el calor puede ser extremo en el interior — las fincas con piscina son las más demandadas en esos meses. El mercado de bodas internacionales funciona incluso en primavera temprana y otoño tardío.' } },
+  { '@type': 'Question', name: '¿Cuándo es la temporada de bodas en Mallorca?', acceptedAnswer: { '@type': 'Answer', text: 'La temporada alta de bodas en Mallorca es de mayo a octubre. El mes más popular es septiembre por el calor más suave y la luz dorada del atardecer. Julio y agosto tienen bodas pero el calor puede ser extremo en el interior: las fincas con piscina son las más demandadas en esos meses. El mercado de bodas internacionales funciona incluso en primavera temprana y otoño tardío.' } },
   { '@type': 'Question', name: '¿El DJ necesita hablar inglés o alemán para bodas en Mallorca?', acceptedAnswer: { '@type': 'Answer', text: 'Para bodas internacionales en Mallorca, sí es muy recomendable. Más del 60% de las bodas en Mallorca son de parejas extranjeras (alemanas, británicas, escandinavas). Un DJ con inglés fluido y repertorio internacional puede cobrar un 30-50% más que uno sin esas capacidades. Si tu boda tiene invitados de múltiples países, el DJ necesita gestionar el MC de forma inclusiva.' } },
   { '@type': 'Question', name: '¿Cómo llega el DJ a las fincas más remotas de Mallorca?', acceptedAnswer: { '@type': 'Answer', text: 'La mayoría de DJs de Mallorca incluyen el desplazamiento dentro de la isla en su precio. Las fincas del interior (Serra de Tramuntana, Randa, Manacor) están a 30-60 minutos de Palma. Para fincas muy remotas en la sierra, algunos DJs añaden suplemento de transporte de equipo de 50-100€ por el acceso complicado a carreteras estrechas.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'DJ bodas Mallorca', item: 'https://xpeak.es/blog/dj-bodas-mallorca' }] };
 const PRECIOS = [
-  { servicio: 'Solo pista de baile (4-5h)', precio: '500–1.000€' },
-  { servicio: 'Cóctel + pista de baile', precio: '800–1.500€' },
-  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '1.000–2.200€' },
-  { servicio: 'Pack premium bodas internacionales de lujo', precio: '1.500–3.500€' },
+  { servicio: 'Solo pista de baile (4-5h)', precio: '500-1.000€' },
+  { servicio: 'Cóctel + pista de baile', precio: '800-1.500€' },
+  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '1.000-2.200€' },
+  { servicio: 'Pack premium bodas internacionales de lujo', precio: '1.500-3.500€' },
 ];
 const ZONAS = [
   { zona: 'Serra de Tramuntana', fincas: 'Valldemossa, Deià, Sóller', nota: 'UNESCO, máxima exclusividad' },
@@ -38,7 +38,7 @@ export default function BlogDJBodaMallorca() {
         <title>DJ para bodas en Mallorca: precio 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un DJ para una boda en Mallorca. Precios reales 2026, fincas de lujo, bodas internacionales y temporada alta en Baleares." />
         <link rel="canonical" href="https://xpeak.es/blog/dj-bodas-mallorca" />
-        <meta property="og:title" content="DJ para bodas en Mallorca: precio 2026 — XPEAK Blog" />
+        <meta property="og:title" content="DJ para bodas en Mallorca: precio 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precios DJs boda Mallorca. Fincas de lujo, bodas internacionales y cómo elegir DJ en Baleares." />
         <meta property="og:url" content="https://xpeak.es/blog/dj-bodas-mallorca" />
         <meta property="og:type" content="article" />

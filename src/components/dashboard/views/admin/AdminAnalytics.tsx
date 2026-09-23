@@ -316,11 +316,11 @@ export default function AdminAnalytics() {
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-4">
         <Kpi icon={Users} label="Online ahora" valor={online ?? '—'} sub="últimos 5 min" live
           onClick={() => setOnlineAbierto(o => !o)} abierto={onlineAbierto}
-          ayuda="Sesiones distintas con actividad en los últimos 5 minutos. Se actualiza sola cada 30s — no hace falta pulsar Actualizar. Excluye tu propio tráfico de admin y el de las cuentas demo. Toca la tarjeta para ver quién es y en qué página está." />
+          ayuda="Sesiones distintas con actividad en los últimos 5 minutos. Se actualiza sola cada 30s: no hace falta pulsar Actualizar. Excluye tu propio tráfico de admin y el de las cuentas demo. Toca la tarjeta para ver quién es y en qué página está." />
         <Kpi icon={Eye} label="Usuarios" valor={usuariosUnicos ?? '—'} sub={dias === 1 ? 'hoy' : `en ${dias} días`}
           ayuda="Personas distintas que han entrado, sin duplicar a quien vuelve varios días dentro del periodo. Excluye tu propio tráfico de admin y el de las cuentas demo." />
         <Kpi icon={Users} label="Sesiones" valor={totalSesiones} sub="entradas por día, sumadas"
-          ayuda="Personas distintas por día, sumadas — quien entra 3 días cuenta 3 veces (a diferencia de 'Usuarios', que no duplica). Útil para ver el pulso diario, no el total de gente real." />
+          ayuda="Personas distintas por día, sumadas: quien entra 3 días cuenta 3 veces (a diferencia de 'Usuarios', que no duplica). Útil para ver el pulso diario, no el total de gente real." />
         <Kpi icon={UserPlus} label="Altas" valor={totalAltas} sub="perfiles nuevos"
           ayuda="Perfiles creados en el periodo. Sale de la base de datos, así que tiene histórico completo desde el inicio del proyecto." />
         <Kpi icon={Send} label="Solicitudes" valor={totalSolicitudes} sub="Flash Booking"
@@ -389,7 +389,7 @@ export default function AdminAnalytics() {
         title="¿A qué hora entra tu gente?"
         ayuda="Suma todas las visitas por hora del día (hora española). Sirve para decidir cuándo publicar en redes y cuándo lanzar campañas: publicar cuando tu gente duerme es tirar el alcance. La franja es más fiable que la hora exacta: con pocas visitas, una sola visita puede cambiar cuál es 'la hora punta', pero la franja aguanta mejor ese ruido."
         hint={franjaPunta && totalPorHora > 0
-          ? `${franjaPunta.nombre} concentra el ${pctFranjaPunta}% de las visitas — es tu mejor franja para publicar y lanzar campañas. Dentro de ella, la hora más fuerte es las ${horaPunta?.hora}:00 h (${pctHoraPunta}% del total).`
+          ? `${franjaPunta.nombre} concentra el ${pctFranjaPunta}% de las visitas: es tu mejor franja para publicar y lanzar campañas. Dentro de ella, la hora más fuerte es las ${horaPunta?.hora}:00 h (${pctHoraPunta}% del total).`
           : 'Hora local de España. Se llena a medida que entren visitas.'}
       >
         <ResponsiveContainer width="100%" height={190}>

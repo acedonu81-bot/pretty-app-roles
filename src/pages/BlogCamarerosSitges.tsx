@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Camareros Sitges', item: 'https://xpeak.es/blog/camareros-eventos-sitges' }] };
 
 const PRECIOS = [
-  { perfil: 'Camarero/a de sala', tarifa: '15–21€/hora', nota: 'Cóctel, cena sentada o buffet' },
-  { perfil: 'Bartender / coctelería', tarifa: '19–28€/hora', nota: 'Barra libre y coctelería de autor en villas' },
-  { perfil: 'Jefe de sala / coordinador', tarifa: '25–36€/hora', nota: 'Gestión del equipo en boda o evento de lujo' },
-  { perfil: 'Servicio boda en villa (6-7h)', tarifa: '170–320€/persona', nota: 'Cóctel + cena + barra' },
-  { perfil: 'Barra libre con bartender (4h)', tarifa: '220–450€', nota: 'Incluye montaje y desmontaje' },
-  { perfil: 'Personal de apoyo Carnaval/Festival', tarifa: '16–24€/hora', nota: 'Refuerzo en bares y restaurantes del centro' },
+  { perfil: 'Camarero/a de sala', tarifa: '15-21€/hora', nota: 'Cóctel, cena sentada o buffet' },
+  { perfil: 'Bartender / coctelería', tarifa: '19-28€/hora', nota: 'Barra libre y coctelería de autor en villas' },
+  { perfil: 'Jefe de sala / coordinador', tarifa: '25-36€/hora', nota: 'Gestión del equipo en boda o evento de lujo' },
+  { perfil: 'Servicio boda en villa (6-7h)', tarifa: '170-320€/persona', nota: 'Cóctel + cena + barra' },
+  { perfil: 'Barra libre con bartender (4h)', tarifa: '220-450€', nota: 'Incluye montaje y desmontaje' },
+  { perfil: 'Personal de apoyo Carnaval/Festival', tarifa: '16-24€/hora', nota: 'Refuerzo en bares y restaurantes del centro' },
 ];
 
 export default function BlogCamarerosSitges() {
@@ -33,7 +33,7 @@ export default function BlogCamarerosSitges() {
         <title>Precio camareros para eventos en Sitges 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran los camareros y bartenders para bodas en villas y eventos en Sitges. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/camareros-eventos-sitges" />
-        <meta property="og:title" content="Precio camareros eventos Sitges 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio camareros eventos Sitges 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de camareros y bartenders para bodas de lujo y eventos en Sitges." />
         <meta property="og:url" content="https://xpeak.es/blog/camareros-eventos-sitges" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

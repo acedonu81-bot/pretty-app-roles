@@ -235,7 +235,7 @@ const EventRequestsSection = () => {
         r.id === responseId ? { ...r, chosen_at: new Date().toISOString() } : r
       ),
     }));
-    toast.success(`Avisado ${nombre} — en cuanto confirme, se cierra la oferta.`);
+    toast.success(`Avisado ${nombre}: en cuanto confirme, se cierra la oferta.`);
   };
 
   // El profesional preseleccionado acepta: esto SÍ dispara notify_contratacion
@@ -492,7 +492,7 @@ const EventRequestsSection = () => {
     // pide confirmar.
     if (/\b(test|prueba|verify|demo)\b/i.test(form.client_name)) {
       const seguro = window.confirm(
-        `"${form.client_name}" parece un nombre de prueba. Al publicar se avisa YA a profesionales reales por email y push — ¿seguro que quieres continuar?`
+        `"${form.client_name}" parece un nombre de prueba. Al publicar se avisa YA a profesionales reales por email y push: ¿seguro que quieres continuar?`
       );
       if (!seguro) return;
     }
@@ -545,7 +545,7 @@ const EventRequestsSection = () => {
             Solicitudes de Evento
           </h3>
           <p className="text-xs" style={{ color: '#333' }}>
-            {isEmpresario ? 'Publica lo que necesitas — los profesionales te contactan' : 'Clientes buscando profesionales ahora'}
+            {isEmpresario ? 'Publica lo que necesitas: los profesionales te contactan' : 'Clientes buscando profesionales ahora'}
           </p>
         </div>
         {/* Publicar una solicitud de evento es cosa del empresario: al
@@ -641,7 +641,7 @@ const EventRequestsSection = () => {
                       <span className="flex items-center gap-1 text-xs font-bold" style={{ color: '#8A6D0F' }}>
                         <Euro size={10} />
                         {req.budget_min && req.budget_max
-                          ? `${req.budget_min}–${req.budget_max}€`
+                          ? `${req.budget_min}-${req.budget_max}€`
                           : req.budget_max ? `hasta ${req.budget_max}€` : `desde ${req.budget_min}€`}
                       </span>
                     )}
@@ -703,7 +703,7 @@ const EventRequestsSection = () => {
                                 <div key={slot.id}>
                                   <div className="flex items-center justify-between mb-1.5">
                                     <p className="text-[10px] font-black uppercase tracking-wider" style={{ color: '#8A6D0F' }}>
-                                      {slot.role} — {candidatos.length} interesado{candidatos.length === 1 ? '' : 's'}
+                                      {slot.role} · {candidatos.length} interesado{candidatos.length === 1 ? '' : 's'}
                                     </p>
                                     {candidatos.length === 0 && (
                                       <button type="button"
@@ -811,7 +811,7 @@ const EventRequestsSection = () => {
                       ) : applied[req.id] ? (
                         <div className="flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-bold"
                           style={{ background: 'rgba(34,197,94,0.1)', color: '#16a34a', border: '1px solid rgba(34,197,94,0.25)' }}>
-                          <Check size={12} /> Te has apuntado — el organizador ya lo sabe
+                          <Check size={12} /> Te has apuntado: el organizador ya lo sabe
                         </div>
                       ) : (
                         <div className="flex flex-col gap-2">
@@ -957,7 +957,7 @@ const EventRequestsSection = () => {
               <div>
                 <label className="text-xs font-black mb-1 block" style={{ color: '#333' }}>¿QUÉ PROFESIONALES NECESITAS?</label>
                 <p className="text-[10px] mb-2" style={{ color: '#888' }}>
-                  Ej. 1 DJ y 2 camareros — cada uno se elige y confirma por separado.
+                  Ej. 1 DJ y 2 camareros: cada uno se elige y confirma por separado.
                 </p>
                 <div className="flex flex-col gap-1.5">
                   {ROLES_LIST.map(r => {

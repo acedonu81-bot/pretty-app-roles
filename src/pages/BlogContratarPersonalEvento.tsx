@@ -18,21 +18,21 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Contratar personal para un evento', item: 'https://xpeak.es/blog/como-contratar-personal-para-un-evento' }] };
 
 const PERFILES = [
-  { perfil: 'Camarero de sala', precio: '15–25€/h', para: 'Servicio de mesa, buffet, barra libre', ratio: '1 por cada 20-25 pax' },
-  { perfil: 'DJ profesional', precio: '300–1.500€/evento', para: 'Música, animación, ambientación', ratio: '1 por evento' },
-  { perfil: 'Fotógrafo de eventos', precio: '500–2.500€/evento', para: 'Cobertura fotográfica completa', ratio: '1-2 por evento' },
-  { perfil: 'Azafata / Hostess', precio: '120–200€/jornada', para: 'Recepción, entrega de material, imagen', ratio: '1 por cada 50-80 pax' },
-  { perfil: 'Barman / Coctelero', precio: '150–400€/evento', para: 'Barra de cócteles, barra libre', ratio: '1 por cada 40-50 pax' },
-  { perfil: 'Coordinador de eventos', precio: '800–2.500€/evento', para: 'Gestión integral del día', ratio: '1 por evento' },
-  { perfil: 'Maquilladora', precio: '200–600€/sesión', para: 'Bodas, galas, eventos de imagen', ratio: '1-2 según invitadas' },
-  { perfil: 'Fotógrafo/videógrafo', precio: '600–3.000€/evento', para: 'Foto y vídeo combinados', ratio: '1-2 por evento' },
+  { perfil: 'Camarero de sala', precio: '15-25€/h', para: 'Servicio de mesa, buffet, barra libre', ratio: '1 por cada 20-25 pax' },
+  { perfil: 'DJ profesional', precio: '300-1.500€/evento', para: 'Música, animación, ambientación', ratio: '1 por evento' },
+  { perfil: 'Fotógrafo de eventos', precio: '500-2.500€/evento', para: 'Cobertura fotográfica completa', ratio: '1-2 por evento' },
+  { perfil: 'Azafata / Hostess', precio: '120-200€/jornada', para: 'Recepción, entrega de material, imagen', ratio: '1 por cada 50-80 pax' },
+  { perfil: 'Barman / Coctelero', precio: '150-400€/evento', para: 'Barra de cócteles, barra libre', ratio: '1 por cada 40-50 pax' },
+  { perfil: 'Coordinador de eventos', precio: '800-2.500€/evento', para: 'Gestión integral del día', ratio: '1 por evento' },
+  { perfil: 'Maquilladora', precio: '200-600€/sesión', para: 'Bodas, galas, eventos de imagen', ratio: '1-2 según invitadas' },
+  { perfil: 'Fotógrafo/videógrafo', precio: '600-3.000€/evento', para: 'Foto y vídeo combinados', ratio: '1-2 por evento' },
 ];
 
 const CHECKLIST = [
   'Confirmar fecha, horario de inicio y fin (con margen de montaje y desmontaje)',
   'Definir funciones exactas por escrito (no "lo que haga falta")',
   'Acordar el precio y forma de pago por adelantado (señal + resto el día del evento)',
-  'Establecer condición de cancelación — cuánto se pierde si cancelas a 7, 15 o 30 días',
+  'Establecer condición de cancelación: cuánto se pierde si cancelas a 7, 15 o 30 días',
   'Confirmar si el profesional aporta equipo propio o lo necesita el organizador',
   'Pedir referencias o ver portfolio antes de confirmar',
   'Firmar un contrato de prestación de servicios aunque sea sencillo',
@@ -48,7 +48,7 @@ export default function BlogContratarPersonalEvento() {
         <title>Contratar personal para un evento: guía 2026 | XPEAK</title>
         <meta name="description" content="Guía paso a paso para contratar personal para eventos en España. Perfiles, precios reales y checklist antes de firmar. Camareros, DJs, fotógrafos, azafatas y más." />
         <link rel="canonical" href="https://xpeak.es/blog/como-contratar-personal-para-un-evento" />
-        <meta property="og:title" content="Cómo contratar personal para un evento — XPEAK Blog" />
+        <meta property="og:title" content="Cómo contratar personal para un evento | XPEAK Blog" />
         <meta property="og:description" content="Guía completa para contratar personal de eventos en España. Precios, perfiles y checklist." />
         <meta property="og:url" content="https://xpeak.es/blog/como-contratar-personal-para-un-evento" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />
@@ -88,9 +88,9 @@ export default function BlogContratarPersonalEvento() {
               <p className="text-base leading-relaxed mb-4" style={{ color: '#3d3d4e' }}>El número de profesionales depende de tres factores: número de invitados, formato del evento y nivel de servicio esperado.</p>
               <div className="grid sm:grid-cols-3 gap-3">
                 {[
-                  { tipo: 'Evento pequeño (hasta 50 pax)', personal: '2 camareros · 1 DJ (opcional) · 1 fotógrafo', precio: '500–1.500€' },
-                  { tipo: 'Evento mediano (50–150 pax)', personal: '4–6 camareros · 1 DJ · 1 fotógrafo · 1–2 azafatas', precio: '2.000–5.000€' },
-                  { tipo: 'Evento grande (+150 pax)', personal: '8+ camareros · 1 DJ + asistente · 1–2 fotógrafos · 3+ azafatas · coordinador', precio: '5.000–15.000€' },
+                  { tipo: 'Evento pequeño (hasta 50 pax)', personal: '2 camareros · 1 DJ (opcional) · 1 fotógrafo', precio: '500-1.500€' },
+                  { tipo: 'Evento mediano (50-150 pax)', personal: '4-6 camareros · 1 DJ · 1 fotógrafo · 1-2 azafatas', precio: '2.000-5.000€' },
+                  { tipo: 'Evento grande (+150 pax)', personal: '8+ camareros · 1 DJ + asistente · 1-2 fotógrafos · 3+ azafatas · coordinador', precio: '5.000-15.000€' },
                 ].map(e => (
                   <div key={e.tipo} className="p-4 rounded-xl" style={{ background: 'rgba(5,150,105,0.04)', border: '1px solid rgba(5,150,105,0.12)' }}>
                     <p className="text-xs font-bold mb-2" style={{ color: '#059669' }}>{e.tipo}</p>

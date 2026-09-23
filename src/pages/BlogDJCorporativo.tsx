@@ -9,16 +9,16 @@ import BlogAuthor from '@/components/BlogAuthor';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const TABLE = [
-  { tipo: 'Afterwork / coctelería (< 100 p.)', horas: '3–4 h', rango: '400€ – 800€', notas: 'Música ambiental, lounge/house suave' },
-  { tipo: 'Cena de gala empresarial', horas: '4–5 h', rango: '600€ – 1.200€', notas: 'Ambiente premium, equipo incluido' },
-  { tipo: 'Fiesta de empresa > 200 personas', horas: '4–6 h', rango: '900€ – 2.000€', notas: 'DJ de referencia + producción AV' },
-  { tipo: 'Presentación de producto / lanzamiento', horas: '2–3 h', rango: '500€ – 1.500€', notas: 'Música en directo o set ambiental' },
-  { tipo: 'Convención o team building', horas: '2–4 h', rango: '400€ – 900€', notas: 'Sesión interactiva o ambiental' },
+  { tipo: 'Afterwork / coctelería (< 100 p.)', horas: '3-4 h', rango: '400€-800€', notas: 'Música ambiental, lounge/house suave' },
+  { tipo: 'Cena de gala empresarial', horas: '4-5 h', rango: '600€-1.200€', notas: 'Ambiente premium, equipo incluido' },
+  { tipo: 'Fiesta de empresa > 200 personas', horas: '4-6 h', rango: '900€-2.000€', notas: 'DJ de referencia + producción AV' },
+  { tipo: 'Presentación de producto / lanzamiento', horas: '2-3 h', rango: '500€-1.500€', notas: 'Música en directo o set ambiental' },
+  { tipo: 'Convención o team building', horas: '2-4 h', rango: '400€-900€', notas: 'Sesión interactiva o ambiental' },
 ];
 
 const FAQ = [
   { q: '¿Qué diferencia a un DJ corporativo de uno de discoteca?', a: 'Un DJ corporativo entiende que el objetivo no es la pista de baile a las 4AM sino crear un ambiente que favorezca la conversación, el networking o el baile controlado en una gala. Controla la energía de la sala progresivamente y adapta géneros al perfil de la empresa.' },
-  { q: '¿El DJ necesita equipo propio para eventos corporativos?', a: 'En muchos venues corporativos ya existe instalación de sonido. El DJ debe poder conectarse a ella. Para venues sin instalación, el DJ lleva su propio equipo (habitualmente incluido en el precio para eventos de 100–200 personas).' },
+  { q: '¿El DJ necesita equipo propio para eventos corporativos?', a: 'En muchos venues corporativos ya existe instalación de sonido. El DJ debe poder conectarse a ella. Para venues sin instalación, el DJ lleva su propio equipo (habitualmente incluido en el precio para eventos de 100-200 personas).' },
   { q: '¿Qué música se pone en una fiesta de empresa?', a: 'Depende del perfil de los asistentes y la fase del evento. En cenas de gala se suele empezar con lounge/chill y escalar a pop comercial o funk. En afterworks, house suave o pop latino. Lo más importante es evitar géneros polarizadores (reggaeton muy explícito, metal, etc.) en el inicio.' },
   { q: '¿Hay que hacer un briefing previo con el DJ corporativo?', a: 'Sí, siempre. Un buen DJ corporativo pedirá información sobre el tipo de empresa, la media de edad de los asistentes, el dress code y si hay momentos especiales (premios, discursos). Esa información define el tracklist.' },
 ];

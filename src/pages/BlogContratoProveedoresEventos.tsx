@@ -40,7 +40,7 @@ const breadcrumb = {
 const CLAUSULAS = [
   { clausula: 'Datos de las partes', detalle: 'Nombre o razón social, DNI/NIF y domicilio de ambas partes.' },
   { clausula: 'Fecha, hora y lugar exactos', detalle: 'Incluyendo horas de montaje y desmontaje, no solo la actuación o el servicio.' },
-  { clausula: 'Qué incluye el servicio', detalle: 'Equipo, número de personas, duración exacta — cualquier extra debe quedar fuera y con precio aparte.' },
+  { clausula: 'Qué incluye el servicio', detalle: 'Equipo, número de personas, duración exacta: cualquier extra debe quedar fuera y con precio aparte.' },
   { clausula: 'Precio total con IVA', detalle: 'Y forma de pago: señal al firmar (30-50%) y resto según lo acordado.' },
   { clausula: 'Cláusula de cancelación', detalle: 'Qué ocurre si cancela el organizador o el proveedor, y en qué plazos.' },
   { clausula: 'Fuerza mayor', detalle: 'Qué pasa si el proveedor no puede prestar el servicio por causas ajenas (enfermedad, accidente).' },
@@ -53,7 +53,7 @@ export default function BlogContratoProveedoresEventos() {
         <title>Contrato con proveedores de eventos: qué debe incluir (2026) | XPEAK</title>
         <meta name="description" content="Cláusulas imprescindibles en el contrato con DJ, catering, fotógrafo o cualquier proveedor de eventos: cancelación, pagos e incumplimientos." />
         <link rel="canonical" href="https://xpeak.es/blog/contrato-proveedores-eventos" />
-        <meta property="og:title" content="Contrato con proveedores de eventos: qué debe incluir — XPEAK Blog" />
+        <meta property="og:title" content="Contrato con proveedores de eventos: qué debe incluir | XPEAK Blog" />
         <meta property="og:description" content="Cláusulas imprescindibles para proteger al organizador en cualquier contrato con proveedores de eventos." />
         <meta property="og:url" content="https://xpeak.es/blog/contrato-proveedores-eventos" />
         <meta property="og:type" content="article" />

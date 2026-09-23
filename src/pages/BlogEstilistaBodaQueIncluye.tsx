@@ -51,7 +51,7 @@ export default function BlogEstilistaBodaQueIncluye() {
         <title>Estilista de boda: qué incluye el servicio (2026) | XPEAK</title>
         <meta name="description" content="Qué hace un estilista de boda, con cuánta antelación contratarlo y qué diferencia hay entre asesoramiento y personal shopper." />
         <link rel="canonical" href="https://xpeak.es/blog/estilista-de-boda-que-incluye" />
-        <meta property="og:title" content="Estilista de boda: qué incluye el servicio — XPEAK Blog" />
+        <meta property="og:title" content="Estilista de boda: qué incluye el servicio | XPEAK Blog" />
         <meta property="og:description" content="Qué hace un estilista de boda y con cuánta antelación contratarlo." />
         <meta property="og:url" content="https://xpeak.es/blog/estilista-de-boda-que-incluye" />
         <meta property="og:type" content="article" />

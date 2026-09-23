@@ -152,8 +152,8 @@ const FlashTab = () => {
 
     toast.success(
       avisados > 0
-        ? `Oferta publicada — avisados ${avisados} profesionales por email`
-        : `Oferta publicada — visible ${durationHours}h en el panel`
+        ? `Oferta publicada: avisados ${avisados} profesionales por email`
+        : `Oferta publicada: visible ${durationHours}h en el panel`
     );
     setShowForm(false);
     setTitle(''); setDesc(''); setPay(''); setLocation(''); setRole(''); setDurationHours(24);
@@ -180,7 +180,7 @@ const FlashTab = () => {
         <div className="glass-panel p-5 animate-[fadeIn_0.25s_ease]">
           <div className="flex items-center gap-2 mb-4">
             <Zap size={14} style={{ color: '#8A6D0F' }} />
-            <h4 className="text-sm font-bold">Nueva Oferta Flash — caduca en {durationHours}h</h4>
+            <h4 className="text-sm font-bold">Nueva Oferta Flash: caduca en {durationHours}h</h4>
           </div>
           <div className="space-y-3">
             <input value={title} onChange={e => setTitle(e.target.value)}

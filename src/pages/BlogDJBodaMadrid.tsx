@@ -20,10 +20,10 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'DJ bodas Madrid', item: 'https://xpeak.es/blog/dj-bodas-madrid' }] };
 
 const PRECIOS = [
-  { servicio: 'Solo pista de baile (4-5h)', precio: '500–1.000€' },
-  { servicio: 'Cóctel + pista de baile', precio: '700–1.300€' },
-  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '900–2.000€' },
-  { servicio: 'Pack premium con equipo de luces profesional', precio: '1.200–2.500€' },
+  { servicio: 'Solo pista de baile (4-5h)', precio: '500-1.000€' },
+  { servicio: 'Cóctel + pista de baile', precio: '700-1.300€' },
+  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '900-2.000€' },
+  { servicio: 'Pack premium con equipo de luces profesional', precio: '1.200-2.500€' },
 ];
 
 const ZONAS = [
@@ -42,7 +42,7 @@ export default function BlogDJBodaMadrid() {
         <title>DJ para bodas en Madrid: precio 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un DJ para una boda en Madrid. Precios reales 2026, zonas de celebración y cómo contratar el mejor DJ en la Comunidad de Madrid." />
         <link rel="canonical" href="https://xpeak.es/blog/dj-bodas-madrid" />
-        <meta property="og:title" content="DJ para bodas en Madrid: precio 2026 — XPEAK Blog" />
+        <meta property="og:title" content="DJ para bodas en Madrid: precio 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precios reales de DJs de boda en Madrid. Zonas, desplazamiento y cómo elegir el perfil correcto." />
         <meta property="og:url" content="https://xpeak.es/blog/dj-bodas-madrid" />
         <meta property="og:type" content="article" />
@@ -71,7 +71,7 @@ export default function BlogDJBodaMadrid() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>DJ · Madrid · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para bodas en Madrid: precio y cómo contratar en 2026</h1>
-            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Madrid concentra el mayor número de bodas de España. Los DJs de boda en la Comunidad tienen más demanda y precios más altos que la media nacional — te contamos exactamente cuánto y cómo encontrar el correcto.</p>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Madrid concentra el mayor número de bodas de España. Los DJs de boda en la Comunidad tienen más demanda y precios más altos que la media nacional: te contamos exactamente cuánto y cómo encontrar el correcto.</p>
             <time className="text-xs mt-3 block" style={{ color: '#666' }}>28 mayo 2026</time>
             <BlogAnswerBox
               question="¿Cuánto cuesta un DJ para una boda en Madrid?"

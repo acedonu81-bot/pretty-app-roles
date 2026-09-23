@@ -9,24 +9,24 @@ import BlogAuthor from '@/components/BlogAuthor';
 import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const TIPOS = [
-  { tipo: 'Sesión de retrato (2h)', rango: '80€ – 180€', nota: 'Fotos de pareja o pre-boda' },
-  { tipo: 'Reportaje solo ceremonia', rango: '300€ – 600€', nota: 'Entrada, intercambio de votos y salida' },
-  { tipo: 'Boda completa (8h)', rango: '900€ – 2.500€', nota: 'Ceremonia, cóctel y banquete' },
-  { tipo: 'Pack foto + vídeo', rango: '1.500€ – 4.000€', nota: 'Ahorro medio de un 20% vs contratar por separado' },
-  { tipo: 'Álbum de boda premium', rango: '300€ – 800€', nota: 'Adicional al reportaje, entrega en 4–8 semanas' },
+  { tipo: 'Sesión de retrato (2h)', rango: '80€-180€', nota: 'Fotos de pareja o pre-boda' },
+  { tipo: 'Reportaje solo ceremonia', rango: '300€-600€', nota: 'Entrada, intercambio de votos y salida' },
+  { tipo: 'Boda completa (8h)', rango: '900€-2.500€', nota: 'Ceremonia, cóctel y banquete' },
+  { tipo: 'Pack foto + vídeo', rango: '1.500€-4.000€', nota: 'Ahorro medio de un 20% vs contratar por separado' },
+  { tipo: 'Álbum de boda premium', rango: '300€-800€', nota: 'Adicional al reportaje, entrega en 4-8 semanas' },
 ];
 
 const CIUDADES = [
-  { ciudad: 'Madrid', rango: '1.000€ – 2.800€', nota: 'Mayor oferta de fotógrafos especializados en bodas' },
-  { ciudad: 'Barcelona', rango: '1.200€ – 3.500€', nota: 'Destino de bodas destino, muchos internacionales' },
-  { ciudad: 'Valencia', rango: '800€ – 2.200€', nota: 'Buena relación calidad-precio, mercado creciente' },
-  { ciudad: 'Sevilla', rango: '700€ – 2.000€', nota: 'Especialistas en bodas al aire libre y fincas' },
-  { ciudad: 'Málaga / Costa del Sol', rango: '900€ – 2.500€', nota: 'Bodas destino con clientes internacionales' },
-  { ciudad: 'Ibiza / Baleares', rango: '1.500€ – 5.000€', nota: 'Mercado de lujo, fotógrafos internacionales' },
+  { ciudad: 'Madrid', rango: '1.000€-2.800€', nota: 'Mayor oferta de fotógrafos especializados en bodas' },
+  { ciudad: 'Barcelona', rango: '1.200€-3.500€', nota: 'Destino de bodas destino, muchos internacionales' },
+  { ciudad: 'Valencia', rango: '800€-2.200€', nota: 'Buena relación calidad-precio, mercado creciente' },
+  { ciudad: 'Sevilla', rango: '700€-2.000€', nota: 'Especialistas en bodas al aire libre y fincas' },
+  { ciudad: 'Málaga / Costa del Sol', rango: '900€-2.500€', nota: 'Bodas destino con clientes internacionales' },
+  { ciudad: 'Ibiza / Baleares', rango: '1.500€-5.000€', nota: 'Mercado de lujo, fotógrafos internacionales' },
 ];
 
 const FAQ = [
-  { q: '¿Con cuánta antelación debo contratar el fotógrafo de boda?', a: 'Lo ideal es contratar el fotógrafo entre 9 y 18 meses antes de la boda. Los mejores fotógrafos suelen tener agenda completa con un año de antelación en temporada alta (mayo–octubre). Para bodas en fechas fuera de temporada puedes encontrar disponibilidad con 3–6 meses.' },
+  { q: '¿Con cuánta antelación debo contratar el fotógrafo de boda?', a: 'Lo ideal es contratar el fotógrafo entre 9 y 18 meses antes de la boda. Los mejores fotógrafos suelen tener agenda completa con un año de antelación en temporada alta (mayo-octubre). Para bodas en fechas fuera de temporada puedes encontrar disponibilidad con 3-6 meses.' },
   { q: '¿Qué diferencia hay entre un fotógrafo de boda y uno de eventos?', a: 'Un fotógrafo de bodas está especializado en capturar momentos únicos e irrepetibles: la primera mirada, las lágrimas, los detalles. Trabaja con luz natural y en espacios complejos. El fotógrafo de eventos tiene un ritmo diferente, más dinámico y orientado al contenido de marca. Para tu boda, busca siempre portfolio específico de bodas.' },
   { q: '¿Cuántas fotos entrega un fotógrafo de bodas?', a: 'Lo habitual es entre 400 y 800 fotos editadas para una boda completa de 8 horas. El número varía según el estilo del fotógrafo: los documentalistas tienden a entregar más, los artísticos seleccionan más. Pregunta siempre cuántas fotos incluye el precio y en qué plazo.' },
   { q: '¿Puedo ver el reportaje completo de una boda antes de contratar?', a: 'Sí, y es algo que deberías pedir siempre. Cualquier fotógrafo serio te mostrará reportajes completos, no solo las mejores fotos. Esto te permite evaluar cómo trabaja durante todo el evento, no solo en los momentos perfectos.' },

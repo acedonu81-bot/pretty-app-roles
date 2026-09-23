@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Camareros Badalona', item: 'https://xpeak.es/blog/camareros-eventos-badalona' }] };
 
 const PRECIOS = [
-  { perfil: 'Camarero/a de sala', tarifa: '13–18€/hora', nota: 'Cóctel, cena sentada o buffet' },
-  { perfil: 'Bartender / coctelería', tarifa: '17–24€/hora', nota: 'Barra libre y coctelería de autor' },
-  { perfil: 'Jefe de sala / coordinador', tarifa: '22–31€/hora', nota: 'Gestión del equipo en boda o evento grande' },
-  { perfil: 'Servicio boda completo (6-7h)', tarifa: '145–250€/persona', nota: 'Cóctel + cena + barra' },
-  { perfil: 'Barra libre con bartender (4h)', tarifa: '175–370€', nota: 'Incluye montaje y desmontaje' },
-  { perfil: 'Personal de apoyo evento corporativo', tarifa: '14–21€/hora', nota: 'Cenas de empresa del área metropolitana' },
+  { perfil: 'Camarero/a de sala', tarifa: '13-18€/hora', nota: 'Cóctel, cena sentada o buffet' },
+  { perfil: 'Bartender / coctelería', tarifa: '17-24€/hora', nota: 'Barra libre y coctelería de autor' },
+  { perfil: 'Jefe de sala / coordinador', tarifa: '22-31€/hora', nota: 'Gestión del equipo en boda o evento grande' },
+  { perfil: 'Servicio boda completo (6-7h)', tarifa: '145-250€/persona', nota: 'Cóctel + cena + barra' },
+  { perfil: 'Barra libre con bartender (4h)', tarifa: '175-370€', nota: 'Incluye montaje y desmontaje' },
+  { perfil: 'Personal de apoyo evento corporativo', tarifa: '14-21€/hora', nota: 'Cenas de empresa del área metropolitana' },
 ];
 
 export default function BlogCamarerosBadalona() {
@@ -33,7 +33,7 @@ export default function BlogCamarerosBadalona() {
         <title>Precio camareros para eventos en Badalona 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran los camareros y bartenders para eventos corporativos y bodas en Badalona. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/camareros-eventos-badalona" />
-        <meta property="og:title" content="Precio camareros eventos Badalona 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio camareros eventos Badalona 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de camareros y bartenders para eventos corporativos en Badalona." />
         <meta property="og:url" content="https://xpeak.es/blog/camareros-eventos-badalona" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

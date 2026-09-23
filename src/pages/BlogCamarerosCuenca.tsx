@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Camareros Cuenca', item: 'https://xpeak.es/blog/camareros-eventos-cuenca' }] };
 
 const PRECIOS = [
-  { perfil: 'Camarero/a de sala', tarifa: '10–15€/hora', nota: 'Cóctel, cena sentada o buffet' },
-  { perfil: 'Bartender / coctelería', tarifa: '13–19€/hora', nota: 'Barra libre y coctelería básica' },
-  { perfil: 'Jefe de sala / coordinador', tarifa: '17–25€/hora', nota: 'Gestión del equipo en boda o evento grande' },
-  { perfil: 'Servicio boda completo (6-7h)', tarifa: '92–172€/persona', nota: 'Cóctel + cena + barra' },
-  { perfil: 'Barra libre con bartender (4h)', tarifa: '112–240€', nota: 'Incluye montaje y desmontaje' },
-  { perfil: 'Personal de cocina de apoyo', tarifa: '11–17€/hora', nota: 'Emplatado y logística en directo' },
+  { perfil: 'Camarero/a de sala', tarifa: '10-15€/hora', nota: 'Cóctel, cena sentada o buffet' },
+  { perfil: 'Bartender / coctelería', tarifa: '13-19€/hora', nota: 'Barra libre y coctelería básica' },
+  { perfil: 'Jefe de sala / coordinador', tarifa: '17-25€/hora', nota: 'Gestión del equipo en boda o evento grande' },
+  { perfil: 'Servicio boda completo (6-7h)', tarifa: '92-172€/persona', nota: 'Cóctel + cena + barra' },
+  { perfil: 'Barra libre con bartender (4h)', tarifa: '112-240€', nota: 'Incluye montaje y desmontaje' },
+  { perfil: 'Personal de cocina de apoyo', tarifa: '11-17€/hora', nota: 'Emplatado y logística en directo' },
 ];
 
 export default function BlogCamarerosCuenca() {
@@ -33,7 +33,7 @@ export default function BlogCamarerosCuenca() {
         <title>Precio camareros para eventos en Cuenca 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran los camareros para bodas y eventos en el casco histórico de Cuenca. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/camareros-eventos-cuenca" />
-        <meta property="og:title" content="Precio camareros eventos Cuenca 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio camareros eventos Cuenca 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de camareros para bodas y eventos en Cuenca." />
         <meta property="og:url" content="https://xpeak.es/blog/camareros-eventos-cuenca" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

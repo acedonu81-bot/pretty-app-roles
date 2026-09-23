@@ -63,7 +63,7 @@ export default function EventCartWidget() {
       )}
       <button
         onClick={() => { setOpen(true); dismissHint(); }}
-        aria-label={`Mi evento — ${items.length} profesional${items.length === 1 ? '' : 'es'}`}
+        aria-label={`Mi evento: ${items.length} profesional${items.length === 1 ? '' : 'es'}`}
         // Mismo tamaño que el círculo de SupportChat (44px/56px) en vez de la
         // píldora ancha con texto de antes — un solo FAB de peso visual
         // comparable al de soporte, no dos "botones grandes" compitiendo.

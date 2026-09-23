@@ -36,18 +36,18 @@ const faqStructured = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
   mainEntity: [
-    { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de bodas en Granada?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de bodas en Granada cuesta entre 800€ y 2.500€. Los reportajes en la Alhambra o el Albaicín tienen un coste adicional por los permisos de localización (150–400€ extra).' } },
-    { '@type': 'Question', name: '¿Hace falta permiso para fotografiar en la Alhambra?', acceptedAnswer: { '@type': 'Answer', text: 'Sí. Los reportajes en el recinto de la Alhambra requieren autorización previa del Patronato. Suele gestionarlo el fotógrafo, con un coste de 150–300€ y reserva mínima de 30 días de antelación.' } },
+    { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de bodas en Granada?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de bodas en Granada cuesta entre 800€ y 2.500€. Los reportajes en la Alhambra o el Albaicín tienen un coste adicional por los permisos de localización (150-400€ extra).' } },
+    { '@type': 'Question', name: '¿Hace falta permiso para fotografiar en la Alhambra?', acceptedAnswer: { '@type': 'Answer', text: 'Sí. Los reportajes en el recinto de la Alhambra requieren autorización previa del Patronato. Suele gestionarlo el fotógrafo, con un coste de 150-300€ y reserva mínima de 30 días de antelación.' } },
     { '@type': 'Question', name: '¿Cuántas horas suele cubrir un reportaje de boda en Granada?', acceptedAnswer: { '@type': 'Answer', text: 'La cobertura estándar es de 8 a 10 horas. Muchas parejas optan por añadir una sesión de postboda al día siguiente en el Albaicín o los Jardines del Generalife para aprovechar la luz de mañana.' } },
-    { '@type': 'Question', name: '¿Cuándo contratar el fotógrafo para una boda en Granada?', acceptedAnswer: { '@type': 'Answer', text: 'En Granada la temporada alta es abril–octubre. Los fotógrafos de referencia se agotan con 9–12 meses de antelación. Fuera de temporada (noviembre–marzo) hay más disponibilidad y precios un 15–20% inferiores.' } },
+    { '@type': 'Question', name: '¿Cuándo contratar el fotógrafo para una boda en Granada?', acceptedAnswer: { '@type': 'Answer', text: 'En Granada la temporada alta es abril-octubre. Los fotógrafos de referencia se agotan con 9-12 meses de antelación. Fuera de temporada (noviembre-marzo) hay más disponibilidad y precios un 15-20% inferiores.' } },
   ],
 };
 
 const PRICES = [
-  { perfil: 'Fotógrafo emergente', experiencia: '< 2 años', rango: '600€ – 1.000€', nota: 'Portfolio en construcción, buen precio' },
-  { perfil: 'Fotógrafo profesional', experiencia: '2–5 años', rango: '1.000€ – 1.800€', nota: 'Reportaje completo, álbum incluido' },
-  { perfil: 'Fotógrafo premium', experiencia: '5–10 años', rango: '1.800€ – 2.800€', nota: 'Edición artística, sesión postboda' },
-  { perfil: 'Fotógrafo de referencia', experiencia: '+10 años', rango: '2.800€ – 4.500€', nota: 'Publicaciones, premios nacionales' },
+  { perfil: 'Fotógrafo emergente', experiencia: '< 2 años', rango: '600€-1.000€', nota: 'Portfolio en construcción, buen precio' },
+  { perfil: 'Fotógrafo profesional', experiencia: '2-5 años', rango: '1.000€-1.800€', nota: 'Reportaje completo, álbum incluido' },
+  { perfil: 'Fotógrafo premium', experiencia: '5-10 años', rango: '1.800€-2.800€', nota: 'Edición artística, sesión postboda' },
+  { perfil: 'Fotógrafo de referencia', experiencia: '+10 años', rango: '2.800€-4.500€', nota: 'Publicaciones, premios nacionales' },
 ];
 
 export default function BlogFotografoBodaGranada() {
@@ -82,7 +82,7 @@ export default function BlogFotografoBodaGranada() {
           <p className="text-[#555] text-sm mb-8">Actualizado junio 2026 · 8 min lectura</p>
 
           <BlogAnswerBox question="¿Cuánto cuesta un fotógrafo de bodas en Granada?">
-            Un fotógrafo de bodas en Granada cuesta entre <strong>800€ y 2.500€</strong> de media. Los reportajes en la Alhambra o el Albaicín pueden incluir un extra de 150–400€ por permisos de localización. La temporada alta (abril–octubre) tiene precios hasta un 20% superiores.
+            Un fotógrafo de bodas en Granada cuesta entre <strong>800€ y 2.500€</strong> de media. Los reportajes en la Alhambra o el Albaicín pueden incluir un extra de 150-400€ por permisos de localización. La temporada alta (abril-octubre) tiene precios hasta un 20% superiores.
           </BlogAnswerBox>
 
           <p className="text-[#333] mb-6">
@@ -117,22 +117,22 @@ export default function BlogFotografoBodaGranada() {
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Las mejores localizaciones para fotos de boda en Granada</h2>
           <ul className="space-y-3 mb-8 text-[#333]">
-            <li><strong className="text-[#111]">La Alhambra y el Generalife</strong> — El escenario más icónico. Requiere permiso del Patronato (150–300€). Mejor luz: hora dorada de tarde.</li>
-            <li><strong className="text-[#111]">El Albaicín</strong> — Callejuelas con vistas a la Alhambra. Ideal para reportajes urbanos con luz natural. Sin coste extra de permisos.</li>
-            <li><strong className="text-[#111]">Cármenes de la Vega</strong> — Jardines privados con fachadas blancas y limoneros. Muy demandados para postbodas románticos.</li>
-            <li><strong className="text-[#111]">Sierra Nevada</strong> — Para bodas de mayo–junio con nieve de fondo. Imágenes imposibles en cualquier otra ciudad española.</li>
-            <li><strong className="text-[#111]">Catedral de Granada</strong> — Para reportajes urbanos con arquitectura barroca de primer nivel.</li>
+            <li><strong className="text-[#111]">La Alhambra y el Generalife</strong>: El escenario más icónico. Requiere permiso del Patronato (150-300€). Mejor luz: hora dorada de tarde.</li>
+            <li><strong className="text-[#111]">El Albaicín</strong>: Callejuelas con vistas a la Alhambra. Ideal para reportajes urbanos con luz natural. Sin coste extra de permisos.</li>
+            <li><strong className="text-[#111]">Cármenes de la Vega</strong>: Jardines privados con fachadas blancas y limoneros. Muy demandados para postbodas románticos.</li>
+            <li><strong className="text-[#111]">Sierra Nevada</strong>: Para bodas de mayo-junio con nieve de fondo. Imágenes imposibles en cualquier otra ciudad española.</li>
+            <li><strong className="text-[#111]">Catedral de Granada</strong>: Para reportajes urbanos con arquitectura barroca de primer nivel.</li>
           </ul>
 
           <h2 className="text-2xl font-bold mt-10 mb-4">¿Qué incluye el precio de un fotógrafo de bodas en Granada?</h2>
           <p className="text-[#333] mb-4">El precio estándar suele incluir:</p>
           <ul className="list-disc list-inside space-y-2 text-[#333] mb-6">
-            <li>Cobertura de 8–10 horas (preparativos, ceremonia, banquete)</li>
-            <li>Edición completa de 300–600 fotos en alta resolución</li>
+            <li>Cobertura de 8-10 horas (preparativos, ceremonia, banquete)</li>
+            <li>Edición completa de 300-600 fotos en alta resolución</li>
             <li>Galería privada online para compartir con invitados</li>
             <li>Álbum impreso (en packs premium)</li>
           </ul>
-          <p className="text-[#333] mb-8">Lo que suele tener coste adicional: segundo fotógrafo (+200–400€), videógrafo para bodas en combo, permisos en la Alhambra, traslados si la boda es en localidades fuera de Granada capital.</p>
+          <p className="text-[#333] mb-8">Lo que suele tener coste adicional: segundo fotógrafo (+200-400€), videógrafo para bodas en combo, permisos en la Alhambra, traslados si la boda es en localidades fuera de Granada capital.</p>
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-fotografo" articlePath="/blog/fotografo-boda-granada" />
 

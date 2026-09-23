@@ -390,7 +390,7 @@ const FichaView = ({ targetUserId, targetName, onNavigate }: Props = {}) => {
                 value={draft}
                 onChange={e => setDraft(e.target.value)}
                 placeholder={
-                  postType === 'text'  ? 'Cuéntalo a tus fans y empresarios — experiencias, reflexiones, novedades...' :
+                  postType === 'text'  ? 'Cuéntalo a tus fans y empresarios: experiencias, reflexiones, novedades...' :
                   postType === 'image' ? 'Describe la foto o el momento...' :
                   postType === 'video' ? 'Describe el vídeo...' :
                   'Comenta la sesión de audio...'
@@ -540,7 +540,7 @@ const FichaView = ({ targetUserId, targetName, onNavigate }: Props = {}) => {
             </h4>
             <p className="text-xs text-muted-foreground mb-4">
               Grábalo o súbelo desde tu móvil para que aparezca en el feed swipe (tipo Instagram) y en tu ficha.
-              Un enlace de YouTube o Vimeo solo se muestra en tu ficha — el feed swipe no puede reproducir vídeos externos.
+              Un enlace de YouTube o Vimeo solo se muestra en tu ficha: el feed swipe no puede reproducir vídeos externos.
             </p>
 
             {/* Grabar/subir vídeo desde la cámara del móvil (destino: bio_video_url) */}

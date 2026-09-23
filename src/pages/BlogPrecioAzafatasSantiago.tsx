@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Santiago', item: 'https://xpeak.es/blog/precio-azafatas-santiago' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '105–150€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '125–185€/día', nota: 'Eventos institucionales y de marca' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '140–190€/día', nota: 'Congresos universitarios y turismo internacional' },
-  { perfil: 'Azafata de protocolo', tarifa: '140–200€/día', nota: 'Bodas en casco histórico y pazos' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '150–220€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '65–110€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '105-150€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '125-185€/día', nota: 'Eventos institucionales y de marca' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '140-190€/día', nota: 'Congresos universitarios y turismo internacional' },
+  { perfil: 'Azafata de protocolo', tarifa: '140-200€/día', nota: 'Bodas en casco histórico y pazos' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '150-220€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '65-110€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasSantiago() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasSantiago() {
         <title>Precio azafatas para eventos en Santiago 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos institucionales, universitarios y bodas en Santiago de Compostela. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-santiago" />
-        <meta property="og:title" content="Precio azafatas eventos Santiago 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Santiago 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para congresos universitarios y bodas en Santiago de Compostela." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-santiago" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

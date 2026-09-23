@@ -12,17 +12,17 @@ import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para bodas en Tenerife: precio y cómo contratar en 2026', description: 'Cuánto cuesta un DJ para una boda en Tenerife. Precios reales 2026, bodas en el sur y norte de la isla, venues y cómo contratar el mejor DJ.', datePublished: '2026-06-03', dateModified: '2026-06-03', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-bodas-tenerife' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda en Tenerife?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ para boda en Tenerife cuesta entre 600€ y 1.800€ para el servicio completo. El sur de la isla (Adeje, Costa Adeje, Los Cristianos) tiene precios más altos por la concentración de bodas de destino internacionales, llegando a 2.500€ para servicios premium. El norte (La Laguna, Puerto de la Cruz) tiene precios más ajustados.' } },
-  { '@type': 'Question', name: '¿Tenerife es un buen destino para bodas de destino?', acceptedAnswer: { '@type': 'Answer', text: 'Sí, es uno de los destinos de bodas más populares de España para parejas internacionales. El sur tiene resorts de 5 estrellas con servicios de boda completos (Ritz-Carlton, Hard Rock, Bahía del Duque). El clima es excelente todo el año — más de 300 días de sol — lo que facilita planificar bodas al exterior sin riesgo de lluvia.' } },
+  { '@type': 'Question', name: '¿Tenerife es un buen destino para bodas de destino?', acceptedAnswer: { '@type': 'Answer', text: 'Sí, es uno de los destinos de bodas más populares de España para parejas internacionales. El sur tiene resorts de 5 estrellas con servicios de boda completos (Ritz-Carlton, Hard Rock, Bahía del Duque). El clima es excelente todo el año, más de 300 días de sol, lo que facilita planificar bodas al exterior sin riesgo de lluvia.' } },
   { '@type': 'Question', name: '¿Los DJs de Tenerife actúan en inglés?', acceptedAnswer: { '@type': 'Answer', text: 'La mayoría de DJs del sur de la isla con experiencia en bodas internacionales actúan perfectamente en inglés o bilingüe. Es un requisito habitual para bodas con invitados de Reino Unido, Alemania o Países Bajos, que son los mercados principales de bodas de destino en Tenerife.' } },
   { '@type': 'Question', name: '¿Hay que pagar desplazamiento al DJ si la boda es en el sur y vive en el norte?', acceptedAnswer: { '@type': 'Answer', text: 'Sí, normalmente se paga el desplazamiento si el DJ tiene que cruzar la isla (de norte a sur o viceversa son 1-1,5h de viaje). Suma entre 50-100€ y, si la boda acaba tarde, puede ser necesario alojamiento. Pregunta siempre qué incluye el presupuesto.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'DJ bodas Tenerife', item: 'https://xpeak.es/blog/dj-bodas-tenerife' }] };
 
 const PRECIOS = [
-  { servicio: 'Solo pista de baile (4-5h)', precio: '350–850€' },
-  { servicio: 'Cóctel + pista de baile', precio: '550–1.200€' },
-  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '700–1.800€' },
-  { servicio: 'Pack resort 5★ / boda de destino premium', precio: '1.200–2.500€' },
+  { servicio: 'Solo pista de baile (4-5h)', precio: '350-850€' },
+  { servicio: 'Cóctel + pista de baile', precio: '550-1.200€' },
+  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '700-1.800€' },
+  { servicio: 'Pack resort 5★ / boda de destino premium', precio: '1.200-2.500€' },
 ];
 
 const ZONAS = [
@@ -41,7 +41,7 @@ export default function BlogDJBodaTenerife() {
         <title>DJ para bodas en Tenerife: precio 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un DJ para una boda en Tenerife. Precios reales 2026, Costa Adeje, bodas de destino internacionales y cómo contratar el mejor DJ." />
         <link rel="canonical" href="https://xpeak.es/blog/dj-bodas-tenerife" />
-        <meta property="og:title" content="DJ para bodas en Tenerife: precio 2026 — XPEAK Blog" />
+        <meta property="og:title" content="DJ para bodas en Tenerife: precio 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precios reales de DJs de boda en Tenerife. Costa Adeje, resorts 5 estrellas y cómo elegir el perfil correcto." />
         <meta property="og:url" content="https://xpeak.es/blog/dj-bodas-tenerife" />
         <meta property="og:type" content="article" />
@@ -85,7 +85,7 @@ export default function BlogDJBodaTenerife() {
                   </div>
                 ))}
               </div>
-              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos 2026. Sin IVA. Los resorts del sur suelen tener lista de proveedores aprobados — confirma con el venue antes.</p>
+              <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos 2026. Sin IVA. Los resorts del sur suelen tener lista de proveedores aprobados: confirma con el venue antes.</p>
             </section>
             <BlogInlineCTA role="dj" variant="upgrade" />
             <section>

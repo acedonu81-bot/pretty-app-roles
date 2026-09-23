@@ -34,7 +34,7 @@ export default function HubStaff() {
         <title>Staff para eventos España: camareros y personal 2026 | XPEAK</title>
         <meta name="description" content="Guía completa sobre contratación de staff para eventos en España. Precios de camareros, azafatas, bármanes, promotores y animadores. Ratios reales 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/staff-para-eventos" />
-        <meta property="og:title" content="Staff para eventos España: guía completa 2026 — XPEAK" />
+        <meta property="og:title" content="Staff para eventos España: guía completa 2026 | XPEAK" />
         <meta property="og:description" content="Camareros, azafatas, bármanes y promotores para eventos. Precios y ratios reales en España." />
         <meta property="og:url" content="https://xpeak.es/blog/staff-para-eventos" />
         <meta property="og:type" content="article" />
@@ -90,12 +90,12 @@ export default function HubStaff() {
               <h2 className="text-lg font-black mb-4">Tarifas por perfil (España 2026)</h2>
               <div className="space-y-2">
                 {[
-                  { perfil: 'Camarero de sala', tarifa: '12–18€/h · 50–90€/noche' },
-                  { perfil: 'Hostess / Azafata', tarifa: '15–22€/h · 40–80€/noche' },
-                  { perfil: 'Barman / Coctelero', tarifa: '15–25€/h · 60–120€/noche' },
-                  { perfil: 'Coordinador de sala', tarifa: '20–35€/h · 80–150€/noche' },
-                  { perfil: 'Animador infantil', tarifa: '150–350€ el evento (3-4h)' },
-                  { perfil: 'Relaciones Públicas (RRPP)', tarifa: '80–300€/noche + % taquilla' },
+                  { perfil: 'Camarero de sala', tarifa: '12-18€/h · 50-90€/noche' },
+                  { perfil: 'Hostess / Azafata', tarifa: '15-22€/h · 40-80€/noche' },
+                  { perfil: 'Barman / Coctelero', tarifa: '15-25€/h · 60-120€/noche' },
+                  { perfil: 'Coordinador de sala', tarifa: '20-35€/h · 80-150€/noche' },
+                  { perfil: 'Animador infantil', tarifa: '150-350€ el evento (3-4h)' },
+                  { perfil: 'Relaciones Públicas (RRPP)', tarifa: '80-300€/noche + % taquilla' },
                 ].map((row, i) => (
                   <div key={row.perfil} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <p className="text-xs font-medium">{row.perfil}</p>

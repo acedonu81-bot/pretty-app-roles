@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Camareros Pamplona', item: 'https://xpeak.es/blog/camareros-eventos-pamplona' }] };
 
 const PRECIOS = [
-  { perfil: 'Camarero/a de sala', tarifa: '11–18€/hora', nota: 'Cóctel, cena sentada o buffet (año estándar)' },
-  { perfil: 'Bartender / coctelería', tarifa: '15–22€/hora', nota: 'Barra libre y coctelería de autor' },
-  { perfil: 'Jefe de sala / coordinador', tarifa: '20–29€/hora', nota: 'Gestión del equipo en boda o evento grande' },
-  { perfil: 'Servicio boda completo (6-7h)', tarifa: '130–235€/persona', nota: 'Cóctel + cena + barra, fincas de Navarra' },
-  { perfil: 'Barra libre con bartender (4h)', tarifa: '155–340€', nota: 'Incluye montaje y desmontaje' },
-  { perfil: 'Personal eventos agroalimentarios', tarifa: '13–21€/hora', nota: 'Ferias y presentaciones del sector' },
+  { perfil: 'Camarero/a de sala', tarifa: '11-18€/hora', nota: 'Cóctel, cena sentada o buffet (año estándar)' },
+  { perfil: 'Bartender / coctelería', tarifa: '15-22€/hora', nota: 'Barra libre y coctelería de autor' },
+  { perfil: 'Jefe de sala / coordinador', tarifa: '20-29€/hora', nota: 'Gestión del equipo en boda o evento grande' },
+  { perfil: 'Servicio boda completo (6-7h)', tarifa: '130-235€/persona', nota: 'Cóctel + cena + barra, fincas de Navarra' },
+  { perfil: 'Barra libre con bartender (4h)', tarifa: '155-340€', nota: 'Incluye montaje y desmontaje' },
+  { perfil: 'Personal eventos agroalimentarios', tarifa: '13-21€/hora', nota: 'Ferias y presentaciones del sector' },
 ];
 
 export default function BlogCamarerosPamplona() {
@@ -33,7 +33,7 @@ export default function BlogCamarerosPamplona() {
         <title>Precio camareros para eventos en Pamplona 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran los camareros y bartenders para bodas en fincas de Navarra y eventos en Pamplona. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/camareros-eventos-pamplona" />
-        <meta property="og:title" content="Precio camareros eventos Pamplona 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio camareros eventos Pamplona 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de camareros y bartenders para bodas y eventos corporativos en Pamplona." />
         <meta property="og:url" content="https://xpeak.es/blog/camareros-eventos-pamplona" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

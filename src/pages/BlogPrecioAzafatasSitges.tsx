@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Sitges', item: 'https://xpeak.es/blog/precio-azafatas-sitges' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / evento', tarifa: '180–240€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '210–320€/día', nota: 'Bodas de lujo y fiestas privadas en villas' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '220–300€/día', nota: 'Imprescindible por turismo internacional' },
-  { perfil: 'Azafata trilingüe', tarifa: '260–380€/día', nota: 'Festival de Cine Fantástico y eventos internacionales' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '240–350€/día', nota: 'Gestión de equipo en Carnaval o festival' },
-  { perfil: 'Pack evento en villa (4h)', tarifa: '130–220€', nota: 'Desplazamiento en costa incluido' },
+  { perfil: 'Azafata de stand / evento', tarifa: '180-240€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '210-320€/día', nota: 'Bodas de lujo y fiestas privadas en villas' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '220-300€/día', nota: 'Imprescindible por turismo internacional' },
+  { perfil: 'Azafata trilingüe', tarifa: '260-380€/día', nota: 'Festival de Cine Fantástico y eventos internacionales' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '240-350€/día', nota: 'Gestión de equipo en Carnaval o festival' },
+  { perfil: 'Pack evento en villa (4h)', tarifa: '130-220€', nota: 'Desplazamiento en costa incluido' },
 ];
 
 export default function BlogPrecioAzafatasSitges() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasSitges() {
         <title>Precio azafatas para eventos en Sitges 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos, Carnaval y Festival de Cine Fantástico en Sitges. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-sitges" />
-        <meta property="og:title" content="Precio azafatas eventos Sitges 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Sitges 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para Carnaval, festivales y bodas de lujo en Sitges." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-sitges" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

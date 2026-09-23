@@ -19,10 +19,10 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'DJ bodas Valencia', item: 'https://xpeak.es/blog/dj-bodas-valencia' }] };
 
 const PRECIOS = [
-  { servicio: 'Solo pista de baile (4-5h)', precio: '400–900€' },
-  { servicio: 'Cóctel + pista de baile', precio: '600–1.200€' },
-  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '800–1.800€' },
-  { servicio: 'Pack premium con equipo de luces profesional', precio: '1.100–2.200€' },
+  { servicio: 'Solo pista de baile (4-5h)', precio: '400-900€' },
+  { servicio: 'Cóctel + pista de baile', precio: '600-1.200€' },
+  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '800-1.800€' },
+  { servicio: 'Pack premium con equipo de luces profesional', precio: '1.100-2.200€' },
 ];
 
 const ZONAS = [
@@ -41,7 +41,7 @@ export default function BlogDJBodaValencia() {
         <title>DJ para bodas en Valencia: precio 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un DJ para una boda en Valencia. Precios reales 2026, zonas de celebración y cómo contratar el mejor DJ en la Comunitat Valenciana." />
         <link rel="canonical" href="https://xpeak.es/blog/dj-bodas-valencia" />
-        <meta property="og:title" content="DJ para bodas en Valencia: precio 2026 — XPEAK Blog" />
+        <meta property="og:title" content="DJ para bodas en Valencia: precio 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precios reales de DJs de boda en Valencia. Zonas, Albufera, Marina Alta y cómo elegir el perfil correcto." />
         <meta property="og:url" content="https://xpeak.es/blog/dj-bodas-valencia" />
         <meta property="og:type" content="article" />
@@ -70,7 +70,7 @@ export default function BlogDJBodaValencia() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>DJ · Valencia · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para bodas en Valencia: precio y cómo contratar en 2026</h1>
-            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Valencia tiene uno de los mercados de bodas más activos de España gracias a su clima mediterráneo y la enorme variedad de fincas. Precios más competitivos que Madrid o Barcelona — te explicamos exactamente cuánto y cómo elegir bien.</p>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>Valencia tiene uno de los mercados de bodas más activos de España gracias a su clima mediterráneo y la enorme variedad de fincas. Precios más competitivos que Madrid o Barcelona: te explicamos exactamente cuánto y cómo elegir bien.</p>
             <time className="text-xs mt-3 block" style={{ color: '#666' }}>28 mayo 2026</time>
             <BlogAnswerBox
               question="¿Cuánto cuesta un DJ para una boda en Valencia?"
@@ -113,7 +113,7 @@ export default function BlogDJBodaValencia() {
             <section>
               <h2 className="text-lg font-black mb-3">Qué diferencia a un DJ de bodas en Valencia</h2>
               <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>
-                Valencia tiene una escena musical muy rica: DJs locales con formación en electrónica, techno y música latina conviven en el mismo mercado. Para bodas, los DJs valencianos suelen tener experiencia en eventos grandes — la ciudad organiza festivales masivos que han profesionalizado mucho el sector.
+                Valencia tiene una escena musical muy rica: DJs locales con formación en electrónica, techno y música latina conviven en el mismo mercado. Para bodas, los DJs valencianos suelen tener experiencia en eventos grandes: la ciudad organiza festivales masivos que han profesionalizado mucho el sector.
               </p>
               <p className="text-base leading-relaxed" style={{ color: '#222' }}>
                 Un punto a tener en cuenta es la temporada de Fallas (febrero-marzo): los DJs más demandados suelen estar totalmente reservados para esas fechas y para bodas de primavera que se solapan. Si tu boda es en abril, mayo o junio, reserva con al menos 9-10 meses de antelación para no quedarte sin opciones de calidad.

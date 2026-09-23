@@ -33,15 +33,15 @@ const faqStructured = {
   mainEntity: [
     { '@type': 'Question', name: '¿Cuánto cuesta un fotógrafo de bodas en Zaragoza?', acceptedAnswer: { '@type': 'Answer', text: 'Un fotógrafo de bodas en Zaragoza cuesta entre 750€ y 2.000€. Los precios son algo más competitivos que en Madrid o Barcelona, con muy buena calidad media en la región aragonesa.' } },
     { '@type': 'Question', name: '¿Se puede fotografiar en la Basílica del Pilar?', acceptedAnswer: { '@type': 'Answer', text: 'El interior de la Basílica no permite sesiones fotográficas privadas durante la ceremonia sin autorización especial. Los exteriores con el Pilar al fondo son libres y muy demandados para postbodas.' } },
-    { '@type': 'Question', name: '¿Cuándo reservar fotógrafo de bodas en Zaragoza?', acceptedAnswer: { '@type': 'Answer', text: 'Con 6–9 meses de antelación es suficiente en temporada media. Para bodas en octubre (temporada alta aragonesa) o en primavera, reserva con al menos 10–12 meses.' } },
+    { '@type': 'Question', name: '¿Cuándo reservar fotógrafo de bodas en Zaragoza?', acceptedAnswer: { '@type': 'Answer', text: 'Con 6-9 meses de antelación es suficiente en temporada media. Para bodas en octubre (temporada alta aragonesa) o en primavera, reserva con al menos 10-12 meses.' } },
   ],
 };
 
 const PRICES = [
-  { perfil: 'Fotógrafo emergente', rango: '600€ – 900€', nota: 'Ideal para bodas íntimas o civiles' },
-  { perfil: 'Fotógrafo profesional', rango: '900€ – 1.600€', nota: 'Reportaje completo, álbum digital' },
-  { perfil: 'Fotógrafo premium', rango: '1.600€ – 2.500€', nota: 'Edición artística, postboda Pirineos' },
-  { perfil: 'Fotógrafo de referencia', rango: '2.500€ – 3.800€', nota: 'Premiado, publicaciones nacionales' },
+  { perfil: 'Fotógrafo emergente', rango: '600€-900€', nota: 'Ideal para bodas íntimas o civiles' },
+  { perfil: 'Fotógrafo profesional', rango: '900€-1.600€', nota: 'Reportaje completo, álbum digital' },
+  { perfil: 'Fotógrafo premium', rango: '1.600€-2.500€', nota: 'Edición artística, postboda Pirineos' },
+  { perfil: 'Fotógrafo de referencia', rango: '2.500€-3.800€', nota: 'Premiado, publicaciones nacionales' },
 ];
 
 export default function BlogFotografoBodaZaragoza() {
@@ -96,11 +96,11 @@ export default function BlogFotografoBodaZaragoza() {
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Mejores localizaciones para fotos de boda en Zaragoza</h2>
           <ul className="space-y-3 mb-8 text-[#333]">
-            <li><strong className="text-[#111]">Basílica del Pilar (exterior)</strong> — Icono absoluto. Los reflejos en el Ebro al amanecer son de otro nivel.</li>
-            <li><strong className="text-[#111]">La Seo (Catedral de San Salvador)</strong> — Arquitectura mudéjar-gótica. Ideal para bodas religiosas con reportaje en el entorno medieval.</li>
-            <li><strong className="text-[#111]">Palacio de la Aljafería</strong> — Fortaleza morisca del s.XI. Requiere permiso previo pero las fotos son espectaculares.</li>
-            <li><strong className="text-[#111]">Pirineos aragoneses</strong> — Para sesiones postboda únicas: Ordesa, Benasque, Hecho. A 2h de Zaragoza.</li>
-            <li><strong className="text-[#111]">Bodegas del Somontano / Cariñena</strong> — Viñedos en otoño con colores dorados. Muy demandado en octubre.</li>
+            <li><strong className="text-[#111]">Basílica del Pilar (exterior)</strong>: Icono absoluto. Los reflejos en el Ebro al amanecer son de otro nivel.</li>
+            <li><strong className="text-[#111]">La Seo (Catedral de San Salvador)</strong>: Arquitectura mudéjar-gótica. Ideal para bodas religiosas con reportaje en el entorno medieval.</li>
+            <li><strong className="text-[#111]">Palacio de la Aljafería</strong>: Fortaleza morisca del s.XI. Requiere permiso previo pero las fotos son espectaculares.</li>
+            <li><strong className="text-[#111]">Pirineos aragoneses</strong>: Para sesiones postboda únicas: Ordesa, Benasque, Hecho. A 2h de Zaragoza.</li>
+            <li><strong className="text-[#111]">Bodegas del Somontano / Cariñena</strong>: Viñedos en otoño con colores dorados. Muy demandado en octubre.</li>
           </ul>
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-fotografo" articlePath="/blog/fotografo-boda-zaragoza" />

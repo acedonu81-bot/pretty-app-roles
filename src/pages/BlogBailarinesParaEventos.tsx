@@ -51,7 +51,7 @@ export default function BlogBailarinesParaEventos() {
         <title>Bailarines para eventos: cuándo contratarlos (2026) | XPEAK</title>
         <meta name="description" content="Show de baile, animación de pista o clase exprés: qué formato de bailarín encaja mejor en cada tipo de evento." />
         <link rel="canonical" href="https://xpeak.es/blog/bailarines-para-eventos" />
-        <meta property="og:title" content="Bailarines para eventos — XPEAK Blog" />
+        <meta property="og:title" content="Bailarines para eventos | XPEAK Blog" />
         <meta property="og:description" content="Qué formato de bailarín elegir según el tipo de evento." />
         <meta property="og:url" content="https://xpeak.es/blog/bailarines-para-eventos" />
         <meta property="og:type" content="article" />

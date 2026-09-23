@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Manresa', item: 'https://xpeak.es/blog/precio-azafatas-manresa' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '115–160€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '140–210€/día', nota: 'Eventos institucionales y de empresa' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '150–195€/día', nota: 'Demanda puntual en actos con proveedores' },
-  { perfil: 'Azafata para boda (recepción)', tarifa: '110–170€/día', nota: 'Fincas del Bages' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '155–230€/día', nota: 'Gestión del equipo completo' },
-  { perfil: 'Pack evento corporativo (4h)', tarifa: '70–115€', nota: 'Acto único, media jornada' },
+  { perfil: 'Azafata de stand / feria', tarifa: '115-160€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '140-210€/día', nota: 'Eventos institucionales y de empresa' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '150-195€/día', nota: 'Demanda puntual en actos con proveedores' },
+  { perfil: 'Azafata para boda (recepción)', tarifa: '110-170€/día', nota: 'Fincas del Bages' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '155-230€/día', nota: 'Gestión del equipo completo' },
+  { perfil: 'Pack evento corporativo (4h)', tarifa: '70-115€', nota: 'Acto único, media jornada' },
 ];
 
 export default function BlogPrecioAzafatasManresa() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasManresa() {
         <title>Precio azafatas para eventos en Manresa 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos y bodas en Manresa, Catalunya Central. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-manresa" />
-        <meta property="og:title" content="Precio azafatas eventos Manresa 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Manresa 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para eventos y bodas en Manresa." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-manresa" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

@@ -37,7 +37,7 @@ export default function BlogPersonalExtraHosteleria() {
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructured)}</script>
       </Helmet>
-      <div style={{ background: '#0A0A0A', color: '#F5F5F0', minHeight: '100vh' }}>
+      <div style={{ background: '#ffffff', color: '#111', minHeight: '100vh' }}>
         <div className="max-w-2xl mx-auto px-4 py-12">
           <a href="/blog" style={{ color: '#2563EB', fontSize: '0.8rem', fontWeight: 700 }}>← Blog XPEAK</a>
           <article className="mt-6">
@@ -60,10 +60,10 @@ export default function BlogPersonalExtraHosteleria() {
               </thead>
               <tbody>
                 {[
-                  ['Verano (costa e islas)', 'Jun–Sep', 'Camareros barra, bartenders, jefes de sala'],
-                  ['Bodas y eventos privados', 'Abr–Oct', 'Camareros de boda, maitre, personal cóctel'],
-                  ['Navidad y Nochevieja', 'Nov–Ene', 'Camareros cenas empresa, barra libre'],
-                  ['Eventos corporativos', 'Sep–Nov y Feb–Abr', 'Personal de sala, azafatas, coordinadores'],
+                  ['Verano (costa e islas)', 'Jun-Sep', 'Camareros barra, bartenders, jefes de sala'],
+                  ['Bodas y eventos privados', 'Abr-Oct', 'Camareros de boda, maitre, personal cóctel'],
+                  ['Navidad y Nochevieja', 'Nov-Ene', 'Camareros cenas empresa, barra libre'],
+                  ['Eventos corporativos', 'Sep-Nov y Feb-Abr', 'Personal de sala, azafatas, coordinadores'],
                 ].map(([temp, meses, tipo]) => (
                   <tr key={temp} style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
                     <td style={{ padding: '10px 0', fontWeight: 700 }}>{temp}</td>
@@ -85,12 +85,12 @@ export default function BlogPersonalExtraHosteleria() {
               </thead>
               <tbody>
                 {[
-                  ['Camarero/a sala', '12€–16€', '96€–128€'],
-                  ['Bartender / Barman', '14€–20€', '112€–160€'],
-                  ['Jefe de sala', '18€–25€', '144€–200€'],
-                  ['Maitre', '20€–30€', '160€–240€'],
-                  ['Azafata / Hostess', '14€–18€', '112€–144€'],
-                  ['Personal de cocina', '12€–18€', '96€–144€'],
+                  ['Camarero/a sala', '12€-16€', '96€-128€'],
+                  ['Bartender / Barman', '14€-20€', '112€-160€'],
+                  ['Jefe de sala', '18€-25€', '144€-200€'],
+                  ['Maitre', '20€-30€', '160€-240€'],
+                  ['Azafata / Hostess', '14€-18€', '112€-144€'],
+                  ['Personal de cocina', '12€-18€', '96€-144€'],
                 ].map(([perfil, hora, jornada]) => (
                   <tr key={perfil} style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
                     <td style={{ padding: '10px 0', fontWeight: 700 }}>{perfil}</td>
@@ -122,7 +122,7 @@ export default function BlogPersonalExtraHosteleria() {
               <li>Publica una oferta con el perfil, número de personas, fecha y ciudad.</li>
               <li>Recibe candidaturas de camareros verificados con disponibilidad confirmada.</li>
               <li>Firma el contrato digital automático con un clic.</li>
-              <li>Para urgencias: usa <strong style={{ color: '#2563EB' }}>Flash Booking</strong> — respuesta en menos de 1 hora.</li>
+              <li>Para urgencias: usa <strong style={{ color: '#2563EB' }}>Flash Booking</strong>: respuesta en menos de 1 hora.</li>
             </ol>
 
             <section className="mt-8">

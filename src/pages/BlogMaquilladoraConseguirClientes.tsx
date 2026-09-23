@@ -13,13 +13,13 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
   { '@type': 'Question', name: '¿Cuánto cobra una maquilladora freelance en España?', acceptedAnswer: { '@type': 'Answer', text: 'Una maquilladora freelance cobra entre 80€ y 300€ por servicio según el tipo de evento y la ciudad. Maquillaje de novia completo (prueba + día del evento): 150-350€. Maquillaje de comunión (niña): 50-100€. Maquillaje para evento o gala: 70-150€. En Madrid y Barcelona los precios son un 20-30% más altos. Con 3-4 servicios al fin de semana en temporada alta se superan fácilmente los 1.500€ mensuales.' } },
   { '@type': 'Question', name: '¿Necesito título oficial para trabajar de maquilladora?', acceptedAnswer: { '@type': 'Answer', text: 'No hay título obligatorio para ejercer, pero sí se valoran las certificaciones: FP de Estética (Grado Medio o Superior), cursos homologados de maquillaje nupcial, artístico o aerógrafo. Las marcas como MAC, Charlotte Tilbury o Armani ofrecen formaciones que también abren puertas. Lo que más cuenta para los clientes es el portfolio y las reseñas.' } },
   { '@type': 'Question', name: '¿Cómo fijo el precio como maquilladora de bodas?', acceptedAnswer: { '@type': 'Answer', text: 'Calcula: tiempo de servicio (maquillaje de novia 1.5-2h, prueba 1h) + desplazamiento + materiales consumibles + IRPF. Muchas maquilladoras cobran la prueba por separado (50-80€) y el servicio el día de la boda (120-220€). Para paquetes con damas de honor o familiares, descuento del 10-15% por persona adicional.' } },
-  { '@type': 'Question', name: '¿Cómo consigo mis primeras clientas de boda?', acceptedAnswer: { '@type': 'Answer', text: 'Empieza con sesiones a precio reducido a cambio de fotos de calidad para tu portfolio. Contacta fotógrafos de bodas para hacer shootings colaborativos — ellos también necesitan maquilladoras para sus proyectos. Regístrate en plataformas como XPEAK donde novias y organizadores buscan maquilladoras verificadas. Instagram bien trabajado con antes/después es tu mejor herramienta de captación.' } },
+  { '@type': 'Question', name: '¿Cómo consigo mis primeras clientas de boda?', acceptedAnswer: { '@type': 'Answer', text: 'Empieza con sesiones a precio reducido a cambio de fotos de calidad para tu portfolio. Contacta fotógrafos de bodas para hacer shootings colaborativos: ellos también necesitan maquilladoras para sus proyectos. Regístrate en plataformas como XPEAK donde novias y organizadores buscan maquilladoras verificadas. Instagram bien trabajado con antes/después es tu mejor herramienta de captación.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Maquilladora conseguir clientes', item: 'https://xpeak.es/blog/maquilladora-conseguir-clientes' }] };
 
 const ESTRATEGIAS = [
   { num: '01', titulo: 'Instagram con before & after reales', desc: 'El maquillaje es el contenido más viral de Instagram. Un reel de transformación de 15 segundos puede conseguirte más clientas que un anuncio de 500€. Muestra tu trabajo real, con luz natural, sin filtros exagerados. Las novias quieren ver cómo quedará en las fotos, no en un estudio de producto.' },
-  { num: '02', titulo: 'Portfolio físico y digital impecable', desc: 'Lleva siempre un portfolio en iPad o móvil a las reuniones presenciales. Organiza por tipo de evento: novias, comuniones, galas, maquillaje artístico. Incluye fotos de fotógrafo profesional si puedes — la calidad de la foto también vende tu trabajo.' },
+  { num: '02', titulo: 'Portfolio físico y digital impecable', desc: 'Lleva siempre un portfolio en iPad o móvil a las reuniones presenciales. Organiza por tipo de evento: novias, comuniones, galas, maquillaje artístico. Incluye fotos de fotógrafo profesional si puedes: la calidad de la foto también vende tu trabajo.' },
   { num: '03', titulo: 'Colabora con fotógrafos y wedding planners', desc: 'Un fotógrafo de bodas con quien trabajas bien es una fuente constante de referencias. Los wedding planners tienen listas de proveedores recomendados que usan con cada boda. Una relación sólida con 2-3 de cada puede darte la agenda llena sin hacer marketing adicional.' },
   { num: '04', titulo: 'Regístrate en plataformas especializadas', desc: 'XPEAK conecta maquilladoras con novias, organizadores de comuniones y coordinadoras de eventos que buscan profesionales verificadas. Tu perfil incluye portfolio, reseñas y zonas de trabajo. Las clientas que entran ya tienen intención de contratar.' },
   { num: '05', titulo: 'Ofrece prueba antes de la boda', desc: 'La prueba de maquillaje es un servicio de pago (no gratis) que reduce la ansiedad de la novia y asegura que el look del gran día esté definido. Las maquilladoras que ofrecen prueba tienen mayor tasa de conversión y menos cancelaciones el día del evento.' },
@@ -33,7 +33,7 @@ export default function BlogMaquilladoraConseguirClientes() {
         <title>Cómo conseguir trabajo de maquilladora en España 2026 | XPEAK</title>
         <meta name="description" content="Guía práctica para maquilladoras freelance. Cómo conseguir clientas de bodas, comuniones y eventos. Portfolio, Instagram, plataformas y precios." />
         <link rel="canonical" href="https://xpeak.es/blog/maquilladora-conseguir-clientes" />
-        <meta property="og:title" content="Cómo conseguir trabajo de maquilladora en España 2026 — XPEAK" />
+        <meta property="og:title" content="Cómo conseguir trabajo de maquilladora en España 2026 | XPEAK" />
         <meta property="og:description" content="Estrategias para maquilladoras freelance que quieren conseguir más clientas en bodas y eventos. Portfolio, Instagram y plataformas." />
         <meta property="og:url" content="https://xpeak.es/blog/maquilladora-conseguir-clientes" />
         <meta property="og:type" content="article" />
@@ -70,11 +70,11 @@ export default function BlogMaquilladoraConseguirClientes() {
               <h2 className="text-lg font-black mb-4">Tarifas orientativas</h2>
               <div className="space-y-2">
                 {[
-                  { servicio: 'Maquillaje novia (prueba)', precio: '50–90€' },
-                  { servicio: 'Maquillaje novia (día del evento)', precio: '120–250€' },
-                  { servicio: 'Maquillaje dama de honor / familiar', precio: '60–120€' },
-                  { servicio: 'Maquillaje comunión (niña)', precio: '50–90€' },
-                  { servicio: 'Maquillaje gala / evento corporativo', precio: '70–150€' },
+                  { servicio: 'Maquillaje novia (prueba)', precio: '50-90€' },
+                  { servicio: 'Maquillaje novia (día del evento)', precio: '120-250€' },
+                  { servicio: 'Maquillaje dama de honor / familiar', precio: '60-120€' },
+                  { servicio: 'Maquillaje comunión (niña)', precio: '50-90€' },
+                  { servicio: 'Maquillaje gala / evento corporativo', precio: '70-150€' },
                 ].map((row, i) => (
                   <div key={row.servicio} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}>
                     <p className="text-xs font-medium">{row.servicio}</p>

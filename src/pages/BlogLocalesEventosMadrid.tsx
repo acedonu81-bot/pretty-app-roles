@@ -22,7 +22,7 @@ const faqStructured = {
   '@type': 'FAQPage',
   mainEntity: [
     { '@type': 'Question', name: '¿Cómo elegir el local adecuado para una fiesta privada en Madrid?', acceptedAnswer: { '@type': 'Answer', text: 'Depende del tipo de evento y del número de invitados: una discoteca con sala privada funciona bien para cumpleaños y despedidas urbanas, una terraza o azotea para algo más tranquilo, y una finca a las afueras cuando el grupo quiere pasar el fin de semana completo fuera de la ciudad.' } },
-    { '@type': 'Question', name: '¿Los locales de esta guía cobran comisión por reservar a través de XPEAK?', acceptedAnswer: { '@type': 'Answer', text: 'No. Esta es una guía informativa: cada local se contacta directamente a través de su propia web, teléfono o Instagram. XPEAK no gestiona la reserva del espacio ni cobra comisión por ello.' } },
+    { '@type': 'Question', name: '¿Los locales de esta guía cobran comisión por reservar a través de XPEAK?', acceptedAnswer: { '@type': 'Answer', text: 'No. Esta es una guía informativa: cada local se contacta directamente a través de su propia web, teléfono o Instagram. XPEAK no gestiona la reserva del espacio.' } },
     { '@type': 'Question', name: '¿Con cuánta antelación hay que reservar un local para una fiesta o despedida?', acceptedAnswer: { '@type': 'Answer', text: 'Para salas y discotecas en Madrid capital, entre 3 y 6 semanas suele ser suficiente salvo fechas muy señaladas como Navidad o fin de curso. Para fincas de despedida, sobre todo en primavera y verano, conviene reservar con 2 o 3 meses de margen porque la disponibilidad de fin de semana se agota antes.' } },
     { '@type': 'Question', name: '¿Además del local, quién más hace falta para organizar el evento?', acceptedAnswer: { '@type': 'Answer', text: 'El local es solo una parte: la mayoría de eventos necesitan también DJ o música, catering, fotografía o algún tipo de animación según el tipo de celebración. XPEAK reúne a esos profesionales en un directorio aparte, para contratarlos todos desde el mismo carrito de evento.' } },
   ],
@@ -108,9 +108,9 @@ export default function BlogLocalesEventosMadrid() {
     <>
       <Helmet>
         <title>Locales para eventos en Madrid: guía de salas, terrazas y fincas (2026) | XPEAK</title>
-        <meta name="description" content="Discotecas, terrazas, azoteas y fincas para despedidas en Madrid y alrededores, con web y contacto directo. Sin comisiones ni intermediarios." />
+        <meta name="description" content="Discotecas, terrazas, azoteas y fincas para despedidas en Madrid y alrededores, con web y contacto directo." />
         <link rel="canonical" href="https://xpeak.es/blog/locales-para-eventos-madrid" />
-        <meta property="og:title" content="Locales para eventos en Madrid — XPEAK Blog" />
+        <meta property="og:title" content="Locales para eventos en Madrid | XPEAK Blog" />
         <meta property="og:description" content="Guía de salas, terrazas, azoteas y fincas para fiestas y despedidas en Madrid, con contacto directo de cada local." />
         <meta property="og:url" content="https://xpeak.es/blog/locales-para-eventos-madrid" />
         <meta property="og:type" content="article" />
@@ -166,7 +166,7 @@ export default function BlogLocalesEventosMadrid() {
             </p>
 
             <p className="text-base leading-relaxed mb-2" style={{ color: '#222' }}>
-              Esta guía reúne locales reales de distintos barrios y tipos de Madrid, más algunas fincas a las afueras pensadas para despedidas de fin de semana completo. Cada local tiene su propia web o contacto, sin intermediarios ni comisión de por medio.
+              Esta guía reúne locales reales de distintos barrios y tipos de Madrid, más algunas fincas a las afueras pensadas para despedidas de fin de semana completo. Cada local tiene su propia web o contacto, sin intermediarios.
             </p>
 
             <div className="flex flex-wrap gap-2 mt-6">

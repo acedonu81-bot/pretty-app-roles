@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Benidorm', item: 'https://xpeak.es/blog/precio-azafatas-benidorm' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '130–175€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '150–210€/día', nota: 'Activaciones de marca en hoteles y playa' },
-  { perfil: 'Azafata bilingüe (inglés)', tarifa: '160–200€/día', nota: 'Muy demandada por turismo internacional' },
-  { perfil: 'Azafata trilingüe', tarifa: '190–260€/día', nota: 'Eventos con clientela europea diversa' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '180–240€/día', nota: 'Gestión de equipo en eventos hoteleros grandes' },
-  { perfil: 'Pack evento en hotel (4h)', tarifa: '80–130€', nota: 'Sube en temporada alta (junio-agosto)' },
+  { perfil: 'Azafata de stand / feria', tarifa: '130-175€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '150-210€/día', nota: 'Activaciones de marca en hoteles y playa' },
+  { perfil: 'Azafata bilingüe (inglés)', tarifa: '160-200€/día', nota: 'Muy demandada por turismo internacional' },
+  { perfil: 'Azafata trilingüe', tarifa: '190-260€/día', nota: 'Eventos con clientela europea diversa' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '180-240€/día', nota: 'Gestión de equipo en eventos hoteleros grandes' },
+  { perfil: 'Pack evento en hotel (4h)', tarifa: '80-130€', nota: 'Sube en temporada alta (junio-agosto)' },
 ];
 
 export default function BlogPrecioAzafatasBenidorm() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasBenidorm() {
         <title>Precio azafatas para eventos en Benidorm 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos en hoteles y temporada turística en Benidorm. Tarifas por perfil 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-benidorm" />
-        <meta property="og:title" content="Precio azafatas eventos Benidorm 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Benidorm 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para eventos hoteleros y turísticos en Benidorm." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-benidorm" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

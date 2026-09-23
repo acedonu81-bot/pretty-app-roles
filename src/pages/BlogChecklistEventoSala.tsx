@@ -31,13 +31,13 @@ export default function BlogChecklistEventoSala() {
   return (
     <>
       <Helmet>
-        <title>Checklist para Organizar un Evento en Sala — Guía Completa 2026 | XPEAK</title>
+        <title>Checklist para Organizar un Evento en Sala: Guía Completa 2026 | XPEAK</title>
         <meta name="description" content="Lista completa de proveedores y pasos para organizar un evento en sala: DJ, camareros, catering, seguridad. Checklist descargable y precios orientativos 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/checklist-organizar-evento-sala" />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
         <script type="application/ld+json">{JSON.stringify(faqLd)}</script>
       </Helmet>
-      <div style={{ background: '#0A0A0A', color: '#F5F5F0', minHeight: '100vh' }}>
+      <div style={{ background: '#ffffff', color: '#111', minHeight: '100vh' }}>
         <div className="max-w-2xl mx-auto px-4 py-12">
           <a href="/blog" style={{ color: '#6D28D9', fontSize: '0.8rem', fontWeight: 700 }}>← Blog XPEAK</a>
           <article className="mt-6">
@@ -118,7 +118,7 @@ export default function BlogChecklistEventoSala() {
               <li><strong style={{ color: '#6D28D9' }}>3-6 meses antes:</strong> DJ principal y fotógrafo (los más demandados).</li>
               <li><strong style={{ color: '#6D28D9' }}>1-3 meses antes:</strong> Catering, producción audiovisual, artista en vivo.</li>
               <li><strong style={{ color: '#6D28D9' }}>2-4 semanas antes:</strong> Camareros, bartenders, seguridad, RRPP.</li>
-              <li><strong style={{ color: '#6D28D9' }}>Última hora:</strong> Usa <a href="/contratar-dj" style={{ color: '#6D28D9' }}>Flash Booking</a> — respuesta garantizada en menos de 1 hora.</li>
+              <li><strong style={{ color: '#6D28D9' }}>Última hora:</strong> Usa <a href="/contratar-dj" style={{ color: '#6D28D9' }}>Flash Booking</a>: respuesta garantizada en menos de 1 hora.</li>
             </ol>
 
             <h2 className="text-xl font-black mt-8 mb-3">Presupuesto orientativo por tamaño de evento</h2>
@@ -132,9 +132,9 @@ export default function BlogChecklistEventoSala() {
               </thead>
               <tbody>
                 {[
-                  ['Evento íntimo', '50 pax', '800€ – 1.500€'],
-                  ['Evento mediano', '100-150 pax', '1.500€ – 3.000€'],
-                  ['Evento grande', '200-300 pax', '3.000€ – 6.000€'],
+                  ['Evento íntimo', '50 pax', '800€-1.500€'],
+                  ['Evento mediano', '100-150 pax', '1.500€-3.000€'],
+                  ['Evento grande', '200-300 pax', '3.000€-6.000€'],
                   ['Macro evento / festival', '+500 pax', '+10.000€'],
                 ].map(([size, pax, budget]) => (
                   <tr key={size} style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
@@ -161,7 +161,7 @@ export default function BlogChecklistEventoSala() {
 
             <div className="mt-8 p-5 rounded-2xl text-center" style={{ background: 'rgba(109,40,217,0.06)', border: '1px solid rgba(109,40,217,0.2)' }}>
               <p className="font-black text-lg mb-2">¿Necesitas contratar proveedores para tu evento?</p>
-              <p style={{ color: '#444', fontSize: '0.9rem', marginBottom: '1rem' }}>En XPEAK encuentras DJ, camareros, catering y más — con contratos digitales automáticos y Flash Booking en menos de 1 hora.</p>
+              <p style={{ color: '#444', fontSize: '0.9rem', marginBottom: '1rem' }}>En XPEAK encuentras DJ, camareros, catering y más, con contratos digitales automáticos y Flash Booking en menos de 1 hora.</p>
               <a href="/auth" className="inline-block px-6 py-3 rounded-xl font-black text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(90deg,#6D28D9,#B8941E)', color: '#000' }}>Publicar oferta →</a>
             </div>
 

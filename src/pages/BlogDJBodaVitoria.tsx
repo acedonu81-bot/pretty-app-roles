@@ -12,10 +12,10 @@ import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 const slug = 'dj-bodas-vitoria';
 const ciudad = 'Vitoria';
 const PRECIOS = [
-  { servicio: 'Solo pista de baile (4-5h)', precio: '350–800€' },
-  { servicio: 'Cóctel + pista de baile', precio: '550–1.200€' },
-  { servicio: 'Servicio completo', precio: '700–1.800€' },
-  { servicio: 'Pack caserío o palacio premium', precio: '1.000–2.200€' },
+  { servicio: 'Solo pista de baile (4-5h)', precio: '350-800€' },
+  { servicio: 'Cóctel + pista de baile', precio: '550-1.200€' },
+  { servicio: 'Servicio completo', precio: '700-1.800€' },
+  { servicio: 'Pack caserío o palacio premium', precio: '1.000-2.200€' },
 ];
 const ZONAS = [
   { zona: 'Vitoria capital', fincas: 'Palacios medievales, hoteles históricos, casas señoriales', nota: 'Ciudad bien conservada, venues únicos' },
@@ -39,7 +39,7 @@ export default function BlogDJBodaVitoria() {
         <title>DJ para bodas en Vitoria: precio 2026 | XPEAK</title>
         <meta name="description" content={`Cuánto cuesta un DJ para una boda en ${ciudad}. Precios reales 2026, caseríos, bodegas Rioja Alavesa y cómo contratar el mejor DJ.`} />
         <link rel="canonical" href={`https://xpeak.es/blog/${slug}`} />
-        <meta property="og:title" content={`DJ para bodas en ${ciudad}: precio 2026 — XPEAK Blog`} />
+        <meta property="og:title" content={`DJ para bodas en ${ciudad}: precio 2026 | XPEAK Blog`} />
         <meta property="og:url" content={`https://xpeak.es/blog/${slug}`} />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />
         <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:image" content="https://xpeak.es/og-image.jpg" />

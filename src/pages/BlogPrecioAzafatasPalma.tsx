@@ -12,18 +12,18 @@ const article = { '@context': 'https://schema.org', '@type': 'Article', headline
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
   { '@type': 'Question', name: '¿Cuánto cobran las azafatas de eventos en Palma de Mallorca?', acceptedAnswer: { '@type': 'Answer', text: 'En Palma de Mallorca, una azafata de eventos cobra entre 17€ y 28€/hora bruto, notablemente por encima de la media nacional por el peso del turismo de lujo. Las agencias facturan al cliente entre 180€ y 320€/día por perfil. En temporada alta (mayo-octubre) la demanda se triplica y las tarifas suben hasta un 40%.' } },
   { '@type': 'Question', name: '¿Dónde se concentran los eventos en Palma de Mallorca?', acceptedAnswer: { '@type': 'Answer', text: 'La demanda se concentra en villas privadas y fincas de lujo del interior de la isla para bodas, en el puerto deportivo y muelles para eventos náuticos y presentaciones a bordo de yates, y en hoteles de gama alta de Palma capital para congresos y presentaciones de marca internacional.' } },
-  { '@type': 'Question', name: '¿Con cuánta antelación reservar azafatas para una boda en Mallorca?', acceptedAnswer: { '@type': 'Answer', text: 'Para bodas en fincas y villas de Mallorca en temporada alta (mayo-octubre) reserva con 3-4 meses de antelación como mínimo — los perfiles bilingües y trilingües de zonas turísticas se agotan primero. Fuera de temporada, 3-4 semanas suele ser suficiente.' } },
+  { '@type': 'Question', name: '¿Con cuánta antelación reservar azafatas para una boda en Mallorca?', acceptedAnswer: { '@type': 'Answer', text: 'Para bodas en fincas y villas de Mallorca en temporada alta (mayo-octubre) reserva con 3-4 meses de antelación como mínimo: los perfiles bilingües y trilingües de zonas turísticas se agotan primero. Fuera de temporada, 3-4 semanas suele ser suficiente.' } },
   { '@type': 'Question', name: '¿Por qué son más caras las azafatas en Mallorca que en el resto de España?', acceptedAnswer: { '@type': 'Answer', text: 'El turismo internacional de lujo y la temporada muy concentrada (mayo-octubre) disparan la demanda de perfiles bilingües y trilingües en muy poco tiempo. A esto se suma el coste de vida más alto de la isla, lo que sitúa las tarifas entre un 30% y un 60% por encima de Madrid o Barcelona en plena temporada.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Azafatas Palma', item: 'https://xpeak.es/blog/precio-azafatas-palma' }] };
 
 const PRECIOS = [
-  { perfil: 'Azafata de stand / feria', tarifa: '180–260€/día', nota: 'Jornada completa 8h' },
-  { perfil: 'Azafata de imagen', tarifa: '220–340€/día', nota: 'Eventos de marca y turismo de lujo' },
-  { perfil: 'Azafata bilingüe (inglés/alemán)', tarifa: '230–320€/día', nota: 'Muy demandada por clientela internacional' },
-  { perfil: 'Azafata trilingüe', tarifa: '280–420€/día', nota: 'Eventos náuticos y de yates' },
-  { perfil: 'Coordinadora de azafatas', tarifa: '260–380€/día', nota: 'Gestión de equipo en boda o evento grande' },
-  { perfil: 'Pack evento en villa/finca (4h)', tarifa: '120–220€', nota: 'Desplazamiento incluido dentro de la isla' },
+  { perfil: 'Azafata de stand / feria', tarifa: '180-260€/día', nota: 'Jornada completa 8h' },
+  { perfil: 'Azafata de imagen', tarifa: '220-340€/día', nota: 'Eventos de marca y turismo de lujo' },
+  { perfil: 'Azafata bilingüe (inglés/alemán)', tarifa: '230-320€/día', nota: 'Muy demandada por clientela internacional' },
+  { perfil: 'Azafata trilingüe', tarifa: '280-420€/día', nota: 'Eventos náuticos y de yates' },
+  { perfil: 'Coordinadora de azafatas', tarifa: '260-380€/día', nota: 'Gestión de equipo en boda o evento grande' },
+  { perfil: 'Pack evento en villa/finca (4h)', tarifa: '120-220€', nota: 'Desplazamiento incluido dentro de la isla' },
 ];
 
 export default function BlogPrecioAzafatasPalma() {
@@ -33,7 +33,7 @@ export default function BlogPrecioAzafatasPalma() {
         <title>Precio azafatas para eventos en Palma 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobran las azafatas para eventos, bodas de lujo y ferias en Palma de Mallorca. Tarifas de temporada alta 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/precio-azafatas-palma" />
-        <meta property="og:title" content="Precio azafatas eventos Palma de Mallorca 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio azafatas eventos Palma de Mallorca 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de azafatas para bodas de lujo y eventos náuticos en Mallorca." />
         <meta property="og:url" content="https://xpeak.es/blog/precio-azafatas-palma" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

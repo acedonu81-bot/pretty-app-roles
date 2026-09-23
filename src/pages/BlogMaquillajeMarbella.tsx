@@ -18,12 +18,12 @@ const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', ma
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'Maquillaje Marbella', item: 'https://xpeak.es/blog/maquillaje-eventos-marbella' }] };
 
 const PRECIOS = [
-  { perfil: 'Maquillaje novia (solo)', tarifa: '160–380€', nota: 'Incluye prueba previa' },
-  { perfil: 'Maquillaje novia + peinado', tarifa: '320–650€', nota: 'Servicio integral en villas y hoteles 5*' },
-  { perfil: 'Madrina / invitada especial', tarifa: '90–180€', nota: 'Sin prueba previa habitualmente' },
-  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '550–1.050€', nota: 'Desplazamiento a villa de la Milla de Oro incluido' },
-  { perfil: 'Evento Puerto Banús / marca', tarifa: '55–110€/persona', nota: 'Maquillaje fast-track para clientela internacional' },
-  { perfil: 'Sesión foto / vídeo', tarifa: '130–280€', nota: 'HD premium, flash-friendly, retoque incluido' },
+  { perfil: 'Maquillaje novia (solo)', tarifa: '160-380€', nota: 'Incluye prueba previa' },
+  { perfil: 'Maquillaje novia + peinado', tarifa: '320-650€', nota: 'Servicio integral en villas y hoteles 5*' },
+  { perfil: 'Madrina / invitada especial', tarifa: '90-180€', nota: 'Sin prueba previa habitualmente' },
+  { perfil: 'Pack boda (novia + 3 personas)', tarifa: '550-1.050€', nota: 'Desplazamiento a villa de la Milla de Oro incluido' },
+  { perfil: 'Evento Puerto Banús / marca', tarifa: '55-110€/persona', nota: 'Maquillaje fast-track para clientela internacional' },
+  { perfil: 'Sesión foto / vídeo', tarifa: '130-280€', nota: 'HD premium, flash-friendly, retoque incluido' },
 ];
 
 export default function BlogMaquillajeMarbella() {
@@ -33,7 +33,7 @@ export default function BlogMaquillajeMarbella() {
         <title>Precio maquilladora para eventos en Marbella 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cobra una maquilladora para bodas de lujo en villas y hoteles 5* de Marbella. Tarifas 2026." />
         <link rel="canonical" href="https://xpeak.es/blog/maquillaje-eventos-marbella" />
-        <meta property="og:title" content="Precio maquilladora eventos Marbella 2026 — XPEAK Blog" />
+        <meta property="og:title" content="Precio maquilladora eventos Marbella 2026 | XPEAK Blog" />
         <meta property="og:description" content="Tarifas de maquilladoras para bodas de lujo en Marbella." />
         <meta property="og:url" content="https://xpeak.es/blog/maquillaje-eventos-marbella" />
         <meta property="og:type" content="article" /><meta property="og:image" content="https://xpeak.es/og-image.jpg" /><meta property="og:site_name" content="XPEAK" />

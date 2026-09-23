@@ -166,7 +166,7 @@ const AdminSaludSistema = () => {
                   <button
                     onClick={() => descartar([a.clave])}
                     aria-label="Descartar este aviso"
-                    title="Ya lo sé — no volver a mostrarlo"
+                    title="Ya lo sé: no volver a mostrarlo"
                     className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-opacity opacity-40 hover:opacity-100"
                     style={{ color: e.color }}
                   >

@@ -11,17 +11,17 @@ import DJResourcesAffiliate from '@/components/DJResourcesAffiliate';
 
 const article = { '@context': 'https://schema.org', '@type': 'Article', headline: 'DJ para bodas en Bilbao: precio y cómo contratar en 2026', description: 'Cuánto cuesta un DJ para una boda en Bilbao. Precios reales, zonas del País Vasco y cómo contratar el mejor DJ en Euskadi.', datePublished: '2026-06-03', dateModified: '2026-06-03', author: { '@type': 'Person', name: 'Daniel', jobTitle: 'Fundador de XPEAK', url: 'https://xpeak.es/autor/daniel' }, publisher: { '@type': 'Organization', name: 'XPEAK', url: 'https://xpeak.es', logo: { '@type': 'ImageObject', url: 'https://xpeak.es/favicon.png' } }, image: 'https://xpeak.es/og-image.jpg', url: 'https://xpeak.es/blog/dj-bodas-bilbao' };
 const faqStructured = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [
-  { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda en Bilbao?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ para boda en Bilbao cuesta entre 700€ y 2.000€ para el servicio completo. Los precios en el País Vasco son similares a Barcelona — entre un 15-25% por encima de la media nacional, por la alta demanda y el elevado coste de vida. Para bodas solo con pista de baile (4-5h), el rango es 400-900€.' } },
+  { '@type': 'Question', name: '¿Cuánto cuesta un DJ para una boda en Bilbao?', acceptedAnswer: { '@type': 'Answer', text: 'Un DJ para boda en Bilbao cuesta entre 700€ y 2.000€ para el servicio completo. Los precios en el País Vasco son similares a Barcelona: entre un 15-25% por encima de la media nacional, por la alta demanda y el elevado coste de vida. Para bodas solo con pista de baile (4-5h), el rango es 400-900€.' } },
   { '@type': 'Question', name: '¿Cuándo es temporada alta de bodas en Bilbao?', acceptedAnswer: { '@type': 'Answer', text: 'Bilbao y el País Vasco tienen bodas durante todo el año gracias al clima templado y lluvioso que evita el calor extremo de verano. Los meses más demandados son junio, septiembre y octubre. Diciembre también tiene bodas en caseríos con ambiente muy especial. Para sábados de junio y septiembre, reserva con 10-12 meses de antelación.' } },
   { '@type': 'Question', name: '¿Qué tipo de venues hay para bodas en Bilbao?', acceptedAnswer: { '@type': 'Answer', text: 'Bilbao tiene una mezcla única de venues: caseríos vascos (caserío = granja tradicional con mucho encanto), palacios históricos en el casco viejo, hoteles de lujo (Gran Hotel Domine, López de Haro) y fincas en la costa (Getxo, Algorta, Sopelana con vistas al Cantábrico). Los caseríos son el venue más auténtico y demandado en Euskadi.' } },
   { '@type': 'Question', name: '¿El DJ cobra desplazamiento para bodas fuera de Bilbao?', acceptedAnswer: { '@type': 'Answer', text: 'La mayoría de DJs de Bilbao cubren gratis la provincia de Bizkaia. Para bodas en Gipuzkoa (San Sebastián) o Álava (Vitoria), suelen cobrar un suplemento de 50-100€. Para bodas en Cantabria, La Rioja o Navarra limítrofes, el suplemento puede llegar a 100-200€.' } },
 ] };
 const breadcrumb = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://xpeak.es' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://xpeak.es/blog' }, { '@type': 'ListItem', position: 3, name: 'DJ bodas Bilbao', item: 'https://xpeak.es/blog/dj-bodas-bilbao' }] };
 const PRECIOS = [
-  { servicio: 'Solo pista de baile (4-5h)', precio: '400–900€' },
-  { servicio: 'Cóctel + pista de baile', precio: '600–1.200€' },
-  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '800–1.800€' },
-  { servicio: 'Pack premium con equipo profesional', precio: '1.100–2.200€' },
+  { servicio: 'Solo pista de baile (4-5h)', precio: '400-900€' },
+  { servicio: 'Cóctel + pista de baile', precio: '600-1.200€' },
+  { servicio: 'Servicio completo (ceremonia + cóctel + cena + pista)', precio: '800-1.800€' },
+  { servicio: 'Pack premium con equipo profesional', precio: '1.100-2.200€' },
 ];
 const ZONAS = [
   { zona: 'Gran Bilbao', fincas: 'Getxo, Algorta, Sopelana', nota: 'Vistas al Cantábrico' },
@@ -38,7 +38,7 @@ export default function BlogDJBodaBilbao() {
         <title>DJ para bodas en Bilbao: precio 2026 | XPEAK</title>
         <meta name="description" content="Cuánto cuesta un DJ para una boda en Bilbao. Precios reales 2026, caseríos vascos, costa y bodegas de Rioja Alavesa. Cómo contratar en Euskadi." />
         <link rel="canonical" href="https://xpeak.es/blog/dj-bodas-bilbao" />
-        <meta property="og:title" content="DJ para bodas en Bilbao: precio 2026 — XPEAK Blog" />
+        <meta property="og:title" content="DJ para bodas en Bilbao: precio 2026 | XPEAK Blog" />
         <meta property="og:description" content="Precios reales DJs boda Bilbao. Caseríos, costa y bodegas. Cómo elegir en Euskadi." />
         <meta property="og:url" content="https://xpeak.es/blog/dj-bodas-bilbao" />
         <meta property="og:type" content="article" />
@@ -64,7 +64,7 @@ export default function BlogDJBodaBilbao() {
           <div className="mb-8">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#D4AF37' }}>DJ · Bilbao · XPEAK Blog</p>
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-4">DJ para bodas en Bilbao: precio y cómo contratar en 2026</h1>
-            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>El País Vasco tiene uno de los mercados de bodas más activos y exigentes de España. Caseríos centenarios, palacios urbanos y bodegas de la Rioja Alavesa — te contamos cuánto cuesta el DJ y cómo elegir bien en Euskadi.</p>
+            <p className="text-base leading-relaxed" style={{ color: '#3d3d4e' }}>El País Vasco tiene uno de los mercados de bodas más activos y exigentes de España. Caseríos centenarios, palacios urbanos y bodegas de la Rioja Alavesa: te contamos cuánto cuesta el DJ y cómo elegir bien en Euskadi.</p>
             <time className="text-xs mt-3 block" style={{ color: '#666' }}>3 junio 2026</time>
             <BlogAnswerBox
               question="¿Cuánto cuesta un DJ para una boda en Bilbao?"
@@ -101,8 +101,8 @@ export default function BlogDJBodaBilbao() {
             </section>
             <section>
               <h2 className="text-lg font-black mb-3">Qué diferencia a un DJ de bodas en Bilbao</h2>
-              <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>Las bodas en el País Vasco tienen una duración media mayor que en el resto de España — es habitual que empiecen al mediodía y terminen de madrugada. El DJ debe gestionar bien el arco musical de muchas horas: aperitivo, cena larga con vino txakoli y sobremesa, y pista de baile intensa al final.</p>
-              <p className="text-base leading-relaxed" style={{ color: '#222' }}>Los caseríos suelen tener acústica complicada — madera, piedra y espacios de techos bajos. Los DJs con experiencia en el País Vasco conocen cómo configurar el sonido para que no haya rebotes ni distorsión en estos espacios tan particulares.</p>
+              <p className="text-base leading-relaxed mb-3" style={{ color: '#222' }}>Las bodas en el País Vasco tienen una duración media mayor que en el resto de España: es habitual que empiecen al mediodía y terminen de madrugada. El DJ debe gestionar bien el arco musical de muchas horas: aperitivo, cena larga con vino txakoli y sobremesa, y pista de baile intensa al final.</p>
+              <p className="text-base leading-relaxed" style={{ color: '#222' }}>Los caseríos suelen tener acústica complicada: madera, piedra y espacios de techos bajos. Los DJs con experiencia en el País Vasco conocen cómo configurar el sonido para que no haya rebotes ni distorsión en estos espacios tan particulares.</p>
             </section>
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>

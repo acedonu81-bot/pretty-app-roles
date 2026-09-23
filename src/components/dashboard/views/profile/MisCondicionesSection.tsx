@@ -101,7 +101,7 @@ export default function MisCondicionesSection({ profile, onSaved }: Props) {
     } as any).eq('user_id', profile.user_id);
     setSaving(false);
     if (error) { toast.error('No se pudieron guardar tus condiciones'); return; }
-    toast.success('Condiciones actualizadas — ya las ve quien quiera contratarte');
+    toast.success('Condiciones actualizadas: ya las ve quien quiera contratarte');
     onSaved?.();
   };
 

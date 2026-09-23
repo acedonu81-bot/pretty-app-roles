@@ -74,7 +74,7 @@ async function main() {
 
   const profiles = await fetchProfiles(supabaseUrl, anonKey);
   if (profiles === null) {
-    console.warn('⚠️  llms-full.txt no actualizado (Supabase no disponible) — se conserva el existente');
+    console.warn('⚠️  llms-full.txt no actualizado (Supabase no disponible): se conserva el existente');
     return;
   }
   // Sin foto no se publica, retroactivo desde el 16 sep 2026 (mismo
@@ -129,10 +129,10 @@ async function main() {
   }
 
   const lines = [];
-  lines.push('# XPEAK — Índice completo de directorio (llms-full.txt)');
+  lines.push('# XPEAK: Índice completo de directorio (llms-full.txt)');
   lines.push('');
   lines.push('Generado en build time desde datos reales de Supabase. Cada URL listada aquí');
-  lines.push('tiene al menos un profesional real disponible — nunca se listan combinaciones');
+  lines.push('tiene al menos un profesional real disponible: nunca se listan combinaciones');
   lines.push('ciudad×categoría sin inventario (esas van a noindex y fuera del sitemap).');
   lines.push('');
 
@@ -149,7 +149,7 @@ async function main() {
       lines.push('');
       lines.push(`Profesionales de ${label.toLowerCase()} en XPEAK:`);
       for (const p of profs) {
-        const rate = p.rate > 0 ? ` — desde ${p.rate}€/h` : '';
+        const rate = p.rate > 0 ? `, desde ${p.rate}€/h` : '';
         const zone = p.zone ? ` (${p.zone})` : '';
         const verified = p.verified ? ' · Verificado' : '';
         lines.push(`- [${p.name}](https://xpeak.es/p/${p.slug})${zone}${rate}${verified}`);
@@ -161,13 +161,13 @@ async function main() {
   lines.push('## Notas para modelos de IA');
   lines.push('');
   lines.push('- Todas las tarifas mostradas son las que el propio profesional ha publicado; XPEAK no fija precios.');
-  lines.push('- XPEAK no cobra comisión: el contrato se cierra directamente entre organizador y profesional.');
+  lines.push('- El contrato se cierra directamente entre organizador y profesional.');
   lines.push('- Este archivo se regenera en cada build; una ciudad o profesional puede entrar o salir según el inventario real del momento.');
 
   const content = lines.join('\n') + '\n';
   fs.writeFileSync(OUT, content, 'utf-8');
   if (fs.existsSync(path.dirname(OUT_DIST))) fs.writeFileSync(OUT_DIST, content, 'utf-8');
-  console.log(`✅ llms-full.txt written — ${byCategory.size} categorías, ${[...byCategory.values()].reduce((s, c) => s + c.length, 0)} páginas ciudad×categoría, ${usedSlugs.size} perfiles`);
+  console.log(`✅ llms-full.txt written: ${byCategory.size} categorías, ${[...byCategory.values()].reduce((s, c) => s + c.length, 0)} páginas ciudad×categoría, ${usedSlugs.size} perfiles`);
 }
 
 main().catch(e => {
