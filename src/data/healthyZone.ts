@@ -14,10 +14,13 @@ export type HZTone = 'sun' | 'sky' | 'leaf' | 'lilac';
 export const HZ_PLANES = ['Tardeo', 'Afterwork', 'Evento sin alcohol', 'Jornada de bienestar', 'Otro'] as const;
 export type HZPlan = (typeof HZ_PLANES)[number];
 
+import type { HZMatchRole } from './healthyZoneMatches';
+
 export interface HZSection {
   h2: string;
   paragraphs?: string[];
-  items?: { title: string; text: string; precio?: string }[];
+  items?: { title: string; text: string; precio?: string; matchRole?: HZMatchRole }[];
+  matchRole?: HZMatchRole; // muestra una tarjeta "esto podría encajar" al final de la sección
 }
 
 export interface HZGuide {
@@ -69,6 +72,7 @@ export const HZ_GUIDES: HZGuide[] = [
       },
       {
         h2: 'El DJ de tarde no es el DJ de noche',
+        matchRole: 'dj',
         paragraphs: [
           'Aquí es donde más se falla. Un tardeo arranca con conversación, así que las dos primeras horas piden música de fondo: nu disco, funk, house suave, clásicos que la gente reconoce. La pista se abre sola hacia la mitad, y es entonces cuando el DJ sube.',
           'Para un tardeo de 4 a 5 horas con equipo propio, un DJ en Madrid suele cobrar entre 300€ y 700€, según experiencia y si tiene que llevar sonido para exterior. Pregunta siempre si incluye equipo y cuánto tarda en montar.',
@@ -85,6 +89,7 @@ export const HZ_GUIDES: HZGuide[] = [
       },
       {
         h2: 'Comida y bebida',
+        matchRole: 'staff',
         paragraphs: [
           'Picoteo que se pueda comer de pie: raciones, mini bocadillos, algo de fruta si hace calor. Y una barra con opciones sin alcohol que no sean solo refrescos, porque en un tardeo hay más gente que conduce o que simplemente prefiere no beber a las cinco de la tarde.',
           'Si sois más de 40 personas, un camarero de barra hace que todo fluya mucho mejor que el autoservicio.',
@@ -131,9 +136,9 @@ export const HZ_GUIDES: HZGuide[] = [
         h2: 'Qué contratar',
         items: [
           { title: 'Espacio', text: 'Terraza, sala privada de un bar o la propia oficina si tiene una zona abierta. En la oficina es más barato, pero cuesta más desconectar.', precio: 'Según local; muchos cobran solo consumo mínimo' },
-          { title: 'Música', text: 'Un DJ que empiece suave y suba cuando la gente ya ha picado algo. Un dúo acústico también funciona si el espacio es pequeño.', precio: '300-700€ por 3 horas con equipo' },
+          { title: 'Música', text: 'Un DJ que empiece suave y suba cuando la gente ya ha picado algo. Un dúo acústico también funciona si el espacio es pequeño.', precio: '300-700€ por 3 horas con equipo', matchRole: 'dj' },
           { title: 'Picoteo', text: 'Raciones y cosas que se coman de pie. No hace falta cena: el afterwork termina justo cuando la gente se va a cenar a casa.', precio: '15-35€ por persona' },
-          { title: 'Barra', text: 'Un camarero de barra con cócteles, también sin alcohol. Hace que la gente se quede y que nadie se sienta raro por no beber.', precio: '25-45€ por hora de camarero' },
+          { title: 'Barra', text: 'Un camarero de barra con cócteles, también sin alcohol. Hace que la gente se quede y que nadie se sienta raro por no beber.', precio: '25-45€ por hora de camarero', matchRole: 'staff' },
         ],
       },
       {
@@ -175,6 +180,7 @@ export const HZ_GUIDES: HZGuide[] = [
     sections: [
       {
         h2: 'La barra es lo primero',
+        matchRole: 'staff',
         paragraphs: [
           'El error más común es poner refrescos, agua y un zumo, y ya. La gente lo nota y se va antes. Un bartender con carta de cócteles sin alcohol (con sirope casero, hierbas, fruta fresca, tónicas buenas, versiones sin alcohol de vermut o ginebra) cambia completamente la percepción.',
           'Un bartender para eventos cobra en Madrid entre 25€ y 45€ por hora, según experiencia y si trae material propio. Para 50 a 80 personas, uno suele bastar.',
@@ -237,8 +243,8 @@ export const HZ_GUIDES: HZGuide[] = [
           { title: 'Actividad física suave', text: 'Yoga, pilates, estiramientos o una clase de baile tranquila. Mejor algo que pueda hacer cualquiera, sin ropa especial ni nivel previo.', precio: '100-300€ la sesión con instructor' },
           { title: 'Charla o taller práctico', text: 'Sueño, gestión del estrés, ergonomía en el puesto o nutrición. Que sea práctico: la gente quiere salir con dos o tres cosas que pueda aplicar el lunes.', precio: '300-1.200€ según ponente' },
           { title: 'Masajes express', text: 'Sesiones de 10 a 15 minutos en silla. Muy agradecido y fácil de montar en la oficina.', precio: '60-90€ por hora de masajista' },
-          { title: 'Comida saludable', text: 'Catering de comida ligera, bowls, fruta de temporada, agua con sabores. Se nota mucho la diferencia con el típico catering de bandejas.', precio: '15-35€ por persona' },
-          { title: 'Música en directo tranquila', text: 'Un dúo acústico o un DJ con sesión chill durante la comida cambia el ambiente sin molestar.', precio: '250-600€' },
+          { title: 'Comida saludable', text: 'Catering de comida ligera, bowls, fruta de temporada, agua con sabores. Se nota mucho la diferencia con el típico catering de bandejas.', precio: '15-35€ por persona', matchRole: 'catering' },
+          { title: 'Música en directo tranquila', text: 'Un dúo acústico o un DJ con sesión chill durante la comida cambia el ambiente sin molestar.', precio: '250-600€', matchRole: 'grupo-musical' },
         ],
       },
       {

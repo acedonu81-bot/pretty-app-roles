@@ -1,0 +1,86 @@
+import { useEffect, useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { HZ_MATCH_IDS, type HZMatchRole } from '@/data/healthyZoneMatches';
+import { HZ, clay, SURFACE_RGB } from './clay';
+
+const ROLE_LABEL: Record<HZMatchRole, string> = {
+  dj: 'DJ',
+  staff: 'Camarero/a',
+  catering: 'Catering',
+  'grupo-musical': 'Grupo en directo',
+  bailarin: 'Bailarín/instructor',
+};
+
+interface Profile {
+  user_id: string;
+  display_name: string;
+  photo_url: string | null;
+  city_ref: string | null;
+  region: string | null;
+}
+
+// Una recomendación de "esto podría encajar" dentro de un bloque de guía.
+// Trae un perfil real (con foto) al azar de la lista curada en
+// healthyZoneMatches.ts. Si Supabase falla o el perfil ya no existe, no
+// muestra nada — nunca un hueco roto ni un dato inventado.
+export default function HZMatchCard({ role, seed }: { role: HZMatchRole; seed: string }) {
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    const ids = HZ_MATCH_IDS[role];
+    if (!ids?.length) { setLoaded(true); return; }
+    // Rotación estable por sesión de carga (no aleatoria en cada render).
+    const pick = ids[Math.abs(hashCode(seed)) % ids.length];
+    supabase
+      .from('profiles')
+      .select('user_id, display_name, photo_url, city_ref, region')
+      .eq('user_id', pick)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (active) { setProfile(data ?? null); setLoaded(true); }
+      });
+    return () => { active = false; };
+  }, [role, seed]);
+
+  if (!loaded || !profile || !profile.display_name) return null;
+
+  const lugar = profile.city_ref || profile.region;
+
+  return (
+    <a
+      href={`/p/${profile.user_id}`}
+      className="mt-4 flex items-center gap-4 rounded-[24px] p-4 no-underline transition-transform hover:-translate-y-0.5"
+      style={{ background: HZ.surface, boxShadow: clay(SURFACE_RGB, 'sm') }}
+    >
+      {profile.photo_url ? (
+        <img
+          src={profile.photo_url}
+          alt={profile.display_name}
+          className="h-14 w-14 shrink-0 rounded-full object-cover"
+          style={{ boxShadow: clay(SURFACE_RGB, 'sm') }}
+          loading="lazy"
+        />
+      ) : (
+        <span className="h-14 w-14 shrink-0 rounded-full" style={{ background: '#DDE9E2' }} aria-hidden="true" />
+      )}
+      <span className="flex flex-col gap-0.5">
+        <span className="text-xs" style={{ color: HZ.green, fontWeight: 800 }}>Este podría encajar</span>
+        <span className="text-base" style={{ color: HZ.ink, fontWeight: 800 }}>
+          {profile.display_name} <span style={{ color: HZ.inkSoft, fontWeight: 600 }}>· {ROLE_LABEL[role]}</span>
+        </span>
+        {lugar && <span className="text-sm" style={{ color: HZ.inkSoft }}>{lugar}</span>}
+      </span>
+      <span className="ml-auto shrink-0 rounded-full px-4 py-2 text-sm whitespace-nowrap" style={{ background: HZ.green, color: '#fff', fontWeight: 800 }}>
+        Ver perfil
+      </span>
+    </a>
+  );
+}
+
+function hashCode(s: string): number {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h << 5) - h + s.charCodeAt(i) | 0;
+  return h;
+}

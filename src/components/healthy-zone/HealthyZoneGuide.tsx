@@ -5,6 +5,7 @@ import { HZ, TONES, clay, BLUE_RGB, SURFACE_RGB } from './clay';
 import HZNav from './HZNav';
 import HZIcon from './HZIcon';
 import HZLeadForm from './HZLeadForm';
+import HZMatchCard from './HZMatchCard';
 
 // Plantilla común de las guías de la Healthy Zone (datos en src/data/healthyZone.ts).
 export default function HealthyZoneGuide({ slug }: { slug: string }) {
@@ -92,6 +93,7 @@ export default function HealthyZoneGuide({ slug }: { slug: string }) {
               {s.paragraphs?.map((p, i) => (
                 <p key={i} className="m-0 text-[17px] leading-[1.7]" style={{ color: '#1F3A33' }}>{p}</p>
               ))}
+              {s.matchRole && <HZMatchCard role={s.matchRole} seed={`${g.slug}-${s.h2}`} />}
               {s.items && (
                 <div className="flex flex-col gap-5">
                   {s.items.map((it) => (
@@ -103,6 +105,7 @@ export default function HealthyZoneGuide({ slug }: { slug: string }) {
                           Precio orientativo: {it.precio}
                         </p>
                       )}
+                      {it.matchRole && <HZMatchCard role={it.matchRole} seed={`${g.slug}-${it.title}`} />}
                     </div>
                   ))}
                 </div>
