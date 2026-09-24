@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { logEvent } from '@/lib/track';
 import { HZ_MATCH_IDS, type HZMatchRole } from '@/data/healthyZoneMatches';
 import { HZ, clay, SURFACE_RGB } from './clay';
 
@@ -23,7 +24,11 @@ interface Profile {
 // Trae un perfil real (con foto) al azar de la lista curada en
 // healthyZoneMatches.ts. Si Supabase falla o el perfil ya no existe, no
 // muestra nada — nunca un hueco roto ni un dato inventado.
-export default function HZMatchCard({ role, seed }: { role: HZMatchRole; seed: string }) {
+//
+// origin identifica la guía (slug) para poder medir en GA4/analítica propia
+// qué guía y qué rol generan clics reales a "Ver perfil", separado de las
+// visitas de página que ya mide GA4 solo.
+export default function HZMatchCard({ role, seed, origin }: { role: HZMatchRole; seed: string; origin: string }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loaded, setLoaded] = useState(false);
 
@@ -51,6 +56,7 @@ export default function HZMatchCard({ role, seed }: { role: HZMatchRole; seed: s
   return (
     <a
       href={`/p/${profile.user_id}`}
+      onClick={() => { void logEvent('hz_match_click', origin, `${role}:${profile.user_id}`); }}
       className="mt-4 flex items-center gap-4 rounded-[24px] p-4 no-underline transition-transform hover:-translate-y-0.5"
       style={{ background: HZ.surface, boxShadow: clay(SURFACE_RGB, 'sm') }}
     >
