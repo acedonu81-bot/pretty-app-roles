@@ -12,6 +12,17 @@ const ROLE_LABEL: Record<HZMatchRole, string> = {
   bailarin: 'Bailarín/instructor',
 };
 
+// Directorio de cada rol, para el aviso "consulta tu zona" cuando el perfil
+// mostrado no es de Madrid (las guías de la Healthy Zone están escritas en
+// clave Madrid, pero la oferta real de XPEAK es de toda España).
+const ROLE_DIRECTORIO: Record<HZMatchRole, string> = {
+  dj: '/directorio/dj',
+  staff: '/directorio/staff',
+  catering: '/directorio/catering',
+  'grupo-musical': '/directorio/grupo-musical',
+  bailarin: '/directorio/bailarin',
+};
+
 interface Profile {
   user_id: string;
   display_name: string;
@@ -52,36 +63,47 @@ export default function HZMatchCard({ role, seed, origin }: { role: HZMatchRole;
   if (!loaded || !profile || !profile.display_name) return null;
 
   const lugar = profile.city_ref || profile.region;
+  // Las guías están escritas en clave Madrid; si el perfil mostrado es de
+  // otra ciudad, lo decimos y enlazamos al directorio de ese rol en vez de
+  // prometer "hay más cerca de ti" sin dato real detrás.
+  const esOtraCiudad = !!profile.city_ref && profile.city_ref !== 'Madrid';
 
   return (
-    <a
-      href={`/p/${profile.user_id}`}
-      onClick={() => { void logEvent('hz_match_click', origin, `${role}:${profile.user_id}`); }}
-      className="mt-4 flex items-center gap-4 rounded-[24px] p-4 no-underline transition-transform hover:-translate-y-0.5"
-      style={{ background: HZ.surface, boxShadow: clay(SURFACE_RGB, 'sm') }}
-    >
-      {profile.photo_url ? (
-        <img
-          src={profile.photo_url}
-          alt={profile.display_name}
-          className="h-14 w-14 shrink-0 rounded-full object-cover"
-          style={{ boxShadow: clay(SURFACE_RGB, 'sm') }}
-          loading="lazy"
-        />
-      ) : (
-        <span className="h-14 w-14 shrink-0 rounded-full" style={{ background: '#DDE9E2' }} aria-hidden="true" />
-      )}
-      <span className="flex flex-col gap-0.5">
-        <span className="text-xs" style={{ color: HZ.green, fontWeight: 800 }}>Este podría encajar</span>
-        <span className="text-base" style={{ color: HZ.ink, fontWeight: 800 }}>
-          {profile.display_name} <span style={{ color: HZ.inkSoft, fontWeight: 600 }}>· {ROLE_LABEL[role]}</span>
+    <div className="mt-4 flex flex-col gap-2">
+      <a
+        href={`/p/${profile.user_id}`}
+        onClick={() => { void logEvent('hz_match_click', origin, `${role}:${profile.user_id}`); }}
+        className="flex items-center gap-4 rounded-[24px] p-4 no-underline transition-transform hover:-translate-y-0.5"
+        style={{ background: HZ.surface, boxShadow: clay(SURFACE_RGB, 'sm') }}
+      >
+        {profile.photo_url ? (
+          <img
+            src={profile.photo_url}
+            alt={profile.display_name}
+            className="h-14 w-14 shrink-0 rounded-full object-cover"
+            style={{ boxShadow: clay(SURFACE_RGB, 'sm') }}
+            loading="lazy"
+          />
+        ) : (
+          <span className="h-14 w-14 shrink-0 rounded-full" style={{ background: '#DDE9E2' }} aria-hidden="true" />
+        )}
+        <span className="flex flex-col gap-0.5">
+          <span className="text-xs" style={{ color: HZ.green, fontWeight: 800 }}>Este podría encajar</span>
+          <span className="text-base" style={{ color: HZ.ink, fontWeight: 800 }}>
+            {profile.display_name} <span style={{ color: HZ.inkSoft, fontWeight: 600 }}>· {ROLE_LABEL[role]}</span>
+          </span>
+          {lugar && <span className="text-sm" style={{ color: HZ.inkSoft }}>{lugar}</span>}
         </span>
-        {lugar && <span className="text-sm" style={{ color: HZ.inkSoft }}>{lugar}</span>}
-      </span>
-      <span className="ml-auto shrink-0 rounded-full px-4 py-2 text-sm whitespace-nowrap" style={{ background: HZ.green, color: '#fff', fontWeight: 800 }}>
-        Ver perfil
-      </span>
-    </a>
+        <span className="ml-auto shrink-0 rounded-full px-4 py-2 text-sm whitespace-nowrap" style={{ background: HZ.green, color: '#fff', fontWeight: 800 }}>
+          Ver perfil
+        </span>
+      </a>
+      {esOtraCiudad && (
+        <a href={ROLE_DIRECTORIO[role]} className="self-start pl-2 text-xs no-underline" style={{ color: HZ.inkSoft }}>
+          ¿No eres de {profile.city_ref}? <span style={{ color: HZ.green, fontWeight: 800 }}>Consulta tu zona en el directorio →</span>
+        </a>
+      )}
+    </div>
   );
 }
 
