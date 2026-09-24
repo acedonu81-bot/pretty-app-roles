@@ -3,7 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://challenges.cloudflare.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https: ; media-src 'self' blob: https://videos.pexels.com https://*.supabase.co; frame-src 'self' https://w.soundcloud.com https://www.youtube.com https://player.vimeo.com https://hearthis.at https://app.hearthis.at https://www.mixcloud.com https://player-widget.mixcloud.com https://player.twitch.tv https://open.spotify.com https://www.googletagmanager.com https://challenges.cloudflare.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.doubleclick.net https://api.stripe.com https://api-v2.hearthis.at https://challenges.cloudflare.com https://connect.facebook.net https://www.facebook.com; worker-src 'self' blob: ; object-src 'none';" />
+    <!-- CSP: NO duplicar aquí. La cabecera HTTP real la manda vercel.json
+         (gana siempre sobre este meta si ambas existen a la vez, y el
+         navegador exige cumplir las dos si coexisten — el 23 sep 2026 una
+         CSP desincronizada aquí bloqueó los scripts inline de tracking,
+         incluido Consent Mode, y GA4 perdió atribución de fuente en ~76%
+         de las sesiones ese día). Cambios de CSP van solo en vercel.json. -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
     <title>XPEAK | Profesionales para Eventos en España</title>
@@ -109,7 +114,17 @@
          GA4 descarta los hits aunque la etiqueta se dispare (gtm.js con 200/204
          pero 0 usuarios activos en Analytics). Lee la preferencia ya guardada
          por CookieBanner.tsx si existe; si no, deniega analytics/ads por
-         defecto hasta que el usuario decida (RGPD). -->
+         defecto hasta que el usuario decida (RGPD).
+
+         Este script (y el IIFE de arranque diferido y el snippet de GTM más
+         abajo) son inline, así que necesitan 'unsafe-inline' en script-src
+         de la CSP de vercel.json (fuente de verdad única, ver comentario en
+         el <head>). El 23 sep 2026 una CSP más estricta puesta SOLO aquí en
+         index.html bloqueó estos tres scripts sin dar error visible: GA4
+         siguió recibiendo hits pero sin consentimiento ni fuente, y
+         sessionSourceMedium cayó en "(not set)" en el 76% de las sesiones
+         de ese día. Si se quiere quitar 'unsafe-inline' en el futuro, migrar
+         estos scripts a nonce o hash primero, no solo endurecer la CSP. -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){ dataLayer.push(arguments); }
