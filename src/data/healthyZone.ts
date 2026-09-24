@@ -137,7 +137,7 @@ export const HZ_GUIDES: HZGuide[] = [
         items: [
           { title: 'Espacio', text: 'Terraza, sala privada de un bar o la propia oficina si tiene una zona abierta. En la oficina es más barato, pero cuesta más desconectar.', precio: 'Según local; muchos cobran solo consumo mínimo' },
           { title: 'Música', text: 'Un DJ que empiece suave y suba cuando la gente ya ha picado algo. Un dúo acústico también funciona si el espacio es pequeño.', precio: '300-700€ por 3 horas con equipo', matchRole: 'dj' },
-          { title: 'Picoteo', text: 'Raciones y cosas que se coman de pie. No hace falta cena: el afterwork termina justo cuando la gente se va a cenar a casa.', precio: '15-35€ por persona' },
+          { title: 'Picoteo', text: 'Raciones y cosas que se coman de pie. No hace falta cena: el afterwork termina justo cuando la gente se va a cenar a casa.', precio: '15-35€ por persona', matchRole: 'catering' },
           { title: 'Barra', text: 'Un camarero de barra con cócteles, también sin alcohol. Hace que la gente se quede y que nadie se sienta raro por no beber.', precio: '25-45€ por hora de camarero', matchRole: 'staff' },
         ],
       },

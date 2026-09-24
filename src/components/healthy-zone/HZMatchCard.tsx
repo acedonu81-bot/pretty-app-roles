@@ -51,11 +51,17 @@ export default function HZMatchCard({ role, seed, origin }: { role: HZMatchRole;
     const pick = ids[Math.abs(hashCode(seed)) % ids.length];
     supabase
       .from('profiles')
-      .select('user_id, display_name, photo_url, city_ref, region')
+      .select('user_id, display_name, photo_url, city_ref, region, role')
       .eq('user_id', pick)
-      .maybeSingle()
-      .then(({ data }) => {
-        if (active) { setProfile(data ?? null); setLoaded(true); }
+      .eq('role', role)
+      // .limit(1) en vez de .maybeSingle(): algunos user_id tienen más de
+      // una fila en profiles (un mismo usuario con perfil de empresario Y de
+      // profesional — ver DirectorioPublico.tsx, caso MAGIC DREAMS). Sin
+      // filtrar por role, .maybeSingle() lanza PGRST116 "multiple rows" y la
+      // tarjeta desaparece en silencio (bug real: Vulcano Grill, catering).
+      .limit(1)
+      .then(({ data, error }) => {
+        if (active) { setProfile(error ? null : (data?.[0] ?? null)); setLoaded(true); }
       });
     return () => { active = false; };
   }, [role, seed]);
