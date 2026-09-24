@@ -600,6 +600,12 @@ const DirectoryView = ({ role, roles, title, subtitle, onNavigate, onMessage, wi
                     {leadStatus === 'error' && (
                       <p className="text-xs mt-2" style={{ color: '#dc2626' }}>Error al guardar. Inténtalo de nuevo.</p>
                     )}
+                    <p className="text-[0.65rem] mt-2" style={{ color: '#999' }}>
+                      Al enviar aceptas nuestra{' '}
+                      <a href="/privacidad" target="_blank" rel="noopener noreferrer" className="underline">
+                        Política de Privacidad
+                      </a>.
+                    </p>
                   </>
                 )}
               </div>

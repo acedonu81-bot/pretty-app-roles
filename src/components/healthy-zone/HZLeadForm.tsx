@@ -100,6 +100,12 @@ export default function HZLeadForm({ origin, title, defaultPlan = 'Tardeo', stac
           {status === 'error' && (
             <p className="sm:col-span-2 m-0 text-sm" style={{ color: '#B42318', fontWeight: 700 }}>Revisa el email o inténtalo de nuevo.</p>
           )}
+          <p className="sm:col-span-2 m-0 text-xs" style={{ color: HZ.inkSoft }}>
+            Al enviar aceptas nuestra{' '}
+            <a href="/privacidad" target="_blank" rel="noopener noreferrer" className="underline" style={{ color: HZ.inkSoft }}>
+              Política de Privacidad
+            </a>.
+          </p>
         </form>
       )}
     </section>

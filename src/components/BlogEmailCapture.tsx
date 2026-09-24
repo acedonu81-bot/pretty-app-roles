@@ -147,7 +147,10 @@ export default function BlogEmailCapture({
         )}
 
         <p className="text-[0.6rem] mt-3" style={{ color: '#666' }}>
-          Sin spam. Puedes darte de baja en cualquier momento.
+          Sin spam. Puedes darte de baja en cualquier momento. Al enviar aceptas nuestra{' '}
+          <a href="/privacidad" target="_blank" rel="noopener noreferrer" className="underline" style={{ color: '#888' }}>
+            Política de Privacidad
+          </a>.
         </p>
       </div>
     </div>
