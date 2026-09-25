@@ -11,6 +11,7 @@ import { ROLE_ES } from '@/lib/constants';
 import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion } from '@/lib/regions';
 import { expandRole } from '@/lib/constants';
 import { isEarlyAdopter } from '@/lib/earlyAdopter';
+import { hashDaily, COMPLETENESS_MAX } from '@/lib/dailyRotation';
 import { isNewOnPlatform } from '@/lib/newOnPlatform';
 import ResourcesBanner from '@/components/dashboard/ResourcesBanner';
 import UltimaContratacion from '@/components/dashboard/UltimaContratacion';
@@ -162,6 +163,16 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
       if (bPriority !== aPriority) return bPriority - aPriority;
       if ((b.is_verified ? 1 : 0) !== (a.is_verified ? 1 : 0)) return (b.is_verified ? 1 : 0) - (a.is_verified ? 1 : 0);
       if (completeness(b) !== completeness(a)) return completeness(b) - completeness(a);
+      // Rotación diaria (26 sep 2026): entre quienes tienen el perfil al
+      // máximo (completeness === COMPLETENESS_MAX), el desempate por score
+      // siempre dejaba arriba al mismo — con volumen bajo por rol casi
+      // nunca se veía a nadie más en primera posición. hashDaily da un
+      // orden estable durante todo el día de hoy y distinto mañana, así que
+      // con el tiempo a todos les toca subir. Por debajo del máximo (menos
+      // completo) sigue mandando el score real, sin rotación.
+      if (completeness(a) === COMPLETENESS_MAX && completeness(b) === COMPLETENESS_MAX) {
+        return hashDaily(a.user_id ?? a.id ?? '') - hashDaily(b.user_id ?? b.id ?? '');
+      }
       return (b.score ?? 0) - (a.score ?? 0);
     })
     .map((row) => {

@@ -15,6 +15,7 @@ import GhostProfileCards from '@/components/GhostProfileCards';
 import TruncatedDescription from '@/components/TruncatedDescription';
 import { isEarlyAdopter } from '@/lib/earlyAdopter';
 import { isNewOnPlatform } from '@/lib/newOnPlatform';
+import { hashDaily, COMPLETENESS_MAX } from '@/lib/dailyRotation';
 import { expandRole, canonicalRole } from '@/lib/constants';
 
 // URL de perfil por slug de nombre (la misma que usan sitemap y prerender) en
@@ -410,12 +411,18 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string, expe
   // adopter): en el directorio se ve como una tarjeta vacía, y en el feed
   // swipe (100% visual) no puede mostrarse en absoluto sin foto. Recupera
   // posición en cuanto sube una.
+  //
+  // Rotación diaria entre los "top" (completeness al máximo, 26 sep 2026):
+  // ver dailyRotation.ts — sin esto, con pocos perfiles top por rol siempre
+  // ganaba el mismo por score y nunca se veía movimiento.
   enriched.sort((a: any, b: any) =>
     (Number(!!b.photo_url) - Number(!!a.photo_url))
     || (Number(b.is_early_adopter) - Number(a.is_early_adopter))
     || (Number(b.is_verified) - Number(a.is_verified))
     || (completeness(b) - completeness(a))
-    || ((b.score ?? 0) - (a.score ?? 0))
+    || (completeness(a) === COMPLETENESS_MAX && completeness(b) === COMPLETENESS_MAX
+        ? hashDaily(a.user_id) - hashDaily(b.user_id)
+        : (b.score ?? 0) - (a.score ?? 0))
   );
   return enriched;
 }
@@ -464,12 +471,16 @@ export async function fetchAllDirectorioProfilesByRole(city: string): Promise<Re
     return (hasMedia ? 4 : 0) + (p.photo_url ? 2 : 0) + (p.bio?.trim() ? 1 : 0);
   };
   const enriched = filtered.map((p: any) => ({ ...p, avgRating: 0, reviewCount: 0 }));
+  // Rotación diaria entre los "top" — ver comentario en el otro sort de este
+  // archivo, mismo motivo.
   enriched.sort((a: any, b: any) =>
     (Number(!!b.photo_url) - Number(!!a.photo_url))
     || (Number(b.is_early_adopter) - Number(a.is_early_adopter))
     || (Number(b.is_verified) - Number(a.is_verified))
     || (completeness(b) - completeness(a))
-    || ((b.score ?? 0) - (a.score ?? 0))
+    || (completeness(a) === COMPLETENESS_MAX && completeness(b) === COMPLETENESS_MAX
+        ? hashDaily(a.user_id) - hashDaily(b.user_id)
+        : (b.score ?? 0) - (a.score ?? 0))
   );
 
   const byRole: Record<string, DirProfile[]> = {};
