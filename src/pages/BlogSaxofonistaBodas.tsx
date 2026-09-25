@@ -213,7 +213,7 @@ const faqStructured = {
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/saxofonista-para-bodas-precio" />
         <BlogRelatedPosts currentSlug='/blog/saxofonista-para-bodas-precio' tag='Bodas' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_saxofonista_bodas" />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_saxofonista_bodas" articlePath="/blog/saxofonista-para-bodas-precio" />
       </div>
     </>
   );

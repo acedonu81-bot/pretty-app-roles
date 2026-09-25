@@ -170,7 +170,7 @@ export default function BlogDJBodaVsDiscoteca() {
               </div>
             </section>
 
-            <BlogInlineCTA role="dj" />
+            <BlogInlineCTA role="dj" articlePath="/blog/dj-para-bodas-vs-discoteca" />
 
             <section>
               <h2 className="text-xl sm:text-2xl font-black mb-3">¿Cuál necesitas para tu evento?</h2>
@@ -264,7 +264,7 @@ export default function BlogDJBodaVsDiscoteca() {
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-para-bodas-vs-discoteca" />
         <BlogRelatedPosts currentSlug='/blog/dj-para-bodas-vs-discoteca' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_vs_discoteca" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_vs_discoteca" articlePath="/blog/dj-para-bodas-vs-discoteca" />
       </div>
     </>
   );

@@ -126,7 +126,7 @@ export default function BlogHumoristaCenaEmpresaComoElegir() {
 
         <BlogRelatedPosts currentSlug='/blog/humorista-cena-empresa-como-elegir' tag='Humorista' />
         <FooterPublic />
-        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_humorista_cena_empresa" />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_humorista_cena_empresa" articlePath="/blog/humorista-cena-empresa-como-elegir" />
       </div>
     </>
   );

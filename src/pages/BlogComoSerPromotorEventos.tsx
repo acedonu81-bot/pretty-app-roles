@@ -87,7 +87,7 @@ export default function BlogComoSerPromotorEventos() {
               </div>
             </section>
 
-            <BlogInlineCTA role="general" />
+            <BlogInlineCTA role="general" articlePath="/blog/como-ser-promotor-eventos" />
 
             <section>
               <h2 className="text-lg font-black mb-4">Cómo empezar: 6 pasos</h2>
@@ -144,7 +144,7 @@ export default function BlogComoSerPromotorEventos() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/como-ser-promotor-eventos' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_como_ser_promotor_eventos_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_como_ser_promotor_eventos_v2" articlePath="/blog/como-ser-promotor-eventos" />
       </div>
     </>
   );

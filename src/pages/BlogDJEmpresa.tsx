@@ -107,7 +107,7 @@ export default function BlogDJEmpresa() {
               </div>
             </section>
 
-            <BlogInlineCTA role="dj" variant="upgrade" />
+            <BlogInlineCTA role="dj" variant="upgrade" articlePath="/blog/dj-empresa-precio" />
 
             <section className="mt-8">
               <h2 className="text-base font-black mb-3" style={{ color: '#111' }}>Artículos relacionados</h2>
@@ -129,7 +129,7 @@ export default function BlogDJEmpresa() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/dj-empresa-precio' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_empresa" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_empresa" articlePath="/blog/dj-empresa-precio" />
       </div>
     </>
   );

@@ -126,7 +126,7 @@ export default function BlogBailarinesParaEventos() {
 
         <BlogRelatedPosts currentSlug='/blog/bailarines-para-eventos' tag='Bailarin' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_bailarines_eventos" />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_bailarines_eventos" articlePath="/blog/bailarines-para-eventos" />
       </div>
     </>
   );

@@ -171,7 +171,7 @@ export default function BlogDJResidenteDiscoteca() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/dj-residente-discoteca-precio' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj_pro" storageKey="xpeak_scrollcta_dj_residente_discoteca_v2" />
+        <BlogScrollCTA role="dj_pro" storageKey="xpeak_scrollcta_dj_residente_discoteca_v2" articlePath="/blog/dj-residente-discoteca-precio" />
       </div>
     </>
   );

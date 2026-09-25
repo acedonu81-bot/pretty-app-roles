@@ -76,7 +76,7 @@ export default function BlogFotografoBodaBilbao() {
               </div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios Bilbao 2026. Sin IVA.</p>
             </section>
-            <BlogInlineCTA role="fotografo" />
+            <BlogInlineCTA role="fotografo" articlePath="/blog/fotografo-boda-bilbao" />
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
@@ -117,7 +117,7 @@ export default function BlogFotografoBodaBilbao() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/fotografo-boda-bilbao' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda_bilbao" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda_bilbao" articlePath="/blog/fotografo-boda-bilbao" />
       </div>
     </>
   );

@@ -59,7 +59,7 @@ export default function BlogMaquillajeAlcorcon() {
               answer="Una maquilladora de novia en Alcorcón cobra entre 95€ y 230€, incluyendo prueba previa. El pack boda completo (novia + 3 personas) ronda los 320€-650€. Para eventos comerciales, el precio por persona está entre 30€ y 65€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-alcorcon" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Alcorcón</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeAlcorcon() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-alcorcon' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_alcorcon_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_alcorcon_v2" articlePath="/blog/maquillaje-eventos-alcorcon" />
       </div>
     </>
   );

@@ -126,7 +126,7 @@ export default function BlogTiposAnimacionEventos() {
 
         <BlogRelatedPosts currentSlug='/blog/tipos-de-animacion-para-eventos' tag='Animador' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_tipos_animacion" />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_tipos_animacion" articlePath="/blog/tipos-de-animacion-para-eventos" />
       </div>
     </>
   );

@@ -76,7 +76,7 @@ export default function BlogFotografoBodaValencia() {
               </div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios Valencia 2026. Sin IVA. En la media nacional, más económico que Madrid o Barcelona.</p>
             </section>
-            <BlogInlineCTA role="fotografo" />
+            <BlogInlineCTA role="fotografo" articlePath="/blog/fotografo-boda-valencia" />
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
@@ -117,7 +117,7 @@ export default function BlogFotografoBodaValencia() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/fotografo-boda-valencia' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda_valencia" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda_valencia" articlePath="/blog/fotografo-boda-valencia" />
       </div>
     </>
   );

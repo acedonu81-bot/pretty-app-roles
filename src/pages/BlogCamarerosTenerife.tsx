@@ -59,7 +59,7 @@ export default function BlogCamarerosTenerife() {
               answer="Un camarero de eventos en Tenerife cobra entre 13€ y 21€/hora bruto, y un bartender con experiencia en coctelería entre 17€ y 26€/hora. Para una boda completa de 6-7 horas, el presupuesto de personal de sala suele estar entre 1.000€ y 2.400€ según el número de invitados."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-tenerife" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Tenerife</h2>
@@ -107,7 +107,7 @@ export default function BlogCamarerosTenerife() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-tenerife' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_tenerife_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_tenerife_v2" articlePath="/blog/camareros-eventos-tenerife" />
       </div>
     </>
   );

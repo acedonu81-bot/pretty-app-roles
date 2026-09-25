@@ -126,7 +126,7 @@ export default function BlogCuantoCobraHumoristaEventos() {
 
         <BlogRelatedPosts currentSlug='/blog/cuanto-cobra-un-humorista-eventos' tag='Humorista' />
         <FooterPublic />
-        <BlogScrollCTA role="humorista_pro" storageKey="xpeak_scrollcta_humorista_precio_v2" />
+        <BlogScrollCTA role="humorista_pro" storageKey="xpeak_scrollcta_humorista_precio_v2" articlePath="/blog/cuanto-cobra-un-humorista-eventos" />
       </div>
     </>
   );

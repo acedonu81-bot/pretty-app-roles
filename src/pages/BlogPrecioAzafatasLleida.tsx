@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasLleida() {
               answer="Una azafata de eventos en Lleida cobra entre 11€ y 16€/hora bruto, y las agencias facturan entre 110€ y 160€/día por el servicio completo. Es una de las plazas más económicas de Cataluña, por debajo de Barcelona y la costa."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-lleida" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Lleida</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasLleida() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-lleida' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_lleida_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_lleida_v2" articlePath="/blog/precio-azafatas-lleida" />
       </div>
     </>
   );

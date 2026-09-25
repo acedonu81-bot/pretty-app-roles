@@ -106,7 +106,7 @@ export default function BlogComoContratarDJ() {
               </div>
             </section>
 
-            <BlogInlineCTA role="dj" variant="upgrade" />
+            <BlogInlineCTA role="dj" variant="upgrade" articlePath="/blog/como-contratar-un-dj" />
 
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
@@ -149,7 +149,7 @@ export default function BlogComoContratarDJ() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/como-contratar-un-dj' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_como_contratar_dj" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_como_contratar_dj" articlePath="/blog/como-contratar-un-dj" />
       </div>
     </>
   );

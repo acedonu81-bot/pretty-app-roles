@@ -59,7 +59,7 @@ export default function BlogMaquillajeSitges() {
               answer="Una maquilladora de novia en Sitges cobra entre 140€ y 320€, incluyendo prueba previa. El pack boda completo (novia + 3 personas) ronda los 440€-820€. Para eventos corporativos, el precio por persona está entre 40€ y 90€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-sitges" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Sitges</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeSitges() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-sitges' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_sitges_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_sitges_v2" articlePath="/blog/maquillaje-eventos-sitges" />
       </div>
     </>
   );

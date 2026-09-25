@@ -149,7 +149,7 @@ export default function BlogPersonalExtraHosteleria() {
         </div>
         <BlogRelatedPosts currentSlug='/blog/personal-extra-hosteleria-temporada' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_personal_extra" />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_personal_extra" articlePath="/blog/personal-extra-hosteleria-temporada" />
       </div>
     </>
   );

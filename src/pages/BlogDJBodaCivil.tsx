@@ -68,7 +68,7 @@ export default function BlogDJBodaCivil() {
               <h2 className="text-lg font-black mb-4">Guía musical: qué poner en cada momento de la boda civil</h2>
               <div className="space-y-3">{MOMENTOS.map((m, i) => (<div key={m.momento} className="p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}><div className="flex items-start justify-between mb-1"><p className="text-xs font-bold">{m.momento}</p><span className="text-[0.6rem] font-bold px-2 py-0.5 rounded-full ml-2 shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>{m.estilo}</span></div><p className="text-xs" style={{ color: '#3d3d4e' }}>{m.ejemplo}</p></div>))}</div>
             </section>
-            <BlogInlineCTA role="dj" />
+            <BlogInlineCTA role="dj" articlePath="/blog/dj-boda-civil-precio-canciones" />
 
             <section>
               <h2 className="text-lg font-black mb-3">Precio del DJ para boda civil según servicio contratado</h2>
@@ -111,7 +111,7 @@ export default function BlogDJBodaCivil() {
       <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/dj-boda-civil-precio-canciones' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_civil" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_civil" articlePath="/blog/dj-boda-civil-precio-canciones" />
       </div>
     </>
   );

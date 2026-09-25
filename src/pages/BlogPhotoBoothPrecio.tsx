@@ -302,7 +302,7 @@ export default function BlogPhotoBoothPrecio() {
 
         <BlogRelatedPosts currentSlug='/blog/photobooth-precio-boda-evento' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_photo_booth_precio" />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_photo_booth_precio" articlePath="/blog/photobooth-precio-boda-evento" />
       </div>
     </>
   );

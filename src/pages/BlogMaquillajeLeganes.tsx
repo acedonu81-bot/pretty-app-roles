@@ -59,7 +59,7 @@ export default function BlogMaquillajeLeganes() {
               answer="Una maquilladora de novia en Leganés cobra entre 95€ y 230€, incluyendo prueba previa. El pack boda completo (novia + 3 personas) ronda los 320€-650€. Para graduaciones y actos académicos, el precio por persona está entre 30€ y 65€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-leganes" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Leganés</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeLeganes() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-leganes' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_leganes_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_leganes_v2" articlePath="/blog/maquillaje-eventos-leganes" />
       </div>
     </>
   );

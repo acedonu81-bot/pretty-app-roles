@@ -127,7 +127,7 @@ export default function BlogQueHacePromotorEventos() {
 
         <BlogRelatedPosts currentSlug='/blog/que-hace-un-promotor-de-eventos' tag='Promotores' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_que_hace_promotor" />
+        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_que_hace_promotor" articlePath="/blog/que-hace-un-promotor-de-eventos" />
       </div>
     </>
   );

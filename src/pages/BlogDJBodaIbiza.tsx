@@ -74,7 +74,7 @@ export default function BlogDJBodaIbiza() {
               </div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios Ibiza 2026. Sin IVA.</p>
             </section>
-            <BlogInlineCTA role="dj" />
+            <BlogInlineCTA role="dj" articlePath="/blog/dj-bodas-ibiza" />
             <section>
               <h2 className="text-lg font-black mb-4">Zonas de boda en Ibiza</h2>
               <div className="space-y-3">
@@ -130,7 +130,7 @@ export default function BlogDJBodaIbiza() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-ibiza' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_ibiza" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_ibiza" articlePath="/blog/dj-bodas-ibiza" />
       </div>
     </>
   );

@@ -170,7 +170,7 @@ export default function BlogOrganizarEventoEmpresaPasoAPaso() {
 
         <BlogRelatedPosts currentSlug='/blog/organizar-evento-empresa-paso-a-paso' tag='Eventos' />
         <FooterPublic />
-        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_organizar_evento_empresa" />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_organizar_evento_empresa" articlePath="/blog/organizar-evento-empresa-paso-a-paso" />
       </div>
     </>
   );

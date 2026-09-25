@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasBarcelona() {
               answer="Una azafata de eventos en Barcelona cobra entre 13€ y 20€/hora bruto, y las agencias facturan entre 130€ y 200€/día por el servicio completo. Durante el Mobile World Congress y otras ferias internacionales de Fira de Barcelona, la tarifa de perfiles con idiomas sube un 20-30% por la alta demanda."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-barcelona" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Barcelona</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasBarcelona() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-barcelona' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_barcelona_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_barcelona_v2" articlePath="/blog/precio-azafatas-barcelona" />
       </div>
     </>
   );

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { UserPlus } from 'lucide-react';
+import { trackBlogCtaClick } from '@/lib/blogAnalytics';
 
 type ProfessionalRole =
   | 'dj_pro'
@@ -16,6 +17,7 @@ type ProfessionalRole =
 interface BlogScrollCTAProps {
   role?: 'dj' | 'staff' | 'azafata' | 'fotografo' | 'bailarin' | 'general' | 'empresario' | ProfessionalRole;
   storageKey?: string;
+  articlePath?: string;
 }
 
 const CONFIG = {
@@ -123,7 +125,7 @@ const CONFIG = {
   },
 };
 
-export default function BlogScrollCTA({ role = 'general', storageKey }: BlogScrollCTAProps) {
+export default function BlogScrollCTA({ role = 'general', storageKey, articlePath = '' }: BlogScrollCTAProps) {
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const [pulse, setPulse] = useState(true);
@@ -144,6 +146,12 @@ export default function BlogScrollCTA({ role = 'general', storageKey }: BlogScro
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [key]);
+
+  // Impresión: una vez por aparición, para poder calcular tasa de clic real
+  useEffect(() => {
+    if (visible) trackBlogCtaClick({ component: 'scroll', role: `${role}_impression`, article_path: articlePath });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visible]);
 
   useEffect(() => {
     if (!visible || dismissed) return;
@@ -198,6 +206,7 @@ export default function BlogScrollCTA({ role = 'general', storageKey }: BlogScro
         <div className="flex items-center gap-2 flex-shrink-0">
           <a
             href={c.href}
+            onClick={() => trackBlogCtaClick({ component: 'scroll', role, href: c.href, article_path: articlePath })}
             className="inline-flex items-center px-3 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all hover:scale-105 whitespace-nowrap"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000', boxShadow: '0 2px 20px rgba(212,175,55,0.4)' }}
           >

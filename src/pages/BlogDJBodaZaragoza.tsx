@@ -74,7 +74,7 @@ export default function BlogDJBodaZaragoza() {
               </div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios Zaragoza 2026. Sin IVA.</p>
             </section>
-            <BlogInlineCTA role="dj" />
+            <BlogInlineCTA role="dj" articlePath="/blog/dj-bodas-zaragoza" />
             <section>
               <h2 className="text-lg font-black mb-4">Zonas de boda en Zaragoza</h2>
               <div className="space-y-3">
@@ -130,7 +130,7 @@ export default function BlogDJBodaZaragoza() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-zaragoza' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_zaragoza" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_zaragoza" articlePath="/blog/dj-bodas-zaragoza" />
       </div>
     </>
   );

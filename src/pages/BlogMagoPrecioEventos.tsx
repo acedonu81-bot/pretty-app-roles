@@ -278,7 +278,7 @@ export default function BlogMagoPrecioEventos() {
 
         <BlogRelatedPosts currentSlug='/blog/mago-precio-eventos-espana' tag='Mago' />
         <FooterPublic />
-        <BlogScrollCTA role="mago_pro" storageKey="xpeak_scrollcta_mago_precio_eventos_v2" />
+        <BlogScrollCTA role="mago_pro" storageKey="xpeak_scrollcta_mago_precio_eventos_v2" articlePath="/blog/mago-precio-eventos-espana" />
       </div>
     </>
   );

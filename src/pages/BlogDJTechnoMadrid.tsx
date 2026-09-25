@@ -76,7 +76,7 @@ export default function BlogDJTechnoMadrid() {
             Madrid tiene una de las escenas techno más activas de Europa. Clubs como Fabrik programan artistas de referencia internacional todas las semanas, mientras el circuito underground de salas medianas alimenta una generación de DJs locales de primer nivel. Si buscas techno para tu evento o sala, aquí tienes todo lo que necesitas saber.
           </p>
 
-          <BlogInlineCTA role="dj" text="¿Buscas DJ de techno en Madrid para tu sala o evento? Encuentra artistas con tarifa pública en XPEAK." />
+          <BlogInlineCTA role="dj" text="¿Buscas DJ de techno en Madrid para tu sala o evento? Encuentra artistas con tarifa pública en XPEAK." articlePath="/blog/dj-techno-madrid" />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Tarifas DJ techno Madrid 2026</h2>
           <div className="overflow-x-auto mb-8">
@@ -132,7 +132,7 @@ export default function BlogDJTechnoMadrid() {
         </article>
         <BlogRelatedPosts currentSlug='/blog/dj-techno-madrid' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_techno_madrid" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_techno_madrid" articlePath="/blog/dj-techno-madrid" />
       </div>
     </>
   );

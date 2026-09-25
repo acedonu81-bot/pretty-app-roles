@@ -126,7 +126,7 @@ export default function BlogComoElegirPresentadorEventoEmpresa() {
 
         <BlogRelatedPosts currentSlug='/blog/como-elegir-presentador-evento-empresa' tag='Speaker' />
         <FooterPublic />
-        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_elegir_presentador" />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_elegir_presentador" articlePath="/blog/como-elegir-presentador-evento-empresa" />
       </div>
     </>
   );

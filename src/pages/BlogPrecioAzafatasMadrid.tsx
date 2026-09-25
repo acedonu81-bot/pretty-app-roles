@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasMadrid() {
               answer="Una azafata de eventos en Madrid cobra entre 13€ y 20€/hora bruto, y las agencias facturan entre 130€ y 200€/día por el servicio completo. En fechas de ferias grandes de IFEMA (FITUR, ARCO, MWC) la tarifa sube un 15-20% por la alta demanda de perfiles bilingües."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-madrid" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Madrid</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasMadrid() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-madrid' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_madrid_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_madrid_v2" articlePath="/blog/precio-azafatas-madrid" />
       </div>
     </>
   );

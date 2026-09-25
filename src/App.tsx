@@ -40,6 +40,8 @@ const BlogIndex = lazy(() => import("./pages/BlogIndex"));
 const BlogFotografoBodas = lazy(() => import("./pages/BlogFotografoBodas"));
 const BlogStaffDiscoteca = lazy(() => import("./pages/BlogStaffDiscoteca"));
 const BlogCateringEmpresas = lazy(() => import("./pages/BlogCateringEmpresas"));
+const BlogFoodTruckPrecio = lazy(() => import("./pages/BlogFoodTruckPrecio"));
+const BlogPlataformasFoodTruck = lazy(() => import("./pages/BlogPlataformasFoodTruck"));
 const BlogDiscoMovilComuniones = lazy(() => import("./pages/BlogDiscoMovilComuniones"));
 const BlogPromotoresEventos = lazy(() => import("./pages/BlogPromotoresEventos"));
 const BlogMaquillajeBoda = lazy(() => import("./pages/BlogMaquillajeBoda"));
@@ -535,6 +537,8 @@ const App = () => (
             <Route path="/blog/contratar-fotografo-de-bodas" element={<BlogFotografoBodas />} />
             <Route path="/blog/staff-de-discoteca-funciones-y-salario" element={<BlogStaffDiscoteca />} />
             <Route path="/blog/catering-para-eventos-de-empresa" element={<BlogCateringEmpresas />} />
+            <Route path="/blog/cuanto-cuesta-un-food-truck-para-evento" element={<BlogFoodTruckPrecio />} />
+            <Route path="/blog/donde-publicar-food-truck-eventos" element={<BlogPlataformasFoodTruck />} />
             <Route path="/blog/disco-movil-para-comuniones" element={<BlogDiscoMovilComuniones />} />
             <Route path="/blog/promotores-de-eventos-que-hacen" element={<BlogPromotoresEventos />} />
             <Route path="/blog/maquillaje-nupcial-precio-guia" element={<BlogMaquillajeBoda />} />

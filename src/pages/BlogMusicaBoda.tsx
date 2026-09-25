@@ -140,7 +140,7 @@ export default function BlogMusicaBoda() {
           </div>
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/musica-para-bodas-guia" />
-          <BlogInlineCTA role="dj" variant="upgrade" />
+          <BlogInlineCTA role="dj" variant="upgrade" articlePath="/blog/musica-para-bodas-guia" />
 
           <div className="space-y-10">
             <section>
@@ -266,7 +266,7 @@ export default function BlogMusicaBoda() {
       <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/musica-para-bodas-guia' tag='DJ' />
         <FooterPublic />
-      <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_musica_boda" />
+      <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_musica_boda" articlePath="/blog/musica-para-bodas-guia" />
       </div>
     </>
   );

@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasJerez() {
               answer="Una azafata de eventos en Jerez de la Frontera cobra entre 12€ y 18€/hora bruto, y las agencias facturan entre 120€ y 190€/día por el servicio completo. Es una tarifa en línea con la media nacional, aunque sube en fechas de la Feria de Jerez en mayo."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-jerez" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Jerez</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasJerez() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-jerez' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_jerez_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_jerez_v2" articlePath="/blog/precio-azafatas-jerez" />
       </div>
     </>
   );

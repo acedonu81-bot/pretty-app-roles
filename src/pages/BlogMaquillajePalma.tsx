@@ -59,7 +59,7 @@ export default function BlogMaquillajePalma() {
               answer="Una maquilladora de novia en Palma de Mallorca cobra entre 160€ y 380€, incluyendo prueba previa. El pack boda completo (novia + 3 personas) ronda los 520€-980€. Para eventos corporativos, el precio por persona está entre 45€ y 95€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-palma" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Palma de Mallorca</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajePalma() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-palma' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_palma_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_palma_v2" articlePath="/blog/maquillaje-eventos-palma" />
       </div>
     </>
   );

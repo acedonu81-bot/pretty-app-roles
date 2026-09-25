@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasAlcorcon() {
               answer="Una azafata de eventos en Alcorcón cobra entre 12€ y 17€/hora bruto, y las agencias facturan entre 110€ y 170€/día por el servicio completo. Las campañas comerciales en los grandes centros comerciales de la ciudad son las que más demanda generan."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-alcorcon" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Alcorcón</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasAlcorcon() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-alcorcon' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_alcorcon_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_alcorcon_v2" articlePath="/blog/precio-azafatas-alcorcon" />
       </div>
     </>
   );

@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasGirona() {
               answer="Una azafata de eventos en Girona cobra entre 13€ y 19€/hora bruto, y las agencias facturan entre 130€ y 195€/día por el servicio completo. Los eventos gastronómicos y culturales en el Barri Vell son los que más demandan perfiles de imagen."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-girona" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Girona</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasGirona() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-girona' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_girona_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_girona_v2" articlePath="/blog/precio-azafatas-girona" />
       </div>
     </>
   );

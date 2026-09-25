@@ -138,7 +138,7 @@ export default function BlogContratoProveedoresEventos() {
 
         <BlogRelatedPosts currentSlug='/blog/contrato-proveedores-eventos' tag='Eventos' />
         <FooterPublic />
-        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_contrato_proveedores" />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_contrato_proveedores" articlePath="/blog/contrato-proveedores-eventos" />
       </div>
     </>
   );

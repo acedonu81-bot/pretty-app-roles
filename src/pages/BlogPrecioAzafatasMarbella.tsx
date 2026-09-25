@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasMarbella() {
               answer="Una azafata de eventos en Marbella cobra entre 17€ y 28€/hora bruto, y las agencias facturan entre 180€ y 320€/día por el servicio completo. Es una tarifa muy por encima de la media nacional, impulsada por el turismo de lujo de Puerto Banús, aunque algo por debajo de plazas como Ibiza."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-marbella" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Marbella</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasMarbella() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-marbella' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_marbella_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_marbella_v2" articlePath="/blog/precio-azafatas-marbella" />
       </div>
     </>
   );

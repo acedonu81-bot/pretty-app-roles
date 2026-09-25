@@ -74,7 +74,7 @@ export default function BlogDJBodaGranada() {
               </div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios Granada 2026. Sin IVA.</p>
             </section>
-            <BlogInlineCTA role="dj" />
+            <BlogInlineCTA role="dj" articlePath="/blog/dj-bodas-granada" />
             <section>
               <h2 className="text-lg font-black mb-4">Zonas de boda en Granada</h2>
               <div className="space-y-3">
@@ -130,7 +130,7 @@ export default function BlogDJBodaGranada() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-granada' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_granada" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_granada" articlePath="/blog/dj-bodas-granada" />
       </div>
     </>
   );

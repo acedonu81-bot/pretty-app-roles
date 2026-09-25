@@ -59,7 +59,7 @@ export default function BlogMaquillajePamplona() {
               answer="Una maquilladora de novia en Pamplona cobra entre 95€ y 235€, incluyendo prueba previa. El pack boda completo (novia + 3 personas) ronda los 330€-650€. Durante San Fermín, la demanda de maquillaje para eventos privados y peñas sube considerablemente."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-pamplona" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Pamplona</h2>
@@ -107,7 +107,7 @@ export default function BlogMaquillajePamplona() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-pamplona' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_pamplona_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_pamplona_v2" articlePath="/blog/maquillaje-eventos-pamplona" />
       </div>
     </>
   );

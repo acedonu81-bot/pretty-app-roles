@@ -215,7 +215,7 @@ const faqStructured = {
           <BlogEmailCapture variant="guia" intent="ser-profesional" articlePath="/blog/personal-de-imagen-ferias-y-congresos" />
         <BlogRelatedPosts currentSlug='/blog/personal-de-imagen-ferias-y-congresos' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_personal_imagen" />
+        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_personal_imagen" articlePath="/blog/personal-de-imagen-ferias-y-congresos" />
       </div>
     </>
   );

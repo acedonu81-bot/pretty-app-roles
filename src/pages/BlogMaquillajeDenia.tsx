@@ -59,7 +59,7 @@ export default function BlogMaquillajeDenia() {
               answer="Una maquilladora de novia en Dénia cobra entre 130€ y 300€, incluyendo prueba previa. El pack boda completo (novia + 3 personas) ronda los 420€-800€. Para eventos corporativos y gastronómicos, el precio por persona está entre 40€ y 80€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-denia" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Dénia</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeDenia() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-denia' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_denia_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_denia_v2" articlePath="/blog/maquillaje-eventos-denia" />
       </div>
     </>
   );

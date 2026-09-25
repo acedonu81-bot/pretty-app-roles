@@ -89,7 +89,7 @@ export default function BlogFotografoComunion() {
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos España 2026. Sin IVA. Álbum impreso aumenta entre 200-400€ el paquete base.</p>
             </section>
 
-            <BlogInlineCTA role="fotografo" />
+            <BlogInlineCTA role="fotografo" articlePath="/blog/fotografo-para-comunion-precio" />
 
             <section>
               <h2 className="text-lg font-black mb-4">Precio del fotógrafo de comunión por ciudad</h2>
@@ -176,7 +176,7 @@ export default function BlogFotografoComunion() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/fotografo-para-comunion-precio' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_comunion" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_comunion" articlePath="/blog/fotografo-para-comunion-precio" />
       </div>
     </>
   );

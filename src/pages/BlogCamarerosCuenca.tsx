@@ -59,7 +59,7 @@ export default function BlogCamarerosCuenca() {
               answer="Un camarero de eventos en Cuenca cobra entre 10€ y 16€/hora bruto, y un bartender entre 13€ y 19€/hora. Para una boda completa de 6-7 horas, el presupuesto de personal de sala suele estar entre 570€ y 1.280€ según el número de invitados."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-cuenca" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Cuenca</h2>
@@ -107,7 +107,7 @@ export default function BlogCamarerosCuenca() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-cuenca' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_cuenca_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_cuenca_v2" articlePath="/blog/camareros-eventos-cuenca" />
       </div>
     </>
   );

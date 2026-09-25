@@ -59,7 +59,7 @@ export default function BlogCamarerosOviedo() {
               answer="Un camarero de eventos en Oviedo cobra entre 11€ y 17€/hora bruto, y un bartender con experiencia en coctelería entre 15€ y 22€/hora. Para una boda completa de 6-7 horas en el casco histórico o una finca del entorno, el presupuesto de personal de sala suele estar entre 850€ y 2.000€."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-oviedo" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Oviedo</h2>
@@ -107,7 +107,7 @@ export default function BlogCamarerosOviedo() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-oviedo' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_oviedo_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_oviedo_v2" articlePath="/blog/camareros-eventos-oviedo" />
       </div>
     </>
   );

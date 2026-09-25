@@ -59,7 +59,7 @@ export default function BlogCamarerosBarcelona() {
               answer="Un camarero de eventos en Barcelona cobra entre 12€ y 19€/hora bruto, y un bartender con experiencia entre 16€ y 23€/hora. Para una boda completa en una masía del Penedès, el presupuesto de personal de sala suele estar entre 900€ y 2.000€ para 6-7 horas de servicio."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-barcelona" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Barcelona</h2>
@@ -107,7 +107,7 @@ export default function BlogCamarerosBarcelona() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-barcelona' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_barcelona_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_barcelona_v2" articlePath="/blog/camareros-eventos-barcelona" />
       </div>
     </>
   );

@@ -282,7 +282,7 @@ export default function BlogMusicaEnVivoBodas() {
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/musica-en-vivo-para-bodas" />
         <BlogRelatedPosts currentSlug='/blog/musica-en-vivo-para-bodas' tag='Bodas' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_musica_en_vivo_bodas" />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_musica_en_vivo_bodas" articlePath="/blog/musica-en-vivo-para-bodas" />
       </div>
     </>
   );

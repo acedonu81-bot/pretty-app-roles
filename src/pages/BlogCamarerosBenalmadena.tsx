@@ -59,7 +59,7 @@ export default function BlogCamarerosBenalmadena() {
               answer="Un camarero de eventos en Benalmádena cobra entre 12€ y 19€/hora bruto, y un bartender con experiencia entre 16€ y 24€/hora. Para una boda completa de 6-7 horas, el presupuesto de personal de sala suele estar entre 900€ y 2.050€."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-benalmadena" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Benalmádena</h2>
@@ -107,7 +107,7 @@ export default function BlogCamarerosBenalmadena() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-benalmadena' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_benalmadena_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_benalmadena_v2" articlePath="/blog/camareros-eventos-benalmadena" />
       </div>
     </>
   );

@@ -59,7 +59,7 @@ export default function BlogCamarerosLasPalmas() {
               answer="Un camarero de eventos en Las Palmas cobra entre 12€ y 20€/hora bruto, y un bartender con experiencia en coctelería entre 16€ y 25€/hora. Para una boda completa de 6-7 horas, el presupuesto de personal de sala suele estar entre 950€ y 2.300€ según el número de invitados."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-laspalmas" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Las Palmas</h2>
@@ -107,7 +107,7 @@ export default function BlogCamarerosLasPalmas() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-laspalmas' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_las_palmas_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_las_palmas_v2" articlePath="/blog/camareros-eventos-laspalmas" />
       </div>
     </>
   );

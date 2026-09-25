@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasOviedo() {
               answer="Una azafata de eventos en Oviedo cobra entre 12€ y 18€/hora bruto, y las agencias facturan entre 125€ y 180€/día por el servicio completo. El perfil de protocolo institucional, muy demandado por el volumen de eventos oficiales de la capital asturiana, tiene una tarifa algo superior."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-oviedo" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Oviedo</h2>
@@ -107,7 +107,7 @@ export default function BlogPrecioAzafatasOviedo() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-oviedo' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_oviedo_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_oviedo_v2" articlePath="/blog/precio-azafatas-oviedo" />
       </div>
     </>
   );

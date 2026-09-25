@@ -59,7 +59,7 @@ export default function BlogCamarerosMataro() {
               answer="Un camarero de eventos en Mataró cobra entre 12€ y 18€/hora bruto, y un bartender con experiencia en coctelería entre 16€ y 22€/hora. Para una boda de playa completa de 6-7 horas, el presupuesto de sala suele estar entre 850€ y 2.000€."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-mataro" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Mataró</h2>
@@ -106,7 +106,7 @@ export default function BlogCamarerosMataro() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-mataro' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_mataro_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_mataro_v2" articlePath="/blog/camareros-eventos-mataro" />
       </div>
     </>
   );

@@ -83,7 +83,7 @@ export default function BlogFotografoConseguirClientes() {
               </div>
             </section>
 
-            <BlogInlineCTA role="fotografo" />
+            <BlogInlineCTA role="fotografo" articlePath="/blog/fotografo-como-conseguir-clientes" />
 
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
@@ -126,7 +126,7 @@ export default function BlogFotografoConseguirClientes() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/fotografo-como-conseguir-clientes' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_conseguir_clientes" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_conseguir_clientes" articlePath="/blog/fotografo-como-conseguir-clientes" />
       </div>
     </>
   );

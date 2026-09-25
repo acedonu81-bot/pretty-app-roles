@@ -231,7 +231,7 @@ export default function BlogLocalesEventosMadrid() {
 
         <BlogRelatedPosts currentSlug='/blog/locales-para-eventos-madrid' tag='Organizadores' />
         <FooterPublic />
-        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_locales_madrid" />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_locales_madrid" articlePath="/blog/locales-para-eventos-madrid" />
       </div>
     </>
   );

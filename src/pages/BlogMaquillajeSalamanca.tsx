@@ -59,7 +59,7 @@ export default function BlogMaquillajeSalamanca() {
               answer="Una maquilladora de novia en Salamanca cobra entre 85€ y 200€, incluyendo prueba previa. El pack boda completo (novia + 3 personas) ronda los 280€-560€. Para eventos institucionales y corporativos, el precio por persona está entre 30€ y 60€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-salamanca" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Salamanca</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeSalamanca() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-salamanca' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_salamanca_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_salamanca_v2" articlePath="/blog/maquillaje-eventos-salamanca" />
       </div>
     </>
   );

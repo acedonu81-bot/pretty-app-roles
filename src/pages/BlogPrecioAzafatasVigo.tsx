@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasVigo() {
               answer="Una azafata de eventos en Vigo cobra entre 11€ y 17€/hora bruto, y las agencias facturan entre 105€ y 165€/día por el servicio completo. La industria del motor y naval mantiene una demanda corporativa estable durante todo el año."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-vigo" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Vigo</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasVigo() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-vigo' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_vigo_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_vigo_v2" articlePath="/blog/precio-azafatas-vigo" />
       </div>
     </>
   );

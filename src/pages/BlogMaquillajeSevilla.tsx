@@ -59,7 +59,7 @@ export default function BlogMaquillajeSevilla() {
               answer="Una maquilladora de novia en Sevilla cobra entre 85€ y 220€, incluyendo prueba previa. El pack boda completo (novia + 3 personas) ronda los 290€-590€. Para maquillaje de Feria de Abril, el precio está entre 45€ y 100€ por persona."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-sevilla" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Sevilla</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeSevilla() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-sevilla' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_sevilla_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_sevilla_v2" articlePath="/blog/maquillaje-eventos-sevilla" />
       </div>
     </>
   );

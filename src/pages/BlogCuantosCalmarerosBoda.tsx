@@ -129,7 +129,7 @@ const faqStructured = {
             </p>
           </section>
 
-          <BlogInlineCTA role="staff" />
+          <BlogInlineCTA role="staff" articlePath="/blog/cuantos-camareros-necesito-para-mi-boda" />
 
           <div className="space-y-8">
             <section>
@@ -246,7 +246,7 @@ const faqStructured = {
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuantos-camareros-necesito-para-mi-boda" />
         <BlogRelatedPosts currentSlug='/blog/cuantos-camareros-necesito-para-mi-boda' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_cuantos_calmareros_boda" />
+        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_cuantos_calmareros_boda" articlePath="/blog/cuantos-camareros-necesito-para-mi-boda" />
       </div>
     </>
   );

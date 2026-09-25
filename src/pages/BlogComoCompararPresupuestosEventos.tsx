@@ -141,7 +141,7 @@ export default function BlogComoCompararPresupuestosEventos() {
 
         <BlogRelatedPosts currentSlug='/blog/comparar-presupuestos-proveedores-eventos' tag='Eventos' />
         <FooterPublic />
-        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_comparar_presupuestos" />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_comparar_presupuestos" articlePath="/blog/comparar-presupuestos-proveedores-eventos" />
       </div>
     </>
   );

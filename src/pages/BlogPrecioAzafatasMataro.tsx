@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasMataro() {
               answer="Una azafata de eventos en Mataró cobra entre 13€ y 19€/hora bruto, y las agencias facturan entre 135€ y 195€/día por el servicio completo. En temporada de bodas de costa (junio-septiembre) la demanda y las tarifas suben ligeramente."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-mataro" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Mataró</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasMataro() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-mataro' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_mataro_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_mataro_v2" articlePath="/blog/precio-azafatas-mataro" />
       </div>
     </>
   );

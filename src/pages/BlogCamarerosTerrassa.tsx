@@ -59,7 +59,7 @@ export default function BlogCamarerosTerrassa() {
               answer="Un camarero de eventos en Terrassa cobra entre 12€ y 18€/hora bruto, y un bartender con experiencia en coctelería entre 15€ y 22€/hora. Para una boda completa de 6-7 horas en una finca del Vallès, el presupuesto de sala suele estar entre 800€ y 1.900€."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-terrassa" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Terrassa</h2>
@@ -106,7 +106,7 @@ export default function BlogCamarerosTerrassa() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-terrassa' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_terrassa_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_terrassa_v2" articlePath="/blog/camareros-eventos-terrassa" />
       </div>
     </>
   );

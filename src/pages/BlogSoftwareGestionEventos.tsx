@@ -129,7 +129,7 @@ export default function BlogSoftwareGestionEventos() {
 
         <BlogRelatedPosts currentSlug='/blog/software-para-organizar-eventos' tag='Eventos' />
         <FooterPublic />
-        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_software_gestion" />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_software_gestion" articlePath="/blog/software-para-organizar-eventos" />
       </div>
     </>
   );

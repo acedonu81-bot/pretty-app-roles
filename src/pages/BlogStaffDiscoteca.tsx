@@ -118,7 +118,7 @@ const faqStructured = {
             <p className="text-xs mt-2" style={{ color: '#3d3d4e' }}>Los RRPPs suelen cobrar fijo + porcentaje de la taquilla atribuida a su lista.</p>
           </section>
 
-          <BlogInlineCTA role="staff" />
+          <BlogInlineCTA role="staff" articlePath="/blog/staff-de-discoteca-funciones-y-salario" />
 
           <section className="mb-10">
             <h2 className="text-lg font-black mb-4">Funciones de cada perfil</h2>
@@ -181,7 +181,7 @@ const faqStructured = {
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/staff-de-discoteca-funciones-y-salario" />
       <BlogRelatedPosts currentSlug='/blog/staff-de-discoteca-funciones-y-salario' tag='Staff' />
         <FooterPublic />
-      <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_staff_discoteca" />
+      <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_staff_discoteca" articlePath="/blog/staff-de-discoteca-funciones-y-salario" />
       </div>
     </>
   );

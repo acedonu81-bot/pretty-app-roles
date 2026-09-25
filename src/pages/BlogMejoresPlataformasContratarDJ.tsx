@@ -128,7 +128,7 @@ export default function BlogMejoresPlataformasContratarDJ() {
 
         <a href="/blog" className="block px-4 sm:px-6 pb-2 max-w-3xl mx-auto text-xs" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
         <article className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 pb-20 sm:pb-24">
-          <BlogTopCTA href="/auth?mode=register&intent=contratar-dj" label="Ver DJs →" />
+          <BlogTopCTA href="/auth?mode=register&intent=contratar-dj" label="Ver DJs →" articlePath="/blog/mejores-plataformas-contratar-dj-espana" />
 
           <p className="text-xs mb-6 font-bold" style={{ color: '#666' }}>
             <a href="/" className="hover:text-[#8A6D0F] transition-colors">XPEAK</a>
@@ -191,7 +191,7 @@ export default function BlogMejoresPlataformasContratarDJ() {
           </p>
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/mejores-plataformas-contratar-dj-espana" />
-          <BlogInlineCTA role="dj" variant="upgrade" />
+          <BlogInlineCTA role="dj" variant="upgrade" articlePath="/blog/mejores-plataformas-contratar-dj-espana" />
 
           <h2 className="text-xl font-black mb-4">Qué mirar antes de elegir plataforma</h2>
           <ul className="space-y-3 mb-10">
@@ -290,7 +290,7 @@ export default function BlogMejoresPlataformasContratarDJ() {
         </article>
         <BlogRelatedPosts currentSlug='/blog/mejores-plataformas-contratar-dj-espana' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_comparativa_dj" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_comparativa_dj" articlePath="/blog/mejores-plataformas-contratar-dj-espana" />
       </div>
     </>
   );

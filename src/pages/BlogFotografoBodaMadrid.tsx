@@ -86,7 +86,7 @@ export default function BlogFotografoBodaMadrid() {
               </div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios Madrid 2026. Sin IVA. Un 20-35% por encima de la media nacional.</p>
             </section>
-            <BlogInlineCTA role="fotografo" />
+            <BlogInlineCTA role="fotografo" articlePath="/blog/fotografo-boda-madrid" />
             <section>
               <h2 className="text-lg font-black mb-4">Zonas de boda en Madrid</h2>
               <div className="space-y-3">
@@ -141,7 +141,7 @@ export default function BlogFotografoBodaMadrid() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/fotografo-boda-madrid' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda_madrid" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda_madrid" articlePath="/blog/fotografo-boda-madrid" />
       </div>
     </>
   );

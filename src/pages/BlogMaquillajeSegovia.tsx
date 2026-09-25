@@ -59,7 +59,7 @@ export default function BlogMaquillajeSegovia() {
               answer="Una maquilladora de novia en Segovia cobra entre 85€ y 190€, incluyendo prueba previa. El pack boda (novia + 3 personas) ronda los 280€-530€. Para eventos corporativos, el precio por persona está entre 28€ y 60€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-segovia" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Segovia</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeSegovia() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-segovia' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_segovia_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_segovia_v2" articlePath="/blog/maquillaje-eventos-segovia" />
       </div>
     </>
   );

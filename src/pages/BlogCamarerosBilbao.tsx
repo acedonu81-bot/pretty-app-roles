@@ -59,7 +59,7 @@ export default function BlogCamarerosBilbao() {
               answer="Un camarero de eventos en Bilbao cobra entre 11€ y 18€/hora bruto, y un bartender con experiencia entre 15€ y 22€/hora. Para una boda completa en un caserío del Gran Bilbao, el presupuesto de personal de sala suele estar entre 800€ y 1.900€ para 6-7 horas de servicio."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-bilbao" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Bilbao</h2>
@@ -107,7 +107,7 @@ export default function BlogCamarerosBilbao() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-bilbao' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_bilbao_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_bilbao_v2" articlePath="/blog/camareros-eventos-bilbao" />
       </div>
     </>
   );

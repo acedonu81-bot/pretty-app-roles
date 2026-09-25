@@ -115,7 +115,7 @@ export default function BlogFlashBookingComoFunciona() {
         </div>
         <BlogRelatedPosts currentSlug='/blog/como-funciona-flash-booking-xpeak' tag='Eventos' />
         <FooterPublic />
-        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_flash_booking" />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_flash_booking" articlePath="/blog/como-funciona-flash-booking-xpeak" />
       </div>
     </>
   );

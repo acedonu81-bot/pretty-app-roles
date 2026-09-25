@@ -109,7 +109,7 @@ const faqStructured = {
 
         <a href="/blog" className="block px-4 sm:px-6 pb-2 max-w-3xl mx-auto text-xs" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
         <article className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 pb-20 sm:pb-24">
-            <BlogTopCTA href="/auth?mode=register&intent=contratar-dj" label="Ver DJs →" />
+            <BlogTopCTA href="/auth?mode=register&intent=contratar-dj" label="Ver DJs →" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
 
           {/* Breadcrumb */}
           <p className="text-xs mb-6 font-bold" style={{ color: '#666' }}>
@@ -183,7 +183,7 @@ const faqStructured = {
           </div>
 
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
-          <BlogInlineCTA role="dj" variant="upgrade" />
+          <BlogInlineCTA role="dj" variant="upgrade" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
 
           {/* Por ciudad */}
           <h2 className="text-xl font-black mb-4">Precio de un DJ por ciudad</h2>
@@ -361,7 +361,7 @@ const faqStructured = {
         </article>
         <BlogRelatedPosts currentSlug='/blog/cuanto-cobra-un-dj-en-espana' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj_pro" storageKey="xpeak_scrollcta_dj_precio_v2" />
+        <BlogScrollCTA role="dj_pro" storageKey="xpeak_scrollcta_dj_precio_v2" articlePath="/blog/cuanto-cobra-un-dj-en-espana" />
       </div>
     </>
   );

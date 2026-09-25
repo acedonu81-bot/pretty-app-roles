@@ -142,7 +142,7 @@ export default function BlogDJCumpleanos() {
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos en España 2026. Equipo básico incluido. Sin IVA.</p>
             </section>
 
-            <BlogInlineCTA role="dj" />
+            <BlogInlineCTA role="dj" articlePath="/blog/dj-para-cumpleanos-precio" />
 
             <section>
               <h2 className="text-lg font-black mb-4">Precio según perfil del DJ</h2>
@@ -238,7 +238,7 @@ export default function BlogDJCumpleanos() {
       <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/dj-para-cumpleanos-precio' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_cumpleanos" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_cumpleanos" articlePath="/blog/dj-para-cumpleanos-precio" />
       </div>
     </>
   );

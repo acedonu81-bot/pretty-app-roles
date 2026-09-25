@@ -160,7 +160,7 @@ const faqStructured = {
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/catering-para-eventos-de-empresa" />
       <BlogRelatedPosts currentSlug='/blog/catering-para-eventos-de-empresa' tag='Catering' />
         <FooterPublic />
-      <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_catering_empresas" />
+      <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_catering_empresas" articlePath="/blog/catering-para-eventos-de-empresa" />
       </div>
     </>
   );

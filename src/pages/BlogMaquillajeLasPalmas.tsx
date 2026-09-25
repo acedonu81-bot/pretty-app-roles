@@ -59,7 +59,7 @@ export default function BlogMaquillajeLasPalmas() {
               answer="Una maquilladora de novia en Las Palmas cobra entre 120€ y 290€, incluyendo prueba previa. El pack boda completo (novia + 3 personas) ronda los 410€-790€. Para eventos corporativos, el precio por persona está entre 38€ y 80€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-laspalmas" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Las Palmas</h2>
@@ -107,7 +107,7 @@ export default function BlogMaquillajeLasPalmas() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-laspalmas' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_las_palmas_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_las_palmas_v2" articlePath="/blog/maquillaje-eventos-laspalmas" />
       </div>
     </>
   );

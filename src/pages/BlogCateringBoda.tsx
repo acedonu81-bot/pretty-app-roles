@@ -120,7 +120,7 @@ export default function BlogCateringBoda() {
         <DJResourcesAffiliate role="catering" />
         <BlogAuthor />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_catering_boda" />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_catering_boda" articlePath="/blog/catering-boda-precio-por-persona" />
       </div>
     </>
   );

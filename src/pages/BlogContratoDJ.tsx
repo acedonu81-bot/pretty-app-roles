@@ -113,7 +113,7 @@ export default function BlogContratoDJ() {
             <DJResourcesAffiliate role="dj" />
 
             <BlogEmailCapture variant="plantilla" intent="contratar-dj" articlePath="/blog/contrato-dj-que-debe-incluir" />
-            <BlogInlineCTA role="dj" variant="upgrade" />
+            <BlogInlineCTA role="dj" variant="upgrade" articlePath="/blog/contrato-dj-que-debe-incluir" />
 
             <section>
               <h2 className="text-lg font-black mb-4">Errores frecuentes que cuestan dinero</h2>
@@ -215,7 +215,7 @@ export default function BlogContratoDJ() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/contrato-dj-que-debe-incluir' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_contrato_dj" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_contrato_dj" articlePath="/blog/contrato-dj-que-debe-incluir" />
       </div>
     </>
   );

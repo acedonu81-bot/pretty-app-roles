@@ -74,7 +74,7 @@ export default function BlogFotografoBodaMurcia() {
 
           <p className="text-[#333] mb-6">La Región de Murcia es uno de los mercados de bodas más activos del sureste español. La combinación de haciendas en la huerta, bodegas premiadas en Jumilla o Yecla, y acceso al Mar Menor hace de Murcia un escenario excepcional para bodas con identidad propia.</p>
 
-          <BlogInlineCTA role="fotografo" text="¿Buscas fotógrafo para tu boda en Murcia? Encuentra los mejores profesionales en XPEAK." />
+          <BlogInlineCTA role="fotografo" text="¿Buscas fotógrafo para tu boda en Murcia? Encuentra los mejores profesionales en XPEAK." articlePath="/blog/fotografo-boda-murcia" />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Precios fotógrafo boda Murcia 2026</h2>
           <div className="overflow-x-auto mb-8">
@@ -117,7 +117,7 @@ export default function BlogFotografoBodaMurcia() {
         </article>
         <BlogRelatedPosts currentSlug='/blog/fotografo-boda-murcia' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_murcia" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_murcia" articlePath="/blog/fotografo-boda-murcia" />
       </div>
     </>
   );

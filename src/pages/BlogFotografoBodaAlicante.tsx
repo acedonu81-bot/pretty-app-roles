@@ -74,7 +74,7 @@ export default function BlogFotografoBodaAlicante() {
 
           <p className="text-[#333] mb-6">Alicante combina playas de postal, el Castillo de Santa Bárbara y fincas en el interior con viñedos. Un escenario excepcional para bodas y para los fotógrafos que saben aprovechar la luz única del Mediterráneo.</p>
 
-          <BlogInlineCTA role="fotografo" text="¿Buscas fotógrafo para tu boda en Alicante? Compara perfiles y tarifas en XPEAK." />
+          <BlogInlineCTA role="fotografo" text="¿Buscas fotógrafo para tu boda en Alicante? Compara perfiles y tarifas en XPEAK." articlePath="/blog/fotografo-boda-alicante" />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Precios fotógrafo boda Alicante 2026</h2>
           <div className="overflow-x-auto mb-8">
@@ -117,7 +117,7 @@ export default function BlogFotografoBodaAlicante() {
         </article>
         <BlogRelatedPosts currentSlug='/blog/fotografo-boda-alicante' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_alicante" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_alicante" articlePath="/blog/fotografo-boda-alicante" />
       </div>
     </>
   );

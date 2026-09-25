@@ -59,7 +59,7 @@ export default function BlogCamarerosMalaga() {
               answer="Un camarero de eventos en Málaga cobra entre 11€ y 18€/hora bruto, y un bartender con experiencia entre 15€ y 22€/hora. Para una boda completa en la Costa del Sol, el presupuesto de personal de sala suele estar entre 800€ y 1.900€ para 6-7 horas de servicio."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-malaga" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Málaga</h2>
@@ -107,7 +107,7 @@ export default function BlogCamarerosMalaga() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-malaga' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_malaga_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_malaga_v2" articlePath="/blog/camareros-eventos-malaga" />
       </div>
     </>
   );

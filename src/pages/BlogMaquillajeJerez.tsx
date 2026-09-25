@@ -59,7 +59,7 @@ export default function BlogMaquillajeJerez() {
               answer="Una maquilladora de novia en Jerez de la Frontera cobra entre 95€ y 220€, incluyendo prueba previa. Para la Feria de Jerez, el maquillaje flamenco ronda los 40€-75€ por sesión. Para eventos corporativos, el precio por persona está entre 30€ y 60€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-jerez" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Jerez</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeJerez() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-jerez' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_jerez_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_jerez_v2" articlePath="/blog/maquillaje-eventos-jerez" />
       </div>
     </>
   );

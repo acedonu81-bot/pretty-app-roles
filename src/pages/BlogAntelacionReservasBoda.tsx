@@ -126,7 +126,7 @@ export default function BlogAntelacionReservasBoda() {
         </div>
         <BlogRelatedPosts currentSlug='/blog/antelacion-reservar-proveedores-boda' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_antelacion_boda" />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_antelacion_boda" articlePath="/blog/antelacion-reservar-proveedores-boda" />
       </div>
     </>
   );

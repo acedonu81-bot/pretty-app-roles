@@ -59,7 +59,7 @@ export default function BlogCamarerosTorrevieja() {
               answer="Un camarero de eventos en Torrevieja cobra entre 13€ y 19€/hora bruto, y un bartender con experiencia entre 16€ y 23€/hora. Para una boda completa de 6-7 horas, el presupuesto de personal de sala suele estar entre 950€ y 2.200€, con los perfiles con inglés como los más solicitados."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-torrevieja" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Torrevieja</h2>
@@ -107,7 +107,7 @@ export default function BlogCamarerosTorrevieja() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-torrevieja' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_torrevieja_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_torrevieja_v2" articlePath="/blog/camareros-eventos-torrevieja" />
       </div>
     </>
   );

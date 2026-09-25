@@ -59,7 +59,7 @@ export default function BlogMaquillajeMadrid() {
               answer="Una maquilladora de novia en Madrid cobra entre 110€ y 270€, incluyendo prueba previa. El pack boda completo (novia + 3 personas) ronda los 380€-750€. Para eventos corporativos, el precio por persona está entre 35€ y 75€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-madrid" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Madrid</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeMadrid() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-madrid' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_madrid_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_madrid_v2" articlePath="/blog/maquillaje-eventos-madrid" />
       </div>
     </>
   );

@@ -59,7 +59,7 @@ export default function BlogCamarerosSitges() {
               answer="Un camarero de eventos en Sitges cobra entre 15€ y 23€/hora bruto, y un bartender con experiencia en coctelería entre 19€ y 28€/hora. Para una boda completa en villa (6-7h), el presupuesto de personal de sala suele estar entre 1.100€ y 2.600€ según el número de invitados."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-sitges" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Sitges</h2>
@@ -107,7 +107,7 @@ export default function BlogCamarerosSitges() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-sitges' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_sitges_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_sitges_v2" articlePath="/blog/camareros-eventos-sitges" />
       </div>
     </>
   );

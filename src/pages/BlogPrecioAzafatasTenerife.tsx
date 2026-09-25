@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasTenerife() {
               answer="Una azafata de eventos en Tenerife cobra entre 13€ y 21€/hora bruto, y las agencias facturan entre 140€ y 210€/día por el servicio completo. Los precios están por encima de la media nacional por la logística de archipiélago y el volumen de eventos internacionales durante todo el año."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-tenerife" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Tenerife</h2>
@@ -107,7 +107,7 @@ export default function BlogPrecioAzafatasTenerife() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-tenerife' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_tenerife_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_tenerife_v2" articlePath="/blog/precio-azafatas-tenerife" />
       </div>
     </>
   );

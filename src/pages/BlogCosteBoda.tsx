@@ -257,7 +257,7 @@ const faqStructured = {
             </div>
           </section>
 
-          <BlogInlineCTA role="general" />
+          <BlogInlineCTA role="general" articlePath="/blog/cuanto-cuesta-una-boda-en-espana" />
 
           {/* DJ */}
           <section className="mb-12">
@@ -434,7 +434,7 @@ const faqStructured = {
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuanto-cuesta-una-boda-en-espana" />
       <BlogRelatedPosts currentSlug='/blog/cuanto-cuesta-una-boda-en-espana' tag='Bodas' />
         <FooterPublic />
-      <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_coste_boda" />
+      <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_coste_boda" articlePath="/blog/cuanto-cuesta-una-boda-en-espana" />
       </div>
     </>
   );

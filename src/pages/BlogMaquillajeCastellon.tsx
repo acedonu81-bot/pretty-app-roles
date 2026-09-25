@@ -59,7 +59,7 @@ export default function BlogMaquillajeCastellon() {
               answer="Una maquilladora de novia en Castellón cobra entre 90€ y 230€, incluyendo prueba previa. El pack boda completo (novia + 3 personas) ronda los 320€-650€. Para eventos corporativos, el precio por persona está entre 30€ y 65€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-castellon" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Castellón</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeCastellon() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-castellon' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_castellon_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_castellon_v2" articlePath="/blog/maquillaje-eventos-castellon" />
       </div>
     </>
   );

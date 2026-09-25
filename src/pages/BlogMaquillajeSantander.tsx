@@ -59,7 +59,7 @@ export default function BlogMaquillajeSantander() {
               answer="Una maquilladora de novia en Santander cobra entre 105€ y 250€, incluyendo prueba previa. El pack boda completo (novia + 3 personas) ronda los 360€-700€. Para eventos corporativos, el precio por persona está entre 35€ y 70€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-santander" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Santander</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeSantander() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-santander' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_santander_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_santander_v2" articlePath="/blog/maquillaje-eventos-santander" />
       </div>
     </>
   );

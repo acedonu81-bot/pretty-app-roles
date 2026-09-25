@@ -116,7 +116,7 @@ export default function BlogAnimadoresInfantiles() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/animadores-infantiles-comuniones-cumpleanos' tag='Animador' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_animadores_infantiles" />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_animadores_infantiles" articlePath="/blog/animadores-infantiles-comuniones-cumpleanos" />
       </div>
     </>
   );

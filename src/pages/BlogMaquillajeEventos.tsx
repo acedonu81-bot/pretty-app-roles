@@ -217,7 +217,7 @@ const faqStructured = {
           <BlogEmailCapture variant="presupuestos" intent="contratar-makeup" articlePath="/blog/maquilladora-para-eventos-precio" />
         <BlogRelatedPosts currentSlug='/blog/maquilladora-para-eventos-precio' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maquillaje_eventos" />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maquillaje_eventos" articlePath="/blog/maquilladora-para-eventos-precio" />
       </div>
     </>
   );

@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasElche() {
               answer="Una azafata de eventos en Elche cobra entre 12€ y 17€/hora bruto, y las agencias facturan entre 110€ y 165€/día por el servicio completo. Las ferias y showrooms del sector del calzado son el principal motor de demanda durante el año."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-elche" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Elche</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasElche() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-elche' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_elche_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_elche_v2" articlePath="/blog/precio-azafatas-elche" />
       </div>
     </>
   );

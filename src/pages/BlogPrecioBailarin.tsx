@@ -58,7 +58,7 @@ export default function BlogPrecioBailarin() {
               answer="Un show de baile para evento cuesta entre 200€ y 600€ según formato. Una clase particular de salsa o bachata ronda los 25€-50€/hora en individual, o 15€-30€ por persona en grupo reducido. Los precios varían según ciudad y experiencia del profesional."
             />
           </div>
-          <BlogInlineCTA role="bailarin" variant="upgrade" />
+          <BlogInlineCTA role="bailarin" variant="upgrade" articlePath="/blog/precio-bailarin-instructor-salsa-bachata" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de bailarines e instructores de baile</h2>
@@ -124,7 +124,7 @@ export default function BlogPrecioBailarin() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-bailarin-instructor-salsa-bachata' tag='Bailarin' />
         <FooterPublic />
-        <BlogScrollCTA role="bailarin_pro" storageKey="xpeak_scrollcta_precio_bailarin_v2" />
+        <BlogScrollCTA role="bailarin_pro" storageKey="xpeak_scrollcta_precio_bailarin_v2" articlePath="/blog/precio-bailarin-instructor-salsa-bachata" />
       </div>
     </>
   );

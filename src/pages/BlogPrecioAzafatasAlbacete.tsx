@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasAlbacete() {
               answer="Una azafata de eventos en Albacete cobra entre 10€ y 15€/hora bruto, y las agencias facturan entre 90€ y 135€/día por el servicio completo. Es una de las tarifas más económicas de España, propia de un mercado de eventos más local, con la Feria de Albacete en septiembre como principal pico de demanda."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-albacete" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Albacete</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasAlbacete() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-albacete' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_albacete_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_albacete_v2" articlePath="/blog/precio-azafatas-albacete" />
       </div>
     </>
   );

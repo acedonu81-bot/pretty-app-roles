@@ -303,7 +303,7 @@ export default function BlogWeddingPlanner() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/wedding-planner-precio-espana' tag='Eventos' />
         <FooterPublic />
-        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_wedding_planner" />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_wedding_planner" articlePath="/blog/wedding-planner-precio-espana" />
       </div>
     </>
   );

@@ -70,7 +70,7 @@ export default function BlogFotografoBoda() {
         <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
           <a href="/blog" className="inline-flex items-center gap-1 text-xs mb-6 transition-opacity hover:opacity-70" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
 
-          <BlogTopCTA role="fotografo" />
+          <BlogTopCTA role="fotografo" articlePath="/blog/fotografo-boda" />
 
           <div className="mb-8 mt-6">
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#4F46E5' }}>Fotografía · España · XPEAK Blog</p>
@@ -94,7 +94,7 @@ export default function BlogFotografoBoda() {
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos 2026 para toda España. Sin IVA. Madrid y Barcelona suelen estar un 20-30% por encima.</p>
             </section>
 
-            <BlogInlineCTA role="fotografo" />
+            <BlogInlineCTA role="fotografo" articlePath="/blog/fotografo-boda" />
 
             <section>
               <h2 className="text-lg font-black mb-4">¿Qué incluye un reportaje de boda?</h2>
@@ -187,7 +187,7 @@ export default function BlogFotografoBoda() {
         </main>
         <BlogRelatedPosts currentSlug='/blog/fotografo-boda' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda" articlePath="/blog/fotografo-boda" />
       </div>
     </>
   );

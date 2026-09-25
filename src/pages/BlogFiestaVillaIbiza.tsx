@@ -127,7 +127,7 @@ export default function BlogFiestaVillaIbiza() {
         </div>
         <BlogRelatedPosts currentSlug='/blog/fiesta-privada-villa-ibiza' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_villa_ibiza" />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_villa_ibiza" articlePath="/blog/fiesta-privada-villa-ibiza" />
       </div>
     </>
   );

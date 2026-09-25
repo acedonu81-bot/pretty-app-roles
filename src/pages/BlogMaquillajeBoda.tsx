@@ -150,7 +150,7 @@ export default function BlogMaquillajeBoda() {
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios medios en España 2026. Sin IVA. El desplazamiento se cobra aparte según distancia al venue.</p>
             </section>
 
-            <BlogInlineCTA role="makeup" />
+            <BlogInlineCTA role="makeup" articlePath="/blog/maquillaje-nupcial-precio-guia" />
 
             <section>
               <h2 className="text-lg font-black mb-4">Precio del maquillaje de novia por ciudad</h2>
@@ -238,7 +238,7 @@ export default function BlogMaquillajeBoda() {
       <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-nupcial-precio-guia' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maquillaje_boda" />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maquillaje_boda" articlePath="/blog/maquillaje-nupcial-precio-guia" />
       </div>
     </>
   );

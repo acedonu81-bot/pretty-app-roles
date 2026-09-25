@@ -87,7 +87,7 @@ export default function BlogDJBodaCordoba() {
               </div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos 2026. Sin IVA. Venues históricos en el casco antiguo pueden requerir equipos de sonido específicos (limitaciones acústicas).</p>
             </section>
-            <BlogInlineCTA role="dj" variant="upgrade" />
+            <BlogInlineCTA role="dj" variant="upgrade" articlePath="/blog/dj-bodas-cordoba" />
             <section>
               <h2 className="text-lg font-black mb-4">Zonas de boda en Córdoba</h2>
               <div className="space-y-3">
@@ -142,7 +142,7 @@ export default function BlogDJBodaCordoba() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-cordoba' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_cordoba" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_cordoba" articlePath="/blog/dj-bodas-cordoba" />
       </div>
     </>
   );

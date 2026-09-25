@@ -74,7 +74,7 @@ const faqStructured = {
         <a href="/blog" className="block px-4 sm:px-6 pb-2 max-w-3xl mx-auto text-xs" style={{ color: '#3d3d4e' }}>← Todos los artículos</a>
 
         <article className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
-            <BlogTopCTA href="/auth?mode=register&role=staff" label="Crea tu perfil →" text="¿Eres camarero? Publica tu perfil y que te encuentren directamente" highlight />
+            <BlogTopCTA href="/auth?mode=register&role=staff" label="Crea tu perfil →" text="¿Eres camarero? Publica tu perfil y que te encuentren directamente" highlight articlePath="/blog/cuanto-cobra-un-camarero-de-eventos" />
           <a href="/contratar-camareros" className="inline-flex items-center gap-1.5 text-xs mb-6 transition-opacity hover:opacity-60"
             style={{ color: 'rgba(37,99,235,0.7)' }}>
             <ArrowLeft size={12} /> Contratar camareros
@@ -147,7 +147,7 @@ const faqStructured = {
               </p>
             </section>
 
-            <BlogInlineCTA role="staff" />
+            <BlogInlineCTA role="staff" articlePath="/blog/cuanto-cobra-un-camarero-de-eventos" />
 
             <section>
               <h2 className="text-xl sm:text-2xl font-black mb-3">Precio de camareros para eventos de empresa</h2>
@@ -241,7 +241,7 @@ const faqStructured = {
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/cuanto-cobra-un-camarero-de-eventos" />
         <BlogRelatedPosts currentSlug='/blog/cuanto-cobra-un-camarero-de-eventos' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_precio_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_precio_v2" articlePath="/blog/cuanto-cobra-un-camarero-de-eventos" />
       </div>
     </>
   );

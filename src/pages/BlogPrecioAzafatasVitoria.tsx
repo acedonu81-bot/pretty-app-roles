@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasVitoria() {
               answer="Una azafata de eventos en Vitoria-Gasteiz cobra entre 12€ y 19€/hora bruto, y las agencias facturan entre 130€ y 185€/día por el servicio completo. El perfil de protocolo institucional, muy demandado por ser sede de instituciones vascas, tiene tarifas algo superiores."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-vitoria" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Vitoria-Gasteiz</h2>
@@ -107,7 +107,7 @@ export default function BlogPrecioAzafatasVitoria() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-vitoria' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_vitoria_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_vitoria_v2" articlePath="/blog/precio-azafatas-vitoria" />
       </div>
     </>
   );

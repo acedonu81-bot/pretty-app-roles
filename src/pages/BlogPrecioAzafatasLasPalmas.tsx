@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasLasPalmas() {
               answer="Una azafata de eventos en Las Palmas cobra entre 13€ y 20€/hora bruto, y las agencias facturan entre 135€ y 205€/día por el servicio completo. La logística de archipiélago y el turismo internacional constante mantienen las tarifas por encima de la media nacional."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-laspalmas" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Las Palmas</h2>
@@ -107,7 +107,7 @@ export default function BlogPrecioAzafatasLasPalmas() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-laspalmas' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_las_palmas_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_las_palmas_v2" articlePath="/blog/precio-azafatas-laspalmas" />
       </div>
     </>
   );

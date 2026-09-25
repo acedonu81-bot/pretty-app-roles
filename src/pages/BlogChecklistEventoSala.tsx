@@ -171,7 +171,7 @@ export default function BlogChecklistEventoSala() {
         </div>
         <BlogRelatedPosts currentSlug='/blog/checklist-organizar-evento-sala' tag='Eventos' />
         <FooterPublic />
-        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_checklist_sala" />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_checklist_sala" articlePath="/blog/checklist-organizar-evento-sala" />
       </div>
     </>
   );

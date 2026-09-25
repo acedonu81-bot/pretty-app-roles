@@ -59,7 +59,7 @@ export default function BlogCamarerosHuesca() {
               answer="Un camarero de eventos en Huesca cobra entre 11€ y 17€/hora bruto, y un bartender entre 14€ y 20€/hora. Para una boda completa de 6-7 horas, el presupuesto de personal de sala suele estar entre 600€ y 1.350€ según el número de invitados."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-huesca" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Huesca</h2>
@@ -107,7 +107,7 @@ export default function BlogCamarerosHuesca() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-huesca' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_huesca_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_huesca_v2" articlePath="/blog/camareros-eventos-huesca" />
       </div>
     </>
   );

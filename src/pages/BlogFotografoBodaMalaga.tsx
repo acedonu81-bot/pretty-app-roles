@@ -76,7 +76,7 @@ export default function BlogFotografoBodaMalaga() {
               </div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios Málaga 2026. Sin IVA.</p>
             </section>
-            <BlogInlineCTA role="fotografo" />
+            <BlogInlineCTA role="fotografo" articlePath="/blog/fotografo-boda-malaga" />
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
@@ -117,7 +117,7 @@ export default function BlogFotografoBodaMalaga() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/fotografo-boda-malaga' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda_malaga" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda_malaga" articlePath="/blog/fotografo-boda-malaga" />
       </div>
     </>
   );

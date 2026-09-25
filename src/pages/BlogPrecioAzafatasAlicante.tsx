@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasAlicante() {
               answer="Una azafata de eventos en Alicante cobra entre 11€ y 17€/hora bruto, y las agencias facturan entre 115€ y 175€/día por el servicio completo. En temporada alta de la Costa Blanca (abril-octubre), con más bodas y eventos de playa, la demanda de perfiles bilingües sube."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-alicante" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Alicante</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasAlicante() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-alicante' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_alicante_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_alicante_v2" articlePath="/blog/precio-azafatas-alicante" />
       </div>
     </>
   );

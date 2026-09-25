@@ -58,7 +58,7 @@ export default function BlogPrecioAzafatasHuesca() {
               answer="Una azafata de eventos en Huesca cobra entre 10€ y 16€/hora bruto, y las agencias facturan entre 95€ y 155€/día por el servicio completo. Los precios suben algo en temporada de montaña por la mayor demanda turística."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-huesca" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Huesca</h2>
@@ -105,7 +105,7 @@ export default function BlogPrecioAzafatasHuesca() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-huesca' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_huesca_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_huesca_v2" articlePath="/blog/precio-azafatas-huesca" />
       </div>
     </>
   );

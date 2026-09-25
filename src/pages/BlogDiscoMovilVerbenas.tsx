@@ -151,7 +151,7 @@ export default function BlogDiscoMovilVerbenas() {
         </div>
         <BlogRelatedPosts currentSlug='/blog/disco-movil-verbenas-fiestas-pueblo' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_disco_movil_verbenas" />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_disco_movil_verbenas" articlePath="/blog/disco-movil-verbenas-fiestas-pueblo" />
       </div>
     </>
   );

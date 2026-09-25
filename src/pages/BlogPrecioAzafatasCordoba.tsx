@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasCordoba() {
               answer="Una azafata de eventos en Córdoba cobra entre 10€ y 15€/hora bruto, y las agencias facturan entre 95€ y 150€/día por el servicio completo. En mayo, con el Festival de los Patios, la demanda de perfiles turísticos y bilingües sube de forma notable."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-cordoba" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Córdoba</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasCordoba() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-cordoba' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_cordoba_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_cordoba_v2" articlePath="/blog/precio-azafatas-cordoba" />
       </div>
     </>
   );

@@ -76,7 +76,7 @@ export default function BlogFotografoBodaSevilla() {
               </div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios Sevilla 2026. Sin IVA. En la media nacional, más asequible que Madrid o Barcelona.</p>
             </section>
-            <BlogInlineCTA role="fotografo" />
+            <BlogInlineCTA role="fotografo" articlePath="/blog/fotografo-boda-sevilla" />
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
@@ -117,7 +117,7 @@ export default function BlogFotografoBodaSevilla() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/fotografo-boda-sevilla' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda_sevilla" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda_sevilla" articlePath="/blog/fotografo-boda-sevilla" />
       </div>
     </>
   );

@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasSantiago() {
               answer="Una azafata de eventos en Santiago cobra entre 11€ y 17€/hora bruto, y las agencias facturan entre 105€ y 165€/día por el servicio completo. El Camino de Santiago y la actividad universitaria mantienen la demanda estable durante todo el año, no solo en temporada de bodas."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-santiago" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Santiago</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasSantiago() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-santiago' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_santiago_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_santiago_v2" articlePath="/blog/precio-azafatas-santiago" />
       </div>
     </>
   );

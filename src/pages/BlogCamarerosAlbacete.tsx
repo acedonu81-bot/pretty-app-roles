@@ -59,7 +59,7 @@ export default function BlogCamarerosAlbacete() {
               answer="Un camarero de eventos en Albacete cobra entre 9€ y 14€/hora bruto, y un bartender con experiencia entre 12€ y 17€/hora. Para una boda completa de 6-7 horas, el presupuesto de personal de sala suele estar entre 600€ y 1.350€, con la Feria de Albacete en septiembre como principal pico de demanda del año."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-albacete" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Albacete</h2>
@@ -106,7 +106,7 @@ export default function BlogCamarerosAlbacete() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-albacete' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_albacete_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_albacete_v2" articlePath="/blog/camareros-eventos-albacete" />
       </div>
     </>
   );

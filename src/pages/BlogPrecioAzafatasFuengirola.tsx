@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasFuengirola() {
               answer="Una azafata de eventos en Fuengirola cobra entre 14€ y 21€/hora bruto, y las agencias facturan entre 140€ y 230€/día por el servicio completo. Es una tarifa por encima de la media nacional, impulsada por el volumen de eventos hoteleros en temporada alta."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-fuengirola" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Fuengirola</h2>
@@ -107,7 +107,7 @@ export default function BlogPrecioAzafatasFuengirola() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-fuengirola' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_fuengirola_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_fuengirola_v2" articlePath="/blog/precio-azafatas-fuengirola" />
       </div>
     </>
   );

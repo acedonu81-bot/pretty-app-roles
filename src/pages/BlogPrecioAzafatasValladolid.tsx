@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasValladolid() {
               answer="Una azafata de eventos en Valladolid cobra entre 10€ y 15€/hora bruto, y las agencias facturan entre 95€ y 150€/día por el servicio completo. Los congresos y ferias del recinto ferial y las bodas en fincas de Castilla concentran la mayor parte de la demanda."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-valladolid" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Valladolid</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasValladolid() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-valladolid' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_valladolid_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_valladolid_v2" articlePath="/blog/precio-azafatas-valladolid" />
       </div>
     </>
   );

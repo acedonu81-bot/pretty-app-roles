@@ -144,7 +144,7 @@ export default function BlogComoContratarPromotoresDiscoteca() {
 
         <BlogRelatedPosts currentSlug='/blog/como-contratar-promotores-discoteca' tag='Promotores' />
         <FooterPublic />
-        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_contratar_promotores" />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_contratar_promotores" articlePath="/blog/como-contratar-promotores-discoteca" />
       </div>
     </>
   );

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { trackBlogLeadSubmit } from '@/lib/blogAnalytics';
 
 interface BlogEmailCaptureProps {
   intent?: 'contratar-dj' | 'ser-profesional' | 'contratar-staff' | 'contratar-makeup' | 'contratar-fotografo' | 'contratar-musico' | 'contratar-bailarin' | 'contratar-peluqueria' | 'general';
@@ -82,6 +83,7 @@ export default function BlogEmailCapture({
       },
     }).catch(() => {}); // silencioso si falla
 
+    trackBlogLeadSubmit({ component: 'email_capture', role: intent, variant, article_path: articlePath });
     setStatus('success');
   };
 

@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasGandia() {
               answer="Una azafata de eventos en Gandía cobra entre 13€ y 18€/hora bruto, y las agencias facturan entre 125€ y 180€/día por el servicio completo. En julio y agosto, con la temporada de playa en pleno apogeo, la demanda y las tarifas suben."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-gandia" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Gandía</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasGandia() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-gandia' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_gandia_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_gandia_v2" articlePath="/blog/precio-azafatas-gandia" />
       </div>
     </>
   );

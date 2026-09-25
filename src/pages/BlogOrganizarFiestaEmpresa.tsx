@@ -73,7 +73,7 @@ export default function BlogOrganizarFiestaEmpresa() {
 
           <p className="text-[#333] mb-6">Una buena fiesta de empresa mejora el clima laboral, refuerza la cultura corporativa y genera recuerdos positivos que fidelizan al equipo. Pero organizarla mal, venue inadecuado, DJ que no conecta, catering con esperas largas, puede tener el efecto contrario.</p>
 
-          <BlogInlineCTA role="dj" text="¿Necesitas DJ para tu evento de empresa? Encuentra artistas con tarifa pública y disponibilidad en XPEAK." />
+          <BlogInlineCTA role="dj" text="¿Necesitas DJ para tu evento de empresa? Encuentra artistas con tarifa pública y disponibilidad en XPEAK." articlePath="/blog/como-organizar-fiesta-de-empresa" />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Presupuesto fiesta de empresa 2026: referencia por persona</h2>
           <div className="overflow-x-auto mb-8">
@@ -133,7 +133,7 @@ export default function BlogOrganizarFiestaEmpresa() {
         </article>
         <BlogRelatedPosts currentSlug='/blog/como-organizar-fiesta-de-empresa' tag='Eventos' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_organizar_fiesta_empresa" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_organizar_fiesta_empresa" articlePath="/blog/como-organizar-fiesta-de-empresa" />
       </div>
     </>
   );

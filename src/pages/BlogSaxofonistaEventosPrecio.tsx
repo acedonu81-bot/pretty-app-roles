@@ -280,7 +280,7 @@ export default function BlogSaxofonistaEventosPrecio() {
 
         <BlogRelatedPosts currentSlug='/blog/saxofonista-precio-espana' tag='Eventos' />
         <FooterPublic />
-        <BlogScrollCTA role="profesional_pro" storageKey="xpeak_scrollcta_saxofonista_eventos_precio_v2" />
+        <BlogScrollCTA role="profesional_pro" storageKey="xpeak_scrollcta_saxofonista_eventos_precio_v2" articlePath="/blog/saxofonista-precio-espana" />
       </div>
     </>
   );

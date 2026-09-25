@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasTerrassa() {
               answer="Una azafata de eventos en Terrassa cobra entre 13€ y 19€/hora bruto, y las agencias facturan entre 130€ y 190€/día por el servicio completo. Los eventos culturales en espacios patrimoniales impulsan la demanda de perfiles de protocolo."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-terrassa" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Terrassa</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasTerrassa() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-terrassa' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_terrassa_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_terrassa_v2" articlePath="/blog/precio-azafatas-terrassa" />
       </div>
     </>
   );

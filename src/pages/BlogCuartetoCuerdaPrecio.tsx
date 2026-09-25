@@ -206,7 +206,7 @@ export default function BlogCuartetoCuerdaPrecio() {
         </main>
         <BlogRelatedPosts currentSlug='/blog/cuarteto-cuerda-boda-precio' tag='Bodas' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_cuarteto_cuerda_precio" />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_cuarteto_cuerda_precio" articlePath="/blog/cuarteto-cuerda-boda-precio" />
       </div>
     </>
   );

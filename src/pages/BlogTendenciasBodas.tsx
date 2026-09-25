@@ -120,7 +120,7 @@ export default function BlogTendenciasBodas() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/tendencias-bodas-2026' tag='Bodas' />
         <FooterPublic />
-        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_tendencias_bodas" />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_tendencias_bodas" articlePath="/blog/tendencias-bodas-2026" />
       </div>
     </>
   );

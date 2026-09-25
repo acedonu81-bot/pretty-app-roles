@@ -85,7 +85,7 @@ export default function BlogMaquilladoraConseguirClientes() {
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Tarifas orientativas España 2026. Madrid y Barcelona un 20-30% más. Sin IVA.</p>
             </section>
 
-            <BlogInlineCTA role="makeup" />
+            <BlogInlineCTA role="makeup" articlePath="/blog/maquilladora-conseguir-clientes" />
 
             <section>
               <h2 className="text-lg font-black mb-4">6 estrategias para conseguir más clientas</h2>
@@ -145,7 +145,7 @@ export default function BlogMaquilladoraConseguirClientes() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquilladora-conseguir-clientes' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maquilladora_conseguir_clientes" />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maquilladora_conseguir_clientes" articlePath="/blog/maquilladora-conseguir-clientes" />
       </div>
     </>
   );

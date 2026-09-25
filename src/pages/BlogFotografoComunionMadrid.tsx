@@ -84,7 +84,7 @@ export default function BlogFotografoComunionMadrid() {
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios específicos para Madrid 2026. Sin IVA. Un 20-30% por encima de la media nacional.</p>
             </section>
 
-            <BlogInlineCTA role="fotografo" />
+            <BlogInlineCTA role="fotografo" articlePath="/blog/fotografo-comunion-madrid" />
 
             <section>
               <h2 className="text-lg font-black mb-4">Momentos clave de una comunión</h2>
@@ -154,7 +154,7 @@ export default function BlogFotografoComunionMadrid() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/fotografo-comunion-madrid' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_comunion_madrid" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_comunion_madrid" articlePath="/blog/fotografo-comunion-madrid" />
       </div>
     </>
   );

@@ -75,7 +75,7 @@ export default function BlogFotografoComunionBarcelona() {
 
           <p className="text-[#333] mb-6">Barcelona concentra una gran cantidad de fotógrafos especializados en comuniones con estilos muy distintos: desde el reportaje clásico y formal hasta el estilo documental natural o la sesión de moda artística. La clave es elegir el estilo que conecte con la personalidad del niño o niña.</p>
 
-          <BlogInlineCTA role="fotografo" text="¿Buscas fotógrafo de comunión en Barcelona? Compara perfiles verificados y tarifas en XPEAK." />
+          <BlogInlineCTA role="fotografo" text="¿Buscas fotógrafo de comunión en Barcelona? Compara perfiles verificados y tarifas en XPEAK." articlePath="/blog/fotografo-comunion-barcelona" />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Precios fotógrafo comunión Barcelona 2026</h2>
           <div className="overflow-x-auto mb-8">
@@ -119,7 +119,7 @@ export default function BlogFotografoComunionBarcelona() {
         </article>
         <BlogRelatedPosts currentSlug='/blog/fotografo-comunion-barcelona' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_comunion_bcn" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_comunion_bcn" articlePath="/blog/fotografo-comunion-barcelona" />
       </div>
     </>
   );

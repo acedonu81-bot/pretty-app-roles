@@ -190,7 +190,7 @@ export default function BlogEventoEmpresaIdeas() {
         </main>
         <BlogRelatedPosts currentSlug='/blog/ideas-eventos-empresa-originales' tag='Eventos' />
         <FooterPublic />
-        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_evento_empresa_ideas" />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_evento_empresa_ideas" articlePath="/blog/ideas-eventos-empresa-originales" />
       </div>
     </>
   );

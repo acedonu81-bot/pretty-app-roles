@@ -198,7 +198,7 @@ export default function BlogEventoCorporativo() {
       <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/como-organizar-evento-corporativo' tag='Eventos' />
         <FooterPublic />
-        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_evento_corporativo" />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_evento_corporativo" articlePath="/blog/como-organizar-evento-corporativo" />
       </div>
     </>
   );

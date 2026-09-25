@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasSantander() {
               answer="Una azafata de eventos en Santander cobra entre 12€ y 18€/hora bruto, y las agencias facturan entre 115€ y 175€/día por el servicio completo. En verano, con el pico de turismo en Cantabria, la demanda de personal para bodas en la costa aumenta de forma notable."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-santander" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Santander</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasSantander() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-santander' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_santander_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_santander_v2" articlePath="/blog/precio-azafatas-santander" />
       </div>
     </>
   );

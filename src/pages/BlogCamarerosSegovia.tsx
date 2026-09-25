@@ -59,7 +59,7 @@ export default function BlogCamarerosSegovia() {
               answer="Un camarero de eventos en Segovia cobra entre 11€ y 17€/hora bruto, y un bartender entre 14€ y 21€/hora. Para una boda completa de 6-7 horas, el presupuesto de personal de sala suele estar entre 650€ y 1.450€ según el número de invitados."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-segovia" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Segovia</h2>
@@ -107,7 +107,7 @@ export default function BlogCamarerosSegovia() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-segovia' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_segovia_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_segovia_v2" articlePath="/blog/camareros-eventos-segovia" />
       </div>
     </>
   );

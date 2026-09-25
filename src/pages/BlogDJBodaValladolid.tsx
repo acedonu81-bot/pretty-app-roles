@@ -87,7 +87,7 @@ export default function BlogDJBodaValladolid() {
               </div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos 2026. Sin IVA. Bodegas de la Ribera del Duero pueden añadir tasas de venue o restricciones de proveedor.</p>
             </section>
-            <BlogInlineCTA role="dj" variant="upgrade" />
+            <BlogInlineCTA role="dj" variant="upgrade" articlePath="/blog/dj-bodas-valladolid" />
             <section>
               <h2 className="text-lg font-black mb-4">Zonas de boda en Valladolid</h2>
               <div className="space-y-3">
@@ -142,7 +142,7 @@ export default function BlogDJBodaValladolid() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-valladolid' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_valladolid" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_valladolid" articlePath="/blog/dj-bodas-valladolid" />
       </div>
     </>
   );

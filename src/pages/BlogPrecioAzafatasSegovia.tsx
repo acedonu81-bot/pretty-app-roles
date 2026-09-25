@@ -58,7 +58,7 @@ export default function BlogPrecioAzafatasSegovia() {
               answer="Una azafata de eventos en Segovia cobra entre 10€ y 16€/hora bruto, y las agencias facturan entre 100€ y 160€/día por el servicio completo. Los precios son algo más ajustados que en Madrid."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-segovia" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Segovia</h2>
@@ -105,7 +105,7 @@ export default function BlogPrecioAzafatasSegovia() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-segovia' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_segovia_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_segovia_v2" articlePath="/blog/precio-azafatas-segovia" />
       </div>
     </>
   );

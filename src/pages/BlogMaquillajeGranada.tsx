@@ -59,7 +59,7 @@ export default function BlogMaquillajeGranada() {
               answer="Una maquilladora de novia en Granada cobra entre 85€ y 210€, incluyendo prueba previa. El pack boda completo (novia + 3 personas) ronda los 290€-580€. Para eventos corporativos, el precio por persona está entre 28€ y 60€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-granada" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Granada</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeGranada() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-granada' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_granada_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_granada_v2" articlePath="/blog/maquillaje-eventos-granada" />
       </div>
     </>
   );

@@ -59,7 +59,7 @@ export default function BlogCamarerosMostoles() {
               answer="Un camarero de eventos en Móstoles cobra entre 11€ y 17€/hora bruto, y un bartender con experiencia entre 14€ y 20€/hora. Para una boda completa de 6-7 horas, el presupuesto de personal de sala suele estar entre 750€ y 1.800€."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-mostoles" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Móstoles</h2>
@@ -106,7 +106,7 @@ export default function BlogCamarerosMostoles() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-mostoles' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_mostoles_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_mostoles_v2" articlePath="/blog/camareros-eventos-mostoles" />
       </div>
     </>
   );

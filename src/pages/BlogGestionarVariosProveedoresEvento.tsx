@@ -146,7 +146,7 @@ export default function BlogGestionarVariosProveedoresEvento() {
 
         <BlogRelatedPosts currentSlug='/blog/gestionar-varios-proveedores-evento' tag='Eventos' />
         <FooterPublic />
-        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_gestionar_proveedores" />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_gestionar_proveedores" articlePath="/blog/gestionar-varios-proveedores-evento" />
       </div>
     </>
   );

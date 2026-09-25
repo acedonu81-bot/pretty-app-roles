@@ -126,7 +126,7 @@ const faqStructured = {
             </div>
           </section>
 
-          <BlogInlineCTA role="fotografo" />
+          <BlogInlineCTA role="fotografo" articlePath="/blog/contratar-fotografo-de-bodas" />
 
           <section className="mb-10">
             <h2 className="text-lg font-black mb-4">Precios por ciudad</h2>
@@ -209,7 +209,7 @@ const faqStructured = {
           <BlogEmailCapture variant="presupuestos" intent="contratar-fotografo" articlePath="/blog/contratar-fotografo-de-bodas" />
       <BlogRelatedPosts currentSlug='/blog/contratar-fotografo-de-bodas' tag='Fotografía' />
         <FooterPublic />
-      <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_bodas" />
+      <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_bodas" articlePath="/blog/contratar-fotografo-de-bodas" />
       </div>
     </>
   );

@@ -59,7 +59,7 @@ export default function BlogCamarerosTarragona() {
               answer="Un camarero de eventos en Tarragona cobra entre 12€ y 18€/hora bruto, y un bartender con experiencia en coctelería entre 15€ y 22€/hora. Para una boda completa de 6-7 horas, el presupuesto de personal de sala suele estar entre 850€ y 1.900€."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-tarragona" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Tarragona</h2>
@@ -107,7 +107,7 @@ export default function BlogCamarerosTarragona() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-tarragona' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_tarragona_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_tarragona_v2" articlePath="/blog/camareros-eventos-tarragona" />
       </div>
     </>
   );

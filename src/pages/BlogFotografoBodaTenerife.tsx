@@ -74,7 +74,7 @@ export default function BlogFotografoBodaTenerife() {
 
           <p className="text-[#333] mb-6">Tenerife es mucho más que playa: el Teide al amanecer, los acantilados de Los Gigantes, los bosques de laurisilva en Anaga o las fincas históricas de La Orotava ofrecen paisajes imposibles para reportajes de boda únicos en Europa.</p>
 
-          <BlogInlineCTA role="fotografo" text="¿Buscas fotógrafo para tu boda en Tenerife? Encuentra los mejores profesionales de la isla en XPEAK." />
+          <BlogInlineCTA role="fotografo" text="¿Buscas fotógrafo para tu boda en Tenerife? Encuentra los mejores profesionales de la isla en XPEAK." articlePath="/blog/fotografo-boda-tenerife" />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Precios fotógrafo boda Tenerife 2026</h2>
           <div className="overflow-x-auto mb-8">
@@ -118,7 +118,7 @@ export default function BlogFotografoBodaTenerife() {
         </article>
         <BlogRelatedPosts currentSlug='/blog/fotografo-boda-tenerife' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_tenerife" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_tenerife" articlePath="/blog/fotografo-boda-tenerife" />
       </div>
     </>
   );

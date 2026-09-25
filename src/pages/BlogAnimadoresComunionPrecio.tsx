@@ -209,7 +209,7 @@ export default function BlogAnimadoresComunionPrecio() {
         </main>
         <BlogRelatedPosts currentSlug='/blog/animadores-comunion-precio' tag='Eventos' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_animadores_comunion_precio" />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_animadores_comunion_precio" articlePath="/blog/animadores-comunion-precio" />
       </div>
     </>
   );

@@ -58,7 +58,7 @@ export default function BlogPrecioAzafatasAvila() {
               answer="Una azafata de eventos en Ávila cobra entre 9€ y 14€/hora bruto, y las agencias facturan entre 90€ y 140€/día por el servicio completo. Es uno de los mercados más económicos de Castilla y León."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-avila" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Ávila</h2>
@@ -105,7 +105,7 @@ export default function BlogPrecioAzafatasAvila() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-avila' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_avila_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_avila_v2" articlePath="/blog/precio-azafatas-avila" />
       </div>
     </>
   );

@@ -59,7 +59,7 @@ export default function BlogCamarerosPamplona() {
               answer="Un camarero de eventos en Pamplona cobra entre 11€ y 18€/hora bruto durante el año estándar, y un bartender con experiencia entre 15€ y 22€/hora. Para una boda completa de 6-7 horas en una finca de Navarra, el presupuesto de personal de sala suele estar entre 850€ y 2.000€. San Fermín (julio) es un pico de demanda aparte."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-pamplona" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Pamplona</h2>
@@ -107,7 +107,7 @@ export default function BlogCamarerosPamplona() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-pamplona' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_pamplona_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_pamplona_v2" articlePath="/blog/camareros-eventos-pamplona" />
       </div>
     </>
   );

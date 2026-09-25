@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasSevilla() {
               answer="Una azafata de eventos en Sevilla cobra entre 11€ y 16€/hora bruto, y las agencias facturan entre 105€ y 165€/día por el servicio completo. Los congresos grandes en FIBES pueden subir ligeramente la tarifa de perfiles bilingües en fechas de máxima demanda."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-sevilla" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Sevilla</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasSevilla() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-sevilla' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_sevilla_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_sevilla_v2" articlePath="/blog/precio-azafatas-sevilla" />
       </div>
     </>
   );

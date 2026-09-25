@@ -134,7 +134,7 @@ export default function BlogFiestaEmpresa() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/como-organizar-fiesta-empresa' tag='Eventos' />
         <FooterPublic />
-        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_fiesta_empresa" />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_fiesta_empresa" articlePath="/blog/como-organizar-fiesta-empresa" />
       </div>
     </>
   );

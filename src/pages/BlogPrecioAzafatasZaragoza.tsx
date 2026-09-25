@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasZaragoza() {
               answer="Una azafata de eventos en Zaragoza cobra entre 11€ y 17€/hora bruto, y las agencias facturan entre 110€ y 170€/día por el servicio completo. En fechas de feria grande en el recinto de Montañana o durante las Fiestas del Pilar, la tarifa puede subir un 10-15%."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-zaragoza" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Zaragoza</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasZaragoza() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-zaragoza' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_zaragoza_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_zaragoza_v2" articlePath="/blog/precio-azafatas-zaragoza" />
       </div>
     </>
   );

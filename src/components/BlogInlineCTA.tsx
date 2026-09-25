@@ -1,7 +1,10 @@
+import { trackBlogCtaClick } from '@/lib/blogAnalytics';
+
 interface BlogInlineCTAProps {
   role?: 'dj' | 'staff' | 'azafata' | 'makeup' | 'peluqueria' | 'fotografo' | 'bailarin' | 'general';
   orgLabel?: string;
   variant?: 'default' | 'upgrade';
+  articlePath?: string;
 }
 
 const CONFIG = {
@@ -103,8 +106,10 @@ const CONFIG = {
   },
 };
 
-export default function BlogInlineCTA({ role = 'general', variant = 'default' }: BlogInlineCTAProps) {
+export default function BlogInlineCTA({ role = 'general', variant = 'default', articlePath = '' }: BlogInlineCTAProps) {
   const c = CONFIG[role as keyof typeof CONFIG] ?? CONFIG.general;
+  const track = (sub: string, href: string) =>
+    trackBlogCtaClick({ component: 'inline', role: `${role}_${sub}`, variant, href, article_path: articlePath });
 
   if (variant === 'upgrade') {
     const u = c.upgrade;
@@ -123,6 +128,7 @@ export default function BlogInlineCTA({ role = 'general', variant = 'default' }:
           <p className="text-xs leading-relaxed mb-4" style={{ color: '#444' }}>{u.sub}</p>
           <a
             href={u.href}
+            onClick={() => track('upgrade', u.href)}
             className="inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 rounded-xl text-sm font-black transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000' }}
           >
@@ -151,11 +157,13 @@ export default function BlogInlineCTA({ role = 'general', variant = 'default' }:
               dominante (más padding, sombra) y el secundario reduce tamaño
               de fuente para no competir. */}
           <a href={c.pro.href}
+            onClick={() => track('pro', c.pro.href)}
             className="inline-flex items-center justify-center px-6 py-3 rounded-xl text-sm font-black transition-all hover:scale-105"
             style={{ background: 'linear-gradient(90deg,#D4AF37,#B8941E)', color: '#000', whiteSpace: 'nowrap', boxShadow: '0 4px 14px rgba(212,175,55,0.35)' }}>
             {c.pro.cta}
           </a>
           <a href={c.org.href}
+            onClick={() => track('org', c.org.href)}
             className="inline-flex items-center justify-center px-5 py-1.5 rounded-xl text-[0.7rem] font-bold transition-all hover:scale-105"
             style={{ background: 'transparent', color: '#666', whiteSpace: 'nowrap' }}>
             {c.org.cta}

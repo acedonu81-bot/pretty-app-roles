@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasPamplona() {
               answer="Una azafata de eventos en Pamplona cobra entre 12€ y 19€/hora bruto durante el año estándar, y las agencias facturan entre 130€ y 185€/día por el servicio completo. San Fermín (julio) es un pico de demanda de personal aparte, con disponibilidad muy reducida si no se reserva con antelación."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-pamplona" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Pamplona</h2>
@@ -107,7 +107,7 @@ export default function BlogPrecioAzafatasPamplona() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-pamplona' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_pamplona_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_pamplona_v2" articlePath="/blog/precio-azafatas-pamplona" />
       </div>
     </>
   );

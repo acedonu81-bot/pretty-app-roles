@@ -59,7 +59,7 @@ export default function BlogMaquillajeToledo() {
               answer="Una maquilladora de novia en Toledo cobra entre 90€ y 210€, incluyendo prueba previa. El pack boda completo (novia + 3 personas) ronda los 300€-590€. Para eventos corporativos, el precio por persona está entre 30€ y 60€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-toledo" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Toledo</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeToledo() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-toledo' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_toledo_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_toledo_v2" articlePath="/blog/maquillaje-eventos-toledo" />
       </div>
     </>
   );

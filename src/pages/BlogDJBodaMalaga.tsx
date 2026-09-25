@@ -87,7 +87,7 @@ export default function BlogDJBodaMalaga() {
               </div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios para Málaga provincia 2026. Sin IVA. Marbella y Costa del Sol Occidental tienen precios un 30-50% más altos.</p>
             </section>
-            <BlogInlineCTA role="dj" />
+            <BlogInlineCTA role="dj" articlePath="/blog/dj-bodas-malaga" />
             <section>
               <h2 className="text-lg font-black mb-4">Zonas de boda en Málaga</h2>
               <div className="space-y-3">
@@ -143,7 +143,7 @@ export default function BlogDJBodaMalaga() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-malaga' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_malaga" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_malaga" articlePath="/blog/dj-bodas-malaga" />
       </div>
     </>
   );

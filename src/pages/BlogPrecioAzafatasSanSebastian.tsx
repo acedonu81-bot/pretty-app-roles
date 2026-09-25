@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasSanSebastian() {
               answer="Una azafata de eventos en San Sebastián cobra entre 14€ y 21€/hora bruto, y las agencias facturan entre 140€ y 210€/día por el servicio completo. Durante el Zinemaldia en septiembre, la tarifa sube un 20-30% por la alta demanda de perfiles bilingües y trilingües para prensa internacional."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-sansebastian" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en San Sebastián</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasSanSebastian() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-sansebastian' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_san_sebastian_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_san_sebastian_v2" articlePath="/blog/precio-azafatas-sansebastian" />
       </div>
     </>
   );

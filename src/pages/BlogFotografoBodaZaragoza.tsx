@@ -74,7 +74,7 @@ export default function BlogFotografoBodaZaragoza() {
 
           <p className="text-[#333] mb-6">Zaragoza ofrece una combinación única: arquitectura mudéjar declarada Patrimonio UNESCO, el río Ebro como escenario natural, y acceso rápido a los Pirineos para sesiones de postboda únicas en Europa.</p>
 
-          <BlogInlineCTA role="fotografo" text="¿Buscas fotógrafo para tu boda en Zaragoza? Compara perfiles y disponibilidad en XPEAK." />
+          <BlogInlineCTA role="fotografo" text="¿Buscas fotógrafo para tu boda en Zaragoza? Compara perfiles y disponibilidad en XPEAK." articlePath="/blog/fotografo-boda-zaragoza" />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Precios fotógrafo boda Zaragoza 2026</h2>
           <div className="overflow-x-auto mb-8">
@@ -118,7 +118,7 @@ export default function BlogFotografoBodaZaragoza() {
         </article>
         <BlogRelatedPosts currentSlug='/blog/fotografo-boda-zaragoza' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_zaragoza" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_zaragoza" articlePath="/blog/fotografo-boda-zaragoza" />
       </div>
     </>
   );

@@ -79,7 +79,7 @@ export default function BlogFotografoBodaBarcelona() {
               </div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios Barcelona 2026. Sin IVA. Similar a Madrid, un 20-30% por encima de la media nacional.</p>
             </section>
-            <BlogInlineCTA role="fotografo" />
+            <BlogInlineCTA role="fotografo" articlePath="/blog/fotografo-boda-barcelona" />
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
@@ -120,7 +120,7 @@ export default function BlogFotografoBodaBarcelona() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/fotografo-boda-barcelona' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda_barcelona" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda_barcelona" articlePath="/blog/fotografo-boda-barcelona" />
       </div>
     </>
   );

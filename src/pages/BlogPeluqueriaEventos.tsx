@@ -217,7 +217,7 @@ export default function BlogPeluqueriaEventos() {
           <BlogEmailCapture variant="presupuestos" intent="contratar-peluqueria" articlePath="/blog/peluqueria-domicilio-eventos-precio" />
         <BlogRelatedPosts currentSlug='/blog/peluqueria-domicilio-eventos-precio' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_peluqueria_eventos" />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_peluqueria_eventos" articlePath="/blog/peluqueria-domicilio-eventos-precio" />
       </div>
     </>
   );

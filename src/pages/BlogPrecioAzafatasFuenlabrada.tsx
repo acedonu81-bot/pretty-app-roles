@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasFuenlabrada() {
               answer="Una azafata de eventos en Fuenlabrada cobra entre 12€ y 17€/hora bruto, y las agencias facturan entre 110€ y 165€/día por el servicio completo. Los eventos corporativos ligados a los polígonos industriales de la zona concentran buena parte de la demanda."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-fuenlabrada" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Fuenlabrada</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasFuenlabrada() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-fuenlabrada' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_fuenlabrada_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_fuenlabrada_v2" articlePath="/blog/precio-azafatas-fuenlabrada" />
       </div>
     </>
   );

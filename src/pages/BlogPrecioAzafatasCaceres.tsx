@@ -58,7 +58,7 @@ export default function BlogPrecioAzafatasCaceres() {
               answer="Una azafata de eventos en Cáceres cobra entre 9€ y 15€/hora bruto, y las agencias facturan entre 90€ y 150€/día por el servicio completo. Es un mercado más económico que las grandes capitales, con menos presión de demanda."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-caceres" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Cáceres</h2>
@@ -105,7 +105,7 @@ export default function BlogPrecioAzafatasCaceres() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-caceres' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_caceres_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_caceres_v2" articlePath="/blog/precio-azafatas-caceres" />
       </div>
     </>
   );

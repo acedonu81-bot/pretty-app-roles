@@ -253,7 +253,7 @@ export default function BlogDJErroresBoda() {
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/10-errores-contratar-dj-boda" />
         <BlogRelatedPosts currentSlug='/blog/10-errores-contratar-dj-boda' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_errores_boda" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_errores_boda" articlePath="/blog/10-errores-contratar-dj-boda" />
       </div>
     </>
   );

@@ -220,7 +220,7 @@ const faqStructured = {
         </article>
         <BlogRelatedPosts currentSlug='/blog/dj-para-fiesta-privada-precio' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_fiesta_privada" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_fiesta_privada" articlePath="/blog/dj-para-fiesta-privada-precio" />
       </div>
     </>
   );

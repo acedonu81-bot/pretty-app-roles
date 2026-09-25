@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasGranada() {
               answer="Una azafata de eventos en Granada cobra entre 10€ y 16€/hora bruto, y las agencias facturan entre 100€ y 160€/día por el servicio completo. La demanda se mantiene estable todo el año gracias a los congresos universitarios y el turismo cultural del entorno de la Alhambra."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-granada" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Granada</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasGranada() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-granada' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_granada_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_granada_v2" articlePath="/blog/precio-azafatas-granada" />
       </div>
     </>
   );

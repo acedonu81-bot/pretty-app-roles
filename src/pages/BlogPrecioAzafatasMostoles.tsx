@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasMostoles() {
               answer="Una azafata de eventos en Móstoles cobra entre 12€ y 17€/hora bruto, y las agencias facturan entre 110€ y 165€/día por el servicio completo. Las campañas comerciales y los actos institucionales del ayuntamiento concentran la mayor parte de la demanda."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-mostoles" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Móstoles</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasMostoles() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-mostoles' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_mostoles_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_mostoles_v2" articlePath="/blog/precio-azafatas-mostoles" />
       </div>
     </>
   );

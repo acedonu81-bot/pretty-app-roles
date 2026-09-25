@@ -216,7 +216,7 @@ export default function BlogFotografiaEventosNocturnos() {
       <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/fotografia-eventos-nocturnos' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografia_eventos_nocturnos" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografia_eventos_nocturnos" articlePath="/blog/fotografia-eventos-nocturnos" />
       </div>
     </>
   );

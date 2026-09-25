@@ -59,7 +59,7 @@ export default function BlogCamarerosMadrid() {
               answer="Un camarero de eventos en Madrid cobra entre 12€ y 20€/hora bruto, y un bartender con experiencia en coctelería entre 16€ y 24€/hora. Para una boda completa de 6-7 horas, el presupuesto de personal de sala suele estar entre 900€ y 2.200€ según el número de invitados."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-madrid" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Madrid</h2>
@@ -107,7 +107,7 @@ export default function BlogCamarerosMadrid() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-madrid' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_madrid_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_madrid_v2" articlePath="/blog/camareros-eventos-madrid" />
       </div>
     </>
   );

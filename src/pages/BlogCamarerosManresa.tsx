@@ -59,7 +59,7 @@ export default function BlogCamarerosManresa() {
               answer="Un camarero de eventos en Manresa cobra entre 11€ y 16€/hora bruto, y un bartender entre 14€ y 20€/hora. Para una boda completa de 6-7 horas en una finca del Bages, el presupuesto de sala suele estar entre 700€ y 1.600€."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-manresa" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Manresa</h2>
@@ -106,7 +106,7 @@ export default function BlogCamarerosManresa() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-manresa' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_manresa_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_manresa_v2" articlePath="/blog/camareros-eventos-manresa" />
       </div>
     </>
   );

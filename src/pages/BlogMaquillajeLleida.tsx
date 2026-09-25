@@ -59,7 +59,7 @@ export default function BlogMaquillajeLleida() {
               answer="Una maquilladora de novia en Lleida cobra entre 75€ y 190€, incluyendo prueba previa. El pack boda completo (novia + 3 personas) ronda los 260€-520€. Para eventos corporativos, el precio por persona está entre 25€ y 55€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-lleida" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Lleida</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeLleida() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-lleida' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_lleida_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_lleida_v2" articlePath="/blog/maquillaje-eventos-lleida" />
       </div>
     </>
   );

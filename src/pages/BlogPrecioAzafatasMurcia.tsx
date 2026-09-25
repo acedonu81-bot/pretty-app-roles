@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasMurcia() {
               answer="Una azafata de eventos en Murcia cobra entre 10€ y 15€/hora bruto, y las agencias facturan entre 95€ y 150€/día por el servicio completo. El clima suave de la región permite programar eventos al aire libre en más meses del año que en otras zonas de España, lo que reparte la demanda de forma más constante."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-murcia" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Murcia</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasMurcia() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-murcia' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_murcia_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_murcia_v2" articlePath="/blog/precio-azafatas-murcia" />
       </div>
     </>
   );

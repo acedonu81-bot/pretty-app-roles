@@ -84,7 +84,7 @@ export default function BlogDJBodaMallorca() {
               </div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios Mallorca 2026. Sin IVA. El mercado internacional de bodas de lujo puede duplicar estos rangos.</p>
             </section>
-            <BlogInlineCTA role="dj" />
+            <BlogInlineCTA role="dj" articlePath="/blog/dj-bodas-mallorca" />
             <section>
               <h2 className="text-lg font-black mb-4">Zonas de boda en Mallorca</h2>
               <div className="space-y-3">
@@ -140,7 +140,7 @@ export default function BlogDJBodaMallorca() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-mallorca' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_mallorca" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_mallorca" articlePath="/blog/dj-bodas-mallorca" />
       </div>
     </>
   );

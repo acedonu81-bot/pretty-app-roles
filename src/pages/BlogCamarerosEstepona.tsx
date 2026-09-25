@@ -59,7 +59,7 @@ export default function BlogCamarerosEstepona() {
               answer="Un camarero de eventos en Estepona cobra entre 13€ y 19€/hora bruto, y un bartender con experiencia en coctelería entre 17€ y 25€/hora. Para una boda completa de 6-7 horas, el presupuesto de personal de sala suele estar entre 950€ y 2.100€."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-estepona" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Estepona</h2>
@@ -107,7 +107,7 @@ export default function BlogCamarerosEstepona() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-estepona' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_estepona_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_estepona_v2" articlePath="/blog/camareros-eventos-estepona" />
       </div>
     </>
   );

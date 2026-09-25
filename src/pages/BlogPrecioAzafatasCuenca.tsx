@@ -58,7 +58,7 @@ export default function BlogPrecioAzafatasCuenca() {
               answer="Una azafata de eventos en Cuenca cobra entre 9€ y 15€/hora bruto, y las agencias facturan entre 90€ y 145€/día por el servicio completo. Es uno de los mercados más económicos de Castilla-La Mancha."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-cuenca" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Cuenca</h2>
@@ -105,7 +105,7 @@ export default function BlogPrecioAzafatasCuenca() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-cuenca' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_cuenca_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_cuenca_v2" articlePath="/blog/precio-azafatas-cuenca" />
       </div>
     </>
   );

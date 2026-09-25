@@ -59,7 +59,7 @@ export default function BlogCamarerosSabadell() {
               answer="Un camarero de eventos en Sabadell cobra entre 12€ y 18€/hora bruto, y un bartender con experiencia en coctelería entre 15€ y 22€/hora. Las tarifas son algo más moderadas que en Barcelona capital por ser un mercado de tamaño medio."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-sabadell" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Sabadell</h2>
@@ -106,7 +106,7 @@ export default function BlogCamarerosSabadell() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-sabadell' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_sabadell_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_sabadell_v2" articlePath="/blog/camareros-eventos-sabadell" />
       </div>
     </>
   );

@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasBilbao() {
               answer="Una azafata de eventos en Bilbao cobra entre 12€ y 18€/hora bruto, y las agencias facturan entre 115€ y 175€/día por el servicio completo. Las ferias industriales del BEC pueden subir la tarifa de perfiles técnicos o bilingües en fechas de máxima actividad."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-bilbao" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Bilbao</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasBilbao() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-bilbao' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_bilbao_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_bilbao_v2" articlePath="/blog/precio-azafatas-bilbao" />
       </div>
     </>
   );

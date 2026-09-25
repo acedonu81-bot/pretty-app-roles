@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasDenia() {
               answer="Una azafata de eventos en Dénia cobra entre 14€ y 20€/hora bruto, y las agencias facturan entre 140€ y 210€/día por el servicio completo. Los eventos gastronómicos de alto nivel, ligados al reconocimiento UNESCO de la ciudad, elevan la tarifa de los perfiles de imagen."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-denia" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Dénia</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasDenia() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-denia' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_denia_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_denia_v2" articlePath="/blog/precio-azafatas-denia" />
       </div>
     </>
   );

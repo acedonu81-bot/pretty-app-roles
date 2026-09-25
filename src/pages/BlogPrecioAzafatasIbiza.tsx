@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasIbiza() {
               answer="Una azafata de eventos en Ibiza cobra entre 20€ y 35€/hora bruto, y las agencias facturan entre 220€ y 400€/día por el servicio completo. Es la tarifa más alta de España, impulsada por el turismo de lujo y la corta duración de la temporada."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-ibiza" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Ibiza</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasIbiza() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-ibiza' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_ibiza_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_ibiza_v2" articlePath="/blog/precio-azafatas-ibiza" />
       </div>
     </>
   );

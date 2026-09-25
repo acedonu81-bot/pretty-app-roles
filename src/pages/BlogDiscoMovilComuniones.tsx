@@ -174,7 +174,7 @@ const faqStructured = {
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/disco-movil-para-comuniones" />
       <BlogRelatedPosts currentSlug='/blog/disco-movil-para-comuniones' tag='DJ' />
         <FooterPublic />
-      <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_disco_movil_comuniones" />
+      <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_disco_movil_comuniones" articlePath="/blog/disco-movil-para-comuniones" />
       </div>
     </>
   );

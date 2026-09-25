@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasGijon() {
               answer="Una azafata de eventos en Gijón cobra entre 12€ y 18€/hora bruto, y las agencias facturan entre 120€ y 175€/día por el servicio completo. En verano, con el turismo de costa y eventos multitudinarios como la Semana Grande, la demanda de personal aumenta de forma notable."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-gijon" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Gijón</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasGijon() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-gijon' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_gijon_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_gijon_v2" articlePath="/blog/precio-azafatas-gijon" />
       </div>
     </>
   );

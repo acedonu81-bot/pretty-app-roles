@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasMalaga() {
               answer="Una azafata de eventos en Málaga cobra entre 11€ y 16€/hora bruto, y las agencias facturan entre 105€ y 165€/día por el servicio completo. Los eventos del sector tecnológico y los congresos en FYCMA suelen pedir perfiles bilingües, que se pagan algo por encima de la media."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-malaga" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Málaga</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasMalaga() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-malaga' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_malaga_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_malaga_v2" articlePath="/blog/precio-azafatas-malaga" />
       </div>
     </>
   );

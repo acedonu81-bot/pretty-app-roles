@@ -59,7 +59,7 @@ export default function BlogMaquillajeCuenca() {
               answer="Una maquilladora de novia en Cuenca cobra entre 72€ y 170€, incluyendo prueba previa. El pack boda (novia + 3 personas) ronda los 240€-460€. Para eventos corporativos, el precio por persona está entre 25€ y 52€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-cuenca" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Cuenca</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeCuenca() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-cuenca' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_cuenca_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_cuenca_v2" articlePath="/blog/maquillaje-eventos-cuenca" />
       </div>
     </>
   );

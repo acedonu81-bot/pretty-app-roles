@@ -59,7 +59,7 @@ export default function BlogMaquillajeGandia() {
               answer="Una maquilladora de novia en Gandía cobra entre 110€ y 260€, incluyendo prueba previa. El pack boda completo (novia + 3 personas) ronda los 370€-720€. Para eventos corporativos, el precio por persona está entre 35€ y 70€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-gandia" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Gandía</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeGandia() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-gandia' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_gandia_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_gandia_v2" articlePath="/blog/maquillaje-eventos-gandia" />
       </div>
     </>
   );

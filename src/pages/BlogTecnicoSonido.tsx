@@ -214,7 +214,7 @@ const faqStructured = {
           <BlogEmailCapture variant="guia" intent="ser-profesional" articlePath="/blog/tecnico-de-sonido-para-eventos" />
         <BlogRelatedPosts currentSlug='/blog/tecnico-de-sonido-para-eventos' tag='Eventos' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_tecnico_sonido" />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_tecnico_sonido" articlePath="/blog/tecnico-de-sonido-para-eventos" />
       </div>
     </>
   );

@@ -59,7 +59,7 @@ export default function BlogMaquillajeTerrassa() {
               answer="Una maquilladora de novia en Terrassa cobra entre 95€ y 235€, incluyendo prueba previa. El pack boda completo (novia + 3 personas) ronda los 330€-650€. Para eventos culturales e institucionales, el precio por persona está entre 30€ y 65€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-terrassa" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Terrassa</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeTerrassa() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-terrassa' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_terrassa_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_terrassa_v2" articlePath="/blog/maquillaje-eventos-terrassa" />
       </div>
     </>
   );

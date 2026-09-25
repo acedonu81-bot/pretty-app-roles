@@ -130,7 +130,7 @@ export default function BlogVideografoBodas() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/videografo-bodas-precio' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_videografo_bodas" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_videografo_bodas" articlePath="/blog/videografo-bodas-precio" />
       </div>
     </>
   );

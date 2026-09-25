@@ -126,7 +126,7 @@ export default function BlogComoElegirMagoEventos() {
 
         <BlogRelatedPosts currentSlug='/blog/como-elegir-mago-para-tu-evento' tag='Mago' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_elegir_mago" />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_elegir_mago" articlePath="/blog/como-elegir-mago-para-tu-evento" />
       </div>
     </>
   );

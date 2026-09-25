@@ -76,7 +76,7 @@ export default function BlogFotografoBodaMallorca() {
               </div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios Mallorca 2026. Sin IVA.</p>
             </section>
-            <BlogInlineCTA role="fotografo" />
+            <BlogInlineCTA role="fotografo" articlePath="/blog/fotografo-boda-mallorca" />
             <section>
               <h2 className="text-lg font-black mb-4">Preguntas frecuentes</h2>
               <div className="space-y-4">
@@ -117,7 +117,7 @@ export default function BlogFotografoBodaMallorca() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/fotografo-boda-mallorca' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda_mallorca" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_boda_mallorca" articlePath="/blog/fotografo-boda-mallorca" />
       </div>
     </>
   );

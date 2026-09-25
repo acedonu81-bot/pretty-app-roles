@@ -96,7 +96,7 @@ export default function BlogDJComunion() {
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos España 2026. Equipo básico incluido. Sin IVA.</p>
             </section>
 
-            <BlogInlineCTA role="dj" />
+            <BlogInlineCTA role="dj" articlePath="/blog/dj-para-comunion-precio" />
 
             <section>
               <h2 className="text-lg font-black mb-3">¿DJ o disco móvil para una comunión?</h2>
@@ -182,7 +182,7 @@ export default function BlogDJComunion() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/dj-para-comunion-precio' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_comunion" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_comunion" articlePath="/blog/dj-para-comunion-precio" />
       </div>
     </>
   );

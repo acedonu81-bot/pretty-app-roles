@@ -216,7 +216,7 @@ const faqStructured = {
           <DJResourcesAffiliate role="dj" />
         <BlogRelatedPosts currentSlug='/blog/dj-para-eventos-corporativos-precio' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_corporativo" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_corporativo" articlePath="/blog/dj-para-eventos-corporativos-precio" />
       </div>
     </>
   );

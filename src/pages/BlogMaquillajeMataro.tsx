@@ -59,7 +59,7 @@ export default function BlogMaquillajeMataro() {
               answer="Una maquilladora de novia en Mataró cobra entre 100€ y 245€, incluyendo prueba previa. El pack de boda de playa completo (novia + 3 personas) ronda los 360€-690€, con maquillaje waterproof incluido para resistir el calor y la humedad de la costa."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-mataro" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Mataró</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeMataro() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-mataro' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_mataro_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_mataro_v2" articlePath="/blog/maquillaje-eventos-mataro" />
       </div>
     </>
   );

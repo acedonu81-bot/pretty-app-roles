@@ -83,7 +83,7 @@ export default function BlogRRPPDiscoteca() {
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Las condiciones varían mucho por sala, ciudad y tipo de evento. Negocia siempre antes de empezar.</p>
             </section>
 
-            <BlogInlineCTA role="general" />
+            <BlogInlineCTA role="general" articlePath="/blog/como-trabajar-de-rrpp-discoteca" />
 
             <section>
               <h2 className="text-lg font-black mb-4">Cómo empezar: 6 pasos</h2>
@@ -140,7 +140,7 @@ export default function BlogRRPPDiscoteca() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/como-trabajar-de-rrpp-discoteca' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_rrpp_discoteca_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_rrpp_discoteca_v2" articlePath="/blog/como-trabajar-de-rrpp-discoteca" />
       </div>
     </>
   );

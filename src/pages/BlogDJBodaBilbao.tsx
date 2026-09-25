@@ -84,7 +84,7 @@ export default function BlogDJBodaBilbao() {
               </div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios País Vasco 2026. Sin IVA. Un 15-25% por encima de la media nacional.</p>
             </section>
-            <BlogInlineCTA role="dj" />
+            <BlogInlineCTA role="dj" articlePath="/blog/dj-bodas-bilbao" />
             <section>
               <h2 className="text-lg font-black mb-4">Zonas de boda en el País Vasco</h2>
               <div className="space-y-3">
@@ -145,7 +145,7 @@ export default function BlogDJBodaBilbao() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-bilbao' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_bilbao" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_bilbao" articlePath="/blog/dj-bodas-bilbao" />
       </div>
     </>
   );

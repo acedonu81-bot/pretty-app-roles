@@ -102,7 +102,7 @@ export default function BlogBarmanEventos() {
       <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/contratar-barman-evento-privado' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_barman_eventos" />
+        <BlogScrollCTA role="staff" storageKey="xpeak_scrollcta_barman_eventos" articlePath="/blog/contratar-barman-evento-privado" />
       </div>
     </>
   );

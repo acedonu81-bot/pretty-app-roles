@@ -59,7 +59,7 @@ export default function BlogMaquillajeHuesca() {
               answer="Una maquilladora de novia en Huesca cobra entre 80€ y 185€, incluyendo prueba previa. El pack boda (novia + 3 personas) ronda los 260€-500€. Para eventos corporativos, el precio por persona está entre 27€ y 58€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-huesca" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Huesca</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeHuesca() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-huesca' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_huesca_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_huesca_v2" articlePath="/blog/maquillaje-eventos-huesca" />
       </div>
     </>
   );

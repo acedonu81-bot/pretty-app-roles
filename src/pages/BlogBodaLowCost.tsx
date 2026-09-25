@@ -232,7 +232,7 @@ export default function BlogBodaLowCost() {
             </p>
           </section>
 
-          <BlogInlineCTA role="dj" variant="upgrade" />
+          <BlogInlineCTA role="dj" variant="upgrade" articlePath="/blog/boda-low-cost-checklist-completo" />
 
           {/* Checklist por categoría */}
           <section className="mb-10">
@@ -352,7 +352,7 @@ export default function BlogBodaLowCost() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/boda-low-cost-checklist-completo' tag='Bodas' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_boda_low_cost" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_boda_low_cost" articlePath="/blog/boda-low-cost-checklist-completo" />
       </div>
     </>
   );

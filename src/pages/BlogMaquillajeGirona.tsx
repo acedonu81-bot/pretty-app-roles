@@ -59,7 +59,7 @@ export default function BlogMaquillajeGirona() {
               answer="Una maquilladora de novia en Girona cobra entre 100€ y 250€, incluyendo prueba previa. El pack boda completo (novia + 3 personas) ronda los 340€-680€. Para eventos corporativos, el precio por persona está entre 32€ y 70€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-girona" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Girona</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeGirona() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-girona' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_girona_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_girona_v2" articlePath="/blog/maquillaje-eventos-girona" />
       </div>
     </>
   );

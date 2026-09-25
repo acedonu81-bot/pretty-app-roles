@@ -59,7 +59,7 @@ export default function BlogCamarerosPalma() {
               answer="Un camarero de eventos en Palma de Mallorca cobra entre 15€ y 25€/hora bruto, y un bartender con experiencia en coctelería entre 20€ y 32€/hora. Para una boda completa en villa o finca de 6-7 horas, el presupuesto de personal de sala puede superar los 1.800€ según el número de invitados y el nivel de servicio."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-palma" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Palma de Mallorca</h2>
@@ -107,7 +107,7 @@ export default function BlogCamarerosPalma() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-palma' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_palma_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_palma_v2" articlePath="/blog/camareros-eventos-palma" />
       </div>
     </>
   );

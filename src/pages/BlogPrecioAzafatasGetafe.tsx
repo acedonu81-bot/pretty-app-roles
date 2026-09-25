@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasGetafe() {
               answer="Una azafata de eventos en Getafe cobra entre 12€ y 17€/hora bruto, y las agencias facturan entre 110€ y 170€/día por el servicio completo. Los actos institucionales y las jornadas de la Universidad Carlos III concentran buena parte de la demanda durante el curso académico."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-getafe" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Getafe</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasGetafe() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-getafe' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_getafe_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_getafe_v2" articlePath="/blog/precio-azafatas-getafe" />
       </div>
     </>
   );

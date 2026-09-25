@@ -59,7 +59,7 @@ export default function BlogMaquillajeVitoria() {
               answer="Una maquilladora de novia en Vitoria-Gasteiz cobra entre 100€ y 240€, incluyendo prueba previa. El pack boda completo (novia + 3 personas) ronda los 340€-660€. Para eventos institucionales y corporativos, el precio por persona está entre 32€ y 70€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-vitoria" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Vitoria-Gasteiz</h2>
@@ -107,7 +107,7 @@ export default function BlogMaquillajeVitoria() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-vitoria' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_vitoria_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_vitoria_v2" articlePath="/blog/maquillaje-eventos-vitoria" />
       </div>
     </>
   );

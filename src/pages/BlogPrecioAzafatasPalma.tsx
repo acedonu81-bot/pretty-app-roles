@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasPalma() {
               answer="Una azafata de eventos en Palma de Mallorca cobra entre 17€ y 28€/hora bruto, y las agencias facturan entre 180€ y 320€/día por el servicio completo. En temporada alta (mayo-octubre) la demanda se triplica y las tarifas suben hasta un 40% respecto a temporada baja."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-palma" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Palma de Mallorca</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasPalma() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-palma' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_palma_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_palma_v2" articlePath="/blog/precio-azafatas-palma" />
       </div>
     </>
   );

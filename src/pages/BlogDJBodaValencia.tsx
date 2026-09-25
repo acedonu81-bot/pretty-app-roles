@@ -92,7 +92,7 @@ export default function BlogDJBodaValencia() {
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios específicos para la Comunitat Valenciana 2026. Sin IVA. En la media nacional, 10-20% más económico que Madrid o Barcelona.</p>
             </section>
 
-            <BlogInlineCTA role="dj" />
+            <BlogInlineCTA role="dj" articlePath="/blog/dj-bodas-valencia" />
 
             <section>
               <h2 className="text-lg font-black mb-4">Zonas de boda en Valencia y el DJ</h2>
@@ -163,7 +163,7 @@ export default function BlogDJBodaValencia() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-valencia' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_valencia" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_valencia" articlePath="/blog/dj-bodas-valencia" />
       </div>
     </>
   );

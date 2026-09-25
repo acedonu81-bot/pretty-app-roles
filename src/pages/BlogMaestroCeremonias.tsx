@@ -296,7 +296,7 @@ export default function BlogMaestroCeremonias() {
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/maestro-de-ceremonias-boda-precio-guia" />
         <BlogRelatedPosts currentSlug='/blog/maestro-de-ceremonias-boda-precio-guia' tag='Bodas' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maestro_ceremonias" />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_maestro_ceremonias" articlePath="/blog/maestro-de-ceremonias-boda-precio-guia" />
       </div>
     </>
   );

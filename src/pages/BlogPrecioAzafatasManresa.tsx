@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasManresa() {
               answer="Una azafata de eventos en Manresa cobra entre 12€ y 17€/hora bruto, y las agencias facturan entre 115€ y 165€/día por el servicio completo. Son tarifas más ajustadas que en el área metropolitana de Barcelona por ser un mercado interior de menor volumen."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-manresa" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Manresa</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasManresa() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-manresa' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_manresa_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_manresa_v2" articlePath="/blog/precio-azafatas-manresa" />
       </div>
     </>
   );

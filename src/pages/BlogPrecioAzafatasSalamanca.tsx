@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasSalamanca() {
               answer="Una azafata de eventos en Salamanca cobra entre 11€ y 16€/hora bruto, y las agencias facturan entre 100€ y 150€/día por el servicio completo. Es una tarifa por debajo de la media nacional, propia de una plaza de tamaño medio con menos competencia por los perfiles disponibles."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-salamanca" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Salamanca</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasSalamanca() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-salamanca' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_salamanca_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_salamanca_v2" articlePath="/blog/precio-azafatas-salamanca" />
       </div>
     </>
   );

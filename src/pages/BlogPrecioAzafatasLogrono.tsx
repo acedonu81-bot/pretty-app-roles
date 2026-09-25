@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasLogrono() {
               answer="Una azafata de eventos en Logroño cobra entre 11€ y 17€/hora bruto, algo por debajo de la media nacional, y las agencias facturan entre 115€ y 165€/día por el servicio completo. Las catas y eventos en bodegas suelen pagar algo más por requerir un perfil con conocimiento del sector vitivinícola."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-logrono" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Logroño</h2>
@@ -107,7 +107,7 @@ export default function BlogPrecioAzafatasLogrono() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-logrono' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_logrono_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_logrono_v2" articlePath="/blog/precio-azafatas-logrono" />
       </div>
     </>
   );

@@ -59,7 +59,7 @@ export default function BlogMaquillajeManresa() {
               answer="Una maquilladora de novia en Manresa cobra entre 80€ y 200€, incluyendo prueba previa. El pack boda completo (novia + 3 personas) ronda los 280€-560€. Para eventos institucionales, el precio por persona está entre 28€ y 55€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-manresa" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Manresa</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeManresa() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-manresa' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_manresa_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_manresa_v2" articlePath="/blog/maquillaje-eventos-manresa" />
       </div>
     </>
   );

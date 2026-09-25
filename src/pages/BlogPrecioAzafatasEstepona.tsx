@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasEstepona() {
               answer="Una azafata de eventos en Estepona cobra entre 15€ y 23€/hora bruto, y las agencias facturan entre 150€ y 250€/día por el servicio completo. Es una tarifa por encima de la media nacional gracias al turismo de calidad de la zona, aunque algo por debajo de Marbella."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-estepona" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Estepona</h2>
@@ -107,7 +107,7 @@ export default function BlogPrecioAzafatasEstepona() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-estepona' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_estepona_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_estepona_v2" articlePath="/blog/precio-azafatas-estepona" />
       </div>
     </>
   );

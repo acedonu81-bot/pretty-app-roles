@@ -89,7 +89,7 @@ export default function BlogFotografoBodaGranada() {
             Granada es uno de los destinos de boda más fotogénicos de España. La Alhambra, el Albaicín, los cármenes de la Vega y la Sierra Nevada al fondo crean un escenario único que atrae a parejas de toda Europa. Pero ese escenario también tiene sus reglas: permisos, horarios y disponibilidad limitada de los fotógrafos top.
           </p>
 
-          <BlogInlineCTA role="fotografo" text="¿Buscas fotógrafo para tu boda en Granada? Compara perfiles, tarifas y disponibilidad en XPEAK." />
+          <BlogInlineCTA role="fotografo" text="¿Buscas fotógrafo para tu boda en Granada? Compara perfiles, tarifas y disponibilidad en XPEAK." articlePath="/blog/fotografo-boda-granada" />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Tabla de precios fotógrafo boda Granada 2026</h2>
           <div className="overflow-x-auto mb-8">
@@ -151,7 +151,7 @@ export default function BlogFotografoBodaGranada() {
         </article>
         <BlogRelatedPosts currentSlug='/blog/fotografo-boda-granada' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_granada" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_granada" articlePath="/blog/fotografo-boda-granada" />
       </div>
     </>
   );

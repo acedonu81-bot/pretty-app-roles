@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasCoruna() {
               answer="Una azafata de eventos en A Coruña cobra entre 11€ y 17€/hora bruto, y las agencias facturan entre 105€ y 165€/día por el servicio completo. La demanda corporativa ligada a la industria textil y naval mantiene el mercado activo todo el año."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-coruna" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en A Coruña</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasCoruna() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-coruna' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_coruna_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_coruna_v2" articlePath="/blog/precio-azafatas-coruna" />
       </div>
     </>
   );

@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasCastellon() {
               answer="Una azafata de eventos en Castellón cobra entre 12€ y 17€/hora bruto, y las agencias facturan entre 110€ y 165€/día por el servicio completo. En marzo, coincidiendo con las Fiestas de la Magdalena, la demanda de perfiles de protocolo sube notablemente."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-castellon" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Castellón</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasCastellon() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-castellon' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_castellon_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_castellon_v2" articlePath="/blog/precio-azafatas-castellon" />
       </div>
     </>
   );

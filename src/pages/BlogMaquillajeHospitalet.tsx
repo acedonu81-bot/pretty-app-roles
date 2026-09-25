@@ -59,7 +59,7 @@ export default function BlogMaquillajeHospitalet() {
               answer="Una maquilladora de novia en L'Hospitalet cobra entre 100€ y 250€, incluyendo prueba previa. El pack boda completo (novia + 3 personas) ronda los 350€-700€. Para eventos corporativos y ferias, el precio por persona está entre 35€ y 70€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-hospitalet" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en L'Hospitalet</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeHospitalet() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-hospitalet' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_hospitalet_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_hospitalet_v2" articlePath="/blog/maquillaje-eventos-hospitalet" />
       </div>
     </>
   );

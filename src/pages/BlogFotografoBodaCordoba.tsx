@@ -74,7 +74,7 @@ export default function BlogFotografoBodaCordoba() {
 
           <p className="text-[#333] mb-6">Córdoba es Patrimonio de la Humanidad con tres declaraciones UNESCO (Mezquita-Catedral, Centro Histórico y Festival de los Patios). Para un fotógrafo de bodas, la ciudad es un paraíso: callejuelas con cal blanca, naranjos en flor y una luz andaluza única.</p>
 
-          <BlogInlineCTA role="fotografo" text="¿Buscas fotógrafo para tu boda en Córdoba? Compara perfiles y tarifas en XPEAK." />
+          <BlogInlineCTA role="fotografo" text="¿Buscas fotógrafo para tu boda en Córdoba? Compara perfiles y tarifas en XPEAK." articlePath="/blog/fotografo-boda-cordoba" />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Precios fotógrafo boda Córdoba 2026</h2>
           <div className="overflow-x-auto mb-8">
@@ -118,7 +118,7 @@ export default function BlogFotografoBodaCordoba() {
         </article>
         <BlogRelatedPosts currentSlug='/blog/fotografo-boda-cordoba' tag='Fotografía' />
         <FooterPublic />
-        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_cordoba" />
+        <BlogScrollCTA role="fotografo" storageKey="xpeak_scrollcta_fotografo_cordoba" articlePath="/blog/fotografo-boda-cordoba" />
       </div>
     </>
   );

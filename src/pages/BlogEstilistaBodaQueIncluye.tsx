@@ -126,7 +126,7 @@ export default function BlogEstilistaBodaQueIncluye() {
 
         <BlogRelatedPosts currentSlug='/blog/estilista-de-boda-que-incluye' tag='Vestuario' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_estilista_boda" />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_estilista_boda" articlePath="/blog/estilista-de-boda-que-incluye" />
       </div>
     </>
   );

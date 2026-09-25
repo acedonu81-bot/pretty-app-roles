@@ -59,7 +59,7 @@ export default function BlogCamarerosSantander() {
               answer="Un camarero de eventos en Santander cobra entre 12€ y 18€/hora bruto, y un bartender con experiencia en coctelería entre 16€ y 22€/hora. Para una boda completa de 6-7 horas en una finca de la costa cántabra, el presupuesto de personal de sala suele estar entre 850€ y 2.000€."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-santander" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Santander</h2>
@@ -107,7 +107,7 @@ export default function BlogCamarerosSantander() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-santander' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_santander_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_santander_v2" articlePath="/blog/camareros-eventos-santander" />
       </div>
     </>
   );

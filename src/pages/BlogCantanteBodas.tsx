@@ -133,7 +133,7 @@ const faqStructured = {
             </table>
           </div>
 
-          <BlogInlineCTA role="general" variant="upgrade" />
+          <BlogInlineCTA role="general" variant="upgrade" articlePath="/blog/cantante-para-bodas-precio" />
 
           <h2 className="text-xl font-black mb-4">¿En qué momento de la boda actúa el cantante?</h2>
           <ul className="space-y-3 mb-10">
@@ -237,7 +237,7 @@ const faqStructured = {
           <BlogEmailCapture variant="presupuestos" intent="contratar-staff" articlePath="/blog/cantante-para-bodas-precio" />
         <BlogRelatedPosts currentSlug='/blog/cantante-para-bodas-precio' tag='Bodas' />
         <FooterPublic />
-        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_cantante_bodas" />
+        <BlogScrollCTA role="general" storageKey="xpeak_scrollcta_cantante_bodas" articlePath="/blog/cantante-para-bodas-precio" />
       </div>
     </>
   );

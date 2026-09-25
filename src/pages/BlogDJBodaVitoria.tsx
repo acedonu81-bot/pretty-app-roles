@@ -68,7 +68,7 @@ export default function BlogDJBodaVitoria() {
               <div className="space-y-2">{PRECIOS.map((row, i) => (<div key={row.servicio} className="flex items-center justify-between p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}><p className="text-xs font-medium">{row.servicio}</p><span className="text-xs font-bold ml-4 shrink-0" style={{ color: '#D4AF37' }}>{row.precio}</span></div>))}</div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos 2026. Sin IVA.</p>
             </section>
-            <BlogInlineCTA role="dj" variant="upgrade" />
+            <BlogInlineCTA role="dj" variant="upgrade" articlePath="/blog/dj-bodas-vitoria" />
             <section>
               <h2 className="text-lg font-black mb-4">Zonas de boda en {ciudad}</h2>
               <div className="space-y-3">{ZONAS.map((z, i) => (<div key={z.zona} className="p-4 rounded-xl" style={{ background: i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'rgba(0,0,0,0.015)', border: '1px solid rgba(0,0,0,0.04)' }}><div className="flex items-start justify-between mb-1"><p className="text-xs font-bold">{z.zona}</p><span className="text-[0.6rem] font-bold px-2 py-0.5 rounded ml-3 shrink-0" style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37' }}>{z.nota}</span></div><p className="text-xs" style={{ color: '#3d3d4e' }}>{z.fincas}</p></div>))}</div>
@@ -94,7 +94,7 @@ export default function BlogDJBodaVitoria() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-vitoria' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey={`xpeak_scrollcta_${slug}`} />
+        <BlogScrollCTA role="dj" storageKey={`xpeak_scrollcta_${slug}`} articlePath="/blog/dj-bodas-vitoria" />
       </div>
     </>
   );

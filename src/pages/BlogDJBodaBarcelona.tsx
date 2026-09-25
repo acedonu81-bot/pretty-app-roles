@@ -93,7 +93,7 @@ export default function BlogDJBodaBarcelona() {
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios específicos para la provincia de Barcelona 2026. Sin IVA. Un 20-30% por encima de la media nacional.</p>
             </section>
 
-            <BlogInlineCTA role="dj" />
+            <BlogInlineCTA role="dj" articlePath="/blog/dj-bodas-barcelona" />
 
             <section>
               <h2 className="text-lg font-black mb-4">Zonas de boda en Barcelona y el DJ</h2>
@@ -163,7 +163,7 @@ export default function BlogDJBodaBarcelona() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-barcelona' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_barcelona" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_barcelona" articlePath="/blog/dj-bodas-barcelona" />
       </div>
     </>
   );

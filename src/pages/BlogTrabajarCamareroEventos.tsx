@@ -84,7 +84,7 @@ export default function BlogTrabajarCamareroEventos() {
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Tarifas orientativas España 2026. En Madrid y Barcelona un 20-30% más. Jornada = 8-10 horas.</p>
             </section>
 
-            <BlogInlineCTA role="staff" />
+            <BlogInlineCTA role="staff" articlePath="/blog/como-trabajar-de-camarero-eventos" />
 
             <section>
               <h2 className="text-lg font-black mb-4">Cómo empezar: 6 pasos</h2>
@@ -141,7 +141,7 @@ export default function BlogTrabajarCamareroEventos() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/como-trabajar-de-camarero-eventos' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_trabajar_camarero_eventos_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_trabajar_camarero_eventos_v2" articlePath="/blog/como-trabajar-de-camarero-eventos" />
       </div>
     </>
   );

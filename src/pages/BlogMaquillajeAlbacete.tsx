@@ -59,7 +59,7 @@ export default function BlogMaquillajeAlbacete() {
               answer="Una maquilladora de novia en Albacete cobra entre 75€ y 180€, incluyendo prueba previa. El pack boda completo (novia + 3 personas) ronda los 250€-490€. Para eventos corporativos, el precio por persona está entre 25€ y 50€, con la Feria de Albacete en septiembre como pico puntual de demanda."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-albacete" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Albacete</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeAlbacete() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-albacete' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_albacete_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_albacete_v2" articlePath="/blog/maquillaje-eventos-albacete" />
       </div>
     </>
   );

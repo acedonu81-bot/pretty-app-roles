@@ -77,7 +77,7 @@ export default function BlogGrupoMusicalBoda() {
             La música en vivo marca la diferencia entre una boda memorable y una boda corriente. El grupo musical crea momentos únicos que ningún playlist puede reproducir. Pero contratar el grupo equivocado, o pagarlo de más, es uno de los errores más frecuentes en la planificación de bodas.
           </p>
 
-          <BlogInlineCTA role="staff" text="¿Buscas grupo musical para tu boda? Compara artistas verificados y tarifas reales en XPEAK." />
+          <BlogInlineCTA role="staff" text="¿Buscas grupo musical para tu boda? Compara artistas verificados y tarifas reales en XPEAK." articlePath="/blog/grupo-musical-para-boda-precio" />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Precios por tipo de grupo musical para boda 2026</h2>
           <div className="overflow-x-auto mb-8">
@@ -125,7 +125,7 @@ export default function BlogGrupoMusicalBoda() {
         </article>
         <BlogRelatedPosts currentSlug='/blog/grupo-musical-para-boda-precio' tag='Bodas' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_grupo_musical_boda" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_grupo_musical_boda" articlePath="/blog/grupo-musical-para-boda-precio" />
       </div>
     </>
   );

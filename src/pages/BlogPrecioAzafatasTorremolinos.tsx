@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasTorremolinos() {
               answer="Una azafata de eventos en Torremolinos cobra entre 14€ y 22€/hora bruto, y las agencias facturan entre 145€ y 235€/día por el servicio completo. Es una tarifa por encima de la media nacional, sostenida por la consolidada oferta hotelera y turística de la zona."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-torremolinos" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Torremolinos</h2>
@@ -107,7 +107,7 @@ export default function BlogPrecioAzafatasTorremolinos() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-torremolinos' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_torremolinos_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_torremolinos_v2" articlePath="/blog/precio-azafatas-torremolinos" />
       </div>
     </>
   );

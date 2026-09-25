@@ -59,7 +59,7 @@ export default function BlogPrecioAzafatasSitges() {
               answer="Una azafata de eventos en Sitges cobra entre 17€ y 28€/hora bruto, y las agencias facturan entre 180€ y 320€/día por el servicio completo. En Carnaval (febrero) y en el Festival de Cine Fantástico (octubre) la demanda sube con fuerza y conviene reservar con antelación."
             />
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-sitges" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata en Sitges</h2>
@@ -106,7 +106,7 @@ export default function BlogPrecioAzafatasSitges() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-sitges' tag='Staff' />
         <FooterPublic />
-        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_sitges_v2" />
+        <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_sitges_v2" articlePath="/blog/precio-azafatas-sitges" />
       </div>
     </>
   );

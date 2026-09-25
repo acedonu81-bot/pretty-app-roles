@@ -74,7 +74,7 @@ export default function BlogPrecioAzafatas() {
               />
             </picture>
           </div>
-          <BlogInlineCTA role="azafata" variant="upgrade" />
+          <BlogInlineCTA role="azafata" variant="upgrade" articlePath="/blog/precio-azafatas-eventos-espana" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de azafata</h2>
@@ -140,7 +140,7 @@ export default function BlogPrecioAzafatas() {
       <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/precio-azafatas-eventos-espana' tag='Staff' />
         <FooterPublic />
-      <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_v2" />
+      <BlogScrollCTA role="azafata_pro" storageKey="xpeak_scrollcta_precio_azafatas_v2" articlePath="/blog/precio-azafatas-eventos-espana" />
       </div>
     </>
   );

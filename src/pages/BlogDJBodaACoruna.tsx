@@ -87,7 +87,7 @@ export default function BlogDJBodaACoruna() {
               </div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos 2026. Sin IVA. Algunos pazos tienen lista de proveedores aprobados: verifica antes de contratar.</p>
             </section>
-            <BlogInlineCTA role="dj" variant="upgrade" />
+            <BlogInlineCTA role="dj" variant="upgrade" articlePath="/blog/dj-bodas-a-coruna" />
             <section>
               <h2 className="text-lg font-black mb-4">Zonas de boda en A Coruña</h2>
               <div className="space-y-3">
@@ -142,7 +142,7 @@ export default function BlogDJBodaACoruna() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-a-coruna' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj_pro" storageKey="xpeak_scrollcta_dj_acoruna_v2" />
+        <BlogScrollCTA role="dj_pro" storageKey="xpeak_scrollcta_dj_acoruna_v2" articlePath="/blog/dj-bodas-a-coruna" />
       </div>
     </>
   );

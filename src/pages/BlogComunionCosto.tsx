@@ -219,7 +219,7 @@ const faqStructured = {
           <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/cuanto-cuesta-una-comunion-en-espana" />
         <BlogRelatedPosts currentSlug='/blog/cuanto-cuesta-una-comunion-en-espana' tag='Eventos' />
         <FooterPublic />
-        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_comunion_costo" />
+        <BlogScrollCTA role="empresario" storageKey="xpeak_scrollcta_comunion_costo" articlePath="/blog/cuanto-cuesta-una-comunion-en-espana" />
       </div>
     </>
   );

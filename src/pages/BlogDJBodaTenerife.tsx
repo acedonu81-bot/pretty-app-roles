@@ -87,7 +87,7 @@ export default function BlogDJBodaTenerife() {
               </div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios orientativos 2026. Sin IVA. Los resorts del sur suelen tener lista de proveedores aprobados: confirma con el venue antes.</p>
             </section>
-            <BlogInlineCTA role="dj" variant="upgrade" />
+            <BlogInlineCTA role="dj" variant="upgrade" articlePath="/blog/dj-bodas-tenerife" />
             <section>
               <h2 className="text-lg font-black mb-4">Zonas de boda en Tenerife</h2>
               <div className="space-y-3">
@@ -143,7 +143,7 @@ export default function BlogDJBodaTenerife() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-tenerife' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_tenerife" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_tenerife" articlePath="/blog/dj-bodas-tenerife" />
       </div>
     </>
   );

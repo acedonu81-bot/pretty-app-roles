@@ -87,7 +87,7 @@ export default function BlogDJBodaSevilla() {
               </div>
               <p className="text-xs mt-3" style={{ color: '#3d3d4e' }}>Precios para Sevilla y provincia 2026. Sin IVA. En la media nacional, más económico que Madrid o Barcelona.</p>
             </section>
-            <BlogInlineCTA role="dj" />
+            <BlogInlineCTA role="dj" articlePath="/blog/dj-bodas-sevilla" />
             <section>
               <h2 className="text-lg font-black mb-4">Zonas de boda en Sevilla</h2>
               <div className="space-y-3">
@@ -149,7 +149,7 @@ export default function BlogDJBodaSevilla() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/dj-bodas-sevilla' tag='DJ' />
         <FooterPublic />
-        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_sevilla" />
+        <BlogScrollCTA role="dj" storageKey="xpeak_scrollcta_dj_boda_sevilla" articlePath="/blog/dj-bodas-sevilla" />
       </div>
     </>
   );

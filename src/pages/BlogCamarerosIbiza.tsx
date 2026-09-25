@@ -59,7 +59,7 @@ export default function BlogCamarerosIbiza() {
               answer="Un camarero de eventos en Ibiza cobra entre 18€ y 30€/hora bruto, y un bartender de coctelería premium entre 24€ y 38€/hora. Para un evento privado en villa de 6-7 horas, el presupuesto de personal de sala puede superar los 2.000€ por la exigencia de servicio internacional."
             />
           </div>
-          <BlogInlineCTA role="staff" variant="upgrade" />
+          <BlogInlineCTA role="staff" variant="upgrade" articlePath="/blog/camareros-eventos-ibiza" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas por perfil de camarero en Ibiza</h2>
@@ -107,7 +107,7 @@ export default function BlogCamarerosIbiza() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/camareros-eventos-ibiza' tag='Camareros' />
         <FooterPublic />
-        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_ibiza_v2" />
+        <BlogScrollCTA role="staff_pro" storageKey="xpeak_scrollcta_camareros_ibiza_v2" articlePath="/blog/camareros-eventos-ibiza" />
       </div>
     </>
   );

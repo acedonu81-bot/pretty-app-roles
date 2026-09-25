@@ -59,7 +59,7 @@ export default function BlogMaquillajeCaceres() {
               answer="Una maquilladora de novia en Cáceres cobra entre 75€ y 175€, incluyendo prueba previa. El pack boda (novia + 3 personas) ronda los 250€-480€. Para eventos corporativos, el precio por persona está entre 25€ y 55€."
             />
           </div>
-          <BlogInlineCTA role="makeup" variant="upgrade" />
+          <BlogInlineCTA role="makeup" variant="upgrade" articlePath="/blog/maquillaje-eventos-caceres" />
           <div className="space-y-10">
             <section>
               <h2 className="text-lg font-black mb-4">Tarifas de maquillaje para eventos en Cáceres</h2>
@@ -106,7 +106,7 @@ export default function BlogMaquillajeCaceres() {
         <BlogAuthor />
         <BlogRelatedPosts currentSlug='/blog/maquillaje-eventos-caceres' tag='Maquillaje' />
         <FooterPublic />
-        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_caceres_v2" />
+        <BlogScrollCTA role="makeup_pro" storageKey="xpeak_scrollcta_maquillaje_caceres_v2" articlePath="/blog/maquillaje-eventos-caceres" />
       </div>
     </>
   );

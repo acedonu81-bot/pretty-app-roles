@@ -1,11 +1,15 @@
+import { trackBlogCtaClick } from '@/lib/blogAnalytics';
+
 interface BlogTopCTAProps {
   label: string;
   href: string;
   text?: string;
   highlight?: boolean;
+  role?: string;
+  articlePath?: string;
 }
 
-export default function BlogTopCTA({ label, href, text, highlight }: BlogTopCTAProps) {
+export default function BlogTopCTA({ label, href, text, highlight, role, articlePath = '' }: BlogTopCTAProps) {
   return (
     <div
       className="flex items-center justify-between gap-3 my-4 px-4 py-3 rounded-xl"
@@ -19,6 +23,7 @@ export default function BlogTopCTA({ label, href, text, highlight }: BlogTopCTAP
         {text ?? 'Flash Booking: profesionales verificados en menos de 1h'}
       </p>
       <a href={href}
+        onClick={() => trackBlogCtaClick({ component: 'top', role, href, article_path: articlePath })}
         className="flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-black transition-all hover:scale-105 whitespace-nowrap"
         style={
           highlight
