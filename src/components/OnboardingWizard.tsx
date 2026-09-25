@@ -36,6 +36,7 @@ const ROLES = [
   { value: 'vestuario',    label: 'Estilista / Vestuario', desc: 'Moda, vestuario y styling',       icon: Shirt,          color: '#10b981' },
   { value: 'photo-booth',  label: 'Photo Booth',         desc: 'Cabinas de fotos y espejos 360',    icon: Camera,         color: '#f43f5e' },
   { value: 'tecnico',      label: 'Técnico de Sonido y Montaje', desc: 'Sonido, iluminación y montaje de escenario', icon: SlidersHorizontal, color: '#38bdf8' },
+  { value: 'local_eventos', label: 'Local / Sala para Eventos', desc: 'Alquiler de espacio para eventos privados', icon: Briefcase,     color: '#a3a3a3' },
 ];
 
 const EMPRESARIO_ROLE = { value: 'empresario', label: 'Busco talento: Empresario', desc: 'Sala, promotora, agencia o evento privado: busco y contrato profesionales', icon: Briefcase, color: '#D4AF37' };
@@ -613,7 +614,6 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                     className="nightlife-input !py-2.5 text-sm w-full">
                     <option value="">No, solo busco profesionales</option>
                     {ROLES.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
-                    <option value="local_eventos">Local / sala para eventos</option>
                   </select>
                 </div>
 

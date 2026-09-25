@@ -1,5 +1,6 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { isDemoAccount } from './isDemoAccount.ts';
 
 // El sistema de reseñas está construido y verificado (RLS exige un
 // flash_booking real) pero nadie lo usa: 0 filas en 6+ meses de producción,
@@ -86,6 +87,7 @@ serve(async (req) => {
       console.warn('[review-reminder] no email for', userId);
       return;
     }
+    if (isDemoAccount(userData.user.email)) return;
 
     const res = await fetch(`${supabaseUrl}/functions/v1/send-email`, {
       method: 'POST',

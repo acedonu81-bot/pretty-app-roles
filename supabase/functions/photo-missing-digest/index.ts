@@ -1,5 +1,6 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { isDemoAccount } from './isDemoAccount.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -46,7 +47,17 @@ serve(async (req) => {
     .lte('sent_at', sevenDaysAgo);
 
   const remindedIds = new Set((reminders ?? []).map((r: any) => r.user_id));
-  const overdue = profiles.filter((p) => remindedIds.has(p.user_id));
+  let overdue = profiles.filter((p) => remindedIds.has(p.user_id));
+
+  // Cuentas demo.*@xpeak.es (ver isDemoAccount.ts): no son negocio real,
+  // no deben contaminar el digest que lee el admin.
+  if (overdue.length > 0) {
+    const { data: users } = await admin.auth.admin.listUsers({ perPage: 1000 });
+    const demoIds = new Set(
+      (users?.users ?? []).filter((u) => isDemoAccount(u.email ?? '')).map((u) => u.id)
+    );
+    overdue = overdue.filter((p) => !demoIds.has(p.user_id));
+  }
 
   if (overdue.length === 0) {
     return new Response(JSON.stringify({ found: 0, message: 'None overdue 7+ days' }), { headers: corsHeaders });

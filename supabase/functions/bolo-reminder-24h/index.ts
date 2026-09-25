@@ -1,5 +1,6 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { isDemoAccount } from './isDemoAccount.ts';
 
 // Sin esto el aviso de "mañana tienes X" solo llegaba por email — en la app
 // nativa iOS/Android nadie mira el correo, mira el push. Best-effort: si
@@ -70,6 +71,8 @@ serve(async (req) => {
         const { data: userData, error: userError } = await admin.auth.admin.getUserById(ev.user_id);
         if (userError || !userData?.user?.email) {
           console.warn('[bolo-reminder-24h] no email for', ev.user_id);
+        } else if (isDemoAccount(userData.user.email)) {
+          // demo.*@xpeak.es (Apple review): sin negocio real detrás.
         } else {
           const res = await fetch(`${supabaseUrl}/functions/v1/send-email`, {
             method: 'POST',

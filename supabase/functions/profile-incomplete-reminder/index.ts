@@ -1,5 +1,6 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { isDemoAccount } from './isDemoAccount.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -102,6 +103,7 @@ serve(async (req) => {
         console.warn('[profile-incomplete-reminder] no email for', profile.user_id);
         continue;
       }
+      if (isDemoAccount(userData.user.email)) continue;
 
       const res = await fetch(`${supabaseUrl}/functions/v1/send-email`, {
         method: 'POST',

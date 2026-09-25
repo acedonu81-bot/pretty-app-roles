@@ -27,7 +27,7 @@ const wizard = leer('src/components/OnboardingWizard.tsx');
 const auth = leer('src/pages/Auth.tsx');
 
 /** Roles que el wizard de onboarding ofrece elegir. */
-const rolesDelWizard = [...wizard.matchAll(/value: '([a-z-]+)'/g)].map(m => m[1]);
+const rolesDelWizard = [...wizard.matchAll(/value: '([a-z_-]+)'/g)].map(m => m[1]);
 
 /** Roles que el registro acepta por query param (?role=). */
 const rolesDeRegistro =

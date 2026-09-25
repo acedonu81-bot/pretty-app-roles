@@ -1,5 +1,6 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { isDemoAccount } from './isDemoAccount.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -92,6 +93,7 @@ serve(async (req) => {
         console.warn('[unread-message-reminder] no email for', recipientId);
         continue;
       }
+      if (isDemoAccount(recipientAuth.user.email)) continue;
       const lastSignIn = recipientAuth.user.last_sign_in_at;
       if (lastSignIn && new Date(lastSignIn) > new Date(msg.created_at)) continue;
 

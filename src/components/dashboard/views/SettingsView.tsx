@@ -988,7 +988,9 @@ const SettingsView = ({ onNavigate }: { onNavigate?: (view: string) => void }) =
                       await showLocalNotification('XPEAK', '¡Notificaciones activas! Te avisaremos cuando lleguen mensajes o bookings.', '/dashboard');
                       toast.success('Notificaciones activadas.');
                     } else {
-                      toast.error('No se pudo activar. Revisa los permisos del sitio en tu navegador.');
+                      toast.error(esAppNativa()
+                        ? 'No se pudo activar. Revisa los permisos de notificaciones de XPEAK en Ajustes del sistema.'
+                        : 'No se pudo activar. Revisa los permisos del sitio en tu navegador.');
                     }
                   }
                 }}

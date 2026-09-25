@@ -1,5 +1,6 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { isDemoAccount } from './isDemoAccount.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -80,6 +81,13 @@ serve(async (req) => {
         .limit(1)
         .maybeSingle();
       if (existing) continue;
+
+      const { data: userData, error: userError } = await admin.auth.admin.getUserById(profile.user_id);
+      if (userError || !userData?.user?.email) {
+        console.warn('[organizador-segundo-perfil-reminder] no email for', profile.user_id);
+        continue;
+      }
+      if (isDemoAccount(userData.user.email)) continue;
 
       const res = await fetch(`${supabaseUrl}/functions/v1/send-email`, {
         method: 'POST',
