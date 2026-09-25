@@ -30,7 +30,7 @@ const faqStructured = {
       name: '¿Cuánto cobra un saxofonista para una boda?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Un saxofonista para boda en España cobra entre 400€ y 1.000€ por servicio completo (ceremonia + cóctel). Si solo se contrata para el cóctel, el rango habitual es 400-700€. Para bodas de alto nivel en grandes ciudades los precios pueden superar los 1.000€ si el músico va acompañado de DJ o backing track profesional.',
+        text: 'Un saxofonista para boda en España cobra entre 600€ y 1.000€ por servicio completo (ceremonia + cóctel). Si solo se contrata para el cóctel, el rango habitual es 400-700€. Para bodas de alto nivel en grandes ciudades los precios pueden superar los 1.000€ si el músico va acompañado de DJ o backing track profesional.',
       },
     },
     {
