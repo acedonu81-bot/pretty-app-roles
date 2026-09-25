@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Send, Shield, MessageSquare, CheckCheck, Check, Image, Smile, X, ArrowLeft, Trash2, MoreVertical } from 'lucide-react';
+import { Send, Shield, MessageSquare, CheckCheck, Check, Image, Smile, X, ArrowLeft, Trash2, MoreVertical, Flag } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -54,20 +54,30 @@ interface Props {
   onDeleteMessage?: (messageId: string) => void;
   onDeleteConversation?: () => void;
   onBlockUser?: () => void;
+  onReportUser?: (reason: string) => void;
 }
+
+const REPORT_REASONS = [
+  'Contenido ofensivo o abusivo',
+  'Acoso o intimidación',
+  'Spam o estafa',
+  'Suplantación de identidad',
+  'Otro motivo',
+];
 
 const ChatWindow = ({
   messages, userId, activeOtherName,
   input, setInput, showEmoji, setShowEmoji,
   sending, uploadingPhoto, bottomRef, fileInputRef,
   onSend, onPhotoUpload, onBack,
-  onDeleteMessage, onDeleteConversation, onBlockUser,
+  onDeleteMessage, onDeleteConversation, onBlockUser, onReportUser,
 }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [hoveredMsgId, setHoveredMsgId] = useState<string | null>(null);
   const [confirmDeleteMsgId, setConfirmDeleteMsgId] = useState<string | null>(null);
   const [showHeaderMenu, setShowHeaderMenu] = useState(false);
   const [confirmAction, setConfirmAction] = useState<'delete-chat' | 'block' | null>(null);
+  const [reportReason, setReportReason] = useState<string | null>(null);
 
   const insertEmoji = (emoji: string) => {
     setInput(input + emoji);
@@ -98,7 +108,7 @@ const ChatWindow = ({
           </p>
         </div>
 
-        {(onDeleteConversation || onBlockUser) && (
+        {(onDeleteConversation || onBlockUser || onReportUser) && (
           <div className="relative flex-shrink-0">
             <button onClick={() => setShowHeaderMenu(v => !v)}
               aria-label="Más opciones"
@@ -119,6 +129,13 @@ const ChatWindow = ({
                       <Trash2 size={14} /> Eliminar chat
                     </button>
                   )}
+                  {onReportUser && (
+                    <button onClick={() => { setShowHeaderMenu(false); setReportReason(REPORT_REASONS[0]); }}
+                      className="w-full text-left px-4 py-2.5 text-sm font-medium flex items-center gap-2 transition-colors hover:bg-black/5"
+                      style={{ color: '#333' }}>
+                      <Flag size={14} /> Reportar a {activeOtherName}
+                    </button>
+                  )}
                   {onBlockUser && (
                     <button onClick={() => { setShowHeaderMenu(false); setConfirmAction('block'); }}
                       className="w-full text-left px-4 py-2.5 text-sm font-medium flex items-center gap-2 transition-colors hover:bg-black/5"
@@ -132,6 +149,41 @@ const ChatWindow = ({
           </div>
         )}
       </div>
+
+      {reportReason !== null && (
+        <div className="fixed inset-0 z-40 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.5)' }}
+          onClick={() => setReportReason(null)}>
+          <div className="rounded-2xl p-5 max-w-sm w-full" style={{ background: '#ffffff' }} onClick={e => e.stopPropagation()}>
+            <p className="text-sm font-bold mb-1">Reportar a {activeOtherName}</p>
+            <p className="text-xs text-muted-foreground mb-3">
+              Un administrador de XPEAK revisará esta conversación. No podrá deshacerse.
+            </p>
+            <div className="flex flex-col gap-1.5 mb-4">
+              {REPORT_REASONS.map(r => (
+                <button key={r} onClick={() => setReportReason(r)}
+                  className="text-left px-3 py-2 rounded-lg text-xs font-medium transition-colors"
+                  style={{
+                    background: reportReason === r ? 'rgba(212,175,55,0.12)' : 'rgba(0,0,0,0.03)',
+                    border: `1px solid ${reportReason === r ? '#D4AF37' : 'transparent'}`,
+                    color: '#222',
+                  }}>
+                  {r}
+                </button>
+              ))}
+            </div>
+            <div className="flex gap-2 justify-end">
+              <button onClick={() => setReportReason(null)}
+                className="px-3.5 py-2 rounded-lg text-xs font-bold" style={{ background: 'rgba(0,0,0,0.05)', color: '#333' }}>
+                Cancelar
+              </button>
+              <button onClick={() => { onReportUser?.(reportReason); setReportReason(null); }}
+                className="px-3.5 py-2 rounded-lg text-xs font-bold text-white" style={{ background: '#dc2626' }}>
+                Reportar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {confirmAction && (
         <div className="fixed inset-0 z-40 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.5)' }}

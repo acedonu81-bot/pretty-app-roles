@@ -382,6 +382,28 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
     if (activeOtherUserId === targetUserId) handleCloseChat();
   };
 
+  // Reporta la conversación activa para revisión del admin. content_id usa
+  // el id de la conversación (no de un mensaje suelto): más simple y ya
+  // cubre el caso de uso real — el admin revisa el hilo completo, no un
+  // mensaje aislado. unique(reporter_id, content_type, content_id) evita
+  // duplicar el mismo reporte si el usuario pulsa dos veces.
+  const reportUser = async (reason: string) => {
+    if (!user || !activeConvId || !activeOtherUserId) return;
+    const { error } = await supabase.from('content_reports').insert({
+      reporter_id: user.id,
+      content_type: 'message',
+      content_id: activeConvId,
+      reported_user_id: activeOtherUserId,
+      reason,
+    });
+    if (error) {
+      if (error.code === '23505') { toast.error('Ya reportaste esta conversación.'); return; }
+      toast.error('No se pudo enviar el reporte');
+      return;
+    }
+    toast.success('Reporte enviado. Un administrador lo revisará.');
+  };
+
   const totalUnread = conversations.reduce((s, c) => s + c.unread, 0);
 
   return (
@@ -459,6 +481,7 @@ const MessagesView = ({ initialUserId, initialName }: { initialUserId?: string; 
                   if (conv) deleteConversation(conv);
                 }}
                 onBlockUser={() => { if (activeOtherUserId) blockUser(activeOtherUserId); }}
+                onReportUser={reportUser}
               />
             </div>
           )}

@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, Headphones, BookOpen, Video, Music, Instagram, Send, X, Shield, Check, Plus, Share2, Link2, Building2, Moon, Navigation } from 'lucide-react';
+import { Star, MapPin, Clock, ArrowLeft, Zap, MessageCircle, BadgeCheck, Headphones, BookOpen, Video, Music, Instagram, Send, X, Shield, Check, Plus, Share2, Link2, Building2, Moon, Navigation, Flag } from 'lucide-react';
 import { toast } from 'sonner';
 import { addToCart, useEventCart, MAX_CART_ITEMS } from '@/lib/eventCart';
 import CondicionesPublicas from '@/components/CondicionesPublicas';
@@ -124,6 +124,25 @@ const ReviewsSection = ({ professionalUserId, professionalName, googleReviewUrl 
   // podía dejar una valoración sin haber contratado nunca.
   const [eligibleBooking, setEligibleBooking] = useState<{ requester_name: string } | null | 'loading'>('loading');
   const [form, setForm] = useState({ event_type: '', rating: 5, comment: '' });
+  const [reportingReviewId, setReportingReviewId] = useState<string | null>(null);
+  const [reportedReviewIds, setReportedReviewIds] = useState<Set<string>>(new Set());
+
+  const reportReview = async (reviewId: string, reason: string) => {
+    if (!user) return;
+    const { error } = await supabase.from('content_reports').insert({
+      reporter_id: user.id,
+      content_type: 'review',
+      content_id: reviewId,
+      reason,
+    });
+    if (error) {
+      if (error.code === '23505') { toast.error('Ya reportaste esta reseña.'); }
+      else toast.error('No se pudo enviar el reporte');
+      return;
+    }
+    toast.success('Reporte enviado. Un administrador lo revisará.');
+    setReportedReviewIds(prev => new Set(prev).add(reviewId));
+  };
 
   useEffect(() => {
     if (!professionalUserId) return;
@@ -303,10 +322,50 @@ const ReviewsSection = ({ professionalUserId, professionalName, googleReviewUrl 
                 </div>
               </div>
               <p className="text-sm leading-relaxed" style={{ color: '#333' }}>"{r.comment}"</p>
+              {user && (
+                <button
+                  onClick={() => setReportingReviewId(r.id)}
+                  disabled={reportedReviewIds.has(r.id)}
+                  className="mt-2 flex items-center gap-1 text-[11px] font-medium disabled:opacity-50"
+                  style={{ color: '#888' }}>
+                  <Flag size={10} /> {reportedReviewIds.has(r.id) ? 'Reportada' : 'Reportar'}
+                </button>
+              )}
             </div>
           ))}
         </div>
       )}
+
+      {/* Report review modal */}
+      <AnimatePresence>
+        {reportingReviewId && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            style={{ background: 'rgba(0,0,0,0.5)' }}
+            onClick={() => setReportingReviewId(null)}>
+            <div className="w-full max-w-sm rounded-2xl p-5" style={{ background: '#fff' }} onClick={e => e.stopPropagation()}>
+              <p className="text-sm font-bold mb-1" style={{ color: '#111' }}>Reportar reseña</p>
+              <p className="text-xs mb-3" style={{ color: '#555' }}>
+                Un administrador de XPEAK la revisará.
+              </p>
+              <div className="flex flex-col gap-1.5">
+                {['Contenido ofensivo o abusivo', 'Acoso o intimidación', 'Spam o estafa', 'Reseña falsa o no relacionada con un servicio real', 'Otro motivo'].map(reason => (
+                  <button key={reason}
+                    onClick={() => { reportReview(reportingReviewId, reason); setReportingReviewId(null); }}
+                    className="text-left px-3 py-2 rounded-lg text-xs font-medium transition-colors hover:bg-black/5"
+                    style={{ background: 'rgba(0,0,0,0.03)', color: '#222' }}>
+                    {reason}
+                  </button>
+                ))}
+              </div>
+              <button onClick={() => setReportingReviewId(null)}
+                className="w-full mt-3 px-3.5 py-2 rounded-lg text-xs font-bold" style={{ background: 'rgba(0,0,0,0.05)', color: '#333' }}>
+                Cancelar
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Review form modal */}
       <AnimatePresence>
