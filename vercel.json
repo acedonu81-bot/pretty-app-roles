@@ -105,7 +105,6 @@
     { "src": "/blog/precio-azafatas-leganes", "status": 301, "headers": { "Location": "/blog/precio-azafatas-eventos-espana" } },
     { "src": "/blog/precio-azafatas-lleida", "status": 301, "headers": { "Location": "/blog/precio-azafatas-eventos-espana" } },
     { "src": "/blog/precio-azafatas-logrono", "status": 301, "headers": { "Location": "/blog/precio-azafatas-eventos-espana" } },
-    { "src": "/blog/precio-azafatas-madrid", "status": 301, "headers": { "Location": "/blog/precio-azafatas-eventos-espana" } },
     { "src": "/blog/precio-azafatas-malaga", "status": 301, "headers": { "Location": "/blog/precio-azafatas-eventos-espana" } },
     { "src": "/blog/precio-azafatas-manresa", "status": 301, "headers": { "Location": "/blog/precio-azafatas-eventos-espana" } },
     { "src": "/blog/precio-azafatas-marbella", "status": 301, "headers": { "Location": "/blog/precio-azafatas-eventos-espana" } },
