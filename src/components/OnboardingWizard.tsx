@@ -465,7 +465,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                   <h2 className="text-lg font-black mb-1" style={{ fontFamily: 'Syne, sans-serif', color: '#111' }}>
                     {roleData.title}
                   </h2>
-                  <p className="text-xs" style={{ color: '#333' }}>Rellena esto ahora: tu ficha se ve 3× mejor desde el primer día</p>
+                  <p className="text-xs" style={{ color: '#333' }}>Foto y ciudad para aparecer ya en el directorio. El resto puedes completarlo después.</p>
                 </div>
 
                 <div className="flex flex-col gap-3 mb-5">
@@ -511,7 +511,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                   </div>
 
                   <div className="px-1">
-                    <p className="text-[0.65rem] font-bold mb-1.5" style={{ color: '#222' }}>Tu tarifa por hora</p>
+                    <p className="text-[0.65rem] font-bold mb-1.5" style={{ color: '#222' }}>Tu tarifa por hora <span className="font-normal" style={{ color: '#888' }}>(opcional)</span></p>
                     <div className="relative">
                       <Euro size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#888' }} />
                       <input
@@ -553,7 +553,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                   </div>
 
                   <div className="px-1">
-                    <p className="text-[0.65rem] font-bold mb-1.5" style={{ color: '#222' }}>Cuéntanos sobre ti</p>
+                    <p className="text-[0.65rem] font-bold mb-1.5" style={{ color: '#222' }}>Cuéntanos sobre ti <span className="font-normal" style={{ color: '#888' }}>(opcional)</span></p>
                     <textarea
                       value={bio}
                       onChange={(e) => setBio(e.target.value)}
@@ -563,9 +563,6 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                       className="w-full px-3 py-2.5 rounded-xl text-xs outline-none resize-none"
                       style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.1)', color: '#111' }}
                     />
-                    <p className="text-[0.6rem] mt-1" style={{ color: bio.trim().length >= 40 ? '#22c55e' : '#888' }}>
-                      {bio.trim().length}/40 caracteres mínimo
-                    </p>
                     {tieneFraseGenerica(bio) && (
                       <p className="text-[0.6rem] mt-1 font-semibold" style={{ color: '#dc2626' }}>
                         Evita frases tipo "info al DM" o "busco eventos": cuenta tu experiencia real
@@ -644,15 +641,20 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
             </button>
           )}
           {step === 1 && selectedRole !== 'empresario' && (() => {
-            const validRate = priceOnRequest || (!!hourlyRate && !isNaN(parseFloat(hourlyRate)) && parseFloat(hourlyRate) > 0);
-            const bioTooGeneric = tieneFraseGenerica(bio);
-            const validBio = bio.trim().length >= 40 && !bioTooGeneric;
-            const canContinue = !!photoUrl && !!effectiveCity && validRate && validBio;
+            // Solo foto y ciudad bloquean (26 sep 2026): son las dos cosas
+            // que el directorio exige de verdad para mostrar el perfil (ver
+            // DirectoryView.tsx .not('photo_url', 'is', null) y búsqueda por
+            // zona). Tarifa/Instagram/bio pasan a opcionales aquí — medido en
+            // los últimos 30 días, 27% de las altas se atascaba justo en la
+            // tarifa y otro 15% en la bio de 40 caracteres, ya con foto y
+            // ciudad puestas: perfiles que ya estaban comprometidos se
+            // perdían por fricción en el tramo final. Bio sigue filtrando
+            // frase genérica/teléfono si se escribe algo (no en blanco).
+            const bioTooGeneric = bio.trim().length > 0 && tieneFraseGenerica(bio);
+            const canContinue = !!photoUrl && !!effectiveCity && !bioTooGeneric;
             const missingLabel = !photoUrl ? 'Sube tu foto para continuar'
               : !effectiveCity ? 'Elige tu ciudad para continuar'
-              : !validRate ? 'Indica tu tarifa para continuar'
               : bioTooGeneric ? 'Cuenta tu experiencia real, no un anuncio genérico'
-              : bio.trim().length < 40 ? 'Cuéntanos sobre ti para continuar'
               : 'Guardar y continuar';
             return (
               <button onClick={handleQuickSave} disabled={savingQuick || uploadingPhoto || !canContinue}

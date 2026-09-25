@@ -11,7 +11,8 @@ import PortfolioUpload from '@/components/dashboard/PortfolioUpload';
 import MisCondicionesSection from './profile/MisCondicionesSection';
 import LocalEventosExtraFields from '@/components/dashboard/LocalEventosExtraFields';
 import { sanitizeInput } from '@/lib/contentFilter';
-import { DEFAULT_ZONE, DJ_GENRES, ROLE_TAGS } from '@/lib/constants';
+import { DJ_GENRES, ROLE_TAGS } from '@/lib/constants';
+import { computeProfileCompleteness } from '@/hooks/useProfileCompleteness';
 
 const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {}) => {
   const { user } = useAuth();
@@ -55,35 +56,10 @@ const ProfileView = ({ onNavigate }: { onNavigate?: (view: string) => void } = {
   const rawPhoto = profile.photo_url;
   const photoUrl = rawPhoto && rawPhoto.trim().length > 5 && !rawPhoto.endsWith("''") ? rawPhoto : null;
 
-  // Profile completeness
-  const completenessSteps = (() => {
-    const steps: { label: string; done: boolean; hint: string; bloqueante?: boolean }[] = [
-      // "bloqueante": no es que sumen posición, es que SIN esto no apareces en
-      // el sitio donde te buscan. Medido el 5 sep: 7 de 8 camareros sin foto,
-      // 5 de 8 con zona genérica ("España") en vez de ciudad — ninguno de esos
-      // 5 sale en /contratar-camareros/:ciudad, que es la página a la que
-      // llega quien busca contratar. El texto anterior ("suman posición")
-      // sonaba a mejora opcional cuando en realidad es la diferencia entre
-      // existir o no existir en el directorio.
-      { label: 'Foto de perfil', done: !!photoUrl || !!profile.photo_url, hint: 'Sin foto no puedes aparecer en el directorio.', bloqueante: true },
-      { label: 'Bio', done: !!(profile.bio && profile.bio.trim().length > 20), hint: 'Escribe al menos una frase sobre ti.' },
-      { label: 'Ciudad', done: !!(profile.zone && profile.zone !== DEFAULT_ZONE), hint: 'Sin tu ciudad, nadie te encuentra al buscar en su zona.', bloqueante: true },
-      // "Especialidad" solo para profesionales: al empresario se le contaba en
-      // el % de perfil completo aunque su control (roleTagConfig) no existe
-      // para su rol, así que no tenía forma directa de completarlo.
-      ...(profile.role !== 'empresario' ? [
-        { label: 'Especialidad', done: !!(profile.specialty && profile.specialty.trim().length > 0), hint: 'Añade tus géneros o especialidades.' },
-      ] : []),
-      { label: 'Instagram', done: !!(profile.instagram && profile.instagram.trim().length > 0), hint: 'Enlaza tu Instagram para que te contacten.' },
-      ...(profile.role === 'dj' ? [
-        { label: 'Mix / Audio', done: !!(profile.audio_embed_url && (profile.audio_embed_url as string).trim().length > 0) || !!(profile.audio_session_urls && profile.audio_session_urls.length > 0), hint: 'Añade un enlace a tu mix o sesión.' },
-      ] : profile.role !== 'empresario' ? [
-        { label: 'Portfolio', done: !!(profile.portfolio_urls && profile.portfolio_urls.length > 0), hint: 'Sube fotos o un vídeo corto de tu trabajo.' },
-      ] : []),
-    ];
-    const done = steps.filter(s => s.done).length;
-    return { steps, percent: Math.round((done / steps.length) * 100) };
-  })();
+  // Profile completeness — lógica compartida con el banner del dashboard
+  // (useProfileCompleteness), ver comentario ahí sobre mantenerla en sync
+  // con la copia server-side de profile-incomplete-reminder.
+  const completenessSteps = computeProfileCompleteness(profile);
 
   const EU_LANGS = ['Español','Inglés','Francés','Italiano','Alemán','Portugués','Neerlandés','Polaco','Catalán','Euskera','Gallego'];
   // Provincia → ciudades. Flujo de 2 pasos (más ordenado que una lista larga).

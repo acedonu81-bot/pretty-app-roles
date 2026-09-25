@@ -63,8 +63,8 @@ const LocalEventosView = lazy(() => import('@/components/dashboard/views/LocalEv
 const OnboardingTour = lazy(() => import('@/components/dashboard/OnboardingTour'));
 const OnboardingWizard = lazy(() => import('@/components/OnboardingWizard'));
 const AmbientBackground = lazy(() => import('@/components/AmbientBackground'));
-import { DEFAULT_ZONE } from '@/lib/constants';
 import { logProfileView } from '@/lib/track';
+import { computeProfileCompleteness } from '@/hooks/useProfileCompleteness';
 
 const PROFILE_VIEWS = new Set(['profile', 'ficha', 'stats']);
 
@@ -81,21 +81,12 @@ const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: s
   // mensaje dos veces seguidas en la misma pantalla.
   if (ctx.loading || dismissed || activeView === 'profile') return null;
 
+  // Misma cuenta que ProfileView.tsx y el email profile_incomplete_reminder
+  // (useProfileCompleteness) — antes este banner tenía su propia copia de
+  // los pasos, con riesgo de divergir en silencio.
+  const { steps: completenessSteps, percent } = computeProfileCompleteness(ctx);
   const hasInstagram = !!(ctx.instagram && ctx.instagram.trim().length > 0);
-  const steps = [
-    !!ctx.photo_url,
-    !!(ctx.bio && ctx.bio.trim().length > 20),
-    !!(ctx.zone && ctx.zone !== DEFAULT_ZONE),
-    !!(ctx.specialty && ctx.specialty.trim().length > 0),
-    hasInstagram,
-    ...(ctx.role !== 'empresario' ? [!!(
-      (ctx.audio_embed_url && (ctx.audio_embed_url as string).trim().length > 0)
-      || (Array.isArray(ctx.audio_session_urls) && ctx.audio_session_urls.length > 0)
-      || (Array.isArray(ctx.portfolio_urls) && ctx.portfolio_urls.length > 0)
-    )] : []),
-  ];
-  const missingCount = steps.filter(s => !s).length;
-  const percent = Math.round((steps.filter(Boolean).length / steps.length) * 100);
+  const missingCount = completenessSteps.filter(s => !s.done).length;
 
   if (percent >= 100) return null;
 
