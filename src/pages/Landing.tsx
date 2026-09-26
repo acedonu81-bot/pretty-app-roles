@@ -575,11 +575,15 @@ const Landing = () => {
     try {
       const { supabase } = await import('@/integrations/supabase/client');
       const cleanEmail = newsletterEmail.trim().toLowerCase();
-      await (supabase.from as any)('newsletter_leads').insert({ email: cleanEmail });
+      const { error } = await (supabase.from as any)('newsletter_leads').insert({ email: cleanEmail });
       setNewsletterDone(true);
-      supabase.functions.invoke('send-email', {
-        body: { type: 'lead_welcome', data: { email: cleanEmail, intent: 'newsletter', variant: 'landing' } },
-      }).catch(() => {}); // silencioso si falla
+      // Solo enviar si el email era nuevo (23505 = ya suscrito). Antes se
+      // reenviaba en cada submit aunque el insert fallara por duplicado.
+      if (!error) {
+        supabase.functions.invoke('send-email', {
+          body: { type: 'lead_welcome', data: { email: cleanEmail, intent: 'newsletter', variant: 'landing' } },
+        }).catch(() => {}); // silencioso si falla
+      }
     } catch {
       navigate('/auth');
     } finally {

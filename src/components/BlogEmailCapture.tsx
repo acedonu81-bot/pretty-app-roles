@@ -75,13 +75,19 @@ export default function BlogEmailCapture({
       return;
     }
 
-    // Enviar email de bienvenida (fire-and-forget, no bloquea el flujo)
-    supabase.functions.invoke('send-email', {
-      body: {
-        type: 'lead_welcome',
-        data: { email: email.toLowerCase().trim(), intent, variant, article_path: articlePath },
-      },
-    }).catch(() => {}); // silencioso si falla
+    // Email de bienvenida solo si el lead es nuevo. Con 23505 (email ya
+    // existía) no reenviar: antes se invocaba send-email en todos los casos,
+    // y al haber dos BlogEmailCapture en la misma página (arriba y abajo del
+    // artículo) un usuario que probaba varias veces recibía 3-4 copias del
+    // mismo email en minutos (visto con djjhosval@gmail.com, 25 sep 2026).
+    if (!error) {
+      supabase.functions.invoke('send-email', {
+        body: {
+          type: 'lead_welcome',
+          data: { email: email.toLowerCase().trim(), intent, variant, article_path: articlePath },
+        },
+      }).catch(() => {}); // silencioso si falla
+    }
 
     trackBlogLeadSubmit({ component: 'email_capture', role: intent, variant, article_path: articlePath });
     setStatus('success');
