@@ -513,12 +513,22 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                       era obligatorio — se quedaba con el botón de avanzar en
                       gris sin entender por qué (26 sep 2026: 3 de los últimos
                       5 registros con 2 eventos de analítica en total, es
-                      decir, cerraron el wizard sin llegar a pulsar aquí). */}
-                  <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploadingPhoto}
-                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all"
+                      decir, cerraron el wizard sin llegar a pulsar aquí).
+                      El pulso de sombra (26 sep 2026) sube y baja de
+                      intensidad en bucle mientras falta la foto — refuerza el
+                      "toca aquí" sin depender de que el usuario note un borde
+                      estático. Se para en cuanto hay foto: animate={false}
+                      con framer-motion no reinicia el bucle, solo congela el
+                      último frame en el estado final (verde, foto subida). */}
+                  <motion.button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploadingPhoto}
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl"
+                    animate={photoUrl
+                      ? { boxShadow: '0 0 0 0 rgba(34,197,94,0)' }
+                      : { boxShadow: ['0 0 0 2px rgba(212,175,55,0.15)', '0 0 22px 4px rgba(212,175,55,0.55)', '0 0 0 2px rgba(212,175,55,0.15)'] }}
+                    transition={photoUrl ? { duration: 0.3 } : { duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
                     style={photoUrl
                       ? { background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.25)' }
-                      : { background: 'rgba(212,175,55,0.1)', border: '1.5px solid #D4AF37', boxShadow: '0 0 0 3px rgba(212,175,55,0.15)' }}>
+                      : { background: 'rgba(212,175,55,0.1)', border: '1.5px solid #D4AF37' }}>
                     {photoUrl ? (
                       <img src={photoUrl} alt="Tu foto" className="w-10 h-10 rounded-full object-cover flex-shrink-0" />
                     ) : (
@@ -533,7 +543,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                       </p>
                       <p className="text-[0.65rem]" style={{ color: '#333' }}>Los perfiles con foto reciben 3× más contactos</p>
                     </div>
-                  </button>
+                  </motion.button>
 
                   <div className="px-1">
                     <p className="text-[0.65rem] font-bold mb-1.5" style={{ color: '#222' }}>Tu ciudad</p>
