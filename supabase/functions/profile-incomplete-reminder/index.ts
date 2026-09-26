@@ -52,9 +52,15 @@ function completeness(p: Record<string, unknown>): { percent: number; missing: s
 
 // Finds ANY incomplete, non-empresario, non-seed profile (sin límite de
 // antigüedad — antes solo miraba la ventana 24-48h desde el registro, así
-// que nunca alcanzaba a perfiles ya asentados e incompletos). Dedupe vía
-// email_logs garantiza que cada perfil recibe el aviso una sola vez.
+// que nunca alcanzaba a perfiles ya asentados e incompletos).
 // Designed to be called daily via Supabase cron.
+//
+// Tope de MAX_REMINDERS: el guard anterior era "una vez para siempre, nunca
+// más" via email_logs, pero un fallo de esa comprobación (sin UNIQUE
+// constraint, ver migración 20260926130000) dejó a un usuario recibiendo
+// este email 13 días seguidos sin parar (ivanperezblanco1992@gmail.com,
+// 12-23 sep 2026). Ahora se cuenta cuántos recordatorios lleva y se corta.
+const MAX_REMINDERS = 4;
 serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
 
@@ -89,14 +95,28 @@ serve(async (req) => {
       const { percent, missing } = completeness(profile as Record<string, unknown>);
       if (percent >= 100 || missing.length === 0) continue;
 
-      const { data: existing } = await admin
+      const { count: reminderCount } = await admin
         .from('email_logs' as any)
-        .select('id')
+        .select('id', { count: 'exact', head: true })
         .eq('user_id', profile.user_id)
-        .eq('type', 'profile_incomplete_reminder')
-        .limit(1)
-        .maybeSingle();
-      if (existing) continue;
+        .eq('type', 'profile_incomplete_reminder');
+      if ((reminderCount ?? 0) >= MAX_REMINDERS) continue;
+
+      // Reservar el envío de HOY antes de enviarlo: el UNIQUE(user_id, type,
+      // sent_day) de email_logs (migración 20260926130000) hace que una
+      // segunda invocación de la función el mismo día falle aquí con
+      // conflicto y nunca llegue a duplicar el email. Antes el insert iba
+      // DESPUÉS de enviar (y sin constraint), así que el guard de "ya se
+      // envió" no protegía nada frente a invocaciones repetidas — el caso
+      // real fue ivanperezblanco1992@gmail.com recibiendo este email 13 días
+      // seguidos sin parar (12-23 sep 2026), con 16 filas de log para el
+      // mismo user+type en vez de una por día.
+      const { error: reserveError } = await admin.from('email_logs' as any).insert({
+        user_id: profile.user_id,
+        type: 'profile_incomplete_reminder',
+        sent_at: new Date().toISOString(),
+      });
+      if (reserveError) continue; // ya reservado hoy por otra invocación
 
       const { data: userData, error: userError } = await admin.auth.admin.getUserById(profile.user_id);
       if (userError || !userData?.user?.email) {
@@ -126,18 +146,6 @@ serve(async (req) => {
         errors.push(profile.user_id);
         continue;
       }
-
-      // try/catch explícito, no .insert().catch() encadenado — esa forma
-      // lanza TypeError en la versión de supabase-js usada aquí (confirmado
-      // el 18 ago 2026 en chat-ai), lo que haría contar un envío ya
-      // realizado como error y arriesgar reintentar/duplicar el email.
-      try {
-        await admin.from('email_logs' as any).insert({
-          user_id: profile.user_id,
-          type: 'profile_incomplete_reminder',
-          sent_at: new Date().toISOString(),
-        });
-      } catch { /* non-critical */ }
 
       sent++;
     } catch (e) {

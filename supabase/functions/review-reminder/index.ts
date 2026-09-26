@@ -72,15 +72,24 @@ serve(async (req) => {
     logSuffix: string,
     data: { name: string; titulo: string; otra_parte: string; es_organizador: boolean; ref: string },
   ) => {
+    // logKey ya es único por evento (bookingId+logSuffix): un mismo
+    // user_id+type real solo debería darse una vez, cualquier día. Antes el
+    // orden era SELECT -> enviar -> INSERT, sin transacción: dos invocaciones
+    // de la función (test manual, reintento) podían pasar el SELECT antes de
+    // que cualquiera insertara, y ambas enviaban — pasó el 13 sep 2026 (4
+    // copias de "pedir_valoracion" a acedonu81@gmail.com en 19 min).
+    //
+    // Ahora se reserva el envío insertando el log ANTES de llamar a
+    // send-email: el UNIQUE(user_id, type, sent_day) de email_logs (migración
+    // 20260926130000) hace que una segunda invocación concurrente falle aquí
+    // con conflicto y nunca llegue a enviar el email duplicado.
     const logKey = `review_reminder_${bookingId}_${logSuffix}`;
-    const { data: existingLog } = await admin
-      .from('email_logs' as any)
-      .select('id')
-      .eq('user_id', userId)
-      .eq('type', logKey)
-      .limit(1)
-      .maybeSingle();
-    if (existingLog) return;
+    const { error: reserveError } = await admin.from('email_logs' as any).insert({
+      user_id: userId,
+      type: logKey,
+      sent_at: new Date().toISOString(),
+    });
+    if (reserveError) return; // ya reservado (o insertado) por otra invocación
 
     const { data: userData, error: userError } = await admin.auth.admin.getUserById(userId);
     if (userError || !userData?.user?.email) {
@@ -103,12 +112,6 @@ serve(async (req) => {
       errors.push(userId);
       return;
     }
-
-    await admin.from('email_logs' as any).insert({
-      user_id: userId,
-      type: logKey,
-      sent_at: new Date().toISOString(),
-    }).catch(() => { /* non-critical */ });
 
     sent++;
   };

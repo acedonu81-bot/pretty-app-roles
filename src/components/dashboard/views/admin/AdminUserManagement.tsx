@@ -37,6 +37,10 @@ const AdminUserManagement = () => {
   const [users, setUsers] = useState<DBProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState('');
+  // IDs con una acción en curso — evita doble clic mientras la request está
+  // en vuelo. Caso real (15 sep 2026): gonzalo.magro@yahoo.es recibió 2
+  // emails "Perfil aprobado" en 42s porque el botón no bloqueaba reentradas.
+  const [verifyingIds, setVerifyingIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     fetchUsers();
@@ -53,23 +57,29 @@ const AdminUserManagement = () => {
   };
 
   const toggleVerify = async (user: DBProfile) => {
-    const { error } = await supabase
-      .from('profiles')
-      .update({ is_verified: !user.is_verified })
-      .eq('id', user.id);
-    if (error) { toast.error('Error'); return; }
-    toast.success(user.is_verified ? 'Verificación eliminada' : 'Perfil verificado con Sello Dorado');
-    setUsers(prev => prev.map(u => u.id === user.id ? { ...u, is_verified: !u.is_verified } : u));
+    if (verifyingIds.has(user.id)) return; // ya hay una request en vuelo para este usuario
+    setVerifyingIds(prev => new Set(prev).add(user.id));
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ is_verified: !user.is_verified })
+        .eq('id', user.id);
+      if (error) { toast.error('Error'); return; }
+      toast.success(user.is_verified ? 'Verificación eliminada' : 'Perfil verificado con Sello Dorado');
+      setUsers(prev => prev.map(u => u.id === user.id ? { ...u, is_verified: !u.is_verified } : u));
 
-    // Aviso al profesional. Solo al conceder el sello — quitarlo es una
-    // acción administrativa sin plantilla de "sello retirado" y no se avisa.
-    if (!user.is_verified) {
-      supabase.functions.invoke('send-email', {
-        body: {
-          type: 'admin_approved',
-          data: { user_id: user.user_id, name: user.display_name, role: user.role },
-        },
-      }).catch((err: unknown) => console.warn('[AdminUserManagement] approved email failed:', err));
+      // Aviso al profesional. Solo al conceder el sello — quitarlo es una
+      // acción administrativa sin plantilla de "sello retirado" y no se avisa.
+      if (!user.is_verified) {
+        supabase.functions.invoke('send-email', {
+          body: {
+            type: 'admin_approved',
+            data: { user_id: user.user_id, name: user.display_name, role: user.role },
+          },
+        }).catch((err: unknown) => console.warn('[AdminUserManagement] approved email failed:', err));
+      }
+    } finally {
+      setVerifyingIds(prev => { const next = new Set(prev); next.delete(user.id); return next; });
     }
   };
 
@@ -207,8 +217,9 @@ const AdminUserManagement = () => {
                         style={{ background: 'rgba(139,92,246,0.1)', color: '#8B5CF6' }}>
                         <FileEdit size={13} />
                       </a>
-                      <button onClick={() => toggleVerify(u)} title={u.is_verified ? 'Quitar Sello Dorado' : ACTIONS[3].hint}
-                        className="p-1.5 rounded-md transition-all hover:scale-110"
+                      <button onClick={() => toggleVerify(u)} disabled={verifyingIds.has(u.id)}
+                        title={u.is_verified ? 'Quitar Sello Dorado' : ACTIONS[3].hint}
+                        className="p-1.5 rounded-md transition-all hover:scale-110 disabled:opacity-40 disabled:pointer-events-none"
                         style={{
                           background: u.is_verified ? 'rgba(212,175,55,0.2)' : 'rgba(0,0,0,0.04)',
                           color: u.is_verified ? '#8A6D0F' : '#666',
