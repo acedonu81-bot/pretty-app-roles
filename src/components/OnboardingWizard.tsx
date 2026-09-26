@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { ALL_CITIES } from '@/lib/regions';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight, Megaphone, UtensilsCrossed, Laugh, PartyPopper, PersonStanding, MicVocal, Shirt, Scissors, Upload, Euro, Guitar, SlidersHorizontal, Instagram } from 'lucide-react';
@@ -321,6 +321,40 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
     setStep(1);
   };
 
+  // Abre el selector de foto solo con llegar al step 1 (26 sep 2026): antes
+  // "Añade tu foto" y "Guardar y continuar" eran dos botones sin relación
+  // visible, y una parte de los registros se quedaba mirando el botón de
+  // avanzar en gris ("Sube tu foto para continuar") sin pulsar el de arriba.
+  // El timeout deja que termine la animación de entrada del step antes de
+  // que el selector nativo del sistema tape el modal.
+  useEffect(() => {
+    if (step !== 1 || selectedRole === 'empresario' || photoUrl) return;
+    const timer = setTimeout(() => fileInputRef.current?.click(), 500);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step, selectedRole]);
+
+  // Refuerzo si cierra el selector sin elegir nada (26 sep 2026): el evento
+  // 'cancel' del input no dispara handlePhotoUpload, así que sin esto el
+  // usuario volvía al wizard exactamente donde estaba, sin ninguna pista de
+  // por qué "Guardar y continuar" seguía bloqueado. 'cancel' lo soportan
+  // Chrome/Safari/Firefox actuales; en el resto simplemente no se muestra el
+  // aviso extra, pero el botón dorado resaltado y su texto siguen ahí.
+  // Depende de `step`: el <input type="file"> vive dentro del bloque del
+  // step 1 (no existe en el DOM en step 0), así que sin esta dependencia el
+  // efecto se ejecutaba una sola vez al montar el wizard con
+  // fileInputRef.current todavía en null y el listener nunca llegaba a
+  // engancharse — verificado en vivo, el evento 'cancel' pasaba de largo.
+  useEffect(() => {
+    const input = fileInputRef.current;
+    if (!input) return;
+    const onCancel = () => {
+      if (!photoUrl) toast.error('Necesitas una foto para aparecer en el directorio.');
+    };
+    input.addEventListener('cancel', onCancel);
+    return () => input.removeEventListener('cancel', onCancel);
+  }, [photoUrl, step]);
+
   // Empresario que además ofrece servicios (23 sep 2026, caso Vulcano Grill:
   // food truck registrado como organizador, con foto y bio completas pero
   // invisible — los perfiles de empresario no salen en el directorio). Si
@@ -471,9 +505,20 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
 
                 <div className="flex flex-col gap-3 mb-5">
                   <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
+                  {/* Sin foto, este botón se distingue del resto de campos
+                      (opcionales, estilo dorado tenue de abajo) porque es el
+                      único paso que de verdad bloquea "Guardar y continuar"
+                      (ver canContinue más abajo). Antes tenía el mismo estilo
+                      sutil que Instagram/bio y el usuario no distinguía cuál
+                      era obligatorio — se quedaba con el botón de avanzar en
+                      gris sin entender por qué (26 sep 2026: 3 de los últimos
+                      5 registros con 2 eventos de analítica en total, es
+                      decir, cerraron el wizard sin llegar a pulsar aquí). */}
                   <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploadingPhoto}
                     className="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all"
-                    style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.12)' }}>
+                    style={photoUrl
+                      ? { background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.25)' }
+                      : { background: 'rgba(212,175,55,0.1)', border: '1.5px solid #D4AF37', boxShadow: '0 0 0 3px rgba(212,175,55,0.15)' }}>
                     {photoUrl ? (
                       <img src={photoUrl} alt="Tu foto" className="w-10 h-10 rounded-full object-cover flex-shrink-0" />
                     ) : (
@@ -484,7 +529,7 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
                     )}
                     <div className="text-left">
                       <p className="text-xs font-bold" style={{ color: '#222' }}>
-                        {uploadingPhoto ? 'Subiendo...' : photoUrl ? 'Foto subida ✓' : 'Añade tu foto'}
+                        {uploadingPhoto ? 'Subiendo...' : photoUrl ? 'Foto subida ✓' : 'Toca aquí para añadir tu foto (obligatoria)'}
                       </p>
                       <p className="text-[0.65rem]" style={{ color: '#333' }}>Los perfiles con foto reciben 3× más contactos</p>
                     </div>
