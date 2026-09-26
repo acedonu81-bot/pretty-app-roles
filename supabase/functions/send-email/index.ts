@@ -1478,6 +1478,59 @@ serve(async (req) => {
       return new Response(JSON.stringify({ error: 'Invalid recipient email' }), { status: 400, headers: corsHeaders });
     }
 
+    // Throttle de new_message: si el destinatario ya recibió un aviso de
+    // mensaje nuevo en los últimos 2 minutos, no reenviar. Antes cada
+    // mensaje de chat disparaba su propio email sin agrupar, así que una
+    // ráfaga de varios mensajes seguidos del mismo remitente generaba un
+    // email por cada uno (caso real: acedonu81@gmail.com, 2 emails en 72s,
+    // 22 sep 2026). No afecta a mensajes reales espaciados en el tiempo.
+    if (type === 'new_message' && to !== ADMIN) {
+      const throttleClient = createClient(
+        Deno.env.get('SUPABASE_URL') ?? '',
+        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+      );
+      const twoMinAgo = new Date(Date.now() - 2 * 60 * 1000).toISOString();
+      const { data: recent } = await throttleClient
+        .from('email_send_log' as any)
+        .select('id')
+        .eq('to_email', to)
+        .eq('type', 'new_message')
+        .gte('sent_at', twoMinAgo)
+        .limit(1)
+        .maybeSingle();
+      if (recent) {
+        return new Response(JSON.stringify({ ok: true, skipped: 'throttled' }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }
+    }
+
+    // Dedupe de resena_pendiente por review_id: el trigger notify_admin_
+    // review_pending llama a esta función vía net.http_post (pg_net), que
+    // puede reintentar la petición HTTP. Caso real (13 sep 2026): 1 sola
+    // fila insertada en reviews pero 2 emails "Nueva reseña pendiente"
+    // enviados en 14 min — no fue doble-submit del formulario (solo 1 fila
+    // en reviews), así que el duplicado vino del reintento de red del
+    // trigger, no del cliente. Se reserva en email_logs (mismo mecanismo que
+    // los crons de recordatorio) ANTES de enviar: si ya existe la fila para
+    // este review_id, el insert falla por el UNIQUE y no se envía nada.
+    // email_logs.user_id es NOT NULL y este email no tiene un destinatario
+    // con cuenta (va a info@xpeak.site) — se usa reviewed_user_id (el
+    // profesional reseñado, siempre presente en una reseña) solo como
+    // clave, no como destinatario real del email.
+    if (type === 'resena_pendiente' && data?.review_id && data?.reviewed_user_id) {
+      const dedupeClient = createClient(
+        Deno.env.get('SUPABASE_URL') ?? '',
+        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+      );
+      const { error: reserveError } = await dedupeClient.from('email_logs' as any).insert({
+        user_id: data.reviewed_user_id,
+        type: `resena_pendiente_${data.review_id}`,
+        sent_at: new Date().toISOString(),
+      });
+      if (reserveError) {
+        return new Response(JSON.stringify({ ok: true, skipped: 'duplicate_review' }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }
+    }
+
     // Check email opt-out (skip for admin-only emails sent to info@xpeak.site)
     if (to !== ADMIN) {
       const optOutClient = createClient(
