@@ -323,6 +323,7 @@ export default function ResourcesView() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {courses.map(p => (
               <a key={p.name} href={p.url!} target="_blank" rel="sponsored noopener noreferrer"
+                onClick={() => logAffiliateClick(p.name)}
                 className="group flex flex-col rounded-2xl p-4 transition-all hover:shadow-md hover:-translate-y-0.5 relative overflow-hidden"
                 style={{
                   background: 'linear-gradient(135deg, rgba(37,99,235,0.05), rgba(37,99,235,0.01))',
@@ -363,6 +364,7 @@ export default function ResourcesView() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {shops.map(p => (
               <a key={p.name} href={p.url!} target="_blank" rel="sponsored noopener noreferrer"
+                onClick={() => logAffiliateClick(p.name)}
                 className="group flex flex-col rounded-2xl p-4 transition-all hover:shadow-sm"
                 style={{ background: '#fff', border: '1px solid rgba(10,9,8,0.08)' }}>
                 <div className="flex items-start justify-between gap-2">
