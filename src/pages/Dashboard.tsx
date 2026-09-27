@@ -125,6 +125,44 @@ const ProfileIncompleteBanner = ({ onNavigate, activeView }: { onNavigate: (v: s
   );
 };
 
+// Opt-in de marketing (migración 20260927) para usuarios registrados antes
+// de que existiera la casilla en el alta — no había base legal para incluirlos
+// en campañas de email. Se pregunta una sola vez: aceptar o rechazar marcan
+// marketing_consent_asked_at y el banner no vuelve a aparecer en ningún caso.
+const MarketingConsentBanner = () => {
+  const profile = useProfile();
+  const [hidden, setHidden] = useState(false);
+
+  if (profile.loading || hidden || profile.marketing_consent_asked_at) return null;
+
+  const respond = async (accept: boolean) => {
+    setHidden(true);
+    await profile.updateField({
+      marketing_consent: accept,
+      marketing_consent_asked_at: new Date().toISOString(),
+    });
+  };
+
+  return (
+    <div className="mx-4 mt-3 mb-0 flex items-center gap-3 px-4 py-3 rounded-xl text-xs"
+      style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.18)' }}>
+      <span className="flex-1" style={{ color: '#222' }}>
+        ¿Quieres recibir novedades y ofertas de XPEAK por email?
+      </span>
+      <button onClick={() => respond(true)}
+        className="flex-shrink-0 px-3 py-1.5 rounded-lg font-bold transition-all hover:scale-105"
+        style={{ background: 'rgba(212,175,55,0.15)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.25)' }}>
+        Sí, quiero
+      </button>
+      <button onClick={() => respond(false)}
+        className="flex-shrink-0 px-3 py-1.5 rounded-lg font-bold transition-all hover:opacity-70"
+        style={{ color: '#666' }}>
+        No, gracias
+      </button>
+    </div>
+  );
+};
+
 // NOTA: aquí vivían ROLE_DEFAULT_VIEW y el componente RoleDefaultView, un
 // TERCER mecanismo que cambiaba la vista tras montar según su propio mapa —
 // con criterios distintos a ROLE_TO_VIEW (p.ej. mandaba los 'dj' a 'profile').
@@ -407,6 +445,25 @@ const Dashboard = () => {
     return () => window.removeEventListener('popstate', onPop);
   }, [selectedProfile]);
 
+  // Entrar en una categoría (ej. Explorar -> DJs) no dejaba rastro en el
+  // historial del navegador: al pulsar "atrás" no había nada que deshacer
+  // dentro del panel, así que saltaba directo a la página anterior a
+  // Explorar (la landing). pushState aquí crea esa entrada; popstate deshace
+  // volviendo a 'explorar' sin tocar handleViewChange (que sí debe seguir
+  // registrando historial en la próxima navegación hacia adelante).
+  const viewForPopRef = useRef(activeView);
+  viewForPopRef.current = activeView;
+  useEffect(() => {
+    if (HOME_VIEWS.has(activeView)) return;
+    window.history.pushState({ dashboardView: activeView }, '');
+    const onPop = () => {
+      if (!HOME_VIEWS.has(viewForPopRef.current)) setActiveView('explorar');
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeView]);
+
   useEffect(() => {
     if (!loading && !user) {
       navigate('/auth', { replace: true });
@@ -596,6 +653,7 @@ const Dashboard = () => {
         >
           <DashboardTopbar onMenuToggle={() => setSidebarOpen(true)} isMobile={isMobile} onSearch={handleSearch} searchQuery={searchQuery} onHome={() => handleViewChange('dj')} userId={user?.id} isEmpresario={profileRole === 'empresario'} onViewChange={handleViewChange} />
           <ProfileIncompleteBanner onNavigate={handleViewChange} activeView={activeView} />
+          <MarketingConsentBanner />
           <RecentBusinessViewLine />
           <TodaysRequestsLine />
           <div className={`p-3 md:p-6 flex-1 md:pb-6 ${isMobile ? 'pb-[calc(64px+max(env(safe-area-inset-bottom),12px)+1.5rem)]' : 'pb-6'}`}

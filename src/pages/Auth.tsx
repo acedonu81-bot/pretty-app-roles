@@ -110,6 +110,7 @@ const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [legalAccepted, setLegalAccepted] = useState(false);
+  const [marketingConsent, setMarketingConsent] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
   const [showForgot, setShowForgot] = useState(false);
   const [forgotEmail, setForgotEmail] = useState('');
@@ -406,6 +407,7 @@ const Auth = () => {
               hourly_rate: 0,
               category: 'pending',
               zone: city || 'España',
+              marketing_consent: marketingConsent,
             },
             emailRedirectTo: `${SITE_URL}/auth`,
             captchaToken,
@@ -830,6 +832,29 @@ const Auth = () => {
                       <Link to="/terminos" target="_blank" onClick={e => e.stopPropagation()} className="underline" style={{ color: '#8B6A00' }}>Términos</Link>{' '}
                       y{' '}
                       <Link to="/cookies" target="_blank" onClick={e => e.stopPropagation()} className="underline" style={{ color: '#8B6A00' }}>Cookies</Link>
+                    </span>
+                  </label>
+                )}
+
+                {/* Marketing — opcional, nunca premarcado, no bloquea el registro */}
+                {!isLogin && (
+                  <label
+                    htmlFor="marketing-consent"
+                    className="flex items-center gap-3 cursor-pointer rounded-xl px-3 py-3.5 active:bg-black/5"
+                    style={{
+                      background: 'rgba(0,0,0,0.03)',
+                      border: marketingConsent ? '1px solid rgba(212,175,55,0.5)' : '1px solid rgba(0,0,0,0.1)',
+                    }}>
+                    <input
+                      id="marketing-consent"
+                      name="marketingConsent"
+                      type="checkbox"
+                      checked={marketingConsent}
+                      onChange={(e) => setMarketingConsent(e.target.checked)}
+                      className="w-6 h-6 flex-shrink-0 rounded-md accent-[#D4AF37]"
+                    />
+                    <span className="text-xs leading-relaxed" style={{ color: 'rgba(0,0,0,0.65)' }}>
+                      Quiero recibir novedades y ofertas de XPEAK por email (opcional)
                     </span>
                   </label>
                 )}

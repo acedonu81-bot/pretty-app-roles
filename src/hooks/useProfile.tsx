@@ -65,6 +65,11 @@ interface ProfileData {
   is_public?: boolean;
   show_online?: boolean;
   email_opt_out?: boolean;
+  // Opt-in de marketing (migración 20260927). Distinto de email_opt_out
+  // (notificaciones de chat). asked_at = null significa que nunca se le
+  // mostró el banner; se marca tanto al aceptar como al rechazar.
+  marketing_consent?: boolean;
+  marketing_consent_asked_at?: string | null;
   // Emergentes (migración 20260916): experience_level='emergente' saca al
   // perfil del directorio normal y lo mete en el directorio Emergentes.
   // El sub-nivel es autodeclarado y solo informativo; el ascenso de
@@ -134,6 +139,8 @@ const defaults: ProfileData = {
   is_public: true,
   show_online: true,
   email_opt_out: false,
+  marketing_consent: false,
+  marketing_consent_asked_at: null,
   phone: null,
   specialty: null,
   instagram: null,
@@ -192,7 +199,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     // el perfil no cargaría para nadie. Se pide primero con ellas y, si falla,
     // se reintenta sin ellas usando los defaults.
     const BASE_COLS = 'id, user_id, display_name, role, roles, photo_url, is_primary, subscription_tier, birthday, zone, hourly_rate, stream_url, stream_title, trial_started_at, annual_billing, is_live, is_flash_active, phone, specialty, instagram, bio, audio_embed_url, audio_session_urls, languages, genres, category, tiktok, bio_video_url, bg_music_url, portfolio_urls, referral_code, priority_badge_until, offers_classes, class_styles, class_price, seeking_dance_partner, dance_level, dance_role, created_at, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km, min_hours, overtime_after_hours, overtime_surcharge_pct, night_surcharge_pct, holiday_surcharge_pct, payment_days_max, travel_free_km, travel_fee, excluded_services, uniform_provided_by, available_weekdays, blocked_dates, min_notice_hours, conditions_note';
-    const PRIVACY_COLS = 'is_public, show_online, email_opt_out';
+    const PRIVACY_COLS = 'is_public, show_online, email_opt_out, marketing_consent, marketing_consent_asked_at';
     const EMERGENTE_COLS = 'experience_level, emergente_sub_nivel, emergente_anios, show_new_badge';
 
     let { data: rows, error: rowsError } = await supabase
@@ -221,6 +228,8 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
       is_public: primary.is_public ?? true,
       show_online: primary.show_online ?? true,
       email_opt_out: primary.email_opt_out ?? false,
+      marketing_consent: primary.marketing_consent ?? false,
+      marketing_consent_asked_at: primary.marketing_consent_asked_at ?? null,
       experience_level: primary.experience_level ?? null,
       emergente_sub_nivel: primary.emergente_sub_nivel ?? null,
       emergente_anios: primary.emergente_anios ?? null,
