@@ -1,8 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
-import { CheckCircle, Mail, MessageSquare, FileEdit, Star, TrendingUp, Search } from 'lucide-react';
+import { CheckCircle, Mail, MessageSquare, FileEdit, TrendingUp, Search } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { isEarlyAdopter } from '@/lib/earlyAdopter';
 
 interface DBProfile {
   id: string;
@@ -11,8 +10,6 @@ interface DBProfile {
   zone: string | null;
   subscription_tier: string;
   is_verified: boolean;
-  is_early_adopter: boolean;
-  is_early_adopter_override: boolean;
   phone?: string | null;
   instagram: string | null;
   category: string;
@@ -26,12 +23,8 @@ const ACTIONS = [
   { icon: Mail, label: 'Email', hint: 'Abre un correo a info@xpeak.es sobre este usuario' },
   { icon: FileEdit, label: 'Ficha', hint: 'Ver su perfil público en una pestaña nueva' },
   { icon: CheckCircle, label: 'Sello Dorado', hint: 'Marca el perfil como verificado' },
-  { icon: Star, label: 'Aro Azul', hint: 'Fuerza el aro azul como excepción (el criterio normal es foto+bio+media)' },
   { icon: TrendingUp, label: 'Score +200', hint: 'Empuja el ranking del perfil' },
 ] as const;
-// El Aro Azul ("early adopter") se calcula solo cuando el perfil tiene
-// foto+bio+media (ver src/lib/earlyAdopter.ts). is_early_adopter_override
-// permite a un admin forzarlo como excepción puntual sin cambiar ese criterio.
 
 const AdminUserManagement = () => {
   const [users, setUsers] = useState<DBProfile[]>([]);
@@ -81,16 +74,6 @@ const AdminUserManagement = () => {
     } finally {
       setVerifyingIds(prev => { const next = new Set(prev); next.delete(user.id); return next; });
     }
-  };
-
-  const toggleEarlyAdopterOverride = async (user: DBProfile) => {
-    const { error } = await supabase
-      .from('profiles')
-      .update({ is_early_adopter_override: !user.is_early_adopter_override })
-      .eq('id', user.id);
-    if (error) { toast.error('Error'); return; }
-    toast.success(user.is_early_adopter_override ? 'Aro Azul (excepción) quitado' : 'Aro Azul forzado como excepción');
-    setUsers(prev => prev.map(u => u.id === user.id ? { ...u, is_early_adopter_override: !u.is_early_adopter_override } : u));
   };
 
   const contactUser = () => {
@@ -192,12 +175,7 @@ const AdminUserManagement = () => {
                           <CheckCircle size={9} /> Verificado
                         </span>
                       )}
-                      {isEarlyAdopter(u as any) && (
-                        <span className="flex items-center gap-1 text-[0.6rem] font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(59,130,246,0.15)', color: '#2563eb' }}>
-                          <Star size={9} /> Aro azul
-                        </span>
-                      )}
-                      {!u.is_verified && !isEarlyAdopter(u as any) && <span className="text-muted-foreground">—</span>}
+                      {!u.is_verified && <span className="text-muted-foreground">—</span>}
                     </div>
                   </td>
                   <td className="px-4 py-3">
@@ -226,15 +204,7 @@ const AdminUserManagement = () => {
                         }}>
                         <CheckCircle size={13} />
                       </button>
-                      <button onClick={() => toggleEarlyAdopterOverride(u)} title={u.is_early_adopter_override ? 'Quitar Aro Azul (excepción)' : ACTIONS[4].hint}
-                        className="p-1.5 rounded-md transition-all hover:scale-110"
-                        style={{
-                          background: u.is_early_adopter_override ? 'rgba(59,130,246,0.2)' : 'rgba(0,0,0,0.04)',
-                          color: u.is_early_adopter_override ? '#2563eb' : '#666',
-                        }}>
-                        <Star size={13} />
-                      </button>
-                      <button onClick={() => boostScore(u)} title={ACTIONS[5].hint}
+                      <button onClick={() => boostScore(u)} title={ACTIONS[4].hint}
                         className="p-1.5 rounded-md transition-all hover:scale-110"
                         style={{ background: 'rgba(34,197,94,0.1)', color: '#22c55e' }}>
                         <TrendingUp size={13} />

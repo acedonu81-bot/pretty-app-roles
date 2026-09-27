@@ -10,7 +10,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { ROLE_ES } from '@/lib/constants';
 import { REGIONS, ALL_REGIONS_LABEL, getPresetRegion, setPresetRegion } from '@/lib/regions';
 import { expandRole } from '@/lib/constants';
-import { isEarlyAdopter } from '@/lib/earlyAdopter';
 import { hashDaily, COMPLETENESS_MAX } from '@/lib/dailyRotation';
 import { isNewOnPlatform } from '@/lib/newOnPlatform';
 import ResourcesBanner from '@/components/dashboard/ResourcesBanner';
@@ -67,7 +66,7 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
   ].join(',');
   let query = supabase
     .from('profiles')
-    .select('id, user_id, display_name, photo_url, zone, region, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, instagram, category, is_verified, is_flash_active, is_early_adopter, is_early_adopter_override, priority_badge_until, score, role, roles, seeking_dance_partner, dance_level, dance_role, created_at, experience_level, show_new_badge, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
+    .select('id, user_id, display_name, photo_url, zone, region, hourly_rate, specialty, subscription_tier, genres, audio_embed_url, audio_session_urls, portfolio_urls, bio, languages, tiktok, instagram, category, is_verified, is_flash_active, priority_badge_until, score, role, roles, seeking_dance_partner, dance_level, dance_role, created_at, experience_level, show_new_badge, venue_capacity, allows_overnight, price_per_hour, price_per_event, distance_from_madrid_km')
     .or(orFilter)
     // Excluye empresarios que tengan este oficio en `roles` por dato legacy o
     // error de alta — buscan y contratan, no les contratan (caso real: MAGIG
@@ -148,15 +147,12 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
           || (Array.isArray(p.portfolio_urls) && p.portfolio_urls.length > 0);
         return (hasMedia ? 4 : 0) + (p.photo_url ? 2 : 0) + (p.bio?.trim() ? 1 : 0);
       };
-      // Sin foto siempre al final, sin excepción (ni con early adopter/verificado
-      // por delante) — mismo criterio que fetchDirectorioProfiles en
+      // Sin foto siempre al final, sin excepción (ni con verificado por
+      // delante) — mismo criterio que fetchDirectorioProfiles en
       // DirectorioPublico.tsx. Recupera posición en cuanto sube una foto.
       const aHasPhoto = a.photo_url ? 1 : 0;
       const bHasPhoto = b.photo_url ? 1 : 0;
       if (bHasPhoto !== aHasPhoto) return bHasPhoto - aHasPhoto;
-      const aEarly = isEarlyAdopter(a as any) ? 1 : 0;
-      const bEarly = isEarlyAdopter(b as any) ? 1 : 0;
-      if (bEarly !== aEarly) return bEarly - aEarly;
       const hasPriority = (p: any) => p.priority_badge_until && new Date(p.priority_badge_until) > new Date();
       const aPriority = hasPriority(a) ? 1 : 0;
       const bPriority = hasPriority(b) ? 1 : 0;
@@ -210,9 +206,13 @@ async function fetchDirectoryProfiles(role: string, roles: string[] | undefined,
       tiktok: row.tiktok || '',
       category: (row.category as Profile['category']) ?? 'professional',
       isVerified: row.is_verified ?? false,
-      isEarlyAdopter: isEarlyAdopter(row as any),
       hasPriorityBadge: !!((row as any).priority_badge_until && new Date((row as any).priority_badge_until) > new Date()),
-      isNew: !!((row as any).created_at && (Date.now() - new Date((row as any).created_at).getTime()) < 30 * 24 * 60 * 60 * 1000),
+      // isNew se calculaba aquí con Date.now() en el momento del fetch y
+      // quedaba congelado dentro de la caché de React Query (staleTime 60s,
+      // gcTime 10min) — un perfil recién dado de alta seguía mostrando
+      // "Nuevo" días después si la sesión no disparaba un refetch real.
+      // Se recalcula ahora en ProfileCard con createdAt crudo, en cada render.
+      createdAt: (row as any).created_at ?? null,
       showNewBadge: isNewOnPlatform(row as any),
       // RLS de profile_business_views solo permite leer las vistas propias
       // (select_own) — una query sin filtro de usuario aquí solo devolvía las

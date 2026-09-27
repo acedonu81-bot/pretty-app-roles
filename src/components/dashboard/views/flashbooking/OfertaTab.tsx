@@ -5,7 +5,6 @@ import { useProfile } from '@/hooks/useProfile';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import FlashBookingRequestModal from '@/components/dashboard/FlashBookingRequestModal';
-import { isEarlyAdopter } from '@/lib/earlyAdopter';
 
 interface FlashProfile {
   id: string;
@@ -16,7 +15,6 @@ interface FlashProfile {
   price: number;
   priceUnit: string;
   role: string;
-  isEarlyAdopter?: boolean;
   genres?: string[];
   photoError?: boolean;
 }
@@ -48,7 +46,7 @@ const OfertaTab = () => {
   const fetchFlashProfiles = () => {
     supabase
       .from('profiles')
-      .select('id, user_id, display_name, photo_url, specialty, zone, hourly_rate, role, bio, audio_embed_url, audio_session_urls, portfolio_urls, score, genres, is_early_adopter_override')
+      .select('id, user_id, display_name, photo_url, specialty, zone, hourly_rate, role, bio, audio_embed_url, audio_session_urls, portfolio_urls, score, genres')
       .eq('is_flash_active', true)
       // Emergentes (16 sep 2026): sin Flash Booking directo mientras suben de
       // nivel — protege la métrica de "responde en X" de los profesionales
@@ -56,8 +54,6 @@ const OfertaTab = () => {
       .is('experience_level', null)
       .order('score', { ascending: false })
       .then(({ data }) => {
-        // is_early_adopter ya no viene de BD — se calcula aquí, así que el
-        // orden por early adopter se hace en JS tras traer los datos.
         const mapped = (data ?? []).map(p => ({
           id: p.user_id || p.id,
           name: p.display_name || 'Profesional',
@@ -67,10 +63,8 @@ const OfertaTab = () => {
           price: p.hourly_rate || 0,
           priceUnit: '/hora',
           role: p.role,
-          isEarlyAdopter: isEarlyAdopter(p as any),
           genres: (p as any).genres ?? [],
         }));
-        mapped.sort((a, b) => Number(b.isEarlyAdopter) - Number(a.isEarlyAdopter));
         setFlashProfiles(mapped);
         setLoadingProfiles(false);
       }, (err: unknown) => {
@@ -180,12 +174,8 @@ const OfertaTab = () => {
                 style={{
                   aspectRatio: '3/4',
                   borderRadius: 16,
-                  border: p.isEarlyAdopter
-                    ? '2px solid #3B82F6'
-                    : '1px solid rgba(212,175,55,0.25)',
-                  boxShadow: p.isEarlyAdopter
-                    ? '0 24px 56px rgba(0,0,0,0.70), 0 0 0 3px rgba(59,130,246,0.25)'
-                    : '0 24px 56px rgba(0,0,0,0.70)',
+                  border: '1px solid rgba(212,175,55,0.25)',
+                  boxShadow: '0 24px 56px rgba(0,0,0,0.70)',
                   overflow: 'hidden',
                   position: 'relative',
                   cursor: 'pointer',

@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { isEarlyAdopter } from '@/lib/earlyAdopter';
 
 export interface MatchedProfessional {
   user_id: string;
@@ -12,7 +11,6 @@ export interface MatchedProfessional {
   hourly_rate: number | null;
   is_flash_active: boolean;
   is_verified: boolean;
-  is_early_adopter: boolean;
   score: number;
   fast_responder_count: number;
   avgRating: number;
@@ -89,7 +87,6 @@ function computeMatch(
 
   if (profile.is_verified) { score += 10; reasons.push('Verificado'); }
   if (profile.is_flash_active) { score += 8; reasons.push('Disponible ahora'); }
-  if (isEarlyAdopter(profile)) score += 5;
   if ((profile.fast_responder_count ?? 0) >= 1) { score += 7; reasons.push('Respuesta rápida'); }
 
   score += Math.min(15, Math.round((profile.score ?? 0) / 10));
@@ -122,7 +119,6 @@ function computeMatch(
     hourly_rate: profile.hourly_rate,
     is_flash_active: profile.is_flash_active ?? false,
     is_verified: profile.is_verified ?? false,
-    is_early_adopter: isEarlyAdopter(profile),
     score: profile.score ?? 0,
     fast_responder_count: profile.fast_responder_count ?? 0,
     avgRating: ratingInfo.avg,
@@ -144,7 +140,7 @@ export function useSmartMatch(query: MatchQuery | null): { results: MatchedProfe
     const [profilesRes, reviewsRes, availRes] = await Promise.all([
       supabase
         .from('profiles')
-        .select('user_id, display_name, role, roles, specialty, zone, city_ref, photo_url, hourly_rate, is_flash_active, is_verified, bio, audio_embed_url, audio_session_urls, portfolio_urls, score, fast_responder_count, is_early_adopter_override, created_at')
+        .select('user_id, display_name, role, roles, specialty, zone, city_ref, photo_url, hourly_rate, is_flash_active, is_verified, bio, audio_embed_url, audio_session_urls, portfolio_urls, score, fast_responder_count, created_at')
         .contains('roles', [query.role])
         .not('display_name', 'is', null)
         .limit(100),

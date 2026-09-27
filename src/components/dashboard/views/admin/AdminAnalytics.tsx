@@ -131,7 +131,7 @@ const Panel = ({ title, hint, ayuda, children }: {
 );
 
 export default function AdminAnalytics() {
-  const [dias, setDias] = useState(30);
+  const [dias, setDias] = useState(7);
   const [porDia, setPorDia] = useState<Dia[]>([]);
   const [porHora, setPorHora] = useState<Hora[]>([]);
   const [top, setTop] = useState<Top[]>([]);

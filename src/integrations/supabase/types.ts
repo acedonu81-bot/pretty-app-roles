@@ -1300,8 +1300,6 @@ export type Database = {
           hourly_rate: number | null
           id: string
           instagram: string | null
-          is_early_adopter: boolean
-          is_early_adopter_override: boolean
           is_flash_active: boolean | null
           is_live: boolean | null
           is_premium: boolean | null
@@ -1378,8 +1376,6 @@ export type Database = {
           hourly_rate?: number | null
           id?: string
           instagram?: string | null
-          is_early_adopter?: boolean
-          is_early_adopter_override?: boolean
           is_flash_active?: boolean | null
           is_live?: boolean | null
           is_premium?: boolean | null
@@ -1456,8 +1452,6 @@ export type Database = {
           hourly_rate?: number | null
           id?: string
           instagram?: string | null
-          is_early_adopter?: boolean
-          is_early_adopter_override?: boolean
           is_flash_active?: boolean | null
           is_live?: boolean | null
           is_premium?: boolean | null

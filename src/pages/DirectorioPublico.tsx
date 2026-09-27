@@ -13,7 +13,6 @@ import { addToCart, useEventCart, MAX_CART_ITEMS } from '@/lib/eventCart';
 import { useAuth } from '@/hooks/useAuth';
 import GhostProfileCards from '@/components/GhostProfileCards';
 import TruncatedDescription from '@/components/TruncatedDescription';
-import { isEarlyAdopter } from '@/lib/earlyAdopter';
 import { isNewOnPlatform } from '@/lib/newOnPlatform';
 import { hashDaily, COMPLETENESS_MAX } from '@/lib/dailyRotation';
 import { expandRole, canonicalRole } from '@/lib/constants';
@@ -346,7 +345,7 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string, expe
   const orFilter = dbRoles.map(r => `role.eq.${r}`).join(',') + ',' + dbRoles.map(r => `roles.cs.{${r}}`).join(',');
   let q = supabase
     .from('profiles')
-    .select('user_id, display_name, role, roles, specialty, zone, photo_url, bio_video_url, video_session_urls, hourly_rate, bio, is_flash_active, is_verified, is_seed, is_early_adopter, is_early_adopter_override, score, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls, updated_at, created_at, experience_level, show_new_badge')
+    .select('user_id, display_name, role, roles, specialty, zone, photo_url, bio_video_url, video_session_urls, hourly_rate, bio, is_flash_active, is_verified, is_seed, score, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls, updated_at, created_at, experience_level, show_new_badge')
     .or(orFilter)
     // Un empresario que tenga esta categoria en su array `roles` (segundo
     // oficio marcado por error o dato legacy) hace match por roles.cs — se
@@ -384,10 +383,7 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string, expe
   // indefinidamente a los perfiles previos sin foto.
   const noPhotoGated = (data ?? []).filter((p: any) => !!p.photo_url || p.role === 'empresario');
 
-  // is_early_adopter ya no viene del campo manual de BD — se recalcula aquí
-  // según si el perfil está de verdad completo (foto+bio+media). Así el aro
-  // azul se gana/pierde solo, sin depender de que un admin lo active a mano.
-  const filtered = noPhotoGated.map((p: any) => ({ ...p, is_early_adopter: isEarlyAdopter(p) }));
+  const filtered = noPhotoGated;
 
   // Las valoraciones NO se piden aquí. Antes iban en un await encadenado
   // (necesita los user_id de la consulta anterior), así que el listado no
@@ -417,7 +413,6 @@ export async function fetchDirectorioProfiles(dbRole: string, city: string, expe
   // ganaba el mismo por score y nunca se veía movimiento.
   enriched.sort((a: any, b: any) =>
     (Number(!!b.photo_url) - Number(!!a.photo_url))
-    || (Number(b.is_early_adopter) - Number(a.is_early_adopter))
     || (Number(b.is_verified) - Number(a.is_verified))
     || (completeness(b) - completeness(a))
     || (completeness(a) === COMPLETENESS_MAX && completeness(b) === COMPLETENESS_MAX
@@ -446,7 +441,7 @@ export async function fetchAllDirectorioProfilesByRole(city: string): Promise<Re
   // columna `role` en vez de reintroducir el ORDER BY en BD.
   let q = supabase
     .from('profiles')
-    .select('user_id, display_name, role, roles, specialty, zone, photo_url, bio_video_url, video_session_urls, hourly_rate, bio, is_flash_active, is_verified, is_seed, is_early_adopter, is_early_adopter_override, score, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls, updated_at, created_at, city_ref')
+    .select('user_id, display_name, role, roles, specialty, zone, photo_url, bio_video_url, video_session_urls, hourly_rate, bio, is_flash_active, is_verified, is_seed, score, fast_responder_count, audio_embed_url, audio_session_urls, portfolio_urls, updated_at, created_at, city_ref')
     .not('display_name', 'is', null)
     .limit(1000) as any;
 
@@ -461,7 +456,6 @@ export async function fetchAllDirectorioProfilesByRole(city: string): Promise<Re
   const noPhotoGated = (data ?? []).filter((p: any) => !!p.photo_url || p.role === 'empresario');
 
   const filtered = noPhotoGated
-    .map((p: any) => ({ ...p, is_early_adopter: isEarlyAdopter(p) }))
     .filter((p: any) => p.display_name?.trim().length > 1);
 
   const completeness = (p: any): number => {
@@ -475,7 +469,6 @@ export async function fetchAllDirectorioProfilesByRole(city: string): Promise<Re
   // archivo, mismo motivo.
   enriched.sort((a: any, b: any) =>
     (Number(!!b.photo_url) - Number(!!a.photo_url))
-    || (Number(b.is_early_adopter) - Number(a.is_early_adopter))
     || (Number(b.is_verified) - Number(a.is_verified))
     || (completeness(b) - completeness(a))
     || (completeness(a) === COMPLETENESS_MAX && completeness(b) === COMPLETENESS_MAX
@@ -803,8 +796,8 @@ export default function DirectorioPublico() {
               {profiles.map((p, i) => (
                 <div key={p.user_id} className="rounded-2xl overflow-hidden flex flex-col bg-white"
                   style={{
-                    border: (p as any).is_early_adopter ? '4px solid rgba(96,165,250,0.7)' : '1px solid rgba(0,0,0,0.12)',
-                    boxShadow: (p as any).is_early_adopter ? '0 0 20px rgba(96,165,250,0.2), 0 2px 12px rgba(0,0,0,0.1)' : '0 2px 12px rgba(0,0,0,0.1)',
+                    border: '1px solid rgba(0,0,0,0.12)',
+                    boxShadow: '0 2px 12px rgba(0,0,0,0.1)',
                   }}>
 
                   {/* Foto — tall on mobile (3:4), wide on desktop (4:3) */}

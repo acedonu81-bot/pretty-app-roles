@@ -35,7 +35,6 @@ export interface Profile {
   city?: string;
   userId?: string;
   slug?: string;
-  isEarlyAdopter?: boolean;
   showNewBadge?: boolean;
   weeklyViews?: { count: number; delta: number } | null;
   lastViewedAt?: string | null;

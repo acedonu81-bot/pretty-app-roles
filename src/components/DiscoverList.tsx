@@ -29,7 +29,6 @@ export interface ReelsProfile {
   bio: string | null;
   is_verified: boolean;
   is_flash_active: boolean;
-  is_early_adopter?: boolean;
   avgRating: number;
   reviewCount: number;
 }

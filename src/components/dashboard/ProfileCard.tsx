@@ -85,7 +85,12 @@ const ProfileCard = ({ profile: p, onBook, compact, showPortfolio, onMessage, on
   // Magos, artistas con caché por evento) — "A consultar" en vez de dejar
   // el precio en blanco sin explicación.
   const priceOnRequest = showsPrice && !(p.price > 0);
-  const isNew = (p as any).isNew ?? false;
+  // Recalculado en cada render con Date.now() — antes venía precalculado
+  // desde la queryFn y quedaba congelado en la caché de React Query, así que
+  // un perfil de hace 40 días seguía viéndose "Nuevo" hasta el próximo
+  // refetch real (ver comentario en DirectoryView.tsx).
+  const createdAtMs = (p as any).createdAt ? new Date((p as any).createdAt).getTime() : null;
+  const isNew = !!(createdAtMs && (Date.now() - createdAtMs) < 30 * 24 * 60 * 60 * 1000);
   // Opt-in, no automático por fecha: ver src/lib/newOnPlatform.ts — un grupo
   // consolidado que se da de alta hoy es "nuevo en la plataforma" pero no
   // "nuevo en el sector", así que el propio grupo decide si lo activa.

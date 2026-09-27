@@ -4,7 +4,6 @@ import { Zap, Star, Shield, ArrowRight, MapPin, CheckCircle } from 'lucide-react
 import FooterPublic from '@/components/FooterPublic';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { isEarlyAdopter } from '@/lib/earlyAdopter';
 import { toSlug } from '@/data/profiles';
 // Sin foto no se publica, retroactivo desde el 16 sep 2026 (ver
 // DirectorioPublico.tsx para el motivo).
@@ -15,7 +14,7 @@ const gateNoPhoto = <T extends { photo_url: string | null }>(rows: T[]): T[] =>
 // Señal de frescura para motores generativos, que penalizan contenido stale.
 const BUILD_DATE = new Date().toISOString().slice(0, 10);
 
-interface Prof { id: string; display_name: string; photo_url: string | null; bio: string | null; city: string | null; role: string; score: number; slug: string; is_verified: boolean; is_early_adopter: boolean; }
+interface Prof { id: string; display_name: string; photo_url: string | null; bio: string | null; city: string | null; role: string; score: number; slug: string; is_verified: boolean; }
 
 const ROLE_MAP: Record<string, string[]> = {
   dj: ['dj'], camareros: ['camarero', 'staff'], fotografo: ['media'], staff: ['staff', 'promotor'],
@@ -57,7 +56,7 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
     const roles = ROLE_MAP[categorySlug] ?? ['dj'];
     // No existe columna slug en profiles — se deriva del nombre, igual que
     // hace PublicProfile.tsx al resolver /p/:slug.
-    const map = (p: any): Prof => ({ id: p.user_id, display_name: p.display_name ?? 'Profesional', photo_url: p.photo_url, bio: p.bio, city: p.zone, role: p.role, score: p.score ?? 0, slug: toSlug(p.display_name ?? p.user_id), is_verified: p.is_verified ?? false, is_early_adopter: isEarlyAdopter(p) });
+    const map = (p: any): Prof => ({ id: p.user_id, display_name: p.display_name ?? 'Profesional', photo_url: p.photo_url, bio: p.bio, city: p.zone, role: p.role, score: p.score ?? 0, slug: toSlug(p.display_name ?? p.user_id), is_verified: p.is_verified ?? false });
 
     // Match por el array `roles` ademas de por el `role` singular: un segundo
     // rol se guarda en `roles`, y filtrar solo por `role` dejaba fuera de esta
@@ -70,7 +69,7 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
 
     supabase
       .from('profiles')
-      .select('user_id,display_name,photo_url,bio,zone,role,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,is_early_adopter_override,created_at')
+      .select('user_id,display_name,photo_url,bio,zone,role,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,created_at')
       .or(roleFilter)
       // Un empresario puede tener 'mago' en `roles` (segundo oficio marcado
       // por error o dato legacy) y coincidir con roleFilter via roles.cs — se
@@ -105,7 +104,7 @@ function useCityProfessionals(ciudad: string, categorySlug: string) {
           // No hay en esta ciudad — cargar sugerencias nacionales
           supabase
             .from('profiles')
-            .select('user_id,display_name,photo_url,bio,zone,role,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,is_early_adopter_override,created_at')
+            .select('user_id,display_name,photo_url,bio,zone,role,score,is_verified,audio_embed_url,audio_session_urls,portfolio_urls,created_at')
             .or(roleFilter)
             .neq('role', 'empresario')
             .or('is_public.is.null,is_public.eq.true')
@@ -618,7 +617,7 @@ const ProfGrid = ({ profs }: { profs: Prof[] }) => (
     {profs.map(p => (
       <a key={p.id}
         href={p.slug ? `/p/${p.slug}` : `/p/${p.id}`}
-        style={{ textDecoration: 'none', display: 'block', background: 'rgba(255,255,255,0.03)', border: p.is_early_adopter ? '4px solid #3B82F6' : '1px solid rgba(255,255,255,0.08)', borderRadius: 16, overflow: 'hidden', transition: 'transform 0.2s', boxShadow: p.is_early_adopter ? '0 0 0 3px rgba(59,130,246,0.15)' : 'none' }}
+        style={{ textDecoration: 'none', display: 'block', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, overflow: 'hidden', transition: 'transform 0.2s' }}
         onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.02)')}
         onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}>
         <div style={{ aspectRatio: '3/2', overflow: 'hidden', background: 'rgba(255,255,255,0.05)', position: 'relative' }}>
