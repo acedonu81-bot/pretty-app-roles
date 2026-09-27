@@ -370,11 +370,15 @@ export default function AdminAnalytics() {
         </div>
       )}
 
-      {/* Tráfico por día */}
-      <Panel title="Tráfico por día" hint="Visitas y sesiones. Excluye tu propio tráfico de admin y el de las cuentas demo."
-        ayuda="La línea dorada son páginas vistas; la azul, personas distintas. Empieza a contar desde que se instaló la analítica, así que los días anteriores salen a cero.">
+      {/* Tráfico por día (o por hora en la vista de 24h, donde "por día" solo
+          tiene un punto y no dice nada) */}
+      <Panel title={dias === 1 ? 'Tráfico por hora' : 'Tráfico por día'}
+        hint="Visitas y sesiones. Excluye tu propio tráfico de admin y el de las cuentas demo."
+        ayuda={dias === 1
+          ? 'La línea dorada son páginas vistas por hora, hoy. Con solo 24h seleccionadas, agrupar por día daba un único punto sin información real.'
+          : 'La línea dorada son páginas vistas; la azul, personas distintas. Empieza a contar desde que se instaló la analítica, así que los días anteriores salen a cero.'}>
         <ResponsiveContainer width="100%" height={220}>
-          <AreaChart data={porDia}>
+          <AreaChart data={dias === 1 ? porHora : porDia}>
             <defs>
               <linearGradient id="gVisitas" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor={GOLD} stopOpacity={0.35} />
@@ -382,14 +386,21 @@ export default function AdminAnalytics() {
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(10,9,8,0.06)" vertical={false} />
-            <XAxis dataKey="dia" tickFormatter={fmtDia} tick={{ fontSize: 10, fill: 'rgba(10,9,8,0.45)' }}
-              axisLine={false} tickLine={false} minTickGap={20} />
+            {dias === 1 ? (
+              <XAxis dataKey="hora" tickFormatter={(h: number) => `${h}h`} tick={{ fontSize: 10, fill: 'rgba(10,9,8,0.45)' }}
+                axisLine={false} tickLine={false} interval={1} />
+            ) : (
+              <XAxis dataKey="dia" tickFormatter={fmtDia} tick={{ fontSize: 10, fill: 'rgba(10,9,8,0.45)' }}
+                axisLine={false} tickLine={false} minTickGap={20} />
+            )}
             <YAxis tick={{ fontSize: 10, fill: 'rgba(10,9,8,0.45)' }} axisLine={false} tickLine={false} width={30} allowDecimals={false} />
-            <Tooltip labelFormatter={fmtDia}
+            <Tooltip labelFormatter={dias === 1 ? (h: number) => `${h}:00 h` : fmtDia}
               contentStyle={{ borderRadius: 12, border: '1px solid rgba(10,9,8,0.1)', fontSize: 12 }} />
-            <Legend wrapperStyle={{ fontSize: 11 }} />
+            {dias !== 1 && <Legend wrapperStyle={{ fontSize: 11 }} />}
             <Area type="monotone" dataKey="visitas" name="Visitas" stroke={GOLD} strokeWidth={2} fill="url(#gVisitas)" />
-            <Area type="monotone" dataKey="sesiones" name="Sesiones" stroke="#4285F4" strokeWidth={1.5} fill="none" />
+            {/* panel_analytics_hora no distingue sesiones de visitas (a diferencia
+                de panel_analytics_dia) — con dias===1 solo hay una serie que mostrar. */}
+            {dias !== 1 && <Area type="monotone" dataKey="sesiones" name="Sesiones" stroke="#4285F4" strokeWidth={1.5} fill="none" />}
           </AreaChart>
         </ResponsiveContainer>
       </Panel>
