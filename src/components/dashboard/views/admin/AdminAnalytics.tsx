@@ -237,6 +237,16 @@ export default function AdminAnalytics() {
   const totalAltas = negocio.reduce((s, d) => s + Number(d.altas || 0), 0);
   const totalSolicitudes = negocio.reduce((s, d) => s + Number(d.solicitudes || 0), 0);
 
+  // Media diaria en vez de suma acumulada: con 30-90 días seleccionados, sumar
+  // todas las visitas de cada hora del rango entero infla las barras (una
+  // hora con tráfico constante todos los días parece "más punta" solo por
+  // acumular más días, no por ser realmente más fuerte). Al dividir entre el
+  // número real de días consultados, la forma del gráfico deja de depender
+  // del rango elegido. panel_analytics_hora topa en 30 días aunque el
+  // selector pida 90 (línea de la llamada RPC más abajo) — el divisor debe
+  // ser ese mismo tope, no `dias`, o la media saldría más baja de lo real.
+  const diasHora = Math.min(dias, 30);
+  const porHoraMedia = porHora.map(h => ({ ...h, visitas: Number(h.visitas || 0) / diasHora }));
   const horaPunta = porHora.length
     ? porHora.reduce((max, h) => (Number(h.visitas) > Number(max.visitas) ? h : max), porHora[0])
     : null;
@@ -387,20 +397,20 @@ export default function AdminAnalytics() {
       {/* Por hora */}
       <Panel
         title="¿A qué hora entra tu gente?"
-        ayuda="Suma todas las visitas por hora del día (hora española). Sirve para decidir cuándo publicar en redes y cuándo lanzar campañas: publicar cuando tu gente duerme es tirar el alcance. La franja es más fiable que la hora exacta: con pocas visitas, una sola visita puede cambiar cuál es 'la hora punta', pero la franja aguanta mejor ese ruido."
+        ayuda={`Media de visitas por hora del día (hora española), calculada sobre ${labelRango(diasHora)}${dias > 30 ? ' (máximo para esta gráfica)' : ''}. Sirve para decidir cuándo publicar en redes y cuándo lanzar campañas: publicar cuando tu gente duerme es tirar el alcance. La franja es más fiable que la hora exacta: con pocas visitas, una sola visita puede cambiar cuál es 'la hora punta', pero la franja aguanta mejor ese ruido.`}
         hint={franjaPunta && totalPorHora > 0
           ? `${franjaPunta.nombre} concentra el ${pctFranjaPunta}% de las visitas: es tu mejor franja para publicar y lanzar campañas. Dentro de ella, la hora más fuerte es las ${horaPunta?.hora}:00 h (${pctHoraPunta}% del total).`
           : 'Hora local de España. Se llena a medida que entren visitas.'}
       >
         <ResponsiveContainer width="100%" height={190}>
-          <BarChart data={porHora}>
+          <BarChart data={porHoraMedia}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(10,9,8,0.06)" vertical={false} />
             <XAxis dataKey="hora" tickFormatter={(h: number) => `${h}h`}
               tick={{ fontSize: 10, fill: 'rgba(10,9,8,0.45)' }} axisLine={false} tickLine={false} interval={1} />
             <YAxis tick={{ fontSize: 10, fill: 'rgba(10,9,8,0.45)' }} axisLine={false} tickLine={false} width={30} allowDecimals={false} />
-            <Tooltip labelFormatter={(h) => `${h}:00 h`}
+            <Tooltip labelFormatter={(h) => `${h}:00 h`} formatter={(v: number) => [v.toFixed(1), 'Media de visitas']}
               contentStyle={{ borderRadius: 12, border: '1px solid rgba(10,9,8,0.1)', fontSize: 12 }} />
-            <Bar dataKey="visitas" name="Visitas" fill={GOLD} radius={[4, 4, 0, 0]} />
+            <Bar dataKey="visitas" name="Media de visitas" fill={GOLD} radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </Panel>

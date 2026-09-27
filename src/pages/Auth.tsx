@@ -121,6 +121,9 @@ const Auth = () => {
   const [newPassword, setNewPassword] = useState('');
   const [recoveryLoading, setRecoveryLoading] = useState(false);
   const isRegistering = useRef(false);
+  // Marca si goAfterLogin (disparado por SIGNED_IN) ya navegó, para que el
+  // fallback de seguridad tras signInWithPassword no navegue una segunda vez.
+  const loggedInNavigated = useRef(false);
   // Vuelta de Google con ?code=... — el SDK aún no ha intercambiado el código
   // por una sesión. Sin esta pantalla, el usuario ve el login "normal" y le da
   // otra vez, lo que pisa el code_verifier PKCE del primer intento y rompe el login.
@@ -152,6 +155,7 @@ const Auth = () => {
     // Se respeta un ?redirect= explícito distinto del feed: ese sí lo pidió
     // alguien (enlace de email, vuelta de OAuth a una sección concreta).
     const goAfterLogin = async (_userId: string) => {
+      loggedInNavigated.current = true;
       if (redirectParam !== '/descubrir') { navigate(redirectParam, { replace: true }); return; }
       navigate('/dashboard', { replace: true, state: { view: VISTA_TRAS_LOGIN } });
     };
@@ -367,10 +371,28 @@ const Auth = () => {
         clearRateLimit();
         track('auth_success', { mode: 'login' });
         toast.success('¡Bienvenido de vuelta!');
-        // Mismo criterio que el efecto de sesión ya activa (línea ~151):
-        // login SIEMPRE al dashboard salvo ?redirect= explícito distinto del feed.
-        if (redirectParam !== '/descubrir') navigate(redirectParam, { replace: true });
-        else navigate('/dashboard', { replace: true, state: { view: VISTA_TRAS_LOGIN } });
+        // No navegar aquí de forma inmediata: signInWithPassword resuelve
+        // antes de que useAuth() (montado en Dashboard.tsx) haya terminado
+        // de leer la sesión de localStorage. Navegar ya mismo ganaba esa
+        // carrera y el guard de Dashboard.tsx, viendo todavía user=null por
+        // un instante, expulsaba de vuelta a /auth (confirmado en producción:
+        // ~13 sesiones/30 días con el patrón /auth→/dashboard→/auth en
+        // <2min, sobre todo mobile). goAfterLogin() de la línea ~196,
+        // enganchado a SIGNED_IN, hace esta misma navegación en cuanto la
+        // sesión está de verdad lista — que en la práctica es casi
+        // inmediato, signInWithPassword solo resuelve tras fijar la sesión.
+        // Fallback de seguridad: si por lo que sea SIGNED_IN nunca llegara
+        // (fallo interno del SDK), no dejar a alguien que sí inició sesión
+        // colgado en /auth sin explicación. loggedInNavigated evita navegar
+        // una segunda vez si goAfterLogin ya lo hizo (el caso normal).
+        setTimeout(() => {
+          if (!isRegistering.current && !loggedInNavigated.current) {
+            navigate(redirectParam !== '/descubrir' ? redirectParam : '/dashboard', {
+              replace: true,
+              state: redirectParam === '/descubrir' ? { view: VISTA_TRAS_LOGIN } : undefined,
+            });
+          }
+        }, 2500);
       } else {
         if (!displayName.trim()) {
           track('auth_validation_error', { mode: 'register', reason: 'missing_name' });

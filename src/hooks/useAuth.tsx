@@ -8,8 +8,18 @@ export const useAuth = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Primero obtener la sesión actual para evitar flash de "no autenticado"
+    // getSession() lee localStorage de forma async, y justo tras un login en
+    // la misma pestaña puede tardar un instante en reflejar la sesión recién
+    // escrita. Si onAuthStateChange dispara antes con session=null (p.ej. su
+    // primer evento en algunos navegadores móviles) y ponemos loading=false
+    // ahí, el guard de Dashboard.tsx ve "ya sé que no hay user" y expulsa a
+    // /auth aunque la sesión sí exista — el usuario vuelve a loguearse un
+    // segundo después. initialCheckDone asegura que loading solo baja tras
+    // el resultado real de getSession(), nunca antes por culpa del listener.
+    let initialCheckDone = false;
+
     supabase.auth.getSession().then(({ data: { session } }) => {
+      initialCheckDone = true;
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
@@ -19,7 +29,7 @@ export const useAuth = () => {
       (_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        setLoading(false);
+        if (initialCheckDone) setLoading(false);
       }
     );
 
