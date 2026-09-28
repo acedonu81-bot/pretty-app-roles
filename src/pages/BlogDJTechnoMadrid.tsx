@@ -118,7 +118,7 @@ export default function BlogDJTechnoMadrid() {
 
           <DJResourcesAffiliate role="dj" />
 
-          <BlogEmailCapture variant="general" intent="contratar-dj" articlePath="/blog/dj-techno-madrid" />
+          <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/dj-techno-madrid" />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Preguntas frecuentes</h2>
           {faqStructured.mainEntity.map((faq, i) => (

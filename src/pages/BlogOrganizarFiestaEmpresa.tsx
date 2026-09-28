@@ -119,7 +119,7 @@ export default function BlogOrganizarFiestaEmpresa() {
             </div>
           ))}
 
-          <BlogEmailCapture variant="general" intent="contratar-dj" articlePath="/blog/como-organizar-fiesta-de-empresa" />
+          <BlogEmailCapture variant="presupuestos" intent="contratar-dj" articlePath="/blog/como-organizar-fiesta-de-empresa" />
 
           <h2 className="text-2xl font-bold mt-10 mb-4">Preguntas frecuentes</h2>
           {faqStructured.mainEntity.map((faq, i) => (
