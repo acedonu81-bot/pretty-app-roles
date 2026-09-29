@@ -74,6 +74,7 @@ const FlashBookingRequestModal = ({ professionalName, professionalRole, professi
 
     trackLead('flash_booking', { role: professionalRole || 'unknown' });
     void logEvent('flash_request', location.pathname, professionalRole || 'desconocido');
+    if (typeof window !== 'undefined' && (window as any).fbq) (window as any).fbq('track', 'Contact');
 
     // Email a admin
     supabase.functions.invoke('send-email', { body: { type: 'flash_booking', data: payload } })

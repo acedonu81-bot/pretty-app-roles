@@ -392,8 +392,8 @@ const RastreadorDeRutas = () => {
   const location = useLocation();
   const blocked = useNativeGuardedPath(location.pathname);
   useEffect(() => {
-    logPageView(location.pathname);
-  }, [location.pathname]);
+    logPageView(location.pathname, location.search);
+  }, [location.pathname, location.search]);
   if (blocked) {
     return <Navigate to="/auth" replace />;
   }

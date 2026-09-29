@@ -59,6 +59,7 @@ export default function PublicContactModal({ professionalName, professionalUserI
 
       trackLead('contact_modal', { role: professionalRole ?? 'unknown' });
       logContactClick(professionalRole ?? 'desconocido');
+      if (typeof window !== 'undefined' && (window as any).fbq) (window as any).fbq('track', 'Contact');
 
       // Aviso a admin (registro interno)
       supabase.functions.invoke('send-email', { body: { type: 'flash_booking', data: payload } })

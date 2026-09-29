@@ -1,14 +1,7 @@
 import { useState, useRef, useEffect, useCallback, useMemo, lazy, Suspense } from 'react';
 import { ALL_CITIES } from '@/lib/regions';
 import { resolverVistaDeBusqueda } from '@/pages/Dashboard';
-import { ROLE_CONFIG } from '@/pages/DirectorioPublico';
-
-// dbRole (el que usa resolverVistaDeBusqueda, ej. 'media') → slug de
-// /directorio/:slug (ej. 'fotografo'). Derivado de ROLE_CONFIG en vez de
-// mantener un segundo mapeo a mano que se desincronice del real.
-const DBROLE_TO_DIRECTORIO_SLUG: Record<string, string> = Object.fromEntries(
-  Object.entries(ROLE_CONFIG).map(([slug, cfg]) => [cfg.dbRole, slug])
-);
+import { directorioSlugDeRol } from '@/pages/DirectorioPublico';
 
 
 
@@ -826,7 +819,7 @@ const Landing = () => {
                 if (user) {
                   navigate('/dashboard', { state: { view: dbRole, search: searchFilter, city } });
                 } else {
-                  const slug = DBROLE_TO_DIRECTORIO_SLUG[dbRole] ?? 'dj';
+                  const slug = directorioSlugDeRol(dbRole);
                   const params = new URLSearchParams();
                   if (q) params.set('q', q);
                   if (city) params.set('city', city);

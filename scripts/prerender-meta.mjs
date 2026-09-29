@@ -101,7 +101,7 @@ const ROUTES = [
   // City landings — DJ
   {
     path: '/contratar-dj/madrid',
-    title: 'Contratar DJ en Madrid | XPEAK | DJs verificados para clubs y eventos',
+    title: 'Contratar DJ en Madrid | XPEAK | DJs verificados',
     desc: 'Contrata DJs profesionales en Madrid para clubs, festivales, bodas y eventos privados. Flash Booking en menos de 1h.',
     ogTitle: 'Contratar DJ en Madrid | XPEAK',
     ogDesc: 'Directorio de DJs verificados en Madrid. Flash Booking, contratos digitales.',
@@ -109,7 +109,7 @@ const ROUTES = [
   },
   {
     path: '/contratar-dj/barcelona',
-    title: 'Contratar DJ en Barcelona | XPEAK | DJs verificados para clubs y eventos',
+    title: 'Contratar DJ en Barcelona | XPEAK | DJs verificados',
     desc: 'Contrata DJs profesionales en Barcelona para clubs, festivales, bodas y eventos privados. Flash Booking en menos de 1h.',
     ogTitle: 'Contratar DJ en Barcelona | XPEAK',
     ogDesc: 'Directorio de DJs verificados en Barcelona. Flash Booking, contratos digitales.',
@@ -117,7 +117,7 @@ const ROUTES = [
   },
   {
     path: '/contratar-dj/valencia',
-    title: 'Contratar DJ en Valencia | XPEAK | DJs verificados para clubs y eventos',
+    title: 'Contratar DJ en Valencia | XPEAK | DJs verificados',
     desc: 'Contrata DJs profesionales en Valencia para clubs, festivales, bodas y eventos privados. Flash Booking en menos de 1h.',
     ogTitle: 'Contratar DJ en Valencia | XPEAK',
     ogDesc: 'Directorio de DJs verificados en Valencia. Flash Booking, contratos digitales.',
@@ -125,7 +125,7 @@ const ROUTES = [
   },
   {
     path: '/contratar-dj/sevilla',
-    title: 'Contratar DJ en Sevilla | XPEAK | DJs verificados para clubs y eventos',
+    title: 'Contratar DJ en Sevilla | XPEAK | DJs verificados',
     desc: 'Contrata DJs profesionales en Sevilla para clubs, festivales, bodas y eventos privados. Flash Booking en menos de 1h.',
     ogTitle: 'Contratar DJ en Sevilla | XPEAK',
     ogDesc: 'Directorio de DJs verificados en Sevilla. Flash Booking, contratos digitales.',
@@ -290,12 +290,12 @@ const ROUTES = [
     ogType: 'article',
   },
   // DJ por ciudad — adicionales
-  { path: '/contratar-dj/malaga',    title: 'Contratar DJ en Málaga | XPEAK | DJs verificados para clubs y eventos',    desc: 'Contrata DJs profesionales en Málaga para clubs, festivales, bodas y eventos privados. Flash Booking en menos de 1h.',                     ogTitle: 'Contratar DJ en Málaga | XPEAK',    ogDesc: 'Directorio de DJs verificados en Málaga. Flash Booking, contratos digitales.',    ogType: 'website' },
-  { path: '/contratar-dj/bilbao',    title: 'Contratar DJ en Bilbao | XPEAK | DJs verificados para clubs y eventos',    desc: 'Contrata DJs profesionales en Bilbao para clubs, festivales, bodas y eventos privados. Flash Booking en menos de 1h.',                     ogTitle: 'Contratar DJ en Bilbao | XPEAK',    ogDesc: 'Directorio de DJs verificados en Bilbao. Flash Booking, contratos digitales.',    ogType: 'website' },
-  { path: '/contratar-dj/zaragoza',  title: 'Contratar DJ en Zaragoza | XPEAK | DJs verificados para clubs y eventos',  desc: 'Contrata DJs profesionales en Zaragoza para clubs, festivales, bodas y eventos privados. Flash Booking en menos de 1h.',                   ogTitle: 'Contratar DJ en Zaragoza | XPEAK',  ogDesc: 'Directorio de DJs verificados en Zaragoza. Flash Booking, contratos digitales.',  ogType: 'website' },
-  { path: '/contratar-dj/murcia',    title: 'Contratar DJ en Murcia | XPEAK | DJs verificados para clubs y eventos',    desc: 'Contrata DJs profesionales en Murcia para clubs, festivales, bodas y eventos privados. Flash Booking en menos de 1h.',                     ogTitle: 'Contratar DJ en Murcia | XPEAK',    ogDesc: 'Directorio de DJs verificados en Murcia. Flash Booking, contratos digitales.',    ogType: 'website' },
-  { path: '/contratar-dj/palma',     title: 'Contratar DJ en Palma | XPEAK | DJs verificados para clubs y eventos',     desc: 'Contrata DJs profesionales en Palma de Mallorca para clubs, eventos privados y bodas. Flash Booking en menos de 1h.',                    ogTitle: 'Contratar DJ en Palma | XPEAK',     ogDesc: 'Directorio de DJs verificados en Palma de Mallorca. Flash Booking, contratos digitales.', ogType: 'website' },
-  { path: '/contratar-dj/ibiza',     title: 'Contratar DJ en Ibiza | XPEAK | DJs verificados para clubs y eventos',     desc: 'Contrata DJs profesionales en Ibiza para clubs internacionales, fiestas privadas y eventos exclusivos. Flash Booking en menos de 1h.',   ogTitle: 'Contratar DJ en Ibiza | XPEAK',     ogDesc: 'Directorio de DJs verificados en Ibiza. Flash Booking para clubs y eventos VIP.',  ogType: 'website' },
+  { path: '/contratar-dj/malaga',    title: 'Contratar DJ en Málaga | XPEAK | DJs verificados',    desc: 'Contrata DJs profesionales en Málaga para clubs, festivales, bodas y eventos privados. Flash Booking en menos de 1h.',                     ogTitle: 'Contratar DJ en Málaga | XPEAK',    ogDesc: 'Directorio de DJs verificados en Málaga. Flash Booking, contratos digitales.',    ogType: 'website' },
+  { path: '/contratar-dj/bilbao',    title: 'Contratar DJ en Bilbao | XPEAK | DJs verificados',    desc: 'Contrata DJs profesionales en Bilbao para clubs, festivales, bodas y eventos privados. Flash Booking en menos de 1h.',                     ogTitle: 'Contratar DJ en Bilbao | XPEAK',    ogDesc: 'Directorio de DJs verificados en Bilbao. Flash Booking, contratos digitales.',    ogType: 'website' },
+  { path: '/contratar-dj/zaragoza',  title: 'Contratar DJ en Zaragoza | XPEAK | DJs verificados',  desc: 'Contrata DJs profesionales en Zaragoza para clubs, festivales, bodas y eventos privados. Flash Booking en menos de 1h.',                   ogTitle: 'Contratar DJ en Zaragoza | XPEAK',  ogDesc: 'Directorio de DJs verificados en Zaragoza. Flash Booking, contratos digitales.',  ogType: 'website' },
+  { path: '/contratar-dj/murcia',    title: 'Contratar DJ en Murcia | XPEAK | DJs verificados',    desc: 'Contrata DJs profesionales en Murcia para clubs, festivales, bodas y eventos privados. Flash Booking en menos de 1h.',                     ogTitle: 'Contratar DJ en Murcia | XPEAK',    ogDesc: 'Directorio de DJs verificados en Murcia. Flash Booking, contratos digitales.',    ogType: 'website' },
+  { path: '/contratar-dj/palma',     title: 'Contratar DJ en Palma | XPEAK | DJs verificados',     desc: 'Contrata DJs profesionales en Palma de Mallorca para clubs, eventos privados y bodas. Flash Booking en menos de 1h.',                    ogTitle: 'Contratar DJ en Palma | XPEAK',     ogDesc: 'Directorio de DJs verificados en Palma de Mallorca. Flash Booking, contratos digitales.', ogType: 'website' },
+  { path: '/contratar-dj/ibiza',     title: 'Contratar DJ en Ibiza | XPEAK | DJs verificados',     desc: 'Contrata DJs profesionales en Ibiza para clubs internacionales, fiestas privadas y eventos exclusivos. Flash Booking en menos de 1h.',   ogTitle: 'Contratar DJ en Ibiza | XPEAK',     ogDesc: 'Directorio de DJs verificados en Ibiza. Flash Booking para clubs y eventos VIP.',  ogType: 'website' },
 
   // Camareros por ciudad — adicionales
   { path: '/contratar-camareros/valencia', title: 'Contratar Camareros en Valencia | XPEAK | Personal de hostelería verificado',  desc: 'Contrata camareros y personal de hostelería en Valencia para bodas, eventos corporativos y hostelería nocturna. Flash Booking disponible.',  ogTitle: 'Contratar Camareros en Valencia | XPEAK',  ogDesc: 'Camareros verificados en Valencia. Flash Booking para cubrir eventos urgentes.',  ogType: 'website' },
@@ -1269,8 +1269,6 @@ for (const [catSlug, cat] of Object.entries(CATEGORY_DATA)) {
 for (const catSlug of routedCitySlugs) {
   const cat = CITY_CATEGORIES[catSlug];
   if (!cat) continue; // alias sin entrada propia en CATEGORIES (ver CATEGORIES.animadores = CATEGORIES.animador, etc. si se añaden)
-  const catDataFallback = CATEGORY_DATA[catSlug]; // solo para el h1 de fallback en el <title>
-  const h1Fallback = catDataFallback?.h1 ?? `Contratar ${cat.keyword}`;
 
   for (const [citySlug, cityInfo] of Object.entries(CITIES)) {
     const routePath = `/contratar-${catSlug}/${citySlug}`;
@@ -1279,9 +1277,14 @@ for (const catSlug of routedCitySlugs) {
     const cityName = cityInfo.ciudad;
     const desc = cat.desc(cityName);
 
+    // Antes se añadía aquí un tercer segmento con el h1 de CATEGORY_DATA (p.
+    // ej. "Contratar Bailarín, Bailarina e Instructor de Baile"), que ya
+    // repite la misma keyword del principio del title — Bing lo marcó como
+    // "Title too long" (hasta 138 caracteres) en las categorías con keyword
+    // largo. Mismo sufijo genérico que usa CityLanding.tsx en runtime.
     ROUTES.push({
       path: routePath,
-      title: `Contratar ${cat.keyword} en ${cityName} | XPEAK | ${h1Fallback}`,
+      title: `Contratar ${cat.keyword} en ${cityName} | XPEAK | Directorio Profesional de Eventos`,
       desc: desc.slice(0, 300),
       ogTitle: `Contratar ${cat.keyword} en ${cityName} | XPEAK`,
       ogDesc: desc.slice(0, 200),
@@ -1407,6 +1410,8 @@ const ROLE_LABELS = {
   bailarin: 'Bailarín/a', humorista: 'Humorista', monologo: 'Monologuista',
   animador: 'Animador/a', speaker: 'Speaker', vestuario: 'Estilista', ambassador: 'Brand ambassador',
   'grupo-musical': 'Grupo musical', event_manager: 'Coordinador/a de eventos',
+  'photo-booth': 'Photo booth', peluqueria: 'Peluquería', local_eventos: 'Local para eventos',
+  'tecnico-sonido': 'Técnico de sonido',
 };
 
 // rol de perfil (BD) → slug de categoría en /contratar-{slug} — para enlazar
@@ -1416,7 +1421,8 @@ const ROLE_TO_CATEGORY_SLUG = {
   media: 'fotografo', promotor: 'promotores', catering: 'catering',
   mago: 'mago', bailarin: 'bailarin', humorista: 'humorista',
   monologo: 'monologo', animador: 'animador', speaker: 'speaker', vestuario: 'vestuario',
-  'grupo-musical': 'grupo-musical',
+  'grupo-musical': 'grupo-musical', 'photo-booth': 'photo-booth', peluqueria: 'peluqueria',
+  local_eventos: 'locales-eventos', 'tecnico-sonido': 'tecnico-sonido',
 };
 
 try {

@@ -25,6 +25,18 @@ export const ROLE_ES: Record<string, string> = {
   media:         'Media / Fotografía',
   tecnico:       'Técnico de Sonido y Montaje',
   local_eventos: 'Locales para eventos',
+  'grupo-musical': 'Grupo Musical',
+  mago:          'Mago & Ilusionista',
+  humorista:     'Humorista & Cómico',
+  monologo:      'Monólogo & Stand-Up',
+  animador:      'Payaso & Animador',
+  bailarin:      'Bailarín & Danza',
+  speaker:       'Speaker & Presentador',
+  vestuario:     'Estilista & Vestuario',
+  'photo-booth': 'Photo Booth',
+  design:        'Diseño & Visuales',
+  empresario:    'Organizador',
+  pending:       'Pendiente de elegir oficio',
 };
 
 /**

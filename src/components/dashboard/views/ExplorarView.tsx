@@ -45,8 +45,7 @@ const SOMBRA_HOVER = [
 
 /**
  * Los gremios, agrupados igual que el sidebar y /descubrir para que las tres
- * navegaciones cuenten lo mismo. `view` es el id de vista del dashboard, que
- * no siempre coincide con el rol de BD (photo-booth usa la vista de media).
+ * navegaciones cuenten lo mismo. `view` es el id de vista del dashboard.
  */
 const GRUPOS: { titulo: string; items: { id: string; view: string; nombre: string; gancho: string; nuevo?: boolean }[] }[] = [
   {
@@ -69,7 +68,7 @@ const GRUPOS: { titulo: string; items: { id: string; view: string; nombre: strin
     titulo: 'Imagen & Media',
     items: [
       { id: 'media', view: 'media', nombre: 'Media & Contenido', gancho: 'Fotografía, vídeo y creadores' },
-      { id: 'photo-booth', view: 'media', nombre: 'Photo Booth', gancho: 'Cabinas de fotos y espejos 360' },
+      { id: 'photo-booth', view: 'photo-booth', nombre: 'Photo Booth', gancho: 'Cabinas de fotos y espejos 360' },
       { id: 'design', view: 'design', nombre: 'Diseño & Visuales', gancho: 'Cartelería, VJing y mapping' },
     ],
   },

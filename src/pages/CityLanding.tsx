@@ -433,7 +433,7 @@ export const CATEGORIES: Record<string, CategoryInfo> = {
   },
   bailarin: {
     label: 'Bailarín / Instructor',
-    keyword: 'Bailarín, Compañía de Danza e Instructor',
+    keyword: 'Bailarín e Instructor de Baile',
     unidad: '/evento',
     desc: (c) => `Contratar bailarines en ${c} para bodas, eventos y espectáculos: flamenco, baile moderno, latino y danza contemporánea. También instructores de salsa y bachata para clases. Shows desde 30 min. Flash Booking..`,
     intro: (c) => `Encuentra bailarines y compañías de danza en ${c} para amenizar cualquier evento: flamenco para bodas y eventos internacionales, shows de baile moderno para convenciones, danza contemporánea para galas y espectáculos de apertura. XPEAK conecta organizadores con bailarines profesionales verificados.`,

@@ -91,6 +91,9 @@ const CookieBanner = () => {
       analytics_storage: p.analytics ? 'granted' : 'denied',
     });
     if (p.marketing) cargarMetaPixelSiHaceFalta();
+    // Carga Clarity si hace falta y le pasa el consentimiento (también al
+    // rechazar, para que no grabe si GTM ya lo había cargado). Ver index.html.
+    (window as any).__xpeakClarity?.(p);
     setVisible(false);
   };
 

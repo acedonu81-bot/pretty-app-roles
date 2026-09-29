@@ -18,6 +18,7 @@ import CalendarHowItWorksModal from '@/components/CalendarHowItWorksModal';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { instagramUrl, extractInstagramHandle } from '@/lib/social';
+import { directorioSlugDeRol } from '@/pages/DirectorioPublico';
 
 /* ── Reviews ─────────────────────────────────────────────────────────────── */
 interface Review {
@@ -825,6 +826,7 @@ const PublicProfile = () => {
     monologo: 'Monólogo & Stand-Up', animador: 'Animador Infantil', speaker: 'Speaker & Presentador',
     vestuario: 'Personal Shopper & Vestuario', 'photo-booth': 'Photo Booth',
     'grupo-musical': 'Grupo Musical', 'wedding-planner': 'Wedding Planner', 'diseno-grafico': 'Diseño Gráfico',
+    tecnico: 'Técnico de Sonido y Montaje', local_eventos: 'Local para eventos', camarero: 'Camarero',
   };
 
   // Related profiles: Supabase results for real profiles, static data for
@@ -940,7 +942,7 @@ const PublicProfile = () => {
           "@type": "BreadcrumbList",
           "itemListElement": [
             { "@type": "ListItem", "position": 1, "name": "XPEAK", "item": BASE_URL },
-            { "@type": "ListItem", "position": 2, "name": roleLabel[profile.role] || 'Profesionales', "item": `${BASE_URL}/directorio/${profile.role || 'dj'}` },
+            { "@type": "ListItem", "position": 2, "name": roleLabel[profile.role] || 'Profesionales', "item": `${BASE_URL}/directorio/${directorioSlugDeRol(profile.role)}` },
             ...(cityShort !== 'España' ? [{ "@type": "ListItem", "position": 3, "name": cityShort, "item": `${BASE_URL}/contratar-dj/${toSlug(cityShort)}` }] : []),
             { "@type": "ListItem", "position": cityShort !== 'España' ? 4 : 3, "name": profile.name, "item": profileUrl },
           ]

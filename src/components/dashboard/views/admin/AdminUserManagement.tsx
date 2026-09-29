@@ -30,6 +30,7 @@ const AdminUserManagement = () => {
   const [users, setUsers] = useState<DBProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState('');
+  const [error, setError] = useState<string | null>(null);
   // IDs con una acción en curso — evita doble clic mientras la request está
   // en vuelo. Caso real (15 sep 2026): gonzalo.magro@yahoo.es recibió 2
   // emails "Perfil aprobado" en 42s porque el botón no bloqueaba reentradas.
@@ -40,12 +41,23 @@ const AdminUserManagement = () => {
   }, []);
 
   const fetchUsers = async () => {
-    const { data } = await supabase
+    setLoading(true);
+    setError(null);
+    // Antes se ignoraba `error` por completo: si la consulta fallaba (RLS,
+    // columna, lo que sea), `data` quedaba null y la tabla se quedaba vacía
+    // en silencio, indistinguible de "no hay usuarios" — así se vivió el caso
+    // de Vanessa Ledezma (28 sep 2026): parecía que "no aparecía nadie" sin
+    // ninguna pista de qué había fallado.
+    const { data, error: fetchError } = await supabase
       .from('profiles')
       .select('*')
       .order('created_at', { ascending: false })
       .limit(500);
-    if (data) setUsers(data as unknown as DBProfile[]);
+    if (fetchError) {
+      setError(fetchError.message);
+    } else {
+      setUsers((data ?? []) as unknown as DBProfile[]);
+    }
     setLoading(false);
   };
 
@@ -122,6 +134,16 @@ const AdminUserManagement = () => {
 
       {loading ? (
         <p className="text-sm text-center py-12 animate-pulse text-muted-foreground">Cargando usuarios...</p>
+      ) : error ? (
+        <div className="text-sm text-center py-12">
+          <p className="mb-3" style={{ color: '#b91c1c' }}>No se pudo cargar la lista: {error}</p>
+          <button onClick={fetchUsers} className="text-xs font-bold px-3 py-2 rounded-full"
+            style={{ background: 'rgba(212,175,55,0.15)', color: '#8A6D0F', border: '1px solid rgba(212,175,55,0.3)' }}>
+            Reintentar
+          </button>
+        </div>
+      ) : filtered.length === 0 && users.length === 0 ? (
+        <p className="text-sm text-center py-12 text-muted-foreground">No hay usuarios registrados todavía.</p>
       ) : filtered.length === 0 ? (
         <p className="text-sm text-center py-12 text-muted-foreground">Sin resultados para "{query}".</p>
       ) : (

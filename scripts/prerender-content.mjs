@@ -57,7 +57,7 @@ async function fetchAllProfilesForPrerender() {
       console.warn('  ⚠ Sin credenciales Supabase: páginas ciudad/categoría se prerenderizan sin profesionales');
       return [];
     }
-    const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,photo_url,bio,zone,role,roles,specialty,hourly_rate,is_flash_active,is_seed,audio_embed_url,audio_session_urls,portfolio_urls,score,is_verified,is_primary,is_early_adopter_override,created_at&role=neq.empresario&is_seed=eq.false&or=(is_public.is.null,is_public.eq.true)&limit=1000`;
+    const url = `${supabaseUrl}/rest/v1/profiles?select=user_id,display_name,photo_url,bio,zone,role,roles,specialty,hourly_rate,is_flash_active,is_seed,audio_embed_url,audio_session_urls,portfolio_urls,score,is_verified,is_primary,created_at&role=neq.empresario&is_seed=eq.false&or=(is_public.is.null,is_public.eq.true)&limit=1000`;
     const res = await fetch(url, { headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` } });
     if (!res.ok) {
       console.warn('  ⚠ No se pudieron cargar profesionales para el prerender:', res.status);
@@ -90,7 +90,6 @@ function mapProfile(p) {
     score: p.score ?? 0,
     slug: toSlug(p.display_name ?? p.user_id),
     is_verified: p.is_verified ?? false,
-    is_early_adopter: !!p.is_early_adopter_override,
   };
 }
 

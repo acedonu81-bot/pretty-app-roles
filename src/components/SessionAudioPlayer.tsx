@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
-import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack } from '@/lib/streaming';
+import { parseStreamUrl, resolveHearthisProfile, resolveHearthisTrack, resolveSoundcloudShort } from '@/lib/streaming';
 
 const formatTime = (seconds: number) => {
   if (!Number.isFinite(seconds)) return '0:00';
@@ -103,6 +103,7 @@ const SessionAudioPlayer = ({ url }: { url: string }) => {
   useEffect(() => {
     if (!parsed) return;
     if (!parsed.needsResolve) { setEmbedSrc(parsed.embedUrl); return; }
+    if (parsed._soundcloudShort) { resolveSoundcloudShort(parsed._soundcloudShort).then(u => setEmbedSrc(u)); return; }
     if (!parsed._hearthisUser) return;
     const resolver = parsed._hearthisSlug
       ? resolveHearthisTrack(parsed._hearthisUser, parsed._hearthisSlug)

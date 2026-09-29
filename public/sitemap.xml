@@ -80,7 +80,7 @@
   <!-- catering por ciudad -->
 
   <!-- maquillaje por ciudad -->
-  <url><loc>https://xpeak.es/contratar-maquillaje/madrid</loc><lastmod>2026-09-18</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://xpeak.es/contratar-maquillaje/madrid</loc><lastmod>2026-09-28</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
   <url><loc>https://xpeak.es/contratar-maquillaje/barcelona</loc><lastmod>2026-09-16</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
 
   <!-- peluqueria por ciudad -->
@@ -115,20 +115,22 @@
   <url><loc>https://xpeak.es/contratar-vestuario/zaragoza</loc><lastmod>2026-09-13</lastmod><changefreq>weekly</changefreq><priority>0.80</priority></url>
 
   <!-- mago por ciudad -->
-  <url><loc>https://xpeak.es/contratar-mago/madrid</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://xpeak.es/contratar-mago/madrid</loc><lastmod>2026-09-28</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
   <url><loc>https://xpeak.es/contratar-mago/zaragoza</loc><lastmod>2026-09-24</lastmod><changefreq>weekly</changefreq><priority>0.80</priority></url>
 
   <!-- humorista por ciudad -->
 
   <!-- animador por ciudad -->
+  <url><loc>https://xpeak.es/contratar-animador/madrid</loc><lastmod>2026-09-28</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
 
   <!-- animadores por ciudad -->
+  <url><loc>https://xpeak.es/contratar-animadores/madrid</loc><lastmod>2026-09-28</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
 
   <!-- bailarin por ciudad -->
   <url><loc>https://xpeak.es/contratar-bailarin/madrid</loc><lastmod>2026-09-13</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
 
   <!-- speaker por ciudad -->
-  <url><loc>https://xpeak.es/contratar-speaker/madrid</loc><lastmod>2026-09-15</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://xpeak.es/contratar-speaker/madrid</loc><lastmod>2026-09-28</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
 
   <!-- monologo por ciudad -->
 
@@ -146,6 +148,7 @@
   <url><loc>https://xpeak.es/contratar-grupo-musical/benidorm</loc><lastmod>2026-09-02</lastmod><changefreq>weekly</changefreq><priority>0.70</priority></url>
 
   <!-- photo-booth por ciudad -->
+  <url><loc>https://xpeak.es/contratar-photo-booth/madrid</loc><lastmod>2026-09-28</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
 
   <!-- tecnico-sonido por ciudad -->
 
@@ -532,6 +535,9 @@
   <url><loc>https://xpeak.es/blog/como-organizar-fiesta-de-empresa</loc><lastmod>2026-09-25</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
 
   <!-- Perfiles reales -->
+  <url><loc>https://xpeak.es/p/vanessa-ledezma</loc><lastmod>2026-09-28</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
+  <url><loc>https://xpeak.es/p/ole-hop-animaciones</loc><lastmod>2026-09-28</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
+  <url><loc>https://xpeak.es/p/antonio-oliva</loc><lastmod>2026-09-28</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
   <url><loc>https://xpeak.es/p/toni-vapin-dj</loc><lastmod>2026-09-27</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
   <url><loc>https://xpeak.es/p/dj-jhosval-mix-jhosval-mix-producciones</loc><lastmod>2026-09-25</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>
   <url><loc>https://xpeak.es/p/judith-burcio-romero</loc><lastmod>2026-09-24</lastmod><changefreq>weekly</changefreq><priority>0.65</priority></url>

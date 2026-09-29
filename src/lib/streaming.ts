@@ -7,6 +7,25 @@ export interface ParsedStreamUrl {
   /** hearthis: el iframe solo funciona con ID numérico — hay que resolverlo async vía API */
   needsResolve?: boolean;
   _hearthisSlug?: string;
+  /** SoundCloud: enlace corto on.soundcloud.com (el que copia la app móvil); el player no lo acepta, se resuelve vía oEmbed */
+  _soundcloudShort?: string;
+}
+
+// El widget de SoundCloud responde "You have not provided a valid SoundCloud URL"
+// con enlaces on.soundcloud.com. oEmbed sí los resuelve y devuelve el iframe final.
+export async function resolveSoundcloudShort(shortUrl: string): Promise<string | null> {
+  try {
+    const res = await fetch(`https://soundcloud.com/oembed?format=json&url=${encodeURIComponent(shortUrl)}`);
+    if (!res.ok) return null;
+    const data = await res.json();
+    const src = String(data.html || '').match(/src="([^"]+)"/)?.[1];
+    if (!src) return null;
+    const trackUrl = new URL(src.replace(/&amp;/g, '&')).searchParams.get('url');
+    if (!trackUrl) return null;
+    return `https://w.soundcloud.com/player/?url=${encodeURIComponent(trackUrl)}&color=%23D4AF37&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&visual=true`;
+  } catch {
+    return null;
+  }
 }
 
 export async function resolveHearthisProfile(username: string): Promise<string | null> {
@@ -116,6 +135,10 @@ export const parseStreamUrl = (value?: string | null): ParsedStreamUrl | null =>
         needsResolve: true,
         _hearthisUser: username,
       };
+    }
+
+    if (hostname === 'on.soundcloud.com') {
+      return { type: 'SoundCloud', embedUrl: '', needsResolve: true, _soundcloudShort: normalized };
     }
 
     if (hostname.includes('soundcloud.com')) {

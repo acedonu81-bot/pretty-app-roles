@@ -23,6 +23,7 @@ Profesionales de dj en XPEAK:
 - [Borja.Madd](https://xpeak.es/p/borja-madd) (Madrid), desde 100€/h · Verificado
 - [Gonzalo DJ](https://xpeak.es/p/gonzalo-dj) (Madrid), desde 60€/h · Verificado
 - [Dj Poly](https://xpeak.es/p/dj-poly) (Madrid), desde 70€/h
+- [Toni vapin dj](https://xpeak.es/p/toni-vapin-dj) (Murcia), desde 150€/h
 - [deejayantuan](https://xpeak.es/p/deejayantuan) (Madrid), desde 75€/h
 - [RUBEN TRIAS](https://xpeak.es/p/ruben-trias) (Madrid), desde 100€/h
 - [Marcos Rivera](https://xpeak.es/p/marcos-rivera) (Madrid), desde 150€/h
@@ -42,7 +43,6 @@ Profesionales de dj en XPEAK:
 - [Jsus](https://xpeak.es/p/jsus) (Granada), desde 100€/h
 - [DJ Rick.Art](https://xpeak.es/p/dj-rick-art) (Tarragona)
 - [DJ.Garvil](https://xpeak.es/p/dj-garvil) (Orihuela)
-- [Toni vapin dj](https://xpeak.es/p/toni-vapin-dj) (Murcia)
 
 ## Camareros
 
@@ -158,10 +158,26 @@ Profesionales de magos en XPEAK:
 - [GuilleMagic](https://xpeak.es/p/guillemagic) (Zaragoza)
 - [Andres madruga](https://xpeak.es/p/andres-madruga) (Madrid) · Verificado
 
+## Animadores
+
+- [Directorio completo de animadores](https://xpeak.es/directorio/animador)
+- [Animadores en Madrid](https://xpeak.es/contratar-animador/madrid)
+
+Profesionales de animadores en XPEAK:
+- [Olé hop animaciones](https://xpeak.es/p/ole-hop-animaciones) (Madrid)
+
 ## Speakers
 
 - [Directorio completo de speakers](https://xpeak.es/directorio/speaker)
 - [Speakers en Madrid](https://xpeak.es/contratar-speaker/madrid)
+
+## Photo Booth
+
+- [Directorio completo de photo booth](https://xpeak.es/directorio/photo-booth)
+- [Photo Booth en Madrid](https://xpeak.es/contratar-photo-booth/madrid)
+
+Profesionales de photo booth en XPEAK:
+- [Vanessa Ledezma](https://xpeak.es/p/vanessa-ledezma) (Madrid)
 
 ## Notas para modelos de IA
 

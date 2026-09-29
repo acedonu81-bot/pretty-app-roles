@@ -33,6 +33,11 @@ const ROL_ES: Record<string, string> = {
   humorista: 'Humorista', animador: 'Animador', bailarin: 'Bailarín',
   speaker: 'Speaker', vestuario: 'Estilismo', 'photo-booth': 'Photo Booth',
   empresario: 'Organizador',
+  tecnico: 'Técnico de Sonido y Montaje', local_eventos: 'Local para eventos',
+  // Alta por Google OAuth sin rol elegido todavía (handle_new_user cae aquí
+  // en vez de inventar un oficio) — sin esta entrada, rolLegible() capitaliza
+  // el string crudo y el email dice "Pending" en vez de un texto en español.
+  pending: 'Pendiente de elegir',
 };
 const rolLegible = (r: unknown): string => {
   const k = String(r ?? '').trim();
@@ -205,6 +210,11 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   // foto (filtro de foto obligatoria); un empresario no aparece, contrata.
   welcome: (d) => {
     const esEmpresa = d.role === 'empresario';
+    // Alta por Google (handle_new_user, 29 sep 2026): no manda rol y el
+    // perfil se crea como 'pending' en vez de inventar un oficio. Sin este
+    // caso, el texto de abajo diría "Tu perfil como Pendiente de elegir ya
+    // está activo" — nada está activo de verdad hasta que elige su oficio.
+    const sinRolTodavia = !esEmpresa && (!d.role || d.role === 'pending');
     return {
     subject: `Bienvenido a XPEAK, ${esc(d.name)}`,
     to: d.email,
@@ -217,7 +227,11 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 20px">
         Añade un logo y una breve descripción de tu negocio: los profesionales miran quién les escribe antes de responder.
       </p>
-      ${btn('Buscar profesionales →', 'https://xpeak.es/dashboard')}` : `
+      ${btn('Buscar profesionales →', 'https://xpeak.es/dashboard')}` : sinRolTodavia ? `
+      <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
+        Tu cuenta ya está creada. Solo falta un paso: elige tu oficio (DJ, fotógrafo, camarero, animador...) para activar tu perfil y que los organizadores puedan encontrarte.
+      </p>
+      ${btn('Elegir mi oficio →', 'https://xpeak.es/dashboard')}` : `
       <p style="color:#4b5563;font-size:14px;line-height:1.7;margin:0 0 6px">
         Tu perfil como <strong style="color:#D4AF37">${esc(rolLegible(d.role))}</strong> ya está activo. En cuanto subas una foto de perfil, aparecerás en el directorio y los organizadores de toda España podrán encontrarte y contactarte.
       </p>
@@ -1146,7 +1160,8 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       ${btn('Crear mi perfil de Organizador →', 'https://xpeak.es/dashboard')}
       <p style="color:#9CA3AF;font-size:12px;text-align:center;margin-top:16px">¿Alguna duda? Responde a este email.</p>
     `),
-  }),
+    };
+  },
 
   // 13b. Nuevo mensaje en chat
   new_message: (d) => ({
@@ -1164,8 +1179,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       <p style="color:#9CA3AF;font-size:11px;text-align:center;margin:0">
         Puedes desactivar estas notificaciones en Ajustes → Privacidad.
       </p>`),
-    };
-  },
+  }),
 
   // 13c. Mensaje sin responder pasadas ~24h — segundo aviso, más directo
   unread_message_reminder: (d) => ({
@@ -1469,20 +1483,6 @@ serve(async (req) => {
   try {
     const { type, data } = await req.json();
 
-    // Resolve email of the target user. IMPORTANTE: en avisos AL profesional
-    // (booking_received), el email destino es el del PROFESIONAL, no el del
-    // solicitante. El payload trae requester_contact (email de quien contacta),
-    // que NO debe usarse como destino. Resolvemos data.email desde el user_id
-    // del destinatario real (professional_user_id o user_id).
-    const targetUserId = data?.professional_user_id ?? data?.user_id;
-    if (targetUserId && !data?.email) {
-      const adminClient = createClient(
-        Deno.env.get('SUPABASE_URL') ?? '',
-        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
-      );
-      const { data: userData } = await adminClient.auth.admin.getUserById(targetUserId);
-      if (userData?.user?.email) data.email = userData.user.email;
-
     // Quien llama. El gateway ya verifica la firma del JWT (verify_jwt por
     // defecto), asi que el claim role es fiable: anon = visitante sin sesion
     // (el anon key es publico), authenticated = usuario logueado,
@@ -1523,6 +1523,20 @@ serve(async (req) => {
         delete data.email;
       }
     }
+
+    // Resolve email of the target user. IMPORTANTE: en avisos AL profesional
+    // (booking_received), el email destino es el del PROFESIONAL, no el del
+    // solicitante. El payload trae requester_contact (email de quien contacta),
+    // que NO debe usarse como destino. Resolvemos data.email desde el user_id
+    // del destinatario real (professional_user_id o user_id).
+    const targetUserId = data?.professional_user_id ?? data?.user_id;
+    if (targetUserId && !data?.email) {
+      const adminClient = createClient(
+        Deno.env.get('SUPABASE_URL') ?? '',
+        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+      );
+      const { data: userData } = await adminClient.auth.admin.getUserById(targetUserId);
+      if (userData?.user?.email) data.email = userData.user.email;
 
       if (data?.professional_user_id && !data?.professional_name) {
         const { data: prof } = await adminClient

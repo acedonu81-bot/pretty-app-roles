@@ -160,6 +160,39 @@
         || location.hostname.endsWith('.local')
         || location.protocol === 'file:';
       window.__xpeakTracking = function (fn) { if (!esLocal) pendientes.push(fn); };
+      // Unico punto que carga Clarity y le pasa el consentimiento (lo llaman el
+      // arranque diferido de abajo y CookieBanner.tsx al guardar). Comprueba si
+      // el tag ya esta en la pagina, no window.clarity: GTM define ese stub
+      // antes de cargar nada y hacia creer que Clarity ya estaba. Sin la senal
+      // 'consentv2' el proyecto de Clarity no recoge datos ("not being
+      // collected due to your configured project settings").
+      window.__xpeakClarity = function (prefs) {
+        if (esLocal || !prefs) return;
+        var w = window;
+        if (prefs.analytics && !document.querySelector('script[src*="clarity.ms/tag/"]')) {
+          w.clarity = w.clarity || function () { (w.clarity.q = w.clarity.q || []).push(arguments); };
+          var t = document.createElement('script'); t.async = 1; t.src = 'https://www.clarity.ms/tag/ypbgn6h98z';
+          var y = document.getElementsByTagName('script')[0]; y.parentNode.insertBefore(t, y);
+        }
+        if (typeof w.clarity === 'function') {
+          w.clarity('consentv2', {
+            ad_Storage: prefs.marketing ? 'granted' : 'denied',
+            analytics_Storage: prefs.analytics ? 'granted' : 'denied',
+          });
+          // Enlaza la sesion de Clarity con la de GA4 (client_id y session_id),
+          // lo que hacia el tag de GTM pausado el 29 sep ("Custom Id" / "Session
+          // Id"). Si GA4 no llega a cargar (bloqueador), el callback no se llama
+          // y Clarity graba igual, sin el cruce.
+          if (prefs.analytics && typeof w.gtag === 'function') {
+            w.gtag('get', 'G-D5MSEHB4E2', 'client_id', function (cid) {
+              if (!cid) return;
+              w.gtag('get', 'G-D5MSEHB4E2', 'session_id', function (sid) {
+                w.clarity('identify', String(cid), sid ? String(sid) : undefined);
+              });
+            });
+          }
+        }
+      };
       function arrancar() {
         if (arrancado) return;
         arrancado = true;
@@ -283,6 +316,16 @@
          da GA4 y añadía una conexión más al arranque. Su valor está en la
          analítica de redes sociales, que no necesita este pixel en la web.
          Si se quiere recuperar el tracking web, está en git. -->
+
+    <!-- Microsoft Clarity — grabaciones de sesión y mapas de calor (28 sep
+         2026). No es publicidad, es analítica de comportamiento: se
+         condiciona a la categoría "Analytics" del banner, igual que GA4
+         arriba, no a "Marketing" como el Meta Pixel. -->
+    <script>window.__xpeakTracking(function(){
+    var prefs = null;
+    try { prefs = JSON.parse(localStorage.getItem('xpeak-cookie-consent')); } catch (e) {}
+    window.__xpeakClarity(prefs);
+    });</script>
 
   </head>
 

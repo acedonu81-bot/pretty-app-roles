@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { ALL_CITIES } from '@/lib/regions';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight, Megaphone, UtensilsCrossed, Laugh, PartyPopper, PersonStanding, MicVocal, Shirt, Scissors, Upload, Euro, Guitar, SlidersHorizontal, Instagram } from 'lucide-react';
+import { CheckCircle, ArrowRight, Sparkles, Music2, Briefcase, Camera, Users, Wand2, ChevronRight, Megaphone, UtensilsCrossed, Laugh, PartyPopper, PersonStanding, MicVocal, Shirt, Scissors, Upload, Euro, Guitar, SlidersHorizontal, Instagram, ClipboardList } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
@@ -26,6 +26,7 @@ const ROLES = [
   { value: 'peluqueria',   label: 'Peluquería a Domicilio', desc: 'Peluquería a domicilio, eventos y día a día', icon: Scissors, color: '#fb7185' },
   { value: 'staff',        label: 'Camarero',            desc: 'Camarero y personal de sala',       icon: Users,          color: '#34d399' },
   { value: 'azafata',      label: 'Azafata',             desc: 'Azafata de imagen y atención al público', icon: Users,    color: '#f472b6' },
+  { value: 'event_manager', label: 'Encargada de Eventos', desc: 'Coordinación y producción de eventos', icon: ClipboardList, color: '#818cf8' },
   { value: 'promotor',     label: 'Promotor / RRPP',     desc: 'Relaciones públicas y listas',      icon: Megaphone,      color: '#a78bfa' },
   { value: 'catering',     label: 'Catering / Chef',     desc: 'Cocina, barra y cócteles',          icon: UtensilsCrossed, color: '#fb923c' },
   { value: 'mago',         label: 'Mago / Ilusionista',  desc: 'Magia de cerca y escenario',        icon: Wand2,          color: '#8b5cf6' },
@@ -186,6 +187,30 @@ const TIPS: Record<string, { title: string; tips: [string, string][] }> = {
       ['Di qué equipo manejas', 'Mesa, P.A., luces: por marca y modelo'],
       ['Aclara si aportas material', 'Con equipo propio o solo mano de obra'],
       ['Añade tu tarifa', 'Por jornada, por montaje o por evento'],
+    ],
+  },
+  azafata: {
+    title: 'Tu perfil de Azafata está listo',
+    tips: [
+      ['Añade tu foto', 'Una foto profesional de cuerpo entero o medio cuerpo'],
+      ['Indica tus idiomas', 'Congresos y ferias piden idiomas casi siempre'],
+      ['Añade tu tarifa', 'Por jornada o por evento'],
+    ],
+  },
+  event_manager: {
+    title: 'Tu perfil de Encargada de Eventos está listo',
+    tips: [
+      ['Añade tu foto', 'Sin foto no apareces en el directorio'],
+      ['Cuenta qué eventos coordinas', 'Bodas, corporativos, festivales...'],
+      ['Añade tu tarifa', 'Por evento o por jornada'],
+    ],
+  },
+  local_eventos: {
+    title: 'La ficha de tu local está lista',
+    tips: [
+      ['Sube fotos del espacio', 'Sala, barra y zona exterior si la hay'],
+      ['Indica el aforo', 'Es lo primero que filtra quien organiza'],
+      ['Añade tu precio', 'Por hora o por evento'],
     ],
   },
   empresario: {
@@ -393,7 +418,17 @@ const OnboardingWizard = ({ onClose, onNavigate }: Props) => {
     onNavigate(selectedRole === 'empresario' ? 'empresario' : 'profile');
   };
 
-  const roleData = TIPS[selectedRole] ?? TIPS['dj'];
+  // Sin TIPS propio para un oficio, antes caía en TIPS['dj'] y una azafata o
+  // un local veían "Tu perfil de DJ está listo" + "Sube tu mix" al acabar el
+  // alta (29 sep 2026). Mejor un texto neutro que uno de otro oficio.
+  const roleData = TIPS[selectedRole] ?? {
+    title: 'Tu perfil está listo',
+    tips: [
+      ['Añade tu foto', 'Sin foto no apareces en el directorio'],
+      ['Escribe tu bio', 'Cuenta qué haces y dónde has trabajado'],
+      ['Añade tu tarifa', 'Por hora o por evento'],
+    ] as [string, string][],
+  };
 
   return (
     <div className="fixed inset-0 z-[200] flex items-center justify-center p-4"

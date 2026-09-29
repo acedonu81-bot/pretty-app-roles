@@ -202,9 +202,18 @@ export async function logEvent(
   }
 }
 
-/** Visita de página. Se llama en cada cambio de ruta. */
-export function logPageView(path: string = location.pathname) {
-  void logEvent('page_view', path);
+/**
+ * Visita de página. Se llama en cada cambio de ruta.
+ *
+ * En /auth se guarda el query string (mode/role) como detalle: es la única
+ * ruta donde ese dato distingue acciones muy distintas para el panel "Quién
+ * está online" (alta de profesional vs. login de organizador), así que no
+ * compensa arrastrarlo en `path` para todas las rutas y romper las vistas SQL
+ * que agrupan por path exacto.
+ */
+export function logPageView(path: string = location.pathname, search: string = location.search) {
+  const detalle = path === '/auth' && search ? search.replace(/^\?/, '') : undefined;
+  void logEvent('page_view', path, detalle);
 }
 
 /**

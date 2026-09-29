@@ -257,11 +257,11 @@ const SIN_EXPLORAR = new Set(['empresario', 'pending', 'rookie']);
 // fondo que ya se corrigió para el aterrizaje inicial (ver roleRouting.test.ts
 // y el comentario de ROLE_TO_VIEW): un valor cae en 'dj' por defecto en vez de
 // resolverse de verdad.
-// Cubre los 18 oficios que ofrece hoy el wizard de alta (OnboardingWizard.tsx)
+// Cubre los 19 oficios que ofrece hoy el wizard de alta (OnboardingWizard.tsx)
 // más 'staff' (alias de 'camarero') y los roles legado que ya no se dan de
-// alta pero pueden seguir teniendo perfiles reales (design, event_manager,
-// monologo, ambassador) — estos últimos con menos sinónimos porque nadie
-// nuevo elige ya ese oficio, pero un perfil existente sigue siendo buscable.
+// alta pero pueden seguir teniendo perfiles reales (design, monologo,
+// ambassador) — estos últimos con menos sinónimos porque nadie nuevo elige
+// ya ese oficio, pero un perfil existente sigue siendo buscable.
 const BUSQUEDA_POR_VISTA: Record<string, string[]> = {
   dj: ['dj', 'disc jockey', 'pincha', 'discomovil'],
   'grupo-musical': ['grupo musical', 'grupo', 'banda', 'orquesta', 'musico', 'musicos', 'saxofonista', 'saxofon', 'violinista', 'trio musical', 'cuarteto'],
@@ -283,7 +283,7 @@ const BUSQUEDA_POR_VISTA: Record<string, string[]> = {
   local_eventos: ['local', 'locales', 'evento', 'eventos', 'finca', 'discoteca', 'sala', 'terraza', 'despedida'],
   // Legado: sin alta activa, sinónimos mínimos por si queda algún perfil real.
   design: ['diseno', 'diseño', 'decoracion'],
-  event_manager: ['event manager', 'organizador de eventos', 'wedding planner'],
+  event_manager: ['event manager', 'organizador de eventos', 'wedding planner', 'encargada de eventos', 'encargado de eventos', 'coordinadora de eventos', 'coordinador de eventos'],
   monologo: ['monologo', 'monologuista'],
   ambassador: ['ambassador', 'embajador', 'embajadora'],
 };

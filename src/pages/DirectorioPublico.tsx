@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { ALL_CITIES } from '@/lib/regions';
-import { useParams, Navigate, useSearchParams } from 'react-router-dom';
+import { useParams, Navigate, useSearchParams, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { Zap, MapPin, BadgeCheck, ChevronRight, Check, Plus, Users } from 'lucide-react';
@@ -232,6 +232,19 @@ export const ROLE_CONFIG: Record<string, {
     cta: 'Contratar este local',
   },
 };
+
+// Rol de BD → slug de /directorio/:slug. Gana la PRIMERA entrada de cada
+// dbRole y se saltan los subdirectorios 'only' (emergentes): con
+// Object.fromEntries ganaba la última, y dbRole 'dj' apuntaba a
+// 'djs-emergentes' — el buscador de la portada mandaba a quien buscaba "DJ"
+// al directorio que solo enseña DJs que empiezan (29 sep 2026).
+const DIRECTORIO_SLUG_POR_ROL: Record<string, string> = {};
+for (const [slug, cfg] of Object.entries(ROLE_CONFIG)) {
+  if (cfg.experienceLevel === 'only' || DIRECTORIO_SLUG_POR_ROL[cfg.dbRole]) continue;
+  DIRECTORIO_SLUG_POR_ROL[cfg.dbRole] = slug;
+}
+export const directorioSlugDeRol = (role: string | null | undefined): string =>
+  DIRECTORIO_SLUG_POR_ROL[canonicalRole(role) ?? ''] ?? 'dj';
 
 export const ALL_ROLES = [
   { slug: 'dj', label: 'DJs' },
@@ -496,7 +509,20 @@ export async function fetchAllDirectorioProfilesByRole(city: string): Promise<Re
   return byRole;
 }
 
+// Un slug que no existe (p.ej. /directorio/media, el rol de BD en vez del
+// slug 'fotografo' — lo publicaban los breadcrumbs de PublicProfile) pintaba
+// en silencio el directorio de DJs con la URL equivocada. Se redirige al slug
+// real. Va en un componente aparte para no romper el orden de hooks.
 export default function DirectorioPublico() {
+  const { rol } = useParams<{ rol: string }>();
+  const { search } = useLocation();
+  if (rol && !ROLE_CONFIG[rol]) {
+    return <Navigate to={`/directorio/${directorioSlugDeRol(rol)}${search}`} replace />;
+  }
+  return <DirectorioPublicoContenido />;
+}
+
+function DirectorioPublicoContenido() {
   const { rol } = useParams<{ rol: string }>();
   const config = ROLE_CONFIG[rol ?? 'dj'] ?? ROLE_CONFIG.dj;
 

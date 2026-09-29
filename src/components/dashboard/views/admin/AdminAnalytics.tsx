@@ -33,6 +33,7 @@ type Recurso = { oficio: string; visitas: number; sesiones: number };
 type QuienOnline = {
   session_id: string; ultima_pagina: string | null; device: string | null;
   hace_segundos: number; display_name: string | null; rol: string | null;
+  detalle: string | null;
 };
 
 const GOLD = '#B8941E';
@@ -64,13 +65,25 @@ const Ayuda = ({ texto }: { texto: string }) => (
     </span>
   </span>
 );
-// 1 se muestra como "24 horas": los RPCs ya calculan la ventana con
+// 1 se muestra como "24 horas": los RPCs calculan la ventana con
 // now() - interval 'X days' (hora exacta, no día de calendario), así que
-// p_dias=1 cubre de verdad las últimas 24h y no hace falta tocar SQL.
+// p_dias=1 son las últimas 24h reales, no "desde las 00:00 de hoy" — para
+// eso existe el botón "Hoy" (estado `hoy`), aparte de este selector.
 const RANGOS = [1, 7, 30, 90];
 const labelRango = (r: number) => r === 1 ? '24 horas' : `${r} días`;
 
 const fmtHaceSegundos = (s: number) => s < 60 ? `hace ${s}s` : `hace ${Math.round(s / 60)} min`;
+
+/** Traduce el query string de /auth (mode/role) a algo legible junto a la ruta. */
+function describirDetalleAuth(pagina: string | null, detalle: string | null): string {
+  if (pagina !== '/auth' || !detalle) return '';
+  const params = new URLSearchParams(detalle);
+  const mode = params.get('mode') === 'register' ? 'Registro' : params.get('mode') === 'login' ? 'Login' : null;
+  const rolLabel: Record<string, string> = { profesional: 'profesional', empresario: 'organizador' };
+  const rol = rolLabel[params.get('role') ?? ''];
+  const partes = [mode, rol].filter(Boolean);
+  return partes.length ? ` · ${partes.join(' ')}` : '';
+}
 
 const fmtDia = (d: string) => {
   const date = new Date(d + 'T00:00:00');
@@ -132,6 +145,12 @@ const Panel = ({ title, hint, ayuda, children }: {
 
 export default function AdminAnalytics() {
   const [dias, setDias] = useState(7);
+  // "Hoy" es un filtro aparte de `dias`: cuenta desde las 00:00 de hoy (hora
+  // España), no una ventana móvil de 24h como dias=1. Antes no existía esta
+  // distinción y la tarjeta "Usuarios" decía "hoy" con dias=1 aunque el dato
+  // real fueran las últimas 24h — a las 00:30 seguía mostrando el tráfico de
+  // ayer casi entero.
+  const [hoy, setHoy] = useState(false);
   const [porDia, setPorDia] = useState<Dia[]>([]);
   const [porHora, setPorHora] = useState<Hora[]>([]);
   const [top, setTop] = useState<Top[]>([]);
@@ -174,7 +193,7 @@ export default function AdminAnalytics() {
       // Personas distintas del PERIODO COMPLETO (no la suma día a día que ya
       // hace "sesiones" en panel_analytics_dia, que duplica a quien vuelve
       // varios días). Sustituye a "Visitas" (páginas vistas, no gente).
-      sb.rpc('panel_analytics_usuarios_unicos', { p_dias: dias }),
+      sb.rpc('panel_analytics_usuarios_unicos', { p_dias: dias, p_desde_medianoche: hoy }),
     ]);
 
     const fallo = [d, h, t, n].find(r => r.error);
@@ -204,7 +223,7 @@ export default function AdminAnalytics() {
     const uuRow = (uu.data as { usuarios: number }[] | null)?.[0];
     setUsuariosUnicos(uuRow ? Number(uuRow.usuarios) : null);
     setCargando(false);
-  }, [dias]);
+  }, [dias, hoy]);
 
   useEffect(() => { cargar(); }, [cargar]);
 
@@ -298,6 +317,18 @@ export default function AdminAnalytics() {
     <div>
       {/* Rango + refrescar */}
       <div className="flex items-center gap-2 mb-4 flex-wrap">
+        {/* "Hoy" solo afecta a la tarjeta "Usuarios" (única migrada a
+            p_desde_medianoche); el resto del panel (gráficas, top, negocio...)
+            sigue leyendo la ventana de `dias` normal mientras está activo. */}
+        <button onClick={() => setHoy(h => !h)}
+          className="text-xs font-bold px-3 py-1.5 rounded-full transition-all"
+          style={{
+            background: hoy ? 'rgba(212,175,55,0.15)' : 'rgba(0,0,0,0.03)',
+            border: `1px solid ${hoy ? 'rgba(212,175,55,0.4)' : 'rgba(0,0,0,0.08)'}`,
+            color: hoy ? '#8A6D0F' : '#444',
+          }}>
+          Hoy
+        </button>
         {RANGOS.map(r => (
           <button key={r} onClick={() => setDias(r)}
             className="text-xs font-bold px-3 py-1.5 rounded-full transition-all"
@@ -327,8 +358,11 @@ export default function AdminAnalytics() {
         <Kpi icon={Users} label="Online ahora" valor={online ?? '—'} sub="últimos 5 min" live
           onClick={() => setOnlineAbierto(o => !o)} abierto={onlineAbierto}
           ayuda="Sesiones distintas con actividad en los últimos 5 minutos. Se actualiza sola cada 30s: no hace falta pulsar Actualizar. Excluye tu propio tráfico de admin y el de las cuentas demo. Toca la tarjeta para ver quién es y en qué página está." />
-        <Kpi icon={Eye} label="Usuarios" valor={usuariosUnicos ?? '—'} sub={dias === 1 ? 'hoy' : `en ${dias} días`}
-          ayuda="Personas distintas que han entrado, sin duplicar a quien vuelve varios días dentro del periodo. Excluye tu propio tráfico de admin y el de las cuentas demo." />
+        <Kpi icon={Eye} label="Usuarios" valor={usuariosUnicos ?? '—'}
+          sub={hoy ? 'hoy (desde 00:00)' : dias === 1 ? 'últimas 24h' : `en ${dias} días`}
+          ayuda={hoy
+            ? 'Personas distintas desde las 00:00 de hoy (hora España), sin duplicar a quien vuelve. Excluye tu propio tráfico de admin y el de las cuentas demo.'
+            : 'Personas distintas que han entrado, sin duplicar a quien vuelve varios días dentro del periodo. Excluye tu propio tráfico de admin y el de las cuentas demo.'} />
         <Kpi icon={Users} label="Sesiones" valor={totalSesiones} sub="entradas por día, sumadas"
           ayuda="Personas distintas por día, sumadas: quien entra 3 días cuenta 3 veces (a diferencia de 'Usuarios', que no duplica). Útil para ver el pulso diario, no el total de gente real." />
         <Kpi icon={UserPlus} label="Altas" valor={totalAltas} sub="perfiles nuevos"
@@ -357,7 +391,9 @@ export default function AdminAnalytics() {
                       {q.display_name || 'Visitante'}
                       {q.rol && <span className="font-normal" style={{ color: 'rgba(10,9,8,0.45)' }}> · {q.rol}</span>}
                     </p>
-                    <p className="text-[0.7rem] truncate" style={{ color: 'rgba(10,9,8,0.5)' }}>{q.ultima_pagina || '/'}</p>
+                    <p className="text-[0.7rem] truncate" style={{ color: 'rgba(10,9,8,0.5)' }}>
+                      {q.ultima_pagina || '/'}{describirDetalleAuth(q.ultima_pagina, q.detalle)}
+                    </p>
                   </div>
                   <div className="flex-shrink-0 flex items-center gap-2 text-[0.65rem]" style={{ color: 'rgba(10,9,8,0.4)' }}>
                     <Monitor size={12} />
