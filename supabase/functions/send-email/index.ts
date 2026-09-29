@@ -1096,14 +1096,37 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
   //
   // Es la via mas directa a mas organizadores: gente que ya esta dentro, que
   // ya monta eventos y que ya sabe lo que cuesta encontrar personal.
-  organizador_segundo_perfil: (d) => ({
+  organizador_segundo_perfil: (d) => {
+    // Copy por rol: que pregunta, a quien se parece, que suelen contratar
+    // (nunca su propio oficio) y que datos de su ficha "no se tocan".
+    const R: Record<string, { q: string; quienes: string; necesitan: string; perfil: string; ficha: string }> = {
+      dj:              { q: 'además de pinchar', quienes: 'Muchos DJs no solo pinchan: montan la fiesta entera', necesitan: 'camareros, fotógrafo o azafatas', perfil: 'DJ', ficha: 'tus géneros, tu tarifa y tus sesiones' },
+      'grupo-musical': { q: 'además de tocar', quienes: 'Muchos grupos no solo tocan: organizan el concierto o la fiesta entera', necesitan: 'técnico de sonido, DJ para después o camareros', perfil: 'grupo', ficha: 'tu repertorio, tu tarifa y tus vídeos' },
+      staff:           { q: 'además de servir', quienes: 'Mucha gente de sala no solo sirve: coordina el equipo o monta sus propios eventos', necesitan: 'más camareros, DJ o catering', perfil: 'camarero', ficha: 'tu experiencia, tu tarifa y tus fotos' },
+      camarero:        { q: 'además de servir', quienes: 'Mucha gente de sala no solo sirve: coordina el equipo o monta sus propios eventos', necesitan: 'más camareros, DJ o catering', perfil: 'camarero', ficha: 'tu experiencia, tu tarifa y tus fotos' },
+      catering:        { q: 'además de cocinar', quienes: 'Muchos caterings no solo ponen la comida: se encargan del evento completo', necesitan: 'camareros, DJ o fotógrafo', perfil: 'catering', ficha: 'tu carta, tu tarifa y tus fotos' },
+      makeup:          { q: 'además de maquillar', quienes: 'Muchas maquilladoras no solo maquillan: organizan sesiones, desfiles o eventos', necesitan: 'peluquería, fotógrafo o modelos', perfil: 'maquillaje', ficha: 'tus estilos, tu tarifa y tu portfolio' },
+      peluqueria:      { q: 'además de peinar', quienes: 'Muchos peluqueros no solo peinan: organizan sesiones, desfiles o eventos', necesitan: 'maquillaje, fotógrafo o modelos', perfil: 'peluquería', ficha: 'tus estilos, tu tarifa y tu portfolio' },
+      bailarin:        { q: 'además de bailar', quienes: 'Muchos bailarines no solo actúan: montan sus propios shows y eventos', necesitan: 'DJ, vestuario o fotógrafo', perfil: 'bailarín', ficha: 'tus estilos, tu tarifa y tus vídeos' },
+      mago:            { q: 'además de actuar', quienes: 'Muchos magos no solo actúan: organizan el evento completo', necesitan: 'DJ, animador o camareros', perfil: 'mago', ficha: 'tu espectáculo, tu tarifa y tus vídeos' },
+      humorista:       { q: 'además de actuar', quienes: 'Muchos humoristas no solo actúan: montan sus propias noches de comedia', necesitan: 'técnico de sonido, camareros o fotógrafo', perfil: 'humorista', ficha: 'tu espectáculo, tu tarifa y tus vídeos' },
+      animador:        { q: 'además de animar', quienes: 'Muchos animadores no solo animan: organizan la fiesta entera', necesitan: 'DJ, catering o photo booth', perfil: 'animador', ficha: 'tus actividades, tu tarifa y tus fotos' },
+      media:           { q: 'además de fotografiar', quienes: 'Muchos fotógrafos no solo hacen fotos: producen el evento o la sesión completa', necesitan: 'maquillaje, modelos o DJ', perfil: 'fotógrafo', ficha: 'tu estilo, tu tarifa y tu portfolio' },
+      'photo-booth':   { q: 'además del photo booth', quienes: 'Muchos photo booths no solo ponen el fotomatón: montan el evento completo', necesitan: 'DJ, camareros o animador', perfil: 'photo booth', ficha: 'tu servicio, tu tarifa y tus fotos' },
+      vestuario:       { q: 'además del vestuario', quienes: 'Mucha gente de vestuario no solo viste: produce desfiles, rodajes o eventos', necesitan: 'maquillaje, peluquería o fotógrafo', perfil: 'vestuario', ficha: 'tu trabajo, tu tarifa y tu portfolio' },
+      event_manager:   { q: 'y necesitas equipo', quienes: 'Si coordinas eventos, necesitas encontrar profesionales rápido', necesitan: 'DJ, camareros, catering o fotógrafo', perfil: 'event manager', ficha: 'tu experiencia, tu tarifa y tus fotos' },
+      promotor:        { q: 'y necesitas equipo', quienes: 'Si promocionas fiestas, necesitas cerrar el cartel y el equipo rápido', necesitan: 'DJs, camareros o fotógrafo', perfil: 'promotor', ficha: 'tus eventos, tu tarifa y tus fotos' },
+      local_eventos:   { q: 'en tu local', quienes: 'Si tienes un espacio para eventos, muchas veces te toca montar la fiesta completa', necesitan: 'DJ, camareros o catering', perfil: 'local', ficha: 'tu espacio, tu tarifa y tus fotos' },
+    };
+    const r = R[d.role] ?? { q: 'además de trabajar en ellos', quienes: 'Muchos profesionales no solo trabajan en eventos: los organizan', necesitan: 'DJ, camareros o fotógrafo', perfil: 'profesional', ficha: 'tus datos, tu tarifa y tu portfolio' };
+    return {
     subject: `${esc(d.name)}, si montas eventos puedes contratar desde tu cuenta`,
     to: d.email,
     html: base(`
-      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">¿Montas eventos además de pinchar?</h2>
+      <h2 style="font-size:22px;font-weight:900;margin:0 0 10px;color:#0a0908">¿Montas eventos ${r.q}?</h2>
       <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
-        Hola <strong>${esc(d.name)}</strong>. Muchos DJs no solo pinchan: montan la fiesta entera y necesitan
-        camareros, fotógrafo o azafatas. Si es tu caso, puedes tener un perfil de
+        Hola <strong>${esc(d.name)}</strong>. ${r.quienes} y necesitan
+        ${r.necesitan}. Si es tu caso, puedes tener un perfil de
         <strong>Organizador</strong> en la misma cuenta que ya usas, sin registrarte otra vez y sin dar otro correo.
       </p>
       <div style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.25);border-radius:8px;padding:20px;margin:20px 0;box-shadow:0 8px 22px rgba(212,175,55,0.16)">
@@ -1116,7 +1139,7 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
         </p>
       </div>
       <p style="color:#0a0908;font-size:14px;line-height:1.7;margin:0 0 16px">
-        Tu perfil de DJ <strong>no se toca</strong>: sigue igual en el directorio, con tus géneros, tu tarifa y tus sesiones.
+        Tu perfil de ${r.perfil} <strong>no se toca</strong>: sigue igual en el directorio, con ${r.ficha}.
         El de Organizador es aparte, y es el que te deja buscar profesionales por ciudad, ver quién está disponible
         y mandar solicitudes.
       </p>
@@ -1141,7 +1164,8 @@ const TEMPLATES: Record<string, (d: any) => { subject: string; html: string; to:
       <p style="color:#9CA3AF;font-size:11px;text-align:center;margin:0">
         Puedes desactivar estas notificaciones en Ajustes → Privacidad.
       </p>`),
-  }),
+    };
+  },
 
   // 13c. Mensaje sin responder pasadas ~24h — segundo aviso, más directo
   unread_message_reminder: (d) => ({
@@ -1458,6 +1482,47 @@ serve(async (req) => {
       );
       const { data: userData } = await adminClient.auth.admin.getUserById(targetUserId);
       if (userData?.user?.email) data.email = userData.user.email;
+
+    // Quien llama. El gateway ya verifica la firma del JWT (verify_jwt por
+    // defecto), asi que el claim role es fiable: anon = visitante sin sesion
+    // (el anon key es publico), authenticated = usuario logueado,
+    // service_role = crons y otras edge functions.
+    // Antes cualquiera con el anon key podia mandar CUALQUIER plantilla a
+    // CUALQUIER direccion desde info@xpeak.site (verificado 29 sep con
+    // organizador_segundo_perfil -> mail-tester). Si alguien lo usa para spam,
+    // cae la reputacion del dominio y todos los correos acaban en spam.
+    let callerRole = 'anon';
+    let callerId: string | null = null;
+    try {
+      const payload = JSON.parse(atob(authHeader.replace('Bearer ', '').split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+      callerRole = payload.role ?? 'anon';
+      callerId = payload.sub ?? null;
+    } catch { /* token no JWT: se trata como anon */ }
+    const isTrusted = isInternal || callerRole === 'service_role';
+
+    if (!isTrusted) {
+      // Flujos publicos sin sesion (contacto, Flash Booking publico, blog, registro, reseñas).
+      const PUBLIC_TYPES = ['contact_form', 'flash_booking', 'flash_booking_confirm', 'booking_received', 'lead_welcome', 'early_adopter', 'new_review_pending'];
+      // Avisos lanzados desde el dashboard con sesion iniciada.
+      const LOGGED_TYPES = ['booking_status_update', 'contract_generated', 'bolo_new_confirmation', 'fast_responder_badge', 'flash_job_nuevo', 'new_message', 'subscription_cancelled', 'verification_request'];
+      const ADMIN_TYPES = ['admin_approved', 'admin_rejected'];
+      const allowed = PUBLIC_TYPES.includes(type)
+        || (callerRole === 'authenticated' && LOGGED_TYPES.includes(type))
+        || (callerRole === 'authenticated' && ADMIN_TYPES.includes(type));
+      if (!allowed) {
+        return new Response(JSON.stringify({ error: 'Forbidden' }), { status: 403, headers: corsHeaders });
+      }
+      if (ADMIN_TYPES.includes(type)) {
+        const adminClient = createClient(Deno.env.get('SUPABASE_URL') ?? '', Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '');
+        const { data: isAdmin } = await adminClient.from('user_roles').select('role').eq('user_id', callerId).eq('role', 'admin').maybeSingle();
+        if (!isAdmin) return new Response(JSON.stringify({ error: 'Forbidden' }), { status: 403, headers: corsHeaders });
+      }
+      // Avisos a un usuario concreto: el destino sale SIEMPRE de su user_id,
+      // nunca de un email que mande el navegador.
+      if (['booking_received', 'new_message'].includes(type) && data && (data.professional_user_id || data.user_id)) {
+        delete data.email;
+      }
+    }
 
       if (data?.professional_user_id && !data?.professional_name) {
         const { data: prof } = await adminClient

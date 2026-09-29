@@ -97,6 +97,7 @@ serve(async (req) => {
           data: {
             user_id: profile.user_id,
             name: profile.display_name ?? 'Profesional',
+            role: profile.role,
           },
         }),
       });
